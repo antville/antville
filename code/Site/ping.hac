@@ -1,9 +1,4 @@
 var ping = this.ping();
 
-if (!ping.error)
-	this.lastping = new Date();
-else
-	writeln("Error when pinging weblogs.com for update of weblog " + this._id + ": " + ping.message);
-
 res.message = ping.message;
 res.redirect(this.href());
