@@ -11,7 +11,7 @@
 </tr>
 <tr>
 <td class="storyText" valign="top" nowrap>Text:</td>
-<td class="storyText" nowrap><% this.text as="editor" width="25" height="8" %></td>
+<td class="storyText" nowrap><% this.text as="editor" width="30" height="8" %></td>
 </tr>
 <tr>
 <td class="storyText" nowrap>&nbsp;</td>
