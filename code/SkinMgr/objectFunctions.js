@@ -1,5 +1,7 @@
 /**
- * function evaluates skin
+ * function stores skin
+ * if no source was posted, the database-skin is deleted
+ * (actually there should be a "delete"-button ...)
  */
 
 function saveSkin() {
@@ -22,5 +24,5 @@ function saveSkin() {
          currSkin.skin = req.data.skin;
       res.message = "Changes were saved successfully!";
    }
-   res.redirect(this.href() + "?proto=" + req.data.proto + "&name=" + req.data.name);
+   res.redirect(this.href());
 }
