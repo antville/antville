@@ -8,11 +8,11 @@
 > 
 
   <channel rdf:about="<% this.url %>">
-    <title><![CDATA[<% this.title %>]]></title>
+    <title><% this.title encoding="xml" %></title>
     <link><% this.url %></link>
-    <description><![CDATA[<% this.tagline %>]]></description>
-    <dc:publisher><![CDATA[<% param.title %>]]></dc:publisher>
-    <dc:creator><![CDATA[<% param.creator %> (mailto:<% param.email %>)]]></dc:creator>
+    <description><% this.tagline encoding="xml" %></description>
+    <dc:publisher><% param.title encoding="xml" %></dc:publisher>
+    <dc:creator><% param.creator encoding="xml" %> (mailto:<% param.email encoding="xml" %>)</dc:creator>
     <dc:date><% param.lastupdate %></dc:date>
     <dc:language>en</dc:language>
     <sy:updatePeriod>hourly</sy:updatePeriod>
@@ -26,10 +26,10 @@
   </channel>
 
    <textinput rdf:about="<% this.url %>search">
-   	<title>find</title>
-   	<description>Search this weblog:</description>
-   	<name>q</name>
-   	<link><% this.url %>search</link>
+      <title>find</title>
+      <description>Search this weblog:</description>
+      <name>q</name>
+      <link><% this.url %>search</link>
    </textinput>
 
 <% param.items %>

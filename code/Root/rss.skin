@@ -7,12 +7,12 @@
   xmlns="http://purl.org/rss/1.0/"
 > 
 
-  <channel rdf:about="<% this.url encode="xml" %>">
-    <title><% param.title %> Sites</title>
-    <link><% this.url encode="xml" %></link>
+  <channel rdf:about="<% this.url encoding="xml" %>">
+    <title><% param.title encoding="xml" %> Sites</title>
+    <link><% this.url encoding="xml" %></link>
     <description>Recently updated <% param.title %> sites ordered by date</description>
-    <dc:publisher><% param.title %></dc:publisher>
-    <dc:creator><% param.title %> (mailto:<% param.email %>)</dc:creator>
+    <dc:publisher><% param.title encoding="xml" %></dc:publisher>
+    <dc:creator><% param.title encoding="xml" %> (mailto:<% param.email %>)</dc:creator>
     <dc:date><% param.lastupdate %></dc:date>
     <dc:language>en</dc:language>
     <sy:updatePeriod>hourly</sy:updatePeriod>

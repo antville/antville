@@ -13,13 +13,13 @@ var items = "";
 var resources = "";
 
 for (var i=0; i<max; i++) {
-	var site = this.get(i);
-	if (site.online && site.lastupdate) {
+   var site = this.get(i);
+   if (site.online && site.lastupdate) {
       param.title = site.title ? site.title : site.alias;
       param.publisher = systitle;
       param.creator = site.creator.name;
       param.email = translateToEntities(site.creator.email);
-	   param.date = site.lastupdate.format("dd.MM.yyyy, HH:mm'h CET'");
+      param.date = site.lastupdate.format("dd.MM.yyyy, HH:mm'h CET'");
       param.isodate = site.lastupdate.format(isoDateFormat);
       param.year = site.lastupdate.getYear();
       items += site.renderSkinAsString("rssItem", param);

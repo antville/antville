@@ -1,9 +1,9 @@
-  <item rdf:about="<% this.url encode="xml" %>">
-    <title><![CDATA[<% param.title %>]]></title> 
-    <link><% this.url encode="xml" %></link>
-    <description><![CDATA[<% param.date %><% this.tagline encode="xml" prefix=" &#150; " %>]]></description>
-    <dc:publisher><![CDATA[<% param.publisher %>]]></dc:publisher>
-    <dc:creator><![CDATA[<% param.creator %> (mailto:<% param.email %>)]]></dc:creator>
-    <dc:rights><![CDATA[Copyright &#169; <% param.year %> <% param.creator %>]]></dc:rights>
+  <item rdf:about="<% this.url encoding="xml" %>">
+    <title><% param.title encoding="xml" %></title> 
+    <link><% this.url encoding="xml" %></link>
+    <description><% param.date %><% this.tagline encoding="xml" prefix=" &#150; " %></description>
+    <dc:publisher><% param.publisher encoding="xml" %></dc:publisher>
+    <dc:creator><% param.creator encoding="xml" %> (mailto:<% param.email encoding="xml" %>)</dc:creator>
+    <dc:rights>Copyright &#169; <% param.year %> <% param.creator encoding="xml" %>%></dc:rights>
     <dc:date><% param.isodate %></dc:date>
   </item> 
