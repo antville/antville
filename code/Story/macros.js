@@ -246,6 +246,16 @@ function image_macro(param) {
 }
 
 /**
+ * macro is a wrapper-macro for calling thumbnail-macro
+ * of weblog
+ */
+
+function thumbnail_macro(param) {
+   this.weblog.thumbnail_macro(param);
+}
+
+
+/**
  * macro renders the property of story that defines if
  * other users may edit this story
  */

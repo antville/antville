@@ -492,7 +492,7 @@ function age_macro(param) {
  */
 
 function image_macro(param) {
-   if (param && param.name && this.images.get(param.name)) {
+   if (param.name && this.images.get(param.name)) {
       res.write(param.prefix)
       if (param.linkto) {
          this.openLink(param);
@@ -504,6 +504,33 @@ function image_macro(param) {
    }
 }
 
+
+/**
+ * macro renders an image out of thumbnail-pool
+ * either as plain image, as link to image.main, to popup or to external url
+ * overrideable parameters: width,height,alttext,border
+ * additional parameters: align, valign
+ * <% weblog.thumbnail name="[name]" linkto="[fullsize|popup|url]" %>
+ */
+
+function thumbnail_macro(param) {
+   if (!param.name)
+      return;
+   var img = this.images.get(param.name);
+   if (img && img.thumbnail) {
+      res.write(param.prefix);
+      var linkParam = new HopObject();
+      if (param.linkto) {
+         this.openLink(param);
+      } else {
+         linkParam.linkto = img.popupUrl();
+         this.openLink(linkParam);
+      }
+      this.renderImage(img.thumbnail,param);
+      this.closeLink(param);
+      res.write(param.suffix);
+   }
+}
 
 /**
  * macro renders the number of members of this weblog
