@@ -4,202 +4,202 @@ _url = http://macros.antville.org/stories/
 
 // G L O B A L
 
-global = colorpicker , file, image, imagelist, link, now, poll, sitelist, story, storylist, topiclist, username, linkedpath
+global.macros = colorpicker , file, image, imagelist, link, now, poll, sitelist, story, storylist, topiclist, username, linkedpath
 
-global.colorpickerWidget = param.editor, param.text, param.name, param.color
-global.prevpagelink = param.next, param.url
-global.nextpagelink = param.next, param.url
-global.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
+global.macro.image = 14962
+global.macro.link = 14956
+global.macro.logo = 14986
+global.macro.poll = 14957
 
-global.image = 14962
-global.link = 14956
-global.logo = 14986
-global.poll = 14957
+global.skin.colorpickerWidget = param.editor, param.text, param.name, param.color
+global.skin.prevpagelink = param.next, param.url
+global.skin.nextpagelink = param.next, param.url
+global.skin.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
 
 
 
 // H O P O B J E C T 
 
-hopobject = skin, link, createtime
-hopobject.delete = response.action, param.what
+hopobject.macros = skin, link, createtime
+hopobject.macro.delete = response.action, param.what
 
 
 
 // R O O T
 
-root = loginstatus, sitelist, sitecounter, url, systitle, sysurl
+root.macros = loginstatus, sitelist, sitecounter, url, systitle, sysurl
 
-root.rss = param.title, param.email, param.lastupdate, param.resources, param.textinput, param.items
+root.skin.rss = param.title, param.email, param.lastupdate, param.resources, param.textinput, param.items
 
 
 
 // C H O I C E
 
-choice.edit = param.count, param.value
-choice.graph = param.width
-choice.main = param.name, param.value, param.checked, param.title
-choice.result = param.graph, param.percent, param.count, param.text, param.title
+choice.skin.edit = param.count, param.value
+choice.skin.graph = param.width
+choice.skin.main = param.name, param.value, param.checked, param.title
+choice.skin.result = param.graph, param.percent, param.count, param.text, param.title
 
 
 
 // C O M M E N T
 
-comment = replylink, content, createtime, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+comment.macros = replylink, content, createtime, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
 
-comment.edit = response.action
+comment.skin.edit = response.action
 
 
 
 // D A Y
 
-day = storylist, link
-day.main = response.prevpage, response.nextpage
+day.macros = storylist, link
+day.skin.main = response.prevpage, response.nextpage
 
 
 
 // F I L E
 
-file = alias, description, url, editlink, deletelink, creator, createtime, filesize, mimetype, filetype, clicks
+file.macros = alias, description, url, editlink, deletelink, creator, createtime, filesize, mimetype, filetype, clicks
 
-file.edit = response.action
-file.new = response.action
+file.skin.edit = response.action
+file.skin.new = response.action
 
 
 
 // F I L E M G R
 
-filemgr = files
-filemgr.main = response.prevpage, response.nextpage
+filemgr.macros = files
+filemgr.skin.main = response.prevpage, response.nextpage
 
 
 
 // I M A G E
 
-image = alias, alttext, width, height, url, editlink, deletelink, show, creator, hasthumbnail
+image.macros = alias, alttext, width, height, url, editlink, deletelink, show, creator, hasthumbnail
 
-image.edit = response.action
-image.new = response.action
+image.skin.edit = response.action
+image.skin.new = response.action
 
 
 
 // I M A G E M G R
 
-imagemgr = images, imagelist
-imagemgr.main = response.prevpage, response.nextpage
+imagemgr.macros = images, imagelist
+imagemgr.skin.main = response.prevpage, response.nextpage
 
 
 
 // M E M B E R M G R
 
-membermgr = membership, subscribelink, subscriptionslink, memberlist
+membermgr.macros = membership, subscribelink, subscriptionslink, memberlist
 
-membermgr.main = response.action
-membermgr.login = response.action
-membermgr.mailnewmember = param.creator, param.account, param.site, param.url
-membermgr.membergroup = param.group, param.list
-membermgr.pwdmail = param.timestamp, param.text
-membermgr.searchresult = response.searchresult
-membermgr.searchresultitem = param.name, param.description
-membermgr.sendpwd = response.action
+membermgr.skin.main = response.action
+membermgr.skin.login = response.action
+membermgr.skin.mailnewmember = param.creator, param.account, param.site, param.url
+membermgr.skin.membergroup = param.group, param.list
+membermgr.skin.pwdmail = param.timestamp, param.text
+membermgr.skin.searchresult = response.searchresult
+membermgr.skin.searchresultitem = param.name, param.description
+membermgr.skin.sendpwd = response.action
 
 
 
 // M E M B E R S H I P
 
-membership = username, email, url, level, sitetitle, deletelink, unsubscribelink
-membership.edit = response.action
+membership.macros = username, email, url, level, sitetitle, deletelink, unsubscribelink
+membership.skin.edit = response.action
 
 
 
 // P O L L
 
-poll = title, question, choices, results, total, creator, modifytime, editlink, deletelink, viewlink, closelink, state, info
+poll.macros = title, question, choices, results, total, creator, modifytime, editlink, deletelink, viewlink, closelink, state, info
 
-poll.main = response.action
-poll.edit = response.action
+poll.skin.main = response.action
+poll.skin.edit = response.action
 
 
 
 // P O L L M G R
 
-pollmgr = pollList
-pollmgr.main = response.prevpage, response.nextpage
-pollmgr.openpoll = param.poll
-pollmgr.closedpoll = param.poll
+pollmgr.macros = pollList
+pollmgr.skin.main = response.prevpage, response.nextpage
+pollmgr.skin.openpoll = param.poll
+pollmgr.skin.closedpoll = param.poll
 
 
 
 // S H O R T C U T
 
-shortcut = creator, render, placeholder
-shortcut.main = param.id
+shortcut.macros = creator, render, placeholder
+shortcut.skin.main = param.id
 
 
 
 // S H O R T C U T M G R
 
-shortcutmgr = shortcutlist
-shortcutmgr.main = response.action
+shortcutmgr.macros = shortcutlist
+shortcutmgr.skin.main = response.action
 
 
 
 // S I T E
 
-site = age, alias, alinkcolor, bgcolor, calendar, email, history, image, imagelist, lastupdate, linkcolor, membercounter, modifytime, monthlist, navigation, smallcolor, smallfont, smallsize, storylist, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist, url, vlinkcolor, xmlbutton, listMostRead
+site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, image, imagelist, lastupdate, linkcolor, membercounter, modifytime, monthlist, navigation, smallcolor, smallfont, smallsize, storylist, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist, url, vlinkcolor, xmlbutton, listMostRead
 
-site.calendar = param.calendar, param.month, param.year, param.back, param.forward
-site.calendarday = param.day
-site.calendardayheader = param.day
-site.calendarselday = param.day
-site.calendarweek = param.week
-site.edit = response.action, response.title
-site.main = response.prevpage, response.nextpage
-site.new = response.action
-site.page = response.body, response.title, response.message
-site.referrerItem = param.count, param.text, param.referrer
-site.rss = param.title, param.creator, param.email, param.lastupdate, param.resources, param.items
-site.rssItem = param.title, param.date, param.publisher, param.creator, param.email, param.year
-site.searchform = response.action, response.q
+site.skin.calendar = param.calendar, param.month, param.year, param.back, param.forward
+site.skin.calendarday = param.day
+site.skin.calendardayheader = param.day
+site.skin.calendarselday = param.day
+site.skin.calendarweek = param.week
+site.skin.edit = response.action, response.title
+site.skin.main = response.prevpage, response.nextpage
+site.skin.new = response.action
+site.skin.page = response.body, response.title, response.message
+site.skin.referrerItem = param.count, param.text, param.referrer
+site.skin.rss = param.title, param.creator, param.email, param.lastupdate, param.resources, param.items
+site.skin.rssItem = param.title, param.date, param.publisher, param.creator, param.email, param.year
+site.skin.searchform = response.action, response.q
 
 
 
 // S T O R Y
 
-story = content, createtime, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+story.macros = content, createtime, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
 
-story.backlinkItem = param.count, param.referrer, param.text
-story.backlinks = param.referrers
-story.edit = response.action
-story.mostreads = param.rank, param.reads
-story.rssItem = param.url, param.title, param.text, param.publisher, param.creator, param.email, param,subject, param.year, param.creator, param.date
+story.skin.backlinkItem = param.count, param.referrer, param.text
+story.skin.backlinks = param.referrers
+story.skin.edit = response.action
+story.skin.mostreads = param.rank, param.reads
+story.skin.rssItem = param.url, param.title, param.text, param.publisher, param.creator, param.email, param,subject, param.year, param.creator, param.date
 
 
 
 // S T O R Y M G R
 
-storymgr = storylist
-storymgr.main = response.prevpage, response.nextpage
-storymgr.onlinestory = param.story
-storymgr.offlinestory = param.story
+storymgr.macros = storylist
+storymgr.skin.main = response.prevpage, response.nextpage
+storymgr.skin.onlinestory = param.story
+storymgr.skin.offlinestory = param.story
 
 
 
 // T O P I C
 
-topic = addstory, relatedtopics, storylist
-topic.main = response.prevpage, response.nextpage
+topic.macros = addstory, relatedtopics, storylist
+topic.skin.main = response.prevpage, response.nextpage
 
 
 
 // T O P I C M G R
 
-topicmgr = topiclist
+topicmgr.macros = topiclist
 
 
 
 // U S E R
 
-user = name, password, url, email, publishemail, description, membershiplist, subscriptionlist, sitelist
+user.macros = name, password, url, email, publishemail, description, membershiplist, subscriptionlist, sitelist
 
-user.mailbody = param.name, param.password
-user.edit = response.action
+user.skin.mailbody = param.name, param.password
+user.skin.edit = response.action

@@ -21,12 +21,12 @@ function help_macro(param) {
    var ref = app.data.macros;
    var helpUrl = ref.getProperty("_url");
    var macros = new Object();
-   macros["global"] = ref.getProperty("global");
-   var hopjectMacros = ref.getProperty("hopobject");
-   macros["root"] = ref.getProperty("root");
-   macros[proto] = (proto == "global") ? null : ref.getProperty(proto);
+   macros["global"] = ref.getProperty("global.macros");
+   var hopjectMacros = ref.getProperty("hopobject.macros");
+   macros["root"] = ref.getProperty("root.macros");
+   macros[proto] = (proto == "global") ? null : ref.getProperty(proto+".macros");
    macros[proto] += hopjectMacros ? ","+hopjectMacros : "";
-   macros.resOrParam = ref.getProperty(proto+"."+skin);
+   macros.resOrParam = ref.getProperty(proto+".skin."+skin);
    //macros.response = ref.getProperty(proto+"."+skin+".response");
    var re = new RegExp(" *, *");
    re.global = true;
@@ -37,9 +37,9 @@ function help_macro(param) {
       var macroNames = macros[protoName].split(",");
       macroNames.sort();
       for (var n in macroNames) {
-         var url = null;
+         var url;
          if (protoName != "resOrParam") // && protoName != "res")
-            url = ref.getProperty(protoName+"."+macroNames[n]);
+            url = ref.getProperty(protoName+".macro."+macroNames[n]);
          if (url)
             openLink(helpUrl + url);
          res.encode("<% ");
