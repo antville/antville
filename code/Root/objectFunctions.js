@@ -45,7 +45,7 @@ function createNewWeblog(title,alias,creator) {
    newLog.title = title;
    newLog.alias = alias;
    newLog.creator = creator;
-   newLog.createtime = newLog.birthdate = new Date();
+   newLog.createtime = newLog.lastoffline = newLog.birthdate = new Date();
    newLog.email = creator.email;
    newLog.online = 0;
    newLog.discussions = 1;
@@ -53,6 +53,7 @@ function createNewWeblog(title,alias,creator) {
    newLog.usersignup = 1;
    newLog.archive = 1;
    newLog.blocked = 0;
+   newLog.trusted = (creator.isTrusted() ? 1 : 0);
    newLog.bgcolor = "FFFFFF";
    newLog.textfont = "Verdana,Helvetica,Arial,sans-serif";
    newLog.textsize = "13px";
@@ -78,4 +79,20 @@ function createNewWeblog(title,alias,creator) {
       return (newLog);
    } else
       return null;
+}
+
+/**
+ * function removes a weblog completely
+ * including stories, comments, members
+ * @param Object weblog to remove
+ */
+
+function deleteWeblog(weblog) {
+   var result = new Object();
+   weblog.deleteAll();
+   this.remove(weblog);
+   // add syslog-entry
+   this.manage.syslogs.add(new syslog("weblog",weblog.alias,"removed weblog",user));
+   result.message = "The weblog " + weblog.alias + " was removed successfully!";
+   return (result);
 }
