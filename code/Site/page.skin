@@ -17,7 +17,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="700" class="title" nowrap="nowrap"><% image name="/pixel" width="40" %><% site.title %></td>
+<td width="700" class="title" nowrap="nowrap"><% image name="/pixel" width="40" %><a href="<% this.href %>"><% site.title %></a></td>
 </tr>
 </table>
 
