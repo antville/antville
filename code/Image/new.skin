@@ -5,15 +5,19 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Name:</td>
-<td nowrap="nowrap"><% this.alias as="editor" %></td>
+<td nowrap="nowrap"><input type="text" name="alias" size="25" value="<%request.alias encoding="form"%>" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Alttext:</td>
-<td nowrap="nowrap"><% this.alttext as="editor" width="25" %></td>
+<td nowrap="nowrap"><input type="text" name="alttext" size="25" value="<%request.alttext encoding="form"%>" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">File:</td>
+<td class="small" nowrap="nowrap">Upload File:</td>
 <td nowrap="nowrap"><% this.input type="file" name="rawimage" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Fetch from URL:</td>
+<td nowrap="nowrap"><input type="text" name="url" size="25" value="<%request.url encoding="form"%>" /></td>
 </tr>
 <tr>
 <td colspan="2">If you want to resize the image, please specify your desired maximum width and/or maximum height. If you specify both, the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
