@@ -2,13 +2,16 @@ To insert this image into a story or comment copy/paste the following code: <pre
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% image.creator as="link" %> on <% image.createtime format="short" %> (<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels)</span></td>
+<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% image.creator as="link" %> on <% image.createtime format="short" %></span></td>
 </tr>
 <tr>
-<td valign="top" class="storytitle"><% image.alias %><br />
+<td valign="top">
+<div class="storyTitle"><% image.alias %></div>
+<div class="small">(<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels)</div>
 <% image.alttext %></td>
 <td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>
 
 <p><% image.show %></p>
+
