@@ -1,4 +1,4 @@
-var deny = false; //this.isDenied(session.user);
+var deny = this.isDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(session.data.referrer ? path.weblog.members.href("login") : path.weblog.href());
