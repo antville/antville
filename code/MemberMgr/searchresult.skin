@@ -5,7 +5,7 @@
 </tr>
 <% response.searchresult %>
 <tr>
-<td colspan="2" nowrap="nowrap"><br /><% input type="button" name="add" value="Add to members" %><br />
+<td colspan="2" nowrap="nowrap"><br /><% input type="submit" name="add" value="Add to members" %><br />
 <span class="commentHead">&nbsp;</span></td>
 </tr>
 </table>
