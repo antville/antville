@@ -217,7 +217,7 @@ create table AV_SKIN (
 # Indexes on table AV_SKIN
 #----------------------------
 
-CREATE INDEX IDX_SKIN_MIXED ON AV_SKIN (SKIN_F_SITE,SKIN_PROTOTYPE(10),SKIN_NAME(10));
+CREATE INDEX IDX_SKIN_MIXED ON AV_SKIN (SKIN_F_SKINSET,SKIN_PROTOTYPE(10),SKIN_NAME(10));
 
 #----------------------------
 # Table structure for AV_SYSLOG
