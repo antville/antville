@@ -240,7 +240,7 @@ function sitelist_macro(param) {
    var cnt = 0;
    while (cnt < max && idx < size) {
       var w = collection.get(idx++);
-      if (!w.isBlocked() && !w.isNotPublic()) {
+      if (!w.isBlocked() && w.isOnline()) {
          w.renderSkin("preview");
          cnt++;
       }
