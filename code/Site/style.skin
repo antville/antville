@@ -26,21 +26,24 @@ a:hover { background-color:<% weblog.linkcolor %>;
          color:#666666;
        }
 
-.message { font-size: 8pt;
-          padding:1px;
-          color:<% weblog.linkcolor %>;
-          background-color:<% weblog.bgcolor %>;
+.message { font-family:<% weblog.smallfont %>;
+           font-size:<% weblog.smallsize %>;
+           padding:1px;
+           color:<% weblog.linkcolor %>;
+           background-color:<% weblog.bgcolor %>;
          }
 
-.statusdark { width:198px;
-              font-size:8pt;
+.statusdark { font-family:<% weblog.smallfont %>;
+              font-size:<% weblog.smallsize %>;
+              width:198px;
               display:block;
               padding-top:3px;
               padding-bottom:3px;
              }
 
-.statuslight { width:198px;
-               font-size:8pt;
+.statuslight { font-family:<% weblog.smallfont %>;
+               font-size:<% weblog.smallsize %>;
+               width:198px;
                color:#999999;
                display:block;
                padding-top:3px;
@@ -84,17 +87,20 @@ li { padding-bottom:3px;
            font-weight:bold;
          }
 
-.storyDate { font-size:8pt;
-             color:#999999;
+.storyDate { font-family:<% weblog.smallfont %>;
+             font-size:<% weblog.smallsize %>;
+             color:<% weblog.smallcolor %>;
            }
 
-.storyTitle { font-size:<% weblog.titlesize %>;
+.storyTitle { font-family:<% weblog.titlefont %>;
+              font-size:<% weblog.titlesize %>;
               color:<% weblog.titlecolor %>;
               font-weight: bold;
             }
 
-.small { font-size:8pt;
-         color:#999999;
+.small { font-family:<% weblog.smallfont %>;
+         font-size:<% weblog.smallsize %>;
+         color:<% weblog.smallcolor %>;
        }
 
 .commentHead { width:50px;
@@ -105,14 +111,16 @@ li { padding-bottom:3px;
                margin-top:10px;
              }
 
-.commentDate { font-size:8pt;
-               color:#999999;
+.commentDate { font-family:<% weblog.smallfont %>;
+               font-size:<% weblog.smallsize %>;
+               color:<% weblog.smallcolor %>;
                margin-bottom:2px;
               }
 
-.commentTitle { font-size:<% weblog.titlesize %>;
-                font-weight:bold;
+.commentTitle { font-family:<% weblog.titlefont %>;
+                font-size:<% weblog.titlesize %>;
                 color:<% weblog.textcolor %>;
+                font-weight:bold;
                 margin-bottom:2px;
               }
 
@@ -121,20 +129,20 @@ li { padding-bottom:3px;
 
 
 .formTitle { width:380px;
-             font-size:<% weblog.titlesize %>;
              font-family:<% weblog.textfont %>;
+             font-size:<% weblog.titlesize %>;
              font-weight:bold;
            }
 
 .formText { width:380px;
-            font-size:<% weblog.textsize %>;
             font-family:<% weblog.textfont %>;
+            font-size:<% weblog.textsize %>;
             font-weight:normal;
           }
 
 .formWide { width:660px;
-            font-size:<% weblog.textsize %>;
             font-family:<% weblog.textfont %>;
+            font-size:<% weblog.textsize %>;
             font-weight:normal;
           }
 
