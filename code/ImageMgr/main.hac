@@ -1,6 +1,8 @@
 if (!this.isEditAllowed())
    res.redirect(user.cache.referer ? this.__parent__.members.href("login") : this.__parent__.href());
 
+this.filter();
+
 res.skin = "main";
 res.title = "Antville - " + this.__parent__.title;
 res.head = this.__parent__.renderSkinAsString("style");
