@@ -72,7 +72,7 @@
    <!-- =================================================================== -->
    <target name="antville" depends="init">
       <mkdir dir="${build.work}"/>
-      <!-- cvs cvsRoot="${cvs.antville.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}"/ -->
+      <cvs cvsRoot="${cvs.antville.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}"/>
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
          <param name="path" value="${build.work}/antville"/>
