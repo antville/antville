@@ -8,17 +8,7 @@
 function checkAccess(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
    try {
-      switch (action) {
-         case "main" :
-            this.checkEdit(usr, level);
-            break;
-         case "edit" :
-            this.checkEdit(usr, level);
-            break;
-         case "delete" :
-            this.checkEdit(usr, level);
-            break;
-      }
+      this.checkEdit(usr, level);
    } catch (deny) {
       res.message = deny.toString();
       res.redirect(this._parent.href());
