@@ -28,16 +28,16 @@ function renderSitelist(limit, show, scroll) {
    }
 
    var cnt = 0;
-   var buf = new java.lang.StringBuffer();
    collection.prefetchChildren(idx, limit);
+   res.push();
    while (cnt < limit && idx < size) {
-      var w = collection.get(idx++);
-      if (!w.blocked && w.online) {
-         buf.append(w.renderSkinAsString("preview"));
+      var s = collection.get(idx++);
+      if (!s.blocked && s.online) {
+         s.renderSkin("preview");
          cnt++;
       }
    }
-   res.data.sitelist = buf.toString();
+   res.data.sitelist = res.pop();
 
    if (scroll && idx < size) {
       var sp = new Object();
@@ -47,3 +47,4 @@ function renderSitelist(limit, show, scroll) {
    }
    return;
 }
+

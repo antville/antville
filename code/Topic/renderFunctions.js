@@ -21,22 +21,24 @@ function renderStorylist(idx) {
       sp.text = "previous page";
       res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
-   var storylist = new java.lang.StringBuffer();
+
+   res.push();
    var day;
    while (idx < max) {
       var s = this.get(idx++);
       if (s.day != day) {
-         storylist.append(s.renderSkinAsString("dayheader"));
+         s.renderSkin("dayheader");
          day = s.day;
       }
-      storylist.append(s.renderSkinAsString("preview"));
+      s.renderSkin("preview");
    }
+   res.data.storylist = res.pop();
+
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;
       sp.text = "next page";
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
-   res.data.storylist = storylist.toString();
    return;
 }

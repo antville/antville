@@ -138,7 +138,6 @@ function renderTimeZoneChooser(tz) {
  * @return String rendered list
  */
 function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
-   var buf = new java.lang.StringBuffer();
    var currIdx = 0;
    var stop = size = collection.size();
 
@@ -150,12 +149,13 @@ function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
       stop = Math.min(currIdx + itemsPerPage, size);
    }
    var isFunction = (funcOrSkin instanceof Function) ? true : false;
+   res.push();
    while (currIdx < stop) {
       var item = collection.get(currIdx);
-      buf.append(isFunction ? funcOrSkin(item) : item.renderSkinAsString(funcOrSkin));
+      isFunction ? funcOrSkin(item) : item.renderSkin(funcOrSkin);
       currIdx++;
    }
-   return buf.toString();
+   return res.pop();
 }
 
 /**
@@ -184,26 +184,26 @@ function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
    param.total = size;
 
    // render the navigation-bar
-   var buf = new java.lang.StringBuffer();
+   res.push();
    if (pageIdx > 0)
-      buf.append(renderPageNavItem("prev", "pageNavItem", url, pageIdx-1));
+      renderPageNavItem("prev", "pageNavItem", url, pageIdx-1);
    var offset = Math.floor(pageIdx/maxItems)*maxItems;
    if (offset > 0)
-      buf.append(renderPageNavItem("[..]", "pageNavItem", url, offset-1));
+      renderPageNavItem("[..]", "pageNavItem", url, offset-1);
    var currPage = offset;
    var stop = Math.min(currPage + maxItems, lastPageIdx+1);
    while (currPage < stop) {
       if (currPage == pageIdx)
-         buf.append(renderPageNavItem("[" + (currPage +1) + "]", "pageNavSelItem"));
+         renderPageNavItem("[" + (currPage +1) + "]", "pageNavSelItem");
       else
-         buf.append(renderPageNavItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage));
+         renderPageNavItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
       currPage++;
    }
    if (currPage < lastPageIdx)
-      buf.append(renderPageNavItem("[..]", "pageNavItem", url, offset + maxItems));
+      renderPageNavItem("[..]", "pageNavItem", url, offset + maxItems);
    if (pageIdx < lastPageIdx)
-      buf.append(renderPageNavItem("next", "pageNavItem", url, pageIdx +1));
-   param.pagenavigation = buf.toString();
+      renderPageNavItem("next", "pageNavItem", url, pageIdx +1);
+   param.pagenavigation = res.pop();
    return renderSkinAsString("pagenavigation", param);
 }
 
@@ -213,7 +213,8 @@ function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
 function renderPageNavItem(text, cssClass, url, page) {
    var param = {text: !url ? text : Html.linkAsString(url + "?page=" + page, text),
                 "class": cssClass};
-   return renderSkinAsString("pagenavigationitem", param);
+   renderSkin("pagenavigationitem", param);
+   return;
 }
 
 

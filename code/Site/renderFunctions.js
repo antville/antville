@@ -89,13 +89,14 @@ function renderStorylist(day) {
       res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    days = Math.min(idx + days++, this.size());
-   var storylist = new java.lang.StringBuffer();
+   res.push();
    while (idx < days) {
       var day = this.get(idx++);
-      storylist.append(day.get(0).renderSkinAsString("dayheader"));
+      day.get(0).renderSkin("dayheader");
       for (var i=0;i<day.size();i++)
-         storylist.append(day.get(i).renderSkinAsString("preview"));
+         day.get(i).renderSkin("preview");
    }
+   res.data.storylist = res.pop();
    if (idx < size) {
       var sp = new Object();
       var next = this.get (idx);
@@ -103,6 +104,5 @@ function renderStorylist(day) {
       sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
-   res.data.storylist = storylist.toString();
    return;
 }
