@@ -17,6 +17,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
     s.author = user;
     s.editableby = 3;
     blog.add (s);
+    blog.lastupdate = s.createtime;
     return s.__id__;
 }
 
@@ -30,6 +31,7 @@ function editPost (appkey, postid, username, password, content, publish) {
     s.text = content;
     s.online = publish ? 1 : 0;
     s.modifytime = new Date();
+    s.weblog.lastupdate = s.modifytime;
     return true;
 }
 
