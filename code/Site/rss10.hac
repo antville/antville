@@ -11,7 +11,6 @@ if (this.online) {
 	if (max > 20)
 		max = 20;
 	
-	var resources = "";
 	var items = "";
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
@@ -25,7 +24,6 @@ if (this.online) {
 		str = convertHtmlImageToHtmlLink(str);
 		param1.itemDescription = encodeXml(str);
 		items += renderSkinAsString("rss10Item", param1);
-		resources += renderSkinAsString("rss10Resource", param1);
 	}
 }
 else {
@@ -48,7 +46,6 @@ param2.date = sdf.format(this.lastUpdate);
 param2.updateBase = sdf.format(this.createtime);
 param2.language = this.language;
 param2.items = items;
-param2.resources = resources;
 param2.textinput = this.renderSkinAsString("rssTextInput", param2);
 
 renderSkin("rss10Channel", param2);

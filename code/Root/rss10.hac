@@ -10,7 +10,6 @@ if (max > size)
 if (max > 50)
 	max = 50;
 
-var resources = "";
 var items = "";
 for (var i=0; i<max; i++) {
 	var weblog = this.get(i);
@@ -22,7 +21,6 @@ for (var i=0; i<max; i++) {
 		param1.year = now.getYear();
 		param1.itemDescription = encodeXml(weblog.tagline);
 		items += renderSkinAsString("rss10Item", param1);
-		resources += renderSkinAsString("rss10Resource", param1);
 	}
 }
 
@@ -39,6 +37,5 @@ param2.date = sdf.format(now);
 param2.updateBase = "2000-01-01T00:00:00Z";
 param2.language = getProperty("language");
 param2.items = items;
-param2.resources = resources;
 
 renderSkin("rss10Channel", param2);
