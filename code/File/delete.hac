@@ -3,23 +3,23 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.goodies.href());
+   res.redirect(this.site.files.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.goodies.href());
+   res.redirect(this.site.files.href());
 else if (req.data.submit == "delete" || req.data.remove) {
-   res.message = this.weblog.goodies.deleteGoodie(this);
-   res.redirect(path.goodiemgr.href());
+   res.message = this.site.files.deleteFile(this);
+   res.redirect(path.filemgr.href());
 }
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 
 var skinParam = new Object();
-skinParam.what = "the goodie <b>" + this.alias + "</b>";
+skinParam.what = "the file <b>" + this.alias + "</b>";
 
 res.data.body = this.renderSkinAsString("delete",skinParam);
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

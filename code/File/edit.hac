@@ -3,22 +3,22 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.goodies.href());
+   res.redirect(this.site.files.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.goodies.href());
+   res.redirect(this.site.files.href());
 else if (req.data.submit == "save" || req.data.save) {
-   var result = this.evalGoodie(req.data,session.user);
+   var result = this.evalFile(req.data,session.user);
    res.message = result.message;
    if (!result.error)
-      res.redirect(path.goodiemgr.href());
+      res.redirect(path.filemgr.href());
 }
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 
 res.data.body = this.renderSkinAsString("edit");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
