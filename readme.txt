@@ -3,16 +3,17 @@ ABOUT ANTVILLE
 ==============
 
 Antville is an open source project aimed to the development of an 
-"easy to maintain and use" weblog-hosting system. It is not limited to 
-just one weblog, it can easily host up to several hundred or thousand 
-weblogs (the number of weblogs is more limited by the site owner's 
-choice and server power than software limitations).
+"easy to maintain and use" weblog-hosting system. It can easily host 
+up to several hundred or thousand weblogs (the number of weblogs is 
+more limited by the site owner's choice and server power than software 
+limitations).
 
 Antville is entirely written in JavaScript and based on the Helma 
 Object Publisher, a powerful and fast scriptable open source web 
 application server (which itself is written in Java). Antville works 
 with a relational database in the backend.
 
+Check out http://project.antville.org/ for more information.
 
 ============================
 ABOUT HELMA OBJECT PUBLISHER
@@ -39,16 +40,17 @@ of as an analogy to the Document Object Model (Dom) in client-side
 JavaScript.
 
 
-======
-STATUS
-======
+====== STATUS ======
 
 Antville should be considered pre-release quality code. Although it is 
 heavily used by severeal thousand users at http://www.antville.org 
-chances are that there are still bugs hidden in this application (if 
-you find one, please see belog). Antville can be used for production 
-purposes, but please mind that the creators of Antville and Helma do 
-not take any warranty (whichever kind).
+chances are that there are still bugs hidden somewhere in this 
+application (if you found one please report it at 
+http://helma.org/bugs).
+
+Antville can be used for production purposes, but please mind that the 
+creators of Antville and Helma do not take any warranty (whichever 
+kind).
 
 
 ===================
@@ -57,23 +59,27 @@ SYSTEM REQUIREMENTS
 
 To run Antville you need Helma Object Publisher (http://helma.org) and 
 a relational database in the backend. Antville was tested with mySQL 
-(http://www.mysql.com) and Oracle (v.8.1.7). For setting up either 
-Helma Object Publisher or the database you decided to use please refer 
-to their installation instructions. Since Antville sends confirmation 
-mails to users (i.e. after registration or if they were added to the 
-list of members of a site), you'll also need an up-and-running SMTP-
-server (which you should specify in the server.properties in the 
-directory where you installed Helma Object Publisher).
+(http://www.mysql.com) and Oracle (v.8.1.7). For setting up Helma 
+Object Publisher and the database of your choice please refer to their 
+installation instructions. Since Antville sends confirmation mails to 
+users (i.e. after registration or if they were added to the list of 
+members of a site), you'll also need access to an SMTP- server.
+
+Helma comes with its own embedded webserver (Jetty) so you don't need 
+to install one, although you can easily use Apache as frontend-
+webserver too (this might be necessary for really big Antville-
+installations or if you need advanced features like URL-rewriting).
 
 
 ============
 INSTALLATION
 ============
 
-Antville comes with two SQL-scripts for creating the database needed 
-by the application: for mySQL (antville_mysql.sql) and for Oracle 
-databases (antville_oracle.sql) - the third one, antville_mckoi.sql, 
-is only used for the Antclick-distribution of Antville.
+The Antville-distribution contains a .zip-file with several sql-
+scripts for creating the database needed by the application: for mySQL 
+(antville_mysql.sql) and for Oracle databases (antville_oracle.sql) -
+the third one, antville_mckoi.sql, is only used for the Antclick-
+distribution of Antville.
 
 Both scripts are not only creating the tables, indexes and initial 
 records, but also the account used by the application to communicate 
@@ -81,24 +87,30 @@ with the database. The default username and password of this account
 is "antville", so you probably want to change that (you should!).
 
 Please refer to the documentation of your database on how to run the 
-appropriate script. After done so you'll have to modfiy the file 
-"db.properties" in the directory where you installed the application. 
-Depending on your database you should open either db.properties.mysql 
-or db.properties.oracle and modify it to match the configuration of 
-your database (if you changed the default username and password don't 
-forget to change it here too!).
+appropriate script. After done so you'll have to tell Antville how it 
+can access your database. This is done in a configuration file named 
+"db.properties". Antville comes with two templates, one for MySQL 
+(antville_mysql.sql) and one for Oracle (antville_oracle.sql). Open 
+the template for your database and ensure that the line beginning with 
+"antville.url=" points to the server that runs the database (for MySQL 
+this will in most cases look like http://localhost:3306/antville). 
+Check that user and password are correct and save the file as 
+"db.properties" (without the quotes) in the root-directory of the 
+Antville-installation (if it is already existing you can safely 
+overwrite it).
 
-After done so save the modified file under the name "db.properties" in 
-the same directory. Next open the file "app.properties" - it contains 
-all basic file- and URI-path definitions needed by Antville. Don't be 
-confused by the contents of the file, all you need to change for now 
-is imgPath, filePath, imgUrl and fileUrl.
+Finally, open the file "apps.properties" located in the directory 
+where you installed Helma and append the word "antville" (without 
+quotes) in a new line. Then start up Helma, and after pointing your 
+browser to http://localhost/antville you should see Antville's welcome 
+page. It will tell you about the two additional configuration steps 
+necessary: you need to register to gain system administration rights 
+and then you must configure the basic preferences (like language, 
+date- and time-formats etc.)
 
-Finally, append the word "antville" to the file "apps.properties" 
-located in the directory where you install Helma Object Publisher. The 
-start up Helma, and with the first request you should see Antville's 
-welcome page telling you how to proceed with configuration.
-
+NOTE: If you're using Oracle you need to install the JDBC-driver for 
+your database by placing the appropriate .zip-file into the 
+subdirectory "lib/ext" located in Helma's installation directory.
 
 =====================================
 DOCUMENTATION AND FURTHER INFORMATION
@@ -110,7 +122,7 @@ http://project.antville.org
 http://macros.antville.org
 http://help.antville.org
 
-Feel free to ask any question regarding the application in 
+Feel free to ask any question regarding the application at 
 http://project.antville.org
 
 For further information about Helma http://helma.org generally is a 
@@ -135,5 +147,5 @@ be other ways to participate.
 © 2002, antville@helma.org
 http://project.antville.org
 
-This document was last modified on Monday 2 December 2002 by
+This document was last modified on Sunday 31 December 2002 by
 robert@helma.org
