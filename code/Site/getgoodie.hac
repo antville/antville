@@ -1,0 +1,15 @@
+/**
+ * this action tries to get a goodie with the given name
+ * if it finds it, it increases the request-counter of this goodie
+ * sets the appropriate mimetype and redirects the browser to the file
+ */
+
+var goodie = this.goodies.get(req.data.name);
+if (goodie) {
+   goodie.requestcnt++;
+   res.contentType = goodie.mimetype;
+   res.redirect(getProperty("goodieUrl") + this.alias + "/" + goodie.file);
+} else {
+   res.message = "Couln't find goodie " + req.data.name + "!";
+   res.redirect(this.href());
+}
