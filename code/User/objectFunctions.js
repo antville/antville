@@ -21,9 +21,7 @@ function sendConfirmationMail(sender) {
  */
 
 function isBlocked() {
-   if (parseInt(this.blocked,10))
-      return true;
-   return false;
+   this.blocked;
 }
 
 /**
@@ -31,9 +29,7 @@ function isBlocked() {
  */
 
 function isTrusted() {
-   if (parseInt(this.trusted,10))
-      return true;
-   return false;
+   this.trusted;
 }
 
 /**
@@ -41,9 +37,7 @@ function isTrusted() {
  */
 
 function isSysAdmin() {
-   if (parseInt(this.sysadmin,10))
-      return true;
-   return false;
+   this.sysadmin;
 }
 
 /**
@@ -51,9 +45,7 @@ function isSysAdmin() {
  */
 
 function isEmailPublic() {
-   if (parseInt(this.publishemail,10))
-      return true;
-   return false;
+   this.publishemail;
 }
 
 /**

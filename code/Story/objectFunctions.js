@@ -107,9 +107,7 @@ function toggleOnline(newStatus) {
  */
 
 function isOnline() {
-   if (parseInt(this.online,10))
-      return true;
-   return false;
+   this.online;
 }
 
 /**
@@ -290,8 +288,6 @@ function convertContentToXML () {
  */
 
 function hasDiscussions() {
-   if (parseInt(this.discussions,10))
-      return true;
-   return false;
+   this.discussions;
 }
 

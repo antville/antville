@@ -92,9 +92,7 @@ function isUnsubscribeDenied(usr) {
  */
 
 function userMayContrib() {
-   if (parseInt(this.usercontrib,10))
-      return true;
-   return false;
+   this.usercontrib;
 }
 
 
@@ -104,9 +102,7 @@ function userMayContrib() {
  */
 
 function showArchive() {
-   if (parseInt(this.archive))
-      return true;
-   return false;
+   this.archive;
 }
 
 /**
@@ -115,7 +111,5 @@ function showArchive() {
  */
 
 function isBlocked() {
-   if (parseInt(this.blocked))
-      return true;
-   return false;
+   this.blocked;
 }

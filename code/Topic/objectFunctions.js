@@ -6,7 +6,5 @@
  */
 
 function isStoryOnline(st) {
-   if (parseInt(st.online,10) > 0)
-      return true;
-   return false;
+   return st.online;
 }

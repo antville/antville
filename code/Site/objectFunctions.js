@@ -75,9 +75,7 @@ function evalPreferences(param,modifier) {
  */
 
 function hasDiscussions() {
-   if (parseInt(this.discussions,10))
-      return true;
-   return false;
+   this.discussions;
 }
 
 /**
@@ -86,9 +84,7 @@ function hasDiscussions() {
  */
 
 function isOnline() {
-   if (parseInt(this.online,10))
-      return true;
-   return false;
+   this.online;
 }
 
 /**
@@ -155,9 +151,7 @@ function sortMostReads(s1, s2) {
  */
 
 function isStoryOnline(st) {
-   if (parseInt(st.online,10) == 2)
-      return true;
-   return false;
+   st.online;
 }
 
 
@@ -180,9 +174,7 @@ function deleteAll() {
  */
 
 function isTrusted() {
-   if (parseInt(this.trusted,10))
-      return true;
-   return false;
+   this.trusted;
 }
 
 
