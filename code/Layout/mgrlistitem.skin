@@ -5,7 +5,8 @@
 <td valign="top"><div class="storyTitle"><% layout.title linkto="main" %></div>
 <div><% layout.description limit="100" suffix="<br />" %></div>
 <div><% layout.parent prefix="(based on the layout '" suffix="')<br />" %></div>
-<div class="small"><% layout.creator prefix="created by " %><% layout.createtime format="long" prefix=" on " %><% layout.modifier prefix="; last modified by " %><% layout.modifytime prefix=" on " format="long" %></div></td>
+<div class="small"><% layout.creator prefix="created by " %><% layout.createtime format="short" prefix=" on " %><br />
+<% layout.modifier prefix="last modified by " %><% layout.modifytime prefix=" on " format="short" %></div></td>
 <td valign="top" align="right" class="small"><% layout.link to="edit" text="preferences" prefix="...&nbsp;" suffix="<br />" %>
 <% layout.link to="skins" text="skins" prefix="...&nbsp;" suffix="<br />" %>
 <% layout.link to="images" text="images" prefix="...&nbsp;" suffix="<br />" %>
