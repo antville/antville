@@ -79,6 +79,9 @@ function evalRegistration(param) {
          newUser.description = param.description;
          newUser.registered = new Date();
          newUser.blocked = 0;
+         // if it's the first user registering, she's granted trust and sysadmin-rights
+         if (root.manage.users.size() == 0)
+            newUser.sysadmin = newUser.trusted = 1;
 			result.message = "Welcome " + newUser.name + ". Have fun!";
          result.error = false;
          result.username = newUser.name;
