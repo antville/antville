@@ -2,8 +2,8 @@ Welcome to Antville!
 
 Here's your login info:
 
-    Username: <% this.name %>
-    Password: <% this.password %>
+    Username: <% param.name %>
+    Password: <% param.password %>
 
 Have fun!
 
