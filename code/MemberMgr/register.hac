@@ -2,12 +2,23 @@ var parent = setLayout();
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(parent.href());
-else
-   this.evalRegistration();
+else if (req.data.submit == "register" || req.data.register) {
+   var result = this.evalRegistration(req.data);
+   res.message = result.message;
+   if (!result.error) {
+      // now we log in the user and send the confirmation mail
+		user.login(result.username, result.password);
+      user.sendConfirmationMail();
+      if (user.cache.referer) {
+         var url = user.cache.referer;
+         user.cache.referer = null;
+      } else
+         var url = parent.href();
+      res.redirect(url);
+   }
+}
 
-res.title = "Antville - Registration";
-res.head = parent.renderSkinAsString("javascript");
-res.head += parent.renderSkinAsString("style");
+res.data.title = "Antville - Registration";
 
-res.body = this.renderSkinAsString("register");
+res.data.body = this.renderSkinAsString("register");
 
