@@ -1,4 +1,4 @@
 <% linkedpath %>
 <ul>
-<% topicmgr.loopskin name="link" %>
+<% this.topiclist itemprefix="<li>" itemsuffix="</li>" %>
 </ul>
