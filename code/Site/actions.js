@@ -187,7 +187,7 @@ function rss_action() {
          param.email = this.email.entitize();
       else if (this.creator.publishemail)
          param.email = this.creator.email.entitize();
-      param.year = now.getYear();
+      param.year = now.getFullYear();
       param.lastupdate = max > 0 ? sdf.format(this.lastUpdate): sdf.format(this.createtime);
       param.items = items.toString();
       param.resources = resources.toString();

@@ -121,7 +121,7 @@ function rss_action() {
    param = new Object();
    param.title = systitle;
    param.email = root.sys_email.entitize();
-   param.year = now.getYear();
+   param.year = now.getFullYear();
    param.lastupdate = sdf.format(now);
    param.items = items.toString();
    param.resources = resources.toString();
