@@ -9,6 +9,9 @@ if (deny) {
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.href());
 else if (req.data.submit == "save" || req.data.save) {
+   // check if a url has been passed instead of a file upload. hw
+   if ((!req.data.rawimage || req.data.rawimage.contentLength == 0) && req.data.url)
+       req.data.rawimage = getURL(req.data.url);
    var result = this.evalImg(req.data,session.user);
    res.message = result.message;
    if (!result.error)
