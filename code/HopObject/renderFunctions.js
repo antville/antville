@@ -1,25 +1,4 @@
 /**
- * open an html link element
- * special properties of param:
- *   - linkto | to (the url)
- *   - urlparam (querystring)
- *   - anchor (inline link)
- */
-function openLink(param) {
-  var p = this.createLinkParam(param);
-  openMarkupElement("a", p);
-}
-
-
-/**
- * close an html link element
- */
-function closeLink() {
-  closeMarkupElement("a");
-}
-
-
-/**
  * function renders a dropdown-box for choosing dateformats
  * @param String String indicating version of dateformat to use:
  *               "short" - short date format
