@@ -5,14 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <title>Antville Colorpicker</title>
 
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
+
 <style type="text/css">
 <!--
 
-body, td {
+body {
    background-color: #ffffff;
    font-family: Verdana, Helvetica, Arial, sans-serif;
    font-size: 13px;
    color: #000000;
+}
+
+td {
+   vertical-align: top;
 }
 
 .center {
@@ -20,21 +26,22 @@ body, td {
    vertical-align: middle;
 }
 
-a {text-decoration: none;}
-
-a:link {color: #ff3300;}
-
-a:visited {color: #ff3300;}
-
-a:active {color: #ff0000;}
-
-a:hover {
-   background-color: #ff3300;
-   color: #ffffff;
-}   
-
-.text {
+.widget {
+   background-color: #ffffff;
    font: 12px verdana;
+   color: #000000;
+}
+
+.link {
+   color: <% site.linkcolor %>;
+}
+
+.active {
+   color: <% site.alinkcolor %>;
+}
+
+.visited {
+   color: <% site.vlinkcolor %>;
 }
 
 .border {
@@ -61,6 +68,21 @@ brightness[9] = new Array("bfbfbf","bfafaf","bf9f9f","bf8f8f","bf8080","bf7070",
 brightness[10] = new Array("d5d5d5","d5c3c3","d5b1b1","d59f9f","d58e8e","d57c7c","d56a6a","d55959","d54747","d53535","d52323","d51212","d50000","d5d5d5","d5ccc3","d5c3b1","d5ba9f","d5b18e","d5a87c","d59f6a","d59759","d58e47","d58535","d57c23","d57312","d56a00","d5d5d5","d4d5c3","d5d5b1","d5d59f","d5d58e","d4d57c","d5d56a","d5d559","d4d547","d5d535","d5d523","d5d512","d5d500","d5d5d5","ccd5c3","c3d5b1","bad59f","b1d58e","a8d57c","9fd56a","97d559","8ed547","85d535","7cd523","73d512","6ad500","d5d5d5","c3d5c3","b1d5b1","9fd59f","8ed58e","7cd57c","6ad56a","59d559","47d547","35d535","23d523","12d512","00d500","d5d5d5","c3d5cc","b1d5c3","9fd5ba","8ed5b1","7cd5a8","6ad59f","59d597","47d58e","35d585","23d57c","12d573","00d56a","d5d5d5","c3d5d4","b1d5d4","9fd5d5","8ed5d5","7cd5d4","6ad5d4","59d5d4","47d5d4","35d5d4","23d5d4","12d5d4","00d5d4","d5d5d5","c3ccd5","b1c3d5","9fbad5","8eb1d5","7ca8d5","6a9fd5","5997d5","478ed5","3585d5","237cd5","1273d5","006ad5","d5d5d5","c3c3d5","b1b1d5","9f9fd5","8e8ed5","7c7cd5","6a6ad5","5959d5","4747d5","3535d5","2323d5","1212d5","0000d5","d5d5d5","ccc3d5","c3b1d5","ba9fd5","b18ed5","a87cd5","9f6ad5","9759d5","8e47d5","8535d5","7c23d5","7312d5","6a00d5","d5d5d5","d5c3d4","d5b1d5","d59fd5","d58ed5","d57cd4","d56ad5","d559d5","d547d4","d535d5","d523d5","d512d5","d500d5","d5d5d5","d5c3cc","d5b1c3","d59fba","d58eb1","d57ca8","d56a9f","d55997","d5478e","d53585","d5237c","d51273","d5006a","d5d5d5","d5c3c3","d5b1b1","d59f9f","d58e8e","d57c7c","d56a6a","d55959","d54747","d53535","d52323","d51212","d50000");
 brightness[11] = new Array("eaeaea","ead6d6","eac3c3","eaafaf","ea9c9c","ea8888","ea7575","ea6161","ea4e4e","ea3a3a","ea2727","ea1313","ea0000","eaeaea","eae0d6","ead6c3","eacdaf","eac39c","eab988","eaaf75","eaa661","ea9c4e","ea923a","ea8827","ea7f13","ea7500","eaeaea","eaead6","eaeac3","eaeaaf","eaea9c","eaea88","eaea75","eaea61","eaea4e","eaea3a","eaea27","eaea13","eaea00","eaeaea","e0ead6","d6eac3","cdeaaf","c3ea9c","b9ea88","afea75","a6ea61","9cea4e","92ea3a","88ea27","7fea13","75ea00","eaeaea","d6ead6","c3eac3","afeaaf","9cea9c","88ea88","75ea75","61ea61","4eea4e","3aea3a","27ea27","13ea13","00ea00","eaeaea","d6eae0","c3ead6","afeacd","9ceac3","88eab9","75eaaf","61eaa6","4eea9c","3aea92","27ea88","13ea7f","00ea75","eaeaea","d6eaea","c3eaea","afeaea","9ceaea","88eaea","75eaea","61eaea","4eeaea","3aeaea","27eaea","13eaea","00eaea","eaeaea","d6e0ea","c3d6ea","afcdea","9cc3ea","88b9ea","75afea","61a6ea","4e9cea","3a92ea","2788ea","137fea","0075ea","eaeaea","d6d6ea","c3c3ea","afafea","9c9cea","8888ea","7575ea","6161ea","4e4eea","3a3aea","2727ea","1313ea","0000ea","eaeaea","e0d6ea","d6c3ea","cdafea","c39cea","b988ea","af75ea","a661ea","9c4eea","923aea","8827ea","7f13ea","7500ea","eaeaea","ead6ea","eac3ea","eaafea","ea9cea","ea88ea","ea75ea","ea61ea","ea4eea","ea3aea","ea27ea","ea13ea","ea00ea","eaeaea","ead6e0","eac3d6","eaafcd","ea9cc3","ea88b9","ea75af","ea61a6","ea4e9c","ea3a92","ea2788","ea137f","ea0075","eaeaea","ead6d6","eac3c3","eaafaf","ea9c9c","ea8888","ea7575","ea6161","ea4e4e","ea3a3a","ea2727","ea1313","ea0000");
 brightness[12] = new Array("ffffff","ffeaea","ffd5d5","ffbfbf","ffaaaa","ff9595","ff8080","ff6a6a","ff5555","ff4040","ff2a2a","ff1515","ff0000","ffffff","fff4ea","ffead5","ffdfbf","ffd5aa","ffca95","ffbf80","ffb56a","ffaa55","ff9f40","ff952a","ff8a15","ff8000","ffffff","ffffea","ffffd5","ffffbf","ffffaa","ffff95","ffff80","ffff6a","ffff55","ffff40","ffff2a","ffff15","ffff00","ffffff","f4ffea","eaffd5","dfffbf","d5ffaa","caff95","bfff80","b5ff6a","aaff55","9fff40","95ff2a","8aff15","80ff00","ffffff","eaffea","d5ffd5","bfffbf","aaffaa","95ff95","80ff80","6aff6a","55ff55","40ff40","2aff2a","15ff15","00ff00","ffffff","eafff4","d5ffea","bfffdf","aaffd4","95ffca","80ffbf","6affb5","55ffaa","40ff9f","2aff95","15ff8a","00ff80","ffffff","eaffff","d5ffff","bfffff","aaffff","95ffff","80ffff","6affff","55ffff","40ffff","2affff","15ffff","00ffff","ffffff","eaf4ff","d5eaff","bfdfff","aad5ff","95caff","80bfff","6ab5ff","55aaff","409fff","2a95ff","158aff","0080ff","ffffff","eaeaff","d5d5ff","bfbfff","aaaaff","9595ff","8080ff","6a6aff","5555ff","4040ff","2a2aff","1515ff","0000ff","ffffff","f4eaff","ead5ff","dfbfff","d5aaff","ca95ff","bf80ff","b56aff","aa55ff","9f40ff","952aff","8a15ff","8000ff","ffffff","ffeaff","ffd5ff","ffbfff","ffaaff","ff95ff","ff80ff","ff6aff","ff55ff","ff40ff","ff2aff","ff15ff","ff00ff","ffffff","ffeaf4","ffd5ea","ffbfdf","ffaad4","ff95ca","ff80bf","ff6ab5","ff55aa","ff409f","ff2a95","ff158a","ff007f","ffffff","ffeaea","ffd5d5","ffbfbf","ffaaaa","ff9595","ff8080","ff6a6a","ff5555","ff4040","ff2a2b","ff1515","ff0000");
+
+
+// container object for modified colors
+var colors = {
+   bgcolor: "<% site.bgcolor %>",
+   titlecolor: "<% site.titlecolor %>",
+   textcolor: "<% site.textcolor %>",
+   linkcolor: "<% site.linkcolor %>",
+   alinkcolor: "<% site.alinkcolor %>",
+   vlinkcolor: "<% site.vlinkcolor %>",
+   smallcolor: "<% site.smallcolor %>"
+}
+
+// the color we're currently editing
+var currentColor = "<% request.name %>";
 
 var squareSize = 15;
 var defaultPalette = brightness[brightness.length-1];
@@ -120,9 +142,29 @@ function displayColorset(obj, idx) {
 function displayColor(obj) {
    displayColorValue(obj);
    var col = obj.style.backgroundColor;
-   document.getElementById("result").value = col;
-   document.getElementsByTagName("body")[0].style.backgroundColor = col;
+   // document.getElementById("result").value = col;
+   colors[currentColor] = document.getElementById("display").value;
+   if (currentColor == "bgcolor")
+      document.getElementById("demo").style.backgroundColor = col;
+   else
+      document.getElementById(currentColor).style.color = col;
    return;
+}
+
+function setCurrentColor(select) {
+  currentColor = select.options[select.selectedIndex].value;
+  setMarquee({});
+  setMarquee2({});
+}
+
+function setDropdownColor() {
+   var select = document.getElementById("dropdown");
+   for (var i=0; i<select.options.length; i++) {
+      if (select.options[i].value == currentColor) {
+         select.selectedIndex = i;
+         break;
+      }
+   }
 }
 
 function updatePalette(obj, p) {
@@ -140,19 +182,13 @@ function updatePalette(obj, p) {
 }
 
 function submit() {
-   var col = document.getElementById("result").value;
-   if (self.opener && col) {
-      col = self.opener.parseColor(col);
+   var ref = self.opener.document;
+   for (var i in colors) {
+      var col = colors[i];
       if (col.indexOf("#") == 0)
-         var cValue = col.substr(1,col.length-1);
-      var name = "<% request.name %>";
-      // without helma, it certainly is a little bit more elaborate:
-      // var query = document.URL.split("?");
-      // var args = query[1].split("&");
-      // var name = args[1].split("=")[1];
-      var ref = self.opener.document;
-      ref.getElementById("cp1_"+name).value = cValue;
-      ref.getElementById("cp2_"+name).style.backgroundColor = col;
+         col = col.substring(1);
+      ref.getElementById("cp1_"+i).value = col;
+      ref.getElementById("cp2_"+i).style.backgroundColor = "#"+col;
    }
    cancel();
    return;
@@ -167,15 +203,29 @@ function cancel() {
 </script>
 
 </head>
-<body>
+<body onLoad="setDropdownColor();">
 
-<p align="center">
-<table border="0" cellspacing="5" cellpadding="0" bgcolor="#ffffff">
-<tr>
-<td class="text" colspan="2" align="center">Pick <% request.text %> color:</td>
-</tr>
-<tr>
-<td valign="top" class="border" title="Select color">
+<table border="0" cellspacing="4" cellpadding="8">
+ <tr>
+  <td width="240" class="widget" rowspan="2">
+
+   <!-- inner table, containing the color picker widget -->
+   <table border="0" cellspacing="5" cellpadding="0" bgcolor="#ffffff">
+    <tr>
+     <td class="widget" colspan="2" align="center">Select
+      <select size="1" id="dropdown" name="color" onChange="setCurrentColor(this);">
+       <option value="bgcolor">background</option>
+       <option value="titlecolor">title</option>
+       <option value="textcolor">text</option>
+       <option value="linkcolor">link</option>
+       <option value="vlinkcolor">visited link</option>
+       <option value="alinkcolor">active link</option>
+       <option value="smallcolor">small text</option>
+      </select> color:
+     </td>
+    </tr>
+    <tr>
+     <td valign="top" class="border" title="Select color">
 
 <script type="text/javascript">
 <!--
@@ -192,9 +242,9 @@ for (var i=0; i<defaultPalette.length; i++) {
 // -->
 </script>
 
-</td>
-<td valign="top">
-<div class="border" title="Select color brightness">
+     </td>
+     <td valign="top">
+      <div class="border" title="Select color brightness">
 
 <script type="text/javascript">
 <!--
@@ -205,28 +255,40 @@ for (var i=0; i<brightness.length; i++)
 // -->
 </script>
 
-</div>
-</td>
-</tr>
+      </div>
+     </td>
+    </tr>
 
-<tr>
-<form method="post">
-<input type="hidden" id="result" />
-<td colspan="2">
+   </table>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td class="text"><input class="text" style="border: none;" id="display" value="" size="10" maxsize="10" /></td>
-<td align="right" class="text"><a href="javascript: submit();" title="accept the color value">accept</a>&nbsp;&nbsp;&nbsp;<a href="javascript: cancel();" title="cancel color selection">cancel</a></td>
-</tr>
+  </td>
+  <td class="widget">&nbsp; <!-- just a stupid spacer cell --></td>
+ </tr>
+ <tr>
+  <td id="demo">
+   <div id="titlecolor" class="storyTitle">Sample Text</div>
+   <div id="textcolor" class="storyText">This is a sample text containing a
+      <a id="linkcolor" class="link">fresh (unvisited) link</a> and a
+      <a id="vlinkcolor" class="visited">visited link</a>.
+      The <a id="alinkcolor" class="active">active link</a> color is the one
+      you'll see while pressing the mouse button on the link.
+
+   </div>
+   <br />
+   <div id="smallcolor" class="small">Finally, some small text.</div>
+  </td>
+ </tr>
+ <tr>
+  <td class="widget">
+   <input class="widget" style="border: none;" id="display" value="" size="10" maxsize="10" />
+  </td>
+  <td align="right" class="widget">
+    <button onClick="javascript: submit();" title="accept color selection">Accept</button>
+    &nbsp;&nbsp;
+    <button onClick="javascript: cancel();" title="cancel color selection">Cancel</button>
+  </td>
+ </tr>
 </table>
-
-</td>
-</form>
-</tr>
-
-</table>
-</p>
 
 </body>
 </html>

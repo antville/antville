@@ -70,6 +70,7 @@ function delete_action() {
  */
 
 function colorpicker_action() {
+   res.handlers.site = this;
    root.colorpicker_action();
    return;
 }
