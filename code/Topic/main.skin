@@ -1,5 +1,8 @@
+<% linkedpath %>
+<br>
 <% this.storylist %>
 <br>
+<% linkedpath %><br>
 <% this.relatedtopics prefix="Related topics (aka backlinks): "%>
 <br>
 <% this.addstory %>
