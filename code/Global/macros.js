@@ -32,6 +32,8 @@ function image_macro(param) {
       return;
    var img = getPoolObj(param.name, "images");
    if (!img)
+      img = getPoolObj(param.fallback, "images");
+   if (!img)
       return;
    var imgObj = img.obj;
    // return different display according to param.as
