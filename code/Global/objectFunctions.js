@@ -35,7 +35,7 @@ function checkEmail(address) {
  */
 
 function isClean(str) {
-   var invalidChar = new RegExp("[^a-z,^A-Z,^0-9]");
+   var invalidChar = new RegExp("[^a-zA-Z0-9]");
    if (invalidChar.exec(str))
       return false;
    return true;
