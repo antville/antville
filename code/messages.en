@@ -242,13 +242,13 @@ skinset.poll.basic = Basic Layout
 skinset.poll.editor = Editor forms
 skinset.poll.list = List of polls|These skins control the layout of the poll listing in the "polls" section of the site.
 
-skinset.root = System Layout|Skins that define the basic system layout (eg. front page) of an Antville installation.
-skinset.root.scripts = Javascripts|Client side javascript code skins
-skinset.root.rss = RSS feed|The skins used to render the RSS feed of an Antville installation (containing the last modified sites)
-skinset.root.sitelist = List of sites|Skins used for rendering lists of sites (eg. the list of last modified sites on the frontpage).
-skinset.root.colorpicker = Colorpicker|The skins used for rendering the different versions of the colorpicker.
-skinset.root.welcome = Welcome messages|The skins that display welcome messages in different contexts (eg. after creating a new site).
-skinset.root.various = Various other skins
+skinset.Root = System Layout|Skins that define the basic system layout (eg. front page) of an Antville installation.
+skinset.Root.scripts = Javascripts|Client side javascript code skins
+skinset.Root.rss = RSS feed|The skins used to render the RSS feed of an Antville installation (containing the last modified sites)
+skinset.Root.sitelist = List of sites|Skins used for rendering lists of sites (eg. the list of last modified sites on the frontpage).
+skinset.Root.colorpicker = Colorpicker|The skins used for rendering the different versions of the colorpicker.
+skinset.Root.welcome = Welcome messages|The skins that display welcome messages in different contexts (eg. after creating a new site).
+skinset.Root.various = Various other skins
 
 skinset.sysmgr = System Manager|Skins used in the system management section of an Antville installation.
 skinset.sysmgr.forms = Forms|Skins to display various forms in the system manager.
@@ -334,19 +334,19 @@ skin.comment.reply = Reply|This skin defines how replies to comments are display
 skin.comment.toplevel = Toplevel comment|Defines the layout of top-level comments to a story.
 skin.comment.edit = Comment editor|This skin contains the form for adding a top-level comment or reply.
 
-## hopobject
-skin.hopobject.delete = Delete confirmation|Displays a confirmation page whenever a user wants to delete something.
+## HopObject
+skin.HopObject.delete = Delete confirmation|Displays a confirmation page whenever a user wants to delete something.
 
-## global
-skin.global.nextpagelink = Link to next page|This skin displays a link to older entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for site navigation if you include it in the main page.
-skin.global.colorpicker = Color picker|Displays the small version of the color picker (without sample area).
-skin.global.rssImage = RSS image|This skin is used to render a site image item in the RSS feed.
-skin.global.colorpickerExt = Color picker (extended)|Displays the extended version of the color picker (which also contains an area showing the selected colors used in an example text);
-skin.global.pagenavigationitem = Page navigation item|A single page inside the page navigation will be displayed using this skin.
-skin.global.pagenavigation = Page navigation bar|The main skin to display the page navigation bar.
-skin.global.prevpagelink = Link to previous page|This skin displays a link to newer entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for site navigation if you include it in the main page.
-skin.global.colorpickerScripts = Color picker script|This skin contains the client side javascript methods used in the color picker.
-skin.global.colorpickerWidget = Widget|This is the skin that displays a small box filled with a selected color (normally it's shown on the right of the form elements for entering a color code).
+## Global
+skin.Global.nextpagelink = Link to next page|This skin displays a link to older entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for site navigation if you include it in the main page.
+skin.Global.colorpicker = Color picker|Displays the small version of the color picker (without sample area).
+skin.Global.rssImage = RSS image|This skin is used to render a site image item in the RSS feed.
+skin.Global.colorpickerExt = Color picker (extended)|Displays the extended version of the color picker (which also contains an area showing the selected colors used in an example text);
+skin.Global.pagenavigationitem = Page navigation item|A single page inside the page navigation will be displayed using this skin.
+skin.Global.pagenavigation = Page navigation bar|The main skin to display the page navigation bar.
+skin.Global.prevpagelink = Link to previous page|This skin displays a link to newer entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for site navigation if you include it in the main page.
+skin.Global.colorpickerScripts = Color picker script|This skin contains the client side javascript methods used in the color picker.
+skin.Global.colorpickerWidget = Widget|This is the skin that displays a small box filled with a selected color (normally it's shown on the right of the form elements for entering a color code).
 
 ## layoutimagemgr
 skin.layoutimagemgr.main = List of layout images|This skin contains the list of available images of a layout.
@@ -357,6 +357,7 @@ skin.layoutimagemgr.navigation = Additional navigation|This skin contains additi
 skin.image.main = Display in image list|This skin is used to display an image with its name and description in the "images" section of the site.
 skin.image.mgrlistitem = Image list item|The way an image is displayed in the "images" section of a site (and in the list of images of a layout).
 skin.image.edit = Image editor|The form for editing an already uploaded image.
+skin.image.preview = Image preview|Used to display a preview of an image.
 
 ## filemgr
 skin.filemgr.main = File list|This skin contains the list of available files in the "files" section of the site.
@@ -454,17 +455,17 @@ skin.site.menuext = FIXME
 skin.site.calendardayheader = Header|This skin defines the appearence of the calendar's column headers (i.e. the days "Mon", "Tue", etc.).
 skin.site.adminnavigation = Navigation bar for site administrators|This skin contains the additional navigation items for administrators (i.e. edit preferences, edit skins ...).
 
-## root
-skin.root.list = Site list|This skin contains the list of sites of an Antville installation.
-skin.root.rss = RSS feed|This is the main skin used to render the RSS feed containing the list of recently updated sites.
-skin.root.javascript = Javascript|This is the external javascript code.
-skin.root.main = Frontpage|The "body" of the frontpage of an Antville installation.
-skin.root.welcome = Welcome message|This skin contains a welcome message after successful installation of Antville (together with links to the different setup steps).
-skin.root.page = Main page|The basic view of an Antville system.
-skin.root.systemscripts = System javascript|This skin contains important client javascript code (eg. the colorpicker scripts). You shouldn't modify this skin unless you really know what you're doing.
-skin.root.style = Stylesheet|The external stylesheet used to display the basic view of an Antville installation.
-skin.root.new = Create a new site|This is the form for creating a new site.
-skin.root.sysmgrnavigation = Navigation bar for system administrators|This skin contains some navigation links for system administrators.
+## Root
+skin.Root.list = Site list|This skin contains the list of sites of an Antville installation.
+skin.Root.rss = RSS feed|This is the main skin used to render the RSS feed containing the list of recently updated sites.
+skin.Root.javascript = Javascript|This is the external javascript code.
+skin.Root.main = Frontpage|The "body" of the frontpage of an Antville installation.
+skin.Root.welcome = Welcome message|This skin contains a welcome message after successful installation of Antville (together with links to the different setup steps).
+skin.Root.page = Main page|The basic view of an Antville system.
+skin.Root.systemscripts = System javascript|This skin contains important client javascript code (eg. the colorpicker scripts). You shouldn't modify this skin unless you really know what you're doing.
+skin.Root.style = Stylesheet|The external stylesheet used to display the basic view of an Antville installation.
+skin.Root.new = Create a new site|This is the form for creating a new site.
+skin.Root.sysmgrnavigation = Navigation bar for system administrators|This skin contains some navigation links for system administrators.
 
 ## membership
 skin.membership.subscriptionlistitem = Subscription list item|This skin is used to display a single subscription or membership in a user's list.
@@ -472,4 +473,5 @@ skin.membership.mgrlistitem = Member display|This skin is used to display a sing
 skin.membership.mailstatuschange = Membership status change confirmation|Whenever a site admin changes the status of a member this member will receive a confirmation mail. This skin defines the mail body of it.
 skin.membership.mailmessage = Private Mail message|The body of the mail sent to a user when an admin used the "send an e-mail to this user" feature.
 skin.membership.edit = Member status editor|This skin contains the form for modifying the role of a member.
-             
+skin.membership.mailto = Form for contacting a member|Contains a form for entering the body of a mail to send to a member of a site.
+             ]                                                                          
