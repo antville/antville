@@ -1,5 +1,3 @@
 <% response.pagenavigation %>
-
 <% response.list %>
-
 <% response.pagenavigation %>
