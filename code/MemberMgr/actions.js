@@ -4,13 +4,12 @@
 function main_action() {
    res.data.action = this.href(req.action);
    res.data.title = "Members of " + this._parent.title;
-   res.data.body = this.renderSkinAsString("main");
+   
    if (req.data.keyword) {
       try {
          var result = this.searchUser(req.data.keyword);
          res.message = result.toString();
-         res.data.searchresult = result.obj;
-         res.data.body += this.renderSkinAsString("searchresult");
+         res.data.searchresult = this.renderSkinAsString("searchresult", {result: result.obj});
       } catch (err) {
          res.message = err.toString();
       }
@@ -36,9 +35,9 @@ function main_action() {
             res.redirect(result.obj.href("edit"));
          res.redirect(this.href());
       }
-   }
-
-   res.data.body += this.renderSkinAsString("memberlist");
+   } else
+      res.data.memberlist = this.renderMemberlist();
+   res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
 }
 
