@@ -1,5 +1,0 @@
-<tr>
-<td class="historyItem"><% this.title as="link" %> <br>
-<% this.text limit=50 %><br>
-<small>by <% this.author %> @ <% this.modifytime format="dd.MM.'&nbsp;'h:mm a" %></small></td>
-</tr>
