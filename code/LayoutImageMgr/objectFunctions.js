@@ -124,3 +124,37 @@ function importImage(layout, data) {
    img.modifytime = data.modifytime;
    return img;
 }
+
+/**
+ * returns additional and default images of this layout
+ * packed into a single Array (items sorted by createtime,
+ * additional images override those of the parent layout)
+ * @return Array containing Image HopObjects
+ */
+function mergeImages() {
+   var coll = [];
+   // object to store the already added image aliases
+   // used to avoid duplicate images in the list
+   var keys = {};
+
+   // private method to add a custom skin
+   var addImages = function(mgr) {
+      var size = mgr.size();
+      for (var i=0;i<size;i++) {
+         var img = mgr.get(i);
+         var key = img.alias;
+         if (!keys[key]) {
+            keys[key] = img;
+            coll.push(img);
+         }
+      }
+   }
+   var layout = this._parent;
+   while (layout) {
+      addImages(layout.images);
+      layout = layout.parent;
+   }
+   coll.sort(new Function("a", "b", "return b.createtime - a.createtime"));
+   return coll;
+}
+
