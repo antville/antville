@@ -1,6 +1,7 @@
-autoLogin();
 checkIfLoggedIn(this.href(req.action));
 
 var parent = setLayout();
+
+res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = user.renderSkinAsString("subscriptions");

@@ -19,7 +19,7 @@ else if (req.data.submit == "register" || req.data.register) {
    }
 }
 
-res.data.title = "Antville - Registration";
+res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("register");
 
