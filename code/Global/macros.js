@@ -2,7 +2,7 @@
  * macro renders the current timestamp
  */
 function now_macro(param) {
-   return(formatTimestamp(new Date(),param.format));
+   return formatTimestamp(new Date(), param.format);
 }
 
 
@@ -15,9 +15,9 @@ function logo_macro(param) {
    var logo = root.images.get(param.name);
    if (!logo)
       return;
-   openLink("http://antville.org");
+   Html.openLink("http://antville.org");
    renderImage(logo, param);
-   closeLink();
+   Html.closeLink();
 }
 
 
@@ -30,10 +30,10 @@ function logo_macro(param) {
 function image_macro(param) {
    if (!param.name)
       return;
-   var img = getPoolObj(param.name, "images");
-   if (!img)
+   var result = getPoolObj(param.name, "images");
+   if (!result)
       return;
-   var imgObj = img.obj;
+   var imgObj = result.obj;
    // return different display according to param.as
    if (param.as == "url")
       return(imgObj.getStaticUrl());
@@ -52,10 +52,10 @@ function image_macro(param) {
    delete(param.as);
    // render image tag
    if (param.linkto) {
-      openLink(param.linkto);
+      Html.openLink(param.linkto);
       delete(param.linkto);
       renderImage(imgObj, param);
-      closeLink();
+      Html.closeLink();
    } else
       renderImage(imgObj, param);
    return;
@@ -103,9 +103,9 @@ function link_macro(param) {
    delete param.anchor;
    delete param.text;
 
-   openMarkupElement("a", param);
+   Html.openTag("a", param);
    res.write(content);
-   closeMarkupElement("a");
+   Html.closeTag("a");
 }
 
 
@@ -115,7 +115,7 @@ function link_macro(param) {
 function file_macro(param) {
    if (!param.name)
       return;
-   var p = getPoolObj(param.name,"files");
+   var p = getPoolObj(param.name, "files");
    if (!p)
       return;
    p.obj.renderSkin(param.skin ? param.skin : "main");
@@ -133,17 +133,13 @@ function linkedpath_macro (param) {
    var title;
    for (var i=1; i<path.length-1; i++) {
       title = path[i].getNavigationName();
-      openLink(path[i].href());
-      res.write(title);
-      closeLink();
+      Html.link(path[i].href(), title);
       res.write(separator);
    }
    title = path[i].getNavigationName();
-   if (req.action != "main" && path[i].main_action) {
-      openLink(path[i].href());
-      res.write(title);
-      closeLink();
-   } else
+   if (req.action != "main" && path[i].main_action)
+      Html.link(path[i].href(), title);
+   else
       res.write(title);
    return;
 }
@@ -165,7 +161,7 @@ function story_macro(param) {
       return;
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
    if (!story)
-      return(getMessage("error","storyNoExist",param.id));
+      return getMessage("error.storyNoExist", param.id);
    story.renderSkin(param.skin ? param.skin : "embed");
    return;
 }
@@ -186,15 +182,13 @@ function poll_macro(param) {
       return;
    var poll = site.polls.get(parts[1] ? parts[1] : param.id);
    if (!poll)
-      return(getMessage("error","pollNoExist",param.id));
-   var deny = poll.isVoteDenied(session.user,req.data.memberlevel);
-   if (poll.closed || param.as == "results")
-      poll.renderSkin("results");
-   else if (deny || param.as == "link") {
-      openLink(poll.href());
-      res.write(poll.question);
-      closeLink();
-   } else {
+      return getMessage("error.pollNoExist", param.id);
+   var deny = poll.isVoteDenied(session.user, req.data.memberlevel);
+   if (deny || param.as == "link")
+      Html.link(poll.href(poll.closed ? "results" : ""), poll.question);
+   else if (poll.closed || param.as == "results") 
+      poll.renderSkin("results"); 
+   else {
       res.data.action = poll.href();
       poll.renderSkin("main");
    }
@@ -246,15 +240,12 @@ function topiclist_macro(param) {
  * if true it returns the username
  */
 function username_macro(param) {
-   if (session.user) {
-      if (session.user.url) {
-         openLink(session.user.url);
-         res.write(session.user.name);
-         closeLink();
-      } else
-         res.write(session.user.name);
-   }
-   return;
+   if (!session.user)
+      return;
+   if (session.user.url)
+      Html.link(session.user.url, session.user.name);
+   else
+      res.write(session.user.name);
 }
 
 
@@ -262,25 +253,42 @@ function username_macro(param) {
  * function renders a form-input
  */
 function input_macro(param) {
-   if (param.type == "radio")
-      param.selectedValue = req.data[param.name];
-   else if (param.type != "button")
-      param.value = param.name && req.data[param.name] ? req.data[param.name] : param.value;
-   if (param.type == "textarea")
-      return(renderInputTextarea(param));
-   else if (param.type == "checkbox")
-      return(renderInputCheckbox(param));
-   else if (param.type == "button") {
-      param.type = "submit";
-      return(renderInputButton(param));
-   } else if (param.type == "password")
-      return(renderInputPassword(param));
-   else if (param.type == "radio")
-      return(renderInputRadio(param));
-   else if (param.type == "file")
-      return(renderInputFile(param));
-   else
-      return(renderInputText(param));
+   switch (param.type) {
+      case "button" :
+         break;
+      case "radio" :
+         param.selectedValue = req.data[param.name];
+         break;
+      default :
+         param.value = param.name && req.data[param.name] ? req.data[param.name] : param.value;
+   }
+   switch (param.type) {
+      case "textarea" :
+         Html.textArea(param);
+         break;
+      case "checkbox" :
+         Html.checkBox(param);
+         break;
+      case "button" :
+         // FIXME: this is left for backwards compatibility
+         Html.submit(param);
+         break;
+      case "submit" :
+         Html.submit(param);
+         break;
+      case "password" :
+         Html.password(param);
+         break;
+      case "radio" :
+         Html.radioButton(param);
+         break;
+      case "file" :
+         Html.file(param);
+         break;
+      default :
+         Html.input(param);
+   }
+   return;
 }
 
 
@@ -308,12 +316,12 @@ function storylist_macro(param) {
          if (!story)
             continue;
          res.write(param.itemprefix);
-         openLink(story.href());
+         Html.openLink(story.href());
          var str = story.title;
          if (!str)
-            str = softwrap(clipText(story.getRenderedContentPart("text"), 20))
+            str = story.getRenderedContentPart("text").clip(20).softwrap(30);
          res.write(str ? str : "...");
-         closeLink();
+         Html.closeLink();
          res.write(param.itemsuffix);
       }     
       return;
@@ -346,12 +354,12 @@ function storylist_macro(param) {
          if (!story)
             continue;
          res.write(param.itemprefix);
-         openLink(story.href());
+         Html.openLink(story.href());
          var str = story.title;
          if (!str)
-            str = softwrap(clipText(story.getRenderedContentPart("text"), 20))
+            str = story.getRenderedContentPart("text").clip(20).softwrap(30);
          res.write(str ? str : "...");
-         closeLink();
+         Html.closeLink();
          res.write(param.itemsuffix);
       }
    }
@@ -372,7 +380,7 @@ function colorpicker_macro(param) {
    param2.as = "editor";
    param2.width = "10";
    param2.onchange = "setColorPreview('" + param.name + "', this.value);";
-   param2.id = "cp1_"+param.name;
+   param2.id = "cp1_" + param.name;
    if (!param.text)
       param.text = param.name;
    if (param.color)
@@ -382,14 +390,12 @@ function colorpicker_macro(param) {
       var obj = path.story ? path.story : new story();
       param2.part = param.name;
       param.editor = obj.content_macro(param2);
-      param.color = renderColorAsString(obj.getContentPart(param.name));
-   }
-   else if (res.handlers.site) {
+      param.color = renderColorAsString(obj.content.getProperty(param.name));
+   } else if (res.handlers.site) {
       var obj = res.handlers.site;
-      param.editor = obj[param.name+"_macro"](param2);
-      param.color = renderColorAsString(obj[param.name]);
-   }
-   else
+      param.editor = obj[param.name + "_macro"](param2);
+      param.color = renderColorAsString(obj.preferences.getProperty(param.name));
+   } else
       return;
 
    renderSkin("colorpickerWidget", param);
@@ -404,7 +410,7 @@ function colorpicker_macro(param) {
  */
 
 function fakemail_macro(param) {
-	var tldList = new Array("com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl");
+	var tldList = ["com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl"];
    var nOfMails = param.number ? (param.number <= 50 ? param.number : 50) : 20;
    for (var i=0;i<nOfMails;i++) {
    	var tld = tldList[Math.floor(Math.random()*tldList.length)];
@@ -417,9 +423,7 @@ function fakemail_macro(param) {
    	for (var j=0;j<serverLength;j++)
    		serverName += String.fromCharCode(Math.round(Math.random()*25) + 97);
       var addr = mailName + "@" + serverName + "." + tld;
-      openLink("mailto:" + addr);
-   	res.write(addr);
-      closeLink();
+      Html.link("mailto:" + addr, addr);
       if (i+1 < nOfMails)
          res.write(param.delimiter ? param.delimiter : ", ");
    }
