@@ -90,5 +90,6 @@ function allowTextMacros(s) {
    s.allowMacro("story.link");
    s.allowMacro("goodie");
    s.allowMacro("poll");
+   s.allowMacro("logo");
    return;
 }
