@@ -83,6 +83,10 @@ function evalPreferences(param, modifier) {
 
    // store preferences
    this.preferences.setAll(prefs);
+   // call the evalPreferences method of every module
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "evalPreferences", param);
+
 
    // reset cached locale, timezone and dateSymbols
    this.cache.locale = null;
