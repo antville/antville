@@ -56,6 +56,19 @@ function creator_macro(param) {
 }
 
 /**
+ * macro renders the name of the modifier
+ */
+function modifier_macro(param) {
+   if (!this.modifier)
+      return;
+   if (param.as == "link" && this.modifier.url)
+      Html.link(this.modifier.url, this.modifier.name);
+   else
+      res.write(this.modifier.name);
+   return;
+}
+
+/**
  * macro renders the url of an object
  */
 function url_macro() {
