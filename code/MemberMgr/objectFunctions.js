@@ -155,29 +155,28 @@ function searchUser(key) {
    if (dbError)
       throw new Exception("database", dbError);
    var found = 0;
-   var list = new java.lang.StringBuffer();
+   res.push();
    while (searchResult.next() && found < 100) {
-      var sp = new Object();
-      sp.name = searchResult.getColumnItem("USER_NAME");
+      var name = searchResult.getColumnItem("USER_NAME");
       var url = searchResult.getColumnItem("USER_URL");
-      if (url)
-         sp.description = Html.linkAsString(url, url);
-      list.append(this.renderSkinAsString("searchresultitem", sp));
+      // do nothing if the user is already a member
+      if (this.get(name))
+         continue;
+      var sp = {name: name, description: url ? Html.linkAsString(url, url) : null};
+      this.renderSkin("searchresultitem", sp);
       found++;
    }
    dbConn.release();
    switch (found) {
       case 0:
          throw new Exception("resultNoUser");
-         break;
       case 1:
-         return new Message("resultOneUser", null, list.toString());
-         break;
+         return new Message("resultOneUser", null, res.pop());
       case 100:
-         return new Message("resultTooManyUsers", null, list.toString());
-         break;
+         return new Message("resultTooManyUsers", null, res.pop());
+      default:
+         return new Message("resultManyUsers", found, res.pop());
    }
-   return new Message("resultManyUsers", found.toString(), list.toString());
 }
 
 /**
