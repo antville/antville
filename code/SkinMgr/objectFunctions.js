@@ -4,7 +4,7 @@
  * containing the source of the file-skin
  */
 
-function fetchSkin(proto,name) {
+function fetchSkin(proto, name) {
    var currProto = this.get(proto);
    if (currProto && currProto.get(name))
       return(currProto.get(name));
@@ -26,30 +26,27 @@ function fetchSkin(proto,name) {
  *             - message (String): containing a message to user
  */
 
-function saveSkin(proto,name,source,creator) {
-   var result;
-   if (proto && name) {
-      var s = this.fetchSkin(proto,name);
-      if (!s.proto && source) {
-         s.creator = creator;
-         s.createtime = new Date();
-         s.modifier = creator;
-         s.modifytime = new Date();
-         s.name = name;
-         s.proto = proto;
-         s.site = this._parent;
-         this.add(s);
-      } else if (s.proto && !source)
-         this.get(s.proto).remove(s);
-      if (source) {
-         s.skin = source;
-         s.modifier = creator;
-         s.modifytime = new Date();
-      }
-      result = getConfirm("update");
-   } else
-      result = getError("skinUpdate");
-   return (result);
+function saveSkin(proto, name, source, creator) {
+   if (!proto || !name)
+      throw new Exception("skinUpdate");
+   var s = this.fetchSkin(proto, name);
+   if (!s.proto && source) {
+      s.creator = creator;
+      s.createtime = new Date();
+      s.modifier = creator;
+      s.modifytime = new Date();
+      s.name = name;
+      s.proto = proto;
+      s.site = this._parent;
+      this.add(s);
+   } else if (s.proto && !source)
+      this.get(s.proto).remove(s);
+   if (source) {
+      s.skin = source;
+      s.modifier = creator;
+      s.modifytime = new Date();
+   }
+   return new Message("update");
 }
 
 /**
@@ -59,21 +56,25 @@ function saveSkin(proto,name,source,creator) {
  */
 
 function deleteSkin(s) {
-   if (this.get(s.proto).remove(s))
-      return (getMessage("confirm","skinDelete"));
-   else
-      return (getMessage("error","skinDelete"));
+   try {
+      this.get(s.proto).remove(s);
+      return new Message("skinDelete");
+   } catch (err) {
+      throw new Exception("skinDelete");
+   }
 }
 
 /**
  * function deletes all skins belonging to this manager
  */
-
 function deleteAll() {
    for (var i=this.size();i>0;i--) {
       var proto = this.get(i-1);
-      for (var j=proto.size();j>0;j--)
-         proto.remove(proto.get(j-1));
+      for (var j=proto.size();j>0;j--) {
+         var s = proto.get(j-1);
+         if (!proto.remove(s))
+            throw new Exception("siteDeleteSkins");
+      }
    }
-   return;
+   return true;
 }
