@@ -14,7 +14,7 @@ function isViewDenied(usr) {
 function isVoteDenied(usr) {
    if (this.weblog.isNotPublic(usr))
       return ("Sorry, this weblog is not public!");
-	if (!usr.uid)
+	if (!usr)
 		return ("Please login before");
    if (this.closed)
       return("This poll is closed.");
