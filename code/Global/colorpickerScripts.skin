@@ -2,7 +2,7 @@ var Antville = {};
 
 Antville.prefix = "Antville_";
 Antville.pixel = new Image();
-Antville.pixel.src = "<% layout.image name="pixel" as="url" %>";
+Antville.pixel.src = "<% image name="/pixel" as="url" %>";
 
 Antville.ColorPickerFactory = function() {
    var prefix = Antville.prefix + "ColorPicker_";
@@ -53,7 +53,7 @@ Antville.ColorPickerFactory = function() {
    this.defaultPalette = this.brightness[this.brightness.length-1];
    
    this.marquee = new Image();
-   this.marquee.src = "<% layout.image name="marquee" as="url" %>";
+   this.marquee.src = "<% image name="/marquee" as="url" %>";
    
    this.setPaletteMarquee = function(obj) {
       if (this.lastPaletteMarquee)
