@@ -10,14 +10,14 @@ function renderSitelist(limit, show, scroll) {
       var collection = root.publicSites;
    else
       var collection = root;
-   
+
    var size = collection.size();
    if (!size)
       return;
-   
+
    var idx = parseInt (req.data.start, 10);
    var scroll = (!scroll || scroll == "no" ? false : true);
-   
+
    if (isNaN(idx) || idx > size-1 || idx < 0)
       idx = 0;
    if (scroll && idx > 0) {
