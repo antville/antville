@@ -1,4 +1,4 @@
-<% param.creator %> has added you (meaning your antville-account "<% param.account %>") to the list of members of http://<% param.weblog %>.antville.org
+<% param.creator %> has added you (meaning your antville-account "<% param.account %>") to the list of members of <% param.weblog %> (<% param.url %>).
 
 Have fun!
 
