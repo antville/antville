@@ -1,0 +1,11 @@
+if (!path.weblog.isPublic())
+   res.redirect(path.weblog.members.href("login"));
+if (!path.weblog.showArchive())
+   res.redirect(path.weblog.href());
+
+res.skin = "main";
+
+res.title = "Antville - " + path.weblog.title;
+res.head = path.weblog.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("main");
