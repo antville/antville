@@ -1,7 +1,7 @@
 autoLogin();
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isUnsubscribeDenied(user);
+var deny = this.isUnsubscribeDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(this.members.href("subscriptions"));
@@ -10,15 +10,15 @@ if (deny) {
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.members.href("subscriptions"));
 else if (req.data.submit == "delete" || req.data.remove) {
-   var result = this.members.deleteMember(this.members.get(user.name),user);
+   var result = this.members.deleteMember(this.members.get(session.user.name),session.user);
    res.message = result.message;
    res.redirect(root.members.href("subscriptions"));
 }
-
-res.skin = "weblog.page";
 
 res.data.title = "Antville - " + this.title;
 
 var skinParam = new Object();
 skinParam.what = "your subscription to <b>" + this.title + "</b>";
 res.data.body = this.renderSkinAsString("delete",skinParam);
+
+this.renderSkin("page");
