@@ -630,3 +630,26 @@ function onlinestatus_macro(param) {
       res.write("public");
    res.write(param.suffix);
 }
+
+/**
+ * macro renders a link to signup if user is not member of this weblog
+ * if user is member, it displays the level of membership
+ */
+
+function membership_macro(param) {
+   res.write(param.prefix);
+   var ms = this.members.get(user.name);
+   if (ms) {
+      res.write("You&nbsp;are&nbsp;");
+      ms.renderLvl();
+      res.write("&nbsp;of " + this.title);
+   } else {
+      var linkParam = new Object();
+      linkParam.to = "signup";
+      this.openLink(linkParam);
+      res.write("sign up");
+      this.closeLink();
+      res.write("&nbsp;to&nbsp;" + this.title);
+   }
+   res.write(param.suffix);
+}
