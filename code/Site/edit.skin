@@ -72,6 +72,14 @@
 <td class="storyText" nowrap><% this.hasdiscussions as="editor" %></td>
 </tr>
 <tr>
+<td class="storyText" nowrap>users may signup:</td>
+<td class="storyText" nowrap><% this.usermaysignup as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>users may contribute:</td>
+<td class="storyText" nowrap><% this.usermaycontrib as="editor" %></td>
+</tr>
+<tr>
 <td class="storyText" nowrap>enable archive:</td>
 <td class="storyText" nowrap><% this.showarchive as="editor" %></td>
 </tr>
