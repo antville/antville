@@ -22,12 +22,14 @@
 <td width="400" valign="top" nowrap><br><% response.body %></td>
 <td width="60" nowrap>&nbsp;</td>
 <td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap><div class="sep"><% image name="/pixel" width="198" %></div>
+<td width="198" align="right" valign="top" nowrap><div class="statuslight">
+<% this.age prefix="online for&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="short%></div>
+
+<div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/status" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statuslight"><% this.age prefix="online for&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="short%></div>
-<% this.loginstatus %></div>
+<div class="statuslight"><% this.loginstatus %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/menu" %></div>
