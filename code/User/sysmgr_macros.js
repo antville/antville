@@ -8,14 +8,17 @@ function sysmgr_count_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (param.what == "stories")
-      res.write(this.stories.size());
-   else if (param.what == "comments")
-      res.write(this.comments.size());
-   else if (param.what == "images")
-      res.write(this.images.size());
-   else if (param.what == "files")
-      res.write(this.files.size());
+   switch (param.what) {
+      case "stories" :
+         return this.stories.size();
+      case "comments" :
+         return this.comments.size();
+      case "images" :
+         return this.images.size();
+      case "files" :
+         this.files.size();
+   }
+   return;
 }
 
 /**
@@ -27,11 +30,11 @@ function sysmgr_statusflags_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (this.trusted)
-      res.write("<span class=\"flagltgreen\" nowrap>TRUSTED</span>");
+      res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">TRUSTED</span>");
    if (this.sysadmin)
-      res.write("<span class=\"flagdkgreen\" nowrap>SYSADMIN</span>");
+      res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SYSADMIN</span>");
    if (this.blocked)
-      res.write("<span class=\"flagblack\" nowrap>BLOCKED</span>");
+      res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
 }
 
 /**

@@ -7,12 +7,16 @@ function sysmgr_typeflag_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (this.type == "site")
-      res.write("<span class=\"flagdkgreen\" nowrap>SITE</span>");
-   else if (this.type == "user")
-      res.write("<span class=\"flagred\" nowrap>USER</span>");
-   else
-      res.write("<span class=\"flagyellow\" nowrap>SYSTEM</span>");
+   switch (this.type) {
+      case "site" :
+         res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SITE</span>");
+         break;
+      case "user" :
+         res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">USER</span>");
+         break;
+      default :
+         res.write("<span class=\"flagLight\" style=\"background-color:#FFCC00;\">SYSTEM</span>");
+   }
 }
 
 
