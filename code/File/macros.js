@@ -127,12 +127,12 @@ function filetype_macro(param) {
 
 function clicks_macro(param) {
    if (!this.requestcnt)
-      res.write(param.no ? param.no : "");
+      res.write(param.no ? param.no : "0 downloads");
    else if (this.requestcnt == 1)
-      res.write(param.one ? param.one : "1 click");
+      res.write(param.one ? param.one : "1 download");
    else {
       res.write(this.requestcnt);
-      res.write(param.more ? param.more : " clicks");
+      res.write(param.more ? param.more : " downloads");
    }
    return;
 }
