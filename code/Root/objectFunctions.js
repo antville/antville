@@ -128,12 +128,12 @@ function getTitle() {
 
 /**
  * function checks if the system url of this antville-installation
- * was defined in setup
- * if not, it returns "http://www.antville.org"
+ * was defined in setup and returns it.
+ * if not set, root.href() is returned.
  */
 function getUrl() {
    if (!root.sys_url)
-      return "http://www.antville.org";
+      return root.href();
    return root.sys_url;
 }
 
