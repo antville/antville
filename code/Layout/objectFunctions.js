@@ -12,15 +12,15 @@ function constructor(site, title, creator) {
    prefs.textfont = "Verdana, Helvetica, Arial, sans-serif";
    prefs.textsize = "13px";
    prefs.textcolor = "000000";
-   prefs.linkcolor = "ff3300";
-   prefs.alinkcolor = "ff0000";
-   prefs.vlinkcolor = "ff3300";
+   prefs.linkcolor = "ff4040";
+   prefs.alinkcolor = "ff4040";
+   prefs.vlinkcolor = "ff4040";
    prefs.titlefont = "Verdana, Helvetica, Arial, sans-serif";
    prefs.titlesize = "15px";
-   prefs.titlecolor = "cc0000";
-   prefs.smallfont = "Arial, Helvetica, sans-serif";
-   prefs.smallsize = "12px";
-   prefs.smallcolor = "666666";
+   prefs.titlecolor = "d50000";
+   prefs.smallfont = "Verdana, Arial, Helvetica, sans-serif";
+   prefs.smallsize = "11px";
+   prefs.smallcolor = "959595";
    this.preferences_xml = Xml.writeToString(prefs);
 }
 
@@ -33,15 +33,17 @@ function evalLayout(param, modifier) {
       throw new Exception("layoutTitleMissing");
    this.title = param.title;
    this.description = param.description;
-   this.shareable = param.shareable;
    // get preferences from param object
-   var prefs = new HopObject();
+   var prefs = this.preferences.getAll();
    for (var i in param) {
       if (i.startsWith("preferences_"))
          prefs[i.substring(12)] = param[i];
    }
    // store preferences
    this.preferences.setAll(prefs);
+   // parent layout
+   this.parent = param.layout ? root.layouts.get(param.layout) : null;
+   this.shareable = param.shareable ? 1 : 0;
    this.modifier = modifier;
    this.modifytime = new Date();
    return new Message("layoutUpdate", this.title);
@@ -66,19 +68,48 @@ function getNavigationName() {
 }
 
 /**
+ * render the path to the static directory of this
+ * layout object
+ * @param String name of subdirectory (optional)
+ */
+function staticPath(subdir) {
+   if (this.site)
+      this.site.staticPath();
+   else
+      res.write(app.properties.staticPath);
+   res.write("layouts/");
+   res.write(this.alias);
+   res.write("/");
+   if (subdir)
+      res.write(subdir);
+   return;
+}
+
+/**
  * return the path to the static directory of this
  * layout object
- * @return Object java.lang.StringBuffer
+ * @param String name of subdirectory (optional)
+ * @return String path to static directory
  */
 function getStaticPath(subdir) {
-   var buf = (this.site ? this.site.getStaticPath() :
-              new java.lang.StringBuffer(app.properties.staticPath));
-   buf.append("layouts/");
-   buf.append(this.alias);
-   buf.append("/");
-   if (subdir)
-      buf.append(subdir);
-   return buf;
+   res.push();
+   this.staticPath(subdir);
+   return res.pop();
+}
+
+/**
+ * render the URL of the directory where images
+ * of this layout are located
+ */
+function staticUrl() {
+   if (this.site)
+      this.site.staticUrl();
+   else
+      res.write(app.properties.staticUrl);
+   res.write("layouts/");
+   res.write(this.alias);
+   res.write("/");
+   return;
 }
 
 /**
@@ -87,12 +118,9 @@ function getStaticPath(subdir) {
  * @return String URL of the image directory
  */
 function getStaticUrl() {
-   var buf = (this.site ? this.site.getStaticUrl() :
-              new java.lang.StringBuffer(app.properties.staticUrl));
-   buf.append("layouts/");
-   buf.append(this.alias);
-   buf.append("/");
-   return buf;
+   res.push();
+   this.staticUrl();
+   return res.pop();
 }
 
 /**
@@ -102,16 +130,16 @@ function getStaticUrl() {
  *                directory on disk
  */
 function getStaticDir(subdir) {
-   return FileLib.mkdir(this.getStaticPath(subdir).toString());
+   return FileLib.mkdir(this.getStaticPath(subdir));
 }
 
 /**
  * Helper function: is this layout the default in the current context?
  */
 function isDefaultLayout() {
-   if (this.site && this.site.preferences.getProperty("layout") == this.alias)
+   if (this.site && this.site.layout == this)
       return true;
-   if (!this.site && root.sys_layout == this.alias)
+   if (!this.site && root.sys_layout == this)
       return true;
    return false;
 }
@@ -120,12 +148,13 @@ function isDefaultLayout() {
  * make this layout object a child layout of the one
  * passed as argument and copy the layout-relevant
  * preferences
+ * @param Object parent layout object 
  */
 function setParentLayout(parent) {
    this.parent = parent;
    // child layouts are not shareable
    this.shareable = 0;
-   // clone the layout relevant preferences from parent
+   // copy relevant preferences from parent
    var prefs = new HopObject();
    var parentPrefs = parent.preferences.getAll();
    prefs.bgcolor = parentPrefs.bgcolor;
@@ -140,21 +169,22 @@ function setParentLayout(parent) {
    prefs.titlecolor = parentPrefs.titlecolor;
    prefs.smallfont = parentPrefs.smallfont;
    prefs.smallsize = parentPrefs.smallsize;
+   prefs.smallcolor = parentPrefs.smallcolor;
+   prefs.copyright = parentPrefs.copyright;
+   prefs.email = parentPrefs.email;
    this.preferences.setAll(prefs);
    return;
 }
 
 /**
- * FIXME: experimental methods ...
- */
-
-/**
  * dump a layout object by copying all necessary properties
  * to a transient HopObject and then return the Xml dump
  * of it (this way we avoid any clashes with usernames)
- * @return String Xml-Dump of the layout object
+ * @param Object Zip object to dump layout to
+ * @param Boolean true for full export, false for incremental
+ * @return Boolean true
  */
-function dumpToZip(z) {
+function dumpToZip(z, fullExport) {
    var cl = new HopObject();
    cl.title = this.title;
    cl.alias = this.alias;
@@ -164,9 +194,75 @@ function dumpToZip(z) {
    cl.createtime = this.creator ? this.createtime : null;
    cl.exporttime = new Date();
    cl.exporter = session.user.name;
+   cl.fullExport = fullExport;
    cl.modifier = this.modifier ? this.modifier.name : null;
    cl.modifytime = this.modifytime;
    var buf = new java.lang.String(Xml.writeToString(cl)).getBytes();
-   z.addData(buf, "preferences");
+   z.addData(buf, "preferences.xml");
    return true;
+}
+
+/**
+ * create a .zip file containing the whole layout (including
+ * skins, images and properties)
+ * @param Boolean true for full export, false for incremental
+ * @param Object Byte[] containing the binary data of the zip file
+ */
+function evalDownload(fullExport) {
+   // create the zip file
+   var z = new Zip();
+   // first, dump the layout and add it to the zip file
+   this.dumpToZip(z, fullExport);
+   // add the metadata of layout images
+   // to the directory "imagedata" in the zip file
+   var imgLog = this.images.dumpToZip(z, fullExport);
+   // add skins to the zip archive
+   var skinLog = this.skins.dumpToZip(z, fullExport);
+   return z.close();
+}
+
+/**
+ * retrieve an image from imagemgr
+ * this method walks up the hierarchy of layout objects
+ * until it finds an image, otherwise returns null
+ * @param String name of image to retrieve
+ * @param String name of fallback image to retrieve (optional)
+ * @return Object image object or null
+ */
+function getImage(name, fallback) {
+   var handler = this;
+   while (handler) {
+      if (handler.images.get(name))
+         return handler.images.get(name);
+      if (handler.images.get(fallback))
+         handler.images.get(fallback)
+      handler = handler.parent;
+   }
+   return null;
+}
+
+/**
+ * walk up the layout hierarchy and add all skinmgr
+ * to an array
+ * @return Object Array containing skinmgr objects
+ */
+function getSkinPath() {
+   var sp = [this.skins];
+   var handler = this;
+   while ((handler = handler.parent) != null)
+      sp.push(handler.skins);
+   return sp;
+}
+
+/**
+ * walk up all parents and add them to a Hashtable
+ * (the key is the layout._id, value is Boolean true
+ * @return Object java.util.Hashtable
+ */
+function getParents() {
+   var parents = new java.util.Hashtable();
+   var handler = this;
+   while ((handler = handler.parent) != null)
+      parents.put(handler._id, true);
+   return parents;
 }
