@@ -8,7 +8,8 @@ function alias_macro(param) {
    else if (param.as == "link") {
       param.to = "getfile"
       param.urlparam = "name=" + this.alias;
-      openMarkupElement("a",this.site.createLinkParam(param));
+      param.title = this.description;
+      openMarkupElement("a", this.site.createLinkParam(param));
       res.write(this.alias);
       closeMarkupElement("a");
    } else
@@ -100,8 +101,20 @@ function mimetype_macro(param) {
    res.write(this.mimetype);
 }
 
+
 /**
- * mcaro rendering the number of requests so far
+ * macro rendering the file extension from the name
+ */
+
+function filetype_macro(param) {
+   var i = this.name.lastIndexOf(".");
+   if (i > -1)
+      res.write(this.name.substring(i+1, this.name.length));
+}
+
+
+/**
+ * macro rendering the number of requests so far
  * for a file-object
  */
 
