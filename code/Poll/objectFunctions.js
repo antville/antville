@@ -61,7 +61,7 @@ function evalVote(param, usr) {
 	result.url = this.href();
 	if (param.choice) {
 		var c = this.get(param.choice);
-		var v = this.votes.get(user.uid);
+		var v = session.user ? this.votes.get(session.user.name) : null;
 		if (v) {
 			v.choice = c;
 			v.modifytime = new Date();
@@ -70,8 +70,8 @@ function evalVote(param, usr) {
 			var v = new vote();
 			v.poll = this;
 			v.choice = c;
-			v.user = user;
-			v.username = user.uid;
+			v.user = session.user;
+			v.username = session.user.name;
 			v.createtime = new Date();
 			v.modifytime = new Date();
 			this.votes.add(v);
