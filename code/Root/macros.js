@@ -15,19 +15,35 @@ function loginstatus_macro(param) {
  * macro is left here for backwards-compatibility only
  */
 
-function webloglist_macro(param) {
-	webloglist_macro(param);
+function sitelist_macro(param) {
+	sitelist_macro(param);
 }
 
 
 /**
- * macro renders the number of weblogs (either all or just the public ones)
+ * macro renders the number of site (either all or just the public ones)
  */
 
-function weblogcounter_macro(param) {
+function sitecounter_macro(param) {
    if (param.count == "all")
       var size = root.size();
    else
       var size = this.public.size();
    res.write(size);
+}
+
+/**
+ * macro renders the system-title of this antville-installation
+ */
+
+function systitle_macro(param) {
+   res.write(this.getSysTitle());
+}
+
+/**
+ * macro renders the system-url of this antville-installation
+ */
+
+function sysurl_macro(param) {
+   res.write(this.getSysUrl());
 }
