@@ -12,9 +12,13 @@ function onRequest() {
       res.message = deny;
       res.redirect(root.href());
    }
-   // need a sysmgr-object in session for searching
-   if (!session.data.mgr)
+   // initialize sysmgr-object in session
+   if (!session.data.mgr) {
       session.data.mgr = new sysmgr();
+      session.data.mgr.searchSites();
+      session.data.mgr.searchUsers();
+      session.data.mgr.searchSyslog();
+   }
 }
 
 /**
