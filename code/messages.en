@@ -161,14 +161,14 @@ confirm.layoutImport = Successfully imported the layout &raquo;<% param.value1 %
 ##
 ## mail messages
 ##
-mail.statusChange = Your membership at <% param.value1 %> was changed
+mail.statusChange = Your membership at "<% param.value1 %>" was changed
 mail.sendPwd = Your Accounts for Antville
-mail.newMember = You are now a member of <% param.value1 %>
-mail.blockWarning = Attention! Your site &raquo;<% param.value1 %>&laquo; will soon be blocked!
-mail.deleteWarning = Attention! Your site &raquo;<% param.value1 %>&laquo; will soon be deleted!
-mail.registration = Welcome to &raquo;<% param.value1 %>&laquo;!
+mail.newMember = You are now a member of "<% param.value1 %>"
+mail.blockWarning = Attention! Your site "<% param.value1 %>" will soon be blocked!
+mail.deleteWarning = Attention! Your site "<% param.value1 %>" will soon be deleted!
+mail.registration = Welcome to "<% param.value1 %>"!
 mail.notification = Notification of site changes
-mail.toUser = Message from a &raquo;<% param.value1 %>&laquo; user
+mail.toUser = Message from a "<% param.value1 %>" user
 
 
 ##
