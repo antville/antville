@@ -73,13 +73,9 @@ a:hover {
   background-image:url("<% imageurl name="/dot" %>");
 }
 
-ul {
-  list-style: url("<% imageurl name="/bullet" %>") circle;
-}
+ul {list-style: url("<% imageurl name="/bullet" %>") circle;}
 
-li {
-  padding-bottom:3px;
-}
+li {padding-bottom:3px;}
 
 .calHead {
   font-family:<% weblog.smallfont %>;
@@ -149,9 +145,7 @@ li {
   margin-bottom:2px;
 }
 
-.reply {
-  padding-left:20px;
-}
+.reply {padding-left:20px;}
 
 
 .formTitle {
@@ -175,9 +169,7 @@ li {
   font-weight: normal;
 }
 
-.offlineStory {
-  background-color: #cccccc;
-}
+.offlineStory {background-color: #cccccc;}
 
 .pollResultsBar {
 	height: 5px;
