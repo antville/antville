@@ -46,6 +46,7 @@ function input_macro(param) {
       inputParam.value = param.name ? req.data[param.name] : null;
       this.renderInputTextarea(inputParam);
    } else if (param.type == "checkbox") {
+      this.renderInputCheckbox(param);
    } else if (param.type == "button") {
       this.renderInputButton(param);
    } else if (param.type == "password") {
