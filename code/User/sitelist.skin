@@ -1,0 +1,1 @@
+<% user.sitelist prefix="<ul>" suffix="</ul>" %>

@@ -1,0 +1,10 @@
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td nowrap="nowrap"><% input type="text" name="keyword" %>&nbsp;</td>
+<td nowrap="nowrap"><% input type="submit" name="search" value="Search" %></td>
+</tr>
+</table>
+</form>
+
+<% response.searchresult %>
