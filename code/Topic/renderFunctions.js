@@ -30,10 +30,9 @@ function renderStorylist(idx) {
          s.renderSkin("dayheader");
          day = s.day;
       }
-      s.renderSkin("preview");
+      s.renderSkin("mgrlistitem");
    }
    res.data.storylist = res.pop();
-
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;
