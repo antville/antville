@@ -375,3 +375,25 @@ CREATE INDEX IDX_SITE_ENABLEPING ON AV_SITE (SITE_ENABLEPING);
 CREATE INDEX IDX_SITE_LASTPING ON AV_SITE (SITE_LASTPING);
 CREATE INDEX IDX_SITE_F_USER_CREATOR ON AV_SITE (SITE_F_USER_CREATOR);
 
+#----------------------------
+# Table structure for AV_SHORTCUT
+#----------------------------
+
+create table AV_SHORTCUT (
+  SHORTCUT_ID mediumint(9) not null,
+  SHORTCUT_F_SITE mediumint(9) null,
+  SHORTCUT_F_USER_CREATOR mediumint(9) null,
+  SHORTCUT_TITLE varchar(255) null,
+  SHORTCUT_CONTENT mediumtext null,
+  SHORTCUT_CREATETIME datetime null,
+  SHORTCUT_MODIFYTIME datetime null,
+  primary key (SHORTCUT_ID)
+);
+
+#----------------------------
+# Indexes on table AV_SHORTCUT
+#----------------------------
+
+CREATE INDEX IDX_SHORTCUT_SITE ON AV_SHORTCUT (SHORTCUT_F_SITE);
+CREATE INDEX IDX_SHORTCUT_CREATOR ON AV_SHORTCUT (SHORTCUT_F_USER_CREATOR);
+CREATE INDEX IDX_SHORTCUT_TITLE ON AV_SHORTCUT (SHORTCUT_TITLE);
