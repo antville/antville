@@ -1,4 +1,4 @@
-alter table AV_SITE add column  SITE_PREFERENCES mediumtext null after SITE_SHORTDATEFORMAT;
+use antville;
 alter table AV_SITE
    drop column SITE_BGCOLOR,
    drop column SITE_TEXTFONT,
