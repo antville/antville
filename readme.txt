@@ -6,29 +6,27 @@ Antville
 STATUS
 -----------------------
 
-Antville should be considered beta-release quality code. It is still developed and chances are good you'll find bugs in this application. Antville can be used for production purposes, but please mind that the creators of antville resp. helma.org do not take any warranty (whichever kind).
+Antville should be considered pre-release quality code. Although it is heavily used by severeal thousand users at http://www.antville.org chances are that there are still bugs hidden in this application (if you find one, please see belog). Antville can be used for production purposes, but please mind that the creators of Antville and Helma do not take any warranty (whichever kind).
 
 -----------------------
 SYSTEM REQUIREMENTS
 -----------------------
 
-Basically you'll need two applications to run Antville: Helma Object Publisher (http://helma.org) and mySql (http://www.mysql.com). For setting up please refer to their installation instructions. Since Antville sends confirmation mails to users (i.e. after registration or if they were added to the list of members of a weblog), you'll also need an up-and-running SMTP-server (which you should specify in the server.properties in the directory where you installed Helma Object Publisher).
+To run Antville you need Helma Object Publisher (http://helma.org) and a relational database in the backend. Antville was tested with mySQL (http://www.mysql.com) and Oracle (v.8.1.7). For setting up either Helma Object Publisher or the database you decided to use please refer to their installation instructions. Since Antville sends confirmation mails to users (i.e. after registration or if they were added to the list of members of a site), you'll also need an up-and-running SMTP-server (which you should specify in the server.properties in the directory where you installed Helma Object Publisher).
 
 -----------------------
 INSTALLATION
 -----------------------
 
-First, use the mySql-dumpfile "antville.sql" that comes with Antville to create the user, database and tables needed by the application (the default user is "antville" with the password "antville" - you'll probably want to change that). Don't be irritated by the number of "antville_dbpatches" - you can ignore them if you install antville for the first time (they're just useful for upgrading an existing version of antville). After done so you'll have to modfiy the file "db.properties" in the directory where you installed the application. Change "antville.url", "antville.username" and "antville.password" to wherever your mySql-database resides and the settings you defined for the user.
+Antville comes with two SQL-scripts for creating the database needed by the application: for mySQL (antville_mysql.sql) and for Oracle databases (antville_oracle.sql) - the third one, antville_mckoi.sql, is only used for the Antclick-distribution of Antville.
 
-Next, modify the file "app.properties" in the application directory. What you should check/change are the "baseURI", the locations and urls for images and goodies and "adminEmail" (which you should change to the email-address you want to use as FROM-address in confirmation mails):
+Both scripts are not only creating the tables, indexes and initial records, but also the account used by the application to communicate with the database. The default username and password of this account is "antville", so you probably want to change that (you should!).
 
-The two application-properties "imgPath" and "goodiePath" are used to store uploaded images and goodies into separate directories. Antville will create necessary subdirectories if needed (i.e. if a goodie was uploaded for the first time in a weblog, antville will create a subdirectory with the alias of the weblog, same for images). If you already have a directory that contains static contents, the easiest way is to create a subdirectory called "antville" plus two subdirectories called "images" and "goodies". Then you should adjust "imgUrl" and "goodieUrl" - these two properties will be used to create the appropriate URLs.
+Please refer to the documentation of your database on how to run the appropriate script. After done so you'll have to modfiy the file "db.properties" in the directory where you installed the application. Depending on your database you should open either db.properties.mysql or db.properties.oracle and modify it to match the configuration of your database (if you changed the default username and password don't forget to change it here too!).
 
-If your Hop-setup uses Apache as frontend-webserver, you should modify httpd.conf and insert a rewriteRule to prevent that image-requests are sent to Hop. Please refer to the Apache-documentation on how to use the URL Rewriting Module or have a look at our setup at http://www.antville.org.
+After done so save the modified file under the name "db.properties" in the same directory. Next open the file "app.properties" - it contains all basic file- and URI-path definitions needed by Antville. Don't be confused by the contents of the file, all you need to change for now is imgPath, filePath, imgUrl and fileUrl.
 
-There's another property that could be of interest for you: if you set "allowGoodies" to "false", the upload of goodies is disabled. Otherwise it's enabled and you should check if the uploadLimit-parameter of the helma-servlet fit's your needs (if not set anyone could upload a neat linux-distribution onto your harddisk ...)
-
-Finally, you'll need to start the application by appending "antville" to the file "apps.properties" located in the directory where you install Hop.
+Finally, append the word "antville" to the file "apps.properties" located in the directory where you install Helma Object Publisher. The start up Helma, and with the first request you should see Antville's welcome page telling you how to proceed with configuration.
 
 ----------------------------------
 DOCUMENTATION
@@ -49,3 +47,4 @@ If you find any bugs or have any ideas about new features, please send a mail to
 
 ----------------------------------
 © 2002, antville@helma.org
+http://project.antville.org
