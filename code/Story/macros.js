@@ -189,13 +189,20 @@ function onlinelink_macro(param) {
       if (this.online && param.mode != "toggle")
          return;
       delete param.mode;
+      var text = param.text;
       param.linkto = "edit";
       param.urlparam = "set=" + (this.online ? "offline" : "online");
       openMarkupElement("a",this.createLinkParam(param));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image),param);
-      else
-         res.write(this.online ? "set offline" : "set online");
+      else {
+         // currently, only the "set online" text is customizable, since this macro
+         // is by default only used in that context outside the story manager.
+         if (this.online)
+            res.write("set offline");
+         else
+            res.write(text ? text : "set online");
+      }
       closeMarkupElement("a");
    }
 }
