@@ -2,9 +2,9 @@ autoLogin();
 
 res.skin = "root.page";
 
-res.title = "Antville";
+res.data.title = "Antville";
 
 res.head = this.renderSkinAsString("javascript");
 res.head += this.renderSkinAsString("style");
 
-res.body = this.renderSkinAsString("main");
+res.data.body = this.renderSkinAsString("main");

@@ -1,6 +1,6 @@
 var parent = setLayout();
 
-res.title = "Antville - 404 - not found";
+res.data.title = "Antville - 404 - not found";
 
 res.head = parent.renderSkinAsString("javascript");
 res.head += parent.renderSkinAsString("style");
