@@ -24,7 +24,6 @@ function updateComment(param) {
    var content = extractContent(param, this.content.getAll());
    if (!content.exists)
       throw new Exception("textMissing");
-   this.setContent(content.value);
    // let's keep the comment title property:
    this.title = content.value.title;
    if (content.isMajorUpdate) {
