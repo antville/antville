@@ -82,13 +82,11 @@ function changeAlias(currGoodie,newAlias) {
  */
 
 function deleteGoodie(currGoodie) {
-   // first we try to remove the goodie from disk
+   // first remove the goodie from disk
    var f = new File(getProperty("goodiePath") + currGoodie.weblog.alias, currGoodie.file);
-   if (f.remove()) {
-      if (this.remove(currGoodie))
-         return ("The goodie was deleted successfully!");
-      else
-         return ("Ooops! Couldn't delete the goodie!");
-   } else
-      return ("Ooops! Couldn't remove the goodie from disk!");
+   f.remove();
+   if (this.remove(currGoodie))
+      return ("The goodie was deleted successfully!");
+   else
+      return ("Ooops! Couldn't delete the goodie!");
 }
