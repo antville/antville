@@ -38,7 +38,16 @@ function renderView(collection, title) {
  */
 function renderSubscriptionView(collection, title) {
    var sitelist = collection.list();
-   sitelist.sort(new Function("a", "b", "return a.site.title.toLowerCase() - b.site.title.toLowerCase()"));
+   var sorter = function(a, b) {
+      var str1 = a.site.title.toLowerCase();
+      var str2 = b.site.title.toLowerCase();
+      if (str1 > str2)
+         return 1;
+      else if (str1 < str2)
+         return -1;
+      return 0;
+   }
+   sitelist.sort(sorter);
    res.data.title = title + " of user " + session.user.name;
    res.data.sitelist = renderList(sitelist, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
