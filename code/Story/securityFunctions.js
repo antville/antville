@@ -13,7 +13,7 @@ function checkAccess(action, usr, level) {
             this.checkView(usr, level);
             break;
          case "edit" :
-            if (!usr && (req.data.save || req.data.publish))
+            if (!usr && req.data.save)
                rescueText(req.data);
             checkIfLoggedIn(this.href(req.action));
             this.checkEdit(usr, level);
