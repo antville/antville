@@ -123,3 +123,21 @@ function goodie_macro(param) {
    p.obj.renderSkin(param.useskin ? param.useskin : "main");
    res.write(param.suffix);
 }
+
+/**
+ * Macro creates a string representing the objects in the
+ * current request path, linked to their main action.
+ */
+function linkedpath_macro (param) {
+   var separator = param.separator;
+   if (!separator)
+       separator = "&gt; ";
+   var title = "Home";
+   for (var i=1; i<path.length-1; i++) {
+       title = path[i].getNavigationName();
+       res.write("<a href=\""+path[i].href()+"\">"+title+"</a>"+separator);
+   }
+
+   title = path[path.length-1].getNavigationName();
+   res.write (title);
+}
