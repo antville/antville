@@ -11,7 +11,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
     var blog = this.get (blogid.toString());    
     var param = new Object();
     param.text = content;
-    param.online = publish ? 1 : 0;
+    param.online = publish ? 2 : 0;
     var result = blog.stories.evalNewStory(param,user);
     return (result.id);
 }
@@ -24,11 +24,24 @@ function editPost (appkey, postid, username, password, content, publish) {
     var user = getUser (username);
     var s = this.storiesByID.get (postid.toString());
     s.text = content;
-    s.online = publish ? 1 : 0;
+    s.online = publish ? 2 : 0;
     s.modifytime = new Date();
     s.weblog.lastupdate = s.modifytime;
     return true;
 }
+
+/**
+ * Delete an existing posting. [ts]
+ */
+function deletePost(appkey, postid, username, password, publish) {
+    this.checkAccessPermission(null, postid.toString(), username, password);
+    var user = getUser(username);
+    var s = this.storiesByID.get(postid.toString());
+    var blog = s.weblog;
+    var result = blog.stories.deleteStory(s);
+    return(!result.error);
+}
+
 
 /**
  * This function checks if a user with given credentials may post to a weblog (if 
