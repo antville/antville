@@ -62,31 +62,31 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% this.bgcolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="bgcolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="bgcolor" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% this.titlecolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="titlecolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="titlecolor" text="title" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Text:</td>
-<td nowrap="nowrap"><% this.textcolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="textcolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="textcolor" text="text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Small text:</td>
-<td nowrap="nowrap"><% this.smallcolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="smallcolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="smallcolor" text="small text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Link:</td>
-<td nowrap="nowrap"><% this.linkcolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="linkcolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="linkcolor" text="link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Active Link:</td>
-<td nowrap="nowrap"><% this.alinkcolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="alinkcolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="alinkcolor" text="active link" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Followed Link:</td>
-<td nowrap="nowrap"><% this.vlinkcolor as="editor" width="10" %> <% this.colorpicker id="prefs" element="vlinkcolor" %></td>
+<td class="small" nowrap="nowrap">Visited Link:</td>
+<td nowrap="nowrap"><% this.colorpicker name="vlinkcolor" text="visited link" %></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
