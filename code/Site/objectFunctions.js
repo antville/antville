@@ -1,34 +1,4 @@
 /**
- * function checks if story fits to the minimal needs (must have at least a text ;-)
- */
-
-function evalNewStory() {
-   var newStory = new story();
-   
-   if (req.data.text) {
-      newStory.weblog = this;
-      newStory.title = req.data.title;
-      newStory.text = req.data.text;
-      newStory.online = parseInt(req.data.online) ? parseInt(req.data.online) : 0;
-      if (req.data.editableby != null && req.data.editableby != "")
-         newStory.editableby = parseInt(req.data.editableby,10);
-      else
-         newStory.editableby = 2;
-      newStory.author = user;
-      newStory.createtime = new Date();
-      newStory.modifytime = new Date();
-      newStory.day = newStory.createtime.format("yyyyMMdd");
-      this.add(newStory);
-      this.lastupdate = newStory.createtime;
-      res.message = "The story was created successfully!";
-      res.redirect(this.href());
-   } else
-      return (newStory);
-}
-
-
-
-/**
  * check if there are any stories in the previous month
  */
 
@@ -77,24 +47,6 @@ function renderLinkToNextMonth(cal) {
    } else {
       return ("&nbsp;");
    }
-}
-
-/**
- * delete a story
- * including all the comments
- */
-
-function deleteStory(currStory) {
-   for (var i=currStory.size();i>0;i--)
-      currStory.deleteComment(currStory.get(i-1));
-   currStory.setParent(this);
-   if (this.remove(currStory)) {
-      this.lastupdate = new Date();
-      res.message = "The story was deleted successfully!";
-   } else
-      res.message = "Ooops! Couldn't delete the story!";
-
-   res.redirect(this.href("main"));
 }
 
 /**
