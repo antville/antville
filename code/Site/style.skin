@@ -2,10 +2,14 @@
 <!--
 
 body, td {
-  background-color: <% site.bgcolor %>;
-  font-family: <% site.textfont %>;
-  font-size: <% site.textsize %>;
-  color: <% site.textcolor %>;
+   background-color: <% site.bgcolor %>;
+   font-family: <% site.textfont %>;
+   font-size: <% site.textsize %>;
+   color: <% site.textcolor %>;
+}
+
+form {
+   margin: 0px;
 }
 
 a {text-decoration: none;}
@@ -17,61 +21,61 @@ a:visited {color: <% site.vlinkcolor %>;}
 a:active {color: <% site.alinkcolor %>;}
 
 a:hover {
-  background-color: <% site.linkcolor %>;
-  color: <% site.bgcolor %>;
+   background-color: <% site.linkcolor %>;
+   color: <% site.bgcolor %>;
 }
 
 .title {
-  height: 53px;
-  font-size: 20pt;
-  font-weight: bold;
-  vertical-align: middle;
-  background-image: url("<% imageurl name="/webloghead" %>");
-  background-color: transparent;
-  color: #ff3300;
+   height: 53px;
+   font-size: 20pt;
+   font-weight: bold;
+   vertical-align: middle;
+   background-image: url("<% imageurl name="/webloghead" %>");
+   background-color: transparent;
+   color: #ff3300;
 }
 
 .message {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  padding: 1px;
-  color: <% site.linkcolor %>;
-  background-color: <% site.bgcolor %>;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   padding: 1px;
+   color: <% site.linkcolor %>;
+   background-color: <% site.bgcolor %>;
 }
 
 .statusdark {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  width: 198px;
-  display: block;
-  padding-top: 3px;
-  padding-bottom: 3px;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   width: 198px;
+   display: block;
+   padding-top: 3px;
+   padding-bottom: 3px;
 }
 
 .statuslight {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  width: 198px;
-  color: #999999;
-  display: block;
-  padding-top: 3px;
-  padding-bottom: 3px;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   width: 198px;
+   color: #999999;
+   display: block;
+   padding-top: 3px;
+   padding-bottom: 3px;
 }
 
 .statushead {
-  width: 198px;
-  text-align: left;
-  letter-spacing: 3px;
-  font-size: <% site.smallsize %>;
-  display: block;
-  padding-top: 1px;
-  padding-bottom: 1px;
+   width: 198px;
+   text-align: left;
+   letter-spacing: 3px;
+   font-size: <% site.smallsize %>;
+   display: block;
+   padding-top: 1px;
+   padding-bottom: 1px;
 }
 
 .sep {
-  height: 1px;
-  width: 198px;
-  background-image: url("<% imageurl name="/dot" %>");
+   height: 1px;
+   width: 198px;
+   background-image: url("<% imageurl name="/dot" %>");
 }
 
 ul {list-style: url("<% imageurl name="/bullet" %>") circle;}
@@ -79,95 +83,95 @@ ul {list-style: url("<% imageurl name="/bullet" %>") circle;}
 li {padding-bottom: 3px;}
 
 .calHead {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  font-weight: bold;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   font-weight: bold;
 }
 
 .calDay {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  text-align: center;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   text-align: center;
 }
 
 .calSelDay {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  border: 1px solid <% site.linkcolor %>;
-  text-align: center;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   border: 1px solid <% site.linkcolor %>;
+   text-align: center;
 }
 
 .calFoot {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  font-weight: bold;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   font-weight: bold;
 }
 
 .storyDate {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  color: <% site.smallcolor %>;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   color: <% site.smallcolor %>;
 }
 
 .storyTitle {
-  font-family: <% site.titlefont %>;
-  font-size: <% site.titlesize %>;
-  color: <% site.titlecolor %>;
-  font-weight: bold;
+   font-family: <% site.titlefont %>;
+   font-size: <% site.titlesize %>;
+   color: <% site.titlecolor %>;
+   font-weight: bold;
 }
 
 .small {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  color: <% site.smallcolor %>;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   color: <% site.smallcolor %>;
 }
 
 .commentHead {
-  width: 50px;
-  border-bottom-style: dotted;
-  border-bottom-width: thin;
-  border-bottom-color: #cccccc;
-  margin-bottom: 2px;
-  margin-top: 10px;
+   width: 50px;
+   border-bottom-style: dotted;
+   border-bottom-width: thin;
+   border-bottom-color: #cccccc;
+   margin-bottom: 2px;
+   margin-top: 10px;
 }
 
 .commentDate {
-  font-family: <% site.smallfont %>;
-  font-size: <% site.smallsize %>;
-  color: <% site.smallcolor %>;
-  margin-bottom: 2px;
+   font-family: <% site.smallfont %>;
+   font-size: <% site.smallsize %>;
+   color: <% site.smallcolor %>;
+   margin-bottom: 2px;
 }
 
 .commentTitle {
-  font-family: <% site.titlefont %>;
-  font-size: <% site.titlesize %>;
-  color: <% site.textcolor %>;
-  font-weight: bold;
-  margin-bottom: 2px;
+   font-family: <% site.titlefont %>;
+   font-size: <% site.titlesize %>;
+   color: <% site.textcolor %>;
+   font-weight: bold;
+   margin-bottom: 2px;
 }
 
 .reply {padding-left: 20px;}
 
 
 .formTitle {
-  width: 380px;
-  font-family: <% site.textfont %>;
-  font-size: <% site.titlesize %>;
-  font-weight: bold;
+   width: 380px;
+   font-family: <% site.textfont %>;
+   font-size: <% site.titlesize %>;
+   font-weight: bold;
 }
 
 .formText {
-  width: 380px;
-  font-family: <% site.textfont %>;
-  font-size: <% site.textsize %>;
-  font-weight: normal;
+   width: 380px;
+   font-family: <% site.textfont %>;
+   font-size: <% site.textsize %>;
+   font-weight: normal;
 }
 
 .formWide {
-  width: 660px;
-  font-family: <% site.textfont %>;
-  font-size: <% site.textsize %>;
-  font-weight: normal;
+   width: 660px;
+   font-family: <% site.textfont %>;
+   font-size: <% site.textsize %>;
+   font-weight: normal;
 }
 
 .offlineStory {background-color: #cccccc;}
@@ -180,9 +184,9 @@ li {padding-bottom: 3px;}
 }
 
 .searchbox {
-   font-size:11px;
-   margin-top:3px;
-   margin-bottom:3px;
+    font-size:11px;
+    margin-top:3px;
+    margin-bottom:3px;
 }
 
 // -->
