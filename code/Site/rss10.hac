@@ -7,11 +7,11 @@ var now = new Date();
 var param1 = new Object();
 var param2 = new Object();
 
-if (this.online) {
-	var size = this.allstories.size();
-	var max = req.data.max ? parseInt(req.data.max) : 7;
-	max = Math.min(max, size, 7);	
-	
+var size = this.allstories.size();
+var max = req.data.max ? parseInt(req.data.max) : 7;
+max = Math.min(max, size);	
+
+if (this.online && max > 0) {
 	var resources = "";
  	var items = "";
 	for (var i=0; i<max; i++) {
@@ -33,20 +33,26 @@ if (this.online) {
 	param2.textinput = this.renderSkinAsString("rssTextInput", param2);
 	param2.creatorName = encodeXml(this.creator.name);
 	param2.creatorMail = encodeXml(this.creator.email);
-	param2.date = this.lastUpdate.format(w3fmt);
+	param2.date = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
+	param2.resources = resources;
+	param2.items = items;
 }
 else {
 	param1.itemUrl = url;
-	param1.itemTitle = "Access denied";
-	param1.itemDescription = "This weblog is offline.";
 	param1.authorName = "Antville Weblog Tool";
 	param1.authorMail = encodeXml(getProperty("adminEmail"));
 	param1.date = this.createtime.format(w3fmt);
-	items = renderSkinAsString("rss10Item", param1);
-	resources = renderSkinAsString("rss10Resource", param1);
 	param2.creatorName = param1.authorName;
 	param2.creatorMail = param1.authorMail;
 	param2.date = param1.date;
+	if (max < 1) {
+		param1.itemTitle = "Welcome to " + encodeXml(this.title) + "!";
+		param1.itemDescription = "This weblog doesn't contain any stories, yet";
+	}
+	else {
+		param1.itemTitle = "Access denied";
+		param1.itemDescription = "This weblog is offline.";
+	}
 }
 
 param2.title = encodeXml(this.title);
@@ -55,7 +61,7 @@ param2.description = this.tagline ? encodeXml(this.tagline) : "";
 param2.year = now.getYear();
 param2.updateBase = this.createtime.format(w3fmt);
 param2.language = this.language;
-param2.items = items;
-param2.resources = resources;
+param2.items = renderSkinAsString("rss10Item", param1);
+param2.resources = renderSkinAsString("rss10Resource", param1);
 
 renderSkin("rss10Channel", param2);
