@@ -6,9 +6,7 @@
  */   
  
 function isPostDenied(usr,level) {
-   if (usr.sysadmin)
-      return null;
-   if (!this.site.online && !level)
+   if (!usr.sysadmin && !this.site.online && level == null)
       return "siteNotPublic";
    else if (!this.site.discussions)
       return "siteNoDiscussion";
