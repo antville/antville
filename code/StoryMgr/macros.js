@@ -17,19 +17,18 @@ function storylist_macro(param) {
 
    while (cnt < max && idx < size) {
       var render = true;
-      var s = this.get(idx);
-      if (show == "offline" && s.isOnline())
+      var st = this.get(idx);
+      if (show == "offline" && st.isOnline())
          render = false;
       else if (show == "mystories" && s.author != user)
          render = false;
       if (render) {
          var sp = new Object();
-         sp.story = s.renderSkinAsString("listitem");
-         if (s.isOnline())
+         sp.story = st.renderSkinAsString("listitem");
+         if (st.isOnline())
             this.renderSkin("onlinestory",sp);
-         else {
+         else
             this.renderSkin("offlinestory",sp);
-         }
          cnt++;
       }
       idx++;

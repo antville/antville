@@ -39,7 +39,7 @@ This skin defines the page containing the form for adding a new comment.</li>
 This skin defines the layout of toplevel-comments</li>
 <li><a name="commentreply"></a><% this.link to="edit" urlparam="?proto=comment&name=reply" text="reply" %>&nbsp;<span class="small">(<% this.skinstatus proto="comment" name="reply" %>)</span><br>
 This skin defines how replies to comments are displayed.</li>
-<li><a name="commentedit"></a><% this.link to="edit" urlparam="?proto=comment&name=edit" text="form for creating/editing" %>&nbsp;<span class="small">(<% this.skinstatus proto="comment" name="edit" %>)</span><br>
+<li><a name="commentedit"></a><% this.link to="edit" urlparam="?proto=comment&name=edit" text="form for creating/editing a comment" %>&nbsp;<span class="small">(<% this.skinstatus proto="comment" name="edit" %>)</span><br>
 This skin contains the form for adding a toplevel-comment or a reply to a comment.</li>
 </ul>
 
@@ -118,7 +118,7 @@ This skin contains the additional navigation-items for administrators (i.e. edit
 
 <p><b>editor skins</b></p>
 <ul>
-<li><a name="storyedit"></a><% this.link to="edit" urlparam="?proto=story&name=edit" text="form for creating/editing" %>&nbsp;<span class="small">(<% this.skinstatus proto="story" name="edit" %>)</span><br>
+<li><a name="storyedit"></a><% this.link to="edit" urlparam="?proto=story&name=edit" text="form for creating/editing a story" %>&nbsp;<span class="small">(<% this.skinstatus proto="story" name="edit" %>)</span><br>
 This is the form used for creating a new or editing an existing story.</li>
 <li><a name="imagenew"></a><% this.link to="edit" urlparam="?proto=image&name=new" text="imageupload" %>&nbsp;<span class="small">(<% this.skinstatus proto="image" name="new" %>)</span><br>
 This skin contains the form for uploading a new image.</li>
