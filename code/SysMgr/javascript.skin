@@ -1,6 +1,0 @@
-function openPopup(img,width,height) {
-   if (img && width && height) {
-      popUp = window.open(img,"popUp","toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=no,copyhistory=no,width=" + (width+16) + ",height=" + (height+20));
-   }
-   return;
-}
