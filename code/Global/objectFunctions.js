@@ -140,7 +140,7 @@ function autoLogin() {
    var u = root.users.get(name);
    if (!u)
       return;
-   if (Packages.helma.util.MD5Encoder.encode(u.password) != pw)
+   if (Packages.helma.util.MD5Encoder.encode(u.password+req.data.http_remotehost) != pw)
       return;
    else {
       if (session.login(name,u.password)) {
