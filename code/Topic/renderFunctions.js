@@ -18,7 +18,7 @@ function renderStorylist(idx) {
    if (idx > 0) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10);
-      sp.text = "previous topics";
+      sp.text = "previous page";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
    res.data.storylist = "";
@@ -33,7 +33,7 @@ function renderStorylist(idx) {
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;
-      sp.text = "more topics";
+      sp.text = "next page";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
    return;
