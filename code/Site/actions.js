@@ -37,7 +37,7 @@ function javascript_action() {
  */
 
 function rss092_action() {
-   res.redirect(this.href("rss"));
+   this.rss_action();
 }
 
 
@@ -46,5 +46,5 @@ function rss092_action() {
  */
 
 function rss10_action() {
-   res.redirect(this.href("rss"));
+   this.rss_action();
 }
