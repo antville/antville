@@ -43,15 +43,15 @@ function renderColor(c) {
 function renderTextPreview(text,limit) {
    var text = stripTags(text);
    var limit = Math.min(limit,text.length);
-   var charCnt = 0;
-   for (var i=0;i<text.length;i++) {
-      charCnt = (text.charAt(i) == " " ? 0 : charCnt+1);
-      if (charCnt > 20) {
-         res.write("<wbr>");
-         charCnt = 0;
-      }
-      if (i >= limit && text.charAt(i) == " ")
+   var idx = 0;
+   while (idx < limit) {
+      var nIdx = text.indexOf(" ",idx);
+      if (nIdx < 0)
          break;
-      res.write(text.charAt(i));
+      idx = ++nIdx;
    }
+   var prev = text.substring(0,(idx ? idx : text.length));
+   // and now we "enrich" the text with <wbr>-tags
+   for (var i=0;i<prev.length;i=i+30)
+      res.write(prev.substring(i,i+30) + "<wbr>");
 }
