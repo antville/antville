@@ -48,25 +48,22 @@ function choices_macro(param) {
             else
                param2.value = req.data.choice;
          }
-          renderInputText(param2);
-         res.write("\n");
+         renderInputText(param2);
       }
    }
    else {
-      var chosen = -1;
+      var vote;
       if (session.user)
-         chosen = this.votes.get(session.user.name);
+         vote = this.votes.get(session.user.name).choice;
       for (var i=0; i<this.size(); i++) {
-         var c = this.get(i);
+         var choice = this.get(i);
          param.name = "choice";
-         param.title = c.title;
-         param.value = c._id;
-         if (c._id == chosen)
-            param.checked = " checked";
-         else
-            param.checked = "";
-         res.write(c.renderSkinAsString("main", param));
-         res.write("\n");
+         param.title = choice.title;
+         param.value = choice._id;
+         param.checked = "";
+         if (choice == vote)
+            param.checked = " checked=\"checked\"";
+         res.write(choice.renderSkinAsString("main", param));
       }
    }
 }
