@@ -17,7 +17,7 @@ function renderLinkToPrevMonth(cal) {
          if (this.get(cal.getTime().format("yyyyMMdd")))
             prevDay = this.get(cal.getTime().format("yyyyMMdd"));
       }
-      return ("<a href=\"" + prevDay.href() + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
+      return ("<a href=\"" + prevDay.href() + "\">" + formatTimestamp(cal.getTime(),tsParam.format) + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -43,7 +43,7 @@ function renderLinkToNextMonth(cal) {
          if (this.get(cal.getTime().format("yyyyMMdd")))
             nextDay = this.get(cal.getTime().format("yyyyMMdd"));
       }
-      return ("<a href=\"" + nextDay.href() + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
+      return ("<a href=\"" + nextDay.href() + "\">" + formatTimestamp(cal.getTime(),tsParam.format) + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -158,15 +158,6 @@ function isOnline() {
 function createImgDirectory() {
    var dir = new File(getProperty("imgPath") + this.alias + "/");
    return (dir.mkdir());
-}
-
-/**
- * function checks if language and/or country was specified for this weblog
- * if true, it returns the timestamp formatted with the given locale
- */
-
-function formatTimestamp(ts,param) {
-   formatTimestamp(ts,param.format);
 }
 
 /**
