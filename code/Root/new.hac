@@ -1,10 +1,10 @@
 checkIfLoggedIn(this.href(req.action));
 
 var limit = getProperty("limitNewWeblogs").toLowerCase();
-if (limit == "sysadmin" && !user.isSysAdmin ()) {
+if (limit == "sysadmin" && !isUserSysAdmin ()) {
    res.message = "Sorry! Only administrators are allowed to create new Weblogs."
    res.redirect(root.href());
-} else if (limit == "trusted" && !(user.isSysAdmin () || user.isTrusted ())) {
+} else if (limit == "trusted" && !(isUserSysAdmin () || isUserTrusted ())) {
    res.message = "Sorry! You are not allowed to create new Weblogs."
    res.redirect(root.href());
 }
@@ -12,17 +12,17 @@ if (limit == "sysadmin" && !user.isSysAdmin ()) {
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(root.href());
 else if (req.data.submit == "create" || req.data.create) {
-   var result = this.evalWeblog(req.data.title,req.data.alias,user);
+   var result = this.evalWeblog(req.data.title,req.data.alias,session.user);
    res.message = result.message;
    if (!result.error)
       res.redirect(result.weblog.href());
 }
    
-res.skin = "root.page";
-
 res.data.action = this.href(req.action);
 
 res.data.title = "Antville";
 
 var newLog = new weblog();
 res.data.body = newLog.renderSkinAsString("new");
+
+root.renderSkin("page");
