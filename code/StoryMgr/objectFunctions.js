@@ -34,6 +34,7 @@ function evalNewStory(s,param,creator) {
       s.modifytime = s.createtime = new Date();
    }
    s.editableby = !isNaN(parseInt(param.editableby)) ? parseInt(param.editableby,10) : null;
+   s.discussions = !isNaN(parseInt(param.discussions)) ? parseInt(param.discussions,10) : 0;
    if (s.createtime)
       s.day = s.createtime.format("yyyyMMdd");
    s.ipaddress = param.http_remotehost;
