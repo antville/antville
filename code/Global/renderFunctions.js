@@ -226,7 +226,7 @@ function renderDropDownBox(name, options, selectedIndex, firstoption) {
     param.name = encode(options[i]);
     param.value = i; 
     if (param.value == selectedIndex)
-      param.selected = "true";
+      param.selected = "selected";
     openMarkupElement("option", param);
     res.write(param.name);
     closeMarkupElement("option");
