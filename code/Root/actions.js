@@ -62,18 +62,15 @@ function list_action() {
 /**
  * @DEPRECATED
  */
-
 function safescripts_action() {
    res.contentType = "text/javascript";
    res.write("");
    return;
 }
 
-
 /**
  * wrapper to access colorpicker
  */
-
 function colorpicker_action() {
    if (!req.data.skin)
       req.data.skin = "colorpicker";
@@ -169,7 +166,7 @@ function sys_error_action() {
 /**
  * action to render external stylesheet
  */
-function stylesheet_action() {
+function stylesheet_css_action() {
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "style"));
    res.digest();
@@ -179,9 +176,18 @@ function stylesheet_action() {
 }
 
 /**
+ * wrapper for stylesheet.css action
+ * DEPRECATED! left for backwards compatibility only
+ */
+function stylesheet_action() {
+   this.stylesheet_css_action();
+   return;
+}
+
+/**
  * action to render external javascript
  */
-function javascript_action() {
+function javascript_js_action() {
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "javascript"));
    res.digest();
@@ -191,3 +197,11 @@ function javascript_action() {
    return;
 }
 
+/**
+ * wrapper for javascript.js action
+ * DEPRECATED! left for backwards compatibility only
+ */
+function javascript_action() {
+   this.javascript_js_action();
+   return;
+}
