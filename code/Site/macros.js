@@ -545,7 +545,7 @@ function listMostRead_macro() {
   storyList.sort(this.sortMostReads);
   var len = storyList.length;
   var max = 25;
-  var lim = Math.min(max, len); //len > max ? max : len;
+  var lim = Math.min(max, len);
   var param = new Object();
   for (var i=0; i<lim; i++) {
     var s = storyList[i];
