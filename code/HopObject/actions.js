@@ -3,5 +3,5 @@
  */
 
 function colorpicker_action() {
-   this.renderSkin("colorpicker");
+   renderSkin("colorpicker");
 }
