@@ -51,13 +51,13 @@ function edit_action() {
    } else if (req.data.addchoice)
    	arr.push(new choice(""));
    
-   var choiceList = new java.lang.StringBuffer();
+   res.push();
    var max = Math.max(2, arr.length);
    for (var i=0;i<max;i++) {
       var c = arr[i] != null ? arr[i] : new choice("");
-    	choiceList.append(c.renderSkinAsString("edit", {count: (i+1).toString()} ));
+    	c.renderSkin("edit", {count: (i+1).toString()});
    }
-   res.data.choices = choiceList.toString();
+   res.data.choices = res.pop();
    res.data.action = this.href(req.action);
    res.data.title = "Edit poll: " + this.question;
    res.data.body = this.renderSkinAsString("edit");

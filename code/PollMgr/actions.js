@@ -61,13 +61,14 @@ function create_action() {
    	arr.push(new choice(""));
 
    var newPoll = new poll();
-   var choiceList = new java.lang.StringBuffer();
+
+   res.push();
    var max = Math.max(2, arr.length);
    for (var i=0;i<max;i++) {
       var c = arr[i] ? arr[i] : new choice("");
-    	choiceList.append(c.renderSkinAsString("edit", {count: (i+1).toString()} ));
+    	c.renderSkin("edit", {count: (i+1).toString()});
    }
-   res.data.choices = choiceList.toString();
+   res.data.choices = res.pop();
    res.data.action = this.href(req.action);
    res.data.title = "Add a poll to " + this._parent.title;
    res.data.body = newPoll.renderSkinAsString("edit");
