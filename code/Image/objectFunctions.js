@@ -3,7 +3,7 @@
  * but before check if image should be resized
  */
 
-function saveImg(rawimage) {
+function saveImg(rawimage,version) {
    if (rawimage && (!rawimage.contentType || !this.evalImgType(rawimage.contentType))) {
       // whatever the user has uploaded, it was no image! 
       this.cache.error = true; 
@@ -11,7 +11,7 @@ function saveImg(rawimage) {
    } else {
       // determine filetype of image (one could do this also by checking the mimetype) 
       this.fileext = this.evalImgType(rawimage.contentType);
-      var img = new Image(rawimage.getContent()); 
+      var img = new Image(rawimage.getContent());
       // check if resizing is necessary 
       if (this.cache.maxwidth && this.cache.maxheight && img.width > this.cache.maxwidth && img.height > this.cache.maxheight) {
          var hfact = this.cache.maxwidth / img.width; 
@@ -21,13 +21,13 @@ function saveImg(rawimage) {
          var doResize = true; 
       } else if (this.cache.maxwidth && img.width > this.cache.maxwidth) {
          var fact = this.cache.maxwidth / img.width; 
-         this.width = this.cache.maxwidth; 
-         this.height = Math.round(img.height * fact); 
+         this.width = this.cache.maxwidth;
+         this.height = Math.round(img.height * fact);
          var doResize = true; 
       } else if (this.cache.maxheight && img.height > this.cache.maxheight) {
          var fact = this.cache.maxheight / img.height; 
-         this.height = this.cache.maxheight; 
-         this.width = Math.round(img.width * fact); 
+         this.height = this.cache.maxheight;
+         this.width = Math.round(img.width * fact);
          var doResize = true; 
       } else {
          // no resizing done
@@ -39,7 +39,7 @@ function saveImg(rawimage) {
          if (rawimage.contentType == 'image/gif')
             img.reduceColors(256); 
       }
-      // finally we save the image 
+      // finally we save the image
       img.saveAs(this.cache.saveTo + this.filename + "." + this.fileext); 
    } 
    return; 
@@ -52,8 +52,11 @@ function saveImg(rawimage) {
 
 function evalImg() {
    if (req.data.alias) {
-      if (req.data.alias != this.alias) {
-         // alias has changed ...
+      if (req.data.alias != this.alias && this.weblog.images.get(req.data.alias)) {
+         // alias has changed, but is already existing
+         res.message = "This name is already in use!";
+         res.redirect(this.href("edit"));
+      } else {
          this.weblog.images.changeAlias(this);
       }
       this.alttext = req.data.alttext;
@@ -77,4 +80,29 @@ function evalImgType(ct) {
       return ("png");
    else
       return false;
+}
+
+/**
+ * function creates a thumbnail of this image
+ * does nothing if the image uploaded is smaller than 100x100px
+ * @param uploaded image
+ */
+
+function createThumbnail(rawimage) {
+   if (this.width < 100 && this.height < 100)
+      return;
+   var thumbImg = new image();
+   thumbImg.filename = this.filename + "_small";
+   thumbImg.cache.saveTo = this.cache.saveTo;
+   thumbImg.cache.maxwidth = 100;
+   thumbImg.cache.maxheight = 100;
+   thumbImg.saveImg(rawimage);
+   thumbImg.weblog = path.weblog;
+   thumbImg.alttext = req.data.alttext;
+   thumbImg.creator = user;
+   thumbImg.createtime = new Date();
+   thumbImg.alias = req.data.alias;
+   thumbImg.parent = this;
+   this.thumbnail = thumbImg;
+   return;
 }
