@@ -7,7 +7,7 @@ function sendConfirmationMail() {
 	mail.setFrom(getProperty("adminEmail"));
 	mail.setTo(user.email);
 	mail.setSubject("Welcome to Antville!");
-	mail.setText(this.renderSkinAsString("regConfirm"));
+	mail.setText(this.renderSkinAsString("mailbody"));
 	mail.send();
 
 }
