@@ -27,8 +27,7 @@
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
 <div class="statuslight"><% this.age prefix="online for&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="short%></div>
-<% this.loginstatus %>
-<div class="statuslight"><% this.membership prefix="...&nbsp;" %></div>
+<% this.loginstatus %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/menu" %></div>
