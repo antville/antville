@@ -297,22 +297,34 @@ function logAccess() {
  */
  
 function pingUpdatedWeblogs() {
-	for (var i=0; i<root.allWeblogs.size(); i++) {
-		var blog = root.allWeblogs.get(i);
-		var now = new Date();
-		var period = 1000 * 60 * 60; // one hour
-		if ((now - blog.lastPing >= period) && (now - blog.lastUpdate <= period) && blog.online) {
-			writeln(blog.title + " was updated, so i'll ping weblogs.com...");
-			var url = getProperty("baseURI") + blog.href();
-			//var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + blog.title + "&url=" + url);
-			var xr = new Remote("http://rpc.weblogs.com/RPC2");
-			var ping = xr.weblogUpdates.ping(blog.title, url); 
-			if (ping.error)
-				writeln(ping.error);
-			blog.lastPing = now;
-		}
+	var now = new Date();
+	var period = 1000 * 60 * 60; // one hour
+
+	var c = getDBConnection("antville");
+	var error = c.getLastError();
+	if (error) {
+		writeln("Error establishing DB connection: " + error);
+		return;
 	}
+
+	var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and LASTUPDATE > LASTPING;";
+	c.executeCommand(query);
+	var error = c.getLastError();
+	if (error) {
+		writeln("Error executing SQL query: " + error);
+		return;
+	}
+
+	while (rows.next()) {
+		var id = rows.getColumnItem("ID");
+		var blog = root.get(id);
+		blog.ping();
+	}
+
+	rows.release();
+	return;
 }
+
 
 /**
  * parse a timestamp into a date object. This is used when  users
@@ -326,6 +338,7 @@ function parseTimestamp (time, format) {
    var df = new java.text.SimpleDateFormat (format);
    return df.parse (time);
 }
+
 
 /**
  * scheduler performing auto-disposal of inactive weblogs
