@@ -246,7 +246,7 @@ function rssConvertHtmlImageToHtmlLink(str) {
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
    re.ignoreCase = true;
    re.global = true;
-   str = str.replace(re, "[<a href=\"http://" + getProperty("hostname") + "$1\" title=\"$3\">Image</a>]");
+   str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
  	return(str);
 }
 
