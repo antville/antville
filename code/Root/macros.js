@@ -15,7 +15,6 @@ function loginstatus_macro(param) {
  * macro basically renders a list of weblogs
  * but first it checks which collection to use
  */
-
 function webloglist_macro(param) {
    if (param.show == "all")
       var collection = this.allWeblogs;
@@ -26,7 +25,7 @@ function webloglist_macro(param) {
    if (!size)
       return;
 
-   res.write(param.prefix)
+   res.write(param.prefix);
    var start = parseInt (req.data.start,10);
    var limit = parseInt(param.limit,10);
    var scroll = (!param.scroll || param.scroll == "no" ? false : true);
@@ -36,15 +35,24 @@ function webloglist_macro(param) {
       var end = Math.min((limit ? limit : size),size);
    else {
       var end = Math.min (start+(limit ? limit : 10), size);
-      if (start > 0)
-         res.write ("<a href=\"?start="+Math.max(0, start-limit)+"\">&lt;&lt;&nbsp;prev</a><br>");
+      if (start > 0) {
+	      var sp = new Object();
+	      sp.url = this.href("list") + "?start=" + Math.max(0, start-limit);
+	      sp.text = "previous weblogs";
+	      res.write(renderSkinAsString("prevpagelink",sp) + "<br>");
+      }
    }
    for (var i=start;i<end;i++)
       collection.get(i).renderSkin("preview");
-   if (scroll && end < size)
-      res.write ("<br><a href=\"?start="+end+"\">next&nbsp;&gt;&gt;</a><br>");
+   if (scroll && end < size) {
+      var sp = new Object();
+      sp.url = this.href("list") + "?start=" + end;
+      sp.text = "more weblogs";
+      res.write("<br>" + renderSkinAsString("nextpagelink",sp));
+   }
    res.write(param.suffix);
 }
+
 
 /**
  * macro renders the number of weblogs
