@@ -206,7 +206,7 @@ function searchUser(key) {
       sp.name = searchResult.getColumnItem("USER_NAME");
       var url = searchResult.getColumnItem("USER_URL");
       if (url)
-         sp.description = "(url: <a href=\"" + url + "\">" + url + "</a>)";
+         sp.description = "<a href=\"" + url + "\">" + url + "</a>";
       list += this.renderSkinAsString("searchresultitem",sp);
       found++;
    }
