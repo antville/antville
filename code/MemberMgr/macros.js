@@ -21,11 +21,9 @@ function subscribelink_macro(param) {
    var ms = this.get(session.user.name);
    if (ms)
       return;
-   var linkParam = new Object();
-   linkParam.to = "subscribe";
-   path.weblog.openLink(linkParam);
+   openLink(path.weblog.href("subscribe"));
    res.write(param.text ? param.text : "sign up");
-   this.closeLink();
+   closeLink();
 }
 
 /**
@@ -36,11 +34,9 @@ function subscribelink_macro(param) {
 function subscriptionslink_macro(param) {
    if (!session.user.size())
       return;
-   var linkParam = new Object();
-   linkParam.to = "subscriptions";
-   this.openLink(linkParam);
+   openLink(this.href("subscriptions"));
    res.write(param.text ? param.text : "subscriptions");
-   this.closeLink();
+   closeLink();
 }
 
 /**

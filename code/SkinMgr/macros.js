@@ -42,11 +42,9 @@ function skinstatus_macro(param) {
    if (s.creator) {
       res.write("customized by " + s.creator.name);
       res.write("&nbsp;...&nbsp;");
-      var linkParam = new Object();
-      linkParam.to = "delete";
-      s.openLink(linkParam);
+      openLink(s.href("delete"));
       res.write("remove skin");
-      this.closeLink();
+      closeLink();
    } else
       res.write("not customized");
 }

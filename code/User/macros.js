@@ -4,11 +4,9 @@
 
 function name_macro(param) {
    if (this.url) {
-      var linkParam = new Object();
-      linkParam.to = this.url;
-      this.openLink(linkParam);
+      openLink(this.url);
       res.write(this.name);
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.name);
 }
