@@ -1,4 +1,4 @@
 res.message = "Good bye, " + user.name + "! Lookin' forward to see you again!";
 user.logout();
 user.cache.referer = null;
-res.redirect(this.__parent__.href());
+res.redirect(this._parent.href());

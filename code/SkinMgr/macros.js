@@ -26,7 +26,7 @@ function skineditor_macro(param) {
    res.write(param.prefix)
    if (req.data.proto && req.data.name) {
       // user wants to edit a skin, so we try to get it:
-      var currProto = this.__parent__.skinmanager.get(req.data.proto);
+      var currProto = this._parent.skinmanager.get(req.data.proto);
       if (currProto && currProto.get(req.data.name)) {
          var currSkin = currProto.get(req.data.name);
          currSkin.renderSkin("edit");
