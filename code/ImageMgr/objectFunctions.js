@@ -8,24 +8,23 @@
  */
 
 function evalImg(param,creator) {
-   var result;
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
-      result = getError("imageFileTooBig");
+      return (getError("imageFileTooBig"));
    } else if (param.rawimage) {
       var newImg = new image();
       if (param.rawimage.contentLength == 0) {
          // looks like nothing was uploaded ...
-         result = getError("imageNoUpload");
+         return (getError("imageNoUpload"));
       } else if (param.rawimage && (!param.rawimage.contentType || !newImg.evalImgType(param.rawimage.contentType))) {
          // whatever the user has uploaded wasn't recognized as an image
-         result = getError("imageNoImage");
+         return (getError("imageNoImage"));
       } else {
          // if no alias given try to determine it
          if (!param.alias)
             param.alias = buildAliasFromFile(param.rawimage);
-         else if (!isClean(param.alias))
-            result = getError("noSpecialChars");
+         else if (!isCleanForName(param.alias))
+            return (getError("noSpecialChars"));
 
          // check if alias is already in use
          if (this.get(param.alias)) {
@@ -55,34 +54,13 @@ function evalImg(param,creator) {
             if (newImg.width > 100 || newImg.height > 100)
               newImg.createThumbnail(param.rawimage);
             newImg.clearCache();
-            result = getConfirm("imageCreate",newImg.alias);
+            return (getConfirm("imageCreate",newImg.alias));
          } else
-            result = getError("error");
+            return (getError("error"));
       }
    } else
-      result = getError("imageNoUpload");
-   return (result);
+      return (getError("imageNoUpload"));
 }
-
-/**
- * alias of image has changed, so we remove it and add it again with it's new alias
- * @param Obj Image-object to modify
- * @param String new alias for image
- * @return Boolean true in any case ...
- */
-
-function changeAlias(currImg,newAlias) {
-   currImg.setParent(this);
-   this.remove(currImg);
-   this.set(currImg.alias,null);
-   currImg.alias = newAlias;
-   this.add(currImg);
-   // if thumbnail exists, we have to change this alias too
-   if (currImg.thumbnail)
-      currImg.thumbnail.alias = newAlias;
-   return true;
-}
-
 
 /**
  * delete an image
