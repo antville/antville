@@ -1,3 +1,19 @@
 * text=auto !eol
 code/AntvilleLib-1.3.zip -text
-/images.zip -text
+static/hop.gif -text
+static/layouts/default/big.gif -text
+static/layouts/default/bullet.gif -text
+static/layouts/default/dot.gif -text
+static/layouts/default/headbg.gif -text
+static/layouts/default/manage.gif -text
+static/layouts/default/menu.gif -text
+static/layouts/default/recent.gif -text
+static/layouts/default/status.gif -text
+static/layouts/default/webloghead.gif -text
+static/marquee.gif -text
+static/pixel.gif -text
+static/smallanim.gif -text
+static/smallchaos.gif -text
+static/smallstraight.gif -text
+static/smalltrans.gif -text
+static/xmlbutton.gif -text
