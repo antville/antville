@@ -1,9 +1,9 @@
 /**
- * macro renders the username of this member
+ * macro renders the username
  */
 
 function username_macro(param) {
-   if (param.linkto) {
+   if (param.linkto && (param.linkto != "edit" || this.user != session.user)) {
       openLink(this.href(param.linkto));
       res.write(this.username);
       closeLink();
@@ -12,7 +12,7 @@ function username_macro(param) {
 }
 
 /**
- * macro renders the createtime of this membership
+ * macro renders the createtime
  */
 
 function createtime_macro(param) {
@@ -20,7 +20,7 @@ function createtime_macro(param) {
 }
 
 /**
- * macro renders eMail-address of member
+ * macro renders eMail-address
  */
 
 function email_macro(param) {
@@ -28,7 +28,7 @@ function email_macro(param) {
 }
 
 /**
- * macro renders URL of member (if existing)
+ * macro renders URL (if existing)
  */
 
 function url_macro(param) {
@@ -53,15 +53,15 @@ function level_macro(param) {
 }
 
 /**
- * macro renders the title of the weblog
+ * macro renders the title of the site
  */
 
-function weblogtitle_macro(param) {
-   this.weblog.title_macro(param);
+function sitetitle_macro(param) {
+   this.site.title_macro(param);
 }
 
 /**
- * macro renders a link to deleting a membership
+ * macro renders a link for deleting a membership
  */
 
 function deletelink_macro(param) {
@@ -79,7 +79,7 @@ function deletelink_macro(param) {
 function unsubscribelink_macro(param) {
    if (this.level > 0)
       return;
-   openLink(this.weblog.href("unsubscribe"));
+   openLink(this.site.href("unsubscribe"));
    res.write(param.text ? param.text : "unsubscribe");
    closeLink();
 }
