@@ -5,7 +5,7 @@
 function searchSites(show,sort,order,keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
-   if (!show || show == "1")
+   if (show == "1")
       sql += "WHERE SITE_ISONLINE=1 AND SITE_ISBLOCKED=0 ";
    else if (show == "2")
       sql += "WHERE SITE_ISONLINE=0 AND SITE_ISBLOCKED=0 ";
@@ -92,7 +92,7 @@ function searchUsers(show,sort,order,keywords) {
 function searchSyslog(show,order,keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
-   if (!show || show == "1")
+   if (show == "1")
       sql += "WHERE SYSLOG_TYPE = 'site' ";
    else if (show == "2")
       sql += "WHERE SYSLOG_TYPE = 'user' ";
