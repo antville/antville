@@ -109,7 +109,7 @@ Whenever you or another admin of your weblog changes the status of a signed up m
 <li><a name="weblogusernavigation"></a><% this.link to="edit" urlparam="?proto=weblog&name=usernavigation" text="navigation-bar for users" %>&nbsp;<span class="small">(<% this.skinstatus proto="weblog" name="usernavigation" %>)</span><br>
 This skin contains the navigation presented to all users (regardless if they're logged in or not)</li>
 <li><a name="weblogcontribnavigation"></a><% this.link to="edit" urlparam="?proto=weblog&name=contribnavigation" text="navigation-bar for contributors" %>&nbsp;<span class="small">(<% this.skinstatus proto="weblog" name="contribnavigation" %>)</span><br>
-This skin contains additional navigation-items for contributors of your weblog (i.e. links to add stories or images)</li>
+This skin contains additional navigation-items for contributors and content managers of your weblog (i.e. links to add stories or images)</li>
 <li><a name="weblogadminnavigation"></a><% this.link to="edit" urlparam="?proto=weblog&name=adminnavigation" text="navigation-bar for admins" %>&nbsp;<span class="small">(<% this.skinstatus proto="weblog" name="adminnavigation" %>)</span><br>
 This skin contains the additional navigation-items for administrators (i.e. edit preferences, edit skins ...).</li>
 </ul>
