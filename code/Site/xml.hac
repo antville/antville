@@ -1,24 +1,31 @@
-if (!this.online)
-	res.redirect("notfound");
-	
+res.contentType = "text/xml";
+
 var base = "http://" + getProperty("server") + getProperty("baseURI");
 var now = new Date();
 var param1 = new Object();
 
-var size = this.allstories.size();
-var max = req.data.max ? req.data.max : 7;
-if (max > size)
-	max = size;
-
-var items = "";
-for (var i=0; i<max; i++) {
-	var story = this.allstories.get(i);
-	if (story.online) {
-		param1.itemLink = base + story.href();
-		param1.itemTitle = encodeXml(story.title);
-		param1.itemDescription = encodeXml(story.text);
-		items += this.renderSkinAsString("rssItem", param1);
+if (this.online) {
+	var size = this.allstories.size();
+	var max = req.data.max ? req.data.max : 7;
+	if (max > size)
+		max = size;
+	
+	var items = "";
+	for (var i=0; i<max; i++) {
+		var story = this.allstories.get(i);
+		if (story.online) {
+			param1.itemLink = base + story.href();
+			param1.itemTitle = encodeXml(story.title);
+			param1.itemDescription = encodeXml(story.text);
+			items += this.renderSkinAsString("rssItem", param1);
+		}
 	}
+}
+else {
+	param1.itemLink = "";
+	param1.itemTitle = encodeXml("Access denied");
+	param1.itemDescription = encodeXml("This weblog is offline.");
+	items = this.renderSkinAsString("rssItem", param1);
 }
 
 var param2 = new Object();
@@ -33,5 +40,4 @@ param2.webMaster = this.creator.email;
 param2.language = this.language;
 param2.items = items;
 
-res.contentType = "text/xml";
 this.renderSkin("rssChannel", param2);
