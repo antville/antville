@@ -5,5 +5,5 @@
 </tr>
 <tr>
 <td></td>
-<td class="small"><% shortcut.render %><% shortcut.placeholder prefix="&nbsp;" %></td>
+<td class="small"><% shortcut.display %><% shortcut.placeholder prefix="&nbsp;" %></td>
 </tr>

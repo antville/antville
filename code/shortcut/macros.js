@@ -1,7 +1,7 @@
 /**
  * function renders a shortcut
  */
-function render_macro() {
+function display_macro() {
    this.renderContent(this.getTitle());
 }
 
