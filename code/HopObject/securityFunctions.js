@@ -16,13 +16,10 @@ function onRequest() {
    }
    if (res.handlers.site) {
       res.skinpath = new Array(res.handlers.site.skins);
-      if (session.user) {
-         var m = res.handlers.site.members.get(session.user.name);
-         if (m)
-            req.data.memberlevel = m.level;
-      }
       if (res.handlers.site.blocked)
          res.redirect(root.href("blocked"));
+      if (session.user)
+         req.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
    }
    if (session.user && session.user.blocked) {
       // user was blocked recently, so log out
