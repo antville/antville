@@ -358,3 +358,129 @@ function getDiskQuota() {
    else 
       return root.sys_diskQuota;
 }
+
+
+/**
+ * returns the corresponding Index object for a site
+ * for performance reasons the Index object is cached
+ */
+function getIndex(force) {
+   if (!this.cache.index || force) {
+      var baseDir = new Helma.File(app.properties.indexPath);
+      var index, analyzer;
+      if (this.getLocale().getLanguage() == java.util.Locale.GERMAN)
+         analyzer = Search.getAnalyzer(java.util.Locale.GERMAN);
+      else
+         analyzer = Search.getAnalyzer();
+      // try to mount an existing index, if this fails create a new one
+      try {
+         index = Search.mountIndex(this.alias, baseDir, analyzer);
+         app.log("[" + this.alias + "] mounted index " + index);
+      } catch (e) {
+         try {
+            index = Search.createIndex(this.alias, baseDir, analyzer);
+            app.log("[" + this.alias + "] created index " + index);
+         } catch (e) {
+            throw ("[" + this.alias + "] Error: unable to mount or create index");
+            return;
+         }
+      }
+      this.cache.index = index;
+   }
+   return this.cache.index;
+};
+
+
+/**
+ * re-indexes all stories and comments of a site
+ * @param Object instance of Search.Index
+ * @return void
+ */
+function rebuildIndex() {
+   /**
+    * private method for constructing an index document
+    * based on the data retrieved via direct db
+    */
+   function getIndexDocument() {
+      var doc = new Search.Document();
+      doc.addField("prototype", rows.getColumnItem("TEXT_PROTOTYPE"));
+      switch (rows.getColumnItem("TEXT_PROTOTYPE")) {
+         case "Comment":
+            doc.addField("story", rows.getColumnItem("TEXT_F_TEXT_STORY"), {store: true, index: true, tokenize: false});
+            if (parent = rows.getColumnItem("TEXT_F_TEXT_PARENT"))
+               doc.addField("parent", parent, {store: true, index: true, tokenize: false});
+            break;
+         default:
+            doc.addField("day", rows.getColumnItem("TEXT_DAY"), {store: true, index: true, tokenize: false});
+            if (topic = rows.getColumnItem("TEXT_TOPIC"))
+               doc.addField("topic", topic, {store: true, index: true, tokenize: true});
+            break;
+      }
+   
+      doc.addField("online", rows.getColumnItem("TEXT_ISONLINE"), {store: true, index: true, tokenize: false});
+      doc.addField("site", self._id, {store: true, index: true, tokenize: false});
+      doc.addField("id", rows.getColumnItem("TEXT_ID"), {store: true, index: true, tokenize: false});
+      var content = Xml.readFromString(rows.getColumnItem("TEXT_CONTENT"));
+      if (title = stripTags(content.title).trim())
+         doc.addField("title", title, {store: false, index: true, tokenize: true});
+      res.push();
+      for (var propName in content) {
+         if (propName != "title") {
+            res.write(stripTags(content[propName]).trim());
+            res.write(" ");
+         }
+      }
+      doc.addField("text", res.pop(), {store: false, index: true, tokenize: true});
+      if (creator = rows.getColumnItem("USER_NAME")) {
+         doc.addField("creator", creator, {store: false, index: true, tokenize: false});
+         doc.addField("createtime", (new Date(rows.getColumnItem("TEXT_CREATETIME").getTime())).format("yyyyMMdd", locale, timeZone),
+                      {store: false, index: true, tokenize: false});
+      }
+      return doc;
+   }
+
+   var parent, topic, title, text, creator;
+   // lock the index queue to prevent it
+   // from being flushed by the IndexManager
+   var queue = app.data.indexManager.getQueue(this);
+   queue.lock();
+   var index = this.getIndex();
+   index.clear();
+
+   var buf = new java.util.Vector(500, 500);
+   var cnt = 0;
+   var now = new Date();
+   var start = new Date();
+   var locale = this.getLocale();
+   var timeZone = this.getTimeZone();
+   var dbCon = getDBConnection("antville");
+   var rows = dbCon.executeRetrieval("select TEXT_ID, TEXT_PROTOTYPE, TEXT_DAY, TEXT_TOPIC, TEXT_ALIAS, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_PROTOTYPE, TEXT_ISONLINE, TEXT_CONTENT, USER_NAME, TEXT_CREATETIME from AV_TEXT, AV_USER where TEXT_F_SITE = " + this._id + " and TEXT_F_USER_CREATOR = USER_ID");
+   app.log("[" + this.alias + "] retrieved indexable contents in " + ((new Date()).diff(now)) + " ms");
+   if (dbCon.lastError != null) {
+      app.log("[" + this.alias + "] unable to retrieve indexable contents, reason: " + dbCon.lastError);
+   } else {
+      var self = this;
+      while (rows.next()) {
+         try {
+            buf.add(getIndexDocument());
+            if (cnt > 0 && cnt % 2000 == 0) {
+               index.addDocument(buf);
+               buf.clear();
+               app.log("[" + this.alias + "] added " + cnt + " documents to index (last 1000 in " + ((new Date()).diff(now)) + " ms)");
+               now = new Date();
+            }
+         } catch (e) {
+            app.log("[" + this.alias + "] Error: unable to add document " + cnt + " to index. Reason: " + e.toString());
+         }
+         cnt++;
+      }
+      rows.release();
+      index.addDocument(buf);
+      app.log("[" + this.alias + "] finished adding " + cnt + " documents to index in " + ((new Date()).diff(start)) + " ms");
+      index.optimize();
+   }
+
+   // unlock the queue again
+   queue.unlock();
+   return cnt;
+}

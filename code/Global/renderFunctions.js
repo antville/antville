@@ -171,16 +171,40 @@ function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
  * @param Int currently viewed page index
  * @return String rendered Navigationbar
  */
-function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
+function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
+
+   /**
+    * render a single item for page-navigation bar
+    */
+   var renderItem = function(text, cssClass, url, page) {
+      var param = {"class": cssClass};
+      if (!url)
+         param.text = text;
+      else {
+         if (url.contains("?"))
+            param.text = Html.linkAsString({href: url + "&page=" + page}, text);
+         else
+            param.text = Html.linkAsString({href: url + "?page=" + page}, text);
+      }
+      renderSkin("pagenavigationitem", param);
+      return;
+   }
+
    var maxItems = 10;
-   var size = (collection instanceof Array) ? collection.length : collection.size();
+   var size = 0;
+   if (collectionOrSize instanceof Array)
+      size = collectionOrSize.length;
+   else if (collectionOrSize instanceof HopObject)
+      size = collectionOrSize.size();
+   else if (!isNaN(collectionOrSize))
+      size = parseInt(collectionOrSize, 10);
    var lastPageIdx = Math.ceil(size/itemsPerPage)-1;
    // if we have just one page, there's no need for navigation
    if (lastPageIdx <= 0)
       return null;
 
    // init parameter object
-   var param = new Object();
+   var param = {};
    var pageIdx = parseInt(pageIdx, 10);
    // check if the passed page-index is correct
    if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0)
@@ -191,38 +215,23 @@ function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
    // render the navigation-bar
    res.push();
    if (pageIdx > 0)
-      renderPageNavItem("prev", "pageNavItem", url, pageIdx-1);
+      renderItem("prev", "pageNavItem", url, pageIdx-1);
    var offset = Math.floor(pageIdx/maxItems)*maxItems;
    if (offset > 0)
-      renderPageNavItem("[..]", "pageNavItem", url, offset-1);
+      renderItem("[..]", "pageNavItem", url, offset-1);
    var currPage = offset;
    var stop = Math.min(currPage + maxItems, lastPageIdx+1);
    while (currPage < stop) {
       if (currPage == pageIdx)
-         renderPageNavItem("[" + (currPage +1) + "]", "pageNavSelItem");
+         renderItem("[" + (currPage +1) + "]", "pageNavSelItem");
       else
-         renderPageNavItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
+         renderItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
       currPage++;
    }
    if (currPage < lastPageIdx)
-      renderPageNavItem("[..]", "pageNavItem", url, offset + maxItems);
+      renderItem("[..]", "pageNavItem", url, offset + maxItems);
    if (pageIdx < lastPageIdx)
-      renderPageNavItem("next", "pageNavItem", url, pageIdx +1);
+      renderItem("next", "pageNavItem", url, pageIdx +1);
    param.pagenavigation = res.pop();
    return renderSkinAsString("pagenavigation", param);
 }
-
-/**
- * render a single item for page-navigation bar
- */
-function renderPageNavItem(text, cssClass, url, page) {
-   var param = {"class": cssClass};
-   if (!url)
-      param.text = text;
-   else
-      param.text = Html.linkAsString({href: url + "?page=" + page}, text);
-   renderSkin("pagenavigationitem", param);
-   return;
-}
-
-

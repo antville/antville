@@ -14,6 +14,8 @@ function onStart() {
    		app.log("loaded application messages (language: " + name + ")");
    	}
    }
+   // init index manager
+   app.data.indexManager = new IndexManager();
    // build macro help
    app.data.macros = buildMacroHelp();
    //eval(macroHelpFile.readAll());
@@ -41,9 +43,9 @@ function onStart() {
  */
 function scheduler() {
    // call autocleanup
-   root.manage.autoCleanUp();
+//   root.manage.autoCleanUp();
    // notify updated sites
-   pingUpdatedSites();
+//   pingUpdatedSites();
    // countUsers();
    // write the log-entries in app.data.accessLog into DB
    writeAccessLog();
@@ -52,7 +54,11 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
-   return 30000;
+   // send mails and empty mail queue
+//   flushMailQueue();
+   // flush the index queue
+   app.data.indexManager.flush();
+   return 5000;
 }
 
 
@@ -705,4 +711,13 @@ function buildMacroHelp() {
       ref.sort(sorter);
    }
    return macroHelp;
+}
+
+/**
+ * wrapper method to expose the indexManager's
+ * rebuildIndexes method to cron
+ */
+function rebuildIndexes() {
+   app.data.indexManager.rebuildIndexes();
+   return;
 }

@@ -8,6 +8,7 @@ build/lib/ant.jar -text
 build/lib/jsch.jar -text
 code/AntvilleLib-1.4.zip -text
 code/HelmaLib-1.0.zip -text
+code/lucene-1.4.3.jar -text
 db/data/062SYS_INFO_sUSRSequenceInfo.koi -text
 db/data/063SYS_INFO_sUSRSequence.koi -text
 db/data/064SYS_INFO_sUSRPKeyInfo.koi -text

@@ -157,6 +157,7 @@ confirm.layoutDelete = Successfully deleted the layout &raquo;<% param.value1 %>
 confirm.layoutUpdate = Successfully update the layout &raquo;<% param.value1 %>&laquo;.
 confirm.layoutStopTestdrive = Switched back to standard layout.
 confirm.layoutImport = Successfully imported the layout &raquo;<% param.value1 %>&laquo;.
+confirm.rebuildIndex = Your site was scheduled for index rebuilding. It should be finished within the next hour.
 
 ##
 ## mail messages

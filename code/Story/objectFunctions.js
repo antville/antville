@@ -86,6 +86,8 @@ function evalStory(param, modifier) {
    var result = new Message("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
    result.id = this._id;
+   // add the modified story to search index
+   app.data.indexManager.getQueue(this.site).add(this);
    return result;
 }
 
@@ -99,6 +101,9 @@ function toggleOnline(newStatus) {
       this.site.lastupdate = new Date();
    } else if (newStatus == "offline")
       this.online = 0;
+
+   // add the modified story to search index
+   app.data.indexManager.getQueue(this.site).add(this);
    return true;
 }
 
@@ -142,16 +147,18 @@ function evalComment(param, creator) {
    // also add to story.comments since it has
    // cachemode set to aggressive and wouldn't refetch
    // its child collection index otherwise
-   if (this._prototype == "Story")
-      this.comments.add(c);
-   else
+   if (this.story)
       this.story.comments.add(c);
+   else
+      this.comments.add(c);
    this.site.lastupdate = new Date();
    // send e-mail notification
    if (this.site.isNotificationEnabled())
       this.site.sendNotification("create", c);
    var result = new Message("commentCreate");
    result.id = c._id;
+   // add the new comment to search index
+   app.data.indexManager.getQueue(this.site).add(c);
    return result;
 }
 
@@ -170,6 +177,9 @@ function deleteComment(commentObj) {
    (commentObj.parent ? commentObj.parent : this).removeChild(commentObj);
    this.comments.removeChild(commentObj);
    commentObj.remove();
+
+   // remove the modified comment from search index
+   app.data.indexManager.getQueue(this.site).remove(commentObj._id);
    return new Message("commentDelete");
 }
 
@@ -225,8 +235,14 @@ function getRenderedContentPart(name, fmt) {
  * function deletes all childobjects of a story (recursive!)
  */
 function deleteAll() {
-   for (var i=this.comments.size();i>0;i--)
-      this.comments.get(i-1).remove();
+   var queue = app.data.indexManager.getQueue(this.site);
+   var item;
+   for (var i=this.comments.size();i>0;i--) {
+      item = this.comments.get(i-1);
+      // remove comment from search index
+      queue.remove(item._id);
+      item.remove();
+   }
    return true;
 }
 
@@ -260,4 +276,47 @@ function getNavigationName () {
    if (this.title)
       return this.title;
    return DISPLAY["story"] + " " + this._id;
+}
+
+
+/**
+ * creates a Lucene Document object for a story
+ * @return Object instance of Search.Document representing the story
+ */
+function getIndexDocument() {
+   var doc = new Search.Document();
+   switch (this._prototype) {
+      case "Comment":
+         doc.addField("story", this.story._id, {store: true, index: true, tokenize: false});
+         if (this.parent)
+            doc.addField("parent", this.parent._id, {store: true, index: true, tokenize: false});
+         break;
+      default:
+         doc.addField("day", this.day, {store: true, index: true, tokenize: false});
+         if (this.topic)
+            doc.addField("topic", this.topic, {store: true, index: true, tokenize: true});
+         break;
+   }
+
+   doc.addField("online", this.online, {store: true, index: true, tokenize: false});
+   doc.addField("site", this.site._id, {store: true, index: true, tokenize: false});
+   doc.addField("id", this._id, {store: true, index: true, tokenize: false});
+   var content = this.content.getAll();
+   var title;
+   if (title = stripTags(content.title).trim())
+      doc.addField("title", title, {store: false, index: true, tokenize: true});
+   var text = new java.lang.StringBuffer();
+   for (var propName in content) {
+      if (propName != "title") {
+         text.append(stripTags(content[propName]).trim());
+         text.append(" ");
+      }
+   }
+   doc.addField("text", text.toString(), {store: false, index: true, tokenize: true});
+   if (this.creator) {
+      // FIXME: checking this shouldn't be necessary, but somehow it is ...
+      doc.addField("creator", this.creator.name, {store: false, index: true, tokenize: false});
+      doc.addField("createtime", this.createtime.format("yyyyMMdd"), {store: false, index: true, tokenize: false});
+   }
+   return doc;
 }

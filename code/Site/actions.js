@@ -24,12 +24,16 @@ function main_action() {
  * edit action
  */
 function edit_action() {
-   if (req.data.cancel)
+   if (req.data.cancel) {
       res.redirect(this.href());
-   else if (req.data.save) {
+   } else if (req.data.rebuildIndex) {
+      app.data.indexManager.queueForRebuilding(this.alias);
+      res.message = new Message("rebuildIndex");
+      res.redirect(this.href(req.action));
+   } else if (req.data.save) {
       try {
          res.message = this.evalPreferences(req.data, session.user);
-         res.redirect(this.href("edit"));
+         res.redirect(this.href(req.action));
       } catch (err) {
          res.message = err.toString();
       }
@@ -268,68 +272,103 @@ function referrers_action() {
  * search action
  */
 function search_action() {
-   res.data.action = this.href(req.action);
-   res.data.title = "Search " + this.title;
-   res.data.body = this.renderSkinAsString("searchform");
+   var self = this;
 
-   if (req.data.q) {
+   /**
+    * private method for rendering the results
+    */
+   var renderResult = function(hits, itemsPerPage, pageIdx) {
+      var currIdx = 0;
+      var stop = size = hits.length();
+   
+      var totalPages = Math.ceil(size/itemsPerPage);
+      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
+         pageIdx = 0;
+      currIdx = pageIdx * itemsPerPage;
+      stop = Math.min(currIdx + itemsPerPage, size);
+      res.push();
+      while (currIdx < stop) {
+         var item = self.allcontent.get(hits.doc(currIdx).get("id"));
+         if (item)
+            item.renderSkin("searchview", {score: Math.round(hits.score(currIdx) * 100)});
+         currIdx++;
+      }
+      return res.pop();
+   }
+
+   /**
+    * main action body
+    */
+   if (req.isGet() && req.data.q != null) {
       var query = stripTags(req.data.q);
-      // array with sites to search
-      var sites = new Array (this);
-      var result = root.searchSites (query, this._id);
-      var found = result.length;
-      if (found == 0)
-         res.data.body += getMessage("error.searchNothingFound", query);
-      else {
-         var start = 0;
-         var end = found;
+      var queryArr = ["q=" + query];
 
-         if (found == 1)
-            res.data.body += getMessage("confirm.resultOne", query);
-         else if (found <= 10)
-            res.data.body += getMessage("confirm.resultMany", [encodeForm(query), found]);
-         else {
-            if (req.data.start)
-               start = Math.min (found-1, parseInt (req.data.start));
-            if (isNaN (start))
-               start = 0;
-            end = Math.min (found, start+10);
-            res.data.body += getMessage("confirm.resultMany", [encodeForm(query), found]);
-            res.data.body += " " + getMessage("confirm.resultDisplay", [start+1, end]);
-         }
+      // construct the filter query
+      var fq = new Search.BooleanQuery();
+      fq.addQuery(new Search.RangeQuery("online", 1, 2));
+      // filter by creator
+      if (req.data.c) {
+         fq.addTerm("creator", req.data.c);
+         queryArr.push("c=" + req.data.c);
+      }
+      // filter by createtime
+      if (req.data.ct) {
+         var then = new Date();
+         var min = new Date(then.setMonth(then.getMonth() - parseInt(req.data.ct, 10)));
+         min = min.format("yyyyMMdd", this.getLocale(), this.getTimeZone());
+         fq.addQuery(new Search.RangeQuery("createtime", min));
+         queryArr.push("ct=" + req.data.ct);
+      }
+      var filter = new Search.QueryFilter(fq);
 
-         res.data.body += "<br />";
+      // construct the query itself
+      var q = new Search.BooleanQuery();
+      q.addTerm("site", this._id);
+      // occurrence
+      queryArr.push("o=" + req.data.o);
+      switch (req.data.o) {
+         case "topic":
+            q.addTerm("topic", query);
+            break;
+         case "title":
+            q.addTerm("title", query);
+            break;
+         case "text":
+            q.addTerm("text", query);
+            break;
+         default:
+            q.addTerm(["title", "text", "topic"], query);
+            break;
+      }
 
-         // note: I'm doing this without a "searchbody" skin, since
-         // I think there's not much need to customize the body of
-         // search results, esp. since its parts are fully customizable.
-         // of course, I may be wrong about that.
-
-         // render prev links, if necessary
-         if (start > 0) {
-            var sp = new Object();
-            sp.url = this.href() + "search?q=" + escape(query)+"&start=" + Math.max(0, start-10);
-            sp.text = "previous results";
-            res.data.body += "<br /><br />" + renderSkinAsString("prevpagelink", sp);
-         }
-
-         // render result
-         for (var i=start; i<end; i++) {
-            var site = root.get(result[i].sitealias);
-            var item = site.allcontent.get(result[i].sid);
-            if (item)
-               res.data.body += item.renderSkinAsString("searchview");
-         }
-
-         // render next links, if necessary
-         if (end < found) {
-            var sp = new Object();
-            sp.url = this.href() + "search?q=" + escape(query) + "&start=" + Math.min(found-1, start+10);
-            sp.text = "next results";
-            res.data.body += renderSkinAsString("nextpagelink", sp);
+      var index = this.getIndex();
+      if (!index) {
+         res.message = getMessage("error.searchNothingFound", encodeForm(query));
+      } else {
+         var now = new Date();
+         var searcher = new index.Searcher();
+         var cnt = searcher.search(q, filter);
+         switch(cnt) {
+            case 0:
+               res.message = getMessage("error.searchNothingFound", encodeForm(query));
+               break;
+            case 1:
+               res.message = getMessage("confirm.resultOne", encodeForm(query));
+               break;
+            default:
+               res.message = getMessage("confirm.resultMany", [encodeForm(query), cnt]);
+               break;
          }
       }
+      res.data.resultlist = renderResult(searcher.hits, 10, req.data.page);
+      res.data.pagenavigation = renderPageNavigation(cnt, this.href(req.action) + "?" + queryArr.join("&"), 10, req.data.page);
+      searcher.close();
+      app.log("[" + this.alias + "] query (" + (new Date()).diff(now) + "ms): " + q);
    }
+
+   res.data.action = this.href(req.action);
+   res.data.title = this.title;
+   res.data.body = this.renderSkinAsString("searchresult");
    this.renderSkin("page");
    return;
 }

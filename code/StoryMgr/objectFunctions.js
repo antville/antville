@@ -62,6 +62,9 @@ function evalNewStory(param, creator) {
       result.url = s.href();
    } else
       result.url = this.href();
+
+   // add the new story to search index
+   app.data.indexManager.getQueue(this._parent).add(s);
    return result;
 }
 
@@ -79,6 +82,9 @@ function deleteStory(storyObj) {
    if (storyObj.online > 0)
       this._parent.lastupdate = new Date();
    storyObj.remove();
+
+   // remove the story from search index
+   app.data.indexManager.getQueue(this._parent).remove(storyObj._id);
    return new Message("storyDelete");
 }
 

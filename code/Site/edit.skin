@@ -68,6 +68,14 @@ of available layouts.</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
+<strong><a name="index">Index Maintenance</a></strong></td>
+</tr>
+<tr>
+<td></td>
+<td><span class="small">If the search index of your site is corrupt you can schedule it for rebuilding by klicking on the button below:<% input type="submit" name="rebuildIndex" value="rebuild index" style="display:block;margin:5px 0;" %>Please bear in mind that rebuilding the search index is a quite ressource-intensive operation, so please use this feature only when it's really necessary (e.g. if you receive an error when trying to search).</span></td>
+</tr>
+<tr>
+<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
 <strong><a name="spamfilter">Referrer spam filter</a></strong></td>
 </tr>
 <tr>
@@ -79,6 +87,9 @@ of available layouts.</span></td>
 
 <% site.modulePreferences %>
 
-<tr> <td></td> <td nowrap="nowrap"><br /><% input type="submit" 
-   name="save" value="Save" %>&nbsp;<% input type="submit" 
-   name="cancel" value="Cancel" %></td> </tr> </table> </form>
+<tr>
+<td></td>
+<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+</tr>
+</table>
+</form>

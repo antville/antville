@@ -645,9 +645,39 @@ function switch_macro(param) {
    return;
 }
 
+
 /**   
  * returns the number of members of this site
  */   
 function membercounter_macro(param) {
    return this.members.size();
-} 
+}
+
+
+/**
+ * renders a dropdown containing the possible occurrences
+ * of search terms in a content object
+ */
+function searchOccurrence_macro() {
+   var options = [["", "anywhere"],
+                  ["title", "in the title"],
+                  ["text", "in the text"],
+                  ["topic", "in the topic name"]];
+   Html.dropDown({name: "o"}, options, req.data.o);
+   return;
+}
+
+/**
+ * renders a dropdown containing some reasonable
+ * timespans for searching
+ */
+function searchCreatetime_macro() {
+   var options = [["", "anytime"],
+                  ["1", "the past month"],
+                  ["2", "the past 2 months"],
+                  ["4", "the past 4 months"],
+                  ["6", "the past half year"],
+                  ["12", "the past year"]];
+   Html.dropDown({name: "ct"}, options, req.data.ct);
+   return;
+}

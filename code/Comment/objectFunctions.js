@@ -34,5 +34,7 @@ function updateComment(param) {
          this.site.sendNotification("update", this);
    }
    this.ipaddress = param.http_remotehost;
+   // add the modified story to search index
+   app.data.indexManager.getQueue(this.site).add(this);
    return new Message("update");
 }

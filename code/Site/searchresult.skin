@@ -1,0 +1,32 @@
+<p>Enter a term to search in &raquo;<% response.title %>&laquo;:</p>
+
+<form method="get" action="<% response.action %>">
+<table border="0" cellspacing="5" cellpadding="0">
+<tr>
+<td>Search for:</td>
+<td><input size="25" name="q" value="<% request.q encoding="form" %>"></td>
+</tr>
+<tr>
+<td>Term occurrence:</td>
+<td><% site.searchOccurrence %></td>
+</tr>
+<tr>
+<td>Creator:</td>
+<td><input size="25" name="c" value="<% request.c encoding="form" %>"></td>
+</tr>
+<tr>
+<td>Created within:</td>
+<td><% site.searchCreatetime %></td>
+</tr>
+<tr>
+<td></td>
+<td><input type="submit" value="search" /></td>
+</tr>
+</table>
+</form>
+
+<br />
+<% response.pagenavigation %>
+<% response.resultlist %>
+<% response.pagenavigation %>
+
