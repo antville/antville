@@ -1,5 +1,0 @@
-		<item>
-			<link><% param.itemLink %></link>
-			<title><![CDATA[<% param.itemTitle %>]]></title>
-			<description><![CDATA[<% param.itemDescription %>]]></description>
-		</item>
