@@ -1,1 +1,1 @@
-<% goodie.alias as="link" %> <span class="small"><% goodie.description prefix="[" suffix="]" %></span>
+<% file.alias as="link" %> <span class="small"><% file.description prefix="[" suffix="]" %></span>

@@ -1,7 +1,7 @@
-<p>To insert a goodie in a story or comment just copy and paste its code.</p>
-<p>...&nbsp;<% this.link to="create" text="add new goodie" %></p>
+<p>To insert a file in a story or comment just copy and paste its code.</p>
+<p>...&nbsp;<% this.link to="create" text="add a file" %></p>
 
 <% response.prevpage %>
-<% this.goodies %>
+<% this.files %>
 <% response.nextpage %>
 
