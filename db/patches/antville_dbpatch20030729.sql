@@ -4,7 +4,6 @@ alter table AV_SITE
    drop column SITE_TEXTFONT,
    drop column SITE_TEXTCOLOR,
    drop column SITE_TEXTSIZE,
-   drop column SITE_TEXTFONT,
    drop column SITE_LINKCOLOR,
    drop column SITE_ALINKCOLOR,
    drop column SITE_VLINKCOLOR,
