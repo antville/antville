@@ -312,6 +312,19 @@ function pingUpdatedWeblogs() {
 }
 
 /**
+ * parse a timestamp into a date object. This is used when  users
+ * want to set createtime explicitly when creating/editing stories.
+ *
+ * @param time    The time as string
+ * @param format   The format of the time string
+ * @return            The parsed Date
+ */
+function parseTimestamp (time, format) {
+   var df = new java.text.SimpleDateFormat (format);
+   return df.parse (time);
+}
+
+/**
  * scheduler performing auto-disposal of inactive weblogs
  * and auto-blocking of private weblogs
  * if defined in app.properties
