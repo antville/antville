@@ -1,6 +1,6 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small"><% this.creator as="link" %>, <% this.createtime format="short" %> (<% this.total %> votes)</td>
+<td colspan="3" class="small"><% this.creator as="link" %>, <% this.createtime format="short" %> (<% this.total singular="vote" plural="votes" %>)</td>
 </tr>
 <tr valign="top">
 <td><span class="storyTitle"><% this.title suffix="<br>" %></span><% this.question limit="200" suffix="&nbsp;..." %></td>

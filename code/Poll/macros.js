@@ -101,8 +101,17 @@ function results_macro() {
 }
 
 
-function total_macro() {
-	return(this.votes.size());
+function total_macro(param) {
+	var n = this.votes.size();
+	if (n == 1) {
+		if (param.singular)
+			n += " " + param.singular;
+	}
+	else {
+		if (param.plural)
+			n += " " + param.plural;
+	}
+	return(n);
 }
 
 
