@@ -1,13 +1,17 @@
 if (!this.isDeleteAllowed())
    res.redirect(this.story.href());
 
-if (req.data.submit == "delete")
+if (req.data.submit == "cancel")
+   res.redirect(this.story.href("main"));
+
+if (req.data.submit == "delete") {
+   var redirTo = this.story.href();
    if (this.parent)
       this.parent.deleteComment(this);
    else
       this.story.deleteComment(this);
-else if (req.data.submit == "cancel")
-   res.redirect(this.story.href("main"));
+   res.redirect(redirTo);
+}
 
 res.skin = "main";
 res.title = "Antville - " + this.weblog.title;
