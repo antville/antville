@@ -65,8 +65,8 @@ function doWikiStuff (src) {
    // robert, disabled: didn't get the reason for this:
    // var src= " "+src;
 
-   // do the Wiki link thing, *asterisk style*
-   var regex = new RegExp ("[*]([a-z0-9צהü][a-z0-9צהüß ]*[a-z0-9צהüß])[*]");
+   // do the Wiki link thing, <*asterisk style*>
+   var regex = new RegExp ("<[*]([^*]+)[*]>");
    regex.ignoreCase=true;
 
    var text = "";
@@ -77,15 +77,15 @@ function doWikiStuff (src) {
       text += src.substring(start, to);
       if (found == null)
          break;
-      var name = found[1];
-      var item = path.weblog.space.get (name);
+      var name = ""+(new java.lang.String (found[1])).trim();
+      var item = path.weblog.topics.get (name);
       if (item == null && name.lastIndexOf("s") == name.length-1)
-         item = path.weblog.space.get (name.substring(0, name.length-1));
+         item = path.weblog.topics.get (name.substring(0, name.length-1));
       if (item == null || !item.size())
          text += format(name)+" <small>[<a href=\""+path.weblog.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
       else
          text += "<a href=\""+item.href()+"\">"+name+"</a>";
-      start += found.index + found[1].length+2;
+      start += found.index + found[1].length+4;
    }
    return text;
 }
