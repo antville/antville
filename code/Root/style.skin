@@ -74,3 +74,8 @@ ul {
   color: #FF3300;
   padding-bottom: 10pt;
 }
+
+.pagelink {
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
