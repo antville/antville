@@ -191,6 +191,7 @@ create table GOODIE (
   `FILE` tinytext,
   FILESIZE mediumint(9),
   DESCRIPTION mediumtext,
+  REQUESTCNT mediumint(9),
   CREATETIME datetime,
   CREATOR mediumint(9),
   MODIFYTIME datetime,

@@ -54,7 +54,7 @@ function setLayout(useSkin) {
       res.skin = "weblog." + (useSkin ? useSkin : "page");
       return (path.weblog);
    } else {
-      res.skin = "root." + (useSkin ? useSkin : "page");
+      res.skin = "root.page";
       return (root);
    }
 }
