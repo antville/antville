@@ -203,8 +203,8 @@ function chooser(param) {
 
 function renderImage(img,param) {
    res.write("<img src=\"" + getProperty("imgUrl"));
-   if (this.alias)
-      res.write(this.alias + "/");
+   if (img.weblog)
+      res.write(img.weblog.alias + "/");
    res.write(img.filename + "." + img.fileext + "\"");
    res.write(" width=\"" + (param.width ? param.width : img.width) + "\"");
    res.write(" height=\"" + (param.height ? param.height: img.height) + "\"");

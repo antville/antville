@@ -95,8 +95,8 @@ function imageurl_macro(param) {
    if (!p)
       return;
    res.write(getProperty("imgUrl"));
-   if (p.parent.alias)
-       res.write(p.parent.alias + "/");
+   if (p.obj.weblog)
+       res.write(p.obj.weblog.alias + "/");
    res.write(p.obj.filename + "." + p.obj.fileext);
 }
 
