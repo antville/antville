@@ -42,7 +42,7 @@ function evalPoll(param, creator) {
 			}
 
       result = getConfirm("pollCreate");
-      result.url = path.weblog.polls.href();
+      result.url = path.site.polls.href();
       result.id = this._id;
    } else
       result = getError("pollMissingValues");
@@ -81,10 +81,4 @@ function calcPercent(param) {
 	var sum = this.votes.size();
 	var p = param.count / (sum / 100);
 	return(Math.round(p*100)/100);
-}
-
-
-function isClosed() {
-	return(null);
-	return("This poll is closed. Voting is not possible anymore.");
 }
