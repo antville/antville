@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
@@ -16,7 +16,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="700" class="title" nowrap="nowrap"><% image name="/pixel" width="40" %><a href="<% this.href %>"><% site.title %></a></td>
+<td width="700" class="title" nowrap="nowrap"><% layout.image name="pixel" width="40" %><a href="<% this.href %>"><% site.title %></a></td>
 </tr>
 </table>
 
@@ -30,40 +30,40 @@
 <% response.body %></td>
 
 <td width="60" nowrap="nowrap">&nbsp;</td>
-<td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
+<td width="2" style="background-image: url(<% layout.image as="url" name="dot" %>);" nowrap="nowrap"><% layout.image name="pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
 <% site.age prefix="Online for&nbsp;" show="days" suffix=" days<br />" %><% site.lastupdate prefix="Last update:&nbsp;" format="short" %></div>
 
-<div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statushead"><% image name="/status" %></div>
-<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
+<div class="statushead"><% layout.image name="status" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
 
 <div class="statuslight"><% site.loginstatus %></div>
 
-<div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statushead"><% image name="/menu" %></div>
-<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
+<div class="statushead"><% layout.image name="menu" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
 
 <div class="statusdark">...&nbsp;<% site.link to="main" text="home" %><br />
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
 ...&nbsp;<% site.link to="images/topics" text="galleries" %><br />
 <% site.navigation for="contributors" %>
 <% site.navigation for="admins" %><br />
-...&nbsp;<a href="<% root.sysurl %>"><% root.systitle suffix=" " %>home</a></div>
+...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a></div>
 
-<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
 <div><% site.searchbox %></div>
-<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
 <div class="statusdark"><% site.calendar %></div>
 
-<div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statushead"><% image name="/recent" %></div>
-<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
+<div class="statushead"><% layout.image name="recent" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
 
 <% site.history show="5" %>
 
-<div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><br /><% site.xmlbutton %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
+<div class="statuslight"><br /><% site.xmlbutton %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% layout.image name="hop" linkto="http://helma.org" %></div></td>
 </tr>
 </table>
 
