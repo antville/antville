@@ -258,6 +258,7 @@ function getDefaultDateFormats(version) {
 function logAccess() {
 	if (req.data.http_referer) {
 		var weblog = path["weblog"];
+		var storyID = path["story"] ? path["story"]._id : null;
 		var referrer = req.data.http_referer;
 		var ip = req.data.http_remotehost;
 		var hopPath = path[path.length-1].href();
@@ -272,7 +273,8 @@ function logAccess() {
 			writeln("Error establishing DB connection: " + error);
 			return;
 		}
-		var query = "insert into ACCESS (WEBLOG_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
+		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", " + storyID + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
+		writeln(query);
 		c.executeCommand(query);
 		var error = c.getLastError();
 		if (error) {
