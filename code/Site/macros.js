@@ -195,7 +195,16 @@ function loginstatus_macro(param) {
  * depending on user-status & rights
  */
 function navigation_macro(param) {
-   if (!param["for"] || !session.user)
+   if (!param["for"] || param["for"] == "users") {
+      // FIXME: this is left for backwards-compatibility
+      // sometime in the future we'll get rid of the usernavigation.skin
+      res.write("...&nbsp;");
+      Html.link({href: "http://project.antville.org/project/stories/146"}, "<strong>README</strong>");
+      Html.tag("br");
+      Html.tag("br");
+      this.renderSkin("usernavigation");
+   }
+   if (!session.user)
       return;
    switch (param["for"]) {
       case "contributors" :
