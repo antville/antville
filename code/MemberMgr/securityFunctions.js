@@ -18,7 +18,10 @@ function checkAccess(action, usr, level) {
             checkIfLoggedIn(this.href(action));
             this.checkEditMembers(usr, level);
             break;
+         case "updated" :
+         case "memberships" :
          case "subscriptions" :
+         case "edit" :
             checkIfLoggedIn(this.href(action));
             break;
       }
