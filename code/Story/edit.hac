@@ -28,7 +28,7 @@ if (req.data.set) {
       var url = session.data.referrer ? session.data.referrer : this.site.stories.href();
    session.data.referrer = null;
    res.redirect(url);
-} else if (req.data.submit == "save" || req.data.save) {
+} else if (req.data.submit == "save" || req.data.save || req.data.submit == "publish" || req.data.publish) {
    var result = this.evalStory(req.data,session.user);
    res.message = result.message;
    if (!result.error) {
