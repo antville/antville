@@ -53,7 +53,7 @@ a:hover { background-color:<% weblog.linkcolor %>;
 .statushead { width:198px;
               text-align:left;
               letter-spacing:3px;
-              font-size:7pt;
+              font-size:<% weblog.smallsize %>;
               display:block;
               padding-top:1px;
               padding-bottom:1px;
@@ -69,21 +69,24 @@ ul { list-style: url("<% imageurl name="/bullet" %>") circle;
 li { padding-bottom:3px;
    }
 
-.calHead { font-size:8pt;
+.calHead { font-family:<% weblog.smallfont %>;
+           font-size:<% weblog.smallsize %>;
            font-weight:bold;
          }
 
-.calDay { font-size:8pt;
-          font-weight:normal;
+.calDay { font-family:<% weblog.smallfont %>;
+          font-size:<% weblog.smallsize %>;
           text-align:center;
         }
 
-.calSelDay { font-size:8pt;
+.calSelDay { font-family:<% weblog.smallfont %>;
+             font-size:<% weblog.smallsize %>;
              border:1px solid <% weblog.linkcolor %>;
              text-align:center;
            }
 
-.calFoot { font-size:8pt;
+.calFoot { font-family:<% weblog.smallfont %>;
+           font-size:<% weblog.smallsize %>;
            font-weight:bold;
          }
 
