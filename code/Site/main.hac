@@ -9,7 +9,7 @@ if (deny) {
 
 res.skin = "weblog.page";
 
-this.renderStorylist(parseInt(req.data.start,10));
+this.renderStorylist(req.data.day);
 
 res.data.title = "Antville - " + this.title;
 
