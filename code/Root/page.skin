@@ -12,14 +12,15 @@
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td><% logo name="big" %></td>
-<td width="296" class="header">&nbsp;<span class="message"><% response.message %></span></td>
+<td width="296" class="header">&nbsp;</td>
 </tr>
 </table>
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20" nowrap>&nbsp;</td>
-<td width="460" valign="top" nowrap><br><% response.body %></td>
+<td width="460" valign="top" nowrap><span class="message"><% response.message prefix="<br />" suffix="<br />" %></span>
+<br /><% response.body %></td>
 <td width="20" nowrap>&nbsp;</td>
 <td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap><div class="statuslight"><% now format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<br>" %>
