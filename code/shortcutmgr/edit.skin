@@ -1,0 +1,39 @@
+<table border="0" cellspacing="0" cellpadding="2">
+<form action="<% response.action %>" method="post">
+<tr>
+<td class="small">Title</td>
+<td class="small">Content</td>
+<td></td>
+</tr>
+
+<tr>
+<td><input type="text" size="15" name="newtitle" value="" />
+<div class="small">&nbsp;</div></td>
+<td valign="top"><input type="text" size="40" name="newcontent" value="" />
+<div class="small">&nbsp</div></td>
+</tr>
+<tr>
+<td colspan="2"><input type="submit" name="submit" value=" save " /><br />&nbsp;</td>
+</tr>
+
+<% shortcutmgr.shortcutlist as="editor" %>
+
+</form>
+
+<tr>
+<td colspan="2" class="small"><br /><br />
+<b>How to use Antville's shortcut feature:</b></a>
+<ul>
+<li>Please be aware that this still is experimental stuff.</li>
+<li>Use the following macro to display a shortcut:<br />
+<tt>&lt;% shortcut name="<i>title</i>" %&gt;</tt>.<br />
+This will output the content of the shortcut with the given title.</li>
+<li>If a shortcut starts with http:// the macro will automatically output the title as an HTML link. To display an alternative text instead of the shortcut's title you can use the optional parameter <tt>text="<i>altText</i>"</tt> in the above macro.</li>
+<li>If a shortcut contains the string <tt>$text</tt> latter will be replaced either with the shortcut's title or with the value of the text parameter, if defined. An asterisk * right from the preview (ie. the line below the content input field) will indicate that the placeholder is in effect.</li>
+<li>You can use a specific shortcut title only once. If you should need the same title for two or more shortcuts simply add a hash and some additional characters to the title for distinction. These additions won't be displayed in the output. Example titles: <tt>myShortcut, myShortcut#2, myShortcut#new</tt>.</li>
+<li>Edit a shortcut's content directly in its form field. The title is read-only and cannot be edited. All changes will be saved when you click the save button.</li>
+<li>To delete a shortcut simply clear the content input field and click the save button. But be aware that this affects the output of any story containing the corresponding shortcut macro! An error message will be displayed instead of a missing shortcut.</li>
+</ul>
+</td>
+</tr>
+</table>
