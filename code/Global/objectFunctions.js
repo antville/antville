@@ -524,3 +524,48 @@ function translateToEntities(str) {
    }
    return(result);
 }
+
+
+/**
+ * function retuns only a part of the text passed as argument
+ * length of the string to show is defined by argument "limit"
+ */
+function clipText(text, limit, clipping) {
+   var text = stripTags(text);
+   if (text.length <= limit)
+      clipping = "";
+   else if (!clipping)
+      clipping = "...";
+   var limit = Math.min(limit, text.length);
+   var prev = text.substring(0,text.indexOf(" ",limit));
+   if (!prev)
+      prev = text;
+   return(prev + clipping);
+}
+
+
+/**
+ * function adds a <wbr /> tag each 30 characters
+ */
+
+function softwrap(str) {
+   var result = "";
+   for (var i=0; i<str.length; i=i+30)
+      result += str.substring(i, i+30) + "<wbr />";
+   return(result);
+}
+
+
+/**
+ * This function parses a string for <img> tags and turns them
+ * into <a> tags.  
+ */ 
+
+function fixRssText(str) {
+   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
+   re.ignoreCase = true;
+   re.global = true;
+   str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
+ 	return(str);
+}
+
