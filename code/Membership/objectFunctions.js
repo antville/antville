@@ -3,7 +3,7 @@
  */
 
 function isAdmin() {
-   if (parseInt(this.admin,10))
+   if (parseInt(this.level,10) == 2)
       return true;
    return false;
 }
@@ -13,7 +13,7 @@ function isAdmin() {
  */
 
 function isContributor() {
-   if (parseInt(this.contributor,10))
+   if (parseInt(this.level,10) == 1)
       return true;
    return false;
 }
@@ -24,8 +24,8 @@ function isContributor() {
  */
 
 function updateMember() {
-   this.admin = (parseInt(req.data.admin) ? parseInt(req.data.admin) : 0);
-   this.contributor = (parseInt(req.data.contributor) ? parseInt(req.data.contributor) : 0);
+   if (req.data.level != null && req.data.level != "")
+      this.level = req.data.level;
    this.modifytime = new Date();
    this.modifier = user;
    this.sendConfirmationMail();
