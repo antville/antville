@@ -1,8 +1,21 @@
 /**
- * main action
+ * display all images of a site
  */
 function main_action() {
-   this.renderImagelist(parseInt(req.data.start, 10));
+   res.data.imagelist = renderList(this, "preview", 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
+   res.data.title = "Images of " + res.handlers.context.title;
+   res.data.body = this.renderSkinAsString("main");
+   this._parent.renderSkin("page");
+}
+
+/**
+ * display my images
+ */
+function myimages_action() {
+   var ms = this._parent.members.get(session.user.name);
+   res.data.imagelist = renderList(ms.images, "preview", 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(ms.images, this.href(req.action), 10, req.data.page);
    res.data.title = "Images of " + res.handlers.context.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
