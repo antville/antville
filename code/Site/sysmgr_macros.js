@@ -8,14 +8,17 @@ function sysmgr_count_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (param.what == "stories")
-      res.write(this.allstories.size());
-   else if (param.what == "comments")
-      res.write(this.allcontent.size() - this.allstories.size());
-   else if (param.what == "images")
-      res.write(this.images.size());
-   else if (param.what == "files")
-      res.write(this.files.size());
+   switch (param.what) {
+      case "stories" :
+         return this.allstories.size();
+      case "comments" :
+         return (this.allcontent.size() - this.allstories.size());
+      case "images" :
+         return this.images.size();
+      case "files" :
+         return this.files.size();
+   }
+   return;
 }
 
 /**
@@ -27,13 +30,13 @@ function sysmgr_statusflags_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (this.trusted)
-      res.write("<span class=\"flagltgreen\" nowrap>TRUSTED</span>");
+      res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">TRUSTED</span>");
    if (!this.online)
-      res.write("<span class=\"flagred\" nowrap>PRIVATE</span>");
+      res.write("<span class=\"flagDark\" style=\"background-color:#CC0000;\">PRIVATE</span>");
    else
-      res.write("<span class=\"flagdkgreen\" nowrap>PUBLIC</span>");      
+      res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">PUBLIC</span>");      
    if (this.blocked)
-      res.write("<span class=\"flagblack\" nowrap>BLOCKED</span>");
+      res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
 }
 
 /**
@@ -70,18 +73,6 @@ function sysmgr_deletelink_macro(param) {
    Html.openTag("a", root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "delete");
    Html.closeTag("a");
-}
-
-/**
- * macro renders the name of the creator of this
- * site as link
- */
-
-function sysmgr_creator_macro(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   res.write(this.creator.name);
 }
 
 /**
