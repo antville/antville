@@ -25,7 +25,7 @@ function renderCalendarDay(currGroupname,text) {
 
 
 /**
- * function renders the list of stories for weblog-(front-)pages
+ * function renders the list of stories for site-(front-)pages
  * and assigns the rendered list to res.data.storylist
  * scrollnavigation-links to previous and next page(s) are also
  * assigned to res.data (res.data.prevpage, res.data.nextpage)
@@ -92,7 +92,7 @@ function renderStorylist(day) {
          }
       }
       // only increment daycounter if day contains a story
-      // that is online in weblog
+      // that is online in site
       if (count)
          dayCnt++;
    }
