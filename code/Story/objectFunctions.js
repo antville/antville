@@ -113,7 +113,8 @@ function setContent(newContent) {
    // set rawcontent property used for searching
    res.push();
    for (var i in newContent) {
-      res.write(newContent[i]+'\r\n');
+      res.write(newContent[i]);
+      res.write("\r\n");
    }
    this.rawcontent = res.pop();
 }

@@ -16,7 +16,7 @@ function username_macro(param) {
 function email_macro(param) {
    if (this.user.publishemail)
       return this.user.email;
-   return "**********";
+   return "***";
 }
 
 /**

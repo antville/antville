@@ -102,9 +102,13 @@ function file_macro(param) {
    var p = getPoolObj(param.name, "files");
    if (!p)
       return;
-   if (!param.text)
-      param.text = p.obj.alias;
-   p.obj.renderSkin(param.skin ? param.skin : "main", param);
+   if (param.as == "url")
+      res.write(p.obj.getUrl());
+   else {
+      if (!param.text)
+         param.text = p.obj.alias;
+      p.obj.renderSkin(param.skin ? param.skin : "main", param);
+   }
    return;
 }
 
@@ -152,7 +156,18 @@ function story_macro(param) {
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
    if (!story)
       return getMessage("error", "storyNoExist", param.id);
-   story.renderSkin(param.skin ? param.skin : "embed");
+   switch (param.as) {
+      case "url":
+         res.write(story.href());
+         break;
+      case "link":
+         var title = param.text ? param.text : 
+                     story.content.getProperty("title");
+         Html.link({href: story.href()}, title ? title : story._id);
+         break;
+      default:
+         story.renderSkin(param.skin ? param.skin : "embed");
+   }
    return;
 }
 
@@ -173,13 +188,22 @@ function poll_macro(param) {
    var poll = site.polls.get(parts[1] ? parts[1] : param.id);
    if (!poll)
       return getMessage("error.pollNoExist", param.id);
-   if (param.as == "link")
-      Html.link({href: poll.href(poll.closed ? "results" : "")}, poll.question);
-   else if (poll.closed || param.as == "results")
-      poll.renderSkin("results");
-   else {
-      res.data.action = poll.href();
-      poll.renderSkin("main");
+   switch (param.as) {
+      case "url":
+         res.write(poll.href());
+         break;
+      case "link":
+         Html.link({
+            href: poll.href(poll.closed ? "results" : "")
+         }, poll.question);
+         break;
+      default:
+         if (poll.closed || param.as == "results")
+            poll.renderSkin("results");
+         else {
+            res.data.action = poll.href();
+            poll.renderSkin("main");
+         }
    }
    return;
 }
@@ -234,6 +258,8 @@ function username_macro(param) {
       return;
    if (session.user.url && param.as == "link")
       Html.link({href: session.user.url}, session.user.name);
+   else if (session.user.url && param.as == "url")
+      res.write(session.user.url);
    else
       res.write(session.user.name);
    return;

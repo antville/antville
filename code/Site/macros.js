@@ -534,9 +534,12 @@ function layoutchooser_macro(param) {
  * please add some error message for undefined param.event
  */
 function notify_macro(param) {
-   var notifyContributors = param.notifyContributors ? param.notifyContributors : getMessage("Site.notifyContributors");
-   var notifyAdmins = param.notifyAdmins ? param.notifyAdmins : getMessage("Site.notifyAdmins");
-   var notifyNobody = param.notifyNobody ? param.notifyNobody : getMessage("Site.notifyNobody");
+   var notifyContributors = param.notifyContributors ? 
+      param.notifyContributors : getMessage("Site.notifyContributors");
+   var notifyAdmins = param.notifyAdmins ? 
+      param.notifyAdmins : getMessage("Site.notifyAdmins");
+   var notifyNobody = param.notifyNobody ? 
+      param.notifyNobody : getMessage("Site.notifyNobody");
 
    var pref = this.preferences.getProperty("notify_" + param.event);
    if (param.as == "editor") {
