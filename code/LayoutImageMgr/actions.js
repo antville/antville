@@ -2,12 +2,7 @@
  * display all images of a site or layout
  */
 function main_action() {
-   var allimages = this.list();
-   if (this._parent.parent) {
-      allimages = allimages.concat(this._parent.parent.images.list());
-      allimages.sort(new Function("a", "b", "return b.createtime - a.createtime"));
-   }
-   res.data.imagelist = renderList(allimages, "mgrlistitem", 10, req.data.page);
+   res.data.imagelist = renderList(this.mergeImages(), "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.title = getMessage("LayoutMgr.mainTitle", {layoutTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
