@@ -14,11 +14,12 @@ function content_macro(param) {
             param.value = "Re: " + path.comment.title;
          else if (path.story && path.story.title)
             param.value = "Re: " + path.story.title;
+      } else if (req.data["content_" + param.part]) {
+         // if there's a part-value in request.data available use it:
+         res.debug("content_" + param.part + ": using value from req.data");
+         param.value = unescape(req.data["content_" + param.part]);
       } else
          param.value = this.getContentPart(param.part);
-      // if there's still no value get it from request.data if available:
-      if (!param.value && req.data["content_" + param.part])
-         param.value = unescape(req.data["content_" + param.part]);
       param.name = "content_" + param.part;
       delete(param.part);
       if (!param.height || parseInt(param.height,10) == 1)
@@ -379,7 +380,10 @@ function topicchooser_macro(param) {
       var topic = path.site.topics.get(i);
       if (topic.size()) {
          options[i] = topic.groupname;
-         if (this.topic == topic.groupname)
+         if (req.data.topicidx != null) {
+            if (req.data.topicidx == i)
+               var selectedIndex = i;
+         } else if (this.topic == topic.groupname)
             var selectedIndex = i;
       }
    }
