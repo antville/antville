@@ -12,6 +12,7 @@ function replylink_macro(param) {
          renderImage(param);
       Html.closeLink();
    }
+   return;
 }
 
 /**
@@ -20,5 +21,6 @@ function replylink_macro(param) {
 
 function url_macro(param) {
    res.write(this.story.href() + "#" + this._id);
+   return;
 }
 
