@@ -2,6 +2,6 @@
 ...&nbsp;show&nbsp;<% storymgr.link to="main" text="all stories" %>&nbsp;|&nbsp;<% storymgr.link to="offline" text="offline stories"%>&nbsp;|&nbsp;<% storymgr.link to="mystories" text="my stories" %>
 
 <% response.pagenavigation %>
-<% storymgr.storylist %>
+<% response.storylist %>
 <% response.pagenavigation %>
 
