@@ -86,7 +86,7 @@ function renderLocaleChooser(loc) {
    // get the defined locale of this site for comparison
    for (var i in locs)
       options[i] = new Array(locs[i], locs[i].getDisplayName());
-   Html.dropDown("locale", options, loc ? loc.toString() : null);
+   Html.dropDown({name: "locale"}, options, loc ? loc.toString() : null);
 }
 
 
@@ -106,7 +106,7 @@ function renderDateformatChooser(version, locale, selectedValue) {
       var sdf = new java.text.SimpleDateFormat(patterns[i], locale);
       options[i] = [encodeForm(patterns[i]), sdf.format(now)];
    }
-   Html.dropDown(version, options, selectedValue);
+   Html.dropDown({name: version}, options, selectedValue);
 }
 
 
@@ -122,7 +122,7 @@ function renderTimeZoneChooser(tz) {
       var zone = java.util.TimeZone.getTimeZone(zones[i]);
       options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/ONEHOUR)) + " (" + zones[i] + ")"];
    }
-   Html.dropDown("timezone", options, tz ? tz.getID() : null);
+   Html.dropDown({name: "timezone"}, options, tz ? tz.getID() : null);
 }
 
 /**
@@ -211,8 +211,12 @@ function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
  * render a single item for page-navigation bar
  */
 function renderPageNavItem(text, cssClass, url, page) {
-   var param = {text: !url ? text : Html.linkAsString(url + "?page=" + page, text),
-                "class": cssClass};
+   var param = new Object();
+   if (!url)
+      param.text = text
+   else
+      Html.linkAsString({href: url + "?page=" + page}, text);
+   param["class"] = cssClass;
    renderSkin("pagenavigationitem", param);
    return;
 }

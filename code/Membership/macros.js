@@ -3,7 +3,7 @@
  */
 function username_macro(param) {
    if (param.linkto && (param.linkto != "edit" || this.user != session.user))
-      Html.link(this.href(param.linkto), this.username);
+      Html.link({href: this.href(param.linkto)}, this.username);
    else
       res.write(this.username);
 }
@@ -23,7 +23,7 @@ function email_macro(param) {
  */
 function url_macro(param) {
    if (this.user.url)
-      Html.link(this.user.url, this.user.url);
+      Html.link({href: this.user.url}, this.user.url);
    return;
 }
 
@@ -33,7 +33,7 @@ function url_macro(param) {
 
 function level_macro(param) {
    if (param.as == "editor")
-      Html.dropDown("level", ROLES, null, "-- select --");
+      Html.dropDown({name: "level"}, ROLES, null, "-- select --");
    else
       res.write(getRole(this.level));
    return;
@@ -44,7 +44,8 @@ function level_macro(param) {
  */
 function deletelink_macro(param) {
    if (this.level != ADMIN)
-      Html.link(this.href("delete"), param.text ? param.text : "remove");
+      Html.link({href: this.href("delete")},
+                param.text ? param.text : "remove");
    return;
 }
 
@@ -53,6 +54,7 @@ function deletelink_macro(param) {
  */
 function unsubscribelink_macro(param) {
    if (this.level == SUBSCRIBER)
-      Html.link(this.site.href("unsubscribe"), param.text ? param.text : "unsubscribe");
+      Html.link({href: this.site.href("unsubscribe")},
+                param.text ? param.text : "unsubscribe");
    return;
 }

@@ -33,7 +33,7 @@ function imagelist_macro(param) {
             imgObj = imgObj.thumbnail;
       }
       if (url) {
-         Html.openLink(url);
+         Html.openLink({href: url});
          renderImage(imgObj, ObjectLib.clone(param));
          Html.closeLink();
       } else
@@ -61,6 +61,6 @@ function topicchooser_macro(param) {
             var selected = topic.groupname;
       }
    }
-   Html.dropDown("addToTopic", options, selected, "-- choose gallery --");
+   Html.dropDown({name: "addToTopic"}, options, selected, "-- choose gallery --");
    return;
 }
