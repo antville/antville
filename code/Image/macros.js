@@ -26,6 +26,40 @@ function alttext_macro(param) {
 }
 
 /**
+ * macro renders the width of the image
+ */
+
+function width_macro(param) {
+   res.write(param.prefix);
+   res.write(this.width);
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders the height of the image
+ */
+
+function height_macro(param) {
+   res.write(param.prefix);
+   res.write(this.height);
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders the url to this image
+ */
+
+function url_macro(param) {
+   res.write(param.prefix);
+   res.write(getProperty("imgUrl"));
+   if (this.weblog)
+       res.write(this.weblog.alias + "/");
+   res.write(this.filename + "." + this.fileext);
+   res.write(param.suffix);
+}
+
+
+/**
  * macro renders a link for editing image
  */
 
