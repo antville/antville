@@ -96,3 +96,45 @@ function updateUser() {
    res.message = "Changes were saved successfully!";
    res.redirect(this._parent.href());
 }
+
+/**
+ * function retrieves a list of usernames/passwords for a submitted email-address
+ * and sends them as mail
+ */
+
+function sendPwd() {
+   if (!req.data.email)
+      return;
+   var email = req.data.email;
+   var sqlClause = "select USERNAME,PASSWORD from USER where EMAIL = '" + email + "'";
+   var dbConn = getDBConnection("antville");
+   var result = dbConn.executeRetrieval(sqlClause);
+   var cnt = 0;
+   var pwdList = "";
+   while (result.next()) {
+      pwdList += "Username: " + result.getColumnItem("USERNAME") + "\n";
+      pwdList += "Password: " + result.getColumnItem("PASSWORD") + "\n\n";
+      cnt++;
+   }
+   result.release;
+   if (!cnt) {
+      res.message = "No accounts found for this eMail-address!";
+      return;
+   }
+   // now we send the mail containing all accounts for this email-address
+   var mail = new Mail();
+   mail.setFrom(getProperty("adminEmail"));
+   mail.addTo(email);
+   mail.setSubject("Your Accounts for Antville");
+   var mailParam = new Object();
+   var now = new Date();
+   mailParam.timestamp = this._parent.formatTimestamp(now,new Object());
+   mailParam.text = pwdList;
+	mail.setText(this.renderSkinAsString("pwdmail",mailParam));
+   var result = mail.send();
+   if (result.status)
+      res.message = "An error occurred while trying to send the mail!";
+   else
+      res.message = "A mail containing your the password(s) was sent successfully!";
+   res.redirect(this._parent.href());
+}
