@@ -19,6 +19,7 @@ if (this.online) {
 		param1.authorName = encodeXml(story.author.name);
 		param1.authorMail = encodeXml(story.author.email);
 		param1.year = now.getYear();
+		param1.subject = story.topic ? encodeXml(story.topic) : "";
 		var skin = createSkin(story.text);
 		var str = this.renderSkinAsString(skin);
 		str = this.rssConvertHtmlImageToHtmlLink(str);

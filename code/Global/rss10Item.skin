@@ -7,5 +7,5 @@
     <dc:publisher>Antville Weblog Tool</dc:publisher>
     <dc:creator><% param.authorName %> (mailto:<% param.authorMail %>)</dc:creator>
     <dc:rights>Copyright &#169; <% param.year %> <% param.authorName %></dc:rights>
-    <dc:subject><% param.category %></dc:subject>
+    <dc:subject><% param.subject %></dc:subject>
   </item> 
