@@ -1,4 +1,0 @@
-...&nbsp;<% site.link to="main" text="home" %><br />
-...&nbsp;<% site.link to="search" text="search" %><br />
-...&nbsp;<% site.link to="topics" text="topics" %><br />
-...&nbsp;<% site.link to="polls" text="polls" %><br />
