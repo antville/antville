@@ -160,7 +160,7 @@ function sys_startAtHour_macro(param) {
    if (param.as == "editor") {
       var options = new Array();
       for (var i=0;i<24;i++)
-         options[i] = (i < 10 ? "0" + i : i);
+         options[i] = (i < 10 ? "0" + i : i.toString());
       Html.dropDown("sys_startAtHour", options, this.sys_startAtHour);
    } else
       res.write(this.sys_startAtHour);
