@@ -159,49 +159,6 @@ function closeLink() {
 
 
 /**
- * renders a group of dropdowns for selecting
- * date-value
- */
-
-function renderDateDropdown(param) {
-   if (param.value) {
-      var ts = param.value;
-   } else {
-      var ts = new Date();
-   }
-   var prefix = param.name ? param.name : "date";
-   this.createDDparam(prefix,ts,"yyyy");
-   this.createDDparam(prefix,ts,"MM");
-   this.createDDparam(prefix,ts,"dd");
-   this.createDDparam(prefix,ts,"HH");
-   this.createDDparam(prefix,ts,"mm");
-}
-
-/**
- * function renders a dropdown-element
- * input values: parameter-object
- * param.name = name of select-element
- * param-object contains a HopObject for each option that is selectable
- * each option contains the following properties:
- * name = string to display in dropdown
- * value = value of option
- * selected = boolean (option matches the current selection)
- */
-
-function chooser(param) {
-   res.write("<select name=\"" + param.name + "\"");
-   res.write(">\n");
-   for (var i=0;i<param.size();i++) {
-      res.write("<option value=\"" + param.get(i).value + "\"");
-      if (param.get(i).selected)
-         res.write(" selected");
-      res.write(">" + param.get(i).name + "</option>\n");
-   }
-   res.write("</select>\n");
-}
-
-
-/**
  * function renders image-tag
  */
 
@@ -220,6 +177,13 @@ function renderImage(img,param) {
       res.write(" alt=\"" + img.alttext + "\"");
    res.write(" border=\"0\">");
 }
+
+/**
+ * function renders a dropdown-box for choosing dateformats
+ * @param String String indicating version of dateformat to use:
+ *               "short" - short date format
+ *               "long" - long date format
+ */
 
 function renderDateformatChooser(version) {
    var patterns = getDefaultDateFormats(version);
