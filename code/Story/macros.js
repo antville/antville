@@ -186,6 +186,7 @@ function onlinelink_macro(param) {
    if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
       if (this.online && param.mode != "toggle")
          return;
+      delete param.mode;
       param.linkto = "edit";
       param.urlparam = "set=" + (this.online ? "offline" : "online");
       openMarkupElement("a",this.createLinkParam(param));
@@ -220,7 +221,7 @@ function commentlink_macro(param) {
    if (!this.discussions || !this.site.discussions)
       return;
    openLink(this.href(param.to ? param.to : "comment"));
-   res.write(param.text ? param.text : "place your comment");
+   res.write(param.text ? param.text : "react");
    closeLink();
 }
 
@@ -293,7 +294,7 @@ function commentform_macro(param) {
       c.renderSkin("edit");
    } else {
       openLink(this.site.members.href("login"));
-      res.write (param.text ? param.text : "login to add your comment!");
+      res.write (param.text ? param.text : "Login to add your comment!");
       closeLink();
    }
 }
@@ -338,11 +339,11 @@ function editableby_macro(param) {
       }
    } else {
       if (this.editableby == 0)
-         res.write("subscribers of and contributors to " + this.site.title);
+         res.write("Subscribers of and contributors to " + this.site.title);
       else if (this.editableby == 1)
-         res.write("contributors to " + this.site.title);
+         res.write("Contributors to " + this.site.title);
       else
-         res.write("content managers and admins of " + this.site.title);
+         res.write("Content managers and admins of " + this.site.title);
    }
    return;
 }
@@ -489,4 +490,13 @@ function justintopic_macro(param) {
     param.name = "justintopic";
     renderInputCheckbox(param);
   } 
+}
+
+
+/**
+ * macro renders id of a story
+ */
+function id_macro() {
+   res.write(this._id);
+   return;
 }
