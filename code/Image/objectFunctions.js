@@ -118,9 +118,15 @@ function createThumbnail(rawimage, dir) {
  * @return String call of popup-script
  */
 function getPopupUrl() {
-   var url = "javascript:openPopup('" + this.getUrl();
-   url += "'," + this.width + "," + this.height + ");return false;";
-   return (url);
+   res.push();
+   res.write("javascript:openPopup('");
+   res.write(this.getUrl());
+   res.write("',");
+   res.write(this.width);
+   res.write(",");
+   res.write(this.height);
+   res.write(");return false;");
+   return res.pop();
 }
 
 
@@ -128,21 +134,31 @@ function getPopupUrl() {
  * return the url of the image
  */
 function getUrl() {
-   var buf = this.site.getStaticUrl("images/");
-   buf.append(this.filename);
-   buf.append(".");
-   buf.append(this.fileext);
-   return buf.toString();
+   res.push();
+   this.site.staticUrl("images/");
+   res.write(this.filename);
+   res.write(".");
+   res.write(this.fileext);
+   return res.pop();
 }
+
+/**
+ * return the image file on disk
+ * @return Object File object
+ */
+function getFile() {
+   return FileLib.get(this.site.getStaticPath(), this.filename + "." + this.fileext);
+}
+
 
 /**
  * dump an image to a zip file passed as argument
  * @return Object HopObject containing the metadata of the image(s)
  */
-function dump() {
+function dumpToZip(z) {
    var data = new HopObject();
    if (this.thumbnail)
-      data.thumbnail = this.thumbnail.dump();
+      data.thumbnail = this.thumbnail.dumpToZip(z);
    data.alias = this.alias;
    data.filename = this.filename;
    data.fileext = this.fileext;
@@ -154,5 +170,7 @@ function dump() {
    data.exporttime = new Date();
    data.creator = this.creator ? this.creator.name : null;
    data.modifier = this.modifier ? this.modifier.name : null;
+   // add the image file to the zip archive
+   z.add(this.getFile(), "images");
    return data;
 }
