@@ -95,5 +95,7 @@ function allowTextMacros(s) {
    s.allowMacro("file");
    s.allowMacro("poll");
    s.allowMacro("logo");
+   s.allowMacro("shortcut");
+   s.allowMacro("storylist");
    return;
 }
