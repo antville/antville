@@ -211,12 +211,11 @@ function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
  * render a single item for page-navigation bar
  */
 function renderPageNavItem(text, cssClass, url, page) {
-   var param = new Object();
+   var param = {"class": cssClass};
    if (!url)
-      param.text = text
+      param.text = text;
    else
-      Html.linkAsString({href: url + "?page=" + page}, text);
-   param["class"] = cssClass;
+      param.text = Html.linkAsString({href: url + "?page=" + page}, text);
    renderSkin("pagenavigationitem", param);
    return;
 }
