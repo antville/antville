@@ -7,14 +7,14 @@ function onRequest() {
    autoLogin();
    checkIfLoggedIn(this.href(req.action));
    
-   var deny = this.isDenied(user);
+   var deny = this.isDenied(session.user);
    if (deny) {
       res.message = deny;
       res.redirect(root.href());
    }
-   // need a sysmgr-object in user-cache for searching
-   if (!user.cache.mgr)
-      user.cache.mgr = new sysmgr();
+   // need a sysmgr-object in session for searching
+   if (!session.data.mgr)
+      session.data.mgr = new sysmgr();
 }
 
 /**
