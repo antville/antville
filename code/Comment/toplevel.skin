@@ -11,7 +11,7 @@
     <% comment.content part="text" %>
 </div>
 <p class="small">
-    <% comment.link text="link" %>&nbsp;&nbsp;
+    <% comment.link text="link" prefix="...&nbsp;" %>&nbsp;&nbsp;
     <% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>
     <% comment.deletelink prefix="...&nbsp;" %>
 </p>
