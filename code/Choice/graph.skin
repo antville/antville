@@ -1,1 +1,1 @@
-<span class="pollResultsBar"><img src="<% image as="url" name="/pixel" %>" width="<% param.width %>" height="5" alt="" /></span>
+<span class="pollResultsBar"><img src="<% layout.image as="url" name="pixel" %>" width="<% param.width %>" height="5" alt="" /></span>
