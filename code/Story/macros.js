@@ -531,8 +531,8 @@ function addtofront_macro(param) {
             delete param.checked;
          else if (req.data.online == 2 || this.online == 2)
             param.checked = "checked";
-      } else {
-         if (this.online != null && this.online < 2)
+      } else if (this.creator) {
+        if (this.online != null && this.online < 2)
             delete param.checked;
          else
             param.checked = "checked";
