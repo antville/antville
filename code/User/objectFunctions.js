@@ -7,7 +7,7 @@ function sendConfirmationMail() {
    mail.setFrom(getProperty("adminEmail"));
    mail.addTo(this.email);
    mail.setSubject("Welcome to Antville!");
-   var mailParam = new HopObject();
+   var mailParam = new Object();
    mailParam.name = this.name;
    mailParam.password = this.password;
 	mail.setText(this.renderSkinAsString("mailbody",mailParam));
