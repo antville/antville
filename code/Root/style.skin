@@ -1,45 +1,45 @@
 body, td, span {
-  font-family: Verdana, Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-family: <% layout.textfont %>;
+  font-size: <% layout.textsize %>;
   font-weight: normal;
-  color: #000000;
+  color: <% layout.textcolor %>;
   vertical-align: top;
-  background-color: #FFFFFF;
+  background-color: <% layout.bgcolor %>;
 }
 
 a {
   text-decoration: none;
-  color: #FF3300;
+  color: <% layout.linkcolor %>;
 }
 
 a:hover {
-  background-color: #FF3300;
-  color: #FFFFFF;
+  background-color: <% layout.linkcolor %>;
+  color: <% layout.textcolor %>;
 }
 
 ul {
-  list-style: url("<% image as="url" name="/bullet" %>") circle;
+  list-style: url("<% layout.image as="url" name="bullet" %>") circle;
 }
 
 .header {
-  background-image: url("<% image as="url" name="/headbg" %>");
+  background-image: url("<% layout.image as="url" name="headbg" %>");
   background-repeat: repeat-x;
   text-align: right;
   vertical-align: middle;
 }
 
 .message {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: <% layout.textfont %>;
+  font-size: <% layout.textsize %>;
   padding: 1px;
   color: #FF3300;
-  background-color: #FFFFFF;
+  background-color: <% layout.bgcolor %>;
 }
 
 .statusdark {
   width: 198px;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: <% layout.smallfont %>;
+  font-size: <% layout.smallsize %>;
   display: block;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -47,8 +47,8 @@ ul {
 
 .statuslight {
   width: 198px;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: <% layout.smallfont %>;
+  font-size: <% layout.smallsize %>;
   color: #999999;
   display: block;
   padding-top: 3px;
@@ -56,20 +56,21 @@ ul {
 }
 
 .small {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: <% layout.smallfont %>;
+  font-size: <% layout.smallsize %>;
+  font-color: <% layout.smallcolor %>;
   color: #666666;
 }
 
 .sep {
   width: 198px;
   height: 1px;
-  background-image: url("<% image as="url" name="/dot" %>");
+  background-image: url("<% layout.image as="url" name="dot" %>");
 }
 
 .pageTitle {
-  font-family: Verdana, Helvetica, Arial, sans-serif;
-  font-size: 12pt;
+  font-family: <% layout.titlefont %>;
+  font-size: <% layout.titlesize %>;
   font-weight: bold;
   color: #FF3300;
   padding-bottom: 10pt;
@@ -78,4 +79,67 @@ ul {
 .pagelink {
    margin-top: 2px;
    margin-bottom: 2px;
+}
+
+/** classes used in sysmgr **/
+
+.flagltgreen {
+   background-color:#009900;
+   font-family:Verdana,Helvetica,Arial,sans-serif;
+   font-size:7pt;
+   padding:2px;
+   color:#ffffff;
+}
+.flagdkgreen {
+   background-color:#006600;
+   font-family:Verdana,Helvetica,Arial,sans-serif;
+   font-size:7pt;
+   padding:2px;
+   color:#ffffff;
+}
+.flagred {
+   background-color:#CC0000;
+   font-family:Verdana,Helvetica,Arial,sans-serif;
+   font-size:7pt;
+   padding:2px;
+   color:#ffffff;
+}
+.flagblack {
+   background-color:#000000;
+   font-family:Verdana,Helvetica,Arial,sans-serif;
+   font-size:7pt;
+   padding:2px;
+   color:#ffffff;
+}
+.flagyellow {
+   background-color:#FFCC00;
+   font-family:Verdana,Helvetica,Arial,sans-serif;
+   font-size:7pt;
+   padding:2px;
+   color:#333333;
+}
+
+/* page navigation bar */
+
+div.pageNav {
+   margin-top:10px;
+   height:14px;
+   font-size:11px;
+}
+div.pageNavSummary {
+   padding:2px;
+   background-color:#efefef;
+   border-bottom:1px solid #cccccc;
+   text-align:left;
+}
+div.pageNavBar {
+   padding:2px;
+   text-align:right;
+}
+div.pageNavBar span {
+   padding-left:2px;
+   padding-right:2px;
+}
+div.pageNavBar span.pageNavSelItem {
+   font-weight:bold;
 }
