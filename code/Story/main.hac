@@ -24,3 +24,4 @@ else if ((req.data.submit == "save" || req.data.save) && this.weblog.hasDiscussi
 res.data.body = this.renderSkinAsString("main");
 
 this.incrementReadCounter();
+logAccess();
