@@ -1,28 +1,27 @@
 checkIfLoggedIn(this.href(req.action));
 
-var limit = getProperty("limitNewWeblogs").toLowerCase();
-if (limit == "sysadmin" && !isUserSysAdmin ()) {
-   res.message = getMsg("error","weblogCreateOnlyAdmins");
+if (root.sys_limitNewSites == 2 && !isUserSysAdmin ()) {
+   res.message = getMsg("error","siteCreateOnlyAdmins");
    res.redirect(root.href());
-} else if (limit == "trusted" && !(isUserSysAdmin () || isUserTrusted ())) {
-   res.message = getMsg("error","weblogCreateNotAllowed");
+} else if (root.sys_limitNewSites == 1 && !(isUserSysAdmin () || isUserTrusted ())) {
+   res.message = getMsg("error","siteCreateNotAllowed");
    res.redirect(root.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(root.href());
 else if (req.data.submit == "create" || req.data.create) {
-   var result = this.evalWeblog(req.data.title,req.data.alias,session.user);
+   var result = this.evalSite(req.data.title,req.data.alias,session.user);
    res.message = result.message;
    if (!result.error)
-      res.redirect(result.weblog.href());
+      res.redirect(result.site.href());
 }
    
 res.data.action = this.href(req.action);
 
-res.data.title = "Antville";
+res.data.title = root.getSysTitle();
 
-var newLog = new weblog();
-res.data.body = newLog.renderSkinAsString("new");
+var newSite = new site();
+res.data.body = newSite.renderSkinAsString("new");
 
 root.renderSkin("page");
