@@ -621,11 +621,15 @@ function listMostRead_macro() {
   storyList.sort(this.sortMostReads);
   var len = storyList.length;
   var max = 25;
-  var lim = len > max ? max : len;
+  var lim = Math.min(max, len); //len > max ? max : len;
   var param = new Object();
   for (var i=0; i<lim; i++) {
     var s = storyList[i];
-    param.reads = s.reads + s.cache.reads;
+	  if (s.cache.reads > 0) {
+	  	s.reads += s.cache.reads;
+	  	s.cache.reads = 0;
+	  }
+    param.reads = s.reads; // + s.cache.reads;
     param.rank = i+1;
     str += s.renderSkinAsString("mostread", param);
   }
