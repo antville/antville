@@ -85,11 +85,11 @@ This macro calls another skin for rendering.<br>
 <p><b>link</b><br>
 This macro renders a text-link to an external URL or an internal action.<br>
 <blockquote><pre>&lt;% this.link   to="ext. URL or internal action-name"
-               text="String to appear as link"
+               [text="String to appear as link"]
                [prefix="String"]
                [suffix="String"]
 %&gt;</pre></blockquote>
-If you want to link an image to somewhere else, you should use the image-macro of <i>story</i> or <i>weblog</i> described below.</p>
+If you don't specify a text to appear as link, the macro will display the url instead. If you want to link an image to somewhere else, you should use the image-macro of <i>story</i> or <i>weblog</i> described below.</p>
 
 <p><b>input</b><br>
 This macro renders an input-element. Use this macro for those inputs that have no initial value (i.e. in user-registration).<br>
