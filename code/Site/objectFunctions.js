@@ -47,7 +47,7 @@ function renderLinkToPrevMonth(cal) {
          if (this.get(cal.getTime().format("yyyyMMdd")))
             prevDay = this.get(cal.getTime().format("yyyyMMdd"));
       }
-      return ("<a href=\"" + this.href("main") + "?show="+ prevDay.groupname + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
+      return ("<a href=\"" + prevDay.href() + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -73,7 +73,7 @@ function renderLinkToNextMonth(cal) {
          if (this.get(cal.getTime().format("yyyyMMdd")))
             nextDay = this.get(cal.getTime().format("yyyyMMdd"));
       }
-      return ("<a href=\"" + this.href("main") + "?show="+ nextDay.groupname + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
+      return ("<a href=\"" + nextDay.href() + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -81,9 +81,12 @@ function renderLinkToNextMonth(cal) {
 
 /**
  * delete a story
+ * including all the comments
  */
 
 function deleteStory(currStory) {
+   for (var i=currStory.size();i>0;i--)
+      currStory.deleteComment(currStory.get(i-1));
    currStory.setParent(this);
    if (this.remove(currStory)) {
       this.lastupdate = new Date();
