@@ -159,23 +159,24 @@ function setPostCategories(postid, username, password, categories) {
  *  retrieve information about the XML-RPC methods supported by the server
  */
 function supportedMethods() {
-   var result = new Array();
-   result[result.length] = "metaWeblog.getPost";
-   result[result.length] = "metaWeblog.newPost";
-   result[result.length] = "metaWeblog.editPost";
-   result[result.length] = "blogger.deletePost";
-   result[result.length] = "metaWeblog.getRecentPosts";
-   result[result.length] = "metaWeblog.newMediaObject";
-   result[result.length] = "blogger.getUsersBlogs";
-   result[result.length] = "blogger.getUserInfo";
-   result[result.length] = "mt.getRecentPostTitles";
-   result[result.length] = "mt.getCategoryList";
-   result[result.length] = "mt.getPostCategories";
-   result[result.length] = "mt.setPostCategories";
-   result[result.length] = "mt.supportedMethods";
-   result[result.length] = "mt.supportedTextFilters";
-   result[result.length] = "mt.getTrackbackPings";
-   result[result.length] = "mt.publishPost";
+   var result = [
+      "metaWeblog.getPost",
+      "metaWeblog.newPost",
+      "metaWeblog.editPost",
+      "blogger.deletePost",
+      "metaWeblog.getRecentPosts",
+      "metaWeblog.newMediaObject",
+      "blogger.getUsersBlogs",
+      "blogger.getUserInfo",
+      "mt.getRecentPostTitles",
+      "mt.getCategoryList",
+      "mt.getPostCategories",
+      "mt.setPostCategories",
+      "mt.supportedMethods",
+      "mt.supportedTextFilters",
+      "mt.getTrackbackPings",
+      "mt.publishPost"
+   ]
    return result;
 }
 
@@ -186,7 +187,7 @@ function supportedMethods() {
  *  Antville currently just returns an empty array
  */
 function supportedTextFilters() {
-   return new Array();
+   return [];
 }
 
 
@@ -196,7 +197,7 @@ function supportedTextFilters() {
  *  Antville currently just returns an empty array
  */
 function getTrackbackPings() {
-   return new Array();
+   return [];
 }
 
 
