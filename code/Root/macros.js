@@ -64,3 +64,15 @@ function systitle_macro(param) {
 function sysurl_macro(param) {
    res.write(this.getSysUrl());
 }
+
+/**
+ * macro renders a link to the sysmgr if user has sysadmin rights
+ */
+function managelink_macro(param) {
+   if (!session.user || !session.user.sysadmin)
+      return;
+   openLink(root.href("manage"));
+   res.write(param.text ? param.text : "system management");
+   closeLink();
+   return;
+}
