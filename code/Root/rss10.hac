@@ -17,30 +17,30 @@ if (max > 50)
 	max = 50;
 
 for (var i=0; i<max; i++) {
-	var weblog = this.get(i);
-	if (weblog.online) {
-		// if weblog was modified, use modifytime, otherwise createtime
-		var weblogDate = weblog.lastupdate ? weblog.lastupdate : weblog.createtime;
-		param1.itemUrl = weblog.href();
-		param1.itemTitle = weblog.title ? encodeXml(weblog.title) : "[untitled antville weblog]";
-		param1.authorName = encodeXml(weblog.creator.name);
-		param1.authorMail = encodeXml(weblog.creator.email);
-		param1.date = weblogDate.format(w3fmt);
+	var site = this.get(i);
+	if (site.online) {
+		// if site was modified, use modifytime, otherwise createtime
+		var siteDate = site.lastupdate ? site.lastupdate : site.createtime;
+		param1.itemUrl = site.href();
+		param1.itemTitle = site.title ? encodeXml(site.title) : "[untitled " + root.getSysTitle() + " weblog]";
+		param1.authorName = encodeXml(site.creator.name);
+		param1.authorMail = encodeXml(site.creator.email);
+		param1.date = siteDate.format(w3fmt);
 		param1.year = now.getYear();
-		var descr = weblog.tagline ? encodeXml("<br />" + weblog.tagline) : "";
-		var date = weblogDate.format("dd.MM.yyyy, HH:mm'h CET'");
+		var descr = site.tagline ? encodeXml("<br />" + site.tagline) : "";
+		var date = siteDate.format("dd.MM.yyyy, HH:mm'h CET'");
 		param1.itemDescription = date + descr;
 		param2.items += renderSkinAsString("rss10Item", param1);
 		param2.resources += renderSkinAsString("rss10Resource", param1);
 	}
 }
 
-param2.title = "Antville Weblogs";
+param2.title = root.getSysTitle() + " Weblogs";
 param2.url = encodeXml(this.href());
-param2.description = "Recently updated Antville weblogs ordered by date";
+param2.description = "Recently updated " + root.getSysTitle() + " weblogs ordered by date";
 param2.year = now.getYear();
-param2.creatorName = "Antville Weblog Tool";
-param2.creatorMail = getProperty("adminEmail");
+param2.creatorName = root.getSysTitle() + " Weblog Tool";
+param2.creatorMail = root.sys_email;
 param2.date = now.format(w3fmt);
 param2.updateBase = "2000-01-01T00:00:00Z";
 param2.language = "en";
