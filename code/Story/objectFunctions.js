@@ -286,3 +286,16 @@ function incrementReadCounter() {
       app.data.readLog.get(String(this._id)).reads++;
    return;
 }
+
+/**
+ * Return either the title of the story or
+ * the id prefixed with standard display name
+ * to be used in the global linkedpath macro
+ * @see hopobject.getNavigationName()
+ */
+function getNavigationName () {
+   if (this.title)
+      return this.title;
+   return (DISPLAY["story"] + " " + this._id);
+}
+
