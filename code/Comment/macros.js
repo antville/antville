@@ -50,7 +50,7 @@ function author_macro(param) {
 
 function createtime_macro(param) {
    renderPrefix(param);
-   res.write(param.format ? this.createtime.format(param.format) : this.createtime.format());
+   res.write(param.format ? this.createtime.format(param.format) : this.createtime.format("yyyy.MM.dd HH:mm"));
    renderSuffix(param);
 }
 
