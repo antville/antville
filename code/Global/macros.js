@@ -455,8 +455,12 @@ function fakemail_macro(param) {
    	var serverLength = Math.round(Math.random()*16) + 8;
    	for (var j=0;j<serverLength;j++)
    		serverName += String.fromCharCode(Math.round(Math.random()*25) + 97);
-   	res.write("<a href=\"mailto:" + mailName + "@" + serverName + "." + tld + "\">");
-   	res.write(mailName + "@" + serverName + "." + tld + "</a>, ");
+      var addr = mailName + "@" + serverName + "." + tld;
+      openLink("mailto:" + addr);
+   	res.write(addr);
+      closeLink();
+      if (i+1 < nOfMails)
+         res.write(param.delimiter ? param.delimiter : ", ");
    }
 	return;
 }
