@@ -1,11 +1,12 @@
 <div class="listSeparator">&nbsp;</div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small"><div class="ample"><strong>Status:</strong> <% membership.level %></td>
+<td colspan="3" class="small"><div class="ample"><strong>Status:</strong> <% membership.level %></div></td>
 </tr>
 <tr valign="top">
 <td><div class="storytitle"><% membership.username %></div>
-<div class="storyDate"><% membership.createtime format="short" prefix="created on " %><% membership.url as="link" prefix="<br />" %></div></td>
+<div class="ample"><small><% membership.createtime format="short" prefix="created on " %></small></div>
+<div><% membership.url as="link" %></div></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
 <td align="right" class="small" nowrap="nowrap"><% membership.editlink text="edit" prefix="...&nbsp;" suffix="<br />" %>
 <% membership.link to="mailto" text="contact" prefix="...&nbsp;" %>
