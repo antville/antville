@@ -1,1 +1,0 @@
-<% this.link to="main" text="add your comment!" %>&nbsp;(<% this.commentcounter no=" threads" one=" thread" more=" threads" %>)&nbsp;&nbsp;
