@@ -166,13 +166,13 @@ function getRenderedContentPart (name) {
       var part = this.getContentPart (name);
       if (!part)
          return "";
-      var s = createSkin(format(activateLinks(part)));
+      var s = createSkin(activateLinks(part));
       this.allowTextMacros(s);
       if (!s.containsMacro("poll"))
          this.cache["lastRendered_"+name] = new Date();
       this.cache["rendered_"+name] = this.renderSkinAsString(s);
    }
-   return (doWikiStuff(this.cache["rendered_"+name]));
+   return (format(doWikiStuff(this.cache["rendered_"+name])));
 }
 
 /**
