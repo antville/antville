@@ -7,16 +7,16 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="alternate" type="text/xml" title="XML" href="<% site.href %>rss" />
-<script type="text/javascript" src="<% site.href %>main.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href %>main.css" />
+<link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss" />
+<script type="text/javascript" src="<% site.url %>main.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>main.css" />
 </head>
 
 <body>
 
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td class="header"><a href="<% site.href %>" title="<% site.tagline %>"><% site.title %></a></td>
+<td class="header"><a href="<% site.url %>" title="<% site.tagline %>"><% site.title %></a></td>
 </tr>
 </table>
 

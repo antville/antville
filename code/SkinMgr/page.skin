@@ -7,7 +7,7 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% context.href %>main.css" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% context.url %>main.css" />
 <style type="text/css">
 <!--
 

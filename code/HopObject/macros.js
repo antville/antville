@@ -1,4 +1,12 @@
 /**
+ * user-friendly wrapper for href_macro
+ */
+function url_macro(param) {
+   this.href_macro(param);
+   return;
+}
+
+/**
  * macro creates an html link
  */
 function link_macro(param) {
@@ -19,7 +27,6 @@ function createtime_macro(param) {
    return;
 }
 
-
 /**
  * macro rendering modifytime
  */
@@ -28,7 +35,6 @@ function modifytime_macro(param) {
       res.write(formatTimestamp(this.modifytime, param.format));
    return;
 }
-
 
 /**
  * macro renders the name of the creator of an object

@@ -1,7 +1,7 @@
 This is a notification to inform you that changes were applied to the site <% site.title %><% param.user prefix=" by user " %>.
 
 For details please check the following URL: 
-<% param.href %>
+<% param.url %>
 
 PLEASE DO NOT REPLY TO THIS MESSAGE.
 

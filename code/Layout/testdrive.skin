@@ -1,2 +1,2 @@
-<form method="get" action="<% layout.href action="stopTestdrive" %>">
+<form method="get" action="<% layout.url action="stopTestdrive" %>">
 <div>Currently testing the layout '<% layout.title linkto="main" %>'<br /><% input type="submit" name="stop" value="Stop testing the layout" %></div>

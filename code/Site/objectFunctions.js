@@ -234,7 +234,7 @@ function sendNotification(type, obj) {
       var param = {
          user: obj.modifier ? obj.modifier.name :
             (obj.creator ? obj.creator.name : null),
-         href: obj.href()
+         url: obj.href()
       };
       var sender = root.sys_title + "<" + root.sys_email + ">";
       var subject = getMessage("mail.notification");
