@@ -20,7 +20,7 @@ if (req.data.q) {
     var found = result.length;
 
     if (found == 0)
-        res.body += "<i>Nothing found for '"+query+"'.</i>";
+        res.data.body += "<i>Nothing found for '"+query+"'.</i>";
     else {
         var start = 0;
         var end = found;
