@@ -1,6 +1,6 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isDenied(user);
+var deny = this.isDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(this.href());
@@ -10,28 +10,28 @@ var s = new story();
 s.topic = req.data.topic;
 s.text = req.data.text;
 
-// storing referrer in user-cache in case user clicks cancel later
-if (!user.cache.referrer && req.data.http_referer)
-   user.cache.referrer = req.data.http_referer;
+// storing referrer in session-cache in case user clicks cancel later
+if (!session.data.referrer && req.data.http_referer)
+   session.data.referrer = req.data.http_referer;
 
 if (req.data.submit == "cancel" || req.data.cancel) {
-   var url = user.cache.referrer ? user.cache.referrer : this.href();
-   user.cache.referrer = null;
+   var url = session.data.referrer ? session.data.referrer : this.href();
+   session.data.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
-   var result = this.evalNewStory(s,req.data,user);
+   var result = this.evalNewStory(s,req.data,session.user);
    res.message = result.message;
    if (!result.error) {
-      user.cache.referrer = null;
+      session.data.referrer = null;
       res.redirect(result.url);
    } else
       s = result.story;
 }
-
-res.skin = "weblog.page";
 
 res.data.title = path.weblog.title;
 
 res.data.action = this.href("create");
 
 res.data.body = s.renderSkinAsString("edit");
+
+path.weblog.renderSkin("page");
