@@ -1,1 +1,1 @@
-res.redirect(this.href("weblogs"));
+res.redirect(this.href("sites"));
