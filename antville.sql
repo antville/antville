@@ -179,3 +179,23 @@ create table MEMBER (
 # No records for table MEMBER
 #----------------------------
 
+#----------------------------
+# Table structure for GOODIE
+#----------------------------
+create table GOODIE (
+  ID mediumint(9) not null,
+  WEBLOG_ID mediumint(9),
+  ALIAS tinytext,
+  MIMETYPE tinytext,
+  `FILE` tinytext,
+  FILESIZE mediumint(9),
+  DESCRIPTION mediumtext,
+  CREATETIME datetime,
+  CREATOR mediumint(9),
+  MODIFYTIME datetime,
+  MODIFIER mediumint(9),
+  unique ID(ID));
+
+#----------------------------
+# No records for table GOODIE
+#----------------------------
