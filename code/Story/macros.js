@@ -245,6 +245,7 @@ function commentcounter_macro(param) {
       var commentCnt = this.allcomments.count();
       var linkParam = new Object();
       linkParam.linkto = (param.linkto ? param.linkto : "main");
+      linkParam.anchor = param.anchor;
       if (commentCnt == 0) {
          res.write(commentCnt + " " + (param.no ? param.no : " comments"));
       } else {
