@@ -16,11 +16,9 @@ function membership_macro(param) {
  */
 
 function subscribelink_macro(param) {
-   if (!path.site || !path.site.online || req.data.memberlevel != null)
-      return;
-   openLink(path.site.href("subscribe"));
-   res.write(param.text ? param.text : "sign up");
-   closeLink();
+   if (this._parent.online && req.data.memberlevel == null)
+      Html.link(this._parent.href("subscribe"), param.text ? param.text : "sign up");
+   return;
 }
 
 /**
@@ -29,11 +27,9 @@ function subscribelink_macro(param) {
  */
 
 function subscriptionslink_macro(param) {
-   if (!session.user.size())
-      return;
-   openLink(this.href("subscriptions"));
-   res.write(param.text ? param.text : "subscriptions");
-   closeLink();
+   if (session.user.size())
+      Html.link(this.href("subscriptions"), param.text ? param.text : "subscriptions");
+   return;
 }
 
 /**
@@ -48,7 +44,7 @@ function memberlist_macro(param) {
       var m = this.get(i);
       if (m.level != currLvl) {
          sp.list = memberlist.toString();
-         this.renderSkin("membergroup",sp);
+         this.renderSkin("membergroup", sp);
          memberlist = new java.lang.StringBuffer();
          sp.group = getRole(m.level);
          currLvl = m.level;
