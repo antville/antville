@@ -25,7 +25,7 @@ function renderImage(img, param) {
  * otherwise it assumes the color is a named one
  */
 function renderColorAsString(c) {
-   if (c && c.length == 6 && c.isHexColor())
+   if (c && c.isHexColor())
       return("#" + c);
    return(c);
 }
