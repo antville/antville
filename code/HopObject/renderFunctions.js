@@ -96,7 +96,7 @@ function renderInputCheckbox(param) {
       res.write("\" value=\"1\"");
       if (param.style)
          res.write(" class=\"" + param.style + "\"");
-      if (parseInt(param.value,10) == 1)
+      if (parseInt(param.value,10) == 1 || param.check == "true")
          res.write(" checked");
       res.write(">");
    }
