@@ -1,15 +1,19 @@
-if (!this.isSignUpAllowed())
+var deny = this.isSignUpDenied();
+if (deny) {
+   res.message = deny;
    res.redirect(user.cache.referer ? this.members.href("login") : this.href());
+}
 
-res.skin = "main";
+res.skin = "weblog.page";
 
-if (req.data.submit == "cancel")
+if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.href());
 else
    this.evalSignup();
 
 res.title = this.title + " - sign up";
+
 res.head = this.renderSkinAsString("javascript");
 res.head += this.renderSkinAsString("style");
-res.body = this.renderSkinAsString("header");
-res.body += this.renderSkinAsString("signup");
+
+res.body = this.renderSkinAsString("signup");
