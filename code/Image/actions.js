@@ -4,7 +4,7 @@
 function main_action() {
    res.data.title = "View image: " + this.alias;
    res.data.body = this.renderSkinAsString("main");
-   path.imagemgr._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
 
 
@@ -18,11 +18,11 @@ function edit_action() {
       res.message = this.evalImg(req.data, session.user);
       res.redirect(this.href());
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Edit image: " + this.alias;
    res.data.body = this.renderSkinAsString("edit");
-   path.imagemgr._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
 
 
@@ -41,11 +41,11 @@ function delete_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Delete image: " + this.alias;
    var sp = new Object();
    sp.what = "the image &quot;" + this.alias + "&quot;";
    res.data.body = this.renderSkinAsString("delete", sp);
-   path.imagemgr._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
