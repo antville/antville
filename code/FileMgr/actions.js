@@ -2,7 +2,7 @@
  * list all files of a site
  */
 function main_action() {
-   res.data.filelist = renderList(this, "preview", 10, req.data.page);
+   res.data.filelist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.title = "Files of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
@@ -14,7 +14,7 @@ function main_action() {
  */
 function myfiles_action() {
    var ms = this._parent.members.get(session.user.name);
-   res.data.filelist = renderList(ms.files, "preview", 10, req.data.page);
+   res.data.filelist = renderList(ms.files, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.files, this.href(), 10, req.data.page);
    res.data.title = "My files of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
