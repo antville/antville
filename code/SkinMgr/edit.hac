@@ -9,7 +9,7 @@ if (req.data.submit == "cancel" || req.data.cancel)
 else if (req.data.submit == "save" || req.data.save)
    this.saveSkin();
 
-res.skin = "weblog.page";
+res.skin = "skinmgr.page";
 
 res.title = "Antville - " + path.weblog.title;
 
