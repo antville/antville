@@ -189,6 +189,6 @@ function processHref(href) {
    if (vhost)
       return vhost+href;
    else
-      return "/"+this.alias+href;
+      return getProperty("defaulthost")+"/"+this.alias+href;
 }
 
