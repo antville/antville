@@ -375,7 +375,9 @@ function search_action() {
          res.data.pagenavigation = renderPageNavigation(total, this.href(req.action) + "?" + queryArr.join("&"), 10, req.data.page);
          searcher.close();
       }
-      app.log("[" + this.alias + "] query (" + (new Date()).diff(now) + "ms): " + q);
+      app.debug("[" + this.alias + "] search for " + q.toString() +
+                ", filter: " + filter.toString() +
+                " (" + (new Date()).diff(now) + "ms)");
    }
 
    res.data.action = this.href(req.action);
