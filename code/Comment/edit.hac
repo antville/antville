@@ -1,4 +1,5 @@
 autoLogin();
+checkIfLoggedIn(this.href(req.action));
 
 var deny = this.isEditDenied(user);
 if (deny) {
