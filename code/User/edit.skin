@@ -25,5 +25,3 @@
 </tr>
 </table>
 </form>
-
-<% this.membershiplist prefix="<p>You're member of the following weblogs:<ul>" suffix="</ul></p>" %>
