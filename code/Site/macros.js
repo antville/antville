@@ -1,348 +1,351 @@
 /**
  * macro rendering title of weblog
  */
-
 function title_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("title",param));
-   else {
-      if (param && param.linkto) {
-         this.openLink(param);
-         if (this.title)
-            res.write(stripTags(this.title));
-         else
-            res.write("[untitled weblog]");
-         this.closeLink(param);
-      } else
-         res.write(this.title);
-   }
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("title", param));
+  else {
+    if (param && param.linkto) {
+      this.openLink(param);
+      if (this.title)
+        res.write(stripTags(this.title));
+      else
+        res.write("[untitled weblog]");
+      this.closeLink(param);
+    }
+    else
+      res.write(this.title);
+  }
 }
+
 
 /**
  * macro rendering alias of weblog
  */
-
 function alias_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("alias",param));
-   else
-      res.write(this.alias);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("alias",param));
+  else
+    res.write(this.alias);
 }
+
 
 /**
  * macro rendering tagline of weblog
  */
-
 function tagline_macro(param) {
-   if (!this.tagline && param.as != "editor")
-      return;
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("tagline",param));
-   else if (this.tagline)
-      res.write(stripTags(this.tagline));
+  if (!this.tagline && param.as != "editor")
+    return;
+  
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("tagline",param));
+  else if (this.tagline)
+    res.write(stripTags(this.tagline));
 }
+
 
 /**
  * macro rendering birthdate of weblog
  */
-
 function birthdate_macro(param) {
-   if (param.as == "editor")
-      this.renderDateDropdown(this.createInputParam("birthdate",param));
-   else if (param.format)
-      res.write(this.birthdate.format(param.format));
-   else
-      res.write(this.birthdate.format("yyyy.MM.dd HH:mm"));
+  if (param.as == "editor")
+    this.renderDateDropdown(this.createInputParam("birthdate",param));
+  else if (param.format)
+    res.write(this.birthdate.format(param.format));
+  else
+    res.write(this.birthdate.format("yyyy.MM.dd HH:mm"));
 }
+
 
 /**
  * macro rendering email of weblog
  */
-
 function email_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("email",param));
-   else
-      res.write(this.email);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("email",param));
+  else
+    res.write(this.email);
 }
+
 
 /**
  * macro rendering bgcolor of weblog
  */
-
 function bgcolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("bgcolor",param));
-   else
-      renderColor(this.bgcolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("bgcolor",param));
+  else
+    renderColor(this.bgcolor);
 }
+
 
 /**
  * macro rendering textfont of weblog
  */
-
 function textfont_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("textfont",param));
-   else
-      res.write(this.textfont);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("textfont",param));
+  else
+    res.write(this.textfont);
 }
+
 
 /**
  * macro rendering textsize of weblog
  */
-
 function textsize_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("textsize",param));
-   else
-      res.write(this.textsize);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("textsize",param));
+  else
+    res.write(this.textsize);
 }
+
 
 /**
  * macro rendering textcolor of weblog
  */
-
 function textcolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("textcolor",param));
-   else
-      renderColor(this.textcolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("textcolor",param));
+  else
+    renderColor(this.textcolor);
 }
+
 
 /**
  * macro rendering linkcolor of weblog
  */
-
 function linkcolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("linkcolor",param));
-   else
-      renderColor(this.linkcolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("linkcolor",param));
+  else
+    renderColor(this.linkcolor);
 }
+
 
 /**
  * macro rendering alinkcolor of weblog
  */
-
 function alinkcolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("alinkcolor",param));
-   else
-      renderColor(this.alinkcolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("alinkcolor",param));
+  else
+    renderColor(this.alinkcolor);
 }
+
 
 /**
  * macro rendering vlinkcolor of weblog
  */
-
 function vlinkcolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("vlinkcolor",param));
-   else
-      renderColor(this.vlinkcolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("vlinkcolor",param));
+  else
+    renderColor(this.vlinkcolor);
 }
+
 
 /**
  * macro rendering titlefont of weblog
  */
-
 function titlefont_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("titlefont",param));
-   else
-      res.write(this.titlefont);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("titlefont",param));
+  else
+    res.write(this.titlefont);
 }
+
 
 /**
  * macro rendering titlesize of weblog
  */
-
 function titlesize_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("titlesize",param));
-   else
-      res.write(this.titlesize);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("titlesize",param));
+  else
+    res.write(this.titlesize);
 }
+
 
 /**
  * macro rendering titlecolor of weblog
  */
-
 function titlecolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("titlecolor",param));
-   else
-      renderColor(this.titlecolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("titlecolor",param));
+  else
+    renderColor(this.titlecolor);
 }
+
 
 /**
  * macro rendering smallfont of weblog
  */
-
 function smallfont_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("smallfont",param));
-   else
-      res.write(this.smallfont);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("smallfont",param));
+  else
+    res.write(this.smallfont);
 }
+
 
 /**
  * macro rendering smallfont-size of weblog
  */
-
 function smallsize_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("smallsize",param));
-   else
-      res.write(this.smallsize);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("smallsize",param));
+  else
+    res.write(this.smallsize);
 }
+
 
 /**
  * macro rendering smallfont-color of weblog
  */
-
 function smallcolor_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("smallcolor",param));
-   else
-      renderColor(this.smallcolor);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("smallcolor",param));
+  else
+    renderColor(this.smallcolor);
 }
+
 
 /**
  * macro rendering lastupdate of weblog
  */
-
 function lastupdate_macro(param) {
-   if (!this.lastupdate)
-      res.write("no updates so far");
-   else
-      res.write(formatTimestamp(this.lastupdate,param.format));
+  if (!this.lastupdate) {
+    res.write("no updates so far");
+  }
+  else
+    res.write(this.formatTimestamp(this.lastupdate,param));
 }
+
 
 /**
  * macro rendering createtime of weblog
  */
-
 function createtime_macro(param) {
-   res.write(formatTimestamp(this.createtime,param.format));
+  res.write(this.formatTimestamp(this.createtime,param));  
 }
+
 
 /**
  * macro rendering modifytime of weblog
  */
-
 function modifytime_macro(param) {
-   if (this.modifytime)
-      res.write(formatTimestamp(this.modifytime,param.format));
+  if (this.modifytime) {
+    res.write(res.write(this.formatTimestamp(this.modifytime,param)));
+  }
 }
+
 
 /**
  * macro rendering online-status of weblog
  */
-
 function online_macro(param) {
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("online",param));
-   else
-      res.write(this.online ? "yes" : "no");
+  if (param.as == "editor")
+    this.renderInputCheckbox(this.createInputParam("online",param));
+  else
+    res.write(this.online ? "yes" : "no");
 }
+
 
 /**
  * macro renders the url to this weblog
  */
-
 function url_macro(param) {
-   res.write(this.href());
+  res.write(this.href());
 }
+
 
 /**
  * macro rendering discussion-flag of weblog
  */
-
 function hasdiscussions_macro(param) {
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("discussions",param));
-   else
-      res.write(parseInt(this.discussions,10) ? "yes" : "no");
+  if (param.as == "editor")
+    this.renderInputCheckbox(this.createInputParam("discussions",param));
+  else
+    res.write(parseInt(this.discussions,10) ? "yes" : "no");
 }
+
 
 /**
  * macro rendering usercontrib-flag of weblog
  */
-
 function usermaycontrib_macro(param) {
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("usercontrib",param));
-   else
-      res.write(parseInt(this.usercontrib,10) ? "yes" : "no");
+  if (param.as == "editor")
+    this.renderInputCheckbox(this.createInputParam("usercontrib",param));
+  else
+    res.write(parseInt(this.usercontrib,10) ? "yes" : "no");
 }
+
 
 /**
  * macro rendering nr. of days to show on weblog-fontpage
  */
-
 function showdays_macro(param) {
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("days",param));
-   else
-      res.write(this.days);
+  if (param.as == "editor")
+    this.renderInputText(this.createInputParam("days",param));
+  else
+    res.write(this.days);
 }
+
 
 /**
  * macro rendering archive-flag of weblog
  */
-
 function showarchive_macro(param) {
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("archive",param));
-   else
-      res.write(parseInt(this.archive,10) ? "yes" : "no");
+  if (param.as == "editor")
+    this.renderInputCheckbox(this.createInputParam("archive",param));
+  else
+    res.write(parseInt(this.archive,10) ? "yes" : "no");
 }
+
 
 /**
  * macro rendering enableping-flag of weblog
  */
-
 function enableping_macro(param) {
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("enableping",param));
-   else
-      res.write(parseInt(this.enableping,10) ? "yes" : "no");
+  if (param.as == "editor")
+    this.renderInputCheckbox(this.createInputParam("enableping",param));
+  else
+    res.write(parseInt(this.enableping,10) ? "yes" : "no");
 }
+
 
 /**
  * macro rendering default longdateformat of weblog
  */
-
 function longdateformat_macro(param) {
-   if (param.as == "chooser")
-      this.renderDateformatChooser("long");
-   else if (param.as == "editor")
-      this.renderInputText(this.createInputParam("longdateformat",param));
-   else
-      res.write(this.longdateformat);
+  if (param.as == "chooser")
+    this.renderDateformatChooser("long");
+  else if (param.as == "editor")
+    this.renderInputText(this.createInputParam("longdateformat",param));
+  else
+    res.write(this.longdateformat);
 }
+
 
 /**
  * macro rendering default shortdateformat of weblog
  */
-
 function shortdateformat_macro(param) {
-   if (param.as == "chooser")
-      this.renderDateformatChooser("short");
-   else if (param.as == "editor")
-      this.renderInputText(this.createInputParam("shortdateformat",param));
-   else
-      res.write(this.shortdateformat);
+  if (param.as == "chooser")
+    this.renderDateformatChooser("short");
+  else if (param.as == "editor")
+    this.renderInputText(this.createInputParam("shortdateformat",param));
+  else
+    res.write(this.shortdateformat);
 }
+
 
 /**
  * macro rendering loginStatus of user
  * valid params:  -  loginSkin
  *                -  logoutSkin
  */
-
 function loginstatus_macro(param) {
    if (session.user)
       this.members.renderSkin("statusloggedin");
@@ -355,7 +358,6 @@ function loginstatus_macro(param) {
  * macro rendering two different navigation-skins
  * depending on user-status & rights
  */
-
 function navigation_macro(param) {
    this.renderSkin("usernavigation");
    if (!session.user)
@@ -372,19 +374,16 @@ function navigation_macro(param) {
  * macro writes storylist to response-object
  * kept for backwards-compatibility only
  */
-
 function storylist_macro(param) {
    res.write(res.data.storylist);
    return;
 }
 
 
-
 /**
  * macro renders a calendar
  * version 2
  */
-
 function calendar_macro(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this weblog is disabled
@@ -469,7 +468,6 @@ function calendar_macro(param) {
 /**
  * macro renders age of weblog
  */
-
 function age_macro(param) {
    if (this.birthdate) {
       if (param && param.format)
@@ -486,7 +484,6 @@ function age_macro(param) {
  * macro left for backwards-compatibility
  * calls global image_macro()
  */
-
 function image_macro(param) {
    image_macro(param);
 }
@@ -496,24 +493,23 @@ function image_macro(param) {
  * macro left for backwards-compatibility
  * calls global thumbnail_macro()
  */
-
 function thumbnail_macro(param) {
    thumbnail_macro(param);
 }
 
+
 /**
  * macro renders the number of members of this weblog
  */
-
 function membercounter_macro(param) {
    res.write(this.members.size());
 }
+
 
 /**
  * macro renders a list of recentyl added/updated stories/comments
  * of this weblog
  */
-
 function history_macro(param) {
    if (this.isNotPublic(session.user) && !this.isUserMember(session.user))
       return;
@@ -527,7 +523,6 @@ function history_macro(param) {
 /**
  * macro renders a list of available locales as dropdown
  */
-
 function localechooser_macro(param) {
    var locs = java.util.Locale.getAvailableLocales();
    var options = new Array();
@@ -538,8 +533,10 @@ function localechooser_macro(param) {
       if (locs[i].equals(loc))
          var selectedIndex = i;
    }
-   res.write(simpleDropDownBox("locale",options,selectedIndex));
+   renderDropDownBox("locale",options,selectedIndex);
 }
+
+
 
 /**
  * macro renders a list of available time zones as dropdown
@@ -556,7 +553,7 @@ function timezonechooser_macro(param) {
       if (zones[i] == currentZone.getID())
          var selectedIndex = i;
    }
-   res.write(simpleDropDownBox("timezone",options,selectedIndex));
+   renderDropDownBox("timezone",options,selectedIndex);
 }
 
 
@@ -564,26 +561,25 @@ function timezonechooser_macro(param) {
  * renders a list of most read pages, ie. a link
  * to a story together with the read counter et al.
  */
-
 function listMostRead_macro() {
-   var str = "";
-   var storyList = this.mostread.list();
-   storyList.sort(this.sortMostReads);
-   var len = storyList.length;
-   var max = 25;
-   var lim = Math.min(max, len); //len > max ? max : len;
-   var param = new Object();
-   for (var i=0; i<lim; i++) {
-      var s = storyList[i];
-      if (s.cache.reads > 0) {
-         s.reads += s.cache.reads;
-         s.cache.reads = 0;
-      }
-      param.reads = s.reads; // + s.cache.reads;
-      param.rank = i+1;
-      str += s.renderSkinAsString("mostread", param);
-   }
-   return(str);
+  var str = "";
+  var storyList = this.mostread.list();
+  storyList.sort(this.sortMostReads);
+  var len = storyList.length;
+  var max = 25;
+  var lim = Math.min(max, len); //len > max ? max : len;
+  var param = new Object();
+  for (var i=0; i<lim; i++) {
+    var s = storyList[i];
+    if (s.cache.reads > 0) {
+      s.reads += s.cache.reads;
+      s.cache.reads = 0;
+    }
+    param.reads = s.reads; // + s.cache.reads;
+    param.rank = i+1;
+    str += s.renderSkinAsString("mostread", param);
+  }
+  return(str);
 }
 
 
@@ -591,35 +587,34 @@ function listMostRead_macro() {
  * renders a list of referrers, ie. a link
  * to a url together with the read counter et al.
  */
-
 function listReferrers_macro() {
-	var str = "";
-	var c = getDBConnection("antville");
-	error = c.getLastError();
-	if (error)
-		return("Error establishing DB connection: " + error);
+  var str = "";
+  var c = getDBConnection("antville");
+  error = c.getLastError();
+  if (error)
+    return("Error establishing DB connection: " + error);
 
-	// we're doing this with direct db access here
-	// (there's no need to do it with prototypes):
-   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
-	var query = "select *, count(*) as \"COUNT\" from ACCESS where WEBLOG_ID = " + this._id + " and DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by REFERRER order by \"COUNT\" desc, REFERRER asc;";
-	var rows = c.executeRetrieval(query);
-	error = c.getLastError();
-	if (error)
-		return("Error executing SQL query: " + error);
-	
-	var param = new Object();
-	while (rows.next()) {
-		param.count = rows.getColumnItem("COUNT");
+  // we're doing this with direct db access here
+  // (there's no need to do it with prototypes):
+  var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
+  var query = "select *, count(*) as \"COUNT\" from ACCESS where WEBLOG_ID = " + this._id + " and DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by REFERRER order by \"COUNT\" desc, REFERRER asc;";
+  var rows = c.executeRetrieval(query);
+  error = c.getLastError();
+  if (error)
+    return("Error executing SQL query: " + error);
+  
+  var param = new Object();
+  while (rows.next()) {
+    param.count = rows.getColumnItem("COUNT");
     // these two lines are necessary only for hsqldb connections:
     if (param.count == 0);
       continue;
-		param.referrer = rows.getColumnItem("REFERRER");
-		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
-		str += this.renderSkinAsString("referrerItem", param);
-	}
-   rows.release();
-	return(str);
+    param.referrer = rows.getColumnItem("REFERRER");
+    param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
+    str += this.renderSkinAsString("referrerItem", param);
+  }
+  rows.release();
+  return(str);
 }
 
 
@@ -627,16 +622,14 @@ function listReferrers_macro() {
  * renders the xml button for use 
  * when referring to an rss feed
  */
-
 function xmlbutton_macro() {
-	var param = new Object();
-	param.to = this.href("rss10");
-	param.name = "xmlbutton";
-   var img = root.images.get(param.name);
-	if (!img)
-     	return;
-	this.openLink(param);
-	root.renderImage(img, param);
-	this.closeLink();
+  var param = new Object();
+  param.to = this.href("rss10");
+  param.name = "xmlbutton";
+  var img = root.images.get(param.name);
+  if (!img)
+    return;
+  this.openLink(param);
+  renderImage(img, param);
+  this.closeLink();
 }
-

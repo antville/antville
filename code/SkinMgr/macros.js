@@ -6,12 +6,15 @@ function skins_macro(param) {
    for (var i in app.skinfiles) {
       res.write("<b>" + i + "</b>");
       for (var j in app.skinfiles[i]) {
-         res.write("<li>");
-         res.write("<a href=\"" + this.href() + "?proto=" + i + "&name=" + j + "\">");
+         var linkparam = new Object();
+         linkparam.href = this.href() + "?proto=" + i + "&name=" + j;
+         openMarkupElement("li");
+         openMarkupElement("a", linkparam);
          res.write(j);
-         res.write("</a></li>");
+         closeMarkupElement("a");
+         closeMarkupElement("li");
       }
-      res.write("<br>");
+      renderMarkupElement("br");
    }
 }
 
