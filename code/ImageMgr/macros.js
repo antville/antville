@@ -20,7 +20,7 @@ function imagelist_macro(param) {
    var idx = 0;
    while (imgcnt < size || imgcnt == size-1) {
       var imgObj = this.get(idx++);
-      var url = param.linkto ? param.linkto : imgObj.getStaticUrl();
+      var url = param.linkto ? param.linkto : imgObj.getUrl();
 
       res.write(param.itemprefix);
       // return different display according to param.as
@@ -28,7 +28,7 @@ function imagelist_macro(param) {
          if (imgObj.thumbnail)
             imgObj = imgObj.thumbnail;
       } else if (param.as == "popup") {
-         url = imgObj.popupUrl();
+         url = imgObj.getPopupUrl();
          if (imgObj.thumbnail)
             imgObj = imgObj.thumbnail;
       }
