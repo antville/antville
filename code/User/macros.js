@@ -49,9 +49,9 @@ function email_macro(param) {
 
 function publishemail_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.createInputParam("publishemail", param);
-      if ((req.data.save && req.data.publishemail) || (!req.data.save && this.publishemail))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("publishemail", param);
+      if (req.data.save && !req.data.publishemail)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
       res.write(this.publishemail ? "yes" : "no");

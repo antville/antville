@@ -68,9 +68,9 @@ function lastupdate_macro(param) {
  */
 function online_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.createInputParam("online", param);
-      if ((req.data.save && req.data.online) || (!req.data.save && this.online))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("online", param);
+      if (req.data.save && !req.data.online)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.online)
       res.write(param.yes ? param.yes : "yes");
@@ -84,10 +84,9 @@ function online_macro(param) {
  */
 function hasdiscussions_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.preferences.createInputParam("discussions", param);
-      if ((req.data.save && req.data.discussions) ||
-          (!req.data.save && this.preferences.getProperty("discussions")))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("discussions", param);
+      if (req.data.save && !req.data.discussions)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
       res.write(this.preferences.getProperty("discussions") ? "yes" : "no");
@@ -100,10 +99,9 @@ function hasdiscussions_macro(param) {
  */
 function usermaycontrib_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.preferences.createInputParam("usercontrib", param);
-      if ((req.data.save && req.data.usercontrib) ||
-          (!req.data.save && this.preferences.getProperty("usercontrib")))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("usercontrib", param);
+      if (req.data.save && !req.data.usercontrib)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
       res.write(this.preferences.getProperty("usercontrib") ? "yes" : "no");
@@ -126,10 +124,9 @@ function showdays_macro(param) {
  */
 function showarchive_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.preferences.createInputParam("archive", param);
-      if ((req.data.save && req.data.archive) ||
-          (!req.data.save && this.preferences.getProperty("archive")))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("archive", param);
+      if (req.data.save && !req.data.archive)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
       res.write(this.preferences.getProperty("archive") ? "yes" : "no");
@@ -141,9 +138,9 @@ function showarchive_macro(param) {
  */
 function enableping_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.createInputParam("enableping", param);
-      if ((req.data.save && req.data.enableping) || (!req.data.save && this.enableping))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("enableping", param);
+      if (req.data.save && !req.data.enableping)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
       res.write(this.enableping ? "yes" : "no");

@@ -245,9 +245,9 @@ function description_macro(param) {
  */
 function shareable_macro(param) {
    if (param.as == "editor" && !this.site) {
-      var inputParam = this.createInputParam("shareable", param);
-      if ((req.data.save && req.data.shareable) || (!req.data.save && this.shareable))
-         inputParam.checked = "checked";
+      var inputParam = this.createCheckBoxParam("shareable", param);
+      if (req.data.save && !req.data.shareable)
+         delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.shareable)
       res.write(param.yes ? param.yes : "yes");
