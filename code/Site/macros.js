@@ -474,7 +474,7 @@ function calendar_macro(param) {
  * macro renders age
  */
 function age_macro(param) {
-   res.write(Math.floor((new Date() - this.createtime) / 86400000));
+   res.write(Math.floor((new Date() - this.createtime) / ONEDAY));
 }
 
 
@@ -509,8 +509,11 @@ function membercounter_macro(param) {
  * of this site
  */
 function history_macro(param) {
-   if (this.isAccessDenied(session.user, req.data.memberlevel))
+   try {
+      this.checkView(session.user, req.data.memberlevel);
+   } catch (deny) {
       return;
+   }
    if (!param.show)
       param.show = 5;
    var cnt = 0;
