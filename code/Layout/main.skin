@@ -2,9 +2,9 @@
 
 <p class="storyTitle"><br />Layout '<% layout.title %>'</p>
 
-<p><% this.description prefix="<p>" suffix="<br />" %>
-<span class="small"><% this.copyright prefix="<br />Copyright: " %>
-<% this.email prefix="<br />e-mail: " %></span></p>
+<p><% layout.description prefix="<p>" suffix="<br />" %>
+<span class="small"><% layout.copyright prefix="<br />Copyright: " %>
+<% layout.email prefix="<br />e-mail: " %></span></p>
 
 <p><% layout.link to="edit" text="Edit the preferences" %> of this layout.</p>
 

@@ -1,4 +1,4 @@
-<h3>Diffs for <% this.proto %>/<% this.name %>.skin of layout '<% layout.title %>'</h3>
+<h3>Diffs for <% skin.proto %>/<% skin.name %>.skin of layout '<% layout.title %>'</h3>
 
 <table class="diff" cellspacing="0" cellpadding="0">
 <tr>
