@@ -12,13 +12,18 @@ function evalStory(param,modifier) {
    if (param.text) {
       var online = parseInt(param.online,10);
       var editableby = parseInt(param.editableby,10);
-      // this.online = (!isNaN(online) ? online : 0);
       this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : 2);
       this.title = param.title;
       this.text = param.text;
       this.modifytime = new Date();
       this.modifier = modifier;
-      this.topic = param.topic ? param.topic : null;
+      this.ipaddress = param.http_remotehost;
+      if (param.newtopic)
+         this.topic = param.newtopic;
+      else if (parseInt(param.topic,10) > 0)
+         this.topic = this.weblog.space.get(parseInt(param.topic,10) -1).groupname;
+      else
+         this.topic = null;
       if ((this.online && !online) || this.online)
          this.weblog.lastupdate = new Date();
       if (isNaN(online) || (online == 1 && !this.topic))
@@ -29,11 +34,15 @@ function evalStory(param,modifier) {
          // href() may not yet work if we changed the topic
          // so we build the redirect URL manually
          if (this.topic)
-            result.url = this.weblog.space.href() + this.topic + "/" + this._id;
+            result.url = this.weblog.space.href() + escape(this.topic) + "/" + this._id;
          else
             result.url = this.href();
       } else
          result.url = this.weblog.stories.href();
+      // hmmm, the parent needs to be explicitly set
+      // otherwise href() will result in wrong urls if
+      // topic is changed (and something in text/title also has changed)
+      this.setParent(this.topic ? this.weblog.space.get(this.topic) : this.weblog.get(this.day));
       result.message = "The story was updated successfully!";
       result.error = false;
    } else {
@@ -58,7 +67,7 @@ function toggleOnline(newStatus) {
 
 /**
  * function returns true/false whether story is online or not
-*/
+ */
 
 function isOnline() {
    if (parseInt(this.online,10))
@@ -68,9 +77,15 @@ function isOnline() {
 
 /**
  * function evaluates comment and adds it if ok
+ * @param Obj Object containing properties needed for creation of comment
+ * @param Obj Story-Object
+ * @param Obj User-Object (creator of comment)
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function evalComment(param,creator) {
+function evalComment(param,story,creator) {
    var result = new Object();
    if (!param.text) {
       result.message = "You need at least some text!";
@@ -80,11 +95,12 @@ function evalComment(param,creator) {
       c.title = param.title;
       c.text = param.text;
       c.weblog = this.weblog;
-      c.story = this;
+      c.story = story;
       c.createtime = c.modifytime = new Date();
       c.author = creator;
       c.online = 1;
-      c.ipadress = param.http_remotehost;
+      c.editableby = 2;
+      c.ipaddress = param.http_remotehost;
       this.add(c);
       this.weblog.lastupdate = new Date();
       result.message = "Your posting was saved successfully!";
