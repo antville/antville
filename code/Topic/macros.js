@@ -19,6 +19,7 @@ function addstory_macro () {
  */
 
 function relatedtopics_macro (param) {
+   return;
    this.related.subnodeRelation = "where TEXT_F_SITE = " + path.site._id + " AND TEXT_TEXT like '%*" + this.groupname + "*%' AND (TEXT_TOPIC is null OR TEXT_TOPIC != '" + this.groupname + "') ORDER BY TEXT_MODIFYTIME desc";
    var l = this.related.size();
    if (l == 0)
