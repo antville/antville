@@ -3,30 +3,29 @@
  */
 
 function evalSite(title,alias,creator) {
-   var result;
+   // check alias
    if (!alias)
-      result = getError("siteAliasMissing");
+      return (getError("siteAliasMissing"));
    else if (this.get(alias))
-      result = getError("siteAliasExisting");
+      return (getError("siteAliasExisting"));
    else if (!isClean(alias))
-      result = getError("siteAliasNoSpecialChars");
-   else {
-      // check if alias is similar to an action-name (which is reserved)
-      if (this[alias] || this[alias + "_action"])
-         result = getError("siteAliasReserved");
-   }
+      return (getError("siteAliasNoSpecialChars"));
+   else if (this[alias] || this[alias + "_action"])
+      return (getError("siteAliasReserved"));
+   // check if title is missing
    if (!title)
-      result = getError("siteTitleMissing");
-   if (!result) {
-      var newSite = this.createNewSite(title,alias,creator);
-      if (!newSite)
-         result = getError("siteCreate");
-      else {
-         result = getConfirm("siteCreate");
-         result.site = newSite;
-      }
+      return (getError("siteTitleMissing"));
+   // create new site
+   var newSite = this.createNewSite(title,alias,creator);
+   if (!newSite)
+      return (getError("siteCreate"));
+   else {
+      // add a log-message
+      root.manage.syslogs.add(new syslog("site",newSite.alias,"added site",creator));
+      var result = getConfirm("siteCreate");
+      result.site = newSite;
+      return (result);
    }
-   return (result);
 }
 
 
