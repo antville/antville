@@ -7,10 +7,10 @@
 function isPostDenied(usr) {
    if (usr.isSysAdmin())
       return null;
-   if (!this.weblog.isOnline() && !this.weblog.isUserMember(usr))   
-      return ("This weblog is not public!");   
-   else if (!this.weblog.hasDiscussions())   
-      return ("Sorry, discussions were disabled for this weblog!");   
+   if (!this.site.isOnline() && !this.site.isUserMember(usr))
+      return (getMsg("error","siteNotPublic"));
+   else if (!this.site.hasDiscussions())
+      return (getMsg("error","siteNoDiscussion"));
    return null;   
 }   
     
@@ -21,12 +21,12 @@ function isPostDenied(usr) {
  */
 
 function isDeleteDenied(usr) {
-   if (this.author != usr) {
-      var membership = this.weblog.isUserMember(usr);
+   if (this.creator != usr) {
+      var membership = this.site.isUserMember(usr);
       if (!membership)
-         return ("You're not a member of this weblog!");
+         return (getMsg("error","userNoMember"));
       else if ((membership.level & MAY_DELETE_ANYSTORY) == 0)
-         return ("You cannot delete the story of somebody else!");
+         return (getMsg("error","storyDeleteDenied"));
    }
    return null;
 }
@@ -38,14 +38,14 @@ function isDeleteDenied(usr) {
  */
 
 function isEditDenied(usr) {
-   if (this.author != usr) {
-      var membership = this.weblog.isUserMember(usr);
+   if (this.creator != usr) {
+      var membership = this.site.isUserMember(usr);
       if (!membership)
-         return ("You're not a member of this weblog!");
+         return (getMsg("error","userNoMember"));
       else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
-         return ("You're not allowed to edit this story!");
+         return (getMsg("error","storyEditDenied"));
       else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
-         return ("You're not allowed to edit this story!");
+         return (getMsg("error","storyEditDenied"));
    }
    return null;
 }
@@ -58,16 +58,16 @@ function isEditDenied(usr) {
  */
 
 function isViewDenied(usr) {
-   if (this.weblog.isNotPublic(usr))
-      return ("Sorry, this weblog is not public!");
-   else if (!this.isOnline() && this.author != usr) {
-      var membership = this.weblog.isUserMember(usr);
+   if (this.site.isNotPublic(usr))
+      return (getMsg("error","siteNotPublic"));
+   else if (!this.isOnline() && this.creator != usr) {
+      var membership = this.site.isUserMember(usr);
       if (!membership)
-         return ("You're not a a member of this weblog!");
+         return (getMsg("error","userNoMember"));
       else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
-         return ("You're not allowed to see this story!");
+         return (getMsg("error","storyViewDenied"));
       else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
-         return ("Only Contributors are allowed to see this story!");
+         return (getMsg("error","storyViewDenied"));
    }
    return null;
 }
@@ -80,17 +80,17 @@ function isViewDenied(usr) {
 function allowTextMacros(s) {
    s.allowMacro("image");
    s.allowMacro("this.image");
-   s.allowMacro("weblog.image");
+   s.allowMacro("site.image");
    s.allowMacro("story.image");
    s.allowMacro("thumbnail");
    s.allowMacro("this.thumbnail");
-   s.allowMacro("weblog.thumbnail");
+   s.allowMacro("site.thumbnail");
    s.allowMacro("story.thumbnail");
    s.allowMacro("link");
    s.allowMacro("this.link");
-   s.allowMacro("weblog.link");
+   s.allowMacro("site.link");
    s.allowMacro("story.link");
-   s.allowMacro("goodie");
+   s.allowMacro("file");
    s.allowMacro("poll");
    s.allowMacro("logo");
    return;
