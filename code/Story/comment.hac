@@ -1,15 +1,19 @@
-if (!this.weblog.isPublic() || !this.isPostAllowed())
+var deny = this.isPostDenied();
+if (deny) {
+   res.message = deny;
    res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.href());
+}
 
-res.skin = "main";
+res.skin = "weblog.page";
 
-if (req.data.submit == "cancel" || !this.isPostAllowed())
+if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.href());
 else if (req.data.text)
    this.addComment();
 
 res.title = "Antville - " + this.weblog.title;
+
 res.head = this.weblog.renderSkinAsString("javascript");
 res.head += this.weblog.renderSkinAsString("style");
-res.body = this.weblog.renderSkinAsString("header");
-res.body += this.renderSkinAsString("comment");
+
+res.body = this.renderSkinAsString("comment");

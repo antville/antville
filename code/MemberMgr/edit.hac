@@ -1,16 +1,18 @@
-if (!this.isEditAllowed())
-   res.redirect(user.cache.referer ? this.href("login") : this.__parent__.href());
+var parent = setLayout();
 
-res.skin = "main";
+var deny = this.isEditDenied();
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? this.href("login") : parent.href());
+}
 
-if (req.data.submit == "cancel")
-   res.redirect(this.__parent__.href());
-else if (req.data.submit == "save")
+if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(parent.href());
+else if (req.data.submit == "save" || req.data.save)
    this.updateUser();
 
-res.head = this.__parent__.renderSkinAsString("style");
+res.head = parent.renderSkinAsString("style");
 if (path.weblog)
    res.head += path.weblog.renderSkinAsString("javascript");
-res.body = this.__parent__.renderSkinAsString("header");
 
-res.body += user.renderSkinAsString("edit");
+res.body = user.renderSkinAsString("edit");

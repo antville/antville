@@ -1,10 +1,14 @@
-if (!this.isEditAllowed())
+var deny = this.isEditDenied();
+if (deny) {
+   res.message = deny;
    res.redirect(this.story.href());
+}
 
-res.skin = "main";
+res.skin = "weblog.page";
+
 res.title = "Antville - " + this.weblog.title;
 
-if (req.data.submit == "cancel")
+if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.story.href());
 
 if (req.data.text)
@@ -13,5 +17,4 @@ if (req.data.text)
 res.head = this.weblog.renderSkinAsString("javascript");
 res.head += this.weblog.renderSkinAsString("style");
 
-res.body = this.weblog.renderSkinAsString("header");
-res.body += this.renderSkinAsString("edit");
+res.body = this.renderSkinAsString("edit");
