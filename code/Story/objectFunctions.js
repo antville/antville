@@ -49,7 +49,8 @@ function evalStory(param,modifier) {
           result = getError("timestampParse",param.createtime);
       else if (ctime.value != this.createtime) {
          this.createtime = ctime.value;
-         this.day = this.createtime.format("yyyyMMdd");
+         // create day of story with respect to site-timezone
+         this.day = formatTimestamp(this.createtime,"yyyyMMdd");
       }
    }
    // check name of topic (if specified)
