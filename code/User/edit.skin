@@ -20,7 +20,7 @@
 <td class="storyText" nowrap><% this.email as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>description:</td>
+<td class="storyText" valign="top" nowrap>description:</td>
 <td class="storyText" nowrap><% this.description as="editor" %></td>
 </tr>
 <tr>

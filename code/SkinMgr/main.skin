@@ -1,6 +1,6 @@
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td nowrap><font size="-1"><% this.skins %></font></td>
+<td class="storyText" nowrap><% this.skins %></td>
 <td width="20" nowrap>&nbsp;</td>
 <td valign="top" nowrap><% this.skineditor %></td>
 </tr>
