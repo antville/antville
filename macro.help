@@ -7,11 +7,19 @@ _url = http://macros.antville.org/stories/
 global.macros = colorpicker , file, image, imagelist, link, now, poll, sitelist, story, storylist, topiclist, username, linkedpath
 
 global.macro.image = 14962
+global.macro.imagelist = 142488
 global.macro.link = 14956
 global.macro.logo = 14986
 global.macro.poll = 14957
 global.macro.file = 15078
 global.macro.sitelist = 15372
+global.macro.now = 246588
+global.macro.linkedpath = 235746
+global.macro.story = 246618
+global.macro.topiclist = 142469
+global.macro.username = 246622
+global.macro.storylist = 246675
+global.macro.colorpicker = 246684
 
 global.skin.colorpickerWidget = param.editor, param.text, param.name, param.color
 global.skin.prevpagelink = param.next, param.url
@@ -34,7 +42,13 @@ hopobject.skin.delete = response.action, param.what
 
 // R O O T
 
-root.macros = loginstatus, sitelist, sitecounter, url, systitle, sysurl
+root.macros = sitelist, sitecounter, url, systitle, sysurl
+
+root.macro.sitecounter = 249998
+root.macro.sitelist = 15372
+root.macro.systitle = 142337
+root.macro.sysurl = 142339
+root.macro.url = 142549
 
 root.skin.rss = param.title, param.email, param.lastupdate, param.resources, param.textinput, param.items
 
@@ -155,8 +169,10 @@ shortcutmgr.skin.main = response.action
 
 // S I T E
 
-site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, image, imagelist, lastupdate, linkcolor, membercounter, modifytime, monthlist, navigation, smallcolor, smallfont, smallsize, storylist, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist, url, vlinkcolor, xmlbutton, listMostRead
+site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, lastupdate, linkcolor, membercounter, modifytime, monthlist, navigation, smallcolor, smallfont, smallsize, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist, url, vlinkcolor, xmlbutton
 
+site.macro.age = 142397
+site.macro.alias = 142378
 site.macro.alinkcolor = 15131
 site.macro.bgcolor = 15131
 site.macro.linkcolor = 15131
@@ -171,6 +187,18 @@ site.macro.titlefont = 15131
 site.macro.titlesize = 15131
 site.macro.vlinkcolor = 15131
 site.macro.xmlbutton = 15492
+site.macro.calendar = 142395
+site.macro.email = 142378
+site.macro.history = 142404
+site.macro.membercounter = 247667
+site.macro.lastupdate = 244877
+site.macro.modifytime = 15131
+site.macro.monthlist = 142461
+site.macro.navigation = 244843
+site.macro.title = 15131
+site.macro.tagline = 15131
+site.macro.topiclist = 142469
+site.macro.url = 142549
 
 site.skin.calendar = param.calendar, param.month, param.year, param.back, param.forward
 site.skin.calendarday = param.day
@@ -195,9 +223,10 @@ story.macros = content, modifytime, modifier, url, editlink, deletelink, onlinel
 story.macro.backlinks = 40917
 story.macro.commentcounter = 26573
 story.macro.content = 142506
-story.macro.createtime = 44385
 story.macro.modifier = 142525
 story.macro.modifytime = 244877
+story.macro.topic = 142577
+story.macro.backlinks = 40917
 
 story.skin.backlinkItem = param.count, param.referrer, param.text
 story.skin.backlinks = param.referrers
@@ -218,7 +247,7 @@ storymgr.skin.offlinestory = param.story
 
 // T O P I C
 
-topic.macros = addstory, relatedtopics, storylist
+topic.macros = addstory, storylist
 topic.skin.main = response.prevpage, response.nextpage
 
 
