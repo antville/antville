@@ -27,7 +27,7 @@ function evalNewStory(param,creator) {
          newStory.online = 0;
       else
          newStory.online = online;
-      newStory.editableby = !isNaN(editableby) ? editableby : 2;
+      newStory.editableby = !isNaN(editableby) ? editableby : null;
       newStory.author = creator;
       newStory.createtime = new Date();
       newStory.modifytime = new Date();

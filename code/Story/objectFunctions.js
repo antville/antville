@@ -12,7 +12,7 @@ function evalStory(param,modifier) {
    if (param.text) {
       var online = parseInt(param.online,10);
       var editableby = parseInt(param.editableby,10);
-      this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : 2);
+      this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : null);
       this.title = param.title;
       this.text = param.text;
       this.modifytime = new Date();
@@ -99,7 +99,7 @@ function evalComment(param,story,creator) {
       c.createtime = c.modifytime = new Date();
       c.author = creator;
       c.online = 1;
-      c.editableby = 2;
+      c.editableby = null;
       c.ipaddress = param.http_remotehost;
       this.add(c);
       this.weblog.lastupdate = new Date();
