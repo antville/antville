@@ -8,6 +8,11 @@
 function saveImg(rawimage) {
    // determine filetype of image (one could do this also by checking the mimetype) 
    this.fileext = this.evalImgType(rawimage.contentType);
+   if (this.fileext == "ico") {
+      // the image is an .ico, so we directory write it to disk and return
+      rawimage.writeToFile(this.cache.saveTo, this.filename + "." + this.fileext);
+      return true;
+   }
    var img = new Image(rawimage.getContent());
    // check if resizing is necessary 
    if (this.cache.maxwidth && this.cache.maxheight && img.width > this.cache.maxwidth && img.height > this.cache.maxheight) {
@@ -81,6 +86,8 @@ function evalImgType(ct) {
       return ("gif");
    else if (ct == "image/x-png" || ct == "image/png")
       return ("png");
+   else if (ct == "image/x-icon")
+      return ("ico");
    else
       return null;
 }
