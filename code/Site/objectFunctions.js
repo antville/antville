@@ -101,6 +101,8 @@ function updateWeblog() {
    this.online = parseInt(req.data.online,10);
    this.discussions = parseInt(req.data.discussions,10);
    this.archive = parseInt(req.data.archive,10);
+   this.language = req.data.language ? req.data.language.substring(0,2) : "";
+   this.country = req.data.country ? req.data.country.substring(0,2) : "";
    this.birthdate = this.checkdate("birthdate");
    res.message = "The changes were saved successfully!";
    res.redirect(this.href());
