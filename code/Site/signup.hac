@@ -1,0 +1,14 @@
+if (!this.isSignUpAllowed())
+   res.redirect(user.cache.referer ? this.members.href("login") : this.href());
+
+res.skin = "main";
+
+if (req.data.submit == "cancel")
+   res.redirect(this.href());
+else
+   this.evalSignup();
+
+res.title = this.title + " - sign up";
+res.head = this.renderSkinAsString("style");
+res.body = this.renderSkinAsString("header");
+res.body += this.renderSkinAsString("signup");
