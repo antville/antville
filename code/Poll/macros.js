@@ -133,23 +133,6 @@ function total_macro(param) {
 
 
 /**
- * macro renders creator of a poll
- * (either as link or as text)
- */
-
-function creator_macro(param) {
-   if (!this.creator)
-      return;
-   if (param.as == "link" && this.creator.url) {
-      openLink(this.creator.url);
-      res.write(this.creator.name);
-      closeLink();
-   } else
-      res.write(this.creator.name);
-}
-
-
-/**
  * macro renders the time a poll was modified
  */
 

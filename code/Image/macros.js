@@ -97,15 +97,6 @@ function show_macro(param) {
 
 
 /**
- * macro renders the name of the creator of this image
- */
-
-function creator_macro(param) {
-   res.write(this.creator.name);
-}
-
-
-/**
  * macro renders "yes" if this image has a thumbnail
  */
 

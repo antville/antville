@@ -68,14 +68,6 @@ function deletelink_macro(param) {
 }
 
 /**
- * macro renders the name of the creator
- */
-
-function creator_macro(param) {
-   res.write(this.creator.name);
-}
-
-/**
  * macro rendering filesize
  */
 

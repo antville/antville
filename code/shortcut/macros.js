@@ -1,13 +1,4 @@
 /**
- * function outputs the name of the user
- * who created the shortcut
- */
-function creator_macro() {
-   res.write(this.creator.name);
-}
-
-
-/**
  * function renders a shortcut
  */
 function render_macro() {
