@@ -189,14 +189,15 @@
    <!-- =================================================================== -->
    <target name="package-tgz" depends="init">
       <mkdir dir="${build.dist}" />
-      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/.xml, **/.sh" />
+      <fixcrlf srcdir="${path}" eol="lf" eof="remove" 
+         includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/.xml, **/.sh" />
       <tar tarfile="${build.dist}/${filename}.tar" basedir="${path}" excludes="**">
          <tarfileset prefix="${filename}" dir="${path}" mode="755">
-            <include name="*.sh"/>
+            <include name="**/*.sh"/>
          </tarfileset>
          <tarfileset prefix="${filename}" dir="${path}">
             <include name="**"/>
-            <exclude name="*.sh"/>
+            <exclude name="**/*.sh"/>
          </tarfileset>
       </tar>
       <gzip zipfile="${build.dist}/${filename}.tgz" src="${build.dist}/${filename}.tar"/>
@@ -210,7 +211,8 @@
    <!-- =================================================================== -->
    <target name="package-zip" depends="init">
       <mkdir dir="${build.dist}" />
-      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat" />
+      <fixcrlf srcdir="${path}" eol="crlf" 
+         includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat" />
       <zip zipfile="${build.dist}/${filename}.zip">
          <zipfileset dir="${path}" prefix="${filename}" includes="**" />
       </zip>
