@@ -1,4 +1,4 @@
-To create a new weblog you need to fill out the form below. The <em>title</em> will appear in the header of every page (you can change it anytime you want) while the <em>alias</em> will be part of the URL to your weblog (i.e. if you enter "vac" as the alias, your weblog will get the URL "vac.antville.org").
+To create a new weblog you need to fill out the form below. The <em>title</em> will appear in the header of every page (you can change it anytime you want) while the <em>alias</em> will be part of the URL to your weblog (i.e. if you enter "vac" as the alias, your weblog will be reachable by appending "/vac" to the URL of your Antville server).
 
 <p>
 <form method="post" action="<% response.action %>">
