@@ -260,3 +260,14 @@ function isTrusted() {
    return false;
 }
 
+
+function ping_action() {
+	var xr = new Remote("http://rpc.weblogs.com/RPC2");
+	//getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
+	var ping = xr.weblogUpdates.ping(this.title, this.href()); 
+	if (!ping.error)
+		this.lastping = new Date();
+	else
+		writeln("Error when pinging weblogs.com for weblog " + this._id + ": " + ping.error);
+	return;
+}
