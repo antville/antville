@@ -18,7 +18,7 @@ function evalNewStory(s,param,creator) {
    var contentIsCool = false;
    for (var i in param) {
       if (i.indexOf ("content_") == 0) {
-         cont[i.substring(8)] = param[i];
+         cont[i.substring(8)] = param[i].trim();
          if (!contentIsCool && param[i])
             contentIsCool = true;
       }

@@ -24,7 +24,7 @@ function evalStory(param,modifier) {
                var len2 = param[i].length;
             majorUpdate = Math.abs(len1 - len2) >= 50;
          }
-         cont[part] = param[i];
+         cont[part] = param[i].trim();
          if (!contentIsCool && param[i])
             contentIsCool = true;
       }
@@ -210,7 +210,7 @@ function getContentPart (name) {
  */
 function setContentPart (name, value) {
    var cnt = this.getContent();
-   cnt[name] = value;
+   cnt[name] = value.trim();
    this.setContent (cnt);
 }
 
