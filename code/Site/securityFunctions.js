@@ -14,12 +14,12 @@ function checkAccess(action, usr, level) {
          break;
       case "edit" :
          checkIfLoggedIn();
-         deny = this.isEditDenied(usr, level, req.data.permissions);
+         deny = this.isEditDenied(usr, level);
          url = this.href();
          break;
       case "permissions" :
          checkIfLoggedIn();
-         deny = this.isEditDenied(usr, level, req.data.permissions);
+         deny = this.isEditDenied(usr, level);
          url = this.href();
          break;
       case "delete" :
@@ -76,10 +76,10 @@ function isAccessDenied(usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isEditDenied(usr, level, permissions) {
+function isEditDenied(usr, level) {
    if (usr.sysadmin)
       return null;
-   if (permissions.edit_prefs && (level & permissions.edit_prefs) == 0)
+   if ((level & MAY_EDIT_PREFS) == 0)
       return new Exception("siteEditDenied");
    return null;
 }
