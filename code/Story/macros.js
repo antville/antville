@@ -21,7 +21,7 @@ function content_macro(param) {
          break;
 
       default :
-         if (!param.clipping)
+         if (param.clipping == null)
             param.clipping = "...";
          var part = this.getRenderedContentPart(param.part, param.as);
          if (!part && param.fallback)
