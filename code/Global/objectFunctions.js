@@ -253,37 +253,37 @@ function getDefaultDateFormats(version) {
  */
 
 function logAccess() {
-	if (req.data.http_referer) {
-		var site = path.site ? path.site : root;
-		var referrer = req.data.http_referer;
+   if (req.data.http_referer) {
+      var site = path.site ? path.site : root;
+      var referrer = req.data.http_referer;
 
       // no logging at all if the referrer comes from the same site
       // or is not a http-request
       if (referrer.indexOf("http") < 0)
          return;
-      var siteHref = site.href();
-      if (referrer.indexOf(siteHref.substring(0,siteHref.length-1)) >= 0)
+      var siteHref = site.href().toLowerCase();
+      if (referrer.toLowerCase().indexOf(siteHref.substring(0,siteHref.length-1)) >= 0)
          return;
 
-		var storyID = path.story ? path.story._id : null;
+      var storyID = path.story ? path.story._id : null;
 
-		// we're doing this with direct db access here
-		// (there's no need to do it with prototypes):
-		var c = getDBConnection("antville");
-		var dbError = c.getLastError();
-		if (dbError) {
-			app.__app__.logEvent("Error establishing DB connection: " + dbError);
-			return;
-		}
-		var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE, ACCESSLOG_F_TEXT, ACCESSLOG_REFERRER, ACCESSLOG_IP, ACCESSLOG_BROWSER) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "')";
-		c.executeCommand(query);
-		var dbError = c.getLastError();
-		if (dbError) {
- 			app.__app__.logEvent("Error executing SQL query: " + dbError);
-			return;
-		}
-		return;
-	}
+      // we're doing this with direct db access here
+      // (there's no need to do it with prototypes):
+      var c = getDBConnection("antville");
+      var dbError = c.getLastError();
+      if (dbError) {
+         app.__app__.logEvent("Error establishing DB connection: " + dbError);
+         return;
+      }
+      var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE, ACCESSLOG_F_TEXT, ACCESSLOG_REFERRER, ACCESSLOG_IP, ACCESSLOG_BROWSER) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "')";
+      c.executeCommand(query);
+      var dbError = c.getLastError();
+      if (dbError) {
+         app.__app__.logEvent("Error executing SQL query: " + dbError);
+         return;
+      }
+      return;
+   }
 }
 
 
