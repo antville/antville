@@ -1,10 +1,11 @@
 /**
  * send a mail to confirm registration
+ * @param String email-address used as sender-address
  */
 
-function sendConfirmationMail() {
+function sendConfirmationMail(sender) {
    var mail = new Mail();
-   mail.setFrom(getProperty("adminEmail"));
+   mail.setFrom(sender);
    mail.addTo(this.email);
    mail.setSubject("Welcome to Antville!");
    var mailParam = new Object();
