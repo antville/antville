@@ -3,7 +3,7 @@
 <input type="hidden" name="name" value="<% request.name %>" />
 <% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %>
 
-<p><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %> &nbsp; <a href="#help">Help</a></p>
+<p><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %> &nbsp; <a href="#help">help</a></p>
 </form>
 
 <a name="help"></a>
