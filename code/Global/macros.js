@@ -54,8 +54,7 @@ function image_macro(param) {
          param.linkto = url;
       if (imgObj.thumbnail)
          imgObj = imgObj.thumbnail;
-   }
-   else if (param.as == "popup") {
+   } else if (param.as == "popup") {
       param.linkto = imgObj.popupUrl();
       if (imgObj.thumbnail)
          imgObj = imgObj.thumbnail;
@@ -69,9 +68,9 @@ function image_macro(param) {
       delete(param.linkto);
       renderImage(imgObj, param);
       closeLink();
-   }
-   else
+   } else
       renderImage(imgObj, param);
+   return;
 }
 
 
