@@ -270,7 +270,10 @@ function logAccess() {
          app.log("Error establishing DB connection: " + dbError);
          return;
       }
-      var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE, ACCESSLOG_F_TEXT, ACCESSLOG_REFERRER, ACCESSLOG_IP, ACCESSLOG_BROWSER) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "')";
+      var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE,ACCESSLOG_F_TEXT,"+
+         "ACCESSLOG_REFERRER,ACCESSLOG_IP,ACCESSLOG_BROWSER) values (" + 
+         site._id + "," + storyID + ",'" + referrer + "','" + req.data.http_remotehost + 
+         "','" + req.data.http_browser + "')";
       c.executeCommand(query);
       var dbError = c.getLastError();
       if (dbError) {
@@ -345,25 +348,28 @@ function formatTimestamp(ts,dformat) {
    // date format parsing is quite expensive, but date formats
    // are not thread safe, so what we do is to cache them per request
    // in the response object using "timeformat_<format>" as key.
-   var sdf = res.data["timeformat_"+dformat];
-   if (!sdf) {
-      var fmt = "yyyy/MM/dd HH:mm";
-      if (path.site) {
-         if (dformat == "short")
-            fmt = path.site.shortdateformat ? path.site.shortdateformat : "dd.MM HH:mm";
-         else if (dformat == "long")
-            fmt = path.site.longdateformat ? path.site.longdateformat : "yyyy/MM/dd HH:mm";
-         else if (dformat)
-            fmt = dformat;
-         sdf = new java.text.SimpleDateFormat(fmt,path.site.getLocale());
-         sdf.setTimeZone(path.site.getTimeZone())
-      } else {
-         if (dformat)
-            fmt = dformat;
-         sdf = new java.text.SimpleDateFormat(fmt,root.getLocale());
-      }
-      res.data["timeformat_"+dformat] = sdf;
+   var sdf = res.data["timeformat_"];
+   var fmt = "yyyy/MM/dd HH:mm";
+   if (path.site) {
+      if (dformat == "short")
+         fmt = path.site.shortdateformat ? path.site.shortdateformat : "dd.MM HH:mm";
+      else if (dformat == "long")
+         fmt = path.site.longdateformat ? path.site.longdateformat : "yyyy/MM/dd HH:mm";
+      else if (dformat)
+         fmt = dformat;
+   } else {
+      if (dformat)
+         fmt = dformat;
    }
+
+   if (!sdf) {
+      var locale = path.site ? path.site.getLocale() : root.getLocale();
+      sdf = new java.text.SimpleDateFormat(fmt, locale);
+      res.data["timeformat_"] = sdf;
+   } else if (fmt != sdf.toPattern()) {
+      sdf.applyPattern(fmt);
+   }
+   
    var result = tryEval("sdf.format(ts)");
    if (result.error)
       return (getMsg("error","wrongDateFormat"));
@@ -385,8 +391,7 @@ function scheduler() {
    var patch = tryEval("root.system_patch()");
    if (patch.value) {
       app.__app__.logEvent("---------- [ANTVILLE PATCH] ----------");
-      app.__app__.logEvent("still not finished, next run in " + patch.value
-+ " millis");
+      app.__app__.logEvent("still not finished, next run in " + patch.value + " millis");
       return (patch.value);
    }
    */
