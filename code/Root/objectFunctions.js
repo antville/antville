@@ -94,7 +94,7 @@ function deleteWeblog(weblog) {
    weblog.deleteAll();
    this.remove(weblog);
    // add syslog-entry
-   this.manage.syslogs.add(new syslog("weblog",weblog.alias,"removed weblog",user));
+   this.manage.syslogs.add(new syslog("weblog",weblog.alias,"removed weblog",session.user));
    result.message = "The weblog " + weblog.alias + " was removed successfully!";
    return (result);
 }
