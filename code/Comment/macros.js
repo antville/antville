@@ -93,10 +93,10 @@ function editlink_macro(param) {
       var linkParam = new HopObject();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
-      if (!param.image)
-         res.write(param.text ? param.text : "edit");
+      if (param.image && this.weblog.images.get(param.image))
+         this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
-         this.renderImage(param);
+         res.write(param.text ? param.text : "edit");
       this.closeLink();
       res.write(param.suffix);
    }
@@ -114,10 +114,10 @@ function deletelink_macro(param) {
          var linkParam = new HopObject();
          linkParam.linkto = "delete";
          this.openLink(linkParam);
-         if (!param.image)
-            res.write(param.text ? param.text : "delete");
+         if (param.image && this.weblog.images.get(param.image))
+            this.weblog.renderImage(this.weblog.images.get(param.image),param);
          else
-            this.renderImage(param);
+            res.write(param.text ? param.text : "delete");
          this.closeLink();
       }
       res.write(param.suffix);
