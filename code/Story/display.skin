@@ -1,3 +1,3 @@
-<span class="storyDate"><% this.author as="link" %>, <% this.createtime format="long" suffix="<br />"%></span>
+<span class="storyDate"><% this.creator as="link" %>, <% this.createtime format="long" suffix="<br />"%></span>
 <span class="storyTitle"><% this.title suffix="<br />" %></span>
 <% this.text suffix="<br />&nbsp;<br />" %>
