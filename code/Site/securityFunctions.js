@@ -1,7 +1,7 @@
 /**
- * check if weblog is online
+ * check if site is online
  * @param Obj Userobject
- * @return String String indicating that weblog is not public (or null if public)
+ * @return String String indicating that site is not public (or null if public)
  */
 
 function isNotPublic(usr) {
@@ -10,14 +10,14 @@ function isNotPublic(usr) {
          return null;
       else if (usr && this.isUserMember(usr))
          return null;
-      return ("This weblog is not public!");
+      return (getMsg("error","siteNotPublic"));
    }
    return null;
 
 }
 
 /**
- * check if user is allowed to edit the preferences of this weblog
+ * check if user is allowed to edit the preferences of this site
  * @param Obj Userobject
  * @return String Reason for denial (or null if allowed)
  */
@@ -27,25 +27,25 @@ function isEditDenied(usr) {
       return null;
    var membership = this.isUserMember(usr);
    if (!membership || (membership.level & MAY_EDIT_PREFS) == 0)
-      return ("You're not allowed to edit the preferences!");
+      return (getMsg("error","siteEditDenied"));
    return null;
 }
 
 /**
- * check if user is allowed to delete the weblog
- * (only SysAdmins or the creator of a weblog are allowed to delete it!)
+ * check if user is allowed to delete the site
+ * (only SysAdmins or the creator of a site are allowed to delete it!)
  * @param Obj Userobject
  * @return String Reason for denial (or null if allowed)
  */
 
 function isDeleteDenied(usr) {
    if (!usr.isSysAdmin() && usr != this.creator)
-      return ("You're not allowed to delete this weblog!");
+      return (getMsg("error","siteDeleteDenied"));
    return null;
 }
 
 /**
- * function checks if user is a member of this weblog
+ * function checks if user is a member of this site
  * @param Obj Userobject
  * @return Obj null in case user is not a member, otherwise member-object
  */
@@ -64,9 +64,9 @@ function isUserMember(usr) {
 
 function isSubscribeDenied(usr) {
    if (this.isUserMember(usr))
-      return ("You have already subscribed to this weblog!");
+      return (getMsg("error","subscriptionExist"));
    else if (!this.isOnline())
-      return ("This weblog is not public!");
+      return (getMsg("error","siteNotPublic"));
    return null;
 }
 
@@ -79,15 +79,15 @@ function isSubscribeDenied(usr) {
 function isUnsubscribeDenied(usr) {
    var membership = this.isUserMember(usr);
    if (!membership)
-      return ("You're not a subscriber of this weblog!");
+      return (getMsg("error","subscriptionNoExist"));
    else if (membership.level > 0)
-      return ("You cannot unsubscribe, because you are a " + getRole(membership.level) + "!");
+      return (getMsg("error","unsubscribeDenied",getRole(membership.level)));
    return null;
 }
 
 /**
  * function checks if normal users are allowed to
- * contrib to this weblog
+ * contribute to this site
  * @return Boolean true if members may contribute, false if not
  */
 
@@ -99,7 +99,7 @@ function userMayContrib() {
 
 
 /**
- * function checks if archive of weblog is enabled
+ * function checks if archive of site is enabled
  * @return Boolean true if archive is enabled, false if not
  */
 
@@ -110,8 +110,8 @@ function showArchive() {
 }
 
 /**
- * function checks if weblog is blocked
- * @return Boolean true if weblog is blocked, otherwise false
+ * function checks if site is blocked
+ * @return Boolean true if site is blocked, otherwise false
  */
 
 function isBlocked() {
