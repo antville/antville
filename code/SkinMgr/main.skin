@@ -101,16 +101,14 @@ This skin defines the basic layout (including the header) of the "recently modif
 This skin defines how a story or a comment will appear in the list of recently modified items.</li>
 </ul>
 
-<!-- login/register/signup // -->
+<!-- login/register // -->
 
-<p><b>register/login/signup</b></p>
+<p><b>register/login</b></p>
 <ul>
 <li><a name="membershipregister"></a><% this.link to="edit" urlparam="proto=membermgr&name=register" text="register-form" %>&nbsp;<span class="small">(<% this.skinstatus proto="membermgr" name="register" %>)</span><br />
 Whenever a user wants to register to Antville via your weblog, this skin will be used to display the form needed.</li>
 <li><a name="membershiplogin"></a><% this.link to="edit" urlparam="proto=membermgr&name=login" text="login-form" %>&nbsp;<span class="small">(<% this.skinstatus proto="membermgr" name="login" %>)</span><br />
 This skin defines the layout of the login-form.</li>
-<li><a name="weblogsignup"></a><% this.link to="edit" urlparam="proto=site&name=signup" text="signup-form" %>&nbsp;<span class="small">(<% this.skinstatus proto="site" name="signup" %>)</span><br />
-This skin contains the form for signing up as a member to your weblog.</li>
 </ul>
 
 <!-- mails // -->
