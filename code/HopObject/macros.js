@@ -6,9 +6,9 @@
  */
 
 function skin_macro(param) {
-   if (param.name) {
-      this.renderSkin(param.name);
-   }
+   if (!param.name)
+      return;
+   this.renderSkin(param.name);
 }
 
 /**
@@ -81,3 +81,12 @@ function href_macro(param) {
 function input_macro(param) {
    input_macro(param);
 }
+
+/**
+ * macro renders the url of an object
+ */
+function url_macro() {
+   res.write(this.href());
+}
+
+
