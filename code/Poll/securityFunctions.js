@@ -12,15 +12,13 @@ function isViewDenied(usr) {
 
 
 function isVoteDenied(usr) {
-  if (this.weblog.isNotPublic(usr))
-     return ("Sorry, this weblog is not public!");
-	if (!usr.uid) {
-		usr.cache.referer = this.href();
+   if (this.weblog.isNotPublic(usr))
+      return ("Sorry, this weblog is not public!");
+	if (!usr.uid)
 		return ("Please login before");
-	}
-  if (this.closed)
-  	 return("This poll is closed.");
-  return null;
+   if (this.closed)
+      return("This poll is closed.");
+   return null;
 }
 
 
