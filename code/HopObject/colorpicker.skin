@@ -144,7 +144,7 @@ function displayColorset(obj, idx) {
    if (obj)
       setMarquee(obj);
    for (var i=0; i<brightness.length; i++)
-      document.getElementById("bright"+i).style.backgroundColor = brightness[i][idx];
+      document.getElementById("bright"+i).style.backgroundColor = "#"+brightness[i][idx];
    return;
 }
 
@@ -162,7 +162,7 @@ function updatePalette(obj, p) {
          colorPalette[i] = document.getElementById("color"+i);
    }
    for (var i=0; i<palette.length; i++)
-      colorPalette[i].style.backgroundColor = palette[i];
+      colorPalette[i].style.backgroundColor = "#"+palette[i];
    selectedColor = obj;
    return;
 }
@@ -316,7 +316,7 @@ function cancel() {
 
 for (var i=0; i<defaultPalette.length; i++) {
    var color = defaultPalette[i];
-   document.write('<span id="color' + i + '" style="background-color: ' + color + ';" onclick="displayColorValue(this);"><img src="' + pixel.src + '" width="' + squareSize + '" height="' + squareSize + '" onclick="displayColorset(this, ' + i + ');" /></span>');
+   document.write('<span id="color' + i + '" style="background-color: #' + color + ';" onclick="displayColorValue(this);"><img src="' + pixel.src + '" width="' + squareSize + '" height="' + squareSize + '" onclick="displayColorset(this, ' + i + ');" /></span>');
    if (i % 16 == 15)
       document.write("<br />");
 }
