@@ -53,8 +53,8 @@ db/data/108APP_AV_SYSLOG.koi -text
 db/data/109APP_AV_TEXT.koi -text
 db/data/110APP_AV_USER.koi -text
 db/data/111APP_AV_VOTE.koi -text
-db/data/112APP_AV_SITE.koi -text
-db/data/113APP_AV_IMAGE.koi -text
+db/data/114APP_AV_SITE.koi svneol=native#unset
+db/data/117APP_AV_IMAGE.koi svneol=native#unset
 db/data/BlobStore.koi -text
 db/data/DefaultDatabase_sf.koi -text
 static/hop.gif -text
