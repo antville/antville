@@ -48,33 +48,34 @@ function createCheckBoxParam(propName, param) {
  * be passed to function that renders the link element
  */
 function createLinkParam(param) {
+   // clone the param object since known non-html
+   // attributes are going to be deleted
+   var linkParam = Object.clone(param);
    var url = param.to ? param.to : param.linkto;
    if (!url || url == "main") {
       if (this._prototype != "Comment")
-         param.href = this.href();
+         linkParam.href = this.href();
       else
-         param.href = this.story.href() + "#" + this._id;
+         linkParam.href = this.story.href() + "#" + this._id;
    } else if (url.contains("://") || url.startsWith("javascript"))
-      param.href = url;
+      linkParam.href = url;
    else {
       // check if link points to a subcollection
       if (url.contains("/"))
-         param.href = this.href() + url;
+         linkParam.href = this.href() + url;
       else
-         param.href = this.href(url);
+         linkParam.href = this.href(url);
    }
    if (param.urlparam)
-      param.href += "?" + param.urlparam;
+      linkParam.href += "?" + param.urlparam;
    if (param.anchor)
-      param.href += "#" + param.anchor;
-   delete param.to;
-   delete param.linkto;
-   delete param.urlparam;
-   delete param.anchor;
-   delete param.text;
-   delete param.prefix;
-   delete param.suffix;
-   return param;
+      linkParam.href += "#" + param.anchor;
+   delete linkParam.to;
+   delete linkParam.linkto;
+   delete linkParam.urlparam;
+   delete linkParam.anchor;
+   delete linkParam.text;
+   return linkParam;
 }
 
 /**
