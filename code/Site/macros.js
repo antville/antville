@@ -647,3 +647,10 @@ function monthlist_macro(param) {
 function topiclist_macro(param) {
    this.topics.topiclist_macro(param);
 }
+
+/**
+ * wrapper-macro for imagelist
+ */
+function imagelist_macro(param) {
+   this.images.imagelist_macro(param);
+}
