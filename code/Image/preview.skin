@@ -2,8 +2,8 @@
 <tr>
 <tr>
 <td colspan="2" class="small" nowrap><span class="commentHead">&nbsp;</span><br>
-<b><% this.alias %></b>&nbsp;by <% this.creator %> (<% this.createtime %>)<br>
-<b>code:&nbsp;</b>&lt;% weblog.image name="<% this.alias %>" %&gt;</td>
+<b><% this.alias %></b>&nbsp;by <% this.creator %> (<% this.createtime format="short" %>)<br>
+<b>code:&nbsp;</b>&lt;% image name="<% this.alias %>" %&gt;</td>
 </tr>
 <tr>
 <td nowrap><% this.show what="thumbnail" %></td>
