@@ -2,13 +2,11 @@
  * check if user is allowed to edit this image
  */
 
-function isEditAllowed() {
+function isEditDenied() {
    if (!user.uid) {
       user.cache.referer = this.href("edit");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   }
-   return true;
+      return ("Please login before!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   return null;
 }

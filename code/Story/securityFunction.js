@@ -2,47 +2,43 @@
  * check if user is allowed to post a comment to this story
  */
 
-function isPostAllowed() {
-   if (!this.weblog.hasDiscussions()) {
-      res.message = "Sorry, discussions were disabled for this weblog!";
-      return false;
-   } else if (!user.uid) {
+function isPostDenied() {
+   if (!this.weblog.isOnline())
+      return ("This weblog is not public!");
+   else if (!this.weblog.hasDiscussions())
+      return ("Sorry, discussions were disabled for this weblog!");
+   else if (!user.uid) {
       user.cache.referer = this.href("comment");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   }
-   return true;
+      return ("Please login before adding a comment!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   return null;
 }
 
 /**
  * check if user is allowed to delete this story
  */
 
-function isDeleteAllowed() {
-   if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (!this.weblog.isUserAdmin() && this.author != user) {
-      res.message = "You cannot delete the story of somebody else!";
-      return false;
-   }
-   return true;
+function isDeleteDenied() {
+   if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (!this.weblog.isUserAdmin() && this.author != user)
+      return ("You cannot delete the story of somebody else!");
+   return null;
 }
 
 /**
  * check if user is allowed to edit this story
  */
 
-function isEditAllowed() {
+function isEditDenied() {
    if (user.isBlocked())
-      return false;
+      return ("Sorry, your accout was disabled!");
    if (this.author == user)
-      return true;
-   if (this.weblog.isUserMember() && this.editableby <= this.weblog.members.get(user.name).level)
-      return true;
-   return false;
+      return null;
+   if (!this.weblog.isUserMember() || this.editableby > this.weblog.members.get(user.name).level)
+      return ("You're not allowed to edit this story!");
+   return null;
 }
 
 

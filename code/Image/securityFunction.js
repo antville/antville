@@ -2,18 +2,15 @@
  * check if user is allowed to edit this image
  */
 
-function isEditAllowed() {
+function isEditDenied() {
    if (!user.uid) {
       user.cache.referer = this.href("edit");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (this.creator != user) {
-      res.message = "Sorry, this image belongs to someone else!";
-      return false;
-   }
-   return true;
+      return ("Please login first!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (this.creator != user)
+      return ("Sorry, this image belongs to someone else!");
+   return null;
 }
 
 
@@ -21,13 +18,10 @@ function isEditAllowed() {
  * check if user is allowed to delete this image
  */
 
-function isDeleteAllowed() {
-   if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (this.creator != user && !this.weblog.isUserAdmin()) {
-      res.message = "Sorry, this image belongs to someone else!";
-      return false;
-   }
-   return true;
+function isDeleteDenied() {
+   if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (this.creator != user && !this.weblog.isUserAdmin())
+      return ("Sorry, this image belongs to someone else!");
+   return null;
 }

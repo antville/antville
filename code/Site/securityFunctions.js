@@ -3,66 +3,55 @@
  * return false if not
  */
 
-function isPublic() {
-   if (!this.isOnline() && !this.isUserMember()) {
-      res.message = "This weblog is not public!";
-      return false;
-   }
-   return true;
+function isNotPublic() {
+   if (!this.isOnline() && !this.isUserMember())
+      return("This weblog is not public!");
+   return null;
 }
 
 /**
  * check if user is allowed to edit the preferences of this weblog
  */
 
-function isEditAllowed() {
+function isEditDenied() {
    if (!user.uid) {
       user.cache.referer = this.href("edit");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (!this.isUserAdmin()) {
-      res.message ="You're not allowed to edit the preferences!";
-      return false;
-    }
-    return true;
+      return ("Please login to edit the preferences of this weblog!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (!this.isUserAdmin())
+      return ("You're not allowed to edit the preferences!");
+   return null;
 }
 
 /**
  * check if user is allowed to add a story to this weblog
  */
 
-function isAddAllowed() {
+function isAddDenied() {
    if (!user.uid) {
       user.cache.referer = this.href("create");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (!this.isUserAdmin() && !this.isUserContributor() && !this.userMayContrib()) {
-      res.message ="You're not allowed to add a story to a foreign weblog!";
-      return false;
-    }
-    return true;
+      return ("Please login before adding a story!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (!this.isUserAdmin() && !this.isUserContributor() && !this.userMayContrib())
+      return ("You're not allowed to add a story to a foreign weblog!");
+   return null;
 }
 
 /**
  * check if user is allowed to edit the preferences of this weblog
  */
 
-function isEditMembersAllowed() {
+function isEditMembersDenied() {
    if (!user.uid) {
       user.cache.referer = this.href("memberships");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (!this.isUserAdmin()) {
-      res.message ="You're not allowed to edit memberships!";
-      return false;
-    }
-    return true;
+      return ("Please login before!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (!this.isUserAdmin())
+      return ("You're not allowed to edit memberships!");
+   return null;
 }
 
 /**
@@ -103,24 +92,19 @@ function isUserMember() {
  * function checks if user is allowed to sign up
  */
 
-function isSignUpAllowed() {
-   if (this.isUserMember()) {
-      res.message = "You are already a member of this weblog!";
-      return false;
-   } else if (!this.isOnline()) {
-      res.message = "This weblog is not public!";
-      return false;
-   } else if (!this.userMaySignup()) {
-      res.message = "Signing up was disabled!";
-      return false;
-   } else if (!user.uid) {
+function isSignUpDenied() {
+   if (this.isUserMember())
+      return ("You are already a member of this weblog!");
+   else if (!this.isOnline())
+      return ("This weblog is not public!");
+   else if (!this.userMaySignup())
+      return ("Signing up was disabled!");
+   else if (!user.uid) {
       user.cache.referer = this.href("signup");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   }
-   return true;
+      return ("Please login before!");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   return null;
 }
 
 

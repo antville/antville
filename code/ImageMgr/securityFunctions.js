@@ -2,34 +2,28 @@
  * check if user is allowed to edit images
  */
 
-function isEditAllowed() {
+function isEditDenied() {
    if (!user.uid) {
       user.cache.referer = this.href();
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (!this.__parent__.isUserAdmin() && !this.__parent__.isUserContributor() && !this.__parent__.userMayContrib()) {
-      res.message = "Sorry, you're not allowed to edit images!";
-      return false;
-   }
-   return true;  
+      return ("Please login before");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (!this._parent.isUserAdmin() && !this._parent.isUserContributor() && !this._parent.userMayContrib())
+      return ("Sorry, you're not allowed to edit images!");
+   return null;  
 }
 
 /**
  * check if user is allowed to add images
  */
 
-function isAddAllowed() {
+function isAddDenied() {
    if (!user.uid) {
       user.cache.referer = this.href("create");
-      return false;
-   } else if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
-      return false;
-   } else if (!this.__parent__.isUserAdmin() && !this.__parent__.isUserContributor() && !this.__parent__.userMayContrib()) {
-      res.message = "Sorry, you're not allowed to add images!";
-      return false;
-   }
-   return true;  
+      return ("Please login before");
+   } else if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   else if (!this._parent.isUserAdmin() && !this._parent.isUserContributor() && !this._parent.userMayContrib())
+      return ("Sorry, you're not allowed to add images!");
+   return null;  
 }
