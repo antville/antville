@@ -1,9 +1,9 @@
 <form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
+<table cellspacing="0" cellpadding="3">
 <tr>
 <td class="small">Name:</td>
 <td><% image.alias %></td>
-<td rowspan="5" valign="top" nowrap="nowrap"><% layout.image name="pixel" width="10" %><% image.show what="thumbnail" %></td>
+<td rowspan="5" valign="top" nowrap="nowrap">&nbsp;&nbsp;<% image.show what="thumbnail" %></td>
 </tr>
 <tr>
 <td class="small">Type:</td>
