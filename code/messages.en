@@ -604,9 +604,9 @@ user.role.contributors = Contributors
 user.role.contentManagers = Content Managers
 user.role.administrators = Administrators
 user.role.subscribers = Subscribers
-user.loginTitle = "Login";
-user.registerTitle = "Login";
-user.recoverPasswordTitle = "Recover your password";
+user.loginTitle = Login
+user.registerTitle = Login
+user.recoverPasswordTitle = Recover your password
 
 membership.editTitle = Edit membership: <% param.userName %>
 membership.deleteTitle = Delete membership: <% param.userName %>
@@ -625,9 +625,9 @@ membermgr.subscriptionsTitle = <% param.title %> of user <% param.userName %>
 membermgr.viewListTitle = <% param.title %> of <% param.siteName %>
 
 # file
-file.manageFilesTitle = Files of <% param.siteTitle %>
-file.myFilesTitle = My files of <% param.siteTitle %>
-file.addFileTo = Add a file to <% param.siteTitle %>
+file.mgr.listTitle = Files of <% param.siteTitle %>
+file.mgr.listMyFilesTitle = My files of <% param.siteTitle %>
+file.mgr.addFile = Add a file to <% param.siteTitle %>
 file.editTitle = Edit file: <% param.fileAlias %>
 file.deleteTitle = Delete file: <% param.fileAlias %>
 file.deleteDescription = the file

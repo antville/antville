@@ -144,6 +144,7 @@ function blocked_action() {
  */
 function notfound_action() {
    res.data.title = root.getTitle() + " - 404 - not found";
+   req.data.path = req.path;
    res.data.body = root.renderSkinAsString("notfound");
    (path.site && path.site.online ? path.site : root).renderSkin("page");
    return;

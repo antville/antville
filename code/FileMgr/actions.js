@@ -4,7 +4,7 @@
 function main_action() {
    res.data.filelist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
-   res.data.title = getMessage("file.managerTitle", {siteTitle: this._parent.title});
+   res.data.title = getMessage("file.mgr.listTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -17,7 +17,7 @@ function myfiles_action() {
    var ms = this._parent.members.get(session.user.name);
    res.data.filelist = renderList(ms.files, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.files, this.href(), 10, req.data.page);
-   res.data.title = getMessage("file.myFilesTitle", {siteTitle: this._parent.title});
+   res.data.title = getMessage("file.mgr.listMyFilesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -39,7 +39,7 @@ function create_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("file.myFilesTitle", {siteTitle: this._parent.title});
+   res.data.title = getMessage("file.mgr.addFile", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("new");
    this._parent.renderSkin("page");
    return;
