@@ -32,7 +32,7 @@
 <td width="60" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
-<% site.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% site.lastupdate prefix="last updated:&nbsp;" format="short%></div>
+<% site.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% site.lastupdate prefix="last updated:&nbsp;" format="short" %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/status" %></div>
