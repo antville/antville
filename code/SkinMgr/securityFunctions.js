@@ -24,7 +24,7 @@ function checkAccess(action, usr, level) {
  * @return String Reason for denial (or null if allowed)
  */
 function checkEdit(usr, level) {
-   if ((level & MAY_EDIT_SKINS) == 0 && !session.user.sysadmin)
+   if ((level & MAY_EDIT_LAYOUTS) == 0 && !session.user.sysadmin)
       throw new DenyException("skinEdit");
    return;
 }
