@@ -16,9 +16,12 @@ if (this.online) {
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
 		if (story.online) {
-			param1.itemLink = base + story.href();
+			param1.itemLink = story.href();
 			param1.itemTitle = encodeXml(story.title);
-			param1.itemDescription = encodeXml(story.text);
+			var skin = createSkin(story.text);
+			var str = renderSkinAsString(skin);
+			str = convertHtmlImageToHtmlLink(str);
+			param1.itemDescription = encodeXml(str);
 			items += this.renderSkinAsString("rss092Item", param1);
 		}
 	}
