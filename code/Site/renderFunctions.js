@@ -2,7 +2,7 @@
  * check if there are any stories in the previous month
  */
 
-function renderLinkToPrevMonth(firstDayIndex,currentMonth) {
+function renderLinkToPrevMonth(firstDayIndex,currentMonth,monthNames) {
 
    var l = this.size();
    if (l == 0 || l <= firstDayIndex)
@@ -10,8 +10,8 @@ function renderLinkToPrevMonth(firstDayIndex,currentMonth) {
 
    var prevDay = this.get(firstDayIndex+1);
    if (prevDay && prevDay.groupname<currentMonth) {
-      var date = parseTimestamp(prevDay.groupName, "yyyyMMdd");
-      return ("<a href=\"" + prevDay.href() + "\">" + formatTimestamp(date,"MMMM") + "</a>");
+      var month = prevDay.groupName.toString().substring(4,6)-1;
+      return ("<a href=\"" + prevDay.href() + "\">" + monthNames[month] + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -22,15 +22,15 @@ function renderLinkToPrevMonth(firstDayIndex,currentMonth) {
  * check if there are any stories in the previous month
  */
 
-function renderLinkToNextMonth(lastDayIndex,currentMonth) {
+function renderLinkToNextMonth(lastDayIndex,currentMonth,monthNames) {
    var l = this.size();
    if (l == 0 || lastDayIndex == 0)
       return ("&nbsp;");
 
    var nextDay = this.get(lastDayIndex-1);
    if (nextDay && nextDay.groupname>currentMonth) {
-      var date = parseTimestamp(nextDay.groupName, "yyyyMMdd");
-      return ("<a href=\"" + nextDay.href() + "\">" + formatTimestamp(date,"MMMM") + "</a>");
+      var month = nextDay.groupName.toString().substring(4,6)-1;
+      return ("<a href=\"" + nextDay.href() + "\">" + monthNames[month] + "</a>");
    } else {
       return ("&nbsp;");
    }

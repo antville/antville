@@ -382,10 +382,9 @@ function calendar_macro(param) {
    calParam.calendar = "";
    var dayParam = new Object();
    var weekParam = new Object();
-   // create new calendar-object and set day to first day of month
-   var locale = this.getLocale();
-   var cal = java.util.Calendar.getInstance(this.getTimeZone(), locale);
-   var symbols = new java.text.DateFormatSymbols(locale);
+   // create new calendar-object
+   var cal = java.util.Calendar.getInstance(this.getTimeZone(), this.getLocale());
+   var symbols = this.getDateSymbols();
 
    // render header-row of calendar
    var firstDayOfWeek = cal.getFirstDayOfWeek();
@@ -419,12 +418,12 @@ function calendar_macro(param) {
    var weeks = Math.ceil((pre + days) / 7);
    var daycnt = 1;
 
-   var time = cal.getTime();
-   calParam.month = formatTimestamp(time,"MMMM");
-   calParam.year =  formatTimestamp(time,"yyyy");
+   var monthNames = symbols.getMonths();
+   calParam.month = monthNames[cal.get(java.util.Calendar.MONTH)];
+   calParam.year =  cal.get(java.util.Calendar.YEAR);
 
    // pre-render the year and month so we only have to append the days as we loop
-   var currMonth = formatTimestamp(time, "yyyyMM");
+   var currMonth = formatTimestamp(cal.getTime(), "yyyyMM");
    // remember the index of the first and last days within this month.
    // this is needed to optimize previous and next month links.
    var lastDayIndex = 9999999;
@@ -463,8 +462,8 @@ function calendar_macro(param) {
    // set day to last day of month and try to render next month
    // check what the last day of the month is
    // cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE));
-   calParam.back = this.renderLinkToPrevMonth(firstDayIndex,currMonth+"01");
-   calParam.forward = this.renderLinkToNextMonth(lastDayIndex,currMonth+"31");
+   calParam.back = this.renderLinkToPrevMonth(firstDayIndex,currMonth+"01",monthNames);
+   calParam.forward = this.renderLinkToNextMonth(lastDayIndex,currMonth+"31",monthNames);
    this.renderSkin("calendar",calParam);
 }
 
