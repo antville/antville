@@ -86,7 +86,7 @@ comment.skin.edit = response.action
 
 // D A Y
 
-day.macros = storylist, link
+day.macros = storylist, timestamp
 day.skin.main = response.prevpage, response.nextpage
 
 
