@@ -22,6 +22,23 @@ function getPost(appkey, postid, username, password) {
 }
 
 /**
+ *  Utility function to parse the <title>title</title> out of a 
+ *  Blogger API posting.
+ */
+function parseBloggerAPIPosting (param, content) {
+   if (content.indexOf ("<title>") != 0)
+      param.content_text = content;
+   else {
+      var endTitle = content.lastIndexOf ("</title>");
+      if (endTitle > 0) {
+         param.content_title = content.substring (7, endTitle);
+         param.content_text = content.substring (endTitle+8); 
+      } else
+         param.content_text = content;
+   }
+}
+
+/**
  * Create a new post after checking user credentials.
  */
 function newPost (appkey, blogid, username, password, content, publish) {
@@ -32,7 +49,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
       throwError ("You don't have permission to post to this weblog");
 
    var param = new Object();
-   param.content_text = content;
+   this.parseBloggerAPIPosting (param, content);
    param.online = publish ? 2 : 0;
    var result = blog.stories.evalNewStory(new story(), param, user);
    if (result.error)
@@ -53,7 +70,11 @@ function editPost (appkey, postid, username, password, content, publish) {
    // check if user is allowed to edit the story
    if (story.isEditDenied(user,story.site.members.getMembershipLevel(user)))
       throwError ("You're not allowed to edit the story with id " + postid);
-   story.setContentPart("text",content);
+   var param = new Object();
+   this.parseBloggerAPIPosting (param, content);
+   story.title = param.content_title;
+   story.setContentPart("title",param.content_title);
+   story.setContentPart("text",param.content_text);
    story.online = publish ? 2 : 0;
    story.modifier = user;
    story.modifytime = new Date();
@@ -99,7 +120,11 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
       param.postid = story._id;
       param.userid = story.creator.name;
       param.dateCreated = story.createtime;
-      param.content = story.getContentPart("text");
+      if (story.title)
+         param.content = "<title>"+story.title+"</title>"+
+             story.getContentPart("text");
+      else
+         param.content = story.getContentPart("text");
       posts[posts.length] = param;
    }
    return (posts);
