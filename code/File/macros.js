@@ -47,8 +47,14 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel))
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.link(this.href("edit"), param.text ? param.text : "edit");
+   }
    return;
 }
 
@@ -58,7 +64,12 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
