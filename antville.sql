@@ -89,6 +89,7 @@ create table STORY (
    ID mediumint(9) not null,
    WEBLOG_ID mediumint(9),
    DAY varchar(10),
+   TOPIC varchar(128),
    TITLE mediumtext,
    TEXT mediumtext,
    ISONLINE tinyint(1),
