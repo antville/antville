@@ -507,6 +507,11 @@ function onStart() {
    		app.log ("loaded application messages (language: " + name + ")");
    	}
    }
+   // load macro help file
+   var macroHelpFile = new File(dir, "macro.help");
+   app.data.macros = new Packages.helma.util.SystemProperties (macroHelpFile.getAbsolutePath());
+   //eval(macroHelpFile.readAll());
+   app.log("loaded macro help file");
    return;
 }
 
