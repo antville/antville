@@ -4,7 +4,8 @@
 
 function stylesheet_action() {
    var skin = this.skins.fetchSkin("site", "style");
-   if (skin.isModified()) {
+   // we also check if the prefs have been changed, lately:
+   if (skin.isModified() || req.data.lastModified < this.modifytime) {
       res.contentType = "text/css";
       res.lastModified = new Date();
       this.renderSkin("style");
