@@ -9,13 +9,13 @@ function renderTree(param, collection) {
       var collection = SKINSETS;
    for (var i in collection) {
       var skinset = collection[i];
+      if (skinset.context && 
+          skinset.context != res.handlers.context._prototype.toLowerCase())
+         continue;
       var sp = {skinset: skinset.key, anchor: skinset.key, "class": "closed"};
       var desc = this.getSkinDescription("skinset", skinset.key);
       sp.title = desc[0];
       sp.text = desc[1];
-      if (skinset.context && 
-          skinset.context != res.handlers.context._prototype.toLowerCase())
-         continue;
       if (param.skinset && param.skinset.startsWith(skinset.key)) {
          sp["class"] = "selected";
          if (skinset.skins)
@@ -36,7 +36,6 @@ function renderTree(param, collection) {
  */
 function renderTreeLeafs(skinset) {
    res.push();
-   var text;
    for (var i in skinset.skins) {
       var sp = {key: skinset.skins[i], skinset: skinset.key};
       var splitKey = sp.key.split(".");
@@ -57,8 +56,9 @@ function renderTreeLeafs(skinset) {
 function renderList(collection, action) {
    var sp = {action: action};
    res.push();
-   for (var i=0;i<collection.size();i++) {
-      var s = collection.get(i);
+   var arr = (collection instanceof Array ? collection : collection.list());
+   for (var i=0;i<arr.length;i++) {
+      var s = arr[i];
       sp.key = s.proto + "." + s.name;
       if (!s.custom) {
          sp.status = s.renderSkinAsString("status");
