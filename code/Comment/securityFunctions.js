@@ -5,10 +5,10 @@
  */
 
 function isEditDenied(usr) {
-   if (this.author != usr) {
-      var membership = this.weblog.isUserMember(usr);
+   if (this.creator != usr) {
+      var membership = this.site.isUserMember(usr);
       if (!membership || (membership.level & MAY_EDIT_ANYCOMMENT) == 0)
-         return ("Sorry, you're not allowed to edit a posting of somebody else!");
+         return (getMsg("error","commentEditDenied"));
    }
    return null;
 }
