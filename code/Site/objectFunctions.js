@@ -93,7 +93,7 @@ function evalPreferences(param,modifier) {
    this.discussions = parseInt(param.discussions,10);
    this.usercontrib = parseInt(param.usercontrib,10);
    this.archive = parseInt(param.archive,10);
-
+   this.enableping = parseInt(param.enableping,10);
    // store selected locale in this.language and this.country
    var locs = java.util.Locale.getAvailableLocales();
    var newLoc = locs[parseInt(param.locale,10)];
