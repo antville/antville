@@ -148,7 +148,7 @@ function autoLogin() {
    if (Packages.helma.util.MD5Encoder.encode(u.password) != pw)
       return;
    else {
-      if (user.login(name,u.password)) {
+      if (session.login(name,u.password)) {
          user.lastVisit = new Date();
          res.message = "Welcome to Antville, " + user.name + "! Have fun!";
       } else
