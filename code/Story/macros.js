@@ -7,7 +7,7 @@ function title_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "main";
       this.openLink(linkParam);
       if (this.title)
@@ -87,7 +87,7 @@ function author_macro(param) {
       return;
    res.write(param.prefix);
    if (param.as == "link" && this.author.url) {
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.to = this.author.url;
       this.openLink(linkParam);
       res.write(this.author.name);
@@ -106,7 +106,7 @@ function modifier_macro(param) {
       return;
    res.write(param.prefix);
    if (param.as == "link" && this.modifier.url) {
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.to = this.modifier.url;
       this.openLink(linkParam);
       res.write(this.modifier.name);
@@ -123,8 +123,8 @@ function modifier_macro(param) {
 
 function editlink_macro(param) {
    res.write(param.prefix);
-   if (this.isEditAllowed()) {
-      var linkParam = new HopObject();
+   if (!this.isEditDenied()) {
+      var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       if (param.image && this.weblog.images.get(param.image))
@@ -143,8 +143,8 @@ function editlink_macro(param) {
 
 function deletelink_macro(param) {
    res.write(param.prefix);
-   if (this.isDeleteAllowed()) {
-      var linkParam = new HopObject();
+   if (!this.isDeleteDenied()) {
+      var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
       if (param.image && this.weblog.images.get(param.image))
@@ -181,7 +181,7 @@ function commentlink_macro(param) {
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       res.write(param.prefix);
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "main";
       if (this.allcomments.count() == 0) {
          res.write(this.allcomments.count() + " " + (param.no ? param.no : " comments"));
@@ -206,7 +206,7 @@ function comments_macro(param) {
    if (this.weblog.hasDiscussions() && this.count()) {
       res.write(param.prefix);
       for (var i=0;i<this.size();i++) {
-         res.write("<a name=\""+this.get(i).__id__+"\"></a>");
+         res.write("<a name=\"" + this.get(i)._id + "\"></a>");
          this.get(i).renderSkin("toplevel");
       }
       res.write(param.suffix);
@@ -220,9 +220,18 @@ function comments_macro(param) {
 
 function commentform_macro(param) {
    res.write(param.prefix);
-   var c = new comment();
-   c.renderSkin("edit");
+   if (user.uid) {
+      var c = new comment();
+      c.renderSkin("edit");
+   } else {
+      var linkParam = new Object();
+      linkParam.to = "login";
+      this.weblog.members.openLink(linkParam);
+      res.write (param.text ? param.text : "login to add your comment!");
+      this.closeLink();
+   }
    res.write(param.suffix);
+
 }
 
 /**
