@@ -9,6 +9,8 @@ if (this.online) {
 	var max = req.data.max ? parseInt(req.data.max) : 7;
 	if (max > size)
 		max = size;
+	if (max > 20)
+		max = 20;
 	
 	var items = "";
 	for (var i=0; i<max; i++) {
