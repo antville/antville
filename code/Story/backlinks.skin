@@ -6,6 +6,40 @@
 	<td class="small"><b>Backlinks</b></td>
 </tr>
 
+<script type="text/javascript"><!--
+var referrers = [];
 <% param.referrers %>
+
+var query = new Antville.Query();
+var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
+var searchFilter = new Antville.Filter(query.filter);
+var searchEngineFilters = [
+   new Antville.Filter("http:\/\/.*google.*\?", "q"),
+   new Antville.Filter("http:\/\/.*search\.msn.*\?", "q"),
+   new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
+   new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
+]
+var prefix = "<em>Search request:</em> ";
+for (var i in referrers) {
+   var ref = referrers[i];
+   var text = ref.text;
+   if (spamFilter.test(ref.url))
+      continue;
+   if (query.filter && !searchFilter.test(ref.url))
+      continue;
+   var done = false;
+   for (var e in searchEngineFilters) {
+      var filter = searchEngineFilters[e];
+      if (!done && filter.test(ref.url)) {
+         text = ref.compose(filter.key, prefix);
+         done = true;
+      }
+   }
+   document.writeln('<tr>');
+   document.writeln('<td align="right" valign="top">', ref.count, '</td>');
+   document.writeln('<td><a href="', ref.url, '">', text, '</a></td>');
+   document.writeln('</tr>');
+}
+// --></script>
 
 </table>
