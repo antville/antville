@@ -22,15 +22,15 @@ global.macro.storylist = 246675
 global.macro.colorpicker = 246684
 
 global.skin.colorpickerWidget = param.editor, param.text, param.name, param.color
-global.skin.prevpagelink = param.next, param.url
-global.skin.nextpagelink = param.next, param.url
+global.skin.prevpagelink = param.text, param.url
+global.skin.nextpagelink = param.text, param.url
 global.skin.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
 
 
 
 // H O P O B J E C T 
 
-hopobject.macros = skin, link, createtime, creator
+hopobject.macros = link, createtime, creator
 
 hopobject.macro.createtime = 244877
 hopobject.macro.creator = 142525
@@ -83,7 +83,15 @@ day.skin.main = response.prevpage, response.nextpage
 
 // F I L E
 
-file.macros = alias, description, url, editlink, deletelink, creator, filesize, mimetype, filetype, clicks
+file.macros = alias, description, url, filesize, mimetype, filetype, clicks
+
+file.macro.alias = 254484
+file.macro.description = 254488
+file.macro.clicks = 254490
+file.macro.filesize = 254493
+file.macro.filetype = 254495
+file.macro.mimetype = 254498
+file.macro.url = 254504
 
 file.skin.edit = response.action
 file.skin.new = response.action
@@ -99,7 +107,14 @@ filemgr.skin.main = response.prevpage, response.nextpage
 
 // I M A G E
 
-image.macros = alias, alttext, width, height, url, editlink, deletelink, show, creator, hasthumbnail
+image.macros = alias, alttext, width, height, url, show
+
+image.macro.alias = 254543
+image.macro.alttext = 254547
+image.macro.width = 254548
+image.macro.height = 254548
+image.macro.url = 254552
+image.macro.show = 254560
 
 image.skin.edit = response.action
 image.skin.new = response.action
@@ -212,7 +227,7 @@ site.skin.page = response.body, response.title, response.message
 site.skin.referrerItem = param.count, param.text, param.referrer
 site.skin.rss = param.title, param.creator, param.email, param.lastupdate, param.resources, param.items
 site.skin.rssItem = param.title, param.date, param.publisher, param.creator, param.email, param.year
-site.skin.searchform = response.action, response.q
+site.skin.searchform = response.action, request.q
 
 
 
