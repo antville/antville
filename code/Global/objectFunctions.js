@@ -261,8 +261,9 @@ function logAccess() {
 		var referrer = req.data.http_referer;
 
 		// no logging at all if the referrer comes from the same weblog
-		// or the antville-frontpage
+		// or the antville-frontpage or is equal to "-"
 		if (referrer.indexOf(weblog.href()) > -1 || referrer == root.href() || referrer == "-")
+			return;
 
 		var storyID = path["story"] ? path["story"]._id : null;
 		var ip = req.data.http_remotehost;
