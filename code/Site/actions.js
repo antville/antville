@@ -279,18 +279,30 @@ function search_action() {
     */
    var renderResult = function(hits, itemsPerPage, pageIdx) {
       var currIdx = 0;
-      var stop = size = hits.length();
+      var size = hits.length();
+      var validCnt = 0;
    
       var totalPages = Math.ceil(size/itemsPerPage);
       if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
          pageIdx = 0;
-      currIdx = pageIdx * itemsPerPage;
-      stop = Math.min(currIdx + itemsPerPage, size);
+      var start = (pageIdx * itemsPerPage);
+      stop = Math.min(start + itemsPerPage, size);
       res.push();
-      while (currIdx < stop) {
-         var item = self.allcontent.get(hits.doc(currIdx).get("id"));
-         if (item)
-            item.renderSkin("searchview", {score: Math.round(hits.score(currIdx) * 100)});
+      while (currIdx < size && validCnt < stop) {
+         var item = Story.getById(hits.doc(currIdx).get("id"));
+         if (item) {
+            var status = (item instanceof Comment) ? item.story.online : item.online;
+            if (status > 0) {
+               if (validCnt >= start) {
+                  item.renderSkin("searchview", {score: Math.round(hits.score(currIdx) * 100)});
+               }
+               validCnt++;
+            } else {
+               // "correct" the number of hits since
+               // the story/comment is offline
+               total--;
+            }
+         }
          currIdx++;
       }
       return res.pop();
@@ -347,8 +359,9 @@ function search_action() {
       } else {
          var now = new Date();
          var searcher = new index.Searcher();
-         var cnt = searcher.search(q, filter);
-         switch(cnt) {
+         var total = searcher.search(q, filter);
+         res.data.resultlist = renderResult(searcher.hits, 10, req.data.page);
+         switch(total) {
             case 0:
                res.message = getMessage("error.searchNothingFound", encodeForm(query));
                break;
@@ -356,13 +369,12 @@ function search_action() {
                res.message = getMessage("confirm.resultOne", encodeForm(query));
                break;
             default:
-               res.message = getMessage("confirm.resultMany", [encodeForm(query), cnt]);
+               res.message = getMessage("confirm.resultMany", [encodeForm(query), total]);
                break;
          }
+         res.data.pagenavigation = renderPageNavigation(total, this.href(req.action) + "?" + queryArr.join("&"), 10, req.data.page);
+         searcher.close();
       }
-      res.data.resultlist = renderResult(searcher.hits, 10, req.data.page);
-      res.data.pagenavigation = renderPageNavigation(cnt, this.href(req.action) + "?" + queryArr.join("&"), 10, req.data.page);
-      searcher.close();
       app.log("[" + this.alias + "] query (" + (new Date()).diff(now) + "ms): " + q);
    }
 
