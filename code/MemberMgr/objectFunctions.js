@@ -128,7 +128,7 @@ function sendPwd(email) {
    if (!cnt)
       throw new Exception("emailNoAccounts");
    // now we send the mail containing all accounts for this email-address
-   var mailbody = this.renderSkinAsString("pwdmail", {text: pwdList});
+   var mailbody = this.renderSkinAsString("mailpassword", {text: pwdList});
    sendMail(root.sys_email, email, getMessage("mail.sendPwd"), mailbody);
    return new Message("mailSendPassword");
 }
