@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.redirect(this.href("sites"));
+   res.redirect(this.href("status"));
 }
 
 /**
