@@ -35,10 +35,8 @@ function text_macro(param) {
    else {
       if (!param.limit)
          this.renderSkin(createSkin(format(activateLinks(this.text))));
-      else {
+      else
          this.renderTextPreview(param.limit);
-         res.write("&nbsp;...");
-      }
    }
    res.write(param.suffix);
 }
@@ -116,6 +114,16 @@ function modifier_macro(param) {
    } else
       res.write(this.modifier.name);
    res.write(param.suffix);
+}
+
+/**
+ * macro renders the url of this story
+ */
+
+function url_macro(param) {
+   res.write(param.prefix);
+   res.write(this.href());
+   res.write(param.prefix);
 }
 
 /**
@@ -237,32 +245,21 @@ function commentform_macro(param) {
 }
 
 /**
- * macro renders an image out of image-pool
- * either as plain image or as image-link
- * overrideable parameters: width,height,alttext,border
- * additional parameters: align, valign
+ * macro left for backwards-compatibility
+ * calls global image_macro()
  */
 
 function image_macro(param) {
-   if (param.name && this.weblog.images.get(param.name)) {
-      res.write(param.prefix);
-      if (param.linkto) {
-         this.openLink(param);
-         this.weblog.renderImage(this.weblog.images.get(param.name),param);
-         this.closeLink(param);
-      } else
-         this.weblog.renderImage(this.weblog.images.get(param.name),param);
-      res.write(param.suffix);
-   }
+   image_macro(param);
 }
 
 /**
- * macro is a wrapper-macro for calling thumbnail-macro
- * of weblog
+ * macro left for backwards-compatibility
+ * calls global image_macro()
  */
 
 function thumbnail_macro(param) {
-   this.weblog.thumbnail_macro(param);
+   thumbnail_macro(param);
 }
 
 
