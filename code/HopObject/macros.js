@@ -12,19 +12,6 @@ function skin_macro(param) {
 }
 
 /**
- * Loops over subnodes, rendering a skin on each.
- */
-
-function loopskin_macro (param) {
-   var l = this.size();
-   for (var i=0; i<l; i++) {
-      var item = this.get(i);
-      item.renderSkin (param.name);
-   }
-}
-
-
-/**
  * macro creates an html link
  */
 function link_macro(param) {
