@@ -104,9 +104,11 @@ function searchSites (query, sid) {
    var result = new Array();
 
    // break up search string
-   var unquote = new RegExp("\\\\", "g");
+   var unquote = new RegExp("\\\\");
+   unquote.global = true;
    query = query.replace(unquote, "\\\\");
-   unquote = new RegExp("\'", "g");
+   unquote = new RegExp("\'");
+   unquote.global = true;
    query = query.replace(unquote, "\'\'");
    var qarr = query.split(" ");
 
@@ -166,7 +168,7 @@ function getLocale() {
 
 function getSysTitle() {
    if (!root.sys_title)
-      return ("Antville");
+      return ("antville");
    return (root.sys_title);
 }
 

@@ -92,7 +92,7 @@ function renderStorylist(day) {
    var storylist = new java.lang.StringBuffer();
    while (idx < days) {
       var day = this.get(idx++);
-      storylist.append(day.renderSkinAsString("header"));
+      storylist.append(day.get(0).renderSkinAsString("dayheader"));
       for (var i=0;i<day.size();i++)
          storylist.append(day.get(i).renderSkinAsString("preview"));
    }

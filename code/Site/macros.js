@@ -203,14 +203,9 @@ function smallcolor_macro(param) {
  * macro rendering lastupdate
  */
 function lastupdate_macro(param) {
-   if (!this.lastupdate) {
-      res.write("no updates so far");
-   }
-   else {
-      res.write("last update on&nbsp;");
-      res.write(formatTimestamp(this.lastupdate,param.format));
-   }
-   return;
+   if (!this.lastupdate)
+      return;
+   return (formatTimestamp(this.lastupdate,param.format));
 }
 
 
@@ -500,6 +495,7 @@ function history_macro(param) {
       param.show = 5;
    var cnt = 0;
    var i = 0;
+   this.lastmod.prefetchChildren(0, parseInt(param.show, 10));
    while (cnt < param.show && this.lastmod.get(i)) {
       var item = this.lastmod.get(i++);
       if (!item.story || (item.story.online && item.story.discussions && item.site.discussions)) {

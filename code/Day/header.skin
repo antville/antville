@@ -1,1 +1,0 @@
-<div class="small"><br /><b><% day.timestamp format="EEEE, d. MMMM yyyy" %></b></div>

@@ -7,9 +7,9 @@
   xmlns="http://purl.org/rss/1.0/"
 > 
 
-  <channel rdf:about="<% this.url encoding="xml" %>">
+  <channel rdf:about="<% root.url encoding="xml" %>">
     <title><% param.title encoding="xml" %> Sites</title>
-    <link><% this.url encoding="xml" %></link>
+    <link><% root.url encoding="xml" %></link>
     <description>Recently updated <% param.title %> sites ordered by date</description>
     <dc:publisher><% param.title encoding="xml" %></dc:publisher>
     <dc:creator><% param.title encoding="xml" %><% param.email encoding="xml" prefix=" (mailto:" suffix=")" %></dc:creator>

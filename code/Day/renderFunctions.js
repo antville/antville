@@ -16,6 +16,7 @@ function renderStorylist() {
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
    var storylist = new java.lang.StringBuffer();
+   storylist.append(this.get(0).renderSkinAsString("dayheader"));
    for (var i=0;i<this.size();i++)
       storylist.append(this.get(i).renderSkinAsString("preview"));
    // assigning link to previous page to res.data.prevpage

@@ -2,7 +2,8 @@ res.contentType = "text/xml";
 
 var now = new Date();
 var systitle = root.getSysTitle();
-var isoDateFormat = "yyyy-MM-dd'T'HH:mm:ss'+01:00'";
+var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
 
 var size = this.size();
 var max = req.data.max ? parseInt(req.data.max) : 25;
@@ -21,8 +22,8 @@ for (var i=0; i<max; i++) {
       param.email = "";
       if (site.creator.publishemail)
          param.email = translateToEntities(site.creator.email);
-      param.date = site.lastupdate.format("dd.MM.yyyy, HH:mm'h CET'");
-      param.isodate = site.lastupdate.format(isoDateFormat);
+      param.isodate = sdf.format(site.lastupdate)
+      param.date = site.tagline ? "" : param.isodate;
       param.year = site.lastupdate.getYear();
       items.append(site.renderSkinAsString("rssItem", param));
       resources.append(site.renderSkinAsString("rssResource", param));
@@ -33,7 +34,7 @@ param = new Object();
 param.title = systitle;
 param.email = translateToEntities(root.sys_email);
 param.year = now.getYear();
-param.lastupdate = now.format(isoDateFormat);
+param.lastupdate = sdf.format(now);
 param.items = items.toString();
 param.resources = resources.toString();
 

@@ -364,9 +364,15 @@ function editableby_macro(param) {
  */
 
 function discussions_macro(param) {
+   if (!path.site.discussions)
+      return;
    if (param.as == "editor") {
-      if (this.discussions == null && path.site.discussions)
-         param.checked = "checked";
+      if (this.creator) {
+         if (this.discussions == null)
+            param.checked = "checked";
+         else
+            delete param.checked;
+      }
       renderInputCheckbox(this.createInputParam("discussions", param));
       var attr = new Object();
       attr.type = "hidden";
@@ -501,7 +507,7 @@ function justintopic_macro(param) {
             delete param.checked;
          else if (req.data.online == 1 || this.online == 1)
             param.checked = "checked";
-      } else {
+      } else if (this.creator) {
          if (this.online != 1)
             delete param.checked;
          else
@@ -530,8 +536,8 @@ function addtofront_macro(param) {
             delete param.checked;
          else if (req.data.online == 2 || this.online == 2)
             param.checked = "checked";
-      } else {
-         if (this.online != null && this.online < 2)
+      } else if (this.creator) {
+        if (this.online != null && this.online < 2)
             delete param.checked;
          else
             param.checked = "checked";

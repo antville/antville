@@ -7,10 +7,10 @@
   xmlns="http://purl.org/rss/1.0/"
 > 
 
-  <channel rdf:about="<% this.url %>">
-    <title><% this.title encoding="xml" %></title>
-    <link><% this.url %></link>
-    <description><% this.tagline encoding="xml" %></description>
+  <channel rdf:about="<% site.url %>">
+    <title><% site.title encoding="xml" %></title>
+    <link><% site.url %></link>
+    <description><% site.tagline encoding="xml" %></description>
     <dc:publisher><% param.title encoding="xml" %></dc:publisher>
     <dc:creator><% param.creator encoding="xml" %><% param.email encoding="xml" prefix=" (mailto:" suffix=")" %></dc:creator>
     <dc:date><% param.lastupdate %></dc:date>
@@ -25,11 +25,11 @@
     </items>
   </channel>
 
-   <textinput rdf:about="<% this.url %>search">
+   <textinput rdf:about="<% site.url %>search">
       <title>find</title>
       <description>Search this weblog:</description>
       <name>q</name>
-      <link><% this.url %>search</link>
+      <link><% site.url %>search</link>
    </textinput>
 
 <% param.items %>

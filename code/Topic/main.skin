@@ -1,6 +1,5 @@
-<div><% linkedpath %></div><br />
-<div><% topic.addstory prefix="...&nbsp;" %></div>
-
-<% response.prevpage prefix="<div>" suffix="</div>" %>
-<% topic.storylist prefix="<br /><br />" suffix="" %>
-<% response.nextpage prefix="<div>" suffix="</div>" %>
+<div class="pagelink"><% linkedpath %><br /><br />
+<% topic.addstory prefix="...&nbsp;" suffix="<br />" %>
+<% response.prevpage %></div>
+<% topic.storylist %>
+<% response.nextpage %>

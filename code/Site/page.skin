@@ -49,7 +49,7 @@
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
 <% site.navigation for="contributors" %>
 <% site.navigation for="admins" %><br />
-<% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
+...&nbsp;<a href="<% root.sysurl %>"><% root.systitle suffix=" " %>home</a></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div><% site.searchbox %></div>

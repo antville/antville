@@ -1,4 +1,3 @@
-<% response.prevpage %>
-<% day.skin name="header" %>
+<div class="pagelink"><% response.prevpage %></div>
 <% day.storylist %>
 <% response.nextpage %>

@@ -22,8 +22,15 @@ function renderStorylist(idx) {
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
    var storylist = new java.lang.StringBuffer();
-   while (idx < max)
-      storylist.append(this.get(idx++).renderSkinAsString("preview"));
+   var day;
+   while (idx < max) {
+      var s = this.get(idx++);
+      if (s.day != day) {
+         storylist.append(s.renderSkinAsString("dayheader"));
+         day = s.day;
+      }
+      storylist.append(s.renderSkinAsString("preview"));
+   }
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;

@@ -25,7 +25,7 @@
 <td width="460" valign="top" nowrap="nowrap"><br /><% response.body %></td>
 <td width="20" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap="nowrap"><% root.loginstatus %>
+<td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% root.loginstatus %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/manage" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
@@ -35,7 +35,7 @@
 ...&nbsp;<% sysmgr.link to="setup" text="setup" %><br />
 ...&nbsp;<% sysmgr.link to="logs" text="log" %><br />
 ...&nbsp;<% sysmgr.link to="status" text="status" %><br />
-<br /><% root.link to="main" text="antville home" prefix="...&nbsp;" %></div></td>
+<br />...&nbsp;<a href="<% root.sysurl %>"><% root.systitle suffix=" " %>home</a></div></td>
 </tr>
 <tr>
 <td colspan="4" width="680" nowrap="nowrap"><% response.list %></td>
