@@ -11,7 +11,7 @@
     <title><% param.title %></title>
     <link><% param.url %></link>
     <description><% param.description %></description>
-    <dc:publisher>Antville Weblog Tool</dc:publisher>
+    <dc:publisher>Antville Publishing Tool</dc:publisher>
     <dc:creator><% param.creatorName %> (mailto:<% param.creatorMail %>)</dc:creator>
     <dc:rights>Copyright &#169; <% param.year %> <% param.creatorName %></dc:rights>
     <dc:date><% param.date %></dc:date>

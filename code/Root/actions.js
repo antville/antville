@@ -21,3 +21,12 @@ function safescripts_action() {
 function colorpicker_action() {
    renderSkin("colorpicker");
 }
+
+
+/**
+ * redirect requests for rss10 to rss
+ */
+
+function rss10_action() {
+   res.redirect(this.href("rss"));
+}

@@ -33,9 +33,18 @@ function javascript_action() {
 
 
 /**
- * redirect requests for rss092 to rss10
+ * redirect requests for rss092 to rss
  */
 
 function rss092_action() {
-   res.redirect(this.href("rss10"));
+   res.redirect(this.href("rss"));
+}
+
+
+/**
+ * redirect requests for rss10 to rss
+ */
+
+function rss10_action() {
+   res.redirect(this.href("rss"));
 }
