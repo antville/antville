@@ -1,1 +1,1 @@
-<li><% this.weblogtitle linkto="main" %> (as <% this.level %>, since <% this.createtime format="short" %>)</li>
+<li><% this.weblogtitle linkto="main" %> (as <% this.level %>)</li>
