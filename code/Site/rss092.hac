@@ -6,7 +6,7 @@ var param1 = new Object();
 
 if (this.online) {
 	var size = this.allstories.size();
-	var max = req.data.max ? req.data.max : 7;
+	var max = req.data.max ? req.data.max + 1 : 8;
 	if (max > size)
 		max = size;
 	
