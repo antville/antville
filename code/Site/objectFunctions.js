@@ -128,14 +128,14 @@ function getTimeZone() {
  * @return Integer -1: a>b; 1: a<b; 0: a=b
  */
 function sortMostReads(s1, s2) {
-	var s1reads = s1.reads + s1.cache.reads;
-	var s2reads = s2.reads + s2.cache.reads;
-	if (s1reads > s2reads)
-		return(-1);
-	else if (s1reads < s2reads)
-		return(1);
-	else
-		return(0);
+   var s1reads = s1.reads + s1.cache.reads;
+   var s2reads = s2.reads + s2.cache.reads;
+   if (s1reads > s2reads)
+      return(-1);
+   else if (s1reads < s2reads)
+      return(1);
+   else
+      return(0);
 }
 
 /**
@@ -158,23 +158,23 @@ function deleteAll() {
  */
 
 function ping() {
-	var title = this.title ? this.title : this.alias;
+   var title = this.title ? this.title : this.alias;
 
-	// we're doing it the xml-rpc way
-	// (specs at http://newhome.weblogs.com/directory/11)
-	var xr = new Remote("http://rpc.weblogs.com/RPC2");
-	var ping = xr.weblogUpdates.ping(title, this.href());
+   // we're doing it the xml-rpc way
+   // (specs at http://newhome.weblogs.com/directory/11)
+   var xr = new Remote("http://rpc.weblogs.com/RPC2");
+   var ping = xr.weblogUpdates.ping(title, this.href());
    if (!ping.result)
       return;
-	var result = new Object();
-	result.error = ping.result.flerror;
-	result.message = ping.result.message;
+   var result = new Object();
+   result.error = ping.result.flerror;
+   result.message = ping.result.message;
 
-	if (result.error)
-		app.log("Error when notifying weblogs.com for updated site \"" + this.alias + "\": " + result.message);
+   if (result.error)
+      app.log("Error when notifying weblogs.com for updated site \"" + this.alias + "\": " + result.message);
 
-	// lastping is always set to now to prevent blogs
-	// hanging in the scheduler if a fatal error occurs
-	this.lastping = new Date();
-	return(result);
+   // lastping is always set to now to prevent blogs
+   // hanging in the scheduler if a fatal error occurs
+   this.lastping = new Date();
+   return(result);
 }
