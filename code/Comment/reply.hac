@@ -1,16 +1,22 @@
-if (!this.isReplyAllowed())
+var deny = this.isReplyDenied();
+if (deny) {
+   res.message = deny;
    res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.story.href());
+}
 
-if (req.data.submit != "cancel" && this.weblog.hasDiscussions()) {
-   res.skin = "main";
-   res.title = "Antville - " + this.weblog.title;
-
-   var r = this.addComment();
-   
-   res.head = this.story.weblog.renderSkinAsString("javascript");
-   res.head += this.story.weblog.renderSkinAsString("style");
-   res.body = this.story.weblog.renderSkinAsString("header");
-   res.body += this.renderSkinAsString("toplevel");
-   res.body += r.renderSkinAsString("edit");
-} else
+if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.story.href());
+if (!this.weblog.hasDiscussions())
+   res.redirect(this.story.href());
+
+res.skin = "weblog.page";
+
+res.title = "Antville - " + this.weblog.title;
+
+var r = this.addComment();
+
+res.head = this.story.weblog.renderSkinAsString("javascript");
+res.head += this.story.weblog.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("toplevel");
+res.body += r.renderSkinAsString("edit");
