@@ -33,10 +33,10 @@ function updateMembership(lvl,modifier) {
  */
 
 function sendConfirmationMail(fromEmail) {
-	var mail = new Mail();
-	mail.setFrom(fromEmail);
-	mail.addTo(this.user.email);
-	mail.setSubject(getMessage("mailsubject","statusChange",this.site.title));
-	mail.setText(this.renderSkinAsString("mailbody"));
-	mail.send();
+   var mail = new Mail();
+   mail.setFrom(fromEmail);
+   mail.addTo(this.user.email);
+   mail.setSubject(getMessage("mailsubject","statusChange",this.site.title));
+   mail.setText(this.renderSkinAsString("mailbody"));
+   mail.send();
 }
