@@ -45,7 +45,7 @@ function online_macro(param) {
 
 function createtime_macro(param) {
    renderPrefix(param);
-   this.weblog.formatTimestamp(this.createtime,param);
+   res.write(this.weblog.formatTimestamp(this.createtime,param));
    renderSuffix(param);
 }
 
@@ -56,9 +56,19 @@ function createtime_macro(param) {
 function modifytime_macro(param) {
    if (this.modifytime) {
       renderPrefix(param);
-      this.weblog.formatTimestamp(this.modifytime,param);
+      res.write(this.weblog.formatTimestamp(this.modifytime,param));
       renderSuffix(param);
    }
+}
+
+/**
+ * macro renders the name of the author
+ */
+
+function author_macro(param) {
+   renderPrefix(param);
+   res.write(this.author.name);
+   renderSuffix(param);
 }
 
 /**
@@ -83,7 +93,7 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is owner of this story
+ * if user is author of this story
  */
 
 function deletelink_macro(param) {
