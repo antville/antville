@@ -10,7 +10,7 @@
 <td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
 </tr>
 <tr>
-<td colspan="2"><% image.show what="thumbnail" vspace="5" %></td>
+<td colspan="2"><% image.show as="thumbnail" vspace="5" %></td>
 </tr>
 </table>
 

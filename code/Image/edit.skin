@@ -3,7 +3,7 @@
 <tr>
 <td class="small">Name:</td>
 <td><% image.alias %></td>
-<td rowspan="5" valign="top" align="right" nowrap="nowrap"><div style="width: 100px; height: 67px; overflow: hidden;"><% image.show what="thumbnail" %></div></td>
+<td rowspan="5" valign="top" align="right" nowrap="nowrap"><div style="width: 100px; height: 67px; overflow: hidden;"><% image.show as="thumbnail" %></div></td>
 </tr>
 <tr>
 <td class="small">Type:</td>

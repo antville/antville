@@ -93,7 +93,7 @@ function deletelink_macro(param) {
 function show_macro(param) {
    var img = this;
    // if we have a thumbnail, display that
-   if (param.what == "thumbnail" && this.thumbnail) {
+   if (param.as == "thumbnail" && this.thumbnail) {
       var url = this.href();
       img = this.thumbnail;
    } else
