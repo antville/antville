@@ -17,7 +17,7 @@ function evalNewStory(param, creator) {
    // if all story parts are null, return with error-message
    if (!content.exists)
       throw new Exception("textMissing");
-   s.content.setAll(content.value);
+   s.setContent(content.value);
    // let's keep the title property
    s.title = content.value.title;
    // check if the create date is set in the param object

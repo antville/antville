@@ -51,7 +51,7 @@ function evalStory(param, modifier) {
       this.online = 0;
    if (content.isMajorUpdate)
       this.modifytime = new Date();
-   this.content.setAll(content.value);
+   this.setContent(content.value);
    this.topic = topicName;
    // let's keep the title property
    this.title = content.value.title;
@@ -99,6 +99,22 @@ function toggleOnline(newStatus) {
 }
 
 /**
+ * Sets this text's content to a new content object. This should be used instead
+ * of this.content.setAll() to make sure also set the rawcontent property is set.
+ *
+ * @param Obj an object containing the new content parts as properties.
+ */
+function setContent(newContent) {
+   this.content.setAll(newContent);
+   // set rawcontent property used for searching
+   res.push();
+   for (var i in newContent) {
+      res.write(newContent[i]+'\r\n');
+   }
+   this.rawcontent = res.pop();
+}
+
+/**
  * function evaluates comment and adds it if ok
  * @param Obj Object containing properties needed for creation of comment
  * @param Obj Story-Object
@@ -114,7 +130,7 @@ function evalComment(param, creator) {
    if (!content.exists)
       throw new Exception("textMissing");
    var c = new comment(this.site, creator, param.http_remotehost);
-   c.content.setAll(content.value);
+   c.setContent(content.value);
    // let's keep the title property:
    c.title = content.value.title;
    this.add(c);
