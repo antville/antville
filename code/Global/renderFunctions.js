@@ -1,4 +1,21 @@
 /**
+ * open an html link element
+ * @param String URL to use in a-tag
+ */
+function openLink(url) {
+   var attr = new Object();
+   attr.href = url;
+   openMarkupElement("a", attr);
+}
+
+/**
+ * close an html link element
+ */
+function closeLink() {
+  closeMarkupElement("a");
+}
+
+/**
  * Opens an arbitrary x/html element ("begin tag")
  * @param name String containing the element's name
  * @param attr Object containing the element's attributes as properties
@@ -64,19 +81,19 @@ function renderMarkupPart(name, attr) {
  * @param param Object contains user-defined properties
  */
 function renderImage(img, param) {
-  if (!param.title)
-    param.title = img.alttext;
-  param.src = getProperty("imgUrl");
-  param.src += img.weblog ? img.weblog.alias + "/" : "";
-  param.src += img.filename + "." + img.fileext;
-  if (!param.width)
-    param.width = img.width;
-  if (!param.height)
-    param.height = img.height;
-  if (!param.border)
-    param.border = "0";
-  param.alt = param.description ? param.description : img.alttext;
-  renderMarkupElement("img", param);
+   if (!param.title)
+      param.title = img.alttext;
+   param.src = getProperty("imgUrl");
+   param.src += img.weblog ? img.weblog.alias + "/" : "";
+   param.src += img.filename + "." + img.fileext;
+   if (!param.width)
+      param.width = img.width;
+   if (!param.height)
+      param.height = img.height;
+   if (!param.border)
+      param.border = "0";
+   param.alt = param.description ? param.description : img.alttext;
+   renderMarkupElement("img", param);
 }
 
 
