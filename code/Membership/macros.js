@@ -72,7 +72,7 @@ function deletelink_macro(param) {
  */
 
 function unsubscribelink_macro(param) {
-   if (this.level > 0)
+   if (this.level > SUBSCRIBER)
       return;
    openLink(this.site.href("unsubscribe"));
    res.write(param.text ? param.text : "unsubscribe");
