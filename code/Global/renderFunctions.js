@@ -272,10 +272,10 @@ function renderTextPreviewAsString(text, limit) {
    var prev = text.substring(0,text.indexOf(" ",limit));
    if (!prev)
       prev = text;
-   // and now we "enrich" the text with <wbr>-tags
+   // and now we "enrich" the text with <wbr />-tags
    var str = "";
    for (var i=0; i<prev.length; i=i+30)
-      str += prev.substring(i, i+30) + "<wbr>";
+      str += prev.substring(i, i+30) + "<wbr />";
    return(str);
 }
 
@@ -285,7 +285,7 @@ function renderTextPreviewAsString(text, limit) {
  * length of the string to show is defined by argument "limit"
  */
 function renderTextPreview(text, limit) {
-  res.write(renderTextPreviewAsString(text, limit));
+   res.write(renderTextPreviewAsString(text, limit));
 }
 
 
