@@ -1,0 +1,6 @@
+<tr>
+<td><br><% this.title as="link" %><br>
+<% this.text limit="200" suffix="&nbsp;..." %>
+<div class="small">by <% this.author %> @ <% this.modifytime format="short" %></div>
+</td>
+</tr>
