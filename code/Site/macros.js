@@ -561,7 +561,7 @@ function listMostRead_macro() {
 function listReferrers_macro() {
   var str = "";
   var c = getDBConnection("antville");
-  var dbError = c.getLasterror();
+  var dbError = c.getLastError();
   if (dbError)
     return (getMsg("error","database",dbError));
   // we're doing this with direct db access here
@@ -569,7 +569,7 @@ function listReferrers_macro() {
   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
   var query = "select *, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
   var rows = c.executeRetrieval(query);
-  var dbError = c.getLasterror();
+  var dbError = c.getLastError();
   if (dbError)
     return (getMsg("error","database",dbError));
   var param = new Object();
