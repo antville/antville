@@ -8,7 +8,7 @@ function main_action() {
    }
    res.data.title = "Layouts of " + res.handlers.context.getTitle();
    res.data.action = this.href();
-   res.data.layoutlist = renderList(this, this.renderManagerView, 10, req.data.page);
+   res.data.layoutlist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");

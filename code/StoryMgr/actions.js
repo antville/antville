@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.storylist = renderList(this, this.renderManagerView, 10, req.data.page);
+   res.data.storylist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.title = "Online stories of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
@@ -10,7 +10,7 @@ function main_action() {
 }
 
 function offline_action() {
-   res.data.storylist = renderList(this.offline, this.renderManagerView, 10, req.data.start);
+   res.data.storylist = renderList(this.offline, "mgrlistitem", 10, req.data.start);
    res.data.pagenavigation = renderPageNavigation(this.offline, this.href(req.action), 10, req.data.page);
    res.data.title = "Online stories of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
@@ -23,7 +23,7 @@ function offline_action() {
  */
 function mystories_action() {
    var ms = this._parent.members.get(session.user.name);
-   res.data.storylist = renderList(ms.stories, this.renderManagerView, 10, req.data.page);
+   res.data.storylist = renderList(ms.stories, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.stories, this.href(req.action), 10, req.data.page);
    res.data.title = "My stories in " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");

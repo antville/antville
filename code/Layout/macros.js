@@ -289,3 +289,15 @@ function email_macro(param) {
       res.write(this.preferences.getProperty("email"));
    return;
 }
+
+
+/**
+ * overwrite the switch macro in antvillelib
+ * for certain properties (but pass others thru)
+ */
+function switch_macro(param) {
+   if (param.name == "active")
+      return res.handlers.context.layout == this ? param.on : param.off;
+   HopObject.prototype.apply(this, [param]);
+   return;
+}

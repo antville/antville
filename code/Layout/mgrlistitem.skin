@@ -1,5 +1,7 @@
+<div class="listSeparator">&nbsp;</div>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
+<% layout.switch name="active" on='<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" class="listFlag">a<br />c<br />t<br />i<br />v<br />e<td rowspan="2" width="5" nowrap="nowrap"></td>' off="" %>
 <td valign="top"><div class="storyTitle"><% layout.title linkto="main" %></div>
 <div><% layout.description limit="100" suffix="<br />" %></div>
 <div><% layout.parent prefix="(based on the layout '" suffix="')<br />" %></div>

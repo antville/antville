@@ -1,15 +1,4 @@
 /**
- * check if a layout is default layout or not
- * and render the mgrlistitem view accordingly
- * @param Object layout object to render
- */
-function renderManagerView(layout) {
-   var sp = {layout: layout.renderSkinAsString("mgrlistitem")};
-   this.renderSkin(layout.isDefaultLayout() ? "activelayout" : "inactivelayout", sp);
-   return;
-}
-
-/**
  * render a dropdown containing shareable system layouts
  * @param Object current layout
  */

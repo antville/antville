@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.pollList = renderList(this, this.renderManagerView, 10, req.data.page);
+   res.data.pollList = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.title = "All polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
@@ -13,7 +13,7 @@ function main_action() {
  * main action
  */
 function open_action() {
-   res.data.pollList = renderList(this.open, this.renderManagerView, 10, req.data.page);
+   res.data.pollList = renderList(this.open, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this.open, this.href(req.action), 10, req.data.page);
    res.data.title = "Open polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
@@ -25,7 +25,7 @@ function open_action() {
  */
 function mypolls_action() {
    var ms = this._parent.members.get(session.user.name);
-   res.data.pollList = renderList(ms.polls, this.renderManagerView, 10, req.data.page);
+   res.data.pollList = renderList(ms.polls, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.polls, this.href(req.action), 10, req.data.page);
    res.data.title = "My polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");

@@ -1,7 +1,9 @@
+<div class="listSeparator">&nbsp;</div>
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
+<% story.switch name="online" on="" off='<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" class="listFlag">o<br />f<br />f<br />l<br />i<br />n<br />e<td rowspan="2" width="5" nowrap="nowrap"></td>' %>
 <td colspan="3" class="small"><strong>Macro:</strong>&nbsp;&lt;% story id="<% story.id %>" %&gt;<br />
-<div class="ample"><strong>Status:&nbsp;</strong><% story.online yes="online" no="offline" %><% this.topic prefix=" in " as="link" text="topic" %><% story.commentcounter prefix=",&nbsp;" anchor="comments" %></div></td>
+<div class="ample"><strong>Status:&nbsp;</strong><% story.online yes="online" no="offline" %><% story.topic prefix=" in " as="link" text="topic" %><% story.commentcounter prefix=",&nbsp;" anchor="comments" %></div></td>
 </tr>
 <tr valign="top">
 <td><div class="storyTitle"><% story.content part="title" %></div>
