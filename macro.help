@@ -160,16 +160,16 @@ membership.skin.edit = response.action
 
 // P O L L
 
-poll.macros = title, question, choices, results, total, editlink, deletelink, viewlink, closelink
+poll.macros = question, choices, results, total, editlink, deletelink, viewlink, closelink, closetime
 
 poll.macro.choices = 254699
 poll.macro.closelink = 254703
+poll.macro.closetime = 254703
 poll.macro.viewlink = 254713
 poll.macro.editlink = 254714
 poll.macro.deletelink = 254716
 poll.macro.question = 254722
 poll.macro.results = 254729
-poll.macro.title = 254734
 poll.macro.total = 254737
 
 poll.skin.main = response.action

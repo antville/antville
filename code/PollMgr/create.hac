@@ -46,10 +46,7 @@ for (var i=0; i<max; i++) {
 }
 
 res.data.action = this.href(req.action);
-
-res.data.command = "Create";
 res.data.title = path.site.title;
-
 res.data.body = newPoll.renderSkinAsString("edit");
 
 path.site.renderSkin("page");

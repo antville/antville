@@ -1,27 +1,9 @@
 /**
- * macro renders the title of a poll
- * (either as text, link or editor)
+ * macro renders the id of a poll
  */
-
-function title_macro(param) {
-   if (!this.title && !param.as)
-      return;
-   if (param.as == "editor") {
-      var param2 = this.createInputParam("title", param);
-      if (req.data.title)
-         param2.value = req.data.title;
-      else
-         param2.value = this.title;
-      renderInputText(param2);
-   }
-   else if (param.as == "link") {
-      openLink(this.href());
-      if (this.title)
-         res.write(this.title);
-      closeLink();
-   }
-   else
-      res.write(this.title);
+function id_macro() {
+   res.write(this._id);
+   return;
 }
 
 
@@ -29,7 +11,6 @@ function title_macro(param) {
  * macro renders a poll's question
  * (either as text or editor)
  */
-
 function question_macro(param) {
    if (param.as == "editor") {
       var param2 = this.createInputParam("question", param);
@@ -41,6 +22,7 @@ function question_macro(param) {
    }
    else
       res.write(this.question);
+   return;
 }
 
 
@@ -48,7 +30,6 @@ function question_macro(param) {
  * macro renders one choice of a poll
  * (either as text or as editor)
  */
-
 function choices_macro(param) {
    if (param.as == "editor") {
       var max = res.data.choices;
@@ -81,15 +62,15 @@ function choices_macro(param) {
          res.write(choice.renderSkinAsString("main", param));
       }
    }
+   return;
 }
 
 
 /**
  * macro renders results of a poll as bar chart
  */
-
 function results_macro(param2) {
-   var str = "";
+   var buf = new java.lang.StringBuffer();
    for (var i=0; i<this.size(); i++) {
       var c = this.get(i);
       var param = new Object();
@@ -107,16 +88,15 @@ function results_macro(param2) {
       }
       else
          param.text = " " + (param2.no ? param2.no : "votes");
-      str += c.renderSkinAsString("result", param);
+      buf.append(c.renderSkinAsString("result", param));
    }
-   return(str);
+   return buf.toString();
 }
 
 
 /**
  * macro renders totals of a poll
  */
-
 function total_macro(param) {
    var n = this.votes.size();
    if (n == 0)
@@ -125,20 +105,20 @@ function total_macro(param) {
       n += " " + (param.one ? param.one : "vote");
    else
       n += " " + (param.more ? param.more : "votes");
-   return(n);
+   return n;
 }
 
 
 /**
  * macro renders a link to the poll editor
  */
-
 function editlink_macro(param) {
    if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
       openLink(this.href("edit"));
       res.write(param.text ? param.text : "edit");
       closeLink();
    }
+   return;
 }
 
 
@@ -146,20 +126,19 @@ function editlink_macro(param) {
  * macro rendering a link to delete a poll
  * (only if the user also is the creator)
  */
-
 function deletelink_macro(param) {
    if (session.user && !this.isDeleteDenied(session.user,req.data.memberlevel)) {
       openLink(this.href("delete"));
       res.write(param.text ? param.text : "delete");
       closeLink();
    }
+   return;
 }
 
 
 /**
  * macro renders a link to the poll
  */
-
 function viewlink_macro(param) {
    if (session.user && this.isViewDenied(session.user,req.data.memberlevel))
      return;
@@ -174,13 +153,13 @@ function viewlink_macro(param) {
    openLink(url);
    res.write(param.text ? param.text : str);
    closeLink();
+   return;
 }
 
 
 /**
  * macro renders a link as switch to close/re-open a poll
  */
-
 function closelink_macro(param) {
    if (session.user && !this.isDeleteDenied(session.user,req.data.memberlevel)) {
       var str = this.closed ? "re-open" : "close";
@@ -188,15 +167,29 @@ function closelink_macro(param) {
       res.write(param.text ? param.text : str);
       closeLink();
    }
+   return;
 }
 
 
 /**
- * macro renders the state (open/closed) of a poll
+ * macro renders the time a poll was closed
  */
-
-function state_macro(param) {
+function closetime_macro(param) {
    if (this.closed) {
-      return(param.text + formatTimestamp(this.modifytime, param.format));
+      if (!param.format)
+         param.format = "short";
+      res.write(formatTimestamp(this.modifytime, param.format));
    }
+   return;
+}
+
+
+/**
+ * macro for backwards compatibility
+ */
+function state_macro(param) {
+   if (this.closed && param.text)
+      res.write(param.text);
+   this.closetime_macro(param);
+   return;
 }

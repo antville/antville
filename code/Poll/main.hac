@@ -4,10 +4,6 @@ if (deny) {
    res.redirect(this.site.polls.href());
 }
 
-res.data.title = this.site.title;
-if (this.title)
-  res.data.title += " - " + encode(this.title);
-
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.href());
 else if ((req.data.submit == "vote" || req.data.vote)) {
@@ -18,6 +14,7 @@ else if ((req.data.submit == "vote" || req.data.vote)) {
 }
 
 res.data.action = this.href();
+res.data.title = this.site.title;
 res.data.body = this.renderSkinAsString("main");
 
 path.site.renderSkin("page");

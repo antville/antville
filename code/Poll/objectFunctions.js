@@ -20,7 +20,6 @@ function evalPoll(param, creator) {
       }
    }
    if (param.question && choiceCnt > 1) {
-      this.title = param.title;
       this.question = param.question;
       this.modifytime = new Date();
       for (var i=this.size(); i>0; i--) {

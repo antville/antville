@@ -3,7 +3,8 @@
 <td colspan="3" class="small"><% poll.creator as="link" %>, <% poll.createtime format="short" %> (<% poll.total no="votes" one="vote" more="votes" %>)</td>
 </tr>
 <tr valign="top">
-<td><b><% poll.question %></b></td>
+<td><div class="storytitle"><% poll.question %></div>
+<div class="small"><b>code:</b> &lt;% poll id="<% poll.id %>" %&gt;</div></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
 <td align="right" class="small" nowrap="nowrap"><% poll.viewlink prefix="...&nbsp;" suffix="<br />" %><% poll.link to="results" text="results" prefix="...&nbsp;" suffix="<br />" %><% poll.editlink prefix="...&nbsp;" suffix="<br />" %><% poll.closelink prefix="...&nbsp;" suffix="<br />" %><% poll.deletelink prefix="...&nbsp;" %></td>
 </tr>

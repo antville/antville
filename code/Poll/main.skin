@@ -1,4 +1,4 @@
-<b><% poll.question %></b>
+<% poll.question %>
 <table border="0" cellspacing="2" cellpadding="2">
 <form method="post" action="<% response.action %>">
 

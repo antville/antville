@@ -2,6 +2,6 @@
 
 <% poll.results no="votes" one="vote" more="votes" %>
 
-<p><b>Total:</b> 100% <span class="small">(<% poll.total no="votes" one="vote" more="votes" %>)</span></p>
+<p><b>total:</b> 100% <span class="small">(<% poll.total no="votes" one="vote" more="votes" %>)</span></p>
 
-<div class="small">created by <% poll.creator %> on <% poll.createtime format="short" %>.<% poll.state text="<br />this poll was closed on " format="short" %></div>
+<div class="small">created by <% poll.creator %> on <% poll.createtime format="short" %>.<% poll.closetime prefix="<br />this poll was closed on " suffix="." format="short" %></div>

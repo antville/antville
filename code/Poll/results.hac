@@ -5,9 +5,6 @@ if (deny) {
 }
 
 res.data.title = this.site.title;
-if (this.title)
-  res.data.title += " - " + encode(this.title);
-
 res.data.body = this.renderSkinAsString("results");
 
 path.site.renderSkin("page");

@@ -22,7 +22,6 @@ function evalNewPoll(param, creator) {
    if (param.question && creator && choiceCnt > 1) {
       var newPoll = new poll();
       newPoll.site = this._parent;
-      newPoll.title = param.title;
       newPoll.question = param.question;
       newPoll.closed = 0;
       newPoll.creator = creator;
