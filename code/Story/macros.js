@@ -94,7 +94,8 @@ function online_macro(param) {
 }
 
 /**
- * macro rendering createtime of story
+ * macro rendering createtime of story, either as editor,
+ * plain text or as link to the frontpage of the day
  */
 
 function createtime_macro(param) {
@@ -105,11 +106,16 @@ function createtime_macro(param) {
          param.value = formatTimestamp(new Date(), "yyyy-MM-dd HH:mm");
       param.name = "createtime";
       renderInputText(param);
-   } else {
-      if (!this.createtime)
-         return;
-      res.write(formatTimestamp(this.createtime,param.format));
+   } else if (this.createtime) {
+      var text = formatTimestamp(this.createtime,param.format);
+      if (param.as == "link") {
+         openLink(this.site.get(String(this.day)).href());
+         res.write(text);
+         closeLink();
+      } else
+         res.write(text);
    }
+   return;
 }
 
 /**
