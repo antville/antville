@@ -1,5 +1,7 @@
 use antville;
 
+alter table ACCESS change column ID ID bigint(20) not null auto_increment;
+
 create table CHOICE (
    ID bigint(20) not null,
    POLL_ID bigint(20),

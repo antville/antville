@@ -169,7 +169,7 @@ create table GOODIE (
 #----------------------------
 
 create table ACCESS (
-   ID bigint(20) not null,
+   ID bigint(20) not null auto_increment,
    WEBLOG_ID bigint(20),
    REFERRER mediumtext,
    IP mediumtext,
