@@ -1,49 +1,4 @@
 /**
- * this is the generic onStart handler
- */
- 
-function onStart() {
-	scheduler();
-}
-
-
-
-/**
- * this is the generic scheduler() function
- */
- 
-function scheduler() {
-	return(3600000);
-}
-
-
-
-/**
- * to register updates of a weblog at weblogs.com
- * (and probably other services, soon), this 
- * function can be called via the scheduler.
- */
- 
-function pingUpdatedWeblogs() {
-  for (var i=0; i<root.allWeblogs.size(); i++) {
-   var blog = root.allWeblogs.get(i);
-    var now = new Date();
-    var period = 1000 * 60 * 10;
-    if ((now - blog.lastPing >= period) && (now - blog.lastUpdate <= period) && blog.online) {
-     writeln(blog.title + " was updated, so i'll ping weblogs.com...");
-      var url = "http://hopdev.helma.at" + blog.href();
-      //var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + blog.title + "&url=" + url);
-		var xr = new Remote("http://rpc.weblogs.com/RPC2");
-		var ping = xr.weblogUpdates.ping(blog.title, url); 
-		if (ping.error)
-			writeln(ping.error);
-      blog.lastPing = now;
-    }
-  }
-}
-
-
-/**
  * check if email-adress is syntactically correct
  */
 
@@ -275,4 +230,74 @@ function getDefaultDateFormats(version) {
       patterns[14] = "MM.dd, h:mm a";
    }
    return (patterns);
+}
+
+
+/**
+ * This is a simple logger that creates a DB entry for 
+ * each request that contains an HTTP referrer. This is
+ * done by direct DB interface due to performance reasons.
+ */
+function logAccess() {
+	if (req.data.http_referer) {
+		var weblog = path["weblog"];
+		var referrer = req.data.http_referer;
+		var ip = req.data.http_remotehost;
+		var hopPath = path[path.length-1].href();
+		var action = req.action;
+		var browser = req.data.http_browser;
+		
+		var c = getDBConnection("antville");
+		error = c.getLastError();
+		if (error) {
+			writeln("Error establishing DB connection: " + error);
+			return;
+		}
+
+		var query = "insert into ACCESS (WEBLOG_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
+		c.executeCommand(query);
+		error = c.getLastError();
+		if (error) {
+			writeln("Error executing SQL query: " + error);
+			return;
+		}
+		return;
+
+		// this is the conventional Helma way:
+		var hopPath = path[path.length-1].href();
+		var a = new access();
+		a.weblog = path["weblog"];
+		a.referrer = req.data.http_referer;
+		a.ip = req.data.http_remotehost;
+		a.url = hopPath + req.action;
+		a.hopPath = hopPath;
+		a.action = req.action;
+		a.browser = req.data.http_browser;
+		a.date = new Date();
+		root.access.add(a);
+	}
+}
+
+
+/**
+ * to register updates of a weblog at weblogs.com
+ * (and probably other services, soon), this 
+ * function can be called via the scheduler.
+ */
+function pingUpdatedWeblogs() {
+	for (var i=0; i<root.allWeblogs.size(); i++) {
+		var blog = root.allWeblogs.get(i);
+		var now = new Date();
+		var period = 1000 * 60 * 60; // one hour
+		if ((now - blog.lastPing >= period) && (now - blog.lastUpdate <= period) && blog.online) {
+			writeln(blog.title + " was updated, so i'll ping weblogs.com...");
+			var url = getProperty("baseURI") + blog.href();
+			//var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + blog.title + "&url=" + url);
+			var xr = new Remote("http://rpc.weblogs.com/RPC2");
+			var ping = xr.weblogUpdates.ping(blog.title, url); 
+			if (ping.error)
+				writeln(ping.error);
+			blog.lastPing = now;
+		}
+	}
 }
