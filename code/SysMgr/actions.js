@@ -19,7 +19,7 @@ function setup_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.title = "System configuration of " + root.getSysTitle();
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("setup");
@@ -52,9 +52,9 @@ function sites_action() {
          res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
    } else if (req.data.item)
       req.data.selectedItem = this.sites.get(req.data.item);
-   
-   res.data.list = renderList(this.sites, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this.sites, this.href(req.action), 10, req.data.page);
+
+   res.data.list = renderList(session.data.mgr.sites, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(session.data.mgr.sites, this.href(req.action), 10, req.data.page);
    res.data.list = this.renderSkinAsString("list");
    res.data.body = this.renderSkinAsString("sitesearchform");
    this.renderSkin("page");
@@ -66,7 +66,7 @@ function sites_action() {
 function users_action() {
    res.data.title = "User manager of " + root.getSysTitle();
    res.data.action = this.href(req.action);
-   
+
    if (req.data.search || req.data.keywords)
       session.data.mgr.searchUsers(req.data.show, req.data.sort, req.data.order, req.data.keywords);
    else if (req.data.cancel)
@@ -78,9 +78,9 @@ function users_action() {
          res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
    } else if (req.data.item)
       req.data.selectedItem = root.users.get(req.data.item);
-   
-   res.data.list = renderList(this.users, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this.users, this.href(req.action), 10, req.data.page);
+
+   res.data.list = renderList(session.data.mgr.users, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(session.data.mgr.users, this.href(req.action), 10, req.data.page);
    res.data.list = this.renderSkinAsString("list");
    res.data.body = this.renderSkinAsString("usersearchform");
    this.renderSkin("page");
@@ -92,12 +92,12 @@ function users_action() {
 function logs_action() {
    res.data.title = "Log data of " + root.getSysTitle();
    res.data.action = this.href(req.action);
-   
+
    if (req.data.search || req.data.keywords)
       session.data.mgr.searchSyslog(req.data.show, req.data.order, req.data.keywords);
-   
-   res.data.list = renderList(this.syslogs, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this.syslogs, this.href(req.action), 10, req.data.page);
+
+   res.data.list = renderList(session.data.mgr.syslogs, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(session.data.mgr.syslogs, this.href(req.action), 10, req.data.page);
    res.data.list = this.renderSkinAsString("list");
    res.data.body = this.renderSkinAsString("syslogsearchform");
    this.renderSkin("page");
