@@ -109,6 +109,7 @@ create table AV_IMAGE (
 
 CREATE INDEX IDX_IMAGE_F_USER_CREATOR ON AV_IMAGE (IMAGE_F_USER_CREATOR);
 CREATE INDEX IDX_IMAGE_MIXED ON AV_IMAGE (IMAGE_F_SITE,IMAGE_ALIAS(20),IMAGE_F_IMAGE_PARENT);
+CREATE INDEX IDX_IMAGE_MIXED_LAYOUT ON AV_IMAGE (IMAGE_F_LAYOUT,IMAGE_ALIAS(20),IMAGE_F_IMAGE_PARENT);
 
 #----------------------------
 # records for table AV_IMAGE
@@ -205,6 +206,13 @@ alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null;
 select @layoutID:=LAYOUT_ID from AV_LAYOUT where LAYOUT_ALIAS = 'default' and LAYOUT_F_SITE is null and LAYOUT_F_LAYOUT_PARENT is null;
 update AV_IMAGE set IMAGE_F_LAYOUT = @layoutID where IMAGE_F_SITE is null;
 
+#----------------------------
+# Indexes on table AV_LAYOUT
+#----------------------------
+
+CREATE INDEX IDX_LAYOUT_ALIAS ON AV_LAYOUT (LAYOUT_ALIAS);
+CREATE INDEX IDX_LAYOUT_F_SITE ON AV_LAYOUT (LAYOUT_F_SITE);
+CREATE INDEX IDX_LAYOUT_F_LAYOUT_PARENT ON AV_LAYOUT (LAYOUT_F_LAYOUT_PARENT);
 
 #----------------------------
 # Table structure for AV_SKIN
