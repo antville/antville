@@ -6,7 +6,7 @@
 <head>
 <title>Antville Colorpicker</title>
 
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet.css" />
 
 <style type="text/css">
 <!--
