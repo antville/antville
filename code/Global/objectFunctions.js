@@ -257,19 +257,18 @@ function getDefaultDateFormats(version) {
 
 function logAccess() {
 	if (req.data.http_referer) {
-		var weblog = path["weblog"];
+		var site = path.weblog ? path.weblog : root;
 		var referrer = req.data.http_referer;
 
-		// no logging at all if the referrer comes from the same weblog
-		// or the antville-frontpage or is equal to "-"
-		if (referrer.indexOf(weblog.href()) > -1 || referrer == root.href() || referrer == "-")
-			return;
+      // no logging at all if the referrer comes from the same weblog
+      // or is not a http-request
+      if (referrer.indexOf("http") < 0)
+         return;
+      var siteHref = site.href();
+      if (referrer.indexOf(siteHref.substring(0,siteHref.length-1)) >= 0)
+         return;
 
-		var storyID = path["story"] ? path["story"]._id : null;
-		var ip = req.data.http_remotehost;
-		var hopPath = path[path.length-1].href();
-		var action = req.action;
-		var browser = req.data.http_browser;
+		var storyID = path.story ? path.story._id : null;
 
 		// we're doing this with direct db access here
 		// (there's no need to do it with prototypes):
@@ -279,16 +278,13 @@ function logAccess() {
 			writeln("Error establishing DB connection: " + error);
 			return;
 		}
-		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", " + storyID + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
+		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, BROWSER, DATE) values (" + site._id + ", " + storyID + ", \"" + referrer + "\", \"" + req.data.http_remotehost + "\", \"" + req.data.http_browser + "\", now());";
 		c.executeCommand(query);
 		var error = c.getLastError();
 		if (error) {
-			writeln("Error executing SQL query: " + error);
+ 			writeln("Error executing SQL query: " + error);
 			return;
 		}
-		// No need to release database connection, since this is the connection managed by
-		// Helma and she'll release it when it's been idle long enough.
-		// c.release();
 		return;
 	}
 }
