@@ -257,9 +257,9 @@ function commentcounter_macro(param) {
    if (linkflag)
       openMarkupElement("a", this.createLinkParam(param2));
    if (commentCnt == 0)
-      res.write(commentCnt + (param.no ? param.no : " comments"));
+      res.write(param.no ? param.no : "0 comments");
    else if (commentCnt == 1)
-      res.write(commentCnt + (param.one ? param.one : " comment"));
+      res.write(param.one ? param.one : "1 comment");
    else
       res.write(commentCnt + (param.more ? param.more : " comments"));
    if (linkflag)
@@ -333,8 +333,17 @@ function thumbnail_macro(param) {
 
 function editableby_macro(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
-      var options = new Array("Subscribers and Contributors","Contributors only");
-      renderDropDownBox("editableby",options,this.editableby,"----");
+      var options = new Array(null,0,1);
+      var labels = new Array("the Author","all Subscribers","all Contributors");
+      for (var i=0;i<options.length;i++) {
+        param.name = "editableby";
+        param.value = options[i];
+        param.selectedValue = this.editableby;
+        renderInputRadio(param);
+        res.write("&nbsp;");
+        res.write(labels[i]);
+        res.write("&nbsp;");
+      }
    } else {
       if (this.editableby == 0)
          res.write("Subscribers of and Contributors to " + this.site.title);
@@ -476,4 +485,16 @@ function backlinks_macro(param) {
       this.cache.rBacklinks = "";
    this.cache.lrBacklinks = new Date();
    return (this.cache.rBacklinks);
+}
+
+/**
+ * macro renders a checkbox whether the story is just published in a topic or also in weblog
+ */
+function justintopic_macro(param) {
+  if (param.as == "editor") {
+    if (this.online=="1")
+      param.value="1";
+    param.name = "justintopic";
+    renderInputCheckbox(param);
+  } 
 }
