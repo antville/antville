@@ -18,9 +18,5 @@
 
 <% this.shortcutlist %>
 
-<tr>
-<td colspan="2"><input type="submit" name="submit" value=" save " /></td>
-</tr>
-
 </form>
 </table>
