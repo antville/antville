@@ -1,0 +1,10 @@
+  <item rdf:about="<% param.url %>">
+    <title><![CDATA[<% param.title %>]]></title> 
+    <link><% param.url %></link>
+    <% param.text prefix="<description><![CDATA[" suffix="]]></description>" %>
+    <dc:publisher><![CDATA[<% param.publisher %>]]></dc:publisher>
+    <dc:creator><![CDATA[<% param.creator %> (mailto:<% param.email %>)]]></dc:creator>
+    <dc:subject><% param.subject %></dc:subject>
+    <dc:rights><![CDATA[Copyright &#169; <% param.year %> <% param.creator %>]]></dc:rights>
+    <dc:date><% param.date %></dc:date>
+  </item> 

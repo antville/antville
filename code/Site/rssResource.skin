@@ -1,0 +1,1 @@
+        <rdf:li rdf:resource="<% this.url encode="xml" %>" />

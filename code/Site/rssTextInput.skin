@@ -1,6 +1,0 @@
-<textinput rdf:about="<% param.url %>search">
-	<title>find</title>
-	<description>Search this weblog:</description>
-	<name>q</name>
-	<link><% param.url %>search</link>
-</textinput>
