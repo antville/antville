@@ -10,3 +10,13 @@ function dropdown_macro(param) {
    Html.dropDown({name: param.name},options,selectedIndex);
    return;
 }
+
+/**
+ * macro checks if there are any modules present
+ * and if they need to be included in the system setup page
+ */
+function moduleSetup_macro(param) {
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "renderSetup", param);
+   return;
+}
