@@ -1,7 +1,1 @@
-<br />
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="2" style="background-image: url(<% layout.image as="url" name="dot" %>);" nowrap="nowrap"><% layout.image name="pixel" width="2" %></td>
-</tr>
-</table>
-<div class="pagelink" align="right">...&nbsp;<a href="<% param.url %>"><% param.text %></a></div>
+<div class="pagelinkBottom">...&nbsp;<a href="<% param.url %>"><% param.text %></a></div>
