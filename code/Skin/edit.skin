@@ -1,4 +1,4 @@
-<form method="post">
+<form method="post" action="<% response.action %>">
 <input type="hidden" name="proto" value="<% request.proto %>">
 <input type="hidden" name="name" value="<% request.name %>"><br>
 <% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %>
