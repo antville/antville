@@ -30,7 +30,7 @@ function renderStorylist(idx,show) {
       var st = this.get(idx);
       if (show == "offline" && st.isOnline())
          render = false;
-      else if (show == "mystories" && st.author != session.user)
+      else if (show == "mystories" && st.creator != session.user)
          render = false;
       if (render) {
          var sp = new Object();
