@@ -150,3 +150,17 @@ function linkedpath_macro (param) {
    res.write (title);
    res.write(param.suffix);
 }
+
+
+function poll_macro(param) {
+	var poll = path.weblog.polls.get(param.id);
+	if (!poll)
+		return("[poll id " + param.id + " does not exist.]");
+	var deny = poll.isVoteDenied(user);
+	if (param.as == "link")
+		return('<a href="' + poll.href() + '">' + poll.question + '</a>');
+	if (deny || poll.closed || param.as == "results")
+	  poll.renderSkin("results");
+	else
+		poll.renderSkin("main");
+}
