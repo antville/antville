@@ -6,6 +6,9 @@ function isPostAllowed() {
    if (!this.weblog.hasDiscussions()) {
       res.message = "Sorry, discussions were disabled for this weblog!";
       return false;
+   } else if (!user.uid) {
+      user.cache.referer = this.href("comment");
+      return false;
    } else if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
       return false;
@@ -36,8 +39,11 @@ function isEditAllowed() {
    if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
       return false;
-   } else if (this.author != user) {
-      res.message = "You cannot edit the story of somebody else!";
+   } else if (!this.weblog.isUserMember()) {
+      res.message = "Sorry, editing is only allowed for registered Users!";
+      return false;
+   } else if (this.author != user && this.editableby > this.weblog.members.get(user.name).level) {
+      res.message = "Sorry, you're not allowed to edit this story!";
       return false;
    }
    return true;
