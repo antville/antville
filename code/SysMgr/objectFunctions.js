@@ -220,13 +220,11 @@ function evalSystemSetup(param,admin) {
    root.sys_language = newLoc.getLanguage();
 
    // long dateformat
-   var patterns = getDefaultDateFormats();
-   var ldf = patterns[parseInt(param.longdateformat,10)];
+   var ldf = LONGDATEFORMATS[parseInt(param.longdateformat,10)];
    root.longdateformat = ldf ? ldf : null;
 
    // short dateformat
-   var patterns = getDefaultDateFormats("short");
-   var sdf = patterns[parseInt(param.shortdateformat,10)];
+   var sdf = SHORTDATEFORMATS[parseInt(param.shortdateformat,10)];
    root.shortdateformat = sdf ? sdf : null;
 
    root.cache.locale = null;
