@@ -31,27 +31,3 @@ function subscriptionslink_macro(param) {
       Html.link(this.href("subscriptions"), param.text ? param.text : "subscriptions");
    return;
 }
-
-/**
- * macro renders the list of all members of this site
- */
-
-function memberlist_macro(param) {
-   var currLvl;
-   var sp = new Object();
-   var memberlist = new java.lang.StringBuffer();
-   for (var i=0;i<this.size();i++) {
-      var m = this.get(i);
-      if (m.level != currLvl) {
-         sp.list = memberlist.toString();
-         this.renderSkin("membergroup", sp);
-         memberlist = new java.lang.StringBuffer();
-         sp.group = getRole(m.level);
-         currLvl = m.level;
-      }
-      memberlist.append(m.renderSkinAsString("preview"));
-   }
-   sp.list = memberlist.toString();
-   this.renderSkin("membergroup",sp);
-}
-
