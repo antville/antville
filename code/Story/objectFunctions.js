@@ -190,7 +190,7 @@ function getRenderedContentPart (name) {
       var part = this.getContentPart (name);
       if (!part)
          return "";
-      var s = createSkin(activateLinks(format(part)));
+      var s = createSkin(format(activateLinks(part)));
       this.allowTextMacros(s);
       if (!s.containsMacro("poll") && !s.containsMacro("shortcut") && !s.containsMacro("storylist"))
          this.cache["lastRendered_"+name] = new Date();
