@@ -10,8 +10,12 @@
 <p><% input type="submit" name="close" value="Save and close" %>&nbsp;<% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %> &nbsp; <a href="#help">help</a></p>
 </form>
 
+<br />
 <a name="help"></a>
-<% skinmgr.help prefix='<p class="small"><b>Macros available for this skin:</b><br /><br /><tt>' suffix="</tt></p>" %>
+<p class="small"><b>Macros available for this skin:</b></p>
+<% skinmgr.macros prefix='<p class="small"><tt>' suffix="</tt></p>" %>
+<p class="small"><tt><% skinmgr.macros proto="global" %></tt></p>
+<% skinmgr.skinmacros prefix='<p class="small"><tt>' suffix="</tt></p>" %>
 </td>
 </tr>
 </table>

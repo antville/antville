@@ -356,9 +356,8 @@ function onStart() {
    		app.log("loaded application messages (language: " + name + ")");
    	}
    }
-   // load macro help file
-   var macroHelpFile = File.get(dir, "macro.help");
-   app.data.macros = new Packages.helma.util.SystemProperties(macroHelpFile.getAbsolutePath());
+   // build macro help
+   app.data.macros = buildMacroHelp();
    //eval(macroHelpFile.readAll());
    app.log("loaded macro help file");
    // creating the vector for referrer-logging
@@ -640,4 +639,54 @@ function getLanguages() {
          languages.unshift(lang);
    }
    return languages;
+}
+
+
+/**
+ * build a more scripting-compatible object
+ * structure of the HELP.macros
+ * @return Object the resulting object tree
+ */
+function buildMacroHelp() {
+   var sorter = function(a, b) {
+      var str1 = a.name.toLowerCase();
+      var str2 = b.name.toLowerCase();
+      if (str1 > str2)
+         return 1;
+      else if (str1 < str2)
+         return -1;
+      return 0;
+   }
+
+   var macroHelp = {};
+   var ref = macroHelp.global = [];
+   var macrolist = HELP.macros.global;
+   for (var i in macrolist)
+      ref.push({name: i, storyid: macrolist[i]});
+   ref.sort(sorter);
+
+   var ref = macroHelp.hopobject = [];
+   var macrolist = HELP.macros.hopobject;
+   for (var i in macrolist)
+      ref.push({name: i, storyid: macrolist[i]});
+   ref.sort(sorter);
+
+   for (var proto in HELP.macros) {
+      if (proto.indexOf("_") == 0 || proto == "global" || proto == "hopobject")
+         continue;
+      var macrolist = HELP.macros[proto];
+      var ref = macroHelp[proto] = [];
+      var keys = "";
+      for (var i in macrolist) {
+         ref.push({name: i, storyid: macrolist[i]});
+         keys += i + ",";
+      }
+      for (var n in macroHelp.hopobject) {
+         var shared = macroHelp.hopobject[n];
+         if (keys.indexOf(shared.name + ",") < 0)
+            ref.push(shared);
+      }
+      ref.sort(sorter);
+   }
+   return macroHelp;
 }
