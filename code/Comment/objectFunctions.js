@@ -4,7 +4,7 @@
 function constructor(site, creator, ipaddress) {
    this.site = site;
    this.online = 1;
-   this.editableby = null;
+   this.editableby = EDITABLEBY_ADMINS;
    this.ipaddress = ipaddress;
    this.creator = creator;
    this.createtime = this.modifytime = new Date();

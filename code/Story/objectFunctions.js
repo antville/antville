@@ -5,6 +5,7 @@ function constructor(creator, ipaddress) {
    this.reads = 0;
    this.ipaddress = ipaddress;
    this.creator = creator;
+   this.editableby = EDITABLEBY_ADMINS;
    this.createtime = new Date();
    this.modifytime = new Date();
 }
@@ -61,7 +62,8 @@ function evalStory(param, modifier) {
       this.day = ctime.format("yyyyMMdd", this.site.getLocale(), this.site.getTimeZone());
    }
    if (modifier == this.creator)
-      this.editableby = !isNaN(param.editableby) ? parseInt(param.editableby, 10) : null;
+      this.editableby = !isNaN(param.editableby) ?
+                        parseInt(param.editableby, 10) : EDITABLEBY_ADMINS;
    this.discussions = param.discussions ? 1 : 0;
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;

@@ -28,7 +28,8 @@ function evalNewStory(param, creator) {
          throw new Exception("timestampParse", param.createtime);
       }
    }
-   s.editableby = !isNaN(parseInt(param.editableby, 10)) ? parseInt(param.editableby, 10) : null;
+   s.editableby = !isNaN(parseInt(param.editableby, 10)) ?
+                  parseInt(param.editableby, 10) : EDITABLEBY_ADMINS;
    s.discussions = param.discussions ? 1 : 0;
    // create day of story with respect to site-timezone
    s.day = formatTimestamp(s.createtime, "yyyyMMdd");
