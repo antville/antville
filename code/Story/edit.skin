@@ -9,12 +9,13 @@
 </tr>
 <tr>
 <td><table border="0" cellspacing="0" cellpadding="3">
-   <td class="small" nowrap>is online:</td>
-   <td nowrap><% this.online as="editor" %></td>
-   </tr>
    <tr>
    <td class="small">topic:</td>
    <td nowrap><input name="topic" value="<% this.topic as="form" %>"></td>
+   </tr>
+   <tr>
+   <td class="small" nowrap>is online:</td>
+   <td nowrap><% this.online as="editor" %></td>
    </tr>
    <tr>
    <td class="small" nowrap>editing allowed for:</td>
