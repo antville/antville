@@ -15,28 +15,6 @@ function skin_macro(param) {
 
 
 /**
- * creates a <FORM ... tag
-
-function form_macro(param) {
-   if (param) {
-      renderPrefix(param);
-      res.write("<FORM METHOD=\"");
-      if (param.method == "GET")
-         res.write("GET\" ");
-      else
-         res.write("POST\" ");
-      res.write("ACTION=\"" + this.href(param.action ? param.action : "") + "\"");
-      if (param.enctype)
-         res.write(" ENCTYPE=\"" + param.enctype + "\">");
-      else
-         res.write(">");
-      renderSuffix(param);
-   }
-}
-*/
-
-
-/**
  * macro creates a link by using the renderFunctions
  * openLink() and closeLink()
  */
@@ -44,7 +22,10 @@ function form_macro(param) {
 function link_macro(param) {
    renderPrefix(param);
    this.openLink(param);
-   res.write(param.text);
+   if (param.text)
+      res.write(param.text);
+   else
+      res.write(param.to ? param.to : param.linkto);
    this.closeLink();
    renderSuffix(param);
 }
