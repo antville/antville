@@ -6,7 +6,7 @@
  * @see story.getNavigationName()
  * @see topic.getNavigationName()
  */
-function getNavigationName () {
+function getNavigationName() {
    var proto = this._prototype;
    if (DISPLAY[proto])
       return DISPLAY[proto];
@@ -19,11 +19,16 @@ function getNavigationName () {
  * function that renders the input element
  */
 function createInputParam(propName, param) {
-   var inputParam = new Object();
+   var inputParam = ObjectLib.clone(param);
    inputParam.name = propName;
-   for (var i in param)
-      inputParam[i] = param[i];
-   inputParam.value = this[propName];
+   // submitted values override property value
+   // but only if there were not multiple form elements
+   // with the same name submitted
+   if (!req.data[propName + "_array"] && req.data[propName] != null)
+      inputParam.value = req.data[propName];
+   else
+      inputParam.value = this[propName];
+   delete inputParam.as;
    return (inputParam);
 }
 
@@ -39,11 +44,11 @@ function createLinkParam(param) {
          param.href = this.href();
       else
          param.href = this.story.href() + "#" + this._id;
-   } else if (url.indexOf("://") > -1 || url.indexOf("javascript") == 0)
+   } else if (url.contains("://") || url.startsWith("javascript"))
       param.href = url;
    else {
       // check if link points to a subcollection
-      if (url.indexOf("/") > -1)
+      if (url.contains("/"))
          param.href = this.href() + url;
       else
          param.href = this.href(url);
