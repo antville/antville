@@ -34,7 +34,11 @@ function sys_email_macro(param) {
       return;
    if (param.as == "editor") {
       param["type"] = "text";
-      renderInputText(this.createInputParam("sys_email",param));
+      var iParam = this.createInputParam("sys_email",param);
+      // use the users email if sys_email is empty
+      if (!iParam.value)
+         iParam.value = session.user.email;
+      renderInputText(iParam);
    } else
       res.write(this.sys_email);
    return;
