@@ -56,7 +56,7 @@ function edit_action() {
          res.message = this.saveSkin(req.data, session.user);
          if (req.data.close)
             res.redirect(this.href(req.data.action) + "?skinset=" + req.data.skinset + "#" + req.data.key);
-         res.redirect(this.href(req.action) + "?key=" + req.data.key + "&skinset=" + req.data.skinset + "#" + req.data.skinset);
+         res.redirect(this.href(req.action) + "?key=" + req.data.key + "&skinset=" + req.data.skinset + "&action=" + req.data.action);
       } catch (err) {
          res.message = err.toString();
       }
