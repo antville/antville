@@ -23,7 +23,7 @@ function evalNewPoll(param, creator) {
       newPoll.createtime = new Date();
       newPoll.modifytime = new Date();
 
-      this._parent.add(newPoll);
+      this.add(newPoll);
 
 			for (var i=0; i<param.choice_array.length; i++) {
 				var title = param.choice_array[i];
@@ -59,7 +59,7 @@ function deletePoll(currPoll) {
    for (var i=currPoll.size(); i>0; i--) {
    		var ch = currPoll.get(i-1);
    		for (var n=ch.size(); n>0; n--) {
-   			var vt = ch.get(i-1);
+   			var vt = ch.get(n-1);
    			ch.remove(vt);
    		}
    		currPoll.remove(ch);
