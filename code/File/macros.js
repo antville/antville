@@ -1,14 +1,14 @@
 /**
- * macro rendering alias of goodie
+ * macro rendering alias
  */
 
 function alias_macro(param) {
    if (param.as == "editor")
       renderInputText(this.createInputParam("alias",param));
    else if (param.as == "link") {
-      param.to = "getgoodie"
+      param.to = "getfile"
       param.urlparam = "name=" + this.alias;
-      openMarkupElement("a",this.weblog.createLinkParam(param));
+      openMarkupElement("a",this.site.createLinkParam(param));
       res.write(this.alias);
       closeMarkupElement("a");
    } else
@@ -17,7 +17,7 @@ function alias_macro(param) {
 
 
 /**
- * macro rendering description of goodie
+ * macro rendering description
  */
 
 function description_macro(param) {
@@ -28,18 +28,18 @@ function description_macro(param) {
 }
 
 /**
- * macro renders the url to this goodie
+ * macro renders the url to this file
  */
 
 function url_macro(param) {
-   res.write(getProperty("goodieUrl"));
-   if (this.weblog)
-       res.write(this.weblog.alias + "/");
+   res.write(getProperty("fileUrl"));
+   if (this.site)
+       res.write(this.site.alias + "/");
    res.write(this.filename + "." + this.fileext);
 }
 
 /**
- * macro renders a link for editing goodie
+ * macro renders a link for editing a file
  */
 
 function editlink_macro(param) {
@@ -52,14 +52,14 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is creator of this goodie
+ * if user is creator of this file
  */
 
 function deletelink_macro(param) {
    if (!this.isEditDenied(session.user)) {
       openLink(this.href("delete"));
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "delete");
       closeLink();
@@ -67,7 +67,7 @@ function deletelink_macro(param) {
 }
 
 /**
- * macro renders the name of the creator of this goodie
+ * macro renders the name of the creator
  */
 
 function creator_macro(param) {
@@ -75,7 +75,7 @@ function creator_macro(param) {
 }
 
 /**
- * macro rendering createtime of goodie
+ * macro rendering createtime
  */
 
 function createtime_macro(param) {
@@ -85,7 +85,7 @@ function createtime_macro(param) {
 }
 
 /**
- * macro rendering filesize of goodie
+ * macro rendering filesize
  */
 
 function filesize_macro(param) {
@@ -93,7 +93,7 @@ function filesize_macro(param) {
 }
 
 /**
- * macro rendering the mimetype of goodie
+ * macro rendering the mimetype
  */
 
 function mimetype_macro(param) {
@@ -102,7 +102,7 @@ function mimetype_macro(param) {
 
 /**
  * mcaro rendering the number of requests so far
- * for a goodie-object
+ * for a file-object
  */
 
 function clicks_macro(param) {
