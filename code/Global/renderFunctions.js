@@ -64,9 +64,9 @@ function doWikiStuff (src) {
    var src= " "+src;
 
    // set up reg exp for http link stuff
-   var linkexp = new RegExp ("([^=^\"])(http://[^ ^\r^\n^\"]*)");
-   linkexp.ignoreCase=true;
-   linkexp.global=true;
+   // var linkexp = new RegExp ("([^=^\"])(http://[^ ^\r^\n^\"]*)");
+   // linkexp.ignoreCase=true;
+   // linkexp.global=true;
 
    // do the Wiki link thing, *asterisk style*
    var regex = new RegExp ("[*]([a-z0-9צהü][a-z0-9צהüß ]*[a-z0-9צהüß])[*]");
@@ -77,7 +77,8 @@ function doWikiStuff (src) {
    while (true) {
       var found = regex.exec (src.substring(start));
       var to = found == null ? src.length : start + found.index;
-      text += src.substring(start, to).replace (linkexp, "$1<a href=\"$2\">$2</a>");
+      // text += src.substring(start, to).replace (linkexp, "$1<a href=\"$2\">$2</a>");
+      text += src.substring(start, to);
       if (found == null)
          break;
       var name = found[1];
