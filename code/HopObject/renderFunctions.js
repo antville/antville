@@ -5,18 +5,18 @@
 
 function renderInputTextarea(param) {
    if (param) {
-      res.write("<TEXTAREA NAME=\"" + param.name + "\"");
-      res.write(" ROWS=\"");
+      res.write("<textarea name=\"" + param.name);
+      res.write("\" rows=\"");
       res.write(param.height ? param.height : "5");
-      res.write("\" COLS=\"");
+      res.write("\" cols=\"");
       res.write(param.width ? param.width : "40");
-      res.write("\" WRAP=\"");
-      res.write(param.wrap ? param.wrap : "VIRTUAL");
+      res.write("\" wrap=\"");
+      res.write(param.wrap ? param.wrap : "virtual");
       if (param.style)
-         res.write("\" CLASS=\"" + param.style);
+         res.write("\" class=\"" + param.style);
       res.write("\">");
       res.write(param.value != null ? param.value : "");
-      res.write("</TEXTAREA>");
+      res.write("</textarea>");
    }
 }
 
@@ -28,13 +28,13 @@ function renderInputTextarea(param) {
 
 function renderInputText(param) {
    if (param) {
-      res.write("<INPUT TYPE=\"TEXT\" NAME=\"" + param.name + "\"");
+      res.write("<input type=\"text\" name=\"" + param.name);
       if (param.value)
-         res.write(" VALUE=\"" + param.value);
-      res.write("\" SIZE=\"");
+         res.write("\" value=\"" + param.value);
+      res.write("\" size=\"");
       res.write(param.width ? param.width : "20");
       if (param.style)
-         res.write("\" CLASS=\"" + param.style);
+         res.write("\" class=\"" + param.style);
       res.write("\">");
    }
 }
@@ -47,11 +47,11 @@ function renderInputText(param) {
 
 function renderInputPassword(param) {
    if (param) {
-      res.write("<INPUT TYPE=\"PASSWORD\" NAME=\"" + param.name + "\"");
-      res.write(" SIZE=\"");
+      res.write("<input type=\"password\" name=\"" + param.name);
+      res.write("\" size=\"");
       res.write(param.width ? param.width : "20");
       if (param.style)
-         res.write("\" CLASS=\"" + param.style);
+         res.write("\" class=\"" + param.style);
       res.write("\">");
    }
 }
@@ -63,11 +63,11 @@ function renderInputPassword(param) {
 
 function renderInputFile(param) {
    if (param) {
-      res.write("<INPUT TYPE=\"FILE\" NAME=\"" + param.name + "\"");
-      res.write(" SIZE=\"");
+      res.write("<input type=\"file\" name=\"" + param.name);
+      res.write("\" size=\"");
       res.write(param.width ? param.width : "10");
       if (param.style)
-         res.write("\" CLASS=\"" + param.style);
+         res.write("\" class=\"" + param.style);
       res.write("\">");
    }
 } 
@@ -78,8 +78,8 @@ function renderInputFile(param) {
 
 function renderInputRadio(param) {
    if (param) {
-      res.write("<INPUT TYPE=\"RADIO\" NAME=\"" + param.value + "\"");
-      res.write(" VALUE=\"" + (this[param.value] ? this[param.value] : "") + "\"");
+      res.write("<input type=\"radio\" name=\"" + param.value + "\"");
+      res.write(" value=\"" + (this[param.value] ? this[param.value] : "") + "\"");
       res.write(">");
    }
 }
@@ -92,12 +92,12 @@ function renderInputRadio(param) {
 
 function renderInputCheckbox(param) {
    if (param && param.name) {
-      res.write("<INPUT TYPE=\"CHECKBOX\" NAME=\"" + param.name + "\"");
-      res.write(" VALUE=\"1\"");
+      res.write("<input type=\"checkbox\" name=\"" + param.name);
+      res.write("\" value=\"1\"");
       if (param.style)
-         res.write(" CLASS=\"" + param.style + "\"");
-      if (parseInt(param.value) == 1)
-         res.write(" CHECKED");
+         res.write(" class=\"" + param.style + "\"");
+      if (parseInt(param.value,10) == 1)
+         res.write(" checked");
       res.write(">");
    }
 }
@@ -110,11 +110,11 @@ function renderInputCheckbox(param) {
 
 function renderInputButton(param) {
    if (param) {
-      res.write("<INPUT TYPE=\"SUBMIT\"");
-      res.write(" NAME=\"" + (param.name ? param.name : "submit") + "\"");
-      res.write(" VALUE=\"" + (param.value ? param.value : "submit") + "\"");
+      res.write("<input type=\"submit\"");
+      res.write(" name=\"" + (param.name ? param.name : "submit") + "\"");
+      res.write(" value=\"" + (param.value ? param.value : "submit") + "\"");
       if (param.style)
-         res.write(" CLASS=\"" + param.style + "\"");
+         res.write(" class=\"" + param.style + "\"");
       res.write(">");
    }
 }
@@ -129,7 +129,7 @@ function renderInputButton(param) {
 
 function openLink(param) {
    if (param.to || param.linkto) {
-      res.write("<A HREF=\"");
+      res.write("<a href=\"");
       var url = param.to ? param.to : param.linkto;
       // check if this is an external url
       if (url.indexOf("://") > -1)
@@ -139,7 +139,7 @@ function openLink(param) {
       if (param.urlparam) res.write(param.urlparam);
       res.write("\"");
       if (param.target)
-         res.write(" TARGET=\"" + param.target + "\"");
+         res.write(" target=\"" + param.target + "\"");
       res.write(">");
    }
 }
@@ -150,7 +150,7 @@ function openLink(param) {
  */
 
 function closeLink() {
-   res.write("</A>");
+   res.write("</a>");
 }
 
 
@@ -185,13 +185,15 @@ function renderDateDropdown(param) {
  */
 
 function chooser(param) {
-   res.write("<SELECT NAME=\"" + param.name + "\"");
+   res.write("<select name=\"" + param.name + "\"");
    res.write(">\n");
    for (var i=0;i<param.size();i++) {
-      res.write("<OPTION VALUE=\"" + param.get(i).value + "\"");
+      res.write("<option value=\"" + param.get(i).value + "\"");
       if (param.get(i).selected)
-         res.write(" SELECTED");
-      res.write(">" + param.get(i).name + "</OPTION>\n");
+         res.write(" selected");
+      res.write(">" + param.get(i).name + "</option>\n");
    }
-   res.write("</SELECT>\n");
+   res.write("</select>\n");
 }
+
+
