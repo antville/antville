@@ -1,7 +1,6 @@
 <p>Antville is an open source project aimed to the development of an "easy to maintain and use" weblog hosting system. It's not limited to just one weblog, it can easily host up to several hundred or thousand weblogs (the number of weblogs is rather limited by the site owners choice and server power than by the software).</p>
 
 Number of weblogs hosted here: <% root.sitecounter count="all" %><br />
-Publicly accessible weblogs: <% root.sitecounter %><br /><br />
+Publicly accessible weblogs: <% root.sitecounter %>
 
-Last updated weblogs:
-<% sitelist limit="25" prefix="<ul>" suffix="</ul>" %>
+<% sitelist limit="25" prefix="<br /><br />Recently updated weblogs:<ul>" suffix="</ul>" %>
