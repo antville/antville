@@ -61,8 +61,10 @@ function newPost (appkey, blogid, username, password, content, publish) {
    }
 
    var param = new Object();
+   param.http_remotehost = "bloggerAPI";
    root.blogger.parseBloggerAPIPosting (param, content);
-   param.online = publish ? 2 : 0;
+   param.publish = publish;
+   param.addToFront = true;
    var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
       throw(result.message);

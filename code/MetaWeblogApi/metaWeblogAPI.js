@@ -77,19 +77,16 @@ function newPost (blogid, username, password, content, publish) {
       throw("You don't have permission to post to this site");
    }
    var param = new Object();
+   param.http_remotehost = "metaweblogAPI";
    param.content_title = content.title;
    param.content_text  = content.description;
-   if (content.dateCreated) 
+   if (content.dateCreated)
      param.createtime = content.dateCreated.format("yyyy-MM-dd HH:mm");
    if (content.categories && content.categories.length>0)
       param.topic = content.categories[0];
-   if (publish) 
-      param.online = 2;
-   else if (content.flNotOnHomePage && param.topic) 
-      param.online = 1;
-   else 
-      param.online = 0;
-   param.discussions = content.discussions == 0 ? 0 : null;
+   param.publish = publish;
+   param.addToFront = (content.flNotOnHomePage && param.topic) ? false : true;
+   param.discussions = content.discussions == 0 ? 0 : 1;
    var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
       throw(result.message);
@@ -134,17 +131,13 @@ function editPost (postid, username, password, content, publish) {
    var param = new Object();
    param.content_title = content.title;
    param.content_text  = content.description;
-   if (content.dateCreated) 
+   if (content.dateCreated)
      param.createtime = (content.dateCreated).format("yyyy-MM-dd HH:mm");
    if (content.categories && content.categories.length>0)
       param.topic = content.categories[0];
-   if (publish) 
-      param.online = 2;
-   else if (content.flNotOnHomePage && param.topic) 
-      param.online = 1;
-   else 
-      param.online = 0;
-   param.discussions = content.mt_allow_comments == 0 ? 0 : null;
+   param.publish = publish;
+   param.addToFront = (content.flNotOnHomePage && param.topic) ? false : true;
+   param.discussions = content.mt_allow_comments == 0 ? 0 : 1;
 
    var result = entry.evalStory(param, usr);
    return !result.error;
@@ -253,7 +246,7 @@ function getCategories(blogid, username, password) {
  *                    .description String (optional) description of the object
  *                    .antville_maxheight Integer (optional), just applies for images
  *                    .antville_maxwidth Integer (optional), just applies for images
- *  @return Object containing the following properties 
+ *  @return Object containing the following properties
  *                    .url String containing the URL of the uploaded file
  *                    .antville_alias Sting containing the alias of the uploaded file
  *                    .antville_message String human readable message indicating success
@@ -274,53 +267,53 @@ function newMediaObject(blogid, username, password, fileObject) {
    var str = new java.lang.String(fileObject.bits);
    var bytes = Packages.helma.util.Base64.decode(str.toCharArray());
    var param = new Object();
-   var ret = new Object(); 
-   if (fileObject.type.substring(0, 6).toLowerCase() == "image/") { 
+   var ret = new Object();
+   if (fileObject.type.substring(0, 6).toLowerCase() == "image/") {
       try {
          blog.images.checkAdd(usr, level);
       } catch (deny) {
          throw("You're not allowed to upload images to the blog " + blog.alias);
       }
-      param.rawimage = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type); 
-      param.maxheight = fileObject.antville_maxheight; 
-      param.maxwidth = fileObject.antville_maxwidth; 
-      var result = blog.images.evalImg(param, usr); 
-      if (result.error) 
-         throw("Error occured while creating new Media Object: " + result.message); 
-      else { 
-         var alias = param.alias; 
-         var file = blog.images.get(alias); 
-         file.alttext = fileObject.description; 
-         ret.antville_staticUrl = file.getUrl(); 
-         ret.antville_popupUrl = file.getPopupUrl(); 
-         ret.antville_width = file.width; 
-         ret.antville_height = file.height; 
-         ret.antville_macro = "<% image name=\"" + blog.alias + "/" + alias + "\" %>"; 
-         if (file.thumbnail) { 
-            ret.antville_popupmacro = "<% image name=\"" + blog.alias + "/" + alias + "\" as=\"popup\"%>"; 
-            ret.antville_thumbmacro = "<% image name=\"" + blog.alias + "/" + alias + "\" as=\"thumbnail\"%>"; 
-         } 
-      }  
+      param.rawimage = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
+      param.maxheight = fileObject.antville_maxheight;
+      param.maxwidth = fileObject.antville_maxwidth;
+      var alias = buildAliasFromFile(param.rawimage, blog.images);
+      var result = blog.images.evalImg(param, usr);
+      if (result.error)
+         throw("Error occured while creating new Media Object: " + result.message);
+      else {
+         var mediaObject = blog.images.get(alias);
+         mediaObject.alttext = fileObject.description;
+         ret.antville_staticUrl = mediaObject.getUrl();
+         ret.antville_popupUrl = mediaObject.getPopupUrl();
+         ret.antville_width = mediaObject.width;
+         ret.antville_height = mediaObject.height;
+         ret.antville_macro = "<% image name=\"" + blog.alias + "/" + alias + "\" %>";
+         if (mediaObject.thumbnail) {
+            ret.antville_popupmacro = "<% image name=\"" + blog.alias + "/" + alias + "\" as=\"popup\"%>";
+            ret.antville_thumbmacro = "<% image name=\"" + blog.alias + "/" + alias + "\" as=\"thumbnail\"%>";
+         }
+      }
    } else {
       try {
          blog.files.checkAdd(usr, level);
       } catch (deny) {
-         throw("You're not allowed to upload files to the blog " + blog.alias); 
+         throw("You're not allowed to upload files to the blog " + blog.alias);
       }
       param.rawfile = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
+      var alias = buildAliasFromFile(param.rawfile, blog.files);
       var result = blog.files.evalFile(param, usr);
       if (result.error)
          throw("Error occured while creating new Media Object: " + result.message);
       else {
-         var alias = buildAliasFromFile(param.rawfile, blog.files);
-         var file = blog.files.get(alias);
-         file.description = fileObject.description;
+         var mediaObject = blog.files.get(alias);
+         mediaObject.description = fileObject.description;
          ret.antville_macro = "<% file name=\"" + blog.alias + "/" + alias + "\" %>";
       }
    }
-   ret.url = file.url;
+   ret.url = mediaObject.getUrl();
    ret.antville_alias = alias;
-   ret.antville_message = result.message;
+   ret.antville_message = (result.message) ? result.message : null;
    return ret;
 }
 

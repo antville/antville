@@ -165,7 +165,7 @@ function supportedMethods() {
    result[result.length] = "metaWeblog.editPost";
    result[result.length] = "blogger.deletePost";
    result[result.length] = "metaWeblog.getRecentPosts";
-//   result[result.length] = "metaWeblog.newMediaObject";
+   result[result.length] = "metaWeblog.newMediaObject";
    result[result.length] = "blogger.getUsersBlogs";
    result[result.length] = "blogger.getUserInfo";
    result[result.length] = "mt.getRecentPostTitles";
