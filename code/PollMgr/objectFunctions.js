@@ -8,43 +8,14 @@
  *                - url (String): the URL string of the poll
  *                - id (Number): the internal Hop ID of the poll
  */
-
-function evalNewPoll(param, creator) {
-   var result;
-   var choiceInput = param.choice;
-   if (param.choice_array) {
-       var choiceCnt = 0;
-      for (var i=0; i<param.choice_array.length; i++) {
-         if (param.choice_array[i])
-            choiceCnt++;
-      }
-   }
-   if (param.question && creator && choiceCnt > 1) {
-      var newPoll = new poll();
-      newPoll.site = this._parent;
-      newPoll.question = param.question;
-      newPoll.closed = 0;
-      newPoll.creator = creator;
-      newPoll.createtime = new Date();
-      newPoll.modifytime = new Date();
-
-      this.add(newPoll);
-      for (var i=0; i<param.choice_array.length; i++) {
-         var title = param.choice_array[i];
-         if (!title)
-            continue;
-         var newChoice = new choice();
-         newChoice.poll = newPoll;
-         newChoice.title = title;
-         newChoice.createtime = new Date();
-         newChoice.modifytime = new Date();
-         newPoll.add(newChoice);
-      }
-      result = getConfirm("pollCreate");
-      result.error = false;
-   } else
-      result = getError("pollMissing");
-   return(result);
+function evalNewPoll(question, choices, creator) {
+   if (!question || !choices || choices.length < 2)
+      throw new Exception("pollMissing");
+   var newPoll = new poll(question, creator);
+   this.add(newPoll);
+   for (var i=0; i<choices.length; i++)
+      newPoll.add(choices[i]);
+   return new Message("pollCreate");
 }
 
 
@@ -55,23 +26,11 @@ function evalNewPoll(param, creator) {
  *                - error (boolean): true if error occured, false otherwise
  *                - message (String): an error or a confirmation message
  */
-
 function deletePoll(currPoll) {
-   var result;
-   for (var i=currPoll.size(); i>0; i--) {
-      var ch = currPoll.get(i-1);
-      for (var n=ch.size(); n>0; n--) {
-         var vt = ch.get(n-1);
-         ch.remove(vt);
-      }
-      currPoll.remove(ch);
-   }
-   currPoll.setParent(this._parent);
-   if (this._parent.remove(currPoll))
-      result = getConfirm("pollDelete");
-   else
-      result = getError("pollDelete");
-   return (result);
+   currPoll.deleteAll();
+   if (!this.remove(currPoll))
+      throw new Exception("pollDelete");
+   return new Message("pollDelete");
 }
 
 
@@ -84,8 +43,6 @@ function deletePoll(currPoll) {
  */
 
 function closePoll(currPoll) {
-   var result;
    currPoll.closed = 1;
-   result = getConfirm("pollClose");
-   return(result);
+   return new Message("pollClose");
 }
