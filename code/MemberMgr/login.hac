@@ -12,11 +12,7 @@ if (req.data.name && req.data.password) {
       user.lastVisit = new Date();
       res.message = "Welcome to Antville, " + user.name + "! Have fun!";
       if (!user.cache.referer) {
-         if (user.weblog) {
-            user.weblog.setParent(root);
-            var redirectTo = user.weblog.href();
-         } else
-            var redirectTo = root.href();
+         var redirectTo = root.href();
       } else {
          var redirectTo = user.cache.referer;
          user.cache.referer = null;
