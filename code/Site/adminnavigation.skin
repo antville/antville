@@ -1,6 +1,6 @@
 ...&nbsp;<% this.link to="main" text="home" %><br>
 ...&nbsp;<% this.link to="edit" text="preferences" %><br>
-...&nbsp;<% this.link to="create" text="create story" %><br>
+...&nbsp;<% this.link to="stories" text="storypool" %><br>
 ...&nbsp;<% this.link to="images" text="imagepool" %><br>
 ...&nbsp;<% this.link to="goodies" text="goodiepool" %><br>
 ...&nbsp;<% this.link to="memberships" text="memberships" %><br>
