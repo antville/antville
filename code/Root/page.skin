@@ -35,14 +35,14 @@
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20" nowrap="nowrap">&nbsp;</td>
-<td width="460" valign="top" nowrap="nowrap"><span class="message"><% response.message prefix="<br />" suffix="<br />" %></span>
-<br /><% response.body %></td>
+<td width="460" valign="top" nowrap="nowrap"><% response.message prefix='<br /><span class="message">' suffix="</span><br />" %><br />
+<% response.body %></td>
 <td width="20" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% image name="/dot" as="url" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% now format="long" suffix="<br />" %>
 <% root.loginstatus %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />
+<div class="statusdark"><% root.link to="main" text="antville home" prefix="...&nbsp;" %><br />
 ...&nbsp;<% root.link to="new" text="create a new weblog" %><br />
 <% root.managelink prefix="...&nbsp;" suffix="<br />" %>
 <br /><span class="statuslight">Resources:<br />
