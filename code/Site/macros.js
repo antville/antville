@@ -38,11 +38,13 @@ function alias_macro(param) {
  */
 
 function tagline_macro(param) {
+   if (!this.tagline && param.as != "editor")
+      return;
    res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("tagline",param));
-   else
-      res.write(this.tagline);
+   else if (this.tagline)
+      res.write(stripTags(this.tagline));
    res.write(param.suffix);
 }
 
@@ -567,7 +569,7 @@ function membercounter_macro(param) {
  */
 
 function history_macro(param) {
-   if (this.isNotPublic() && !this.isUserMember(user))
+   if (this.isNotPublic(user) && !this.isUserMember(user))
       return;
    res.write(param.prefix);
    var max = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
@@ -577,19 +579,6 @@ function history_macro(param) {
    res.write(param.suffix);
 }
 
-
-/**
- * macro checks if this weblog is online or offline
- */
-
-function onlinestatus_macro(param) {
-   res.write(param.prefix);
-   if (!this.isOnline())
-      res.write("private");
-   else
-      res.write("public");
-   res.write(param.suffix);
-}
 
 /**
  * macro renders a list of available locales as dropdown
