@@ -29,12 +29,12 @@
  *                .mt_keywords       String [MT-API]
  */
 function getPost(postid, username, password) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
       throwError ("Couldn't find the story with id " + postid);
    // check if user is allowed to edit this story
-   if (entry.isEditDenied(usr,entry.site.members.getMembershipLevel(usr)))
+   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
       throwError ("You're not allowed to edit the story with id " + postid);
 
    return (this.convertStoryToStruct(entry));
@@ -65,11 +65,11 @@ function getPost(postid, username, password) {
  *  @return String representing the ID of the new story
  */
 function newPost (blogid, username, password, content, publish) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
-   if (blog.stories.isDenied(usr,blog.members.getMembershipLevel(usr)))
+   if (blog.stories.isDenied(usr, blog.members.getMembershipLevel(usr)))
       throwError ("You don't have permission to post to this weblog");
 
    var param = new Object();
@@ -86,7 +86,7 @@ function newPost (blogid, username, password, content, publish) {
    else 
       param.online = 0;
    param.discussions = content.discussions == 0 ? 0 : null;
-   var result = blog.stories.evalNewStory(new story(), param, usr);
+   var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
       throwError (result.message);
    return (result.id);
@@ -117,12 +117,12 @@ function newPost (blogid, username, password, content, publish) {
  *  @return Boolean true if successful
  */
 function editPost (postid, username, password, content, publish) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
       throwError ("Couldn't find the story with id " + postid);
    // check if user is allowed to edit the story
-   if (entry.isEditDenied(usr,entry.site.members.getMembershipLevel(usr)))
+   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
       throwError ("You're not allowed to edit the story with id " + postid);
    var param = new Object();
    param.content_title = content.title;
@@ -168,19 +168,19 @@ function editPost (postid, username, password, content, publish) {
  *                   .mt_keywords       String [MT-API]
  */
 function getRecentPosts(blogid, username, password, numberOfPosts) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
 
    var size = blog.stories.size();
-   var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts,20) : 20,size);
+   var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts, 20) : 20, size);
    var posts = new Array();
    var idx = 0;
    while (posts.length < limit && idx < size) {
       var entry = blog.stories.get(idx++);
-      if (entry.isEditDenied(usr,level))
+      if (entry.isEditDenied(usr, level))
          continue;
       posts[posts.length] = this.convertStoryToStruct(entry);
    }
@@ -201,12 +201,12 @@ function getRecentPosts(blogid, username, password, numberOfPosts) {
  *                   .rssUrl            String
  */
 function getCategories(blogid, username, password) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
-   if (blog.isNotPublic(usr, level))
+   if (blog.isAccessDenied(usr, level))
       trowError("You're not allowed to view the blog " + blogid);
 
    var arr = blog.topics.list();
@@ -235,7 +235,7 @@ function getCategories(blogid, username, password) {
  *  @return String containing the URL of the uploaded file
  */
 function newMediaObject(blogid, username, password, fileObject) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
@@ -243,11 +243,11 @@ function newMediaObject(blogid, username, password, fileObject) {
    var bytes = Packages.helma.util.Base64.decode(str.toCharArray());
    var param = new Object();
    param.rawfile = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
-   var result = blog.files.evalFile(param, urs);
+   var result = blog.files.evalFile(param, usr);
    if (result.error)
       throwError ("Error occured while creating new Media Object");
    else {
-      var alias = buildAliasFromFile(param.rawfile);
+      var alias = buildAliasFromFile(param.rawfile, blog.files);
       var file = blog.files.get(alias);
       return (getProperty("fileUrl")+blog.alias+"/"+file.name);
    }
@@ -263,8 +263,8 @@ function convertStoryToStruct (entry) {
    obj.userid = entry.creator ? entry.creator.name : null;
    obj.postid = entry._id;
    obj.dateCreated = entry.createtime;
-   obj.title = entry.getContentPart("title");
-   obj.description = entry.getContentPart("text");
+   obj.title = entry.content.getProperty("title");
+   obj.description = entry.content.getProperty("text");
    obj.categories = entry.topic ? new Array(entry.topic) : new Array();
    obj.flNotOnHomePage = entry.online==1 ? true : false;
    obj.link = entry.href();
