@@ -3,7 +3,6 @@
  */
 
 function skins_macro(param) {
-   res.write(param.prefix)
    for (var i in app.skinfiles) {
       res.write("<b>" + i + "</b>");
       for (var j in app.skinfiles[i]) {
@@ -14,7 +13,6 @@ function skins_macro(param) {
       }
       res.write("<br>");
    }
-   res.write(param.suffix);
 }
 
 
@@ -23,24 +21,10 @@ function skins_macro(param) {
  */
 
 function skineditor_macro(param) {
-   res.write(param.prefix)
    if (req.data.proto && req.data.name) {
       var s = this.fetchSkin(req.data.proto,req.data.name);
       s.renderSkin("edit");
-      /*
-      var currProto = this.get(req.data.proto);
-      if (currProto && currProto.get(req.data.name)) {
-         var currSkin = currProto.get(req.data.name);
-         currSkin.renderSkin("edit");
-      } else {
-         var newSkin = new skin();
-         // since this is a new skin, we give it the source of the skinfile as default
-         newSkin.skin = app.skinfiles[req.data.proto][req.data.name];
-         newSkin.renderSkin("edit");
-      }
-      */
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -52,7 +36,6 @@ function skinstatus_macro(param) {
    if (!param.proto || !param.name)
       return;
    var s = this.fetchSkin(param.proto,param.name);
-   res.write(param.prefix);
    if (s.creator) {
       res.write("customized by " + s.creator.name);
       res.write("&nbsp;...&nbsp;");
@@ -63,5 +46,4 @@ function skinstatus_macro(param) {
       this.closeLink();
    } else
       res.write("not customized");
-   res.write(param.suffix);
 }
