@@ -6,6 +6,8 @@ function title_macro(param) {
     renderInputText(this.createInputParam("title", param));
   else {
     if (param && param.linkto) {
+      if (param.linkto == "main")
+        param.linkto = "";
       openLink(this.href(param.linkto));
       if (this.title && this.title.trim())
         res.write(stripTags(this.title));
@@ -589,7 +591,7 @@ function listReferrers_macro() {
   // we're doing this with direct db access here
   // (there's no need to do it with prototypes):
   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
-  var query = "select *, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
+  var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
   var rows = c.executeRetrieval(query);
   var dbError = c.getLastError();
   if (dbError)
