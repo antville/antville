@@ -226,7 +226,7 @@ function activatelink_macro(param) {
 function downloadlink_macro(param) {
    if (this.parent)
       return;
-   Html.link(this.href("download"), param.text ? param.text : "download");
+   Html.link(this.href("download.zip"), param.text ? param.text : "download");
 }
 
 /**
