@@ -15,7 +15,7 @@ if (this.online) {
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
 		param1.itemUrl = story.href();
-		param1.itemTitle = encodeXml(story.title);
+		param1.itemTitle = story.title ? encodeXml(story.title) : "";
 		param1.authorName = encodeXml(story.author.name);
 		param1.authorMail = encodeXml(story.author.email);
 		param1.year = now.getYear();
@@ -36,7 +36,7 @@ else {
 var param2 = new Object();
 param2.title = encodeXml(this.title);
 param2.url = encodeXml(this.href());
-param2.description = encodeXml(this.tagline);
+param2.description = this.tagline ? encodeXml(this.tagline) : "";
 param2.year = now.getYear();
 param2.creatorName = encodeXml(this.creator.name);
 param2.creatorMail = encodeXml(this.creator.email);
