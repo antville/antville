@@ -1,4 +1,4 @@
-<p><b><% this.title %></b> has <% this.membercounter %> members until now:</p>
+<p>members of <b><% this.title %></b>:</p>
 <ul>
 <% this.memberlist %>
 </ul>
