@@ -11,6 +11,8 @@ function isPostDenied(usr) {
       return (getMsg("error","siteNotPublic"));
    else if (!this.site.hasDiscussions())
       return (getMsg("error","siteNoDiscussion"));
+   else if (!this.hasDiscussions())
+      return (getMsg("error","storyNoDiscussions"));
    return null;   
 }   
     
