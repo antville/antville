@@ -8,12 +8,12 @@
 <td class="storyText" nowrap><% this.email %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Administrator</td>
-<td class="storyText" nowrap><% this.admin as="editor" %></td>
+<td class="storyText" nowrap>currently</td>
+<td class="storyText" nowrap><% this.level %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Contributor</td>
-<td class="storyText" nowrap><% this.contributor as="editor" %></td>
+<td class="storyText" nowrap>change to:</td>
+<td class="storyText" nowrap><% this.level as="editor" %></td>
 </tr>
 <tr>
 <td class="storyText" nowrap>&nbsp;</td>
