@@ -1,7 +1,7 @@
-if (user.uid) {
-  res.message = "Good bye, " + user.name + "! Lookin' forward to seeing you again!";
-  user.logout();
-  user.cache.referrer = null;
+if (session.user) {
+  res.message = "Good bye, " + session.user.name + "! Lookin' forward to seeing you again!";
+  session.logout();
+  session.data.referrer = null;
   res.setCookie ("avUsr", "");
   res.setCookie ("avPw", "");
 }
