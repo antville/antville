@@ -60,7 +60,7 @@ function evalImg(param, creator) {
    if (newImg.site && newImg.site.isNotificationEnabled())
       newImg.site.sendNotification("upload", newImg);
    newImg.site.diskusage += newImg.filesize;
-   var result = new Message("imageCreate", newImg.alias);
+   var result = new Message("imageCreate", newImg.alias, newImg);
    result.url = newImg.href();
    return result;
 }
