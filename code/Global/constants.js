@@ -53,6 +53,13 @@ ROLES[2] = [CONTENTMANAGER, "Content manager"];
 ROLES[3] = [ADMIN, "Admin"];
 
 /**
+ * constant object containing the values for editableby levels
+ */
+EDITABLEBY_ADMINS       = 0;
+EDITABLEBY_CONTRIBUTORS = 1;
+EDITABLEBY_SUBSCRIBERS  = 2;
+
+/**
  * named array containing the display-names of
  * path-objects which is used by linkedpath_macro()
  */
