@@ -346,14 +346,21 @@ function loginstatus_macro(param) {
  * depending on user-status & rights
  */
 function navigation_macro(param) {
-   this.renderSkin("usernavigation");
+   if (!param["for"] || param["for"] == "users") {
+      this.renderSkin("usernavigation");
+   }
    if (!session.user)
       return;
    var membership = this.isUserMember(session.user);
-   if (this.userMayContrib() || (membership && membership.level >= getContributorLvl()))
-      this.renderSkin("contribnavigation");
-   if (membership && membership.level == getAdminLvl())
-      this.renderSkin("adminnavigation");
+   if (!param["for"] || param["for"] == "contributors") {
+      if (this.userMayContrib() || (membership && membership.level >= getContributorLvl()))
+         this.renderSkin("contribnavigation");
+   }
+   if (!param["for"] || param["for"] == "admins") {
+      if (membership && membership.level == getAdminLvl())
+         this.renderSkin("adminnavigation");
+   }
+   return;
 }
 
 
