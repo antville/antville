@@ -3,12 +3,11 @@
 <head>
 <title><% response.title %></title>
 <meta name="MSSmartTagsPreventParsing" content="TRUE">
-<% response.head %>
+<% weblog.skin name="style" %>
+<% weblog.skin name="javascript" %>
 </head>
 
 <body>
-
-<% weblog.skin name="header" %>
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
