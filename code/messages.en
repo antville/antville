@@ -116,6 +116,7 @@ confirm.delete = Deletion was accomplished successfully.
 confirm.fileCreate= The file was added successfully. Its name is '<% param.value1 %>'
 confirm.fileDelete = The file was deleted successfully.
 confirm.mailSendPassword = An e-mail containing your user data was just sent to you.
+confirm.mailSend = The e-mail was sent successfully.
 confirm.memberCreate = Successfully added <% param.value1 %> to the list of members.
 confirm.memberDelete = Successfully deleted the membership.
 confirm.pollUpdate = The poll was updated successfully.
@@ -162,6 +163,8 @@ mail.blockWarning = Attention! Your site '<% param.value1 %>' will soon be block
 mail.deleteWarning = Attention! Your site '<% param.value1 %>' will soon be deleted!
 mail.registration = Welcome to '<% param.value1 %>'!
 mail.notification = Notification of site changes
+mail.toUser = Message from a '<% param.value1 %>' user
+
 
 ##
 ## denial messages
@@ -398,8 +401,8 @@ skin.topicmgr.main = Topic list|Defines the look of the "topics" section of a si
 ## membermgr
 skin.membermgr.membergroup = Member group|This skin is used to render a single group of site members.
 skin.membermgr.login = Login form|This skin defines the layout of the login form.
-skin.membermgr.pwdmail = "Password forgotten" mail|This is the mail that is sent to those who used the "password forgotten?" feature.
-skin.membermgr.mailbody = Registration confirmation|This is the confirmation mail that is sent to a user after registration.
+skin.membermgr.mailpassword = "Password forgotten" mail|This is the mail that is sent to those who used the "password forgotten?" feature.
+skin.membermgr.mailregconfirm = Registration confirmation|This is the confirmation mail that is sent to a user after registration.
 skin.membermgr.sendpwd = "Password forgotten?" form|This skin contains the form for entering the email address in the "password forgotten?" feature.
 skin.membermgr.statusloggedout = Logged out user|If the user visiting your site is not logged in, this skin will be displayed wherever you place the macro .
 skin.membermgr.memberlist = List of members|This skin contains the list of site members.
@@ -464,6 +467,7 @@ skin.root.sysmgrnavigation = Navigation bar for system administrators|This skin 
 ## membership
 skin.membership.subscription = Subscription list item|This skin is used to display a single subscription in a user's list.
 skin.membership.mgrlistitem = Member display|This skin is used to display a single membership in the "members" section of a site.
-skin.membership.mailbody = Membership status change confirmation|Whenever a site admin changes the status of a member this member will receive a confirmation mail. This skin defines the mail body of it.
+skin.membership.mailstatuschange = Membership status change confirmation|Whenever a site admin changes the status of a member this member will receive a confirmation mail. This skin defines the mail body of it.
+skin.membership.mailmessage = Private Mail message|The body of the mail sent to a user when an admin used the "send an e-mail to this user" feature.
 skin.membership.membership = Membership display|This skin is used to display a user's membership in the list of memberships.
 skin.membership.edit = Member status editor|This skin contains the form for modifying the role of a member.
