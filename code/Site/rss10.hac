@@ -12,45 +12,45 @@ var max = req.data.max ? parseInt(req.data.max) : 7;
 max = Math.min(max, size, 7);
 
 if (max > 0 && this.online) {
-	param2.resources = "";
- 	param2.items = "";
-	for (var i=0; i<max; i++) {
-		var story = this.allstories.get(i);
-		param1.itemUrl = story.href();
-		param1.itemTitle = encodeXml(story.getContentPart("title"));
-		param1.authorName = encodeXml(story.creator.name);
-		param1.authorMail = encodeXml(story.creator.email);
-		param1.year = now.getYear();
-		param1.subject = story.topic ? encodeXml(story.topic) : "";
-		param1.date = story.modifytime.format(w3fmt);
-		var skin = createSkin(story.getContentPart("text"));
-		var str = this.renderSkinAsString(skin);
-		str = this.rssConvertHtmlImageToHtmlLink(str);
-		param1.itemDescription = encodeXml(str);
-		param2.items += renderSkinAsString("rss10Item", param1);
-		param2.resources += renderSkinAsString("rss10Resource", param1);
-	}
-	param2.textinput = this.renderSkinAsString("rssTextInput", param2);
-	param2.creatorName = encodeXml(this.creator.name);
-	param2.creatorMail = encodeXml(this.creator.email);
-	param2.date = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
+   param2.resources = "";
+    param2.items = "";
+   for (var i=0; i<max; i++) {
+      var story = this.allstories.get(i);
+      param1.itemUrl = story.href();
+      param1.itemTitle = story.title ? encodeXml(story.title) : "";
+      param1.authorName = encodeXml(story.creator.name);
+      param1.authorMail = encodeXml(story.creator.email);
+      param1.year = now.getYear();
+      param1.subject = story.topic ? encodeXml(story.topic) : "";
+      param1.date = story.modifytime.format(w3fmt);
+      var skin = createSkin(story.getContentPart("text"));
+      # var str = renderTextPreviewAsString(this.renderSkinAsString(skin), 250, "...");
+      str = this.rssConvertHtmlImageToHtmlLink(str);
+      param1.itemDescription = encodeXml(str);
+      param2.items += renderSkinAsString("rss10Item", param1);
+      param2.resources += renderSkinAsString("rss10Resource", param1);
+   }
+   param2.textinput = this.renderSkinAsString("rssTextInput", param2);
+   param2.creatorName = encodeXml(this.creator.name);
+   param2.creatorMail = encodeXml(this.creator.email);
+   param2.date = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
 }
 else {
-	param1.itemUrl = url;
-	param1.authorName = "Antville Weblog Tool";
-	param1.authorMail = encodeXml(root.sys_email);
-	param1.date = this.createtime.format(w3fmt);
-	param2.creatorName = param1.authorName;
-	param2.creatorMail = param1.authorMail;
-	param2.date = param1.date;
-	if (max < 1) {
-		param1.itemTitle = "Welcome to " + encodeXml(this.title) + "!";
-		param1.itemDescription = "This weblog doesn't contain any stories, yet";
-	}
-	else {
-		param1.itemTitle = "Access denied";
-		param1.itemDescription = "This weblog is offline.";
-	}
+   param1.itemUrl = url;
+   param1.authorName = "Antville Weblog Tool";
+   param1.authorMail = encodeXml(root.sys_email);
+   param1.date = this.createtime.format(w3fmt);
+   param2.creatorName = param1.authorName;
+   param2.creatorMail = param1.authorMail;
+   param2.date = param1.date;
+   if (max < 1) {
+      param1.itemTitle = "Welcome to " + encodeXml(this.title) + "!";
+      param1.itemDescription = "This weblog doesn't contain any stories, yet";
+   }
+   else {
+      param1.itemTitle = "Access denied";
+      param1.itemDescription = "This weblog is offline.";
+   }
 }
 
 param2.title = encodeXml(this.title);
