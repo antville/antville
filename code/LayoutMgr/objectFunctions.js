@@ -4,15 +4,14 @@
  * @param Object Creator of the layout object
  */
 function evalNewLayout(param, creator) {
-   if (!param.title)
-      throw new Exception("layoutTitleMissing");
    var newLayout = new layout(this._parent instanceof site ? this._parent : null,
-                              param.title, creator);
+                              "untitled", creator);
    if (param.layout) {
       var parentLayout = root.layouts.get(param.layout);
       if (!parentLayout)
          throw new Exception("layoutParentNotFound");
       newLayout.setParentLayout(parentLayout);
+      newLayout.title = parentLayout.title;
    }
    newLayout.alias = buildAlias(newLayout.title, this);
    if (!this.add(newLayout))
