@@ -66,7 +66,7 @@ function evalNewStory(s,param,creator) {
          result = getConfirm("storyCreate");
          result.id = s._id;
          if (s.online) {
-            s.site.lastupdate = s.createtime;
+            s.site.lastupdate = s.modifytime;
             result.url = s.href();
          } else
             result.url = this.href();
