@@ -62,7 +62,7 @@ function deletelink_macro(param) {
       }
       Html.openLink({href: this.href("delete")});
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : getMessage("generic.delete"));
       Html.closeLink();
