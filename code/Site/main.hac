@@ -1,5 +1,3 @@
-autoLogin();
-
 var deny = this.isNotPublic(user);
 if (deny) {
    res.message = deny;
@@ -11,7 +9,7 @@ res.skin = "weblog.page";
 
 this.renderStorylist(req.data.day);
 
-res.data.title = "Antville - " + this.title;
+res.data.title = this.title;
 
 res.data.body = this.renderSkinAsString("main");
 

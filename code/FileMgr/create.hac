@@ -1,4 +1,3 @@
-autoLogin();
 checkIfLoggedIn(this.href(req.action));
 
 var deny = this.isDenied(user);
@@ -18,7 +17,7 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.skin = "weblog.page";
 
-res.data.title = "Antville - " + path.weblog.title;
+res.data.title = path.weblog.title;
 
 var newGoodie = new goodie();
 res.data.body = newGoodie.renderSkinAsString("new");
