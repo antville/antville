@@ -118,7 +118,7 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
    if (blog.isNotPublic(usr, level))
-      trowError("You're not allowed to view the blog " + blogid);
+      throwError("You're not allowed to view the blog " + blogid);
 
    var size = blog.stories.size();
    var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts,20) : 20,size);

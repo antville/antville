@@ -25,7 +25,7 @@ function getRecentPostTitles(blogid, username, password, numberOfPosts) {
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
    if (blog.isNotPublic(usr, level))
-      trowError("You're not allowed to view the blog " + blogid);
+      throwError("You're not allowed to view the blog " + blogid);
 
    var size = blog.stories.size();
    var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts,20) : 20,size);
@@ -64,7 +64,7 @@ function getCategoryList(blogid, username, password) {
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
    if (blog.isNotPublic(usr, level))
-      trowError("You're not allowed to view the blog " + blogid);
+      throwError("You're not allowed to view the blog " + blogid);
 
    var arr = blog.topics.list();
    var topics = new Array();
@@ -98,7 +98,7 @@ function getPostCategories(postid, username, password) {
       throwError ("Couldn't find the story with id " + postid);
    var level = entry.site.members.getMembershipLevel(usr);
    if (entry.isViewDenied(usr, level))
-      trowError("You are not allowed to view the story with id "+postid);
+      throwError("You are not allowed to view the story with id "+postid);
    var topics = new Array();
    if (entry.topic) {
      var param = new Object();
@@ -132,7 +132,7 @@ function setPostCategories(postid, username, password, categories) {
       throwError ("Couldn't find the story with id " + postid);
    var level = entry.site.members.getMembershipLevel(usr);
    if (entry.isEditDenied(usr, level))
-      trowError("You are not allowed to edit the story with id "+postid);
+      throwError("You are not allowed to edit the story with id "+postid);
 
    if (categories.length>0)
       entry.topic = categories[0].categoryId;
