@@ -13,7 +13,7 @@ res.data.body = this.renderSkinAsString("searchform");
 
 if (req.data.q) {
 
-    var query = req.data.q;
+    var query = stripTags(req.data.q);
     // array with sites to search
     var sites = new Array (this);
     var result = root.searchSites (query, this._id);
@@ -57,7 +57,8 @@ if (req.data.q) {
         for (var i=start; i<end; i++) {
             var site = root.get(result[i].sitealias);
             var item = site.allcontent.get(result[i].sid);
-            res.data.body += item.renderSkinAsString("searchview");
+            if (item)
+               res.data.body += item.renderSkinAsString("searchview");
         }
 
         // render next links, if necessary
