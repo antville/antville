@@ -35,11 +35,7 @@ function description_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(app.properties.fileUrl);
-   if (this.site)
-       res.write(this.site.alias + "/");
-   res.write(this.filename + "." + this.fileext);
-   return;
+   return this.getUrl();
 }
 
 /**
