@@ -119,7 +119,7 @@ function file_macro(param) {
 function linkedpath_macro (param) {
    var separator = param.separator;
    if (!separator)
-      separator = " &gt; ";
+      separator = " : ";
    var title;
    var start = (path.site == null) ? 0 : 1;
    for (var i=start; i<path.length-1; i++) {
