@@ -667,7 +667,7 @@ function listReferrers_macro() {
 
 function xmlbutton_macro(param) {
 	var param = new Object();
-	param.to = this.href("rss");
+	param.to = this.href("rss10");
 	param.name = "xmlbutton";
   var img = root.images.get(param.name);
 	if (!img)
