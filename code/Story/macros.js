@@ -6,9 +6,11 @@ function content_macro(param) {
    // objectFunctions.js/getContentPart() because
    // this function is called directly sometimes [ts]
    if (param.as == "editor") {
+      // this is a first trial to add a title like
+      // "Re: title of previous posting" to a new posting
       if (param.part == "title" && !this.content) {
-         if (path.comment.title)
-            param.value = "Re: " + path.comment.text;
+         if (path.comment)
+            param.value = "";
          else if (path.story.title)
             param.value = "Re: " + path.story.title;
       }
