@@ -1,2 +1,2 @@
 <div class="statuslight">Logged in as <% currentUser.name %><br>
-...&nbsp;<% this.link to="edit" text="edit" %> your profile<br>or <% this.link to="logout" text="logout" %><div class="statuslight"><% this.membership prefix="You are " suffix=" of this weblog" %><% this.signuplink text="sign up" prefix="<br>..." suffix=" to this weblog" %></div></div>
+<% this.membership prefix="You are " suffix=" of this weblog<br>" %><% this.link to="edit" text="edit" prefix="...&nbsp;" suffix="&nbsp;your profile<br>" %><% this.subscribelink text="subscribe to" prefix="...&nbsp;" suffix="&nbsp;this site<br>" %><% this.subscriptionslink prefix="...&nbsp;your&nbsp;" suffix="<br>" %><% this.link to="logout" text="logout" prefix="...&nbsp;" %></div>
