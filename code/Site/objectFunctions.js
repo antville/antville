@@ -53,12 +53,22 @@ function renderLinkToNextMonth(cal) {
  * function saves new properties of weblog
  * @param Obj Object containing the form values
  * @param Obj User-Object modifying this weblog
- * @return String Message indicating success
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function updateWeblog(param,modifier) {
+function evalPreferences(param,modifier) {
+   var result = new Object();
+   result.error = false;
+   if (!checkEmail(param.email)) {
+      result.message = "The email-address is invalid!";
+      result.error = true;
+      return (result);
+   }
    this.title = param.title;
    this.tagline = param.tagline;
+   this.email = param.email;
    this.bgcolor = param.bgcolor;
    this.textfont = param.textfont;
    this.textsize = param.textsize;
@@ -100,7 +110,8 @@ function updateWeblog(param,modifier) {
    // this.birthdate = this.checkdate(param,"birthdate");
    this.modifytime = new Date();
    this.modifier = modifier;
-   return ("The changes were saved successfully!");
+   result.message = "The changes were saved successfully!";
+   return (result);
 }
 
 /**
