@@ -1,4 +1,4 @@
-To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre>
+To insert this image into a story, comment or skin copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
