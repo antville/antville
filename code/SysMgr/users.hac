@@ -16,6 +16,6 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.searchform = this.renderSkinAsString("usersearchform");
 user.cache.mgr.renderPageNavigation("users",res.data.action,parseInt(req.data.page,10));
-user.cache.mgr.renderList("users",req.data.item,req.data.action,parseInt(req.data.page,10));
+user.cache.mgr.renderList("users",getUser(req.data.item),req.data.action,parseInt(req.data.page,10));
 
 res.data.body = this.renderSkinAsString("list");

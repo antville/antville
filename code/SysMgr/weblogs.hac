@@ -23,7 +23,7 @@ else if (req.data.remove && req.data.item) {
 }
 
 user.cache.mgr.renderPageNavigation("weblogs",res.data.action,parseInt(req.data.page,10));
-user.cache.mgr.renderList("weblogs",req.data.item,req.data.action,parseInt(req.data.page,10));
+user.cache.mgr.renderList("weblogs",root.get(req.data.item),req.data.action,parseInt(req.data.page,10));
 
 res.data.searchform = this.renderSkinAsString("weblogsearchform");
 res.data.body = this.renderSkinAsString("list");
