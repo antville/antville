@@ -26,7 +26,8 @@
 <td width="40" nowrap="nowrap">&nbsp;</td>
 <td width="400" valign="top" nowrap="nowrap">
 
-<br /><% response.message prefix='<p class="message">' suffix='</p>' %>
+<br />
+<% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
 <% response.body %></td>
 
 <td width="60" nowrap="nowrap">&nbsp;</td>
