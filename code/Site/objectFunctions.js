@@ -27,7 +27,11 @@ function evalNewStory() {
  * check if there are any stories in the previous month
  */
 
-function renderLinkToPrev(cal) {
+function renderLinkToPrevMonth(cal) {
+   // create HopObject used to pass to format-function
+   var tsParam = new HopObject();
+   tsParam.format = "MMMM";
+
    if (!this.size())
       return ("&nbsp;");
    if (parseInt(this.get(this.size()-1).groupname,10) < parseInt(cal.getTime().format("yyyyMMdd"),10)) {
@@ -38,7 +42,7 @@ function renderLinkToPrev(cal) {
          if (this.get(cal.getTime().format("yyyyMMdd")))
             prevDay = this.get(cal.getTime().format("yyyyMMdd"));
       }
-      return ("<A HREF=\"" + this.href("main") + "?show="+ prevDay.groupname + "\">" + cal.getTime().format("MMMM") + "</A>");
+      return ("<a href=\"" + this.href("main") + "?show="+ prevDay.groupname + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -49,7 +53,11 @@ function renderLinkToPrev(cal) {
  * check if there are any stories in the previous month
  */
 
-function renderLinkToNext(cal) {
+function renderLinkToNextMonth(cal) {
+   // create HopObject used to pass to format-function
+   var tsParam = new HopObject();
+   tsParam.format = "MMMM";
+
    if (!this.size())
       return ("&nbsp;");
    if (parseInt(this.get(0).groupname,10) > parseInt(cal.getTime().format("yyyyMMdd"),10)) {
@@ -60,7 +68,7 @@ function renderLinkToNext(cal) {
          if (this.get(cal.getTime().format("yyyyMMdd")))
             nextDay = this.get(cal.getTime().format("yyyyMMdd"));
       }
-      return ("<A HREF=\"" + this.href("main") + "?show="+ nextDay.groupname + "\">" + cal.getTime().format("MMMM") + "</A>");
+      return ("<a href=\"" + this.href("main") + "?show="+ nextDay.groupname + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -100,9 +108,11 @@ function updateWeblog() {
    this.days = parseInt(req.data.days,10);
    this.online = parseInt(req.data.online,10);
    this.discussions = parseInt(req.data.discussions,10);
+   this.usercontrib = parseInt(req.data.usercontrib,10);
+   this.usersignup = parseInt(req.data.usersignup,10);
    this.archive = parseInt(req.data.archive,10);
-   this.language = req.data.language ? req.data.language.substring(0,2) : "";
-   this.country = req.data.country ? req.data.country.substring(0,2) : "";
+   this.language = req.data.language ? req.data.language.substring(0,2).toLowerCase() : "";
+   this.country = req.data.country ? req.data.country.substring(0,2).toUpperCase() : "";
    this.birthdate = this.checkdate("birthdate");
    res.message = "The changes were saved successfully!";
    res.redirect(this.href());
@@ -149,6 +159,17 @@ function isOnline() {
    return false;
 }
 
+/**
+ * function returns true if signup is enabled
+ * otherwise false
+ */
+
+function userMaySignup() {
+   if (parseInt(this.usersignup,10))
+      return true;
+   return false;
+}
+
 
 /**
  * function creates the directory that will contain the images of this weblog
@@ -157,4 +178,71 @@ function isOnline() {
 function createImgDirectory() {
    var dir = new File(getProperty("imgPath") + this.alias + "/");
    return (dir.mkdir());
+}
+
+/**
+ * function adds a new member-object for this weblog
+ */
+
+function createMember(userLvl) {
+   var newMember = new member();
+   newMember.weblog = this;
+   newMember.user = user;
+   newMember.username = user.name;
+   newMember.admin = (userLvl == "admin" ? 1 : 0);
+   newMember.contributor = (userLvl == "contributor" ? 1 : 0);
+   newMember.createtime = new Date();
+   this.members.add(newMember);
+   return;
+}
+
+/**
+ * check if a signup attempt is ok
+ */
+
+function evalSignup() {
+   if (this.members.get(user.name)) {
+      res.message = "You are already a member of this weblog!";
+      res.redirect(this.href());
+   }
+   var signup = new member();
+   if (req.data.email) {
+      if (req.data.email != user.email) {
+         if (!checkEmail(req.data.email)) {
+            res.message = "Your eMail-address is invalid!";
+            return (signup);
+         } else
+            user.email = req.data.email;
+      }
+      this.createMember();
+      res.message = this.title + " welcomes you as a member! Have fun!";
+      res.redirect(this.href());
+   }
+}
+
+/**
+ * function checks if language and/or country was specified for this weblog
+ * if true, it returns the timestamp formatted with the given locale
+ */
+
+function formatTimestamp(ts,param) {
+   if (param.format)
+      var fmt = param.format;
+   else
+      var fmt = "yyyy/MM/dd HH:mm";
+   var sdf = new java.text.SimpleDateFormat(fmt,this.getLocale());
+   return(sdf.format(ts));
+}
+
+/**
+ * function checks if language and country were specified
+ * for this weblog. if so, it returns a Locale-object
+ * otherwise false
+ */
+
+function getLocale() {
+   if (this.language && this.country)
+      return (new java.util.Locale(this.language,this.country));
+   else
+      return (java.util.Locale.getDefault());
 }
