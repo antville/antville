@@ -505,6 +505,7 @@ manage.view = view
 manage.create = create
 manage.edit = edit
 manage.remove = remove
+manage.replace = replace
 manage.yes = yes
 manage.no = no
 manage.of = of
