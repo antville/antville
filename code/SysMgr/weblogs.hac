@@ -11,7 +11,7 @@ else if (req.data.remove && req.data.item) {
       var result = root.deleteWeblog(weblog);
       res.message = result.message;
    } else
-      res.message = "Can't delete " + req.data.item + "!";
+      res.message = getMsg("error","delete",req.data.item);
    res.redirect(res.data.action + "?page=" + req.data.page);
 } else if (req.data.save) {
    var result = this.updateWeblog(req.data,session.user);
