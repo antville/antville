@@ -1,3 +1,4 @@
+<a name="<% user.name %>"></a>
 <table class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="2"><% user.sysmgr_statusflags %></td>
