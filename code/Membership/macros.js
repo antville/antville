@@ -67,3 +67,11 @@ function level_macro(param) {
       this.renderLvl();
    res.write(param.suffix);
 }
+
+/**
+ * macro renders the title of the weblog
+ */
+
+function weblogtitle_macro(param) {
+   this.weblog.title_macro(param);
+}
