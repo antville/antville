@@ -11,7 +11,7 @@ function main_action() {
 }
 
 function offline_action() {
-   res.data.storylist = renderList(this.offline, "mgrlistitem", 10, req.data.start);
+   res.data.storylist = renderList(this.offline, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this.offline, this.href(req.action), 10, req.data.page);
    res.data.title = getMessage("story.offlineStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
