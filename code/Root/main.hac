@@ -1,7 +1,7 @@
-res.skin = "root.page";
-
 res.data.title = "Antville";
 
 res.data.body = this.renderSkinAsString("main");
+
+root.renderSkin("page");
 
 logAccess();
