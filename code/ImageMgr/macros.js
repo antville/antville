@@ -10,8 +10,11 @@ function images_macro(param) {
 
 
 /**
+ * FIXME!
+ *
  * macro renders editor for chosen image
  */
 
 function imageeditor_macro(param) {
+  return;
 }
