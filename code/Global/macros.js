@@ -1,3 +1,11 @@
+/** 
+ * macro renders the current timestamp   
+ */   
+function now_macro(param) {
+   return formatTimestamp(new Date(), param.format);
+}
+
+
 /**
  * macro renders the antville-logos
  */
