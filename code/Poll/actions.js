@@ -5,6 +5,8 @@ function main_action() {
    if (req.data.cancel)
       res.redirect(this.href());
    else if (req.data.vote) {
+      if (!session.user)
+         checkIfLoggedIn(this.href());
       try {
          res.message = this.evalVote(req.data, session.user);
          res.redirect(this.href("results"));
@@ -12,7 +14,6 @@ function main_action() {
          res.message = err.toString();
       }
    }
-   
    res.data.action = this.href();
    res.data.title = "Vote poll: " + this.question;
    res.data.body = this.renderSkinAsString("main");
@@ -53,7 +54,7 @@ function edit_action() {
    var choiceList = new java.lang.StringBuffer();
    var max = Math.max(2, arr.length);
    for (var i=0;i<max;i++) {
-      var c = arr[i] ? arr[i] : new choice("");
+      var c = arr[i] != null ? arr[i] : new choice("");
     	choiceList.append(c.renderSkinAsString("edit", {count: (i+1).toString()} ));
    }
    res.data.choices = choiceList.toString();
