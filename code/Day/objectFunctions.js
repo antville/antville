@@ -10,3 +10,13 @@ function deleteAll() {
    }
    return true;
 }
+
+/**
+ * Return the groupname of a day-object formatted as
+ * date-string to be used in the global linkedpath macro
+ * @see hopobject.getNavigationName()
+ */
+function getNavigationName () {
+   return (formatTimestamp(parseTimestamp(this.groupname,"yyyyMMdd"),"EEEE, dd.MM.yyyy"));
+}
+
