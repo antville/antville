@@ -152,6 +152,25 @@ function getUsersBlogs(appkey, username, password) {
 }
 
 /**
+ *  Blogger API function that retrieves a user's info. 
+ *  See http://groups.yahoo.com/group/bloggerDev/message/315
+ */
+function getUserInfo(appkey, username, password) {
+   var result = new Object();
+   var user = this.getUser (username, password);
+   if (user) {
+      result.userid = username;
+      result.nickname = username;
+      result.email = user.email;
+      result.url = user.url;
+      result.firstname = "X";
+      result.lastname = "YZ";
+   }
+   return result;
+}
+
+
+/**
  * function retrieves a userobject
  */
 function getUser(username, password) {
