@@ -147,6 +147,22 @@ function autoLogin() {
 }
 
 /**
+ * function checks if user is logged in or not
+ * if false, it redirects to the login-page
+ * but before it stores the url to jump back (if passed as argument)
+ */
+
+function checkIfLoggedIn(referrer) {
+   if (!user.uid) {
+      // user is not logged in
+      if (referrer)
+         user.cache.referer = referrer;
+      res.redirect(path.weblog ? path.weblog.members.href("login") : root.members.href("login"));
+   }
+   return;
+}
+
+/**
  * function checks if the name of the requested object has a slash in it
  * if true, it tries to fetch the appropriate parent-object (either weblog or root)
  * and to fetch the object with the requested name in the specified collection
@@ -251,7 +267,7 @@ function logAccess() {
 		// we're doing this with direct db access here
 		// (there's no need to do it with prototypes):
 		var c = getDBConnection("antville");
-		error = c.getLastError();
+		var error = c.getLastError();
 		if (error) {
 			writeln("Error establishing DB connection: " + error);
 			return;
@@ -259,11 +275,12 @@ function logAccess() {
 
 		var query = "insert into ACCESS (WEBLOG_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
 		c.executeCommand(query);
-		error = c.getLastError();
+		var error = c.getLastError();
 		if (error) {
 			writeln("Error executing SQL query: " + error);
 			return;
 		}
+      c.release();
 		return;
 
 		// *****************************************
@@ -306,3 +323,16 @@ function pingUpdatedWeblogs() {
 		}
 	}
 }
+
+/**
+ * function calls standard-functions on every request
+ * FIXME: implement this when helma is ready for onRequest()
+
+function onRequest() {
+   if (!user.isBlocked())
+      return;
+   user.logout();
+   res.message = "Your account was blocked!";
+   res.redirect(path.weblog ? path.weblog.href() : root.href());
+}
+*/
