@@ -287,7 +287,7 @@ function ping() {
 	result.message = ping.result.message;
 
 	if (result.error)
-		app.__app__.logEvenet("Error when notifying weblogs.com for updated weblog #" + this._id + ": " + result.message);
+		app.__app__.logEvent("Error when notifying weblogs.com for updated weblog #" + this._id + ": " + result.message);
 
 	// this is the easy post url method (maybe faster?)
 	// var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
