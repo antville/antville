@@ -130,17 +130,9 @@ function updatePalette(obj, p) {
 function submit() {
    var color = document.forms[0].elements[0].value;
    if (self.opener && color) {
-      var cValue = color.substr(1,color.length-1);
-      if (color.indexOf("rgb(") == 0) {
-         var parts = color.substr(4,color.length-2).split(",");
-         var R = parseInt(parts[0]).toString(16);
-         var G = parseInt(parts[1]).toString(16);
-         var B = parseInt(parts[2]).toString(16);
-         if (R.length == 1) R="0"+R;
-         if (G.length == 1) G="0"+G;
-         if (B.length == 1) B="0"+B;
-         cValue = R+G+B;
-      }
+      color = self.opener.parseColor(color);
+      if (color.indexOf("#") == 0)
+         var cValue = color.substr(1,color.length-1);
       //var query = document.URL.split("?");
       //var args = query[1].split("&");
       var name = "<% request.name %>"; //args[1].split("=")[1];
