@@ -193,8 +193,6 @@ function renderInputCheckbox(param) {
   if (!param || !param.name)
     return;
   param.type = "checkbox";
-  param.checked = param.check;
-  delete param.check;
   if (parseInt(param.value, 10) == 1 || param.value == true)
     param.checked = "checked";
   param.value = "1";
