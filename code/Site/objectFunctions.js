@@ -52,13 +52,11 @@ function evalPreferences(param,modifier) {
    this.cache.dateSymbols = null;
 
    // long dateformat
-   var patterns = getDefaultDateFormats();
-   var ldf = patterns[parseInt(param.longdateformat,10)];
+   var ldf = LONGDATEFORMATS[parseInt(param.longdateformat,10)];
    this.longdateformat = ldf ? ldf : null;
 
    // short dateformat
-   var patterns = getDefaultDateFormats("short");
-   var sdf = patterns[parseInt(param.shortdateformat,10)];
+   var sdf = SHORTDATEFORMATS[parseInt(param.shortdateformat,10)];
    this.shortdateformat = sdf ? sdf : null;
 
    this.modifytime = new Date();
