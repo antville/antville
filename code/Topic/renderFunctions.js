@@ -14,6 +14,7 @@ function renderStorylist(idx) {
    if (idx < 0 || isNaN (idx)|| idx > size-1)
       idx = 0;
    var max = Math.min (idx+10, size);
+   this.prefetchChildren(idx, max);
    if (idx > 0) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10);
