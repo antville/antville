@@ -4,8 +4,7 @@
  * @param Object story object to render
  */
 function renderManagerView(story) {
-   var sp = {story: story.renderSkinAsString("listitem")};
-   if (story.online == 0)
-      return this.renderSkinAsString("offlinestory", sp);
-   return this.renderSkinAsString("onlinestory", sp);
+   var sp = {story: story.renderSkinAsString("mgrlistitem")};
+   this.renderSkin(story.online == 0 ? "offlinestory" : "onlinestory", sp);
+   return;
 }
