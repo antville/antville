@@ -56,8 +56,8 @@ function evalStory(param,modifier) {
       newStatus = 0;
    if (isNaN(newStatus))
       return (getError("storyPublish"));
-   if (newStatus == 1 && !topicName)
-      return (getError("storyTopicMissing"));
+   // if (newStatus == 1 && !topicName)
+   //    return (getError("storyTopicMissing"));
 
    // since we came down here we store the new values of the story
    if (newStatus > 0 && (!this.online || majorUpdate))

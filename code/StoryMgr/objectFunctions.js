@@ -70,8 +70,8 @@ function evalNewStory(s,param,creator) {
       status = 0;
    if (isNaN(status))
       result = getError("storyPublish");
-   else if (status == 1 && !s.topic)
-      result = getError("storyTopicMissing");
+   // else if (status == 1 && !s.topic)
+   //    result = getError("storyTopicMissing");
    //else
       s.online = status;
    // if everything ok, so proceed with adding the story
