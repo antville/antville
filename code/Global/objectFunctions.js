@@ -340,7 +340,7 @@ function scheduler() {
    root.manage.autoCleanUp();
    // notify updated sites
    pingUpdatedSites();
-   countUsers();
+   // countUsers();
    // write the log-entries in app.data.accessLog into DB
    writeAccessLog();
    // store a timestamp in app.data indicating when last update
@@ -348,12 +348,6 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
-   // call module schedulers
-   for (var i in app.data.modules) {
-      var module = app.data.modules[i];
-      if (module.schedule)
-         module.schedule();
-   }
    return (30000);
 }
 
