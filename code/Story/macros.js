@@ -228,7 +228,7 @@ function commentcounter_macro(param) {
       param.linkto = "main";
    // cloning the param object to remove the macro-specific
    // attributes from the clone for valid markup output:
-   var param2 = ObjectLib.clone(param);
+   var param2 = Object.clone(param);
    delete param2.one;
    delete param2.more;
    delete param2.no;
@@ -288,8 +288,10 @@ function commentform_macro(param) {
  */
 function editableby_macro(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
-      var options = [null, 0, 1];
-      var labels = ["the author", "all subscribers", "all contributors"];
+      var options = [EDITABLEBY_ADMINS,
+                     EDITABLEBY_CONTRIBUTORS,
+                     EDITABLEBY_SUBSCRIBERS];
+      var labels = ["the author", "all contributors", "all subscribers"];
       delete param.as;
       if (req.data.publish || req.data.save)
          var selValue = !isNaN(req.data.editableby) ? req.data.editableby : null;
@@ -304,13 +306,14 @@ function editableby_macro(param) {
    } else {
       switch (this.editableby) {
          case 0 :
-            res.write("Subscribers of and contributors to '" + path.site.title + "'");
-            break;
+            res.write("Content managers and admins of '" + path.site.title + "'");
+            return;
          case 1 :
             res.write("Contributors to '" + path.site.title + "'");
             break;
-         default :
-            res.write("Content managers and admins of '" + path.site.title + "'");
+         case 2 :
+            res.write("Subscribers of and contributors to '" + path.site.title + "'");
+            break;
       }
    }
    return;
@@ -325,12 +328,10 @@ function discussions_macro(param) {
    if (!path.site.preferences.getProperty("discussions"))
       return;
    if (param.as == "editor") {
-      param.checked = "checked";
+      var inputParam = this.createCheckBoxParam("discussions", param);
       if ((req.data.publish || req.data.save) && !req.data.discussions)
-         delete param.checked;
-      else if (this.discussions == 0)
-         delete param.checked;
-      Html.checkBox(this.createInputParam("discussions", param));
+         delete inputParam.checked;
+      Html.checkBox(inputParam);
    } else
       res.write(this.discussions ? "yes" : "no");
    return;
@@ -449,7 +450,6 @@ function backlinks_macro(param) {
  */
 function addtofront_macro(param) {
    if (param.as == "editor") {
-      param.checked = "checked";
       // if we're in a submit, use the submitted form value.
       // otherwise, render the object's value.
       if (req.data.publish || req.data.save) {
@@ -459,6 +459,7 @@ function addtofront_macro(param) {
          delete param.checked;
       }
       param.name = "addToFront";
+      param.value = 1;
       delete param.as;
       Html.checkBox(param);
    }
