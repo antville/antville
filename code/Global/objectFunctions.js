@@ -495,11 +495,9 @@ function onStart() {
    //eval(macroHelpFile.readAll());
    app.log("loaded macro help file");
    // creating the vector for referrer-logging
-   // with an initial capacity of 500 and an increment of 150
-   app.data.accessLog = new java.util.Vector(500,125);
+   app.data.accessLog = new java.util.Vector();
    // creating the hashtable for storyread-counting
-   // with an initial capacity of 500 and an increment of 150
-   app.data.readLog = new java.util.Hashtable(500,125);
+   app.data.readLog = new java.util.Hashtable();
    return;
 }
 
@@ -597,10 +595,8 @@ function writeAccessLog() {
       return;
    // first of all swap app.data.accessLog
    var size = app.data.accessLog.size();
-   var newSize = Math.max(Math.round(size*1.25),500);
-   var newIncrement = Math.max(Math.round(size/4),125);
    var log = app.data.accessLog;
-   app.data.accessLog = new java.util.Vector(newSize,newIncrement);
+   app.data.accessLog = new java.util.Vector(size);
    // open database-connection
    var c = getDBConnection("antville");
    var dbError = c.getLastError();
@@ -636,18 +632,13 @@ function writeReadLog() {
       return;
    // first of all swap app.data.readLog
    var size = app.data.readLog.size();
-   var newSize = Math.max(Math.round(size*1.25),500);
-   var newIncrement = Math.max(Math.round(size/4),125);
    var log = app.data.readLog;
-   app.data.readLog = new java.util.Hashtable(newSize,newIncrement);
+   app.data.readLog = new java.util.Hashtable(size);
    // loop over Hashtable
    var reads = log.elements();
    while (reads.hasMoreElements()) {
       var el = reads.nextElement();
-      var site = root.get(el.site);
-      if (!site)
-         continue;
-      var story = site.allstories.get(String(el.story));
+      var story = root.storiesByID.get(String(el.story));
       if (!story)
          continue;
       story.reads = el.reads;
