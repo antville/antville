@@ -10,7 +10,7 @@ create table SYSLOG
   ID mediumint(9) not null,
   TYPE tinytext null,
   OBJECT tinytext null,
-  LOGMESSAGE mediumtext null,
+  LOGENTRY mediumtext null,
   SYSADMIN_ID mediumint(9) null,
   CREATETIME datetime null,
   primary key (ID)
