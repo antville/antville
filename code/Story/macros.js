@@ -46,7 +46,7 @@ function content_macro(param) {
             openLink(this.story.href()+"#"+this._id);
       }
       if (!param.limit)
-         res.write(format(part));
+         res.write(part);
       else
          res.write(softwrap(clipText(part, param.limit, param.clipping)));
       if (param.as == "link")
