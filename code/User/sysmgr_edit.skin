@@ -22,7 +22,7 @@
    </tr>
    <tr>
    <td nowrap="nowrap"></td>
-   <td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+   <td nowrap="nowrap"><% input type="submit" name="save" value="save" %>&nbsp;<% input type="submit" name="cancel" value="cancel" %></td>
    </tr>
    </table></td>
 </tr>

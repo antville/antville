@@ -17,7 +17,7 @@
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td><% input type="button" name="search" value="show log-entries" %></td>
+<td><% input type="submit" name="search" value="show log-entries" %></td>
 </tr>
 </form>
 </table>

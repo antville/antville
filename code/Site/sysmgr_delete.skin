@@ -4,7 +4,7 @@
 <tr>
 <td colspan="4" class="highlight" valign="top"><p><b>Warning!</b> You're about to delete the above weblog. Please mind that this is an irreversible process, and any asset of this weblog will be deleted. Just to remind you: <% site.alias %> currently contains <b><% site.sysmgr_count what="stories" %> stories</b> with <b><% site.sysmgr_count what="comments" %> comments</b>, <b><% site.sysmgr_count what="images" %> images</b> and <b><% site.sysmgr_count what="files" %> files</b>. Also all the subscriptions to this weblog will be removed.</p>
 <p><b>Are you sure you want to delete this weblog?</b></p>
-<p><% input type="button" name="remove" value="yes" %>&nbsp;&nbsp;<% input type="button" name="cancel" value=" no " %></p></td>
+<p><% input type="submit" name="remove" value="yes" %>&nbsp;&nbsp;<% input type="submit" name="cancel" value=" no " %></p></td>
 </tr>
 <tr>
 <td colspan="4" height="5" nowrap="nowrap"></td>

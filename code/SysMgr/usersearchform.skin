@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td><% input type="button" name="search" value="show users" %></td>
+<td><% input type="submit" name="search" value="show users" %></td>
 </tr>
 </form>
 </table>
