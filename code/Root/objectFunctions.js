@@ -113,10 +113,8 @@ function searchSites (query, sid) {
     // construct query
     var where = "select AV_TEXT.TEXT_ID, AV_SITE.SITE_ALIAS from AV_TEXT, AV_SITE where "+
                 "AV_TEXT.TEXT_F_SITE = AV_SITE.SITE_ID and "+
-                "AV_TEXT.TEXT_ISONLINE > 0 and AV_SITE.SITE_ISONLINE > 0 and ";
+                "AV_TEXT.TEXT_ISONLINE > 0 and ";
     for (var i in qarr) {
-        // where += "(LOWER(AV_TEXT.TEXT_TITLE) like '%"+qarr[i].toLowerCase()+
-        //          "%' or LOWER(AV_TEXT.TEXT_TEXT) like '%"+qarr[i].toLowerCase()+"%') "
         where += "(AV_TEXT.TEXT_RAWCONTENT like '%"+qarr[i].toLowerCase()+"%') "
         if (i < qarr.length-1)
             where += "and ";
@@ -124,6 +122,8 @@ function searchSites (query, sid) {
     // search only in the specified site
     if (sid)
         where += "and AV_SITE.SITE_ID = "+sid+" ";
+    else
+        where += "and AV_SITE.SITE_ISONLINE > 0 ";
     where += "order by AV_TEXT.TEXT_CREATETIME desc";
     // writeln (where);
     var dbcon = getDBConnection ("antville");
