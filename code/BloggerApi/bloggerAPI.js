@@ -20,14 +20,14 @@
  *                .content           String
  */
 function getPost(appkey, postid, username, password) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
       throwError ("Couldn't find the entry with id " + postid);
-   if (entry.isEditDenied(usr,entry.site.members.getMembershipLevel(usr)))
+   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
       throwError ("You're not allowed to edit the entry with id " + postid);
    var result = new Object();
-   result.content = entry.getContentPart("text");
+   result.content = entry.content.getProperty("text");
    result.userid = entry.creator.name;
    result.postid = entry._id;
    result.dateCreated = entry.createtime;
@@ -47,17 +47,17 @@ function getPost(appkey, postid, username, password) {
  *  @return String representing the ID of the new entry
  */
 function newPost (appkey, blogid, username, password, content, publish) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
-   if (blog.stories.isDenied(usr,blog.members.getMembershipLevel(usr)))
+   if (blog.stories.isDenied(usr, blog.members.getMembershipLevel(usr)))
       throwError ("You don't have permission to post to this weblog");
 
    var param = new Object();
    root.blogger.parseBloggerAPIPosting (param, content);
    param.online = publish ? 2 : 0;
-   var result = blog.stories.evalNewStory(new story(), param, usr);
+   var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
       throwError (result.message);
    return (result.id);
@@ -76,18 +76,18 @@ function newPost (appkey, blogid, username, password, content, publish) {
  *  @return Boolean true if successful
  */
 function editPost (appkey, postid, username, password, content, publish) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
       throwError ("Couldn't find the entry with id " + postid);
    // check if user is allowed to edit the entry
-   if (entry.isEditDenied(usr,entry.site.members.getMembershipLevel(usr)))
+   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
       throwError ("You're not allowed to edit the entry with id " + postid);
    var param = new Object();
-   root.blogger.parseBloggerAPIPosting (param, content);
+   root.blogger.parseBloggerAPIPosting(param, content);
    entry.title = param.content_title;
-   entry.setContentPart("title",param.content_title);
-   entry.setContentPart("text",param.content_text);
+   entry.content.setProperty("title", param.content_title);
+   entry.content.setProperty("text", param.content_text);
    entry.online = publish ? 2 : 0;
    entry.modifier = usr;
    entry.modifytime = new Date();
@@ -112,19 +112,19 @@ function editPost (appkey, postid, username, password, content, publish) {
  *                   .content           String
  */
 function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
 
    var size = blog.stories.size();
-   var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts,20) : 20,size);
+   var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts, 20) : 20, size);
    var posts = new Array();
    var idx = 0;
    while (posts.length < limit && idx < size) {
       var entry = blog.stories.get(idx++);
-      if (entry.isEditDenied(usr,level))
+      if (entry.isEditDenied(usr, level))
          continue;
       var param = new Object();
       param.postid = entry._id;
@@ -132,9 +132,9 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
       param.dateCreated = entry.createtime;
       if (entry.title)
          param.content = "<title>"+entry.title+"</title>"+
-             entry.getContentPart("text");
+             entry.content.getProperty("text");
       else
-         param.content = entry.getContentPart("text");
+         param.content = entry.content.getProperty("text");
       posts[posts.length] = param;
    }
    return (posts);
@@ -152,12 +152,12 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
  *  @return Boolean true if successful
  */
 function deletePost(appkey, postid, username, password, publish) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
       throwError ("Couldn't find the entry with id " + postid);
    // check if user is allowed to delete the entry
-   if (entry.isDeleteDenied(usr,entry.site.members.getMembershipLevel(usr)))
+   if (entry.isDeleteDenied(usr, entry.site.members.getMembershipLevel(usr)))
       throwError ("You're not allowed to delete the entry with id " + postid);
    var result = entry._parent.deleteStory(entry);
    return (!result.error);
@@ -178,12 +178,12 @@ function deletePost(appkey, postid, username, password, publish) {
  *                .blogName String
  */
 function getUsersBlogs(appkey, username, password) {
-   var usr = root.blogger.getUser(username,password);
+   var usr = root.blogger.getUser(username, password);
    var result = new Array();
    for (var i=0;i<usr.size();i++) {
       var membership = usr.get(i);
       var blog = membership.site;
-      if (blog.stories.isDenied(usr,membership.level))
+      if (blog.stories.isDenied(usr, membership.level))
          continue;
       var param = new Object();
       param.blogid = blog.alias;
@@ -231,7 +231,7 @@ function getUserInfo(appkey, username, password) {
  *  Blogger API posting.
  */
 function parseBloggerAPIPosting (param, content) {
-   if (content.indexOf ("<title>") != 0)
+   if (!content.startsWith("<title>"))
       param.content_text = content;
    else {
       var endTitle = content.lastIndexOf ("</title>");
