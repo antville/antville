@@ -1,3 +1,7 @@
+<div class="storyDate">
+   <% story.creator as="link" %>, 
+   <% story.createtime format="HH:mm" suffix="h" %>
+</div>
 <% story.skin name="display" %>
 <p>
 <span class="small">

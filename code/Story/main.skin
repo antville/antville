@@ -1,3 +1,7 @@
+<div class="storyDate">
+   <% story.creator as="link" %>, 
+   <% story.createtime format="long" %>
+</div>
 <% story.skin name="display" %>
 
 <p class="small"><% story.commentlink prefix="...&nbsp;" %><% story.editlink prefix="&nbsp;&nbsp;...&nbsp;" %><% story.onlinelink prefix="&nbsp;&nbsp;...&nbsp;" %></p>
