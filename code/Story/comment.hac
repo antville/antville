@@ -20,4 +20,5 @@ else if (req.data.submit == "save" || req.data.save) {
 res.data.title = "Antville - " + this.weblog.title;
 
 res.data.body = this.renderSkinAsString("comment");
-this.reads++;
+
+this.incrementReadCounter();
