@@ -82,11 +82,11 @@ function isUserAdmin() {
  */
 
 function isUserContributor() {
-   if (!this.isUserMember())
-      return false;
-   else if (!this.members.get(user.name).isContributor())
-      return false;
-   return true;
+   if (user.uid && this.userMayContrib())
+      return true;
+   else if (this.isUserMember() && this.members.get(user.name).isContributor())
+      return true;
+   return false;
 }
 
 /**
