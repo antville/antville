@@ -261,7 +261,15 @@ function isTrusted() {
 }
 
 
+/**
+ * send notification to weblogs.com
+ * that this weblog was updated
+ * @return Object with properties error and message
+ */
+
 function ping() {
+	// we're doing it the xml-rpc way
+	// (specs at http://newhome.weblogs.com/directory/11)
 	var xr = new Remote("http://rpc.weblogs.com/RPC2");
 	var ping = xr.weblogUpdates.ping(this.title, this.href());
 
@@ -270,11 +278,13 @@ function ping() {
 	result.message = ping.result.message;
 
 	if (result.error)
-		writeln("Error when pinging weblogs.com for updated weblog #" + this._id + ": " + result.message);
-	else
-		this.lastping = new Date();
+		writeln("Error when notifying weblogs.com for updated weblog #" + this._id + ": " + result.message);
 
-	//var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
+	// this is the easy post url method (maybe faster?)
+	// var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
 
+	// lastping is always set to now to prevent blogs
+	// hanging in the scheduler if a fatal error occurs
+	this.lastping = new Date();
 	return(result);
 }
