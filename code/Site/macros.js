@@ -84,8 +84,8 @@ function online_macro(param) {
  */
 function hasdiscussions_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("discussions", param);
-      if (req.data.save && !req.data.discussions)
+      var inputParam = this.preferences.createCheckBoxParam("discussions", param);
+      if (req.data.save && !req.data.preferences_discussions)
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
@@ -99,8 +99,8 @@ function hasdiscussions_macro(param) {
  */
 function usermaycontrib_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("usercontrib", param);
-      if (req.data.save && !req.data.usercontrib)
+      var inputParam = this.preferences.createCheckBoxParam("usercontrib", param);
+      if (req.data.save && !req.data.preferences_usercontrib)
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
@@ -124,8 +124,8 @@ function showdays_macro(param) {
  */
 function showarchive_macro(param) {
    if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("archive", param);
-      if (req.data.save && !req.data.archive)
+      var inputParam = this.preferences.createCheckBoxParam("archive", param);
+      if (req.data.save && !req.data.preferences_archive)
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
