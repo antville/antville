@@ -10,8 +10,8 @@
 function evalStory(param,modifier) {
    var result;
    // assign those properties that can be stored anyway
-   var editableby = parseInt(param.editableby,10);
-   this.editableby = (modifier == this.creator && !isNaN(editableby) ? editableby : this.editableby);
+   if (modifier == this.creator)
+      this.editableby = !isNaN(param.editableby) ? parseInt(param.editableby,10) : null;
    this.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
    // loop through param and collect content properties
    var majorUpdate = false;
