@@ -16,9 +16,7 @@ if (req.data.submit == "cancel" || req.data.cancel) {
 }
 
 res.data.action = this.href(req.action);
-
-res.data.title = path.site.title;
-
+res.data.title = req.data.proto + "/" + req.data.name + ".skin of " + path.site.title;
 res.data.body = this.renderSkinAsString("edit");
 
 this.renderSkin("page");
