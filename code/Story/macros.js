@@ -284,7 +284,8 @@ function commentcounter_macro(param) {
  */
 
 function comments_macro(param) {
-   if (!path.story.hasDiscussions())
+   var s = this.story ? this.story : this;
+   if (!s.hasDiscussions())
       return;
    for (var i=0;i<this.size();i++) {
       var c = this.get(i);
