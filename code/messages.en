@@ -139,6 +139,7 @@ mail.newMember = You are now a member of <% param.value1 %>
 mail.blockWarning = Attention! Your weblog '<% param.value1 %>' will soon be blocked!
 mail.deleteWarning = Attention! Your weblog '<% param.value1 %>' will soon be deleted!
 mail.registration = Welcome to '<% param.value1 %>'!
+mail.notification = Notification of site changes
 
 ##
 ## denial messages
