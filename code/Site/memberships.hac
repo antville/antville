@@ -1,0 +1,10 @@
+if (!this.isEditMembersAllowed())
+   res.redirect(user.cache.referer ? this.members.href("login") : this.href());
+
+res.skin = "main";
+
+res.title = "Antville - " + this.title + " - list of members";
+res.head = this.renderSkinAsString("style");
+res.body = this.renderSkinAsString("header");
+res.body += this.renderSkinAsString("memberlist");
+
