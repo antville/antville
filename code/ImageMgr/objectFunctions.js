@@ -81,7 +81,8 @@ function deleteImage(imgObj) {
       f.remove();
       thumb.remove();
    }
-   imgObj.site.diskusage -= imgObj.filesize;
+   if (imgObj.site)
+      imgObj.site.diskusage -= imgObj.filesize;
    // then, remove the image-object
    imgObj.remove();
    return new Message("imageDelete");
