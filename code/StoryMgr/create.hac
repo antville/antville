@@ -24,7 +24,7 @@ if (req.data.submit == "cancel" || req.data.cancel) {
 
 res.skin = "weblog.page";
 
-res.data.title = "Antville - " + this.title;
+res.data.title = "Antville - " + path.weblog.title;
 
 newStory = new story();
 if (req.data.topic)
