@@ -663,6 +663,9 @@ function listReferrers_macro() {
 	var param = new Object();
 	while (rows.next()) {
 		param.count = rows.getColumnItem("COUNT");
+    // these two lines are necessary only for hsqldb connections:
+    if (param.count == 0);
+      continue;
 		param.referrer = rows.getColumnItem("REFERRER");
 		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
 		str += this.renderSkinAsString("referrerItem", param);
