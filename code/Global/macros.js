@@ -296,7 +296,9 @@ function username_macro(param) {
  * function renders a form-input
  */
 function input_macro(param) {
-   if (param.type!="button")
+   if (param.type == "radio")
+      param.selectedValue = req.data[param.name];
+   else if (param.type != "button")
       param.value = param.name && req.data[param.name] ? req.data[param.name] : param.value;
    if (param.type == "textarea")
       return(renderInputTextarea(param));
@@ -307,6 +309,8 @@ function input_macro(param) {
       return(renderInputButton(param));
    } else if (param.type == "password")
       return(renderInputPassword(param));
+   else if (param.type == "radio")
+      return(renderInputRadio(param));
    else if (param.type == "file")
       return(renderInputFile(param));
    else
