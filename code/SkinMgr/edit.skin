@@ -1,10 +1,13 @@
+<h4>Skin '<% param.title %>'</h4>
+<% param.text prefix="<p>" suffix="</p>" %>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td valign="top" nowrap="nowrap"><form method="post" action="<% response.action %>">
-<input type="hidden" name="proto" value="<% request.proto %>" />
-<input type="hidden" name="name" value="<% request.name %>" />
-<textarea name="skin" cols="50" rows="25" wrap="virtual" class="formWide"><% response.skin encoding="form" %></textarea>
-<p><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %> &nbsp; <a href="#help">help</a></p>
+<input type="hidden" name="action" value="<% param.action %>" />
+<input type="hidden" name="key" value="<% request.key %>" />
+<input type="hidden" name="skinset" value="<% request.skinset %>" />
+<textarea name="skin" cols="50" rows="25" wrap="virtual" class="formWide"><% param.skin encoding="form" %></textarea>
+<p><% input type="submit" name="close" value="Save and close" %>&nbsp;<% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %> &nbsp; <a href="#help">help</a></p>
 </form>
 
 <a name="help"></a>
