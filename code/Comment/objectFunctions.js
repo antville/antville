@@ -28,6 +28,7 @@ function addComment() {
       r.story = this.story;
       r.parent = this;
       this.add(r);
+      this.weblog.lastupdate = new Date();
       res.redirect(this.story.href());
    }
    return (r);
