@@ -1,6 +1,6 @@
 <tr>
 <td valign="top"><% shortcut.title %></td>
-<td valign="top"><% shortcut.content %></td>
+<td valign="top"><% shortcut.content encoding="form" %></td>
 </tr>
 <tr>
 <td></td>
