@@ -6,7 +6,7 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   if (!this._parent.online)
+   if (!path.site.online)
       checkIfLoggedIn();
    try {
       path.site.checkView(usr, level);
