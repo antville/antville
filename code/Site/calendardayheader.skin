@@ -1,1 +1,1 @@
-<td class="calendarDay" nowrap><% param.day %></td>
+<td nowrap><div class="calDay"><% param.day %></div></td>

@@ -1,31 +1,27 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="storyText" nowrap><form method="post">old password:</td>
-<td class="storyText" nowrap><% this.input type="password" name="oldpwd" %></td>
+<td nowrap><form method="post">old password:</td>
+<td nowrap><% this.input type="password" name="oldpwd" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>new password:</td>
-<td class="storyText" nowrap><% this.input type="password" name="newpwd1" %></td>
+<td nowrap>new password:</td>
+<td nowrap><% this.input type="password" name="newpwd1" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>confirm password:</td>
-<td class="storyText" nowrap><% this.input type="password" name="newpwd2" %></td>
+<td nowrap>confirm password:</td>
+<td nowrap><% this.input type="password" name="newpwd2" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>url:</td>
-<td class="storyText" nowrap><% this.url as="editor" %></td>
+<td nowrap>url:</td>
+<td nowrap><% this.url as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>eMail:</td>
-<td class="storyText" nowrap><% this.email as="editor" %></td>
+<td nowrap>eMail:</td>
+<td nowrap><% this.email as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" valign="top" nowrap>description:</td>
-<td class="storyText" nowrap><% this.description as="editor" %></td>
-</tr>
-<tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" value="cancel" %>&nbsp;<% this.input type="button" value="save" %></td>
 </tr>
 </table>
 </form>

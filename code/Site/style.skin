@@ -1,170 +1,136 @@
 <style type="text/css">
 <!--
 
-body  {  font-family: <% this.textfont %>;
-         font-size: <% this.textsize %>;
-         font-weight: normal;
-         color: #<% this.textcolor %>;
-         background-color: #<% this.bgcolor %>;
-      }
+body,td { font-family:<% this.textfont %>;
+       font-size:<% this.textsize %>;
+       color:#<% this.textcolor %>;
+    }
 
-a:link { color: #<% this.linkcolor %>;
-       }
+a { text-decoration:none; }
 
-a:visited { color: #<% this.vlinkcolor %>;
-          }
+a:link { color:#<% this.linkcolor %>; }
 
-a:active { color: #<% this.alinkcolor %>;
-         }
+a:visited { color:#<% this.vlinkcolor %>; }
 
-.header { width: 600px;
-          height: 80px;
-          background-color: #CCCCCC;
-          border-style: inset;
-          border: 1px solid #666666;
+a:active { color: #<% this.alinkcolor %>; }
+
+a:hover { background-color:#<% this.linkcolor %>;
+          color:#<% this.bgcolor %>;
         }
 
-.headerTitle { font-family: <% this.titlefont %>;
-               font-size: 20pt;
-               font-weight: bold;
-               color: #666666;
-               vertical-align: top;
-               padding: 5px;
+.title { font-size:20pt;
+         font-weight:bold;
+         vertical-align:middle;
+         background-color:transparent;
+         color: #666666;
+       }
+
+.message { font-size: 8pt;
+          padding:1px;
+          color:#<% this.linkcolor %>;
+          background-color:#FFFFFF;
+         }
+
+.statusdark { width:198px;
+              font-size:8pt;
+              display:block;
+              padding-top:3px;
+              padding-bottom:3px;
              }
 
-.headerMsg { font-family: <% this.textfont %>;
-             font-size: 10pt;
-             font-weigth: normal;
-             color: #CC0000;
-             text-align: right;
-             padding: 5px;
-           }
-
-.headerStatus { font-family: <% this.textfont %>;
-                font-size: 8pt;
-                font-weight: normal;
-                color: #666666;
-                text-align: right;
-                vertical-align: bottom;
-                padding: 5px;
-              }
-
-.loginStatus { font-family: <% this.textfont %>;
-               font-size: 8pt;
-               color: #666666;
-               font-weight: normal;
-               text-align: left;
-               vertical-align: bottom;
-               padding: 5px;
+.statuslight { width:198px;
+               font-size:8pt;
+               color:#999999;
+               display:block;
+               padding-top:3px;
+               padding-bottom:3px;
              }
 
-.headerNav { width: 600px;
-             background-color: #666666;
-             padding: 1px;
+.sep { width:198px;
+       background-image:url("/img/antville/dot.gif");
+     }
+
+ul { list-style: url("/img/antville/bullet.gif") circle;
+   }
+
+li { padding-bottom:3px;
+   }
+
+.calHead { font-size:8pt;
+           font-weight:bold;
+         }
+
+.calDay { font-size:8pt;
+          font-weight:normal;
+          text-align:center;
+        }
+
+.calSelDay { font-size:8pt;
+             border:1px solid #<% this.linkcolor %>;
+             text-align:center;
            }
 
-.headerNavItem { font-family: <% this.textfont %>;
-                 font-size: 9pt;
-                 background-color: #FFFFFF;
-                 font-color: #666666;
-                 padding: 1px;
-               }
+.calFoot { font-size:8pt;
+           font-weight:bold;
+         }
 
-.storyDate { font-family: <% this.textfont %>;
-             font-size: 8pt;
-             color: #999999;
+.storyDate { font-size:8pt;
+             color:#999999;
            }
 
-.storyTitle { font-family: <% this.titlefont %>;
-              font-size: <% this.titlesize %>;
-              color: <% this.titlecolor %>;
+.storyTitle { font-size:<% this.titlesize %>;
+              color:#<% this.titlecolor %>;
               font-weight: bold;
             }
 
-.storyText { font-family: <% this.textfont %>;
-             font-size: <% this.textsize %>;
-             color: <% this.textcolor %>;
-             font-weight: normal;
-           }
-
-.storyNav { font-family: <% this.textfont %>;
-            font-size: 8pt;
-            color: #999999;
+.small { font-size:8pt;
+            color:#999999;
+            margin-top:5px;
           }
 
-.toplevelDate { font-family: <% this.textfont %>;
-                font-size: 8pt;
-                line-height: 12px;
-                font-style: italic;
-                color: #FFFFFF;
-                background-color: #999999;
-                padding: 2px;
+.commentHead { width:50px;
+               border-bottom-style:dotted;
+               border-bottom-width:thin;
+               border-bottom-color:#CCCCCC;
+               margin-bottom:2px;
+               margin-top:10px;
+             }
+
+.commentDate { font-size:8pt;
+               color:#999999;
+               margin-bottom:2px;
               }
 
-.replyDate { font-family: <% this.textfont %>;
-             font-size: 8pt;
-             line-height: 12px;
-             font-style: italic;
-             color: #FFFFFF;
-             background-color: #CCCCCC;
-             padding: 2px;
+.commentTitle { font-size:<% this.titlesize %>;
+                font-weight:bold;
+                color:#<% this.textcolor %>;
+                margin-bottom:2px;
+              }
+
+.reply { padding-left:20px;
+       }
+
+
+.formTitle { width:400px;
+             font-size:<% this.titlesize %>;
+             font-family:<% this.textfont %>;
+             font-weight:bold;
            }
 
-.commentTitle { font-family: <% this.textfont %>;
-                margin-top: 5px;
-                font-size: 11pt;
-                font-weight: bold;
-                color: <% this.textcolor %>;
-              }
-
-.calendar { background-color: #CCCCCC;
-            border-style: solid;
-            border-color: black;
-            border-width: 1px;
+.formText { width:400px;
+            font-size:<% this.textsize %>;
+            font-family:<% this.textfont %>;
+            font-weight:normal;
           }
 
-.calendarHeader { font-family: <% this.textfont %>;
-                  font-size: 8pt;
-                  font-weight: bold;
-                  color: #FFFFFF;
-                  background-color: #666666;
-                }
+.formWide { width:660px;
+            font-size:<% this.textsize %>;
+            font-family:<% this.textfont %>;
+            font-weight:normal;
+          }
 
-.calendarDay { font-family: <% this.textfont %>;
-               font-size: 8pt;
-               font-weight: normal;
-               border-style: solid;
-               border-width: 1px;
-               border-color: #666666;
-               text-align: center;
-             }
-
-.calendarSelectedDay { font-family: <% this.textfont %>;
-                       font-size: 8pt;
-                       font-weight: normal;
-                       border: 1px solid #666666;
-                       background-color: #FFFFFF;
-                       text-align: center;
-                     }
-
-.calendarFooter { font-family: <% this.textfont %>;
-                  font-size: 8pt;
-                  font-weight: bold;
-                  color: #FFFFFF;
-                  background-color: #999999;
-                }
-
-.history { background-color: #CCCCCC;
-           border-style: solid;
-           border-color: black;
-           border-width: 1px;
-         }
-
-.historyItem { font-family: <% this.textfont %>;
-               font-size: <% this.textsize %>;
-               color: <% this.textcolor %>;
-               font-weight: normal;
-             }
+.offlineStory { background-color:#CCCCCC;
+              }
 
 // -->
 </style>

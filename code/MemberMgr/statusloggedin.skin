@@ -1,1 +1,2 @@
-Logged in as <% currentUser.name %> ... <% this.link to="edit" text="edit your profile" %> or <% this.link to="logout" text="logout" %>
+<div class="statuslight">Logged in as <% currentUser.name %><br>
+...&nbsp;<% this.link to="edit" text="edit" %> your profile<br>or <% this.link to="logout" text="logout" %></div>

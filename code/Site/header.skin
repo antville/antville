@@ -1,15 +1,6 @@
-<table border="0" width="600" height="80" cellspacing="0" cellpadding="2" class="header">
+<table border="0" height="53" cellspacing="0" cellpadding="0">
 <tr>
-<td class="headerTitle" nowrap><% this.title %></td>
-<td class="headerMsg">&nbsp;<% response.message %></td>
-</tr>
-<tr>
-<td class="loginStatus" nowrap><% this.loginstatus %>&nbsp;<br><% weblog.link to="signup" text="sign up" %> to <% this.title %>!</td>
-<td class="headerStatus"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days" %>
-<% this.lastupdate prefix="<BR>last updated:&nbsp;" %></td>
-</tr>
-<tr>
-<td colspan="2" class="headerNav" nowrap><% this.navigation %></td>
+<td width="404" class="title" background="/img/antville/weblogheader.gif" nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% this.title %></td>
+<td width="296" align="right" background="/img/antville/head_bg.gif" valign="middle" nowrap>&nbsp;<span class="message"><% response.message %></span></td>
 </tr>
 </table>
-&nbsp;<br>

@@ -1,6 +1,4 @@
-<p><% this.membercounter %> users have signed up for <% this.title %> until now (including you)</p>
-
-<p>the list of signed up users (excluding you):<br>
+<p><b><% this.title %></b> has <% this.membercounter %> members until now:</p>
 <ul>
 <% this.memberlist %>
-</ul></p>
+</ul>

@@ -1,19 +1,19 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="storyText" nowrap><form method="post">Username:</td>
-<td class="storyText" nowrap><% this.input type="text" name="name" width="15" %></td>
+<td nowrap><form method="post">Username:</td>
+<td nowrap><% this.input type="text" name="name" width="15" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Password:</td>
-<td class="storyText" nowrap><% this.input type="password" name="password" width="15" %></td>
+<td nowrap>Password:</td>
+<td nowrap><% this.input type="password" name="password" width="15" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" name="login" value="login!" %></td>
+<td nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" name="login" value="login!" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap>If you're not registered, you can do this <% this.link to="register" text="here" %></td>
+<td nowrap>&nbsp;</td>
+<td nowrap>If you're not registered, you can do this <% this.link to="register" text="here" %></td>
 </tr>
 </table>
 </form>

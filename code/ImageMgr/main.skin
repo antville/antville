@@ -1,5 +1,4 @@
-<p><% this.link to="create" text="add new image" %><br>
-To insert an image in a story or comment just copy and paste its code.</p>
-
+<p>To insert an image in a story or comment just copy and paste its code.</p>
+<p>...&nbsp;<% this.link to="create" text="add new image" %></p>
 <% this.images %>
 

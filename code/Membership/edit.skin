@@ -1,23 +1,23 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="storyText" nowrap><form method="post">Username:</td>
-<td class="storyText" nowrap><b><% this.username %></b></td>
+<td nowrap><form method="post">Username:</td>
+<td nowrap><b><% this.username %></b></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>eMail:</td>
-<td class="storyText" nowrap><% this.email %></td>
+<td nowrap>eMail:</td>
+<td nowrap><% this.email %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>currently</td>
-<td class="storyText" nowrap><% this.level %></td>
+<td nowrap>currently</td>
+<td nowrap><% this.level %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>change to:</td>
-<td class="storyText" nowrap><% this.level as="editor" %></td>
+<td nowrap>change to:</td>
+<td nowrap><% this.level as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" value="cancel" %>&nbsp;<% this.input type="button" value="save" %></td>
 </tr>
 </table>
 </form>

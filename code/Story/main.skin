@@ -1,7 +1,6 @@
-<p><span class="storyDate"><% this.author as="link" %>, <% story.createtime suffix="<br>"%></span>
-<span class="storyTitle"><% story.title suffix="<br>" %></span>
-<span class="storyText"><% story.text suffix="<br>" %></span>
-<span class="storyNav"><br><% this.link to="comment" text="place your comment!" %>&nbsp;&nbsp;<% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></span></p>
-<% this.comments %></td>
-<td width="200" align="right" valign="top" nowrap><% weblog.calendar %><br>
-<% weblog.skin name="history" %>
+<div class="storyDate"><% this.author as="link" %>, <% story.createtime suffix="<br>"%></div>
+<div class="storyTitle"><% story.title suffix="<br>" %></div>
+<% story.text suffix="<br>" %>
+<div class="small"><br><% this.link to="comment" text="place your comment!" %>&nbsp;&nbsp;<% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div>
+
+<% this.comments %>

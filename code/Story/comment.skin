@@ -1,4 +1,4 @@
 <p><span class="storyDate"><% this.author as="link" %>, <% story.createtime suffix="<br>"%></span>
 <span class="storyTitle"><% story.title suffix="<br>" %></span>
-<span class="storyText"><% story.text suffix="<br>" %></span>
-<span class="storyNav"><% this.commentform %></span></p>
+<% story.text suffix="<br>" %>
+<span class="small"><% this.commentform %></span></p>

@@ -1,12 +1,7 @@
-<table border="0" width="400" cellspacing="0" cellpadding="0">
-<tr>
-<td width="40" nowrap>&nbsp;</td>
-<td><div class="replyDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author as="link" prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
+<div class="reply">
+<span class="commentHead">&nbsp;<br></span>
+<div class="commentDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author as="link" prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
 <div class="commentTitle"><% this.title %></div>
-<div class="storyText"><% this.text suffix="<br>&nbsp;" %></div>
-<div class="storyNav"><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div></td>
-</tr>
-<tr>
-<td colspan="2" height="15" nowrap>&nbsp;</td>
-</tr>
-</table>
+<% this.text suffix="<br>" %>
+<div class="small"><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div>
+</div>

@@ -1,13 +1,13 @@
-<p>This is Antville, a small Weblog-application build with <% this.link to="http://helma.org" text="Helma" %>. Within Antville you can easily create your own weblog and modify it to your own needs. Beside the normal weblog-functions Antville in it's current version provides:
-<ul class="storyText">
-<li>an tool for easy administration of images</li>
+<p>This is Antville, a small Weblog-application build with <% this.link to="http://helma.org" text="Helma" %>. Within Antville you can easily create your own weblog and modify it to your own needs. Beside the normal weblog-functions Antville in it's current version provides:</p>
+<ul>
+<li>a tool for easy administration/manipulation of images (including automatic creation of thumbnails linked to a popup-window containing the fullsize-image)</li>
 <li>a powerful set of macros (which are kind of special tags you can embed in layout-snippets and stories, i.e. to embed an image in a story or to place a link).</li>
-<li>a fully customizeable set of &quot;skins&quot; for each weblog including a skin-editor where you can easily modify the appearence of your weblog.</li>
-</ul></p>
+<li>a fully customizeable set of &quot;skins&quot; for each weblog including a skin-editor where you can easily modify the design of your weblog.</li>
+</ul>
 
-<p class="storyText">So if you want to give Antville a try, feel free to <% this.link to="new" text="create a weblog" %>!</p>
+<p>So if you want to give Antville a try, feel free to <% this.link to="new" text="create a weblog" %>!</p>
 
-<p class="storyText">Until now, <% this.weblogcounter %> Weblogs were created, and the last updated weblogs are
-<ul class="storyText">
-<% this.webloglist %>
-</ul></p>
+<p>Until now, <% this.weblogcounter %> Weblogs were created, and the last updated weblogs are</p>
+<ul>
+<% this.webloglist limit="4" %>
+</ul>

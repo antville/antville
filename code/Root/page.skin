@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
 <head>
 <title><% response.title %></title>
@@ -9,9 +10,19 @@
 
 <% root.skin name="header" %>
 
-<table width="600" border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td class="storyText"><% response.body %></td>
+<td width="20" nowrap>&nbsp;</td>
+<td width="460" valign="top" nowrap><br><% response.body %></td>
+<td width="20" nowrap>&nbsp;</td>
+<td width="2" background="/img/antville/dot.gif" nowrap><img src="/img/antville/pixel.gif" width="2" border="0"></td>
+<td width="198" align="right" valign="top" nowrap><div class="statuslight"><% now format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<br>" %>
+<% root.loginstatus %></div>
+<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %></div>
+<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="statuslight"><% this.weblogcounter %> weblogs created ... <% this.link to="list" %></div>
+<div class="statuslight">...&nbsp;<a href="http://antville.org/documentation.html">documentation</a></div></td>
 </tr>
 </table>
 

@@ -1,1 +1,1 @@
-You're not logged in ... <% this.link to="login" text="login" %>
+<div class="statuslight">You're not logged in ... <% this.link to="login" text="login" %></div>

@@ -1,11 +1,6 @@
-<table border="0" width="600" height="80" cellspacing="0" cellpadding="2" class="header">
+<table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td class="headerTitle" nowrap>Antville</td>
-<td class="headerMsg">&nbsp;<% response.message %></td>
-</tr>
-<tr>
-<td class="loginStatus" nowrap><% root.loginstatus %>&nbsp;</td>
-<td class="headerStatus"><% now prefix="right now it's " format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<BR>" %></td>
+<td><% logo name="big" %></td>
+<td width="296" class="header">&nbsp;<span class="message"><% response.message %></span></td>
 </tr>
 </table>
-&nbsp;<br>

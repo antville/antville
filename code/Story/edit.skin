@@ -1,27 +1,25 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="storyText" nowrap><form method="post">Title:</td>
-<td class="storyText" nowrap><% this.title as="editor" width="40" %></td>
+<td colspan="2" nowrap><form method="post"><span class="small">Title:</span><br>
+<% this.title as="editor" width="25" style="formTitle" %></td>
 </tr>
 <tr>
-<td class="storyText" valign="top" nowrap>Text:</td>
-<td class="storyText" nowrap><% this.text as="editor" width="40" height="15" %></td>
+<td colspan="2" nowrap><span class="small">Text:</span><br>
+<% this.text as="editor" width="31" height="15" style="formText" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>is online:</td>
-<td class="storyText" nowrap><% this.online as="editor" %></td>
+<td class="small" nowrap>is online:</td>
+<td nowrap><% this.online as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>who may edit?</td>
-<td class="storyText" nowrap><% this.editableby as="editor" %></td>
+<td class="small" nowrap>who may edit?</td>
+<td nowrap><% this.editableby as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td colspan="2" nowrap><% this.input type="button" value="cancel" %>&nbsp;<% this.input type="button" value="save" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.author as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime prefix="&nbsp;on&nbsp;"%></td>
+<td colspan="2" class="small" nowrap><% this.author as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime prefix="&nbsp;on&nbsp;"%></td>
 </tr>
 </table>
 </form>

@@ -1,95 +1,95 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="storyText" nowrap><form method="post">Title:</td>
-<td class="storyText" nowrap><% this.title as="editor" width="30" %></td>
+<td class="small" nowrap><form method="post">Title:</td>
+<td nowrap><% this.title as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Tagline:</td>
-<td class="storyText" nowrap><% this.tagline as="editor" width="30" %></td>
+<td class="small" nowrap>Tagline:</td>
+<td nowrap><% this.tagline as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Birthdate:</td>
-<td class="storyText" nowrap><% this.birthdate as="editor" %></td>
+<td class="small" nowrap>Birthdate:</td>
+<td nowrap><% this.birthdate as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Background color:</td>
-<td class="storyText" nowrap><% this.bgcolor as="editor" width="10" %></td>
+<td class="small" nowrap>Background color:</td>
+<td nowrap><% this.bgcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Textfont:</td>
-<td class="storyText" nowrap><% this.textfont as="editor" width="30" %></td>
+<td class="small" nowrap>Textfont:</td>
+<td nowrap><% this.textfont as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Textsize:</td>
-<td class="storyText" nowrap><% this.textsize as="editor" width="10" %></td>
+<td class="small" nowrap>Textsize:</td>
+<td nowrap><% this.textsize as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Textcolor:</td>
-<td class="storyText" nowrap><% this.textcolor as="editor" width="10" %></td>
+<td class="small" nowrap>Textcolor:</td>
+<td nowrap><% this.textcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Linkcolor:</td>
-<td class="storyText" nowrap><% this.linkcolor as="editor" width="10" %></td>
+<td class="small" nowrap>Linkcolor:</td>
+<td nowrap><% this.linkcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>ALinkcolor:</td>
-<td class="storyText" nowrap><% this.alinkcolor as="editor" width="10" %></td>
+<td class="small" nowrap>ALinkcolor:</td>
+<td nowrap><% this.alinkcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>VLinkcolor:</td>
-<td class="storyText" nowrap><% this.vlinkcolor as="editor" width="10" %></td>
+<td class="small" nowrap>VLinkcolor:</td>
+<td nowrap><% this.vlinkcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Titlefont:</td>
-<td class="storyText" nowrap><% this.titlefont as="editor" width="30" %></td>
+<td class="small" nowrap>Titlefont:</td>
+<td nowrap><% this.titlefont as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Titlesize:</td>
-<td class="storyText" nowrap><% this.titlesize as="editor" width="10" %></td>
+<td class="small" nowrap>Titlesize:</td>
+<td nowrap><% this.titlesize as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Titlecolor:</td>
-<td class="storyText" nowrap><% this.titlecolor as="editor" width="10" %></td>
+<td class="small" nowrap>Titlecolor:</td>
+<td nowrap><% this.titlecolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>show days:</td>
-<td class="storyText" nowrap><% this.showdays as="editor" width="5" %></td>
+<td class="small" nowrap>show days:</td>
+<td nowrap><% this.showdays as="editor" width="5" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>language:</td>
-<td class="storyText" nowrap><% this.language as="editor" width="5" %></td>
+<td class="small" nowrap>language:</td>
+<td nowrap><% this.language as="editor" width="5" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>country:</td>
-<td class="storyText" nowrap><% this.country as="editor" width="5" %></td>
+<td class="small" nowrap>country:</td>
+<td nowrap><% this.country as="editor" width="5" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>dateformat:</td>
-<td class="storyText" nowrap><% this.dateformat as="editor" width="20" %></td>
+<td class="small" nowrap>dateformat:</td>
+<td nowrap><% this.dateformat as="editor" width="20" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>online:</td>
-<td class="storyText" nowrap><% this.online as="editor" %></td>
+<td class="small" nowrap>online:</td>
+<td nowrap><% this.online as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>hasDiscussions:</td>
-<td class="storyText" nowrap><% this.hasdiscussions as="editor" %></td>
+<td class="small" nowrap>hasDiscussions:</td>
+<td nowrap><% this.hasdiscussions as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>users may signup:</td>
-<td class="storyText" nowrap><% this.usermaysignup as="editor" %></td>
+<td class="small" nowrap>users may signup:</td>
+<td nowrap><% this.usermaysignup as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>users may contribute:</td>
-<td class="storyText" nowrap><% this.usermaycontrib as="editor" %></td>
+<td class="small" nowrap>users may contribute:</td>
+<td nowrap><% this.usermaycontrib as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>enable archive:</td>
-<td class="storyText" nowrap><% this.showarchive as="editor" %></td>
+<td class="small" nowrap>enable archive:</td>
+<td nowrap><% this.showarchive as="editor" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td class="small" nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 </table>
 </form>

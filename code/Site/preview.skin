@@ -1,1 +1,1 @@
-<li><% this.title linkto="main" %> (last updated: <% this.lastupdate %>)</li>
+<li><% this.title linkto="main" %> (<% this.onlinestatus %><% this.lastupdate format="EE, MM.dd.yy" prefix=", last updated:&nbsp;" %>)</li>

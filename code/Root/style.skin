@@ -1,59 +1,56 @@
 <style type="text/css">
 <!--
 
-body  {  font-family: Verdana, Arial, Helvetica, sans-serif;
-         font-size: 10pt;
-         font-weight: normal;
-         color: #000000;
-         background-color: #FFFFFF;
-      }
+body,td,span { font-family:Verdana,Arial,Helvetica,sans-serif;
+       font-size:10pt;
+       line-height:13pt;
+       font-weight:normal;
+       color:#000000;
+       vertical-align: top;
+       background-color:#FFFFFF;
+    }
 
-.header { width: 600px;
-          height: 80px;
-          background-color: #CCCCCC;
-          border-style: inset;
-          border: 1px solid #666666;
+a { text-decoration:none;
+    color:#FF3300;
+  }
+
+a:hover { background-color:#FF3300;
+          color:#FFFFFF;
         }
 
-.headerTitle { font-family: Verdana, Arial, Helvetica, sans-serif;
-               font-size: 20pt;
-               font-weight: bold;
-               color: #666666;
-               vertical-align: top;
-               padding: 5px;
+.header {  background-image:url("/img/antville/head_bg.gif");
+           background-repeat:repeat-x;
+           text-align:right;
+           vertical-align:middle;
+        }
+
+.message { font-size:8pt;
+           padding:1px;
+           color:#FF3300;
+           background-color:#FFFFFF;
+         }
+
+.statusdark { width:198px;
+              font-size:8pt;
+              display:block;
+              padding-top:3px;
+              padding-bottom:3px;
+            }
+
+.statuslight { width:198px;
+               font-size:8pt;
+               color:#999999;
+               display: block;
+               padding-top:3px;
+               padding-bottom:3px;
              }
 
-.headerMsg { font-family: Verdana, Arial, Helvetica, sans-serif;
-             font-size: 10pt;
-             font-weigth: normal;
-             color: #CC0000;
-             text-align: right;
-             padding: 5px;
-           }
+.sep { width:198px;
+       background-image:url("/img/antville/dot.gif");
+     }
 
-.headerStatus { font-family: Verdana, Arial, Helvetica, sans-serif;
-                font-size: 8pt;
-                font-weight: normal;
-                color: #666666;
-                text-align: right;
-                vertical-align: bottom;
-                padding: 5px;
-              }
-
-.loginStatus { font-family: Verdana, Arial, Helvetica, sans-serif;
-               font-size: 8pt;
-               color: #666666;
-               font-weight: normal;
-               text-align: left;
-               vertical-align: bottom;
-               padding: 5px;
-             }
-
-.storyText { font-family: Verdana, Arial, Helvetica, sans-serif;
-             font-size: 10pt;;
-             color: #000000;
-             font-weight: normal;
-           }
+ul { list-style: url("/img/antville/bullet.gif") circle;
+   }
 
 // -->
 </style>

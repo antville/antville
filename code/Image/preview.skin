@@ -1,11 +1,12 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <tr>
-<td colspan="3" bgcolor="#CCCCCC" class="storyNav"><b>code:&nbsp;</b>&lt;% weblog.image name="<% this.alias %>" %&gt;</td>
+<td colspan="2" class="small" nowrap><span class="commentHead">&nbsp;</span><br>
+<b><% this.alias %></b>&nbsp;by <% this.creator %> (<% this.createtime %>)<br>
+<b>code:&nbsp;</b>&lt;% weblog.image name="<% this.alias %>" %&gt;</td>
 </tr>
 <tr>
-<td class="storyText" nowrap><% this.show what="thumbnail" %></td>
-<td class="storyText" valign="top">by <% this.creator %><br><% this.createtime %></td>
-<td class="storyNav" valign="top" nowrap><% this.editlink suffix="<br>" %><% this.deletelink %></td>
+<td nowrap><% this.show what="thumbnail" %></td>
+<td class="small" valign="top" nowrap><% this.editlink suffix="<br>" %><% this.deletelink %></td>
 </tr>
 </table>

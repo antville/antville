@@ -1,11 +1,11 @@
-<table border="0" cellspacing="0" cellpadding="2" class="calendar">
+<table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="7" align="center" class="calendarheader" nowrap><% param.month %>&nbsp;<% param.year %></td>
+<td colspan="7" align="center" nowrap><div class="calHead"><% param.month %>&nbsp;<% param.year %></div></td>
 </tr>
 <% param.calendar %>
 <tr>
-<td colspan="3" align="right" class="calendarfooter" nowrap><% param.back %></td>
-<td class="calendarfooter" nowrap>&nbsp;</td>
-<td colspan="3" class="calendarfooter" nowrap><% param.forward %></td>
+<td colspan="3" align="right" nowrap><div class="calFoot"><% param.back %></div></td>
+<td nowrap><div class="calFoot">&nbsp;</div></td>
+<td colspan="3" nowrap><div class="calFoot"><% param.forward %></div></td>
 </tr>
 </table>

@@ -1,3 +1,1 @@
-<% this.storylist %></td>
-<td width="200" align="right" valign="top" nowrap><% weblog.calendar %><br>
-<% weblog.skin name="history" %>
+<% this.storylist %>

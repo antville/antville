@@ -2,16 +2,16 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <tr>
-<td class="storyText" nowrap><form method="post">Name:</td>
-<td class="storyText" nowrap><% this.alias as="editor" %></td>
+<td class="small" nowrap><form method="post">Name:</td>
+<td nowrap><% this.alias as="editor" width="25" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>Alttext:</td>
-<td class="storyText" nowrap><% this.alttext as="editor" width="40" %></td>
+<td class="small" nowrap>Alttext:</td>
+<td nowrap><% this.alttext as="editor" width="25" %></td>
 </tr>
 <tr>
-<td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 </table>
 </form>
