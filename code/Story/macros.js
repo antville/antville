@@ -44,7 +44,7 @@ function content_macro(param) {
       if (!param.limit)
          res.write(format(part));
       else
-         renderTextPreview(part, param.limit, param.clipping);
+         res.write(softwrap(clipText(part, param.limit, param.clipping)));
       if (param.as == "link")
          closeLink();
    }

@@ -313,6 +313,7 @@ function shortcut_macro(param) {
  * param.order determines the sort order (asc or desc)
  * param.show determines the text type (story, comment or all)
  */
+
 function storylist_macro(param) {
    if (param.sortby != "title" && param.sortby != "createtime" && param.sortby != "modifytime")
       param.sortby = "modifytime";
@@ -349,7 +350,7 @@ function storylist_macro(param) {
          var str = story.title;
          if (!str) {
             res.write("...");
-            renderTextPreview(story.getRenderedContentPart("text"), 20);
+            res.write(softwrap(clipText(story.getRenderedContentPart("text"), 20)));
          }
          else
             res.write(str);
