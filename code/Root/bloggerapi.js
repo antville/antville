@@ -7,7 +7,7 @@
  */
 function newPost (appkey, blogid, username, password, content, publish) {
     this.checkAccessPermission (blogid, null, username, password);
-    var user = getUser (username);
+    var user = root.users.get(username);
     var blog = this.get (blogid.toString());
     var param = new Object();
     param.text = content;
@@ -28,7 +28,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
  */
 function editPost (appkey, postid, username, password, content, publish) {
     this.checkAccessPermission (null, postid.toString(), username, password);
-    var user = getUser (username);
+    var user = root.users.get(username);
     var s = this.storiesByID.get (postid.toString());
     s.text = content;
     s.online = publish ? 2 : 0;
@@ -42,7 +42,7 @@ function editPost (appkey, postid, username, password, content, publish) {
  */
 function deletePost(appkey, postid, username, password, publish) {
     this.checkAccessPermission(null, postid.toString(), username, password);
-    var user = getUser(username);
+    var user = root.users.get(username);
     var s = this.storiesByID.get(postid.toString());
     var blog = s.weblog;
     var result = blog.stories.deleteStory(s);
@@ -55,12 +55,12 @@ function deletePost(appkey, postid, username, password, publish) {
  * blogid is not null) or edit a story (if postid is not null). If not, an error is thrown.
  */
 function checkAccessPermission (blogid, postid, username, password) {
-    var user = getUser (username);
+    var user = root.users.get(username);
     if (!user)
         throwError ("User "+username+" does not exist on this server");
     if (user.password != password)
         throwError ("Authentication failed for user "+username);
-    if (user.isBlocked())
+    if (isUserBlocked())
         throwError ("Sorry, you can't post to this weblog");
     if (!blogid && !postid)
         throwError ("Invalide blog or post id: "+blogid);
