@@ -133,7 +133,7 @@ function openLink(param) {
    // check if this is an external url
    if (!url || url == "main")
       res.write(this.href());
-   else if (url.indexOf("://") > -1)
+   else if (url.indexOf("://") > -1 || url.substring(0,10) == "javascript")
       res.write(url);
    else
       res.write(this.href(url));
