@@ -1,5 +1,5 @@
-# Properties of antville datasource
-antville.url=jdbc:mysql://[Server-IP]/antville
-antville.driver=org.gjt.mm.mysql.Driver
-antville.user=antville
-antville.password=antville
+# Properties of antville's mysql datasource
+antville.url      = jdbc:mysql://localhost/antville
+antville.driver   = org.gjt.mm.mysql.Driver
+antville.user     = antville
+antville.password = antville

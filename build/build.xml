@@ -37,7 +37,7 @@
       <property name="project" value="antville"/>
       <property name="build.compiler" value="classic"/>
 
-      <property name="cvs.antville.root" value=":pserver:anonymous@adele.helma.at:/opt/cvs/apps"/>
+      <property name="cvs.apps.root" value=":pserver:anonymous@adele.helma.at:/opt/cvs/apps"/>
       <property name="cvs.antville.tag" value="HEAD"/>
       <property name="cvs.hop.root" value=":pserver:anonymous@adele.helma.at:/opt/cvs/hop"/>
       <property name="cvs.hop.tag" value="HEAD"/>
@@ -48,8 +48,9 @@
       <property name="build.static" value="${home.dir}/static"/>
       <property name="build.docs" value="${home.dir}/docs"/>
 
-      <property name="build.work" value="${home.dir}/work"/>
-      <property name="build.dist" value="${home.dir}/dist"/>
+      <property name="build.work" value="${build.dir}/work"/>
+      <property name="build.dist" value="${build.dir}/dist"/>
+      <property name="build.extra" value="${build.dir}/extras"/>
 
       <property name="jar.name" value="${project}"/>
       <property name="package.name" value="${project}-${version}"/>
@@ -72,7 +73,7 @@
    <!-- =================================================================== -->
    <target name="antville" depends="init">
       <mkdir dir="${build.work}"/>
-      <cvs cvsRoot="${cvs.antville.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}"/>
+      <!-- cvs cvsRoot="${cvs.apps.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}"/ -->
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
          <param name="path" value="${build.work}/antville"/>
@@ -82,6 +83,36 @@
          <param name="path" value="${build.work}/antville"/>
       </antcall>
       <delete dir="${build.work}"/>
+   </target>
+
+
+   <!-- =================================================================== -->
+   <!-- generate the antclick distribution packages                         -->
+   <!-- =================================================================== -->
+   <target name="antclick" depends="init">
+      <mkdir dir="${build.work}"/>
+      <copy todir="${build.work}/">
+         <fileset dir="${build.extra}" includes="antclick.sh antclick.bat launcher.jar server.properties"/>
+      </copy>
+
+      <mkdir dir="${build.work}/apps"/>
+      <cvs cvsRoot="${cvs.apps.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}/apps"/>
+      <cvs cvsRoot="${cvs.apps.root}" command="export" tag="HEAD" package="manage" dest="${build.work}/apps"/>
+      <copy file="${build.extra}/db.properties" tofile="${build.work}/apps/antville/db.properties"/>
+
+      <cvs cvsRoot="${cvs.hop.root}" command="export" tag="${cvs.hop.tag}" package="helma/lib" dest="${build.work}/lib"/>
+      <copy file="${build.extra}/helma.jar" todir="${build.work}/lib"/>
+      <copy file="${build.extra}/mckoidb.jar" todir="${build.work}/lib/ext"/>
+
+      <antcall target="package-zip">
+         <param name="filename" value="${package.name}"/>
+         <param name="path" value="${build.work}/antville"/>
+      </antcall>
+      <antcall target="package-tgz">
+         <param name="filename" value="${package.name}"/>
+         <param name="path" value="${build.work}/antville"/>
+      </antcall>
+      <!-- delete dir="${build.work}"/ -->
    </target>
 
 
