@@ -4,9 +4,18 @@
 
 function images_macro(param) {
    res.write(param.prefix)
-   for (var i=0;i<this.size();i++) {
+   var size = this.size();
+   var start = parseInt (req.data.start);
+   if (isNaN (start)|| start >= size-1)
+      start = 0;
+   var end = Math.min (start+20, size);
+   if (start > 0)
+      res.write ("<a href='"+this.href()+"?start="+Math.max(0, start-20)+"'>newer images</a><br><br>");
+   for (var i=start; i<end; i++) {
       this.get(i).renderSkin("preview");
    }
+   if (end < size)
+      res.write ("<a href='"+this.href()+"?start="+end+"'>older images</a><br>");
    res.write(param.suffix);
 }
 
