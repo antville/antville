@@ -23,9 +23,12 @@ function getPost(appkey, postid, username, password) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
-      throwError ("Couldn't find the entry with id " + postid);
-   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
-      throwError ("You're not allowed to edit the entry with id " + postid);
+      throw("Couldn't find the entry with id " + postid);
+   try {
+      entry.checkEdit(usr, entry.site.members.getMembershipLevel(usr));
+   } catch (deny) {
+      throw ("You're not allowed to edit the entry with id " + postid);
+   }
    var result = new Object();
    result.content = entry.content.getProperty("text");
    result.userid = entry.creator.name;
@@ -50,16 +53,19 @@ function newPost (appkey, blogid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
-      throwError ("Couldn't find the blog " + blogid);
-   if (blog.stories.isDenied(usr, blog.members.getMembershipLevel(usr)))
-      throwError ("You don't have permission to post to this weblog");
+      throw("Couldn't find the blog " + blogid);
+   try {
+      blog.stories.checkAdd(usr, blog.members.getMembershipLevel(usr));
+   } catch (deny) {
+      throw ("You don't have permission to post to this weblog");
+   }
 
    var param = new Object();
    root.blogger.parseBloggerAPIPosting (param, content);
    param.online = publish ? 2 : 0;
    var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
-      throwError (result.message);
+      throw(result.message);
    return (result.id);
 }
 
@@ -79,10 +85,13 @@ function editPost (appkey, postid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
-      throwError ("Couldn't find the entry with id " + postid);
+      throw("Couldn't find the entry with id " + postid);
    // check if user is allowed to edit the entry
-   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
-      throwError ("You're not allowed to edit the entry with id " + postid);
+   try {
+      entry.checkEdit(usr, entry.site.members.getMembershipLevel(usr));
+   } catch (deny) {
+      throw ("You're not allowed to edit the entry with id " + postid);
+   }
    var param = new Object();
    root.blogger.parseBloggerAPIPosting(param, content);
    entry.title = param.content_title;
@@ -115,8 +124,13 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
    var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
-      throwError ("Couldn't find the blog " + blogid);
+      throw("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
+   try {
+      blog.checkView(usr, level);
+   } catch (deny) {
+      throw("You're not allowed to view the blog " + blogid);
+   }
 
    var size = blog.stories.size();
    var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts, 20) : 20, size);
@@ -124,8 +138,11 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
    var idx = 0;
    while (posts.length < limit && idx < size) {
       var entry = blog.stories.get(idx++);
-      if (entry.isEditDenied(usr, level))
+      try {
+         entry.checkEdit(usr, level);
+      } catch (deny) {
          continue;
+      }
       var param = new Object();
       param.postid = entry._id;
       param.userid = entry.creator.name;
@@ -155,10 +172,13 @@ function deletePost(appkey, postid, username, password, publish) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
-      throwError ("Couldn't find the entry with id " + postid);
+      throw("Couldn't find the entry with id " + postid);
    // check if user is allowed to delete the entry
-   if (entry.isDeleteDenied(usr, entry.site.members.getMembershipLevel(usr)))
-      throwError ("You're not allowed to delete the entry with id " + postid);
+   try {
+      entry.checkDelete(usr, entry.site.members.getMembershipLevel(usr));
+   } catch (deny) {
+      throw ("You're not allowed to delete the entry with id " + postid);
+   }
    var result = entry._parent.deleteStory(entry);
    return (!result.error);
 }
@@ -183,8 +203,11 @@ function getUsersBlogs(appkey, username, password) {
    for (var i=0;i<usr.size();i++) {
       var membership = usr.get(i);
       var blog = membership.site;
-      if (blog.stories.isDenied(usr, membership.level))
+      try {
+         blog.stories.checkAdd(usr, membership.level);
+      } catch (deny) {
          continue;
+      }
       var param = new Object();
       param.blogid = blog.alias;
       param.blogName = blog.title;
@@ -214,7 +237,7 @@ function getUsersBlogs(appkey, username, password) {
 function getUserInfo(appkey, username, password) {
    var usr = root.users.get(username);
    if (!usr)
-      throwError ("User " + username + " does not exist on this server");
+      throw("User " + username + " does not exist on this server");
    var result = new Object();
    result.userid = username;
    result.nickname = username;
@@ -253,11 +276,11 @@ function parseBloggerAPIPosting (param, content) {
 function getUser(username, password) {
    var usr = root.users.get(username);
    if (!usr)
-      throwError ("User " + username + " does not exist on this server");
+      throw("User " + username + " does not exist on this server");
    if (usr.password != password)
-      throwError ("Authentication failed for user " + username);
+      throw("Authentication failed for user " + username);
    if (usr.blocked)
-      throwError ("Sorry, your account has been disabled.");
+      throw("Sorry, your account has been disabled.");
    return (usr);
 }
 
@@ -270,8 +293,8 @@ function getUser(username, password) {
 function getBlog(blogid) {
    var blog = root.get (blogid.toString());
    if (!blog)
-      throwError ("The weblog " + blogid + " doesn't exist on this server.");
+      throw("The weblog " + blogid + " doesn't exist on this server.");
    else if (blog.blocked)
-      throwError ("The weblog " + blogid + " was disabled.");
+      throw("The weblog " + blogid + " was disabled.");
    return (blog);
 }

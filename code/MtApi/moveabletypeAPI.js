@@ -22,17 +22,24 @@ function getRecentPostTitles(blogid, username, password, numberOfPosts) {
    var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
-      throwError ("Couldn't find the blog " + blogid);
+      throw("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
-
+   try {
+      blog.checkView(usr, level);
+   } catch (deny) {
+      throw("You're not allowed to view the blog " + blogid); 
+   }
    var size = blog.stories.size();
    var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts, 20) : 20, size);
    var posts = new Array();
    var idx = 0;
    while (posts.length < limit && idx < size) {
       var entry = blog.stories.get(idx++);
-      if (entry.isEditDenied(usr, level))
+      try {
+         entry.checkEdit(usr, level);
+      } catch (deny) {
          continue;
+      }
       var param = new Object();
       param.username = entry.creator ? entry.creator.username : null;
       param.postid = entry._id;
@@ -59,11 +66,13 @@ function getCategoryList(blogid, username, password) {
    var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
-      throwError ("Couldn't find the blog " + blogid);
+      throw("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
-   if (blog.isAccessDenied(usr, level))
-      throwError("You're not allowed to view the blog " + blogid);
-
+   try {
+      blog.checkView(usr, level);
+   } catch (deny) {
+      throw("You're not allowed to view the blog " + blogid);
+   }
    var arr = blog.topics.list();
    var topics = new Array();
    for (var i=0; i<arr.length; i++) {
@@ -93,10 +102,13 @@ function getPostCategories(postid, username, password) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
-      throwError ("Couldn't find the story with id " + postid);
+      throw("Couldn't find the story with id " + postid);
    var level = entry.site.members.getMembershipLevel(usr);
-   if (entry.isViewDenied(usr, level))
-      throwError("You are not allowed to view the story with id " + postid);
+   try {
+      entry.checkView(usr, level);
+   } catch (deny) {
+      throw("You are not allowed to view the story with id " + postid);
+   }
    var topics = new Array();
    if (entry.topic) {
      var param = new Object();
@@ -127,11 +139,13 @@ function setPostCategories(postid, username, password, categories) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
-      throwError ("Couldn't find the story with id " + postid);
+      throw("Couldn't find the story with id " + postid);
    var level = entry.site.members.getMembershipLevel(usr);
-   if (entry.isEditDenied(usr, level))
-      trowError("You are not allowed to edit the story with id "+postid);
-
+   try {
+      entry.checkEdit(usr, level);
+   } catch (deny) {
+      throw("You are not allowed to edit the story with id "+postid);
+   }
    if (categories.length>0)
       entry.topic = categories[0].categoryId;
    else
@@ -198,9 +212,12 @@ function publishPost(postid, username, password) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
-      throwError ("Couldn't find the story with id " + postid);
-   if (entry.isEditDenied(usr, entry.site.members.getMembershipLevel(usr)))
-      throwError ("You're not allowed to edit the story with id " + postid);
+      throw("Couldn't find the story with id " + postid);
+   try {
+      entry.checkEdit(usr, entry.site.members.getMembershipLevel(usr));
+   } catch (deny) {
+      throw("You're not allowed to edit the story with id " + postid);
+   }
    entry.publish = 2;
    return (true);
 }
