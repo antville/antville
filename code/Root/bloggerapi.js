@@ -9,16 +9,11 @@ function newPost (appkey, blogid, username, password, content, publish) {
     this.checkAccessPermission (blogid, null, username, password);
     var user = getUser (username);
     var blog = this.get (blogid.toString());    
-    var s = new story();
-    s.text = content;
-    s.online = publish ? 1 : 0;
-    s.createtime = s.modifytime = new Date();
-    s.day = s.createtime.format("yyyyMMdd");   
-    s.author = user;
-    s.editableby = 3;
-    blog.add (s);
-    blog.lastupdate = s.createtime;
-    return s._id;
+    var param = new Object();
+    param.text = content;
+    param.online = publish ? 1 : 0;
+    var result = blog.stories.evalNewStory(param,user);
+    return (result.id);
 }
 
 /** 
