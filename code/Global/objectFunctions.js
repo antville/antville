@@ -62,14 +62,11 @@ function isCleanForURL(str) {
  * if false, it uses root and it's page-skin
  */
 
-function setLayout() {
-   if (path.weblog) {
-      res.skin = "weblog.page";
+function getParent() {
+   if (path.weblog)
       return (path.weblog);
-   } else {
-      res.skin = "root.page";
+   else
       return (root);
-   }
 }
 
 /**
@@ -139,13 +136,13 @@ function evalURL(url) {
  */
 
 function autoLogin() {
-   if (user.uid)
+   if (session.user)
       return;
    var name = req.data.avUsr;
    var pw = req.data.avPw;
    if (!name || !pw)
       return;
-   var u = getUser(name);
+   var u = root.users.get(name);
    if (!u)
       return;
    if (Packages.helma.util.MD5Encoder.encode(u.password) != pw)
@@ -166,10 +163,10 @@ function autoLogin() {
  */
 
 function checkIfLoggedIn(referrer) {
-   if (!user.uid) {
+   if (!session.user) {
       // user is not logged in
       if (referrer)
-         user.cache.referrer = referrer;
+         session.data.referrer = referrer;
       res.redirect(path.weblog ? path.weblog.members.href("login") : root.members.href("login"));
    }
    return;
@@ -390,3 +387,4 @@ function scheduler() {
    // notify updated weblogs
    pingUpdatedWeblogs();
 }
+
