@@ -16,6 +16,7 @@ function skin_macro(param) {
 /**
  * Loops over subnodes, rendering a skin on each.
  */
+
 function loopskin_macro (param) {
    var l = this.size();
    for (var i=0; i<l; i++) {
@@ -73,5 +74,3 @@ function input_macro(param) {
    }
    res.write(param.suffix);
 }
-
-
