@@ -1,8 +1,11 @@
-<tr bgcolor="#CCCCCC">
-<td class="storyText" nowrap><% this.show what="thumbnail" %></td>
-<td class="storyText" nowrap><b><% this.alias %></b></td>
-<td class="storyText" nowrap><% this.creator %></td>
-<td class="storyText" nowrap><% this.createtime %></td>
-<td class="storyText" nowrap><% this.hasthumbnail %></td>
-<td class="storyNav" nowrap><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></td>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<tr>
+<td colspan="3" bgcolor="#CCCCCC" class="storyNav"><b>code:&nbsp;</b>&lt;% weblog.image name="<% this.alias %>" %&gt;</td>
 </tr>
+<tr>
+<td class="storyText" nowrap><% this.show what="thumbnail" %></td>
+<td class="storyText" valign="top">by <% this.creator %><br><% this.createtime %></td>
+<td class="storyNav" valign="top" nowrap><% this.editlink suffix="<br>" %><% this.deletelink %></td>
+</tr>
+</table>
