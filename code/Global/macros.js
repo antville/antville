@@ -3,7 +3,6 @@
  */
 
 function now_macro(param) {
-   res.write(param.prefix)
    var now = new Date();
    if (path.weblog)
       res.write(path.weblog.formatTimestamp(now,param));
@@ -15,7 +14,6 @@ function now_macro(param) {
       return (result.value);
    } else
       res.write(now.format("yyyy.MM.dd HH:mm"));
-   res.write(param.suffix);
 }
 
 /**
@@ -51,14 +49,12 @@ function image_macro(param) {
    var p = getPoolObj(param.name,"images");
    if (!p)
       return;
-   res.write(param.prefix);
    if (param.linkto) {
       p.parent.openLink(param);
       p.parent.renderImage(p.obj,param);
       p.parent.closeLink(param);
    } else
       p.parent.renderImage(p.obj,param);
-   res.write(param.suffix);
 }
 
 
@@ -77,7 +73,6 @@ function thumbnail_macro(param) {
    var p = getPoolObj(param.name,"images");
    if (!p || !p.obj.thumbnail)
       return;
-   res.write(param.prefix);
    if (param.linkto) {
       p.parent.openLink(param);
    } else {
@@ -87,7 +82,6 @@ function thumbnail_macro(param) {
    }
    p.parent.renderImage(p.obj.thumbnail,param);
    p.parent.closeLink(param);
-   res.write(param.suffix);
 }
 
 /**
@@ -112,7 +106,6 @@ function imageurl_macro(param) {
  */
 
 function link_macro(param) {
-   res.write(param.prefix)
    res.write("<a href=\"");
    var url = param.to ? param.to : param.linkto;
    res.write(url);
@@ -127,7 +120,6 @@ function link_macro(param) {
    else
       res.write(param.to ? param.to : param.linkto);
    res.write("</a>");
-   res.write(param.suffix);
 }
 
 
@@ -141,9 +133,7 @@ function goodie_macro(param) {
    var p = getPoolObj(param.name,"goodies");
    if (!p)
       return;
-   res.write(param.prefix);
    p.obj.renderSkin(param.useskin ? param.useskin : "main");
-   res.write(param.suffix);
 }
 
 /**
@@ -152,7 +142,6 @@ function goodie_macro(param) {
  */
 
 function linkedpath_macro (param) {
-   res.write(param.prefix);
    var separator = param.separator;
    if (!separator)
        separator = " &gt; ";
@@ -164,7 +153,6 @@ function linkedpath_macro (param) {
 
    title = path[path.length-1].getNavigationName();
    res.write (title);
-   res.write(param.suffix);
 }
 
 
@@ -180,7 +168,7 @@ function poll_macro(param) {
 	}
 	if (!poll)
 		return("[poll id " + param.id + " does not exist.]");
-	var deny = poll.isVoteDenied(user);
+	var deny = poll.isVoteDenied(session.user);
 	if (deny || param.as == "link")
 		return('<a href="' + poll.href() + '">' + poll.question + '</a>');
 	if (poll.closed || param.as == "results")
@@ -211,7 +199,6 @@ function webloglist_macro(param) {
    var minDisplay = 10;
    var maxDisplay = 100;
 
-   res.write(param.prefix);
    var idx = parseInt (req.data.start,10);
    var max = Math.min((param.limit ? parseInt(param.limit,10) : minDisplay),maxDisplay);
 
@@ -239,5 +226,16 @@ function webloglist_macro(param) {
       sp.text = "more weblogs";
       res.write("<br>" + renderSkinAsString("nextpagelink",sp));
    }
-   res.write(param.suffix);
+}
+
+
+/**
+ * macro checks if the current session is authenticated
+ * if true it returns the username
+ */
+
+function username_macro(param) {
+   if (session.user)
+      res.write(session.user.name);
+   return;
 }
