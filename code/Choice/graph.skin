@@ -1,1 +1,1 @@
-<span class="bar" style="width: <% param.width %>"></span>
+<span class="pollResultsBar" style="width: <% param.width %>;"></span>
