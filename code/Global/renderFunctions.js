@@ -242,7 +242,7 @@ function renderDropDownBox(name, options, selectedIndex, firstoption) {
  * otherwise it assumes the color is a named one
  */
 function renderColorAsString(c) {
-   if (c) {
+   if (c && c.length == 6) {
       var nonhex = new RegExp("[^0-9,a-f]");
       nonhex.ignoreCase = true;
       var found = c.match(nonhex);

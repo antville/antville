@@ -130,11 +130,7 @@ function updatePalette(obj, p) {
 function submit() {
    var color = document.forms[0].elements[0].value;
    if (self.opener && color) {
-      //var query = document.URL.split("?");
-      //var args = query[1].split("&");
-      var form = "<% request.form %>"; //args[0].split("=")[1];
-      var name = "<% request.name %>"; //args[1].split("=")[1];
-      var ref = self.opener.document;
+      var cValue = color.substr(1,color.length-1);
       if (color.indexOf("rgb(") == 0) {
          var parts = color.substr(4,color.length-2).split(",");
          var R = parseInt(parts[0]).toString(16);
@@ -143,8 +139,13 @@ function submit() {
          if (R.length == 1) R="0"+R;
          if (G.length == 1) G="0"+G;
          if (B.length == 1) B="0"+B;
+         cValue = R+G+B;
       }
-      ref.getElementById("cp1_"+name).value = R+G+B;
+      //var query = document.URL.split("?");
+      //var args = query[1].split("&");
+      var name = "<% request.name %>"; //args[1].split("=")[1];
+      var ref = self.opener.document;
+      ref.getElementById("cp1_"+name).value = cValue;
       ref.getElementById("cp2_"+name).style.backgroundColor = color;
    }
    cancel();

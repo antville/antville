@@ -1,0 +1,28 @@
+function openColorPicker(name, text) {
+   var cpWindow = window.open("<% root.url path="colorpicker" %>?name=" + name + "&text=" + text, "cpWindow", "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=350,height=320");
+}
+
+function isValidColor(c) {
+   c = c.toLowerCase();
+   if (c && c.length == 6) {
+      var nonhex = new RegExp("[^0-9,a-f]");
+      nonhex.ignoreCase = true;
+      var found = c.match(nonhex);
+      if (!found) {
+        // color-string contains just hex-characters, so we prefix it with '#'
+        return("#" + c);
+      }
+   }
+   var colorNames = new Array("aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow", "honeydew", "hotpink", "indianred ", "indigo ", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgrey", "lightgreen", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslateblue", "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "turquoise", "violet", "violetred", "wheat", "white", "whitesmoke", "yellow", "yellowgreen");   
+   for (var i in colorNames) {
+      if (c == colorNames[i])
+         return(c);
+   }
+   return(null);
+}
+
+function setColorPreview(name, color) {
+   color = isValidColor(color)
+   if (color)
+      document.getElementById('cp2_' + name).style.backgroundColor = color;
+}

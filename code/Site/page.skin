@@ -19,6 +19,7 @@
 <script type="text/javascript" language="javascript">
 <!--
 <% site.skin name="javascript" %>
+<% site.skin name="cp_javascript" %>
 // -->
 </script>
 </head>
