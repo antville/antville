@@ -9,7 +9,7 @@ function isEditAllowed() {
    } else if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
       return false;
-   } else if (this.__parent__.owner != user) {
+   } else if (!this.__parent__.isUserAdmin()) {
       res.message = "Sorry, your're not allowed to edit skins!";
       return false;
    }

@@ -44,12 +44,12 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is owner of this story
+ * if user is author of this story
  */
 
 function deletelink_macro(param) {
    renderPrefix(param);
-   if (this.weblog && this.weblog.owner == user) {
+   if (this.weblog && this.weblog.isUserAdmin) {
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
       this.openLink(linkParam);

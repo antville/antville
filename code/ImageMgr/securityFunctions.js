@@ -9,7 +9,7 @@ function isEditAllowed() {
    } else if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
       return false;
-   } else if (this.__parent__.owner != user) {
+   } else if (!this.__parent__.isUserAdmin() && !this.__parent__.isUserContributor() && !this.__parent__.userMayContrib()) {
       res.message = "Sorry, you're not allowed to edit images!";
       return false;
    }
@@ -27,7 +27,7 @@ function isAddAllowed() {
    } else if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
       return false;
-   } else if (this.__parent__.owner != user) {
+   } else if (!this.__parent__.isUserAdmin() && !this.__parent__.isUserContributor() && !this.__parent__.userMayContrib()) {
       res.message = "Sorry, you're not allowed to add images!";
       return false;
    }

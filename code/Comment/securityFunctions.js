@@ -3,8 +3,8 @@
  */
 
 function isDeleteAllowed() {
-   if (this.weblog.owner != user) {
-      res.message = "This is not your weblog, so you can't delete any postings!";
+   if (!this.weblog.isUserAdmin()) {
+      res.message = "You're not admin of this weblog, so you can't delete any postings!";
       return false;
    }
    return true;
