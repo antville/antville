@@ -45,7 +45,6 @@ function choices_macro(param) {
  * macro renders results of a poll as bar chart
  */
 function results_macro(param2) {
-   var buf = new java.lang.StringBuffer();
    for (var i=0; i<this.size(); i++) {
       var c = this.get(i);
       var param = new Object();
@@ -62,9 +61,9 @@ function results_macro(param2) {
             param.text = " " + (param2.more ? param2.more : "votes");
       } else
          param.text = " " + (param2.no ? param2.no : "votes");
-      buf.append(c.renderSkinAsString("result", param));
+      c.renderSkin("result", param);
    }
-   return buf.toString();
+   return;
 }
 
 
