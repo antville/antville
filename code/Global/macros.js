@@ -237,9 +237,28 @@ function sitelist_macro(param) {
  * macro checks if the current session is authenticated
  * if true it returns the username
  */
-
 function username_macro(param) {
    if (session.user)
       res.write(session.user.name);
    return;
+}
+
+/**
+ * function renders a form-input
+ */
+function input_macro(param) {
+   param.value = param.name && req.data[param.name] ? encodeForm(req.data[param.name]) : param.value;
+   if (param.type == "textarea")
+      return(renderInputTextarea(param));
+   else if (param.type == "checkbox")
+      return(renderInputCheckbox(param));
+   else if (param.type == "button") {
+      param.type = "submit";
+      return(renderInputButton(param));
+   } else if (param.type == "password")
+      return(renderInputPassword(param));
+   else if (param.type == "file")
+      return(renderInputFile(param));
+   else
+      return(renderInputText(param));
 }
