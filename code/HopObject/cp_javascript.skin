@@ -2,32 +2,43 @@ function openColorPicker(name, text) {
    var cpWindow = window.open("<% root.url path="colorpicker" %>?name=" + name + "&text=" + text, "cpWindow", "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=350,height=320");
 }
 
-function renderColorAsString(c) {
-   c = c.toLowerCase();
+function setColorPreview(name, color) {
+   color = parseColor(color);
+   if (color)
+      document.getElementById('cp2_' + name).style.backgroundColor = color;
+   else
+      color = parseColor(document.getElementById('cp2_' + name).style.backgroundColor);
+   if (color.indexOf("#") == 0)
+      color = color.substr(1,color.length-1);
+   document.getElementById('cp1_' + name).value = color;
+}
+
+function parseColor(color) {
+   c = color.toLowerCase();
+   var colorNames = new Array("aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow", "honeydew", "hotpink", "indianred ", "indigo ", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgrey", "lightgreen", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslateblue", "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "turquoise", "violet", "violetred", "wheat", "white", "whitesmoke", "yellow", "yellowgreen");   
+   for (var i in colorNames) {
+      if (c == colorNames[i])
+         return(c);
+   }
+   var rgb = new RegExp("rgb ?\\(([0-9^,]*),([0-9^,]*),([0-9^\\)]*)\\)");
+   var result = color.match(rgb);
+   if (result) {
+      var R = parseInt(result[1]).toString(16);
+      var G = parseInt(result[2]).toString(16);
+      var B = parseInt(result[3]).toString(16);
+      if (R.length == 1) R="0"+R;
+      if (G.length == 1) G="0"+G;
+      if (B.length == 1) B="0"+B;
+      return("#"+R+G+B);
+   }
    if (c.indexOf("#") == 0)
       c = c.substr(1,c.length-1);
-   if (c && c.length == 6) {
+   if (c.length == 6) {
       var nonhex = new RegExp("[^0-9,a-f]");
       nonhex.ignoreCase = true;
       var found = c.match(nonhex);
       if (!found)
          return("#" + c);
    }
-   var colorNames = new Array("aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow", "honeydew", "hotpink", "indianred ", "indigo ", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgrey", "lightgreen", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslateblue", "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "turquoise", "violet", "violetred", "wheat", "white", "whitesmoke", "yellow", "yellowgreen");   
-   for (var i in colorNames) {
-      if (c == colorNames[i])
-         return(c);
-   }
    return(null);
-}
-
-function setColorPreview(name, color) {
-   color = renderColorAsString(color)
-   if (color)
-      document.getElementById('cp2_' + name).style.backgroundColor = color;
-   else
-      color = document.getElementById('cp2_' + name).style.backgroundColor;
-   if (color.indexOf("#") == 0)
-      color = color.substr(1,color.length-1);
-   document.getElementById('cp1_' + name).value = color;
 }
