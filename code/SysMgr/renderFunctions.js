@@ -53,8 +53,10 @@ function renderPageNavigation(collection,url,pageIdx) {
  * using this separate renderFunction instead of doing the stuff
  * in storylist_macro() was necessary for completely independent
  * placement of the prevpage- and nextpage-links
- * @param Int Index-position to start with
- * @param String String indicating what kind of stories to show
+ * @param String name of collection to loop over
+ * @param Obj requested object to edit
+ * @param String name of requested action
+ * @param Int Number of page
  */
 
 function renderList(collection,reqItem,reqAction,pageIdx) {
@@ -72,7 +74,7 @@ function renderList(collection,reqItem,reqAction,pageIdx) {
    for (var i=start;i<stop;i++) {
       var itm = this[collection].get(i);
       res.data.list += itm.renderSkinAsString("sysmgr_listitem");
-      if (reqItem == itm.__name__) {
+      if (itm == reqItem) {
          if (reqAction == "remove")
             res.data.list += itm.renderSkinAsString("sysmgr_delete");
          else
