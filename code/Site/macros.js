@@ -383,7 +383,21 @@ function calendar_macro(param) {
    var dayParam = new Object();
    var weekParam = new Object();
    // create new calendar-object and set day to first day of month
-   var cal = new java.util.GregorianCalendar(this.getTimeZone(), this.getLocale());
+   var locale = this.getLocale();
+   var cal = java.util.Calendar.getInstance(this.getTimeZone(), locale);
+   var symbols = new java.text.DateFormatSymbols(locale);
+
+   // render header-row of calendar
+   var firstDayOfWeek = cal.getFirstDayOfWeek();
+   var week = "";
+   var weekdays = symbols.getShortWeekdays();
+   for (var i=0;i<7;i++) {
+      dayParam.day = weekdays[(i+firstDayOfWeek-1)%7+1];
+      week += this.renderSkinAsString("calendardayheader", dayParam);
+   }
+   weekParam.week = week;
+   calParam.calendar = this.renderSkinAsString("calendarweek",weekParam);
+
    cal.set(java.util.Calendar.DATE,1);
    // check whether there's a day or a story in path
    // if so, use it to determine the month to render
@@ -400,32 +414,20 @@ function calendar_macro(param) {
    // we want to render
 
    // nr. of empty days in rendered calendar before the first day of month appears
-   var pre = (7-cal.getFirstDayOfWeek()+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
+   var pre = (7-firstDayOfWeek+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
    var days = cal.getActualMaximum(java.util.Calendar.DATE);
    var weeks = Math.ceil((pre + days) / 7);
    var daycnt = 1;
 
-   calParam.month = formatTimestamp(cal.getTime(),"MMMM");
-
-   calParam.year = cal.getTime().format("yyyy");
-   // render header-row of calendar
-   weekParam.week = "";
-   var calHead = cal.clone();
-   var firstDayOfWeek = cal.getFirstDayOfWeek();
-   for (var i=0;i<7;i++) {
-      calHead.set(java.util.Calendar.DAY_OF_WEEK, firstDayOfWeek + i);
-      dayParam.day = formatTimestamp(calHead.getTime(),"EE");
-      weekParam.week += this.renderSkinAsString("calendardayheader",dayParam);
-   }
-   calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
+   var time = cal.getTime();
+   calParam.month = formatTimestamp(time,"MMMM");
+   calParam.year =  formatTimestamp(time,"yyyy");
 
    // pre-render the year and month so we only have to append the days as we loop
-   var currMonth = formatTimestamp(cal.getTime(), "yyyyMM");
-   // simply loop through days
-   var currDay = 1;
+   var currMonth = formatTimestamp(time, "yyyyMM");
    // remember the index of the first and last days within this month.
    // this is needed to optimize previous and next month links.
-   var lastDayIndex = this.size();
+   var lastDayIndex = 9999999;
    var firstDayIndex = -1;
 
    for (var i=0;i<weeks;i++) {
@@ -435,8 +437,8 @@ function calendar_macro(param) {
          if ((i == 0 && j < pre) || daycnt > days)
             dayParam.day = "&nbsp;";
          else {
-            var currGroupname = currMonth+currDay.format("00");
-            var linkText = currDay < 10 ? "&nbsp;"+currDay+"&nbsp;" : currDay;
+            var currGroupname = currMonth+daycnt.format("00");
+            var linkText = daycnt < 10 ? "&nbsp;"+daycnt+"&nbsp;" : daycnt;
             var currGroup = this.get(currGroupname);
             if (currGroup) {
                var idx = this.contains(currGroup);
@@ -444,7 +446,7 @@ function calendar_macro(param) {
                   if  (idx > firstDayIndex)
                      firstDayIndex = idx;
                   if (idx < lastDayIndex)
-                      lastDayIndex = idx;
+                     lastDayIndex = idx;
                }
                dayParam.day =  "<a href=\"" + currGroup.href() + "\">" + linkText + "</a>";
             } else {
@@ -452,7 +454,6 @@ function calendar_macro(param) {
             }
             if (currGroupname == today)
                dayParam.useskin = "calendarselday";
-            currDay++;
             daycnt++;
          }
          weekParam.week += this.renderSkinAsString(dayParam.useskin, dayParam);
@@ -461,7 +462,7 @@ function calendar_macro(param) {
    }
    // set day to last day of month and try to render next month
    // check what the last day of the month is
-   cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE));
+   // cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE));
    calParam.back = this.renderLinkToPrevMonth(firstDayIndex,currMonth+"01");
    calParam.forward = this.renderLinkToNextMonth(lastDayIndex,currMonth+"31");
    this.renderSkin("calendar",calParam);
@@ -591,7 +592,10 @@ function listReferrers_macro() {
   // we're doing this with direct db access here
   // (there's no need to do it with prototypes):
   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
-  var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
+  var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG "+
+     "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + 
+     d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER "+
+     "order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
   var rows = c.executeRetrieval(query);
   var dbError = c.getLastError();
   if (dbError)
