@@ -325,19 +325,6 @@ function usermaycontrib_macro(param) {
 }
 
 /**
- * macro rendering usersignup-flag of weblog
- */
-
-function usermaysignup_macro(param) {
-   res.write(param.prefix)
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("usersignup",param));
-   else
-      res.write(parseInt(this.usersignup,10) ? "yes" : "no");
-   res.write(param.suffix);
-}
-
-/**
  * macro rendering nr. of days to show on weblog-fontpage
  */
 
@@ -414,9 +401,12 @@ function loginstatus_macro(param) {
 
 function navigation_macro(param) {
    this.renderSkin("usernavigation");
-   if (this.isUserContributor(user) || this.isUserAdmin(user))
+   var membership = this.isUserMember(user);
+   if (!membership)
+      return;
+   if (this.userMayContrib() || membership.level >= getContributorLvl())
       this.renderSkin("contribnavigation");
-   if (this.isUserAdmin(user))
+   if (membership.level == getAdminLvl())
       this.renderSkin("adminnavigation");
 }
 
@@ -567,18 +557,6 @@ function membercounter_macro(param) {
    res.write(this.members.size());
    res.write(param.suffix);
 }
-
-/**
- * macro renders the list of all members of this weblog
- */
-
-function memberlist_macro(param) {
-   res.write(param.prefix)
-   for (var i=0;i<this.members.size();i++)
-      this.members.get(i).renderSkin("preview");
-   res.write(param.suffix);
-}
-
 
 /**
  * macro renders a list of recentyl added/updated stories/comments
