@@ -462,13 +462,17 @@ function calendar_macro(param) {
    // create new calendar-object and set day to first day of month
    var cal = new java.util.GregorianCalendar(this.getLocale());
    cal.set(java.util.Calendar.DATE,1);
-   if (path.day) {
-      var reqYear = parseInt(path.day.groupname.substring(0,4),10);
-      var reqMonth = parseInt(path.day.groupname.substring(4,6),10) - 1;
-      cal.set(java.util.Calendar.YEAR,reqYear);
-      cal.set(java.util.Calendar.MONTH,reqMonth);
+   // check whether there's a day or a story in path
+   // if so, use it to determine the month to render
+   if (path.story)
+      var today = path.story.day;
+   else if (path.day)
+      var today = path.day.groupname;
+   if (today) {
+      var todayDate = parseTimestamp(today,"yyyyMMdd");
+      cal.set(java.util.Calendar.YEAR,todayDate.getFullYear());
+      cal.set(java.util.Calendar.MONTH,todayDate.getMonth());
    }
-
    // cal is now a calendar object set to the first day of the month
    // we want to render
 
@@ -512,7 +516,7 @@ function calendar_macro(param) {
          else {
             var currGroupname = currMonth+currDay.format("00");
             dayParam.day = this.renderCalendarDay(currGroupname, currDay);
-            if (path.day && currGroupname == path.day.groupname)
+            if (currGroupname == today)
                dayParam.useskin = "calendarselday";
             currDay++;
             daycnt++;
