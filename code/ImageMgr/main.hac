@@ -8,10 +8,9 @@ if (deny) {
    res.redirect(parent.href());
 }
 
-renderImagelist(parseInt(req.data.start,10));
+this.renderImagelist(parseInt(req.data.start,10));
 
 res.data.title = parent.title;
-
 res.data.body = this.renderSkinAsString("main");
 
 parent.renderSkin("page");
