@@ -163,7 +163,7 @@ function deletelink_macro(param) {
 function onlinelink_macro(param) {
    if (!this.isEditDenied(session.user)) {
       param.linkto = "edit";
-      linkParam.urlparam = "set=" + (this.isOnline() ? "offline" : "online");
+      param.urlparam = "set=" + (this.isOnline() ? "offline" : "online");
       openMarkupElement("a",this.createLinkParam(param));
       if (param.image && this.weblog.images.get(param.image))
          this.weblog.renderImage(this.weblog.images.get(param.image),param);
