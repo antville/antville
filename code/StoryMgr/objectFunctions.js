@@ -36,7 +36,8 @@ function evalNewStory(param, creator) {
 
    // check name of topic (if specified)
    if (param.topic) {
-      if (!param.topic.isURL())
+       // FIXME: this should be solved more elegantly
+      if (String.URLPATTERN.test(param.topic))
          throw new Exception("topicNoSpecialChars");
       if (this._parent.topics[param.topic] || this._parent.topics[param.topic + "_action"])
          throw new Exception("topicReservedWord");

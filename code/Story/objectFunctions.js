@@ -37,7 +37,8 @@ function evalStory(param, modifier) {
    // check name of topic (if specified)
    var topicName = null;
    if (param.topic) {
-      if (!param.topic.isURL())
+       // FIXME: this should be solved more elegantly
+      if (String.URLPATTERN.test(param.topic))
          throw new Exception("topicNoSpecialChars");
       if (this.site.topics[param.topic] || this.site.topics[param.topic + "_action"])
          throw new Exception("topicReservedWord");
