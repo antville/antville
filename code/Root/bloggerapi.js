@@ -64,7 +64,7 @@ function checkAccessPermission (blogid, postid, username, password) {
         if (!blog.userMayContrib()) {
             var status = blog.members.get (username);
             writeln ("STATUS: "+status);
-            if (!status || (!status.isContributor () && !status.isAdmin()))
+            if (!status || (status.level & MAY_ADD_STORY) == 0)
                 throwError ("You don't have permission to post to this weblog");
         }
     } else if (postid) {
