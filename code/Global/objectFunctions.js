@@ -57,14 +57,14 @@ function isCleanForURL(str) {
 }
 
 /**
- * function checks if there is a weblog-object in path
- * if true, it sets the skin of response to "page" and returns the weblog-object found
- * if false, it uses root and it's page-skin
+ * function checks if there is a site-object in path
+ * if true, it returns it
+ * if false, it returns root
  */
 
 function getParent() {
-   if (path.weblog)
-      return (path.weblog);
+   if (path.site)
+      return (path.site);
    else
       return (root);
 }
@@ -150,10 +150,7 @@ function autoLogin() {
    else {
       if (session.login(name,u.password)) {
          u.lastVisit = new Date();
-         if (path.weblog)
-            res.message = getMsg("confirm","welcomeWeblog",new Array(session.user.name,path.weblog.title));
-         else
-            res.message = getMsg("confirm","welcomeAntville",session.user.name);
+         res.message = getMsg("confirm","welcome",new Array(path.site ? path.site.title : root.getSysTitle(),session.user.name));
       } else
          return;
    }
@@ -170,14 +167,14 @@ function checkIfLoggedIn(referrer) {
       // user is not logged in
       if (referrer)
          session.data.referrer = referrer;
-      res.redirect(path.weblog ? path.weblog.members.href("login") : root.members.href("login"));
+      res.redirect(path.site ? path.site.members.href("login") : root.members.href("login"));
    }
    return;
 }
 
 /**
  * function checks if the name of the requested object has a slash in it
- * if true, it tries to fetch the appropriate parent-object (either weblog or root)
+ * if true, it tries to fetch the appropriate parent-object (either site or root)
  * and to fetch the object with the requested name in the specified collection
  * @param String Name of the object to retrieve
  * @param String Name of the pool to search in
@@ -193,7 +190,7 @@ function getPoolObj(objName,pool) {
       p.parent = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
       p.objName = objPath[1];
    } else {
-      p.parent = path.weblog;
+      p.parent = path.site;
       p.objName = objName;
    }
    if (!p.parent)
@@ -257,10 +254,10 @@ function getDefaultDateFormats(version) {
 
 function logAccess() {
 	if (req.data.http_referer) {
-		var site = path.weblog ? path.weblog : root;
+		var site = path.site ? path.site : root;
 		var referrer = req.data.http_referer;
 
-      // no logging at all if the referrer comes from the same weblog
+      // no logging at all if the referrer comes from the same site
       // or is not a http-request
       if (referrer.indexOf("http") < 0)
          return;
@@ -278,7 +275,7 @@ function logAccess() {
 			app.__app__.logEvent("Error establishing DB connection: " + dbError);
 			return;
 		}
-		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, BROWSER, DATE) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "', now());";
+		var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE, ACCESSLOG_F_TEXT, ACCESSLOG_REFERRER, ACCESSLOG_IP, ACCESSLOG_BROWSER) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "')";
 		c.executeCommand(query);
 		var dbError = c.getLastError();
 		if (dbError) {
@@ -291,12 +288,12 @@ function logAccess() {
 
 
 /**
- * to register updates of a weblog at weblogs.com
+ * to register updates of a site at weblogs.com
  * (and probably other services, soon), this 
  * function can be called via the scheduler.
  */
  
-function pingUpdatedWeblogs() {
+function pingUpdatedSites() {
    // var period = 1000 * 60 * 60; // one hour
 
    var c = getDBConnection("antville");
@@ -306,7 +303,7 @@ function pingUpdatedWeblogs() {
       return;
    }
 
-   var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and  (LASTUPDATE > LASTPING or LASTPING is null);";
+   var query = "select SITE_ID from AV_SITE where SITE_ISONLINE = 1 and SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
    if (dbError) {
@@ -316,8 +313,8 @@ function pingUpdatedWeblogs() {
 
    while (rows.next()) {
       var id = rows.getColumnItem("ID");
-      var blog = root.get(id.toString());
-      app.__app__.logEvent("Notifying weblogs.com for updated weblog '" + blog.alias + "' (id " + id + ")");
+      var site = root.get(id.toString());
+      app.__app__.logEvent("Notifying weblogs.com for updated site '" + site.alias + "' (id " + id + ")");
       blog.ping();
    }
 
@@ -336,13 +333,13 @@ function pingUpdatedWeblogs() {
  */
 function parseTimestamp (time, format) {
    var df = new java.text.SimpleDateFormat (format);
-   if (path.weblog)
-       df.setTimeZone(path.weblog.getTimeZone());
+   if (path.site)
+       df.setTimeZone(path.site.getTimeZone());
    return df.parse (time);
 }
 
 /**
- * function formats a date to a string. It checks if a weblog object is
+ * function formats a date to a string. It checks if a site object is
  * in the request path and if so uses its locale and timezone.
  *
  * @param ts           Date to be formatted
@@ -356,39 +353,38 @@ function formatTimestamp(ts,dformat) {
    var sdf = res.data["timeformat_"+dformat];
    if (!sdf) {
       var fmt = "yyyy/MM/dd HH:mm";
-      if (path.weblog) {
+      if (path.site) {
          if (dformat == "short")
-            fmt = path.weblog.shortdateformat ? path.weblog.shortdateformat : "dd.MM HH:mm";
+            fmt = path.site.shortdateformat ? path.site.shortdateformat : "dd.MM HH:mm";
          else if (dformat == "long")
-            fmt = path.weblog.longdateformat ? path.weblog.longdateformat : "yyyy/MM/dd HH:mm";
+            fmt = path.site.longdateformat ? path.site.longdateformat : "yyyy/MM/dd HH:mm";
          else if (dformat)
             fmt = dformat;
-         sdf = new java.text.SimpleDateFormat(fmt,path.weblog.getLocale());
-         sdf.setTimeZone(path.weblog.getTimeZone())
+         sdf = new java.text.SimpleDateFormat(fmt,path.site.getLocale());
+         sdf.setTimeZone(path.site.getTimeZone())
       } else {
          if (dformat)
             fmt = dformat;
-         sdf = new java.text.SimpleDateFormat(fmt);
+         sdf = new java.text.SimpleDateFormat(fmt,root.getLocale());
       }
       res.data["timeformat_"+dformat] = sdf;
    }
    var result = tryEval("sdf.format(ts)");
    if (result.error)
-      return ("[error: wrong date-format]");
+      return (getMsg("error","wrongDateFormat"));
    return (result.value);
 }
 
 /**
- * scheduler performing auto-disposal of inactive weblogs
- * and auto-blocking of private weblogs
- * if defined in app.properties
+ * scheduler performing auto-disposal of inactive sites
+ * and auto-blocking of private sites
  */
 
 function scheduler() {
-   // call automatic cleanup if sysmgr is installed
-   tryEval("root.manage.autoCleanUp()");
-   // notify updated weblogs
-   pingUpdatedWeblogs();
+   // call autocleanup
+   root.manage.autoCleanUp();
+   // notify updated sites
+   pingUpdatedSites();
 }
 
 
@@ -419,8 +415,10 @@ function cloneObject(obj) {
 function getMsg(msgClass,name,value) {
    // create array containing languages to search for message
    var languages = new Array();
-   if (path.weblog && path.weblog.language)
-      languages[0] = path.weblog.language;
+   if (path && path.site && path.site.language)
+      languages[0] = (path.site.getLocale().getLanguage());
+   languages[languages.length] = (root.getLocale()).getLanguage();
+   // the last language to search for messages is always english
    languages[languages.length] = "en";
    // loop over languages and try to find the message
    for (var i in languages) {
