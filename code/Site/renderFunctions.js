@@ -24,21 +24,3 @@ function renderCalendarDay(currGroupname,text) {
    }
    return (text);
 }
-
-/**
- * function renders image-tag
- */
-
-function renderImage(img,param) {
-   res.write("<img src=\"" + getProperty("imgUrl") + this.alias + "/" + img.filename + "." + img.fileext + "\"");
-   res.write(" width=\"" + (param.width ? param.width : img.width) + "\"");
-   res.write(" height=\"" + (param.height ? param.height : img.height) + "\"");
-   res.write(" alt=\"" + (param.alttext ? param.alttext : img.alttext) + "\"");
-   if (param.align)
-      res.write(" align=\"" + param.align + "\"");
-   if (param.valign)
-      res.write(" valign=\"" + param.valign + "\"");
-   res.write(" border=\"" + (param.border ? param.border : 0) + "\">");
-}
-
-
