@@ -311,8 +311,10 @@ function email_macro(param) {
  * for certain properties (but pass others thru)
  */
 function switch_macro(param) {
-   if (param.name == "active")
-      return res.handlers.context.layout == this ? param.on : param.off;
+   if (param.name == "active") {
+      var currLayout = res.handlers.context.getLayout();
+      return currLayout == this ? param.on : param.off;
+   }
    HopObject.prototype.apply(this, [param]);
    return;
 }
