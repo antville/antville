@@ -1,34 +1,13 @@
 /**
- * macro checks if the skin was modified or
- * is the default-skin
- */
-function skinstatus_macro(param) {
-   if (!param.proto || !param.name)
-      return;
-   if (this[param.proto] && this[param.proto][param.name]) {
-      var s = this[param.proto][param.name];
-      res.write("customized by " + s.creator.name);
-      res.write("&nbsp;...&nbsp;");
-      Html.openLink(this.href("diff")+"?proto="+param.proto+"&name="+param.name);
-      res.write("diff");
-      Html.closeLink();
-      res.write("&nbsp;...&nbsp;");
-      Html.openLink(s.href("delete"));
-      res.write("reset");
-      Html.closeLink();
-   } else {
-      res.write("not customized");
-   }
-}
-
-/**
  * macro showing the most important macros
  * available for a specific skin
  */
-
 function help_macro(param) {
-   var proto = req.data.proto;
-   var skin = req.data.name;
+   if (!req.data.key)
+      return;
+   var splitKey = req.data.key.split(".");
+   var proto = splitKey[0];
+   var skin = splitKey[1];
    var ref = app.data.macros;
    var helpUrl = ref.getProperty("_url");
 
@@ -38,7 +17,7 @@ function help_macro(param) {
    var hopjectMacros = ref.getProperty("hopobject.macros");
    macros["root"] = ref.getProperty("root.macros");
    // no prototype for global macros
-   macros[proto] = (proto == "global") ? null : ref.getProperty(proto + ".macros");
+   macros[proto] = (proto == "global" ? null : ref.getProperty(proto + ".macros"));
    // merge the hopobject's stuff with the prototype's
    macros[proto] += hopjectMacros ? "," + hopjectMacros : "";
    macros.resOrParam = ref.getProperty(proto + ".skin." + skin);
@@ -79,4 +58,16 @@ function help_macro(param) {
       }
       Html.tag("br");
    }
+}
+
+/**
+ * renders a dropdown containing available
+ * prototypes
+ */
+function prototypechooser_macro(param) {
+   var options = [];
+   for (var i in app.skinfiles)
+      options.push({value: i, display: i});
+   options.sort(function(a, b) {return (a.display.charCodeAt(0) - b.display.charCodeAt(0)); });
+   Html.dropDown("prototype", options, null, "--- select a prototype ---");
 }
