@@ -10,9 +10,9 @@ function onRequest() {
       res.skinpath = new Array(path.weblog.skins);
    if (path.weblog && path.weblog.isBlocked())
       res.redirect(root.href("blocked"));
-   if (user.isBlocked()) {
+   if (isUserBlocked()) {
       // user was blocked recently, so log out
-      user.logout();
+      session.logout();
       res.message = "Your account was blocked!";
       res.redirect(path.weblog ? path.weblog.href() : root.href());
    }
