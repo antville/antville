@@ -1,6 +1,6 @@
 checkIfLoggedIn(this.href(req.action));
 
-var parent = setLayout();
+var parent = getParent();
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(parent.href());
@@ -13,4 +13,6 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.title = path.weblog ? path.weblog.title : "Antville";
 
-res.data.body = user.renderSkinAsString("edit");
+res.data.body = session.user.renderSkinAsString("edit");
+
+parent.renderSkin("page");
