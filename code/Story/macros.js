@@ -262,6 +262,8 @@ function comments_macro(param) {
  * if true, render form to add a comment
  */
 function commentform_macro(param) {
+   if (!this.discussions)
+      return;
    if (session.user) {
       res.data.action = this.href("comment");
       (new Comment()).renderSkin("edit");
