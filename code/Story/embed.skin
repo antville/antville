@@ -1,2 +1,2 @@
 <span class="storyTitle"><% story.content part="title" suffix="<br />" %></span>
-<% story.content part="text" limit="100" clipping="&nbsp;..." %><span class="small"><% story.link text="[read&nbsp;more]" prefix="&nbsp;" to="main" %><% story.editlink prefix="&nbsp;...&nbsp;" %></span><br /></span>
+<% story.content part="text" limit="100" clipping="&nbsp;..." %><span class="small"><% story.link text="[read&nbsp;more]" prefix="&nbsp;" to="main" %><% story.editlink prefix="&nbsp;...&nbsp;" %></span><br />
