@@ -62,7 +62,8 @@ function checkAccess(action, usr, level) {
  */
 function isAccessDenied(usr, level) {
    if (!this.online) {
-      if (!usr || !usr.sysadmin || level == null)
+      // if not logged in or not logged in with sufficient permissions
+      if (!usr || (level < CONTRIBUTOR && !usr.sysadmin))
          return new Exception("siteAccessDenied");
    }
    return null;
