@@ -19,14 +19,16 @@ if (max > 50)
 for (var i=0; i<max; i++) {
 	var weblog = this.get(i);
 	if (weblog.online) {
+                // if weblog was modified, use modifytime, otherwise createtime
+                var weblogDate = weblog.modifytime ? weblog.modifytime : weblog.createtime;
 		param1.itemUrl = weblog.href();
 		param1.itemTitle = weblog.title ? encodeXml(weblog.title) : "[untitled antville weblog]";
 		param1.authorName = encodeXml(weblog.creator.name);
 		param1.authorMail = encodeXml(weblog.creator.email);
-		param1.date = weblog.modifytime.format(w3fmt);
+		param1.date = weblogDate.format(w3fmt);
 		param1.year = now.getYear();
 		var descr = weblog.tagline ? encodeXml("<br />" + weblog.tagline) : "";
-		var date = weblog.modifytime.format("dd.MM.yyyy, HH:mm'h CET'");
+		var date = weblogDate.format("dd.MM.yyyy, HH:mm'h CET'");
 		param1.itemDescription = date + descr;
 		param2.items += renderSkinAsString("rss10Item", param1);
 		param2.resources += renderSkinAsString("rss10Resource", param1);
