@@ -8,11 +8,13 @@ body, td {
 fieldset {
   padding-left: 8px;
   padding-top: 0px;
+  margin-top:6px;
+  margin-bottom:6px;
 }
 
-fieldset p {
+p {
    margin-top:6px;
-   margin-bottom:6px;
+   margin-bottom:10px;
 }
 
 form {margin: 0px;}
@@ -37,7 +39,7 @@ a:hover {
    vertical-align: middle;
    background-image: url("<% image as="url" name="/webloghead" %>");
    background-color: transparent;
-   color: #ff3300;
+   color: <% site.titlecolor %>
 }
 
 .message {
@@ -117,6 +119,8 @@ li {padding-bottom: 3px;}
    font-family: <% site.smallfont %>;
    font-size: <% site.smallsize %>;
    color: <% site.smallcolor %>;
+   margin-top: 10px;
+   margin-bottom: 2px;
 }
 
 .storyTitle {
@@ -124,6 +128,7 @@ li {padding-bottom: 3px;}
    font-size: <% site.titlesize %>;
    color: <% site.titlecolor %>;
    font-weight: bold;
+   margin-bottom: 2px;
 }
 
 .small {
@@ -156,7 +161,7 @@ li {padding-bottom: 3px;}
    margin-bottom: 2px;
 }
 
-.reply {padding-left: 20px;}
+.reply {padding-left: 40px;}
 
 
 .formTitle {

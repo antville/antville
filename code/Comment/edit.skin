@@ -1,3 +1,4 @@
+<br />
 <form method="post" action="<% response.action %>">
 <p><span class="small">Title:<br /></span>
 <% comment.content part="title" as="editor" width="25" style="formTitle" %></p>

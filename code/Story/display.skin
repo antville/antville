@@ -1,3 +1,9 @@
-<p><span class="storyDate"><% story.creator as="link" %>, <% story.createtime format="long" "%></span><br />
-<% story.content part="title" prefix='<span class="storyTitle">' suffix='</span><br />' %>
-<% story.content part="text" prefix="<span>" suffix="</span><br /><br />" %></p>
+<div class="storyDate">
+   <% story.creator as="link" %>, 
+   <% story.createtime format="long" %>
+</div>
+
+<div class="storyTitle"><% story.content part="title" %></div>
+
+<div><% story.content part="text" %></div>
+

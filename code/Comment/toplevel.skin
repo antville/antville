@@ -1,8 +1,21 @@
-<span class="commentHead">&nbsp;<br /></span>
-<div class="commentDate"><% comment.createtime format="short" prefix="On&nbsp;" %><% comment.creator as="link" prefix=",&nbsp;" suffix="&nbsp;wrote:"%></div>
-<div class="commentTitle"><% comment.content part="title" %></div>
-<% comment.content part="text" suffix="<br /><br />" %>
-<div class="small"><% comment.link text="link" %>&nbsp;&nbsp;<% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% comment.deletelink prefix="...&nbsp;" %></div>
 
+<div class="commentHead">&nbsp;<br /></div>
+<div class="commentDate">
+    <% comment.creator as="link"  %>, 
+    <% comment.createtime format="long" %>
+</div>
+<div class="commentTitle">
+    <% comment.content part="title" %>
+</div>
+<div>
+    <% comment.content part="text" %>
+</div>
+<p class="small">
+    <% comment.link text="link" %>&nbsp;&nbsp;
+    <% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>
+    <% comment.deletelink prefix="...&nbsp;" %>
+</p>
 <% comment.comments %>
-<div class="reply"><span class="small"><% this.replylink text="comment" prefix="<br />...&nbsp;" %></span></div>
+<div class="reply"><span class="small">
+    <% this.replylink text="comment" prefix="<br />...&nbsp;" %>
+</span></div>
