@@ -1,4 +1,1 @@
-<tr>
-	<td align="right" valign="top"><% param.count %></td>
-	<td><a href="<% param.referrer %>"><% param.text %></a></td>
-</tr>
+referrers.push(new Antville.Referrer("<% param.referrer %>", "<% param.text %>", <% param.count %>));
