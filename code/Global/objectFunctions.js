@@ -68,7 +68,7 @@ function autoLogin() {
       return;
    else if (session.login(name, u.password)) {
       u.lastVisit = new Date();
-      res.message = getMessage("confirm.welcome", [res.handlers.context.getTitle(), session.user.name]);
+      res.message = getMessage("confirm.welcome", [(res.handlers.site ? res.handlers.site : root).getTitle(), session.user.name]);
    }
    return;
 }
