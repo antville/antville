@@ -247,7 +247,7 @@ function commentcounter_macro(param) {
    if (linkflag)
       Html.openTag("a", this.createLinkParam(param2));
    if (commentCnt == 0)
-      res.write(param.no ? param.no : "0 comments");
+      res.write(param.no || param.no == "" ? param.no : "0 comments");
    else if (commentCnt == 1)
       res.write(param.one ? param.one : "1 comment");
    else
