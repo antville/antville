@@ -106,3 +106,15 @@ function createThumbnail(rawimage) {
    this.thumbnail = thumbImg;
    return;
 }
+
+/**
+ * function creates the call to the client-side popup-script
+ * for image-object
+ * @return String call of popup-script
+ */
+
+function popupUrl() {
+   var url = "javascript:openPopup('" + getProperty("imgUrl") + this.weblog.alias + "/" + this.filename + "." + this.fileext;
+   url += "'," + this.width + "," + this.height + ");";
+   return (url);
+}
