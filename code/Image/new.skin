@@ -1,42 +1,39 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <tr>
-<td colspan="2">Please specify the name of the image. Using this name you will be able to insert this image i.e. into a story by typing <pre>&lt;% image name="nameofyourimage" %&gt;</pre></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Name:</td>
-<td nowrap="nowrap"><input type="text" name="alias" size="25" value="<%request.alias encoding="form"%>" /></td>
+<td valign="top" class="small" nowrap="nowrap">Name:</td>
+<td><% input name="alias" size="25" %><br /><span class="small">If you do not specify a name, Antville will create one based on the name of the image you uploaded.</small></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Alttext:</td>
-<td nowrap="nowrap"><input type="text" name="alttext" size="25" value="<%request.alttext encoding="form"%>" /></td>
+<td nowrap="nowrap"><% input name="alttext" size="25" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Upload File:</td>
-<td nowrap="nowrap"><% this.input type="file" name="rawimage" width="10" %></td>
+<td nowrap="nowrap"><% input type="file" name="rawimage" width="10" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Fetch from URL:</td>
-<td nowrap="nowrap"><input type="text" name="url" size="25" value="<%request.url encoding="form"%>" /></td>
+<td nowrap="nowrap"><% input name="url" size="25" %></td>
 </tr>
 <tr>
 <td colspan="2">If you want to resize the image, please specify your desired maximum width and/or maximum height. If you specify both, the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">max. width:</td>
-<td nowrap="nowrap"><% this.input type="text" name="maxwidth" width="5" value="400" %>&nbsp;pixel</td>
+<td nowrap="nowrap"><% input type="text" name="maxwidth" width="5" value="400" %>&nbsp;pixel</td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">max. height:</td>
-<td nowrap="nowrap"><% this.input type="text" name="maxheight" width="5" value="400" %>&nbsp;pixel</td>
+<td nowrap="nowrap"><% input type="text" name="maxheight" width="5" value="400" %>&nbsp;pixel</td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">create thumbnail:</td>
-<td nowrap="nowrap"><% this.input type="checkbox" name="thumbnail" check="true" %></td>
+<td class="small" nowrap="nowrap">&nbsp;</td>
+<td class="small">(If the width or height of your image exceeds 100 pixel Antville will automatically create a thumbnail of it too.)</td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </form>
 </table>
