@@ -11,7 +11,7 @@ function constructor() {
  * function manipulates the sites-collection
  */
 
-function searchSites(show,sort,order,keywords) {
+function searchSites(show, sort, order, keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
    if (show == "1")
@@ -53,7 +53,7 @@ function searchSites(show,sort,order,keywords) {
  * function manipulates the users-collection
  */
 
-function searchUsers(show,sort,order,keywords) {
+function searchUsers(show, sort, order, keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
    if (show == "1")
@@ -98,7 +98,7 @@ function searchUsers(show,sort,order,keywords) {
  * function manipulates the syslogs-collection
  */
 
-function searchSyslog(show,order,keywords) {
+function searchSyslog(show, order, keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
    if (show == "1")
@@ -130,68 +130,60 @@ function searchSyslog(show,order,keywords) {
  * function stores updated site-preferences
  */
 
-function updateSite(param,admin) {
-   var result;
+function updateSite(param, admin) {
    var site = this.sites.get(param.item);
    if (!site)
-      result = getError("siteEditMissing");
-   else {
-      var trust = parseInt(param.trusted,10);
-      var block = parseInt(param.blocked,10);
-      if (trust > site.trusted)
-         this.syslogs.add(new syslog("site",site.alias,"granted trust",admin));
-      else if (trust < site.trusted)
-         this.syslogs.add(new syslog("site",site.alias,"revoked trust",admin));
-      if (block > site.blocked)
-         this.syslogs.add(new syslog("site",site.alias,"blocked site",admin));
-      else if (block < site.blocked)
-         this.syslogs.add(new syslog("site",site.alias,"unblocked site",admin));
-      site.trusted = trust;
-      site.blocked = block;
-      result = getConfirm("save");
-   }
-   return (result);
+      throw new Exception("siteEditMissing");
+   var trust = parseInt(param.trusted, 10);
+   var block = parseInt(param.blocked, 10);
+   if (trust > site.trusted)
+      this.syslogs.add(new syslog("site", site.alias, "granted trust", admin));
+   else if (trust < site.trusted)
+      this.syslogs.add(new syslog("site", site.alias, "revoked trust", admin));
+   if (block > site.blocked)
+      this.syslogs.add(new syslog("site", site.alias, "blocked site", admin));
+   else if (block < site.blocked)
+      this.syslogs.add(new syslog("site", site.alias, "unblocked site", admin));
+   site.trusted = trust;
+   site.blocked = block;
+   return new Message("update");
 }
 
 /**
  * function stores updated user
  */
 
-function updateUser(param,admin) {
-   var result;
+function updateUser(param, admin) {
    var u = this.users.get(param.item);
    if (!u)
-      result = getError("userEditMissing");
-   else if (u == admin)
-      result = getError("accountModifyOwn");
+      throw new Exception("userEditMissing");
+   if (u == admin)
+      throw new Exception("accountModifyOwn");
+   // check if this is an attempt to remove the last sysadmin
+   var sysadmin = parseInt(param.sysadmin, 10);
+   var trust = parseInt(param.trusted, 10);
+   var block = parseInt(param.blocked, 10);
+   if (u.sysadmin && this.sysadmins.size() == 1)
+      throw new Exception("adminDeleteLast");
    else {
-      // check if this is an attempt to remove the last sysadmin
-      var sysadmin = parseInt(param.sysadmin,10);
-      var trust = parseInt(param.trusted,10);
-      var block = parseInt(param.blocked,10);
-      if (u.sysadmin && this.sysadmins.size() == 1)
-         result = getError("adminDeleteLast");
-      else {
-         //logging
-         if (sysadmin > u.sysadmin)
-            this.syslogs.add(new syslog("user",u.name,"granted sysadmin-rights",admin));
-         else if (sysadmin < u.sysadmin)
-            this.syslogs.add(new syslog("user",u.name,"revoked sysadmin-rights",admin));
-         u.sysadmin = sysadmin;
-      }
-      if (trust > u.trusted)
-         this.syslogs.add(new syslog("user",u.name,"granted trust",admin));
-      else if (trust < u.trusted)
-         this.syslogs.add(new syslog("user",u.name,"revoked trust",admin));
-      if (block > u.blocked)
-         this.syslogs.add(new syslog("user",u.name,"blocked user",admin));
-      else if (block < u.blocked)
-         this.syslogs.add(new syslog("user",u.name,"unblocked user",admin));
-      u.trusted = trust;
-      u.blocked = block;
-      result = getConfirm("save");
+      //logging
+      if (sysadmin > u.sysadmin)
+         this.syslogs.add(new syslog("user", u.name, "granted sysadmin-rights", admin));
+      else if (sysadmin < u.sysadmin)
+         this.syslogs.add(new syslog("user", u.name, "revoked sysadmin-rights", admin));
+      u.sysadmin = sysadmin;
    }
-   return (result);
+   if (trust > u.trusted)
+      this.syslogs.add(new syslog("user", u.name, "granted trust", admin));
+   else if (trust < u.trusted)
+      this.syslogs.add(new syslog("user", u.name, "revoked trust", admin));
+   if (block > u.blocked)
+      this.syslogs.add(new syslog("user", u.name, "blocked user", admin));
+   else if (block < u.blocked)
+      this.syslogs.add(new syslog("user", u.name, "unblocked user", admin));
+   u.trusted = trust;
+   u.blocked = block;
+   return new Message("update");
 }
 
 
@@ -199,60 +191,56 @@ function updateUser(param,admin) {
  * function checks if the system parameters are correct
  */
 
-function evalSystemSetup(param,admin) {
-   var result;
+function evalSystemSetup(param, admin) {
    root.sys_title = param.sys_title;
    root.sys_url = evalURL(param.sys_url);
-   root.sys_frontSite = param.sys_frontSite ? root.get(param.sys_frontSite) : null;
+   if (param.sys_frontSite) {
+      var s = root.get(param.sys_frontSite);
+      if (!s)
+         throw new Exception("systemFrontsiteMissing");
+      root.sys_frontSite = s;
+   } else
+      root.sys_frontSite = null;
    // check system email
    if (!param.sys_email)
-      result = getError("systemEmailMissing");
-   else if (!checkEmail(param.sys_email))
-      result = getError("emailInvalid");
-   else
-      root.sys_email = param.sys_email;
+      throw new Exception("systemEmailMissing");
+   evalEmail(param.sys_email);
+   root.sys_email = param.sys_email;
    // store selected locale in this.language and this.country
-   var locs = java.util.Locale.getAvailableLocales();
-   var newLoc = locs[parseInt(param.locale,10)];
-   if (!newLoc)
-      newLoc = java.util.Locale.getDefault();
-   root.sys_country = newLoc.getCountry();
-   root.sys_language = newLoc.getLanguage();
-
+   if (param.locale) {
+      var loc = param.locale.split("_");
+      root.sys_language = loc[0];
+      root.sys_country = loc.length == 2 ? loc[1] : null;
+      root.cache.locale = null;
+   }
+   root.sys_timezone = param.timezone;
+   root.cache.timezone = null;
    // long dateformat
-   var ldf = LONGDATEFORMATS[parseInt(param.longdateformat,10)];
-   root.longdateformat = ldf ? ldf : null;
-
+   root.longdateformat = param.longdateformat ? param.longdateformat : null;
    // short dateformat
-   var sdf = SHORTDATEFORMATS[parseInt(param.shortdateformat,10)];
-   root.shortdateformat = sdf ? sdf : null;
+   root.shortdateformat = param.shortdateformat ? param.shortdateformat : null;
 
-   root.cache.locale = null;
    // allow file
    root.sys_allowFiles = param.sys_allowFiles ? true : false;
    // limiting site-creation
-   var limitArray = new Array(null,"trusted","sysAdmin");
-   root.sys_limitNewSites = param.sys_limitNewSites ? parseInt(param.sys_limitNewSites,10) : null;
-   root.sys_minMemberAge = param.sys_minMemberAge ? parseInt(param.sys_minMemberAge,10) : null;
-   root.sys_minMemberSince = param.sys_minMemberSince ? parseTimestamp(param.sys_minMemberSince,"yyyy-MM-dd HH:mm") : null;
-   root.sys_waitAfterNewSite = param.sys_waitAfterNewSite ? parseInt(param.sys_waitAfterNewSite,10) : null;
+   root.sys_limitNewSites = param.sys_limitNewSites ? parseInt(param.sys_limitNewSites, 10) : null;
+   root.sys_minMemberAge = param.sys_minMemberAge ? parseInt(param.sys_minMemberAge, 10) : null;
+   root.sys_minMemberSince = param.sys_minMemberSince ? param.sys_minMemberSince.toDate("yyyy-MM-dd HH:mm", root.getTimeZone()) : null;
+   root.sys_waitAfterNewSite = param.sys_waitAfterNewSite ? parseInt(param.sys_waitAfterNewSite, 10) : null;
    // auto-cleanup
    root.sys_enableAutoCleanup = param.sys_enableAutoCleanup ? true : false;
-   root.sys_startAtHour = parseInt(param.sys_startAtHour,10);
+   root.sys_startAtHour = parseInt(param.sys_startAtHour, 10);
    // auto-block
    root.sys_blockPrivateSites = param.sys_blockPrivateSites ? true : false;
-   root.sys_blockWarningAfter = param.sys_blockWarningAfter ? parseInt(param.sys_blockWarningAfter,10) : null;
-   root.sys_blockAfterWarning = param.sys_blockAfterWarning ? parseInt(param.sys_blockAfterWarning,10) : null;
+   root.sys_blockWarningAfter = param.sys_blockWarningAfter ? parseInt(param.sys_blockWarningAfter, 10) : null;
+   root.sys_blockAfterWarning = param.sys_blockAfterWarning ? parseInt(param.sys_blockAfterWarning, 10) : null;
    // auto-removal
    root.sys_deleteInactiveSites = param.sys_deleteInactiveSites ? true : false;
-   root.sys_deleteWarningAfter = param.sys_deleteWarningAfter ? parseInt(param.sys_deleteWarningAfter,10) : null;
-   root.sys_deleteAfterWarning = param.sys_deleteAfterWarning ? parseInt(param.sys_deleteAfterWarning,10) : null;
-   if (!result) {
-      // add a new entry in system-log
-      this.syslogs.add(new syslog("system",null,"changed system setup",session.user));
-      // everything fine, so we assign true to root.sys_issetup
-      root.sys_issetup = true;
-      result = getConfirm("systemUpdate");
-   }
-   return (result);
+   root.sys_deleteWarningAfter = param.sys_deleteWarningAfter ? parseInt(param.sys_deleteWarningAfter, 10) : null;
+   root.sys_deleteAfterWarning = param.sys_deleteAfterWarning ? parseInt(param.sys_deleteAfterWarning, 10) : null;
+   // add a new entry in system-log
+   this.syslogs.add(new syslog("system", null, "changed system setup", session.user));
+   // everything fine, so we assign true to root.sys_issetup
+   root.sys_issetup = true;
+   return new Message("systemUpdate");
 }
