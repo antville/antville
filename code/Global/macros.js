@@ -335,24 +335,43 @@ function shortcut_macro(param) {
  */
 
 function storylist_macro(param) {
+   var site = param.of ? root.get(param.of) : path.site;
+   if (!site)
+      return;
+
+   // untrusted sites are only allowed to use "light" version
+   if (path.site && !path.site.trusted) {
+      param.limit = param.limit ? Math.min(site.allstories.count(), parseInt(param.limit), 50) : 25;
+      for (var i=0; i<param.limit; i++) {
+         var story = site.allcontent.get(i);
+         if (!story)
+            continue;
+         res.write(param.itemprefix);
+         openLink(story.href());
+         var str = story.title;
+         if (!str)
+            str = softwrap(clipText(story.getRenderedContentPart("text"), 20))
+         res.write(str ? str : "...");
+         closeLink();
+         res.write(param.itemsuffix);
+      }     
+      return;
+   }
+
+   // this is db-heavy action available for trusted users only (yet?)
    if (param.sortby != "title" && param.sortby != "createtime" && param.sortby != "modifytime")
       param.sortby = "modifytime";
    if (param.order != "asc" && param.order != "desc")
       param.order = "asc";
-
    var order = " order by TEXT_" + param.sortby.toUpperCase() + " " + param.order;
-
    var rel = "";
    if (param.show == "stories")
       rel += " and TEXT_PROTOTYPE = 'story'";
    else if (param.show == "comments")
       rel += " and TEXT_PROTOTYPE = 'comment'";
-
    if (param.topic)
       rel += " and TEXT_TOPIC = '" + param.topic + "'";
-
-   var query = "select * from AV_TEXT where TEXT_F_SITE = " + path.site._id + " and TEXT_ISONLINE > 0" + rel + order;
-
+   var query = "select TEXT_ID from AV_TEXT where TEXT_F_SITE = " + site._id + " and TEXT_ISONLINE > 0" + rel + order;
    var connex = getDBConnection("antville");
    var rows = connex.executeRetrieval(query);
 
@@ -362,20 +381,17 @@ function storylist_macro(param) {
       while (rows.next() && (cnt < param.limit)) {
          cnt++;
          var id = rows.getColumnItem("TEXT_ID").toString();
-         var story = path.site.allcontent.get(id);
+         var story = site.allcontent.get(id);
          if (!story)
             continue;
          res.write(param.itemprefix);
          openLink(story.href());
          var str = story.title;
-         if (!str) {
-            res.write("...");
-            res.write(softwrap(clipText(story.getRenderedContentPart("text"), 20)));
-         }
-         else
-            res.write(str);
+         if (!str)
+            str = softwrap(clipText(story.getRenderedContentPart("text"), 20))
+         res.write(str ? str : "...");
          closeLink();
-         res.write(param.itemsuffix + " \n");
+         res.write(param.itemsuffix);
       }
    }
    rows.release();
