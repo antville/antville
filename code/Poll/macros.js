@@ -73,7 +73,7 @@ function choices_macro(param) {
       for (var i=0; i<this.size(); i++) {
          var choice = this.get(i);
          param.name = "choice";
-         param.title = choice.title;
+         param.title = renderSkinAsString(createSkin(choice.title));
          param.value = choice._id;
          param.checked = "";
          if (choice == vote)
