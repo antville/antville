@@ -13,13 +13,16 @@ function evalNewStory(param,creator) {
    if (param.text && creator) {
       result.url = this.href();
       var newStory = new story();
+      newStory.prototype = "story";
       var online = parseInt(param.online,10);
       var editableby = parseInt(param.editableby,10);
       newStory.weblog = this._parent;
       newStory.title = param.title;
       newStory.text = param.text;
-      if (param.topic)
-         newStory.topic = param.topic;
+      if (param.newtopic)
+         newStory.topic = param.newtopic;
+      else if (parseInt(param.topic,10) > 0)
+         newStory.topic = this._parent.space.get(parseInt(param.topic,10) -1).groupname;
       if (isNaN(online) || (online == 1 && !newStory.topic))
          newStory.online = 0;
       else
@@ -29,12 +32,13 @@ function evalNewStory(param,creator) {
       newStory.createtime = new Date();
       newStory.modifytime = new Date();
       newStory.day = newStory.createtime.format("yyyyMMdd");
+      newStory.ipaddress = param.http_remotehost;
       newStory.reads = 0;
       this._parent.add(newStory);
       if (newStory.online) {
          this._parent.lastupdate = newStory.createtime;
          if (newStory.topic)
-            result.url = this._parent.space.href() + newStory.topic;
+            result.url = this._parent.space.href() + escape(newStory.topic);
          else
             result.url = newStory.href();
       } else
