@@ -1,6 +1,6 @@
-<P>This is Antville, a small but fancy Weblog-Application build with <% this.link to="http://helma.org" text="Helma Object Publisher" %> And the Blindtext goes on and on and on and on. And here comes another text that should explain what the hell antville is and what one can do with it.  And the Blindtext goes on and on and on and on. And here comes another text that should explain what the hell antville is and what one can do with it.  And the Blindtext goes on and on and on and on. And here comes another text that should explain what the hell antville is and what one can do with it. </P>
+<P>This is Antville, a small Weblog-Application build with <% this.link to="http://helma.org" text="Helma Object Publisher" %>.</P>
 
-<P>If you don't own a Weblog yourself, you can <% this.link to="new" text="create one" %></P>
+<P>If you don't own a Weblog yourself, feel free to <% this.link to="new" text="create one" %></P>
 
 <P><B>Status:</B></P>
 <% this.weblogcounter %> WebLogs created<BR>
