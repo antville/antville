@@ -24,7 +24,7 @@ function isDeleteAllowed() {
    if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
       return false;
-   } else if (this.author != user) {
+   } else if (!this.weblog.isUserAdmin() && this.author != user) {
       res.message = "You cannot delete the story of somebody else!";
       return false;
    }
@@ -36,15 +36,24 @@ function isDeleteAllowed() {
  */
 
 function isEditAllowed() {
-   if (user.isBlocked()) {
-      res.message = "Sorry, your account was disabled!";
+   if (user.isBlocked())
       return false;
-   } else if (!this.weblog.isUserMember()) {
-      res.message = "Sorry, editing is only allowed for registered Users!";
-      return false;
-   } else if (this.author != user && this.editableby > this.weblog.members.get(user.name).level) {
-      res.message = "Sorry, you're not allowed to edit this story!";
-      return false;
-   }
-   return true;
+   if (this.author == user)
+      return true;
+   if (this.weblog.isUserMember() && this.editableby <= this.weblog.members.get(user.name).level)
+      return true;
+   return false;
+}
+
+
+/**
+ * check if this story should appear or not
+ */
+
+function isViewAllowed() {
+   if (this.author == user || this.weblog.isUserAdmin())
+      return true;
+   if (this.weblog.isUserMember() && this.editableby <= this.weblog.members.get(user.name).level)
+      return true;
+   return false;
 }
