@@ -5,7 +5,7 @@
 </tr>
 <tr>
 <td class="loginStatus" nowrap><% root.loginstatus %>&nbsp;</td>
-<td class="headerStatus"><% now prefix="right now it's " format="EEEE, dd.MM.yyyy HH:mm" suffix="<BR>" %></td>
+<td class="headerStatus"><% now prefix="right now it's " format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<BR>" %></td>
 </tr>
 </table>
 &nbsp;<br>
