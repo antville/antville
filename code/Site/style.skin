@@ -313,36 +313,6 @@ ul.skinmgrTree li div {
    color:<% layout.textcolor %>;
 }
 
-/* classes for skin diff */
-.diff td {
-   padding:0px 5px;
-}
-.diff pre {
-   font-size:12px;
-   margin:0px;
-   padding:2px 0px;
-}
-.diff .removed {
-   border-top:1px solid <% layout.smallcolor %>;
-   background-color: #ff3333;
-}
-.diff .added {
-   border-top:1px solid <% layout.smallcolor %>;
-   background-color: #33cc33;
-}
-.diff .line {
-   border-top:1px solid <% layout.smallcolor %>;
-}
-.diff .num {
-   border-top:1px solid <% layout.smallcolor %>;
-   color:<% layout.smallcolor %>;
-   text-align:right;
-}
-.diff .status {
-   padding:0px 5px;
-   border-top:1px solid <% layout.smallcolor %>;
-}
-
 /* classes for membermgr */
 .membergroup {
    font-weight:bold;
