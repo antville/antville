@@ -194,7 +194,7 @@ function evalSystemSetup(param,admin) {
    var result;
    root.sys_title = param.sys_title;
    root.sys_url = evalURL(param.sys_url);
-   root.sys_frontSite = param.sys_frontSite ? param.sys_frontSite : null;
+   root.sys_frontSite = param.sys_frontSite ? root.get(param.sys_frontSite) : null;
    // check system email
    if (!param.sys_email)
       result = getError("systemEmailMissing");
