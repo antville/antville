@@ -105,7 +105,7 @@ error.layoutDelete = Couldn't delete the layout &raquo;<% param.value1 %>&laquo;
 error.layoutParentMissing = You must choose an existing layout as a basis for your new layout.
 error.layoutParentNotFound = Couldn't find the basic layout. Please choose another one.
 error.layoutNoParent = There are no standard images since this layout isn't based on another one.
-error.layoutExport = Oops, couldn't export the layout &raquo;<% param.value1 %>&laquo;. Please try again or contact the site administrators.
+error.layoutDownload = Oops, couldn't export the layout &raquo;<% param.value1 %>&laquo;. Please try again or contact the site administrators.
 
 error.layoutImportTooBig = Oops, the size of the layout archive exceeded the upload limit. Please contact the site administrators.
 error.layoutImportNoUpload = Please upload a .zip archive that contains the layout you want to import.
