@@ -14,7 +14,10 @@ res.title = "Search " + this.title;
 res.body = this.renderSkinAsString("searchform");
 
 if (req.data.q) {
-    var query = req.data.q;
+    // escape single ' as ''
+    var unquote = new RegExp("\'");
+    unquote.global = true;
+    var query = req.data.q.replace(unquote, "''");
 
     // reuse search result container if it already exists
     var folder = user.cache["search-"+query];
@@ -29,7 +32,7 @@ if (req.data.q) {
     // construct query
     var where = "where WEBLOG_ID = "+this._id+" and ISONLINE > 0 and ";
     for (var i in qarr) {
-        where += "(TITLE like '%"+qarr[i]+"%' or TEXT like '%"+qarr[i]+"%') "
+        where += "(TITLE like '%"+qarr[i]+"%' or BODY like '%"+qarr[i]+"%') "
         if (i < qarr.length-1)
             where += "and ";
     }
