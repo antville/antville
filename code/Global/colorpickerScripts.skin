@@ -88,10 +88,12 @@ Antville.ColorPickerFactory = function() {
       return;
    }
 
-   this.displayColorValue = function(obj) {
-      var col = obj.style.backgroundColor;
+   /**
+    * Convert various color notations into one canonical six figure hex notation.
+    */
+   this.parseColor = function(color) {
       var rgb = new RegExp("rgb ?\\( ?([0-9^,]*), ?([0-9^,]*), ?([0-9^ \\)]*) ?\\)");
-      var result = col.match(rgb);
+      var result = color.match(rgb);
       if (result) {
          var R = parseInt(result[1]).toString(16);
          var G = parseInt(result[2]).toString(16);
@@ -99,10 +101,17 @@ Antville.ColorPickerFactory = function() {
          if (R.length == 1) R="0"+R;
          if (G.length == 1) G="0"+G;
          if (B.length == 1) B="0"+B;
-         col = R+G+B;
+         return R+G+B;
       }
-      else if (col.indexOf("#") == 0)
-         col = col.substring(1, col.length);
+      else if (color.indexOf("#") == 0)
+         return color.substring(1);
+      else
+         return color;
+   }
+
+   this.displayColorValue = function(obj) {
+      var col = obj.style.backgroundColor;
+      col = this.parseColor(col);
       document.getElementById("display").value = col;
       return;
    }
@@ -139,13 +148,12 @@ Antville.ColorPickerFactory = function() {
             document.getElementById(name).style.color = col;
       }
    }
-   
+
    this.setCurrentColor = function() {
       var col = this.colors[this.currentColor];
       if (col == null)
          col = this.currentColorValue;
-      if (col.indexOf("#") == 0)
-         col = col.substring(1);
+      col = this.parseColor(col);
       for (var i=this.brightness.length-1; i>=0; i--) {
          for (var j=0; j<this.brightness[i].length; j++) {
             if (this.brightness[i][j] == col) {
@@ -181,8 +189,7 @@ Antville.ColorPickerFactory = function() {
       var ref = self.opener.document;
       for (var i in this.colors) {
          var col = this.colors[i];
-         if (col.indexOf("#") == 0)
-            col = col.substring(1);
+         col = this.parseColor(col);
          ref.getElementById(prefix+i).style.backgroundColor = "#"+col;
          ref.getElementById(valuePrefix+i).value = col;
       }
