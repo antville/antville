@@ -34,3 +34,24 @@ function isReplyDenied() {
       return ("Sorry, your account was disabled!");
    return null;
 }
+
+/**
+ * function explicitly allowes some macros for use in the text of a story
+ */
+
+function allowTextMacros(s) {
+   s.allowMacro("image");
+   s.allowMacro("this.image");
+   s.allowMacro("weblog.image");
+   s.allowMacro("story.image");
+   s.allowMacro("thumbnail");
+   s.allowMacro("this.thumbnail");
+   s.allowMacro("weblog.thumbnail");
+   s.allowMacro("story.thumbnail");
+   s.allowMacro("link");
+   s.allowMacro("this.link");
+   s.allowMacro("weblog.link");
+   s.allowMacro("story.link");
+   s.allowMacro("goodie");
+   return;
+}
