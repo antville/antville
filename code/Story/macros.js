@@ -341,17 +341,17 @@ function backlinks_macro() {
 	// this is a clone of weblog.listReferrers_macro.
 	var str = "";
 	var c = getDBConnection("antville");
-	error = c.getLastError();
-	if (error)
-		return("Error establishing DB connection: " + error);
+	var dbError = c.getLastError();
+	if (dbError)
+		return("Error establishing DB connection: " + dbError);
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
 	var query = "select *, count(*) as \"COUNT\" from ACCESS where STORY_ID = " + this._id + " group by REFERRER order by \"COUNT\" desc, REFERRER asc;";                                
 	var rows = c.executeRetrieval(query);
-	error = c.getLastError();
-	if (error)
-		return("Error executing SQL query: " + error);
+	var dbError = c.getLastError();
+	if (dbError)
+		return("Error executing SQL query: " + dbError);
 	
 	var param = new Object();
 	while (rows.next()) {

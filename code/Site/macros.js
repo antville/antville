@@ -590,18 +590,17 @@ function listMostRead_macro() {
 function listReferrers_macro() {
   var str = "";
   var c = getDBConnection("antville");
-  var error = c.getLastError();
-  if (error)
-    return("Error establishing DB connection: " + error);
-
+  var dbError = c.getLasterror();
+  if (dbError)
+    return("Error establishing DB connection: " + dbError);
   // we're doing this with direct db access here
   // (there's no need to do it with prototypes):
   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
   var query = "select *, count(*) as \"COUNT\" from ACCESS where WEBLOG_ID = " + this._id + " and DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by REFERRER order by \"COUNT\" desc, REFERRER asc;";
   var rows = c.executeRetrieval(query);
-  error = c.getLastError();
-  if (error)
-    return("Error executing SQL query: " + error);
+  var dbError = c.getLasterror();
+  if (dbError)
+    return("Error executing SQL query: " + dbError);
   var param = new Object();
   while (rows.next()) {
     param.count = rows.getColumnItem("COUNT");
