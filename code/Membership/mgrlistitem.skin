@@ -5,7 +5,7 @@
 </tr>
 <tr valign="top">
 <td><div class="storytitle"><% membership.username %></div>
-<div class="ample"><small><% membership.createtime format="short" prefix="created on " %></small></div>
+<div class="ample"><span class="small"><% membership.createtime format="short" prefix="created on " %></span></div>
 <div><% membership.url as="link" %></div></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
 <td align="right" class="small" nowrap="nowrap"><% membership.editlink text="edit" prefix="...&nbsp;" suffix="<br />" %>
