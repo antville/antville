@@ -183,8 +183,7 @@ function poll_macro(param) {
    var poll = site.polls.get(parts[1] ? parts[1] : param.id);
    if (!poll)
       return getMessage("error.pollNoExist", param.id);
-   var deny = poll.isVoteDenied(session.user, req.data.memberlevel);
-   if (deny || param.as == "link")
+   if (param.as == "link")
       Html.link(poll.href(poll.closed ? "results" : ""), poll.question);
    else if (poll.closed || param.as == "results") 
       poll.renderSkin("results"); 
@@ -192,6 +191,7 @@ function poll_macro(param) {
       res.data.action = poll.href();
       poll.renderSkin("main");
    }
+   return;
 }
 
 
