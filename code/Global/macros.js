@@ -36,20 +36,23 @@ function image_macro(param) {
       result = getPoolObj(param.fallback, "images");
    if (!result)
       return;
-   var imgObj = result.obj;
+   var img = result.obj;
    // return different display according to param.as
-   if (param.as == "url")
-      return(imgObj.getStaticUrl());
-   else if (param.as == "thumbnail") {
-      if (!param.linkto)
-         param.linkto = imgObj.getStaticUrl();
-      if (imgObj.thumbnail)
-         imgObj = imgObj.thumbnail;
-   } else if (param.as == "popup") {
-      param.linkto = imgObj.getStaticUrl();
-      param.onclick = imgObj.popupUrl();
-      if (imgObj.thumbnail)
-         imgObj = imgObj.thumbnail;
+   switch (param.as) {
+      case "url" :
+         return img.getUrl();
+      case "thumbnail" :
+         if (!param.linkto)
+            param.linkto = img.getUrl();
+         if (img.thumbnail)
+            img = img.thumbnail;
+         break;
+      case "popup" :
+         param.linkto = img.getUrl();
+         param.onClick = img.getPopupUrl();
+         if (img.thumbnail)
+            img = img.thumbnail;
+         break;
    }
    delete(param.name);
    delete(param.as);
@@ -57,10 +60,10 @@ function image_macro(param) {
    if (param.linkto) {
       Html.openLink(param.linkto);
       delete(param.linkto);
-      renderImage(imgObj, param);
+      renderImage(img, param);
       Html.closeLink();
    } else
-      renderImage(imgObj, param);
+      renderImage(img, param);
    return;
 }
 
@@ -383,8 +386,8 @@ function colorpicker_macro(param) {
       param2.part = param.name;
       param.editor = obj.content_macro(param2);
       param.color = renderColorAsString(obj.content.getProperty(param.name));
-   } else if (res.handlers.site) {
-      var obj = res.handlers.site;
+   } else if (path.layout) {
+      var obj = path.layout;
       param.editor = obj[param.name + "_macro"](param2);
       param.color = renderColorAsString(obj.preferences.getProperty(param.name));
    } else
