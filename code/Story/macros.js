@@ -108,19 +108,6 @@ function createtime_macro(param) {
 }
 
 /**
- * macro renders the name of the modifier
- */
-function modifier_macro(param) {
-   if (!this.modifier)
-      return;
-   if (param.as == "link" && this.modifier.url)
-      Html.link(this.modifier.url, this.modifier.name);
-   else
-      res.write(this.modifier.name);
-   return;
-}
-
-/**
  * macro rendering a link to edit
  * if user is allowed to edit
  */
@@ -237,7 +224,7 @@ function commentcounter_macro(param) {
    var commentCnt = this.comments.count();
    if (!param.linkto)
       param.linkto = "main";
-   // cloning the param object to remove the macro-specific 
+   // cloning the param object to remove the macro-specific
    // attributes from the clone for valid markup output:
    var param2 = ObjectLib.clone(param);
    delete param2.one;
@@ -368,7 +355,7 @@ function topicchooser_macro(param) {
 
 /**
  * macro renders the name of the topic this story belongs to
- * either as link, image (if an image entiteld by the 
+ * either as link, image (if an image entiteld by the
  * topic name is available) or plain text
  * NOTE: for backwards compatibility, the default is a link and
  * you have to set "text" explicitely (which is not so nice, imho.)
@@ -409,15 +396,15 @@ function backlinks_macro(param) {
    var dbError = c.getLastError();
    if (dbError)
       return getMessage("error.database", dbError);
-   
+
    // we're doing this with direct db access here
    // (there's no need to do it with prototypes):
-   var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";                                
+   var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
    if (dbError)
       return getMessage("error.database", dbError);
-   
+
    // we show a maximum of 100 backlinks
    var limit = Math.min((param.limit ? parseInt(param.limit, 10) : 100), 100);
    var backlinks = new java.lang.StringBuffer();
@@ -461,7 +448,7 @@ function backlinks_macro(param) {
 function addtofront_macro(param) {
    if (param.as == "editor") {
       param.checked = "checked";
-      // if we're in a submit, use the submitted form value. 
+      // if we're in a submit, use the submitted form value.
       // otherwise, render the object's value.
       if (req.data.publish || req.data.save) {
          if (!req.data.addToFront)
