@@ -676,22 +676,19 @@ function skinsetchooser_macro(param) {
  * please add some error message for undefined param.event
  */
 function notify_macro(param) {
-   if (param.event == "storycreate" || param.event == "commentcreate" || param.event == "textupdate" || param.event == "upload") {
-      if (param.as == "editor") {
-         var options = new Array("No e-mail notification", "Admins and content managers", "Contributors and above");
-         var notify = this.preferences.getProperty("notify" + param.event);
-         Html.dropDown("notify" + param.event, options, notify);
-      } else {
-         if (notify == 2)
-            res.write("Contributors and above");
-         else if (notify == 1)
-            res.write("Admins and content managers");
-         else
-            res.write("No e-mail notification");
-      }
+   if (param.as == "editor") {
+      var options = new Array("Don't notify anyone", "Notify content managers", "Notify contributors");
+      var pref = this.preferences.getProperty("notify_" + param.event);
+      Html.dropDown("notify_" + param.event, options, pref);
+   } else {
+      if (pref == 2)
+         res.write("Notify contributors");
+      else if (pref == 1)
+         res.write("Notify content managers");
+      else
+         res.write("Don't notify anyone");
    }
-   else // FIXME
-      res.write('param.event ="' + param.event +'" is not allowed.<br /> (only storycreate/commentcreate/textupdate/upload)');
+   return;
 }
 
 /**
