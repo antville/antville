@@ -20,7 +20,8 @@ create table IMAGE (
    CREATOR mediumint(9),
    MODIFYTIME datetime,
    MODIFIER mediumint(9),
-   unique ID (ID));
+   unique ID (ID)
+);
 
 #----------------------------
 # records for table IMAGE
@@ -56,7 +57,8 @@ create table SKIN (
    CREATOR mediumint(9),
    CREATETIME datetime,
    MODIFYTIME datetime,
-   unique ID (ID));
+   unique ID (ID)
+);
 
 #----------------------------
 # No records for table SKIN
@@ -77,7 +79,8 @@ create table USER (
    ISBLOCKED tinyint(1),
    ISTRUSTED tinyint(1),
    ISSYSADMIN tinyint(1),
-   unique ID (ID));
+   unique ID (ID)
+);
 
 #----------------------------
 # No records for table USER
@@ -127,7 +130,8 @@ create table WEBLOG (
    CREATOR mediumint(9),
    MODIFYTIME datetime,
    MODIFIER mediumint(9),
-   unique ID (ID));
+   unique ID (ID)
+);
 
 #----------------------------
 # No records for table WEBLOG
@@ -145,7 +149,8 @@ create table MEMBER (
    CREATETIME datetime,
    MODIFIER mediumint(9),
    MODIFYTIME datetime,
-   unique ID (ID));
+   unique ID (ID)
+);
 
 #----------------------------
 # No records for table MEMBER
@@ -167,7 +172,8 @@ create table GOODIE (
   CREATOR mediumint(9),
   MODIFYTIME datetime,
   MODIFIER mediumint(9),
-  unique ID(ID));
+  unique ID(ID)
+);
 
 #----------------------------
 # No records for table GOODIE
@@ -178,9 +184,9 @@ create table GOODIE (
 #----------------------------
 
 create table ACCESS (
-   ID bigint(20) not null auto_increment,
-   WEBLOG_ID bigint(20),
-   STORY_ID bigint(20),
+   ID mediumint(9) not null auto_increment,
+   WEBLOG_ID mediumint(9),
+   STORY_ID mediumint(9),
    REFERRER text,
    IP varchar(20),
    BROWSER varchar(255),
@@ -208,7 +214,7 @@ create table TEXT (
    CREATETIME datetime,
    MODIFYTIME datetime,
    MODIFIER mediumint(9),
-   READS bigint,
+   READS mediumint(9),
    IPADDRESS varchar(20),
    unique ID (ID)
 );
@@ -218,11 +224,11 @@ create table TEXT (
 #----------------------------
 
 create table POLL (
-   ID bigint(20) not null,
-   WEBLOG_ID bigint(20),
-   USER_ID bigint(20),
+   ID mediumint(9) not null,
+   WEBLOG_ID mediumint(9),
+   USER_ID mediumint(9),
    TITLE varchar(255),
-   QUESTION text,
+   QUESTION mediumtext,
    ISONLINE tinyint(1),
    CLOSED tinyint(4),
    CLOSETIME datetime,
@@ -236,8 +242,8 @@ create table POLL (
 #----------------------------
 
 create table CHOICE (
-   ID bigint(20) not null,
-   POLL_ID bigint(20),
+   ID mediumint(9) not null,
+   POLL_ID mediumint(9),
    TITLE varchar(255),
    CREATETIME datetime,
    MODIFYTIME datetime,
@@ -249,10 +255,10 @@ create table CHOICE (
 #----------------------------
 
 create table VOTE (
-   ID bigint(20) not null,
-   POLL_ID bigint(20),
-   USER_ID bigint(20),
-   CHOICE_ID bigint(20),
+   ID mediumint(9) not null,
+   POLL_ID mediumint(9),
+   USER_ID mediumint(9),
+   CHOICE_ID mediumint(9),
    USERNAME tinytext,
    CREATETIME datetime,
    MODIFYTIME datetime,
