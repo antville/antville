@@ -27,7 +27,7 @@ function content_macro(param) {
       if (param.as == "link")
          openLink(this.href("main"));
       if (!param.limit)
-         res.write(part);
+         res.write(format(part));
       else
          renderTextPreview(part, param.limit);
       if (param.as == "link")
@@ -222,7 +222,11 @@ function viewlink_macro(param) {
  */
 
 function commentlink_macro(param) {
-   this.renderSkin(param.useskin ? param.useskin : "commentlink");
+   if (!this.hasDiscussions())
+      return;
+   openLink(this.href(param.to ? param.to : "comment"));
+   res.write(param.text ? param.text : "place your comment");
+   closeLink();
 }
 
 
@@ -235,22 +239,22 @@ function commentlink_macro(param) {
  */
 
 function commentcounter_macro(param) {
-   if (this.site.hasDiscussions()) {
-      var commentCnt = this.comments.count();
-      if (!param.linkto)
-         param.linkto = "main";
-      if (commentCnt == 0) {
-         res.write(commentCnt + (param.no ? param.no : " comments"));
-      }
-      else {
-         openMarkupElement("a", this.createLinkParam(param));
-         if (commentCnt == 1)
-            res.write(commentCnt + (param.one ? param.one : " comment"));
-         else
-            res.write(commentCnt + (param.more ? param.more : " comments"));
-         closeMarkupElement("a");
-      }
+   if (!this.hasDiscussions())
+      return;
+   var commentCnt = this.comments.count();
+   if (!param.linkto)
+      param.linkto = "main";
+   if (commentCnt == 0) {
+      res.write(commentCnt + (param.no ? param.no : " comments"));
+   } else {
+      openMarkupElement("a", this.createLinkParam(param));
+      if (commentCnt == 1)
+         res.write(commentCnt + (param.one ? param.one : " comment"));
+      else
+         res.write(commentCnt + (param.more ? param.more : " comments"));
+      closeMarkupElement("a");
    }
+   return;
 }
 
 /**
@@ -258,17 +262,17 @@ function commentcounter_macro(param) {
  */
 
 function comments_macro(param) {
-   if (this.site.hasDiscussions() && this.count()) {
-      for (var i=0;i<this.size();i++) {
-         var c = this.get(i);
-         var linkParam = new Object();
-         linkParam.name = c._id;
-         renderMarkupElement("a", linkParam);
-         if (c.parent)
-            c.renderSkin("reply");
-         else
-            c.renderSkin("toplevel");
-      }
+   if (!path.story.hasDiscussions())
+      return;
+   for (var i=0;i<this.size();i++) {
+      var c = this.get(i);
+      var linkParam = new Object();
+      linkParam.name = c._id;
+      renderMarkupElement("a", linkParam);
+      if (c.parent)
+         c.renderSkin("reply");
+      else
+         c.renderSkin("toplevel");
    }
 }
 
@@ -325,6 +329,19 @@ function editableby_macro(param) {
       else
          res.write("Content Managers and Admins of " + this.site.title);
    }
+}
+
+/**
+ * macro renders a checkbox for enabling/disabling discussions
+ */
+
+function discussions_macro(param) {
+  if (param.as == "editor") {
+    if (this.discussions == null && path.site.hasDiscussions())
+      param.check = "true";
+    renderInputCheckbox(this.createInputParam("discussions",param));
+  } else
+    res.write(parseInt(this.discussions,10) ? "yes" : "no");
 }
 
 /**
