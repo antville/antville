@@ -12,18 +12,38 @@ function loginstatus_macro(param) {
 }
 
 /**
- * macro renders the 10 freshest weblogs
+ * macro basically renders a list of weblogs
+ * but first it checks which collection to use
  */
 
 function webloglist_macro(param) {
-   if (this.size()) {
-      res.write(param.prefix)
-      for (var i=0;i<(this.size() > 10 ? 10 : this.size());i++) {
-         if (this.get(i).isOnline() && this.get(i).lastupdate)
-            this.get(i).renderSkin("preview");
-      }
-      res.write(param.suffix);
+   if (param.show == "all")
+      var collection = this.allWeblogs;
+   else
+      var collection = this;
+
+   var size = collection.size();
+   if (!size)
+      return;
+
+   res.write(param.prefix)
+   var start = parseInt (req.data.start,10);
+   var limit = parseInt(param.limit,10);
+   var scroll = (!param.scroll || param.scroll == "no" ? false : true);
+   if (isNaN(start) || start > size-1)
+      start = 0;
+   if (!scroll)
+      var end = Math.min((limit ? limit : size),size);
+   else {
+      var end = Math.min (start+(limit ? limit : 10), size);
+      if (start > 0)
+         res.write ("<a href=\"?start="+Math.max(0, start-limit)+"\">&lt;&lt;&nbsp;prev</a><br>");
    }
+   for (var i=start;i<end;i++)
+      collection.get(i).renderSkin("preview");
+   if (scroll && end < size)
+      res.write ("<br><a href=\"?start="+end+"\">next&nbsp;&gt;&gt;</a><br>");
+   res.write(param.suffix);
 }
 
 /**
