@@ -136,6 +136,7 @@ function goodie_macro(param) {
  */
 
 function linkedpath_macro (param) {
+   res.write(param.prefix);
    var separator = param.separator;
    if (!separator)
        separator = "&gt; ";
@@ -147,4 +148,5 @@ function linkedpath_macro (param) {
 
    title = path[path.length-1].getNavigationName();
    res.write (title);
+   res.write(param.suffix);
 }
