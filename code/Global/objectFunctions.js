@@ -279,7 +279,9 @@ function logAccess() {
 			writeln("Error executing SQL query: " + error);
 			return;
 		}
-		c.release();
+		// No need to release database connection, since this is the connection managed by
+		// Helma and she'll release it when it's been idle long enough.
+		// c.release();
 		return;
 	}
 }
