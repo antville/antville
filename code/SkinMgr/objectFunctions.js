@@ -33,14 +33,19 @@ function saveSkin(proto,name,source,creator) {
       if (!s.proto && source) {
          s.creator = creator;
          s.createtime = new Date();
+         s.modifier = creator;
+         s.modifytime = new Date();
          s.name = name;
          s.proto = proto;
          s.site = this._parent;
          this.add(s);
       } else if (s.proto && !source)
          this.get(s.proto).remove(s);
-      if (source)
+      if (source) {
          s.skin = source;
+         s.modifier = creator;
+         s.modifytime = new Date();
+      }
       result = getConfirm("update");
    } else
       result = getError("skinUpdate");
