@@ -85,7 +85,7 @@ function evalImg(param, modifier) {
    // check name of topic (if specified)
    var topicName = null;
    if (param.topic) {
-      if (!param.topic.isURL())
+      if (String.URLPATTERN.test(param.topic))
          throw new Exception("topicNoSpecialChars");
       topicName = param.topic;
    } else if (param.addToTopic)
