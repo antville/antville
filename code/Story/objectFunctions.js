@@ -187,9 +187,9 @@ function getRenderedContentPart (name) {
       var part = this.getContentPart (name);
       if (!part)
          return "";
-      var s = createSkin(format(activateLinks(part)));
+      var s = createSkin(format(part));
       this.allowTextMacros(s);
-      this.cache["rendered_"+name] = this.renderSkinAsString(s);
+      this.cache["rendered_"+name] = activateLinks(this.renderSkinAsString(s));
       if (req.data.cachePart)
          this.cache["lastRendered_"+name] = new Date();
    }
