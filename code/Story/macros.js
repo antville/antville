@@ -123,16 +123,6 @@ function createtime_macro(param) {
 }
 
 /**
- * macro rendering modifytime of story
- */
-
-function modifytime_macro(param) {
-   if (this.modifytime) {
-      res.write(formatTimestamp(this.modifytime,param.format));
-   }
-}
-
-/**
  * macro renders the name of the author
  * !!! left for backwards-compatibility !!!
  */

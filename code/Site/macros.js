@@ -212,16 +212,6 @@ function lastupdate_macro(param) {
 
 
 /**
- * macro rendering modifytime
- */
-function modifytime_macro(param) {
-   if (this.modifytime)
-      res.write(formatTimestamp(this.modifytime,param.format));
-   return;
-}
-
-
-/**
  * macro rendering online-status
  */
 function online_macro(param) {

@@ -130,17 +130,6 @@ function total_macro(param) {
 
 
 /**
- * macro renders the time a poll was modified
- */
-
-function modifytime_macro(param) {
-   if (this.modifytime) {
-      res.write(formatTimestamp(this.modifytime,param.format));
-   }
-}
-
-
-/**
  * macro renders a link to the poll editor
  */
 

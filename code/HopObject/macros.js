@@ -34,6 +34,18 @@ function createtime_macro(param) {
    res.write(formatTimestamp(this.createtime, param.format));
 }
 
+
+/**
+ * macro rendering modifytime
+ */
+
+function modifytime_macro(param) {
+   if (this.modifytime)
+      res.write(formatTimestamp(this.modifytime,param.format));
+   return;
+}
+
+
 /**
  * macro renders the name of the creator of an object
  * either as link or as plain text
