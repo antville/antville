@@ -1,9 +1,9 @@
-Your status as a member of <% weblog.title %> has changed: You are now
+Your status as a member of <% site.title %> has changed: You are now
 
    <% this.level %>
 
 Have fun!
 
 ---------------------------------------
-Antville - http://www.antville.org
+<% root.systitle %> - <% root.sysurl %>
 ---------------------------------------
