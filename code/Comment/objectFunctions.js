@@ -16,7 +16,7 @@ function isOnline() {
 function updateComment() {
    if (!this.isEditDenied()) {
       this.title = req.data.title;
-      this.text = formatLinks(req.data.text);
+      this.text = req.data.text;
       this.modifytime = new Date();
       res.message = "Changes were saved successfully!";
    } else

@@ -37,7 +37,7 @@ function addComment() {
    if (user.uid && !user.isBlocked() && (req.data.submit != "cancel" &&  !req.data.cancel)) {
       var c = new comment();
       c.title = req.data.title;
-      c.text = formatLinks(req.data.text);
+      c.text = req.data.text;
       c.weblog = this.weblog;
       c.story = this;
       c.createtime = new Date();
