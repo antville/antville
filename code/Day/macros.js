@@ -6,8 +6,9 @@
 
 function storylist_macro() {
    for (var i=0;i<this.size();i++) {
-      if (this.get(i).isOnline())
-         this.get(i).renderSkin("preview");
+      var st = this.get(i);
+      if (this.isStoryOnline(st))
+         st.renderSkin("preview");
    }
 }
 
