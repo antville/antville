@@ -94,6 +94,10 @@ function getLocale() {
    return locale;
 }
 
+/**
+ * function returns the (already cached) DateFormatSymbols according
+ * to the locale defined for a site
+ */
 function getDateSymbols() {
    var symbols = this.cache.dateSymbols;
    if (symbols)
@@ -102,6 +106,10 @@ function getDateSymbols() {
    return this.cache.dateSymbols;
 }
 
+/**
+ * function returns the (already cached) TimeZone-Object
+ * according to site-preferences
+ */
 function getTimeZone() {
    var timezone = this.cache.timezone;
    if (timezone)
@@ -166,9 +174,6 @@ function ping() {
 
 	if (result.error)
 		app.log("Error when notifying weblogs.com for updated site \"" + this.alias + "\": " + result.message);
-
-	// this is the easy post url method (maybe faster?)
-	// var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
 
 	// lastping is always set to now to prevent blogs
 	// hanging in the scheduler if a fatal error occurs
