@@ -269,6 +269,11 @@ function ping() {
 	result.error = ping.result.flerror;
 	result.message = ping.result.message;
 
+	if (result.error)
+		writeln("Error when pinging weblogs.com for updated weblog #" + this._id + ": " + result.message);
+	else
+		this.lastping = new Date();
+
 	//var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
 
 	return(result);
