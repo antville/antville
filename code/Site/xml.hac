@@ -13,10 +13,12 @@ if (max > size)
 var items = "";
 for (var i=0; i<max; i++) {
 	var story = this.allstories.get(i);
-	param1.itemLink = base + story.href();
-	param1.itemTitle = encodeXml(story.title);
-	param1.itemDescription = encodeXml(story.text);
-	items += this.renderSkinAsString("rssItem", param1);
+	if (story.online) {
+		param1.itemLink = base + story.href();
+		param1.itemTitle = encodeXml(story.title);
+		param1.itemDescription = encodeXml(story.text);
+		items += this.renderSkinAsString("rssItem", param1);
+	}
 }
 
 var param2 = new Object();
