@@ -155,7 +155,7 @@ li { padding-bottom:3px;
 .pollResultsBar {
 	height: 5px;
 	margin-right: 10px;
-	background-color: #ff3300;
+	background-color: <% weblog.linkcolor %>;
 	font-size: 0px;
 }
 // -->
