@@ -159,6 +159,7 @@ insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FIL
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (13,'webloghead','webloghead','gif',404,53,'head');
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (14,'hop','hop','gif',124,25,'helma object publisher');
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (15,'xmlbutton','xmlbutton','gif',36,14,'xml version of this page');
+insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (16,'marquee','marquee','gif',15,15,'marquee');
 
 ---------------------------------
 -- Table structure for MEMBERSHIP
