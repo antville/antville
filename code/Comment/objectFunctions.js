@@ -14,9 +14,9 @@ function isOnline() {
  */
 
 function updateComment() {
-   if (this.author == user) {
+   if (!this.isEditDenied()) {
       this.title = req.data.title;
-      this.text = req.data.text;
+      this.text = formatLinks(req.data.text);
       this.modifytime = new Date();
       res.message = "Changes were saved successfully!";
    } else
@@ -31,7 +31,7 @@ function updateComment() {
 function addComment() {
    var r = new comment();
    if (req.data.text) {
-      r.text = req.data.text;
+      r.text = formatLinks(req.data.text);
       r.title = req.data.title;
       r.author = user;
       r.createtime = new Date();
