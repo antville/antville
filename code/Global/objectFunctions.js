@@ -258,8 +258,12 @@ function getDefaultDateFormats(version) {
 function logAccess() {
 	if (req.data.http_referer) {
 		var weblog = path["weblog"];
-		var storyID = path["story"] ? path["story"]._id : null;
 		var referrer = req.data.http_referer;
+
+		if (referrer.indexOf(weblog.href()) > -1 || referrer == root.href())
+			return;
+
+		var storyID = path["story"] ? path["story"]._id : null;
 		var ip = req.data.http_remotehost;
 		var hopPath = path[path.length-1].href();
 		var action = req.action;
