@@ -337,9 +337,7 @@ function buildAliasFromFile(uploadFile, collection) {
 function buildAlias(alias, collection) {
    // clean name from any invalid characters
    var newAlias = alias.toLowerCase().toFileName();
-   // FIXME: we should consider to add this to the
-   // File.toFileName method:
-   if (newAlias.indexOf(".") == 0)
+   if (newAlias.startsWith("."))
       newAlias = newAlias.substring(1);
    if (collection && collection.get(newAlias)) {
       // alias is already existing in collection, so we append a number
@@ -356,13 +354,13 @@ function buildAlias(alias, collection) {
  */
 function onStart() {
    // load application messages and modules
-   var dir = File.get(app.dir);
+   var dir = new Helma.File(app.dir);
    var arr = dir.list();
    for (var i in arr) {
       var fname = arr[i];
    	if (fname.startsWith("messages.")) {
          var name = fname.substring(fname.indexOf(".") + 1, fname.length);
-   		var msgFile = File.get(dir, fname);
+   		var msgFile = new Helma.File(dir, fname);
    		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
    		app.log("loaded application messages (language: " + name + ")");
    	}

@@ -73,11 +73,11 @@ function evalImg(param, creator) {
 function deleteImage(imgObj) {
    // first remove the image from disk (and the thumbnail, if existing)
    var dir = imgObj.site ? imgObj.site.getStaticDir("images") : imgObj.layout.getStaticDir();
-   var f = File.get(dir, imgObj.filename + "." + imgObj.fileext);
+   var f = new Helma.File(dir, imgObj.filename + "." + imgObj.fileext);
    f.remove();
    if (imgObj.thumbnail) {
       var thumb = imgObj.thumbnail;
-      f = File.get(dir, thumb.filename + "." + thumb.fileext);
+      f = new Helma.File(dir, thumb.filename + "." + thumb.fileext);
       f.remove();
       thumb.remove();
    }

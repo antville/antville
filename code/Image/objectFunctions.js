@@ -150,7 +150,7 @@ function getUrl() {
  * @return Object File object
  */
 function getFile() {
-   return File.get(this.site.getStaticPath(), this.filename + "." + this.fileext);
+   return new Helma.File(this.site.getStaticPath(), this.filename + "." + this.fileext);
 }
 
 

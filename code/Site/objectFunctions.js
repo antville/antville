@@ -311,7 +311,9 @@ function getStaticUrl(subdir) {
  * @return Object File object
  */
 function getStaticDir(subdir) {
-   return File.mkdir(this.getStaticPath(subdir));
+   var f = new Helma.File(this.getStaticPath(subdir));
+   f.mkdir();
+   return f;
 }
 
 /**

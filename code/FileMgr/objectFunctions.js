@@ -58,7 +58,7 @@ function evalFile(param, creator) {
 
 function deleteFile(fileObj) {
    // first remove the file from disk
-   var f = File.get(this._parent.getStaticPath("files"), fileObj.name);
+   var f = new Helma.File(this._parent.getStaticPath("files"), fileObj.name);
    f.remove();
    fileObj.site.diskusage -= fileObj.filesize;
    fileObj.remove();

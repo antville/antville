@@ -131,7 +131,9 @@ function getStaticUrl() {
  *                directory on disk
  */
 function getStaticDir(subdir) {
-   return File.mkdir(this.getStaticPath(subdir));
+   var f = new Helma.File(this.getStaticPath(subdir));
+   f.mkdir();
+   return f;
 }
 
 /**
@@ -223,7 +225,7 @@ function evalDownload(fullExport) {
 }
 
 /**
- * retrieve an picture from picturemgr
+ * retrieve an image from ImageMgr
  * this method walks up the hierarchy of layout objects
  * until it finds an image, otherwise returns null
  * @param String name of image to retrieve
