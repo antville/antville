@@ -11,6 +11,8 @@ function evalRegistration() {
 			newUser.email = reg.email;
          newUser.url = reg.url;
          newUser.description = reg.description;
+         newUser.registered = new Date();
+         newUser.blocked = 0;
 			user.login(reg.name, reg.password1);
          user.sendConfirmationMail();
 			res.message = "Welcome " + user.name + ". Have fun!<br>";
@@ -35,6 +37,12 @@ function checkReg() {
       reg.name = req.data.name;
    else
       reg.error = true;
+   // check if username contains any special characters
+   if (!isClean(reg.name)) {
+      res.message = "Please don't use any special characters in your username!";
+      reg.error = true;
+   }
+   // check if passwords match
 	if (req.data.password1 && req.data.password2) {
       if (req.data.password1 == req.data.password2) {
    	   reg.password1 = req.data.password1;
@@ -45,6 +53,7 @@ function checkReg() {
       }
    } else
       reg.error = true;
+   // check if email-address is valid
    if (req.data.email) {
    	reg.email = req.data.email;
       if (!checkEmail(req.data.email)) {
