@@ -122,3 +122,16 @@ function getText() {
    }
    return (doWikiStuff(this.cache.rText));
 }
+
+
+/**
+ * incrementing the read counter for this story
+ * every 10 reads the cached value is made persistent
+ */
+function incrementReadCounter() {
+	this.cache.reads++;
+	if (this.cache.reads == 10) {
+		this.reads += this.cache.reads;
+		this.cache.reads = 0;
+	}
+}
