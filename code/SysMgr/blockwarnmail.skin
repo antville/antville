@@ -1,9 +1,9 @@
-(You're receiving this mail because you are Administrator of <% param.weblog %>).
+(You're receiving this mail because you are Administrator of <% param.site %>).
 
-<% param.weblog %> (<% param.url %>) has been private for more than <% param.privatetime %> days. Due to policy reasons your weblog will be blocked in <% param.daysleft %> days if you keep it private. This does *not* mean that your weblog will be removed, but neither you nor other members of it will have access to <% param.weblog %> unless one of the system administrators decides to unblock your weblog.
+<% param.site %> (<% param.url %>) has been private for more than <% param.privatetime %> days. Due to policy reasons your weblog will be blocked in <% param.daysleft %> days if you keep it private. This does *not* mean that your weblog will be removed, but neither you nor other members of it will have access to <% param.site %> unless one of the system administrators decides to unblock your weblog.
 
 So please either change the preferences of your weblog (select the checkbox "public") or send a mail to <% param.contact %> containing reasons why your weblog should stay private.
 
 ---------------------------------------
-Antville - http://www.antville.org
+<% root.systitle %> - <% root.sysurl %>
 ---------------------------------------
