@@ -53,7 +53,7 @@ function choices_macro(param) {
    }
    else {
       var vote;
-      if (session.user)
+      if (session.user && this.votes.get(session.user.name))
          vote = this.votes.get(session.user.name).choice;
       for (var i=0; i<this.size(); i++) {
          var choice = this.get(i);
@@ -147,7 +147,7 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is author of this poll
+ * if user is creator of this poll
  */
 
 function deletelink_macro(param) {
