@@ -16,17 +16,16 @@ if (max > 0 && this.online) {
    for (var i=0; i<max; i++) {
       var story = this.allstories.get(i);
       param.url = story.href();
+      param.title = clipText(story.getRenderedContentPart("title"), 50);
       param.text = clipText(story.getRenderedContentPart("text"), 500);
-      // shit happens: if a story contains a markup element only
-      // stripTags() will return nothing...
-      if (!param.text)
+      // shit happens: if a content part contains a markup
+      // element only clipText() will return nothing...
+      if (!param.text && !param.title)
          param.title = "...";
-      else
-         param.title = clipText(story.getRenderedContentPart("title"), 50);
       param.publisher = systitle;
       param.creator = story.creator.name;
       param.email = translateToEntities(story.creator.email);
-		param.date = story.modifytime.format(w3fmt);
+      param.date = story.modifytime.format(w3fmt);
       param.subject = story.topic ? story.topic : "";
       param.year = story.modifytime.getYear();
       items += story.renderSkinAsString("rssItem", param);
