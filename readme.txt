@@ -12,7 +12,7 @@ Antville should be considered beta-release quality code. It is still developed a
 SYSTEM REQUIREMENTS
 -----------------------
 
-Basically you'll need two applications to run Antville: Hop (http://helma.org) and mySql (http://www.mysql.com). For setting up please refer to their installation instructions. Since Antville sends confirmation mails to users after their registration, you'll also need a valid SMTP-server (which you should specify in the server.properties in the directory where you installed Hop).
+Basically you'll need two applications to run Antville: Hop (http://helma.org) and mySql (http://www.mysql.com). For setting up please refer to their installation instructions. Since Antville sends confirmation mails to users (i.e. after registration or if they were added to the list of members of a weblog), you'll also need a valid SMTP-server (which you should specify in the server.properties in the directory where you installed Hop).
 
 -----------------------
 INSTALLATION
