@@ -15,7 +15,7 @@ function renderInputTextarea(param) {
       if (param.style)
          res.write("\" class=\"" + param.style);
       res.write("\">");
-      res.encodeForm(param.value != null ? param.value : "");
+      res.encodeForm(param.value ? param.value : "");
       res.write("</textarea>");
    }
 }
