@@ -1,20 +1,25 @@
 autoLogin();
 
-var deny = root.isAddDenied();
+var deny = root.isAddDenied(user);
 if (deny) {
    res.message = deny;
    res.redirect(user.cache.referer ? root.members.href("login") : root.href());
 }
 
-res.skin = "root.page";
-
-res.title = "Antville - Create a new weblog";
-
-res.head = this.renderSkinAsString("style");
-
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(root.href());
+else if (req.data.submit == "create" || req.data.create) {
+   var result = this.evalWeblog(req.data.title,req.data.alias,user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(result.weblog.href());
+}
 
-var newLog = this.evalNewWeblog();
    
-res.body = newLog.renderSkinAsString("new");
+res.skin = "root.page";
+
+res.data.title = "Antville - Create a new weblog";
+res.head = this.renderSkinAsString("style");
+
+var newLog = new weblog();
+res.data.body = newLog.renderSkinAsString("new");
