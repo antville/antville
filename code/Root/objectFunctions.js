@@ -41,11 +41,12 @@ function checkIfExists(alias) {
  */
 
 function createNewWeblog(newLog) {
-   newLog.owner = user;
    newLog.creator = user;
    newLog.createtime = new Date();
    newLog.online = 0;
    newLog.discussions = 1;
+   newLog.usercontrib = 0;
+   newLog.usersignup = 1;
    newLog.archive = 1;
    newLog.blocked = 0;
    newLog.birthdate = new Date();
@@ -64,7 +65,8 @@ function createNewWeblog(newLog) {
    newLog.country = "US";
    newLog.createImgDirectory()
    this.add(newLog);
-   user.weblog = newLog;
+   // create member-object for connecting user <-> weblog with admin-rights
+   newLog.createMember("admin");
    res.message = "Your weblog was created successfully! Have fun!";
    res.redirect(newLog.href());
 }
