@@ -371,5 +371,5 @@ function colorpicker_macro(param) {
    else
       return;
 
-   renderSkin("cp_element", param);
+   renderSkin("colorpickerWidget", param);
 }
