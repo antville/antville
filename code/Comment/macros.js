@@ -8,17 +8,16 @@ function title_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
-      var linkParam = new Object();
-      linkParam.linkto = "main";
-      linkParam.urlparam = "#" + this._id;
-      this.story.openLink(linkParam);
+      param.linkto = "main";
+      param.anchor = this._id;
+      openMarkupElement("a",this.story.createLinkParam(param));
       if (this.title)
          res.write(this.title);
       else {
          // no title, so we show the first words of the comment-text as link
          renderTextPreview(this.text,20);
       }
-      this.story.closeLink();   
+      closeLink();   
    } else 
       res.write(this.title);
 }
@@ -29,14 +28,12 @@ function title_macro(param) {
 
 function replylink_macro(param) {
    if (this.weblog.hasDiscussions() && !isUserBlocked() && req.action == "main") {
-      var linkParam = new Object();
-      linkParam.linkto = "comment";
-      this.openLink(linkParam);
+      openLink(this.href("comment"));
       if (!param.image)
          res.write(param.text ? param.text : "reply");
       else
          this.renderImage(param);
-      this.closeLink();
+      closeLink();
    }
 }
 

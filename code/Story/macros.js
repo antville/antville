@@ -8,16 +8,14 @@ function title_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
-      var linkParam = new Object();
-      linkParam.linkto = "main";
-      this.openLink(linkParam);
+      openLink(this.href("main"));
       if (this.title)
          res.write(this.title);
       else {
          // no title, so we show the first words of the story-text as link
          renderTextPreview(this.getText(),20);
       }
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.title);
 }
@@ -50,10 +48,9 @@ function online_macro(param) {
          res.write("offline");
       else if (parseInt(this.online,10) < 2) {
          res.write("online in ");
-         var linkParam = new Object();
-         this.weblog.topics.get(this.topic).openLink(linkParam);
+         openLink(this.weblog.topics.get(this.topic).href());
          res.write(this.topic);
-         this.closeLink();
+         closeLink();
       } else
          res.write("online in weblog");
    }
@@ -96,11 +93,9 @@ function author_macro(param) {
    if (!this.author)
       return;
    if (param.as == "link" && this.author.url) {
-      var linkParam = new Object();
-      linkParam.to = this.author.url;
-      this.openLink(linkParam);
+      openLink(this.author.url);
       res.write(this.author.name);
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.author.name);
 }
@@ -113,11 +108,9 @@ function modifier_macro(param) {
    if (!this.modifier)
       return;
    if (param.as == "link" && this.modifier.url) {
-      var linkParam = new Object();
-      linkParam.to = this.modifier.url;
-      this.openLink(linkParam);
+      openLink(this.modifier.url);
       res.write(this.modifier.name);
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.modifier.name);
 }
@@ -137,14 +130,12 @@ function url_macro(param) {
 
 function editlink_macro(param) {
    if (!this.isEditDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "edit";
-      this.openLink(linkParam);
+      openLink(this.href("edit"));
       if (param.image && this.weblog.images.get(param.image))
          this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "edit");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -155,14 +146,12 @@ function editlink_macro(param) {
 
 function deletelink_macro(param) {
    if (!this.isDeleteDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "delete";
-      this.openLink(linkParam);
+      openLink(this.href("delete"));
       if (param.image && this.weblog.images.get(param.image))
          this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "delete");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -173,15 +162,14 @@ function deletelink_macro(param) {
 
 function onlinelink_macro(param) {
    if (!this.isEditDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "edit";
-      linkParam.urlparam = "?set=" + (this.isOnline() ? "offline" : "online");
-      this.openLink(linkParam);
+      param.linkto = "edit";
+      linkParam.urlparam = "set=" + (this.isOnline() ? "offline" : "online");
+      openMarkupElement("a",this.createLinkParam(param));
       if (param.image && this.weblog.images.get(param.image))
          this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
          res.write(this.isOnline() ? "set offline" : "set online");
-      this.closeLink();
+      closeMarkupElement("a");
    }
 }
 
@@ -192,14 +180,12 @@ function onlinelink_macro(param) {
 function viewlink_macro(param) {
    if (this.isViewDenied(session.user))
       return;
-   var linkParam = new Object();
-   linkParam.linkto = "main";
-   this.openLink(linkParam);
+   openLink(this.href());
    if (param.image && this.weblog.images.get(param.image))
       this.weblog.renderImage(this.weblog.images.get(param.image),param);
    else
       res.write(param.text ? param.text : "view");
-   this.closeLink();
+   closeLink();
 }
 
 /**
@@ -225,18 +211,18 @@ function commentlink_macro(param) {
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       var commentCnt = this.comments.count();
-      var linkParam = new Object();
-      linkParam.linkto = (param.linkto ? param.linkto : "main");
-      linkParam.anchor = param.anchor;
+      if (!param.linkto)
+         param.linkto = "main";
+      param.anchor = param.anchor;
       if (commentCnt == 0) {
          res.write(commentCnt + (param.no ? param.no : " comments"));
       } else {
-         this.openLink(linkParam);
+         openMarkupElement("a",this.createLinkParam(param));
          if (commentCnt == 1)
             res.write(commentCnt + (param.one ? param.one : " comment"));
          else
             res.write(commentCnt + (param.more ? param.more : " comments"));
-         this.closeLink();
+         closeMarkupElement("a");
       }
    }
 }
@@ -268,11 +254,9 @@ function commentform_macro(param) {
       var c = new comment();
       c.renderSkin("edit");
    } else {
-      var linkParam = new Object();
-      linkParam.to = "login";
-      this.weblog.members.openLink(linkParam);
+      openLink(this.weblog.members.href("login"));
       res.write (param.text ? param.text : "login to add your comment!");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -340,9 +324,9 @@ function topicchooser_macro(param) {
 function topic_macro(param) {
    if (!this.topic)
       return;
-   this.weblog.topics.get(this.topic).openLink(new Object());
+   openLink(this.weblog.topics.get(this.topic).href());
    res.write(this.topic);
-   this.closeLink();
+   closeLink();
 }
 
 
