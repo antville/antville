@@ -10,6 +10,11 @@ function checkAccess(action, usr, level) {
    try {
       switch (action) {
          case "main" :
+         case "admins" :
+         case "managers" :
+         case "contributors" :
+         case "subscribers" :
+         case "create" :
             checkIfLoggedIn(this.href(action));
             this.checkEditMembers(usr, level);
             break;
