@@ -133,7 +133,8 @@ function linkedpath_macro (param) {
    if (!separator)
       separator = " &gt; ";
    var title;
-   for (var i=1; i<path.length-1; i++) {
+   var start = (path.site == null) ? 0 : 1;
+   for (var i=start; i<path.length-1; i++) {
       title = path[i].getNavigationName();
       Html.link(path[i].href(), title);
       res.write(separator);
