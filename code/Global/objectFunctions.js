@@ -312,14 +312,12 @@ function pingUpdatedWeblogs() {
 }
 
 /**
- * function calls standard-functions on every request
- * FIXME: implement this when helma is ready for onRequest()
+ * scheduler performing auto-disposal of inactive weblogs
+ * and auto-blocking of private weblogs
+ * if defined in app.properties
+ */
 
-function onRequest() {
-   if (!user.isBlocked())
-      return;
-   user.logout();
-   res.message = "Your account was blocked!";
-   res.redirect(path.weblog ? path.weblog.href() : root.href());
+function scheduler() {
+   // call automatic cleanup if sysmgr is installed
+   tryEval("root.manage.autoCleanUp()");
 }
-*/
