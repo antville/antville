@@ -11,7 +11,7 @@ res.skin = "weblog.page";
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.href());
 else if (req.data.submit == "save" || req.data.save) {
-   var result = this.evalComment(req.data,user);
+   var result = this.evalComment(req.data,this,user);
    res.message = result.message;
    if (!result.error)
       res.redirect(this.href());
