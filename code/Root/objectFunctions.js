@@ -17,8 +17,16 @@ function evalNewSite(title, alias, creator) {
       throw new Exception("siteTitleMissing");
    // create new site
    var newSite = new site(title, alias, creator);
+   // create an initial layout object that is a child layout
+   // of the currently active root layout
+   var initLayout = new layout(newSite, newSite.title, creator);
+   initLayout.alias = newSite.alias;
+   initLayout.setParentLayout(res.handlers.layout);
    if (!this.add(newSite))
       throw new Exception("siteCreate");
+   newSite.layouts.add(initLayout);
+   newSite.layouts.setDefaultLayout(initLayout.alias);
+   // add the creator to the admins of the new site
    newSite.members.add(new membership(creator, ADMIN));
    root.manage.syslogs.add(new syslog("site", newSite.alias, "added site", creator));
    return new Message("siteCreate", null, newSite);
@@ -112,8 +120,7 @@ function getLocale() {
  * was defined in setup
  * if not, it returns "Antville"
  */
-
-function getSysTitle() {
+function getTitle() {
    if (!root.sys_title)
       return ("antville");
    return (root.sys_title);
@@ -124,8 +131,7 @@ function getSysTitle() {
  * was defined in setup
  * if not, it returns "http://www.antville.org"
  */
-
-function getSysUrl() {
+function getUrl() {
    if (!root.sys_url)
       return ("http://www.antville.org");
    return (root.sys_url);
@@ -136,7 +142,7 @@ function getSysUrl() {
  *  for this site's alias, use it. Otherwise, use normal site URL.
  */
 function processHref(href) {
-   return getProperty("defaulthost")+href;
+   return (app.properties.defaulthost + href);
 }
 
 /**
@@ -152,3 +158,22 @@ function getTimeZone() {
    return this.cache.timezone;
 }
 
+/**
+ * return the root layout
+ * if no layout is activated, check if the default
+ * layout is existing, otherwise return a transient
+ * layout object
+ * @return Object layout object
+ */
+function getLayout() {
+   if (!this.sys_layout) {
+      // no layout defined, so try to get default
+      // layout. if that doesn't exist either
+      // return a newly created layout object
+      var defLayout = root.layouts.get("default");
+      if (!defLayout)
+         return new layout();
+      return defLayout;
+   }
+   return root.layouts.get(root.sys_layout);
+}
