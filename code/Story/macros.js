@@ -405,8 +405,7 @@ function topic_macro(param) {
       openLink(this.site.topics.href(this.topic));
       res.write(this.topic);
       closeLink();
-   }
-   else if (param.as == "image") {
+   } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";
       var img = getPoolObj(param.imgprefix+this.topic, "images");
@@ -415,8 +414,7 @@ function topic_macro(param) {
       openLink(this.site.topics.href(this.topic));
       renderImage(img.obj, param)
       closeLink();
-   }
-   else if (param.as = "text")
+   } else if (param.as = "text")
       res.write(this.topic);
 }
 
@@ -487,23 +485,26 @@ function backlinks_macro(param) {
 /**
  * macro renders a checkbox whether the story
  * is just published in a topic or also in weblog
- * FIXME: this function should probably be deprected,
- *        and addtofront_macro recommended
  */
 function justintopic_macro(param) {
    if (param.as == "editor") {
-      param.value = 2;
-      // don't check the box if story is not in topic space
-      if (this.online != "1" || (!req.data.justintopic &&
-req.data.content_text))
-         delete param.checked;
-      param.name = "justintopic";
+      if (req.data.publish || req.data.submit == "publish") {
+         if (!req.data.online)
+            delete param.checked;
+         else if (req.data.online == 1 || this.online == 1)
+            param.checked = "checked";
+      } else {
+         if (this.online != 1)
+            delete param.checked;
+         else
+            param.checked = "checked";
+      }
+      param.name = "online";
       renderInputCheckbox(param);
-      // we need a hidden property for backwards compatibility
       var attr = new Object();
+      attr.value = 2;
+      attr.name = "onlinedefault";
       attr.type = "hidden";
-      attr.name = "addtofront";
-      attr.value = "-1";
       renderMarkupElement("input", attr);
    }
    return;
@@ -516,13 +517,25 @@ req.data.content_text))
  */
 function addtofront_macro(param) {
    if (param.as == "editor") {
+      if (req.data.publish || req.data.submit == "publish") {
+         if (!req.data.online)
+            delete param.checked;
+         else if (req.data.online == 2 || this.online == 2)
+            param.checked = "checked";
+      } else {
+         if (this.online != null && this.online < 2)
+            delete param.checked;
+         else
+            param.checked = "checked";
+      }
       param.value = 2;
-      // check the box if story is shown on front page
-      if (this.online == "1" || (!req.data.addtofront &&
-req.data.content_text))
-         delete param.checked;
-      param.name = "addtofront";
+      param.name = "online";
       renderInputCheckbox(param);
+      var attr = new Object();
+      attr.value = 1;
+      attr.name = "onlinedefault";
+      attr.type = "hidden";
+      renderMarkupElement("input", attr);
    }
    return;
 }
