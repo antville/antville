@@ -590,12 +590,13 @@ Mail.prototype.queue = function() {
  * application-wide mail queue
  */
 function flushMailQueue() {
-   while (app.data.mailQueue.length) {
-      var mail = app.data.mailQueue.pop();
-      mail.send();
-      if (mail.status > 0) {
-         app.debug("Mail transfer status: " + mail.status);
-         //throw new MailException("mailSend");
+   if (app.data.mailQueue.length > 0) {
+      app.debug("flushing mailQueue, sending " + app.data.mailQueue.length + " eMail(s) ...");
+      while (app.data.mailQueue.length) {
+         var mail = app.data.mailQueue.pop();
+         mail.send();
+         if (mail.status > 0)
+            app.debug("Error while sending eMail, status = " + mail.status);
       }
    }
    return;
