@@ -33,15 +33,15 @@ td {
 }
 
 .link {
-   color: <% site.linkcolor %>;
+   color: <% layout.linkcolor %>;
 }
 
 .active {
-   color: <% site.alinkcolor %>;
+   color: <% layout.alinkcolor %>;
 }
 
 .visited {
-   color: <% site.vlinkcolor %>;
+   color: <% layout.vlinkcolor %>;
 }
 
 .border {
