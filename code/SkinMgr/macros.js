@@ -31,6 +31,9 @@ function skineditor_macro(param) {
          currSkin.renderSkin("edit");
       } else {
          var newSkin = new skin();
+         // since this is a new skin, we give it the source of the skinfile as default
+         var sf = new File(getProperty("appPath") + req.data.proto + "/" + req.data.name + ".skin");
+         newSkin.skin = sf.readAll();
          newSkin.renderSkin("edit");
       }
    }
