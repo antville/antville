@@ -9,7 +9,8 @@ if (!root.sys_issetup) {
       return;
    } else
       res.redirect(this.manage.href("setup"));
-}
+} else if (!root.size())
+   res.redirect(this.href("new"));
 
 if (res.handlers.site) {
    res.handlers.site.main_action();
