@@ -61,6 +61,7 @@ insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('status'
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('dot','dot','gif',30,30,'dots');
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('bullet','bullet','gif',3,10,'bullet');
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('webloghead','webloghead','gif',404,53,'head');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('hop','hop','gif',124,25,'helma object publisher');
 alter table image change column ID ID mediumint(9) not null;
 
 #----------------------------
