@@ -4,9 +4,9 @@
 
 function username_macro(param) {
    if (param.linkto) {
-      this.openLink(param);
+      openLink(this.href(param.linkto));
       res.write(this.username);
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.username);
 }
@@ -16,7 +16,7 @@ function username_macro(param) {
  */
 
 function createtime_macro(param) {
-   res.write(this.weblog.formatTimestamp(this.createtime,param));
+   res.write(formatTimestamp(this.createtime,param.format));
 }
 
 /**
@@ -34,11 +34,9 @@ function email_macro(param) {
 function url_macro(param) {
    if (!this.user.url)
       return;
-   var linkParam = new Object();
-   linkParam.to = this.user.url;
-   this.openLink(linkParam);
-   res.write(linkParam.to);
-   this.closeLink();
+   openLink(this.user.url);
+   res.write(this.user.url);
+   closeLink();
 }
 
 /**
@@ -69,11 +67,9 @@ function weblogtitle_macro(param) {
 function deletelink_macro(param) {
    if (this.level == getAdminLvl())
       return;
-   var linkParam = new Object();
-   linkParam.to = "delete";
-   this.openLink(linkParam);
+   openLink(this.href("delete"));
    res.write(param.text ? param.text : "remove");
-   this.closeLink();
+   closeLink();
 }
 
 /**
@@ -83,9 +79,7 @@ function deletelink_macro(param) {
 function unsubscribelink_macro(param) {
    if (this.level > 0)
       return;
-   var linkParam = new Object();
-   linkParam.to = "unsubscribe";
-   this.weblog.openLink(linkParam);
+   openLink(this.weblog.href("unsubscribe"));
    res.write(param.text ? param.text : "unsubscribe");
-   this.closeLink();
+   closeLink();
 }

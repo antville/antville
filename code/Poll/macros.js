@@ -10,12 +10,10 @@ function title_macro(param) {
       this.renderInputText(param2);
    }
    else if (param.as == "link") {
-      var linkParam = new Object();
-      linkParam.linkto = "main";
-      this.openLink(linkParam);
+      openLink(this.href());
       if (this.title)
          res.write(this.title);
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.title);
 }
@@ -119,11 +117,9 @@ function creator_macro(param) {
    if (!this.creator)
       return;
    if (param.as == "link" && this.creator.url) {
-      var linkParam = new Object();
-      linkParam.to = this.creator.url;
-      this.openLink(linkParam);
+      openLink(this.creator.url);
       res.write(this.creator.name);
-      this.closeLink();
+      closeLink();
    } else
       res.write(this.creator.name);
 }
@@ -132,24 +128,22 @@ function creator_macro(param) {
 function createtime_macro(param) {
    if (!this.createtime)
       return;
-   res.write(this.weblog.formatTimestamp(this.createtime,param));
+   res.write(formatTimestamp(this.createtime,param.format));
 }
 
 
 function modifytime_macro(param) {
    if (this.modifytime) {
-      res.write(this.weblog.formatTimestamp(this.modifytime,param));
+      res.write(formatTimestamp(this.modifytime,param.format));
    }
 }
 
 
 function editlink_macro(param) {
    if (!this.isEditDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "edit";
-      this.openLink(linkParam);
+      openLink(this.href("edit"));
       res.write(param.text ? param.text : "edit");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -160,11 +154,9 @@ function editlink_macro(param) {
 
 function deletelink_macro(param) {
    if (!this.isDeleteDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "delete";
-      this.openLink(linkParam);
+      openLink(this.href("delete"));
       res.write(param.text ? param.text : "delete");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -176,39 +168,34 @@ function deletelink_macro(param) {
 function viewlink_macro(param) {
    if (this.isViewDenied(session.user))
      return;
-   var linkParam = new Object();
+   var url;
+   var str;
    if (this.closed || this.isVoteDenied(session.user)) {
-   		linkParam.linkto = "results";
-   		var str = "view";
+      url = this.href("results");
+      str = "view";
+   } else {
+      url = this.href("main");
+      str = "vote";
    }
-   else {
-		  linkParam.linkto = "main";
-		  var str = "vote";
-	 }
-   this.openLink(linkParam);
+   openLink(url);
    res.write(param.text ? param.text : str);
-   this.closeLink();
+   closeLink();
 }
 
 
 function closelink_macro(param) {
    if (!this.isDeleteDenied(session.user)) {
-      var linkParam = new Object();
-	    linkParam.linkto = "toggle";
-      if (this.closed)
-				var str = "re-open";
-			else
-		    var str = "close";
-      this.openLink(linkParam);
+      var str = this.closed ? "re-open" : "close";
+      openLink(this.href("toggle"));
       res.write(param.text ? param.text : str);
-      this.closeLink();
+      closeLink();
    }
 }
 
 
 function state_macro(param) {
 	if (this.closed) {
-		return(param.text + this.weblog.formatTimestamp(this.modifytime, param));
+		return(param.text + formatTimestamp(this.modifytime, param.format));
 	}
 }
 

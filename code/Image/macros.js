@@ -55,14 +55,12 @@ function url_macro(param) {
 
 function editlink_macro(param) {
    if (!this.isEditDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "edit";
-      this.openLink(linkParam);
+      openLink(this.href("edit"));
       if (param.image && this.weblog.images.get(param.image))
          this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "edit");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -73,14 +71,12 @@ function editlink_macro(param) {
 
 function deletelink_macro(param) {
    if (!this.isEditDenied(session.user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "delete";
-      this.openLink(linkParam);
+      openLink(this.href("delete"));
       if (param.image && this.weblog.images.get(param.image))
          this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "delete");
-      this.closeLink();
+      closeLink();
    }
 }
 
@@ -94,11 +90,9 @@ function show_macro(param) {
    // if we have a thumbnail, display that
    if (param.what == "thumbnail" && this.thumbnail) 
       img = this.thumbnail;
-   var linkParam = new Object();
-   linkParam.linkto = "main";
-   this.openLink(linkParam);
+   openLink(this.href());
    path.weblog.renderImage(img,param);
-   this.closeLink();
+   closeLink();
 }
 
 
@@ -117,7 +111,7 @@ function creator_macro(param) {
 function createtime_macro(param) {
    if (!this.createtime)
       return;
-   res.write(this.weblog.formatTimestamp(this.createtime,param));
+   res.write(formatTimestamp(this.createtime,param.format));
 }
 
 /**
