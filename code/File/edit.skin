@@ -4,10 +4,6 @@
 <td colspan="2">To insert this file into a story copy/paste the following code: <pre>&lt;% file name="<% this.alias %>" %&gt;</pre><br /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Name:</td>
-<td nowrap="nowrap"><% this.alias as="editor" %></td>
-</tr>
-<tr>
 <td class="small" valign="top" nowrap="nowrap">Description:</td>
 <td nowrap="nowrap"><% this.description as="editor" width="25" %></td>
 </tr>
@@ -18,7 +14,7 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </form>
 </table>
