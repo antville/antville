@@ -20,6 +20,8 @@ else if (req.data.submit == "create" || req.data.create) {
    
 res.skin = "root.page";
 
+res.data.action = this.href(req.action);
+
 res.data.title = "Antville";
 
 var newLog = new weblog();

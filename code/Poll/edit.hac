@@ -57,6 +57,8 @@ for (var i=0; i<max; i++) {
 
 res.skin = "weblog.page";
 
+res.data.action = this.href(req.action);
+
 res.data.command = "Edit";
 res.data.title = path.weblog.title;
 res.data.body = this.renderSkinAsString("edit");

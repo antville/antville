@@ -8,6 +8,8 @@ if (deny) {
 
 res.skin = "weblog.page";
 
+res.data.action = this.href(req.action);
+
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.story.href());
 else if (req.data.submit == "save" || req.data.save) {

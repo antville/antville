@@ -18,6 +18,8 @@ if (req.data.submit == "login" || req.data.login) {
 if (!user.cache.referrer && req.data.http_referer)
    user.cache.referrer = req.data.http_referer;
 
+res.data.action = this.href(req.action);
+
 res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("login");

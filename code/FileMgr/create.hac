@@ -17,6 +17,8 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.skin = "weblog.page";
 
+res.data.action = this.href(req.action);
+
 res.data.title = path.weblog.title;
 
 var newGoodie = new goodie();

@@ -9,6 +9,8 @@ else if (req.data.submit == "send" || req.data.send) {
       res.redirect(parent.href());
 }
 
+res.data.action = this.href(req.action);
+
 res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("sendpwd");

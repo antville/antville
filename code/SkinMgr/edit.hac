@@ -17,6 +17,8 @@ if (req.data.submit == "cancel" || req.data.cancel) {
 
 res.skin = "skinmgr.page";
 
+res.data.action = this.href(req.action);
+
 res.data.title = path.weblog.title;
 
 res.data.body = this.renderSkinAsString("edit");

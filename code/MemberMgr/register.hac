@@ -19,6 +19,8 @@ else if (req.data.submit == "register" || req.data.register) {
    }
 }
 
+res.data.action = this.href(req.action);
+
 res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("register");

@@ -47,6 +47,8 @@ for (var i=0; i<max; i++) {
 
 res.skin = "weblog.page";
 
+res.data.action = this.href(req.action);
+
 res.data.command = "Create";
 res.data.title = path.weblog.title;
 
