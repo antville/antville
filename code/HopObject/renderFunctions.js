@@ -12,6 +12,8 @@ function renderInputTextarea(param) {
       res.write(param.width ? param.width : "40");
       res.write("\" WRAP=\"");
       res.write(param.wrap ? param.wrap : "VIRTUAL");
+      if (param.style)
+         res.write("\" CLASS=\"" + param.style);
       res.write("\">");
       res.write(param.value != null ? param.value : "");
       res.write("</TEXTAREA>");
@@ -28,9 +30,11 @@ function renderInputText(param) {
    if (param) {
       res.write("<INPUT TYPE=\"TEXT\" NAME=\"" + param.name + "\"");
       if (param.value)
-         res.write(" VALUE=\"" + param.value + "\"");
-      res.write(" SIZE=\"");
+         res.write(" VALUE=\"" + param.value);
+      res.write("\" SIZE=\"");
       res.write(param.width ? param.width : "20");
+      if (param.style)
+         res.write("\" CLASS=\"" + param.style);
       res.write("\">");
    }
 }
@@ -46,6 +50,8 @@ function renderInputPassword(param) {
       res.write("<INPUT TYPE=\"PASSWORD\" NAME=\"" + param.name + "\"");
       res.write(" SIZE=\"");
       res.write(param.width ? param.width : "20");
+      if (param.style)
+         res.write("\" CLASS=\"" + param.style);
       res.write("\">");
    }
 }
@@ -60,6 +66,8 @@ function renderInputFile(param) {
       res.write("<INPUT TYPE=\"FILE\" NAME=\"" + param.name + "\"");
       res.write(" SIZE=\"");
       res.write(param.width ? param.width : "10");
+      if (param.style)
+         res.write("\" CLASS=\"" + param.style);
       res.write("\">");
    }
 } 
@@ -86,6 +94,8 @@ function renderInputCheckbox(param) {
    if (param && param.name) {
       res.write("<INPUT TYPE=\"CHECKBOX\" NAME=\"" + param.name + "\"");
       res.write(" VALUE=\"1\"");
+      if (param.style)
+         res.write(" CLASS=\"" + param.style + "\"");
       if (parseInt(param.value) == 1)
          res.write(" CHECKED");
       res.write(">");
@@ -103,6 +113,8 @@ function renderInputButton(param) {
       res.write("<INPUT TYPE=\"SUBMIT\"");
       res.write(" NAME=\"" + (param.name ? param.name : "submit") + "\"");
       res.write(" VALUE=\"" + (param.value ? param.value : "submit") + "\"");
+      if (param.style)
+         res.write(" CLASS=\"" + param.style + "\"");
       res.write(">");
    }
 }
