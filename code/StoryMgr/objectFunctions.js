@@ -69,11 +69,8 @@ function evalNewStory(s,param,creator) {
    if (!result.error) {
       if (this._parent.add(s)) {
          if (s.online) {
-            this._parent.lastupdate = s.createtime;
-            if (s.topic)
-               result.url = this._parent.topics.href() + escape(s.topic);
-            else
-               result.url = s.href();
+            s.weblog.lastupdate = s.createtime;
+            result.url = s.href();
          } else
             result.url = this.href();
          result.message = "The story was created successfully!";
@@ -98,10 +95,9 @@ function evalNewStory(s,param,creator) {
 
 function deleteStory(currStory) {
    var result = new Object();
-   for (var i=currStory.size();i>0;i--)
-      currStory.deleteComment(currStory.get(i-1));
-   currStory.setParent(this._parent);
-   if (this._parent.remove(currStory)) {
+   // delete all comments of story
+   currStory.deleteAll();
+   if (this.remove(currStory)) {
       this._parent.lastupdate = new Date();
       result.message = "The story was deleted successfully!";
       result.error = false;
@@ -109,5 +105,16 @@ function deleteStory(currStory) {
       result.message = "Ooops! Couldn't delete the story!";
       result.error = true;
    }
+   return (result);
+}
+
+/**
+ * function loops over all stories and removes them (including their comments!)
+ * @return Boolean true in any case
+ */
+
+function deleteAll() {
+   for (var i=this.size();i>0;i--)
+      this.deleteStory(this.get(i-1));
    return (result);
 }
