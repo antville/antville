@@ -326,7 +326,7 @@ function thumbnail_macro(param) {
 function editableby_macro(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = new Array(null,0,1);
-      var labels = new Array("the Author","all Subscribers","all Contributors");
+      var labels = new Array("the author","all subscribers","all contributors");
       for (var i=0;i<options.length;i++) {
         param.name = "editableby";
         param.value = options[i];
@@ -338,11 +338,11 @@ function editableby_macro(param) {
       }
    } else {
       if (this.editableby == 0)
-         res.write("Subscribers of and Contributors to " + this.site.title);
+         res.write("subscribers of and contributors to " + this.site.title);
       else if (this.editableby == 1)
-         res.write("Contributors to " + this.site.title);
+         res.write("contributors to " + this.site.title);
       else
-         res.write("Content Managers and Admins of " + this.site.title);
+         res.write("content managers and admins of " + this.site.title);
    }
    return;
 }

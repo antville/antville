@@ -1,16 +1,16 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>">
 <tr>
-<td nowrap="nowrap"><span class="small">Title:</span><br />
+<td nowrap="nowrap"><span class="small">title:</span><br />
 <% story.content part="title" as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><span class="small">Text:</span><br />
+<td nowrap="nowrap"><span class="small">text:</span><br />
 <% story.content part="text" as="editor" width="30" height="15" style="formText" %></td>
 </tr>
 <tr>
 <td><fieldset><legend class="small">options</legend>
-<p>Add this story to a topic<br />
+<p>add this story to a topic<br />
 <div style="margin-left:15px;"><table>
 <tr>
 <td width="48%" class="small">choose a topic:<br />
