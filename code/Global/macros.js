@@ -190,9 +190,14 @@ function webloglist_macro(param) {
    if (!size)
       return;
 
+	 // setting some general limitations:
+	 var minDisplay = 10;
+	 var maxDisplay = 100;
+
    res.write(param.prefix);
    var start = parseInt (req.data.start,10);
-   var limit = param.limit ? parseInt(param.limit,10) : 10;
+   var limit = param.limit ? parseInt(param.limit,10) : minDisplay;
+   limit = (limit > maxDisplay) ? maxDisplay : limit;
    var scroll = (!param.scroll || param.scroll == "no" ? false : true);
    if (isNaN(start) || start > size-1)
       start = 0;
