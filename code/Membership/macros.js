@@ -48,8 +48,8 @@ function url_macro(param) {
 function level_macro(param) {
    if (param.as == "editor") {
       // var options = new Array("Subscriber","Contributor","Content Manager","Administrator");
-      // res.write(simpleDropDownBox("level",options,null,"-- select --"));
-      res.write(simpleDropDownBox("level",ROLES,null,"-- select --"));
+      // renderDropDownBox("level",options,null,"-- select --");
+      renderDropDownBox("level", ROLES, null, "-- select --");
    } else
       res.write(getRole(parseInt(this.level,10)));
 }

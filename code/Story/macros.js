@@ -44,7 +44,7 @@ function text_macro(param) {
 function online_macro(param) {
    if (param.as == "editor") {
       var options = new Array("offline","online in topic","online in weblog");
-      res.write(simpleDropDownBox("online",options,this.online));
+      renderDropDownBox("online",options,this.online);
    } else {
       if (!this.isOnline())
          res.write("offline");
@@ -274,7 +274,6 @@ function commentform_macro(param) {
       res.write (param.text ? param.text : "login to add your comment!");
       this.closeLink();
    }
-
 }
 
 /**
@@ -304,7 +303,7 @@ function thumbnail_macro(param) {
 function editableby_macro(param) {
    if (param.as == "editor" && (session.user == this.author || !this.author)) {
       var options = new Array("Subscribers and Contributors","Contributors only");
-      res.write(simpleDropDownBox("editableby",options,this.editableby,"----"));
+      renderDropDownBox("editableby",options,this.editableby,"----");
    } else {
       if (this.editableby == 0)
          res.write("Subscribers of and Contributors to " + this.weblog.title);
@@ -330,7 +329,7 @@ function topicchooser_macro(param) {
             var selectedIndex = i;
       }
    }
-   res.write(simpleDropDownBox("topicidx",options,selectedIndex,"-- choose topic --"));
+   renderDropDownBox("topicidx", options, selectedIndex, "-- choose topic --");
 }
 
 /**

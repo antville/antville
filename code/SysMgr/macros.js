@@ -1,5 +1,5 @@
 /**
- * macro renders a dropdown-box using simpleDropDownBox()
+ * macro renders a dropdown-box using renderDropDownBox()
  */
 
 function dropdown_macro(param) {
@@ -7,5 +7,5 @@ function dropdown_macro(param) {
       return;
    var options = param.values.split(",");
    var selectedIndex = req.data[param.name];
-   res.write(simpleDropDownBox(param.name,options,selectedIndex));
+   renderDropDownBox(param.name,options,selectedIndex);
 }
