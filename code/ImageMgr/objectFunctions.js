@@ -18,44 +18,46 @@ function evalImg(param,creator) {
          // looks like nothing was uploaded ...
          result = getError("imageNoUpload");
       } else if (param.rawimage && (!param.rawimage.contentType || !newImg.evalImgType(param.rawimage.contentType))) {
-         // whatever the user has uploaded, it was no image ...
+         // whatever the user has uploaded wasn't recognized as an image
          result = getError("imageNoImage");
       } else {
-         // first, check if alias already exists
+         // if no alias given try to determine it
          if (!param.alias)
-            result = getError("imageNameMissing");
-         else if (this.get(param.alias))
-            result = getError("imageExisting");
+            param.alias = buildAliasFromFile(param.rawimage);
          else if (!isClean(param.alias))
             result = getError("noSpecialChars");
-         else {
-            // store properties necessary for saving image on disk
-            newImg.filename = param.alias;
-            newImg.cache.saveTo = getProperty("imgPath") + this._parent.alias + "/";
- 
-            // check if user wants to resize width
-            newImg.cache.maxwidth = param.maxwidth ? parseInt(param.maxwidth,10) : null;
-            // check if user wants to resize height
-            newImg.cache.maxheight = param.maxheight ? parseInt(param.maxheight,10) : null;
 
-            // save/resize the image
-            if (newImg.saveImg(param.rawimage)) {
-               // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
-               // result.error = this.addImg(param,creator,newImg);
-               newImg.alias = param.alias;
-               newImg.site = this._parent;
-               newImg.alttext = param.alttext;
-               newImg.creator = creator;
-               newImg.createtime = new Date();
-               this.add(newImg);
-               // the fullsize-image is stored, so we check if a thumbnail should be created too
-               if (param.thumbnail)
-                 newImg.createThumbnail(param.rawimage);
-               newImg.clearCache();
-               result = getConfirm("imageCreate");
-            } else
-               result = getError("error");
+         // check if alias is already in use
+         if (this.get(param.alias)) {
+            var nr = 1;
+            while (this.get(param.alias + nr))
+               nr++;
+            param.alias = param.alias + nr;
          }
+         // store properties necessary for saving image on disk
+         newImg.filename = param.alias;
+         newImg.cache.saveTo = getProperty("imgPath") + this._parent.alias + "/";
+         // check if user wants to resize width
+         newImg.cache.maxwidth = param.maxwidth ? parseInt(param.maxwidth,10) : null;
+         // check if user wants to resize height
+         newImg.cache.maxheight = param.maxheight ? parseInt(param.maxheight,10) : null;
+         // save/resize the image
+         if (newImg.saveImg(param.rawimage)) {
+            // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
+            // result.error = this.addImg(param,creator,newImg);
+            newImg.alias = param.alias;
+            newImg.site = this._parent;
+            newImg.alttext = param.alttext;
+            newImg.creator = creator;
+            newImg.createtime = new Date();
+            this.add(newImg);
+            // the fullsize-image is stored, so we check if a thumbnail should be created too
+            if (newImg.width > 100 || newImg.height > 100)
+              newImg.createThumbnail(param.rawimage);
+            newImg.clearCache();
+            result = getConfirm("imageCreate",newImg.alias);
+         } else
+            result = getError("error");
       }
    } else
       result = getError("imageNoUpload");
