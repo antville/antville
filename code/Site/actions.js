@@ -312,9 +312,9 @@ function unsubscribe_action() {
       }
    }
 
-   res.data.title = this.title;
+   res.data.title = "Remove subscription to " + this.title;
    var sp = new Object();
-   sp.what = "your subscription to <b>" + this.title + "</b>";
+   sp.what = "your subscription to <strong>" + this.title + "</strong> ";
    res.data.body = this.renderSkinAsString("delete", sp);
    this.renderSkin("page");
 }
