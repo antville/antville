@@ -29,7 +29,7 @@ function searchSites(show, sort, order, keywords) {
       for (var i in kArray) {
          var k = kArray[i];
          sql += sql.length > 0 ? "AND " : "WHERE ";
-         sql += "(SITE_ALIAS LIKE '%" + k + "%' OR SITE_TITLE LIKE '%" + k + "%' OR SITE_TAGLINE LIKE '%" + k + "%') ";
+         sql += "(SITE_ALIAS LIKE '%" + k + "%' OR SITE_TITLE LIKE '%" + k + "%') ";
       }
    }
    if (!sort || sort == "0")
