@@ -343,6 +343,9 @@ function scheduler() {
    countUsers();
    // write the log-entries in app.data.accessLog into DB
    writeAccessLog();
+   // store a timestamp in app.data indicating when last update
+   // of accessLog was finished
+   app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
    return (60000);
@@ -350,10 +353,10 @@ function scheduler() {
 
 
 /**
- * DEPRECATED!
- * this function was used to replicate a read-only
- * javascript object (like a nacro's param object)
- * for the purpose of creating a writeable clone.
+ * this function is used to replicate a javascript object
+ * (like a nacro's param object)
+ * @param Object JavaScript-Object to clone
+ * @return Object cloned JavaScript-Object
  */
 
 function cloneObject(obj) {
