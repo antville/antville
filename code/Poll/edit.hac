@@ -15,7 +15,7 @@ if (req.data.submit == "cancel" || req.data.cancel) {
    session.data.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
-   var result = this.evalPoll(req.data, user);
+   var result = this.evalPoll(req.data, session.user);
    res.message = result.message;
    session.data.referrer = null;
    if (!result.error)
