@@ -139,14 +139,9 @@
 <td class="storyText">This skin defines the basic layout (including the header) of the "recently modified"-box.</td>
 </tr>
 <tr>
-<td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=comment&name=historyview" text="comment-item" %></td>
+<td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=hopobject&name=historyview" text="item" %></td>
 <td width="20" align="center" valign="top" class="storyText" nowrap>&gt;&gt;</td>
-<td class="storyText">This skin is used to display a comment in the list of recently modified items.</td>
-</tr>
-<tr>
-<td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=story&name=historyview" text="story-item" %></td>
-<td width="20" align="center" valign="top" class="storyText" nowrap>&gt;&gt;</td>
-<td class="storyText">This skin defines how a story will appear in the list of recently modified items.</td>
+<td class="storyText">This skin defines how a story or a comment will appear in the list of recently modified items.</td>
 </tr>
 
 <!-- login/register/signup // -->
