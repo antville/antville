@@ -149,7 +149,6 @@ function replylink_macro(param) {
 
 function replies_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      this.filter();
       if (this.count()) {
          res.write(param.prefix)
          for (var i=0;i<this.size();i++) {

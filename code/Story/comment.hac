@@ -1,8 +1,6 @@
 if (!this.weblog.isPublic() || !this.isPostAllowed())
    res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.href());
 
-this.filter();
-
 res.skin = "main";
 
 if (req.data.submit == "cancel" || !this.isPostAllowed())

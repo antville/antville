@@ -181,7 +181,6 @@ function commentlink_macro(param) {
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       res.write(param.prefix);
-      this.filter();
       var linkParam = new HopObject();
       linkParam.linkto = "main";
       if (this.allcomments.count() == 0) {
