@@ -21,7 +21,7 @@ function checkAccess(action, usr, level) {
             this.checkAdd(usr, level);
             break;
          case "create" :
-            if (!usr && req.data.save)
+            if (!usr)
                rescueText(req.data);
             checkIfLoggedIn(this.href(req.action));
             this.checkAdd(usr, level);
