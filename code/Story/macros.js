@@ -401,22 +401,12 @@ function backlinks_macro(param) {
    var limit = Math.min((param.limit ? parseInt(param.limit, 10) : 100), 100);
    res.push();
 
-   // if user specified some servers to be excluded from backlink-list
-   // create the RegExp-Object for filtering
-   if (param.exclude) {
-      var r = new RegExp("\\s*,\\s*", "gi");
-      var excludeStr = param.exclude.replace(r, "|");
-      var exclude = new RegExp(excludeStr);
-   }
-
    var skinParam = new Object();
    var cnt = 0;
    while (rows.next() && cnt <= limit) {
       skinParam.count = rows.getColumnItem("COUNT");
       skinParam.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-      if (exclude && exclude.test(skinParam.referrer))
-         continue;
-      skinParam.text = skinParam.referrer.length > 50 ? skinParam.referrer.substring(0, 50) + "..." : skinParam.referrer;
+      skinParam.text = skinParam.referrer.clip(50, "...", true)
       this.renderSkin("backlinkItem", skinParam);
       cnt++;
    }
