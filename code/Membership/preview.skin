@@ -1,1 +1,1 @@
-<li><b><% this.username linkto="edit" %></b> (<% this.userlevel %>, signed up <% this.createtime format="dd.MM.yyyy HH:mm" %>)</li>
+<li><b><% this.username linkto="edit" %></b> (<% this.level %>, signed up <% this.createtime format="dd.MM.yyyy HH:mm" %>)</li>
