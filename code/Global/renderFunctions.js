@@ -6,7 +6,7 @@
 function renderImage(img, param) {
    if (!param.title)
       param.title = img.alttext ? encode(img.alttext) : "";
-   param.src = img.getStaticUrl();
+   param.src = img.getUrl();
    if (!param.width)
       param.width = img.width;
    if (!param.height)
