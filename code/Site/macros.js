@@ -208,7 +208,7 @@ function loginstatus_macro(param) {
  * depending on user-status & rights
  */
 function navigation_macro(param) {
-   if (!param["for"] || param["for"] == "users") {
+   if (param["for"] == "users" && !param.modules) {
       // FIXME: this is left for backwards-compatibility
       // sometime in the future we'll get rid of the usernavigation.skin
       res.write("...&nbsp;");
@@ -221,7 +221,9 @@ function navigation_macro(param) {
       return;
    switch (param["for"]) {
       case "contributors" :
-         if (session.user.sysadmin || this.preferences.getProperty("usercontrib") || req.data.memberlevel >= CONTRIBUTOR)
+         if (session.user.sysadmin ||
+             this.preferences.getProperty("usercontrib") ||
+             req.data.memberlevel >= CONTRIBUTOR)
             this.renderSkin("contribnavigation");
          break;
       case "admins" :
@@ -229,6 +231,29 @@ function navigation_macro(param) {
             this.renderSkin("adminnavigation");
          break;
    }
+   if (param.modules != null) {
+      var mods = param.modules.split(",");
+      if (mods.length == 1 && mods[0] == "all") {
+         for (var i in app.modules)
+            this.applyModuleMethod(app.modules[i], "renderSiteNavigation", param);
+      } else {
+         for (var i in mods)
+            this.applyModuleMethod(app.modules[mods[i]], "renderSiteNavigation", param);
+      }
+   }
+   return;
+}
+
+
+/**
+ * call the site navigation render method
+ * of a module
+ */
+function moduleNavigation_macro(param) {
+   if (!param.module)
+      return;
+   this.applyModuleMethod(app.modules[param.module],
+                          "renderSiteNavigation", param);
    return;
 }
 
@@ -582,5 +607,15 @@ function spamfilter_macro(param) {
  */
 function diskusage_macro(param) {
    res.write((this.getDiskUsage() / 1024).format("###,###") + " KB");
+   return;
+}
+
+/**
+ * macro checks if there are any modules present
+ * and if they need to be included in the system setup page
+ */
+function modulePreferences_macro(param) {
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "renderPreferences", param);
    return;
 }
