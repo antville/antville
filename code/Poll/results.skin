@@ -10,8 +10,8 @@
 </style>
 
 <span class="storyTitle"><% this.question %></span>
-<% this.results %>
+<% this.results singular="vote" plural="votes" %>
 
-<p><b>Total:</b> 100% <i>(<% this.total %>)</i>
+<p><b>Total:</b> 100% <span class="small">(<% this.total singular="vote" plural="votes" %>)</span>
 
 <p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.<% this.state text="<br>this poll was closed on " format="short" %></span>

@@ -82,7 +82,7 @@ function choices_macro(param) {
 }
 
 
-function results_macro() {
+function results_macro(param2) {
 	var str = "";
 	for (var i=0; i<this.size(); i++) {
 		var c = this.get(i);
@@ -94,6 +94,15 @@ function results_macro() {
 			param.percent = this.calcPercent(param);
 			param.width = Math.round(param.percent * 2.5);
 			param.graph = c.renderSkinAsString("graph", param);
+			param.text = " sucker";
+		}
+		if (param.count == 1) {
+			if (param2.singular)
+				param.text = " " + param2.singular;
+		}
+		else {
+			if (param2.plural)
+				param.text = " " + param2.plural;
 		}
 		str += c.renderSkinAsString("result", param);
 	}
