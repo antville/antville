@@ -3,6 +3,8 @@
  */
 
 function title_macro(param) {
+   if (!this.title && !param.as)
+      return;
    res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
