@@ -407,7 +407,7 @@ function shortdateformat_macro(param) {
 function loginstatus_macro(param) {
    if (user.uid)
       this.members.renderSkin("statusloggedin");
-   else if (getActionName() != "login")
+   else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
 }
 
