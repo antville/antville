@@ -117,8 +117,6 @@ Whenever a user views the stories of a specific day, this skin will be used to h
 
 <p><b>"recently modified"-box</b></p>
 <ul>
-<li><a name="webloghistory"></a><% skinmgr.link to="edit" urlparam="proto=site&name=history" text="main template" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="history" %>)</span><br />
-This skin defines the basic layout (including the header) of the "recently modified"-box.</li>
 <li><a name="hopobjecthistoryview"></a><% skinmgr.link to="edit" urlparam="proto=story&name=historyview" text="item" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="historyview" %>)</span><br />
 This skin defines how a story or a comment will appear in the list of recently modified items.</li>
 </ul>
