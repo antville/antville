@@ -24,10 +24,14 @@ if (max > 0 && this.online) {
       param.url = story.href();
       param.title = clipText(story.getRenderedContentPart("title"), 50);
       param.text = clipText(story.getRenderedContentPart("text"), 500);
-      // shit happens: if a content part contains a markup
-      // element only clipText() will return nothing...
-      if (!param.text && !param.title)
-         param.title = "...";
+      if (!param.title) {
+         // shit happens: if a content part contains a markup
+         // element only, clipText() will return nothing...
+         if (!param.text)
+            param.title = "...";
+         else
+            param.title = clipText(story.getRenderedContentPart("text"), 25);
+      }
       param.publisher = systitle;
       param.creator = story.creator.name;
       param.email = "";
