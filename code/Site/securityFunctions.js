@@ -35,7 +35,7 @@ function isEditAllowed() {
 
 function isAddAllowed() {
    if (!user.uid) {
-      user.cache.referer = this.href("edit");
+      user.cache.referer = this.href("create");
       return false;
    } else if (user.isBlocked()) {
       res.message = "Sorry, your account was disabled!";
