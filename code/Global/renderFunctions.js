@@ -120,7 +120,7 @@ function renderTimeZoneChooser(tz) {
    var format = new java.text.DecimalFormat ("-0;+0");
    for (var i in zones) {
       var zone = java.util.TimeZone.getTimeZone(zones[i]);
-      options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/3600000)) + " (" + zones[i] + ")"];
+      options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/ONEHOUR)) + " (" + zones[i] + ")"];
    }
    Html.dropDown("timezone", options, tz ? tz.getID() : null);
 }
