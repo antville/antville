@@ -1,6 +1,6 @@
 <div class="reply">
 <span class="commentHead">&nbsp;<br /></span>
-<div class="commentDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author as="link" prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
+<div class="commentDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.creator as="link" prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
 <div class="commentTitle"><% this.title %></div>
 <% this.text suffix="<br />" %>
 <div class="small"><% this.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" %></div>
