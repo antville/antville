@@ -1,3 +1,6 @@
+if (!this.weblog.isPublic())
+   res.redirect(this.weblog.members.href("login"));
+
 this.filter();
 
 res.skin = "main";

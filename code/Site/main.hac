@@ -1,3 +1,6 @@
+if (!this.isPublic())
+   res.redirect(this.members.href("login"));
+
 res.skin = "main";
 
 res.title = "Antville - " + this.title;
