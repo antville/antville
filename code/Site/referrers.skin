@@ -44,7 +44,6 @@ for (var i in referrers) {
    document.writeln('<td align="right" valign="top">', ref.count, '</td>');
    document.writeln('<td valign="top"><% site.switch name="userMayEdit" on="<input type=\"checkbox\" name=\"permanent\" value=\"', ref.url, '\" />" off="" %></td>');
    document.writeln('<td><a href="', ref.url, '"',
-      ' onclick="clickReferrer(event, this); return false;"',
       (isSpam ? ' style="color: <% layout.smallcolor %>;"' : ''),
       '>', text, '</a></td>');
    document.writeln('</tr>');
