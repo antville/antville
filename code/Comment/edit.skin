@@ -1,4 +1,4 @@
-<br />
+<br /><a name="form"></a>
 <form method="post" action="<% response.action %>">
 <p><span class="small">Title:<br /></span>
 <% comment.content part="title" as="editor" size="25" class="formTitle" %></p>

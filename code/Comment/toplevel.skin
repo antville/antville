@@ -17,5 +17,5 @@
 </p>
 <% comment.comments %>
 <div class="reply"><span class="small">
-    <% this.replylink text="comment" prefix="<br />...&nbsp;" %>
+    <% comment.replylink text="comment" anchor="form" prefix="<br />...&nbsp;" %>
 </span></div>
