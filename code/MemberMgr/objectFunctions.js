@@ -12,20 +12,20 @@ function evalLogin(username,password) {
    result.error = true;
 
    // check if login is successful
-   if (user.login(username, password)) {
-      if (user.isBlocked()) {
+   if (session.login(username, password)) {
+      if (isUserBlocked()) {
          result.message = "Sorry, your account was disabled!";
-         user.logout();
+         session.logout();
          return (result);
       }
       // login successful
-      user.lastVisit = new Date();
+      session.user.lastVisit = new Date();
       if (req.data.remember) {
          // user allowed us to set permanent cookies for auto-login
-         res.setCookie("avUsr",user.name,365);
-         res.setCookie("avPw",Packages.helma.util.MD5Encoder.encode(user.password),365);
+         res.setCookie("avUsr",session.user.name,365);
+         res.setCookie("avPw",Packages.helma.util.MD5Encoder.encode(session.user.password),365);
       }
-      result.message = "Welcome to Antville, " + user.name + "! Have fun!";
+      result.message = "Welcome to Antville, " + session.user.name + "! Have fun!";
       result.error = false;
    } else
       result.message = "Login failed! Maybe a typo?";
@@ -71,7 +71,7 @@ function evalRegistration(param) {
    }
 
    if (!result.message) {
-		var newUser = user.register(param.name, param.password1);
+		var newUser = app.registerUser(param.name, param.password1);
  		if (newUser) {
          newUser.name = param.name;
 			newUser.email = param.email;
@@ -108,22 +108,22 @@ function evalRegistration(param) {
 function updateUser(param) {
    var result = new Object();
    if (param.oldpwd && param.newpwd1 && param.newpwd2) {
-      if (user.password != param.oldpwd) {
+      if (session.user.password != param.oldpwd) {
          result.message = "Old password is incorrect!";
          result.error = true;
       } else if (param.newpwd1 != param.newpwd2) {
          result.message = "Ooops! Passwords didn't match! Please type in again!";
          result.error = true;
       } else
-         user.password = param.newpwd1;
+         session.user.password = param.newpwd1;
    }
    if (!checkEmail(param.email)) {
       result.message = "Your email-address is not valid!";
       result.error = true;
    }
    if (!result.error) {
-      user.url = evalURL(param.url);
-      user.email = param.email;
+      session.user.url = evalURL(param.url);
+      session.user.email = param.email;
       // not in use right now: user.description = param.description;
       result.message = "Changes were saved successfully!";
    }
@@ -253,7 +253,7 @@ function searchUser(key) {
 function evalNewMember(uname,creator) {
    var result = new Object();
    result.error = true;
-   var u = getUser(uname);
+   var u = root.users.get(uname);
    if (!u)
       result.message = "Couldn't find user to add to members!";
    else if (this.get(uname))
