@@ -13,13 +13,23 @@ function evalStory() {
       this.online = parseInt(req.data.online,10);
       this.modifytime = new Date();
       this.modifier = user;
+      if (req.data.topic)
+         this.topic = req.data.topic;
+      else
+         this.topic = null;
       this.weblog.lastupdate = new Date();
       res.message = "The story was updated successfully!";
       if (user.cache.referer) {
          var redirTo = user.cache.referer;
          user.cache.referer = null;
       }
-      res.redirect(redirTo ? redirTo : this.weblog.stories.href());
+      // href() may not yet work if we changed the topic
+      // so we build the redirect URL manually
+      if (this.topic)
+         res.redirect(path.weblog.space.href()+this.topic+"/"+this._id);
+      else
+         res.redirect(path.weblog.href()+this.day+"/"+this._id);
+      // res.redirect(redirTo ? redirTo : this.weblog.stories.href());
    } else
       res.message = "You need at least some text!";
 }
