@@ -1,2 +1,3 @@
 ...&nbsp;<% weblog.link to="main" text="home" %><br>
 ...&nbsp;<% weblog.link to="space" text="topics" %><br>
+...&nbsp;<% weblog.link to="polls" text="polls" %><br>
