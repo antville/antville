@@ -7,14 +7,8 @@
 <td><div class="storytitle"><% membership.username %></div>
 <div class="storyDate"><% membership.createtime format="short" prefix="created on " %><% membership.url as="link" prefix="<br />" %></div></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% membership.editlink text="edit" prefix="...&nbsp;" %>
-<% membership.link to="mailto" text="contact" prefix="<br />...&nbsp;" %>
+<td align="right" class="small" nowrap="nowrap"><% membership.editlink text="edit" prefix="...&nbsp;" suffix="<br />" %>
+<% membership.link to="mailto" text="contact" prefix="...&nbsp;" %>
 <% membership.deletelink text="remove" prefix="<br />...&nbsp;" %></td>
 </tr>
 </table>
-
-
-<!-- div class="member"><b><% membership.username linkto="edit" %></b>
-<div class="small"><% membership.url suffix="<br />" %>
-Signed up on <% membership.createtime format="short" %><br />
-<% membership.deletelink text="remove" prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>...&nbsp;<% membership.link to="mailto" text="send an e-mail to this user" %></div></div -->
