@@ -1,3 +1,4 @@
+<% linkedpath %>
 <ul>
 <% this.loopskin name="link" %>
 </ul>
