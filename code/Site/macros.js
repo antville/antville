@@ -3,7 +3,6 @@
  */
 
 function title_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else {
@@ -17,7 +16,6 @@ function title_macro(param) {
       } else
          res.write(this.title);
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -25,12 +23,10 @@ function title_macro(param) {
  */
 
 function alias_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alias",param));
    else
       res.write(this.alias);
-   res.write(param.suffix);
 }
 
 /**
@@ -40,12 +36,10 @@ function alias_macro(param) {
 function tagline_macro(param) {
    if (!this.tagline && param.as != "editor")
       return;
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("tagline",param));
    else if (this.tagline)
       res.write(stripTags(this.tagline));
-   res.write(param.suffix);
 }
 
 /**
@@ -53,14 +47,12 @@ function tagline_macro(param) {
  */
 
 function birthdate_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderDateDropdown(this.createInputParam("birthdate",param));
    else if (param.format)
       res.write(this.birthdate.format(param.format));
    else
       res.write(this.birthdate.format("yyyy.MM.dd HH:mm"));
-   res.write(param.suffix);
 }
 
 /**
@@ -68,12 +60,10 @@ function birthdate_macro(param) {
  */
 
 function email_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("email",param));
    else
       res.write(this.email);
-   res.write(param.suffix);
 }
 
 /**
@@ -81,12 +71,10 @@ function email_macro(param) {
  */
 
 function bgcolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("bgcolor",param));
    else
       renderColor(this.bgcolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -94,12 +82,10 @@ function bgcolor_macro(param) {
  */
 
 function textfont_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("textfont",param));
    else
       res.write(this.textfont);
-   res.write(param.suffix);
 }
 
 /**
@@ -107,12 +93,10 @@ function textfont_macro(param) {
  */
 
 function textsize_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("textsize",param));
    else
       res.write(this.textsize);
-   res.write(param.suffix);
 }
 
 /**
@@ -120,12 +104,10 @@ function textsize_macro(param) {
  */
 
 function textcolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("textcolor",param));
    else
       renderColor(this.textcolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -133,12 +115,10 @@ function textcolor_macro(param) {
  */
 
 function linkcolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("linkcolor",param));
    else
       renderColor(this.linkcolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -146,12 +126,10 @@ function linkcolor_macro(param) {
  */
 
 function alinkcolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alinkcolor",param));
    else
       renderColor(this.alinkcolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -159,12 +137,10 @@ function alinkcolor_macro(param) {
  */
 
 function vlinkcolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("vlinkcolor",param));
    else
       renderColor(this.vlinkcolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -172,12 +148,10 @@ function vlinkcolor_macro(param) {
  */
 
 function titlefont_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("titlefont",param));
    else
       res.write(this.titlefont);
-   res.write(param.suffix);
 }
 
 /**
@@ -185,12 +159,10 @@ function titlefont_macro(param) {
  */
 
 function titlesize_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("titlesize",param));
    else
       res.write(this.titlesize);
-   res.write(param.suffix);
 }
 
 /**
@@ -198,12 +170,10 @@ function titlesize_macro(param) {
  */
 
 function titlecolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("titlecolor",param));
    else
       renderColor(this.titlecolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -211,12 +181,10 @@ function titlecolor_macro(param) {
  */
 
 function smallfont_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("smallfont",param));
    else
       res.write(this.smallfont);
-   res.write(param.suffix);
 }
 
 /**
@@ -224,12 +192,10 @@ function smallfont_macro(param) {
  */
 
 function smallsize_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("smallsize",param));
    else
       res.write(this.smallsize);
-   res.write(param.suffix);
 }
 
 /**
@@ -237,12 +203,10 @@ function smallsize_macro(param) {
  */
 
 function smallcolor_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("smallcolor",param));
    else
       renderColor(this.smallcolor);
-   res.write(param.suffix);
 }
 
 /**
@@ -250,12 +214,10 @@ function smallcolor_macro(param) {
  */
 
 function lastupdate_macro(param) {
-   res.write(param.prefix)
-   if (!this.lastupdate) {
+   if (!this.lastupdate)
       res.write("no updates so far");
-   } else
+   else
       res.write(formatTimestamp(this.lastupdate,param.format));
-   res.write(param.suffix);
 }
 
 /**
@@ -263,9 +225,7 @@ function lastupdate_macro(param) {
  */
 
 function createtime_macro(param) {
-   res.write(param.prefix)
    res.write(formatTimestamp(this.createtime,param.format));
-   res.write(param.suffix);
 }
 
 /**
@@ -273,11 +233,8 @@ function createtime_macro(param) {
  */
 
 function modifytime_macro(param) {
-   if (this.modifytime) {
-      res.write(param.prefix)
+   if (this.modifytime)
       res.write(formatTimestamp(this.modifytime,param.format));
-      res.write(param.suffix);
-   }
 }
 
 /**
@@ -285,12 +242,10 @@ function modifytime_macro(param) {
  */
 
 function online_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("online",param));
    else
       res.write(this.online ? "yes" : "no");
-   res.write(param.suffix);
 }
 
 /**
@@ -298,9 +253,7 @@ function online_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(param.prefix);
    res.write(this.href());
-   res.write(param.suffix);
 }
 
 /**
@@ -308,12 +261,10 @@ function url_macro(param) {
  */
 
 function hasdiscussions_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("discussions",param));
    else
       res.write(parseInt(this.discussions,10) ? "yes" : "no");
-   res.write(param.suffix);
 }
 
 /**
@@ -321,12 +272,10 @@ function hasdiscussions_macro(param) {
  */
 
 function usermaycontrib_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("usercontrib",param));
    else
       res.write(parseInt(this.usercontrib,10) ? "yes" : "no");
-   res.write(param.suffix);
 }
 
 /**
@@ -334,12 +283,10 @@ function usermaycontrib_macro(param) {
  */
 
 function showdays_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("days",param));
    else
       res.write(this.days);
-   res.write(param.suffix);
 }
 
 /**
@@ -347,12 +294,10 @@ function showdays_macro(param) {
  */
 
 function showarchive_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("archive",param));
    else
       res.write(parseInt(this.archive,10) ? "yes" : "no");
-   res.write(param.suffix);
 }
 
 /**
@@ -360,12 +305,10 @@ function showarchive_macro(param) {
  */
 
 function enableping_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("enableping",param));
    else
       res.write(parseInt(this.enableping,10) ? "yes" : "no");
-   res.write(param.suffix);
 }
 
 /**
@@ -373,14 +316,12 @@ function enableping_macro(param) {
  */
 
 function longdateformat_macro(param) {
-   res.write(param.prefix)
    if (param.as == "chooser")
       this.renderDateformatChooser("long");
    else if (param.as == "editor")
       this.renderInputText(this.createInputParam("longdateformat",param));
    else
       res.write(this.longdateformat);
-   res.write(param.suffix);
 }
 
 /**
@@ -388,14 +329,12 @@ function longdateformat_macro(param) {
  */
 
 function shortdateformat_macro(param) {
-   res.write(param.prefix)
    if (param.as == "chooser")
       this.renderDateformatChooser("short");
    else if (param.as == "editor")
       this.renderInputText(this.createInputParam("shortdateformat",param));
    else
       res.write(this.shortdateformat);
-   res.write(param.suffix);
 }
 
 /**
@@ -405,7 +344,7 @@ function shortdateformat_macro(param) {
  */
 
 function loginstatus_macro(param) {
-   if (user.uid)
+   if (session.user)
       this.members.renderSkin("statusloggedin");
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
@@ -419,9 +358,9 @@ function loginstatus_macro(param) {
 
 function navigation_macro(param) {
    this.renderSkin("usernavigation");
-   if (!user.uid)
+   if (!session.user)
       return;
-   var membership = this.isUserMember(user);
+   var membership = this.isUserMember(session.user);
    if (this.userMayContrib() || (membership && membership.level >= getContributorLvl()))
       this.renderSkin("contribnavigation");
    if (membership && membership.level == getAdminLvl())
@@ -435,9 +374,7 @@ function navigation_macro(param) {
  */
 
 function storylist_macro(param) {
-   res.write(param.prefix)
    res.write(res.data.storylist);
-   res.write(param.suffix)
    return;
 }
 
@@ -535,14 +472,12 @@ function calendar_macro(param) {
 
 function age_macro(param) {
    if (this.birthdate) {
-      res.write(param.prefix)
       if (param && param.format)
          res.write(this.birthdate.format(param.format));
       else if (param && param.show.toLowerCase() == "days")
          res.write(Math.floor((new Date() - this.birthdate) / 86400000));
       else
          res.write(this.birthdate);
-      res.write(param.suffix);
    }
 }
 
@@ -571,9 +506,7 @@ function thumbnail_macro(param) {
  */
 
 function membercounter_macro(param) {
-   res.write(param.prefix)
    res.write(this.members.size());
-   res.write(param.suffix);
 }
 
 /**
@@ -582,14 +515,12 @@ function membercounter_macro(param) {
  */
 
 function history_macro(param) {
-   if (this.isNotPublic(user) && !this.isUserMember(user))
+   if (this.isNotPublic(session.user) && !this.isUserMember(session.user))
       return;
-   res.write(param.prefix);
    var max = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
    max = Math.min(max,this.allcontent.size());
    for (var i=0;i<max;i++)
       this.allcontent.get(i).renderSkin("historyview");
-   res.write(param.suffix);
 }
 
 
@@ -598,7 +529,6 @@ function history_macro(param) {
  */
 
 function localechooser_macro(param) {
-   res.write(param.prefix);
    var locs = java.util.Locale.getAvailableLocales();
    var options = new Array();
    // get the defined locale of this weblog for comparison
@@ -609,7 +539,6 @@ function localechooser_macro(param) {
          var selectedIndex = i;
    }
    res.write(simpleDropDownBox("locale",options,selectedIndex));
-   res.write(param.suffix);
 }
 
 /**
@@ -617,7 +546,6 @@ function localechooser_macro(param) {
  */
 
 function timezonechooser_macro(param) {
-   res.write(param.prefix);
    var zones = java.util.TimeZone.getAvailableIDs();
    var options = new Array();
    var format = new java.text.DecimalFormat ("-0;+0");
@@ -629,7 +557,6 @@ function timezonechooser_macro(param) {
          var selectedIndex = i;
    }
    res.write(simpleDropDownBox("timezone",options,selectedIndex));
-   res.write(param.suffix);
 }
 
 
@@ -639,24 +566,24 @@ function timezonechooser_macro(param) {
  */
 
 function listMostRead_macro() {
-  var str = "";
-  var storyList = this.mostread.list();
-  storyList.sort(this.sortMostReads);
-  var len = storyList.length;
-  var max = 25;
-  var lim = Math.min(max, len); //len > max ? max : len;
-  var param = new Object();
-  for (var i=0; i<lim; i++) {
-    var s = storyList[i];
-	  if (s.cache.reads > 0) {
-	  	s.reads += s.cache.reads;
-	  	s.cache.reads = 0;
-	  }
-    param.reads = s.reads; // + s.cache.reads;
-    param.rank = i+1;
-    str += s.renderSkinAsString("mostread", param);
-  }
-  return(str);
+   var str = "";
+   var storyList = this.mostread.list();
+   storyList.sort(this.sortMostReads);
+   var len = storyList.length;
+   var max = 25;
+   var lim = Math.min(max, len); //len > max ? max : len;
+   var param = new Object();
+   for (var i=0; i<lim; i++) {
+      var s = storyList[i];
+      if (s.cache.reads > 0) {
+         s.reads += s.cache.reads;
+         s.cache.reads = 0;
+      }
+      param.reads = s.reads; // + s.cache.reads;
+      param.rank = i+1;
+      str += s.renderSkinAsString("mostread", param);
+   }
+   return(str);
 }
 
 
@@ -674,7 +601,7 @@ function listReferrers_macro() {
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
-  var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
+   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
 	var query = "select *, count(*) as \"COUNT\" from ACCESS where WEBLOG_ID = " + this._id + " and DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by REFERRER order by \"COUNT\" desc, REFERRER asc;";
 	var rows = c.executeRetrieval(query);
 	error = c.getLastError();
@@ -691,7 +618,7 @@ function listReferrers_macro() {
 		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
 		str += this.renderSkinAsString("referrerItem", param);
 	}
-        rows.release();
+   rows.release();
 	return(str);
 }
 
@@ -705,9 +632,9 @@ function xmlbutton_macro() {
 	var param = new Object();
 	param.to = this.href("rss10");
 	param.name = "xmlbutton";
-  var img = root.images.get(param.name);
+   var img = root.images.get(param.name);
 	if (!img)
-  	return;
+     	return;
 	this.openLink(param);
 	root.renderImage(img, param);
 	this.closeLink();
