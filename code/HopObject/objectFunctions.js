@@ -54,22 +54,9 @@ function createDDparam(prefix,ts,dropFormat) {
 
 function createDDOptions(ddParam) {
    if (ddParam.firstOption) {
-      /*
-      var option = new HopObject()
-      option.name = ddParam.firstOption;
-      option.value = "";
-      ddParam.add(option);
-      */
       ddParam.add(this.createDDOption(ddParam.firstOption,""));
    }
    for (var i=ddParam.start;i<=ddParam.end;i++) {
-      /*
-      var option = new HopObject();
-      option.name = (i<10 ? "0" + i : i);
-      option.value = (ddParam.valueOffset ? i+ddParam.valueOffset : i);
-      option.selected = (ddParam.currValue == option.value ? true : false);
-      ddParam.add(option);
-      */
       var name = (i<10 ? "0" + i : i);
       var value = (ddParam.valueOffset ? i+ddParam.valueOffset : i);
       var sel = (ddParam.currValue == value ? true : false);
@@ -96,7 +83,7 @@ function createDDOption(name,value,sel) {
  */
 
 function createInputParam(propName,param) {
-   var inputParam = new HopObject();
+   var inputParam = new Object();
    inputParam.name = propName;
    for (var i in param)
       inputParam[i] = param[i];
