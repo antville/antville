@@ -1,4 +1,4 @@
-var parent = setLayout();
+var parent = getParent();
 
 res.message = "Please enter your login name and password:";
 
@@ -6,17 +6,17 @@ if (req.data.submit == "login" || req.data.login) {
    var result = this.evalLogin(req.data.name,req.data.password);
    res.message = result.message;
    if (!result.error) {
-      if (user.cache.referrer) {
-         var url = user.cache.referrer;
-         user.cache.referrer = null;
+      if (session.data.referrer) {
+         var url = session.data.referrer;
+         session.data.referrer = null;
       } else
          var url = parent.href();
       res.redirect(url);
    }
 }
 
-if (!user.cache.referrer && req.data.http_referer)
-   user.cache.referrer = req.data.http_referer;
+if (!session.data.referrer && req.data.http_referer)
+   session.data.referrer = req.data.http_referer;
 
 res.data.action = this.href(req.action);
 
@@ -24,3 +24,4 @@ res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("login");
 
+parent.renderSkin("page");
