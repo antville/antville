@@ -39,8 +39,12 @@ function content_macro(param) {
          part = this.getRenderedContentPart ("text");
          param.limit = "20";
       }
-      if (param.as == "link")
-         openLink(this.href("main"));
+      if (param.as == "link") {
+         if (this._prototype != "comment")
+            openLink(this.href());
+         else
+            openLink(this.story.href()+"#"+this._id);
+      }
       if (!param.limit)
          res.write(format(part));
       else
@@ -274,7 +278,8 @@ function comments_macro(param) {
       var c = this.get(i);
       var linkParam = new Object();
       linkParam.name = c._id;
-      renderMarkupElement("a", linkParam);
+      openMarkupElement("a", linkParam);
+      closeMarkupElement("a");
       if (c.parent)
          c.renderSkin("reply");
       else
@@ -420,7 +425,7 @@ function backlinks_macro() {
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
-	var query = "select *, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";                                
+	var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";                                
 	var rows = c.executeRetrieval(query);
 	var dbError = c.getLastError();
 	if (dbError)
