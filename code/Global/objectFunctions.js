@@ -297,7 +297,6 @@ function logAccess() {
  */
  
 function pingUpdatedWeblogs() {
-   app.__app__.logEvent("Notifying weblogs.com for updated weblogs...");
    // var period = 1000 * 60 * 60; // one hour
 
    var c = getDBConnection("antville");
