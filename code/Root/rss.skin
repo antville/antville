@@ -12,7 +12,7 @@
     <link><% this.url encoding="xml" %></link>
     <description>Recently updated <% param.title %> sites ordered by date</description>
     <dc:publisher><% param.title encoding="xml" %></dc:publisher>
-    <dc:creator><% param.title encoding="xml" %><% param.email prefix=" (mailto:" suffix=")" %></dc:creator>
+    <dc:creator><% param.title encoding="xml" %><% param.email encoding="xml" prefix=" (mailto:" suffix=")" %></dc:creator>
     <dc:date><% param.lastupdate %></dc:date>
     <dc:language>en</dc:language>
     <sy:updatePeriod>hourly</sy:updatePeriod>
