@@ -20,7 +20,7 @@ MAY_EDIT_PREFS = 16384;
 MAY_EDIT_SKINS = 32768;
 MAY_EDIT_MEMBERS = 65536;
 
-ROLES = new Array("Subscriber","Contributor","Content Manager","Admin");
+ROLES = new Array("Subscriber","Contributor","Content manager","Admin");
 
 /**
  * constant containing integer representing permission of subscribers
@@ -57,7 +57,7 @@ function getRole(lvl) {
    if (lvl == CONTRIBUTOR)
       return ("Contributor");
    else if (lvl == CONTENTMANAGER)
-      return ("Content Manager");
+      return ("Content manager");
    else if (lvl == ADMIN)
       return ("Admin");
    else
