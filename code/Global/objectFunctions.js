@@ -1,23 +1,4 @@
 /**
- * this is the generic onStart handler
- */
- 
-function onStart() {
-	scheduler();
-}
-
-
-/**
- * this is the generic scheduler() function
- */
- 
-function scheduler() {
-	var pause = BI_scheduler();
-	return(pause);
-}
-
-
-/**
  * check if email-adress is syntactically correct
  */
 
