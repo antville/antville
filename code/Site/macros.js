@@ -211,14 +211,6 @@ function lastupdate_macro(param) {
 
 
 /**
- * macro rendering createtime
- */
-function createtime_macro(param) {
-  res.write(formatTimestamp(this.createtime,param.format));  
-}
-
-
-/**
  * macro rendering modifytime
  */
 function modifytime_macro(param) {

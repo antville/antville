@@ -11,13 +11,6 @@ function username_macro(param) {
       res.write(this.username);
 }
 
-/**
- * macro renders the createtime
- */
-
-function createtime_macro(param) {
-   res.write(formatTimestamp(this.createtime,param.format));
-}
 
 /**
  * macro renders eMail-address

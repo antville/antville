@@ -104,15 +104,6 @@ function creator_macro(param) {
    res.write(this.creator.name);
 }
 
-/**
- * macro rendering createtime of image
- */
-
-function createtime_macro(param) {
-   if (!this.createtime)
-      return;
-   res.write(formatTimestamp(this.createtime,param.format));
-}
 
 /**
  * macro renders "yes" if this image has a thumbnail

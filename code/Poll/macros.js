@@ -122,13 +122,6 @@ function creator_macro(param) {
 }
 
 
-function createtime_macro(param) {
-   if (!this.createtime)
-      return;
-   res.write(formatTimestamp(this.createtime,param.format));
-}
-
-
 function modifytime_macro(param) {
    if (this.modifytime) {
       res.write(formatTimestamp(this.modifytime,param.format));

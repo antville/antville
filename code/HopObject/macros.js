@@ -41,6 +41,17 @@ function link_macro(param) {
 
 
 /**
+ * macro renders the time the object was created
+ */
+
+function createtime_macro(param) {
+   if (!this.createtime || !param.format)
+      return;
+   res.write(formatTimestamp(this.createtime, param.format));
+}
+
+
+/**
  * macro renders a form-input
  * DEPRECATED: just left for backwards-compatibility, use global input_macro() now
  */
