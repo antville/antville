@@ -17,7 +17,7 @@ if (this.online) {
 			param1.itemLink = base + story.href();
 			param1.itemTitle = encodeXml(story.title);
 			param1.itemDescription = encodeXml(story.text);
-			items += this.renderSkinAsString("rssItem", param1);
+			items += this.renderSkinAsString("rss092Item", param1);
 		}
 	}
 }
@@ -25,7 +25,7 @@ else {
 	param1.itemLink = "";
 	param1.itemTitle = encodeXml("Access denied");
 	param1.itemDescription = encodeXml("This weblog is offline.");
-	items = this.renderSkinAsString("rssItem", param1);
+	items = this.renderSkinAsString("rss092Item", param1);
 }
 
 var param2 = new Object();
@@ -40,4 +40,4 @@ param2.webMaster = this.creator.email;
 param2.language = this.language;
 param2.items = items;
 
-this.renderSkin("rssChannel", param2);
+this.renderSkin("rss092Channel", param2);
