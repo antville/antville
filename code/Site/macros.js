@@ -380,9 +380,7 @@ function navigation_macro(param) {
 
 
 /**
- * macro rendering storylist
- * but check if story is online ...
- * if not, we only display it when author of story is viewer or admin
+ * macro rendering storylist, but checks if story is online ...
  */
 
 function storylist_macro() {
@@ -393,11 +391,8 @@ function storylist_macro() {
       for (var i=0;i<days;i++) {
          for (var j=0;j<this.get(i).size();j++) {
             var currStory = this.get(i).get(j);
-            // don't think we need this anymore: currStory.setParent(currDay);
             if (currStory.isOnline())
                currStory.renderSkin("preview");
-            else if (currStory.isViewAllowed())
-               currStory.renderSkin("offline");
          }
       }
    } else
@@ -558,7 +553,7 @@ function memberlist_macro(param) {
 
 function history_macro(param) {
    res.write(param.prefix)
-   var len1 = this.allstories.count();
+   var len1 = this.stories.count();
    var len2 = this.allcomments.count();
    var nr = (param.show) ? param.show : 5;
    if (nr > len1+len2) nr = len1+len2;
@@ -566,17 +561,17 @@ function history_macro(param) {
    var c2 = 0;
    var x = new Array(nr);
    for (var i=0; i<nr; i++) {
-      if (c1 >= this.allstories.count())
+      if (c1 >= this.stories.count())
          x[i] = this.allcomments.get(c2++);
       else if (c2 >= this.allcomments.count())
-         x[i] = this.allstories.get(c1++);
+         x[i] = this.stories.get(c1++);
       else {
-         var t1 = (this.allstories.get(c1).modifytime) ? this.allstories.get(c1).modifytime : this.allstories.get(c1).createtime;
+         var t1 = (this.stories.get(c1).modifytime) ? this.stories.get(c1).modifytime : this.stories.get(c1).createtime;
          var t2 = (this.allcomments.get(c2).modifytime) ? this.allcomments.get(c2).modifytime : this.allcomments.get(c2).createtime;
          if (t2 > t1)
             x[i] = this.allcomments.get(c2++);
          else
-            x[i] = this.allstories.get(c1++);
+            x[i] = this.stories.get(c1++);
       }
    }
    for (var j in x) {

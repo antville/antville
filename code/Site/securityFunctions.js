@@ -25,22 +25,7 @@ function isEditDenied() {
 }
 
 /**
- * check if user is allowed to add a story to this weblog
- */
-
-function isAddDenied() {
-   if (!user.uid) {
-      user.cache.referer = this.href("create");
-      return ("Please login before adding a story!");
-   } else if (user.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this.isUserAdmin() && !this.isUserContributor() && !this.userMayContrib())
-      return ("You're not allowed to add a story to a foreign weblog!");
-   return null;
-}
-
-/**
- * check if user is allowed to edit the preferences of this weblog
+ * check if user is allowed to edit the memberlist of this weblog
  */
 
 function isEditMembersDenied() {
