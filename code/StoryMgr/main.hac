@@ -1,0 +1,16 @@
+autoLogin();
+
+var deny = this.isDenied();
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? path.weblog.members.href("login") : path.weblog.href());
+}
+
+res.skin = "weblog.editor";
+
+res.title = "Antville - " + path.weblog.title;
+
+res.head = path.weblog.renderSkinAsString("javascript");
+res.head += path.weblog.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("main");

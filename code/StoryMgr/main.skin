@@ -1,0 +1,4 @@
+<p>...&nbsp;<% this.link to="create" text="add new story" %><br>
+...&nbsp;show&nbsp;<% this.link to="main" text="all stories" %>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=offline" text="offline stories"%>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=mystories" text="my stories" %></p>
+
+<% this.storylist %>
