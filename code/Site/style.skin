@@ -23,7 +23,7 @@ a:hover { background-color:<% weblog.linkcolor %>;
          font-weight:bold;
          vertical-align:middle;
          background-color:transparent;
-         color: <% weblog.linkcolor %>;
+         color: #ff3300;
        }
 
 .message { font-family:<% weblog.smallfont %>;
