@@ -236,16 +236,7 @@ function deleteAll() {
    this.images.deleteAll();
    this.goodies.deleteAll();
    this.skins.deleteAll();
-   // loop over days and remove stories
-   for (var i=this.size();i>0;i--) {
-      var day = this.get(i-1);
-      day.deleteAll();
-   }
-   // loop over topics and remove stories
-   for (var i=this.topics.size();i>0;i--) {
-      var topic = this.topics.get(i-1);
-      topic.deleteAll();
-   }
+   this.stories.deleteAll();
    return true;
 }
 
