@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% this.colorpicker name="bgcolor" text="background" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="bgcolor" text="background" %><!-- &nbsp; <span class="small"><a href="javascript: setBg();">preview</a></small> --></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
