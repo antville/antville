@@ -8,14 +8,10 @@
  */
 
 function evalStory(param,modifier) {
-   var result = new Object();
-   result.error = false;
+   var result;
    // if user deleted the text of the story, return with error-message
-   if (!param.text) {
-      result.message = "You need at least some text!";
-      result.error = true;
-      return (result);
-   }
+   if (!param.text)
+      return (getError("textMissing"));
    
    // check if there's a difference between old and
    // new text of more than 50 characters:
@@ -31,10 +27,9 @@ function evalStory(param,modifier) {
    // check if the createtime is set in param
    if (param.createtime) {
       var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
-      if (ctime.error) {
-          result.message = "Error: Can't parse timestamp \""+param.createtime+"\" as date";
-          result.error = true;
-      } else if (ctime.value != this.createtime) {
+      if (ctime.error)
+          result = getError("timestampParse",param.createtime);
+      else if (ctime.value != this.createtime) {
          this.createtime = ctime.value;
          this.day = this.createtime.format("yyyyMMdd");
       }
@@ -48,39 +43,31 @@ function evalStory(param,modifier) {
       var topicName = null;
    if (!isCleanForURL(topicName)) {
       // name of topic contains forbidden characters, so return immediatly
-      result.message = "The name of the topic contains forbidden characters!";
-      result.error = true;
-      return (result);
+      return (getError("topicNoSpecialChars"));
    } else if (topicName)
       this.topic = topicName;
 
    // check online-status of story
    var newStatus = parseInt(param.online,10);
-   if (isNaN(newStatus)) {
-      result.message = "Should the story appear online or not?";
-      result.error = true;
-      return (result);
-   }
-   if (newStatus == 1 && !topicName) {
-      result.message = "Can't publish story in a topic because you didn't specify one!";
-      result.error = true;
-      return (result);
-   }
+   if (isNaN(newStatus))
+      return (getError("storyPublish"));
+   if (newStatus == 1 && !topicName)
+      return (getError("storyTopicMissing"));
    if (!this.online) {
       if (newStatus > 0) {
          this.online = newStatus;
          this.weblog.lastupdate = new Date();
       }
-      this.modifytime = new Date();
    } else {
       if (newStatus > 0 && majorUpdate)
          this.weblog.lastupdate = new Date();
       this.online = newStatus;
-      this.modifytime = new Date();
       this.online = newStatus;
    }
+   if (majorUpdate)
+      this.modifytime = new Date();
+   result = getConfirm("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.weblog.stories.href();
-   result.message = "The story was updated successfully!";
    this.cache.lrText = null;
    return (result);
 }
@@ -119,11 +106,10 @@ function isOnline() {
  */
 
 function evalComment(param,story,creator) {
-   var result = new Object();
-   if (!param.text) {
-      result.message = "You need at least some text!";
-      result.error = true;
-   } else {
+   var result;
+   if (!param.text)
+      result = getError("textMissing");
+   else {
       var c = new comment();
       c.title = param.title;
       c.text = param.text;
@@ -136,8 +122,7 @@ function evalComment(param,story,creator) {
       c.ipaddress = param.http_remotehost;
       this.add(c);
       this.weblog.lastupdate = new Date();
-      result.message = "Your posting was saved successfully!";
-      result.error = false;
+      result = getConfirm("commentCreate");
    }
    return (result);
 }
@@ -152,9 +137,9 @@ function deleteComment(currComment) {
    for (var i=currComment.size();i>0;i--)
       this.deleteComment(currComment.get(i-1));
    if (this.comments.remove(currComment))
-      return("The comment was deleted successfully!");
+      return(getMsg("confirm","commentDelete"));
    else
-      return("Couldn't delete the comment!");
+      return(getMsg("error","commentDelete"));
 }
 
 /**

@@ -3,35 +3,29 @@
  */
 
 function evalWeblog(title,alias,creator) {
-   var result = new Object();
-   if (!alias) {
-      result.message = "Please choose an alias for your weblog!";
-      result.error = true;
-   } else if (this.get(alias)) {
-      result.message = "Sorry, we already have a weblog with this alias!";
-      result.error = true;
-   } else if (!isClean(alias)) {
-      result.message = "Please don't use any special characters in the alias!";
-      result.error = true;
-   } else {
+   var result;
+   if (!alias)
+      result = getError("weblogAliasMissing");
+   else if (this.get(alias))
+      result = getError("weblogAliasExisting");
+   else if (!isClean(alias))
+      result = getError("weblogAliasNoSpecialChars");
+   else {
       // check if alias is similar to an action-name (which is reserved)
       var reserved = eval("this." + alias + "_action");
-      if (reserved) {
-         result.message = "Sorry, this alias is reserved!";
-         result.error = true;
+      if (reserved)
+         result = getError("weblogAliasReserved");
+   }
+   if (!title)
+      result = getError("weblogTitleMissing");
+   if (!result) {
+      var newWeblog = this.createNewWeblog(title,alias,creator);
+      if (!newWeblog)
+         result = getError("weblogCreate");
+      else {
+         result = getConfirm("weblogCreate");
+         result.weblog = newWeblog;
       }
-   }
-   if (!title) {
-      result.message = "Please choose a title for your weblog!";
-      result.error = true;
-   }
-   if (!result.error) {
-      result.weblog = this.createNewWeblog(title,alias,creator);
-      if (!result.weblog) {
-         result.message = "Couldn't create your weblog!";
-         result.error = true;
-      } else
-         result.message = "Your weblog was created successfully!";
    }
    return (result);
 }
@@ -90,13 +84,11 @@ function createNewWeblog(title,alias,creator) {
  */
 
 function deleteWeblog(weblog) {
-   var result = new Object();
    weblog.deleteAll();
    this.remove(weblog);
    // add syslog-entry
    this.manage.syslogs.add(new syslog("weblog",weblog.alias,"removed weblog",session.user));
-   result.message = "The weblog " + weblog.alias + " was removed successfully!";
-   return (result);
+   return (getConfirm("weblogDelete",weblog.alias));
 }
 
 /**

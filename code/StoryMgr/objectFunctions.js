@@ -11,9 +11,7 @@
  */
 
 function evalNewStory(s,param,creator) {
-   var result = new Object();
-   result.error = false;
-   result.story = s;
+   var result;
    s.weblog = this._parent;
    s.title = param.title;
    s.text = param.text;
@@ -22,12 +20,10 @@ function evalNewStory(s,param,creator) {
    // check if the create date is set in the param object
    if (param.createtime) {
       var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
-      if (ctime.error) {
-          result.message = "Error: Can't parse timestamp \""+param.createtime+"\" as date";
-          result.error = true;
-      } else {
+      if (ctime.error)
+          result = getError("timestampParse",param.createtime);
+      else
          s.createtime = ctime.value;
-      }
       s.modifytime = new Date();
    } else {
       s.modifytime = s.createtime = new Date();
@@ -38,10 +34,8 @@ function evalNewStory(s,param,creator) {
    s.ipaddress = param.http_remotehost;
    s.reads = 0;
    // start checking if story-params make sense
-   if (!s.text) {
-      result.message = "You need at least some text!";
-      result.error = true;
-   }
+   if (!s.text)
+      result = getError("textMissing");
 
    var topic = param.topic ? param.topic : parseInt(param.topicidx,10);
    if (!isNaN(topic) && topic >= 0) {
@@ -51,35 +45,30 @@ function evalNewStory(s,param,creator) {
       s.topic = topic ? topic : null;
 
    // check if topic-name contains any forbidden characters
-   if (!isCleanForURL(s.topic)) {
-      result.message = "The name of the topic contains forbidden characters!";
-      result.error = true;
-   }
+   if (!isCleanForURL(s.topic))
+      result = getError("topicNoSpecialChars");
    var status = parseInt(param.online,10);
-   if (isNaN(status)) {
-      result.message = "Status of story is missing!";
-      result.error = true;
-   } else if (status == 1 && !s.topic) {
-      result.message = "Can't set story online in topic because you didn't specify one!";
-      result.error = true;
-   } else
+   if (isNaN(status))
+      result = getError("storyPublish");
+   else if (status == 1 && !s.topic)
+      result = getError("storyTopicMissing");
+   else
       s.online = status;
 
    // if everything ok, so proceed with adding the story
-   if (!result.error) {
+   if (!result) {
       if (this._parent.add(s)) {
+         result = getConfirm("storyCreate");
+         result.id = s._id;
          if (s.online) {
             s.weblog.lastupdate = s.createtime;
             result.url = s.href();
          } else
             result.url = this.href();
-         result.message = "The story was created successfully!";
-         result.id = s._id;
-      } else {
-         result.message = "Couldn't add the story!";
-         result.error = true;
-      }
+      } else
+         result = getError("storyCreate");
    }
+   result.story = s;
    return (result);
 }
 
@@ -94,17 +83,14 @@ function evalNewStory(s,param,creator) {
  */
 
 function deleteStory(currStory) {
-   var result = new Object();
+   var result;
    // delete all comments of story
    currStory.deleteAll();
    if (this.remove(currStory)) {
       this._parent.lastupdate = new Date();
-      result.message = "The story was deleted successfully!";
-      result.error = false;
-   } else {
-      result.message = "Ooops! Couldn't delete the story!";
-      result.error = true;
-   }
+      result = getConfirm("storyDelete");
+   } else
+      result = getError("storyDelete");
    return (result);
 }
 

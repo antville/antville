@@ -8,7 +8,7 @@
  */
 
 function updateMember(lvl,modifier) {
-   var result = new Object();
+   var result;
    if (!isNaN(lvl)) {
       if (lvl == 1)
          this.level = getContributorLvl();
@@ -21,12 +21,9 @@ function updateMember(lvl,modifier) {
       this.modifytime = new Date();
       this.modifier = modifier;
       this.sendConfirmationMail(modifier.email);
-      result.message = "Changes were saved successfully!";
-      result.error = false;
-   } else {
-      result.message = "Please choose a role for this member!";
-      result.error = true;
-   }
+      result = getConfirm("update");
+   } else
+      result = getError("memberNoRole");
    return (result);
 }
 

@@ -18,25 +18,24 @@ if (req.data.q) {
     var wlogs = new Array (this);
     var result = root.searchWeblogs (query, this._id);
     var found = result.length;
-
     if (found == 0)
-        res.data.body += "<i>Nothing found for '"+query+"'.</i>";
+        res.data.body += "<i>" + getMsg("error","searchNothingFound",query) + "</i>";
     else {
         var start = 0;
         var end = found;
 
         if (found == 1)
-            res.data.body += "<i>Found 1 item for '"+query+"'.</i>";
+            res.data.body += getMsg("confirm","resultOne",query);
         else if (found <= 10)
-            res.data.body += "<i>Found "+found+" items for '"+encodeForm(query)+"'.<i>";
+            res.data.body += getMsg("confirm","resultMany",new Array(encodeForm(query),found));
         else {
             if (req.data.start)
                 start = Math.min (found-1, parseInt (req.data.start));
             if (isNaN (start))
                 start = 0;
             end = Math.min (found, start+10);
-            res.data.body += "<i>Found "+found+" items for '"+encodeForm(query)+"'. ";
-            res.data.body += "Displaying items "+(start+1)+" to "+end+".</i>";
+            res.data.body += getMsg("confirm","resultMany",new Array(encodeForm(query),found));
+            res.data.body += getMsg("confirm","resultDisplay",new Array(start+1,end));
         }
 
         // note: I'm doing this without a "searchbody" skin, since
@@ -49,7 +48,7 @@ if (req.data.q) {
             var sp = new Object();
             sp.url = this.href() + "search?q="+escape(query)+"&start="+Math.max(0,start-10);
             sp.text = "previous results";
-            res.data.body += "<br><br>"+renderSkinAsString("prevpagelink",sp);
+            res.data.body += "<br /><br />"+renderSkinAsString("prevpagelink",sp);
         }
 
         // render result

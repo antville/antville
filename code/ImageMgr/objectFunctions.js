@@ -8,28 +8,26 @@
  */
 
 function evalImg(param,creator) {
-   var result = new Object();
-   result.error = true;
-
+   var result;
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
-      result.message = "File is too big to handle!";
+      result = getError("imageFileTooBig");
    } else if (param.rawimage) {
       var newImg = new image();
       if (param.rawimage.contentLength == 0) {
          // looks like nothing was uploaded ...
-         result.message = "Please upload an image and fill out the form ...";
+         result = getError("imageNoUpload");
       } else if (param.rawimage && (!param.rawimage.contentType || !newImg.evalImgType(param.rawimage.contentType))) {
          // whatever the user has uploaded, it was no image ...
-         result.message = "This was definetly no image!"; 
+         result = getError("imageNoImage");
       } else {
          // first, check if alias already exists
          if (!param.alias)
-            result.message = "You must enter a name for this image!";
+            result = getError("imageNameMissing");
          else if (this.get(param.alias))
-            result.message = "There is already an image with this name!";
+            result = getError("imageExisting");
          else if (!isClean(param.alias))
-            result.message = "Please do not use special characters in the name!";
+            result = getError("noSpecialChars");
          else {
             // store properties necessary for saving image on disk
             newImg.filename = param.alias;
@@ -54,10 +52,9 @@ function evalImg(param,creator) {
                if (param.thumbnail)
                  newImg.createThumbnail(param.rawimage);
                newImg.clearCache();
-               result.message = "Your image was saved successfully!";
-               result.error = false;
+               result = getConfirm("imageCreate");
             } else
-               result.message = "An error occurred!";
+               result = getError("error");
          }
       }
    }
@@ -103,9 +100,9 @@ function deleteImage(currImg) {
    }
    // then, remove the image-object
    if (this.remove(currImg))
-      return ("The image was deleted successfully!");
+      return (getMsg("confirm","imageDelete"));
    else
-      return ("Ooops! Couldn't delete the image!");
+      return (getMsg("error","imageDelete"));
 }
 
 /**

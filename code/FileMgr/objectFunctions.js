@@ -8,16 +8,14 @@
  */
 
 function evalGoodie(param,creator) {
-   var result = new Object();
-   result.error = true;
-
+   var result;
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
-      result.message = "File is too big to handle!";
+      result = getError("goodieFileTooBig");
    } else if (param.rawgoodie) {
       if (param.rawgoodie.contentLength == 0) {
          // looks like nothing was uploaded ...
-         result.message = "Please upload a goodie and fill out the form ...";
+         result = getError("goodieNoUpload");
       } else {
          var newGoodie = new goodie();
          // store extension of uploaded goodie in variable
@@ -25,13 +23,13 @@ function evalGoodie(param,creator) {
             var fileExt = param.rawgoodie.name.substring(param.rawgoodie.name.lastIndexOf("."));
          // first, check if alias already exists
          if (!param.alias)
-            result.message = "You must enter a name for this goodie!";
+            result = getError("goodieNameMissing");
          else if (this.get(param.alias))
-            result.message = "There is already a goodie with this name!";
+            result = getError("goodieExisting");
          else if (!isClean(param.alias))
-            result.message = "Please do not use special characters in the name!";
+            result = getError("noSpecialChars");
          else if (!fileExt)
-            result.message = "The file has no valid extension!";
+            result = getError("fileInvalidExtension");
          else {
             // store properties necessary for goodie-creation
             newGoodie.alias = param.alias;
@@ -47,12 +45,11 @@ function evalGoodie(param,creator) {
                newGoodie.creator = creator;
                newGoodie.createtime = new Date();
                if (this.add(newGoodie)) {
-                  result.message = "The goodie " + newGoodie.alias + " was added successfully!";
-                  result.error = false;
+                  result = getConfirm("goodieCreate",newGoodie.alias);
                } else
-                  result.message = "Ooops! Adding the goodie " + newGoodie.alias + " failed!";
+                  result = getError("goodieCreate",newGoodie.alias);
             } else
-               result.message = "Couldn't store the file on disk!";
+               result = getError("fileSave");
          }
       }
    }
@@ -86,9 +83,9 @@ function deleteGoodie(currGoodie) {
    var f = new File(getProperty("goodiePath") + currGoodie.weblog.alias, currGoodie.file);
    f.remove();
    if (this.remove(currGoodie))
-      return ("The goodie was deleted successfully!");
+      return (getMsg("confirm","goodieDelete"));
    else
-      return ("Ooops! Couldn't delete the goodie!");
+      return (getMsg("error","goodieDelete"));
 }
 
 /**

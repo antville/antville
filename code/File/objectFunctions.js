@@ -8,24 +8,20 @@
  */
 
 function evalGoodie(param,modifier) {
-   var result = new Object();
+   var result;
    if (param.alias) {
       if (param.alias != this.alias) {
          if (this.weblog.goodies.get(param.alias)) {
             // alias has changed, but is already existing
-            result.message = "This name is already in use!";
-            result.error = true;
+            result = getError("nameInUse");
          } else
             this.weblog.goodies.changeAlias(this,param.alias);
       }
       this.description = param.description;
       this.modifier = modifier;
       this.modifytime = new Date();
-      result.message = "Changes saved successfully!";
-      result.error = false;
-   } else {
-      result.message = "You must specify a name for this goodie!";
-      result.error = true;
-   }
+      result = getConfirm("update");
+   } else
+      result = getError("goodieNameMissing");
    return (result);
 }

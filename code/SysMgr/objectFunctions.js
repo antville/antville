@@ -122,12 +122,11 @@ function searchSyslog(show,order,keywords) {
  */
 
 function updateWeblog(param,admin) {
-   var result = new Object();
+   var result;
    var weblog = this.weblogs.get(param.item);
-   if (!weblog) {
-      result.message = "Please choose a weblog to edit!";
-      result.error = true;
-   } else {
+   if (!weblog)
+      result = getError("weblogEditMissing");
+   else {
       var trust = parseInt(param.trusted,10);
       var block = parseInt(param.blocked,10);
       if (trust > weblog.trusted)
@@ -140,7 +139,7 @@ function updateWeblog(param,admin) {
          this.syslogs.add(new syslog("weblog",weblog.alias,"unblocked weblog",admin));
       weblog.trusted = trust;
       weblog.blocked = block;
-      result.message = "Changes to " + weblog.alias + " where saved successfully!";
+      result = getConfirm("save");
    }
    return (result);
 }
@@ -150,22 +149,20 @@ function updateWeblog(param,admin) {
  */
 
 function updateUser(param,admin) {
-   var result = new Object();
+   var result;
    var u = this.users.get(param.item);
-   if (!u) {
-      result.message = "Please choose a user to edit!";
-      result.error = true;
-   } else if (u == admin) {
-      result.message = "You can't modify your own account!";
-      result.error = true;
-   } else {
-      result.message = "Changes to " + u.name + " where saved successfully!";
+   if (!u)
+      result = getError("userEditMissing");
+   else if (u == admin)
+      result = getError("accountModifyOwn");
+   else {
+      result = getConfirm("save");
       // check if this is an attempt to remove the last sysadmin
       var sysadmin = parseInt(param.sysadmin,10);
       var trust = parseInt(param.trusted,10);
       var block = parseInt(param.blocked,10);
       if (this.sysadmins.size() == 1 && !sysadmin)
-         result.message = "This system needs at least one system administrator!";
+         result = getError("adminDeleteLast");
       else {
          //logging
          if (sysadmin > u.sysadmin)

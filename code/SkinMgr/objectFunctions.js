@@ -27,8 +27,7 @@ function fetchSkin(proto,name) {
  */
 
 function saveSkin(proto,name,source,creator) {
-   var result = new Object();
-   result.error = false;
+   var result;
    if (proto && name) {
       var s = this.fetchSkin(proto,name);
       if (!s.proto && skin) {
@@ -41,11 +40,9 @@ function saveSkin(proto,name,source,creator) {
          this.get(s.proto).remove(s);
       if (source)
          s.skin = source;
-      result.message = "Changes were saved successfully!";
-   } else {
-      result.message = "Couldn't find skin for update!";
-      result.error = true;
-   }
+      result = getConfirm("update");
+   } else
+      result = getError("skinUpdate");
    return (result);
 }
 

@@ -6,7 +6,7 @@ function isOnline() {
 
 
 function evalPoll(param, creator) {
-   var result = new Object();
+   var result;
    var choiceInput = param.choice;
    if (param.choice_array) {
    	 var choiceCnt = 0;
@@ -15,9 +15,8 @@ function evalPoll(param, creator) {
 	   		  choiceCnt++;
 	   		}
 	   }
-	 }
+   }
    if (param.title && param.question && creator && choiceCnt > 1) {
-      result.url = this.href();
       var online = parseInt(param.online,10);
       var editableby = parseInt(param.editableby,10);
  
@@ -42,23 +41,17 @@ function evalPoll(param, creator) {
 				this.add(newChoice);
 			}
 
+      result = getConfirm("pollCreate");
       result.url = path.weblog.polls.href();
-      result.message = "The poll was updated successfully!";
       result.id = this._id;
-      result.error = false;
-   }
-   else {
-      result.message = "Please fill out the form to update the poll.";
-      result.error = true;
-   }
+   } else
+      result = getError("pollMissingValues");
    return(result);
 }
 
 
 function evalVote(param, usr) {
-	var result = new Object();
-	result.error = false;
-	result.url = this.href();
+	var result;
 	if (param.choice) {
 		var c = this.get(param.choice);
 		var v = session.user ? this.votes.get(session.user.name) : null;
@@ -76,10 +69,10 @@ function evalVote(param, usr) {
 			v.modifytime = new Date();
 			this.votes.add(v);
 		}
-		result.message = "Your vote was registered. You can change your vote until the poll is closed.";
-	}
-	else
-		result.message = "You did not vote, yet. You can vote until the poll is closed.";
+		result = getConfirm("vote");
+	} else
+		result = getConfirm("noVote");
+	result.url = this.href();
 	return(result);
 }
 

@@ -13,7 +13,7 @@ function onRequest() {
    if (isUserBlocked()) {
       // user was blocked recently, so log out
       session.logout();
-      res.message = "Your account was blocked!";
+      res.message = getMsg("error","accountBlocked");
       res.redirect(path.weblog ? path.weblog.href() : root.href());
    }
 }

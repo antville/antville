@@ -61,13 +61,9 @@ function renderLinkToNextMonth(cal) {
  */
 
 function evalPreferences(param,modifier) {
-   var result = new Object();
-   result.error = false;
-   if (!checkEmail(param.email)) {
-      result.message = "The email-address is invalid!";
-      result.error = true;
-      return (result);
-   }
+   var result;
+   if (!checkEmail(param.email))
+      return (getError("emailInvalid"));
    this.title = stripTags(param.title);
    this.tagline = param.tagline;
    this.email = param.email;
@@ -124,8 +120,7 @@ function evalPreferences(param,modifier) {
 
    this.modifytime = new Date();
    this.modifier = modifier;
-   result.message = "The changes were saved successfully!";
-   return (result);
+   return (getConfirm("update"));
 }
 
 

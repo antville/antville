@@ -149,8 +149,11 @@ function autoLogin() {
       return;
    else {
       if (session.login(name,u.password)) {
-         user.lastVisit = new Date();
-         res.message = "Welcome to Antville, " + user.name + "! Have fun!";
+         u.lastVisit = new Date();
+         if (path.weblog)
+            res.message = getMsg("confirm","welcomeWeblog",new Array(session.user.name,path.weblog.title));
+         else
+            res.message = getMsg("confirm","welcomeAntville",session.user.name);
       } else
          return;
    }
@@ -270,16 +273,16 @@ function logAccess() {
 		// we're doing this with direct db access here
 		// (there's no need to do it with prototypes):
 		var c = getDBConnection("antville");
-		var error = c.getLastError();
-		if (error) {
-			app.__app__.logEvent("Error establishing DB connection: " + error);
+		var dbError = c.getLastError();
+		if (dbError) {
+			app.__app__.logEvent("Error establishing DB connection: " + dbError);
 			return;
 		}
 		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, BROWSER, DATE) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "', now());";
 		c.executeCommand(query);
-		var error = c.getLastError();
-		if (error) {
- 			app.__app__.logEvent("Error executing SQL query: " + error);
+		var dbError = c.getLastError();
+		if (dbError) {
+ 			app.__app__.logEvent("Error executing SQL query: " + dbError);
 			return;
 		}
 		return;
@@ -297,17 +300,17 @@ function pingUpdatedWeblogs() {
    // var period = 1000 * 60 * 60; // one hour
 
    var c = getDBConnection("antville");
-   var error = c.getLastError();
-   if (error) {
-      app.__app__.logEvent("Error establishing DB connection: " + error);
+   var dbError = c.getLastError();
+   if (dbError) {
+      app.__app__.logEvent("Error establishing DB connection: " + dbError);
       return;
    }
 
    var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and  (LASTUPDATE > LASTPING or LASTPING is null);";
    var rows = c.executeRetrieval(query);
-   var error = c.getLastError();
-   if (error) {
-      app.__app__.logEvent("Error executing SQL query: " + error);
+   var dbError = c.getLastError();
+   if (dbError) {
+      app.__app__.logEvent("Error executing SQL query: " + dbError);
       return;
    }
 
@@ -403,4 +406,74 @@ function cloneObject(obj) {
   for (var i in obj)
     clone[i] = obj[i];
   return(clone);
+}
+
+/**
+ * function constructs a server-message
+ * @param String Name of message to display
+ * @param optional String (or Array containing several Strings)
+ *        to pass to message-skin
+ * @return String rendered message
+ */
+
+function getMsg(msgClass,name,value) {
+   // create array containing languages to search for message
+   var languages = new Array();
+   if (path.weblog && path.weblog.language)
+      languages[0] = path.weblog.language;
+   languages[languages.length] = "en";
+   // loop over languages and try to find the message
+   for (var i in languages) {
+      var lang = app.data[languages[i]];
+      if (lang && lang[msgClass] && lang[msgClass][name]) {
+         var message = lang[msgClass][name];
+         // create param-object needed to render Skin
+         var param = new Object();
+         // check if value passed is actually an array
+         if (value && typeof(value) == typeof(String()))
+            param.value1 = value;
+         else if (value && value.length > 0) {
+            for (var i in value)
+               param["value" + (parseInt(i)+1)] = value[i];
+         }
+         return (renderSkinAsString(createSkin(message),param));
+      }
+   }
+   // still no message found, so return
+   return ("[couldn't find message!]");
+}
+
+/**
+ * function creates a result-object that contains a message
+ * and a property indicating if this result-object is classified
+ * as error or not
+ * @param String Class of message
+ * @param String Name of message
+ * @param optional String (or Array containing several Strings)
+ *        to pass to message-skin
+ * @param Boolean flag indicating error or not
+ * @return Obj result-Object
+ */
+
+function createResultObj(msgClass,msg,value,error) {
+   var result = new Object();
+   result.message = getMsg(msgClass,msg,value);
+   result.error = error;
+   return (result);
+}
+
+/**
+ * wrapper-function to create a result-object of type "error"
+ */
+
+function getError(messageName,value) {
+   return (createResultObj("error",messageName,value,true));
+}
+
+/**
+ * wrapper-function to create a result-object of type "confirm"
+ */
+
+function getConfirm(messageName,value) {
+   return (createResultObj("confirm",messageName,value,false));
 }

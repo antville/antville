@@ -8,15 +8,12 @@
  */
 
 function evalLogin(username,password) {
-   var result = new Object();
-   result.error = true;
-
+   var result;
    // check if login is successful
    if (session.login(username, password)) {
       if (isUserBlocked()) {
-         result.message = "Sorry, your account was disabled!";
          session.logout();
-         return (result);
+         return(getError("accountBlocked"));
       }
       // login successful
       session.user.lastVisit = new Date();
@@ -25,10 +22,13 @@ function evalLogin(username,password) {
          res.setCookie("avUsr",session.user.name,365);
          res.setCookie("avPw",Packages.helma.util.MD5Encoder.encode(session.user.password),365);
       }
-      result.message = "Welcome to Antville, " + session.user.name + "! Have fun!";
-      result.error = false;
-   } else
-      result.message = "Login failed! Maybe a typo?";
+      if (path.weblog)
+         result = getConfirm("welcomeWeblog",new Array(session.user.name,path.weblog.title));
+      else
+         result = getConfirm("welcomeAntville",session.user.name);
+   } else {
+      result = getError("loginTypo");
+   }
    return (result);
 }
 
@@ -43,34 +43,32 @@ function evalLogin(username,password) {
  */
 
 function evalRegistration(param) {
-   var result = new Object();
-   result.error = true;
-
+   var result;
    // check if email-address is valid
    if (!param.email)
-      result.message = "Please type in your email-address!";
+      result = getError("emailMissing1");
    else if (!checkEmail(param.email))
-      result.message = "Ooops! The email-address you entered is not valid!";
+      result = getError("emailInvalid");
 
    // check if passwords match
 	if (!param.password1 || !param.password2)
-	   result.message = "Please type in your password twice!";
+	   result = getError("passwordTwice");
 	else if (param.password1 != param.password2)
-      result.message = "Passwords didn't match! Please re-enter:";
+      result = getError("passwordNoMatch");
 
    // check if username is existing and is clean
    if (!param.name)
-      result.message = "Please choose a username!";
+      result = getError("unameMissing");
    else if (!isClean(param.name))
-      result.message = "Please don't use any special characters in your username!";
+      result = getError("unameNoSpecialChars");
    else {
       // check if username is similar to a built in function
       var reserved = eval("this." + param.name);
       if (reserved)
-         result.message = "Please choose a different username!";
+         result = getError("unameExisting");
    }
 
-   if (!result.message) {
+   if (!result) {
 		var newUser = app.registerUser(param.name, param.password1);
  		if (newUser) {
          newUser.name = param.name;
@@ -79,18 +77,20 @@ function evalRegistration(param) {
          newUser.description = param.description;
          newUser.registered = new Date();
          newUser.blocked = 0;
-         // if it's the first user registering, she's granted trust and sysadmin-rights
-         if (root.manage.users.size() == 0)
+         // grant trust and sysadmin-rights if there's no sysadmin 'til now
+         if (root.manage.sysadmins.size() == 0)
             newUser.sysadmin = newUser.trusted = 1;
-			result.message = "Welcome " + newUser.name + ". Have fun!";
-         result.error = false;
+         if (path.weblog) {
+   			result = getConfirm("welcomeWeblog",new Array(path.weblog.title,newUser.name));
+            // if user registered within a public weblog, we add this weblog to favorites
+            if (path.weblog.isOnline())
+               this.addMember(newUser);
+         } else
+   			result = getConfirm("welcomeAntville",newUser.name);
          result.username = newUser.name;
          result.password = newUser.password;
-         // if user registered within a public weblog, we add this weblog to favorites
-         if (path.weblog && path.weblog.isOnline())
-            this.addMember(newUser);
 		} else
- 			result.message = "Sorry, there is already a member with this name.";
+ 			result = getError("memberExisting");
 	}
 	return (result);
 }
@@ -106,26 +106,22 @@ function evalRegistration(param) {
  */
 
 function updateUser(param) {
-   var result = new Object();
+   var result;
    if (param.oldpwd && param.newpwd1 && param.newpwd2) {
-      if (session.user.password != param.oldpwd) {
-         result.message = "Old password is incorrect!";
-         result.error = true;
-      } else if (param.newpwd1 != param.newpwd2) {
-         result.message = "Ooops! Passwords didn't match! Please type in again!";
-         result.error = true;
-      } else
+      if (session.user.password != param.oldpwd)
+         result = getError("accountOldPwd");
+      else if (param.newpwd1 != param.newpwd2)
+         result = getError("passwordNoMatch");
+      else
          session.user.password = param.newpwd1;
    }
-   if (!checkEmail(param.email)) {
-      result.message = "Your email-address is not valid!";
-      result.error = true;
-   }
-   if (!result.error) {
+   if (!checkEmail(param.email))
+      result = getError("emailInvalid");
+   if (!result) {
       session.user.url = evalURL(param.url);
       session.user.email = param.email;
       // not in use right now: user.description = param.description;
-      result.message = "Changes were saved successfully!";
+      result = getConfirm("update");
    }
    return (result);
 }
@@ -140,11 +136,10 @@ function updateUser(param) {
  */
 
 function sendPwd(email) {
-   var result = new Object();
-   if (!email) {
-      result.message = "Please specify an email-address!";
-      result.error = true;
-   } else {
+   var result;
+   if (!email)
+      result = getError("emailMissing2");
+   else {
       var sqlClause = "select USERNAME,PASSWORD from USER where EMAIL = '" + email + "'";
       var dbConn = getDBConnection("antville");
       var dbResult = dbConn.executeRetrieval(sqlClause);
@@ -156,12 +151,10 @@ function sendPwd(email) {
          cnt++;
       }
       dbResult.release;
-      if (!cnt) {
-         result.message = "No accounts found for this eMail-address!";
-         result.error = true;
-      }
+      if (!cnt)
+         result = getError("emailNoAccounts");
    }
-   if (!result.error) {
+   if (!result) {
       // now we send the mail containing all accounts for this email-address
       var mail = new Mail();
       mail.setFrom(getProperty("adminEmail"));
@@ -173,11 +166,10 @@ function sendPwd(email) {
       mailParam.text = pwdList;
    	mail.setText(this.renderSkinAsString("pwdmail",mailParam));
       var sendResult = mail.send();
-      if (sendResult.status) {
-         result.message = "An error occurred while trying to send the mail!";
-         result.error = true;
-      } else
-         result.message = "A mail containing your the password(s) was sent successfully!";
+      if (sendResult.status)
+         result = getError("emailSend");
+      else
+         result = getConfirm("mailSendPassword");
    }
    return (result);
 }
@@ -193,51 +185,43 @@ function sendPwd(email) {
  */
 
 function searchUser(key) {
-   var result = new Object();
-   // initializing properties
-   result.error = false;
-   result.list = "";
+   var result;
    if (!key) {
       // no keyword to search for
-      result.message = "Please enter a part of the name!";
-      result.error = true;
-      return (result);
+      return (getError("searchNoKeyword"));
    }
 	var dbConn = getDBConnection("antville");
-	var error = dbConn.getLastError();
-   if (error) {
-      result.message = error;
-      result.error = true;
-      return (result);
-   }
+	var dbError = dbConn.getLastError();
+   if (dbError)
+      return (getError("database",dbError));
    var query = "select USERNAME,URL from USER ";
    query += "where USERNAME like '%" + key + "%' order by USERNAME asc";
 	var searchResult = dbConn.executeRetrieval(query);
-	var error = dbConn.getLastError();
-   if (error) {
-      result.message = error;
-      result.error = true;
-      return (result);
-   }
-   result.found = 0;
-   while (searchResult.next() && result.found < 100) {
+	var dbError = dbConn.getLastError();
+   if (dbError)
+      return (getError("database",dbError));
+   var found = 0;
+   var list = "";
+   while (searchResult.next() && found < 100) {
       var sp = new Object();
       sp.name = searchResult.getColumnItem("USERNAME");
       var url = searchResult.getColumnItem("URL");
       if (url)
          sp.description = "(url: <a href=\"" + url + "\">" + url + "</a>)";
-      result.list += this.renderSkinAsString("searchresultitem",sp);
-      result.found++;
+      list += this.renderSkinAsString("searchresultitem",sp);
+      found++;
    }
    dbConn.release();
-   if (result.found == 0)
-      result.message = "Couldn't find any user!";
-   else if (result.found == 1)
-      result.message = "One user found!";
-   else if (result.found == 100)
-      result.message = "More than 100 users found, displaying the first 100!";
+   if (found == 0)
+      result = getError("resultNoUser");
+   else if (found == 1)
+      result = getConfirm("resultOneUser");
+   else if (found == 100)
+      result = getConfirm("resultTooManyUsers");
    else
-      result.message = result.found + " users found!";
+      result = getConfirm("resultManyUsers",found);
+   result.list = list;
+   result.found = found;
    return (result);
 }
 
@@ -251,30 +235,26 @@ function searchUser(key) {
  */
 
 function evalNewMember(uname,creator) {
-   var result = new Object();
-   result.error = true;
+   var result;
    var u = root.users.get(uname);
    if (!u)
-      result.message = "Couldn't find user to add to members!";
+      return (getError("resultNoUser"));
    else if (this.get(uname))
-      result.message = "This user is already a member of this weblog!";
-   else {
-      result.id = this.addMember(u);
-      // send a confirmation mail to the new member
-      var mail = new Mail();
-      mail.setFrom(path.weblog.email ? path.weblog.email : creator.email);
-      mail.setTo(u.email);
-      mail.setSubject("You are now a member of " + path.weblog.title + "!");
-      var skinParam = new Object();
-      skinParam.weblog = path.weblog.title;
-      skinParam.creator = creator.name;
-      skinParam.url = path.weblog.href();
-      skinParam.account = u.name;
-      mail.setText(this.renderSkinAsString("mailnewmember",skinParam));
-      mail.send();
-      result.message = "Added " + u.name + " to list of members!";
-      result.error = false;
-   }
+      return (getError("userAlreadyMember"));
+   // send a confirmation mail to the new member
+   var mail = new Mail();
+   mail.setFrom(path.weblog.email ? path.weblog.email : creator.email);
+   mail.setTo(u.email);
+   mail.setSubject("You are now a member of " + path.weblog.title + "!");
+   var skinParam = new Object();
+   skinParam.weblog = path.weblog.title;
+   skinParam.creator = creator.name;
+   skinParam.url = path.weblog.href();
+   skinParam.account = u.name;
+   mail.setText(this.renderSkinAsString("mailnewmember",skinParam));
+   mail.send();
+   result = getConfirm("memberCreate",u.name);
+   result.id = this.addMember(u);
    return (result);
 }
 
@@ -306,16 +286,14 @@ function addMember(usr,level) {
  */
 
 function deleteMember(member,usr) {
-   var result = new Object();
-   result.error = true;
+   var result;
    if (!member)
-      result.message = "Please specify a membership to delete!";
+      result = getError("memberDelete");
    else if (member.level == 3)
-      result.message = "Sorry, Admins cannot be deleted!";
+      result = getError("adminDelete");
    else {
       this.remove(member);
-      result.message = "Membership deleted successfully!";
-      result.error = false;
+      result = getConfirm("memberDelete");
    }
    return (result);
 }

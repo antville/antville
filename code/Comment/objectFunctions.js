@@ -19,7 +19,7 @@ function isOnline() {
  */
 
 function updateComment(param) {
-   var result = new Object();
+   var result;
    if (param.text) {
 
       // check if there's a difference between old and
@@ -31,11 +31,9 @@ function updateComment(param) {
       if (majorUpdate)
          this.modifytime = new Date();
       this.ipaddress = param.http_remotehost;
-      result.message = "Changes were saved successfully!";
-      result.error = false;
+      result = getConfirm("update");
    } else {
-      result.message = "You need at least some text!";
-      result.error = true;
+      result = getError("textMissing");
    }
    this.cache.lrText = null;
    return (result);

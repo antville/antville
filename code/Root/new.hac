@@ -2,10 +2,10 @@ checkIfLoggedIn(this.href(req.action));
 
 var limit = getProperty("limitNewWeblogs").toLowerCase();
 if (limit == "sysadmin" && !isUserSysAdmin ()) {
-   res.message = "Sorry! Only administrators are allowed to create new Weblogs."
+   res.message = getMsg("error","weblogCreateOnlyAdmins");
    res.redirect(root.href());
 } else if (limit == "trusted" && !(isUserSysAdmin () || isUserTrusted ())) {
-   res.message = "Sorry! You are not allowed to create new Weblogs."
+   res.message = getMsg("error","weblogCreateNotAllowed");
    res.redirect(root.href());
 }
 
