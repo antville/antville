@@ -13,12 +13,12 @@
 <td class="small" nowrap="nowrap">Personal URL:</td>
 <td nowrap="nowrap"><% membership.url %></td>
 </tr>
-<tr>
+<!-- tr>
 <td class="small" nowrap="nowrap">Currently</td>
 <td nowrap="nowrap"><% membership.level %></td>
-</tr>
+</tr -->
 <tr>
-<td class="small" nowrap="nowrap">Change to:</td>
+<td class="small" nowrap="nowrap">Status:</td>
 <td nowrap="nowrap"><% membership.level as="editor" %></td>
 </tr>
 <tr>

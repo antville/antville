@@ -10,7 +10,7 @@ function username_macro(param) {
 
 
 /**
- * macro renders eMail-address
+ * macro renders e-mail address
  */
 function email_macro(param) {
    if (this.user.publishemail)
@@ -33,11 +33,21 @@ function url_macro(param) {
 
 function level_macro(param) {
    if (param.as == "editor")
-      Html.dropDown({name: "level"}, ROLES, null, "-- select --");
+      Html.dropDown({name: "level"}, ROLES, this.level, "-- select --");
    else
       res.write(getRole(this.level));
    return;
 }
+
+/**
+ * macro renders the username
+ */
+function editlink_macro(param) {
+   if (this.user != session.user)
+      Html.link({href: this.href("edit")}, param.text ? param.text : "edit");
+   return;
+}
+
 
 /**
  * macro renders a link for deleting a membership

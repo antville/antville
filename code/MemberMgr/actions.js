@@ -42,6 +42,34 @@ function main_action() {
 }
 
 /**
+ * action that lists all subscribers of a site
+ */
+function subscribers_action() {
+   this.renderView(this.subscribers, "Subscribers");
+}
+
+/**
+ * action that lists all contributors of a site
+ */
+function contributors_action() {
+   this.renderView(this.contributors, "Contributors");
+}
+
+/**
+ * action that lists all content managers of a site
+ */
+function managers_action() {
+   this.renderView(this.managers, "Content Managers");
+}
+
+/**
+ * action that lists all admins of a site
+ */
+function admins_action() {
+   this.renderView(this.admins, "Administrators");
+}
+
+/**
  * edit actions for user profiles
  */
 function edit_action() {
@@ -171,3 +199,4 @@ function subscriptions_action() {
    res.data.body = session.user.renderSkinAsString("subscriptions");
    this._parent.renderSkin("page");
 }
+

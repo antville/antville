@@ -1,4 +1,20 @@
-<div class="member"><b><% membership.username linkto="edit" %></b>
+<div class="listSeparator">&nbsp;</div>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td colspan="3" class="small"><div class="ample"><strong>Status:</strong> <% membership.level %></td>
+</tr>
+<tr valign="top">
+<td><div class="storytitle"><% membership.username %></div>
+<div class="storyDate"><% membership.createtime format="short" prefix="created on " %><% membership.url as="link" prefix="<br />" %></div></td>
+<td width="10" nowrap="nowrap">&nbsp;</td>
+<td align="right" class="small" nowrap="nowrap"><% membership.editlink text="edit" prefix="...&nbsp;" %>
+<% membership.link to="mailto" text="contact" prefix="<br />...&nbsp;" %>
+<% membership.deletelink text="remove" prefix="<br />...&nbsp;" %></td>
+</tr>
+</table>
+
+
+<!-- div class="member"><b><% membership.username linkto="edit" %></b>
 <div class="small"><% membership.url suffix="<br />" %>
 Signed up on <% membership.createtime format="short" %><br />
-<% membership.deletelink text="remove" prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>...&nbsp;<% membership.link to="mailto" text="send an e-mail to this user" %></div></div>
+<% membership.deletelink text="remove" prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>...&nbsp;<% membership.link to="mailto" text="send an e-mail to this user" %></div></div -->

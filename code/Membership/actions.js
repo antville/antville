@@ -67,7 +67,7 @@ function mailto_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = "Send an e-mail to: " + this.username;
+   res.data.title = "Send e-mail to " + this.username;
    res.data.body = this.renderSkinAsString("mailto");
    this.site.renderSkin("page");
 }

@@ -1,14 +1,6 @@
-<p>To add a new contributor, content manager or admin to this weblog, simply search for an existing antville user by specifying a part of the username.</p>
+<div class="ample">...&nbsp;<% membermgr.link to="add" text="add member" %></div>
+...&nbsp;show <% membermgr.link to="main" text="all" %>&nbsp;| <% membermgr.link to="admins" %>&nbsp;| <% membermgr.link to="contributors" %>&nbsp;| <% membermgr.link to="managers" %>&nbsp;| <% membermgr.link to="subscribers" %>
 
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td nowrap="nowrap"><% input type="text" name="keyword" %>&nbsp;</td>
-<td nowrap="nowrap"><% input type="submit" name="search" value="Search" %></td>
-</tr>
-</table>
-</form>
-
-<% response.searchresult %>
-
-<% response.memberlist prefix="<p>Current members of this site:</p>" %>
+<% response.pagenavigation %>
+<% response.memberlist %>
+<% response.pagenavigation %>
