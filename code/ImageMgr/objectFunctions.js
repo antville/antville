@@ -23,20 +23,30 @@ function evalNewImg() {
          else if (!isClean(req.data.alias))
             res.message = "Please do not use special characters in the name!";
          else {
+            // store properties necessary for image-creation
             newImg.filename = req.data.alias;
             newImg.cache.saveTo = getProperty("imgPath") + this.__parent__.alias + "/";
+ 
             // check if user wants to resize width
             if (req.data.maxwidth)
                newImg.cache.maxwidth = parseInt(req.data.maxwidth,10);
+            else
+               newImg.cache.maxwidth = null;
             // check if user wants to resize height
             if (req.data.maxheight)
                newImg.cache.maxheight = parseInt(req.data.maxheight,10);
+            else
+               newImg.cache.maxheight = null;
             // save/resize the image
             newImg.saveImg(rawimage);
             // any errors?
             if (!newImg.cache.error) {
-               // the image is on disk, so we add the image-object
+               // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
                this.addImg(newImg);
+               // the fullsize-image is stored, so we check if a thumbnail should be created too
+               if (req.data.thumbnail) {
+                  newImg.createThumbnail(rawimage);
+               }
                res.redirect(this.href());
             } 
          }
@@ -75,6 +85,9 @@ function changeAlias(currImg) {
    this.set(currImg.alias,null);
    currImg.alias = req.data.alias;
    this.add(currImg);
+   // if thumbnail exists, we have to change this alias too
+   if (currImg.thumbnail)
+      currImg.thumbnail.alias = req.data.alias;
    return;
 }
 
@@ -85,9 +98,15 @@ function changeAlias(currImg) {
 
 function deleteImage(currImg) {
    currImg.setParent(this);
-   // first we try to remove the image from disk
+   // first we try to remove the image from disk (and the thumbnail, if existing)
    var f = new File(getProperty("imgPath") + currImg.weblog.alias, currImg.filename + "." + currImg.fileext);
    if (f.remove()) {
+      if (currImg.thumbnail) {
+         f = new File(getProperty("imgPath") + currImg.weblog.alias, currImg.thumbnail.filename + "." + currImg.thumbnail.fileext);
+         f.remove();
+         currImg.thumbnail.setParent(this);
+         this.remove(currImg.thumbnail);
+      }
       if (this.remove(currImg))
          res.message = "The image was deleted successfully!";
       else
