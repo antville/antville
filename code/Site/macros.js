@@ -427,14 +427,15 @@ function navigation_macro(param) {
 
 function storylist_macro() {
    if (this.allstories.size() > 0) {
-      var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
-      if (days > this.size())
-         days = this.size();
-      for (var i=0;i<days;i++) {
-         for (var j=0;j<this.get(i).size();j++) {
-            var currStory = this.get(i).get(j);
-            if (currStory.isOnline())
-               currStory.renderSkin("preview");
+      var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2
+      days = Math.min(days,this.size());
+      var dayCnt = 0;
+      while (dayCnt < days) {
+         var day = this.get(dayCnt++);
+         for (var i=0;i<day.size();i++) {
+            var st = day.get(i);
+            if (this.isStoryOnline(st))
+               st.renderSkin("preview");
          }
       }
    } else
@@ -636,29 +637,6 @@ function onlinestatus_macro(param) {
       res.write("private");
    else
       res.write("public");
-   res.write(param.suffix);
-}
-
-/**
- * macro renders a link to signup if user is not member of this weblog
- * if user is member, it displays the level of membership
- */
-
-function membership_macro(param) {
-   res.write(param.prefix);
-   var ms = this.members.get(user.name);
-   if (ms) {
-      res.write("You&nbsp;are&nbsp;");
-      ms.renderLvl();
-      res.write("&nbsp;of " + this.title);
-   } else {
-      var linkParam = new Object();
-      linkParam.to = "signup";
-      this.openLink(linkParam);
-      res.write("sign up");
-      this.closeLink();
-      res.write("&nbsp;to&nbsp;" + this.title);
-   }
    res.write(param.suffix);
 }
 
