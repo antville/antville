@@ -11,8 +11,8 @@ if (!root.sys_issetup) {
       res.redirect(this.manage.href("setup"));
 }
 
-if (path.site) {
-   path.site.main_action();
+if (res.handlers.site) {
+   res.handlers.site.main_action();
 } else {
    res.data.body = root.renderSkinAsString("main");
    root.renderSkin("page");
