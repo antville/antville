@@ -87,8 +87,14 @@ function total_macro(param) {
  * macro renders a link to the poll editor
  */
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel))
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.link(this.href("edit"), param.text ? param.text : "edit");
+   }
    return;
 }
 
@@ -98,8 +104,14 @@ function editlink_macro(param) {
  * (only if the user also is the creator)
  */
 function deletelink_macro(param) {
-   if (session.user && !this.isDeleteDenied(session.user, req.data.memberlevel))
+   if (session.user) {
+      try {
+         this.checkDelete(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.link(this.href("delete"), param.text ? param.text : "delete");
+   }
    return;
 }
 
@@ -108,11 +120,16 @@ function deletelink_macro(param) {
  * macro renders a link to the poll
  */
 function viewlink_macro(param) {
-   if (session.user && this.isViewDenied(session.user, req.data.memberlevel))
+   try {
+      if (session.user)
+         this.checkView(session.user, req.data.memberlevel);
+      if (!this.closed) {
+         this.checkVote(session.user, req.data.memberlevel);
+         Html.link(this.href(), param.text ? param.text : "vote");
+      }
+   } catch (deny) {
       return;
-   if (this.closed || this.isVoteDenied(session.user, req.data.memberlevel))
-      return;
-   Html.link(this.href(), param.text ? param.text : "vote");
+   }
    return;
 }
 
@@ -121,7 +138,12 @@ function viewlink_macro(param) {
  * macro renders a link as switch to close/re-open a poll
  */
 function closelink_macro(param) {
-   if (session.user && !this.isDeleteDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkDelete(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       var str = this.closed ? "re-open" : "close";
       Html.link(this.href("toggle"), param.text ? param.text : str);
    }
