@@ -189,6 +189,45 @@ function titlecolor_macro(param) {
 }
 
 /**
+ * macro rendering smallfont of weblog
+ */
+
+function smallfont_macro(param) {
+   res.write(param.prefix)
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("smallfont",param));
+   else
+      res.write(this.smallfont);
+   res.write(param.suffix);
+}
+
+/**
+ * macro rendering smallfont-size of weblog
+ */
+
+function smallsize_macro(param) {
+   res.write(param.prefix)
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("smallsize",param));
+   else
+      res.write(this.smallsize);
+   res.write(param.suffix);
+}
+
+/**
+ * macro rendering smallfont-color of weblog
+ */
+
+function smallcolor_macro(param) {
+   res.write(param.prefix)
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("smallcolor",param));
+   else
+      renderColor(this.smallcolor);
+   res.write(param.suffix);
+}
+
+/**
  * macro rendering lastupdate of weblog
  */
 
@@ -312,41 +351,32 @@ function showarchive_macro(param) {
 }
 
 /**
- * macro rendering language of weblog
+ * macro rendering default longdateformat of weblog
  */
 
-function language_macro(param) {
+function longdateformat_macro(param) {
    res.write(param.prefix)
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("language",param));
+   if (param.as == "chooser")
+      this.renderDateformatChooser("long");
+   else if (param.as == "editor")
+      this.renderInputText(this.createInputParam("longdateformat",param));
    else
-      res.write(this.language);
+      res.write(this.longdateformat);
    res.write(param.suffix);
 }
 
 /**
- * macro rendering country of weblog
+ * macro rendering default shortdateformat of weblog
  */
 
-function country_macro(param) {
+function shortdateformat_macro(param) {
    res.write(param.prefix)
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("country",param));
+   if (param.as == "chooser")
+      this.renderDateformatChooser("short");
+   else if (param.as == "editor")
+      this.renderInputText(this.createInputParam("shortdateformat",param));
    else
-      res.write(this.country);
-   res.write(param.suffix);
-}
-
-/**
- * macro rendering default dateformat of weblog
- */
-
-function dateformat_macro(param) {
-   res.write(param.prefix)
-   if (param.as == "editor")
-      this.renderInputText(this.createInputParam("dateformat",param));
-   else
-      res.write(this.dateformat);
+      res.write(this.shortdateformat);
    res.write(param.suffix);
 }
 
@@ -370,12 +400,11 @@ function loginstatus_macro(param) {
  */
 
 function navigation_macro(param) {
-   if (this.isUserAdmin())
-      this.renderSkin("adminnavigation");
-   else if (this.isUserContributor())
+   this.renderSkin("usernavigation");
+   if (this.isUserContributor(user) || this.isUserAdmin(user))
       this.renderSkin("contribnavigation");
-   else
-      this.renderSkin("usernavigation");
+   if (this.isUserAdmin(user))
+      this.renderSkin("adminnavigation");
 }
 
 
@@ -384,7 +413,7 @@ function navigation_macro(param) {
  */
 
 function storylist_macro() {
-   if (this.size() > 0) {
+   if (this.allstories.size() > 0) {
       var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
       if (days > this.size())
          days = this.size();
@@ -553,7 +582,6 @@ function memberlist_macro(param) {
 
 function history_macro(param) {
    res.write(param.prefix);
-   var x = new Array(nr);
    var len1 = this.allstories.count();
    var len2 = this.allcomments.count();
    var nr = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
@@ -561,6 +589,7 @@ function history_macro(param) {
    var c1 = 0;
    var c2 = 0;
    var cnt = 0;
+   var x = new Array(nr);
    while (cnt < nr) {
       if (c1 >= this.allstories.count())
          x[cnt] = this.allcomments.get(c2++);
@@ -576,8 +605,7 @@ function history_macro(param) {
          else
             x[cnt] = this.allstories.get(c1++);
       }
-      if (x[cnt].isOnline())
-         cnt++;
+      cnt++;
    }
    for (var j in x)
       x[j].renderSkin("historyview");
@@ -618,6 +646,25 @@ function membership_macro(param) {
       this.closeLink();
       res.write("&nbsp;to&nbsp;" + this.title);
    }
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders a list of available locales as dropdown
+ */
+
+function localechooser_macro(param) {
+   res.write(param.prefix);
+   var locs = java.util.Locale.getAvailableLocales();
+   var options = new Array();
+   // get the defined locale of this weblog for comparison
+   var loc = this.getLocale();
+   for (var i in locs) {
+      options[i] = locs[i].getDisplayName();
+      if (locs[i].equals(loc))
+         var selectedIndex = i;
+   }
+   res.write(simpleDropDownBox("locale",options,selectedIndex));
    res.write(param.suffix);
 }
 
