@@ -1,7 +1,7 @@
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><b><a name="general">General</a></b></td>
+<td colspan="2" nowrap="nowrap"><strong><a name="general">General</a></strong></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
@@ -67,7 +67,7 @@ of available layouts.</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
-<b><a name="spamfilter">Referrer spam filter</a></b></td>
+<strong><a name="spamfilter">Referrer spam filter</a></strong></td>
 </tr>
 <tr>
 <td class="small" valign="top">Enter one <a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> per line to be applied on every URL in the referrer and backlink lists.</td>
