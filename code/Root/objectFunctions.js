@@ -131,7 +131,7 @@ function searchWeblogs (query, wlogid) {
     if (wlogid)
         where += "and WEBLOG.ID = "+wlogid+" ";
     where += "order by TEXT.CREATETIME desc";
-    writeln (where);
+    // writeln (where);
     var dbcon = getDBConnection ("antville");
     var dbres = dbcon.executeRetrieval(where);
     if (dbres) {
