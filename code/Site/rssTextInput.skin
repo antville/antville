@@ -1,0 +1,6 @@
+<textInput>
+	<title>find</title>
+	<description>Search <% this.alias %></description>
+	<name>q</name>
+	<link><% param.url %>search</link>
+</textInput>
