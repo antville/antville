@@ -567,9 +567,7 @@ function sendMail(from, to, subject, body) {
          break;
    }
    // finally send the mail
-   mail.send();
-   if (mail.status != 0)
-      throw new MailException("mailSend");
+   mail.queue();
    return new Message("mailSend");
 }
 
@@ -592,9 +590,15 @@ Mail.prototype.queue = function() {
  * application-wide mail queue
  */
 function flushMailQueue() {
+   if (!app.data.mailqueue)
+      return;
    while (app.data.mailqueue.length) {
-      var result = app.data.mailqueue.pop().send();
-      app.debug("Mail transfer status: " + result);
+      var mail = app.data.mailqueue.pop();
+      mail.send();
+      if (mail.status > 0) {
+         app.debug("Mail transfer status: " + mail.status);
+         //throw new MailException("mailSend");
+      }
    }
    return;
 }
