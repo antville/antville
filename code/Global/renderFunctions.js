@@ -124,8 +124,6 @@ function renderInputTextarea(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputButton(param) {
-   if (!param)
-      return;
    param.type = "submit";
    if (param.content) {
       param.value = param.content;
@@ -142,8 +140,6 @@ function renderInputButton(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputText(param) {
-   if (!param)
-      return;
    param.type = "text";
    // this one is left for backwards-compatibility
    if (param.width)
@@ -161,8 +157,6 @@ function renderInputText(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputPassword(param) {
-  if (!param)
-    return;
   param.type = "password";
   param.size = param.width ? param.width : "20";
   delete param.width;
@@ -175,8 +169,6 @@ function renderInputPassword(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputFile(param) {
-  if (!param)
-    return;
   param.type = "file";
   renderMarkupElement("input", param);
 } 
@@ -187,12 +179,25 @@ function renderInputFile(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputCheckbox(param) {
-  if (!param || !param.name)
-    return;
   param.type = "checkbox";
   if (parseInt(param.value, 10) == 1 || param.value == true)
     param.checked = "checked";
   param.value = "1";
+  renderMarkupElement("input", param);
+}
+
+
+/**
+ * renders an input type checkbox
+ * @param param Object contains the element's attributes
+ */
+function renderInputRadio(param) {
+  param.type = "radio";
+  if (param.value == param.selectedValue)
+    param.checked = "checked";
+  else
+    delete param.checked;
+  delete param.selectedValue;
   renderMarkupElement("input", param);
 }
 
