@@ -82,7 +82,7 @@ function image_macro(param) {
  * use image_macro() with param.as = "thumbnail" instead
  */
 function thumbnail_macro(param) {
-  param.as = "thumbnail";
+  param.as = "popup";
   image_macro(param);
 }
 
