@@ -19,7 +19,7 @@ function checkAccess(action, usr, level) {
       }
    } catch (deny) {
       res.message = deny.toString();
-      res.redirect(this.site.images.href());
+      res.redirect(this._parent.href());
    }
    return;
 }
@@ -44,7 +44,7 @@ function checkEdit(usr, level) {
  * @return Obj Exception or null (if allowed)
  */
 function checkDelete(usr, level) {
-   if (this.creator != usr && (level & MAY_DELELTE_ANYIMAGE) == 0)
+   if (this.creator != usr && (level & MAY_DELETE_ANYIMAGE) == 0)
       throw new DenyException("imageDelete");
    return;
 }
