@@ -16,12 +16,16 @@ function evalStory(param,modifier) {
       result.error = true;
       return (result);
    }
+   
+   // check if there's a difference between old and
+   // new text of more than 50 characters:
+   var majorUpdate = Math.abs(this.text.length - param.text.length) > 50;
+
    // assign those properties that can be stored anyway
    var editableby = parseInt(param.editableby,10);
    this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : null);
    this.title = param.title;
    this.text = param.text;
-   this.modifytime = new Date();
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
    // check if the createtime is set in param
@@ -61,6 +65,14 @@ function evalStory(param,modifier) {
    else
       this.online = online;
 
+   // the modifytimes of a story and its parent weblog will only 
+   // be updated if more than 50 characters have changed.
+   if (majorUpdate) {
+      if (this.online > 0)
+         this.weblog.lastupdate = new Date();
+      this.modifytime = new Date();
+   }
+
    if (this.online > 0) {
       // href() may not yet work if we changed the topic
       // so we build the redirect URL manually
@@ -68,7 +80,6 @@ function evalStory(param,modifier) {
          result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
       else
          result.url = this.weblog.href() + this.day+"/" + this._id;
-      this.weblog.lastupdate = new Date();
    } else
       result.url = this.weblog.stories.href();
    result.message = "The story was updated successfully!";
