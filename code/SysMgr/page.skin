@@ -29,6 +29,7 @@
 
 <div class="statuslight">...&nbsp;<% this.link to="sites" text="sites" %><br />
 ...&nbsp;<% this.link to="users" text="users" %><br />
+...&nbsp;<% this.link to="setup" text="setup" %><br />
 ...&nbsp;<% this.link to="logs" text="system log" %>
 </td>
 </tr>
