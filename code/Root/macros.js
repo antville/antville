@@ -39,26 +39,24 @@ function url_macro(param) {
 
 
 /**
- * macro renders the system-title of this antville-installation
+ * render the system title of this antville installation
  */
-
-function systitle_macro(param) {
-   res.write(this.getSysTitle());
+function title_macro() {
+   res.write(this.getTitle());
 }
 
 /**
- * macro renders the system-url of this antville-installation
+ * render the system-url of this antville installation
  */
-
-function sysurl_macro(param) {
-   res.write(this.getSysUrl());
+function url_macro(param) {
+   res.write(this.getUrl());
 }
 
 /**
- * macro renders a link to the sysmgr if user has sysadmin rights
+ * render the system manager navigation if user is a system manager
  */
-function managelink_macro(param) {
+function sysmgrnavigation_macro(param) {
    if (session.user && session.user.sysadmin)
-      Html.link(root.href("manage"), param.text ? param.text : "system management");
+      this.renderSkin("sysmgrnavigation");
    return;
 }
