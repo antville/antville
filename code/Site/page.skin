@@ -9,7 +9,12 @@
 
 <body>
 
-<% weblog.skin name="header" %>
+<table border="0" height="53" cellspacing="0" cellpadding="0">
+<tr>
+<td width="404" class="title" background="<% imageurl name="/webloghead" %>" nowrap>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<% this.title %></td>
+<td width="296" align="right" background="<% imageurl name="/headbg" %>" valign="middle" nowrap>&nbsp;<span class="message"><% response.message %></span></td>
+</tr>
+</table>
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -21,7 +26,7 @@
 <div class="statushead"><% image name="/status" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statuslight"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="EE, MM/dd/yyyy%></div>
+<div class="statuslight"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="short%></div>
 <% this.loginstatus %>
 <div class="statuslight"><% this.membership prefix="...&nbsp;" %></div>
 
