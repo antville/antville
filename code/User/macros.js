@@ -70,13 +70,52 @@ function description_macro(param) {
 
 /**
  * macro renders a list of memberships of this user
+ * meaning all memberships where level > 0
  */
 
 function membershiplist_macro(param) {
-   if (!this.size())
-      return;
    res.write(param.prefix);
-   for (var i=0;i<this.size();i++)
-      this.get(i).renderSkin("membership");
+   if (!this.memberships.size())
+      res.writeln("-----");
+   else {
+      for (var i=0;i<this.memberships.size();i++)
+         this.memberships.get(i).renderSkin("membership");
+   }
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders a list of subscriptions of this user
+ * meaning all memberships where level == 0
+ */
+
+function subscriptionlist_macro(param) {
+   res.write(param.prefix);
+   if (!this.subscriptions.size())
+      res.writeln("-----");
+   else {
+      for (var i=0;i<this.subscriptions.size();i++)
+         this.subscriptions.get(i).renderSkin("subscription");
+   }
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders the weblogs the user is a member of or has subscribed to
+ * in order of their last update-timestamp
+ */
+
+function webloglist_macro(param) {
+   res.write(param.prefix);
+   if (!this.size())
+      res.writeln("-----");
+   else {
+      var l = user.list();
+      l.sort(this.sortSubscriptions);
+      for (var i in l) {
+         var wl = l[i].weblog;
+         wl.renderSkin("preview");
+      }
+   }
    res.write(param.suffix);
 }
