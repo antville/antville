@@ -14,3 +14,5 @@ this.renderStorylist(req.data.day);
 res.data.title = "Antville - " + this.title;
 
 res.data.body = this.renderSkinAsString("main");
+
+logAccess();
