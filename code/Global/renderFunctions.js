@@ -266,7 +266,7 @@ function renderColor(c) {
 function doWikiStuff (src) {
   // robert, disabled: didn't get the reason for this:
   // var src= " "+src;
-  if (src.indexOf ("<*") < 0)
+  if (src == null || src.indexOf ("<*") < 0)
      return src;
 
   // do the Wiki link thing, <*asterisk style*>
