@@ -50,7 +50,7 @@ function author_macro(param) {
 
 function createtime_macro(param) {
    renderPrefix(param);
-   this.weblog.formatTimestamp(this.createtime,param);
+   res.write(this.weblog.formatTimestamp(this.createtime,param));
    renderSuffix(param);
 }
 
@@ -61,7 +61,7 @@ function createtime_macro(param) {
 function modifytime_macro(param) {
    if (this.modifytime) {
       renderPrefix(param);
-      this.weblog.formatTimestamp(this.modifytime,param);
+      res.write(this.weblog.formatTimestamp(this.modifytime,param));
       renderSuffix(param);
    }
 }
@@ -88,12 +88,12 @@ function editlink_macro(param) {
 
 /**
  * macro renders a link to delete the comment
- * if user == weblog-owner
+ * if user == weblog-admin
  */
 
 function deletelink_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      if (this.weblog.owner == user && path[path.length-1] != this) {
+      if (this.weblog.isUserAdmin() && path[path.length-1] != this) {
          renderPrefix(param);
          var linkParam = new HopObject();
          linkParam.linkto = "delete";
