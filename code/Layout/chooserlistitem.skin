@@ -1,7 +1,7 @@
-<span class="commentHead">&nbsp;</span>
+<div class="listSeparator">&nbsp;</div>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td valign="top" class="small"><input type="radio" name="parent" value="<% layout.alias %>">&nbsp;</td>
+<td valign="top" class="small"><input type="radio" name="layout" value="<% layout.alias %>" />&nbsp;</td>
 <td width="100%" valign="top"><div class="storyTitle"><% layout.title %></div>
 <div><% layout.description limit="100" suffix="<br />" %></div></td>
 <td valign="top" align="right" class="small"><% layout.link to="startTestdrive" prefix="...&nbsp;" text="test" %></td>
