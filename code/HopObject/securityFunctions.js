@@ -1,4 +1,4 @@
-</**
+/**
  * function checks if there's a weblog in path
  * if true it checks if the weblog or the user is blocked
  */
