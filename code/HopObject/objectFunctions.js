@@ -7,38 +7,38 @@ function createDDparam(prefix,ts,dropFormat) {
    var ddParam = new HopObject();
    if (dropFormat == "dd") {
       ddParam.name = prefix + "Date";
-      ddParam.firstOption = "Day";
+      ddParam.firstOption = "DD";
       ddParam.currValue = ts ? ts.getDate() : null;
       ddParam.start = 1;
       ddParam.end = 31;
    } else if (dropFormat == "MM") {
       ddParam.name = prefix + "Month";
-      ddParam.firstOption = "Month";
+      ddParam.firstOption = "MM";
       ddParam.currValue = ts ? ts.getMonth() : null;
       ddParam.start = 1;
       ddParam.end = 12;
       ddParam.valueOffset = -1;
    } else if (dropFormat == "yyyy") {
       ddParam.name = prefix + "Year";
-      ddParam.firstOption = "Year";
+      ddParam.firstOption = "YYYY";
       ddParam.currValue = ts ? ts.getFullYear() : null;
       ddParam.start = 2000;
       ddParam.end = 2010;
    } else if (dropFormat == "HH") {
       ddParam.name = prefix + "Hours";
-      ddParam.firstOption = "Hour";
+      ddParam.firstOption = "HH";
       ddParam.currValue = ts ? ts.getHours() : null;
       ddParam.start = 0;
       ddParam.end = 23;
    } else if (dropFormat == "mm") {
       ddParam.name = prefix + "Minutes";
-      ddParam.firstOption = "Minute";
+      ddParam.firstOption = "mm";
       ddParam.currValue = ts ? ts.getMinutes() : null;
       ddParam.start = 0;
       ddParam.end = 59;
    } else if (dropFormat == "ss") {
       ddParam.name = prefix + "Seconds";
-      ddParam.firstOption = "Second";
+      ddParam.firstOption = "ss";
       ddParam.currValue = ts ? ts.getSeconds() : null;
       ddParam.start = 0;
       ddParam.end = 59;

@@ -26,7 +26,4 @@
 </table>
 </form>
 
-<p>You're member of the following weblogs:
-<ul>
-<% this.membershiplist %>
-</ul></p>
+<% this.membershiplist prefix="<p>You're member of the following weblogs:<ul>" suffix="</ul></p>" %>
