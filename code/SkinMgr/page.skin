@@ -7,15 +7,15 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% context.href %>stylesheet" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% context.href %>stylesheet.css" />
 </head>
 
 <body>
 
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="main" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20" nowrap="nowrap">&nbsp;</td>
-<td valign="top" nowrap="nowrap"><% response.body %></td>
+<td valign="top"><% response.body %></td>
 <td width="20" nowrap="nowrap">&nbsp;</td>
 </tr>
 </table>
