@@ -132,3 +132,13 @@ function activateLinks (str) {
    return (str);
 }
 
+/**
+ * function checks if url is correct
+ * if not it assumes that http is the protocol
+ */
+
+function evalURL(url) {
+   if (url.indexOf("://") < 0)
+      return ("http://" + url);
+   return (url);
+}
