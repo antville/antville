@@ -16,7 +16,6 @@ function content_macro(param) {
             param.value = "Re: " + path.story.title;
       } else if (req.data["content_" + param.part]) {
          // if there's a part-value in request.data available use it:
-         res.debug("content_" + param.part + ": using value from req.data");
          param.value = unescape(req.data["content_" + param.part]);
       } else
          param.value = this.getContentPart(param.part);
