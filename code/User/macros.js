@@ -3,11 +3,9 @@
  */
 
 function name_macro(param) {
-   if (this.url) {
-      openLink(this.url);
-      res.write(this.name);
-      closeLink();
-   } else
+   if (this.url)
+      Html.link(this.url, this.name);
+   else
       res.write(this.name);
 }
 
@@ -17,7 +15,7 @@ function name_macro(param) {
 
 function password_macro(param) {
    if (param.as == "editor")
-      renderInputPassword(this.createInputParam("password",param));
+      Html.password(this.createInputParam("password", param));
    return;
 }
 
@@ -28,7 +26,7 @@ function password_macro(param) {
 
 function url_macro(param) {
    if (param.as == "editor")
-      renderInputText(this.createInputParam("url",param));
+      Html.input(this.createInputParam("url", param));
    else
       res.write(this.url);
 }
@@ -40,7 +38,7 @@ function url_macro(param) {
 
 function email_macro(param) {
    if (param.as == "editor")
-      renderInputText(this.createInputParam("email",param));
+      Html.input(this.createInputParam("email", param));
    else
       res.write(this.email);
 }
@@ -50,9 +48,12 @@ function email_macro(param) {
  */
 
 function publishemail_macro(param) {
-   if (param.as == "editor")
-      renderInputCheckbox(this.createInputParam("publishemail",param));
-   else
+   if (param.as == "editor") {
+      var inputParam = this.createInputParam("publishemail", param);
+      if ((req.data.save && req.data.publishemail) || (!req.data.save && this.publishemail))
+         inputParam.checked = "checked";
+      Html.checkBox(inputParam);
+   } else
       res.write(this.publishemail ? "yes" : "no");
 }
 
@@ -62,7 +63,7 @@ function publishemail_macro(param) {
 
 function description_macro(param) {
    if (param.as == "editor")
-      renderInputTextarea(this.createInputParam("description",param));
+      Html.textArea(this.createInputParam("description", param));
    else
       res.write(this.description);
 }
@@ -108,6 +109,8 @@ function sitelist_macro(param) {
       l.sort(this.sortSubscriptions);
       for (var i in l) {
          var s = l[i].site;
+         if (!s)
+            continue;
          s.renderSkin("preview");
       }
    }
