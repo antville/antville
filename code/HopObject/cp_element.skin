@@ -1,0 +1,1 @@
+<a href="javascript: openColorPicker('<% param.id %>', '<% param.element %>');" name="<% param.element %>" style="background-color: <% param.color %>; border: 1px solid #cccccc;"><% image name="/pixel" width="15" height="15" title="click to select a color" %></a>

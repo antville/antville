@@ -1,0 +1,319 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title></title>
+
+<style type="text/css">
+<!--
+
+body, td {
+   background-color: #ffffff;
+   font-family: Verdana, Helvetica, Arial, sans-serif;
+   font-size: 13px;
+   color: #000000;
+}
+
+a {text-decoration: none;}
+
+a:link {color: #FF3300;}
+
+a:visited {color: #FF3300;}
+
+a:active {color: #FF0000;}
+
+a:hover {
+   background-color: #FF3300;
+   color: #ffffff;
+}   
+
+.text {
+   font: 12px verdana;
+}
+
+.border {
+   border: 1px solid #eeeeee;
+}
+
+// -->
+</style>
+
+<script type="text/javascript">
+<!--
+
+var brightness = new Array();
+var step = 0.06666;
+var imax = Math.round(1.0/step);
+for (var i=.0; i<=imax; i++) {
+   var L = (i+0)/imax;
+   brightness[i] = new Array();
+   for (var H=.0; H<=1.0; H+=step) {
+      for (var S=.0; S<=1.0; S+=step) {
+         var color = HSLtoRGB(H,S,L);
+         var R = color.red.toString("16");
+         var G = color.green.toString("16");
+         var B = color.blue.toString("16");
+         while (R.length < 2)
+            R = "0" + R;
+         while (G.length < 2)
+            G = "0" + G;
+         while (B.length < 2)
+            B = "0" + B;
+         var hexColor = R + G + B;
+         while (hexColor.length < 6)
+            hexColor = "0" + hexColor; 
+         brightness[i][brightness[i].length] = hexColor;
+      }
+   }
+}
+
+var squareSize = 15;
+var defaultPalette = brightness[brightness.length-1];
+
+var colorPalette, selectedColor;
+var lastMarquee, lastMarquee2;
+
+var pixel = new Image();
+pixel.src = "<% image name="/pixel" as="url" %>";
+
+var marquee = new Image();
+marquee.src = "<% image name="/marquee" as="url" %>";
+
+function initColorPicker() {
+   displayColorset(null, 0);
+   return;
+}
+
+function setMarquee(obj) {
+   if (lastMarquee)
+      lastMarquee.src = pixel.src;
+   obj.src = marquee.src;
+   lastMarquee = obj;
+   return;
+}
+
+function setMarquee2(obj) {
+   if (lastMarquee2)
+      lastMarquee2.src = pixel.src;
+   obj.src = marquee.src;
+   lastMarquee2 = obj;
+   return;
+}
+
+function displayColorValue(obj) {
+   displayColor(obj);
+   var color = obj.style.backgroundColor;
+   document.forms[0].elements[0].value = color.substr(1, color.length-1);
+   return;
+}
+
+function displayColorset(obj, idx) {
+   if (obj)
+      setMarquee(obj);
+   for (var i=0; i<brightness.length; i++)
+      document.getElementById("bright"+i).style.backgroundColor = brightness[i][idx];
+   return;
+}
+
+function displayColor(obj) {
+   document.getElementsByTagName("body")[0].style.backgroundColor = obj.style.backgroundColor;
+   return;
+}
+
+function updatePalette(obj, p) {
+   displayColorValue(obj);
+   var palette = brightness[p];
+   if (!colorPalette) {
+      colorPalette = new Array();
+      for (var i=0; i<palette.length; i++)
+         colorPalette[i] = document.getElementById("color"+i);
+   }
+   for (var i=0; i<palette.length; i++)
+      colorPalette[i].style.backgroundColor = palette[i];
+   selectedColor = obj;
+   return;
+}
+
+function submit() {
+   var color = document.forms[0].elements[0].value;
+   if (self.opener && color) {
+      var query = document.URL.split("?");
+      var args = query[1].split("&");
+      var form = args[0].split("=")[1];
+      var element = args[1].split("=")[1];
+      var ref = self.opener.document;
+      ref.forms[form].elements[element].value = color;
+      ref.getElementsByTagName("a")[element].style.backgroundColor = color;
+   }
+   cancel();
+   return;
+}
+
+function cancel() {
+   self.close();
+   return;
+}
+
+// i adapted the color conversion functions from
+// http://www1.tip.nl/~t876506/ColorDesign.html#hr
+// thanks!
+function HSLtoRGB(H,S,L) {
+   // H  [0-1] is divided into 6 equal sectors.
+   // From within each sector the proper conversion function is called.
+   var result;
+   if (H < 1/6)
+      result = H1(H,S,L);
+   else if (H < 1/3)
+      result = H2(H,S,L);
+   else if (H < 1/2)
+      result = H3(H,S,L);
+   else if (H < 2/3)
+      result = H4(H,S,L);
+   else if (H < 5/6)
+      result = H5(H,S,L);
+   else
+      result = H6(H,S,L);
+   return(result);
+}
+
+// Here are the 6 conversion functions.
+// First H,1,1 is converted to R,G,B.
+// Then a correction for the actual S.
+// At last a correction for the actual L.
+function H1(H,S,L) {
+   var R = 1;
+   var G = 6*H;
+   var B = 0;
+   G = G*S + 1 - S;
+   B = B*S + 1 - S;
+   R = R*L; G = G*L;
+   B = B*L;
+   return(makeColorObject(R,G,B));
+}
+
+function H2(H,S,L) {
+   var R = 1-6*(H - 1/6);
+   var G = 1;
+   var B = 0;
+   R = R*S + 1 - S;
+   B = B*S + 1 - S
+   R = R*L; G = G*L;
+   B = B*L
+   return(makeColorObject(R,G,B));
+}
+
+function H3(H,S,L) {
+   var R = 0;
+   var G = 1;
+   var B = 6*(H - 1/3);
+   R = R*S + 1 - S;
+   B = B*S + 1 - S;
+   R = R*L;
+   G = G*L;
+   B = B*L
+   return(makeColorObject(R,G,B));
+}
+
+function H4(H,S,L) {
+   var R = 0;
+   var G = 1-6*(H - 1/2);
+   var B = 1;
+   R = R*S + 1 - S;
+   G = G*S + 1 - S;
+   R = R*L; G = G*L;
+   B = B*L;
+   return(makeColorObject(R,G,B));
+}
+
+function H5(H,S,L) {
+   var R = 6*(H - 2/3);
+   var G = 0;
+   var B = 1;
+   R = R*S + 1 - S;
+   G = G*S + 1 - S;
+   R = R*L; G = G*L;
+   B = B*L;
+   return(makeColorObject(R,G,B));
+}
+
+function H6(H,S,L) {
+   var R = 1;
+   var G = 0;
+   var B = 1-6*(H - 5/6);
+   G = G*S + 1 - S;
+   B = B*S + 1 - S;
+   R = R*L; G = G*L;
+   B = B*L;
+   return(makeColorObject(R,G,B));
+}
+
+function makeColorObject(R,G,B) {
+   var obj = new Object();
+   obj.red = Math.round(R*255);
+   obj.green = Math.round(G*255);
+   obj.blue = Math.round(B*255);
+   return(obj);
+}
+
+function convert() {
+   var ref = self.document.forms[0].elements;
+   var H = parseFloat(ref["H"].value);
+   var S = parseFloat(ref["S"].value);
+   var L = parseFloat(ref["L"].value);
+   var rgb = HSLtoRGB(H,S,L);
+   ref["R"].value = rgb.red;
+   ref["G"].value = rgb.green;
+   ref["B"].value = rgb.blue;
+   return;
+}
+
+// -->
+</script>
+
+</head>
+<body onload="initColorPicker();">
+
+<table border="0" cellspacing="5" cellpadding="0" bgcolor="#ffffff">
+<tr>
+
+<td valign="top" class="border" title="Select color"><script type="text/javascript"><!--
+
+for (var i=0; i<defaultPalette.length; i++) {
+   var color = defaultPalette[i];
+   document.write('<span id="color' + i + '" style="background-color: ' + color + ';" onclick="displayColorValue(this);"><img src="' + pixel.src + '" width="' + squareSize + '" height="' + squareSize + '" onclick="displayColorset(this, ' + i + ');" /></span>');
+   if (i % 16 == 15)
+      document.write("<br />");
+}
+
+// --></script></td>
+
+<td valign="top">
+<div class="border" title="Select color brightness">
+
+<script type="text/javascript"><!--
+
+for (var i=0; i<brightness.length; i++)
+   document.write('<span id="bright' + i + '" onclick="updatePalette(this, ' + i + ');"><img onclick="setMarquee2(this);" src="' + pixel.src + '" width="15" height="15" /></span><br />');
+
+// --></script>
+
+</div></td>
+</tr>
+
+<form method="post">
+<tr>
+<td colspan="2">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td class="text">Color value: <input class="text" style="border: none;" id="result" value="" size="10" maxsize="10" /></td>
+<td align="right" class="text"><a href="javascript: submit();" title="accept the color value">accept</a>&nbsp;&nbsp;&nbsp;<a href="javascript: cancel();" title="cancel color selection">cancel</a></td>
+</tr>
+</table>
+
+</td>
+</tr>
+<form>
+
+</table>
+
+</body>
+</html>
