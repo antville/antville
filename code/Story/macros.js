@@ -1,5 +1,6 @@
 /*
- *  macro for rendering a part of the content.
+ * macro for rendering a part of the content.
+ * FIXME & FOXME: this macro should be completely rewritten post 1.0
  */
 function content_macro(param) {
    if (param.as == "editor") {
@@ -39,7 +40,7 @@ function content_macro(param) {
             openLink(this.story.href()+"#"+this._id);
          if (!part && param.part == "title") {
             // FIXME: this should go post 1.0 final
-            part = stripTags(this.getRenderedContentPart ("text"));
+            part = stripTags(this.getRenderedContentPart ("text")).trim();
             param.limit = "20";
          }
          if (!part)
