@@ -39,11 +39,12 @@ function image_macro(param) {
       return(imgObj.getStaticUrl());
    else if (param.as == "thumbnail") {
       if (!param.linkto)
-         param.linkto = url;
+         param.linkto = imgObj.getStaticUrl();
       if (imgObj.thumbnail)
          imgObj = imgObj.thumbnail;
    } else if (param.as == "popup") {
-      param.linkto = imgObj.popupUrl();
+      param.linkto = imgObj.getStaticUrl();
+      param.onClick = imgObj.popupUrl();
       if (imgObj.thumbnail)
          imgObj = imgObj.thumbnail;
    }
@@ -129,7 +130,7 @@ function linkedpath_macro (param) {
    var separator = param.separator;
    if (!separator)
       separator = " &gt; ";
-   var title = "Home";
+   var title;
    for (var i=1; i<path.length-1; i++) {
       title = path[i].getNavigationName();
       openLink(path[i].href());
@@ -137,8 +138,14 @@ function linkedpath_macro (param) {
       closeLink();
       res.write(separator);
    }
-   title = path[path.length-1].getNavigationName();
-   res.write(title);
+   title = path[i].getNavigationName();
+   if (req.action != "main" && path[i].main_action) {
+      openLink(path[i].href());
+      res.write(title);
+      closeLink();
+   } else
+      res.write(title);
+   return;
 }
 
 
