@@ -1,96 +1,94 @@
 /**
- * function checks if goodie fits to the minimal needs 
+ * function checks if goodie fits to the minimal needs
+ * @param Obj Object containing the properties needed for creating a new goodie
+ * @param Obj User-Object creating this goodie
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function evalNewGoodie() {
-   var newGoodie = new goodie();
+function evalGoodie(param,creator) {
+   var result = new Object();
+   result.error = true;
 
-   var rawgoodie = req.get("rawgoodie");
-   if (req.get("uploadError")) {
+   if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
-      res.message = "File too big to handle!";
-
-   } else if (rawgoodie) {
-      if (rawgoodie.contentLength == 0) {
+      result.message = "File is too big to handle!";
+   } else if (param.rawgoodie) {
+      if (param.rawgoodie.contentLength == 0) {
          // looks like nothing was uploaded ...
-         res.message = "Please upload a goodie and fill out the form ...";
+         result.message = "Please upload a goodie and fill out the form ...";
       } else {
+         var newGoodie = new goodie();
          // store extension of uploaded goodie in variable
-         if (rawgoodie.name.lastIndexOf(".") > 0)
-            var fileExt = rawgoodie.name.substring(rawgoodie.name.lastIndexOf("."));
+         if (param.rawgoodie.name.lastIndexOf(".") > 0)
+            var fileExt = param.rawgoodie.name.substring(param.rawgoodie.name.lastIndexOf("."));
          // first, check if alias already exists
-         if (!req.data.alias)
-            res.message = "You must enter a name for this goodie!";
-         else if (this.get(req.data.alias))
-            res.message = "There is already a goodie with this name!";
-         else if (!isClean(req.data.alias))
-            res.message = "Please do not use special characters in the name!";
+         if (!param.alias)
+            result.message = "You must enter a name for this goodie!";
+         else if (this.get(param.alias))
+            result.message = "There is already a goodie with this name!";
+         else if (!isClean(param.alias))
+            result.message = "Please do not use special characters in the name!";
          else if (!fileExt)
-            res.message = "The file has no valid extension!";
+            result.message = "The file has no valid extension!";
          else {
             // store properties necessary for goodie-creation
-            newGoodie.alias = req.data.alias;
-            newGoodie.alttext = req.data.alttext;
-            newGoodie.file = req.data.alias + fileExt;
-            newGoodie.filesize = rawgoodie.contentLength;
-            newGoodie.mimetype = rawgoodie.contentType;
-            newGoodie.description = req.data.description;
- 
+            newGoodie.alias = param.alias;
+            newGoodie.alttext = param.alttext;
+            newGoodie.file = param.alias + fileExt;
+            newGoodie.filesize = param.rawgoodie.contentLength;
+            newGoodie.mimetype = param.rawgoodie.contentType;
+            newGoodie.description = param.description;
             var saveTo = getProperty("goodiePath") + this._parent.alias + "/";
             // any errors?
-            if (rawgoodie.writeToFile(saveTo,newGoodie.file)) {
+            if (param.rawgoodie.writeToFile(saveTo,newGoodie.file)) {
                // the goodie is on disk, so we add the goodie-object
-               this.addGoodie(newGoodie);
-               res.redirect(this.href());
-            } 
+               newGoodie.creator = creator;
+               newGoodie.createtime = new Date();
+               if (this.add(newGoodie)) {
+                  result.message = "The goodie " + newGoodie.alias + " was added successfully!";
+                  result.error = false;
+               } else
+                  result.message = "Ooops! Adding the goodie " + newGoodie.alias + " failed!";
+            } else
+               result.message = "Couldn't store the file on disk!";
          }
       }
    }
-   return (newGoodie);
+   return (result);
 }
 
-
-/**
- * function adds a goodie to pool
- */
-
-function addGoodie(newGoodie) {
-   newGoodie.creator = user;
-   newGoodie.createtime = new Date();
-   if (this.add(newGoodie))
-      res.message = "The goodie " + newGoodie.alias + " was added successfully!";
-   else
-      res.message = "Ooops! Adding the goodie " + newGoodie.alias + " failed!";
-   return;
-}
 
 /**
  * alias of goodie has changed, so we remove it and add it again with it's new alias
+ * @param Obj goodie-object whose alias should be changed
+ * @param String new alias of goodie
+ * @return Boolean true in any case ...
  */
 
-function changeAlias(currGoodie) {
-   currGoodie.setParent(this);
+function changeAlias(currGoodie,newAlias) {
    this.remove(currGoodie);
    this.set(currGoodie.alias,null);
-   currGoodie.alias = req.data.alias;
+   currGoodie.alias = newAlias.alias;
    this.add(currGoodie);
-   return;
+   return true;
 }
 
 /**
  * delete a goodie
+ * @param Obj goodie-object to delete
+ * @return String Message indicating success or failure
  */
 
 function deleteGoodie(currGoodie) {
-   currGoodie.setParent(this);
    // first we try to remove the goodie from disk
    var f = new File(getProperty("goodiePath") + currGoodie.weblog.alias, currGoodie.file);
    if (f.remove()) {
       if (this.remove(currGoodie))
-         res.message = "The goodie was deleted successfully!";
+         return ("The goodie was deleted successfully!");
       else
-         res.message = "Ooops! Couldn't delete the goodie!";
+         return ("Ooops! Couldn't delete the goodie!");
    } else
-      res.message = "Ooops! Couldn't remove the goodie from disk!";
-   res.redirect(this.href("main"));
+      return ("Ooops! Couldn't remove the goodie from disk!");
 }
