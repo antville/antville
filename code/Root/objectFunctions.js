@@ -10,6 +10,9 @@ function evalNewWeblog() {
       if (this.checkIfExists(newLog.alias)) {
          res.message = "Sorry, we already have a weblog with this alias!";
          newLog.error = true;
+      } else if (!isClean(newLog.alias)) {
+         res.message = "Please don't use any special characters in the alias!";
+         newLog.error = true;
       } else {
          // now we can safely create a new weblog
          this.createNewWeblog(newLog);
