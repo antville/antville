@@ -178,9 +178,6 @@ create table ACCESS (
    STORY_ID bigint(20),
    REFERRER longvarchar,
    IP varchar(20),
-   URL longvarchar,
-   PATH varchar(255),
-   ACTION varchar(50),
    BROWSER varchar(255),
    DATE datetime
 );
