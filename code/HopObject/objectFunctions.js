@@ -23,7 +23,7 @@ function createInputParam(propName, param) {
    inputParam.name = propName;
    for (var i in param)
       inputParam[i] = param[i];
-   inputParam.value = this[propName];
+   inputParam.value = encodeForm(this[propName]);
    return (inputParam);
 }
 
