@@ -47,6 +47,16 @@ function isSysAdmin() {
 }
 
 /**
+ * check if email is public
+ */
+
+function isEmailPublic() {
+   if (parseInt(this.publishemail,10))
+      return true;
+   return false;
+}
+
+/**
  * function for sorting member-objects by the lastupdate-timestamp
  * of the according site
  */
