@@ -1,79 +1,87 @@
 /**
  * save image as file on local disk
  * but before check if image should be resized
+ * @param Node uploaded image
+ * @return Boolean true in any case ...
  */
 
-function saveImg(rawimage,version) {
-   if (rawimage && (!rawimage.contentType || !this.evalImgType(rawimage.contentType))) {
-      // whatever the user has uploaded, it was no image! 
-      this.cache.error = true; 
-      res.message = "This was definetly no image!"; 
+function saveImg(rawimage) {
+   // determine filetype of image (one could do this also by checking the mimetype) 
+   this.fileext = this.evalImgType(rawimage.contentType);
+   var img = new Image(rawimage.getContent());
+   // check if resizing is necessary 
+   if (this.cache.maxwidth && this.cache.maxheight && img.width > this.cache.maxwidth && img.height > this.cache.maxheight) {
+      var hfact = this.cache.maxwidth / img.width; 
+      var vfact = this.cache.maxheight / img.height; 
+      this.width = Math.round(img.width * (hfact < vfact ? hfact : vfact)); 
+      this.height = Math.round(img.height * (hfact < vfact ? hfact : vfact)); 
+      var doResize = true; 
+   } else if (this.cache.maxwidth && img.width > this.cache.maxwidth) {
+      var fact = this.cache.maxwidth / img.width; 
+      this.width = this.cache.maxwidth;
+      this.height = Math.round(img.height * fact);
+      var doResize = true; 
+   } else if (this.cache.maxheight && img.height > this.cache.maxheight) {
+      var fact = this.cache.maxheight / img.height; 
+      this.height = this.cache.maxheight;
+      this.width = Math.round(img.width * fact);
+      var doResize = true; 
    } else {
-      // determine filetype of image (one could do this also by checking the mimetype) 
-      this.fileext = this.evalImgType(rawimage.contentType);
-      var img = new Image(rawimage.getContent());
-      // check if resizing is necessary 
-      if (this.cache.maxwidth && this.cache.maxheight && img.width > this.cache.maxwidth && img.height > this.cache.maxheight) {
-         var hfact = this.cache.maxwidth / img.width; 
-         var vfact = this.cache.maxheight / img.height; 
-         this.width = Math.round(img.width * (hfact < vfact ? hfact : vfact)); 
-         this.height = Math.round(img.height * (hfact < vfact ? hfact : vfact)); 
-         var doResize = true; 
-      } else if (this.cache.maxwidth && img.width > this.cache.maxwidth) {
-         var fact = this.cache.maxwidth / img.width; 
-         this.width = this.cache.maxwidth;
-         this.height = Math.round(img.height * fact);
-         var doResize = true; 
-      } else if (this.cache.maxheight && img.height > this.cache.maxheight) {
-         var fact = this.cache.maxheight / img.height; 
-         this.height = this.cache.maxheight;
-         this.width = Math.round(img.width * fact);
-         var doResize = true; 
-      } else {
-         // no resizing done
-         this.width = img.width;
-         this.height = img.height;
-      }
-      if (doResize) { 
-         img.resize(this.width,this.height); 
-         if (rawimage.contentType == 'image/gif')
-            img.reduceColors(256); 
-         // finally we save the resized image
-         img.saveAs(this.cache.saveTo + this.filename + "." + this.fileext); 
-      } else {
-         // finally we save the not resized image
-         rawimage.writeToFile(this.cache.saveTo,this.filename + "." + this.fileext);
-      }
-   } 
-   return; 
+      // no resizing done
+      this.width = img.width;
+      this.height = img.height;
+   }
+   if (doResize) { 
+      img.resize(this.width,this.height); 
+      if (rawimage.contentType == 'image/gif')
+         img.reduceColors(256); 
+      // finally we save the resized image
+      img.saveAs(this.cache.saveTo + this.filename + "." + this.fileext);
+   } else {
+      // finally we save the not resized image
+      rawimage.writeToFile(this.cache.saveTo,this.filename + "." + this.fileext);
+   }
+   return true; 
 }
 
 
 /**
  * function checks if new image-parameters are correct ...
+ * @param Obj Object containing the form values
+ * @param Obj User-Object modifying this image
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function evalImg() {
-   if (req.data.alias) {
-      if (req.data.alias != this.alias && this.weblog.images.get(req.data.alias)) {
+function evalImg(param,modifier) {
+   var result = new Object();
+   if (param.alias) {
+      if (param.alias != this.alias && this.weblog.images.get(req.data.alias)) {
          // alias has changed, but is already existing
-         res.message = "This name is already in use!";
-         res.redirect(this.href("edit"));
-      } else {
-         this.weblog.images.changeAlias(this);
-      }
-      this.alttext = req.data.alttext;
+         result.message = "This name is already in use!";
+         result.error = true;
+      } else
+         this.weblog.images.changeAlias(this,param.alias);
+      this.alttext = param.alttext;
+      this.modifier = modifier;
       if (this.thumbnail)
          this.thumbnail.alttext = this.alttext;
-      res.message = "Changes saved successfully!";
-      res.redirect(this.weblog.images.href());
+      result.message = "Changes saved successfully!";
+      result.error = false;
+   } else {
+      result.message = "You must specify a name for this image!";
+      result.error = true;
    }
+   return (result);
 }
 
 
 /**
  * function returns file-extension according to mimetype of raw-image
  * returns false if mimetype is unknown
+ * @param String Mimetype of image
+ * @return String File-Extension to use
  */
 
 function evalImgType(ct) {
@@ -84,32 +92,33 @@ function evalImgType(ct) {
    else if (ct == "image/png")
       return ("png");
    else
-      return false;
+      return null;
 }
 
 /**
  * function creates a thumbnail of this image
  * does nothing if the image uploaded is smaller than 100x100px
  * @param uploaded image
+ * @return Boolean true in any case ...
  */
 
 function createThumbnail(rawimage) {
    if (this.width < 100 && this.height < 100)
-      return;
+      return null;
    var thumbImg = new image();
    thumbImg.filename = this.filename + "_small";
    thumbImg.cache.saveTo = this.cache.saveTo;
    thumbImg.cache.maxwidth = 100;
    thumbImg.cache.maxheight = 100;
    thumbImg.saveImg(rawimage);
-   thumbImg.weblog = path.weblog;
-   thumbImg.alttext = req.data.alttext;
-   thumbImg.creator = user;
-   thumbImg.createtime = new Date();
-   thumbImg.alias = req.data.alias;
+   thumbImg.weblog = this.weblog;
+   thumbImg.alttext = this.alttext;
+   thumbImg.creator = this.creator;
+   thumbImg.createtime = this.createtime;
+   thumbImg.alias = this.alias;
    thumbImg.parent = this;
    this.thumbnail = thumbImg;
-   return;
+   return true;
 }
 
 /**
