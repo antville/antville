@@ -37,6 +37,7 @@ function evalFile(param,creator) {
          newFile.filesize = param.rawfile.contentLength;
          newFile.mimetype = param.rawfile.contentType;
          newFile.description = param.description;
+         newFile.requestcnt = 0;
          var saveTo = getProperty("filePath") + this._parent.alias + "/";
          newFile.name = param.rawfile.writeToFile(saveTo,newFile.name);
          if (newFile.name) {
