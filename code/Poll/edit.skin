@@ -1,6 +1,6 @@
 <span class="storyTitle"><% response.command %> a poll</span>
 
-<form method="post">
+<form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td nowrap><span class="small">Title:</span><br>

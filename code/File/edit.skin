@@ -3,7 +3,7 @@
 <td colspan="2">To insert this goodie into a story copy/paste the following code: <pre>&lt;% goodie name="<% this.alias %>" %&gt;</pre><br></td>
 </tr>
 <tr>
-<td class="small" nowrap><form method="post">Name:</td>
+<td class="small" nowrap><form method="post" action="<% response.action %>">Name:</td>
 <td nowrap><% this.alias as="editor" %></td>
 </tr>
 <tr>

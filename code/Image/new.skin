@@ -3,7 +3,7 @@
 <td colspan="2">Please specify the name of the image. Using this name you will be able to insert this image i.e. into a story by typing <pre>&lt;% image name="nameofyourimage" %&gt;</pre></td>
 </tr>
 <tr>
-<td class="small" nowrap><form method="post" enctype="multipart/form-data">Name:</td>
+<td class="small" nowrap><form method="post" action="<% response.action %>" enctype="multipart/form-data">Name:</td>
 <td nowrap><% this.alias as="editor" %></td>
 </tr>
 <tr>

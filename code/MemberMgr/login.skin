@@ -1,6 +1,6 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap><form method="post">Username:</td>
+<td class="small" nowrap><form method="post" action="<% response.action %>">Username:</td>
 <td nowrap><% this.input type="text" name="name" width="15" %></td>
 </tr>
 <tr>

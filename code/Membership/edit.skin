@@ -1,7 +1,7 @@
 <p>To change the status of this member, simply choose from the dropdown-menu and click on "save" (the member will get a mail telling that his/her status has been changed by you).</p>
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap><form method="post">Username:</td>
+<td class="small" nowrap><form method="post" action="<% response.action %>">Username:</td>
 <td nowrap><b><% this.username %></b></td>
 </tr>
 <tr>

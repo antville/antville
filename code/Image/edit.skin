@@ -11,7 +11,7 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <tr>
-<td class="small" nowrap><form method="post">Name:</td>
+<td class="small" nowrap><form method="post" action="<% response.action %>">Name:</td>
 <td nowrap><% this.alias as="editor" width="25" %></td>
 </tr>
 <tr>
