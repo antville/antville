@@ -55,5 +55,14 @@ function deleteComment(currComment) {
    currComment.setParent(this);
    this.remove(currComment);
    res.message = "The comment was deleted successfully!";
-   res.redirect(this.story.href());
+}
+
+/**
+ * function loops over replies 
+ * and removes them
+ */
+
+function deleteReplies() {
+   for (var j=this.size();j>0;j--)
+      this.deleteComment(this.get(j-1));
 }

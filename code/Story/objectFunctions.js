@@ -52,12 +52,13 @@ function addComment() {
 }
 
 /**
- * function deletes a comment
+ * function deletes a whole thread
  */
 
 function deleteComment(currComment) {
+   for (var i=currComment.size();i>0;i--)
+      currComment.deleteComment(currComment.get(i-1));
    currComment.setParent(this);
    this.remove(currComment);
    res.message = "The comment was deleted successfully!";
-   res.redirect(this.href());
 }
