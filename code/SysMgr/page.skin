@@ -5,21 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title><% response.title %></title>
-
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-
-<style type="text/css">
-<!--
-<% sysmgr.skin name="style" %>
-// -->
-</style>
-
-<script type="text/javascript" language="javascript">
-<!--
-<% sysmgr.skin name="javascript" %>
-// -->
-</script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% this.url %>stylesheet" />
 </head>
 
 <body>
@@ -34,22 +22,23 @@
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20" rowspan="2" nowrap="nowrap">&nbsp;</td>
-<td width="460" valign="top" nowrap="nowrap"><br /><% response.searchform %></td>
+<td width="460" valign="top" nowrap="nowrap"><br /><% response.body %></td>
 <td width="20" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap="nowrap"><% root.loginstatus %><div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />
+<td width="198" align="right" valign="top" nowrap="nowrap"><% root.loginstatus %>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statushead"><% image name="/manage" %>manage</div>
+<div class="statushead"><% image name="/manage" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statuslight">...&nbsp;<% sysmgr.link to="sites" text="sites" %><br />
+<div class="statusdark">...&nbsp;<% sysmgr.link to="sites" text="sites" %><br />
 ...&nbsp;<% sysmgr.link to="users" text="users" %><br />
 ...&nbsp;<% sysmgr.link to="setup" text="setup" %><br />
-...&nbsp;<% sysmgr.link to="logs" text="system log" %>
-</td>
+...&nbsp;<% sysmgr.link to="logs" text="system log" %><br />
+...&nbsp;<% sysmgr.link to="status" text="system status" %><br />
+<br /><% root.link to="main" text="antville home" prefix="...&nbsp;" %></div></td>
 </tr>
 <tr>
-<td colspan="4" width="680" nowrap="nowrap"><% response.body %></td>
+<td colspan="4" width="680" nowrap="nowrap"><% response.list %></td>
 </tr>
 </table>
 
