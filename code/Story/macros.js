@@ -414,6 +414,7 @@ function backlinks_macro() {
 		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
 		str += this.renderSkinAsString("backlinkItem", param);
 	}
+   rows.release();
 	param = new Object();
 	param.referrers = str;
 	if (str)
