@@ -56,70 +56,10 @@
 <td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled <a href="http://www.weblogs.com">weblogs.com</a> will be notified when your weblog is updated.</span></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Skinset:</td>
-<td><% site.skinsetchooser %><br /><span class="small"> Choose the skinset to use for your site. <% site.link to="skins" 
-text="Go to the skins page" %> to browse, manage or test-drive the list 
-of available skinsets.</span></td>
-</tr>
-<tr>
-<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
-<b><a name="colors">Colors</a></b></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="bgcolor" text="background" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="titlecolor" text="title" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Text:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="textcolor" text="text" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Small text:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="smallcolor" text="small text" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Link:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="linkcolor" text="link" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Active link:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="alinkcolor" text="active link" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Visited link:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="vlinkcolor" text="visited link" %></td>
-</tr>
-<tr>
-<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
-<b><a name="fonts">Fonts</a></b></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Title font:</td>
-<td nowrap="nowrap"><% site.titlefont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Title size:</td>
-<td nowrap="nowrap"><% site.titlesize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Text font:</td>
-<td nowrap="nowrap"><% site.textfont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Text size:</td>
-<td nowrap="nowrap"><% site.textsize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Small font:</td>
-<td nowrap="nowrap"><% site.smallfont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Small size:</td>
-<td nowrap="nowrap"><% site.smallsize as="editor" width="10" %></td>
+<td class="small" valign="top" nowrap="nowrap">Layout:</td>
+<td><% site.layoutchooser %><br /><span class="small">Choose the layout to use for your site. <% site.link to="layouts" 
+text="Go to the layouts page" %> to browse, manage or test-drive the list 
+of available layouts.</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
