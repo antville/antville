@@ -13,4 +13,5 @@
 <td class="storyText" nowrap>&nbsp;</td>
 <td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
+</table>
 </form>
