@@ -15,6 +15,7 @@ function renderStorylist() {
       sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
+   this.prefetchChildren();
    var storylist = new java.lang.StringBuffer();
    for (var i=0;i<this.size();i++)
       storylist.append(this.get(i).renderSkinAsString("preview"));
