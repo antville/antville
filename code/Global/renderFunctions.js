@@ -34,3 +34,24 @@ function renderColor(c) {
    }
    res.write(c);
 }
+
+/**
+ * function renders only a part of the text passed as argument
+ * length of the string to show is defined by argument "limit"
+ */
+
+function renderTextPreview(text,limit) {
+   var text = stripTags(text);
+   var limit = Math.min(limit,text.length);
+   var charCnt = 0;
+   for (var i=0;i<text.length;i++) {
+      charCnt = (text.charAt(i) == " " ? 0 : charCnt+1);
+      if (charCnt > 20) {
+         res.write("<wbr>");
+         charCnt = 0;
+      }
+      if (i >= limit && text.charAt(i) == " ")
+         break;
+      res.write(text.charAt(i));
+   }
+}
