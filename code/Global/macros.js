@@ -11,7 +11,7 @@ function now_macro(param) {
  */
 function logo_macro(param) {
    if (!param.name)
-      return;
+      param.name = "smallchaos";
    var logo = root.images.get(param.name);
    if (!logo)
       return;
