@@ -43,8 +43,8 @@ function height_macro(param) {
 
 function url_macro(param) {
    res.write(getProperty("imgUrl"));
-   if (this.weblog)
-       res.write(this.weblog.alias + "/");
+   if (this.site)
+       res.write(this.site.alias + "/");
    res.write(this.filename + "." + this.fileext);
 }
 
@@ -56,8 +56,8 @@ function url_macro(param) {
 function editlink_macro(param) {
    if (!this.isEditDenied(session.user)) {
       openLink(this.href("edit"));
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "edit");
       closeLink();
@@ -66,14 +66,14 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is author of this image
+ * if user is creator of this image
  */
 
 function deletelink_macro(param) {
    if (!this.isEditDenied(session.user)) {
       openLink(this.href("delete"));
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "delete");
       closeLink();

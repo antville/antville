@@ -1,5 +1,5 @@
 /**
- * macro renders a link to signup if user is not member of this weblog
+ * macro renders a link to signup if user is not member of this site
  * if user is member, it displays the level of membership
  */
 
@@ -12,23 +12,23 @@ function membership_macro(param) {
 
 /**
  * macro renders a link to signup-action
- * but only if user is not a member of this weblog
+ * but only if user is not a member of this site
  */
 
 function subscribelink_macro(param) {
-   if (!path.weblog)
+   if (!path.site)
       return;
    var ms = this.get(session.user.name);
    if (ms)
       return;
-   openLink(path.weblog.href("subscribe"));
+   openLink(path.site.href("subscribe"));
    res.write(param.text ? param.text : "sign up");
    closeLink();
 }
 
 /**
  * macro renders a link to signup-action
- * but only if user is not a member of this weblog
+ * but only if user is not a member of this site
  */
 
 function subscriptionslink_macro(param) {
@@ -40,7 +40,7 @@ function subscriptionslink_macro(param) {
 }
 
 /**
- * macro renders the list of all members of this weblog
+ * macro renders the list of all members of this site
  */
 
 function memberlist_macro(param) {
