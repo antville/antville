@@ -382,9 +382,8 @@ function history_macro(param) {
    this.lastmod.prefetchChildren(0, parseInt(param.show, 10));
    while (cnt < param.show && this.lastmod.get(i)) {
       var item = this.lastmod.get(i++);
-      if (!item.story ||
-          (item.story.online && item.story.discussions &&
-           item.site.preferences.getProperty("discussions"))) {
+      if (!item.story || (item.story.online && item.story.discussions &&
+            item.site.preferences.getProperty("discussions"))) {
          item.renderSkin("historyview");
          cnt++;
       }
