@@ -113,6 +113,8 @@ create table WEBLOG (
    LASTOFFLINE datetime,
    LASTBLOCKWARN datetime,
    LASTDELWARN datetime,
+   LASTPING datetime,
+   ENABLEPING tinyint(1),
    HASDISCUSSIONS tinyint(1),
    USERMAYCONTRIB tinyint(1),
    SHOWDAYS tinyint(4),
@@ -181,9 +183,6 @@ create table ACCESS (
    STORY_ID bigint(20),
    REFERRER text,
    IP varchar(20),
-   URL text,
-   PATH varchar(255),
-   `ACTION` varchar(50),
    BROWSER varchar(255),
    `DATE` datetime,
    unique ID (ID)
