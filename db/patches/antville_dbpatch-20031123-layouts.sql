@@ -26,6 +26,7 @@ alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null a
 
 insert into AV_LAYOUT (LAYOUT_ALIAS, LAYOUT_TITLE, LAYOUT_PREFERENCES, LAYOUT_DESCRIPTION, LAYOUT_SHAREABLE)
 values ('default', 'antville.org', '<?xml version="1.0" encoding="UTF-8"?>\r\n<xmlroot xmlns:hop="http://www.helma.org/docs/guide/features/database">\r\n  <hopobject id="t234" name="HopObject" prototype="HopObject" created="1069430202375" lastModified="1069430202375">\r\n    <smallcolor>666666</smallcolor>\r\n    <textcolor>000000</textcolor>\r\n    <vlinkcolor>ff3300</vlinkcolor>\r\n    <titlecolor>cc0000</titlecolor>\r\n    <smallsize>11px</smallsize>\r\n    <alinkcolor>ff0000</alinkcolor>\r\n    <textsize>13px</textsize>\r\n    <titlesize>15px</titlesize>\r\n    <linkcolor>ff3300</linkcolor>\r\n    <smallfont>Verdana, Arial, Helvetica, sans-serif</smallfont>\r\n    <textfont>Verdana, Helvetica, Arial, sans-serif</textfont>\r\n    <titlefont>Verdana, Helvetica, Arial, sans-serif</titlefont>\r\n    <bgcolor>ffffff</bgcolor>\r\n  </hopobject>\r\n</xmlroot>', 'The layout of antville.org', 1);
+update AV_LAYOUT set LAYOUT_ALIAS = LAYOUT_ID where LAYOUT_ALIAS is null;
 
 alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null;
 
