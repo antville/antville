@@ -12,7 +12,7 @@ This skin contains JavaScript code that will be included in the header of every 
 This is the skin responsible for the front page of your weblog.</li>
 <li><a name="daymain"></a><% skinmgr.link to="edit" urlparam="proto=day&amp;name=main" text="front page of a single day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="day" name="main" %>)</span><br />
 Whenever a user selects a single day via the calendar, this skin will be used to display the list of stories of this day.</li>
-<li><a name="dayheader"></a><% skinmgr.link to="edit" urlparam="proto=day&amp;name=header" text="header of a single day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="day" name="header" %>)</span><br />
+<li><a name="dayheader"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=dayheader" text="header of a single day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="dayheader" %>)</span><br />
 This header will be displayed for all stories of an individual day.</li>
 <li><a name="membershipstatusloggedin"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&amp;name=statusloggedin" text="user logged in" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="statusloggedin" %>)</span><br />
 If the user visiting your weblog is logged in, this skin will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
