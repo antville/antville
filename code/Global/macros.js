@@ -79,7 +79,7 @@ function image_macro(param) {
 
 /** 
  * DEPRECATED!
- * use image_macro() with param.as = "thumbnail" instead
+ * use image_macro() with param.as = "popup" instead
  */
 function thumbnail_macro(param) {
   param.as = "popup";
