@@ -1,4 +1,5 @@
 ...&nbsp;<% this.link to="main" text="home" %><br>
+...&nbsp;<% this.link to="space" text="topics" %><br>
 ...&nbsp;<% this.link to="edit" text="preferences" %><br>
 ...&nbsp;<% this.link to="stories" text="storypool" %><br>
 ...&nbsp;<% this.link to="images" text="imagepool" %><br>
