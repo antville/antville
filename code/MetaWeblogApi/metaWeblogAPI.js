@@ -232,7 +232,9 @@ function getCategories(blogid, username, password) {
  *                    .bits base64, the base64-encoded contents of the file
  *                    .name String containing the filename
  *                    .type String
- *  @return String containing the URL of the uploaded file
+ *  @return Object, containing the following properties 
+ *                    .url String containing the URL of the uploaded file
+ *                    .alias Sting containing the alias of the uploaded file
  */
 function newMediaObject(blogid, username, password, fileObject) {
    var usr = root.blogger.getUser(username,password);
@@ -243,13 +245,16 @@ function newMediaObject(blogid, username, password, fileObject) {
    var bytes = Packages.helma.util.Base64.decode(str.toCharArray());
    var param = new Object();
    param.rawfile = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
-   var result = blog.files.evalFile(param, urs);
+   var result = blog.files.evalFile(param, usr);
    if (result.error)
       throwError ("Error occured while creating new Media Object");
    else {
-      var alias = buildAliasFromFile(param.rawfile);
+      var alias = param.alias;
       var file = blog.files.get(alias);
-      return (getProperty("fileUrl")+blog.alias+"/"+file.name);
+      var ret = new Object();
+      ret.url = getProperty("baseUri")+getProperty("fileUrl")+blog.alias+"/"+file.name;
+      ret.alias = alias;
+      return (ret);
    }
 }
 
