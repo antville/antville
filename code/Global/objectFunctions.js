@@ -317,9 +317,9 @@ function pingUpdatedWeblogs() {
 
    while (rows.next()) {
       var id = rows.getColumnItem("ID");
-      var blog = root.get(id);
-      app.__app__.logEvent("Notifying weblogs.com for updated weblog " + id);
-      //blog.ping();
+      var blog = root.get(id.toString());
+      app.__app__.logEvent("Notifying weblogs.com for updated weblog " + blog.alias);
+      blog.ping();
    }
 
    rows.release();
