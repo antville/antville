@@ -10,7 +10,7 @@ This will output the content of the shortcut with the given title.</li>
 <li>If a shortcut contains the string <tt>$text</tt> latter will be replaced either with the shortcut's title or with the value of the text parameter, if defined. An asterisk * right from the preview (ie. the line below the content input field) will indicate that the placeholder is in effect.</li>
 <li>You can use a specific shortcut title only once. If you should need the same title for two or more shortcuts simply add a hash and some additional characters to the title for distinction. These additions won't be displayed in the output. Example titles: <tt>myShortcut, myShortcut#2, myShortcut#new</tt>.</li>
 <li>Edit a shortcut's content directly in its form field. The title is read-only and cannot be edited. All changes will be saved when you click the save button.</li>
-<li>To delete a shortcut simply clear the content input field and click the save button. But be aware that this affects the output of any story containing the corresponding shortcut macro! An error message will be displayed instead of a missing shortcut.</li>
+<li>To delete a shortcut simply clear the content input field and click the save button. But be aware that this affects the output of any story containing the corresponding shortcut macro! Instead of a missing shortcut the plain title (as given in the macro) will be displayed.</li>
 </ul>
 </td>
 </tr>
