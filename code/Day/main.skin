@@ -1,3 +1,4 @@
 <% response.prevpage %>
+<% day.skin name="header" %>
 <% day.storylist %>
 <% response.nextpage %>
