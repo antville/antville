@@ -198,7 +198,7 @@ function ping() {
 
 	// we're doing it the xml-rpc way
 	// (specs at http://newhome.weblogs.com/directory/11)
-	var xr = new Remote("http://rpc.weblogs.com/RPC2");
+	var xr = new Remote("http://rssrpc.weblogs.com/RPC2");
 	var ping = xr.weblogUpdates.ping(title, this.href());
    if (!ping.result)
       return;
