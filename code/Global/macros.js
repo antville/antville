@@ -180,6 +180,7 @@ function poll_macro(param) {
  * macro basically renders a list of weblogs
  * but first it checks which collection to use
  */
+
 function webloglist_macro(param) {
    if (param.show == "all")
       var collection = root.allWeblogs;
@@ -190,33 +191,35 @@ function webloglist_macro(param) {
    if (!size)
       return;
 
-	 // setting some general limitations:
-	 var minDisplay = 10;
-	 var maxDisplay = 100;
+   // setting some general limitations:
+   var minDisplay = 10;
+   var maxDisplay = 100;
 
    res.write(param.prefix);
-   var start = parseInt (req.data.start,10);
-   var limit = param.limit ? parseInt(param.limit,10) : minDisplay;
-   limit = (limit > maxDisplay) ? maxDisplay : limit;
+   var idx = parseInt (req.data.start,10);
+   var max = Math.min((param.limit ? parseInt(param.limit,10) : minDisplay),maxDisplay);
+
    var scroll = (!param.scroll || param.scroll == "no" ? false : true);
-   if (isNaN(start) || start > size-1)
-      start = 0;
-   if (!scroll)
-      var end = Math.min((limit ? limit : size),size);
-   else {
-      var end = Math.min (start+(limit ? limit : 10), size);
-      if (start > 0) {
-	      var sp = new Object();
-	      sp.url = root.href("list") + "?start=" + Math.max(0, start-limit);
-	      sp.text = "previous weblogs";
-	      res.write(renderSkinAsString("prevpagelink",sp) + "<br>");
+
+   if (isNaN(idx) || idx > size-1 || idx < 0)
+      idx = 0;
+   if (scroll && idx > 0) {
+      var sp = new Object();
+      sp.url = root.href("list") + "?start=" + Math.max(0, idx-max);
+      sp.text = "previous weblogs";
+      res.write(renderSkinAsString("prevpagelink",sp) + "<br>");
+   }
+   var cnt = 0;
+   while (cnt < max && idx < size) {
+      var w = collection.get(idx++);
+      if (!w.isBlocked() && !w.isNotPublic()) {
+         w.renderSkin("preview");
+         cnt++;
       }
    }
-   for (var i=start;i<end;i++)
-      collection.get(i).renderSkin("preview");
-   if (scroll && end < size) {
+   if (scroll && idx < size) {
       var sp = new Object();
-      sp.url = root.href("list") + "?start=" + end;
+      sp.url = root.href("list") + "?start=" + idx;
       sp.text = "more weblogs";
       res.write("<br>" + renderSkinAsString("nextpagelink",sp));
    }
