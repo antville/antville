@@ -55,27 +55,15 @@ function saveImg(rawimage) {
  */
 
 function evalImg(param,modifier) {
-   var result;
-   if (param.alias) {
-      if (param.alias != this.alias && this.site.images.get(req.data.alias)) {
-         // alias has changed, but is already existing
-         result = getError("imageExisting");
-      } else if (!isClean(param.alias))
-         result = getError("noSpecialChars");
-      else
-         this.site.images.changeAlias(this,param.alias);
-      this.alttext = param.alttext;
-      this.modifier = modifier;
-      this.modifytime = new Date();
-      if (this.thumbnail) {
-         this.thumbnail.alttext = this.alttext;
-         this.thumbnail.modifytime = this.modifytime;
-         this.thumbnail.modifier = this.modifier;
-      }
-      result = getConfirm("update");
-   } else
-      result = getError("imageNameMissing");
-   return (result);
+   this.alttext = param.alttext;
+   this.modifier = modifier;
+   this.modifytime = new Date();
+   if (this.thumbnail) {
+      this.thumbnail.alttext = this.alttext;
+      this.thumbnail.modifytime = this.modifytime;
+      this.thumbnail.modifier = this.modifier;
+   }
+   return (getConfirm("update"));
 }
 
 
