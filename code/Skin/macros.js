@@ -7,3 +7,23 @@ function proto_macro() {
       res.write(this.proto);
    return;
 }
+
+/**
+ * link to delete action
+ */
+function deletelink_macro(param) {
+   if (path.layout != this.layout)
+      return;
+   Html.link({href: this.href("delete")}, param.text ? param.text : "delete");
+   return;
+}
+
+/**
+ * link to diff action
+ */
+function difflink_macro(param) {
+   if (this.custom == 1 && !this.layout.skins.getOriginalSkin(this.proto, this.name))
+      return;
+   Html.link({href: this.href("diff")}, param.text ? param.text : "diff");
+   return;
+}
