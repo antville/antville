@@ -2,9 +2,13 @@
  * main action
  */
 function main_action() {
+   this.renderView(this, "Members");
+   return;
+}
+
+
+function add_action() {
    res.data.action = this.href(req.action);
-   res.data.title = "Members of " + this._parent.title;
-   
    if (req.data.keyword) {
       try {
          var result = this.searchUser(req.data.keyword);
@@ -35,10 +39,11 @@ function main_action() {
             res.redirect(result.obj.href("edit"));
          res.redirect(this.href());
       }
-   } else
-      res.data.memberlist = this.renderMemberlist();
-   res.data.body = this.renderSkinAsString("main");
-   this._parent.renderSkin("page");
+   }
+   res.data.title = "Search members of " + this._parent.title;
+   res.data.body = this.renderSkinAsString("new");
+   res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**

@@ -21,7 +21,6 @@ function renderMemberlist() {
  * @param String Title to use
  */
 function renderView(collection, title) {
-   res.data.action = this.href(req.action);
    res.data.title = title + " of " + this._parent.title;
    res.data.memberlist = renderList(collection, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(collection, this.href(req.action), 10, req.data.page);
