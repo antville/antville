@@ -1,0 +1,8 @@
+var parent = setLayout();
+
+res.title = "Antville - 404 - not found";
+
+res.head = parent.renderSkinAsString("javascript");
+res.head += parent.renderSkinAsString("style");
+
+res.body = "<p><b>Sorry!</b></p><p>Whatever you were looking for, it does not exist ...</p>";
