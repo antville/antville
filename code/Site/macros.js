@@ -621,6 +621,10 @@ function membership_macro(param) {
    res.write(param.suffix);
 }
 
+/**
+ * renders a list of most read pages, ie. a link
+ * to a story followed by the read counter.
+ */
 
 function listMostRead_macro() {
   var str = "";
