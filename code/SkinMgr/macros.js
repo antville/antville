@@ -5,13 +5,14 @@
 function skins_macro(param) {
    renderPrefix(param);
    for (var i in app.skinfiles) {
-      res.write("<B>" + i + "</B><BR>");
+      res.write("<b>" + i + "</b>");
       for (var j in app.skinfiles[i]) {
-         res.write("&bull;&nbsp;");
-         res.write("<A HREF=\"" + this.href() + "?proto=" + i + "&name=" + j + "\">");
+         res.write("<li>");
+         res.write("<a href=\"" + this.href() + "?proto=" + i + "&name=" + j + "\">");
          res.write(j);
-         res.write("</A><BR>");
+         res.write("</a></li>");
       }
+      res.write("<br>");
    }
    renderSuffix(param);
 }
