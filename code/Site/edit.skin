@@ -64,6 +64,10 @@
 <td class="storyText" nowrap><% this.country as="editor" width="5" %></td>
 </tr>
 <tr>
+<td class="storyText" nowrap>dateformat:</td>
+<td class="storyText" nowrap><% this.dateformat as="editor" width="20" %></td>
+</tr>
+<tr>
 <td class="storyText" nowrap>online:</td>
 <td class="storyText" nowrap><% this.online as="editor" %></td>
 </tr>
