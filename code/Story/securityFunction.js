@@ -97,5 +97,6 @@ function allowTextMacros(s) {
    s.allowMacro("logo");
    s.allowMacro("shortcut");
    s.allowMacro("storylist");
+   s.allowMacro("fakemail");
    return;
 }
