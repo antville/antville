@@ -4,7 +4,7 @@
 function now_macro(param) {
    var now = new Date();
    if (path.weblog)
-      res.write(path.weblog.formatTimestamp(now,param));
+      res.write(formatTimestamp(now,param.format));
    else if (param.format) {
       var sdf = new java.text.SimpleDateFormat(param.format);
       var result = tryEval("sdf.format(now)");
