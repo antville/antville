@@ -1,4 +1,4 @@
-if (!session.user && (req.data.submit == "save" || req.data.save))
+if (!session.user && (req.data.submit == "save" || req.data.save || req.data.submit == "publish" || req.data.publish))
    rescueText(req.data);
 
 checkIfLoggedIn(this.href(req.action));
