@@ -407,7 +407,7 @@ function backlinks_macro(param) {
 
    // we show a maximum of 100 backlinks
    var limit = Math.min((param.limit ? parseInt(param.limit, 10) : 100), 100);
-   var backlinks = new java.lang.StringBuffer();
+   res.push();
 
    // if user specified some servers to be excluded from backlink-list
    // create the RegExp-Object for filtering
@@ -425,20 +425,19 @@ function backlinks_macro(param) {
       if (exclude && exclude.test(skinParam.referrer))
          continue;
       skinParam.text = skinParam.referrer.length > 50 ? skinParam.referrer.substring(0, 50) + "..." : skinParam.referrer;
-      backlinks.append(this.renderSkinAsString("backlinkItem", skinParam));
+      this.renderSkin("backlinkItem", skinParam);
       cnt++;
    }
    rows.release();
    // cache rendered backlinks and set timestamp for
    // checking if backlinks should be rendered again
-   skinParam = new Object();
-   if (backlinks.length() > 0) {
-      skinParam.referrers = backlinks.toString();
+   skinParam = {referrers: res.pop()};
+   if (skinParam.referrers.length > 0)
       this.cache.rBacklinks = this.renderSkinAsString("backlinks", skinParam);
-   } else
+   else
       this.cache.rBacklinks = "";
    this.cache.lrBacklinks = new Date();
-   return (this.cache.rBacklinks);
+   return this.cache.rBacklinks;
 }
 
 /**
