@@ -50,11 +50,15 @@ function url_macro(param) {
 
 
 /**
- * macro renders a link for editing image
+ * render a link to image-edit
  */
-
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.openLink(this.href("edit"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
@@ -62,15 +66,19 @@ function editlink_macro(param) {
          res.write(param.text ? param.text : "edit");
       Html.closeLink();
    }
+   return;
 }
 
 /**
- * macro rendering a link to delete
- * if user is creator of this image
+ * render a link to delete action
  */
-
 function deletelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
@@ -78,13 +86,13 @@ function deletelink_macro(param) {
          res.write(param.text ? param.text : "delete");
       Html.closeLink();
    }
+   return;
 }
 
 /**
- * macro renders the image-tag
- * link to main if thumbnail
+ * render the image-tag (link to main action if image
+ * is a thumbnail)
  */
-
 function show_macro(param) {
    var img = this;
    // if we have a thumbnail, display that
@@ -99,16 +107,4 @@ function show_macro(param) {
    Html.openLink(url);
    renderImage(img, param);
    Html.closeLink();
-}
-
-
-/**
- * macro renders "yes" if this image has a thumbnail
- */
-
-function hasthumbnail_macro(param) {
-   if (this.thumbnail)
-      res.write("yes");
-   else
-      res.write("no");
 }
