@@ -45,14 +45,21 @@ function online_macro(param) {
 
 function createtime_macro(param) {
    renderPrefix(param);
-   if (param.as == "editor")
-      this.renderDateDropdown(this.createInputParam("createtime",param));
-   else {
-      res.write(param.format ? this.createtime.format(param.format) : this.createtime.format("yyyy.MM.dd HH:mm"));
-   }
+   this.weblog.formatTimestamp(this.createtime,param);
    renderSuffix(param);
 }
 
+/**
+ * macro rendering modifytime of story
+ */
+
+function modifytime_macro(param) {
+   if (this.modifytime) {
+      renderPrefix(param);
+      this.weblog.formatTimestamp(this.modifytime,param);
+      renderSuffix(param);
+   }
+}
 
 /**
  * macro rendering a link to edit
@@ -168,9 +175,14 @@ function commentform_macro(param) {
  */
 
 function image_macro(param) {
-   if (param && param.name) {
+   if (param && param.name && this.weblog.images.get(param.name)) {
       renderPrefix(param);
-      this.weblog.renderImage(param);
+      if (param.linkto) {
+         this.openLink(param);
+         this.weblog.renderImage(this.weblog.images.get(param.name),param);
+         this.closeLink(param);
+      } else
+         this.weblog.renderImage(this.weblog.images.get(param.name),param);
       renderSuffix(param);
    }
 }
