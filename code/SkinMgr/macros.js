@@ -28,7 +28,7 @@ function skineditor_macro(param) {
       var s = this.fetchSkin(req.data.proto,req.data.name);
       s.renderSkin("edit");
       /*
-      var currProto = this._parent.skinmanager.get(req.data.proto);
+      var currProto = this.get(req.data.proto);
       if (currProto && currProto.get(req.data.name)) {
          var currSkin = currProto.get(req.data.name);
          currSkin.renderSkin("edit");
