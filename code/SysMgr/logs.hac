@@ -1,14 +1,14 @@
 res.data.title = root.getSysTitle() + " Manager - " + req.action;
 res.data.action = this.href(req.action);
 
-if (req.data.search)
+if (req.data.search || req.data.keywords)
    session.data.mgr.searchSyslog(req.data.show,req.data.order,req.data.keywords);
 
 session.data.mgr.renderPageNavigation("syslogs",this.href(req.action),parseInt(req.data.page,10));
 session.data.mgr.renderList("syslogs",null,null,parseInt(req.data.page,10));
 
-res.data.searchform = this.renderSkinAsString("syslogsearchform");
+res.data.body = this.renderSkinAsString("syslogsearchform");
 
-res.data.body = this.renderSkinAsString("list");
+res.data.list = this.renderSkinAsString("list");
 
 this.renderSkin("page");

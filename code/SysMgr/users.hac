@@ -1,7 +1,7 @@
 res.data.title = root.getSysTitle() + " Manager - " + req.action;
 res.data.action = this.href(req.action);
 
-if (req.data.search)
+if (req.data.search || req.data.keywords)
    session.data.mgr.searchUsers(req.data.show, req.data.sort, req.data.order, req.data.keywords);
 else if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
@@ -12,10 +12,10 @@ else if (req.data.submit == "save" || req.data.save) {
       res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
 }
 
-res.data.searchform = this.renderSkinAsString("usersearchform");
+res.data.body = this.renderSkinAsString("usersearchform");
 session.data.mgr.renderPageNavigation("users",res.data.action,parseInt(req.data.page,10));
 session.data.mgr.renderList("users",root.users.get(req.data.item),req.data.action,parseInt(req.data.page,10));
 
-res.data.body = this.renderSkinAsString("list");
+res.data.list = this.renderSkinAsString("list");
 
 this.renderSkin("page");
