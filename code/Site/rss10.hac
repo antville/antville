@@ -21,7 +21,7 @@ if (this.online) {
 		param1.year = now.getYear();
 		var skin = createSkin(story.text);
 		var str = this.renderSkinAsString(skin);
-		str = convertHtmlImageToHtmlLink(str);
+		str = this.rssConvertHtmlImageToHtmlLink(str);
 		param1.itemDescription = encodeXml(str);
 		items += renderSkinAsString("rss10Item", param1);
 	}

@@ -192,19 +192,6 @@ function getPoolObj(objName,pool) {
 }
 
 /**
- * This function parses a string for <img> tags and turns them
- * into <a> tags.  
- */ 
-
-function convertHtmlImageToHtmlLink(str) {
-   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
-   re.ignoreCase = true;
-   re.global = true;
-   str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
- 	return(str);
-}
-
-/**
  * function builds an array containing
  * default dateformat-patterns
  */
@@ -272,7 +259,6 @@ function logAccess() {
 			writeln("Error establishing DB connection: " + error);
 			return;
 		}
-
 		var query = "insert into ACCESS (WEBLOG_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
 		c.executeCommand(query);
 		var error = c.getLastError();
@@ -280,23 +266,8 @@ function logAccess() {
 			writeln("Error executing SQL query: " + error);
 			return;
 		}
-      c.release();
+		c.release();
 		return;
-
-		// *****************************************
-		// this is the conventional Helma way
-		// (needs appropriate type mapping if used):
-		var hopPath = path[path.length-1].href();
-		var a = new access();
-		a.weblog = path["weblog"];
-		a.referrer = req.data.http_referer;
-		a.ip = req.data.http_remotehost;
-		a.url = hopPath + req.action;
-		a.hopPath = hopPath;
-		a.action = req.action;
-		a.browser = req.data.http_browser;
-		a.date = new Date();
-		root.access.add(a);
 	}
 }
 
