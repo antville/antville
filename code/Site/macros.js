@@ -404,12 +404,12 @@ function loginstatus_macro(param) {
 
 function navigation_macro(param) {
    this.renderSkin("usernavigation");
-   var membership = this.isUserMember(user);
-   if (!membership)
+   if (!user.uid)
       return;
-   if (this.userMayContrib() || membership.level >= getContributorLvl())
+   var membership = this.isUserMember(user);
+   if (this.userMayContrib() || (membership && membership.level >= getContributorLvl()))
       this.renderSkin("contribnavigation");
-   if (membership.level == getAdminLvl())
+   if (membership && membership.level == getAdminLvl())
       this.renderSkin("adminnavigation");
 }
 
