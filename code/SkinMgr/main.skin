@@ -45,6 +45,12 @@ This skin defines how replies to comments are displayed.</li>
 This skin contains the form for adding a toplevel-comment or a reply to a comment.</li>
 </ul>
 
+<p><b>goodies</b></p>
+<ul>
+<li><a name="goodiemain"></a><% this.link to="edit" urlparam="?proto=goodie&name=main" text="view" %>&nbsp;<span class="small">(<% this.skinstatus proto="goodie" name="main" %>)</span><br>
+This skin defines the way goodies are displayed when embedded in a story or comment using the goodie-macro.</li>
+</ul>
+
 <!-- calendar // -->
 
 <p><b>calendar</b></p>
