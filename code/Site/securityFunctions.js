@@ -23,7 +23,7 @@ function checkAccess(action, usr, level) {
          case "delete" :
             checkIfLoggedIn();
             url = this.href();
-            this.checkView(usr, level);
+            this.checkDelete(usr, level);
             break;
          case "getfile" :
             if (!this.online)
