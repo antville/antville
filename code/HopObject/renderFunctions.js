@@ -177,7 +177,7 @@ function renderImage(img,param) {
       res.write(" valign=\"" + param.valign + "\"");
    if (img.alttext)
       res.write(" alt=\"" + img.alttext + "\"");
-   res.write(" border=\"0\">");
+   res.write(" border=\"" + (param.border ? param.border : 0) + "\">");
 }
 
 /**
