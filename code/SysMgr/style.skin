@@ -135,3 +135,28 @@ ul {
    padding:10px;
    color:#333333;
 }
+
+/* pagewise navigation bar */
+div.pageNav {
+   background-color:#efefef;
+   padding:2px;
+   margin-top:10px;
+   height:14px;
+   font-size:11px;
+}
+div.pageNavSummary {
+   display:inline;
+   text-align:left;
+   width:40%;
+   float:left;
+}
+div.pageNavBar {
+   display:inline;
+   width:60%;
+   text-align:right;
+   float:right;
+}
+span.pageNavItem {
+   padding-left:2px;
+   padding-right:2px;
+}
