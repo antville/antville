@@ -505,7 +505,7 @@ function history_macro(param) {
    var i = 0;
    while (cnt < param.show && this.lastmod.get(i)) {
       var item = this.lastmod.get(i++);
-      if (!item.story || (item.story.online && item.story.discussions)) {
+      if (!item.story || (item.story.online && item.story.discussions && item.site.discussions)) {
          item.renderSkin("historyview");
          cnt++;
       }
