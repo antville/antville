@@ -474,7 +474,7 @@ function writeReadLog() {
    var reads = log.elements();
    while (reads.hasMoreElements()) {
       var el = reads.nextElement();
-      var story = root.storiesByID.get(String(el.story));
+      var story = Story.getById(String(el.story));
       if (!story)
          continue;
       story.reads = el.reads;
