@@ -135,3 +135,15 @@ function popupUrl() {
    url += "'," + this.width + "," + this.height + ");";
    return (url);
 }
+
+
+/**
+ * returns the url to the static image
+ */
+function getStaticUrl() {
+  var url = getProperty("imgUrl");
+  if (this.weblog)
+    url += this.weblog.alias + "/";
+  url += this.filename + "." + this.fileext;
+  return(url);
+}
