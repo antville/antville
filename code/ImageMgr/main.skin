@@ -1,4 +1,4 @@
-...&nbsp;<% this.link to="create" text="add new image" %>
+<p>...&nbsp;<% this.link to="create" text="add new image" %></p>
 <p>To insert an image in a story or comment just copy and paste its code.</p>
 
 <% response.prevpage %>
