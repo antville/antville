@@ -56,7 +56,7 @@ function edit_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.title = "Profile of user " + session.user.name;
    res.data.body = session.user.renderSkinAsString("edit");
    this._parent.renderSkin("page");
@@ -80,7 +80,7 @@ function login_action() {
          res.message = err.toString();
       }
    }
-   
+
    if (!session.data.referrer && req.data.http_referer)
       session.data.referrer = req.data.http_referer;
    res.data.action = this.href(req.action);
@@ -124,7 +124,7 @@ function register_action() {
             var sp = {name: result.obj.name, password: result.obj.password};
             sendMail(root.sys_email,
                      result.obj.email,
-                     getMessage("mail.registration", root.getSysTitle()),
+                     getMessage("mail.registration", root.getTitle()),
                      this.renderSkinAsString("mailbody", sp)
                     );
          }
@@ -136,7 +136,7 @@ function register_action() {
             res.redirect(url);
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Register";
    res.data.body = this.renderSkinAsString("register");
@@ -157,7 +157,7 @@ function sendpwd_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Recover your password";
    res.data.body = this.renderSkinAsString("sendpwd");
