@@ -74,7 +74,7 @@ function login_action() {
             var url = session.data.referrer;
             session.data.referrer = null;
          } else
-            var url = parent.href();
+            var url = this._parent.href();
          res.redirect(url);
       } catch (err) {
          res.message = err.toString();
