@@ -17,12 +17,12 @@ function main_action() {
 /**
  * choose a new root layout
  */
-function choose_action() {
+function create_action() {
    if (req.data.cancel)
       res.redirect(this.href());
-   else if (req.data.choose) {
+   else if (req.data.create) {
       try {
-         var result = this.chooseNewLayout(req.data, session.user);
+         var result = this.evalNewLayout(req.data, session.user);
          res.message = result.toString();
          res.redirect(this.href());
       } catch (err) {
@@ -31,11 +31,36 @@ function choose_action() {
    }
 
    // render a list of root layouts that are shareable
-   res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 10, req.data.page);
+   res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
 
-   res.data.title = "Choose a new layout for " + res.handlers.context.getTitle();
+   res.data.title = "Create a new layout for " + res.handlers.context.getTitle();
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("choose");
+   res.data.body = this.renderSkinAsString("new");
+   res.handlers.context.renderSkin("page");
+}
+
+/**
+ * import action
+ */
+function import_action() {
+   if (req.data.cancel)
+      res.redirect(this.href());
+   else if (req.data["import"]) {
+      try {
+         var result = this.evalImport(req.data, session.user);
+         res.message = result.toString();
+         res.redirect(this.href());
+      } catch (err) {
+         res.message = err.toString();
+      }
+   }
+   // render a list of root layouts that are shareable
+   res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
+
+   res.data.title = "Import a layout to " + res.handlers.context.getTitle();
+   res.data.action = this.href(req.action);
+   res.data.body = this.renderSkinAsString("import");
    res.handlers.context.renderSkin("page");
 }
