@@ -40,7 +40,7 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Time between two<br>new weblogs:</td>
-<td><% root.sys_waitAfterNewWeblog as="editor" %><span class="small">&nbsp;days<br />This is the amount of time a user has to wait before creating a new weblog.</span></td>
+<td><% root.sys_waitAfterNewSite as="editor" %><span class="small">&nbsp;days<br />This is the amount of time a user has to wait before creating a new weblog.</span></td>
 </tr>
 
 <tr>

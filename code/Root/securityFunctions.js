@@ -18,8 +18,8 @@ function isAddSiteDenied(usr) {
       // check if user has to wait some more time before creating a new weblog
       if (usr.sites.count()) {
          var lastCreation = Math.floor((new Date() - usr.sites.get(0).createtime)/86400000);
-         if (lastCreation < root.sys_waitAfterNewWeblog)
-            return (getError("siteCreateWait",new Array(root.sys_waitAfterNewWeblog,root.sys_waitAfterNewWeblog - lastCreation)));
+         if (lastCreation < root.sys_waitAfterNewSite)
+            return (getError("siteCreateWait",new Array(root.sys_waitAfterNewSite,root.sys_waitAfterNewSite - lastCreation)));
       }
    }
    return null;

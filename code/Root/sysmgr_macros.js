@@ -96,7 +96,7 @@ function sys_minMemberAge_macro(param) {
  * after having created a weblog before being allowed to create a new one
  */
 
-function sys_waitAfterNewWeblog_macro(param) {
+function sys_waitAfterNewSite_macro(param) {
    // this macro is allowed just for sysadmins
    if (!isUserSysAdmin())
       return;
@@ -106,9 +106,9 @@ function sys_waitAfterNewWeblog_macro(param) {
          if (i < 7 || !(i%7))
             options[i] = i;
       }
-      renderDropDownBox("sys_waitAfterNewWeblog",options,this.sys_waitAfterNewWeblog,"----");
+      renderDropDownBox("sys_waitAfterNewSite",options,this.sys_waitAfterNewSite,"----");
    } else
-      res.write(this.sys_waitAfterNewWeblog);
+      res.write(this.sys_waitAfterNewSite);
    return;
 }
 
