@@ -1,12 +1,14 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td colspan="2" class="small" nowrap="nowrap"><span class="commentHead">&nbsp;</span><br />
-<span class="small"><% image.creator as="link" %> on <% image.createtime format="short" %>  (<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels)</span></td>
+<span class="small"><% image.creator as="link" %> on <% image.createtime format="short" %></span></td>
 </tr>
 <tr>
-<td><span class="storytitle"><% image.alias %></b></span><br />
+<td><div class="storyTitle"><% image.alias %></div>
+<div class="small">(<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels)</div>
 <span class="small"><b>Code:&nbsp;</b>&lt;% image name="<% image.alias %>" %&gt;</span><br />
 <% image.show what="thumbnail" vspace="5" %></td>
 <td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>
+
