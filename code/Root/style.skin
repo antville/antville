@@ -18,7 +18,7 @@ a:hover { background-color:#FF3300;
           color:#FFFFFF;
         }
 
-.header {  background-image:url("/img/antville/head_bg.gif");
+.header {  background-image:url("<% imageurl name="/headbg" %>");
            background-repeat:repeat-x;
            text-align:right;
            vertical-align:middle;
@@ -46,10 +46,10 @@ a:hover { background-color:#FF3300;
              }
 
 .sep { width:198px;
-       background-image:url("/img/antville/dot.gif");
+       background-image:url("<% imageurl name="/dot" %>");
      }
 
-ul { list-style: url("/img/antville/bullet.gif") circle;
+ul { list-style: url("<% imageurl name="/bullet" %>") circle;
    }
 
 // -->

@@ -15,12 +15,12 @@
 <td width="20" nowrap>&nbsp;</td>
 <td width="460" valign="top" nowrap><br><% response.body %></td>
 <td width="20" nowrap>&nbsp;</td>
-<td width="2" background="/img/antville/dot.gif" nowrap><img src="/img/antville/pixel.gif" width="2" border="0"></td>
+<td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap><div class="statuslight"><% now format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<br>" %>
 <% root.loginstatus %></div>
-<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %></div>
-<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><% this.weblogcounter %> weblogs created ... <% this.link to="list" %></div>
 <div class="statuslight">...&nbsp;<a href="http://antville.org/documentation.html">documentation</a></div></td>
 </tr>
