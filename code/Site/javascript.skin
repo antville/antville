@@ -1,3 +1,5 @@
+<% root.skin name="systemscripts" %>
+
 var imgWindow = "";
 
 function openPopup(img, width, height) {
