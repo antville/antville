@@ -20,9 +20,7 @@ function sendConfirmationMail() {
  */
 
 function isBlocked() {
-   if (parseInt(this.blocked,10)) {
-      res.message = "Sorry, you were blocked by an Administrator!";
+   if (parseInt(this.blocked,10))
       return true;
-   } else
-      return false;
+   return false;
 }
