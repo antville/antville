@@ -70,11 +70,22 @@ function online_macro(param) {
  */
 
 function createtime_macro(param) {
-   if (!this.createtime)
-      return;
-   res.write(param.prefix);
-   res.write(this.weblog.formatTimestamp(this.createtime,param));
-   res.write(param.suffix);
+   if (param.as == "editor") {
+      res.write (param.prefix);
+      if (this.createtime)
+         param.value = this.createtime.format("yyyy-MM-dd HH:mm");
+      else
+         param.value = (new Date()).format("yyyy-MM-dd HH:mm");
+      param.name = "createtime";
+      this.renderInputText(param);
+      res.write (param.suffix);
+   } else {
+      if (!this.createtime)
+         return;
+      res.write(param.prefix);
+      res.write(this.weblog.formatTimestamp(this.createtime,param));
+      res.write(param.suffix);
+   }
 }
 
 /**
