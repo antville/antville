@@ -11,7 +11,10 @@ Antville.ColorPickerFactory = function() {
    this.valuePrefix = Antville.prefix + "ColorValue_";
 
    this.open = function(name, text, skin) {
-      var cpWindow = window.open("<% context.href action="colorpicker" %>?name=" + name + "&text=" + text + "&skin=" + skin, Antville.ColorPicker.prefix, "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=350,height=320");
+      if (skin == "colorpickerExt")
+         var cpWindow = window.open("<% context.href action="colorpicker" %>?name=" + name + "&text=" + text + "&skin=" + skin, Antville.ColorPicker.prefix, "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=480,height=360");
+      else
+         var cpWindow = window.open("<% context.href action="colorpicker" %>?name=" + name + "&text=" + text + "&skin=" + skin, Antville.ColorPicker.prefix, "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=350,height=320");
    }
 
    this.set = function(name, color) {

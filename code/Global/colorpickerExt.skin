@@ -58,7 +58,7 @@ td {
 </script>
 
 </head>
-<body onload="self.resizeTo(480, 360); cp.setCurrentColors(); cp.setDropdown(); cp.setCurrentColor();">
+<body onload="cp.setCurrentColors(); cp.setDropdown(); cp.setCurrentColor();">
 
 <table border="0" cellspacing="4" cellpadding="8">
 <tr>
