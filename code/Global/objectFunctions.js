@@ -197,7 +197,7 @@ function formatTimestamp(ts, dformat) {
    try {
       return ts.format(fmt, handler.getLocale(), handler.getTimeZone());
    } catch (err) {
-      return "[invalid format pattern]";
+      return "[" + getMessage("error.invalidDatePattern") + "]";
    }
 }
 
@@ -300,8 +300,11 @@ function getMessage(property, value) {
          if (value instanceof Array) {
             for (var j=0;j<value.length;j++)
                param["value" + (j+1)] = value[j];
-         } else
+         } else if (typeof value == "object") {
+            param = value;
+         } else {
             param.value1 = value;
+         }
       }
       return renderSkinAsString(createSkin(source), param);
    }
@@ -374,6 +377,8 @@ function onStart() {
    app.data.readLog = new java.util.Hashtable();
    // define the global mail queue
    app.data.mailQueue = new Array();
+   // init constants
+   initConstants();
    return;
 }
 
@@ -511,16 +516,16 @@ function restoreRescuedText() {
 function getRole(lvl) {
    switch (parseInt(lvl, 10)) {
       case CONTRIBUTOR :
-         return "Contributor";
+         return getMessage("user.role.contributor");
          break;
       case CONTENTMANAGER :
-         return "Content Manager";
+         return getMessage("user.role.contentManager");
          break;
       case ADMIN :
-         return "Administrator";
+         return getMessage("user.role.admin");
          break;
       default :
-         return "Subscriber";
+         return getMessage("user.role.subscriber");
    }
 }
 

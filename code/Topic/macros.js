@@ -14,7 +14,7 @@ function addstory_macro (param) {
    if (param.text)
       res.format(param.text);
    else
-      res.write("add a story to this topic");
+      res.write(getMessage("topic.addStoryToTopic"));
    Html.closeTag("a");
    return;
 }
@@ -35,7 +35,7 @@ function addimage_macro (param) {
    if (param.text)
       res.format(param.text);
    else
-      res.write("add an image to this gallery");
+      res.write(getMessage("gallery.addImageToGallery"));
    Html.closeTag("a");
    return;
 }

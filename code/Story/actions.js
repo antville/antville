@@ -40,7 +40,7 @@ function edit_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = "Edit story";
+   res.data.title = getMessage("story.editTitle");
    if (this.title)
       res.data.title += ": " + encode(this.title);
    res.data.body = this.renderSkinAsString("edit");
@@ -64,17 +64,17 @@ function delete_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = "Delete story";
+   res.data.title = getMessage("story.deleteTitle");
    if (this.title)
       res.data.title += ": " + encode(this.title);
 
    if (this.title)
       var skinParam = {
-         description: "the story",
+         description: getMessage("story.deleteDescription"),
          detail: this.title
       };
    else
-      var skinParam = {description: "a story"};
+      var skinParam = {description: getMessage("story.deleteDescriptionNoTitle")};
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
    return;

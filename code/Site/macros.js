@@ -77,9 +77,9 @@ function online_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.online)
-      res.write(param.yes ? param.yes : "yes");
+      res.write(param.yes ? param.yes : getMessage("manage.yes"));
    else
-      res.write(param.no ? param.no : "no");
+      res.write(param.no ? param.no : getMessage("manage.no"));
    return;
 }
 
@@ -94,7 +94,7 @@ function hasdiscussions_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("discussions") ? "yes" : "no");
+      res.write(this.preferences.getProperty("discussions") ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -109,7 +109,7 @@ function usermaycontrib_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("usercontrib") ? "yes" : "no");
+      res.write(this.preferences.getProperty("usercontrib") ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -136,7 +136,7 @@ function showarchive_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("archive") ? "yes" : "no");
+      res.write(this.preferences.getProperty("archive") ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -151,7 +151,7 @@ function enableping_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.enableping ? "yes" : "no");
+      res.write(this.enableping ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -497,17 +497,23 @@ function layoutchooser_macro(param) {
  * please add some error message for undefined param.event
  */
 function notify_macro(param) {
+   var notifyContributors = param.notifyContributors ? param.notifyContributors : getMessage("site.notifyContributors");
+   var notifyAdmins = param.notifyAdmins ? param.notifyAdmins : getMessage("site.notifyAdmins");
+   var notifyNobody = param.notifyNobody ? param.notifyNobody : getMessage("site.notifyNobody");
+
+   var pref = this.preferences.getProperty("notify_" + param.event);
    if (param.as == "editor") {
-      var options = new Array("Don't notify anyone", "Notify content managers and admins", "Notify contributors and above");
-      var pref = this.preferences.getProperty("notify_" + param.event);
+      var options = new Array(notifyNobody, notifyAdmins, notifyContributors);
       Html.dropDown({name: "notify_" + param.event}, options, pref);
    } else {
-      if (pref == 2)
-         res.write("Notify contributors");
-      else if (pref == 1)
-         res.write("Notify content managers");
-      else
-         res.write("Don't notify anyone");
+      switch (pref) {
+         case 2:
+            return notifyContributors;
+         case 1:
+            return notifyAdmins;
+         default:
+            return notifyNobody;
+      }
    }
    return;
 }

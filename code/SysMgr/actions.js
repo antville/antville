@@ -20,7 +20,7 @@ function setup_action() {
       }
    }
 
-   res.data.title = "System configuration of " + root.getTitle();
+   res.data.title = getMessage("sysmgr.setupTitle", {serverTitle: root.getTitle()});
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("setup");
    root.renderSkin("page");
@@ -31,7 +31,7 @@ function setup_action() {
  * site maintenance action
  */
 function sites_action() {
-   res.data.title = "Site manager of " + root.getTitle();
+   res.data.title = getMessage("sysmgr.sitesTitle", {serverTitle: root.getTitle()});
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
@@ -66,7 +66,7 @@ function sites_action() {
  * user maintenance action
  */
 function users_action() {
-   res.data.title = "User manager of " + root.getTitle();
+   res.data.title = getMessage("sysmgr.usersTitle", {serverTitle: root.getTitle()});
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
@@ -93,7 +93,7 @@ function users_action() {
  * action for displaying system logs
  */
 function logs_action() {
-   res.data.title = "Log data of " + root.getTitle();
+   res.data.title = getMessage("sysmgr.logTitle", {serverTitle: root.getTitle()});
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
@@ -111,7 +111,7 @@ function logs_action() {
  * system status
  */
 function status_action() {
-   res.data.title = "Status of " + root.getTitle();
+   res.data.title = getMessage("sysmgr.statusTitle", {serverTitle: root.getTitle()});
    var status = new Object();
    status.upSince = formatTimestamp(new Date(app.upSince.getTime()), "long");
    status.activeThreads = app.activeThreads;

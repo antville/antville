@@ -36,7 +36,7 @@ function edit_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Preferences of " + this.title;
+   res.data.title = getMessage("site.preferencesTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
    return;
@@ -59,9 +59,9 @@ function delete_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Delete site: " + this.title;
+   res.data.title = getMessage("site.deleteTitle");
    var skinParam = {
-      description: "the site",
+      description: getMessage("site.deleteDescription"),
       detail: this.title
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
@@ -225,7 +225,7 @@ function getfile_action() {
  * most read stories of a site
  */
 function mostread_action() {
-   res.data.title = "Most read stories of " + this.title;
+   res.data.title = getMessage("site.mostReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("mostread");
    this.renderSkin("page");
    return;
@@ -236,7 +236,7 @@ function mostread_action() {
  */
 function referrers_action() {
    res.data.action = this.href("referrers");
-   res.data.title = "Referrers in the last 24 hours of " + this.title;
+   res.data.title = getMessage("site.referrersReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("page");
    return;
@@ -339,9 +339,9 @@ function unsubscribe_action() {
       }
    }
 
-   res.data.title = "Remove subscription to " + this.title;
+   res.data.title = getMessage("site.subscription.deleteTitle", {siteTitle: this.title});
    var skinParam = {
-      description: "your subscription to",
+      description: getMessage("site.subscription.deleteDescription"),
       details: this.title
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

@@ -43,7 +43,7 @@ function new_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Create a new site";
+   res.data.title = getMessage("sysmgr.createSiteTitle");
    res.data.body = this.renderSkinAsString("new");
    root.renderSkin("page");
    return;
@@ -56,7 +56,7 @@ function list_action() {
    // preparing res.data.sitelist and prev/next links
    // ("all" shows all sites, "yes" is for scrolling)
    this.renderSitelist(25, "all", "yes");
-   res.data.title = "Sites of " + root.getTitle();
+   res.data.title = getMessage("sysmgr.listTitle ", {serverTitle: root.getTitle()});
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
    return;
@@ -134,7 +134,7 @@ function rss_action() {
  */
 function blocked_action() {
    res.data.title = root.getTitle() + " - 404 - blocked";
-   res.data.body = "<p><strong>Sorry!</strong></p><p>This site was disabled.</p>";
+   res.data.body = root.renderSkinAsString("blocked");
    root.renderSkin("page");
    return;
 }
@@ -144,7 +144,7 @@ function blocked_action() {
  */
 function notfound_action() {
    res.data.title = root.getTitle() + " - 404 - not found";
-   res.data.body = "<p><strong>Sorry!</strong></p><p>URL /" + req.path + " was not found on this server!</p>";
+   res.data.body = root.renderSkinAsString("notfound");
    (path.site && path.site.online ? path.site : root).renderSkin("page");
    return;
 }
@@ -154,7 +154,7 @@ function notfound_action() {
  */
 function sys_error_action() {
    res.data.title = root.getTitle() + " - Error";
-   res.data.body = "<p><strong>Sorry!</strong></p><p>An error occurred while processing your request:</p>";
+   res.data.body = root.renderSkinAsString("sysError");
    res.data.body += "<p>"+res.error+"</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
    return;

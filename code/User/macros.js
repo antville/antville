@@ -57,7 +57,7 @@ function publishemail_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.publishemail ? "yes" : "no");
+      res.write(this.publishemail ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 

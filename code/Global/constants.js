@@ -46,12 +46,6 @@ CONTENTMANAGER = CONTRIBUTOR | MAY_VIEW_ANYSTORY | MAY_EDIT_ANYSTORY |
  */
 ADMIN = CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_LAYOUTS | MAY_EDIT_MEMBERS;
 
-ROLES = new Array();
-ROLES[0] = [SUBSCRIBER, "Subscriber"];
-ROLES[1] = [CONTRIBUTOR, "Contributor"];
-ROLES[2] = [CONTENTMANAGER, "Content manager"];
-ROLES[3] = [ADMIN, "Admin"];
-
 /**
  * constant object containing the values for editableby levels
  */
@@ -60,27 +54,34 @@ EDITABLEBY_CONTRIBUTORS = 1;
 EDITABLEBY_SUBSCRIBERS  = 2;
 
 /**
- * named array containing the display-names of
- * path-objects which is used by linkedpath_macro()
+ * set constants, called by onStart()
  */
-
+ROLES = new Array();
 DISPLAY = new Array();
-DISPLAY["root"] = "Root";
-DISPLAY["site"] = "Home";
-DISPLAY["topicmgr"] = "Topics";
-DISPLAY["imagetopicmgr"] = "Galleries";
-DISPLAY["storymgr"] = "Stories";
-DISPLAY["filemgr"] = "Files";
-DISPLAY["imagemgr"] = "Images";
-DISPLAY["membermgr"] = "Members";
-DISPLAY["sysmgr"] = "System Management";
-DISPLAY["pollmgr"] = "Polls";
-DISPLAY["skinmgr"] = "Skins";
-DISPLAY["layout"] = "Layout";
-DISPLAY["layoutmgr"] = "Layouts";
-DISPLAY["layoutimagemgr"] = "Images";
-DISPLAY["rootlayoutmgr"] = "Layouts";
-DISPLAY["story"] = "Story";
+
+function initConstants() {
+   ROLES[0] = [SUBSCRIBER, getMessage("user.role.subscriber")];
+   ROLES[1] = [CONTRIBUTOR, getMessage("user.role.contributor")];
+   ROLES[2] = [CONTENTMANAGER, getMessage("user.role.contentManager")];
+   ROLES[3] = [ADMIN, getMessage("user.role.admin")];
+
+   DISPLAY["root"] = getMessage("prototype.root");
+   DISPLAY["site"] = getMessage("prototype.site");
+   DISPLAY["topicmgr"] = getMessage("prototype.topicmgr");
+   DISPLAY["imagetopicmgr"] = getMessage("prototype.imagetopicmgr");
+   DISPLAY["storymgr"] = getMessage("prototype.storymgr");
+   DISPLAY["filemgr"] = getMessage("prototype.filemgr");
+   DISPLAY["imagemgr"] = getMessage("prototype.imagemgr");
+   DISPLAY["membermgr"] = getMessage("prototype.membermgr");
+   DISPLAY["sysmgr"] = getMessage("prototype.sysmgr");
+   DISPLAY["pollmgr"] = getMessage("prototype.pollmgr");
+   DISPLAY["skinmgr"] = getMessage("prototype.skinmgr");
+   DISPLAY["layout"] = getMessage("prototype.layout");
+   DISPLAY["layoutmgr"] = getMessage("prototype.layoutmgr");
+   DISPLAY["layoutimagemgr"] = getMessage("prototype.layoutimagemgr");
+   DISPLAY["rootlayoutmgr"] = getMessage("prototype.rootlayoutmgr");
+   DISPLAY["story"] = getMessage("prototype.story");
+}
 
 /**
  * array containing short dateformats
@@ -200,6 +201,7 @@ newSet.add(new Skinset("Root.sitelist", ["site.preview", "Root.list"]));
 newSet.add(new Skinset("Root.rss", ["Root.rss", "site.rssItem", "site.rssResource", "Global.rssImage"]));
 newSet.add(new Skinset("Root.colorpicker", ["Global.colorpicker", "Global.colorpickerExt", "Global.colorpickerWidget", "Global.colorpickerScripts"]));
 newSet.add(new Skinset("Root.welcome", ["site.welcome", "site.welcomeowner", "site.welcomesysadmin", "Root.welcome"]));
+newSet.add(new Skinset("Root.various", ["Root.blocked", "Root.notfound", "Root.sysError"]));
 SKINSETS.push(newSet);
 
 newSet = new Skinset("site", ["site.page", "site.style", "site.javascript", "site.main", "day.main", "story.dayheader"]);

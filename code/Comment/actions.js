@@ -86,7 +86,7 @@ function delete_action() {
    res.data.action = this.href(req.action);
    res.data.title = this.site.title;
    var skinParam = {
-      description: "a comment from",
+      description: getMessage("comment.deleteDescription"),
       detail: this.creator.name
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

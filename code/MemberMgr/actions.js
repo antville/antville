@@ -2,7 +2,7 @@
  * main action, lists all members in alpabetical order
  */
 function main_action() {
-   this.renderView(this, "Members");
+   this.renderView(this, getMessage("user.role.members"));
    return;
 }
 
@@ -10,7 +10,7 @@ function main_action() {
  * list all subscribers of a site
  */
 function subscribers_action() {
-   this.renderView(this.subscribers, "Subscribers");
+   this.renderView(this.subscribers, getMessage("user.role.subscribers"));
    return;
 }
 
@@ -18,7 +18,7 @@ function subscribers_action() {
  * list all contributors of a site
  */
 function contributors_action() {
-   this.renderView(this.contributors, "Contributors");
+   this.renderView(this.contributors, getMessage("user.role.contributors"));
    return;
 }
 
@@ -26,7 +26,7 @@ function contributors_action() {
  * list all content managers of a site
  */
 function managers_action() {
-   this.renderView(this.managers, "Content Managers");
+   this.renderView(this.managers, getMessage("user.role.contentManagers"));
    return;
 }
 
@@ -34,7 +34,7 @@ function managers_action() {
  * list all admins of a site
  */
 function admins_action() {
-   this.renderView(this.admins, "Administrators");
+   this.renderView(this.admins, getMessage("user.role.administrators"));
    return;
 }
 
@@ -43,7 +43,7 @@ function admins_action() {
  * site list of a user's subscriptions
  */
 function updated_action() {
-   res.data.title = "Updated sites for user " + session.user.name;
+   res.data.title = getMessage("membermgr.updateTitle", {userName: session.user.name});
    res.data.sitelist = session.user.renderSkinAsString("sitelist");
    res.data.body = session.user.renderSkinAsString("subscriptions");
    res.handlers.context.renderSkin("page");
@@ -104,7 +104,7 @@ function create_action() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.title = "Search members of " + this._parent.title;
+   res.data.title = getMessage("membermgr.searchTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
    return;
@@ -125,7 +125,7 @@ function edit_action() {
       }
    }
 
-   res.data.title = "Profile of user " + session.user.name;
+   res.data.title = getMessage("membermgr.editProfileTitle", {userName: session.user.name});
    res.data.body = session.user.renderSkinAsString("edit");
    this._parent.renderSkin("page");
    return;
@@ -153,7 +153,7 @@ function login_action() {
    if (!session.data.referrer && req.data.http_referer)
       session.data.referrer = req.data.http_referer;
    res.data.action = this.href(req.action);
-   res.data.title = "Login";
+   res.data.title = getMessage("user.loginTitle");
    res.data.body = this.renderSkinAsString("login");
    this._parent.renderSkin("page");
    return;
@@ -209,7 +209,7 @@ function register_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Register";
+   res.data.title = getMessage("user.registerTitle");
    res.data.body = this.renderSkinAsString("register");
    this._parent.renderSkin("page");
    return;
@@ -231,7 +231,7 @@ function sendpwd_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Recover your password";
+   res.data.title = getMessage("user.recoverPasswordTitle");
    res.data.body = this.renderSkinAsString("sendpwd");
    this._parent.renderSkin("page");
    return;

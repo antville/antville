@@ -120,8 +120,8 @@ function sendPwd(email) {
    var cnt = 0;
    var pwdList = "";
    while (dbResult.next()) {
-      pwdList += "Username: " + dbResult.getColumnItem("USER_NAME") + "\n";
-      pwdList += "Password: " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
+      pwdList += getMessage("membermgr.userName") + ": " + dbResult.getColumnItem("USER_NAME") + "\n";
+      pwdList += getMessage("membermgr.password") + ": " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
       cnt++;
    }
    dbResult.release;

@@ -4,7 +4,7 @@
 function main_action() {
    res.data.storylist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
-   res.data.title = "Online stories of " + this._parent.title;
+   res.data.title = getMessage("story.onlineStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -13,7 +13,7 @@ function main_action() {
 function offline_action() {
    res.data.storylist = renderList(this.offline, "mgrlistitem", 10, req.data.start);
    res.data.pagenavigation = renderPageNavigation(this.offline, this.href(req.action), 10, req.data.page);
-   res.data.title = "Online stories of " + this._parent.title;
+   res.data.title = getMessage("story.offlineStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -27,7 +27,7 @@ function mystories_action() {
    var ms = this._parent.members.get(session.user.name);
    res.data.storylist = renderList(ms.stories, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.stories, this.href(req.action), 10, req.data.page);
-   res.data.title = "My stories in " + this._parent.title;
+   res.data.title = getMessage("story.myStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -61,7 +61,7 @@ function create_action() {
       }
    }
    
-   res.data.title = "Add a story to " + this._parent.title;
+   res.data.title =  getMessage("story.addStoryTo", {siteTitle: this._parent.title});
    res.data.action = this.href("create");
    res.data.body = s.renderSkinAsString("edit");
    this._parent.renderSkin("page");

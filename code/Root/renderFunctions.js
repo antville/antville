@@ -23,7 +23,7 @@ function renderSitelist(limit, show, scroll) {
    if (scroll && idx > 0) {
       var sp = new Object();
       sp.url = root.href("list") + "?start=" + Math.max(0, idx-limit);
-      sp.text = "previous sites";
+      sp.text = getMessage("site.previousPage");
       res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
 
@@ -42,7 +42,7 @@ function renderSitelist(limit, show, scroll) {
    if (scroll && idx < size) {
       var sp = new Object();
       sp.url = root.href("list") + "?start=" + idx;
-      sp.text = "more sites";
+      sp.text = getMessage("site.nextPage");
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    return;

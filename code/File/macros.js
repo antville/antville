@@ -44,7 +44,7 @@ function editlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.link({href: this.href("edit")}, param.text ? param.text : "edit");
+      Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("manage.edit"));
    }
    return;
 }
@@ -64,7 +64,7 @@ function deletelink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : "delete");
+         res.write(param.text ? param.text : getMessage("manage.delete"));
       Html.closeLink();
    }
    return;
@@ -78,7 +78,7 @@ function viewlink_macro(param) {
       param.to = "getfile"
       param.urlparam = "name=" + escape(this.alias);
       param.title = encodeForm(this.description);
-      var text = param.text ? param.text : "view";
+      var text = param.text ? param.text : getMessage("manage.view");
       Html.openTag("a", this.site.createLinkParam(param));
       res.write(text);
       Html.closeTag("a");
@@ -118,12 +118,12 @@ function filetype_macro(param) {
  */
 function clicks_macro(param) {
    if (!this.requestcnt)
-      res.write(param.no ? param.no : "0 downloads");
+      res.write(param.no ? param.no : getMessage("file.download.no"));
    else if (this.requestcnt == 1)
-      res.write(param.one ? param.one : "1 download");
+      res.write(param.one ? param.one : getMessage("file.download.one"));
    else {
       res.write(this.requestcnt);
-      res.write(param.more ? param.more : " downloads");
+      res.write(param.more ? param.more : " " + getMessage("file.download.more"));
    }
    return;
 }

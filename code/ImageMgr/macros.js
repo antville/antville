@@ -53,6 +53,7 @@ function topicchooser_macro(param) {
             var selected = topic.groupname;
       }
    }
-   Html.dropDown({name: "addToTopic"}, options, selected, "-- choose gallery --");
+   var firstOption = param.firstOption ?  param.firstOption : getMessage("gallery.chooserFirstOption");
+   Html.dropDown({name: "addToTopic"}, options, selected, firstOption);
    return;
 }

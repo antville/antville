@@ -4,7 +4,7 @@
 function main_action() {
    res.data.pollList = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
-   res.data.title = "All polls of " + this._parent.title;
+   res.data.title = getMessage("poll.listTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -16,7 +16,7 @@ function main_action() {
 function open_action() {
    res.data.pollList = renderList(this.open, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this.open, this.href(req.action), 10, req.data.page);
-   res.data.title = "Open polls of " + this._parent.title;
+   res.data.title = getMessage("poll.listOpenPollsTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -29,7 +29,7 @@ function mypolls_action() {
    var ms = this._parent.members.get(session.user.name);
    res.data.pollList = renderList(ms.polls, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.polls, this.href(req.action), 10, req.data.page);
-   res.data.title = "My polls of " + this._parent.title;
+   res.data.title = getMessage("poll.listMyPollsTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -73,7 +73,7 @@ function create_action() {
    }
    res.data.choices = res.pop();
    res.data.action = this.href(req.action);
-   res.data.title = "Add a poll to " + this._parent.title;
+   res.data.title = getMessage("poll.addPoll", {siteTitle: this._parent.title});
    res.data.body = newPoll.renderSkinAsString("edit");
    this._parent.renderSkin("page");
    return;

@@ -16,6 +16,6 @@ function date_macro(param) {
    try {
       return formatTimestamp(ts, param.format);
    } catch (err) {
-      return "[invalid format pattern]";
+      return "[" + getMessage("error.invalidDatePattern") + "]";
    }
 }

@@ -55,7 +55,7 @@ function sys_allowFiles_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_allowFiles ? "yes" : "no");
+      res.write(this.sys_allowFiles ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -68,7 +68,7 @@ function sys_limitNewSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = ["all registered users", "only trusted users", "---------"];
+      var options = [getMessage("sysmgr.registeredUsers"), getMessage("sysmgr.trustedUsers"), "---------"];
       Html.dropDown({name: "sys_limitNewSites"}, options, this.sys_limitNewSites);
    } else
       res.write(this.sys_limitNewSites);
@@ -150,7 +150,7 @@ function sys_enableAutoCleanup_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_enableAutoCleanup ? "yes" : "no");
+      res.write(this.sys_enableAutoCleanup ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -186,7 +186,7 @@ function sys_blockPrivateSites_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_blockPrivateSites ? "yes" : "no");
+      res.write(this.sys_blockPrivateSites ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -234,7 +234,7 @@ function sys_deleteInactiveSites_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_deleteInactiveSites ? "yes" : "no");
+      res.write(this.sys_deleteInactiveSites ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -337,7 +337,7 @@ function sys_allowEmails_macro(param) {
   if (!session.user.sysadmin)
      return;
   if (param.as == "editor") {
-     var options = new Array("no notification e-mails", "notification for all sites", "only for trusted sites");
+     var options = new Array(getMessage("sysmgr.allowNotfication.no"), getMessage("sysmgr.allowNotfication.all"), getMessage("sysmgr.allowNotfication.trusted"));
      Html.dropDown({name: "sys_allowEmails"}, options, this.sys_allowEmails);
   } else
      res.write(this.sys_allowEmails);

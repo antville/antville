@@ -15,7 +15,7 @@ function main_action() {
       }
    }
    res.data.action = this.href();
-   res.data.title = "Vote poll: " + this.question;
+   res.data.title = getMessage("poll.viewTitle", {question: this.question});
    res.data.body = this.renderSkinAsString("main");
    this.site.renderSkin("page");
    return;
@@ -60,7 +60,7 @@ function edit_action() {
    }
    res.data.choices = res.pop();
    res.data.action = this.href(req.action);
-   res.data.title = "Edit poll: " + this.question;
+   res.data.title = getMessage("poll.editTitle", {question: this.question});
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
    return;
@@ -83,9 +83,9 @@ function delete_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = "Delete poll: " + this.question;
+   res.data.title = getMessage("poll.deleteTitle", {question: this.question});
    var skinParam = {
-      description: "the poll",
+      description: getMessage("poll.deleteDescription"),
       detail: this.question
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
@@ -97,7 +97,7 @@ function delete_action() {
  * action renders the current result of a poll
  */
 function results_action() {
-   res.data.title = "View poll: " + this.question;
+   res.data.title = getMessage("poll.viewTitle", {question: this.question});
    res.data.body = this.renderSkinAsString("results");
    this.site.renderSkin("page");
    return;

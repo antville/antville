@@ -58,7 +58,7 @@ function editlink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : "edit");
+         res.write(param.text ? param.text : getMessage("manage.edit"));
       Html.closeLink();
    }
    return;
@@ -78,7 +78,7 @@ function deletelink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : "delete");
+         res.write(param.text ? param.text : getMessage("manage.delete"));
       Html.closeLink();
    }
    return;

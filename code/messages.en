@@ -8,6 +8,7 @@ error.nameInUse = This name is already in use. Please enter a different one.
 error.noSpecialChars = Please use alphanumeric characters only in the 'name' field.
 error.storyPublish = Sorry, I was not able to determine the online state of the story.
 error.textMissing = Please enter at least something into the 'text' field.
+error.invalidDatePattern = invalid format pattern
 error.fileNameMissing = Please enter a name for the file.
 error.fileExisting = There is already a file with this name. Please enter a different one.
 // size of upload limit with param in fileFileTooBig?
@@ -460,6 +461,9 @@ skin.Root.systemscripts = System javascript|This skin contains important client 
 skin.Root.style = Stylesheet|The external stylesheet used to display the basic view of an Antville installation.
 skin.Root.new = Create a new site|This is the form for creating a new site.
 skin.Root.sysmgrnavigation = Navigation bar for system administrators|This skin contains some navigation links for system administrators.
+skin.Root.blocked = Blocked user|If a blocked user requests a page this skin will be rendered instead.
+skin.Root.notfound = Notfound page|Displayed if a request ends in a 404 Not Found
+skin.Root.sysError = System Error page|Displayed if a system error occurs.
 
 ## membership
 skin.membership.subscriptionlistitem = Subscription list item|This skin is used to display a single subscription or membership in a user's list.
@@ -468,4 +472,196 @@ skin.membership.mailstatuschange = Membership status change confirmation|Wheneve
 skin.membership.mailmessage = Private Mail message|The body of the mail sent to a user when an admin used the "send an e-mail to this user" feature.
 skin.membership.edit = Member status editor|This skin contains the form for modifying the role of a member.
 skin.membership.mailto = Form for contacting a member|Contains a form for entering the body of a mail to send to a member of a site.
-             ]                                                                          
+
+##
+## managemnet tasks and macro texts
+##
+
+# prototypes
+prototype.root = Root
+prototype.site = Home
+prototype.topicmgr = Topics
+prototype.imagetopicmgr = Galleries
+prototype.storymgr = Stories
+prototype.filemgr = Files
+prototype.imagemgr = Images
+prototype.membermgr = Members
+prototype.sysmgr = System Management
+prototype.pollmgr = Polls
+prototype.skinmgr = Skins
+prototype.layout = Layout
+prototype.layoutmgr = Layouts
+prototype.layoutimagemgr = Images
+prototype.rootlayoutmgr = Layouts
+prototype.story = Story
+
+# general manage tasks
+manage.delete = delete
+manage.view = view
+manage.create = create
+manage.edit = edit
+manage.remove = remove
+manage.yes = yes
+manage.no = no
+manage.of = of
+manage.previousPage = previous page
+manage.nextPage = next page
+manage.chooserFirstOption = --- select ---
+manage.untitled = untitled
+
+# sysmgr
+sysmgr.listTitle = Sites of <% param.serverTitle %>
+sysmgr.setupTitle = System configuration of <% param.serverTitle %>
+sysmgr.sitesTitle = Site manager of <% param.serverTitle %>
+sysmgr.usersTitle = User manager of <% param.serverTitle %>
+sysmgr.logTitle = Log data of <% param.serverTitle %>
+sysmgr.statusTitle = Status of <% param.serverTitle %>
+sysmgr.createSiteTitle = Create a new site
+sysmgr.registeredUsers = all registered users
+sysmgr.trustedUsers = only trusted users
+sysmgr.allowNotfication.no = no notification e-mails
+sysmgr.allowNotfication.allSites = notification for alle sites
+sysmgr.allowNotfication.trustedSites = only trusted sites
+
+# site
+site.preferencesTitle = Preferences of <% param.siteTitle %>
+site.subscription.deleteTitle = Remove subscription to <% param.siteTitle %>
+site.subscription.deleteDescription = your subscriptions to
+site.mostReadTitle = Most read stories of <% param.siteTitle %>
+site.referrersReadTitle = Referrers in the last 24 hours of <% param.siteTitle %>
+site.deleteTitle = Delete site 
+site.deleteDescription = the site
+site.notifyNobody = Don't notify anyone
+site.notifyAdmins = Notify content managers and admins
+site.notifyContributors = Notify contributors
+site.previousPage = previous sites
+site.nextPage = more sites
+
+# layout / skins
+layout.test = test
+layout.activate = activate
+layout.mainTitle = Layout '<% param.layoutTitle %>'
+layout.editTitle = Edit layout: <% param.layoutTitle %>
+layout.downloadTitle = Download layout '<% param.layoutTitle %>'
+layout.basisChooserFirstOption = --- choose a basis layout ---
+layout.chooserFirstOption = --- choose a layout ---
+layout.mgr.listImagesTitle = Images of <% param.layoutTitle %>
+layout.mgr.listParentImagesTitle = Images of layout '<% param.parentLayoutTitle %>'
+layout.mgr.mainTitle = Layouts of <% param.siteTitle %>
+layout.mgr.createTitle = Create a new layouts for <% param.siteTitle %>
+layout.mgr.importTitle = Import a layout to <% param.siteTitle %>
+
+skin.diff.noDiffAvailable = This is a custom skin, therefor no differences can be displayed
+skin.diff.noDiffFound = No differences were found
+skin.diff.displayTitle = Diffs for <% param.skinProto %>/<% param.skinName %>.skin of layout <% param.layoutTitle %>
+skin.mgr.listTitle = Skins of <% param.layoutTitle %>
+skin.mgr.listModifiedTitle = Modified skins of <% param.layoutTitle %>
+skin.mgr.listCustomTitle = Custom skins of <% param.layoutTitle %>
+skin.mgr.createCustomTitle = Create a custom skin for <% layoutTitle %>
+skin.deleteDescription = modifications of the skin
+skin.customSkin = custom skin
+
+# story / comment
+story.online = online
+story.offline = offline
+story.setOnline = set online
+story.setOffline = set offline
+story.newerStories = newer stories
+story.olderStories = older stories
+story.editTitle = Edit story
+story.deleteTitle = Delete story
+story.deleteDescription = the story
+story.deleteDescriptionNoTitle = a story
+story.onlineStoriesTitle = Online stories of <% param.siteTitle %>
+story.offlineStoriesTitle = Offline stories of <% param.siteTitle %>
+story.myStoriesTitle = My stories of <% param.siteTitle %>
+story.addStoryTo = Add a story to <% param.siteTitle %>
+story.editableBy.admins = the author
+story.editableBy.contributors = all contributors
+story.editableBy.subscribers = all subscribers
+story.editableBy.adminsLong = Content managers and admins of '<% param.siteTitle %>'
+story.editableBy.contributorsLong =  Contributors to '<% param.siteTitle %>'
+story.editableBy.subscribersLong =  Subscribers of and contributors to '<% param.siteTitle %>'
+
+comment.deleteDescription = a comment from
+comment.reply = reply
+comment.no = 0 comments
+comment.one = 1 comment
+comment.more = comments
+comment.loginToAdd = Login to add your comment!
+
+# user / membership / membermgr
+user.role.contributor = Contributor
+user.role.contentManager = Content Manager
+user.role.admin = Administrator
+user.role.subscriber = Subscriber
+user.role.members = Members
+user.role.contributors = Contributors
+user.role.contentManagers = Content Managers
+user.role.administrators = Administrators
+user.role.subscribers = Subscribers
+user.loginTitle = "Login";
+user.registerTitle = "Login";
+user.recoverPasswordTitle = "Recover your password";
+
+membership.editTitle = Edit membership: <% param.userName %>
+membership.deleteTitle = Delete membership: <% param.userName %>
+membership.deleteDescription = the membership of
+membership.sendEmailTitle = Send e-mail to <% param.userName %>
+membership.unsubscribe = unsubscribe
+
+membermgr.subscriptions = subscriptions
+membermgr.updateTitle = Updated sites for user <% param.userName %>
+membermgr.searchTitle = Search members of <% param.siteTitle %>
+membermgr.editProfileTitle = Profile of user <% param.userName %>
+membermgr.signUp = sign up
+membermgr.userName = Username
+membermgr.password = Password
+membermgr.subscriptionsTitle = <% param.title %> of user <% param.userName %>
+membermgr.viewListTitle = <% param.title %> of <% param.siteName %>
+
+# file
+file.manageFilesTitle = Files of <% param.siteTitle %>
+file.myFilesTitle = My files of <% param.siteTitle %>
+file.addFileTo = Add a file to <% param.siteTitle %>
+file.editTitle = Edit file: <% param.fileAlias %>
+file.deleteTitle = Delete file: <% param.fileAlias %>
+file.deleteDescription = the file
+file.downloads.no = 0 downloads
+file.downloads.one = 1 download
+file.downloads.more = downloads
+
+# image
+image.viewTitle = View image: <% param.imageAlias %>
+image.editTitle = Edit image: <% param.imageAlias %>
+image.deleteTitle = Delete image: <% param.imageAlias %>
+image.deleteDescription = the image
+image.mgr.listTitle = Images of <% param.parentTitle %>
+image.mgr.listMyImagesTitle = My images of <% param.parentTitle %>
+image.mgr.addImage = Add an image to <% param.parentTitle %>
+
+# topics / galleries
+topic.addStoryToTopic = add a story to this topic
+topic.chooserFirstOption = -- choose topic --
+topic.mgr.mainTitle = Topics of <% param.title %>
+
+gallery.addImageToGallery = add an image to this gallery
+gallery.chooserFirstOption = -- choose gallery --
+gallery.mgr.mainTitle = Galleries of <% param.siteTitle %>
+
+# poll
+poll.voteTitle = Vote poll: <% param.question %>
+poll.editTitle = Edit poll: <% param.question %>
+poll.deleteTitle = Delete poll: <% param.question %>
+poll.deleteDescription = the poll
+poll.viewTitle = View poll: <% param.question %>
+poll.listTitle = All polls of <% param.siteTitle %>
+poll.listOpenPollsTitle = Open polls of <% param.siteTitle %>
+poll.listMyPollsTitle = My polls of <% param.siteTitle %>
+poll.addPoll = Add a poll to <% param.siteTitle %>
+poll.vote = vote
+poll.votes.no = votes
+poll.votes.one = vote
+poll.votes.more = votes
+poll.close = close
+poll.reopen = re-open

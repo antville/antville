@@ -6,7 +6,7 @@ function main_action() {
       this.setDefaultLayout(req.data["activate"]);
       res.redirect(this.href());
    }
-   res.data.title = "Layouts of " + res.handlers.context.getTitle();
+   res.data.title = getMessage("layout.mgr.mainTitle", {siteTitle: res.handlers.context.getTitle()});
    res.data.action = this.href();
    res.data.layoutlist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
@@ -35,7 +35,7 @@ function create_action() {
    res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
    res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
 
-   res.data.title = "Create a new layout for " + res.handlers.context.getTitle();
+   res.data.title = getMessage("layout.mgr.createTitle", {siteTitle: res.handlers.context.getTitle()});
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
@@ -61,7 +61,7 @@ function import_action() {
    res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
    res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
 
-   res.data.title = "Import a layout to " + res.handlers.context.getTitle();
+   res.data.title = getMessage("layout.mgr.importTitle", {siteTitle: res.handlers.context.getTitle()});
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("import");
    res.handlers.context.renderSkin("page");

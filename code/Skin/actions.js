@@ -7,11 +7,11 @@ function diff_action() {
    var originalSkin = this.layout.skins.getOriginalSkinSource(this.proto, this.name);
 
    if (originalSkin == null) {
-      res.data.status = "This is a custom skin, therefor no differences can be displayed";
+      res.data.status = getMessage("skin.diff.noDiffAvailable");
    } else {
       var diff = originalSkin.diff(this.skin ? this.skin : "");
       if (!diff) {
-         res.data.status = "No differences were found";
+         res.data.status = getMessage("skin.diff.noDiffFound");
       } else {
          res.push();
          var sp = new Object();
@@ -47,7 +47,7 @@ function diff_action() {
       }
    }
    res.data.body = this.renderSkinAsString("diff");
-   res.data.title = "Diffs for " + this.proto + "/" + this.name + ".skin of layout " + this.layout.title;
+   res.data.title = getMessage("skin.diff.displayTitle", {skinProto: this.proto, skinName: this.name; layoutTitle: this.layout.title});
    this.layout.skins.renderSkin("page");
    return;
 }
@@ -70,7 +70,7 @@ function delete_action() {
    res.data.action = this.href(req.action);
    res.data.title = res.handlers.context.getTitle();
    var skinParam = {
-      description: "modifications of the skin",
+      description: getMessage("skin.deleteDescription"),
       detail: this.name
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

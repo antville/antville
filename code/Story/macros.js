@@ -109,7 +109,7 @@ function editlink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : "edit");
+         res.write(param.text ? param.text : getMessage("manage.edit"));
       Html.closeLink();
    }
    return;
@@ -130,7 +130,7 @@ function deletelink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : "delete");
+         res.write(param.text ? param.text : getMessage("manage.delete"));
       Html.closeLink();
    }
    return;
@@ -160,9 +160,9 @@ function onlinelink_macro(param) {
          // currently, only the "set online" text is customizable, since this macro
          // is by default only used in that context outside the story manager.
          if (this.online)
-            res.write("set offline");
+            res.write(getMessage("story.setOffline"));
          else
-            res.write(text ? text : "set online");
+            res.write(text ? text : getMessage("story.setOnline"));
       }
       Html.closeTag("a");
    }
@@ -223,11 +223,11 @@ function commentcounter_macro(param) {
    if (linkflag)
       Html.openTag("a", this.createLinkParam(param2));
    if (commentCnt == 0)
-      res.write(param.no || param.no == "" ? param.no : "0 comments");
+      res.write(param.no || param.no == "" ? param.no : getMessage("comment.no"));
    else if (commentCnt == 1)
-      res.write(param.one ? param.one : "1 comment");
+      res.write(param.one ? param.one : getMessage("comment.one"));
    else
-      res.write(commentCnt + (param.more ? param.more : " comments"));
+      res.write(commentCnt + (param.more ? param.more : " " + getMessage("comment.more")));
    if (linkflag)
       Html.closeTag("a");
    return;
@@ -265,7 +265,7 @@ function commentform_macro(param) {
       (new comment()).renderSkin("edit");
    } else {
       Html.link({href: this.site.members.href("login")},
-                param.text ? param.text : "Login to add your comment!");
+                param.text ? param.text : getMessage("comment.loginToAdd"));
    }
    return;
 }
@@ -279,7 +279,7 @@ function editableby_macro(param) {
       var options = [EDITABLEBY_ADMINS,
                      EDITABLEBY_CONTRIBUTORS,
                      EDITABLEBY_SUBSCRIBERS];
-      var labels = ["the author", "all contributors", "all subscribers"];
+      var labels = [getMessage("story.editableBy.admins"), getMessage("story.editableBy.contributors"), getMessage("story.editableBy.subscribers")];
       delete param.as;
       if (req.data.publish || req.data.save)
          var selValue = !isNaN(req.data.editableby) ? req.data.editableby : null;
@@ -294,13 +294,13 @@ function editableby_macro(param) {
    } else {
       switch (this.editableby) {
          case 0 :
-            res.write("Content managers and admins of '" + path.site.title + "'");
+            res.write(getMessage("story.editableBy.adminsLong", {siteTitle: path.site.title}));
             return;
          case 1 :
-            res.write("Contributors to '" + path.site.title + "'");
+            res.write(getMessage("story.editableBy.contributorsLong", {siteTitle: path.site.title}));
             break;
          case 2 :
-            res.write("Subscribers of and contributors to '" + path.site.title + "'");
+            res.write(getMessage("story.editableBy.subscribersLong", {siteTitle: path.site.title}));
             break;
       }
    }
@@ -321,7 +321,7 @@ function discussions_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.discussions ? "yes" : "no");
+      res.write(this.discussions ? getMessage("manage.yes") : getMessage("manage.no"));
    return;
 }
 
@@ -341,7 +341,9 @@ function topicchooser_macro(param) {
             var selected = topic.groupname;
       }
    }
-   Html.dropDown({name: "addToTopic"}, options, selected, "-- choose topic --");
+
+   var firstOption = param.firstOption ?  param.firstOption : getMessage("topic.chooserFirstOption");
+   Html.dropDown({name: "addToTopic"}, options, selected, firstOption);
    return;
 }
 

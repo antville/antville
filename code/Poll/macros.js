@@ -48,11 +48,11 @@ function results_macro(param2) {
          param.width = Math.round(param.percent * 2.5);
          param.graph = c.renderSkinAsString("graph", param);
          if (param.count == 1)
-            param.text = " " + (param2.one ? param2.one : "vote");
+            param.text = " " + (param2.one ? param2.one : getMessage("poll.votes.one"));
          else
-            param.text = " " + (param2.more ? param2.more : "votes");
+            param.text = " " + (param2.more ? param2.more : getMessage("poll.votes.more"));
       } else
-         param.text = " " + (param2.no ? param2.no : "votes");
+         param.text = " " + (param2.no ? param2.no : getMessage("poll.votes.no"));
       c.renderSkin("result", param);
    }
    return;
@@ -65,11 +65,11 @@ function results_macro(param2) {
 function total_macro(param) {
    var n = this.votes.size();
    if (n == 0)
-      n += " " + (param.no ? param.no : "votes");
+      n += " " + (param.no ? param.no : getMessage("poll.votes.no"));
    else if (n == 1)
-      n += " " + (param.one ? param.one : "vote");
+      n += " " + (param.one ? param.one : getMessage("poll.votes.one"));
    else
-      n += " " + (param.more ? param.more : "votes");
+      n += " " + (param.more ? param.more : getMessage("poll.votes.more"));
    return n;
 }
 
@@ -85,7 +85,7 @@ function editlink_macro(param) {
          return;
       }
       Html.link({href: this.href("edit")},
-                param.text ? param.text : "edit");
+                param.text ? param.text : getMessage("manage.edit"));
    }
    return;
 }
@@ -103,7 +103,7 @@ function deletelink_macro(param) {
          return;
       }
       Html.link({href: this.href("delete")},
-                param.text ? param.text : "delete");
+                param.text ? param.text : getMessage("manage.delete"));
    }
    return;
 }
@@ -117,7 +117,7 @@ function viewlink_macro(param) {
       if (!this.closed) {
          this.checkVote(session.user, req.data.memberlevel);
          Html.link({href: this.href()},
-                   param.text ? param.text : "vote");
+                   param.text ? param.text : getMessage("poll.vote"));
       }
    } catch (deny) {
       return;
@@ -136,7 +136,7 @@ function closelink_macro(param) {
       } catch (deny) {
          return;
       }
-      var str = this.closed ? "re-open" : "close";
+      var str = this.closed ? getMessage("poll.reopen") : getMessage("poll.close");
       Html.link({href: this.href("toggle")},
                 param.text ? param.text : str);
    }

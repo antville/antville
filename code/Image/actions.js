@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.title = "View image: " + this.alias;
+   res.data.title = getMessage("image.viewTitle", {imageAlias: this.alias});
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
    return;
@@ -21,7 +21,7 @@ function edit_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Edit image: " + this.alias;
+   res.data.title = getMessage("image.editTitle", {imageAlias: this.alias});
    res.data.body = this.renderSkinAsString("edit");
    res.handlers.context.renderSkin("page");
    return;
@@ -45,9 +45,9 @@ function delete_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Delete image: " + this.alias;
+   res.data.title = getMessage("image.deleteTitle", {imageAlias: this.alias});
    var skinParam = {
-      description: "the image",
+      description: getMessage("image.deleteDescription"),
       detail: this.alias
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

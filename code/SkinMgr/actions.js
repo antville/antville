@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.title = "Skins of " + this._parent.title;
+   res.data.title = getMessage("skin.mgr.listTitle", {layoutTitle: this._parent.title});
    res.data.list = this.renderTree(req.data);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -13,7 +13,7 @@ function main_action() {
  * list only modified skins
  */
 function modified_action() {
-   res.data.title = "Skins of " + this._parent.title;
+   res.data.title = getMessage("skin.mgr.listModifiedTitle", {layoutTitle: this._parent.title});
    res.data.list = this.renderList(this.modified, req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -24,7 +24,7 @@ function modified_action() {
  * list only custom skins
  */
 function custom_action() {
-   res.data.title = "Custom skins of " + this._parent.title;
+   res.data.title = getMessage("skin.mgr.listCustomTitle", {layoutTitle: this._parent.title});
    res.data.list = this.renderList(this.custom, req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -67,13 +67,13 @@ function edit_action() {
    var sp = new Object();
    var desc = this.getSkinDescription("skin", req.data.key);
    sp.title = desc[0];
-   sp.text = desc[1] ? desc[1] : " (custom skin)";
+   sp.text = desc[1] ? desc[1] : " (" + getMessage("skin.customSkin") + ")";
    var splitKey = req.data.key.split(".");
    sp.skin = this.getSkinSource(splitKey[0], splitKey[1]);
    sp.action = req.data.action;
 
    res.data.action = this.href(req.action);
-   res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin of " + this._parent.title;
+   res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin " + getMessage("manage.of") + " " + this._parent.title;
    res.data.body = this.renderSkinAsString("edit", sp);
    this.renderSkin("page");
    return;
@@ -97,7 +97,7 @@ function create_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Create a custom skin for " + this._parent.title;
+   res.data.title = getMessage("skin.mgr.createCustomTitle", {layoutName: this._parent.title});
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
    return;
