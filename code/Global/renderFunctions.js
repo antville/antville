@@ -141,6 +141,8 @@ function renderInputPassword(param) {
   if (!param)
     return;
   param.type = "password";
+  param.size = param.width ? param.width : "20";
+  delete param.width;
   renderMarkupElement("input", param);
 }
 
