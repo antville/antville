@@ -290,9 +290,12 @@ function shortdateformat_macro(param) {
 function sys_frontSite_macro(param) {
    if (!isUserSysAdmin())
       return;
-   if (param.as == "editor")
-      renderInputText(this.createInputParam("sys_frontSite",param));
-   else
+   if (param.as == "editor") {
+      var inputParam = new Object();
+      inputParam.name = "sys_frontSite";
+      inputParam.value = root.sys_frontSite ? root.sys_frontSite.alias : null;
+      renderInputText(inputParam);
+   } else
       res.write (root.sys_frontSite);
    return;
 }
