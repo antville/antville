@@ -124,3 +124,96 @@ function renderTimeZoneChooser(tz) {
    }
    Html.dropDown("timezone", options, tz ? tz.getID() : null);
 }
+
+/**
+ * generic list render function. if the argument
+ * "itemsPerPage" is given it renders a pagelist, otherwise
+ * the *whole* collection will be rendered
+ * @param Object collection to work on
+ * @param Object either a string which is interpreted as name of a skin
+ *               or a function to call for each item (the item is passed
+ *               as argument)
+ * @param Int Number of items per page
+ * @param Object String or Integer representing the currently viewed page
+ * @return String rendered list
+ */
+function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
+   var buf = new java.lang.StringBuffer();
+   var currIdx = 0;
+   var stop = size = collection.size();
+
+   if (itemsPerPage) {
+      var totalPages = Math.ceil(size/itemsPerPage);
+      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
+         pageIdx = 0;
+      currIdx = pageIdx * itemsPerPage;
+      stop = Math.min(currIdx + itemsPerPage, size);
+   }
+   var isFunction = (funcOrSkin instanceof Function) ? true : false;
+   while (currIdx < stop) {
+      var item = collection.get(currIdx);
+      buf.append(isFunction ? funcOrSkin(item) : item.renderSkinAsString(funcOrSkin));
+      currIdx++;
+   }
+   return buf.toString();
+}
+
+/**
+ * render pagewise-navigationbar
+ * @param Object collection to work on (either HopObject or Array)
+ * @param String url of action to link to
+ * @param String Number of items on one page
+ * @param Int currently viewed page index
+ * @return String rendered Navigationbar
+ */
+function renderPageNavigation(collection, url, itemsPerPage, pageIdx) {
+   var maxItems = 10;
+   var size = (collection instanceof Array) ? collection.length : collection.size();
+   var lastPageIdx = Math.ceil(size/itemsPerPage)-1;
+   // if we have just one page, there's no need for navigation
+   if (lastPageIdx <= 0)
+      return null;
+
+   // init parameter object
+   var param = new Object();
+   var pageIdx = parseInt(pageIdx, 10);
+   // check if the passed page-index is correct
+   if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0)
+      pageIdx = 0;
+   param.display = ((pageIdx*itemsPerPage) +1) + "-" + (Math.min((pageIdx*itemsPerPage)+itemsPerPage, size));
+   param.total = size;
+
+   // render the navigation-bar
+   var buf = new java.lang.StringBuffer();
+   if (pageIdx > 0)
+      buf.append(renderPageNavItem("prev", "pageNavItem", url, pageIdx-1));
+   var offset = Math.floor(pageIdx/maxItems)*maxItems;
+   if (offset > 0)
+      buf.append(renderPageNavItem("[..]", "pageNavItem", url, offset-1));
+   var currPage = offset;
+   var stop = Math.min(currPage + maxItems, lastPageIdx+1);
+   while (currPage < stop) {
+      if (currPage == pageIdx)
+         buf.append(renderPageNavItem("[" + (currPage +1) + "]", "pageNavSelItem"));
+      else
+         buf.append(renderPageNavItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage));
+      currPage++;
+   }
+   if (currPage < lastPageIdx)
+      buf.append(renderPageNavItem("[..]", "pageNavItem", url, offset + maxItems));
+   if (pageIdx < lastPageIdx)
+      buf.append(renderPageNavItem("next", "pageNavItem", url, pageIdx +1));
+   param.pagenavigation = buf.toString();
+   return renderSkinAsString("pagenavigation", param);
+}
+
+/**
+ * render a single item for page-navigation bar
+ */
+function renderPageNavItem(text, cssClass, url, page) {
+   var param = {text: !url ? text : Html.linkAsString(url + "?page=" + page, text),
+                "class": cssClass};
+   return renderSkinAsString("pagenavigationitem", param);
+}
+
+
