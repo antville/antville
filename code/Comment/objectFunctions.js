@@ -26,8 +26,12 @@ function updateComment(param) {
    this.content.setAll(content.value);
    // let's keep the comment title property:
    this.title = content.value.title;
-   if (content.isMajorUpdate)
+   if (content.isMajorUpdate) {
       this.modifytime = new Date();
+      // send e-mail notification
+      if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
+         this.sendNotification("comment", "update");
+   }
    this.cache.modifytime = new Date();
    this.ipaddress = param.http_remotehost;
    return new Message("update");

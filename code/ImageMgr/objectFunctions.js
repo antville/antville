@@ -42,6 +42,9 @@ function evalImg(param, creator) {
    // the fullsize-image is stored, so we check if a thumbnail should be created too
    if (newImg.width > THUMBNAILWIDTH)
       newImg.createThumbnail(param.rawimage, dir);
+   // send e-mail notification
+   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
+      newImg.site.sendNotification("image", newImg.alias);
    return new Message("imageCreate", newImg.alias);
 }
 

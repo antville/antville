@@ -81,6 +81,17 @@ function evalPreferences(param, modifier) {
    prefs.timezone = param.timezone;
    prefs.longdateformat = param.longdateformat;
    prefs.shortdateformat = param.shortdateformat;
+
+   // e-mail notification
+   var notifystorycreate = parseInt(param.notifystorycreate,10);
+   prefs.notifystorycreate = (modifier == this.creator && !isNaN(notifystorycreate) ? notifystorycreate : null);
+   var notifytextupdate = parseInt(param.notifytextupdate,10);
+   prefs.notifytextupdate = (modifier == this.creator && !isNaN(notifytextupdate) ? notifytextupdate : null);
+   var notifycommentcreate = parseInt(param.notifycommentcreate,10);
+   prefs.notifycommentcreate = (modifier == this.creator && !isNaN(notifycommentcreate) ? notifycommentcreate : null);
+   var notifyupload = parseInt(param.notifyupload,10);
+   prefs.notifyupload = (modifier == this.creator && !isNaN(notifyupload) ? notifyupload : null);
+
    // store preferences
    this.preferences.setAll(prefs);
 
@@ -217,3 +228,27 @@ function processHref(href) {
       return getProperty("defaulthost")+"/"+this.alias+href;
 }
 
+
+/**
+ * function sends e-mail notification if a new file or image is uploaded
+ * type: file/image
+ * alias: name of the file/image
+ */
+function sendNotification(type, alias) {
+   var notify = this.preferences.getProperty("notifyupload");
+   if (notify == 0)
+      return;
+   var mail = new Mail();
+   mail.setFrom(root.sys_email);
+   for (var i=0; i<this.members.size(); i++) {
+      var m = this.members.get(i);
+      if (notify == 1 && (m.level == ADMIN || m.level == CONTENTMANAGER) )
+         mail.addBCC(m.user.email);
+      if (notify == 2 && (m.level == ADMIN || m.level == CONTENTMANAGER || m.level == CONTRIBUTOR) )
+         mail.addBCC(m.user.email);
+   }
+   mail.setSubject("uploaded " + type + " on " + this.title + ": " + alias);
+   mail.setText(renderSkinAsString("notification", {url: this.href()}));
+   var sendResult = mail.send();
+   return;
+}

@@ -658,3 +658,37 @@ function topiclist_macro(param) {
 function imagelist_macro(param) {
    this.images.imagelist_macro(param);
 }
+
+/**
+ * macro rendering recipients for email notification
+ * param.event: storycreate/commentcreate/textupdate/upload
+ * please add some error message for undefined param.event
+ */
+function notify_macro(param) {
+   if (param.event == "storycreate" || param.event == "commentcreate" || param.event == "textupdate" || param.event == "upload") {
+      if (param.as == "editor") {
+         var options = new Array("No e-mail notification", "Admins and content managers", "Contributors and above");
+         var notify = this.preferences.getProperty("notify" + param.event);
+         Html.dropDown("notify" + param.event, options, notify);
+      } else {
+         if (notify == 2)
+            res.write("Contributors and above");
+         else if (notify == 1)
+            res.write("Admins and content managers");
+         else  
+            res.write("No e-mail notification");
+      }
+   }
+   else // FIXME
+      res.write('param.event ="' + param.event +'" is not allowed.<br /> (only storycreate/commentcreate/textupdate/upload)');
+}
+
+/**
+ * macro rendering notification settings if enabled
+ */
+function notification_macro(param) {
+   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.trusted )
+      this.renderSkin("notification");
+   return;
+}
+

@@ -206,6 +206,8 @@ function evalSystemSetup(param, admin) {
       throw new Exception("systemEmailMissing");
    evalEmail(param.sys_email);
    root.sys_email = param.sys_email;
+   // e-mail notification
+   root.sys_allowEmails = param.sys_allowEmails;
    // store selected locale in this.language and this.country
    if (param.locale) {
       var loc = param.locale.split("_");
@@ -219,7 +221,6 @@ function evalSystemSetup(param, admin) {
    root.longdateformat = param.longdateformat ? param.longdateformat : null;
    // short dateformat
    root.shortdateformat = param.shortdateformat ? param.shortdateformat : null;
-
    // allow file
    root.sys_allowFiles = param.sys_allowFiles ? true : false;
    // limiting site-creation

@@ -20,6 +20,10 @@
 <td><% root.sys_email as="editor" size="20" %><br /><span class="small">Antville will use this e-mail address to send various confirmation messages (e.g. when a user registers within the front page)</span></td>
 </tr>
 <tr>
+<td valign="top" nowrap="nowrap">Allow notification:</td>
+<td><% root.sys_allowEmails as="editor" %><br /><span class="small">By enabling this option site owners can define the receipients for notification e-mails (e.g. for new or updated stories and comments or uploaded images and files)</span></td>
+</tr>
+<tr>
 <td valign="top" nowrap="nowrap">Language:</td>
 <td><% root.localechooser %><br /><span class="small">This defines the language of Antville's confirm  and error messages. If you select a language that Antville doesn't know, it will display all messages in english. Whatever language you specify here will also be the default for every new weblog created here.</span></td>
 </tr>

@@ -312,3 +312,21 @@ function sys_frontSite_macro(param) {
       res.write (root.sys_frontSite);
    return;
 }
+
+/* *
+ *  macro allow e-mail notification
+ *  0: no notification
+ *  1: notification for all sites
+ *  2: notification only for trusted sites
+ */
+function sys_allowEmails_macro(param) {
+  // this macro is allowed just for sysadmins
+  if (!session.user.sysadmin)
+     return;
+  if (param.as == "editor") {
+     var options = new Array("no notification e-mails", "notification for all sites", "only for trusted sites");
+     Html.dropDown("sys_allowEmails", options, this.sys_allowEmails);
+  } else
+     res.write(this.sys_allowEmails);
+  return;
+}

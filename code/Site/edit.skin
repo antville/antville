@@ -115,6 +115,7 @@
 <td class="small" nowrap="nowrap">Small size:</td>
 <td nowrap="nowrap"><% site.smallsize as="editor" width="10" %></td>
 </tr>
+<% site.notification %>
 <tr>
 <td class="small" nowrap="nowrap">&nbsp;</td>
 <td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>

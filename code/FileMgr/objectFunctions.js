@@ -37,6 +37,9 @@ function evalFile(param, creator) {
    // the file is on disk, so we add the file-object
    if (!this.add(newFile))
       throw new Exception("fileCreate", newFile.alias);
+   // send e-mail notification
+   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
+      newFile.site.sendNotification("file", newFile.alias);
    return new Message("fileCreate", newFile.alias);
 }
 
