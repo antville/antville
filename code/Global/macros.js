@@ -240,6 +240,7 @@ function imagelist_macro(param) {
    var idx = 0;
    var imgParam;
    var linkParam = {};
+   delete param.limit;
 
    while (idx < max) {
       var imgObj = site.images.get(idx++);
