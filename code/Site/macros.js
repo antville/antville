@@ -654,6 +654,7 @@ function listReferrers_macro() {
 		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
 		str += this.renderSkinAsString("referrerItem", param);
 	}
+        rows.release();
 	return(str);
 }
 
