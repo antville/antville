@@ -17,6 +17,7 @@ function renderGoodielist(idx) {
    if (idx > 0) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10);
+      sp.text = "previous goodies";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
    res.data.goodielist = "";
@@ -25,6 +26,7 @@ function renderGoodielist(idx) {
    if (i < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + i;
+      sp.text = "more goodies";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
    return;
