@@ -14,9 +14,9 @@ function content_macro(param) {
 
       case "image" :
          var part = this.content.getProperty(param.part);
-         if (part && this.site.images[part]) {
+         if (part && this.site.images.get(part)) {
             delete param.part;
-            renderImage(this.site.images[part], param);
+            renderImage(this.site.images.get(part), param);
          }
          break;
 
