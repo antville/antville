@@ -1,2 +1,0 @@
-<p>Current members of this site:</p>
-<% membermgr.memberlist %>
