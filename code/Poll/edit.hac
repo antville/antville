@@ -3,7 +3,7 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(session.data.referrer ? path.weblog.members.href("login") : this.href());
+   res.redirect(session.data.referrer ? path.site.members.href("login") : this.href());
 }
 
 // storing referer in session in case user clicks cancel later
@@ -58,7 +58,7 @@ for (var i=0; i<max; i++) {
 res.data.action = this.href(req.action);
 
 res.data.command = "Edit";
-res.data.title = path.weblog.title;
+res.data.title = path.site.title;
 res.data.body = this.renderSkinAsString("edit");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
