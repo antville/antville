@@ -15,19 +15,17 @@ if (this.online) {
 	var items = "";
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
-		if (story.online) {
-			param1.itemUrl = story.href();
-			param1.itemTitle = encodeXml(story.title);
-			param1.authorName = encodeXml(story.author.name);
-			param1.authorMail = encodeXml(story.author.email);
-			param1.year = now.getYear();
-			var skin = createSkin(story.text);
-			var str = this.renderSkinAsString(skin);
-			str = convertHtmlImageToHtmlLink(str);
-			param1.itemDescription = encodeXml(str);
-			items += renderSkinAsString("rss10Item", param1);
-			resources += renderSkinAsString("rss10Resource", param1);
-		}
+		param1.itemUrl = story.href();
+		param1.itemTitle = encodeXml(story.title);
+		param1.authorName = encodeXml(story.author.name);
+		param1.authorMail = encodeXml(story.author.email);
+		param1.year = now.getYear();
+		var skin = createSkin(story.text);
+		var str = this.renderSkinAsString(skin);
+		str = convertHtmlImageToHtmlLink(str);
+		param1.itemDescription = encodeXml(str);
+		items += renderSkinAsString("rss10Item", param1);
+		resources += renderSkinAsString("rss10Resource", param1);
 	}
 }
 else {

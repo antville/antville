@@ -14,15 +14,13 @@ if (this.online) {
 	var items = "";
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
-		if (story.online) {
-			param1.itemLink = story.href();
-			param1.itemTitle = encodeXml(story.title);
-			var skin = createSkin(story.text);
-			var str = this.renderSkinAsString(skin);
-			str = convertHtmlImageToHtmlLink(str);
-			param1.itemDescription = encodeXml(str);
-			items += renderSkinAsString("rss092Item", param1);
-		}
+		param1.itemLink = story.href();
+		param1.itemTitle = encodeXml(story.title);
+		var skin = createSkin(story.text);
+		var str = this.renderSkinAsString(skin);
+		str = convertHtmlImageToHtmlLink(str);
+		param1.itemDescription = encodeXml(str);
+		items += renderSkinAsString("rss092Item", param1);
 	}
 }
 else {
