@@ -21,7 +21,7 @@ function evalStory(param,modifier) {
       if (param.newtopic)
          this.topic = param.newtopic;
       else if (parseInt(param.topic,10) > 0)
-         this.topic = this.weblog.space.get(parseInt(param.topic,10) -1).groupname;
+         this.topic = this.weblog.topics.get(parseInt(param.topic,10) -1).groupname;
       else
          this.topic = null;
       if ((this.online && !online) || this.online)
@@ -34,7 +34,7 @@ function evalStory(param,modifier) {
          // href() may not yet work if we changed the topic
          // so we build the redirect URL manually
          if (this.topic)
-            result.url = this.weblog.space.href() + escape(this.topic) + "/" + this._id;
+            result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
          else
             result.url = this.href();
       } else
@@ -42,7 +42,7 @@ function evalStory(param,modifier) {
       // hmmm, the parent needs to be explicitly set
       // otherwise href() will result in wrong urls if
       // topic is changed (and something in text/title also has changed)
-      this.setParent(this.topic ? this.weblog.space.get(this.topic) : this.weblog.get(this.day));
+      this.setParent(this.topic ? this.weblog.topics.get(this.topic) : this.weblog.get(this.day));
       result.message = "The story was updated successfully!";
       result.error = false;
    } else {

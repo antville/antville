@@ -56,7 +56,7 @@ function online_macro(param) {
       else if (parseInt(this.online,10) < 2) {
          res.write("online in ");
          var linkParam = new Object();
-         this.weblog.space.get(this.topic).openLink(linkParam);
+         this.weblog.topics.get(this.topic).openLink(linkParam);
          res.write(this.topic);
          this.closeLink();
       } else
@@ -345,11 +345,11 @@ function editableby_macro(param) {
 
 function topicchooser_macro(param) {
    res.write(param.prefix);
-   var size = path.weblog.space.size();
+   var size = path.weblog.topics.size();
    var options = new Array();
    options[0] = "-- choose topic --";
    for (var i=0;i<size;i++) {
-      var topic = path.weblog.space.get(i);
+      var topic = path.weblog.topics.get(i);
       if (topic.size()) {
          options[i+1] = topic.groupname;
          if (this.topic == topic.groupname)
