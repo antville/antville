@@ -67,7 +67,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied(user)) {
+   if (!this.isEditDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "delete";
