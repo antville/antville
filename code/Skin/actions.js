@@ -47,7 +47,7 @@ function diff_action() {
       }
    }
    res.data.body = this.renderSkinAsString("diff");
-   res.data.title = getMessage("skin.diff.displayTitle", {skinProto: this.proto, skinName: this.name; layoutTitle: this.layout.title});
+   res.data.title = getMessage("skin.diff.displayTitle", {skinProto: this.proto, skinName: this.name, layoutTitle: this.layout.title});
    this.layout.skins.renderSkin("page");
    return;
 }
