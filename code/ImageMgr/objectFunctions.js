@@ -6,19 +6,19 @@
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 function evalImg(param, creator) {
-   var newImg = new image(res.handlers.site, creator);
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
       throw new Exception("imageFileTooBig");
    } else if (!param.rawimage || param.rawimage.contentLength == 0) {
       // looks like nothing was uploaded ...
       throw new Exception("imageNoUpload");
-   } else if (param.rawimage && (!param.rawimage.contentType || !newImg.evalImgType(param.rawimage.contentType))) {
+   } else if (param.rawimage && (!param.rawimage.contentType || !evalImgType(param.rawimage.contentType))) {
       // whatever the user has uploaded wasn't recognized as an image
       throw new Exception("imageNoImage");
    }
+
+   var newImg = new image(creator);
    // if no alias given try to determine it
    if (!param.alias)
       newImg.alias = buildAliasFromFile(param.rawimage, this);
@@ -42,11 +42,7 @@ function evalImg(param, creator) {
    var maxWidth = param.maxwidth ? parseInt(param.maxwidth, 10) : null;
    var maxHeight = param.maxheight ? parseInt(param.maxheight, 10) : null;
    // save/resize the image
-   var dir; 
-   if (path.site) 
-      dir = getProperty("imgPath") + this._parent.alias + "/";
-   else 
-      dir = getProperty("imgPath");
+   var dir = this._parent.getStaticDir("images");
    newImg.save(param.rawimage, dir, maxWidth, maxHeight);
    // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
    newImg.alttext = param.alttext;
@@ -56,7 +52,7 @@ function evalImg(param, creator) {
    if (newImg.width > THUMBNAILWIDTH)
       newImg.createThumbnail(param.rawimage, dir);
    // send e-mail notification
-   if (newImg.site.isNotificationEnabled()) 
+   if (newImg.site && newImg.site.isNotificationEnabled())
       newImg.site.sendNotification("upload", newImg);
    var result = new Message("imageCreate", newImg.alias);
    result.url = newImg.href();
@@ -70,23 +66,17 @@ function evalImg(param, creator) {
  */
 function deleteImage(currImg) {
    // first remove the image from disk (and the thumbnail, if existing)
-   var dir;
-   if (currImg.site)
-      dir = getProperty("imgPath") + currImg.site.alias;
-   else 
-      dir = getProperty("imgPath");
+   var dir = currImg.site ? currImg.site.getStaticDir("images") : currImg.layout.getStaticDir();
    var f = FileLib.get(dir, currImg.filename + "." + currImg.fileext);
    f.remove();
    if (currImg.thumbnail) {
       var thumb = currImg.thumbnail;
       f = FileLib.get(dir, thumb.filename + "." + thumb.fileext);
       f.remove();
-      // if (!currImg.remove(thumb))
       if (!thumb.remove())
          throw new Exception("imageDelete");
    }
    // then, remove the image-object
-   // if (!this.remove(currImg))
    if (!currImg.remove())
       throw new Exception("imageDelete");
    return new Message("imageDelete");
