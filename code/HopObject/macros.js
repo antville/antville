@@ -15,7 +15,7 @@ function skin_macro(param) {
  * macro creates an html link
  */
 function link_macro(param) {
-   if (param.checkdeny == "true" && this.isDenied(session.user))
+   if (param.checkdeny == "true" && this.isDenied(session.user,req.data.memberlevel))
       return;
    var content = param.text ? param.text : param.to;
    param = this.createLinkParam(param);

@@ -145,7 +145,7 @@ function modifytime_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user)) {
+   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
       openLink(this.href("edit"));
       res.write(param.text ? param.text : "edit");
       closeLink();
@@ -159,7 +159,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (session.user && !this.isDeleteDenied(session.user)) {
+   if (session.user && !this.isDeleteDenied(session.user,req.data.memberlevel)) {
       openLink(this.href("delete"));
       res.write(param.text ? param.text : "delete");
       closeLink();
@@ -172,9 +172,9 @@ function deletelink_macro(param) {
  */
 
 function viewlink_macro(param) {
-   if (session.user && this.isViewDenied(session.user))
+   if (session.user && this.isViewDenied(session.user,req.data.memberlevel))
      return;
-   if (this.closed || this.isVoteDenied(session.user)) {
+   if (this.closed || this.isVoteDenied(session.user,req.data.memberlevel)) {
       var url = this.href("results");
       var str = "view";
    }
@@ -193,7 +193,7 @@ function viewlink_macro(param) {
  */
 
 function closelink_macro(param) {
-   if (session.user && !this.isDeleteDenied(session.user)) {
+   if (session.user && !this.isDeleteDenied(session.user,req.data.memberlevel)) {
       var str = this.closed ? "re-open" : "close";
       openLink(this.href("toggle"));
       res.write(param.text ? param.text : str);

@@ -1,6 +1,6 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = path.membermgr.isEditMembersDenied(session.user);
+var deny = path.membermgr.isEditMembersDenied(session.user,req.data.memberlevel);
 if (deny) {
    res.message = getMessage("error",deny);
    res.redirect(path.membermgr.href());

@@ -1,4 +1,4 @@
-var deny = this.isDenied(session.user);
+var deny = this.isDenied(session.user,req.data.memberlevel);
 if (deny) {
    res.message = getMessage("error",deny);
    res.redirect(path.site.href());

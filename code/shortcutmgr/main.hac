@@ -1,12 +1,12 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isDenied(session.user);
+var deny = this.isDenied(session.user,req.data.memberlevel);
 if (deny) {
    res.message = getMessage("error",deny);
    res.redirect(path.site.href());
 }
 
-if (this._parent.isEditDenied(session.user)) {
+if (this._parent.isEditDenied(session.user,req.data.memberlevel)) {
    res.data.title = path.site.title + " - Shortcuts";
    res.data.body = this.renderSkinAsString("main");
    path.site.renderSkin("page");

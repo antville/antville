@@ -54,7 +54,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user)) {
+   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
       openLink(this.href("edit"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image),param);
@@ -70,7 +70,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user)) {
+   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
       openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image),param);

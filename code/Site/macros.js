@@ -507,7 +507,7 @@ function membercounter_macro(param) {
  * of this site
  */
 function history_macro(param) {
-   if (this.isNotPublic(session.user) && !req.data.memberlevel)
+   if (this.isNotPublic(session.user,req.data.memberlevel))
       return;
    if (!param.show)
       param.show = 5;

@@ -1,7 +1,7 @@
 autoLogin();
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isUnsubscribeDenied(session.user);
+var deny = this.isUnsubscribeDenied(session.user,req.data.memberlevel);
 if (deny) {
    res.message = getMessage("error",deny);
    res.redirect(this.members.href("subscriptions"));

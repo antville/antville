@@ -187,7 +187,7 @@ function poll_macro(param) {
    var poll = site.polls.get(parts[1] ? parts[1] : param.id);
    if (!poll)
       return(getMessage("error","pollNoExist",param.id));
-   var deny = poll.isVoteDenied(session.user);
+   var deny = poll.isVoteDenied(session.user,req.data.memberlevel);
    if (poll.closed || param.as == "results")
       poll.renderSkin("results");
    else if (deny || param.as == "link") {

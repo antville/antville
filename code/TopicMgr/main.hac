@@ -1,4 +1,4 @@
-var deny = path.site.isNotPublic(session.user);
+var deny = path.site.isNotPublic(session.user,req.data.memberlevel);
 if (deny) {
    res.message = getMessage("error",deny);
    session.data.referrer = path.site.href();

@@ -1,4 +1,4 @@
-var deny = this.isVoteDenied(session.user);
+var deny = this.isVoteDenied(session.user,req.data.memberlevel);
 if (deny) {
    res.message = getMessage("error",deny);
    res.redirect(this.site.polls.href());
