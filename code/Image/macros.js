@@ -107,16 +107,27 @@ function show_macro(param) {
 
 
 /**
- * macro renders the name of the topic this story belongs to
- * either as link or plain text
+ * macro renders the name of the gallery this image belongs to
  */
-function topic_macro(param) {
+function gallery_macro(param) {
    if (!this.topic)
       return;
-   if (param.as == "link") {
-      Html.link({href: path.site.images.topics.href(this.topic)}, this.topic);
-   } else
+   if (!param.as || param.as == "text")
       res.write(this.topic);
+   else if (param.as == "link") {
+      var text = param.text ? param.text : this.topic;
+      Html.link({href: path.site.images.topics.href(this.topic)}, text);
+   } else if (param.as == "image") {
+      if (!param.imgprefix)
+         param.imgprefix = "topic_";
+      var img = getPoolObj(param.imgprefix + this.topic, "images");
+      if (!img)
+         return;
+      Html.openLink({href: path.site.topics.href(this.topic)});
+      renderImage(img.obj, param)
+      Html.closeLink();
+   }
+   return;
 }
 
 /**
