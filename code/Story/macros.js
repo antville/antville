@@ -259,10 +259,14 @@ function commentcounter_macro(param) {
    if (!param.linkto)
       param.linkto = "main";
    if (commentCnt == 0) {
-      res.write(commentCnt + (param.no ? param.no : " comments"));
-   } else {
+      if (param.no)
+         res.write(param.no)
+      else
+         return;
+   }
+   else {
       // cloning the param object to remove the macro-specific 
-      // attributes from the clone for correct markup output:
+      // attributes from the clone for valid markup output:
       var param2 = cloneObject(param);
       delete param2.one;
       delete param2.more;
