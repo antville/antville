@@ -1,0 +1,25 @@
+autoLogin();
+
+var deny = this.isPostDenied(user);
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? this.weblog.members.href("login") : path.story.href());
+}
+
+res.skin = "weblog.page";
+
+if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(this.story.href());
+else if (req.data.submit == "save" || req.data.save) {
+   var result = this.evalComment(req.data,path.story,user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(path.story.href());
+}
+
+res.data.title = "Antville - " + this.weblog.title;
+
+res.data.body = this.renderSkinAsString("toplevel");
+
+var r = new comment();
+res.data.body += r.renderSkinAsString("edit");
