@@ -10,6 +10,10 @@ function evalNewStory() {
       newStory.title = req.data.title;
       newStory.text = req.data.text;
       newStory.online = parseInt(req.data.online) ? parseInt(req.data.online) : 0;
+      if (req.data.editableby != null && req.data.editableby != "")
+         newStory.editableby = parseInt(req.data.editableby,10);
+      else
+         newStory.editableby = 3;
       newStory.author = user;
       newStory.createtime = new Date();
       newStory.modifytime = new Date();
@@ -191,8 +195,8 @@ function createMember(userLvl) {
    newMember.weblog = this;
    newMember.user = user;
    newMember.username = user.name;
-   newMember.admin = (userLvl == "admin" ? 1 : 0);
-   newMember.contributor = (userLvl == "contributor" ? 1 : 0);
+   // we start with a default level of "normal user"
+   newMember.level = 0;
    newMember.createtime = new Date();
    this.members.add(newMember);
    return;
