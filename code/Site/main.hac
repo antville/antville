@@ -4,6 +4,7 @@ if (!this.isPublic())
 res.skin = "main";
 
 res.title = "Antville - " + this.title;
-res.head = this.renderSkinAsString("style");
+res.head = this.renderSkinAsString("javascript");
+res.head += this.renderSkinAsString("style");
 
 res.body = this.renderSkinAsString("main");

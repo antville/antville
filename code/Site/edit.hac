@@ -8,7 +8,8 @@ else if (req.data.submit == "save")
 
 res.skin = "main";
 res.title = "Antville - " + this.title;
-res.head = this.renderSkinAsString("style");
+res.head = this.renderSkinAsString("javascript");
+res.head += this.renderSkinAsString("style");
 
 res.body = this.renderSkinAsString("header");
 res.body += this.renderSkinAsString("edit");

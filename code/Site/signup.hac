@@ -9,6 +9,7 @@ else
    this.evalSignup();
 
 res.title = this.title + " - sign up";
-res.head = this.renderSkinAsString("style");
+res.head = this.renderSkinAsString("javascript");
+res.head += this.renderSkinAsString("style");
 res.body = this.renderSkinAsString("header");
 res.body += this.renderSkinAsString("signup");

@@ -6,6 +6,7 @@ if (!path.weblog.showArchive())
 res.skin = "main";
 
 res.title = "Antville - " + path.weblog.title;
-res.head = path.weblog.renderSkinAsString("style");
+res.head = path.weblog.renderSkinAsString("javascript");
+res.head += path.weblog.renderSkinAsString("style");
 
 res.body = this.renderSkinAsString("main");

@@ -6,7 +6,8 @@ if (req.data.submit == "cancel")
 
 res.skin = "main";
 res.title = "Antville - " + this.title;
-res.head = this.renderSkinAsString("style");
+res.head = this.renderSkinAsString("javascript");
+res.head += this.renderSkinAsString("style");
 
 newStory = this.evalNewStory();
 
