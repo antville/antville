@@ -1,3 +1,6 @@
+##
+## error messages
+##
 error.error = Oops, something went wrong here...
 error.delete = Sorry, cannot delete <% param.value1 %>!
 error.database = Oy, there is trouble with the database: <% param.value1 %>
@@ -17,6 +20,7 @@ error.fileDirNoExist = Oops, I cannot write to the specified file directory. Ple
 error.fileNoUpload = There was nothing to upload. Please be sure to choose a file.
 error.fileEditDenied = Sorry, you're not allowed to edit this file.
 error.fileAddDenied = Sorry, you need to be a member of this weblog to add files.
+error.fileDeleteDenied = Sorry, you're not allowed to delete this file.
 error.fileInvalidExtension = Oy, I do not recognize the file extension.
 error.fileSave = Was not able to write to disk. Please contact the maintainer of this site.
 error.imageNameMissing = Please enter a name for the image.
@@ -29,20 +33,23 @@ error.imageDirMissing = Oops, the image directory is not specified. Please conta
 error.imageDirNoExist = Oops, I cannot write to the specified image directory. Please contact the maintainer of this site.
 error.imageEditDenied = Sorry, you're not allowed to edit this image.
 error.imageAddDenied = Sorry, you need to be a member of this weblog to add images.
+error.imageSave = Oops, couldn't save the image on disk. Please contact the maintainer of this site.
+error.imageResize = Oops, couldn't resize the image. Please try again.
 error.accountBlocked = Sorry pal, your account was disabled. Best you contact the maintainer of this site.
 error.loginTypo = Unfortunately, your login failed. Maybe a typo?
 error.loginBefore = Please login before.
 error.emailMissing = Please enter your e-mail address.
 error.emailInvalid = Could not process the e-mail address. Are you sure it is correct?
 error.emailNoAccounts = Sorry, but this is an unregistered e-mail address. Maybe a typo?
-error.emailSend = Whoa, an error occurred while trying to send the e-mail. Maybe you should try again.
 error.passwordTwice = Could not verify your password. Please repeat your input.
 error.passwordNoMatch = Unfortunately, your passwords didn't match. Please repeat your input.
-error.unameMissing = Please enter a username.
-error.unameNoSpecialChars = Please enter alphanumeric characters only in the username field.
-error.unameExisting = Sorry, the username you entered already exists. Please enter a different one.
+error.usernameMissing = Please enter a username.
+error.usernameNoSpecialChars = Please enter alphanumeric characters only in the username field.
+error.usernameExisting = Sorry, the username you entered already exists. Please enter a different one.
 error.memberExisting = Sorry, there is already a member with this name. Please enter a different name.
+error.memberCreate = Sorry, couldn't add the membership. Please try again.
 error.accountOldPwd = Oops, your old password is incorrect. Please re-enter it.
+error.accountNewPwdMissing = Please specify a new password.
 error.resultNoUser = Sorry, your input did not match any registered user.
 error.userAlreadyMember = This user is already a member of this weblog.
 error.shortcutEditDenied = You are not allowed to edit shortcuts.
@@ -66,6 +73,7 @@ error.siteDeleteDenied = Sorry, you are not allowed to delete this weblog.
 error.skinUpdate = Oops, was not able to update the desired skin. Maybe you should try again...
 error.skinDelete = Sorry, was not able to delete the skin. Maybe you should try again ...
 error.skinDeleteDenied = Sorry, you need to be administrator of this weblog to delete a skin.
+error.skinDiff = Sorry, couln't create the diff for the skin. Please check the parameters.
 error.skinEditDenied = Sorry, you need to be administrator of this weblog to edit skins.
 error.timestampParse = Cannot parse timestamp <% param.value1 %> as a date.
 error.topicNoSpecialChars = Please only use alphanumeric characters for the topic name.
@@ -81,6 +89,7 @@ error.storyNoExist = [There is no story with the id <% param.value1 %>]
 error.accountModifyOwn = Sorry, you are not allowed to modify your own account.
 error.adminDeleteLast = Sorry, you are not allowed to remove the only admin account.
 error.systemEmailMissing = Oy, the system-wide e-mail address is not specified. Please contact the maintainer of this site.
+error.systemFrontsiteMissing = Couldn't find the front page weblog you specified. Please make sure you typed in the correct alias.
 error.userNoSysAdmin = Sorry, you need system administrator rights for that.
 error.memberNoRole = Please choose a new role for this member.
 error.searchUserNoKey = Please enter at least one keyword to search for.
@@ -103,7 +112,17 @@ error.wrongDateFormat = [error: wrong date-format]
 error.subscriptionExist = Oy, you have already subscribed to this weblog.
 error.subscriptionNoExist = Oy, you are not subscribed to this weblog.
 error.unsubscribeDenied = Sorry, you cannot unsubscribe because you are a <% param.value1 %>.
+error.mailMissingParameters = Sorry, the mail couldn't be sent because of missing parameters.
+error.mailFromInvalid = Sorry, the mail couldn't be sent because the sender's eMail address is invalid.
+error.mailToInvalid = Sorry, the mail couldn't be sent because the recipient's eMail address is invalid.
+error.mailCCInvalid = Sorry, the mail couldn't be sent because the eMail address of one of the recipients is invalid.
+error.mailSubjectMissing = Sorry, the mail couldn't be sent because the subject is missing.
+error.mailTextMissing = Sorry, the mail couldn't be sent because the text is missing.
+error.mailSend = Sorry, couldn't send the eMail. Please try again or contact the site administrators.
 
+##
+## confirm messages
+##
 confirm.save = The changes of <% param.value1 %> where saved successfully.
 confirm.update = The changes were saved successfully.
 confirm.delete = Deletion was accomplished successfully.
@@ -140,9 +159,12 @@ confirm.resultManyUsers = Found <% param.value1 %> users.
 confirm.subscriptionCreate = You successfully subscribed to '<% param.value1 %>'.
 confirm.skinDelete = Successfully deleted the skin.
 
-mailsubject.statusChange = Your membership at <% param.value1 %> was changed
-mailsubject.sendPwd = Your Accounts for Antville
-mailsubject.newMember = You are now a member of <% param.value1 %>
-mailsubject.blockWarning = Attention! Your weblog '<% param.value1 %>' will soon be blocked!
-mailsubject.deleteWarning = Attention! Your weblog '<% param.value1 %>' will soon be deleted!
-mailsubject.registration = Welcome to '<% param.value1 %>'!
+##
+## mail messages
+##
+mail.statusChange = Your membership at <% param.value1 %> was changed
+mail.sendPwd = Your Accounts for Antville
+mail.newMember = You are now a member of <% param.value1 %>
+mail.blockWarning = Attention! Your weblog '<% param.value1 %>' will soon be blocked!
+mail.deleteWarning = Attention! Your weblog '<% param.value1 %>' will soon be deleted!
+mail.registration = Welcome to '<% param.value1 %>'!
