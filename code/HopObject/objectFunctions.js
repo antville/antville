@@ -6,7 +6,7 @@
  */
 function getNavigationName () {
    var proto = this.__prototype__;
-   if (proto == "weblog")
+   if (proto == "site")
       return "Home";
    else if (proto == "topicmgr")
       return "Topics";
