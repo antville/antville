@@ -1,24 +1,23 @@
 autoLogin();
 
-var deny = this.isDeleteDenied();
+var deny = this.isDeleteDenied(user);
 if (deny) {
    res.message = deny;
    res.redirect(this.weblog.href());
 }
 
-if (req.data.submit == "delete" || req.data.remove)
-   this.weblog.skins.deleteSkin(this);
-else if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.skins.href("main"));
+if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(this.weblog.skins.href());
+else if (req.data.submit == "delete" || req.data.remove) {
+   res.message = this.weblog.skins.deleteSkin(this);
+   res.redirect(this.weblog.skins.href());
+}
 
 res.skin = "weblog.page";
 
-res.title = "Antville - " + this.weblog.title;
-
-res.head = this.weblog.renderSkinAsString("javascript");
-res.head += this.weblog.renderSkinAsString("style");
+res.data.title = "Antville - " + this.weblog.title;
 
 var skinParam = new Object();
 skinParam.what = "the skin &quot;" + this.name + "&quot; (created by " + this.creator.name + ")";
 
-res.body = this.renderSkinAsString("delete",skinParam);
+res.data.body = this.renderSkinAsString("delete",skinParam);
