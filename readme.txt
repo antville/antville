@@ -8,7 +8,7 @@ up to several hundred or thousand weblogs (the number of weblogs is
 more limited by the site owner's choice and server power than software 
 limitations).
 
-Antville is entirely written in JavaScript and based on the Helma 
+Antville is entirely written in JavaScript and based on Helma 
 Object Publisher, a powerful and fast scriptable open source web 
 application server (which itself is written in Java). Antville works 
 with a relational database in the backend.
@@ -40,7 +40,9 @@ of as an analogy to the Document Object Model (Dom) in client-side
 JavaScript.
 
 
-====== STATUS ======
+======
+STATUS
+======
 
 Antville should be considered pre-release quality code. Although it is 
 heavily used by severeal thousand users at http://www.antville.org 
@@ -75,16 +77,24 @@ installations or if you need advanced features like URL-rewriting).
 INSTALLATION
 ============
 
-The Antville-distribution contains a .zip-file with several sql-
-scripts for creating the database needed by the application: for mySQL 
-(antville_mysql.sql) and for Oracle databases (antville_oracle.sql) -
-the third one, antville_mckoi.sql, is only used for the Antclick-
-distribution of Antville.
+The Antville-distribution contains two main directories: "antville" 
+and "db_support". Put the first one (which is the application itself) 
+into the directory "apps" of your Helma Object Publisher installation.
 
-Both scripts are not only creating the tables, indexes and initial 
+The second directory, "db_support", contains database-related files, 
+ie. several sql-scripts for creating the database needed by the 
+application. Antville comes with scripts for mySQL 
+(antville_mysql.sql) and for Oracle databases (antville_oracle.sql) -
+the third one, antville_mckoi.sql, is only used for the mcKoi-database 
+used in the Antclick-distribution.
+
+All scripts are not only creating the tables, indexes and initial 
 records, but also the account used by the application to communicate 
 with the database. The default username and password of this account 
-is "antville", so you probably want to change that (you should!).
+is "antville", so you probably want to change that (you should!). Open 
+the appropriate script and scroll down to the section called 
+"Database-User". Search for "identified by" and change the value in 
+quotes to the password of your choice.
 
 Please refer to the documentation of your database on how to run the 
 appropriate script. After done so you'll have to tell Antville how it 
@@ -93,24 +103,30 @@ can access your database. This is done in a configuration file named
 (antville_mysql.sql) and one for Oracle (antville_oracle.sql). Open 
 the template for your database and ensure that the line beginning with 
 "antville.url=" points to the server that runs the database (for MySQL 
-this will in most cases look like http://localhost:3306/antville). 
+this will in most cases look like http://localhost:3306/antville, 
+assuming that the database is running on the same machine as the 
+application). 
+
 Check that user and password are correct and save the file as 
 "db.properties" (without the quotes) in the root-directory of the 
-Antville-installation (if it is already existing you can safely 
+Antville application (if it is already existing you can safely 
 overwrite it).
+
+NOTE: If you're using Oracle you need to install the JDBC-driver for 
+your database by placing the appropriate .zip-file into the 
+subdirectory "lib/ext" located in Helma's installation directory. The 
+driver for mySQL is already contained in the distribution of Helma 
+Object Publisher.
 
 Finally, open the file "apps.properties" located in the directory 
 where you installed Helma and append the word "antville" (without 
 quotes) in a new line. Then start up Helma, and after pointing your 
-browser to http://localhost/antville you should see Antville's welcome 
-page. It will tell you about the two additional configuration steps 
-necessary: you need to register to gain system administration rights 
-and then you must configure the basic preferences (like language, 
-date- and time-formats etc.)
-
-NOTE: If you're using Oracle you need to install the JDBC-driver for 
-your database by placing the appropriate .zip-file into the 
-subdirectory "lib/ext" located in Helma's installation directory.
+browser to http://localhost/antville (assuming that Helma is running 
+on the same machine and uses port 80) you should see Antville's 
+welcome page. It will tell you about the two additional configuration 
+steps necessary: you need to register to gain system administration 
+rights and then you must configure the basic preferences (like 
+language, date- and time-formats etc.)
 
 =====================================
 DOCUMENTATION AND FURTHER INFORMATION
@@ -119,7 +135,7 @@ DOCUMENTATION AND FURTHER INFORMATION
 To get the documentation and further information regarding Antville 
 please refer to:
 http://project.antville.org
-http://macros.antville.org
+http://macros.antville.org (the documentation of Antville macros - in progress)
 http://help.antville.org
 
 Feel free to ask any question regarding the application at 
@@ -134,18 +150,19 @@ available at http://helma.org/lists/listinfo/hop.
 BUG REPORTING AND FEATURE REQUESTS
 ==================================
 
-If you find any bugs or have any ideas about new features, please post 
-them to http://project.antville.org or send a mail to 
-antville@helma.org. Since Antville is open-source, you're definetly 
-encouraged to modify the application, but please keep us informed on 
-what you do/did. For those of you who demonstrated a commitment to 
-collaborative open-source development through sustained participation 
-and contributions within the development of Antville, there will also 
-be other ways to participate.
+If you find any bug please report it at http://helma.org/bugs. Please 
+post feature requests or proposals to http://project.antville.org. 
+Since Antville is open-source, you're definetly encouraged to modify 
+the application, but please keep us informed on what you do/did 
+(either by posting at http://project.antville.org or by sending a mail 
+to antville@helma.org). For those of you who demonstrated a commitment 
+to collaborative open- source development through sustained 
+participation and contributions within the development of Antville, 
+there will also be other ways to participate.
 
 --
 © 2002, antville@helma.org
 http://project.antville.org
 
-This document was last modified on Sunday 31 December 2002 by
+This document was last modified on Tuesday 6 January 2003 by
 robert@helma.org
