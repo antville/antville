@@ -27,6 +27,7 @@
  *                .mt_allow_pings    int, 0=no, 1=yes [MT-API]
  *                .mt_convert_breaks String [MT-API]
  *                .mt_keywords       String [MT-API]
+ *                .antville_blogid   String
  */
 function getPost(postid, username, password) {
    var usr = root.blogger.getUser(username,password);
@@ -34,7 +35,7 @@ function getPost(postid, username, password) {
    if (!entry)
       throwError ("Couldn't find the story with id " + postid);
    // check if user is allowed to edit this story
-   if (entry.isEditDenied(usr,entry.site.members.getMembershipLevel(usr)))
+   if (entry.isViewDenied(usr,entry.site.members.getMembershipLevel(usr)))
       throwError ("You're not allowed to edit the story with id " + postid);
 
    return (this.convertStoryToStruct(entry));
@@ -166,6 +167,7 @@ function editPost (postid, username, password, content, publish) {
  *                   .mt_allow_pings    int, 0=no, 1=yes [MT-API]
  *                   .mt_convert_breaks String [MT-API]
  *                   .mt_keywords       String [MT-API]
+ *                   .antville_blogid   String
  */
 function getRecentPosts(blogid, username, password, numberOfPosts) {
    var usr = root.blogger.getUser(username,password);
@@ -173,6 +175,8 @@ function getRecentPosts(blogid, username, password, numberOfPosts) {
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
+   if (blog.isNotPublic(usr, level))
+      trowError("You're not allowed to view the blog " + blogid);
 
    var size = blog.stories.size();
    var limit = Math.min(numberOfPosts ? Math.min(numberOfPosts,20) : 20,size);
@@ -231,31 +235,73 @@ function getCategories(blogid, username, password) {
  *  @param fileObject Object, containing the following properties
  *                    .bits base64, the base64-encoded contents of the file
  *                    .name String containing the filename
- *                    .type String
+ *                    .type String representing a MIME-type
+ *                    .description String (optional) description of the object
+ *                    .antville_maxheight Integer (optional), just applies for images
+ *                    .antville_maxwidth Integer (optional), just applies for images
  *  @return Object, containing the following properties 
  *                    .url String containing the URL of the uploaded file
- *                    .alias Sting containing the alias of the uploaded file
+ *                    .antville_alias Sting containing the alias of the uploaded file
+ *                    .antville_message String human readable message indicating success
+ *                    .antville_macro String a macro which can be embedded into storys to insert this object
+ *                    .antville_thumbmacro String (optional) a macro to display a thumbnail
+ *                    .antville_popupmacro String (optional) a macro to display the image as a popup
+ *                    .antville_staticUrl String (optional) url of the Image
+ *                    .antville_popupUrl String (optional) javascript code to open a popup with the image
+ *                    .antville_width Int (optional) the width of the image
+ *                    .antville_height Int (optional) the height of the image
  */
 function newMediaObject(blogid, username, password, fileObject) {
    var usr = root.blogger.getUser(username,password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throwError ("Couldn't find the blog " + blogid);
+   var level = blog.members.getMembershipLevel(usr);
    var str = new java.lang.String(fileObject.bits);
    var bytes = Packages.helma.util.Base64.decode(str.toCharArray());
    var param = new Object();
-   param.rawfile = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
-   var result = blog.files.evalFile(param, usr);
-   if (result.error)
-      throwError ("Error occured while creating new Media Object");
-   else {
-      var alias = param.alias;
-      var file = blog.files.get(alias);
-      var ret = new Object();
-      ret.url = getProperty("baseUri")+getProperty("fileUrl")+blog.alias+"/"+file.name;
-      ret.alias = alias;
-      return (ret);
+   var ret = new Object();
+   if (fileObject.type.substring(0, 6).toLowerCase() == "image/") {
+      if (blog.images.isDenied(usr, level))
+         throwError ("You're not allowed to upload images to the blog "+blog.alias);
+      param.rawimage = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
+      param.maxheight = fileObject.antville_maxheight;
+      param.maxwidth = fileObject.antville_maxwidth;
+      var result = blog.images.evalImg(param, usr);
+      if (result.error)
+         throwError ("Error occured while creating new Media Object: "+result.message);
+      else {
+         var alias = param.alias;
+         var file = blog.images.get(alias);
+         file.alttext = fileObject.description;
+         ret.antville_staticUrl = file.getStaticUrl();
+         ret.antville_popupUrl = file.popupUrl();
+         ret.antville_width = file.width;
+         ret.antville_height = file.height;
+         ret.antville_macro = "<% image name=\""+blog.alias+"/"+alias+"\" %>";
+         if (file.thumbnail) {
+            ret.antville_popupmacro = "<% image name=\""+blog.alias+"/"+alias+"\" as=\"popup\"%>";
+            ret.antville_thumbmacro = "<% image name=\""+blog.alias+"/"+alias+"\" as=\"thumbnail\"%>";
+        }
+      } 
+   } else {
+      if (blog.files.isDenied(usr, level))
+         throwError ("You're not allowed to upload files to the blog "+blog.alias);
+      param.rawfile = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
+      var result = blog.files.evalFile(param, urs);
+      if (result.error)
+         throwError ("Error occured while creating new Media Object: "+result.message);
+      else {
+         var alias = param.alias;
+         var file = blog.files.get(alias);
+         file.description = fileObject.description;
+         ret.antville_macro = "<% file name=\""+blog.alias+"/"+alias+"\" %>";
+      }
    }
+   ret.url = file.url;
+   ret.antville_alias = alias;
+   ret.antville_message = result.message;
+   return (ret);
 }
 
 
@@ -280,5 +326,6 @@ function convertStoryToStruct (entry) {
    obj.mt_allow_pings = 0;
    obj.mt_convert_breaks = null;
    obj.mt_keywords = null;
+   obj.antville_blogid = entry.site.alias;
    return obj;
 }
