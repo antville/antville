@@ -13,7 +13,7 @@ max = Math.min(max, size, 7);
 
 if (max > 0 && this.online) {
    param2.resources = "";
-    param2.items = "";
+   param2.items = "";
    for (var i=0; i<max; i++) {
       var story = this.allstories.get(i);
       param1.itemUrl = story.href();
@@ -50,8 +50,10 @@ else {
    }
    else {
       param1.itemTitle = "Access denied";
-      param1.itemDescription = "This weblog is offline.";
+      param1.itemDescription = "This weblog is not public.";
    }
+   param2.items = renderSkinAsString("rss10Item", param1);
+   param2.resources = renderSkinAsString("rss10Resource", param1);
 }
 
 param2.title = encodeXml(this.title);
