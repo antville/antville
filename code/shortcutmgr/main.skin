@@ -1,5 +1,5 @@
 <table border="0" cellspacing="0" cellpadding="2">
-<form action="" method="post">
+<form action="<% response.action %>" method="post">
 <tr>
 <td class="small">Title</td>
 <td class="small">Content</td>

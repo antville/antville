@@ -39,6 +39,7 @@ if (req.data.submit || req.data.submit == "submit") {
    res.redirect(this.href());
 }
 
+res.data.action = this.href();
 res.data.title = path.site.title + " - Shortcuts";
 res.data.body = this.renderSkinAsString("main");
 path.site.renderSkin("page");
