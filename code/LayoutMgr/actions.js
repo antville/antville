@@ -24,7 +24,7 @@ function create_action() {
       try {
          var result = this.evalNewLayout(req.data, session.user);
          res.message = result.toString();
-         res.redirect(this.href());
+         res.redirect(result.obj.href("edit"));
       } catch (err) {
          res.message = err.toString();
       }
