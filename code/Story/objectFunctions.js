@@ -12,17 +12,20 @@ function evalStory(param,modifier) {
    if (param.text) {
       var online = parseInt(param.online,10);
       var editableby = parseInt(param.editableby,10);
-      if (this.online)
-         this.weblog.lastupdate = new Date();
-      this.online = (!isNaN(online) ? online : 0);
+      // this.online = (!isNaN(online) ? online : 0);
       this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : 2);
       this.title = param.title;
       this.text = param.text;
       this.modifytime = new Date();
       this.modifier = modifier;
       this.topic = param.topic ? param.topic : null;
-      this.weblog.lastupdate = new Date();
-      if (this.online) {
+      if ((this.online && !online) || this.online)
+         this.weblog.lastupdate = new Date();
+      if (isNaN(online) || (online == 1 && !this.topic))
+         this.online = 0;
+      else
+         this.online = online;
+      if (this.online > 0) {
          // href() may not yet work if we changed the topic
          // so we build the redirect URL manually
          if (this.topic)
@@ -46,7 +49,7 @@ function evalStory(param,modifier) {
 
 function toggleOnline(newStatus) {
    if (newStatus == "online") {
-      this.online = 1;
+      this.online = 2;
       this.weblog.lastupdate = new Date();
    } else if (newStatus == "offline")
       this.online = 0;
@@ -55,7 +58,7 @@ function toggleOnline(newStatus) {
 
 /**
  * function returns true/false whether story is online or not
- */
+*/
 
 function isOnline() {
    if (parseInt(this.online,10))

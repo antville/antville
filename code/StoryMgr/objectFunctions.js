@@ -18,13 +18,16 @@ function evalNewStory(param,creator) {
       newStory.weblog = this._parent;
       newStory.title = param.title;
       newStory.text = param.text;
-      newStory.online = !isNaN(online) ? online : 0;
+      if (param.topic)
+         newStory.topic = param.topic;
+      if (isNaN(online) || (online == 1 && !newStory.topic))
+         newStory.online = 0;
+      else
+         newStory.online = online;
       newStory.editableby = !isNaN(editableby) ? editableby : 2;
       newStory.author = creator;
       newStory.createtime = new Date();
       newStory.modifytime = new Date();
-      if (param.topic)
-         newStory.topic = param.topic;
       newStory.day = newStory.createtime.format("yyyyMMdd");
       newStory.reads = 0;
       this._parent.add(newStory);
@@ -71,4 +74,3 @@ function deleteStory(currStory) {
    }
    return (result);
 }
-
