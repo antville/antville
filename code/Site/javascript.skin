@@ -1,13 +1,13 @@
-<script language="JavaScript">
+<script language="javascript" type="text/javascript">
 <!--
 
 function openPopup(img, width, height) {
-   if (img && width && height) {
-      width = Math.min(width + 36, 640);
-      height = Math.min(height + 30, 480);
-      var popUp = window.open(img,"popUp","toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,copyhistory=no,width=" + width + ",height=" + height);
-   }
-   return;
+  if (img && width && height) {
+    width = Math.min(width + 36, 640);
+    height = Math.min(height + 30, 480);
+    var popUp = window.open(img,"popUp","toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,copyhistory=no,width=" + width + ",height=" + height);
+  }
+  return;
 }
 
 // -->
