@@ -1,4 +1,0 @@
-<p>members of <b><% this.title %></b>:</p>
-<ul>
-<% this.memberlist %>
-</ul>
