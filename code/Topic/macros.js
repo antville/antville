@@ -4,13 +4,13 @@
  */
 
 function addstory_macro () {
-   var membership = path.weblog.isUserMember(session.user);
+   var membership = path.site.isUserMember(session.user);
    if (!membership)
       return;
    if ((membership.level & MAY_ADD_STORY) == 0)
       return;
    var param = new Object();
-   param.link = path.weblog.stories.href("create")+"?topic="+this.groupname;
+   param.link = path.site.stories.href("create")+"?topic="+this.groupname;
    this.renderSkin ("createStoryLink", param);
 }
 
@@ -21,7 +21,7 @@ function addstory_macro () {
  */
 
 function relatedtopics_macro (param) {
-   this.related.subnodeRelation = "where WEBLOG_ID = " + path.weblog._id + " AND TEXT like '%*" + this.groupname + "*%' AND (TOPIC is null OR TOPIC != '" + this.groupname + "') ORDER BY MODIFYTIME DESC";
+   this.related.subnodeRelation = "where TEXT_F_SITE = " + path.site._id + " AND TEXT_TEXT like '%*" + this.groupname + "*%' AND (TEXT_TOPIC is null OR TEXT_TOPIC != '" + this.groupname + "') ORDER BY TEXT_MODIFYTIME desc";
    var l = this.related.size();
    if (l == 0)
       return;
