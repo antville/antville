@@ -1,2 +1,2 @@
 <p><% param.graph %><% param.percent %>% <span class="small">(<% param.count %><% param.text %>)</span><br>
-<% param.title %>
+<% param.title %></p>
