@@ -54,152 +54,6 @@ function email_macro(param) {
 
 
 /**
- * macro rendering bgcolor
- */
-function bgcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("bgcolor", param));
-  else
-    renderColor(this.preferences.getProperty("bgcolor"));
-}
-
-
-/**
- * macro rendering textfont
- */
-function textfont_macro(param) {
-  if (param.as == "editor") {
-    param.size = 40;
-    Html.input(this.preferences.createInputParam("textfont", param));
-  } else
-    res.write(this.preferences.getProperty("textfont"));
-}
-
-
-/**
- * macro rendering textsize
- */
-function textsize_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("textsize", param));
-  else
-    res.write(this.preferences.getProperty("textsize"));
-}
-
-
-/**
- * macro rendering textcolor
- */
-function textcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("textcolor", param));
-  else
-    renderColor(this.preferences.getProperty("textcolor"));
-}
-
-
-/**
- * macro rendering linkcolor
- */
-function linkcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("linkcolor", param));
-  else
-    renderColor(this.preferences.getProperty("linkcolor"));
-}
-
-
-/**
- * macro rendering alinkcolor
- */
-function alinkcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("alinkcolor", param));
-  else
-    renderColor(this.preferences.getProperty("alinkcolor"));
-}
-
-
-/**
- * macro rendering vlinkcolor
- */
-function vlinkcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("vlinkcolor", param));
-  else
-    renderColor(this.preferences.getProperty("vlinkcolor"));
-}
-
-
-/**
- * macro rendering titlefont
- */
-function titlefont_macro(param) {
-  if (param.as == "editor") {
-    param.size = 40;
-    Html.input(this.preferences.createInputParam("titlefont", param));
-  } else
-    res.write(this.preferences.getProperty("titlefont"));
-}
-
-
-/**
- * macro rendering titlesize
- */
-function titlesize_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("titlesize", param));
-  else
-    res.write(this.preferences.getProperty("titlesize"));
-}
-
-
-/**
- * macro rendering titlecolor
- */
-function titlecolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("titlecolor", param));
-  else
-    renderColor(this.preferences.getProperty("titlecolor"));
-}
-
-
-/**
- * macro rendering smallfont
- */
-function smallfont_macro(param) {
-  if (param.as == "editor") {
-    param.size = 40;
-    Html.input(this.preferences.createInputParam("smallfont", param));
-  } else
-    res.write(this.preferences.getProperty("smallfont"));
-}
-
-
-/**
- * macro rendering smallfont-size
- */
-function smallsize_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("smallsize", param));
-  else
-    res.write(this.preferences.getProperty("smallsize"));
-}
-
-
-/**
- * macro rendering smallfont-color
- */
-function smallcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("smallcolor", param));
-  else
-    renderColor(this.preferences.getProperty("smallcolor"));
-}
-
-
-/**
  * macro rendering lastupdate
  */
 function lastupdate_macro(param) {
@@ -350,11 +204,11 @@ function navigation_macro(param) {
    if (!session.user)
       return;
    if (!param["for"] || param["for"] == "contributors") {
-      if (this.preferences.getProperty("usercontrib") || req.data.memberlevel >= CONTRIBUTOR)
+      if (session.user.sysadmin || this.preferences.getProperty("usercontrib") || req.data.memberlevel >= CONTRIBUTOR)
          this.renderSkin("contribnavigation");
    }
    if (!param["for"] || param["for"] == "admins") {
-      if (req.data.memberlevel >= ADMIN)
+      if (session.user.sysadmin || req.data.memberlevel >= ADMIN)
          this.renderSkin("adminnavigation");
    }
    return;
@@ -407,7 +261,7 @@ function calendar_macro(param) {
    // if so, use it to determine the month to render
    if (path.story)
       var today = path.story.day.toString();
-   else if (path.day && this.contains(path.day) > -1)
+   else if (path.day && path.day._prototype == "day")
       var today = path.day.groupname.toString();
    if (today) {
       // instead of using String.toDate
@@ -583,7 +437,7 @@ function listReferrers_macro() {
    var d = new Date();
    d.setDate(d.getDate()-1); // 24 hours ago
    var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG " +
-      "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > {ts '" + 
+      "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > {ts '" +
       d.format("yyyy-MM-dd HH:mm:ss") + "'} group by ACCESSLOG_REFERRER "+
       "order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
    var rows = c.executeRetrieval(query);
@@ -605,7 +459,7 @@ function listReferrers_macro() {
 
 
 /**
- * renders the xml button for use 
+ * renders the xml button for use
  * when referring to an rss feed
  */
 function xmlbutton_macro(param) {
@@ -663,11 +517,11 @@ function imagelist_macro(param) {
 }
 
 /**
- * proxy-macro for skinset chooser
+ * proxy-macro for layout chooser
  */
-function skinsetchooser_macro(param) {
-   param.selected = this.preferences.getProperty("skinset");
-   this.skins.skinsetchooser_macro(param);
+function layoutchooser_macro(param) {
+   param.selected = this.preferences.getProperty("layout");
+   this.layouts.layoutchooser_macro(param);
 }
 
 /**
