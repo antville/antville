@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" src="<% site.url %>javascript"></script>
-<script type="text/javascript" src="<% site.url %>cp_javascript"></script>
+<script type="text/javascript" src="<% root.url %>safejs"></script>
 <link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
 </head>
