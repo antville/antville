@@ -32,13 +32,25 @@ function checkDate() {
 }
 
 /**
- * functin checks if the string passed contains special characters like
+ * function checks if the string passed contains special characters like
  * spaces, brackets etc.
  */
 
 function isClean(str) {
-   var validChar = new RegExp("[^a-z,^A-Z,^0-9]");
-   if (validChar.exec(str))
+   var invalidChar = new RegExp("[^a-z,^A-Z,^0-9]");
+   if (invalidChar.exec(str))
+      return false;
+   return true;
+}
+
+/**
+ * function checks if the string passed contains any characters that
+ * are forbidden in URLS
+ */
+
+function isCleanForURL(str) {
+   var invalidChar = new RegExp("[\\/?&=\\+#]");
+   if (invalidChar.exec(str))
       return false;
    return true;
 }
