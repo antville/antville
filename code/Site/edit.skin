@@ -32,7 +32,7 @@
 <td nowrap="nowrap"><% site.showdays as="editor" size="5" maxlength="2" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Weblog is public:</td>
+<td class="small" nowrap="nowrap">Site is public:</td>
 <td nowrap="nowrap"><% site.online as="editor" %></td>
 </tr>
 <tr>
@@ -49,11 +49,11 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">e-mail address:</td>
-<td><% site.email as="editor" %><br /><span class="small">This e-mail address will be used for sending confirmation mails, i.e. when a user registers or signs up a weblog.</span></td>
+<td><% site.email as="editor" %><br /><span class="small">This e-mail address will be used for sending confirmation mails, i.e. when a user registers or signs up a site.</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Notify updates:</td>
-<td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled <a href="http://www.weblogs.com">weblogs.com</a> will be notified when your weblog is updated.</span></td>
+<td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled <a href="http://www.weblogs.com">weblogs.com</a> will be notified when your site is updated.</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Layout:</td>

@@ -1,4 +1,4 @@
-<p>This is the complete list of public weblogs hosted here, in alphabetical order.</p>
+<p>This is the complete list of public sites hosted here, in alphabetical order.</p>
 
 <% response.prevpage %>
 <% response.sitelist prefix="<ul>" suffix="</ul>" %>

@@ -57,7 +57,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
    try {
       blog.stories.checkAdd(usr, blog.members.getMembershipLevel(usr));
    } catch (deny) {
-      throw ("You don't have permission to post to this weblog");
+      throw ("You don't have permission to post to this site");
    }
 
    var param = new Object();
@@ -186,7 +186,7 @@ function deletePost(appkey, postid, username, password, publish) {
 
 /**
  *  blogger.getUsersBlogs
- *  returns a list of weblogs to which an author is a member of,
+ *  returns a list of sites to which an author is a member of,
  *  and allowed to add/edit stories
  *  @param appkey      String
  *  @param username    String
@@ -293,8 +293,8 @@ function getUser(username, password) {
 function getBlog(blogid) {
    var blog = root.get (blogid.toString());
    if (!blog)
-      throw("The weblog " + blogid + " doesn't exist on this server.");
+      throw("The site " + blogid + " doesn't exist on this server.");
    else if (blog.blocked)
-      throw("The weblog " + blogid + " was disabled.");
+      throw("The site " + blogid + " was disabled.");
    return (blog);
 }

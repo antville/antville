@@ -8,7 +8,7 @@ function onRequest() {
    req.data.memberlevel = null;
    // if root.sys_frontSite is set and the site is online
    // we put it into res.handlers.site to ensure that the mirrored
-   // weblog works as expected
+   // site works as expected
    if (!path.site && root.sys_frontSite && root.sys_frontSite.online)
       res.handlers.site = root.sys_frontSite;
    if (res.handlers.site) {

@@ -53,7 +53,7 @@ function getRecentPostTitles(blogid, username, password, numberOfPosts) {
 
 /**
  *  mt.getCategoryList
- *  returns a list of all categories defined in the weblog
+ *  returns a list of all categories defined in the site
  *  @param blogid         String
  *  @param username       String
  *  @param password       String

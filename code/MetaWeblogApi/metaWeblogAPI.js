@@ -74,7 +74,7 @@ function newPost (blogid, username, password, content, publish) {
    try {
       blog.stories.checkAdd(usr, blog.members.getMembershipLevel(usr));
    } catch (deny) {
-      throw("You don't have permission to post to this weblog");
+      throw("You don't have permission to post to this site");
    }
    var param = new Object();
    param.content_title = content.title;
@@ -206,7 +206,7 @@ function getRecentPosts(blogid, username, password, numberOfPosts) {
 
 /**
  *  metaWeblog.getCategories
- *  returns a list of categories for a weblog
+ *  returns a list of categories for a site
  *  @param blogid         String
  *  @param username       String
  *  @param password       String

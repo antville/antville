@@ -27,7 +27,7 @@
 
    <textinput rdf:about="<% site.url %>search">
       <title>find</title>
-      <description>Search this weblog:</description>
+      <description>Search this site:</description>
       <name>q</name>
       <link><% site.url %>search</link>
    </textinput>

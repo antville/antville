@@ -97,7 +97,7 @@ function sys_minMemberAge_macro(param) {
 
 /**
  * macro renders an input type text for editing the system-timestamp
- * that allows users who have registered before it to create a weblog
+ * that allows users who have registered before it to create a site
  */
 function sys_minMemberSince_macro(param) {
    // this macro is allowed just for sysadmins
@@ -116,7 +116,7 @@ function sys_minMemberSince_macro(param) {
 
 /**
  * macro renders a dropdown containing the number of days a user has to wait
- * after having created a weblog before being allowed to create a new one
+ * after having created a site before being allowed to create a new one
  */
 
 function sys_waitAfterNewSite_macro(param) {
@@ -309,7 +309,7 @@ function shortdateformat_macro(param) {
 }
 
 /**
- * macro renders the alias of the frontpage weblog defined
+ * macro renders the alias of the frontpage site defined
  */
 function sys_frontSite_macro(param) {
    if (!session.user.sysadmin)

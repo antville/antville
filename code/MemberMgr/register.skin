@@ -18,7 +18,7 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">e-mail is visible:</td>
-<td><span class="small"><% input type="checkbox" name="publishemail" %><br />If you select this checkbox your e-mail address will be visible to weblog administrators.</span></td>
+<td><span class="small"><% input type="checkbox" name="publishemail" %><br />If you select this checkbox your e-mail address will be visible to site administrators.</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Personal URL:</td>

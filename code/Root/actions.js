@@ -42,7 +42,7 @@ function new_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Create a new weblog";
+   res.data.title = "Create a new site";
    res.data.body = this.renderSkinAsString("new");
    root.renderSkin("page");
 }
@@ -122,7 +122,7 @@ function rss_action() {
  */
 function blocked_action() {
    res.data.title = root.getTitle() + " - 404 - blocked";
-   res.data.body = "<p><strong>Sorry!</strong></p><p>This weblog was disabled.</p>";
+   res.data.body = "<p><strong>Sorry!</strong></p><p>This site was disabled.</p>";
    root.renderSkin("page");
 }
 

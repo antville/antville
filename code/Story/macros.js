@@ -432,7 +432,7 @@ function backlinks_macro(param) {
 
 /**
  * macro renders a checkbox whether the story is
- * published on the weblog's front page
+ * published on the site's front page
  */
 function addtofront_macro(param) {
    if (param.as == "editor") {

@@ -33,7 +33,7 @@
 <div class="boxheader">menu</div>
 <div class="box">
 ...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a><br />
-<% root.link to="new" text="create a new weblog" prefix="...&nbsp;" %>
+<% root.link to="new" text="create a new site" prefix="...&nbsp;" %>
 </div>
 
 <% root.sysmgrnavigation %>
@@ -47,7 +47,7 @@
 
 <div class="boxline">&nbsp;</div>
 <div class="box">
-<% root.sitecounter no="no public weblogs" one="one public weblog" more=" public weblogs"%>... <% root.link to="list" %>
+<% root.sitecounter no="no public sites" one="one public site" more=" public sites"%>... <% root.link to="list" %>
 </div>
 
 <div class="box">
