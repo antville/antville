@@ -1,14 +1,13 @@
 <style type="text/css">
 <!--
 
-body,td,span { font-family:Verdana,Arial,Helvetica,sans-serif;
-       font-size:10pt;
-       line-height:13pt;
-       font-weight:normal;
-       color:#000000;
-       vertical-align: top;
-       background-color:#FFFFFF;
-    }
+body,td,span { font-family:Verdana,Helvetica,Arial,sans-serif;
+               font-size:13px;
+               font-weight:normal;
+               color:#000000;
+               vertical-align: top;
+               background-color:#FFFFFF;
+             }
 
 a { text-decoration:none;
     color:#FF3300;
@@ -24,21 +23,24 @@ a:hover { background-color:#FF3300;
            vertical-align:middle;
         }
 
-.message { font-size:8pt;
+.message { font-family:Helvetica,Arial,sans-serif;
+           font-size:12px;
            padding:1px;
            color:#FF3300;
            background-color:#FFFFFF;
          }
 
 .statusdark { width:198px;
-              font-size:8pt;
+              font-family:Helvetica,Arial,sans-serif;
+              font-size:12px;
               display:block;
               padding-top:3px;
               padding-bottom:3px;
             }
 
 .statuslight { width:198px;
-               font-size:8pt;
+               font-family:Helvetica,Arial,sans-serif;
+               font-size:12px;
                color:#999999;
                display: block;
                padding-top:3px;
