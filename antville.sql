@@ -3,27 +3,6 @@ USE antville;
 GRANT SELECT,INSERT,UPDATE,DELETE ON antville.* TO antville@localhost IDENTIFIED BY 'antville';
 
 #----------------------------
-# Table structure for COMMENT
-#----------------------------
-create table COMMENT (
-   ID mediumint(9) not null,
-   WEBLOG_ID mediumint(9),
-   STORY_ID mediumint(9),
-   PARENT_ID mediumint(9),
-   TITLE mediumtext,
-   TEXT mediumtext,
-   AUTHOR mediumint(9),
-   CREATETIME datetime,
-   MODIFYTIME datetime,
-   ISONLINE tinyint(1),
-   IPADDRESS varchar(20),
-   unique ID (ID));
-
-#----------------------------
-# No records for table COMMENT
-#----------------------------
-
-#----------------------------
 # Table structure for IMAGE
 #----------------------------
 create table IMAGE (
