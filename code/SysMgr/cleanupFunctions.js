@@ -17,6 +17,7 @@ function autoCleanUp() {
          this.syslogs.add (new syslog("system",null,"starting automatic cleanup ...",null));
          app.data.nextCleanup = nextCleanup;
          // now start the auto-cleanup-functions
+         this.cleanupAccesslog();
          this.blockPrivateSites();
          // this.deleteInactiveSites();
          this.add (new syslog("system",null,"next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
@@ -162,3 +163,23 @@ function deleteInactiveSites() {
    return true;
 }
 
+
+/**
+ * function deletes all accesslog-records older than 48 hours
+ * and with story-id = null
+ */
+function cleanupAccesslog() {
+	var dbConn = getDBConnection("antville");
+	var dbError = dbConn.getLastError();
+	if (dbError) {
+      this.syslogs.add (new syslog("system",null,"failed to clean up accesslog-table!",null));
+      return;
+   }
+   var threshold = new Date();
+   threshold.setDate(threshold.getDate() -2);
+	var query = "delete from AV_ACCESSLOG where ACCESSLOG_F_TEXT is null and ACCESSLOG_DATE < '" + threshold.format("yyyy-MM-dd HH:mm:ss") + "'";
+   var delRows = dbConn.executeCommand(query);
+   if (delRows)
+      this.syslogs.add (new syslog("system",null,"removed " + delRows + " records from accesslog-table",null));
+   return;
+}
