@@ -6,7 +6,8 @@ function deleteAll() {
    for (var i=this.size();i>0;i--) {
       var story = this.get(i-1);
       story.deleteAll();
-      this.remove(story);
+      if (!this._parent.stories.remove(story))
+         throw new Exception("storyDelete");
    }
    return true;
 }
@@ -17,6 +18,7 @@ function deleteAll() {
  * @see hopobject.getNavigationName()
  */
 function getNavigationName () {
-   return (formatTimestamp(parseTimestamp(this.groupname,"yyyyMMdd"),"EEEE, dd.MM.yyyy"));
+   var ts = this.groupname.toDate("yyyyMMdd", this._parent.getTimeZone());
+   return formatTimestamp(ts, "EEEE, dd.MM.yyyy");
 }
 
