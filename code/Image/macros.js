@@ -104,7 +104,8 @@ function show_macro(param) {
       img = this.thumbnail;
    } else
       var url = img.getUrl();
-   delete(param.what);
+   delete param.what;
+   delete param.as;
    param.src = img.getUrl();
    Html.openLink({href: url});
    renderImage(img, param);
