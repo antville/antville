@@ -19,11 +19,11 @@
 </tr>
 <tr>
 <td class="small" nowrap>max. width:</td>
-<td nowrap><% this.input type="text" name="maxwidth" width="5" %>&nbsp;pixel</td>
+<td nowrap><% this.input type="text" name="maxwidth" width="5" value="400" %>&nbsp;pixel</td>
 </tr>
 <tr>
 <td class="small" nowrap>max. height:</td>
-<td nowrap><% this.input type="text" name="maxheight" width="5" %>&nbsp;pixel</td>
+<td nowrap><% this.input type="text" name="maxheight" width="5" value="400" %>&nbsp;pixel</td>
 </tr>
 <tr>
 <td class="small" nowrap>create thumbnail:</td>
