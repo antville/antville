@@ -41,7 +41,6 @@ function question_macro(param) {
 
 function choices_macro(param) {
 	if (param.as == "editor") {
-		var re = new RegExp("<cnt>");
 		var max = res.data.choices;
 		for (var i=0; i<max; i++) {
 			res.write(param.prefix.replace(re, i+1));
@@ -95,15 +94,13 @@ function results_macro(param2) {
 			param.width = Math.round(param.percent * 2.5);
 			param.graph = c.renderSkinAsString("graph", param);
 			param.text = " sucker";
+			if (param.count == 1)
+				param.text = " " + (param2.one ? param2.one : "vote");
+			else
+				param.text = " " + (param2.more ? param2.more : "votes");
 		}
-		if (param.count == 1) {
-			if (param2.singular)
-				param.text = " " + param2.singular;
-		}
-		else {
-			if (param2.plural)
-				param.text = " " + param2.plural;
-		}
+		else
+			param.text = " " + (param2.no ? param2.no : "votes");
 		str += c.renderSkinAsString("result", param);
 	}
 	return(str);
@@ -112,13 +109,14 @@ function results_macro(param2) {
 
 function total_macro(param) {
 	var n = this.votes.size();
-	if (n == 1) {
-		if (param.singular)
-			n += " " + param.singular;
+	if (n == 0) {
+		n += " " + (param.no ? param.no : "votes");
+	}
+	else if (n == 1) {
+		n += " " + (param.one ? param.one : "vote");
 	}
 	else {
-		if (param.plural)
-			n += " " + param.plural;
+		n += " " + (param.more ? param.more : "votes");
 	}
 	return(n);
 }
@@ -164,10 +162,7 @@ function editlink_macro(param) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
-      else
-         res.write(param.text ? param.text : "edit");
+      res.write(param.text ? param.text : "edit");
       this.closeLink();
       res.write(param.suffix);
    }
@@ -184,10 +179,7 @@ function deletelink_macro(param) {
       var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
-      else
-         res.write(param.text ? param.text : "delete");
+      res.write(param.text ? param.text : "delete");
       this.closeLink();
       res.write(param.suffix);
    }
@@ -212,10 +204,7 @@ function viewlink_macro(param) {
 		  var str = "vote";
 	 }
    this.openLink(linkParam);
-   if (param.image && this.weblog.images.get(param.image))
-      this.weblog.renderImage(this.weblog.images.get(param.image),param);
-   else
-      res.write(param.text ? param.text : str);
+   res.write(param.text ? param.text : str);
    this.closeLink();
    res.write(param.suffix);
 }
@@ -231,10 +220,7 @@ function closelink_macro(param) {
 			else
 		    var str = "close";
       this.openLink(linkParam);
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
-      else
-         res.write(param.text ? param.text : str);
+      res.write(param.text ? param.text : str);
       this.closeLink();
       res.write(param.suffix);
    }
@@ -248,7 +234,7 @@ function state_macro(param) {
 }
 
 
-function createInfo_macro(param) {
+function info_macro(param) {
 	if (this.creator)
-		return(this.renderSkinAsString("createInfo"));
+		return(this.renderSkinAsString("info"));
 }
