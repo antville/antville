@@ -28,7 +28,7 @@ function edit_action() {
    else if (req.data.save) {
       try {
          res.message = this.evalPreferences(req.data, session.user);
-         res.redirect(this.href());
+         res.redirect(this.href("edit"));
       } catch (err) {
          res.message = err.toString();
       }
