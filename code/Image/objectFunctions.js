@@ -38,9 +38,12 @@ function saveImg(rawimage,version) {
          img.resize(this.width,this.height); 
          if (rawimage.contentType == 'image/gif')
             img.reduceColors(256); 
+         // finally we save the resized image
+         img.saveAs(this.cache.saveTo + this.filename + "." + this.fileext); 
+      } else {
+         // finally we save the not resized image
+         rawimage.writeToFile(this.cache.saveTo,this.filename + "." + this.fileext);
       }
-      // finally we save the image
-      img.saveAs(this.cache.saveTo + this.filename + "." + this.fileext); 
    } 
    return; 
 }
