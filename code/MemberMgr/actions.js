@@ -1,15 +1,46 @@
 /**
- * main action
+ * main action, lists all members in alpabetical order
  */
 function main_action() {
    this.renderView(this, "Members");
    return;
 }
 
+/**
+ * list all subscribers of a site
+ */
+function subscribers_action() {
+   this.renderView(this.subscribers, "Subscribers");
+}
 
-function add_action() {
-   res.data.action = this.href(req.action);
-   if (req.data.keyword) {
+/**
+ * list all contributors of a site
+ */
+function contributors_action() {
+   this.renderView(this.contributors, "Contributors");
+}
+
+/**
+ * list all content managers of a site
+ */
+function managers_action() {
+   this.renderView(this.managers, "Content Managers");
+}
+
+/**
+ * list all admins of a site
+ */
+function admins_action() {
+   this.renderView(this.admins, "Administrators");
+}
+
+/**
+ * action for creating a new membership
+ */
+function create_action() {
+   if (req.data.cancel)
+      res.redirect(this.href());
+   else if (req.data.keyword) {
       try {
          var result = this.searchUser(req.data.keyword);
          res.message = result.toString();
@@ -40,38 +71,11 @@ function add_action() {
          res.redirect(this.href());
       }
    }
+   res.data.action = this.href(req.action);
    res.data.title = "Search members of " + this._parent.title;
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
    return;
-}
-
-/**
- * action that lists all subscribers of a site
- */
-function subscribers_action() {
-   this.renderView(this.subscribers, "Subscribers");
-}
-
-/**
- * action that lists all contributors of a site
- */
-function contributors_action() {
-   this.renderView(this.contributors, "Contributors");
-}
-
-/**
- * action that lists all content managers of a site
- */
-function managers_action() {
-   this.renderView(this.managers, "Content Managers");
-}
-
-/**
- * action that lists all admins of a site
- */
-function admins_action() {
-   this.renderView(this.admins, "Administrators");
 }
 
 /**
