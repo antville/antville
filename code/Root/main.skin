@@ -1,0 +1,7 @@
+<P>This is Antville, a small but fancy Weblog-Application build with <% this.link to="http://helma.org" text="Helma Object Publisher" %></P>
+
+<P>If you don't own a Weblog yourself, you can <% this.link to="new" text="create one" %></P>
+
+<P><B>Status:</B></P>
+<% this.weblogcounter %> WebLogs created<BR>
+<% this.webloglist prefix="<BR>last updated weblogs:" %><P>

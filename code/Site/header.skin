@@ -1,0 +1,6 @@
+<P><FONT SIZE="+3"><B><% this.title %></B></FONT>&nbsp;<FONT SIZE="-1" COLOR="#FF0000"><% response.message %></FONT>
+<% this.age prefix="<BR>online since:&nbsp;" show="days" suffix=" Days" %>
+<% this.lastupdate prefix="<BR>last updated:&nbsp;" format="EEEE, dd.MM.yyyy, HH:mm" suffix="&nbsp;Uhr" %></P>
+
+<% this.loginstatus %>
+<% this.navigation %>

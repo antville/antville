@@ -1,0 +1,5 @@
+<% this.skin name="header" %>
+
+<% this.calendar %>
+
+<% this.storylist %>

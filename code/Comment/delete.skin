@@ -1,0 +1,4 @@
+<FORM METHOD="POST">
+<P>Warning! You are about to delete the a comment from <B><% this.author %></B>! Be aware of the fact that there is no "undo", so if you klick on delete here the comment will be gone forever!</P>
+<P><% this.input type="button" value="delete" %>&nbsp;<% this.input type="button" value="cancel" %></P>
+</FORM>

@@ -1,0 +1,6 @@
+<P><B><% this.title %></B><BR>
+<I><% this.author %><% this.createtime format="EEEE, dd.MM.yyyy HH:mm" prefix=",&nbsp;am&nbsp;" %></I><BR>
+<% this.text %><BR>
+<% this.replylink text="reply to this comment ..." suffix="&nbsp;&nbsp;" %><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></P>
+
+<% this.replies %>

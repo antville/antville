@@ -1,0 +1,11 @@
+this.filter();
+
+res.skin = "main";
+
+if (req.data.text && this.weblog.hasDiscussions())
+   this.addComment();
+
+res.title = "Antville - " + this.weblog.title;
+res.head = this.weblog.renderSkinAsString("style");
+res.body = this.weblog.renderSkinAsString("header");
+res.body += this.renderSkinAsString("main");

@@ -1,0 +1,6 @@
+<FORM METHOD="POST">
+<P>Title: <% this.title as="editor" %></P>
+<P>Text: <% this.text as="editor" width="40" height="10" %></P>
+<P>is online: <% this.online as="editor" %></P>
+<P><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></P>
+</FORM>

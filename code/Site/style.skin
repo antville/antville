@@ -1,0 +1,45 @@
+<STYLE TYPE="text/css">
+<!--
+
+body  {  font-family: <% this.textfont %>;
+         font-size: <% this.textsize %>;
+         font-weight: normal;
+         color: #<% this.textcolor %>;
+      }
+
+.title { font-family: <% this.titlefont %>;
+         font-size: <% this.titlesize %>;
+         color: <% this.titlecolor %>;
+         font-weight: bold;
+       }
+
+.calendar { border: 1px solid black;
+          }
+
+.calendarHeader { font-size: 8pt;
+                  font-weight: bold;
+                  color: #FFFFFF;
+                  background-color: #666666;
+                }
+
+.calendarDay { font-size: 8pt;
+               font-weight: normal;
+               border: 1px solid #666666;
+               text-align: center;
+             }
+
+.calendarSelectedDay { font-size: 8pt;
+                       font-weight: normal;
+                       border: 1px solid #666666;
+                       background-color: #FFFFFF;
+                       text-align: center;
+                     }
+
+.calendarFooter { font-size: 8pt;
+                  font-weight: bold;
+                  color: #FFFFFF;
+                  background-color: #999999;
+                }
+
+// -->
+</STYLE>

@@ -1,0 +1,20 @@
+<P><FORM METHOD="POST">
+Title:&nbsp;<% this.title as="editor" width="40" %><BR>
+Tagline:&nbsp;<% this.tagline as="editor" width="40" %><BR>
+Birthdate:&nbsp;<% this.birthdate as="editor" %><BR>
+Background color:&nbsp;<% this.bgcolor as="editor" width="10" %><BR>
+Textfont:&nbsp;<% this.textfont as="editor" width="40" %><BR>
+Textsize:&nbsp;<% this.textsize as="editor" width="10" %><BR>
+Textcolor:&nbsp;<% this.textcolor as="editor" width="10" %><BR>
+Linkcolor:&nbsp;<% this.linkcolor as="editor" width="10" %><BR>
+ALinkcolor:&nbsp;<% this.alinkcolor as="editor" width="10" %><BR>
+VLinkcolor:&nbsp;<% this.vlinkcolor as="editor" width="10" %><BR>
+Titlefont:&nbsp;<% this.titlefont as="editor" width="40" %><BR>
+Titlesize:&nbsp;<% this.titlesize as="editor" width="10" %><BR>
+Titlecolor:&nbsp;<% this.titlecolor as="editor" width="10" %><BR>
+show days:&nbsp;<% this.showdays as="editor" width="5"%><BR>
+online:&nbsp;<% this.online as="editor" %><BR>
+hasDiscussions:&nbsp;<% this.hasdiscussions as="editor" %><BR>
+enable archive:&nbsp;<% this.showarchive as="editor" %><BR>
+<% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %>
+</FORM></P>

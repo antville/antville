@@ -1,0 +1,13 @@
+// check if user has right to edit this comment
+this.checkPermissions();
+
+res.skin = "main";
+res.title = "Antville - " + this.weblog.title;
+
+if (req.data.text)
+   this.updateComment();
+
+res.head = this.weblog.renderSkinAsString("style");
+res.body = this.weblog.renderSkinAsString("header");
+
+res.body += this.renderSkinAsString("edit");

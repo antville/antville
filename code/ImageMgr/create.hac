@@ -1,0 +1,14 @@
+// check if user is logged in and is the owner of this weblog
+this.checkPermissions();
+
+if (req.data.submit == "cancel")
+   res.redirect(this.href());
+
+newImg = this.evalNewImg();
+
+res.skin = "main";
+res.title = "Antville - " + this.__parent__.title;
+res.head = this.__parent__.renderSkinAsString("style");
+
+res.body = this.__parent__.renderSkinAsString("header");
+res.body += newImg.renderSkinAsString("new");

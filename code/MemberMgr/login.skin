@@ -1,0 +1,6 @@
+<FORM METHOD="POST">
+<P><% this.input type="text" name="name" prefix="Username:&nbsp;" %><BR>
+<% this.input type="password" name="password" prefix="Password:&nbsp;" %><BR>
+<% this.input type="button" name="login" value="login!" %></P>
+<P>If you're not registered, you can do this <% this.link to="register" text="here" %></P>
+</FORM>

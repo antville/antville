@@ -1,0 +1,9 @@
+<TABLE BGCOLOR="#FF9900" BORDER="0" CELLSPACING="0" CELLPADDING="2">
+<TR>
+<TD NOWRAP><% this.link to="main" text="&bull;&nbsp;home" %></TD>
+<TD NOWRAP><% this.link to="edit" text="&bull;&nbsp;preferences" %></TD>
+<TD NOWRAP><% this.link to="create" text="&bull;&nbsp;create story" %></TD>
+<TD NOWRAP><% this.link to="images" text="&bull;&nbsp;image editor" %></TD>
+<TD NOWRAP><% this.link to="skins" text="&bull;&nbsp;skin editor" %></TD>
+</TR>
+</TABLE>

@@ -1,0 +1,12 @@
+if (this.weblog.hasDiscussions()) {
+   res.skin = "main";
+   res.title = "Antville - " + this.weblog.title;
+
+   var r = this.addComment();
+   
+   res.head = this.story.weblog.renderSkinAsString("style");
+   res.body = this.story.weblog.renderSkinAsString("header");
+   res.body += this.renderSkinAsString("toplevel");
+   res.body += r.renderSkinAsString("edit");
+} else
+   res.redirect(this.story.href());

@@ -1,0 +1,6 @@
+<FORM METHOD="POST">
+<P><% this.show %></P>
+<P>Alias:<% this.alias as="editor" %></P>
+<P>Alttext:<% this.alttext as="editor" %></P>
+<P><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %>
+</FORM>

@@ -1,0 +1,12 @@
+<HTML>
+<HEAD>
+<TITLE><% response.title %></TITLE>
+<% response.head %>
+</HEAD>
+
+<BODY>
+
+<% response.body %>
+
+</BODY>
+</HTML>

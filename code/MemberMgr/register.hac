@@ -1,0 +1,12 @@
+res.skin = "main";
+
+if (req.data.submit == "cancel")
+   res.redirect(root.href());
+else
+   var reg = this.evalRegistration();
+
+res.title = "Antville member registration";
+res.head = root.renderSkinAsString("style");
+res.body = root.renderSkinAsString("header");
+res.body += this.renderSkinAsString("register",reg);
+

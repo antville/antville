@@ -1,0 +1,14 @@
+// check if user is allowed to edit this story
+this.checkPermissions();
+
+if (req.data.submit == "cancel")
+   res.redirect(this.href());
+
+res.skin = "main";
+res.title = "Antville - " + this.title;
+res.head = this.renderSkinAsString("style");
+
+newStory = this.evalNewStory();
+
+res.body = this.renderSkinAsString("header");
+res.body += newStory.renderSkinAsString("edit");

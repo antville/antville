@@ -1,0 +1,20 @@
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="2" BGCOLOR="#CCCCCC" CLASS="calendar">
+<TR>
+<TD COLSPAN="7" ALIGN="CENTER" CLASS="calendarHeader" NOWRAP><% param.month %>&nbsp;<% param.year %></TD>
+</TR>
+<TR>
+<TD CLASS="calendarDay" NOWRAP>Mo</TD>
+<TD CLASS="calendarDay" NOWRAP>Tu</TD>
+<TD CLASS="calendarDay" NOWRAP>We</TD>
+<TD CLASS="calendarDay" NOWRAP>Th</TD>
+<TD CLASS="calendarDay" NOWRAP>Fr</TD>
+<TD CLASS="calendarDay" NOWRAP>Sa</TD>
+<TD CLASS="calendarDay" NOWRAP>Su</TD>
+</TR>
+<% param.calendar %>
+<TR>
+<TD COLSPAN="3" ALIGN="RIGHT" CLASS="calendarFooter" NOWRAP><% param.back %></TD>
+<TD CLASS="calendarFooter" NOWRAP>&nbsp;</TD>
+<TD COLSPAN="3" CLASS="calendarFooter" NOWRAP><% param.forward %></TD>
+</TR>
+</TABLE>

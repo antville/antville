@@ -1,0 +1,1 @@
+<FONT SIZE="-1">Logged in as <% currentUser.name %> ... <% this.link to="edit" text="edit your profile" %> or <% this.link to="logout" text="logout" %></FONT>

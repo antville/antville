@@ -1,0 +1,9 @@
+Welcome to Antville!
+
+Here's your login info:
+
+    Username: <% this.name %>
+    Password: <% this.password %>
+
+Have fun!
+

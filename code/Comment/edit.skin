@@ -1,0 +1,5 @@
+<FORM METHOD="POST">
+<P>Title: <% this.title as="editor" %></P>
+<P>Text: <% this.text as="editor" %></P>
+<% this.input type="button" value="save" %>
+</FORM>

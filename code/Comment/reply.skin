@@ -1,0 +1,4 @@
+<BLOCKQUOTE><B><% this.title %></B><BR>
+<I><% this.author %><% this.createtime format="EEEE, dd.MM.yyyy HH:mm" prefix=",&nbsp;am&nbsp;" %></I><BR>
+<% this.text %><BR>
+<% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></BLOCKQUOTE>

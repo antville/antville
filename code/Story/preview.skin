@@ -1,0 +1,4 @@
+<P><FONT SIZE="-2"><% this.createtime format="EEEE, dd.MM.yyyy, HH:mm" suffix=" Uhr"%></FONT><BR>
+<SPAN CLASS="title"><% this.title %></SPAN><BR>
+<% this.text %>
+<% this.commentlink prefix="<BR>" %><% this.editlink prefix="&nbsp;&nbsp;" %><% this.deletelink prefix="&nbsp;&nbsp;" %></P>

@@ -1,0 +1,5 @@
+<TABLE BGCOLOR="#FF9900" BORDER="0" CELLSPACING="0" CELLPADDING="2">
+<TR>
+<TD NOWRAP><% this.link to="main" text="&bull;&nbsp;home" %></TD>
+</TR>
+</TABLE>

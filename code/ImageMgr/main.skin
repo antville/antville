@@ -1,0 +1,2 @@
+<P><% this.images %></P>
+<P><% this.link to="create" text="add new image" %></P>

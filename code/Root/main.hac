@@ -1,0 +1,6 @@
+res.skin = "main";
+
+res.head = this.renderSkinAsString("style");
+res.title = "Antville";
+res.body = this.renderSkinAsString("header");
+res.body += this.renderSkinAsString("main");

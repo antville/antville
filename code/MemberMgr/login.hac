@@ -1,0 +1,34 @@
+res.skin = "main";
+
+if (req.data.name && req.data.password) {
+   // check if login is successful
+   if (user.login(req.data.name, req.data.password)) {
+      // login successful
+      user.lastVisit = new Date();
+      res.message = "Welcome to Antville, " + user.name + "! Have fun!";
+      if (!user.cache.referer) {
+         if (user.weblog) {
+            user.weblog.setParent(root);
+            res.redirect(user.weblog.href());
+         } else
+            res.redirect(root.href());
+      } else {
+         var redirectTo = user.cache.referer;
+         user.cache.referer = null;
+         res.redirect(redirectTo);
+      }
+   } else
+      res.message = "Login failed! Maybe a typo?";
+
+} else {
+   if (!res.message)
+      res.message = "Please enter your login name and password:";
+}
+
+if (!user.cache.referer && req.data.http_referer)
+   user.cache.referer = req.data.http_referer;
+
+res.title = "Anville Member Login";
+res.head = this.__parent__.renderSkinAsString("style");
+res.body = this.__parent__.renderSkinAsString("header");
+res.body += this.renderSkinAsString("login");
