@@ -401,8 +401,8 @@ function colorpicker_macro(param) {
    if (param.color)
    	param.color = renderColorAsString(param.color);
 
-   if (path.story) {
-      var obj = path.story;
+   if (path.story || path.storymgr) {
+      var obj = path.story ? path.story : new story();
       param2.part = param.name;
       param.editor = obj.content_macro(param2);
       param.color = obj.getContentPart(param.name);
