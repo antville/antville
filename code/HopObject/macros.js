@@ -52,7 +52,7 @@ function createtime_macro(param) {
 
 
 /**
- * a yet not sophisticated macro to display a
+ * a not yet sophisticated macro to display a 
  * colorpicker. works already in prefs and story editors
  */
 
@@ -61,7 +61,7 @@ function colorpicker_macro(param) {
       return;
    var param2 = new Object();
    param2.as = "editor";
-   param2.width = "15";
+   param2.width = "10";
    param2.onchange = "setColorPreview('" + param.name + "', this.value);";
    param2.id = "cp1_"+param.name;
    if (this.__prototype__ == "story") {
