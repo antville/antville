@@ -418,38 +418,55 @@ function topic_macro(param) {
 
 /**
  * macro returns a list of references linking to a story
+ * since referrers are asynchronously written to database by scheduler
+ * it makes sense to cache them in story.cache.rBacklinks because they
+ * won't change until the next referrer-update was done
+ * @return String rendered backlinks
  */
 
 function backlinks_macro() {
-	// this is a clone of site.listReferrers_macro.
-	var str = "";
-	var c = getDBConnection("antville");
-	var dbError = c.getLastError();
-	if (dbError)
-      return (getMessage("error","database",dbError));
+   // check if scheduler has done a new update of accesslog
+   // if not and we have cached backlinks simply return them
+   if (this.cache.lrBacklinks > app.data.lastAccessLogUpdate)
+      return (this.cache.rBacklinks)
 
-	// we're doing this with direct db access here
-	// (there's no need to do it with prototypes):
-	var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";                                
-	var rows = c.executeRetrieval(query);
-	var dbError = c.getLastError();
-	if (dbError)
+   var c = getDBConnection("antville");
+   var dbError = c.getLastError();
+   if (dbError)
       return (getMessage("error","database",dbError));
-	
-	var param = new Object();
-	while (rows.next()) {
-		param.count = rows.getColumnItem("COUNT");
-    // these two lines are necessary only for hsqldb connections:
-    if (param.count == 0)
-      continue;
-		param.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
-		str += this.renderSkinAsString("backlinkItem", param);
-	}
+   
+   // we're doing this with direct db access here
+   // (there's no need to do it with prototypes):
+   var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";                                
+   var rows = c.executeRetrieval(query);
+   var dbError = c.getLastError();
+   if (dbError)
+      return (getMessage("error","database",dbError));
+   
+   var param = new Object();
+   var cnt = 0;
+   // we show a maximum of 100 backlinks
+   var limit = Math.min((param.limit ? parseInt(param.limit,10) : 100),100);
+   var backlinks = new java.lang.StringBuffer();
+
+   while (rows.next() && cnt++ <= limit) {
+      param.count = rows.getColumnItem("COUNT");
+      // these two lines are necessary only for hsqldb connections:
+      if (param.count == 0)
+         continue;
+      param.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
+      param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
+      backlinks.append(this.renderSkinAsString("backlinkItem", param));
+   }
    rows.release();
-	param = new Object();
-	param.referrers = str;
-	if (str)
-		str = this.renderSkinAsString("backlinks", param);
-	return(str);
+   if (backlinks.length() > 0) {
+      // cache rendered backlinks and set timestamp for
+      // checking if backlinks should be rendered again
+      param = new Object();
+      param.referrers = backlinks.toString();
+      this.cache.rBacklinks = this.renderSkinAsString("backlinks", param);
+      this.cache.lrBacklinks = new Date();
+      return (this.cache.rBacklinks);
+   }
+   return;
 }
