@@ -1,15 +1,6 @@
 /**
- * this action tries to get a goodie with the given name
- * if it finds it, it increases the request-counter of this goodie
- * sets the appropriate mimetype and redirects the browser to the file
+ * thanks to GOOGLE we have to keep this file ...
+ * (try a search for "getgoodie" ;-)
  */
 
-var goodie = this.goodies.get(req.data.name);
-if (goodie) {
-   goodie.requestcnt++;
-   res.contentType = goodie.mimetype;
-   res.redirect(getProperty("goodieUrl") + this.alias + "/" + goodie.file);
-} else {
-   res.message = getMsg("error","goodieNotFound",req.data.name);
-   res.redirect(this.href());
-}
+this.getfile_action();
