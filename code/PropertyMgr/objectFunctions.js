@@ -36,7 +36,7 @@ function deleteProperty(key) {
    this.evalCache();
    this.cache.content[key] = null;
    delete this.cache.content[key];
-   this._parent[this.getDataField ()] = Xml.writeToString (this.cache.content);
+   this._parent[this.getDataField()] = Xml.writeToString(this.cache.content);
 }
 
 
@@ -46,7 +46,7 @@ function deleteProperty(key) {
   */
 function keys() {
    this.evalCache();
-   var arr = new Array ();
+   var arr = new Array();
    for (var i in this.cache.content) {
       arr[arr.length] = i;
    }
@@ -76,10 +76,10 @@ function evalCache() {
       // cache is either outdated or not existing, so (re-)create it
       if (this._parent[fieldName] && this._parent[fieldName].trim() != "") {
          this.cache.rawcontent = this._parent[fieldName];
-         this.cache.content = Xml.readFromString (this.cache.rawcontent);
+         this.cache.content = Xml.readFromString(this.cache.rawcontent);
       } else {
          this.cache.rawcontent = "";
-         this.cache.content = new HopObject ();
+         this.cache.content = new HopObject();
       }
    }
    return;
@@ -92,7 +92,7 @@ function evalCache() {
   * for this object. The name of the xml-field is constructed out of
   * the name of the mountpoint (this.__name__) and "_xml".
   */
-function getDataField () {
+function getDataField() {
    return (this.__name__ + "_xml");
 }
 
@@ -103,18 +103,18 @@ function getDataField () {
   * for debugging
   * @returns the content of this object as text with linebreaks
   */
-function toString () {
-   var sb = new java.lang.StringBuffer ();
-   var arr = this.keys ();
-   arr.sort ();
+function toString() {
+   res.push();
+   var arr = this.keys();
+   arr.sort();
    for (var i in arr) {
-      sb.append ("property ");
-      sb.append (arr[i]);
-      sb.append (" = ");
-      sb.append (this.getProperty (arr[i]));
-      sb.append ("\n");
+      res.write("property ");
+      res.write(arr[i]);
+      res.write(" = ");
+      res.write(this.getProperty(arr[i]));
+      res.write("\n");
    }
-   return sb.toString ();
+   return res.pop();
 }
 
 
