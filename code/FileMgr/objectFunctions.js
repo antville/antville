@@ -8,21 +8,20 @@
  */
 
 function evalFile(param,creator) {
-   var result;
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
-      result = getError("fileFileTooBig");
+      return (getError("fileFileTooBig"));
    } else if (param.rawfile) {
       if (param.rawfile.contentLength == 0) {
          // looks like nothing was uploaded ...
-         result = getError("fileNoUpload");
+         return (getError("fileNoUpload"));
       } else {
          var newFile = new file();
          // if no alias given try to determine it
          if (!param.alias)
             param.alias = buildAliasFromFile(param.rawfile);
-         else if (!isClean(param.alias))
-            result = getError("noSpecialChars");
+         else if (!isCleanForName(param.alias))
+            return (getError("noSpecialChars"));
          // check if alias is already in use
          if (this.get(param.alias)) {
             var nr = 1;
@@ -45,31 +44,15 @@ function evalFile(param,creator) {
             newFile.creator = creator;
             newFile.createtime = new Date();
             if (this.add(newFile)) {
-               result = getConfirm("fileCreate",newFile.alias);
+               return (getConfirm("fileCreate",newFile.alias));
             } else
-               result = getError("fileCreate",newFile.alias);
+               return (getError("fileCreate",newFile.alias));
          } else
-            result = getError("fileSave");
+            return (getError("fileSave"));
       }
    }
-   return (result);
 }
 
-
-/**
- * alias of file has changed, so we remove it and add it again with it's new alias
- * @param Obj file-object whose alias should be changed
- * @param String new alias of file
- * @return Boolean true in any case ...
- */
-
-function changeAlias(currFile,newAlias) {
-   this.remove(currFile);
-   this.set(currFile.alias,null);
-   currFile.alias = newAlias.alias;
-   this.add(currFile);
-   return true;
-}
 
 /**
  * delete a file
