@@ -8,7 +8,7 @@ function onRequest() {
    checkIfLoggedIn(this.href(req.action));
 
    if (!session.user || !session.user.sysadmin) {
-      res.message = getError("userNoSysAdmin");
+      res.message = getMessage("error","userNoSysAdmin");
       res.redirect(root.href());
    }
    // initialize sysmgr-object in session
