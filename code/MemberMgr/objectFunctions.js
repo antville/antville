@@ -50,9 +50,12 @@ function evalRegistration(param) {
       result = getError("passwordNoMatch");
 
    // check if username is existing and is clean
+   // can't use global isClean() here because we accept
+   // special characters like umlauts and spaces
+   var invalidChar = new RegExp("[^a-zA-Z0-9дцья\\.\\-_ ]");
    if (!param.name)
       result = getError("unameMissing");
-   else if (!isClean(param.name))
+   else if (invalidChar.exec(param.name))
       result = getError("unameNoSpecialChars");
    else {
       // check if username is similar to a built in function
@@ -268,7 +271,7 @@ function addMembership(usr,level) {
    newMembership.site = this._parent;
    newMembership.user = usr;
    newMembership.username = usr.name;
-   newMembership.level = level ? level : 0;
+   newMembership.level = level ? level : SUBSCRIBER;
    newMembership.createtime = new Date();
    this.add(newMembership);
    return (newMembership._id);
