@@ -1,1 +1,1 @@
-<li><% membership.sitetitle linkto="main" %> <span class="small">(as <% membership.level %>)</span></li>
+<li><% site.title linkto="main" %> <span class="small">(as <% membership.level %>)</span></li>
