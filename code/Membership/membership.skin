@@ -1,0 +1,1 @@
+<li><% weblog.title linkto="main" %> (as <% this.level %>, since <% this.createtime %>)</li>
