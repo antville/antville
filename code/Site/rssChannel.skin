@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <rss version="0.92">
 	<channel>
-		<title><% param.title %></title>
+		<title><![CDATA[<% param.title %>]]></title>
 		<link><% param.link %></link>
-		<description><% param.description %></description>
-		<copyright>Copyright <% param.year %> by <% param.name %></copyright>
+		<description><![CDATA[<% param.description %>]]></description>
+		<copyright>Copyright <% param.year %> by <![CDATA[<% param.name %>]]></copyright>
 		<docs>http://backend.userland.com/rss092</docs>
 		<lastBuildDate><% param.lastBuildDate %></lastBuildDate>
 		<managingEditor><% param.managingEditor %> </managingEditor>
