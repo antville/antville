@@ -70,7 +70,7 @@ function evalPreferences(param, modifier) {
    prefs.shortdateformat = param.shortdateformat;
 
    // layout
-   prefs.layout = param.layout;
+   this.layout = param.layout ? this.layouts.get(param.layout) : null;
 
    // e-mail notification
    var n = parseInt(param.notify_create, 10);
@@ -265,38 +265,61 @@ function sendNotification(type, obj) {
  * return the currently enabled layout object
  */
 function getLayout() {
-   var layoutAlias = this.preferences.getProperty("layout");
-   if (layoutAlias)
-      return this.layouts.get(layoutAlias);
+   if (this.layout)
+      return this.layout;
    return root.getLayout();
+}
+
+/**
+ * render the path to the static directory
+ * of this site
+ * @param String name of subdirectory (optional)
+ */
+function staticPath(subdir) {
+   res.write(app.properties.staticPath);
+   res.write(this.alias);
+   res.write("/");
+   if (subdir)
+      res.write(subdir);
+   return;
 }
 
 /**
  * return the path to the static directory
  * of this site
- * @return Object java.lang.StringBuffer
+ * @param String name of subdirectory (optional)
+ * @return String path to the static directory
  */
 function getStaticPath(subdir) {
-   var buf = new java.lang.StringBuffer(app.properties.staticPath);
-   buf.append(this.alias);
-   buf.append("/");
+   res.push();
+   this.staticPath(subdir);
+   return res.pop();
+}
+
+/**
+ * render the url of the static directory
+ * of this site
+ * @param String optional subdirectory
+ */
+function staticUrl(subdir) {
+   res.write(app.properties.staticUrl);
+   res.write(this.alias);
+   res.write("/");
    if (subdir)
-      buf.append(subdir);
-   return buf;
+      res.write(subdir);
+   return;
 }
 
 /**
  * return the url of the static directory
  * of this site
- * @return Object java.lang.Stringbuffer
+ * @param String optional subdirectory
+ * @return String static url
  */
 function getStaticUrl(subdir) {
-   var buf = new java.lang.StringBuffer(app.properties.staticUrl);
-   buf.append(this.alias);
-   buf.append("/");
-   if (subdir)
-      buf.append(subdir);
-   return buf;
+   res.push();
+   this.staticUrl(subdir);
+   return res.pop();
 }
 
 /**
@@ -305,7 +328,7 @@ function getStaticUrl(subdir) {
  * @return Object File object
  */
 function getStaticDir(subdir) {
-   return FileLib.mkdir(this.getStaticPath(subdir).toString());
+   return FileLib.mkdir(this.getStaticPath(subdir));
 }
 
 /**
