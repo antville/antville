@@ -3,7 +3,7 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(path.weblog.href());
+   res.redirect(path.site.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel) {
@@ -17,7 +17,7 @@ if (req.data.submit == "cancel" || req.data.cancel) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.weblog.title;
+res.data.title = path.site.title;
 
 res.data.body = this.renderSkinAsString("edit");
 

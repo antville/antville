@@ -3,7 +3,7 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.href());
+   res.redirect(this.site.href());
 }
 
 // storing referrer in session-cache in case user clicks cancel later
@@ -12,12 +12,12 @@ if (!session.data.referrer && req.data.http_referer)
 
 if (req.data.set) {
    this.toggleOnline(req.data.set);
-   res.redirect(this.weblog.stories.href());
+   res.redirect(this.site.stories.href());
 } else if (req.data.submit == "cancel" || req.data.cancel) {
    if (!this.isOnline())
-      var url = this.weblog.stories.href();
+      var url = this.site.stories.href();
    else
-      var url = session.data.referrer ? session.data.referrer : this.weblog.stories.href();
+      var url = session.data.referrer ? session.data.referrer : this.site.stories.href();
    session.data.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
@@ -31,10 +31,10 @@ if (req.data.set) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.title)
    res.data.title += " - " + encode(this.title);
 
 res.data.body = this.renderSkinAsString("edit");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

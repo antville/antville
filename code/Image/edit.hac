@@ -3,11 +3,11 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.images.href());
+   res.redirect(this.site.images.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.images.href());
+   res.redirect(this.site.images.href());
 else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalImg(req.data,session.user);
    res.message = result.message;
@@ -17,8 +17,8 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 
 res.data.body = this.renderSkinAsString("edit");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

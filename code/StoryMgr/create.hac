@@ -28,10 +28,10 @@ if (req.data.submit == "cancel" || req.data.cancel) {
       s = result.story;
 }
 
-res.data.title = path.weblog.title;
+res.data.title = path.site.title;
 
 res.data.action = this.href("create");
 
 res.data.body = s.renderSkinAsString("edit");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

@@ -3,11 +3,11 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.images.href());
+   res.redirect(this.site.images.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.images.href());
+   res.redirect(this.site.images.href());
 else if (req.data.submit == "delete" || req.data.remove) {
    res.message = this._parent.deleteImage(this);
    res.redirect(path.imagemgr.href());
@@ -15,11 +15,11 @@ else if (req.data.submit == "delete" || req.data.remove) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 
 var skinParam = new Object();
 skinParam.what = "the image <b>" + this.alias + "</b>";
 
 res.data.body = this.renderSkinAsString("delete",skinParam);
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
