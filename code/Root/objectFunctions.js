@@ -122,8 +122,8 @@ function getLocale() {
  */
 function getTitle() {
    if (!root.sys_title)
-      return ("antville");
-   return (root.sys_title);
+      return "antville";
+   return root.sys_title;
 }
 
 /**
@@ -133,8 +133,8 @@ function getTitle() {
  */
 function getUrl() {
    if (!root.sys_url)
-      return ("http://www.antville.org");
-   return (root.sys_url);
+      return "http://www.antville.org";
+   return root.sys_url;
 }
 
 /**
@@ -175,5 +175,5 @@ function getLayout() {
          return new layout();
       return defLayout;
    }
-   return root.layouts.get(root.sys_layout);
+   return root.sys_layout;
 }
