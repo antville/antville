@@ -5,11 +5,20 @@ if (deny) {
    res.redirect(this.members.href("login"));
 }
 
-this.renderStorylist(req.data.day);
-
 res.data.title = this.title;
 
-res.data.body = this.renderSkinAsString("main");
+if (this.allstories.size() == 0) {
+   res.data.body = this.renderSkinAsString("welcome");
+   if (session.user) {
+      if (session.user == this.creator)
+         res.data.body += this.renderSkinAsString("welcomeowner");
+      if (session.user.sysadmin)
+         res.data.body += this.renderSkinAsString("welcomesysadmin");
+   }
+} else {
+   this.renderStorylist(req.data.day);
+   res.data.body = this.renderSkinAsString("main");
+}
 
 this.renderSkin("page");
 
