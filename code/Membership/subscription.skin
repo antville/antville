@@ -1,1 +1,1 @@
-<li><% this.weblogtitle linkto="main" %>&nbsp;&nbsp;&nbsp;<span class="small"><% this.unsubscribelink prefix="...&nbsp;"%></span></li>
+<li><% this.sitetitle linkto="main" %>&nbsp;&nbsp;&nbsp;<span class="small"><% this.unsubscribelink prefix="...&nbsp;"%></span></li>
