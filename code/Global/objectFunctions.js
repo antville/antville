@@ -43,8 +43,8 @@ function isCleanForURL(str) {
  */
 
 function getParent() {
-   if (path.site)
-      return (path.site);
+   if (res.handlers.site)
+      return (res.handlers.site);
    else
       return (root);
 }
@@ -119,7 +119,7 @@ function autoLogin() {
    else {
       if (session.login(name,u.password)) {
          u.lastVisit = new Date();
-         res.message = getMessage("confirm","welcome",new Array(path.site ? path.site.title : root.getSysTitle(),session.user.name));
+         res.message = getMessage("confirm","welcome",new Array(res.handlers.site ? res.handlers.site.title : root.getSysTitle(),session.user.name));
       } else
          return;
    }
@@ -136,7 +136,7 @@ function checkIfLoggedIn(referrer) {
       // user is not logged in
       if (referrer)
          session.data.referrer = referrer;
-      res.redirect(path.site ? path.site.members.href("login") : root.members.href("login"));
+      res.redirect(res.handlers.site ? res.handlers.site.members.href("login") : root.members.href("login"));
    }
    return;
 }
@@ -159,7 +159,7 @@ function getPoolObj(objName,pool) {
       p.parent = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
       p.objName = objPath[1];
    } else {
-      p.parent = path.site;
+      p.parent = res.handlers.site;
       p.objName = objName;
    }
    if (!p.parent)
@@ -225,7 +225,7 @@ function getDefaultDateFormats(version) {
 
 function logAccess() {
    if (req.data.http_referer) {
-      var site = path.site ? path.site : root;
+      var site = res.handlers.site ? res.handlers.site : root;
       var referrer = req.data.http_referer;
 
       // no logging at all if the referrer comes from the same site
@@ -291,8 +291,8 @@ function pingUpdatedSites() {
  */
 function parseTimestamp (time, format) {
    var df = new java.text.SimpleDateFormat (format);
-   if (path.site)
-       df.setTimeZone(path.site.getTimeZone());
+   if (res.handlers.site)
+       df.setTimeZone(res.handlers.site.getTimeZone());
    // time may be a number like "20021020", so convert to string
    return df.parse (time.toString());
 }
@@ -311,7 +311,7 @@ function formatTimestamp(ts,dformat) {
    // in the response object
    var sdf = res.data["timeformat"];
    var fmt = "yyyy/MM/dd HH:mm";
-   var obj = path.site ? path.site : root;
+   var obj = res.handlers.site ? res.handlers.site : root;
    if (dformat == "short")
       fmt = obj.shortdateformat ? obj.shortdateformat : "dd.MM HH:mm";
    else if (dformat == "long")
@@ -320,7 +320,7 @@ function formatTimestamp(ts,dformat) {
       fmt = dformat;
 
    if (!sdf) {
-      var locale = path.site ? path.site.getLocale() : root.getLocale();
+      var locale = res.handlers.site ? res.handlers.site.getLocale() : root.getLocale();
       sdf = new java.text.SimpleDateFormat(fmt, locale);
       res.data["timeformat"] = sdf;
    } else if (fmt != sdf.toPattern()) {
@@ -376,8 +376,8 @@ function cloneObject(obj) {
 function getMessage(msgClass,msgName,value) {
    // create array containing languages to search for message
    var languages = new Array();
-   if (path && path.site && path.site.language)
-      languages[0] = (path.site.getLocale().getLanguage());
+   if (res.handlers.site && res.handlers.site.language)
+      languages[0] = (res.handlers.site.getLocale().getLanguage());
    languages[languages.length] = (root.getLocale()).getLanguage();
    // the last language to search for messages is always english
    languages[languages.length] = "en";
