@@ -76,3 +76,13 @@ function createLinkParam(param) {
    delete param.suffix;
    return param;
 }
+
+/**
+ * method for rendering any module navigation
+ * by calling the module method renderSiteNavigation
+ */
+function applyModuleMethod(module, funcName, param) {
+   if (module && module[funcName])
+      module[funcName].apply(this, [param]);
+   return;
+};
