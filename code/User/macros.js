@@ -3,7 +3,6 @@
  */
 
 function name_macro(param) {
-   res.write(param.prefix)
    if (this.url) {
       var linkParam = new Object();
       linkParam.to = this.url;
@@ -12,7 +11,6 @@ function name_macro(param) {
       this.closeLink();
    } else
       res.write(this.name);
-   res.write(param.suffix);
 }
 
 /**
@@ -20,11 +18,9 @@ function name_macro(param) {
  */
 
 function password_macro(param) {
-   if (param.as == "editor") {
-      res.write(param.prefix)
+   if (param.as == "editor")
       this.renderInputPassword(this.createInputParam("password",param));
-      res.write(param.suffix);
-   }
+   return;
 }
 
 
@@ -33,12 +29,10 @@ function password_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("url",param));
    else
       res.write(this.url);
-   res.write(param.suffix);
 }
 
 
@@ -47,12 +41,10 @@ function url_macro(param) {
  */
 
 function email_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("email",param));
    else
       res.write(this.email);
-   res.write(param.suffix);
 }
 
 /**
@@ -60,12 +52,10 @@ function email_macro(param) {
  */
 
 function description_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("description",param));
    else
       res.write(this.description);
-   res.write(param.suffix);
 }
 
 /**
@@ -74,14 +64,12 @@ function description_macro(param) {
  */
 
 function membershiplist_macro(param) {
-   res.write(param.prefix);
    if (!this.memberships.size())
       res.writeln("-----");
    else {
       for (var i=0;i<this.memberships.size();i++)
          this.memberships.get(i).renderSkin("membership");
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -90,14 +78,12 @@ function membershiplist_macro(param) {
  */
 
 function subscriptionlist_macro(param) {
-   res.write(param.prefix);
    if (!this.subscriptions.size())
       res.writeln("-----");
    else {
       for (var i=0;i<this.subscriptions.size();i++)
          this.subscriptions.get(i).renderSkin("subscription");
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -106,16 +92,14 @@ function subscriptionlist_macro(param) {
  */
 
 function webloglist_macro(param) {
-   res.write(param.prefix);
    if (!this.size())
       res.writeln("-----");
    else {
-      var l = user.list();
+      var l = session.user.list();
       l.sort(this.sortSubscriptions);
       for (var i in l) {
          var wl = l[i].weblog;
          wl.renderSkin("preview");
       }
    }
-   res.write(param.suffix);
 }
