@@ -50,8 +50,12 @@ function evalStory(param,modifier) {
    }
    // check new online-status of story
    var newStatus = parseInt(param.online,10);
-   if (param.publish || param.submit == "publish")
-      newStatus = param.addtofront ? 2 : 1;
+   if (param.publish || param.submit == "publish") {
+      if (param.justintopic)
+         newStatus = (param.addtofront != "1") ? 1 : 2;
+      else
+         newStatus = param.addtofront ? 2 : 1;
+   }
    else if ((param.save || param.submit == "save") && isNaN(newStatus))
       newStatus = 0;
    if (isNaN(newStatus))
