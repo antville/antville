@@ -12,10 +12,11 @@ function membership_macro(param) {
 /**
  * macro renders a link to signup-action
  * but only if user is not a member of this site
+ * and the site is public
  */
 
 function subscribelink_macro(param) {
-   if (!path.site || req.data.memberlevel != null)
+   if (!path.site || !path.site.online || req.data.memberlevel != null)
       return;
    openLink(path.site.href("subscribe"));
    res.write(param.text ? param.text : "sign up");
