@@ -147,10 +147,16 @@ function rss_action() {
    var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
    sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
    
-   var collection = this.allstories;
-   if (req.data.show == "all")
-      collection = this.allcontent;
-   var size = collection.size();
+   if (req.data.show == "all") {
+      var collection = this.allcontent;
+   } else if (req.data.show == "day") {
+      var collection = this.get(req.data.day);
+   } else if (req.data.show == "topic") {
+      var collection = this.topics.get(req.data.topic);
+   } else {
+      var collection = this.allstories;
+   }
+   var size = (collection != null) ? collection.size() : 0;
    var max = req.data.max ? parseInt(req.data.max) : 7;
    max = Math.min(max, size);
    max = Math.min(max, 10);

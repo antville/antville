@@ -15,3 +15,13 @@ function main_action() {
    res.data.body = this.renderSkinAsString("main");
    path.site.renderSkin("page");
 }
+
+/**
+ * rss feed for specific days and topics
+ */
+function rss_action() {
+  req.data.show = this._prototype;
+  req.data[this._prototype] = this.groupname;
+  path.site.rss_action();
+  return;
+}
