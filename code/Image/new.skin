@@ -1,6 +1,6 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td colspan="2" class="storyText">Please specify the name of the image. Using this name you will be able to reference the image in a macro.</td>
+<td colspan="2" class="storyText">Please specify the name of the image. Using this name you will be able to insert this image i.e. into a story by typing <pre>&lt;% weblog.image name="[insert name of image]" %&gt;</pre></td>
 </tr>
 <tr>
 <td class="storyText" nowrap><form method="post" enctype="multipart/form-data">Name:</td>
@@ -24,6 +24,10 @@
 <tr>
 <td class="storyText" nowrap>max. height:</td>
 <td class="storyText" nowrap><% this.input type="text" name="maxheight" width="5" %>&nbsp;pixel</td>
+</tr>
+<tr>
+<td class="storyText" nowrap>create thumbnail:</td>
+<td class="storyText" nowrap><% this.input type="checkbox" name="thumbnail" %></td>
 </tr>
 <tr>
 <td class="storyText" valign="top" nowrap>&nbsp;</td>
