@@ -56,6 +56,12 @@
 <td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled <a href="http://www.weblogs.com">weblogs.com</a> will be notified when your weblog is updated.</span></td>
 </tr>
 <tr>
+<td class="small" valign="top" nowrap="nowrap">Skinset:</td>
+<td><% site.skinsetchooser %><br /><span class="small"> Choose the skinset to use for your site. <% site.link to="skins" 
+text="Go to the skins page" %> to browse, manage or test-drive the list 
+of available skinsets.</span></td>
+</tr>
+<tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
 <b><a name="colors">Colors</a></b></td>
 </tr>
