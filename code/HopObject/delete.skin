@@ -1,3 +1,3 @@
 <form method="post"><p class="storyTitle">Warning!</p>
-<p>You are about to delete <% param.what %>! Be aware of the fact that there is no "undo", so if you klick on delete here the image will be gone forever!</p>
-<p><% this.input type="button" name="cancel" value="cancel" %>&nbsp;<% this.input type="button" name="remove" value="remove" %></p></form>
+<p>You are about to delete <% param.what %>! Be aware of the fact that there is no "undo", so if you klick on delete here it will be gone forever!</p>
+<p><% this.input type="button" name="remove" value="remove" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></p></form>
