@@ -3,6 +3,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
 <title>Antville Colorpicker</title>
 
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
@@ -203,7 +204,7 @@ function cancel() {
 </script>
 
 </head>
-<body onLoad="setDropdownColor();">
+<body onload="setDropdownColor();">
 
 <table border="0" cellspacing="4" cellpadding="8">
  <tr>
@@ -213,7 +214,7 @@ function cancel() {
    <table border="0" cellspacing="5" cellpadding="0" bgcolor="#ffffff">
     <tr>
      <td class="widget" colspan="2" align="center">Select
-      <select size="1" id="dropdown" name="color" onChange="setCurrentColor(this);">
+      <select size="1" id="dropdown" name="color" onchange="setCurrentColor(this);">
        <option value="bgcolor">background</option>
        <option value="titlecolor">title</option>
        <option value="textcolor">text</option>
@@ -280,12 +281,12 @@ for (var i=0; i<brightness.length; i++)
  </tr>
  <tr>
   <td class="widget">
-   <input class="widget" style="border: none;" id="display" value="" size="10" maxsize="10" />
+   <input class="widget" style="border: none;" id="display" value="" size="10" />
   </td>
   <td align="right" class="widget">
-    <button onClick="javascript: submit();" title="accept color selection">Accept</button>
+    <button name="accept" type="button" onclick="javascript: submit();" title="accept color selection">Accept</button>
     &nbsp;&nbsp;
-    <button onClick="javascript: cancel();" title="cancel color selection">Cancel</button>
+    <button name="cancel" type="button" onclick="javascript: cancel();" title="cancel color selection">Cancel</button>
   </td>
  </tr>
 </table>
