@@ -46,7 +46,7 @@ function evalFile(param, creator) {
    if (newFile.site.isNotificationEnabled())
       newFile.site.sendNotification("upload", newFile);
    newFile.site.diskusage += newFile.filesize;
-   return new Message("fileCreate", newFile.alias);
+   return new Message("fileCreate", newFile.alias, newFile);
 }
 
 
