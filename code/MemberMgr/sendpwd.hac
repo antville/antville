@@ -9,7 +9,7 @@ else if (req.data.submit == "send" || req.data.send) {
       res.redirect(parent.href());
 }
 
-res.data.title = "Antville - Password forgotten";
+res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("sendpwd");
 
