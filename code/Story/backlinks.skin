@@ -41,6 +41,11 @@ for (var i in referrers) {
    document.writeln('</tr>');
 }
 // --></script>
-<noscript>To prevent spam abuse referrers and backlinks are displayed using client-side JavaScript code. Thus, you should enable the option to execute JavaScript code in your browser. Otherwise you will only see this information.</noscript>
+
+<noscript>
+<tr>
+<td colspan="3">To prevent spam abuse referrers and backlinks are displayed using client-side JavaScript code. Thus, you should enable the option to execute JavaScript code in your browser. Otherwise you will only see this information.</td>
+</tr>
+</noscript>
 
 </table>
