@@ -221,7 +221,7 @@ SKINSETS.push(newSet);
 
 newSet = new Skinset("Story", ["Story.display", "Story.main", "Story.preview", "Story.comment", "Story.historyview", "Story.embed", "Story.edit"]);
 newSet.add(new Skinset("Story.backlinks", ["Story.backlinks", "Story.backlinkItem"]));
-newSet.add(new Skinset("Story.list", ["Storymgr.main", "Story.mgrlistitem"]));
+newSet.add(new Skinset("Story.list", ["StoryMgr.main", "Story.mgrlistitem"]));
 SKINSETS.push(newSet);
 
 newSet = new Skinset("Comment", ["Comment.toplevel", "Comment.reply", "Comment.edit"]);
