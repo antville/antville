@@ -11,17 +11,25 @@ function loginstatus_macro(param) {
       this.members.renderSkin("statusloggedout");
 }
 
+/**
+ * macro is left here for backwards-compatibility only
+ */
+
 function webloglist_macro(param) {
 	webloglist_macro(param);
 }
 
 
 /**
- * macro renders the number of weblogs
+ * macro renders the number of weblogs (either all or just the public ones)
  */
 
 function weblogcounter_macro(param) {
+   if (param.count == "all")
+      var size = root.size();
+   else
+      var size = this.public.size();
    res.write(param.prefix)
-   res.write(this.size());
+   res.write(size);
    res.write(param.suffix);
 }
