@@ -67,7 +67,7 @@ function evalStory(param, modifier) {
    this.ipaddress = param.http_remotehost;
 
    // send e-mail notification
-   if ((root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) && newStatus != 0) {
+   if (this.site.isNotificationEnabled() && newStatus != 0) {
       // status changes from offline to online
       // (this is bad because somebody could send a bunch
       // of e-mails simply by toggling the online status.)
@@ -127,7 +127,7 @@ function evalComment(param, creator) {
       this.story.comments.add(c);
    this.site.lastupdate = new Date();
    // send e-mail notification
-   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
+   if (this.site.isNotificationEnabled()) 
       this.site.sendNotification("create", c);
    var result = new Message("commentCreate");
    result.id = c._id;

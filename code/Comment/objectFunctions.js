@@ -29,7 +29,7 @@ function updateComment(param) {
    if (content.isMajorUpdate) {
       this.modifytime = new Date();
       // send e-mail notification
-      if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
+      if (this.site.isNotificationEnabled()) 
          this.site.sendNotification("update", this);
    }
    this.cache.modifytime = new Date();

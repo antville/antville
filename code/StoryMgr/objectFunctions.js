@@ -49,7 +49,7 @@ function evalNewStory(param, creator) {
    if (!this.add(s))
       throw new Exception("storyCreate");
    // send e-mail notification
-   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && s.site.trusted) 
+   if (s.site.isNotificationEnabled()) 
       s.site.sendNotification("create", s);
    var result = new Message("storyCreate", null, s);
    result.id = s._id;
