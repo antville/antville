@@ -14,7 +14,6 @@ if (deny) {
 
 var s = new story();
 
-
 // storing referrer in session-cache in case user clicks cancel later
 if (!session.data.referrer && req.data.http_referer)
    session.data.referrer = req.data.http_referer;
@@ -23,7 +22,7 @@ if (req.data.submit == "cancel" || req.data.cancel) {
    var url = session.data.referrer ? session.data.referrer : this.href();
    session.data.referrer = null;
    res.redirect(url);
-} else if (req.data.submit == "save" || req.data.save) {
+} else if (req.data.submit == "save" || req.data.save || req.data.submit == "publish" || req.data.publish) {
    var result = this.evalNewStory(s,req.data,session.user);
    res.message = result.message;
    if (!result.error) {
