@@ -139,7 +139,7 @@ function linkedpath_macro (param) {
    res.write(param.prefix);
    var separator = param.separator;
    if (!separator)
-       separator = "&gt; ";
+       separator = " &gt; ";
    var title = "Home";
    for (var i=1; i<path.length-1; i++) {
        title = path[i].getNavigationName();
