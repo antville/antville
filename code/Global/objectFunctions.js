@@ -306,7 +306,7 @@ function pingUpdatedWeblogs() {
       return;
    }
 
-   var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and LASTUPDATE > LASTPING;";
+   var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and  (LASTUPDATE > LASTPING or LASTPING is null);";
    var rows = c.executeRetrieval(query);
    var error = c.getLastError();
    if (error) {
@@ -317,7 +317,7 @@ function pingUpdatedWeblogs() {
    while (rows.next()) {
       var id = rows.getColumnItem("ID");
       var blog = root.get(id.toString());
-      app.__app__.logEvent("Notifying weblogs.com for updated weblog " + blog.alias);
+      app.__app__.logEvent("Notifying weblogs.com for updated weblog '" + blog.alias + "' (id " + id + ")");
       blog.ping();
    }
 
