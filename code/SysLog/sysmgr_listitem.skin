@@ -1,7 +1,7 @@
 <table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td><% syslog.sysmgr_typeflag %></td>
-<td class="small" align="right" nowrap="nowrap"><% syslog.createtime format="dd.MM.yyyy HH:mm" %></td>
+<td class="small" align="right" nowrap="nowrap"><% syslog.createtime format="yyyy.MM.dd, HH:mm" %></td>
 </tr>
 <tr>
 <td width="100%" nowrap="nowrap"><% syslog.sysmgr_object prefix="<strong>" suffix="</strong><br />" %>
