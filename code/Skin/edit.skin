@@ -1,9 +1,9 @@
 <form method="post" action="<% response.action %>">
 <input type="hidden" name="proto" value="<% request.proto %>" />
 <input type="hidden" name="name" value="<% request.name %>" />
-<% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %>
+<% this.skin as="editor" cols="50" rows="25" wrap="virtual" class="formWide" %>
 
-<p><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %> &nbsp; <a href="#help">help</a></p>
+<p><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %> &nbsp; <a href="#help">help</a></p>
 </form>
 
 <a name="help"></a>

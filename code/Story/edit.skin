@@ -2,11 +2,11 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td nowrap="nowrap"><span class="small">Title:</span><br />
-<% story.content part="title" as="editor" width="24" style="formTitle" %></td>
+<% story.content part="title" as="editor" size="24" class="formTitle" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap"><span class="small">Text:</span><br />
-<% story.content part="text" as="editor" width="30" height="15" style="formText" %></td>
+<% story.content part="text" as="editor" cols="30" rows="15" class="formText" %></td>
 </tr>
 <tr>
 <td><fieldset><legend class="small">Options</legend>
@@ -31,7 +31,7 @@ Add this story to a topic<br />
 <td class="small"><% story.creator as="link" prefix="Created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><br /><% input type="button" name="publish" value="Publish" %>&nbsp;<% input type="button" name="save" value="Save offline" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="submit" name="publish" value="Publish" %>&nbsp;<% input type="submit" name="save" value="Save offline" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>
