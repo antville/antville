@@ -524,8 +524,8 @@ sysmgr.createSiteTitle = Create a new site
 sysmgr.registeredUsers = all registered users
 sysmgr.trustedUsers = only trusted users
 sysmgr.allowNotfication.no = no notification e-mails
-sysmgr.allowNotfication.allSites = notification for alle sites
-sysmgr.allowNotfication.trustedSites = only trusted sites
+sysmgr.allowNotfication.all = notification for alle sites
+sysmgr.allowNotfication.trusted = only trusted sites
 
 # site
 site.preferencesTitle = Preferences of <% param.siteTitle %>
