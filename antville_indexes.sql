@@ -1,6 +1,14 @@
 use antville;
 
 #-----------------------------
+# Indexes for ACCESS
+#-----------------------------
+
+create index IDX_WEBLOG_ID on ACCESS (WEBLOG_ID);
+create index IDX_DATE on ACCESS (DATE);
+create index IDX_REFERRER on ACCESS (REFERRER(30));
+
+#-----------------------------
 # Indexes for WEBLOG
 #-----------------------------
 
