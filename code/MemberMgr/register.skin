@@ -13,16 +13,18 @@
 <td nowrap="nowrap"><% input type="password" name="password2" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">eMail:</td>
-<td nowrap="nowrap"><% input type="text" name="email" %></td>
+<td class="small" valign="top" nowrap="nowrap">eMail:</td>
+<td><% input type="text" name="email" %><br>
+<span class="small"><% input type="checkbox" name="publishemail" %>if you select this the eMail-address above might appear public.</span></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Url:*</td>
-<td nowrap="nowrap"><% input type="text" name="url" %></td>
+<td class="small" valign="top" nowrap="nowrap">Link:*</td>
+<td><% input type="text" name="url" %><br>
+<span class="small">If you enter an eMail-address or a URL here, your Username will appear as link.</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="register" value="register" %>&nbsp;<% input type="button" name="cancel" value="cancel" %><br />&nbsp;<br />* = optional</td>
+<td nowrap="nowrap"><% input type="button" name="register" value="register" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </form>
 </table>
