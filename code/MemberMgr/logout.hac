@@ -1,8 +1,0 @@
-if (session.user) {
-  res.message = getMessage("confirm","logout",session.user.name);
-  session.logout();
-  session.data.referrer = null;
-  res.setCookie ("avUsr", "");
-  res.setCookie ("avPw", "");
-}
-res.redirect(this._parent.href());

@@ -1,5 +1,0 @@
-// since comments don't have their own page, we redirect to
-// story together with an anchor to this comment
-
-res.redirect(this.story.href() + "#" + this._id);
-

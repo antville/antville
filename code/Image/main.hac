@@ -1,5 +1,0 @@
-res.data.title = "View image: " + this.alias;
-
-res.data.body = this.renderSkinAsString("main");
-
-path.site.renderSkin("page");
