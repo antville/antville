@@ -56,6 +56,7 @@ function evalStory(param, modifier) {
       this.online = 0;
    if (content.isMajorUpdate)
       this.modifytime = new Date();
+   this.content.setAll(content.value);
    this.topic = topicName;
    // let's keep the title property
    this.title = content.value.title;
@@ -122,6 +123,7 @@ function evalComment(param, creator) {
    if (!content.exists)
       throw new Exception("textMissing");
    var c = new Comment(this.site, creator, param.http_remotehost);
+   c.content.setAll(content.value);
    // let's keep the title property:
    c.title = content.value.title;
    this.add(c);
