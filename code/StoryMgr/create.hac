@@ -1,9 +1,10 @@
 autoLogin();
+checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isAddDenied(user);
+var deny = this.isDenied(user);
 if (deny) {
    res.message = deny;
-   res.redirect(user.cache.referer ? path.weblog.members.href("login") : this.href());
+   res.redirect(this.href());
 }
 
 // storing referer in user-cache in case user clicks cancel later
