@@ -3,7 +3,6 @@
  */
 
 function renderCalendarDay(currGroupname,text) {
-   var now = new Date();
    var currGroup = this.get(currGroupname);
    var linkit = false;
    if (currGroup && currGroup.size()) {
@@ -11,13 +10,11 @@ function renderCalendarDay(currGroupname,text) {
          linkit = true;
       else {
          linkit = false;
-         if (currGroupname <= now.format("yyyyMMdd")) {
-            for (var i=0;i<currGroup.size();i++) {
-               var st = currGroup.get(i);
-               if (st.isOnline() || st.isViewAllowed()) {
-                  linkit = true;
-                  break;
-               }
+         for (var i=0;i<currGroup.size();i++) {
+            var st = currGroup.get(i);
+            if (st.isOnline() || st.isViewAllowed()) {
+               linkit = true;
+               break;
             }
          }
       }
