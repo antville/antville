@@ -145,8 +145,7 @@ function getUsersBlogs(appkey, username, password) {
       var param = new Object();
       param.blogid = site.alias;
       param.blogname = site.title;
-      // FIXME: just for testing
-      param.url = "http://localhost/antville/" + site.alias; // site.href();
+      param.url = site.href();
       result[result.length] = param;
    }
    return (result);
