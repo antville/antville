@@ -8,6 +8,8 @@ if (deny) {
    res.redirect(user.cache.referer ? parent.members.href("login") : parent.href());
 }
 
+this.renderImagelist(parseInt(req.data.start,10));
+
 res.data.title = "Antville - " + parent.title;
 
 res.data.body = this.renderSkinAsString("main");
