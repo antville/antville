@@ -18,7 +18,7 @@ function content_macro(param) {
       param.name = "content_" + param.part;
       delete(param.part);
       if (!param.height || parseInt(param.height) == 1) {
-         param.value = encodeForm(param.value);
+         param.value = encodeForm(param.value ? param.value : "");
          renderInputText(param);
       } else 
          renderInputTextarea(param);
