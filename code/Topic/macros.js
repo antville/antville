@@ -3,8 +3,11 @@
  * to this topic.
  */
 function addstory_macro (param) {
-   if (path.site.stories.isDenied(session.user, req.data.memberlevel))
+   try {
+      path.site.stories.checkAdd(session.user, req.data.memberlevel);
+   } catch (deny) {
       return;
+   }
    param.linkto = "create";
    param.urlparam = "topic=" + this.groupname;
    Html.openTag("a", path.site.stories.createLinkParam(param));
@@ -13,6 +16,7 @@ function addstory_macro (param) {
    else
       res.write("add a story to this topic");
    Html.closeTag("a");
+   return;
 }
 
 /**
