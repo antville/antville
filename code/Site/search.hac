@@ -15,25 +15,74 @@ res.body = this.renderSkinAsString("searchform");
 
 if (req.data.q) {
     var query = req.data.q;
+
+    // reuse search result container if it already exists
     var folder = user.cache["search-"+query];
     if (!folder) {
         folder = new weblog();
         user.cache["search-"+query] = folder;
     }
-    folder.allstories.subnodeRelation = "where WEBLOG_ID = "+this._id+" and ISONLINE > 0 and "+
-		"(TITLE like '%"+query+"%' or TEXT like '%"+query+"%') "+
-		"order by CREATETIME desc";
+
+    // break up search string
+    var qarr = query.split(" ");
+
+    // construct query
+    var where = "where WEBLOG_ID = "+this._id+" and ISONLINE > 0 and ";
+    for (var i in qarr) {
+        where += "(TITLE like '%"+qarr[i]+"%' or TEXT like '%"+qarr[i]+"%') "
+        if (i < qarr.length-1)
+            where += "and ";
+    }
+    where += "order by CREATETIME desc";
+    folder.allstories.subnodeRelation = where;
+
     var found = folder.allstories.size();
     if (found == 0)
         res.body += "<i>Nothing found for '"+query+"'.</i>";
     else {
+        var start = 0;
+        var end = found;
+
         if (found == 1)
             res.body += "<i>Found 1 item for '"+query+"'.</i>";
-        else
+        else if (found <= 10)
             res.body += "<i>Found "+found+" items for '"+query+"'.<i>";
+        else {
+            if (req.data.start)
+                start = Math.min (found-1, parseInt (req.data.start));
+            if (isNaN (start))
+                start = 0;
+            end = Math.min (found, start+10);
+            res.body += "<i>Found "+found+" items for '"+query+"'. ";
+            res.body += "Displaying items "+(start+1)+" to "+end+".<i>";
+        }
+
+        // note: I'm doing this without a "searchbody" skin, since
+        // I think there's not much need to customize the body of
+        // search results, esp. since its parts are fully customizable.
+        // of course, I may be wrong about that.
+
+        // render prev links, if necessary
+        if (start > 0) {
+            var sp = new Object();
+            sp.url = this.href() + "search?q="+escape(query)+"&start="+Math.max(0,start-10);
+            sp.text = "previous results";
+            res.body += "<br><br>"+renderSkinAsString("prevpagelink",sp);
+        }
+
+        // render result
         res.body += '<table border="0">';
-        for (var i=0; i<found; i++)
-        res.body += folder.allstories.get (i).renderSkinAsString("searchview");
+        for (var i=start; i<end; i++)
+            res.body += folder.allstories.get (i).renderSkinAsString("searchview");
+
         res.body += '</table>';
+
+        // render next links, if necessary
+        if (end < found) {
+            var sp = new Object();
+            sp.url = this.href() + "search?q="+escape(query)+"&start="+Math.min(found-1,start+10);
+            sp.text = "next results";
+            res.body += renderSkinAsString("nextpagelink",sp);
+        }
     }
 }
