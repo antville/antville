@@ -14,6 +14,7 @@ function alias_macro(param) {
       closeMarkupElement("a");
    } else
       res.write(this.alias);
+   return;
 }
 
 
@@ -26,6 +27,7 @@ function description_macro(param) {
       renderInputTextarea(this.createInputParam("description",param));
    else
       res.write(this.description);
+   return;
 }
 
 /**
@@ -37,6 +39,7 @@ function url_macro(param) {
    if (this.site)
        res.write(this.site.alias + "/");
    res.write(this.filename + "." + this.fileext);
+   return;
 }
 
 /**
@@ -49,6 +52,7 @@ function editlink_macro(param) {
       res.write(param.text ? param.text : "edit");
       closeLink();
    }
+   return;
 }
 
 /**
@@ -65,6 +69,7 @@ function deletelink_macro(param) {
          res.write(param.text ? param.text : "delete");
       closeLink();
    }
+   return;
 }
 
 /**
@@ -90,6 +95,7 @@ function viewlink_macro(param) {
 
 function filesize_macro(param) {
    res.write((this.filesize / 1000).format("###,###") + " KB");
+   return;
 }
 
 /**
@@ -98,6 +104,7 @@ function filesize_macro(param) {
 
 function mimetype_macro(param) {
    res.write(this.mimetype);
+   return;
 }
 
 
@@ -109,6 +116,7 @@ function filetype_macro(param) {
    var i = this.name.lastIndexOf(".");
    if (i > -1)
       res.write(this.name.substring(i+1, this.name.length));
+   return;
 }
 
 
@@ -118,5 +126,13 @@ function filetype_macro(param) {
  */
 
 function clicks_macro(param) {
-   res.write(this.requestcnt);
+   if (!this.requestcnt)
+      res.write(param.no ? param.no : "");
+   else if (this.requestcnt == 1)
+      res.write(param.one ? param.one : "1 click");
+   else {
+      res.write(this.requestcnt);
+      res.write(param.more ? param.more : " clicks");
+   }
+   return;
 }
