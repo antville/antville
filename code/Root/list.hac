@@ -1,0 +1,8 @@
+res.skin = "root.page";
+
+res.title = "Antville";
+
+res.head = this.renderSkinAsString("javascript");
+res.head += this.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("list");

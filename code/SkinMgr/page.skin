@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<title><% response.title %></title>
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<% response.head %>
+</head>
+
+<body>
+
+<% weblog.skin name="header" %>
+
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20" nowrap>&nbsp;</td>
+<td width="660" valign="top" nowrap><br><% response.body %></td>
+<td width="20" nowrap>&nbsp;</td>
+</tr>
+</table>
+
+</body>
+</html>
