@@ -1,12 +1,15 @@
-use antville ;
+CREATE DATABASE IF NOT EXISTS antville;
+USE antville;
+GRANT SELECT,INSERT,UPDATE,DELETE ON antville.* TO antville@localhost IDENTIFIED BY 'antville';
+
 #----------------------------
 # Table structure for COMMENT
 #----------------------------
 create table COMMENT (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    WEBLOG_ID mediumint(9),
    STORY_ID mediumint(9),
-   PARENT_ID mediumint(9) default '0',
+   PARENT_ID mediumint(9),
    TITLE mediumtext,
    TEXT mediumtext,
    AUTHOR mediumint(9),
@@ -24,7 +27,7 @@ create table COMMENT (
 # Table structure for IMAGE
 #----------------------------
 create table IMAGE (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    WEBLOG_ID mediumint(9),
    PARENT_ID mediumint(9),
    THUMBNAIL_ID mediumint(9),
@@ -41,14 +44,30 @@ create table IMAGE (
    unique ID (ID));
 
 #----------------------------
-# No records for table IMAGE
+# records for table IMAGE
 #----------------------------
+
+alter table image change column ID ID mediumint(9) not null auto_increment;
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('big','big','gif',404,53,'antville.org');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('smallanim','smallanim','gif',98,30,'resident of antville.org');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('smallchaos','smallchaos','gif',107,29,'resident of antville.org');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('smallstraight','smallstraight','gif',107,24,'resident of antville.org');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('smalltrans','smalltrans','gif',98,30,'resident of antville.org');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('pixel','pixel','gif',1,1,'pixel');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT) values ('headbg','headbg','gif',3,52);
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('menu','menu','gif',36,13,'menu');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('recent','recent','gif',123,13,'recently modified');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('status','status','gif',48,13,'status');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('dot','dot','gif',30,30,'dots');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('bullet','bullet','gif',3,10,'bullet');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('webloghead','webloghead','gif',404,53,'head');
+alter table image change column ID ID mediumint(9) not null;
 
 #----------------------------
 # Table structure for SKIN
 #----------------------------
 create table SKIN (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    WEBLOG_ID mediumint(9),
    PROTO tinytext,
    NAME tinytext,
@@ -66,7 +85,7 @@ create table SKIN (
 # Table structure for STORY
 #----------------------------
 create table STORY (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    WEBLOG_ID mediumint(9),
    DAY varchar(10),
    TITLE mediumtext,
@@ -87,7 +106,7 @@ create table STORY (
 # Table structure for USER
 #----------------------------
 create table USER (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    USERNAME tinytext,
    PASSWORD tinytext,
    EMAIL tinytext,
@@ -106,7 +125,7 @@ create table USER (
 # Table structure for WEBLOG
 #----------------------------
 create table WEBLOG (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    TITLE tinytext,
    ALIAS tinytext,
    TAGLINE tinytext,
@@ -131,7 +150,7 @@ create table WEBLOG (
    SHOWARCHIVE tinyint(1),
    LANGUAGE varchar(2),
    COUNTRY varchar(2),
-   DATEFORMAT varchar(50);
+   DATEFORMAT varchar(50),
    CREATETIME datetime,
    CREATOR mediumint(9),
    MODIFYTIME datetime,
@@ -146,7 +165,7 @@ create table WEBLOG (
 # Table structure for MEMBER
 #----------------------------
 create table MEMBER (
-   ID mediumint(9) not null default '0',
+   ID mediumint(9) not null,
    WEBLOG_ID mediumint(9),
    USER_ID mediumint(9),
    USERNAME tinytext,
