@@ -232,7 +232,34 @@ function imagelist_macro(param) {
    var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
       return;
-   site.images.imagelist_macro(param);
+   if (!site.images.size())
+      return;
+   var size = Math.min(param.limit ? param.limit : 5, site.images.size());
+   var imgcnt = 0;
+   var idx = 0;
+   while (imgcnt < size || imgcnt == size-1) {
+      var imgObj = site.images.get(idx++);
+      var url = param.linkto ? param.linkto : imgObj.getUrl();
+
+      res.write(param.itemprefix);
+      // return different display according to param.as
+      if (param.as == "thumbnail") {
+         if (imgObj.thumbnail)
+            imgObj = imgObj.thumbnail;
+      } else if (param.as == "popup") {
+         url = imgObj.getPopupUrl();
+         if (imgObj.thumbnail)
+            imgObj = imgObj.thumbnail;
+      }
+      if (url) {
+         Html.openLink({href: url});
+         renderImage(imgObj, Object.clone(param));
+         Html.closeLink();
+      } else
+         renderImage(imgObj, Object.clone(param));
+      res.write(param.itemsuffix);
+      imgcnt++;
+   }
    return;
 }
 
