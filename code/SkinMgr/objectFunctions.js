@@ -30,7 +30,7 @@ function saveSkin(proto,name,source,creator) {
    var result;
    if (proto && name) {
       var s = this.fetchSkin(proto,name);
-      if (!s.proto && skin) {
+      if (!s.proto && source) {
          s.creator = creator;
          s.createtime = new Date();
          s.name = name;
