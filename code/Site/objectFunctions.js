@@ -86,14 +86,12 @@ function evalPreferences(param, modifier) {
    prefs.skinset = param.skinset;
 
    // e-mail notification
-   var notifystorycreate = parseInt(param.notifystorycreate,10);
-   prefs.notifystorycreate = (modifier == this.creator && !isNaN(notifystorycreate) ? notifystorycreate : null);
-   var notifytextupdate = parseInt(param.notifytextupdate,10);
-   prefs.notifytextupdate = (modifier == this.creator && !isNaN(notifytextupdate) ? notifytextupdate : null);
-   var notifycommentcreate = parseInt(param.notifycommentcreate,10);
-   prefs.notifycommentcreate = (modifier == this.creator && !isNaN(notifycommentcreate) ? notifycommentcreate : null);
-   var notifyupload = parseInt(param.notifyupload,10);
-   prefs.notifyupload = (modifier == this.creator && !isNaN(notifyupload) ? notifyupload : null);
+   var n = parseInt(param.notify_create, 10);
+   prefs.notify_create = (modifier == this.creator && !isNaN(n) ? n : null);
+   n = parseInt(param.notify_update, 10);
+   prefs.notify_update = (modifier == this.creator && !isNaN(n) ? n : null);
+   n = parseInt(param.notify_upload,10);
+   prefs.notify_upload = (modifier == this.creator && !isNaN(n) ? n : null);
 
    // store preferences
    this.preferences.setAll(prefs);
@@ -233,25 +231,43 @@ function processHref(href) {
 
 
 /**
- * function sends e-mail notification if a new file or image is uploaded
- * type: file/image
- * alias: name of the file/image
+ * send e-mail notification if necessary
+ * @param String type of changes (e.g. createStory)
+ * @param HopObject the HopObject the changes were applied to
  */
-function sendNotification(type, alias) {
-   var notify = this.preferences.getProperty("notifyupload");
-   if (notify == 0)
+function sendNotification(type, obj) {
+   var notify = this.preferences.getProperty("notify_" + type);
+   if (!notify || notify == 0)
       return;
-   var mail = new Mail();
-   mail.setFrom(root.sys_email);
+   var recipients = new Array();
    for (var i=0; i<this.members.size(); i++) {
       var m = this.members.get(i);
+      if ((type != "update" && m.user == obj.creator) || (type == "update" && m.user == obj.modifier))
+         continue;
       if (notify == 1 && (m.level == ADMIN || m.level == CONTENTMANAGER) )
-         mail.addBCC(m.user.email);
-      if (notify == 2 && (m.level == ADMIN || m.level == CONTENTMANAGER || m.level == CONTRIBUTOR) )
-         mail.addBCC(m.user.email);
+         recipients.push(m.user.email);
+      if (notify == 2 && (m.level == ADMIN || m.level == CONTENTMANAGER || m.level == CONTRIBUTOR))
+         recipients.push(m.user.email);
    }
-   mail.setSubject("uploaded " + type + " on " + this.title + ": " + alias);
-   mail.setText(renderSkinAsString("notification", {url: this.href()}));
-   mail.queue();
+   if (recipients.length > 0) {
+      var param = {
+         user: obj.modifier ? obj.modifier.name : 
+            (obj.creator ? obj.creator.name : null),
+         href: obj.href()
+      };
+      var sender = root.sys_title + "<" + root.sys_email + ">";
+      var subject = getMessage("mail.notification");
+      var body = this.renderSkinAsString("notificationMail", param);
+      sendMail(sender, recipients, subject, body);
+/*
+      var mail = new Mail();
+      mail.setFrom(root.sys_title + "<" + root.sys_email + ">");
+      mail.setSubject("Notification of site changes");
+      mail.setText();
+      for (var i in recipients)
+         mail.addBCC(recipients[i]);
+      mail.queue();
+*/
+   }
    return;
 }

@@ -3,18 +3,13 @@
 <b>E-mail notification</b></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">New stories:</td>
-<td nowrap="nowrap"><% site.notify event="storycreate" as="editor" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">New comments:</td>
-<td nowrap="nowrap"><% site.notify event="commentcreate" as="editor" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">New picture <br />or file upload:</td>
-<td nowrap="nowrap"><% site.notify event="upload" as="editor" %></td>
+<td class="small" nowrap="nowrap">New stories <br />or comments:</td>
+<td nowrap="nowrap"><% site.notify event="create" as="editor" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Updated stories <br />or comments:</td>
-<td nowrap="nowrap"><% site.notify event="textupdate" as="editor" %></td>
+<td nowrap="nowrap"><% site.notify event="update" as="editor" %></td>
+</tr><tr>
+<td class="small" nowrap="nowrap">New image <br />or file uploads:</td>
+<td nowrap="nowrap"><% site.notify event="upload" as="editor" %></td>
 </tr>
