@@ -188,13 +188,14 @@ function poll_macro(param) {
    if (!poll)
       return(getMessage("error","pollNoExist",param.id));
    var deny = poll.isVoteDenied(session.user,req.data.memberlevel);
-   if (poll.closed || param.as == "results")
-      poll.renderSkin("results");
-   else if (deny || param.as == "link") {
-      openLink(poll.href());
+   if (deny || param.as == "link") {
+      openLink(poll.href(poll.closed ? "results" : ""));
       res.write(poll.question);
       closeLink();
-   } else {
+   }
+   else if (poll.closed || param.as == "results")
+      poll.renderSkin("results");
+   else {
       res.data.action = poll.href();
       poll.renderSkin("main");
    }
