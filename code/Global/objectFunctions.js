@@ -13,7 +13,7 @@ function onStart() {
  */
  
 function scheduler() {
-	return(1000);
+	return(3600000);
 }
 
 
