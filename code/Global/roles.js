@@ -23,22 +23,13 @@ MAY_EDIT_MEMBERS = 65536;
 ROLES = new Array("Subscriber","Contributor","Content Manager","Admin");
 
 /**
- * function returns an integer indicating user-role
- */
-
-function getUserLvl() {
-   var lvl = 0;
-   lvl |= MAY_ADD_COMMENT;
-   return (lvl);
-}
-
-/**
  * function returns an integer indicating contributor-role
  */
 
 function getContributorLvl() {
-   var lvl = getUserLvl();
+   var lvl = 0;
    lvl |= MAY_ADD_STORY;
+   lvl |= MAY_ADD_COMMENT;
    lvl |= MAY_ADD_IMAGE;
    lvl |= MAY_ADD_GOODIE;
    lvl |= MAY_VIEW_STATS;
