@@ -17,7 +17,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="700" class="title" nowrap="nowrap"><% image name="/pixel" width="40" %><% this.title %></td>
+<td width="700" class="title" nowrap="nowrap"><% image name="/pixel" width="40" %><% site.title %></td>
 </tr>
 </table>
 
@@ -32,13 +32,13 @@
 <td width="60" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
-<% this.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% this.lastupdate prefix="last updated:&nbsp;" format="short%></div>
+<% site.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% site.lastupdate prefix="last updated:&nbsp;" format="short%></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/status" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statuslight"><% this.loginstatus %></div>
+<div class="statuslight"><% site.loginstatus %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/menu" %></div>
@@ -46,12 +46,12 @@
 
 <div class="statusdark">...&nbsp;<% site.link to="main" text="home" %><br />
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
-<% this.navigation for="contributors" %>
-<% this.navigation for="admins" %><br />
+<% site.navigation for="contributors" %>
+<% site.navigation for="admins" %><br />
 <% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div><form method="GET" action="<% site.url %>search"><% input name="q" class="searchbox" value="enter your keyword(s)" onclick="this.value='';"%><% input type="button" name="submit" value="find!" class="searchbox" %></form></div>
+<div><% site.searchbox %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% site.calendar %></div>
 
@@ -59,7 +59,7 @@
 <div class="statushead"><% image name="/recent" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<% this.history show="5" %>
+<% site.history show="5" %>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><br /><% site.xmlbutton %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
