@@ -8,10 +8,10 @@
  */
 
 function renderStorylist() {
-   var dayIdx = path.weblog.contains(this);
+   var dayIdx = path.site.contains(this);
    if (dayIdx > 0) {
       var sp = new Object();
-      sp.url = path.weblog.get(path.weblog.contains(this)-1).href();
+      sp.url = path.site.get(path.site.contains(this)-1).href();
       sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
@@ -22,9 +22,9 @@ function renderStorylist() {
          res.data.storylist += st.renderSkinAsString("preview");
    }
    // assigning link to previous page to res.data.prevpage
-   if (dayIdx < path.weblog.size()-1) {
+   if (dayIdx < path.site.size()-1) {
       var sp = new Object();
-      sp.url = path.weblog.get(path.weblog.contains(this)+1).href();
+      sp.url = path.site.get(path.site.contains(this)+1).href();
       sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }

@@ -7,8 +7,8 @@ function sysmgr_typeflag_macro(param) {
    // this macro is allowed just for sysadmins
    if (!isUserSysAdmin())
       return;
-   if (this.type == "weblog")
-      res.write("<span class=\"flagdkgreen\" nowrap>WEBLOG</span>");
+   if (this.type == "site")
+      res.write("<span class=\"flagdkgreen\" nowrap>SITE</span>");
    else if (this.type == "user")
       res.write("<span class=\"flagred\" nowrap>USER</span>");
    else

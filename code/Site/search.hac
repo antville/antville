@@ -14,9 +14,9 @@ res.data.body = this.renderSkinAsString("searchform");
 if (req.data.q) {
 
     var query = req.data.q;
-    // array with weblogs to search
-    var wlogs = new Array (this);
-    var result = root.searchWeblogs (query, this._id);
+    // array with sites to search
+    var sites = new Array (this);
+    var result = root.searchSites (query, this._id);
     var found = result.length;
     if (found == 0)
         res.data.body += "<i>" + getMsg("error","searchNothingFound",query) + "</i>";
@@ -54,8 +54,8 @@ if (req.data.q) {
         // render result
         res.data.body += '<table border="0">';
         for (var i=start; i<end; i++) {
-            var wl = root.get(result[i].weblogalias);
-            var item = wl.allcontent.get(result[i].sid);
+            var site = root.get(result[i].sitealias);
+            var item = site.allcontent.get(result[i].sid);
             res.data.body += item.renderSkinAsString("searchview");
         }
 

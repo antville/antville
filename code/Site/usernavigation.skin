@@ -1,4 +1,4 @@
-...&nbsp;<% weblog.link to="main" text="home" %><br />
-...&nbsp;<% weblog.link to="search" text="search" %><br />
-...&nbsp;<% weblog.link to="topics" text="topics" %><br />
-...&nbsp;<% weblog.link to="polls" text="polls" %><br />
+...&nbsp;<% site.link to="main" text="home" %><br />
+...&nbsp;<% site.link to="search" text="search" %><br />
+...&nbsp;<% site.link to="topics" text="topics" %><br />
+...&nbsp;<% site.link to="polls" text="polls" %><br />

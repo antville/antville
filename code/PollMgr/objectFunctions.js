@@ -13,7 +13,7 @@ function evalNewPoll(param, creator) {
       var online = parseInt(param.online,10);
       var editableby = parseInt(param.editableby,10);
  
-      newPoll.weblog = this._parent;
+      newPoll.site = this._parent;
       newPoll.title = param.title;
       newPoll.question = param.question;
 			newPoll.closed = 0;

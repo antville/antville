@@ -12,11 +12,11 @@
 
 function evalNewStory(s,param,creator) {
    var result;
-   s.weblog = this._parent;
+   s.site = this._parent;
    s.title = param.title;
    s.text = param.text;
    s.prototype = "story";
-   s.author = creator;
+   s.creator = creator;
    // check if the create date is set in the param object
    if (param.createtime) {
       var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
@@ -61,7 +61,7 @@ function evalNewStory(s,param,creator) {
          result = getConfirm("storyCreate");
          result.id = s._id;
          if (s.online) {
-            s.weblog.lastupdate = s.createtime;
+            s.site.lastupdate = s.createtime;
             result.url = s.href();
          } else
             result.url = this.href();

@@ -57,17 +57,21 @@ function saveImg(rawimage) {
 function evalImg(param,modifier) {
    var result;
    if (param.alias) {
-      if (param.alias != this.alias && this.weblog.images.get(req.data.alias)) {
+      if (param.alias != this.alias && this.site.images.get(req.data.alias)) {
          // alias has changed, but is already existing
          result = getError("imageExisting");
       } else if (!isClean(param.alias))
          result = getError("noSpecialChars");
       else
-         this.weblog.images.changeAlias(this,param.alias);
+         this.site.images.changeAlias(this,param.alias);
       this.alttext = param.alttext;
       this.modifier = modifier;
-      if (this.thumbnail)
+      this.modifytime = new Date();
+      if (this.thumbnail) {
          this.thumbnail.alttext = this.alttext;
+         this.thumbnail.modifytime = this.modifytime;
+         this.thumbnail.modifier = this.modifier;
+      }
       result = getConfirm("update");
    } else
       result = getError("imageNameMissing");
@@ -109,7 +113,7 @@ function createThumbnail(rawimage) {
    thumbImg.cache.maxwidth = 100;
    thumbImg.cache.maxheight = 100;
    thumbImg.saveImg(rawimage);
-   thumbImg.weblog = this.weblog;
+   thumbImg.site = this.site;
    thumbImg.alttext = this.alttext;
    thumbImg.creator = this.creator;
    thumbImg.createtime = this.createtime;
@@ -126,7 +130,7 @@ function createThumbnail(rawimage) {
  */
 
 function popupUrl() {
-   var url = "javascript:openPopup('" + getProperty("imgUrl") + this.weblog.alias + "/" + this.filename + "." + this.fileext;
+   var url = "javascript:openPopup('" + getProperty("imgUrl") + this.site.alias + "/" + this.filename + "." + this.fileext;
    url += "'," + this.width + "," + this.height + ");";
    return (url);
 }
@@ -137,8 +141,8 @@ function popupUrl() {
  */
 function getStaticUrl() {
   var url = getProperty("imgUrl");
-  if (this.weblog)
-    url += this.weblog.alias + "/";
+  if (this.site)
+    url += this.site.alias + "/";
   url += this.filename + "." + this.fileext;
   return(url);
 }

@@ -2,23 +2,23 @@
 <!--
 
 body, td {
-  background-color: <% weblog.bgcolor %>;
-  font-family: <% weblog.textfont %>;
-  font-size: <% weblog.textsize %>;
-  color: <% weblog.textcolor %>;
+  background-color: <% site.bgcolor %>;
+  font-family: <% site.textfont %>;
+  font-size: <% site.textsize %>;
+  color: <% site.textcolor %>;
 }
 
 a {text-decoration: none;}
 
-a:link {color: <% weblog.linkcolor %>;}
+a:link {color: <% site.linkcolor %>;}
 
-a:visited {color: <% weblog.vlinkcolor %>;}
+a:visited {color: <% site.vlinkcolor %>;}
 
-a:active {color: <% weblog.alinkcolor %>;}
+a:active {color: <% site.alinkcolor %>;}
 
 a:hover {
-  background-color: <% weblog.linkcolor %>;
-  color: <% weblog.bgcolor %>;
+  background-color: <% site.linkcolor %>;
+  color: <% site.bgcolor %>;
 }
 
 .title {
@@ -32,16 +32,16 @@ a:hover {
 }
 
 .message {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
   padding: 1px;
-  color: <% weblog.linkcolor %>;
-  background-color: <% weblog.bgcolor %>;
+  color: <% site.linkcolor %>;
+  background-color: <% site.bgcolor %>;
 }
 
 .statusdark {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
   width: 198px;
   display: block;
   padding-top: 3px;
@@ -49,8 +49,8 @@ a:hover {
 }
 
 .statuslight {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
   width: 198px;
   color: #999999;
   display: block;
@@ -62,7 +62,7 @@ a:hover {
   width: 198px;
   text-align: left;
   letter-spacing: 3px;
-  font-size: <% weblog.smallsize %>;
+  font-size: <% site.smallsize %>;
   display: block;
   padding-top: 1px;
   padding-bottom: 1px;
@@ -78,47 +78,47 @@ ul {list-style: url("<% imageurl name="/bullet" %>") circle;}
 li {padding-bottom: 3px;}
 
 .calHead {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
   font-weight: bold;
 }
 
 .calDay {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
   text-align: center;
 }
 
 .calSelDay {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
-  border: 1px solid <% weblog.linkcolor %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
+  border: 1px solid <% site.linkcolor %>;
   text-align: center;
 }
 
 .calFoot {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
   font-weight: bold;
 }
 
 .storyDate {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
-  color: <% weblog.smallcolor %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
+  color: <% site.smallcolor %>;
 }
 
 .storyTitle {
-  font-family: <% weblog.titlefont %>;
-  font-size: <% weblog.titlesize %>;
-  color: <% weblog.titlecolor %>;
+  font-family: <% site.titlefont %>;
+  font-size: <% site.titlesize %>;
+  color: <% site.titlecolor %>;
   font-weight: bold;
 }
 
 .small {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
-  color: <% weblog.smallcolor %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
+  color: <% site.smallcolor %>;
 }
 
 .commentHead {
@@ -131,16 +131,16 @@ li {padding-bottom: 3px;}
 }
 
 .commentDate {
-  font-family: <% weblog.smallfont %>;
-  font-size: <% weblog.smallsize %>;
-  color: <% weblog.smallcolor %>;
+  font-family: <% site.smallfont %>;
+  font-size: <% site.smallsize %>;
+  color: <% site.smallcolor %>;
   margin-bottom: 2px;
 }
 
 .commentTitle {
-  font-family: <% weblog.titlefont %>;
-  font-size: <% weblog.titlesize %>;
-  color: <% weblog.textcolor %>;
+  font-family: <% site.titlefont %>;
+  font-size: <% site.titlesize %>;
+  color: <% site.textcolor %>;
   font-weight: bold;
   margin-bottom: 2px;
 }
@@ -150,22 +150,22 @@ li {padding-bottom: 3px;}
 
 .formTitle {
   width: 380px;
-  font-family: <% weblog.textfont %>;
-  font-size: <% weblog.titlesize %>;
+  font-family: <% site.textfont %>;
+  font-size: <% site.titlesize %>;
   font-weight: bold;
 }
 
 .formText {
   width: 380px;
-  font-family: <% weblog.textfont %>;
-  font-size: <% weblog.textsize %>;
+  font-family: <% site.textfont %>;
+  font-size: <% site.textsize %>;
   font-weight: normal;
 }
 
 .formWide {
   width: 660px;
-  font-family: <% weblog.textfont %>;
-  font-size: <% weblog.textsize %>;
+  font-family: <% site.textfont %>;
+  font-size: <% site.textsize %>;
   font-weight: normal;
 }
 
@@ -174,7 +174,7 @@ li {padding-bottom: 3px;}
 .pollResultsBar {
 	height: 5px;
 	margin-right: 10px;
-	background-color: <% weblog.linkcolor %>;
+	background-color: <% site.linkcolor %>;
 	font-size: 0px;
 }
 

@@ -1,13 +1,13 @@
 var deny = this.isViewDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.href());
+   res.redirect(this.site.href());
 }
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.title)
   res.data.title += " - " + encode(this.title);
 
 res.data.body = this.renderSkinAsString("results");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

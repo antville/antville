@@ -19,7 +19,7 @@ function evalStory(param,modifier) {
 
    // assign those properties that can be stored anyway
    var editableby = parseInt(param.editableby,10);
-   this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : null);
+   this.editableby = (modifier == this.creator && !isNaN(editableby) ? editableby : null);
    this.title = param.title;
    this.text = param.text;
    this.modifier = modifier;
@@ -38,7 +38,7 @@ function evalStory(param,modifier) {
    if (param.topic)
       var topicName = param.topic;
    else if (!isNaN(parseInt(param.topicidx,10)))
-      var topicName = this.weblog.topics.get(parseInt(param.topicidx,10)).groupname;
+      var topicName = this.site.topics.get(parseInt(param.topicidx,10)).groupname;
    else
       var topicName = null;
    if (!isCleanForURL(topicName)) {
@@ -56,18 +56,18 @@ function evalStory(param,modifier) {
    if (!this.online) {
       if (newStatus > 0) {
          this.online = newStatus;
-         this.weblog.lastupdate = new Date();
+         this.site.lastupdate = new Date();
       }
    } else {
       if (newStatus > 0 && majorUpdate)
-         this.weblog.lastupdate = new Date();
+         this.site.lastupdate = new Date();
       this.online = newStatus;
       this.online = newStatus;
    }
    if (majorUpdate)
       this.modifytime = new Date();
    result = getConfirm("storyUpdate");
-   result.url = this.online > 0 ? this.href() : this.weblog.stories.href();
+   result.url = this.online > 0 ? this.href() : this.site.stories.href();
    this.cache.lrText = null;
    return (result);
 }
@@ -79,7 +79,7 @@ function evalStory(param,modifier) {
 function toggleOnline(newStatus) {
    if (newStatus == "online") {
       this.online = 2;
-      this.weblog.lastupdate = new Date();
+      this.site.lastupdate = new Date();
    } else if (newStatus == "offline")
       this.online = 0;
    return true;
@@ -113,15 +113,15 @@ function evalComment(param,story,creator) {
       var c = new comment();
       c.title = param.title;
       c.text = param.text;
-      c.weblog = this.weblog;
+      c.site = this.site;
       c.story = story;
       c.createtime = c.modifytime = new Date();
-      c.author = creator;
+      c.creator = creator;
       c.online = 1;
       c.editableby = null;
       c.ipaddress = param.http_remotehost;
       this.add(c);
-      this.weblog.lastupdate = new Date();
+      this.site.lastupdate = new Date();
       result = getConfirm("commentCreate");
    }
    return (result);

@@ -43,7 +43,7 @@ function evalImg(param,creator) {
                // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
                // result.error = this.addImg(param,creator,newImg);
                newImg.alias = param.alias;
-               newImg.weblog = this._parent;
+               newImg.site = this._parent;
                newImg.alttext = param.alttext;
                newImg.creator = creator;
                newImg.createtime = new Date();
@@ -89,11 +89,11 @@ function changeAlias(currImg,newAlias) {
 
 function deleteImage(currImg) {
    // first remove the image from disk (and the thumbnail, if existing)
-   var f = new File(getProperty("imgPath") + currImg.weblog.alias, currImg.filename + "." + currImg.fileext);
+   var f = new File(getProperty("imgPath") + currImg.site.alias, currImg.filename + "." + currImg.fileext);
    f.remove();
    if (currImg.thumbnail) {
       var thumb = currImg.thumbnail;
-      f = new File(getProperty("imgPath") + thumb.weblog.alias, thumb.filename + "." + thumb.fileext);
+      f = new File(getProperty("imgPath") + thumb.site.alias, thumb.filename + "." + thumb.fileext);
       f.remove();
       thumb.parent = null;
       this.remove(thumb);

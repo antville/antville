@@ -3,8 +3,8 @@
 <head>
 <title><% response.title %></title>
 <meta name="MSSmartTagsPreventParsing" content="TRUE">
-<% weblog.skin name="style" %>
-<% weblog.skin name="javascript" %>
+<% site.skin name="style" %>
+<% site.skin name="javascript" %>
 </head>
 
 <body>

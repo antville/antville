@@ -2,11 +2,11 @@
 <html>
 <head>
 <title><% response.title %></title>
-<link rel="alternate" type="text/xml" title="XML" href="<% weblog.url %>rss10" />
+<link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<% weblog.skin name="style" %>
-<% weblog.skin name="javascript" %>
+<% site.skin name="style" %>
+<% site.skin name="javascript" %>
 </head>
 
 <body>
@@ -42,7 +42,7 @@
 
 <div class="statusdark"><% this.navigation %><% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statusdark"><% weblog.calendar %></div>
+<div class="statusdark"><% site.calendar %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/recent" %></div>
@@ -51,7 +51,7 @@
 <% this.history show="5" %>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><br /><% weblog.xmlbutton %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
+<div class="statuslight"><br /><% site.xmlbutton %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
 </tr>
 </table>
 

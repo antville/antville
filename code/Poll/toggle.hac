@@ -3,10 +3,10 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isDeleteDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.href());
+   res.redirect(this.site.href());
 }
 
 var closed = !this.closed;
 this.closed = closed ? 1 : 0;
 this.modifytime = new Date();
-res.redirect(path.weblog.polls.href());
+res.redirect(path.site.polls.href());
