@@ -35,6 +35,7 @@ function saveSkin(proto,name,source,creator) {
          s.createtime = new Date();
          s.name = name;
          s.proto = proto;
+         s.site = this._parent;
          this.add(s);
       } else if (s.proto && !source)
          this.get(s.proto).remove(s);
@@ -54,9 +55,9 @@ function saveSkin(proto,name,source,creator) {
 
 function deleteSkin(s) {
    if (this.get(s.proto).remove(s))
-      return ("Skin deleted successfully!");
+      return (getMsg("confirm","skinDelete"));
    else
-      return ("Couldn't delete skin!");
+      return (getMsg("error","skinDelete"));
 }
 
 /**
