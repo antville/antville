@@ -623,10 +623,13 @@ function membership_macro(param) {
 
 
 function listMostRead_macro() {
-	var str = "";
-	for (var i=0; i<this.mostread.size(); i++) {
-	   var s = this.mostread.get(i);
-		str += s.renderSkinAsString("mostread");
-	}
-	return(str);
+  var str = "";
+  var len = this.mostread.size();
+  var max = 25;
+  var lim = len > max ? max : len;
+  for (var i=0; i<lim; i++) {
+    var s = this.mostread.get(i);
+    str += s.renderSkinAsString("mostread");
+  }
+  return(str);
 }
