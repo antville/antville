@@ -30,9 +30,10 @@ global.skin.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
 
 // H O P O B J E C T 
 
-hopobject.macros = link, createtime, creator
+hopobject.macros = skin, link, createtime, modifytime, creator
 
 hopobject.macro.createtime = 244877
+hopobject.macro.modifytime = 244877
 hopobject.macro.creator = 142525
 hopobject.macro.link = 14956
 
