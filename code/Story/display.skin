@@ -1,6 +1,6 @@
 <div class="storyDate">
    <% story.creator as="link" %>, 
-   <% story.createtime format="long" %>
+   <% story.createtime format="HH:mm" suffix="h" %>
 </div>
 
 <div class="storyTitle"><% story.content part="title" %></div>

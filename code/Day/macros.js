@@ -18,4 +18,14 @@ function link_macro () {
    openMarkupElement("a", attr);
    res.write(this.groupname);
    closeMarkupElement("a");
+   return;
+}
+
+
+/**
+ * return the groupname as formatted timestamp
+ */
+function timestamp_macro(param) {
+   var ts = parseTimestamp(this.groupname, "yyyyMMdd");
+   return formatTimestamp(ts, param.format);
 }

@@ -3,12 +3,18 @@
  * to this topic.
  */
 
-function addstory_macro () {
+function addstory_macro (param) {
    if ((req.data.memberlevel & MAY_ADD_STORY) == 0)
       return;
-   var param = new Object();
-   param.link = path.site.stories.href("create")+"?topic="+this.groupname;
-   this.renderSkin ("createStoryLink", param);
+   var text = param.text;
+   param.linkto = "create";
+   param.urlparam = "topic=" + this.groupname;
+   openMarkupElement("a",path.site.stories.createLinkParam(param));
+   if (text)
+      res.format(text);
+   else
+      res.write("add a story to this topic");
+   closeMarkupElement("a");
 }
 
 /**

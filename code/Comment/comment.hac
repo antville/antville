@@ -20,7 +20,7 @@ else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalComment(req.data,path.story,session.user);
    res.message = result.message;
    if (!result.error)
-      res.redirect(path.story.href());
+      res.redirect(path.story.href()+"#"+result.id);
 }
 
 res.data.title = this.site.title;
