@@ -27,7 +27,8 @@ function evalFile(param, modifier) {
  * return the url of the file
  */
 function getUrl() {
-   var buf = this.site.getStaticUrl("files/");
-   buf.append(this.name);
-   return buf.toString();
+   res.push();
+   this.site.staticUrl("files/");
+   res.write(this.name);
+   return res.pop();
 }
