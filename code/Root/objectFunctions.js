@@ -104,11 +104,9 @@ function searchSites (query, sid) {
    var result = new Array();
 
    // break up search string
-   var unquote = new RegExp("\\\\");
-   unquote.global = true;
+   var unquote = new RegExp("\\\\", "g");
    query = query.replace(unquote, "\\\\");
-   unquote = new RegExp("\'");
-   unquote.global = true;
+   unquote = new RegExp("\'", "g");
    query = query.replace(unquote, "\'\'");
    var qarr = query.split(" ");
 

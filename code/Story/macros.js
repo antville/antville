@@ -461,8 +461,7 @@ function backlinks_macro(param) {
    // if user specified some servers to be excluded from backlink-list
    // create the RegExp-Object for filtering
    if (param.exclude) {
-      var r = new RegExp("\\s*,\\s*");
-      r.global = true;
+      var r = new RegExp("\\s*,\\s*", "g");
       var excludeStr = param.exclude.replace(r,"|");
       var exclude = new RegExp(excludeStr);
    }

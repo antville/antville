@@ -76,8 +76,7 @@ function isClean(str) {
  */
 
 function isCleanForURL(str) {
-   var invalidChar = new RegExp("[\\/?&=\\+#дцья\\\\]");
-   invalidChar.ignoreCase = true;
+   var invalidChar = new RegExp("[\\/?&=\\+#дцья\\\\]", "i");
    if (invalidChar.exec(str))
       return false;
    return true;
@@ -117,11 +116,9 @@ function formatLinks(str) {
    var pre = "<% this.link to=\"";
    var mid = "\" text=\"";
    var post = "\" %>";
-   var l0 = new RegExp("<a href\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?>([^<]*?)</a>");
-   var l1 = new RegExp("([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?(\\s|$))");
-   var l2 = new RegExp("(<%[^%]*?)" + pre + "(.*?)" + mid + ".*?" + post + "([^%]*?%>)");
-   l0.ignoreCase = l1.ignoreCase = l2.ignoreCase = true;
-   l0.global = l1.global = l2.global = true;
+   var l0 = new RegExp("<a href\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?>([^<]*?)</a>", "gi");
+   var l1 = new RegExp("([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?(\\s|$))", "gi");
+   var l2 = new RegExp("(<%[^%]*?)" + pre + "(.*?)" + mid + ".*?" + post + "([^%]*?%>)", "gi");
    
    str = str.replace(l0, pre + "$1" + mid + "$2" + post);
    str = str.replace(l1, pre + "$1" + mid + "$1" + post + "$3");
@@ -138,9 +135,7 @@ function activateLinks (str) {
    var mid = "\">";
    var post = "</a>";
 
-   var l1 = new RegExp("(^|/>|\\s+)([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?)(?=[\\s<]|$)");
-   l1.ignoreCase = true;
-   l1.global = true;
+   var l1 = new RegExp("(^|/>|\\s+)([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?)(?=[\\s<]|$)", "gi");
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$3");
    return (str);
 }
@@ -456,9 +451,7 @@ function buildAliasFromFile(uploadFile) {
    if (name.indexOf(".") == 0)
       name = name.substring(1, name.length);
    // clean name from any invalid characters
-   var invalidChars = new RegExp("[ \\/?&=\\+#дцья\\\\]");
-   invalidChars.ignoreCase = true;
-   invalidChars.global = true;
+   var invalidChars = new RegExp("[ \\/?&=\\+#дцья\\\\]", "gi");
    return name.replace(invalidChars,"");
 }
 
@@ -548,11 +541,9 @@ function softwrap(str) {
  */ 
 
 function fixRssText(str) {
-   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
-   re.ignoreCase = true;
-   re.global = true;
+   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
- 	return str;
+   return str;
 }
 
 

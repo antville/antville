@@ -32,8 +32,7 @@ function help_macro(param) {
    macros[proto] += hopjectMacros ? ","+hopjectMacros : "";
    macros.resOrParam = ref.getProperty(proto+".skin."+skin);
 
-   var re = new RegExp(" *, *");
-   re.global = true;
+   var re = new RegExp(" *, *", "g");
    for (var protoName in macros) {
       if (!macros[protoName])
          continue;
