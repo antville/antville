@@ -242,16 +242,18 @@ function renderDropDownBox(name, options, selectedIndex, firstoption) {
  * otherwise it assumes the color is a named one
  */
 function renderColorAsString(c) {
-  if (c && c.length == 6) {
-    var nonhex = new RegExp("[^0-9,a-f]");
-    nonhex.ignoreCase = true;
-    var found = c.match(nonhex);
-    if (!found) {
-      // color-string contains just hex-characters, so we prefix it with '#'
-      return("#" + c);
-    }
-  }
-  return(c);
+   if (c) {
+      var nonhex = new RegExp("[^0-9,a-f]");
+      nonhex.ignoreCase = true;
+      var found = c.match(nonhex);
+      if (!found) {
+         while (c.length < 6)
+            c="0"+c;
+         // color-string contains just hex-characters, so we prefix it with '#'
+         return("#" + c);
+      }
+   }
+   return(c);
 }
 
 /**
