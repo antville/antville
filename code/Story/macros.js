@@ -1,98 +1,85 @@
 /*
- * macro for rendering a part of the content.
- * FIXME & FOXME: this macro should be completely rewritten post 1.0
+ * macro for rendering a part of the story content
  */
 function content_macro(param) {
-   if (param.as == "editor") {
-      // this is a first trial to add a title like
-      // "Re: title of previous posting" to a new posting
-      // (works only if autoresponse="true" is set in the macro)
-      if (param.autoresponse == "true" && param.part == "title" && !this.content) {
-         if (path.comment && path.comment.title)
-            param.value = "Re: " + path.comment.title;
-         else if (path.story && path.story.title)
-            param.value = "Re: " + path.story.title;
-      } else if (req.data["content_" + param.part]) {
-         // if there's a part-value in request.data available use it:
-         param.value = unescape(req.data["content_" + param.part]);
-      } else
-         param.value = this.getContentPart(param.part);
-      param.name = "content_" + param.part;
-      delete(param.part);
-      if (!param.height || parseInt(param.height,10) == 1)
-         renderInputText(param);
-      else
-         renderInputTextarea(param);
-   } else if (param.as == "image") {
-      var part = this.getContentPart (param.part);
-      if (part && this.site.images[part]) {
-         delete (param.part);
-         renderImage (this.site.images[part], param);
-      }
-   } else {
-      var part = this.getRenderedContentPart (param.part);
-      if (!part && param.fallback)
-         part = this.getRenderedContentPart (param.fallback);
-      if (param.as == "link") {
-         if (this._prototype != "comment")
-            openLink(this.href());
+   switch (param.as) {
+      case "editor" :
+         var inputParam = this.content.createInputParam(param.part, param);
+         delete inputParam.part;
+         if (param.cols || param.rows)
+            Html.textArea(inputParam);
          else
-            openLink(this.story.href()+"#"+this._id);
-         if (!part && param.part == "title") {
-            // FIXME: this should go post 1.0 final
-            part = stripTags(this.getRenderedContentPart ("text")).trim();
-            param.limit = "20";
+            Html.input(inputParam);
+         break;
+
+      case "image" :
+         var part = this.content.getProperty(param.part);
+         if (part && this.site.images[part]) {
+            delete param.part;
+            renderImage(this.site.images[part], param);
          }
-         if (!part)
-            part = "...";
-      }
-      if (!param.limit)
-         res.write(part);
-      else
-         res.write(softwrap(clipText(part, param.limit, param.clipping)));
-      if (param.as == "link")
-         closeLink();
+         break;
+
+      default :
+         var part = this.getRenderedContentPart(param.part);
+         if (!part && param.fallback)
+            part = this.getRenderedContentPart(param.fallback);
+         if (param.as == "link") {
+            if (this._prototype != "comment")
+               Html.openLink(this.href());
+            else
+               Html.openLink(this.story.href() + "#" + this._id);
+            if (!part && param.part == "title") {
+               // use the text part instead, clipped after 20 characters
+               part = stripTags(this.getRenderedContentPart ("text")).trim();
+               param.limit = "20";
+            }
+            if (!part)
+               part = "...";
+         }
+         if (!param.limit)
+            res.write(part);
+         else
+            res.write(part.clip(param.limit, param.clipping).softwrap(25));
+         if (param.as == "link")
+            Html.closeLink();
    }
 }
 
 /**
- * macro rendering title of story
+ * returns the title of a story
+ * DEPRECATED! use .content part="title" instead
  */
-
 function title_macro(param) {
    param.part = "title";
-   this.content_macro (param);
+   this.content_macro(param);
 }
 
 /**
- * macro rendering text of story
+ * returns the text of a story
+ * DEPRECATED! use .content part="text" instead
  */
-
 function text_macro(param) {
    param.part = "text";
-   this.content_macro (param);
+   this.content_macro(param);
 }
 
 /**
  * macro rendering online-status of story
  */
-
 function online_macro(param) {
    if (param.as == "editor") {
-      var options = new Array("offline","online in topic","online in weblog");
-      renderDropDownBox("online",options,this.online);
+      var options = ["offline", "online in topic", "online in weblog"];
+      Html.dropDown("online", options, this.online);
    } else {
       if (!this.online)
          res.write("offline");
       else if (this.online < 2) {
          res.write("online in ");
-         if (this.topic) {
-           openLink(this.site.topics.get(this.topic).href());
-           res.write(this.topic);
-           closeLink();
-         } else {
+         if (this.topic)
+           Html.link(this.site.topics.get(this.topic).href(), this.topic);
+         else
            res.write ("stories");
-         }
       } else
          res.write("online in weblog");
    }
@@ -102,7 +89,6 @@ function online_macro(param) {
  * macro rendering createtime of story, either as editor,
  * plain text or as link to the frontpage of the day
  */
-
 function createtime_macro(param) {
    if (param.as == "editor") {
       if (this.createtime)
@@ -110,56 +96,42 @@ function createtime_macro(param) {
       else
          param.value = formatTimestamp(new Date(), "yyyy-MM-dd HH:mm");
       param.name = "createtime";
-      renderInputText(param);
+      Html.input(param);
    } else if (this.createtime) {
-      var text = formatTimestamp(this.createtime,param.format);
-      if (param.as == "link" && this.online == 2) {
-         openLink(this.site.get(String(this.day)).href());
-         res.write(text);
-         closeLink();
-      } else
+      var text = formatTimestamp(this.createtime, param.format);
+      if (param.as == "link" && this.online == 2)
+         Html.link(path.site.get(String(this.day)).href(), text);
+      else
          res.write(text);
    }
    return;
 }
 
 /**
- * macro renders the name of the author
- * !!! left for backwards-compatibility !!!
- */
-
-function author_macro(param) {
-   this.creator_macro(param);
-}
-
-/**
  * macro renders the name of the modifier
  */
-
 function modifier_macro(param) {
    if (!this.modifier)
       return;
-   if (param.as == "link" && this.modifier.url) {
-      openLink(this.modifier.url);
+   if (param.as == "link" && this.modifier.url)
+      Html.link(this.modifier.url, this.modifier.name);
+   else
       res.write(this.modifier.name);
-      closeLink();
-   } else
-      res.write(this.modifier.name);
+   return;
 }
 
 /**
  * macro rendering a link to edit
  * if user is allowed to edit
  */
-
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
-      openLink(this.href("edit"));
+   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+      Html.openLink(this.href("edit"));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image),param);
+         this.site.renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : "edit");
-      closeLink();
+      Html.closeLink();
    }
 }
 
@@ -167,15 +139,14 @@ function editlink_macro(param) {
  * macro rendering a link to delete
  * if user is creator of this story
  */
-
 function deletelink_macro(param) {
-   if (session.user && !this.isDeleteDenied(session.user,req.data.memberlevel)) {
-      openLink(this.href("delete"));
+   if (session.user && !this.isDeleteDenied(session.user, req.data.memberlevel)) {
+      Html.openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image),param);
+         this.site.renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : "delete");
-      closeLink();
+      Html.closeLink();
    }
 }
 
@@ -183,18 +154,17 @@ function deletelink_macro(param) {
  * macro renders a link to
  * toggle the online-status of this story
  */
-
 function onlinelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
+   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
       if (this.online && param.mode != "toggle")
          return;
       delete param.mode;
       var text = param.text;
       param.linkto = "edit";
       param.urlparam = "set=" + (this.online ? "offline" : "online");
-      openMarkupElement("a",this.createLinkParam(param));
+      Html.openTag("a", this.createLinkParam(param));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image),param);
+         this.site.renderImage(this.site.images.get(param.image), param);
       else {
          // currently, only the "set online" text is customizable, since this macro
          // is by default only used in that context outside the story manager.
@@ -203,35 +173,31 @@ function onlinelink_macro(param) {
          else
             res.write(text ? text : "set online");
       }
-      closeMarkupElement("a");
+      Html.closeTag("a");
    }
 }
 
 /**
  * macro renders a link to the story
  */
-
 function viewlink_macro(param) {
-   if (session.user && this.isViewDenied(session.user,req.data.memberlevel))
+   if (session.user && this.isViewDenied(session.user, req.data.memberlevel))
       return;
-   openLink(this.href());
+   Html.openLink(this.href());
    if (param.image && this.site.images.get(param.image))
-      this.site.renderImage(this.site.images.get(param.image),param);
+      this.site.renderImage(this.site.images.get(param.image), param);
    else
       res.write(param.text ? param.text : "view");
-   closeLink();
+   Html.closeLink();
 }
 
 /**
  * macro rendering link to comments
  */
-
 function commentlink_macro(param) {
-   if (!this.discussions || !this.site.discussions)
-      return;
-   openLink(this.href(param.to ? param.to : "comment"));
-   res.write(param.text ? param.text : "comment");
-   closeLink();
+   if (this.discussions && this.site.preferences.getProperty("discussions"))
+      Html.link(this.href(param.to ? param.to : "comment"), param.text ? param.text : "comment");
+   return;
 }
 
 
@@ -242,22 +208,21 @@ function commentlink_macro(param) {
  *          text to use when more than one comment
  *          action to link to (default: main)
  */
-
 function commentcounter_macro(param) {
-   if (!this.discussions)
+   if (!this.site.preferences.getProperty("discussions") || !this.discussions)
       return;
    var commentCnt = this.comments.count();
    if (!param.linkto)
       param.linkto = "main";
    // cloning the param object to remove the macro-specific 
    // attributes from the clone for valid markup output:
-   var param2 = cloneObject(param);
+   var param2 = ObjectLib.clone(param);
    delete param2.one;
    delete param2.more;
    delete param2.no;
    var linkflag = (param.as == "link" && param.as != "text" || !param.as && commentCnt > 0);
    if (linkflag)
-      openMarkupElement("a", this.createLinkParam(param2));
+      Html.openTag("a", this.createLinkParam(param2));
    if (commentCnt == 0)
       res.write(param.no ? param.no : "0 comments");
    else if (commentCnt == 1)
@@ -265,25 +230,24 @@ function commentcounter_macro(param) {
    else
       res.write(commentCnt + (param.more ? param.more : " comments"));
    if (linkflag)
-      closeMarkupElement("a");
+      Html.closeTag("a");
    return;
 }
 
 /**
  * macro loops over comments and renders them
  */
-
 function comments_macro(param) {
    var s = this.story ? this.story : this;
-   if (!s.discussions)
+   if (!s.site.preferences.getProperty("discussions") || !s.discussions)
       return;
    this.comments.prefetchChildren();
    for (var i=0;i<this.size();i++) {
       var c = this.get(i);
       var linkParam = new Object();
       linkParam.name = c._id;
-      openMarkupElement("a", linkParam);
-      closeMarkupElement("a");
+      Html.openTag("a", linkParam);
+      Html.closeTag("a");
       if (c.parent)
          c.renderSkin("reply");
       else
@@ -295,64 +259,46 @@ function comments_macro(param) {
  * macro checks if user is logged in and not blocked
  * if true, render form to add a comment
  */
-
 function commentform_macro(param) {
    if (session.user) {
-      var c = new comment();
       res.data.action = this.href("comment");
-      c.renderSkin("edit");
+      (new comment()).renderSkin("edit");
    } else {
-      openLink(this.site.members.href("login"));
-      res.write (param.text ? param.text : "Login to add your comment!");
-      closeLink();
+      Html.link(this.site.members.href("login"), param.text ? param.text : "Login to add your comment!");
    }
+   return;
 }
-
-/**
- * macro left for backwards-compatibility
- * calls global image_macro()
- */
-
-function image_macro(param) {
-   image_macro(param);
-}
-
-/**
- * macro left for backwards-compatibility
- * calls global image_macro() as "popup"
- */
-
-function thumbnail_macro(param) {
-   param.as = "popup";
-   image_macro(param);
-}
-
 
 /**
  * macro renders the property of story that defines if
  * other users may edit this story
  */
-
 function editableby_macro(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
-      var options = new Array(null,0,1);
-      var labels = new Array("the author","all subscribers","all contributors");
+      var options = [null, 0, 1];
+      var labels = ["the author", "all subscribers", "all contributors"];
+      delete param.as;
+      if (req.data.publish || req.data.save)
+         var selValue = !isNaN(req.data.editableby) ? req.data.editableby : null;
+      else
+         var selValue = this.editableby;
       for (var i=0;i<options.length;i++) {
-        param.name = "editableby";
-        param.value = options[i];
-        param.selectedValue = this.editableby;
-        renderInputRadio(param);
-        res.write("&nbsp;");
-        res.write(labels[i]);
-        res.write("&nbsp;");
+         Html.radioButton({name: "editableby", value: options[i], selectedValue: selValue});
+         res.write("&nbsp;");
+         res.write(labels[i]);
+         res.write("&nbsp;");
       }
    } else {
-      if (this.editableby == 0)
-         res.write("Subscribers of and contributors to " + this.site.title);
-      else if (this.editableby == 1)
-         res.write("Contributors to " + this.site.title);
-      else
-         res.write("Content managers and admins of " + this.site.title);
+      switch (this.editableby) {
+         case 0 :
+            res.write("Subscribers of and contributors to '" + path.site.title + "'");
+            break;
+         case 1 :
+            res.write("Contributors to '" + path.site.title + "'");
+            break;
+         default :
+            res.write("Content managers and admins of '" + path.site.title + "'");
+      }
    }
    return;
 }
@@ -362,23 +308,16 @@ function editableby_macro(param) {
  * for backwards compatibility this macro also renders a hidden input
  * so that we can check if the checkbox is embedded in story/edit.skin
  */
-
 function discussions_macro(param) {
-   if (!path.site.discussions)
+   if (!path.site.preferences.getProperty("discussions"))
       return;
    if (param.as == "editor") {
-      if (this.creator) {
-         if (this.discussions == null)
-            param.checked = "checked";
-         else
-            delete param.checked;
-      }
-      renderInputCheckbox(this.createInputParam("discussions", param));
-      var attr = new Object();
-      attr.type = "hidden";
-      attr.name = "discussions";
-      attr.value = "0";
-      renderMarkupElement("input", attr);
+      param.checked = "checked";
+      if ((req.data.publish || req.data.save) && !req.data.discussions)
+         delete param.checked;
+      else if (this.discussions == 0)
+         delete param.checked;
+      Html.checkBox(this.createInputParam("discussions", param));
    } else
       res.write(this.discussions ? "yes" : "no");
    return;
@@ -387,22 +326,21 @@ function discussions_macro(param) {
 /**
  * macro renders a list of existing topics as dropdown
  */
-
 function topicchooser_macro(param) {
    var size = path.site.topics.size();
    var options = new Array();
    for (var i=0;i<size;i++) {
       var topic = path.site.topics.get(i);
       if (topic.size()) {
-         options[i] = topic.groupname;
-         if (req.data.topicidx != null) {
-            if (req.data.topicidx == i)
-               var selectedIndex = i;
-         } else if (this.topic == topic.groupname)
-            var selectedIndex = i;
+         options[i] = {value: topic.groupname, display: topic.groupname};
+         if (req.data.addToTopic)
+            var selected = req.data.addToTopic;
+         else if (this.topic == topic.groupname)
+            var selected = topic.groupname;
       }
    }
-   renderDropDownBox("topicidx", options, selectedIndex, "-- choose topic --");
+   Html.dropDown("addToTopic", options, selected, "-- choose topic --");
+   return;
 }
 
 /**
@@ -412,23 +350,20 @@ function topicchooser_macro(param) {
  * NOTE: for backwards compatibility, the default is a link and
  * you have to set "text" explicitely (which is not so nice, imho.)
  */
-
 function topic_macro(param) {
    if (!this.topic)
       return;
    if (!param.as || param.as == "link") {
-      openLink(this.site.topics.href(this.topic));
-      res.write(this.topic);
-      closeLink();
+      Html.link(path.site.topics.href(this.topic), this.topic);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";
-      var img = getPoolObj(param.imgprefix+this.topic, "images");
+      var img = getPoolObj(param.imgprefix + this.topic, "images");
       if (!img)
          return;
-      openLink(this.site.topics.href(this.topic));
+      Html.openLink(path.site.topics.href(this.topic));
       renderImage(img.obj, param)
-      closeLink();
+      Html.closeLink();
    } else if (param.as = "text")
       res.write(this.topic);
 }
@@ -450,7 +385,7 @@ function backlinks_macro(param) {
    var c = getDBConnection("antville");
    var dbError = c.getLastError();
    if (dbError)
-      return (getMessage("error","database",dbError));
+      return getMessage("error.database", dbError);
    
    // we're doing this with direct db access here
    // (there's no need to do it with prototypes):
@@ -458,17 +393,17 @@ function backlinks_macro(param) {
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
    if (dbError)
-      return (getMessage("error","database",dbError));
+      return getMessage("error.database", dbError);
    
    // we show a maximum of 100 backlinks
-   var limit = Math.min((param.limit ? parseInt(param.limit,10) : 100),100);
+   var limit = Math.min((param.limit ? parseInt(param.limit, 10) : 100), 100);
    var backlinks = new java.lang.StringBuffer();
 
    // if user specified some servers to be excluded from backlink-list
    // create the RegExp-Object for filtering
    if (param.exclude) {
-      var r = new RegExp("\\s*,\\s*", "g");
-      var excludeStr = param.exclude.replace(r,"|");
+      var r = new RegExp("\\s*,\\s*", "gi");
+      var excludeStr = param.exclude.replace(r, "|");
       var exclude = new RegExp(excludeStr);
    }
 
@@ -497,68 +432,20 @@ function backlinks_macro(param) {
 }
 
 /**
- * macro renders a checkbox whether the story
- * is just published in a topic or also in weblog
- */
-function justintopic_macro(param) {
-   if (param.as == "editor") {
-      if (req.data.publish || req.data.submit == "publish") {
-         if (!req.data.online)
-            delete param.checked;
-         else if (req.data.online == 1 || this.online == 1)
-            param.checked = "checked";
-      } else if (this.creator) {
-         if (this.online != 1)
-            delete param.checked;
-         else
-            param.checked = "checked";
-      }
-      param.name = "online";
-      renderInputCheckbox(param);
-      var attr = new Object();
-      attr.value = 2;
-      attr.name = "onlinedefault";
-      attr.type = "hidden";
-      renderMarkupElement("input", attr);
-   }
-   return;
-}
-
-
-/**
  * macro renders a checkbox whether the story is
  * published on the weblog's front page
  */
 function addtofront_macro(param) {
    if (param.as == "editor") {
-      if (req.data.publish || req.data.submit == "publish") {
-         if (!req.data.online)
-            delete param.checked;
-         else if (req.data.online == 2 || this.online == 2)
-            param.checked = "checked";
-      } else if (this.creator) {
-        if (this.online != null && this.online < 2)
-            delete param.checked;
-         else
-            param.checked = "checked";
-      }
-      param.value = 2;
-      param.name = "online";
-      renderInputCheckbox(param);
-      var attr = new Object();
-      attr.value = 1;
-      attr.name = "onlinedefault";
-      attr.type = "hidden";
-      renderMarkupElement("input", attr);
+      param.checked = "checked";
+      if ((req.data.publish || req.data.save) && !req.data.addToFront)
+         delete param.checked;
+      else if (this.online != null && this.online < 2)
+         delete param.checked;
+      param.value = 1;
+      param.name = "addToFront";
+      delete param.as;
+      Html.checkBox(param);
    }
-   return;
-}
-
-
-/**
- * macro renders id of a story
- */
-function id_macro() {
-   res.write(this._id);
    return;
 }
