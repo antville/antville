@@ -6,7 +6,7 @@
 <% site.sysmgr_count what="comments" suffix="&nbsp;comments<br />" %>
 <% site.sysmgr_count what="images" suffix="&nbsp;images<br />" %>
 <% site.sysmgr_count what="files" suffix="&nbsp;files<br />" %></td>
-<td width="10" nowrap="nowrap"><% image name="/pixel" width="10" %></td>
+<td width="10" nowrap="nowrap"><% layout.image name="pixel" width="10" %></td>
 <td colspan="2" nowrap="nowrap"><table border="0" class="highlight">
    <tr>
    <td nowrap="nowrap">trusted:</td>
