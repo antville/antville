@@ -356,6 +356,19 @@ function showarchive_macro(param) {
 }
 
 /**
+ * macro rendering enableping-flag of weblog
+ */
+
+function enableping_macro(param) {
+   res.write(param.prefix)
+   if (param.as == "editor")
+      this.renderInputCheckbox(this.createInputParam("enableping",param));
+   else
+      res.write(parseInt(this.enableping,10) ? "yes" : "no");
+   res.write(param.suffix);
+}
+
+/**
  * macro rendering default longdateformat of weblog
  */
 
