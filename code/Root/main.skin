@@ -1,6 +1,4 @@
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="600" class="storyText" nowrap><p>This is Antville, a small Weblog-application build with <% this.link to="http://helma.org" text="Helma" %>. Within Antville you can easily create your own weblog and modify it to your own needs. Beside the normal weblog-functions Antville in it's current version provides:
+<p>This is Antville, a small Weblog-application build with <% this.link to="http://helma.org" text="Helma" %>. Within Antville you can easily create your own weblog and modify it to your own needs. Beside the normal weblog-functions Antville in it's current version provides:
 <ul class="storyText">
 <li>an tool for easy administration of images</li>
 <li>a powerful set of macros (which are kind of special tags you can embed in layout-snippets and stories, i.e. to embed an image in a story or to place a link).</li>
@@ -12,6 +10,4 @@
 <p class="storyText">Until now, <% this.weblogcounter %> Weblogs were created, and the last updated weblogs are
 <ul class="storyText">
 <% this.webloglist %>
-</ul></p></td>
-</tr>
-</table>
+</ul></p>
