@@ -168,7 +168,7 @@ function getLocale() {
 
 function getSysTitle() {
    if (!root.sys_title)
-      return ("Antville");
+      return ("antville");
    return (root.sys_title);
 }
 
