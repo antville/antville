@@ -31,7 +31,7 @@ function updateComment() {
 function addComment() {
    var r = new comment();
    if (req.data.text) {
-      r.text = formatLinks(req.data.text);
+      r.text = req.data.text;
       r.title = req.data.title;
       r.author = user;
       r.createtime = new Date();
