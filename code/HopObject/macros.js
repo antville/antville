@@ -37,6 +37,22 @@ function createtime_macro(param) {
    res.write(formatTimestamp(this.createtime, param.format));
 }
 
+/**
+ * macro renders the name of the creator of an object
+ * either as link or as plain text
+ */
+
+function creator_macro(param) {
+   if (!this.creator)
+      return;
+   if (param.as == "link" && this.creator.url) {
+      openLink(this.creator.url);
+      res.write(this.creator.name);
+      closeLink();
+   } else
+      res.write(this.creator.name);
+   return;
+}
 
 /**
  * macro renders a form-input
