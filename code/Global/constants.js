@@ -201,7 +201,7 @@ newSet.add(new Skinset("site.rss", ["site.rss", "story.rssItem", "story.rssResou
 newSet.add(new Skinset("site.search", ["site.searchform", "site.searchbox", "story.searchview"]));
 newSet.add(new Skinset("site.referrers", ["site.referrers", "site.referrerItem"]));
 newSet.add(new Skinset("site.mostread", ["site.mostread", "story.mostread"]));
-newSet.add(new Skinset("site.mails", ["membermgr.mailbody", "membermgr.pwdmail", "membermgr.mailnewmember", "membership.mailbody", "site.notificationMail"], "root"));
+newSet.add(new Skinset("site.mails", ["membermgr.mailregconfirm", "membermgr.mailpassword", "membermgr.mailnewmember", "membership.mailstatuschange", "membership.mailmessage", "site.notificationMail"], "root"));
 newSet.add(new Skinset("site.preferences", ["site.edit", "site.notification"], "root"));
 newSet.add(new Skinset("site.user", ["membermgr.login", "membermgr.register", "membermgr.sendpwd", "user.edit", "user.subscriptions", "membership.subscription", "membership.membership"], "root"));
 newSet.add(new Skinset("site.membermgr", ["membermgr.memberlist", "membermgr.membergroup", "membermgr.main", "membermgr.searchresult", "membermgr.searchresultitem", "membership.mgrlistitem", "membership.edit"], "root"));
