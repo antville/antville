@@ -211,7 +211,7 @@ newSet.add(new Skinset("site.mostread", ["site.mostread", "story.mostread"]));
 newSet.add(new Skinset("site.mails", ["membermgr.mailregconfirm", "membermgr.mailpassword", "membermgr.mailnewmember", "membership.mailstatuschange", "membership.mailmessage", "site.notificationMail"], "root"));
 newSet.add(new Skinset("site.preferences", ["site.edit", "site.notification"], "root"));
 newSet.add(new Skinset("site.user", ["membermgr.login", "membermgr.register", "membermgr.sendpwd", "user.edit", "user.subscriptions", "membership.subscription", "membership.membership"], "root"));
-newSet.add(new Skinset("site.membermgr", ["membermgr.memberlist", "membermgr.membergroup", "membermgr.main", "membermgr.searchresult", "membermgr.searchresultitem", "membership.mgrlistitem", "membership.edit"], "root"));
+newSet.add(new Skinset("site.membermgr", ["membermgr.main", "membermgr.new", "membermgr.membergroup", "membermgr.searchresult", "membermgr.searchresultitem", "membership.mgrlistitem", "membership.edit"], "root"));
 newSet.add(new Skinset("site.various", ["site.robots"]));
 SKINSETS.push(newSet);
 
