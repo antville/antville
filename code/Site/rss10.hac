@@ -18,8 +18,8 @@ if (max > 0 && this.online) {
 		var story = this.allstories.get(i);
 		param1.itemUrl = story.href();
 		param1.itemTitle = story.title ? encodeXml(story.title) : "";
-		param1.authorName = encodeXml(story.author.name);
-		param1.authorMail = encodeXml(story.author.email);
+		param1.authorName = encodeXml(story.creator.name);
+		param1.authorMail = encodeXml(story.creator.email);
 		param1.year = now.getYear();
 		param1.subject = story.topic ? encodeXml(story.topic) : "";
 		param1.date = story.modifytime.format(w3fmt);
@@ -38,7 +38,7 @@ if (max > 0 && this.online) {
 else {
 	param1.itemUrl = url;
 	param1.authorName = "Antville Weblog Tool";
-	param1.authorMail = encodeXml(getProperty("adminEmail"));
+	param1.authorMail = encodeXml(root.sys_email);
 	param1.date = this.createtime.format(w3fmt);
 	param2.creatorName = param1.authorName;
 	param2.creatorMail = param1.authorMail;
