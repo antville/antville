@@ -32,11 +32,8 @@ function onRequest() {
       res.handlers.layout = res.handlers.context.getLayout();
    }
 
-   // set skinpath according to res.handlers.layout
-   var sp = [res.handlers.layout.skins];
-   if (res.handlers.layout.parent)
-      sp.push(res.handlers.layout.parent.skins);
-   res.skinpath = sp;
+   // set skinpath
+   res.skinpath = res.handlers.layout.getSkinPath();
 
    if (session.user && session.user.blocked) {
       // user was blocked recently, so log out
