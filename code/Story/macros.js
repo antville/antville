@@ -355,13 +355,20 @@ function editableby_macro(param) {
 
 /**
  * macro renders a checkbox for enabling/disabling discussions
+ * for backwards compatibility this macro also renders a hidden input
+ * so that we can check if the checkbox is embedded in story/edit.skin
  */
 
 function discussions_macro(param) {
   if (param.as == "editor") {
     if (this.discussions == null && path.site.hasDiscussions())
-      param.check = "true";
+      param.checked = "checked";
     renderInputCheckbox(this.createInputParam("discussions",param));
+    var attr = new Object();
+    attr.type = "hidden";
+    attr.name = "discussions";
+    attr.value = "0";
+    renderMarkupElement("input",attr);
   } else
     res.write(parseInt(this.discussions,10) ? "yes" : "no");
 }
