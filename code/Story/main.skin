@@ -1,4 +1,4 @@
 <% story.skin name="display" %>
 <div class="small"><% this.link to="comment" text="place your comment!" %>&nbsp;&nbsp;<% this.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %></div>
-
+<a name="comments"/>
 <% this.comments %>
