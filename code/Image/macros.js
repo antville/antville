@@ -42,10 +42,7 @@ function height_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(getProperty("imgUrl"));
-   if (this.site)
-       res.write(this.site.alias + "/");
-   res.write(this.filename + "." + this.fileext);
+   return this.getUrl();
 }
 
 
@@ -75,7 +72,7 @@ function editlink_macro(param) {
 function deletelink_macro(param) {
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkDelete(session.user, req.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -99,11 +96,10 @@ function show_macro(param) {
    if (param.what == "thumbnail" && this.thumbnail) {
       var url = this.href();
       img = this.thumbnail;
-   }
-   else
-      var url = img.getStaticUrl();
+   } else
+      var url = img.getUrl();
    delete(param.what);
-   param.src = img.getStaticUrl();
+   param.src = img.getUrl();
    Html.openLink(url);
    renderImage(img, param);
    Html.closeLink();
@@ -121,4 +117,14 @@ function topic_macro(param) {
       Html.link(path.site.images.topics.href(this.topic), this.topic);
    } else
       res.write(this.topic);
+}
+
+/**
+ * render the code for embedding this image
+ */
+function code_macro(param) {
+   res.write("&lt;% ");
+   res.write(this instanceof layoutimage ? "layout.image" : "image");
+   res.write(" name=\"" + this.alias + "\" %&gt;");
+   return;
 }
