@@ -42,16 +42,14 @@ function sysmgr_editlink_macro(param) {
    // this macro is allowed just for sysadmins
    if (!isUserSysAdmin() || req.data.edit == this.name || session.user == this)
       return;
-   var linkParam = new Object();
-   linkParam.linkto = "users";
-   linkParam.urlparam = "?item=" + this.name;
-   linkParam.urlparam += "&action=edit";
+   param.linkto = "users";
+   param.urlparam = "item=" + this.name + "&action=edit";
    if (req.data.page)
-      linkParam.urlparam += "&page=" + req.data.page;
-   linkParam.urlparam += "#" + this.name;
-   root.manage.openLink(linkParam);
+      param.urlparam += "&page=" + req.data.page;
+   param.anchor = this.name;
+   openMarkupElement("a",root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "edit");
-   this.closeLink();
+   closeMarkupElement("a");
 }
 
 /**
