@@ -1,4 +1,4 @@
-res.data.title = this.site.title;
+res.data.title = "View image: " + this.alias;
 
 res.data.body = this.renderSkinAsString("main");
 

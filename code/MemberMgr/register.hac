@@ -23,7 +23,7 @@ else if (req.data.submit == "register" || req.data.register) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.site ? path.site.title : root.getSysTitle();
+res.data.title = "Register";
 
 res.data.body = this.renderSkinAsString("register");
 

@@ -1,4 +1,5 @@
-<p>This is the complete list of public weblogs hosted here (ordered alphabetically):</p>
-<ul>
-<% sitelist show="all" limit="25" scroll="yes" %>
-</ul>
+<p>This is the complete list of public weblogs hosted here, in alphabetical order.</p>
+
+<% response.prevpage %>
+<% sitelist show="all" limit="25" scroll="yes" prefix="<ul>" suffix="</ul>" %>
+<% response.nextpage %>

@@ -1,26 +1,14 @@
-<table border="0" width="400" cellspacing="0" cellpadding="3">
+To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre></td>
+<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% image.creator as="link" %> on <% image.createtime format="short" %> (<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels)</span></td>
 </tr>
 <tr>
-<td><% image.show %></td>
+<td valign="top" class="storytitle"><% image.alias %><br />
+<% image.alttext %></td>
+<td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>
 
-<br />
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<tr>
-<td class="small" nowrap="nowrap">Name:</td>
-<td nowrap="nowrap"><% image.alias %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Alttext:</td>
-<td nowrap="nowrap"><% image.alttext %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Author:</td>
-<td nowrap="nowrap"><% image.creator %></td>
-</tr>
-</table>
-<div class="small"><% image.editlink prefix="<br />...&nbsp;" suffix="&nbsp;&nbsp;" %><% image.deletelink prefix="...&nbsp;" suffix="<br /><br />" %></div>
+<p><% image.show %></p>

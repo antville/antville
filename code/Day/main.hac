@@ -9,7 +9,7 @@ if (!path.site.archive)
 
 this.renderStorylist(parseInt(req.data.start,10));
 
-res.data.title = path.site.title;
+res.data.title = path.site.title + ": " + path[path.length-1].groupname;
 
 res.data.body = this.renderSkinAsString("main");
 

@@ -16,7 +16,7 @@ function alias_macro(param) {
 
 function alttext_macro(param) {
    if (param.as == "editor")
-      renderInputText(this.createInputParam("alttext",param));
+      renderInputTextarea(this.createInputParam("alttext",param));
    else
       res.write(this.alttext);
 }
@@ -88,11 +88,15 @@ function deletelink_macro(param) {
 function show_macro(param) {
    var img = this;
    // if we have a thumbnail, display that
-   if (param.what == "thumbnail" && this.thumbnail) 
+   if (param.what == "thumbnail" && this.thumbnail) {
+      var url = this.href();
       img = this.thumbnail;
+   }
+   else
+      var url = img.getStaticUrl();
    delete(param.what);
    param.src = img.getStaticUrl();
-   openLink(this.href());
+   openLink(url);
    renderImage(img, param);
    closeLink();
 }

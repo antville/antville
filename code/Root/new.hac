@@ -17,7 +17,7 @@ else if (req.data.submit == "create" || req.data.create) {
    
 res.data.action = this.href(req.action);
 
-res.data.title = root.getSysTitle();
+res.data.title = "Create a new weblog";
 
 var newSite = new site();
 res.data.body = newSite.renderSkinAsString("new");

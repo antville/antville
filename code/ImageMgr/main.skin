@@ -1,4 +1,4 @@
-<p>...&nbsp;<% imagemgr.link to="create" text="add new image" %></p>
+<p>...&nbsp;<% imagemgr.link to="create" text="add an image" %></p>
 <p>To insert an image in a story or comment just copy and paste its code.</p>
 
 <% response.prevpage %>

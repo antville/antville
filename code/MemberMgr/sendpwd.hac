@@ -11,7 +11,7 @@ else if (req.data.submit == "send" || req.data.send) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.site ? path.site.title : root.getSysTitle();
+res.data.title = "Recover your password";
 
 res.data.body = this.renderSkinAsString("sendpwd");
 

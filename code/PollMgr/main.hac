@@ -8,7 +8,8 @@ if (deny) {
 
 this.renderPollList(parseInt(req.data.start,10),req.data.show);
 
-res.data.title = path.site.title;
+res.data.title = "Polls of " + path.site.title;
+
 res.data.body = this.renderSkinAsString("main");
 
 path.site.renderSkin("page");

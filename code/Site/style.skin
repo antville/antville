@@ -44,7 +44,7 @@ a:hover {
    font-family: <% site.smallfont %>;
    font-size: <% site.smallsize %>;
    padding: 1px;
-   color: <% site.linkcolor %>;
+   color: <% site.textcolor %>;
    background-color: <% site.bgcolor %>;
 }
 

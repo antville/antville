@@ -7,7 +7,7 @@ if (deny) {
 res.data.title = this.site.title;
 var storytitle = this.getRenderedContentPart("title");
 if (storytitle)
-   res.data.title += " - " + stripTags(storytitle);
+   res.data.title += ": " + stripTags(storytitle);
 
 res.data.body = this.renderSkinAsString("main");
 

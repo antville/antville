@@ -16,10 +16,10 @@ else if (req.data.submit == "delete" || req.data.remove) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.title;
+res.data.title = "Delete weblog: " + this.title;
 
 var skinParam = new Object();
-skinParam.what = "the weblog <b>" + this.title + "</b>";
+skinParam.what = "the weblog &quot;" + this.title + "&quot;";
 
 res.data.body = this.renderSkinAsString("delete",skinParam);
 

@@ -5,8 +5,8 @@
 <% poll.choices %>
 
 <tr>
-<td colspan="2"><br /><input type="submit" name="submit" value="vote" /> &nbsp; <span class="small"><% poll.link to="results" text="view results" %></span>
-<p class="small">created by <% poll.creator %> on <% poll.createtime format="short" %>.</p></td>
+<td colspan="2"><br /><input type="submit" name="vote" value="Vote" /> &nbsp; <span class="small"><% poll.link to="results" text="view results" %></span>
+<p class="small">Created by <% poll.creator as="link" %> on <% poll.createtime format="short" %>.</p></td>
 </tr>
 
 </table>

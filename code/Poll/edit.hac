@@ -43,7 +43,7 @@ else {
 	max = len;
 }
 
-if (req.data.submit == "add choice")
+if (req.data.submit == "add choice" || req.data.addchoice)
 	max++;
 
 var c = new choice();
@@ -58,7 +58,7 @@ for (var i=0; i<max; i++) {
 res.data.action = this.href(req.action);
 
 res.data.command = "Edit";
-res.data.title = path.site.title;
+res.data.title = "Edit poll: " + this.question;
 res.data.body = this.renderSkinAsString("edit");
 
 path.site.renderSkin("page");

@@ -20,7 +20,7 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.site.title;
+res.data.title = "Add an image to " + path.site.title;
 
 var newImg = new image();
 res.data.body = newImg.renderSkinAsString("new");

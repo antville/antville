@@ -348,6 +348,12 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
+   // call module schedulers
+   for (var i in app.data.modules) {
+      var module = app.data.modules[i];
+      if (module.schedule)
+         module.schedule();
+   }
    return (30000);
 }
 
@@ -464,16 +470,31 @@ function buildAliasFromFile(uploadFile) {
  */
 
 function onStart() {
-   // load application messages
-   var dir = new File(app.dir);
+   // load application messages and modules
+   app.data.modules = new Object();
+   var dir = app.__app__.getAppDir();
    var arr = dir.list();
    for (var i in arr) {
-   	if (arr[i].indexOf("messages.") > -1) {
-         var name = arr[i].substring(arr[i].indexOf(".")+1,arr[i].length);
-   		var msgFile = new File(dir, arr[i]);
+      var fname = arr[i];
+   	if (fname.indexOf("messages.") > -1) {
+         var name = fname.substring(fname.indexOf(".")+1,fname.length);
+   		var msgFile = new File(dir, fname);
    		app.data[name] = new Packages.helma.util.SystemProperties (msgFile.getAbsolutePath());
    		app.log ("loaded application messages (language: " + name + ")");
    	}
+      // check if file is a zip file and if there's 
+      // a module with the zip file's name:
+      if (fname.lastIndexOf(".zip") == fname.length-4) {
+         var modname = fname.substring(0, fname.length-4);
+         var trial = tryEval(modname + "_module");
+         if (!trial.error && typeof trial.value == "function") {
+            trial = tryEval("new " + modname + "_module()");
+            if (!trial.error) {
+               app.data.modules[modname] = trial.value;
+               app.log ("loaded module " + modname);
+            }
+         }
+      }
    }
    // load macro help file
    var macroHelpFile = new File(dir, "macro.help");

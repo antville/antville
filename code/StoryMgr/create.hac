@@ -32,7 +32,7 @@ if (req.data.submit == "cancel" || req.data.cancel) {
       s = result.story;
 }
 
-res.data.title = path.site.title;
+res.data.title = "Add a story to " + path.site.title;
 
 res.data.action = this.href("create");
 

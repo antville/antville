@@ -1,4 +1,4 @@
 <tr>
 <td><span class="small">Choice #<% param.count %>:</span><br />
-<input type="text" size="60" name="choice" value="<% param.value encoding="form" %>"></td>
+<input type="text" size="55" name="choice" value="<% param.value encoding="form" %>" /></td>
 </tr>

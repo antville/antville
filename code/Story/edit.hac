@@ -39,9 +39,9 @@ if (req.data.set) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.site.title;
+res.data.title = "Edit story";
 if (this.title)
-   res.data.title += " - " + encode(this.title);
+   res.data.title += ": " + encode(this.title);
 
 res.data.body = this.renderSkinAsString("edit");
 

@@ -1,5 +1,5 @@
 <% story.skin name="display" %>
-<div class="small"><% story.commentlink text="react" %>&nbsp;&nbsp;<% story.editlink prefix="...&nbsp;" %>&nbsp;&nbsp;<% story.onlinelink prefix="...&nbsp;" %></div>
+<div class="small"><% story.commentlink text="comment" %>&nbsp;&nbsp;<% story.editlink prefix="...&nbsp;" %>&nbsp;&nbsp;<% story.onlinelink prefix="...&nbsp;" %></div>
 
 <a name="comments"></a>
 <% story.comments %>

@@ -30,10 +30,10 @@
 <p><% story.discussions as="editor" %>&nbsp;Allow comments</p></fieldset></td>
 </tr>
 <tr>
-<td class="small"><% story.creator as="link" prefix="Created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;" suffix="<br />&nbsp;" %></td>
+<td class="small"><% story.creator as="link" prefix="Created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><% input type="button" name="publish" value="Publish" %>&nbsp;<% input type="button" name="save" value="Save offline" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="button" name="publish" value="Publish" %>&nbsp;<% input type="button" name="save" value="Save offline" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>

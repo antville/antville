@@ -141,17 +141,12 @@ function deletelink_macro(param) {
  */
 function viewlink_macro(param) {
    if (session.user && this.isViewDenied(session.user,req.data.memberlevel))
-     return;
-   if (this.closed || this.isVoteDenied(session.user,req.data.memberlevel)) {
-      var url = this.href("results");
-      var str = "view";
-   }
-   else {
-      var url = this.href("main");
-      var str = "vote";
-   }
-   openLink(url);
-   res.write(param.text ? param.text : str);
+      return;
+   if (this.closed || this.isVoteDenied(session.user,req.data.memberlevel))
+      return;
+
+   openLink(this.href("main"));
+   res.write(param.text ? param.text : "vote");
    closeLink();
    return;
 }

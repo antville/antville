@@ -5,7 +5,8 @@ if (deny) {
    res.redirect(path.site.members.href("login"));
 }
 
-res.data.title = path.site.title+" Topics";
+res.data.title = "Topics of " + path.site.title;
+
 res.data.body = this.renderSkinAsString ("main");
 
 path.site.renderSkin("page");

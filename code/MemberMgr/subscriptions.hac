@@ -2,7 +2,7 @@ checkIfLoggedIn(this.href(req.action));
 
 var parent = getParent();
 
-res.data.title = path.site ? path.site.title : root.getSysTitle();
+res.data.title = "Your subscriptions";
 
 res.data.body = session.user.renderSkinAsString("subscriptions");
 

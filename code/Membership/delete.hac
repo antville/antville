@@ -16,10 +16,10 @@ else if (req.data.submit == "delete" || req.data.remove) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.site.title;
+res.data.title = "Delete membership: " + this.username;
 
 var skinParam = new Object();
-skinParam.what = "the membership of <b>" + this.username + "</b>";
+skinParam.what = "the membership of &quot;" + this.username + "&quot;";
 res.data.body = this.renderSkinAsString("delete",skinParam);
 
 path.site.renderSkin("page");

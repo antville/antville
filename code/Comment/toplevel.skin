@@ -5,4 +5,4 @@
 <div class="small"><% comment.link text="link" %>&nbsp;&nbsp;<% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% comment.deletelink prefix="...&nbsp;" %></div>
 
 <% comment.comments %>
-<div class="reply"><span class="small"><% this.replylink text="react" prefix="<br />...&nbsp;" %></span></div>
+<div class="reply"><span class="small"><% this.replylink text="comment" prefix="<br />...&nbsp;" %></span></div>

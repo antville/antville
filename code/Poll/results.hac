@@ -4,7 +4,7 @@ if (deny) {
    res.redirect(this.site.href());
 }
 
-res.data.title = this.site.title;
+res.data.title = "View poll: " + this.question;
 res.data.body = this.renderSkinAsString("results");
 
 path.site.renderSkin("page");

@@ -17,7 +17,7 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.site.title;
+res.data.title = "Edit file: " + this.alias;
 
 res.data.body = this.renderSkinAsString("edit");
 

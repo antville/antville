@@ -1,6 +1,6 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><% pollmgr.link to="create" text="create a poll" prefix="...&nbsp;" checkdeny="true" %></td>
+<td colspan="2" nowrap="nowrap"><% pollmgr.link to="create" text="add a poll" prefix="...&nbsp;" checkdeny="true" %></td>
 </tr>
 <tr>
 <td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>

@@ -4,7 +4,7 @@ if (deny) {
    res.redirect(this.members.href("login"));
 }
 
-res.data.title = this.title;
+res.data.title = "Most read stories of " + this.title;
 
 res.data.body = this.renderSkinAsString("mostread");
 

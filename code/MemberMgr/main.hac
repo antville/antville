@@ -8,7 +8,7 @@ if (deny) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.site.title;
+res.data.title = "Members of " + path.site.title;
 
 res.data.body = this.renderSkinAsString("main");
 

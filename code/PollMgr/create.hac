@@ -32,7 +32,7 @@ else {
 	var max = len;
 }
 
-if (req.data.submit == "add choice" || req.data["addchoice"])
+if (req.data.submit == "add choice" || req.data.addchoice)
 	max++;
 
 var newPoll = new poll();
@@ -46,7 +46,7 @@ for (var i=0; i<max; i++) {
 }
 
 res.data.action = this.href(req.action);
-res.data.title = path.site.title;
+res.data.title = "Add a poll to " + path.site.title;
 res.data.body = newPoll.renderSkinAsString("edit");
 
 path.site.renderSkin("page");

@@ -14,7 +14,7 @@ else if ((req.data.submit == "vote" || req.data.vote)) {
 }
 
 res.data.action = this.href();
-res.data.title = this.site.title;
+res.data.title = "Vote poll: " + this.question;
 res.data.body = this.renderSkinAsString("main");
 
 path.site.renderSkin("page");

@@ -1,8 +1,7 @@
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="storytitle"><% response.title %></div><br />
-<b><a name="general">Generic</a></b></td>
+<td colspan="2" nowrap="nowrap"><b><a name="general">General</a></b></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
@@ -90,7 +89,7 @@
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
-<b><a name="fonts">Fonts and sizes</a></b></td>
+<b><a name="fonts">Fonts</a></b></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title font:</td>

@@ -1,4 +1,4 @@
-res.data.title = root.getSysTitle();
+res.data.title = "Sites of " + root.getSysTitle();
 
 res.data.body = this.renderSkinAsString("list");
 

@@ -17,7 +17,7 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.site.title;
+res.data.title = "Add a file to " + path.site.title;
 
 var newFile = new file();
 res.data.body = newFile.renderSkinAsString("new");

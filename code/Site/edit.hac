@@ -17,7 +17,7 @@ else if (req.data.submit == "save" || req.data.save) {
 
 res.data.action = this.href(req.action);
 
-res.data.title = "Preferences";
+res.data.title = "Preferences of " + this.title;
 
 res.data.body = this.renderSkinAsString("edit");
 

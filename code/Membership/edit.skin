@@ -1,9 +1,9 @@
-<p>to change the status of this member, simply choose from the dropdown menu and click on "save". (an e-mail will be sent to the member telling him/her that you changed the status.)</p>
+<p>To change the status of this member, simply choose from the dropdown menu and click on "Save". An e-mail will be sent to the member telling him/her that you changed the status.</p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small" nowrap="nowrap">Username:</td>
-<td nowrap="nowrap"><b><% membership.username %></b></td>
+<td nowrap="nowrap"><% membership.username %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">E-mail:</td>
@@ -23,7 +23,7 @@
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>

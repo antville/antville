@@ -1,15 +1,13 @@
-<p class="storyTitle">Skins</p>
-
 <p>The following list contains skins that you will most likely modify if you want to give your weblog a new design.</p>
 
-<p><b>basic layout</b></p>
+<p><b>Basic layout</b></p>
 <ul>
 <li><a name="weblogpage"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=page" text="main page" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="page" %>)</span><br />
 This is the basic skin of your weblog. Changing this skin will affect the whole weblog.</li>
 <li><a name="weblogstyle"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=style" text="stylesheet" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="style" %>)</span><br />
-This skin contains all Cascaded Stylesheet-definitions (i.e. fonts and font-sizes, colors etc.). Changing this skin will affect the whole weblog.</li>
+This skin contains all cascaded stylesheet definitions, e.g. fonts, font sizes, colors etc. Changing this skin will affect the whole weblog.</li>
 <li><a name="weblogjavascript"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=javascript" text="javascript" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="javascript" %>)</span><br />
-This skin contains JavaScript-Code that will be included in the header of every page.</li>
+This skin contains JavaScript code that will be included in the header of every page.</li>
 <li><a name="weblogmain"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=main" text="frontpage" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="main" %>)</span><br />
 This is the skin responsible for the frontpage of your weblog.</li>
 <li><a name="daymain"></a><% skinmgr.link to="edit" urlparam="proto=day&amp;name=main" text="frontpage of a single day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="day" name="main" %>)</span><br />
@@ -17,12 +15,12 @@ Whenever a user selects a single day via the calendar, this skin will be used to
 <li><a name="membershipstatusloggedin"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&amp;name=statusloggedin" text="user logged in" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="statusloggedin" %>)</span><br />
 If the user visiting your weblog is logged in, this skin will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
 <li><a name="membershipstatusloggedout"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&amp;name=statusloggedout" text="user not logged in" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="statusloggedout" %>)</span><br />
-If the user visiting your weblog is not logged in, this skin (containing a link to the login-page) will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
+If the user visiting your weblog is <em>not</em> logged in, this skin will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
 </ul>
 
 <!-- topics and topic manager // -->
 
-<p><b>topics</b></p>
+<p><b>Topics</b></p>
 <ul>
 <li><a name="topicmain"></a><% skinmgr.link to="edit" urlparam="proto=topic&amp;name=main" text="topic page" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="topic" name="main" %>)</span><br />
 Skin for customizing the look of your topic pages.</li>
@@ -32,37 +30,37 @@ Defines the look of the topic manager.</li>
 
 <!-- story-templates // -->
 
-<p><b>stories</b></p>
+<p><b>Stories</b></p>
 <ul>
 <li><a name="storydisplay"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=display" text="display" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="display" %>)</span><br />
-This skin is used to display a story (it's embedded in the following three skins).</li>
+This skin is used to display a story. By default, it's embedded in the following three skins.</li>
 <li><a name="storypreview"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=preview" text="preview" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="preview" %>)</span><br />
-This skin is used to display a story on a frontpage (either the frontpage of your weblog or the frontpage of a single day).</li>
+This skin is used to display a story on a front page (i.e. either the front page of your weblog or the front page of a single day).</li>
 <li><a name="storyembed"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=embed" text="embed" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="embed" %>)</span><br />
-This skin will be used to display a story when you embed it in a skin using the &lt;%&nbsp;story&nbsp;%&gt;-macro.</li>
+This skin will be used to display a story when you embed it in a skin using the &lt;%&nbsp;story&nbsp;%&gt; macro.</li>
 <li><a name="storymain"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=main" text="full story" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="main" %>)</span><br />
-This skin is used to display a story in the way you defined it in the &quot;display&quot;-skin plus its comments.</li>
+This skin is used to display a story in the way you defined it in the &quot;display&quot; skin plus its comments.</li>
 <li><a name="storycomment"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=comment" text="display on comment-page" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="comment" %>)</span><br />
 This skin defines the page containing the form for adding a new comment.</li>
 <li><a name="storymgrmain"></a><% skinmgr.link to="edit" urlparam="proto=storymgr&amp;name=main" text="story manager" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="storymgr" name="main" %>)</span><br />
-This skin is responsible for the storypool aka story manager.</li>
+This skin is responsible for the story manager.</li>
 </ul>
 
 <!-- comment-templates // -->
 
-<p><b>comments</b></p>
+<p><b>Comments</b></p>
 <ul>
 <li><a name="commenttoplevel"></a><% skinmgr.link to="edit" urlparam="proto=comment&amp;name=toplevel" text="toplevel" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="comment" name="toplevel" %>)</span><br />
-This skin defines the layout of toplevel-comments</li>
+This skin defines the layout of top-level comments.</li>
 <li><a name="commentreply"></a><% skinmgr.link to="edit" urlparam="proto=comment&amp;name=reply" text="reply" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="comment" name="reply" %>)</span><br />
 This skin defines how replies to comments are displayed.</li>
 <li><a name="commentedit"></a><% skinmgr.link to="edit" urlparam="proto=comment&amp;name=edit" text="form for creating/editing a comment" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="comment" name="edit" %>)</span><br />
-This skin contains the form for adding a toplevel-comment or a reply to a comment.</li>
+This skin contains the form for adding a top-level comment or a reply to a comment.</li>
 </ul>
 
 <!-- poll-templates // -->
 
-<p><b>polls</b></p>
+<p><b>Polls</b></p>
 <ul>
 <li><a name="pollmain"></a><% skinmgr.link to="edit" urlparam="proto=poll&amp;name=main" text="form" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="poll" name="main" %>)</span><br />
 This skin shows the form to be used for voting a poll.</li>
@@ -80,12 +78,11 @@ This skin is used to visualize the result of a single choice.</li>
 
 <p class="commentHead">&nbsp;</p>
 
-<p><b>Skins for advanced administrators</b><br />
-The following list contains skins that will be used by Antville i.e. for displaying editing forms or navigation bars. Unless you want to change the design of your weblog completely there will be no need to modify these. Please do not edit the following skins unless you are really familiar with modifying skins.</p>
+<p>The following list contains skins that will be used by Antville e.g. for displaying edit forms or navigation bars. Unless you want to change the design of your weblog completely there will be no need to modify these. Please do not edit the following skins unless you are really familiar with modifying skins and know what you are doing.</p>
 
 <!-- search page // -->
 
-<p><b>search</b></p>
+<p><b>Search</b></p>
 <ul>
 <li><a name="sitesearchform"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=searchform" text="search form" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="searchform" %>)</span><br />
 This skin is responsible for the search form of your site.</li>
@@ -93,22 +90,22 @@ This skin is responsible for the search form of your site.</li>
 Skin defining the look of the search results.</li>
 </ul>
 
-<p><b>files</b></p>
+<p><b>Files</b></p>
 <ul>
 <li><a name="filemain"></a><% skinmgr.link to="edit" urlparam="proto=file&amp;name=main" text="view" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="file" name="main" %>)</span><br />
-This skin defines the way files are displayed when embedded in a story or comment using the file-macro.</li>
+This skin defines the way files are displayed when embedded in a story or comment using the &lt;% file %&gt; macro.</li>
 </ul>
 
 <!-- calendar // -->
 
-<p><b>calendar</b></p>
+<p><b>Calendar</b></p>
 <ul>
 <li><a name="weblogcalendar"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=calendar" text="main template" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="calendar" %>)</span><br />
 The main calendar skin defines the surrounding table with the row containing the current month and year.</li>
 <li><a name="weblogcalendardayheader"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=calendardayheader" text="header" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="calendardayheader" %>)</span><br />
-This skin defines the appearence of the column-headers of the calendar ("Mo","Tue", ...)</li>
+This skin defines the appearence of the calendar's column headers (i.e. the days "Mon", "Tue", etc.)</li>
 <li><a name="weblogcalendarweek"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=calendarweek" text="week" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="calendarweek" %>)</span><br />
-The "week"-template is responsible for the layout of each line of the calendar (containing the days of a week).</li>
+This skin is responsible for the layout of each line of the calendar containing the numerical days of a week.</li>
 <li><a name="weblogcalendarday"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=calendarday" text="day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="calendarday" %>)</span><br />
 This is the way a single day appears in the calendar.</li>
 <li><a name="weblogcalendarselday"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=calendarselday" text="selected day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="calendarselday" %>)</span><br />
@@ -117,7 +114,7 @@ Whenever a user views the stories of a specific day, this skin will be used to h
 
 <!-- recently modified box // -->
 
-<p><b>"recently modified"-box</b></p>
+<p><b>"Recently modified" box</b></p>
 <ul>
 <li><a name="hopobjecthistoryview"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=historyview" text="item" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="historyview" %>)</span><br />
 This skin defines how a story or a comment will appear in the list of recently modified items.</li>
@@ -125,46 +122,46 @@ This skin defines how a story or a comment will appear in the list of recently m
 
 <!-- login/register // -->
 
-<p><b>register/login</b></p>
+<p><b>Login/register</b></p>
 <ul>
-<li><a name="membershipregister"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&amp;name=register" text="register-form" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="register" %>)</span><br />
-Whenever a user wants to register to Antville via your weblog, this skin will be used to display the form needed.</li>
 <li><a name="membershiplogin"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&amp;name=login" text="login-form" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="login" %>)</span><br />
-This skin defines the layout of the login-form.</li>
+This skin defines the layout of the login form.</li>
+<li><a name="membershipregister"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&amp;name=register" text="register-form" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="register" %>)</span><br />
+Whenever a user wants to register to Antville via your weblog, this skin will be used to display the appropriate form.</li>
 </ul>
 
 <!-- mails // -->
 
-<p><b>confirmation mails</b></p>
+<p><b>Confirmation mails</b></p>
 <ul>
 <li><a name="usermailbody"></a><% skinmgr.link to="edit" urlparam="proto=user&amp;name=mailbody" text="registration-confirm" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="user" name="mailbody" %>)</span><br />
-When a user registers via your weblog, a mail containing this body will be sent as a confirmation.</li>
+When a user registers via your weblog, a mail containing this body will be sent as confirmation.</li>
 <li><a name="membermailbody"></a><% skinmgr.link to="edit" urlparam="proto=membership&amp;name=mailbody" text="memberstatus-confirm" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membership" name="mailbody" %>)</span><br />
-Whenever you or another admin of your weblog changes the status of a signed up member, this member will receive a confirmation mail. This skin defines the mail-body of it.</li>
+Whenever you or another admin of your weblog changes the status of a signed up member, this member will receive a confirmation mail. This skin defines the mail body of it.</li>
 </ul>
 
-<p><b>navigation skins</b></p>
+<p><b>Navigation skins</b></p>
 <ul>
 <li><a name="weblogusernavigation"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=usernavigation" text="navigation-bar for users" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="usernavigation" %>)</span><br />
 This skin contains the navigation presented to all users (regardless if they're logged in or not)</li>
 <li><a name="weblogcontribnavigation"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=contribnavigation" text="navigation-bar for contributors" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="contribnavigation" %>)</span><br />
-This skin contains additional navigation-items for contributors and content managers of your weblog (i.e. links to add stories or images)</li>
+This skin contains additional navigation items for contributors and content managers of your weblog (i.e. links to add stories or images)</li>
 <li><a name="weblogadminnavigation"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=adminnavigation" text="navigation-bar for admins" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="adminnavigation" %>)</span><br />
-This skin contains the additional navigation-items for administrators (i.e. edit preferences, edit skins ...).</li>
+This skin contains the additional navigation items for administrators (i.e. edit preferences, edit skins ...).</li>
 </ul>
 
 <!-- editor-skins // -->
 
-<p><b>editor skins</b></p>
+<p><b>Editor skins</b></p>
 <ul>
 <li><a name="storyedit"></a><% skinmgr.link to="edit" urlparam="proto=story&amp;name=edit" text="form for creating/editing a story" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="edit" %>)</span><br />
-This is the form used for creating a new or editing an existing story.</li>
+This is the form used for creating a new, or editing an existing story.</li>
 <li><a name="imagenew"></a><% skinmgr.link to="edit" urlparam="proto=image&amp;name=new" text="imageupload" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="image" name="new" %>)</span><br />
 This skin contains the form for uploading a new image.</li>
 <li><a name="imageedit"></a><% skinmgr.link to="edit" urlparam="proto=image&amp;name=edit" text="image editor" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="image" name="edit" %>)</span><br />
 This skin contains the form for editing an already uploaded image.</li>
 <li><a name="useredit"></a><% skinmgr.link to="edit" urlparam="proto=user&amp;name=edit" text="profile editor" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="user" name="edit" %>)</span><br />
-contains the form used for changing the profile of a user</li>
+contains the form used for changing the profile of a user.</li>
 <li><a name="polledit"></a><% skinmgr.link to="edit" urlparam="proto=poll&amp;name=edit" text="poll editor" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="poll" name="edit" %>)</span><br />
 This skin displays the form for creating and editing a poll.</li>
 <li><a name="choiceedit"></a><% skinmgr.link to="edit" urlparam="proto=choice&amp;name=edit" text="choice editor" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="poll" name="edit" %>)</span><br />
@@ -173,16 +170,16 @@ This skin is used as form element for editing a single choice of a poll.</li>
 
 <!-- previews and lists // -->
 
-<p><b>previews and lists</b></p>
+<p><b>Previews and lists</b></p>
 <ul>
 <li><a name="globalprevpagelink"></a><% skinmgr.link to="edit" urlparam="proto=global&amp;name=prevpagelink" text="link to newer entries" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="global" name="prevpagelink" %>)</span><br />
-This skin displays a link to newer entries. It's used in all editor-lists (i.e. in storypool, imagepool, filepool), in topics and for weblog-navigation if you included it in the <% skinmgr.link to="edit" urlparam="proto=site&amp;name=page" text="main page" %>.</li>
+This skin displays a link to newer entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for weblog navigation if you include it in the <% skinmgr.link to="edit" urlparam="proto=site&amp;name=page" text="main page" %>.</li>
 <li><a name="globalnextpagelink"></a><% skinmgr.link to="edit" urlparam="proto=global&amp;name=nextpagelink" text="link to older entries" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="global" name="nextpagelink" %>)</span><br />
-This skin displays a link to older entries in a list. It's used in all editor-lists (i.e. in storypool, imagepool, filepool), in topics and for weblog-navigation if you included it in the <% skinmgr.link to="edit" urlparam="proto=site&amp;name=page" text="main page" %>.</li>
+This skin displays a link to older entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for weblog navigation if you include it in the <% skinmgr.link to="edit" urlparam="proto=site&amp;name=page" text="main page" %>.</li>
 <li><a name="imagemain"></a><% skinmgr.link to="edit" urlparam="proto=image&amp;name=main" text="image view" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="image" name="main" %>)</span><br />
-This skin is used to display an image with its name and alttext.</li>
+This skin is used to display an image with its name and description.</li>
 <li><a name="imagemgrmain"></a><% skinmgr.link to="edit" urlparam="proto=imagemgr&amp;name=main" text="imagelist" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="imagemgr" name="main" %>)</span><br />
-This skin is used to display a list of images in the imagepool.</li>
+This skin is used to display the list of images contained in the image manager.</li>
 <li><a name="imagepreview"></a><% skinmgr.link to="edit" urlparam="proto=image&amp;name=preview" text="image preview" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="image" name="preview" %>)</span><br />
-This skin defines the way a image is displayed in the imagelist of the imagepool.</li>
+This skin defines the way an image is displayed in the image manager's list of images.</li>
 </ul>

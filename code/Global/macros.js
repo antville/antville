@@ -230,8 +230,7 @@ function sitelist_macro(param) {
       var sp = new Object();
       sp.url = root.href("list") + "?start=" + Math.max(0, idx-max);
       sp.text = "previous weblogs";
-      renderSkin("prevpagelink",sp);
-      renderMarkupElement("br");
+      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
    var cnt = 0;
    while (cnt < max && idx < size) {
@@ -245,9 +244,9 @@ function sitelist_macro(param) {
       var sp = new Object();
       sp.url = root.href("list") + "?start=" + idx;
       sp.text = "more weblogs";
-      renderMarkupElement("br");
-      renderSkin("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   return;
 }
 
 

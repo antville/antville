@@ -1,23 +1,27 @@
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td valign="top" class="small" nowrap="nowrap">Name:</td>
-<td><% input name="alias" size="25" %><br /><span class="small">If you do not specify a name, Antville will create one based on the name of the image you uploaded.</span></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Description:</td>
-<td nowrap="nowrap"><% input name="alttext" size="25" %></td>
-</tr>
-<tr>
 <td class="small" nowrap="nowrap">Local file:</td>
 <td nowrap="nowrap"><% input type="file" name="rawimage" size="20" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Remote URL:</td>
-<td nowrap="nowrap"><% input name="url" size="25" %></td>
+<td align="center"><em>&#151; or &#151;</em></td>
+<td class="small">(only specify either a local file or a remote URL)</td>
 </tr>
 <tr>
-<td colspan="2">If you want to resize the image, please specify your desired maximum width and/or maximum height. If you specify both, the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
+<td class="small" nowrap="nowrap">Remote URL:</td>
+<td nowrap="nowrap"><% input name="url" size="30" %></td>
+</tr>
+<tr>
+<td valign="top" class="small" nowrap="nowrap">Name:</td>
+<td><% input name="alias" size="30" %><br /><span class="small">If you do not specify a name Antville will create one based on the name of the local or remote file, resp.</span></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap" valign="top">Description:</td>
+<td nowrap="nowrap"><% input type="textarea" name="alttext" cols="25" rows="3" %></td>
+</tr>
+<tr>
+<td colspan="2">If you want to resize the image please specify your desired maximum width and/or maximum height. If you specify both the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">max. width:</td>
@@ -29,11 +33,11 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">&nbsp;</td>
-<td class="small">If the width or height of your image exceeds 100 pixels Antville automatically will create a thumbnail of it, too.</td>
+<td class="small">If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too.</td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>

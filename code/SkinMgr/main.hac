@@ -6,7 +6,7 @@ if (deny) {
    res.redirect(path.site.href());
 }
 
-res.data.title = path.site.title;
+res.data.title = "Skins of " + path.site.title;
 
 res.data.body = this.renderSkinAsString("main");
 

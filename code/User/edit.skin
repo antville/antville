@@ -2,19 +2,19 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small" nowrap="nowrap">Old password:</td>
-<td nowrap="nowrap"><% input type="password" name="oldpwd" %></td>
+<td nowrap="nowrap"><% input type="password" name="oldpwd" width="15" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">New password:</td>
-<td nowrap="nowrap"><% input type="password" name="newpwd1" %></td>
+<td nowrap="nowrap"><% input type="password" name="newpwd1" width="15" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Confirm password:</td>
-<td nowrap="nowrap"><% input type="password" name="newpwd2" %></td>
+<td nowrap="nowrap"><% input type="password" name="newpwd2" width="15" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">E-mail:</td>
-<td><% user.email as="editor" %></td>
+<td><% user.email as="editor" width="35" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">E-mail is visible:</td>
@@ -22,12 +22,12 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
-<td><% user.url as="editor" %><br />
+<td><% user.url as="editor" width="35" %><br />
 <span class="small">If you enter a URL or an e-mail address here, your username will appear as link next to your stories or comments.</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>

@@ -1,2 +1,2 @@
 <% story.skin name="display" %>
-<span class="small"><% story.link text="link" %>&nbsp;<% story.commentcounter prefix="(" suffix=")&nbsp;&nbsp;" anchor="comments" %><% story.commentlink text="react" prefix="...&nbsp;" %>&nbsp;&nbsp;<% story.editlink prefix="...&nbsp;" %></span><br />&nbsp;
+<span class="small"><% story.link text="link" %>&nbsp;<% story.commentcounter prefix="(" suffix=")&nbsp;&nbsp;" anchor="comments" %><% story.commentlink text="comment" prefix="...&nbsp;" %>&nbsp;&nbsp;<% story.editlink prefix="...&nbsp;" %></span><br />&nbsp;
