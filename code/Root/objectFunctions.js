@@ -63,6 +63,7 @@ function createNewWeblog(newLog) {
    newLog.days = 3;
    newLog.language = "en";
    newLog.country = "US";
+   newLog.dateformat = "EEEE, dd.MM.yyyy HH:mm";
    newLog.createImgDirectory()
    this.add(newLog);
    // create member-object for connecting user <-> weblog with admin-rights
