@@ -22,7 +22,7 @@
 
 <div class="statuslight"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="EE, MM/dd/yyyy%></div>
 <% this.loginstatus %>
-<div class="statuslight"><% weblog.link to="signup" text="sign up" %> to <% this.title %>!</div>
+<div class="statuslight"><% this.membership prefix="...&nbsp;" %></div>
 
 <div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
 <div class="statushead"><img src="/img/antville/head_menu.gif" width="36" height="13" border="0"></div>
