@@ -25,7 +25,7 @@ function evalNewImg() {
          else {
             // store properties necessary for image-creation
             newImg.filename = req.data.alias;
-            newImg.cache.saveTo = getProperty("imgPath") + this.__parent__.alias + "/";
+            newImg.cache.saveTo = getProperty("imgPath") + this._parent.alias + "/";
  
             // check if user wants to resize width
             if (req.data.maxwidth)
