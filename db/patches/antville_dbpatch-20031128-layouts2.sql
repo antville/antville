@@ -12,3 +12,7 @@ update AV_SKIN set SKIN_NAME = "mgrlistitem" where SKIN_PROTOTYPE = "poll" and S
 update AV_SKIN set SKIN_NAME = "mgrlistitem" where SKIN_PROTOTYPE = "layout" and SKIN_NAME = "listitem";
 update AV_SKIN set SKIN_NAME = "mgrlistitem" where SKIN_PROTOTYPE = "story" and SKIN_NAME = "listitem";
 update AV_SKIN set SKIN_NAME = "mgrlistitem" where SKIN_PROTOTYPE = "membership" and SKIN_NAME = "preview";
+update AV_SKIN set SKIN_NAME = "mailregconfirm" where SKIN_PROTOTYPE = "membermgr" and SKIN_NAME = "mailbody"
+update AV_SKIN set SKIN_NAME = "mailpassword" where SKIN_PROTOTYPE = "membermgr" and SKIN_NAME = "pwdmail"
+update AV_SKIN set SKIN_NAME = "mailstatuschange" where SKIN_PROTOTYPE = "membership" and SKIN_NAME = "mailbody"
+
