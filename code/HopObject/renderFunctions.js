@@ -218,3 +218,23 @@ function renderTextPreview(limit) {
       res.write(text.charAt(i));
    }
 }
+
+/**
+ * function renders image-tag
+ */
+
+function renderImage(img,param) {
+   res.write("<img src=\"" + getProperty("imgUrl"));
+   if (this.alias)
+      res.write(this.alias + "/");
+   res.write(img.filename + "." + img.fileext + "\"");
+   res.write(" width=\"" + (param.width ? param.width : img.width) + "\"");
+   res.write(" height=\"" + (param.height ? param.height: img.height) + "\"");
+   if (param.align)
+      res.write(" align=\"" + param.align + "\"");
+   if (param.valign)
+      res.write(" valign=\"" + param.valign + "\"");
+   if (img.alttext)
+      res.write(" alt=\"" + img.alttext + "\"");
+   res.write(" border=\"0\">");
+}
