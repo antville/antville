@@ -1,16 +1,16 @@
-var deny = this.isNotPublic(user);
+var deny = this.isNotPublic(session.user);
 if (deny) {
    res.message = deny;
-   user.cache.referrer = this.href();
+   session.data.referrer = this.href();
    res.redirect(this.members.href("login"));
 }
-
-res.skin = "weblog.page";
 
 this.renderStorylist(req.data.day);
 
 res.data.title = this.title;
 
 res.data.body = this.renderSkinAsString("main");
+
+this.renderSkin("page");
 
 logAccess();
