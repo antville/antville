@@ -155,3 +155,10 @@ function setAll(obj) {
    this.cache.content = obj;
    return true;
 }
+
+/**
+ * return the last modified timestamp of the content cache
+ */
+function getLastModified() {
+   return this.cache.__lastModified__;
+}
