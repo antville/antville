@@ -21,7 +21,7 @@ function addstory_macro () {
  */
 
 function relatedtopics_macro (param) {
-   this.related.subnodeRelation = "where TEXT like '%*" + this.groupname + "*%' AND (TOPIC is null OR TOPIC != '" + this.groupname + "') ORDER BY MODIFYTIME DESC";
+   this.related.subnodeRelation = "where WEBLOG_ID = " + path.weblog._id + " AND TEXT like '%*" + this.groupname + "*%' AND (TOPIC is null OR TOPIC != '" + this.groupname + "') ORDER BY MODIFYTIME DESC";
    var l = this.related.size();
    if (l == 0)
       return;
