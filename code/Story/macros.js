@@ -2,13 +2,20 @@
  *  macro for rendering a part of the content.
  */
 function content_macro(param) {
-   // check if this is a story with the old property layout. If so, convert to new.
-   if (this.text && !this.content) {
-      this.convertContentToXML();
-   }
+   // moved the check for old property layout to
+   // objectFunctions.js/getContentPart() because
+   // this function is called directly sometimes [ts]
    if (param.as == "editor") {
-      param.name = "content_" + param.part;
-      param.value = this.getContentPart(param.part);
+      if (param.part == "title" && !this.content) {
+         if (path.comment.title)
+            param.value = "Re: " + path.comment.text;
+         else if (path.story.title)
+            param.value = "Re: " + path.story.title;
+      }
+      else {
+         param.name = "content_" + param.part;
+         param.value = this.getContentPart(param.part);
+      }
       delete(param.part);
       if (!param.height || parseInt(param.height) == 1)
          renderInputText(param);
@@ -35,7 +42,7 @@ function content_macro(param) {
       if (!param.limit)
          res.write(format(part));
       else
-         renderTextPreview(part, param.limit);
+         renderTextPreview(part, param.limit, param.clipping);
       if (param.as == "link")
          closeLink();
    }
