@@ -5,5 +5,5 @@ The status of your account '<% membership.username %>' as a member of '<% site.t
 Have fun!
 
 ---------------------------------------
-<% root.systitle %> - <% root.sysurl %>
+<% root.title %> - <% root.url %>
 ---------------------------------------

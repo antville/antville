@@ -1,4 +1,4 @@
-Welcome to <% root.systitle %>!
+Welcome to <% root.title %>!
 
 Here's your login info:
 
@@ -8,5 +8,5 @@ Here's your login info:
 Have fun!
 
 ---------------------------------------
-<% root.systitle %> - <% root.sysurl %>
+<% root.title %> - <% root.url %>
 ---------------------------------------
