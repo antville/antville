@@ -124,7 +124,7 @@ function register_action() {
             sendMail(root.sys_email,
                      result.obj.email,
                      getMessage("mail.registration", root.getTitle()),
-                     this.renderSkinAsString("mailbody", sp)
+                     this.renderSkinAsString("mailregconfirm", sp)
                     );
          }
          res.redirect(url);
