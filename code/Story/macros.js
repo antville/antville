@@ -274,6 +274,7 @@ function comments_macro(param) {
    var s = this.story ? this.story : this;
    if (!s.hasDiscussions())
       return;
+   this.comments.prefetchChildren();
    for (var i=0;i<this.size();i++) {
       var c = this.get(i);
       var linkParam = new Object();
