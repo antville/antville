@@ -1,125 +1,60 @@
-
 /**
- * function tries to check if the color contains just hex-characters
- * if so, it renders the color-definition prefixed with a '#'
- * otherwise it assumes the color is a named one
- */
-
-function renderColor(c) {
-   if (c && c.length == 6) {
-      var nonhex = new RegExp("[^0-9,a-f]");
-      nonhex.ignoreCase = true;
-      var found = c.match(nonhex);
-      if (!found) {
-         // color-string contains just hex-characters, so we prefix it with '#'
-         res.write("#" + c);
-         return;
-      }
-   }
-   res.write(c);
-}
-
-/**
- * function renders only a part of the text passed as argument
- * length of the string to show is defined by argument "limit"
- */
-
-function renderTextPreview(text,limit) {
-   var limit = Math.min(limit,text.length);
-   var text = stripTags(text);
-   var idx = 0;
-   while (idx < limit) {
-      var nIdx = text.indexOf(" ",idx);
-      if (nIdx < 0)
-         break;
-      idx = ++nIdx;
-   }
-   var prev = text.substring(0,(idx > 1 ? idx : limit));
-   // and now we "enrich" the text with <wbr>-tags
-   for (var i=0;i<prev.length;i=i+30)
-      res.write(prev.substring(i,i+30) + "<wbr>");
-}
-
-/**
- * Do Wiki style substitution, transforming
- * stuff contained between asterisks into links.
- */
-
-function doWikiStuff (src) {
-   // robert, disabled: didn't get the reason for this:
-   // var src= " "+src;
-
-   // do the Wiki link thing, <*asterisk style*>
-   var regex = new RegExp ("<[*]([^*]+)[*]>");
-   regex.ignoreCase=true;
-
-   var text = "";
-   var start = 0;
-   while (true) {
-      var found = regex.exec (src.substring(start));
-      var to = found == null ? src.length : start + found.index;
-      text += src.substring(start, to);
-      if (found == null)
-         break;
-      var name = ""+(new java.lang.String (found[1])).trim();
-      var item = path.weblog.topics.get (name);
-      if (item == null && name.lastIndexOf("s") == name.length-1)
-         item = path.weblog.topics.get (name.substring(0, name.length-1));
-      if (item == null || !item.size())
-         text += format(name)+" <small>[<a href=\""+path.weblog.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
-      else
-         text += "<a href=\""+item.href()+"\">"+name+"</a>";
-      start += found.index + found[1].length+4;
-   }
-   return text;
-}
-
-/**
- *  Renders a drop down box from an Array and an optional 
- *  current selection index. This is a simpler alternative 
- *  for the drop-down framework in hopobject. Its main 
- *  advantage is that Arrays are much simpler to set up in 
- *  JavaScript than (Hop)Objects:
- */
-function simpleDropDownBox (name, options, selectedIndex, firstoption) {
-   var str = "<select name=\""+name+"\" size=\"1\">";
-   if (firstoption)
-      str += "<option value=\"\">" + firstoption + "</option>";
-   for (var i in options) {
-      var name = encode (options[i]);
-      var key = i;
-      if (key == selectedIndex)
-         str += "<option value=\""+key+"\" selected=\"true\">"+name+"</option>";
-      else
-         str += "<option value=\""+key+"\">"+name+"</option>";
-   }
-   str += "</select>";
-   return str;
-}
-
-
-/**
- * Renders an arbitrary x/html element
- * @param name String containing the element's name (tag)
- * @param content String containing the element's content
+ * Opens an arbitrary x/html element ("begin tag")
+ * @param name String containing the element's name
  * @param attr Object containing the element's attributes as properties
  */
-function renderMarkupElement(name, content, attr) {
-  if (!content)
-    content = "";
-  // temporary mapping of class attribute
-  // (due to backwards-compatibility)
-  if (!attr["class"]) {
-    attr["class"] = attr.style;
-    delete(attr.style);
+function openMarkupElement(name, attr) {
+  renderMarkupPart(name, attr);
+  res.write(">");
+}
+
+
+/**
+ * Closes an arbitray x/html element ("end tag")
+ * @param name String containing the element's name
+ */
+function closeMarkupElement(name) {
+  res.write("</" + name + ">");
+}
+
+
+/**
+ * Outputs an arbitrary empty x/html element ("contentless tag")
+ * @param name String containing the element's name
+ * @param attr Object containing the element's attributes as properties
+ */
+function renderMarkupElement(name, attr) {
+  renderMarkupPart(name, attr);
+  res.write(" />");
+}
+
+
+/**
+ * Outputs the first part of an arbitrary x/html element
+ * except for the closing ">" or "/>" which is done by
+ * openMarkupElement() or renderMarkupElement(), resp.
+ * @param name String containing the element's name
+ * @param attr Object containing the element's attributes as properties
+ */
+function renderMarkupPart(name, attr) {
+  res.write("<" + name);
+  if (attr) {
+    // temporary mapping of class attribute
+    // if attr.style contains class definition
+    // (due to backwards-compatibility)
+    if (attr.style && attr.style.indexOf(":") < 0) {
+      attr["class"] = attr.style;
+      delete attr.style;
+    }
+    delete attr.as;
+    var attributes = "";
+    // creating the attribute string
+    for (var i in attr) {
+      if (!attr[i])
+        continue;
+      res.write(" " + i + "=\"" + attr[i] + "\"");
+  	}
   }
-  var attributes = "";
-  for (var i in attr) {
-    if (!attr[i])
-      continue;
-    attributes += " " + i + "=\"" + attr[i] + "\"";
-	}
-  res.write("<" + name + attributes + ">" + content + "</" + name + ">");
 }
 
 
@@ -141,7 +76,256 @@ function renderImage(img, param) {
   if (!param.border)
     param.border = "0";
   param.alt = param.description ? param.description : img.alttext;
-  delete(param.description);
-  // delete(param.name);
-  return(renderMarkupElement("img", null, param));
+  renderMarkupElement("img", param);
 }
+
+
+/**
+ * renders a textarea
+ * @param param Object contains the element's attributes
+ */
+function renderInputTextarea(param) {
+  param.cols = param.width ? param.width : "40";
+  param.rows = param.height ? param.height : "5";
+  if (!param.wrap)
+    param.wrap = "virtual";
+  var value = param.value ? encodeForm(param.value) : "";
+  delete param.value;
+  delete param.width;
+  delete param.height;
+  delete param.as;
+  openMarkupElement("textarea", param);
+  res.write(value);
+  closeMarkupElement("textarea");
+}
+
+
+/**
+ * renders a submit-button
+ * @param param Object contains the element's attributes
+ */
+function renderInputButton(param) {
+  if (!param)
+    return;
+  param.type = "submit";
+  if (param.content) {
+    param.value = param.content;
+    delete param.content;
+  }
+  if (!param.name)
+    param.name = param.type;
+  param.value = param.value ? encodeForm(param.value) : param.type;
+  renderMarkupElement("input", param);  
+}
+
+
+/**
+ * renders an input type text
+ * @param param Object contains the element's attributes
+ */
+function renderInputText(param) {
+  if (!param)
+    return;
+  param.type = "text";
+  param.size = param.width ? param.width : "20";
+  delete param.width;
+  renderMarkupElement("input", param);
+}
+
+
+/**
+ * renders an input type password
+ * @param param Object contains the element's attributes
+ */
+function renderInputPassword(param) {
+  if (!param)
+    return;
+  param.type = "password";
+  renderMarkupElement("input", param);
+}
+
+
+/**
+ * function renders an input type file
+ * @param param Object contains the element's attributes
+ */
+function renderInputFile(param) {
+  if (!param)
+    return;
+  param.type = "file";
+  renderMarkupElement("input", param);
+} 
+
+
+/**
+ * renders an input type checkbox
+ * @param param Object contains the element's attributes
+ */
+function renderInputCheckbox(param) {
+  if (!param || !param.name)
+    return;
+  param.type = "checkbox";
+  param.checked = param.check;
+  delete param.check;
+  if (parseInt(param.value, 10) == 1 || param.checked == "true")
+    param.checked = "checked";
+  param.value = "1";
+  renderMarkupElement("input", param);
+}
+
+
+/**
+ *  Renders a drop down box from an Array and an optional 
+ *  current selection index. This is a simpler alternative 
+ *  for the drop-down framework in hopobject. Its main 
+ *  advantage is that Arrays are much simpler to set up in 
+ *  JavaScript than (Hop)Objects:
+ */
+function renderDropDownBox(name, options, selectedIndex, firstoption) {
+  var param = new Object();
+  param.name = name;
+  param.size = "1";
+  openMarkupElement("select", param);
+  if (firstoption) {
+    param = new Object();
+    param.value = "";
+    openMarkupElement("option", param);
+    res.write(firstoption);
+    closeMarkupElement("option");
+  }
+  for (var i in options) {
+    param = new Object();
+    param.name = encode(options[i]);
+    param.value = i; 
+    if (param.value == selectedIndex)
+      param.selected = "true";
+    openMarkupElement("option", param);
+    res.write(param.name);
+    closeMarkupElement("option");
+  }
+  closeMarkupElement("select");
+}
+
+
+/**
+ * function tries to check if the color contains just hex-characters
+ * if so, it returns the color-definition prefixed with a '#'
+ * otherwise it assumes the color is a named one
+ */
+function renderColorAsString(c) {
+  if (c && c.length == 6) {
+    var nonhex = new RegExp("[^0-9,a-f]");
+    nonhex.ignoreCase = true;
+    var found = c.match(nonhex);
+    if (!found) {
+      // color-string contains just hex-characters, so we prefix it with '#'
+      return("#" + c);
+    }
+  }
+  return(c);
+}
+
+/**
+ * renders a color as hex or named string
+ */
+function renderColor(c) {
+  res.write(renderColorAsString(c));
+}
+
+
+/**
+ * function retuns only a part of the text passed as argument
+ * length of the string to show is defined by argument "limit"
+ */
+function renderTextPreviewAsString(text, limit) {
+   var limit = Math.min(limit, text.length);
+   var text = stripTags(text);
+   var idx = 0;
+   while (idx < limit) {
+      var nIdx = text.indexOf(" ", idx);
+      if (nIdx < 0)
+         break;
+      idx = ++nIdx;
+   }
+   var prev = text.substring(0,(idx > 1 ? idx : limit));
+   // and now we "enrich" the text with <wbr>-tags
+   var str = "";
+   for (var i=0; i<prev.length; i=i+30)
+      str += prev.substring(i, i+30) + "<wbr>";
+   return(str);
+}
+
+
+/**
+ * function renders only a part of the text passed as argument
+ * length of the string to show is defined by argument "limit"
+ */
+function renderTextPreview(text, limit) {
+  res.write(renderTextPreviewAsString(text, limit));
+}
+
+
+/**
+ * Do Wiki style substitution, transforming
+ * stuff contained between asterisks into links.
+ */
+function doWikiStuff (src) {
+  // robert, disabled: didn't get the reason for this:
+  // var src= " "+src;
+
+  // do the Wiki link thing, <*asterisk style*>
+  var regex = new RegExp ("<[*]([^*]+)[*]>");
+  regex.ignoreCase=true;
+
+  var text = "";
+  var start = 0;
+  while (true) {
+    var found = regex.exec (src.substring(start));
+    var to = found == null ? src.length : start + found.index;
+    text += src.substring(start, to);
+    if (found == null)
+      break;
+    var name = ""+(new java.lang.String (found[1])).trim();
+    var item = path.weblog.topics.get (name);
+    if (item == null && name.lastIndexOf("s") == name.length-1)
+      item = path.weblog.topics.get (name.substring(0, name.length-1));
+    if (item == null || !item.size())
+      text += format(name)+" <small>[<a href=\""+path.weblog.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
+    else
+      text += "<a href=\""+item.href()+"\">"+name+"</a>";
+    start += found.index + found[1].length+4;
+  }
+  return text;
+}
+
+
+/**
+ * DEPRECATED!
+ * use openMarkupElement(), closeMarkupElement() and 
+ * renderMarkupElement() instead
+ *
+ * Returns an arbitrary x/html element as string
+ * @param name String containing the element's name (tag)
+ * @param content String containing the element's content
+ * @param attr Object containing the element's attributes as properties
+ */
+function renderMarkupElementAsString(name, content, attr) {
+  if (!content)
+    content = "";
+  // temporary mapping of class attribute
+  // (due to backwards-compatibility)
+  if (!attr["class"]) {
+    attr["class"] = attr.style;
+    delete attr.style;
+  }
+  var attributes = "";
+  // creating the attribute string
+  for (var i in attr) {
+    if (!attr[i])
+      continue;
+    attributes += " " + i + "=\"" + attr[i] + "\"";
+	}
+  return("<" + name + attributes + ">" + content + "</" + name + ">");
+}
+
+
