@@ -3,25 +3,12 @@
  */
 
 function isEditDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href("edit");
-      return ("Please login first!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (this.creator != usr && !this.weblog.isUserAdmin(usr))
-      return ("Sorry, this goodie belongs to someone else!");
-   return null;
-}
-
-
-/**
- * check if user is allowed to delete this goodie
- */
-
-function isDeleteDenied(usr) {
-   if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (this.creator != usr && !this.weblog.isUserAdmin(usr))
-      return ("Sorry, this goodie belongs to someone else!");
+   if (this.creator != usr) {
+      var membership = this.weblog.isUserMember(usr);
+      if (!membership)
+         return ("You're not a member of this weblog!");
+      else if ((membership.level & MAY_EDIT_ANYGOODIE) == 0)
+         return ("You're not allowed to do this!");
+   }
    return null;
 }
