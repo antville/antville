@@ -4,3 +4,5 @@
 <% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %></p>
 <p><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></p>
 </form>
+
+<% skin.help prefix='<p class="small"><b>Macros available for this skin:</b><br /><br /><tt>' suffix="</tt></p>" %>
