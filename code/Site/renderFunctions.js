@@ -5,15 +5,19 @@
 function renderCalendarDay(currGroupname,text) {
    var now = new Date();
    var currGroup = this.get(currGroupname);
+   var linkit = false;
    if (currGroup && currGroup.size()) {
       if (this.isUserAdmin())
-         var linkit = true;
+         linkit = true;
       else {
-         var linkit = false;
+         linkit = false;
          if (currGroupname <= now.format("yyyyMMdd")) {
             for (var i=0;i<currGroup.size();i++) {
-               if (currGroup.get(i).isOnline() || currGroup.get(i).isViewAllowed())
+               var st = currGroup.get(i);
+               if (st.isOnline() || st.isViewAllowed()) {
                   linkit = true;
+                  break;
+               }
             }
          }
       }

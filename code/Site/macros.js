@@ -391,11 +391,11 @@ function calendar_macro(param) {
    if (!this.size() || !this.showArchive())
       return;
    // define variables needed in this function
-   var tsParam = new HopObject();
-   var calParam = new HopObject();
+   var tsParam = new Object();
+   var calParam = new Object();
    calParam.calendar = "";
-   var dayParam = new HopObject();
-   var weekParam = new HopObject();
+   var dayParam = new Object();
+   var weekParam = new Object();
    // create new calendar-object and set day to first day of month
    var cal = new java.util.GregorianCalendar(this.getLocale());
    cal.set(java.util.Calendar.DATE,1);
