@@ -2,5 +2,18 @@
 
 <p>
 <table border="0" cellspacing="0" cellpadding="2">
+<tr>
+	<td></td>
+	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td align="right"><b>Visits</b></td>
+	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td><b>Date</b></td>
+	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td><b>Title</b></td>
+	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td><b>Author</b></td>
+</tr>
+
 <% this.listMostRead %>
+
 </table>
