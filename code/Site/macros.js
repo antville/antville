@@ -700,3 +700,37 @@ function notification_macro(param) {
    return;
 }
 
+
+/**
+ * render generic preference editor or value
+ */
+function preferences_macro(param) {
+   if (param.as == "editor") {
+      var inputParam = this.preferences.createInputParam(param.name, param);
+      delete inputParam.part;
+      if (param.cols || param.rows)
+         Html.textArea(inputParam);
+      else
+         Html.input(inputParam);
+   } else
+      res.write(this.preferences.getProperty(param.name));
+   return;
+}
+
+
+/**
+ * output spamfilter data appropriate
+ * for client-side javascript code
+ */
+function spamfilter_macro(param) {
+   var str = this.preferences.getProperty("spamfilter");
+   var items = str.replace(/\n/g, "").split("\r");
+   for (var i in items) {
+      res.write('"');
+      res.write(items[i]);
+      res.write('"');
+      if (i < items.length-1)
+         res.write(",");
+   }
+   return;
+}
