@@ -1,4 +1,4 @@
-// create the object that will contain all english messages
+// create the object that will contain all german messages
 app.data.de = new Object();
 
 app.data.de.error = new Object();
