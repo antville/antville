@@ -2,6 +2,6 @@
 <div class="commentDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author as="link" prefix=",&nbsp;" suffix="&nbsp;posted:"%></div>
 <div class="commentTitle"><% this.title %></div>
 <% this.text suffix="<br>" %>
-<div class="small"><% this.replylink text="reply to this comment ..." suffix="&nbsp;&nbsp;" %><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div>
+<div class="small"><% this.replylink text="reply to this comment" suffix="&nbsp;&nbsp;" %><% this.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" %></div>
 
 <% this.replies %>
