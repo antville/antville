@@ -57,6 +57,7 @@
       <property name="build.work" value="${build.dir}/work"/>
       <property name="build.dist" value="${build.dir}/dist"/>
       <property name="build.extra" value="${build.dir}/extra"/>
+      <property name="build.lib" value="${build.dir}/lib"/>
 
       <property name="package.name" value="${project}-${version}"/>
       <property name="antclick.name" value="antclick-${version}"/>

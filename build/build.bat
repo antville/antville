@@ -9,14 +9,10 @@ REM set JAVA_HOME=c:\programme\jdk13
 
 set TARGET=%1%
 
-:## eventually check out files necessary for building with ant:
+:## get update of necessary ant classes from CVS:
 set CVS_ACCESS=:pserver:anonymous@194.232.104.95:/opt/cvs/apps
-if not exist extra (
-   cvs -d %CVS_ACCESS% ex -r HEAD -d extra antville/build/extra
-)
-if not exist lib (
-   cvs -d %CVS_ACCESS% ex -r HEAD -d lib antville/build/lib
-)
+cvs -d %CVS_ACCESS% co -d lib antville/build/lib
+cvs -d %CVS_ACCESS% co -d extra antville/build/extra
 
 if "%JAVA_HOME%" == "" goto javahomeerror
 

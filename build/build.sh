@@ -7,14 +7,10 @@
 ## No need to edit anything past here
 ##--------------------------------------------
 
-## eventually check out files necessary for building with ant:
+## get update of necessary ant classes from CVS:
 CVS_ACCESS=:pserver:anonymous@194.232.104.95:/opt/cvs/apps
-if ! test -d extra ; then
-   cvs -d ${CVS_ACCESS} ex -r HEAD -d extra antville/build/extra
-fi
-if ! test -d lib ; then
-   cvs -d ${CVS_ACCESS} ex -r HEAD -d lib antville/build/lib
-fi
+cvs -d ${CVS_ACCESS} co -d lib antville/build/lib
+cvs -d ${CVS_ACCESS} co -d extra antville/build/extra
 
 if test -z "${JAVA_HOME}" ; then
     echo "ERROR: JAVA_HOME not found in your environment."
