@@ -145,3 +145,29 @@ function code_macro(param) {
    res.write(" name=\"" + this.alias + "\" %&gt;");
    return;
 }
+
+/**
+ * render a link to delete action
+ * calls image.deletelink_macro, but only
+ * if the layout in path is the one this image
+ * belongs to
+ */
+function replacelink_macro(param) {
+   if (this.layout && path.Layout != this.layout) {
+      if (session.user) {
+         try {
+            path.Layout.images.checkAdd(session.user, req.data.memberlevel);
+         } catch (deny) {
+            return;
+         }
+         Html.openLink({href: path.Layout.images.href("create") + "?alias=" + this.alias});
+         if (param.image && this.site.images.get(param.image))
+            this.site.renderImage(this.site.images.get(param.image), param);
+         else
+            res.write(param.text ? param.text : getMessage("generic.replace"));
+         Html.closeLink();
+      }
+      return;
+   }
+   return;
+}
