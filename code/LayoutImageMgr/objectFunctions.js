@@ -47,14 +47,28 @@ function evalImg(param, creator) {
 /**
  * loop over all images and dump the metadata into
  * an xml-encoded export format
+ * @param Object Zip object to add the image to
+ * @param Object Boolean true for full export
+ *               (including any parent layout image)
+ * @param Object java.util.Hashtable (optional)
+ * @return Object java.util.Hashtable
  */
-function dumpToZip(z) {
+function dumpToZip(z, fullExport, exportLog) {
+   // create the export log
+   if (!exportLog)
+      var exportLog = new java.util.Hashtable(20);
+   
    for (var i=0;i<this.size();i++) {
       var img = this.get(i);
-      var buf = new java.lang.String(Xml.writeToString(img.dump())).getBytes();
-      z.addData(buf, "imagedata/" + img.alias);
+      if (exportLog.containsKey(img.alias))
+         continue;
+      var buf = new java.lang.String(Xml.writeToString(img.dumpToZip(z))).getBytes();
+      z.addData(buf, "imagedata/" + img.alias + ".xml");
+      exportLog.put(img.alias, true);
    }
-   return true;
+   if (fullExport && this._parent.parent)
+      this._parent.parent.images.dumpToZip(z, fullExport, exportLog);
+   return exportLog;
 }
 
 /**
