@@ -13,6 +13,10 @@
    <td nowrap><% this.online as="editor" %></td>
    </tr>
    <tr>
+   <td class="small">topic:</td>
+   <td nowrap><input name="topic" value="<% this.topic as="form" %>"></td>
+   </tr>
+   <tr>
    <td class="small" nowrap>editing allowed for:</td>
    <td nowrap><% this.editableby as="editor" %></td>
    </tr>
