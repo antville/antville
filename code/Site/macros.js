@@ -405,12 +405,12 @@ function calendar_macro(param) {
    else if (path.day)
       var today = path.day.groupname;
    if (today) {
-      var todayDate = parseTimestamp(today,"yyyyMMdd");
-      cal.set(java.util.Calendar.YEAR,todayDate.getFullYear());
-      cal.set(java.util.Calendar.MONTH,todayDate.getMonth());
+      // instead of using the global parseTimestamp-function
+      // we do it manually here to avoid that a day like 20021001
+      // would be changed to 20020930 in some cases
+      cal.set(java.util.Calendar.YEAR,parseInt(today.substring(0,4),10));
+      cal.set(java.util.Calendar.MONTH,parseInt(today.substring(4,6),10)-1);
    }
-   // cal is now a calendar object set to the first day of the month
-   // we want to render
 
    // nr. of empty days in rendered calendar before the first day of month appears
    var pre = (7-firstDayOfWeek+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
@@ -461,7 +461,6 @@ function calendar_macro(param) {
    }
    // set day to last day of month and try to render next month
    // check what the last day of the month is
-   // cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE));
    calParam.back = this.renderLinkToPrevMonth(firstDayIndex,currMonth+"01",monthNames);
    calParam.forward = this.renderLinkToNextMonth(lastDayIndex,currMonth+"31",monthNames);
    this.renderSkin("calendar",calParam);
@@ -651,7 +650,8 @@ function monthlist_macro(param) {
       if (!next || next.groupname.substring(0,6) < curr.groupname.substring(0,6)) {
          res.write(param.itemprefix);
          openLink(curr.href());
-         res.write(parseTimestamp(curr.groupname.substring(0,6),"yyyyMM").format(param.format ? param.format : "MMMM yyyy"));
+         var ts = parseTimestamp(curr.groupname.substring(0,6),"yyyyMM");
+         res.write(formatTimestamp(ts,param.format ? param.format : "MMMM yyyy"));
          closeLink();
          res.write(param.itemsuffix);
       }
