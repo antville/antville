@@ -48,7 +48,7 @@ function createNewSite(title,alias,creator) {
    newSite.archive = 1;
    newSite.blocked = 0;
    newSite.trusted = (creator.isTrusted() ? 1 : 0);
-   newSite.bgcolor = "#ffffff";
+   newSite.bgcolor = "ffffff";
    newSite.textfont = "Verdana, Helvetica, Arial, sans-serif";
    newSite.textsize = "13px";
    newSite.textcolor = "000000";
