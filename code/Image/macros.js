@@ -100,24 +100,23 @@ function deletelink_macro(param) {
 
 /**
  * macro renders the image-tag
+ * link to main if thumbnail
  */
 
 function show_macro(param) {
    res.write(param.prefix)
-   if (param.what == "thumbnail" && this.thumbnail)
-      var img = this.thumbnail;
-   else
-      var img = this;
-   if (!this.isEditDenied(user)) {
-      var linkParam = new Object();
-      linkParam.linkto = "edit";
-      this.openLink(linkParam);
-      path.weblog.renderImage(img,param);
-      this.closeLink();
-   } else
-      path.weblog.renderImage(img,param);
+   var img = this;
+   // if we have a thumbnail, display that
+   if (param.what == "thumbnail" && this.thumbnail) 
+      img = this.thumbnail;
+   var linkParam = new Object();
+   linkParam.linkto = "main";
+   this.openLink(linkParam);
+   path.weblog.renderImage(img,param);
+   this.closeLink();
    res.write(param.suffix);
 }
+
 
 /**
  * macro renders the name of the creator of this image
