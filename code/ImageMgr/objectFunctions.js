@@ -1,117 +1,110 @@
 /**
- * function checks if image fits to the minimal needs 
+ * function checks if image fits to the minimal needs
+ * @param Obj Object containing the properties needed for creating a new image
+ * @param Obj User-Object creating this image
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function evalNewImg() {
-   var newImg = new image();
+function evalImg(param,creator) {
+   var result = new Object();
+   result.error = true;
 
-   var rawimage = req.get("rawimage");
-   if (req.get("uploadError")) {
+   if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
-      res.message = "File too big to handle!";
-
-   } else if (rawimage) {
-      if (rawimage.contentLength == 0) {
+      result.message = "File is too big to handle!";
+   } else if (param.rawimage) {
+      var newImg = new image();
+      if (param.rawimage.contentLength == 0) {
          // looks like nothing was uploaded ...
-         res.message = "Please upload an image and fill out the form ...";
+         result.message = "Please upload an image and fill out the form ...";
+      } else if (param.rawimage && (!param.rawimage.contentType || !newImg.evalImgType(param.rawimage.contentType))) {
+         // whatever the user has uploaded, it was no image ...
+         result.message = "This was definetly no image!"; 
       } else {
          // first, check if alias already exists
-         if (!req.data.alias)
-            res.message = "You must enter a name for this image!";
-         else if (this.get(req.data.alias))
-            res.message = "There is already an image with this name!";
-         else if (!isClean(req.data.alias))
-            res.message = "Please do not use special characters in the name!";
+         if (!param.alias)
+            result.message = "You must enter a name for this image!";
+         else if (this.get(param.alias))
+            result.message = "There is already an image with this name!";
+         else if (!isClean(param.alias))
+            result.message = "Please do not use special characters in the name!";
          else {
-            // store properties necessary for image-creation
-            newImg.filename = req.data.alias;
+            // store properties necessary for saving image on disk
+            newImg.filename = param.alias;
             newImg.cache.saveTo = getProperty("imgPath") + this._parent.alias + "/";
  
             // check if user wants to resize width
-            if (req.data.maxwidth)
-               newImg.cache.maxwidth = parseInt(req.data.maxwidth,10);
-            else
-               newImg.cache.maxwidth = null;
+            newImg.cache.maxwidth = param.maxwidth ? parseInt(param.maxwidth,10) : null;
             // check if user wants to resize height
-            if (req.data.maxheight)
-               newImg.cache.maxheight = parseInt(req.data.maxheight,10);
-            else
-               newImg.cache.maxheight = null;
+            newImg.cache.maxheight = param.maxheight ? parseInt(param.maxheight,10) : null;
+
             // save/resize the image
-            newImg.saveImg(rawimage);
-            // any errors?
-            if (!newImg.cache.error) {
+            if (newImg.saveImg(param.rawimage)) {
                // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
-               this.addImg(newImg);
+               // result.error = this.addImg(param,creator,newImg);
+               newImg.alias = param.alias;
+               newImg.weblog = this._parent;
+               newImg.alttext = param.alttext;
+               newImg.creator = creator;
+               newImg.createtime = new Date();
+               this.add(newImg);
                // the fullsize-image is stored, so we check if a thumbnail should be created too
-               if (req.data.thumbnail) {
-                  newImg.createThumbnail(rawimage);
-               }
-               res.redirect(this.href());
-            } 
+               if (param.thumbnail)
+                 newImg.createThumbnail(param.rawimage);
+               newImg.clearCache();
+               result.message = "Your image was saved successfully!";
+               result.error = false;
+            } else
+               result.message = "An error occurred!";
          }
       }
    }
-   return (newImg);
-}
-
-
-
-
-/**
- * function adds an image to pool
- */
-
-function addImg(newImg) {
-   newImg.alias = req.data.alias;
-   newImg.alttext = req.data.alttext;
-   newImg.creator = user;
-   newImg.createtime = new Date();
-   if (this.add(newImg))
-      res.message = "The image " + newImg.alias + " was added successfully!";
-   else
-      res.message = "Ooops! Adding the image " + newImg.alias + " failed!";
-   return;
+   return (result);
 }
 
 /**
  * alias of image has changed, so we remove it and add it again with it's new alias
+ * @param Obj Image-object to modify
+ * @param String new alias for image
+ * @return Boolean true in any case ...
  */
 
-function changeAlias(currImg) {
-   // var oldAlias = currImg.alias;
+function changeAlias(currImg,newAlias) {
    currImg.setParent(this);
    this.remove(currImg);
    this.set(currImg.alias,null);
-   currImg.alias = req.data.alias;
+   currImg.alias = newAlias;
    this.add(currImg);
    // if thumbnail exists, we have to change this alias too
    if (currImg.thumbnail)
-      currImg.thumbnail.alias = currImg.alias;
-   return;
+      currImg.thumbnail.alias = newAlias;
+   return true;
 }
 
 
 /**
  * delete an image
+ * @param Obj Image-Object to delete
+ * @return String Message indicating success or failure
  */
 
 function deleteImage(currImg) {
-   currImg.setParent(this);
    // first we try to remove the image from disk (and the thumbnail, if existing)
    var f = new File(getProperty("imgPath") + currImg.weblog.alias, currImg.filename + "." + currImg.fileext);
    if (f.remove()) {
       if (currImg.thumbnail) {
-         f = new File(getProperty("imgPath") + currImg.weblog.alias, currImg.thumbnail.filename + "." + currImg.thumbnail.fileext);
+         var thumb = currImg.thumbnail;
+         f = new File(getProperty("imgPath") + thumb.weblog.alias, thumb.filename + "." + thumb.fileext);
          f.remove();
-         currImg.thumbnail.setParent(this);
-         this.remove(currImg.thumbnail);
+         thumb.parent = null;
+         this.remove(thumb);
       }
       if (this.remove(currImg))
-         res.message = "The image was deleted successfully!";
+         return ("The image was deleted successfully!");
       else
-         res.message = "Ooops! Couldn't delete the image!";
+         return ("Ooops! Couldn't delete the image!");
    } else
-      res.message = "Ooops! Couldn't remove the image from disk!";
-   res.redirect(this.href("main"));
+      return ("Ooops! Couldn't remove the image from disk!");
 }
