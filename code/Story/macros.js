@@ -364,9 +364,11 @@ function editableby_macro(param) {
  */
 
 function discussions_macro(param) {
+   if (!path.site.discussions)
+      return;
    if (param.as == "editor") {
       if (this.creator) {
-         if (this.discussions == null && path.site.discussions)
+         if (this.discussions == null)
             param.checked = "checked";
          else
             delete param.checked;
