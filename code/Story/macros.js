@@ -423,11 +423,10 @@ function topic_macro(param) {
  * won't change until the next referrer-update was done
  * @return String rendered backlinks
  */
-
-function backlinks_macro() {
+function backlinks_macro(param) {
    // check if scheduler has done a new update of accesslog
    // if not and we have cached backlinks simply return them
-   if (this.cache.lrBacklinks > app.data.lastAccessLogUpdate)
+   if (this.cache.lrBacklinks == app.data.lastAccessLogUpdate)
       return (this.cache.rBacklinks)
 
    var c = getDBConnection("antville");
@@ -443,30 +442,39 @@ function backlinks_macro() {
    if (dbError)
       return (getMessage("error","database",dbError));
    
-   var param = new Object();
-   var cnt = 0;
    // we show a maximum of 100 backlinks
    var limit = Math.min((param.limit ? parseInt(param.limit,10) : 100),100);
    var backlinks = new java.lang.StringBuffer();
 
-   while (rows.next() && cnt++ <= limit) {
-      param.count = rows.getColumnItem("COUNT");
-      // these two lines are necessary only for hsqldb connections:
-      if (param.count == 0)
+   // if user specified some servers to be excluded from backlink-list
+   // create the RegExp-Object for filtering
+   if (param.exclude) {
+      var r = new RegExp("\\s*,\\s*");
+      r.global = true;
+      var excludeStr = param.exclude.replace(r,"|");
+      var exclude = new RegExp(excludeStr);
+   }
+
+   var skinParam = new Object();
+   var cnt = 0;
+   while (rows.next() && cnt <= limit) {
+      skinParam.count = rows.getColumnItem("COUNT");
+      skinParam.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
+      if (exclude && exclude.test(skinParam.referrer))
          continue;
-      param.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-      param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
-      backlinks.append(this.renderSkinAsString("backlinkItem", param));
+      skinParam.text = skinParam.referrer.length > 50 ? skinParam.referrer.substring(0, 50) + "..." : skinParam.referrer;
+      backlinks.append(this.renderSkinAsString("backlinkItem", skinParam));
+      cnt++;
    }
    rows.release();
+   // cache rendered backlinks and set timestamp for
+   // checking if backlinks should be rendered again
+   skinParam = new Object();
    if (backlinks.length() > 0) {
-      // cache rendered backlinks and set timestamp for
-      // checking if backlinks should be rendered again
-      param = new Object();
-      param.referrers = backlinks.toString();
-      this.cache.rBacklinks = this.renderSkinAsString("backlinks", param);
-      this.cache.lrBacklinks = new Date();
-      return (this.cache.rBacklinks);
-   }
-   return;
+      skinParam.referrers = backlinks.toString();
+      this.cache.rBacklinks = this.renderSkinAsString("backlinks", skinParam);
+   } else
+      this.cache.rBacklinks = "";
+   this.cache.lrBacklinks = new Date();
+   return (this.cache.rBacklinks);
 }
