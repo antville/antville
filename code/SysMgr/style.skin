@@ -1,9 +1,13 @@
-body,td,span {
+body {
    font-family:Verdana,Helvetica,Arial,sans-serif;
-   font-size:13px;
    font-weight:normal;
    color:#000000;
    vertical-align: top;
+   background-color: #FFFFFF;
+}
+
+td {
+   font-size:13px;
 }
 
 a {
@@ -13,7 +17,7 @@ a {
 
 a:hover {
    background-color:#FF3300;
-color:#FFFFFF;
+   color:#FFFFFF;
 }
 
 .header {
@@ -32,22 +36,32 @@ color:#FFFFFF;
 }
 
 .statusdark {
-   width:198px;
    font-family:Helvetica,Arial,sans-serif;
    font-size:12px;
+   width: 198px;
    display:block;
    padding-top:3px;
    padding-bottom:3px;
 }
 
 .statuslight {
-   width:198px;
    font-family:Helvetica,Arial,sans-serif;
    font-size:12px;
+   width: 198px;
    color:#999999;
    display: block;
    padding-top:3px;
    padding-bottom:3px;
+}
+
+.statushead {
+   width: 198px;
+   text-align: left;
+   letter-spacing: 3px;
+   font-size: <% site.smallsize %>;
+   display: block;
+   padding-top: 1px;
+   padding-bottom: 1px;
 }
 
 .small {
@@ -71,6 +85,7 @@ ul {
    font-weight:bold;
    color:#FF3300;
    padding-bottom:10pt;
+   text-align:left;
 }
 
 .flagltgreen {
