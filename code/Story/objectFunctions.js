@@ -24,6 +24,17 @@ function evalStory(param,modifier) {
    this.modifytime = new Date();
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
+   // check if the createtime is set in param
+   if (param.createtime) {
+      var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
+      if (ctime.error) {
+          result.message = "Error: Can't parse timestamp \""+param.createtime+"\" as date";
+          result.error = true;
+      } else if (ctime.value != this.createtime) {
+         this.createtime = ctime.value;
+         this.day = this.createtime.format("yyyyMMdd");
+      }
+   }
    // check name of topic (if specified)
    if (param.topic)
       var topicName = param.topic;
@@ -56,7 +67,7 @@ function evalStory(param,modifier) {
       if (this.topic)
          result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
       else
-         result.url = this.href();
+         result.url = this.weblog.href() + this.day+"/" + this._id;
       this.weblog.lastupdate = new Date();
    } else
       result.url = this.weblog.stories.href();

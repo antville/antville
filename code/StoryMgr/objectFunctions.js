@@ -19,9 +19,22 @@ function evalNewStory(s,param,creator) {
    s.text = param.text;
    s.prototype = "story";
    s.author = creator;
-   s.modifytime = s.createtime = new Date();
+   // check if the create date is set in the param object
+   if (param.createtime) {
+      var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
+      if (ctime.error) {
+          result.message = "Error: Can't parse timestamp \""+param.createtime+"\" as date";
+          result.error = true;
+      } else {
+         s.createtime = ctime.value;
+      }
+      s.modifytime = new Date();
+   } else {
+      s.modifytime = s.createtime = new Date();
+   }
    s.editableby = !isNaN(parseInt(param.editableby)) ? parseInt(param.editableby,10) : null;
-   s.day = s.createtime.format("yyyyMMdd");
+   if (s.createtime)
+      s.day = s.createtime.format("yyyyMMdd");
    s.ipaddress = param.http_remotehost;
    s.reads = 0;
    // start checking if story-params make sense
