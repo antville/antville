@@ -1,10 +1,10 @@
 /**
- * macro renders res.data.goodielist to response-object
+ * macro renders res.data.filelist to response-object
  * left for backwards-compatibility only
  */
 
-function goodies_macro(param) {
-   res.write(res.data.goodielist);
+function files_macro(param) {
+   res.write(res.data.filelist);
    return;
 }
 
