@@ -6,15 +6,15 @@
 <td nowrap><table border="0" cellspacing="0" cellpadding="3">
    <tr>
    <td nowrap><form method="post">Title:</td>
-   <td nowrap><% this.title as="editor" %></td>
+   <td nowrap><% this.input type="text" name="title" %></td>
    </tr>
    <tr>
    <td nowrap>Alias:</td>
-   <td nowrap><% this.alias as="editor" %></td>
+   <td nowrap><% this.input type="text" name="alias" %></td>
    </tr>
    <tr>
    <td nowrap>&nbsp;</td>
-   <td nowrap><% this.input type="button" value="cancel" %>&nbsp;<% this.input type="button" value="create" %></td>
+   <td nowrap><% this.input type="button" value="create" %>&nbsp;<% this.input type="button" value="cancel" %></td>
    </tr>
    </table></td>
 </tr>
