@@ -14,11 +14,12 @@ function evalEmail(address) {
  * if not it assumes that http is the protocol
  */
 function evalURL(url) {
-   if (url && url.contains("@") && !url.contains("mailto:") && !url.contains("://"))
-      return ("mailto:" + url);
-   else if (url && !url.contains("://") && !url.contains("mailto:"))
-      return ("http://" + url);
-   return (url);
+   if (!url || url.contains("://") || url.contains("mailto:"))
+      return url;
+   if (url.contains("@"))
+      return "mailto:" + url;
+   else
+      return "http://" + url;
 }
 
 /**
