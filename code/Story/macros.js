@@ -221,7 +221,7 @@ function commentlink_macro(param) {
    if (!this.discussions || !this.site.discussions)
       return;
    openLink(this.href(param.to ? param.to : "comment"));
-   res.write(param.text ? param.text : "react");
+   res.write(param.text ? param.text : "comment");
    closeLink();
 }
 
