@@ -1,7 +1,0 @@
-<FORM METHOD="POST">
-
-<P>Title:&nbsp;<% this.input type="text" name="title" %><BR>
-Alias:&nbsp;<% this.input type="text" name="alias" %><BR>
-<% this.input type="button" value="create" %>&nbsp;<% this.input type="button" value="cancel" %></P>
-
-</FORM>
