@@ -1,10 +1,47 @@
+<form action="<% this.href action="referrers" %>" method="get">
+<input type="text" name="filter" value="<% request.filter %>" size="40" /> <input type="submit" name="submit" value="Filter" />
+</form><br />
+
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-	<td align="right" class="small">Visits</td>
-	<td rowspan="999">&nbsp;&nbsp;</td>
-	<td class="small">Referrer</td>
+<td align="right" class="small">Visits</td>
+<td rowspan="999">&nbsp;&nbsp;</td>
+<td class="small">Referrer</td>
 </tr>
 
+<script type="text/javascript"><!--
+var referrers = [];
 <% site.listReferrers %>
+
+var query = new Antville.Query();
+var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
+var searchFilter = new Antville.Filter(query.filter);
+var searchEngineFilters = [
+   new Antville.Filter("http:\/\/.*google.*\?", "q"),
+   new Antville.Filter("http:\/\/.*search\.msn.*\?", "q"),
+   new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
+   new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
+]
+for (var i in referrers) {
+   var ref = referrers[i];
+   var text = ref.text;
+   if (spamFilter.test(ref.url))
+      continue;
+   if (query.filter && !searchFilter.test(ref.url))
+      continue;
+   var done = false;
+   for (var e in searchEngineFilters) {
+      var filter = searchEngineFilters[e];
+      if (!done && filter.test(ref.url)) {
+         text = ref.compose(filter.key, "<em>Search request:</em> ");
+         done = true;
+      }
+   }
+   document.writeln('<tr>');
+   document.writeln('<td align="right" valign="top">', ref.count, '</td>');
+   document.writeln('<td><a href="', ref.url, '">', text, '</a></td>');
+   document.writeln('</tr>');
+}
+// --></script>
 
 </table>
