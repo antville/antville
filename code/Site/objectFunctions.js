@@ -261,20 +261,11 @@ function isTrusted() {
 }
 
 
-function ping_action() {
-	//getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
-
+function ping() {
 	var xr = new Remote("http://rpc.weblogs.com/RPC2");
 	var ping = xr.weblogUpdates.ping(this.title, this.href());
 
-	if (!ping.result.flerror) {
-		res.message = "Weblogs.com was successfully informed about that your weblog has changed.";
-		this.lastping = new Date();
-	}
-	else {
-		res.message = ping.result.message;
-		writeln("Error when pinging weblogs.com for weblog " + this._id + ": " + ping.result.message);
-	}
-	res.redirect(this.href());
-	return;
+	//var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
+
+	return(ping);
 }
