@@ -45,15 +45,18 @@
 <div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />
 ...&nbsp;<% root.link to="new" text="create a new weblog" %><br />
 <% root.managelink prefix="...&nbsp;" suffix="<br />" %>
-<br /><span class="statuslight">resources:<br />
+<br /><span class="statuslight">Resources:<br />
 ...&nbsp;<a href="http://help.antville.org/">help</a><br />
 ...&nbsp;<a href="http://project.antville.org/">project log</a><br />
 ...&nbsp;<a href="http://macros.antville.org/">macro docs</a></span></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><% root.sitecounter no="no public weblogs" one="one public weblog" more=" public weblogs"%>... <% root.link to="list" %></div>
-<!-- div class="statuslight">...&nbsp;<a href="http://www.antville.org/documentation.html">documentation</a></div -->
-<div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><br /><% image name="/xmlbutton" linkto="rss" title="List of recently updated Antville sites in RDF format" %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
+<!-- div class="statuslight">...&nbsp;<a href="http://www.antville.org/documentation.html">Documentation</a></div -->
+<div class="sep"><% image name="/pixel" width="198" %></div><br />
+<div class="statuslight"><% image name="/xmlbutton" linkto="rss" title="List of recently updated Antville sites in RSS format" %><br /><br />
+<% logo name="smallstraight" %><br /><br />
+Powered by<br />
+<% image name="/hop" linkto="http://helma.org" %></div></td>
 </tr>
 </table>
 
