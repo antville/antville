@@ -112,30 +112,12 @@ function evalPreferences(param,modifier) {
    var ldf = patterns[parseInt(param.shortdateformat,10)];
    this.shortdateformat = ldf ? ldf : null;
 
-   // this.birthdate = this.checkdate(param,"birthdate");
    this.modifytime = new Date();
    this.modifier = modifier;
    result.message = "The changes were saved successfully!";
    return (result);
 }
 
-/**
- * function takes postdate of story, checks it and
- * returns Date-object
- */
-
-function checkdate(param,prefix) {
-   if (param[prefix + "Year"] && param[prefix + "Month"] && param[prefix + "Date"] && param[prefix + "Hours"] && param[prefix + "Minutes"]) {
-      var pd = new Date();
-      pd.setYear(parseInt(param[prefix + "Year"],10));
-      pd.setMonth(parseInt(param[prefix + "Month"],10));
-      pd.setDate(parseInt(param[prefix + "Date"],10));
-      pd.setHours(parseInt(param[prefix + "Hours"],10));
-      pd.setMinutes(parseInt(param[prefix + "Minutes"],10));
-      return (pd);
-   } else
-      return (new Date());
-}
 
 /**
  * function returns true if discussions are enabled
