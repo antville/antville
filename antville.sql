@@ -26,6 +26,8 @@ create table COMMENT (
 create table IMAGE (
    ID mediumint(9) not null default '0',
    WEBLOG_ID mediumint(9),
+   PARENT_ID mediumint(9),
+   THUMBNAIL_ID mediumint(9),
    ALIAS tinytext,
    FILENAME tinytext,
    FILEEXT tinytext,
