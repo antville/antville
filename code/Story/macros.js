@@ -3,14 +3,19 @@
  */
 
 function title_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
       var linkParam = new HopObject();
       linkParam.linkto = "main";
       this.openLink(linkParam);
-      res.write(this.title);
+      if (this.title)
+         res.write(this.title);
+      else {
+         // no title, so we show the first words of the story-text as link
+         this.renderTextPreview(20);
+      }
       this.closeLink();
    } else
       res.write(this.title);
@@ -22,18 +27,16 @@ function title_macro(param) {
  */
 
 function text_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
-     var text = createSkin(format(this.text));
-     if (!param.limit) {
-       this.renderSkin(text);
-		 } else {
-			 var text = stripTags(this.renderSkinAsString(text));
-			 var limit = (param.limit > text.length) ? text.length : param.limit;
-       res.write(text.substring(0,limit)); // stripping all HTML tags
-		 }
+      if (!param.limit)
+         this.renderSkin(createSkin(format(this.text)));
+      else {
+         this.renderTextPreview(param.limit);
+         res.write("&nbsp;...");
+      }
    }
    res.write(param.suffix);
 }
@@ -43,7 +46,7 @@ function text_macro(param) {
  */
 
 function online_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("online",param));
    else
@@ -56,7 +59,7 @@ function online_macro(param) {
  */
 
 function createtime_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    res.write(this.weblog.formatTimestamp(this.createtime,param));
    res.write(param.suffix);
 }
@@ -67,7 +70,7 @@ function createtime_macro(param) {
 
 function modifytime_macro(param) {
    if (this.modifytime) {
-      res.write(param.prefix)
+      res.write(param.prefix);
       res.write(this.weblog.formatTimestamp(this.modifytime,param));
       res.write(param.suffix);
    }
@@ -78,8 +81,15 @@ function modifytime_macro(param) {
  */
 
 function author_macro(param) {
-   res.write(param.prefix)
-   res.write(this.author.name);
+   res.write(param.prefix);
+   if (param.as == "link" && this.author.url) {
+      var linkParam = new HopObject();
+      linkParam.to = this.author.url;
+      this.openLink(linkParam);
+      res.write(this.author.name);
+      this.closeLink();
+   } else
+      res.write(this.author.name);
    res.write(param.suffix);
 }
 
@@ -89,7 +99,7 @@ function author_macro(param) {
  */
 
 function editlink_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    if (this.author == user) {
       var linkParam = new HopObject();
       linkParam.linkto = "edit";
@@ -109,7 +119,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    if (this.author == user) {
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
@@ -130,7 +140,7 @@ function deletelink_macro(param) {
 
 function commentlink_macro(param) {
    if (path[path.length-1] != this && this.weblog.hasDiscussions()) {
-      res.write(param.prefix)
+      res.write(param.prefix);
       this.renderSkin(param.useskin ? param.useskin : "commentlink");
       res.write(param.suffix);
    }
@@ -145,7 +155,7 @@ function commentlink_macro(param) {
 
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      res.write(param.prefix)
+      res.write(param.prefix);
       this.filter();
       if (this.count() == 0) {
          res.write(this.count() + (param.no ? param.no : " threads"));
@@ -164,7 +174,7 @@ function commentcounter_macro(param) {
 
 function comments_macro(param) {
    if (this.weblog.hasDiscussions() && this.count()) {
-      res.write(param.prefix)
+      res.write(param.prefix);
       for (var i=0;i<this.size();i++) {
          res.write("<a name=\""+this.get(i).__id__+"\"></a>");
          this.get(i).renderSkin("toplevel");
@@ -180,7 +190,7 @@ function comments_macro(param) {
 
 function commentform_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      res.write(param.prefix)
+      res.write(param.prefix);
       if (user.uid && !user.isBlocked()) {
          var c = new comment();
          c.renderSkin("edit");
@@ -199,7 +209,7 @@ function commentform_macro(param) {
 
 function image_macro(param) {
    if (param && param.name && this.weblog.images.get(param.name)) {
-      res.write(param.prefix)
+      res.write(param.prefix);
       if (param.linkto) {
          this.openLink(param);
          this.weblog.renderImage(this.weblog.images.get(param.name),param);
