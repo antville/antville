@@ -433,3 +433,30 @@ function colorpicker_macro(param) {
 
    renderSkin("colorpickerWidget", param);
 }
+
+
+/**
+ * fakemail macro <%fakemail number=%>
+ * generates and renders faked email-adresses
+ * param.number 
+ * (contributed by hr@conspirat)
+ */
+
+function fakemail_macro(param) {
+	var tldList = new Array("com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl");
+   var nOfMails = param.number ? param.number : 20;
+   for (var i=0;i<nOfMails;i++) {
+   	var tld = tldList[Math.floor(Math.random()*tldList.length)];
+   	var mailName = "";
+      var serverName = "";
+   	var nameLength = Math.round(Math.random()*7) + 3;
+   	for (var j=0;j<nameLength;j++)
+   		mailName += String.fromCharCode(Math.round(Math.random()*25) + 97);
+   	var serverLength = Math.round(Math.random()*16) + 8;
+   	for (var j=0;j<serverLength;j++)
+   		serverName += String.fromCharCode(Math.round(Math.random()*25) + 97);
+   	res.write("<a href=\"mailto:" + mailName + "@" + serverName + "." + tld + "\">");
+   	res.write(mailName + "@" + serverName + "." + tld + "</a>, ");
+   }
+	return;
+}
