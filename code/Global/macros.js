@@ -79,7 +79,7 @@ function thumbnail_macro(param) {
       return;
    res.write(param.prefix);
    if (param.linkto) {
-      p.handler.openLink(param);
+      p.parent.openLink(param);
    } else {
       var linkParam = new Object();
       linkParam.linkto = p.obj.popupUrl();
