@@ -1,16 +1,16 @@
 <tr>
-<td colspan=4 height=1 background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" height="1" %></td>
+<td colspan=4 height=1 background="<% imageurl name="/dot" %>" nowrap="nowrap"><% image name="/pixel" height="1" %></td>
 </tr>
 <tr>
-<td colspan=4 nowrap><% this.sysmgr_typeflag %></td>
+<td colspan=4 nowrap="nowrap"><% this.sysmgr_typeflag %></td>
 </tr>
 <tr>
-<td width=470 valign="top" nowrap><% this.sysmgr_object prefix="<b>" suffix="</b><br>" %>
+<td width=470 valign="top" nowrap="nowrap"><% this.sysmgr_object prefix="<b>" suffix="</b><br />" %>
 Message: <% this.sysmgr_logentry %></td>
-<td width=10 nowrap><% image name="/pixel" width=10 %></td>
-<td width=200 colspan=2 valign="top" class="small" nowrap>by: <% this.sysmgr_sysadmin %><br>
+<td width=10 nowrap="nowrap"><% image name="/pixel" width=10 %></td>
+<td width=200 colspan=2 valign="top" class="small" nowrap="nowrap">by: <% this.sysmgr_sysadmin %><br />
 time:&nbsp;<% this.createtime format="dd.MM.yyyy HH:mm" %></td>
 </tr>
 <tr>
-<td colspan=4 height=5 nowrap><% image name=pixel height=5 %></td>
+<td colspan=4 height=5 nowrap="nowrap"><% image name=pixel height=5 %></td>
 </tr>

@@ -19,7 +19,7 @@
 <td><% this.addstory %></td>
 </tr>
 <tr>
-<td><% this.relatedtopics prefix="<br>Stories/Comments linking to this topic:<br>" %></td>
+<td><% this.relatedtopics prefix="<br />Stories/Comments linking to this topic:<br />" %></td>
 </tr>
 </table>
 

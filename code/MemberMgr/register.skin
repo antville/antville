@@ -1,27 +1,27 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap><form method="post" action="<% response.action %>">Username:</td>
-<td nowrap><% this.input type="text" name="name" %></td>
+<td class="small" nowrap="nowrap"><form method="post" action="<% response.action %>">Username:</td>
+<td nowrap="nowrap"><% this.input type="text" name="name" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Password:</td>
-<td nowrap><% this.input type="password" name="password1" %></td>
+<td class="small" nowrap="nowrap">Password:</td>
+<td nowrap="nowrap"><% this.input type="password" name="password1" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>type again:</td>
-<td nowrap><% this.input type="password" name="password2" %></td>
+<td class="small" nowrap="nowrap">type again:</td>
+<td nowrap="nowrap"><% this.input type="password" name="password2" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>eMail:</td>
-<td nowrap><% this.input type="text" name="email" %></td>
+<td class="small" nowrap="nowrap">eMail:</td>
+<td nowrap="nowrap"><% this.input type="text" name="email" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Url:*</td>
-<td nowrap><% this.input type="text" name="url" %></td>
+<td class="small" nowrap="nowrap">Url:*</td>
+<td nowrap="nowrap"><% this.input type="text" name="url" %></td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" name="register" value="register" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %><br>&nbsp;<br>* = optional</td>
+<td nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><% this.input type="button" name="register" value="register" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %><br />&nbsp;<br />* = optional</td>
 </tr>
 </table>
 </form>

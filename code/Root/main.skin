@@ -1,8 +1,13 @@
 <p>antville is an open source project aimed to the development of an "easy to maintain and use" weblog-hosting system. it's not limited to just one weblog, it can easily host up to several hundred or thousand weblogs (the number of weblogs is more limited by the site owners choice and server power than software limitations).</p>
+
 <p>antville is entirely written in JavaScript and based on <% link to=http://helma.org/about text=Helma %>, a powerful and fast scriptable open source web application server (which itself is written in Java). antville works with a relational database in the backend: here at antville.org we're using <% link to=http://www.mysql.com text=MySQL %>, but one can also use nearly any other one. more information about the project can be found at the <% link to="http://project.antville.org" text="project weblog" %>, the <% link to="http://macros.antville.org" text="macro documentation" %> (in progress) or <% link to="http://help.antville.org" text="antville help" %>. there is also a brief description of the <% link to=http://project.antville.org/topics/about+antville text="features of antville" %>.</p>
 
 <p>antville.org is a weblog-hosting service based on this application. the service was established to demonstrate the power of <%link to=http://helma.org/about text=Helma %> and antville (and because we like to use our own software ;-). It's free of charge, but please read and agree to the <% link to="http://project.antville.org/topics/disclaimer" text="terms of service" %> before you're <% root.link to="new" text="creating a weblog " %> on antville.org.</p>
 
-<p>Number of weblogs hosted here: <% root.weblogcounter count="all" %><br>
-Public accessible weblogs: <% root.weblogcounter %><br>
-<% webloglist limit="25"  prefix="Last updated weblogs: <ul>" suffix="</ul>" %></p>
+<p />
+Number of weblogs hosted here: <% root.weblogcounter count="all" %><br />
+Public accessible weblogs: <% root.weblogcounter %><br />
+Last updated weblogs:
+<ul>
+<% webloglist limit="25"  %>
+</ul>

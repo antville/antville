@@ -1,8 +1,8 @@
 <table width="400" border="0" cellspacing="2" cellpadding="0">
 <tr>
-<td nowrap>...&nbsp;<a href="<% param.url %>"><% param.text %></a></td>
+<td nowrap="nowrap">...&nbsp;<a href="<% param.url %>"><% param.text %></a></td>
 </tr>
 <tr>
-<td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
+<td width="2" background="<% imageurl name="/dot" %>" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 </tr>
 </table>

@@ -3,18 +3,18 @@
 <td>To create a new weblog you need to fill out the form below. The <b>title</b> will appear in the header of every page (you can change it anytime you want), while the <b>alias</b> will be part of the URL to your weblog (i.e. if you enter "vac" as the alias, your weblog will get the URL vac.antville.org).</td>
 </tr>
 <tr>
-<td nowrap><table border="0" cellspacing="0" cellpadding="3">
+<td nowrap="nowrap"><table border="0" cellspacing="0" cellpadding="3">
    <tr>
-   <td nowrap><form method="post" action="<% response.action %>">Title:</td>
-   <td nowrap><% this.input type="text" name="title" %></td>
+   <td nowrap="nowrap"><form method="post" action="<% response.action %>">Title:</td>
+   <td nowrap="nowrap"><% this.input type="text" name="title" %></td>
    </tr>
    <tr>
-   <td nowrap>Alias:</td>
-   <td nowrap><% this.input type="text" name="alias" %></td>
+   <td nowrap="nowrap">Alias:</td>
+   <td nowrap="nowrap"><% this.input type="text" name="alias" %></td>
    </tr>
    <tr>
-   <td nowrap>&nbsp;</td>
-   <td nowrap><% this.input type="button" value="create" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+   <td nowrap="nowrap">&nbsp;</td>
+   <td nowrap="nowrap"><% this.input type="button" value="create" %>&nbsp;<% this.input type="button" value="cancel" %></td>
    </tr>
    </table></td>
 </tr>

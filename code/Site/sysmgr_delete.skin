@@ -7,7 +7,7 @@
 <p><% this.input type="button" name="remove" value="yes" %>&nbsp;&nbsp;<% this.input type="button" name="cancel" value="&nbsp;no&nbsp;" %></p></td>
 </tr>
 <tr>
-<td colspan=4 height=5 nowrap></form></td>
+<td colspan=4 height=5 nowrap="nowrap"></form></td>
 </tr>
 
 

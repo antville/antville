@@ -1,8 +1,8 @@
 <span class="commentHead">&nbsp;</span>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td width="10" align="center" valign="top" class="offlineStory" nowrap>o<br>f<br>f</td>
-<td width="5" nowrap></td>
+<td width="10" align="center" valign="top" class="offlineStory" nowrap="nowrap">o<br />f<br />f</td>
+<td width="5" nowrap="nowrap"></td>
 <td><% param.story %></td>
 </tr>
 </table>

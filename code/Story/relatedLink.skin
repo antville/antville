@@ -1,1 +1,1 @@
-[<% this.title as="link" %>]<br>
+[<% this.title as="link" %>]<br />

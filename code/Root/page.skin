@@ -1,8 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html>
 <head>
 <title><% response.title %></title>
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <% root.skin name="style" %>
 <% root.skin name="javascript" %>
 </head>
@@ -18,26 +19,26 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20" nowrap>&nbsp;</td>
-<td width="460" valign="top" nowrap><span class="message"><% response.message prefix="<br />" suffix="<br />" %></span>
+<td width="20" nowrap="nowrap">&nbsp;</td>
+<td width="460" valign="top" nowrap="nowrap"><span class="message"><% response.message prefix="<br />" suffix="<br />" %></span>
 <br /><% response.body %></td>
-<td width="20" nowrap>&nbsp;</td>
-<td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap><div class="statuslight"><% now format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<br>" %>
+<td width="20" nowrap="nowrap">&nbsp;</td>
+<td width="2" style="background-image: url(<% image name="/dot" as="url" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
+<td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% now format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<br />" %>
 <% root.loginstatus %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br>
-...&nbsp;<a href="http://help.antville.org/">help</a><br>
-...&nbsp;<a href="http://macros.antville.org/">macros</a><br>
-...&nbsp;<a href="http://project.antville.org/">project log</a><br>
-...&nbsp;<a href="http://project.antville.org/topics/about+antville">features</a><br>
+<div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />
+...&nbsp;<a href="http://help.antville.org/">help</a><br />
+...&nbsp;<a href="http://macros.antville.org/">macros</a><br />
+...&nbsp;<a href="http://project.antville.org/">project log</a><br />
+...&nbsp;<a href="http://project.antville.org/topics/about+antville">features</a><br />
 ...&nbsp;<a href="http://project.antville.org/topics/disclaimer">disclaimer</a></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><% this.weblogcounter suffix="&nbsp;public weblogs&nbsp;" %>... <% this.link to="list" %><br>
+<div class="statuslight"><% this.weblogcounter suffix="&nbsp;public weblogs&nbsp;" %>... <% this.link to="list" %><br />
 ...&nbsp;<% this.link to="new" text="create a weblog" %></div>
 <!-- div class="statuslight">...&nbsp;<a href="http://antville.org/documentation.html">documentation</a></div -->
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><br><% image name="/xmlbutton" linkto="rss10" %><br><br><% logo name="smallstraight" %><br>powered by<br><% image name="/hop" linkto="http://helma.org" %></div></td>
+<div class="statuslight"><br /><% image name="/xmlbutton" linkto="rss10" %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
 </tr>
 </table>
 

@@ -1,4 +1,6 @@
-<p>Enter a term to search in <% this.title %></p>
+<p class="storytitle">Search</p>
+
+<p>Enter a term to search in <% this.title %>:</p>
 
 <form method="get" action="<% response.action %>">
 <input size="25" name="q" value="<% request.q encoding="form" %>">

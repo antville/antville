@@ -1,10 +1,10 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap>...&nbsp;<% this.link to="create" text="create a story" %></td>
+<td colspan="2" nowrap="nowrap">...&nbsp;<% this.link to="create" text="create a story" %></td>
 </tr>
 <tr>
-<td rowspan="2" valign="top" nowrap>...&nbsp;show&nbsp;</td>
-<td nowrap><% this.link to="main" text="all stories" %>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=offline" text="offline stories"%>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=mystories" text="my stories" %></td>
+<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
+<td nowrap="nowrap"><% this.link to="main" text="all stories" %>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=offline" text="offline stories"%>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=mystories" text="my stories" %></td>
 </tr>
 </table>
 

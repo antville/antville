@@ -2,28 +2,28 @@
 <input type="hidden" name="item" value="<% request.item %>">
 <input type="hidden" name="page" value="<% request.page %>">
 <tr>
-<td valign="top" class="small" nowrap><% this.sysmgr_count what="stories" suffix="&nbsp;stories<br>" %>
-<% this.sysmgr_count what="comments" suffix="&nbsp;comments<br>" %>
-<% this.sysmgr_count what="images" suffix="&nbsp;images<br>" %>
-<% this.sysmgr_count what="goodies" suffix="&nbsp;goodies<br>" %></td>
-<td width=10 nowrap><% image name="/pixel" width=10 %></td>
-<td colspan=2 nowrap><table border=0 class="highlight">
+<td valign="top" class="small" nowrap="nowrap"><% this.sysmgr_count what="stories" suffix="&nbsp;stories<br />" %>
+<% this.sysmgr_count what="comments" suffix="&nbsp;comments<br />" %>
+<% this.sysmgr_count what="images" suffix="&nbsp;images<br />" %>
+<% this.sysmgr_count what="goodies" suffix="&nbsp;goodies<br />" %></td>
+<td width=10 nowrap="nowrap"><% image name="/pixel" width=10 %></td>
+<td colspan=2 nowrap="nowrap"><table border=0 class="highlight">
    <tr>
-   <td nowrap>trusted:</td>
-   <td nowrap><% this.sysmgr_trusted as="editor" %></td>
+   <td nowrap="nowrap">trusted:</td>
+   <td nowrap="nowrap"><% this.sysmgr_trusted as="editor" %></td>
    </tr>
    <tr>
-   <td nowrap>blocked:</td>
-   <td nowrap><% this.sysmgr_blocked as="editor" %></td>
+   <td nowrap="nowrap">blocked:</td>
+   <td nowrap="nowrap"><% this.sysmgr_blocked as="editor" %></td>
    </tr>
    <tr>
-   <td nowrap></td>
-   <td nowrap><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></td>
+   <td nowrap="nowrap"></td>
+   <td nowrap="nowrap"><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></td>
    </tr>
    </table></td>
 </tr>
 <tr>
-<td colspan=4 height=5 nowrap></form></td>
+<td colspan=4 height=5 nowrap="nowrap"></form></td>
 </tr>
 
 

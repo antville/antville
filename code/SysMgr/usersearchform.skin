@@ -1,23 +1,23 @@
 <form method="post" action="<% response.searchaction %>">
 <table border=0 cellspacing=0 cellpadding=2>
 <tr>
-<td colspan=2 class="pageTitle" nowrap>User-Manager</td>
+<td colspan=2 class="pageTitle" nowrap="nowrap">User-Manager</td>
 </tr>
 <tr>
-<td nowrap>...&nbsp;show</td>
-<td nowrap><% this.dropdown name="show" values="all users,blocked users,trusted users,sysadmins" %></td>
+<td nowrap="nowrap">...&nbsp;show</td>
+<td nowrap="nowrap"><% this.dropdown name="show" values="all users,blocked users,trusted users,sysadmins" %></td>
 </tr>
 <tr>
-<td nowrap>...&nbsp;sorted by</td>
-<td nowrap><% this.dropdown name="sort" values="last visit,registration,username" %></td>
+<td nowrap="nowrap">...&nbsp;sorted by</td>
+<td nowrap="nowrap"><% this.dropdown name="sort" values="last visit,registration,username" %></td>
 </tr>
 <tr>
 <td>...&nbsp;order</td>
-<td nowrap><% this.dropdown name="order" values="descending,ascending" %></td>
+<td nowrap="nowrap"><% this.dropdown name="order" values="descending,ascending" %></td>
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>
-<td nowrap><% this.input name="keywords" %></td>
+<td nowrap="nowrap"><% this.input name="keywords" %></td>
 </tr>
 <tr>
 <td>&nbsp;</td>

@@ -1,2 +1,2 @@
-<li><b><% this.username linkto="edit" %></b><% this.url prefix="&nbsp;(url:&nbsp;" suffix=")" %><br>
+<li><b><% this.username linkto="edit" %></b><% this.url prefix="&nbsp;(url:&nbsp;" suffix=")" %><br />
 signed up: <% this.createtime format="short" %>&nbsp;&nbsp;<% this.deletelink text="remove" prefix="...&nbsp;" %></li>

@@ -7,20 +7,20 @@
 </tr>
 </table>
 
-<br>
+<br />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <tr>
-<td class="small" nowrap>Name:</td>
-<td nowrap><% this.alias %></td>
+<td class="small" nowrap="nowrap">Name:</td>
+<td nowrap="nowrap"><% this.alias %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Alttext:</td>
-<td nowrap><% this.alttext %></td>
+<td class="small" nowrap="nowrap">Alttext:</td>
+<td nowrap="nowrap"><% this.alttext %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Author:</td>
-<td nowrap><% this.creator %></td>
+<td class="small" nowrap="nowrap">Author:</td>
+<td nowrap="nowrap"><% this.creator %></td>
 </tr>
 </table>
-<div class="small"><% this.editlink prefix="<br>...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" suffix="<br><br>" %></div>
+<div class="small"><% this.editlink prefix="<br />...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" suffix="<br /><br />" %></div>

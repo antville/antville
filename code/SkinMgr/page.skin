@@ -11,9 +11,9 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20" nowrap>&nbsp;</td>
-<td width="660" valign="top" nowrap><br><% response.body %></td>
-<td width="20" nowrap>&nbsp;</td>
+<td width="20" nowrap="nowrap">&nbsp;</td>
+<td width="660" valign="top" nowrap="nowrap"><br /><% response.body %></td>
+<td width="20" nowrap="nowrap">&nbsp;</td>
 </tr>
 </table>
 

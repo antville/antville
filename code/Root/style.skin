@@ -1,69 +1,81 @@
 <style type="text/css">
 <!--
 
-body,td,span { font-family:Verdana,Helvetica,Arial,sans-serif;
-               font-size:13px;
-               font-weight:normal;
-               color:#000000;
-               vertical-align: top;
-               background-color:#FFFFFF;
-             }
+body, td, span {
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  color: #000000;
+  vertical-align: top;
+  background-color: #FFFFFF;
+}
 
-a { text-decoration:none;
-    color:#FF3300;
-  }
+a {
+  text-decoration: none;
+  color: #FF3300;
+}
 
-a:hover { background-color:#FF3300;
-          color:#FFFFFF;
-        }
+a:hover {
+  background-color: #FF3300;
+  color: #FFFFFF;
+}
 
-.header {  background-image:url("<% imageurl name="/headbg" %>");
-           background-repeat:repeat-x;
-           text-align:right;
-           vertical-align:middle;
-        }
+ul {
+  list-style: url("<% imageurl name="/bullet" %>") circle;
+}
 
-.message { font-family:Helvetica,Arial,sans-serif;
-           font-size:12px;
-           padding:1px;
-           color:#FF3300;
-           background-color:#FFFFFF;
-         }
+.header {
+  background-image: url("<% imageurl name="/headbg" %>");
+  background-repeat: repeat-x;
+  text-align: right;
+  vertical-align: middle;
+}
 
-.statusdark { width:198px;
-              font-family:Helvetica,Arial,sans-serif;
-              font-size:12px;
-              display:block;
-              padding-top:3px;
-              padding-bottom:3px;
-            }
+.message {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  padding: 1px;
+  color: #FF3300;
+  background-color: #FFFFFF;
+}
 
-.statuslight { width:198px;
-               font-family:Helvetica,Arial,sans-serif;
-               font-size:12px;
-               color:#999999;
-               display: block;
-               padding-top:3px;
-               padding-bottom:3px;
-             }
+.statusdark {
+  width: 198px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  display: block;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
 
-.small { font-family:Helvetica,Arial,sans-serif;
-         font-size:12px;
-         color:#999999;
-       }
+.statuslight {
+  width: 198px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #999999;
+  display: block;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
 
-.sep { width:198px;
-       background-image:url("<% imageurl name="/dot" %>");
-     }
+.small {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #999999;
+}
 
-ul { list-style: url("<% imageurl name="/bullet" %>") circle;
-   }
+.sep {
+  width: 198px;
+  background-image: url("<% imageurl name="/dot" %>");
+}
 
-.pageTitle { font-family:Verdana,Helvetica,Arial,sans-serif;
-             font-size:12pt;
-             font-weight:bold;
-             color:#FF3300;
-             padding-bottom:10pt;
-           }
+.pageTitle {
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #FF3300;
+  padding-bottom: 10pt;
+}
+
 // -->
 </style>

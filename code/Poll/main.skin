@@ -6,7 +6,7 @@
 <% this.choices %>
 
 <tr>
-<td colspan="2"><br><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><% this.link to="results" text="view results" %></span>
+<td colspan="2"><br /><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><% this.link to="results" text="view results" %></span>
 <p class="small"><% this.info %></p></td>
 </tr>
 

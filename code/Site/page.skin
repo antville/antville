@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html>
 <head>
 <title><% response.title %></title>
@@ -19,7 +19,7 @@
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="40" nowrap="nowrap">&nbsp;</td>
-<td width="400" valign="top" nowrap>
+<td width="400" valign="top" nowrap="nowrap">
 
 <span class="message"><% response.message prefix="<br />" suffix="<br />" %></span>
 <br /><% response.body %></td>

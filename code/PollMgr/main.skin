@@ -1,10 +1,10 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap><% this.link to="create" text="create a poll" prefix="...&nbsp;" checkdeny="true" %></td>
+<td colspan="2" nowrap="nowrap"><% this.link to="create" text="create a poll" prefix="...&nbsp;" checkdeny="true" %></td>
 </tr>
 <tr>
-<td rowspan="2" valign="top" nowrap>...&nbsp;show&nbsp;</td>
-<td nowrap><% this.link to="main" text="all polls" %><% this.link to="main" text="open polls" urlparam="?show=open" prefix="&nbsp;|&nbsp;" %><% this.link to="main" urlparam="?show=mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %></td>
+<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
+<td nowrap="nowrap"><% this.link to="main" text="all polls" %><% this.link to="main" text="open polls" urlparam="?show=open" prefix="&nbsp;|&nbsp;" %><% this.link to="main" urlparam="?show=mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %></td>
 </tr>
 </table>
 
