@@ -2,12 +2,14 @@ var parent = setLayout();
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(parent.href());
-else
-   this.sendPwd();
+else if (req.data.submit == "send" || req.data.send) {
+   var result = this.sendPwd(req.data.email);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(parent.href());
+}
 
-res.title = "Antville - Password forgotten";
-res.head = parent.renderSkinAsString("javascript");
-res.head += parent.renderSkinAsString("style");
+res.data.title = "Antville - Password forgotten";
 
-res.body = this.renderSkinAsString("sendpwd");
+res.data.body = this.renderSkinAsString("sendpwd");
 
