@@ -677,7 +677,7 @@ function skinsetchooser_macro(param) {
  */
 function notify_macro(param) {
    if (param.as == "editor") {
-      var options = new Array("Don't notify anyone", "Notify content managers", "Notify contributors");
+      var options = new Array("Don't notify anyone", "Notify content managers and admins", "Notify contributors and above");
       var pref = this.preferences.getProperty("notify_" + param.event);
       Html.dropDown("notify_" + param.event, options, pref);
    } else {
@@ -695,7 +695,7 @@ function notify_macro(param) {
  * macro rendering notification settings if enabled
  */
 function notification_macro(param) {
-   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.trusted )
+   if (this.isNotificationEnabled())
       this.renderSkin("notification");
    return;
 }
