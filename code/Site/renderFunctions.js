@@ -2,22 +2,16 @@
  * check if there are any stories in the previous month
  */
 
-function renderLinkToPrevMonth(cal) {
-   // create Object used to pass to format-function
-   var tsParam = new Object();
-   tsParam.format = "MMMM";
+function renderLinkToPrevMonth(firstDayIndex,currentMonth) {
 
-   if (!this.size())
+   var l = this.size();
+   if (l == 0 || l <= firstDayIndex)
       return ("&nbsp;");
-   if (parseInt(this.get(this.size()-1).groupname,10) < parseInt(cal.getTime().format("yyyyMMdd"),10)) {
-      // there are any stories left back in history, so try to get them ...
-      prevDay = false;
-      while (!prevDay) {
-         cal.add(java.util.Calendar.DATE,-1);
-         if (this.get(cal.getTime().format("yyyyMMdd")))
-            prevDay = this.get(cal.getTime().format("yyyyMMdd"));
-      }
-      return ("<a href=\"" + prevDay.href() + "\">" + formatTimestamp(cal.getTime(),tsParam.format) + "</a>");
+
+   var prevDay = this.get(firstDayIndex+1);
+   if (prevDay && prevDay.groupname<currentMonth) {
+      var date = parseTimestamp(prevDay.groupName, "yyyyMMdd");
+      return ("<a href=\"" + prevDay.href() + "\">" + formatTimestamp(date,"MMMM") + "</a>");
    } else {
       return ("&nbsp;");
    }
@@ -28,51 +22,18 @@ function renderLinkToPrevMonth(cal) {
  * check if there are any stories in the previous month
  */
 
-function renderLinkToNextMonth(cal) {
-   // create Object used to pass to format-function
-   var tsParam = new Object();
-   tsParam.format = "MMMM";
-
-   if (!this.size())
+function renderLinkToNextMonth(lastDayIndex,currentMonth) {
+   var l = this.size();
+   if (l == 0 || lastDayIndex == 0)
       return ("&nbsp;");
-   if (parseInt(this.get(0).groupname,10) > parseInt(cal.getTime().format("yyyyMMdd"),10)) {
-      // there are any stories, so try to get them ...
-      nextDay = false;
-      while (!nextDay) {
-         cal.add(java.util.Calendar.DATE,1);
-         if (this.get(cal.getTime().format("yyyyMMdd")))
-            nextDay = this.get(cal.getTime().format("yyyyMMdd"));
-      }
-      return ("<a href=\"" + nextDay.href() + "\">" + formatTimestamp(cal.getTime(),tsParam.format) + "</a>");
+
+   var nextDay = this.get(lastDayIndex-1);
+   if (nextDay && nextDay.groupname>currentMonth) {
+      var date = parseTimestamp(nextDay.groupName, "yyyyMMdd");
+      return ("<a href=\"" + nextDay.href() + "\">" + formatTimestamp(date,"MMMM") + "</a>");
    } else {
       return ("&nbsp;");
    }
-}
-
-
-/**
- * function renders a single day, either as link if there are
- * any stories online, or as plain text
- */
-
-function renderCalendarDay(currGroupname,text) {
-   if (text < 10)
-      text = "&nbsp;"+text+"&nbsp;";
-   var currGroup = this.get(currGroupname);
-   var linkit = false;
-   if (currGroup && currGroup.size()) {
-      linkit = false;
-      for (var i=0;i<currGroup.size();i++) {
-         var st = currGroup.get(i);
-         if (this.isStoryOnline(st)) {
-            linkit = true;
-            break;
-         }
-      }
-      if (linkit)
-         var text = "<a href=\"" + currGroup.href() + "\">" + text + "</a>";
-   }
-   return (text);
 }
 
 

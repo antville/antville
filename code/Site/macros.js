@@ -406,9 +406,6 @@ function calendar_macro(param) {
    calParam.month = formatTimestamp(cal.getTime(),"MMMM");
 
    calParam.year = cal.getTime().format("yyyy");
-   // create link to previous month if needed
-   calParam.back = this.renderLinkToPrevMonth(cal.clone());
-
    // render header-row of calendar
    weekParam.week = "";
    var calHead = cal.clone();
@@ -424,6 +421,10 @@ function calendar_macro(param) {
    var currMonth = formatTimestamp(cal.getTime(), "yyyyMM");
    // simply loop through days
    var currDay = 1;
+   // remember the index of the first and last days within this month.
+   // this is needed to optimize previous and next month links.
+   var lastDayIndex = this.size();
+   var firstDayIndex = -1;
 
    for (var i=0;i<weeks;i++) {
       weekParam.week = "";
@@ -433,7 +434,20 @@ function calendar_macro(param) {
             dayParam.day = "&nbsp;";
          else {
             var currGroupname = currMonth+currDay.format("00");
-            dayParam.day = this.renderCalendarDay(currGroupname, currDay);
+            var linkText = currDay < 10 ? "&nbsp;"+currDay+"&nbsp;" : currDay;
+            var currGroup = this.get(currGroupname);
+            if (currGroup) {
+               var idx = this.contains(currGroup);
+               if (idx > -1) {
+                  if  (idx > firstDayIndex)
+                     firstDayIndex = idx;
+                  if (idx < lastDayIndex)
+                      lastDayIndex = idx;
+               }
+               dayParam.day =  "<a href=\"" + currGroup.href() + "\">" + linkText + "</a>";
+            } else {
+               dayParam.day = linkText;
+            }
             if (currGroupname == today)
                dayParam.useskin = "calendarselday";
             currDay++;
@@ -446,7 +460,8 @@ function calendar_macro(param) {
    // set day to last day of month and try to render next month
    // check what the last day of the month is
    cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE));
-   calParam.forward = this.renderLinkToNextMonth(cal);
+   calParam.back = this.renderLinkToPrevMonth(firstDayIndex,currMonth+"01");
+   calParam.forward = this.renderLinkToNextMonth(lastDayIndex,currMonth+"31");
    this.renderSkin("calendar",calParam);
 }
 
