@@ -249,6 +249,6 @@ function sendNotification(type, alias) {
    }
    mail.setSubject("uploaded " + type + " on " + this.title + ": " + alias);
    mail.setText(renderSkinAsString("notification", {url: this.href()}));
-   var sendResult = mail.send();
+   mail.queue();
    return;
 }

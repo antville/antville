@@ -254,6 +254,6 @@ function sendNotification(type, event) {
    }
    mail.setSubject(type + " " + event + "d on " + this.site.title + ": " + this.title);
    mail.setText(renderSkinAsString("notification", {url: this.href()}));
-   var sendResult = mail.send();
+   mail.queue();
    return;
 }

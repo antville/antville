@@ -190,7 +190,9 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
-   return (30000);
+   // send mails and empty mail queue
+   flushMailQueue();
+   return 30000;
 }
 
 
@@ -569,4 +571,30 @@ function sendMail(from, to, subject, body) {
    if (mail.status != 0)
       throw new MailException("mailSend");
    return new Message("mailSend");
+}
+
+
+/**
+ * extend the Mail prototype with a method
+ * that simply adds a mail object to an
+ * application-wide array (mail queue).
+ */
+Mail.prototype.queue = function() {
+   if (!app.data.mailqueue)
+      app.data.mailqueue = new Array();
+   app.data.mailqueue.push(this);
+   return;
+}
+
+
+/**
+ * send all mails contained in the
+ * application-wide mail queue
+ */
+function flushMailQueue() {
+   while (app.data.mailqueue.length) {
+      var result = app.data.mailqueue.pop().send();
+      app.debug("Mail transfer status: " + result);
+   }
+   return;
 }
