@@ -59,7 +59,6 @@ function evalRegistration(param) {
    newUser.email = param.email;
    newUser.publishemail = param.publishemail;
    newUser.url = evalURL(param.url);
-   newUser.description = param.description;
    newUser.registered = new Date();
    newUser.blocked = 0;
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
