@@ -6,6 +6,7 @@ if (deny) {
    res.redirect(this.members.href("login"));
 }
 
+res.skin = "weblog.page";
 res.data.title = "Antville - " + encode(this.title);
 res.data.body = this.renderSkinAsString("referrers");
-this.renderSkin("page");
+
