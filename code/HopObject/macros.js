@@ -6,16 +6,16 @@
  */
 
 function skin_macro(param) {
-   renderPrefix(param);
-   if (param.name)
+   if (param.name) {
+      renderPrefix(param);
       this.renderSkin(param.name);
-   renderSuffix(param);
+      renderSuffix(param);
+   }
 }
 
 
 /**
  * creates a <FORM ... tag
- */
 
 function form_macro(param) {
    if (param) {
@@ -33,6 +33,7 @@ function form_macro(param) {
       renderSuffix(param);
    }
 }
+*/
 
 
 /**
