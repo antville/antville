@@ -427,12 +427,12 @@ function colorpicker_macro(param) {
       var obj = path.story ? path.story : new story();
       param2.part = param.name;
       param.editor = obj.content_macro(param2);
-      param.color = obj.getContentPart(param.name);
+      param.color = renderColorAsString(obj.getContentPart(param.name));
    }
    else if (res.handlers.site) {
       var obj = res.handlers.site;
       param.editor = obj[param.name+"_macro"](param2);
-      param.color = obj[param.name];
+      param.color = renderColorAsString(obj[param.name]);
    }
    else
       return;
