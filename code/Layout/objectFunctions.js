@@ -130,7 +130,7 @@ function getStaticUrl() {
  *                directory on disk
  */
 function getStaticDir(subdir) {
-   return FileLib.mkdir(this.getStaticPath(subdir));
+   return File.mkdir(this.getStaticPath(subdir));
 }
 
 /**

@@ -52,7 +52,7 @@ function evalFile(param, creator) {
 
 function deleteFile(fileObj) {
    // first remove the file from disk
-   var f = FileLib.get(this._parent.getStaticPath("files"), fileObj.name);
+   var f = File.get(this._parent.getStaticPath("files"), fileObj.name);
    f.remove();
    if (!this.remove(fileObj))
       throw new Exception("fileDelete");

@@ -345,19 +345,19 @@ function buildAlias(alias, collection) {
  */
 function onStart() {
    // load application messages and modules
-   var dir = FileLib.get(app.dir);
+   var dir = File.get(app.dir);
    var arr = dir.list();
    for (var i in arr) {
       var fname = arr[i];
    	if (fname.startsWith("messages.")) {
          var name = fname.substring(fname.indexOf(".") + 1, fname.length);
-   		var msgFile = FileLib.get(dir, fname);
+   		var msgFile = File.get(dir, fname);
    		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
    		app.log("loaded application messages (language: " + name + ")");
    	}
    }
    // load macro help file
-   var macroHelpFile = FileLib.get(dir, "macro.help");
+   var macroHelpFile = File.get(dir, "macro.help");
    app.data.macros = new Packages.helma.util.SystemProperties(macroHelpFile.getAbsolutePath());
    //eval(macroHelpFile.readAll());
    app.log("loaded macro help file");

@@ -328,7 +328,7 @@ function getStaticUrl(subdir) {
  * @return Object File object
  */
 function getStaticDir(subdir) {
-   return FileLib.mkdir(this.getStaticPath(subdir));
+   return File.mkdir(this.getStaticPath(subdir));
 }
 
 /**

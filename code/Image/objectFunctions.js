@@ -147,7 +147,7 @@ function getUrl() {
  * @return Object File object
  */
 function getFile() {
-   return FileLib.get(this.site.getStaticPath(), this.filename + "." + this.fileext);
+   return File.get(this.site.getStaticPath(), this.filename + "." + this.fileext);
 }
 
 

@@ -67,11 +67,11 @@ function evalImg(param, creator) {
 function deleteImage(currImg) {
    // first remove the image from disk (and the thumbnail, if existing)
    var dir = currImg.site ? currImg.site.getStaticDir("images") : currImg.layout.getStaticDir();
-   var f = FileLib.get(dir, currImg.filename + "." + currImg.fileext);
+   var f = File.get(dir, currImg.filename + "." + currImg.fileext);
    f.remove();
    if (currImg.thumbnail) {
       var thumb = currImg.thumbnail;
-      f = FileLib.get(dir, thumb.filename + "." + thumb.fileext);
+      f = File.get(dir, thumb.filename + "." + thumb.fileext);
       f.remove();
       if (!thumb.remove())
          throw new Exception("imageDelete");
