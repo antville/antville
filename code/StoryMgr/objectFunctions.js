@@ -17,14 +17,20 @@ function evalNewStory() {
       newStory.author = user;
       newStory.createtime = new Date();
       newStory.modifytime = new Date();
+      if (req.data.topic)
+         newStory.topic = req.data.topic;
       newStory.day = newStory.createtime.format("yyyyMMdd");
       path.weblog.add(newStory);
       if (newStory.online)
          path.weblog.lastupdate = newStory.createtime;
       res.message = "The story was created successfully!";
       res.redirect(this.href());
-   } else
+   } else {
+      // set wiki topic, if defined
+      if (req.data.topic)
+         newStory.topic = req.data.topic;
       return (newStory);
+   }
 }
 
 
