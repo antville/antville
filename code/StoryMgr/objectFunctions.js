@@ -15,10 +15,18 @@ function evalNewStory(s,param,creator) {
    s.site = this._parent;
    // loop through param and collect content properties
    var cont = new HopObject();
+   var contentIsCool = false;
    for (var i in param) {
-      if (i.indexOf ("content_") == 0)
+      if (i.indexOf ("content_") == 0) {
          cont[i.substring(8)] = param[i];
+         if (!contentIsCool && param[i])
+            contentIsCool = true;
+      }
    }
+   // if all story parts are null, return with error-message
+   if (!contentIsCool)
+      result = getError("textMissing");
+
    s.setContent (cont);
    // let's keep the title property
    s.title = param.content_title;
@@ -41,9 +49,6 @@ function evalNewStory(s,param,creator) {
       s.day = s.createtime.format("yyyyMMdd");
    s.ipaddress = param.http_remotehost;
    s.reads = 0;
-   // start checking if story-params make sense
-   if (!param.content_text)
-      result = getError("textMissing");
 
    var topic = param.topic ? param.topic : parseInt(param.topicidx,10);
    if (!isNaN(topic) && topic >= 0) {

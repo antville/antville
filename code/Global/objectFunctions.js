@@ -380,6 +380,16 @@ function scheduler() {
    root.manage.autoCleanUp();
    // notify updated sites
    pingUpdatedSites();
+   countUsers();
+   /*
+   var patch = tryEval("root.system_patch()");
+   if (patch.value) {
+      app.__app__.logEvent("---------- [ANTVILLE PATCH] ----------");
+      app.__app__.logEvent("still not finished, next run in " + patch.value
++ " millis");
+      return (patch.value);
+   }
+   */
    return (60000);
 }
 
@@ -574,3 +584,23 @@ function fixRssText(str) {
  	return(str);
 }
 
+
+/**
+ * function counting active users and anonymous sessions
+ * (thought to be called by the scheduler)
+ */
+
+function countUsers() {
+   app.log("1, 2, 3... counting users");
+   app.data.activeUsers = new Array()
+   var l = app.getActiveUsers();
+   for (var i in l)
+      app.data.activeUsers[app.data.activeUsers.length] = l[i];
+   l = app.getSessions();
+   app.data.sessions = 0;
+   for (var i in l) {
+      if (!l[i].user)
+         app.data.sessions++;
+   }
+   app.data.activeUsers.sort();
+}
