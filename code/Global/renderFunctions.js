@@ -15,3 +15,22 @@ function getActionName() {
       return(rPath[rPath.length -1]);
 }
 
+/**
+ * function tries to check if the color contains just hex-characters
+ * if so, it renders the color-definition prefixed with a '#'
+ * otherwise it assumes the color is a named one
+ */
+
+function renderColor(c) {
+   if (c.length == 6) {
+      var nonhex = new RegExp("[^0-9,a-f]");
+      nonhex.ignoreCase = true;
+      var found = c.match(nonhex);
+      if (!found) {
+         // color-string contains just hex-characters, so we prefix it with '#'
+         res.write("#" + c);
+         return;
+      }
+   }
+   res.write(c);
+}
