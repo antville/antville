@@ -590,7 +590,7 @@ function listMostRead_macro() {
 function listReferrers_macro() {
   var str = "";
   var c = getDBConnection("antville");
-  error = c.getLastError();
+  var error = c.getLastError();
   if (error)
     return("Error establishing DB connection: " + error);
 
@@ -602,13 +602,14 @@ function listReferrers_macro() {
   error = c.getLastError();
   if (error)
     return("Error executing SQL query: " + error);
-  
   var param = new Object();
   while (rows.next()) {
     param.count = rows.getColumnItem("COUNT");
     // these two lines are necessary only for hsqldb connections:
-    if (param.count == 0);
-      continue;
+    // 2002-06-08: but oops! this does NOT work with mysql, again...
+    // (so i commented them out as i think hsqldb is abandoned, anyway)
+    // if (param.count == 0);
+    //    continue;
     param.referrer = rows.getColumnItem("REFERRER");
     param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
     str += this.renderSkinAsString("referrerItem", param);
