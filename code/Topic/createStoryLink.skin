@@ -1,1 +1,1 @@
-<br><a href="<% param.link %>">Create a new story for this topic!</a>
+...&nbsp;<a href="<% param.link %>">create a story for this topic</a>
