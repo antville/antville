@@ -13,7 +13,11 @@
 </tr>
 <tr>
 <td nowrap>&nbsp;</td>
-<td nowrap>If you're not registered, you can do this <% this.link to="register" text="here" %></td>
+<td nowrap>If you're not registered, you can do this <% this.link to="register" text="here" %>.</td>
+</tr>
+<tr>
+<td nowrap>&nbsp;</td>
+<td nowrap><% this.link to="sendpwd" text="Forgot" %> your password?</td>
 </tr>
 </table>
 </form>
