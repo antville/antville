@@ -1,10 +1,10 @@
 <% linkedpath %>
 
-<h3>Layout '<% layout.title %>'</h3>
+<p class="storyTitle"><br />Layout '<% layout.title %>'</p>
 
 <p><% this.description prefix="<p>" suffix="<br />" %>
 <span class="small"><% this.copyright prefix="<br />Copyright: " %>
-<% this.email prefix="<br />eMail: " %></span></p>
+<% this.email prefix="<br />e-mail: " %></span></p>
 
 <p><% layout.link to="edit" text="Edit the preferences" %> of this layout.</p>
 

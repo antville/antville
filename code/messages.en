@@ -88,12 +88,12 @@ error.wrongDateFormat = [error: wrong date-format]
 error.subscriptionExist = Oy, you have already subscribed to this site.
 error.subscriptionNoExist = Oy, you are not subscribed to this site.
 error.mailMissingParameters = Sorry, the mail couldn't be sent because of missing parameters.
-error.mailFromInvalid = Sorry, the mail couldn't be sent because the sender's eMail address is invalid.
-error.mailToInvalid = Sorry, the mail couldn't be sent because the recipient's eMail address is invalid.
-error.mailCCInvalid = Sorry, the mail couldn't be sent because the eMail address of one of the recipients is invalid.
+error.mailFromInvalid = Sorry, the mail couldn't be sent because the sender's e-mail address is invalid.
+error.mailToInvalid = Sorry, the mail couldn't be sent because the recipient's e-mail address is invalid.
+error.mailCCInvalid = Sorry, the mail couldn't be sent because the e-mail address of one of the recipients is invalid.
 error.mailSubjectMissing = Sorry, the mail couldn't be sent because the subject is missing.
 error.mailTextMissing = Sorry, the mail couldn't be sent because the text is missing.
-error.mailSend = Sorry, couldn't send the eMail. Please try again or contact the site administrators.
+error.mailSend = Sorry, couldn't send the e-mail. Please try again or contact the site administrators.
 error.layoutTitleMissing = Please specify a title for the new layout.
 error.layoutCreate = Couldn't create the new layout. Please try again later.
 error.layoutDelete = Couldn't delete the layout '<% param.value1 %>'.
@@ -314,12 +314,12 @@ skin.skinmgr.edit = Skin editor|This is the form for editing a skin.
 ## story
 skin.story.searchview = Search result view|This skin defines how a story or comment will be displayed in the list of search results.
 skin.story.display = Story display|Displays the contents of a story. By default it is embedded in the skins "Preview", "Full story" and "Comment".
-skin.story.rssResource = RSS resource|The "resource" part of a story in the site's rss feed.
+skin.story.rssResource = RSS resource|The "resource" part of a story in the site's RSS feed.
 skin.story.dayheader = Day header|Used to separate between different days in a list of stories (it is shown on top of the list of stories of a single day).
 skin.story.comment = Comment page|This skin defines the page containing the form for adding a new comment.
 skin.story.mgrlistitem = Item display|Displays a single story in the "stories" section of a site.
 skin.story.edit = Story editor form|This is the form used for creating a new or editing an existing story.
-skin.story.rssItem = RSS item|This skin is used to display a story in the rss feed of a site.
+skin.story.rssItem = RSS item|This skin is used to display a story in the RSS feed of a site.
 skin.story.historyview = "recently modified" item|This skin defines how both stories and comments appear in the list of recently modified items.
 skin.story.main = Full story view|This skin is used to display a story in the way you defined it in the "display" skin plus its comments.
 skin.story.embed = Embedded story view|This skin will be used to display a story when you embed it in a skin using the macro.
@@ -339,7 +339,7 @@ skin.hopobject.delete = Delete confirmation|Displays a confirmation page wheneve
 ## global
 skin.global.nextpagelink = Link to next page|This skin displays a link to older entries. It's used in all item lists (i.e. in the story, image, file manager), in topics and for site navigation if you include it in the main page.
 skin.global.colorpicker = Color picker|Displays the small version of the color picker (without sample area).
-skin.global.rssImage = RSS image|This skin is used to render a site image item in the rss feed.
+skin.global.rssImage = RSS image|This skin is used to render a site image item in the RSS feed.
 skin.global.colorpickerExt = Color picker (extended)|Displays the extended version of the color picker (which also contains an area showing the selected colors used in an example text);
 skin.global.pagenavigationitem = Page navigation item|A single page inside the page navigation will be displayed using this skin.
 skin.global.pagenavigation = Page navigation bar|The main skin to display the page navigation bar.
@@ -420,7 +420,7 @@ skin.pollmgr.closedpoll = Closed poll|This skin is used to highlight an already 
 
 ## site
 skin.site.contribnavigation = Navigation bar for contributors|This skin contains additional navigation items for contributors and content managers of your site (i.e. links to add stories or images).
-skin.site.rss = RSS feed|The main skin used for rendering an rss feed.
+skin.site.rss = RSS feed|The main skin used for rendering an RSS feed.
 skin.site.calendarweek = Week|Displays a single week inside the calendar containing its weeks.
 skin.site.searchform = Search form|This skin is responsible for the search form of your site.
 skin.site.sysmgr_edit = Site editor|The form for editing a site in the system manager.
@@ -445,7 +445,7 @@ skin.site.referrers = Site referrers|This skin contains the list of referrers li
 skin.site.sysmgr_listitem = Site display|This skin is used to display a single site in the system manager's site list.
 skin.site.welcome = Welcome to new site|This is the basic welcome message for users who are not system administrators. This skin is used as long as a site doesn't contain any story.
 skin.site.welcomeowner = Welcome message for site owner|This skin contains some additions to the welcome message for the site owner.
-skin.site.rssItem = RSS item|This skin is used to display a site in the rss feed of an Antville installation.
+skin.site.rssItem = RSS item|This skin is used to display a site in the RSS feed of an Antville installation.
 skin.site.calendarselday = Selected day|Whenever a user views the stories of a specific day, this skin will be used to highlight the selected day.
 skin.site.page = Main page|This is the basic skin of your site. Changing this skin will affect the whole site.
 skin.site.menuext = FIXME
@@ -454,7 +454,7 @@ skin.site.adminnavigation = Navigation bar for site administrators|This skin con
 
 ## root
 skin.root.list = Site list|This skin contains the list of sites of an Antville installation.
-skin.root.rss = RSS feed|This is the main skin used to render the rss feed containing the list of recently updated sites.
+skin.root.rss = RSS feed|This is the main skin used to render the RSS feed containing the list of recently updated sites.
 skin.root.javascript = Javascript|This is the external javascript code.
 skin.root.main = Frontpage|The "body" of the frontpage of an Antville installation.
 skin.root.welcome = Welcome message|This skin contains a welcome message after successful installation of Antville (together with links to the different setup steps).

@@ -614,12 +614,12 @@ Mail.prototype.queue = function() {
  */
 function flushMailQueue() {
    if (app.data.mailQueue.length > 0) {
-      app.debug("flushing mailQueue, sending " + app.data.mailQueue.length + " eMail(s) ...");
+      app.debug("flushing mailQueue, sending " + app.data.mailQueue.length + " e-mail(s) ...");
       while (app.data.mailQueue.length) {
          var mail = app.data.mailQueue.pop();
          mail.send();
          if (mail.status > 0)
-            app.debug("Error while sending eMail, status = " + mail.status);
+            app.debug("Error while sending e-mail, status = " + mail.status);
       }
    }
    return;

@@ -16,7 +16,7 @@
 <td nowrap="nowrap"><% layout.copyright as="editor" size="25" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Contact eMail:</td>
+<td class="small" nowrap="nowrap">Contact e-mail:</td>
 <td nowrap="nowrap"><% layout.email as="editor" size="25" %></td>
 </tr>
 <tr>
