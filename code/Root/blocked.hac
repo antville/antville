@@ -1,5 +1,5 @@
-res.skin = "root.page";
-
 res.data.title = "Antville - 404 - blocked";
 
 res.data.body = "<p><b>Sorry!</b></p><p>This weblog was disabled.</p>";
+
+root.renderSkin("page");
