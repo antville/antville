@@ -68,3 +68,15 @@ function description_macro(param) {
    res.write(param.suffix);
 }
 
+/**
+ * macro renders a list of memberships of this user
+ */
+
+function membershiplist_macro(param) {
+   if (!this.size())
+      return;
+   res.write(param.prefix);
+   for (var i=0;i<this.size();i++)
+      this.get(i).renderSkin("membership");
+   res.write(param.suffix);
+}
