@@ -5,9 +5,10 @@
  */
 
 function isEditDenied(usr) {
-   if (this.author != usr && !this.weblog.isUserAdmin(usr))
-      return ("Sorry, you're not allowed to edit a posting of somebody else!");
-   else if (!this.weblog.hasDiscussions())
-      return ("Sorry, discussions were disabled for this weblog!");
+   if (this.author != usr) {
+      var membership = this.weblog.isUserMember(usr);
+      if (!membership || (membership.level & MAY_EDIT_ANYCOMMENT) == 0)
+         return ("Sorry, you're not allowed to edit a posting of somebody else!");
+   }
    return null;
 }
