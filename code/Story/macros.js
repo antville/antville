@@ -107,7 +107,7 @@ function editlink_macro(param) {
       }
       Html.openLink({href: this.href("edit")});
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : getMessage("generic.edit"));
       Html.closeLink();
@@ -128,7 +128,7 @@ function deletelink_macro(param) {
       }
       Html.openLink({href: this.href("delete")});
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : getMessage("generic.delete"));
       Html.closeLink();
@@ -154,7 +154,7 @@ function onlinelink_macro(param) {
       param.urlparam = "set=" + (this.online ? "offline" : "online");
       Html.openTag("a", this.createLinkParam(param));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else {
          // currently, only the "set online" text is customizable, since this macro
          // is by default only used in that context outside the story manager.
@@ -180,7 +180,7 @@ function viewlink_macro(param) {
       }
       Html.openLink({href: this.href()});
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : "view");
       Html.closeLink();
