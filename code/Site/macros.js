@@ -1,5 +1,5 @@
 /**
- * macro rendering title of weblog
+ * macro rendering title
  */
 function title_macro(param) {
   if (param.as == "editor")
@@ -20,7 +20,7 @@ function title_macro(param) {
 
 
 /**
- * macro rendering alias of weblog
+ * macro rendering alias
  */
 function alias_macro(param) {
   if (param.as == "editor")
@@ -31,7 +31,7 @@ function alias_macro(param) {
 
 
 /**
- * macro rendering tagline of weblog
+ * macro rendering tagline
  */
 function tagline_macro(param) {
   if (!this.tagline && param.as != "editor")
@@ -45,20 +45,7 @@ function tagline_macro(param) {
 
 
 /**
- * macro rendering birthdate of weblog
- */
-function birthdate_macro(param) {
-  if (param.as == "editor")
-    this.renderDateDropdown(this.createInputParam("birthdate",param));
-  else if (param.format)
-    res.write(this.birthdate.format(param.format));
-  else
-    res.write(this.birthdate.format("yyyy.MM.dd HH:mm"));
-}
-
-
-/**
- * macro rendering email of weblog
+ * macro rendering email
  */
 function email_macro(param) {
   if (param.as == "editor")
@@ -69,7 +56,7 @@ function email_macro(param) {
 
 
 /**
- * macro rendering bgcolor of weblog
+ * macro rendering bgcolor
  */
 function bgcolor_macro(param) {
   if (param.as == "editor")
@@ -80,7 +67,7 @@ function bgcolor_macro(param) {
 
 
 /**
- * macro rendering textfont of weblog
+ * macro rendering textfont
  */
 function textfont_macro(param) {
   if (param.as == "editor")
@@ -91,7 +78,7 @@ function textfont_macro(param) {
 
 
 /**
- * macro rendering textsize of weblog
+ * macro rendering textsize
  */
 function textsize_macro(param) {
   if (param.as == "editor")
@@ -102,7 +89,7 @@ function textsize_macro(param) {
 
 
 /**
- * macro rendering textcolor of weblog
+ * macro rendering textcolor
  */
 function textcolor_macro(param) {
   if (param.as == "editor")
@@ -113,7 +100,7 @@ function textcolor_macro(param) {
 
 
 /**
- * macro rendering linkcolor of weblog
+ * macro rendering linkcolor
  */
 function linkcolor_macro(param) {
   if (param.as == "editor")
@@ -124,7 +111,7 @@ function linkcolor_macro(param) {
 
 
 /**
- * macro rendering alinkcolor of weblog
+ * macro rendering alinkcolor
  */
 function alinkcolor_macro(param) {
   if (param.as == "editor")
@@ -135,7 +122,7 @@ function alinkcolor_macro(param) {
 
 
 /**
- * macro rendering vlinkcolor of weblog
+ * macro rendering vlinkcolor
  */
 function vlinkcolor_macro(param) {
   if (param.as == "editor")
@@ -146,7 +133,7 @@ function vlinkcolor_macro(param) {
 
 
 /**
- * macro rendering titlefont of weblog
+ * macro rendering titlefont
  */
 function titlefont_macro(param) {
   if (param.as == "editor")
@@ -157,7 +144,7 @@ function titlefont_macro(param) {
 
 
 /**
- * macro rendering titlesize of weblog
+ * macro rendering titlesize
  */
 function titlesize_macro(param) {
   if (param.as == "editor")
@@ -168,7 +155,7 @@ function titlesize_macro(param) {
 
 
 /**
- * macro rendering titlecolor of weblog
+ * macro rendering titlecolor
  */
 function titlecolor_macro(param) {
   if (param.as == "editor")
@@ -179,7 +166,7 @@ function titlecolor_macro(param) {
 
 
 /**
- * macro rendering smallfont of weblog
+ * macro rendering smallfont
  */
 function smallfont_macro(param) {
   if (param.as == "editor")
@@ -190,7 +177,7 @@ function smallfont_macro(param) {
 
 
 /**
- * macro rendering smallfont-size of weblog
+ * macro rendering smallfont-size
  */
 function smallsize_macro(param) {
   if (param.as == "editor")
@@ -201,7 +188,7 @@ function smallsize_macro(param) {
 
 
 /**
- * macro rendering smallfont-color of weblog
+ * macro rendering smallfont-color
  */
 function smallcolor_macro(param) {
   if (param.as == "editor")
@@ -212,7 +199,7 @@ function smallcolor_macro(param) {
 
 
 /**
- * macro rendering lastupdate of weblog
+ * macro rendering lastupdate
  */
 function lastupdate_macro(param) {
   if (!this.lastupdate) {
@@ -224,7 +211,7 @@ function lastupdate_macro(param) {
 
 
 /**
- * macro rendering createtime of weblog
+ * macro rendering createtime
  */
 function createtime_macro(param) {
   res.write(formatTimestamp(this.createtime,param.format));  
@@ -232,7 +219,7 @@ function createtime_macro(param) {
 
 
 /**
- * macro rendering modifytime of weblog
+ * macro rendering modifytime
  */
 function modifytime_macro(param) {
    if (this.modifytime)
@@ -242,7 +229,7 @@ function modifytime_macro(param) {
 
 
 /**
- * macro rendering online-status of weblog
+ * macro rendering online-status
  */
 function online_macro(param) {
   if (param.as == "editor")
@@ -253,7 +240,7 @@ function online_macro(param) {
 
 
 /**
- * macro renders the url to this weblog
+ * macro renders the url to this site
  */
 function url_macro(param) {
   res.write(this.href());
@@ -261,7 +248,7 @@ function url_macro(param) {
 
 
 /**
- * macro rendering discussion-flag of weblog
+ * macro rendering discussion-flag
  */
 function hasdiscussions_macro(param) {
   if (param.as == "editor")
@@ -272,7 +259,7 @@ function hasdiscussions_macro(param) {
 
 
 /**
- * macro rendering usercontrib-flag of weblog
+ * macro rendering usercontrib-flag
  */
 function usermaycontrib_macro(param) {
   if (param.as == "editor")
@@ -283,7 +270,7 @@ function usermaycontrib_macro(param) {
 
 
 /**
- * macro rendering nr. of days to show on weblog-fontpage
+ * macro rendering nr. of days to show on site-fontpage
  */
 function showdays_macro(param) {
   if (param.as == "editor")
@@ -294,7 +281,7 @@ function showdays_macro(param) {
 
 
 /**
- * macro rendering archive-flag of weblog
+ * macro rendering archive-flag
  */
 function showarchive_macro(param) {
   if (param.as == "editor")
@@ -305,7 +292,7 @@ function showarchive_macro(param) {
 
 
 /**
- * macro rendering enableping-flag of weblog
+ * macro rendering enableping-flag
  */
 function enableping_macro(param) {
   if (param.as == "editor")
@@ -316,7 +303,7 @@ function enableping_macro(param) {
 
 
 /**
- * macro rendering default longdateformat of weblog
+ * macro rendering default longdateformat
  */
 function longdateformat_macro(param) {
   if (param.as == "chooser")
@@ -329,7 +316,7 @@ function longdateformat_macro(param) {
 
 
 /**
- * macro rendering default shortdateformat of weblog
+ * macro rendering default shortdateformat
  */
 function shortdateformat_macro(param) {
   if (param.as == "chooser")
@@ -386,7 +373,7 @@ function storylist_macro(param) {
  */
 function calendar_macro(param) {
    // do nothing if there is not a single story :-))
-   // or if archive of this weblog is disabled
+   // or if archive of this site is disabled
    if (!this.size() || !this.showArchive())
       return;
    // define variables needed in this function
@@ -466,17 +453,10 @@ function calendar_macro(param) {
 
 
 /**
- * macro renders age of weblog
+ * macro renders age
  */
 function age_macro(param) {
-   if (this.birthdate) {
-      if (param && param.format)
-         res.write(this.birthdate.format(param.format));
-      else if (param && param.show.toLowerCase() == "days")
-         res.write(Math.floor((new Date() - this.birthdate) / 86400000));
-      else
-         res.write(this.birthdate);
-   }
+   res.write(Math.floor((new Date() - this.createtime) / 86400000));
 }
 
 
@@ -499,7 +479,7 @@ function thumbnail_macro(param) {
 
 
 /**
- * macro renders the number of members of this weblog
+ * macro renders the number of members of this site
  */
 function membercounter_macro(param) {
    res.write(this.members.size());
@@ -508,7 +488,7 @@ function membercounter_macro(param) {
 
 /**
  * macro renders a list of recentyl added/updated stories/comments
- * of this weblog
+ * of this site
  */
 function history_macro(param) {
    if (this.isNotPublic(session.user) && !this.isUserMember(session.user))
@@ -524,16 +504,7 @@ function history_macro(param) {
  * macro renders a list of available locales as dropdown
  */
 function localechooser_macro(param) {
-   var locs = java.util.Locale.getAvailableLocales();
-   var options = new Array();
-   // get the defined locale of this weblog for comparison
-   var loc = this.getLocale();
-   for (var i in locs) {
-      options[i] = locs[i].getDisplayName();
-      if (locs[i].equals(loc))
-         var selectedIndex = i;
-   }
-   renderDropDownBox("locale",options,selectedIndex);
+   renderLocaleChooser(this.getLocale());
 }
 
 
@@ -592,15 +563,15 @@ function listReferrers_macro() {
   var c = getDBConnection("antville");
   var dbError = c.getLasterror();
   if (dbError)
-    return("Error establishing DB connection: " + dbError);
+    return (getMsg("error","database",dbError));
   // we're doing this with direct db access here
   // (there's no need to do it with prototypes):
   var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
-  var query = "select *, count(*) as \"COUNT\" from ACCESS where WEBLOG_ID = " + this._id + " and DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by REFERRER order by \"COUNT\" desc, REFERRER asc;";
+  var query = "select *, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
   var rows = c.executeRetrieval(query);
   var dbError = c.getLasterror();
   if (dbError)
-    return("Error executing SQL query: " + dbError);
+    return (getMsg("error","database",dbError));
   var param = new Object();
   while (rows.next()) {
     param.count = rows.getColumnItem("COUNT");
@@ -609,7 +580,7 @@ function listReferrers_macro() {
     // (so i commented them out as i think hsqldb is abandoned, anyway)
     // if (param.count == 0);
     //    continue;
-    param.referrer = rows.getColumnItem("REFERRER");
+    param.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
     param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
     str += this.renderSkinAsString("referrerItem", param);
   }
