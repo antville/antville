@@ -32,7 +32,7 @@ else {
 	var max = len;
 }
 
-if (req.data.submit == "add choice")
+if (req.data.submit == "add choice" || req.data["addchoice"])
 	max++;
 
 var newPoll = new poll();
