@@ -61,6 +61,9 @@ function evalImg(param,modifier) {
          // alias has changed, but is already existing
          result.message = "This name is already in use!";
          result.error = true;
+      } else if (!isClean(param.alias)) {
+         result.message = "Please do not use special characters in the name!";
+         result.error = true;
       } else
          this.weblog.images.changeAlias(this,param.alias);
       this.alttext = param.alttext;
