@@ -144,22 +144,6 @@ function autoLogin() {
 }
 
 /**
- * function checks if user is logged in or not
- * if false, it redirects to the login-page
- * but before it stores the url to jump back (if passed as argument)
- */
-
-function checkIfLoggedIn(referrer) {
-   if (!session.user) {
-      // user is not logged in
-      if (referrer)
-         session.data.referrer = referrer;
-      res.redirect(res.handlers.site ? res.handlers.site.members.href("login") : root.members.href("login"));
-   }
-   return;
-}
-
-/**
  * function checks if the name of the requested object has a slash in it
  * if true, it tries to fetch the appropriate parent-object (either site or root)
  * and to fetch the object with the requested name in the specified collection
@@ -366,7 +350,7 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
-   return (60000);
+   return (5000);
 }
 
 
