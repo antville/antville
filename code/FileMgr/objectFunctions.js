@@ -54,8 +54,7 @@ function deleteFile(fileObj) {
    // first remove the file from disk
    var f = File.get(this._parent.getStaticPath("files"), fileObj.name);
    f.remove();
-   if (!this.remove(fileObj))
-      throw new Exception("fileDelete");
+   fileObj.remove();
    return new Message("fileDelete");
 }
 

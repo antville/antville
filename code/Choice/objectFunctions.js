@@ -11,9 +11,7 @@ function constructor(title) {
  * function removes all votes from a choice
  */
 function deleteAll() {
-   for (var i=this.size();i>0;i--) {
-      if (!this.remove(this.get(i-1)))
-         throw new Exception("voteDelete");
-   }
+   for (var i=this.size();i>0;i--)
+      this.get(i-1).remove();
    return true;
 }

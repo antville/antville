@@ -26,8 +26,7 @@ function evalNewLayout(param, creator) {
 function deleteLayout(layout) {
    layout.deleteAll();
    var title = layout.title;
-   if (!this.remove(layout))
-      throw new Exception("layoutDelete", title);
+   layout.remove();
    return new Message("layoutDelete", title);
 }
 

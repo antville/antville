@@ -39,13 +39,8 @@ function saveSkin(param, usr) {
  * @return String Message indicating success of failure
  */
 function deleteSkin(s) {
-   try {
-      this.get(s.proto).remove(s);
-      return new Message("skinDelete");
-   } catch (err) {
-      throw new Exception("skinDelete");
-   }
-   return;
+   s.remove();
+   return new Message("skinDelete");
 }
 
 /**

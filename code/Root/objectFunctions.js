@@ -1,7 +1,6 @@
 /**
  * evaluating new site
  */
-
 function evalNewSite(title, alias, creator) {
    // check alias
    if (!alias)
@@ -38,11 +37,9 @@ function evalNewSite(title, alias, creator) {
  * including stories, comments, members
  * @param Object site to remove
  */
-
 function deleteSite(site) {
    site.deleteAll();
-   if (!this.remove(site))
-      throw new Exception("siteDelete", site.alias);
+   site.remove();
    // add syslog-entry
    this.manage.syslogs.add(new syslog("site", site.alias, "removed site", session.user));
    return new Message("siteDelete", site.alias);
@@ -102,7 +99,6 @@ function searchSites (query, sid) {
  * for root. if so, it returns the specified Locale-object
  * otherwise it returns the default locale of the JVM
  */
-
 function getLocale() {
    var locale = this.cache.locale;
    if (locale)

@@ -64,21 +64,19 @@ function evalImg(param, creator) {
  * @param Obj Image-Object to delete
  * @return String Message indicating success or failure
  */
-function deleteImage(currImg) {
+function deleteImage(imgObj) {
    // first remove the image from disk (and the thumbnail, if existing)
-   var dir = currImg.site ? currImg.site.getStaticDir("images") : currImg.layout.getStaticDir();
-   var f = File.get(dir, currImg.filename + "." + currImg.fileext);
+   var dir = imgObj.site ? imgObj.site.getStaticDir("images") : imgObj.layout.getStaticDir();
+   var f = File.get(dir, imgObj.filename + "." + imgObj.fileext);
    f.remove();
-   if (currImg.thumbnail) {
-      var thumb = currImg.thumbnail;
+   if (imgObj.thumbnail) {
+      var thumb = imgObj.thumbnail;
       f = File.get(dir, thumb.filename + "." + thumb.fileext);
       f.remove();
-      if (!thumb.remove())
-         throw new Exception("imageDelete");
+      thumb.remove();
    }
    // then, remove the image-object
-   if (!currImg.remove())
-      throw new Exception("imageDelete");
+   imgObj.remove();
    return new Message("imageDelete");
 }
 

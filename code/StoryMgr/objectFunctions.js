@@ -77,8 +77,7 @@ function deleteStory(storyObj) {
    storyObj.deleteAll();
    if (storyObj.online > 0)
       this._parent.lastupdate = new Date();
-   if (!this.remove(storyObj))
-      throw new Exception("storyDelete");
+   storyObj.remove();
    return new Message("storyDelete");
 }
 

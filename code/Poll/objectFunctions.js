@@ -25,10 +25,8 @@ function evalPoll(question, choices, creator) {
       throw new Exception("pollMissingValues");
    this.question = question;
    this.modifytime = new Date();
-   for (var i=this.size(); i>0; i--) {
-      var c = this.get(i-1);
-      this.remove(c);
-   }
+   for (var i=this.size(); i>0; i--)
+      this.get(i-1).remove();
    for (var i=0;i<choices.length;i++)
       this.add(choices[i]);
    return new Message("pollCreate");
@@ -66,8 +64,7 @@ function deleteAll() {
    for (var i=this.size();i>0;i--) {
       var c = this.get(i-1);
       c.deleteAll();
-      if (!this.remove(c))
-         throw new Exception("choiceDelete");
+      c.remove();
    }
    return true;
 }

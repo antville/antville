@@ -219,8 +219,7 @@ function deleteMembership(membership) {
       throw new Error("memberDelete");
    else if (membership.level == ADMIN)
       throw new Error("adminDelete");
-   else if (!this.remove(membership))
-      throw new Error("memberDelete");
+   membership.remove();
    return new Message("memberDelete");
 }
 
@@ -229,11 +228,8 @@ function deleteMembership(membership) {
  */
 
 function deleteAll() {
-   for (var i=this.size();i>0;i--) {
-      var member = this.get(i-1);
-      if (!this.remove(member))
-         throw new Exception("siteDeleteMembers");
-   }
+   for (var i=this.size();i>0;i--)
+      this.get(i-1).remove();
    return true;
 }
 

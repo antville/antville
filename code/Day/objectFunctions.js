@@ -1,13 +1,11 @@
 /**
  * function deletes all childobjects of a day (recursive!)
  */
-
 function deleteAll() {
    for (var i=this.size();i>0;i--) {
       var story = this.get(i-1);
       story.deleteAll();
-      if (!this._parent.stories.remove(story))
-         throw new Exception("storyDelete");
+      story.remove();
    }
    return true;
 }

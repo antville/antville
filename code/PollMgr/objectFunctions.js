@@ -26,10 +26,9 @@ function evalNewPoll(question, choices, creator) {
  *                - error (boolean): true if error occured, false otherwise
  *                - message (String): an error or a confirmation message
  */
-function deletePoll(currPoll) {
-   currPoll.deleteAll();
-   if (!this.remove(currPoll))
-      throw new Exception("pollDelete");
+function deletePoll(pollObj) {
+   pollObj.deleteAll();
+   pollObj.remove();
    return new Message("pollDelete");
 }
 
