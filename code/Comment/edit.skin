@@ -1,4 +1,5 @@
-<p><form method="post" action="<% response.action %>"><span class="small">Title:<br /></span>
+<form method="post" action="<% response.action %>">
+<p><span class="small">Title:<br /></span>
 <% this.title as="editor" width="25" style="formTitle" %></p>
 <p><span class="small">Text:</span><br />
 <% this.text as="editor" width="31" height="10" style="formText" %></p>

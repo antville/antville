@@ -1,15 +1,15 @@
-<table border=0 cellspacing=0 cellpadding=2 width=680 bgcolor="#cccccc">
+<table border="0" cellspacing="0" cellpadding="2" width="680" bgcolor="#cccccc">
 <tr>
 <td><% response.display %> <% response.total %></td>
 <td align="right"><% response.pagenav %></td>
 </tr>
 </table>
 
-<table border=0 cellspacing=0 cellpadding=0 width=680>
+<table border="0" cellspacing="0" cellpadding="0" width="680">
 <% response.list %>
 </table>
 
-<table border=0 cellspacing=0 cellpadding=2 width=680 bgcolor="#cccccc">
+<table border="0" cellspacing="0" cellpadding="2" width="680" bgcolor="#cccccc">
 <tr>
 <td align="right"><% response.pagenav %></td>
 </tr>

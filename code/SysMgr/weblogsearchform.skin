@@ -1,7 +1,7 @@
+<table border="0" cellspacing="0" cellpadding="2">
 <form method="post" action="<% response.action %>">
-<table border=0 cellspacing=0 cellpadding=2>
 <tr>
-<td colspan=2 class="pageTitle" nowrap="nowrap">Weblog-Manager</td>
+<td colspan="2" class="pageTitle" nowrap="nowrap">Weblog-Manager</td>
 </tr>
 <tr>
 <td nowrap="nowrap">...&nbsp;show</td>
@@ -23,7 +23,6 @@
 <td>&nbsp;</td>
 <td><% this.input type="button" name="search" value="show weblogs" %></td>
 </tr>
-</table>
 </form>
-
-
+</table>
+<p />

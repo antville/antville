@@ -1,7 +1,7 @@
 <span class="storyTitle"><% response.command %> a poll</span>
 
-<form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
+<form method="post" action="<% response.action %>">
 <tr>
 <td nowrap="nowrap"><span class="small">Title:</span><br />
 <% this.title as="editor" width="24" style="formTitle" %></td>
@@ -17,5 +17,5 @@
 <td nowrap="nowrap"><br /><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="add choice" %>&nbsp;<% this.input type="button" value="cancel" %>
 <p class="small"><% this.info %></p></td>
 </tr>
-</table>
 </form>
+</table>

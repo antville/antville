@@ -1,10 +1,11 @@
 <table border="0" cellspacing="0" cellpadding="2">
+<form method="post" action="<% response.action %>">
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="storytitle"><% response.title %></div><br />
 <b>Generic</b></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap"><form method="post" action="<% response.action %>">Title:</td>
+<td class="small" nowrap="nowrap">Title:</td>
 <td nowrap="nowrap"><% this.title as="editor" width="30" %></td>
 </tr>
 <tr>
@@ -119,5 +120,5 @@
 <td class="small" nowrap="nowrap">&nbsp;</td>
 <td nowrap="nowrap"><br /><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
-</table>
 </form>
+</table>

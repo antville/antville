@@ -1,6 +1,7 @@
 <table border="0" cellspacing="0" cellpadding="3">
+<form method="post" action="<% response.action %>">
 <tr>
-<td nowrap="nowrap"><form method="post" action="<% response.action %>"><span class="small">Title:</span><br />
+<td nowrap="nowrap"><span class="small">Title:</span><br />
 <% this.title as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
@@ -28,5 +29,5 @@
 <tr>
 <td class="small"><% this.author as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime format="short" prefix="&nbsp;on&nbsp;"%></td>
 </tr>
-</table>
 </form>
+</table>

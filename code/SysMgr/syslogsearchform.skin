@@ -1,5 +1,5 @@
-<form method="post" action="<% response.action %>">
 <table border=0 cellspacing=0 cellpadding=2>
+<form method="post" action="<% response.action %>">
 <tr>
 <td colspan=2 class="pageTitle" nowrap="nowrap">System Log</td>
 </tr>
@@ -19,7 +19,5 @@
 <td>&nbsp;</td>
 <td><% this.input type="button" name="search" value="show log-entries" %></td>
 </tr>
-</table>
 </form>
-
-
+</table>

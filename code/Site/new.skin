@@ -1,11 +1,12 @@
 <table border="0" cellspacing="0" cellpadding="3">
+<form method="post" action="<% response.action %>">
 <tr>
 <td>To create a new weblog you need to fill out the form below. The <b>title</b> will appear in the header of every page (you can change it anytime you want), while the <b>alias</b> will be part of the URL to your weblog (i.e. if you enter "vac" as the alias, your weblog will get the URL vac.antville.org).</td>
 </tr>
 <tr>
 <td nowrap="nowrap"><table border="0" cellspacing="0" cellpadding="3">
    <tr>
-   <td nowrap="nowrap"><form method="post" action="<% response.action %>">Title:</td>
+   <td nowrap="nowrap">Title:</td>
    <td nowrap="nowrap"><% this.input type="text" name="title" %></td>
    </tr>
    <tr>
@@ -18,5 +19,5 @@
    </tr>
    </table></td>
 </tr>
-</table>
 </form>
+</table>
