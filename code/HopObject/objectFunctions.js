@@ -19,30 +19,28 @@ function getNavigationName() {
  * function that renders the input element
  */
 function createInputParam(propName, param) {
-   var inputParam = Object.clone(param);
-   inputParam.name = propName;
+   param.name = propName;
    // submitted values override property value
    // but only if there were not multiple form elements
    // with the same name submitted
    if (!req.data[propName + "_array"] && req.data[propName] != null)
-      inputParam.value = req.data[propName];
+      param.value = req.data[propName];
    else
-      inputParam.value = this[propName];
-   delete inputParam.as;
-   return (inputParam);
+      param.value = this[propName];
+   delete param.as;
+   return param;
 }
 
 /**
  * create a parameter object for checkboxes
  */
 function createCheckBoxParam(propName, param) {
-   var inputParam = Object.clone(param);
-   inputParam.name = propName;
-   inputParam.value = 1;
+   param.name = propName;
+   param.value = 1;
    if (req.data[propName] == 1 || this[propName] == 1)
-      inputParam.checked = "checked";
-   delete inputParam.as;
-   return inputParam;
+      param.checked = "checked";
+   delete param.as;
+   return param;
 }
 
 /**

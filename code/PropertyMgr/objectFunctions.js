@@ -129,27 +129,25 @@ function toString() {
  * @return Obj Parameter-Object for Input
  */
 function createInputParam(propName, param) {
-   var inputParam = Object.clone(param);
-   inputParam.name = this.__name__ + "_" + propName;
-   if (!req.data[inputParam.name + "_array"] && req.data[inputParam.name] != null)
-      inputParam.value = req.data[inputParam.name];
+   param.name = this.__name__ + "_" + propName;
+   if (!req.data[param.name + "_array"] && req.data[param.name] != null)
+      param.value = req.data[param.name];
    else
-      inputParam.value = this.getProperty(propName);
-   delete inputParam.as;
-   return inputParam;
+      param.value = this.getProperty(propName);
+   delete param.as;
+   return param;
 }
 
 /**
  * create a parameter object for checkboxes
  */
 function createCheckBoxParam(propName, param) {
-   var inputParam = Object.clone(param);
-   inputParam.name = this.__name__ + "_" + propName;
-   inputParam.value = 1;
-   if (req.data[inputParam.name] == 1 || this.getProperty(propName) == 1)
-      inputParam.checked = "checked";
-   delete inputParam.as;
-   return inputParam;
+   param.name = this.__name__ + "_" + propName;
+   param.value = 1;
+   if (req.data[param.name] == 1 || this.getProperty(propName) == 1)
+      param.checked = "checked";
+   delete param.as;
+   return param;
 }
 
 /**
