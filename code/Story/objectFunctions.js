@@ -24,6 +24,7 @@ function evalStory(param,modifier) {
          this.topic = this.weblog.topics.get(parseInt(param.topic,10) -1).groupname;
       else
          this.topic = null;
+      // if story should go offline, set lastupdate of weblog
       if ((this.online && !online) || this.online)
          this.weblog.lastupdate = new Date();
       if (isNaN(online) || (online == 1 && !this.topic))
@@ -37,6 +38,7 @@ function evalStory(param,modifier) {
             result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
          else
             result.url = this.href();
+         this.weblog.lastupdate = new Date();
       } else
          result.url = this.weblog.stories.href();
       // hmmm, the parent needs to be explicitly set
