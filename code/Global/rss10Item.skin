@@ -1,9 +1,7 @@
   <item rdf:about="<% param.itemUrl %>">
     <title><% param.itemTitle %></title> 
     <link><% param.itemUrl %></link>
-    <description>
-      <% param.itemDescription %>
-    </description>
+    <description><% param.itemDescription %></description>
     <dc:publisher>Antville Weblog Tool</dc:publisher>
     <dc:creator><% param.authorName %> (mailto:<% param.authorMail %>)</dc:creator>
     <dc:rights>Copyright &#169; <% param.year %> <% param.authorName %></dc:rights>
