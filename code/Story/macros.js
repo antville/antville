@@ -65,26 +65,32 @@ function text_macro(param) {
 }
 
 /**
- * macro rendering online-status of story
+ * macro rendering online status of story
  */
 function online_macro(param) {
-   if (param.as == "editor") {
-      var options = ["offline", "online in topic", "online in weblog"];
-      Html.dropDown({name: "online"}, options, this.online);
-   } else {
-      if (!this.online)
-         res.write("offline");
-      else if (this.online < 2) {
-         res.write("online in ");
-         if (this.topic)
-           Html.link({href: this.site.topics.get(this.topic).href()},
-                     this.topic);
-         else
-           res.write ("stories");
-      } else
-         res.write("online in weblog");
-   }
+   if (!this.online)
+      res.write(param.no ? param.no : "offline");
+   else
+      res.write(param.yes ? param.yes : "online");
+   return;
 }
+
+
+/**
+ * macro rendering the location of the story
+ */
+function location_macro(param) {
+   switch (this.online) {
+      case 1:
+         Html.link({href: this.site.topics.get(this.topic).href()}, "topic");
+         break;
+      case 2:
+         res.write("site");
+         break;
+   }
+   return;
+}
+
 
 /**
  * macro rendering createtime of story, either as editor,
@@ -361,14 +367,15 @@ function topicchooser_macro(param) {
  * macro renders the name of the topic this story belongs to
  * either as link, image (if an image entiteld by the
  * topic name is available) or plain text
- * NOTE: for backwards compatibility, the default is a link and
- * you have to set "text" explicitely (which is not so nice, imho.)
  */
 function topic_macro(param) {
-   if (!this.topic)
+   if (!this.topic || !this.online)
       return;
-   if (!param.as || param.as == "link") {
-      Html.link({href: path.site.topics.href(this.topic)}, this.topic);
+   if (!param.as || param.as == "text")
+      res.write(this.topic);
+   else if (param.as == "link") {
+      var text = param.text ? param.text : this.topic;
+      Html.link({href: path.site.topics.href(this.topic)}, text);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";
@@ -378,10 +385,9 @@ function topic_macro(param) {
       Html.openLink({href: path.site.topics.href(this.topic)});
       renderImage(img.obj, param)
       Html.closeLink();
-   } else if (param.as = "text")
-      res.write(this.topic);
+   }
+   return;
 }
-
 
 /**
  * macro returns a list of references linking to a story
