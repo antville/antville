@@ -1,35 +1,35 @@
 <style type="text/css">
 <!--
 
-body,td { background-color:#<% this.bgcolor %>;
-          font-family:<% this.textfont %>;
-          font-size:<% this.textsize %>;
-          color:#<% this.textcolor %>;
+body,td { background-color:<% weblog.bgcolor %>;
+          font-family:<% weblog.textfont %>;
+          font-size:<% weblog.textsize %>;
+          color:<% weblog.textcolor %>;
         }
 
 a { text-decoration:none; }
 
-a:link { color:#<% this.linkcolor %>; }
+a:link { color:<% weblog.linkcolor %>; }
 
-a:visited { color:#<% this.vlinkcolor %>; }
+a:visited { color:<% weblog.vlinkcolor %>; }
 
-a:active { color: #<% this.alinkcolor %>; }
+a:active { color: <% weblog.alinkcolor %>; }
 
-a:hover { background-color:#<% this.linkcolor %>;
-          color:#<% this.bgcolor %>;
+a:hover { background-color:<% weblog.linkcolor %>;
+          color:<% weblog.bgcolor %>;
         }
 
 .title { font-size:20pt;
          font-weight:bold;
          vertical-align:middle;
          background-color:transparent;
-         color: #666666;
+         color:#666666;
        }
 
 .message { font-size: 8pt;
           padding:1px;
-          color:#<% this.linkcolor %>;
-          background-color:#FFFFFF;
+          color:<% weblog.linkcolor %>;
+          background-color:<% weblog.bgcolor %>;
          }
 
 .statusdark { width:198px;
@@ -76,7 +76,7 @@ li { padding-bottom:3px;
         }
 
 .calSelDay { font-size:8pt;
-             border:1px solid #<% this.linkcolor %>;
+             border:1px solid <% weblog.linkcolor %>;
              text-align:center;
            }
 
@@ -88,8 +88,8 @@ li { padding-bottom:3px;
              color:#999999;
            }
 
-.storyTitle { font-size:<% this.titlesize %>;
-              color:#<% this.titlecolor %>;
+.storyTitle { font-size:<% weblog.titlesize %>;
+              color:<% weblog.titlecolor %>;
               font-weight: bold;
             }
 
@@ -100,7 +100,7 @@ li { padding-bottom:3px;
 .commentHead { width:50px;
                border-bottom-style:dotted;
                border-bottom-width:thin;
-               border-bottom-color:#CCCCCC;
+               border-bottom-color:CCCCCC;
                margin-bottom:2px;
                margin-top:10px;
              }
@@ -110,9 +110,9 @@ li { padding-bottom:3px;
                margin-bottom:2px;
               }
 
-.commentTitle { font-size:<% this.titlesize %>;
+.commentTitle { font-size:<% weblog.titlesize %>;
                 font-weight:bold;
-                color:#<% this.textcolor %>;
+                color:<% weblog.textcolor %>;
                 margin-bottom:2px;
               }
 
@@ -121,20 +121,20 @@ li { padding-bottom:3px;
 
 
 .formTitle { width:400px;
-             font-size:<% this.titlesize %>;
-             font-family:<% this.textfont %>;
+             font-size:<% weblog.titlesize %>;
+             font-family:<% weblog.textfont %>;
              font-weight:bold;
            }
 
 .formText { width:400px;
-            font-size:<% this.textsize %>;
-            font-family:<% this.textfont %>;
+            font-size:<% weblog.textsize %>;
+            font-family:<% weblog.textfont %>;
             font-weight:normal;
           }
 
 .formWide { width:660px;
-            font-size:<% this.textsize %>;
-            font-family:<% this.textfont %>;
+            font-size:<% weblog.textsize %>;
+            font-family:<% weblog.textfont %>;
             font-weight:normal;
           }
 
