@@ -81,7 +81,7 @@ function renderMarkupPart(name, attr) {
  */
 function renderImage(img, param) {
    if (!param.title)
-      param.title = img.alttext ? img.alttext : "";
+      param.title = img.alttext ? encode(img.alttext) : "";
    param.src = img.getStaticUrl();
    if (!param.width)
       param.width = img.width;
@@ -89,7 +89,7 @@ function renderImage(img, param) {
       param.height = img.height;
    if (!param.border)
       param.border = "0";
-   param.alt = param.description ? param.description : img.alttext;
+   param.alt = encode(param.description ? param.description : img.alttext);
    renderMarkupElement("img", param);
 }
 
