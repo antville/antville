@@ -1,78 +1,99 @@
 /**
+ * constructor function for site objects
+ * @param String Title
+ * @param String Alias
+ * @param Object Creator
+ */
+function constructor(title, alias, creator) {
+   this.title = title;
+   this.alias = alias;
+   this.creator = creator;
+   this.createtime = this.lastoffline = new Date();
+   this.email = creator.email;
+   this.online = 0;
+   this.blocked = 0;
+   this.trusted = creator.trusted;
+   this.enableping = 0;
+
+   // create initial preferences
+   var prefs = new HopObject();
+   prefs.tagline = null;
+   prefs.discussions = 1;
+   prefs.usercontrib = 0;
+   prefs.archive = 1;
+   prefs.bgcolor = "ffffff";
+   prefs.textfont = "Verdana, Helvetica, Arial, sans-serif";
+   prefs.textsize = "13px";
+   prefs.textcolor = "000000";
+   prefs.linkcolor = "ff3300";
+   prefs.alinkcolor = "ff0000";
+   prefs.vlinkcolor = "ff3300";
+   prefs.titlefont = "Verdana, Helvetica, Arial, sans-serif";
+   prefs.titlesize = "15px";
+   prefs.titlecolor = "cc0000";
+   prefs.smallfont = "Arial, Helvetica, sans-serif";
+   prefs.smallsize = "12px";
+   prefs.smallcolor = "666666";
+   prefs.days = 3;
+   // retrieve locale-object from root
+   var loc = root.getLocale();
+   prefs.language = loc.getLanguage();
+   prefs.country = loc.getCountry();
+   prefs.timezone = root.getTimeZone().getID();
+   prefs.longdateformat = "EEEE, dd. MMMM yyyy, h:mm a";
+   prefs.shortdateformat = "yyyy.MM.dd, HH:mm";
+   this.preferences_xml = Xml.writeToString(prefs);
+}
+
+/**
  * function saves new properties of site
  * @param Obj Object containing the form values
  * @param Obj User-Object modifying this site
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
+ * @throws Exception
  */
 
-function evalPreferences(param,modifier) {
-   if (!checkEmail(param.email))
-      return (getError("emailInvalid"));
+function evalPreferences(param, modifier) {
+   if (!evalEmail(param.email))
+      throw new Exception("emailInvalid");
    this.title = stripTags(param.title);
-   this.tagline = param.tagline;
    this.email = param.email;
-   this.bgcolor = param.bgcolor;
-   this.textfont = param.textfont;
-   this.textsize = param.textsize;
-   this.textcolor = param.textcolor;
-   this.linkcolor = param.linkcolor;
-   this.alinkcolor = param.alinkcolor;
-   this.vlinkcolor = param.vlinkcolor;
-   this.titlefont = param.titlefont;
-   this.titlesize = param.titlesize;
-   this.titlecolor = param.titlecolor;
-   this.smallfont = param.smallfont;
-   this.smallsize = param.smallsize;
-   this.smallcolor = param.smallcolor;
-   this.days = !isNaN(parseInt(param.days,10)) ? parseInt(param.days,10) : 3;
    if (this.online && !param.online)
       this.lastoffline = new Date();
    this.online = param.online ? 1 : 0;
-   this.discussions = param.discussions ? 1 : 0;
-   this.usercontrib = param.usercontrib ? 1 : 0;
-   this.archive = param.archive ? 1 : 0;
    this.enableping = param.enableping ? 1 : 0;
-   // store selected locale in this.language and this.country
-   var locs = java.util.Locale.getAvailableLocales();
-   var newLoc = locs[parseInt(param.locale,10)];
-   if (!newLoc)
-      newLoc = java.util.Locale.getDefault();
-   this.country = newLoc.getCountry();
-   this.language = newLoc.getLanguage();
-   // store selected timezone in this.timezone
-   var timezones = java.util.TimeZone.getAvailableIDs();
-   var newZone = timezones[parseInt(param.timezone,10)];
-   this.timezone = newZone ? newZone : null;
+
+   // store new preferences
+   var prefs = new HopObject();
+   for (var i in param) {
+      if (i.startsWith("preferences_"))
+         prefs[i.substring(12)] = param[i];
+   }
+   prefs.days = !isNaN(parseInt(param.preferences_days, 10)) ? parseInt(param.preferences_days, 10) : 3;
+   prefs.discussions = param.preferences_discussions ? 1 : 0;
+   prefs.usercontrib = param.preferences_usercontrib ? 1 : 0;
+   prefs.archive = param.preferences_archive ? 1 : 0;
+   // store selected locale
+   if (param.locale) {
+      var loc = param.locale.split("_");
+      prefs.language = loc[0];
+      prefs.country = loc.length == 2 ? loc[1] : null;
+   }
+   prefs.timezone = param.timezone;
+   prefs.longdateformat = param.longdateformat;
+   prefs.shortdateformat = param.shortdateformat;
+   // store preferences
+   this.preferences.setAll(prefs);
 
    // reset cached locale, timezone and dateSymbols
    this.cache.locale = null;
    this.cache.timezone = null;
    this.cache.dateSymbols = null;
 
-   // long dateformat
-   var ldf = LONGDATEFORMATS[parseInt(param.longdateformat,10)];
-   this.longdateformat = ldf ? ldf : null;
-
-   // short dateformat
-   var sdf = SHORTDATEFORMATS[parseInt(param.shortdateformat,10)];
-   this.shortdateformat = sdf ? sdf : null;
-
    this.modifytime = new Date();
    this.modifier = modifier;
-   return (getConfirm("update"));
+   return new Message("update");
 }
 
-
-/**
- * function creates the directory that will contain the images of this site
- */
-
-function createImgDirectory() {
-   var dir = new File(getProperty("imgPath") + this.alias + "/");
-   return (dir.mkdir());
-}
 
 /**
  * function checks if language and country were specified
@@ -84,9 +105,13 @@ function getLocale() {
    var locale = this.cache.locale;
    if (locale) 
        return locale;
-   if (this.language)
-      locale = new java.util.Locale(this.language,this.country ? this.country : "");
-   else
+   if (this.preferences.getProperty("language")) {
+      if (this.preferences.getProperty("country"))
+         locale = new java.util.Locale(this.preferences.getProperty("language"),
+                                       this.preferences.getProperty("country"));
+      else
+         locale = new java.util.Locale(this.preferences.getProperty("language"));
+   } else
       locale = root.getLocale();
    this.cache.locale =locale;
    return locale;
@@ -109,15 +134,15 @@ function getDateSymbols() {
  * according to site-preferences
  */
 function getTimeZone() {
-   var timezone = this.cache.timezone;
-   if (timezone)
-       return timezone;
-   if (this.timezone)
-       timezone = java.util.TimeZone.getTimeZone(this.timezone);
+   var tz = this.cache.timezone;
+   if (tz)
+       return tz;
+   if (this.preferences.getProperty("timezone"))
+       tz = java.util.TimeZone.getTimeZone(this.preferences.getProperty("timezone"));
    else
-       timezone = java.util.TimeZone.getDefault();
-   this.cache.timezone =timezone;
-   return timezone;
+       tz = root.getTimeZone();
+   this.cache.timezone = tz;
+   return tz;
 }
 
 
@@ -143,11 +168,11 @@ function sortMostReads(s1, s2) {
  */
 
 function deleteAll() {
-   this.members.deleteAll();
    this.images.deleteAll();
    this.files.deleteAll();
    this.skins.deleteAll();
    this.stories.deleteAll();
+   this.members.deleteAll();
    return true;
 }
 
