@@ -1,11 +1,15 @@
-if (!this.isEditMembersAllowed())
+var deny = this.isEditMembersDenied();
+if (deny) {
+   res.message = deny;
    res.redirect(user.cache.referer ? this.members.href("login") : this.href());
+}
 
-res.skin = "main";
+res.skin = "weblog.page";
 
 res.title = "Antville - " + this.title + " - list of members";
+
 res.head = this.renderSkinAsString("javascript");
 res.head += this.renderSkinAsString("style");
-res.body = this.renderSkinAsString("header");
-res.body += this.renderSkinAsString("memberlist");
+
+res.body = this.renderSkinAsString("memberlist");
 

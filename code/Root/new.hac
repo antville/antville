@@ -1,14 +1,18 @@
-if (!root.isAddAllowed())
-   res.redirect(root.href());
+var deny = root.isAddDenied();
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? root.members.href("login") : root.href());
+}
 
-res.skin = "main";
+res.skin = "root.page";
+
 res.title = "Antville - Create a new weblog";
+
 res.head = this.renderSkinAsString("style");
 
-if (req.data.submit == "cancel")
+if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(root.href());
 
 var newLog = this.evalNewWeblog();
    
-res.body = this.renderSkinAsString("header");
-res.body += newLog.renderSkinAsString("new");
+res.body = newLog.renderSkinAsString("new");
