@@ -1,4 +1,22 @@
 /**
+ * named array containing the display-names of
+ * path-objects which is used by linkedpath_macro()
+ */
+
+DISPLAY = new Array();
+DISPLAY["root"] = "Root";
+DISPLAY["site"] = "Home";
+DISPLAY["topicmgr"] = "Topics";
+DISPLAY["storymgr"] = "Stories";
+DISPLAY["filemgr"] = "Files";
+DISPLAY["imagemgr"] = "Images";
+DISPLAY["membermgr"] = "Members";
+DISPLAY["sysmgr"] = "System Management";
+DISPLAY["pollmgr"] = "Polls";
+DISPLAY["skinmgr"] = "Skins";
+DISPLAY["story"] = "Story";
+
+/**
  * check if email-adress is syntactically correct
  */
 
