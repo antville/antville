@@ -129,16 +129,20 @@ function rss_action() {
    var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
    sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
 
-   var collection;
-   switch (req.data.show) {
-      case "all" :
+   var collection, subtitle;
+   switch (true) {
+      case (req.data.show == "all") :
          collection = this.allcontent;
+         subtitle = "with comments";
          break;
-      case "day" :
+      // FIXME: i don't think a day makes much sense as rss output [tobi]
+      case (req.data.day != null) :
          collection = this.get(req.data.day);
+         subtitle = req.data.day;
          break;
-      case "topic" :
+      case (req.data.topic != null) :
          collection = this.topics.get(req.data.topic);
+         subtitle = req.data.topic;
          break;
       default :
          collection = this.allstories;
@@ -149,49 +153,52 @@ function rss_action() {
    max = Math.min(max, size);
    max = Math.min(max, 10);
 
-   var param = new Object();
+   var item = {};
    if (max > 0 && this.online) {
       var items = new java.lang.StringBuffer();
       var resources = new java.lang.StringBuffer();
       collection.prefetchChildren(0, max);
       for (var i=0; i<max; i++) {
          var story = collection.get(i);
-         param.url = story.href();
-         param.title = story.getRenderedContentPart("title").clip(50);
-         param.text = story.getRenderedContentPart("text").clip(500);
-         if (!param.title) {
+         var item = {
+            url: story.href(),
+            title: story.getRenderedContentPart("title").clip(50),
+            text: story.getRenderedContentPart("text").clip(500),
+            publisher: systitle,
+            creator: story.creator.name,
+            date: sdf.format(story.createtime),
+            subject: story.topic ? story.topic : "",
+            year: story.createtime.getFullYear()
+         };
+         if (story.creator.publishemail)
+            item.email = story.creator.email.entitize();
+         if (!item.title) {
             // shit happens: if a content part contains a markup
             // element only, String.clip() will return nothing...
-            if (!param.text)
-               param.title = "...";
+            if (!item.text)
+               item.title = "...";
             else
-               param.title = story.getRenderedContentPart("text").clip(25);
+               item.title = story.getRenderedContentPart("text").clip(25);
          }
-         param.publisher = systitle;
-         param.creator = story.creator.name;
-         param.email = "";
-         if (story.creator.publishemail)
-            param.email = story.creator.email.entitize();
-         param.date = sdf.format(story.createtime);
-         param.subject = story.topic ? story.topic : "";
-         param.year = story.createtime.getFullYear();
-         items.append(story.renderSkinAsString("rssItem", param));
-         resources.append(story.renderSkinAsString("rssResource", param));
+         items.append(story.renderSkinAsString("rssItem", item));
+         resources.append(story.renderSkinAsString("rssResource", item));
       }
 
-      param = new Object();
-      param.url = this.href();
-      param.title = systitle;
-      param.creator = this.creator.name
+      var site = {
+         subtitle: subtitle,
+         url: this.href(),
+         title: systitle,
+         creator: this.creator.name,
+         year: now.getFullYear(),
+         lastupdate: max > 0 ? sdf.format(this.lastUpdate): sdf.format(this.createtime),
+         items: items.toString(),
+         resources: resources.toString()
+      };
       if (this.email)
-         param.email = this.email.entitize();
+         site.email = this.email.entitize();
       else if (this.creator.publishemail)
-         param.email = this.creator.email.entitize();
-      param.year = now.getFullYear();
-      param.lastupdate = max > 0 ? sdf.format(this.lastUpdate): sdf.format(this.createtime);
-      param.items = items.toString();
-      param.resources = resources.toString();
-      this.renderSkin("rss", param);
+         site.email = this.creator.email.entitize();
+      this.renderSkin("rss", site);
    }
    return;
 }
