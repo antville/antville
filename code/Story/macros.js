@@ -267,8 +267,12 @@ function comments_macro(param) {
    if (this.weblog.hasDiscussions() && this.count()) {
       res.write(param.prefix);
       for (var i=0;i<this.size();i++) {
-         res.write("<a name=\"" + this.get(i)._id + "\"></a>");
-         this.get(i).renderSkin(param.useskin ? param.useskin : "toplevel");
+         var c = this.get(i);
+         res.write("<a name=\"" + c._id + "\"></a>");
+         if (c.parent)
+            c.renderSkin("reply");
+         else
+            c.renderSkin("toplevel");
       }
       res.write(param.suffix);
    }
