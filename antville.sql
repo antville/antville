@@ -83,28 +83,6 @@ create table SKIN (
 #----------------------------
 
 #----------------------------
-# Table structure for STORY
-#----------------------------
-create table STORY (
-   ID mediumint(9) not null,
-   WEBLOG_ID mediumint(9),
-   DAY varchar(10),
-   TOPIC varchar(128),
-   TITLE mediumtext,
-   TEXT mediumtext,
-   ISONLINE tinyint(1),
-   EDITABLEBY tinyint(1),
-   AUTHOR mediumint(9),
-   CREATETIME datetime,
-   MODIFYTIME datetime,
-   MODIFIER mediumint(9),
-   unique ID (ID));
-
-#----------------------------
-# No records for table STORY
-#----------------------------
-
-#----------------------------
 # Table structure for USER
 #----------------------------
 create table USER (
@@ -207,3 +185,45 @@ create table GOODIE (
 #----------------------------
 # No records for table GOODIE
 #----------------------------
+
+#----------------------------
+# Table structure for ACCESS
+#----------------------------
+
+create table ACCESS (
+   ID bigint(20) not null auto_increment,
+   WEBLOG_ID bigint(20) not null default '0',
+   REFERRER mediumtext,
+   IP mediumtext,
+   URL mediumtext,
+   PATH mediumtext,
+   `ACTION` mediumtext,
+   BROWSER mediumtext,
+   `DATE` datetime,
+   unique ID (ID)
+);
+
+#----------------------------
+# Table structure for TEXT
+#----------------------------
+
+create table TEXT (
+   ID mediumint(9) not null,
+   WEBLOG_ID mediumint(9),
+   DAY varchar(10),
+   TOPIC varchar(128),
+   PROTOTYPE varchar(20),
+   STORY_ID mediumint(9),
+   PARENT_ID mediumint(9),
+   TITLE mediumtext,
+   TEXT mediumtext,
+   ISONLINE tinyint(1),
+   EDITABLEBY tinyint(1),
+   AUTHOR mediumint(9),
+   CREATETIME datetime,
+   MODIFYTIME datetime,
+   MODIFIER mediumint(9),
+   READS bigint,
+   IPADDRESS varchar(20),
+   unique ID (ID)
+);
