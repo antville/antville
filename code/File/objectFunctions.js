@@ -16,10 +16,18 @@ function constructor(creator) {
  *             - error (boolean): false
  *             - message (String): containing a message to user
  */
-
 function evalFile(param, modifier) {
    this.description = param.description;
    this.modifier = modifier;
    this.modifytime = new Date();
    return new Message("update");
+}
+
+/**
+ * return the url of the file
+ */
+function getUrl() {
+   var buf = this.site.getStaticUrl("files/");
+   buf.append(this.name);
+   return buf.toString();
 }
