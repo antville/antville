@@ -51,8 +51,10 @@ function birthdate_macro(param) {
    renderPrefix(param);
    if (param.as == "editor")
       this.renderDateDropdown(this.createInputParam("birthdate",param));
+   else if (param.format)
+      res.write(this.birthdate.format(param.format));
    else
-      res.write(this.birthdate.format());
+      res.write(this.birthdate.format("yyyy.MM.dd HH:mm"));
    renderSuffix(param);
 }
 
@@ -274,7 +276,6 @@ function loginstatus_macro(param) {
  */
 
 function navigation_macro(param) {
-   renderPrefix(param);
    if (this.owner == user) {
       // hey, this is the admin, so give him the admin-navigation
       this.renderSkin("adminnavigation");
@@ -282,7 +283,6 @@ function navigation_macro(param) {
       // normal user, so we take the normal navigation
       this.renderSkin("usernavigation");
    }
-   renderSuffix(param);
 }
 
 
@@ -389,7 +389,7 @@ function age_macro(param) {
       renderPrefix(param);
       if (param && param.format)
          res.write(this.birthdate.format(param.format));
-      else if (param && param.show == "days")
+      else if (param && param.show.toLowerCase() == "days")
          res.write(Math.floor((new Date() - this.birthdate) / 86400000));
       else
          res.write(this.birthdate);
