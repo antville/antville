@@ -91,20 +91,19 @@ function changeAlias(currImg,newAlias) {
  */
 
 function deleteImage(currImg) {
-   // first we try to remove the image from disk (and the thumbnail, if existing)
+   // first remove the image from disk (and the thumbnail, if existing)
    var f = new File(getProperty("imgPath") + currImg.weblog.alias, currImg.filename + "." + currImg.fileext);
-   if (f.remove()) {
-      if (currImg.thumbnail) {
-         var thumb = currImg.thumbnail;
-         f = new File(getProperty("imgPath") + thumb.weblog.alias, thumb.filename + "." + thumb.fileext);
-         f.remove();
-         thumb.parent = null;
-         this.remove(thumb);
-      }
-      if (this.remove(currImg))
-         return ("The image was deleted successfully!");
-      else
-         return ("Ooops! Couldn't delete the image!");
-   } else
-      return ("Ooops! Couldn't remove the image from disk!");
+   f.remove();
+   if (currImg.thumbnail) {
+      var thumb = currImg.thumbnail;
+      f = new File(getProperty("imgPath") + thumb.weblog.alias, thumb.filename + "." + thumb.fileext);
+      f.remove();
+      thumb.parent = null;
+      this.remove(thumb);
+   }
+   // then, remove the image-object
+   if (this.remove(currImg))
+      return ("The image was deleted successfully!");
+   else
+      return ("Ooops! Couldn't delete the image!");
 }
