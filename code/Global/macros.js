@@ -64,7 +64,7 @@ function image_macro(param) {
 }
 
 
-/** 
+/**
  * DEPRECATED!
  * use image_macro() with param.as = "popup" instead
  */
@@ -156,15 +156,17 @@ function story_macro(param) {
    if (!param.id)
       return;
    var storyPath = param.id.split("/");
-   if (storyPath.length == 2)
+   if (storyPath.length == 2) {
       var site = root.get(storyPath[0]);
-   else
+      if (!site || !site.online)
+         return;
+   } else if (res.handlers.site)
       var site = res.handlers.site;
-   if (!site)
+   else
       return;
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
    if (!story)
-      return getMessage("error.storyNoExist", param.id);
+      return(getMessage("error", "storyNoExist", param.id));
    story.renderSkin(param.skin ? param.skin : "embed");
    return;
 }
@@ -188,8 +190,8 @@ function poll_macro(param) {
       return getMessage("error.pollNoExist", param.id);
    if (param.as == "link")
       Html.link(poll.href(poll.closed ? "results" : ""), poll.question);
-   else if (poll.closed || param.as == "results") 
-      poll.renderSkin("results"); 
+   else if (poll.closed || param.as == "results")
+      poll.renderSkin("results");
    else {
       res.data.action = poll.href();
       poll.renderSkin("main");
@@ -326,7 +328,7 @@ function storylist_macro(param) {
          res.write(str ? str : "...");
          Html.closeLink();
          res.write(param.itemsuffix);
-      }     
+      }
       return;
    }
 
@@ -371,7 +373,7 @@ function storylist_macro(param) {
 
 
 /**
- * a not yet sophisticated macro to display a 
+ * a not yet sophisticated macro to display a
  * colorpicker. works in site prefs and story editors
  */
 
@@ -408,7 +410,7 @@ function colorpicker_macro(param) {
 /**
  * fakemail macro <%fakemail number=%>
  * generates and renders faked email-adresses
- * param.number 
+ * param.number
  * (contributed by hr@conspirat)
  */
 
