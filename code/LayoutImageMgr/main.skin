@@ -5,5 +5,5 @@
 <% layoutimagemgr.navigation skin="navigation" %>
 
 <% response.pagenavigation %>
-<% layoutimagemgr.images %>
+<% response.imagelist %>
 <% response.pagenavigation %>

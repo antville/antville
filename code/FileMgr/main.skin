@@ -4,6 +4,6 @@
 ...&nbsp;show&nbsp;<% filemgr.link to="main" text="all files" %>&nbsp;|&nbsp;<% filemgr.link to="myfiles" text="my files" %>
 
 <% response.pagenavigation %>
-<% filemgr.files %>
+<% response.filelist %>
 <% response.pagenavigation %>
 

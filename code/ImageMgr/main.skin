@@ -4,5 +4,5 @@
 ...&nbsp;show&nbsp;<% imagemgr.link to="main" text="all images" %>&nbsp;|&nbsp;<% imagemgr.link to="myimages" text="my images" %>
 
 <% response.pagenavigation %>
-<% imagemgr.images %>
+<% response.imagelist %>
 <% response.pagenavigation %>

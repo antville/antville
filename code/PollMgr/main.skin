@@ -4,5 +4,5 @@
 ...&nbsp;show&nbsp;<% pollmgr.link to="main" text="all polls" %><% pollmgr.link to="open" text="open polls" prefix="&nbsp;|&nbsp;" %><% pollmgr.link to="mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %>
 
 <% response.pagenavigation %>
-<% pollmgr.pollList %>
+<% response.pollList %>
 <% response.pagenavigation %>

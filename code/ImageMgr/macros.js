@@ -1,14 +1,4 @@
 /**
- * macro renders res.data.imagelist to response-object
- * left for backwards-compatibility only
- */
-
-function images_macro(param) {
-   res.write(res.data.imagelist);
-   return;
-}
-
-/**
  * function renders a list of the newest n (default=5) thumbnails
  * or images
  */
