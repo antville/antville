@@ -216,7 +216,7 @@ function evalNewMembership(username, creator) {
 function deleteMembership(membership) {
    if (!membership)
       throw new Error("memberDelete");
-   else if (membership.level == 3)
+   else if (membership.level == ADMIN)
       throw new Error("adminDelete");
    else if (!this.remove(membership))
       throw new Error("memberDelete");
