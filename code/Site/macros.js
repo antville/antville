@@ -23,7 +23,10 @@ function title_macro(param) {
 
 function alias_macro(param) {
    renderPrefix(param);
-   res.write(this.alias);
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("alias",param));
+   else
+      res.write(this.alias);
    renderSuffix(param);
 }
 
