@@ -201,11 +201,29 @@ function sendpwd_action() {
 }
 
 /**
+ * action for displaying the last updated 
+ * site list of a user's subscriptions
+ */
+function updated_action() {
+   res.data.title = "Updated sites for user " + session.user.name;
+   res.data.sitelist = session.user.renderSkinAsString("sitelist");
+   res.data.body = session.user.renderSkinAsString("subscriptions");
+   res.handlers.context.renderSkin("page");
+   return;
+}
+
+/**
  * action for displaying subscriptions of a user
  */
 function subscriptions_action() {
-   res.data.title = "Subscriptions of user " + session.user.name;
-   res.data.body = session.user.renderSkinAsString("subscriptions");
-   this._parent.renderSkin("page");
+   this.renderSubscriptionView(session.user.subscriptions, "Subscriptions");
+   return;
 }
 
+/**
+ * action for displaying memberships of a user
+ */
+function memberships_action() {
+   this.renderSubscriptionView(session.user.memberships, "Memberships");
+   return;
+}
