@@ -16,13 +16,13 @@
 
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td class="header"><a href="<% this.href %>"><% site.title %></a></td>
+<td class="header"><a href="<% site.href %>" title="<% site.tagline %>"><% site.title %></a></td>
 </tr>
 </table>
 
 <table class="main">
 <tr>
-<td class="center"><% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
+<td class="center"><% response.message prefix='<div class="message">' suffix='</div><br />' %>
 <% response.body %></td>
 <td class="right">
 <div class="box">
