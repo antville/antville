@@ -19,10 +19,6 @@
 <script type="text/javascript" language="javascript">
 <!--
 <% site.skin name="javascript" %>
-
-function openColorPicker(form, element) {
-   var cpWindow = window.open("<% root.url path="colorpicker" %>?f=" + form + "&e=" + element, "cpWindow", "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=300,height=300");
-}
 // -->
 </script>
 </head>
