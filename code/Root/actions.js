@@ -56,7 +56,7 @@ function list_action() {
    // preparing res.data.sitelist and prev/next links
    // ("all" shows all sites, "yes" is for scrolling)
    this.renderSitelist(25, "all", "yes");
-   res.data.title = getMessage("SysMgr.listTitle ", {serverTitle: root.getTitle()});
+   res.data.title = getMessage("SysMgr.listTitle", {serverTitle: root.getTitle()});
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
    return;

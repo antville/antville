@@ -63,7 +63,8 @@ function reset() {
   * (re-)creates the cache if necessary
   */
 function evalCache() {
-   if (this.cache.content == null) {
+   if (this.cache.content == null ||
+       this.cache.content.__lastModified__.getTime() < this._parent.__lastModified__.getTime()) {
       var fieldName = this.getDataField();
       // cache is either outdated or not existing, so (re-)create it
       if (this._parent[fieldName] && this._parent[fieldName].trim() != "") {

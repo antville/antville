@@ -22,7 +22,7 @@ function evalNewSite(title, alias, creator) {
    // of the currently active root layout
    var initLayout = new Layout(newSite, newSite.title, creator);
    initLayout.alias = newSite.alias;
-   initLayout.setParentLayout(res.handlers.layout);
+   initLayout.setParentLayout(root.getLayout());
    if (!this.add(newSite))
       throw new Exception("siteCreate");
    newSite.layouts.add(initLayout);

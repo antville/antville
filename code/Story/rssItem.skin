@@ -1,10 +1,10 @@
-  <item rdf:about="<% param.url encoding="xml" %>">
-    <title><% param.title encoding="xml" %></title> 
-    <link><% param.url encoding="xml" %></link>
-    <% param.text prefix="<description>" suffix="</description>" encoding="xml" %>
-    <dc:publisher><% param.publisher encoding="xml" %></dc:publisher>
-    <dc:creator><% param.creator encoding="xml" %><% param.email prefix=" (mailto:" suffix=")" encoding="xml" %></dc:creator>
-    <% param.subject prefix="<dc:subject>" suffix="</dc:subject>" encoding="xml" %>
-    <dc:rights><% param.year prefix="Copyright &#169; " encoding="xml" %> <% param.creator %></dc:rights>
-    <dc:date><% param.date %></dc:date>
-  </item> 
+   <item rdf:about="<% param.url encoding="xml" %>">
+      <title><% param.title encoding="xml" %></title> 
+      <link><% param.url encoding="xml" %></link>
+      <% param.text prefix="<description>" suffix="</description>" encoding="xml" %>
+      <dc:publisher><% param.publisher encoding="xml" %></dc:publisher>
+      <dc:creator><% param.creator encoding="xml" %><% param.email prefix=" (mailto:" suffix=")" encoding="xml" %></dc:creator>
+      <% param.subject prefix="<dc:subject>" suffix="</dc:subject>" encoding="xml" %>
+      <dc:rights><% param.year prefix="Copyright &#169; " encoding="xml" %> <% param.creator encoding="xml" %></dc:rights>
+      <dc:date><% param.date encoding="xml" %></dc:date>
+   </item> 

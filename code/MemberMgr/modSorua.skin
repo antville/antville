@@ -11,13 +11,13 @@
 </head>
 
 <body>
-<h1>SORUA at antville.org</h1>
+<h1>SORUA at <% root.sys_title %></h1>
 <% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
   <td class="small" nowrap="nowrap">Username:</td>
-  <td nowrap="nowrap"><% response.user %></td>
+  <td nowrap="nowrap"><% input type="text" name="name" size="15" tabindex="1" %></td>
 </tr>
 <tr>
   <td class="small" nowrap="nowrap">Password:</td>

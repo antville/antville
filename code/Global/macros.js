@@ -236,31 +236,42 @@ function imagelist_macro(param) {
       return;
    if (!site.images.size())
       return;
-   var size = Math.min(param.limit ? param.limit : 5, site.images.size());
-   var imgcnt = 0;
+   var max = Math.min(param.limit ? param.limit : 5, site.images.size());
    var idx = 0;
-   while (imgcnt < size || imgcnt == size-1) {
+   var imgParam;
+   var linkParam = {};
+
+   while (idx < max) {
       var imgObj = site.images.get(idx++);
-      var url = param.linkto ? param.linkto : imgObj.getUrl();
+
+      imgParam = Object.clone(param);
+      delete imgParam.itemprefix;
+      delete imgParam.itemsuffix;
+      delete imgParam.as;
+      delete linkParam.href;
+      delete linkParam.onclick;
 
       res.write(param.itemprefix);
       // return different display according to param.as
-      if (param.as == "thumbnail") {
-         if (imgObj.thumbnail)
-            imgObj = imgObj.thumbnail;
-      } else if (param.as == "popup") {
-         url = imgObj.getPopupUrl();
-         if (imgObj.thumbnail)
-            imgObj = imgObj.thumbnail;
+      switch (param.as) {
+         case "url":
+            res.write(imgObj.getUrl());
+            break;
+         case "popup":
+            linkParam.onclick = imgObj.getPopupUrl();
+         case "thumbnail":
+            linkParam.href = param.linkto ? param.linkto : imgObj.getUrl();
+            if (imgObj.thumbnail)
+               imgObj = imgObj.thumbnail;
+         default:
+            if (linkParam.href) {
+               Html.openLink(linkParam);
+               renderImage(imgObj, imgParam);
+               Html.closeLink();
+            } else
+               renderImage(imgObj, imgParam);
       }
-      if (url) {
-         Html.openLink({href: url});
-         renderImage(imgObj, Object.clone(param));
-         Html.closeLink();
-      } else
-         renderImage(imgObj, Object.clone(param));
       res.write(param.itemsuffix);
-      imgcnt++;
    }
    return;
 }
