@@ -620,3 +620,13 @@ function membership_macro(param) {
    }
    res.write(param.suffix);
 }
+
+
+function listMostRead_macro() {
+	var str = "";
+	for (var i=0; i<this.mostread.size(); i++) {
+	   var s = this.mostread.get(i);
+		str += s.renderSkinAsString("mostread");
+	}
+	return(str);
+}
