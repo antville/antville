@@ -3,6 +3,8 @@
  * if true it checks if the site or the user is blocked
  */
 function onRequest() {
+   if (app.data.redirectPostRequests && path.site && req.isPost())
+      res.redirect(app.data.redirectPostRequests);
    autoLogin();
    // defining skinpath, membershipLevel
    req.data.memberlevel = null;
