@@ -18,13 +18,7 @@ function renderCalendarDay(currGroupname,text) {
          }
       }
       if (linkit) {
-         var text = "<A HREF=\"" + this.href("main") + "?show=" + currGroupname + "\">" + text + "</A>";
-         /*
-         if (!req.data.show && currGroupname == now.format("yyyyMMdd"))
-            text = "<B>" + text + "</B>";
-         else if (req.data.show && req.data.show == currGroupname)
-            text = "<B>" + text + "</B>";
-         */
+         var text = "<a href=\"" + this.href("main") + "?show=" + currGroupname + "\">" + text + "</a>";
       }
    }
    return (text);
@@ -32,24 +26,36 @@ function renderCalendarDay(currGroupname,text) {
 
 
 /**
- * function renders an image
+ * function renders image-tag
  */
 
-function renderImage(param) {
-   if (param.linkto)
-      this.openLink(param);
-   var img = this.images.get(param.name);
-   if (img) {
-      res.write("<IMG SRC=\"" + getProperty("imgUrl") + this.alias + "/" + img.filename + "." + img.fileext + "\"");
-      res.write(" WIDTH=\"" + (param.width ? param.width : img.width) + "\"");
-      res.write(" HEIGHT=\"" + (param.height ? param.height : img.height) + "\"");
-      res.write(" ALT=\"" + (param.alttext ? param.alttext : img.alttext) + "\"");
-      if (param.align)
-         res.write(" ALIGN=\"" + param.align + "\"");
-      if (param.valign)
-         res.write(" VALIGN=\"" + param.valign + "\"");
-      res.write(" BORDER=\"" + (param.border ? param.border : 0) + "\">");
-   }
-   if (param.linkto)
-      this.closeLink(param);
+function renderImage(img,param) {
+   res.write("<img src=\"" + getProperty("imgUrl") + this.alias + "/" + img.filename + "." + img.fileext + "\"");
+   res.write(" width=\"" + (param.width ? param.width : img.width) + "\"");
+   res.write(" height=\"" + (param.height ? param.height : img.height) + "\"");
+   res.write(" alt=\"" + (param.alttext ? param.alttext : img.alttext) + "\"");
+   if (param.align)
+      res.write(" align=\"" + param.align + "\"");
+   if (param.valign)
+      res.write(" valign=\"" + param.valign + "\"");
+   res.write(" border=\"" + (param.border ? param.border : 0) + "\">");
+}
+
+
+/**
+ * function checks if language and/or country was specified for this weblog
+ * if true, it renders the timestamp with the given locale
+ */
+
+function formatTimestamp(ts,param) {
+   if (param.format)
+      var fmt = param.format;
+   else
+      var fmt = "yyyy/MM/dd HH:mm";
+   if (this.language && this.country) {
+      var loc = new java.util.Locale(this.language,this.country);
+      var sdf = new java.text.SimpleDateFormat(fmt,loc);
+   } else
+      var sdf = new java.text.SimpleDateFormat(fmt);
+   res.write(sdf.format(ts));
 }
