@@ -44,6 +44,7 @@
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />
 ...&nbsp;<% root.link to="new" text="create a new weblog" %><br />
+<% root.managelink prefix="...&nbsp;" suffix="<br />" %>
 <br /><span class="statuslight">resources:<br />
 ...&nbsp;<a href="http://help.antville.org/">help</a><br />
 ...&nbsp;<a href="http://project.antville.org/">project log</a><br />
