@@ -23,7 +23,7 @@ function evalLogin(username,password) {
       if (req.data.remember) {
          // user allowed us to set permanent cookies for auto-login
          res.setCookie("avUsr",user.name,365);
-         res.setCookie("avPw",calcMD5(user.password),365);
+         res.setCookie("avPw",Packages.helma.util.MD5Encoder.encode(user.password),365);
       }
       result.message = "Welcome to Antville, " + user.name + "! Have fun!";
       result.error = false;

@@ -148,7 +148,7 @@ function autoLogin() {
    var u = getUser(name);
    if (!u)
       return;
-   if (calcMD5(u.password) != pw)
+   if (Packages.helma.util.MD5Encoder.encode(u.password) != pw)
       return;
    else {
       if (user.login(name,u.password)) {
