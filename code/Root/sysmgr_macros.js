@@ -66,7 +66,7 @@ function sys_limitNewSites_macro(param) {
       return;
    if (param.as == "editor") {
       var options = ["all registered users", "only trusted users", "---------"];
-      Html.dropDown("sys_limitNewSites", options, this.sys_limitNewSites);
+      Html.dropDown({name: "sys_limitNewSites"}, options, this.sys_limitNewSites);
    } else
       res.write(this.sys_limitNewSites);
    return;
@@ -86,7 +86,7 @@ function sys_minMemberAge_macro(param) {
          if (i < 7 || (i % 7) == 0)
             options[options.length] = i.toString();
       }
-      Html.dropDown("sys_minMemberAge", options, this.sys_minMemberAge, "----");
+      Html.dropDown({name: "sys_minMemberAge"}, options, this.sys_minMemberAge, "----");
    } else
       res.write(this.sys_minMemberAge);
    return;
@@ -126,7 +126,7 @@ function sys_waitAfterNewSite_macro(param) {
          if (i < 7 || !(i%7))
             options[i] = i;
       }
-      Html.dropDown("sys_waitAfterNewSite", options, this.sys_waitAfterNewSite, "----");
+      Html.dropDown({name: "sys_waitAfterNewSite"}, options, this.sys_waitAfterNewSite, "----");
    } else
       res.write(this.sys_waitAfterNewSite);
    return;
@@ -160,7 +160,7 @@ function sys_startAtHour_macro(param) {
       var options = new Array();
       for (var i=0;i<24;i++)
          options[i] = (i < 10 ? "0" + i : i.toString());
-      Html.dropDown("sys_startAtHour", options, this.sys_startAtHour);
+      Html.dropDown({name: "sys_startAtHour"}, options, this.sys_startAtHour);
    } else
       res.write(this.sys_startAtHour);
    return;
@@ -324,7 +324,7 @@ function sys_allowEmails_macro(param) {
      return;
   if (param.as == "editor") {
      var options = new Array("no notification e-mails", "notification for all sites", "only for trusted sites");
-     Html.dropDown("sys_allowEmails", options, this.sys_allowEmails);
+     Html.dropDown({name: "sys_allowEmails"}, options, this.sys_allowEmails);
   } else
      res.write(this.sys_allowEmails);
   return;

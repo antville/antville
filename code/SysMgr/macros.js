@@ -7,5 +7,5 @@ function dropdown_macro(param) {
       return;
    var options = param.values.split(",");
    var selectedIndex = req.data[param.name];
-   Html.dropDown(param.name,options,selectedIndex);
+   Html.dropDown({name: param.name},options,selectedIndex);
 }

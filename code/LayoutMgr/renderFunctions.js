@@ -23,6 +23,6 @@ function renderParentLayoutChooser(selLayout) {
    var selected = null;
    if (selLayout && selLayout.parent)
       selected = selLayout.parent.alias;
-   Html.dropDown("layout", options, selected, "--- choose a basis layout ---");
+   Html.dropDown({name: "layout"}, options, selected, "--- choose a basis layout ---");
    return;
 }

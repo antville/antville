@@ -99,7 +99,7 @@ function sysmgr_trusted_macro(param) {
       return;
    if (param.as == "editor") {
       var options = ["no", "yes"];
-      Html.dropDown("trusted", options, this.trusted);
+      Html.dropDown({name: "trusted"}, options, this.trusted);
    } else
       res.write(this.trusted ? "yes" : "no");
 }
@@ -114,7 +114,7 @@ function sysmgr_blocked_macro(param) {
       return;
    if (param.as == "editor") {
       var options = ["no", "yes"];
-      Html.dropDown("blocked", options, this.blocked);
+      Html.dropDown({name: "blocked"}, options, this.blocked);
    } else
       res.write(this.blocked ? "yes" : "no");
 }
@@ -129,7 +129,7 @@ function sysmgr_sysadmin_macro(param) {
       return;
    if (param.as == "editor") {
       var options = ["no", "yes"];
-      Html.dropDown("sysadmin", options, this.sysadmin);
+      Html.dropDown({name: "sysadmin"}, options, this.sysadmin);
    } else
       res.write(this.sysadmin ? "yes" : "no");
 }
