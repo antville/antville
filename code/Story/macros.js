@@ -8,13 +8,17 @@ function content_macro(param) {
    if (param.as == "editor") {
       // this is a first trial to add a title like
       // "Re: title of previous posting" to a new posting
-      if (param.part == "title" && !this.content) {
+      // (works only if autoresponse="true" is set in the macro)
+      if (param.autoresponse && param.part == "title" && !this.content) {
          if (path.comment && path.comment.title)
             param.value = "Re: " + path.comment.title;
          else if (path.story && path.story.title)
             param.value = "Re: " + path.story.title;
       } else
          param.value = this.getContentPart(param.part);
+      // if there's still no value get it from request.data if available:
+      if (!param.value && req.data[param.part])
+         param.value = req.data[param.part];
       param.name = "content_" + param.part;
       delete(param.part);
       if (!param.height || parseInt(param.height,10) == 1) {
