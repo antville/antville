@@ -3,20 +3,25 @@ res.skin = "main";
 if (req.data.name && req.data.password) {
    // check if login is successful
    if (user.login(req.data.name, req.data.password)) {
+      if (user.isBlocked()) {
+         res.message = "Sorry, your account was disabled!";
+         user.logout();
+         res.redirect(this.__parent__.href());
+      }
       // login successful
       user.lastVisit = new Date();
       res.message = "Welcome to Antville, " + user.name + "! Have fun!";
       if (!user.cache.referer) {
          if (user.weblog) {
             user.weblog.setParent(root);
-            res.redirect(user.weblog.href());
+            var redirectTo = user.weblog.href();
          } else
-            res.redirect(root.href());
+            var redirectTo = root.href();
       } else {
          var redirectTo = user.cache.referer;
          user.cache.referer = null;
-         res.redirect(redirectTo);
       }
+      res.redirect(redirectTo);
    } else
       res.message = "Login failed! Maybe a typo?";
 
