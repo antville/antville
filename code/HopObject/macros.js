@@ -42,26 +42,9 @@ function link_macro(param) {
 
 /**
  * macro renders a form-input
- * used mostly for those inputs that have no initial value
- * i.e. in register.skin
+ * DEPRECATED: just left for backwards-compatibility, use global input_macro() now
  */
 
 function input_macro(param) {
-   if (param.type == "textarea") {
-      param.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
-      return(renderInputTextarea(param));
-   } else if (param.type == "checkbox")
-      return(renderInputCheckbox(param));
-   else if (param.type == "button") {
-      param.type = "submit";
-      return(renderInputButton(param));
-   }
-   else if (param.type == "password")
-      return(renderInputPassword(param));
-   else if (param.type == "file")
-      return(renderInputFile(param));
-   else {
-      param.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
-      return(renderInputText(param));
-   }
+   input_macro(param);
 }
