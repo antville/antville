@@ -106,6 +106,14 @@ function main_js_action() {
 }
 
 /**
+ * wrapper for rss feed
+ */
+function rss_xml_action() {
+   res.redirect(root.href("rss"));
+   return;
+}
+
+/**
  * rss feed
  */
 function rss_action() {
@@ -214,6 +222,7 @@ function mostread_action() {
  * referrers of a site
  */
 function referrers_action() {
+   res.data.action = this.href("referrers");
    res.data.title = "Referrers in the last 24 hours of " + this.title;
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("page");

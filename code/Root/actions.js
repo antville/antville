@@ -71,6 +71,14 @@ function colorpicker_action() {
 
 
 /**
+ * wrapper for rss action
+ */
+function rss_xml_action() {
+   res.redirect(root.href("rss"));
+   return;
+}
+
+/**
  * rss action
  */
 function rss_action() {
@@ -158,15 +166,6 @@ function main_css_action() {
 }
 
 /**
- * wrapper for stylesheet.css action
- * DEPRECATED! left for backwards compatibility only
- */
-function stylesheet_action() {
-   this.main_css_action();
-   return;
-}
-
-/**
  * action to render external javascript
  */
 function main_js_action() {
@@ -176,14 +175,5 @@ function main_js_action() {
    res.contentType = "text/javascript";
    root.renderSkin("javascript");
    root.renderSkin("systemscripts");
-   return;
-}
-
-/**
- * wrapper for main.js action
- * DEPRECATED! left for backwards compatibility only
- */
-function javascript_action() {
-   this.main_js_action();
    return;
 }
