@@ -97,7 +97,7 @@ function create_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("skin.mgr.createCustomTitle", {layoutName: this._parent.title});
+   res.data.title = getMessage("skin.mgr.createCustomTitle", {layoutTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
    return;

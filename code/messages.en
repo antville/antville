@@ -557,7 +557,7 @@ skin.diff.displayTitle = Diffs for <% param.skinProto %>/<% param.skinName %>.sk
 skin.mgr.listTitle = Skins of <% param.layoutTitle %>
 skin.mgr.listModifiedTitle = Modified skins of <% param.layoutTitle %>
 skin.mgr.listCustomTitle = Custom skins of <% param.layoutTitle %>
-skin.mgr.createCustomTitle = Create a custom skin for <% layoutTitle %>
+skin.mgr.createCustomTitle = Create a custom skin for <% param.layoutTitle %>
 skin.deleteDescription = modifications of the skin
 skin.customSkin = custom skin
 
