@@ -2,7 +2,7 @@ use antville;
 
 alter table ACCESS change column ID ID bigint(20) not null auto_increment;
 
-insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('xmlbutton','xmlbutton','gif',36,14,'XML Version of this page');
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('xmlbutton','xmlbutton','gif',36,14,'xml version of this page');
 
 create table CHOICE (
    ID bigint(20) not null,
