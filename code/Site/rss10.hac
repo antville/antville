@@ -9,11 +9,11 @@ var param2 = new Object();
 
 var size = this.allstories.size();
 var max = req.data.max ? parseInt(req.data.max) : 7;
-max = Math.min(max, size);	
+max = Math.min(max, size, 7);
 
-if (this.online && max > 0) {
-	var resources = "";
- 	var items = "";
+if (max > 0 && this.online) {
+	param2.resources = "";
+ 	param2.items = "";
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
 		param1.itemUrl = story.href();
@@ -27,15 +27,13 @@ if (this.online && max > 0) {
 		var str = this.renderSkinAsString(skin);
 		str = this.rssConvertHtmlImageToHtmlLink(str);
 		param1.itemDescription = encodeXml(str);
-		items += renderSkinAsString("rss10Item", param1);
-		resources += renderSkinAsString("rss10Resource", param1);
+		param2.items += renderSkinAsString("rss10Item", param1);
+		param2.resources += renderSkinAsString("rss10Resource", param1);
 	}
 	param2.textinput = this.renderSkinAsString("rssTextInput", param2);
 	param2.creatorName = encodeXml(this.creator.name);
 	param2.creatorMail = encodeXml(this.creator.email);
 	param2.date = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
-	param2.resources = resources;
-	param2.items = items;
 }
 else {
 	param1.itemUrl = url;
@@ -61,7 +59,5 @@ param2.description = this.tagline ? encodeXml(this.tagline) : "";
 param2.year = now.getYear();
 param2.updateBase = this.createtime.format(w3fmt);
 param2.language = this.language;
-param2.items = renderSkinAsString("rss10Item", param1);
-param2.resources = renderSkinAsString("rss10Resource", param1);
 
 renderSkin("rss10Channel", param2);
