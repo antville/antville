@@ -29,7 +29,7 @@ function subscribelink_macro(param) {
 
 function subscriptionslink_macro(param) {
    if (session.user.size())
-      Html.link({href: this.href("subscriptions")},
+      Html.link({href: this.href("updated")},
                 param.text ? param.text : "subscriptions");
    return;
 }
