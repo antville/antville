@@ -37,6 +37,14 @@ function height_macro(param) {
 }
 
 /**
+ * macro rendering filesize
+ */
+function filesize_macro(param) {
+   res.write((this.filesize / 1024).format("###,###") + " KB");
+   return;
+}
+
+/**
  * macro renders the url to this image
  */
 function url_macro(param) {

@@ -59,6 +59,8 @@ function save(rawimage, dir, maxWidth, maxHeight) {
       app.log("Error in image.save(): can't save image to "+dir);
       throw new Exception("imageSave");
    }
+   var f = new File(dir.getPath(), this.filename + "." + this.fileext);
+   this.filesize = f.getLength();
    return;
 }
 

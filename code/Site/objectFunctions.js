@@ -323,3 +323,32 @@ function getTitle() {
    else
      return "[" + getMessage("manage.untitled") + "]";
 }
+
+
+/**
+ * function returns the used disk space for this site in Kilobyte
+ */
+function getDiskUsage() {
+   if (this.diskusage == null) {
+      this.diskusage = 0;
+      for (var i=0; i<this.files.count(); i++)
+         this.diskusage += this.files.get(i).filesize;
+      for (var i=0; i<this.images.count(); i++) {
+         if (this.images.get(i).filesize == null)
+            this.images.get(i).filesize = this.images.get(i).getFile().getLength();
+         this.diskusage += this.images.get(i).filesize;
+      }
+   }
+   return Math.round(this.diskusage / 1024);
+}
+
+
+/**
+ * function returns the disk quota in Kilobyte for this site
+ */
+function getDiskQuota() {
+   if (this.trusted || !root.sys_diskQuota) 
+      return Infinity;
+   else 
+      return root.sys_diskQuota;
+}

@@ -563,3 +563,12 @@ function spamfilter_macro(param) {
    }
    return;
 }
+
+
+/**
+ * macro returns the used disk space for this site
+ */
+function diskusage_macro(param) {
+   res.write((this.getDiskUsage() / 1024).format("###,###") + " KB");
+   return;
+}

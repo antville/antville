@@ -4,10 +4,10 @@
 
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td class="small" valign="top" nowrap="nowrap"><% user.sysmgr_count what="stories" suffix="&nbsp;stories<br />" %>
-<% user.sysmgr_count what="comments" suffix="&nbsp;comments<br />" %>
-<% user.sysmgr_count what="images" suffix="&nbsp;images<br />" %>
-<% user.sysmgr_count what="files" suffix="&nbsp;files<br />" %></td>
+<td class="small" valign="top" nowrap="nowrap"><% user.sysmgr_count what="stories" suffix="&nbsp;stories" %><% user.sysmgr_lastitems what="stories" prefix=": " %><br />
+<% user.sysmgr_count what="comments" suffix="&nbsp;comments" %><% user.sysmgr_lastitems what="comments" prefix=": " %><br />
+<% user.sysmgr_count what="images" suffix="&nbsp;images" %><% user.sysmgr_lastitems what="images" prefix=": " %><br />
+<% user.sysmgr_count what="files" suffix="&nbsp;files" %><% user.sysmgr_lastitems what="files" prefix=": " %><br /></td>
 <td><table>
    <tr>
    <td class="small">sysadmin:</td>

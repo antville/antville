@@ -16,7 +16,7 @@ function sysmgr_count_macro(param) {
       case "images" :
          return this.images.size();
       case "files" :
-         this.files.size();
+         return this.files.size();
    }
    return;
 }
@@ -139,5 +139,19 @@ function sysmgr_sysadmin_macro(param) {
       Html.dropDown({name: "sysadmin"}, options, this.sysadmin);
    } else
       res.write(this.sysadmin ? getMessage("manage.yes") : getMessage("manage.no"));
+   return;
+}
+
+
+/** 
+ * macro renders links to last items of this user
+ */
+function sysmgr_lastitems_macro(param) {
+   var max = param.max ? parseInt(param.max) : 5;
+   var coll = this[param.what];
+   var cnt = Math.min(coll.count(), max);
+   for (var i=0; i<cnt; i++) {
+      Html.link({href: coll.get(i).href()}, "#" + (coll.count()-i) + " ");
+   }
    return;
 }

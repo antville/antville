@@ -90,7 +90,7 @@ function viewlink_macro(param) {
  * macro rendering filesize
  */
 function filesize_macro(param) {
-   res.write((this.filesize / 1000).format("###,###") + " KB");
+   res.write((this.filesize / 1024).format("###,###") + " KB");
    return;
 }
 

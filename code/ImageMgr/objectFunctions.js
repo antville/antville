@@ -17,6 +17,11 @@ function evalImg(param, creator) {
       // whatever the user has uploaded wasn't recognized as an image
       throw new Exception("imageNoImage");
    }
+   var filesize = Math.round(param.rawimage.contentLength / 1024);
+   if (this._parent.getDiskUsage() + filesize > this._parent.getDiskQuota()) {
+      // disk quota has already been exceeded
+      throw new Exception("siteQuotaExceeded");
+   }
 
    var newImg = new image(creator);
    // if no alias given try to determine it
@@ -54,6 +59,7 @@ function evalImg(param, creator) {
    // send e-mail notification
    if (newImg.site && newImg.site.isNotificationEnabled())
       newImg.site.sendNotification("upload", newImg);
+   newImg.site.diskusage += newImg.filesize;
    var result = new Message("imageCreate", newImg.alias);
    result.url = newImg.href();
    return result;
@@ -75,6 +81,7 @@ function deleteImage(imgObj) {
       f.remove();
       thumb.remove();
    }
+   imgObj.site.diskusage -= imgObj.filesize;
    // then, remove the image-object
    imgObj.remove();
    return new Message("imageDelete");

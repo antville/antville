@@ -230,6 +230,8 @@ function evalSystemSetup(param, admin) {
    root.shortdateformat = param.shortdateformat ? param.shortdateformat : null;
    // allow file
    root.sys_allowFiles = param.sys_allowFiles ? true : false;
+   // disk quota
+   root.sys_diskQuota = parseInt(param.sys_diskQuota, 10);
    // limiting site-creation
    root.sys_limitNewSites = param.sys_limitNewSites ? parseInt(param.sys_limitNewSites, 10) : null;
    root.sys_minMemberAge = param.sys_minMemberAge ? parseInt(param.sys_minMemberAge, 10) : null;

@@ -9,6 +9,8 @@ function evalNewSite(title, alias, creator) {
       throw new Exception("siteAliasExisting");
    else if (!alias.isClean())
       throw new Exception("siteAliasNoSpecialChars");
+   else if (alias.length > 30)
+      throw new Exception("siteAliasTooLong");
    else if (this[alias] || this[alias + "_action"])
       throw new Exception("siteAliasReserved");
    // check if title is missing

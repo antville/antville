@@ -15,6 +15,11 @@ function evalFile(param, creator) {
       // looks like nothing was uploaded ...
       throw new Exception("fileNoUpload");
    }
+   var filesize = Math.round(param.rawfile.contentLength / 1024);
+   if (this._parent.getDiskUsage() + filesize > this._parent.getDiskQuota()) {
+      // disk quota has already been exceeded
+      throw new Exception("siteQuotaExceeded");
+   }
    var newFile = new file(creator);
    // if no alias given try to determine it
    if (!param.alias)
@@ -40,6 +45,7 @@ function evalFile(param, creator) {
    // send e-mail notification
    if (newFile.site.isNotificationEnabled())
       newFile.site.sendNotification("upload", newFile);
+   newFile.site.diskusage += newFile.filesize;
    return new Message("fileCreate", newFile.alias);
 }
 
@@ -54,6 +60,7 @@ function deleteFile(fileObj) {
    // first remove the file from disk
    var f = File.get(this._parent.getStaticPath("files"), fileObj.name);
    f.remove();
+   fileObj.site.diskusage -= fileObj.filesize;
    fileObj.remove();
    return new Message("fileDelete");
 }

@@ -47,6 +47,10 @@
 <td valign="top" nowrap="nowrap">Allow files:</td>
 <td><% root.sys_allowFiles as="editor" %><br /><span class="small">Enabling this means that users can upload files.</span></td>
 </tr>
+<tr>
+<td valign="top" nowrap="nowrap">Quota per site:</td>
+<td><% root.sys_diskQuota as="editor" %> Kb<br /><span class="small">Maximum amount of disk space, which can be used for images and files per site. This does not apply for trusted sites. If left empty, then the disk space per site is not restricted.</span></td>
+</tr>
 
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><strong>Creation of new sites</strong></td>

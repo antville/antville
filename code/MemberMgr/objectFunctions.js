@@ -37,6 +37,8 @@ function evalRegistration(param) {
    var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
    if (!param.name)
       throw new Exception("usernameMissing");
+   else if (param.name.length > 30)
+      throw new Exception("usernameTooLong");
    else if (invalidChar.exec(param.name))
       throw new Exception("usernameNoSpecialChars");
    else if (this[param.name] || this[param.name + "_action"])

@@ -60,6 +60,23 @@ function sys_allowFiles_macro(param) {
 }
 
 /**
+ * macro rendering diskquota
+ */
+
+function sys_diskQuota_macro(param) {
+   // this macro is allowed just for sysadmins
+   if (!session.user.sysadmin)
+      return;
+   if (param.as == "editor") {
+      param["type"] = "text";
+      var iParam = this.createInputParam("sys_diskQuota", param);
+      Html.input(iParam);
+   } else
+      res.write(this.sys_diskquota);
+   return;
+}
+
+/**
  * macro rendering a dropdown for limiting the creation of new sites
  */
 
