@@ -4,11 +4,11 @@
 </tr>
 <tr>
 <td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% storymgr.link to="main" text="all stories" %>&nbsp;|&nbsp;<% storymgr.link to="main" urlparam="show=offline" text="offline stories"%>&nbsp;|&nbsp;<% storymgr.link to="main" urlparam="show=mystories" text="my stories" %></td>
+<td nowrap="nowrap"><% storymgr.link to="main" text="online stories" %>&nbsp;|&nbsp;<% storymgr.link to="offline" text="offline stories"%>&nbsp;|&nbsp;<% storymgr.link to="mystories" text="my stories" %></td>
 </tr>
 </table>
 
-<% response.prevpage %>
+<% response.pagenavigation %>
 <% storymgr.storylist %>
-<% response.nextpage %>
+<% response.pagenavigation %>
 
