@@ -22,9 +22,10 @@ global.skin.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
 
 // H O P O B J E C T 
 
-hopobject.macros = skin, link, createtime
+hopobject.macros = skin, link, createtime, creator
 
-hopobject.macro.createtime = 44385
+hopobject.macro.createtime = 244877
+hopobject.macro.creator = 142525
 hopobject.macro.link = 14956
 
 hopobject.skin.delete = response.action, param.what
@@ -50,8 +51,11 @@ choice.skin.result = param.graph, param.percent, param.count, param.text, param.
 
 // C O M M E N T
 
-comment.macros = replylink, content, createtime, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+comment.macros = replylink, content, modifytime, modifier, url, editlink, deletelink, onlinelink, viewlink, comments, commentform
 
+comment.macro.content = 142506
+comment.macro.modifier = 142525
+comment.macro.modifytime = 244877
 comment.skin.edit = response.action
 
 
@@ -65,7 +69,7 @@ day.skin.main = response.prevpage, response.nextpage
 
 // F I L E
 
-file.macros = alias, description, url, editlink, deletelink, creator, createtime, filesize, mimetype, filetype, clicks
+file.macros = alias, description, url, editlink, deletelink, creator, filesize, mimetype, filetype, clicks
 
 file.skin.edit = response.action
 file.skin.new = response.action
@@ -186,10 +190,14 @@ site.skin.searchform = response.action, response.q
 
 // S T O R Y
 
-story.macros = content, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+story.macros = content, modifytime, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
 
 story.macro.backlinks = 40917
 story.macro.commentcounter = 26573
+story.macro.content = 142506
+story.macro.createtime = 44385
+story.macro.modifier = 142525
+story.macro.modifytime = 244877
 
 story.skin.backlinkItem = param.count, param.referrer, param.text
 story.skin.backlinks = param.referrers
