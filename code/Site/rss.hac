@@ -9,10 +9,10 @@ var max = req.data.max ? parseInt(req.data.max) : 7;
 max = Math.min(max, size, 7);
 
 var param = new Object();
-if (max > 0 && this.online)
+if (max > 0 && this.online) {
    var items = "";
    var resources = "";
-
+   this.allstories.prefetchChildren(0, max);
    for (var i=0; i<max; i++) {
       var story = this.allstories.get(i);
       param.url = story.href();
