@@ -1,0 +1,12 @@
+Welcome to <% root.title %>!
+
+Here's your login info:
+
+    Username: <% param.name %>
+    Password: <% param.password %>
+
+Have fun!
+
+---------------------------------------
+<% root.title %> - <% root.url %>
+---------------------------------------
