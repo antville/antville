@@ -1,25 +1,25 @@
 /**
  * constructor function for image objects
  */
-function constructor(site, creator) {
-   this.site = site;
+function constructor(creator) {
    this.creator = creator;
    this.createtime = new Date();
 }
 
-
 /**
  * save image as file on local disk
  * but before check if image should be resized
- * @param Node uploaded image
- * @return Boolean true in any case ...
+ * @param Object uploaded image
+ * @param Object File-Object representing the destination directory
+ * @param Int maximum width
+ * @param Int maximum height
  */
 function save(rawimage, dir, maxWidth, maxHeight) {
-   // determine filetype of image (one could do this also by checking the mimetype) 
-   this.fileext = this.evalImgType(rawimage.contentType);
+   // determine filetype of image (one could do this also by checking the mimetype)
+   this.fileext = evalImgType(rawimage.contentType);
    if (this.fileext == "ico") {
-      // the image is an .ico, so we directly write it to disk and return
-      rawimage.writeToFile(dir, this.filename + "." + this.fileext);
+      // the image is an .ico, so we directory write it to disk and return
+      rawimage.writeToFile(dir.getPath(), this.filename + "." + this.fileext);
       return true;
    }
    var img = new Image(rawimage.getContent());
@@ -29,21 +29,21 @@ function save(rawimage, dir, maxWidth, maxHeight) {
    var hfact = 1;
    var vfact = 1;
    if (maxWidth && this.width > maxWidth) {
-      hfact = maxWidth / this.width; 
+      hfact = maxWidth / this.width;
       resize = true;
    }
    if (maxHeight && this.height > maxHeight) {
-      vfact = maxHeight / this.height; 
+      vfact = maxHeight / this.height;
       resize = true;
    }
 
-   if (resize) { 
+   if (resize) {
       this.width = Math.ceil(this.width * (hfact < vfact ? hfact : vfact));
       this.height = Math.ceil(this.height * (hfact < vfact ? hfact : vfact));
       try {
-         img.resize(this.width, this.height); 
+         img.resize(this.width, this.height);
          if (rawimage.contentType == 'image/gif' || this.fileext == "gif")
-            img.reduceColors(256); 
+            img.reduceColors(256);
       } catch (err) {
          throw new Exception("imageResize");
       }
@@ -51,9 +51,9 @@ function save(rawimage, dir, maxWidth, maxHeight) {
    // finally we try  to save the resized image
    try {
       if (resize)
-         img.saveAs(dir + this.filename + "." + this.fileext);
+         img.saveAs(dir.getPath() + "/" + this.filename + "." + this.fileext);
       else
-         rawimage.writeToFile(dir, this.filename + "." + this.fileext);
+         rawimage.writeToFile(dir.getPath(), this.filename + "." + this.fileext);
    } catch (err) {
       app.log("Error in image.save(): can't save image to "+dir);
       throw new Exception("imageSave");
@@ -70,7 +70,6 @@ function save(rawimage, dir, maxWidth, maxHeight) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 function evalImg(param, modifier) {
    this.alttext = param.alttext;
    this.modifier = modifier;
@@ -94,35 +93,6 @@ function evalImg(param, modifier) {
 
 
 /**
- * function returns file-extension according to mimetype of raw-image
- * returns false if mimetype is unknown
- * @param String Mimetype of image
- * @return String File-Extension to use
- */
-
-function evalImgType(ct) {
-   switch (ct) {
-      case "image/jpeg" :
-         return "jpg";
-         break;
-      case "image/pjpeg" :
-         return "jpg";
-         break;
-      case "image/gif" :
-         return "gif";
-         break;
-      case "image/x-png" :
-         return "png";
-         break;
-      case "image/png" :
-         return "png";
-         break;
-      case "image/x-icon" :
-         return "ico";
-   }
-}
-
-/**
  * function creates a thumbnail of this image
  * does nothing if the image uploaded is smaller than 100x100px
  * @param uploaded image
@@ -130,7 +100,9 @@ function evalImgType(ct) {
  */
 
 function createThumbnail(rawimage, dir) {
-   var thumb = new image(res.handlers.site, this.creator);
+   var thumb = (this.site ? new image(this.creator) : new layoutimage(this.creator));
+   thumb.site = this.site;
+   thumb.layout = this.layout;
    thumb.filename = this.filename + "_small";
    thumb.save(rawimage, dir, THUMBNAILWIDTH);
    thumb.alttext = this.alttext;
@@ -141,30 +113,46 @@ function createThumbnail(rawimage, dir) {
 }
 
 /**
- * function creates the call to the client-side popup-script
+ * return the call to the client-side popup-script
  * for image-object
  * @return String call of popup-script
  */
-
-function popupUrl() {
-   var url = "javascript:openPopup('" + this.getStaticUrl();
+function getPopupUrl() {
+   var url = "javascript:openPopup('" + this.getUrl();
    url += "'," + this.width + "," + this.height + ");return false;";
    return (url);
 }
 
 
 /**
- * returns the url to the static image
+ * return the url of the image
  */
-function getStaticUrl() {
-   var url = new java.lang.StringBuffer();
-   url.append(getProperty("imgUrl", "/static/images/"));
-   if (this.site) {
-      url.append(this.site.alias);
-      url.append("/");
-   }
-   url.append(this.filename);
-   url.append(".");
-   url.append(this.fileext);
-   return url.toString();
+function getUrl() {
+   var buf = this.site.getStaticUrl("images/");
+   buf.append(this.filename);
+   buf.append(".");
+   buf.append(this.fileext);
+   return buf.toString();
+}
+
+/**
+ * dump an image to a zip file passed as argument
+ * @return Object HopObject containing the metadata of the image(s)
+ */
+function dump() {
+   var data = new HopObject();
+   if (this.thumbnail)
+      data.thumbnail = this.thumbnail.dump();
+   data.alias = this.alias;
+   data.filename = this.filename;
+   data.fileext = this.fileext;
+   data.width = this.width;
+   data.height = this.height;
+   data.alttext = this.alttext;
+   data.createtime = this.createtime;
+   data.modifytime = this.modifytime;
+   data.exporttime = new Date();
+   data.creator = this.creator ? this.creator.name : null;
+   data.modifier = this.modifier ? this.modifier.name : null;
+   return data;
 }
