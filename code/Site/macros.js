@@ -675,12 +675,17 @@ function localechooser_macro(param) {
 
 function listMostRead_macro() {
   var str = "";
-  var len = this.mostread.size();
+  var storyList = this.mostread.list();
+  storyList.sort(this.sortMostReads);
+  var len = storyList.length;
   var max = 25;
   var lim = len > max ? max : len;
+  var param = new Object();
   for (var i=0; i<lim; i++) {
-    var s = this.mostread.get(i);
-    str += s.renderSkinAsString("mostread");
+    var s = storyList[i];
+    param.reads = s.reads + s.cache.reads;
+    param.rank = i+1;
+    str += s.renderSkinAsString("mostread", param);
   }
   return(str);
 }
