@@ -195,7 +195,7 @@ function titlecolor_macro(param) {
 function lastupdate_macro(param) {
    if (this.lastupdate) {
       renderPrefix(param);
-      this.formatTimestamp(this.lastupdate,param);
+      res.write(this.formatTimestamp(this.lastupdate,param));
       renderSuffix(param);
    }
 }
@@ -206,7 +206,7 @@ function lastupdate_macro(param) {
 
 function createtime_macro(param) {
    renderPrefix(param);
-   this.formatTimestamp(this.createtime,param);
+   res.write(this.formatTimestamp(this.createtime,param));
    renderSuffix(param);
 }
 
@@ -217,7 +217,7 @@ function createtime_macro(param) {
 function modifytime_macro(param) {
    if (this.modifytime) {
       renderPrefix(param);
-      this.formatTimestamp(this.modifytime,param);
+      res.write(res.write(this.formatTimestamp(this.modifytime,param)));
       renderSuffix(param);
    }
 }
@@ -245,6 +245,32 @@ function hasdiscussions_macro(param) {
       this.renderInputCheckbox(this.createInputParam("discussions",param));
    else
       res.write(parseInt(this.discussions,10) ? "yes" : "no");
+   renderSuffix(param);
+}
+
+/**
+ * macro rendering usercontrib-flag of weblog
+ */
+
+function usermaycontrib_macro(param) {
+   renderPrefix(param);
+   if (param.as == "editor")
+      this.renderInputCheckbox(this.createInputParam("usercontrib",param));
+   else
+      res.write(parseInt(this.usercontrib,10) ? "yes" : "no");
+   renderSuffix(param);
+}
+
+/**
+ * macro rendering usersignup-flag of weblog
+ */
+
+function usermaysignup_macro(param) {
+   renderPrefix(param);
+   if (param.as == "editor")
+      this.renderInputCheckbox(this.createInputParam("usersignup",param));
+   else
+      res.write(parseInt(this.usersignup,10) ? "yes" : "no");
    renderSuffix(param);
 }
 
@@ -320,20 +346,19 @@ function loginstatus_macro(param) {
  */
 
 function navigation_macro(param) {
-   if (this.owner == user) {
-      // hey, this is the admin, so give him the admin-navigation
+   if (this.isUserAdmin())
       this.renderSkin("adminnavigation");
-   } else {
-      // normal user, so we take the normal navigation
+   else if (this.isUserContributor() || this.userMayContrib())
+      this.renderSkin("contribnavigation");
+   else
       this.renderSkin("usernavigation");
-   }
 }
 
 
 /**
  * macro rendering storylist
  * but check if story is online ...
- * if not, we only display it when owner is viewing
+ * if not, we only display it when author of story is viewer or admin
  */
 
 function storylist_macro() {
@@ -353,7 +378,7 @@ function storylist_macro() {
             for (var j=0;j<currDay.size();j++) {
                var currStory = currDay.get(j);
                currStory.setParent(currDay);
-               if (currStory.isOnline() || currStory.author == user)
+               if (currStory.isOnline() || currStory.author == user || this.isUserAdmin())
                   currStory.renderSkin("preview");
             }
          }
@@ -366,18 +391,18 @@ function storylist_macro() {
 
 /**
  * macro renders a calendar
+ * version 2
  */
 
-function calendar_macro() {
+function calendar_macro(param) {
    // define variables needed in this function
-   var now = new Date();
+   var tsParam = new HopObject();
    var calParam = new HopObject();
    calParam.calendar = "";
    var dayParam = new HopObject();
    var weekParam = new HopObject();
-   
-   // create new calendar-object
-   var cal = new java.util.GregorianCalendar();
+   // create new calendar-object and set day to first day of month
+   var cal = new java.util.GregorianCalendar(this.getLocale());
    cal.set(java.util.Calendar.DATE,1);
    if (req.data.show) {
       var reqYear = parseInt(req.data.show.substring(0,4),10);
@@ -387,42 +412,55 @@ function calendar_macro() {
          cal.set(java.util.Calendar.MONTH,reqMonth);
       }
    }
-   var lastDay = cal.getActualMaximum(java.util.Calendar.DATE);
-   var startAt = cal.get(java.util.Calendar.DAY_OF_WEEK) - cal.getFirstDayOfWeek();
-   var currMonth = cal.get(java.util.Calendar.MONTH);
-   calParam.month = cal.getTime().format("MMMM");
+   // nr. of empty days in rendered calendar before the first day of month appears
+   var pre = (7-cal.getFirstDayOfWeek()+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
+   var days = cal.getActualMaximum(java.util.Calendar.DATE);
+   var weeks = Math.ceil((pre + days) / 7);
+   var daycnt = 1;
+
+   tsParam.format = "MMMM";
+   calParam.month = this.formatTimestamp(cal.getTime(),tsParam);
+
    calParam.year = cal.getTime().format("yyyy");
+   // create link to previous month if needed
+   calParam.back = this.renderLinkToPrevMonth(cal.clone());
 
-   calParam.back = this.renderLinkToPrev(cal.clone());
+   // render header-row of calendar
+   weekParam.week = "";
+   var calHead = cal.clone();
+   // define the formatting of calendar
+   tsParam.format = "EE";
+   for (var i=0;i<7;i++) {
+      calHead.set(java.util.Calendar.DAY_OF_WEEK,cal.getFirstDayOfWeek() + i);
+      dayParam.day = this.formatTimestamp(calHead.getTime(),tsParam);
+      weekParam.week += this.renderSkinAsString("calendardayheader",dayParam);
+   }
+   calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
 
-   for (var i=0;i<Math.ceil((startAt + lastDay) / 7);i++) {
+   for (var i=0;i<weeks;i++) {
       weekParam.week = "";
       for (var j=0;j<7;j++) {
-         if(i==0 && j<startAt) {
+         dayParam.useskin = "calendarday";
+         if ((i == 0 && j < pre) || daycnt > days)
             dayParam.day = "&nbsp;";
-         } else {
-            if (cal.get(java.util.Calendar.MONTH) != currMonth) {
-               dayParam.day = "&nbsp;";
-            } else {
-               var currGroupname = cal.getTime().format("yyyyMMdd");
-               dayParam.day = this.renderCalendarDay(currGroupname,cal.get(java.util.Calendar.DATE));
-            }
-            // check which skin we should render
+         else {
+            var currGroupname = cal.getTime().format("yyyyMMdd");
+            dayParam.day = this.renderCalendarDay(currGroupname,cal.get(java.util.Calendar.DATE));
             if (req.data.show && cal.getTime().format("yyyyMMdd") == req.data.show)
                dayParam.useskin = "calendarselday";
-            else
-               dayParam.useskin = "calendarday";
-            // render the link to next month (if it makes sense)
-            if (cal.get(java.util.Calendar.DATE) == lastDay)
-               calParam.forward = this.renderLinkToNext(cal.clone());
             cal.add(java.util.Calendar.DATE,1);
+            daycnt++;
          }
+         if (cal.get(java.util.Calendar.DATE) == cal.getActualMaximum(java.util.Calendar.DATE))
+            calParam.forward = this.renderLinkToNextMonth(cal.clone());
          weekParam.week += this.renderSkinAsString((dayParam.useskin ? dayParam.useskin : "calendarday"),dayParam);
       }
       calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
    }
    this.renderSkin("calendar",calParam);
+
 }
+
 
 /**
  * macro renders age of weblog
@@ -460,4 +498,28 @@ function image_macro(param) {
          this.renderImage(this.images.get(param.name),param);
       renderSuffix(param);
    }
+}
+
+
+/**
+ * macro renders the number of members of this weblog
+ */
+
+function membercounter_macro(param) {
+   renderPrefix(param);
+   res.write(this.members.size());
+   renderSuffix(param);
+}
+
+/**
+ * macro renders the list of all members of this weblog
+ */
+
+function memberlist_macro(param) {
+   renderPrefix(param);
+   for (var i=0;i<this.members.size();i++) {
+      if (this.members.get(i).user != user)
+         this.members.get(i).renderSkin("preview");
+   }
+   renderSuffix(param);
 }
