@@ -11,7 +11,12 @@ function title_macro(param) {
       linkParam.linkto = "main";
 			linkParam.urlparam = "#"+this.__id__;
       this.story.openLink(linkParam);
-      res.write(this.title);
+      if (this.title)
+         res.write(this.title);
+      else {
+         // no title, so we show the first words of the comment-text as link
+         this.renderTextPreview(20);
+      }
       this.story.closeLink();   
    } else 
       res.write(this.title);
@@ -27,14 +32,12 @@ function text_macro(param) {
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
-     var text = createSkin(format(this.text));
-     if (!param.limit) {
-       this.renderSkin(text);
-		 } else {
-			 var text = stripTags(this.renderSkinAsString(text));
-			 var limit = (param.limit > text.length) ? text.length : param.limit;
-       res.write(text.substring(0,limit)); // stripping all HTML tags
-		 }
+      if (!param.limit)
+         this.renderSkin(createSkin(format(this.text)));
+      else {
+         this.renderTextPreview(param.limit);
+         res.write("&nbsp;...");
+      }
    }
    res.write(param.suffix);
 }
@@ -46,7 +49,7 @@ function text_macro(param) {
 
 function author_macro(param) {
    res.write(param.prefix)
-   if (this.author.url) {
+   if (param.as == "link" && this.author.url) {
       var linkParam = new HopObject();
       linkParam.to = this.author.url;
       this.openLink(linkParam);
