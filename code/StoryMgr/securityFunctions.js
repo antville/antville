@@ -12,6 +12,14 @@ function checkAccess(action, usr, level) {
             checkIfLoggedIn(this.href(req.action));
             this.checkAdd(usr, level);
             break;
+         case "offline" :
+            checkIfLoggedIn(this.href(req.action));
+            this.checkAdd(usr, level);
+            break;
+         case "mystories" :
+            checkIfLoggedIn(this.href(req.action));
+            this.checkAdd(usr, level);
+            break;
          case "create" :
             if (!usr && req.data.save)
                rescueText(req.data);
