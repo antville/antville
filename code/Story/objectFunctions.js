@@ -6,6 +6,8 @@ function evalStory() {
    if (req.data.text) {
       if (user == this.author && req.data.editableby != null && req.data.editableby != "")
          this.editableby = parseInt(req.data.editableby,10);
+      else
+         this.editableby = 2;
       this.title = req.data.title;
       this.text = req.data.text;
       this.online = parseInt(req.data.online,10);
