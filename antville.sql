@@ -84,7 +84,6 @@ create table STORY (
 #----------------------------
 create table USER (
    ID mediumint(9) not null default '0',
-   WEBLOG_ID mediumint(9),
    USERNAME tinytext,
    PASSWORD tinytext,
    EMAIL tinytext,
@@ -104,7 +103,6 @@ create table USER (
 #----------------------------
 create table WEBLOG (
    ID mediumint(9) not null default '0',
-   OWNER_ID mediumint(9),
    TITLE tinytext,
    ALIAS tinytext,
    TAGLINE tinytext,
@@ -123,6 +121,8 @@ create table WEBLOG (
    ISBLOCKED tinyint(1),
    LASTUPDATE datetime,
    HASDISCUSSIONS tinyint(1),
+   USERMAYCONTRIB tinyint(1),
+   USERMAYSIGNUP tinyint(1),
    SHOWDAYS tinyint(4),
    SHOWARCHIVE tinyint(1),
    LANGUAGE varchar2(2),
@@ -137,4 +137,22 @@ create table WEBLOG (
 # No records for table WEBLOG
 #----------------------------
 
+#----------------------------
+# Table structure for MEMBER
+#----------------------------
+create table MEMBER (
+   ID mediumint(9) not null default '0',
+   WEBLOG_ID mediumint(9),
+   USER_ID mediumint(9),
+   USERNAME tinytext,
+   ISADMIN tinyint(1),
+   ISCONTRIBUTOR tinyint(1),
+   CREATETIME datetime,
+   MODIFIER mediumint(9),
+   MODIFYTIME datetime,
+   unique ID (ID));
+
+#----------------------------
+# No records for table MEMBER
+#----------------------------
 
