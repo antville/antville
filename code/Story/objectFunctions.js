@@ -136,7 +136,8 @@ function getText() {
       // cached version of text is too old, so we cache it again
       var s = createSkin(format(activateLinks(this.text)));
       this.allowTextMacros(s);
-      this.cache.lrText = new Date();
+      if (!s.containsMacro("poll"))
+      	this.cache.lrText = new Date();
       this.cache.rText = this.renderSkinAsString(s);
    }
    return (doWikiStuff(this.cache.rText));
