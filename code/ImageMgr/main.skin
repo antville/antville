@@ -2,7 +2,7 @@
 
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><% imagemgr.link to="create" text="add an image" prefix="...&nbsp;" %></td>
+<td colspan="2" nowrap="nowrap">...&nbsp;<% imagemgr.link to="create" text="add an image" %></td>
 </tr>
 <tr>
 <td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>

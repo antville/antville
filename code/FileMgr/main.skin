@@ -2,7 +2,7 @@
 
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><% filemgr.link to="create" text="add a file" prefix="...&nbsp;" %></td>
+<td colspan="2" nowrap="nowrap">...&nbsp;<% filemgr.link to="create" text="add a file" %></td>
 </tr>
 <tr>
 <td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
