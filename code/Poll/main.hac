@@ -21,4 +21,5 @@ else if ((req.data.submit == "vote" || req.data.vote)) {
      res.redirect(this.href("results"));
 }
 
+res.data.action = this.href("main");
 res.data.body = this.renderSkinAsString("main");

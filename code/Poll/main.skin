@@ -1,7 +1,7 @@
 <p class="storyTitle"><% this.question %></p>
 
 <table border="0" cellspacing="2" cellpadding="2">
-<form method="post">
+<form method="post" action="<% response.action %>">
 
 <% this.choices %>
 
