@@ -5,9 +5,15 @@
 function now_macro(param) {
    res.write(param.prefix)
    var now = new Date();
-   if (param.format)
-      res.write(now.format(param.format));
-   else
+   if (path.weblog)
+      res.write(path.weblog.formatTimestamp(now,param));
+   else if (param.format) {
+      var sdf = new java.text.SimpleDateFormat(param.format);
+      var result = tryEval("sdf.format(now)");
+      if (result.error)
+         return ("[error: wrong date-format]");
+      return (result.value);
+   } else
       res.write(now.format("yyyy.MM.dd HH:mm"));
    res.write(param.suffix);
 }
@@ -128,6 +134,7 @@ function goodie_macro(param) {
  * Macro creates a string representing the objects in the
  * current request path, linked to their main action.
  */
+
 function linkedpath_macro (param) {
    var separator = param.separator;
    if (!separator)
