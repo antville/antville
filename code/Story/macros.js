@@ -33,10 +33,13 @@ function text_macro(param) {
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
+      var s = createSkin(format(activateLinks(this.text)));
+      // allow macros for text
+      this.allowTextMacros(s);
       if (!param.limit)
-         this.renderSkin(createSkin(format(activateLinks(this.text))));
+         this.renderSkin(s);
       else
-         this.renderTextPreview(param.limit);
+         renderTextPreview(this.renderSkinAsString(s),param.limit);
    }
    res.write(param.suffix);
 }
@@ -132,8 +135,8 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   res.write(param.prefix);
    if (!this.isEditDenied()) {
+      res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
@@ -142,8 +145,8 @@ function editlink_macro(param) {
       else
          res.write(param.text ? param.text : "edit");
       this.closeLink();
+      res.write(param.suffix);
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -152,8 +155,8 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   res.write(param.prefix);
    if (!this.isDeleteDenied()) {
+      res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
@@ -162,8 +165,8 @@ function deletelink_macro(param) {
       else
          res.write(param.text ? param.text : "delete");
       this.closeLink();
+      res.write(param.suffix);
    }
-   res.write(param.suffix);
 }
 
 
@@ -273,20 +276,18 @@ function editableby_macro(param) {
       res.write(param.prefix);
       ddParam = new HopObject();
       ddParam.name = "editableby";
-      ddParam.add(this.createDDOption("Author only",3,(this.editableby == 3 ? true : false)));
-      ddParam.add(this.createDDOption("Admins only",2,(this.editableby == 2 ? true : false)));
-      ddParam.add(this.createDDOption("Contributors and Admins",1,(this.editableby == 1 ? true : false)));
-      ddParam.add(this.createDDOption("Members, Contributors and Admins",0,(this.editableby == 0 ? true : false)));
+      // ddParam.add(this.createDDOption("Admins",2,(this.editableby == 2 ? true : false)));
+      ddParam.add(this.createDDOption("-----","",false));
+      ddParam.add(this.createDDOption("Contributors",1,(this.editableby == 1 ? true : false)));
+      ddParam.add(this.createDDOption("Members and Contributors",0,(this.editableby == 0 ? true : false)));
       this.chooser(ddParam);
       res.write(param.suffix);
    } else {
       if (this.editableby == 0)
-         res.write("Members, Contributors and Admins of " + this.weblog.title);
+         res.write("Members and Contributors of " + this.weblog.title);
       else if (this.editableby == 1)
-         res.write("Contributors and Admins of " + this.weblog.title)
-      else if (this.editableby == 2)
-         res.write("only Admins of " + this.weblog.title);
-      else if (this.editableby == 3)
-         res.write("Author only");
+         res.write("Contributors of " + this.weblog.title);
+      else
+         res.write("Admins of " + this.weblog.title);
    }
 }
