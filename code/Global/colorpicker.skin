@@ -14,7 +14,6 @@
 body {
    background-color: #ffffff;
    font-family: Verdana, Helvetica, Arial, sans-serif;
-   font-size: 13px;
    color: #000000;
 }
 
