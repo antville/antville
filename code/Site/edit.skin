@@ -35,12 +35,8 @@
 <td nowrap><% this.hasdiscussions as="editor" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>allow signup:</td>
-<td nowrap><% this.usermaysignup as="editor" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>allow contributions:</td>
-<td nowrap><% this.usermaycontrib as="editor" %></td>
+<td class="small" valign="top" nowrap>allow contributions:</td>
+<td><% this.usermaycontrib as="editor" %><br><span class="small">Enabling this option means that every registered antville-user can create stories.</span></td>
 </tr>
 <tr>
 <td class="small" nowrap>enable archive:</td>
@@ -48,7 +44,7 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap>eMail-address:</td>
-<td><% this.email as="editor" %><br><span class="small">this email-address will be used for sending confirmation mails (i.e. when a user registers or signs up)</span></td>
+<td><% this.email as="editor" %><br><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Colors</b></td>
