@@ -1,3 +1,3 @@
-...&nbsp;<% site.link to="edit" text="preferences" %><br />
 ...&nbsp;<% site.link to="members" text="members" %><br />
+...&nbsp;<% site.link to="edit" text="preferences" %><br />
 ...&nbsp;<% site.link to="skins" text="skin editor" %><br />

@@ -1,5 +1,5 @@
-...&nbsp;<% site.link to="polls" text="polls" %><br />
 ...&nbsp;<% site.link to="stories/create" text="create a story" %><br />
 ...&nbsp;<% site.link to="stories" text="stories" %><br />
 ...&nbsp;<% site.link to="images" text="images" %><br />
 ...&nbsp;<% site.link to="files" text="files" %><br />
+...&nbsp;<% site.link to="polls" text="polls" %><br />
