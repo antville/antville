@@ -19,8 +19,5 @@ res.skin = "weblog.page";
 
 res.data.title = "Antville - " + path.weblog.title;
 
-res.head = path.weblog.renderSkinAsString("javascript");
-res.head += path.weblog.renderSkinAsString("style");
-
 var newGoodie = new goodie();
 res.data.body = newGoodie.renderSkinAsString("new");
