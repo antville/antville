@@ -1,4 +1,13 @@
 /**
+ * main action simply redirects to "view" url
+ */
+function main_action() {
+   res.redirect(this.site.href("getfile") + "?name=" + this.alias);
+   return;
+}
+
+
+/**
  * edit action
  */
 function edit_action() {
