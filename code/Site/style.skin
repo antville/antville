@@ -97,7 +97,7 @@ a:active { color: #<% this.alinkcolor %>;
                 line-height: 12px;
                 font-style: italic;
                 color: #FFFFFF;
-                background-color: #666666;
+                background-color: #999999;
                 padding: 2px;
               }
 
@@ -106,7 +106,7 @@ a:active { color: #<% this.alinkcolor %>;
              line-height: 12px;
              font-style: italic;
              color: #FFFFFF;
-             background-color: #999999;
+             background-color: #CCCCCC;
              padding: 2px;
            }
 
@@ -155,22 +155,16 @@ a:active { color: #<% this.alinkcolor %>;
                 }
 
 .history { background-color: #CCCCCC;
-            border-style: solid;
-            border-color: black;
-            border-width: 1px;
-          }
+           border-style: solid;
+           border-color: black;
+           border-width: 1px;
+         }
 
-.historyStory { font-family: <% this.textfont %>;
-             font-size: <% this.textsize %>;
-             color: <% this.textcolor %>;
-             font-weight: bold;
-           }
-						
-.historyComment { font-family: <% this.textfont %>;
-             font-size: <% this.textsize %>;
-             color: <% this.textcolor %>;
-             font-weight: normal;
-           }							
+.historyItem { font-family: <% this.textfont %>;
+               font-size: <% this.textsize %>;
+               color: <% this.textcolor %>;
+               font-weight: normal;
+             }
 
 // -->
 </style>
