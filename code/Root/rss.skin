@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 
 <rdf:RDF 
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-  xmlns="http://purl.org/rss/1.0/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+   xmlns="http://purl.org/rss/1.0/"
 > 
-
-  <channel rdf:about="<% root.url encoding="xml" %>">
-    <title><% param.title encoding="xml" %> Sites</title>
-    <link><% root.url encoding="xml" %></link>
-    <description>Recently updated <% param.title %> sites ordered by date</description>
-    <dc:publisher><% param.title encoding="xml" %></dc:publisher>
-    <dc:creator><% param.title encoding="xml" %><% param.email encoding="xml" prefix=" (mailto:" suffix=")" %></dc:creator>
-    <dc:date><% param.lastupdate %></dc:date>
-    <dc:language>en</dc:language>
-    <sy:updatePeriod>hourly</sy:updatePeriod>
-    <sy:updateFrequency>1</sy:updateFrequency>
-    <sy:updateBase>2000-01-01T00:00:00Z</sy:updateBase>
-    <items>
-      <rdf:Seq>
+   <channel rdf:about="<% root.url encoding="xml" %>">
+      <title><% param.title encoding="xml" %> Sites</title>
+      <link><% root.url encoding="xml" %></link>
+      <description>Recently updated <% param.title %> sites ordered by date</description>
+      <dc:publisher><% param.title encoding="xml" %></dc:publisher>
+      <dc:creator><% param.title encoding="xml" %><% param.email encoding="xml" prefix=" (mailto:" suffix=")" %></dc:creator>
+      <dc:date><% param.lastupdate %></dc:date>
+      <dc:language>en</dc:language>
+      <sy:updatePeriod>hourly</sy:updatePeriod>
+      <sy:updateFrequency>1</sy:updateFrequency>
+      <sy:updateBase>2000-01-01T00:00:00Z</sy:updateBase>
+      <items>
+         <rdf:Seq>
 <% param.resources %>
-      </rdf:Seq>
-    </items>
-  </channel>
-
+         </rdf:Seq>
+      </items>
+   </channel>
 <% param.textinput %>
 <% param.items %>
-
 </rdf:RDF>

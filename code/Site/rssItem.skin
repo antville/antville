@@ -1,9 +1,9 @@
-  <item rdf:about="<% site.url encoding="xml" %>">
-    <title><% param.title encoding="xml" %></title> 
-    <link><% site.url encoding="xml" %></link>
-    <description><% param.date %><% site.tagline encoding="xml" %></description>
-    <dc:publisher><% param.publisher encoding="xml" %></dc:publisher>
-    <dc:creator><% param.creator encoding="xml" %><% param.email prefix=" (mailto:" suffix=")" encoding="xml" %></dc:creator>
-    <dc:rights><% param.year prefix="Copyright &#169; " encoding="xml" %> <% param.creator encoding="xml" %></dc:rights>
-    <dc:date><% param.isodate %></dc:date>
-  </item> 
+   <item rdf:about="<% site.url encoding="xml" %>">
+      <title><% param.title encoding="xml" %></title> 
+      <link><% site.url encoding="xml" %></link>
+      <description><% param.date %><% site.tagline encoding="xml" %></description>
+      <dc:publisher><% param.publisher encoding="xml" %></dc:publisher>
+      <dc:creator><% param.creator encoding="xml" %><% param.email prefix=" (mailto:" suffix=")" encoding="xml" %></dc:creator>
+      <dc:rights><% param.year prefix="Copyright &#169; " encoding="xml" %> <% param.creator encoding="xml" %></dc:rights>
+      <dc:date><% param.isodate encoding="xml" %></dc:date>
+   </item> 
