@@ -30,7 +30,7 @@ function title_macro(param) {
  */
 
 function replylink_macro(param) {
-   if (this.weblog.hasDiscussions() && !user.isBlocked() && path[path.length-1] != this) {
+   if (this.weblog.hasDiscussions() && !user.isBlocked() && req.action == "main") {
       res.write(param.prefix)
       var linkParam = new Object();
       linkParam.linkto = "comment";
