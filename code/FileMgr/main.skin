@@ -1,4 +1,7 @@
 <p>To insert a goodie in a story or comment just copy and paste its code.</p>
 <p>...&nbsp;<% this.link to="create" text="add new goodie" %></p>
+
+<% response.prevpage %>
 <% this.goodies %>
+<% response.nextpage %>
 

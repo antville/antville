@@ -1,1 +1,3 @@
+<% response.prevpage %>
 <% this.storylist %>
+<% response.nextpage %>

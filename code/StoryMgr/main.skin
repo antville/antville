@@ -8,5 +8,7 @@
 </tr>
 </table>
 
+<% response.prevpage %>
 <% this.storylist %>
+<% response.nextpage %>
 
