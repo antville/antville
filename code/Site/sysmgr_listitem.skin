@@ -1,20 +1,15 @@
+<table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="4" height="1" style="background-image: url(<% layout.image as="url" name="dot" %>);" nowrap="nowrap"><a name="<% site.alias %>"></a><% layout.image name="pixel" height="1" %></td>
+<td colspan="2"><% site.sysmgr_statusflags %></td>
 </tr>
 <tr>
-<td colspan="4" nowrap="nowrap"><% site.sysmgr_statusflags %></td>
-</tr>
-<tr>
-<td valign="top" nowrap="nowrap"><b><% site.title linkto="main" suffix="<br />" %></b>
-<% site.tagline suffix="<br />" %>
-<a href="<% site.url %>"><% site.url %></a></td>
-<td width="10" nowrap="nowrap"><% layout.image name="pixel" width="10" %></td>
-<td valign="top" class="small" nowrap="nowrap">creator:&nbsp;<% site.sysmgr_creator %><br />
-created:&nbsp;<% site.createtime format="dd.MM.yyyy HH:mm" %><br />
-last update:&nbsp;<% site.lastupdate format="dd.MM.yyyy HH:mm" %></td>
+<td width="100%" valign="top">
+<div><strong><% site.title linkto="main" %></strong></div>
+<div><% site.tagline suffix="<br />" %>
+<a href="<% site.url %>"><% site.url %></a></div>
+<div class="small">created by <% site.creator as="link" %> on <% site.createtime format="dd.MM.yyyy HH:mm" %><br />
+last update:&nbsp;<% site.lastupdate format="dd.MM.yyyy HH:mm" default="no updates so far" %></td>
 <td class="small" valign="top" align="right" nowrap="nowrap"><% site.sysmgr_editlink prefix="...&nbsp;" %><br />
 <% site.sysmgr_deletelink prefix="...&nbsp;" %></td>
 </tr>
-<tr>
-<td colspan="4" height="5" nowrap="nowrap"><% layout.image name="pixel" height="5" %></td>
-</tr>
+</table>

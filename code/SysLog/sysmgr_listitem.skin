@@ -1,15 +1,12 @@
+<table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="4" height="1" style="background-image: url(<% layout.image as="url" name="dot" %>);" nowrap="nowrap"><% layout.image name="pixel" height="1" %></td>
+<td><% syslog.sysmgr_typeflag %></td>
+<td class="small" align="right" nowrap="nowrap"><% syslog.createtime format="dd.MM.yyyy HH:mm" %></td>
 </tr>
 <tr>
-<td colspan="4" nowrap="nowrap"><% syslog.sysmgr_typeflag %></td>
+<td width="100%" nowrap="nowrap"><% syslog.sysmgr_object prefix="<b>" suffix="</b><br />" %>
+Message: <% syslog.sysmgr_logentry %><br />
+User: <% syslog.sysmgr_sysadmin %></td>
+<td class="small" valign="top" align="right" nowrap="nowrap"></td>
 </tr>
-<tr>
-<td valign="top" width="100%" nowrap="nowrap"><% syslog.sysmgr_object prefix="<b>" suffix="</b><br />" %>
-Message: <% syslog.sysmgr_logentry %></td>
-<td colspan="2" valign="top" class="small" nowrap="nowrap">by: <% syslog.sysmgr_sysadmin %><br />
-time:&nbsp;<% syslog.createtime format="dd.MM.yyyy HH:mm" %></td>
-</tr>
-<tr>
-<td colspan="4" height="5" nowrap="nowrap"><% layout.image name="pixel" height="5" %></td>
-</tr>
+</table>
