@@ -109,3 +109,26 @@ function formatLinks(str) {
    */
    return (str);
 }
+
+/**
+ * function activates URLs to HTML link tags
+ */
+function activateLinks (str) {
+   var pre = "<a href=\"";
+   var mid = "\">";
+   var post = "</a>";
+
+   var l1 = new RegExp("(^|\\s)([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?(\\s|$))");
+   l1.ignoreCase = true;
+   l1.global = true;
+   
+   // this is odd, but we have to run the regexp twice to catch URLs 
+   // which imediately follow each other. This is because the leading 
+   // and trailing whitespaces are part of the expression, and if there's only 
+   // one whitespace character between two URLs, the first match eats it up 
+   // and the second URL doesn't match.
+   str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$4");
+   str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$4");
+   return (str);
+}
+
