@@ -53,9 +53,9 @@ function createLinkParam(param) {
       param.href = this.href(url);
   }
   if (param.urlparam)
-    param.href += param.urlparam;
+    param.href += "?" + param.urlparam;
   if (param.anchor)
-    param.href += param.anchor;
+    param.href += "#" + param.anchor;
   delete param.to;
   delete param.linkto;
   delete param.urlparam;
