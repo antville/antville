@@ -72,3 +72,32 @@ function renderList(collection, action) {
    }
    return res.pop();
 }
+
+
+/**
+ * render a list of macros
+ */
+function renderMacroList(param) {
+   var macrolist = app.data.macros[param.proto]
+   var handler = "";
+   if (param.proto == "HopObject")
+      handler = "this.";
+   else if (param.proto != "Global")
+      handler = param.proto + ".";
+   for (var i in macrolist) {
+      var macro = macrolist[i];
+      res.push();
+      res.encode("<% ");
+      res.write(handler);
+      res.write(macro.name);
+      res.encode(" %>");
+      var str = res.pop();
+      res.write(param.itemprefix);
+      if (macro.storyid > 0)
+         Html.link({href: HELP.macros._url + macro.storyid}, str);
+      else
+         res.write(str);
+      res.write(param.itemsuffix);
+   }
+   return;
+}

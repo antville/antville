@@ -15,7 +15,7 @@ HELP = {
 
 // G L O B A L
 
-HELP.macros.global = {
+HELP.macros.Global = {
    colorpicker: 246684, 
    //fakemail: 0, 
    file: 15078, 
@@ -39,7 +39,7 @@ HELP.macros.global = {
    username: 246622
 };
 
-HELP.skins.global = {
+HELP.skins.Global = {
    colorpicker: ["request.text"],
    colorpickerScripts: ["request.name"],
    colorpickerWidget: ["param.editor", "param.text", "param.name", "param.color", "param.skin"],
@@ -53,7 +53,7 @@ HELP.skins.global = {
 
 // H O P O B J E C T 
 
-HELP.macros.hopobject = {
+HELP.macros.HopObject = {
    createtime: 244877,
    creator: 142525,
    href: 0,
@@ -67,14 +67,14 @@ HELP.macros.hopobject = {
    url: 142549
 };
 
-HELP.skins.hopobject = {
+HELP.skins.HopObject = {
    "delete": ["response.action", "param.description", "param.detail"]
 };
 
 
 // R O O T
 
-HELP.macros.root = {
+HELP.macros.Root = {
    //layoutchooser: 0,
    loginstatus: 0,
    sitecounter: 249998,
@@ -83,11 +83,39 @@ HELP.macros.root = {
    url: 142339
 };
 
-HELP.skins.root = {
+HELP.skins.Root = {
    rss: ["param.title", "param.email", "param.lastupdate", "param.resources", "param.textinput", "param.items"],
    list: ["response.sitelist", "response.prevpage", "response.nextpage"],
    "new": ["response.action"],
    page: ["response.title", "response.message", "response.body"]
+};
+
+
+// U S E R
+
+HELP.macros.User = {
+   email: 0,
+   name: 0,
+   password: 0,
+   publishemail: 0,
+   sitelist: 0,
+   url: 0
+   //sysmgr_count: 0, 
+   //sysmgr_statusflags: 0, 
+   //sysmgr_editlink: 0, 
+   //sysmgr_username: 0, 
+   //sysmgr_registered: 0, 
+   //sysmgr_lastvisit: 0, 
+   //sysmgr_trusted: 0, 
+   //sysmgr_blocked: 0, 
+   //sysmgr_sysadmin: 0
+};
+
+HELP.skins.User = {
+   mailbody: ["param.name, param.password"],
+   edit: ["response.action"],
+   subscription: ["response.sitelist"]
+   //sysmgr_edit: ["response.action", "request.item", "request.page"]
 };
 
 
@@ -346,25 +374,25 @@ HELP.macros.site = {
    alias: 142378,
    calendar: 142395,
    email: 142378,
-   enableping: 0, 
-   hasdiscussions: 0,
+   //enableping: 0, 
+   //hasdiscussions: 0,
    history: 142404,
    lastupdate: 244877,
-   layoutchooser: 0, 
+   //layoutchooser: 0, 
    listMostRead: 0,
    listReferrers: 0,
    localechooser: 0, 
    loginstatus: 0, 
-   longdateformat: 0, 
+   //longdateformat: 0, 
    monthlist: 142461,
    navigation: 244843, 
-   notification: 0, 
-   notify: 0, 
+   //notification: 0, 
+   //notify: 0, 
    online: 0, 
-   preferences: 0, 
-   shortdateformate: 0, 
-   showarchive: 0,
-   showdays: 0, 
+   //preferences: 0, 
+   //shortdateformat: 0, 
+   //showarchive: 0,
+   //showdays: 0, 
    spamfilter: 0, 
    //sysmgr_count: 0, 
    //sysmgr_statusflags: 0, 
@@ -372,10 +400,10 @@ HELP.macros.site = {
    //sysmgr_deletelink: 0, 
    //sysmgr_trusted: 0, 
    //sysmgr_blocked: 0, 
-   timezonechooser: 0, 
+   //timezonechooser: 0, 
    title: 247655,
    tagline: 15131,
-   usermaycontrib: 0,
+   //usermaycontrib: 0,
    xmlbutton: 15492
 };
 
@@ -505,32 +533,4 @@ HELP.skins.topic = {
 
 HELP.macros.topicmgr = {
    topiclist: 0
-};
-
-
-// U S E R
-
-HELP.macros.user = {
-   email: 0,
-   name: 0,
-   password: 0,
-   publishemail: 0,
-   sitelist: 0,
-   url: 0
-   //sysmgr_count: 0, 
-   //sysmgr_statusflags: 0, 
-   //sysmgr_editlink: 0, 
-   //sysmgr_username: 0, 
-   //sysmgr_registered: 0, 
-   //sysmgr_lastvisit: 0, 
-   //sysmgr_trusted: 0, 
-   //sysmgr_blocked: 0, 
-   //sysmgr_sysadmin: 0
-};
-
-HELP.skins.user = {
-   mailbody: ["param.name, param.password"],
-   edit: ["response.action"],
-   subscription: ["response.sitelist"]
-   //sysmgr_edit: ["response.action", "request.item", "request.page"]
 };

@@ -1,44 +1,36 @@
 /**
  * list the (most important) macros
- * available for a specific skin
+ * available for a specific skin of a
+ * prototype (except Global)
+ * @see this.globalmacros_macro
  */
 function macros_macro(param) {
+   if (param.proto == "global")
+      return;
    if (!param.proto) {
       if (!req.data.key)
          return;
+      param.key = req.data.key;
       var parts = req.data.key.split(".");
       param.proto = parts[0];
    }
-
    if (!param.itemprefix)
       param.itemprefix = "";
    if (!param.itemsuffix)
       param.itemsuffix = "<br />";
+   this.renderMacroList(param);
+   return;
+}
 
-   var renderMacroList = function(proto) {
-      var macrolist = app.data.macros[proto]
-      var handler = "";
-      if (proto != "global")
-         handler = proto + ".";
-      for (var i in macrolist) {
-         var macro = macrolist[i];
-         res.push();
-         res.encode("<% ");
-         res.write(handler);
-         res.write(macro.name);
-         res.encode(" %>");
-         var str = res.pop();
-         res.write(param.itemprefix);
-         if (macro.storyid > 0)
-            Html.link({href: HELP.macros._url + macro.storyid}, str);
-         else
-            res.write(str);
-         res.write(param.itemsuffix);
-      }
-      return;
-   }
 
-   renderMacroList(param.proto);
+/**
+ * list macros available in a global
+ * skin of a prototype
+ * @see this.macros_macro
+ */
+function globalmacros_macro(param) {
+   param.proto = "global";
+   this.macros_macro(param);
    return;
 }
 
@@ -50,13 +42,17 @@ function macros_macro(param) {
 function skinmacros_macro(param) {
    if (!req.data.key)
       return;
+   var parts = req.data.key.split(".");
+   if (!HELP.skins[parts[0]])
+      return;
+   if (!HELP.skins[parts[0]][parts[1]])
+      return;
+   var macros = HELP.skins[parts[0]][parts[1]];
+   macros.sort();
    if (!param.itemprefix)
       param.itemprefix = "";
    if (!param.itemsuffix)
       param.itemsuffix = "<br />";
-   var parts = req.data.key.split(".");
-   var macros = HELP.skins[parts[0]][parts[1]];
-   macros.sort();
    for (var i in macros) {
       res.write(param.itemprefix);
       res.encode("<% ");
