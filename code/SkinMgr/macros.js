@@ -1,17 +1,21 @@
 /**
+ * FIXME!
+ * this macro looks like it is obsolete...?
+ * (and if it's not i think it deserves a skin)
+ *
  * macro renders filebased-skins as list
  */
 
 function skins_macro(param) {
    for (var i in app.skinfiles) {
-      res.write("<b>" + i + "</b>");
+      openMarkupElement("b");
+      res.write(i);
+      closeMarkupElement("b");
       for (var j in app.skinfiles[i]) {
-         var linkparam = new Object();
-         linkparam.href = this.href() + "?proto=" + i + "&name=" + j;
          openMarkupElement("li");
-         openMarkupElement("a", linkparam);
+         openLink(this.href() + "?proto=" + i + "&name=" + j);
          res.write(j);
-         closeMarkupElement("a");
+         closeLink();
          closeMarkupElement("li");
       }
       renderMarkupElement("br");
