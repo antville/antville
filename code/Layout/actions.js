@@ -55,6 +55,10 @@ function stopTestdrive_action() {
  * action deletes this layout
  */
 function delete_action() {
+   if (this.isDefaultLayout() || this.sharedBy.size() > 0) {
+      res.message = new DenyException("layoutDelete");
+      res.redirect(this._parent.href());
+   }
    if (req.data.cancel)
       res.redirect(this._parent.href());
    else if (req.data.remove) {
@@ -77,37 +81,48 @@ function delete_action() {
 }
 
 /**
- * create a .zip file containing the whole layout (including
- * skins, images and properties)
+ * download action
  */
-function download_zip_action() {
-   if (this.parent) {
-      res.message = new DenyException("layoutExport", this.title);
-      res.redirect(this.href());
-   }
-   try {
-      // create the zip file
-      var z = new Zip();
-      // first, dump the layout and add it to the zip file
-      this.dumpToZip(z);
-      // next, loop over all images and add their metadata
-      // into the directory "imagedata" in the zip file
-      this.images.dumpToZip(z);
-      // third, add the whole directory containing the image
-      // files to the zip file
-      z.add(this.getStaticDir(), 9, "images");
-      // fourth, loop over all skins and add them to
-      // the zip archive too
-      this.skins.dumpToZip(z);
+function download_action() {
+   if (req.data.cancel)
+      res.redirect(this._parent.href());
+   else if (req.data.full)
+      res.redirect(this.href("download_full.zip"));
+   else if (req.data.changesonly)
+      res.redirect(this.href("download.zip"));
+   
+   res.data.action = this.href(req.action);
+   res.data.title = "Download layout " + this.title;
+   res.data.body = this.renderSkinAsString("download");
+   res.handlers.context.renderSkin("page");
+}
 
-      // finally, write the zip file directly to response
-      var data = z.close();
+
+/**
+ * create a Zip file containing the whole layout
+ */
+function download_full_zip_action() {
+   try {
+      var data = this.evalDownload(true);
       res.contentType = "application/zip";
       res.writeBinary(data);
    } catch (err) {
-      throw err;
-      return;
-      res.message = new Exception("layoutExport", this.title);
+      res.message = new Exception("layoutDownload");
+      res.redirect(this.href());
+   }
+   return;
+}
+
+/**
+ * create a .zip file containing layout changes only
+ */
+function download_zip_action() {
+   try {
+      var data = this.evalDownload(false);
+      res.contentType = "application/zip";
+      res.writeBinary(data);
+   } catch (err) {
+      res.message = new Exception("layoutDownload");
       res.redirect(this.href());
    }
    return;
