@@ -203,14 +203,9 @@ function smallcolor_macro(param) {
  * macro rendering lastupdate
  */
 function lastupdate_macro(param) {
-   if (!this.lastupdate) {
-      res.write("no updates so far");
-   }
-   else {
-      res.write("last update on&nbsp;");
-      res.write(formatTimestamp(this.lastupdate,param.format));
-   }
-   return;
+   if (!this.lastupdate)
+      return;
+   return (formatTimestamp(this.lastupdate,param.format));
 }
 
 
