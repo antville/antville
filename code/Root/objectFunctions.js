@@ -100,13 +100,17 @@ function deleteSite(site) {
  * @return The result array
  */
 function searchSites (query, sid) {
-   // reuse search result container if it already exists
-   var result = result = new Array();
+   // result array
+   var result = new Array();
 
    // break up search string
-   var unquote = new RegExp("\'");
+   var unquote = new RegExp("\\\\");
    unquote.global = true;
-   var qarr = query.replace(unquote, "''").split(" ");
+   query = query.replace(unquote, "\\\\");
+   unquote = new RegExp("\'");
+   unquote.global = true;
+   query = query.replace(unquote, "\'\'");
+   var qarr = query.split(" ");
 
    // construct query
    var where = "select AV_TEXT.TEXT_ID, AV_SITE.SITE_ALIAS from AV_TEXT, AV_SITE where "+
@@ -178,4 +182,12 @@ function getSysUrl() {
    if (!root.sys_url)
       return ("http://www.antville.org");
    return (root.sys_url);
+}
+
+/**
+ *  href URL postprocessor. If a virtual host mapping is defined
+ *  for this site's alias, use it. Otherwise, use normal site URL.
+ */
+function processHref(href) {
+   return getProperty("defaulthost")+href;
 }
