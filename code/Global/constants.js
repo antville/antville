@@ -117,3 +117,128 @@ THUMBNAILHEIGHT = 100;
 ONEMINUTE = 60000;
 ONEHOUR = 3600000;
 ONEDAY = 86400000;
+
+/**
+ * constant containing the metadata of
+ * standard antville images plus the method
+ * for rendering them
+ */
+DEFAULTIMAGES = {
+   smallanim: {name: "smallanim.gif", width: 98, height: 30, alt: "made with antville", linkto: "http://antville.org"},
+   smallchaos: {name: "smallchaos.gif", width: 107, height: 29, alt: "made with antville", linkto: "http://antville.org"},
+   smallstraight: {name: "smallstraight.gif", width: 107, height: 24, alt: "made with antville", linkto: "http://antville.org"},
+   smalltrans: {name: "smalltrans.gif", width: 98, height: 30, alt: "made with antville", linkto: "http://antville.org"},
+   xmlbutton: {name: "xmlbutton.gif", width: 36, height: 14, alt: "xml version of this page", linkto: "http://antville.org"},
+   hop: {name: "hop.gif", width: 124, height: 25, alt: "helma object publisher", linkto: "http://helma.org"},
+   marquee: {name: "marquee.gif", width: 15, height: 15, alt: "marquee"},
+   pixel: {name: "pixel.gif", width: 1, height: 1, alt: ""},
+
+   /**
+    * render a standard image
+    */
+   render: function(name, param) {
+      if (!this[name])
+         return;
+      param.src = app.properties.staticUrl + this[name].name;
+      if (param.as == "url") {
+         res.write(param.src);
+         return;
+      }
+      delete param.name;
+      param.border = 0;
+      if (!param.width)
+         param.width = this[name].width;
+      if (!param.height)
+         param.height = this[name].height;
+      if (!param.alt)
+         param.alt = this[name].alt;
+      if (!param.linkto && !this[name].linkto)
+         Html.tag("img", param);
+      else {
+         Html.openLink(param.linkto ? param.linkto : this[name].linkto);
+         delete(param.linkto);
+         Html.tag("img", param);
+         Html.closeLink();
+      }
+   }
+}
+
+/**
+ * constructor function for Skinset objects
+ * used to build the constan SKINS
+ */
+function Skinset(key, skins, context) {
+   this.key = key;
+   this.skins = skins;
+   this.context = context;
+   this.children = [];
+   this.add = function(obj) {
+      this.children.push(obj);
+   }
+}
+
+/**
+ * constant that contains the menu structure of the skin manager
+ * it is basically an Array containing Skinset objects (which themselves
+ * can contain child objects too)
+ */
+SKINSETS = [];
+var newSet;
+
+newSet = new Skinset("root", ["root.page", "root.main", "root.style", "root.javascript", "root.sysmgrnavigation", "root.new"], "root");
+newSet.add(new Skinset("root.scripts", ["root.systemscripts", "global.colorpickerScripts"]));
+newSet.add(new Skinset("root.sitelist", ["site.preview", "root.list"]));
+newSet.add(new Skinset("root.rss", ["root.rss", "site.rssItem", "site.rssResource", "global.rssImage"]));
+newSet.add(new Skinset("root.colorpicker", ["global.colorpicker", "global.colorpickerExt", "global.colorpickerWidget", "global.colorpickerScripts"]));
+newSet.add(new Skinset("root.welcome", ["site.welcome", "site.welcomeowner", "site.welcomesysadmin", "root.welcome"]));
+SKINSETS.push(newSet);
+
+newSet = new Skinset("site", ["site.page", "site.style", "site.javascript", "site.main", "day.main", "story.dayheader"]);
+newSet.add(new Skinset("site.navigation", ["site.contribnavigation", "site.adminnavigation", "global.nextpagelink", "global.prevpagelink", "global.pagenavigation", "global.pagenavigationitem", "membermgr.statusloggedin", "membermgr.statusloggedout"]));
+newSet.add(new Skinset("site.topics", ["topicmgr.main", "topic.main"]));
+newSet.add(new Skinset("site.calendar", ["site.calendar", "site.calendardayheader", "site.calendarweek", "site.calendarday", "site.calendarselday"]));
+newSet.add(new Skinset("site.rss", ["site.rss", "story.rssItem", "story.rssResource"]));
+newSet.add(new Skinset("site.search", ["site.searchform", "site.searchbox", "story.searchview"]));
+newSet.add(new Skinset("site.referrers", ["site.referrers", "site.referrerItem"]));
+newSet.add(new Skinset("site.mostread", ["site.mostread", "story.mostread"]));
+newSet.add(new Skinset("site.mails", ["membermgr.mailbody", "membermgr.pwdmail", "membermgr.mailnewmember", "membership.mailbody", "site.notificationMail"], "root"));
+newSet.add(new Skinset("site.preferences", ["site.edit", "site.notification"], "root"));
+newSet.add(new Skinset("site.user", ["membermgr.login", "membermgr.register", "membermgr.sendpwd", "user.edit", "user.subscriptions", "membership.subscription", "membership.membership"], "root"));
+newSet.add(new Skinset("site.membermgr", ["membermgr.memberlist", "membermgr.membergroup", "membermgr.main", "membermgr.searchresult", "membermgr.searchresultitem", "membership.mgrlistitem", "membership.edit"], "root"));
+newSet.add(new Skinset("site.various", ["site.robots"]));
+SKINSETS.push(newSet);
+
+newSet = new Skinset("story", ["story.display", "story.main", "story.preview", "story.comment", "story.historyview", "story.embed", "story.edit"]);
+newSet.add(new Skinset("story.backlinks", ["story.backlinks", "story.backlinkItem"]));
+newSet.add(new Skinset("story.list", ["storymgr.main", "story.mgrlistitem", "storymgr.onlinestory", "storymgr.offlinestory"]));
+SKINSETS.push(newSet);
+
+newSet = new Skinset("comment", ["comment.toplevel", "comment.reply", "comment.edit"]);
+SKINSETS.push(newSet);
+
+newSet = new Skinset("image", ["image.main", "image.edit", "imagemgr.new", "layoutimage.edit", "imagemgr.main", "image.mgrlistitem", "topic.imagetopic"]);
+SKINSETS.push(newSet);
+
+newSet = new Skinset("file", ["file.main", "file.edit", "filemgr.new", "filemgr.main", "file.mgrlistitem"]);
+SKINSETS.push(newSet);
+
+newSet = new Skinset("poll", ["poll.main", "poll.results", "choice.main", "choice.result", "choice.graph"]);
+newSet.add(new Skinset("poll.editor", ["poll.edit", "choice.edit"]));
+newSet.add(new Skinset("poll.list", ["pollmgr.main", "poll.mgrlistitem", "pollmgr.openpoll", "pollmgr.closedpoll"]));
+SKINSETS.push(newSet);
+
+newSet = new Skinset("sysmgr", ["sysmgr.status", "sysmgr.list", "site.sysmgr_listitem", "site.sysmgr_edit", "site.sysmgr_delete", "user.sysmgr_listitem", "user.sysmgr_edit", "syslog.sysmgr_listitem"], "root");
+newSet.add(new Skinset("sysmgr.forms", ["sysmgr.setup", "sysmgr.sitesearchform", "sysmgr.usersearchform", "sysmgr.syslogsearchform"]));
+newSet.add(new Skinset("sysmgr.mails", ["sysmgr.blockwarnmail", "sysmgr.deletewarnmail"]));
+SKINSETS.push(newSet);
+
+newSet = new Skinset("skinmgr", ["skinmgr.main", "skinmgr.page", "skinmgr.edit", "skinmgr.treebranch", "skinmgr.treeleaf", "skin.status", "skin.statuscustom", "skinmgr.new", "skin.diff", "skin.diffline"], "root");
+SKINSETS.push(newSet);
+
+newSet = new Skinset("layoutmgr", ["layoutmgr.main", "layoutmgr.inactivelayout", "layoutmgr.activelayout", "layoutmgr.new", "layoutmgr.import"], "root");
+newSet.add(new Skinset("layoutmgr.layout", ["layout.mgrlistitem", "layout.main", "layout.edit", "layout.download", "layout.chooserlistitem", "layout.testdrive"]));
+newSet.add(new Skinset("layoutmgr.images", ["layoutimagemgr.main", "layoutimagemgr.navigation", "layoutimagemgr.new"]));
+SKINSETS.push(newSet);
+
+newSet = new Skinset("various", ["hopobject.delete"], "root");
+SKINSETS.push(newSet);
