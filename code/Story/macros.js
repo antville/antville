@@ -425,7 +425,7 @@ function topic_macro(param) {
 function backlinks_macro(param) {
    // check if scheduler has done a new update of accesslog
    // if not and we have cached backlinks simply return them
-   if (this.cache.lrBacklinks == app.data.lastAccessLogUpdate)
+   if (this.cache.lrBacklinks >= app.data.lastAccessLogUpdate)
       return (this.cache.rBacklinks)
 
    var c = getDBConnection("antville");
