@@ -1,6 +1,4 @@
-...&nbsp;<% this.link to="main" text="home" %><br>
-...&nbsp;<% this.link to="space" text="topics" %><br>
-...&nbsp;<% this.link to="stories" text="storypool" %><br>
-...&nbsp;<% this.link to="images" text="imagepool" %><br>
-...&nbsp;<% this.link to="goodies" text="goodiepool" %><br>
-
+...&nbsp;<% weblog.link to="stories/create" text="create a story" %><br>
+...&nbsp;<% weblog.link to="stories" text="storypool" %><br>
+...&nbsp;<% weblog.link to="images" text="imagepool" %><br>
+...&nbsp;<% weblog.link to="goodies" text="goodiepool" %><br>

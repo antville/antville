@@ -1,9 +1,3 @@
-...&nbsp;<% this.link to="main" text="home" %><br>
-...&nbsp;<% this.link to="space" text="topics" %><br>
-...&nbsp;<% this.link to="edit" text="preferences" %><br>
-...&nbsp;<% this.link to="stories" text="storypool" %><br>
-...&nbsp;<% this.link to="images" text="imagepool" %><br>
-...&nbsp;<% this.link to="goodies" text="goodiepool" %><br>
-...&nbsp;<% this.link to="memberships" text="memberships" %><br>
-...&nbsp;<% this.link to="skins" text="skin editor" %><br>
-
+...&nbsp;<% weblog.link to="edit" text="preferences" %><br>
+...&nbsp;<% weblog.link to="memberships" text="memberships" %><br>
+...&nbsp;<% weblog.link to="skins" text="skin editor" %><br>
