@@ -3,7 +3,7 @@
 <head>
 <title><% response.title %></title>
 <link rel="alternate" type="text/xml" title="XML" href="rss10" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <% root.skin name="style" %>
 <% root.skin name="javascript" %>
@@ -35,7 +35,7 @@
 ...&nbsp;<a href="http://project.antville.org/topics/about+antville">features</a><br />
 ...&nbsp;<a href="http://project.antville.org/topics/disclaimer">disclaimer</a></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><% this.weblogcounter suffix="&nbsp;public weblogs&nbsp;" %>... <% this.link to="list" %><br />
+<div class="statuslight"><% this.sitecounter suffix="&nbsp;public weblogs&nbsp;" %>... <% this.link to="list" %><br />
 ...&nbsp;<% this.link to="new" text="create a weblog" %></div>
 <!-- div class="statuslight">...&nbsp;<a href="http://antville.org/documentation.html">documentation</a></div -->
 <div class="sep"><% image name="/pixel" width="198" %></div>
