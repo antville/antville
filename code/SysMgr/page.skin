@@ -8,7 +8,7 @@
 <script type="text/javascript" src="<% root.url %>javascript" />
 <link rel="stylesheet" type="text/css" href="<% root.url %>stylesheet" media="screen" />
 <meta http-equiv="Content-Type" content="text/html" />
-<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<meta name="MSSmartTagsPreventParsing" content="TRUE" />
 </head>
 
 <body>
