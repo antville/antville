@@ -363,24 +363,15 @@ function navigation_macro(param) {
 
 function storylist_macro() {
    if (this.size() > 0) {
-      var idx = 0;
-      var days = parseInt(this.days) ? parseInt(this.days) : 2;
-      if (req.data.show && this.showArchive()) {
-         var currGroup = this.get(req.data.show);
-         if (currGroup) {
-            idx = this.contains(currGroup);
-            days = 1;
-         }
-      }
-      for (var i=idx;i<idx + days;i++) {
-         var currDay = this.get(i);
-         if (currDay) {
-            for (var j=0;j<currDay.size();j++) {
-               var currStory = currDay.get(j);
-               currStory.setParent(currDay);
-               if (currStory.isOnline() || currStory.author == user || this.isUserAdmin())
-                  currStory.renderSkin("preview");
-            }
+      var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
+      if (days > this.size())
+         days = this.size();
+      for (var i=0;i<days;i++) {
+         for (var j=0;j<this.get(i).size();j++) {
+            var currStory = this.get(i).get(j);
+            currStory.setParent(currDay);
+            if (currStory.isOnline() || currStory.isViewAllowed())
+               currStory.renderSkin("preview");
          }
       }
    } else
@@ -395,8 +386,9 @@ function storylist_macro() {
  */
 
 function calendar_macro(param) {
-   // do nothing if archive of this weblog is disabled
-   if (!this.showArchive())
+   // do nothing if there is not a single story :-))
+   // or if archive of this weblog is disabled
+   if (!this.size() || !this.showArchive())
       return;
    // define variables needed in this function
    var tsParam = new HopObject();
@@ -407,13 +399,11 @@ function calendar_macro(param) {
    // create new calendar-object and set day to first day of month
    var cal = new java.util.GregorianCalendar(this.getLocale());
    cal.set(java.util.Calendar.DATE,1);
-   if (req.data.show) {
-      var reqYear = parseInt(req.data.show.substring(0,4),10);
-      var reqMonth = parseInt(req.data.show.substring(4,6),10) - 1;
-      if (reqYear && reqMonth) {
-         cal.set(java.util.Calendar.YEAR,reqYear);
-         cal.set(java.util.Calendar.MONTH,reqMonth);
-      }
+   if (path.day) {
+      var reqYear = parseInt(path.day.groupname.substring(0,4),10);
+      var reqMonth = parseInt(path.day.groupname.substring(4,6),10) - 1;
+      cal.set(java.util.Calendar.YEAR,reqYear);
+      cal.set(java.util.Calendar.MONTH,reqMonth);
    }
    // nr. of empty days in rendered calendar before the first day of month appears
    var pre = (7-cal.getFirstDayOfWeek()+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
@@ -449,7 +439,7 @@ function calendar_macro(param) {
          else {
             var currGroupname = cal.getTime().format("yyyyMMdd");
             dayParam.day = this.renderCalendarDay(currGroupname,cal.get(java.util.Calendar.DATE));
-            if (req.data.show && cal.getTime().format("yyyyMMdd") == req.data.show)
+            if (path.day && cal.getTime().format("yyyyMMdd") == path.day.groupname)
                dayParam.useskin = "calendarselday";
             cal.add(java.util.Calendar.DATE,1);
             daycnt++;
@@ -461,7 +451,6 @@ function calendar_macro(param) {
       calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
    }
    this.renderSkin("calendar",calParam);
-
 }
 
 
@@ -491,6 +480,7 @@ function age_macro(param) {
  */
 
 function image_macro(param) {
+   this.images.filter();
    if (param && param.name && this.images.get(param.name)) {
       res.write(param.prefix)
       if (param.linkto) {
@@ -528,31 +518,36 @@ function memberlist_macro(param) {
 }
 
 
+/**
+ * macro renders a list of recentyl added/updated stories/comments
+ * of this weblog
+ */
+
 function history_macro(param) {
-  res.write(param.prefix)
-	var len1 = this.allstories.count();
-	var len2 = this.allcomments.count();
-	var nr = (param.show) ? param.show : 5;
-	if (nr > len1+len2) nr = len1+len2;
-  var c1 = 0;
-  var c2 = 0;
-	var x = new Array(nr);
-	for (var i=0; i<nr; i++) {
-    if (c1 >= this.allstories.count())
-       x[i] = this.allcomments.get(c2++);
-    else if (c2 >= this.allcomments.count())
-       x[i] = this.allstories.get(c1++);
-    else {
-			var t1 = (this.allstories.get(c1).modifytime) ? this.allstories.get(c1).modifytime : this.allstories.get(c1).createtime;
-			var t2 = (this.allcomments.get(c2).modifytime) ? this.allcomments.get(c2).modifytime : this.allcomments.get(c2).createtime;
-       if (t2 > t1)
-          x[i] = this.allcomments.get(c2++);
-       else
-          x[i] = this.allstories.get(c1++);
-    }
-	}
-	for (var j in x) {
-		if (x[j].isOnline()) x[j].renderSkin("historyview");
-	}
-  res.write(param.suffix);
+   res.write(param.prefix)
+   var len1 = this.allstories.count();
+   var len2 = this.allcomments.count();
+   var nr = (param.show) ? param.show : 5;
+   if (nr > len1+len2) nr = len1+len2;
+   var c1 = 0;
+   var c2 = 0;
+   var x = new Array(nr);
+   for (var i=0; i<nr; i++) {
+      if (c1 >= this.allstories.count())
+         x[i] = this.allcomments.get(c2++);
+      else if (c2 >= this.allcomments.count())
+         x[i] = this.allstories.get(c1++);
+      else {
+         var t1 = (this.allstories.get(c1).modifytime) ? this.allstories.get(c1).modifytime : this.allstories.get(c1).createtime;
+         var t2 = (this.allcomments.get(c2).modifytime) ? this.allcomments.get(c2).modifytime : this.allcomments.get(c2).createtime;
+         if (t2 > t1)
+            x[i] = this.allcomments.get(c2++);
+         else
+            x[i] = this.allstories.get(c1++);
+      }
+   }
+   for (var j in x) {
+      if (x[j].isOnline()) x[j].renderSkin("historyview");
+   }
+   res.write(param.suffix);
 }
