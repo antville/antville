@@ -60,7 +60,7 @@ function createNewSite(title,alias,creator) {
    newSite.titlecolor = "cc0000";
    newSite.smallfont = "Arial, Helvetica, sans-serif";
    newSite.smallsize = "12px";
-   newSite.smallcolor = "999999";
+   newSite.smallcolor = "666666";
    newSite.days = 3;
    // retrieve locale-object from root (either specified or default-locale from JVM)
    var loc = this.getLocale();
