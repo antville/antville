@@ -40,7 +40,7 @@ function link_macro(param) {
 function input_macro(param) {
    res.write(param.prefix)
    if (param.type == "textarea") {
-      var inputParam = new HopObject();
+      var inputParam = new Object();
       for (var i in param)
          inputParam[i] = param[i];
       inputParam.value = param.name ? req.data[param.name] : null;
@@ -54,7 +54,7 @@ function input_macro(param) {
    } else if (param.type == "file") {
       this.renderInputFile(param);
    } else {
-      var inputParam = new HopObject();
+      var inputParam = new Object();
       for (var i in param)
          inputParam[i] = param[i];
       inputParam.value = param.name ? req.data[param.name] : null;

@@ -32,7 +32,7 @@ function alttext_macro(param) {
 function editlink_macro(param) {
    if (this.creator == user) {
       res.write(param.prefix);
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       if (param.image && this.weblog.images.get(param.image))
@@ -52,7 +52,7 @@ function editlink_macro(param) {
 function deletelink_macro(param) {
    if (this.creator == user || this.weblog.isUserAdmin()) {
       res.write(param.prefix);
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
       if (param.image && this.weblog.images.get(param.image))
@@ -75,7 +75,7 @@ function show_macro(param) {
    else
       var img = this;
    if (this.creator == user) {
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       path.weblog.renderImage(img,param);
