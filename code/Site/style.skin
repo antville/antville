@@ -43,8 +43,9 @@ a:hover {
 .message {
    font-family: <% site.smallfont %>;
    font-size: <% site.smallsize %>;
+   font-weight: bold;
    padding: 1px;
-   color: <% site.textcolor %>;
+   color: <% site.titlecolor %>;
    background-color: <% site.bgcolor %>;
 }
 
