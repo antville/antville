@@ -5,23 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title><% response.title %></title>
-
-<link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-
-<style type="text/css">
-<!--
-<% site.skin name="style" %>
-// -->
-</style>
-
-<script type="text/javascript" language="javascript">
-<!--
-<% site.skin name="javascript" %>
-<% site.skin name="cp_javascript" %>
-// -->
-</script>
+<script type="text/javascript" src="<% site.url %>javascript"></script>
+<script type="text/javascript" src="<% site.url %>cp_javascript"></script>
+<link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
 </head>
 
 <body>
