@@ -3,13 +3,15 @@
  */
 
 function sendConfirmationMail() {
-	var mail = new Mail();
-	mail.setFrom(getProperty("adminEmail"));
-	mail.setTo(user.email);
-	mail.setSubject("Welcome to Antville!");
-	mail.setText(this.renderSkinAsString("mailbody"));
+   var mail = new Mail();
+   mail.setFrom(getProperty("adminEmail"));
+   mail.addTo(this.email);
+   mail.setSubject("Welcome to Antville!");
+   var mailParam = new HopObject();
+   mailParam.name = this.name;
+   mailParam.password = this.password;
+	mail.setText(this.renderSkinAsString("mailbody",mailParam));
 	mail.send();
-
 }
 
 
