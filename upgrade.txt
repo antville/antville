@@ -1,0 +1,10 @@
+How to upgrade Antville from version 1.0.x to 1.1pre1:
+
+1. Backup your Antville database to a safe place.
+2. Apply the SQL patch named antville_dbpatch20030728.sql
+   (Database patches are located in db_support/patches.)
+3. Start (or restart) Helma.
+4. Point your browser to http://localhost:8080/convertSites
+   (you might need to modify this URL according to your local settings.)
+5. Apply the SQL patch named antville_dbpatch20030729.sql
+6. Stop and restart Helma.
