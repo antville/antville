@@ -3,9 +3,6 @@
 <td><% linkedpath %></td>
 </tr>
 <tr>
-<td><% this.addstory %></td>
-</tr>
-<tr>
 <td><% response.prevpage %></td>
 </tr>
 </table>
@@ -13,12 +10,13 @@
 <% this.storylist %>
 
 <table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2"><% linkedpath %></td>
-</tr>
+
 <tr>
 <td colspan="2"><% response.nextpage %></td>
 </tr>
+</tr>
+<tr>
+<td><% this.addstory %></td>
 </tr>
 <tr>
 <td><% this.relatedtopics prefix="<br>Stories/Comments linking to this topic:<br>" %></td>
