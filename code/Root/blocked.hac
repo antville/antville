@@ -1,0 +1,7 @@
+var parent = setLayout();
+
+res.data.title = "Antville - Access denied";
+
+var email = getProperty("adminEmail");
+
+res.data.body = "<p><b>Sorry!</b></p><p>This weblog was disabled.</p>";
