@@ -218,8 +218,7 @@ function evalDownload(fullExport) {
    this.images.dumpToZip(z, fullExport);
    this.skins.dumpToZip(z, fullExport);
    z.close();
-   var data = z.getData();
-   return data;
+   return z.getData();
 }
 
 /**
