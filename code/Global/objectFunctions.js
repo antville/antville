@@ -388,3 +388,19 @@ function scheduler() {
    pingUpdatedWeblogs();
 }
 
+
+/**
+ * DEPRECATED!
+ * this function was used to replicate a read-only
+ * javascript object (like a nacro's param object)
+ * for the purpose of creating a writeable clone.
+ */
+
+function cloneObject(obj) {
+  var clone = new Object();
+  if (typeof obj != "object")
+    return(obj);
+  for (var i in obj)
+    clone[i] = obj[i];
+  return(clone);
+}
