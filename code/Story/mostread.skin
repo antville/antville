@@ -2,6 +2,6 @@
 	<td align="right" valign="baseline" class="small"><% param.rank %></td>
 	<td align="right" valign="baseline"><% param.reads %></td>
 	<td valign="baseline"><% story.createtime format="dd.MM.yy" %></td>
-	<td valign="baseline"><% story.title as="link" %></td>
+	<td valign="baseline"><% story.content part="title" as="link" %></td>
 	<td valign="baseline"><% story.creator %></td>
 </tr>
