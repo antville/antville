@@ -364,7 +364,7 @@ CREATE INDEX IDX_SITE_F_USER_CREATOR ON AV_SITE (SITE_F_USER_CREATOR);
 # Table structure for AV_SHORTCUT
 #----------------------------
 
-create table AV_SITE (
+create table AV_SHORTCUT (
    SHORTCUT_ID int(10) not null,
    SHORTCUT_F_SITE int(10),
    SHORTCUT_F_USER_CREATOR int(10),
