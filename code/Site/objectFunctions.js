@@ -52,9 +52,9 @@ function renderLinkToNextMonth(cal) {
 
 
 /**
- * function saves new properties of weblog
+ * function saves new properties of site
  * @param Obj Object containing the form values
- * @param Obj User-Object modifying this weblog
+ * @param Obj User-Object modifying this site
  * @return Obj Object containing two properties:
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
@@ -81,15 +81,13 @@ function evalPreferences(param,modifier) {
    this.smallsize = param.smallsize;
    this.smallcolor = param.smallcolor;
    this.days = parseInt(param.days,10);
-   var online = parseInt(param.online,10);
-   if (this.online && !online)
+   if (this.online && !param.online)
       this.lastoffline = new Date();
-   this.online = online;
-   this.online = parseInt(param.online,10);
-   this.discussions = parseInt(param.discussions,10);
-   this.usercontrib = parseInt(param.usercontrib,10);
-   this.archive = parseInt(param.archive,10);
-   this.enableping = parseInt(param.enableping,10);
+   this.online = param.online ? parseInt(param.online,10) : 0;
+   this.discussions = param.discussions ? parseInt(param.discussions,10) : 0;
+   this.usercontrib = param.usercontrib ? parseInt(param.usercontrib,10) : 0;
+   this.archive = param.archive ? parseInt(param.archive,10) : 0;
+   this.enableping = param.enableping ? parseInt(param.enableping,10) : 0;
    // store selected locale in this.language and this.country
    var locs = java.util.Locale.getAvailableLocales();
    var newLoc = locs[parseInt(param.locale,10)];
@@ -126,7 +124,7 @@ function evalPreferences(param,modifier) {
 
 /**
  * function returns true if discussions are enabled
- * for this weblog
+ * for this site
  */
 
 function hasDiscussions() {
@@ -136,7 +134,7 @@ function hasDiscussions() {
 }
 
 /**
- * function returns true if weblog is online
+ * function returns true if site is online
  * otherwise false
  */
 
@@ -147,7 +145,7 @@ function isOnline() {
 }
 
 /**
- * function creates the directory that will contain the images of this weblog
+ * function creates the directory that will contain the images of this site
  */
 
 function createImgDirectory() {
@@ -157,8 +155,8 @@ function createImgDirectory() {
 
 /**
  * function checks if language and country were specified
- * for this weblog. if so, it returns a Locale-object
- * otherwise false
+ * for this site. if so, it returns the specified Locale-object
+ * otherwise it calls getLocale() for root
  */
 
 function getLocale() {
@@ -168,7 +166,7 @@ function getLocale() {
    if (this.language)
       locale = new java.util.Locale(this.language,this.country ? this.country : "");
    else
-      locale = java.util.Locale.getDefault();
+      locale = root.getLocale();
    this.cache.locale =locale;
    return locale;
 }
@@ -204,7 +202,7 @@ function sortMostReads(s1, s2) {
 }
 
 /**
- * function checks if story is online in weblog
+ * function checks if story is online in site
  * @param Obj story to check
  * @return Boolean true if online, false if not
  */
@@ -230,21 +228,21 @@ function rssConvertHtmlImageToHtmlLink(str) {
 }
 
 /**
- * function deletes all assets of a weblog (recursive!)
+ * function deletes all assets of a site (recursive!)
  */
 
 function deleteAll() {
    this.members.deleteAll();
    this.images.deleteAll();
-   this.goodies.deleteAll();
+   this.files.deleteAll();
    this.skins.deleteAll();
    this.stories.deleteAll();
    return true;
 }
 
 /**
- * check if weblog is trusted
- * @return Boolean true in case weblog is trusted, false otherwise
+ * check if site is trusted
+ * @return Boolean true in case site is trusted, false otherwise
  */
 
 function isTrusted() {
@@ -256,7 +254,7 @@ function isTrusted() {
 
 /**
  * send notification to weblogs.com
- * that this weblog was updated
+ * that this site was updated
  * @return Object with properties error and message
  */
 
@@ -273,7 +271,7 @@ function ping() {
 	result.message = ping.result.message;
 
 	if (result.error)
-		app.__app__.logEvent("Error when notifying weblogs.com for updated weblog #" + this._id + ": " + result.message);
+		app.__app__.logEvent("Error when notifying weblogs.com for updated site #" + this._id + ": " + result.message);
 
 	// this is the easy post url method (maybe faster?)
 	// var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
