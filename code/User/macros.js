@@ -58,17 +58,6 @@ function publishemail_macro(param) {
 }
 
 /**
- * macro rendering description
- */
-
-function description_macro(param) {
-   if (param.as == "editor")
-      Html.textArea(this.createInputParam("description", param));
-   else
-      res.write(this.description);
-}
-
-/**
  * macro renders a list of memberships of this user
  * meaning all memberships where level > 0
  */
