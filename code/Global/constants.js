@@ -192,16 +192,16 @@ function Skinset(key, skins, context) {
 SKINSETS = [];
 var newSet;
 
-newSet = new Skinset("root", ["root.page", "root.main", "root.style", "root.javascript", "root.sysmgrnavigation", "root.new"], "root");
-newSet.add(new Skinset("root.scripts", ["root.systemscripts", "global.colorpickerScripts"]));
-newSet.add(new Skinset("root.sitelist", ["site.preview", "root.list"]));
-newSet.add(new Skinset("root.rss", ["root.rss", "site.rssItem", "site.rssResource", "global.rssImage"]));
-newSet.add(new Skinset("root.colorpicker", ["global.colorpicker", "global.colorpickerExt", "global.colorpickerWidget", "global.colorpickerScripts"]));
-newSet.add(new Skinset("root.welcome", ["site.welcome", "site.welcomeowner", "site.welcomesysadmin", "root.welcome"]));
+newSet = new Skinset("Root", ["Root.page", "Root.main", "Root.style", "Root.javascript", "Root.sysmgrnavigation", "Root.new"], "root");
+newSet.add(new Skinset("Root.scripts", ["Root.systemscripts", "Global.colorpickerScripts"]));
+newSet.add(new Skinset("Root.sitelist", ["site.preview", "Root.list"]));
+newSet.add(new Skinset("Root.rss", ["Root.rss", "site.rssItem", "site.rssResource", "Global.rssImage"]));
+newSet.add(new Skinset("Root.colorpicker", ["Global.colorpicker", "Global.colorpickerExt", "Global.colorpickerWidget", "Global.colorpickerScripts"]));
+newSet.add(new Skinset("Root.welcome", ["site.welcome", "site.welcomeowner", "site.welcomesysadmin", "Root.welcome"]));
 SKINSETS.push(newSet);
 
 newSet = new Skinset("site", ["site.page", "site.style", "site.javascript", "site.main", "day.main", "story.dayheader"]);
-newSet.add(new Skinset("site.navigation", ["site.contribnavigation", "site.adminnavigation", "global.nextpagelink", "global.prevpagelink", "global.pagenavigation", "global.pagenavigationitem", "membermgr.statusloggedin", "membermgr.statusloggedout"]));
+newSet.add(new Skinset("site.navigation", ["site.contribnavigation", "site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "membermgr.statusloggedin", "membermgr.statusloggedout"]));
 newSet.add(new Skinset("site.topics", ["topicmgr.main", "topic.main"]));
 newSet.add(new Skinset("site.calendar", ["site.calendar", "site.calendardayheader", "site.calendarweek", "site.calendarday", "site.calendarselday"]));
 newSet.add(new Skinset("site.rss", ["site.rss", "story.rssItem", "story.rssResource"]));
@@ -247,5 +247,5 @@ newSet.add(new Skinset("layoutmgr.layout", ["layout.mgrlistitem", "layout.main",
 newSet.add(new Skinset("layoutmgr.images", ["layoutimagemgr.main", "layoutimagemgr.navigation", "layoutimagemgr.new"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("various", ["hopobject.delete"], "root");
+newSet = new Skinset("various", ["HopObject.delete"], "root");
 SKINSETS.push(newSet);
