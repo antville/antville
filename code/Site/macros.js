@@ -6,12 +6,12 @@ function title_macro(param) {
     this.renderInputText(this.createInputParam("title", param));
   else {
     if (param && param.linkto) {
-      this.openLink(param);
+      openLink(this.href(param.linkto));
       if (this.title)
         res.write(stripTags(this.title));
       else
         res.write("[untitled weblog]");
-      this.closeLink(param);
+      closeLink();
     }
     else
       res.write(this.title);
@@ -219,7 +219,7 @@ function lastupdate_macro(param) {
     res.write("no updates so far");
   }
   else
-    res.write(this.formatTimestamp(this.lastupdate,param));
+    res.write(formatTimestamp(this.lastupdate,param.format));
 }
 
 
@@ -227,7 +227,7 @@ function lastupdate_macro(param) {
  * macro rendering createtime of weblog
  */
 function createtime_macro(param) {
-  res.write(this.formatTimestamp(this.createtime,param));  
+  res.write(formatTimestamp(this.createtime,param.format));  
 }
 
 
@@ -235,9 +235,9 @@ function createtime_macro(param) {
  * macro rendering modifytime of weblog
  */
 function modifytime_macro(param) {
-  if (this.modifytime) {
-    res.write(res.write(this.formatTimestamp(this.modifytime,param)));
-  }
+   if (this.modifytime)
+      res.write(formatTimestamp(this.modifytime,param.format));
+   return;
 }
 
 
@@ -622,14 +622,11 @@ function listReferrers_macro() {
  * renders the xml button for use 
  * when referring to an rss feed
  */
-function xmlbutton_macro() {
-  var param = new Object();
-  param.to = this.href("rss10");
-  param.name = "xmlbutton";
-  var img = root.images.get(param.name);
+function xmlbutton_macro(param) {
+  var img = root.images.get("xmlbutton");
   if (!img)
     return;
-  this.openLink(param);
+  openLink(this.href("rss10"));
   renderImage(img, param);
-  this.closeLink();
+  closeLink();
 }
