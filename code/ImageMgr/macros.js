@@ -34,10 +34,10 @@ function imagelist_macro(param) {
       }
       if (url) {
          Html.openLink({href: url});
-         renderImage(imgObj, ObjectLib.clone(param));
+         renderImage(imgObj, Object.clone(param));
          Html.closeLink();
       } else
-         renderImage(imgObj, ObjectLib.clone(param));
+         renderImage(imgObj, Object.clone(param));
       res.write(param.itemsuffix);
       imgcnt++;
    }

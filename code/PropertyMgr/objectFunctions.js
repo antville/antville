@@ -129,7 +129,7 @@ function toString() {
  * @return Obj Parameter-Object for Input
  */
 function createInputParam(propName, param) {
-   var inputParam = ObjectLib.clone(param);
+   var inputParam = Object.clone(param);
    inputParam.name = this.__name__ + "_" + propName;
    if (!req.data[inputParam.name + "_array"] && req.data[inputParam.name] != null)
       inputParam.value = req.data[inputParam.name];
