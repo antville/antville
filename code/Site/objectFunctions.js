@@ -86,7 +86,6 @@ function evalPreferences(param,modifier) {
    this.online = parseInt(param.online,10);
    this.discussions = parseInt(param.discussions,10);
    this.usercontrib = parseInt(param.usercontrib,10);
-   this.usersignup = parseInt(param.usersignup,10);
    this.archive = parseInt(param.archive,10);
 
    // store selected locale in this.language and this.country
@@ -155,80 +154,12 @@ function isOnline() {
 }
 
 /**
- * function returns true if signup is enabled
- * otherwise false
- */
-
-function userMaySignup() {
-   if (parseInt(this.usersignup,10))
-      return true;
-   return false;
-}
-
-
-/**
  * function creates the directory that will contain the images of this weblog
  */
 
 function createImgDirectory() {
    var dir = new File(getProperty("imgPath") + this.alias + "/");
    return (dir.mkdir());
-}
-
-/**
- * function adds a new member-object for this weblog
- * @param Obj User-object attempting to sign up to this weblog
- * @param Int Integer-value defining userlevel
- * @return Boolean true in any case ...
- */
-
-function createMember(applicant,userLvl) {
-   var newMember = new member();
-   newMember.weblog = this;
-   newMember.user = applicant;
-   newMember.username = applicant.name;
-   if (userLvl)
-      newMember.level = userLvl;
-   else {
-      // we start with a default level of "normal user"
-      newMember.level = 0;
-   }
-   newMember.createtime = new Date();
-   this.members.add(newMember);
-   return true;
-}
-
-/**
- * check if a signup attempt is ok
- * @param String email-address entered in form
- * @param Obj User-Object attempting to sign up to this weblog
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-
-function evalSignup(email,applicant) {
-   var result = new Object();
-   if (this.members.get(applicant.name)) {
-      result.message = "You are already a member of this weblog!";
-      result.error = true;
-   }
-   if (!email) {
-      result.message = "Please specify your eMail-address!";
-      result.error = true;
-   } else if (email != applicant.email) {
-      if (!checkEmail(email)) {
-         result.message = "Your eMail-address is invalid!";
-         result.error = true;
-      } else
-         applicant.email = email;
-   }
-   if (!result.error) {
-      this.createMember(applicant);
-      result.message = this.title + " welcomes you as a member! Have fun!";
-      result.error = false;
-   }
-   return (result);
 }
 
 /**
