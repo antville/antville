@@ -1,4 +1,4 @@
-<p>To insert an image in a story or comment just copy and paste its code.</p>
+<p>To insert a goodie in a story or comment just copy and paste its code.</p>
 <p>...&nbsp;<% this.link to="create" text="add new goodie" %></p>
 <% this.goodies %>
 
