@@ -76,16 +76,6 @@ function creator_macro(param) {
 }
 
 /**
- * macro rendering createtime
- */
-
-function createtime_macro(param) {
-   if (!this.createtime)
-      return;
-   res.write(formatTimestamp(this.createtime,param.format));
-}
-
-/**
  * macro rendering filesize
  */
 
