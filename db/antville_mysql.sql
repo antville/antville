@@ -231,6 +231,7 @@ create table AV_TEXT (
    TEXT_PROTOTYPE varchar(20),
    TEXT_F_TEXT_STORY mediumint(10),
    TEXT_F_TEXT_PARENT mediumint(10),
+   TEXT_ALIAS varchar(255),
    TEXT_TITLE mediumtext,
    TEXT_TEXT mediumtext,
    TEXT_CONTENT mediumtext,

@@ -220,6 +220,7 @@ create table AV_TEXT (
    TEXT_PROTOTYPE varchar(20),
    TEXT_F_TEXT_STORY int(10),
    TEXT_F_TEXT_PARENT int(10),
+   TEXT_ALIAS varchar(255),
    TEXT_TITLE text,
    TEXT_TEXT text,
    TEXT_CONTENT text,
