@@ -13,14 +13,14 @@ function content_macro(param) {
             param.value = "Re: " + path.comment.title;
          else if (path.story && path.story.title)
             param.value = "Re: " + path.story.title;
-      }
-      else
+      } else
          param.value = this.getContentPart(param.part);
       param.name = "content_" + param.part;
       delete(param.part);
-      if (!param.height || parseInt(param.height) == 1)
+      if (!param.height || parseInt(param.height) == 1) {
+         param.value = encodeForm(param.value);
          renderInputText(param);
-      else
+      } else 
          renderInputTextarea(param);
    } else if (param.as == "image") {
       var part = this.getContentPart (param.part);
