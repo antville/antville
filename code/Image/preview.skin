@@ -1,6 +1,5 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<tr>
 <td colspan="2" class="small" nowrap="nowrap"><span class="commentHead">&nbsp;</span><br />
 <b><% this.alias %></b>&nbsp;by <% this.creator %> (<% this.createtime format="short" %>)<br />
 <b>code:&nbsp;</b>&lt;% image name="<% this.alias %>" %&gt;</td>
