@@ -68,11 +68,27 @@ function deletelink_macro(param) {
 }
 
 /**
+ * macro rendering a link to view the file
+ */
+
+function viewlink_macro(param) {
+   if (session.user) {
+      param.to = "getfile"
+      param.urlparam = "name=" + escape(this.alias);
+      param.title = encodeForm(this.description);
+      openMarkupElement("a", this.site.createLinkParam(param));
+      res.write(param.text ? param.text : "view");
+      closeMarkupElement("a");
+   }
+   return;
+}
+
+/**
  * macro rendering filesize
  */
 
 function filesize_macro(param) {
-   res.write((this.filesize / 1000).format("###,###") + " Kb");
+   res.write((this.filesize / 1000).format("###,###") + " KB");
 }
 
 /**
