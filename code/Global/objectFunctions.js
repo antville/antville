@@ -327,9 +327,9 @@ function formatTimestamp(ts,dformat) {
    var fmt = "yyyy/MM/dd HH:mm";
    var obj = res.handlers.site ? res.handlers.site : root;
    if (dformat == "short")
-      fmt = obj.shortdateformat ? obj.shortdateformat : "dd.MM HH:mm";
+      fmt = obj.shortdateformat ? obj.shortdateformat : "yy.MM.dd-HH:mm";
    else if (dformat == "long")
-      fmt = obj.longdateformat ? obj.longdateformat : "yyyy/MM/dd HH:mm";
+      fmt = obj.longdateformat ? obj.longdateformat : "d. MMMM yyyy HH:mm'h'";
    else if (dformat)
       fmt = dformat;
 
@@ -562,7 +562,7 @@ function fixRssText(str) {
    re.ignoreCase = true;
    re.global = true;
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
- 	return(str);
+ 	return str;
 }
 
 
@@ -681,4 +681,17 @@ function restoreRescuedText() {
       req.data[i] = session.data.rescuedText[i];
    session.data.rescuedText = null;
    return;
+}
+
+
+/**
+ * helper function to calculate percentages
+ * @param Number base value
+ * @param Number percent value
+ * @return Float percentage
+ */
+
+function percentage(base, n) {
+	var p = n / (base / 100);
+	return Math.round(p * 100) / 100;   
 }

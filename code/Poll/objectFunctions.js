@@ -80,17 +80,3 @@ function evalVote(param, usr) {
 	result.url = this.href();
 	return(result);
 }
-
-
-/**
- * helper function to calculate vote percentages
- * FIXME this function needs universalisation
- * @param Object created in results_macro()
- * @return Float result in percent
- */
-
-function calcPercent(param) {
-	var sum = this.votes.size();
-	var p = param.count / (sum / 100);
-	return(Math.round(p*100)/100);
-}

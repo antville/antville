@@ -97,7 +97,7 @@ function results_macro(param2) {
       param.count = c.size();
       param.percent = 0;
       if (param.count > 0) {
-         param.percent = this.calcPercent(param);
+         param.percent = percentage(this.votes.size(), param.count);
          param.width = Math.round(param.percent * 2.5);
          param.graph = c.renderSkinAsString("graph", param);
          if (param.count == 1)
