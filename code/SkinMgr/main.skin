@@ -132,6 +132,10 @@ contains the form used for changing the profile of a user</li>
 
 <p><b>previews and lists</b></p>
 <ul>
+<li><a name="globalprevpagelink"></a><% this.link to="edit" urlparam="?proto=global&name=prevpagelink" text="link to newer entries" %>&nbsp;<span class="small">(<% this.skinstatus proto="global" name="prevpagelink" %>)</span><br>
+This skin displays a link to newer entries. It's used in all editor-lists (i.e. in storypool, imagepool, goodiepool), in topics and for weblog-navigation if you included it in the <% this.link to="edit" urlparam="?proto=weblog&name=page" text="main page" %>.</li>
+<li><a name="globalnextpagelink"></a><% this.link to="edit" urlparam="?proto=global&name=nextpagelink" text="link to older entries" %>&nbsp;<span class="small">(<% this.skinstatus proto="global" name="nextpagelink" %>)</span><br>
+This skin displays a link to older entries in a list. It's used in all editor-lists (i.e. in storypool, imagepool, goodiepool), in topics and for weblog-navigation if you included it in the <% this.link to="edit" urlparam="?proto=weblog&name=page" text="main page" %>.</li>
 <li><a name="imagemgrmain"></a><% this.link to="edit" urlparam="?proto=imagemgr&name=main" text="imagelist" %>&nbsp;<span class="small">(<% this.skinstatus proto="imagemgr" name="main" %>)</span><br>
 This skin is used to display a list of images in the imagepool.</li>
 <li><a name="imagepreview"></a><% this.link to="edit" urlparam="?proto=image&name=preview" text="image preview" %>&nbsp;<span class="small">(<% this.skinstatus proto="image" name="preview" %>)</span><br>
