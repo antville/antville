@@ -159,3 +159,13 @@ function notfound_action() {
    res.data.body = "<p><b>Sorry!</b></p><p>URL /" + req.path + " was not found on this server!</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
 }
+
+/**
+ * error action
+ */
+function sys_error_action() {
+   res.data.title = root.getSysTitle() + " - Error";
+   res.data.body = "<p><b>Sorry!</b></p><p>An error occurred while processing your request:</p>";
+   res.data.body += "<p>"+res.error+"</p>";
+   (path.site && path.site.online ? path.site : root).renderSkin("page");
+}
