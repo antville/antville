@@ -32,22 +32,6 @@ function checkDate() {
 }
 
 /**
- * scheduler, basically doin' nothing
- */
-
-function scheduler() {
-   return;
-}
-
-/**
- * onStart-function, basically doin' nothing
- */
-
-function onStart() {
-   return;
-}
-
-/**
  * functin checks if the string passed contains special characters like
  * spaces, brackets etc.
  */
@@ -167,4 +151,29 @@ function autoLogin() {
       } else
          return;
    }
+}
+
+/**
+ * function checks if weblog or root should handle the image-rendering
+ * by checking if there's a slash in the name of the image
+ * returns an Object containing the handler that should render the image
+ * and the image-object
+ */
+
+function imgDispatch(imgName) {
+   var dp = new Object();
+   if (imgName.indexOf("/") >= 0) {
+      var imgPath = imgName.split("/");
+      dp.handler = (!imgPath[0] || imgPath[0] == "root") ? root : root.get(imgPath[0]);
+      dp.imgName = imgPath[1];
+   } else {
+      dp.handler = path.weblog;
+      dp.imgName = imgName;
+   }
+   if (!dp.handler)
+      return null;
+   dp.img = dp.handler.images.get(dp.imgName);
+   if (!dp.img)
+      return null;
+   return (dp);
 }
