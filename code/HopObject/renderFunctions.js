@@ -30,7 +30,7 @@ function renderInputText(param) {
    if (param) {
       res.write("<input type=\"text\" name=\"" + param.name);
       if (param.value)
-         res.write("\" value=\"" + param.value);
+         res.write("\" value=\"" + encodeForm(param.value));
       res.write("\" size=\"");
       res.write(param.width ? param.width : "20");
       if (param.style)
