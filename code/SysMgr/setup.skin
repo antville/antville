@@ -9,7 +9,7 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">System URL:</td>
-<td><% root.sys_url as="editor" size="20" %><br /><span class="small">This URL will be used by Antville in the footer of various confirmation mails. You should set it to the URL of the frontpage of your Antville installation.</span></td>
+<td><% root.sys_url as="editor" size="20" %><br /><span class="small">This URL will be used by Antville in the footer of various confirmation mails. You should set it to the URL of the front page of your Antville installation.</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Front page<br />weblog:</td>
