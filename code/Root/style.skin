@@ -18,11 +18,11 @@ a:hover {
 }
 
 ul {
-  list-style: url("<% imageurl name="/bullet" %>") circle;
+  list-style: url("<% image as="url" name="/bullet" %>") circle;
 }
 
 .header {
-  background-image: url("<% imageurl name="/headbg" %>");
+  background-image: url("<% image as="url" name="/headbg" %>");
   background-repeat: repeat-x;
   text-align: right;
   vertical-align: middle;
@@ -64,7 +64,7 @@ ul {
 .sep {
   width: 198px;
   height: 1px;
-  background-image: url("<% imageurl name="/dot" %>");
+  background-image: url("<% image as="url" name="/dot" %>");
 }
 
 .pageTitle {
