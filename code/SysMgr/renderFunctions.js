@@ -6,7 +6,7 @@
  * @return String rendered Navigationbar
  */
 
-function renderPageNavigation(collection,url,pageIdx) {
+function renderPageNavigation(collection, url, pageIdx) {
    var size = this[collection].size();
    var itmsPerPage = 20;
    var totalPages = Math.ceil(size/itmsPerPage);
@@ -17,7 +17,7 @@ function renderPageNavigation(collection,url,pageIdx) {
       pageIdx = 0;
    if (size) {
       // assign the summary to res.data.summary
-      res.data.display = ((pageIdx*itmsPerPage)+1) + "-" + (Math.min((pageIdx*itmsPerPage)+itmsPerPage,size));
+      res.data.display = ((pageIdx * itmsPerPage) + 1) + "-" + (Math.min((pageIdx * itmsPerPage) + itmsPerPage, size));
       res.data.total = "(of " + size + ")";
    }
    // if we have just one page, there's no need for navigation
@@ -25,23 +25,23 @@ function renderPageNavigation(collection,url,pageIdx) {
       return;
    // build the navigation-bar
    if (pageIdx > 0)
-      pagenav.append("<a href=\"" + url + "?page=" + (pageIdx-1) + "\">prev</a>&nbsp;");
+      pagenav.append(Html.linkAsString(url + "?page=" + (pageIdx-1), "prev"));
    var offset = Math.floor(pageIdx/10)*10;
    if (offset > 0)
-      pagenav.append("<a href=\"" + url + "?page=" + (offset-1) + "\">[..]</a>&nbsp;");
+      pagenav.append(Html.linkAsString(url + "?page=" + (offset-1), "[..]"));
    for (var i=0;i<10;i++) {
       var page = offset+i;
       if (page >= totalPages)
          break;
       if (page == pageIdx)
-         pagenav.append("[" + (page+1) + "]&nbsp;");
+         pagenav.append("[" + (page+1) + "]");
       else
-         pagenav.append("<a href=\"" + url + "?page=" + page + "\">[" + (page+1) + "]</a>&nbsp;");
+         pagenav.append(Html.linkAsString(url + "?page=" + page, "[" + (page+1) + "]"));
    }
    if (page < totalPages-1)
-      pagenav.append("<a href=\"" + url + "?page=" + (offset+10) + "\">[..]</a>&nbsp;");
+      pagenav.append(Html.linkAsString(url + "?page=" + (offset+10), "[..]"));
    if (pageIdx < totalPages-1)
-      pagenav.append("<a href=\"" + url + "?page=" + (pageIdx+1) + "\">next</a>");
+      pagenav.append(Html.linkAsString(url + "?page=" + (pageIdx+1), "next"));
    res.data.pagenav = pagenav.toString();
    return;
 }
@@ -60,7 +60,7 @@ function renderPageNavigation(collection,url,pageIdx) {
  * @param Int Number of page
  */
 
-function renderList(collection,reqItem,reqAction,pageIdx) {
+function renderList(collection, reqItem, reqAction, pageIdx) {
    var size = this[collection].size();
    var itmsPerPage = 20;
    var totalPages = Math.ceil(size/itmsPerPage);
@@ -69,7 +69,7 @@ function renderList(collection,reqItem,reqAction,pageIdx) {
       pageIdx = 0;
 
    var start = pageIdx*itmsPerPage;
-   var stop = Math.min(start+itmsPerPage,size);
+   var stop = Math.min(start + itmsPerPage, size);
 
    var list = new java.lang.StringBuffer();
    for (var i=start;i<stop;i++) {
