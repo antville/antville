@@ -81,7 +81,7 @@
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td>&nbsp;<br /><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></td>
+<td>&nbsp;<br /><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </table>
 </form>

@@ -17,11 +17,11 @@
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>
-<td nowrap="nowrap"><% this.input name="keywords" %></td>
+<td nowrap="nowrap"><% input name="keywords" %></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td><% this.input type="button" name="search" value="show users" %></td>
+<td><% input type="button" name="search" value="show users" %></td>
 </tr>
 </form>
 </table>

@@ -5,7 +5,7 @@
 </tr>
 <% response.searchresult %>
 <tr>
-<td colspan="2" nowrap="nowrap"><% this.input type="button" name="add" value="add to members" %></td>
+<td colspan="2" nowrap="nowrap"><% input type="button" name="add" value="add to members" %></td>
 </tr>
 </form>
 </table>

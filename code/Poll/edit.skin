@@ -14,7 +14,7 @@
 <% response.choices %>
 
 <tr>
-<td nowrap="nowrap"><br /><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="add choice" %>&nbsp;<% this.input type="button" value="cancel" %>
+<td nowrap="nowrap"><br /><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" value="add choice" %>&nbsp;<% input type="button" name="cancel" value="cancel" %>
 <p class="small"><% this.info %></p></td>
 </tr>
 </form>

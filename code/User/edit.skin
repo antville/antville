@@ -2,15 +2,15 @@
 <form method="post">
 <tr>
 <td class="small" nowrap="nowrap">old password:</td>
-<td nowrap="nowrap"><% this.input type="password" name="oldpwd" %></td>
+<td nowrap="nowrap"><% input type="password" name="oldpwd" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">new password:</td>
-<td nowrap="nowrap"><% this.input type="password" name="newpwd1" %></td>
+<td nowrap="nowrap"><% input type="password" name="newpwd1" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">confirm password:</td>
-<td nowrap="nowrap"><% this.input type="password" name="newpwd2" %></td>
+<td nowrap="nowrap"><% input type="password" name="newpwd2" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">url:</td>
@@ -22,7 +22,7 @@
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </form>
 </table>
