@@ -1,4 +1,13 @@
 /**
+ * constructor-function
+ */
+function constructor() {
+   this.searchSites();
+   this.searchUsers();
+   this.searchSyslog();
+}
+
+/**
  * function manipulates the sites-collection
  */
 
