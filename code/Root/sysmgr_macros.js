@@ -72,7 +72,7 @@ function sys_limitNewSites_macro(param) {
 }
 
 /**
- * macro renders a dropdown containing the minimal registration
+ * macro renders a dropdown containing the minimal registration time
  */
 
 function sys_minMemberAge_macro(param) {
@@ -90,6 +90,25 @@ function sys_minMemberAge_macro(param) {
       res.write(this.sys_minMemberAge);
    return;
 }
+
+/**
+ * macro renders an input type text for editing the system-timestamp
+ * that allows users who have registered before it to create a weblog
+ */
+function sys_minMemberSince_macro(param) {
+   // this macro is allowed just for sysadmins
+   if (!isUserSysAdmin())
+      return;
+   if (param.as == "editor") {
+      if (this.sys_minMemberSince)
+         param.value = formatTimestamp(this.sys_minMemberSince, "yyyy-MM-dd HH:mm");
+      param.name = "sys_minMemberSince";
+      renderInputText(param);
+   } else
+      res.write(this.sys_minMemberSince);
+   return;
+}
+
 
 /**
  * macro renders a dropdown containing the number of days a user has to wait
