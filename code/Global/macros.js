@@ -29,7 +29,7 @@ function logo_macro(param) {
    if (!logo)
       return;
    var linkParam = new Object();
-   linkParam.to = "http://antville.org";
+   linkParam.to = "http://www.antville.org/";
    root.openLink(linkParam);
    root.renderImage(logo,param);
    root.closeLink();
