@@ -23,7 +23,7 @@ function updateMembership(lvl, modifier) {
       throw new Exception("memberNoRole");
    // editing the own membership is denied
    if (this.user == modifier)
-      throw new Exception("memberEditSelfDenied");
+      throw new DenyException("memberEditSelf");
    this.level = lvl;
    this.modifier = modifier;
    this.modifytime = new Date();
