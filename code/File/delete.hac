@@ -1,0 +1,24 @@
+autoLogin();
+
+var deny = this.isDeleteDenied();
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.weblog.goodies.href());
+}
+
+if (req.data.submit == "delete" || req.data.remove)
+   this.weblog.goodies.deleteGoodie(this);
+else if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(this.weblog.goodies.href("main"));
+
+res.skin = "weblog.page";
+
+res.title = "Antville - " + this.weblog.title;
+
+res.head = this.weblog.renderSkinAsString("javascript");
+res.head += this.weblog.renderSkinAsString("style");
+
+var skinParam = new Object();
+skinParam.what = "the goodie <b>" + this.alias + "</b>";
+
+res.body = this.renderSkinAsString("delete",skinParam);

@@ -1,0 +1,23 @@
+<table border="0" width="400" cellspacing="0" cellpadding="3">
+<tr>
+<td colspan="2">To insert this goodie into a story copy/paste the following code: <pre>&lt;% goodie name="<% this.alias %>" %&gt;</pre><br></td>
+</tr>
+<tr>
+<td class="small" nowrap><form method="post">Name:</td>
+<td nowrap><% this.alias as="editor" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap>Description:</td>
+<td nowrap><% this.description as="editor" width="25" %></td>
+</tr>
+<tr>
+<td class="small" nowrap></td>
+<td class="small" nowrap><% this.filesize prefix="<b>size:</b>&nbsp;" suffix="<br>" %>
+<% this.mimetype prefix="<b>format:</b>&nbsp;" suffix="<br>" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" value="cancel" %>&nbsp;<% this.input type="button" value="save" %></td>
+</tr>
+</table>
+</form>
