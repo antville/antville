@@ -5,7 +5,6 @@
 function title_macro(param) {
    if (!this.title && !param.as)
       return;
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
@@ -22,7 +21,6 @@ function title_macro(param) {
       this.story.closeLink();   
    } else 
       res.write(this.title);
-   res.write(param.suffix);
 }
 
 /**
@@ -30,8 +28,7 @@ function title_macro(param) {
  */
 
 function replylink_macro(param) {
-   if (this.weblog.hasDiscussions() && !user.isBlocked() && req.action == "main") {
-      res.write(param.prefix)
+   if (this.weblog.hasDiscussions() && !isUserBlocked() && req.action == "main") {
       var linkParam = new Object();
       linkParam.linkto = "comment";
       this.openLink(linkParam);
@@ -40,7 +37,6 @@ function replylink_macro(param) {
       else
          this.renderImage(param);
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -49,8 +45,6 @@ function replylink_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(param.prefix);
    res.write(this.story.href() + "#" + this._id);
-   res.write(param.prefix);
 }
 
