@@ -80,6 +80,15 @@ function evalImg(param, modifier) {
       this.thumbnail.modifytime = this.modifytime;
       this.thumbnail.modifier = this.modifier;
    }
+   // check name of topic (if specified)
+   var topicName = null;
+   if (param.topic) {
+      if (!param.topic.isURL())
+         throw new Exception("topicNoSpecialChars");
+      topicName = param.topic;
+   } else if (param.addToTopic)
+      topicName = param.addToTopic;
+   this.topic = topicName;
    return new Message("update");
 }
 

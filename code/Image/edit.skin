@@ -21,6 +21,14 @@
 <td class="small" valign="top">Description:</td>
 <td nowrap="nowrap"><% image.alttext as="editor" cols="20" rows="3" %></td>
 </tr>
+<tr><td class="small" colspan="5">Add this image to a topic</td></tr>
+<tr><td></td><td colspan="5">
+<table><tr><td class="small">Choose a gallery...<br />
+<% imagemgr.topicchooser %></td>
+<td valign="top" class="small">...or enter a new one<br /> 
+<input type="text" name="topic" value="<% request.topic %>" /></td>
+</tr></table>
+</td></tr>
 <tr>
 <td></td>
 <td colspan="2" class="small">Created by <% image.creator as="link" %> on <% image.createtime format="short" %>.</td>

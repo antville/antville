@@ -75,6 +75,7 @@ create table AV_IMAGE (
    IMAGE_F_IMAGE_PARENT int(10),
    IMAGE_F_IMAGE_THUMB int(10),
    IMAGE_ALIAS varchar(128),
+   IMAGE_TOPIC varchar(255),
    IMAGE_FILENAME varchar(128),
    IMAGE_FILEEXT varchar(128),
    IMAGE_WIDTH int(4),

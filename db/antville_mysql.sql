@@ -88,6 +88,7 @@ create table AV_IMAGE (
    IMAGE_F_IMAGE_PARENT mediumint(10),
    IMAGE_F_IMAGE_THUMB mediumint(10),
    IMAGE_ALIAS tinytext,
+   IMAGE_TOPIC varchar(255),
    IMAGE_FILENAME tinytext,
    IMAGE_FILEEXT tinytext,
    IMAGE_WIDTH mediumint(4),

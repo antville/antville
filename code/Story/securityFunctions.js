@@ -127,5 +127,7 @@ function allowTextMacros(s) {
    s.allowMacro("fakemail");
    s.allowMacro("this.topic");
    s.allowMacro("story.topic");
+   s.allowMacro("imageoftheday");
+   s.allowMacro("gallery");
    return;
 }

@@ -1,0 +1,5 @@
+<div class="pagelink"><% linkedpath %><br /><br />
+<% topic.addimage prefix="...&nbsp;" suffix="<br />" %>
+<% response.prevpage %></div>
+<% topic.storylist %>
+<% response.nextpage %>

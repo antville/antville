@@ -12,7 +12,10 @@ function main_action() {
       res.data.title += formatTimestamp(ts, "yyyy-MM-dd");
    } else
       res.data.title += this.groupname;
-   res.data.body = this.renderSkinAsString("main");
+   if (this._parent._prototype=="imagetopicmgr")
+      res.data.body = this.renderSkinAsString("imagetopic");
+   else
+      res.data.body = this.renderSkinAsString("main");
    path.site.renderSkin("page");
 }
 

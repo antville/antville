@@ -19,6 +19,28 @@ function addstory_macro (param) {
    return;
 }
 
+
+/**
+ * Display a link to let the use add a new image to this topic
+ */
+function addimage_macro (param) {
+   try {
+      path.site.images.checkAdd(session.user, req.data.memberlevel);
+   } catch (deny) {
+      return;
+   }
+   param.linkto = "create";
+   param.urlparam = "topic=" + this.groupname;
+   Html.openTag("a", path.site.images.createLinkParam(param));
+   if (param.text)
+      res.format(param.text);
+   else
+      res.write("add an image to this topic");
+   Html.closeTag("a");
+   return;
+}
+
+
 /**
  * Get related topics, i.e. topics that contain stories that
  * link back to this topic.

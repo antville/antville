@@ -61,6 +61,7 @@ DISPLAY = new Array();
 DISPLAY["root"] = "Root";
 DISPLAY["site"] = "Home";
 DISPLAY["topicmgr"] = "Topics";
+DISPLAY["imagetopicmgr"] = "Galleries";
 DISPLAY["storymgr"] = "Stories";
 DISPLAY["filemgr"] = "Files";
 DISPLAY["imagemgr"] = "Images";

@@ -27,6 +27,15 @@ function evalImg(param, creator) {
          throw new Exception("noSpecialChars");
       newImg.alias = buildAlias(param.alias, this);
    }
+   // check name of topic (if specified)
+   var topicName = null;
+   if (param.topic) {
+      if (!param.topic.isURL())
+         throw new Exception("topicNoSpecialChars");
+      topicName = param.topic;
+   } else if (param.addToTopic)
+      topicName = param.addToTopic;
+   newImg.topic = topicName;
    // store properties necessary for saving image on disk
    newImg.filename = newImg.alias;
    // check if user wants to resize image

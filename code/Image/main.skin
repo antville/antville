@@ -7,6 +7,7 @@ To insert this image into a story, comment or skin copy/paste the following code
 <tr>
 <td valign="top">
 <div class="storyTitle"><% image.alias %></div>
+<% image.topic prefix="Gallery: " as="link" %>
 <div class="small">(<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels)</div>
 </td>
 <td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>

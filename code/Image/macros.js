@@ -108,3 +108,17 @@ function show_macro(param) {
    renderImage(img, param);
    Html.closeLink();
 }
+
+
+/**
+ * macro renders the name of the topic this story belongs to
+ * either as link or plain text
+ */
+function topic_macro(param) {
+   if (!this.topic)
+      return;
+   if (param.as == "link") {
+      Html.link(path.site.images.topics.href(this.topic), this.topic);
+   } else
+      res.write(this.topic);
+}

@@ -46,6 +46,7 @@
 
 <div class="statusdark">...&nbsp;<% site.link to="main" text="home" %><br />
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
+...&nbsp;<% site.link to="images/topics" text="galleries" %><br />
 <% site.navigation for="contributors" %>
 <% site.navigation for="admins" %><br />
 ...&nbsp;<a href="<% root.sysurl %>"><% root.systitle suffix=" " %>home</a></div>
