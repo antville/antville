@@ -142,3 +142,29 @@ function evalURL(url) {
       return ("http://" + url);
    return (url);
 }
+
+/**
+ * function checks if user has permanent cookies
+ * storing username and password
+ */
+
+function autoLogin() {
+   if (user.uid)
+      return;
+   var name = req.data.avUsr;
+   var pw = req.data.avPw;
+   if (!name || !pw)
+      return;
+   var u = getUser(name);
+   if (!u)
+      return;
+   if (calcMD5(u.password) != pw)
+      return;
+   else {
+      if (user.login(name,u.password)) {
+         user.lastVisit = new Date();
+         res.message = "Welcome to Antville, " + user.name + "! Have fun!";
+      } else
+         return;
+   }
+}
