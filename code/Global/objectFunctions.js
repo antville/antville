@@ -350,7 +350,7 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
-   return (5000);
+   return (30000);
 }
 
 
