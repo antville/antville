@@ -36,7 +36,7 @@ else {
 var param2 = new Object();
 param2.title = encodeXml(this.title);
 param2.link = encodeXml(base + this.href());
-param2.description = encodeXml(this.tagline);
+param2.description = encodeXml(this.description);
 param2.year = now.getYear();
 param2.name = encodeXml(this.creator.name);
 param2.lastBuildDate = this.lastUpdate;
