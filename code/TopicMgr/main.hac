@@ -1,5 +1,3 @@
-autoLogin();
-
 var deny = path.weblog.isNotPublic(user);
 if (deny) {
    res.message = deny;
