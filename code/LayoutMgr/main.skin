@@ -1,0 +1,9 @@
+<p><% linkedpath %></p>
+
+<p>...&nbsp;<% layoutmgr.link to="choose" text="choose a new layout" %></p>
+
+<p>Below are the existing layouts for <% context.title %>:</p>
+
+<% response.pagenavigation %>
+<% response.layoutlist %>
+<% response.pagenavigation %>

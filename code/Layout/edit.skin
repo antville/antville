@@ -1,0 +1,87 @@
+<form id="prefs" method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td colspan="2" nowrap="nowrap"><b><a name="general">General</a></b></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Title:</td>
+<td nowrap="nowrap"><% layout.title as="editor" width="30" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">Description:</td>
+<td nowrap="nowrap"><% layout.description as="editor" cols="30" rows="5" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">Basis Layout:</td>
+<td><% layout.parent default="none" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">Shareable:</td>
+<td><% layout.shareable as="editor" %><br /><span class="small">Enabling this means that other users can use this layout as a basis for new layouts. You can only define those layout as shareable that aren't based on a different layout.</span></td>
+</tr>
+<tr>
+<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<b><a name="colors">Colors</a></b></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Background:</td>
+<td nowrap="nowrap"><% colorpicker name="bgcolor" text="background" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Title:</td>
+<td nowrap="nowrap"><% colorpicker name="titlecolor" text="title" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Text:</td>
+<td nowrap="nowrap"><% colorpicker name="textcolor" text="text" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Small text:</td>
+<td nowrap="nowrap"><% colorpicker name="smallcolor" text="small text" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Link:</td>
+<td nowrap="nowrap"><% colorpicker name="linkcolor" text="link" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Active link:</td>
+<td nowrap="nowrap"><% colorpicker name="alinkcolor" text="active link" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Visited link:</td>
+<td nowrap="nowrap"><% colorpicker name="vlinkcolor" text="visited link" %></td>
+</tr>
+<tr>
+<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<b><a name="fonts">Fonts</a></b></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Title font:</td>
+<td nowrap="nowrap"><% layout.titlefont as="editor" width="30" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Title size:</td>
+<td nowrap="nowrap"><% layout.titlesize as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Text font:</td>
+<td nowrap="nowrap"><% layout.textfont as="editor" width="30" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Text size:</td>
+<td nowrap="nowrap"><% layout.textsize as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Small font:</td>
+<td nowrap="nowrap"><% layout.smallfont as="editor" width="30" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Small size:</td>
+<td nowrap="nowrap"><% layout.smallsize as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+</tr>
+</table>
+</form>

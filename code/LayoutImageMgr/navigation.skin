@@ -1,0 +1,7 @@
+<tr>
+<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
+<td nowrap="nowrap"><% layoutimagemgr.link to="main" text="additional images" %></td>
+</tr>
+<tr>
+<td><% layoutimagemgr.link to="parentimages" text="standard images" %><% layout.parent prefix="&nbsp;of&nbsp;'" suffix="'" %></td>
+</tr>

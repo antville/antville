@@ -1,0 +1,28 @@
+<form method="post" action="<% response.action %>" enctype="multipart/form-data">
+<table border="0" width="400" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small" nowrap="nowrap">Local file:</td>
+<td nowrap="nowrap"><% input type="file" name="rawimage" size="20" %></td>
+</tr>
+<tr>
+<td align="center"><em>&#151; or &#151;</em></td>
+<td class="small">(only specify either a local file or a remote URL)</td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Remote URL:</td>
+<td nowrap="nowrap"><% input name="url" size="30" %></td>
+</tr>
+<tr>
+<td valign="top" class="small" nowrap="nowrap">Name:</td>
+<td><% input name="alias" size="30" %><br /><span class="small">If you do not specify a name Antville will create one based on the name of the local or remote file, resp.</span></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap" valign="top">Description:</td>
+<td nowrap="nowrap"><% input type="textarea" name="alttext" cols="25" rows="3" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+</tr>
+</table>
+</form>

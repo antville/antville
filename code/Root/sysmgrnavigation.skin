@@ -1,0 +1,9 @@
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
+<div class="statuslight"><% layout.image name="manage" %></div>
+<div class="sep"><% layout.image name="pixel" width="198" %></div>
+...&nbsp;<% root.link to="manage/sites" text="sites" %><br />
+...&nbsp;<% root.link to="manage/users" text="users" %><br />
+...&nbsp;<% root.link to="layouts" text="layouts" %><br />
+...&nbsp;<% root.link to="manage/logs" text="system log" %><br />
+...&nbsp;<% root.link to="manage/status" text="system status" %><br />
+...&nbsp;<% root.link to="manage/setup" text="system setup" %>

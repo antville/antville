@@ -1,0 +1,14 @@
+<p><% linkedpath %></p>
+
+<p>To insert an image in a story or comment just copy and paste its code.</p>
+
+<table border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td colspan="2" nowrap="nowrap"><% layoutimagemgr.link to="create" text="add a layout image" prefix="...&nbsp;" %></td>
+</tr>
+<% layoutimagemgr.navigation skin="navigation" %>
+</table>
+
+<% response.pagenavigation %>
+<% layoutimagemgr.images %>
+<% response.pagenavigation %>

@@ -1,0 +1,8 @@
+<p><% linkedpath %></p>
+
+<p>Please select the .zip file containing the layout you want to import:</p>
+
+<form method="post" enctype="multipart/form-data" action="<% response.action %>">
+<p><% input type="file" name="zipfile" %></p>
+<p><% input type="submit" name="import" value="Import" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></p>
+</form>

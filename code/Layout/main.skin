@@ -1,0 +1,19 @@
+<% linkedpath %>
+
+<h3>Layout '<% layout.title %>'</h3>
+
+<% this.description prefix="<p>" suffix="</p>" %>
+
+<p><% layout.link to="edit" text="Edit the preferences" %> of this layout.</p>
+
+<p><% layout.link to="images" text="Manage images" %> of this layout.</p>
+
+<p><% layout.link to="skins" text="Manage skins" %> of this layout.</p>
+
+<% layout.testdrivelink text="Test-drive" prefix="<p>" suffix=" this layout on this site.</p>" %>
+
+<% layout.activatelink text="Activate" prefix="<p>" suffix=" this layout on this site.</p>" %>
+
+<% layout.downloadlink text="Download" prefix="<p>" suffix=" this layout as a .zip file.</p>" %>
+
+<% layout.deletelink text="Delete" prefix="<p>" suffix=" this layout and all of its skins.</p>" %>
