@@ -14,7 +14,8 @@
       <echo/>
       <echo message=" available targets are:"/>
       <echo/>
-      <echo message=" antville   - generates the distribution packages"/>
+      <echo message=" all        - generates the antville and antclick packages"/>
+      <echo message=" antville   - generates the antville packages"/>
       <echo message=" antclick   - generates the antclick packages"/>
       <echo message=" transfer   - copy packages to download server"/>
       <!-- echo message=" docs       - generates the API helmaDocs"/ -->
@@ -81,49 +82,45 @@
 
 
    <!-- =================================================================== -->
+   <!-- generate both, the antville and antclick packages                   -->
+   <!-- =================================================================== -->
+   <target name="all" depends="export">
+      <property name="nocleanup" value="true"/>
+      <property name="noexport" value="true"/>
+      <antcall target="antville"/>
+      <antcall target="antclick"/>
+      <antcall target="cleanup"/>
+      <!-- FIXME: currently don't know about a way to call target cleanup here -->
+      <delete dir="${build.work}"/>
+   </target>
+
+
+   <!-- =================================================================== -->
    <!-- generate the antville distribution packages                         -->
    <!-- =================================================================== -->
-   <target name="antville" depends="init">
-      <mkdir dir="${build.work}"/>
-      <cvs cvsRoot="${cvs.antville.root}" 
-         command="export" 
-         tag="${cvs.antville.tag}" 
-         package="${project}" 
-         dest="${build.work}"/>
-      <delete dir="${build.work}/antville/build/extra"/>
-      <delete dir="${build.work}/antville/build/lib"/>
+   <target name="antville" depends="export">
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
-         <param name="path" value="${build.work}/antville"/>
+         <param name="path" value="${build.work}/apps/antville"/>
       </antcall>
       <antcall target="package-tgz">
          <param name="filename" value="${package.name}"/>
-         <param name="path" value="${build.work}/antville"/>
+         <param name="path" value="${build.work}/apps/antville"/>
       </antcall>
-      <delete dir="${build.work}"/>
+      <antcall target="cleanup"/>
    </target>
 
 
    <!-- =================================================================== -->
    <!-- generate the antclick distribution packages                         -->
    <!-- =================================================================== -->
-   <target name="antclick" depends="init">
+   <target name="antclick" depends="export">
       <mkdir dir="${build.work}"/>
       <copy todir="${build.work}/">
          <fileset dir="${build.extra}" 
             includes="antclick.sh antclick.bat apps.properties 
                       launcher.jar server.properties"/>
       </copy>
-
-      <mkdir dir="${build.work}/apps"/>
-      <cvs cvsRoot="${cvs.antville.root}" 
-         command="export" 
-         tag="${cvs.antville.tag}" 
-         package="${project}" 
-         dest="${build.work}/apps"/>
-
-      <delete dir="${build.work}/antville/build/extra"/>
-      <delete dir="${build.work}/antville/build/lib"/>
 
       <cvs cvsRoot="${cvs.manage.root}" 
          command="export" 
@@ -163,8 +160,22 @@
          <param name="filename" value="${antclick.name}"/>
          <param name="path" value="${build.work}"/>
       </antcall>
+      <antcall target="cleanup"/>
+   </target>
 
-      <delete dir="${build.work}"/>
+
+   <!-- =================================================================== -->
+   <!-- export the antville module from CVS                                 -->
+   <!-- =================================================================== -->
+   <target name="export" depends="init" unless="noexport">
+      <mkdir dir="${build.work}/apps"/>
+      <cvs cvsRoot="${cvs.antville.root}" 
+         command="export" 
+         tag="${cvs.antville.tag}" 
+         package="${project}" 
+         dest="${build.work}/apps"/>
+      <delete dir="${build.work}/apps/antville/build/extra"/>
+      <delete dir="${build.work}/apps/antville/build/lib"/>
    </target>
 
 
@@ -216,6 +227,14 @@
       <zip zipfile="${build.dist}/${filename}.zip">
          <zipfileset dir="${path}" prefix="${filename}" includes="**" />
       </zip>
+   </target>
+
+
+   <!-- =================================================================== -->
+   <!-- clean up the mess                                                   -->
+   <!-- =================================================================== -->
+   <target name="cleanup" depends="init" unless="nocleanup">
+      <delete dir="${build.work}"/>
    </target>
 
 </project>
