@@ -1,3 +1,5 @@
+autoLogin();
+
 var deny = this.isEditDenied();
 if (deny) {
    res.message = deny;
