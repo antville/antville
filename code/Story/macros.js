@@ -213,7 +213,6 @@ function commentcounter_macro(param) {
       var commentCnt = this.comments.count();
       if (!param.linkto)
          param.linkto = "main";
-      param.anchor = param.anchor;
       if (commentCnt == 0) {
          res.write(commentCnt + (param.no ? param.no : " comments"));
       } else {

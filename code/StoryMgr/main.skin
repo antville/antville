@@ -4,7 +4,7 @@
 </tr>
 <tr>
 <td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% this.link to="main" text="all stories" %>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=offline" text="offline stories"%>&nbsp;|&nbsp;<% this.link to="main" urlparam="?show=mystories" text="my stories" %></td>
+<td nowrap="nowrap"><% this.link to="main" text="all stories" %>&nbsp;|&nbsp;<% this.link to="main" urlparam="show=offline" text="offline stories"%>&nbsp;|&nbsp;<% this.link to="main" urlparam="show=mystories" text="my stories" %></td>
 </tr>
 </table>
 

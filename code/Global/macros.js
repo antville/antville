@@ -102,9 +102,9 @@ function link_macro(param) {
   else // backwards compatibility
     param.href = param.linkto;
   if (param.urlparam)
-    param.href += param.urlparam;
+    param.href += "?" + param.urlparam;
   if (param.anchor)
-    param.href += param.anchor;
+    param.href += "#" + param.anchor;
   var content = param.text ? param.text : param.href;
 
   delete param.to;
