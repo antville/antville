@@ -5,10 +5,10 @@
 function stylesheet_action() {
    var skin = this.skins.fetchSkin("site", "style");
    // we also check if the prefs have been changed, lately:
-   var mod = req.lastModified ? req.lastModified : new Date();
-   if (skin.isModified() || mod < this.modifytime) {
+   var sitemod = this.isModified();
+   if (skin.isModified() || sitemod) {
       res.contentType = "text/css";
-      res.lastModified = new Date();
+      res.lastModified = sitemod ? this.modifytime : skin.modifytime;
       this.renderSkin("style");
    }
    else 
@@ -24,7 +24,7 @@ function javascript_action() {
    var skin = this.skins.fetchSkin("site", "javascript");
    if (skin.isModified()) {
       res.contentType = "text/javascript";
-      res.lastModified = new Date();
+      res.lastModified = skin.modifytime;
       this.renderSkin("javascript");
    }
    else 
