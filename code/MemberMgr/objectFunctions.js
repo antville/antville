@@ -66,7 +66,6 @@ function evalRegistration(param) {
    if (!result) {
       var newUser = app.registerUser(param.name, param.password1);
       if (newUser) {
-         newUser.name = param.name;
          newUser.email = param.email;
          newUser.publishemail = param.publishemail;
          newUser.url = evalURL(param.url);
