@@ -1,2 +1,1 @@
 <div class="statuslight">You're not logged in ... <% this.link to="login" text="login" %></div>
-<div class="statuslight"><% membership.signuplink text="sign up" prefix="..." suffix=" to this weblog" %></div>
