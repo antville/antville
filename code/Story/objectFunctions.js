@@ -73,14 +73,9 @@ function evalStory(param,modifier) {
       this.modifytime = new Date();
    }
 
-   if (this.online > 0) {
-      // href() may not yet work if we changed the topic
-      // so we build the redirect URL manually
-      if (this.topic)
-         result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
-      else
-         result.url = this.weblog.href() + this.day+"/" + this._id;
-   } else
+   if (this.online > 0)
+      result.url = this.href();
+   else
       result.url = this.weblog.stories.href();
    result.message = "The story was updated successfully!";
    this.cache.lrText = null;
@@ -152,8 +147,8 @@ function evalComment(param,story,creator) {
 
 function deleteComment(currComment) {
    for (var i=currComment.size();i>0;i--)
-      currComment.deleteComment(currComment.get(i-1));
-   if (this.remove(currComment))
+      this.deleteComment(currComment.get(i-1));
+   if (this.comments.remove(currComment))
       return("The comment was deleted successfully!");
    else
       return("Couldn't delete the comment!");
@@ -196,10 +191,9 @@ function incrementReadCounter() {
  */
 
 function deleteAll() {
-   for (var i=this.size();i>0;i--) {
-      var comment = this.get(i-1);
-      comment.deleteAll();
-      this.remove(comment);
+   for (var i=this.comments.size();i>0;i--) {
+      var c = this.comments.get(i-1);
+      this.comments.remove(c);
    }
    return true;
 }
