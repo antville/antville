@@ -1,0 +1,36 @@
+if (!this.online)
+	res.redirect("notfound");
+	
+var base = "http://localhost:8080";
+var now = new Date();
+
+var param1 = new Object();
+var items = "";
+
+var size = this.allstories.size();
+var max = req.data.max ? req.data.max : 7;
+if (max > size)
+	max = size;
+
+for (var i=0; i<max; i++) {
+	var story = this.allstories.get(i);
+	param1.itemLink = base + story.href();
+	param1.itemTitle = story.title;
+	param1.itemDescription = story.text;
+	items += this.renderSkinAsString("rssItem", param1);
+}
+
+var param2 = new Object();
+param2.title = this.title;
+param2.link = base + this.href();
+param2.description =  this.tagline;
+param2.year = now.getYear();
+param2.name = this.creator.name;
+param2.lastBuildDate = this.lastUpdate;
+param2.managingEditor = this.creator.email;
+param2.webMaster = this.creator.email;
+param2.language = this.language;
+param2.items = items;
+
+res.contentType = "text/xml";
+this.renderSkin("rssChannel", param2);
