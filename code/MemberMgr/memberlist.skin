@@ -1,0 +1,2 @@
+<p>Current members of <b><% weblog.title %></b>:</p>
+<% this.memberlist %>

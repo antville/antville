@@ -1,0 +1,6 @@
+autoLogin();
+checkIfLoggedIn(this.href(req.action));
+
+var parent = setLayout();
+
+res.data.body = user.renderSkinAsString("subscriptions");

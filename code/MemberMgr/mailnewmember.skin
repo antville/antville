@@ -1,0 +1,7 @@
+<% param.creator %> has added you (meaning your antville-account "<% param.account %>") to the list of members of "<% param.weblog %>".
+
+Have fun!
+
+---------------------------------------
+Antville - http://www.antville.org
+---------------------------------------

@@ -1,0 +1,11 @@
+<form method="post">
+<p>To add a new contributor, content manager or admin to this weblog, simply search for an existing antville-user by specifying a part of the username:</p>
+
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td nowrap><% this.input type="text" name="keyword" %></td>
+<td nowrap><% this.input type="button" value="search" %></td>
+</tr>
+</table>
+</form>
+

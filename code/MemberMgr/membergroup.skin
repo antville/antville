@@ -1,0 +1,4 @@
+<b><% param.group %></b>
+<ul>
+<% param.list %>
+</ul>
