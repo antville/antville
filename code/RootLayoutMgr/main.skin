@@ -1,8 +1,0 @@
-<p>...&nbsp;<% layoutmgr.link to="create" text="create a new layout" %><br />
-...&nbsp;<% layoutmgr.link to="import" text="import a new layout" %></p>
-
-<p>Below are the existing layouts for <% context.title %>:</p>
-
-<% response.pagenavigation %>
-<% response.layoutlist %>
-<% response.pagenavigation %>
