@@ -1,0 +1,16 @@
+if (!this.weblog.isPublic() || !this.isPostAllowed())
+   res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.href());
+
+this.filter();
+
+res.skin = "main";
+
+if (req.data.submit == "cancel" || !this.isPostAllowed())
+   res.redirect(this.href());
+else if (req.data.text)
+   this.addComment();
+
+res.title = "Antville - " + this.weblog.title;
+res.head = this.weblog.renderSkinAsString("style");
+res.body = this.weblog.renderSkinAsString("header");
+res.body += this.renderSkinAsString("comment");
