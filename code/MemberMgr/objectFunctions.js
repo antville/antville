@@ -169,7 +169,7 @@ function sendPwd(email) {
       mail.setSubject("Your Accounts for Antville");
       var mailParam = new Object();
       var now = new Date();
-      mailParam.timestamp = this._parent.formatTimestamp(now,new Object());
+      mailParam.timestamp = formatTimestamp(now);
       mailParam.text = pwdList;
    	mail.setText(this.renderSkinAsString("pwdmail",mailParam));
       var sendResult = mail.send();
