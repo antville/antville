@@ -4,7 +4,7 @@
 
 function alias_macro(param) {
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("alias",param));
+      renderInputText(this.createInputParam("alias",param));
    else
       res.write(this.alias);
 }
@@ -16,7 +16,7 @@ function alias_macro(param) {
 
 function alttext_macro(param) {
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("alttext",param));
+      renderInputText(this.createInputParam("alttext",param));
    else
       res.write(this.alttext);
 }

@@ -3,7 +3,7 @@
  */
 function title_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("title", param));
+    renderInputText(this.createInputParam("title", param));
   else {
     if (param && param.linkto) {
       openLink(this.href(param.linkto));
@@ -24,7 +24,7 @@ function title_macro(param) {
  */
 function alias_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("alias",param));
+    renderInputText(this.createInputParam("alias",param));
   else
     res.write(this.alias);
 }
@@ -38,7 +38,7 @@ function tagline_macro(param) {
     return;
   
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("tagline",param));
+    renderInputText(this.createInputParam("tagline",param));
   else if (this.tagline)
     res.write(stripTags(this.tagline));
 }
@@ -62,7 +62,7 @@ function birthdate_macro(param) {
  */
 function email_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("email",param));
+    renderInputText(this.createInputParam("email",param));
   else
     res.write(this.email);
 }
@@ -73,7 +73,7 @@ function email_macro(param) {
  */
 function bgcolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("bgcolor",param));
+    renderInputText(this.createInputParam("bgcolor",param));
   else
     renderColor(this.bgcolor);
 }
@@ -84,7 +84,7 @@ function bgcolor_macro(param) {
  */
 function textfont_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("textfont",param));
+    renderInputText(this.createInputParam("textfont",param));
   else
     res.write(this.textfont);
 }
@@ -95,7 +95,7 @@ function textfont_macro(param) {
  */
 function textsize_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("textsize",param));
+    renderInputText(this.createInputParam("textsize",param));
   else
     res.write(this.textsize);
 }
@@ -106,7 +106,7 @@ function textsize_macro(param) {
  */
 function textcolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("textcolor",param));
+    renderInputText(this.createInputParam("textcolor",param));
   else
     renderColor(this.textcolor);
 }
@@ -117,7 +117,7 @@ function textcolor_macro(param) {
  */
 function linkcolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("linkcolor",param));
+    renderInputText(this.createInputParam("linkcolor",param));
   else
     renderColor(this.linkcolor);
 }
@@ -128,7 +128,7 @@ function linkcolor_macro(param) {
  */
 function alinkcolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("alinkcolor",param));
+    renderInputText(this.createInputParam("alinkcolor",param));
   else
     renderColor(this.alinkcolor);
 }
@@ -139,7 +139,7 @@ function alinkcolor_macro(param) {
  */
 function vlinkcolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("vlinkcolor",param));
+    renderInputText(this.createInputParam("vlinkcolor",param));
   else
     renderColor(this.vlinkcolor);
 }
@@ -150,7 +150,7 @@ function vlinkcolor_macro(param) {
  */
 function titlefont_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("titlefont",param));
+    renderInputText(this.createInputParam("titlefont",param));
   else
     res.write(this.titlefont);
 }
@@ -161,7 +161,7 @@ function titlefont_macro(param) {
  */
 function titlesize_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("titlesize",param));
+    renderInputText(this.createInputParam("titlesize",param));
   else
     res.write(this.titlesize);
 }
@@ -172,7 +172,7 @@ function titlesize_macro(param) {
  */
 function titlecolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("titlecolor",param));
+    renderInputText(this.createInputParam("titlecolor",param));
   else
     renderColor(this.titlecolor);
 }
@@ -183,7 +183,7 @@ function titlecolor_macro(param) {
  */
 function smallfont_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("smallfont",param));
+    renderInputText(this.createInputParam("smallfont",param));
   else
     res.write(this.smallfont);
 }
@@ -194,7 +194,7 @@ function smallfont_macro(param) {
  */
 function smallsize_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("smallsize",param));
+    renderInputText(this.createInputParam("smallsize",param));
   else
     res.write(this.smallsize);
 }
@@ -205,7 +205,7 @@ function smallsize_macro(param) {
  */
 function smallcolor_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("smallcolor",param));
+    renderInputText(this.createInputParam("smallcolor",param));
   else
     renderColor(this.smallcolor);
 }
@@ -246,7 +246,7 @@ function modifytime_macro(param) {
  */
 function online_macro(param) {
   if (param.as == "editor")
-    this.renderInputCheckbox(this.createInputParam("online",param));
+    renderInputCheckbox(this.createInputParam("online",param));
   else
     res.write(this.online ? "yes" : "no");
 }
@@ -265,7 +265,7 @@ function url_macro(param) {
  */
 function hasdiscussions_macro(param) {
   if (param.as == "editor")
-    this.renderInputCheckbox(this.createInputParam("discussions",param));
+    renderInputCheckbox(this.createInputParam("discussions",param));
   else
     res.write(parseInt(this.discussions,10) ? "yes" : "no");
 }
@@ -276,7 +276,7 @@ function hasdiscussions_macro(param) {
  */
 function usermaycontrib_macro(param) {
   if (param.as == "editor")
-    this.renderInputCheckbox(this.createInputParam("usercontrib",param));
+    renderInputCheckbox(this.createInputParam("usercontrib",param));
   else
     res.write(parseInt(this.usercontrib,10) ? "yes" : "no");
 }
@@ -287,7 +287,7 @@ function usermaycontrib_macro(param) {
  */
 function showdays_macro(param) {
   if (param.as == "editor")
-    this.renderInputText(this.createInputParam("days",param));
+    renderInputText(this.createInputParam("days",param));
   else
     res.write(this.days);
 }
@@ -298,7 +298,7 @@ function showdays_macro(param) {
  */
 function showarchive_macro(param) {
   if (param.as == "editor")
-    this.renderInputCheckbox(this.createInputParam("archive",param));
+    renderInputCheckbox(this.createInputParam("archive",param));
   else
     res.write(parseInt(this.archive,10) ? "yes" : "no");
 }
@@ -309,7 +309,7 @@ function showarchive_macro(param) {
  */
 function enableping_macro(param) {
   if (param.as == "editor")
-    this.renderInputCheckbox(this.createInputParam("enableping",param));
+    renderInputCheckbox(this.createInputParam("enableping",param));
   else
     res.write(parseInt(this.enableping,10) ? "yes" : "no");
 }
@@ -322,7 +322,7 @@ function longdateformat_macro(param) {
   if (param.as == "chooser")
     this.renderDateformatChooser("long");
   else if (param.as == "editor")
-    this.renderInputText(this.createInputParam("longdateformat",param));
+    renderInputText(this.createInputParam("longdateformat",param));
   else
     res.write(this.longdateformat);
 }
@@ -335,7 +335,7 @@ function shortdateformat_macro(param) {
   if (param.as == "chooser")
     this.renderDateformatChooser("short");
   else if (param.as == "editor")
-    this.renderInputText(this.createInputParam("shortdateformat",param));
+    renderInputText(this.createInputParam("shortdateformat",param));
   else
     res.write(this.shortdateformat);
 }

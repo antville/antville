@@ -6,7 +6,7 @@ function title_macro(param) {
    if (!this.title && !param.as)
       return;
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("title",param));
+      renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
       openLink(this.href("main"));
       if (this.title)
@@ -26,7 +26,7 @@ function title_macro(param) {
 
 function text_macro(param) {
    if (param.as == "editor")
-      this.renderInputTextarea(this.createInputParam("text",param));
+      renderInputTextarea(this.createInputParam("text",param));
    else {
       if (!param.limit)
          res.write(this.getText());
@@ -67,7 +67,7 @@ function createtime_macro(param) {
       else
          param.value = formatTimestamp(new Date(), "yyyy-MM-dd HH:mm");
       param.name = "createtime";
-      this.renderInputText(param);
+      renderInputText(param);
    } else {
       if (!this.createtime)
          return;

@@ -6,7 +6,7 @@ function title_macro(param) {
    if (!this.title && !param.as)
       return;
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("title",param));
+      renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
       param.linkto = "main";
       param.anchor = this._id;
@@ -32,7 +32,7 @@ function replylink_macro(param) {
       if (!param.image)
          res.write(param.text ? param.text : "reply");
       else
-         this.renderImage(param);
+         renderImage(param);
       closeLink();
    }
 }

@@ -17,7 +17,7 @@ function name_macro(param) {
 
 function password_macro(param) {
    if (param.as == "editor")
-      this.renderInputPassword(this.createInputParam("password",param));
+      renderInputPassword(this.createInputParam("password",param));
    return;
 }
 
@@ -28,7 +28,7 @@ function password_macro(param) {
 
 function url_macro(param) {
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("url",param));
+      renderInputText(this.createInputParam("url",param));
    else
       res.write(this.url);
 }
@@ -40,7 +40,7 @@ function url_macro(param) {
 
 function email_macro(param) {
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("email",param));
+      renderInputText(this.createInputParam("email",param));
    else
       res.write(this.email);
 }
@@ -51,7 +51,7 @@ function email_macro(param) {
 
 function description_macro(param) {
    if (param.as == "editor")
-      this.renderInputTextarea(this.createInputParam("description",param));
+      renderInputTextarea(this.createInputParam("description",param));
    else
       res.write(this.description);
 }

@@ -8,7 +8,7 @@ if (deny) {
    res.redirect(parent.href());
 }
 
-this.renderImagelist(parseInt(req.data.start,10));
+renderImagelist(parseInt(req.data.start,10));
 
 res.data.title = parent.title;
 

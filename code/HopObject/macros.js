@@ -49,19 +49,19 @@ function link_macro(param) {
 function input_macro(param) {
    if (param.type == "textarea") {
       param.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
-      return(this.renderInputTextarea(param));
+      return(renderInputTextarea(param));
    } else if (param.type == "checkbox")
-      return(this.renderInputCheckbox(param));
+      return(renderInputCheckbox(param));
    else if (param.type == "button") {
       param.type = "submit";
-      return(this.renderInputButton(param));
+      return(renderInputButton(param));
    }
    else if (param.type == "password")
-      return(this.renderInputPassword(param));
+      return(renderInputPassword(param));
    else if (param.type == "file")
-      return(this.renderInputFile(param));
+      return(renderInputFile(param));
    else {
       param.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
-      return(this.renderInputText(param));
+      return(renderInputText(param));
    }
 }

@@ -4,7 +4,7 @@
 
 function alias_macro(param) {
    if (param.as == "editor")
-      this.renderInputText(this.createInputParam("alias",param));
+      renderInputText(this.createInputParam("alias",param));
    else if (param.as == "link") {
       param.to = "getgoodie"
       param.urlparam = "name=" + this.alias;
@@ -22,7 +22,7 @@ function alias_macro(param) {
 
 function description_macro(param) {
    if (param.as == "editor")
-      this.renderInputTextarea(this.createInputParam("description",param));
+      renderInputTextarea(this.createInputParam("description",param));
    else
       res.write(this.description);
 }

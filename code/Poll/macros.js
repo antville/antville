@@ -7,7 +7,7 @@ function title_macro(param) {
    			param2.value = req.data.title;
    		else
    			param2.value = this.title;
-      this.renderInputText(param2);
+      renderInputText(param2);
    }
    else if (param.as == "link") {
       openLink(this.href());
@@ -27,7 +27,7 @@ function question_macro(param) {
    			param2.value = req.data.question;
    		else
    			param2.value = this.question;
-      this.renderInputTextarea(param2);
+      renderInputTextarea(param2);
    }
    else
       res.write(this.question);
@@ -48,7 +48,7 @@ function choices_macro(param) {
 				else
 					param2.value = req.data.choice;
 			}
- 	   	this.renderInputText(param2);
+ 	   	renderInputText(param2);
 			res.write("\n");
 		}
 	}

@@ -21,67 +21,6 @@ function renderDateformatChooser(version) {
 
 
 /**
- * renders image element
- * @param img Object contains the images's properties
- * @param param Object contains user-defined properties
- */
-function renderImage(img, param) {
-  // this function has gone global
-  renderImage(img, param);
-}
-
-
-/**
- * renders a textarea
- * @param param Object contains the element's attributes
- */
-function renderInputTextarea(param) {
-  // this function has gone global
-  renderInputTextarea(param);
-}
-
-
-/**
- * renders a submit-button
- * @param param Object contains the element's attributes
- */
-function renderInputButton(param) {
-  // this function has gone global
-  renderInputButton(param);
-}
-
-
-/**
- * renders an input type text
- * @param param Object contains the element's attributes
- */
-function renderInputText(param) {
-  // this function has gone global
-  renderInputText(param);
-}
-
-
-/**
- * renders an input type password
- * @param param Object contains the element's attributes
- */
-function renderInputPassword(param) {
-  // this function has gone global
-  renderInputPassword(param);
-}
-
-
-/**
- * function renders an input type file
- * @param param Object contains the element's attributes
- */
-function renderInputFile(param) {
-  // this function has gone global
-  renderInputFile(param);
-} 
-
-
-/**
  * FIXME!
  *
  * renders an input type radio
@@ -95,13 +34,3 @@ function renderInputRadio(param) {
   param.value = this[param.value] ? this[param.value] : "";
   renderMarkupElement("input", param);
 }*/
-
-
-/**
- * renders an input type checkbox
- * @param param Object contains the element's attributes
- */
-function renderInputCheckbox(param) {
-  // this function has gone global
-  renderInputCheckbox(param);
-}
