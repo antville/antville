@@ -125,6 +125,8 @@ function evalComment(param,story,creator) {
             cont[i.substring(8)] = param[i];
       }
       c.setContent (cont);
+      // let's keep the title property:
+      c.title = param.content_title;
       c.site = this.site;
       c.story = story;
       c.createtime = c.modifytime = new Date();

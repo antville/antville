@@ -9,9 +9,9 @@ function content_macro(param) {
       // this is a first trial to add a title like
       // "Re: title of previous posting" to a new posting
       if (param.part == "title" && !this.content) {
-         if (path.comment)
-            param.value = "";
-         else if (path.story.title)
+         if (path.comment && path.comment.title)
+            param.value = "Re: " + path.comment.title;
+         else if (path.story && path.story.title)
             param.value = "Re: " + path.story.title;
       }
       else
