@@ -9,7 +9,10 @@ function title_macro(param) {
    else {
       if (param && param.linkto) {
          this.openLink(param);
-         res.write(this.title);
+         if (this.title)
+         	 res.write(this.title);
+         else
+           res.write("[untitled weblog]");
          this.closeLink(param);
       } else
          res.write(this.title);
