@@ -55,6 +55,18 @@ function isCleanForURL(str) {
 }
 
 /**
+ * function checks if the string passed contains any characters that
+ * are forbidden in image- or filenames
+ */
+
+function isCleanForName(str) {
+   var invalidChar = new RegExp("[^a-zA-Z0-9\\.\\-_ ]");
+   if (invalidChar.exec(str))
+      return false;
+   return true;
+}
+
+/**
  * function checks if there is a site-object in path
  * if true, it returns it
  * if false, it returns root
