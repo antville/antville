@@ -1,11 +1,13 @@
 <form action="<% response.action %>" method="get">
-<input type="text" name="filter" value="<% request.filter %>" size="40" /> <input type="submit" name="submit" value="Filter" />
-</form><br />
+<input type="text" name="filter" value="<% request.filter %>" size="30" /> <input type="submit" name="submit" value="Filter" /> <input type="button" onclick="document.location='<% site.href action="referrers" %>';" value="Reset" />
+<div class="small"><input type="checkbox" name="includeSpam" value="checked" <% request.includeSpam prefix='checked="' suffix='"' %> /> include referrer spam</div>
+<br />
 
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td align="right" class="small">Visits</td>
-<td rowspan="999">&nbsp;&nbsp;</td>
+<td width="10" nowrap="nowrap" rowspan="999"> </td>
+<td></td>
 <td class="small">Referrer</td>
 </tr>
 
@@ -25,7 +27,8 @@ var searchEngineFilters = [
 for (var i in referrers) {
    var ref = referrers[i];
    var text = ref.text;
-   if (spamFilter.test(ref.url))
+   var isSpam = spamFilter.test(ref.url);
+   if (isSpam && !query.includeSpam)
       continue;
    if (query.filter && !searchFilter.test(ref.url))
       continue;
@@ -39,7 +42,11 @@ for (var i in referrers) {
    }
    document.writeln('<tr>');
    document.writeln('<td align="right" valign="top">', ref.count, '</td>');
-   document.writeln('<td><a href="', ref.url, '">', text, '</a></td>');
+   document.writeln('<td valign="top"><% site.switch name="userMayEdit" on="<input type=\"checkbox\" name=\"permanent\" value=\"', ref.url, '\" />" off="" %></td>');
+   document.writeln('<td><a href="', ref.url, '"',
+      ' onclick="clickReferrer(event, this); return false;"',
+      (isSpam ? ' style="color: <% layout.smallcolor %>;"' : ''),
+      '>', text, '</a></td>');
    document.writeln('</tr>');
 }
 // --></script>
@@ -51,3 +58,4 @@ for (var i in referrers) {
 </noscript>
 
 </table>
+</form>

@@ -235,6 +235,28 @@ function mostread_action() {
  * referrers of a site
  */
 function referrers_action() {
+   if (req.data.permanent && session.user) {
+      try {
+         // FIXME: unfortunately, the check* methods are
+         // not very handy, anymore... (need try/catch block)
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (err) {
+         res.message = err.toString();
+         res.redirect(this.href());
+         return;
+      }
+      var urls = req.data.permanent_array ?
+                 req.data.permanent_array : [req.data.permanent];
+      res.push();
+      res.write(this.preferences.getProperty("spamfilter"));
+      for (var i in urls) {
+         res.write("\n");
+         res.write(urls[i]);
+      }
+      this.preferences.setProperty("spamfilter", res.pop());
+      res.redirect(this.href(req.action));
+      return;
+   }
    res.data.action = this.href("referrers");
    res.data.title = getMessage("Site.referrersReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("referrers");

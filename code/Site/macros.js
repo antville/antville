@@ -619,3 +619,25 @@ function modulePreferences_macro(param) {
       this.applyModuleMethod(app.modules[i], "renderPreferences", param);
    return;
 }
+
+
+/**
+ * catch some special needs before passing the 
+ * macro call up to the HopObject prototype
+ * FIXME: this is probably to hackish...
+ */
+function switch_macro(param) {
+   if (param.name == "userMayEdit") {
+      try {
+         // FIXME: unfortunately, the check* methods are
+         // not very handy, anymore... (need try/catch block)
+         this.checkEdit(session.user, req.data.memberlevel);
+         res.write(param.on);
+      } catch (err) {
+         res.write(param.off);
+         return;
+      }
+   } else
+      HopObject.switch_macro.apply(this, [param]);
+   return;
+}
