@@ -52,36 +52,6 @@ function createtime_macro(param) {
 
 
 /**
- * a not yet sophisticated macro to display a 
- * colorpicker. works already in prefs and story editors
- */
-
-function colorpicker_macro(param) {
-   if (!param || !param.name)
-      return;
-   var param2 = new Object();
-   param2.as = "editor";
-   param2.width = "10";
-   param2.onchange = "setColorPreview('" + param.name + "', this.value);";
-   param2.id = "cp1_"+param.name;
-   if (this.__prototype__ == "story") {
-      param2.part = param.name;
-      param.editor = this.content_macro(param2);
-      param.color = this.getContentPart(param.name);
-   }
-   else {
-      param.editor = this[param.name+"_macro"](param2);
-      param.color = this[param.name];
-   }
-   if (!param.text)
-      param.text = param.name;
-   if (param.color)
-   	param.color = renderColorAsString(param.color);
-   this.renderSkin("cp_element", param);
-}
-
-
-/**
  * macro renders a form-input
  * DEPRECATED: just left for backwards-compatibility, use global input_macro() now
  */

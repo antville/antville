@@ -62,31 +62,31 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% site.colorpicker name="bgcolor" text="background" %><!-- &nbsp; <span class="small"><a href="javascript: setBg();">preview</a></small> --></td>
+<td nowrap="nowrap"><% colorpicker name="bgcolor" text="background" %><!-- &nbsp; <span class="small"><a href="javascript: setBg();">preview</a></small> --></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% site.colorpicker name="titlecolor" text="title" %></td>
+<td nowrap="nowrap"><% colorpicker name="titlecolor" text="title" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Text:</td>
-<td nowrap="nowrap"><% site.colorpicker name="textcolor" text="text" %></td>
+<td nowrap="nowrap"><% colorpicker name="textcolor" text="text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Small text:</td>
-<td nowrap="nowrap"><% site.colorpicker name="smallcolor" text="small text" %></td>
+<td nowrap="nowrap"><% colorpicker name="smallcolor" text="small text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Link:</td>
-<td nowrap="nowrap"><% site.colorpicker name="linkcolor" text="link" %></td>
+<td nowrap="nowrap"><% colorpicker name="linkcolor" text="link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Active Link:</td>
-<td nowrap="nowrap"><% site.colorpicker name="alinkcolor" text="active link" %></td>
+<td nowrap="nowrap"><% colorpicker name="alinkcolor" text="active link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Visited Link:</td>
-<td nowrap="nowrap"><% site.colorpicker name="vlinkcolor" text="visited link" %></td>
+<td nowrap="nowrap"><% colorpicker name="vlinkcolor" text="visited link" %></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />

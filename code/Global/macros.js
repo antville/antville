@@ -336,3 +336,40 @@ function storylist_macro(param) {
    }
    rows.release();
 }
+
+
+/**
+ * a not yet sophisticated macro to display a 
+ * colorpicker. works in site prefs and story editors
+ */
+
+function colorpicker_macro(param) {
+   if (!param || !param.name)
+      return;
+
+   var param2 = new Object();
+   param2.as = "editor";
+   param2.width = "10";
+   param2.onchange = "setColorPreview('" + param.name + "', this.value);";
+   param2.id = "cp1_"+param.name;
+   if (!param.text)
+      param.text = param.name;
+   if (param.color)
+   	param.color = renderColorAsString(param.color);
+
+   if (path.story) {
+      var obj = path.story;
+      param2.part = param.name;
+      param.editor = obj.content_macro(param2);
+      param.color = obj.getContentPart(param.name);
+   }
+   else if (path.site) {
+      var obj = path.site;
+      param.editor = obj[param.name+"_macro"](param2);
+      param.color = obj[param.name];
+   }
+   else
+      return;
+
+   renderSkin("cp_element", param);
+}
