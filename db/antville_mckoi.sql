@@ -72,6 +72,7 @@ CREATE INDEX IDX_FILE_F_USER_CREATOR ON AV_FILE (FILE_F_USER_CREATOR);
 create table AV_IMAGE (
    IMAGE_ID int(10) not null,
    IMAGE_F_SITE int(10),
+   IMAGE_F_LAYOUT int(10),
    IMAGE_F_IMAGE_PARENT int(10),
    IMAGE_F_IMAGE_THUMB int(10),
    IMAGE_ALIAS varchar(128),
@@ -93,6 +94,7 @@ create table AV_IMAGE (
 #----------------------------
 
 CREATE INDEX IDX_IMAGE_F_SITE ON AV_IMAGE (IMAGE_F_SITE);
+CREATE INDEX IDX_IMAGE_F_LAYOUT ON AV_IMAGE (IMAGE_F_LAYOUT);
 CREATE INDEX IDX_IMAGE_ALIAS ON AV_IMAGE (IMAGE_ALIAS);
 CREATE INDEX IDX_IMAGE_F_IMAGE_PARENT ON AV_IMAGE (IMAGE_F_IMAGE_PARENT);
 CREATE INDEX IDX_IMAGE_F_IMAGE_THUMB ON AV_IMAGE (IMAGE_F_IMAGE_THUMB);
@@ -101,15 +103,15 @@ CREATE INDEX IDX_IMAGE_F_USER_CREATOR ON AV_IMAGE (IMAGE_F_USER_CREATOR);
 #----------------------------
 # records for table AV_IMAGE
 #----------------------------
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (1,'big','big','gif',404,53,'antville.org');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values (6,'headbg','headbg','gif',3,52);
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (7,'menu','menu','gif',36,13,'menu');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (8,'recent','recent','gif',123,13,'recently modified');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (9,'status','status','gif',48,13,'status');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (10,'dot','dot','gif',30,30,'dots');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (11,'bullet','bullet','gif',3,10,'bullet');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (12,'webloghead','webloghead','gif',404,53,'head');
-insert into AV_IMAGE (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (16,'manage','manage','gif',50,13,'manage');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (1,1,'big','big','gif',404,53,'antville.org');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values (2,1,'headbg','headbg','gif',3,52);
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (3,1,'menu','menu','gif',36,13,'menu');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (4,1,'recent','recent','gif',123,13,'recently modified');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (5,1,'status','status','gif',48,13,'status');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (6,1,'dot','dot','gif',30,30,'dots');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (7,1,'bullet','bullet','gif',3,10,'bullet');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (8,1,'webloghead','webloghead','gif',404,53,'head');
+insert into AV_IMAGE (IMAGE_ID,IMAGE_F_LAYOUT,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (9,1,'manage','manage','gif',50,13,'manage');
 
 #-------------------------------
 # Table structure for AV_MEMBERSHIP
@@ -161,14 +163,46 @@ create table AV_POLL (
 CREATE INDEX IDX_POLL_F_SITE ON AV_POLL (POLL_F_SITE);
 CREATE INDEX IDX_POLL_F_USER_CREATOR ON AV_POLL (POLL_F_USER_CREATOR);
 
+#------------------------------
+# Table structure for AV_LAYOUT
+#------------------------------
+create table AV_LAYOUT (
+   LAYOUT_ID int(10) not null,
+   LAYOUT_ALIAS varchar(128),
+   LAYOUT_TITLE varchar(128),
+   LAYOUT_F_SITE int(10),
+   LAYOUT_F_LAYOUT_PARENT int(10),
+   LAYOUT_PREFERENCES text,
+   LAYOUT_DESCRIPTION text,
+   LAYOUT_CREATETIME timestamp,
+   LAYOUT_MODIFYTIME timestamp,
+   LAYOUT_F_USER_CREATOR int(10),
+   LAYOUT_F_USER_MODIFIER int(10),
+   LAYOUT_SHAREABLE tinyint(1),
+   LAYOUT_ISIMPORT tinyint(1),
+   primary key (LAYOUT_ID)
+);
+# create an initial layout object
+insert into AV_LAYOUT (LAYOUT_ID, LAYOUT_ALIAS, LAYOUT_TITLE, LAYOUT_PREFERENCES, LAYOUT_DESCRIPTION, LAYOUT_SHAREABLE)
+values (1, 'default', 'antville.org', '<?xml version="1.0" encoding="UTF-8"?>\r\n<xmlroot xmlns:hop="http://www.helma.org/docs/guide/features/database">\r\n  <hopobject id="t234" name="HopObject" prototype="HopObject" created="1069430202375" lastModified="1069430202375">\r\n    <smallcolor>959595</smallcolor>\r\n    <textcolor>000000</textcolor>\r\n    <vlinkcolor>ff4040</vlinkcolor>\r\n    <titlecolor>d50000</titlecolor>\r\n    <smallsize>11px</smallsize>\r\n    <alinkcolor>ff4040</alinkcolor>\r\n    <textsize>13px</textsize>\r\n    <titlesize>15px</titlesize>\r\n    <linkcolor>ff4040</linkcolor>\r\n    <smallfont>Verdana, Arial, Helvetica, sans-serif</smallfont>\r\n    <textfont>Verdana, Helvetica, Arial, sans-serif</textfont>\r\n    <titlefont>Verdana, Helvetica, Arial, sans-serif</titlefont>\r\n    <bgcolor>ffffff</bgcolor>\r\n  </hopobject>\r\n</xmlroot>', 'The layout of antville.org', 1);
+
+#----------------------------
+# Indexes on table AV_LAYOUT
+#----------------------------
+
+CREATE INDEX IDX_LAYOUT_ALIAS ON AV_LAYOUT (LAYOUT_ALIAS);
+CREATE INDEX IDX_LAYOUT_F_SITE ON AV_LAYOUT (LAYOUT_F_SITE);
+CREATE INDEX IDX_LAYOUT_F_LAYOUT_PARENT ON AV_LAYOUT (LAYOUT_F_LAYOUT_PARENT);
+
 #----------------------------
 # Table structure for AV_SKIN
 #----------------------------
 create table AV_SKIN (
    SKIN_ID int(10) not null,
-   SKIN_F_SITE int(10),
+   SKIN_F_LAYOUT int(10),
    SKIN_PROTOTYPE varchar(128),
    SKIN_NAME varchar(128),
+   SKIN_ISCUSTOM tinyint(1),
    SKIN_SOURCE text,
    SKIN_CREATETIME timestamp,
    SKIN_F_USER_CREATOR int(10),
@@ -305,6 +339,7 @@ create table AV_SITE (
    SITE_TITLE varchar(128),
    SITE_ALIAS varchar(128),
    SITE_EMAIL varchar(128),
+   SITE_F_LAYOUT int(10),
    SITE_ISONLINE tinyint(1),
    SITE_ISBLOCKED tinyint(1),
    SITE_ISTRUSTED tinyint(1),
