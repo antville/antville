@@ -641,3 +641,10 @@ function switch_macro(param) {
       HopObject.switch_macro.apply(this, [param]);
    return;
 }
+
+/**   
+ * returns the number of members of this site
+ */   
+function membercounter_macro(param) {
+   return this.members.size();
+} 
