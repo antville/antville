@@ -5,9 +5,9 @@
  * belongs to
  */
 function editlink_macro(param) {
-   if (path.layout != this.layout)
-      return;
-   image.prototype.editlink_macro.apply(this, [param]);
+   if (path.layout == this.layout)
+      image.prototype.editlink_macro.apply(this, [param]);
+   return;
 }
 
 
@@ -18,7 +18,7 @@ function editlink_macro(param) {
  * belongs to
  */
 function deletelink_macro(param) {
-   if (path.layout != this.layout)
-      return;
-   image.prototype.deletelink_macro.apply(this, [param]);
+   if (path.layout == this.layout)
+      image.prototype.deletelink_macro.apply(this, [param]);
+   return;
 }
