@@ -15,8 +15,8 @@ if (this.online) {
 	for (var i=0; i<max; i++) {
 		var story = this.allstories.get(i);
 		param1.itemLink = story.href();
-		param1.itemTitle = encodeXml(story.title);
-		var skin = createSkin(story.text);
+		param1.itemTitle = encodeXml(story.getContentPart("title"));
+		var skin = createSkin(story.getContentPart("text"));
 		var str = this.renderSkinAsString(skin);
 		str = this.rssConvertHtmlImageToHtmlLink(str);
 		param1.itemDescription = encodeXml(str);
