@@ -50,12 +50,19 @@ function macros_macro(param) {
 function skinmacros_macro(param) {
    if (!req.data.key)
       return;
+   if (!param.itemprefix)
+      param.itemprefix = "";
+   if (!param.itemsuffix)
+      param.itemsuffix = "<br />";
    var parts = req.data.key.split(".");
    var macros = HELP.skins[parts[0]][parts[1]];
+   macros.sort();
    for (var i in macros) {
+      res.write(param.itemprefix);
       res.encode("<% ");
       res.write(macros[i]);
       res.encode(" %>");
+      res.write(param.itemsuffix);
    }
    return;
 }
