@@ -87,7 +87,7 @@
       <cvs cvsRoot="${cvs.antville.root}" 
          command="export" 
          tag="${cvs.antville.tag}" 
-         package="${package}" 
+         package="${project}" 
          dest="${build.work}"/>
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
