@@ -57,10 +57,12 @@ function delete_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = "Delete weblog: " + this.title;
-   var sp = new Object();
-   sp.what = "the weblog &quot;" + this.title + "&quot;";
-   res.data.body = this.renderSkinAsString("delete", sp);
+   res.data.title = "Delete site: " + this.title;
+   var skinParam = {
+      description: "the site",
+      detail: this.title
+   };
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    this.renderSkin("page");
 }
 
@@ -313,10 +315,13 @@ function unsubscribe_action() {
    }
 
    res.data.title = "Remove subscription to " + this.title;
-   var sp = new Object();
-   sp.what = "your subscription to <strong>" + this.title + "</strong> ";
-   res.data.body = this.renderSkinAsString("delete", sp);
+   var skinParam = {
+      description: "your subscription to",
+      details: this.title
+   };
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    this.renderSkin("page");
+   return;
 }
 
 /**

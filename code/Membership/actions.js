@@ -37,9 +37,11 @@ function delete_action() {
    
    res.data.action = this.href(req.action);
    res.data.title = "Delete membership: " + this.username;
-   var sp = new Object();
-   sp.what = "the membership of &quot;" + this.username + "&quot;";
-   res.data.body = this.renderSkinAsString("delete", sp);
+   var skinParam = {
+      description: "the membership of",
+      detail: this.username
+   };
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
 }
 

@@ -74,8 +74,10 @@ function delete_action() {
 
    res.data.action = this.href(req.action);
    res.data.title = res.handlers.context.getTitle();
-   var skinParam = {what: "the layout '" + this.title +
-                    "' (created by " + this.creator.name + ")"};
+   var skinParam = {
+      description: "the layout",
+      detail: this.title
+   };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    res.handlers.context.renderSkin("page");
 }

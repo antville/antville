@@ -66,11 +66,14 @@ function delete_action() {
    if (this.title)
       res.data.title += ": " + encode(this.title);
 
-   var sp = new Object();
-   sp.what = this.title ? "the story &quot;" + this.title + "&quot;" : "a story";
-   if (this.creator)
-      sp.what += " created by " + this.creator.name;
-   res.data.body = this.renderSkinAsString("delete", sp);
+   if (this.title)
+      var skinParam = {
+         description: "the story",
+         detail: this.title
+      };
+   else
+      var skinParam = {description: "a story"};
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
 }
 

@@ -44,8 +44,10 @@ function delete_action() {
 
    res.data.action = this.href(req.action);
    res.data.title = "Delete image: " + this.alias;
-   var sp = new Object();
-   sp.what = "the image &quot;" + this.alias + "&quot;";
-   res.data.body = this.renderSkinAsString("delete", sp);
+   var skinParam = {
+      description: "the image",
+      detail: this.alias
+   };
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    res.handlers.context.renderSkin("page");
 }

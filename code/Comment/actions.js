@@ -82,8 +82,10 @@ function delete_action() {
    
    res.data.action = this.href(req.action);
    res.data.title = this.site.title;
-   var sp = new Object();
-   sp.what = "a comment from <b>" + this.creator.name + "</b>";
-   res.data.body = this.renderSkinAsString("delete", sp);
+   var skinParam = {
+      description: "a comment from",
+      detail: this.creator.name
+   };
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
 }

@@ -68,8 +68,10 @@ function delete_action() {
 
    res.data.action = this.href(req.action);
    res.data.title = res.handlers.context.getTitle();
-   var sp = new Object();
-   sp.what = "the skin &quot;" + this.name + "&quot; (created by " + this.creator.name + ")";
-   res.data.body = this.renderSkinAsString("delete", sp);
+   var skinParam = {
+      description: "modifications of the skin",
+      detail: this.name
+   };
+   res.data.body = this.renderSkinAsString("delete", skinParam);
    res.handlers.context.renderSkin("page");
 }
