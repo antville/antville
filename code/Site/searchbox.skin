@@ -1,0 +1,1 @@
+<form method="get" action="<% site.url %>search"><% input name="q" class="searchbox" value="enter your keyword(s)" onclick="this.value='';"%><% input type="button" name="submit" value="find!" class="searchbox" %></form>

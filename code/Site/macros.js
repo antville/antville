@@ -608,3 +608,12 @@ function xmlbutton_macro(param) {
   renderImage(img, param);
   closeLink();
 }
+
+
+/**
+ * renders the searchbox
+ */
+
+function searchbox_macro(param) {
+   this.renderSkin("searchbox");
+}
