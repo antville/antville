@@ -40,7 +40,7 @@ function url_macro(param) {
 
 function level_macro(param) {
    if (param.as == "editor") {
-      // var options = new Array("Subscriber","Contributor","Content Manager","Administrator");
+      // var options = new Array("Subscriber","Contributor","Content manager","Administrator");
       // renderDropDownBox("level",options,null,"-- select --");
       renderDropDownBox("level", ROLES, null, "-- select --");
    } else
