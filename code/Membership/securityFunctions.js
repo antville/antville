@@ -7,9 +7,12 @@
  */
 function checkAccess(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
-   var deny = this._parent.isEditMembersDenied(usr, level);
-   if (deny)
-      deny.redirectTo = this.site.href();
-   return deny;
+   try {
+      this._parent.checkEditMembers(usr, level);
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this.site.href());
+   }
+   return;
 }
 
