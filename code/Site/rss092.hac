@@ -18,7 +18,7 @@ if (this.online) {
 			param1.itemLink = story.href();
 			param1.itemTitle = encodeXml(story.title);
 			var skin = createSkin(story.text);
-			var str = renderSkinAsString(skin);
+			var str = this.renderSkinAsString(skin);
 			str = convertHtmlImageToHtmlLink(str);
 			param1.itemDescription = encodeXml(str);
 			items += this.renderSkinAsString("rss092Item", param1);

@@ -22,7 +22,7 @@ if (this.online) {
 			param1.authorMail = encodeXml(story.author.email);
 			param1.year = now.getYear();
 			var skin = createSkin(story.text);
-			var str = renderSkinAsString(skin);
+			var str = this.renderSkinAsString(skin);
 			str = convertHtmlImageToHtmlLink(str);
 			param1.itemDescription = encodeXml(str);
 			items += this.renderSkinAsString("rss10Item", param1);
