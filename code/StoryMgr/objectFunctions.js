@@ -22,7 +22,7 @@ function evalNewStory(param,creator) {
       if (param.newtopic)
          newStory.topic = param.newtopic;
       else if (parseInt(param.topic,10) > 0)
-         newStory.topic = this._parent.space.get(parseInt(param.topic,10) -1).groupname;
+         newStory.topic = this._parent.topics.get(parseInt(param.topic,10) -1).groupname;
       if (isNaN(online) || (online == 1 && !newStory.topic))
          newStory.online = 0;
       else
@@ -38,7 +38,7 @@ function evalNewStory(param,creator) {
       if (newStory.online) {
          this._parent.lastupdate = newStory.createtime;
          if (newStory.topic)
-            result.url = this._parent.space.href() + escape(newStory.topic);
+            result.url = this._parent.topics.href() + escape(newStory.topic);
          else
             result.url = newStory.href();
       } else
