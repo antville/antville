@@ -7,6 +7,8 @@ else
 
 res.title = "Antville - Registration";
 res.head = this.__parent__.renderSkinAsString("style");
+if (path.weblog)
+   res.head += path.weblog.renderSkinAsString("javascript");
 res.body = this.__parent__.renderSkinAsString("header");
 res.body += this.renderSkinAsString("register",reg);
 

@@ -31,5 +31,7 @@ if (!user.cache.referer && req.data.http_referer)
 
 res.title = "Anville Member Login";
 res.head = this.__parent__.renderSkinAsString("style");
+if (path.weblog)
+   res.head += path.weblog.renderSkinAsString("javascript");
 res.body = this.__parent__.renderSkinAsString("header");
 res.body += this.renderSkinAsString("login");
