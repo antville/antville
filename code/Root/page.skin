@@ -8,43 +8,55 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <link rel="alternate" type="text/xml" title="XML" href="rss10" />
-<script type="text/javascript" src="<% root.href %>javascript"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href %>stylesheet" />
+<script type="text/javascript" src="<% root.href %>javascript.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href %>stylesheet.css" />
 </head>
 
 <body>
 
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td><% logo name="big" %></td>
-<td width="296" class="header">&nbsp;</td>
+<td class="header"><% layout.image name="big" linkto="main"%></td>
 </tr>
 </table>
 
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="main">
 <tr>
-<td width="20" nowrap="nowrap">&nbsp;</td>
-<td width="460" valign="top" nowrap="nowrap"><% response.message prefix='<br /><span class="message">' suffix="</span><br />" %><br />
+<td class="center"><% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
 <% response.body %></td>
-<td width="20" nowrap="nowrap">&nbsp;</td>
-<td width="2" style="background-image: url(<% layout.image name="dot" as="url" %>);" nowrap="nowrap"><% layout.image name="pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% now format="long" suffix="<br />" %>
-<% root.loginstatus %></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statusdark">...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a><br />
-<% root.link to="new" text="create a new weblog" prefix="...&nbsp;" suffix="<br />" %>
-<% root.sysmgrnavigation prefix="<br />" suffix="<br />" %>
-<br /><span class="statuslight">Resources:<br />
-...&nbsp;<a href="http://help.antville.org/">help</a><br />
-...&nbsp;<a href="http://project.antville.org/">project log</a><br />
-...&nbsp;<a href="http://macros.antville.org/">macro docs</a></span></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statuslight"><% root.sitecounter no="no public weblogs" one="one public weblog" more=" public weblogs"%>... <% root.link to="list" %></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div><br />
-<div class="statuslight"><% layout.image name="xmlbutton" linkto="rss" title="List of recently updated Antville sites in RSS format" %><br /><br />
+<td class="right">
+<div class="box">
+<% now format="EEEE, dd.MM.yyyy, HH:mm" %>
+<% root.loginstatus prefix="<br />" %>
+</div>
+
+<div class="boxheader">menu</div>
+<div class="box">
+...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a><br />
+<% root.link to="new" text="create a new weblog" prefix="...&nbsp;" %>
+</div>
+
+<% root.sysmgrnavigation %>
+
+<div class="boxheader">resources</div>
+<div class="box">
+...&nbsp;<a href="http://project.antville.org/">project site</a><br />
+...&nbsp;<a href="http://macros.antville.org/">macro docs</a><br />
+...&nbsp;<a href="http://help.antville.org/">help</a>
+</div>
+
+<div class="boxline">&nbsp;</div>
+<div class="box">
+<% root.sitecounter no="no public weblogs" one="one public weblog" more=" public weblogs"%>... <% root.link to="list" %>
+</div>
+
+<div class="box">
+<% image name="/xmlbutton" linkto="rss" title="List of recently updated Antville sites in RSS format" %><br /><br />
 <% logo name="smallstraight" %><br /><br />
 Powered by<br />
-<% layout.image name="hop" linkto="http://helma.org" %></div></td>
+<% image name="/hop" linkto="http://helma.org" %></div>
+
+</td>
 </tr>
 </table>
 
