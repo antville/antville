@@ -63,6 +63,12 @@ function evalRegistration(param) {
       result.message = "Please choose a username!";
    else if (!isClean(param.name))
       result.message = "Please don't use any special characters in your username!";
+   else {
+      // check if username is similar to a built in function
+      var reserved = eval("this." + param.name);
+      if (reserved)
+         result.message = "Please choose a different username!";
+   }
 
    if (!result.message) {
 		var newUser = user.register(param.name, param.password1);
