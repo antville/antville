@@ -382,10 +382,11 @@ skin.layoutmgr.new = New Layout|The form for creating a new layout.
 skin.layoutmgr.import = Import a layout|This is the form for importing a layout zip file.
 
 ## user
-skin.user.subscriptions = Subscription list|This skin displays the subscriptions of a user.
-skin.user.sysmgr_listitem = User display|Used to display a single user in the user list of system manager.
-skin.user.edit = Profile editor|Contains the form used for changing the profile of a user.
-skin.user.sysmgr_edit = User editor|This skin contains the form for editing a user in system manager.
+skin.User.subscriptions = Subscription list|This skin is used to display the subscriptions or memberships of a user.
+skin.User.sysmgr_listitem = User display|Used to display a single user in the user list of system manager.
+skin.User.edit = Profile editor|Contains the form used for changing the profile of a user.
+skin.User.sysmgr_edit = User editor|This skin contains the form for editing a user in system manager.
+skin.User.sitelist = List of subscribed sites|This skin contains the sites a user is subscribed to or a member of ordered by their last update.
 
 ## day
 skin.day.main = Main page of a single day|Whenever a user selects a single day via the calendar, this skin will be used to display the list of stories of this day.
@@ -466,9 +467,9 @@ skin.root.new = Create a new site|This is the form for creating a new site.
 skin.root.sysmgrnavigation = Navigation bar for system administrators|This skin contains some navigation links for system administrators.
 
 ## membership
-skin.membership.subscription = Subscription list item|This skin is used to display a single subscription in a user's list.
+skin.membership.subscriptionlistitem = Subscription list item|This skin is used to display a single subscription or membership in a user's list.
 skin.membership.mgrlistitem = Member display|This skin is used to display a single membership in the "members" section of a site.
 skin.membership.mailstatuschange = Membership status change confirmation|Whenever a site admin changes the status of a member this member will receive a confirmation mail. This skin defines the mail body of it.
 skin.membership.mailmessage = Private Mail message|The body of the mail sent to a user when an admin used the "send an e-mail to this user" feature.
-skin.membership.membership = Membership display|This skin is used to display a user's membership in the list of memberships.
 skin.membership.edit = Member status editor|This skin contains the form for modifying the role of a member.
+             
