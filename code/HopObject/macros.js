@@ -1,16 +1,4 @@
 /**
- * macro rendering a skin
- * valid parameters: - prefix
- *                   - suffix
- *                   - name of skin
- */
-function skin_macro(param) {
-   if (!param.name)
-      return;
-   this.renderSkin(param.name);
-}
-
-/**
  * macro creates an html link
  */
 function link_macro(param) {
