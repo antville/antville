@@ -1,3 +1,5 @@
 ...&nbsp;<% site.link to="members" text="members" %><br />
 ...&nbsp;<% site.link to="edit" text="preferences" %><br />
 ...&nbsp;<% site.link to="skins" text="skin editor" %><br />
+...&nbsp;<% site.link to="referrers" text="referrers" %><br />
+...&nbsp;<% site.link to="mostread" text="most read stories" %><br />
