@@ -2,7 +2,7 @@
  * display all images of a site or layout
  */
 function main_action() {
-   res.data.imagelist = renderList(this, "preview", 10, req.data.page);
+   res.data.imagelist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.title = "Images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
@@ -14,7 +14,7 @@ function main_action() {
  */
 function myimages_action() {
    var ms = this._parent.members.get(session.user.name);
-   res.data.imagelist = renderList(ms.images, "preview", 10, req.data.page);
+   res.data.imagelist = renderList(ms.images, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.images, this.href(req.action), 10, req.data.page);
    res.data.title = "My images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
