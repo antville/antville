@@ -46,3 +46,15 @@ function scheduler() {
 function onStart() {
    return;
 }
+
+/**
+ * functin checks if the string passed contains special characters like
+ * spaces, brackets etc.
+ */
+
+function isClean(str) {
+   var validChar = new RegExp("[^a-z,^A-Z,^0-9]");
+   if (validChar.exec(str))
+      return false;
+   return true;
+}
