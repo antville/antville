@@ -3,7 +3,6 @@
  * valid params:  -  loginSkin
  *                -  logoutSkin
  */
-
 function loginstatus_macro(param) {
    if (session.user)
       this.members.renderSkin("statusloggedin");
@@ -12,18 +11,8 @@ function loginstatus_macro(param) {
 }
 
 /**
- * macro is left here for backwards-compatibility only
- */
-
-function sitelist_macro(param) {
-	sitelist_macro(param);
-}
-
-
-/**
  * macro renders the number of site (either all or just the public ones)
  */
-
 function sitecounter_macro(param) {
    if (param.count == "all")
       var size = root.size();
@@ -69,10 +58,7 @@ function sysurl_macro(param) {
  * macro renders a link to the sysmgr if user has sysadmin rights
  */
 function managelink_macro(param) {
-   if (!session.user || !session.user.sysadmin)
-      return;
-   openLink(root.href("manage"));
-   res.write(param.text ? param.text : "system management");
-   closeLink();
+   if (session.user && session.user.sysadmin)
+      Html.link(root.href("manage"), param.text ? param.text : "system management");
    return;
 }
