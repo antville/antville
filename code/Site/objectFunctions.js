@@ -94,6 +94,10 @@ function evalPreferences(param,modifier) {
    this.smallsize = param.smallsize;
    this.smallcolor = param.smallcolor;
    this.days = parseInt(param.days,10);
+   var online = parseInt(param.online,10);
+   if (this.online && !online)
+      this.lastoffline = new Date();
+   this.online = online;
    this.online = parseInt(param.online,10);
    this.discussions = parseInt(param.discussions,10);
    this.usercontrib = parseInt(param.usercontrib,10);
@@ -248,5 +252,38 @@ function rssConvertHtmlImageToHtmlLink(str) {
    re.global = true;
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
  	return(str);
+}
+
+/**
+ * function deletes all assets of a weblog (recursive!)
+ */
+
+function deleteAll() {
+   this.members.deleteAll();
+   this.images.deleteAll();
+   this.goodies.deleteAll();
+   this.skins.deleteAll();
+   // loop over days and remove stories
+   for (var i=this.size();i>0;i--) {
+      var day = this.get(i-1);
+      day.deleteAll();
+   }
+   // loop over topics and remove stories
+   for (var i=this.topics.size();i>0;i--) {
+      var topic = this.topics.get(i-1);
+      topic.deleteAll();
+   }
+   return true;
+}
+
+/**
+ * check if weblog is trusted
+ * @return Boolean true in case weblog is trusted, false otherwise
+ */
+
+function isTrusted() {
+   if (parseInt(this.trusted,10))
+      return true;
+   return false;
 }
 
