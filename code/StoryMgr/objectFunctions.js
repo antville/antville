@@ -20,6 +20,7 @@ function evalNewStory() {
       if (req.data.topic)
          newStory.topic = req.data.topic;
       newStory.day = newStory.createtime.format("yyyyMMdd");
+      newStory.reads = 0;
       path.weblog.add(newStory);
       if (newStory.online)
          path.weblog.lastupdate = newStory.createtime;
