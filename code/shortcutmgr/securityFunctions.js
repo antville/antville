@@ -7,7 +7,7 @@
  */
 
 function isDenied(usr,level) {
-   if (!this._parent.usercontrib && !level)
+   if (!this._parent.usercontrib && (level & MAY_ADD_STORY) == 0)
       return "shortcutEditDenied";
    return null;
 }
