@@ -1,3 +1,3 @@
 <div class="historyItem"><% this.content part="title" as="link" %><br />
 <% this.content part="text" limit="50" clipping=" ..." %>
-<div class="small">by <% this.creator %> @ <% this.modifytime format="short" %></div></div>
+<div class="small">by <% this.creator %> (<% this.modifytime format="short" %>)</div></div>
