@@ -172,10 +172,10 @@ li {padding-bottom: 3px;}
 .offlineStory {background-color: #cccccc;}
 
 .pollResultsBar {
-	height: 5px;
-	margin-right: 10px;
-	background-color: <% site.linkcolor %>;
-	font-size: 0px;
+   height: 5px;
+   margin-right: 10px;
+   background-color: <% site.linkcolor %>;
+   font-size: 0px;
 }
 
 .searchbox {
