@@ -59,6 +59,19 @@ function birthdate_macro(param) {
 }
 
 /**
+ * macro rendering email of weblog
+ */
+
+function email_macro(param) {
+   res.write(param.prefix)
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("email",param));
+   else
+      res.write(this.email);
+   res.write(param.suffix);
+}
+
+/**
  * macro rendering bgcolor of weblog
  */
 
