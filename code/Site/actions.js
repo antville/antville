@@ -28,20 +28,3 @@ function javascript_action() {
    else 
       res.notModified();
 }
-
-
-
-/**
- * wrapper to make cp_javascript.skin public
- */
-
-function cp_javascript_action() {
-   var skin = this.skins.fetchSkin("site", "cp_javascript");
-   if (skin.isModified()) {
-      res.contentType = "text/javascript";
-      res.lastModified = new Date();
-      this.renderSkin("cp_javascript");
-   }
-   else 
-      res.notModified();
-}
