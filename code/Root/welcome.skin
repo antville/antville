@@ -1,0 +1,9 @@
+<p class="pageTitle">Welcome to Antville!</p>
+<p>You successfully installed Antville! Just two small steps are left before you can start to use this weblog-hosting system:
+<ul>
+<li>First you must <% root.link to="members/register" text="register yourself" %>. Doing so will grant you system administration privileges (of course you can grant these rights to other users later).</li>
+<li>Second you should <% root.link to="manage/setup" text="configure Antville" %> (eg. define the standard language or who is allowed to create weblogs here).</li>
+</ul>
+After you have completed these two steps your Antville will be up and running.</p>
+
+<p>Have fun!</p>
