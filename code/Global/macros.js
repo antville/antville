@@ -243,6 +243,7 @@ function username_macro(param) {
    return;
 }
 
+
 /**
  * function renders a form-input
  */
@@ -261,4 +262,74 @@ function input_macro(param) {
       return(renderInputFile(param));
    else
       return(renderInputText(param));
+}
+
+
+/**
+ * function renders a shortcut
+ */
+function shortcut_macro(param) {
+   if (param && param.name) {
+      var sc = path.site.shortcuts.get(param.name);
+      if (sc)
+         sc.renderContent(param.text);
+      else
+         return("[Shortcut \"" + param.name + "\" not found]");
+   }
+}
+
+
+/**
+ * function renders a list of stories either contained
+ * in a topic or from the story collection.
+ * param.sortby determines the sort criteria
+ * (title, createtime, modifytime);
+ * param.order determines the sort order (asc or desc)
+ * param.show determines the text type (story, comment or all)
+ */
+function storylist_macro(param) {
+   if (param.sortby != "title" && param.sortby != "createtime" && param.sortby != "modifytime")
+      param.sortby = "modifytime";
+   if (param.order != "asc" && param.order != "desc")
+      param.order = "asc";
+
+   var order = " order by TEXT_" + param.sortby.toUpperCase() + " " + param.order;
+
+   var rel = "";
+   if (param.show == "stories")
+      rel += " and TEXT_PROTOTYPE = 'story'";
+   else if (param.show == "comments")
+      rel += " and TEXT_PROTOTYPE = 'comment'";
+
+   if (param.topic)
+      rel += " and TEXT_TOPIC = '" + param.topic + "'";
+
+   var query = "select * from AV_TEXT where TEXT_F_SITE = " + path.site._id + " and TEXT_ISONLINE > 0" + rel + order;
+
+   var connex = getDBConnection("antville");
+   var rows = connex.executeRetrieval(query);
+
+   if (rows) {
+      var cnt = 0;
+      param.limit = param.limit ? Math.min(parseInt(param.limit), 100) : 25;
+      while (rows.next() && (cnt < param.limit)) {
+         cnt++;
+         var id = rows.getColumnItem("TEXT_ID").toString();
+         var story = path.site.allcontent.get(id);
+         if (!story)
+            continue;
+         res.write(param.itemprefix);
+         openLink(story.href());
+         var str = story.title;
+         if (!str) {
+            res.write("...");
+            renderTextPreview(story.getRenderedContentPart("text"), 20);
+         }
+         else
+            res.write(str);
+         closeLink();
+         res.write(param.itemsuffix + " \n");
+      }
+   }
+   rows.release();
 }
