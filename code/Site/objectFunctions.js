@@ -49,9 +49,10 @@ function evalPreferences(param,modifier) {
       this.timezone = null;
    else
       this.timezone =newZone;
-   // reset cached locale and timezone
+   // reset cached locale, timezone and dateSymbols
    this.cache.locale = null;
    this.cache.timezone = null;
+   this.cache.dateSymbols = null;
 
    // long dateformat
    var patterns = getDefaultDateFormats();
@@ -112,6 +113,14 @@ function getLocale() {
       locale = root.getLocale();
    this.cache.locale =locale;
    return locale;
+}
+
+function getDateSymbols() {
+   var symbols = this.cache.dateSymbols;
+   if (symbols)
+      return symbols;
+   this.cache.dateSymbols = new java.text.DateFormatSymbols(this.getLocale());
+   return this.cache.dateSymbols;
 }
 
 function getTimeZone() {
