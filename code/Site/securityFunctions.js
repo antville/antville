@@ -9,7 +9,7 @@ function isNotPublic(usr,level) {
    if (!this.online) {
       if (usr && usr.sysadmin)
          return null;
-      else if (level)
+      else if (level >= 0)
          return null;
       return "siteNotPublic";
    }
