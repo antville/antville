@@ -1,2 +1,1 @@
-<span class="storytitle"><% param.group %></span>
-<% param.list prefix="<ul>" suffix="</ul>" %>
+<div class="membergroup"><% param.group %></div>
