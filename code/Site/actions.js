@@ -77,19 +77,9 @@ function colorpicker_action() {
 
 
 /**
- * @DEPRECATED
- */
-
-function safescripts_action() {
-   root.safescripts_action();
-   return;
-}
-
-
-/**
  * wrapper to make style.skin public
  */
-function stylesheet_action() {
+function stylesheet_css_action() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "style"));
@@ -99,12 +89,20 @@ function stylesheet_action() {
    return;
 }
 
+/**
+ * wrapper for stylesheet.css action
+ * DEPRECATED! left for backwards compatibility only
+ */
+function stylesheet_action() {
+   this.stylesheet_css_action();
+   return;
+}
 
 /**
  * wrapper to make javascript.skin public
  */
 
-function javascript_action() {
+function javascript_js_action() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "javascript"));
@@ -115,6 +113,14 @@ function javascript_action() {
    return;
 }
 
+/**
+ * wrapper for javascript.js action
+ * DEPRECATED! left for backwards compatibility only
+ */
+function javascript_action() {
+   this.javascript_js_action();
+   return;
+}
 
 /**
  * redirect requests for rss092 to rss
