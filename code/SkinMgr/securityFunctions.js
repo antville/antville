@@ -4,13 +4,11 @@
  * @return String Reason for denial (or null if allowed)
  */
 
-function isEditDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href();
-      return ("Please login before!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this._parent.isUserAdmin(usr))
-      return ("Sorry, your're not allowed to edit skins!");
+function isDenied(usr) {
+   var membership = this._parent.isUserMember(usr);
+   if (!membership)
+      return ("You're not a member of this weblog!");
+   else if ((membership.level & MAY_EDIT_SKINS) == 0)
+      return ("You're not allowed to edit skins!");
    return null;
 }
