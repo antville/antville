@@ -20,6 +20,7 @@ function renderImagelist(idx) {
       sp.text = "previous images";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
+   this.prefetchChildren(idx, 20);
    var imagelist = new java.lang.StringBuffer();
    for (var i=idx; i<max; i++)
       imagelist.append(this.get(i).renderSkinAsString("preview"));
