@@ -60,3 +60,12 @@ function sysmgrnavigation_macro(param) {
       this.renderSkin("sysmgrnavigation");
    return;
 }
+
+/**
+ * proxy macro for layoutmgr.layoutchooser
+ */
+function layoutchooser_macro(param) {
+   if (root.sys_layout)
+      param.selected = root.sys_layout.alias;
+   root.layouts.layoutchooser_macro(param);
+}
