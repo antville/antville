@@ -11,15 +11,18 @@
 
 <table border="0" height="53" cellspacing="0" cellpadding="0">
 <tr>
-<td width="404" class="title" background="<% imageurl name="/webloghead" %>" nowrap><% image name="/pixel" width="40" %><% this.title %></td>
-<td width="296" align="right" background="<% imageurl name="/headbg" %>" valign="middle" nowrap>&nbsp;<span class="message"><% response.message %></span></td>
+<td width="700" class="title" background="<% imageurl name="/webloghead" %>" nowrap><% image name="/pixel" width="40" %><% this.title %></td>
 </tr>
 </table>
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="40" nowrap>&nbsp;</td>
-<td width="400" valign="top" nowrap><br><% response.body %></td>
+<td width="400" valign="top" nowrap>
+
+<span class="message"><% response.message prefix="<br>" suffix="<br>" %></span>
+<br><% response.body %></td>
+
 <td width="60" nowrap>&nbsp;</td>
 <td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap><div class="statuslight">
