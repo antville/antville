@@ -7,7 +7,7 @@ function diff_action() {
    var originalSkin = this.layout.skins.getOriginalSkinSource(this.proto, this.name);
 
    if (originalSkin == null) {
-      res.data.status = "No differences were found";
+      res.data.status = "This is a custom skin, therefor no differences can be displayed";
    } else {
       var diff = originalSkin.diff(this.skin ? this.skin : "");
       if (!diff) {
