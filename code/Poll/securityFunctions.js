@@ -6,38 +6,29 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   var deny = null;
-   var url = this.site.polls.href();
-   switch (action) {
-      case "edit" :
-         checkIfLoggedIn();
-         deny = this.isEditDenied(usr, level);
-         break;
-      case "delete" :
-         checkIfLoggedIn();
-         deny = this.isDeleteDenied(usr, level);
-         break;
-      case "results" :
-         deny = this.isViewDenied(usr, level);
-         break;
-      case "toggle" :
-         checkIfLoggedIn();
-         deny = this.isDeleteDenied(usr, level);
-         break;
+   try {
+      switch (action) {
+         case "edit" :
+            checkIfLoggedIn();
+            this.checkEdit(usr, level);
+            break;
+         case "delete" :
+            checkIfLoggedIn();
+            this.checkDelete(usr, level);
+            break;
+         case "results" :
+            this.site.checkView(usr, level);
+            break;
+         case "toggle" :
+            checkIfLoggedIn();
+            this.checkDelete(usr, level);
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this.site.polls.href());
    }
-   if (deny != null)
-      deny.redirectTo = url;
-   return deny;
-}
-
-/**
- * check if user is allowed to view poll
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-function isViewDenied(usr, level) {
-   return this.site.isAccessDenied(usr, level);
+   return;
 }
 
 /**
@@ -46,14 +37,11 @@ function isViewDenied(usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isVoteDenied(usr, level) {
-   if (this.site.isAccessDenied(usr, level))
-      return new Exception("siteNotPublic");
-	if (!usr)
-		return new Exception("loginBefore");
+function checkVote(usr, level) {
+   this.site.checkView(usr, level);
    if (this.closed)
-      return new Exception("pollClosed");
-   return null;
+      throw new DenyException("pollClosed");
+   return;
 }
 
 
@@ -63,16 +51,16 @@ function isVoteDenied(usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isEditDenied(usr, level) {
+function checkEdit(usr, level) {
    if (this.votes.size() > 0)
-      return new Exception("pollEditDenied");
+      throw new DenyException("pollEdit");
    if (this.creator != usr) {
       if (this.editableby == null && (level & MAY_EDIT_ANYSTORY) == 0)
-         return new Exception("storyEditDenied");
+         throw new DenyException("pollEdit");
       else if (this.editableby == 1 && (level & MAY_ADD_STORY) == 0)
-         return new Exception("storyEditDenied");
+         throw new DenyException("pollEdit");
    }
-   return null;
+   return;
 }
 
 
@@ -82,8 +70,8 @@ function isEditDenied(usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isDeleteDenied(usr, level) {
+function checkDelete(usr, level) {
    if (this.creator != usr && (level & MAY_DELETE_ANYSTORY) == 0)
-      return new Exception("pollDeleteDenied");
-   return null;
+      throw new DenyException("pollDelete");
+   return;
 }
