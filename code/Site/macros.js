@@ -653,7 +653,8 @@ function listReferrers_macro() {
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
-	var query = "select *, count(*) as COUNT from ACCESS where WEBLOG_ID = " + this._id + " and DATE > NOW()-1000000 group by REFERRER order by COUNT desc, REFERRER asc;";
+  var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
+	var query = "select *, count(*) as \"COUNT\" from ACCESS where WEBLOG_ID = " + this._id + " and DATE > '" + d.format("yyyy-MM-dd HH:mm:ss") + "' group by REFERRER order by \"COUNT\" desc, REFERRER asc;";
 	var rows = c.executeRetrieval(query);
 	error = c.getLastError();
 	if (error)
@@ -670,6 +671,11 @@ function listReferrers_macro() {
 	return(str);
 }
 
+
+/**
+ * renders the xml button for use 
+ * when referring to an rss feed
+ */
 
 function xmlbutton_macro() {
 	var param = new Object();
