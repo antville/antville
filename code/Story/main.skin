@@ -6,4 +6,4 @@
 <p><a name="comments"></a></p>
 <% story.comments %>
 
-<p><% story.skin name="backlinks" %></p>
+<p><% story.backlinks %></p>
