@@ -15,3 +15,19 @@ function isEditAllowed() {
    }
    return true;
 }
+
+
+/**
+ * check if user is allowed to delete this image
+ */
+
+function isDeleteAllowed() {
+   if (user.isBlocked()) {
+      res.message = "Sorry, your account was disabled!";
+      return false;
+   } else if (this.creator != user && !this.weblog.isUserAdmin()) {
+      res.message = "Sorry, this image belongs to someone else!";
+      return false;
+   }
+   return true;
+}
