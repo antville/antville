@@ -1,14 +1,13 @@
-res.skin = "main";
+var parent = setLayout();
 
-if (req.data.submit == "cancel")
-   res.redirect(this.__parent__.href());
+if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(parent.href());
 else
-   var reg = this.evalRegistration();
+   this.evalRegistration();
 
 res.title = "Antville - Registration";
-res.head = this.__parent__.renderSkinAsString("style");
-if (path.weblog)
-   res.head += path.weblog.renderSkinAsString("javascript");
-res.body = this.__parent__.renderSkinAsString("header");
-res.body += this.renderSkinAsString("register",reg);
+res.head = parent.renderSkinAsString("javascript");
+res.head += parent.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("register");
 
