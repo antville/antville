@@ -28,8 +28,9 @@ function content_macro(param) {
          delete (param.part);
          renderImage (this.site.images[part], param);
       }
-   } else if (!this.content) {
-      return;
+   // see comment at the beginning of this function
+   // } else if (!this.content) {
+   //   return;
    } else {
       var part = this.getRenderedContentPart (param.part);
       if (!part && param.fallback)
