@@ -176,6 +176,8 @@ function story_macro(param) {
  * Renders a poll (optionally as link or results)
  */
 function poll_macro(param) {
+   if (!param.id)
+      return;
    // disable caching of any contentPart containing this macro
    req.data.cachePart = false;
    var parts = param.id.split("/");
