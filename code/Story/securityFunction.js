@@ -34,7 +34,7 @@ function isDeleteDenied() {
 function isEditDenied() {
    if (user.isBlocked())
       return ("Sorry, your accout was disabled!");
-   if (this.author == user)
+   if (this.author == user || this.weblog.isUserAdmin())
       return null;
    if (!this.weblog.isUserMember() || this.editableby > this.weblog.members.get(user.name).level)
       return ("You're not allowed to edit this story!");
@@ -52,4 +52,25 @@ function isViewAllowed() {
    if (this.weblog.isUserMember() && this.editableby <= this.weblog.members.get(user.name).level)
       return true;
    return false;
+}
+
+/**
+ * function explicitly allowes some macros for use in the text of a story
+ */
+
+function allowTextMacros(s) {
+   s.allowMacro("image");
+   s.allowMacro("this.image");
+   s.allowMacro("weblog.image");
+   s.allowMacro("story.image");
+   s.allowMacro("thumbnail");
+   s.allowMacro("this.thumbnail");
+   s.allowMacro("weblog.thumbnail");
+   s.allowMacro("story.thumbnail");
+   s.allowMacro("link");
+   s.allowMacro("this.link");
+   s.allowMacro("weblog.link");
+   s.allowMacro("story.link");
+   s.allowMacro("goodie");
+   return;
 }
