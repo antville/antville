@@ -47,6 +47,10 @@
 <td nowrap><% this.showarchive as="editor" %></td>
 </tr>
 <tr>
+<td class="small" valign="top" nowrap>eMail-address:</td>
+<td><% this.email as="editor" %><br><span class="small">this email-address will be used for sending confirmation mails (i.e. when a user registers or signs up)</span></td>
+</tr>
+<tr>
 <td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Colors</b></td>
 </tr>
 <tr>
