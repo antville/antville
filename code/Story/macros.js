@@ -258,26 +258,23 @@ function commentcounter_macro(param) {
    var commentCnt = this.comments.count();
    if (!param.linkto)
       param.linkto = "main";
-   if (commentCnt == 0) {
-      if (param.no)
-         res.write(param.no)
-      else
-         return;
-   }
-   else {
-      // cloning the param object to remove the macro-specific 
-      // attributes from the clone for valid markup output:
-      var param2 = cloneObject(param);
-      delete param2.one;
-      delete param2.more;
-      delete param2.no;
+   // cloning the param object to remove the macro-specific 
+   // attributes from the clone for valid markup output:
+   var param2 = cloneObject(param);
+   delete param2.one;
+   delete param2.more;
+   delete param2.no;
+   var linkflag = (param.as == "link" && param.as != "text" || !param.as && commentCnt > 0);
+   if (linkflag)
       openMarkupElement("a", this.createLinkParam(param2));
-      if (commentCnt == 1)
-         res.write(commentCnt + (param.one ? param.one : " comment"));
-      else
-         res.write(commentCnt + (param.more ? param.more : " comments"));
+   if (commentCnt == 0)
+      res.write(commentCnt + (param.no ? param.no : " comments"));
+   else if (commentCnt == 1)
+      res.write(commentCnt + (param.one ? param.one : " comment"));
+   else
+      res.write(commentCnt + (param.more ? param.more : " comments"));
+   if (linkflag)
       closeMarkupElement("a");
-   }
    return;
 }
 
