@@ -33,7 +33,7 @@ function editPost (appkey, postid, username, password, content, publish) {
     s.text = content;
     s.online = publish ? 2 : 0;
     s.modifytime = new Date();
-    s.weblog.lastupdate = s.modifytime;
+    s.site.lastupdate = s.modifytime;
     return true;
 }
 
@@ -44,14 +44,14 @@ function deletePost(appkey, postid, username, password, publish) {
     this.checkAccessPermission(null, postid.toString(), username, password);
     var user = root.users.get(username);
     var s = this.storiesByID.get(postid.toString());
-    var blog = s.weblog;
+    var blog = s.site;
     var result = blog.stories.deleteStory(s);
     return(!result.error);
 }
 
 
 /**
- * This function checks if a user with given credentials may post to a weblog (if 
+ * This function checks if a user with given credentials may post to a site (if 
  * blogid is not null) or edit a story (if postid is not null). If not, an error is thrown.
  */
 function checkAccessPermission (blogid, postid, username, password) {
@@ -77,8 +77,8 @@ function checkAccessPermission (blogid, postid, username, password) {
         var s = this.storiesByID.get (postid);
         if (!s) 
             throwError ("Story not found for ID "+postid);
-        // for now, assume story is only editable by its author
-        if (s.author != user)
+        // for now, assume story is only editable by its creator
+        if (s.creator != user)
             throwError ("Not allowed to edit story");
     }
 }
