@@ -12,8 +12,8 @@ function isPostDenied(usr) {
    else if (!this.site.hasDiscussions())
       return (getMsg("error","siteNoDiscussion"));
    else if (!this.hasDiscussions())
-      return (getMsg("error","storyNoDiscussions"));
-   return null;   
+      return (getMsg("error","storyNoDiscussion"));
+   return null;
 }   
     
  /** 
