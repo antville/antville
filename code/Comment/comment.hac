@@ -24,6 +24,7 @@ if (this.story.title)
 res.data.body = this.renderSkinAsString("toplevel");
 
 var r = new comment();
+res.data.action = this.href("comment");
 res.data.body += r.renderSkinAsString("edit");
 
 path.site.renderSkin("page");

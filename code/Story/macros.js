@@ -296,6 +296,7 @@ function comments_macro(param) {
 function commentform_macro(param) {
    if (session.user) {
       var c = new comment();
+      res.data.action = this.href("comment");
       c.renderSkin("edit");
    } else {
       openLink(this.site.members.href("login"));
