@@ -30,15 +30,15 @@ function evalFile(param, creator) {
    newFile.filesize = param.rawfile.contentLength;
    newFile.mimetype = param.rawfile.contentType;
    newFile.description = param.description;
-   var saveTo = getProperty("filePath") + this._parent.alias + "/";
-   newFile.name = param.rawfile.writeToFile(saveTo, newFile.name);
+   var dir = this._parent.getStaticPath("files").toString();
+   newFile.name = param.rawfile.writeToFile(dir, newFile.name);
    if (!newFile.name)
       throw new Exception("fileSave");
    // the file is on disk, so we add the file-object
    if (!this.add(newFile))
       throw new Exception("fileCreate", newFile.alias);
    // send e-mail notification
-   if (newFile.site.isNotificationEnabled()) 
+   if (newFile.site.isNotificationEnabled())
       newFile.site.sendNotification("upload", newFile);
    return new Message("fileCreate", newFile.alias);
 }
@@ -52,7 +52,7 @@ function evalFile(param, creator) {
 
 function deleteFile(fileObj) {
    // first remove the file from disk
-   var f = FileLib.get(getProperty("filePath") + fileObj.site.alias, fileObj.name);
+   var f = FileLib.get(this._parent.getStaticPath("files"), fileObj.name);
    f.remove();
    if (!this.remove(fileObj))
       throw new Exception("fileDelete");
