@@ -1,6 +1,6 @@
 autoLogin();
 
-var deny = this.isNotPublic();
+var deny = this.isNotPublic(user);
 if (deny) {
    res.message = deny;
    res.redirect(this.members.href("login"));
