@@ -1,15 +1,13 @@
 /**
- * macro rendering storylist for this day
- * but check if story is online ...
- * if not, we only display it when user is also allowed to edit this story!
+ * macro writes storylist to response-object
+ * kept for backwards-compatibility only
  */
 
-function storylist_macro() {
-   for (var i=0;i<this.size();i++) {
-      var st = this.get(i);
-      if (this.isStoryOnline(st))
-         st.renderSkin("preview");
-   }
+function storylist_macro(param) {
+   res.write(param.prefix)
+   res.write(res.data.storylist);
+   res.write(param.suffix)
+   return;
 }
 
 
