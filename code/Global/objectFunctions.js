@@ -275,14 +275,14 @@ function logAccess() {
 		var c = getDBConnection("antville");
 		var error = c.getLastError();
 		if (error) {
-			writeln("Error establishing DB connection: " + error);
+			app.__app__.logEvent("Error establishing DB connection: " + error);
 			return;
 		}
 		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, BROWSER, DATE) values (" + site._id + ", " + storyID + ", \"" + referrer + "\", \"" + req.data.http_remotehost + "\", \"" + req.data.http_browser + "\", now());";
 		c.executeCommand(query);
 		var error = c.getLastError();
 		if (error) {
- 			writeln("Error executing SQL query: " + error);
+ 			app.__app__.logEvent("Error executing SQL query: " + error);
 			return;
 		}
 		return;
