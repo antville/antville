@@ -1,22 +1,22 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap><form method="post">old password:</td>
+<td class="small" nowrap><form method="post">old password:</td>
 <td nowrap><% this.input type="password" name="oldpwd" %></td>
 </tr>
 <tr>
-<td nowrap>new password:</td>
+<td class="small" nowrap>new password:</td>
 <td nowrap><% this.input type="password" name="newpwd1" %></td>
 </tr>
 <tr>
-<td nowrap>confirm password:</td>
+<td class="small" nowrap>confirm password:</td>
 <td nowrap><% this.input type="password" name="newpwd2" %></td>
 </tr>
 <tr>
-<td nowrap>url:</td>
+<td class="small" nowrap>url:</td>
 <td nowrap><% this.url as="editor" %></td>
 </tr>
 <tr>
-<td nowrap>eMail:</td>
+<td class="small" nowrap>eMail:</td>
 <td nowrap><% this.email as="editor" %></td>
 </tr>
 <tr>
@@ -25,3 +25,8 @@
 </tr>
 </table>
 </form>
+
+<p>You're member of the following weblogs:
+<ul>
+<% this.membershiplist %>
+</ul></p>
