@@ -1,154 +1,22 @@
 /**
- * named array containing the display-names of
- * path-objects which is used by linkedpath_macro()
- */
-
-DISPLAY = new Array();
-DISPLAY["root"] = "Root";
-DISPLAY["site"] = "Home";
-DISPLAY["topicmgr"] = "Topics";
-DISPLAY["storymgr"] = "Stories";
-DISPLAY["filemgr"] = "Files";
-DISPLAY["imagemgr"] = "Images";
-DISPLAY["membermgr"] = "Members";
-DISPLAY["sysmgr"] = "System Management";
-DISPLAY["pollmgr"] = "Polls";
-DISPLAY["skinmgr"] = "Skins";
-DISPLAY["story"] = "Story";
-
-/**
- * array containing short dateformats
- */
-
-SHORTDATEFORMATS = new Array();
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy.MM.dd, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy-MM-dd HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy/MM/dd HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "d. MMMM, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "MMMM d, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "d. MMM, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "MMM d, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE, d. MMM, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE MMM d, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EE, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "HH:mm";
-
-LONGDATEFORMATS = new Array();
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EEEE, d. MMMM yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EEEE, MMMM dd, yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE, d. MMM. yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE MMM dd, yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE yyyy-MM-dd HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "yyyy-MM-dd HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMMM yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMMM d, yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMM yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMM d, yyyy, HH:mm";
-
-/**
  * check if email-adress is syntactically correct
  */
-
-function checkEmail(address) {
+function evalEmail(address) {
    var m = new Mail();
    m.addTo(address);
-   if (m.status)
-      return false;
-   return true;
-}
-
-/**
- * function checks if the string passed contains special characters like
- * spaces, brackets etc.
- */
-
-function isClean(str) {
-   var invalidChar = new RegExp("[^a-zA-Z0-9]");
-   if (invalidChar.exec(str))
-      return false;
-   return true;
-}
-
-/**
- * function checks if the string passed contains any characters that
- * are forbidden in URLS
- */
-
-function isCleanForURL(str) {
-   var invalidChar = new RegExp("[\\/?&=\\+#äöüß\\\\]", "i");
-   if (invalidChar.exec(str))
-      return false;
-   return true;
-}
-
-/**
- * function checks if the string passed contains any characters that
- * are forbidden in image- or filenames
- */
-
-function isCleanForName(str) {
-   var invalidChar = new RegExp("[^a-zA-Z0-9\\.\\-_ ]");
-   if (invalidChar.exec(str))
-      return false;
-   return true;
-}
-
-/**
- * function checks if there is a site-object in path
- * if true, it returns it
- * if false, it returns root
- */
-
-function getParent() {
-   if (res.handlers.site)
-      return (res.handlers.site);
-   else
-      return (root);
-}
-
-/**
- * function creates macro-tags out of plain urls in text
- * does this with three replace-operations
- */
-
-function formatLinks(str) {
-   var pre = "<% this.link to=\"";
-   var mid = "\" text=\"";
-   var post = "\" %>";
-   var l0 = new RegExp("<a href\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?>([^<]*?)</a>", "gi");
-   var l1 = new RegExp("([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?(\\s|$))", "gi");
-   var l2 = new RegExp("(<%[^%]*?)" + pre + "(.*?)" + mid + ".*?" + post + "([^%]*?%>)", "gi");
-   
-   str = str.replace(l0, pre + "$1" + mid + "$2" + post);
-   str = str.replace(l1, pre + "$1" + mid + "$1" + post + "$3");
-   str = str.replace(l2, "$1$2$3");
-   return (str);
-}
-
-/**
- * function activates URLs to HTML link tags
- */
-
-function activateLinks (str) {
-   var pre = "<a href=\"";
-   var mid = "\">";
-   var post = "</a>";
-
-   var l1 = new RegExp("(^|/>|\\s+)([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?)(?=[\\s<]|$)", "gi");
-   str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$3");
-   return (str);
+   if (m.status != 0)
+      throw new Exception("emailInvalid");
+   return address;
 }
 
 /**
  * function checks if url is correct
  * if not it assumes that http is the protocol
  */
-
 function evalURL(url) {
-   if (url && url.indexOf("@") > 0 && url.indexOf("mailto:") == -1)
+   if (url && url.contains("@") && !url.contains("mailto:"))
       return ("mailto:" + url);
-   else if (url && url.indexOf("://") == -1 && url.indexOf("mailto:") == -1)
+   else if (url && !url.contains("://") && !url.contains("mailto:"))
       return ("http://" + url);
    return (url);
 }
@@ -157,7 +25,6 @@ function evalURL(url) {
  * function checks if user has permanent cookies
  * storing username and password
  */
-
 function autoLogin() {
    if (session.user)
       return;
@@ -168,15 +35,13 @@ function autoLogin() {
    var u = root.users.get(name);
    if (!u)
       return;
-   if (Packages.helma.util.MD5Encoder.encode(u.password+req.data.http_remotehost) != pw)
+   if ((u.password + req.data.http_remotehost).md5() != pw)
       return;
-   else {
-      if (session.login(name,u.password)) {
-         u.lastVisit = new Date();
-         res.message = getMessage("confirm","welcome",new Array(res.handlers.site ? res.handlers.site.title : root.getSysTitle(),session.user.name));
-      } else
-         return;
+   else if (session.login(name, u.password)) {
+      u.lastVisit = new Date();
+      res.message = getMessage("confirm.welcome", [res.handlers.site ? res.handlers.site.title : root.getSysTitle(), session.user.name]);
    }
+   return;
 }
 
 /**
@@ -189,10 +54,9 @@ function autoLogin() {
  *             the other containing the object itself;
  *             If parent or object is null, the function returns null.
  */
-
-function getPoolObj(objName,pool) {
+function getPoolObj(objName, pool) {
    var p = new Object();
-   if (objName.indexOf("/") >= 0) {
+   if (objName.contains("/")) {
       var objPath = objName.split("/");
       p.parent = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
       p.objName = objPath[1];
@@ -215,7 +79,6 @@ function getPoolObj(objName,pool) {
  * into database but instead written to app.data.accessLog (=Vector)
  * and written to database by the scheduler once a minute
  */
-
 function logAccess() {
    if (req.data.http_referer) {
       var site = res.handlers.site ? res.handlers.site : root;
@@ -223,10 +86,10 @@ function logAccess() {
 
       // no logging at all if the referrer comes from the same site
       // or is not a http-request
-      if (referrer.indexOf("http") < 0)
+      if (!referrer.contains("http"))
          return;
       var siteHref = site.href().toLowerCase();
-      if (referrer.toLowerCase().indexOf(siteHref.substring(0,siteHref.length-1)) >= 0)
+      if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
          return;
       var logObj = new Object();
       logObj.storyID = path.story ? path.story._id : null;
@@ -275,22 +138,6 @@ function pingUpdatedSites() {
 
 
 /**
- * parse a timestamp into a date object. This is used when  users
- * want to set createtime explicitly when creating/editing stories.
- *
- * @param time    The time as string
- * @param format   The format of the time string
- * @return            The parsed Date
- */
-function parseTimestamp (time, format) {
-   var df = new java.text.SimpleDateFormat (format);
-   if (res.handlers.site)
-       df.setTimeZone(res.handlers.site.getTimeZone());
-   // time may be a number like "20021020", so convert to string
-   return df.parse (time.toString());
-}
-
-/**
  * function formats a date to a string. It checks if a site object is
  * in the request path and if so uses its locale and timezone.
  *
@@ -298,38 +145,37 @@ function parseTimestamp (time, format) {
  * @param String The format string
  * @return String The date formatted as string
  */
-function formatTimestamp(ts,dformat) {
-   // date format parsing is quite expensive, but date formats
-   // are not thread safe, so what we do is to cache them per request
-   // in the response object
-   var sdf = res.data["timeformat"];
-   var fmt = "yyyy-MM-dd HH:mm";
-   var obj = res.handlers.site ? res.handlers.site : root;
-   if (dformat == "short")
-      fmt = obj.shortdateformat ? obj.shortdateformat : "yyyy-MM-dd HH:mm";
-   else if (dformat == "long")
-      fmt = obj.longdateformat ? obj.longdateformat : "d. MMMM yyyy HH:mm'h'";
-   else if (dformat)
-      fmt = dformat;
-
-   if (!sdf) {
-      var locale = res.handlers.site ? res.handlers.site.getLocale() : root.getLocale();
-      sdf = new java.text.SimpleDateFormat(fmt, locale);
-      if (res.handlers.site)
-         sdf.setTimeZone(res.handlers.site.getTimeZone());
-      res.data["timeformat"] = sdf;
-   } else if (fmt != sdf.toPattern()) {
-      sdf.applyPattern(fmt);
+function formatTimestamp(ts, dformat) {
+   var fmt;
+   switch (dformat) {
+      case "short" :
+         fmt = res.handlers.site ?
+               res.handlers.site.preferences.getProperty("shortdateformat") :
+               root.shortdateformat;
+         break;
+      case "long" :
+         fmt = res.handlers.site ?
+               res.handlers.site.preferences.getProperty("longdateformat") :
+               root.longdateformat;
+         break;
+      default :
+         fmt = dformat;
    }
-   var result = sdf.format(ts);
-   return result;
+   // if we still have no format pattern use a default one
+   if (!fmt)
+      var fmt = "yyyy-MM-dd HH:mm";
+   var handler = res.handlers.site ? res.handlers.site : root;
+   try {
+      return ts.format(fmt, handler.getLocale(), handler.getTimeZone());
+   } catch (err) {
+      return "[invalid format pattern]";
+   }
 }
 
 /**
  * scheduler performing auto-disposal of inactive sites
  * and auto-blocking of private sites
  */
-
 function scheduler() {
    // call autocleanup
    root.manage.autoCleanUp();
@@ -348,132 +194,133 @@ function scheduler() {
 
 
 /**
- * this function is used to replicate a javascript object
- * (like a nacro's param object)
- * @param Object JavaScript-Object to clone
- * @return Object cloned JavaScript-Object
+ * constructor function for Message objects
+ * @param String Name of the message
+ * @param Obj String or Array of strings passed to message-skin
+ * @param Obj Result Object (optional)
  */
-
-function cloneObject(obj) {
-  var clone = new Object();
-  if (typeof obj != "object")
-    return(obj);
-  for (var i in obj)
-    clone[i] = obj[i];
-  return(clone);
+function Message(name, value, obj) {
+   this.name = name;
+   this.value = value;
+   this.obj = obj;
+   this.toString = function() {
+      return getMessage("confirm." + this.name, this.value);
+   }
 }
 
 /**
- * function constructs a server-message
- * @param String Name of message to display
- * @param optional String (or Array containing several Strings)
- *        to pass to message-skin
- * @return String rendered message
+ * constructor function for Exception objects
+ * @param String Name of the message
+ * @param Obj String or Array of strings passed to message-skin
  */
+function Exception(name, value) {
+   this.name = name;
+   this.value = value;
+   this.toString = function() {
+      return getMessage("error." + this.name, this.value);
+   }
+}
 
-function getMessage(msgClass,msgName,value) {
+/**
+ * constructor function for MailException objects
+ * @param String Name of the message
+ * @param Obj String or Array of strings passed to message-skin
+ */
+function MailException(name) {
+   this.name = name;
+   this.toString = function() {
+      return getMessage("error." + this.name);
+   }
+}
+
+
+/**
+ * function retrieves a message from the message file
+ * of the appropriate language
+ */
+function getMessage(property, value) {
    // create array containing languages to search for message
    var languages = new Array();
-   if (res.handlers.site && res.handlers.site.language)
-      languages[0] = (res.handlers.site.getLocale().getLanguage());
+   if (res.handlers.site)
+      languages[0] = res.handlers.site.getLocale().getLanguage();
    languages[languages.length] = (root.getLocale()).getLanguage();
    // the last language to search for messages is always english
-   languages[languages.length] = "en";
+   if ("en" != languages[languages.length-1])
+      languages[languages.length] = "en";
    // loop over languages and try to find the message
    for (var i in languages) {
       var lang = app.data[languages[i]];
-      if (lang && lang.getProperty(msgClass + "." + msgName)) {
-         var message = lang.getProperty(msgClass + "." + msgName);
-         // create param-object needed to render Skin
+      if (lang && lang.getProperty(property)) {
+         var source = lang.getProperty(property);
          var param = new Object();
-         // check if value passed is actually an array
-         if (value && typeof(value) == typeof(String()))
-            param.value1 = value;
-         else if (value && value.length > 0) {
-            for (var i in value)
-               param["value" + (parseInt(i,10)+1)] = value[i];
+         // check if value passed is a string or an array
+         if (value) {
+            if (value instanceof Array) {
+               for (var i in value)
+                  param["value" + (parseInt(i, 10)+1)] = value[i];
+            } else
+               param.value1 = value;
          }
-         return (renderSkinAsString(createSkin(message),param));
+         return (renderSkinAsString(createSkin(source), param));
       }
    }
    // still no message found, so return
-   return ("[couldn't find message!]");
-}
-
-/**
- * function creates a result-object that contains a message
- * and a property indicating if this result-object is classified
- * as error or not
- * @param String Class of message
- * @param String Name of message
- * @param optional String (or Array containing several Strings)
- *        to pass to message-skin
- * @param Boolean flag indicating error or not
- * @return Obj result-Object
- */
-
-function createResultObj(msgClass,msgName,value,error) {
-   var result = new Object();
-   result.message = getMessage(msgClass,msgName,value);
-   result.error = error;
-   return (result);
-}
-
-/**
- * wrapper-function to create a result-object of type "error"
- */
-
-function getError(msgName,value) {
-   return (createResultObj("error",msgName,value,true));
-}
-
-/**
- * wrapper-function to create a result-object of type "confirm"
- */
-
-function getConfirm(msgName,value) {
-   return (createResultObj("confirm",msgName,value,false));
+   return "[couldn't find message!]";
 }
 
 /**
  * function gets a MimePart passed as argument and
- * constructs an alias based on the name
+ * constructs an object-alias based on the name of the uploaded file
  * @param Obj MimePart-Object
+ * @param Obj Destination collection
+ */
+function buildAliasFromFile(uploadFile, collection) {
+   var rawName = uploadFile.getName().split("/");
+   var filename = rawName[rawName.length-1];
+   if (filename.lastIndexOf(".") > -1)
+      filename = filename.substring(0, filename.lastIndexOf("."));
+   return (buildAlias(filename, collection));
+}
+
+/**
+ * function gets a String passed as argument and
+ * constructs an object-alias which is unique in
+ * a collection
+ * @param String proposed alias for object
+ * @param Obj Destination collection
  * @return String determined name
  */
-
-function buildAliasFromFile(uploadFile) {
-   var rawName = uploadFile.getName().split("/");
-   var name = rawName[rawName.length-1];
-   var dotpos = name.indexOf(".", 1);
-   if (dotpos > -1)
-      name = name.substring(0, dotpos);
-   if (name.indexOf(".") == 0)
-      name = name.substring(1, name.length);
+function buildAlias(alias, collection) {
    // clean name from any invalid characters
-   var invalidChars = new RegExp("[ \\/?&=\\+#äöüß\\\\]", "gi");
-   return name.replace(invalidChars,"");
+   var newAlias = alias.toLowerCase().toFileName();
+   if (collection && collection.get(newAlias)) {
+      // alias is already existing in collection, so we append a number
+      var nr = 1;
+      while (collection.get(newAlias + nr.toString()))
+         nr++;
+      return (newAlias + nr.toString());
+   } else
+      return (newAlias);
 }
 
 /**
  * function loads messages on startup
  */
-
 function onStart() {
    // load application messages and modules
-   var dir = new File(app.dir);
+   var dir = FileLib.get(app.dir);
    var arr = dir.list();
    for (var i in arr) {
       var fname = arr[i];
-   	if (fname.indexOf("messages.") > -1) {
-         var name = fname.substring(fname.indexOf(".")+1,fname.length);
-   		var msgFile = new File(dir, fname);
+   	if (fname.startsWith("messages.")) {
+         var name = fname.substring(fname.indexOf(".") + 1, fname.length);
+   		var msgFile = FileLib.get(dir, fname);
    		app.data[name] = new Packages.helma.util.SystemProperties (msgFile.getAbsolutePath());
    		app.log ("loaded application messages (language: " + name + ")");
    	}
    }
    // load macro help file
-   var macroHelpFile = new File(dir, "macro.help");
+   var macroHelpFile = FileLib.get(dir, "macro.help");
    app.data.macros = new Packages.helma.util.SystemProperties (macroHelpFile.getAbsolutePath());
    //eval(macroHelpFile.readAll());
    app.log("loaded macro help file");
@@ -486,60 +333,9 @@ function onStart() {
 
 
 /**
- * translates all characters of a string into HTML entities
- * @param String characters to be translated
- * @return String translated result
- */
-
-function translateToEntities(str) {
-   var result = "";
-   for (var i=0; i<str.length; i++) {
-      result += "&#" + str.charCodeAt(i) + ";";
-   }
-   return(result);
-}
-
-
-/**
- * function retuns only a part of the text passed as argument
- * length of the string to show is defined by argument "limit"
- */
-function clipText(text, limit, clipping) {
-   var text = stripTags(text);
-   if (text.length <= limit)
-      return text;
-   if (!clipping)
-      clipping = "...";
-   var cut = text.indexOf(" ",limit);
-   if (cut == -1)
-      return text;
-   return text.substring(0,cut)+clipping;
-}
-
-
-/**
- * function adds a <wbr /> tag each 30 characters
- */
-
-function softwrap(str) {
-   if (str.length<30)
-      return str;
-   var wrapped = new java.lang.StringBuffer();
-   for (var i=0; i<str.length; i=i+30) {
-      var strPart = str.substring(i, i+30);
-      wrapped.append(strPart);
-      if (strPart.length == 30 && strPart.indexOf(" ") < 0)
-         wrapped.append("<wbr />");
-   }
-   return (wrapped.toString());
-}
-
-
-/**
  * This function parses a string for <img> tags and turns them
  * into <a> tags.  
  */ 
-
 function fixRssText(str) {
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
@@ -551,7 +347,6 @@ function fixRssText(str) {
  * function counting active users and anonymous sessions
  * (thought to be called by the scheduler)
  */
-
 function countUsers() {
    app.data.activeUsers = new Array();
    var l = app.getActiveUsers();
@@ -637,7 +432,7 @@ function writeReadLog() {
 function rescueText(param) {
    session.data.rescuedText = new Object();
    for (var i in param) {
-      if (i.indexOf("content_") == 0)
+      if (i.startsWith("content_"))
          session.data.rescuedText[i] = param[i];
    }
    session.data.rescuedText.discussions = param.discussions;
@@ -662,15 +457,104 @@ function restoreRescuedText() {
    return;
 }
 
+/**
+ * function returns the level of the membership in cleartext
+ * according to passed level
+ */
+function getRole(lvl) {
+   switch (parseInt(lvl, 10)) {
+      case CONTRIBUTOR :
+         return "Contributor";
+         break;
+      case CONTENTMANAGER :
+         return "Content Manager";
+         break;
+      case ADMIN :
+         return "Administrator";
+         break;
+      default :
+         return "Subscriber";
+   }
+}
 
 /**
- * helper function to calculate percentages
- * @param Number base value
- * @param Number percent value
- * @return Float percentage
+ * extract content properties from the object containing
+ * the submitted form values (req.data)
+ * @param Obj Parameter object (usually req.data)
+ * @param Obj HopObject containing any already existing content
+ * @return Obj JS object containing the following properties:
+ *             .value: HopObject() containing extracted content
+ *             .exists: Boolean true in case content was found
+ *             .isMajorUpdate: Boolean true in case one content property
+ *                             differs for more than 50 characters
  */
+function extractContent(param, origContent) {
+   var result = {isMajorUpdate: false, exists: false, value: new HopObject()};
+   for (var i in param) {
+      if (i.startsWith("content_")) {
+         var partName = i.substring(8);
+         var newContentPart = param[i].trim();
+         // check if there's a difference between old and
+         // new text of more than 50 characters:
+         if (!result.isMajorUpdate && origContent) {
+            var len1 = origContent[partName] ? origContent[partName].length : 0;
+            var len2 = newContentPart.length;
+            result.isMajorUpdate = Math.abs(len1 - len2) >= 50;
+         }
+         result.value[partName] = newContentPart;
+         if (newContentPart)
+            result.exists = true;
+      }
+   }
+   return result;
+}
 
-function percentage(base, n) {
-	var p = n / (base / 100);
-	return Math.round(p * 100) / 100;   
+/**
+ * general mail-sending function
+ * @param String sending email address
+ * @param Obj String or Array of Strings containing recipient email addresses
+ * @param String subject line
+ * @param String Body to use in email
+ * @return Obj Message object
+ */
+function sendMail(from, to, subject, body) {
+   if (!from || !to || !body)
+      throw new MailException("mailMissingParameters");
+   var mail = new Mail();
+   mail.setFrom(from ? from : root.sys_email);
+   if (to && to instanceof Array) {
+      for (var i in to)
+         mail.addTo(to[i]);
+   } else
+      mail.addTo(to);
+   mail.setSubject(subject);
+   mail.setText(body);
+   switch (mail.status) {
+      case 10 :
+         throw new MailException("mailSubjectMissing");
+         break;
+      case 11 :
+         throw new MailException("mailTextMissing");
+         break;
+      case 12 :
+         throw new MailException("mailPartMissing");
+         break;
+      case 20 :
+         throw new MailException("mailToInvalid");
+         break;
+      case 21 :
+         throw new MailException("mailCCInvalid");
+         break;
+      case 22 :
+         throw new MailException("mailCCInvalid");
+         break;
+      case 30 :
+         throw new MailException("mailSend");
+         break;
+   }
+   // finally send the mail
+   mail.send();
+   if (mail.status != 0)
+      throw new MailException("mailSend");
+   return new Message("mailSend");
 }
