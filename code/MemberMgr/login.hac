@@ -20,7 +20,7 @@ if (!session.data.referrer && req.data.http_referer)
 
 res.data.action = this.href(req.action);
 
-res.data.title = path.weblog ? path.weblog.title : "Antville";
+res.data.title = path.site ? path.site.title : root.getSysTitle();
 
 res.data.body = this.renderSkinAsString("login");
 
