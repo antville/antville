@@ -1,7 +1,7 @@
-<b><% poll.question %></b>
+<% poll.question %>
 
 <% poll.results no="votes" one="vote" more="votes" %>
 
 <p><b>total:</b> 100% <span class="small">(<% poll.total no="votes" one="vote" more="votes" %>)</span></p>
 
-<div class="small">created by <% poll.creator %> on <% poll.createtime format="short" %>.<% poll.closetime prefix="<br />this poll was closed on " suffix="." format="short" %></div>
+<div class="small">poll created by <% poll.creator %> on <% poll.createtime format="short" %>.<% poll.closetime prefix="<br />this poll was closed on " suffix="." format="short" %></div>
