@@ -118,8 +118,8 @@ function createThumbnail(rawimage) {
  */
 
 function popupUrl() {
-   var url = "javascript:openPopup('" + getProperty("imgUrl") + this.site.alias + "/" + this.filename + "." + this.fileext;
-   url += "'," + this.width + "," + this.height + ");";
+   var url = "javascript:openPopup('" + this.getStaticUrl();
+   url += "'," + this.width + "," + this.height + ");return false;";
    return (url);
 }
 
