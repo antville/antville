@@ -1,10 +1,5 @@
 <a name="backlinks" />
 <table border="0" cellspacing="0" cellpadding="1">
-<tr>
-	<td align="right" class="small">&nbsp;</td>
-	<td rowspan="999" class="small">&nbsp;&nbsp;</td>
-	<td class="small"><b>Backlinks</b></td>
-</tr>
 
 <script type="text/javascript"><!--
 var referrers = [];
@@ -19,6 +14,7 @@ var searchEngineFilters = [
    new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
    new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
 ]
+var cnt = 0;
 var prefix = "<em>Search request:</em> ";
 for (var i in referrers) {
    var ref = referrers[i];
@@ -27,13 +23,19 @@ for (var i in referrers) {
       continue;
    if (query.filter && !searchFilter.test(ref.url))
       continue;
-   var done = false;
    for (var e in searchEngineFilters) {
       var filter = searchEngineFilters[e];
-      if (!done && filter.test(ref.url)) {
+      if (filter.test(ref.url)) {
          text = ref.compose(filter.key, prefix);
-         done = true;
+         break;
       }
+   }
+   if (++cnt == 1) {
+      document.writeln('<tr>');
+      document.writeln('<td align="right" class="small">&nbsp;</td>');
+      document.writeln('<td rowspan="999" class="small">&nbsp;&nbsp;</td>');
+      document.writeln('<td class="small"><strong>Backlinks</strong></td>');
+      document.writeln('</tr>');
    }
    document.writeln('<tr>');
    document.writeln('<td align="right" valign="top" class="small">', ref.count, '</td>');
