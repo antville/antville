@@ -165,9 +165,9 @@ function poll_macro(param) {
 	if (!poll)
 		return("[poll id " + param.id + " does not exist.]");
 	var deny = poll.isVoteDenied(user);
-	if (param.as == "link")
+	if (deny || param.as == "link")
 		return('<a href="' + poll.href() + '">' + poll.question + '</a>');
-	if (deny || poll.closed || param.as == "results")
+	if (poll.closed || param.as == "results")
 	  poll.renderSkin("results");
 	else {
 		res.data.action = poll.href("main");
