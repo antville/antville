@@ -87,7 +87,7 @@ function getPoolObj(objName, pool) {
    var p = new Object();
    if (objName.contains("/")) {
       var objPath = objName.split("/");
-      p.parent = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
+      p.parent = root.get(objPath[0]);
       p.objName = objPath[1];
    } else {
       p.parent = res.handlers.site;
@@ -357,13 +357,13 @@ function onStart() {
    	if (fname.startsWith("messages.")) {
          var name = fname.substring(fname.indexOf(".") + 1, fname.length);
    		var msgFile = FileLib.get(dir, fname);
-   		app.data[name] = new Packages.helma.util.SystemProperties (msgFile.getAbsolutePath());
-   		app.log ("loaded application messages (language: " + name + ")");
+   		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
+   		app.log("loaded application messages (language: " + name + ")");
    	}
    }
    // load macro help file
    var macroHelpFile = FileLib.get(dir, "macro.help");
-   app.data.macros = new Packages.helma.util.SystemProperties (macroHelpFile.getAbsolutePath());
+   app.data.macros = new Packages.helma.util.SystemProperties(macroHelpFile.getAbsolutePath());
    //eval(macroHelpFile.readAll());
    app.log("loaded macro help file");
    // creating the vector for referrer-logging
