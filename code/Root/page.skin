@@ -32,7 +32,8 @@
 ...&nbsp;<a href="http://project.antville.org/topics/about+antville">features</a><br>
 ...&nbsp;<a href="http://project.antville.org/topics/disclaimer">disclaimer</a></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><% this.weblogcounter %> weblogs created ... <% this.link to="list" %></div>
+<div class="statuslight"><% this.weblogcounter %> weblogs created ... <% this.link to="list" %><br>
+...&nbsp;<% this.link to="new" text="create a weblog" %></div>
 <!-- div class="statuslight">...&nbsp;<a href="http://antville.org/documentation.html">documentation</a></div -->
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><br><% image name="/xmlbutton" linkto="rss10" %><br><br><% logo name="smallstraight" %><br>powered by<br><% image name="/hop" linkto="http://helma.org" %></div></td>
