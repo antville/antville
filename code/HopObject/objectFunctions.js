@@ -19,7 +19,7 @@ function getNavigationName() {
  * function that renders the input element
  */
 function createInputParam(propName, param) {
-   var inputParam = ObjectLib.clone(param);
+   var inputParam = Object.clone(param);
    inputParam.name = propName;
    // submitted values override property value
    // but only if there were not multiple form elements
@@ -32,6 +32,18 @@ function createInputParam(propName, param) {
    return (inputParam);
 }
 
+/**
+ * create a parameter object for checkboxes
+ */
+function createCheckBoxParam(propName, param) {
+   var inputParam = Object.clone(param);
+   inputParam.name = propName;
+   inputParam.value = 1;
+   if (req.data[propName] == 1 || this[propName] == 1)
+      inputParam.checked = "checked";
+   delete inputParam.as;
+   return inputParam;
+}
 
 /**
  * derives parameter object from an object that will
