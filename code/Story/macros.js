@@ -215,8 +215,9 @@ function commentcounter_macro(param) {
          param.linkto = "main";
       if (commentCnt == 0) {
          res.write(commentCnt + (param.no ? param.no : " comments"));
-      } else {
-         openMarkupElement("a",this.createLinkParam(param));
+      }
+      else {
+         openMarkupElement("a", this.createLinkParam(param));
          if (commentCnt == 1)
             res.write(commentCnt + (param.one ? param.one : " comment"));
          else
@@ -234,7 +235,9 @@ function comments_macro(param) {
    if (this.weblog.hasDiscussions() && this.count()) {
       for (var i=0;i<this.size();i++) {
          var c = this.get(i);
-         res.write("<a name=\"" + c._id + "\"></a>");
+         var linkParam = new Object();
+         linkParam.name = c._id;
+         renderMarkupElement("a", linkParam);
          if (c.parent)
             c.renderSkin("reply");
          else
@@ -270,11 +273,12 @@ function image_macro(param) {
 
 /**
  * macro left for backwards-compatibility
- * calls global image_macro()
+ * calls global image_macro() as "popup"
  */
 
 function thumbnail_macro(param) {
-   thumbnail_macro(param);
+   param.as = "popup";
+   image_macro(param);
 }
 
 
