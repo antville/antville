@@ -1,16 +1,15 @@
 <tr>
-<td colspan="4" height="1" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" height="1" %></td>
+<td colspan="4" height="1" style="background-image: url(<% layout.image as="url" name="dot" %>);" nowrap="nowrap"><% layout.image name="pixel" height="1" %></td>
 </tr>
 <tr>
 <td colspan="4" nowrap="nowrap"><% syslog.sysmgr_typeflag %></td>
 </tr>
 <tr>
-<td width="470" valign="top" nowrap="nowrap"><% syslog.sysmgr_object prefix="<b>" suffix="</b><br />" %>
+<td valign="top" width="100%" nowrap="nowrap"><% syslog.sysmgr_object prefix="<b>" suffix="</b><br />" %>
 Message: <% syslog.sysmgr_logentry %></td>
-<td width="10" nowrap="nowrap"><% image name="/pixel" width="10" %></td>
-<td width="200" colspan="2" valign="top" class="small" nowrap="nowrap">by: <% syslog.sysmgr_sysadmin %><br />
+<td colspan="2" valign="top" class="small" nowrap="nowrap">by: <% syslog.sysmgr_sysadmin %><br />
 time:&nbsp;<% syslog.createtime format="dd.MM.yyyy HH:mm" %></td>
 </tr>
 <tr>
-<td colspan="4" height="5" nowrap="nowrap"><% image name="pixel" height="5" %></td>
+<td colspan="4" height="5" nowrap="nowrap"><% layout.image name="pixel" height="5" %></td>
 </tr>
