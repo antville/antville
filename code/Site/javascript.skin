@@ -1,8 +1,12 @@
+var imgWindow = "";
+
 function openPopup(img, width, height) {
-  if (img && width && height) {
-    width = Math.min(width + 36, 640);
-    height = Math.min(height + 30, 480);
-    var popUp = window.open(img,"popUp","toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,copyhistory=no,width=" + width + ",height=" + height);
-  }
-  return;
-}
+   if (img && width && height) {
+      width = Math.min(width + 36, 640);
+      height = Math.min(height + 30, 480);
+      if (imgWindow.location && !imgWindow.closed)
+         imgWindow.close();
+         imgWindow = window.open(img, "imgWindow" + width + height, "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=no,width=" + width + ",height=" + height);
+         imageWindow.focus();
+      }
+   }
