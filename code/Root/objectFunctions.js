@@ -100,43 +100,42 @@ function deleteSite(site) {
  * @return The result array
  */
 function searchSites (query, sid) {
+   // reuse search result container if it already exists
+   var result = result = new Array();
 
-    // reuse search result container if it already exists
-    var result = result = new Array();
+   // break up search string
+   var unquote = new RegExp("\'");
+   unquote.global = true;
+   var qarr = query.replace(unquote, "''").split(" ");
 
-    // break up search string
-    var unquote = new RegExp("\'");
-    unquote.global = true;
-    var qarr = query.replace(unquote, "''").split(" ");
+   // construct query
+   var where = "select AV_TEXT.TEXT_ID, AV_SITE.SITE_ALIAS from AV_TEXT, AV_SITE where "+
+               "AV_TEXT.TEXT_F_SITE = AV_SITE.SITE_ID and "+
+               "AV_TEXT.TEXT_ISONLINE > 0 and ";
+   for (var i in qarr) {
+      where += "(AV_TEXT.TEXT_RAWCONTENT like '%"+qarr[i].toLowerCase()+"%') "
+      if (i < qarr.length-1)
+         where += "and ";
+   }
+   // search only in the specified site
+   if (sid)
+      where += "and AV_SITE.SITE_ID = "+sid+" ";
+   else
+      where += "and AV_SITE.SITE_ISONLINE > 0 ";
+   where += "order by AV_TEXT.TEXT_CREATETIME desc";
 
-    // construct query
-    var where = "select AV_TEXT.TEXT_ID, AV_SITE.SITE_ALIAS from AV_TEXT, AV_SITE where "+
-                "AV_TEXT.TEXT_F_SITE = AV_SITE.SITE_ID and "+
-                "AV_TEXT.TEXT_ISONLINE > 0 and ";
-    for (var i in qarr) {
-        where += "(AV_TEXT.TEXT_RAWCONTENT like '%"+qarr[i].toLowerCase()+"%') "
-        if (i < qarr.length-1)
-            where += "and ";
-    }
-    // search only in the specified site
-    if (sid)
-        where += "and AV_SITE.SITE_ID = "+sid+" ";
-    else
-        where += "and AV_SITE.SITE_ISONLINE > 0 ";
-    where += "order by AV_TEXT.TEXT_CREATETIME desc";
-    // writeln (where);
-    var dbcon = getDBConnection ("antville");
-    var dbres = dbcon.executeRetrieval(where);
-    if (dbres) {
-       while (dbres.next()) {
-          var item = new Object();
-          item.sid = dbres.getColumnItem (1).toString();
-          item.sitealias = dbres.getColumnItem (2);
-          result[result.length] = item;
-       }
-    }
-    dbres.release();
-    return result;
+   var dbcon = getDBConnection ("antville");
+   var dbres = dbcon.executeRetrieval(where);
+   if (dbres) {
+      while (dbres.next()) {
+         var item = new Object();
+         item.sid = dbres.getColumnItem (1).toString();
+         item.sitealias = dbres.getColumnItem (2);
+         result[result.length] = item;
+      }
+   }
+   dbres.release();
+   return result;
 }
 
 /**
