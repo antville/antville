@@ -378,15 +378,30 @@ function topicchooser_macro(param) {
 
 /**
  * macro renders the name of the topic this story belongs to
- * as link
+ * either as link, image (if an image entiteld by the 
+ * topic name is available) or plain text
+ * NOTE: for backwards compatibility, the default is a link and
+ * you have to set "text" explicitely (which is not so nice, imho.)
  */
 
 function topic_macro(param) {
    if (!this.topic)
       return;
-   openLink(this.site.topics.get(this.topic).href());
-   res.write(this.topic);
-   closeLink();
+   if (!param.as || param.as == "link") {
+      openLink(this.site.topics.get(this.topic).href());
+      res.write(this.topic);
+      closeLink();
+   }
+   else if (param.as == "image") {
+      var img = getPoolObj(this.topic, "images");
+      if (!img)
+         return;
+      openLink(this.site.topics.get(this.topic).href());
+      renderImage(img.obj, param)
+      closeLink();
+   }
+   else if (param.as = "text")
+      res.write(this.topic);
 }
 
 
