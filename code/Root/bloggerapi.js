@@ -2,21 +2,28 @@
  *  Functions that implement Blogger's XML-RPC API.
  */
 
-/** 
+/**
  * Create a new post after checking user credentials.
  */
 function newPost (appkey, blogid, username, password, content, publish) {
     this.checkAccessPermission (blogid, null, username, password);
     var user = getUser (username);
-    var blog = this.get (blogid.toString());    
+    var blog = this.get (blogid.toString());
     var param = new Object();
     param.text = content;
     param.online = publish ? 2 : 0;
-    var result = blog.stories.evalNewStory(param,user);
-    return (result.id);
+    var s = new story();
+    var result = blog.stories.evalNewStory(s, param, user);
+    if (result && result.id)
+        return (result.id);
+    // we didn't get a story with a valid id -
+    // result should be an object containing an error message.
+    if (result && result.message)
+        throwError (result.message);
+    throwError ("evalStory() returned nothing.");
 }
 
-/** 
+/**
  * Update an existing posting.
  */
 function editPost (appkey, postid, username, password, content, publish) {
@@ -63,7 +70,6 @@ function checkAccessPermission (blogid, postid, username, password) {
             throwError ("Weblog "+blogid+" not found on this server");
         if (!blog.userMayContrib()) {
             var status = blog.members.get (username);
-            writeln ("STATUS: "+status);
             if (!status || (status.level & MAY_ADD_STORY) == 0)
                 throwError ("You don't have permission to post to this weblog");
         }
