@@ -1,1 +1,1 @@
-<span class="small">(modified by <% skin.creator %>&nbsp;...&nbsp;<% skin.link to="diff" %>&nbsp;...&nbsp;<% skin.link to="delete" text="reset" %>)</span>
+<span class="small">(modified by <% skin.creator %>&nbsp;...&nbsp;<% skin.difflink %>&nbsp;...&nbsp;<% skin.deletelink text="reset" %>)</span>

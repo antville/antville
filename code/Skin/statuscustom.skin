@@ -1,2 +1,2 @@
-<span class="small">(created by <% skin.creator %>&nbsp;...&nbsp;<% skin.link to="delete" text="delete" %>)<br />
+<span class="small">(created by <% skin.creator %><% skin.difflink prefix="&nbsp;...&nbsp;" %><% skin.deletelink prefix="&nbsp;...&nbsp;" %>)<br />
 <strong>Macro:</strong> &lt;% <% skin.proto suffix="." %>skin name="<% skin.name %>" %&gt;</span>
