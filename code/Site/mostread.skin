@@ -4,13 +4,13 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
 	<td></td>
-	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
-	<td align="right"><b>Counter</b></td>
-	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td rowspan="999">&nbsp;</td>
+	<td align="right"><b>Count</b></td>
+	<td rowspan="999">&nbsp;</td>
 	<td><b>Date</b></td>
-	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td rowspan="999">&nbsp;</td>
 	<td><b>Title</b></td>
-	<td rowspan="999">&nbsp;&nbsp;&nbsp;</td>
+	<td rowspan="999">&nbsp;</td>
 	<td><b>Author</b></td>
 </tr>
 
