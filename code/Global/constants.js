@@ -119,11 +119,11 @@ ONEHOUR = 3600000;
 ONEDAY = 86400000;
 
 /**
- * constant containing the metadata of
+ * object containing the metadata of
  * standard antville images plus the method
  * for rendering them
  */
-DEFAULTIMAGES = {
+DefaultImages = {
    smallanim: {name: "smallanim.gif", width: 98, height: 30, alt: "made with antville", linkto: "http://antville.org"},
    smallchaos: {name: "smallchaos.gif", width: 107, height: 29, alt: "made with antville", linkto: "http://antville.org"},
    smallstraight: {name: "smallstraight.gif", width: 107, height: 24, alt: "made with antville", linkto: "http://antville.org"},
