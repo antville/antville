@@ -76,11 +76,10 @@ function show_macro(param) {
       var img = this;
    if (this.creator == user) {
       var linkParam = new HopObject();
-      var linkParam = new HopObject();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       path.weblog.renderImage(img,param);
-      this.closeLink(linkParam);
+      this.closeLink();
    } else
       path.weblog.renderImage(img,param);
    res.write(param.suffix);
