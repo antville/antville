@@ -221,7 +221,8 @@ function evalDownload(fullExport) {
    var imgLog = this.images.dumpToZip(z, fullExport);
    // add skins to the zip archive
    var skinLog = this.skins.dumpToZip(z, fullExport);
-   return z.close();
+   z.close();
+   return z.getData();
 }
 
 /**
