@@ -197,3 +197,16 @@ function chooser(param) {
 }
 
 
+/**
+ * function renders only a part of the text
+ * length of the string to show is defined by parameter limit
+ */
+
+function renderTextPreview(limit) {
+   var text = createSkin(format(this.text));
+   text = stripTags(this.renderSkinAsString(text));
+   var limit = Math.min(limit,text.length);
+   while (limit < text.length && text.charAt(limit) != " ")
+      limit++;
+   res.write(text.substring(0,limit));
+}
