@@ -7,13 +7,13 @@ if (deny) {
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.story.href("main"));
+   res.redirect(path.story.href("main"));
 else if (req.data.submit == "delete" || req.data.remove) {
-   var url = this.story.href();
+   var url = path.story.href();
    if (this.parent)
       res.message = this.parent.deleteComment(this);
    else
-      res.message = this.story.deleteComment(this);
+      res.message = path.story.deleteComment(this);
    res.redirect(url);
 }
 
