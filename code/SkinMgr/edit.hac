@@ -1,21 +1,22 @@
 autoLogin();
 
-var deny = this.isEditDenied();
+var deny = this.isEditDenied(user);
 if (deny) {
    res.message = deny;
    res.redirect(user.cache.referer ? path.weblog.members.href("login") : path.weblog.href());
 }
 
-if (req.data.submit == "cancel" || req.data.cancel)
+if (req.data.submit == "cancel" || req.data.cancel) {
    res.redirect(this.href() + "#" + req.data.proto + req.data.name);
-else if (req.data.submit == "save" || req.data.save)
-   this.saveSkin();
+} else if (req.data.submit == "save" || req.data.save) {
+   var result = this.saveSkin(req.data.proto,req.data.name,req.data.skin,user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(this.href() + "#" + req.data.proto + req.data.name);
+}
 
 res.skin = "skinmgr.page";
 
-res.title = "Antville - " + path.weblog.title;
+res.data.title = "Antville - " + path.weblog.title;
 
-res.head = path.weblog.renderSkinAsString("javascript");
-res.head += path.weblog.renderSkinAsString("style");
-
-res.body = this.renderSkinAsString("edit");
+res.data.body = this.renderSkinAsString("edit");
