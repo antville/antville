@@ -1,12 +1,12 @@
 <div class="listSeparator">&nbsp;</div>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr>
-<td colspan="2" class="small"><% file.creator as="link" %> on <% file.createtime format="short" %></td>
+<td colspan="2" class="small"><strong>Macro:</strong>&nbsp;&lt;% file name="<% file.alias %>" %&gt;
+<div class="ample"><strong>Details: </strong><% file.filesize %><% file.mimetype prefix=" " %><% file.clicks prefix=", " no="0 downloads" one="1 download" more=" downloads"%></div></td>
 </tr>
 <tr>
 <td><div class="storyTitle"><% file.alias %></div>
-<div class="small">(<% file.mimetype suffix=", " %><% file.filesize %><% file.clicks prefix=", " no="0 downloads" one="1 download" more=" downloads"%>)</div>
-<div class="small"><b>Code:&nbsp;</b>&lt;% file name="<% file.alias %>" %&gt;</div></td>
+<div class="storyDate"><% file.creator as="link" %> on <% file.createtime format="short" %></div></td>
 <td class="small" align="right" valign="top" rowspan="2" nowrap="nowrap"><% file.editlink prefix="&nbsp;&nbsp;...&nbsp;" suffix="<br />" %><% file.viewlink  text="download" prefix="&nbsp;&nbsp;...&nbsp;" suffix="<br />" %><% file.deletelink prefix="...&nbsp;" %></td>
 </tr>
 <tr>

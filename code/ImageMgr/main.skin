@@ -1,14 +1,7 @@
 <p>To insert an image in a story or comment just copy and paste its code.</p>
 
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2" nowrap="nowrap">...&nbsp;<% imagemgr.link to="create" text="add an image" %></td>
-</tr>
-<tr>
-<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% imagemgr.link to="main" text="all images" %>&nbsp;|&nbsp;<% imagemgr.link to="myimages" text="my images" %></td>
-</tr>
-</table>
+<div class="ample">...&nbsp;<% imagemgr.link to="create" text="add an image" %></div>
+...&nbsp;show&nbsp;<% imagemgr.link to="main" text="all images" %>&nbsp;|&nbsp;<% imagemgr.link to="myimages" text="my images" %>
 
 <% response.pagenavigation %>
 <% imagemgr.images %>

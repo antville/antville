@@ -1,14 +1,8 @@
 <p><% linkedpath %></p>
 
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2" nowrap="nowrap">...&nbsp;<% skinmgr.link to="create" text="add a custom skin" %></td>
-</tr>
-<tr>
-<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% skinmgr.link to="main" text="all skins" %>&nbsp;|&nbsp;<% skinmgr.link to="modified" text="list of modified skins" %>&nbsp;|&nbsp;<% skinmgr.link to="custom" text="custom skins" %></td>
-</tr>
-</table>
+<div class="ample">...&nbsp;<% skinmgr.link to="create" text="add a custom skin" %></div>
+...&nbsp;show&nbsp;<% skinmgr.link to="main" text="all skins" %>&nbsp;|&nbsp;<% skinmgr.link to="modified" text="modified skins" %>&nbsp;|&nbsp;<% skinmgr.link to="custom" text="custom skins" %>
+
 
 <ul class="skinmgrTree">
 <% response.list %>

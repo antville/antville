@@ -1,12 +1,5 @@
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2" nowrap="nowrap">...&nbsp;<% storymgr.link to="create" text="add a story" %></td>
-</tr>
-<tr>
-<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% storymgr.link to="main" text="all stories" %>&nbsp;|&nbsp;<% storymgr.link to="offline" text="offline stories"%>&nbsp;|&nbsp;<% storymgr.link to="mystories" text="my stories" %></td>
-</tr>
-</table>
+<div class="ample">...&nbsp;<% storymgr.link to="create" text="add a story" %></div>
+...&nbsp;show&nbsp;<% storymgr.link to="main" text="all stories" %>&nbsp;|&nbsp;<% storymgr.link to="offline" text="offline stories"%>&nbsp;|&nbsp;<% storymgr.link to="mystories" text="my stories" %>
 
 <% response.pagenavigation %>
 <% storymgr.storylist %>

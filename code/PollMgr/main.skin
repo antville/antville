@@ -1,14 +1,7 @@
 <p>To insert a poll in a story or comment just copy and paste its code.</p>
 
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2" nowrap="nowrap"><% pollmgr.link to="create" text="add a poll" prefix="...&nbsp;" checkdeny="true" %></td>
-</tr>
-<tr>
-<td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% pollmgr.link to="main" text="all polls" %><% pollmgr.link to="open" text="open polls" prefix="&nbsp;|&nbsp;" %><% pollmgr.link to="mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %></td>
-</tr>
-</table>
+<div class="ample"><% pollmgr.link to="create" text="add a poll" prefix="...&nbsp;" checkdeny="true" %></div>
+...&nbsp;show&nbsp;<% pollmgr.link to="main" text="all polls" %><% pollmgr.link to="open" text="open polls" prefix="&nbsp;|&nbsp;" %><% pollmgr.link to="mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %>
 
 <% response.pagenavigation %>
 <% pollmgr.pollList %>

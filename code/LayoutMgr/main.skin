@@ -1,9 +1,6 @@
 <p><% linkedpath %></p>
 
-<p>...&nbsp;<% layoutmgr.link to="create" text="create a new layout" %><br />
-...&nbsp;<% layoutmgr.link to="import" text="import a layout" %></p>
-
-<p>Below are the existing layouts for <% context.title %>:</p>
+<div class="ample">...&nbsp;<% layoutmgr.link to="create" text="create a new layout" %> | <% layoutmgr.link to="import" text="import a layout" %></div>
 
 <% response.pagenavigation %>
 <% response.layoutlist %>
