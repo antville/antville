@@ -52,10 +52,10 @@ function isSysAdmin() {
  */
 
 function sortSubscriptions(s1,s2) {
-   if (s1.weblog.lastupdate > s2.weblog.lastupdate)
-      return -1;
-   else if (s1.weblog.lastupdate > s2.weblog.lastupdate)
+   if (s1.weblog.lastupdate < s2.weblog.lastupdate)
       return 1;
+   else if (s1.weblog.lastupdate > s2.weblog.lastupdate)
+      return -1;
    else
       return 0;
 }
