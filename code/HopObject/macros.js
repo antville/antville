@@ -57,15 +57,15 @@ function input_macro(param) {
          inputParam[i] = param[i];
       inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
       this.renderInputTextarea(inputParam);
-   } else if (param.type == "checkbox") {
+   } else if (param.type == "checkbox")
       this.renderInputCheckbox(param);
-   } else if (param.type == "button") {
+   else if (param.type == "button")
       this.renderInputButton(param);
-   } else if (param.type == "password") {
+   else if (param.type == "password")
       this.renderInputPassword(param);
-   } else if (param.type == "file") {
+   else if (param.type == "file")
       this.renderInputFile(param);
-   } else {
+   else {
       var inputParam = new Object();
       for (var i in param)
          inputParam[i] = param[i];
