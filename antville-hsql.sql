@@ -173,9 +173,9 @@ create table GOODIE (
 #----------------------------
 
 create table ACCESS (
-   ID bigint(20) not null primary key,
-   WEBLOG_ID bigint(20),
-   STORY_ID bigint(20),
+   ID int(9) identity primary key,
+   WEBLOG_ID int(9),
+   STORY_ID int(9),
    REFERRER longvarchar,
    IP varchar(20),
    BROWSER varchar(255),
@@ -202,7 +202,7 @@ create table TEXT (
    CREATETIME datetime,
    MODIFYTIME datetime,
    MODIFIER int(9),
-   READS bigint,
+   READS int(9),
    IPADDRESS varchar(20)
 );
 
@@ -211,9 +211,9 @@ create table TEXT (
 #----------------------------
 
 create table POLL (
-   ID bigint(20) not null primary key,
-   WEBLOG_ID bigint(20),
-   USER_ID bigint(20),
+   ID int(9) not null primary key,
+   WEBLOG_ID int(9),
+   USER_ID int(9),
    TITLE varchar(255),
    QUESTION longvarchar,
    ISONLINE tinyint(1),
@@ -228,8 +228,8 @@ create table POLL (
 #----------------------------
 
 create table CHOICE (
-   ID bigint(20) not null primary key,
-   POLL_ID bigint(20),
+   ID int(9) not null primary key,
+   POLL_ID int(9),
    TITLE varchar(255),
    CREATETIME datetime,
    MODIFYTIME datetime
@@ -240,10 +240,10 @@ create table CHOICE (
 #----------------------------
 
 create table VOTE (
-   ID bigint(20) not null primary key,
-   POLL_ID bigint(20),
-   USER_ID bigint(20),
-   CHOICE_ID bigint(20),
+   ID int(9) not null primary key,
+   POLL_ID int(9),
+   USER_ID int(9),
+   CHOICE_ID int(9),
    USERNAME varchar(128),
    CREATETIME datetime,
    MODIFYTIME datetime
