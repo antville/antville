@@ -20,7 +20,7 @@ function updateMember(lvl,modifier) {
          this.level = 0;
       this.modifytime = new Date();
       this.modifier = modifier;
-      // FIXME: disabled for testing: this.sendConfirmationMail(modifier.email);
+      this.sendConfirmationMail(modifier.email);
       result.message = "Changes were saved successfully!";
       result.error = false;
    } else {
