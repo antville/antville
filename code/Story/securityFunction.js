@@ -43,15 +43,22 @@ function isEditDenied() {
 
 
 /**
- * check if this story should appear or not
+ * check if user is allowed to view story
  */
 
-function isViewAllowed() {
-   if (this.author == user || this.weblog.isUserAdmin())
-      return true;
-   if (this.weblog.isUserMember() && this.editableby <= this.weblog.members.get(user.name).level)
-      return true;
-   return false;
+function isViewDenied() {
+   if (user.isBlocked())
+      return ("Sorry, your account was disabled!");
+   if (!this.isOnline() && this.author != user) {
+      if (!this.weblog.isUserAdmin())
+         return ("You're not allowed to see this story!");
+      else if (!this.weblog.isUserMember())
+         return ("You're not allowed to see this story!");
+      else if (this.editableby <= this.weblog.members.get(user.name).level)
+         return ("You're not allowed to see this story!");
+   } else if (this.weblog.isNotPublic())
+      return ("Sorry, this weblog is not public!");
+   return null;
 }
 
 /**

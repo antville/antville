@@ -1,9 +1,9 @@
 autoLogin();
 
-var deny = this.weblog.isNotPublic();
+var deny = this.isViewDenied();
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.members.href("login"));
+   res.redirect(this.weblog.href());
 }
 
 res.skin = "weblog.page";
