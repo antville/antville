@@ -1,6 +1,6 @@
 <table border="0" width="600" cellspacing="0" cellpadding="3">
 <tr>
-<td class="storyText">To create a new weblog you need to fill out the form below. The title will appear in the header of every page, and the alias will be part of the URL to your weblog. So don't use any special characters like spaces, brackets etc. in the alias.</td>
+<td class="storyText">To create a new weblog you need to fill out the form below. The title will appear in the header of every page, and the alias will be part of the URL to your weblog. So <b>don't use any special characters like spaces, brackets</b> etc. in the alias.</td>
 </tr>
 <tr>
 <td nowrap><table border="0" cellspacing="0" cellpadding="3">
