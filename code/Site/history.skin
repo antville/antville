@@ -3,5 +3,4 @@
 <td align="center" class="calendarheader" nowrap>recently modified:</td>
 </tr>
 <% this.history show="8" %>
-<tr>
 </table>
