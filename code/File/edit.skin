@@ -1,7 +1,7 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <form method="get" action="<% response.action %>">
 <tr>
-<td colspan="2">To insert this goodie into a story copy/paste the following code: <pre>&lt;% goodie name="<% this.alias %>" %&gt;</pre><br /></td>
+<td colspan="2">To insert this file into a story copy/paste the following code: <pre>&lt;% file name="<% this.alias %>" %&gt;</pre><br /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Name:</td>
