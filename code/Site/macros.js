@@ -422,24 +422,15 @@ function navigation_macro(param) {
 
 
 /**
- * macro rendering storylist, but checks if story is online ...
+ * macro writes storylist to response-object
+ * kept for backwards-compatibility only
  */
 
-function storylist_macro() {
-   if (this.allstories.size() > 0) {
-      var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2
-      days = Math.min(days,this.size());
-      var dayCnt = 0;
-      while (dayCnt < days) {
-         var day = this.get(dayCnt++);
-         for (var i=0;i<day.size();i++) {
-            var st = day.get(i);
-            if (this.isStoryOnline(st))
-               st.renderSkin("preview");
-         }
-      }
-   } else
-      this.renderSkin("welcome");
+function storylist_macro(param) {
+   res.write(param.prefix)
+   res.write(res.data.storylist);
+   res.write(param.suffix)
+   return;
 }
 
 
@@ -595,34 +586,13 @@ function memberlist_macro(param) {
  */
 
 function history_macro(param) {
+   if (this.isNotPublic() && !this.isUserMember(user))
+      return;
    res.write(param.prefix);
-   var len1 = this.allstories.count();
-   var len2 = this.allcomments.count();
-   var nr = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
-   if (nr > len1+len2) nr = len1+len2;
-   var c1 = 0;
-   var c2 = 0;
-   var cnt = 0;
-   var x = new Array(nr);
-   while (cnt < nr) {
-      if (c1 >= this.allstories.count())
-         x[cnt] = this.allcomments.get(c2++);
-      else if (c2 >= this.allcomments.count())
-         x[cnt] = this.allstories.get(c1++);
-      else {
-         var s = this.allstories.get(c1);
-         var c = this.allcomments.get(c2);
-         var t1 = (s.modifytime) ? s.modifytime : s.createtime;
-         var t2 = (c.modifytime) ? c.modifytime : c.createtime;
-         if (t2 > t1)
-            x[cnt] = this.allcomments.get(c2++);
-         else
-            x[cnt] = this.allstories.get(c1++);
-      }
-      cnt++;
-   }
-   for (var j in x)
-      x[j].renderSkin("historyview");
+   var max = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
+   max = Math.min(max,this.allcontent.size());
+   for (var i=0;i<max;i++)
+      this.allcontent.get(i).renderSkin("historyview");
    res.write(param.suffix);
 }
 
