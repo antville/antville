@@ -1,1 +1,1 @@
-<% file.alias as="link" %> <span class="small">(<% file.filetype suffix=", " %><% file.filesize %>)</span>
+<a href="<% site.href action="getfile" %>?name=<% file.alias encoding="url" %>"><% param.text %></a> <span class="small">(<% file.filetype suffix=", " %><% file.filesize %>)</span>
