@@ -9,26 +9,26 @@
 <% story.content part="text" as="editor" width="30" height="15" style="formText" %></td>
 </tr>
 <tr>
-<td><table border="0" cellspacing="0" cellpadding="3">
-   <tr>
-   <td class="small">select a topic<br />or create<br />a new one<br />(or leave empty):</td>
-   <td valign="top" nowrap="nowrap"><% story.topicchooser %><br /><input type="text" name="topic" value="<% request.topic %>"></td>
-   </tr>
-   <tr>
-   <td class="small" nowrap="nowrap">status:</td>
-   <td nowrap="nowrap"><% story.online as="editor" %></td>
-   </tr>
-   <tr>
-   <td class="small" nowrap="nowrap">also editable for:</td>
-   <td nowrap="nowrap"><% story.editableby as="editor" %></td>
-   </tr>
-   <tr>
-   <td class="small" nowrap="nowrap">allow comments:</td>
-   <td nowrap="nowrap"><% story.discussions as="editor" %></td>
-   </tr>
-   </table></td>
+<td><fieldset><legend class="small">options</legend>
+<p>Add this story to a topic<br />
+<div style="margin-left:15px;"><table>
 <tr>
-<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td width="48%" class="small">choose a topic:<br />
+<% story.topicchooser %></td>
+<td valign="top" width="4%">&nbsp;</td>
+<td valign="top" width="48%" class="small">
+or create a new one:<br /> 
+<input type="text" name="topic" value="<% request.topic %>"></td>
+</tr>
+<tr>
+<td colspan="3" class="small"><p><% story.justintopic as="editor" %>&nbsp;publish story just in topic</p></td>
+</tr>
+</table></div></p>
+<p>story is editable by:<br />
+<span class="small"><% story.editableby as="editor" %></span></p>
+<p class="small"><% story.discussions as="editor" %>&nbsp;allow comments</p></div></fieldset></td>
+<tr>
+<td nowrap="nowrap"><% input type="button" name="publish" value="publish" %>&nbsp;<% input type="button" name="save" value="save offline" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 <tr>
 <td class="small"><% story.creator as="link" prefix="created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;"%></td>
