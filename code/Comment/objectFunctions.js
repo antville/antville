@@ -33,7 +33,8 @@ function updateComment(param) {
       }
       this.setContent (cont);
 
-      // this.title = param.title;
+      // let's keep the comment title property:
+      this.title = param.content_title;
       // this.text = param.text;
       if (majorUpdate)
          this.modifytime = new Date();
