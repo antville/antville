@@ -81,7 +81,7 @@ function evalStory(param, modifier) {
    this.cache.modifytime = new Date();
    var result = new Message("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
-   result.id = this.id;
+   result.id = this._id;
    return result;
 }
 
@@ -118,7 +118,7 @@ function evalComment(param, creator) {
    // let's keep the title property:
    c.title = content.value.title;
    this.add(c);
-   // also add to story.comments since it has 
+   // also add to story.comments since it has
    // cachemode set to aggressive and wouldn't refetch
    // its child collection index otherwise
    if (this._prototype == "story")
@@ -127,7 +127,7 @@ function evalComment(param, creator) {
       this.story.comments.add(c);
    this.site.lastupdate = new Date();
    // send e-mail notification
-   if (this.site.isNotificationEnabled()) 
+   if (this.site.isNotificationEnabled())
       this.site.sendNotification("create", c);
    var result = new Message("commentCreate");
    result.id = c._id;
@@ -143,7 +143,7 @@ function evalComment(param, creator) {
 function deleteComment(currComment) {
    for (var i=currComment.size();i>0;i--)
       this.deleteComment(currComment.get(i-1));
-   // also remove from comment's parent since it has 
+   // also remove from comment's parent since it has
    // cachemode set to aggressive and wouldn't refetch
    // its child collection index otherwise
    var p = currComment.parent;
