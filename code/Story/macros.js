@@ -2,9 +2,6 @@
  *  macro for rendering a part of the content.
  */
 function content_macro(param) {
-   // moved the check for old property layout to
-   // objectFunctions.js/getContentPart() because
-   // this function is called directly sometimes [ts]
    if (param.as == "editor") {
       // this is a first trial to add a title like
       // "Re: title of previous posting" to a new posting
@@ -31,9 +28,6 @@ function content_macro(param) {
          delete (param.part);
          renderImage (this.site.images[part], param);
       }
-   // see comment at the beginning of this function
-   // } else if (!this.content) {
-   //   return;
    } else {
       var part = this.getRenderedContentPart (param.part);
       if (!part && param.fallback)
@@ -44,9 +38,12 @@ function content_macro(param) {
          else
             openLink(this.story.href()+"#"+this._id);
          if (!part && param.part == "title") {
-            part = this.getRenderedContentPart ("text");
+            // FIXME: this should go post 1.0 final
+            part = stripTags(this.getRenderedContentPart ("text"));
             param.limit = "20";
          }
+         if (!part)
+            part = "...";
       }
       if (!param.limit)
          res.write(part);
