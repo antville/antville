@@ -13,12 +13,11 @@ function name_macro(param) {
  */
 
 function password_macro(param) {
-   res.write(param.prefix)
-   if (param.as == "editor")
+   if (param.as == "editor") {
+      res.write(param.prefix)
       this.renderInputPassword(this.createInputParam("password",param));
-   else
-      res.write(this.password);
-   res.write(param.suffix);
+      res.write(param.suffix);
+   }
 }
 
 
