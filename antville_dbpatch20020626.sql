@@ -180,6 +180,10 @@ add index IDX_SKIN_PROTOTYPE(SKIN_PROTOTYPE(10)),
 add index IDX_SKIN_NAME(SKIN_NAME(20)),
 type=MyISAM;
 alter table SKIN rename to AV_SKIN;
+update AV_SKIN set SKIN_PROTOTYPE = "site" where SKIN_PROTOTYPE = "weblog";
+update AV_SKIN set SKIN_PROTOTYPE = "file" where SKIN_PROTOTYPE = "goodie";
+update AV_SKIN set SKIN_PROTOTYPE = "membermgr" where SKIN_PROTOTYPE = "membership";
+update AV_SKIN set SKIN_PROTOTYPE = "membership" where SKIN_PROTOTYPE = "member";
 
 #----------------------------
 # SYSLOG
