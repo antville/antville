@@ -444,7 +444,7 @@ function colorpicker_macro(param) {
 
 function fakemail_macro(param) {
 	var tldList = new Array("com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl");
-   var nOfMails = param.number ? param.number : 20;
+   var nOfMails = param.number ? (param.number <= 50 ? param.number : 50) : 20;
    for (var i=0;i<nOfMails;i++) {
    	var tld = tldList[Math.floor(Math.random()*tldList.length)];
    	var mailName = "";
