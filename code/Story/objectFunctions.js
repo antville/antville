@@ -9,48 +9,58 @@
 
 function evalStory(param,modifier) {
    var result = new Object();
-   if (param.text) {
-      var online = parseInt(param.online,10);
-      var editableby = parseInt(param.editableby,10);
-      this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : null);
-      this.title = param.title;
-      this.text = param.text;
-      this.modifytime = new Date();
-      this.modifier = modifier;
-      this.ipaddress = param.http_remotehost;
-      if (param.newtopic)
-         this.topic = param.newtopic;
-      else if (parseInt(param.topic,10) > 0)
-         this.topic = this.weblog.topics.get(parseInt(param.topic,10) -1).groupname;
-      else
-         this.topic = null;
-      // if story should go offline, set lastupdate of weblog
-      if ((this.online && !online) || this.online)
-         this.weblog.lastupdate = new Date();
-      if (isNaN(online) || (online == 1 && !this.topic))
-         this.online = 0;
-      else
-         this.online = online;
-      if (this.online > 0) {
-         // href() may not yet work if we changed the topic
-         // so we build the redirect URL manually
-         if (this.topic)
-            result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
-         else
-            result.url = this.href();
-         this.weblog.lastupdate = new Date();
-      } else
-         result.url = this.weblog.stories.href();
-      // hmmm, the parent needs to be explicitly set
-      // otherwise href() will result in wrong urls if
-      // topic is changed (and something in text/title also has changed)
-      this.setParent(this.topic ? this.weblog.topics.get(this.topic) : this.weblog.get(this.day));
-      result.message = "The story was updated successfully!";
-      result.error = false;
-   } else {
+   result.error = false;
+   // if user deleted the text of the story, return with error-message
+   if (!param.text) {
       result.message = "You need at least some text!";
       result.error = true;
+      return (result);
    }
+   // assign those properties that can be stored anyway
+   var editableby = parseInt(param.editableby,10);
+   this.editableby = (modifier == this.author && !isNaN(editableby) ? editableby : null);
+   this.title = param.title;
+   this.text = param.text;
+   this.modifytime = new Date();
+   this.modifier = modifier;
+   this.ipaddress = param.http_remotehost;
+   // check name of topic (if specified)
+   if (param.topic)
+      var topicName = param.topic;
+   else if (!isNaN(parseInt(param.topicidx,10)))
+      var topicName = this.weblog.topics.get(parseInt(param.topicidx,10)).groupname;
+   else
+      var topicName = null;
+   if (!isCleanForURL(topicName)) {
+      // name of topic contains forbidden characters, so return immediatly
+      result.message = "The name of the topic contains forbidden characters!";
+      result.error = true;
+      return (result);
+   } else
+      this.topic = topicName;
+   // check online-status of story
+   var online = parseInt(param.online,10);
+   if (online == 1 && !this.topic) {
+      result.message = "Can't set story online just in topic because you didn't specify one!";
+      result.error = true;
+      this.online = 2;
+      return (result);
+   } else if (isNaN(online))
+      this.online = 0;
+   else
+      this.online = online;
+
+   if (this.online > 0) {
+      // href() may not yet work if we changed the topic
+      // so we build the redirect URL manually
+      if (this.topic)
+         result.url = this.weblog.topics.href() + escape(this.topic) + "/" + this._id;
+      else
+         result.url = this.href();
+      this.weblog.lastupdate = new Date();
+   } else
+      result.url = this.weblog.stories.href();
+   result.message = "The story was updated successfully!";
    return (result);
 }
 
