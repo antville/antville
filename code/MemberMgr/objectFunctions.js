@@ -32,11 +32,11 @@ function evalRegistration() {
 /**
  * check if all values necessary to register
  * are given and return them as properties of a
- * temporary HopObject
+ * temporary Object
  */
 
 function checkReg() {
-   var reg = new HopObject();
+   var reg = new Object();
 	if (!res.message) res.message = "Please fill out the form completely and then click the button to register.";
    if (req.data.name)
       reg.name = req.data.name;
@@ -94,5 +94,5 @@ function updateUser() {
    user.email = req.data.email;
    user.description = req.data.description;
    res.message = "Changes were saved successfully!";
-   res.redirect(this.__parent__.href());
+   res.redirect(this._parent.href());
 }
