@@ -69,6 +69,7 @@ function evalRegistration(param) {
  		if (newUser) {
          newUser.name = param.name;
 			newUser.email = param.email;
+			newUser.publishemail = param.publishemail;
          newUser.url = evalURL(param.url);
          newUser.description = param.description;
          newUser.registered = new Date();
@@ -119,6 +120,7 @@ function updateUser(param) {
    if (!result) {
       session.user.url = evalURL(param.url);
       session.user.email = param.email;
+      session.user.publishemail = param.publishemail;
       // not in use right now: user.description = param.description;
       result = getConfirm("update");
    }
