@@ -47,10 +47,21 @@ function text_macro(param) {
 
 function online_macro(param) {
    res.write(param.prefix);
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("online",param));
-   else
-      res.write(parseInt(this.online,10) ? "yes" : "no");
+   if (param.as == "editor") {
+      var options = new Array("no","just in topic","yes");
+      res.write(simpleDropDownBox("online",options,this.online));
+   } else {
+      if (!this.isOnline())
+         res.write("offline");
+      else if (parseInt(this.online,10) < 2) {
+         res.write("online in ");
+         var linkParam = new Object();
+         this.weblog.space.get(this.topic).openLink(linkParam);
+         res.write(this.topic);
+         this.closeLink();
+      } else
+         res.write("online in weblog");
+   }
    res.write(param.suffix);
 }
 
