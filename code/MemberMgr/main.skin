@@ -1,4 +1,4 @@
-<div class="ample">...&nbsp;<% membermgr.link to="create" text="add member" %></div>
+<div class="ample">...&nbsp;<% membermgr.link to="create" text="add a member" %></div>
 ...&nbsp;show <% membermgr.link to="main" text="all" %>&nbsp;| <% membermgr.link to="admins" %>&nbsp;| <% membermgr.link to="contributors" %>&nbsp;| <% membermgr.link to="managers" %>&nbsp;| <% membermgr.link to="subscribers" %>
 
 <% response.pagenavigation %>
