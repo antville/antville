@@ -10,7 +10,7 @@
   <channel rdf:about="<% this.url %>">
     <title><![CDATA[<% this.title %>]]></title>
     <link><% this.url %></link>
-    <% this.tagline prefix="<description><![CDATA[" suffix="]]></description>" %>
+    <description><![CDATA[<% this.tagline %>]]></description>
     <dc:publisher><![CDATA[<% param.title %>]]></dc:publisher>
     <dc:creator><![CDATA[<% param.creator %> (mailto:<% param.email %>)]]></dc:creator>
     <dc:date><% param.lastupdate %></dc:date>
