@@ -10,15 +10,15 @@
 <tr>
 <td><table border="0" cellspacing="0" cellpadding="3">
    <tr>
-   <td class="small">topic:</td>
-   <td nowrap><input name="topic" value="<% this.topic as="form" %>"></td>
+   <td class="small">select a topic<br>or create<br>a new one<br>(or leave empty):</td>
+   <td valign="top" nowrap><% this.topicchooser %><br><input type="text" name="newtopic" value="<% request.topic %>"></td>
    </tr>
    <tr>
-   <td class="small" nowrap>is online:</td>
+   <td class="small" nowrap>status:</td>
    <td nowrap><% this.online as="editor" %></td>
    </tr>
    <tr>
-   <td class="small" nowrap>editing allowed for:</td>
+   <td class="small" nowrap>also editable for:</td>
    <td nowrap><% this.editableby as="editor" %></td>
    </tr>
    </table></td>
