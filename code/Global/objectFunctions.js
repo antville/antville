@@ -1,4 +1,64 @@
 /**
+ * function loads messages on startup
+ */
+function onStart() {
+   // load application messages and modules
+   var dir = new Helma.File(app.dir);
+   var arr = dir.list();
+   for (var i in arr) {
+      var fname = arr[i];
+   	if (fname.startsWith("messages.")) {
+         var name = fname.substring(fname.indexOf(".") + 1, fname.length);
+   		var msgFile = new Helma.File(dir, fname);
+   		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
+   		app.log("loaded application messages (language: " + name + ")");
+   	}
+   }
+   // build macro help
+   app.data.macros = buildMacroHelp();
+   //eval(macroHelpFile.readAll());
+   app.log("loaded macro help file");
+   // creating the vector for referrer-logging
+   app.data.accessLog = new java.util.Vector();
+   // creating the hashtable for storyread-counting
+   app.data.readLog = new java.util.Hashtable();
+   // define the global mail queue
+   app.data.mailQueue = new Array();
+   // init constants
+   initConstants();
+   // call onStart methods of modules
+   for (var i in app.modules) {
+      if (app.modules[i].onStart)
+         app.modules[i].onStart();
+   }
+   return;
+}
+
+
+/**
+ * scheduler performing auto-disposal of inactive sites
+ * and auto-blocking of private sites
+ */
+function scheduler() {
+   // call autocleanup
+   root.manage.autoCleanUp();
+   // notify updated sites
+   pingUpdatedSites();
+   // countUsers();
+   // write the log-entries in app.data.accessLog into DB
+   writeAccessLog();
+   // store a timestamp in app.data indicating when last update
+   // of accessLog was finished
+   app.data.lastAccessLogUpdate = new Date();
+   // store the readLog in app.data.readLog into DB
+   writeReadLog();
+   // send mails and empty mail queue
+   flushMailQueue();
+   return 30000;
+}
+
+
+/**
  * check if email-adress is syntactically correct
  */
 function evalEmail(address) {
@@ -202,29 +262,6 @@ function formatTimestamp(ts, dformat) {
 }
 
 /**
- * scheduler performing auto-disposal of inactive sites
- * and auto-blocking of private sites
- */
-function scheduler() {
-   // call autocleanup
-   root.manage.autoCleanUp();
-   // notify updated sites
-   pingUpdatedSites();
-   // countUsers();
-   // write the log-entries in app.data.accessLog into DB
-   writeAccessLog();
-   // store a timestamp in app.data indicating when last update
-   // of accessLog was finished
-   app.data.lastAccessLogUpdate = new Date();
-   // store the readLog in app.data.readLog into DB
-   writeReadLog();
-   // send mails and empty mail queue
-   flushMailQueue();
-   return 30000;
-}
-
-
-/**
  * constructor function for Message objects
  * @param String Name of the message
  * @param Obj String or Array of strings passed to message-skin
@@ -348,38 +385,6 @@ function buildAlias(alias, collection) {
    } else
       return newAlias;
 }
-
-/**
- * function loads messages on startup
- */
-function onStart() {
-   // load application messages and modules
-   var dir = new Helma.File(app.dir);
-   var arr = dir.list();
-   for (var i in arr) {
-      var fname = arr[i];
-   	if (fname.startsWith("messages.")) {
-         var name = fname.substring(fname.indexOf(".") + 1, fname.length);
-   		var msgFile = new Helma.File(dir, fname);
-   		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
-   		app.log("loaded application messages (language: " + name + ")");
-   	}
-   }
-   // build macro help
-   app.data.macros = buildMacroHelp();
-   //eval(macroHelpFile.readAll());
-   app.log("loaded macro help file");
-   // creating the vector for referrer-logging
-   app.data.accessLog = new java.util.Vector();
-   // creating the hashtable for storyread-counting
-   app.data.readLog = new java.util.Hashtable();
-   // define the global mail queue
-   app.data.mailQueue = new Array();
-   // init constants
-   initConstants();
-   return;
-}
-
 
 /**
  * This function parses a string for <img> tags and turns them
