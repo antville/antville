@@ -130,7 +130,7 @@ function getOriginalSkinSource(proto, name) {
  * returns all custom skins for this layout 
  * including those from parent layouts (own
  * custom skins override those of the parent layout)
- * @return HopObject of Skins
+ * @return Array containing skin HopObjects
  */
 function getCustomSkins() {
    var coll = [];
