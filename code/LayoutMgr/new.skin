@@ -1,13 +1,6 @@
 <form action="<% response.action %>" method="post">
 
-<p>To create a new layout please enter a title for it. Optional you can choose one of the available system layouts as a basis.</p>
-
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small">Title:</td>
-<td><% input type="text" name="title" %></td>
-</tr>
-</table>
+<p>You can either choose one of the available system layouts below as a basis for your new layout or create one from scratch (you can always change that later in the preferences of the layout too):</p>
 
 <% response.pagenavigation %>
 <% response.layoutlist %>
