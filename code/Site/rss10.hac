@@ -49,5 +49,6 @@ param2.updateBase = sdf.format(this.createtime);
 param2.language = this.language;
 param2.items = items;
 param2.resources = resources;
+param2.textinput = this.renderSkinAsString("rssTextInput", param2);
 
 renderSkin("rss10Channel", param2);

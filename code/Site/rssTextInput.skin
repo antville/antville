@@ -1,6 +1,6 @@
-<textInput>
+<textinput>
 	<title>find</title>
-	<description>Search <% this.alias %></description>
+	<description>Search weblog "<% this.alias %>":</description>
 	<name>q</name>
 	<link><% param.url %>search</link>
-</textInput>
+</textinput>
