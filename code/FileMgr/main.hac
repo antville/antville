@@ -1,6 +1,6 @@
 autoLogin();
 
-var parent = setLayout();
+var parent = setLayout("editor");
 
 var deny = this.isEditDenied();
 if (deny) {
