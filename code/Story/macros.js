@@ -234,7 +234,6 @@ function commentform_macro(param) {
  */
 
 function image_macro(param) {
-   this.weblog.images.filter();
    if (param.name && this.weblog.images.get(param.name)) {
       res.write(param.prefix);
       if (param.linkto) {
