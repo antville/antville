@@ -351,18 +351,27 @@ function history_macro(param) {
    } catch (deny) {
       return;
    }
-   if (!param.show)
-      param.show = 5;
-   var cnt = 0;
-   var i = 0;
-   this.lastmod.prefetchChildren(0, parseInt(param.show, 10));
-   while (cnt < param.show && this.lastmod.get(i)) {
+   var limit = param.limit ? parseInt(param.limit, 10) : 5;
+   var cnt = i = 0;
+   var size = this.lastmod.size();
+   var discussions = this.preferences.getProperty("discussions");
+   while (cnt < limit && i < size) {
+      if (i % limit == 0)
+         this.lastmod.prefetchChildren(i, limit);
       var item = this.lastmod.get(i++);
-      if (!item.story || (item.story.online && item.story.discussions &&
-            item.site.preferences.getProperty("discussions"))) {
-         item.renderSkin("historyview");
-         cnt++;
+      switch (item._prototype) {
+         case "story":
+            if (param.show == "comments")
+               continue;
+            break;
+         case "comment":
+            if (param.show == "stories" || !item.story.online ||
+                  !item.story.discussions || !discussions)
+               continue;
+            break;
       }
+      item.renderSkin("historyview");
+      cnt++;
    }
    return;
 }
