@@ -1,12 +1,12 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isSubscribeDenied(user);
+var deny = this.isSubscribeDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(this.href());
 }
 
 // create a new member-object and add it to membership-mountpoint
-this.members.addMember(user);
+this.members.addMember(session.user);
 res.message = this.title + " was added to your subscriptions!";
 res.redirect(this.href());
