@@ -204,10 +204,10 @@ function getPoolObj(objName,pool) {
 function getDefaultDateFormats(version) {
    var patterns = new Array();
    if (version == "short") {
-      patterns[0] = "yyyy.MM.dd, HH:mm";
-      patterns[1] = "yyyy.MM.dd, h:mm a";
-      patterns[2] = "dd.MM.yyyy, HH:mm";
-      patterns[3] = "dd.MM.yyyy, h:mm a";
+      patterns[0] = "dd.MM.yyyy, HH:mm";
+      patterns[1] = "dd.MM.yyyy, h:mm a";
+      patterns[2] = "yyyy.MM.dd, HH:mm";
+      patterns[3] = "yyyy.MM.dd, h:mm a";
       patterns[4] = "MM.dd, HH:mm";
       patterns[5] = "MM.dd, h:mm a";
       patterns[6] = "dd.MM, HH:mm";
@@ -267,14 +267,14 @@ function logAccess() {
       var c = getDBConnection("antville");
       var dbError = c.getLastError();
       if (dbError) {
-         app.__app__.logEvent("Error establishing DB connection: " + dbError);
+         app.log("Error establishing DB connection: " + dbError);
          return;
       }
       var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE, ACCESSLOG_F_TEXT, ACCESSLOG_REFERRER, ACCESSLOG_IP, ACCESSLOG_BROWSER) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "')";
       c.executeCommand(query);
       var dbError = c.getLastError();
       if (dbError) {
-         app.__app__.logEvent("Error executing SQL query: " + dbError);
+         app.log("Error executing SQL query: " + dbError);
          return;
       }
       return;
@@ -380,6 +380,7 @@ function scheduler() {
    root.manage.autoCleanUp();
    // notify updated sites
    pingUpdatedSites();
+   return (60000);
 }
 
 
@@ -507,4 +508,19 @@ function onStart() {
    	}
    }
    return;
+}
+
+
+/**
+ * translates all characters of a string into HTML entities
+ * @param String characters to be translated
+ * @return String translated result
+ */
+
+function translateToEntities(str) {
+   var result = "";
+   for (var i=0; i<str.length; i++) {
+      result += "&#" + str.charCodeAt(i) + ";";
+   }
+   return(result);
 }
