@@ -1,0 +1,3 @@
+use the following command to start the querytool for the mckoi database:
+
+java -cp ../build/extra/mckoidb.jar com.mckoi.tools.JDBCQueryTool -url jdbc:mckoi:local://./db.conf -u admin -p entwil
