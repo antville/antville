@@ -251,6 +251,10 @@ function evalSystemSetup(param, admin) {
    // set the default layout
    if (param.layout)
       root.layouts.setDefaultLayout(param.layout);
+   // call the evalSystemSetup method of every module
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "evalSystemSetup", param);
+
    // add a new entry in system-log
    this.syslogs.add(new SysLog("system", null, "changed system setup", session.user));
    // everything fine, so we assign true to root.sys_issetup
