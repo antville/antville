@@ -25,12 +25,7 @@ function onRequest() {
       res.redirect(res.handlers.site ? res.handlers.site.href() : root.href());
    }
    // check access
-   var deny = this.checkAccess(req.action, session.user, req.data.memberlevel);
-   if (deny) {
-      res.message = deny.toString();
-      if (deny.redirectTo)
-         res.redirect(deny.redirectTo);
-   }
+   this.checkAccess(req.action, session.user, req.data.memberlevel);
    return;
 }
 
