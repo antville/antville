@@ -71,7 +71,7 @@ function createtime_macro(param) {
  */
 
 function modifytime_macro(param) {
-   if (this.modifytime && this.modifytime.getTime() != this.createtime.getTime()) {
+   if (this.modifytime) {
       res.write(param.prefix);
       res.write(this.weblog.formatTimestamp(this.modifytime,param));
       res.write(param.suffix);
@@ -102,7 +102,7 @@ function author_macro(param) {
  */
 
 function modifier_macro(param) {
-   if (!this.modifier || this.createtime.getTime() == this.modifytime.getTime())
+   if (!this.modifier)
       return;
    res.write(param.prefix);
    if (param.as == "link" && this.modifier.url) {
@@ -143,7 +143,7 @@ function editlink_macro(param) {
 
 function deletelink_macro(param) {
    res.write(param.prefix);
-   if (this.author == user) {
+   if (this.isDeleteAllowed()) {
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
@@ -234,6 +234,7 @@ function commentform_macro(param) {
  */
 
 function image_macro(param) {
+   this.weblog.images.filter();
    if (param.name && this.weblog.images.get(param.name)) {
       res.write(param.prefix);
       if (param.linkto) {
@@ -257,18 +258,18 @@ function editableby_macro(param) {
       ddParam = new HopObject();
       ddParam.name = "editableby";
       ddParam.add(this.createDDOption("Author only",3,(this.editableby == 3 ? true : false)));
-      ddParam.add(this.createDDOption("Administrators only",2,(this.editableby == 2 ? true : false)));
-      ddParam.add(this.createDDOption("Contributors only",1,(this.editableby == 1 ? true : false)));
-      ddParam.add(this.createDDOption("all Users",0,(this.editableby == 0 ? true : false)));
+      ddParam.add(this.createDDOption("Admins only",2,(this.editableby == 2 ? true : false)));
+      ddParam.add(this.createDDOption("Contributors and Admins",1,(this.editableby == 1 ? true : false)));
+      ddParam.add(this.createDDOption("Members, Contributors and Admins",0,(this.editableby == 0 ? true : false)));
       this.chooser(ddParam);
       res.write(param.suffix);
    } else {
       if (this.editableby == 0)
-         res.write("all Users");
+         res.write("Members, Contributors and Admins of " + this.weblog.title);
       else if (this.editableby == 1)
-         res.write("Contributors only")
+         res.write("Contributors and Admins of " + this.weblog.title)
       else if (this.editableby == 2)
-         res.write("Administrators only");
+         res.write("only Admins of " + this.weblog.title);
       else if (this.editableby == 3)
          res.write("Author only");
    }
