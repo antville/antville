@@ -479,7 +479,7 @@ function buildAliasFromFile(uploadFile) {
 
 function onStart() {
    // load application messages
-   var dir = app.__app__.getAppDir();
+   var dir = new File(app.dir);
    var arr = dir.list();
    for (var i in arr) {
    	if (arr[i].indexOf("messages.") > -1) {
