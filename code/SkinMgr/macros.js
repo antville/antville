@@ -45,7 +45,7 @@ function help_macro(param) {
 
          // if a url is available render an html link
          if (url)
-            Html.openLink(helpUrl + url);
+            Html.openLink({href: helpUrl + url});
          res.encode("<% ");
          // show the prototype's name if not global, response or param
          if (protoName != "global" && protoName != "resOrParam")
@@ -69,5 +69,5 @@ function prototypechooser_macro(param) {
    for (var i in app.skinfiles)
       options.push({value: i, display: i});
    options.sort(function(a, b) {return (a.display.charCodeAt(0) - b.display.charCodeAt(0)); });
-   Html.dropDown("prototype", options, null, "--- select a prototype ---");
+   Html.dropDown({name: "prototype"}, options, null, "--- select a prototype ---");
 }
