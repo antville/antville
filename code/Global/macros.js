@@ -153,7 +153,7 @@ function story_macro(param) {
    if (storyPath.length == 2)
       var site = root.get(storyPath[0]);
    else
-      var site = path.site;
+      var site = res.handlers.site;
    if (!site)
       return;
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
@@ -174,7 +174,7 @@ function poll_macro(param) {
    if (parts.length == 2)
       var site = root.get(parts[0]);
    else
-      var site = path.site;
+      var site = res.handlers.site;
    if (!site)
       return;
    var poll = site.polls.get(parts[1] ? parts[1] : param.id);
@@ -248,7 +248,7 @@ function sitelist_macro(param) {
  * wrapper-macro for imagelist
  */
 function imagelist_macro(param) {
-   var site = param.of ? root.get(param.of) : path.site;
+   var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
       return;
    site.images.imagelist_macro(param);
@@ -260,7 +260,7 @@ function imagelist_macro(param) {
  * wrapper-macro for topiclist
  */
 function topiclist_macro(param) {
-   var site = param.of ? root.get(param.of) : path.site;
+   var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
       return;
    site.topics.topiclist_macro(param);
@@ -307,7 +307,7 @@ function shortcut_macro(param) {
    // disable caching of any contentPart containing this macro
    req.data.cachePart = false;
    if (param && param.name) {
-      var sc = path.site.shortcuts.get(param.name);
+      var sc = res.handlers.site.shortcuts.get(param.name);
       if (sc)
          sc.renderContent(param.text);
       else
@@ -328,12 +328,12 @@ function shortcut_macro(param) {
 function storylist_macro(param) {
    // disable caching of any contentPart containing this macro
    req.data.cachePart = false;
-   var site = param.of ? root.get(param.of) : path.site;
+   var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
       return;
 
    // untrusted sites are only allowed to use "light" version
-   if (path.site && !path.site.trusted) {
+   if (res.handlers.site && !res.handlers.site.trusted) {
       param.limit = param.limit ? Math.min(site.allstories.count(), parseInt(param.limit), 50) : 25;
       for (var i=0; i<param.limit; i++) {
          var story = site.allcontent.get(i);
@@ -416,8 +416,8 @@ function colorpicker_macro(param) {
       param.editor = obj.content_macro(param2);
       param.color = obj.getContentPart(param.name);
    }
-   else if (path.site) {
-      var obj = path.site;
+   else if (res.handlers.site) {
+      var obj = res.handlers.site;
       param.editor = obj[param.name+"_macro"](param2);
       param.color = obj[param.name];
    }
