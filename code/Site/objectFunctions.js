@@ -13,7 +13,7 @@ function evalNewStory() {
       if (req.data.editableby != null && req.data.editableby != "")
          newStory.editableby = parseInt(req.data.editableby,10);
       else
-         newStory.editableby = 3;
+         newStory.editableby = 2;
       newStory.author = user;
       newStory.createtime = new Date();
       newStory.modifytime = new Date();
