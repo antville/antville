@@ -1,0 +1,26 @@
+<table border="0" width="400" cellspacing="0" cellpadding="3">
+<tr>
+<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% this.alias %>" %&gt;</pre></td>
+</tr>
+<tr>
+<td><% this.show %></td>
+</tr>
+</table>
+
+<br>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<tr>
+<td class="small" nowrap>Name:</td>
+<td nowrap><% this.alias %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Alttext:</td>
+<td nowrap><% this.alttext %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Author:</td>
+<td nowrap><% this.creator %></td>
+</tr>
+</table>
+<div class="small"><% this.editlink prefix="<br>...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" suffix="<br><br>" %></div>
