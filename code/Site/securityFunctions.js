@@ -5,9 +5,15 @@
  */
 
 function isNotPublic(usr) {
-   if (!this.isOnline() && !this.isUserMember(usr))
-      return("This weblog is not public!");
+   if (!this.isOnline()) {
+      if (usr && usr.isSysAdmin())
+         return null;
+      else if (usr && this.isUserMember(usr))
+         return null;
+      return ("This weblog is not public!");
+   }
    return null;
+
 }
 
 /**
@@ -17,9 +23,24 @@ function isNotPublic(usr) {
  */
 
 function isEditDenied(usr) {
+   if (usr.isSysAdmin())
+      return null;
    var membership = this.isUserMember(usr);
    if (!membership || (membership.level & MAY_EDIT_PREFS) == 0)
       return ("You're not allowed to edit the preferences!");
+   return null;
+}
+
+/**
+ * check if user is allowed to delete the weblog
+ * (only SysAdmins or the creator of a weblog are allowed to delete it!)
+ * @param Obj Userobject
+ * @return String Reason for denial (or null if allowed)
+ */
+
+function isDeleteDenied(usr) {
+   if (!usr.isSysAdmin() && usr != this.creator)
+      return ("You're not allowed to delete this weblog!");
    return null;
 }
 
@@ -84,6 +105,17 @@ function userMayContrib() {
 
 function showArchive() {
    if (parseInt(this.archive))
+      return true;
+   return false;
+}
+
+/**
+ * function checks if weblog is blocked
+ * @return Boolean true if weblog is blocked, otherwise false
+ */
+
+function isBlocked() {
+   if (parseInt(this.blocked))
       return true;
    return false;
 }
