@@ -13,14 +13,13 @@ function evalPoll(param, creator) {
    var result;
    var choiceInput = param.choice;
    if (param.choice_array) {
-   	 var choiceCnt = 0;
-	   for (var i=0; i<param.choice_array.length; i++) {
-	   		if (param.choice_array[i]) {
-	   		  choiceCnt++;
-	   		}
-	   }
+      var choiceCnt = 0;
+      for (var i in param.choice_array) {
+         if (param.choice_array[i])
+            choiceCnt++;
+      }
    }
-   if (param.title && param.question && creator && choiceCnt > 1) {
+   if (param.question && choiceCnt > 1) {
       this.title = param.title;
       this.question = param.question;
       this.modifytime = new Date();
