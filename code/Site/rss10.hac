@@ -43,6 +43,7 @@ else {
 	param1.authorMail = encodeXml(getProperty("adminEmail"));
 	param1.date = this.createtime.format(w3fmt);
 	items = renderSkinAsString("rss10Item", param1);
+	resources = renderSkinAsString("rss10Resource", param1);
 	param2.creatorName = param1.authorName;
 	param2.creatorMail = param1.authorMail;
 }
@@ -50,6 +51,7 @@ else {
 param2.title = encodeXml(this.title);
 param2.url = url;
 param2.description = this.tagline ? encodeXml(this.tagline) : "";
+param2.date = this.createtime.format(w3fmt);
 param2.year = now.getYear();
 param2.updateBase = this.createtime.format(w3fmt);
 param2.language = this.language;
