@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% this.colorpicker name="bgcolor" %></td>
+<td nowrap="nowrap"><% this.colorpicker name="bgcolor" text="background" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
