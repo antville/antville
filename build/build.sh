@@ -13,11 +13,7 @@ if test -z "${JAVA_HOME}" ; then
     exit
 fi
 
-if test -f ${JAVA_HOME}/lib/tools.jar ; then
-    CLASSPATH=${CLASSPATH}:${JAVA_HOME}/lib/tools.jar
-fi
-
 BUILDFILE=build.xml
 
-${JAVA_HOME}/bin/java -cp ant-launcher.jar ${APPNAME} org.apache.tools.ant.launcher.Launch -buildfile ${BUILDFILE} ${1}
+${JAVA_HOME}/bin/java -cp ant-launcher.jar org.apache.tools.ant.launch.Launcher -buildfile ${BUILDFILE} ${1}
 
