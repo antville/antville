@@ -7,6 +7,6 @@ if (deny) {
 }
 
 // create a new member-object and add it to membership-mountpoint
-this.members.addMember(session.user);
+this.members.addMembership(session.user);
 res.message = getMsg("confirm","subscriptionCreate",this.title);
 res.redirect(this.href());
