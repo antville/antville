@@ -20,7 +20,7 @@ if (req.data.q) {
         folder = new weblog();
         user.cache["search-"+query] = folder;
     }
-    folder.allstories.subnodeRelation = "where ISONLINE > 0 and "+
+    folder.allstories.subnodeRelation = "where WEBLOG_ID = "+this._id+" and ISONLINE > 0 and "+
 		"(TITLE like '%"+query+"%' or TEXT like '%"+query+"%') "+
 		"order by CREATETIME desc";
     var found = folder.allstories.size();
