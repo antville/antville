@@ -5,5 +5,5 @@
 So please either change the preferences of your weblog (select the checkbox "public") or send a mail to <% param.contact %> containing reasons why your weblog should stay private.
 
 ---------------------------------------
-<% root.systitle %> - <% root.sysurl %>
+<% root.title %> - <% root.url %>
 ---------------------------------------

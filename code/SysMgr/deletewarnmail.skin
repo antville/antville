@@ -3,5 +3,5 @@
 <% param.site %> (<% param.url %>) was inactive for more than <% param.inactivity %> days. You have <% param.daysleft %> days time to reactivate your weblog, otherwise it will be deleted. Please note that the removal of <% param.site %> is an irreversible process!
 
 ---------------------------------------
-<% root.systitle %> - <% root.sysurl %>
+<% root.title %> - <% root.url %>
 ---------------------------------------
