@@ -139,7 +139,7 @@ function title_macro(param) {
       Html.input(this.createInputParam("title", param));
    else {
       if (param.linkto) {
-         Html.openLink(this.href(param.linkto == "main" ? "" : param.linkto));
+         Html.openLink({href: this.href(param.linkto == "main" ? "" : param.linkto)});
          res.write(this.title);
          Html.closeLink();
       } else
@@ -178,7 +178,7 @@ function image_macro(param) {
    delete(param.as);
    // render image tag
    if (param.linkto) {
-      Html.openLink(param.linkto);
+      Html.openLink({href: param.linkto});
       delete(param.linkto);
       renderImage(img, param);
       Html.closeLink();
@@ -194,7 +194,9 @@ function image_macro(param) {
 function testdrivelink_macro(param) {
    if (this.isDefaultLayout())
       return;
-   Html.link(this.href("startTestdrive"), param.text ? param.text : "test");
+   Html.link({href: this.href("startTestdrive")},
+             param.text ? param.text : "test");
+   return;
 }
 
 /**
@@ -204,7 +206,9 @@ function testdrivelink_macro(param) {
 function deletelink_macro(param) {
    if (this.isDefaultLayout() || this.sharedBy.size() > 0)
       return;
-   Html.link(this.href("delete"), param.text ? param.text : "delete");
+   Html.link({href: this.href("delete")},
+             param.text ? param.text : "delete");
+   return;
 }
 
 /**
@@ -214,7 +218,9 @@ function deletelink_macro(param) {
 function activatelink_macro(param) {
    if (this.isDefaultLayout())
       return;
-   Html.link(this._parent.href() + "?activate=" + this.alias, param.text ? param.text : "activate");
+   Html.link({href: this._parent.href() + "?activate=" + this.alias},
+             param.text ? param.text : "activate");
+   return;
 }
 
 /**

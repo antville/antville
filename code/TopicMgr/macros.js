@@ -7,7 +7,7 @@ function topiclist_macro(param) {
    for (var i=0;i<this.size();i++) {
       var topic = this.get(i);
       res.write(param.itemprefix);
-      Html.link(topic.href(), topic.groupname);
+      Html.link({href: topic.href()}, topic.groupname);
       res.write(param.itemsuffix);
    }
 }

@@ -13,7 +13,7 @@ function storylist_macro(param) {
  *  Overwrite link macro to use groupname. No fancy options.
  */
 function link_macro () {
-   Html.link(this.href(), this.groupname);
+   Html.link({href: this.href()}, this.groupname);
    return;
 }
 

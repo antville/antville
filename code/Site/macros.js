@@ -8,7 +8,7 @@ function title_macro(param) {
     if (param && param.linkto) {
       if (param.linkto == "main")
         param.linkto = "";
-      Html.openLink(this.href(param.linkto));
+      Html.openLink({href: this.href(param.linkto)});
       if (this.title && this.title.trim())
         res.write(stripTags(this.title));
       else
@@ -303,7 +303,7 @@ function calendar_macro(param) {
                   if (idx < lastDayIndex)
                      lastDayIndex = idx;
                }
-               dayParam.day = Html.linkAsString(currGroup.href(), linkText);
+               dayParam.day = Html.linkAsString({href: currGroup.href()}, linkText);
             } else {
                dayParam.day = linkText;
             }
@@ -486,7 +486,7 @@ function monthlist_macro(param) {
       var next = this.get(i+1);
       if (!next || next.groupname.substring(0, 6) < curr.groupname.substring(0, 6)) {
          res.write(param.itemprefix);
-         Html.openLink(curr.href());
+         Html.openLink({href: curr.href()});
          var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", this.getTimeZone());
          res.write(formatTimestamp(ts, param.format ? param.format : "MMMM yyyy"));
          Html.closeLink();
@@ -528,7 +528,7 @@ function notify_macro(param) {
    if (param.as == "editor") {
       var options = new Array("Don't notify anyone", "Notify content managers and admins", "Notify contributors and above");
       var pref = this.preferences.getProperty("notify_" + param.event);
-      Html.dropDown("notify_" + param.event, options, pref);
+      Html.dropDown({name: "notify_" + param.event}, options, pref);
    } else {
       if (pref == 2)
          res.write("Notify contributors");

@@ -49,7 +49,7 @@ function creator_macro(param) {
    if (!this.creator)
       return;
    if (param.as == "link" && this.creator.url)
-      Html.link(this.creator.url, this.creator.name);
+      Html.link({href: this.creator.url}, this.creator.name);
    else
       res.write(this.creator.name);
    return;
@@ -62,7 +62,7 @@ function modifier_macro(param) {
    if (!this.modifier)
       return;
    if (param.as == "link" && this.modifier.url)
-      Html.link(this.modifier.url, this.modifier.name);
+      Html.link({href: this.modifier.url}, this.modifier.name);
    else
       res.write(this.modifier.name);
    return;

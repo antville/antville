@@ -162,7 +162,8 @@ function searchUser(key) {
       // do nothing if the user is already a member
       if (this.get(name))
          continue;
-      var sp = {name: name, description: url ? Html.linkAsString(url, url) : null};
+      var sp = {name: name,
+                description: (url ? Html.linkAsString({href: url}, url) : null)};
       this.renderSkin("searchresultitem", sp);
       found++;
    }

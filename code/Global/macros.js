@@ -58,7 +58,7 @@ function image_macro(param) {
    delete(param.as);
    // render image tag
    if (param.linkto) {
-      Html.openLink(param.linkto);
+      Html.openLink({href: param.linkto});
       delete(param.linkto);
       renderImage(img, param);
       Html.closeLink();
@@ -124,12 +124,12 @@ function linkedpath_macro (param) {
    var start = (path.site == null) ? 0 : 1;
    for (var i=start; i<path.length-1; i++) {
       title = path[i].getNavigationName();
-      Html.link(path[i].href(), title);
+      Html.link({href: path[i].href()}, title);
       res.write(separator);
    }
    title = path[i].getNavigationName();
    if (req.action != "main" && path[i].main_action)
-      Html.link(path[i].href(), title);
+      Html.link({href: path[i].href()}, title);
    else
       res.write(title);
    return;
@@ -177,7 +177,7 @@ function poll_macro(param) {
    if (!poll)
       return getMessage("error.pollNoExist", param.id);
    if (param.as == "link")
-      Html.link(poll.href(poll.closed ? "results" : ""), poll.question);
+      Html.link({href: poll.href(poll.closed ? "results" : "")}, poll.question);
    else if (poll.closed || param.as == "results")
       poll.renderSkin("results");
    else {
@@ -236,7 +236,7 @@ function username_macro(param) {
    if (!session.user)
       return;
    if (session.user.url && param.as == "link")
-      Html.link(session.user.url, session.user.name);
+      Html.link({href: session.user.url}, session.user.name);
    else
       res.write(session.user.name);
    return;
@@ -310,7 +310,7 @@ function storylist_macro(param) {
          if (!story)
             continue;
          res.write(param.itemprefix);
-         Html.openLink(story.href());
+         Html.openLink({href: story.href()});
          var str = story.title;
          if (!str)
             str = story.getRenderedContentPart("text").clip(20).softwrap(30);
@@ -348,7 +348,7 @@ function storylist_macro(param) {
          if (!story)
             continue;
          res.write(param.itemprefix);
-         Html.openLink(story.href());
+         Html.openLink({href: story.href()});
          var str = story.title;
          if (!str)
             str = story.getRenderedContentPart("text").clip(20).softwrap(30);
@@ -426,7 +426,7 @@ function fakemail_macro(param) {
    	for (var j=0;j<serverLength;j++)
    		serverName += String.fromCharCode(Math.round(Math.random()*25) + 97);
       var addr = mailName + "@" + serverName + "." + tld;
-      Html.link("mailto:" + addr, addr);
+      Html.link({href: "mailto:" + addr}, addr);
       if (i+1 < nOfMails)
          res.write(param.delimiter ? param.delimiter : ", ");
    }

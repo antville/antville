@@ -10,7 +10,7 @@ function renderLinkToPrevMonth(firstDayIndex, currentMonth, monthNames) {
    var prevDay = this.get(firstDayIndex + 1);
    if (prevDay && prevDay.groupname < currentMonth) {
       var month = prevDay.groupName.toString().substring(4, 6) - 1;
-      return Html.linkAsString(prevDay.href(), monthNames[month]);
+      return Html.linkAsString({href: prevDay.href()}, monthNames[month]);
    } else {
       return "&nbsp;";
    }
@@ -29,7 +29,7 @@ function renderLinkToNextMonth(lastDayIndex, currentMonth, monthNames) {
    var nextDay = this.get(lastDayIndex - 1);
    if (nextDay && nextDay.groupname > currentMonth) {
       var month = nextDay.groupName.toString().substring(4, 6) - 1;
-      return Html.linkAsString(nextDay.href(), monthNames[month]);
+      return Html.linkAsString({href: nextDay.href()}, monthNames[month]);
    } else {
       return "&nbsp;";
    }

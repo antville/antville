@@ -92,7 +92,8 @@ function editlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.link(this.href("edit"), param.text ? param.text : "edit");
+      Html.link({href: this.href("edit")},
+                param.text ? param.text : "edit");
    }
    return;
 }
@@ -109,7 +110,8 @@ function deletelink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.link(this.href("delete"), param.text ? param.text : "delete");
+      Html.link({href: this.href("delete")},
+                param.text ? param.text : "delete");
    }
    return;
 }
@@ -122,7 +124,8 @@ function viewlink_macro(param) {
    try {
       if (!this.closed) {
          this.checkVote(session.user, req.data.memberlevel);
-         Html.link(this.href(), param.text ? param.text : "vote");
+         Html.link({href: this.href()},
+                   param.text ? param.text : "vote");
       }
    } catch (deny) {
       return;
@@ -142,7 +145,8 @@ function closelink_macro(param) {
          return;
       }
       var str = this.closed ? "re-open" : "close";
-      Html.link(this.href("toggle"), param.text ? param.text : str);
+      Html.link({href: this.href("toggle")},
+                param.text ? param.text : str);
    }
    return;
 }

@@ -155,7 +155,7 @@ DefaultImages = {
       if (!param.linkto && !this[name].linkto)
          Html.tag("img", param);
       else {
-         Html.openLink(param.linkto ? param.linkto : this[name].linkto);
+         Html.openLink({href: param.linkto ? param.linkto : this[name].linkto});
          delete(param.linkto);
          Html.tag("img", param);
          Html.closeLink();

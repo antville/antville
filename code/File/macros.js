@@ -49,7 +49,7 @@ function editlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.link(this.href("edit"), param.text ? param.text : "edit");
+      Html.link({href: this.href("edit")}, param.text ? param.text : "edit");
    }
    return;
 }
@@ -66,7 +66,7 @@ function deletelink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.openLink(this.href("delete"));
+      Html.openLink({href: this.href("delete")});
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else

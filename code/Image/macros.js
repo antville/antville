@@ -56,7 +56,7 @@ function editlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.openLink(this.href("edit"));
+      Html.openLink({href: this.href("edit")});
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
@@ -76,7 +76,7 @@ function deletelink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.openLink(this.href("delete"));
+      Html.openLink({href: this.href("delete")});
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
@@ -100,7 +100,7 @@ function show_macro(param) {
       var url = img.getUrl();
    delete(param.what);
    param.src = img.getUrl();
-   Html.openLink(url);
+   Html.openLink({href: url});
    renderImage(img, param);
    Html.closeLink();
 }
@@ -114,7 +114,7 @@ function topic_macro(param) {
    if (!this.topic)
       return;
    if (param.as == "link") {
-      Html.link(path.site.images.topics.href(this.topic), this.topic);
+      Html.link({href: path.site.images.topics.href(this.topic)}, this.topic);
    } else
       res.write(this.topic);
 }

@@ -4,7 +4,7 @@
 
 function name_macro(param) {
    if (this.url)
-      Html.link(this.url, this.name);
+      Html.link({href: this.url}, this.name);
    else
       res.write(this.name);
 }
