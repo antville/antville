@@ -37,7 +37,7 @@ function skinstatus_macro(param) {
  * macro creates an html link
  */
 function link_macro(param) {
-   if (param.checkdeny == "true" && this.isDenied(session.user,req.data.memberlevel))
+   if (param.checkdeny == "true" && this.isDenied(session.user, req.data.memberlevel))
       return;
    delete param.checkdeny;
    var content = param.text ? param.text : param.to;
