@@ -1,26 +1,22 @@
 /**
- * function checks if a link to the given group makes sense
+ * function renders a single day, either as link if there are
+ * any stories online, or as plain text
  */
 
 function renderCalendarDay(currGroupname,text) {
    var currGroup = this.get(currGroupname);
    var linkit = false;
    if (currGroup && currGroup.size()) {
-      if (this.isUserAdmin())
-         linkit = true;
-      else {
-         linkit = false;
-         for (var i=0;i<currGroup.size();i++) {
-            var st = currGroup.get(i);
-            if (st.isOnline() || st.isViewAllowed()) {
-               linkit = true;
-               break;
-            }
+      linkit = false;
+      for (var i=0;i<currGroup.size();i++) {
+         var st = currGroup.get(i);
+         if (st.isOnline()) {
+            linkit = true;
+            break;
          }
       }
-      if (linkit) {
+      if (linkit)
          var text = "<a href=\"" + currGroup.href() + "\">" + text + "</a>";
-      }
    }
    return (text);
 }
