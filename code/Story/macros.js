@@ -392,7 +392,9 @@ function topic_macro(param) {
    if (!this.topic)
       return;
    if (!param.as || param.as == "link") {
-      openLink(this.site.topics.get(this.topic).href());
+      // FIXME: manually escaping topicname because internal webserver
+      // doesn't understand spaces encoded as '+'
+      openLink(this.site.topics.href() + escape(this.topic));
       res.write(this.topic);
       closeLink();
    }
@@ -402,7 +404,9 @@ function topic_macro(param) {
       var img = getPoolObj(param.imgprefix+this.topic, "images");
       if (!img)
          return;
-      openLink(this.site.topics.get(this.topic).href());
+      // FIXME: manually escaping topicname because internal webserver
+      // doesn't understand spaces encoded as '+'
+      openLink(this.site.topics.href() + escape(this.topic));
       renderImage(img.obj, param)
       closeLink();
    }
