@@ -1,4 +1,4 @@
-<p class="storyTitle"><% poll.question %></p>
+<b><% poll.question %></b>
 
 <% poll.results no="votes" one="vote" more="votes" %>
 

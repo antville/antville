@@ -1,1 +1,0 @@
-created by <% poll.creator %> on <% poll.createtime format="short" %>.

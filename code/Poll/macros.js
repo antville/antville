@@ -119,15 +119,12 @@ function results_macro(param2) {
 
 function total_macro(param) {
    var n = this.votes.size();
-   if (n == 0) {
+   if (n == 0)
       n += " " + (param.no ? param.no : "votes");
-   }
-   else if (n == 1) {
+   else if (n == 1)
       n += " " + (param.one ? param.one : "vote");
-   }
-   else {
+   else
       n += " " + (param.more ? param.more : "votes");
-   }
    return(n);
 }
 
@@ -148,7 +145,7 @@ function modifytime_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied(session.user)) {
+   if (session.user && !this.isEditDenied(session.user)) {
       openLink(this.href("edit"));
       res.write(param.text ? param.text : "edit");
       closeLink();
@@ -162,7 +159,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied(session.user)) {
+   if (session.user && !this.isDeleteDenied(session.user)) {
       openLink(this.href("delete"));
       res.write(param.text ? param.text : "delete");
       closeLink();
@@ -175,7 +172,7 @@ function deletelink_macro(param) {
  */
 
 function viewlink_macro(param) {
-   if (this.isViewDenied(session.user))
+   if (session.user && this.isViewDenied(session.user))
      return;
    if (this.closed || this.isVoteDenied(session.user)) {
       var url = this.href("results");
@@ -196,7 +193,7 @@ function viewlink_macro(param) {
  */
 
 function closelink_macro(param) {
-   if (!this.isDeleteDenied(session.user)) {
+   if (session.user && !this.isDeleteDenied(session.user)) {
       var str = this.closed ? "re-open" : "close";
       openLink(this.href("toggle"));
       res.write(param.text ? param.text : str);
@@ -213,14 +210,4 @@ function state_macro(param) {
    if (this.closed) {
       return(param.text + formatTimestamp(this.modifytime, param.format));
    }
-}
-
-
-/**
- * macro renders some details about the poll
- */
-
-function info_macro(param) {
-   if (this.creator)
-      return(this.renderSkinAsString("info"));
 }

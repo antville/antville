@@ -5,11 +5,8 @@
  */
 
 function isDeleteDenied(usr) {
-   var membership = this.site.isUserMember(usr);
-   if (!membership)
-      return (getMsg("error","userNoMember"));
-   else if ((membership.level & MAY_EDIT_SKINS) == 0)
-      return (getMsg("error","skinDeleteDenied"));
+   if ((req.data.memberlevel & MAY_EDIT_SKINS) == 0)
+      return "skinDeleteDenied";
    return null;
 }
 

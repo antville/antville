@@ -1,4 +1,4 @@
-<p class="storyTitle"><% poll.question %></p>
+<b><% poll.question %></b>
 <table border="0" cellspacing="2" cellpadding="2">
 <form method="post" action="<% response.action %>">
 
@@ -6,7 +6,7 @@
 
 <tr>
 <td colspan="2"><br /><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><% poll.link to="results" text="view results" %></span>
-<p class="small"><% poll.info %></p></td>
+<p class="small">created by <% poll.creator %> on <% poll.createtime format="short" %>.</p></td>
 </tr>
 
 </form>

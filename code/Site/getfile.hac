@@ -10,6 +10,6 @@ if (f) {
    res.contentType = f.mimetype;
    res.redirect(getProperty("fileUrl") + this.alias + "/" + f.name);
 } else {
-   res.message = getMsg("error","fileNotFound",req.data.name);
+   res.message = getMessage("error","fileNotFound",req.data.name);
    res.redirect(this.href());
 }

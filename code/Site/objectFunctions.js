@@ -8,7 +8,6 @@
  */
 
 function evalPreferences(param,modifier) {
-   var result;
    if (!checkEmail(param.email))
       return (getError("emailInvalid"));
    this.title = stripTags(param.title);
@@ -27,14 +26,14 @@ function evalPreferences(param,modifier) {
    this.smallfont = param.smallfont;
    this.smallsize = param.smallsize;
    this.smallcolor = param.smallcolor;
-   this.days = parseInt(param.days,10);
+   this.days = !isNaN(parseInt(param.days,10)) ? parseInt(param.days,10) : 3;
    if (this.online && !param.online)
       this.lastoffline = new Date();
-   this.online = param.online ? parseInt(param.online,10) : 0;
-   this.discussions = param.discussions ? parseInt(param.discussions,10) : 0;
-   this.usercontrib = param.usercontrib ? parseInt(param.usercontrib,10) : 0;
-   this.archive = param.archive ? parseInt(param.archive,10) : 0;
-   this.enableping = param.enableping ? parseInt(param.enableping,10) : 0;
+   this.online = param.online ? 1 : 0;
+   this.discussions = param.discussions ? 1 : 0;
+   this.usercontrib = param.usercontrib ? 1 : 0;
+   this.archive = param.archive ? 1 : 0;
+   this.enableping = param.enableping ? 1 : 0;
    // store selected locale in this.language and this.country
    var locs = java.util.Locale.getAvailableLocales();
    var newLoc = locs[parseInt(param.locale,10)];
@@ -45,10 +44,8 @@ function evalPreferences(param,modifier) {
    // store selected timezone in this.timezone
    var timezones = java.util.TimeZone.getAvailableIDs();
    var newZone = timezones[parseInt(param.timezone,10)];
-   if (!newZone)
-      this.timezone = null;
-   else
-      this.timezone =newZone;
+   this.timezone = newZone ? newZone : null;
+
    // reset cached locale, timezone and dateSymbols
    this.cache.locale = null;
    this.cache.timezone = null;
@@ -61,32 +58,14 @@ function evalPreferences(param,modifier) {
 
    // short dateformat
    var patterns = getDefaultDateFormats("short");
-   var ldf = patterns[parseInt(param.shortdateformat,10)];
-   this.shortdateformat = ldf ? ldf : null;
+   var sdf = patterns[parseInt(param.shortdateformat,10)];
+   this.shortdateformat = sdf ? sdf : null;
 
    this.modifytime = new Date();
    this.modifier = modifier;
    return (getConfirm("update"));
 }
 
-
-/**
- * function returns true if discussions are enabled
- * for this site
- */
-
-function hasDiscussions() {
-   this.discussions;
-}
-
-/**
- * function returns true if site is online
- * otherwise false
- */
-
-function isOnline() {
-   this.online;
-}
 
 /**
  * function creates the directory that will contain the images of this site
@@ -154,17 +133,6 @@ function sortMostReads(s1, s2) {
 }
 
 /**
- * function checks if story is online in site
- * @param Obj story to check
- * @return Boolean true if online, false if not
- */
-
-function isStoryOnline(st) {
-   st.online;
-}
-
-
-/**
  * function deletes all assets of a site (recursive!)
  */
 
@@ -176,16 +144,6 @@ function deleteAll() {
    this.stories.deleteAll();
    return true;
 }
-
-/**
- * check if site is trusted
- * @return Boolean true in case site is trusted, false otherwise
- */
-
-function isTrusted() {
-   this.trusted;
-}
-
 
 /**
  * send notification to weblogs.com
@@ -207,7 +165,7 @@ function ping() {
 	result.message = ping.result.message;
 
 	if (result.error)
-		app.__app__.logEvent("Error when notifying weblogs.com for updated site #" + this._id + ": " + result.message);
+		app.log("Error when notifying weblogs.com for updated site \"" + this.alias + "\": " + result.message);
 
 	// this is the easy post url method (maybe faster?)
 	// var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
@@ -216,17 +174,4 @@ function ping() {
 	// hanging in the scheduler if a fatal error occurs
 	this.lastping = new Date();
 	return(result);
-}
-
-
-/**
- * This function returns true if the site prefs were modified
- * lately, otherwise it returns false.
- * @return Boolean
- */
-
-function isModified() {
-   if (req.lastModified && req.lastModified > this.modifytime)
-      return(false);
-   return(true);
 }

@@ -24,21 +24,21 @@ function renderStorylist(idx,show) {
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
 
-   res.data.storylist = "";
+   var storylist = new java.lang.StringBuffer();
    while (cnt < max && idx < size) {
       var render = true;
       var st = this.get(idx);
-      if (show == "offline" && st.isOnline())
+      if (show == "offline" && st.online)
          render = false;
       else if (show == "mystories" && st.creator != session.user)
          render = false;
       if (render) {
          var sp = new Object();
          sp.story = st.renderSkinAsString("listitem");
-         if (st.isOnline())
-            res.data.storylist += this.renderSkinAsString("onlinestory",sp);
+         if (st.online)
+            storylist.append(this.renderSkinAsString("onlinestory",sp));
          else
-            res.data.storylist += this.renderSkinAsString("offlinestory",sp);
+            storylist.append(this.renderSkinAsString("offlinestory",sp));
          cnt++;
       }
       idx++;
@@ -49,5 +49,6 @@ function renderStorylist(idx,show) {
       sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.storylist = storylist.toString();
    return;
 }

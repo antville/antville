@@ -3,7 +3,6 @@
  */
 
 function renderLinkToPrevMonth(firstDayIndex,currentMonth,monthNames) {
-
    var l = this.size();
    if (l == 0 || l <= firstDayIndex)
       return ("&nbsp;");
@@ -78,7 +77,7 @@ function renderStorylist(day) {
          }
       }
    }
-   var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
+   var days = this.days ? this.days : 2;
    days = Math.min (days, 14);  // render 14 days max
    this.prefetchChildren(idx, days);
 
@@ -93,24 +92,12 @@ function renderStorylist(day) {
       sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
-   days = Math.min(days++,this.size());
-   var dayCnt = 0;
-   res.data.storylist = "";
-   while (dayCnt < days && idx < size) {
+   days = Math.min(idx + days++,this.size());
+   var storylist = new java.lang.StringBuffer();
+   while (idx < days) {
       var day = this.get(idx++);
-      // init var for incrementing daycounter
-      var count = false;
-      for (var i=0;i<day.size();i++) {
-         var st = day.get(i);
-         if (this.isStoryOnline(st)) {
-            res.data.storylist += st.renderSkinAsString("preview");
-            count = true;
-         }
-      }
-      // only increment daycounter if day contains a story
-      // that is online in site
-      if (count)
-         dayCnt++;
+      for (var i=0;i<day.size();i++)
+         storylist.append(day.get(i).renderSkinAsString("preview"));
    }
    if (idx < size) {
       var sp = new Object();
@@ -119,5 +106,6 @@ function renderStorylist(day) {
       sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.storylist = storylist.toString();
    return;
 }

@@ -3,7 +3,7 @@
  */
 
 function replylink_macro(param) {
-   if (this.site.hasDiscussions() && !isUserBlocked() && req.action == "main") {
+   if (this.site.discussions && req.action == "main") {
       openLink(this.href("comment"));
       if (!param.image)
          res.write(param.text ? param.text : "reply");

@@ -256,11 +256,43 @@ function sys_deleteAfterWarning_macro(param) {
 }
 
 /**
- * macro rendering a dropdown containing all 
+ * macro rendering a dropdown containing all available locales
  */
 
 function localechooser_macro(param) {
+   if (!isUserSysAdmin())
+      return;
    renderLocaleChooser(this.getLocale());
    return;
 }
 
+/**
+ * macro renders a chooser for the longdateformat
+ */
+function longdateformat_macro(param) {
+   if (!isUserSysAdmin())
+      return;
+   this.renderDateformatChooser("long");
+}
+
+/**
+ * macro renders a chooser for the shortdateformat
+ */
+function shortdateformat_macro(param) {
+   if (!isUserSysAdmin())
+      return;
+   this.renderDateformatChooser("short");
+}
+
+/**
+ * macro renders the alias of the frontpage weblog defined
+ */
+function sys_frontSite_macro(param) {
+   if (!isUserSysAdmin())
+      return;
+   if (param.as == "editor")
+      renderInputText(this.createInputParam("sys_frontSite",param));
+   else
+      res.write (root.sys_frontSite);
+   return;
+}

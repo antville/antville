@@ -5,9 +5,8 @@
  */
 
 function isEditMembersDenied(usr) {
-   var membership = this.get(usr.name);
-   if (!membership || (membership.level & MAY_EDIT_MEMBERS) == 0)
-      return (getMsg("error","memberEditDenied"));
+   if ((req.data.memberlevel & MAY_EDIT_MEMBERS) == 0)
+      return ("memberEditDenied");
    return null;
 }
 

@@ -1,6 +1,6 @@
 var deny = this.isNotPublic(session.user);
 if (deny) {
-   res.message = deny;
+   res.message = getMessage("error",deny);
    session.data.referrer = this.href();
    res.redirect(this.members.href("login"));
 }
@@ -19,23 +19,23 @@ if (req.data.q) {
     var result = root.searchSites (query, this._id);
     var found = result.length;
     if (found == 0)
-        res.data.body += "<i>" + getMsg("error","searchNothingFound",query) + "</i>";
+        res.data.body += "<i>" + getMessage("error","searchNothingFound",query) + "</i>";
     else {
         var start = 0;
         var end = found;
 
         if (found == 1)
-            res.data.body += getMsg("confirm","resultOne",query);
+            res.data.body += getMessage("confirm","resultOne",query);
         else if (found <= 10)
-            res.data.body += getMsg("confirm","resultMany",new Array(encodeForm(query),found));
+            res.data.body += getMessage("confirm","resultMany",new Array(encodeForm(query),found));
         else {
             if (req.data.start)
                 start = Math.min (found-1, parseInt (req.data.start));
             if (isNaN (start))
                 start = 0;
             end = Math.min (found, start+10);
-            res.data.body += getMsg("confirm","resultMany",new Array(encodeForm(query),found));
-            res.data.body += getMsg("confirm","resultDisplay",new Array(start+1,end));
+            res.data.body += getMessage("confirm","resultMany",new Array(encodeForm(query),found));
+            res.data.body += getMessage("confirm","resultDisplay",new Array(start+1,end));
         }
 
         res.data.body += "<br />";

@@ -60,7 +60,7 @@ function checkAccessPermission (blogid, postid, username, password) {
         throwError ("User "+username+" does not exist on this server");
     if (user.password != password)
         throwError ("Authentication failed for user "+username);
-    if (user.isBlocked())
+    if (user.blocked)
         throwError ("Sorry, you can't post to this weblog");
     if (!blogid && !postid)
         throwError ("Invalide blog or post id: "+blogid);
@@ -68,7 +68,7 @@ function checkAccessPermission (blogid, postid, username, password) {
         var blog = this.get (blogid.toString());
         if (!blog)
             throwError ("Weblog "+blogid+" not found on this server");
-        if (!blog.userMayContrib()) {
+        if (!blog.usercontrib) {
             var status = blog.members.get (username);
             if (!status || (status.level & MAY_ADD_STORY) == 0)
                 throwError ("You don't have permission to post to this weblog");

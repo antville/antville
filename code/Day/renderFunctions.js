@@ -15,12 +15,9 @@ function renderStorylist() {
       sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
-   res.data.storylist = "";
-   for (var i=0;i<this.size();i++) {
-      var st = this.get(i);
-      if (this.isStoryOnline(st))
-         res.data.storylist += st.renderSkinAsString("preview");
-   }
+   var storylist = new java.lang.StringBuffer();
+   for (var i=0;i<this.size();i++)
+      storylist.append(this.get(i).renderSkinAsString("preview"));
    // assigning link to previous page to res.data.prevpage
    if (dayIdx < path.site.size()-1) {
       var sp = new Object();
@@ -28,5 +25,6 @@ function renderStorylist() {
       sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.storylist = storylist.toString();
    return;
 }

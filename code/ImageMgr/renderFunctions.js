@@ -20,14 +20,15 @@ function renderImagelist(idx) {
       sp.text = "previous images";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
-   res.data.imagelist = "";
+   var imagelist = new java.lang.StringBuffer();
    for (var i=idx; i<max; i++)
-      res.data.imagelist += this.get(i).renderSkinAsString("preview");
+      imagelist.append(this.get(i).renderSkinAsString("preview"));
    if (i < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + i;
       sp.text = "more images";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.imagelist = imagelist.toString();
    return;
 }

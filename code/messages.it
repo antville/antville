@@ -32,9 +32,7 @@ error.imageDirNoExist = Il directory per le figure non esiste o é protetto in sc
 error.accountBlocked = Il tuo profilo é bloccato!
 error.loginTypo = Login scorretto! Prova ancora!
 // FIXME
-error.emailMissing1 = Immettere il tuo indirizzo email!
-// difference between emailMissing1 and emailMissing1? 
-error.emailMissing2 = Per favore specificare un indirizzo email valido!
+error.emailMissing = Immettere il tuo indirizzo email!
 error.emailInvalid = L'indirizzo email specificato non é valido!
 error.emailNoAccounts = Non esiste nessun profile con questo indirizzo email!
 error.emailSend = Mandando un email é sucesso un errore !

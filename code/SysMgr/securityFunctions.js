@@ -6,10 +6,9 @@
 function onRequest() {
    autoLogin();
    checkIfLoggedIn(this.href(req.action));
-   
-   var deny = this.isDenied(session.user);
-   if (deny) {
-      res.message = deny;
+
+   if (!session.user || !session.user.sysadmin) {
+      res.message = getError("userNoSysAdmin");
       res.redirect(root.href());
    }
    // initialize sysmgr-object in session
@@ -19,15 +18,5 @@ function onRequest() {
       session.data.mgr.searchUsers();
       session.data.mgr.searchSyslog();
    }
-}
-
-/**
- * function checks if user has the right to access
- * system manager
- */
-
-function isDenied(usr) {
-   if (!usr.isSysAdmin())
-      return (getMsg("error","userNoSysAdmin"));
-   return null;
+   return;
 }

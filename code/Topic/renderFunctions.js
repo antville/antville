@@ -13,28 +13,22 @@ function renderStorylist(idx) {
    var size = this.size();
    if (idx < 0 || isNaN (idx)|| idx > size-1)
       idx = 0;
-   var cnt = 0;
-   var max = Math.min (10, size);
+   var max = Math.min (idx+10, size);
    if (idx > 0) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10);
       sp.text = "previous page";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
-   res.data.storylist = "";
-   while (cnt < max && idx < size) {
-      var st = this.get(idx);
-      if (st.isOnline()) {
-         res.data.storylist += st.renderSkinAsString("preview");
-         cnt++;
-      }
-      idx++;
-   }
+   var storylist = new java.lang.StringBuffer();
+   while (idx < max)
+      storylist.append(this.get(idx++).renderSkinAsString("preview"));
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;
       sp.text = "next page";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.storylist = storylist.toString();
    return;
 }

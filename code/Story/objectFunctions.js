@@ -104,14 +104,6 @@ function toggleOnline(newStatus) {
 }
 
 /**
- * function returns true/false whether story is online or not
- */
-
-function isOnline() {
-   this.online;
-}
-
-/**
  * function evaluates comment and adds it if ok
  * @param Obj Object containing properties needed for creation of comment
  * @param Obj Story-Object
@@ -172,9 +164,9 @@ function deleteComment(currComment) {
    if (p == null)
       p = currComment.story;
    if (p.remove(currComment) && this.comments.remove(currComment))
-      return(getMsg("confirm","commentDelete"));
+      return(getMessage("confirm","commentDelete"));
    else
-      return(getMsg("error","commentDelete"));
+      return(getMessage("error","commentDelete"));
 }
 
 /**
@@ -187,17 +179,21 @@ function getRenderedContentPart (name) {
    var partLastRendered = this.cache["lastRendered_"+name];
    if (partLastRendered <= this.modifytime ||
        partLastRendered <= this.cache.modifytime) {
+      // enable caching; some macros (eg. poll, shortcut, storylist)
+      // will set this to false to prevent caching of a contentpart
+      // containing them [rg]
+      req.data.cachePart = true;
       // cached version of text is too old, so we cache it again
       var part = this.getContentPart (name);
       if (!part)
          return "";
       var s = createSkin(format(activateLinks(part)));
       this.allowTextMacros(s);
-      if (!s.containsMacro("poll") && !s.containsMacro("shortcut") && !s.containsMacro("storylist"))
-         this.cache["lastRendered_"+name] = new Date();
       this.cache["rendered_"+name] = this.renderSkinAsString(s);
+      if (req.data.cachePart)
+         this.cache["lastRendered_"+name] = new Date();
    }
-   return (doWikiStuff(this.cache["rendered_"+name]));
+   return (this.cache["rendered_"+name]);
 }
 
 /**
@@ -242,18 +238,6 @@ function setContent (cnt) {
 }
 
 /**
- * incrementing the read counter for this story
- * every 10 reads the cached value is made persistent
- */
-function incrementReadCounter() {
-	this.cache.reads++;
-	if (this.cache.reads == 10) {
-		this.reads += this.cache.reads;
-		this.cache.reads = 0;
-	}
-}
-
-/**
  * function deletes all childobjects of a story (recursive!)
  */
 
@@ -284,11 +268,21 @@ function convertContentToXML () {
 }
 
 /**
- * function returns true if discussions are enabled
- * for this story
+ * function records the access to a story-object
+ * by incrementing the counter of the Object representing
+ * this story in app.data.readLog which will be stored
+ * in database by scheduler
  */
-
-function hasDiscussions() {
-   this.discussions;
+function incrementReadCounter() {
+   // check if app.data.readLog already contains
+   // an Object representing this story
+   if (!app.data.readLog.containsKey(String(this._id))) {
+      var logObj = new Object();
+      logObj.site = this.site.alias;
+      logObj.story = this._id;
+      logObj.reads = this.reads + 1;
+      app.data.readLog.put(String(this._id),logObj);
+   } else
+      app.data.readLog.get(String(this._id)).reads++;
+   return;
 }
-

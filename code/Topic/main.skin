@@ -18,9 +18,6 @@
 <tr>
 <td><% topic.addstory %></td>
 </tr>
-<tr>
-<td><% topic.relatedtopics prefix="<br />Stories/Comments linking to this topic:<br />" %></td>
-</tr>
 </table>
 
 

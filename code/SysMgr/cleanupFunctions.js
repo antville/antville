@@ -53,7 +53,7 @@ function blockPrivateSites() {
    for (var i=0;i<size;i++) {
       var site = this.privateSites.get(i);
       // if site is trusted, we do nothing
-      if (site.isTrusted())
+      if (site.trusted)
          continue;
 
       var privateFor = new Date() - site.lastoffline;
@@ -70,7 +70,7 @@ function blockPrivateSites() {
             var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
             warning.setFrom(root.sys_email);
-            warning.setSubject(getMsg("mailsubject","blockWarning",site.title));
+            warning.setSubject(getMessage("mailsubject","blockWarning",site.title));
             var sp = new Object();
             sp.site = site.alias;
             sp.url = site.href();
@@ -124,7 +124,7 @@ function deleteInactiveSites() {
    for (var i=size;i>0;i--) {
       var site = root.get(i-1);
       // if site is trusted, we do nothing
-      if (site.isTrusted())
+      if (site.trusted)
          continue;
 
       var idleFor = new Date() - site.lastupdate;
@@ -141,7 +141,7 @@ function deleteInactiveSites() {
             var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
             warning.setFrom(root.sys_email);
-            warning.setSubject(getMsg("mailsubject","deleteWarning",site.title));
+            warning.setSubject(getMessage("mailsubject","deleteWarning",site.title));
             var sp = new Object();
             sp.site = site.alias;
             sp.url = site.href();

@@ -25,79 +25,23 @@ ROLES = new Array("Subscriber","Contributor","Content Manager","Admin");
 /**
  * function returns an integer indicating contributor-role
  */
-
-function getContributorLvl() {
-   var lvl = 0;
-   lvl |= MAY_ADD_STORY;
-   lvl |= MAY_ADD_COMMENT;
-   lvl |= MAY_ADD_IMAGE;
-   lvl |= MAY_ADD_FILE;
-   lvl |= MAY_VIEW_STATS;
-   return (lvl);
-}
+CONTRIBUTOR = MAY_ADD_STORY | MAY_ADD_COMMENT | 
+              MAY_ADD_IMAGE | MAY_ADD_FILE | 
+              MAY_VIEW_STATS;
 
 /**
  * function returns an integer indicating contentmanager-role
  */
-
-function getContentManagerLvl() {
-   var lvl = getContributorLvl();
-   lvl |= MAY_VIEW_ANYSTORY;
-   lvl |= MAY_EDIT_ANYSTORY;
-   lvl |= MAY_DELETE_ANYSTORY;
-   lvl |= MAY_EDIT_ANYCOMMENT;
-   lvl |= MAY_DELETE_ANYCOMMENT;
-   lvl |= MAY_EDIT_ANYIMAGE;
-   lvl |= MAY_DELETE_ANYIMAGE;
-   lvl |= MAY_EDIT_ANYFILE;
-   lvl |= MAY_DELETE_ANYFILE;
-   return (lvl);
-}
+CONTENTMANAGER = CONTRIBUTOR | MAY_VIEW_ANYSTORY | MAY_EDIT_ANYSTORY |
+                 MAY_DELETE_ANYSTORY | MAY_EDIT_ANYCOMMENT |
+                 MAY_DELETE_ANYCOMMENT | MAY_EDIT_ANYIMAGE |
+                 MAY_DELETE_ANYIMAGE | MAY_EDIT_ANYFILE | 
+                 MAY_DELETE_ANYFILE;
 
 /**
  * function returns an integer indicating admin-role
  */
-
-function getAdminLvl() {
-   var lvl = getContentManagerLvl();
-   lvl |= MAY_EDIT_PREFS;
-   lvl |= MAY_EDIT_SKINS;
-   lvl |= MAY_EDIT_MEMBERS;
-   return (lvl);
-}
-
-/**
- * function returns true if passed level matches
- * the level of contributors
- */
-
-function isContributor(lvl) {
-   if (lvl == getContributorLvl())
-      return true;
-   return false;
-}
-
-/**
- * function returns true if passed level matches
- * the level of content managers
- */
-
-function isContentManager(lvl) {
-   if (lvl == getContentManagerLvl())
-      return true;
-   return false;
-}
-
-/**
- * function returns true if passed level matches
- * the level of admins
- */
-
-function isAdmin(lvl) {
-   if (lvl == getAdminLvl())
-      return true;
-   return false;
-}
+ADMIN = CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_SKINS | MAY_EDIT_MEMBERS;
 
 /**
  * function returns the level of the membership in cleartext
@@ -105,11 +49,11 @@ function isAdmin(lvl) {
  */
 
 function getRole(lvl) {
-   if (lvl == getContributorLvl())
+   if (lvl == CONTRIBUTOR)
       return ("Contributor");
-   else if (lvl == getContentManagerLvl())
+   else if (lvl == CONTENTMANAGER)
       return ("Content Manager");
-   else if (lvl == getAdminLvl())
+   else if (lvl == ADMIN)
       return ("Admin");
    else
       return ("Subscriber");

@@ -4,10 +4,9 @@
  */
 
 function membership_macro(param) {
-   var ms = this.get(session.user.name);
-   if (!ms)
+   if (!req.data.memberlevel)
       return;
-   res.write(getRole(ms.level));
+   res.write(getRole(req.data.memberlevel));
 }
 
 /**
@@ -16,10 +15,7 @@ function membership_macro(param) {
  */
 
 function subscribelink_macro(param) {
-   if (!path.site)
-      return;
-   var ms = this.get(session.user.name);
-   if (ms)
+   if (!path.site || req.data.memberlevel)
       return;
    openLink(path.site.href("subscribe"));
    res.write(param.text ? param.text : "sign up");
@@ -46,17 +42,19 @@ function subscriptionslink_macro(param) {
 function memberlist_macro(param) {
    var currLvl;
    var sp = new Object();
-   sp.list = "";
+   var memberlist = new java.lang.StringBuffer();
    for (var i=0;i<this.size();i++) {
       var m = this.get(i);
       if (m.level != currLvl) {
+         sp.list = memberlist.toString();
          this.renderSkin("membergroup",sp);
-         sp.list = "";
-         sp.group = getRole(parseInt(m.level,10)); // m.getLvl();
+         memberlist = new java.lang.StringBuffer();
+         sp.group = getRole(m.level);
          currLvl = m.level;
       }
-      sp.list += m.renderSkinAsString("preview");
+      memberlist.append(m.renderSkinAsString("preview"));
    }
+   sp.list = memberlist.toString();
    this.renderSkin("membergroup",sp);
 }
 

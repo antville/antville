@@ -3,8 +3,8 @@
 <td colspan="3" class="small"><% poll.creator as="link" %>, <% poll.createtime format="short" %> (<% poll.total no="votes" one="vote" more="votes" %>)</td>
 </tr>
 <tr valign="top">
-<td><span class="storyTitle"><% poll.title suffix="<br />" %></span><% poll.question limit="200" suffix="&nbsp;..." %></td>
+<td><b><% poll.question %></b></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% poll.viewlink prefix="...&nbsp;" suffix="<br />" %><% poll.editlink prefix="...&nbsp;" suffix="<br />" %><% poll.closelink prefix="...&nbsp;" suffix="<br />" %><% poll.deletelink prefix="...&nbsp;" %></td>
+<td align="right" class="small" nowrap="nowrap"><% poll.viewlink prefix="...&nbsp;" suffix="<br />" %><% poll.link to="results" text="results" prefix="...&nbsp;" suffix="<br />" %><% poll.editlink prefix="...&nbsp;" suffix="<br />" %><% poll.closelink prefix="...&nbsp;" suffix="<br />" %><% poll.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>

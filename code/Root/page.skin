@@ -39,7 +39,7 @@
 <br /><% response.body %></td>
 <td width="20" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% image name="/dot" as="url" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% now format="EEEE,' 'dd.MM.yyyy,' 'h:mm a" suffix="<br />" %>
+<td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% now format="long" suffix="<br />" %>
 <% root.loginstatus %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />

@@ -19,11 +19,8 @@ function evalNewPoll(param, creator) {
             choiceCnt++;
       }
    }
-   if (param.title && param.question && creator && choiceCnt > 1) {
+   if (param.question && creator && choiceCnt > 1) {
       var newPoll = new poll();
-      var online = parseInt(param.online,10);
-      var editableby = parseInt(param.editableby,10);
- 
       newPoll.site = this._parent;
       newPoll.title = param.title;
       newPoll.question = param.question;
@@ -36,7 +33,7 @@ function evalNewPoll(param, creator) {
       for (var i=0; i<param.choice_array.length; i++) {
          var title = param.choice_array[i];
          if (!title)
-         continue;
+            continue;
          var newChoice = new choice();
          newChoice.poll = newPoll;
          newChoice.title = title;
@@ -45,12 +42,6 @@ function evalNewPoll(param, creator) {
          newPoll.add(newChoice);
       }
       result = getConfirm("pollCreate");
-      if (newPoll.online) {
-         this._parent.lastupdate = newPoll.createtime;
-         result.url = newPoll.href();
-      } else
-         result.url = this.href();
-      result.id = newPoll._id;
       result.error = false;
    } else
       result = getError("pollMissing");

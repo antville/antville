@@ -9,5 +9,5 @@ Number of weblogs hosted here: <% root.sitecounter count="all" %><br />
 Public accessible weblogs: <% root.sitecounter %><br />
 Last updated weblogs:
 <ul>
-<% sitelist limit="25"  %>
+<% sitelist limit="25" %>
 </ul>

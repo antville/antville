@@ -11,7 +11,7 @@ function renderPageNavigation(collection,url,pageIdx) {
    var itmsPerPage = 20;
    var totalPages = Math.ceil(size/itmsPerPage);
    // init property
-   res.data.pagenav = "";
+   var pagenav = new java.lang.StringBuffer();
    // check if the passed page-index is correct
    if (isNaN (pageIdx)|| pageIdx > Math.ceil(size/itmsPerPage) || pageIdx < 0)
       pageIdx = 0;
@@ -25,23 +25,24 @@ function renderPageNavigation(collection,url,pageIdx) {
       return;
    // build the navigation-bar
    if (pageIdx > 0)
-      res.data.pagenav += "<a href=\"" + url + "?page=" + (pageIdx-1) + "\">prev</a>&nbsp;";
+      pagenav.append("<a href=\"" + url + "?page=" + (pageIdx-1) + "\">prev</a>&nbsp;");
    var offset = Math.floor(pageIdx/10)*10;
    if (offset > 0)
-      res.data.pagenav += "<a href=\"" + url + "?page=" + (offset-1) + "\">[..]</a>&nbsp;";
+      pagenav.append("<a href=\"" + url + "?page=" + (offset-1) + "\">[..]</a>&nbsp;");
    for (var i=0;i<10;i++) {
       var page = offset+i;
       if (page >= totalPages)
          break;
       if (page == pageIdx)
-         res.data.pagenav += "[" + (page+1) + "]&nbsp;";
+         pagenav.append("[" + (page+1) + "]&nbsp;");
       else
-         res.data.pagenav += "<a href=\"" + url + "?page=" + page + "\">[" + (page+1) + "]</a>&nbsp;";
+         pagenav.append("<a href=\"" + url + "?page=" + page + "\">[" + (page+1) + "]</a>&nbsp;");
    }
    if (page < totalPages-1)
-      res.data.pagenav += "<a href=\"" + url + "?page=" + (offset+10) + "\">[..]</a>&nbsp;";
+      pagenav.append("<a href=\"" + url + "?page=" + (offset+10) + "\">[..]</a>&nbsp;");
    if (pageIdx < totalPages-1)
-      res.data.pagenav += "<a href=\"" + url + "?page=" + (pageIdx+1) + "\">next</a>";
+      pagenav.append("<a href=\"" + url + "?page=" + (pageIdx+1) + "\">next</a>");
+   res.data.pagenav = pagenav.toString();
    return;
 }
 
@@ -70,16 +71,17 @@ function renderList(collection,reqItem,reqAction,pageIdx) {
    var start = pageIdx*itmsPerPage;
    var stop = Math.min(start+itmsPerPage,size);
 
-   res.data.list = "";
+   var list = new java.lang.StringBuffer();
    for (var i=start;i<stop;i++) {
       var itm = this[collection].get(i);
-      res.data.list += itm.renderSkinAsString("sysmgr_listitem");
+      list.append(itm.renderSkinAsString("sysmgr_listitem"));
       if (itm == reqItem) {
          if (reqAction == "remove")
-            res.data.list += itm.renderSkinAsString("sysmgr_delete");
+            list.append(itm.renderSkinAsString("sysmgr_delete"));
          else
-            res.data.list += itm.renderSkinAsString("sysmgr_edit");
+            list.append(itm.renderSkinAsString("sysmgr_edit"));
       }
    }
+   res.data.list = list.toString();
    return;
 }

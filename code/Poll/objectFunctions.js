@@ -1,17 +1,4 @@
 /**
- * function returns true if a poll is online
- * otherwise false.
- * @return Boolean
- */
-
-function isOnline() {
-   if (parseInt(this.online,10))
-      return true;
-   return false;
-}
-
-
-/**
  * check if poll is ok. if true, save modified poll
  * @param Object the req.data object coming in from the action
  * @param Object the user as creator of the poll modifications
@@ -34,33 +21,25 @@ function evalPoll(param, creator) {
 	   }
    }
    if (param.title && param.question && creator && choiceCnt > 1) {
-      var online = parseInt(param.online,10);
-      var editableby = parseInt(param.editableby,10);
- 
       this.title = param.title;
       this.question = param.question;
       this.modifytime = new Date();
-
-			for (var i=this.size(); i>0; i--) {
-				var ch = this.get(i-1);
-				this.remove(ch);
-			}
-
-			for (var i=0; i<param.choice_array.length; i++) {
-				var title = param.choice_array[i];
-				if (!title)
-					continue;
-				var newChoice = new choice();
-				newChoice.poll = this;
-				newChoice.title = title;
-				newChoice.createtime = new Date();
-				newChoice.modifytime = new Date();
-				this.add(newChoice);
-			}
-
+      for (var i=this.size(); i>0; i--) {
+         var ch = this.get(i-1);
+         this.remove(ch);
+      }
+      for (var i=0; i<param.choice_array.length; i++) {
+         var title = param.choice_array[i];
+         if (!title)
+            continue;
+         var newChoice = new choice();
+         newChoice.poll = this;
+         newChoice.title = title;
+         newChoice.createtime = new Date();
+         newChoice.modifytime = new Date();
+         this.add(newChoice);
+      }
       result = getConfirm("pollCreate");
-      result.url = path.site.polls.href();
-      result.id = this._id;
    } else
       result = getError("pollMissingValues");
    return(result);

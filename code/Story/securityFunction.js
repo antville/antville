@@ -5,14 +5,14 @@
  */   
  
 function isPostDenied(usr) {
-   if (usr.isSysAdmin())
+   if (usr.sysadmin)
       return null;
-   if (!this.site.isOnline() && !this.site.isUserMember(usr))
-      return (getMsg("error","siteNotPublic"));
-   else if (!this.site.hasDiscussions())
-      return (getMsg("error","siteNoDiscussion"));
-   else if (!this.hasDiscussions())
-      return (getMsg("error","storyNoDiscussion"));
+   if (!this.site.online && !req.data.memberlevel)
+      return "siteNotPublic";
+   else if (!this.site.discussions)
+      return "siteNoDiscussion";
+   else if (!this.discussions)
+      return "storyNoDiscussion";
    return null;
 }   
     
@@ -23,13 +23,8 @@ function isPostDenied(usr) {
  */
 
 function isDeleteDenied(usr) {
-   if (this.creator != usr) {
-      var membership = this.site.isUserMember(usr);
-      if (!membership)
-         return (getMsg("error","userNoMember"));
-      else if ((membership.level & MAY_DELETE_ANYSTORY) == 0)
-         return (getMsg("error","storyDeleteDenied"));
-   }
+   if (this.creator != usr && (req.data.memberlevel & MAY_DELETE_ANYSTORY) == 0)
+      return "storyDeleteDenied";
    return null;
 }
 
@@ -41,13 +36,10 @@ function isDeleteDenied(usr) {
 
 function isEditDenied(usr) {
    if (this.creator != usr) {
-      var membership = this.site.isUserMember(usr);
-      if (!membership)
-         return (getMsg("error","userNoMember"));
-      else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
-         return (getMsg("error","storyEditDenied"));
-      else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
-         return (getMsg("error","storyEditDenied"));
+      if (this.editableby == null && (req.data.memberlevel & MAY_EDIT_ANYSTORY) == 0)
+         return "storyEditDenied";
+      else if (this.editableby == 1 && (req.data.memberlevel & MAY_ADD_STORY) == 0)
+         return "storyEditDenied";
    }
    return null;
 }
@@ -61,15 +53,12 @@ function isEditDenied(usr) {
 
 function isViewDenied(usr) {
    if (this.site.isNotPublic(usr))
-      return (getMsg("error","siteNotPublic"));
-   else if (!this.isOnline() && this.creator != usr) {
-      var membership = this.site.isUserMember(usr);
-      if (!membership)
-         return (getMsg("error","userNoMember"));
-      else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
-         return (getMsg("error","storyViewDenied"));
-      else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
-         return (getMsg("error","storyViewDenied"));
+      return "siteNotPublic";
+   else if (!this.online && this.creator != usr) {
+      if (this.editableby == null && (req.data.memberlevel & MAY_EDIT_ANYSTORY) == 0)
+         return "storyViewDenied";
+      else if (this.editableby == 1 && (req.data.memberlevel & MAY_ADD_STORY) == 0)
+         return "storyViewDenied";
    }
    return null;
 }

@@ -20,14 +20,15 @@ function renderFilelist(idx) {
       sp.text = "previous files";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
-   res.data.filelist = "";
+   var filelist = new java.lang.StringBuffer();
    for (var i=idx; i<max; i++)
-      res.data.filelist += this.get(i).renderSkinAsString("preview");
+      filelist.append(this.get(i).renderSkinAsString("preview"));
    if (i < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + i;
       sp.text = "more files";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.filelist = filelist.toString();
    return;
 }

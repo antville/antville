@@ -3,5 +3,5 @@
 <div class="commentDate"><% comment.createtime format="short" prefix="on&nbsp;" %><% comment.creator as="link" prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
 <div class="commentTitle"><% comment.content part="title" %></div>
 <% comment.content part="text" suffix="<br />" %>
-<div class="small"><% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% comment.deletelink prefix="...&nbsp;" %></div>
+<div class="small"><% comment.link text="link me" %>&nbsp;&nbsp;<% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% comment.deletelink prefix="...&nbsp;" %></div>
 </div>

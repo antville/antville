@@ -82,9 +82,7 @@ function renderMarkupPart(name, attr) {
 function renderImage(img, param) {
    if (!param.title)
       param.title = img.alttext ? img.alttext : "";
-   param.src = getProperty("imgUrl");
-   param.src += img.site ? img.site.alias + "/" : "";
-   param.src += img.filename + "." + img.fileext;
+   param.src = img.getStaticUrl();
    if (!param.width)
       param.width = img.width;
    if (!param.height)
@@ -308,22 +306,21 @@ function doWikiStuff (src) {
  * @param attr Object containing the element's attributes as properties
  */
 function renderMarkupElementAsString(name, content, attr) {
-  if (!content)
-    content = "";
-  // temporary mapping of class attribute
-  // (due to backwards-compatibility)
-  if (!attr["class"]) {
-    attr["class"] = attr.style;
-    delete attr.style;
-  }
-  var attributes = "";
-  // creating the attribute string
-  for (var i in attr) {
-    if (!attr[i])
-      continue;
-    attributes += " " + i + "=\"" + attr[i] + "\"";
-	}
-  return("<" + name + attributes + ">" + content + "</" + name + ">");
+   if (!content)
+      content = "";
+   // temporary mapping of class attribute
+   // (due to backwards-compatibility)
+   if (!attr["class"]) {
+      attr["class"] = attr.style;
+      delete attr.style;
+   }
+   var attributes = new java.lang.StringBuffer();
+   for (var i in attr) {
+      if (!attr[i])
+         continue;
+      attributes.append(" " + i + "=\"" + attr[i] + "\"");
+   }
+   return("<" + name + attributes.toString() + ">" + content + "</" + name + ">");
 }
 
 

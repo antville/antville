@@ -4,10 +4,7 @@
  */
 
 function addstory_macro () {
-   var membership = path.site.isUserMember(session.user);
-   if (!membership)
-      return;
-   if ((membership.level & MAY_ADD_STORY) == 0)
+   if ((req.data.memberlevel & MAY_ADD_STORY) == 0)
       return;
    var param = new Object();
    param.link = path.site.stories.href("create")+"?topic="+this.groupname;
@@ -18,6 +15,7 @@ function addstory_macro () {
  * Get related topics, i.e. topics that contain stories that
  * link back to this topic.
  * but avoiding self-referential backlinks
+ * DEPRECATED since the wiki-functionality was dropped!
  */
 
 function relatedtopics_macro (param) {

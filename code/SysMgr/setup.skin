@@ -15,12 +15,24 @@
 <td><% root.sys_url as="editor" size="20" %><br /><span class="small">This URL will be used by Antville in the footer of various confirmation mails. You should set it to the URL of the frontpage of your Antville-Installation.</span></td>
 </tr>
 <tr>
+<td valign="top" nowrap="nowrap">Frontpage Weblog:</td>
+<td><% root.sys_frontSite as="editor" size="20" %><br /><span class="small">If you enter the alias of a public weblog here the frontpage of this antville-installation will display the selected weblog instead of the default frontpage.</span></td>
+</tr>
+<tr>
 <td valign="top" nowrap="nowrap">eMail:</td>
 <td><% root.sys_email as="editor" size="20" %><br /><span class="small">Antville will use this eMail-address to send various confirmation mail (e.g. when a user registers within the frontpage)</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Language:</td>
 <td><% root.localechooser %><br /><span class="small">This defines the language of Antville's confirm- and error-messages. If you select a language that Antville doesn't know, it will display all messages in english. Whatever language you specify here will also be the default for every new weblog created here.</span></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Long dateformat:</td>
+<td nowrap="nowrap"><% root.longdateformat as="chooser" width="20" %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Short dateformat:</td>
+<td nowrap="nowrap"><% root.shortdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Allow files:</td>

@@ -11,11 +11,7 @@ function evalLogin(username,password) {
    var result;
    // check if login is successful
    if (session.login(username, password)) {
-      if (isUserBlocked()) {
-         session.logout();
-         return(getError("accountBlocked"));
-      }
-      // login successful
+      // login was successful
       session.user.lastVisit = new Date();
       if (req.data.remember) {
          // user allowed us to set permanent cookies for auto-login
@@ -43,7 +39,7 @@ function evalRegistration(param) {
    var result;
    // check if email-address is valid
    if (!param.email)
-      result = getError("emailMissing1");
+      result = getError("emailMissing");
    else if (!checkEmail(param.email))
       result = getError("emailInvalid");
 
@@ -82,7 +78,7 @@ function evalRegistration(param) {
          if (path.site) {
             var welcomeWhere = path.site.title;
             // if user registered within a public site, we add this site to favorites
-            if (path.site.isOnline())
+            if (path.site.online)
                this.addMembership(newUser);
          } else
             var welcomeWhere = root.getSysTitle();
@@ -139,7 +135,7 @@ function updateUser(param) {
 function sendPwd(email) {
    var result;
    if (!email)
-      result = getError("emailMissing2");
+      result = getError("emailMissing");
    else {
       var sqlClause = "select USER_NAME,USER_PASSWORD from AV_USER where USER_EMAIL = '" + email + "'";
       var dbConn = getDBConnection("antville");
@@ -160,7 +156,7 @@ function sendPwd(email) {
       var mail = new Mail();
       mail.setFrom(root.sys_email);
       mail.addTo(email);
-      mail.setSubject(getMsg("mailsubject","sendPwd"));
+      mail.setSubject(getMessage("mailsubject","sendPwd"));
       var mailParam = new Object();
       var now = new Date();
       mailParam.timestamp = formatTimestamp(now);
@@ -246,7 +242,7 @@ function evalNewMembership(uname,creator) {
    var mail = new Mail();
    mail.setFrom(path.site.email ? path.site.email : creator.email);
    mail.setTo(u.email);
-   mail.setSubject(getMsg("mailsubject","newMember",path.site.title));
+   mail.setSubject(getMessage("mailsubject","newMember",path.site.title));
    var skinParam = new Object();
    skinParam.site = path.site.title;
    skinParam.creator = creator.name;

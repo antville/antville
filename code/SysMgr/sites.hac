@@ -11,7 +11,7 @@ else if (req.data.remove && req.data.item) {
       var result = root.deleteSite(site);
       res.message = result.message;
    } else
-      res.message = getMsg("error","delete",req.data.item);
+      res.message = getMessage("error","delete",req.data.item);
    res.redirect(res.data.action + "?page=" + req.data.page);
 } else if (req.data.save) {
    var result = this.updateSite(req.data,session.user);

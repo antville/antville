@@ -14,13 +14,16 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">eMail:</td>
-<td><% input type="text" name="email" %><br>
-<span class="small"><% input type="checkbox" name="publishemail" %>if you select this the eMail-address above might appear public.</span></td>
+<td><% input type="text" name="email" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Link:*</td>
+<td class="small" valign="top" nowrwap="nowrap">publish eMail:</td>
+<td><span class="small"><% input type="checkbox" name="publishemail" %><br>If you select this the eMail-address your entered above will be visible to Administrators.</span></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
 <td><% input type="text" name="url" %><br>
-<span class="small">If you enter an eMail-address or a URL here, your Username will appear as link.</span></td>
+<span class="small">If you enter an eMail-address or URL here, your username will appear as link in the stories or comments you created (eMail-addresses will appear as <i>mailto:</i>-link)</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>

@@ -103,9 +103,9 @@ function deleteImage(currImg) {
    }
    // then, remove the image-object
    if (this.remove(currImg))
-      return (getMsg("confirm","imageDelete"));
+      return (getMessage("confirm","imageDelete"));
    else
-      return (getMsg("error","imageDelete"));
+      return (getMessage("error","imageDelete"));
 }
 
 /**

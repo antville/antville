@@ -24,7 +24,8 @@ function renderPollList(idx,show) {
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
 
-   res.data.pollList = "";
+   var plist = new java.lang.StringBuffer();
+   var sp = new Object();
    while (cnt < max && idx < size) {
       var render = true;
       var st = this.get(idx);
@@ -33,12 +34,11 @@ function renderPollList(idx,show) {
       else if (show == "mypolls" && st.creator != session.user)
          render = false;
       if (render) {
-         var sp = new Object();
          sp.poll = st.renderSkinAsString("listitem");
          if (st.closed)
-            res.data.pollList += this.renderSkinAsString("closedpoll",sp);
+            plist.append(this.renderSkinAsString("closedpoll",sp));
          else
-            res.data.pollList += this.renderSkinAsString("openpoll",sp);
+            plist.append(this.renderSkinAsString("openpoll",sp));
          cnt++;
       }
       idx++;
@@ -49,5 +49,6 @@ function renderPollList(idx,show) {
       sp.text = "more polls";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
+   res.data.pollList = plist.toString();
    return;
 }

@@ -32,9 +32,7 @@ error.imageDirNoExist = Das Verzeichnis für Bilder existiert nicht oder es ist s
 error.accountBlocked = Dein Konto wurde gesperrt!
 error.loginTypo = Anmeldung fehlgeschlagen! Hast Du Dich vertippt?
 // FIXME
-error.emailMissing1 = Bitte trag' Deine eMail-Adresse ein!
-// difference between emailMissing1 and emailMissing1? 
-error.emailMissing2 = Bitte trag' eine gültige eMail-Adresse ein!
+error.emailMissing = Bitte trag' Deine eMail-Adresse ein!
 error.emailInvalid = Die eMail-Adresse, die Du angegeben hast, ist ungültig!
 error.emailNoAccounts = Keine Konten zu dieser eMail-Adresse gefunden!
 error.emailSend = Beim Versuch, die eMail abzuschicken ist ein Fehler aufgetreten!

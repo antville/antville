@@ -53,7 +53,7 @@ function publishemail_macro(param) {
    if (param.as == "editor")
       renderInputCheckbox(this.createInputParam("publishemail",param));
    else
-      res.write(this.isEmailPublic() ? "yes" : "no");
+      res.write(this.publishemail ? "yes" : "no");
 }
 
 /**

@@ -2,17 +2,7 @@
  * macro renders the current timestamp
  */
 function now_macro(param) {
-   var now = new Date();
-   if (path.site)
-      res.write(formatTimestamp(now,param.format));
-   else if (param.format) {
-      var sdf = new java.text.SimpleDateFormat(param.format);
-      var result = tryEval("sdf.format(now)");
-      if (result.error)
-         return ("[error: wrong date-format]");
-      return (result.value);
-   } else
-      res.write(now.format("yyyy.MM.dd HH:mm"));
+   return(formatTimestamp(new Date(),param.format));
 }
 
 
@@ -44,11 +34,9 @@ function image_macro(param) {
    if (!img)
       return;
    var imgObj = img.obj;
-   var url = imgObj.getStaticUrl();
-
    // return different display according to param.as
    if (param.as == "url")
-      return(url);
+      return(imgObj.getStaticUrl());
    else if (param.as == "thumbnail") {
       if (!param.linkto)
          param.linkto = url;
@@ -61,7 +49,6 @@ function image_macro(param) {
    }
    delete(param.name);
    delete(param.as);
-
    // render image tag
    if (param.linkto) {
       openLink(param.linkto);
@@ -171,8 +158,8 @@ function story_macro(param) {
       return;
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
    if (!story)
-      return(getMsg("error","storyNoExist",param.id));
-   story.renderSkin(param.useskin ? param.useskin : "preview");
+      return(getMessage("error","storyNoExist",param.id));
+   story.renderSkin(param.useskin ? param.useskin : "embed");
    return;
 }
 
@@ -181,6 +168,8 @@ function story_macro(param) {
  * Renders a poll (optionally as link or results)
  */
 function poll_macro(param) {
+   // disable caching of any contentPart containing this macro
+   req.data.cachePart = false;
    var parts = param.id.split("/");
    if (parts.length == 2)
       var site = root.get(parts[0]);
@@ -190,7 +179,7 @@ function poll_macro(param) {
       return;
    var poll = site.polls.get(parts[1] ? parts[1] : param.id);
    if (!poll)
-      return(getMsg("error","pollNoExist",param.id));
+      return(getMessage("error","pollNoExist",param.id));
    var deny = poll.isVoteDenied(session.user);
    if (poll.closed || param.as == "results")
       poll.renderSkin("results");
@@ -234,13 +223,13 @@ function sitelist_macro(param) {
       var sp = new Object();
       sp.url = root.href("list") + "?start=" + Math.max(0, idx-max);
       sp.text = "previous weblogs";
-      renderSkinAsString("prevpagelink",sp);
+      renderSkin("prevpagelink",sp);
       renderMarkupElement("br");
    }
    var cnt = 0;
    while (cnt < max && idx < size) {
       var w = collection.get(idx++);
-      if (!w.isBlocked() && w.isOnline()) {
+      if (!w.blocked && w.online) {
          w.renderSkin("preview");
          cnt++;
       }
@@ -315,6 +304,8 @@ function input_macro(param) {
  * function renders a shortcut
  */
 function shortcut_macro(param) {
+   // disable caching of any contentPart containing this macro
+   req.data.cachePart = false;
    if (param && param.name) {
       var sc = path.site.shortcuts.get(param.name);
       if (sc)
@@ -335,6 +326,8 @@ function shortcut_macro(param) {
  */
 
 function storylist_macro(param) {
+   // disable caching of any contentPart containing this macro
+   req.data.cachePart = false;
    var site = param.of ? root.get(param.of) : path.site;
    if (!site)
       return;

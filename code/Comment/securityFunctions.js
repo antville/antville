@@ -5,10 +5,10 @@
  */   
  
 function isPostDenied(usr) {
-   if (usr.isSysAdmin())
+   if (usr.sysadmin)
       return null;
-   if (!this.site.isOnline() && !this.site.isUserMember(usr))
-      return (getMsg("error","siteNotPublic"));
+   if (!this.site.online && !req.data.memberlevel)
+      return "siteNotPublic";
    return null;   
 }   
     
@@ -19,10 +19,7 @@ function isPostDenied(usr) {
  */
 
 function isEditDenied(usr) {
-   if (this.creator != usr) {
-      var membership = this.site.isUserMember(usr);
-      if (!membership || (membership.level & MAY_EDIT_ANYCOMMENT) == 0)
-         return (getMsg("error","commentEditDenied"));
-   }
+   if (this.creator != usr && (req.data.memberlevel & MAY_EDIT_ANYCOMMENT) == 0)
+      return "commentEditDenied";
    return null;
 }

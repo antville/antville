@@ -26,11 +26,11 @@ function sysmgr_statusflags_macro(param) {
    // this macro is allowed just for sysadmins
    if (!isUserSysAdmin())
       return;
-   if (this.isTrusted())
+   if (this.trusted)
       res.write("<span class=\"flagltgreen\" nowrap>TRUSTED</span>");
-   if (this.isSysAdmin())
+   if (this.sysadmin)
       res.write("<span class=\"flagdkgreen\" nowrap>SYSADMIN</span>");
-   if (this.isBlocked())
+   if (this.blocked)
       res.write("<span class=\"flagblack\" nowrap>BLOCKED</span>");
 }
 
@@ -96,10 +96,9 @@ function sysmgr_trusted_macro(param) {
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");
-      var selectedIndex = parseInt(this.trusted,10);
-      renderDropDownBox("trusted",options,selectedIndex);
+      renderDropDownBox("trusted",options,this.trusted);
    } else
-      res.write(this.isTrusted() ? "yes" : "no");
+      res.write(this.trusted ? "yes" : "no");
 }
 
 /**
@@ -112,10 +111,9 @@ function sysmgr_blocked_macro(param) {
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");
-      var selectedIndex = parseInt(this.blocked,10);
-      renderDropDownBox("blocked",options,selectedIndex);
+      renderDropDownBox("blocked",options,this.blocked);
    } else
-      res.write(this.isBlocked() ? "yes" : "no");
+      res.write(this.blocked ? "yes" : "no");
 }
 
 /**
@@ -128,8 +126,7 @@ function sysmgr_sysadmin_macro(param) {
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");
-      var selectedIndex = parseInt(this.sysadmin,10);
-      renderDropDownBox("sysadmin",options,selectedIndex);
+      renderDropDownBox("sysadmin",options,this.sysadmin);
    } else
-      res.write(this.isSysAdmin() ? "yes" : "no");
+      res.write(this.sysadmin ? "yes" : "no");
 }

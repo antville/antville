@@ -4,13 +4,10 @@
  */
 
 function safescripts_action() {
-   if (req.lastModified)
-      res.notModified();
-   else {
-      res.contentType = "text/javascript";
-      res.lastModified = new Date();
-      this.renderSkin("safescripts");
-   }
+   res.digest();
+   res.contentType = "text/javascript";
+   this.renderSkin("safescripts");
+   return;
 }
 
 

@@ -9,8 +9,8 @@ var max = req.data.max ? parseInt(req.data.max) : 25;
 max = Math.min(max, size, 50);
 
 var param = new Object();
-var items = "";
-var resources = "";
+var items = new java.lang.StringBuffer();
+var resources = new java.lang.StringBuffer();
 
 for (var i=0; i<max; i++) {
    var site = this.get(i);
@@ -22,8 +22,8 @@ for (var i=0; i<max; i++) {
       param.date = site.lastupdate.format("dd.MM.yyyy, HH:mm'h CET'");
       param.isodate = site.lastupdate.format(isoDateFormat);
       param.year = site.lastupdate.getYear();
-      items += site.renderSkinAsString("rssItem", param);
-      resources += site.renderSkinAsString("rssResource", param);
+      items.append(site.renderSkinAsString("rssItem", param));
+      resources.append(site.renderSkinAsString("rssResource", param));
    }
 }
 
@@ -32,7 +32,7 @@ param.title = systitle;
 param.email = translateToEntities(root.sys_email);
 param.year = now.getYear();
 param.lastupdate = now.format(isoDateFormat);
-param.items = items;
-param.resources = resources;
+param.items = items.toString();
+param.resources = resources.toString();
 
 this.renderSkin("rss", param);

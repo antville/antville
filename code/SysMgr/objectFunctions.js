@@ -15,7 +15,7 @@ function searchSites(show,sort,order,keywords) {
       sql += "WHERE SITE_ISTRUSTED=1 ";
    if (keywords) {
       // additional keywords are given, so we're using them
-      var kArray = keywords.split(" ");
+      var kArray = stripTags(keywords).split(" ");
       for (var i in kArray) {
          var k = kArray[i];
          sql += sql.length > 0 ? "AND " : "WHERE ";
@@ -61,7 +61,7 @@ function searchUsers(show,sort,order,keywords) {
          sql += "USER_EMAIL LIKE '%" + keywords + "%' ";
       } else {
          // doing normal keyword-search
-         var kArray = keywords.split(" ");
+         var kArray = stripTags(keywords).split(" ");
          for (var i in kArray) {
             var k = kArray[i];
             sql += sql.length > 0 ? "AND " : "WHERE ";
@@ -100,7 +100,7 @@ function searchSyslog(show,order,keywords) {
       sql += "WHERE SYSLOG_TYPE = 'system' ";
    if (keywords) {
       // additional keywords are given, so we're using them
-      var kArray = keywords.split(" ");
+      var kArray = stripTags(keywords).split(" ");
       for (var i in kArray) {
          var k = kArray[i];
          sql += sql.length > 0 ? "AND " : "WHERE ";
@@ -156,12 +156,11 @@ function updateUser(param,admin) {
    else if (u == admin)
       result = getError("accountModifyOwn");
    else {
-      result = getConfirm("save");
       // check if this is an attempt to remove the last sysadmin
       var sysadmin = parseInt(param.sysadmin,10);
       var trust = parseInt(param.trusted,10);
       var block = parseInt(param.blocked,10);
-      if (this.sysadmins.size() == 1 && !sysadmin)
+      if (u.sysadmin && this.sysadmins.size() == 1)
          result = getError("adminDeleteLast");
       else {
          //logging
@@ -169,7 +168,7 @@ function updateUser(param,admin) {
             this.syslogs.add(new syslog("user",u.name,"granted sysadmin-rights",admin));
          else if (sysadmin < u.sysadmin)
             this.syslogs.add(new syslog("user",u.name,"revoked sysadmin-rights",admin));
-         u.sysadmin = parseInt(param.sysadmin,10);
+         u.sysadmin = sysadmin;
       }
       if (trust > u.trusted)
          this.syslogs.add(new syslog("user",u.name,"granted trust",admin));
@@ -181,6 +180,7 @@ function updateUser(param,admin) {
          this.syslogs.add(new syslog("user",u.name,"unblocked user",admin));
       u.trusted = trust;
       u.blocked = block;
+      result = getConfirm("save");
    }
    return (result);
 }
@@ -194,6 +194,7 @@ function evalSystemSetup(param,admin) {
    var result;
    root.sys_title = param.sys_title;
    root.sys_url = evalURL(param.sys_url);
+   root.sys_frontSite = param.sys_frontSite ? param.sys_frontSite : null;
    // check system email
    if (!param.sys_email)
       result = getError("systemEmailMissing");
@@ -208,6 +209,17 @@ function evalSystemSetup(param,admin) {
       newLoc = java.util.Locale.getDefault();
    root.sys_country = newLoc.getCountry();
    root.sys_language = newLoc.getLanguage();
+
+   // long dateformat
+   var patterns = getDefaultDateFormats();
+   var ldf = patterns[parseInt(param.longdateformat,10)];
+   root.longdateformat = ldf ? ldf : null;
+
+   // short dateformat
+   var patterns = getDefaultDateFormats("short");
+   var sdf = patterns[parseInt(param.shortdateformat,10)];
+   root.shortdateformat = sdf ? sdf : null;
+
    root.cache.locale = null;
    // allow file
    root.sys_allowFiles = param.sys_allowFiles ? true : false;
@@ -215,6 +227,7 @@ function evalSystemSetup(param,admin) {
    var limitArray = new Array(null,"trusted","sysAdmin");
    root.sys_limitNewSites = param.sys_limitNewSites ? parseInt(param.sys_limitNewSites,10) : null;
    root.sys_minMemberAge = param.sys_minMemberAge ? parseInt(param.sys_minMemberAge,10) : null;
+   root.sys_minMemberSince = param.sys_minMemberSince ? parseTimestamp(param.sys_minMemberSince,"yyyy-MM-dd HH:mm") : null;
    root.sys_waitAfterNewSite = param.sys_waitAfterNewSite ? parseInt(param.sys_waitAfterNewSite,10) : null;
    // auto-cleanup
    root.sys_enableAutoCleanup = param.sys_enableAutoCleanup ? true : false;

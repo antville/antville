@@ -3,13 +3,18 @@ res.data.title = root.getSysTitle();
 // check if this installation is already configured
 // if not, we display the welcome-page as frontpage
 if (!root.sys_issetup) {
-   if (!root.users.size())
+   if (!root.users.size()) {
       res.data.body = this.renderSkinAsString("welcome");
-   else
+      root.renderSkin("page");
+      return;
+   } else
       res.redirect(this.manage.href("setup"));
-} else
-   res.data.body = this.renderSkinAsString("main");
+}
 
-root.renderSkin("page");
-
-logAccess();
+if (path.site) {
+   path.site.main_action();
+} else {
+   res.data.body = root.renderSkinAsString("main");
+   root.renderSkin("page");
+   logAccess();
+}

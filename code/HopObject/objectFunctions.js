@@ -5,7 +5,7 @@
  *
  */
 function getNavigationName () {
-   var proto = this.__prototype__;
+   var proto = this._prototype;
    if (proto == "site")
       return "Home";
    else if (proto == "topicmgr")
@@ -40,28 +40,31 @@ function createInputParam(propName, param) {
  * be passed to function that renders the link element
  */
 function createLinkParam(param) {
-  var url = param.to ? param.to : param.linkto;
-  if (!url || url == "main")
-    param.href = this.href();
-  else if (url.indexOf("://") > -1 || url.substring(0, 10) == "javascript")
-    param.href = url;
-  else {
-    // check if link points to a subcollection
-    if (url.indexOf("/") > -1)
-      param.href = this.href() + url;
-    else
-      param.href = this.href(url);
-  }
-  if (param.urlparam)
-    param.href += "?" + param.urlparam;
-  if (param.anchor)
-    param.href += "#" + param.anchor;
-  delete param.to;
-  delete param.linkto;
-  delete param.urlparam;
-  delete param.anchor;
-  delete param.text;
-  delete param.prefix;
-  delete param.suffix;
-  return(param);
+   var url = param.to ? param.to : param.linkto;
+   if (!url || url == "main") {
+      if (this._prototype != "comment")
+         param.href = this.href();
+      else
+         param.href = this.story.href() + "#" + this._id;
+   } else if (url.indexOf("://") > -1 || url.indexOf("javascript") == 0)
+      param.href = url;
+   else {
+      // check if link points to a subcollection
+      if (url.indexOf("/") > -1)
+         param.href = this.href() + url;
+      else
+         param.href = this.href(url);
+   }
+   if (param.urlparam)
+      param.href += "?" + param.urlparam;
+   if (param.anchor)
+      param.href += "#" + param.anchor;
+   delete param.to;
+   delete param.linkto;
+   delete param.urlparam;
+   delete param.anchor;
+   delete param.text;
+   delete param.prefix;
+   delete param.suffix;
+   return(param);
 }

@@ -5,12 +5,12 @@
  */
 
 function isNotPublic(usr) {
-   if (!this.isOnline()) {
-      if (usr && usr.isSysAdmin())
+   if (!this.online) {
+      if (usr && usr.sysadmin)
          return null;
-      else if (usr && this.isUserMember(usr))
+      else if (req.data.memberlevel)
          return null;
-      return (getMsg("error","siteNotPublic"));
+      return "siteNotPublic";
    }
    return null;
 
@@ -23,11 +23,10 @@ function isNotPublic(usr) {
  */
 
 function isEditDenied(usr) {
-   if (usr.isSysAdmin())
+   if (usr.sysadmin)
       return null;
-   var membership = this.isUserMember(usr);
-   if (!membership || (membership.level & MAY_EDIT_PREFS) == 0)
-      return (getMsg("error","siteEditDenied"));
+   if ((req.data.memberlevel & MAY_EDIT_PREFS) == 0)
+      return "siteEditDenied";
    return null;
 }
 
@@ -39,21 +38,9 @@ function isEditDenied(usr) {
  */
 
 function isDeleteDenied(usr) {
-   if (!usr.isSysAdmin() && usr != this.creator)
-      return (getMsg("error","siteDeleteDenied"));
+   if (!usr.sysadmin && usr != this.creator)
+      return "siteDeleteDenied";
    return null;
-}
-
-/**
- * function checks if user is a member of this site
- * @param Obj Userobject
- * @return Obj null in case user is not a member, otherwise member-object
- */
-
-function isUserMember(usr) {
-   if (!usr)
-      return null;
-   return (this.members.get(usr.name));
 }
 
 /**
@@ -63,10 +50,10 @@ function isUserMember(usr) {
  */
 
 function isSubscribeDenied(usr) {
-   if (this.isUserMember(usr))
-      return (getMsg("error","subscriptionExist"));
-   else if (!this.isOnline())
-      return (getMsg("error","siteNotPublic"));
+   if (req.data.memberlevel)
+      return "subscriptionExist";
+   else if (!this.online)
+      return "siteNotPublic";
    return null;
 }
 
@@ -77,39 +64,10 @@ function isSubscribeDenied(usr) {
  */
 
 function isUnsubscribeDenied(usr) {
-   var membership = this.isUserMember(usr);
-   if (!membership)
-      return (getMsg("error","subscriptionNoExist"));
-   else if (membership.level > 0)
-      return (getMsg("error","unsubscribeDenied",getRole(membership.level)));
+   if (req.data.memberlevel)
+      return "subscriptionNoExist";
+   else if (req.data.memberlevel > 0)
+      return "unsubscribeDenied";
    return null;
 }
 
-/**
- * function checks if normal users are allowed to
- * contribute to this site
- * @return Boolean true if members may contribute, false if not
- */
-
-function userMayContrib() {
-   this.usercontrib;
-}
-
-
-/**
- * function checks if archive of site is enabled
- * @return Boolean true if archive is enabled, false if not
- */
-
-function showArchive() {
-   this.archive;
-}
-
-/**
- * function checks if site is blocked
- * @return Boolean true if site is blocked, otherwise false
- */
-
-function isBlocked() {
-   this.blocked;
-}

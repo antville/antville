@@ -47,7 +47,7 @@ function createNewSite(title,alias,creator) {
    newSite.usersignup = 1;
    newSite.archive = 1;
    newSite.blocked = 0;
-   newSite.trusted = (creator.isTrusted() ? 1 : 0);
+   newSite.trusted = creator.trusted;
    newSite.bgcolor = "ffffff";
    newSite.textfont = "Verdana, Helvetica, Arial, sans-serif";
    newSite.textsize = "13px";
@@ -72,7 +72,7 @@ function createNewSite(title,alias,creator) {
    newSite.createImgDirectory()
    if (this.add(newSite)) {
       // create membership-object for connecting user <-> site with admin-rights
-      newSite.members.addMembership(creator,getAdminLvl());
+      newSite.members.addMembership(creator,ADMIN);
       return (newSite);
    } else
       return null;
@@ -148,13 +148,13 @@ function searchSites (query, sid) {
 
 function getLocale() {
    var locale = this.cache.locale;
-   if (locale) 
+   if (locale)
        return locale;
    if (this.sys_language)
       locale = new java.util.Locale(this.sys_language,this.sys_country ? this.sys_country : "");
    else
       locale = java.util.Locale.getDefault();
-   this.cache.locale =locale;
+   this.cache.locale = locale;
    return locale;
 }
 

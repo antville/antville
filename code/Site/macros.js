@@ -14,8 +14,7 @@ function title_macro(param) {
       else
         res.write("<i>[untitled]</i>");
       closeLink();
-    }
-    else
+    } else
       res.write(this.title);
   }
 }
@@ -248,7 +247,7 @@ function hasdiscussions_macro(param) {
   if (param.as == "editor")
     renderInputCheckbox(this.createInputParam("discussions",param));
   else
-    res.write(parseInt(this.discussions,10) ? "yes" : "no");
+    res.write(this.discussions ? "yes" : "no");
 }
 
 
@@ -259,7 +258,7 @@ function usermaycontrib_macro(param) {
   if (param.as == "editor")
     renderInputCheckbox(this.createInputParam("usercontrib",param));
   else
-    res.write(parseInt(this.usercontrib,10) ? "yes" : "no");
+    res.write(this.usercontrib ? "yes" : "no");
 }
 
 
@@ -281,7 +280,7 @@ function showarchive_macro(param) {
   if (param.as == "editor")
     renderInputCheckbox(this.createInputParam("archive",param));
   else
-    res.write(parseInt(this.archive,10) ? "yes" : "no");
+    res.write(this.archive ? "yes" : "no");
 }
 
 
@@ -292,7 +291,7 @@ function enableping_macro(param) {
   if (param.as == "editor")
     renderInputCheckbox(this.createInputParam("enableping",param));
   else
-    res.write(parseInt(this.enableping,10) ? "yes" : "no");
+    res.write(this.enableping ? "yes" : "no");
 }
 
 
@@ -345,13 +344,12 @@ function navigation_macro(param) {
    }
    if (!session.user)
       return;
-   var membership = this.isUserMember(session.user);
    if (!param["for"] || param["for"] == "contributors") {
-      if (this.userMayContrib() || (membership && membership.level >= getContributorLvl()))
+      if (this.usercontrib || req.data.memberlevel >= CONTRIBUTOR)
          this.renderSkin("contribnavigation");
    }
    if (!param["for"] || param["for"] == "admins") {
-      if (membership && membership.level == getAdminLvl())
+      if (req.data.memberlevel >= ADMIN)
          this.renderSkin("adminnavigation");
    }
    return;
@@ -375,35 +373,37 @@ function storylist_macro(param) {
 function calendar_macro(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this site is disabled
-   if (!this.allstories.size() || !this.showArchive())
+   if (!this.allstories.size() || !this.archive)
       return;
    // define variables needed in this function
    var calParam = new Object();
-   calParam.calendar = "";
    var dayParam = new Object();
    var weekParam = new Object();
+   // init stringBuffers
+   var weekBuf = new java.lang.StringBuffer();
+   var calBuf = new java.lang.StringBuffer();
+
    // create new calendar-object
    var cal = java.util.Calendar.getInstance(this.getTimeZone(), this.getLocale());
    var symbols = this.getDateSymbols();
 
    // render header-row of calendar
    var firstDayOfWeek = cal.getFirstDayOfWeek();
-   var week = "";
    var weekdays = symbols.getShortWeekdays();
    for (var i=0;i<7;i++) {
       dayParam.day = weekdays[(i+firstDayOfWeek-1)%7+1];
-      week += this.renderSkinAsString("calendardayheader", dayParam);
+      weekBuf.append(this.renderSkinAsString("calendardayheader", dayParam));
    }
-   weekParam.week = week;
-   calParam.calendar = this.renderSkinAsString("calendarweek",weekParam);
+   weekParam.week = weekBuf.toString();
+   calBuf.append(this.renderSkinAsString("calendarweek",weekParam));
 
    cal.set(java.util.Calendar.DATE,1);
    // check whether there's a day or a story in path
    // if so, use it to determine the month to render
    if (path.story)
-      var today = path.story.day;
+      var today = path.story.day.toString();
    else if (path.day)
-      var today = path.day.groupname;
+      var today = path.day.groupname.toString();
    if (today) {
       // instead of using the global parseTimestamp-function
       // we do it manually here to avoid that a day like 20021001
@@ -411,7 +411,6 @@ function calendar_macro(param) {
       cal.set(java.util.Calendar.YEAR,parseInt(today.substring(0,4),10));
       cal.set(java.util.Calendar.MONTH,parseInt(today.substring(4,6),10)-1);
    }
-
    // nr. of empty days in rendered calendar before the first day of month appears
    var pre = (7-firstDayOfWeek+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
    var days = cal.getActualMaximum(java.util.Calendar.DATE);
@@ -430,7 +429,7 @@ function calendar_macro(param) {
    var firstDayIndex = -1;
 
    for (var i=0;i<weeks;i++) {
-      weekParam.week = "";
+      weekBuf = new java.lang.StringBuffer();
       for (var j=0;j<7;j++) {
          dayParam.useskin = "calendarday";
          if ((i == 0 && j < pre) || daycnt > days)
@@ -455,14 +454,16 @@ function calendar_macro(param) {
                dayParam.useskin = "calendarselday";
             daycnt++;
          }
-         weekParam.week += this.renderSkinAsString(dayParam.useskin, dayParam);
+         weekBuf.append(this.renderSkinAsString(dayParam.useskin, dayParam));
       }
-      calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
+      weekParam.week = weekBuf.toString();
+      calBuf.append(this.renderSkinAsString("calendarweek",weekParam));
    }
    // set day to last day of month and try to render next month
    // check what the last day of the month is
    calParam.back = this.renderLinkToPrevMonth(firstDayIndex,currMonth+"01",monthNames);
    calParam.forward = this.renderLinkToNextMonth(lastDayIndex,currMonth+"31",monthNames);
+   calParam.calendar = calBuf.toString();
    this.renderSkin("calendar",calParam);
 }
 
@@ -506,7 +507,7 @@ function membercounter_macro(param) {
  * of this site
  */
 function history_macro(param) {
-   if (this.isNotPublic(session.user) && !this.isUserMember(session.user))
+   if (this.isNotPublic(session.user) && !req.data.memberlevel)
       return;
    if (!param.show)
       param.show = 5;
@@ -514,7 +515,7 @@ function history_macro(param) {
    var i = 0;
    while (cnt < param.show && this.allcontent.get(i)) {
       var item = this.allcontent.get(i++);
-      if (!item.story || (item.story.isOnline() && item.story.hasDiscussions())) {
+      if (!item.story || (item.story.online && item.story.discussions)) {
          item.renderSkin("historyview");
          cnt++;
       }
@@ -556,24 +557,15 @@ function timezonechooser_macro(param) {
  * to a story together with the read counter et al.
  */
 function listMostRead_macro() {
-  var str = "";
-  var storyList = this.mostread.list();
-  storyList.sort(this.sortMostReads);
-  var len = storyList.length;
-  var max = 25;
-  var lim = Math.min(max, len);
-  var param = new Object();
-  for (var i=0; i<lim; i++) {
-    var s = storyList[i];
-    if (s.cache.reads > 0) {
-      s.reads += s.cache.reads;
-      s.cache.reads = 0;
-    }
-    param.reads = s.reads; // + s.cache.reads;
-    param.rank = i+1;
-    str += s.renderSkinAsString("mostread", param);
-  }
-  return(str);
+   var param = new Object();
+   var size = this.mostread.size();
+   for (var i=0; i<size; i++) {
+      var s = this.mostread.get(i);
+      param.reads = s.reads;
+      param.rank = i+1;
+      s.renderSkin("mostread", param);
+   }
+   return;
 }
 
 
@@ -582,36 +574,31 @@ function listMostRead_macro() {
  * to a url together with the read counter et al.
  */
 function listReferrers_macro() {
-  var str = "";
-  var c = getDBConnection("antville");
-  var dbError = c.getLastError();
-  if (dbError)
-    return (getMsg("error","database",dbError));
-  // we're doing this with direct db access here
-  // (there's no need to do it with prototypes):
-  var d = new Date(new Date() - 1000 * 60 * 60 * 24); // 24 hours ago
-  var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG "+
-     "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + 
-     d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER "+
-     "order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
-  var rows = c.executeRetrieval(query);
-  var dbError = c.getLastError();
-  if (dbError)
-    return (getMsg("error","database",dbError));
-  var param = new Object();
-  while (rows.next()) {
-    param.count = rows.getColumnItem("COUNT");
-    // these two lines are necessary only for hsqldb connections:
-    // 2002-06-08: but oops! this does NOT work with mysql, again...
-    // (so i commented them out as i think hsqldb is abandoned, anyway)
-    // if (param.count == 0);
-    //    continue;
-    param.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-    param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
-    str += this.renderSkinAsString("referrerItem", param);
-  }
-  rows.release();
-  return(str);
+   var c = getDBConnection("antville");
+   var dbError = c.getLastError();
+   if (dbError)
+      return (getMessage("error","database",dbError));
+   // we're doing this with direct db access here
+   // (there's no need to do it with prototypes):
+   var d = new Date();
+   d.setDate(d.getDate()-1); // 24 hours ago
+   var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG " +
+      "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + 
+      d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER "+
+      "order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
+   var rows = c.executeRetrieval(query);
+   var dbError = c.getLastError();
+   if (dbError)
+      return (getMessage("error","database",dbError));
+   var skinParam = new Object();
+   while (rows.next()) {
+      skinParam.count = rows.getColumnItem("COUNT");
+      skinParam.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
+      skinParam.text = skinParam.referrer.length > 50 ? skinParam.referrer.substring(0, 50) + "..." : skinParam.referrer;
+      this.renderSkin("referrerItem", skinParam);
+   }
+   rows.release();
+   return;
 }
 
 
@@ -641,7 +628,7 @@ function searchbox_macro(param) {
  * function renders the months of the archive
  */
 function monthlist_macro(param) {
-   if (!this.stories.size() || !this.showArchive())
+   if (!this.stories.size() || !this.archive)
       return;
    var size = param.limit ? Math.min(this.size(),param.limit) : this.size();
    for (var i=0;i<size;i++) {

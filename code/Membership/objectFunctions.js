@@ -14,11 +14,11 @@ function updateMembership(lvl,modifier) {
    if (this.user == modifier)
       return (getError("memberEditSelfDenied"));
    if (lvl == 1)
-      this.level = getContributorLvl();
+      this.level = CONTRIBUTOR;
    else if (lvl == 2)
-      this.level = getContentManagerLvl();
+      this.level = CONTENTMANAGER;
    else if (lvl == 3)
-      this.level = getAdminLvl();
+      this.level = ADMIN;
    else
       this.level = 0;
    this.modifytime = new Date();
@@ -36,7 +36,7 @@ function sendConfirmationMail(fromEmail) {
 	var mail = new Mail();
 	mail.setFrom(fromEmail);
 	mail.addTo(this.user.email);
-	mail.setSubject(getMsg("mailsubject","statusChange",this.site.title));
+	mail.setSubject(getMessage("mailsubject","statusChange",this.site.title));
 	mail.setText(this.renderSkinAsString("mailbody"));
 	mail.send();
 }

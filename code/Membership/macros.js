@@ -17,7 +17,7 @@ function username_macro(param) {
  */
 
 function email_macro(param) {
-   if (this.user.isEmailPublic())
+   if (this.user.publishemail)
       return (this.user.email);
    return ("**********");
 }
@@ -44,7 +44,7 @@ function level_macro(param) {
       // renderDropDownBox("level",options,null,"-- select --");
       renderDropDownBox("level", ROLES, null, "-- select --");
    } else
-      res.write(getRole(parseInt(this.level,10)));
+      res.write(getRole(this.level));
 }
 
 /**
@@ -60,7 +60,7 @@ function sitetitle_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (this.level == getAdminLvl())
+   if (this.level == ADMIN)
       return;
    openLink(this.href("delete"));
    res.write(param.text ? param.text : "remove");

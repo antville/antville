@@ -1,8 +1,14 @@
+if (!session.user && (req.data.submit == "save" || req.data.save))
+   rescueText(req.data);
+
 checkIfLoggedIn(this.href(req.action));
+
+if (session.data.rescuedText)
+   restoreRescuedText();
 
 var deny = this.isEditDenied(session.user);
 if (deny) {
-   res.message = deny;
+   res.message = getMessage("error",deny);
    res.redirect(this.site.href());
 }
 
@@ -12,9 +18,11 @@ if (!session.data.referrer && req.data.http_referer)
 
 if (req.data.set) {
    this.toggleOnline(req.data.set);
+   if (req.data.http_referer)
+      res.redirect(req.data.http_referer);
    res.redirect(this.site.stories.href());
 } else if (req.data.submit == "cancel" || req.data.cancel) {
-   if (!this.isOnline())
+   if (!this.online)
       var url = this.site.stories.href();
    else
       var url = session.data.referrer ? session.data.referrer : this.site.stories.href();

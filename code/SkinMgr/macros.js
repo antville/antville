@@ -21,8 +21,12 @@ function skinstatus_macro(param) {
    if (s.creator) {
       res.write("customized by " + s.creator.name);
       res.write("&nbsp;...&nbsp;");
+      openLink(this.href("diff")+"?proto="+param.proto+"&name="+param.name);
+      res.write("diff");
+      closeLink();
+      res.write("&nbsp;...&nbsp;");
       openLink(s.href("delete"));
-      res.write("remove skin");
+      res.write("reset");
       closeLink();
    } else
       res.write("not customized");

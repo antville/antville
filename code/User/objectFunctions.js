@@ -7,7 +7,7 @@ function sendConfirmationMail(sender) {
    var mail = new Mail();
    mail.setFrom(sender);
    mail.addTo(this.email);
-   mail.setSubject(getMsg("mailsubject","registration",root.getSysTitle()));
+   mail.setSubject(getMessage("mailsubject","registration",root.getSysTitle()));
    var mailParam = new Object();
    mailParam.name = this.name;
    mailParam.password = this.password;
@@ -15,38 +15,6 @@ function sendConfirmationMail(sender) {
 	mail.send();
 }
 
-
-/**
- * check if user is blocked
- */
-
-function isBlocked() {
-   this.blocked;
-}
-
-/**
- * check if user is trusted
- */
-
-function isTrusted() {
-   this.trusted;
-}
-
-/**
- * check if user is sysAdmin
- */
-
-function isSysAdmin() {
-   this.sysadmin;
-}
-
-/**
- * check if email is public
- */
-
-function isEmailPublic() {
-   this.publishemail;
-}
 
 /**
  * function for sorting member-objects by the lastupdate-timestamp

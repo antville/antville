@@ -32,9 +32,7 @@ error.imageDirNoExist = Oeps, kan niet schrijven naar het opgegeven directory va
 error.accountBlocked = Sorry, maar uw account is geblokkeerd. Neem contact op met de eigenaar van deze site.
 error.loginTypo = Helaas is het inloggen mislukt. Misschien een typfout?
 // FIXME
-error.emailMissing1 = Voer uw e-mail adres in.
-// difference between emailMissing1 and emailMissing1? 
-error.emailMissing2 = Voer uw e-mail adres in.
+error.emailMissing = Voer uw e-mail adres in.
 error.emailInvalid = Geen geldig e-mail adres. Weet u zeker dat het correct is?
 error.emailNoAccounts = Sorry, maar dit is een ongeregistreerd e-mail adres. Misschien een typfout?
 error.emailSend = Het bericht kon niet verzonden worden. Probeer het nog eens.

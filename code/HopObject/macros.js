@@ -15,17 +15,14 @@ function skin_macro(param) {
  * macro creates an html link
  */
 function link_macro(param) {
-   if (param.checkdeny == "true") {
-      if (this.isDenied(session.user))
-         return("");
-   }
-  var content = param.text ? param.text : param.to;
-  param = this.createLinkParam(param);
-  openMarkupElement("a", param);
-  res.write(content);
-  closeMarkupElement("a");
+   if (param.checkdeny == "true" && this.isDenied(session.user))
+      return;
+   var content = param.text ? param.text : param.to;
+   param = this.createLinkParam(param);
+   openMarkupElement("a", param);
+   res.write(content);
+   closeMarkupElement("a");
 }
-
 
 /**
  * macro renders the time the object was created

@@ -1,6 +1,6 @@
 var deny = this.isViewDenied(session.user);
 if (deny) {
-   res.message = deny;
+   res.message = getMessage("error",deny);
    res.redirect(this.site.href());
 }
 

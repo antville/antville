@@ -1,6 +1,6 @@
 var parent = getParent();
 
-res.message = getMsg("confirm","introLogin");
+res.message = getMessage("confirm","introLogin");
 
 if (req.data.submit == "login" || req.data.login) {
    var result = this.evalLogin(req.data.name,req.data.password);

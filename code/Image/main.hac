@@ -1,5 +1,3 @@
-autoLogin();
-
 res.data.title = this.site.title;
 
 res.data.body = this.renderSkinAsString("main");

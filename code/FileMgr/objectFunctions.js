@@ -82,9 +82,9 @@ function deleteFile(currFile) {
    var f = new File(getProperty("filePath") + currFile.site.alias, currFile.name);
    f.remove();
    if (this.remove(currFile))
-      return (getMsg("confirm","fileDelete"));
+      return (getMessage("confirm","fileDelete"));
    else
-      return (getMsg("error","fileDelete"));
+      return (getMessage("error","fileDelete"));
 }
 
 /**

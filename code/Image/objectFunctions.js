@@ -126,11 +126,15 @@ function popupUrl() {
 
 /**
  * returns the url to the static image
+ * [rg] static url is now cached in this.cache.staticUrl
  */
 function getStaticUrl() {
-  var url = getProperty("imgUrl");
-  if (this.site)
-    url += this.site.alias + "/";
-  url += this.filename + "." + this.fileext;
-  return(url);
+   if (!this.cache.staticUrl) {
+      var url = getProperty("imgUrl");
+      if (this.site)
+         url += this.site.alias + "/";
+      url += this.filename + "." + this.fileext;
+      this.cache.staticUrl = url;
+   }
+   return(this.cache.staticUrl);
 }

@@ -12,26 +12,6 @@ function checkEmail(address) {
 
 
 /**
- * function checks if req.data.date[Year|Month|Date|Hours|Minutes] is valid
- * if correct, creates dateobject and returns it
- * otherwise false
- */
-
-function checkDate() {
-   if (req.data.dateYear && req.data.dateMonth && req.data.dateDate && req.data.dateHours && req.data.dateMinutes) {
-      var ts = new Date();
-      ts.setYear(parseInt(req.data.dateYear));
-      ts.setMonth(parseInt(req.data.dateMonth));
-      ts.setDate(parseInt(req.data.dateDate));
-      ts.setHours(parseInt(req.data.dateHours));
-      ts.setMinutes(parseInt(req.data.dateMinutes));
-      ts.setSeconds(0);
-      return (ts);
-   } else
-      return false;
-}
-
-/**
  * function checks if the string passed contains special characters like
  * spaces, brackets etc.
  */
@@ -103,12 +83,6 @@ function activateLinks (str) {
    l1.ignoreCase = true;
    l1.global = true;
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$3");
-
-   // because of caching of text i had to disable the following
-   // it's now done in text_macro() of comment and story
-   // and in title_macro() of story
-   // do Wiki style substitution
-   // return (doWikiStuff (str));
    return (str);
 }
 
@@ -145,7 +119,7 @@ function autoLogin() {
    else {
       if (session.login(name,u.password)) {
          u.lastVisit = new Date();
-         res.message = getMsg("confirm","welcome",new Array(path.site ? path.site.title : root.getSysTitle(),session.user.name));
+         res.message = getMessage("confirm","welcome",new Array(path.site ? path.site.title : root.getSysTitle(),session.user.name));
       } else
          return;
    }
@@ -243,8 +217,10 @@ function getDefaultDateFormats(version) {
 
 /**
  * This is a simple logger that creates a DB entry for 
- * each request that contains an HTTP referrer. This is
- * done by direct DB interface due to performance reasons.
+ * each request that contains an HTTP referrer.
+ * due to performance-reasons this is not written directly
+ * into database but instead written to app.data.accessLog (=Vector)
+ * and written to database by the scheduler once a minute
  */
 
 function logAccess() {
@@ -259,29 +235,17 @@ function logAccess() {
       var siteHref = site.href().toLowerCase();
       if (referrer.toLowerCase().indexOf(siteHref.substring(0,siteHref.length-1)) >= 0)
          return;
-
-      var storyID = path.story ? path.story._id : null;
-
-      // we're doing this with direct db access here
-      // (there's no need to do it with prototypes):
-      var c = getDBConnection("antville");
-      var dbError = c.getLastError();
-      if (dbError) {
-         app.log("Error establishing DB connection: " + dbError);
-         return;
-      }
-      var query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE,ACCESSLOG_F_TEXT,"+
-         "ACCESSLOG_REFERRER,ACCESSLOG_IP,ACCESSLOG_BROWSER) values (" + 
-         site._id + "," + storyID + ",'" + referrer + "','" + req.data.http_remotehost + 
-         "','" + req.data.http_browser + "')";
-      c.executeCommand(query);
-      var dbError = c.getLastError();
-      if (dbError) {
-         app.log("Error executing SQL query: " + dbError);
-         return;
-      }
-      return;
+      var logObj = new Object();
+      logObj.storyID = path.story ? path.story._id : null;
+      logObj.siteID = site._id;
+      logObj.referrer = referrer;
+      logObj.remoteHost = req.data.http_remotehost;
+      logObj.browser = req.data.http_browser;
+      
+      // log to app.data.accessLog
+      app.data.accessLog.add(logObj);
    }
+   return;
 }
 
 
@@ -290,10 +254,7 @@ function logAccess() {
  * (and probably other services, soon), this 
  * function can be called via the scheduler.
  */
- 
 function pingUpdatedSites() {
-   // var period = 1000 * 60 * 60; // one hour
-
    var c = getDBConnection("antville");
    var dbError = c.getLastError();
    if (dbError) {
@@ -301,7 +262,7 @@ function pingUpdatedSites() {
       return;
    }
 
-   var query = "select SITE_ID from AV_SITE where SITE_ISONLINE = 1 and SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
+   var query = "select SITE_ALIAS from AV_SITE where SITE_ISONLINE = 1 and SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
    if (dbError) {
@@ -310,9 +271,8 @@ function pingUpdatedSites() {
    }
 
    while (rows.next()) {
-      var id = rows.getColumnItem("SITE_ID");
-      var site = root.get(id.toString());
-      app.log("Notifying weblogs.com for updated site '" + site.alias + "' (id " + id + ")");
+      var site = root.get(rows.getColumnItem("SITE_ALIAS"));
+      app.log("Notifying weblogs.com for updated site '" + site.alias + "' (id " + site._id + ")");
       site.ping();
    }
 
@@ -341,42 +301,33 @@ function parseTimestamp (time, format) {
  * function formats a date to a string. It checks if a site object is
  * in the request path and if so uses its locale and timezone.
  *
- * @param ts           Date to be formatted
- * @param format     The format string
- * @return               The date formatted as string
+ * @param Object Date to be formatted
+ * @param String The format string
+ * @return String The date formatted as string
  */
 function formatTimestamp(ts,dformat) {
    // date format parsing is quite expensive, but date formats
    // are not thread safe, so what we do is to cache them per request
-   // in the response object using "timeformat_<format>" as key.
-   var sdf = res.data["timeformat_"];
+   // in the response object
+   var sdf = res.data["timeformat"];
    var fmt = "yyyy/MM/dd HH:mm";
-   if (path.site) {
-      if (dformat == "short")
-         fmt = path.site.shortdateformat ? path.site.shortdateformat : "dd.MM HH:mm";
-      else if (dformat == "long")
-         fmt = path.site.longdateformat ? path.site.longdateformat : "yyyy/MM/dd HH:mm";
-      else if (dformat)
-         fmt = dformat;
-   } else {
-      if (dformat)
-         fmt = dformat;
-   }
+   var obj = path.site ? path.site : root;
+   if (dformat == "short")
+      fmt = obj.shortdateformat ? obj.shortdateformat : "dd.MM HH:mm";
+   else if (dformat == "long")
+      fmt = obj.longdateformat ? obj.longdateformat : "yyyy/MM/dd HH:mm";
+   else if (dformat)
+      fmt = dformat;
 
    if (!sdf) {
       var locale = path.site ? path.site.getLocale() : root.getLocale();
       sdf = new java.text.SimpleDateFormat(fmt, locale);
-      if (path.site)
-         sdf.setTimeZone(path.site.getTimeZone());
-      res.data["timeformat_"] = sdf;
+      res.data["timeformat"] = sdf;
    } else if (fmt != sdf.toPattern()) {
       sdf.applyPattern(fmt);
    }
-   
-   var result = tryEval("sdf.format(ts)");
-   if (result.error)
-      return (getMsg("error","wrongDateFormat"));
-   return (result.value);
+   var result = sdf.format(ts);
+   return result;
 }
 
 /**
@@ -390,14 +341,10 @@ function scheduler() {
    // notify updated sites
    pingUpdatedSites();
    countUsers();
-   /*
-   var patch = tryEval("root.system_patch()");
-   if (patch.value) {
-      app.log("---------- [ANTVILLE PATCH] ----------");
-      app.log("still not finished, next run in " + patch.value + " millis");
-      return (patch.value);
-   }
-   */
+   // write the log-entries in app.data.accessLog into DB
+   writeAccessLog();
+   // store the readLog in app.data.readLog into DB
+   writeReadLog();
    return (60000);
 }
 
@@ -426,7 +373,7 @@ function cloneObject(obj) {
  * @return String rendered message
  */
 
-function getMsg(msgClass,msgName,value) {
+function getMessage(msgClass,msgName,value) {
    // create array containing languages to search for message
    var languages = new Array();
    if (path && path.site && path.site.language)
@@ -446,7 +393,7 @@ function getMsg(msgClass,msgName,value) {
             param.value1 = value;
          else if (value && value.length > 0) {
             for (var i in value)
-               param["value" + (parseInt(i)+1)] = value[i];
+               param["value" + (parseInt(i,10)+1)] = value[i];
          }
          return (renderSkinAsString(createSkin(message),param));
       }
@@ -469,7 +416,7 @@ function getMsg(msgClass,msgName,value) {
 
 function createResultObj(msgClass,msgName,value,error) {
    var result = new Object();
-   result.message = getMsg(msgClass,msgName,value);
+   result.message = getMessage(msgClass,msgName,value);
    result.error = error;
    return (result);
 }
@@ -530,6 +477,12 @@ function onStart() {
    app.data.macros = new Packages.helma.util.SystemProperties (macroHelpFile.getAbsolutePath());
    //eval(macroHelpFile.readAll());
    app.log("loaded macro help file");
+   // creating the vector for referrer-logging
+   // with an initial capacity of 500 and an increment of 150
+   app.data.accessLog = new java.util.Vector(500,125);
+   // creating the hashtable for storyread-counting
+   // with an initial capacity of 500 and an increment of 150
+   app.data.readLog = new java.util.Hashtable(500,125);
    return;
 }
 
@@ -571,10 +524,16 @@ function clipText(text, limit, clipping) {
  */
 
 function softwrap(str) {
-   var result = "";
-   for (var i=0; i<str.length; i=i+30)
-      result += str.substring(i, i+30) + "<wbr />";
-   return(result);
+   if (str.length<30)
+      return str;
+   var wrapped = new java.lang.StringBuffer();
+   for (var i=0; i<str.length; i=i+30) {
+      var strPart = str.substring(i, i+30);
+      wrapped.append(strPart);
+      if (strPart.length == 30 && strPart.indexOf(" ") < 0)
+         wrapped.append("<wbr />");
+   }
+   return (wrapped.toString());
 }
 
 
@@ -598,8 +557,7 @@ function fixRssText(str) {
  */
 
 function countUsers() {
-   app.log("1, 2, 3... counting users");
-   app.data.activeUsers = new Array()
+   app.data.activeUsers = new Array();
    var l = app.getActiveUsers();
    for (var i in l)
       app.data.activeUsers[app.data.activeUsers.length] = l[i];
@@ -610,4 +568,109 @@ function countUsers() {
          app.data.sessions++;
    }
    app.data.activeUsers.sort();
+}
+
+/**
+ * function swaps app.data.accessLog, loops over the objects
+ * contained in Vector and inserts records for every log-entry
+ * in AV_ACCESSLOG
+ */
+function writeAccessLog() {
+   if (app.data.accessLog.size() == 0)
+      return;
+   // first of all swap app.data.accessLog
+   var size = app.data.accessLog.size();
+   var newSize = Math.max(Math.round(size*1.25),500);
+   var newIncrement = Math.max(Math.round(size/4),125);
+   var log = app.data.accessLog;
+   app.data.accessLog = new java.util.Vector(newSize,newIncrement);
+   // open database-connection
+   var c = getDBConnection("antville");
+   var dbError = c.getLastError();
+   if (dbError) {
+      app.log("Error establishing DB connection: " + dbError);
+      return;
+   }
+   // loop over log-vector
+   var query;
+   for (var i=0;i<log.size();i++) {
+      var logObj = log.get(i);
+      query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE,ACCESSLOG_F_TEXT," +
+         "ACCESSLOG_REFERRER,ACCESSLOG_IP,ACCESSLOG_BROWSER) values (" + 
+         logObj.siteID + "," + logObj.storyID + ",'" + logObj.referrer + "','" + logObj.remoteHost + 
+         "','" + logObj.browser + "')";
+      c.executeCommand(query);
+      if (dbError) {
+         app.log("Error executing SQL query: " + dbError);
+         return;
+      }
+   }
+   app.log("wrote " + i + " referrers into database");
+   return;
+}
+
+/**
+ * function swaps app.data.readLog, loops over the logObjects
+ * contained in the Hashtable and updates the read-counter
+ * of all stories
+ */
+function writeReadLog() {
+   if (app.data.readLog.size() == 0)
+      return;
+   // first of all swap app.data.readLog
+   var size = app.data.readLog.size();
+   var newSize = Math.max(Math.round(size*1.25),500);
+   var newIncrement = Math.max(Math.round(size/4),125);
+   var log = app.data.readLog;
+   app.data.readLog = new java.util.Hashtable(newSize,newIncrement);
+   // loop over Hashtable
+   var reads = log.elements();
+   while (reads.hasMoreElements()) {
+      var el = reads.nextElement();
+      var site = root.get(el.site);
+      if (!site)
+         continue;
+      var story = site.allstories.get(String(el.story));
+      if (!story)
+         continue;
+      story.reads = el.reads;
+   }
+   app.log("updated read-counter of " + log.size() + " stories in database");
+   return;
+}
+
+/**
+ * rescue story/comment by copying all necessary properties to
+ * session.data.rescuedText. this will be copied back to
+ * req.data by restoreRescuedText() after successful login
+ * @param Object req.data
+ */
+function rescueText(param) {
+   session.data.rescuedText = new Object();
+   for (var i in param) {
+      if (i.indexOf("content_") == 0)
+         session.data.rescuedText[i] = param[i];
+   }
+   session.data.rescuedText.discussions = param.discussions;
+   session.data.rescuedText.topic = param.topic;
+   session.data.rescuedText.discussions_array = param.discussions_array;
+   session.data.rescuedText.submit = param.submit;
+   session.data.rescuedText.save = param.save;
+   session.data.rescuedText.topicidx = param.topicidx;
+   session.data.rescuedText.online = param.online;
+   session.data.rescuedText.editableby = param.editableby;
+   session.data.rescuedText.createtime = param.createtime;
+   return;
+}
+
+/**
+ * restore rescued Text in session.data by copying
+ * all properties back to req.data
+ */
+function restoreRescuedText() {
+   // copy story-parameters back to req.data
+   for (var i in session.data.rescuedText)
+      req.data[i] = session.data.rescuedText[i];
+   session.data.rescuedText = null;
+   return;
 }

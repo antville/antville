@@ -5,6 +5,6 @@
 <tr valign="top">
 <td><span class="storyTitle"><% story.title suffix="<br />" %></span><% story.text limit="200" suffix="&nbsp;..." %></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% story.editlink prefix="...&nbsp;" suffix="<br />" %><% story.viewlink prefix="...&nbsp;" suffix="<br />" %><% story.onlinelink prefix="...&nbsp;" suffix="<br />" %><% story.deletelink prefix="...&nbsp;" %></td>
+<td align="right" class="small" nowrap="nowrap"><% story.editlink prefix="...&nbsp;" suffix="<br />" %><% story.viewlink prefix="...&nbsp;" suffix="<br />" %><% story.onlinelink mode="toggle" prefix="...&nbsp;" suffix="<br />" %><% story.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>

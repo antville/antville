@@ -38,6 +38,8 @@ Defines the look of the topic manager.</li>
 This skin is used to display a story (it's embedded in the following three skins).</li>
 <li><a name="storypreview"></a><% skinmgr.link to="edit" urlparam="proto=story&name=preview" text="preview" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="preview" %>)</span><br />
 This skin is used to display a story on a frontpage (either the frontpage of your weblog or the frontpage of a single day).</li>
+<li><a name="storyembed"></a><% skinmgr.link to="edit" urlparam="proto=story&name=embed" text="embed" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="embed" %>)</span><br />
+This skin will be used to display a story when you embed it in a skin using the &lt;%&nbsp;story&nbsp;%&gt;-macro.</li>
 <li><a name="storymain"></a><% skinmgr.link to="edit" urlparam="proto=story&name=main" text="full story" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="main" %>)</span><br />
 This skin is used to display a story in the way you defined it in the &quot;display&quot;-skin plus its comments.</li>
 <li><a name="storycomment"></a><% skinmgr.link to="edit" urlparam="proto=story&name=comment" text="display on comment-page" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="story" name="comment" %>)</span><br />

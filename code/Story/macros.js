@@ -17,7 +17,7 @@ function content_macro(param) {
          param.value = this.getContentPart(param.part);
       param.name = "content_" + param.part;
       delete(param.part);
-      if (!param.height || parseInt(param.height) == 1) {
+      if (!param.height || parseInt(param.height,10) == 1) {
          param.value = encodeForm(param.value ? param.value : "");
          renderInputText(param);
       } else 
@@ -35,15 +35,15 @@ function content_macro(param) {
       var part = this.getRenderedContentPart (param.part);
       if (!part && param.fallback)
          part = this.getRenderedContentPart (param.fallback);
-      if (param.part == "title" && param.as == "link" && !part) {
-         part = this.getRenderedContentPart ("text");
-         param.limit = "20";
-      }
       if (param.as == "link") {
          if (this._prototype != "comment")
             openLink(this.href());
          else
             openLink(this.story.href()+"#"+this._id);
+         if (!part && param.part == "title") {
+            part = this.getRenderedContentPart ("text");
+            param.limit = "20";
+         }
       }
       if (!param.limit)
          res.write(part);
@@ -81,9 +81,9 @@ function online_macro(param) {
       var options = new Array("offline","online in topic","online in weblog");
       renderDropDownBox("online",options,this.online);
    } else {
-      if (!this.isOnline())
+      if (!this.online)
          res.write("offline");
-      else if (parseInt(this.online,10) < 2) {
+      else if (this.online < 2) {
          res.write("online in ");
          openLink(this.site.topics.get(this.topic).href());
          res.write(this.topic);
@@ -160,7 +160,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied(session.user)) {
+   if (session.user && !this.isEditDenied(session.user)) {
       openLink(this.href("edit"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image),param);
@@ -176,7 +176,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied(session.user)) {
+   if (session.user && !this.isDeleteDenied(session.user)) {
       openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image),param);
@@ -192,14 +192,16 @@ function deletelink_macro(param) {
  */
 
 function onlinelink_macro(param) {
-   if (!this.isEditDenied(session.user)) {
+   if (session.user && !this.isEditDenied(session.user)) {
+      if (this.online && param.mode != "toggle")
+         return;
       param.linkto = "edit";
-      param.urlparam = "set=" + (this.isOnline() ? "offline" : "online");
+      param.urlparam = "set=" + (this.online ? "offline" : "online");
       openMarkupElement("a",this.createLinkParam(param));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image),param);
       else
-         res.write(this.isOnline() ? "set offline" : "set online");
+         res.write(this.online ? "set offline" : "set online");
       closeMarkupElement("a");
    }
 }
@@ -209,7 +211,7 @@ function onlinelink_macro(param) {
  */
 
 function viewlink_macro(param) {
-   if (this.isViewDenied(session.user))
+   if (session.user && this.isViewDenied(session.user))
       return;
    openLink(this.href());
    if (param.image && this.site.images.get(param.image))
@@ -224,7 +226,7 @@ function viewlink_macro(param) {
  */
 
 function commentlink_macro(param) {
-   if (!this.hasDiscussions())
+   if (!this.discussions)
       return;
    openLink(this.href(param.to ? param.to : "comment"));
    res.write(param.text ? param.text : "place your comment");
@@ -241,7 +243,7 @@ function commentlink_macro(param) {
  */
 
 function commentcounter_macro(param) {
-   if (!this.hasDiscussions())
+   if (!this.discussions)
       return;
    var commentCnt = this.comments.count();
    if (!param.linkto)
@@ -272,7 +274,7 @@ function commentcounter_macro(param) {
 
 function comments_macro(param) {
    var s = this.story ? this.story : this;
-   if (!s.hasDiscussions())
+   if (!s.discussions)
       return;
    this.comments.prefetchChildren();
    for (var i=0;i<this.size();i++) {
@@ -342,6 +344,7 @@ function editableby_macro(param) {
       else
          res.write("Content Managers and Admins of " + this.site.title);
    }
+   return;
 }
 
 /**
@@ -352,7 +355,7 @@ function editableby_macro(param) {
 
 function discussions_macro(param) {
   if (param.as == "editor") {
-    if (this.discussions == null && path.site.hasDiscussions())
+    if (this.discussions == null && path.site.discussions)
       param.checked = "checked";
     renderInputCheckbox(this.createInputParam("discussions",param));
     var attr = new Object();
@@ -361,7 +364,7 @@ function discussions_macro(param) {
     attr.value = "0";
     renderMarkupElement("input",attr);
   } else
-    res.write(parseInt(this.discussions,10) ? "yes" : "no");
+    res.write(this.discussions ? "yes" : "no");
 }
 
 /**
@@ -394,9 +397,7 @@ function topic_macro(param) {
    if (!this.topic)
       return;
    if (!param.as || param.as == "link") {
-      // FIXME: manually escaping topicname because internal webserver
-      // doesn't understand spaces encoded as '+'
-      openLink(this.site.topics.href() + escape(this.topic));
+      openLink(this.topic.href());
       res.write(this.topic);
       closeLink();
    }
@@ -406,9 +407,7 @@ function topic_macro(param) {
       var img = getPoolObj(param.imgprefix+this.topic, "images");
       if (!img)
          return;
-      // FIXME: manually escaping topicname because internal webserver
-      // doesn't understand spaces encoded as '+'
-      openLink(this.site.topics.href() + escape(this.topic));
+      openLink(this.topic.href());
       renderImage(img.obj, param)
       closeLink();
    }
@@ -427,7 +426,7 @@ function backlinks_macro() {
 	var c = getDBConnection("antville");
 	var dbError = c.getLastError();
 	if (dbError)
-      return (getMsg("error","database",dbError));
+      return (getMessage("error","database",dbError));
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
@@ -435,7 +434,7 @@ function backlinks_macro() {
 	var rows = c.executeRetrieval(query);
 	var dbError = c.getLastError();
 	if (dbError)
-      return (getMsg("error","database",dbError));
+      return (getMessage("error","database",dbError));
 	
 	var param = new Object();
 	while (rows.next()) {
@@ -453,9 +452,4 @@ function backlinks_macro() {
 	if (str)
 		str = this.renderSkinAsString("backlinks", param);
 	return(str);
-}
-
-
-function help_macro() {
-   // FIXME how can we display a list of macros allowed in a story?
 }

@@ -60,9 +60,9 @@ function saveSkin(proto,name,source,creator) {
 
 function deleteSkin(s) {
    if (this.get(s.proto).remove(s))
-      return (getMsg("confirm","skinDelete"));
+      return (getMessage("confirm","skinDelete"));
    else
-      return (getMsg("error","skinDelete"));
+      return (getMessage("error","skinDelete"));
 }
 
 /**

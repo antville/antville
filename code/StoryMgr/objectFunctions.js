@@ -43,7 +43,7 @@ function evalNewStory(s,param,creator) {
    } else {
       s.modifytime = s.createtime = new Date();
    }
-   s.editableby = !isNaN(parseInt(param.editableby)) ? parseInt(param.editableby,10) : null;
+   s.editableby = !isNaN(parseInt(param.editableby,10)) ? parseInt(param.editableby,10) : null;
    s.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
    if (s.createtime) {
       // create day of story with respect to site-timezone

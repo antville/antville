@@ -6,10 +6,7 @@
  */
 
 function isDenied(usr) {
-   if (!this._parent.userMayContrib()) {
-      var membership = this._parent.isUserMember(usr);
-      if (!membership)
-         return (getMsg("error","userNoMember"));
-   }
+   if (!this._parent.usercontrib && !req.data.memberlevel)
+      return "shortcutEditDenied";
    return null;
 }
