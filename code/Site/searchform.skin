@@ -1,6 +1,6 @@
 <p>Enter a term to search in <% this.title %></p>
 
-<form method=post action="<% response.action %>">
+<form method="get" action="<% response.action %>">
 <input size="25" name="q" value="<% request.q encoding="form" %>">
 <input type="submit" value="go">
 </form>
