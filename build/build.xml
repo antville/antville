@@ -89,6 +89,8 @@
          tag="${cvs.antville.tag}" 
          package="${project}" 
          dest="${build.work}"/>
+      <delete dir="${build.work}/antville/build/extra"/>
+      <delete dir="${build.work}/antville/build/lib"/>
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
          <param name="path" value="${build.work}/antville"/>
@@ -119,7 +121,8 @@
          package="${project}" 
          dest="${build.work}/apps"/>
 
-      <delete dir="${build.work}/apps/antville/build"/>
+      <delete dir="${build.work}/antville/build/extra"/>
+      <delete dir="${build.work}/antville/build/lib"/>
 
       <cvs cvsRoot="${cvs.manage.root}" 
          command="export" 
