@@ -8,7 +8,7 @@
 > 
 
   <channel rdf:about="<% site.url %>">
-    <title><% site.title encoding="xml" %></title>
+    <title><% site.title encoding="xml" %><% param.subtitle prefix=" (" suffix=")" %></title>
     <link><% site.url %></link>
     <description><% site.tagline encoding="xml" %></description>
     <dc:publisher><% param.title encoding="xml" %></dc:publisher>
@@ -21,9 +21,12 @@
     <items>
       <rdf:Seq>
 <% param.resources %>
+         <textinput rdf:resource="<% site.url %>search" />
       </rdf:Seq>
     </items>
   </channel>
+
+<% param.items %>
 
    <textinput rdf:about="<% site.url %>search">
       <title>find</title>
@@ -31,7 +34,4 @@
       <name>q</name>
       <link><% site.url action="search" %></link>
    </textinput>
-
-<% param.items %>
-
 </rdf:RDF>
