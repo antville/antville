@@ -84,7 +84,7 @@ function renderImage(img, param) {
    if (!param.title)
       param.title = img.alttext;
    param.src = getProperty("imgUrl");
-   param.src += img.weblog ? img.weblog.alias + "/" : "";
+   param.src += img.site ? img.site.alias + "/" : "";
    param.src += img.filename + "." + img.fileext;
    if (!param.width)
       param.width = img.width;
@@ -102,18 +102,24 @@ function renderImage(img, param) {
  * @param param Object contains the element's attributes
  */
 function renderInputTextarea(param) {
-  param.cols = param.width ? param.width : "40";
-  param.rows = param.height ? param.height : "5";
-  if (!param.wrap)
-    param.wrap = "virtual";
-  var value = param.value ? encodeForm(param.value) : "";
-  delete param.value;
-  delete param.width;
-  delete param.height;
-  delete param.as;
-  openMarkupElement("textarea", param);
-  res.write(value);
-  closeMarkupElement("textarea");
+   if (param.width)
+      param.cols = param.width;
+   if (param.height)
+      param.rows = param.height;
+   if (!param.cols)
+      param.cols = 40;
+   if (!param.rows)
+      param.rows = 5;
+   if (!param.wrap)
+      param.wrap = "virtual";
+   var value = param.value ? encodeForm(param.value) : "";
+   delete param.value;
+   delete param.width;
+   delete param.height;
+   delete param.as;
+   openMarkupElement("textarea", param);
+   res.write(value);
+   closeMarkupElement("textarea");
 }
 
 
@@ -122,17 +128,17 @@ function renderInputTextarea(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputButton(param) {
-  if (!param)
-    return;
-  param.type = "submit";
-  if (param.content) {
-    param.value = param.content;
-    delete param.content;
-  }
-  if (!param.name)
-    param.name = param.type;
-  param.value = param.value ? encodeForm(param.value) : param.type;
-  renderMarkupElement("input", param);  
+   if (!param)
+      return;
+   param.type = "submit";
+   if (param.content) {
+      param.value = param.content;
+      delete param.content;
+   }
+   if (!param.name)
+      param.name = param.type;
+   param.value = param.value ? encodeForm(param.value) : param.type;
+   renderMarkupElement("input", param);  
 }
 
 
@@ -141,12 +147,16 @@ function renderInputButton(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputText(param) {
-  if (!param)
-    return;
-  param.type = "text";
-  param.size = param.width ? param.width : "20";
-  delete param.width;
-  renderMarkupElement("input", param);
+   if (!param)
+      return;
+   param.type = "text";
+   // this one is left for backwards-compatibility
+   if (param.width)
+      param.size = param.width;
+   if (!param.size)
+      param.size = 20;
+   delete param.width;
+   renderMarkupElement("input", param);
 }
 
 
@@ -186,7 +196,7 @@ function renderInputCheckbox(param) {
   param.type = "checkbox";
   param.checked = param.check;
   delete param.check;
-  if (parseInt(param.value, 10) == 1 || param.checked == "true")
+  if (parseInt(param.value, 10) == 1 || param.value == true)
     param.checked = "checked";
   param.value = "1";
   renderMarkupElement("input", param);
@@ -305,11 +315,11 @@ function doWikiStuff (src) {
     if (found == null)
       break;
     var name = ""+(new java.lang.String (found[1])).trim();
-    var item = path.weblog.topics.get (name);
+    var item = path.site.topics.get (name);
     if (item == null && name.lastIndexOf("s") == name.length-1)
-      item = path.weblog.topics.get (name.substring(0, name.length-1));
+      item = path.site.topics.get (name.substring(0, name.length-1));
     if (item == null || !item.size())
-      text += format(name)+" <small>[<a href=\""+path.weblog.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
+      text += format(name)+" <small>[<a href=\""+path.site.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
     else
       text += "<a href=\""+item.href()+"\">"+name+"</a>";
     start += found.index + found[1].length+4;
@@ -348,3 +358,20 @@ function renderMarkupElementAsString(name, content, attr) {
 }
 
 
+/**
+ * function renders a dropdown-box containing all available
+ * locales
+ * @param Obj Locale-Object to preselect
+ */
+
+function renderLocaleChooser(loc) {
+   var locs = java.util.Locale.getAvailableLocales();
+   var options = new Array();
+   // get the defined locale of this site for comparison
+   for (var i in locs) {
+      options[i] = locs[i].getDisplayName();
+      if (loc && locs[i].equals(loc))
+         var selectedIndex = i;
+   }
+   renderDropDownBox("locale",options,selectedIndex);
+}
