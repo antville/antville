@@ -14,7 +14,7 @@ function setup_action() {
    else if (req.data.save) {
       try {
          res.message = this.evalSystemSetup(req.data, session.user);
-         res.redirect(root.size() ? this.href("status") : root.href("new"));
+         res.redirect(root.size() ? this.href("setup") : root.href("new"));
       } catch (err) {
          res.message = err.toString();
       }
