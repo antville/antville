@@ -59,6 +59,8 @@ function online_macro(param) {
  */
 
 function createtime_macro(param) {
+   if (!this.createtime)
+      return;
    res.write(param.prefix);
    res.write(this.weblog.formatTimestamp(this.createtime,param));
    res.write(param.suffix);
@@ -69,7 +71,7 @@ function createtime_macro(param) {
  */
 
 function modifytime_macro(param) {
-   if (this.modifytime) {
+   if (this.modifytime && this.modifytime.getTime() != this.createtime.getTime()) {
       res.write(param.prefix);
       res.write(this.weblog.formatTimestamp(this.modifytime,param));
       res.write(param.suffix);
@@ -81,6 +83,8 @@ function modifytime_macro(param) {
  */
 
 function author_macro(param) {
+   if (!this.author)
+      return;
    res.write(param.prefix);
    if (param.as == "link" && this.author.url) {
       var linkParam = new HopObject();
@@ -94,20 +98,39 @@ function author_macro(param) {
 }
 
 /**
+ * macro renders the name of the modifier
+ */
+
+function modifier_macro(param) {
+   if (!this.modifier || this.createtime.getTime() == this.modifytime.getTime())
+      return;
+   res.write(param.prefix);
+   if (param.as == "link" && this.modifier.url) {
+      var linkParam = new HopObject();
+      linkParam.to = this.modifier.url;
+      this.openLink(linkParam);
+      res.write(this.modifier.name);
+      this.closeLink();
+   } else
+      res.write(this.modifier.name);
+   res.write(param.suffix);
+}
+
+/**
  * macro rendering a link to edit
  * if user is allowed to edit
  */
 
 function editlink_macro(param) {
    res.write(param.prefix);
-   if (this.author == user) {
+   if (this.isEditAllowed()) {
       var linkParam = new HopObject();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
-      if (!param.image)
-         res.write(param.text ? param.text : "edit");
+      if (param.image && this.weblog.images.get(param.image))
+         this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
-         this.renderImage(param);
+         res.write(param.text ? param.text : "edit");
       this.closeLink();
    }
    res.write(param.suffix);
@@ -124,10 +147,10 @@ function deletelink_macro(param) {
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
-      if (!param.image)
-         res.write(param.text ? param.text : "delete");
+      if (param.image && this.weblog.images.get(param.image))
+         this.weblog.renderImage(this.weblog.images.get(param.image),param);
       else
-         this.renderImage(param);
+         res.write(param.text ? param.text : "delete");
       this.closeLink();
    }
    res.write(param.suffix);
@@ -136,15 +159,17 @@ function deletelink_macro(param) {
 
 /**
  * macro rendering link to comments
+ * DEPRECATED
+ * this is just left for compatibility with existing weblogs
+ * use a simple like i.e. <% story.link to="comment" text="place your comment" %> instead
  */
 
 function commentlink_macro(param) {
-   if (path[path.length-1] != this && this.weblog.hasDiscussions()) {
-      res.write(param.prefix);
-      this.renderSkin(param.useskin ? param.useskin : "commentlink");
-      res.write(param.suffix);
-   }
+   res.write(param.prefix);
+   this.renderSkin(param.useskin ? param.useskin : "commentlink");
+   res.write(param.suffix);
 }
+
 
 /**
  * macro renders number of comments
@@ -157,12 +182,18 @@ function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       res.write(param.prefix);
       this.filter();
-      if (this.count() == 0) {
-         res.write(this.count() + (param.no ? param.no : " threads"));
-      } else if (this.count() == 1) {
-         res.write(this.count() + (param.one ? param.one : " thread"));
-      } else if (this.count() > 1) {
-         res.write(this.count() + (param.more ? param.more : " threads"));
+      var linkParam = new HopObject();
+      linkParam.linkto = "main";
+      if (this.allcomments.count() == 0) {
+         res.write(this.allcomments.count() + " " + (param.no ? param.no : " comments"));
+      } else if (this.allcomments.count() == 1) {
+         this.openLink(linkParam);
+         res.write(this.allcomments.count() + " " + (param.one ? param.one : " comments"));
+         this.closeLink(linkParam);
+      } else if (this.allcomments.count() > 1) {
+         this.openLink(linkParam);
+         res.write(this.allcomments.count() + " " + (param.more ? param.more : " comments"));
+         this.closeLink(linkParam);
       }
       res.write(param.suffix);
    }
@@ -189,15 +220,10 @@ function comments_macro(param) {
  */
 
 function commentform_macro(param) {
-   if (this.weblog.hasDiscussions()) {
-      res.write(param.prefix);
-      if (user.uid && !user.isBlocked()) {
-         var c = new comment();
-         c.renderSkin("edit");
-      } else if (!user.isBlocked())
-         res.write("<A HREF=\"" + this.weblog.members.href("login") + "\">Login to add your comment</A>");
-      res.write(param.suffix);
-   }
+   res.write(param.prefix);
+   var c = new comment();
+   c.renderSkin("edit");
+   res.write(param.suffix);
 }
 
 /**
@@ -208,7 +234,7 @@ function commentform_macro(param) {
  */
 
 function image_macro(param) {
-   if (param && param.name && this.weblog.images.get(param.name)) {
+   if (param.name && this.weblog.images.get(param.name)) {
       res.write(param.prefix);
       if (param.linkto) {
          this.openLink(param);
@@ -217,5 +243,33 @@ function image_macro(param) {
       } else
          this.weblog.renderImage(this.weblog.images.get(param.name),param);
       res.write(param.suffix);
+   }
+}
+
+/**
+ * macro renders the property of story that defines if
+ * other users may edit this story
+ */
+
+function editableby_macro(param) {
+   if (param.as == "editor" && (user == this.author || !this.author)) {
+      res.write(param.prefix);
+      ddParam = new HopObject();
+      ddParam.name = "editableby";
+      ddParam.add(this.createDDOption("Author only",3,(this.editableby == 3 ? true : false)));
+      ddParam.add(this.createDDOption("Administrators only",2,(this.editableby == 2 ? true : false)));
+      ddParam.add(this.createDDOption("Contributors only",1,(this.editableby == 1 ? true : false)));
+      ddParam.add(this.createDDOption("all Users",0,(this.editableby == 0 ? true : false)));
+      this.chooser(ddParam);
+      res.write(param.suffix);
+   } else {
+      if (this.editableby == 0)
+         res.write("all Users");
+      else if (this.editableby == 1)
+         res.write("Contributors only")
+      else if (this.editableby == 2)
+         res.write("Administrators only");
+      else if (this.editableby == 3)
+         res.write("Author only");
    }
 }
