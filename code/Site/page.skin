@@ -8,62 +8,55 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
-<script type="text/javascript" src="<% site.url %>javascript"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
+<script type="text/javascript" src="<% site.url %>javascript.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet.css" />
 </head>
 
 <body>
 
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td width="700" class="title" nowrap="nowrap"><% layout.image name="pixel" width="40" %><a href="<% this.href %>"><% site.title %></a></td>
+<td class="header"><a href="<% this.href %>"><% site.title %></a></td>
 </tr>
 </table>
 
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="main">
 <tr>
-<td width="40" nowrap="nowrap">&nbsp;</td>
-<td width="400" valign="top" nowrap="nowrap">
-
-<br />
-<% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
+<td class="center"><% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
 <% response.body %></td>
+<td class="right">
+<div class="box">
+<% site.age prefix="Online for " show="days" suffix=" days<br />" %>
+<% site.lastupdate prefix="Last update: " format="short" %>
+</div>
 
-<td width="60" nowrap="nowrap">&nbsp;</td>
-<td width="2" style="background-image: url(<% layout.image as="url" name="dot" %>);" nowrap="nowrap"><% layout.image name="pixel" width="2" %></td>
-<td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
-<% site.age prefix="Online for&nbsp;" show="days" suffix=" days<br />" %><% site.lastupdate prefix="Last update:&nbsp;" format="short" %></div>
+<div class="boxheader">status</div>
+<div class="box"><% site.loginstatus %></div>
 
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statushead"><% layout.image name="status" %></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-
-<div class="statuslight"><% site.loginstatus %></div>
-
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statushead"><% layout.image name="menu" %></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-
-<div class="statusdark">...&nbsp;<% site.link to="main" text="home" %><br />
+<div class="boxheader">menu</div>
+<div class="box">
+...&nbsp;<% site.link to="main" text="home" %><br />
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
 ...&nbsp;<% site.link to="images/topics" text="galleries" %><br />
 <% site.navigation for="contributors" %>
 <% site.navigation for="admins" %><br />
-...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a></div>
+...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a>
+</div>
 
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div><% site.searchbox %></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statusdark"><% site.calendar %></div>
+<div class="boxheader">search</div>
+<div class="box"><% site.searchbox %></div>
 
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statushead"><% layout.image name="recent" %></div>
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
+<div class="boxheader">calendar</div>
+<div class="box"><% site.calendar %></div>
 
-<% site.history show="5" %>
+<div class="boxheader">recent updates</div>
+<div class="box"><% site.history %></div>
 
-<div class="sep"><% layout.image name="pixel" width="198" %></div>
-<div class="statuslight"><br /><% site.xmlbutton %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% layout.image name="hop" linkto="http://helma.org" %></div></td>
+<div class="boxline"></div>
+<div class="box"><% site.xmlbutton %><br /><br />
+<% logo name="smallchaos" %></div>
+
+</td>
 </tr>
 </table>
 
