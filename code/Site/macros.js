@@ -193,11 +193,12 @@ function titlecolor_macro(param) {
  */
 
 function lastupdate_macro(param) {
-   if (this.lastupdate) {
-      res.write(param.prefix)
+   res.write(param.prefix)
+   if (!this.lastupdate) {
+      res.write("no updates so far");
+   } else
       res.write(this.formatTimestamp(this.lastupdate,param));
-      res.write(param.suffix);
-   }
+   res.write(param.suffix);
 }
 
 /**
@@ -382,9 +383,11 @@ function storylist_macro() {
       for (var i=0;i<days;i++) {
          for (var j=0;j<this.get(i).size();j++) {
             var currStory = this.get(i).get(j);
-            currStory.setParent(currDay);
-            if (currStory.isOnline() || currStory.isViewAllowed())
+            // don't think we need this anymore: currStory.setParent(currDay);
+            if (currStory.isOnline())
                currStory.renderSkin("preview");
+            else if (currStory.isViewAllowed())
+               currStory.renderSkin("offline");
          }
       }
    } else
@@ -561,10 +564,8 @@ function membercounter_macro(param) {
 
 function memberlist_macro(param) {
    res.write(param.prefix)
-   for (var i=0;i<this.members.size();i++) {
-      if (this.members.get(i).user != user)
-         this.members.get(i).renderSkin("preview");
-   }
+   for (var i=0;i<this.members.size();i++)
+      this.members.get(i).renderSkin("preview");
    res.write(param.suffix);
 }
 
@@ -600,5 +601,19 @@ function history_macro(param) {
    for (var j in x) {
       if (x[j].isOnline()) x[j].renderSkin("historyview");
    }
+   res.write(param.suffix);
+}
+
+
+/**
+ * macro checks if this weblog is online or offline
+ */
+
+function onlinestatus_macro(param) {
+   res.write(param.prefix);
+   if (!this.isOnline())
+      res.write("private");
+   else
+      res.write("public");
    res.write(param.suffix);
 }
