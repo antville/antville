@@ -4,10 +4,18 @@
  * @see image/objectFunctions.js
  */
 function getUrl() {
-   var buf = this.layout.getStaticUrl();
-   buf.append(this.filename);
-   buf.append(".");
-   buf.append(this.fileext);
-   return buf.toString();
+   res.push();
+   this.layout.staticUrl();
+   res.write(this.filename);
+   res.write(".");
+   res.write(this.fileext);
+   return res.pop();
 }
 
+/**
+ * return the image file on disk
+ * @return Object File object
+ */
+function getFile() {
+   return FileLib.get(this.layout.getStaticPath(), this.filename + "." + this.fileext);
+}
