@@ -66,6 +66,7 @@ ul {
 
 .sep {
   width: 198px;
+  height: 1px;
   background-image: url("<% imageurl name="/dot" %>");
 }
 

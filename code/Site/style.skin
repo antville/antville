@@ -69,6 +69,7 @@ a:hover {
 }
 
 .sep {
+  height: 1px;
   width: 198px;
   background-image: url("<% imageurl name="/dot" %>");
 }
