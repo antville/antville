@@ -21,7 +21,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
 }
 
 /** 
- * Create a new post after checking user credentials.
+ * Update an existing posting.
  */
 function editPost (appkey, postid, username, password, content, publish) {
     this.checkAccessPermission (null, postid.toString(), username, password);
