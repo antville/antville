@@ -57,10 +57,10 @@ a:hover { background-color:<% weblog.linkcolor %>;
              }
 
 .sep { width:198px;
-       background-image:url("/img/antville/dot.gif");
+       background-image:url("<% imageurl name="/dot" %>");
      }
 
-ul { list-style: url("/img/antville/bullet.gif") circle;
+ul { list-style: url("<% imageurl name="/bullet" %>") circle;
    }
 
 li { padding-bottom:3px;
@@ -120,13 +120,13 @@ li { padding-bottom:3px;
        }
 
 
-.formTitle { width:400px;
+.formTitle { width:380px;
              font-size:<% weblog.titlesize %>;
              font-family:<% weblog.textfont %>;
              font-weight:bold;
            }
 
-.formText { width:400px;
+.formText { width:380px;
             font-size:<% weblog.textsize %>;
             font-family:<% weblog.textfont %>;
             font-weight:normal;
