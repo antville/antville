@@ -7,6 +7,6 @@ function openPopup(img, width, height) {
       if (imgWindow.location && !imgWindow.closed)
          imgWindow.close();
          imgWindow = window.open(img, "imgWindow" + width + height, "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=no,width=" + width + ",height=" + height);
-         imageWindow.focus();
+         imgWindow.focus();
       }
    }
