@@ -10,7 +10,7 @@ function storylist_macro(param) {
    if (isNaN (idx)|| idx > size-1)
       idx = 0;
    var cnt = 0;
-   var max = Math.min (idx+10, size);
+   var max = Math.min (10, size);
 
    if (idx > 0)
       res.write ("...&nbsp;<a href='"+this.href()+"?start="+Math.max(0, idx-10) + (show ? "&show=" + show : "") + "'>newer stories</a><br>");
