@@ -1,4 +1,35 @@
 /**
+ * check if a login attempt is ok
+ */
+
+function evalLogin() {
+   // check if login is successful
+   if (user.login(req.data.name, req.data.password)) {
+      if (user.isBlocked()) {
+         res.message = "Sorry, your account was disabled!";
+         user.logout();
+         res.redirect(parent.href());
+      }
+      // login successful
+      user.lastVisit = new Date();
+      if (req.data.remember) {
+         // user allowed us to set permanent cookies for auto-login
+         res.setCookie("avUsr",user.name,365);
+         res.setCookie("avPw",calcMD5(user.password),365);
+      }
+      res.message = "Welcome to Antville, " + user.name + "! Have fun!";
+      if (!user.cache.referer) {
+         var redirectTo = root.href();
+      } else {
+         var redirectTo = user.cache.referer;
+         user.cache.referer = null;
+      }
+      res.redirect(redirectTo);
+   } else
+      res.message = "Login failed! Maybe a typo?";
+}
+
+/**
  * check if a registration attempt is ok
  */
 
