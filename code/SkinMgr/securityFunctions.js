@@ -7,8 +7,8 @@
 function isDenied(usr) {
    var membership = this._parent.isUserMember(usr);
    if (!membership)
-      return ("You're not a member of this weblog!");
+      return (getMsg("error","userNoMember"));
    else if ((membership.level & MAY_EDIT_SKINS) == 0)
-      return ("You're not allowed to edit skins!");
+      return (getMsg("error","skinEditDenied"));
    return null;
 }

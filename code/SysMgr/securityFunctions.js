@@ -24,6 +24,6 @@ function onRequest() {
 
 function isDenied(usr) {
    if (!usr.isSysAdmin())
-      return ("You're not allowed to do this!");
+      return (getMsg("error","userNoSysAdmin"));
    return null;
 }

@@ -8,9 +8,9 @@ function isDenied(usr) {
    if (!this._parent.userMayContrib()) {
       var membership = this._parent.isUserMember(usr);
       if (!membership)
-         return ("You need to be a member of this weblog to do this!");
+         return (getMsg("error","userNoMember"));
       else if ((membership.level & MAY_ADD_IMAGE) == 0)
-         return ("You're not allowed to do this!");
+         return (getMsg("error","imageAddDenied"));
    }
    return null;
 }
