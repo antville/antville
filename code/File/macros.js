@@ -4,14 +4,14 @@
 
 function alias_macro(param) {
    if (param.as == "editor")
-      renderInputText(this.createInputParam("alias",param));
+      Html.input(this.createInputParam("alias", param));
    else if (param.as == "link") {
       param.to = "getfile"
       param.urlparam = "name=" + escape(this.alias);
       param.title = encodeForm(this.description);
-      openMarkupElement("a", this.site.createLinkParam(param));
+      Html.openTag("a", this.site.createLinkParam(param));
       res.write(this.alias);
-      closeMarkupElement("a");
+      Html.closeTag("a");
    } else
       res.write(this.alias);
    return;
@@ -24,7 +24,7 @@ function alias_macro(param) {
 
 function description_macro(param) {
    if (param.as == "editor")
-      renderInputTextarea(this.createInputParam("description",param));
+      Html.textArea(this.createInputParam("description", param));
    else
       res.write(this.description);
    return;
@@ -35,7 +35,7 @@ function description_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(getProperty("fileUrl"));
+   res.write(app.properties.fileUrl);
    if (this.site)
        res.write(this.site.alias + "/");
    res.write(this.filename + "." + this.fileext);
@@ -47,11 +47,8 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
-      openLink(this.href("edit"));
-      res.write(param.text ? param.text : "edit");
-      closeLink();
-   }
+   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel))
+      Html.link(this.href("edit"), param.text ? param.text : "edit");
    return;
 }
 
@@ -61,13 +58,13 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
-      openLink(this.href("delete"));
+   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+      Html.openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image),param);
+         this.site.renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : "delete");
-      closeLink();
+      Html.closeLink();
    }
    return;
 }
@@ -82,9 +79,9 @@ function viewlink_macro(param) {
       param.urlparam = "name=" + escape(this.alias);
       param.title = encodeForm(this.description);
       var text = param.text ? param.text : "view";
-      openMarkupElement("a", this.site.createLinkParam(param));
+      Html.openTag("a", this.site.createLinkParam(param));
       res.write(text);
-      closeMarkupElement("a");
+      Html.closeTag("a");
    }
    return;
 }
