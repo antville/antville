@@ -116,7 +116,6 @@ insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE
 insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smallanim','smallanim','gif',98,30,'resident of antville.org');
 insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smallchaos','smallchaos','gif',107,29,'resident of antville.org');
 insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smallstraight','smallstraight','gif',107,24,'resident of antville.org');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smalltrans','smalltrans','gif',98,30,'resident of antville.org');
 insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('pixel','pixel','gif',1,1,'pixel');
 insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values ('headbg','headbg','gif',3,52);
 insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('menu','menu','gif',36,13,'menu');
