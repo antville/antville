@@ -51,6 +51,16 @@ function creator_macro(param) {
    return;
 }
 
+/** 
+ * Returns a href for an object.
+ */
+function href_macro(param) {
+   if (param.action)
+      return this.href(param.action);
+   else
+      return this.href();
+}
+
 /**
  * macro renders a form-input
  * DEPRECATED: just left for backwards-compatibility, use global input_macro() now
