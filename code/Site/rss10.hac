@@ -4,7 +4,7 @@ var now = new Date();
 var param1 = new Object();
 
 if (this.online) {
-	var size = this.allstories.size();
+	var size = this.stories.size();
 	var max = req.data.max ? parseInt(req.data.max) : 7;
 	if (max > size)
 		max = size;
@@ -14,7 +14,7 @@ if (this.online) {
 	var resources = "";
 	var items = "";
 	for (var i=0; i<max; i++) {
-		var story = this.allstories.get(i);
+		var story = this.stories.get(i);
 		if (story.online) {
 			param1.itemUrl = story.href();
 			param1.itemTitle = encodeXml(story.title);
