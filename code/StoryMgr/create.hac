@@ -7,6 +7,9 @@ if (deny) {
    res.redirect(this.href());
 }
 
+var s = new story();
+s.topic = req.data.topic;
+
 // storing referer in user-cache in case user clicks cancel later
 if (!user.cache.referer && req.data.http_referer)
    user.cache.referer = req.data.http_referer;
@@ -16,17 +19,19 @@ if (req.data.submit == "cancel" || req.data.cancel) {
    user.cache.referer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
-   var result = this.evalNewStory(req.data,user);
+   var result = this.evalNewStory(s,req.data,user);
    res.message = result.message;
-   user.cache.referer = null;
-   if (!result.error)
+   if (!result.error) {
+      user.cache.referer = null;
       res.redirect(result.url);
+   } else
+      s = result.story;
 }
 
 res.skin = "weblog.page";
 
 res.data.title = "Antville - " + path.weblog.title;
 
-newStory = new story();
-newStory.topic = req.data.topic;
-res.data.body = newStory.renderSkinAsString("edit");
+res.data.action = this.href("create");
+
+res.data.body = s.renderSkinAsString("edit");
