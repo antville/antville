@@ -33,7 +33,7 @@ error.accountBlocked = Sorry pal, your account was disabled. Best you contact th
 error.loginTypo = Unfortunately, your login failed. Maybe a typo?
 error.loginBefore = Please login before.
 error.emailMissing1 = Please enter your e-mail address.
-// difference between emailMissin1 and emailMissing1?
+// difference between emailMissing1 and emailMissing1?
 error.emailMissing2 = Please enter your email-address.
 error.emailInvalid = Could not process the e-mail address. Are you sure it is correct?
 error.emailNoAccounts = Sorry, but this is an unregistered e-mail address. Maybe a typo?
@@ -105,7 +105,6 @@ error.subscriptionExist = Oy, you have already subscribed to this weblog.
 error.subscriptionNoExist = Oy, you are not subscribed to this weblog.
 error.unsubscribeDenied = Sorry, you cannot unsubscribe because you are a <% param.value1 %>.
 
-// create the object that will contain all confirmation messages
 confirm.save = The changes of <% param.value1 %> where saved successfully.
 confirm.update = The changes were saved successfully.
 confirm.delete = Deletion was accomplished successfully.
