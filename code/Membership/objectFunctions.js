@@ -31,7 +31,7 @@ function updateMembership(lvl, modifier) {
       sendMail(root.sys_email,
                this.user.email,
                getMessage("mail.statusChange", this.site.title),
-               this.renderSkinAsString("mailbody")
+               this.renderSkinAsString("mailstatuschange")
               );
    }
    return new Message("update");
