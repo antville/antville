@@ -106,15 +106,16 @@ function evalNewStory(s,param,creator) {
  */
 
 function deleteStory(currStory) {
-   var result;
+   var online = currStory.online;
    // delete all comments of story
    currStory.deleteAll();
    if (this.remove(currStory)) {
-      this._parent.lastupdate = new Date();
-      result = getConfirm("storyDelete");
+      // only set modifytime of site if story was online
+      if (online > 0)
+         this._parent.lastupdate = new Date();
+      return (getConfirm("storyDelete"));
    } else
-      result = getError("storyDelete");
-   return (result);
+      return (getError("storyDelete"));
 }
 
 /**
