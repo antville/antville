@@ -503,7 +503,7 @@ function membercounter_macro(param) {
 
 
 /**
- * macro renders a list of recentyl added/updated stories/comments
+ * macro renders a list of recently added/updated stories/comments
  * of this site
  */
 function history_macro(param) {
@@ -513,8 +513,8 @@ function history_macro(param) {
       param.show = 5;
    var cnt = 0;
    var i = 0;
-   while (cnt < param.show && this.allcontent.get(i)) {
-      var item = this.allcontent.get(i++);
+   while (cnt < param.show && this.lastmod.get(i)) {
+      var item = this.lastmod.get(i++);
       if (!item.story || (item.story.online && item.story.discussions)) {
          item.renderSkin("historyview");
          cnt++;
