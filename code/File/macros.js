@@ -50,7 +50,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied()) {
+   if (!this.isEditDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "edit";
@@ -67,7 +67,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied()) {
+   if (!this.isDeleteDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "delete";
