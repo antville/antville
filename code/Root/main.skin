@@ -9,5 +9,5 @@
 
 <p>Until now, <% root.weblogcounter %> Weblogs were created, and the last updated weblogs are</p>
 <ul>
-<% root.webloglist limit="25" %>
+<% webloglist limit="25" %>
 </ul>

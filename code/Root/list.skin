@@ -1,4 +1,4 @@
 <p>This is the complete list of weblogs hosted here (ordered alphabetically):</p>
 <ul>
-<% root.webloglist show="all" limit="25" scroll="yes" %>
+<% webloglist show="all" limit="25" scroll="yes" %>
 </ul>
