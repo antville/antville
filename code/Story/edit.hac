@@ -31,10 +31,10 @@ if (req.data.set) {
 
 res.skin = "weblog.page";
 
+res.data.action = this.href(req.action);
+
 res.data.title = this.weblog.title;
 if (this.title)
    res.data.title += " - " + encode(this.title);
-
-res.data.action = this.href("edit");
 
 res.data.body = this.renderSkinAsString("edit");
