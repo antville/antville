@@ -46,7 +46,7 @@
 <div class="statusdark"><% weblog.skin name="history" %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><br><% image name="/xmlbutton" linkto="rss10" %><br><br><% logo name="smallstraight" %><br>powered by<br><% image name="/hop" linkto="http://helma.org" %></div></td>
+<div class="statuslight"><br><% image name="/xmlbutton" linkto="/rss10" %><br><br><% logo name="smallstraight" %><br>powered by<br><% image name="/hop" linkto="http://helma.org" %></div></td>
 </tr>
 </table>
 
