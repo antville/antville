@@ -207,7 +207,7 @@ function evalSystemSetup(param, admin) {
    evalEmail(param.sys_email);
    root.sys_email = param.sys_email;
    // e-mail notification
-   root.sys_allowEmails = param.sys_allowEmails;
+   root.sys_allowEmails = param.sys_allowEmails ? parseInt(param.sys_allowEmails, 10) : null;
    // store selected locale in this.language and this.country
    if (param.locale) {
       var loc = param.locale.split("_");
