@@ -43,9 +43,9 @@ function onStart() {
  */
 function scheduler() {
    // call autocleanup
-//   root.manage.autoCleanUp();
+   root.manage.autoCleanUp();
    // notify updated sites
-//   pingUpdatedSites();
+   pingUpdatedSites();
    // countUsers();
    // write the log-entries in app.data.accessLog into DB
    writeAccessLog();
@@ -55,7 +55,7 @@ function scheduler() {
    // store the readLog in app.data.readLog into DB
    writeReadLog();
    // send mails and empty mail queue
-//   flushMailQueue();
+   flushMailQueue();
    // flush the index queue
    app.data.indexManager.flush();
    return 5000;
