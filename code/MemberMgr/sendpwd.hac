@@ -1,4 +1,4 @@
-var parent = setLayout();
+var parent = getParent();
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(parent.href());
@@ -15,3 +15,4 @@ res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("sendpwd");
 
+parent.renderSkin("page");
