@@ -1,4 +1,49 @@
 /**
+ * this is the generic onStart handler
+ */
+ 
+function onStart() {
+	scheduler();
+}
+
+
+
+/**
+ * this is the generic scheduler() function
+ */
+ 
+function scheduler() {
+	return(1000);
+}
+
+
+
+/**
+ * to register updates of a weblog at weblogs.com
+ * (and probably other services, soon), this 
+ * function can be called via the scheduler.
+ */
+ 
+function pingUpdatedWeblogs() {
+  for (var i=0; i<root.allWeblogs.size(); i++) {
+   var blog = root.allWeblogs.get(i);
+    var now = new Date();
+    var period = 1000 * 60 * 10;
+    if ((now - blog.lastPing >= period) && (now - blog.lastUpdate <= period) && blog.online) {
+     writeln(blog.title + " was updated, so i'll ping weblogs.com...");
+      var url = "http://hopdev.helma.at" + blog.href();
+      //var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + blog.title + "&url=" + url);
+		var xr = new Remote("http://rpc.weblogs.com/RPC2");
+		var ping = xr.weblogUpdates.ping(blog.title, url); 
+		if (ping.error)
+			writeln(ping.error);
+      blog.lastPing = now;
+    }
+  }
+}
+
+
+/**
  * check if email-adress is syntactically correct
  */
 
