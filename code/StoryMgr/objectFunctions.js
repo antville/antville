@@ -72,12 +72,12 @@ function evalNewStory(s,param,creator) {
 
    // if everything ok, so proceed with adding the story
    if (!result) {
-      if (this._parent.add(s)) {
+      if (this.add(s)) {
          result = getConfirm("storyCreate");
          result.id = s._id;
          if (s.online) {
             s.site.lastupdate = s.modifytime;
-            result.url = s.href();
+            result.url = this.href()+s._id;
          } else
             result.url = this.href();
       } else
