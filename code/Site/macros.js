@@ -545,7 +545,7 @@ function preferences_macro(param) {
  */
 function spamfilter_macro(param) {
    var str = this.preferences.getProperty("spamfilter");
-   var items = str.replace(/\n/g, "").split("\r");
+   var items = str.replace(/\r/g, "").split("\n");
    for (var i in items) {
       res.write('"');
       res.write(items[i]);
