@@ -274,7 +274,6 @@ function logAccess() {
 			return;
 		}
 		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, URL, PATH, ACTION, BROWSER, DATE) values (" + weblog._id + ", " + storyID + ", \"" + referrer + "\", \"" + ip + "\", \"" + hopPath + action + "\", \"" + hopPath + "\", \"" + action + "\", \"" + browser + "\", now());";
-		writeln(query);
 		c.executeCommand(query);
 		var error = c.getLastError();
 		if (error) {
