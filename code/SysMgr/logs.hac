@@ -1,4 +1,4 @@
-res.data.title = root.getSysTitle() + " Manager - " + req.action;
+res.data.title = "Log data of " + root.getSysTitle();
 res.data.action = this.href(req.action);
 
 if (req.data.search || req.data.keywords)

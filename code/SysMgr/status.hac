@@ -1,4 +1,4 @@
-res.data.title = root.getSysTitle() + " Manager - " + req.action;
+res.data.title = "Status of " + root.getSysTitle();
 
 var status = new Object();
 status.upSince = formatTimestamp(app.upSince,"long");
@@ -14,6 +14,6 @@ status.totalMemory = Math.round(java.lang.Runtime.getRuntime().totalMemory() / 1
 status.freeMemory = Math.round(java.lang.Runtime.getRuntime().freeMemory() / 1024);
 status.usedMemory = status.totalMemory - status.freeMemory;
 
-res.data.body = this.renderSkinAsString("status",status);
+res.data.body = this.renderSkinAsString("status", status);
 
 this.renderSkin("page");

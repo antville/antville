@@ -33,8 +33,8 @@
 <div class="statusdark">...&nbsp;<% sysmgr.link to="sites" text="sites" %><br />
 ...&nbsp;<% sysmgr.link to="users" text="users" %><br />
 ...&nbsp;<% sysmgr.link to="setup" text="setup" %><br />
-...&nbsp;<% sysmgr.link to="logs" text="system log" %><br />
-...&nbsp;<% sysmgr.link to="status" text="system status" %><br />
+...&nbsp;<% sysmgr.link to="logs" text="log" %><br />
+...&nbsp;<% sysmgr.link to="status" text="status" %><br />
 <br /><% root.link to="main" text="antville home" prefix="...&nbsp;" %></div></td>
 </tr>
 <tr>

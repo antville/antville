@@ -1,4 +1,4 @@
-res.data.title = root.getSysTitle() + " Manager - " + req.action;
+res.data.title = "Site manager of " + root.getSysTitle();
 res.data.action = this.href(req.action);
 if (req.data.search || req.data.keywords)
    session.data.mgr.searchSites(req.data.show, req.data.sort, req.data.order, req.data.keywords);

@@ -1,4 +1,4 @@
-res.data.title = root.getSysTitle() + " system configuration";
+res.data.title = "System configuration of " + root.getSysTitle();
 
 res.data.action = this.href(req.action);
 
