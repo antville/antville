@@ -7,15 +7,13 @@ function content_macro(param) {
       this.convertContentToXML();
    }
    if (param.as == "editor") {
-      var inputParam = new Object();
-      inputParam.name = "content_"+param.part;
-      inputParam.value = this.getContentPart (param.part);
-      inputParam.style = param.style;
-      inputParam["class"] = param["class"]
-      if (!param.height || parseInt (param.height) == 1)
-         renderInputText (inputParam);
+      param.name = "content_" + param.part;
+      param.value = this.getContentPart(param.part);
+      delete(param.part);
+      if (!param.height || parseInt(param.height) == 1)
+         renderInputText(param);
       else
-         renderInputTextarea (inputParam);
+         renderInputTextarea(param);
    } else if (!this.content) {
       return;
    } else {
