@@ -80,9 +80,10 @@ function renderLinkToNextMonth(cal) {
 
 function deleteStory(currStory) {
    currStory.setParent(this);
-   if (this.remove(currStory))
+   if (this.remove(currStory)) {
+      this.lastupdate = new Date();
       res.message = "The story was deleted successfully!";
-   else
+   } else
       res.message = "Ooops! Couldn't delete the story!";
 
    res.redirect(this.href("main"));
