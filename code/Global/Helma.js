@@ -253,7 +253,8 @@ Helma.File = function(path) {
    this.mkdir = function() {
       if (self.isOpened())
          return false;
-      return file.mkdirs();   // Using multi directory version
+      // don't do anything if file exists or use multi directory version
+      return (file.exists() || file.mkdirs());   
    };
 
    this.renameTo = function(toFile) {
