@@ -336,6 +336,8 @@ function formatTimestamp(ts,dformat) {
    if (!sdf) {
       var locale = res.handlers.site ? res.handlers.site.getLocale() : root.getLocale();
       sdf = new java.text.SimpleDateFormat(fmt, locale);
+      if (res.handlers.site)
+         sdf.setTimeZone(res.handlers.site.getTimeZone());
       res.data["timeformat"] = sdf;
    } else if (fmt != sdf.toPattern()) {
       sdf.applyPattern(fmt);
