@@ -296,7 +296,7 @@ function username_macro(param) {
  * function renders a form-input
  */
 function input_macro(param) {
-   param.value = param.name && req.data[param.name] ? encodeForm(req.data[param.name]) : param.value;
+   if (param.type!="button") param.value = param.name && req.data[param.name] ? encodeForm(req.data[param.name]) : param.value;
    if (param.type == "textarea")
       return(renderInputTextarea(param));
    else if (param.type == "checkbox")
