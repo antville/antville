@@ -81,7 +81,7 @@ function renderMarkupPart(name, attr) {
  */
 function renderImage(img, param) {
    if (!param.title)
-      param.title = img.alttext;
+      param.title = img.alttext ? img.alttext : "";
    param.src = getProperty("imgUrl");
    param.src += img.site ? img.site.alias + "/" : "";
    param.src += img.filename + "." + img.fileext;
