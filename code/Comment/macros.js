@@ -50,8 +50,20 @@ function author_macro(param) {
 
 function createtime_macro(param) {
    renderPrefix(param);
-   res.write(param.format ? this.createtime.format(param.format) : this.createtime.format("yyyy.MM.dd HH:mm"));
+   this.weblog.formatTimestamp(this.createtime,param);
    renderSuffix(param);
+}
+
+/**
+ * macro renders modifytime of comment
+ */
+
+function modifytime_macro(param) {
+   if (this.modifytime) {
+      renderPrefix(param);
+      this.weblog.formatTimestamp(this.modifytime,param);
+      renderSuffix(param);
+   }
 }
 
 /**
@@ -101,7 +113,7 @@ function deletelink_macro(param) {
  */
 
 function replylink_macro(param) {
-   if (this.weblog.hasDiscussions() && user.uid && !user.isBlocked() && path[path.length-1] != this) {
+   if (this.weblog.hasDiscussions() && !user.isBlocked() && path[path.length-1] != this) {
       renderPrefix(param);
       var linkParam = new HopObject();
       linkParam.linkto = "reply";
