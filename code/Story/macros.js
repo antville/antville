@@ -14,6 +14,12 @@ function content_macro(param) {
          renderInputText(param);
       else
          renderInputTextarea(param);
+   } else if (param.as == "image") {
+      var part = this.getContentPart (param.part);
+      if (part && this.site.images[part]) {
+         delete (param.part);
+         renderImage (this.site.images[part], param);
+      }
    } else if (!this.content) {
       return;
    } else {
