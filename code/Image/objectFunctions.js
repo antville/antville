@@ -79,7 +79,7 @@ function evalImgType(ct) {
       return ("jpg");
    else if (ct == "image/gif")
       return ("gif");
-   else if (ct == "image/png")
+   else if (ct == "image/x-png" || ct == "image/png")
       return ("png");
    else
       return null;
