@@ -15,11 +15,27 @@ function evalStory() {
       this.modifier = user;
       this.weblog.lastupdate = new Date();
       res.message = "The story was updated successfully!";
-      res.redirect(this.weblog.href());
+      if (user.cache.referer) {
+         var redirTo = user.cache.referer;
+         user.cache.referer = null;
+      }
+      res.redirect(redirTo ? redirTo : this.weblog.stories.href());
    } else
       res.message = "You need at least some text!";
 }
 
+/**
+ * function sets story either online or offline
+ */
+
+function toggleOnline(newStatus) {
+   if (newStatus == "online") {
+      this.online = 1;
+      this.weblog.lastupdate = new Date();
+   } else if (newStatus == "offline")
+      this.online = 0;
+   res.redirect(this.weblog.stories.href());
+}
 
 /**
  * function returns true/false whether story is online or not
