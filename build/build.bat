@@ -9,12 +9,13 @@ set TARGET=%1%
 :## No need to edit anything past here
 :## --------------------------------------------
 
-set BUILDFILE=build.xml
-if "%TARGET%" == "" goto setdist
-
 if "%JAVA_HOME%" == "" goto javahomeerror
 
-"%JAVA_HOME%\bin\java.exe" -cp ant-launcher.jar org.apache.tools.ant.launch.Launcher -buildfile %BUILDFILE% %TARGET%
+set BUILDFILE=build.xml
+
+set CP="%CLASSPATH%;lib/ant.jar;lib/ant-launcher.jar;lib/jsch.jar;lib/ant-jsch.jar"
+
+"%JAVA_HOME%\bin\java.exe" -cp %CP% org.apache.tools.ant.launch.Launcher -buildfile %BUILDFILE% %TARGET%
 
 goto end
 

@@ -16,6 +16,7 @@
       <echo/>
       <echo message=" antville   - generates the distribution packages"/>
       <echo message=" antclick   - generates the antclick packages"/>
+      <echo message=" transfer   - copy packages to download server"/>
       <!-- echo message=" docs       - generates the API helmaDocs"/ -->
       <echo/>
       <echo message=" usage      - provides help on using the build tool (default)"/>
@@ -34,7 +35,7 @@
       <property name="name" value="Antville"/>
       <property name="year" value="2001-${year}"/>
       <property name="version" value="1.1"/>
-      <property name="project" value="antville-temp"/>
+      <property name="project" value="antville"/>
       <property name="build.compiler" value="classic"/>
 
       <property name="cvs.antville.root" 
@@ -59,6 +60,9 @@
 
       <property name="package.name" value="${project}-${version}"/>
       <property name="antclick.name" value="antclick-${version}"/>
+
+      <property name="scp.server" value="194.232.104.95"/>
+      <property name="scp.path" value="/usr/local/httpd/htdocs/download/antville"/>
 
       <property name="debug" value="on"/>
       <property name="optimize" value="on"/>
@@ -115,6 +119,8 @@
          package="${project}" 
          dest="${build.work}/apps"/>
 
+      <delete dir="${build.work}/apps/antville/build"/>
+
       <cvs cvsRoot="${cvs.manage.root}" 
          command="export" 
          tag="${cvs.manage.tag}" 
@@ -155,6 +161,21 @@
       </antcall>
 
       <delete dir="${build.work}"/>
+   </target>
+
+
+   <!-- =================================================================== -->
+   <!-- copy packages to download server                                    -->
+   <!-- =================================================================== -->
+   <target name="transfer" depends="init">
+   <input message="User: " addproperty="scp.user"/>
+   <input message="Password: " addproperty="scp.pass"/>    
+   <scp trust="yes" todir="${scp.user}:${scp.pass}@${scp.server}:${scp.path}">
+      <fileset dir="${build.dist}" includes="${project}-${version}.*"/>
+   </scp>      
+   <scp trust="yes" todir="${scp.user}:${scp.pass}@${scp.server}:${scp.path}/antclick">
+      <fileset dir="${build.dist}" includes="antclick-${version}.*"/>
+   </scp>      
    </target>
 
 

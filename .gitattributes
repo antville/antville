@@ -1,9 +1,11 @@
 * text=auto !eol
-build/ant-launcher.jar -text
-build/ant.jar -text
 build/extra/helma.jar -text
 build/extra/launcher.jar -text
 build/extra/mckoidb.jar -text
+build/lib/ant-jsch.jar -text
+build/lib/ant-launcher.jar -text
+build/lib/ant.jar -text
+build/lib/jsch.jar -text
 code/AntvilleLib-1.3.zip -text
 db/data/062SYS_INFO_sUSRSequenceInfo.koi -text
 db/data/063SYS_INFO_sUSRSequence.koi -text

@@ -15,5 +15,7 @@ fi
 
 BUILDFILE=build.xml
 
-${JAVA_HOME}/bin/java -cp ant-launcher.jar org.apache.tools.ant.launch.Launcher -buildfile ${BUILDFILE} ${1}
+CP="${CLASSPATH}:lib/ant.jar:lib/ant-launcher.jar:lib/jsch.jar:lib/ant-jsch.jar"
+
+${JAVA_HOME}/bin/java -cp ${CP} org.apache.tools.ant.launch.Launcher -buildfile ${BUILDFILE} ${1}
 
