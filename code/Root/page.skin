@@ -51,7 +51,7 @@
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><% root.sitecounter suffix="&nbsp;public weblogs&nbsp;" %>... <% root.link to="list" %><br />
 ...&nbsp;<% root.link to="new" text="create a weblog" %></div>
-<!-- div class="statuslight">...&nbsp;<a href="http://antville.org/documentation.html">documentation</a></div -->
+<!-- div class="statuslight">...&nbsp;<a href="http://www.antville.org/documentation.html">documentation</a></div -->
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><br /><% image name="/xmlbutton" linkto="rss" title="List of recently updated Antville sites in RDF format" %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
 </tr>
