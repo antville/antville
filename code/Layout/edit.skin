@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Basis Layout:</td>
-<td><% layout.parent as="editor" %></td>
+<td><% layout.parent as="editor" firstOption="--- choose layout ---" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Shareable:</td>
