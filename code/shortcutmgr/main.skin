@@ -1,0 +1,26 @@
+<table border="0" cellspacing="0" cellpadding="2">
+<form action="" method="post">
+<tr>
+<td class="small">Title</td>
+<td class="small">Content</td>
+<td></td>
+</tr>
+
+<tr>
+<td><input type="text" size="20" name="newtitle" value="" />
+<div class="small">&nbsp;</div></td>
+<td valign="top"><input type="text" size="45" name="newcontent" value="" />
+<div class="small">&nbsp</div></td>
+</tr>
+<tr>
+<td colspan="2"><input type="submit" name="submit" value=" save " /><br />&nbsp;</td>
+</tr>
+
+<% this.shortcutlist %>
+
+<tr>
+<td colspan="2"><input type="submit" name="submit" value=" save " /></td>
+</tr>
+
+</form>
+</table>

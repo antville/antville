@@ -1,0 +1,44 @@
+checkIfLoggedIn(this.href(req.action));
+
+var deny = path.site.isEditDenied(session.user);
+if (deny) {
+   res.message = deny;
+   res.redirect(path.site.href());
+}
+
+// check if the shortcut list was submitted
+if (req.data.submit || req.data.submit == "submit") {
+   for (var i=this.size()-1; i>=0; i--) {
+      var sc = this.get(i);
+      var content = req.data["content" + i];
+      // delete a shortcut if it's content is empty
+      if (!content) {
+         this.remove(sc);
+         continue;
+      }
+      sc.title = req.data["title" + i];
+      sc.content = content;
+      sc.modifytime = new Date();
+   }
+   // add a shortcut if a the corresponding fields are not empty
+   if (req.data.newtitle && req.data.newcontent) {
+      // check if there is not already a shortcut with that name
+      if (!this.get(req.data.newtitle)) {
+         var sc = new shortcut();
+         sc.title = req.data.newtitle;
+         sc.content = req.data.newcontent;
+         sc.creator = session.user;
+         sc.site = path.site;
+         sc.createtime = new Date();
+         sc.modifytime = sc.createtime;
+         this.add(sc);
+      }
+      else
+         res.message = "This shortcut already exists.";
+   }
+   res.redirect(this.href());
+}
+
+res.data.title = path.site.title + " - Shortcuts";
+res.data.body = this.renderSkinAsString("main");
+path.site.renderSkin("page");

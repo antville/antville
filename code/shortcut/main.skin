@@ -1,0 +1,7 @@
+<tr>
+<td valign="top"><% this.title encoding="html" %>
+<div class="small"><% this.createtime format="short" %> by <% this.creator %></div>
+<input type="hidden" name="title<% param.id %>" value="<% this.title encoding="form" %>"></td>
+<td valign="top"><input type="text" size="45" name="content<% param.id %>" value="<% this.content encoding="form" %>" />
+<div class="small"><% this.render %><% this.placeholder %></div></td>
+</tr>
