@@ -1,6 +1,6 @@
 Your status as a member of <% weblog.title %> has changed: You are now
 
-   <% this.userlevel %>
+   <% this.level %>
 
 Have fun!
 
