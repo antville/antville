@@ -335,5 +335,78 @@ Helma.File = function(path) {
          return null;
       }
    };
+
+   // DANGER! DANGER! HIGH VOLTAGE!
+   // this method removes a directory recursively
+   // without any warning or precautious measures
+   this.removeDir = function() {
+      if (!file.isDirectory())
+         return false;
+      var arr = file.list();
+      for (var i=0; i<arr.length; i++) {
+         var f = new Helma.File(file, arr[i]);
+         if (f.isDirectory())
+            f.removeDir();
+         else
+            f.remove();
+      }
+      file["delete"]();
+      return true;
+   };
+
+   /**
+    * recursivly lists all files below a given directory
+    * @returns array containing the absolute paths of the files
+    */
+   this.listRecursive = function() {
+      if (!file.isDirectory())
+         return false;
+      var result = [file.getAbsolutePath()];
+      var arr = file.list();
+      for (var i=0; i<arr.length; i++) {
+         var f = new Helma.File(file, arr[i]);
+         if (f.isDirectory())
+            result = result.concat(f.listRecursive());
+         else
+            result.push(f.getAbsolutePath());
+      }
+      return result;
+   }
+
+   /**
+    * function makes a copy of a file over partitions
+    * @param StringOrFile full path of the new file
+    */
+   this.hardCopy = function(dest) {
+      var inStream = new java.io.BufferedInputStream(new java.io.FileInputStream(file));
+      var outStream = new java.io.BufferedOutputStream(new java.io.FileOutputStream(dest));
+      var buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 4096);
+      var bytesRead = 0;
+      while ((bytesRead = inStream.read(buffer, 0, buffer.length)) != -1) {
+         outStream.write(buffer, 0, bytesRead);
+      }
+      outStream.flush();
+      inStream.close();
+      outStream.close();
+      return true;
+   }
+
+   /**
+    * function moves a file to a new destination directory
+    * @param String full path of the new file
+    * @return Boolean true in case file could be moved, false otherwise
+    */
+   this.move = function(dest) {
+      // instead of using the standard File method renameTo()
+      // do a hardCopy and then remove the source file. This way
+      // file locking shouldn't be an issue
+      self.hardCopy(dest);
+      // remove the source file
+      file["delete"]();
+      return true;
+   }
+
    return this;
 }
+
+Helma.File.separator = java.io.File.separator;
