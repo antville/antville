@@ -2,9 +2,12 @@ res.data.title = root.getSysTitle();
 
 // check if this installation is already configured
 // if not, we display the welcome-page as frontpage
-if (!root.sys_issetup)
-   res.data.body = this.renderSkinAsString("welcome");
-else
+if (!root.sys_issetup) {
+   if (!root.users.size())
+      res.data.body = this.renderSkinAsString("welcome");
+   else
+      res.redirect(this.manage.href("setup"));
+} else
    res.data.body = this.renderSkinAsString("main");
 
 root.renderSkin("page");
