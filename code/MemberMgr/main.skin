@@ -8,3 +8,7 @@
 </tr>
 </table>
 </form>
+
+<% response.searchresult %>
+
+<% response.memberlist prefix="<p>Current members of this site:</p>" %>
