@@ -1,5 +1,3 @@
-<tr>
-<td align="right" class="statusdark"><% this.title as="link" %><br />
+<div class="statusdark"><% this.title as="link" %><br />
 <% this.text limit="50" suffix="&nbsp;..." %>
-<div class="small">by <% this.author %> @ <% this.modifytime format="short" %></div></td>
-</tr>
+<div class="small">by <% this.author %> @ <% this.modifytime format="short" %></div></div>
