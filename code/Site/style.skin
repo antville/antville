@@ -5,6 +5,16 @@ body, td {
    color: <% site.textcolor %>;
 }
 
+fieldset {
+  padding-left: 8px;
+  padding-top: 0px;
+}
+
+fieldset p {
+   margin-top:6px;
+   margin-bottom:6px;
+}
+
 form {margin: 0px;}
 
 a {text-decoration: none;}
@@ -153,6 +163,7 @@ li {padding-bottom: 3px;}
    font-family: <% site.textfont %>;
    font-size: <% site.titlesize %>;
    font-weight: bold;
+   border: 1px solid <% site.textcolor %>;
 }
 
 .formText {
@@ -160,6 +171,7 @@ li {padding-bottom: 3px;}
    font-family: <% site.textfont %>;
    font-size: <% site.textsize %>;
    font-weight: normal;
+   border: 1px solid <% site.textcolor %>;
 }
 
 .formWide {
