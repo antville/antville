@@ -94,9 +94,9 @@ function isClean(str) {
  * if false, it uses root and it's page-skin
  */
 
-function setLayout(useSkin) {
+function setLayout() {
    if (path.weblog) {
-      res.skin = "weblog." + (useSkin ? useSkin : "page");
+      res.skin = "weblog.page";
       return (path.weblog);
    } else {
       res.skin = "root.page";
@@ -146,9 +146,12 @@ function activateLinks (str) {
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$4");
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$4");
 
+   // because of caching of text i had to disable the following
+   // it's now done in text_macro() of comment and story
+   // and in title_macro() of story
    // do Wiki style substitution
-   return (doWikiStuff (str));
-   // return (str);
+   // return (doWikiStuff (str));
+   return (str);
 }
 
 /**
@@ -157,7 +160,7 @@ function activateLinks (str) {
  */
 
 function evalURL(url) {
-   if (url.indexOf("://") < 0)
+   if (url && url.indexOf("://") < 0)
       return ("http://" + url);
    return (url);
 }
@@ -230,3 +233,46 @@ function convertHtmlImageToHtmlLink(str) {
  	return(str);
 }
 
+/**
+ * function builds an array containing
+ * default dateformat-patterns
+ */
+
+function getDefaultDateFormats(version) {
+   var patterns = new Array();
+   if (version == "short") {
+      patterns[0] = "yyyy.MM.dd, HH:mm";
+      patterns[1] = "yyyy.MM.dd, h:mm a";
+      patterns[2] = "dd.MM.yyyy, HH:mm";
+      patterns[3] = "dd.MM.yyyy, h:mm a";
+      patterns[4] = "MM.dd, HH:mm";
+      patterns[5] = "MM.dd, h:mm a";
+      patterns[6] = "dd.MM, HH:mm";
+      patterns[7] = "dd.MM, h:mm a";
+      patterns[8] = "d.M, HH:m";
+      patterns[9] = "d.M, h:m a";
+      patterns[10] = "HH:mm";
+      patterns[11] = "h:mm a";
+      patterns[12] = "EEEE, HH:mm";
+      patterns[13] = "EEEE, h:mm a";
+      patterns[14] = "EE, HH:mm";
+      patterns[15] = "EE, h:mm a";
+   } else {
+      patterns[0] = "EEEE, dd. MMMM yyyy, HH:mm";
+      patterns[1] = "EEEE, dd. MMMM yyyy, h:mm a";
+      patterns[2] = "EEEE, MMMM dd yyyy, h:mm a";
+      patterns[3] = "EE, dd. MMM. yyyy, HH:mm";
+      patterns[4] = "EE, dd. MMM. yyyy, h:mm a";
+      patterns[5] = "EE, MMM dd yyyy, h:mm a";
+      patterns[6] = "EE, dd.MM.yyyy, HH:mm";
+      patterns[7] = "EE, dd.MM.yyyy, h:mm a";
+      patterns[8] = "EE, MM.dd.yyyy, h:mm a";
+      patterns[9] = "dd.MM.yyyy, HH:mm";
+      patterns[10] = "MM.dd.yyyy, h:mm a";
+      patterns[11] = "yyyy.MM.dd, HH:mm";
+      patterns[12] = "yyyy.MM.dd, h:mm a";
+      patterns[13] = "dd.MM, HH:mm";
+      patterns[14] = "MM.dd, h:mm a";
+   }
+   return (patterns);
+}
