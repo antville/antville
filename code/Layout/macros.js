@@ -138,9 +138,11 @@ function title_macro(param) {
    if (param.as == "editor")
       Html.input(this.createInputParam("title", param));
    else {
-      if (param.linkto)
-         Html.link(this.href(param.linkto == "main" ? "" : param.linkto), this.title);
-      else
+      if (param.linkto) {
+         Html.openLink(this.href(param.linkto == "main" ? "" : param.linkto));
+         res.write(this.title);
+         Html.closeLink();
+      } else
          return this.title;
    }
 }
@@ -152,12 +154,8 @@ function title_macro(param) {
  * the image belongs to a different site or to root
  */
 function image_macro(param) {
-   var img = this.images.get(param.name);
-   if (!img && param.fallback)
-      img = this.images.get(param.fallback);
-   if (!img && this.parent)
-      img = this.parent.images.get(param.name);
-   if (!img)
+   var img;
+   if ((img = this.getImage(param.name, param.fallback)) == null)
       return;
    // return different display according to param.as
    switch (param.as) {
@@ -220,16 +218,6 @@ function activatelink_macro(param) {
 }
 
 /**
- * render a link to download action if this layout isn't
- * based on another one
- */
-function downloadlink_macro(param) {
-   if (this.parent)
-      return;
-   Html.link(this.href("download.zip"), param.text ? param.text : "download");
-}
-
-/**
  * render the description of a layout, either as editor
  * or as plain text
  */
@@ -247,10 +235,10 @@ function description_macro(param) {
 
 /**
  * render the property "shareable" either as editor (checkbox)
- * or as plain text
+ * or as plain text (editor-mode works only for root-layouts)
  */
 function shareable_macro(param) {
-   if (param.as == "editor" && !this.parent) {
+   if (param.as == "editor" && !this.site) {
       var inputParam = this.createInputParam("shareable", param);
       if ((req.data.save && req.data.shareable) || (!req.data.save && this.shareable))
          inputParam.checked = "checked";
@@ -265,7 +253,33 @@ function shareable_macro(param) {
  * render the title of the parent layout
  */
 function parent_macro(param) {
-   if (!this.parent)
-      return;
-   return this.parent.title;
+   if (param.as == "editor") {
+      this._parent.renderParentLayoutChooser(this, param);
+   } else if (this.parent)
+      return this.parent.title;
+   return;
+}
+
+/**
+ * render the copyright information of this layout
+ * either as editor or as plain text
+ */
+function copyright_macro(param) {
+   if (param.as == "editor" && !this.imported && !this.parent)
+      Html.input(this.preferences.createInputParam("copyright", param));
+   else if (this.preferences.getProperty("copyright"))
+      res.write(this.preferences.getProperty("copyright"));
+   return;
+}
+
+/**
+ * render the contact email address of this layout
+ * either as editor or as plain text
+ */
+function email_macro(param) {
+   if (param.as == "editor" && !this.imported)
+      Html.input(this.preferences.createInputParam("email", param));
+   else if (this.preferences.getProperty("email"))
+      res.write(this.preferences.getProperty("email"));
+   return;
 }
