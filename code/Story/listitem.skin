@@ -1,0 +1,10 @@
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="3" class="small"><% this.author as="link" %>, <% this.createtime format="EEEE, dd.MM.yyyy HH:mm" %></td>
+</tr>
+<tr valign="top">
+<td><span class="storyTitle"><% this.title suffix="<br>" %></span><% this.text limit="200" suffix="&nbsp;..." %></td>
+<td width="10" nowrap>&nbsp;</td>
+<td align="right" class="small" nowrap><% this.editlink prefix="...&nbsp;" suffix="<br>" %><% this.viewlink prefix="...&nbsp;" suffix="<br>" %><% this.onlinelink prefix="...&nbsp;" suffix="<br>" %><% this.deletelink prefix="...&nbsp;" %></td>
+</tr>
+</table>
