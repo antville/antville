@@ -76,7 +76,7 @@ HELP.skins.HopObject = {
 
 HELP.macros.Root = {
    //layoutchooser: 0,
-   loginstatus: 0,
+   loginstatus: 247663,
    sitecounter: 249998,
    //sysmgrnavigation: 0,
    title: 142337,
@@ -143,7 +143,8 @@ HELP.macros.comment = {
    deletelink: 254515,
    editlink: 254563,
    modifier: 142525,
-   replylink: 254694
+   replylink: 254694,
+   url: 0
 };
 
 HELP.skins.comment = {
@@ -228,29 +229,29 @@ HELP.skins.imagemgr = {
 
 HELP.macros.layout = {
    activatelink: 0, 
-   alinkcolor: 0, 
-   bgcolor: 0, 
+   alinkcolor: 650901, 
+   bgcolor: 650901, 
    copyright: 0, 
    deletelink: 0, 
    description: 0, 
    email: 0, 
-   image: 0, 
-   linkcolor: 0, 
+   image: 651308, 
+   linkcolor: 650901, 
    parent: 0, 
    shareable: 0, 
-   smallfont: 0, 
-   smallsize: 0, 
-   smallcolor: 0, 
+   smallfont: 650901, 
+   smallsize: 650901, 
+   smallcolor: 650901, 
    "switch": 0,
    testdrivelink: 0, 
-   textfont: 0, 
-   textsize: 0, 
-   textcolor: 0, 
+   textfont: 650901, 
+   textsize: 650901, 
+   textcolor: 650901, 
    title: 0, 
-   titlefont: 0, 
-   titlesize: 0, 
-   titlecolor: 0, 
-   vlinkcolor: 0
+   titlefont: 650901, 
+   titlesize: 650901, 
+   titlecolor: 650901, 
+   vlinkcolor: 650901
 };
 
 HELP.skins.layout = {
@@ -330,6 +331,7 @@ HELP.macros.membership = {
    level: 0,
    sitetitle: 0,
    unsubscribelink: 0,
+   url: 0, 
    username: 0
 };
 
@@ -416,7 +418,7 @@ HELP.skins.site = {
    edit: ["response.action"],
    main: ["response.storylist", "response.prevpage", "response.nextpage"],
    "new": ["response.action"],
-   notificationMail: ["param.href", "param.user"],
+   notificationMail: ["param.url", "param.user"],
    page: ["response.body", "response.title", "response.message"],
    referrerItem: ["param.count", "param.text", "param.referrer"],
    referrers: ["response.action", "request.filter"],
@@ -468,7 +470,7 @@ HELP.macros.story = {
    commentlink: 142558,
    comments: 254507,
    content: 142506,
-   createtime: 0,
+   createtime: 244877,
    deletelink: 254515,
    discussions: 254522,
    editableby: 254559,

@@ -76,14 +76,28 @@ function renderList(collection, action) {
 
 /**
  * render a list of macros
+ * FIXME: needs improvement
  */
 function renderMacroList(param) {
-   var macrolist = app.data.macros[param.proto]
+   if (!param.proto) {
+      if (!req.data.key)
+         return;
+      param.key = req.data.key;
+      var parts = req.data.key.split(".");
+      param.proto = parts[0];
+   }
    var handler = "";
    if (param.proto == "HopObject")
       handler = "this.";
    else if (param.proto != "Global")
-      handler = param.proto + ".";
+      handler = param.proto.toLowerCase() + ".";
+   else if (!param.includeGlobal)
+      return;
+   if (!param.itemprefix)
+      param.itemprefix = "";
+   if (!param.itemsuffix)
+      param.itemsuffix = "<br />";
+   var macrolist = app.data.macros[param.proto]
    for (var i in macrolist) {
       var macro = macrolist[i];
       res.push();

@@ -3,21 +3,9 @@
  * available for a specific skin of a
  * prototype (except Global)
  * @see this.globalmacros_macro
+ * FIXME: needs improvement
  */
 function macros_macro(param) {
-   if (param.proto == "global")
-      return;
-   if (!param.proto) {
-      if (!req.data.key)
-         return;
-      param.key = req.data.key;
-      var parts = req.data.key.split(".");
-      param.proto = parts[0];
-   }
-   if (!param.itemprefix)
-      param.itemprefix = "";
-   if (!param.itemsuffix)
-      param.itemsuffix = "<br />";
    this.renderMacroList(param);
    return;
 }
@@ -27,10 +15,12 @@ function macros_macro(param) {
  * list macros available in a global
  * skin of a prototype
  * @see this.macros_macro
+ * FIXME: needs improvement
  */
 function globalmacros_macro(param) {
-   param.proto = "global";
-   this.macros_macro(param);
+   param.proto = "Global";
+   param.includeGlobal = true;
+   this.renderMacroList(param);
    return;
 }
 

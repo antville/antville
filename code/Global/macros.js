@@ -65,22 +65,19 @@ function image_macro(param) {
  *  this reproduces the link target without further interpretation.
  */
 function link_macro(param) {
-   if (param.to)
-      param.href = param.to;
-   else // backwards compatibility
-      param.href = param.linkto;
+   if (!param.to)
+      return;
+   param.href = param.to;
    if (param.urlparam)
       param.href += "?" + param.urlparam;
    if (param.anchor)
       param.href += "#" + param.anchor;
    var content = param.text ? param.text : param.href;
-
    delete param.to;
    delete param.linkto;
    delete param.urlparam;
    delete param.anchor;
    delete param.text;
-
    Html.openTag("a", param);
    res.write(content);
    Html.closeTag("a");

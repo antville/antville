@@ -664,20 +664,20 @@ function buildMacroHelp() {
    }
 
    var macroHelp = {};
-   var ref = macroHelp.global = [];
-   var macrolist = HELP.macros.global;
+   var ref = macroHelp.Global = [];
+   var macrolist = HELP.macros.Global;
    for (var i in macrolist)
       ref.push({name: i, storyid: macrolist[i]});
    ref.sort(sorter);
 
-   var ref = macroHelp.hopobject = [];
-   var macrolist = HELP.macros.hopobject;
+   var ref = macroHelp.HopObject = [];
+   var macrolist = HELP.macros.HopObject;
    for (var i in macrolist)
       ref.push({name: i, storyid: macrolist[i]});
    ref.sort(sorter);
 
    for (var proto in HELP.macros) {
-      if (proto.indexOf("_") == 0 || proto == "global" || proto == "hopobject")
+      if (proto.indexOf("_") == 0 || proto == "Global" || proto == "HopObject")
          continue;
       var macrolist = HELP.macros[proto];
       var ref = macroHelp[proto] = [];
@@ -686,8 +686,8 @@ function buildMacroHelp() {
          ref.push({name: i, storyid: macrolist[i]});
          keys += i + ",";
       }
-      for (var n in macroHelp.hopobject) {
-         var shared = macroHelp.hopobject[n];
+      for (var n in macroHelp.HopObject) {
+         var shared = macroHelp.HopObject[n];
          if (keys.indexOf(shared.name + ",") < 0)
             ref.push(shared);
       }
