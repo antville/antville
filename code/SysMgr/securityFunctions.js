@@ -10,6 +10,9 @@ function onRequest() {
       res.message = new Exception("userNoSysAdmin");
       res.redirect(root.href());
    }
+   // define res.handlers.layout
+   res.handlers.layout = root.getLayout();
+   res.skinpath = [res.handlers.layout.skins];
    // initialize sysmgr-object in session
    if (!session.data.mgr)
       session.data.mgr = new sysmgr();
