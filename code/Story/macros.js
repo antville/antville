@@ -150,7 +150,6 @@ function onlinelink_macro(param) {
       if (this.online && param.mode != "toggle")
          return;
       delete param.mode;
-      var text = param.text;
       param.linkto = "edit";
       param.urlparam = "set=" + (this.online ? "offline" : "online");
       Html.openTag("a", this.createLinkParam(param));
@@ -162,7 +161,7 @@ function onlinelink_macro(param) {
          if (this.online)
             res.write(getMessage("Story.setOffline"));
          else
-            res.write(text ? text : getMessage("Story.setOnline"));
+            res.write(param.text ? param.text : getMessage("Story.setOnline"));
       }
       Html.closeTag("a");
    }
@@ -213,17 +212,16 @@ function commentcounter_macro(param) {
    var commentCnt = this.comments.count();
    if (!param.linkto)
       param.linkto = "main";
-   // cloning the param object to remove the macro-specific
-   // attributes from the clone for valid markup output:
-   var param2 = Object.clone(param);
-   delete param2.as;
-   delete param2.one;
-   delete param2.more;
-   delete param2.no;
+   var linkParam = this.createLinkParam(param);
+   // delete the macro-specific attributes for valid markup output
+   delete linkParam.as;
+   delete linkParam.one;
+   delete linkParam.more;
+   delete linkParam.no;
    var linkflag = (param.as == "link" && param.as != "text" || 
                    !param.as && commentCnt > 0);
    if (linkflag)
-      Html.openTag("a", this.createLinkParam(param2));
+      Html.openTag("a", linkParam);
    if (commentCnt == 0)
       res.write(param.no || param.no == "" ? 
                 param.no : getMessage("Comment.no"));
@@ -362,8 +360,8 @@ function topic_macro(param) {
    if (!param.as || param.as == "text")
       res.write(this.topic);
    else if (param.as == "link") {
-      var text = param.text ? param.text : this.topic;
-      Html.link({href: path.Site.topics.href(this.topic)}, text);
+      Html.link({href: path.Site.topics.href(this.topic)},
+                param.text ? param.text : this.topic);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";

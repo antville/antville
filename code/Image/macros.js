@@ -121,8 +121,8 @@ function gallery_macro(param) {
    if (!param.as || param.as == "text")
       res.write(this.topic);
    else if (param.as == "link") {
-      var text = param.text ? param.text : this.topic;
-      Html.link({href: path.Site.images.topics.href(this.topic)}, text);
+      Html.link({href: path.Site.images.topics.href(this.topic)},
+                param.text ? param.text : this.topic);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";

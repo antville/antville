@@ -10,10 +10,8 @@ function url_macro(param) {
  * macro creates an html link
  */
 function link_macro(param) {
-   var content = param.text ? param.text : param.to;
-   param = this.createLinkParam(param);
-   Html.openTag("a", param);
-   res.write(content);
+   Html.openTag("a", this.createLinkParam(param));
+   res.write(param.text ? param.text : param.to);
    Html.closeTag("a");
    return;
 }

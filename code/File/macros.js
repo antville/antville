@@ -78,9 +78,8 @@ function viewlink_macro(param) {
       param.to = "getfile"
       param.urlparam = "name=" + escape(this.alias);
       param.title = encodeForm(this.description);
-      var text = param.text ? param.text : getMessage("generic.view");
       Html.openTag("a", this.site.createLinkParam(param));
-      res.write(text);
+      res.write(param.text ? param.text : getMessage("generic.view"));
       Html.closeTag("a");
    }
    return;
