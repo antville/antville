@@ -1,4 +1,4 @@
-<% membership.username %>, one of the administrators of '<% site.title %>' (URL: <% site.url %>), sent you the following message:
+<% membership.username %>, one of the administrators of '<% site.title %>' (URL: <% site.href %>), sent you the following message:
 
 <% param.text %>
 

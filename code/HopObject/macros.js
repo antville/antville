@@ -56,11 +56,3 @@ function modifier_macro(param) {
       res.write(this.modifier.name);
    return;
 }
-
-/**
- * macro renders the url of an object
- */
-function url_macro() {
-   res.write(this.href());
-   return;
-}
