@@ -274,6 +274,7 @@ create table AV_USER (
    USER_NAME tinytext,
    USER_PASSWORD tinytext,
    USER_EMAIL tinytext,
+   USER_EMAIL_ISPUBLIC tinyint(1),
    USER_URL tinytext,
    USER_REGISTERED datetime,
    USER_LASTVISIT datetime,

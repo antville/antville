@@ -258,6 +258,7 @@ create table AV_USER (
    USER_NAME varchar(128),
    USER_PASSWORD varchar(128),
    USER_EMAIL varchar(128),
+   USER_EMAIL_ISPUBLIC tinyint(1),
    USER_URL varchar(128),
    USER_REGISTERED timestamp,
    USER_LASTVISIT timestamp,
