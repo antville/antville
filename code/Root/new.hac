@@ -1,10 +1,5 @@
 autoLogin();
-
-var deny = root.isAddDenied(user);
-if (deny) {
-   res.message = deny;
-   res.redirect(user.cache.referer ? root.members.href("login") : root.href());
-}
+checkIfLoggedIn(this.href(req.action));
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(root.href());
