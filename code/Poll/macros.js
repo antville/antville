@@ -121,8 +121,6 @@ function deletelink_macro(param) {
  */
 function viewlink_macro(param) {
    try {
-      if (session.user)
-         this.checkView(session.user, req.data.memberlevel);
       if (!this.closed) {
          this.checkVote(session.user, req.data.memberlevel);
          Html.link(this.href(), param.text ? param.text : "vote");
