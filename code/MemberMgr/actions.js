@@ -120,12 +120,14 @@ function register_action() {
          res.message = result.toString();
          // now we log in the user and send the confirmation mail
          session.login(result.obj.name, result.obj.password);
-         var sp = {name: result.obj.name, password: result.obj.password};
-         sendMail(root.sys_email,
-                  result.obj.email,
-                  getMessage("mail.registration", root.getSysTitle()),
-                  this.renderSkinAsString("mailbody", sp)
-                 );
+         if (root.sys_email) {
+            var sp = {name: result.obj.name, password: result.obj.password};
+            sendMail(root.sys_email,
+                     result.obj.email,
+                     getMessage("mail.registration", root.getSysTitle()),
+                     this.renderSkinAsString("mailbody", sp)
+                    );
+         }
          res.redirect(url);
       } catch (err) {
          res.message = err.toString();
