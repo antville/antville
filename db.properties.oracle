@@ -1,5 +1,0 @@
-# Properties of antville datasource
-antville.url=jdbc:oracle:thin:@[Server-IP]:[Port]:[SID]
-antville.driver=oracle.jdbc.driver.OracleDriver
-antville.user=antville
-antville.password=antville
