@@ -36,8 +36,8 @@ for (var i in referrers) {
       }
    }
    document.writeln('<tr>');
-   document.writeln('<td align="right" valign="top">', ref.count, '</td>');
-   document.writeln('<td><a href="', ref.url, '">', text, '</a></td>');
+   document.writeln('<td align="right" valign="top" class="small">', ref.count, '</td>');
+   document.writeln('<td class="small"><a href="', ref.url, '">', text, '</a></td>');
    document.writeln('</tr>');
 }
 // --></script>
