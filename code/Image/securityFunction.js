@@ -8,7 +8,7 @@ function isEditDenied() {
       return ("Please login first!");
    } else if (user.isBlocked())
       return ("Sorry, your account was disabled!");
-   else if (this.creator != user)
+   else if (this.creator != user && !this.weblog.isUserAdmin())
       return ("Sorry, this image belongs to someone else!");
    return null;
 }
