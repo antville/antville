@@ -3,7 +3,7 @@
 
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap><form method="post"><br>Your eMail:</td>
+<td class="small" nowrap><form method="post"><br>Your eMail:</td>
 <td nowrap><br><% currentUser.email as="editor" %></td>
 </tr>
 <td nowrap>&nbsp;</td>
