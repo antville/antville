@@ -9,9 +9,8 @@ function images_macro(param) {
 }
 
 /**
- * function renders a list of the newest n (default=10) thumbnails
+ * function renders a list of the newest n (default=5) thumbnails
  * or images
- * linkto="popup|main"
  */
 function imagelist_macro(param) {
    if (!this.size())
@@ -19,18 +18,30 @@ function imagelist_macro(param) {
    var size = Math.min(param.limit ? param.limit : 5,this.size());
    var imgcnt = 0;
    var idx = 0;
-   while (imgcnt < size || imgcnt == this.size()-1) {
+   while (imgcnt < size || imgcnt == size-1) {
       var imgObj = this.get(idx++);
-      var url = imgObj.getStaticUrl();
+      var url = param.linkto ? param.linkto : imgObj.getStaticUrl();
+
       res.write(param.itemprefix);
-      if (imgObj.thumbnail) {
-         openLink(imgObj.popupUrl());
-         delete(param.linkto);
-         renderImage(imgObj.thumbnail,new Object());
-         closeLink();
-         res.write(param.itemsuffix);
-         imgcnt++;
+      // return different display according to param.as
+      if (param.as == "thumbnail") {
+         if (imgObj.thumbnail)
+            imgObj = imgObj.thumbnail;
+      } else if (param.as == "popup") {
+         url = imgObj.popupUrl();
+         if (imgObj.thumbnail)
+            imgObj = imgObj.thumbnail;
       }
+      if (url) {
+         openLink(url);
+         renderImage(imgObj,cloneObject(param));
+         closeLink();
+      } else
+         renderImage(imgObj,cloneObject(param));
+      res.write(param.itemsuffix);
+      imgcnt++;
    }
    return;
 }
+
+
