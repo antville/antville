@@ -19,6 +19,11 @@
     <sy:updatePeriod>hourly</sy:updatePeriod>
     <sy:updateFrequency>1</sy:updateFrequency>
     <sy:updateBase><% param.updateBase %></sy:updateBase>
+    <items>
+      <rdf:Seq>
+<% param.resources %>
+      </rdf:Seq>
+    </items>
   </channel>
 
 <% param.textinput %>
