@@ -404,7 +404,7 @@ function calendar_macro(param) {
    // if so, use it to determine the month to render
    if (path.story)
       var today = path.story.day.toString();
-   else if (path.day)
+   else if (path.day && this.contains(path.day) > -1)
       var today = path.day.groupname.toString();
    if (today) {
       // instead of using String.toDate
