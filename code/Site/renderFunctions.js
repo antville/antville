@@ -4,7 +4,8 @@
  */
 
 function renderCalendarDay(currGroupname,text) {
-   text = "&nbsp;"+text+"&nbsp;";
+   if (text < 10)
+      text = "&nbsp;"+text+"&nbsp;";
    var currGroup = this.get(currGroupname);
    var linkit = false;
    if (currGroup && currGroup.size()) {
@@ -41,13 +42,35 @@ function renderStorylist(day) {
    }
    var size = this.size();
    var idx = 0;
-   if (day) {
-      var startday = this.get(day);
-      if (startday)
-          idx = this.contains(startday);
+
+   // if no day is specified, start with today. we may need 
+   // to search for today's entries (or the latest entry 
+   // before today) because there may be stories posted for 
+   // future days. (HW)
+   var startdayString = day;
+   if (!startdayString)
+      startdayString = (new Date()).format("yyyyMMdd");
+
+   var startday = this.get(startdayString);
+   if (startday && startday.size()>0) {
+      idx = this.contains(startday);
+   } else {
+      // loop through days until we find a day less or equal than 
+      // the one we're looking for.
+      for (var i=0; i<size; i++) {
+         if (startdayString >= this.get(i).groupname) {
+            idx = i;
+            break;
+         }
+      }
    }
    var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
-   if (idx > 0) {
+
+   // only display "newer stories" if we are actually browsing the archive, 
+   // and the day parameter has been explicitly specified, 
+   // i.e. suppress the link if we are on the home page and there are 
+   // stories on future days. (HW)
+   if (idx > 0 && day) {
       var sp = new Object();
       var prev = this.get (Math.max(0, idx-days));
       sp.url = this.href() + "?day=" + prev.groupname;
