@@ -7,9 +7,9 @@ if (deny) {
    res.redirect(this.weblog.href());
 }
 
-// storing referer in user-cache in case user clicks cancel later
-if (!user.cache.referer && req.data.http_referer)
-   user.cache.referer = req.data.http_referer;
+// storing referrer in user-cache in case user clicks cancel later
+if (!user.cache.referrer && req.data.http_referer)
+   user.cache.referrer = req.data.http_referer;
 
 if (req.data.set) {
    this.toggleOnline(req.data.set);
@@ -18,14 +18,14 @@ if (req.data.set) {
    if (!this.isOnline())
       var url = this.weblog.stories.href();
    else
-      var url = user.cache.referer ? user.cache.referer : this.weblog.stories.href();
-   user.cache.referer = null;
+      var url = user.cache.referrer ? user.cache.referrer : this.weblog.stories.href();
+   user.cache.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalStory(req.data,user);
    res.message = result.message;
    if (!result.error) {
-      user.cache.referer = null;
+      user.cache.referrer = null;
       res.redirect(result.url);
    }
 }

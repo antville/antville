@@ -10,19 +10,19 @@ if (deny) {
 var s = new story();
 s.topic = req.data.topic;
 
-// storing referer in user-cache in case user clicks cancel later
-if (!user.cache.referer && req.data.http_referer)
-   user.cache.referer = req.data.http_referer;
+// storing referrer in user-cache in case user clicks cancel later
+if (!user.cache.referrer && req.data.http_referer)
+   user.cache.referrer = req.data.http_referer;
 
 if (req.data.submit == "cancel" || req.data.cancel) {
-   var url = user.cache.referer ? user.cache.referer : this.href();
-   user.cache.referer = null;
+   var url = user.cache.referrer ? user.cache.referrer : this.href();
+   user.cache.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalNewStory(s,req.data,user);
    res.message = result.message;
    if (!result.error) {
-      user.cache.referer = null;
+      user.cache.referrer = null;
       res.redirect(result.url);
    } else
       s = result.story;

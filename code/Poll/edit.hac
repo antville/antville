@@ -4,21 +4,21 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isEditDenied(user);
 if (deny) {
    res.message = deny;
-   res.redirect(user.cache.referer ? path.weblog.members.href("login") : this.href());
+   res.redirect(user.cache.referrer ? path.weblog.members.href("login") : this.href());
 }
 
 // storing referer in user-cache in case user clicks cancel later
-if (!user.cache.referer && req.data.http_referer)
-   user.cache.referer = req.data.http_referer;
+if (!user.cache.referrer && req.data.http_referer)
+   user.cache.referrer = req.data.http_referer;
 
 if (req.data.submit == "cancel" || req.data.cancel) {
-   var url = user.cache.referer ? user.cache.referer : this.href();
-   user.cache.referer = null;
+   var url = user.cache.referrer ? user.cache.referrer : this.href();
+   user.cache.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalPoll(req.data, user);
    res.message = result.message;
-   user.cache.referer = null;
+   user.cache.referrer = null;
    if (!result.error)
       res.redirect(result.url);
 }

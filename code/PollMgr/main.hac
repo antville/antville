@@ -3,7 +3,7 @@ autoLogin();
 var deny = false; //this.isDenied(user);
 if (deny) {
    res.message = deny;
-   res.redirect(user.cache.referer ? path.weblog.members.href("login") : path.weblog.href());
+   res.redirect(user.cache.referrer ? path.weblog.members.href("login") : path.weblog.href());
 }
 
 res.skin = "weblog.page";

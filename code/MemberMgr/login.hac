@@ -6,17 +6,17 @@ if (req.data.submit == "login" || req.data.login) {
    var result = this.evalLogin(req.data.name,req.data.password);
    res.message = result.message;
    if (!result.error) {
-      if (user.cache.referer) {
-         var url = user.cache.referer;
-         user.cache.referer = null;
+      if (user.cache.referrer) {
+         var url = user.cache.referrer;
+         user.cache.referrer = null;
       } else
          var url = parent.href();
       res.redirect(url);
    }
 }
 
-if (!user.cache.referer && req.data.http_referer)
-   user.cache.referer = req.data.http_referer;
+if (!user.cache.referrer && req.data.http_referer)
+   user.cache.referrer = req.data.http_referer;
 
 res.data.title = "Anville Member Login";
 

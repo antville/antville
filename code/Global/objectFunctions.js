@@ -168,7 +168,7 @@ function checkIfLoggedIn(referrer) {
    if (!user.uid) {
       // user is not logged in
       if (referrer)
-         user.cache.referer = referrer;
+         user.cache.referrer = referrer;
       res.redirect(path.weblog ? path.weblog.members.href("login") : root.members.href("login"));
    }
    return;

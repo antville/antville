@@ -3,7 +3,7 @@ autoLogin();
 var deny = this.isNotPublic(user);
 if (deny) {
    res.message = deny;
-   user.cache.referer = this.href();
+   user.cache.referrer = this.href();
    res.redirect(this.members.href("login"));
 }
 
