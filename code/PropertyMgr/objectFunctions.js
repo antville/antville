@@ -140,6 +140,19 @@ function createInputParam(propName, param) {
 }
 
 /**
+ * create a parameter object for checkboxes
+ */
+function createCheckBoxParam(propName, param) {
+   var inputParam = Object.clone(param);
+   inputParam.name = this.__name__ + "_" + propName;
+   inputParam.value = 1;
+   if (req.data[inputParam.name] == 1 || this.getProperty(propName) == 1)
+      inputParam.checked = "checked";
+   delete inputParam.as;
+   return inputParam;
+}
+
+/**
  * function returns the whole xml encoded HopObject
  */
 function getAll() {
