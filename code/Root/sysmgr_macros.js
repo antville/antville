@@ -1,12 +1,11 @@
 /**
- * macro rendering title
+ * render the system-title of this antville-installation
  */
-
 function sys_title_macro(param) {
    if (param.as == "editor")
       Html.input(this.createInputParam("sys_title", param));
    else
-      res.write(this.sys_title);
+      res.write(this.getTitle());
    return;
 }
 
@@ -329,4 +328,12 @@ function sys_allowEmails_macro(param) {
   } else
      res.write(this.sys_allowEmails);
   return;
+}
+
+/**
+ * proxy-macro for layout chooser
+ */
+function sys_layoutchooser_macro(param) {
+   param.selected = this.sys_layout;
+   this.layouts.layoutchooser_macro(param);
 }
