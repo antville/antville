@@ -62,6 +62,10 @@ text="Go to the layouts page" %> to browse, manage or test-drive the list
 of available layouts.</span></td>
 </tr>
 <tr>
+<td class="small" valign="top" nowrap="nowrap">Context menu:</td>
+<td><span class="small"><% site.link to="menuext.reg" text="Click here" %> to install a  context menu to directly blog to this site from your Windows&reg; desktop.</span></td>
+</tr>
+<tr>
 <td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
 <b><a name="spamfilter">Referrer spam filter</a></b></td>
 </tr>
@@ -71,7 +75,7 @@ of available layouts.</span></td>
 </tr>
 <% site.notification %>
 <tr>
-<td class="small" nowrap="nowrap">&nbsp;</td>
+<td></td>
 <td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
