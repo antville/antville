@@ -4,7 +4,7 @@
 <td class="small" align="right" nowrap="nowrap"><% syslog.createtime format="dd.MM.yyyy HH:mm" %></td>
 </tr>
 <tr>
-<td width="100%" nowrap="nowrap"><% syslog.sysmgr_object prefix="<b>" suffix="</b><br />" %>
+<td width="100%" nowrap="nowrap"><% syslog.sysmgr_object prefix="<strong>" suffix="</strong><br />" %>
 Message: <% syslog.sysmgr_logentry %><br />
 User: <% syslog.sysmgr_sysadmin %></td>
 <td class="small" valign="top" align="right" nowrap="nowrap"></td>

@@ -122,7 +122,7 @@ function rss_action() {
  */
 function blocked_action() {
    res.data.title = root.getTitle() + " - 404 - blocked";
-   res.data.body = "<p><b>Sorry!</b></p><p>This weblog was disabled.</p>";
+   res.data.body = "<p><strong>Sorry!</strong></p><p>This weblog was disabled.</p>";
    root.renderSkin("page");
 }
 
@@ -131,7 +131,7 @@ function blocked_action() {
  */
 function notfound_action() {
    res.data.title = root.getTitle() + " - 404 - not found";
-   res.data.body = "<p><b>Sorry!</b></p><p>URL /" + req.path + " was not found on this server!</p>";
+   res.data.body = "<p><strong>Sorry!</strong></p><p>URL /" + req.path + " was not found on this server!</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
 }
 
@@ -140,7 +140,7 @@ function notfound_action() {
  */
 function sys_error_action() {
    res.data.title = root.getTitle() + " - Error";
-   res.data.body = "<p><b>Sorry!</b></p><p>An error occurred while processing your request:</p>";
+   res.data.body = "<p><strong>Sorry!</strong></p><p>An error occurred while processing your request:</p>";
    res.data.body += "<p>"+res.error+"</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
 }

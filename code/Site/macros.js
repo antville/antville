@@ -12,7 +12,7 @@ function title_macro(param) {
       if (this.title && this.title.trim())
         res.write(stripTags(this.title));
       else
-        res.write("<i>[untitled]</i>");
+        res.write("<em>[untitled]</em>");
       Html.closeLink();
     } else
       res.write(this.title);

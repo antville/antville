@@ -12,7 +12,7 @@
 
 <br />
 <a name="help"></a>
-<p class="small"><b>Macros available for this skin:</b></p>
+<p class="small"><strong>Macros available for this skin:</strong></p>
 <% skinmgr.macros prefix='<p class="small"><tt>' suffix="</tt></p>" %>
 <p class="small"><tt><% skinmgr.macros proto="global" %></tt></p>
 <% skinmgr.skinmacros prefix='<p class="small"><tt>' suffix="</tt></p>" %>

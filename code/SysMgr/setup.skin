@@ -1,7 +1,7 @@
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><b>General</b></td>
+<td colspan="2" nowrap="nowrap"><strong>General</strong></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Title:</td>
@@ -49,7 +49,7 @@
 </tr>
 
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Creation of new weblogs</b></td>
+<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><strong>Creation of new weblogs</strong></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Weblogs may be<br /> created by:</td>
@@ -61,7 +61,7 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">or since:</td>
-<td><% root.sys_minMemberSince as="editor" %><span class="small">&nbsp;(eg. 2002-05-25 00:00)<br />Here you can either specify the time a user has to be registered or you define a timestamp which means that only users who have registered <i>before</i> are allowed to create a weblog.</span></td>
+<td><% root.sys_minMemberSince as="editor" %><span class="small">&nbsp;(eg. 2002-05-25 00:00)<br />Here you can either specify the time a user has to be registered or you define a timestamp which means that only users who have registered <em>before</em> are allowed to create a weblog.</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Delay between<br />creation of<br />two weblogs:</td>
@@ -69,7 +69,7 @@
 </tr>
 
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Automatic cleanup</b></td>
+<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><strong>Automatic cleanup</strong></td>
 </tr>
 <tr>
 <td colspan="2" class="small" valign="top">Antville has some features that ease system administration: it can automatically clean up the accesslog, block those weblogs being private for too long, and it can automatically remove weblogs that are inactive (both features can be enabled or disabled separately below). Whatever you choose, it will be done once in 24 hours.</td>
@@ -83,7 +83,7 @@
 <td><% root.sys_startAtHour as="editor" %><br /><span class="small">Here you can define when Antville should start the cleanup process (you should choose a time when there is low traffic, e.g. at night)</span></td>
 </tr>
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Watching private weblogs</b></td>
+<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><strong>Watching private weblogs</strong></td>
 </tr>
 <tr>
 <td colspan="2" class="small" valign="top">Antville can host both public and private weblogs. Since private weblogs are accessible for members only and won't appear on the front page or in the weblog directory this can be a risky thing (system administrators can access those private weblogs, though). To ease administration Antville can automatically search for private weblogs hosted here and disable them being private for too long (below you can define the time span). However, please note that his does not affect weblogs created by "trusted" users.</td>
@@ -101,7 +101,7 @@
 <td><% root.sys_blockAfterWarning as="editor" size="10" %><span class="small">&nbsp;days<br />Choose the time between sending the warning e-mail and actually blocking a weblog that has been private for too long. After blocking a weblog its owner will receive a message that the weblog was blocked.</span></td>
 </tr>
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Removing inactive weblogs</b></td>
+<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><strong>Removing inactive weblogs</strong></td>
 </tr>
 <tr>
 <td colspan="2" class="small" valign="top">Antville can automatically remove weblogs that are inactive for too long. Here you can decide if you want to enable this feature, define the number of days of inactivity before Antville will send warning e-mails or finally remove inactive weblogs.</td>
