@@ -49,7 +49,7 @@ function isClean(str) {
  */
 
 function isCleanForURL(str) {
-   var invalidChar = new RegExp("[\\/?&=\\+#дцья]");
+   var invalidChar = new RegExp("[\\/?&=\\+#дцья\\\\]");
    invalidChar.ignoreCase = true;
    if (invalidChar.exec(str))
       return false;
