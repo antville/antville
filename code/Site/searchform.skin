@@ -1,5 +1,3 @@
-<p class="storytitle">Search</p>
-
 <p>Enter a term to search in <% site.title %>:</p>
 
 <form method="get" action="<% response.action %>">
@@ -7,4 +5,4 @@
 <input type="submit" value="go">
 </form>
 
-<p />
+<br />
