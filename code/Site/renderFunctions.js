@@ -46,7 +46,7 @@ function renderStorylist(idx) {
    if (idx > 0) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-days);
-      sp.text = "older stories";
+      sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
    days = Math.min(days++,this.size());
@@ -64,7 +64,7 @@ function renderStorylist(idx) {
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;
-      sp.text = "newer stories";
+      sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
    return;
