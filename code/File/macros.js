@@ -7,8 +7,8 @@ function alias_macro(param) {
       renderInputText(this.createInputParam("alias",param));
    else if (param.as == "link") {
       param.to = "getfile"
-      param.urlparam = "name=" + this.alias;
-      param.title = this.description;
+      param.urlparam = "name=" + escape(this.alias);
+      param.title = encodeForm(this.description);
       openMarkupElement("a", this.site.createLinkParam(param));
       res.write(this.alias);
       closeMarkupElement("a");
