@@ -21,6 +21,7 @@ function evalStory(param,modifier) {
    // assign those properties that can be stored anyway
    var editableby = parseInt(param.editableby,10);
    this.editableby = (modifier == this.creator && !isNaN(editableby) ? editableby : null);
+   this.discussions = !isNaN(parseInt(param.discussions)) ? parseInt(param.discussions,10) : 0;
    // loop through param and collect content properties
    var cont = this.getContent();
    for (var i in param) {
@@ -172,7 +173,7 @@ function getRenderedContentPart (name) {
          this.cache["lastRendered_"+name] = new Date();
       this.cache["rendered_"+name] = this.renderSkinAsString(s);
    }
-   return (format(doWikiStuff(this.cache["rendered_"+name])));
+   return (doWikiStuff(this.cache["rendered_"+name]));
 }
 
 /**
@@ -253,3 +254,15 @@ function convertContentToXML () {
     this.content = Xml.writeToString (cnt);
     this.rawcontent = raw;
 }
+
+/**
+ * function returns true if discussions are enabled
+ * for this story
+ */
+
+function hasDiscussions() {
+   if (parseInt(this.discussions,10))
+      return true;
+   return false;
+}
+
