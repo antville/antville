@@ -63,6 +63,8 @@ function evalImg() {
          this.weblog.images.changeAlias(this);
       }
       this.alttext = req.data.alttext;
+      if (this.thumbnail)
+         this.thumbnail.alttext = this.alttext;
       res.message = "Changes saved successfully!";
       res.redirect(this.weblog.images.href());
    }
