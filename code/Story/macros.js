@@ -32,7 +32,7 @@ function text_macro(param) {
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
       if (!param.limit)
-         this.renderSkin(createSkin(format(this.text)));
+         this.renderSkin(createSkin(format(activateLinks(this.text))));
       else {
          this.renderTextPreview(param.limit);
          res.write("&nbsp;...");
