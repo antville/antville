@@ -4,11 +4,14 @@
  */
 
 function addstory_macro () {
-   if (path.weblog.isUserContributor(user) || path.weblog.isUserAdmin(user)) {
-      var param = new Object();
-      param.link = path.weblog.stories.href("create")+"?topic="+this.groupname;
-      this.renderSkin ("createStoryLink", param);
-   }
+   var membership = path.weblog.isUserMember(user);
+   if (!membership)
+      return;
+   if ((membership.level & MAY_ADD_STORY) == 0)
+      return;
+   var param = new Object();
+   param.link = path.weblog.stories.href("create")+"?topic="+this.groupname;
+   this.renderSkin ("createStoryLink", param);
 }
 
 /**
