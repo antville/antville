@@ -8,19 +8,19 @@ function autoCleanUp() {
       var startAtHour = root.sys_startAtHour;
       var nextCleanup = new Date();
       nextCleanup.setDate(nextCleanup.getDate() + 1);
-      nextCleanup.setHours((!isNaN(startAtHour) ? startAtHour : 0),0,0,0);
+      nextCleanup.setHours((!isNaN(startAtHour) ? startAtHour : 0), 0, 0, 0);
       // check if it's time to run autocleanup
       if (!app.data.nextCleanup) {
          app.data.nextCleanup = nextCleanup;
-         this.add (new syslog("system",null,"next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
+         this.add (new syslog("system", null, "next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"), null));
       } else if (new Date() >= app.data.nextCleanup) {
-         this.syslogs.add (new syslog("system",null,"starting automatic cleanup ...",null));
+         this.syslogs.add (new syslog("system", null, "starting automatic cleanup ...", null));
          app.data.nextCleanup = nextCleanup;
          // now start the auto-cleanup-functions
          this.cleanupAccesslog();
          this.blockPrivateSites();
          // this.deleteInactiveSites();
-         this.add (new syslog("system",null,"next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
+         this.add (new syslog("system", null, "next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"), null));
       }
    }
 }
@@ -40,11 +40,11 @@ function blockPrivateSites() {
       return;
    } else if (!blockWarningAfter || !blockAfterWarning) {
       // something is fishy with blocking properties
-      this.syslogs.add (new syslog("system",null,"blocking of private sites cancelled",null));
+      this.syslogs.add (new syslog("system", null, "blocking of private sites cancelled", null));
       return;
    }
    var size = this.privateSites.size();
-   this.syslogs.add (new syslog("system",null,"checking " + size + " private site(s) ...",null));
+   this.syslogs.add (new syslog("system", null, "checking " + size + " private site(s) ...", null));
 
    // get thresholds in millis
    warnThreshold = blockWarningAfter*1000*60*60*24;
@@ -70,26 +70,26 @@ function blockPrivateSites() {
             var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
             warning.setFrom(root.sys_email);
-            warning.setSubject(getMessage("mailsubject","blockWarning",site.title));
+            warning.setSubject(getMessage("mail.blockWarning", site.title));
             var sp = new Object();
             sp.site = site.alias;
             sp.url = site.href();
             sp.privatetime = blockWarningAfter;
             sp.daysleft = blockAfterWarning;
             sp.contact = root.sys_email;
-            warning.addText(this.renderSkinAsString("blockwarnmail",sp));
+            warning.addText(this.renderSkinAsString("blockwarnmail", sp));
             warning.send();
-            this.syslogs.add (new syslog("site",site.alias,"site is private for more than " + blockWarningAfter + " days, sent warning to " + recipient,null));
+            this.syslogs.add (new syslog("site", site.alias, "site is private for more than " + blockWarningAfter + " days, sent warning to " + recipient, null));
             site.lastblockwarn = new Date();
          } else if (timeSinceWarning >= blockThreshold) {
             // site is offline for too long, so block it
             site.blocked = 1;
-            this.syslogs.add (new syslog("site",site.alias,"blocked site",null));
+            this.syslogs.add (new syslog("site", site.alias, "blocked site", null));
          }
       } else
          break;
    }   
-   this.syslogs.add (new syslog("system",null,"finished checking for private sites",null));
+   this.syslogs.add (new syslog("system", null, "finished checking for private sites", null));
    return true;
 }
 
@@ -111,11 +111,11 @@ function deleteInactiveSites() {
       return;
    } else if (!delWarningAfter || !delAfterWarning) {
       // something is fishy with properties
-      this.syslogs.add (new syslog("system",null,"cleanup of sites cancelled",null));
+      this.syslogs.add (new syslog("system", null, "cleanup of sites cancelled", null));
       return;
    }
    var size = root.size();
-   this.syslogs.add (new syslog("system",null,"checking " + size + " sites for inactivity ...",null));
+   this.syslogs.add (new syslog("system", null, "checking " + size + " sites for inactivity ...", null));
 
    // get thresholds in millis
    warnThreshold = delWarningAfter*1000*60*60*24;
@@ -141,16 +141,16 @@ function deleteInactiveSites() {
             var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
             warning.setFrom(root.sys_email);
-            warning.setSubject(getMessage("mailsubject","deleteWarning",site.title));
+            warning.setSubject(getMessage("mail.deleteWarning", site.title));
             var sp = new Object();
             sp.site = site.alias;
             sp.url = site.href();
             sp.inactivity = delWarningAfter;
             sp.daysleft = delAfterWarning;
             sp.contact = root.sys_email;
-            warning.addText(this.renderSkinAsString("deletewarnmail",sp));
+            warning.addText(this.renderSkinAsString("deletewarnmail", sp));
             warning.send();
-            this.syslogs.add (new syslog("site",site.alias,"site was inactive for more than " + delWarningAfter + " days, sent warning to " + recipient,null));
+            this.syslogs.add (new syslog("site", site.alias, "site was inactive for more than " + delWarningAfter + " days, sent warning to " + recipient, null));
             site.lastdelwarn = new Date();
          } else if (timeSinceWarning >= blockThreshold) {
             // site is inactive for too long, so delete it
@@ -159,7 +159,7 @@ function deleteInactiveSites() {
       } else
          break;
    }   
-   this.syslogs.add (new syslog("system",null,"finished checking for inactive sites",null));
+   this.syslogs.add (new syslog("system", null, "finished checking for inactive sites", null));
    return true;
 }
 
@@ -172,7 +172,7 @@ function cleanupAccesslog() {
 	var dbConn = getDBConnection("antville");
 	var dbError = dbConn.getLastError();
 	if (dbError) {
-      this.syslogs.add (new syslog("system",null,"failed to clean up accesslog-table!",null));
+      this.syslogs.add (new syslog("system", null, "failed to clean up accesslog-table!", null));
       return;
    }
    var threshold = new Date();
@@ -180,6 +180,6 @@ function cleanupAccesslog() {
 	var query = "delete from AV_ACCESSLOG where ACCESSLOG_F_TEXT is null and ACCESSLOG_DATE < '" + threshold.format("yyyy-MM-dd HH:mm:ss") + "'";
    var delRows = dbConn.executeCommand(query);
    if (delRows)
-      this.syslogs.add (new syslog("system",null,"removed " + delRows + " records from accesslog-table",null));
+      this.syslogs.add (new syslog("system", null, "removed " + delRows + " records from accesslog-table", null));
    return;
 }
