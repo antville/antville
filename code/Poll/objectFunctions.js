@@ -35,7 +35,7 @@ function evalPoll(param, creator) {
 				if (!title)
 					continue;
 				var newChoice = new choice();
-				newChoice.poll = newPoll;
+				newChoice.poll = this;
 				newChoice.title = title;
 				newChoice.createtime = new Date();
 				newChoice.modifytime = new Date();
@@ -44,7 +44,7 @@ function evalPoll(param, creator) {
 
       result.url = path.weblog.polls.href();
       result.message = "The poll was updated successfully!";
-      result.id = newPoll._id;
+      result.id = this._id;
       result.error = false;
    }
    else {
