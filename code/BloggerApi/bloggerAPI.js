@@ -49,26 +49,27 @@ function getPost(appkey, postid, username, password) {
  *  @param publish  int, 0=no, 1=yes
  *  @return String representing the ID of the new entry
  */
-function newPost (appkey, blogid, username, password, content, publish) {
+function newPost(appkey, blogid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);
    var blog = root.blogger.getBlog(blogid.toString());
    if (!blog)
       throw("Couldn't find the blog " + blogid);
    try {
       blog.stories.checkAdd(usr, blog.members.getMembershipLevel(usr));
-   } catch (deny) {
-      throw ("You don't have permission to post to this site");
+      var param = new Object();
+      param.http_remotehost = "bloggerAPI";
+      root.blogger.parseBloggerAPIPosting (param, content);
+      param.publish = publish;
+      param.addToFront = true;
+      var result = blog.stories.evalNewStory(param, usr);
+      return result.id;
+   } catch (e) {
+      if (e instanceof DenyException)
+         throw ("You don't have permission to post to this site");
+      else
+         throw(e.toString());
    }
-
-   var param = new Object();
-   param.http_remotehost = "bloggerAPI";
-   root.blogger.parseBloggerAPIPosting (param, content);
-   param.publish = publish;
-   param.addToFront = true;
-   var result = blog.stories.evalNewStory(param, usr);
-   if (result.error)
-      throw(result.message);
-   return result.id;
+   return;
 }
 
 
@@ -83,7 +84,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
  *  @param publish  int, 0=no, 1=yes
  *  @return Boolean true if successful
  */
-function editPost (appkey, postid, username, password, content, publish) {
+function editPost(appkey, postid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);
    var entry = root.storiesByID.get(postid.toString());
    if (!entry)
@@ -178,11 +179,15 @@ function deletePost(appkey, postid, username, password, publish) {
    // check if user is allowed to delete the entry
    try {
       entry.checkDelete(usr, entry.site.members.getMembershipLevel(usr));
-   } catch (deny) {
-      throw ("You're not allowed to delete the entry with id " + postid);
+      entry._parent.deleteStory(entry);
+      return true;
+   } catch (e) {
+      if (e instanceof DenyException)
+         throw ("You're not allowed to delete the entry with id " + postid);
+      else
+         throw(e.toString());
    }
-   var result = entry._parent.deleteStory(entry);
-   return !result.error;
+   return;
 }
 
 
@@ -214,7 +219,7 @@ function getUsersBlogs(appkey, username, password) {
       param.blogid = blog.alias;
       param.blogName = blog.title;
       param.url = blog.href();
-      result[result.length] = param;
+      result.push(param);
    }
    return result;
 }
