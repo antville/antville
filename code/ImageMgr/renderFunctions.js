@@ -13,10 +13,10 @@ function renderImagelist(idx) {
    var size = this.size();
    if (isNaN (idx)|| idx > size-1)
       idx = 0;
-   var max = Math.min(idx + 10, size);
+   var max = Math.min(idx + 20, size);
    if (idx > 0) {
       var sp = new Object();
-      sp.url = this.href() + "?start=" + Math.max(0, idx-10);
+      sp.url = this.href() + "?start=" + Math.max(0, idx-20);
       sp.text = "previous images";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
