@@ -1,0 +1,43 @@
+res.contentType = "text/xml";
+
+var base = "http://" + getProperty("server") + getProperty("baseURI");
+var now = new Date();
+var param1 = new Object();
+
+if (this.online) {
+	var size = this.allstories.size();
+	var max = req.data.max ? req.data.max : 7;
+	if (max > size)
+		max = size;
+	
+	var items = "";
+	for (var i=0; i<max; i++) {
+		var story = this.allstories.get(i);
+		if (story.online) {
+			param1.itemLink = base + story.href();
+			param1.itemTitle = encodeXml(story.title);
+			param1.itemDescription = encodeXml(story.text);
+			items += this.renderSkinAsString("rssItem", param1);
+		}
+	}
+}
+else {
+	param1.itemLink = "";
+	param1.itemTitle = encodeXml("Access denied");
+	param1.itemDescription = encodeXml("This weblog is offline.");
+	items = this.renderSkinAsString("rssItem", param1);
+}
+
+var param2 = new Object();
+param2.title = encodeXml(this.title);
+param2.link = base + this.href();
+param2.description = encodeXml(this.tagline);
+param2.year = now.getYear();
+param2.name = encodeXml(this.creator.name);
+param2.lastBuildDate = this.lastUpdate;
+param2.managingEditor = this.creator.email;
+param2.webMaster = this.creator.email;
+param2.language = this.language;
+param2.items = items;
+
+this.renderSkin("rssChannel", param2);
