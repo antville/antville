@@ -116,10 +116,6 @@ CREATE INDEX IDX_IMAGE_MIXED ON AV_IMAGE (IMAGE_F_SITE,IMAGE_ALIAS(20),IMAGE_F_I
 
 alter table AV_IMAGE change column IMAGE_ID IMAGE_ID mediumint(10) not null auto_increment;
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','big','big','gif',404,53,'antville.org');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','smallanim','smallanim','gif',98,30,'made with antville');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','smallchaos','smallchaos','gif',107,29,'made with antville');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','smallstraight','smallstraight','gif',107,24,'made with antville');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','pixel','pixel','gif',1,1,'pixel');
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values ('layoutimage','headbg','headbg','gif',3,52);
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','menu','menu','gif',36,13,'menu');
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','recent','recent','gif',123,13,'recently modified');
@@ -127,9 +123,6 @@ insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,I
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','dot','dot','gif',30,30,'dots');
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','bullet','bullet','gif',3,10,'bullet');
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','webloghead','webloghead','gif',404,53,'head');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','hop','hop','gif',124,25,'helma object publisher');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','xmlbutton','xmlbutton','gif',36,14,'xml version of this page');
-insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','marquee','marquee','gif',15,15,'marquee');
 insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','manage','manage','gif',50,13,'manage');
 alter table AV_IMAGE change column IMAGE_ID IMAGE_ID mediumint(10) not null;
 
