@@ -1,8 +1,0 @@
-<tr>
-<td valign="top"><% shortcut.title %></td>
-<td valign="top"><% shortcut.content encoding="form" %></td>
-</tr>
-<tr>
-<td></td>
-<td class="small"><% shortcut.display %><% shortcut.placeholder prefix="&nbsp;" %></td>
-</tr>
