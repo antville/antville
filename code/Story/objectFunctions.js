@@ -231,10 +231,12 @@ function getContent () {
  */
 function setContent (cnt) {
     this.content = Xml.writeToString (cnt);
-    var raw = "";
-    for (var i in cnt)
-       raw += cnt[i]+" ";
-    this.rawcontent = raw.toLowerCase();
+    var raw = new java.lang.StringBuffer();
+    for (var i in cnt) {
+       raw.append(cnt[i]);
+       raw.append(" ");
+    }
+    this.rawcontent = raw.toString().toLowerCase();
 }
 
 /**
