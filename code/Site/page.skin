@@ -2,7 +2,7 @@
 <html>
 <head>
 <title><% response.title %></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="alternate" type="text/xml" title="XML" href="<% weblog.url %>rss10" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <% weblog.skin name="style" %>
 <% weblog.skin name="javascript" %>
