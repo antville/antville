@@ -76,9 +76,9 @@ function checkEdit(usr, level) {
    if (this.creator != usr) {
       if (level == null)
          throw new DenyException("storyEdit");
-      else if (this.editableby == null && (level & MAY_EDIT_ANYSTORY) == 0)
+      else if (this.editableby == EDITABLEBY_ADMINS && (level & MAY_EDIT_ANYSTORY) == 0)
          throw new DenyException("storyEdit");
-      else if (this.editableby == 1 && (level & MAY_ADD_STORY) == 0)
+      else if (this.editableby == EDITABLEBY_CONTRIBUTORS && (level & MAY_ADD_STORY) == 0)
          throw new DenyException("storyEdit");
    }
    return;
@@ -94,9 +94,9 @@ function checkEdit(usr, level) {
 function checkView(usr, level) {
    this.site.checkView(usr, level);
    if (!this.online && this.creator != usr) {
-      if (this.editableby == null && (level & MAY_EDIT_ANYSTORY) == 0)
+      if (this.editableby == EDITABLEBY_ADMINS && (level & MAY_EDIT_ANYSTORY) == 0)
          throw new DenyException("storyView");
-      else if (this.editableby == 1 && (level & MAY_ADD_STORY) == 0)
+      else if (this.editableby == EDITABLEBY_CONTRIBUTORS && (level & MAY_ADD_STORY) == 0)
          throw new DenyException("storyView");
    }
    return;
