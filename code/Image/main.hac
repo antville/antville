@@ -1,7 +1,7 @@
 autoLogin();
 
-res.data.title = "Antville - " + this.weblog.title;
+res.data.title = this.site.title;
 
 res.data.body = this.renderSkinAsString("main");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
