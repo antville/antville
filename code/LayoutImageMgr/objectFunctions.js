@@ -93,7 +93,7 @@ function evalImport(metadata, files) {
  */
 function importImage(layout, data) {
    // FIXME: replace the creator with a more intelligent solution ...
-   var img = new image(session.user);
+   var img = new layoutimage(session.user);
    if (data.thumbnail) {
       img.thumbnail = this.importImage(layout, data.thumbnail);
       // FIXME: not sure if this is really necessary ...
