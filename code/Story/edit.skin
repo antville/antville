@@ -1,6 +1,6 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap><form method="post"><span class="small">Title:</span><br>
+<td nowrap><form method="post" action="<% response.action %>"><span class="small">Title:</span><br>
 <% this.title as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
@@ -11,7 +11,7 @@
 <td><table border="0" cellspacing="0" cellpadding="3">
    <tr>
    <td class="small">select a topic<br>or create<br>a new one<br>(or leave empty):</td>
-   <td valign="top" nowrap><% this.topicchooser %><br><input type="text" name="newtopic" value="<% request.topic %>"></td>
+   <td valign="top" nowrap><% this.topicchooser %><br><input type="text" name="topic" value="<% request.topic %>"></td>
    </tr>
    <tr>
    <td class="small" nowrap>status:</td>
