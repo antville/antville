@@ -25,3 +25,17 @@ function isBlocked() {
       return true;
    return false;
 }
+
+/**
+ * function for sorting member-objects by the lastupdate-timestamp
+ * of the according weblog
+ */
+
+function sortSubscriptions(s1,s2) {
+   if (s1.weblog.lastupdate > s2.weblog.lastupdate)
+      return -1;
+   else if (s1.weblog.lastupdate > s2.weblog.lastupdate)
+      return 1;
+   else
+      return 0;
+}
