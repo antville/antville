@@ -13,7 +13,8 @@ function renderTree(param, collection) {
       var desc = this.getSkinDescription("skinset", skinset.key);
       sp.title = desc[0];
       sp.text = desc[1];
-      if (skinset.context && skinset.context != res.handlers.context._prototype)
+      if (skinset.context && 
+          skinset.context != res.handlers.context._prototype.toLowerCase())
          continue;
       if (param.skinset && param.skinset.startsWith(skinset.key)) {
          sp["class"] = "selected";
