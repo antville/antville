@@ -640,7 +640,7 @@ function listReferrers_macro() {
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
-	var query = "select *, count(*) as COUNT from ACCESS where WEBLOG_ID = " + this._id + " and DATE > NOW()-1000000 and REFERRER not like \"%" + this.href() + "%\" group by REFERRER order by COUNT desc, REFERRER asc;";
+	var query = "select *, count(*) as COUNT from ACCESS where WEBLOG_ID = " + this._id + " and DATE > NOW()-1000000 and REFERRER not like \"" + this.href() + "%\" group by REFERRER order by COUNT desc, REFERRER asc;";
 	writeln(query);
 	var rows = c.executeRetrieval(query);
 	error = c.getLastError();
