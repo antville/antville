@@ -2,28 +2,8 @@ var parent = setLayout();
 
 res.message = "Please enter your login name and password:";
 
-if (req.data.name && req.data.password) {
-   // check if login is successful
-   if (user.login(req.data.name, req.data.password)) {
-      if (user.isBlocked()) {
-         res.message = "Sorry, your account was disabled!";
-         user.logout();
-         res.redirect(parent.href());
-      }
-      // login successful
-      user.lastVisit = new Date();
-      res.message = "Welcome to Antville, " + user.name + "! Have fun!";
-      if (!user.cache.referer) {
-         var redirectTo = root.href();
-      } else {
-         var redirectTo = user.cache.referer;
-         user.cache.referer = null;
-      }
-      res.redirect(redirectTo);
-   } else
-      res.message = "Login failed! Maybe a typo?";
-
-}
+if (req.data.name && req.data.password)
+   this.evalLogin();
 
 if (!user.cache.referer && req.data.http_referer)
    user.cache.referer = req.data.http_referer;
