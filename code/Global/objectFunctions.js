@@ -1,4 +1,23 @@
 /**
+ * this is the generic onStart handler
+ */
+ 
+function onStart() {
+	scheduler();
+}
+
+
+/**
+ * this is the generic scheduler() function
+ */
+ 
+function scheduler() {
+	var pause = BI_scheduler();
+	return(pause);
+}
+
+
+/**
  * check if email-adress is syntactically correct
  */
 
@@ -306,6 +325,7 @@ function logAccess() {
  * (and probably other services, soon), this 
  * function can be called via the scheduler.
  */
+ 
 function pingUpdatedWeblogs() {
 	for (var i=0; i<root.allWeblogs.size(); i++) {
 		var blog = root.allWeblogs.get(i);
