@@ -6,7 +6,7 @@
 
 function storylist_macro() {
    for (var i=0;i<this.size();i++) {
-      if (this.get(i).isOnline() || this.get(i).isViewAllowed())
+      if (this.get(i).isOnline())
          this.get(i).renderSkin("preview");
    }
 }
