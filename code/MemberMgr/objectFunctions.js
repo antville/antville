@@ -22,10 +22,7 @@ function evalLogin(username,password) {
          res.setCookie("avUsr",session.user.name,365);
          res.setCookie("avPw",Packages.helma.util.MD5Encoder.encode(session.user.password),365);
       }
-      if (path.weblog)
-         result = getConfirm("welcomeWeblog",new Array(session.user.name,path.weblog.title));
-      else
-         result = getConfirm("welcomeAntville",session.user.name);
+      result = getConfirm("welcome",new Array(path.site ? path.site.title : root.getSysTitle(),session.user.name));
    } else {
       result = getError("loginTypo");
    }
@@ -63,8 +60,7 @@ function evalRegistration(param) {
       result = getError("unameNoSpecialChars");
    else {
       // check if username is similar to a built in function
-      var reserved = eval("this." + param.name);
-      if (reserved)
+      if (this[param.name] || this[param.name + "_action"])
          result = getError("unameExisting");
    }
 
@@ -80,13 +76,16 @@ function evalRegistration(param) {
          // grant trust and sysadmin-rights if there's no sysadmin 'til now
          if (root.manage.sysadmins.size() == 0)
             newUser.sysadmin = newUser.trusted = 1;
-         if (path.weblog) {
-   			result = getConfirm("welcomeWeblog",new Array(path.weblog.title,newUser.name));
-            // if user registered within a public weblog, we add this weblog to favorites
-            if (path.weblog.isOnline())
-               this.addMember(newUser);
+         else
+            newUser.sysadmin = newUser.trusted = 0;
+         if (path.site) {
+            var welcomeWhere = path.site.title;
+            // if user registered within a public site, we add this site to favorites
+            if (path.site.isOnline())
+               this.addMembership(newUser);
          } else
-   			result = getConfirm("welcomeAntville",newUser.name);
+            var welcomeWhere = root.getSysTitle();
+			result = getConfirm("welcome",new Array(welcomeWhere,newUser.name));
          result.username = newUser.name;
          result.password = newUser.password;
 		} else
@@ -140,14 +139,14 @@ function sendPwd(email) {
    if (!email)
       result = getError("emailMissing2");
    else {
-      var sqlClause = "select USERNAME,PASSWORD from USER where EMAIL = '" + email + "'";
+      var sqlClause = "select USER_NAME,USER_PASSWORD from AV_USER where USER_EMAIL = '" + email + "'";
       var dbConn = getDBConnection("antville");
       var dbResult = dbConn.executeRetrieval(sqlClause);
       var cnt = 0;
       var pwdList = "";
       while (dbResult.next()) {
-         pwdList += "Username: " + dbResult.getColumnItem("USERNAME") + "\n";
-         pwdList += "Password: " + dbResult.getColumnItem("PASSWORD") + "\n\n";
+         pwdList += "Username: " + dbResult.getColumnItem("USER_NAME") + "\n";
+         pwdList += "Password: " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
          cnt++;
       }
       dbResult.release;
@@ -157,9 +156,9 @@ function sendPwd(email) {
    if (!result) {
       // now we send the mail containing all accounts for this email-address
       var mail = new Mail();
-      mail.setFrom(getProperty("adminEmail"));
+      mail.setFrom(root.sys_email);
       mail.addTo(email);
-      mail.setSubject("Your Accounts for Antville");
+      mail.setSubject(getMsg("mailsubject","sendPwd"));
       var mailParam = new Object();
       var now = new Date();
       mailParam.timestamp = formatTimestamp(now);
@@ -194,8 +193,8 @@ function searchUser(key) {
 	var dbError = dbConn.getLastError();
    if (dbError)
       return (getError("database",dbError));
-   var query = "select USERNAME,URL from USER ";
-   query += "where USERNAME like '%" + key + "%' order by USERNAME asc";
+   var query = "select USER_NAME,USER_URL from AV_USER ";
+   query += "where USER_NAME like '%" + key + "%' order by USER_NAME asc";
 	var searchResult = dbConn.executeRetrieval(query);
 	var dbError = dbConn.getLastError();
    if (dbError)
@@ -204,8 +203,8 @@ function searchUser(key) {
    var list = "";
    while (searchResult.next() && found < 100) {
       var sp = new Object();
-      sp.name = searchResult.getColumnItem("USERNAME");
-      var url = searchResult.getColumnItem("URL");
+      sp.name = searchResult.getColumnItem("USER_NAME");
+      var url = searchResult.getColumnItem("USER_URL");
       if (url)
          sp.description = "(url: <a href=\"" + url + "\">" + url + "</a>)";
       list += this.renderSkinAsString("searchresultitem",sp);
@@ -227,14 +226,14 @@ function searchUser(key) {
 
 /**
  * function adds a user with a given username to the list of members
- * of this weblog
+ * of this site
  * @param String Name of user to add to members
  * @return Obj Object containing two properties:
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
 
-function evalNewMember(uname,creator) {
+function evalNewMembership(uname,creator) {
    var result;
    var u = root.users.get(uname);
    if (!u)
@@ -243,37 +242,37 @@ function evalNewMember(uname,creator) {
       return (getError("userAlreadyMember"));
    // send a confirmation mail to the new member
    var mail = new Mail();
-   mail.setFrom(path.weblog.email ? path.weblog.email : creator.email);
+   mail.setFrom(path.site.email ? path.site.email : creator.email);
    mail.setTo(u.email);
-   mail.setSubject("You are now a member of " + path.weblog.title + "!");
+   mail.setSubject(getMsg("mailsubject","newMember",path.site.title));
    var skinParam = new Object();
-   skinParam.weblog = path.weblog.title;
+   skinParam.site = path.site.title;
    skinParam.creator = creator.name;
-   skinParam.url = path.weblog.href();
+   skinParam.url = path.site.href();
    skinParam.account = u.name;
    mail.setText(this.renderSkinAsString("mailnewmember",skinParam));
    mail.send();
    result = getConfirm("memberCreate",u.name);
-   result.id = this.addMember(u);
+   result.id = this.addMembership(u);
    return (result);
 }
 
 /**
- * function adds a member to a weblog
+ * function adds a member to a site
  * @param Obj User-object to add as member
  * @param Int optional level of this new member
  * @return Int ID of membership
  */
 
-function addMember(usr,level) {
-   var newMember = new member();
-   newMember.weblog = this._parent;
-   newMember.user = usr;
-   newMember.username = usr.name;
-   newMember.level = level ? level : 0;
-   newMember.createtime = new Date();
-   this.add(newMember);
-   return (newMember._id);
+function addMembership(usr,level) {
+   var newMembership = new membership();
+   newMembership.site = this._parent;
+   newMembership.user = usr;
+   newMembership.username = usr.name;
+   newMembership.level = level ? level : 0;
+   newMembership.createtime = new Date();
+   this.add(newMembership);
+   return (newMembership._id);
 }
 
 /**
@@ -285,14 +284,14 @@ function addMember(usr,level) {
  *             - message (String): containing a message to user
  */
 
-function deleteMember(member,usr) {
+function deleteMembership(membership,usr) {
    var result;
-   if (!member)
+   if (!membership)
       result = getError("memberDelete");
-   else if (member.level == 3)
+   else if (membership.level == 3)
       result = getError("adminDelete");
    else {
-      this.remove(member);
+      this.remove(membership);
       result = getConfirm("memberDelete");
    }
    return (result);
