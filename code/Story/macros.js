@@ -261,7 +261,13 @@ function commentcounter_macro(param) {
    if (commentCnt == 0) {
       res.write(commentCnt + (param.no ? param.no : " comments"));
    } else {
-      openMarkupElement("a", this.createLinkParam(param));
+      // cloning the param object to remove the macro-specific 
+      // attributes from the clone for correct markup output:
+      var param2 = cloneObject(param);
+      delete param2.one;
+      delete param2.more;
+      delete param2.no;
+      openMarkupElement("a", this.createLinkParam(param2));
       if (commentCnt == 1)
          res.write(commentCnt + (param.one ? param.one : " comment"));
       else
