@@ -19,7 +19,7 @@
 </tr>
 <tr>
 <td class="small" valign="top">Description:</td>
-<td nowrap="nowrap"><% image.alttext as="editor" width="20" height="3" %></td>
+<td nowrap="nowrap"><% image.alttext as="editor" cols="20" rows="3" %></td>
 </tr>
 <tr>
 <td></td>
@@ -27,7 +27,7 @@
 </tr>
 <tr>
 <td></td>
-<td colspan="2"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td colspan="2"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>

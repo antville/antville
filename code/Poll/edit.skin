@@ -2,7 +2,7 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td nowrap="nowrap"><span class="small">Question:</span><br />
-<% poll.question as="editor" width="30" height="3" style="formText" %></td>
+<% poll.question as="editor" cols="30" rows="3" class="formText" %></td>
 </tr>
 
 <% response.choices %>
@@ -11,7 +11,7 @@
 <td class="small"><% poll.creator as="link" prefix='Created by ' suffix=' on ' %><% poll.createtime format="short" suffix="." %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="addchoice" value="Add choice" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="addchoice" value="Add choice" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>

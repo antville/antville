@@ -11,7 +11,7 @@
 </tr>
 <tr>
 <td class="small" valign="top">Description:</td>
-<td><% file.description as="editor" width="30" height="3" %></td>
+<td><% file.description as="editor" cols="30" rows="3" %></td>
 </tr>
 <tr>
 <td></td>
@@ -19,7 +19,7 @@
 </tr>
 <tr>
 <td></td>
-<td><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>
