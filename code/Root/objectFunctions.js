@@ -100,16 +100,17 @@ function deleteWeblog(weblog) {
 }
 
 /**
- *  search one or more weblogs
+ *  Search one or more (public) weblogs. Returns an array containing weblog-aliases and
+ *  story ids of matching items.
+ *
+ * @param query The unprocessed query string
+ * @param wlogid ID of weblog in which to search, null searches all
+ * @return The result array
  */
-function searchWeblogs (query) {
+function searchWeblogs (query, wlogid) {
 
     // reuse search result container if it already exists
-    var folder = user.cache["globalsearch-"+query];
-    if (!folder) {
-        folder = new Array();
-        user.cache["globalsearch-"+query] = folder;
-    }
+    var result = result = new Array();
 
     // break up search string
     var unquote = new RegExp("\'");
@@ -117,7 +118,7 @@ function searchWeblogs (query) {
     var qarr = query.replace(unquote, "''").split(" ");
 
     // construct query
-    var where = "select TEXT.ID from TEXT, WEBLOG where "+
+    var where = "select TEXT.ID, WEBLOG.ALIAS from TEXT, WEBLOG where "+
                 "TEXT.WEBLOG_ID = WEBLOG.ID and "+
                 "TEXT.ISONLINE > 0 and WEBLOG.ISONLINE > 0 and ";
     for (var i in qarr) {
@@ -126,17 +127,21 @@ function searchWeblogs (query) {
         if (i < qarr.length-1)
             where += "and ";
     }
+    // search only in the specified weblgs
+    if (wlogid)
+        where += "and WEBLOG.ID = "+wlogid+" ";
     where += "order by TEXT.CREATETIME desc";
     writeln (where);
     var dbcon = getDBConnection ("antville");
     var dbres = dbcon.executeRetrieval(where);
     if (dbres) {
        while (dbres.next()) {
-          var sid = dbres.getColumnItem (1).toString();
-          folder[folder.length] = sid;
-          var s = this.storiesByID.get(sid);
-          res.body += sid+"  "+s+"<br>";
+          var item = new Object();
+          item.sid = dbres.getColumnItem (1).toString();
+          item.weblogalias = dbres.getColumnItem (2);
+          result[result.length] = item;
        }
     }
     dbres.release();
+    return result;
 }
