@@ -301,6 +301,8 @@ function renderTextPreview(text, limit) {
 function doWikiStuff (src) {
   // robert, disabled: didn't get the reason for this:
   // var src= " "+src;
+  if (src.indexOf ("<*") < 0)
+     return src;
 
   // do the Wiki link thing, <*asterisk style*>
   var regex = new RegExp ("<[*]([^*]+)[*]>");

@@ -13,13 +13,18 @@
 function evalNewStory(s,param,creator) {
    var result;
    s.site = this._parent;
-   s.title = param.title;
-   s.text = param.text;
+   // loop through param and collect content properties
+   var cont = new HopObject();
+   for (var i in param) {
+      if (i.indexOf ("content_") == 0)
+         cont[i.substring(8)] = param[i];
+   }
+   s.setContent (cont);
    s.prototype = "story";
    s.creator = creator;
    // check if the create date is set in the param object
    if (param.createtime) {
-      var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
+      var ctime = tryEval ('parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm")');
       if (ctime.error)
           result = getError("timestampParse",param.createtime);
       else
@@ -34,7 +39,7 @@ function evalNewStory(s,param,creator) {
    s.ipaddress = param.http_remotehost;
    s.reads = 0;
    // start checking if story-params make sense
-   if (!s.text)
+   if (!param.content_text)
       result = getError("textMissing");
 
    var topic = param.topic ? param.topic : parseInt(param.topicidx,10);

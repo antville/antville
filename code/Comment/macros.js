@@ -1,28 +1,4 @@
 /**
- * macro rendering title of comment
- */
-
-function title_macro(param) {
-   if (!this.title && !param.as)
-      return;
-   if (param.as == "editor")
-      renderInputText(this.createInputParam("title",param));
-   else if (param.as == "link") {
-      param.linkto = "main";
-      param.anchor = this._id;
-      openMarkupElement("a",this.story.createLinkParam(param));
-      if (this.title)
-         res.write(this.title);
-      else {
-         // no title, so we show the first words of the comment-text as link
-         renderTextPreview(this.text,20);
-      }
-      closeLink();   
-   } else 
-      res.write(this.title);
-}
-
-/**
  * macro renders a link to reply to a comment
  */
 

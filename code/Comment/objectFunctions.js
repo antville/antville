@@ -19,22 +19,29 @@ function isOnline() {
  */
 
 function updateComment(param) {
-   var result;
-   if (param.text) {
-
+   var result = new Object();
+   if (param.content_text) {
       // check if there's a difference between old and
       // new text of more than 50 characters:
-      var majorUpdate = Math.abs(this.text.length - param.text.length) > 50;
+      var oldtext = this.getContentPart("text");
+      var majorUpdate = Math.abs(oldtext.length - param.content_text.length) > 50;
 
-      this.title = param.title;
-      this.text = param.text;
+      var cont = this.getContent();
+      for (var i in param) {
+         if (i.indexOf ("content_") == 0)
+             cont[i.substring(8)] = param[i];
+      }
+      this.setContent (cont);
+
+      // this.title = param.title;
+      // this.text = param.text;
       if (majorUpdate)
          this.modifytime = new Date();
+      this.cache.modifytime = new Date();
       this.ipaddress = param.http_remotehost;
       result = getConfirm("update");
    } else {
       result = getError("textMissing");
    }
-   this.cache.lrText = null;
    return (result);
 }

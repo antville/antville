@@ -2,11 +2,11 @@
 <form method="post" action="<% response.action %>">
 <tr>
 <td nowrap="nowrap"><span class="small">Title:</span><br />
-<% this.title as="editor" width="24" style="formTitle" %></td>
+<% this.content part="title" as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap"><span class="small">Text:</span><br />
-<% this.text as="editor" width="30" height="15" style="formText" %></td>
+<% this.content part="text" as="editor" width="30" height="15" style="formText" %></td>
 </tr>
 <tr>
 <td><table border="0" cellspacing="0" cellpadding="3">

@@ -1,23 +1,49 @@
+/*
+ *  macro for rendering a part of the content.
+ */
+function content_macro(param) {
+   // check if this is a story with the old property layout. If so, convert to new.
+   if (this.text && !this.content) {
+      this.convertContentToXML();
+   }
+   if (param.as == "editor") {
+      var inputParam = new Object();
+      inputParam.name = "content_"+param.part;
+      inputParam.value = this.getContentPart (param.part);
+      inputParam.style = param.style;
+      inputParam["class"] = param["class"]
+      if (!param.height || parseInt (param.height) == 1)
+         renderInputText (inputParam);
+      else
+         renderInputTextarea (inputParam);
+   } else if (!this.content) {
+      return;
+   } else {
+      var part = this.getRenderedContentPart (param.part);
+      if (!part && param.fallback)
+         part = this.getRenderedContentPart (param.fallback);
+      if (param.part == "title" && param.as == "link" && !part) {
+         part = this.getRenderedContentPart ("text");
+         param.limit = "20";
+      }
+      if (param.as == "link")
+         openLink(this.href("main"));
+      if (!param.limit)
+         res.write(part);
+      else
+         renderTextPreview(part, param.limit);
+      if (param.as == "link")
+         closeLink();
+   }
+}
+
 /**
  * macro rendering title of story
  */
 
 function title_macro(param) {
-   if (!this.title && !param.as)
-      return;
-   if (param.as == "editor")
-      renderInputText(this.createInputParam("title",param));
-   else if (param.as == "link") {
-      openLink(this.href("main"));
-      if (this.title)
-         res.write(this.title);
-      else {
-         // no title, so we show the first words of the story-text as link
-         renderTextPreview(this.getText(),20);
-      }
-      closeLink();
-   } else
-      res.write(this.title);
+   param.part = "title";
+   this.content_macro (param);
 }
 
 /**
@@ -25,14 +51,8 @@ function title_macro(param) {
  */
 
 function text_macro(param) {
-   if (param.as == "editor")
-      renderInputTextarea(this.createInputParam("text",param));
-   else {
-      if (!param.limit)
-         res.write(this.getText());
-      else
-         renderTextPreview(this.getText(),param.limit);
-   }
+   param.part = "text";
+   this.content_macro (param);
 }
 
 /**

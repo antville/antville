@@ -10,23 +10,29 @@
 function evalStory(param,modifier) {
    var result;
    // if user deleted the text of the story, return with error-message
-   if (!param.text)
+   if (!param.content_text)
       return (getError("textMissing"));
-   
+
    // check if there's a difference between old and
    // new text of more than 50 characters:
-   var majorUpdate = Math.abs(this.text.length - param.text.length) > 50;
+   var oldtext = this.getContentPart("text");
+   var majorUpdate = Math.abs(oldtext.length - param.content_text.length) > 50;
 
    // assign those properties that can be stored anyway
    var editableby = parseInt(param.editableby,10);
    this.editableby = (modifier == this.creator && !isNaN(editableby) ? editableby : null);
-   this.title = param.title;
-   this.text = param.text;
+   // loop through param and collect content properties
+   var cont = this.getContent();
+   for (var i in param) {
+      if (i.indexOf ("content_") == 0)
+         cont[i.substring(8)] = param[i];
+   }
+   this.setContent (cont);
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
    // check if the createtime is set in param
    if (param.createtime) {
-      var ctime = tryEval ('parseTimestamp("'+param.createtime+'", "yyyy-MM-dd HH:mm")');
+      var ctime = tryEval ('parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm")');
       if (ctime.error)
           result = getError("timestampParse",param.createtime);
       else if (ctime.value != this.createtime) {
@@ -66,9 +72,9 @@ function evalStory(param,modifier) {
    }
    if (majorUpdate)
       this.modifytime = new Date();
+   this.cache.modifytime = new Date();
    result = getConfirm("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
-   this.cache.lrText = null;
    return (result);
 }
 
@@ -106,13 +112,17 @@ function isOnline() {
  */
 
 function evalComment(param,story,creator) {
-   var result;
-   if (!param.text)
+   var result = new Object();
+   if (!param.content_text) {
       result = getError("textMissing");
-   else {
+   } else {
       var c = new comment();
-      c.title = param.title;
-      c.text = param.text;
+      var cont = new HopObject ();
+      for (var i in param) {
+         if (i.indexOf ("content_") == 0)
+            cont[i.substring(8)] = param[i];
+      }
+      c.setContent (cont);
       c.site = this.site;
       c.story = story;
       c.createtime = c.modifytime = new Date();
@@ -148,19 +158,59 @@ function deleteComment(currComment) {
  * if false, it caches it again
  * @return String cached text of story
  */
-
-function getText() {
-   if (this.cache.lrText <= this.modifytime) {
+function getRenderedContentPart (name) {
+   var partLastRendered = this.cache["lastRendered_"+name];
+   if (partLastRendered <= this.modifytime ||
+       partLastRendered <= this.cache.modifytime) {
       // cached version of text is too old, so we cache it again
-      var s = createSkin(format(activateLinks(this.text)));
+      var part = this.getContentPart (name);
+      if (!part)
+         return "";
+      var s = createSkin(format(activateLinks(part)));
       this.allowTextMacros(s);
       if (!s.containsMacro("poll"))
-      	this.cache.lrText = new Date();
-      this.cache.rText = this.renderSkinAsString(s);
+         this.cache["lastRendered_"+name] = new Date();
+      this.cache["rendered_"+name] = this.renderSkinAsString(s);
    }
-   return (doWikiStuff(this.cache.rText));
+   return (doWikiStuff(this.cache["rendered_"+name]));
 }
 
+/**
+ *  Get a content part by name.
+ */
+function getContentPart (name) {
+   var cnt = this.getContent();
+   return cnt[name];
+}
+
+/**
+ *  Set a content part to a new value.
+ */
+function setContentPart (name, value) {
+   var cnt = this.getContent();
+   cnt[name] = value;
+   this.setContent (cnt);
+}
+
+/**
+ *  Return the content parsed into a HopObject.
+ */
+function getContent () {
+  if (!this.content)
+     return new HopObject ();
+  return Xml.readFromString (this.content);
+}
+
+/**
+ *  Set the content of this story object.
+ */
+function setContent (cnt) {
+    this.content = Xml.writeToString (cnt);
+    var raw = "";
+    for (var i in cnt)
+       raw += cnt[i]+" ";
+    this.rawcontent = raw.toLowerCase();
+}
 
 /**
  * incrementing the read counter for this story
@@ -184,4 +234,22 @@ function deleteAll() {
       this.comments.remove(c);
    }
    return true;
+}
+
+/**
+ *   Function to convert old story content to new XML encoded format.
+ */
+function convertContentToXML () {
+    var cnt = new HopObject();
+    var raw = "";
+    if (this.title) {
+       cnt.title = this.title;
+       raw += this.title+" ";
+    }
+    if (this.text) {
+       cnt.text = this.text;
+       raw += this.text;
+    }
+    this.content = Xml.writeToString (cnt);
+    this.rawcontent = raw;
 }
