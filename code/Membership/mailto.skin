@@ -1,0 +1,9 @@
+<h4>Mail to '<% membership.username %>'</h4>
+
+<p>Please enter your message to hansi below. To prevent misuse the subject of the eMail is predefined and an additional explanation will be appended to your message. Please make sure your own e-mail address in your <% membermgr.link to="edit" text="profile" %> is correct.</p>
+
+<form method="post" action="<% response.action %>">
+<p><span class="small">Message:</span><br />
+<textarea cols="31" rows="10" class="formText" wrap="virtual" name="text"><% request.text %></textarea></p>
+<p><% input type="submit" name="send" value="Send" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></p>
+</form>
