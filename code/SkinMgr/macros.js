@@ -63,7 +63,7 @@ function prototypechooser_macro(param) {
    for (var i in app.skinfiles)
       options.push({value: i, display: i});
    options.sort(function(a, b) {return a.display.charCodeAt(0) - b.display.charCodeAt(0); });
-   var firstOption = param.firstOption ?  param.firstOption : getMessage("prototype.chooserFirstOption");
+   var firstOption = param.firstOption ?  param.firstOption : getMessage("prototypeChooser.firstOption");
    Html.dropDown({name: "prototype"}, options, null, firstOption);
    return;
 }

@@ -14,7 +14,7 @@ function edit_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("membership.editTitle", {userName: this.username});
+   res.data.title = getMessage("Membership.editTitle", {userName: this.username});
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
    return;
@@ -37,9 +37,9 @@ function delete_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("membership.deleteTitle", {userName: this.username});
+   res.data.title = getMessage("Membership.deleteTitle", {userName: this.username});
    var skinParam = {
-      description: getMessage("membership.deleteDescription"),
+      description: getMessage("Membership.deleteDescription"),
       detail: this.username
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
@@ -71,7 +71,7 @@ function mailto_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("membership.sendEmailTitle", {userName: this.username});
+   res.data.title = getMessage("Membership.sendEmailTitle", {userName: this.username});
    res.data.body = this.renderSkinAsString("mailto");
    this.site.renderSkin("page");
    return;

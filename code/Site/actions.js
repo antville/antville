@@ -36,7 +36,7 @@ function edit_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("site.preferencesTitle", {siteTitle: this.title});
+   res.data.title = getMessage("Site.preferencesTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
    return;
@@ -59,9 +59,9 @@ function delete_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("site.deleteTitle");
+   res.data.title = getMessage("Site.deleteTitle");
    var skinParam = {
-      description: getMessage("site.deleteDescription"),
+      description: getMessage("Site.deleteDescription"),
       detail: this.title
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
@@ -87,7 +87,7 @@ function colorpicker_action() {
 function main_css_action() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "style"));
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "style"));
    res.digest();
    res.contentType = "text/css";
    this.renderSkin("style");
@@ -100,7 +100,7 @@ function main_css_action() {
 function main_js_action() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "javascript"));
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "javascript"));
    res.digest();
    res.contentType = "text/javascript";
    this.renderSkin("javascript");
@@ -225,7 +225,7 @@ function getfile_action() {
  * most read stories of a site
  */
 function mostread_action() {
-   res.data.title = getMessage("site.mostReadTitle", {siteTitle: this.title});
+   res.data.title = getMessage("Site.mostReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("mostread");
    this.renderSkin("page");
    return;
@@ -236,7 +236,7 @@ function mostread_action() {
  */
 function referrers_action() {
    res.data.action = this.href("referrers");
-   res.data.title = getMessage("site.referrersReadTitle", {siteTitle: this.title});
+   res.data.title = getMessage("Site.referrersReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("page");
    return;
@@ -318,7 +318,7 @@ function search_action() {
  */
 function subscribe_action() {
    // create a new member-object and add it to membership-mountpoint
-   this.members.add(new membership(session.user));
+   this.members.add(new Membership(session.user));
    res.message = new Message("subscriptionCreate", this.title);
    res.redirect(this.href());
    return;
@@ -339,9 +339,9 @@ function unsubscribe_action() {
       }
    }
 
-   res.data.title = getMessage("site.subscription.deleteTitle", {siteTitle: this.title});
+   res.data.title = getMessage("Site.subscription.deleteTitle", {siteTitle: this.title});
    var skinParam = {
-      description: getMessage("site.subscription.deleteDescription"),
+      description: getMessage("Site.subscription.deleteDescription"),
       details: this.title
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

@@ -6,7 +6,7 @@ function replylink_macro(param) {
       Html.openLink({href: this.href("comment") +
                      (param.anchor ? "#" + param.anchor : "")});
       if (!param.image)
-         res.write(param.text ? param.text : getMessage("comment.reply"));
+         res.write(param.text ? param.text : getMessage("Comment.reply"));
       else
          renderImage(param);
       Html.closeLink();

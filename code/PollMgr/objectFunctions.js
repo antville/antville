@@ -1,5 +1,5 @@
 /**
- * check if poll is ok. if true, save new poll
+ * check if poll is ok. if true, save new Poll
  * @param Object the req.data object coming in from the action
  * @param Object the user as creator of the poll
  * @return Object containing the properties
@@ -11,7 +11,7 @@
 function evalNewPoll(question, choices, creator) {
    if (!question || !choices || choices.length < 2)
       throw new Exception("pollMissing");
-   var newPoll = new poll(question, creator);
+   var newPoll = new Poll(question, creator);
    this.add(newPoll);
    for (var i=0; i<choices.length; i++)
       newPoll.add(choices[i]);

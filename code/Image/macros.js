@@ -66,7 +66,7 @@ function editlink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : getMessage("manage.edit"));
+         res.write(param.text ? param.text : getMessage("generic.edit"));
       Html.closeLink();
    }
    return;
@@ -86,7 +86,7 @@ function deletelink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : getMessage("manage.delete"));
+         res.write(param.text ? param.text : getMessage("generic.delete"));
       Html.closeLink();
    }
    return;
@@ -122,14 +122,14 @@ function gallery_macro(param) {
       res.write(this.topic);
    else if (param.as == "link") {
       var text = param.text ? param.text : this.topic;
-      Html.link({href: path.site.images.topics.href(this.topic)}, text);
+      Html.link({href: path.Site.images.topics.href(this.topic)}, text);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";
       var img = getPoolObj(param.imgprefix + this.topic, "images");
       if (!img)
          return;
-      Html.openLink({href: path.site.topics.href(this.topic)});
+      Html.openLink({href: path.Site.topics.href(this.topic)});
       renderImage(img.obj, param)
       Html.closeLink();
    }
@@ -141,7 +141,7 @@ function gallery_macro(param) {
  */
 function code_macro(param) {
    res.write("&lt;% ");
-   res.write(this instanceof layoutimage ? "layout.image" : "image");
+   res.write(this instanceof LayoutPicture ? "layout.image" : "image");
    res.write(" name=\"" + this.alias + "\" %&gt;");
    return;
 }

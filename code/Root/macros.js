@@ -54,7 +54,7 @@ function sysmgrnavigation_macro(param) {
 }
 
 /**
- * proxy macro for layoutmgr.layoutchooser
+ * proxy macro for LayoutMgr.layoutchooser
  */
 function layoutchooser_macro(param) {
    if (root.sys_layout)

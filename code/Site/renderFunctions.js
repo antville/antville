@@ -85,7 +85,7 @@ function renderStorylist(day) {
       var sp = new Object();
       var prev = this.get (Math.max(0, idx-days));
       sp.url = this.href() + "?day=" + prev.groupname;
-      sp.text = getMessage("story.newerStories");
+      sp.text = getMessage("Story.newerStories");
       res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    days = Math.min(idx + days++, this.size());
@@ -101,7 +101,7 @@ function renderStorylist(day) {
       var sp = new Object();
       var next = this.get (idx);
       sp.url = this.href() + "?day=" + next.groupname;
-      sp.text = getMessage("story.olderStories");
+      sp.text = getMessage("Story.olderStories");
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    return;

@@ -21,7 +21,7 @@ function checkAccess(action, usr, level) {
 }
 
 /**
- * function checks if user is allowed to create a new site
+ * function checks if user is allowed to create a new Site
  * @param Obj User-Object
  */
 function checkAdd(usr) {
@@ -48,7 +48,7 @@ function checkAdd(usr) {
                throw new DenyException("siteCreateMinMemberSince", formatTimestamp(root.sys_minMemberSince));
          }
          if (usr.sites.count()) {
-            // check if user has to wait some more time before creating a new site
+            // check if user has to wait some more time before creating a new Site
             var lastCreation = Math.floor((new Date() - usr.sites.get(0).createtime)/ONEDAY);
             if (lastCreation < root.sys_waitAfterNewSite)
                throw new DenyException("siteCreateWait", [root.sys_waitAfterNewSite, root.sys_waitAfterNewSite - lastCreation]);

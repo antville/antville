@@ -3,12 +3,12 @@
  * (this method also checks if any of the system layouts is already
  * in the chain of the selected layout, just to prevent a loop
  * between two layouts)
- * @see layoutmgr/renderParentLayoutChooser
+ * @see LayoutMgr/renderParentLayoutChooser
  * @param Object collection to work on
  * @param Object current Layout
  * @param String String to display as first option
  */
-function renderParentLayoutChooser(selLayout) {
+function renderParentLayoutChooser(selLayout, firstOption) {
    var size = this.size();
    var parents = null;
    var selected = null;
@@ -21,6 +21,6 @@ function renderParentLayoutChooser(selLayout) {
    }
    if (selLayout && selLayout.parent)
       selected = selLayout.parent.alias;
-   Html.dropDown({name: "layout"}, options, selected, getMessage("layout.basisChooserFirstOption"));
+   Html.dropDown({name: "layout"}, options, selected, firstOption);
    return;
 }

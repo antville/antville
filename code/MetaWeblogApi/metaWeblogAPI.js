@@ -64,7 +64,7 @@ function getPost(postid, username, password) {
  *                  .mt_tb_ping_urls   String, currently ignored [MT-API]
  *                  .mt_text_more      String, currently ignored [MT-API]
  *  @param publish  int, 0=no, 1=yes
- *  @return String representing the ID of the new story
+ *  @return String representing the ID of the new Story
  */
 function newPost (blogid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);

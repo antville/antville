@@ -34,7 +34,7 @@ function comment_action() {
       res.data.title += " - " + encode(this.story.title);
    res.data.body = this.renderSkinAsString("toplevel");
    res.data.action = this.href("comment");
-   res.data.body += (new comment()).renderSkinAsString("edit");
+   res.data.body += (new Comment()).renderSkinAsString("edit");
    this.site.renderSkin("page");
    return;
 }
@@ -86,7 +86,7 @@ function delete_action() {
    res.data.action = this.href(req.action);
    res.data.title = this.site.title;
    var skinParam = {
-      description: getMessage("comment.deleteDescription"),
+      description: getMessage("Comment.deleteDescription"),
       detail: this.creator.name
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

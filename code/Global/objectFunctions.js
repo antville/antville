@@ -121,7 +121,7 @@ function logAccess() {
       if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
          return;
       var logObj = new Object();
-      logObj.storyID = path.story ? path.story._id : null;
+      logObj.storyID = path.Story ? path.Story._id : null;
       logObj.siteID = site._id;
       logObj.referrer = referrer;
       logObj.remoteHost = req.data.http_remotehost;
@@ -516,16 +516,16 @@ function restoreRescuedText() {
 function getRole(lvl) {
    switch (parseInt(lvl, 10)) {
       case CONTRIBUTOR :
-         return getMessage("user.role.contributor");
+         return getMessage("User.role.contributor");
          break;
       case CONTENTMANAGER :
-         return getMessage("user.role.contentManager");
+         return getMessage("User.role.contentManager");
          break;
       case ADMIN :
-         return getMessage("user.role.admin");
+         return getMessage("User.role.admin");
          break;
       default :
-         return getMessage("user.role.subscriber");
+         return getMessage("User.role.subscriber");
    }
 }
 

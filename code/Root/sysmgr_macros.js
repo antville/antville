@@ -55,7 +55,7 @@ function sys_allowFiles_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_allowFiles ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.sys_allowFiles ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -77,7 +77,7 @@ function sys_diskQuota_macro(param) {
 }
 
 /**
- * macro rendering a dropdown for limiting the creation of new sites
+ * macro rendering a dropdown for limiting the creation of new Sites
  */
 
 function sys_limitNewSites_macro(param) {
@@ -85,7 +85,7 @@ function sys_limitNewSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = [getMessage("sysmgr.registeredUsers"), getMessage("sysmgr.trustedUsers"), "---------"];
+      var options = [getMessage("SysMgr.registeredUsers"), getMessage("SysMgr.trustedUsers"), "---------"];
       Html.dropDown({name: "sys_limitNewSites"}, options, this.sys_limitNewSites);
    } else
       res.write(this.sys_limitNewSites);
@@ -167,7 +167,7 @@ function sys_enableAutoCleanup_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_enableAutoCleanup ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.sys_enableAutoCleanup ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -203,7 +203,7 @@ function sys_blockPrivateSites_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_blockPrivateSites ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.sys_blockPrivateSites ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -251,7 +251,7 @@ function sys_deleteInactiveSites_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_deleteInactiveSites ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.sys_deleteInactiveSites ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -354,7 +354,9 @@ function sys_allowEmails_macro(param) {
   if (!session.user.sysadmin)
      return;
   if (param.as == "editor") {
-     var options = new Array(getMessage("sysmgr.allowNotfication.no"), getMessage("sysmgr.allowNotfication.all"), getMessage("sysmgr.allowNotfication.trusted"));
+     var options = new Array(getMessage("SysMgr.allowNotfication.no"), 
+                             getMessage("SysMgr.allowNotfication.all"), 
+                             getMessage("SysMgr.allowNotfication.trusted"));
      Html.dropDown({name: "sys_allowEmails"}, options, this.sys_allowEmails);
   } else
      res.write(this.sys_allowEmails);

@@ -1,7 +1,7 @@
 /**
  * check if user is allowed to edit a layout image
- * (overwrites image.checkEdit())
- * @see image/securityFunctions.js
+ * (overwrites Picture.checkEdit())
+ * @see Picture/securityFunctions.js
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return Obj Exception or null (if allowed)
@@ -12,9 +12,9 @@ function checkEdit(usr, level) {
 }
 
 /**
- * check if user is allowed to delete an image
- * (overwrites image.checkEdit())
- * @see image/securityFunctions.js
+ * check if user is allowed to delete a Picture
+ * (overwrites Picture.checkEdit())
+ * @see Picture/securityFunctions.js
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return Obj Exception or null (if allowed)

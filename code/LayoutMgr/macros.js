@@ -8,7 +8,6 @@ function layoutchooser_macro(param) {
       var l = this.get(i);
       options.push({value: l.alias, display: l.title});
    }
-   var firstOption = param.firstOption ?  param.firstOption : getMessage("layout.chooserFirstOption");
-   Html.dropDown({name: "layout"}, options, param.selected, firstOption);
+   Html.dropDown({name: "layout"}, options, param.selected, param.firstOption);
    return;
 }

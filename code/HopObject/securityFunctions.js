@@ -9,7 +9,7 @@ function onRequest() {
    // if root.sys_frontSite is set and the site is online
    // we put it into res.handlers.site to ensure that the mirrored
    // site works as expected
-   if (!path.site && root.sys_frontSite && root.sys_frontSite.online)
+   if (!path.Site && root.sys_frontSite && root.sys_frontSite.online)
       res.handlers.site = root.sys_frontSite;
    if (res.handlers.site) {
       if (res.handlers.site.blocked)

@@ -1,8 +1,8 @@
 <p><% linkedpath %></p>
 
-<div class="ample"><% layoutimagemgr.link to="create" text="add a layout image" prefix="...&nbsp;" %></div>
+<div class="ample"><% layoutpicturemgr.link to="create" text="add a layout image" prefix="...&nbsp;" %></div>
 
-<% layoutimagemgr.navigation skin="navigation" %>
+<% layoutpicturemgr.navigation skin="navigation" %>
 
 <% response.pagenavigation %>
 <% response.imagelist %>

@@ -19,7 +19,7 @@ function edit_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("file.editTitle", {fileAlias: this.alias});
+   res.data.title = getMessage("Asset.editTitle", {fileAlias: this.alias});
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
    return;
@@ -42,9 +42,9 @@ function delete_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("file.deleteTitle", {fileAlias: this.alias});
+   res.data.title = getMessage("Asset.deleteTitle", {fileAlias: this.alias});
    var skinParam = {
-      description: getMessage("file.deleteDescription"),
+      description: getMessage("Asset.deleteDescription"),
       detail: this.alias
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

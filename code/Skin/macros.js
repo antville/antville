@@ -12,7 +12,7 @@ function proto_macro() {
  * link to delete action
  */
 function deletelink_macro(param) {
-   if (path.layout != this.layout)
+   if (path.Layout != this.layout)
       return;
    Html.link({href: this.href("delete")}, param.text ? param.text : "delete");
    return;

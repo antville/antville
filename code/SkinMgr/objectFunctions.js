@@ -26,7 +26,7 @@ function saveSkin(param, usr) {
    } else {
       if (param.skin == originalSource)
          return new Message("update");
-      s = new skin(this._parent, splitKey[0], splitKey[1], usr);
+      s = new Skin(this._parent, splitKey[0], splitKey[1], usr);
       s.skin = param.skin;
       var originalSkin = this.getOriginalSkin(splitKey[0], splitKey[1]);
       if (originalSkin)
@@ -220,7 +220,7 @@ function evalImport(data) {
       for (var fileName in proto) {
          name = fileName.substring(0, fileName.lastIndexOf("."));
          // FIXME: replace session.user with a more intelligent solution ...
-         var s = new skin(this._parent, protoName, name, session.user);
+         var s = new Skin(this._parent, protoName, name, session.user);
          buf = data[protoName][fileName].data;
          s.skin = new java.lang.String(buf, 0, buf.length);
          this.add(s);
@@ -263,7 +263,7 @@ function evalCustomSkin(param, creator) {
       throw new Exception("skinCustomExisting");
    else if (app.skinfiles[param.prototype] && app.skinfiles[param.prototype][param.name])
       throw new Exception("skinCustomExisting");
-   var s = new skin(this._parent, param.prototype, param.name, creator);
+   var s = new Skin(this._parent, param.prototype, param.name, creator);
    s.custom = 1;
    if (!this.add(s))
       throw new Exception("skinCustomCreate");

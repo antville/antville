@@ -15,7 +15,7 @@ function main_action() {
       }
    }
    res.data.action = this.href();
-   res.data.title = getMessage("poll.viewTitle", {question: this.question});
+   res.data.title = getMessage("Poll.viewTitle", {question: this.question});
    res.data.body = this.renderSkinAsString("main");
    this.site.renderSkin("page");
    return;
@@ -31,12 +31,12 @@ function edit_action() {
       for (var i=0;i<req.data.title_array.length;i++) {
          var title = req.data.title_array[i].trim();
          if (title)
-            arr[arr.length] = new choice(title);
+            arr[arr.length] = new Choice(title);
       }
    } else if (req.data.title) {
       var title = req.data.title.trim();
       if (title)
-         arr[0] = new choice(title);
+         arr[0] = new Choice(title);
    } else
       arr = this.list();
 
@@ -50,17 +50,17 @@ function edit_action() {
          res.message = err.toString();
       }
    } else if (req.data.addchoice)
-   	arr.push(new choice(""));
+   	arr.push(new Choice(""));
    
    res.push();
    var max = Math.max(2, arr.length);
    for (var i=0;i<max;i++) {
-      var c = arr[i] != null ? arr[i] : new choice("");
+      var c = arr[i] != null ? arr[i] : new Choice("");
     	c.renderSkin("edit", {count: (i+1).toString()});
    }
    res.data.choices = res.pop();
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("poll.editTitle", {question: this.question});
+   res.data.title = getMessage("Poll.editTitle", {question: this.question});
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
    return;
@@ -83,9 +83,9 @@ function delete_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("poll.deleteTitle", {question: this.question});
+   res.data.title = getMessage("Poll.deleteTitle", {question: this.question});
    var skinParam = {
-      description: getMessage("poll.deleteDescription"),
+      description: getMessage("Poll.deleteDescription"),
       detail: this.question
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
@@ -97,7 +97,7 @@ function delete_action() {
  * action renders the current result of a poll
  */
 function results_action() {
-   res.data.title = getMessage("poll.viewTitle", {question: this.question});
+   res.data.title = getMessage("Poll.viewTitle", {question: this.question});
    res.data.body = this.renderSkinAsString("results");
    this.site.renderSkin("page");
    return;

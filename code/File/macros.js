@@ -44,7 +44,7 @@ function editlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("manage.edit"));
+      Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("generic.edit"));
    }
    return;
 }
@@ -64,7 +64,7 @@ function deletelink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : getMessage("manage.delete"));
+         res.write(param.text ? param.text : getMessage("generic.delete"));
       Html.closeLink();
    }
    return;
@@ -78,7 +78,7 @@ function viewlink_macro(param) {
       param.to = "getfile"
       param.urlparam = "name=" + escape(this.alias);
       param.title = encodeForm(this.description);
-      var text = param.text ? param.text : getMessage("manage.view");
+      var text = param.text ? param.text : getMessage("generic.view");
       Html.openTag("a", this.site.createLinkParam(param));
       res.write(text);
       Html.closeTag("a");
@@ -118,12 +118,12 @@ function filetype_macro(param) {
  */
 function clicks_macro(param) {
    if (!this.requestcnt)
-      res.write(param.no ? param.no : getMessage("file.download.no"));
+      res.write(param.no ? param.no : getMessage("Asset.download.no"));
    else if (this.requestcnt == 1)
-      res.write(param.one ? param.one : getMessage("file.download.one"));
+      res.write(param.one ? param.one : getMessage("Asset.download.one"));
    else {
       res.write(this.requestcnt);
-      res.write(param.more ? param.more : " " + getMessage("file.download.more"));
+      res.write(param.more ? param.more : " " + getMessage("Asset.download.more"));
    }
    return;
 }

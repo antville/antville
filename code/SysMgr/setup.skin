@@ -17,7 +17,7 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Layout:</td>
-<td><% root.layoutchooser %><br /><span class="small">Choose the layout to use for this Antville installation. It will also be the default layout for any newly created site.</span></td>
+<td><% root.layoutchooser firstOption="--- choose layout ---" %><br /><span class="small">Choose the layout to use for this Antville installation. It will also be the default layout for any newly created site.</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">e-mail:</td>

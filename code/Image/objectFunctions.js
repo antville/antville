@@ -66,7 +66,7 @@ function save(rawimage, dir, maxWidth, maxHeight) {
 
 
 /**
- * function checks if new image-parameters are correct ...
+ * function checks if new Picture-parameters are correct ...
  * @param Obj Object containing the form values
  * @param Obj User-Object modifying this image
  * @return Obj Object containing two properties:
@@ -103,7 +103,7 @@ function evalImg(param, modifier) {
  */
 
 function createThumbnail(rawimage, dir) {
-   var thumb = (this.site ? new image(this.creator) : new layoutimage(this.creator));
+   var thumb = (this.site ? new Picture(this.creator) : new LayoutPicture(this.creator));
    thumb.site = this.site;
    thumb.layout = this.layout;
    thumb.filename = this.filename + "_small";

@@ -138,13 +138,13 @@ function updateSite(param, admin) {
    var trust = parseInt(param.trusted, 10);
    var block = parseInt(param.blocked, 10);
    if (trust > site.trusted)
-      this.syslogs.add(new syslog("site", site.alias, "granted trust", admin));
+      this.syslogs.add(new SysLog("site", site.alias, "granted trust", admin));
    else if (trust < site.trusted)
-      this.syslogs.add(new syslog("site", site.alias, "revoked trust", admin));
+      this.syslogs.add(new SysLog("site", site.alias, "revoked trust", admin));
    if (block > site.blocked)
-      this.syslogs.add(new syslog("site", site.alias, "blocked site", admin));
+      this.syslogs.add(new SysLog("site", site.alias, "blocked site", admin));
    else if (block < site.blocked)
-      this.syslogs.add(new syslog("site", site.alias, "unblocked site", admin));
+      this.syslogs.add(new SysLog("site", site.alias, "unblocked site", admin));
    site.trusted = trust;
    site.blocked = block;
    return new Message("update");
@@ -169,19 +169,19 @@ function updateUser(param, admin) {
    else {
       //logging
       if (sysadmin > u.sysadmin)
-         this.syslogs.add(new syslog("user", u.name, "granted sysadmin-rights", admin));
+         this.syslogs.add(new SysLog("user", u.name, "granted sysadmin-rights", admin));
       else if (sysadmin < u.sysadmin)
-         this.syslogs.add(new syslog("user", u.name, "revoked sysadmin-rights", admin));
+         this.syslogs.add(new SysLog("user", u.name, "revoked sysadmin-rights", admin));
       u.sysadmin = sysadmin;
    }
    if (trust > u.trusted)
-      this.syslogs.add(new syslog("user", u.name, "granted trust", admin));
+      this.syslogs.add(new SysLog("user", u.name, "granted trust", admin));
    else if (trust < u.trusted)
-      this.syslogs.add(new syslog("user", u.name, "revoked trust", admin));
+      this.syslogs.add(new SysLog("user", u.name, "revoked trust", admin));
    if (block > u.blocked)
-      this.syslogs.add(new syslog("user", u.name, "blocked user", admin));
+      this.syslogs.add(new SysLog("user", u.name, "blocked user", admin));
    else if (block < u.blocked)
-      this.syslogs.add(new syslog("user", u.name, "unblocked user", admin));
+      this.syslogs.add(new SysLog("user", u.name, "unblocked user", admin));
    u.trusted = trust;
    u.blocked = block;
    return new Message("update");
@@ -252,7 +252,7 @@ function evalSystemSetup(param, admin) {
    if (param.layout)
       root.layouts.setDefaultLayout(param.layout);
    // add a new entry in system-log
-   this.syslogs.add(new syslog("system", null, "changed system setup", session.user));
+   this.syslogs.add(new SysLog("system", null, "changed system setup", session.user));
    // everything fine, so we assign true to root.sys_issetup
    root.sys_issetup = true;
    return new Message("systemUpdate");

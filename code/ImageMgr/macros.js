@@ -41,19 +41,45 @@ function imagelist_macro(param) {
  * macro renders a list of existing topics as dropdown
  */
 function topicchooser_macro(param) {
-   var size = path.site.images.topics.size();
+   var size = path.Site.images.topics.size();
    var options = new Array();
    for (var i=0;i<size;i++) {
-      var topic = path.site.images.topics.get(i);
+      var topic = path.Site.images.topics.get(i);
       if (topic.size()) {
          options[i] = {value: topic.groupname, display: topic.groupname};
          if (req.data.addToTopic)
             var selected = req.data.addToTopic;
-         else if (path.image && path.image.topic == topic.groupname)
+         else if (path.Picture && path.Picture.topic == topic.groupname)
             var selected = topic.groupname;
       }
    }
-   var firstOption = param.firstOption ?  param.firstOption : getMessage("gallery.chooserFirstOption");
-   Html.dropDown({name: "addToTopic"}, options, selected, firstOption);
+   Html.dropDown({name: "addToTopic"}, options, selected, param.firstOption);
+   return;
+}
+
+
+/**
+ * render a link to delete action
+ * calls image.deletelink_macro, but only
+ * if the layout in path is the one this image
+ * belongs to
+ */
+function replacelink_macro(param) {
+   if (this.layout && path.Layout != this.layout) {
+      if (session.user) {
+         try {
+            path.Layout.images.checkAdd(session.user, req.data.memberlevel);
+         } catch (deny) {
+            return;
+         }
+         Html.openLink({href: path.Layout.images.href("create") + "?alias=" + this.alias});
+         if (param.image && this.site.images.get(param.image))
+            this.site.renderImage(this.site.images.get(param.image), param);
+         else
+            res.write(param.text ? param.text : getMessage("generic.replace"));
+         Html.closeLink();
+      }
+      return;
+   }
    return;
 }

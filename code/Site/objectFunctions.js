@@ -321,7 +321,7 @@ function getTitle() {
    if (this.title && this.title.trim())
      return stripTags(this.title);
    else
-     return "[" + getMessage("manage.untitled") + "]";
+     return "[" + getMessage("generic.untitled") + "]";
 }
 
 

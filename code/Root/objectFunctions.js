@@ -1,5 +1,5 @@
 /**
- * evaluating new site
+ * evaluating new Site
  */
 function evalNewSite(title, alias, creator) {
    // check alias
@@ -16,20 +16,20 @@ function evalNewSite(title, alias, creator) {
    // check if title is missing
    if (!title)
       throw new Exception("siteTitleMissing");
-   // create new site
-   var newSite = new site(title, alias, creator);
+   // create new Site
+   var newSite = new Site(title, alias, creator);
    // create an initial layout object that is a child layout
    // of the currently active root layout
-   var initLayout = new layout(newSite, newSite.title, creator);
+   var initLayout = new Layout(newSite, newSite.title, creator);
    initLayout.alias = newSite.alias;
    initLayout.setParentLayout(res.handlers.layout);
    if (!this.add(newSite))
       throw new Exception("siteCreate");
    newSite.layouts.add(initLayout);
    newSite.layouts.setDefaultLayout(initLayout.alias);
-   // add the creator to the admins of the new site
-   newSite.members.add(new membership(creator, ADMIN));
-   root.manage.syslogs.add(new syslog("site", newSite.alias, "added site", creator));
+   // add the creator to the admins of the new Site
+   newSite.members.add(new Membership(creator, ADMIN));
+   root.manage.syslogs.add(new SysLog("site", newSite.alias, "added site", creator));
    return new Message("siteCreate", null, newSite);
 }
 
@@ -43,7 +43,7 @@ function deleteSite(site) {
    site.deleteAll();
    site.remove();
    // add syslog-entry
-   this.manage.syslogs.add(new syslog("site", site.alias, "removed site", session.user));
+   this.manage.syslogs.add(new SysLog("site", site.alias, "removed site", session.user));
    return new Message("siteDelete", site.alias);
 }
 
@@ -170,7 +170,7 @@ function getLayout() {
       // return a newly created layout object
       var defLayout = root.layouts.get("default");
       if (!defLayout)
-         return new layout();
+         return new Layout();
       return defLayout;
    }
    return root.sys_layout;

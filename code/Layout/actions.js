@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.title = getMessage("layout.mainTitle", {layoutTitle: this.title});
+   res.data.title = getMessage("Layout.mainTitle", {layoutTitle: this.title});
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
    return;
@@ -24,7 +24,7 @@ function edit_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("layout.editTitle", {layoutTitle: this.title});
+   res.data.title = getMessage("Layout.editTitle", {layoutTitle: this.title});
    res.data.body = this.renderSkinAsString("edit");
    res.handlers.context.renderSkin("page");
    return;
@@ -99,7 +99,7 @@ function download_action() {
       res.redirect(this.href("download.zip"));
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("layout.downloadTitle", {layoutTitle: this.title});
+   res.data.title = getMessage("Layout.downloadTitle", {layoutTitle: this.title});
    res.data.body = this.renderSkinAsString("download");
    res.handlers.context.renderSkin("page");
    return;

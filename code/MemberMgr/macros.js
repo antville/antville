@@ -19,7 +19,7 @@ function membership_macro(param) {
 function subscribelink_macro(param) {
    if (this._parent.online && req.data.memberlevel == null)
       Html.link({href: this._parent.href("subscribe")},
-                param.text ? param.text : getMessgae("membermgr.signUp"));
+                param.text ? param.text : getMessage("MemberMgr.signUp"));
    return;
 }
 
@@ -31,6 +31,6 @@ function subscribelink_macro(param) {
 function subscriptionslink_macro(param) {
    if (session.user.size())
       Html.link({href: this.href("updated")},
-                param.text ? param.text : getMessage("membermgr.subscriptions"));
+                param.text ? param.text : getMessage("MemberMgr.subscriptions"));
    return;
 }

@@ -68,12 +68,12 @@ function evalRegistration(param) {
       newUser.sysadmin = newUser.trusted = 1;
    else
       newUser.sysadmin = newUser.trusted = 0;
-   if (path.site) {
-      var welcomeWhere = path.site.title;
+   if (path.Site) {
+      var welcomeWhere = path.Site.title;
       // if user registered within a public site, we subscribe
       // user to this site
-      if (path.site.online)
-         this.add(new membership(newUser));
+      if (path.Site.online)
+         this.add(new Membership(newUser));
    } else
       var welcomeWhere = root.getTitle();
    return new Message("welcome", [welcomeWhere, newUser.name], newUser);
@@ -122,8 +122,8 @@ function sendPwd(email) {
    var cnt = 0;
    var pwdList = "";
    while (dbResult.next()) {
-      pwdList += getMessage("membermgr.userName") + ": " + dbResult.getColumnItem("USER_NAME") + "\n";
-      pwdList += getMessage("membermgr.password") + ": " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
+      pwdList += getMessage("MemberMgr.userName") + ": " + dbResult.getColumnItem("USER_NAME") + "\n";
+      pwdList += getMessage("MemberMgr.password") + ": " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
       cnt++;
    }
    dbResult.release;
@@ -198,7 +198,7 @@ function evalNewMembership(username, creator) {
    else if (this.get(username))
       throw new Exception("userAlreadyMember");
    try {
-      var ms = new membership(newMember);
+      var ms = new Membership(newMember);
       this.add(ms);
       return new Message("memberCreate", ms.user.name, ms);
    } catch (err) {

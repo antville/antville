@@ -77,9 +77,9 @@ function online_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.online)
-      res.write(param.yes ? param.yes : getMessage("manage.yes"));
+      res.write(param.yes ? param.yes : getMessage("generic.yes"));
    else
-      res.write(param.no ? param.no : getMessage("manage.no"));
+      res.write(param.no ? param.no : getMessage("generic.no"));
    return;
 }
 
@@ -94,7 +94,8 @@ function hasdiscussions_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("discussions") ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.preferences.getProperty("discussions") ? 
+                getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -109,7 +110,8 @@ function usermaycontrib_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("usercontrib") ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.preferences.getProperty("usercontrib") ? 
+                getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -136,7 +138,8 @@ function showarchive_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("archive") ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.preferences.getProperty("archive") ? 
+                getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -151,7 +154,7 @@ function enableping_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.enableping ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.enableping ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -263,10 +266,10 @@ function calendar_macro(param) {
    cal.set(java.util.Calendar.DATE, 1);
    // check whether there's a day or a story in path
    // if so, use it to determine the month to render
-   if (path.story)
-      var today = path.story.day.toString();
-   else if (path.day && path.day._prototype == "day")
-      var today = path.day.groupname.toString();
+   if (path.Story)
+      var today = path.Story.day.toString();
+   else if (path.Day && path.Day._prototype == "Day")
+      var today = path.Day.groupname.toString();
    if (today) {
       // instead of using String.toDate
       // we do it manually here to avoid that a day like 20021001
@@ -360,11 +363,11 @@ function history_macro(param) {
          this.lastmod.prefetchChildren(i, limit);
       var item = this.lastmod.get(i++);
       switch (item._prototype) {
-         case "story":
+         case "Story":
             if (param.show == "comments")
                continue;
             break;
-         case "comment":
+         case "Comment":
             if (param.show == "stories" || !item.story.online ||
                   !item.story.discussions || !discussions)
                continue;
@@ -506,9 +509,9 @@ function layoutchooser_macro(param) {
  * please add some error message for undefined param.event
  */
 function notify_macro(param) {
-   var notifyContributors = param.notifyContributors ? param.notifyContributors : getMessage("site.notifyContributors");
-   var notifyAdmins = param.notifyAdmins ? param.notifyAdmins : getMessage("site.notifyAdmins");
-   var notifyNobody = param.notifyNobody ? param.notifyNobody : getMessage("site.notifyNobody");
+   var notifyContributors = param.notifyContributors ? param.notifyContributors : getMessage("Site.notifyContributors");
+   var notifyAdmins = param.notifyAdmins ? param.notifyAdmins : getMessage("Site.notifyAdmins");
+   var notifyNobody = param.notifyNobody ? param.notifyNobody : getMessage("Site.notifyNobody");
 
    var pref = this.preferences.getProperty("notify_" + param.event);
    if (param.as == "editor") {

@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Layout:</td>
-<td><% site.layoutchooser %><br /><span class="small">Choose the layout to use for your site. <% site.link to="layouts" 
+<td><% site.layoutchooser firstOption="--- choose layout ---" %><br /><span class="small">Choose the layout to use for your site. <% site.link to="layouts" 
 text="Go to the layouts page" %> to browse, manage or test-drive the list 
 of available layouts.</span></td>
 </tr>

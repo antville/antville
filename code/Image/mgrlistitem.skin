@@ -1,16 +1,16 @@
 <div class="listSeparator">&nbsp;</div>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr>
-<td colspan="2" class="small"><strong>Macro:</strong>&nbsp;<% image.code %>
-<div class="ample"><strong>Format: </strong><% image.fileext %><% image.gallery prefix=" in " as="link" text="gallery" %>, <% image.width %>&times;<% image.height %> pixels</div></td>
+<td colspan="2" class="small"><strong>Macro:</strong>&nbsp;<% picture.code %>
+<div class="ample"><strong>Format: </strong><% picture.fileext %><% picture.gallery prefix=" in " as="link" text="gallery" %>, <% picture.width %>&times;<% picture.height %> pixels</div></td>
 </tr>
 <tr>
-<td><div class="storyTitle"><% image.alias %></div>
-<div class="storyDate"><% image.creator as="link" %><% image.createtime format="short" prefix=" on&nbsp;" %></div></td>
-<td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" suffix="<br />" %><% image.replacelink prefix="....&nbsp;" suffix="<br />" %></td>
+<td><div class="storyTitle"><% picture.alias %></div>
+<div class="storyDate"><% picture.creator as="link" %><% picture.createtime format="short" prefix=" on&nbsp;" %></div></td>
+<td align="right" class="small" valign="top" nowrap="nowrap"><% picture.editlink prefix="...&nbsp;" suffix="<br />" %><% picture.deletelink prefix="...&nbsp;" suffix="<br />" %><% picturemgr.replacelink prefix="....&nbsp;" suffix="<br />" %></td>
 </tr>
 <tr>
-<td colspan="2"><% image.show as="thumbnail" vspace="5" %></td>
+<td colspan="2"><% picture.show as="thumbnail" vspace="5" %></td>
 </tr>
 </table>
 

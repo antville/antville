@@ -209,7 +209,7 @@ function testdrivelink_macro(param) {
    if (this.isDefaultLayout())
       return;
    Html.link({href: this.href("startTestdrive")},
-             param.text ? param.text : getMessage("layout.test"));
+             param.text ? param.text : getMessage("Layout.test"));
    return;
 }
 
@@ -221,7 +221,7 @@ function deletelink_macro(param) {
    if (this.isDefaultLayout() || this.sharedBy.size() > 0)
       return;
    Html.link({href: this.href("delete")},
-             param.text ? param.text : getMessage("manage.delete"));
+             param.text ? param.text : getMessage("generic.delete"));
    return;
 }
 
@@ -233,7 +233,7 @@ function activatelink_macro(param) {
    if (this.isDefaultLayout())
       return;
    Html.link({href: this._parent.href() + "?activate=" + this.alias},
-             param.text ? param.text : getMessage("layout.activate"));
+             param.text ? param.text : getMessage("Layout.activate"));
    return;
 }
 
@@ -264,9 +264,9 @@ function shareable_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.shareable)
-      res.write(param.yes ? param.yes : getMessage("manage.yes"));
+      res.write(param.yes ? param.yes : getMessage("generic.yes"));
    else
-      res.write(param.no ? param.no : getMessage("manage.no"));
+      res.write(param.no ? param.no : getMessage("generic.no"));
    return;
 }
 
@@ -275,7 +275,7 @@ function shareable_macro(param) {
  */
 function parent_macro(param) {
    if (param.as == "editor") {
-      this._parent.renderParentLayoutChooser(this, param);
+      this._parent.renderParentLayoutChooser(this, param.firstOption);
    } else if (this.parent)
       return this.parent.title;
    return;

@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.title = getMessage("skin.mgr.listTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.listTitle", {layoutTitle: this._parent.title});
    res.data.list = this.renderTree(req.data);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -13,7 +13,7 @@ function main_action() {
  * list only modified skins
  */
 function modified_action() {
-   res.data.title = getMessage("skin.mgr.listModifiedTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.listModifiedTitle", {layoutTitle: this._parent.title});
    res.data.list = this.renderList(this.modified, req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -24,7 +24,7 @@ function modified_action() {
  * list only custom skins
  */
 function custom_action() {
-   res.data.title = getMessage("skin.mgr.listCustomTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.listCustomTitle", {layoutTitle: this._parent.title});
    res.data.list = this.renderList(this.getCustomSkins(), req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -73,7 +73,7 @@ function edit_action() {
    sp.action = req.data.action;
 
    res.data.action = this.href(req.action);
-   res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin " + getMessage("manage.of") + " " + this._parent.title;
+   res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin " + getMessage("generic.of") + " " + this._parent.title;
    res.data.body = this.renderSkinAsString("edit", sp);
    this.renderSkin("page");
    return;
@@ -97,7 +97,7 @@ function create_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("skin.mgr.createCustomTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.createCustomTitle", {layoutTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
    return;

@@ -50,7 +50,7 @@ function createCheckBoxParam(propName, param) {
 function createLinkParam(param) {
    var url = param.to ? param.to : param.linkto;
    if (!url || url == "main") {
-      if (this._prototype != "comment")
+      if (this._prototype != "Comment")
          param.href = this.href();
       else
          param.href = this.story.href() + "#" + this._id;

@@ -52,8 +52,8 @@ function evalVote(param, usr) {
 		v.choice = c;
 		v.modifytime = new Date();
 	} else
-		this.votes.add(new vote(c, usr));
-	return new Message("vote");
+		this.votes.add(new Vote(c, usr));
+	return new Message("Vote");
 }
 
 /**

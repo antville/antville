@@ -121,11 +121,11 @@ HELP.skins.User = {
 
 // C H O I C E
 
-HELP.macros.choice = {
+HELP.macros.Choice = {
    title: 0
 };
 
-HELP.skins.choice = {
+HELP.skins.Choice = {
    edit: ["param.count", "param.value"],
    graph: ["param.width"],
    main: ["param.name", "param.value", "param.checked", "param.title"],
@@ -135,7 +135,7 @@ HELP.skins.choice = {
 
 // C O M M E N T
 
-HELP.macros.comment = {
+HELP.macros.Comment = {
    commentform: 254497,
    commentlink: 254605,
    comments: 254661,
@@ -147,26 +147,26 @@ HELP.macros.comment = {
    url: 0
 };
 
-HELP.skins.comment = {
+HELP.skins.Comment = {
    edit: ["response.action"]
 };
 
 
 // D A Y
 
-HELP.macros.day = {
+HELP.macros.Day = {
    date: 0,
    link: 0,
    storylist: 0
 };
 
-HELP.skins.day = {
+HELP.skins.Day = {
    main: ["response.storylist", "response.prevpage", "response.nextpage"]
 };
 
 
 // F I L E
-HELP.macros.file = {
+HELP.macros.Asset = {
    alias: 254484,
    clicks: 254490,
    deletelink: 0,
@@ -179,7 +179,7 @@ HELP.macros.file = {
    url: 254504
 };
 
-HELP.skins.file = {
+HELP.skins.Asset = {
    edit: ["response.action"],
    main: ["param.text"]
 }
@@ -187,14 +187,14 @@ HELP.skins.file = {
 
 // F I L E M G R
 
-HELP.skins.filemgr = {
+HELP.skins.AssetMgr = {
    main: ["response.filelist", "response.pagenavigation"]
 };
 
 
 // I M A G E
 
-HELP.macros.image = {
+HELP.macros.Picture = {
    alias: 254543,
    alttext: 254547,
    code: 0,
@@ -207,19 +207,19 @@ HELP.macros.image = {
    width: 254548
 };
 
-HELP.skins.image = {
+HELP.skins.Picture = {
    edit: ["response.action", "request.topic"]
 };
 
 
 // I M A G E M G R
 
-HELP.macros.imagemgr = {
+HELP.macros.PictureMgr = {
    imagelist: 0
    //topicchooser: 0
 };
 
-HELP.skins.imagemgr = {
+HELP.skins.PictureMgr = {
    main: ["response.imagelist", "response.pagenavigation"],
    "new": ["response.action", "request.topic"]
 };
@@ -227,7 +227,7 @@ HELP.skins.imagemgr = {
 
 // L A Y O U T
 
-HELP.macros.layout = {
+HELP.macros.Layout = {
    activatelink: 0, 
    alinkcolor: 650901, 
    bgcolor: 650901, 
@@ -254,7 +254,7 @@ HELP.macros.layout = {
    vlinkcolor: 650901
 };
 
-HELP.skins.layout = {
+HELP.skins.Layout = {
    download: ["response.action"],
    edit: ["response.action"]
 };
@@ -262,25 +262,25 @@ HELP.skins.layout = {
 
 // L A Y O U T I M A G E
 
-HELP.macros.layoutimage = {
+HELP.macros.LayoutPicture = {
    deletelink: 0,
    editlink: 0
 };
 
 
-HELP.skins.layoutimage = {
+HELP.skins.LayoutPicture = {
    edit: ["response.action"]
 };
 
 
 // L A Y O U T I M A G E M G R
 
-HELP.macros.layoutimagemgr = {
+HELP.macros.LayoutPictureMgr = {
    navigation: 0
 };
 
 
-HELP.skins.layoutimagemgr = {
+HELP.skins.LayoutPictureMgr = {
    main: ["response.imagelist", "response.pagenavigation"],
    "new": ["response.action"]
 };
@@ -288,12 +288,12 @@ HELP.skins.layoutimagemgr = {
 
 // L A Y O U T M G R
 
-HELP.macros.layoutmgr = {
+HELP.macros.LayoutMgr = {
    layoutchooser: 0
 };
 
 
-HELP.skins.layoutmgr = {
+HELP.skins.LayoutMgr = {
    "import": ["response.layoutlist", "response.pagenavigation"],
    main: ["response.layoutlist", "response.pagenavigation"],
    "new": ["response.action", "response.layoutlist", "response.pagenavigation"]
@@ -302,13 +302,13 @@ HELP.skins.layoutmgr = {
 
 // M E M B E R M G R
 
-HELP.macros.membermgr = {
+HELP.macros.MemberMgr = {
    membership: 0,
    subscribelink: 0,
    subscriptionslink: 0
 };
 
-HELP.skins.membermgr = {
+HELP.skins.MemberMgr = {
    login: ["response.action"],
    mailnewmember: ["param.creator", "param.account", "param.site", "param.url"],
    mailpassword: ["param.text"],
@@ -324,7 +324,7 @@ HELP.skins.membermgr = {
 
 // M E M B E R S H I P
 
-HELP.macros.membership = {
+HELP.macros.Membership = {
    deletelink: 0,
    editlink: 0,
    email: 0,
@@ -335,7 +335,7 @@ HELP.macros.membership = {
    username: 0
 };
 
-HELP.skins.membership = {
+HELP.skins.Membership = {
    edit: ["response.action"],
    mailmessage: ["param.text"],
    mailto: ["response.action", "request.text"]
@@ -344,7 +344,7 @@ HELP.skins.membership = {
 
 // P O L L
 
-HELP.macros.poll = {
+HELP.macros.Poll = {
    choices: 254699,
    closelink: 254703,
    closetime: 254703,
@@ -356,7 +356,7 @@ HELP.macros.poll = {
    total: 254737
 };
 
-HELP.skins.poll = {
+HELP.skins.Poll = {
    edit: ["response.action", "response.choices"],
    main: ["response.action"]
 };
@@ -364,14 +364,14 @@ HELP.skins.poll = {
 
 // P O L L M G R
 
-HELP.skins.pollmgr = {
+HELP.skins.PollMgr = {
    main: ["response.pollList", "response.pagenavigation"]
 };
 
 
 // S I T E
 
-HELP.macros.site = {
+HELP.macros.Site = {
    age: 142397,
    alias: 142378,
    calendar: 142395,
@@ -409,7 +409,7 @@ HELP.macros.site = {
    xmlbutton: 15492
 };
 
-HELP.skins.site = {
+HELP.skins.Site = {
    calendar: ["param.calendar", "param.month", "param.year", "param.back", "param.forward"],
    calendarday: ["param.day"],
    calendardayheader: ["param.day"],
@@ -432,11 +432,11 @@ HELP.skins.site = {
 
 // S K I N
 
-HELP.macros.skin = {
+HELP.macros.Skin = {
    proto: 0
 }
 
-HELP.skins.skin = {
+HELP.skins.Skin = {
    diff: ["response.status", "response.diff"],
    diffline: ["param.num", "param.status", "param.class", "param.line"]
 }
@@ -444,13 +444,13 @@ HELP.skins.skin = {
 
 // S K I N M G R
 
-HELP.macros.skinmgr = {
+HELP.macros.SkinMgr = {
    macros: 0,
    prototypechooser: 0,
    skinmacros: 0
 }
 
-HELP.skins.skinmgr = {
+HELP.skins.SkinMgr = {
    edit: ["param.text", "param.title", "response.action", "param.action", "request.skinset", "request.key", "param.key", "param.skin"],
    main: ["response.list"],
    "new": ["response.action"],
@@ -462,7 +462,7 @@ HELP.skins.skinmgr = {
 
 // S T O R Y
 
-HELP.macros.story = {
+HELP.macros.Story = {
    addtofront: 0,
    backlinks: 40917,
    commentcounter: 26573,
@@ -484,7 +484,7 @@ HELP.macros.story = {
    viewlink: 254597
 };
 
-HELP.skins.story = {
+HELP.skins.Story = {
    backlinkItem: ["param.count", "param.referrer", "param.text"],
    backlinks: ["param.referrers"],
    edit: ["response.action", "request.topic"],
@@ -495,19 +495,19 @@ HELP.skins.story = {
 
 // S T O R Y M G R
 
-HELP.skins.storymgr = {
+HELP.skins.StoryMgr = {
    main: ["response.storylist", "response.pagenavigation"],
 };
 
 
 // S Y S M G R
 
-HELP.macros.sysmgr = {
+HELP.macros.SysMgr = {
    //drowdown: 0
 };
 
 
-HELP.skins.sysmgr = {
+HELP.skins.SysMgr = {
    blockwarnmail: ["param.site", "param.url", "param.privatetime", "param.daysleft", "param.contact"],
    deletewarnmail: ["param.site", "param.url", "param.inactivity", "param.daysleft"],
    list: ["response.list", "response.pagenavigation"],
@@ -521,18 +521,18 @@ HELP.skins.sysmgr = {
 
 // T O P I C
 
-HELP.macros.topic = {
+HELP.macros.Topic = {
    addstory: 0,
    addimage: 0
 };
 
-HELP.skins.topic = {
+HELP.skins.Topic = {
    main: ["response.storylist", "response.prevpage", "response.nextpage"]
 };
 
 
 // T O P I C M G R
 
-HELP.macros.topicmgr = {
+HELP.macros.TopicMgr = {
    topiclist: 0
 };

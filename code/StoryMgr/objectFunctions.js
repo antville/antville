@@ -1,7 +1,7 @@
 /**
  * function checks if story fits to the minimal needs (must have at least a text ;-)
  * @param Obj story-object to work on
- * @param Obj Object containing the properties needed for creating a new story
+ * @param Obj Object containing the properties needed for creating a new Story
  * @param Obj User-Object creating this story
  * @return Obj Object containing three properties:
  *             - error (boolean): true if error happened, false if everything went fine
@@ -11,7 +11,7 @@
  */
 
 function evalNewStory(param, creator) {
-   var s = new story(creator, param.http_remotehost);
+   var s = new Story(creator, param.http_remotehost);
    // collect content
    var content = extractContent(param);
    // if all story parts are null, return with error-message

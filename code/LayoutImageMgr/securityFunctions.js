@@ -1,7 +1,7 @@
 /**
- * check if user is allowed to add images
- * (overwrites imagemgr.checkAdd())
- * @see imagemgr/securityFunctions.js
+ * check if user is allowed to add pictures
+ * (overwrites PictureMgr.checkAdd())
+ * @see PictureMgr/securityFunctions.js
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)

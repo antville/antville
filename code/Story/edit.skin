@@ -16,7 +16,7 @@ Add this story to a topic<br />
 <table style="margin-left:15px;">
 <tr>
 <td width="48%" class="small">Choose a topic...<br />
-<% story.topicchooser %></td>
+<% story.topicchooser firstOption="--- choose topic ---" %></td>
 <td valign="top" width="4%">&nbsp;</td>
 <td valign="top" width="48%" class="small">...or enter a new one<br /> 
 <input type="text" name="topic" value="<% request.topic %>" /></td>

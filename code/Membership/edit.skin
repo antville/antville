@@ -15,7 +15,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Status:</td>
-<td nowrap="nowrap"><% membership.level as="editor" %></td>
+<td nowrap="nowrap"><% membership.level as="editor" firstOption="--- choose role ---" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>

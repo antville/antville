@@ -223,7 +223,7 @@ function evalDownload(fullExport) {
 }
 
 /**
- * retrieve an image from imagemgr
+ * retrieve an picture from picturemgr
  * this method walks up the hierarchy of layout objects
  * until it finds an image, otherwise returns null
  * @param String name of image to retrieve

@@ -9,8 +9,7 @@ function renderTree(param, collection) {
       var collection = SKINSETS;
    for (var i in collection) {
       var skinset = collection[i];
-      if (skinset.context && 
-          skinset.context != res.handlers.context._prototype.toLowerCase())
+      if (skinset.context && skinset.context != res.handlers.context._prototype)
          continue;
       var sp = {skinset: skinset.key, anchor: skinset.key, "class": "closed"};
       var desc = this.getSkinDescription("skinset", skinset.key);

@@ -60,27 +60,27 @@ ROLES = new Array();
 DISPLAY = new Array();
 
 function initConstants() {
-   ROLES[0] = [SUBSCRIBER, getMessage("user.role.subscriber")];
-   ROLES[1] = [CONTRIBUTOR, getMessage("user.role.contributor")];
-   ROLES[2] = [CONTENTMANAGER, getMessage("user.role.contentManager")];
-   ROLES[3] = [ADMIN, getMessage("user.role.admin")];
+   ROLES[0] = [SUBSCRIBER, getMessage("User.role.subscriber")];
+   ROLES[1] = [CONTRIBUTOR, getMessage("User.role.contributor")];
+   ROLES[2] = [CONTENTMANAGER, getMessage("User.role.contentManager")];
+   ROLES[3] = [ADMIN, getMessage("User.role.admin")];
 
-   DISPLAY["root"] = getMessage("prototype.root");
-   DISPLAY["site"] = getMessage("prototype.site");
-   DISPLAY["topicmgr"] = getMessage("prototype.topicmgr");
-   DISPLAY["imagetopicmgr"] = getMessage("prototype.imagetopicmgr");
-   DISPLAY["storymgr"] = getMessage("prototype.storymgr");
-   DISPLAY["filemgr"] = getMessage("prototype.filemgr");
-   DISPLAY["imagemgr"] = getMessage("prototype.imagemgr");
-   DISPLAY["membermgr"] = getMessage("prototype.membermgr");
-   DISPLAY["sysmgr"] = getMessage("prototype.sysmgr");
-   DISPLAY["pollmgr"] = getMessage("prototype.pollmgr");
-   DISPLAY["skinmgr"] = getMessage("prototype.skinmgr");
-   DISPLAY["layout"] = getMessage("prototype.layout");
-   DISPLAY["layoutmgr"] = getMessage("prototype.layoutmgr");
-   DISPLAY["layoutimagemgr"] = getMessage("prototype.layoutimagemgr");
-   DISPLAY["rootlayoutmgr"] = getMessage("prototype.rootlayoutmgr");
-   DISPLAY["story"] = getMessage("prototype.story");
+   DISPLAY["Root"] = getMessage("Root");
+   DISPLAY["Site"] = getMessage("Site");
+   DISPLAY["TopicMgr"] = getMessage("TopicMgr");
+   DISPLAY["PictureTopicMgr"] = getMessage("PictureTopicMgr");
+   DISPLAY["StoryMgr"] = getMessage("StoryMgr");
+   DISPLAY["AssetMgr"] = getMessage("AssetMgr");
+   DISPLAY["PictureMgr"] = getMessage("PictureMgr");
+   DISPLAY["MemberMgr"] = getMessage("MemberMgr");
+   DISPLAY["SysMgr"] = getMessage("SysMgr");
+   DISPLAY["PollMgr"] = getMessage("PollMgr");
+   DISPLAY["SkinMgr"] = getMessage("SkinMgr");
+   DISPLAY["Layout"] = getMessage("Layout");
+   DISPLAY["LayoutMgr"] = getMessage("LayoutMgr");
+   DISPLAY["LayoutPictureMgr"] = getMessage("LayoutPictureMgr");
+   DISPLAY["RootLayoutMgr"] = getMessage("RootLayoutMgr");
+   DISPLAY["Story"] = getMessage("Story");
 }
 
 /**
@@ -195,61 +195,61 @@ function Skinset(key, skins, context) {
 SKINSETS = [];
 var newSet;
 
-newSet = new Skinset("Root", ["Root.page", "Root.main", "Root.style", "Root.javascript", "Root.sysmgrnavigation", "Root.new"], "root");
+newSet = new Skinset("Root", ["Root.page", "Root.main", "Root.style", "Root.javascript", "Root.sysmgrnavigation", "Root.new"], "Root");
 newSet.add(new Skinset("Root.scripts", ["Root.systemscripts", "Global.colorpickerScripts"]));
-newSet.add(new Skinset("Root.sitelist", ["site.preview", "Root.list"]));
-newSet.add(new Skinset("Root.rss", ["Root.rss", "site.rssItem", "site.rssResource", "Global.rssImage"]));
+newSet.add(new Skinset("Root.sitelist", ["Site.preview", "Root.list"]));
+newSet.add(new Skinset("Root.rss", ["Root.rss", "Site.rssItem", "Site.rssResource", "Global.rssImage"]));
 newSet.add(new Skinset("Root.colorpicker", ["Global.colorpicker", "Global.colorpickerExt", "Global.colorpickerWidget", "Global.colorpickerScripts"]));
-newSet.add(new Skinset("Root.welcome", ["site.welcome", "site.welcomeowner", "site.welcomesysadmin", "Root.welcome"]));
+newSet.add(new Skinset("Root.welcome", ["Site.welcome", "Site.welcomeowner", "Site.welcomesysadmin", "Root.welcome"]));
 newSet.add(new Skinset("Root.various", ["Root.blocked", "Root.notfound", "Root.sysError"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("site", ["site.page", "site.style", "site.javascript", "site.main", "day.main", "story.dayheader"]);
-newSet.add(new Skinset("site.navigation", ["site.contribnavigation", "site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "membermgr.statusloggedin", "membermgr.statusloggedout"]));
-newSet.add(new Skinset("site.topics", ["topicmgr.main", "topic.main"]));
-newSet.add(new Skinset("site.calendar", ["site.calendar", "site.calendardayheader", "site.calendarweek", "site.calendarday", "site.calendarselday"]));
-newSet.add(new Skinset("site.rss", ["site.rss", "story.rssItem", "story.rssResource"]));
-newSet.add(new Skinset("site.search", ["site.searchform", "site.searchbox", "story.searchview"]));
-newSet.add(new Skinset("site.referrers", ["site.referrers", "site.referrerItem"]));
-newSet.add(new Skinset("site.mostread", ["site.mostread", "story.mostread"]));
-newSet.add(new Skinset("site.mails", ["membermgr.mailregconfirm", "membermgr.mailpassword", "membermgr.mailnewmember", "membership.mailstatuschange", "membership.mailmessage", "site.notificationMail"], "root"));
-newSet.add(new Skinset("site.preferences", ["site.edit", "site.notification"], "root"));
-newSet.add(new Skinset("site.User", ["membermgr.login", "membermgr.register", "membermgr.sendpwd", "User.edit", "User.sitelist", "User.subscriptions", "membership.subscriptionlistitem"], "root"));
-newSet.add(new Skinset("site.membermgr", ["membermgr.main", "membermgr.new", "membermgr.membergroup", "membermgr.searchresult", "membermgr.searchresultitem", "membership.mgrlistitem", "membership.edit"], "root"));
-newSet.add(new Skinset("site.various", ["site.robots"]));
+newSet = new Skinset("Site", ["Site.page", "Site.style", "Site.javascript", "Site.main", "day.main", "Story.dayheader"]);
+newSet.add(new Skinset("Site.navigation", ["Site.contribnavigation", "Site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "MemberMgr.statusloggedin", "MemberMgr.statusloggedout"]));
+newSet.add(new Skinset("Site.topics", ["TopicMgr.main", "Topic.main"]));
+newSet.add(new Skinset("Site.calendar", ["Site.calendar", "Site.calendardayheader", "Site.calendarweek", "Site.calendarday", "Site.calendarselday"]));
+newSet.add(new Skinset("Site.rss", ["Site.rss", "Story.rssItem", "Story.rssResource"]));
+newSet.add(new Skinset("Site.search", ["Site.searchform", "Site.searchbox", "Story.searchview"]));
+newSet.add(new Skinset("Site.referrers", ["Site.referrers", "Site.referrerItem"]));
+newSet.add(new Skinset("Site.mostread", ["Site.mostread", "Story.mostread"]));
+newSet.add(new Skinset("Site.mails", ["MemberMgr.mailregconfirm", "MemberMgr.mailpassword", "MemberMgr.mailnewmember", "Membership.mailstatuschange", "Membership.mailmessage", "Site.notificationMail"], "Root"));
+newSet.add(new Skinset("Site.preferences", ["Site.edit", "Site.notification"], "Root"));
+newSet.add(new Skinset("Site.user", ["MemberMgr.login", "MemberMgr.register", "MemberMgr.sendpwd", "User.edit", "User.sitelist", "User.subscriptions", "Membership.subscriptionlistitem"], "Root"));
+newSet.add(new Skinset("Site.membermgr", ["MemberMgr.main", "MemberMgr.new", "MemberMgr.membergroup", "MemberMgr.searchresult", "MemberMgr.searchresultitem", "Membership.mgrlistitem", "Membership.edit"], "Root"));
+newSet.add(new Skinset("Site.various", ["Site.robots"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("story", ["story.display", "story.main", "story.preview", "story.comment", "story.historyview", "story.embed", "story.edit"]);
-newSet.add(new Skinset("story.backlinks", ["story.backlinks", "story.backlinkItem"]));
-newSet.add(new Skinset("story.list", ["storymgr.main", "story.mgrlistitem"]));
+newSet = new Skinset("Story", ["Story.display", "Story.main", "Story.preview", "Story.comment", "Story.historyview", "Story.embed", "Story.edit"]);
+newSet.add(new Skinset("Story.backlinks", ["Story.backlinks", "Story.backlinkItem"]));
+newSet.add(new Skinset("Story.list", ["Storymgr.main", "Story.mgrlistitem"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("comment", ["comment.toplevel", "comment.reply", "comment.edit"]);
+newSet = new Skinset("Comment", ["Comment.toplevel", "Comment.reply", "Comment.edit"]);
 SKINSETS.push(newSet);
 
-newSet = new Skinset("image", ["image.main", "image.edit", "imagemgr.new", "layoutimage.edit", "imagemgr.main", "image.mgrlistitem", "topic.imagetopic"]);
+newSet = new Skinset("Picture", ["Picture.main", "Picture.edit", "PictureMgr.new", "LayoutPicture.edit", "PictureMgr.main", "Picture.mgrlistitem", "Topic.imagetopic"]);
 SKINSETS.push(newSet);
 
-newSet = new Skinset("file", ["file.main", "file.edit", "filemgr.new", "filemgr.main", "file.mgrlistitem"]);
+newSet = new Skinset("Asset", ["Asset.main", "Asset.edit", "AssetMgr.new", "AssetMgr.main", "Asset.mgrlistitem"]);
 SKINSETS.push(newSet);
 
-newSet = new Skinset("poll", ["poll.main", "poll.results", "choice.main", "choice.result", "choice.graph"]);
-newSet.add(new Skinset("poll.editor", ["poll.edit", "choice.edit"]));
-newSet.add(new Skinset("poll.list", ["pollmgr.main", "poll.mgrlistitem"]));
+newSet = new Skinset("Poll", ["Poll.main", "Poll.results", "Choice.main", "Choice.result", "Choice.graph"]);
+newSet.add(new Skinset("Poll.editor", ["Poll.edit", "Choice.edit"]));
+newSet.add(new Skinset("Poll.list", ["PollMgr.main", "Poll.mgrlistitem"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("sysmgr", ["sysmgr.status", "sysmgr.list", "site.sysmgr_listitem", "site.sysmgr_edit", "site.sysmgr_delete", "User.sysmgr_listitem", "User.sysmgr_edit", "syslog.sysmgr_listitem"], "root");
-newSet.add(new Skinset("sysmgr.forms", ["sysmgr.setup", "sysmgr.sitesearchform", "sysmgr.usersearchform", "sysmgr.syslogsearchform"]));
-newSet.add(new Skinset("sysmgr.mails", ["sysmgr.blockwarnmail", "sysmgr.deletewarnmail"]));
+newSet = new Skinset("SysMgr", ["SysMgr.status", "SysMgr.list", "Site.sysmgr_listitem", "Site.sysmgr_edit", "Site.sysmgr_delete", "User.sysmgr_listitem", "User.sysmgr_edit", "SysLog.sysmgr_listitem"], "Root");
+newSet.add(new Skinset("SysMgr.forms", ["SysMgr.setup", "SysMgr.sitesearchform", "SysMgr.usersearchform", "SysMgr.syslogsearchform"]));
+newSet.add(new Skinset("SysMgr.mails", ["SysMgr.blockwarnmail", "SysMgr.deletewarnmail"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("skinmgr", ["skinmgr.main", "skinmgr.page", "skinmgr.edit", "skinmgr.treebranch", "skinmgr.treeleaf", "skin.status", "skin.statuscustom", "skinmgr.new", "skin.diff", "skin.diffline"], "root");
+newSet = new Skinset("SkinMgr", ["SkinMgr.main", "SkinMgr.page", "SkinMgr.edit", "SkinMgr.treebranch", "SkinMgr.treeleaf", "Skin.status", "Skin.statuscustom", "SkinMgr.new", "Skin.diff", "Skin.diffline"], "Root");
 SKINSETS.push(newSet);
 
-newSet = new Skinset("layoutmgr", ["layoutmgr.main", "layoutmgr.new", "layoutmgr.import"], "root");
-newSet.add(new Skinset("layoutmgr.layout", ["layout.mgrlistitem", "layout.main", "layout.edit", "layout.download", "layout.chooserlistitem", "layout.testdrive"]));
-newSet.add(new Skinset("layoutmgr.images", ["layoutimagemgr.main", "layoutimagemgr.navigation", "layoutimagemgr.new"]));
+newSet = new Skinset("LayoutMgr", ["LayoutMgr.main", "LayoutMgr.new", "LayoutMgr.import"], "Root");
+newSet.add(new Skinset("LayoutMgr.layout", ["Layout.mgrlistitem", "Layout.main", "Layout.edit", "Layout.download", "Layout.chooserlistitem", "Layout.testdrive"]));
+newSet.add(new Skinset("LayoutMgr.images", ["LayoutPictureMgr.main", "LayoutPictureMgr.navigation", "LayoutPictureMgr.new"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("various", ["HopObject.delete"], "root");
+newSet = new Skinset("various", ["HopObject.delete"], "Root");
 SKINSETS.push(newSet);

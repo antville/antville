@@ -27,7 +27,7 @@ function content_macro(param) {
          if (!part && param.fallback)
             part = this.getRenderedContentPart(param.fallback, param.as);
          if (param.as == "link") {
-            if (this._prototype != "comment")
+            if (this._prototype != "Comment")
                Html.openLink({href: this.href()});
             else
                Html.openLink({href: this.story.href() + "#" + this._id});
@@ -87,7 +87,7 @@ function createtime_macro(param) {
    } else if (this.createtime) {
       var text = formatTimestamp(this.createtime, param.format);
       if (param.as == "link" && this.online == 2)
-         Html.link({href: path.site.get(String(this.day)).href()}, text);
+         Html.link({href: path.Site.get(String(this.day)).href()}, text);
       else
          res.write(text);
    }
@@ -109,7 +109,7 @@ function editlink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : getMessage("manage.edit"));
+         res.write(param.text ? param.text : getMessage("generic.edit"));
       Html.closeLink();
    }
    return;
@@ -130,7 +130,7 @@ function deletelink_macro(param) {
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
-         res.write(param.text ? param.text : getMessage("manage.delete"));
+         res.write(param.text ? param.text : getMessage("generic.delete"));
       Html.closeLink();
    }
    return;
@@ -160,9 +160,9 @@ function onlinelink_macro(param) {
          // currently, only the "set online" text is customizable, since this macro
          // is by default only used in that context outside the story manager.
          if (this.online)
-            res.write(getMessage("story.setOffline"));
+            res.write(getMessage("Story.setOffline"));
          else
-            res.write(text ? text : getMessage("story.setOnline"));
+            res.write(text ? text : getMessage("Story.setOnline"));
       }
       Html.closeTag("a");
    }
@@ -223,11 +223,11 @@ function commentcounter_macro(param) {
    if (linkflag)
       Html.openTag("a", this.createLinkParam(param2));
    if (commentCnt == 0)
-      res.write(param.no || param.no == "" ? param.no : getMessage("comment.no"));
+      res.write(param.no || param.no == "" ? param.no : getMessage("Comment.no"));
    else if (commentCnt == 1)
-      res.write(param.one ? param.one : getMessage("comment.one"));
+      res.write(param.one ? param.one : getMessage("Comment.one"));
    else
-      res.write(commentCnt + (param.more ? param.more : " " + getMessage("comment.more")));
+      res.write(commentCnt + (param.more ? param.more : " " + getMessage("Comment.more")));
    if (linkflag)
       Html.closeTag("a");
    return;
@@ -262,10 +262,10 @@ function comments_macro(param) {
 function commentform_macro(param) {
    if (session.user) {
       res.data.action = this.href("comment");
-      (new comment()).renderSkin("edit");
+      (new Comment()).renderSkin("edit");
    } else {
       Html.link({href: this.site.members.href("login")},
-                param.text ? param.text : getMessage("comment.loginToAdd"));
+                param.text ? param.text : getMessage("Comment.loginToAdd"));
    }
    return;
 }
@@ -279,7 +279,9 @@ function editableby_macro(param) {
       var options = [EDITABLEBY_ADMINS,
                      EDITABLEBY_CONTRIBUTORS,
                      EDITABLEBY_SUBSCRIBERS];
-      var labels = [getMessage("story.editableBy.admins"), getMessage("story.editableBy.contributors"), getMessage("story.editableBy.subscribers")];
+      var labels = [getMessage("Story.editableBy.admins"), 
+                    getMessage("Story.editableBy.contributors"), 
+                    getMessage("Story.editableBy.subscribers")];
       delete param.as;
       if (req.data.publish || req.data.save)
          var selValue = !isNaN(req.data.editableby) ? req.data.editableby : null;
@@ -294,13 +296,13 @@ function editableby_macro(param) {
    } else {
       switch (this.editableby) {
          case 0 :
-            res.write(getMessage("story.editableBy.adminsLong", {siteTitle: path.site.title}));
+            res.write(getMessage("Story.editableBy.adminsLong", {siteTitle: path.Site.title}));
             return;
          case 1 :
-            res.write(getMessage("story.editableBy.contributorsLong", {siteTitle: path.site.title}));
+            res.write(getMessage("Story.editableBy.contributorsLong", {siteTitle: path.Site.title}));
             break;
          case 2 :
-            res.write(getMessage("story.editableBy.subscribersLong", {siteTitle: path.site.title}));
+            res.write(getMessage("Story.editableBy.subscribersLong", {siteTitle: path.Site.title}));
             break;
       }
    }
@@ -313,7 +315,7 @@ function editableby_macro(param) {
  * so that we can check if the checkbox is embedded in story/edit.skin
  */
 function discussions_macro(param) {
-   if (!path.site.preferences.getProperty("discussions"))
+   if (!path.Site.preferences.getProperty("discussions"))
       return;
    if (param.as == "editor") {
       var inputParam = this.createCheckBoxParam("discussions", param);
@@ -321,7 +323,7 @@ function discussions_macro(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.discussions ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.discussions ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -329,10 +331,10 @@ function discussions_macro(param) {
  * macro renders a list of existing topics as dropdown
  */
 function topicchooser_macro(param) {
-   var size = path.site.topics.size();
+   var size = path.Site.topics.size();
    var options = new Array();
    for (var i=0;i<size;i++) {
-      var topic = path.site.topics.get(i);
+      var topic = path.Site.topics.get(i);
       if (topic.size()) {
          options[i] = {value: topic.groupname, display: topic.groupname};
          if (req.data.addToTopic)
@@ -341,9 +343,7 @@ function topicchooser_macro(param) {
             var selected = topic.groupname;
       }
    }
-
-   var firstOption = param.firstOption ?  param.firstOption : getMessage("topic.chooserFirstOption");
-   Html.dropDown({name: "addToTopic"}, options, selected, firstOption);
+   Html.dropDown({name: "addToTopic"}, options, selected, param.firstOption);
    return;
 }
 
@@ -359,14 +359,14 @@ function topic_macro(param) {
       res.write(this.topic);
    else if (param.as == "link") {
       var text = param.text ? param.text : this.topic;
-      Html.link({href: path.site.topics.href(this.topic)}, text);
+      Html.link({href: path.Site.topics.href(this.topic)}, text);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";
       var img = getPoolObj(param.imgprefix + this.topic, "images");
       if (!img)
          return;
-      Html.openLink({href: path.site.topics.href(this.topic)});
+      Html.openLink({href: path.Site.topics.href(this.topic)});
       renderImage(img.obj, param)
       Html.closeLink();
    }

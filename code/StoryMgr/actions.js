@@ -4,7 +4,7 @@
 function main_action() {
    res.data.storylist = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
-   res.data.title = getMessage("story.onlineStoriesTitle", {siteTitle: this._parent.title});
+   res.data.title = getMessage("Story.onlineStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -13,7 +13,7 @@ function main_action() {
 function offline_action() {
    res.data.storylist = renderList(this.offline, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this.offline, this.href(req.action), 10, req.data.page);
-   res.data.title = getMessage("story.offlineStoriesTitle", {siteTitle: this._parent.title});
+   res.data.title = getMessage("Story.offlineStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -27,21 +27,21 @@ function mystories_action() {
    var ms = this._parent.members.get(session.user.name);
    res.data.storylist = renderList(ms.stories, "mgrlistitem", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.stories, this.href(req.action), 10, req.data.page);
-   res.data.title = getMessage("story.myStoriesTitle", {siteTitle: this._parent.title});
+   res.data.title = getMessage("Story.myStoriesTitle", {siteTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
 }
 
 /**
- * action for creating a new story
+ * action for creating a new Story
  */
 function create_action() {
    // restore any rescued text
    if (session.data.rescuedText)
       restoreRescuedText();
    
-   var s = new story();
+   var s = new Story();
    // storing referrer in session-cache in case user clicks cancel later
    if (!session.data.referrer && req.data.http_referer)
       session.data.referrer = req.data.http_referer;
@@ -61,7 +61,7 @@ function create_action() {
       }
    }
    
-   res.data.title =  getMessage("story.addStoryTo", {siteTitle: this._parent.title});
+   res.data.title =  getMessage("Story.addStoryTo", {siteTitle: this._parent.title});
    res.data.action = this.href("create");
    res.data.body = s.renderSkinAsString("edit");
    this._parent.renderSkin("page");

@@ -12,7 +12,7 @@ function renderStorylist() {
    if (dayIdx > 0) {
       var sp = new Object();
       sp.url = this._parent.get(dayIdx - 1).href();
-      sp.text = getMessage("story.newerStories");
+      sp.text = getMessage("Story.newerStories");
       res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    res.push();
@@ -24,7 +24,7 @@ function renderStorylist() {
    if (dayIdx < this._parent.size()-1) {
       var sp = new Object();
       sp.url = this._parent.get(dayIdx + 1).href();
-      sp.text = getMessage("story.olderStories");
+      sp.text = getMessage("Story.olderStories");
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    return;

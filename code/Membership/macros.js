@@ -38,7 +38,7 @@ function url_macro(param) {
 
 function level_macro(param) {
    if (param.as == "editor")
-      Html.dropDown({name: "level"}, ROLES, this.level, getMessage("manage.chooserFirstOption"));
+      Html.dropDown({name: "level"}, ROLES, this.level, param.firstOption);
    else
       res.write(getRole(this.level));
    return;
@@ -49,7 +49,7 @@ function level_macro(param) {
  */
 function editlink_macro(param) {
    if (this.user != session.user)
-      Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("manage.edit"));
+      Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("generic.edit"));
    return;
 }
 
@@ -60,7 +60,7 @@ function editlink_macro(param) {
 function deletelink_macro(param) {
    if (this.level != ADMIN)
       Html.link({href: this.href("delete")},
-                param.text ? param.text : getMessage("manage.remove"));
+                param.text ? param.text : getMessage("generic.remove"));
    return;
 }
 
@@ -70,6 +70,6 @@ function deletelink_macro(param) {
 function unsubscribelink_macro(param) {
    if (this.level == SUBSCRIBER)
       Html.link({href: this.site.href("unsubscribe")},
-                param.text ? param.text : getMessage("membership.unsubscribe"));
+                param.text ? param.text : getMessage("Membership.unsubscribe"));
    return;
 }

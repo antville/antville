@@ -1,10 +1,10 @@
 /**
- * create a new layout based on a chosen parent layout
+ * create a new Layout based on a chosen parent layout
  * @param Object Object containing the submitted form values
  * @param Object Creator of the layout object
  */
 function evalNewLayout(param, creator) {
-   var newLayout = new layout(this._parent instanceof site ? this._parent : null,
+   var newLayout = new Layout(this._parent instanceof Site ? this._parent : null,
                               "untitled", creator);
    if (param.layout) {
       var parentLayout = root.layouts.get(param.layout);
@@ -42,7 +42,7 @@ function setDefaultLayout(alias) {
 }
 
 /**
- * import a new layout that was uploaded as a zip file
+ * import a new Layout that was uploaded as a zip file
  */
 function evalImport(param, creator) {
    if (param.uploadError) {
@@ -59,7 +59,7 @@ function evalImport(param, creator) {
       var data = contents.files["preferences.xml"].data;
       var importLayout = Xml.readFromString(new java.lang.String(data, 0, data.length));
       // start with the actual import
-      var newLayout = new layout(this._parent instanceof site ? this._parent : null, 
+      var newLayout = new Layout(this._parent instanceof Site ? this._parent : null, 
                                  importLayout.title, session.user);
       newLayout.parent = param.layout ? root.layouts.get(param.layout) : null;
       newLayout.preferences.setAll(importLayout.preferences);

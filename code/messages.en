@@ -2,10 +2,10 @@
 ## error messages
 ##
 error.error = Oops, something went wrong here...
-error.delete = Sorry, cannot delete <% param.value1 %>!
+error.delete = Sorry, cannot delete »<% param.value1 %>«!
 error.database = Oy, there is trouble with the database: <% param.value1 %>
 error.nameInUse = This name is already in use. Please enter a different one.
-error.noSpecialChars = Please use alphanumeric characters only in the 'name' field.
+error.noSpecialChars = Please use alphanumeric characters only in the »name« field.
 error.storyPublish = Sorry, I was not able to determine the online state of the story.
 error.textMissing = Please enter at least something into the 'text' field.
 error.invalidDatePattern = invalid format pattern
@@ -80,7 +80,7 @@ error.systemFrontsiteMissing = Couldn't find the front site you specified. Pleas
 error.userNoSysAdmin = Sorry, you need system administrator rights for that.
 error.memberNoRole = Please choose a new role for this member.
 error.searchUserNoKey = Please enter at least one keyword to search for.
-error.searchNothingFound = Sorry, could not find anything related to '<% param.value1 %>'!
+error.searchNothingFound = Sorry, could not find anything related to »<% param.value1 %>«!
 error.memberDelete = Please specify a membership you want to be removed.
 error.memberLastAdmin = Sorry, you cannot change the last administrator account of this site.
 error.pollDelete = Was not able to delete the poll. Maybe you should try again...
@@ -101,11 +101,11 @@ error.mailTextMissing = Sorry, the mail couldn't be sent because the text is mis
 error.mailSend = Sorry, couldn't send the e-mail. Please try again or contact the site administrators.
 error.layoutTitleMissing = Please specify a title for the new layout.
 error.layoutCreate = Couldn't create the new layout. Please try again later.
-error.layoutDelete = Couldn't delete the layout '<% param.value1 %>'.
+error.layoutDelete = Couldn't delete the layout »<% param.value1 %>«.
 error.layoutParentMissing = You must choose an existing layout as a basis for your new layout.
 error.layoutParentNotFound = Couldn't find the basic layout. Please choose another one.
 error.layoutNoParent = There are no standard images since this layout isn't based on another one.
-error.layoutExport = Oops, couldn't export the layout '<% param.value1 %>'. Please try again or contact the site administrators.
+error.layoutExport = Oops, couldn't export the layout »<% param.value1 %>«. Please try again or contact the site administrators.
 
 error.layoutImportTooBig = Oops, the size of the layout archive exceeded the upload limit. Please contact the site administrators.
 error.layoutImportNoUpload = Please upload a .zip archive that contains the layout you want to import.
@@ -118,7 +118,7 @@ error.layoutImportCorrupt = Sorry, couldn't start the import because the .zip fi
 confirm.save = The changes of <% param.value1 %> where saved successfully.
 confirm.update = The changes were saved successfully.
 confirm.delete = Deletion was accomplished successfully.
-confirm.fileCreate= The file was added successfully. Its name is '<% param.value1 %>'
+confirm.fileCreate= The file was added successfully. Its name is »<% param.value1 %>«
 confirm.fileDelete = The file was deleted successfully.
 confirm.mailSendPassword = An e-mail containing your user data was just sent to you.
 confirm.mailSend = The e-mail was sent successfully.
@@ -138,25 +138,25 @@ confirm.storyUpdate = The story was updated successfully.
 confirm.storyDelete = Successfully deleted the story.
 confirm.systemUpdate = Successfully updated the system configuration.
 confirm.logout = Good bye, <% param.value1 %>! Lookin' forward to seeing you again!
-confirm.welcome = Welcome to <% param.value1 %>, <% param.value2 %>. Have fun!
+confirm.welcome = Welcome to »<% param.value1 %>«, <% param.value2 %>. Have fun!
 confirm.noVote = You did not vote, yet. You can vote until the poll is closed.
-confirm.imageCreate = The uploaded image was saved successfully. Its name is '<% param.value1 %>'
+confirm.imageCreate = The uploaded image was saved successfully. Its name is »<% param.value1 %>«
 confirm.imageDelete = Successfully deleted the image.
 confirm.introLogin = Please enter your username and password.
-confirm.resultOne = Found one item related to '<% param.value1 %>'!
-confirm.resultMany = Found <% param.value2 %> items related to '<% param.value1 %>'.
+confirm.resultOne = Found one item related to »<% param.value1 %>«!
+confirm.resultMany = Found <% param.value2 %> items related to »<% param.value1 %>«.
 confirm.resultDisplay = Displaying items <% param.value1 %> to <% param.value2 %>.
 confirm.resultOneUser = Found one user matching the input.
 confirm.resultTooManyUsers = Found more than 100 users, only displaying the first 100.
 confirm.resultManyUsers = Found <% param.value1 %> users.
-confirm.subscriptionCreate = You successfully subscribed to '<% param.value1 %>'.
+confirm.subscriptionCreate = You successfully subscribed to »<% param.value1 %>«.
 confirm.skinDelete = Successfully deleted the skin.
 confirm.skinCustomCreate = Successfully created the custom <% param.value1 %>/<% param.value2 %>.skin.
-confirm.layoutCreate = Successfully created the layout '<% param.value1 %>'.
-confirm.layoutDelete = Successfully deleted the layout '<% param.value1 %>'.
-confirm.layoutUpdate = Successfully update the layout '<% param.value1 %>'.
+confirm.layoutCreate = Successfully created the layout »<% param.value1 %>«.
+confirm.layoutDelete = Successfully deleted the layout »<% param.value1 %>«.
+confirm.layoutUpdate = Successfully update the layout »<% param.value1 %>«.
 confirm.layoutStopTestdrive = Switched back to standard layout.
-confirm.layoutImport = Successfully imported the layout '<% param.value1 %>'.
+confirm.layoutImport = Successfully imported the layout »<% param.value1 %>«.
 
 ##
 ## mail messages
@@ -164,11 +164,11 @@ confirm.layoutImport = Successfully imported the layout '<% param.value1 %>'.
 mail.statusChange = Your membership at <% param.value1 %> was changed
 mail.sendPwd = Your Accounts for Antville
 mail.newMember = You are now a member of <% param.value1 %>
-mail.blockWarning = Attention! Your site '<% param.value1 %>' will soon be blocked!
-mail.deleteWarning = Attention! Your site '<% param.value1 %>' will soon be deleted!
-mail.registration = Welcome to '<% param.value1 %>'!
+mail.blockWarning = Attention! Your site »<% param.value1 %>« will soon be blocked!
+mail.deleteWarning = Attention! Your site »<% param.value1 %>« will soon be deleted!
+mail.registration = Welcome to »<% param.value1 %>«!
 mail.notification = Notification of site changes
-mail.toUser = Message from a '<% param.value1 %>' user
+mail.toUser = Message from a »<% param.value1 %>« user
 
 
 ##
@@ -200,7 +200,7 @@ deny.pollEdit = Sorry, but modifying a poll that has already started is prohibit
 deny.pollAdd = Sorry, you are not allowed to create polls in this site.
 deny.pollClosed = This poll is closed.
 deny.pollDelete = Sorry, you are not allowed to delete this poll.
-deny.unsubscribe = Sorry, you cannot unsubscribe because you have the status '<% param.value1 %>'.
+deny.unsubscribe = Sorry, you cannot unsubscribe because you have the status »<% param.value1 %>«.
 deny.siteCreateOnlyAdmins = Sorry, sites can be created by  administrators only.
 deny.siteCreateNotAllowed = Sorry, you are not allowed to create a new site.
 deny.siteCreateMinMemberAge = Sorry, you are a registered member for now <% param.value1 %> day(s), but you have to be a member for at least <% param.value2 %> day(s) to create a new site.
@@ -211,40 +211,40 @@ deny.layoutDelete = Sorry, you can't delete the layout because it is already use
 
 ##
 ## Skin set titles and descriptions
-## the string to the left of the pipe ("|") will be used as title
+## the string to the left of the pipe («|«) will be used as title
 ## the string to the right as text
 ##
-skinset.site = Site Layout|Contains those skins that make up the layout of your site, eg. basic page layout, navigation, calendar, search, mails etc.
-skinset.site.basic = Basic Layout|The basic skins used to display your site, eg. the main page, stylesheet, external javascript file etc.
-skinset.site.navigation = Navigation|Skins used for different navigation parts on your site.
-skinset.site.topics = Topics|The skins used to display topics.
-skinset.site.calendar = Calendar|The skins used for rendering the calendar.
-skinset.site.rss = RSS feed|The skins used for the RSS feed of this site.
-skinset.site.search = Search|All search (and search result) skins.
-skinset.site.referrers = Referrers|The skins used to display the referrers pointing to this site.
-skinset.site.mostread = Mostread stories|The skins involved in the "most read" section of your site.
-skinset.site.mails = Mails|The body of confirmation mails that are sent by Antville.
-skinset.site.preferences = Preference forms|Skins defining the layout of the site preferences page.
-skinset.site.user = Login, Registration and Subscriptions
-skinset.site.membermgr = Member management|All the skins used in the "members" section of a site.
-skinset.site.various = Various other skins
+skinset.Site = Site Layout|Contains those skins that make up the layout of your site, eg. basic page layout, navigation, calendar, search, mails etc.
+skinset.Site.basic = Basic Layout|The basic skins used to display your site, eg. the main page, stylesheet, external javascript file etc.
+skinset.Site.navigation = Navigation|Skins used for different navigation parts on your site.
+skinset.Site.topics = Topics|The skins used to display topics.
+skinset.Site.calendar = Calendar|The skins used for rendering the calendar.
+skinset.Site.rss = RSS feed|The skins used for the RSS feed of this site.
+skinset.Site.search = Search|All search (and search result) skins.
+skinset.Site.referrers = Referrers|The skins used to display the referrers pointing to this site.
+skinset.Site.mostread = Mostread stories|The skins involved in the »most read« section of your site.
+skinset.Site.mails = Mails|The body of confirmation mails that are sent by Antville.
+skinset.Site.preferences = Preference forms|Skins defining the layout of the site preferences page.
+skinset.Site.user = Login, Registration and Subscriptions
+skinset.Site.membermgr = Member management|All the skins used in the »members« section of a site.
+skinset.Site.various = Various other skins
              
-skinset.story = Stories|All skins that are used to display stories in different contexts.
-skinset.story.basic = Basic Layout|The skins used for rendering the preview and the full display of stories.
-skinset.story.backlinks = Backlinks|All skins used for rendering the backlinks pointing to a story.
-skinset.story.editor = Story editor|The form for editing a story.
-skinset.story.list = Story pool|The skins used to display the "stories" section of the site.
+skinset.Story = Stories|All skins that are used to display stories in different contexts.
+skinset.Story.basic = Basic Layout|The skins used for rendering the preview and the full display of stories.
+skinset.Story.backlinks = Backlinks|All skins used for rendering the backlinks pointing to a story.
+skinset.Story.editor = Story editor|The form for editing a story.
+skinset.Story.list = Story pool|The skins used to display the »stories« section of the site.
 
-skinset.comment = Comments|Skins used to display comments and the form for entering a new or editing an existing comment.
+skinset.Comment = Comments|Skins used to display comments and the form for entering a new or editing an existing comment.
 
-skinset.image = Images|This section contains all skins used for rendering images in your site.
+skinset.Picture = Images|This section contains all skins used for rendering images in your site.
 
-skinset.file = Files|Skins used to display files in your site.
+skinset.Asset = Files|Skins used to display files in your site.
 
-skinset.poll = Polls|Skins used for rendering polls and their results.
-skinset.poll.basic = Basic Layout
-skinset.poll.editor = Editor forms
-skinset.poll.list = List of polls|These skins control the layout of the poll listing in the "polls" section of the site.
+skinset.Poll = Polls|Skins used for rendering polls and their results.
+skinset.Poll.basic = Basic Layout
+skinset.Poll.editor = Editor forms
+skinset.Poll.list = List of polls|These skins control the layout of the poll listing in the »polls« section of the site.
 
 skinset.Root = System Layout|Skins that define the basic system layout (eg. front page) of an Antville installation.
 skinset.Root.scripts = Javascripts|Client side javascript code skins
@@ -254,87 +254,87 @@ skinset.Root.colorpicker = Colorpicker|The skins used for rendering the differen
 skinset.Root.welcome = Welcome messages|The skins that display welcome messages in different contexts (eg. after creating a new site).
 skinset.Root.various = Various other skins
 
-skinset.sysmgr = System Manager|Skins used in the system management section of an Antville installation.
-skinset.sysmgr.forms = Forms|Skins to display various forms in the system manager.
-skinset.sysmgr.mails = Mails|Mail messages that are used for different notifications.
-skinset.skinmgr = Skin Manager|The skins used for managing and editing the skins of a layout.
-skinset.layoutmgr = Layout Management|Skins used to display the layout manager.
-skinset.layoutmgr.layout = Layout display|All skins used to render layouts in the layout manager.
-skinset.layoutmgr.images = Layout images|These skins define how images in a layout's image pool are displayed.
+skinset.SysMgr = System Manager|Skins used in the system management section of an Antville installation.
+skinset.SysMgr.forms = Forms|Skins to display various forms in the system manager.
+skinset.SysMgr.mails = Mails|Mail messages that are used for different notifications.
+skinset.SkinMgr = Skin Manager|The skins used for managing and editing the skins of a layout.
+skinset.LayoutMgr = Layout Management|Skins used to display the layout manager.
+skinset.LayoutMgr.layout = Layout display|All skins used to render layouts in the layout manager.
+skinset.LayoutMgr.images = Layout images|These skins define how images in a layout's image pool are displayed.
 skinset.various = Various other skins
 
 ##
 ## skin explanation texts
 ##
-## storymgr
-skin.storymgr.main = Main page|The basic view of the "stories" section of a site.
+## StoryMgr
+skin.StoryMgr.main = Main page|The basic view of the »stories« section of a site.
 
-## sysmgr
-skin.sysmgr.list = Listing|This is the generic skin for all listings in the system manager.
-skin.sysmgr.setup = System Setup|The form for the setup of an Antville installation.
-skin.sysmgr.deletewarnmail = Delete Notification Mail|This is the mail message that is sent to site owners to tell them that their site is about to be deleted.
-skin.sysmgr.sitesearchform = Site search form|This skin contains the form for searching sites in system manager.
-skin.sysmgr.blockwarnmail = Block Notification Mail|This is the mail message that is sent to site owners to warn them that their site is about to be blocked.
-skin.sysmgr.syslogsearchform = Log search form|The form for searching within the log entries of system manager.
-skin.sysmgr.usersearchform = User search form|The form for searching users in the system manager.
-skin.sysmgr.status = Status|Displays the system status information.
+## SysMgr
+skin.SysMgr.list = Listing|This is the generic skin for all listings in the system manager.
+skin.SysMgr.setup = System Setup|The form for the setup of an Antville installation.
+skin.SysMgr.deletewarnmail = Delete Notification Mail|This is the mail message that is sent to site owners to tell them that their site is about to be deleted.
+skin.SysMgr.sitesearchform = Site search form|This skin contains the form for searching sites in system manager.
+skin.SysMgr.blockwarnmail = Block Notification Mail|This is the mail message that is sent to site owners to warn them that their site is about to be blocked.
+skin.SysMgr.syslogsearchform = Log search form|The form for searching within the log entries of system manager.
+skin.SysMgr.usersearchform = User search form|The form for searching users in the system manager.
+skin.SysMgr.status = Status|Displays the system status information.
 
-## layout
-skin.layout.main = Layout overview|Displays a preview of a layout including links to the available options.
-skin.layout.download = Download page|Whenever a user wants to download a layout this skin will be rendered.
-skin.layout.chooserlistitem = Chooserlist item|This skin is used to display a layout in the chooser list (that is rendered after the user clicked on 'choose a new layout').
-skin.layout.testdrive = Testdrive message|Display the name of the layout that is currently tested (and a link to terminate the test). This skin will be shown in the message area of the page.
-skin.layout.mgrlistitem = List item|This skin is used to display a single layout in the list of existing layouts.
-skin.layout.edit = Layout editor|This is the form for editing a layout.
+## Layout
+skin.Layout.main = Layout overview|Displays a preview of a layout including links to the available options.
+skin.Layout.download = Download page|Whenever a user wants to download a layout this skin will be rendered.
+skin.Layout.chooserlistitem = Chooserlist item|This skin is used to display a layout in the chooser list (that is rendered after the user clicked on »choose a new layout«).
+skin.Layout.testdrive = Testdrive message|Display the name of the layout that is currently tested (and a link to terminate the test). This skin will be shown in the message area of the page.
+skin.Layout.mgrlistitem = List item|This skin is used to display a single layout in the list of existing layouts.
+skin.Layout.edit = Layout editor|This is the form for editing a layout.
 
-## imagemgr
-skin.imagemgr.main = Image list|Displays the list of images in the "images" section of a site.
-skin.imagemgr.new = New image|This is the form for uploading a new image to the site's imagepool.
+## PictureMgr
+skin.PictureMgr.main = Image list|Displays the list of images in the »images« section of a site.
+skin.PictureMgr.new = New image|This is the form for uploading a new image to the site's imagepool.
 
-## topic
-skin.topic.main = Main topic page|The skin for customizing the look of topic pages.
-skin.topic.imagetopic = Main gallery page|The skin that is used to display an image gallery.
+## Topic
+skin.Topic.main = Main topic page|The skin for customizing the look of topic pages.
+skin.Topic.imagetopic = Main gallery page|The skin that is used to display an image gallery.
 
-## file
-skin.file.main = File display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
-skin.file.mgrlistitem = File list item|Displays a file in the "files" section of a site.
-skin.file.edit = File editor|The form for editing an existing file.
+## Asset
+skin.Asset.main = File display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
+skin.Asset.mgrlistitem = File list item|Displays a file in the »files« section of a site.
+skin.Asset.edit = File editor|The form for editing an existing file.
 
-## choice
-skin.choice.main = Display|The form part for a single choice of a poll.
-skin.choice.result = Choice result|This skin defines the way a single choice result of a poll will be displayed.
-skin.choice.graph = Graph bar|The bar for visualizing the percentage of votes for a choice.
-skin.choice.edit = Choice editor|This is the form element for editing a single choice of a poll (used whenever a user is editing a poll).
+## Choice
+skin.Choice.main = Display|The form part for a single choice of a poll.
+skin.Choice.result = Choice result|This skin defines the way a single choice result of a poll will be displayed.
+skin.Choice.graph = Graph bar|The bar for visualizing the percentage of votes for a choice.
+skin.Choice.edit = Choice editor|This is the form element for editing a single choice of a poll (used whenever a user is editing a poll).
 
-## skinmgr
-skin.skinmgr.main = Skin list|The main page body of the skin manager.
-skin.skinmgr.page = Main page|This is the main page that is used for the skin manager.
-skin.skinmgr.treebranch = Skin section|This skin is used to render a section of skins in the skinmanager.
-skin.skinmgr.new = New custom skin|Contains the form for creating a new custom skin.
-skin.skinmgr.treeleaf = Skin list item|Used to render a skin in the skinmanager.
-skin.skinmgr.edit = Skin editor|This is the form for editing a skin.
+## SkinMgr
+skin.SkinMgr.main = Skin list|The main page body of the skin manager.
+skin.SkinMgr.page = Main page|This is the main page that is used for the skin manager.
+skin.SkinMgr.treebranch = Skin section|This skin is used to render a section of skins in the skinmanager.
+skin.SkinMgr.new = New custom skin|Contains the form for creating a new custom skin.
+skin.SkinMgr.treeleaf = Skin list item|Used to render a skin in the skinmanager.
+skin.SkinMgr.edit = Skin editor|This is the form for editing a skin.
 
-## story
-skin.story.searchview = Search result view|This skin defines how a story or comment will be displayed in the list of search results.
-skin.story.display = Story display|Displays the contents of a story. By default it is embedded in the skins "Preview", "Full story" and "Comment".
-skin.story.rssResource = RSS resource|The "resource" part of a story in the site's RSS feed.
-skin.story.dayheader = Day header|Used to separate between different days in a list of stories (it is shown on top of the list of stories of a single day).
-skin.story.comment = Comment page|This skin defines the page containing the form for adding a new comment.
-skin.story.mgrlistitem = Item display|Displays a single story in the "stories" section of a site.
-skin.story.edit = Story editor form|This is the form used for creating a new or editing an existing story.
-skin.story.rssItem = RSS item|This skin is used to display a story in the RSS feed of a site.
-skin.story.historyview = "recently modified" item|This skin defines how both stories and comments appear in the list of recently modified items.
-skin.story.main = Full story view|This skin is used to display a story in the way you defined it in the "display" skin plus its comments.
-skin.story.embed = Embedded story view|This skin will be used to display a story when you embed it in a skin using the macro.
-skin.story.preview = Story preview|This skin is used to display a story on a front page (i.e. either the front page of your site or the front page of a single day).
-skin.story.backlinks = List of Backlinks|This skin is used whenever there are referrers pointing to a story.
-skin.story.mostread = "Mostread" display|Displays a single story in the list of "most read" stories of a site.
-skin.story.backlinkItem = Backlink|This skin is used to display a single backlink in the list of backlinks of a story.
+## Story
+skin.Story.searchview = Search result view|This skin defines how a story or comment will be displayed in the list of search results.
+skin.Story.display = Story display|Displays the contents of a story. By default it is embedded in the skins »Preview«, »Full story« and »Comment«.
+skin.Story.rssResource = RSS resource|The »resource« part of a story in the site's RSS feed.
+skin.Story.dayheader = Day header|Used to separate between different days in a list of stories (it is shown on top of the list of stories of a single day).
+skin.Story.comment = Comment page|This skin defines the page containing the form for adding a new comment.
+skin.Story.mgrlistitem = Item display|Displays a single story in the »stories« section of a site.
+skin.Story.edit = Story editor form|This is the form used for creating a new or editing an existing story.
+skin.Story.rssItem = RSS item|This skin is used to display a story in the RSS feed of a site.
+skin.Story.historyview = »recently modified« item|This skin defines how both stories and comments appear in the list of recently modified items.
+skin.Story.main = Full story view|This skin is used to display a story in the way you defined it in the »display« skin plus its comments.
+skin.Story.embed = Embedded story view|This skin will be used to display a story when you embed it in a skin using the macro.
+skin.Story.preview = Story preview|This skin is used to display a story on a front page (i.e. either the front page of your site or the front page of a single day).
+skin.Story.backlinks = List of Backlinks|This skin is used whenever there are referrers pointing to a story.
+skin.Story.mostread = »Mostread« display|Displays a single story in the list of »most read« stories of a site.
+skin.Story.backlinkItem = Backlink|This skin is used to display a single backlink in the list of backlinks of a story.
 
-## comment
-skin.comment.reply = Reply|This skin defines how replies to comments are displayed.
-skin.comment.toplevel = Toplevel comment|Defines the layout of top-level comments to a story.
-skin.comment.edit = Comment editor|This skin contains the form for adding a top-level comment or reply.
+## Comment
+skin.Comment.reply = Reply|This skin defines how replies to comments are displayed.
+skin.Comment.toplevel = Toplevel comment|Defines the layout of top-level comments to a story.
+skin.Comment.edit = Comment editor|This skin contains the form for adding a top-level comment or reply.
 
 ## HopObject
 skin.HopObject.delete = Delete confirmation|Displays a confirmation page whenever a user wants to delete something.
@@ -350,114 +350,114 @@ skin.Global.prevpagelink = Link to previous page|This skin displays a link to ne
 skin.Global.colorpickerScripts = Color picker script|This skin contains the client side javascript methods used in the color picker.
 skin.Global.colorpickerWidget = Widget|This is the skin that displays a small box filled with a selected color (normally it's shown on the right of the form elements for entering a color code).
 
-## layoutimagemgr
-skin.layoutimagemgr.main = List of layout images|This skin contains the list of available images of a layout.
-skin.layoutimagemgr.new = New layout image|This is the form for uploading a new layout image.
-skin.layoutimagemgr.navigation = Additional navigation|This skin contains additional navigation links (eg. the link to the "standard images" of the basis layout). It will only be used if a layout is based on another one which owns images too.
+## LayoutPictureMgr
+skin.LayoutPictureMgr.main = List of layout images|This skin contains the list of available images of a layout.
+skin.LayoutPictureMgr.new = New layout image|This is the form for uploading a new layout image.
+skin.LayoutPictureMgr.navigation = Additional navigation|This skin contains additional navigation links (eg. the link to the »standard images« of the basis layout). It will only be used if a layout is based on another one which owns images too.
 
-## image
-skin.image.main = Display in image list|This skin is used to display an image with its name and description in the "images" section of the site.
-skin.image.mgrlistitem = Image list item|The way an image is displayed in the "images" section of a site (and in the list of images of a layout).
-skin.image.edit = Image editor|The form for editing an already uploaded image.
-skin.image.preview = Image preview|Used to display a preview of an image.
+## Picture
+skin.Picture.main = Display in image list|This skin is used to display an image with its name and description in the »images« section of the site.
+skin.Picture.mgrlistitem = Image list item|The way an image is displayed in the »images« section of a site (and in the list of images of a layout).
+skin.Picture.edit = Image editor|The form for editing an already uploaded image.
+skin.Picture.preview = Image preview|Used to display a preview of an image.
 
-## filemgr
-skin.filemgr.main = File list|This skin contains the list of available files in the "files" section of the site.
-skin.filemgr.new = New file|The form for uploading a new file.
+## AssetMgr
+skin.AssetMgr.main = File list|This skin contains the list of available files in the »files« section of the site.
+skin.AssetMgr.new = New file|The form for uploading a new file.
 
-## syslog
-skin.syslog.sysmgr_listitem = Log entry|Displays a single log entry in the log manager.
+## SysLog
+skin.SysLog.sysmgr_listitem = Log entry|Displays a single log entry in the log manager.
 
-## layoutimage
-skin.layoutimage.edit = Layout image editor|The form for editing an existing layout image.
+## LayoutPicture
+skin.LayoutPicture.edit = Layout image editor|The form for editing an existing layout image.
 
-## poll
-skin.poll.main = Main display|This skin shows a poll as form for voting.
-skin.poll.mgrlistitem = Poll list item|This skin is used to display a single poll in the site's "polls" section.
-skin.poll.results = Result display|This skin shows the overall results of a poll.
-skin.poll.edit = Poll editor|The form for creating a new or editing an existing poll.
+## Poll
+skin.Poll.main = Main display|This skin shows a poll as form for voting.
+skin.Poll.mgrlistitem = Poll list item|This skin is used to display a single poll in the site's »polls« section.
+skin.Poll.results = Result display|This skin shows the overall results of a poll.
+skin.Poll.edit = Poll editor|The form for creating a new or editing an existing poll.
 
-## layoutmgr
-skin.layoutmgr.main = Layout list|This skin contains the list of available site layouts.
-skin.layoutmgr.new = New Layout|The form for creating a new layout.
-skin.layoutmgr.import = Import a layout|This is the form for importing a layout zip file.
+## LayoutMgr
+skin.LayoutMgr.main = Layout list|This skin contains the list of available site layouts.
+skin.LayoutMgr.new = New Layout|The form for creating a new layout.
+skin.LayoutMgr.import = Import a layout|This is the form for importing a layout zip file.
 
-## user
+## User
 skin.User.subscriptions = Subscription list|This skin is used to display the subscriptions or memberships of a user.
 skin.User.sysmgr_listitem = User display|Used to display a single user in the user list of system manager.
 skin.User.edit = Profile editor|Contains the form used for changing the profile of a user.
 skin.User.sysmgr_edit = User editor|This skin contains the form for editing a user in system manager.
 skin.User.sitelist = List of subscribed sites|This skin contains the sites a user is subscribed to or a member of ordered by their last update.
 
-## day
-skin.day.main = Main page of a single day|Whenever a user selects a single day via the calendar, this skin will be used to display the list of stories of this day.
+## Day
+skin.Day.main = Main page of a single day|Whenever a user selects a single day via the calendar, this skin will be used to display the list of stories of this day.
 
-## skin
-skin.skin.diffline = Diff line|Displays a single line of the skin source when in "diff" mode.
-skin.skin.statuscustom = Status of a custom skin|This skin contains the status information of a custom skin.
-skin.skin.status = Status of a modified skin|Displays the status of a standard skin that was modified (eg. containing the links to "diff" and "reset").
-skin.skin.diff = Diff page|This is the main page showing the differences between two skins.
+## Skin
+skin.Skin.diffline = Diff line|Displays a single line of the skin source when in »diff« mode.
+skin.Skin.statuscustom = Status of a custom skin|This skin contains the status information of a custom skin.
+skin.Skin.status = Status of a modified skin|Displays the status of a standard skin that was modified (eg. containing the links to »diff« and »reset«).
+skin.Skin.diff = Diff page|This is the main page showing the differences between two skins.
 
-## topicmgr
-skin.topicmgr.main = Topic list|Defines the look of the "topics" section of a site.
+## TopicMgr
+skin.TopicMgr.main = Topic list|Defines the look of the »topics« section of a site.
 
-## membermgr
-skin.membermgr.membergroup = Member group|This skin is used to render a single group of site members.
-skin.membermgr.login = Login form|This skin defines the layout of the login form.
-skin.membermgr.mailpassword = "Password forgotten" mail|This is the mail that is sent to those who used the "password forgotten?" feature.
-skin.membermgr.mailregconfirm = Registration confirmation|This is the confirmation mail that is sent to a user after registration.
-skin.membermgr.sendpwd = "Password forgotten?" form|This skin contains the form for entering the email address in the "password forgotten?" feature.
-skin.membermgr.statusloggedout = Logged out user|If the user visiting your site is not logged in, this skin will be displayed wherever you place the macro .
-skin.membermgr.main = List of members|This skin contains the list of site members (either all of them or by role).
-skin.membermgr.new = Add a new member|This is the form for searching for users in the members secion of a site and adding them to the site members.
-skin.membermgr.statusloggedin = Logged in user|If the user visiting your site is logged in, this skin will be displayed wherever you place the macro .
-skin.membermgr.mailnewmember = Membership confirmation|This is the mail message that is sent to a new member of a site.
-skin.membermgr.searchresultitem = User searchresult item|This skin is used to display a single user in the list of searchresults in a site's "members" section.
-skin.membermgr.searchresult = Result list of user search|This skin contains any search results in a site's "members" section.
-skin.membermgr.register = Registration form|Whenever a user wants to register to Antville via your site, this skin will be used to display the appropriate form.
+## MemberMgr
+skin.MemberMgr.membergroup = Member group|This skin is used to render a single group of site members.
+skin.MemberMgr.login = Login form|This skin defines the layout of the login form.
+skin.MemberMgr.mailpassword = »Password forgotten« mail|This is the mail that is sent to those who used the »password forgotten?« feature.
+skin.MemberMgr.mailregconfirm = Registration confirmation|This is the confirmation mail that is sent to a user after registration.
+skin.MemberMgr.sendpwd = »Password forgotten?« form|This skin contains the form for entering the email address in the »password forgotten?« feature.
+skin.MemberMgr.statusloggedout = Logged out user|If the user visiting your site is not logged in, this skin will be displayed wherever you place the macro .
+skin.MemberMgr.main = List of members|This skin contains the list of site members (either all of them or by role).
+skin.MemberMgr.new = Add a new member|This is the form for searching for users in the members secion of a site and adding them to the site members.
+skin.MemberMgr.statusloggedin = Logged in user|If the user visiting your site is logged in, this skin will be displayed wherever you place the macro .
+skin.MemberMgr.mailnewmember = Membership confirmation|This is the mail message that is sent to a new member of a site.
+skin.MemberMgr.searchresultitem = User searchresult item|This skin is used to display a single user in the list of searchresults in a site's »members« section.
+skin.MemberMgr.searchresult = Result list of user search|This skin contains any search results in a site's »members« section.
+skin.MemberMgr.register = Registration form|Whenever a user wants to register to Antville via your site, this skin will be used to display the appropriate form.
 
-## pollmgr
-skin.pollmgr.main = List of polls|This is the main page of a site's "polls" section.
+## PollMgr
+skin.PollMgr.main = List of polls|This is the main page of a site's »polls« section.
 
-## site
-skin.site.contribnavigation = Navigation bar for contributors|This skin contains additional navigation items for contributors and content managers of your site (i.e. links to add stories or images).
-skin.site.rss = RSS feed|The main skin used for rendering an RSS feed.
-skin.site.calendarweek = Week|Displays a single week inside the calendar containing its weeks.
-skin.site.searchform = Search form|This skin is responsible for the search form of your site.
-skin.site.sysmgr_edit = Site editor|The form for editing a site in the system manager.
-skin.site.edit = Preferences form|This is the form for editing the preferences of a site.
-skin.site.sysmgr_delete = Confirm removal of site|Display a confirm page whenever a system administrator is about to delete a site.
-skin.site.calendar = Main template|The main calendar skin defines the surrounding table with the row containing the current month and year.
-skin.site.main = Frontpage|This skin is used to render the front page of your site.
-skin.site.menuext.reg = Context menu extension|This is a small registry script that will add a "Post to my site" menu entry in the standard Windows context menu (Windows NT and above only)
-skin.site.referrerItem = Referrer list item|This skin is used to display a single referrer in the list of a site's referrers.
-skin.site.notificationMail = Notification mail|This is the mail message sent to those who requested notification mails whenever something inside a site is changed.
-skin.site.preview = Sitelist item|Displays a single site in the list of public sites on the frontpage of an Antville installation (or in the list of public sites).
-skin.site.welcomesysadmin = Welcome message for System Administrators|This is a special welcome message for system administrators (containing a few more navigation options).
-skin.site.notification = Notification preferences|This skin contains form elements for defining the notification features (it is only used if notification is enabled in the system preferences).
-skin.site.style = Stylesheet|Contains the cascaded stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Changing this skin will affect the whole site.
-skin.site.searchbox = Search box|This is the skin used to display the searchbox in the navigation bar.
-skin.site.robots = Search robot restrictions|This skin may contain restrictions for specific (or all) search engine spiders (aka "robots.txt") to control which ones are allowed to index which sections of the site.
-skin.site.mostread = Most read stories|This skin contains the list of most read stories of a site.
-skin.site.calendarday = Day|This skin defines how a single day should appear in the calendar.
-skin.site.javascript = Javascript|This skin contains the JavaScript code that will be included in the header of every page.
-skin.site.rssResource = RSS resource|This skin is used to render the "resource" part of a site in the RSS feed of an Antville installation.
-skin.site.referrers = Site referrers|This skin contains the list of referrers linking to a site.
-skin.site.sysmgr_listitem = Site display|This skin is used to display a single site in the system manager's site list.
-skin.site.welcome = Welcome to new site|This is the basic welcome message for users who are not system administrators. This skin is used as long as a site doesn't contain any story.
-skin.site.welcomeowner = Welcome message for site owner|This skin contains some additions to the welcome message for the site owner.
-skin.site.rssItem = RSS item|This skin is used to display a site in the RSS feed of an Antville installation.
-skin.site.calendarselday = Selected day|Whenever a user views the stories of a specific day, this skin will be used to highlight the selected day.
-skin.site.page = Main page|This is the basic skin of your site. Changing this skin will affect the whole site.
-skin.site.menuext = FIXME
-skin.site.calendardayheader = Header|This skin defines the appearence of the calendar's column headers (i.e. the days "Mon", "Tue", etc.).
-skin.site.adminnavigation = Navigation bar for site administrators|This skin contains the additional navigation items for administrators (i.e. edit preferences, edit skins ...).
+## Site
+skin.Site.contribnavigation = Navigation bar for contributors|This skin contains additional navigation items for contributors and content managers of your site (i.e. links to add stories or images).
+skin.Site.rss = RSS feed|The main skin used for rendering an RSS feed.
+skin.Site.calendarweek = Week|Displays a single week inside the calendar containing its weeks.
+skin.Site.searchform = Search form|This skin is responsible for the search form of your site.
+skin.Site.sysmgr_edit = Site editor|The form for editing a site in the system manager.
+skin.Site.edit = Preferences form|This is the form for editing the preferences of a site.
+skin.Site.sysmgr_delete = Confirm removal of site|Display a confirm page whenever a system administrator is about to delete a site.
+skin.Site.calendar = Main template|The main calendar skin defines the surrounding table with the row containing the current month and year.
+skin.Site.main = Frontpage|This skin is used to render the front page of your site.
+skin.Site.menuext.reg = Context menu extension|This is a small registry script that will add a »Post to my site« menu entry in the standard Windows context menu (Windows NT and above only)
+skin.Site.referrerItem = Referrer list item|This skin is used to display a single referrer in the list of a site's referrers.
+skin.Site.notificationMail = Notification mail|This is the mail message sent to those who requested notification mails whenever something inside a site is changed.
+skin.Site.preview = Sitelist item|Displays a single site in the list of public sites on the frontpage of an Antville installation (or in the list of public sites).
+skin.Site.welcomesysadmin = Welcome message for System Administrators|This is a special welcome message for system administrators (containing a few more navigation options).
+skin.Site.notification = Notification preferences|This skin contains form elements for defining the notification features (it is only used if notification is enabled in the system preferences).
+skin.Site.style = Stylesheet|Contains the cascaded stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Changing this skin will affect the whole site.
+skin.Site.searchbox = Search box|This is the skin used to display the searchbox in the navigation bar.
+skin.Site.robots = Search robot restrictions|This skin may contain restrictions for specific (or all) search engine spiders (aka »robots.txt«) to control which ones are allowed to index which sections of the site.
+skin.Site.mostread = Most read stories|This skin contains the list of most read stories of a site.
+skin.Site.calendarday = Day|This skin defines how a single day should appear in the calendar.
+skin.Site.javascript = Javascript|This skin contains the JavaScript code that will be included in the header of every page.
+skin.Site.rssResource = RSS resource|This skin is used to render the »resource« part of a site in the RSS feed of an Antville installation.
+skin.Site.referrers = Site referrers|This skin contains the list of referrers linking to a site.
+skin.Site.sysmgr_listitem = Site display|This skin is used to display a single site in the system manager's site list.
+skin.Site.welcome = Welcome to new site|This is the basic welcome message for users who are not system administrators. This skin is used as long as a site doesn't contain any story.
+skin.Site.welcomeowner = Welcome message for site owner|This skin contains some additions to the welcome message for the site owner.
+skin.Site.rssItem = RSS item|This skin is used to display a site in the RSS feed of an Antville installation.
+skin.Site.calendarselday = Selected day|Whenever a user views the stories of a specific day, this skin will be used to highlight the selected day.
+skin.Site.page = Main page|This is the basic skin of your site. Changing this skin will affect the whole site.
+skin.Site.menuext = FIXME
+skin.Site.calendardayheader = Header|This skin defines the appearence of the calendar's column headers (i.e. the days »Mon«, »Tue«, etc.).
+skin.Site.adminnavigation = Navigation bar for site administrators|This skin contains the additional navigation items for administrators (i.e. edit preferences, edit skins ...).
 
 ## Root
 skin.Root.list = Site list|This skin contains the list of sites of an Antville installation.
 skin.Root.rss = RSS feed|This is the main skin used to render the RSS feed containing the list of recently updated sites.
 skin.Root.javascript = Javascript|This is the external javascript code.
-skin.Root.main = Frontpage|The "body" of the frontpage of an Antville installation.
+skin.Root.main = Frontpage|The »body« of the frontpage of an Antville installation.
 skin.Root.welcome = Welcome message|This skin contains a welcome message after successful installation of Antville (together with links to the different setup steps).
 skin.Root.page = Main page|The basic view of an Antville system.
 skin.Root.systemscripts = System javascript|This skin contains important client javascript code (eg. the colorpicker scripts). You shouldn't modify this skin unless you really know what you're doing.
@@ -468,205 +468,199 @@ skin.Root.blocked = Blocked user|If a blocked user requests a page this skin wil
 skin.Root.notfound = Notfound page|Displayed if a request ends in a 404 Not Found
 skin.Root.sysError = System Error page|Displayed if a system error occurs.
 
-## membership
-skin.membership.subscriptionlistitem = Subscription list item|This skin is used to display a single subscription or membership in a user's list.
-skin.membership.mgrlistitem = Member display|This skin is used to display a single membership in the "members" section of a site.
-skin.membership.mailstatuschange = Membership status change confirmation|Whenever a site admin changes the status of a member this member will receive a confirmation mail. This skin defines the mail body of it.
-skin.membership.mailmessage = Private Mail message|The body of the mail sent to a user when an admin used the "send an e-mail to this user" feature.
-skin.membership.edit = Member status editor|This skin contains the form for modifying the role of a member.
-skin.membership.mailto = Form for contacting a member|Contains a form for entering the body of a mail to send to a member of a site.
+## Membership
+skin.Membership.subscriptionlistitem = Subscription list item|This skin is used to display a single subscription or membership in a user's list.
+skin.Membership.mgrlistitem = Member display|This skin is used to display a single membership in the »members« section of a site.
+skin.Membership.mailstatuschange = Membership status change confirmation|Whenever a site admin changes the status of a member this member will receive a confirmation mail. This skin defines the mail body of it.
+skin.Membership.mailmessage = Private Mail message|The body of the mail sent to a user when an admin used the »send an e-mail to this user« feature.
+skin.Membership.edit = Member status editor|This skin contains the form for modifying the role of a member.
+skin.Membership.mailto = Form for contacting a member|Contains a form for entering the body of a mail to send to a member of a site.
 
 ##
-## managemnet tasks and macro texts
+## management tasks and macro texts
 ##
 
-# prototypes
-prototype.root = Root
-prototype.site = Home
-prototype.topicmgr = Topics
-prototype.imagetopicmgr = Galleries
-prototype.storymgr = Stories
-prototype.filemgr = Files
-prototype.imagemgr = Images
-prototype.membermgr = Members
-prototype.sysmgr = System Management
-prototype.pollmgr = Polls
-prototype.skinmgr = Skins
-prototype.layout = Layout
-prototype.layoutmgr = Layouts
-prototype.layoutimagemgr = Images
-prototype.rootlayoutmgr = Layouts
-prototype.story = Story
-prototype.chooserFirstOption = --- choose prototype ---
+# prototype titles
+Root = Root
+Site = Home
+TopicMgr = Topics
+PictureTopicMgr = Galleries
+StoryMgr = Stories
+AssetMgr = Files
+PictureMgr = Images
+MemberMgr = Members
+SysMgr = System Management
+PollMgr = Polls
+SkinMgr = Skins
+Layout = Layout
+LayoutMgr = Layouts
+LayoutPictureMgr = Images
+RootLayoutMgr = Layouts
+Story = Story
 
 # general manage tasks
-manage.delete = delete
-manage.view = view
-manage.create = create
-manage.edit = edit
-manage.remove = remove
-manage.replace = replace
-manage.yes = yes
-manage.no = no
-manage.of = of
-manage.previousPage = previous page
-manage.nextPage = next page
-manage.chooserFirstOption = --- select ---
-manage.untitled = untitled
+generic.delete = delete
+generic.view = view
+generic.create = create
+generic.edit = edit
+generic.remove = remove
+generic.replace = replace
+generic.yes = yes
+generic.no = no
+generic.of = of
+generic.previousPage = previous page
+generic.nextPage = next page
+generic.untitled = untitled
 
-# sysmgr
-sysmgr.listTitle = Sites of <% param.serverTitle %>
-sysmgr.setupTitle = System configuration of <% param.serverTitle %>
-sysmgr.sitesTitle = Site manager of <% param.serverTitle %>
-sysmgr.usersTitle = User manager of <% param.serverTitle %>
-sysmgr.logTitle = Log data of <% param.serverTitle %>
-sysmgr.statusTitle = Status of <% param.serverTitle %>
-sysmgr.createSiteTitle = Create a new site
-sysmgr.registeredUsers = all registered users
-sysmgr.trustedUsers = only trusted users
-sysmgr.allowNotfication.no = no notification e-mails
-sysmgr.allowNotfication.all = notification for alle sites
-sysmgr.allowNotfication.trusted = only trusted sites
+# SysMgr
+SysMgr.listTitle = Sites of <% param.serverTitle %>
+SysMgr.setupTitle = System configuration of <% param.serverTitle %>
+SysMgr.sitesTitle = Site manager of <% param.serverTitle %>
+SysMgr.usersTitle = User manager of <% param.serverTitle %>
+SysMgr.logTitle = Log data of <% param.serverTitle %>
+SysMgr.statusTitle = Status of <% param.serverTitle %>
+SysMgr.createSiteTitle = Create a new site
+SysMgr.registeredUsers = all registered users
+SysMgr.trustedUsers = only trusted users
+SysMgr.allowNotfication.no = no notification e-mails
+SysMgr.allowNotfication.all = notification for alle sites
+SysMgr.allowNotfication.trusted = only trusted sites
 
-# site
-site.preferencesTitle = Preferences of <% param.siteTitle %>
-site.subscription.deleteTitle = Remove subscription to <% param.siteTitle %>
-site.subscription.deleteDescription = your subscriptions to
-site.mostReadTitle = Most read stories of <% param.siteTitle %>
-site.referrersReadTitle = Referrers in the last 24 hours of <% param.siteTitle %>
-site.deleteTitle = Delete site 
-site.deleteDescription = the site
-site.notifyNobody = Don't notify anyone
-site.notifyAdmins = Notify content managers and admins
-site.notifyContributors = Notify contributors
-site.previousPage = previous sites
-site.nextPage = more sites
+# Site
+Site.preferencesTitle = Preferences of <% param.siteTitle %>
+Site.subscription.deleteTitle = Remove subscription to <% param.siteTitle %>
+Site.subscription.deleteDescription = your subscriptions to
+Site.mostReadTitle = Most read stories of <% param.siteTitle %>
+Site.referrersReadTitle = Referrers in the last 24 hours of <% param.siteTitle %>
+Site.deleteTitle = Delete site 
+Site.deleteDescription = the site
+Site.notifyNobody = Don't notify anyone
+Site.notifyAdmins = Notify content managers and admins
+Site.notifyContributors = Notify contributors
+Site.previousPage = previous sites
+Site.nextPage = more sites
 
-# layout / skins
-layout.test = test
-layout.activate = activate
-layout.mainTitle = Layout '<% param.layoutTitle %>'
-layout.editTitle = Edit layout: <% param.layoutTitle %>
-layout.downloadTitle = Download layout '<% param.layoutTitle %>'
-layout.basisChooserFirstOption = --- choose a basis layout ---
-layout.chooserFirstOption = --- choose a layout ---
-layout.mgr.listImagesTitle = Images of <% param.layoutTitle %>
-layout.mgr.listParentImagesTitle = Images of layout '<% param.parentLayoutTitle %>'
-layout.mgr.mainTitle = Layouts of <% param.siteTitle %>
-layout.mgr.createTitle = Create a new layouts for <% param.siteTitle %>
-layout.mgr.importTitle = Import a layout to <% param.siteTitle %>
+# Layout / Skin
+Layout.test = test
+Layout.activate = activate
+Layout.mainTitle = Layout '<% param.layoutTitle %>'
+Layout.editTitle = Edit layout: <% param.layoutTitle %>
+Layout.downloadTitle = Download layout '<% param.layoutTitle %>'
+LayoutMgr.listImagesTitle = Images of <% param.layoutTitle %>
+LayoutMgr.listParentImagesTitle = Images of layout '<% param.parentLayoutTitle %>'
+LayoutMgr.mainTitle = Layouts of <% param.siteTitle %>
+LayoutMgr.createTitle = Create a new layouts for <% param.siteTitle %>
+LayoutMgr.importTitle = Import a layout to <% param.siteTitle %>
 
-skin.diff.noDiffAvailable = This is a custom skin, therefor no differences can be displayed
-skin.diff.noDiffFound = No differences were found
-skin.diff.displayTitle = Diffs for <% param.skinProto %>/<% param.skinName %>.skin of layout <% param.layoutTitle %>
-skin.mgr.listTitle = Skins of <% param.layoutTitle %>
-skin.mgr.listModifiedTitle = Modified skins of <% param.layoutTitle %>
-skin.mgr.listCustomTitle = Custom skins of <% param.layoutTitle %>
-skin.mgr.createCustomTitle = Create a custom skin for <% param.layoutTitle %>
-skin.deleteDescription = modifications of the skin
-skin.customSkin = custom skin
+Skin.diff.noDiffAvailable = This is a custom skin, therefor no differences can be displayed
+Skin.diff.noDiffFound = No differences were found
+Skin.diff.displayTitle = Diffs for <% param.skinProto %>/<% param.skinName %>.skin of layout <% param.layoutTitle %>
+SkinMgr.listTitle = Skins of <% param.layoutTitle %>
+SkinMgr.listModifiedTitle = Modified skins of <% param.layoutTitle %>
+SkinMgr.listCustomTitle = Custom skins of <% param.layoutTitle %>
+SkinMgr.createCustomTitle = Create a custom skin for <% param.layoutTitle %>
+Skin.deleteDescription = modifications of the skin
+Skin.customSkin = custom skin
 
-# story / comment
-story.online = online
-story.offline = offline
-story.setOnline = set online
-story.setOffline = set offline
-story.newerStories = newer stories
-story.olderStories = older stories
-story.editTitle = Edit story
-story.deleteTitle = Delete story
-story.deleteDescription = the story
-story.deleteDescriptionNoTitle = a story
-story.onlineStoriesTitle = Online stories of <% param.siteTitle %>
-story.offlineStoriesTitle = Offline stories of <% param.siteTitle %>
-story.myStoriesTitle = My stories of <% param.siteTitle %>
-story.addStoryTo = Add a story to <% param.siteTitle %>
-story.editableBy.admins = the author
-story.editableBy.contributors = all contributors
-story.editableBy.subscribers = all subscribers
-story.editableBy.adminsLong = Content managers and admins of '<% param.siteTitle %>'
-story.editableBy.contributorsLong =  Contributors to '<% param.siteTitle %>'
-story.editableBy.subscribersLong =  Subscribers of and contributors to '<% param.siteTitle %>'
+# Story / Comment
+Story.online = online
+Story.offline = offline
+Story.setOnline = set online
+Story.setOffline = set offline
+Story.newerStories = newer stories
+Story.olderStories = older stories
+Story.editTitle = Edit story
+Story.deleteTitle = Delete story
+Story.deleteDescription = the story
+Story.deleteDescriptionNoTitle = a story
+Story.onlineStoriesTitle = Online stories of <% param.siteTitle %>
+Story.offlineStoriesTitle = Offline stories of <% param.siteTitle %>
+Story.myStoriesTitle = My stories of <% param.siteTitle %>
+Story.addStoryTo = Add a story to <% param.siteTitle %>
+Story.editableBy.admins = the author
+Story.editableBy.contributors = all contributors
+Story.editableBy.subscribers = all subscribers
+Story.editableBy.adminsLong = Content managers and admins of '<% param.siteTitle %>'
+Story.editableBy.contributorsLong =  Contributors to '<% param.siteTitle %>'
+Story.editableBy.subscribersLong =  Subscribers of and contributors to '<% param.siteTitle %>'
 
-comment.deleteDescription = a comment from
-comment.reply = reply
-comment.no = 0 comments
-comment.one = 1 comment
-comment.more = comments
-comment.loginToAdd = Login to add your comment!
+Comment.deleteDescription = a comment from
+Comment.reply = reply
+Comment.no = 0 comments
+Comment.one = 1 comment
+Comment.more = comments
+Comment.loginToAdd = Login to add your comment!
 
-# user / membership / membermgr
-user.role.contributor = Contributor
-user.role.contentManager = Content Manager
-user.role.admin = Administrator
-user.role.subscriber = Subscriber
-user.role.members = Members
-user.role.contributors = Contributors
-user.role.contentManagers = Content Managers
-user.role.administrators = Administrators
-user.role.subscribers = Subscribers
-user.loginTitle = Login
-user.registerTitle = Login
-user.recoverPasswordTitle = Recover your password
+# User / Membership / MemberMgr
+User.role.contributor = Contributor
+User.role.contentManager = Content Manager
+User.role.admin = Administrator
+User.role.subscriber = Subscriber
+User.role.members = Members
+User.role.contributors = Contributors
+User.role.contentManagers = Content Managers
+User.role.administrators = Administrators
+User.role.subscribers = Subscribers
+User.loginTitle = Login
+User.registerTitle = Login
+User.recoverPasswordTitle = Recover your password
 
-membership.editTitle = Edit membership: <% param.userName %>
-membership.deleteTitle = Delete membership: <% param.userName %>
-membership.deleteDescription = the membership of
-membership.sendEmailTitle = Send e-mail to <% param.userName %>
-membership.unsubscribe = unsubscribe
+Membership.editTitle = Edit membership: <% param.userName %>
+Membership.deleteTitle = Delete membership: <% param.userName %>
+Membership.deleteDescription = the membership of
+Membership.sendEmailTitle = Send e-mail to <% param.userName %>
+Membership.unsubscribe = unsubscribe
 
-membermgr.subscriptions = subscriptions
-membermgr.updateTitle = Updated sites for user <% param.userName %>
-membermgr.searchTitle = Search members of <% param.siteTitle %>
-membermgr.editProfileTitle = Profile of user <% param.userName %>
-membermgr.signUp = sign up
-membermgr.userName = Username
-membermgr.password = Password
-membermgr.subscriptionsTitle = <% param.title %> of user <% param.userName %>
-membermgr.viewListTitle = <% param.title %> of <% param.siteName %>
+MemberMgr.subscriptions = subscriptions
+MemberMgr.updateTitle = Updated sites for user <% param.userName %>
+MemberMgr.searchTitle = Search members of <% param.siteTitle %>
+MemberMgr.editProfileTitle = Profile of user <% param.userName %>
+MemberMgr.signUp = sign up
+MemberMgr.userName = Username
+MemberMgr.password = Password
+MemberMgr.subscriptionsTitle = <% param.title %> of user <% param.userName %>
+MemberMgr.viewListTitle = <% param.title %> of <% param.siteName %>
 
-# file
-file.mgr.listTitle = Files of <% param.siteTitle %>
-file.mgr.listMyFilesTitle = My files of <% param.siteTitle %>
-file.mgr.addFile = Add a file to <% param.siteTitle %>
-file.editTitle = Edit file: <% param.fileAlias %>
-file.deleteTitle = Delete file: <% param.fileAlias %>
-file.deleteDescription = the file
-file.downloads.no = 0 downloads
-file.downloads.one = 1 download
-file.downloads.more = downloads
+# Asset / AssetMgr
+AssetMgr.listTitle = Files of <% param.siteTitle %>
+AssetMgr.listMyFilesTitle = My files of <% param.siteTitle %>
+AssetMgr.addFile = Add a file to <% param.siteTitle %>
+Asset.editTitle = Edit file: <% param.fileAlias %>
+Asset.deleteTitle = Delete file: <% param.fileAlias %>
+Asset.deleteDescription = the file
+Asset.downloads.no = 0 downloads
+Asset.downloads.one = 1 download
+Asset.downloads.more = downloads
 
-# image
-image.viewTitle = View image: <% param.imageAlias %>
-image.editTitle = Edit image: <% param.imageAlias %>
-image.deleteTitle = Delete image: <% param.imageAlias %>
-image.deleteDescription = the image
-image.mgr.listTitle = Images of <% param.parentTitle %>
-image.mgr.listMyImagesTitle = My images of <% param.parentTitle %>
-image.mgr.addImage = Add an image to <% param.parentTitle %>
+# Picture
+Picture.viewTitle = View image: <% param.imageAlias %>
+Picture.editTitle = Edit image: <% param.imageAlias %>
+Picture.deleteTitle = Delete image: <% param.imageAlias %>
+Picture.deleteDescription = the image
+PictureMgr.listTitle = Images of <% param.parentTitle %>
+PictureMgr.listMyImagesTitle = My images of <% param.parentTitle %>
+PictureMgr.addImage = Add an image to <% param.parentTitle %>
 
-# topics / galleries
-topic.addStoryToTopic = add a story to this topic
-topic.chooserFirstOption = -- choose topic --
-topic.mgr.mainTitle = Topics of <% param.title %>
+# Topic / gallery
+Topic.addStoryToTopic = add a story to this topic
+TopicMgr.mainTitle = Topics of <% param.title %>
 
-gallery.addImageToGallery = add an image to this gallery
-gallery.chooserFirstOption = -- choose gallery --
-gallery.mgr.mainTitle = Galleries of <% param.siteTitle %>
+PictureTopicMgr.addImageToGallery = add an image to this gallery
+PictureTopicMgr.mainTitle = Galleries of <% param.siteTitle %>
 
-# poll
-poll.voteTitle = Vote poll: <% param.question %>
-poll.editTitle = Edit poll: <% param.question %>
-poll.deleteTitle = Delete poll: <% param.question %>
-poll.deleteDescription = the poll
-poll.viewTitle = View poll: <% param.question %>
-poll.listTitle = All polls of <% param.siteTitle %>
-poll.listOpenPollsTitle = Open polls of <% param.siteTitle %>
-poll.listMyPollsTitle = My polls of <% param.siteTitle %>
-poll.addPoll = Add a poll to <% param.siteTitle %>
-poll.vote = vote
-poll.votes.no = votes
-poll.votes.one = vote
-poll.votes.more = votes
-poll.close = close
-poll.reopen = re-open
+# Poll
+Poll.voteTitle = Vote poll: <% param.question %>
+Poll.editTitle = Edit poll: <% param.question %>
+Poll.deleteTitle = Delete poll: <% param.question %>
+Poll.deleteDescription = the poll
+Poll.viewTitle = View poll: <% param.question %>
+Poll.listTitle = All polls of <% param.siteTitle %>
+Poll.listOpenPollsTitle = Open polls of <% param.siteTitle %>
+Poll.listMyPollsTitle = My polls of <% param.siteTitle %>
+Poll.addPoll = Add a poll to <% param.siteTitle %>
+Poll.vote = vote
+Poll.votes.no = votes
+Poll.votes.one = vote
+Poll.votes.more = votes
+Poll.close = close
+Poll.reopen = re-open

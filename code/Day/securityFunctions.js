@@ -6,10 +6,10 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   if (!path.site.online)
+   if (!path.Site.online)
       checkIfLoggedIn();
    try {
-      path.site.checkView(usr, level);
+      path.Site.checkView(usr, level);
    } catch (deny) {
       res.message = deny.toString();
       res.redirect(root.href());

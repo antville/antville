@@ -110,7 +110,7 @@ function linkedpath_macro (param) {
    if (!separator)
       separator = " : ";
    var title;
-   var start = (path.site == null) ? 0 : 1;
+   var start = (path.Site == null) ? 0 : 1;
    for (var i=start; i<path.length-1; i++) {
       title = path[i].getNavigationName();
       Html.link({href: path[i].href()}, title);
@@ -370,8 +370,8 @@ function colorpicker_macro(param) {
    if (param.color)
    	param.color = renderColorAsString(param.color);
 
-   if (path.story || path.storymgr) {
-      var obj = path.story ? path.story : new story();
+   if (path.Story || path.StoryMgr) {
+      var obj = path.Story ? path.Story : new Story();
       param2.part = param.name;
       // use res.push()/res.pop(), otherwise the macro
       // would directly write to response
@@ -379,8 +379,8 @@ function colorpicker_macro(param) {
       obj.content_macro(param2);
       param.editor = res.pop();
       param.color = renderColorAsString(obj.content.getProperty(param.name));
-   } else if (path.layout) {
-      var obj = path.layout;
+   } else if (path.Layout) {
+      var obj = path.Layout;
       // use res.push()/res.pop(), otherwise the macro
       // would directly write to response
       res.push();
@@ -540,8 +540,8 @@ function gallery_macro(param) {
          var img = getPoolObj(aliases[i], "images");
          if (img && img.obj) items[items.length] = img.obj;
       }
-   } else if (param.topic==null && path.topic) {
-      var items = path.topic.list();
+   } else if (param.topic == null && path.Topic) {
+      var items = path.Topic.list();
    } else {
       var top = param.topic;
       if (top && top.indexOf("/") >= 0) {

@@ -1,21 +1,21 @@
 <p><% linkedpath %></p>
 
-<p>To insert this image into a story, comment or skin copy/paste the following code: <pre><% image.code %></pre></p>
+<p>To insert this image into a story, comment or skin copy/paste the following code: <pre><% picture.code %></pre></p>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% image.creator as="link" %><% image.createtime format="short" prefix=" on " %></span></td>
+<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% picture.creator as="link" %><% picture.createtime format="short" prefix=" on " %></span></td>
 </tr>
 <tr>
 <td valign="top">
-<div class="storyTitle"><% image.alias %></div>
-<% image.topic prefix="Gallery: " as="link" %>
-<div class="small">(<% image.fileext %>, <% image.width %>&times;<% image.height %> pixels, <% image.filesize %>)</div>
+<div class="storyTitle"><% picture.alias %></div>
+<% picture.topic prefix="Gallery: " as="link" %>
+<div class="small">(<% picture.fileext %>, <% picture.width %>&times;<% picture.height %> pixels, <% picture.filesize %>)</div>
 </td>
-<td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
+<td align="right" class="small" valign="top" nowrap="nowrap"><% picture.editlink prefix="...&nbsp;" suffix="<br />" %><% picture.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>
 
-<p><% image.show %></p>
+<p><% picture.show %></p>
 
-<p><% image.alttext %></p>
+<p><% picture.alttext %></p>

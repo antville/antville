@@ -26,7 +26,7 @@ function main_action() {
 }
 
 /**
- * action for creating a new site
+ * action for creating a new Site
  */
 function new_action() {
    if (req.data.cancel)
@@ -43,7 +43,7 @@ function new_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("sysmgr.createSiteTitle");
+   res.data.title = getMessage("SysMgr.createSiteTitle");
    res.data.body = this.renderSkinAsString("new");
    root.renderSkin("page");
    return;
@@ -56,7 +56,7 @@ function list_action() {
    // preparing res.data.sitelist and prev/next links
    // ("all" shows all sites, "yes" is for scrolling)
    this.renderSitelist(25, "all", "yes");
-   res.data.title = getMessage("sysmgr.listTitle ", {serverTitle: root.getTitle()});
+   res.data.title = getMessage("SysMgr.listTitle ", {serverTitle: root.getTitle()});
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
    return;
@@ -146,7 +146,7 @@ function notfound_action() {
    res.data.title = root.getTitle() + " - 404 - not found";
    req.data.path = req.path;
    res.data.body = root.renderSkinAsString("notfound");
-   (path.site && path.site.online ? path.site : root).renderSkin("page");
+   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
    return;
 }
 
@@ -157,7 +157,7 @@ function sys_error_action() {
    res.data.title = root.getTitle() + " - Error";
    res.data.body = root.renderSkinAsString("sysError");
    res.data.body += "<p>"+res.error+"</p>";
-   (path.site && path.site.online ? path.site : root).renderSkin("page");
+   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
    return;
 }
 
@@ -166,7 +166,7 @@ function sys_error_action() {
  */
 function main_css_action() {
    res.dependsOn(res.handlers.layout.modifytime);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "style"));
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("Root", "style"));
    res.digest();
    res.contentType = "text/css";
    this.renderSkin("style");
@@ -178,7 +178,7 @@ function main_css_action() {
  */
 function main_js_action() {
    res.dependsOn(res.handlers.layout.modifytime);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "javascript"));
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("Root", "javascript"));
    res.digest();
    res.contentType = "text/javascript";
    root.renderSkin("javascript");

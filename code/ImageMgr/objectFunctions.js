@@ -1,6 +1,6 @@
 /**
  * function checks if image fits to the minimal needs
- * @param Obj Object containing the properties needed for creating a new image
+ * @param Obj Object containing the properties needed for creating a new Picture
  * @param Obj User-Object creating this image
  * @return Obj Object containing two properties:
  *             - error (boolean): true if error happened, false if everything went fine
@@ -23,7 +23,7 @@ function evalImg(param, creator) {
       throw new Exception("siteQuotaExceeded");
    }
 
-   var newImg = new image(creator);
+   var newImg = new Picture(creator);
    // if no alias given try to determine it
    if (!param.alias)
       newImg.alias = buildAliasFromFile(param.rawimage, this);

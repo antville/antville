@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.title = getMessage("image.viewTitle", {imageAlias: this.alias});
+   res.data.title = getMessage("Picture.viewTitle", {imageAlias: this.alias});
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
    return;
@@ -21,7 +21,7 @@ function edit_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("image.editTitle", {imageAlias: this.alias});
+   res.data.title = getMessage("Picture.editTitle", {imageAlias: this.alias});
    res.data.body = this.renderSkinAsString("edit");
    res.handlers.context.renderSkin("page");
    return;
@@ -33,7 +33,7 @@ function edit_action() {
  */
 function delete_action() {
    if (req.data.cancel)
-      res.redirect(path.imagemgr.href());
+      res.redirect(path.PictureMgr.href());
    else if (req.data.remove) {
       try {
          var url = this._parent.href();
@@ -45,9 +45,9 @@ function delete_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("image.deleteTitle", {imageAlias: this.alias});
+   res.data.title = getMessage("Picture.deleteTitle", {imageAlias: this.alias});
    var skinParam = {
-      description: getMessage("image.deleteDescription"),
+      description: getMessage("Picture.deleteDescription"),
       detail: this.alias
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);

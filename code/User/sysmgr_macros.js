@@ -52,7 +52,7 @@ function sysmgr_editlink_macro(param) {
       param.urlparam += "&page=" + req.data.page;
    param.anchor = this.name;
    Html.openTag("a", root.manage.createLinkParam(param));
-   res.write(param.text ? param.text : getMessage("manage.edit"));
+   res.write(param.text ? param.text : getMessage("generic.edit"));
    Html.closeTag("a");
    return;
 }
@@ -103,10 +103,10 @@ function sysmgr_trusted_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = [getMessage("manage.no"), getMessage("manage.yes")];
+      var options = [getMessage("generic.no"), getMessage("generic.yes")];
       Html.dropDown({name: "trusted"}, options, this.trusted);
    } else
-      res.write(this.trusted ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.trusted ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -119,10 +119,10 @@ function sysmgr_blocked_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = [getMessage("manage.no"), getMessage("manage.yes")];
+      var options = [getMessage("generic.no"), getMessage("generic.yes")];
       Html.dropDown({name: "blocked"}, options, this.blocked);
    } else
-      res.write(this.blocked ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.blocked ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 
@@ -135,10 +135,10 @@ function sysmgr_sysadmin_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = [getMessage("manage.no"), getMessage("manage.yes")];
+      var options = [getMessage("generic.no"), getMessage("generic.yes")];
       Html.dropDown({name: "sysadmin"}, options, this.sysadmin);
    } else
-      res.write(this.sysadmin ? getMessage("manage.yes") : getMessage("manage.no"));
+      res.write(this.sysadmin ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 }
 

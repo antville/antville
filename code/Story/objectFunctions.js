@@ -14,7 +14,7 @@ function constructor(creator, ipaddress) {
 
 /**
  * check if story is ok; if true, save changed story
- * @param Obj Object containing the properties needed for creating a new story
+ * @param Obj Object containing the properties needed for creating a new Story
  * @param Obj User-Object modifying this story
  * @return Obj Object containing two properties:
  *             - error (boolean): true if error happened, false if everything went fine
@@ -132,7 +132,7 @@ function evalComment(param, creator) {
    var content = extractContent(param);
    if (!content.exists)
       throw new Exception("textMissing");
-   var c = new comment(this.site, creator, param.http_remotehost);
+   var c = new Comment(this.site, creator, param.http_remotehost);
    c.setContent(content.value);
    // let's keep the title property:
    c.title = content.value.title;
@@ -140,7 +140,7 @@ function evalComment(param, creator) {
    // also add to story.comments since it has
    // cachemode set to aggressive and wouldn't refetch
    // its child collection index otherwise
-   if (this._prototype == "story")
+   if (this._prototype == "Story")
       this.comments.add(c);
    else
       this.story.comments.add(c);

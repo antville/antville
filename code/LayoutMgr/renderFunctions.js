@@ -2,7 +2,7 @@
  * render a dropdown containing shareable system layouts
  * @param Object current layout
  */
-function renderParentLayoutChooser(selLayout) {
+function renderParentLayoutChooser(selLayout, firstOption) {
    var options = [];
    var size = root.layouts.shareable.size();
    for (var i=0;i<size;i++) {
@@ -12,6 +12,6 @@ function renderParentLayoutChooser(selLayout) {
    var selected = null;
    if (selLayout && selLayout.parent)
       selected = selLayout.parent.alias;
-   Html.dropDown({name: "layout"}, options, selected, getMessage("layout.chooserFirstOption"));
+   Html.dropDown({name: "layout"}, options, selected, firstOption);
    return;
 }
