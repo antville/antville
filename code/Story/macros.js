@@ -438,11 +438,14 @@ function backlinks_macro(param) {
 function addtofront_macro(param) {
    if (param.as == "editor") {
       param.checked = "checked";
-      if ((req.data.publish || req.data.save) && !req.data.addToFront)
+      // if we're in a submit, use the submitted form value. 
+      // otherwise, render the object's value.
+      if (req.data.publish || req.data.save) {
+         if (!req.data.addToFront)
+            delete param.checked;
+      } else if (this.online != null && this.online < 2) {
          delete param.checked;
-      else if (this.online != null && this.online < 2)
-         delete param.checked;
-      param.value = 1;
+      }
       param.name = "addToFront";
       delete param.as;
       Html.checkBox(param);
