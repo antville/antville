@@ -41,8 +41,8 @@ function renderColor(c) {
  */
 
 function renderTextPreview(text,limit) {
-   var text = stripTags(text);
    var limit = Math.min(limit,text.length);
+   var text = stripTags(text);
    var idx = 0;
    while (idx < limit) {
       var nIdx = text.indexOf(" ",idx);
@@ -85,7 +85,7 @@ function doWikiStuff (src) {
       var item = path.weblog.space.get (name);
       if (item == null && name.lastIndexOf("s") == name.length-1)
          item = path.weblog.space.get (name.substring(0, name.length-1));
-      if (item == null)
+      if (item == null || !item.size())
          text += format(name)+" <small>[<a href=\""+path.weblog.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
       else
          text += "<a href=\""+item.href()+"\">"+name+"</a>";
