@@ -91,7 +91,7 @@ function show_macro(param) {
    if (param.what == "thumbnail" && this.thumbnail) 
       img = this.thumbnail;
    openLink(this.href());
-   path.weblog.renderImage(img,param);
+   renderImage(img, param);
    closeLink();
 }
 
