@@ -1,4 +1,5 @@
-&nbsp;<% this.link to="main" text="home" %><br>
-&nbsp;<% this.link to="create" text="create story" %><br>
-&nbsp;<% this.link to="images" text="imagepool" %><br>
+...&nbsp;<% this.link to="main" text="home" %><br>
+...&nbsp;<% this.link to="create" text="create story" %><br>
+...&nbsp;<% this.link to="images" text="imagepool" %><br>
+...&nbsp;<% this.link to="goodies" text="goodiepool" %><br>
 
