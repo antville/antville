@@ -80,7 +80,6 @@ function doWikiStuff (src) {
  *  for the drop-down framework in hopobject. Its main 
  *  advantage is that Arrays are much simpler to set up in 
  *  JavaScript than (Hop)Objects:
- *  
  */
 function simpleDropDownBox (name, options, selectedIndex, firstoption) {
    var str = "<select name=\""+name+"\" size=\"1\">";
@@ -96,4 +95,53 @@ function simpleDropDownBox (name, options, selectedIndex, firstoption) {
    }
    str += "</select>";
    return str;
+}
+
+
+/**
+ * Renders an arbitrary x/html element
+ * @param name String containing the element's name (tag)
+ * @param content String containing the element's content
+ * @param attr Object containing the element's attributes as properties
+ */
+function renderMarkupElement(name, content, attr) {
+  if (!content)
+    content = "";
+  // temporary mapping of class attribute
+  // (due to backwards-compatibility)
+  if (!attr["class"]) {
+    attr["class"] = attr.style;
+    delete(attr.style);
+  }
+  var attributes = "";
+  for (var i in attr) {
+    if (!attr[i])
+      continue;
+    attributes += " " + i + "=\"" + attr[i] + "\"";
+	}
+  res.write("<" + name + attributes + ">" + content + "</" + name + ">");
+}
+
+
+/**
+ * renders image element
+ * @param img Object contains the images's properties
+ * @param param Object contains user-defined properties
+ */
+function renderImage(img, param) {
+  if (!param.title)
+    param.title = img.alttext;
+  param.src = getProperty("imgUrl");
+  param.src += img.weblog ? img.weblog.alias + "/" : "";
+  param.src += img.filename + "." + img.fileext;
+  if (!param.width)
+    param.width = img.width;
+  if (!param.height)
+    param.height = img.height;
+  if (!param.border)
+    param.border = "0";
+  param.alt = param.description ? param.description : img.alttext;
+  delete(param.description);
+  // delete(param.name);
+  return(renderMarkupElement("img", null, param));
 }

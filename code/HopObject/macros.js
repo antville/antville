@@ -50,27 +50,24 @@ function link_macro(param) {
  */
 
 function input_macro(param) {
-   res.write(param.prefix)
+   var inputParam = new Object();
+   for (var i in param)
+      inputParam[i] = param[i];
    if (param.type == "textarea") {
-      var inputParam = new Object();
-      for (var i in param)
-         inputParam[i] = param[i];
       inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
-      this.renderInputTextarea(inputParam);
+      return(this.renderInputTextarea(inputParam));
    } else if (param.type == "checkbox")
-      this.renderInputCheckbox(param);
-   else if (param.type == "button")
-      this.renderInputButton(param);
-   else if (param.type == "password")
-      this.renderInputPassword(param);
-   else if (param.type == "file")
-      this.renderInputFile(param);
-   else {
-      var inputParam = new Object();
-      for (var i in param)
-         inputParam[i] = param[i];
-      inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
-      this.renderInputText(inputParam);
+      return(this.renderInputCheckbox(inputParam));
+   else if (param.type == "button") {
+      inputParam.type = "submit";
+      return(this.renderInputButton(inputParam));
    }
-   res.write(param.suffix);
+   else if (param.type == "password")
+      return(this.renderInputPassword(inputParam));
+   else if (param.type == "file")
+      return(this.renderInputFile(inputParam));
+   else {
+      inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
+      return(this.renderInputText(inputParam));
+   }
 }
