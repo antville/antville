@@ -214,14 +214,12 @@ function dumpToZip(z, fullExport) {
 function evalDownload(fullExport) {
    // create the zip file
    var z = new Zip();
-   // first, dump the layout and add it to the zip file
    this.dumpToZip(z, fullExport);
-   // add the metadata of layout images
-   // to the directory "imagedata" in the zip file
-   var imgLog = this.images.dumpToZip(z, fullExport);
-   // add skins to the zip archive
-   var skinLog = this.skins.dumpToZip(z, fullExport);
-   return z.close();
+   this.images.dumpToZip(z, fullExport);
+   this.skins.dumpToZip(z, fullExport);
+   z.close();
+   var data = z.getData();
+   return data;
 }
 
 /**

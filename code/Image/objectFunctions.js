@@ -173,7 +173,10 @@ function dumpToZip(z) {
    data.exporttime = new Date();
    data.creator = this.creator ? this.creator.name : null;
    data.modifier = this.modifier ? this.modifier.name : null;
-   // add the image file to the zip archive
-   z.add(this.getFile(), "images");
+   var file = this.getFile();
+   if (file.exists()) {
+      // add the image file to the zip archive
+      z.add(file, "images");
+   }
    return data;
 }

@@ -53,22 +53,25 @@ function evalImg(param, creator) {
  * @param Object java.util.Hashtable (optional)
  * @return Object java.util.Hashtable
  */
-function dumpToZip(z, fullExport, exportLog) {
+function dumpToZip(z, fullExport, log) {
    // create the export log
-   if (!exportLog)
-      var exportLog = new java.util.Hashtable(20);
-   
-   for (var i=0;i<this.size();i++) {
-      var img = this.get(i);
-      if (exportLog.containsKey(img.alias))
+   if (!log)
+      var log = {};
+   var img, data, file;
+   var size = this.size();
+   for (var i=0;i<size;i++) {
+      img = this.get(i);
+      if (log[img.alias])
          continue;
-      var buf = new java.lang.String(Xml.writeToString(img.dumpToZip(z))).getBytes();
-      z.addData(buf, "imagedata/" + img.alias + ".xml");
-      exportLog.put(img.alias, true);
+      if (data = img.dumpToZip(z)) {
+         var buf = new java.lang.String(Xml.writeToString(data)).getBytes();
+         z.addData(buf, "imagedata/" + img.alias + ".xml");
+         log[img.alias] = true;
+      }
    }
    if (fullExport && this._parent.parent)
-      this._parent.parent.images.dumpToZip(z, fullExport, exportLog);
-   return exportLog;
+      this._parent.parent.images.dumpToZip(z, fullExport, log);
+   return log;
 }
 
 /**

@@ -162,52 +162,30 @@ function getCustomSkins() {
  * dump all skins of this skinmgr
  * @param Object Zip object to add the skins to
  */
-function dumpToZip(z, fullExport, exportLog) {
-   if (!exportLog)
-      var exportLog = new java.util.Hashtable(200);
-   var key;
-   // first loop over all skins managed by this skinmanager
-   for (var i=0;i<this.size();i++) {
-      var proto = this.get(i);
-      for (var j=0;j<proto.size();j++) {
-         var s = proto.get(j);
-         key = s.proto + s.name;
-         if (s.skin && !exportLog.containsKey(key)) {
-            var buf = new java.lang.String(s.skin).getBytes();
-            z.addData(buf, "skins/" + s.proto + "/" + s.name + ".skin");
-            // add the exported skin to the exportLog
-            exportLog.put(key, true)
-         }
-      }
-   }
-   // if fullExport is enabled also dump the parent's skins
-   // and finally all skins of app.skinfiles that weren't
-   // exported already
-   if (fullExport) {
-      if (this._parent.parent)
-         this._parent.parent.skins.dumpToZip(z, fullExport, exportLog);
-      else {
-         // loop over application prototypes and add those skins
-         // that aren't exported already to the zip file
-         var protos = app.__app__.getPrototypes();
-         var it = protos.iterator();
-         var key, protoName, source;
-         while (it.hasNext()) {
-            protoName = it.next().getName();
-            var protoSkins = app.skinfiles[protoName];
-            for (var skinName in protoSkins) {
-               source = protoSkins[skinName];
-               key = protoName + skinName;
-               if (source && !exportLog.containsKey(key)) {
-                  var buf = new java.lang.String(source).getBytes();
-                  z.addData(buf, "skins/" + protoName + "/" + skinName + ".skin");
-                  exportLog.put(key, true);
-               }
+function dumpToZip(z, fullExport) {
+   var appSkinFiles = app.getSkinfiles();
+   var it = app.__app__.getPrototypes().iterator();
+   var protoName, proto, protoSkinFiles, skinName, skin, buf;
+   while (it.hasNext()) {
+      protoName = it.next().getName();
+      if ((proto = this.get(protoName)) || fullExport) {
+         protoSkinFiles = appSkinFiles[protoName];
+         for (var skinName in protoSkinFiles) {
+            if (skin = this.getSkin(protoName, skinName)) {
+               // skin is locally managed => export
+               z.addData(new java.lang.String(skin.skin).getBytes(),
+                         "skins/" + protoName + "/" + skinName + ".skin");
+            } else if (fullExport) {
+               // walk up the layout chain and 
+               if (!(skin = this.getOriginalSkin(protoName, skinName)))
+                  skin = protoSkinFiles[skinName];
+               z.addData(new java.lang.String(skin).getBytes(),
+                         "skins/" + protoName + "/" + skinName + ".skin");
             }
          }
       }
    }
-   return exportLog;
+   return;
 }
 
 
@@ -216,9 +194,7 @@ function dumpToZip(z, fullExport, exportLog) {
  * @param Object JS object tree containing the skins data
  */
 function evalImport(data) {
-   var proto;
-   var buf;
-   var name;
+   var proto, buf, name;
    for (var protoName in data) {
       proto = data[protoName];
       for (var fileName in proto) {
