@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title></title>
+<title>Antville Colorpicker</title>
 
 <style type="text/css">
 <!--
@@ -132,26 +132,6 @@ function updatePalette(obj, p) {
    return;
 }
 
-function submit() {
-   var color = document.forms[0].elements[0].value;
-   if (self.opener && color) {
-      var query = document.URL.split("?");
-      var args = query[1].split("&");
-      var form = args[0].split("=")[1];
-      var element = args[1].split("=")[1];
-      var ref = self.opener.document;
-      ref.forms[form].elements[element].value = color;
-      ref.getElementsByTagName("a")[element].style.backgroundColor = color;
-   }
-   cancel();
-   return;
-}
-
-function cancel() {
-   self.close();
-   return;
-}
-
 // i adapted the color conversion functions from
 // http://www1.tip.nl/~t876506/ColorDesign.html#hr
 // thanks!
@@ -262,6 +242,26 @@ function convert() {
    ref["R"].value = rgb.red;
    ref["G"].value = rgb.green;
    ref["B"].value = rgb.blue;
+   return;
+}
+
+function submit() {
+   var color = document.forms[0].elements[0].value;
+   if (self.opener && color) {
+      var query = document.URL.split("?");
+      var args = query[1].split("&");
+      var form = args[0].split("=")[1];
+      var element = args[1].split("=")[1];
+      var ref = self.opener.document;
+      ref.forms[form].elements[element].value = color;
+      ref.getElementsByTagName("span")[element].style.backgroundColor = color;
+   }
+   cancel();
+   return;
+}
+
+function cancel() {
+   self.close();
    return;
 }
 

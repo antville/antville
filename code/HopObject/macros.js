@@ -54,7 +54,10 @@ function createtime_macro(param) {
 function colorpicker_macro(param) {
    if (!param || !param.element)
       return;
-   param.color = this[param.element];
+   var col = this[param.element];
+   if (col.indexOf("#") < 0)
+      col = "#" + col;
+   param.color = col;
    this.renderSkin("cp_element", param);
 }
 
