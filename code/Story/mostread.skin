@@ -1,0 +1,4 @@
+<tr>
+	<td><a href="<% this.url %>"><% this.title as="link" %></a></td>
+	<td align="right"><% this.reads %></td>
+</tr>
