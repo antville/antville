@@ -15,7 +15,7 @@ function renderInputTextarea(param) {
       if (param.style)
          res.write("\" class=\"" + param.style);
       res.write("\">");
-      res.write(param.value != null ? param.value : "");
+      res.encodeForm(param.value != null ? param.value : "");
       res.write("</textarea>");
    }
 }
@@ -128,20 +128,20 @@ function renderInputButton(param) {
  */
 
 function openLink(param) {
-   if (param.to || param.linkto) {
-      res.write("<a href=\"");
-      var url = param.to ? param.to : param.linkto;
-      // check if this is an external url
-      if (url.indexOf("://") > -1)
-         res.write(url);
-      else
-         res.write(this.href(url));
-      if (param.urlparam) res.write(param.urlparam);
-      res.write("\"");
-      if (param.target)
-         res.write(" target=\"" + param.target + "\"");
-      res.write(">");
-   }
+   res.write("<a href=\"");
+   var url = param.to ? param.to : param.linkto;
+   // check if this is an external url
+   if (!url || url == "main")
+      res.write(this.href());
+   else if (url.indexOf("://") > -1)
+      res.write(url);
+   else
+      res.write(this.href(url));
+   if (param.urlparam) res.write(param.urlparam);
+   res.write("\"");
+   if (param.target)
+      res.write(" target=\"" + param.target + "\"");
+   res.write(">");
 }
 
 
