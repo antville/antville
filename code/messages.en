@@ -64,6 +64,7 @@ error.skinCustomExisting = There is already a skin with this name. Please choose
 error.skinCustomCreate = Sorry, couldn't create the custom skin. Please try again.
 error.timestampParse = Cannot parse timestamp <% param.value1 %> as a date.
 error.topicNoSpecialChars = Please only use alphanumeric characters for the topic name.
+error.topicReservedWord = Sorry, unfortunately you cannot use this topic name. Please choose a different one.
 error.storyTopicMissing = Please enter or choose a topic to save this story in topic space.
 error.storyCreate = Sorry, was not able to add the story. Maybe you should try again...
 error.storyDelete = Sorry, was not able to delete the story. Maybe you should try again...

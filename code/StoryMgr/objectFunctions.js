@@ -38,6 +38,8 @@ function evalNewStory(param, creator) {
    if (param.topic) {
       if (!param.topic.isURL())
          throw new Exception("topicNoSpecialChars");
+      if (this._parent.topics[param.topic] || this._parent.topics[param.topic + "_action"])
+         throw new Exception("topicReservedWord");
       s.topic = param.topic;
    } else if (param.addToTopic)
       s.topic = param.addToTopic;

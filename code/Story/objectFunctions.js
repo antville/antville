@@ -38,6 +38,8 @@ function evalStory(param, modifier) {
    if (param.topic) {
       if (!param.topic.isURL())
          throw new Exception("topicNoSpecialChars");
+      if (this.site.topics[param.topic] || this.site.topics[param.topic + "_action"])
+         throw new Exception("topicReservedWord");
       topicName = param.topic;
    } else if (param.addToTopic)
       topicName = param.addToTopic;
