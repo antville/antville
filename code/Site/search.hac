@@ -54,7 +54,7 @@ if (req.data.q) {
                 start = 0;
             end = Math.min (found, start+10);
             res.body += "<i>Found "+found+" items for '"+query+"'. ";
-            res.body += "Displaying items "+(start+1)+" to "+end+".<i>";
+            res.body += "Displaying items "+(start+1)+" to "+end+".</i>";
         }
 
         // note: I'm doing this without a "searchbody" skin, since
