@@ -407,7 +407,7 @@ function cloneObject(obj) {
  * @return String rendered message
  */
 
-function getMsg(msgClass,name,value) {
+function getMsg(msgClass,msgName,value) {
    // create array containing languages to search for message
    var languages = new Array();
    if (path && path.site && path.site.language)
@@ -418,8 +418,8 @@ function getMsg(msgClass,name,value) {
    // loop over languages and try to find the message
    for (var i in languages) {
       var lang = app.data[languages[i]];
-      if (lang && lang[msgClass] && lang[msgClass][name]) {
-         var message = lang[msgClass][name];
+      if (lang && lang.getProperty(msgClass + "." + msgName)) {
+         var message = lang.getProperty(msgClass + "." + msgName);
          // create param-object needed to render Skin
          var param = new Object();
          // check if value passed is actually an array
@@ -448,9 +448,9 @@ function getMsg(msgClass,name,value) {
  * @return Obj result-Object
  */
 
-function createResultObj(msgClass,msg,value,error) {
+function createResultObj(msgClass,msgName,value,error) {
    var result = new Object();
-   result.message = getMsg(msgClass,msg,value);
+   result.message = getMsg(msgClass,msgName,value);
    result.error = error;
    return (result);
 }
@@ -459,16 +459,16 @@ function createResultObj(msgClass,msg,value,error) {
  * wrapper-function to create a result-object of type "error"
  */
 
-function getError(messageName,value) {
-   return (createResultObj("error",messageName,value,true));
+function getError(msgName,value) {
+   return (createResultObj("error",msgName,value,true));
 }
 
 /**
  * wrapper-function to create a result-object of type "confirm"
  */
 
-function getConfirm(messageName,value) {
-   return (createResultObj("confirm",messageName,value,false));
+function getConfirm(msgName,value) {
+   return (createResultObj("confirm",msgName,value,false));
 }
 
 /**
@@ -488,4 +488,23 @@ function buildAliasFromFile(uploadFile) {
    invalidChars.ignoreCase = true;
    invalidChars.global = true;
    return (name.replace(invalidChars,""));
+}
+
+/**
+ * function loads messages on startup
+ */
+
+function onStart() {
+   // load application messages
+   var dir = app.__app__.getAppDir();
+   var arr = dir.list();
+   for (var i in arr) {
+   	if (arr[i].indexOf("messages.") > -1) {
+         var name = arr[i].substring(arr[i].indexOf(".")+1,arr[i].length);
+   		var msgFile = new File(dir, arr[i]);
+   		app.data[name] = new Packages.helma.util.SystemProperties (msgFile.getAbsolutePath());
+   		app.log ("loaded application messages (language: " + name + ")");
+   	}
+   }
+   return;
 }
