@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title><% response.title %></title>
-<script type="text/javascript" src="<% root.url %>javascript" />
+<script type="text/javascript" src="<% root.url %>javascript"></script>
 <link rel="stylesheet" type="text/css" href="<% root.url %>stylesheet" media="screen" />
 <link rel="alternate" type="text/xml" title="XML" href="rss10" />
 <meta http-equiv="Content-Type" content="text/html" />
