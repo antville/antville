@@ -18,6 +18,7 @@
 </tr>
 <tr>
 <td class="small" colspan="2">
+<br />
 <p><% membermgr.link to="register" text="Not registered yet?" %></p>
 <p><% membermgr.link to="sendpwd" text="Forgot your password?" %></p>
 </td>
