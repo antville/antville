@@ -23,12 +23,7 @@ function checkAccess(action, usr, level) {
  * @return String Reason for denial (or null if allowed)
  */
 function checkAdd(usr, level) {
-   if (path.site) {
-      if (!path.site.preferences.getProperty("usercontrib") && (level & MAY_ADD_IMAGE) == 0)
-         throw new DenyException("imageAdd");
-   } else {
-      if (!session.user || !session.user.sysadmin)
-         throw new DenyException("imageAdd");
-   }
+   if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_IMAGE) == 0)
+      throw new DenyException("imageAdd");
    return;
 }
