@@ -10,7 +10,8 @@ if (req.data.submit == "cancel")
 if (req.data.text)
    this.updateComment();
 
-res.head = this.weblog.renderSkinAsString("style");
-res.body = this.weblog.renderSkinAsString("header");
+res.head = this.weblog.renderSkinAsString("javascript");
+res.head += this.weblog.renderSkinAsString("style");
 
+res.body = this.weblog.renderSkinAsString("header");
 res.body += this.renderSkinAsString("edit");

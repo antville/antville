@@ -7,7 +7,8 @@ if (req.data.submit != "cancel" && this.weblog.hasDiscussions()) {
 
    var r = this.addComment();
    
-   res.head = this.story.weblog.renderSkinAsString("style");
+   res.head = this.story.weblog.renderSkinAsString("javascript");
+   res.head += this.story.weblog.renderSkinAsString("style");
    res.body = this.story.weblog.renderSkinAsString("header");
    res.body += this.renderSkinAsString("toplevel");
    res.body += r.renderSkinAsString("edit");

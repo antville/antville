@@ -15,7 +15,8 @@ if (req.data.submit == "delete") {
 
 res.skin = "main";
 res.title = "Antville - " + this.weblog.title;
-res.head = this.weblog.renderSkinAsString("style");
+res.head = this.weblog.renderSkinAsString("javascript");
+res.head += this.weblog.renderSkinAsString("style");
 
 res.body = this.weblog.renderSkinAsString("header");
 res.body += this.renderSkinAsString("delete");
