@@ -226,7 +226,7 @@ function viewlink_macro(param) {
  */
 
 function commentlink_macro(param) {
-   if (!this.discussions)
+   if (!this.discussions || !this.site.discussions)
       return;
    openLink(this.href(param.to ? param.to : "comment"));
    res.write(param.text ? param.text : "place your comment");
