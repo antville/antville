@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.data.title = root.getSysTitle();
+   res.data.title = root.getTitle();
    // check if this installation is already configured
    // if not, we display the welcome-page as frontpage
    if (!root.sys_issetup) {
@@ -14,7 +14,7 @@ function main_action() {
          res.redirect(this.manage.href("setup"));
    } else if (!root.size())
       res.redirect(this.href("new"));
-   
+
    if (res.handlers.site) {
       res.handlers.site.main_action();
    } else {
@@ -40,7 +40,7 @@ function new_action() {
          res.message = err.toString();
       }
    }
-      
+
    res.data.action = this.href(req.action);
    res.data.title = "Create a new weblog";
    res.data.body = this.renderSkinAsString("new");
@@ -54,7 +54,7 @@ function list_action() {
    // preparing res.data.sitelist and prev/next links
    // ("all" shows all sites, "yes" is for scrolling)
    this.renderSitelist(25, "all", "yes");
-   res.data.title = "Sites of " + root.getSysTitle();
+   res.data.title = "Sites of " + root.getTitle();
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
 }
@@ -96,20 +96,20 @@ function rss10_action() {
  */
 function rss_action() {
    res.contentType = "text/xml";
-   
+
    var now = new Date();
-   var systitle = root.getSysTitle();
+   var systitle = root.getTitle();
    var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
    sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
-   
+
    var size = this.size();
    var max = req.data.max ? parseInt(req.data.max) : 25;
    max = Math.min(max, size, 50);
-   
+
    var param = new Object();
    var items = new java.lang.StringBuffer();
    var resources = new java.lang.StringBuffer();
-   
+
    for (var i=0; i<max; i++) {
       var site = this.get(i);
       if (site.online && site.lastupdate) {
@@ -142,7 +142,7 @@ function rss_action() {
  * action called when a site has been blocked
  */
 function blocked_action() {
-   res.data.title = root.getSysTitle() + " - 404 - blocked";
+   res.data.title = root.getTitle() + " - 404 - blocked";
    res.data.body = "<p><b>Sorry!</b></p><p>This weblog was disabled.</p>";
    root.renderSkin("page");
 }
@@ -151,7 +151,7 @@ function blocked_action() {
  * 404 action
  */
 function notfound_action() {
-   res.data.title = root.getSysTitle() + " - 404 - not found";
+   res.data.title = root.getTitle() + " - 404 - not found";
    res.data.body = "<p><b>Sorry!</b></p><p>URL /" + req.path + " was not found on this server!</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
 }
@@ -160,8 +160,34 @@ function notfound_action() {
  * error action
  */
 function sys_error_action() {
-   res.data.title = root.getSysTitle() + " - Error";
+   res.data.title = root.getTitle() + " - Error";
    res.data.body = "<p><b>Sorry!</b></p><p>An error occurred while processing your request:</p>";
    res.data.body += "<p>"+res.error+"</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
 }
+
+/**
+ * action to render external stylesheet
+ */
+function stylesheet_action() {
+   res.dependsOn(res.handlers.layout.modifytime);
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "style"));
+   res.digest();
+   res.contentType = "text/css";
+   this.renderSkin("style");
+   return;
+}
+
+/**
+ * action to render external javascript
+ */
+function javascript_action() {
+   res.dependsOn(res.handlers.layout.modifytime);
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "javascript"));
+   res.digest();
+   res.contentType = "text/javascript";
+   root.renderSkin("javascript");
+   root.renderSkin("systemscripts");
+   return;
+}
+
