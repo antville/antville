@@ -1,6 +1,3 @@
-<style type="text/css">
-<!--
-
 body,td,span {
    font-family:Verdana,Helvetica,Arial,sans-serif;
    font-size:13px;
@@ -123,6 +120,3 @@ ul {
    padding:10px;
    color:#333333;
 }
-
-// -->
-</style>
