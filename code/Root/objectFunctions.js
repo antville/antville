@@ -6,7 +6,7 @@ function evalNewWeblog() {
    var newLog = new weblog();
    if (req.data.title && req.data.alias) {
       newLog.title = req.data.title;
-      newLog.alias = req.data.alias;
+      newLog.alias = req.data.alias.toLowerCase();
       if (this.checkIfExists(newLog.alias)) {
          res.message = "Sorry, we already have a weblog with this alias!";
          newLog.error = true;
@@ -51,14 +51,14 @@ function createNewWeblog(newLog) {
    newLog.blocked = 0;
    newLog.birthdate = new Date();
    newLog.bgcolor = "FFFFFF";
-   newLog.textfont = "Arial, Helvetica, sans-serif";
-   newLog.textsize = "10pt";
+   newLog.textfont = "Verdana, Arial, Helvetica, sans-serif";
+   newLog.textsize = "9pt";
    newLog.textcolor = "000000";
-   newLog.linkcolor = "0000FF";
+   newLog.linkcolor = "FF3300";
    newLog.alinkcolor = "FF0000";
-   newLog.vlinkcolor = "0000CC";
-   newLog.titlefont = "Arial, Helvetica, sans-serif";
-   newLog.titlesize = "12pt";
+   newLog.vlinkcolor = "FF3300";
+   newLog.titlefont = "Verdana, Arial, Helvetica, sans-serif";
+   newLog.titlesize = "11pt";
    newLog.titlecolor = "CC0000";
    newLog.days = 3;
    newLog.language = "en";
