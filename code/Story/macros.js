@@ -26,9 +26,9 @@ function content_macro(param) {
             part = this.getRenderedContentPart(param.fallback);
          if (param.as == "link") {
             if (this._prototype != "comment")
-               Html.openLink(this.href());
+               Html.openLink({href: this.href()});
             else
-               Html.openLink(this.story.href() + "#" + this._id);
+               Html.openLink({href: this.story.href() + "#" + this._id});
             if (!part && param.part == "title") {
                // use the text part instead, clipped after 20 characters
                part = stripTags(this.getRenderedContentPart ("text")).trim();
@@ -70,14 +70,15 @@ function text_macro(param) {
 function online_macro(param) {
    if (param.as == "editor") {
       var options = ["offline", "online in topic", "online in weblog"];
-      Html.dropDown("online", options, this.online);
+      Html.dropDown({name: "online"}, options, this.online);
    } else {
       if (!this.online)
          res.write("offline");
       else if (this.online < 2) {
          res.write("online in ");
          if (this.topic)
-           Html.link(this.site.topics.get(this.topic).href(), this.topic);
+           Html.link({href: this.site.topics.get(this.topic).href()},
+                     this.topic);
          else
            res.write ("stories");
       } else
@@ -100,7 +101,7 @@ function createtime_macro(param) {
    } else if (this.createtime) {
       var text = formatTimestamp(this.createtime, param.format);
       if (param.as == "link" && this.online == 2)
-         Html.link(path.site.get(String(this.day)).href(), text);
+         Html.link({href: path.site.get(String(this.day)).href()}, text);
       else
          res.write(text);
    }
@@ -118,7 +119,7 @@ function editlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.openLink(this.href("edit"));
+      Html.openLink({href: this.href("edit")});
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
@@ -139,7 +140,7 @@ function deletelink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.openLink(this.href("delete"));
+      Html.openLink({href: this.href("delete")});
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
@@ -192,7 +193,7 @@ function viewlink_macro(param) {
       } catch (deny) {
          return;
       }
-      Html.openLink(this.href());
+      Html.openLink({href: this.href()});
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
       else
@@ -206,7 +207,8 @@ function viewlink_macro(param) {
  */
 function commentlink_macro(param) {
    if (this.discussions && this.site.preferences.getProperty("discussions"))
-      Html.link(this.href(param.to ? param.to : "comment"), param.text ? param.text : "comment");
+      Html.link({href: this.href(param.to ? param.to : "comment")},
+                param.text ? param.text : "comment");
    return;
 }
 
@@ -274,7 +276,8 @@ function commentform_macro(param) {
       res.data.action = this.href("comment");
       (new comment()).renderSkin("edit");
    } else {
-      Html.link(this.site.members.href("login"), param.text ? param.text : "Login to add your comment!");
+      Html.link({href: this.site.members.href("login")},
+                param.text ? param.text : "Login to add your comment!");
    }
    return;
 }
@@ -349,7 +352,7 @@ function topicchooser_macro(param) {
             var selected = topic.groupname;
       }
    }
-   Html.dropDown("addToTopic", options, selected, "-- choose topic --");
+   Html.dropDown({name: "addToTopic"}, options, selected, "-- choose topic --");
    return;
 }
 
@@ -364,14 +367,14 @@ function topic_macro(param) {
    if (!this.topic)
       return;
    if (!param.as || param.as == "link") {
-      Html.link(path.site.topics.href(this.topic), this.topic);
+      Html.link({href: path.site.topics.href(this.topic)}, this.topic);
    } else if (param.as == "image") {
       if (!param.imgprefix)
          param.imgprefix = "topic_";
       var img = getPoolObj(param.imgprefix + this.topic, "images");
       if (!img)
          return;
-      Html.openLink(path.site.topics.href(this.topic));
+      Html.openLink({href: path.site.topics.href(this.topic)});
       renderImage(img.obj, param)
       Html.closeLink();
    } else if (param.as = "text")
