@@ -48,6 +48,7 @@
 <td nowrap="nowrap"><% site.showarchive as="editor" %></td>
 </tr>
 <tr>
+<!-- FIXME: should site.email be dropped? afaik, bounces should be sent to sys.email? [tobi] -->
 <td class="small" valign="top" nowrap="nowrap">e-mail address:</td>
 <td><% site.email as="editor" %><br /><span class="small">This e-mail address will be used for sending confirmation mails, i.e. when a user registers or signs up a site.</span></td>
 </tr>
