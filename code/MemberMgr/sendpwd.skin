@@ -1,14 +1,14 @@
-<p>Please enter the eMail-address you most likely used back then when you registered. A mail containing all accounts that were registered with this address will be sent to it.</p>
+<p>Please enter the e-mail address you most likely used back then when you registered yourself here. An e-mail containing all accounts that were registered with this e-mail address will be sent back to this address.</p>
 
-<table border="0" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">eMail:</td>
+<td class="small" nowrap="nowrap">E-mail:</td>
 <td nowrap="nowrap"><% input type="text" name="email" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="send" value="send" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="send" value="Send" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
-</form>
 </table>
+</form>

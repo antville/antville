@@ -1,5 +1,5 @@
-<table border="0" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small" nowrap="nowrap">Username:</td>
 <td nowrap="nowrap"><% input type="text" name="name" %></td>
@@ -9,25 +9,25 @@
 <td nowrap="nowrap"><% input type="password" name="password1" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">type again:</td>
+<td class="small" nowrap="nowrap">Confirm password:</td>
 <td nowrap="nowrap"><% input type="password" name="password2" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">eMail:</td>
+<td class="small" valign="top" nowrap="nowrap">E-mail:</td>
 <td><% input type="text" name="email" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrwap="nowrap">publish eMail:</td>
-<td><span class="small"><% input type="checkbox" name="publishemail" %><br>If you select this the eMail-address your entered above will be visible to Administrators.</span></td>
+<td class="small" valign="top" nowrap="nowrap">E-mail is visible:</td>
+<td><span class="small"><% input type="checkbox" name="publishemail" %><br />If you select this checkbox your e-mail address will be visible to weblog administrators.</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
-<td><% input type="text" name="url" %><br>
-<span class="small">If you enter an eMail-address or URL here, your username will appear as link in the stories or comments you created (eMail-addresses will appear as <i>mailto:</i>-link)</span></td>
+<td><% input type="text" name="url" %><br />
+<span class="small">If you enter a URL or an e-mail address here, your username will appear as link next to your stories or comments.</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="register" value="register" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="register" value="Register" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
-</form>
 </table>
+</form>
