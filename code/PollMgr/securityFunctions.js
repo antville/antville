@@ -13,6 +13,16 @@ function checkAccess(action, usr, level) {
             var url = this._parent.href();
             this.checkAdd(usr, level);
             break;
+         case "open" :
+            checkIfLoggedIn(this.href(req.action));
+            var url = this._parent.href();
+            this.checkAdd(usr, level);
+            break;
+         case "mypolls" :
+            checkIfLoggedIn(this.href(req.action));
+            var url = this._parent.href();
+            this.checkAdd(usr, level);
+            break;
          case "create" :
             checkIfLoggedIn();
             var url = this.href();
