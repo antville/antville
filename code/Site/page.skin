@@ -1,5 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title><% response.title %></title>
 <link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
@@ -46,9 +49,10 @@
 <% this.navigation for="contributors" %>
 <% this.navigation for="admins" %><br />
 <% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
-<div class="sep"><form method="post" action="<% site.url %>search"><% image name="/pixel" width="198" %></div>
-<% input name="q" class="searchbox" value="enter your keyword(s)" onClick="this.value='';"%><% input type="button" name="submit" value="find!" class="searchbox" %>
-<div class="sep"></form><% image name="/pixel" width="198" %></div>
+
+<div class="sep"><% image name="/pixel" width="198" %></div>
+<div><form method="post" action="<% site.url %>search"><% input name="q" class="searchbox" value="enter your keyword(s)" onclick="this.value='';"%><% input type="button" name="submit" value="find!" class="searchbox" %></form></div>
+<div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% site.calendar %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
