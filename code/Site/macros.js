@@ -552,31 +552,35 @@ function memberlist_macro(param) {
  */
 
 function history_macro(param) {
-   res.write(param.prefix)
-   var len1 = this.stories.count();
+   res.write(param.prefix);
+   var x = new Array(nr);
+   var len1 = this.allstories.count();
    var len2 = this.allcomments.count();
-   var nr = (param.show) ? param.show : 5;
+   var nr = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
    if (nr > len1+len2) nr = len1+len2;
    var c1 = 0;
    var c2 = 0;
-   var x = new Array(nr);
-   for (var i=0; i<nr; i++) {
-      if (c1 >= this.stories.count())
-         x[i] = this.allcomments.get(c2++);
+   var cnt = 0;
+   while (cnt < nr) {
+      if (c1 >= this.allstories.count())
+         x[cnt] = this.allcomments.get(c2++);
       else if (c2 >= this.allcomments.count())
-         x[i] = this.stories.get(c1++);
+         x[cnt] = this.allstories.get(c1++);
       else {
-         var t1 = (this.stories.get(c1).modifytime) ? this.stories.get(c1).modifytime : this.stories.get(c1).createtime;
-         var t2 = (this.allcomments.get(c2).modifytime) ? this.allcomments.get(c2).modifytime : this.allcomments.get(c2).createtime;
+         var s = this.allstories.get(c1);
+         var c = this.allcomments.get(c2);
+         var t1 = (s.modifytime) ? s.modifytime : s.createtime;
+         var t2 = (c.modifytime) ? c.modifytime : c.createtime;
          if (t2 > t1)
-            x[i] = this.allcomments.get(c2++);
+            x[cnt] = this.allcomments.get(c2++);
          else
-            x[i] = this.stories.get(c1++);
+            x[cnt] = this.allstories.get(c1++);
       }
+      if (x[cnt].isOnline())
+         cnt++;
    }
-   for (var j in x) {
-      if (x[j].isOnline()) x[j].renderSkin("historyview");
-   }
+   for (var j in x)
+      x[j].renderSkin("historyview");
    res.write(param.suffix);
 }
 
