@@ -30,7 +30,7 @@ function evalFile(param, creator) {
    newFile.filesize = param.rawfile.contentLength;
    newFile.mimetype = param.rawfile.contentType;
    newFile.description = param.description;
-   var dir = this._parent.getStaticPath("files").toString();
+   var dir = this._parent.getStaticPath("files");
    newFile.name = param.rawfile.writeToFile(dir, newFile.name);
    if (!newFile.name)
       throw new Exception("fileSave");
