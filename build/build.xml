@@ -97,16 +97,6 @@
    </target>
 
 
-<target name="test" depends="init">
-   <mkdir dir="${build.work}/apps"/>
-   <cvs cvsRoot="${cvs.antville.root}" 
-      command="export" 
-      tag="${cvs.antville.tag}" 
-      package="${package}" 
-      dest="${build.work}/apps"/>
-</target>
-
-
    <!-- =================================================================== -->
    <!-- generate the antclick distribution packages                         -->
    <!-- =================================================================== -->
@@ -124,18 +114,19 @@
          tag="${cvs.antville.tag}" 
          package="${project}" 
          dest="${build.work}/apps"/>
+
       <cvs cvsRoot="${cvs.manage.root}" 
          command="export" 
          tag="${cvs.manage.tag}" 
          package="manage" 
          dest="${build.work}/apps"/>
       <copy file="${build.extra}/db.properties" 
-         tofile="${build.work}/apps/${project}/db.properties"/>
+         tofile="${build.work}/apps/${project}/code/db.properties"/>
 
       <cvs cvsRoot="${cvs.hop.root}" 
          command="export" 
          tag="${cvs.hop.tag}" 
-         package="helma/lib" 
+         package="helma/lib helma/licenses helma/license.txt" 
          dest="${build.work}"/>
 
       <copy todir="${build.work}/lib">
@@ -143,18 +134,27 @@
       </copy>
       <copy file="${build.extra}/helma.jar" todir="${build.work}/lib"/>
       <copy file="${build.extra}/mckoidb.jar" todir="${build.work}/lib/ext"/>
+
+      <copy todir="${build.work}/licenses">
+         <fileset dir="${build.work}/helma/licenses"/>
+      </copy>
+      <copy file="${build.work}/helma/license.txt" 
+         tofile="${build.work}/licenses/helma.txt"/>
+      <move file="${build.work}/apps/${project}/license.txt" 
+         tofile="${build.work}/licenses/antville.txt"/>
+
       <delete dir="${build.work}/helma"/>
 
-      <!-- antcall target="package-zip">
+      <antcall target="package-zip">
          <param name="filename" value="${antclick.name}"/>
          <param name="path" value="${build.work}"/>
       </antcall>
       <antcall target="package-tgz">
          <param name="filename" value="${antclick.name}"/>
          <param name="path" value="${build.work}"/>
-      </antcall -->
+      </antcall>
 
-      <!-- delete dir="${build.work}"/ -->
+      <delete dir="${build.work}"/>
    </target>
 
 
@@ -164,14 +164,14 @@
    <!-- =================================================================== -->
    <target name="package-tgz" depends="init">
       <mkdir dir="${build.dist}" />
-      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin" />
+      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/.xml, **/.sh" />
       <tar tarfile="${build.dist}/${filename}.tar" basedir="${path}" excludes="**">
          <tarfileset prefix="${filename}" dir="${path}" mode="755">
-            <include name="hop.sh"/>
+            <include name="*.sh"/>
          </tarfileset>
          <tarfileset prefix="${filename}" dir="${path}">
             <include name="**"/>
-            <exclude name="hop.sh"/>
+            <exclude name="*.sh"/>
          </tarfileset>
       </tar>
       <gzip zipfile="${build.dist}/${filename}.tgz" src="${build.dist}/${filename}.tar"/>
@@ -185,336 +185,10 @@
    <!-- =================================================================== -->
    <target name="package-zip" depends="init">
       <mkdir dir="${build.dist}" />
-      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml" />
+      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat" />
       <zip zipfile="${build.dist}/${filename}.zip">
          <zipfileset dir="${path}" prefix="${filename}" includes="**" />
       </zip>
-   </target>
-
-<!-- ************************************************************************* -->
-
-
-   <!-- =================================================================== -->
-   <!-- Compiles the source directory                                       -->
-   <!-- =================================================================== -->
-   <target name="compile" depends="init">
-      <mkdir dir="${build.classes}"/>
-      <javac srcdir="${build.src}"
-         destdir="${build.classes}"
-         debug="${debug}"
-         deprecation="${deprecation}"
-         optimize="${optimize}">
-         <classpath refid="build.class.path" />
-      </javac>
-      <rmic classname="helma.framework.core.RemoteApplication" base="${build.classes}"/>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Creates a helma.jar file (snapshot) in the lib-directory            -->
-   <!-- =================================================================== -->
-   <target name="jar" depends="compile">
-      <jar jarfile="${build.lib}/${jar.name}-${DSTAMP}.jar"
-         basedir="${build.classes}"
-         excludes="**/package.html,**/main/launcher/**"/>
-      <jar jarfile="${home.dir}/launcher.jar"
-         basedir="${build.classes}"
-         includes="**/main/launcher/**"
-         manifest="${build.src}/helma/main/launcher/manifest.txt"/>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Creates the API documentation                                       -->
-   <!-- =================================================================== -->
-   <target name="javadocs" depends="init">
-      <mkdir dir="${build.javadocs}"/>
-      <javadoc packagenames="helma.*"
-         sourcepath="${build.src}"
-         destdir="${build.javadocs}"
-         author="false"
-         private="false"
-         version="false"
-         windowtitle="${name} ${version} API"
-         doctitle="${name} ${version} API"
-         bottom="Copyright &#169; ${year} Helma.org. All Rights Reserved."
-         classpathref="build.class.path"
-      />
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Get the documentation (currently can fail due to request time-out   -->
-   <!-- or missing support for proxies)                                     -->
-   <!-- =================================================================== -->
-   <target name="docs" depends="init">
-      <get src="http://www.helma.org/docs/reference/print"
-          dest="${build.docs}/reference.html"
-          ignoreerrors="true"
-      />
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Creates the full helma distribution                                 -->
-   <!-- =================================================================== -->
-   <target name="package" depends="init">
-      <mkdir dir="${build.work}"/>
-      
-      <!-- create the main part of helma -->
-      <antcall target="package-raw">
-         <param name="distribution" value="main" />
-      </antcall>
-
-      <chmod perm="755">
-         <fileset dir="${build.work}">
-            <include name="hop.sh"/>
-         </fileset>
-      </chmod>
-
-      <!-- checkout the demo apps (and zip manage-app) -->
-      <antcall target="package-apps" />
-
-      <!-- zip up the whole thing -->
-      <antcall target="package-zip">
-         <param name="filename" value="${package.name}"/>
-      </antcall>
-      <antcall target="package-tgz">
-         <param name="filename" value="${package.name}"/>
-      </antcall>
-      
-      <!-- make the src distributions -->
-      <antcall target="package-src-zip">
-         <param name="filename" value="${package.name}"/>
-      </antcall>
-      <antcall target="package-src-tgz">
-         <param name="filename" value="${package.name}"/>
-      </antcall>
-
-      <!-- clean up -->
-      <delete dir="${build.work}"/>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Compile Helma and prepare the skeleton in a temporary directory.    -->
-   <!-- Used by package and antclick.                                       -->
-   <!-- =================================================================== -->
-   <target name="package-raw" depends="init, jar">
-
-      <!-- copy the framework (apps.props, server.props, hop/db, hop/static) -->
-      <copy todir="${build.work}">
-         <fileset dir="${build.dir}/${distribution}" excludes="**/CVS**"/>
-      </copy>
-
-      <!-- copy the launcher jar file -->
-      <copy file="${home.dir}/launcher.jar" todir="${build.work}/"/>
-
-      <!-- copy README.txt -->
-      <copy file="${home.dir}/README.txt" todir="${build.work}/"/>
-
-      <!-- copy the whole docs-directory -->
-      <!-- copy todir="${build.work}/docs">
-         <fileset dir="${build.docs}"/>
-      </copy -->
-
-      <!-- copy all libraries except helma-YYYYMMDD.jar -->
-      <copy todir="${build.work}/lib">
-         <fileset dir="${home.dir}/lib">
-            <exclude name="**/helma*.jar" />
-            <include name="**/*.jar" />
-         </fileset>
-      </copy>
-
-      <!-- copy the whole licenses-directory -->
-      <copy todir="${build.work}/licenses">
-         <fileset dir="${home.dir}/licenses" excludes="**/CVS**"/>
-      </copy>
-
-      <!-- copy the scripts directory -->
-      <copy todir="${build.work}/scripts">
-         <fileset dir="${home.dir}/scripts" excludes="**/CVS**"/>
-      </copy>
-
-      <!-- rename the current jar-file -->
-      <copy file="${build.lib}/${jar.name}-${DSTAMP}.jar" tofile="${build.work}/lib/helma.jar"/>
-
-      <!-- zip the sourcecode -->
-      <!-- mkdir dir="${build.work}/src"/>
-      <tar tarfile="${build.work}/src/helma-src.tar" basedir="${build.src}/">
-          <tarfileset dir="${build.src}">
-             <include name="${build.src}/**"/>
-          </tarfileset>
-      </tar>
-      <gzip zipfile="${build.work}/src/helma-src.tar.gz" src="${build.work}/src/helma-src.tar"/>
-      <delete file="${build.work}/src/helma-src.tar"/ -->
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Checkout demo apps, put them in work directory and zip manage app   -->
-   <!-- =================================================================== -->
-   <target name="package-apps" depends="init">
-
-      <mkdir dir="${build.work}/apps" />
-
-      <!-- get demo apps -->
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="${cvs.apps.tag}" package="base" dest="${build.work}/apps" />
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="${cvs.apps.tag}" package="bloggerapi" dest="${build.work}/apps" />
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="${cvs.apps.tag}" package="himp" dest="${build.work}/apps" />
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="${cvs.apps.tag}" package="gong" dest="${build.work}/apps" />
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="${cvs.apps.tag}" package="lillebror" dest="${build.work}/apps" />
-
-      <antcall target="package-manage" />
-
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Checkout and zip manage application                                 -->
-   <!-- =================================================================== -->
-   <target name="package-manage" depends="init">
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="${cvs.apps.tag}" package="manage" dest="${build.work}" />
-      <mkdir dir="${build.work}/apps/manage"/>
-      <zip zipfile="${build.work}/apps/manage/manage.zip" basedir="${build.work}/manage/" includes="**" excludes="**/properties,readme/**" />
-         <copy todir="${build.work}/apps/manage">
-            <fileset dir="${build.work}/manage" includes="app.properties,class.properties,readme.txt"/>
-         </copy>
-      <delete dir="${build.work}/manage" />
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Packages the work directory with TAR-GZIP                           -->
-   <!-- needs parameter ${filename} for final dist-file                     -->
-   <!-- =================================================================== -->
-   <target name="package-tgz" depends="init">
-      <mkdir dir="${build.dist}" />
-      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin" />
-      <tar tarfile="${build.dist}/${filename}.tar" basedir="${path}" excludes="**">
-         <tarfileset prefix="${filename}" dir="${path}" mode="755">
-            <include name="hop.sh"/>
-         </tarfileset>
-         <tarfileset prefix="${filename}" dir="${path}">
-            <include name="**"/>
-            <exclude name="hop.sh"/>
-         </tarfileset>
-      </tar>
-      <gzip zipfile="${build.dist}/${filename}.tgz" src="${build.dist}/${filename}.tar"/>
-      <delete file="${build.dist}/${filename}.tar"/>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Packages the work directory with ZIP                                -->
-   <!-- needs parameter ${filename} for final dist-file                     -->
-   <!-- =================================================================== -->
-   <target name="package-zip" depends="init">
-      <mkdir dir="${build.dist}" />
-      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml" />
-      <zip zipfile="${build.dist}/${filename}.zip">
-         <zipfileset dir="${path}" prefix="${filename}" includes="**" />
-      </zip>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Packages Helma src and build directories with TAR-GZIP              -->
-   <!-- needs parameter ${filename} for final dist-file                     -->
-   <!-- =================================================================== -->
-   <target name="package-src-tgz" depends="init">
-      <mkdir dir="${build.dist}" />
-      <tar tarfile="${build.dist}/${filename}-src.tar">
-         <tarfileset prefix="${filename}" dir="${home.dir}"
-            includes="src/**,build/**,license.txt,licenses/**"/>
-      </tar>
-      <gzip zipfile="${build.dist}/${filename}-src.tar.gz" src="${build.dist}/${filename}-src.tar"/>
-      <delete file="${build.dist}/${filename}-src.tar"/>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Packages Helma src and build directories with ZIP                   -->
-   <!-- needs parameter ${filename} for final dist-file                     -->
-   <!-- =================================================================== -->
-   <target name="package-src-zip" depends="init">
-      <mkdir dir="${build.dist}" />
-      <zip zipfile="${build.dist}/${filename}-src.zip">
-         <zipfileset dir="${home.dir}" prefix="${filename}" 
-          includes="src/**,build/**,license.txt,licenses/**" />
-      </zip>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Make Antclick package (helma plus Antville and manage apps)         -->
-   <!-- =================================================================== -->
-   <target name="antclick" depends="init">
-      <mkdir dir="${build.work}"/>
-
-      <!-- create the main part of helma -->
-      <antcall target="package-raw">
-         <param name="distribution" value="antclick" />
-      </antcall>
-
-      <!-- get antville -->
-      <mkdir dir="${build.work}/apps" />
-      <!-- to retrieve special versions of antville insert additional attributes:
-          tag="TAGNAME", date="1972-09-24" or date="1972-09-24 20:05" -->
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="HEAD" package="antville" dest="${build.work}/apps" />
-
-      <!-- unzip images -->
-      <unzip src="${build.work}/apps/antville/images.zip" dest="${build.work}/static">
-         <patternset>
-            <include name="**"/>
-         </patternset>
-      </unzip>
-
-      <!-- delete antville's mysql-scripts, image-zip etc -->
-      <delete>
-         <fileset dir="${build.work}/apps/antville" includes="images.zip,*.sql" />
-      </delete>
-
-      <!-- get and zip manage-app -->
-      <antcall target="package-manage" />
-
-      <!-- zip up the whole thing -->
-      <antcall target="package-zip">
-         <param name="filename" value="${antclick.name}"/>
-      </antcall>
-      <antcall target="package-tgz">
-         <param name="filename" value="${antclick.name}"/>
-      </antcall>
-
-      <!-- clean up -->
-      <delete dir="${build.work}"/>
-   </target>
-
-
-   <!-- =================================================================== -->
-   <!-- Gets an application from the cvs and zips/targzs it                 -->
-   <!-- =================================================================== -->
-   <target name="app" depends="init">
-      <mkdir dir="${build.dist}" />
-      <mkdir dir="${build.work}" />
-
-      <!-- to retrieve special versions of an application insert
-      additional attributes: tag="TAGNAME" or date="1972-09-24 20:05" -->
-      <cvs cvsRoot="${cvs.root.apps}" command="export" tag="HEAD" package="${application}" dest="${build.work}" />
-
-      <fixcrlf srcdir="${build.work}" eol="crlf" eof="add"  includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml" />
-      <zip zipfile="${build.dist}/${application}-${DSTAMP}.zip" basedir="${build.work}" includes="**"/>
-
-      <fixcrlf srcdir="${build.work}" eol="lf" eof="remove" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin" />
-      <tar tarfile="${build.dist}/${application}-${DSTAMP}.tar" basedir="${build.work}">
-      <tarfileset dir="${build.work}">
-         <include name="${build.work}/**"/>
-      </tarfileset>
-      </tar>
-      <gzip zipfile="${build.dist}/${application}-${DSTAMP}.tar.gz" src="${build.dist}/${application}-${DSTAMP}.tar" />
-
-      <delete file="${build.dist}/${application}-${DSTAMP}.tar" />
-      <delete dir="${build.work}" />
    </target>
 
 </project>
