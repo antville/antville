@@ -613,7 +613,28 @@ function xmlbutton_macro(param) {
 /**
  * renders the searchbox
  */
-
 function searchbox_macro(param) {
    this.renderSkin("searchbox");
+}
+
+/**
+ * function renders the months of the archive
+ */
+function monthlist_macro(param) {
+   if (!this.stories.size() || !this.showArchive())
+      return;
+   var currMonth;
+   var prevMonth;
+   for (var i=0;i<this.size();i++) {
+      currMonth = this.get(i).groupname.substring(0,6);
+      if (currMonth < prevMonth || i == this.size()-1) {
+         res.write(param.itemprefix);
+         openLink(this.get(i).href());
+         res.writeln(parseTimestamp(currMonth,"yyyyMM").format(param.format ? param.format : "MMMM yyyy"));
+         closeLink();
+         res.write(param.itemsuffix);
+      }
+      prevMonth = currMonth;
+   }
+   return;
 }
