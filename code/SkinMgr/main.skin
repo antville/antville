@@ -15,7 +15,7 @@ This is the skin responsible for the frontpage of your weblog.</li>
 <li><a name="daymain"></a><% skinmgr.link to="edit" urlparam="proto=day&name=main" text="frontpage of a single day" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="day" name="main" %>)</span><br />
 Whenever a user selects a single day via the calendar, this skin will be used to display the list of stories of this day.</li>
 <li><a name="membershipstatusloggedin"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&name=statusloggedin" text="user logged in" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="statusloggedin" %>)</span><br />
-If the user visiting your weblog is logged in, this skin will be displayed wherever you place the macro &lt;%&nbsp;weblog.loginstatus&nbsp;%&gt;.</li>
+If the user visiting your weblog is logged in, this skin will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
 <li><a name="membershipstatusloggedout"></a><% skinmgr.link to="edit" urlparam="proto=membermgr&name=statusloggedout" text="user not logged in" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="membermgr" name="statusloggedout" %>)</span><br />
 If the user visiting your weblog is not logged in, this skin (containing a link to the login-page) will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
 </ul>
