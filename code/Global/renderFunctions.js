@@ -60,6 +60,7 @@ function renderTextPreview(text,limit) {
  * Do Wiki style substitution, transforming
  * stuff contained between asterisks into links.
  */
+
 function doWikiStuff (src) {
    // robert, disabled: didn't get the reason for this:
    // var src= " "+src;
@@ -97,16 +98,18 @@ function doWikiStuff (src) {
  *  JavaScript than (Hop)Objects:
  *  
  */
-function simpleDropDownBox (name, options, selectedIndex) {
-  var str = "<select name=\""+name+"\" size=\"1\">";
-  for (var i in options) {
-    var name = encode (options[i]);
-    var key = i;
-    if (key == selectedIndex)
-       str += "<option value=\""+key+"\" selected=\"true\">"+name+"</option>";
-    else
-       str += "<option value=\""+key+"\">"+name+"</option>";
-  }
-  str += "</select>";
-  return str;
+function simpleDropDownBox (name, options, selectedIndex, firstoption) {
+   var str = "<select name=\""+name+"\" size=\"1\">";
+   if (firstoption)
+      str += "<option value=\"\">" + firstoption + "</option>";
+   for (var i in options) {
+      var name = encode (options[i]);
+      var key = i;
+      if (key == selectedIndex)
+         str += "<option value=\""+key+"\" selected=\"true\">"+name+"</option>";
+      else
+         str += "<option value=\""+key+"\">"+name+"</option>";
+   }
+   str += "</select>";
+   return str;
 }
