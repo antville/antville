@@ -1,4 +1,4 @@
-<p>This is the complete list of weblogs hosted here (ordered alphabetically):</p>
+<p>This is the complete list of public weblogs hosted here (ordered alphabetically):</p>
 <ul>
 <% webloglist show="all" limit="25" scroll="yes" %>
 </ul>
