@@ -1,23 +1,23 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isEditDenied(user);
+var deny = this.isEditDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(user.cache.referrer ? path.weblog.members.href("login") : this.href());
+   res.redirect(session.data.referrer ? path.weblog.members.href("login") : this.href());
 }
 
-// storing referer in user-cache in case user clicks cancel later
-if (!user.cache.referrer && req.data.http_referer)
-   user.cache.referrer = req.data.http_referer;
+// storing referer in session in case user clicks cancel later
+if (!session.data.referrer && req.data.http_referer)
+   session.data.referrer = req.data.http_referer;
 
 if (req.data.submit == "cancel" || req.data.cancel) {
-   var url = user.cache.referrer ? user.cache.referrer : this.href();
-   user.cache.referrer = null;
+   var url = session.data.referrer ? session.data.referrer : this.href();
+   session.data.referrer = null;
    res.redirect(url);
 } else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalPoll(req.data, user);
    res.message = result.message;
-   user.cache.referrer = null;
+   session.data.referrer = null;
    if (!result.error)
       res.redirect(result.url);
 }
@@ -55,10 +55,10 @@ for (var i=0; i<max; i++) {
  	res.data.choices += c.renderSkinAsString("edit", param);
 }
 
-res.skin = "weblog.page";
-
 res.data.action = this.href(req.action);
 
 res.data.command = "Edit";
 res.data.title = path.weblog.title;
 res.data.body = this.renderSkinAsString("edit");
+
+path.weblog.renderSkin("page");

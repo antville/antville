@@ -1,14 +1,15 @@
-res.skin = "sysmgr.page";
 res.data.title = "Antville Manager - " + req.action;
 
 
 res.data.action = this.href(req.action);
 
 if (req.data.search)
-   user.cache.mgr.searchSyslog(req.data.show,req.data.order,req.data.keywords);
+   session.data.mgr.searchSyslog(req.data.show,req.data.order,req.data.keywords);
 
-user.cache.mgr.renderPageNavigation("syslogs",this.href(req.action),parseInt(req.data.page,10));
-user.cache.mgr.renderList("syslogs",null,null,parseInt(req.data.page,10));
+session.data.mgr.renderPageNavigation("syslogs",this.href(req.action),parseInt(req.data.page,10));
+session.data.mgr.renderList("syslogs",null,null,parseInt(req.data.page,10));
 
 res.data.searchform = this.renderSkinAsString("syslogsearchform");
 res.data.body = this.renderSkinAsString("list");
+
+this.renderSkin("page");
