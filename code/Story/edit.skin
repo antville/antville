@@ -12,8 +12,17 @@
 <td class="storyText" nowrap><% this.online as="editor" %></td>
 </tr>
 <tr>
+<td class="storyText" nowrap>who may edit?</td>
+<td class="storyText" nowrap><% this.editableby as="editor" %></td>
+</tr>
+<tr>
 <td class="storyText" nowrap>&nbsp;</td>
 <td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.author as="link" prefix="created by " %> <% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy,'&nbsp;'h:mm a" prefix="on " %><br>
+<% this.modifier as="link" prefix="last modification by " %> <% this.modifytime format="EEEE,'&nbsp;'dd.MM.yyyy,'&nbsp;'h:mm a" prefix="on "%></td>
 </tr>
 </table>
 </form>
