@@ -1,7 +1,7 @@
 <br />
 <% response.pagenavigation %>
 
-<table border="0" cellspacing="0" cellpadding="0" width="680">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
 <% response.list %>
 </table>
 
