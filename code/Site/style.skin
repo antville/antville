@@ -39,7 +39,7 @@ a:hover {
    vertical-align: middle;
    background-image: url("<% image as="url" name="/webloghead" %>");
    background-color: transparent;
-   color: <% site.titlecolor %>
+   color: <% site.linkcolor %>
 }
 
 .message {
