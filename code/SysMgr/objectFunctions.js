@@ -239,6 +239,9 @@ function evalSystemSetup(param, admin) {
    root.sys_deleteInactiveSites = param.sys_deleteInactiveSites ? true : false;
    root.sys_deleteWarningAfter = param.sys_deleteWarningAfter ? parseInt(param.sys_deleteWarningAfter, 10) : null;
    root.sys_deleteAfterWarning = param.sys_deleteAfterWarning ? parseInt(param.sys_deleteAfterWarning, 10) : null;
+   // set the default layout
+   if (param.layout)
+      root.layouts.setDefaultLayout(param.layout);
    // add a new entry in system-log
    this.syslogs.add(new syslog("system", null, "changed system setup", session.user));
    // everything fine, so we assign true to root.sys_issetup
