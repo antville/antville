@@ -471,8 +471,7 @@ function buildAliasFromFile(uploadFile) {
 
 function onStart() {
    // load application messages and modules
-   app.data.modules = new Object();
-   var dir = app.__app__.getAppDir();
+   var dir = new File(app.dir);
    var arr = dir.list();
    for (var i in arr) {
       var fname = arr[i];
@@ -482,19 +481,6 @@ function onStart() {
    		app.data[name] = new Packages.helma.util.SystemProperties (msgFile.getAbsolutePath());
    		app.log ("loaded application messages (language: " + name + ")");
    	}
-      // check if file is a zip file and if there's 
-      // a module with the zip file's name:
-      if (fname.lastIndexOf(".zip") == fname.length-4) {
-         var modname = fname.substring(0, fname.length-4);
-         var trial = tryEval(modname + "_module");
-         if (!trial.error && typeof trial.value == "function") {
-            trial = tryEval("new " + modname + "_module()");
-            if (!trial.error) {
-               app.data.modules[modname] = trial.value;
-               app.log ("loaded module " + modname);
-            }
-         }
-      }
    }
    // load macro help file
    var macroHelpFile = new File(dir, "macro.help");
