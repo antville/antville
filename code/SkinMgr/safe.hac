@@ -1,0 +1,13 @@
+checkIfLoggedIn(this.href(req.action));
+
+var deny = this.isDenied(session.user,req.data.memberlevel);
+if (deny) {
+   res.message = getMessage("error",deny);
+   res.redirect(path.site.href());
+}
+
+res.data.title = path.site.title;
+
+res.data.body = this.renderSkinAsString("main");
+
+this.renderSkin("page");
