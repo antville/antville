@@ -37,14 +37,24 @@ function email_macro(param) {
  * macro renders user-level
  */
 
-function userlevel_macro(param) {
+function level_macro(param) {
    res.write(param.prefix)
-   if (this.isAdmin())
-      res.write("Admin");
-   else if (this.isContributor())
-      res.write("Contributor");
-   else
-      res.write("User");
+   if (param.as == "editor") {
+      ddParam = new HopObject();
+      ddParam.name = "level";
+      ddParam.add(this.createDDOption("-- select --",""));
+      ddParam.add(this.createDDOption("User",0));
+      ddParam.add(this.createDDOption("Contributor",1));
+      ddParam.add(this.createDDOption("Administrator",2));
+      this.chooser(ddParam);      
+   } else {
+      if (this.isAdmin())
+         res.write("Admin");
+      else if (this.isContributor())
+         res.write("Contributor");
+      else
+         res.write("User");
+   }
    res.write(param.suffix);
 }
 
