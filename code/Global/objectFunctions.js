@@ -475,3 +475,22 @@ function getError(messageName,value) {
 function getConfirm(messageName,value) {
    return (createResultObj("confirm",messageName,value,false));
 }
+
+/**
+ * function gets a MimePart passed as argument and
+ * constructs an alias based on the name
+ * @param Obj MimePart-Object
+ * @return String determined name
+ */
+
+function buildAliasFromFile(uploadFile) {
+   var rawName = uploadFile.getName().split("/");
+   var name = rawName[rawName.length-1];
+   if (name.indexOf(".") > -1)
+      name = name.substring(0,name.indexOf("."));
+   // clean name from any invalid characters
+   var invalidChars = new RegExp("[ \\/?&=\\+#дцья\\\\]");
+   invalidChars.ignoreCase = true;
+   invalidChars.global = true;
+   return (name.replace(invalidChars,""));
+}
