@@ -1,23 +1,15 @@
 /**
- * function checks if the current session is authenticated
- * and if the user is trusted
- * @return Boolean true when trusted, false otherwise
+ * function checks if user is logged in or not
+ * if false, it redirects to the login-page
+ * but before it stores the url to jump back (if passed as argument)
  */
 
-function isUserTrusted() {
-   if (session.user)
-      return (session.user.trusted)
-   return false;
-}
-
-/**
- * function checks if the current session is authenticated
- * and if the user has SysAdmin-rights
- * @return Boolean true when SysAdmin, false otherwise
- */
-
-function isUserSysAdmin() {
-   if (session.user)
-      return (session.user.sysadmin);
-   return false;
+function checkIfLoggedIn(referrer) {
+   if (!session.user) {
+      // user is not logged in
+      if (referrer)
+         session.data.referrer = referrer;
+      res.redirect(res.handlers.site ? res.handlers.site.members.href("login") : root.members.href("login"));
+   }
+   return;
 }
