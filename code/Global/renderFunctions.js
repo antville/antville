@@ -12,7 +12,7 @@ function openLink(url) {
  * close an html link element
  */
 function closeLink() {
-  closeMarkupElement("a");
+   closeMarkupElement("a");
 }
 
 /**
@@ -21,8 +21,8 @@ function closeLink() {
  * @param attr Object containing the element's attributes as properties
  */
 function openMarkupElement(name, attr) {
-  renderMarkupPart(name, attr);
-  res.write(">");
+   renderMarkupPart(name, attr);
+   res.write(">");
 }
 
 
@@ -31,7 +31,7 @@ function openMarkupElement(name, attr) {
  * @param name String containing the element's name
  */
 function closeMarkupElement(name) {
-  res.write("</" + name + ">");
+   res.write("</" + name + ">");
 }
 
 
@@ -41,8 +41,8 @@ function closeMarkupElement(name) {
  * @param attr Object containing the element's attributes as properties
  */
 function renderMarkupElement(name, attr) {
-  renderMarkupPart(name, attr);
-  res.write(" />");
+   renderMarkupPart(name, attr);
+   res.write(" />");
 }
 
 
@@ -54,23 +54,23 @@ function renderMarkupElement(name, attr) {
  * @param attr Object containing the element's attributes as properties
  */
 function renderMarkupPart(name, attr) {
-  res.write("<" + name);
-  if (attr) {
-    // temporary mapping of class attribute
-    // if attr.style contains class definition
-    // (due to backwards-compatibility)
-    if (attr.style && attr.style.indexOf(":") < 0) {
-      attr["class"] = attr.style;
-      delete attr.style;
-    }
-    delete attr.as;
-    // creating the attribute string
-    for (var i in attr) {
-      if (attr[i] == null)
-        continue;
-      res.write(" " + i + "=\"" + attr[i] + "\"");
-  	}
-  }
+   res.write("<" + name);
+   if (attr) {
+      // temporary mapping of class attribute
+      // if attr.style contains class definition
+      // (due to backwards-compatibility)
+      if (attr.style && attr.style.indexOf(":") < 0) {
+         attr["class"] = attr.style;
+         delete attr.style;
+      }
+      delete attr.as;
+      // creating the attribute string
+      for (var i in attr) {
+         if (attr[i] == null)
+            continue;
+         res.write(" " + i + "=\"" + attr[i] + "\"");
+      }
+   }
 }
 
 
@@ -157,10 +157,10 @@ function renderInputText(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputPassword(param) {
-  param.type = "password";
-  param.size = param.width ? param.width : "20";
-  delete param.width;
-  renderMarkupElement("input", param);
+   param.type = "password";
+   param.size = param.width ? param.width : "20";
+   delete param.width;
+   renderMarkupElement("input", param);
 }
 
 
@@ -169,8 +169,8 @@ function renderInputPassword(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputFile(param) {
-  param.type = "file";
-  renderMarkupElement("input", param);
+   param.type = "file";
+   renderMarkupElement("input", param);
 } 
 
 
@@ -179,11 +179,12 @@ function renderInputFile(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputCheckbox(param) {
-  param.type = "checkbox";
-  if (parseInt(param.value, 10) == 1 || param.value == true)
-    param.checked = "checked";
-  param.value = "1";
-  renderMarkupElement("input", param);
+   param.type = "checkbox";
+   if (parseInt(param.value, 10) == 1 || param.value == true)
+      param.checked = "checked";
+   if (!param.value)
+      param.value = "1";
+   renderMarkupElement("input", param);
 }
 
 
@@ -192,13 +193,13 @@ function renderInputCheckbox(param) {
  * @param param Object contains the element's attributes
  */
 function renderInputRadio(param) {
-  param.type = "radio";
-  if (param.value == param.selectedValue)
-    param.checked = "checked";
-  else
-    delete param.checked;
-  delete param.selectedValue;
-  renderMarkupElement("input", param);
+   param.type = "radio";
+   if (param.value == param.selectedValue)
+      param.checked = "checked";
+   else
+      delete param.checked;
+   delete param.selectedValue;
+   renderMarkupElement("input", param);
 }
 
 
@@ -210,28 +211,28 @@ function renderInputRadio(param) {
  *  JavaScript than (Hop)Objects:
  */
 function renderDropDownBox(name, options, selectedIndex, firstoption) {
-  var param = new Object();
-  param.name = name;
-  param.size = "1";
-  openMarkupElement("select", param);
-  if (firstoption) {
-    param = new Object();
-    param.value = "";
-    openMarkupElement("option", param);
-    res.write(firstoption);
-    closeMarkupElement("option");
-  }
-  for (var i in options) {
-    param = new Object();
-    param.name = encode(options[i]);
-    param.value = i; 
-    if (param.value == selectedIndex)
-      param.selected = "selected";
-    openMarkupElement("option", param);
-    res.write(param.name);
-    closeMarkupElement("option");
-  }
-  closeMarkupElement("select");
+   var param = new Object();
+   param.name = name;
+   param.size = "1";
+   openMarkupElement("select", param);
+   if (firstoption) {
+      param = new Object();
+      param.value = "";
+      openMarkupElement("option", param);
+      res.write(firstoption);
+      closeMarkupElement("option");
+   }
+   for (var i in options) {
+      param = new Object();
+      param.name = encode(options[i]);
+      param.value = i; 
+      if (param.value == selectedIndex)
+         param.selected = "selected";
+      openMarkupElement("option", param);
+      res.write(param.name);
+      closeMarkupElement("option");
+   }
+   closeMarkupElement("select");
 }
 
 
@@ -259,7 +260,7 @@ function renderColorAsString(c) {
  * renders a color as hex or named string
  */
 function renderColor(c) {
-  res.write(renderColorAsString(c));
+   res.write(renderColorAsString(c));
 }
 
 
@@ -268,34 +269,34 @@ function renderColor(c) {
  * stuff contained between asterisks into links.
  */
 function doWikiStuff (src) {
-  // robert, disabled: didn't get the reason for this:
-  // var src= " "+src;
-  if (src == null || src.indexOf ("<*") < 0)
-     return src;
+   // robert, disabled: didn't get the reason for this:
+   // var src= " "+src;
+   if (src == null || src.indexOf ("<*") < 0)
+      return src;
 
-  // do the Wiki link thing, <*asterisk style*>
-  var regex = new RegExp ("<[*]([^*]+)[*]>");
-  regex.ignoreCase=true;
-
-  var text = "";
-  var start = 0;
-  while (true) {
-    var found = regex.exec (src.substring(start));
-    var to = found == null ? src.length : start + found.index;
-    text += src.substring(start, to);
-    if (found == null)
-      break;
-    var name = ""+(new java.lang.String (found[1])).trim();
-    var item = res.handlers.site.topics.get (name);
-    if (item == null && name.lastIndexOf("s") == name.length-1)
-      item = res.handlers.site.topics.get (name.substring(0, name.length-1));
-    if (item == null || !item.size())
-      text += format(name)+" <small>[<a href=\""+res.handlers.site.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
-    else
-      text += "<a href=\""+item.href()+"\">"+name+"</a>";
-    start += found.index + found[1].length+4;
-  }
-  return text;
+   // do the Wiki link thing, <*asterisk style*>
+   var regex = new RegExp ("<[*]([^*]+)[*]>");
+   regex.ignoreCase=true;
+   
+   var text = "";
+   var start = 0;
+   while (true) {
+      var found = regex.exec (src.substring(start));
+      var to = found == null ? src.length : start + found.index;
+      text += src.substring(start, to);
+      if (found == null)
+         break;
+      var name = ""+(new java.lang.String (found[1])).trim();
+      var item = res.handlers.site.topics.get (name);
+      if (item == null && name.lastIndexOf("s") == name.length-1)
+         item = res.handlers.site.topics.get (name.substring(0, name.length-1));
+      if (item == null || !item.size())
+         text += format(name)+" <small>[<a href=\""+res.handlers.site.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
+      else
+         text += "<a href=\""+item.href()+"\">"+name+"</a>";
+      start += found.index + found[1].length+4;
+   }
+   return text;
 }
 
 
