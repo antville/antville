@@ -10,6 +10,6 @@ function onRequest() {
    }
    // initialize sysmgr-object in session
    if (!session.data.mgr)
-      session.data.mgr = new sysmgr();
+      session.data.mgr = new SysMgr();
    return;
 }
