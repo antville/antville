@@ -108,7 +108,7 @@ function createtime_macro(param) {
       renderInputText(param);
    } else if (this.createtime) {
       var text = formatTimestamp(this.createtime,param.format);
-      if (param.as == "link") {
+      if (param.as == "link" && this.online == 2) {
          openLink(this.site.get(String(this.day)).href());
          res.write(text);
          closeLink();
