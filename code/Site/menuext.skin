@@ -1,10 +1,10 @@
 <script language="javascript" defer="defer">
-   var parentwin = external.menuArguments;
-   var doc = parentwin.document;
+   var win = external.menuArguments;
+   var doc = win.document;
    var sel = doc.selection;
    var rng = sel.createRange();
    var str = new String(rng.text);
    var url = "<% root.sys_url %>/<% site.alias %>/stories/create?content_text=";
    var link = escape('<a href="' + doc.location.href + '">' + doc.title + "</a>: ");
-   top.location.href = url + link + str;
+   win.top.location.href = url + link + str;
 </script>
