@@ -64,8 +64,12 @@ function evalNewStory(s,param,creator) {
       result = getError("topicNoSpecialChars");
    // check the online-status of the story
    var status = parseInt(param.online,10);
-   if (param.publish || param.submit == "publish")
-      status = param.addtofront ? 2 : 1;
+   if (param.publish || param.submit == "publish") {
+      if (param.justintopic)
+         status = (param.addtofront != "1") ? 1 : 2;
+      else
+         status = param.addtofront ? 2 : 1;
+   }
    else if ((param.save || param.submit == "save") && isNaN(status))
       status = 0;
    if (isNaN(status))
