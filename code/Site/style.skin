@@ -1,8 +1,8 @@
 body, td {
-   background-color: <% site.bgcolor %>;
-   font-family: <% site.textfont %>;
-   font-size: <% site.textsize %>;
-   color: <% site.textcolor %>;
+   background-color: <% layout.bgcolor %>;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.textsize %>;
+   color: <% layout.textcolor %>;
 }
 
 fieldset {
@@ -21,15 +21,15 @@ form {margin: 0px;}
 
 a {text-decoration: none;}
 
-a:link {color: <% site.linkcolor %>;}
+a:link {color: <% layout.linkcolor %>;}
 
-a:visited {color: <% site.vlinkcolor %>;}
+a:visited {color: <% layout.vlinkcolor %>;}
 
-a:active {color: <% site.alinkcolor %>;}
+a:active {color: <% layout.alinkcolor %>;}
 
 a:hover {
-   background-color: <% site.linkcolor %>;
-   color: <% site.bgcolor %>;
+   background-color: <% layout.linkcolor %>;
+   color: <% layout.bgcolor %>;
 }
 
 .title {
@@ -37,23 +37,23 @@ a:hover {
    font-size: 20pt;
    font-weight: bold;
    vertical-align: middle;
-   background-image: url("<% image as="url" name="/webloghead" %>");
+   background-image: url("<% layout.image as="url" name="webloghead" %>");
    background-color: transparent;
-   color: <% site.linkcolor %>
+   color: <% layout.linkcolor %>
 }
 
 .message {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
    font-weight: bold;
    padding: 1px;
-   color: <% site.titlecolor %>;
-   background-color: <% site.bgcolor %>;
+   color: <% layout.titlecolor %>;
+   background-color: <% layout.bgcolor %>;
 }
 
 .statusdark {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
    width: 198px;
    display: block;
    padding-top: 3px;
@@ -61,8 +61,8 @@ a:hover {
 }
 
 .statuslight {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
    width: 198px;
    color: #999999;
    display: block;
@@ -74,7 +74,7 @@ a:hover {
    width: 198px;
    text-align: left;
    letter-spacing: 3px;
-   font-size: <% site.smallsize %>;
+   font-size: <% layout.smallsize %>;
    display: block;
    padding-top: 1px;
    padding-bottom: 1px;
@@ -83,58 +83,58 @@ a:hover {
 .sep {
    height: 1px;
    width: 198px;
-   background-image: url("<% image as="url" name="/dot" %>");
+   background-image: url("<% layout.image as="url" name="dot" %>");
 }
 
-ul {list-style: url("<% image as="url" name="/bullet" %>") circle;}
+ul {list-style: url("<% layout.image as="url" name="bullet" %>") circle;}
 
 li {padding-bottom: 3px;}
 
 .calHead {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
    font-weight: bold;
 }
 
 .calDay {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
    text-align: center;
 }
 
 .calSelDay {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
-   border: 1px solid <% site.linkcolor %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   border: 1px solid <% layout.linkcolor %>;
    text-align: center;
 }
 
 .calFoot {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
    font-weight: bold;
 }
 
 .storyDate {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
-   color: <% site.smallcolor %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.smallcolor %>;
    margin-top: 10px;
    margin-bottom: 2px;
 }
 
 .storyTitle {
-   font-family: <% site.titlefont %>;
-   font-size: <% site.titlesize %>;
-   color: <% site.titlecolor %>;
+   font-family: <% layout.titlefont %>;
+   font-size: <% layout.titlesize %>;
+   color: <% layout.titlecolor %>;
    font-weight: bold;
    margin-bottom: 2px;
 }
 
 .small {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
-   color: <% site.smallcolor %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.smallcolor %>;
 }
 
 .commentHead {
@@ -147,16 +147,16 @@ li {padding-bottom: 3px;}
 }
 
 .commentDate {
-   font-family: <% site.smallfont %>;
-   font-size: <% site.smallsize %>;
-   color: <% site.smallcolor %>;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.smallcolor %>;
    margin-bottom: 2px;
 }
 
 .commentTitle {
-   font-family: <% site.titlefont %>;
-   font-size: <% site.titlesize %>;
-   color: <% site.textcolor %>;
+   font-family: <% layout.titlefont %>;
+   font-size: <% layout.titlesize %>;
+   color: <% layout.textcolor %>;
    font-weight: bold;
    margin-bottom: 2px;
 }
@@ -166,24 +166,24 @@ li {padding-bottom: 3px;}
 
 .formTitle {
    width: 380px;
-   font-family: <% site.textfont %>;
-   font-size: <% site.titlesize %>;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.titlesize %>;
    font-weight: bold;
-   border: 1px solid <% site.textcolor %>;
+   border: 1px solid <% layout.textcolor %>;
 }
 
 .formText {
    width: 380px;
-   font-family: <% site.textfont %>;
-   font-size: <% site.textsize %>;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.textsize %>;
    font-weight: normal;
-   border: 1px solid <% site.textcolor %>;
+   border: 1px solid <% layout.textcolor %>;
 }
 
 .formWide {
    width: 660px;
-   font-family: <% site.textfont %>;
-   font-size: <% site.textsize %>;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.textsize %>;
    font-weight: normal;
 }
 
@@ -192,7 +192,7 @@ li {padding-bottom: 3px;}
 .pollResultsBar {
    height: 5px;
    margin-right: 10px;
-   background-color: <% site.linkcolor %>;
+   background-color: <% layout.linkcolor %>;
    font-size: 0px;
 }
 
@@ -211,7 +211,8 @@ li {padding-bottom: 3px;}
    margin-bottom: 18px;
 }
 
-/* pagewise navigation bar */
+/* page navigation bar */
+
 div.pageNav {
    margin-top:10px;
    height:14px;
