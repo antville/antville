@@ -35,7 +35,7 @@ function logo_macro(param) {
  * macro renders an image out of image-pool
  * either as plain image, thumbnail, popup or url
  * param.name can contain a slash indicating that
- * the image belongs to a different weblog or to root
+ * the image belongs to a different site or to root
  */
 function image_macro(param) {
   if (!param.name)
@@ -120,12 +120,12 @@ function link_macro(param) {
 
 
 /**
- * macro fetches a goodie-object and renders a link to "getgoodie"-action
+ * macro fetches a file-object and renders a link to "getfile"-action
  */
-function goodie_macro(param) {
+function file_macro(param) {
    if (!param.name)
       return;
-   var p = getPoolObj(param.name,"goodies");
+   var p = getPoolObj(param.name,"files");
    if (!p)
       return;
    p.obj.renderSkin(param.useskin ? param.useskin : "main");
@@ -163,11 +163,11 @@ function poll_macro(param) {
     var poll = blog.polls.get(parts[1]);
   }
   else {
-    var blog = path.weblog;
+    var blog = path.site;
     var poll = blog.polls.get(param.id);
   }
   if (!poll)
-    return("[poll id " + param.id + " does not exist.]");
+    return(getMsg("error","pollNoExist",param.id));
   var deny = poll.isVoteDenied(session.user);
   if (poll.closed || param.as == "results")
     poll.renderSkin("results");
@@ -184,10 +184,10 @@ function poll_macro(param) {
 
 
 /**
- * macro basically renders a list of weblogs
+ * macro basically renders a list of sites
  * but first it checks which collection to use
  */
-function webloglist_macro(param) {
+function sitelist_macro(param) {
   if (param.show == "all")
     var collection = root.public;
   else
