@@ -1,10 +1,11 @@
 <style type="text/css">
 <!--
 
-body,td { font-family:<% this.textfont %>;
-       font-size:<% this.textsize %>;
-       color:#<% this.textcolor %>;
-    }
+body,td { background-color:#<% this.bgcolor %>;
+          font-family:<% this.textfont %>;
+          font-size:<% this.textsize %>;
+          color:#<% this.textcolor %>;
+        }
 
 a { text-decoration:none; }
 
@@ -46,6 +47,15 @@ a:hover { background-color:#<% this.linkcolor %>;
                padding-bottom:3px;
              }
 
+.statushead { width:198px;
+              text-align:left;
+              letter-spacing:3px;
+              font-size:7pt;
+              display:block;
+              padding-top:1px;
+              padding-bottom:1px;
+             }
+
 .sep { width:198px;
        background-image:url("/img/antville/dot.gif");
      }
@@ -84,9 +94,8 @@ li { padding-bottom:3px;
             }
 
 .small { font-size:8pt;
-            color:#999999;
-            margin-top:5px;
-          }
+         color:#999999;
+       }
 
 .commentHead { width:50px;
                border-bottom-style:dotted;

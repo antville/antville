@@ -1,5 +1,5 @@
 <tr>
 <td align="right" class="statusdark"><% this.title as="link" %><br>
-<% this.text limit=50 %><br>
-<small>by <% this.author %> @ <% this.modifytime format="dd.MM.'&nbsp;'h:mm a" %></small></td>
+<% this.text limit=50 %>
+<div class="small">by <% this.author %> @ <% this.modifytime format="dd.MM.'&nbsp;'h:mm a" %></div></td>
 </tr>
