@@ -624,19 +624,17 @@ function searchbox_macro(param) {
 function monthlist_macro(param) {
    if (!this.stories.size() || !this.showArchive())
       return;
-   var currMonth;
-   var prevMonth;
    var size = param.limit ? Math.min(this.size(),param.limit) : this.size();
    for (var i=0;i<size;i++) {
-      currMonth = this.get(i).groupname.substring(0,6);
-      if (currMonth < prevMonth || i == size-1) {
+      var curr = this.get(i);
+      var next = this.get(i+1);
+      if (!next || next.groupname.substring(0,6) < curr.groupname.substring(0,6)) {
          res.write(param.itemprefix);
-         openLink(this.get(i).href());
-         res.write(parseTimestamp(currMonth,"yyyyMM").format(param.format ? param.format : "MMMM yyyy"));
+         openLink(curr.href());
+         res.write(parseTimestamp(curr.groupname.substring(0,6),"yyyyMM").format(param.format ? param.format : "MMMM yyyy"));
          closeLink();
          res.write(param.itemsuffix);
       }
-      prevMonth = currMonth;
    }
    return;
 }
