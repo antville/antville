@@ -10,7 +10,7 @@
  * @param String String indicating what kind of stories to show
  */
 
-function renderStorylist(idx,show) {
+function renderStorylist(idx, show) {
    var size = this.size();
    if (isNaN (idx)|| idx > size-1)
       idx = 0;
@@ -21,7 +21,7 @@ function renderStorylist(idx,show) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10) + (show ? "&show=" + show : "");
       sp.text = "newer stories";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
+      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
 
    var storylist = new java.lang.StringBuffer();
@@ -36,9 +36,9 @@ function renderStorylist(idx,show) {
          var sp = new Object();
          sp.story = st.renderSkinAsString("listitem");
          if (st.online)
-            storylist.append(this.renderSkinAsString("onlinestory",sp));
+            storylist.append(this.renderSkinAsString("onlinestory", sp));
          else
-            storylist.append(this.renderSkinAsString("offlinestory",sp));
+            storylist.append(this.renderSkinAsString("offlinestory", sp));
          cnt++;
       }
       idx++;
@@ -47,7 +47,7 @@ function renderStorylist(idx,show) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx + (show ? "&show=" + show : "");
       sp.text = "older stories";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    res.data.storylist = storylist.toString();
    return;

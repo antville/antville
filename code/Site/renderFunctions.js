@@ -2,17 +2,17 @@
  * check if there are any stories in the previous month
  */
 
-function renderLinkToPrevMonth(firstDayIndex,currentMonth,monthNames) {
+function renderLinkToPrevMonth(firstDayIndex, currentMonth, monthNames) {
    var l = this.size();
    if (l == 0 || l <= firstDayIndex)
       return ("&nbsp;");
 
-   var prevDay = this.get(firstDayIndex+1);
-   if (prevDay && prevDay.groupname<currentMonth) {
-      var month = prevDay.groupName.toString().substring(4,6)-1;
-      return ("<a href=\"" + prevDay.href() + "\">" + monthNames[month] + "</a>");
+   var prevDay = this.get(firstDayIndex + 1);
+   if (prevDay && prevDay.groupname < currentMonth) {
+      var month = prevDay.groupName.toString().substring(4, 6) - 1;
+      return Html.linkAsString(prevDay.href(), monthNames[month]);
    } else {
-      return ("&nbsp;");
+      return "&nbsp;";
    }
 }
 
@@ -21,17 +21,17 @@ function renderLinkToPrevMonth(firstDayIndex,currentMonth,monthNames) {
  * check if there are any stories in the previous month
  */
 
-function renderLinkToNextMonth(lastDayIndex,currentMonth,monthNames) {
+function renderLinkToNextMonth(lastDayIndex, currentMonth, monthNames) {
    var l = this.size();
    if (l == 0 || lastDayIndex == 0)
       return ("&nbsp;");
 
-   var nextDay = this.get(lastDayIndex-1);
-   if (nextDay && nextDay.groupname>currentMonth) {
-      var month = nextDay.groupName.toString().substring(4,6)-1;
-      return ("<a href=\"" + nextDay.href() + "\">" + monthNames[month] + "</a>");
+   var nextDay = this.get(lastDayIndex - 1);
+   if (nextDay && nextDay.groupname > currentMonth) {
+      var month = nextDay.groupName.toString().substring(4, 6) - 1;
+      return Html.linkAsString(nextDay.href(), monthNames[month]);
    } else {
-      return ("&nbsp;");
+      return "&nbsp;";
    }
 }
 
@@ -73,7 +73,7 @@ function renderStorylist(day) {
          }
       }
    }
-   var days = this.days ? this.days : 2;
+   var days = this.preferences.getProperty("days") ? this.preferences.getProperty("days") : 2;
    days = Math.min (days, 14);  // render 14 days max
    this.prefetchChildren(idx, days);
 
@@ -86,9 +86,9 @@ function renderStorylist(day) {
       var prev = this.get (Math.max(0, idx-days));
       sp.url = this.href() + "?day=" + prev.groupname;
       sp.text = "newer stories";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
+      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
-   days = Math.min(idx + days++,this.size());
+   days = Math.min(idx + days++, this.size());
    var storylist = new java.lang.StringBuffer();
    while (idx < days) {
       var day = this.get(idx++);
@@ -101,7 +101,7 @@ function renderStorylist(day) {
       var next = this.get (idx);
       sp.url = this.href() + "?day=" + next.groupname;
       sp.text = "older stories";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    res.data.storylist = storylist.toString();
    return;

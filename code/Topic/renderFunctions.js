@@ -19,7 +19,7 @@ function renderStorylist(idx) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10);
       sp.text = "previous page";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
+      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    var storylist = new java.lang.StringBuffer();
    var day;
@@ -35,7 +35,7 @@ function renderStorylist(idx) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx;
       sp.text = "next page";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    res.data.storylist = storylist.toString();
    return;

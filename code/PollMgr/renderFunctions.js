@@ -10,7 +10,7 @@
  * @param String String indicating what kind of polls to show
  */
 
-function renderPollList(idx,show) {
+function renderPollList(idx, show) {
    var size = this.size();
    if (isNaN (idx)|| idx > size-1)
       idx = 0;
@@ -21,7 +21,7 @@ function renderPollList(idx,show) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10) + (show ? "&show=" + show : "");
       sp.text = "previous polls";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
+      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
 
    var plist = new java.lang.StringBuffer();
@@ -36,9 +36,9 @@ function renderPollList(idx,show) {
       if (render) {
          sp.poll = st.renderSkinAsString("listitem");
          if (st.closed)
-            plist.append(this.renderSkinAsString("closedpoll",sp));
+            plist.append(this.renderSkinAsString("closedpoll", sp));
          else
-            plist.append(this.renderSkinAsString("openpoll",sp));
+            plist.append(this.renderSkinAsString("openpoll", sp));
          cnt++;
       }
       idx++;
@@ -47,7 +47,7 @@ function renderPollList(idx,show) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx + (show ? "&show=" + show : "");
       sp.text = "more polls";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    res.data.pollList = plist.toString();
    return;

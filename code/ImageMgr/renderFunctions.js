@@ -18,7 +18,7 @@ function renderImagelist(idx) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-20);
       sp.text = "previous images";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
+      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    this.prefetchChildren(idx, 20);
    var imagelist = new java.lang.StringBuffer();
@@ -28,7 +28,7 @@ function renderImagelist(idx) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + i;
       sp.text = "more images";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    res.data.imagelist = imagelist.toString();
    return;

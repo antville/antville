@@ -18,7 +18,7 @@ function renderFilelist(idx) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10);
       sp.text = "previous files";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
+      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    var filelist = new java.lang.StringBuffer();
    for (var i=idx; i<max; i++)
@@ -27,7 +27,7 @@ function renderFilelist(idx) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + i;
       sp.text = "more files";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
+      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    res.data.filelist = filelist.toString();
    return;
