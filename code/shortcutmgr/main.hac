@@ -1,9 +1,16 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = path.site.isEditDenied(session.user);
-if (deny) {
-   res.message = deny;
+var denied = this.isDenied(session.user);
+if (denied) {
+   res.message = denied;
    res.redirect(path.site.href());
+}
+
+if (this._parent.isEditDenied(session.user)) {
+   res.data.title = path.site.title + " - Shortcuts";
+   res.data.body = this.renderSkinAsString("main");
+   path.site.renderSkin("page");
+   return;
 }
 
 // check if the shortcut list was submitted
@@ -20,7 +27,7 @@ if (req.data.submit || req.data.submit == "submit") {
       sc.content = content;
       sc.modifytime = new Date();
    }
-   // add a shortcut if a the corresponding fields are not empty
+   // add a shortcut if the corresponding fields are not empty
    if (req.data.newtitle && req.data.newcontent) {
       // check if there is not already a shortcut with that name
       if (!this.get(req.data.newtitle)) {
@@ -41,5 +48,5 @@ if (req.data.submit || req.data.submit == "submit") {
 
 res.data.action = this.href();
 res.data.title = path.site.title + " - Shortcuts";
-res.data.body = this.renderSkinAsString("main");
+res.data.body = this.renderSkinAsString("edit");
 path.site.renderSkin("page");
