@@ -57,7 +57,8 @@ function evalImg(param,creator) {
                result = getError("error");
          }
       }
-   }
+   } else
+      result = getError("imageNoUpload");
    return (result);
 }
 
