@@ -4,17 +4,32 @@
  * @param Obj User object
  */
 function saveSkin(param, usr) {
-   if (!param.proto || !param.name)
+   if (!param.key)
       throw new Exception("skinUpdate");
-   if (this[param.proto] && this[param.proto][param.name]) {
-      var s = this[param.proto][param.name];
-      s.modifytime = new Date();
-      s.modifier = usr;
+   var splitKey = param.key.split(".");
+   var s = this.getSkin(splitKey[0], splitKey[1]);
+   var originalSource = this.getOriginalSkinSource(splitKey[0], splitKey[1]);
+   if (s) {
+      if (param.skin == originalSource) {
+         // submitted skin equals original source
+         // so delete the skin object
+         try {
+            this.deleteSkin(s);
+         } catch (err) {
+            return new Message("update");
+         }
+      } else {
+         s.modifytime = new Date();
+         s.modifier = usr;
+         s.skin = param.skin;
+      }
    } else {
-      var s = new skin(this._parent, param.proto, param.name, usr);
+      if (param.skin == originalSource)
+         return new Message("update");
+      s = new skin(this._parent, splitKey[0], splitKey[1], usr);
+      s.skin = param.skin;
       this.add(s);
    }
-   s.skin = param.skin;
    return new Message("update");
 }
 
@@ -30,19 +45,31 @@ function deleteSkin(s) {
    } catch (err) {
       throw new Exception("skinDelete");
    }
-   return true;
+   return;
 }
 
 /**
  * delete all skins belonging to this manager
  */
 function deleteAll() {
-   for (var i=this.size();i>0;i--) {
-      var proto = this.get(i-1);
+   for (var i=0;i<this.size();i++) {
+      var proto = this.get(i);
       for (var j=proto.size();j>0;j--)
          this.deleteSkin(proto.get(j-1));
    }
-   return true;
+   return;
+}
+
+/**
+ * retrieve a skin from the skinmanager collection
+ * @param String name of prototype
+ * @param String name of skin
+ * @return Object skin object or null
+ */
+function getSkin(proto, name) {
+   if (!this.get(proto))
+      return null;
+   return this.get(proto).get(name);
 }
 
 /**
@@ -52,32 +79,89 @@ function deleteAll() {
  * @return String source of the skin
  */
 function getSkinSource(proto, name) {
-   var sp = [this];
-   if (this._parent.parent)
-      sp.push(this._parent.parent.skins);
-   var s = app.__app__.getSkin(proto, name, sp);
-   return (s ? s.source : null);
+   var s;
+   if ((s = this.getSkin(proto, name)) != null)
+      return s.skin;
+   else if (this._parent.parent) {
+      var handler = this._parent;
+      while ((handler = handler.parent) != null) {
+         if ((s = handler.skins.getSkin(proto, name)) != null)
+            return s.skin;
+      }
+   }
+   if (app.skinfiles[proto])
+      return app.skinfiles[proto][name];
+   return null;
+}
+
+/**
+ * function gets the source of the original skin
+ * @param String name of the prototype
+ * @param String name of the skin
+ * @return String source of the original skin
+ */
+function getOriginalSkinSource(proto, name) {
+   if (this._parent.parent) {
+      var handler = this._parent;
+      var s;
+      while ((handler = handler.parent) != null) {
+         if ((s = handler.skins.getSkin(proto, name)) != null)
+            return s.skin;
+      }
+   }
+   if (app.skinfiles[proto])
+      return app.skinfiles[proto][name];
+   return null;
 }
 
 /**
  * dump all skins of this skinmgr
  * @param Object Zip object to add the skins to
  */
-function dumpToZip(z) {
-   var skins = app.skinfiles;
-   for (var protoName in skins) {
-      var proto = app.skinfiles[protoName];
-      for (var skinName in proto) {
-         var s = proto[skinName];
-         var source = this.getSkinSource(protoName, skinName);
-         if (source) {
-            var buf = new java.lang.String(source).getBytes();
-            z.addData(buf, "skins/" + protoName + "/" + skinName);
+function dumpToZip(z, fullExport, exportLog) {
+   if (!exportLog)
+      var exportLog = new java.util.Hashtable(200);
+   var key;
+   // first loop over all skins managed by this skinmanager
+   for (var i=0;i<this.size();i++) {
+      var proto = this.get(i);
+      for (var j=0;j<proto.size();j++) {
+         var s = proto.get(j);
+         key = s.proto + s.name;
+         if (s.skin && !exportLog.containsKey(key)) {
+            var buf = new java.lang.String(s.skin).getBytes();
+            z.addData(buf, "skins/" + s.proto + "/" + s.name + ".skin");
+            // add the exported skin to the exportLog
+            exportLog.put(key, true)
          }
       }
    }
-   return;
+   // if fullExport is enabled also dump the parent's skins
+   // and finally all skins of app.skinfiles that weren't
+   // exported already
+   if (fullExport) {
+      if (this._parent.parent)
+         this._parent.parent.skins.dumpToZip(z, fullExport, exportLog);
+      else {
+         // loop over app.skinfiles and add those that aren't
+         // exported already to the zip file
+         for (var protoName in app.skinfiles) {
+            var proto = app.skinfiles[protoName];
+            for (var skinName in proto) {
+               var source = proto[skinName];
+               key = protoName + skinName;
+               if (source && !exportLog.containsKey(key)) {
+                  var buf = new java.lang.String(source).getBytes();
+                  z.addData(buf, "skins/" + protoName + "/" + skinName + ".skin");
+                  exportLog.put(key, true);
+               }
+            }
+         }
+      }
+   }
+   return exportLog;
 }
+
 
 /**
  * create the skins of an imported layout
@@ -85,18 +169,58 @@ function dumpToZip(z) {
  */
 function evalImport(data) {
    var proto;
-   var skinParam;
    var buf;
+   var name;
    for (var protoName in data) {
       proto = data[protoName];
-      for (var skinName in proto) {
-         skinParam = proto[skinName];
+      for (var fileName in proto) {
+         name = fileName.substring(0, fileName.lastIndexOf("."));
          // FIXME: replace session.user with a more intelligent solution ...
-         var s = new skin(this._parent, protoName, skinName, session.user);
-         buf = data[protoName][skinName].data;
+         var s = new skin(this._parent, protoName, name, session.user);
+         buf = data[protoName][fileName].data;
          s.skin = new java.lang.String(buf, 0, buf.length);
          this.add(s);
       }
    }
    return true;
+}
+
+/**
+ * retrieve the description (title, text) of a skin
+ * from a message file depending on site and root locale
+ * @param String prefix
+ * @param String key to message
+ * @param Object Array ([0] == title, [1] == text)
+ */
+function getSkinDescription(prefix, key) {
+   var languages = new Array();
+   if (res.handlers.site)
+      languages[0] = res.handlers.site.getLocale().getLanguage();
+   languages[languages.length] = (root.getLocale()).getLanguage();
+   var propName = prefix + "." + key;
+   for (var i in languages) {
+      var lang = app.data[languages[i]];
+      if (lang && lang.getProperty(propName))
+         return lang.getProperty(propName).split("|");
+   }
+   return [key];
+}
+
+/**
+ * create a custom skin
+ */
+function evalCustomSkin(param, creator) {
+   if (!param.prototype)
+      throw new Exception("skinCustomPrototypeMissing");
+   else if (!param.name)
+      throw new Exception("skinCustomNameMissing");
+   else if (this[param.prototype] && this[param.prototype][param.name])
+      throw new Exception("skinCustomExisting");
+   else if (app.skinfiles[param.prototype] && app.skinfiles[param.prototype][param.name])
+      throw new Exception("skinCustomExisting");
+   var s = new skin(this._parent, param.prototype, param.name, creator);
+   s.custom = 1;
+   if (!this.add(s))
+      throw new Exception("skinCustomCreate");
+   return new Message("skinCustomCreate", [param.prototype, param.name]);
 }
