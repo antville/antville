@@ -278,7 +278,7 @@ function logAccess() {
 			app.__app__.logEvent("Error establishing DB connection: " + error);
 			return;
 		}
-		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, BROWSER, DATE) values (" + site._id + ", " + storyID + ", \"" + referrer + "\", \"" + req.data.http_remotehost + "\", \"" + req.data.http_browser + "\", now());";
+		var query = "insert into ACCESS (WEBLOG_ID, STORY_ID, REFERRER, IP, BROWSER, DATE) values (" + site._id + ", " + storyID + ", '" + referrer + "', '" + req.data.http_remotehost + "', '" + req.data.http_browser + "', now());";
 		c.executeCommand(query);
 		var error = c.getLastError();
 		if (error) {
