@@ -10,85 +10,52 @@
  *             - id (Int): id of created story
  */
 
-function evalNewStory(s,param,creator) {
-   var result;
-   s.site = this._parent;
-   // loop through param and collect content properties
-   var cont = new HopObject();
-   var contentIsCool = false;
-   for (var i in param) {
-      if (i.indexOf ("content_") == 0) {
-         cont[i.substring(8)] = param[i].trim();
-         if (!contentIsCool && param[i])
-            contentIsCool = true;
-      }
-   }
+function evalNewStory(param, creator) {
+   var s = new story(creator, param.http_remotehost);
+   // collect content
+   var content = extractContent(param);
    // if all story parts are null, return with error-message
-   if (!contentIsCool)
-      result = getError("textMissing");
-
-   s.setContent (cont);
+   if (!content.exists)
+      throw new Exception("textMissing");
+   s.content.setAll(content.value);
    // let's keep the title property
-   s.title = param.content_title;
-   s.prototype = "story";
-   s.creator = creator;
+   s.title = content.value.title;
    // check if the create date is set in the param object
    if (param.createtime) {
       try {
-         s.createtime = parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm");
+         s.createtime = param.createtime.toDate("yyyy-MM-dd HH:mm", this._parent.getTimeZone());
       } catch (error) {
-         result = getError("timestampParse",param.createtime);
+         throw new Exception("timestampParse", param.createtime);
       }
-      s.modifytime = new Date();
-   } else {
-      s.modifytime = s.createtime = new Date();
    }
-   s.editableby = !isNaN(parseInt(param.editableby,10)) ? parseInt(param.editableby,10) : null;
-   s.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
-   if (s.createtime) {
-      // create day of story with respect to site-timezone
-      s.day = formatTimestamp(s.createtime,"yyyyMMdd");
-   }
-   s.ipaddress = param.http_remotehost;
-   s.reads = 0;
+   s.editableby = !isNaN(parseInt(param.editableby, 10)) ? parseInt(param.editableby, 10) : null;
+   s.discussions = param.discussions ? 1 : 0;
+   // create day of story with respect to site-timezone
+   s.day = formatTimestamp(s.createtime, "yyyyMMdd");
 
-   var topic = param.topic ? param.topic : parseInt(param.topicidx,10);
-   if (!isNaN(topic) && topic >= 0) {
-      var topicNode = this._parent.topics.get(topic);
-      s.topic = topicNode ? topicNode.groupname : null;
-   } else
-      s.topic = topic ? topic : null;
-
-   // check if topic-name contains any forbidden characters
-   if (!isCleanForURL(s.topic))
-      result = getError("topicNoSpecialChars");
+   // check name of topic (if specified)
+   if (param.topic) {
+      if (!param.topic.isURL())
+         throw new Exception("topicNoSpecialChars");
+      s.topic = param.topic;
+   } else if (param.addToTopic)
+      s.topic = param.addToTopic;
    // check the online-status of the story
-   var status = parseInt(param.online,10);
-   if ((param.publish || param.submit == "publish") && isNaN(status))
-      status = parseInt(param.onlinedefault,10);
-   else if (param.save || param.submit == "save")
-      status = 0;
-   if (isNaN(status))
-      result = getError("storyPublish");
-   // else if (status == 1 && !s.topic)
-   //    result = getError("storyTopicMissing");
-   //else
-      s.online = status;
-   // if everything ok, so proceed with adding the story
-   if (!result) {
-      if (this.add(s)) {
-         result = getConfirm("storyCreate");
-         result.id = s._id;
-         if (s.online) {
-            s.site.lastupdate = s.modifytime;
-            result.url = this.href()+s._id;
-         } else
-            result.url = this.href();
-      } else
-         result = getError("storyCreate");
-   }
-   result.story = s;
-   return (result);
+   if (param.publish)
+      s.online = param.addToFront ? 2 : 1;
+   else
+      s.online = 0;
+   // store the story
+   if (!this.add(s))
+      throw new Exception("storyCreate");
+   var result = new Message("storyCreate", null, s);
+   result.id = s._id;
+   if (s.online) {
+      s.site.lastupdate = s.modifytime;
+      result.url = s.href();
+   } else
+      result.url = this.href();
+   return result;
 }
 
 
@@ -100,27 +67,21 @@ function evalNewStory(s,param,creator) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
-function deleteStory(currStory) {
-   var online = currStory.online;
-   // delete all comments of story
-   currStory.deleteAll();
-   if (this.remove(currStory)) {
-      // only set modifytime of site if story was online
-      if (online > 0)
-         this._parent.lastupdate = new Date();
-      return (getConfirm("storyDelete"));
-   } else
-      return (getError("storyDelete"));
+function deleteStory(storyObj) {
+   storyObj.deleteAll();
+   if (storyObj.online > 0)
+      this._parent.lastupdate = new Date();
+   if (!this.remove(storyObj))
+      throw new Exception("storyDelete");
+   return new Message("storyDelete");
 }
 
 /**
  * function loops over all stories and removes them (including their comments!)
  * @return Boolean true in any case
  */
-
 function deleteAll() {
    for (var i=this.size();i>0;i--)
       this.deleteStory(this.get(i-1));
-   return (result);
+   return true;
 }
