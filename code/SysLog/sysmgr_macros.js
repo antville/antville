@@ -5,16 +5,14 @@
 
 function sysmgr_typeflag_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    if (this.type == "weblog")
       res.write("<span class=\"flagdkgreen\" nowrap>WEBLOG</span>");
    else if (this.type == "user")
       res.write("<span class=\"flagred\" nowrap>USER</span>");
    else
       res.write("<span class=\"flagyellow\" nowrap>SYSTEM</span>");
-   res.write(param.suffix);
 }
 
 
@@ -24,13 +22,11 @@ function sysmgr_typeflag_macro(param) {
 
 function sysmgr_object_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
    if (!this.object)
       return;
-   res.write(param.prefix);
    res.write(this.object);
-   res.write(param.suffix);
 }
 
 /**
@@ -39,11 +35,9 @@ function sysmgr_object_macro(param) {
 
 function sysmgr_logentry_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    res.write(this.logentry);
-   res.write(param.suffix);
 }
 
 /**
@@ -52,13 +46,10 @@ function sysmgr_logentry_macro(param) {
 
 function sysmgr_sysadmin_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
    if (this.sysadmin)
       this.sysadmin.name_macro(param);
-   else {
-      res.write(param.prefix);
+   else
       res.write("system");
-      res.write(param.suffix);
-   }
 }
