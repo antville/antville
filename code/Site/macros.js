@@ -327,6 +327,19 @@ function country_macro(param) {
 }
 
 /**
+ * macro rendering default dateformat of weblog
+ */
+
+function dateformat_macro(param) {
+   res.write(param.prefix)
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("dateformat",param));
+   else
+      res.write(this.dateformat);
+   res.write(param.suffix);
+}
+
+/**
  * macro rendering loginStatus of user
  * valid params:  -  loginSkin
  *                -  logoutSkin
@@ -519,7 +532,7 @@ function thumbnail_macro(param) {
    var img = this.images.get(param.name);
    if (img && img.thumbnail) {
       res.write(param.prefix);
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       if (param.linkto) {
          this.openLink(param);
       } else {
