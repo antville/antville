@@ -1,8 +1,8 @@
 autoLogin();
 
-var parent = setLayout("editor");
+var parent = setLayout();
 
-var deny = this.isEditDenied();
+var deny = this.isEditDenied(user);
 if (deny) {
    res.message = deny;
    res.redirect(user.cache.referer ? this.href("login") : parent.href());
@@ -10,11 +10,11 @@ if (deny) {
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(parent.href());
-else if (req.data.submit == "save" || req.data.save)
-   this.updateUser();
+else if (req.data.submit == "save" || req.data.save) {
+   var result = this.updateUser(req.data);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(parent.href());
+}
 
-res.head = parent.renderSkinAsString("style");
-if (path.weblog)
-   res.head += path.weblog.renderSkinAsString("javascript");
-
-res.body = user.renderSkinAsString("edit");
+res.data.body = user.renderSkinAsString("edit");
