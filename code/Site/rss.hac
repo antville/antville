@@ -1,4 +1,6 @@
 res.contentType = "text/xml";
+res.dependsOn(this.lastupdate);
+res.digest();
 
 var now = new Date();
 var systitle = root.getSysTitle();
