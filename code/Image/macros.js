@@ -4,7 +4,7 @@
 
 function alias_macro(param) {
    if (param.as == "editor")
-      renderInputText(this.createInputParam("alias",param));
+      Html.input(this.createInputParam("alias", param));
    else
       res.write(this.alias);
 }
@@ -16,7 +16,7 @@ function alias_macro(param) {
 
 function alttext_macro(param) {
    if (param.as == "editor")
-      renderInputTextarea(this.createInputParam("alttext",param));
+      Html.textArea(this.createInputParam("alttext", param));
    else
       res.write(this.alttext);
 }
@@ -54,13 +54,13 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
-      openLink(this.href("edit"));
+   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+      Html.openLink(this.href("edit"));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image),param);
+         this.site.renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : "edit");
-      closeLink();
+      Html.closeLink();
    }
 }
 
@@ -70,13 +70,13 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user,req.data.memberlevel)) {
-      openLink(this.href("delete"));
+   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+      Html.openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image),param);
+         this.site.renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : "delete");
-      closeLink();
+      Html.closeLink();
    }
 }
 
@@ -96,9 +96,9 @@ function show_macro(param) {
       var url = img.getStaticUrl();
    delete(param.what);
    param.src = img.getStaticUrl();
-   openLink(url);
+   Html.openLink(url);
    renderImage(img, param);
-   closeLink();
+   Html.closeLink();
 }
 
 

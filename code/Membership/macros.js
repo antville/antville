@@ -1,13 +1,10 @@
 /**
  * macro renders the username
  */
-
 function username_macro(param) {
-   if (param.linkto && (param.linkto != "edit" || this.user != session.user)) {
-      openLink(this.href(param.linkto));
-      res.write(this.username);
-      closeLink();
-   } else
+   if (param.linkto && (param.linkto != "edit" || this.user != session.user))
+      Html.link(this.href(param.linkto), this.username);
+   else
       res.write(this.username);
 }
 
@@ -15,7 +12,6 @@ function username_macro(param) {
 /**
  * macro renders eMail-address
  */
-
 function email_macro(param) {
    if (this.user.publishemail)
       return (this.user.email);
@@ -25,13 +21,10 @@ function email_macro(param) {
 /**
  * macro renders URL (if existing)
  */
-
 function url_macro(param) {
-   if (!this.user.url)
-      return;
-   openLink(this.user.url);
-   res.write(this.user.url);
-   closeLink();
+   if (this.user.url)
+      Html.link(this.user.url, this.user.url);
+   return;
 }
 
 /**
@@ -39,42 +32,27 @@ function url_macro(param) {
  */
 
 function level_macro(param) {
-   if (param.as == "editor") {
-      // var options = new Array("Subscriber","Contributor","Content manager","Administrator");
-      // renderDropDownBox("level",options,null,"-- select --");
-      renderDropDownBox("level", ROLES, null, "-- select --");
-   } else
+   if (param.as == "editor")
+      Html.dropDown("level", ROLES, null, "-- select --");
+   else
       res.write(getRole(this.level));
-}
-
-/**
- * macro renders the title of the site
- */
-
-function sitetitle_macro(param) {
-   this.site.title_macro(param);
+   return;
 }
 
 /**
  * macro renders a link for deleting a membership
  */
-
 function deletelink_macro(param) {
-   if (this.level == ADMIN)
-      return;
-   openLink(this.href("delete"));
-   res.write(param.text ? param.text : "remove");
-   closeLink();
+   if (this.level != ADMIN)
+      Html.link(this.href("delete"), param.text ? param.text : "remove");
+   return;
 }
 
 /**
  * macro renders a link to unsubscribe-action
  */
-
 function unsubscribelink_macro(param) {
-   if (this.level > SUBSCRIBER)
-      return;
-   openLink(this.site.href("unsubscribe"));
-   res.write(param.text ? param.text : "unsubscribe");
-   closeLink();
+   if (this.level == SUBSCRIBER)
+      Html.link(this.site.href("unsubscribe"), param.text ? param.text : "unsubscribe");
+   return;
 }

@@ -15,7 +15,7 @@ function images_macro(param) {
 function imagelist_macro(param) {
    if (!this.size())
       return;
-   var size = Math.min(param.limit ? param.limit : 5,this.size());
+   var size = Math.min(param.limit ? param.limit : 5, this.size());
    var imgcnt = 0;
    var idx = 0;
    while (imgcnt < size || imgcnt == size-1) {
@@ -33,11 +33,11 @@ function imagelist_macro(param) {
             imgObj = imgObj.thumbnail;
       }
       if (url) {
-         openLink(url);
-         renderImage(imgObj,cloneObject(param));
-         closeLink();
+         Html.openLink(url);
+         renderImage(imgObj, ObjectLib.clone(param));
+         Html.closeLink();
       } else
-         renderImage(imgObj,cloneObject(param));
+         renderImage(imgObj, ObjectLib.clone(param));
       res.write(param.itemsuffix);
       imgcnt++;
    }
