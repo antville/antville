@@ -122,12 +122,17 @@ function allowTextMacros(s) {
    s.allowMacro("file");
    s.allowMacro("poll");
    s.allowMacro("logo");
-   s.allowMacro("shortcut");
    s.allowMacro("storylist");
    s.allowMacro("fakemail");
    s.allowMacro("this.topic");
    s.allowMacro("story.topic");
    s.allowMacro("imageoftheday");
    s.allowMacro("gallery");
+
+   // allow module text macros
+   for (var i in app.modules) {
+      if (app.modules[i].allowTextMacros)
+         app.modules[i].allowTextMacros(s);
+   }
    return;
 }
