@@ -29,7 +29,13 @@ function sitecounter_macro(param) {
       var size = root.size();
    else
       var size = this.public.size();
-   res.write(size);
+   if (size == 0)
+      res.write(param.no ? param.no : size);
+   else if (size == 1)
+      res.write(param.one ? param.one : size);
+   else
+      res.write(size + (param.more ? param.more : ""));
+   return;
 }
 
 /**
