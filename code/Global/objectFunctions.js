@@ -281,30 +281,25 @@ function DenyException(name) {
  * of the appropriate language
  */
 function getMessage(property, value) {
-   // create array containing languages to search for message
-   var languages = new Array();
-   if (res.handlers.site)
-      languages[0] = res.handlers.site.getLocale().getLanguage();
-   languages[languages.length] = (root.getLocale()).getLanguage();
-   // the last language to search for messages is always english
-   if ("en" != languages[languages.length-1])
-      languages[languages.length] = "en";
+   var languages = getLanguages();
    // loop over languages and try to find the message
-   for (var i in languages) {
-      var lang = app.data[languages[i]];
-      if (lang && lang.getProperty(property)) {
-         var source = lang.getProperty(property);
-         var param = new Object();
-         // check if value passed is a string or an array
-         if (value) {
-            if (value instanceof Array) {
-               for (var i in value)
-                  param["value" + (parseInt(i, 10)+1)] = value[i];
-            } else
-               param.value1 = value;
-         }
-         return (renderSkinAsString(createSkin(source), param));
+   var lang;
+   var source;
+   for (var i=0;i<languages.length;i++) {
+      if (!(lang = app.data[languages[i]]))
+         continue;
+      if (!(source = lang.getProperty(property)))
+         continue;
+      var param = new Object();
+      // check if value passed is a string or an array
+      if (value) {
+         if (value instanceof Array) {
+            for (var j=0;j<value.length;j++)
+               param["value" + (j+1)] = value[j];
+         } else
+            param.value1 = value;
       }
+      return renderSkinAsString(createSkin(source), param);
    }
    // still no message found, so return
    return "[couldn't find message!]";
@@ -628,4 +623,21 @@ function flushMailQueue() {
       }
    }
    return;
+}
+
+/**
+ * construct an array containing languages keys
+ * used for retrieving a localized message
+ */
+function getLanguages() {
+   var languages = new Array("en");
+   var syslang;
+   if ((syslang = root.getLocale().getLanguage()) != "en")
+      languages.unshift(syslang);
+   if (res.handlers.site) {
+      var lang = res.handlers.site.getLocale().getLanguage();
+      if (lang != "en" && lang != syslang)
+         languages.unshift(lang);
+   }
+   return languages;
 }
