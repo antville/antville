@@ -16,7 +16,7 @@ function title_macro(param) {
          res.write(this.title);
       else {
          // no title, so we show the first words of the story-text as link
-         this.renderTextPreview(20);
+         renderTextPreview(this.text,20);
       }
       this.closeLink();
    } else
