@@ -145,9 +145,9 @@ CREATE INDEX "ANTVILLE"."IDX_IMAGE_F_USER_CREATOR" ON "ANTVILLE"."AV_IMAGE"("IMA
 ------------------------------
 
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (1,'big','big','gif',404,53,'antville.org');
-insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (2,'smallanim','smallanim','gif',98,30,'resident of antville.org');
-insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (3,'smallchaos','smallchaos','gif',107,29,'resident of antville.org');
-insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (4,'smallstraight','smallstraight','gif',107,24,'resident of antville.org');
+insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (2,'smallanim','smallanim','gif',98,30,'made with antville');
+insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (3,'smallchaos','smallchaos','gif',107,29,'made with antville');
+insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (4,'smallstraight','smallstraight','gif',107,24,'made with antville');
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (5,'pixel','pixel','gif',1,1,'pixel');
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values (6,'headbg','headbg','gif',3,52);
 insert into "ANTVILLE"."AV_IMAGE" (IMAGE_ID,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values (7,'menu','menu','gif',36,13,'menu');
