@@ -33,8 +33,8 @@ function evalNewStory() {
  */
 
 function renderLinkToPrevMonth(cal) {
-   // create HopObject used to pass to format-function
-   var tsParam = new HopObject();
+   // create Object used to pass to format-function
+   var tsParam = new Object();
    tsParam.format = "MMMM";
 
    if (!this.size())
@@ -59,8 +59,8 @@ function renderLinkToPrevMonth(cal) {
  */
 
 function renderLinkToNextMonth(cal) {
-   // create HopObject used to pass to format-function
-   var tsParam = new HopObject();
+   // create Object used to pass to format-function
+   var tsParam = new Object();
    tsParam.format = "MMMM";
 
    if (!this.size())
@@ -122,6 +122,7 @@ function updateWeblog() {
    this.archive = parseInt(req.data.archive,10);
    this.language = req.data.language ? req.data.language.substring(0,2).toLowerCase() : "";
    this.country = req.data.country ? req.data.country.substring(0,2).toUpperCase() : "";
+   this.dateformat = req.data.dateformat;
    this.birthdate = this.checkdate("birthdate");
    res.message = "The changes were saved successfully!";
    res.redirect(this.href());
@@ -153,7 +154,6 @@ function checkdate(prefix) {
 function hasDiscussions() {
    if (parseInt(this.discussions,10))
       return true;
-   res.message = "Sorry, posting comments is not enabled here!";
    return false;
 }
 
@@ -241,6 +241,8 @@ function evalSignup() {
 function formatTimestamp(ts,param) {
    if (param.format)
       var fmt = param.format;
+   else if (this.dateformat)
+      var fmt = this.dateformat;
    else
       var fmt = "yyyy/MM/dd HH:mm";
    var sdf = new java.text.SimpleDateFormat(fmt,this.getLocale());
