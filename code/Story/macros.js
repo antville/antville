@@ -8,7 +8,7 @@ function title_macro(param) {
    res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
-   else if (param.as == "link") {
+   else if (param.as == "link" && !this.isViewDenied()) {
       var linkParam = new Object();
       linkParam.linkto = "main";
       this.openLink(linkParam);
@@ -169,6 +169,45 @@ function deletelink_macro(param) {
    }
 }
 
+/**
+ * macro renders a link to
+ * toggle the online-status of this story
+ */
+
+function onlinelink_macro(param) {
+   if (!this.isEditDenied()) {
+      res.write(param.prefix);
+      var linkParam = new Object();
+      linkParam.linkto = "edit";
+      linkParam.urlparam = "?set=" + (this.isOnline() ? "offline" : "online");
+      this.openLink(linkParam);
+      if (param.image && this.weblog.images.get(param.image))
+         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      else
+         res.write(this.isOnline() ? "set offline" : "set online");
+      this.closeLink();
+      res.write(param.suffix);
+   }
+}
+
+/**
+ * macro renders a link to the story
+ */
+
+function viewlink_macro(param) {
+   if (this.isViewDenied())
+      return;
+   res.write(param.prefix);
+   var linkParam = new Object();
+   linkParam.linkto = "main";
+   this.openLink(linkParam);
+   if (param.image && this.weblog.images.get(param.image))
+      this.weblog.renderImage(this.weblog.images.get(param.image),param);
+   else
+      res.write(param.text ? param.text : "view");
+   this.closeLink();
+   res.write(param.suffix);
+}
 
 /**
  * macro rendering link to comments
