@@ -1,0 +1,13 @@
+<div class="storyTitle">Referrers of this weblog in the last 24 hours</div>
+
+<p>
+<table border="0" cellspacing="0" cellpadding="2">
+<tr>
+	<td align="right"><b>Visits</b></td>
+	<td rowspan="999">&nbsp;&nbsp;</td>
+	<td><b>Referrer</b></td>
+</tr>
+
+<% this.listReferrers %>
+
+</table>

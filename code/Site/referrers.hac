@@ -1,0 +1,11 @@
+autoLogin();
+
+var deny = this.isNotPublic(user);
+if (deny) {
+   res.message = deny;
+   res.redirect(this.members.href("login"));
+}
+
+res.data.title = "Antville - " + encode(this.title);
+res.data.body = this.renderSkinAsString("referrers");
+this.renderSkin("page");
