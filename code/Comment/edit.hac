@@ -1,4 +1,10 @@
+if (!session.user && (req.data.submit == "save" || req.data.save))
+   rescueText(req.data);
+
 checkIfLoggedIn(this.href(req.action));
+
+if (session.data.rescuedText)
+   restoreRescuedText();
 
 var deny = this.isEditDenied(session.user,req.data.memberlevel);
 if (deny) {
