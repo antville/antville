@@ -40,30 +40,3 @@ function updateComment(param) {
    this.cache.lrText = null;
    return (result);
 }
-
-/**
- * function deletes a comment
- * @param Obj Comment-Object that should be deleted
- * @return String Message indicating success/failure
- */
-
-function deleteComment(currComment) {
-   if (this.remove(currComment))
-      return ("The comment was deleted successfully!");
-   else
-      return ("Couldn't delete the comment!");
-}
-
-
-/**
- * function deletes all childobjects of a comment (recursive!)
- */
-
-function deleteAll() {
-   for (var i=this.size();i>0;i--) {
-      var reply = this.get(i-1);
-      reply.deleteAll();
-      this.remove(reply);
-   }
-   return true;
-}
