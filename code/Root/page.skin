@@ -2,7 +2,8 @@
 <html>
 <head>
 <title><% response.title %></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="alternate" type="text/xml" title="XML" href="rss10" />
+<meta http-equiv="Content-Type" content="text/html; charset="utf-8" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <% root.skin name="style" %>
 <% root.skin name="javascript" %>
