@@ -1,0 +1,1 @@
+<span class="small">(modified by <% this.creator %>&nbsp;...&nbsp;<% this.link to="diff" %>&nbsp;...&nbsp;<% this.link to="delete" text="reset" %>)</span>

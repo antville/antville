@@ -1,0 +1,19 @@
+<form method="post" action="<% response.action %>">
+
+<p>To create a new custom skin please choose the prototype and define a name for it.</p>
+
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small" nowrap="nowrap">Prototype:</td>
+<td nowrap="nowrap"><% skinmgr.prototypechooser %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Name:</td>
+<td nowrap="nowrap"><% input name="name" size="30" %></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+</tr>
+</table>
+</form>

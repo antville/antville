@@ -1,0 +1,3 @@
+<div class="member"><b><% membership.username linkto="edit" %></b>
+<div class="small"><% membership.url suffix="<br />" %>
+Signed up on <% membership.createtime format="short" %><% membership.deletelink text="remove" prefix="&nbsp;&nbsp;...&nbsp;" %></div></div>

@@ -1,0 +1,19 @@
+<form action="<% response.action %>" method="post">
+
+<p>To create a new layout please enter a title for it. Optional you can choose one of the available system layouts as a basis.</p>
+
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small">Title:</td>
+<td><% input type="text" name="title" %></td>
+</tr>
+</table>
+
+<% response.pagenavigation %>
+<% response.layoutlist %>
+<% response.pagenavigation %>
+
+<p><br /><% input type="submit" name="create" value="Create" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></p>
+
+</form>
+

@@ -1,0 +1,1 @@
+<li><a href="<% skinmgr.href %>edit?key=<% param.key %>&skinset=<% param.skinset %>&action=<% param.action %>" name="<% param.key %>"><% param.title %></a><% param.status prefix="<div>" suffix="</div>" %><% param.text prefix="<div>" suffix="</div>" %></li>

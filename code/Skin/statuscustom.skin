@@ -1,0 +1,2 @@
+<span class="small">(created by <% this.creator %>&nbsp;...&nbsp;<% this.link to="delete" text="delete" %>)<br />
+<strong>Code:</strong> &lt;% <% this.proto %>.skin name="<% this.name %>" %&gt;</span>
