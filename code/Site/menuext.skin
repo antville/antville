@@ -4,7 +4,7 @@
    var sel = doc.selection;
    var rng = sel.createRange();
    var str = new String(rng.text);
-   var url = "http://<% site.alias %>.antville.org/stories/create?content_text=";
+   var url = "<% root.sys_url %>/<% site.alias %>/stories/create?content_text=";
    var link = escape('<a href="' + doc.location.href + '">' + doc.title + "</a>: ");
    doc.location.href = url + link + str;
 </script>
