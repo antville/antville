@@ -25,7 +25,7 @@ Add this story to a topic<br />
 
 <p>This story is editable by<br />
 <span class="small"><% story.editableby as="editor" %></span></p>
-<% story.discussions as="editor" checked="checked" prefix="<p>" suffix="&nbsp;Allow comments</p>" %></fieldset></td>
+<% story.discussions as="editor" prefix="<p>" suffix="&nbsp;Allow comments</p>" %></fieldset></td>
 </tr>
 <tr>
 <td class="small"><% story.creator as="link" prefix="Created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;" %></td>
