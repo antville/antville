@@ -34,9 +34,11 @@ function evalStory(param,modifier) {
       return (getError("textMissing"));
    // check if the createtime is set in param
    if (param.createtime) {
-      var ctime = tryEval("parseTimestamp(param.createtime, \"yyyy-MM-dd HH:mm\")");
-      if (ctime.error)
+      try {
+         var ctime = parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm");
+      } catch (error) {
          return (getError("timestampParse",param.createtime));
+      }
    }
    // check name of topic (if specified)
    var topicName = null;
@@ -68,8 +70,8 @@ function evalStory(param,modifier) {
    this.setContent (cont);
    // let's keep the title property
    this.title = param.content_title;
-   if (ctime && ctime.value != this.createtime) {
-      this.createtime = ctime.value;
+   if (ctime && ctime != this.createtime) {
+      this.createtime = ctime;
       // create day of story with respect to site-timezone
       this.day = formatTimestamp(this.createtime,"yyyyMMdd");
    }

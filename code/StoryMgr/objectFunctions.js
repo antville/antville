@@ -34,11 +34,11 @@ function evalNewStory(s,param,creator) {
    s.creator = creator;
    // check if the create date is set in the param object
    if (param.createtime) {
-      var ctime = tryEval ('parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm")');
-      if (ctime.error)
-          result = getError("timestampParse",param.createtime);
-      else
-         s.createtime = ctime.value;
+      try {
+         s.createtime = parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm");
+      } catch (error) {
+         result = getError("timestampParse",param.createtime);
+      }
       s.modifytime = new Date();
    } else {
       s.modifytime = s.createtime = new Date();
