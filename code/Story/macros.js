@@ -355,17 +355,18 @@ function editableby_macro(param) {
  */
 
 function discussions_macro(param) {
-  if (param.as == "editor") {
-    if (this.discussions == null && path.site.discussions)
-      param.checked = "checked";
-    renderInputCheckbox(this.createInputParam("discussions",param));
-    var attr = new Object();
-    attr.type = "hidden";
-    attr.name = "discussions";
-    attr.value = "0";
-    renderMarkupElement("input",attr);
-  } else
-    res.write(this.discussions ? "yes" : "no");
+   if (param.as == "editor") {
+      if (this.discussions == null && path.site.discussions)
+         param.checked = "checked";
+      renderInputCheckbox(this.createInputParam("discussions", param));
+      var attr = new Object();
+      attr.type = "hidden";
+      attr.name = "discussions";
+      attr.value = "0";
+      renderMarkupElement("input", attr);
+   } else
+      res.write(this.discussions ? "yes" : "no");
+   return;
 }
 
 /**
@@ -484,25 +485,41 @@ function backlinks_macro(param) {
 }
 
 /**
- * macro renders a checkbox whether the story is just published in a topic or also in weblog
+ * macro renders a checkbox whether the story
+ * is just published in a topic or also in weblog
+ * FIXME: this function should probably be deprected,
+ *        and addtofront_macro recommended
  */
 function justintopic_macro(param) {
    if (param.as == "editor") {
-      if (this.online == "1")
-         param.value = "1";
+      param.value = 2;
+      // don't check the box if story is not in topic space
+      if (this.online != "1" || (!req.data.justintopic &&
+req.data.content_text))
+         delete param.checked;
       param.name = "justintopic";
       renderInputCheckbox(param);
+      // we need a hidden property for backwards compatibility
+      var attr = new Object();
+      attr.type = "hidden";
+      attr.name = "addtofront";
+      attr.value = "-1";
+      renderMarkupElement("input", attr);
    }
    return;
 }
 
 
 /**
- * macro renders a checkbox whether the story is published on the weblog's front page
+ * macro renders a checkbox whether the story is
+ * published on the weblog's front page
  */
 function addtofront_macro(param) {
    if (param.as == "editor") {
-      if (this.online == "1")
+      param.value = 2;
+      // check the box if story is shown on front page
+      if (this.online == "1" || (!req.data.addtofront &&
+req.data.content_text))
          delete param.checked;
       param.name = "addtofront";
       renderInputCheckbox(param);
