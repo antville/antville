@@ -91,9 +91,21 @@ function setMarquee2(obj) {
 }
 
 function displayColorValue(obj) {
-   displayColor(obj);
-   var color = obj.style.backgroundColor;
-   document.forms[0].elements[0].value = color;
+   var col = obj.style.backgroundColor;
+   var rgb = new RegExp("rgb ?\\( ?([0-9^,]*), ?([0-9^,]*), ?([0-9^ \\)]*) ?\\)");
+   var result = col.match(rgb);
+   if (result) {
+      var R = parseInt(result[1]).toString(16);
+      var G = parseInt(result[2]).toString(16);
+      var B = parseInt(result[3]).toString(16);
+      if (R.length == 1) R="0"+R;
+      if (G.length == 1) G="0"+G;
+      if (B.length == 1) B="0"+B;
+      col = R+G+B;
+   }
+   else if (col.indexOf("#") == 0)
+      col = col.substring(1, col.length);
+   document.getElementById("display").value = col;
    return;
 }
 
@@ -106,17 +118,15 @@ function displayColorset(obj, idx) {
 }
 
 function displayColor(obj) {
-   document.getElementsByTagName("body")[0].style.backgroundColor = obj.style.backgroundColor;
+   displayColorValue(obj);
+   var col = obj.style.backgroundColor;
+   document.getElementById("result").value = col;
+   document.getElementsByTagName("body")[0].style.backgroundColor = col;
    return;
 }
 
-function displayStatus(obj) {
-   //document.getElementById("display").value = obj.style.backgroundColor;
-   return true;
-}
-
 function updatePalette(obj, p) {
-   displayColorValue(obj);
+   displayColor(obj);
    var palette = brightness[p];
    if (!colorPalette) {
       colorPalette = new Array();
@@ -130,11 +140,11 @@ function updatePalette(obj, p) {
 }
 
 function submit() {
-   var color = document.forms[0].elements[0].value;
-   if (self.opener && color) {
-      color = self.opener.parseColor(color);
-      if (color.indexOf("#") == 0)
-         var cValue = color.substr(1,color.length-1);
+   var col = document.getElementById("result").value;
+   if (self.opener && col) {
+      col = self.opener.parseColor(col);
+      if (col.indexOf("#") == 0)
+         var cValue = col.substr(1,col.length-1);
       var name = "<% request.name %>";
       // without helma, it certainly is a little bit more elaborate:
       // var query = document.URL.split("?");
@@ -142,7 +152,7 @@ function submit() {
       // var name = args[1].split("=")[1];
       var ref = self.opener.document;
       ref.getElementById("cp1_"+name).value = cValue;
-      ref.getElementById("cp2_"+name).style.backgroundColor = color;
+      ref.getElementById("cp2_"+name).style.backgroundColor = col;
    }
    cancel();
    return;
@@ -162,7 +172,7 @@ function cancel() {
 <p align="center">
 <table border="0" cellspacing="5" cellpadding="0" bgcolor="#ffffff">
 <tr>
-<td class="text" colspan="2" align="center">Pick a <% request.text %> color:</td>
+<td class="text" colspan="2" align="center">Pick <% request.text %> color:</td>
 </tr>
 <tr>
 <td valign="top" class="border" title="Select color">
@@ -174,7 +184,7 @@ for (var i=0; i<defaultPalette.length; i++) {
    var color = defaultPalette[i];
    if (i % brightness.length == 0)
       document.write("<div>");
-   document.write('<img id="color' + i + '" style="background-color: #' + color + ';" onmouseover="displayStatus(this);" onclick="displayColorset(this, ' + i + '); displayColorValue(this);" src="' + pixel.src + '" width="' + squareSize + '" height="' + squareSize + '" />');
+   document.write('<img id="color' + i + '" style="background-color: #' + color + ';" onclick="displayColorset(this, ' + i + '); displayColor(this);" src="' + pixel.src + '" width="' + squareSize + '" height="' + squareSize + '" />');
    if (i % brightness.length == brightness.length-1)
      document.write("</div>");
 }
@@ -190,7 +200,7 @@ for (var i=0; i<defaultPalette.length; i++) {
 <!--
 
 for (var i=0; i<brightness.length; i++)
-   document.write('<div><img id="bright' + i + '" onmouseover="displayStatus(this);" onclick="setMarquee2(this); updatePalette(this, ' + i + ');" src="' + pixel.src + '" width="15" height="15" style="background-color: #' + brightness[i][0] + ';"/></div>');
+   document.write('<div><img id="bright' + i + '" onclick="setMarquee2(this); updatePalette(this, ' + i + ');" src="' + pixel.src + '" width="15" height="15" style="background-color: #' + brightness[i][0] + ';"/></div>');
 
 // -->
 </script>

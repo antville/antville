@@ -1,4 +1,24 @@
 /**
+ * wrapper to access colorpicker also from site
+ */
+
+function colorpicker_action() {
+   root.colorpicker_action();
+   return;
+}
+
+
+/**
+ * wrapper to access safescripts also from site
+ */
+
+function safescripts_action() {
+   root.safescripts_action();
+   return;
+}
+
+
+/**
  * wrapper to make style.skin public
  */
 
@@ -32,6 +52,7 @@ function javascript_action() {
 
 function rss092_action() {
    this.rss_action();
+   return;
 }
 
 
@@ -41,4 +62,5 @@ function rss092_action() {
 
 function rss10_action() {
    this.rss_action();
+   return;
 }

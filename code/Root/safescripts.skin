@@ -1,5 +1,5 @@
 function openColorPicker(name, text) {
-   var cpWindow = window.open("<% root.url path="colorpicker" %>?name=" + name + "&text=" + text, "cpWindow", "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=350,height=320");
+   var cpWindow = window.open("<% param.cpHost %>colorpicker?name=" + name + "&text=" + text, "cpWindow", "toolbar=no,location=no,directories=no,status=no,scrollbars=no,resizable=yes,width=350,height=320");
 }
 
 function setBg() {

@@ -183,3 +183,7 @@ li {padding-bottom: 3px;}
    margin-top:3px;
    margin-bottom:3px;
 }
+
+.colorpickerWidget {
+   border: 1px solid #cccccc;
+}

@@ -6,7 +6,11 @@
 function safescripts_action() {
    res.digest();
    res.contentType = "text/javascript";
-   this.renderSkin("safescripts");
+   var param = new Object();
+   // this is needed to enable sites with virtual domain hosting
+   // using the colorpicker to circumvent domain-based script security:
+   param.cpHost = path.site ? path.site.href() : root.href();
+   root.renderSkin("safescripts", param);
    return;
 }
 
@@ -17,6 +21,7 @@ function safescripts_action() {
 
 function colorpicker_action() {
    renderSkin("colorpicker");
+   return;
 }
 
 
@@ -26,4 +31,5 @@ function colorpicker_action() {
 
 function rss10_action() {
    res.redirect(this.href("rss"));
+   return;
 }
