@@ -87,7 +87,7 @@ function changeAlias(currImg) {
    this.add(currImg);
    // if thumbnail exists, we have to change this alias too
    if (currImg.thumbnail)
-      currImg.thumbnail.alias = req.data.alias;
+      currImg.thumbnail.alias = currImg.alias;
    return;
 }
 

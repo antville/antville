@@ -7,6 +7,6 @@
 </tr>
 <tr>
 <td nowrap><% this.show what="thumbnail" %></td>
-<td class="small" valign="top" nowrap><% this.editlink suffix="<br>" %><% this.deletelink %></td>
+<td class="small" valign="top" nowrap><% this.editlink prefix="...&nbsp;" suffix="<br>" %><% this.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>
