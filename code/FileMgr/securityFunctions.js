@@ -4,32 +4,11 @@
  * @return String Reason for denial (or null if allowed)
  */
 
-function isEditDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href();
-      return ("Please login before");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this._parent.isUserAdmin(usr) && !this._parent.isUserContributor(usr) && !this._parent.userMayContrib())
-      return ("Sorry, you're not allowed to edit goodies!");
-   return null;  
-}
-
-/**
- * check if user is allowed to add images
- * @param Obj Userobject
- * @return String Reason for denial (or null if allowed)
- */
-
-function isAddDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href("create");
-      return ("Please login before");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this._parent.isUserAdmin(usr) && !this._parent.isUserContributor(usr) && !this._parent.userMayContrib())
-      return ("Sorry, you're not allowed to add goodies!");
-   else if (getProperty("allowGoodies") != "true")
-      return ("Sorry, goodies are not allowed!");
-   return null;  
+function isDenied(usr) {
+   var membership = this._parent.isUserMember(usr);
+   if (!membership)
+      return ("You're not a member of this weblog!");
+   else if (!this._parent.userMayContrib() && (membership.level & MAY_ADD_GOODIE) == 0)
+      return ("You're not allowed to do this!");
+   return null;
 }
