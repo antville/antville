@@ -139,7 +139,8 @@ function renderTimeZoneChooser(tz) {
  */
 function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
    var currIdx = 0;
-   var stop = size = collection.size();
+   var isArray = collection instanceof Array;
+   var stop = size = isArray ? collection.length : collection.size();
 
    if (itemsPerPage) {
       var totalPages = Math.ceil(size/itemsPerPage);
@@ -151,7 +152,7 @@ function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
    var isFunction = (funcOrSkin instanceof Function) ? true : false;
    res.push();
    while (currIdx < stop) {
-      var item = collection.get(currIdx);
+      var item = isArray ? collection[currIdx] : collection.get(currIdx);
       isFunction ? funcOrSkin(item) : item.renderSkin(funcOrSkin);
       currIdx++;
    }
