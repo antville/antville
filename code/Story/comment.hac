@@ -19,3 +19,5 @@ res.head = this.weblog.renderSkinAsString("javascript");
 res.head += this.weblog.renderSkinAsString("style");
 
 res.body = this.renderSkinAsString("comment");
+
+this.reads++;
