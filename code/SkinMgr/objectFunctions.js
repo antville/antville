@@ -28,6 +28,9 @@ function saveSkin(param, usr) {
          return new Message("update");
       s = new skin(this._parent, splitKey[0], splitKey[1], usr);
       s.skin = param.skin;
+      var originalSkin = this.getOriginalSkin(splitKey[0], splitKey[1]);
+      if (originalSkin)
+         s.custom = originalSkin.custom;
       this.add(s);
    }
    return new Message("update");
@@ -90,23 +93,69 @@ function getSkinSource(proto, name) {
 }
 
 /**
+ * function gets the original skin
+ * @param String name of the prototype
+ * @param String name of the skin
+ * @return Skin the original skin
+ */
+function getOriginalSkin(proto, name) {
+   if (this._parent.parent) {
+      var handler = this._parent;
+      var s;
+      while ((handler = handler.parent) != null) {
+         if ((s = handler.skins.getSkin(proto, name)) != null)
+            return s;
+      }
+   }
+   return null;
+}
+
+/**
  * function gets the source of the original skin
  * @param String name of the prototype
  * @param String name of the skin
  * @return String source of the original skin
  */
 function getOriginalSkinSource(proto, name) {
-   if (this._parent.parent) {
-      var handler = this._parent;
-      var s;
-      while ((handler = handler.parent) != null) {
-         if ((s = handler.skins.getSkin(proto, name)) != null)
-            return s.skin;
+   var originalSkin;
+   if ((originalSkin = this.getOriginalSkin(proto, name)) != null)
+      return originalSkin.skin;
+   else if (app.skinfiles[proto])
+      return app.skinfiles[proto][name];
+   else
+      return null;
+}
+
+/**
+ * returns all custom skins for this layout 
+ * including those from parent layouts (own
+ * custom skins override those of the parent layout)
+ * @return HopObject of Skins
+ */
+function getCustomSkins() {
+   var coll = [];
+   // object to store the already added skin keys
+   // used to avoid duplicate skins in the list
+   var keys = {};
+
+   // private method to add a custom skin
+   var addSkins = function(mgr) {
+      var size = mgr.custom.size();
+      for (var i=0;i<size;i++) {
+         var s = mgr.custom.get(i);
+         var key = s.proto + ":" + s.name;
+         if (!keys[key]) {
+            keys[key] = s;
+            coll.push(s);
+         }
       }
    }
-   if (app.skinfiles[proto])
-      return app.skinfiles[proto][name];
-   return null;
+   var handler = this._parent;
+   while (handler) {
+      addSkins(handler.skins);
+      handler = handler.parent;
+   }
+   return coll;
 }
 
 /**
@@ -209,6 +258,8 @@ function evalCustomSkin(param, creator) {
    else if (!param.name)
       throw new Exception("skinCustomNameMissing");
    else if (this[param.prototype] && this[param.prototype][param.name])
+      throw new Exception("skinCustomExisting");
+   else if (this.getOriginalSkin(param.prototype, param.name))
       throw new Exception("skinCustomExisting");
    else if (app.skinfiles[param.prototype] && app.skinfiles[param.prototype][param.name])
       throw new Exception("skinCustomExisting");
