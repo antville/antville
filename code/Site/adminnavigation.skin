@@ -3,7 +3,8 @@
 <td class="headerNavItem" nowrap>&nbsp;<% this.link to="main" text="home" %>&nbsp;</td>
 <td class="headerNavItem" nowrap>&nbsp;<% this.link to="edit" text="preferences" %>&nbsp;</td>
 <td class="headerNavItem" nowrap>&nbsp;<% this.link to="create" text="create story" %>&nbsp;</td>
-<td class="headerNavItem" nowrap>&nbsp;<% this.link to="images" text="image editor" %>&nbsp;</td>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="images" text="imagepool" %>&nbsp;</td>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="memberships" text="memberships" %>&nbsp;</td>
 <td class="headerNavItem" nowrap>&nbsp;<% this.link to="skins" text="skin editor" %>&nbsp;</td>
 </tr>
 </table>
