@@ -84,8 +84,8 @@ function sys_minMemberAge_macro(param) {
    if (param.as == "editor") {
       var options = new Array();
       for (var i=1;i<92;i++) {
-         if (i < 7 || !(i%7))
-            options[i] = i;
+         if (i < 7 || (i % 7) == 0)
+            options[options.length] = i.toString();
       }
       Html.dropDown("sys_minMemberAge", options, this.sys_minMemberAge, "----");
    } else
