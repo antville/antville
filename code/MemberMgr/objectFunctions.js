@@ -17,7 +17,7 @@ function evalLogin(username, password) {
       res.setCookie("avUsr", session.user.name, 365);
       res.setCookie("avPw", Packages.helma.util.MD5Encoder.encode(session.user.password+req.data.http_remotehost), 365);
    }
-   return new Message("welcome", [path.site ? path.site.title : root.getSysTitle(), session.user.name]);
+   return new Message("welcome", [res.handlers.context.getTitle(), session.user.name]);
 }
 
 /**
@@ -73,7 +73,7 @@ function evalRegistration(param) {
       if (path.site.online)
          this.add(new membership(newUser));
    } else
-      var welcomeWhere = root.getSysTitle();
+      var welcomeWhere = root.getTitle();
    return new Message("welcome", [welcomeWhere, newUser.name], newUser);
 }
 
