@@ -1,17 +1,7 @@
-<style type="text/css">
-<!--
-.bar {
-	height: 5px;
-	margin-right: 10px;
-	background-color: #ff3300;
-	font-size: 0px;
-}
-// -->
-</style>
+<p class="storyTitle"><% this.question %></p>
 
-<span class="storyTitle"><% this.question %></span>
-<% this.results singular="vote" plural="votes" %>
+<% this.results no="votes" one="vote" more="votes" %>
 
-<p><b>Total:</b> 100% <span class="small">(<% this.total singular="vote" plural="votes" %>)</span>
+<p><b>Total:</b> 100% <span class="small">(<% this.total no="votes" one="vote" more="votes" %>)</span></p>
 
-<p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.<% this.state text="<br>this poll was closed on " format="short" %></span>
+<p class="small">created by <% this.creator %> on <% this.createtime format="short" %>.<% this.state text="<br>this poll was closed on " format="short" %></p>
