@@ -3,7 +3,6 @@
 <div class="ample">...&nbsp;<% skinmgr.link to="create" text="add a custom skin" %></div>
 ...&nbsp;show&nbsp;<% skinmgr.link to="main" text="all skins" %>&nbsp;|&nbsp;<% skinmgr.link to="modified" text="modified skins" %>&nbsp;|&nbsp;<% skinmgr.link to="custom" text="custom skins" %>
 
-
 <ul class="skinmgrTree">
 <% response.list %>
 </ul>

@@ -1,14 +1,14 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <tr>
-	<td></td>
-	<td rowspan="999">&nbsp;</td>
-	<td align="right" class="small">Count</td>
-	<td rowspan="999">&nbsp;</td>
-	<td class="small">Date</td>
-	<td rowspan="999">&nbsp;</td>
-	<td class="small">Title</td>
-	<td rowspan="999">&nbsp;</td>
-	<td class="small">Author</td>
+<td></td>
+<td rowspan="999">&nbsp;</td>
+<td align="right" class="small">Count</td>
+<td rowspan="999">&nbsp;</td>
+<td class="small">Date</td>
+<td rowspan="999">&nbsp;</td>
+<td class="small">Title</td>
+<td rowspan="999">&nbsp;</td>
+<td class="small">Author</td>
 </tr>
 
 <% site.listMostRead %>

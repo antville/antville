@@ -1,14 +1,14 @@
 <div class="reply">
-  <div class="listSeparator">&nbsp;</div>
-  <div class="storyDate">
-  <% comment.creator as="link" %>, 
-  <% comment.createtime format="long" %>
-  </div>
-  <div class="title"><% comment.content part="title" %></div>
-  <div><% comment.content part="text" %></div>
-  <p class="small">
-   <% comment.link text="link" prefix="...&nbsp;" %>&nbsp;&nbsp;
-   <% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>
-   <% comment.deletelink prefix="...&nbsp;" %>
-  </p>
+<div class="listSeparator">&nbsp;</div>
+<div class="storyDate">
+<% comment.creator as="link" %>, 
+<% comment.createtime format="long" %>
+</div>
+<div class="title"><% comment.content part="title" %></div>
+<div><% comment.content part="text" %></div>
+<p class="small">
+<% comment.link text="link" prefix="...&nbsp;" %>&nbsp;&nbsp;
+<% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>
+<% comment.deletelink prefix="...&nbsp;" %>
+</p>
 </div>

@@ -1,8 +1,8 @@
 <% story.skin name="display" %>
 <p class="small">
-   <% story.link text="link" prefix="...&nbsp;" %>
-   <% story.commentcounter prefix="(" suffix=")" anchor="comments" %>
-   <% story.commentlink prefix="&nbsp;&nbsp;...&nbsp;" %>
-   <% story.editlink prefix="&nbsp;&nbsp;...&nbsp;" %>
+<% story.link text="link" prefix="...&nbsp;" %>
+<% story.commentcounter prefix="(" suffix=")" anchor="comments" %>
+<% story.commentlink prefix="&nbsp;&nbsp;...&nbsp;" %>
+<% story.editlink prefix="&nbsp;&nbsp;...&nbsp;" %>
 </p>
 <br />

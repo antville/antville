@@ -1,10 +1,10 @@
 <script language="javascript" defer="defer">
-   var win = external.menuArguments;
-   var doc = win.document;
-   var sel = doc.selection;
-   var rng = sel.createRange();
-   var str = new String(rng.text);
-   var url = "<% root.url %>/<% site.alias %>/stories/create?content_text=";
-   var link = escape('<a href="' + doc.location.href + '">' + doc.title + "</a>: ");
-   win.top.location.href = url + link + str;
+var win = external.menuArguments;
+var doc = win.document;
+var sel = doc.selection;
+var rng = sel.createRange();
+var str = new String(rng.text);
+var url = "<% root.url %>/<% site.alias %>/stories/create?content_text=";
+var link = escape('<a href="' + doc.location.href + '">' + doc.title + "</a>: ");
+win.top.location.href = url + link + str;
 </script>
