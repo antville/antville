@@ -16,6 +16,12 @@
 <td><% root.sys_frontSite as="editor" size="20" %><br /><span class="small">If you enter the alias of a public weblog here the front page of this Antville installation will display the selected weblog instead of the default front page.</span></td>
 </tr>
 <tr>
+<td valign="top" nowrap="nowrap">Layout:</td>
+<td><% root.sys_layoutchooser %><br /><span class="small">Choose the layout to use for this Antville installation. It will also be the default layout for any newly created site.</span></td>
+</tr>
+
+
+<tr>
 <td valign="top" nowrap="nowrap">e-mail:</td>
 <td><% root.sys_email as="editor" size="20" %><br /><span class="small">Antville will use this e-mail address to send various confirmation messages (e.g. when a user registers within the front page)</span></td>
 </tr>
