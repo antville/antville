@@ -22,7 +22,7 @@ function getActionName() {
  */
 
 function renderColor(c) {
-   if (c.length == 6) {
+   if (c && c.length == 6) {
       var nonhex = new RegExp("[^0-9,a-f]");
       nonhex.ignoreCase = true;
       var found = c.match(nonhex);
@@ -50,7 +50,7 @@ function renderTextPreview(text,limit) {
          break;
       idx = ++nIdx;
    }
-   var prev = text.substring(0,(idx ? idx : text.length));
+   var prev = text.substring(0,(idx > 1 ? idx : limit));
    // and now we "enrich" the text with <wbr>-tags
    for (var i=0;i<prev.length;i=i+30)
       res.write(prev.substring(i,i+30) + "<wbr>");
@@ -61,12 +61,8 @@ function renderTextPreview(text,limit) {
  * stuff contained between asterisks into links.
  */
 function doWikiStuff (src) {
-   var src= " "+src;
-
-   // set up reg exp for http link stuff
-   // var linkexp = new RegExp ("([^=^\"])(http://[^ ^\r^\n^\"]*)");
-   // linkexp.ignoreCase=true;
-   // linkexp.global=true;
+   // robert, disabled: didn't get the reason for this:
+   // var src= " "+src;
 
    // do the Wiki link thing, *asterisk style*
    var regex = new RegExp ("[*]([a-z0-9צהü][a-z0-9צהüß ]*[a-z0-9צהüß])[*]");
@@ -77,7 +73,6 @@ function doWikiStuff (src) {
    while (true) {
       var found = regex.exec (src.substring(start));
       var to = found == null ? src.length : start + found.index;
-      // text += src.substring(start, to).replace (linkexp, "$1<a href=\"$2\">$2</a>");
       text += src.substring(start, to);
       if (found == null)
          break;
