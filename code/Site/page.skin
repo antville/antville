@@ -40,8 +40,15 @@
 <div class="statushead"><% image name="/menu" %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statusdark"><% this.navigation %><% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
-<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="statusdark">...&nbsp;<% site.link to="main" text="home" %><br />
+...&nbsp;<% site.link to="topics" text="topics" %><br />
+...&nbsp;<% site.link to="polls" text="polls" %><br />
+<% this.navigation for="contributors" %>
+<% this.navigation for="admins" %><br />
+<% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
+<div class="sep"><form method="post" action="<% site.url %>search"><% image name="/pixel" width="198" %></div>
+<% input name="q" class="searchbox" value="enter your keyword(s)" onClick="this.value='';"%><% input type="button" name="submit" value="find!" class="searchbox" %>
+<div class="sep"></form><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% site.calendar %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
