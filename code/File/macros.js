@@ -22,7 +22,7 @@ function alias_macro(param) {
 function description_macro(param) {
    if (param.as == "editor")
       Html.textArea(this.createInputParam("description", param));
-   else
+   else if (this.description)
       res.write(this.description);
    return;
 }
