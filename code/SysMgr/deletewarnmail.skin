@@ -1,7 +1,7 @@
-(You're receiving this mail because you are Administrator of <% param.weblog %>).
+(You're receiving this mail because you are Administrator of <% param.site %>).
 
-<% param.weblog %> (<% param.url %>) was inactive for more than <% param.inactivity %> days. You have <% param.daysleft %> days time to reactivate your weblog, otherwise it will be deleted. Please note that the removal of <% param.weblog %> is an irreversible process!
+<% param.site %> (<% param.url %>) was inactive for more than <% param.inactivity %> days. You have <% param.daysleft %> days time to reactivate your weblog, otherwise it will be deleted. Please note that the removal of <% param.site %> is an irreversible process!
 
 ---------------------------------------
-Antville - http://www.antville.org
+<% root.systitle %> - <% root.sysurl %>
 ---------------------------------------
