@@ -58,7 +58,7 @@ ul {
 .small {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 12px;
-  color: #999999;
+  color: #666666;
 }
 
 .sep {
