@@ -253,3 +253,20 @@ function getLocale() {
       return (java.util.Locale.getDefault());
 }
 
+
+/**
+ * helper function to sort story reads
+ * @param Obj story a to be compared with story b
+ * @param Obj story b to be compared with story a
+ * @return Integer -1: a>b; 1: a<b; 0: a=b
+ */
+function sortMostReads(s1, s2) {
+	var s1reads = s1.reads + s1.cache.reads;
+	var s2reads = s2.reads + s2.cache.reads;
+	if (s1reads > s2reads)
+		return(-1);
+	else if (s1reads < s2reads)
+		return(1);
+	else
+		return(0);
+}
