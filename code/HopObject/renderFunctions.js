@@ -130,13 +130,17 @@ function renderInputButton(param) {
 function openLink(param) {
    res.write("<a href=\"");
    var url = param.to ? param.to : param.linkto;
-   // check if this is an external url
    if (!url || url == "main")
       res.write(this.href());
    else if (url.indexOf("://") > -1 || url.substring(0,10) == "javascript")
       res.write(url);
-   else
-      res.write(this.href(url));
+   else {
+      // check if link points to a subcollection
+      if (url.indexOf("/") > -1)
+         res.write(this.href() + url);
+      else
+         res.write(this.href(url));
+   }
    if (param.urlparam) res.write(param.urlparam);
    res.write("\"");
    if (param.target)
@@ -215,4 +219,19 @@ function renderImage(img,param) {
    if (img.alttext)
       res.write(" alt=\"" + img.alttext + "\"");
    res.write(" border=\"0\">");
+}
+
+function renderDateformatChooser(version) {
+   var patterns = getDefaultDateFormats(version);
+   var now = new Date();
+   var options = new Array();
+   var loc = this.getLocale();
+   var fmtProperty = (version == "short" ? "shortdateformat" : "longdateformat");
+   for (var i in patterns) {
+      var sdf = new java.text.SimpleDateFormat(patterns[i],loc);
+      options[i] = sdf.format(now);
+      if (this[fmtProperty] == patterns[i])
+         var selectedIndex = i;
+   }
+   res.write(simpleDropDownBox(fmtProperty,options,selectedIndex ? selectedIndex : 0));
 }
