@@ -21,6 +21,7 @@ function title_macro(param) {
 }
 
 
+/* FIXME! as == "editor" ??? */
 function question_macro(param) {
    if (param.as == "editor") {
    		var param2 = this.createInputParam("question", param);
@@ -34,7 +35,7 @@ function question_macro(param) {
       res.write(this.question);
 }
 
-
+/* FIXME! as == "editor" ??? */
 function choices_macro(param) {
 	if (param.as == "editor") {
 		var max = res.data.choices;
