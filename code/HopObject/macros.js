@@ -51,6 +51,14 @@ function createtime_macro(param) {
 }
 
 
+function colorpicker_macro(param) {
+   if (!param || !param.element)
+      return;
+   param.color = this[param.element];
+   this.renderSkin("cp_element", param);
+}
+
+
 /**
  * macro renders a form-input
  * DEPRECATED: just left for backwards-compatibility, use global input_macro() now
