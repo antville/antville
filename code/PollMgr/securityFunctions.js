@@ -6,22 +6,24 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   var deny = null;
-   var url = this._parent.href();
-   switch (action) {
-      case "main" :
-         checkIfLoggedIn(this.href(req.action));
-         deny = this.isDenied(usr, level);
-         break;
-      case "create" :
-         checkIfLoggedIn();
-         deny = this.isDenied(usr, level);
-         url = this.href();
-         break;
+   try {
+      switch (action) {
+         case "main" :
+            checkIfLoggedIn(this.href(req.action));
+            var url = this._parent.href();
+            this.checkAdd(usr, level);
+            break;
+         case "create" :
+            checkIfLoggedIn();
+            var url = this.href();
+            this.checkAdd(usr, level);
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(url);
    }
-   if (deny != null)
-      deny.redirectTo = url;
-   return deny;
+   return;
 }
 
 /**
@@ -31,8 +33,8 @@ function checkAccess(action, usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isDenied(usr, level) {
+function checkAdd(usr, level) {
    if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_STORY) == 0)
-      return new Exception("pollAddDenied");
-   return null;
+      throw new DenyException("pollAdd");
+   return;
 }

@@ -7,20 +7,23 @@
  */
 function checkAccess(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
-   var deny = this.isDenied(session.user, req.data.memberlevel);
-   if (deny)
-      deny.redirectTo = getParent().href();
-   return deny;
+   try {
+      this.checkAdd(session.user, req.data.memberlevel);
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this._parent.href());
+   }
+   return;
 }
 
 /**
- * check if user is allowed to edit images
+ * check if user is allowed to add images
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isDenied(usr, level) {
+function checkAdd(usr, level) {
    if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_IMAGE) == 0)
-      return new Exception("imageAddDenied");
-   return null;
+      throw new DenyException("imageAdd");
+   return;
 }

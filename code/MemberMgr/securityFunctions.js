@@ -7,18 +7,21 @@
  */
 function checkAccess(action, usr, level) {
    var deny = null;
-   switch (action) {
-      case "main" :
-         checkIfLoggedIn(this.href(action));
-         deny = this.isEditMembersDenied(usr, level);
-         break;
-      case "subscriptions" :
-         checkIfLoggedIn(this.href(action));
-         break;
+   try {
+      switch (action) {
+         case "main" :
+            checkIfLoggedIn(this.href(action));
+            this.checkEditMembers(usr, level);
+            break;
+         case "subscriptions" :
+            checkIfLoggedIn(this.href(action));
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this._parent.href());
    }
-   if (deny != null)
-      deny.redirectTo = this._parent.href();
-   return deny;
+   return;
 }
 
 /**
@@ -27,9 +30,9 @@ function checkAccess(action, usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isEditMembersDenied(usr, level) {
+function checkEditMembers(usr, level) {
    if ((level & MAY_EDIT_MEMBERS) == 0)
-      return new Exception("memberEditDenied");
-   return null;
+      throw new DenyException("memberEdit");
+   return;
 }
 

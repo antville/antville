@@ -7,21 +7,24 @@
  */
 function checkAccess(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
-   var deny = this.isDenied(usr, level);
-   if (deny)
-      deny.redirectTo = this._parent.href();
-   return deny;
+   try {
+      this.checkEdit(usr, level);
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this._parent.href());
+   }
+   return;
 }
 
 
 /**
- * check if user is allowed to edit this image
+ * check if user is allowed to edit skins
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isDenied(usr, level) {
+function checkEdit(usr, level) {
    if ((level & MAY_EDIT_SKINS) == 0 && !session.user.sysadmin)
-      return new Exception("skinEditDenied");
-   return null;
+      throw new DenyException("skinEdit");
+   return;
 }

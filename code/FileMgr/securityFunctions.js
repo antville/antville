@@ -7,20 +7,23 @@
  */
 function checkAccess(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
-   var deny = this.isDenied(session.user, req.data.memberlevel);
-   if (deny)
-      deny.redirectTo = this._parent.href();
-   return deny;
+   try {
+      this.checkAdd(session.user, req.data.memberlevel);
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this._parent.href());
+   }
+   return;
 }
 
 /**
- * check if user is allowed to edit files
+ * check if user is allowed to add files
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return Obj Exception or null
  */
-function isDenied(usr, level) {
+function checkAdd(usr, level) {
    if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_FILE) == 0)
-      return new Exception("fileAddDenied");
-   return null;
+      throw new DenyException("fileAdd");
+   return;
 }

@@ -6,44 +6,45 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   var deny = null;
-   var url = this.site.files.href();
-   switch (action) {
-      case "edit" :
-         checkIfLoggedIn(this.href(req.action));
-         deny = this.isEditDenied(usr, level);
-         break;
-      case "delete" :
-         checkIfLoggedIn();
-         deny = this.isDeleteDenied(usr, level);
-         break;
+   try {
+      switch (action) {
+         case "edit" :
+            checkIfLoggedIn(this.href(req.action));
+            this.checkEdit(usr, level);
+            break;
+         case "delete" :
+            checkIfLoggedIn();
+            this.checkDelete(usr, level);
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this.site.files.href());
    }
-   if (deny != null)
-      deny.redirectTo = url;
-   return deny;
+   return;
 }
 
 /**
- * check if user is allowed to edit this file
+ * check if user is allowed to edit a file
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isEditDenied(usr, level) {
+function checkEdit(usr, level) {
    if (this.creator != usr && (level & MAY_EDIT_ANYFILE) == 0)
-      return new Exception("fileEditDenied");
-   return null;
+      throw new DenyException("fileEdit");
+   return;
 }
 
 
 /**
- * check if user is allowed to delete this file
+ * check if user is allowed to delete a file
  * @param Obj Userobject
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isDeleteDenied(usr, level) {
+function checkDelete(usr, level) {
    if (this.creator != usr && (level & MAY_DELELTE_ANYIMAGE) == 0)
-      return new Exception("fileDeleteDenied");
-   return null;
+      throw new DenyException("fileDelete");
+   return;
 }

@@ -6,23 +6,24 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   var deny = null;
-   var url = this._parent.href();
-   switch (action) {
-      case "main" :
-         checkIfLoggedIn(this.href(req.action));
-         deny = this.isDenied(usr, level);
-         break;
-      case "create" :
-         if (!usr && req.data.save)
-            rescueText(req.data);
-         checkIfLoggedIn(this.href(req.action));
-         deny = this.isDenied(usr, level);
-         break;
+   try {
+      switch (action) {
+         case "main" :
+            checkIfLoggedIn(this.href(req.action));
+            this.checkAdd(usr, level);
+            break;
+         case "create" :
+            if (!usr && req.data.save)
+               rescueText(req.data);
+            checkIfLoggedIn(this.href(req.action));
+            this.checkAdd(usr, level);
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this._parent.href());
    }
-   if (deny != null)
-      deny.redirectTo = url;
-   return deny;
+   return;
 }
 
 /**
@@ -33,8 +34,8 @@ function checkAccess(action, usr, level) {
  * @return String Reason for denial (or null if allowed)
  */
 
-function isDenied(usr, level) {
+function checkAdd(usr, level) {
    if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_STORY) == 0)
-      return new Exception("storyAddDenied");
-   return null;
+      throw new DenyException("storyAdd");
+   return;
 }

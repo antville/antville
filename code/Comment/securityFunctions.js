@@ -6,29 +6,30 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   var deny = null;
-   var url = this.story.href();
-   switch (action) {
-      case "edit" :
-         if (!usr && req.data.save)
-            rescueText(req.data);
-         checkIfLoggedIn(this.href(req.action));
-         deny = this.isEditDenied(usr, level);
-         break;
-      case "delete" :
-         checkIfLoggedIn();
-         deny = this.isDeleteDenied(usr, level);
-         break;
-      case "comment" :
-         if (!usr && req.data.save)
-            rescueText(req.data);
-         checkIfLoggedIn(this.href(req.action));
-         deny = this.story.isPostDenied(usr, level);
-         break;
+   try {
+      switch (action) {
+         case "edit" :
+            if (!usr && req.data.save)
+               rescueText(req.data);
+            checkIfLoggedIn(this.href(req.action));
+            this.checkEdit(usr, level);
+            break;
+         case "delete" :
+            checkIfLoggedIn();
+            this.checkDelete(usr, level);
+            break;
+         case "comment" :
+            if (!usr && req.data.save)
+               rescueText(req.data);
+            checkIfLoggedIn(this.href(req.action));
+            this.story.checkPost(usr, level);
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this.story.href());
    }
-   if (deny != null)
-      deny.redirectTo = url;
-   return deny;
+   return;
 }
 
 /**
@@ -37,8 +38,8 @@ function checkAccess(action, usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isEditDenied(usr, level) {
+function checkEdit(usr, level) {
    if (this.creator != usr && (level & MAY_EDIT_ANYCOMMENT) == 0)
-      return new Exception("commentEditDenied");
-   return null;
+      throw new DenyException("commentEdit");
+   return;
 }
