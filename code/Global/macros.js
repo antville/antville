@@ -18,6 +18,7 @@ function logo_macro(param) {
    Html.openLink("http://antville.org");
    renderImage(logo, param);
    Html.closeLink();
+   return;
 }
 
 
@@ -46,7 +47,7 @@ function image_macro(param) {
          imgObj = imgObj.thumbnail;
    } else if (param.as == "popup") {
       param.linkto = imgObj.getStaticUrl();
-      param.onClick = imgObj.popupUrl();
+      param.onclick = imgObj.popupUrl();
       if (imgObj.thumbnail)
          imgObj = imgObj.thumbnail;
    }
@@ -61,26 +62,6 @@ function image_macro(param) {
    } else
       renderImage(imgObj, param);
    return;
-}
-
-
-/**
- * DEPRECATED!
- * use image_macro() with param.as = "popup" instead
- */
-function thumbnail_macro(param) {
-   param.as = "popup";
-   image_macro(param);
-}
-
-
-/**
- * DEPRECATED!
- * use image_macro() with param.as = "url" instead
- */
-function imageurl_macro(param) {
-   param.as = "url";
-   image_macro(param);
 }
 
 
@@ -108,6 +89,7 @@ function link_macro(param) {
    Html.openTag("a", param);
    res.write(content);
    Html.closeTag("a");
+   return;
 }
 
 
@@ -120,7 +102,10 @@ function file_macro(param) {
    var p = getPoolObj(param.name, "files");
    if (!p)
       return;
-   p.obj.renderSkin(param.skin ? param.skin : "main");
+   if (!param.text)
+      param.text = p.obj.alias;
+   p.obj.renderSkin(param.skin ? param.skin : "main", param);
+   return;
 }
 
 
@@ -251,6 +236,7 @@ function username_macro(param) {
       Html.link(session.user.url, session.user.name);
    else
       res.write(session.user.name);
+   return;
 }
 
 
@@ -369,6 +355,7 @@ function storylist_macro(param) {
       }
    }
    rows.release();
+   return;
 }
 
 
@@ -402,8 +389,8 @@ function colorpicker_macro(param) {
       param.color = renderColorAsString(obj.preferences.getProperty(param.name));
    } else
       return;
-
    renderSkin("colorpickerWidget", param);
+   return;
 }
 
 
@@ -433,4 +420,37 @@ function fakemail_macro(param) {
          res.write(param.delimiter ? param.delimiter : ", ");
    }
 	return;
+}
+
+
+/**
+ * picks a random site, image or story by setting
+ * param.what to the corresponding prototype
+ * by default, embed.skin will be rendered but this
+ * can be overriden using param.skin
+ */
+function randomize_macro(param) {
+   if (!param)
+      var param = new Object();
+   if (!param.what || param.what == "sites") {
+      var rnd = Math.floor(Math.random() * root.publicSites.size());
+      var obj = root.publicSites.get(rnd);
+   } else {
+      if (param.site) {
+         var parent = root.get(param.site);
+         if (!parent.online)
+            return;
+      } else
+         var parent = root;
+      if (param.what == "stories")
+         var coll = param.site ? parent.allstories : parent.storiesByID;
+      else if (param.what == "images")
+         var coll = parent.images;
+      else
+         return;
+      var rnd = Math.floor(Math.random() * coll.size());
+      var obj = coll.get(rnd);
+   }
+   obj.renderSkin(param.skin ? param.skin : "embed");
+   return;
 }
