@@ -10,4 +10,5 @@ function topiclist_macro(param) {
       Html.link({href: topic.href()}, topic.groupname);
       res.write(param.itemsuffix);
    }
+   return;
 }
