@@ -43,15 +43,13 @@
 <% root.loginstatus %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br />
+...&nbsp;<% root.link to="new" text="create a new weblog" %><br />
+<br /><span class="statuslight">resources:<br />
 ...&nbsp;<a href="http://help.antville.org/">help</a><br />
-...&nbsp;<a href="http://macros.antville.org/">macros</a><br />
 ...&nbsp;<a href="http://project.antville.org/">project log</a><br />
-...&nbsp;<a href="http://translate.antville.org/">translate!</a><br />
-...&nbsp;<a href="http://project.antville.org/topics/about+antville">features</a><br />
-...&nbsp;<a href="http://project.antville.org/topics/disclaimer">disclaimer</a></div>
+...&nbsp;<a href="http://macros.antville.org/">macro docs</a></span></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statuslight"><% root.sitecounter suffix="&nbsp;public weblogs&nbsp;" %>... <% root.link to="list" %><br />
-...&nbsp;<% root.link to="new" text="create a weblog" %></div>
+<div class="statuslight"><% root.sitecounter no="no public weblogs" one="one public weblog" more=" public weblogs"%>... <% root.link to="list" %></div>
 <!-- div class="statuslight">...&nbsp;<a href="http://www.antville.org/documentation.html">documentation</a></div -->
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statuslight"><br /><% image name="/xmlbutton" linkto="rss" title="List of recently updated Antville sites in RDF format" %><br /><br /><% logo name="smallstraight" %><br />powered by<br /><% image name="/hop" linkto="http://helma.org" %></div></td>
