@@ -4,7 +4,7 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% image.creator as="link" %> on <% image.createtime format="short" %></span></td>
+<td colspan="2" class="small" nowrap="nowrap"><span class="small"><% image.creator as="link" %><% image.createtime format="short" prefix=" on " %></span></td>
 </tr>
 <tr>
 <td valign="top">
