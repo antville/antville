@@ -1,9 +1,13 @@
-if (!this.isPublic())
+var deny = this.isNotPublic();
+if (deny) {
+   res.message = deny;
    res.redirect(this.members.href("login"));
+}
 
-res.skin = "main";
+res.skin = "weblog.page";
 
 res.title = "Antville - " + this.title;
+
 res.head = this.renderSkinAsString("javascript");
 res.head += this.renderSkinAsString("style");
 
