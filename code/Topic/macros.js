@@ -35,7 +35,7 @@ function addimage_macro (param) {
    if (param.text)
       res.format(param.text);
    else
-      res.write("add an image to this topic");
+      res.write("add an image to this gallery");
    Html.closeTag("a");
    return;
 }
