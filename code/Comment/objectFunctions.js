@@ -21,9 +21,15 @@ function isOnline() {
 function updateComment(param) {
    var result = new Object();
    if (param.text) {
+
+      // check if there's a difference between old and
+      // new text of more than 50 characters:
+      var majorUpdate = Math.abs(this.text.length - param.text.length) > 50;
+
       this.title = param.title;
       this.text = param.text;
-      this.modifytime = new Date();
+      if (majorUpdate)
+         this.modifytime = new Date();
       this.ipaddress = param.http_remotehost;
       result.message = "Changes were saved successfully!";
       result.error = false;
