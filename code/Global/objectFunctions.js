@@ -52,8 +52,6 @@ function scheduler() {
    app.data.lastAccessLogUpdate = new Date();
    // store the readLog in app.data.readLog into DB
    writeReadLog();
-   // send mails and empty mail queue
-   flushMailQueue();
    return 30000;
 }
 
