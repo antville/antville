@@ -1,99 +1,132 @@
-body, td {
+/**
+* Basic page structure.
+* When changing something, make sure widths are coherent.
+*/
+table.main {
+   width: 700px;
+}
+
+td.header {
+   height: 53px;
+   padding-left: 40px;
+   font-weight: bold;
+}
+
+td.center { 
+   width: 70%; 
+   padding: 25px 20px 10px 40px; 
+   vertical-align: top; 
+}
+
+td.right { 
+   width: 30%; 
+   padding: 0px 0px 10px 0px; 
+   vertical-align: top; 
+   border-left: 1px solid #dddddd;
+}
+
+/**
+* Colors, fonts, styles.
+*/
+
+body {
    background-color: <% layout.bgcolor %>;
    font-family: <% layout.textfont %>;
    font-size: <% layout.textsize %>;
    color: <% layout.textcolor %>;
 }
 
+td {
+   font-size: <%layout.textsize %>;
+   line-height: 1.2em;
+}
+
+td.header {
+   background-image: url("<% layout.image name="webloghead" as="url" %>");
+   font-size: 25px;
+   font-weight: bold;
+}
+
+div.boxheader {
+   color: <% layout.smallcolor %>;
+   overflow: hidden;
+   font-size: 10px;
+   padding-left: 6px;
+   border-top: 1px solid #dddddd;
+}
+
+div.boxline {
+   height:1px;
+   overflow:hidden;
+   border-bottom: 1px solid #dddddd;
+}
+
+div.box {
+   font-size: <% layout.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   color: <% layout.smallcolor %>;
+   line-height: 1.4em;
+   text-align: right;
+   padding: 0em 0em 0.4em 0.4em;
+   margin: 0em 0em 0.2em 0em;
+}
+
+/* this is for mozilla to align tables in boxes right */
+div.box table {
+   margin-left: auto; 
+   margin-right: 0px; 
+}
+
 fieldset {
-  padding-left: 8px;
-  padding-top: 0px;
-  margin-top:6px;
-  margin-bottom:6px;
+   padding-left: 8px;
+   padding-top: 0px;
+   margin-top: 6px;
+   margin-bottom: 6px;
 }
 
 p {
-   margin-top:6px;
-   margin-bottom:10px;
+   margin-top: 6px;
+   margin-bottom: 10px;
 }
 
-form {margin: 0px;}
+form { margin: 0px; }
 
 a {text-decoration: none;}
-
 a:link {color: <% layout.linkcolor %>;}
-
 a:visited {color: <% layout.vlinkcolor %>;}
-
 a:active {color: <% layout.alinkcolor %>;}
-
-a:hover {
-   background-color: <% layout.linkcolor %>;
-   color: <% layout.bgcolor %>;
-}
-
-.title {
-   height: 53px;
-   font-size: 20pt;
-   font-weight: bold;
-   vertical-align: middle;
-   background-image: url("<% layout.image as="url" name="webloghead" %>");
-   background-color: transparent;
-   color: <% layout.linkcolor %>
-}
+a:hover {text-decoration: underline;}
 
 .message {
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
    font-weight: bold;
    padding: 1px;
+   margin-top: 6px;
+   margin-bottom: 6px;
    color: <% layout.titlecolor %>;
-   background-color: <% layout.bgcolor %>;
 }
 
-.statusdark {
+.message input {
+   font-size:9px;
+   padding:0px;
+   margin:0px;
+}
+
+.historyItem {
+   color: <% layout.textcolor %>;
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
-   width: 198px;
-   display: block;
-   padding-top: 3px;
-   padding-bottom: 3px;
+   padding-bottom: 0.3em;
 }
 
-.statuslight {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   width: 198px;
-   color: #999999;
-   display: block;
-   padding-top: 3px;
-   padding-bottom: 3px;
-}
-
-.statushead {
-   width: 198px;
-   text-align: left;
-   letter-spacing: 3px;
-   font-size: <% layout.smallsize %>;
-   display: block;
-   padding-top: 1px;
-   padding-bottom: 1px;
-}
-
-.sep {
-   height: 1px;
-   width: 198px;
-   background-image: url("<% layout.image as="url" name="dot" %>");
-}
-
-ul {list-style: url("<% layout.image as="url" name="bullet" %>") circle;}
-
-li {padding-bottom: 3px;}
+/* calendar */
 
 .calHead {
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
    font-weight: bold;
+   text-align: center;
 }
 
 .calDay {
@@ -112,15 +145,25 @@ li {padding-bottom: 3px;}
 .calFoot {
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
-   font-weight: bold;
+   text-align: center;
 }
+
+.dayHeader {
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.smallcolor %>;
+   font-weight: bold;
+   margin-bottom:10px;
+}
+
+/* story display classes */
 
 .storyDate {
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
    color: <% layout.smallcolor %>;
-   margin-top: 10px;
-   margin-bottom: 2px;
+   margin-top: 6px;
+   margin-bottom: 6px;
 }
 
 .storyTitle {
@@ -128,7 +171,6 @@ li {padding-bottom: 3px;}
    font-size: <% layout.titlesize %>;
    color: <% layout.titlecolor %>;
    font-weight: bold;
-   margin-bottom: 2px;
 }
 
 .small {
@@ -137,23 +179,14 @@ li {padding-bottom: 3px;}
    color: <% layout.smallcolor %>;
 }
 
-.commentHead {
+.listSeparator {
    width: 50px;
-   border-bottom-style: dotted;
-   border-bottom-width: thin;
-   border-bottom-color: #cccccc;
-   margin-bottom: 2px;
+   border-bottom: 2px dotted #dddddd;
    margin-top: 10px;
+   margin-bottom: 4px;
 }
 
-.commentDate {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.smallcolor %>;
-   margin-bottom: 2px;
-}
-
-.commentTitle {
+.title {
    font-family: <% layout.titlefont %>;
    font-size: <% layout.titlesize %>;
    color: <% layout.textcolor %>;
@@ -161,8 +194,9 @@ li {padding-bottom: 3px;}
    margin-bottom: 2px;
 }
 
-.reply {padding-left: 40px;}
+.reply { padding-left: 40px; }
 
+/* form input classes */
 
 .formTitle {
    width: 380px;
@@ -187,53 +221,135 @@ li {padding-bottom: 3px;}
    font-weight: normal;
 }
 
-.offlineStory {background-color: #cccccc;}
+.listFlag {
+   background-color: #cccccc;
+   padding: 1px;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.textcolor %>;
+}
 
 .pollResultsBar {
    height: 5px;
+   overflow: hidden;
+   float:left;
    margin-right: 10px;
    background-color: <% layout.linkcolor %>;
    font-size: 0px;
 }
 
 .searchbox {
-   font-size:11px;
-   margin-top:3px;
-   margin-bottom:3px;
+   font-size: 11px;
+   margin-top: 3px;
 }
 
 .colorpickerWidget {
    border: 1px solid #cccccc;
 }
 
-.pagelink {
-   margin-top: 2px;
+.pagelinkTop {
    margin-bottom: 18px;
+   padding-bottom:3px;
+   border-bottom:1px solid #dddddd;
+}
+
+.pagelinkBottom {
+   margin-top: 18px;
+   padding-top:3px;
+   border-top:1px solid #dddddd;
+   text-align:right;
 }
 
 /* page navigation bar */
-
 div.pageNav {
-   margin-top:10px;
-   height:14px;
-   font-size:11px;
+   margin-top: 10px;
+   margin-bottom: 0px;
+   font-size: 11px;
 }
 div.pageNavSummary {
-   padding:2px;
-   background-color:#efefef;
-   border-bottom:1px solid #cccccc;
-   text-align:left;
+   padding: 1px 5px;
+   background-color: #efefef;
+   border-bottom: 1px solid #cccccc;
+   text-align: left;
 }
 div.pageNavBar {
-   padding:2px;
-   text-align:right;
+   padding-top: 1px;
+   text-align: right;
 }
 span.pageNavItem {
-   padding-left:2px;
-   padding-right:2px;
+   padding-left: 2px;
+   padding-right: 2px;
 }
 span.pageNavSelItem {
-   padding-left:2px;
-   padding-right:2px;
+   padding-left: 2px;
+   padding-right: 2px;
+   font-weight: bold;
+}
+
+/* tree navigation in skinmgr */
+ul.skinmgrTree {
+   padding-left:15px;
+   margin:20px 0px;
+}
+ul.skinmgrTree ul {
+   padding-left:30px;
+   margin:0px;
+}
+ul.skinmgrTree li {
+   list-style:none;
+   margin:7px 0px;
+   padding:0px;
+}
+ul.skinmgrTree li.skinset {
+   list-style:square;
+   padding-left:0px;
+}
+ul.skinmgrTree a.selected {
    font-weight:bold;
+}
+ul.skinmgrTree li div {
+   font-family:<% layout.textfont %>;
+   font-size:<% layout.smallsize %>;
+   color:<% layout.textcolor %>;
+}
+
+/* classes for skin diff */
+.diff td {
+   padding:0px 5px;
+}
+.diff pre {
+   font-size:12px;
+   margin:0px;
+   padding:2px 0px;
+}
+.diff .removed {
+   border-top:1px solid <% layout.smallcolor %>;
+   background-color: #ff3333;
+}
+.diff .added {
+   border-top:1px solid <% layout.smallcolor %>;
+   background-color: #33cc33;
+}
+.diff .line {
+   border-top:1px solid <% layout.smallcolor %>;
+}
+.diff .num {
+   border-top:1px solid <% layout.smallcolor %>;
+   color:<% layout.smallcolor %>;
+   text-align:right;
+}
+.diff .status {
+   padding:0px 5px;
+   border-top:1px solid <% layout.smallcolor %>;
+}
+
+/* classes for membermgr */
+.membergroup {
+   font-weight:bold;
+   font-size:<% layout.titlesize %>;
+   margin:10px 0px;
+}
+.member {
+   margin-left:20px;
+   margin-bottom:5px;
 }

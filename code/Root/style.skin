@@ -1,145 +1,281 @@
-body, td, span {
-  font-family: <% layout.textfont %>;
-  font-size: <% layout.textsize %>;
-  font-weight: normal;
-  color: <% layout.textcolor %>;
-  vertical-align: top;
-  background-color: <% layout.bgcolor %>;
+/**
+* Basic page structure.
+* When changing something, make sure widths are coherent.
+*/
+table.main {
+   width: 700px;
 }
 
-a {
-  text-decoration: none;
-  color: <% layout.linkcolor %>;
+td.header {
+   padding-left:1px;
+   font-weight: bold;
 }
 
-a:hover {
-  background-color: <% layout.linkcolor %>;
-  color: <% layout.textcolor %>;
+td.center { 
+   width: 70%; 
+   padding: 25px 20px 10px 40px; 
+   vertical-align: top; 
 }
 
-ul {
-  list-style: url("<% layout.image as="url" name="bullet" %>") circle;
+td.right { 
+   width: 30%; 
+   padding: 0px 0px 10px 0px; 
+   vertical-align: top; 
+   border-left: 1px solid #dddddd;
 }
 
-.header {
-  background-image: url("<% layout.image as="url" name="headbg" %>");
-  background-repeat: repeat-x;
-  text-align: right;
-  vertical-align: middle;
+/**
+* Colors, fonts, styles.
+*/
+
+body {
+   background-color: <% layout.bgcolor %>;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.textsize %>;
+   color: <% layout.textcolor %>;
 }
+
+td {
+   font-size: <%layout.textsize %>;
+   line-height: 1.2em;
+}
+
+td.header {
+   background-image: url("<% layout.image as="url" name="headbg" %>");
+   background-repeat: repeat-x;
+   vertical-align: top;
+   font-size: 25px;
+   font-weight: bold;
+}
+
+div.boxheader {
+   color: <% layout.smallcolor %>;
+   overflow: hidden;
+   font-size: 10px;
+   padding-left: 6px;
+   border-top: 1px solid #dddddd;
+}
+
+div.boxline {
+   height:1px;
+   overflow:hidden;
+   border-bottom: 1px solid #dddddd;
+}
+
+div.box {
+   font-size: <% layout.smallsize %>;
+   font-family: <% layout.smallfont %>;
+   color: <% layout.smallcolor %>;
+   line-height: 1.4em;
+   text-align: right;
+   padding: 0em 0em 0.4em 0.4em;
+   margin: 0em 0em 0.2em 0em;
+}
+
+/* this is for mozilla to align tables in boxes right */
+div.box table {
+   margin-left: auto; 
+   margin-right: 0px; 
+}
+
+fieldset {
+   padding-left: 8px;
+   padding-top: 0px;
+   margin-top: 6px;
+   margin-bottom: 6px;
+}
+
+p {
+   margin-top: 6px;
+   margin-bottom: 10px;
+}
+
+form { margin: 0px; }
+
+a {text-decoration: none;}
+a:link {color: <% layout.linkcolor %>;}
+a:visited {color: <% layout.vlinkcolor %>;}
+a:active {color: <% layout.alinkcolor %>;}
+a:hover {text-decoration: underline;}
 
 .message {
-  font-family: <% layout.textfont %>;
-  font-size: <% layout.textsize %>;
-  padding: 1px;
-  color: #FF3300;
-  background-color: <% layout.bgcolor %>;
-}
-
-.statusdark {
-  width: 198px;
-  font-family: <% layout.smallfont %>;
-  font-size: <% layout.smallsize %>;
-  display: block;
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-
-.statuslight {
-  width: 198px;
-  font-family: <% layout.smallfont %>;
-  font-size: <% layout.smallsize %>;
-  color: #999999;
-  display: block;
-  padding-top: 3px;
-  padding-bottom: 3px;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   font-weight: bold;
+   padding: 1px;
+   margin-top: 6px;
+   margin-bottom: 6px;
+   color: <% layout.titlecolor %>;
+   background-color: <% layout.bgcolor %>;
 }
 
 .small {
-  font-family: <% layout.smallfont %>;
-  font-size: <% layout.smallsize %>;
-  font-color: <% layout.smallcolor %>;
-  color: #666666;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.smallcolor %>;
 }
 
-.sep {
-  width: 198px;
-  height: 1px;
-  background-image: url("<% layout.image as="url" name="dot" %>");
+.listSeparator {
+   width: 50px;
+   border-bottom: 2px dotted #cccccc;
+   margin-top: 10px;
+   margin-bottom: 4px;
 }
 
-.pageTitle {
-  font-family: <% layout.titlefont %>;
-  font-size: <% layout.titlesize %>;
-  font-weight: bold;
-  color: #FF3300;
-  padding-bottom: 10pt;
-}
-
-.pagelink {
-   margin-top: 2px;
+.storyTitle {
+   font-family: <% layout.titlefont %>;
+   font-size: <% layout.titlesize %>;
+   color: <% layout.titlecolor %>;
+   font-weight: bold;
    margin-bottom: 2px;
 }
 
-/** classes used in sysmgr **/
+/* form input classes */
 
-.flagltgreen {
-   background-color:#009900;
-   font-family:Verdana,Helvetica,Arial,sans-serif;
+.formTitle {
+   width: 380px;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.titlesize %>;
+   font-weight: bold;
+   border: 1px solid <% layout.textcolor %>;
+}
+
+.formText {
+   width: 380px;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.textsize %>;
+   font-weight: normal;
+   border: 1px solid <% layout.textcolor %>;
+}
+
+.formWide {
+   width: 660px;
+   font-family: <% layout.textfont %>;
+   font-size: <% layout.textsize %>;
+   font-weight: normal;
+}
+
+.listFlag {
+   background-color: #cccccc;
+   padding: 1px;
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.textcolor %>;
+}
+
+.colorpickerWidget {
+   border: 1px solid #cccccc;
+}
+
+/* page navigation bar */
+div.pageNav {
+   margin-top: 10px;
+   margin-bottom: 0px;
+   font-size: 11px;
+}
+div.pageNavSummary {
+   padding: 1px 5px;
+   background-color: #efefef;
+   border-bottom: 1px solid #cccccc;
+   text-align: left;
+}
+div.pageNavBar {
+   padding-top: 1px;
+   text-align: right;
+}
+span.pageNavItem {
+   padding-left: 2px;
+   padding-right: 2px;
+}
+span.pageNavSelItem {
+   padding-left: 2px;
+   padding-right: 2px;
+   font-weight: bold;
+}
+
+/* system manager classes */
+
+.pageTitle {
+   font-family:<% layout.titlefont %>;
+   font-size:<% layout.titlesize %>;
+   font-weight:bold;
+   color:<% layout.titlecolor %>;
+   padding-bottom:10pt;
+}
+
+.flagDark {
+   font-family:<% layout.smallfont %>;
    font-size:7pt;
    padding:2px;
    color:#ffffff;
 }
-.flagdkgreen {
-   background-color:#006600;
-   font-family:Verdana,Helvetica,Arial,sans-serif;
-   font-size:7pt;
-   padding:2px;
-   color:#ffffff;
-}
-.flagred {
-   background-color:#CC0000;
-   font-family:Verdana,Helvetica,Arial,sans-serif;
-   font-size:7pt;
-   padding:2px;
-   color:#ffffff;
-}
-.flagblack {
-   background-color:#000000;
-   font-family:Verdana,Helvetica,Arial,sans-serif;
-   font-size:7pt;
-   padding:2px;
-   color:#ffffff;
-}
-.flagyellow {
-   background-color:#FFCC00;
-   font-family:Verdana,Helvetica,Arial,sans-serif;
+
+.flagLight {
+   font-family:<% layout.smallfont %>;
    font-size:7pt;
    padding:2px;
    color:#333333;
 }
 
-/* page navigation bar */
+.sysmgrListitem {
+   margin-top:15px;
+   border-top:1px solid #dddddd;
+}
 
-div.pageNav {
-   margin-top:10px;
-   height:14px;
-   font-size:11px;
+/* tree navigation in skinmgr */
+ul.skinmgrTree {
+   padding-left:15px;
+   margin:20px 0px;
 }
-div.pageNavSummary {
-   padding:2px;
-   background-color:#efefef;
-   border-bottom:1px solid #cccccc;
-   text-align:left;
+ul.skinmgrTree ul {
+   padding-left:30px;
+   margin:0px;
 }
-div.pageNavBar {
-   padding:2px;
+ul.skinmgrTree li {
+   font-weight:normal;
+   list-style:none;
+   margin:7px 0px;
+   padding:0px;
+}
+ul.skinmgrTree li.skinset {
+   list-style:square;
+   padding-left:0px;
+}
+ul.skinmgrTree a.selected {
+   font-weight:bold;
+}
+ul.skinmgrTree li div {
+   font-family:<% layout.textfont %>;
+   font-size:<% layout.smallsize %>;
+   color:<% layout.textcolor %>;
+}
+
+/* classes for skin diff */
+.diff td {
+   padding:0px 5px;
+}
+.diff pre {
+   font-size:12px;
+   margin:0px;
+   padding:2px 0px;
+}
+.diff .removed {
+   border-top:1px solid <% layout.smallcolor %>;
+   background-color: #ff3333;
+}
+.diff .added {
+   border-top:1px solid <% layout.smallcolor %>;
+   background-color: #33cc33;
+}
+.diff .line {
+   border-top:1px solid <% layout.smallcolor %>;
+}
+.diff .num {
+   border-top:1px solid <% layout.smallcolor %>;
+   color:<% layout.smallcolor %>;
    text-align:right;
 }
-div.pageNavBar span {
-   padding-left:2px;
-   padding-right:2px;
-}
-div.pageNavBar span.pageNavSelItem {
-   font-weight:bold;
+.diff .status {
+   padding:0px 5px;
+   border-top:1px solid <% layout.smallcolor %>;
 }
