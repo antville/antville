@@ -254,7 +254,7 @@ function lastupdate_macro(param) {
    if (!this.lastupdate) {
       res.write("no updates so far");
    } else
-      res.write(this.formatTimestamp(this.lastupdate,param));
+      res.write(formatTimestamp(this.lastupdate,param.format));
    res.write(param.suffix);
 }
 
@@ -264,7 +264,7 @@ function lastupdate_macro(param) {
 
 function createtime_macro(param) {
    res.write(param.prefix)
-   res.write(this.formatTimestamp(this.createtime,param));
+   res.write(formatTimestamp(this.createtime,param.format));
    res.write(param.suffix);
 }
 
@@ -275,7 +275,7 @@ function createtime_macro(param) {
 function modifytime_macro(param) {
    if (this.modifytime) {
       res.write(param.prefix)
-      res.write(res.write(this.formatTimestamp(this.modifytime,param)));
+      res.write(formatTimestamp(this.modifytime,param.format));
       res.write(param.suffix);
    }
 }
@@ -454,13 +454,12 @@ function calendar_macro(param) {
    if (!this.size() || !this.showArchive())
       return;
    // define variables needed in this function
-   var tsParam = new Object();
    var calParam = new Object();
    calParam.calendar = "";
    var dayParam = new Object();
    var weekParam = new Object();
    // create new calendar-object and set day to first day of month
-   var cal = new java.util.GregorianCalendar(this.getLocale());
+   var cal = new java.util.GregorianCalendar(this.getTimeZone(), this.getLocale());
    cal.set(java.util.Calendar.DATE,1);
    // check whether there's a day or a story in path
    // if so, use it to determine the month to render
@@ -482,8 +481,7 @@ function calendar_macro(param) {
    var weeks = Math.ceil((pre + days) / 7);
    var daycnt = 1;
 
-   tsParam.format = "MMMM";
-   calParam.month = this.formatTimestamp(cal.getTime(),tsParam);
+   calParam.month = formatTimestamp(cal.getTime(),"MMMM");
 
    calParam.year = cal.getTime().format("yyyy");
    // create link to previous month if needed
@@ -492,18 +490,16 @@ function calendar_macro(param) {
    // render header-row of calendar
    weekParam.week = "";
    var calHead = cal.clone();
-   // define the formatting of calendar
-   tsParam.format = "EE";
    var firstDayOfWeek = cal.getFirstDayOfWeek();
    for (var i=0;i<7;i++) {
       calHead.set(java.util.Calendar.DAY_OF_WEEK, firstDayOfWeek + i);
-      dayParam.day = this.formatTimestamp(calHead.getTime(),tsParam);
+      dayParam.day = formatTimestamp(calHead.getTime(),"EE");
       weekParam.week += this.renderSkinAsString("calendardayheader",dayParam);
    }
    calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
 
    // pre-render the year and month so we only have to append the days as we loop
-   var currMonth = cal.getTime().format("yyyyMM");
+   var currMonth = formatTimestamp(cal.getTime(), "yyyyMM");
    // simply loop through days
    var currDay = 1;
 
@@ -617,6 +613,27 @@ function localechooser_macro(param) {
 }
 
 /**
+ * macro renders a list of available time zones as dropdown
+ */
+
+function timezonechooser_macro(param) {
+   res.write(param.prefix);
+   var zones = java.util.TimeZone.getAvailableIDs();
+   var options = new Array();
+   var format = new java.text.DecimalFormat ("-0;+0");
+   var currentZone = this.getTimeZone();
+   for (var i in zones) {
+      var zone = java.util.TimeZone.getTimeZone (zones[i]);
+      options[i] = "GMT"+(format.format(zone.getRawOffset()/3600000))+"  ("+zones[i]+")";
+      if (zones[i] == currentZone.getID())
+         var selectedIndex = i;
+   }
+   res.write(simpleDropDownBox("timezone",options,selectedIndex));
+   res.write(param.suffix);
+}
+
+
+/**
  * renders a list of most read pages, ie. a link
  * to a story together with the read counter et al.
  */
@@ -695,3 +712,4 @@ function xmlbutton_macro() {
 	root.renderImage(img, param);
 	this.closeLink();
 }
+

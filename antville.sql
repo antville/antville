@@ -144,6 +144,7 @@ create table WEBLOG (
    SHOWARCHIVE tinyint(1),
    LANGUAGE varchar(2),
    COUNTRY varchar(2),
+   TIMEZONE varchar(32),
    LONGDATEFORMAT varchar(50),
    SHORTDATEFORMAT varchar(50),
    CREATETIME datetime,

@@ -20,6 +20,10 @@
 <td nowrap="nowrap"><% this.localechooser %></td>
 </tr>
 <tr>
+<td class="small" nowrap>Timezone:</td>
+<td nowrap><% this.timezonechooser %></td>
+</tr>
+<tr>
 <td class="small" nowrap="nowrap">Long dateformat:</td>
 <td nowrap="nowrap"><% this.longdateformat as="chooser" width="20" %></td>
 </tr>

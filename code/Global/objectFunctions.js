@@ -336,9 +336,47 @@ function pingUpdatedWeblogs() {
  */
 function parseTimestamp (time, format) {
    var df = new java.text.SimpleDateFormat (format);
+   if (path.weblog)
+       df.setTimeZone(path.weblog.getTimeZone());
    return df.parse (time);
 }
 
+/**
+ * function formats a date to a string. It checks if a weblog object is
+ * in the request path and if so uses its locale and timezone.
+ *
+ * @param ts           Date to be formatted
+ * @param format     The format string
+ * @return               The date formatted as string
+ */
+function formatTimestamp(ts,dformat) {
+   // date format parsing is quite expensive, but date formats
+   // are not thread safe, so what we do is to cache them per request
+   // in the response object using "timeformat_<format>" as key.
+   var sdf = res.data["timeformat_"+dformat];
+   if (!sdf) {
+      var fmt = "yyyy/MM/dd HH:mm";
+      if (path.weblog) {
+         if (dformat == "short")
+            fmt = path.weblog.shortdateformat ? path.weblog.shortdateformat : "dd.MM HH:mm";
+         else if (dformat == "long")
+            fmt = path.weblog.longdateformat ? path.weblog.longdateformat : "yyyy/MM/dd HH:mm";
+         else if (dformat)
+            fmt = dformat;
+         sdf = new java.text.SimpleDateFormat(fmt,path.weblog.getLocale());
+         sdf.setTimeZone(path.weblog.getTimeZone())
+      } else {
+         if (dformat)
+            fmt = dformat;
+         sdf = new java.text.SimpleDateFormat(fmt);
+      }
+      res.data["timeformat_"+dformat] = sdf;
+   }
+   var result = tryEval("sdf.format(ts)");
+   if (result.error)
+      return ("[error: wrong date-format]");
+   return (result.value);
+}
 
 /**
  * scheduler performing auto-disposal of inactive weblogs

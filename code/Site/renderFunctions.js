@@ -49,7 +49,7 @@ function renderStorylist(day) {
    // future days. (HW)
    var startdayString = day;
    if (!startdayString)
-      startdayString = (new Date()).format("yyyyMMdd");
+      startdayString = formatTimestamp(new Date(), "yyyyMMdd");
 
    var startday = this.get(startdayString);
    if (startday && startday.size()>0) {

@@ -101,6 +101,16 @@ function evalPreferences(param,modifier) {
       newLoc = java.util.Locale.getDefault();
    this.country = newLoc.getCountry();
    this.language = newLoc.getLanguage();
+   // store selected timezone in this.timezone
+   var timezones = java.util.TimeZone.getAvailableIDs();
+   var newZone = timezones[parseInt(param.timezone,10)];
+   if (!newZone)
+      this.timezone = null;
+   else
+      this.timezone =newZone;
+   // reset cached locale and timezone
+   this.cache.locale = null;
+   this.cache.timezone = null;
 
    // long dateformat
    var patterns = getDefaultDateFormats();
@@ -156,18 +166,7 @@ function createImgDirectory() {
  */
 
 function formatTimestamp(ts,param) {
-   var fmt = "yyyy/MM/dd HH:mm";
-   if (param.format == "short")
-      fmt = this.shortdateformat ? this.shortdateformat : "dd.MM HH:mm";
-   else if (param.format == "long")
-      fmt = this.longdateformat ? this.longdateformat : "yyyy/MM/dd HH:mm";
-   else if (param.format)
-      fmt = param.format;
-   var sdf = new java.text.SimpleDateFormat(fmt,this.getLocale());
-   var result = tryEval("sdf.format(ts)");
-   if (result.error)
-      return ("[error: wrong date-format]");
-   return (result.value);
+   formatTimestamp(ts,param.format);
 }
 
 /**
@@ -177,10 +176,27 @@ function formatTimestamp(ts,param) {
  */
 
 function getLocale() {
+   var locale = this.cache.locale;
+   if (locale) 
+       return locale;
    if (this.language)
-      return (new java.util.Locale(this.language,this.country ? this.country : ""));
+      locale = new java.util.Locale(this.language,this.country ? this.country : "");
    else
-      return (java.util.Locale.getDefault());
+      locale = java.util.Locale.getDefault();
+   this.cache.locale =locale;
+   return locale;
+}
+
+function getTimeZone() {
+   var timezone = this.cache.timezone;
+   if (timezone)
+       return timezone;
+   if (this.timezone)
+       timezone = java.util.TimeZone.getTimeZone(this.timezone);
+   else
+       timezone = java.util.TimeZone.getDefault();
+   this.cache.timezone =timezone;
+   return timezone;
 }
 
 
@@ -281,3 +297,4 @@ function ping() {
 	this.lastping = new Date();
 	return(result);
 }
+
