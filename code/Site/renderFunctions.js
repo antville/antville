@@ -48,10 +48,6 @@ function renderLinkToNextMonth(lastDayIndex,currentMonth,monthNames) {
  */
 
 function renderStorylist(day) {
-   if (this.allstories.size() == 0) {
-      res.data.storylist = this.renderSkinAsString("welcome");
-      return;
-   }
    var size = this.size();
    var idx = 0;
 
