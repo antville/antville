@@ -101,11 +101,11 @@
    <target name="antville" depends="export">
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
-         <param name="path" value="${build.work}/apps/antville"/>
+         <param name="path" value="${build.work}/apps/${project}"/>
       </antcall>
       <antcall target="package-tgz">
          <param name="filename" value="${package.name}"/>
-         <param name="path" value="${build.work}/apps/antville"/>
+         <param name="path" value="${build.work}/apps/${project}"/>
       </antcall>
       <antcall target="cleanup"/>
    </target>
@@ -115,20 +115,20 @@
    <!-- generate the antclick distribution packages                         -->
    <!-- =================================================================== -->
    <target name="antclick" depends="export">
-      <mkdir dir="${build.work}"/>
       <copy todir="${build.work}/">
          <fileset dir="${build.extra}" 
             includes="antclick.sh antclick.bat apps.properties 
                       launcher.jar server.properties"/>
       </copy>
+      <copy file="${build.extra}/db.properties" 
+         todir="${build.work}/apps/${project}/code"
+         overwrite="true"/>
 
       <cvs cvsRoot="${cvs.manage.root}" 
          command="export" 
          tag="${cvs.manage.tag}" 
          package="manage" 
          dest="${build.work}/apps"/>
-      <copy file="${build.extra}/db.properties" 
-         tofile="${build.work}/apps/${project}/code/db.properties"/>
 
       <cvs cvsRoot="${cvs.hop.root}" 
          command="export" 
