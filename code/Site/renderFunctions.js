@@ -4,6 +4,7 @@
  */
 
 function renderCalendarDay(currGroupname,text) {
+   text = "&nbsp;"+text+"&nbsp;";
    var currGroup = this.get(currGroupname);
    var linkit = false;
    if (currGroup && currGroup.size()) {
