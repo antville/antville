@@ -21,19 +21,6 @@ function constructor(title, alias, creator) {
    prefs.discussions = 1;
    prefs.usercontrib = 0;
    prefs.archive = 1;
-   prefs.bgcolor = "ffffff";
-   prefs.textfont = "Verdana, Helvetica, Arial, sans-serif";
-   prefs.textsize = "13px";
-   prefs.textcolor = "000000";
-   prefs.linkcolor = "ff3300";
-   prefs.alinkcolor = "ff0000";
-   prefs.vlinkcolor = "ff3300";
-   prefs.titlefont = "Verdana, Helvetica, Arial, sans-serif";
-   prefs.titlesize = "15px";
-   prefs.titlecolor = "cc0000";
-   prefs.smallfont = "Arial, Helvetica, sans-serif";
-   prefs.smallsize = "12px";
-   prefs.smallcolor = "666666";
    prefs.days = 3;
    // retrieve locale-object from root
    var loc = root.getLocale();
@@ -82,8 +69,8 @@ function evalPreferences(param, modifier) {
    prefs.longdateformat = param.longdateformat;
    prefs.shortdateformat = param.shortdateformat;
 
-   // skinset
-   prefs.skinset = param.skinset;
+   // layout
+   prefs.layout = param.layout;
 
    // e-mail notification
    var n = parseInt(param.notify_create, 10);
@@ -115,7 +102,7 @@ function evalPreferences(param, modifier) {
 
 function getLocale() {
    var locale = this.cache.locale;
-   if (locale) 
+   if (locale)
        return locale;
    if (this.preferences.getProperty("language")) {
       if (this.preferences.getProperty("country"))
@@ -178,11 +165,11 @@ function sortMostReads(s1, s2) {
 /**
  * function deletes all assets of a site (recursive!)
  */
-
 function deleteAll() {
    this.images.deleteAll();
    this.files.deleteAll();
-   this.skins.deleteAll();
+   // FIXME: add deleting of all layouts!
+   // this.layouts.deleteAll();
    this.stories.deleteAll();
    this.members.deleteAll();
    return true;
@@ -222,11 +209,11 @@ function ping() {
  *  for this site's alias, use it. Otherwise, use normal site URL.
  */
 function processHref(href) {
-   var vhost = getProperty("vhost."+this.alias);
+   var vhost = app.properties["vhost." + this.alias];
    if (vhost)
-      return vhost+href;
+      return vhost + href;
    else
-      return getProperty("defaulthost")+"/"+this.alias+href;
+      return app.properties.defaulthost + "/" + this.alias + href;
 }
 
 
@@ -262,7 +249,7 @@ function sendNotification(type, obj) {
    }
    if (recipients.length > 0) {
       var param = {
-         user: obj.modifier ? obj.modifier.name : 
+         user: obj.modifier ? obj.modifier.name :
             (obj.creator ? obj.creator.name : null),
          href: obj.href()
       };
@@ -272,4 +259,61 @@ function sendNotification(type, obj) {
       sendMail(sender, recipients, subject, body);
    }
    return;
+}
+
+/**
+ * return the currently enabled layout object
+ */
+function getLayout() {
+   var layoutAlias = this.preferences.getProperty("layout");
+   if (layoutAlias)
+      return this.layouts.get(layoutAlias);
+   return root.getLayout();
+}
+
+/**
+ * return the path to the static directory
+ * of this site
+ * @return Object java.lang.StringBuffer
+ */
+function getStaticPath(subdir) {
+   var buf = new java.lang.StringBuffer(app.properties.staticPath);
+   buf.append(this.alias);
+   buf.append("/");
+   if (subdir)
+      buf.append(subdir);
+   return buf;
+}
+
+/**
+ * return the url of the static directory
+ * of this site
+ * @return Object java.lang.Stringbuffer
+ */
+function getStaticUrl(subdir) {
+   var buf = new java.lang.StringBuffer(app.properties.staticUrl);
+   buf.append(this.alias);
+   buf.append("/");
+   if (subdir)
+      buf.append(subdir);
+   return buf;
+}
+
+/**
+ * return the directory containing static contents
+ * @param String subdirectory (optional)
+ * @return Object File object
+ */
+function getStaticDir(subdir) {
+   return FileLib.mkdir(this.getStaticPath(subdir).toString());
+}
+
+/**
+ * function returns the title of a site
+ */
+function getTitle() {
+   if (this.title && this.title.trim())
+     return stripTags(this.title);
+   else
+     return "[untitled]";
 }
