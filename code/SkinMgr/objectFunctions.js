@@ -187,12 +187,16 @@ function dumpToZip(z, fullExport, exportLog) {
       if (this._parent.parent)
          this._parent.parent.skins.dumpToZip(z, fullExport, exportLog);
       else {
-         // loop over app.skinfiles and add those that aren't
-         // exported already to the zip file
-         for (var protoName in app.skinfiles) {
-            var proto = app.skinfiles[protoName];
-            for (var skinName in proto) {
-               var source = proto[skinName];
+         // loop over application prototypes and add those skins
+         // that aren't exported already to the zip file
+         var protos = app.__app__.getPrototypes();
+         var it = protos.iterator();
+         var key, protoName, source;
+         while (it.hasNext()) {
+            protoName = it.next().getName();
+            var protoSkins = app.skinfiles[protoName];
+            for (var skinName in protoSkins) {
+               source = protoSkins[skinName];
                key = protoName + skinName;
                if (source && !exportLog.containsKey(key)) {
                   var buf = new java.lang.String(source).getBytes();
