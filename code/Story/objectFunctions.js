@@ -50,13 +50,9 @@ function evalStory(param,modifier) {
    }
    // check new online-status of story
    var newStatus = parseInt(param.online,10);
-   if (param.publish || param.submit == "publish") {
-      if (param.justintopic)
-         newStatus = (param.addtofront != "1") ? 1 : 2;
-      else
-         newStatus = param.addtofront ? 2 : 1;
-   }
-   else if ((param.save || param.submit == "save") && isNaN(newStatus))
+   if ((param.publish || param.submit == "publish") && isNaN(newStatus))
+      newStatus = parseInt(param.onlinedefault,10);
+   else if (param.save || param.submit == "save")
       newStatus = 0;
    if (isNaN(newStatus))
       return (getError("storyPublish"));
@@ -88,7 +84,6 @@ function evalStory(param,modifier) {
    var result = getConfirm("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
    return (result);
-
 }
 
 /**
