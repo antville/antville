@@ -54,6 +54,7 @@ error.siteCreateOnlyAdmins = Nur Administratoren können neue Weblogs anlegen!
 error.siteCreateNotAllowed = Du hast nicht das Recht, ein neues Weblog anzulegen!
 // FIXME
 // FIXME
+// FIXME
 error.siteAliasMissing = Bitte wähle einen Alias für dein neues Weblog!
 error.siteAliasExisting = Es existiert schon ein Weblog mit diesem Alias!
 error.siteAliasNoSpecialChars = Bitte verwende keine Sonderzeichen im Alias!

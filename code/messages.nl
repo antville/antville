@@ -54,6 +54,7 @@ error.siteCreateOnlyAdmins = Sorry, weblogs kunnen alleen door beheerders worden
 error.siteCreateNotAllowed = Sorry, u mag geen nieuwe weblog aanmaken.
 // FIXME
 // FIXME
+// FIXME
 error.siteAliasMissing = Vul een alias in voor uw nieuwe weblog.
 error.siteAliasExisting = Sorry, er is al een weblog met deze alias.
 error.siteAliasNoSpecialChars = Voer hier alleen alfanumerieke tekens in.
