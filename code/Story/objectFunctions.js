@@ -8,11 +8,6 @@
  */
 
 function evalStory(param,modifier) {
-   var result;
-   // assign those properties that can be stored anyway
-   if (modifier == this.creator)
-      this.editableby = !isNaN(param.editableby) ? parseInt(param.editableby,10) : null;
-   this.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
    // loop through param and collect content properties
    var majorUpdate = false;
    var contentIsCool = false;
@@ -37,35 +32,22 @@ function evalStory(param,modifier) {
    // if all story parts are null, return with error-message
    if (!contentIsCool)
       return (getError("textMissing"));
-   this.setContent (cont);
-   // let's keep the title property
-   this.title = param.content_title;
-   this.modifier = modifier;
-   this.ipaddress = param.http_remotehost;
    // check if the createtime is set in param
    if (param.createtime) {
-      var ctime = tryEval ('parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm")');
+      var ctime = tryEval("parseTimestamp(param.createtime, \"yyyy-MM-dd HH:mm\")");
       if (ctime.error)
-          result = getError("timestampParse",param.createtime);
-      else if (ctime.value != this.createtime) {
-         this.createtime = ctime.value;
-         // create day of story with respect to site-timezone
-         this.day = formatTimestamp(this.createtime,"yyyyMMdd");
-      }
+         return (getError("timestampParse",param.createtime));
    }
    // check name of topic (if specified)
+   var topicName = null;
    if (param.topic)
-      var topicName = param.topic;
+      topicName = param.topic;
    else if (!isNaN(parseInt(param.topicidx,10)))
-      var topicName = this.site.topics.get(parseInt(param.topicidx,10)).groupname;
-   else
-      var topicName = null;
-   if (!isCleanForURL(topicName)) {
+      topicName = this.site.topics.get(parseInt(param.topicidx,10)).groupname;
+   if (topicName && !isCleanForURL(topicName)) {
       // name of topic contains forbidden characters, so return immediatly
       return (getError("topicNoSpecialChars"));
-   } else if (topicName)
-      this.topic = topicName;
-
+   }
    // check new online-status of story
    var newStatus = parseInt(param.online,10);
    if (param.publish || param.submit == "publish")
@@ -76,15 +58,33 @@ function evalStory(param,modifier) {
       return (getError("storyPublish"));
    if (newStatus == 1 && !topicName)
       return (getError("storyTopicMissing"));
+
+   // since we came down here we store the new values of the story
    if (newStatus > 0 && (!this.online || majorUpdate))
       this.site.lastupdate = new Date();
    this.online = newStatus;
    if (majorUpdate)
       this.modifytime = new Date();
+   this.setContent (cont);
+   // let's keep the title property
+   this.title = param.content_title;
+   if (ctime && ctime.value != this.createtime) {
+      this.createtime = ctime.value;
+      // create day of story with respect to site-timezone
+      this.day = formatTimestamp(this.createtime,"yyyyMMdd");
+   }
+   if (modifier == this.creator)
+      this.editableby = !isNaN(param.editableby) ? parseInt(param.editableby,10) : null;
+   this.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
+   this.modifier = modifier;
+   this.ipaddress = param.http_remotehost;
+   this.topic = topicName;
+
    this.cache.modifytime = new Date();
-   result = getConfirm("storyUpdate");
+   var result = getConfirm("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
    return (result);
+
 }
 
 /**
@@ -111,7 +111,7 @@ function toggleOnline(newStatus) {
  */
 
 function evalComment(param,story,creator) {
-   var result = new Object();
+   var result;
    if (!param.content_text) {
       result = getError("textMissing");
    } else {
