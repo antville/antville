@@ -23,6 +23,34 @@ function evalURL(url) {
 }
 
 /**
+ * function returns file-extension according to mimetype of raw-image
+ * returns false if mimetype is unknown
+ * @param String Mimetype of image
+ * @return String File-Extension to use
+ */
+function evalImgType(ct) {
+   switch (ct) {
+      case "image/jpeg" :
+         return "jpg";
+         break;
+      case "image/pjpeg" :
+         return "jpg";
+         break;
+      case "image/gif" :
+         return "gif";
+         break;
+      case "image/x-png" :
+         return "png";
+         break;
+      case "image/png" :
+         return "png";
+         break;
+      case "image/x-icon" :
+         return "ico";
+   }
+}
+
+/**
  * function checks if user has permanent cookies
  * storing username and password
  */
@@ -40,7 +68,7 @@ function autoLogin() {
       return;
    else if (session.login(name, u.password)) {
       u.lastVisit = new Date();
-      res.message = getMessage("confirm.welcome", [res.handlers.site ? res.handlers.site.title : root.getSysTitle(), session.user.name]);
+      res.message = getMessage("confirm.welcome", [res.handlers.context.getTitle(), session.user.name]);
    }
    return;
 }
@@ -74,7 +102,7 @@ function getPoolObj(objName, pool) {
 }
 
 /**
- * This is a simple logger that creates a DB entry for 
+ * This is a simple logger that creates a DB entry for
  * each request that contains an HTTP referrer.
  * due to performance-reasons this is not written directly
  * into database but instead written to app.data.accessLog (=Vector)
@@ -98,7 +126,7 @@ function logAccess() {
       logObj.referrer = referrer;
       logObj.remoteHost = req.data.http_remotehost;
       logObj.browser = req.data.http_browser;
-      
+
       // log to app.data.accessLog
       app.data.accessLog.add(logObj);
    }
@@ -108,7 +136,7 @@ function logAccess() {
 
 /**
  * to register updates of a site at weblogs.com
- * (and probably other services, soon), this 
+ * (and probably other services, soon), this
  * function can be called via the scheduler.
  */
 function pingUpdatedSites() {
@@ -350,8 +378,8 @@ function onStart() {
 
 /**
  * This function parses a string for <img> tags and turns them
- * into <a> tags.  
- */ 
+ * into <a> tags.
+ */
 function fixRssText(str) {
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
@@ -401,8 +429,8 @@ function writeAccessLog() {
    for (var i=0;i<log.size();i++) {
       var logObj = log.get(i);
       query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE,ACCESSLOG_F_TEXT," +
-         "ACCESSLOG_REFERRER,ACCESSLOG_IP,ACCESSLOG_BROWSER) values (" + 
-         logObj.siteID + "," + logObj.storyID + ",'" + logObj.referrer + "','" + logObj.remoteHost + 
+         "ACCESSLOG_REFERRER,ACCESSLOG_IP,ACCESSLOG_BROWSER) values (" +
+         logObj.siteID + "," + logObj.storyID + ",'" + logObj.referrer + "','" + logObj.remoteHost +
          "','" + logObj.browser + "')";
       c.executeCommand(query);
       if (dbError) {
