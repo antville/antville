@@ -1,0 +1,25 @@
+<form method="post" action="<% response.action %>">
+<table border=0 cellspacing=0 cellpadding=2>
+<tr>
+<td colspan=2 class="pageTitle" nowrap>System Log</td>
+</tr>
+<tr>
+<td nowrap>...&nbsp;show</td>
+<td nowrap><% this.dropdown name="show" values="all logs,weblog-logs,user-logs,system-logs" %></td>
+</tr>
+<tr>
+<td>...&nbsp;order</td>
+<td nowrap><% this.dropdown name="order" values="descending,ascending" %></td>
+</tr>
+<tr>
+<td>...&nbsp;keyword(s)</td>
+<td nowrap><% this.input name="keywords" %></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><% this.input type="button" name="search" value="show log-entries" %></td>
+</tr>
+</table>
+</form>
+
+

@@ -1,0 +1,21 @@
+res.skin = "sysmgr.page";
+res.data.title = "Antville Manager - " + req.action;
+
+res.data.action = this.href(req.action);
+
+if (req.data.search)
+   user.cache.mgr.searchUsers(req.data.show,req.data.sort,req.data.order,req.data.keywords);
+else if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
+else if (req.data.submit == "save" || req.data.save) {
+   var result = this.updateUser(req.data,user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
+}
+
+res.data.searchform = this.renderSkinAsString("usersearchform");
+user.cache.mgr.renderPageNavigation("users",res.data.action,parseInt(req.data.page,10));
+user.cache.mgr.renderList("users",req.data.item,req.data.action,parseInt(req.data.page,10));
+
+res.data.body = this.renderSkinAsString("list");

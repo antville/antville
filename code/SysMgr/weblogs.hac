@@ -1,0 +1,29 @@
+res.skin = "sysmgr.page";
+res.data.title = "Antville Manager - " + req.action;
+
+res.data.action = this.href(req.action);
+
+if (req.data.search)
+   user.cache.mgr.searchWeblogs(req.data.show,req.data.sort,req.data.order,req.data.keywords);
+else if (req.data.cancel)
+   res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
+else if (req.data.remove && req.data.item) {
+   var weblog = root.get(req.data.item);
+   if (weblog) {
+      var result = root.deleteWeblog(weblog);
+      res.message = result.message;
+   } else
+      res.message = "Can't delete " + req.data.item + "!";
+   res.redirect(res.data.action + "?page=" + req.data.page);
+} else if (req.data.save) {
+   var result = this.updateWeblog(req.data,user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
+}
+
+user.cache.mgr.renderPageNavigation("weblogs",res.data.action,parseInt(req.data.page,10));
+user.cache.mgr.renderList("weblogs",req.data.item,req.data.action,parseInt(req.data.page,10));
+
+res.data.searchform = this.renderSkinAsString("weblogsearchform");
+res.data.body = this.renderSkinAsString("list");

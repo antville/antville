@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<title><% response.title %></title>
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<% this.skin name="style" %>
+<% this.skin name="javascript" %>
+</head>
+
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><% logo name="big" %></td>
+<td width="296" class="header">&nbsp;<span class="message"><% response.message %></span></td>
+</tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20" rowspan=2 nowrap>&nbsp;</td>
+<td width="460" valign="top" nowrap><br><% response.searchform %></td>
+<td width="20" nowrap>&nbsp;</td>
+<td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
+<td width="198" align="right" valign="top" nowrap><% root.loginstatus %><div class="statusdark"><% root.link to="main" text="home" prefix="...&nbsp;" %><br>
+<div class="sep"><% image name="/pixel" width="198" %></div>
+<div class="statushead"><% image name="/manage" %>manage</div>
+<div class="sep"><% image name="/pixel" width="198" %></div>
+
+<div class="statuslight">...&nbsp;<% this.link to="weblogs" text="weblogs" %><br>
+...&nbsp;<% this.link to="users" text="users" %><br>
+...&nbsp;<% this.link to="logs" text="system log" %>
+</td>
+</tr>
+<tr>
+<td colspan=4 width=680 nowrap><% response.body %></td>
+</tr>
+</table>
+
+</body>
+</html>

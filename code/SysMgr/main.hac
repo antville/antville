@@ -1,0 +1,1 @@
+res.redirect(this.href("weblogs"));
