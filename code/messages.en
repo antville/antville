@@ -494,6 +494,7 @@ prototype.layoutmgr = Layouts
 prototype.layoutimagemgr = Images
 prototype.rootlayoutmgr = Layouts
 prototype.story = Story
+prototype.chooserFirstOption = --- choose prototype ---
 
 # general manage tasks
 manage.delete = delete
