@@ -70,7 +70,7 @@
       <filter token="version" value="${version}"/>
       <filter token="date" value="${TODAY}"/>
 
-      <cvspass cvsroot="${cvs.apps.root}" password=""/>
+      <cvspass cvsroot="${cvs.antville.root}" password=""/>
       <cvspass cvsroot="${cvs.hop.root}" password=""/>
    </target>
 
