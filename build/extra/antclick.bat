@@ -22,13 +22,13 @@ rem set AJP13_PORT=8009
 rem set RMI_PORT=5050
 
 :: Uncomment to set HOP_HOME
-rem set HOP_HOME=c:\program files\helma
+rem set HOP_HOME="c:\program files\helma"
 
 :: Uncomment to set JAVA_HOME variable
-rem set JAVA_HOME=c:\program files\java
+rem set JAVA_HOME="c:\program files\java"
 
 :: Uncomment to pass options to the Java virtual machine
-rem set JAVA_OPTIONS=-server -Xmx128m
+rem set JAVA_OPTIONS="-server -Xmx128m -Djava.awt.headless=true"
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :::::: No user configuration needed below this line :::::::
