@@ -1,6 +1,11 @@
-res.data.title = "Antville";
+res.data.title = root.getSysTitle();
 
-res.data.body = this.renderSkinAsString("main");
+// check if this installation is already configured
+// if not, we display the welcome-page as frontpage
+if (!root.sys_issetup)
+   res.data.body = this.renderSkinAsString("welcome");
+else
+   res.data.body = this.renderSkinAsString("main");
 
 root.renderSkin("page");
 
