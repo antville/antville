@@ -59,12 +59,19 @@ function renderStorylist(day) {
    res.data.storylist = "";
    while (dayCnt < days && idx < size) {
       var day = this.get(idx++);
+      // init var for incrementing daycounter
+      var count = false;
       for (var i=0;i<day.size();i++) {
          var st = day.get(i);
-         if (this.isStoryOnline(st))
+         if (this.isStoryOnline(st)) {
             res.data.storylist += st.renderSkinAsString("preview");
+            count = true;
+         }
       }
-      dayCnt++;
+      // only increment daycounter if day contains a story
+      // that is online in weblog
+      if (count)
+         dayCnt++;
    }
    if (idx < size) {
       var sp = new Object();
