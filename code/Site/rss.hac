@@ -27,7 +27,9 @@ if (max > 0 && this.online) {
          param.title = "...";
       param.publisher = systitle;
       param.creator = story.creator.name;
-      param.email = translateToEntities(story.creator.email);
+      param.email = "";
+      if (story.creator.publishemail)
+         param.email = translateToEntities(story.creator.email);
       param.date = story.modifytime.format(w3fmt);
       param.subject = story.topic ? story.topic : "";
       param.year = story.modifytime.getYear();
@@ -39,7 +41,8 @@ if (max > 0 && this.online) {
    param.url = this.href();
    param.title = systitle;
    param.creator = this.creator.name
-   param.email = translateToEntities(this.creator.email);
+   if (this.creator.publishemail)
+      param.email = translateToEntities(this.creator.email);
    param.year = now.getYear();
    param.lastupdate = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
 

@@ -3,7 +3,7 @@
     <link><% param.url %></link>
     <% param.text prefix="<description>" suffix="</description>" encoding="xml" %>
     <dc:publisher><% param.publisher encoding="xml" %></dc:publisher>
-    <dc:creator><% param.creator encoding="xml" %> (mailto:<% param.email encoding="xml" %>)</dc:creator>
+    <dc:creator><% param.creator encoding="xml" %><% param.email prefix=" (mailto:" suffix=")" encoding="xml" %></dc:creator>
     <% param.subject prefix="<dc:subject>" suffix="</dc:subject>" encoding="xml" %>
     <dc:rights>Copyright &#169; <% param.year %> <% param.creator %></dc:rights>
     <dc:date><% param.date %></dc:date>
