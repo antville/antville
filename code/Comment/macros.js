@@ -3,13 +3,13 @@
  */
 
 function replylink_macro(param) {
-   if (this.site.discussions && req.action == "main") {
-      openLink(this.href("comment"));
+   if (this.site.preferences.getProperty("discussions") && req.action == "main") {
+      Html.openLink(this.href("comment"));
       if (!param.image)
          res.write(param.text ? param.text : "reply");
       else
          renderImage(param);
-      closeLink();
+      Html.closeLink();
    }
 }
 
