@@ -100,7 +100,10 @@ function activateLinks (str) {
    // and the second URL doesn't match.
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$4");
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$4");
-   return (str);
+
+   // do Wiki style substitution
+   return (doWikiStuff (str));
+   // return (str);
 }
 
 /**
