@@ -1,16 +1,13 @@
 autoLogin();
 
-var parent = setLayout("editor");
+var parent = setLayout();
 
-var deny = this.isEditDenied();
+var deny = this.isEditDenied(user);
 if (deny) {
    res.message = deny;
    res.redirect(user.cache.referer ? parent.members.href("login") : parent.href());
 }
 
-res.title = "Antville - " + parent.title;
+res.data.title = "Antville - " + parent.title;
 
-res.head = parent.renderSkinAsString("javascript");
-res.head += parent.renderSkinAsString("style");
-
-res.body = this.renderSkinAsString("main");
+res.data.body = this.renderSkinAsString("main");
