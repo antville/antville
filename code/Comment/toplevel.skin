@@ -1,10 +1,9 @@
-
-<div class="commentHead">&nbsp;<br /></div>
-<div class="commentDate">
+<div class="listSeparator">&nbsp;</div>
+<div class="storyDate">
     <% comment.creator as="link"  %>, 
     <% comment.createtime format="long" %>
 </div>
-<div class="commentTitle">
+<div class="title">
     <% comment.content part="title" %>
 </div>
 <div>
