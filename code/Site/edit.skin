@@ -1,116 +1,119 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Basic Preferences</b></td>
+<td colspan="2" nowrap="nowrap"><div class="storytitle"><% response.title %></div><br />
+<b>Generic</b></td>
 </tr>
 <tr>
-<td class="small" nowrap><form method="post" action="<% response.action %>">Title:</td>
-<td nowrap><% this.title as="editor" width="30" %></td>
+<td class="small" nowrap="nowrap"><form method="post" action="<% response.action %>">Title:</td>
+<td nowrap="nowrap"><% this.title as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Tagline:</td>
-<td nowrap><% this.tagline as="editor" width="30" %></td>
+<td class="small" nowrap="nowrap">Tagline:</td>
+<td nowrap="nowrap"><% this.tagline as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Nr. of days on frontpage:</td>
-<td nowrap><% this.showdays as="editor" width="5" %></td>
+<td class="small" nowrap="nowrap">Days on frontpage:</td>
+<td nowrap="nowrap"><% this.showdays as="editor" width="5" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Language/Country:</td>
-<td nowrap><% this.localechooser %></td>
+<td class="small" nowrap="nowrap">Language:</td>
+<td nowrap="nowrap"><% this.localechooser %></td>
 </tr>
 <tr>
-<td class="small" nowrap>long dateformat:</td>
-<td nowrap><% this.longdateformat as="chooser" width="20" %></td>
+<td class="small" nowrap="nowrap">Long dateformat:</td>
+<td nowrap="nowrap"><% this.longdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>short dateformat:</td>
-<td nowrap><% this.shortdateformat as="chooser" width="20" %></td>
+<td class="small" nowrap="nowrap">Short dateformat:</td>
+<td nowrap="nowrap"><% this.shortdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>weblog is public:</td>
-<td nowrap><% this.online as="editor" %></td>
+<td class="small" nowrap="nowrap">Weblog is public:</td>
+<td nowrap="nowrap"><% this.online as="editor" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>allow comments:</td>
-<td nowrap><% this.hasdiscussions as="editor" %></td>
+<td class="small" nowrap="nowrap">Allow comments:</td>
+<td nowrap="nowrap"><% this.hasdiscussions as="editor" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap>allow contributions:</td>
-<td><% this.usermaycontrib as="editor" %><br><span class="small">Enabling this option means that every registered antville-user can create stories.</span></td>
+<td class="small" valign="top" nowrap="nowrap">Allow contributions:</td>
+<td><% this.usermaycontrib as="editor" %><br /><span class="small">Enabling this option means that every registered antville-user can create stories.</span></td>
 </tr>
 <tr>
-<td class="small" nowrap>enable archive:</td>
-<td nowrap><% this.showarchive as="editor" %></td>
+<td class="small" nowrap="nowrap">Enable archive:</td>
+<td nowrap="nowrap"><% this.showarchive as="editor" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap>eMail-address:</td>
-<td><% this.email as="editor" %><br><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
+<td class="small" valign="top" nowrap="nowrap">E-mail address:</td>
+<td><% this.email as="editor" %><br /><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap>notify updates:</td>
-<td><% this.enableping as="editor" %><br><span class="small">If this option is enabled, <a href="http://www.weblogs.com">weblogs.com</a> will be notified of any update of your weblog.</span></td>
+<td class="small" valign="top" nowrap="nowrap">Notify updates:</td>
+<td><% this.enableping as="editor" %><br /><span class="small">If this option is enabled, <a href="http://www.weblogs.com">weblogs.com</a> will be notified of any update of your weblog.</span></td>
 </tr>
 <tr>
-<td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Colors</b></td>
+<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<b>Colors</b></td>
 </tr>
 <tr>
-<td class="small" nowrap>Background:</td>
-<td nowrap><% this.bgcolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Background:</td>
+<td nowrap="nowrap"><% this.bgcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Text:</td>
-<td nowrap><% this.textcolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Title:</td>
+<td nowrap="nowrap"><% this.titlecolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Titles:</td>
-<td nowrap><% this.titlecolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Text:</td>
+<td nowrap="nowrap"><% this.textcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Links:</td>
-<td nowrap><% this.linkcolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Small text:</td>
+<td nowrap="nowrap"><% this.smallcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Active Links:</td>
-<td nowrap><% this.alinkcolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Link:</td>
+<td nowrap="nowrap"><% this.linkcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Followed Links:</td>
-<td nowrap><% this.vlinkcolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Active Link:</td>
+<td nowrap="nowrap"><% this.alinkcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Small:</td>
-<td nowrap><% this.smallcolor as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Followed Link:</td>
+<td nowrap="nowrap"><% this.vlinkcolor as="editor" width="10" %></td>
 </tr>
 <tr>
-<td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Fonts and sizes</b></td>
+<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<b>Fonts and sizes</b></td>
 </tr>
 <tr>
-<td class="small" nowrap>Textfont:</td>
-<td nowrap><% this.textfont as="editor" width="30" %></td>
+<td class="small" nowrap="nowrap">Title font:</td>
+<td nowrap="nowrap"><% this.titlefont as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Textsize:</td>
-<td nowrap><% this.textsize as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Title size:</td>
+<td nowrap="nowrap"><% this.titlesize as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Titlefont:</td>
-<td nowrap><% this.titlefont as="editor" width="30" %></td>
+<td class="small" nowrap="nowrap">Text font:</td>
+<td nowrap="nowrap"><% this.textfont as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Titlesize:</td>
-<td nowrap><% this.titlesize as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Text size:</td>
+<td nowrap="nowrap"><% this.textsize as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Smallfont:</td>
-<td nowrap><% this.smallfont as="editor" width="30" %></td>
+<td class="small" nowrap="nowrap">Small font:</td>
+<td nowrap="nowrap"><% this.smallfont as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Smallsize:</td>
-<td nowrap><% this.smallsize as="editor" width="10" %></td>
+<td class="small" nowrap="nowrap">Small size:</td>
+<td nowrap="nowrap"><% this.smallsize as="editor" width="10" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td class="small" nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><br /><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 </table>
 </form>
