@@ -8,8 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <link rel="alternate" type="text/xml" title="XML" href="rss10" />
-<script type="text/javascript" src="<% root.href %>javascript.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href %>stylesheet.css" />
+<script type="text/javascript" src="<% root.href %>main.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href %>main.css" />
 </head>
 
 <body>
