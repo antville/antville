@@ -102,7 +102,7 @@ function download_action() {
 
       // finally, write the zip file directly to response
       var data = z.close();
-      res.contentType = "application/x-zip";
+      res.contentType = "application/zip";
       res.writeBinary(data);
    } catch (err) {
       throw err;
