@@ -8,6 +8,7 @@ function evalStory() {
       this.text = req.data.text;
       this.online = req.data.online;
       this.modifytime = new Date();
+      this.weblog.lastupdate = new Date();
       res.message = "The story was updated successfully!";
       res.redirect(this.weblog.href());
    } else
@@ -41,6 +42,7 @@ function addComment() {
       c.online = 1;
       c.ipadress = req.data.http_remotehost;
       this.add(c);
+      this.weblog.lastupdate = new Date();
    }
    res.redirect(this.href());
 }
