@@ -1,2 +1,2 @@
-Logged in as <% username %><br />
+Logged in as <% username as="link" %><br />
 <% membermgr.membership prefix="You are " suffix=" of this weblog<br />" %><% membermgr.link to="edit" text="edit" prefix="...&nbsp;" suffix="&nbsp;your profile<br />" %><% membermgr.subscribelink text="subscribe to" prefix="...&nbsp;" suffix="&nbsp;this site<br />" %><% membermgr.subscriptionslink prefix="...&nbsp;Your&nbsp;" suffix="<br />" %><% membermgr.link to="logout" text="logout" prefix="...&nbsp;" %>
