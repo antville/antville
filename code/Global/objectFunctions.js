@@ -390,8 +390,8 @@ function scheduler() {
    /*
    var patch = tryEval("root.system_patch()");
    if (patch.value) {
-      app.__app__.logEvent("---------- [ANTVILLE PATCH] ----------");
-      app.__app__.logEvent("still not finished, next run in " + patch.value + " millis");
+      app.log("---------- [ANTVILLE PATCH] ----------");
+      app.log("still not finished, next run in " + patch.value + " millis");
       return (patch.value);
    }
    */
