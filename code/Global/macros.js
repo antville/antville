@@ -12,7 +12,7 @@ function now_macro(param) {
 function logo_macro(param) {
    if (!param.name)
       param.name = "smallchaos";
-   DEFAULTIMAGES.render(param.name, param);
+   DefaultImages.render(param.name, param);
    return;
 }
 
@@ -28,7 +28,7 @@ function image_macro(param) {
       return;
    if (param.name.startsWith("/")) {
       // standard images and logos are handled by constant IMAGES
-      DEFAULTIMAGES.render(param.name.substring(1), param);
+      DefaultImages.render(param.name.substring(1), param);
       return;
    }
    var result = getPoolObj(param.name, "images");

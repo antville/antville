@@ -462,7 +462,7 @@ function listReferrers_macro() {
  */
 function xmlbutton_macro(param) {
    param.linkto = this.href("rss");   
-   DEFAULTIMAGES.render("xmlbutton", param);
+   DefaultImages.render("xmlbutton", param);
 }
 
 
