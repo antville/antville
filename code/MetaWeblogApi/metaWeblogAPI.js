@@ -291,8 +291,8 @@ function newMediaObject(blogid, username, password, fileObject) {
          var alias = param.alias; 
          var file = blog.images.get(alias); 
          file.alttext = fileObject.description; 
-         ret.antville_staticUrl = file.getStaticUrl(); 
-         ret.antville_popupUrl = file.popupUrl(); 
+         ret.antville_staticUrl = file.getUrl(); 
+         ret.antville_popupUrl = file.getPopupUrl(); 
          ret.antville_width = file.width; 
          ret.antville_height = file.height; 
          ret.antville_macro = "<% image name=\"" + blog.alias + "/" + alias + "\" %>"; 
