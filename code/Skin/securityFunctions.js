@@ -5,11 +5,11 @@
  */
 
 function isDeleteDenied(usr) {
-   var membership = this.weblog.isUserMember(usr);
+   var membership = this.site.isUserMember(usr);
    if (!membership)
-      return ("You're not a member of this weblog");
+      return (getMsg("error","userNoMember"));
    else if ((membership.level & MAY_EDIT_SKINS) == 0)
-      return ("Only admins of this weblog can delete skins!");
+      return (getMsg("error","skinDeleteDenied"));
    return null;
 }
 

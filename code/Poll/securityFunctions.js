@@ -5,43 +5,43 @@
  */
 
 function isViewDenied(usr) {
-   if (this.weblog.isNotPublic(usr))
-      return ("Sorry, this weblog is not public!");
+   if (this.site.isNotPublic(usr))
+      return (getMsg("error","siteNotPublic"));
    return null;
 }
 
 
 function isVoteDenied(usr) {
-   if (this.weblog.isNotPublic(usr))
-      return ("Sorry, this weblog is not public!");
+   if (this.site.isNotPublic(usr))
+      return (getMsg("error","siteNotPublic"));
 	if (!usr)
-		return ("Please login before");
+		return (getMsg("error","loginBefore"));
    if (this.closed)
-      return("This poll is closed.");
+      return (getMsg("error","pollClosed"));
    return null;
 }
 
 
 function isPostDenied(usr) {
-   if (!this.weblog.isOnline() && !this.weblog.isUserMember(usr))
-      return ("This weblog is not public!");
-   else if (!this.weblog.hasDiscussions())
-      return ("Sorry, discussions were disabled for this weblog!");
+   if (!this.site.isOnline() && !this.site.isUserMember(usr))
+      return (getMsg("error","siteNotPublic"));
+   else if (!this.site.hasDiscussions())
+      return (getMsg("error","siteNoDiscussion"));
    return null;
 }
 
 
 function isEditDenied(usr) {
 	 if (this.votes.size() > 0)
-	 		return("Sorry, but modifying a running poll is prohibited.");
+	 		return (getMsg("error","pollEditDenied"));
    if (this.creator != usr) {
-      var membership = this.weblog.isUserMember(usr);
+      var membership = this.site.isUserMember(usr);
       if (!membership)
-         return ("You're not a member of this weblog!");
+         return (getMsg("error","userNoMember"));
       else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
-         return ("You're not allowed to edit this story!");
+         return (getMsg("error","storyEditDenied"));
       else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
-         return ("You're not allowed to edit this story!");
+         return (getMsg("error","storyEditDenied"));
    }
    return null;
 }
@@ -49,11 +49,11 @@ function isEditDenied(usr) {
 
 function isDeleteDenied(usr) {
    if (this.creator != usr) {
-      var membership = this.weblog.isUserMember(usr);
+      var membership = this.site.isUserMember(usr);
       if (!membership)
-         return ("You're not a member of this weblog!");
+         return (getMsg("error","userNoMember"));
       else if ((membership.level & MAY_DELETE_ANYSTORY) == 0)
-         return ("You cannot delete the story of somebody else!");
+         return (getMsg("error","storyDeleteDenied"));
    }
    return null;
 }
