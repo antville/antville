@@ -450,8 +450,9 @@ function getConfirm(msgName,value) {
 function buildAliasFromFile(uploadFile) {
    var rawName = uploadFile.getName().split("/");
    var name = rawName[rawName.length-1];
-   if (name.indexOf(".") > -1)
-      name = name.substring(0,name.indexOf("."));
+   var dotpos = name.lastIndexOf(".");
+   if (dotpos > 0)
+      name = name.substring(0, dotpos);
    // clean name from any invalid characters
    var invalidChars = new RegExp("[ \\/?&=\\+#дцья\\\\]");
    invalidChars.ignoreCase = true;
