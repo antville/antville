@@ -2,8 +2,32 @@
  * main action
  */
 function main_action() {
-   this.renderPollList(parseInt(req.data.start, 10), req.data.show);
-   res.data.title = "Polls of " + this._parent.title;
+   res.data.pollList = renderList(this, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
+   res.data.title = "All polls of " + this._parent.title;
+   res.data.body = this.renderSkinAsString("main");
+   this._parent.renderSkin("page");
+}
+
+/**
+ * main action
+ */
+function open_action() {
+   res.data.pollList = renderList(this.open, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this.open, this.href(req.action), 10, req.data.page);
+   res.data.title = "Open polls of " + this._parent.title;
+   res.data.body = this.renderSkinAsString("main");
+   this._parent.renderSkin("page");
+}
+
+/**
+ * main action
+ */
+function mypolls_action() {
+   var ms = this._parent.members.get(session.user.name);
+   res.data.pollList = renderList(ms.polls, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(ms.polls, this.href(req.action), 10, req.data.page);
+   res.data.title = "My polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
 }
