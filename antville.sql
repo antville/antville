@@ -20,8 +20,18 @@ create table IMAGE (
    CREATOR mediumint(9),
    MODIFYTIME datetime,
    MODIFIER mediumint(9),
-   unique ID (ID)
-);
+   primary key (ID)
+};
+
+#----------------------------
+# Indexes on table IMAGE
+#----------------------------
+
+CREATE INDEX IDX_WEBLOG_ID ON IMAGE (WEBLOG_ID);
+CREATE INDEX IDX_ALIAS ON IMAGE (ALIAS(50));
+CREATE INDEX IDX_PARENT_ID ON IMAGE (PARENT_ID);
+CREATE INDEX IDX_THUMBNAIL_ID ON IMAGE (THUMBNAIL_ID);
+CREATE INDEX IDX_CREATOR ON IMAGE (CREATOR);
 
 #----------------------------
 # records for table IMAGE
@@ -57,12 +67,16 @@ create table SKIN (
    CREATOR mediumint(9),
    CREATETIME datetime,
    MODIFYTIME datetime,
-   unique ID (ID)
+   primary key (ID)
 );
 
 #----------------------------
-# No records for table SKIN
+# Indexes on table SKIN
 #----------------------------
+
+CREATE INDEX IDX_WEBLOG_ID ON SKIN (WEBLOG_ID);
+CREATE INDEX IDX_PROTO ON SKIN (PROTO(10));
+CREATE INDEX IDX_NAME ON SKIN (NAME(30));
 
 #----------------------------
 # Table structure for USER
@@ -79,12 +93,18 @@ create table USER (
    ISBLOCKED tinyint(1),
    ISTRUSTED tinyint(1),
    ISSYSADMIN tinyint(1),
-   unique ID (ID)
+   primary key (ID)
 );
 
 #----------------------------
-# No records for table USER
+# Indexes on table USER
 #----------------------------
+
+CREATE INDEX IDX_USERNAME ON USER (USERNAME(30));
+CREATE INDEX IDX_PASSWORD ON USER (PASSWORD(30));
+CREATE INDEX IDX_ISBLOCKED ON USER (ISBLOCKED);
+CREATE INDEX IDX_ISTRUSTED ON USER (ISTRUSTED);
+CREATE INDEX IDX_ISSYSADMIN ON USER (ISSYSADMIN);
 
 #----------------------------
 # Table structure for WEBLOG
@@ -130,12 +150,16 @@ create table WEBLOG (
    CREATOR mediumint(9),
    MODIFYTIME datetime,
    MODIFIER mediumint(9),
-   unique ID (ID)
+   primary key (ID)
 );
 
 #----------------------------
-# No records for table WEBLOG
+# Indexes on table WEBLOG
 #----------------------------
+
+CREATE INDEX IDX_ALIAS ON WEBLOG (ALIAS(50));
+CREATE INDEX IDX_ISONLINE ON WEBLOG (ISONLINE);
+CREATE INDEX IDX_CREATOR ON WEBLOG (CREATOR);
 
 #----------------------------
 # Table structure for MEMBER
@@ -149,12 +173,17 @@ create table MEMBER (
    CREATETIME datetime,
    MODIFIER mediumint(9),
    MODIFYTIME datetime,
-   unique ID (ID)
+   primary key (ID)
 );
 
 #----------------------------
-# No records for table MEMBER
+# Indexes on table MEMBER
 #----------------------------
+
+CREATE INDEX IDX_WEBLOG_ID ON MEMBER (WEBLOG_ID);
+CREATE INDEX IDX_USER_ID ON MEMBER (USER_ID);
+CREATE INDEX IDX_USERNAME ON MEMBER (USERNAME(30));
+CREATE INDEX IDX_LEVEL ON MEMBER (LEVEL);
 
 #----------------------------
 # Table structure for GOODIE
@@ -172,12 +201,16 @@ create table GOODIE (
   CREATOR mediumint(9),
   MODIFYTIME datetime,
   MODIFIER mediumint(9),
-  unique ID(ID)
+  primary key (ID)
 );
 
 #----------------------------
-# No records for table GOODIE
+# Indexes on table GOODIE
 #----------------------------
+
+CREATE INDEX IDX_WEBLOG_ID ON GOODIE (WEBLOG_ID);
+CREATE INDEX IDX_ALIAS ON GOODIE (ALIAS(50));
+CREATE INDEX IDX_CREATOR ON GOODIE (CREATOR);
 
 #----------------------------
 # Table structure for ACCESS
@@ -191,8 +224,17 @@ create table ACCESS (
    IP varchar(20),
    BROWSER varchar(255),
    `DATE` datetime,
-   unique ID (ID)
+   primary key (ID)
 );
+
+#---------------------------
+# Indexes on table ACCESS
+#---------------------------
+
+create index IDX_WEBLOG_ID on ACCESS (WEBLOG_ID);
+create index IDX_STORY_ID on ACCESS (STORY_ID);
+create index IDX_DATE on ACCESS (DATE);
+create index IDX_REFERRER on ACCESS (REFERRER(30));
 
 #----------------------------
 # Table structure for TEXT
@@ -216,8 +258,21 @@ create table TEXT (
    MODIFIER mediumint(9),
    READS mediumint(9),
    IPADDRESS varchar(20),
-   unique ID (ID)
+   primary key (ID)
 );
+
+#----------------------------
+# Indexes on table TEXT
+#----------------------------
+
+CREATE INDEX IDX_WEBLOG_ID ON TEXT (WEBLOG_ID);
+CREATE INDEX IDX_TOPIC ON TEXT (TOPIC);
+CREATE INDEX IDX_DAY ON TEXT (DAY);
+CREATE INDEX IDX_PROTOTYPE ON TEXT (PROTOTYPE);
+CREATE INDEX IDX_STORY_ID ON TEXT (STORY_ID);
+CREATE INDEX IDX_PARENT_ID ON TEXT (PARENT_ID);
+CREATE INDEX IDX_ISONLINE ON TEXT (ISONLINE);
+CREATE INDEX IDX_CREATOR ON TEXT (AUTHOR);
 
 #----------------------------
 # Table structure for POLL
@@ -234,8 +289,15 @@ create table POLL (
    CLOSETIME datetime,
    CREATETIME datetime,
    MODIFYTIME datetime,
-   unique ID (ID)
+   primary key (ID)
 );
+
+#----------------------------
+# Indexes on table POLL
+#----------------------------
+
+CREATE INDEX IDX_WEBLOG_ID ON POLL (WEBLOG_ID);
+CREATE INDEX IDX_USER_ID ON POLL (USER_ID);
 
 #----------------------------
 # Table structure for CHOICE
@@ -247,8 +309,14 @@ create table CHOICE (
    TITLE varchar(255),
    CREATETIME datetime,
    MODIFYTIME datetime,
-   unique ID (ID)
+   primary key (ID)
 );
+
+#----------------------------
+# Indexes on table CHOICE
+#----------------------------
+
+CREATE INDEX IDX_POLL_ID ON CHOICE (POLL_ID);
 
 #----------------------------
 # Table structure for VOTE
@@ -262,8 +330,16 @@ create table VOTE (
    USERNAME tinytext,
    CREATETIME datetime,
    MODIFYTIME datetime,
-   unique ID (ID)
+   primary key (ID)
 );
+
+#----------------------------
+# Indexes on table VOTE
+#----------------------------
+
+CREATE INDEX IDX_POLL_ID ON VOTE (POLL_ID);
+CREATE INDEX IDX_USER_ID ON VOTE (USER_ID);
+CREATE INDEX IDX_CHOICE_ID ON VOTE (CHOICE_ID);
 
 #----------------------------
 # Table structure for SYSLOG
