@@ -1,7 +1,6 @@
 /**
  * macro rendering alias
  */
-
 function alias_macro(param) {
    if (param.as == "editor")
       Html.input(this.createInputParam("alias", param));
@@ -17,11 +16,9 @@ function alias_macro(param) {
    return;
 }
 
-
 /**
  * macro rendering description
  */
-
 function description_macro(param) {
    if (param.as == "editor")
       Html.textArea(this.createInputParam("description", param));
@@ -31,9 +28,8 @@ function description_macro(param) {
 }
 
 /**
- * macro renders the url to this file
+ * macro renders the url of this file
  */
-
 function url_macro(param) {
    return this.getUrl();
 }
@@ -41,7 +37,6 @@ function url_macro(param) {
 /**
  * macro renders a link for editing a file
  */
-
 function editlink_macro(param) {
    if (session.user) {
       try {
@@ -58,7 +53,6 @@ function editlink_macro(param) {
  * macro rendering a link to delete
  * if user is creator of this file
  */
-
 function deletelink_macro(param) {
    if (session.user) {
       try {
@@ -79,7 +73,6 @@ function deletelink_macro(param) {
 /**
  * macro rendering a link to view the file
  */
-
 function viewlink_macro(param) {
    if (session.user) {
       param.to = "getfile"
@@ -96,7 +89,6 @@ function viewlink_macro(param) {
 /**
  * macro rendering filesize
  */
-
 function filesize_macro(param) {
    res.write((this.filesize / 1000).format("###,###") + " KB");
    return;
@@ -105,17 +97,14 @@ function filesize_macro(param) {
 /**
  * macro rendering the mimetype
  */
-
 function mimetype_macro(param) {
    res.write(this.mimetype);
    return;
 }
 
-
 /**
  * macro rendering the file extension from the name
  */
-
 function filetype_macro(param) {
    var i = this.name.lastIndexOf(".");
    if (i > -1)
@@ -123,12 +112,10 @@ function filetype_macro(param) {
    return;
 }
 
-
 /**
  * macro rendering the number of requests so far
  * for a file-object
  */
-
 function clicks_macro(param) {
    if (!this.requestcnt)
       res.write(param.no ? param.no : "0 downloads");

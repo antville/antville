@@ -1,7 +1,6 @@
 /**
  * macro renders a link to reply to a comment
  */
-
 function replylink_macro(param) {
    if (this.site.preferences.getProperty("discussions") && req.action == "main") {
       Html.openLink({href: this.href("comment") +
@@ -18,7 +17,6 @@ function replylink_macro(param) {
 /**
  * macro renders the url of this comment
  */
-
 function url_macro(param) {
    res.write(this.story.href() + "#" + this._id);
    return;

@@ -1,7 +1,6 @@
 /**
  * macro rendering alias of image
  */
-
 function alias_macro(param) {
    if (param.as == "editor")
       Html.input(this.createInputParam("alias", param));
@@ -10,11 +9,9 @@ function alias_macro(param) {
    return;
 }
 
-
 /**
  * macro rendering alternate text of image
  */
-
 function alttext_macro(param) {
    if (param.as == "editor")
       Html.textArea(this.createInputParam("alttext", param));
@@ -26,7 +23,6 @@ function alttext_macro(param) {
 /**
  * macro renders the width of the image
  */
-
 function width_macro(param) {
    res.write(this.width);
    return;
@@ -35,7 +31,6 @@ function width_macro(param) {
 /**
  * macro renders the height of the image
  */
-
 function height_macro(param) {
    res.write(this.height);
    return;
@@ -44,12 +39,10 @@ function height_macro(param) {
 /**
  * macro renders the url to this image
  */
-
 function url_macro(param) {
    res.write(this.getUrl());
    return;
 }
-
 
 /**
  * render a link to image-edit
@@ -110,7 +103,6 @@ function show_macro(param) {
    Html.closeLink();
    return;
 }
-
 
 /**
  * macro renders the name of the gallery this image belongs to
