@@ -1,0 +1,19 @@
+<html>
+<head>
+<title><% response.title %></title>
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
+<% response.head %>
+</head>
+
+<body>
+
+<% root.skin name="header" %>
+
+<table width="600" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td class="storyText"><% response.body %></td>
+</tr>
+</table>
+
+</body>
+</html>
