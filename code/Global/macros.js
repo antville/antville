@@ -25,12 +25,9 @@ function logo_macro(param) {
   var logo = root.images.get(param.name);
   if (!logo)
     return;
-  var linkParam = new Object();
-  linkParam.href = root.href();
-
-  openMarkupElement("a", linkParam);
+  openLink(root.href());
   renderImage(logo, param);
-  closeMarkupElement("a");
+  closeLink();
 }
 
 
@@ -65,12 +62,10 @@ function image_macro(param) {
 
   // render image tag
   if (param.linkto) {
-    var linkparam = new Object();
-    linkparam.href = param.linkto;
+    openLink(param.linkto);
     delete(param.linkto);
-    openMarkupElement("a", linkparam);
     renderImage(imgObj, param);
-    closeMarkupElement("a");
+    closeLink();
   }
   else
     renderImage(imgObj, param);
@@ -148,11 +143,9 @@ function linkedpath_macro (param) {
   var title = "Home";
   for (var i=1; i<path.length-1; i++) {
     title = path[i].getNavigationName();
-    var linkparam = new Object();
-    linkparam.href = path[i].href();
-    openMarkupElement("a", linkparam);
+    openLink(path[i].href());
     res.write(title);
-    closeMarkupElement("a");
+    closeLink();
     res.write(separator);
   }
   title = path[path.length-1].getNavigationName();
@@ -177,11 +170,9 @@ function poll_macro(param) {
     return("[poll id " + param.id + " does not exist.]");
   var deny = poll.isVoteDenied(session.user);
   if (deny || param.as == "link") {
-    var linkparam = new Object();
-    linkparam.href = poll.href();
-    openMarkupElement("a", linkparam);
+    openLink(poll.href());
     res.write(poll.question);
-    closeMarkupElement("a");
+    closeLink();
   }
   else if (poll.closed || param.as == "results")
     poll.renderSkin("results");
