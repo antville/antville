@@ -4,6 +4,10 @@ var w3fmt = "yyyy-MM-dd'T'HH:mm:ss'+01:00'";
 
 var now = new Date();
 var param1 = new Object();
+var param2 = new Object();
+
+param2.items = "";
+param2.resources = "";
 
 var size = this.size();
 var max = req.data.max ? parseInt(req.data.max) : 25;
@@ -12,7 +16,6 @@ if (max > size)
 if (max > 50)
 	max = 50;
 
-var items = "";
 for (var i=0; i<max; i++) {
 	var weblog = this.get(i);
 	if (weblog.online) {
@@ -20,25 +23,24 @@ for (var i=0; i<max; i++) {
 		param1.itemTitle = weblog.title ? encodeXml(weblog.title) : "[untitled antville weblog]";
 		param1.authorName = encodeXml(weblog.creator.name);
 		param1.authorMail = encodeXml(weblog.creator.email);
-		param1.date = weblog.lastupdate.format(w3fmt);
+		param1.date = weblog.modifytime.format(w3fmt);
 		param1.year = now.getYear();
 		var descr = weblog.tagline ? encodeXml("<br />" + weblog.tagline) : "";
-		var date = weblog.lastupdate.format("dd.MM.yyyy, HH:mm'h'");
+		var date = weblog.modifytime.format("dd.MM.yyyy, HH:mm'h CET'");
 		param1.itemDescription = date + descr;
-		items += renderSkinAsString("rss10Item", param1);
+		param2.items += renderSkinAsString("rss10Item", param1);
+		param2.resources += renderSkinAsString("rss10Resource", param1);
 	}
 }
 
-var param2 = new Object();
 param2.title = "Antville Weblogs";
 param2.url = encodeXml(this.href());
 param2.description = "Recently updated Antville weblogs ordered by date";
 param2.year = now.getYear();
-param2.creatorName = encodeXml("Tobi Schäfer");
-param2.creatorMail = encodeXml("tobi@helma.org");
+param2.creatorName = "Antville Weblog Tool";
+param2.creatorMail = getProperty("adminEmail");
 param2.date = now.format(w3fmt);
 param2.updateBase = "2000-01-01T00:00:00Z";
-param2.language = getProperty("language");
-param2.items = items;
+param2.language = "en";
 
 renderSkin("rss10Channel", param2);
