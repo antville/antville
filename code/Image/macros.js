@@ -30,16 +30,18 @@ function alttext_macro(param) {
  */
 
 function editlink_macro(param) {
-   res.write(param.prefix)
-   var linkParam = new HopObject();
-   linkParam.linkto = "edit";
-   this.openLink(linkParam);
-   if (param.image && this.weblog.images.get(param.image))
-      this.weblog.renderImage(this.weblog.images.get(param.image),param);
-   else
-      res.write(param.text ? param.text : "edit");
-   this.closeLink();
-   res.write(param.suffix);
+   if (this.creator == user) {
+      res.write(param.prefix);
+      var linkParam = new HopObject();
+      linkParam.linkto = "edit";
+      this.openLink(linkParam);
+      if (param.image && this.weblog.images.get(param.image))
+         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      else
+         res.write(param.text ? param.text : "edit");
+      this.closeLink();
+      res.write(param.suffix);
+   }
 }
 
 /**
@@ -48,8 +50,8 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   res.write(param.prefix)
-   if (this.weblog && this.weblog.isUserAdmin) {
+   if (this.creator == user || this.weblog.isUserAdmin()) {
+      res.write(param.prefix);
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
@@ -58,8 +60,8 @@ function deletelink_macro(param) {
       else
          res.write(param.text ? param.text : "delete");
       this.closeLink();
+      res.write(param.suffix);
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -68,11 +70,53 @@ function deletelink_macro(param) {
 
 function show_macro(param) {
    res.write(param.prefix)
-   if (param.linkto) {
-      this.openLink(param);
-      this.weblog.renderImage(this,param);
-      this.closeLink(param);
+   if (param.what == "thumbnail" && this.thumbnail)
+      var img = this.thumbnail;
+   else
+      var img = this;
+   if (this.creator == user) {
+      var linkParam = new HopObject();
+      var linkParam = new HopObject();
+      linkParam.linkto = "edit";
+      this.openLink(linkParam);
+      path.weblog.renderImage(img,param);
+      this.closeLink(linkParam);
    } else
-      this.weblog.renderImage(this,param);
+      path.weblog.renderImage(img,param);
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders the name of the creator of this image
+ */
+
+function creator_macro(param) {
+   res.write(param.prefix);
+   res.write(this.creator.name);
+   res.write(param.suffix);
+}
+
+/**
+ * macro rendering createtime of image
+ */
+
+function createtime_macro(param) {
+   if (!this.createtime)
+      return;
+   res.write(param.prefix);
+   res.write(this.weblog.formatTimestamp(this.createtime,param));
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders "yes" if this image has a thumbnail
+ */
+
+function hasthumbnail_macro(param) {
+   res.write(param.prefix);
+   if (this.thumbnail)
+      res.write("yes");
+   else
+      res.write("no");
    res.write(param.suffix);
 }
