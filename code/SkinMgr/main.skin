@@ -20,6 +20,16 @@ If the user visiting your weblog is logged in, this skin will be displayed where
 If the user visiting your weblog is not logged in, this skin (containing a link to the login-page) will be displayed wherever you place the macro &lt;%&nbsp;site.loginstatus&nbsp;%&gt;.</li>
 </ul>
 
+<!-- topics and topic manager // -->
+
+<p><b>topics</b></p>
+<ul>
+<li><a name="topicmain"></a><% this.link to="edit" urlparam="proto=topic&name=main" text="topic page" %>&nbsp;<span class="small">(<% this.skinstatus proto="topic" name="main" %>)</span><br />
+Skin for customizing the look of your topic pages.</li>
+<li><a name="topicmgrmain"></a><% this.link to="edit" urlparam="proto=topicmgr&name=main" text="topic manager" %>&nbsp;<span class="small">(<% this.skinstatus proto="topicmgr" name="main" %>)</span><br />
+Defines the look of the topic manager.</li>
+</ul>
+
 <!-- story-templates // -->
 
 <p><b>stories</b></p>
@@ -32,6 +42,8 @@ This skin is used to display a story on a frontpage (either the frontpage of you
 This skin is used to display a story in the way you defined it in the &quot;display&quot;-skin plus its comments.</li>
 <li><a name="storycomment"></a><% this.link to="edit" urlparam="proto=story&name=comment" text="display on comment-page" %>&nbsp;<span class="small">(<% this.skinstatus proto="story" name="comment" %>)</span><br />
 This skin defines the page containing the form for adding a new comment.</li>
+<li><a name="storymgrmain"></a><% this.link to="edit" urlparam="proto=storymgr&name=main" text="story manager" %>&nbsp;<span class="small">(<% this.skinstatus proto="storymgr" name="main" %>)</span><br />
+This skin is responsible for the storypool aka story manager.</li>
 </ul>
 
 <!-- comment-templates // -->
@@ -68,6 +80,16 @@ This skin is used to visualize the result of a single choice.</li>
 
 <p><b>Skins for advanced administrators</b><br />
 The following list contains skins that will be used by Antville i.e. for displaying editing forms or navigation bars. Unless you want to change the design of your weblog completely there will be no need to modify these. Please do not edit the following skins unless you are really familiar with modifying skins.</p>
+
+<!-- search page // -->
+
+<p><b>search</b></p>
+<ul>
+<li><a name="sitesearchform"></a><% this.link to="edit" urlparam="proto=site&name=searchform" text="search form" %>&nbsp;<span class="small">(<% this.skinstatus proto="site" name="searchform" %>)</span><br />
+This skin is responsible for the search form of your site.</li>
+<li><a name="storysearchview"></a><% this.link to="edit" urlparam="proto=story&name=searchview" text="search results" %>&nbsp;<span class="small">(<% this.skinstatus proto="story" name="searchview" %>)</span><br />
+Skin defining the look of the search results.</li>
+</ul>
 
 <p><b>files</b></p>
 <ul>
