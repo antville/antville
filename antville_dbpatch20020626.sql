@@ -161,7 +161,7 @@ alter table POLL rename to AV_POLL;
 #----------------------------
 
 alter table SKIN
- add column  SKIN_F_USER_MODIFIER mediumint(10) null after SKIN_MODIFYTIME,
+add column  SKIN_F_USER_MODIFIER mediumint(10) null after SKIN_MODIFYTIME,
 change column ID SKIN_ID mediumint(10) not null default '0',
 change column WEBLOG_ID SKIN_F_SITE mediumint(10) null,
 change column PROTO SKIN_PROTOTYPE tinytext null,
@@ -205,6 +205,9 @@ alter table SYSLOG rename to AV_SYSLOG;
 #----------------------------
 
 alter table `TEXT`
+add column TEXT_CONTENT mediumtext null after TEXT_TEXT,
+add column TEXT_RAWCONTENT mediumtext null after TEXT_CONTENT,
+add column TEXT_HASDISCUSSIONS tinyint(1) null after TEXT_EDITABLEBY,
 change column ID TEXT_ID mediumint(10) not null default '0',
 change column WEBLOG_ID TEXT_F_SITE mediumint(10) null,
 change column `DAY` TEXT_DAY varchar(10) null,
