@@ -25,17 +25,18 @@ function loopskin_macro (param) {
 
 
 /**
- * macro creates a link by using the renderFunctions
- * openLink() and closeLink()
+ * macro creates an html link
  */
-
 function link_macro(param) {
-   this.openLink(param);
-   if (param.text)
-      res.write(param.text);
-   else
-      res.write(param.to ? param.to : param.linkto);
-   this.closeLink();
+	if (param.checkdeny == "true") {
+		if (this.isDenied(session.user))
+			return("");
+	}
+  var content = param.text ? param.text : param.to;
+  param = this.createLinkParam(param);
+  openMarkupElement("a", param);
+  res.write(content);
+  closeMarkupElement("a");
 }
 
 
@@ -46,9 +47,7 @@ function link_macro(param) {
  */
 
 function input_macro(param) {
-   var inputParam = new Object();
-   for (var i in param)
-      inputParam[i] = param[i];
+   var inputParam = param;
    if (param.type == "textarea") {
       inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
       return(this.renderInputTextarea(inputParam));
