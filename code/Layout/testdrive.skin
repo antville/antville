@@ -1,2 +1,2 @@
-[Currently testing the layout '<% this.title linkto="main" %>'.<br />
-<% this.link to="stopTestdrive" text="Click here" %> to switch back to default layout.]
+<form method="get" action="<% this.href action="stopTestdrive" %>">
+<div>Currently testing the layout '<% this.title linkto="main" %>'<br /><% input type="submit" name="stop" value="Stop testing the layout" %></div>
