@@ -2,80 +2,28 @@
  * evaluating new site
  */
 
-function evalSite(title,alias,creator) {
+function evalNewSite(title, alias, creator) {
    // check alias
    if (!alias)
-      return (getError("siteAliasMissing"));
+      throw new Exception("siteAliasMissing");
    else if (this.get(alias))
-      return (getError("siteAliasExisting"));
-   else if (!isClean(alias))
-      return (getError("siteAliasNoSpecialChars"));
+      throw new Exception("siteAliasExisting");
+   else if (!alias.isClean())
+      throw new Exception("siteAliasNoSpecialChars");
    else if (this[alias] || this[alias + "_action"])
-      return (getError("siteAliasReserved"));
+      throw new Exception("siteAliasReserved");
    // check if title is missing
    if (!title)
-      return (getError("siteTitleMissing"));
+      throw new Exception("siteTitleMissing");
    // create new site
-   var newSite = this.createNewSite(title,alias,creator);
-   if (!newSite)
-      return (getError("siteCreate"));
-   else {
-      // add a log-message
-      root.manage.syslogs.add(new syslog("site",newSite.alias,"added site",creator));
-      var result = getConfirm("siteCreate");
-      result.site = newSite;
-      return (result);
-   }
+   var newSite = new site(title, alias, creator);
+   if (!this.add(newSite))
+      throw new Exception("siteCreate");
+   newSite.members.add(new membership(creator, ADMIN));
+   root.manage.syslogs.add(new syslog("site", newSite.alias, "added site", creator));
+   return new Message("siteCreate", null, newSite);
 }
 
-
-/**
- * create a new site
- */
-
-function createNewSite(title,alias,creator) {
-   var newSite = new site();
-   newSite.title = title;
-   newSite.alias = alias;
-   newSite.creator = creator;
-   newSite.createtime = newSite.lastoffline = new Date();
-   newSite.email = creator.email;
-   newSite.online = 0;
-   newSite.discussions = 1;
-   newSite.usercontrib = 0;
-   newSite.usersignup = 1;
-   newSite.archive = 1;
-   newSite.blocked = 0;
-   newSite.trusted = creator.trusted;
-   newSite.bgcolor = "ffffff";
-   newSite.textfont = "Verdana, Helvetica, Arial, sans-serif";
-   newSite.textsize = "13px";
-   newSite.textcolor = "000000";
-   newSite.linkcolor = "ff3300";
-   newSite.alinkcolor = "ff0000";
-   newSite.vlinkcolor = "ff3300";
-   newSite.titlefont = "Verdana, Helvetica, Arial, sans-serif";
-   newSite.titlesize = "15px";
-   newSite.titlecolor = "cc0000";
-   newSite.smallfont = "Arial, Helvetica, sans-serif";
-   newSite.smallsize = "12px";
-   newSite.smallcolor = "666666";
-   newSite.days = 3;
-   // retrieve locale-object from root (either specified or default-locale from JVM)
-   var loc = this.getLocale();
-   newSite.language = loc.getLanguage();
-   newSite.country = loc.getCountry();
-   newSite.longdateformat = "EEEE, dd. MMMM yyyy, h:mm a";
-   newSite.shortdateformat = "yyyy.MM.dd, HH:mm";
-   newSite.enableping = 0;
-   newSite.createImgDirectory()
-   if (this.add(newSite)) {
-      // create membership-object for connecting user <-> site with admin-rights
-      newSite.members.addMembership(creator,ADMIN);
-      return (newSite);
-   } else
-      return null;
-}
 
 /**
  * function removes a site completely
@@ -85,10 +33,11 @@ function createNewSite(title,alias,creator) {
 
 function deleteSite(site) {
    site.deleteAll();
-   this.remove(site);
+   if (!this.remove(site))
+      throw new Exception("siteDelete", site.alias);
    // add syslog-entry
-   this.manage.syslogs.add(new syslog("site",site.alias,"removed site",session.user));
-   return (getConfirm("siteDelete",site.alias));
+   this.manage.syslogs.add(new syslog("site", site.alias, "removed site", session.user));
+   return new Message("siteDelete", site.alias);
 }
 
 /**
@@ -153,7 +102,7 @@ function getLocale() {
    if (locale)
        return locale;
    if (this.sys_language)
-      locale = new java.util.Locale(this.sys_language,this.sys_country ? this.sys_country : "");
+      locale = new java.util.Locale(this.sys_language, this.sys_country ? this.sys_country : "");
    else
       locale = java.util.Locale.getDefault();
    this.cache.locale = locale;
@@ -191,3 +140,17 @@ function getSysUrl() {
 function processHref(href) {
    return getProperty("defaulthost")+href;
 }
+
+/**
+ * function returns the (already cached) TimeZone-Object
+ */
+function getTimeZone() {
+   if (this.cache.timezone)
+       return this.cache.timezone;
+   if (this.sys_timezone)
+       this.cache.timezone = java.util.TimeZone.getTimeZone(this.sys_timezone);
+   else
+       this.cache.timezone = java.util.TimeZone.getDefault();
+   return this.cache.timezone;
+}
+
