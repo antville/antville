@@ -1,6 +1,4 @@
 res.data.title = "Antville Manager - " + req.action;
-
-
 res.data.action = this.href(req.action);
 
 if (req.data.search)
@@ -10,6 +8,7 @@ session.data.mgr.renderPageNavigation("syslogs",this.href(req.action),parseInt(r
 session.data.mgr.renderList("syslogs",null,null,parseInt(req.data.page,10));
 
 res.data.searchform = this.renderSkinAsString("syslogsearchform");
+
 res.data.body = this.renderSkinAsString("list");
 
 this.renderSkin("page");

@@ -6,8 +6,8 @@
 <% this.sysmgr_count what="comments" suffix="&nbsp;comments<br />" %>
 <% this.sysmgr_count what="images" suffix="&nbsp;images<br />" %>
 <% this.sysmgr_count what="goodies" suffix="&nbsp;goodies<br />" %></td>
-<td width=10 nowrap="nowrap"><% image name="/pixel" width=10 %></td>
-<td colspan=2 nowrap="nowrap"><table border=0 class="highlight">
+<td width="10" nowrap="nowrap"><% image name="/pixel" width="10" %></td>
+<td colspan="2" nowrap="nowrap"><table border="0" class="highlight">
    <tr>
    <td nowrap="nowrap">trusted:</td>
    <td nowrap="nowrap"><% this.sysmgr_trusted as="editor" %></td>

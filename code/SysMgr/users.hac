@@ -1,9 +1,8 @@
 res.data.title = "Antville Manager - " + req.action;
-
 res.data.action = this.href(req.action);
 
 if (req.data.search)
-   session.data.mgr.searchUsers(req.data.show,req.data.sort,req.data.order,req.data.keywords);
+   session.data.mgr.searchUsers(req.data.show, req.data.sort, req.data.order, req.data.keywords);
 else if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
 else if (req.data.submit == "save" || req.data.save) {

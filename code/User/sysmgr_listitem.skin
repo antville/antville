@@ -1,18 +1,18 @@
 <tr>
-<td colspan=4 height=1 background="<% imageurl name="/dot" %>" nowrap="nowrap"><a name="<% this.sysmgr_username %>"></a><% image name="/pixel" height="1" %></td>
+<td colspan="4" height="1" background="<% imageurl name="/dot" %>" nowrap="nowrap"><a name="<% this.sysmgr_username %>"></a><% image name="/pixel" height="1" %></td>
 </tr>
 <tr>
-<td colspan=4 nowrap="nowrap"><% this.sysmgr_statusflags %></td>
+<td colspan="4" nowrap="nowrap"><% this.sysmgr_statusflags %></td>
 </tr>
 <tr>
-<td width=390 valign="top" nowrap="nowrap"><b><% this.name suffix="<br />" %></b>
+<td width="390" valign="top" nowrap="nowrap"><b><% this.name suffix="<br />" %></b>
 <% this.email suffix="<br />" %>
 <a href="<% this.url %>"><% this.url %></a></td>
-<td width=10 nowrap="nowrap"><% image name="/pixel" width=10 %></td>
-<td width=200 valign="top" class="small" nowrap="nowrap">registered:&nbsp;<% this.sysmgr_registered format="dd.MM.yyyy HH:mm" %><br />
+<td width="10" nowrap="nowrap"><% image name="/pixel" width="10" %></td>
+<td width="200" valign="top" class="small" nowrap="nowrap">registered:&nbsp;<% this.sysmgr_registered format="dd.MM.yyyy HH:mm" %><br />
 last visit:&nbsp;<% this.sysmgr_lastvisit format="dd.MM.yyyy HH:mm" %></td>
-<td width=80 class="small" valign="top" align=right nowrap="nowrap"><% this.sysmgr_editlink prefix="...&nbsp;" %></td>
+<td width="80" class="small" valign="top" align="right" nowrap="nowrap"><% this.sysmgr_editlink prefix="...&nbsp;" %></td>
 </tr>
 <tr>
-<td colspan=4 height=5 nowrap="nowrap"><% image name=pixel height=5 %></td>
+<td colspan="4" height="5" nowrap="nowrap"><% image name="pixel" height="5" %></td>
 </tr>

@@ -1,7 +1,7 @@
-<table border=0 cellspacing=0 cellpadding=2>
+<table border="0" cellspacing="0" cellpadding="2">
 <form method="post" action="<% response.action %>">
 <tr>
-<td colspan=2 class="pageTitle" nowrap="nowrap">System Log</td>
+<td colspan="2" class="pageTitle" nowrap="nowrap">System Log</td>
 </tr>
 <tr>
 <td nowrap="nowrap">...&nbsp;show</td>

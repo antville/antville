@@ -18,7 +18,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20" rowspan=2 nowrap="nowrap">&nbsp;</td>
+<td width="20" rowspan="2" nowrap="nowrap">&nbsp;</td>
 <td width="460" valign="top" nowrap="nowrap"><br /><% response.searchform %></td>
 <td width="20" nowrap="nowrap">&nbsp;</td>
 <td width="2" background="<% imageurl name="/dot" %>" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
@@ -33,7 +33,7 @@
 </td>
 </tr>
 <tr>
-<td colspan=4 width=680 nowrap="nowrap"><% response.body %></td>
+<td colspan="4" width="680" nowrap="nowrap"><% response.body %></td>
 </tr>
 </table>
 
