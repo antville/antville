@@ -307,3 +307,13 @@ function deleteAll() {
    }
    return true;
 }
+
+/**
+ * function retrieves the level of a users membership
+ */
+function getMembershipLevel(usr) {
+   var ms = this.get(usr.name);
+   if (!ms)
+      return null;
+   return (ms.level);
+}
