@@ -76,8 +76,8 @@ function evalRegistration(param) {
          result.error = false;
          result.username = newUser.name;
          result.password = newUser.password;
-         // if user registered within a weblog, we add this weblog to favorites
-         if (path.weblog)
+         // if user registered within a public weblog, we add this weblog to favorites
+         if (path.weblog && path.weblog.isOnline())
             this.addMember(newUser);
 		} else
  			result.message = "Sorry, there is already a member with this name.";
