@@ -237,6 +237,16 @@ function online_macro(param) {
 }
 
 /**
+ * macro renders the url to this weblog
+ */
+
+function url_macro(param) {
+   res.write(param.prefix);
+   res.write(this.href());
+   res.write(param.suffix);
+}
+
+/**
  * macro rendering discussion-flag of weblog
  */
 
@@ -501,64 +511,22 @@ function age_macro(param) {
 
 
 /**
- * macro renders an image out of image-pool
- * either as plain image or as image-link
- * overrideable parameters: width,height,alttext,border
- * additional parameters: align, valign
- * with optional parameter "weblog" one can also embed an image
- * from a different weblog
+ * macro left for backwards-compatibility
+ * calls global image_macro()
  */
 
 function image_macro(param) {
-   if (!param.name)
-      return;
-   var wl = this;
-   if (param.weblog && root.get(param.weblog))
-      wl = root.get(param.weblog);
-   var img = wl.images.get(param.name);
-   if (!img)
-      return;
-   res.write(param.prefix);
-   if (param.linkto) {
-      this.openLink(param);
-      wl.renderImage(img,param);
-      this.closeLink(param);
-   } else
-      wl.renderImage(img,param);
-   res.write(param.suffix);
+   image_macro(param);
 }
 
 
 /**
- * macro renders thumbnail
- * either as plain image, as link to popup (=default) or to external url
- * overrideable parameters: width,height,alttext,border
- * additional parameters: align, valign
- * <% weblog.thumbnail name="[name]" linkto="[fullsize|popup|url]" %>
- * with optional parameter "weblog" one can also embed a thumbnail from
- * an image of a different weblog
+ * macro left for backwards-compatibility
+ * calls global thumbnail_macro()
  */
 
 function thumbnail_macro(param) {
-   if (!param.name)
-      return;
-   var wl = this;
-   if (param.weblog && root.get(param.weblog))
-      wl = root.get(param.weblog);
-   var img = wl.images.get(param.name);
-   if (!img || !img.thumbnail)
-      return;
-   res.write(param.prefix);
-   var linkParam = new Object();
-   if (param.linkto) {
-      this.openLink(param);
-   } else {
-      linkParam.linkto = img.popupUrl();
-      this.openLink(linkParam);
-   }
-   wl.renderImage(img.thumbnail,param);
-   this.closeLink(param);
-   res.write(param.suffix);
+   thumbnail_macro(param);
 }
 
 /**
