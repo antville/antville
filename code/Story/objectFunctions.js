@@ -12,21 +12,22 @@ function evalStory(param,modifier) {
    // if user deleted the text of the story, return with error-message
    if (!param.content_text)
       return (getError("textMissing"));
-
-   // check if there's a difference between old and
-   // new text of more than 50 characters:
-   var oldtext = this.getContentPart("text");
-   var majorUpdate = Math.abs(oldtext.length - param.content_text.length) > 50;
-
    // assign those properties that can be stored anyway
    var editableby = parseInt(param.editableby,10);
    this.editableby = (modifier == this.creator && !isNaN(editableby) ? editableby : null);
    this.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
    // loop through param and collect content properties
+   var majorUpdate = false;
    var cont = this.getContent();
    for (var i in param) {
-      if (i.indexOf ("content_") == 0)
-         cont[i.substring(8)] = param[i];
+      if (i.indexOf ("content_") == 0) {
+         var part = i.substring(8);
+         // check if there's a difference between old and
+         // new text of more than 50 characters:
+         if (!majorUpdate)
+            majorUpdate = Math.abs(cont[part].length - param[i].length) > 50;
+         cont[part] = param[i];
+      }
    }
    this.setContent (cont);
    // let's keep the title property
