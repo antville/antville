@@ -206,7 +206,15 @@ function renderTextPreview(limit) {
    var text = createSkin(format(this.text));
    text = stripTags(this.renderSkinAsString(text));
    var limit = Math.min(limit,text.length);
-   while (limit < text.length && text.charAt(limit) != " ")
-      limit++;
-   res.write(text.substring(0,limit));
+   var charCnt = 0;
+   for (var i=0;i<text.length;i++) {
+      charCnt = (text.charAt(i) == " " ? 0 : charCnt+1);
+      if (charCnt > 20) {
+         res.write("<wbr>");
+         charCnt = 0;
+      }
+      if (i >= limit && text.charAt(i) == " ")
+         break;
+      res.write(text.charAt(i));
+   }
 }
