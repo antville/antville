@@ -98,3 +98,45 @@ function deleteWeblog(weblog) {
    result.message = "The weblog " + weblog.alias + " was removed successfully!";
    return (result);
 }
+
+/**
+ *  search one or more weblogs
+ */
+function searchWeblogs (query) {
+
+    // reuse search result container if it already exists
+    var folder = user.cache["globalsearch-"+query];
+    if (!folder) {
+        folder = new Array();
+        user.cache["globalsearch-"+query] = folder;
+    }
+
+    // break up search string
+    var unquote = new RegExp("\'");
+    unquote.global = true;
+    var qarr = query.replace(unquote, "''").split(" ");
+
+    // construct query
+    var where = "select TEXT.ID from TEXT, WEBLOG where "+
+                "TEXT.WEBLOG_ID = WEBLOG.ID and "+
+                "TEXT.ISONLINE > 0 and WEBLOG.ISONLINE > 0 and ";
+    for (var i in qarr) {
+        where += "(TEXT.TITLE like '%"+qarr[i].toLowerCase()+
+                 "%' or TEXT.TEXT like '%"+qarr[i].toLowerCase()+"%') "
+        if (i < qarr.length-1)
+            where += "and ";
+    }
+    where += "order by TEXT.CREATETIME desc";
+    writeln (where);
+    var dbcon = getDBConnection ("antville");
+    var dbres = dbcon.executeRetrieval(where);
+    if (dbres) {
+       while (dbres.next()) {
+          var sid = dbres.getColumnItem (1).toString();
+          folder[folder.length] = sid;
+          var s = this.storiesByID.get(sid);
+          res.body += sid+"  "+s+"<br>";
+       }
+    }
+    dbres.release();
+}
