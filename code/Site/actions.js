@@ -33,7 +33,7 @@ function edit_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Preferences of " + this.title;
    res.data.body = this.renderSkinAsString("edit");
@@ -55,7 +55,7 @@ function delete_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Delete weblog: " + this.title;
    var sp = new Object();
@@ -89,10 +89,10 @@ function safescripts_action() {
 /**
  * wrapper to make style.skin public
  */
-
 function stylesheet_action() {
    res.dependsOn(this.modifytime);
-   res.dependsOn(app.skinfiles["site"]["style"]);
+   res.dependsOn(res.handlers.layout.modifytime);
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "style"));
    res.digest();
    res.contentType = "text/css";
    this.renderSkin("style");
@@ -106,7 +106,8 @@ function stylesheet_action() {
 
 function javascript_action() {
    res.dependsOn(this.modifytime);
-   res.dependsOn(app.skinfiles["site"]["javascript"]);
+   res.dependsOn(res.handlers.layout.modifytime);
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "javascript"));
    res.digest();
    res.contentType = "text/javascript";
    this.renderSkin("javascript");
@@ -142,30 +143,36 @@ function rss_action() {
    res.contentType = "text/xml";
    res.dependsOn(this.lastupdate);
    res.digest();
-   
+
    var now = new Date();
-   var systitle = root.getSysTitle();
+   var systitle = root.getTitle();
    var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
    sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
-   
-   if (req.data.show == "all") {
-      var collection = this.allcontent;
-   } else if (req.data.show == "day") {
-      var collection = this.get(req.data.day);
-   } else if (req.data.show == "topic") {
-      var collection = this.topics.get(req.data.topic);
-   } else {
-      var collection = this.allstories;
+
+   var collection;
+   switch (req.data.show) {
+      case "all" :
+         collection = this.allcontent;
+         break;
+      case "day" :
+         collection = this.get(req.data.day);
+         break;
+      case "topic" :
+         collection = this.topics.get(req.data.topic);
+         break;
+      default :
+         collection = this.allstories;
    }
    var size = (collection != null) ? collection.size() : 0;
+
    var max = req.data.max ? parseInt(req.data.max) : 7;
    max = Math.min(max, size);
    max = Math.min(max, 10);
-   
+
    var param = new Object();
    if (max > 0 && this.online) {
-      var items = "";
-      var resources = "";
+      var items = new java.lang.StringBuffer();
+      var resources = new java.lang.StringBuffer();
       collection.prefetchChildren(0, max);
       for (var i=0; i<max; i++) {
          var story = collection.get(i);
@@ -188,10 +195,10 @@ function rss_action() {
          param.date = sdf.format(story.createtime);
          param.subject = story.topic ? story.topic : "";
          param.year = story.createtime.getYear();
-         items += story.renderSkinAsString("rssItem", param);
-         resources += story.renderSkinAsString("rssResource", param);
+         items.append(story.renderSkinAsString("rssItem", param));
+         resources.append(story.renderSkinAsString("rssResource", param));
       }
-      
+
       param = new Object();
       param.url = this.href();
       param.title = systitle;
@@ -202,8 +209,8 @@ function rss_action() {
          param.email = this.creator.email.entitize();
       param.year = now.getYear();
       param.lastupdate = max > 0 ? sdf.format(this.lastUpdate): sdf.format(this.createtime);
-      param.items = items;
-      param.resources = resources;
+      param.items = items.toString();
+      param.resources = resources.toString();
       this.renderSkin("rss", param);
    }
 }
@@ -218,7 +225,7 @@ function getfile_action() {
    if (f) {
       f.requestcnt++;
       res.contentType = f.mimetype;
-      res.redirect(getProperty("fileUrl") + this.alias + "/" + f.name);
+      res.redirect(f.getUrl());
    } else {
       res.message = getMessage("error.fileNotFound", req.data.name);
       res.redirect(this.href());
@@ -250,7 +257,7 @@ function search_action() {
    res.data.action = this.href(req.action);
    res.data.title = "Search " + this.title;
    res.data.body = this.renderSkinAsString("searchform");
-   
+
    if (req.data.q) {
       var query = stripTags(req.data.q);
       // array with sites to search
@@ -262,7 +269,7 @@ function search_action() {
       else {
          var start = 0;
          var end = found;
-   
+
          if (found == 1)
             res.data.body += getMessage("confirm.resultOne", query);
          else if (found <= 10)
@@ -276,14 +283,14 @@ function search_action() {
             res.data.body += getMessage("confirm.resultMany", [encodeForm(query), found]);
             res.data.body += " " + getMessage("confirm.resultDisplay", [start+1, end]);
          }
-   
+
          res.data.body += "<br />";
-         
+
          // note: I'm doing this without a "searchbody" skin, since
          // I think there's not much need to customize the body of
          // search results, esp. since its parts are fully customizable.
          // of course, I may be wrong about that.
-         
+
          // render prev links, if necessary
          if (start > 0) {
             var sp = new Object();
@@ -291,7 +298,7 @@ function search_action() {
             sp.text = "previous results";
             res.data.body += "<br /><br />" + renderSkinAsString("prevpagelink", sp);
          }
-         
+
          // render result
          for (var i=start; i<end; i++) {
             var site = root.get(result[i].sitealias);
@@ -299,7 +306,7 @@ function search_action() {
             if (item)
                res.data.body += item.renderSkinAsString("searchview");
          }
-   
+
          // render next links, if necessary
          if (end < found) {
             var sp = new Object();
@@ -337,7 +344,7 @@ function unsubscribe_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.title = this.title;
    var sp = new Object();
    sp.what = "your subscription to <b>" + this.title + "</b>";
