@@ -152,5 +152,11 @@ li { padding-bottom:3px;
 .offlineStory { background-color:#CCCCCC;
               }
 
+.pollResultsBar {
+	height: 5px;
+	margin-right: 10px;
+	background-color: #ff3300;
+	font-size: 0px;
+}
 // -->
 </style>
