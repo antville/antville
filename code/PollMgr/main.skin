@@ -4,11 +4,10 @@
 </tr>
 <tr>
 <td rowspan="2" valign="top" nowrap="nowrap">...&nbsp;show&nbsp;</td>
-<td nowrap="nowrap"><% this.link to="main" text="all polls" %><% this.link to="main" text="open polls" urlparam="show=open" prefix="&nbsp;|&nbsp;" %><% this.link to="main" urlparam="?show=mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %></td>
+<td nowrap="nowrap"><% this.link to="main" text="all polls" %><% this.link to="main" text="open polls" urlparam="show=open" prefix="&nbsp;|&nbsp;" %><% this.link to="main" urlparam="show=mypolls" text="my polls" prefix="&nbsp;|&nbsp;" checkdeny="true" %></td>
 </tr>
 </table>
 
 <% response.prevpage %>
 <% this.pollList %>
 <% response.nextpage %>
-
