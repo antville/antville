@@ -85,19 +85,19 @@ function subscriptionlist_macro(param) {
 }
 
 /**
- * macro renders the weblogs the user is a member of or has subscribed to
+ * macro renders the sites the user is a member of or has subscribed to
  * in order of their last update-timestamp
  */
 
-function webloglist_macro(param) {
+function sitelist_macro(param) {
    if (!this.size())
       res.writeln("-----");
    else {
       var l = session.user.list();
       l.sort(this.sortSubscriptions);
       for (var i in l) {
-         var wl = l[i].weblog;
-         wl.renderSkin("preview");
+         var s = l[i].site;
+         s.renderSkin("preview");
       }
    }
 }
