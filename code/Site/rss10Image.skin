@@ -1,0 +1,5 @@
+  <image rdf:about="<% param.image %>">
+    <title><% param.imgTitle %></title>
+    <url><% param.imgUrl %></url>
+    <link><% param.url %></link>
+  </image>
