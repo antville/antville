@@ -1,27 +1,26 @@
-<table border="0" cellspacing="0" cellpadding="2">
+<div class="pageTitle">Site Manager</div>
+
 <form method="post" action="<% response.action %>">
+<table cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" class="pageTitle" nowrap="nowrap">Site-Manager</td>
+<td>...&nbsp;show</td>
+<td><% sysmgr.dropdown name="show" values="all sites,public sites,private sites,blocked sites,trusted sites" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">...&nbsp;show</td>
-<td nowrap="nowrap"><% sysmgr.dropdown name="show" values="all sites,public sites,private sites,blocked sites,trusted sites" %></td>
-</tr>
-<tr>
-<td nowrap="nowrap">...&nbsp;sorted by</td>
-<td nowrap="nowrap"><% sysmgr.dropdown name="sort" values="last update,create time,alias,title" %></td>
+<td>...&nbsp;sorted by</td>
+<td><% sysmgr.dropdown name="sort" values="last update,create time,alias,title" %></td>
 </tr>
 <tr>
 <td>...&nbsp;order</td>
-<td nowrap="nowrap"><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
+<td><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>
-<td nowrap="nowrap"><% input name="keywords" %></td>
+<td><% input name="keywords" %></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
 <td><% input type="submit" name="search" value="show sites" %></td>
 </tr>
-</form>
 </table>
+</form>
