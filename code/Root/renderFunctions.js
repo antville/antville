@@ -7,7 +7,7 @@
  */
 function renderSitelist(limit, show, scroll) {
    if (show && show == "all")
-      var collection = root.public;
+      var collection = root.publicSites;
    else
       var collection = root;
    
@@ -29,6 +29,7 @@ function renderSitelist(limit, show, scroll) {
 
    var cnt = 0;
    var buf = new java.lang.StringBuffer();
+   collection.prefetchChildren(idx, limit);
    while (cnt < limit && idx < size) {
       var w = collection.get(idx++);
       if (!w.blocked && w.online) {

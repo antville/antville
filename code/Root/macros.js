@@ -28,7 +28,7 @@ function sitecounter_macro(param) {
    if (param.count == "all")
       var size = root.size();
    else
-      var size = this.public.size();
+      var size = this.publicSites.size();
    if (size == 0)
       res.write(param.no ? param.no : size);
    else if (size == 1)
