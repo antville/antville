@@ -10,7 +10,7 @@
 </tr>
 <tr>
 <td><fieldset><legend class="small">Options</legend>
-<p><% story.addtofront as="editor" checked="checked" %>&nbsp;Display this story on the front page</p>
+<p><% story.addtofront as="editor" checked="checked" %>&nbsp;Show this story on the front page</p>
 
 Add this story to a topic<br />
 <table style="margin-left:15px;">
