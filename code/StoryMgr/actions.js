@@ -2,8 +2,30 @@
  * main action
  */
 function main_action() {
-   this.renderStorylist(parseInt(req.data.start, 10), req.data.show);
-   res.data.title = "Stories of " + this._parent.title;
+   res.data.storylist = renderList(this, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
+   res.data.title = "Online stories of " + this._parent.title;
+   res.data.body = this.renderSkinAsString("main");
+   this._parent.renderSkin("page");
+}
+
+function offline_action() {
+   res.data.storylist = renderList(this.offline, this.renderManagerView, 10, req.data.start);
+   res.data.pagenavigation = renderPageNavigation(this.offline, this.href(req.action), 10, req.data.page);
+   res.data.title = "Online stories of " + this._parent.title;
+   res.data.body = this.renderSkinAsString("main");
+   this._parent.renderSkin("page");
+}
+
+/**
+ * list all stories of a user inside the site the
+ * membership belongs to
+ */
+function mystories_action() {
+   var ms = this._parent.members.get(session.user.name);
+   res.data.storylist = renderList(ms.stories, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(ms.stories, this.href(req.action), 10, req.data.page);
+   res.data.title = "My stories in " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
 }
