@@ -1,4 +1,4 @@
-<p>This is Antville, a small Weblog-application build with <% link to="http://helma.org" text="Helma" %>. Within Antville you can easily create your own weblog and modify it to your own needs. Beside the normal weblog-functions Antville in it's current version provides:</p>
+<p>This is Antville, a small Weblog-application built with <% link to="http://helma.org" text="Helma" %>. Within Antville you can easily create your own weblog and modify it to your own needs. Beside the normal weblog-functions Antville in it's current version provides:</p>
 <ul>
 <li>a tool for easy administration/manipulation of images (including automatic creation of thumbnails linked to a popup-window containing the fullsize-image)</li>
 <li>a powerful set of macros (which are kind of special tags you can embed in layout-snippets and stories, i.e. to embed an image in a story or to place a link).</li>
