@@ -7,9 +7,9 @@ function title_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "main";
-			linkParam.urlparam = "#"+this.__id__;
+			linkParam.urlparam = "#"+this._id;
       this.story.openLink(linkParam);
       if (this.title)
          res.write(this.title);
@@ -50,7 +50,7 @@ function text_macro(param) {
 function author_macro(param) {
    res.write(param.prefix)
    if (param.as == "link" && this.author.url) {
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.to = this.author.url;
       this.openLink(linkParam);
       res.write(this.author.name);
@@ -88,9 +88,9 @@ function modifytime_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (this.weblog.hasDiscussions() && this.author == user && path[path.length-1] != this) {
+   if (!this.isEditDenied() && path[path.length-1] != this) {
       res.write(param.prefix)
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       if (param.image && this.weblog.images.get(param.image))
@@ -111,7 +111,7 @@ function deletelink_macro(param) {
    if (this.weblog.hasDiscussions()) {
       if (this.weblog.isUserAdmin() && path[path.length-1] != this) {
          res.write(param.prefix)
-         var linkParam = new HopObject();
+         var linkParam = new Object();
          linkParam.linkto = "delete";
          this.openLink(linkParam);
          if (param.image && this.weblog.images.get(param.image))
@@ -131,7 +131,7 @@ function deletelink_macro(param) {
 function replylink_macro(param) {
    if (this.weblog.hasDiscussions() && !user.isBlocked() && path[path.length-1] != this) {
       res.write(param.prefix)
-      var linkParam = new HopObject();
+      var linkParam = new Object();
       linkParam.linkto = "reply";
       this.openLink(linkParam);
       if (!param.image)
@@ -152,7 +152,7 @@ function replies_macro(param) {
       if (this.count()) {
          res.write(param.prefix)
          for (var i=0;i<this.size();i++) {
-            res.write("<a name=\""+this.get(i).__id__+"\"></a>");
+            res.write("<a name=\""+this.get(i)._id+"\"></a>");
             this.get(i).renderSkin("reply");
 				 }
          res.write(param.suffix);
