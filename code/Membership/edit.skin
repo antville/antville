@@ -6,7 +6,7 @@
 <td nowrap="nowrap"><% membership.username %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">E-mail:</td>
+<td class="small" nowrap="nowrap">e-mail:</td>
 <td nowrap="nowrap"><% membership.email %></td>
 </tr>
 <tr>

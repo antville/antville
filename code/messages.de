@@ -32,10 +32,10 @@ error.imageDirNoExist = Das Verzeichnis für Bilder existiert nicht oder es ist s
 error.accountBlocked = Dein Konto wurde gesperrt!
 error.loginTypo = Anmeldung fehlgeschlagen! Hast Du Dich vertippt?
 // FIXME
-error.emailMissing = Bitte trag' Deine eMail-Adresse ein!
-error.emailInvalid = Die eMail-Adresse, die Du angegeben hast, ist ungültig!
-error.emailNoAccounts = Keine Konten zu dieser eMail-Adresse gefunden!
-error.emailSend = Beim Versuch, die eMail abzuschicken ist ein Fehler aufgetreten!
+error.emailMissing = Bitte trag' Deine e-mail-Adresse ein!
+error.emailInvalid = Die e-mail-Adresse, die Du angegeben hast, ist ungültig!
+error.emailNoAccounts = Keine Konten zu dieser e-mail-Adresse gefunden!
+error.emailSend = Beim Versuch, die e-mail abzuschicken ist ein Fehler aufgetreten!
 error.passwordTwice = Bitte gib das Passwort zweimal ein!
 error.passwordNoMatch = Die beiden Passwörter haben nicht übereingestimmt! Bitte versuch es noch einmal.
 error.unameMissing = Wähle einen Usernamen aus!
@@ -80,7 +80,7 @@ error.storyDelete = Konnte die Story nicht löschen!
 // FIXME
 error.accountModifyOwn = Du kannst dein eigenes Konto nicht bearbeiten!
 error.adminDeleteLast = Dieses System braucht mindestens einen Administrator!
-error.systemEmailMissing = Du musst eine eMail-Adresse für das System auswählen!
+error.systemEmailMissing = Du musst eine e-mail-Adresse für das System auswählen!
 // FIXME
 error.memberNoRole = Bitte wähle eine neue Berechtigungs-Stufe für dieses Mitglied!
 error.searchUserNoKey = Bitte gib ein Stichwort ein, nach dem gesucht werden soll!
@@ -109,7 +109,7 @@ confirm.update = Die Änderungen wurden erfolgreich gespeichert!
 confirm.delete = Deine Auswahl wurde erfolgreich gelöscht!
 confirm.fileCreate= Die Datei <% param.value1 %> wurde erfolgreich gespeichert!
 confirm.fileDelete = Die Datei wurde erfolgreich gelöscht!
-confirm.mailSendPassword = Eine eMail mit den Passwörtern deiner Konten wurde erfolgreicht verschickt!
+confirm.mailSendPassword = Eine e-mail mit den Passwörtern deiner Konten wurde erfolgreicht verschickt!
 confirm.memberCreate = <% param.value1 %> ist jetzt Mitglied dieses Weblogs!
 confirm.memberDelete = Mitgliedschaft erfolgreich gelöscht!
 confirm.pollUpdate = Die Änderungen an der Umfrage wurden erfolgreich gespeichert!

@@ -3,7 +3,7 @@
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">E-mail:</td>
+<td class="small" nowrap="nowrap">e-mail:</td>
 <td nowrap="nowrap"><% input type="text" name="email" %></td>
 </tr>
 <tr>

@@ -13,11 +13,11 @@
 <td nowrap="nowrap"><% input type="password" name="password2" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">E-mail:</td>
+<td class="small" valign="top" nowrap="nowrap">e-mail:</td>
 <td><% input type="text" name="email" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">E-mail is visible:</td>
+<td class="small" valign="top" nowrap="nowrap">e-mail is visible:</td>
 <td><span class="small"><% input type="checkbox" name="publishemail" %><br />If you select this checkbox your e-mail address will be visible to weblog administrators.</span></td>
 </tr>
 <tr>
