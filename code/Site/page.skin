@@ -46,7 +46,6 @@
 
 <div class="statusdark">...&nbsp;<% site.link to="main" text="home" %><br />
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
-...&nbsp;<% site.link to="polls" text="polls" %><br />
 <% this.navigation for="contributors" %>
 <% this.navigation for="admins" %><br />
 <% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
