@@ -74,7 +74,7 @@ function createNewWeblog(title,alias,creator) {
    newLog.createImgDirectory()
    if (this.add(newLog)) {
       // create member-object for connecting user <-> weblog with admin-rights
-      newLog.createMember(creator,2);
+      newLog.members.addMember(creator,getAdminLvl());
       return (newLog);
    } else
       return null;
