@@ -617,6 +617,7 @@ function searchbox_macro(param) {
    this.renderSkin("searchbox");
 }
 
+
 /**
  * function renders the months of the archive
  */
@@ -625,16 +626,24 @@ function monthlist_macro(param) {
       return;
    var currMonth;
    var prevMonth;
-   for (var i=0;i<this.size();i++) {
+   var size = param.limit ? Math.min(this.size(),param.limit) : this.size();
+   for (var i=0;i<size;i++) {
       currMonth = this.get(i).groupname.substring(0,6);
-      if (currMonth < prevMonth || i == this.size()-1) {
+      if (currMonth < prevMonth || i == size-1) {
          res.write(param.itemprefix);
          openLink(this.get(i).href());
-         res.writeln(parseTimestamp(currMonth,"yyyyMM").format(param.format ? param.format : "MMMM yyyy"));
+         res.write(parseTimestamp(currMonth,"yyyyMM").format(param.format ? param.format : "MMMM yyyy"));
          closeLink();
          res.write(param.itemsuffix);
       }
       prevMonth = currMonth;
    }
    return;
+}
+
+/**
+ * wrapper-macro for topiclist
+ */
+function topiclist_macro(param) {
+   this.topics.topiclist_macro(param);
 }
