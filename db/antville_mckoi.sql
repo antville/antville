@@ -82,7 +82,7 @@ create table AV_IMAGE (
    IMAGE_FILEEXT varchar(128),
    IMAGE_WIDTH int(4),
    IMAGE_HEIGHT int(4),
-   IMAGE_ALTTEXT varchar(128),
+   IMAGE_ALTTEXT text,
    IMAGE_FILESIZE int(10),
    IMAGE_CREATETIME timestamp,
    IMAGE_F_USER_CREATOR int(10),

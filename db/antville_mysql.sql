@@ -95,7 +95,7 @@ create table AV_IMAGE (
    IMAGE_FILEEXT tinytext,
    IMAGE_WIDTH mediumint(4),
    IMAGE_HEIGHT mediumint(4),
-   IMAGE_ALTTEXT tinytext,
+   IMAGE_ALTTEXT mediumtext,
    IMAGE_FILESIZE mediumint(10),
    IMAGE_CREATETIME datetime,
    IMAGE_F_USER_CREATOR mediumint(10),
