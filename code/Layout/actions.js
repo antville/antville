@@ -80,7 +80,7 @@ function delete_action() {
  * create a .zip file containing the whole layout (including
  * skins, images and properties)
  */
-function download_action() {
+function download_zip_action() {
    if (this.parent) {
       res.message = new DenyException("layoutExport", this.title);
       res.redirect(this.href());
