@@ -154,6 +154,23 @@ function displayColor(obj) {
 
 function setCurrentColor(select) {
   currentColor = select.options[select.selectedIndex].value;
+  var col = colors[currentColor];
+  if (col.indexOf("#") == 0)
+     col = col.substring(1);
+  for (var i=12; i>=0; i--) {
+     for (var j=0; j<brightness[i].length; j++) {
+        if (brightness[i][j] == col) {
+           var c = document.getElementById("color"+j);
+           var b = document.getElementById("bright"+i);
+           updatePalette(b, i);
+           displayColorset(c, j);
+           setMarquee2(b);
+           setMarquee(c);
+           displayColor(c);
+           return;
+        }
+     }
+  }
   setMarquee({});
   setMarquee2({});
 }
@@ -166,6 +183,7 @@ function setDropdownColor() {
          break;
       }
    }
+   setCurrentColor(select);
 }
 
 function updatePalette(obj, p) {
