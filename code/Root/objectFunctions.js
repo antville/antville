@@ -13,15 +13,16 @@ function evalWeblog(title,alias,creator) {
    } else if (!isClean(alias)) {
       result.message = "Please don't use any special characters in the alias!";
       result.error = true;
+   } else {
+      // check if alias is similar to an action-name (which is reserved)
+      var reserved = eval("this." + alias + "_action");
+      if (reserved) {
+         result.message = "Sorry, this alias is reserved!";
+         result.error = true;
+      }
    }
    if (!title) {
       result.message = "Please choose a title for your weblog!";
-      result.error = true;
-   }
-   // check if alias is similar to an action-name (which is reserved)
-   var reserved = eval("this." + alias + "_action");
-   if (reserved) {
-      result.message = "Sorry, this alias is reserved!";
       result.error = true;
    }
    if (!result.error) {
