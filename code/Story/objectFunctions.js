@@ -4,10 +4,13 @@
 
 function evalStory() {
    if (req.data.text) {
+      if (user == this.author && req.data.editableby != null && req.data.editableby != "")
+         this.editableby = parseInt(req.data.editableby,10);
       this.title = req.data.title;
       this.text = req.data.text;
-      this.online = req.data.online;
+      this.online = parseInt(req.data.online,10);
       this.modifytime = new Date();
+      this.modifier = user;
       this.weblog.lastupdate = new Date();
       res.message = "The story was updated successfully!";
       res.redirect(this.weblog.href());
@@ -31,7 +34,7 @@ function isOnline() {
  */
 
 function addComment() {
-   if (user.uid && !user.isBlocked()) {
+   if (user.uid && !user.isBlocked() && req.data.submit != "cancel") {
       var c = new comment();
       c.title = req.data.title;
       c.text = req.data.text;
