@@ -18,5 +18,5 @@ if (!user.uid) {
       var newLog = this.evalNewWeblog();
    
    res.body = this.renderSkinAsString("header");
-   res.body += this.renderSkinAsString("new",newLog);
-}   
+   res.body += newLog.renderSkinAsString("new");
+}
