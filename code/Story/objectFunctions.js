@@ -179,7 +179,7 @@ function getRenderedContentPart (name) {
    var partLastRendered = this.cache["lastRendered_"+name];
    if (partLastRendered <= this.modifytime ||
        partLastRendered <= this.cache.modifytime) {
-      // enable caching; some macros (eg. poll, shortcut, storylist)
+      // enable caching; some macros (eg. poll, storylist)
       // will set this to false to prevent caching of a contentpart
       // containing them [rg]
       req.data.cachePart = true;

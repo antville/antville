@@ -315,22 +315,6 @@ function input_macro(param) {
 
 
 /**
- * function renders a shortcut
- */
-function shortcut_macro(param) {
-   // disable caching of any contentPart containing this macro
-   req.data.cachePart = false;
-   if (param && param.name) {
-      var sc = res.handlers.site.shortcuts.get(param.name);
-      if (sc)
-         sc.renderContent(param.text);
-      else
-         return(param.name);
-   }
-}
-
-
-/**
  * function renders a list of stories either contained
  * in a topic or from the story collection.
  * param.sortby determines the sort criteria
