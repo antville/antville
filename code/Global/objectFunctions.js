@@ -214,51 +214,6 @@ function getPoolObj(objName,pool) {
 }
 
 /**
- * function builds an array containing
- * default dateformat-patterns
- */
-
-function getDefaultDateFormats(version) {
-   var patterns = new Array();
-   if (version == "short") {
-      patterns[0] = "dd.MM.yyyy, HH:mm";
-      patterns[1] = "dd.MM.yyyy, h:mm a";
-      patterns[2] = "yyyy.MM.dd, HH:mm";
-      patterns[3] = "yyyy.MM.dd, h:mm a";
-      patterns[4] = "MM.dd, HH:mm";
-      patterns[5] = "MM.dd, h:mm a";
-      patterns[6] = "dd.MM, HH:mm";
-      patterns[7] = "dd.MM, h:mm a";
-      patterns[8] = "d.M, HH:m";
-      patterns[9] = "d.M, h:m a";
-      patterns[10] = "HH:mm";
-      patterns[11] = "h:mm a";
-      patterns[12] = "EEEE, HH:mm";
-      patterns[13] = "EEEE, h:mm a";
-      patterns[14] = "EE, HH:mm";
-      patterns[15] = "EE, h:mm a";
-   } else {
-      patterns[0] = "EEEE, dd. MMMM yyyy, HH:mm";
-      patterns[1] = "EEEE, dd. MMMM yyyy, h:mm a";
-      patterns[2] = "EEEE, MMMM dd yyyy, h:mm a";
-      patterns[3] = "EE, dd. MMM. yyyy, HH:mm";
-      patterns[4] = "EE, dd. MMM. yyyy, h:mm a";
-      patterns[5] = "EE, MMM dd yyyy, h:mm a";
-      patterns[6] = "EE, dd.MM.yyyy, HH:mm";
-      patterns[7] = "EE, dd.MM.yyyy, h:mm a";
-      patterns[8] = "EE, MM.dd.yyyy, h:mm a";
-      patterns[9] = "dd.MM.yyyy, HH:mm";
-      patterns[10] = "MM.dd.yyyy, h:mm a";
-      patterns[11] = "yyyy.MM.dd, HH:mm";
-      patterns[12] = "yyyy.MM.dd, h:mm a";
-      patterns[13] = "dd.MM, HH:mm";
-      patterns[14] = "MM.dd, h:mm a";
-   }
-   return (patterns);
-}
-
-
-/**
  * This is a simple logger that creates a DB entry for 
  * each request that contains an HTTP referrer.
  * due to performance-reasons this is not written directly
