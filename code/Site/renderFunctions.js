@@ -11,7 +11,7 @@ function renderCalendarDay(currGroupname,text) {
       linkit = false;
       for (var i=0;i<currGroup.size();i++) {
          var st = currGroup.get(i);
-         if (st.isOnline()) {
+         if (this.isStoryOnline(st)) {
             linkit = true;
             break;
          }
