@@ -202,7 +202,7 @@ shortcutmgr.skin.main = response.action
 
 // S I T E
 
-site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, lastupdate, linkcolor, membercounter, monthlist, navigation, smallcolor, smallfont, smallsize, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topicl
+site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, lastupdate, linkcolor, membercounter, monthlist, navigation, smallcolor, smallfont, smallsize, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist
 
 ist, url, vlinkcolor, xmlbutton
 
