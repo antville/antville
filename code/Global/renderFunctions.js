@@ -66,7 +66,7 @@ function renderMarkupPart(name, attr) {
     delete attr.as;
     // creating the attribute string
     for (var i in attr) {
-      if (!attr[i])
+      if (attr[i] == null)
         continue;
       res.write(" " + i + "=\"" + attr[i] + "\"");
   	}
