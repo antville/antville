@@ -44,7 +44,7 @@ else {
    param2.creatorName = param1.authorName;
    param2.creatorMail = param1.authorMail;
    param2.date = param1.date;
-   if (max < 1) {
+   if (this.online) {
       param1.itemTitle = "Welcome to " + encodeXml(this.title) + "!";
       param1.itemDescription = "This weblog doesn't contain any stories, yet";
    }
