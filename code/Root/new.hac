@@ -1,10 +1,8 @@
 checkIfLoggedIn(this.href(req.action));
 
-if (root.sys_limitNewSites == 2 && !isUserSysAdmin ()) {
-   res.message = getMsg("error","siteCreateOnlyAdmins");
-   res.redirect(root.href());
-} else if (root.sys_limitNewSites == 1 && !(isUserSysAdmin () || isUserTrusted ())) {
-   res.message = getMsg("error","siteCreateNotAllowed");
+var result = this.isAddSiteDenied(session.user);
+if (result) {
+   res.message = result.message;
    res.redirect(root.href());
 }
 
