@@ -72,8 +72,8 @@ function deletePost(appkey, postid, username, password, publish) {
    // check if user is allowed to delete the story
    if (story.isDeleteDenied(user,story.site.members.getMembershipLevel(user)))
       throwError ("You're not allowed to delete the story with id " + postid);
-   var result = story._parent.deleteStory(s);
-   return(result.error);
+   var result = story._parent.deleteStory(story);
+   return (!result.error);
 }
 
 
