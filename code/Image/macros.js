@@ -3,12 +3,12 @@
  */
 
 function alias_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alias",param));
    else
       res.write(this.alias);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -17,12 +17,12 @@ function alias_macro(param) {
  */
 
 function alttext_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alttext",param));
    else
       res.write(this.alttext);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -30,7 +30,7 @@ function alttext_macro(param) {
  */
 
 function editlink_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    var linkParam = new HopObject();
    linkParam.linkto = "edit";
    this.openLink(linkParam);
@@ -39,7 +39,7 @@ function editlink_macro(param) {
    else
       this.renderImage(param);
    this.closeLink();
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -48,7 +48,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (this.weblog && this.weblog.isUserAdmin) {
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
@@ -59,7 +59,7 @@ function deletelink_macro(param) {
          this.renderImage(param);
       this.closeLink();
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -67,12 +67,12 @@ function deletelink_macro(param) {
  */
 
 function show_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.linkto) {
       this.openLink(param);
       this.weblog.renderImage(this,param);
       this.closeLink(param);
    } else
       this.weblog.renderImage(this,param);
-   renderSuffix(param);
+   res.write(param.suffix);
 }

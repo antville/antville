@@ -3,9 +3,9 @@
  */
 
 function name_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.name);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -13,12 +13,12 @@ function name_macro(param) {
  */
 
 function password_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputPassword(this.createInputParam("password",param));
    else
       res.write(this.password);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -27,12 +27,12 @@ function password_macro(param) {
  */
 
 function url_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("url",param));
    else
       res.write(this.url);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -41,12 +41,12 @@ function url_macro(param) {
  */
 
 function email_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("email",param));
    else
       res.write(this.email);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -54,11 +54,11 @@ function email_macro(param) {
  */
 
 function description_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("description",param));
    else
       res.write(this.description);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 

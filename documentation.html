@@ -237,6 +237,13 @@ If the weblog contains stories, this macro loops over them and calls the skin "p
 This macro renders a calendar. It uses the following skins: calendar (the main skin), calendarday (a skin used for rendering a day in the calendar), calendarselday (used for highlighting the selected day), calendarweek (used for displaying a week of the month).<br>
 <blockquote><pre>&lt;% weblog.calendar %&gt;</pre></blockquote></p>
 
+<p><b>weblog.history</b><br>
+This macro renders a chronological list of most recently modified stories and comments. It will render for each listitem the corresponding "historyview" skin. The default number of 5 displayed items can be overridden by passing the argument "show" to this macro.<br>
+<blockquote><pre>&lt;% weblog.history  [prefix="String"]
+               [suffix="String"]
+               [show="integer"]
+%&gt;</pre></blockquote></p>
+
 <p><b>weblog.age</b><br>
 This macro calculates the age of the weblog, but only if a birthdate was specified in the preferences. If a format-pattern is given, it displays the formatted birthdate, if the special parameter show="days" is given, it calculates the age of the weblog in days.<br>
 <blockquote><pre>&lt;% weblog.age  [prefix="String"]
@@ -268,7 +275,7 @@ Displays the title of the story<br>
 <blockquote><pre>&lt;% story.title [prefix="String"]
                [suffix="String"]
                [linkto="ext.URL or action-name title should link to"]
-               [as="editor"]
+               [as="editor" || as="link"]
                   [width="integer"]
                   [style="classname defined in stylesheet"]
 %&gt;</pre></blockquote></p> 
@@ -372,7 +379,7 @@ This macro looks for an image in the image-pool of the weblog with the given nam
 Displays the title of the comment<br>
 <blockquote><pre>&lt;% comment.title  [prefix="String"]
                   [suffix="String"]
-                  [as="editor"]
+                  [as="editor" || as="link"]
                      [width="integer"]
                      [style="classname defined in stylesheet"]
 %&gt;</pre></blockquote></p> 

@@ -3,11 +3,11 @@
  */
 
 function images_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    for (var i=0;i<this.size();i++) {
       this.get(i).renderSkin("preview");
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -16,6 +16,6 @@ function images_macro(param) {
  */
 
 function imageeditor_macro(param) {
-   renderPrefix(param);
-   renderSuffix(param);
+   res.write(param.prefix)
+   res.write(param.suffix);
 }

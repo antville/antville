@@ -3,14 +3,14 @@
  */
 
 function username_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.linkto) {
       this.openLink(param);
       res.write(this.username);
       this.closeLink();
    } else
       res.write(this.username);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -18,9 +18,9 @@ function username_macro(param) {
  */
 
 function createtime_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -28,9 +28,9 @@ function createtime_macro(param) {
  */
 
 function email_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.user.email);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -38,14 +38,14 @@ function email_macro(param) {
  */
 
 function userlevel_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (this.isAdmin())
       res.write("Admin");
    else if (this.isContributor())
       res.write("Contributor");
    else
       res.write("User");
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -53,12 +53,12 @@ function userlevel_macro(param) {
  */
 
 function admin_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("admin",param));
    else
       res.write(parseInt(this.admin,10) ? "yes" : "no");
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -66,11 +66,11 @@ function admin_macro(param) {
  */
 
 function contributor_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("contributor",param));
    else
       res.write(parseInt(this.contributor,10) ? "yes" : "no");
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 

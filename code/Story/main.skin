@@ -6,7 +6,11 @@
 <span class="storyText"><% story.text suffix="<br>&nbsp;<BR>" %></span></p>
 <% this.comments %>
 <span class="storyNav"><% this.commentform %></span></td>
-<td width="200" align="right" valign="top" nowrap><% weblog.calendar %></td>
+<td width="200" align="right" valign="top" nowrap>
+<% weblog.calendar %>
+<br>
+<% weblog.skin name="history" %>
+</td>
 </tr>
 </table>
 

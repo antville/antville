@@ -12,6 +12,7 @@ function evalNewStory() {
       newStory.online = parseInt(req.data.online) ? parseInt(req.data.online) : 0;
       newStory.author = user;
       newStory.createtime = new Date();
+      newStory.modifytime = new Date();
       newStory.day = newStory.createtime.format("yyyyMMdd");
       this.add(newStory);
       this.lastupdate = newStory.createtime;

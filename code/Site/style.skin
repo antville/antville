@@ -154,5 +154,23 @@ a:active { color: #<% this.alinkcolor %>;
                   background-color: #999999;
                 }
 
+.history { background-color: #CCCCCC;
+            border-style: solid;
+            border-color: black;
+            border-width: 1px;
+          }
+
+.historyStory { font-family: <% this.textfont %>;
+             font-size: <% this.textsize %>;
+             color: <% this.textcolor %>;
+             font-weight: bold;
+           }
+						
+.historyComment { font-family: <% this.textfont %>;
+             font-size: <% this.textsize %>;
+             color: <% this.textcolor %>;
+             font-weight: normal;
+           }							
+
 // -->
 </style>

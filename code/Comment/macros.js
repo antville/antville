@@ -3,12 +3,19 @@
  */
 
 function title_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
-   else
+   else if (param.as == "link") {
+      var linkParam = new HopObject();
+      linkParam.linkto = "main";
+			linkParam.urlparam = "#"+this.__id__;
+      this.story.openLink(linkParam);
       res.write(this.title);
-   renderSuffix(param);
+      this.story.closeLink();   
+   } else 
+      res.write(this.title);
+   res.write(param.suffix);
 }
 
 /**
@@ -16,14 +23,20 @@ function title_macro(param) {
  */
 
 function text_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
-      var text = createSkin(format(this.text));
-      this.renderSkin(text);
+     var text = createSkin(format(this.text));
+     if (!param.limit) {
+       this.renderSkin(text);
+		 } else {
+			 var text = stripTags(this.renderSkinAsString(text));
+			 var limit = (param.limit > text.length) ? text.length : param.limit;
+       res.write(text.substring(0,limit)); // stripping all HTML tags
+		 }
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -32,7 +45,7 @@ function text_macro(param) {
  */
 
 function author_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (this.author.url) {
       var linkParam = new HopObject();
       linkParam.to = this.author.url;
@@ -41,7 +54,7 @@ function author_macro(param) {
       this.closeLink();
    } else
       res.write(this.author.name);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -49,9 +62,9 @@ function author_macro(param) {
  */
 
 function createtime_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -60,9 +73,9 @@ function createtime_macro(param) {
 
 function modifytime_macro(param) {
    if (this.modifytime) {
-      renderPrefix(param);
+      res.write(param.prefix)
       res.write(this.weblog.formatTimestamp(this.modifytime,param));
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -73,7 +86,7 @@ function modifytime_macro(param) {
 
 function editlink_macro(param) {
    if (this.weblog.hasDiscussions() && this.author == user && path[path.length-1] != this) {
-      renderPrefix(param);
+      res.write(param.prefix)
       var linkParam = new HopObject();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
@@ -82,7 +95,7 @@ function editlink_macro(param) {
       else
          this.renderImage(param);
       this.closeLink();
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -94,7 +107,7 @@ function editlink_macro(param) {
 function deletelink_macro(param) {
    if (this.weblog.hasDiscussions()) {
       if (this.weblog.isUserAdmin() && path[path.length-1] != this) {
-         renderPrefix(param);
+         res.write(param.prefix)
          var linkParam = new HopObject();
          linkParam.linkto = "delete";
          this.openLink(linkParam);
@@ -104,7 +117,7 @@ function deletelink_macro(param) {
             this.renderImage(param);
          this.closeLink();
       }
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -114,7 +127,7 @@ function deletelink_macro(param) {
 
 function replylink_macro(param) {
    if (this.weblog.hasDiscussions() && !user.isBlocked() && path[path.length-1] != this) {
-      renderPrefix(param);
+      res.write(param.prefix)
       var linkParam = new HopObject();
       linkParam.linkto = "reply";
       this.openLink(linkParam);
@@ -123,7 +136,7 @@ function replylink_macro(param) {
       else
          this.renderImage(param);
       this.closeLink();
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -135,10 +148,12 @@ function replies_macro(param) {
    if (this.weblog.hasDiscussions()) {
       this.filter();
       if (this.count()) {
-         renderPrefix(param);
-         for (var i=0;i<this.size();i++)
+         res.write(param.prefix)
+         for (var i=0;i<this.size();i++) {
+            res.write("<a name=\""+this.get(i).__id__+"\"></a>");
             this.get(i).renderSkin("reply");
-         renderSuffix(param);
+				 }
+         res.write(param.suffix);
       }
    }
 }

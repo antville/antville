@@ -3,11 +3,11 @@
  */
 
 function skin_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("skin",param));
    else
       res.write(this.skin);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 

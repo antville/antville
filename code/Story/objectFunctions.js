@@ -38,6 +38,7 @@ function addComment() {
       c.weblog = this.weblog;
       c.story = this;
       c.createtime = new Date();
+      c.modifytime = new Date();
       c.author = user;
       c.online = 1;
       c.ipadress = req.data.http_remotehost;

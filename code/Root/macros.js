@@ -17,12 +17,12 @@ function loginstatus_macro(param) {
 
 function webloglist_macro(param) {
    if (this.size()) {
-      renderPrefix(param);
+      res.write(param.prefix)
       for (var i=0;i<(this.size() > 10 ? 10 : this.size());i++) {
          if (this.get(i).isOnline() && this.get(i).lastupdate)
             this.get(i).renderSkin("preview");
       }
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -31,7 +31,7 @@ function webloglist_macro(param) {
  */
 
 function weblogcounter_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.size());
-   renderSuffix(param);
+   res.write(param.suffix);
 }

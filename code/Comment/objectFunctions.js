@@ -1,4 +1,15 @@
 /**
+ * function returns true/false whether story is online or not
+ */
+
+function isOnline() {
+   if (parseInt(this.online,10))
+      return true;
+   return false;
+}
+
+
+/**
  * function evaluates changes to posting
  */
 
@@ -24,8 +35,10 @@ function addComment() {
       r.title = req.data.title;
       r.author = user;
       r.createtime = new Date();
+      r.modifytime = new Date();
       r.weblog = this.weblog;
       r.story = this.story;
+      r.online = 1;
       r.parent = this;
       this.add(r);
       this.weblog.lastupdate = new Date();

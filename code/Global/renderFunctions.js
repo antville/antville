@@ -1,22 +1,3 @@
-/**
- * renders prefix if it's given
- */
-
-function renderPrefix(param) {
-   if (param.prefix)
-      res.write(param.prefix);
-   return;
-}
-
-/**
- * renders sufffix if it's given
- */
-
-function renderSuffix(param) {
-   if (param.suffix)
-      res.write(param.suffix);
-   return;
-}
 
 /**
  * returns name of action file the user has called

@@ -7,9 +7,9 @@
 
 function skin_macro(param) {
    if (param.name) {
-      renderPrefix(param);
+      res.write(param.prefix)
       this.renderSkin(param.name);
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -20,14 +20,14 @@ function skin_macro(param) {
  */
 
 function link_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    this.openLink(param);
    if (param.text)
       res.write(param.text);
    else
       res.write(param.to ? param.to : param.linkto);
    this.closeLink();
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -38,7 +38,7 @@ function link_macro(param) {
  */
 
 function input_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.type == "textarea") {
       var inputParam = new HopObject();
       for (var i in param)
@@ -59,7 +59,7 @@ function input_macro(param) {
       inputParam.value = param.name ? req.data[param.name] : null;
       this.renderInputText(inputParam);
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 

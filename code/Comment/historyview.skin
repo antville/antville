@@ -1,0 +1,4 @@
+<tr><td class="historyComment"><% this.title as="link" %> <br>
+<% this.text limit=20 %><br>
+<small>by <% this.author %> @ <% this.modifytime format="dd.MM.'&nbsp;'h:mm a" %></small>
+</td></tr>

@@ -3,12 +3,18 @@
  */
 
 function title_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
-   else
+   else if (param.as == "link") {
+      var linkParam = new HopObject();
+      linkParam.linkto = "main";
+      this.openLink(linkParam);
       res.write(this.title);
-   renderSuffix(param);
+      this.closeLink();
+   } else
+      res.write(this.title);
+   res.write(param.suffix);
 }
 
 /**
@@ -16,14 +22,20 @@ function title_macro(param) {
  */
 
 function text_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
-      var text = createSkin(format(this.text));
-      this.renderSkin(text);
+     var text = createSkin(format(this.text));
+     if (!param.limit) {
+       this.renderSkin(text);
+		 } else {
+			 var text = stripTags(this.renderSkinAsString(text));
+			 var limit = (param.limit > text.length) ? text.length : param.limit;
+       res.write(text.substring(0,limit)); // stripping all HTML tags
+		 }
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -31,12 +43,12 @@ function text_macro(param) {
  */
 
 function online_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputCheckbox(this.createInputParam("online",param));
    else
       res.write(parseInt(this.online,10) ? "yes" : "no");
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -44,9 +56,9 @@ function online_macro(param) {
  */
 
 function createtime_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -55,9 +67,9 @@ function createtime_macro(param) {
 
 function modifytime_macro(param) {
    if (this.modifytime) {
-      renderPrefix(param);
+      res.write(param.prefix)
       res.write(this.weblog.formatTimestamp(this.modifytime,param));
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -66,9 +78,9 @@ function modifytime_macro(param) {
  */
 
 function author_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    res.write(this.author.name);
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -77,7 +89,7 @@ function author_macro(param) {
  */
 
 function editlink_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (this.author == user) {
       var linkParam = new HopObject();
       linkParam.linkto = "edit";
@@ -88,7 +100,7 @@ function editlink_macro(param) {
          this.renderImage(param);
       this.closeLink();
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 /**
@@ -97,7 +109,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (this.author == user) {
       var linkParam = new HopObject();
       linkParam.linkto = "delete";
@@ -108,7 +120,7 @@ function deletelink_macro(param) {
          this.renderImage(param);
       this.closeLink();
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -118,9 +130,9 @@ function deletelink_macro(param) {
 
 function commentlink_macro(param) {
    if (path[path.length-1] != this && this.weblog.hasDiscussions()) {
-      renderPrefix(param);
+      res.write(param.prefix)
       this.renderSkin(param.useskin ? param.useskin : "commentlink");
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -133,7 +145,7 @@ function commentlink_macro(param) {
 
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      renderPrefix(param);
+      res.write(param.prefix)
       this.filter();
       if (this.count() == 0) {
          res.write(this.count() + (param.no ? param.no : " threads"));
@@ -142,7 +154,7 @@ function commentcounter_macro(param) {
       } else if (this.count() > 1) {
          res.write(this.count() + (param.more ? param.more : " threads"));
       }
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -152,11 +164,12 @@ function commentcounter_macro(param) {
 
 function comments_macro(param) {
    if (this.weblog.hasDiscussions() && this.count()) {
-      renderPrefix(param);
+      res.write(param.prefix)
       for (var i=0;i<this.size();i++) {
+         res.write("<a name=\""+this.get(i).__id__+"\"></a>");
          this.get(i).renderSkin("toplevel");
       }
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -167,13 +180,13 @@ function comments_macro(param) {
 
 function commentform_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      renderPrefix(param);
+      res.write(param.prefix)
       if (user.uid && !user.isBlocked()) {
          var c = new comment();
          c.renderSkin("edit");
       } else if (!user.isBlocked())
          res.write("<A HREF=\"" + this.weblog.members.href("login") + "\">Login to add your comment</A>");
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }
 
@@ -186,13 +199,13 @@ function commentform_macro(param) {
 
 function image_macro(param) {
    if (param && param.name && this.weblog.images.get(param.name)) {
-      renderPrefix(param);
+      res.write(param.prefix)
       if (param.linkto) {
          this.openLink(param);
          this.weblog.renderImage(this.weblog.images.get(param.name),param);
          this.closeLink(param);
       } else
          this.weblog.renderImage(this.weblog.images.get(param.name),param);
-      renderSuffix(param);
+      res.write(param.suffix);
    }
 }

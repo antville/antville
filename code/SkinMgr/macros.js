@@ -3,7 +3,7 @@
  */
 
 function skins_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    for (var i in app.skinfiles) {
       res.write("<b>" + i + "</b>");
       for (var j in app.skinfiles[i]) {
@@ -14,7 +14,7 @@ function skins_macro(param) {
       }
       res.write("<br>");
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
 
@@ -23,7 +23,7 @@ function skins_macro(param) {
  */
 
 function skineditor_macro(param) {
-   renderPrefix(param);
+   res.write(param.prefix)
    if (req.data.proto && req.data.name) {
       // user wants to edit a skin, so we try to get it:
       var currProto = this.__parent__.skinmanager.get(req.data.proto);
@@ -37,6 +37,6 @@ function skineditor_macro(param) {
          newSkin.renderSkin("edit");
       }
    }
-   renderSuffix(param);
+   res.write(param.suffix);
 }
 
