@@ -100,7 +100,7 @@ function getCategoryList(blogid, username, password) {
  */
 function getPostCategories(postid, username, password) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the story with id " + postid);
    var level = entry.site.members.getMembershipLevel(usr);
@@ -137,7 +137,7 @@ function getPostCategories(postid, username, password) {
  */
 function setPostCategories(postid, username, password, categories) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the story with id " + postid);
    var level = entry.site.members.getMembershipLevel(usr);
@@ -211,7 +211,7 @@ function getTrackbackPings() {
  */
 function publishPost(postid, username, password) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the story with id " + postid);
    try {

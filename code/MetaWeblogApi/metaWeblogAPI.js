@@ -30,7 +30,7 @@
  */
 function getPost(postid, username, password) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the story with id " + postid);
    // check if user is allowed to edit this story
@@ -121,7 +121,7 @@ function newPost(blogid, username, password, content, publish) {
  */
 function editPost(postid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the story with id " + postid);
    // check if user is allowed to edit the story

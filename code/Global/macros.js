@@ -505,26 +505,28 @@ function fakemail_macro(param) {
  * can be overriden using param.skin
  */
 function randomize_macro(param) {
-   if (!param)
-      var param = new Object();
-   if (!param.what || param.what == "sites") {
-      var rnd = Math.floor(Math.random() * root.publicSites.size());
-      var obj = root.publicSites.get(rnd);
-   } else {
-      if (param.site) {
-         var parent = root.get(param.site);
-         if (!parent.online)
-            return;
-      } else
-         var parent = root;
-      if (param.what == "stories")
-         var coll = param.site ? parent.allstories : parent.storiesByID;
-      else if (param.what == "images")
-         var coll = parent.images;
-      else
+   var site, obj;
+   if (param.site) {
+      var site = root.get(param.site);
+      if (!site.online)
          return;
-      var rnd = Math.floor(Math.random() * coll.size());
-      var obj = coll.get(rnd);
+   } else {
+      var max = root.publicSites.size();
+      while (!site || site.online < 1)
+         site = root.publicSites.get(Math.floor(Math.random() * max));
+   }
+   var coll;
+   switch (param.what) {
+      case "stories":
+         obj = site.stories.get(Math.floor(Math.random() * site.allstories.size()));
+         break;
+      case "images":
+         obj = site.images.get(Math.floor(Math.random() * site.images.size()));
+         break;
+      case "sites":
+      default:
+         obj = site;
+         break;
    }
    obj.renderSkin(param.skin ? param.skin : "embed");
    return;

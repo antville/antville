@@ -21,7 +21,7 @@
  */
 function getPost(appkey, postid, username, password) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the entry with id " + postid);
    try {
@@ -87,7 +87,7 @@ function newPost(appkey, blogid, username, password, content, publish) {
  */
 function editPost(appkey, postid, username, password, content, publish) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the entry with id " + postid);
    // check if user is allowed to edit the entry
@@ -174,7 +174,7 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
  */
 function deletePost(appkey, postid, username, password, publish) {
    var usr = root.blogger.getUser(username, password);
-   var entry = root.storiesByID.get(postid.toString());
+   var entry = Story.getById(postid);
    if (!entry)
       throw("Couldn't find the entry with id " + postid);
    // check if user is allowed to delete the entry
