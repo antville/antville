@@ -500,6 +500,7 @@ function history_macro(param) {
       param.show = 5;
    var cnt = 0;
    var i = 0;
+   this.lastmod.prefetchChildren(0, parseInt(param.show, 10));
    while (cnt < param.show && this.lastmod.get(i)) {
       var item = this.lastmod.get(i++);
       if (!item.story || (item.story.online && item.story.discussions && item.site.discussions)) {
