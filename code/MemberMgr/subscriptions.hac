@@ -1,7 +1,9 @@
 checkIfLoggedIn(this.href(req.action));
 
-var parent = setLayout();
+var parent = getParent();
 
 res.data.title = path.weblog ? path.weblog.title : "Antville";
 
-res.data.body = user.renderSkinAsString("subscriptions");
+res.data.body = session.user.renderSkinAsString("subscriptions");
+
+parent.renderSkin("page");
