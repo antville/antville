@@ -99,7 +99,7 @@ function sysmgr_trusted_macro(param) {
    if (param.as == "editor") {
       var options = new Array("no","yes");
       var selectedIndex = parseInt(this.trusted,10);
-      res.write(simpleDropDownBox("trusted",options,selectedIndex));
+      renderDropDownBox("trusted",options,selectedIndex);
    } else
       res.write(this.isTrusted() ? "yes" : "no");
 }
@@ -115,7 +115,7 @@ function sysmgr_blocked_macro(param) {
    if (param.as == "editor") {
       var options = new Array("no","yes");
       var selectedIndex = parseInt(this.blocked,10);
-      res.write(simpleDropDownBox("blocked",options,selectedIndex));
+      renderDropDownBox("blocked",options,selectedIndex);
    } else
       res.write(this.isBlocked() ? "yes" : "no");
 }
@@ -131,7 +131,7 @@ function sysmgr_sysadmin_macro(param) {
    if (param.as == "editor") {
       var options = new Array("no","yes");
       var selectedIndex = parseInt(this.sysadmin,10);
-      res.write(simpleDropDownBox("sysadmin",options,selectedIndex));
+      renderDropDownBox("sysadmin",options,selectedIndex);
    } else
       res.write(this.isSysAdmin() ? "yes" : "no");
 }
