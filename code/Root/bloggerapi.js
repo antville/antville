@@ -60,7 +60,7 @@ function checkAccessPermission (blogid, postid, username, password) {
         throwError ("User "+username+" does not exist on this server");
     if (user.password != password)
         throwError ("Authentication failed for user "+username);
-    if (isUserBlocked())
+    if (user.isBlocked())
         throwError ("Sorry, you can't post to this weblog");
     if (!blogid && !postid)
         throwError ("Invalide blog or post id: "+blogid);
