@@ -1,10 +1,10 @@
 <div class="reply">
-  <div class="commentHead">&nbsp;</div>
-  <div class="commentDate">
+  <div class="listSeparator">&nbsp;</div>
+  <div class="storyDate">
   <% comment.creator as="link" %>, 
   <% comment.createtime format="long" %>
   </div>
-  <div class="commentTitle"><% comment.content part="title" %></div>
+  <div class="title"><% comment.content part="title" %></div>
   <div><% comment.content part="text" %></div>
   <p class="small">
    <% comment.link text="link" prefix="...&nbsp;" %>&nbsp;&nbsp;
