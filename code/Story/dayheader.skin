@@ -1,0 +1,1 @@
+<div class="small"><b><% story.createtime format="EEEE, d. MMMM yyyy" %></b></div>
