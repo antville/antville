@@ -1,0 +1,1 @@
+<p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.</span>

@@ -228,3 +228,9 @@ function state_macro(param) {
 		return(param.text + this.weblog.formatTimestamp(this.modifytime, param));
 	}
 }
+
+
+function createInfo_macro(param) {
+	if (this.creator)
+		return(this.renderSkinAsString("createInfo"));
+}

@@ -14,7 +14,7 @@
 
 <tr>
 <td nowrap><br><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="add choice" %>&nbsp;<% this.input type="button" value="cancel" %>
-<p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.</span></td>
+<% this.creatorInfo %></td>
 </tr>
 </table>
 </form>
