@@ -4,6 +4,9 @@ if (!this.isEditAllowed())
 res.skin = "main";
 res.title = "Antville - " + this.weblog.title;
 
+if (req.data.submit == "cancel")
+   res.redirect(this.story.href());
+
 if (req.data.text)
    this.updateComment();
 
