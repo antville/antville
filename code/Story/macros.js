@@ -48,7 +48,7 @@ function text_macro(param) {
 function online_macro(param) {
    res.write(param.prefix);
    if (param.as == "editor") {
-      var options = new Array("no","just in topic","yes");
+      var options = new Array("offline","online in topic","online in weblog");
       res.write(simpleDropDownBox("online",options,this.online));
    } else {
       if (!this.isOnline())
@@ -242,16 +242,17 @@ function commentlink_macro(param) {
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       res.write(param.prefix);
+      var commentCnt = this.allcomments.count();
       var linkParam = new Object();
       linkParam.linkto = (param.linkto ? param.linkto : "main");
-      if (this.allcomments.count() == 0) {
-         res.write(this.allcomments.count() + " " + (param.no ? param.no : " comments"));
+      if (commentCnt == 0) {
+         res.write(commentCnt + " " + (param.no ? param.no : " comments"));
       } else {
          this.openLink(linkParam);
-         if (this.allcomments.count() == 1)
-            res.write(this.allcomments.count() + " " + (param.one ? param.one : " comments"));
-         else if (this.allcomments.count() > 1)
-            res.write(this.allcomments.count() + " " + (param.more ? param.more : " comments"));
+         if (commentCnt == 1)
+            res.write(commentCnt + " " + (param.one ? param.one : " comment"));
+         else
+            res.write(commentCnt + " " + (param.more ? param.more : " comments"));
          this.closeLink();
       }
       res.write(param.suffix);
@@ -267,7 +268,7 @@ function comments_macro(param) {
       res.write(param.prefix);
       for (var i=0;i<this.size();i++) {
          res.write("<a name=\"" + this.get(i)._id + "\"></a>");
-         this.get(i).renderSkin("toplevel");
+         this.get(i).renderSkin(param.useskin ? param.useskin : "toplevel");
       }
       res.write(param.suffix);
    }
@@ -323,7 +324,6 @@ function editableby_macro(param) {
       res.write(param.prefix);
       ddParam = new HopObject();
       ddParam.name = "editableby";
-      // ddParam.add(this.createDDOption("Admins",2,(this.editableby == 2 ? true : false)));
       ddParam.add(this.createDDOption("-----","",false));
       ddParam.add(this.createDDOption("Contributors",1,(this.editableby == 1 ? true : false)));
       ddParam.add(this.createDDOption("Members and Contributors",0,(this.editableby == 0 ? true : false)));
@@ -337,4 +337,25 @@ function editableby_macro(param) {
       else
          res.write("Admins of " + this.weblog.title);
    }
+}
+
+/**
+ * macro renders a list of existing topics as dropdown
+ */
+
+function topicchooser_macro(param) {
+   res.write(param.prefix);
+   var size = path.weblog.space.size();
+   var options = new Array();
+   options[0] = "-- choose topic --";
+   for (var i=0;i<size;i++) {
+      var topic = path.weblog.space.get(i);
+      if (topic.size()) {
+         options[i+1] = topic.groupname;
+         if (this.topic == topic.groupname)
+            var selectedIndex = i+1;
+      }
+   }
+   res.write(simpleDropDownBox("topic",options,selectedIndex));
+   res.write(param.suffix);
 }
