@@ -2,13 +2,13 @@
  * check if user is allowed to edit this goodie
  */
 
-function isEditDenied() {
-   if (!user.uid) {
-      user.cache.referer = this.href("edit");
+function isEditDenied(usr) {
+   if (!usr.uid) {
+      usr.cache.referer = this.href("edit");
       return ("Please login first!");
-   } else if (user.isBlocked())
+   } else if (usr.isBlocked())
       return ("Sorry, your account was disabled!");
-   else if (this.creator != user && !this.weblog.isUserAdmin())
+   else if (this.creator != usr && !this.weblog.isUserAdmin(usr))
       return ("Sorry, this goodie belongs to someone else!");
    return null;
 }
@@ -18,10 +18,10 @@ function isEditDenied() {
  * check if user is allowed to delete this goodie
  */
 
-function isDeleteDenied() {
-   if (user.isBlocked())
+function isDeleteDenied(usr) {
+   if (usr.isBlocked())
       return ("Sorry, your account was disabled!");
-   else if (this.creator != user && !this.weblog.isUserAdmin())
+   else if (this.creator != usr && !this.weblog.isUserAdmin(usr))
       return ("Sorry, this goodie belongs to someone else!");
    return null;
 }
