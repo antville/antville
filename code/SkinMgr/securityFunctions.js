@@ -6,7 +6,7 @@
  */
 
 function isDenied(usr,level) {
-   if ((level & MAY_EDIT_SKINS) == 0)
+   if ((level & MAY_EDIT_SKINS) == 0 && !session.user.sysadmin)
       return "skinEditDenied";
    return null;
 }
