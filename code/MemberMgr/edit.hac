@@ -11,7 +11,7 @@ else if (req.data.submit == "save" || req.data.save) {
       res.redirect(parent.href());
 }
 
-res.data.title = "Your profile";
+res.data.title = "Profile of user " + session.user.name;
 
 res.data.body = session.user.renderSkinAsString("edit");
 
