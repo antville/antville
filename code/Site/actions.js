@@ -30,3 +30,12 @@ function javascript_action() {
    else 
       res.notModified();
 }
+
+
+/**
+ * redirect requests for rss092 to rss10
+ */
+
+function rss092_action() {
+   res.redirect(this.href("rss10"));
+}
