@@ -1,8 +1,11 @@
 <form method="get" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
+<td class="small">Name:</td>
+<td rowspan="6">&nbsp;</td>
+<td><% file.alias %></td>
+</tr>
 <td class="small">Size:</td>
-<td rowspan="5">&nbsp;</td>
 <td><% file.filesize %></td>
 </tr>
 <tr>
