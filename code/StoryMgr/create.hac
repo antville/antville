@@ -9,6 +9,7 @@ if (deny) {
 
 var s = new story();
 s.topic = req.data.topic;
+s.text = req.data.text;
 
 // storing referrer in user-cache in case user clicks cancel later
 if (!user.cache.referrer && req.data.http_referer)
