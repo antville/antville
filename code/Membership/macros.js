@@ -20,11 +20,15 @@ function email_macro(param) {
 }
 
 /**
- * macro renders URL (if existing)
+ * macro renders a member's url as text or link
  */
 function url_macro(param) {
-   if (this.user.url)
+   if (!this.user.url)
+      return;
+   if (param.as == "link")
       Html.link({href: this.user.url}, this.user.url);
+   else
+      res.write(this.user.url);
    return;
 }
 
