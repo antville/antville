@@ -1,52 +1,63 @@
 /**
+ * constructor function for image objects
+ */
+function constructor(site, creator) {
+   this.site = site;
+   this.creator = creator;
+   this.createtime = new Date();
+}
+
+
+/**
  * save image as file on local disk
  * but before check if image should be resized
  * @param Node uploaded image
  * @return Boolean true in any case ...
  */
-
-function saveImg(rawimage) {
+function save(rawimage, dir, maxWidth, maxHeight) {
    // determine filetype of image (one could do this also by checking the mimetype) 
    this.fileext = this.evalImgType(rawimage.contentType);
    if (this.fileext == "ico") {
       // the image is an .ico, so we directory write it to disk and return
-      rawimage.writeToFile(this.cache.saveTo, this.filename + "." + this.fileext);
+      rawimage.writeToFile(dir, this.filename + "." + this.fileext);
       return true;
    }
    var img = new Image(rawimage.getContent());
-   // check if resizing is necessary 
-   if (this.cache.maxwidth && this.cache.maxheight && img.width > this.cache.maxwidth && img.height > this.cache.maxheight) {
-      var hfact = this.cache.maxwidth / img.width; 
-      var vfact = this.cache.maxheight / img.height; 
-      this.width = Math.round(img.width * (hfact < vfact ? hfact : vfact)); 
-      this.height = Math.round(img.height * (hfact < vfact ? hfact : vfact)); 
-      var doResize = true; 
-   } else if (this.cache.maxwidth && img.width > this.cache.maxwidth) {
-      var fact = this.cache.maxwidth / img.width; 
-      this.width = this.cache.maxwidth;
-      this.height = Math.round(img.height * fact);
-      var doResize = true; 
-   } else if (this.cache.maxheight && img.height > this.cache.maxheight) {
-      var fact = this.cache.maxheight / img.height; 
-      this.height = this.cache.maxheight;
-      this.width = Math.round(img.width * fact);
-      var doResize = true; 
-   } else {
-      // no resizing done
-      this.width = img.width;
-      this.height = img.height;
+   this.width = img.getWidth();
+   this.height = img.getHeight();
+   var resize = false;
+   var hfact = 1;
+   var vfact = 1;
+   if (maxWidth && this.width > maxWidth) {
+      hfact = maxWidth / this.width; 
+      resize = true;
    }
-   if (doResize) { 
-      img.resize(this.width,this.height); 
-      if (rawimage.contentType == 'image/gif')
-         img.reduceColors(256); 
-      // finally we save the resized image
-      img.saveAs(this.cache.saveTo + this.filename + "." + this.fileext);
-   } else {
-      // finally we save the not resized image
-      rawimage.writeToFile(this.cache.saveTo,this.filename + "." + this.fileext);
+   if (maxHeight && this.height > maxHeight) {
+      vfact = maxHeight / this.height; 
+      resize = true;
    }
-   return true; 
+
+   if (resize) { 
+      this.width = Math.ceil(this.width * (hfact < vfact ? hfact : vfact));
+      this.height = Math.ceil(this.height * (hfact < vfact ? hfact : vfact));
+      try {
+         img.resize(this.width, this.height); 
+         if (rawimage.contentType == 'image/gif' || this.fileext == "gif")
+            img.reduceColors(256); 
+      } catch (err) {
+         throw new Exception("imageResize");
+      }
+   }
+   // finally we try  to save the resized image
+   try {
+      if (resize)
+         img.saveAs(dir + this.filename + "." + this.fileext);
+      else
+         rawimage.writeToFile(dir, this.filename + "." + this.fileext);
+   } catch (err) {
+      throw new Exception("imageSave");
+   }
+   return;
 }
 
 
@@ -59,7 +70,7 @@ function saveImg(rawimage) {
  *             - message (String): containing a message to user
  */
 
-function evalImg(param,modifier) {
+function evalImg(param, modifier) {
    this.alttext = param.alttext;
    this.modifier = modifier;
    this.modifytime = new Date();
@@ -68,7 +79,7 @@ function evalImg(param,modifier) {
       this.thumbnail.modifytime = this.modifytime;
       this.thumbnail.modifier = this.modifier;
    }
-   return (getConfirm("update"));
+   return new Message("update");
 }
 
 
@@ -80,16 +91,25 @@ function evalImg(param,modifier) {
  */
 
 function evalImgType(ct) {
-   if (ct == "image/jpeg" || ct == "image/pjpeg")
-      return ("jpg");
-   else if (ct == "image/gif")
-      return ("gif");
-   else if (ct == "image/x-png" || ct == "image/png")
-      return ("png");
-   else if (ct == "image/x-icon")
-      return ("ico");
-   else
-      return null;
+   switch (ct) {
+      case "image/jpeg" :
+         return "jpg";
+         break;
+      case "image/pjpeg" :
+         return "jpg";
+         break;
+      case "image/gif" :
+         return "gif";
+         break;
+      case "image/x-png" :
+         return "png";
+         break;
+      case "image/png" :
+         return "png";
+         break;
+      case "image/x-icon" :
+         return "ico";
+   }
 }
 
 /**
@@ -99,23 +119,15 @@ function evalImgType(ct) {
  * @return Boolean true in any case ...
  */
 
-function createThumbnail(rawimage) {
-   if (this.width < 100 && this.height < 100)
-      return null;
-   var thumbImg = new image();
-   thumbImg.filename = this.filename + "_small";
-   thumbImg.cache.saveTo = this.cache.saveTo;
-   thumbImg.cache.maxwidth = 100;
-   thumbImg.cache.maxheight = 100;
-   thumbImg.saveImg(rawimage);
-   thumbImg.site = this.site;
-   thumbImg.alttext = this.alttext;
-   thumbImg.creator = this.creator;
-   thumbImg.createtime = this.createtime;
-   thumbImg.alias = this.alias;
-   thumbImg.parent = this;
-   this.thumbnail = thumbImg;
-   return true;
+function createThumbnail(rawimage, dir) {
+   var thumb = new image(this.site, this.creator);
+   thumb.filename = this.filename + "_small";
+   thumb.save(rawimage, dir, THUMBNAILWIDTH);
+   thumb.alttext = this.alttext;
+   thumb.alias = this.alias;
+   thumb.parent = this;
+   this.thumbnail = thumb;
+   return;
 }
 
 /**
@@ -133,15 +145,16 @@ function popupUrl() {
 
 /**
  * returns the url to the static image
- * [rg] static url is now cached in this.cache.staticUrl
  */
 function getStaticUrl() {
-   if (!this.cache.staticUrl) {
-      var url = getProperty("imgUrl");
-      if (this.site)
-         url += this.site.alias + "/";
-      url += this.filename + "." + this.fileext;
-      this.cache.staticUrl = url;
+   var url = new java.lang.StringBuffer();
+   url.append(getProperty("imgUrl", "/static/images/"));
+   if (this.site) {
+      url.append(this.site.alias);
+      url.append("/");
    }
-   return(this.cache.staticUrl);
+   url.append(this.filename);
+   url.append(".");
+   url.append(this.fileext);
+   return url.toString();
 }
