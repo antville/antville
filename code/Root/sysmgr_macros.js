@@ -64,12 +64,54 @@ function sys_limitNewSites_macro(param) {
    if (!isUserSysAdmin())
       return;
    if (param.as == "editor") {
-      var options = new Array("unlimited","only trusted users","system administrators");
+      var options = new Array("all registered users","only trusted users","---------");
       renderDropDownBox("sys_limitNewSites",options,this.sys_limitNewSites);
    } else
       res.write(this.sys_limitNewSites);
    return;
 }
+
+/**
+ * macro renders a dropdown containing the minimal registration
+ */
+
+function sys_minMemberAge_macro(param) {
+   // this macro is allowed just for sysadmins
+   if (!isUserSysAdmin())
+      return;
+   if (param.as == "editor") {
+      var options = new Array();
+      for (var i=1;i<92;i++) {
+         if (i < 7 || !(i%7))
+            options[i] = i;
+      }
+      renderDropDownBox("sys_minMemberAge",options,this.sys_minMemberAge,"----");
+   } else
+      res.write(this.sys_minMemberAge);
+   return;
+}
+
+/**
+ * macro renders a dropdown containing the number of days a user has to wait
+ * after having created a weblog before being allowed to create a new one
+ */
+
+function sys_waitAfterNewWeblog_macro(param) {
+   // this macro is allowed just for sysadmins
+   if (!isUserSysAdmin())
+      return;
+   if (param.as == "editor") {
+      var options = new Array();
+      for (var i=1;i<92;i++) {
+         if (i < 7 || !(i%7))
+            options[i] = i;
+      }
+      renderDropDownBox("sys_waitAfterNewWeblog",options,this.sys_waitAfterNewWeblog,"----");
+   } else
+      res.write(this.sys_waitAfterNewWeblog);
+   return;
+}
+
 
 /**
  * macro rendering autocleanup-flag
