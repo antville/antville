@@ -24,7 +24,7 @@ function safescripts_action() {
 
 function stylesheet_action() {
    res.dependsOn(this.modifytime);
-   res.dependsOn(app.skinfiles["site"]["stylesheet"]);
+   res.dependsOn(app.skinfiles["site"]["style"]);
    res.digest();
    res.contentType = "text/css";
    this.renderSkin("style");
