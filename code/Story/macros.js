@@ -14,10 +14,9 @@ function content_macro(param) {
          else if (path.story.title)
             param.value = "Re: " + path.story.title;
       }
-      else {
-         param.name = "content_" + param.part;
+      else
          param.value = this.getContentPart(param.part);
-      }
+      param.name = "content_" + param.part;
       delete(param.part);
       if (!param.height || parseInt(param.height) == 1)
          renderInputText(param);
