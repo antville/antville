@@ -3,7 +3,7 @@
  */
 
 function main_action() {
-   res.data.title = "Skins of " + this._parent._parent.title;
+   res.data.title = "Skins of " + res.handlers.context.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent._parent.renderSkin("page");
 }
@@ -24,7 +24,7 @@ function edit_action() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = req.data.proto + "/" + req.data.name + ".skin of " + this._parent.title;
+   res.data.title = req.data.proto + "/" + req.data.name + ".skin of " + res.handlers.context.title;
    res.data.body = this.renderSkinAsString("edit");
    this._parent.renderSkin("page");
 }
@@ -87,7 +87,8 @@ function diff_action() {
          buf.append("</pre>");
       }
    }
-   res.data.title = "Diffs for " + req.data.proto + "/" + req.data.name + ".skin of " + this._parent.title;
+   res.data.title = "Diffs for " + req.data.proto + "/" + req.data.name + 
+                    ".skin of " + res.handlers.context.title;
    res.data.body = buf.toString();
    this.renderSkin("page");
 }
@@ -99,7 +100,7 @@ function diff_action() {
  * give users the possibility to undo their changes
  */
 function safe_action() {
-   res.data.title = this._parent.title;
+   res.data.title = res.handlers.context.title;
    res.data.body = this.renderSkinAsString("main");
    this.renderSkin("page");
 }
@@ -129,7 +130,7 @@ function stopTestdrive_action() {
  *  action displays a list of skins in this skinset.
  */
 function skins_action() {
-   res.data.title = "Skins of " + this._parent._parent.title;
+   res.data.title = "Skins of " + res.handlers.context.title;
    res.data.body = this.renderSkinAsString("skins");
    this._parent._parent.renderSkin("page");
 }
@@ -147,7 +148,7 @@ function delete_action() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = this._parent._parent.title;
+   res.data.title = res.handlers.context.title;
 
    var skinParam = new Object();
    skinParam.what = "the skinset &quot;" + this.name + 
