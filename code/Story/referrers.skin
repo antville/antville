@@ -1,0 +1,11 @@
+<p />
+<table border="0" cellspacing="0" cellpadding="1">
+<tr>
+	<td align="right" class="small">&nbsp;</td>
+	<td rowspan="999" class="small">&nbsp;&nbsp;</td>
+	<td class="small"><b>Backlinks</b></td>
+</tr>
+
+<% param.referrers %>
+
+</table>

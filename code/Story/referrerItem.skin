@@ -1,0 +1,4 @@
+<tr>
+	<td align="right" valign="top" class="small"><% param.count %></td>
+	<td class="small"><a href="<% param.referrer %>"><% param.text %></a></td>
+</tr>
