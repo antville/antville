@@ -21,6 +21,8 @@ function content_macro(param) {
          break;
 
       default :
+         if (!param.clipping)
+            param.clipping = "...";
          var part = this.getRenderedContentPart(param.part);
          if (!part && param.fallback)
             part = this.getRenderedContentPart(param.fallback);
@@ -29,13 +31,7 @@ function content_macro(param) {
                Html.openLink({href: this.href()});
             else
                Html.openLink({href: this.story.href() + "#" + this._id});
-            if (!part && param.part == "title") {
-               // use the text part instead, clipped after 20 characters
-               part = stripTags(this.getRenderedContentPart ("text")).trim();
-               param.limit = "20";
-            }
-            if (!part)
-               part = "...";
+            part = part ? part.stripTags() : param.clipping;
          }
          if (!param.limit)
             res.write(part);
@@ -44,25 +40,9 @@ function content_macro(param) {
          if (param.as == "link")
             Html.closeLink();
    }
+   return;
 }
 
-/**
- * returns the title of a story
- * DEPRECATED! use .content part="title" instead
- */
-function title_macro(param) {
-   param.part = "title";
-   this.content_macro(param);
-}
-
-/**
- * returns the text of a story
- * DEPRECATED! use .content part="text" instead
- */
-function text_macro(param) {
-   param.part = "text";
-   this.content_macro(param);
-}
 
 /**
  * macro rendering online status of story
