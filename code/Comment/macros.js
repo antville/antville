@@ -32,13 +32,10 @@ function text_macro(param) {
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
-      var s = createSkin(format(activateLinks(this.text)));
-      // only the following macros are allowed in the text of a comment
-      this.allowTextMacros(s);
       if (!param.limit)
-         this.renderSkin(s);
+         res.write(this.getText());
       else
-         renderTextPreview(this.renderSkinAsString(s),param.limit);
+         renderTextPreview(this.getText(),param.limit);
    }
    res.write(param.suffix);
 }
@@ -89,7 +86,7 @@ function modifytime_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied() && path[path.length-1] != this) {
+   if (!this.isEditDenied(user) && path[path.length-1] != this) {
       res.write(param.prefix)
       var linkParam = new Object();
       linkParam.linkto = "edit";
@@ -110,7 +107,7 @@ function editlink_macro(param) {
 
 function deletelink_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      if (this.weblog.isUserAdmin() && path[path.length-1] != this) {
+      if (this.weblog.isUserAdmin(user) && path[path.length-1] != this) {
          res.write(param.prefix)
          var linkParam = new Object();
          linkParam.linkto = "delete";
