@@ -403,7 +403,7 @@ function topic_macro(param) {
    if (!this.topic)
       return;
    if (!param.as || param.as == "link") {
-      openLink(this.topic.href());
+      openLink(this.site.topics.href(this.topic));
       res.write(this.topic);
       closeLink();
    }
@@ -413,7 +413,7 @@ function topic_macro(param) {
       var img = getPoolObj(param.imgprefix+this.topic, "images");
       if (!img)
          return;
-      openLink(this.topic.href());
+      openLink(this.site.topics.href(this.topic));
       renderImage(img.obj, param)
       closeLink();
    }
