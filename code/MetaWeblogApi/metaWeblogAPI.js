@@ -269,15 +269,13 @@ function newMediaObject(blogid, username, password, fileObject) {
    if (!blog)
       throw("Couldn't find the blog " + blogid);
    var level = blog.members.getMembershipLevel(usr);
-   var str = new java.lang.String(fileObject.bits);
-   var bytes = Packages.helma.util.Base64.decode(str.toCharArray());
    var param = new Object();
    var ret = new Object();
    if (fileObject.type.toLowerCase().startsWith("image/")) {
       // handle new image
       try {
          blog.images.checkAdd(usr, level);
-         param.rawimage = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
+         param.rawimage = new Packages.helma.util.MimePart(fileObject.name, fileObject.bits, fileObject.type);
          param.maxheight = fileObject.antville_maxheight;
          param.maxwidth = fileObject.antville_maxwidth;
          param.alttext = fileObject.description;
@@ -303,7 +301,7 @@ function newMediaObject(blogid, username, password, fileObject) {
       // handle new file
       try {
          blog.files.checkAdd(usr, level);
-         param.rawfile = new Packages.helma.util.MimePart(fileObject.name, bytes, fileObject.type);
+         param.rawfile = new Packages.helma.util.MimePart(fileObject.name, fileObject.bits, fileObject.type);
          param.description = fileObject.description;
          var result = blog.files.evalFile(param, usr);
          var mediaObject = result.obj;
