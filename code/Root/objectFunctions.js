@@ -121,8 +121,8 @@ function searchWeblogs (query) {
                 "TEXT.WEBLOG_ID = WEBLOG.ID and "+
                 "TEXT.ISONLINE > 0 and WEBLOG.ISONLINE > 0 and ";
     for (var i in qarr) {
-        where += "(TEXT.TITLE like '%"+qarr[i].toLowerCase()+
-                 "%' or TEXT.TEXT like '%"+qarr[i].toLowerCase()+"%') "
+        where += "(LOWER(TEXT.TITLE) like '%"+qarr[i].toLowerCase()+
+                 "%' or LOWER(TEXT.TEXT) like '%"+qarr[i].toLowerCase()+"%') "
         if (i < qarr.length-1)
             where += "and ";
     }
