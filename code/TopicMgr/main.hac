@@ -1,4 +1,4 @@
 res.skin = "weblog.page";
 
-res.data.title = path.weblog.title+" TopicSpace";
+res.data.title = path.weblog.title+" Topics";
 res.data.body = this.renderSkinAsString ("main");
