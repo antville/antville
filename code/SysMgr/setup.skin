@@ -47,7 +47,7 @@
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Automatic cleanup</b></td>
 </tr>
 <tr>
-<td colspan="2" class="small" valign="top">Antville has some features that ease system administration: it can automatically block those weblogs that are private for too long, and it can automatically remove weblogs that are inactive (both features can be enabled or disabled separately below). Whatever you choose, it will be done once in 24 hours.</td>
+<td colspan="2" class="small" valign="top">Antville has some features that ease system administration: it can automatically clean up the accesslog, block those weblogs that are private for too long and it can automatically remove weblogs that are inactive (both features can be enabled or disabled separately below). Whatever you choose, it will be done once in 24 hours.</td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Enable cleanup:</td>
