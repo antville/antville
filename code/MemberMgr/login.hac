@@ -18,7 +18,7 @@ if (req.data.submit == "login" || req.data.login) {
 if (!user.cache.referrer && req.data.http_referer)
    user.cache.referrer = req.data.http_referer;
 
-res.data.title = "Anville Member Login";
+res.data.title = "Antville Member Login";
 
 res.data.body = this.renderSkinAsString("login");
 
