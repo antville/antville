@@ -1,12 +1,4 @@
 /**
- * macro renders the current timestamp
- */
-function now_macro(param) {
-   return formatTimestamp(new Date(), param.format);
-}
-
-
-/**
  * macro renders the antville-logos
  */
 function logo_macro(param) {
@@ -476,6 +468,7 @@ function randomize_macro(param) {
  * @param topic String (optional), specifies from which topic the image should be taken
  * all other parameters are passed through to the global image macro
  * this macro is *not* allowed in stories
+ * FIXME: this function needs testing and proof of concept
  */
 function randomimage_macro(param) {
    if (param.images) {
@@ -512,6 +505,7 @@ function randomimage_macro(param) {
  *
  * @param topic String (optional), specifies from which topic the image should be taken
  * all other parameters are passed through to the global image macro
+ * FIXME: this function needs testing and proof of concept
  */
 function imageoftheday_macro(param) {
    var s = res.handlers.site;
@@ -538,6 +532,7 @@ function imageoftheday_macro(param) {
  * @tr_params String (optional)
  * @td_params String (optional)
  * all other parameters are passed through to the global image macro
+ * FIXME: the gallery feature needs make-over
  */
 function gallery_macro(param) {
    if (param.images) {

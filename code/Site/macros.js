@@ -330,32 +330,6 @@ function age_macro(param) {
 
 
 /**
- * macro left for backwards-compatibility
- * calls global image_macro()
- */
-function image_macro(param) {
-   image_macro(param);
-}
-
-
-/**
- * macro left for backwards-compatibility
- * calls global thumbnail_macro()
- */
-function thumbnail_macro(param) {
-   thumbnail_macro(param);
-}
-
-
-/**
- * macro renders the number of members of this site
- */
-function membercounter_macro(param) {
-   res.write(this.members.size());
-}
-
-
-/**
  * macro renders a list of recently added/updated stories/comments
  * of this site
  */
@@ -458,6 +432,7 @@ function listReferrers_macro() {
 function xmlbutton_macro(param) {
    param.linkto = this.href("rss");   
    DefaultImages.render("xmlbutton", param);
+   return;
 }
 
 
@@ -489,20 +464,6 @@ function monthlist_macro(param) {
       }
    }
    return;
-}
-
-/**
- * wrapper-macro for topiclist
- */
-function topiclist_macro(param) {
-   this.topics.topiclist_macro(param);
-}
-
-/**
- * wrapper-macro for imagelist
- */
-function imagelist_macro(param) {
-   this.images.imagelist_macro(param);
 }
 
 /**

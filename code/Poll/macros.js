@@ -1,13 +1,4 @@
 /**
- * macro renders the id of a poll
- */
-function id_macro() {
-   res.write(this._id);
-   return;
-}
-
-
-/**
  * macro renders a poll's question
  * (either as text or editor)
  */
