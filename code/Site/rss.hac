@@ -6,10 +6,10 @@ var now = new Date();
 var systitle = root.getSysTitle();
 var w3fmt = "yyyy-MM-dd'T'HH:mm:ss'+01:00'";
 
-var container = this.allstories;
+var collection = this.allstories;
 if (req.data.show == "all")
-   container = this.allcontent;
-var size = container.size();
+   collection = this.allcontent;
+var size = collection.size();
 var max = req.data.max ? parseInt(req.data.max) : 7;
 max = Math.min(max, size);
 max = Math.min(max, 10);
@@ -18,9 +18,9 @@ var param = new Object();
 if (max > 0 && this.online) {
    var items = "";
    var resources = "";
-   container.prefetchChildren(0, max);
+   collection.prefetchChildren(0, max);
    for (var i=0; i<max; i++) {
-      var story = container.get(i);
+      var story = collection.get(i);
       param.url = story.href();
       param.title = clipText(story.getRenderedContentPart("title"), 50);
       param.text = clipText(story.getRenderedContentPart("text"), 500);
