@@ -24,13 +24,15 @@ function updateMembership(lvl, modifier) {
    // editing the own membership is denied
    if (this.user == modifier)
       throw new DenyException("memberEditSelf");
-   this.level = lvl;
-   this.modifier = modifier;
-   this.modifytime = new Date();
-   sendMail(root.sys_email,
-            this.user.email,
-            getMessage("mail.statusChange", this.site.title),
-            this.renderSkinAsString("mailbody")
-           );
+   if (lvl != this.level) {
+      this.level = lvl;
+      this.modifier = modifier;
+      this.modifytime = new Date();
+      sendMail(root.sys_email,
+               this.user.email,
+               getMessage("mail.statusChange", this.site.title),
+               this.renderSkinAsString("mailbody")
+              );
+   }
    return new Message("update");
 }
