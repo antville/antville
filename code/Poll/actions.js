@@ -68,12 +68,13 @@ function edit_action() {
  * delete action
  */
 function delete_action() {
+   var url = this._parent.href();
    if (req.data.cancel)
-      res.redirect(this._parent.href());
+      res.redirect(url);
    else if (req.data.remove) {
       try {
          res.message = this.site.polls.deletePoll(this);
-         res.redirect(this._parent.href());
+         res.redirect(url);
       } catch (err) {
          res.message = err.toString();
       }
