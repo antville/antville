@@ -1,12 +1,12 @@
 /**
- * display all images of a site
+ * display all images of a site or layout
  */
 function main_action() {
    res.data.imagelist = renderList(this, "preview", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
-   res.data.title = "Images of " + res.handlers.context.title;
+   res.data.title = "Images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
-   this._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
 
 /**
@@ -16,9 +16,9 @@ function myimages_action() {
    var ms = this._parent.members.get(session.user.name);
    res.data.imagelist = renderList(ms.images, "preview", 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(ms.images, this.href(req.action), 10, req.data.page);
-   res.data.title = "Images of " + res.handlers.context.title;
+   res.data.title = "My images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
-   this._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
 
 /**
@@ -40,9 +40,9 @@ function create_action() {
          res.message = err.toString();
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = "Add an image to " + this._parent.title;
    res.data.body = this.renderSkinAsString("new");
-   this._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
