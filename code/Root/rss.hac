@@ -20,6 +20,7 @@ for (var i=0; i<max; i++) {
       param.creator = site.creator.name;
       param.email = translateToEntities(site.creator.email);
 		param.date = site.lastupdate.format("dd.MM.yyyy, HH:mm'h CET'");
+      param.year = site.lastupdate.getYear();
       items += site.renderSkinAsString("rssItem", param);
       resources += site.renderSkinAsString("rssResource", param);
    }
