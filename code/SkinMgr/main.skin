@@ -23,6 +23,11 @@
 <td class="storyText">This skin contains all Cascaded Stylesheet-definitions (i.e. fonts and font-sizes, colors etc.). Changing this skin will affect the whole weblog.</td>
 </tr>
 <tr>
+<td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=weblog&name=javascript" text="javascript" %></td>
+<td width="20" align="center" valign="top" class="storyText" nowrap>&gt;&gt;</td>
+<td class="storyText">This skin contains JavaScript-Code that will be included in the header of every page.</td>
+</tr>
+<tr>
 <td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=weblog&name=main" text="frontpage" %></td>
 <td width="20" align="center" valign="top" class="storyText" nowrap>&gt;&gt;</td>
 <td class="storyText">This is the skin responsible for the frontpage of your weblog.</td>
@@ -83,7 +88,7 @@
 <tr>
 <td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=comment&name=toplevel" text="toplevel" %></td>
 <td width="20" align="center" valign="top" class="storyText" nowrap>&gt;&gt;</td>
-<td class="storyText"This skin defines the layout of toplevel-comments></td>
+<td class="storyText">This skin defines the layout of toplevel-comments</td>
 </tr>
 <tr>
 <td valign="top" class="storyText" nowrap><% this.link to="edit" urlparam="?proto=comment&name=reply" text="reply" %></td>
