@@ -15,7 +15,7 @@ function logo_macro(param) {
    var logo = root.images.get(param.name);
    if (!logo)
       return;
-   openLink(root.href());
+   openLink("http://antville.org");
    renderImage(logo, param);
    closeLink();
 }
