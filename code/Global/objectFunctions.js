@@ -97,7 +97,7 @@ function activateLinks (str) {
    var mid = "\">";
    var post = "</a>";
 
-   var l1 = new RegExp("(^|\\s+)([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?)(?=[\\s<]|$)");
+   var l1 = new RegExp("(^|/>|\\s+)([fhtpsr]+:\\/\\/[^\\s]+?)([\\.,;\\)\\]\"]?)(?=[\\s<]|$)");
    l1.ignoreCase = true;
    l1.global = true;
    str = str.replace(l1, "$1" + pre + "$2" + mid + "$2" + post + "$3");
