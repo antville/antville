@@ -34,18 +34,23 @@ function renderCalendarDay(currGroupname,text) {
  * @param Int Index-position to start with
  */
 
-function renderStorylist(idx) {
+function renderStorylist(day) {
    if (this.allstories.size() == 0) {
       res.data.storylist = this.renderSkinAsString("welcome");
       return;
    }
    var size = this.size();
-   if (idx < 0 || isNaN (idx) || idx > size-1)
-      idx = 0;
+   var idx = 0;
+   if (day) {
+      var startday = this.get(day);
+      if (startday)
+          idx = this.contains(startday);
+   }
    var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
    if (idx > 0) {
       var sp = new Object();
-      sp.url = this.href() + "?start=" + Math.max(0, idx-days);
+      var prev = this.get (Math.max(0, idx-days));
+      sp.url = this.href() + "?day=" + prev.groupname;
       sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
@@ -63,7 +68,8 @@ function renderStorylist(idx) {
    }
    if (idx < size) {
       var sp = new Object();
-      sp.url = this.href() + "?start=" + idx;
+      var next = this.get (idx);
+      sp.url = this.href() + "?day=" + next.groupname;
       sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
