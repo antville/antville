@@ -4,7 +4,7 @@
 
 function skin_macro(param) {
    if (param.as == "editor")
-      renderInputTextarea(this.createInputParam("skin",param));
+      Html.textArea(this.createInputParam("skin", param));
    else
       res.write(this.skin);
 }
@@ -27,10 +27,10 @@ function help_macro(param) {
    var hopjectMacros = ref.getProperty("hopobject.macros");
    macros["root"] = ref.getProperty("root.macros");
    // no prototype for global macros
-   macros[proto] = (proto == "global") ? null : ref.getProperty(proto+".macros");
+   macros[proto] = (proto == "global") ? null : ref.getProperty(proto + ".macros");
    // merge the hopobject's stuff with the prototype's
-   macros[proto] += hopjectMacros ? ","+hopjectMacros : "";
-   macros.resOrParam = ref.getProperty(proto+".skin."+skin);
+   macros[proto] += hopjectMacros ? "," + hopjectMacros : "";
+   macros.resOrParam = ref.getProperty(proto + ".skin." + skin);
 
    var re = new RegExp(" *, *", "g");
    for (var protoName in macros) {
@@ -55,7 +55,7 @@ function help_macro(param) {
 
          // if a url is available render an html link
          if (url)
-            openLink(helpUrl + url);
+            Html.openLink(helpUrl + url);
          res.encode("<% ");
          // show the prototype's name if not global, response or param
          if (protoName != "global" && protoName != "resOrParam")
@@ -63,9 +63,9 @@ function help_macro(param) {
          res.write(macroNames[n]);
          res.encode(" %>");
          if (url)
-            closeLink();
-         renderMarkupElement("br");
+            Html.closeLink();
+         Html.tag("br");
       }
-      renderMarkupElement("br");
+      Html.tag("br");
    }
 }
