@@ -49,6 +49,7 @@ function createNewWeblog(newLog) {
    newLog.archive = 1;
    newLog.blocked = 0;
    newLog.birthdate = new Date();
+   newLog.bgcolor = "FFFFFF";
    newLog.textfont = "Arial, Helvetica, sans-serif";
    newLog.textsize = "10pt";
    newLog.textcolor = "000000";
@@ -59,6 +60,8 @@ function createNewWeblog(newLog) {
    newLog.titlesize = "12pt";
    newLog.titlecolor = "CC0000";
    newLog.days = 3;
+   newLog.language = "en";
+   newLog.country = "US";
    newLog.createImgDirectory()
    this.add(newLog);
    user.weblog = newLog;
