@@ -77,7 +77,7 @@ function evalPreferences(param,modifier) {
       result.error = true;
       return (result);
    }
-   this.title = param.title;
+   this.title = stripTags(param.title);
    this.tagline = param.tagline;
    this.email = param.email;
    this.bgcolor = param.bgcolor;
