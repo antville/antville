@@ -47,7 +47,7 @@ create table IMAGE (
 # records for table IMAGE
 #----------------------------
 
-alter table image change column ID ID mediumint(9) not null auto_increment;
+alter table IMAGE change column ID ID mediumint(9) not null auto_increment;
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('big','big','gif',404,53,'antville.org');
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('smallanim','smallanim','gif',98,30,'resident of antville.org');
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('smallchaos','smallchaos','gif',107,29,'resident of antville.org');
@@ -62,7 +62,7 @@ insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('dot','d
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('bullet','bullet','gif',3,10,'bullet');
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('webloghead','webloghead','gif',404,53,'head');
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) values ('hop','hop','gif',124,25,'helma object publisher');
-alter table image change column ID ID mediumint(9) not null;
+alter table IMAGE change column ID ID mediumint(9) not null;
 
 #----------------------------
 # Table structure for SKIN
