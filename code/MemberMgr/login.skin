@@ -13,7 +13,7 @@
 </tr>
 <tr>
 <td nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" name="login" value="login!" %></td>
+<td nowrap><% this.input type="button" name="login" value="login" %></td>
 </tr>
 <tr>
 <td nowrap>&nbsp;</td>
