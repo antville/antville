@@ -217,8 +217,10 @@ function lastupdate_macro(param) {
 function online_macro(param) {
   if (param.as == "editor")
     renderInputCheckbox(this.createInputParam("online",param));
+  else if (this.online)
+    res.write(param.yes ? param.yes : "yes");
   else
-    res.write(this.online ? "yes" : "no");
+    res.write(param.no ? param.no : "no");
 }
 
 
