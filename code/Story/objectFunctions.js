@@ -24,7 +24,7 @@ function evalStory(param,modifier) {
          var part = i.substring(8);
          // check if there's a difference between old and
          // new text of more than 50 characters:
-         if (!majorUpdate)
+         if (cont[part] && !majorUpdate)
             majorUpdate = Math.abs(cont[part].length - param[i].length) > 50;
          cont[part] = param[i];
       }
