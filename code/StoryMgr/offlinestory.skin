@@ -1,8 +1,0 @@
-<div class="listSeparator">&nbsp;</div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td width="10" align="center" valign="top" class="listFlag" nowrap="nowrap">o<br />f<br />f<br />l<br />i<br />n<br />e</td>
-<td width="5" nowrap="nowrap"></td>
-<td valign="top"><% param.story %></td>
-</tr>
-</table>
