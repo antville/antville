@@ -54,12 +54,8 @@ function checkVote(usr, level) {
 function checkEdit(usr, level) {
    if (this.votes.size() > 0)
       throw new DenyException("pollEdit");
-   if (this.creator != usr) {
-      if (this.editableby == null && (level & MAY_EDIT_ANYSTORY) == 0)
-         throw new DenyException("pollEdit");
-      else if (this.editableby == 1 && (level & MAY_ADD_STORY) == 0)
-         throw new DenyException("pollEdit");
-   }
+   if (this.creator != usr && (level & MAY_EDIT_ANYSTORY) == 0)
+      throw new DenyException("pollEdit");
    return;
 }
 
