@@ -1,9 +1,10 @@
 autoLogin();
+checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isDeleteDenied(user);
+var deny = this.isEditDenied(user);
 if (deny) {
    res.message = deny;
-   res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.weblog.goodies.href());
+   res.redirect(this.weblog.goodies.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
