@@ -1,2 +1,2 @@
-<p class="storyTitle">Welcome to <% site.title %>!</p>
+<p class="storyTitle">Welcome to &quot;<% site.title %>&quot;.</p>
 <p>This weblog was created on <% site.createtime format="long" %> by <% site.creator as="link" %>.</p>
