@@ -85,8 +85,10 @@ CREATE INDEX IDX_FILE_F_USER_CREATOR ON AV_FILE (FILE_F_USER_CREATOR);
 create table AV_IMAGE (
    IMAGE_ID mediumint(10) not null,
    IMAGE_F_SITE mediumint(10),
+   IMAGE_F_LAYOUT mediumint(10),
    IMAGE_F_IMAGE_PARENT mediumint(10),
    IMAGE_F_IMAGE_THUMB mediumint(10),
+   IMAGE_PROTOTYPE varchar(20),
    IMAGE_ALIAS tinytext,
    IMAGE_TOPIC varchar(255),
    IMAGE_FILENAME tinytext,
@@ -113,22 +115,22 @@ CREATE INDEX IDX_IMAGE_MIXED ON AV_IMAGE (IMAGE_F_SITE,IMAGE_ALIAS(20),IMAGE_F_I
 #----------------------------
 
 alter table AV_IMAGE change column IMAGE_ID IMAGE_ID mediumint(10) not null auto_increment;
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('big','big','gif',404,53,'antville.org');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smallanim','smallanim','gif',98,30,'made with antville');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smallchaos','smallchaos','gif',107,29,'made with antville');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('smallstraight','smallstraight','gif',107,24,'made with antville');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('pixel','pixel','gif',1,1,'pixel');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values ('headbg','headbg','gif',3,52);
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('menu','menu','gif',36,13,'menu');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('recent','recent','gif',123,13,'recently modified');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('status','status','gif',48,13,'status');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('dot','dot','gif',30,30,'dots');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('bullet','bullet','gif',3,10,'bullet');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('webloghead','webloghead','gif',404,53,'head');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('hop','hop','gif',124,25,'helma object publisher');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('xmlbutton','xmlbutton','gif',36,14,'xml version of this page');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('marquee','marquee','gif',15,15,'marquee');
-insert into AV_IMAGE (IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('manage','manage','gif',50,13,'manage');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','big','big','gif',404,53,'antville.org');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','smallanim','smallanim','gif',98,30,'made with antville');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','smallchaos','smallchaos','gif',107,29,'made with antville');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','smallstraight','smallstraight','gif',107,24,'made with antville');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','pixel','pixel','gif',1,1,'pixel');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT) values ('layoutimage','headbg','headbg','gif',3,52);
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','menu','menu','gif',36,13,'menu');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','recent','recent','gif',123,13,'recently modified');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','status','status','gif',48,13,'status');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','dot','dot','gif',30,30,'dots');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','bullet','bullet','gif',3,10,'bullet');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','webloghead','webloghead','gif',404,53,'head');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','hop','hop','gif',124,25,'helma object publisher');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','xmlbutton','xmlbutton','gif',36,14,'xml version of this page');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','marquee','marquee','gif',15,15,'marquee');
+insert into AV_IMAGE (IMAGE_PROTOTYPE,IMAGE_ALIAS,IMAGE_FILENAME,IMAGE_FILEEXT,IMAGE_WIDTH,IMAGE_HEIGHT,IMAGE_ALTTEXT) values ('layoutimage','manage','manage','gif',50,13,'manage');
 alter table AV_IMAGE change column IMAGE_ID IMAGE_ID mediumint(10) not null;
 
 #-------------------------------
@@ -182,20 +184,32 @@ CREATE INDEX IDX_POLL_F_SITE ON AV_POLL (POLL_F_SITE);
 CREATE INDEX IDX_POLL_F_USER_CREATOR ON AV_POLL (POLL_F_USER_CREATOR);
 
 #------------------------------
-# Table structure for AV_SKINSET
+# Table structure for AV_LAYOUT
 #------------------------------
-create table AV_SKINSET (
-   SKINSET_ID mediumint(10) not null,
-   SKINSET_NAME varchar(128),
-   SKINSET_F_SITE mediumint(10),
-   SKINSET_F_SKINSET_PARENT mediumint(10),
-   SKINSET_CREATETIME datetime,
-   SKINSET_MODIFYTIME datetime,
-   SKINSET_F_USER_CREATOR mediumint(10),
-   SKINSET_F_USER_MODIFIER mediumint(10),
-   SKINSET_SHARED tinyint(1),
-   primary key (SKINSET_ID)
+create table AV_LAYOUT (
+   LAYOUT_ID mediumint(10) not null,
+   LAYOUT_ALIAS varchar(128),
+   LAYOUT_TITLE varchar(128),
+   LAYOUT_F_SITE mediumint(10),
+   LAYOUT_F_LAYOUT_PARENT mediumint(10),
+   LAYOUT_PREFERENCES mediumtext,
+   LAYOUT_DESCRIPTION mediumtext,
+   LAYOUT_CREATETIME datetime,
+   LAYOUT_MODIFYTIME datetime,
+   LAYOUT_F_USER_CREATOR mediumint(10),
+   LAYOUT_F_USER_MODIFIER mediumint(10),
+   LAYOUT_SHAREABLE tinyint(1),
+   primary key (LAYOUT_ID)
 );
+
+# create an initial layout object
+alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null auto_increment;
+insert into AV_LAYOUT (LAYOUT_ALIAS, LAYOUT_TITLE, LAYOUT_PREFERENCES, LAYOUT_DESCRIPTION, LAYOUT_SHAREABLE)
+values ('default', 'antville.org', '<?xml version="1.0" encoding="UTF-8"?>\r\n<xmlroot xmlns:hop="http://www.helma.org/docs/guide/features/database">\r\n  <hopobject id="t234" name="HopObject" prototype="HopObject" created="1069430202375" lastModified="1069430202375">\r\n    <smallcolor>666666</smallcolor>\r\n    <textcolor>000000</textcolor>\r\n    <vlinkcolor>ff3300</vlinkcolor>\r\n    <titlecolor>cc0000</titlecolor>\r\n    <smallsize>11px</smallsize>\r\n    <alinkcolor>ff0000</alinkcolor>\r\n    <textsize>13px</textsize>\r\n    <titlesize>15px</titlesize>\r\n    <linkcolor>ff3300</linkcolor>\r\n    <smallfont>Verdana, Arial, Helvetica, sans-serif</smallfont>\r\n    <textfont>Verdana, Helvetica, Arial, sans-serif</textfont>\r\n    <titlefont>Verdana, Helvetica, Arial, sans-serif</titlefont>\r\n    <bgcolor>ffffff</bgcolor>\r\n  </hopobject>\r\n</xmlroot>', 'The layout of antville.org', 1);
+alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null;
+# mark all default images as layout images of default layout
+select @layoutID:=LAYOUT_ID from AV_LAYOUT where LAYOUT_ALIAS = 'default' and LAYOUT_F_SITE is null and LAYOUT_F_LAYOUT_PARENT is null;
+update AV_IMAGE set IMAGE_F_LAYOUT = @layoutID where IMAGE_F_SITE is null;
 
 
 #----------------------------
@@ -203,7 +217,7 @@ create table AV_SKINSET (
 #----------------------------
 create table AV_SKIN (
    SKIN_ID mediumint(10) not null,
-   SKIN_F_SKINSET mediumint(10),
+   SKIN_F_LAYOUT mediumint(10),
    SKIN_PROTOTYPE tinytext,
    SKIN_NAME tinytext,
    SKIN_SOURCE mediumtext,
@@ -218,7 +232,7 @@ create table AV_SKIN (
 # Indexes on table AV_SKIN
 #----------------------------
 
-CREATE INDEX IDX_SKIN_MIXED ON AV_SKIN (SKIN_F_SKINSET,SKIN_PROTOTYPE(10),SKIN_NAME(10));
+CREATE INDEX IDX_SKIN_MIXED ON AV_SKIN (SKIN_F_LAYOUT,SKIN_PROTOTYPE(10),SKIN_NAME(10));
 
 #----------------------------
 # Table structure for AV_SYSLOG
