@@ -66,22 +66,19 @@ function evalStory(param,modifier) {
    } else if (topicName)
       this.topic = topicName;
 
-   // check online-status of story
+   // check new online-status of story
    var newStatus = parseInt(param.online,10);
+   if (param.publish || param.submit == "publish")
+      newStatus = param.justintopic ? 1 : 2;
+   else if ((param.save || param.submit == "save") && isNaN(newStatus))
+      newStatus = 0;
    if (isNaN(newStatus))
       return (getError("storyPublish"));
    if (newStatus == 1 && !topicName)
       return (getError("storyTopicMissing"));
-   if (!this.online) {
-      if (newStatus > 0) {
-         this.online = newStatus;
-         this.site.lastupdate = new Date();
-      }
-   } else {
-      if (newStatus > 0 && majorUpdate)
-         this.site.lastupdate = new Date();
-      this.online = newStatus;
-   }
+   if (newStatus > 0 && (!this.online || majorUpdate))
+      this.site.lastupdate = new Date();
+   this.online = newStatus;
    if (majorUpdate)
       this.modifytime = new Date();
    this.cache.modifytime = new Date();
