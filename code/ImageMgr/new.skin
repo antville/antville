@@ -20,14 +20,18 @@
 <td class="small" nowrap="nowrap" valign="top">Description:</td>
 <td nowrap="nowrap"><% input type="textarea" name="alttext" cols="25" rows="3" %></td>
 </tr>
-<tr><td class="small" colspan="2">Add this image to a topic</td></tr>
-<tr><td></td><td>
-<table><tr><td class="small">Choose a gallery...<br />
-<% imagemgr.topicchooser %></td>
-<td valign="top" class="small">...or enter a new one<br /> 
-<input type="text" name="topic" value="<% request.topic %>" /></td>
-</tr></table>
-</td></tr>
+<tr>
+<td class="small" colspan="2">Add this image to a gallery</td>
+</tr>
+<tr>
+<td></td>
+<td><table>
+<tr>
+<td class="small">Choose a gallery...<br /><% imagemgr.topicchooser %></td>
+<td valign="top" class="small">...or enter a new one<br />&nbsp;<input type="text" name="topic" value="<% request.topic %>" /></td>
+</tr>
+</table></td>
+</tr>
 <tr>
 <td colspan="2">If you want to resize the image please specify your desired maximum width and/or maximum height. If you specify both the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
 </tr>
