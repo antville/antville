@@ -7,9 +7,9 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
-<script type="text/javascript" src="<% site.url %>javascript.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet.css" />
+<link rel="alternate" type="text/xml" title="XML" href="<% site.href %>rss10" />
+<script type="text/javascript" src="<% site.href %>main.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href %>main.css" />
 </head>
 
 <body>
