@@ -16,7 +16,7 @@ function addstory_macro () {
  */
 function relatedtopics_macro (param) {
    var duplicateChecker = new HopObject();
-   this.related.subnodeRelation = "where TEXT like '%"+this.groupname+"%' ";
+   this.related.subnodeRelation = "where TEXT like '%*"+this.groupname+"*%' ";
    var l = this.related.size();
    if (l == 0)
       return;
