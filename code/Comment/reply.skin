@@ -1,7 +1,7 @@
 <table border="0" width="400" cellspacing="0" cellpadding="0">
 <tr>
 <td width="40" nowrap>&nbsp;</td>
-<td><div class="replyDate"><% this.createtime format="EEEE,'&nbsp;'dd.mm.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
+<td><div class="replyDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
 <div class="commentTitle"><% this.title %></div>
 <div class="storyText"><% this.text suffix="<br>&nbsp;" %></div>
 <div class="storyNav"><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div></td>

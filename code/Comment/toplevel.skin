@@ -1,6 +1,6 @@
 <table border="0" width="400" cellspacing="0" cellpadding="0">
 <tr>
-<td><div class="toplevelDate"><% this.createtime format="EEEE,'&nbsp;'dd.mm.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author prefix=",&nbsp;" suffix="&nbsp;wrote:"%></div>
+<td><div class="toplevelDate"><% this.createtime format="EEEE,'&nbsp;'dd.MM.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author prefix=",&nbsp;" suffix="&nbsp;wrote:"%></div>
 <div class="commentTitle"><% this.title %></div>
 <div class="storyText"><% this.text suffix="<br>&nbsp;" %></div>
 <div class="storyNav"><% this.replylink text="reply to this comment ..." suffix="&nbsp;&nbsp;" %><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div></td>
