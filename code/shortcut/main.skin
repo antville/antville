@@ -1,7 +1,6 @@
 <tr>
-<td valign="top"><input type="text" size="15" value="<% shortcut.title encoding="form" %>" readonly="readonly" title="A shortcut's title is read-only and cannot be edited." />
-<input type="hidden" name="title<% param.id %>" value="<% shortcut.title encoding="form" %>"></td>
-<td valign="top"><input type="text" size="40" name="content<% param.id %>" value="<% shortcut.content encoding="form" %>" /></td>
+<td valign="top"><% shortcut.title %></td>
+<td valign="top"><% shortcut.content %></td>
 </tr>
 <tr>
 <td></td>
