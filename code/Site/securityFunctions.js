@@ -9,7 +9,7 @@ function isNotPublic(usr,level) {
    if (!this.online) {
       if (usr && usr.sysadmin)
          return null;
-      else if (level >= 0)
+      else if (level != null)
          return null;
       return "siteNotPublic";
    }
@@ -53,7 +53,7 @@ function isDeleteDenied(usr) {
  */
 
 function isSubscribeDenied(usr,level) {
-   if (level)
+   if (level != null)
       return "subscriptionExist";
    else if (!this.online)
       return "siteNotPublic";
@@ -67,9 +67,9 @@ function isSubscribeDenied(usr,level) {
  */
 
 function isUnsubscribeDenied(usr,level) {
-   if (!level)
+   if (level == null)
       return "subscriptionNoExist";
-   else if (level > 0)
+   else if (level > SUBSCRIBER)
       return "unsubscribeDenied";
    return null;
 }

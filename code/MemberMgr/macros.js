@@ -4,7 +4,7 @@
  */
 
 function membership_macro(param) {
-   if (!req.data.memberlevel)
+   if (req.data.memberlevel == null)
       return;
    res.write(getRole(req.data.memberlevel));
 }
@@ -15,7 +15,7 @@ function membership_macro(param) {
  */
 
 function subscribelink_macro(param) {
-   if (!path.site || req.data.memberlevel)
+   if (!path.site || req.data.memberlevel != null)
       return;
    openLink(path.site.href("subscribe"));
    res.write(param.text ? param.text : "sign up");
