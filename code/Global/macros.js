@@ -12,12 +12,7 @@ function now_macro(param) {
 function logo_macro(param) {
    if (!param.name)
       param.name = "smallchaos";
-   var logo = root.images.get(param.name);
-   if (!logo)
-      return;
-   Html.openLink("http://antville.org");
-   renderImage(logo, param);
-   Html.closeLink();
+   DEFAULTIMAGES.render(param.name, param);
    return;
 }
 
@@ -31,6 +26,11 @@ function logo_macro(param) {
 function image_macro(param) {
    if (!param.name)
       return;
+   if (param.name.startsWith("/")) {
+      // standard images and logos are handled by constant IMAGES
+      DEFAULTIMAGES.render(param.name.substring(1), param);
+      return;
+   }
    var result = getPoolObj(param.name, "images");
    if (!result && param.fallback)
       result = getPoolObj(param.fallback, "images");
@@ -384,11 +384,19 @@ function colorpicker_macro(param) {
    if (path.story || path.storymgr) {
       var obj = path.story ? path.story : new story();
       param2.part = param.name;
-      param.editor = obj.content_macro(param2);
+      // use res.push()/res.pop(), otherwise the macro
+      // would directly write to response
+      res.push();
+      obj.content_macro(param2);
+      param.editor = res.pop();
       param.color = renderColorAsString(obj.content.getProperty(param.name));
    } else if (path.layout) {
       var obj = path.layout;
-      param.editor = obj[param.name + "_macro"](param2);
+      // use res.push()/res.pop(), otherwise the macro
+      // would directly write to response
+      res.push();
+      obj[param.name + "_macro"](param2);
+      param.editor = res.pop();
       param.color = renderColorAsString(obj.preferences.getProperty(param.name));
    } else
       return;
