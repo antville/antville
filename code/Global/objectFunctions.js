@@ -294,7 +294,7 @@ function pingUpdatedSites() {
    var c = getDBConnection("antville");
    var dbError = c.getLastError();
    if (dbError) {
-      app.__app__.logEvent("Error establishing DB connection: " + dbError);
+      app.log("Error establishing DB connection: " + dbError);
       return;
    }
 
@@ -302,15 +302,15 @@ function pingUpdatedSites() {
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
    if (dbError) {
-      app.__app__.logEvent("Error executing SQL query: " + dbError);
+      app.log("Error executing SQL query: " + dbError);
       return;
    }
 
    while (rows.next()) {
-      var id = rows.getColumnItem("ID");
+      var id = rows.getColumnItem("SITE_ID");
       var site = root.get(id.toString());
-      app.__app__.logEvent("Notifying weblogs.com for updated site '" + site.alias + "' (id " + id + ")");
-      blog.ping();
+      app.log("Notifying weblogs.com for updated site '" + site.alias + "' (id " + id + ")");
+      site.ping();
    }
 
    rows.release();
