@@ -2,10 +2,7 @@
 
 <div class="ample"><% layoutimagemgr.link to="create" text="add a layout image" prefix="...&nbsp;" %></div>
 
-<table border="0" cellspacing="0" cellpadding="2">
-</tr>
 <% layoutimagemgr.navigation skin="navigation" %>
-</table>
 
 <% response.pagenavigation %>
 <% layoutimagemgr.images %>
