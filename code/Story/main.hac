@@ -5,7 +5,9 @@ this.filter();
 
 res.skin = "main";
 
-res.title = "Antville - " + this.weblog.title;
+res.title = encode (this.weblog.title);
+if (this.title)
+  res.title += " - "+ encode(this.title);
 res.head = this.weblog.renderSkinAsString("style");
 res.body = this.weblog.renderSkinAsString("header");
 res.body += this.renderSkinAsString("main");
