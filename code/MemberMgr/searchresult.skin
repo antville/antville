@@ -3,10 +3,9 @@
 <tr>
 <td colspan="2">&nbsp;</td>
 </tr>
-<% response.searchresult %>
+<% param.result %>
 <tr>
-<td colspan="2" nowrap="nowrap"><br /><% input type="submit" name="add" value="Add to members" %><br />
-<span class="commentHead">&nbsp;</span></td>
+<td colspan="2" nowrap="nowrap"><br /><% input type="submit" name="add" value="Add to members" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>
