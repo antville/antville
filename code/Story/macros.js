@@ -216,18 +216,22 @@ function commentcounter_macro(param) {
    // cloning the param object to remove the macro-specific
    // attributes from the clone for valid markup output:
    var param2 = Object.clone(param);
+   delete param2.as;
    delete param2.one;
    delete param2.more;
    delete param2.no;
-   var linkflag = (param.as == "link" && param.as != "text" || !param.as && commentCnt > 0);
+   var linkflag = (param.as == "link" && param.as != "text" || 
+                   !param.as && commentCnt > 0);
    if (linkflag)
       Html.openTag("a", this.createLinkParam(param2));
    if (commentCnt == 0)
-      res.write(param.no || param.no == "" ? param.no : getMessage("Comment.no"));
+      res.write(param.no || param.no == "" ? 
+                param.no : getMessage("Comment.no"));
    else if (commentCnt == 1)
       res.write(param.one ? param.one : getMessage("Comment.one"));
    else
-      res.write(commentCnt + (param.more ? param.more : " " + getMessage("Comment.more")));
+      res.write(commentCnt + (param.more ? 
+                param.more : " " + getMessage("Comment.more")));
    if (linkflag)
       Html.closeTag("a");
    return;
