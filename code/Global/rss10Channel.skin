@@ -23,7 +23,7 @@
     <sy:updateBase><% param.updateBase %></sy:updateBase>
 
     <!-- image rdf:resource="<% param.image %>"/ -->
-    <textinput rdf:resource="<% param.url %>"/>
+    <!-- textinput rdf:resource="<% param.url %>"/ -->
 
     <items>
       <rdf:Seq>
