@@ -82,8 +82,6 @@ function evalStory(param, modifier) {
       if (this.online != 0 && content.isMajorUpdate)
          this.site.sendNotification("update", this);
    }
-
-   this.cache.modifytime = new Date();
    var result = new Message("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
    result.id = this._id;
@@ -179,25 +177,37 @@ function deleteComment(commentObj) {
  * if false, it caches it again
  * @return String cached text of story
  */
-function getRenderedContentPart(name) {
-   var partLastRendered = this.cache["lastRendered_" + name];
-   if (!partLastRendered || partLastRendered <= this.modifytime ||
-       partLastRendered <= this.cache.modifytime) {
-      // enable caching; some macros (eg. poll, storylist)
-      // will set this to false to prevent caching of a contentpart
-      // containing them [rg]
-      req.data.cachePart = true;
-      // cached version of text is too old, so we cache it again
-      var part = this.content.getProperty(name);
-      if (!part)
-         return "";
-      var s = createSkin(format(part));
-      this.allowTextMacros(s);
-      this.cache["rendered_" + name] = this.renderSkinAsString(s).activateURLs();
-      if (req.data.cachePart == true)
-         this.cache["lastRendered_" + name] = new Date();
-   }
-   return this.cache["rendered_" + name];
+function getRenderedContentPart(name, fmt) {
+   var part = this.content.getProperty(name);
+   if (!part)
+      return "";
+   var key = fmt ? name + ":" + fmt : name;
+   var lastRendered = this.cache["lastRendered_" + key];
+   if (!lastRendered ||
+       lastRendered.getTime() < this.content.getLastModified().getTime()) {
+      switch (fmt) {
+         case "plaintext":
+            part = stripTags(part);
+            break;
+         case "alttext":
+            part = stripTags(part);
+            part = part.replace(/\"/g, "&quot;");
+            part = part.replace(/\'/g, "&#39;");
+            break;
+         default:
+            var s = createSkin(format(part));
+            this.allowTextMacros(s);
+            // enable caching; some macros (eg. poll, storylist)
+            // will set this to false to prevent caching of a contentpart
+            // containing them
+            req.data.cachePart = true;
+            part = this.renderSkinAsString(s).activateURLs();
+      }
+      this.cache[key] = part;
+      if (req.data.cachePart)
+         this.cache["lastRendered_" + key] = new Date();
+   }   
+   return this.cache[key];
 }
 
 /**
