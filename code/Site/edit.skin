@@ -47,7 +47,7 @@
 <td><% this.email as="editor" %><br><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap>notify <a href="http://www.weblogs.com">weblogs.com</a>:</td>
+<td class="small" valign="top" nowrap>notify updates:</td>
 <td><% this.enableping as="editor" %><br><span class="small">If this option is enabled, <a href="http://www.weblogs.com">weblogs.com</a> will be notified of any update of your weblog.</span></td>
 </tr>
 <tr>
