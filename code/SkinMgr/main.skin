@@ -104,11 +104,6 @@ When a user registers via your weblog, a mail containing this body will be sent 
 Whenever you or another admin of your weblog changes the status of a signed up member, this member will receive a confirmation mail. This skin defines the mail-body of it.</li>
 </ul>
 
-<ul>
-<li><a name="weblogeditor"></a><% this.link to="edit" urlparam="?proto=weblog&name=editor" text="main edit-page" %>&nbsp;<span class="small">(<% this.skinstatus proto="weblog" name="editor" %>)</span><br>
-This is the main skin used for all edit-pages (per default it's basically the same as the normal main page, just without calendar and &quot;recently-modified&quot;-box).</li>
-</ul>
-
 <p><b>navigation skins</b></p>
 <ul>
 <li><a name="weblogusernavigation"></a><% this.link to="edit" urlparam="?proto=weblog&name=usernavigation" text="navigation-bar for users" %>&nbsp;<span class="small">(<% this.skinstatus proto="weblog" name="usernavigation" %>)</span><br>
