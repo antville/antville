@@ -1,9 +1,9 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% this.alias %>" %&gt;</pre></td>
+<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre></td>
 </tr>
 <tr>
-<td><% this.show %></td>
+<td><% image.show %></td>
 </tr>
 </table>
 
@@ -13,7 +13,7 @@
 <tr>
 <tr>
 <td class="small" nowrap="nowrap">Alttext:</td>
-<td nowrap="nowrap"><% this.alttext as="editor" width="25" %></td>
+<td nowrap="nowrap"><% image.alttext as="editor" width="25" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>

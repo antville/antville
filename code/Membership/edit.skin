@@ -3,23 +3,23 @@
 <form method="post" action="<% response.action %>">
 <tr>
 <td class="small" nowrap="nowrap">Username:</td>
-<td nowrap="nowrap"><b><% this.username %></b></td>
+<td nowrap="nowrap"><b><% membership.username %></b></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">eMail:</td>
-<td nowrap="nowrap"><% this.email %></td>
+<td nowrap="nowrap"><% membership.email %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">url:</td>
-<td nowrap="nowrap"><% this.url %></td>
+<td nowrap="nowrap"><% membership.url %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">currently</td>
-<td nowrap="nowrap"><% this.level %></td>
+<td nowrap="nowrap"><% membership.level %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">change to:</td>
-<td nowrap="nowrap"><% this.level as="editor" %></td>
+<td nowrap="nowrap"><% membership.level as="editor" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>

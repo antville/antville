@@ -7,7 +7,7 @@
 </tr>
 </table>
 
-<% this.storylist %>
+<% topic.storylist %>
 
 <table border="0" cellspacing="0" cellpadding="2">
 
@@ -16,10 +16,10 @@
 </tr>
 </tr>
 <tr>
-<td><% this.addstory %></td>
+<td><% topic.addstory %></td>
 </tr>
 <tr>
-<td><% this.relatedtopics prefix="<br />Stories/Comments linking to this topic:<br />" %></td>
+<td><% topic.relatedtopics prefix="<br />Stories/Comments linking to this topic:<br />" %></td>
 </tr>
 </table>
 

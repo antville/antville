@@ -11,13 +11,13 @@
 
 <style type="text/css">
 <!--
-<% root.skin name="style" %>
+<% sysmgr.skin name="style" %>
 // -->
 </style>
 
 <script type="text/javascript" language="javascript">
 <!--
-<% root.skin name="javascript" %>
+<% sysmgr.skin name="javascript" %>
 // -->
 </script>
 </head>
@@ -42,10 +42,10 @@
 <div class="statushead"><% image name="/manage" %>manage</div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statuslight">...&nbsp;<% this.link to="sites" text="sites" %><br />
-...&nbsp;<% this.link to="users" text="users" %><br />
-...&nbsp;<% this.link to="setup" text="setup" %><br />
-...&nbsp;<% this.link to="logs" text="system log" %>
+<div class="statuslight">...&nbsp;<% sysmgr.link to="sites" text="sites" %><br />
+...&nbsp;<% sysmgr.link to="users" text="users" %><br />
+...&nbsp;<% sysmgr.link to="setup" text="setup" %><br />
+...&nbsp;<% sysmgr.link to="logs" text="system log" %>
 </td>
 </tr>
 <tr>

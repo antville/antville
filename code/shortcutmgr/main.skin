@@ -16,7 +16,7 @@
 <td colspan="2"><input type="submit" name="submit" value=" save " /><br />&nbsp;</td>
 </tr>
 
-<% this.shortcutlist %>
+<% shortcutmgr.shortcutlist %>
 
 </form>
 

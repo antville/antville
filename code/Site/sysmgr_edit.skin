@@ -1,20 +1,20 @@
-<form method="post" action="<% response.action %>#<% this.alias %>">
+<form method="post" action="<% response.action %>#<% site.alias %>">
 <input type="hidden" name="item" value="<% request.item %>">
 <input type="hidden" name="page" value="<% request.page %>">
 <tr>
-<td valign="top" class="small" nowrap="nowrap"><% this.sysmgr_count what="stories" suffix="&nbsp;stories<br />" %>
-<% this.sysmgr_count what="comments" suffix="&nbsp;comments<br />" %>
-<% this.sysmgr_count what="images" suffix="&nbsp;images<br />" %>
-<% this.sysmgr_count what="files" suffix="&nbsp;files<br />" %></td>
+<td valign="top" class="small" nowrap="nowrap"><% site.sysmgr_count what="stories" suffix="&nbsp;stories<br />" %>
+<% site.sysmgr_count what="comments" suffix="&nbsp;comments<br />" %>
+<% site.sysmgr_count what="images" suffix="&nbsp;images<br />" %>
+<% site.sysmgr_count what="files" suffix="&nbsp;files<br />" %></td>
 <td width="10" nowrap="nowrap"><% image name="/pixel" width="10" %></td>
 <td colspan="2" nowrap="nowrap"><table border="0" class="highlight">
    <tr>
    <td nowrap="nowrap">trusted:</td>
-   <td nowrap="nowrap"><% this.sysmgr_trusted as="editor" %></td>
+   <td nowrap="nowrap"><% site.sysmgr_trusted as="editor" %></td>
    </tr>
    <tr>
    <td nowrap="nowrap">blocked:</td>
-   <td nowrap="nowrap"><% this.sysmgr_blocked as="editor" %></td>
+   <td nowrap="nowrap"><% site.sysmgr_blocked as="editor" %></td>
    </tr>
    <tr>
    <td nowrap="nowrap"></td>

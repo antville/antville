@@ -1,1 +1,1 @@
-<li><% this.link %></li>
+<li><% topic.link %></li>

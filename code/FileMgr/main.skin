@@ -1,7 +1,7 @@
 <p>To insert a file in a story or comment just copy and paste its code.</p>
-<p>...&nbsp;<% this.link to="create" text="add a file" %></p>
+<p>...&nbsp;<% filemgr.link to="create" text="add a file" %></p>
 
 <% response.prevpage %>
-<% this.files %>
+<% filemgr.files %>
 <% response.nextpage %>
 

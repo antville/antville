@@ -14,12 +14,12 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">eMail:</td>
-<td><% this.email as="editor" %><br>
+<td><% user.email as="editor" %><br>
 <span class="small"><% input type="checkbox" name="publishemail" %>if you select this the eMail-address above might appear public.</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Link:*</td>
-<td><% this.url as="editor" %><br>
+<td><% user.url as="editor" %><br>
 <span class="small">If you enter a URL or an eMail-address here, your Username will appear as link.</span></td>
 </tr>
 <tr>

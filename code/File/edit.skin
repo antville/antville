@@ -1,16 +1,16 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <form method="get" action="<% response.action %>">
 <tr>
-<td colspan="2">To insert this file into a story copy/paste the following code: <pre>&lt;% file name="<% this.alias %>" %&gt;</pre><br /></td>
+<td colspan="2">To insert this file into a story copy/paste the following code: <pre>&lt;% file name="<% file.alias %>" %&gt;</pre><br /></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Description:</td>
-<td nowrap="nowrap"><% this.description as="editor" width="25" %></td>
+<td nowrap="nowrap"><% file.description as="editor" width="25" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap"></td>
-<td class="small" nowrap="nowrap"><% this.filesize prefix="<b>size:</b>&nbsp;" suffix="<br />" %>
-<% this.mimetype prefix="<b>format:</b>&nbsp;" suffix="<br />" %></td>
+<td class="small" nowrap="nowrap"><% file.filesize prefix="<b>size:</b>&nbsp;" suffix="<br />" %>
+<% file.mimetype prefix="<b>format:</b>&nbsp;" suffix="<br />" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>

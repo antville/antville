@@ -1,9 +1,9 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% this.alias %>" %&gt;</pre></td>
+<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre></td>
 </tr>
 <tr>
-<td><% this.show %></td>
+<td><% image.show %></td>
 </tr>
 </table>
 
@@ -12,15 +12,15 @@
 <tr>
 <tr>
 <td class="small" nowrap="nowrap">Name:</td>
-<td nowrap="nowrap"><% this.alias %></td>
+<td nowrap="nowrap"><% image.alias %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Alttext:</td>
-<td nowrap="nowrap"><% this.alttext %></td>
+<td nowrap="nowrap"><% image.alttext %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Author:</td>
-<td nowrap="nowrap"><% this.creator %></td>
+<td nowrap="nowrap"><% image.creator %></td>
 </tr>
 </table>
-<div class="small"><% this.editlink prefix="<br />...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" suffix="<br /><br />" %></div>
+<div class="small"><% image.editlink prefix="<br />...&nbsp;" suffix="&nbsp;&nbsp;" %><% image.deletelink prefix="...&nbsp;" suffix="<br /><br />" %></div>

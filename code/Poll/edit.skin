@@ -4,18 +4,18 @@
 <form method="post" action="<% response.action %>">
 <tr>
 <td nowrap="nowrap"><span class="small">Title:</span><br />
-<% this.title as="editor" width="24" style="formTitle" %></td>
+<% poll.title as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap"><span class="small">Question:</span><br />
-<% this.question as="editor" width="30" height="3" style="formText" %></td>
+<% poll.question as="editor" width="30" height="3" style="formText" %></td>
 </tr>
 
 <% response.choices %>
 
 <tr>
 <td nowrap="nowrap"><br /><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" value="add choice" %>&nbsp;<% input type="button" name="cancel" value="cancel" %>
-<p class="small"><% this.info %></p></td>
+<p class="small"><% poll.info %></p></td>
 </tr>
 </form>
 </table>

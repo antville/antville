@@ -1,12 +1,12 @@
-<p class="storyTitle"><% this.question %></p>
+<p class="storyTitle"><% poll.question %></p>
 <table border="0" cellspacing="2" cellpadding="2">
 <form method="post" action="<% response.action %>">
 
-<% this.choices %>
+<% poll.choices %>
 
 <tr>
-<td colspan="2"><br /><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><% this.link to="results" text="view results" %></span>
-<p class="small"><% this.info %></p></td>
+<td colspan="2"><br /><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><% poll.link to="results" text="view results" %></span>
+<p class="small"><% poll.info %></p></td>
 </tr>
 
 </form>

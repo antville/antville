@@ -18,11 +18,11 @@
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap">If you're not registered, you can do this <% this.link to="register" text="here" %>.</td>
+<td nowrap="nowrap">If you're not registered, you can do this <% membermgr.link to="register" text="here" %>.</td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% this.link to="sendpwd" text="Forgot" %> your password?</td>
+<td nowrap="nowrap"><% membermgr.link to="sendpwd" text="Forgot" %> your password?</td>
 </tr>
 </form>
 </table>

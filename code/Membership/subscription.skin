@@ -1,1 +1,1 @@
-<li><% this.sitetitle linkto="main" %>&nbsp;&nbsp;&nbsp;<span class="small"><% this.unsubscribelink prefix="...&nbsp;"%></span></li>
+<li><% membership.sitetitle linkto="main" %>&nbsp;&nbsp;&nbsp;<span class="small"><% membership.unsubscribelink prefix="...&nbsp;"%></span></li>

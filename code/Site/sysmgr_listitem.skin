@@ -1,19 +1,19 @@
 <tr>
-<td colspan="4" height="1" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><a name="<% this.alias %>"></a><% image name="/pixel" height="1" %></td>
+<td colspan="4" height="1" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><a name="<% site.alias %>"></a><% image name="/pixel" height="1" %></td>
 </tr>
 <tr>
-<td colspan="4" nowrap="nowrap"><% this.sysmgr_statusflags %></td>
+<td colspan="4" nowrap="nowrap"><% site.sysmgr_statusflags %></td>
 </tr>
 <tr>
-<td width="390" valign="top" nowrap="nowrap"><b><% this.title linkto="main" suffix="<br />" %></b>
-<% this.tagline suffix="<br />" %>
-<a href="<% this.url %>"><% this.url %></a></td>
+<td width="390" valign="top" nowrap="nowrap"><b><% site.title linkto="main" suffix="<br />" %></b>
+<% site.tagline suffix="<br />" %>
+<a href="<% site.url %>"><% site.url %></a></td>
 <td width="10" nowrap="nowrap"><% image name="/pixel" width="10" %></td>
-<td width="200" valign="top" class="small" nowrap="nowrap">creator:&nbsp;<% this.sysmgr_creator %><br />
-created:&nbsp;<% this.createtime format="dd.MM.yyyy HH:mm" %><br />
-last update:&nbsp;<% this.lastupdate format="dd.MM.yyyy HH:mm" %></td>
-<td width="80" class="small" valign="top" align="right" nowrap="nowrap"><% this.sysmgr_editlink prefix="...&nbsp;" %><br />
-<% this.sysmgr_deletelink prefix="...&nbsp;" %></td>
+<td width="200" valign="top" class="small" nowrap="nowrap">creator:&nbsp;<% site.sysmgr_creator %><br />
+created:&nbsp;<% site.createtime format="dd.MM.yyyy HH:mm" %><br />
+last update:&nbsp;<% site.lastupdate format="dd.MM.yyyy HH:mm" %></td>
+<td width="80" class="small" valign="top" align="right" nowrap="nowrap"><% site.sysmgr_editlink prefix="...&nbsp;" %><br />
+<% site.sysmgr_deletelink prefix="...&nbsp;" %></td>
 </tr>
 <tr>
 <td colspan="4" height="5" nowrap="nowrap"><% image name="pixel" height="5" %></td>

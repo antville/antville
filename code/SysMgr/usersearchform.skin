@@ -5,15 +5,15 @@
 </tr>
 <tr>
 <td nowrap="nowrap">...&nbsp;show</td>
-<td nowrap="nowrap"><% this.dropdown name="show" values="all users,blocked users,trusted users,sysadmins" %></td>
+<td nowrap="nowrap"><% sysmgr.dropdown name="show" values="all users,blocked users,trusted users,sysadmins" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">...&nbsp;sorted by</td>
-<td nowrap="nowrap"><% this.dropdown name="sort" values="last visit,registration,username" %></td>
+<td nowrap="nowrap"><% sysmgr.dropdown name="sort" values="last visit,registration,username" %></td>
 </tr>
 <tr>
 <td>...&nbsp;order</td>
-<td nowrap="nowrap"><% this.dropdown name="order" values="descending,ascending" %></td>
+<td nowrap="nowrap"><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>

@@ -5,11 +5,11 @@
 </tr>
 <tr>
 <td nowrap="nowrap">...&nbsp;show</td>
-<td nowrap="nowrap"><% this.dropdown name="show" values="all logs,site-logs,user-logs,system-logs" %></td>
+<td nowrap="nowrap"><% sysmgr.dropdown name="show" values="all logs,site-logs,user-logs,system-logs" %></td>
 </tr>
 <tr>
 <td>...&nbsp;order</td>
-<td nowrap="nowrap"><% this.dropdown name="order" values="descending,ascending" %></td>
+<td nowrap="nowrap"><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>

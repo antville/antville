@@ -6,55 +6,55 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% this.title as="editor" width="30" %></td>
+<td nowrap="nowrap"><% site.title as="editor" width="30" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Tagline:</td>
-<td nowrap="nowrap"><% this.tagline as="editor" width="30" %></td>
+<td nowrap="nowrap"><% site.tagline as="editor" width="30" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Days on frontpage:</td>
-<td nowrap="nowrap"><% this.showdays as="editor" width="5" %></td>
+<td nowrap="nowrap"><% site.showdays as="editor" width="5" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Language:</td>
-<td nowrap="nowrap"><% this.localechooser %></td>
+<td nowrap="nowrap"><% site.localechooser %></td>
 </tr>
 <tr>
 <td class="small" nowrap>Timezone:</td>
-<td nowrap><% this.timezonechooser %></td>
+<td nowrap><% site.timezonechooser %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Long dateformat:</td>
-<td nowrap="nowrap"><% this.longdateformat as="chooser" width="20" %></td>
+<td nowrap="nowrap"><% site.longdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Short dateformat:</td>
-<td nowrap="nowrap"><% this.shortdateformat as="chooser" width="20" %></td>
+<td nowrap="nowrap"><% site.shortdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Weblog is public:</td>
-<td nowrap="nowrap"><% this.online as="editor" %></td>
+<td nowrap="nowrap"><% site.online as="editor" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Allow comments:</td>
-<td nowrap="nowrap"><% this.hasdiscussions as="editor" %></td>
+<td nowrap="nowrap"><% site.hasdiscussions as="editor" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Allow contributions:</td>
-<td><% this.usermaycontrib as="editor" %><br /><span class="small">Enabling this option means that every registered antville-user can create stories.</span></td>
+<td><% site.usermaycontrib as="editor" %><br /><span class="small">Enabling this option means that every registered antville-user can create stories.</span></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Enable archive:</td>
-<td nowrap="nowrap"><% this.showarchive as="editor" %></td>
+<td nowrap="nowrap"><% site.showarchive as="editor" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">E-mail address:</td>
-<td><% this.email as="editor" %><br /><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
+<td><% site.email as="editor" %><br /><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Notify updates:</td>
-<td><% this.enableping as="editor" %><br /><span class="small">If this option is enabled, <a href="http://www.weblogs.com">weblogs.com</a> will be notified of any update of your weblog.</span></td>
+<td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled, <a href="http://www.weblogs.com">weblogs.com</a> will be notified of any update of your weblog.</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
@@ -62,31 +62,31 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% this.colorpicker name="bgcolor" text="background" %><!-- &nbsp; <span class="small"><a href="javascript: setBg();">preview</a></small> --></td>
+<td nowrap="nowrap"><% site.colorpicker name="bgcolor" text="background" %><!-- &nbsp; <span class="small"><a href="javascript: setBg();">preview</a></small> --></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% this.colorpicker name="titlecolor" text="title" %></td>
+<td nowrap="nowrap"><% site.colorpicker name="titlecolor" text="title" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Text:</td>
-<td nowrap="nowrap"><% this.colorpicker name="textcolor" text="text" %></td>
+<td nowrap="nowrap"><% site.colorpicker name="textcolor" text="text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Small text:</td>
-<td nowrap="nowrap"><% this.colorpicker name="smallcolor" text="small text" %></td>
+<td nowrap="nowrap"><% site.colorpicker name="smallcolor" text="small text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Link:</td>
-<td nowrap="nowrap"><% this.colorpicker name="linkcolor" text="link" %></td>
+<td nowrap="nowrap"><% site.colorpicker name="linkcolor" text="link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Active Link:</td>
-<td nowrap="nowrap"><% this.colorpicker name="alinkcolor" text="active link" %></td>
+<td nowrap="nowrap"><% site.colorpicker name="alinkcolor" text="active link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Visited Link:</td>
-<td nowrap="nowrap"><% this.colorpicker name="vlinkcolor" text="visited link" %></td>
+<td nowrap="nowrap"><% site.colorpicker name="vlinkcolor" text="visited link" %></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
@@ -94,27 +94,27 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title font:</td>
-<td nowrap="nowrap"><% this.titlefont as="editor" width="30" %></td>
+<td nowrap="nowrap"><% site.titlefont as="editor" width="30" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title size:</td>
-<td nowrap="nowrap"><% this.titlesize as="editor" width="10" %></td>
+<td nowrap="nowrap"><% site.titlesize as="editor" width="10" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Text font:</td>
-<td nowrap="nowrap"><% this.textfont as="editor" width="30" %></td>
+<td nowrap="nowrap"><% site.textfont as="editor" width="30" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Text size:</td>
-<td nowrap="nowrap"><% this.textsize as="editor" width="10" %></td>
+<td nowrap="nowrap"><% site.textsize as="editor" width="10" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Small font:</td>
-<td nowrap="nowrap"><% this.smallfont as="editor" width="30" %></td>
+<td nowrap="nowrap"><% site.smallfont as="editor" width="30" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Small size:</td>
-<td nowrap="nowrap"><% this.smallsize as="editor" width="10" %></td>
+<td nowrap="nowrap"><% site.smallsize as="editor" width="10" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">&nbsp;</td>

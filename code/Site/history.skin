@@ -1,3 +1,3 @@
 <table border="0" cellspacing="0" cellpadding="2" width="200">
-<% this.history show="5" %>
+<% site.history show="5" %>
 </table>

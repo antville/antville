@@ -1,6 +1,6 @@
 Your status as a member of <% site.title %> has changed: You are now
 
-   <% this.level %>
+   <% membership.level %>
 
 Have fun!
 

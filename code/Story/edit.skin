@@ -2,36 +2,36 @@
 <form method="post" action="<% response.action %>">
 <tr>
 <td nowrap="nowrap"><span class="small">Title:</span><br />
-<% this.content part="title" as="editor" width="24" style="formTitle" %></td>
+<% story.content part="title" as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap"><span class="small">Text:</span><br />
-<% this.content part="text" as="editor" width="30" height="15" style="formText" %></td>
+<% story.content part="text" as="editor" width="30" height="15" style="formText" %></td>
 </tr>
 <tr>
 <td><table border="0" cellspacing="0" cellpadding="3">
    <tr>
    <td class="small">select a topic<br />or create<br />a new one<br />(or leave empty):</td>
-   <td valign="top" nowrap="nowrap"><% this.topicchooser %><br /><input type="text" name="topic" value="<% request.topic %>"></td>
+   <td valign="top" nowrap="nowrap"><% story.topicchooser %><br /><input type="text" name="topic" value="<% request.topic %>"></td>
    </tr>
    <tr>
    <td class="small" nowrap="nowrap">status:</td>
-   <td nowrap="nowrap"><% this.online as="editor" %></td>
+   <td nowrap="nowrap"><% story.online as="editor" %></td>
    </tr>
    <tr>
    <td class="small" nowrap="nowrap">also editable for:</td>
-   <td nowrap="nowrap"><% this.editableby as="editor" %></td>
+   <td nowrap="nowrap"><% story.editableby as="editor" %></td>
    </tr>
    <tr>
    <td class="small" nowrap="nowrap">allow comments:</td>
-   <td nowrap="nowrap"><% this.discussions as="editor" %></td>
+   <td nowrap="nowrap"><% story.discussions as="editor" %></td>
    </tr>
    </table></td>
 <tr>
 <td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 <tr>
-<td class="small"><% this.creator as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime format="short" prefix="&nbsp;on&nbsp;"%></td>
+<td class="small"><% story.creator as="link" prefix="created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;"%></td>
 </tr>
 </form>
 </table>

@@ -1,2 +1,2 @@
 <p><% story.skin name="display" %>
-<span class="small"><% this.commentform %></span></p>
+<span class="small"><% story.commentform %></span></p>

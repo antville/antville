@@ -38,6 +38,8 @@ if (req.data.q) {
             res.data.body += getMsg("confirm","resultDisplay",new Array(start+1,end));
         }
 
+        res.data.body += "<br />";
+
         // note: I'm doing this without a "searchbody" skin, since
         // I think there's not much need to customize the body of
         // search results, esp. since its parts are fully customizable.
@@ -52,14 +54,11 @@ if (req.data.q) {
         }
 
         // render result
-        res.data.body += '<table border="0">';
         for (var i=start; i<end; i++) {
             var site = root.get(result[i].sitealias);
             var item = site.allcontent.get(result[i].sid);
             res.data.body += item.renderSkinAsString("searchview");
         }
-
-        res.data.body += '</table>';
 
         // render next links, if necessary
         if (end < found) {

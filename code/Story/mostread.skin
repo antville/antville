@@ -1,7 +1,7 @@
 <tr>
 	<td align="right" valign="top"><% param.rank %></td>
 	<td align="right" valign="top"><% param.reads %></td>
-	<td valign="top"><% this.createtime format="dd.MM.yy" %></td>
-	<td valign="top"><a href="<% this.url %>"><% this.title as="link" %></a></td>
-	<td valign="top"><% this.creator %></td>
+	<td valign="top"><% story.createtime format="dd.MM.yy" %></td>
+	<td valign="top"><a href="<% story.url %>"><% story.title as="link" %></a></td>
+	<td valign="top"><% story.creator %></td>
 </tr>

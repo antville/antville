@@ -1,4 +1,4 @@
 <p>The following list of weblogs contains those that you either subscribed or are a member of, sorted by their last update:</p>
-<% this.sitelist prefix="<ul>" suffix="</ul>" %>
-<% this.membershiplist prefix="<p>Your are a member of the following sites:</p><ul>" suffix="</ul>" %>
-<% this.subscriptionlist prefix="<p>You subscribed to the following sites:</p><ul>" suffix="</ul>" %>
+<% user.sitelist prefix="<ul>" suffix="</ul>" %>
+<% user.membershiplist prefix="<p>You are a member of the following sites:</p><ul>" suffix="</ul>" %>
+<% user.subscriptionlist prefix="<p>You subscribed to the following sites:</p><ul>" suffix="</ul>" %>

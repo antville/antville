@@ -1,1 +1,1 @@
-created by <% this.creator %> on <% this.createtime format="short" %>.
+created by <% poll.creator %> on <% poll.createtime format="short" %>.

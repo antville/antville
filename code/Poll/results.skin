@@ -1,7 +1,7 @@
-<p class="storyTitle"><% this.question %></p>
+<p class="storyTitle"><% poll.question %></p>
 
-<% this.results no="votes" one="vote" more="votes" %>
+<% poll.results no="votes" one="vote" more="votes" %>
 
-<p><b>Total:</b> 100% <span class="small">(<% this.total no="votes" one="vote" more="votes" %>)</span></p>
+<p><b>Total:</b> 100% <span class="small">(<% poll.total no="votes" one="vote" more="votes" %>)</span></p>
 
-<div class="small">created by <% this.creator %> on <% this.createtime format="short" %>.<% this.state text="<br />this poll was closed on " format="short" %></div>
+<div class="small">created by <% poll.creator %> on <% poll.createtime format="short" %>.<% poll.state text="<br />this poll was closed on " format="short" %></div>

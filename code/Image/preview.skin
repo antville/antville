@@ -1,11 +1,11 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td colspan="2" class="small" nowrap="nowrap"><span class="commentHead">&nbsp;</span><br />
-<b><% this.alias %></b>&nbsp;by <% this.creator %> (<% this.createtime format="short" %>)<br />
-<b>code:&nbsp;</b>&lt;% image name="<% this.alias %>" %&gt;</td>
+<b><% image.alias %></b>&nbsp;by <% image.creator %> (<% image.createtime format="short" %>)<br />
+<b>code:&nbsp;</b>&lt;% image name="<% image.alias %>" %&gt;</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><% this.show what="thumbnail" %></td>
-<td class="small" valign="top" nowrap="nowrap"><% this.editlink prefix="...&nbsp;" suffix="<br />" %><% this.deletelink prefix="...&nbsp;" %></td>
+<td nowrap="nowrap"><% image.show what="thumbnail" %></td>
+<td class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>

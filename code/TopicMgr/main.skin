@@ -1,4 +1,4 @@
 <% linkedpath %>
 <ul>
-<% this.loopskin name="link" %>
+<% topicmgr.loopskin name="link" %>
 </ul>

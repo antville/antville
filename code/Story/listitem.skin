@@ -1,10 +1,10 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small"><% this.creator as="link" %>, <% this.createtime format="short" %>&nbsp;(<% this.online  %><% this.commentcounter prefix=",&nbsp;" anchor="comments" %>)</td>
+<td colspan="3" class="small"><% story.creator as="link" %>, <% story.createtime format="short" %>&nbsp;(<% story.online  %><% story.commentcounter prefix=",&nbsp;" anchor="comments" %>)</td>
 </tr>
 <tr valign="top">
-<td><span class="storyTitle"><% this.title suffix="<br />" %></span><% this.text limit="200" suffix="&nbsp;..." %></td>
+<td><span class="storyTitle"><% story.title suffix="<br />" %></span><% story.text limit="200" suffix="&nbsp;..." %></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% this.editlink prefix="...&nbsp;" suffix="<br />" %><% this.viewlink prefix="...&nbsp;" suffix="<br />" %><% this.onlinelink prefix="...&nbsp;" suffix="<br />" %><% this.deletelink prefix="...&nbsp;" %></td>
+<td align="right" class="small" nowrap="nowrap"><% story.editlink prefix="...&nbsp;" suffix="<br />" %><% story.viewlink prefix="...&nbsp;" suffix="<br />" %><% story.onlinelink prefix="...&nbsp;" suffix="<br />" %><% story.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>

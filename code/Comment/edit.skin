@@ -1,7 +1,7 @@
 <form method="post" action="<% response.action %>">
 <p><span class="small">Title:<br /></span>
-<% this.content part="title" as="editor" width="25" style="formTitle" %></p>
+<% comment.content part="title" as="editor" width="25" style="formTitle" %></p>
 <p><span class="small">Text:</span><br />
-<% this.content part="text" as="editor" width="31" height="10" style="formText" %></p>
+<% comment.content part="text" as="editor" width="31" height="10" style="formText" %></p>
 <p><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></p>
 </form>
