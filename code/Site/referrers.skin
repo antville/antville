@@ -1,4 +1,4 @@
-<form action="<% site.href action="referrers" %>" method="get">
+<form action="<% response.action %>" method="get">
 <input type="text" name="filter" value="<% request.filter %>" size="40" /> <input type="submit" name="submit" value="Filter" />
 </form><br />
 
