@@ -16,6 +16,7 @@ function evalLogin(username,password) {
       if (user.isBlocked()) {
          result.message = "Sorry, your account was disabled!";
          user.logout();
+         return (result);
       }
       // login successful
       user.lastVisit = new Date();
@@ -308,4 +309,16 @@ function deleteMember(member,usr) {
       result.error = false;
    }
    return (result);
+}
+
+/**
+ * function deletes all members
+ */
+
+function deleteAll() {
+   for (var i=this.size();i>0;i--) {
+      var member = this.get(i-1);
+      this.remove(member);
+   }
+   return true;
 }

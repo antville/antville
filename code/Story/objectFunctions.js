@@ -167,3 +167,16 @@ function incrementReadCounter() {
 		this.cache.reads = 0;
 	}
 }
+
+/**
+ * function deletes all childobjects of a story (recursive!)
+ */
+
+function deleteAll() {
+   for (var i=this.size();i>0;i--) {
+      var comment = this.get(i-1);
+      comment.deleteAll();
+      this.remove(comment);
+   }
+   return true;
+}

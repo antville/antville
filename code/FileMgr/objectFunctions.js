@@ -90,3 +90,15 @@ function deleteGoodie(currGoodie) {
    else
       return ("Ooops! Couldn't delete the goodie!");
 }
+
+/**
+ * function deletes all goodies
+ */
+
+function deleteAll() {
+   for (var i=this.size();i>0;i--) {
+      var goodie = this.get(i-1);
+      this.deleteGoodie(goodie);
+   }
+   return true;
+}

@@ -107,3 +107,15 @@ function deleteImage(currImg) {
    else
       return ("Ooops! Couldn't delete the image!");
 }
+
+/**
+ * function deletes all images
+ */
+
+function deleteAll() {
+   for (var i=this.size();i>0;i--) {
+      var img = this.get(i-1);
+      this.deleteImage(img);
+   }
+   return true;
+}

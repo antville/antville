@@ -61,3 +61,17 @@ function deleteSkin(s) {
    else
       return ("Couldn't delete skin!");
 }
+
+/**
+ * function deletes all skins belonging to this manager
+ */
+
+function deleteAll() {
+   var mgr = this._parent.skinmanager;
+   for (var i=mgr.size();i>0;i--) {
+      var proto = mgr.get(i-1);
+      for (var j=proto.size();j>0;j--)
+         proto.remove(proto.get(j-1));
+   }
+   return;
+}
