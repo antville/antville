@@ -19,8 +19,8 @@ if (max > 50)
 for (var i=0; i<max; i++) {
 	var weblog = this.get(i);
 	if (weblog.online) {
-                // if weblog was modified, use modifytime, otherwise createtime
-                var weblogDate = weblog.modifytime ? weblog.modifytime : weblog.createtime;
+		// if weblog was modified, use modifytime, otherwise createtime
+		var weblogDate = weblog.lastupdate ? weblog.lastupdate : weblog.createtime;
 		param1.itemUrl = weblog.href();
 		param1.itemTitle = weblog.title ? encodeXml(weblog.title) : "[untitled antville weblog]";
 		param1.authorName = encodeXml(weblog.creator.name);
