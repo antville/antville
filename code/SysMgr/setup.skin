@@ -24,6 +24,10 @@
 <td><% root.localechooser %><br /><span class="small">This defines the language of Antville's confirm  and error messages. If you select a language that Antville doesn't know, it will display all messages in english. Whatever language you specify here will also be the default for every new weblog created here.</span></td>
 </tr>
 <tr>
+<td nowrap="nowrap">Time zone:</td>
+<td nowrap="nowrap"><% root.timezonechooser %></td>
+</tr>
+<tr>
 <td nowrap="nowrap">Long date format:</td>
 <td nowrap="nowrap"><% root.longdateformat as="chooser" width="20" %></td>
 </tr>
@@ -108,7 +112,7 @@
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td>&nbsp;<br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+<td>&nbsp;<br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>
