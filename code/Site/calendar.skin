@@ -1,20 +1,20 @@
-<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="2" BGCOLOR="#CCCCCC" CLASS="calendar">
-<TR>
-<TD COLSPAN="7" ALIGN="CENTER" CLASS="calendarHeader" NOWRAP><% param.month %>&nbsp;<% param.year %></TD>
-</TR>
-<TR>
-<TD CLASS="calendarDay" NOWRAP>Mo</TD>
-<TD CLASS="calendarDay" NOWRAP>Tu</TD>
-<TD CLASS="calendarDay" NOWRAP>We</TD>
-<TD CLASS="calendarDay" NOWRAP>Th</TD>
-<TD CLASS="calendarDay" NOWRAP>Fr</TD>
-<TD CLASS="calendarDay" NOWRAP>Sa</TD>
-<TD CLASS="calendarDay" NOWRAP>Su</TD>
-</TR>
+<table border="0" cellspacing="0" cellpadding="2" class="calendar">
+<tr>
+<td colspan="7" align="center" class="calendarheader" nowrap><% param.month %>&nbsp;<% param.year %></td>
+</tr>
+<tr>
+<td class="calendarday" nowrap>mo</td>
+<td class="calendarday" nowrap>tu</td>
+<td class="calendarday" nowrap>we</td>
+<td class="calendarday" nowrap>th</td>
+<td class="calendarday" nowrap>fr</td>
+<td class="calendarday" nowrap>sa</td>
+<td class="calendarday" nowrap>su</td>
+</tr>
 <% param.calendar %>
-<TR>
-<TD COLSPAN="3" ALIGN="RIGHT" CLASS="calendarFooter" NOWRAP><% param.back %></TD>
-<TD CLASS="calendarFooter" NOWRAP>&nbsp;</TD>
-<TD COLSPAN="3" CLASS="calendarFooter" NOWRAP><% param.forward %></TD>
-</TR>
-</TABLE>
+<tr>
+<td colspan="3" align="right" class="calendarfooter" nowrap><% param.back %></td>
+<td class="calendarfooter" nowrap>&nbsp;</td>
+<td colspan="3" class="calendarfooter" nowrap><% param.forward %></td>
+</tr>
+</table>

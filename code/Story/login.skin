@@ -1,1 +1,1 @@
-<P><% weblog.loginlink text="login to add your comment!" %></P>
+<p><% weblog.loginlink text="login to add your comment!" %></p>

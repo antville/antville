@@ -1,8 +1,33 @@
-<FORM METHOD="POST" ENCTYPE="multipart/form-data">
-<P>Alias:<% this.alias as="editor" %></P>
-<P>Alttext:<% this.alttext as="editor" %></P>
-<P>Upload: <% this.input type="file" name="rawimage" %></P>
-<P>maximum width: <% this.input type="text" name="maxWidth" width="5" %><BR>
-maximum height: <% this.input type="text" name="maxHeight" width="5" %><BR></P>
-<P><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %>
-</FORM>
+<table border="0" width="400" cellspacing="0" cellpadding="3">
+<tr>
+<td colspan="2" class="storyText">Please specify the name of the image. Using this name you will be able to reference the image in a macro.</td>
+</tr>
+<tr>
+<td class="storyText" nowrap><form method="post" enctype="multipart/form-data">Name:</td>
+<td class="storyText" nowrap><% this.alias as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>Alttext:</td>
+<td class="storyText" nowrap><% this.alttext as="editor" width="40" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>File:</td>
+<td class="storyText" nowrap><% this.input type="file" name="rawimage" width="10" %></td>
+</tr>
+<tr>
+<td colspan="2" class="storyText">If you want to resize the image, please specify your desired maximum width and/or maximum height. If you specify both, the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
+</tr>
+<tr>
+<td class="storyText" nowrap>max. width:</td>
+<td class="storyText" nowrap><% this.input type="text" name="maxwidth" width="5" %>&nbsp;pixel</td>
+</tr>
+<tr>
+<td class="storyText" nowrap>max. height:</td>
+<td class="storyText" nowrap><% this.input type="text" name="maxheight" width="5" %>&nbsp;pixel</td>
+</tr>
+<tr>
+<td class="storyText" valign="top" nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+</tr>
+</table>
+</form>

@@ -1,9 +1,9 @@
-<TABLE BGCOLOR="#FF9900" BORDER="0" CELLSPACING="0" CELLPADDING="2">
-<TR>
-<TD NOWRAP><% this.link to="main" text="&bull;&nbsp;home" %></TD>
-<TD NOWRAP><% this.link to="edit" text="&bull;&nbsp;preferences" %></TD>
-<TD NOWRAP><% this.link to="create" text="&bull;&nbsp;create story" %></TD>
-<TD NOWRAP><% this.link to="images" text="&bull;&nbsp;image editor" %></TD>
-<TD NOWRAP><% this.link to="skins" text="&bull;&nbsp;skin editor" %></TD>
-</TR>
-</TABLE>
+<table border="0" cellspacing="1" cellpadding="0">
+<tr>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="main" text="home" %>&nbsp;</td>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="edit" text="preferences" %>&nbsp;</td>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="create" text="create story" %>&nbsp;</td>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="images" text="image editor" %>&nbsp;</td>
+<td class="headerNavItem" nowrap>&nbsp;<% this.link to="skins" text="skin editor" %>&nbsp;</td>
+</tr>
+</table>

@@ -1,2 +1,2 @@
-<P><% this.images %></P>
-<P><% this.link to="create" text="add new image" %></P>
+<p class="storyNav"><% this.link to="create" text="add new image" %></p>
+<% this.images %>

@@ -1,6 +1,19 @@
-<FORM METHOD="POST">
-<P>Title: <% this.title as="editor" %></P>
-<P>Text: <% this.text as="editor" width="40" height="10" %></P>
-<P>is online: <% this.online as="editor" %></P>
-<P><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></P>
-</FORM>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="storyText" nowrap><form method="post">Title:</td>
+<td class="storyText" nowrap><% this.title as="editor" width="40" %></td>
+</tr>
+<tr>
+<td class="storyText" valign="top" nowrap>Text:</td>
+<td class="storyText" nowrap><% this.text as="editor" width="40" height="15" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>is online:</td>
+<td class="storyText" nowrap><% this.online as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+</tr>
+</table>
+</form>

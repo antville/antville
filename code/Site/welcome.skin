@@ -1,1 +1,2 @@
-<P>This is a completely empty weblog, but who nows? Maybe sometimes ...</P>
+<p class="storyTitle">Welcome to <% this.title %>!</p>
+<p>This weblog was created <% this.createtime format="EEEE, dd.MM.yyyy HH:mm" %>, and 'til now it doesn't contain any stories. But who knows ...</p>

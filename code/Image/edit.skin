@@ -1,6 +1,16 @@
-<FORM METHOD="POST">
-<P><% this.show %></P>
-<P>Alias:<% this.alias as="editor" %></P>
-<P>Alttext:<% this.alttext as="editor" %></P>
-<P><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %>
-</FORM>
+<% this.show %>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<tr>
+<td class="storyText" nowrap><form method="post">Name:</td>
+<td class="storyText" nowrap><% this.alias as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>Alttext:</td>
+<td class="storyText" nowrap><% this.alttext as="editor" width="40" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+</tr>
+</form>

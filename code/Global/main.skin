@@ -1,12 +1,13 @@
-<HTML>
-<HEAD>
-<TITLE><% response.title %></TITLE>
+<html>
+<head>
+<title><% response.title %></title>
+<meta name="MSSmartTagsPreventParsing" content="TRUE">
 <% response.head %>
-</HEAD>
+</head>
 
-<BODY>
+<body>
 
 <% response.body %>
 
-</BODY>
-</HTML>
+</body>
+</html>

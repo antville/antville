@@ -1,39 +1,59 @@
-<STYLE TYPE="text/css">
+<style type="text/css">
 <!--
 
 body  {  font-family: Verdana, Arial, Helvetica, sans-serif;
          font-size: 10pt;
          font-weight: normal;
          color: #000000;
+         background-color: #FFFFFF;
       }
 
-.calendar { border: 1px solid black;
-          }
+.header { width: 600px;
+          height: 80px;
+          background-color: #CCCCCC;
+          border-style: inset;
+          border: 1px solid #666666;
+        }
 
-.calendarHeader { font-size: 8pt;
-                  font-weight: bold;
-                  color: #FFFFFF;
-                  background-color: #666666;
-                }
-
-.calendarDay { font-size: 8pt;
-               font-weight: normal;
-               border: 1px solid #666666;
-               text-align: center;
+.headerTitle { font-family: Verdana, Arial, Helvetica, sans-serif;
+               font-size: 20pt;
+               font-weight: bold;
+               color: #666666;
+               vertical-align: top;
+               padding: 5px;
              }
 
-.calendarSelectedDay { font-size: 8pt;
-                       font-weight: normal;
-                       border: 1px solid #666666;
-                       background-color: #FFFFFF;
-                       text-align: center;
-                     }
+.headerMsg { font-family: Verdana, Arial, Helvetica, sans-serif;
+             font-size: 10pt;
+             font-weigth: normal;
+             color: #CC0000;
+             text-align: right;
+             padding: 5px;
+           }
 
-.calendarFooter { font-size: 8pt;
-                  font-weight: bold;
-                  color: #FFFFFF;
-                  background-color: #999999;
-                }
+.headerStatus { font-family: Verdana, Arial, Helvetica, sans-serif;
+                font-size: 8pt;
+                font-weight: normal;
+                color: #666666;
+                text-align: right;
+                vertical-align: bottom;
+                padding: 5px;
+              }
+
+.loginStatus { font-family: Verdana, Arial, Helvetica, sans-serif;
+               font-size: 8pt;
+               color: #666666;
+               font-weight: normal;
+               text-align: left;
+               vertical-align: bottom;
+               padding: 5px;
+             }
+
+.storyText { font-family: Verdana, Arial, Helvetica, sans-serif;
+             font-size: 10pt;;
+             color: #000000;
+             font-weight: normal;
+           }
 
 // -->
-</STYLE>
+</style>

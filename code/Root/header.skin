@@ -1,3 +1,11 @@
-<P><FONT SIZE="+3"><B>Antville</B>&nbsp;</FONT><FONT SIZE="-1" COLOR="#FF0000"><% response.message %></FONT></P>
-<% now prefix="here it is " format="EEEE, dd.MM.yyyy HH:mm" suffix="<BR>" %>
-<% root.loginstatus %>
+<table border="0" width="600" height="80" cellspacing="0" cellpadding="2" class="header">
+<tr>
+<td class="headerTitle" nowrap>Antville</td>
+<td class="headerMsg">&nbsp;<% response.message %></td>
+</tr>
+<tr>
+<td class="loginStatus" nowrap><% root.loginstatus %>&nbsp;</td>
+<td class="headerStatus"><% now prefix="right now it's " format="EEEE, dd.MM.yyyy HH:mm" suffix="<BR>" %></td>
+</tr>
+</table>
+&nbsp;<br>

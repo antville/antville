@@ -1,11 +1,31 @@
-<FORM METHOD="POST">
-
-<P>Username:&nbsp;<% this.input type="text" name="name" %></P>
-Your Password:&nbsp;<% this.input type="password" name="password1" %><BR>
-type again:&nbsp;<% this.input type="password" name="password2" %><BR>
-Email:&nbsp;<% this.input type="text" name="email" %><BR>
-URL:&nbsp;<% this.input type="text" name="url" %><BR>
-Description:&nbsp;<% this.input type="textarea" name="description" %><BR>
-<% this.input type="button" value="register" %>&nbsp;<% this.input type="button" value="cancel" %>
-
-</FORM>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="storyText" nowrap><form method="post">Username:</td>
+<td class="storyText" nowrap><% this.input type="text" name="name" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>Password:</td>
+<td class="storyText" nowrap><% this.input type="password" name="password1" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>type again:</td>
+<td class="storyText" nowrap><% this.input type="password" name="password2" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>eMail:</td>
+<td class="storyText" nowrap><% this.input type="text" name="email" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>Url:*</td>
+<td class="storyText" nowrap><% this.input type="text" name="url" %></td>
+</tr>
+<tr>
+<td class="storyText" valign="top" nowrap>Description:*</td>
+<td class="storyText" nowrap><% this.input type="textarea" name="description" %></td>
+</tr>
+<tr>
+<td nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.input type="button" value="register" %>&nbsp;<% this.input type="button" value="cancel" %><br>&nbsp;<br>* = optional</td>
+</tr>
+</table>
+</form>

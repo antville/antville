@@ -1,1 +1,12 @@
-<% this.show as="preview" %><% this.editlink prefix="&nbsp;" %><% this.deletelink prefix="&nbsp;" %><BR>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td colspan="2" bgcolor="#CCCCCC" class="storyText"><% this.alias %></td>
+</tr>
+<tr>
+<td nowrap><% this.show linkto="edit" %></td>
+<td valign="top" class="storyNav"><% this.editlink suffix="<br>" %><% this.deletelink %></td>
+</tr>
+<tr>
+<td colspan="2" height="15" nowrap></td>
+</tr>
+</table>

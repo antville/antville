@@ -16,7 +16,12 @@ function evalRegistration() {
 			user.login(reg.name, reg.password1);
          user.sendConfirmationMail();
 			res.message = "Welcome " + user.name + ". Have fun!<br>";
-			res.redirect(root.href());
+			if (user.cache.referer) {
+			   var redirectTo = user.cache.referer;
+			   user.cache.referer = null;
+			} else
+			   var redirectTo = root.href();
+			res.redirect(redirectTo);
 		} else
  			res.message = "Sorry, we already have a member with that name.";
 	}

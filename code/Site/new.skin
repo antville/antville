@@ -1,8 +1,22 @@
-<FORM METHOD="POST">
-
-<P>To create a new weblog you need to fill out the form below. The title will appear in the header of every page, and the alias will be part of the URL to your weblog. So don't use any special characters like spaces, brackets etc. in the alias.</P>
-<P>Title:&nbsp;<% this.title as="editor" %><BR>
-Alias:&nbsp;<% this.alias as="editor" %><BR>
-<% this.input type="button" value="create" %>&nbsp;<% this.input type="button" value="cancel" %></P>
-
-</FORM>
+<table border="0" width="600" cellspacing="0" cellpadding="3">
+<tr>
+<td class="storyText">To create a new weblog you need to fill out the form below. The title will appear in the header of every page, and the alias will be part of the URL to your weblog. So don't use any special characters like spaces, brackets etc. in the alias.</td>
+</tr>
+<tr>
+<td nowrap><table border="0" cellspacing="0" cellpadding="3">
+   <tr>
+   <td class="storyText" nowrap><form method="post">Title:</td>
+   <td class="storyText" nowrap><% this.title as="editor" %></td>
+   </tr>
+   <tr>
+   <td class="storyText" nowrap>Alias:</td>
+   <td class="storyText" nowrap><% this.alias as="editor" %></td>
+   </tr>
+   <tr>
+   <td nowrap>&nbsp;</td>
+   <td class="storyText" nowrap><% this.input type="button" value="create" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+   </tr>
+   </table></td>
+</tr>
+</table>
+</form>

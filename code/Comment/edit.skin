@@ -1,5 +1,15 @@
-<FORM METHOD="POST">
-<P>Title: <% this.title as="editor" %></P>
-<P>Text: <% this.text as="editor" %></P>
-<% this.input type="button" value="save" %>
-</FORM>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="storyText" nowrap><form method="post">Title:</td>
+<td class="storyText" nowrap><% this.title as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" valign="top" nowrap>Text:</td>
+<td class="storyText" nowrap><% this.text as="editor" width="25" height="8" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.input type="button" value="save" %></td>
+</tr>
+</table>
+</form>

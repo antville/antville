@@ -1,4 +1,4 @@
-<P><FONT SIZE="-2"><% this.createtime format="EEEE, dd.MM.yyyy, HH:mm" suffix=" Uhr"%></FONT><BR>
-<SPAN CLASS="title"><% this.title %></SPAN><BR>
-<% this.text %>
-<% this.commentlink prefix="<BR>" %><% this.editlink prefix="&nbsp;&nbsp;" %><% this.deletelink prefix="&nbsp;&nbsp;" %></P>
+<p><span class="storyDate"><% this.createtime format="EEEE, dd.MM.yyyy, h:mm a" suffix="<br>"%></span>
+<span class="storyTitle"><% this.title suffix="<br>" %></span>
+<span class="storyText"><% this.text suffix="<br>&nbsp;<BR>" %></span>
+<span class="storyNav"><% this.commentlink %><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></span><br>&nbsp;</p>

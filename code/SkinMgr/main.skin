@@ -1,7 +1,7 @@
-<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0">
-<TR>
-<TD NOWRAP><FONT SIZE="-1"><% this.skins %></FONT></TD>
-<TD WIDTH="20" NOWRAP>&nbsp;</TD>
-<TD VALIGN="TOP" NOWRAP><% this.skineditor %></TD>
-</TR>
-</TABLE>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td nowrap><font size="-1"><% this.skins %></font></td>
+<td width="20" nowrap>&nbsp;</td>
+<td valign="top" nowrap><% this.skineditor %></td>
+</tr>
+</table>

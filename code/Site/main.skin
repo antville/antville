@@ -1,5 +1,9 @@
 <% this.skin name="header" %>
 
-<% this.calendar %>
+<table width="600" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="400" valign="top" nowrap><% this.storylist %></td>
+<td width="200" align="right" valign="top" nowrap><% this.calendar %></td>
+</tr>
+</table>
 
-<% this.storylist %>

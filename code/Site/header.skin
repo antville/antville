@@ -1,6 +1,15 @@
-<P><FONT SIZE="+3"><B><% this.title %></B></FONT>&nbsp;<FONT SIZE="-1" COLOR="#FF0000"><% response.message %></FONT>
-<% this.age prefix="<BR>online since:&nbsp;" show="days" suffix=" Days" %>
-<% this.lastupdate prefix="<BR>last updated:&nbsp;" format="EEEE, dd.MM.yyyy, HH:mm" suffix="&nbsp;Uhr" %></P>
-
-<% this.loginstatus %>
-<% this.navigation %>
+<table border="0" width="600" height="80" cellspacing="0" cellpadding="2" class="header">
+<tr>
+<td class="headerTitle" nowrap><% this.title %></td>
+<td class="headerMsg">&nbsp;<% response.message %></td>
+</tr>
+<tr>
+<td class="loginStatus" nowrap><% this.loginstatus %>&nbsp;</td>
+<td class="headerStatus"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days" %>
+<% this.lastupdate prefix="<BR>last updated:&nbsp;" format="EE,'&nbsp;'dd.MM.yyyy,'&nbsp;'h:mm a" %></td>
+</tr>
+<tr>
+<td colspan="2" class="headerNav" nowrap><% this.navigation %></td>
+</tr>
+</table>
+&nbsp;<BR>

@@ -1,4 +1,12 @@
-<BLOCKQUOTE><B><% this.title %></B><BR>
-<I><% this.author %><% this.createtime format="EEEE, dd.MM.yyyy HH:mm" prefix=",&nbsp;am&nbsp;" %></I><BR>
-<% this.text %><BR>
-<% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></BLOCKQUOTE>
+<table border="0" width="400" cellspacing="0" cellpadding="0">
+<tr>
+<td width="40" nowrap>&nbsp;</td>
+<td><div class="replyDate"><% this.createtime format="EEEE,'&nbsp;'dd.mm.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author prefix=",&nbsp;" suffix="&nbsp;answered:"%></div>
+<div class="commentTitle"><% this.title %></div>
+<div class="storyText"><% this.text suffix="<br>&nbsp;" %></div>
+<div class="storyNav"><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div></td>
+</tr>
+<tr>
+<td colspan="2" height="15" nowrap>&nbsp;</td>
+</tr>
+</table>

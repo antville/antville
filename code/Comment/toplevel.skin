@@ -1,6 +1,13 @@
-<P><B><% this.title %></B><BR>
-<I><% this.author %><% this.createtime format="EEEE, dd.MM.yyyy HH:mm" prefix=",&nbsp;am&nbsp;" %></I><BR>
-<% this.text %><BR>
-<% this.replylink text="reply to this comment ..." suffix="&nbsp;&nbsp;" %><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></P>
+<table border="0" width="400" cellspacing="0" cellpadding="0">
+<tr>
+<td><div class="toplevelDate"><% this.createtime format="EEEE,'&nbsp;'dd.mm.yyyy'&nbsp;at&nbsp;'h:mm a" prefix="on&nbsp;" %><% this.author prefix=",&nbsp;" suffix="&nbsp;wrote:"%></div>
+<div class="commentTitle"><% this.title %></div>
+<div class="storyText"><% this.text suffix="<br>&nbsp;" %></div>
+<div class="storyNav"><% this.replylink text="reply to this comment ..." suffix="&nbsp;&nbsp;" %><% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></div></td>
+</tr>
+<tr>
+<td height="15" nowrap>&nbsp;</td>
+</tr>
+</table>
 
 <% this.replies %>

@@ -17,18 +17,20 @@ function evalNewImg() {
       } else {
          // first, check if alias already exists
          if (!req.data.alias)
-            res.message = "You must enter an alias for this image!";
+            res.message = "You must enter a name for this image!";
          else if (this.get(req.data.alias))
-            res.message = "There is already an image with this alias!";
+            res.message = "There is already an image with this name!";
+         else if (!isClean(req.data.alias))
+            res.message = "Please do not use special characters in the name!";
          else {
             newImg.filename = req.data.alias;
             newImg.cache.saveTo = getProperty("imgPath") + this.__parent__.alias + "/";
             // check if user wants to resize width
-            if (req.data.maxWidth)
-               newImg.cache.maxWidth = parseInt(req.data.maxWidth,10);
+            if (req.data.maxwidth)
+               newImg.cache.maxwidth = parseInt(req.data.maxwidth,10);
             // check if user wants to resize height
-            if (req.data.maxHeight)
-               newImg.cache.maxHeight = parseInt(req.data.maxHeight,10);
+            if (req.data.maxheight)
+               newImg.cache.maxheight = parseInt(req.data.maxheight,10);
             // save/resize the image
             newImg.saveImg(rawimage);
             // any errors?

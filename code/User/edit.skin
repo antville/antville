@@ -1,9 +1,31 @@
-<FORM METHOD="POST">
-<P>Old password:&nbsp;<% this.input type="password" name="oldpwd" %><BR>
-New password: <% this.input type="password" name="newpwd1" %><BR>
-Confirm password: <% this.input type="password" name="newpwd2" %><BR>
-URL:&nbsp;<% currentUser.url as="editor" %><BR>
-eMail:&nbsp;<% this.email as="editor" %><BR>
-Description:&nbsp;<% this.description as="editor" %><BR>
-<% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></P>
-</FORM>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="storyText" nowrap><form method="post">old password:</td>
+<td class="storyText" nowrap><% this.input type="password" name="oldpwd" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>new password:</td>
+<td class="storyText" nowrap><% this.input type="password" name="newpwd1" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>confirm password:</td>
+<td class="storyText" nowrap><% this.input type="password" name="newpwd2" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>url:</td>
+<td class="storyText" nowrap><% this.url as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>eMail:</td>
+<td class="storyText" nowrap><% this.email as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>description:</td>
+<td class="storyText" nowrap><% this.description as="editor" %></td>
+</tr>
+<tr>
+<td class="storyText" nowrap>&nbsp;</td>
+<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+</tr>
+</table>
+</form>

@@ -1,22 +1,14 @@
+if (!root.isAddAllowed())
+   res.redirect(root.href());
+
 res.skin = "main";
-res.title = "Antville - creating a new Weblog";
+res.title = "Antville - Create a new weblog";
 res.head = this.renderSkinAsString("style");
 
-if (!user.uid) {
-   res.message = "Please login first";
-   user.cache.referer = this.href("new");
-   res.redirect(root.members.href("login"));
-} else {
-   if (req.data.submit == "cancel")
-      res.redirect(root.href());
-   else if (user.isBlocked())
-      res.redirect(root.href());
-   else if (user.getWeblog()) {
-      res.message = "You already own a Weblog! You'll need a new account to create another one.";
-      res.redirect(root.members.href("register"));
-   } else
-      var newLog = this.evalNewWeblog();
+if (req.data.submit == "cancel")
+   res.redirect(root.href());
+
+var newLog = this.evalNewWeblog();
    
-   res.body = this.renderSkinAsString("header");
-   res.body += newLog.renderSkinAsString("new");
-}
+res.body = this.renderSkinAsString("header");
+res.body += newLog.renderSkinAsString("new");
