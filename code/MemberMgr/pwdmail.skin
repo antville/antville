@@ -1,4 +1,4 @@
-On <% param.timestamp %> you requested a list of all your accounts for antville, so here it is:
+On <% now format="long" %> you requested a list of all your accounts for '<% root.systitle %>', so here it is:
 
 <% param.text %>
 
