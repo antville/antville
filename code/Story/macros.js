@@ -409,7 +409,9 @@ function topic_macro(param) {
       closeLink();
    }
    else if (param.as == "image") {
-      var img = getPoolObj(this.topic, "images");
+      if (!param.imgprefix)
+         param.imgprefix = "topic_";
+      var img = getPoolObj(param.imgprefix+this.topic, "images");
       if (!img)
          return;
       openLink(this.site.topics.get(this.topic).href());
@@ -457,4 +459,9 @@ function backlinks_macro() {
 	if (str)
 		str = this.renderSkinAsString("backlinks", param);
 	return(str);
+}
+
+
+function help_macro() {
+   // FIXME how can we display a list of macros allowed in a story?
 }
