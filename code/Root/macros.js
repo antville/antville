@@ -33,6 +33,13 @@ function sitecounter_macro(param) {
 }
 
 /**
+ * macro renders the root url
+ */
+function url_macro(param) {
+  res.write(this.href());
+}
+
+/**
  * macro renders the system-title of this antville-installation
  */
 

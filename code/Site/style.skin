@@ -1,6 +1,3 @@
-<style type="text/css">
-<!--
-
 body, td {
    background-color: <% site.bgcolor %>;
    font-family: <% site.textfont %>;
@@ -8,9 +5,7 @@ body, td {
    color: <% site.textcolor %>;
 }
 
-form {
-   margin: 0px;
-}
+form {margin: 0px;}
 
 a {text-decoration: none;}
 
@@ -188,6 +183,3 @@ li {padding-bottom: 3px;}
    margin-top:3px;
    margin-bottom:3px;
 }
-
-// -->
-</style>

@@ -5,9 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title><% response.title %></title>
+<script type="text/javascript" src="<% root.url %>javascript" />
+<link rel="stylesheet" type="text/css" href="<% root.url %>stylesheet" media="screen" />
+<meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE">
-<% this.skin name="style" %>
-<% this.skin name="javascript" %>
 </head>
 
 <body>

@@ -5,11 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title><% response.title %></title>
+<script type="text/javascript" src="<% root.url %>javascript" />
+<link rel="stylesheet" type="text/css" href="<% root.url %>stylesheet" media="screen" />
 <link rel="alternate" type="text/xml" title="XML" href="rss10" />
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<% root.skin name="style" %>
-<% root.skin name="javascript" %>
 </head>
 
 <body>
