@@ -194,7 +194,13 @@ function updateUser(param, admin) {
 
 function evalSystemSetup(param, admin) {
    root.sys_title = param.sys_title;
-   root.sys_url = evalURL(param.sys_url);
+   var sys_url = evalURL(param.sys_url);
+   // make sure the sys_url ends with a slash, otherwise
+   // the links to external stylesheets etc. won't work
+   if (!sys_url.endsWith("/"))
+      root.sys_url = sys_url + "/";
+   else
+      root.sys_url = sys_url;
    if (param.sys_frontSite) {
       var s = root.get(param.sys_frontSite);
       if (!s)
