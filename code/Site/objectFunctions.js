@@ -51,33 +51,56 @@ function renderLinkToNextMonth(cal) {
 
 /**
  * function saves new properties of weblog
+ * @param Obj Object containing the form values
+ * @param Obj User-Object modifying this weblog
+ * @return String Message indicating success
  */
 
-function updateWeblog() {
-   this.title = req.data.title;
-   this.tagline = req.data.tagline;
-   this.bgcolor = req.data.bgcolor;
-   this.textfont = req.data.textfont;
-   this.textsize = req.data.textsize;
-   this.textcolor = req.data.textcolor;
-   this.linkcolor = req.data.linkcolor;
-   this.alinkcolor = req.data.alinkcolor;
-   this.vlinkcolor = req.data.vlinkcolor;
-   this.titlefont = req.data.titlefont;
-   this.titlesize = req.data.titlesize;
-   this.titlecolor = req.data.titlecolor;
-   this.days = parseInt(req.data.days,10);
-   this.online = parseInt(req.data.online,10);
-   this.discussions = parseInt(req.data.discussions,10);
-   this.usercontrib = parseInt(req.data.usercontrib,10);
-   this.usersignup = parseInt(req.data.usersignup,10);
-   this.archive = parseInt(req.data.archive,10);
-   this.language = req.data.language ? req.data.language.substring(0,2).toLowerCase() : "";
-   this.country = req.data.country ? req.data.country.substring(0,2).toUpperCase() : "";
-   this.dateformat = req.data.dateformat;
-   this.birthdate = this.checkdate("birthdate");
-   res.message = "The changes were saved successfully!";
-   res.redirect(this.href());
+function updateWeblog(param,modifier) {
+   this.title = param.title;
+   this.tagline = param.tagline;
+   this.bgcolor = param.bgcolor;
+   this.textfont = param.textfont;
+   this.textsize = param.textsize;
+   this.textcolor = param.textcolor;
+   this.linkcolor = param.linkcolor;
+   this.alinkcolor = param.alinkcolor;
+   this.vlinkcolor = param.vlinkcolor;
+   this.titlefont = param.titlefont;
+   this.titlesize = param.titlesize;
+   this.titlecolor = param.titlecolor;
+   this.smallfont = param.smallfont;
+   this.smallsize = param.smallsize;
+   this.smallcolor = param.smallcolor;
+   this.days = parseInt(param.days,10);
+   this.online = parseInt(param.online,10);
+   this.discussions = parseInt(param.discussions,10);
+   this.usercontrib = parseInt(param.usercontrib,10);
+   this.usersignup = parseInt(param.usersignup,10);
+   this.archive = parseInt(param.archive,10);
+
+   // store selected locale in this.language and this.country
+   var locs = java.util.Locale.getAvailableLocales();
+   var newLoc = locs[parseInt(param.locale,10)];
+   if (!newLoc)
+      newLoc = java.util.Locale.getDefault();
+   this.country = newLoc.getCountry();
+   this.language = newLoc.getLanguage();
+
+   // long dateformat
+   var patterns = getDefaultDateFormats();
+   var ldf = patterns[parseInt(param.longdateformat,10)];
+   this.longdateformat = ldf ? ldf : null;
+
+   // short dateformat
+   var patterns = getDefaultDateFormats("short");
+   var ldf = patterns[parseInt(param.shortdateformat,10)];
+   this.shortdateformat = ldf ? ldf : null;
+
+   // this.birthdate = this.checkdate(param,"birthdate");
+   this.modifytime = new Date();
+   this.modifier = modifier;
+   return ("The changes were saved successfully!");
 }
 
 /**
@@ -85,14 +108,14 @@ function updateWeblog() {
  * returns Date-object
  */
 
-function checkdate(prefix) {
-   if (req.data[prefix + "Year"] && req.data[prefix + "Month"] && req.data[prefix + "Date"] && req.data[prefix + "Hours"] && req.data[prefix + "Minutes"]) {
+function checkdate(param,prefix) {
+   if (param[prefix + "Year"] && param[prefix + "Month"] && param[prefix + "Date"] && param[prefix + "Hours"] && param[prefix + "Minutes"]) {
       var pd = new Date();
-      pd.setYear(parseInt(req.data[prefix + "Year"],10));
-      pd.setMonth(parseInt(req.data[prefix + "Month"],10));
-      pd.setDate(parseInt(req.data[prefix + "Date"],10));
-      pd.setHours(parseInt(req.data[prefix + "Hours"],10));
-      pd.setMinutes(parseInt(req.data[prefix + "Minutes"],10));
+      pd.setYear(parseInt(param[prefix + "Year"],10));
+      pd.setMonth(parseInt(param[prefix + "Month"],10));
+      pd.setDate(parseInt(param[prefix + "Date"],10));
+      pd.setHours(parseInt(param[prefix + "Hours"],10));
+      pd.setMinutes(parseInt(param[prefix + "Minutes"],10));
       return (pd);
    } else
       return (new Date());
@@ -143,13 +166,16 @@ function createImgDirectory() {
 
 /**
  * function adds a new member-object for this weblog
+ * @param Obj User-object attempting to sign up to this weblog
+ * @param Int Integer-value defining userlevel
+ * @return Boolean true in any case ...
  */
 
-function createMember(userLvl) {
+function createMember(applicant,userLvl) {
    var newMember = new member();
    newMember.weblog = this;
-   newMember.user = user;
-   newMember.username = user.name;
+   newMember.user = applicant;
+   newMember.username = applicant.name;
    if (userLvl)
       newMember.level = userLvl;
    else {
@@ -158,31 +184,40 @@ function createMember(userLvl) {
    }
    newMember.createtime = new Date();
    this.members.add(newMember);
-   return;
+   return true;
 }
 
 /**
  * check if a signup attempt is ok
+ * @param String email-address entered in form
+ * @param Obj User-Object attempting to sign up to this weblog
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function evalSignup() {
-   if (this.members.get(user.name)) {
-      res.message = "You are already a member of this weblog!";
-      res.redirect(this.href());
+function evalSignup(email,applicant) {
+   var result = new Object();
+   if (this.members.get(applicant.name)) {
+      result.message = "You are already a member of this weblog!";
+      result.error = true;
    }
-   var signup = new member();
-   if (req.data.email) {
-      if (req.data.email != user.email) {
-         if (!checkEmail(req.data.email)) {
-            res.message = "Your eMail-address is invalid!";
-            return (signup);
-         } else
-            user.email = req.data.email;
-      }
-      this.createMember();
-      res.message = this.title + " welcomes you as a member! Have fun!";
-      res.redirect(this.href());
+   if (!email) {
+      result.message = "Please specify your eMail-address!";
+      result.error = true;
+   } else if (email != applicant.email) {
+      if (!checkEmail(email)) {
+         result.message = "Your eMail-address is invalid!";
+         result.error = true;
+      } else
+         applicant.email = email;
    }
+   if (!result.error) {
+      this.createMember(applicant);
+      result.message = this.title + " welcomes you as a member! Have fun!";
+      result.error = false;
+   }
+   return (result);
 }
 
 /**
@@ -191,14 +226,18 @@ function evalSignup() {
  */
 
 function formatTimestamp(ts,param) {
-   if (param.format)
-      var fmt = param.format;
-   else if (this.dateformat)
-      var fmt = this.dateformat;
-   else
-      var fmt = "yyyy/MM/dd HH:mm";
+   var fmt = "yyyy/MM/dd HH:mm";
+   if (param.format == "short")
+      fmt = this.shortdateformat ? this.shortdateformat : "dd.MM HH:mm";
+   else if (param.format == "long")
+      fmt = this.longdateformat ? this.longdateformat : "yyyy/MM/dd HH:mm";
+   else if (param.format)
+      fmt = param.format;
    var sdf = new java.text.SimpleDateFormat(fmt,this.getLocale());
-   return(sdf.format(ts));
+   var result = tryEval("sdf.format(ts)");
+   if (result.error)
+      return ("[error: wrong date-format]");
+   return (result.value);
 }
 
 /**
@@ -208,8 +247,9 @@ function formatTimestamp(ts,param) {
  */
 
 function getLocale() {
-   if (this.language && this.country)
-      return (new java.util.Locale(this.language,this.country));
+   if (this.language)
+      return (new java.util.Locale(this.language,this.country ? this.country : ""));
    else
       return (java.util.Locale.getDefault());
 }
+
