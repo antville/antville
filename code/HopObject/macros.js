@@ -17,6 +17,7 @@ function skin_macro(param) {
 function link_macro(param) {
    if (param.checkdeny == "true" && this.isDenied(session.user,req.data.memberlevel))
       return;
+   delete param.checkdeny;
    var content = param.text ? param.text : param.to;
    param = this.createLinkParam(param);
    openMarkupElement("a", param);
