@@ -199,7 +199,8 @@ function ping() {
 	// (specs at http://newhome.weblogs.com/directory/11)
 	var xr = new Remote("http://rpc.weblogs.com/RPC2");
 	var ping = xr.weblogUpdates.ping(title, this.href());
-
+   if (!ping.result)
+      return;
 	var result = new Object();
 	result.error = ping.result.flerror;
 	result.message = ping.result.message;
