@@ -1,5 +1,0 @@
-		<item>
-			<link><% param.itemLink %></link>
-			<title><% param.itemTitle %></title>
-			<description><% param.itemDescription %></description>
-		</item>
