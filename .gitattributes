@@ -44,6 +44,7 @@ db/data/113APP_AV_IMAGE.koi -text
 db/data/115APP_AV_SITE.koi -text
 db/data/BlobStore.koi -text
 db/data/DefaultDatabase_sf.koi -text
+static/dot.gif -text
 static/hop.gif -text
 static/layouts/default/big.gif -text
 static/layouts/default/bullet.gif -text

@@ -140,6 +140,7 @@ DefaultImages = {
    hop: {name: "hop.gif", width: 124, height: 25, alt: "helma object publisher", linkto: "http://helma.org"},
    marquee: {name: "marquee.gif", width: 15, height: 15, alt: "marquee"},
    pixel: {name: "pixel.gif", width: 1, height: 1, alt: ""},
+   dot: {name: "dot.gif", width: 30, height: 30, alt: ""},
 
    /**
     * render a standard image
