@@ -8,6 +8,7 @@ function constructor(site, creator, ipaddress) {
    this.ipaddress = ipaddress;
    this.creator = creator;
    this.createtime = this.modifytime = new Date();
+   return this;
 }
 
 /**

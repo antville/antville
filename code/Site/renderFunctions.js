@@ -5,7 +5,7 @@
 function renderLinkToPrevMonth(firstDayIndex, currentMonth, monthNames) {
    var l = this.size();
    if (l == 0 || l <= firstDayIndex)
-      return ("&nbsp;");
+      return "&nbsp;";
 
    var prevDay = this.get(firstDayIndex + 1);
    if (prevDay && prevDay.groupname < currentMonth) {
@@ -24,7 +24,7 @@ function renderLinkToPrevMonth(firstDayIndex, currentMonth, monthNames) {
 function renderLinkToNextMonth(lastDayIndex, currentMonth, monthNames) {
    var l = this.size();
    if (l == 0 || lastDayIndex == 0)
-      return ("&nbsp;");
+      return "&nbsp;";
 
    var nextDay = this.get(lastDayIndex - 1);
    if (nextDay && nextDay.groupname > currentMonth) {

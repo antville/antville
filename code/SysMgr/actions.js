@@ -24,6 +24,7 @@ function setup_action() {
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("setup");
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -58,6 +59,7 @@ function sites_action() {
    res.data.body = this.renderSkinAsString("sitesearchform");
    res.data.body += this.renderSkinAsString("list");
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -84,6 +86,7 @@ function users_action() {
    res.data.body = this.renderSkinAsString("usersearchform");
    res.data.body += this.renderSkinAsString("list");
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -101,6 +104,7 @@ function logs_action() {
    res.data.body = this.renderSkinAsString("syslogsearchform");
    res.data.body += this.renderSkinAsString("list");
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -123,4 +127,5 @@ function status_action() {
    status.usedMemory = status.totalMemory - status.freeMemory;
    res.data.body = this.renderSkinAsString("status", status);
    root.renderSkin("page");
+   return;
 }

@@ -17,6 +17,7 @@ function main_action() {
    else
       res.data.body = this.renderSkinAsString("main");
    path.site.renderSkin("page");
+   return;
 }
 
 /**

@@ -29,6 +29,7 @@ function choices_macro(param) {
          param.checked = " checked=\"checked\"";
       res.write(choice.renderSkinAsString("main", param));
    }
+   return;
 }
 
 

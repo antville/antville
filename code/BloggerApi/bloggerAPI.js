@@ -34,7 +34,7 @@ function getPost(appkey, postid, username, password) {
    result.userid = entry.creator.name;
    result.postid = entry._id;
    result.dateCreated = entry.createtime;
-   return (result);
+   return result;
 }
 
 
@@ -66,7 +66,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
    var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
       throw(result.message);
-   return (result.id);
+   return result.id;
 }
 
 
@@ -154,7 +154,7 @@ function getRecentPosts(appkey, blogid, username, password, numberOfPosts) {
          param.content = entry.content.getProperty("text");
       posts[posts.length] = param;
    }
-   return (posts);
+   return posts;
 }
 
 
@@ -180,7 +180,7 @@ function deletePost(appkey, postid, username, password, publish) {
       throw ("You're not allowed to delete the entry with id " + postid);
    }
    var result = entry._parent.deleteStory(entry);
-   return (!result.error);
+   return !result.error;
 }
 
 
@@ -214,7 +214,7 @@ function getUsersBlogs(appkey, username, password) {
       param.url = blog.href();
       result[result.length] = param;
    }
-   return (result);
+   return result;
 }
 
 
@@ -281,7 +281,7 @@ function getUser(username, password) {
       throw("Authentication failed for user " + username);
    if (usr.blocked)
       throw("Sorry, your account has been disabled.");
-   return (usr);
+   return usr;
 }
 
 
@@ -296,5 +296,5 @@ function getBlog(blogid) {
       throw("The site " + blogid + " doesn't exist on this server.");
    else if (blog.blocked)
       throw("The site " + blogid + " was disabled.");
-   return (blog);
+   return blog;
 }

@@ -7,6 +7,7 @@ function alias_macro(param) {
       Html.input(this.createInputParam("alias", param));
    else
       res.write(this.alias);
+   return;
 }
 
 
@@ -19,6 +20,7 @@ function alttext_macro(param) {
       Html.textArea(this.createInputParam("alttext", param));
    else
       res.write(this.alttext);
+   return;
 }
 
 /**
@@ -27,6 +29,7 @@ function alttext_macro(param) {
 
 function width_macro(param) {
    res.write(this.width);
+   return;
 }
 
 /**
@@ -35,6 +38,7 @@ function width_macro(param) {
 
 function height_macro(param) {
    res.write(this.height);
+   return;
 }
 
 /**
@@ -42,7 +46,8 @@ function height_macro(param) {
  */
 
 function url_macro(param) {
-   return this.getUrl();
+   res.write(this.getUrl());
+   return;
 }
 
 
@@ -103,6 +108,7 @@ function show_macro(param) {
    Html.openLink({href: url});
    renderImage(img, param);
    Html.closeLink();
+   return;
 }
 
 

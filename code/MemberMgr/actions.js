@@ -11,6 +11,7 @@ function main_action() {
  */
 function subscribers_action() {
    this.renderView(this.subscribers, "Subscribers");
+   return;
 }
 
 /**
@@ -18,6 +19,7 @@ function subscribers_action() {
  */
 function contributors_action() {
    this.renderView(this.contributors, "Contributors");
+   return;
 }
 
 /**
@@ -25,6 +27,7 @@ function contributors_action() {
  */
 function managers_action() {
    this.renderView(this.managers, "Content Managers");
+   return;
 }
 
 /**
@@ -32,6 +35,7 @@ function managers_action() {
  */
 function admins_action() {
    this.renderView(this.admins, "Administrators");
+   return;
 }
 
 /**
@@ -124,6 +128,7 @@ function edit_action() {
    res.data.title = "Profile of user " + session.user.name;
    res.data.body = session.user.renderSkinAsString("edit");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -151,6 +156,7 @@ function login_action() {
    res.data.title = "Login";
    res.data.body = this.renderSkinAsString("login");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -165,6 +171,7 @@ function logout_action() {
      res.setCookie ("avPw", "");
    }
    res.redirect(this._parent.href());
+   return;
 }
 
 /**
@@ -205,6 +212,7 @@ function register_action() {
    res.data.title = "Register";
    res.data.body = this.renderSkinAsString("register");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -226,4 +234,5 @@ function sendpwd_action() {
    res.data.title = "Recover your password";
    res.data.body = this.renderSkinAsString("sendpwd");
    this._parent.renderSkin("page");
+   return;
 }

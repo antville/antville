@@ -12,7 +12,7 @@ function sysmgr_count_macro(param) {
       case "stories" :
          return this.allstories.size();
       case "comments" :
-         return (this.allcontent.size() - this.allstories.size());
+         return this.allcontent.size() - this.allstories.size();
       case "images" :
          return this.images.size();
       case "files" :
@@ -37,6 +37,7 @@ function sysmgr_statusflags_macro(param) {
       res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">PUBLIC</span>");      
    if (this.blocked)
       res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
+   return;
 }
 
 /**
@@ -55,6 +56,7 @@ function sysmgr_editlink_macro(param) {
    Html.openTag("a", root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "edit");
    Html.closeTag("a");
+   return;
 }
 
 /**
@@ -73,6 +75,7 @@ function sysmgr_deletelink_macro(param) {
    Html.openTag("a", root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "delete");
    Html.closeTag("a");
+   return;
 }
 
 /**
@@ -88,6 +91,7 @@ function sysmgr_trusted_macro(param) {
       Html.dropDown({name: "trusted"}, options, this.trusted);
    } else
       res.write(this.trusted ? "yes" : "no");
+   return;
 }
 
 /**
@@ -103,4 +107,5 @@ function sysmgr_blocked_macro(param) {
       Html.dropDown({name: "blocked"}, options, this.blocked);
    } else
       res.write(this.blocked ? "yes" : "no");
+   return;
 }

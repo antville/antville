@@ -12,5 +12,5 @@ function constructor (type, object, logentry, sysadmin) {
    this.logentry = logentry;
    this.sysadmin = sysadmin;
    this.createtime = new Date();
-   return;
+   return this;
 }

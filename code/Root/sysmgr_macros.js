@@ -297,6 +297,7 @@ function longdateformat_macro(param) {
    if (!session.user.sysadmin)
       return;
    renderDateformatChooser("longdateformat", root.getLocale(), this.longdateformat);
+   return;
 }
 
 /**
@@ -306,6 +307,7 @@ function shortdateformat_macro(param) {
    if (!session.user.sysadmin)
       return;
    renderDateformatChooser("shortdateformat", root.getLocale(), this.shortdateformat);
+   return;
 }
 
 /**

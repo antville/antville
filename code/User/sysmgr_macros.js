@@ -35,6 +35,7 @@ function sysmgr_statusflags_macro(param) {
       res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SYSADMIN</span>");
    if (this.blocked)
       res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
+   return;
 }
 
 /**
@@ -53,6 +54,7 @@ function sysmgr_editlink_macro(param) {
    Html.openTag("a", root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "edit");
    Html.closeTag("a");
+   return;
 }
 
 /**
@@ -61,6 +63,7 @@ function sysmgr_editlink_macro(param) {
 
 function sysmgr_username_macro(param) {
    res.write(this.name);
+   return;
 }
 
 /**
@@ -73,6 +76,7 @@ function sysmgr_registered_macro(param) {
       return;
    fmt=param.format ? param.format : "dd.MM.yyyy HH:mm";
    res.write(this.registered.format(fmt));
+   return;
 }
 
 /**
@@ -87,6 +91,7 @@ function sysmgr_lastvisit_macro(param) {
       fmt=param.format ? param.format : "dd.MM.yyyy HH:mm";
       res.write(this.lastvisit.format(fmt));
    }
+   return;
 }
 
 /**
@@ -102,6 +107,7 @@ function sysmgr_trusted_macro(param) {
       Html.dropDown({name: "trusted"}, options, this.trusted);
    } else
       res.write(this.trusted ? "yes" : "no");
+   return;
 }
 
 /**
@@ -117,6 +123,7 @@ function sysmgr_blocked_macro(param) {
       Html.dropDown({name: "blocked"}, options, this.blocked);
    } else
       res.write(this.blocked ? "yes" : "no");
+   return;
 }
 
 /**
@@ -132,4 +139,5 @@ function sysmgr_sysadmin_macro(param) {
       Html.dropDown({name: "sysadmin"}, options, this.sysadmin);
    } else
       res.write(this.sysadmin ? "yes" : "no");
+   return;
 }

@@ -98,7 +98,7 @@ function getPoolObj(objName, pool) {
    p.obj = p.parent[pool].get(p.objName);
    if (!p.obj)
       return null;
-   return (p);
+   return p;
 }
 
 /**
@@ -237,6 +237,7 @@ function Message(name, value, obj) {
    this.toString = function() {
       return getMessage("confirm." + this.name, this.value);
    }
+   return this;
 }
 
 /**
@@ -250,6 +251,7 @@ function Exception(name, value) {
    this.toString = function() {
       return getMessage("error." + this.name, this.value);
    }
+   return this;
 }
 
 /**
@@ -261,6 +263,7 @@ function MailException(name) {
    this.toString = function() {
       return getMessage("error." + this.name);
    }
+   return this;
 }
 
 
@@ -273,6 +276,7 @@ function DenyException(name) {
    this.toString = function() {
       return getMessage("deny." + this.name);
    }
+   return this;
 }
 
 
@@ -316,7 +320,7 @@ function buildAliasFromFile(uploadFile, collection) {
    var filename = rawName[rawName.length-1];
    if (filename.lastIndexOf(".") > -1)
       filename = filename.substring(0, filename.lastIndexOf("."));
-   return (buildAlias(filename, collection));
+   return buildAlias(filename, collection);
 }
 
 /**
@@ -335,9 +339,9 @@ function buildAlias(alias, collection) {
       var nr = 1;
       while (collection.get(newAlias + nr.toString()))
          nr++;
-      return (newAlias + nr.toString());
+      return newAlias + nr.toString();
    } else
-      return (newAlias);
+      return newAlias;
 }
 
 /**
@@ -397,6 +401,7 @@ function countUsers() {
          app.data.sessions++;
    }
    app.data.activeUsers.sort();
+   return;
 }
 
 /**

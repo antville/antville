@@ -5,6 +5,7 @@ function main_action() {
    res.data.title = "Layout '" + this.title + "'";
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -26,6 +27,7 @@ function edit_action() {
    res.data.title = "Edit layout: " + this.title;
    res.data.body = this.renderSkinAsString("edit");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -37,6 +39,7 @@ function startTestdrive_action() {
       res.redirect(req.data.http_referer);
    else
       res.redirect(res.handlers.context.href());
+   return;
 }
 
 /**
@@ -49,6 +52,7 @@ function stopTestdrive_action() {
       res.redirect(req.data.http_referer);
    else
       res.redirect(res.handlers.context.href());
+   return;
 }
 
 /**
@@ -80,6 +84,7 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -97,6 +102,7 @@ function download_action() {
    res.data.title = "Download layout " + this.title;
    res.data.body = this.renderSkinAsString("download");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 

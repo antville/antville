@@ -7,6 +7,7 @@ function membership_macro(param) {
    if (req.data.memberlevel == null)
       return;
    res.write(getRole(req.data.memberlevel));
+   return;
 }
 
 /**

@@ -11,6 +11,7 @@ function main_action() {
    // increment read-counter
    this.incrementReadCounter();
    logAccess();
+   return;
 }
 
 /**
@@ -44,6 +45,7 @@ function edit_action() {
       res.data.title += ": " + encode(this.title);
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -75,6 +77,7 @@ function delete_action() {
       var skinParam = {description: "a story"};
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -105,4 +108,5 @@ function comment_action() {
    this.site.renderSkin("page");
    // increment read-counter
    this.incrementReadCounter();
+   return;
 }

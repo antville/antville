@@ -17,6 +17,7 @@ function sysmgr_typeflag_macro(param) {
       default :
          res.write("<span class=\"flagLight\" style=\"background-color:#FFCC00;\">SYSTEM</span>");
    }
+   return;
 }
 
 
@@ -31,6 +32,7 @@ function sysmgr_object_macro(param) {
    if (!this.object)
       return;
    res.write(this.object);
+   return;
 }
 
 /**
@@ -42,6 +44,7 @@ function sysmgr_logentry_macro(param) {
    if (!session.user.sysadmin)
       return;
    res.write(this.logentry);
+   return;
 }
 
 /**
@@ -56,4 +59,5 @@ function sysmgr_sysadmin_macro(param) {
       this.sysadmin.name_macro(param);
    else
       res.write("system");
+   return;
 }

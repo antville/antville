@@ -1,6 +1,8 @@
 /**
  * function renders a list of the newest n (default=5) thumbnails
  * or images
+ * FIXME: is this deprecated or even obsolete?
+ * (we have response.imagelist in main.skin)
  */
 function imagelist_macro(param) {
    if (!this.size())

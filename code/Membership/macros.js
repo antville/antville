@@ -6,6 +6,7 @@ function username_macro(param) {
       Html.link({href: this.href(param.linkto)}, this.username);
    else
       res.write(this.username);
+   return;
 }
 
 
@@ -14,8 +15,8 @@ function username_macro(param) {
  */
 function email_macro(param) {
    if (this.user.publishemail)
-      return (this.user.email);
-   return ("**********");
+      return this.user.email;
+   return "**********";
 }
 
 /**

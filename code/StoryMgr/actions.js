@@ -7,6 +7,7 @@ function main_action() {
    res.data.title = "Online stories of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 function offline_action() {
@@ -15,6 +16,7 @@ function offline_action() {
    res.data.title = "Online stories of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -28,6 +30,7 @@ function mystories_action() {
    res.data.title = "My stories in " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -62,4 +65,5 @@ function create_action() {
    res.data.action = this.href("create");
    res.data.body = s.renderSkinAsString("edit");
    this._parent.renderSkin("page");
+   return;
 }

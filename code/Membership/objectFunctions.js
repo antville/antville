@@ -6,6 +6,7 @@ function constructor(usr, level) {
    this.username = usr.name;
    this.level = level ? level : SUBSCRIBER;
    this.createtime = new Date();
+   return this;
 }
 
 

@@ -6,6 +6,7 @@ function main_action() {
    res.data.list = this.renderTree(req.data);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -16,6 +17,7 @@ function modified_action() {
    res.data.list = this.renderList(this.modified, req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -26,6 +28,7 @@ function custom_action() {
    res.data.list = this.renderList(this.custom, req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -39,6 +42,7 @@ function safe_action() {
    res.data.list = this.renderList(this.modified);
    res.data.body = this.renderSkinAsString("main");
    this.renderSkin("page");
+   return;
 }
 
 /**
@@ -72,6 +76,7 @@ function edit_action() {
    res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin of " + this._parent.title;
    res.data.body = this.renderSkinAsString("edit", sp);
    this.renderSkin("page");
+   return;
 }
 
 /**
@@ -95,4 +100,5 @@ function create_action() {
    res.data.title = "Create a custom skin for " + this._parent.title;
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
+   return;
 }

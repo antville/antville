@@ -22,6 +22,7 @@ function main_action() {
       root.renderSkin("page");
       logAccess();
    }
+   return;
 }
 
 /**
@@ -45,6 +46,7 @@ function new_action() {
    res.data.title = "Create a new site";
    res.data.body = this.renderSkinAsString("new");
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -57,6 +59,7 @@ function list_action() {
    res.data.title = "Sites of " + root.getTitle();
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -123,6 +126,7 @@ function rss_action() {
    param.items = items.toString();
    param.resources = resources.toString();
    this.renderSkin("rss", param);
+   return;
 }
 
 /**
@@ -132,6 +136,7 @@ function blocked_action() {
    res.data.title = root.getTitle() + " - 404 - blocked";
    res.data.body = "<p><strong>Sorry!</strong></p><p>This site was disabled.</p>";
    root.renderSkin("page");
+   return;
 }
 
 /**
@@ -141,6 +146,7 @@ function notfound_action() {
    res.data.title = root.getTitle() + " - 404 - not found";
    res.data.body = "<p><strong>Sorry!</strong></p><p>URL /" + req.path + " was not found on this server!</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
+   return;
 }
 
 /**
@@ -151,6 +157,7 @@ function sys_error_action() {
    res.data.body = "<p><strong>Sorry!</strong></p><p>An error occurred while processing your request:</p>";
    res.data.body += "<p>"+res.error+"</p>";
    (path.site && path.site.online ? path.site : root).renderSkin("page");
+   return;
 }
 
 /**

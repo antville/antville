@@ -22,6 +22,7 @@ function edit_action() {
    res.data.title = "Edit file: " + this.alias;
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -48,4 +49,5 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
+   return;
 }

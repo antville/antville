@@ -17,6 +17,7 @@ function edit_action() {
    res.data.title = "Edit membership: " + this.username;
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -43,6 +44,7 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -72,4 +74,5 @@ function mailto_action() {
    res.data.title = "Send e-mail to " + this.username;
    res.data.body = this.renderSkinAsString("mailto");
    this.site.renderSkin("page");
+   return;
 }

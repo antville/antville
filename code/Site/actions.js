@@ -17,6 +17,7 @@ function main_action() {
    res.data.title = this.title;
    this.renderSkin("page");
    logAccess();
+   return;
 }
 
 /**
@@ -38,6 +39,7 @@ function edit_action() {
    res.data.title = "Preferences of " + this.title;
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
+   return;
 }
 
 
@@ -64,6 +66,7 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.renderSkin("page");
+   return;
 }
 
 
@@ -190,6 +193,7 @@ function rss_action() {
       param.resources = resources.toString();
       this.renderSkin("rss", param);
    }
+   return;
 }
 
 /**
@@ -207,6 +211,7 @@ function getfile_action() {
       res.message = getMessage("error.fileNotFound", req.data.name);
       res.redirect(this.href());
    }
+   return;
 }
 
 /**
@@ -216,6 +221,7 @@ function mostread_action() {
    res.data.title = "Most read stories of " + this.title;
    res.data.body = this.renderSkinAsString("mostread");
    this.renderSkin("page");
+   return;
 }
 
 /**
@@ -226,6 +232,7 @@ function referrers_action() {
    res.data.title = "Referrers in the last 24 hours of " + this.title;
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("page");
+   return;
 }
 
 /**
@@ -295,6 +302,7 @@ function search_action() {
       }
    }
    this.renderSkin("page");
+   return;
 }
 
 
@@ -306,6 +314,7 @@ function subscribe_action() {
    this.members.add(new membership(session.user));
    res.message = new Message("subscriptionCreate", this.title);
    res.redirect(this.href());
+   return;
 }
 
 /**
@@ -356,4 +365,5 @@ function menuext_reg_action() {
 function robots_txt_action() {
    res.contentType = "text/plain";
    this.renderSkin("robots");
+   return;
 }

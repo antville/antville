@@ -142,7 +142,7 @@ function getUrl() {
  *  for this site's alias, use it. Otherwise, use normal site URL.
  */
 function processHref(href) {
-   return (app.properties.defaulthost + href);
+   return app.properties.defaulthost + href;
 }
 
 /**

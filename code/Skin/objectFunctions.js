@@ -9,4 +9,5 @@ function constructor(layout, proto, name, creator) {
    this.creator = this.modifier = creator;
    this.createtime = new Date();
    this.modifytime = new Date();
+   return this;
 }

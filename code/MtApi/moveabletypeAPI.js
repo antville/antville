@@ -47,7 +47,7 @@ function getRecentPostTitles(blogid, username, password, numberOfPosts) {
       param.dateCreated = entry.createtime;
       posts[posts.length] = param;
    }
-   return (posts);
+   return posts;
 }
 
 
@@ -81,7 +81,7 @@ function getCategoryList(blogid, username, password) {
      param.categoryName = arr[i].groupname;
      topics[topics.length] = param;
    }
-   return (topics);
+   return topics;
 }
 
 
@@ -117,7 +117,7 @@ function getPostCategories(postid, username, password) {
      param.isPrimary = true;
      topics[0] = param;
    }
-   return (topics);
+   return topics;
 }
 
 
@@ -150,7 +150,7 @@ function setPostCategories(postid, username, password, categories) {
       entry.topic = categories[0].categoryId;
    else
       entry.topic = null;
-   return (true);
+   return true;
 }
 
 
@@ -219,5 +219,5 @@ function publishPost(postid, username, password) {
       throw("You're not allowed to edit the story with id " + postid);
    }
    entry.publish = 2;
-   return (true);
+   return true;
 }

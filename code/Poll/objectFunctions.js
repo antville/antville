@@ -6,6 +6,7 @@ function constructor(question, creator) {
    this.creator = creator;
    this.closed = 0;
    this.createtime = this.modifytime = new Date();
+   return this;
 }
 
 

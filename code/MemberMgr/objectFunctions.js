@@ -202,6 +202,7 @@ function evalNewMembership(username, creator) {
    } catch (err) {
       throw new Exception("memberCreate", username);
    }
+   return;
 }
 
 /**

@@ -4,6 +4,7 @@
 function constructor(creator) {
    this.creator = creator;
    this.createtime = new Date();
+   return this;
 }
 
 /**

@@ -186,6 +186,7 @@ function viewlink_macro(param) {
          res.write(param.text ? param.text : "view");
       Html.closeLink();
    }
+   return;
 }
 
 /**
@@ -251,6 +252,7 @@ function comments_macro(param) {
       else
          c.renderSkin("toplevel");
    }
+   return;
 }
 
 /**
@@ -380,7 +382,7 @@ function backlinks_macro(param) {
    // check if scheduler has done a new update of accesslog
    // if not and we have cached backlinks simply return them
    if (this.cache.lrBacklinks >= app.data.lastAccessLogUpdate)
-      return (this.cache.rBacklinks)
+      return this.cache.rBacklinks;
 
    var c = getDBConnection("antville");
    var dbError = c.getLastError();
@@ -427,7 +429,8 @@ function backlinks_macro(param) {
    else
       this.cache.rBacklinks = "";
    this.cache.lrBacklinks = new Date();
-   return this.cache.rBacklinks;
+   res.write(this.cache.rBacklinks);
+   return;
 }
 
 /**

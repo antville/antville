@@ -22,6 +22,7 @@ function constructor(site, title, creator) {
    prefs.smallsize = "11px";
    prefs.smallcolor = "959595";
    this.preferences_xml = Xml.writeToString(prefs);
+   return this;
 }
 
 /**

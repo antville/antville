@@ -5,6 +5,7 @@ function main_action() {
    // since comments don't have their own page, we redirect to
    // story together with an anchor to this comment
    res.redirect(this.story.href() + "#" + this._id);
+   return;
 }
 
 /**
@@ -35,6 +36,7 @@ function comment_action() {
    res.data.action = this.href("comment");
    res.data.body += (new comment()).renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -62,6 +64,7 @@ function edit_action() {
       res.data.title += " - " + encode(this.story.title);
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -88,4 +91,5 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
+   return;
 }

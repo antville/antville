@@ -7,6 +7,7 @@ function link_macro(param) {
    Html.openTag("a", param);
    res.write(content);
    Html.closeTag("a");
+   return;
 }
 
 /**
@@ -61,4 +62,5 @@ function modifier_macro(param) {
  */
 function url_macro() {
    res.write(this.href());
+   return;
 }

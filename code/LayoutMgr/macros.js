@@ -9,4 +9,5 @@ function layoutchooser_macro(param) {
       options.push({value: l.alias, display: l.title});
    }
    Html.dropDown({name: "layout"}, options, param.selected, "--- choose a layout ---");
+   return;
 }

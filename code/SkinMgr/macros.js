@@ -76,6 +76,7 @@ function prototypechooser_macro(param) {
    var options = [];
    for (var i in app.skinfiles)
       options.push({value: i, display: i});
-   options.sort(function(a, b) {return (a.display.charCodeAt(0) - b.display.charCodeAt(0)); });
+   options.sort(function(a, b) {return a.display.charCodeAt(0) - b.display.charCodeAt(0); });
    Html.dropDown({name: "prototype"}, options, null, "--- select a prototype ---");
+   return;
 }

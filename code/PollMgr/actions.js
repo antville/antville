@@ -7,6 +7,7 @@ function main_action() {
    res.data.title = "All polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -18,6 +19,7 @@ function open_action() {
    res.data.title = "Open polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -30,6 +32,7 @@ function mypolls_action() {
    res.data.title = "My polls of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -73,4 +76,5 @@ function create_action() {
    res.data.title = "Add a poll to " + this._parent.title;
    res.data.body = newPoll.renderSkinAsString("edit");
    this._parent.renderSkin("page");
+   return;
 }

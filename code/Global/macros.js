@@ -146,7 +146,7 @@ function story_macro(param) {
       return;
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
    if (!story)
-      return(getMessage("error", "storyNoExist", param.id));
+      return getMessage("error", "storyNoExist", param.id);
    story.renderSkin(param.skin ? param.skin : "embed");
    return;
 }

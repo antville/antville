@@ -12,6 +12,7 @@ function main_action() {
    res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -38,6 +39,7 @@ function create_action() {
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -63,4 +65,5 @@ function import_action() {
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("import");
    res.handlers.context.renderSkin("page");
+   return;
 }

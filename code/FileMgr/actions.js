@@ -7,6 +7,7 @@ function main_action() {
    res.data.title = "Files of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -19,6 +20,7 @@ function myfiles_action() {
    res.data.title = "My files of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
 }
 
 /**
@@ -40,4 +42,5 @@ function create_action() {
    res.data.title = "Add a file to " + this._parent.title;
    res.data.body = this.renderSkinAsString("new");
    this._parent.renderSkin("page");
+   return;
 }

@@ -167,6 +167,7 @@ DefaultImages = {
          Html.tag("img", param);
          Html.closeLink();
       }
+      return;
    }
 }
 
@@ -182,6 +183,7 @@ function Skinset(key, skins, context) {
    this.add = function(obj) {
       this.children.push(obj);
    }
+   return this;
 }
 
 /**

@@ -2,21 +2,22 @@
  * macro rendering title
  */
 function title_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.createInputParam("title", param));
-  else {
-    if (param && param.linkto) {
-      if (param.linkto == "main")
-        param.linkto = "";
-      Html.openLink({href: this.href(param.linkto)});
-      if (this.title && this.title.trim())
-        res.write(stripTags(this.title));
-      else
-        res.write("<em>[untitled]</em>");
-      Html.closeLink();
-    } else
-      res.write(this.title);
-  }
+   if (param.as == "editor")
+      Html.input(this.createInputParam("title", param));
+   else {
+      if (param && param.linkto) {
+         if (param.linkto == "main")
+            param.linkto = "";
+         Html.openLink({href: this.href(param.linkto)});
+         if (this.title && this.title.trim())
+            res.write(stripTags(this.title));
+         else
+            res.write("<em>[untitled]</em>");
+         Html.closeLink();
+      } else
+         res.write(this.title);
+   }
+   return;
 }
 
 
@@ -24,10 +25,11 @@ function title_macro(param) {
  * macro rendering alias
  */
 function alias_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.createInputParam("alias", param));
-  else
-    res.write(this.alias);
+   if (param.as == "editor")
+      Html.input(this.createInputParam("alias", param));
+   else
+      res.write(this.alias);
+   return;
 }
 
 
@@ -39,6 +41,7 @@ function tagline_macro(param) {
       Html.input(this.preferences.createInputParam("tagline", param));
    else if (this.preferences.getProperty("tagline"))
       res.write(stripTags(this.preferences.getProperty("tagline")));
+   return;
 }
 
 
@@ -46,10 +49,11 @@ function tagline_macro(param) {
  * macro rendering email
  */
 function email_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.createInputParam("email", param));
-  else
-    res.write(this.email);
+   if (param.as == "editor")
+      Html.input(this.createInputParam("email", param));
+   else
+      res.write(this.email);
+   return;
 }
 
 
@@ -76,6 +80,7 @@ function online_macro(param) {
       res.write(param.yes ? param.yes : "yes");
    else
       res.write(param.no ? param.no : "no");
+   return;
 }
 
 
@@ -105,6 +110,7 @@ function usermaycontrib_macro(param) {
       Html.checkBox(inputParam);
    } else
       res.write(this.preferences.getProperty("usercontrib") ? "yes" : "no");
+   return;
 }
 
 
@@ -112,10 +118,11 @@ function usermaycontrib_macro(param) {
  * macro rendering nr. of days to show on site-fontpage
  */
 function showdays_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("days", param));
-  else
-    res.write(this.preferences.getProperty("days"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("days", param));
+   else
+      res.write(this.preferences.getProperty("days"));
+   return;
 }
 
 
@@ -130,6 +137,7 @@ function showarchive_macro(param) {
       Html.checkBox(inputParam);
    } else
       res.write(this.preferences.getProperty("archive") ? "yes" : "no");
+   return;
 }
 
 
@@ -144,6 +152,7 @@ function enableping_macro(param) {
       Html.checkBox(inputParam);
    } else
       res.write(this.enableping ? "yes" : "no");
+   return;
 }
 
 
@@ -151,14 +160,14 @@ function enableping_macro(param) {
  * macro rendering default longdateformat
  */
 function longdateformat_macro(param) {
-  if (param.as == "chooser")
-    renderDateformatChooser("longdateformat",
-                            this.getLocale(),
-                            this.preferences.getProperty("longdateformat"));
-  else if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("longdateformat", param));
-  else
-    res.write(this.preferences.getProperty("longdateformat"));
+   if (param.as == "chooser")
+      renderDateformatChooser("longdateformat", this.getLocale(),
+                              this.preferences.getProperty("longdateformat"));
+   else if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("longdateformat", param));
+   else
+      res.write(this.preferences.getProperty("longdateformat"));
+   return;
 }
 
 
@@ -166,14 +175,14 @@ function longdateformat_macro(param) {
  * macro rendering default shortdateformat
  */
 function shortdateformat_macro(param) {
-  if (param.as == "chooser")
-    renderDateformatChooser("shortdateformat",
-                            this.getLocale(),
-                            this.preferences.getProperty("shortdateformat"));
-  else if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("shortdateformat", param));
-  else
-    res.write(this.preferences.getProperty("shortdateformat"));
+   if (param.as == "chooser")
+      renderDateformatChooser("shortdateformat", this.getLocale(),
+                              this.preferences.getProperty("shortdateformat"));
+   else if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("shortdateformat", param));
+   else
+      res.write(this.preferences.getProperty("shortdateformat"));
+   return;
 }
 
 
@@ -187,6 +196,7 @@ function loginstatus_macro(param) {
       this.members.renderSkin("statusloggedin");
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
+   return;
 }
 
 
@@ -318,6 +328,7 @@ function calendar_macro(param) {
    calParam.forward = this.renderLinkToNextMonth(lastDayIndex, currMonth + "31", monthNames);
    calParam.calendar = res.pop();
    this.renderSkin("calendar", calParam);
+   return;
 }
 
 
@@ -326,6 +337,7 @@ function calendar_macro(param) {
  */
 function age_macro(param) {
    res.write(Math.floor((new Date() - this.createtime) / ONEDAY));
+   return;
 }
 
 
@@ -361,6 +373,7 @@ function history_macro(param) {
  */
 function localechooser_macro(param) {
    renderLocaleChooser(this.getLocale());
+   return;
 }
 
 
@@ -370,6 +383,7 @@ function localechooser_macro(param) {
  */
 function timezonechooser_macro(param) {
    renderTimeZoneChooser(this.getTimeZone());
+   return;
 }
 
 
@@ -441,6 +455,7 @@ function xmlbutton_macro(param) {
  */
 function searchbox_macro(param) {
    this.renderSkin("searchbox");
+   return;
 }
 
 
@@ -473,6 +488,7 @@ function layoutchooser_macro(param) {
    if (this.layout)
       param.selected = this.layout.alias;
    this.layouts.layoutchooser_macro(param);
+   return;
 }
 
 /**

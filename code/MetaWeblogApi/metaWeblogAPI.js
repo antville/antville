@@ -39,7 +39,7 @@ function getPost(postid, username, password) {
    } catch (deny) {
       throw("You're not allowed to edit the story with id " + postid);
    }
-   return (this.convertStoryToStruct(entry));
+   return this.convertStoryToStruct(entry);
 }
 
 
@@ -93,7 +93,7 @@ function newPost (blogid, username, password, content, publish) {
    var result = blog.stories.evalNewStory(param, usr);
    if (result.error)
       throw(result.message);
-   return (result.id);
+   return result.id;
 }
 
 
@@ -147,7 +147,7 @@ function editPost (postid, username, password, content, publish) {
    param.discussions = content.mt_allow_comments == 0 ? 0 : null;
 
    var result = entry.evalStory(param, usr);
-   return (!result.error);
+   return !result.error;
 }
 
 
@@ -200,7 +200,7 @@ function getRecentPosts(blogid, username, password, numberOfPosts) {
       }
       posts[posts.length] = this.convertStoryToStruct(entry);
    }
-   return (posts);
+   return posts;
 }
 
 
@@ -236,7 +236,7 @@ function getCategories(blogid, username, password) {
      param.rssUrl = null;
      topics[topics.length] = param;
    }
-   return (topics);
+   return topics;
 }
 
 

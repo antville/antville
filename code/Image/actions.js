@@ -5,6 +5,7 @@ function main_action() {
    res.data.title = "View image: " + this.alias;
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 
@@ -23,6 +24,7 @@ function edit_action() {
    res.data.title = "Edit image: " + this.alias;
    res.data.body = this.renderSkinAsString("edit");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 
@@ -50,4 +52,5 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    res.handlers.context.renderSkin("page");
+   return;
 }

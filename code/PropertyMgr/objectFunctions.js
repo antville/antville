@@ -26,7 +26,6 @@ function setProperty(key, value) {
    this._parent[this.getDataField ()] = Xml.writeToString (this.cache.content);
 }
 
-
 /**
   * deletes a property of the cache object and updates the xml-content
   * at the parent object
@@ -38,8 +37,6 @@ function deleteProperty(key) {
    delete this.cache.content[key];
    this._parent[this.getDataField()] = Xml.writeToString(this.cache.content);
 }
-
-
 
 /**
   * @returns an array of all keys in this object
@@ -53,8 +50,6 @@ function keys() {
    return arr;
 }
 
-
-
 /**
   * deletes this object's cache
   */
@@ -62,9 +57,6 @@ function reset() {
    this.cache.content = null;
    this.cache.rawcontent = null;
 }
-
-
-
 
 /**
   * checks if the cache is still up to date and
@@ -85,19 +77,14 @@ function evalCache() {
    return;
 }
 
-
-
 /**
   * get the field of the parent object that holds the xml-content
   * for this object. The name of the xml-field is constructed out of
   * the name of the mountpoint (this.__name__) and "_xml".
   */
 function getDataField() {
-   return (this.__name__ + "_xml");
+   return this.__name__ + "_xml";
 }
-
-
-
 
 /**
   * for debugging
@@ -116,9 +103,6 @@ function toString() {
    }
    return res.pop();
 }
-
-
-
 
 /**
  * creates parameter object based on xml-encoded property

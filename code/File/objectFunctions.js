@@ -5,6 +5,7 @@ function constructor(creator) {
    this.requestcnt = 0;
    this.creator = creator;
    this.createtime = new Date();
+   return this;
 }
 
 

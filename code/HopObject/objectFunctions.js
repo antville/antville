@@ -74,5 +74,5 @@ function createLinkParam(param) {
    delete param.text;
    delete param.prefix;
    delete param.suffix;
-   return(param);
+   return param;
 }

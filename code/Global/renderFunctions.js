@@ -26,8 +26,8 @@ function renderImage(img, param) {
  */
 function renderColorAsString(c) {
    if (c && c.isHexColor())
-      return("#" + c);
-   return(c);
+      return "#" + c;
+   return c;
 }
 
 /**
@@ -35,6 +35,7 @@ function renderColorAsString(c) {
  */
 function renderColor(c) {
    res.write(renderColorAsString(c));
+   return;
 }
 
 
@@ -87,6 +88,7 @@ function renderLocaleChooser(loc) {
    for (var i in locs)
       options[i] = new Array(locs[i], locs[i].getDisplayName());
    Html.dropDown({name: "locale"}, options, loc ? loc.toString() : null);
+   return;
 }
 
 
@@ -107,6 +109,7 @@ function renderDateformatChooser(version, locale, selectedValue) {
       options[i] = [encodeForm(patterns[i]), sdf.format(now)];
    }
    Html.dropDown({name: version}, options, selectedValue);
+   return;
 }
 
 
@@ -123,6 +126,7 @@ function renderTimeZoneChooser(tz) {
       options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/ONEHOUR)) + " (" + zones[i] + ")"];
    }
    Html.dropDown({name: "timezone"}, options, tz ? tz.getID() : null);
+   return;
 }
 
 /**

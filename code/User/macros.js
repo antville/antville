@@ -7,6 +7,7 @@ function name_macro(param) {
       Html.link({href: this.url}, this.name);
    else
       res.write(this.name);
+   return;
 }
 
 /**
@@ -29,6 +30,7 @@ function url_macro(param) {
       Html.input(this.createInputParam("url", param));
    else
       res.write(this.url);
+   return;
 }
 
 
@@ -41,6 +43,7 @@ function email_macro(param) {
       Html.input(this.createInputParam("email", param));
    else
       res.write(this.email);
+   return;
 }
 
 /**
@@ -55,6 +58,7 @@ function publishemail_macro(param) {
       Html.checkBox(inputParam);
    } else
       res.write(this.publishemail ? "yes" : "no");
+   return;
 }
 
 

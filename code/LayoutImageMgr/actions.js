@@ -12,6 +12,7 @@ function main_action() {
    res.data.title = "Images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -27,6 +28,7 @@ function default_action() {
    res.data.title = "Images of layout '" + this._parent.parent.title + "'";
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -38,4 +40,5 @@ function additional_action() {
    res.data.title = "Images of layout '" + this._parent.title + "'";
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }

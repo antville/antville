@@ -49,6 +49,7 @@ function diff_action() {
    res.data.body = this.renderSkinAsString("diff");
    res.data.title = "Diffs for " + this.proto + "/" + this.name + ".skin of layout " + this.layout.title;
    this.layout.skins.renderSkin("page");
+   return;
 }
 
 /**
@@ -74,4 +75,5 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    res.handlers.context.renderSkin("page");
+   return;
 }

@@ -8,6 +8,7 @@ function loginstatus_macro(param) {
       this.members.renderSkin("statusloggedin");
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
+   return;
 }
 
 /**
@@ -32,6 +33,7 @@ function sitecounter_macro(param) {
  */
 function title_macro() {
    res.write(this.getTitle());
+   return;
 }
 
 /**
@@ -39,6 +41,7 @@ function title_macro() {
  */
 function url_macro(param) {
    res.write(this.getUrl());
+   return;
 }
 
 /**
@@ -57,4 +60,5 @@ function layoutchooser_macro(param) {
    if (root.sys_layout)
       param.selected = root.sys_layout.alias;
    root.layouts.layoutchooser_macro(param);
+   return;
 }

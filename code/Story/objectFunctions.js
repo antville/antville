@@ -8,6 +8,7 @@ function constructor(creator, ipaddress) {
    this.editableby = EDITABLEBY_ADMINS;
    this.createtime = new Date();
    this.modifytime = new Date();
+   return this;
 }
 
 
@@ -202,7 +203,7 @@ function getRenderedContentPart(name) {
       if (req.data.cachePart == true)
          this.cache["lastRendered_" + name] = new Date();
    }
-   return (this.cache["rendered_" + name]);
+   return this.cache["rendered_" + name];
 }
 
 /**
@@ -246,5 +247,5 @@ function incrementReadCounter() {
 function getNavigationName () {
    if (this.title)
       return this.title;
-   return (DISPLAY["story"] + " " + this._id);
+   return DISPLAY["story"] + " " + this._id;
 }

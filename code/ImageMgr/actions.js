@@ -7,6 +7,7 @@ function main_action() {
    res.data.title = "Images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -19,6 +20,7 @@ function myimages_action() {
    res.data.title = "My images of " + this._parent.title;
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
+   return;
 }
 
 /**
@@ -45,4 +47,5 @@ function create_action() {
    res.data.title = "Add an image to " + this._parent.title;
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
+   return;
 }

@@ -2,133 +2,146 @@
  * macro rendering bgcolor
  */
 function bgcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("bgcolor", param));
-  else
-    renderColor(this.preferences.getProperty("bgcolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("bgcolor", param));
+   else
+      renderColor(this.preferences.getProperty("bgcolor"));
+   return;
 }
 
 /**
  * macro rendering textfont
  */
 function textfont_macro(param) {
-  if (param.as == "editor") {
-    param.size = 40;
-    Html.input(this.preferences.createInputParam("textfont", param));
-  } else
-    res.write(this.preferences.getProperty("textfont"));
+   if (param.as == "editor") {
+      param.size = 40;
+      Html.input(this.preferences.createInputParam("textfont", param));
+   } else
+      res.write(this.preferences.getProperty("textfont"));
+   return;
 }
 
 /**
  * macro rendering textsize
  */
 function textsize_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("textsize", param));
-  else
-    res.write(this.preferences.getProperty("textsize"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("textsize", param));
+   else
+      res.write(this.preferences.getProperty("textsize"));
+   return;
 }
 
 /**
  * macro rendering textcolor
  */
 function textcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("textcolor", param));
-  else
-    renderColor(this.preferences.getProperty("textcolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("textcolor", param));
+   else
+      renderColor(this.preferences.getProperty("textcolor"));
+   return;
 }
 
 /**
  * macro rendering linkcolor
  */
 function linkcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("linkcolor", param));
-  else
-    renderColor(this.preferences.getProperty("linkcolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("linkcolor", param));
+   else
+      renderColor(this.preferences.getProperty("linkcolor"));
+   return;
 }
 
 /**
  * macro rendering alinkcolor
  */
 function alinkcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("alinkcolor", param));
-  else
-    renderColor(this.preferences.getProperty("alinkcolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("alinkcolor", param));
+   else
+      renderColor(this.preferences.getProperty("alinkcolor"));
+   return;
 }
 
 /**
  * macro rendering vlinkcolor
  */
 function vlinkcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("vlinkcolor", param));
-  else
-    renderColor(this.preferences.getProperty("vlinkcolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("vlinkcolor", param));
+   else
+      renderColor(this.preferences.getProperty("vlinkcolor"));
+   return;
 }
 
 /**
  * macro rendering titlefont
  */
 function titlefont_macro(param) {
-  if (param.as == "editor") {
-    param.size = 40;
-    Html.input(this.preferences.createInputParam("titlefont", param));
-  } else
-    res.write(this.preferences.getProperty("titlefont"));
+   if (param.as == "editor") {
+      param.size = 40;
+      Html.input(this.preferences.createInputParam("titlefont", param));
+   } else
+      res.write(this.preferences.getProperty("titlefont"));
+   return;
 }
 
 /**
  * macro rendering titlesize
  */
 function titlesize_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("titlesize", param));
-  else
-    res.write(this.preferences.getProperty("titlesize"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("titlesize", param));
+   else
+      res.write(this.preferences.getProperty("titlesize"));
+   return;
 }
 
 /**
  * macro rendering titlecolor
  */
 function titlecolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("titlecolor", param));
-  else
-    renderColor(this.preferences.getProperty("titlecolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("titlecolor", param));
+   else
+      renderColor(this.preferences.getProperty("titlecolor"));
+   return;
 }
 
 /**
  * macro rendering smallfont
  */
 function smallfont_macro(param) {
-  if (param.as == "editor") {
-    param.size = 40;
-    Html.input(this.preferences.createInputParam("smallfont", param));
-  } else
-    res.write(this.preferences.getProperty("smallfont"));
+   if (param.as == "editor") {
+      param.size = 40;
+      Html.input(this.preferences.createInputParam("smallfont", param));
+   } else
+      res.write(this.preferences.getProperty("smallfont"));
+   return;
 }
 
 /**
  * macro rendering smallfont-size
  */
 function smallsize_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("smallsize", param));
-  else
-    res.write(this.preferences.getProperty("smallsize"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("smallsize", param));
+   else
+      res.write(this.preferences.getProperty("smallsize"));
+   return;
 }
 
 /**
  * macro rendering smallfont-color
  */
 function smallcolor_macro(param) {
-  if (param.as == "editor")
-    Html.input(this.preferences.createInputParam("smallcolor", param));
-  else
-    renderColor(this.preferences.getProperty("smallcolor"));
+   if (param.as == "editor")
+      Html.input(this.preferences.createInputParam("smallcolor", param));
+   else
+      renderColor(this.preferences.getProperty("smallcolor"));
+   return;
 }
 
 /**
@@ -143,8 +156,9 @@ function title_macro(param) {
          res.write(this.title);
          Html.closeLink();
       } else
-         return this.title;
+         res.write(this.title);
    }
+   return;
 }
 
 /**
@@ -253,6 +267,7 @@ function shareable_macro(param) {
       res.write(param.yes ? param.yes : "yes");
    else
       res.write(param.no ? param.no : "no");
+   return;
 }
 
 /**

@@ -18,6 +18,7 @@ function main_action() {
    res.data.title = "Vote poll: " + this.question;
    res.data.body = this.renderSkinAsString("main");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -62,6 +63,7 @@ function edit_action() {
    res.data.title = "Edit poll: " + this.question;
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -88,6 +90,7 @@ function delete_action() {
    };
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -97,6 +100,7 @@ function results_action() {
    res.data.title = "View poll: " + this.question;
    res.data.body = this.renderSkinAsString("results");
    this.site.renderSkin("page");
+   return;
 }
 
 /**
@@ -107,4 +111,5 @@ function toggle_action() {
    this.closed = closed ? 1 : 0;
    this.modifytime = new Date();
    res.redirect(this._parent.href());
+   return;
 }

@@ -81,4 +81,5 @@ function evalImport(param, creator) {
    } catch (err) {
       throw new Exception("layoutImportCorrupt");
    }
+   return;
 }
