@@ -1,7 +1,7 @@
 <table width="600" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="400" valign="top" nowrap>
-<p><span class="storyDate"><% this.author %>, <% story.createtime format="EEEE, dd.MM.yyyy, h:mm a" suffix="<br>"%></span>
+<p><span class="storyDate"><% this.author as="link" %>, <% story.createtime format="EEEE, dd.MM.yyyy, h:mm a" suffix="<br>"%></span>
 <span class="storyTitle"><% story.title suffix="<br>" %></span>
 <span class="storyText"><% story.text suffix="<br>&nbsp;<BR>" %></span></p>
 <% this.comments %>
