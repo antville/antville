@@ -285,7 +285,7 @@ function renderTextPreviewAsString(text, limit) {
  * length of the string to show is defined by argument "limit"
  */
 function renderTextPreview(text, limit) {
-  res.write(format(renderTextPreviewAsString(text, limit)));
+  res.write(renderTextPreviewAsString(text, limit));
 }
 
 
