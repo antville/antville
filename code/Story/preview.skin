@@ -1,4 +1,4 @@
-<p><span class="storyDate"><% this.author as="link" %>, <% this.createtime format="EEEE, dd.MM.yyyy, h:mm a" suffix="<br>"%></span>
+<p><span class="storyDate"><% this.author as="link" %>, <% this.createtime suffix="<br>"%></span>
 <span class="storyTitle"><% this.title suffix="<br>" %></span>
 <span class="storyText"><% this.text suffix="<br>&nbsp;<br>" %></span>
 <span class="storyNav"><% this.commentcounter no="comments" one="comment" more="comments" prefix="(" suffix=")&nbsp;&nbsp;" %><% this.link to="comment" text="place your comment!" %>&nbsp;&nbsp;<% this.editlink suffix="&nbsp;&nbsp;" %><% this.deletelink %></span><br>&nbsp;</p>
