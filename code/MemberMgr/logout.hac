@@ -1,4 +1,8 @@
-res.message = "Good bye, " + user.name + "! Lookin' forward to see you again!";
-user.logout();
-user.cache.referer = null;
+if (user.uid) {
+  res.message = "Good bye, " + user.name + "! Lookin' forward to see you again!";
+  user.logout();
+  user.cache.referer = null;
+  res.setCookie ("avUsr", "");
+  res.setCookie ("avPw", "");
+}
 res.redirect(this._parent.href());
