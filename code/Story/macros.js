@@ -125,7 +125,12 @@ function modifier_macro(param) {
  * if user is allowed to edit
  */
 function editlink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.openLink(this.href("edit"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
@@ -133,6 +138,7 @@ function editlink_macro(param) {
          res.write(param.text ? param.text : "edit");
       Html.closeLink();
    }
+   return;
 }
 
 /**
@@ -140,7 +146,12 @@ function editlink_macro(param) {
  * if user is creator of this story
  */
 function deletelink_macro(param) {
-   if (session.user && !this.isDeleteDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkDelete(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       Html.openLink(this.href("delete"));
       if (param.image && this.site.images.get(param.image))
          this.site.renderImage(this.site.images.get(param.image), param);
@@ -148,6 +159,7 @@ function deletelink_macro(param) {
          res.write(param.text ? param.text : "delete");
       Html.closeLink();
    }
+   return;
 }
 
 /**
@@ -155,7 +167,12 @@ function deletelink_macro(param) {
  * toggle the online-status of this story
  */
 function onlinelink_macro(param) {
-   if (session.user && !this.isEditDenied(session.user, req.data.memberlevel)) {
+   if (session.user) {
+      try {
+         this.checkEdit(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
       if (this.online && param.mode != "toggle")
          return;
       delete param.mode;
@@ -175,20 +192,26 @@ function onlinelink_macro(param) {
       }
       Html.closeTag("a");
    }
+   return;
 }
 
 /**
  * macro renders a link to the story
  */
 function viewlink_macro(param) {
-   if (session.user && this.isViewDenied(session.user, req.data.memberlevel))
-      return;
-   Html.openLink(this.href());
-   if (param.image && this.site.images.get(param.image))
-      this.site.renderImage(this.site.images.get(param.image), param);
-   else
-      res.write(param.text ? param.text : "view");
-   Html.closeLink();
+   if (session.user) {
+      try {
+         this.checkView(session.user, req.data.memberlevel);
+      } catch (deny) {
+         return;
+      }
+      Html.openLink(this.href());
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image), param);
+      else
+         res.write(param.text ? param.text : "view");
+      Html.closeLink();
+   }
 }
 
 /**
