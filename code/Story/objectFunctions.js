@@ -174,7 +174,7 @@ function deleteComment(currComment) {
  */
 function getRenderedContentPart (name) {
    var partLastRendered = this.cache["lastRendered_"+name];
-   if (partLastRendered <= this.modifytime ||
+   if (!partLastRendered || partLastRendered <= this.modifytime ||
        partLastRendered <= this.cache.modifytime) {
       // enable caching; some macros (eg. poll, storylist)
       // will set this to false to prevent caching of a contentpart
