@@ -27,7 +27,7 @@
 <div class="statushead"><% image name="/manage" %>manage</div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
 
-<div class="statuslight">...&nbsp;<% this.link to="weblogs" text="weblogs" %><br />
+<div class="statuslight">...&nbsp;<% this.link to="sites" text="sites" %><br />
 ...&nbsp;<% this.link to="users" text="users" %><br />
 ...&nbsp;<% this.link to="logs" text="system log" %>
 </td>
