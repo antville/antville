@@ -60,15 +60,6 @@ function list_action() {
 }
 
 /**
- * @DEPRECATED
- */
-function safescripts_action() {
-   res.contentType = "text/javascript";
-   res.write("");
-   return;
-}
-
-/**
  * wrapper to access colorpicker
  */
 function colorpicker_action() {
@@ -78,15 +69,6 @@ function colorpicker_action() {
    return;
 }
 
-
-/**
- * redirect requests for rss10 to rss
- */
-
-function rss10_action() {
-   res.redirect(this.href("rss"));
-   return;
-}
 
 /**
  * rss action

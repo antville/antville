@@ -90,15 +90,6 @@ function main_css_action() {
 }
 
 /**
- * wrapper for stylesheet.css action
- * DEPRECATED! left for backwards compatibility only
- */
-function stylesheet_action() {
-   this.main_css_action();
-   return;
-}
-
-/**
  * wrapper to make javascript.skin public
  */
 function main_js_action() {
@@ -111,35 +102,6 @@ function main_js_action() {
    root.renderSkin("systemscripts");
    return;
 }
-
-/**
- * wrapper for javascript.js action
- * DEPRECATED! left for backwards compatibility only
- */
-function javascript_action() {
-   this.main_js_action();
-   return;
-}
-
-/**
- * redirect requests for rss092 to rss
- */
-
-function rss092_action() {
-   this.rss_action();
-   return;
-}
-
-
-/**
- * redirect requests for rss10 to rss
- */
-
-function rss10_action() {
-   this.rss_action();
-   return;
-}
-
 
 /**
  * rss feed
