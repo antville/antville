@@ -73,6 +73,7 @@ function createNewWeblog(title,alias,creator) {
    newLog.country = "US";
    newLog.longdateformat = "EEEE, dd. MMMM yyyy, h:mm a";
    newLog.shortdateformat = "yyyy.MM.dd, HH:mm";
+   newLog.enableping = 0;
    newLog.createImgDirectory()
    if (this.add(newLog)) {
       // create member-object for connecting user <-> weblog with admin-rights
