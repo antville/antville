@@ -27,7 +27,7 @@
 <td></td>
 <td><table>
 <tr>
-<td class="small">Choose a gallery...<br /><% picturemgr.topicchooser firstOption="--- choose gallery ---" %></td>
+<td class="small">Choose a gallery...<br /><% imagemgr.topicchooser firstOption="--- choose gallery ---" %></td>
 <td valign="top" class="small">...or enter a new one<br />&nbsp;<input type="text" name="topic" value="<% request.topic %>" /></td>
 </tr>
 </table></td>

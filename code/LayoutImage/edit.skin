@@ -2,28 +2,28 @@
 <table cellspacing="0" cellpadding="3">
 <tr>
 <td class="small">Name:</td>
-<td><% layoutpicture.alias %></td>
-<td rowspan="5" valign="top" nowrap="nowrap">&nbsp;&nbsp;<% layoutpicture.show what="thumbnail" %></td>
+<td><% layoutimage.alias %></td>
+<td rowspan="5" valign="top" nowrap="nowrap">&nbsp;&nbsp;<% layoutimage.show what="thumbnail" %></td>
 </tr>
 <tr>
 <td class="small">Type:</td>
-<td><% layoutpicture.fileext %> image</td>
+<td><% layoutimage.fileext %> image</td>
 </tr>
 <tr>
 <td class="small">Width:</td>
-<td><% layoutpicture.width %> px</td>
+<td><% layoutimage.width %> px</td>
 </tr>
 <tr>
 <td class="small">Height:</td>
-<td><% layoutpicture.height %> px</td>
+<td><% layoutimage.height %> px</td>
 </tr>
 <tr>
 <td class="small" valign="top">Description:</td>
-<td nowrap="nowrap"><% layoutpicture.alttext as="editor" cols="20" rows="3" %></td>
+<td nowrap="nowrap"><% layoutimage.alttext as="editor" cols="20" rows="3" %></td>
 </tr>
 <tr>
 <td></td>
-<td colspan="2" class="small"><% layoutpicture.creator as="link" prefix="Created by " %><% layoutpicture.createtime format="short" prefix=" on " suffix="." %></td>
+<td colspan="2" class="small"><% layoutimage.creator as="link" prefix="Created by " %><% layoutimage.createtime format="short" prefix=" on " suffix="." %></td>
 </tr>
 <tr>
 <td></td>

@@ -6,7 +6,7 @@
  */
 function editlink_macro(param) {
    if (path.Layout == this.layout)
-      Picture.prototype.editlink_macro.apply(this, [param]);
+      Image.prototype.editlink_macro.apply(this, [param]);
    return;
 }
 
@@ -19,6 +19,6 @@ function editlink_macro(param) {
  */
 function deletelink_macro(param) {
    if (path.Layout == this.layout)
-      Picture.prototype.deletelink_macro.apply(this, [param]);
+      Image.prototype.deletelink_macro.apply(this, [param]);
    return;
 }

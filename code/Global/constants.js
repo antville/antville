@@ -68,17 +68,17 @@ function initConstants() {
    DISPLAY["Root"] = getMessage("Root");
    DISPLAY["Site"] = getMessage("Site");
    DISPLAY["TopicMgr"] = getMessage("TopicMgr");
-   DISPLAY["PictureTopicMgr"] = getMessage("PictureTopicMgr");
+   DISPLAY["ImageTopicMgr"] = getMessage("ImageTopicMgr");
    DISPLAY["StoryMgr"] = getMessage("StoryMgr");
-   DISPLAY["AssetMgr"] = getMessage("AssetMgr");
-   DISPLAY["PictureMgr"] = getMessage("PictureMgr");
+   DISPLAY["FileMgr"] = getMessage("FileMgr");
+   DISPLAY["ImageMgr"] = getMessage("ImageMgr");
    DISPLAY["MemberMgr"] = getMessage("MemberMgr");
    DISPLAY["SysMgr"] = getMessage("SysMgr");
    DISPLAY["PollMgr"] = getMessage("PollMgr");
    DISPLAY["SkinMgr"] = getMessage("SkinMgr");
    DISPLAY["Layout"] = getMessage("Layout");
    DISPLAY["LayoutMgr"] = getMessage("LayoutMgr");
-   DISPLAY["LayoutPictureMgr"] = getMessage("LayoutPictureMgr");
+   DISPLAY["LayoutImageMgr"] = getMessage("LayoutImageMgr");
    DISPLAY["RootLayoutMgr"] = getMessage("RootLayoutMgr");
    DISPLAY["Story"] = getMessage("Story");
 }
@@ -227,10 +227,10 @@ SKINSETS.push(newSet);
 newSet = new Skinset("Comment", ["Comment.toplevel", "Comment.reply", "Comment.edit"]);
 SKINSETS.push(newSet);
 
-newSet = new Skinset("Picture", ["Picture.main", "Picture.edit", "PictureMgr.new", "LayoutPicture.edit", "PictureMgr.main", "Picture.mgrlistitem", "Topic.imagetopic"]);
+newSet = new Skinset("Image", ["Image.main", "Image.edit", "ImageMgr.new", "LayoutImage.edit", "ImageMgr.main", "Image.mgrlistitem", "Topic.imagetopic"]);
 SKINSETS.push(newSet);
 
-newSet = new Skinset("Asset", ["Asset.main", "Asset.edit", "AssetMgr.new", "AssetMgr.main", "Asset.mgrlistitem"]);
+newSet = new Skinset("File", ["File.main", "File.edit", "FileMgr.new", "FileMgr.main", "File.mgrlistitem"]);
 SKINSETS.push(newSet);
 
 newSet = new Skinset("Poll", ["Poll.main", "Poll.results", "Choice.main", "Choice.result", "Choice.graph"]);
@@ -248,7 +248,7 @@ SKINSETS.push(newSet);
 
 newSet = new Skinset("LayoutMgr", ["LayoutMgr.main", "LayoutMgr.new", "LayoutMgr.import"], "Root");
 newSet.add(new Skinset("LayoutMgr.layout", ["Layout.mgrlistitem", "Layout.main", "Layout.edit", "Layout.download", "Layout.chooserlistitem", "Layout.testdrive"]));
-newSet.add(new Skinset("LayoutMgr.images", ["LayoutPictureMgr.main", "LayoutPictureMgr.navigation", "LayoutPictureMgr.new"]));
+newSet.add(new Skinset("LayoutMgr.images", ["LayoutImageMgr.main", "LayoutImageMgr.navigation", "LayoutImageMgr.new"]));
 SKINSETS.push(newSet);
 
 newSet = new Skinset("various", ["HopObject.delete"], "Root");

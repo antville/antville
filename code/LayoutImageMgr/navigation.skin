@@ -1,1 +1,1 @@
-...&nbsp;show&nbsp;<% layoutpicturemgr.link text="all images" %>&nbsp;|&nbsp;<% layoutpicturemgr.link to="default" text="default images" %>&nbsp;|&nbsp;<% layoutpicturemgr.link to="additional" text="additional images" %>
+...&nbsp;show&nbsp;<% layoutimagemgr.link text="all images" %>&nbsp;|&nbsp;<% layoutimagemgr.link to="default" text="default images" %>&nbsp;|&nbsp;<% layoutimagemgr.link to="additional" text="additional images" %>

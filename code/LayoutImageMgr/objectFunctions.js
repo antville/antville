@@ -1,6 +1,6 @@
 /**
  * function checks if image fits to the minimal needs
- * @param Obj Object containing the properties needed for creating a new Picture
+ * @param Obj Object containing the properties needed for creating a new Image
  * @param Obj User-Object creating this image
  * @return Obj Object containing two properties:
  *             - error (boolean): true if error happened, false if everything went fine
@@ -18,7 +18,7 @@ function evalImg(param, creator) {
       throw new Exception("imageNoImage");
    }
 
-   var newImg = new LayoutPicture(creator);
+   var newImg = new LayoutImage(creator);
    // if no alias given try to determine it
    if (!param.alias)
       newImg.alias = buildAliasFromFile(param.rawimage, this);
@@ -81,7 +81,7 @@ function evalImport(metadata, files) {
       var data = Xml.readFromString(new java.lang.String(metadata[i].data, 0, metadata[i].data.length));
       var newImg = this.importImage(this._parent, data);
       newImg.layout = this._parent;
-      // finally, add the new Picture to the collection of this LayoutPictureMgr
+      // finally, add the new Image to the collection of this LayoutImageMgr
       this.add(newImg);
    }
    // store the image files to the appropriate directory
@@ -99,7 +99,7 @@ function evalImport(metadata, files) {
 }
 
 /**
- * create a new Picture based on the metadata passed
+ * create a new Image based on the metadata passed
  * as argument
  * @param Object Layout-Object this image should belong to
  * @param Object JS object containing the image-metadata
@@ -107,7 +107,7 @@ function evalImport(metadata, files) {
  */
 function importImage(layout, data) {
    // FIXME: replace the creator with a more intelligent solution ...
-   var img = new LayoutPicture(session.user);
+   var img = new LayoutImage(session.user);
    if (data.thumbnail) {
       img.thumbnail = this.importImage(layout, data.thumbnail);
       // FIXME: not sure if this is really necessary ...

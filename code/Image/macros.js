@@ -141,7 +141,7 @@ function gallery_macro(param) {
  */
 function code_macro(param) {
    res.write("&lt;% ");
-   res.write(this instanceof LayoutPicture ? "layout.image" : "image");
+   res.write(this instanceof LayoutImage ? "layout.image" : "image");
    res.write(" name=\"" + this.alias + "\" %&gt;");
    return;
 }

@@ -3,22 +3,22 @@
 <tr>
 <td class="small">Name:</td>
 <td rowspan="6">&nbsp;</td>
-<td><% asset.alias %></td>
+<td><% file.alias %></td>
 </tr>
 <td class="small">Size:</td>
-<td><% asset.filesize %></td>
+<td><% file.filesize %></td>
 </tr>
 <tr>
 <td class="small">Format:</td>
-<td><% asset.mimetype %></td>
+<td><% file.mimetype %></td>
 </tr>
 <tr>
 <td class="small" valign="top">Description:</td>
-<td><% asset.description as="editor" cols="30" rows="3" %></td>
+<td><% file.description as="editor" cols="30" rows="3" %></td>
 </tr>
 <tr>
 <td></td>
-<td class="small">Created by <% asset.creator as="link" %> on <% asset.createtime format="short" %>.</td>
+<td class="small">Created by <% file.creator as="link" %> on <% file.createtime format="short" %>.</td>
 </tr>
 <tr>
 <td></td>

@@ -237,9 +237,9 @@ skinset.Story.list = Story pool|The skins used to display the »stories« section 
 
 skinset.Comment = Comments|Skins used to display comments and the form for entering a new or editing an existing comment.
 
-skinset.Picture = Images|This section contains all skins used for rendering images in your site.
+skinset.Image = Images|This section contains all skins used for rendering images in your site.
 
-skinset.Asset = Files|Skins used to display files in your site.
+skinset.File = Files|Skins used to display files in your site.
 
 skinset.Poll = Polls|Skins used for rendering polls and their results.
 skinset.Poll.basic = Basic Layout
@@ -287,18 +287,18 @@ skin.Layout.testdrive = Testdrive message|Display the name of the layout that is
 skin.Layout.mgrlistitem = List item|This skin is used to display a single layout in the list of existing layouts.
 skin.Layout.edit = Layout editor|This is the form for editing a layout.
 
-## PictureMgr
-skin.PictureMgr.main = Image list|Displays the list of images in the »images« section of a site.
-skin.PictureMgr.new = New image|This is the form for uploading a new image to the site's imagepool.
+## ImageMgr
+skin.ImageMgr.main = Image list|Displays the list of images in the »images« section of a site.
+skin.ImageMgr.new = New image|This is the form for uploading a new image to the site's imagepool.
 
 ## Topic
 skin.Topic.main = Main topic page|The skin for customizing the look of topic pages.
 skin.Topic.imagetopic = Main gallery page|The skin that is used to display an image gallery.
 
-## Asset
-skin.Asset.main = File display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
-skin.Asset.mgrlistitem = File list item|Displays a file in the »files« section of a site.
-skin.Asset.edit = File editor|The form for editing an existing file.
+## File
+skin.File.main = File display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
+skin.File.mgrlistitem = File list item|Displays a file in the »files« section of a site.
+skin.File.edit = File editor|The form for editing an existing file.
 
 ## Choice
 skin.Choice.main = Display|The form part for a single choice of a poll.
@@ -350,26 +350,26 @@ skin.Global.prevpagelink = Link to previous page|This skin displays a link to ne
 skin.Global.colorpickerScripts = Color picker script|This skin contains the client side javascript methods used in the color picker.
 skin.Global.colorpickerWidget = Widget|This is the skin that displays a small box filled with a selected color (normally it's shown on the right of the form elements for entering a color code).
 
-## LayoutPictureMgr
-skin.LayoutPictureMgr.main = List of layout images|This skin contains the list of available images of a layout.
-skin.LayoutPictureMgr.new = New layout image|This is the form for uploading a new layout image.
-skin.LayoutPictureMgr.navigation = Additional navigation|This skin contains additional navigation links (eg. the link to the »standard images« of the basis layout). It will only be used if a layout is based on another one which owns images too.
+## LayoutImageMgr
+skin.LayoutImageMgr.main = List of layout images|This skin contains the list of available images of a layout.
+skin.LayoutImageMgr.new = New layout image|This is the form for uploading a new layout image.
+skin.LayoutImageMgr.navigation = Additional navigation|This skin contains additional navigation links (eg. the link to the »standard images« of the basis layout). It will only be used if a layout is based on another one which owns images too.
 
-## Picture
-skin.Picture.main = Display in image list|This skin is used to display an image with its name and description in the »images« section of the site.
-skin.Picture.mgrlistitem = Image list item|The way an image is displayed in the »images« section of a site (and in the list of images of a layout).
-skin.Picture.edit = Image editor|The form for editing an already uploaded image.
-skin.Picture.preview = Image preview|Used to display a preview of an image.
+## Image
+skin.Image.main = Display in image list|This skin is used to display an image with its name and description in the »images« section of the site.
+skin.Image.mgrlistitem = Image list item|The way an image is displayed in the »images« section of a site (and in the list of images of a layout).
+skin.Image.edit = Image editor|The form for editing an already uploaded image.
+skin.Image.preview = Image preview|Used to display a preview of an image.
 
-## AssetMgr
-skin.AssetMgr.main = File list|This skin contains the list of available files in the »files« section of the site.
-skin.AssetMgr.new = New file|The form for uploading a new file.
+## FileMgr
+skin.FileMgr.main = File list|This skin contains the list of available files in the »files« section of the site.
+skin.FileMgr.new = New file|The form for uploading a new file.
 
 ## SysLog
 skin.SysLog.sysmgr_listitem = Log entry|Displays a single log entry in the log manager.
 
-## LayoutPicture
-skin.LayoutPicture.edit = Layout image editor|The form for editing an existing layout image.
+## LayoutImage
+skin.LayoutImage.edit = Layout image editor|The form for editing an existing layout image.
 
 ## Poll
 skin.Poll.main = Main display|This skin shows a poll as form for voting.
@@ -484,17 +484,17 @@ skin.Membership.mailto = Form for contacting a member|Contains a form for enteri
 Root = Root
 Site = Home
 TopicMgr = Topics
-PictureTopicMgr = Galleries
+ImageTopicMgr = Galleries
 StoryMgr = Stories
-AssetMgr = Files
-PictureMgr = Images
+FileMgr = Files
+ImageMgr = Images
 MemberMgr = Members
 SysMgr = System Management
 PollMgr = Polls
 SkinMgr = Skins
 Layout = Layout
 LayoutMgr = Layouts
-LayoutPictureMgr = Images
+LayoutImageMgr = Images
 RootLayoutMgr = Layouts
 Story = Story
 
@@ -621,32 +621,32 @@ MemberMgr.password = Password
 MemberMgr.subscriptionsTitle = <% param.title %> of user <% param.userName %>
 MemberMgr.viewListTitle = <% param.title %> of <% param.siteName %>
 
-# Asset / AssetMgr
-AssetMgr.listTitle = Files of <% param.siteTitle %>
-AssetMgr.listMyFilesTitle = My files of <% param.siteTitle %>
-AssetMgr.addFile = Add a file to <% param.siteTitle %>
-Asset.editTitle = Edit file: <% param.fileAlias %>
-Asset.deleteTitle = Delete file: <% param.fileAlias %>
-Asset.deleteDescription = the file
-Asset.downloads.no = 0 downloads
-Asset.downloads.one = 1 download
-Asset.downloads.more = downloads
+# File / FileMgr
+FileMgr.listTitle = Files of <% param.siteTitle %>
+FileMgr.listMyFilesTitle = My files of <% param.siteTitle %>
+FileMgr.addFile = Add a file to <% param.siteTitle %>
+File.editTitle = Edit file: <% param.fileAlias %>
+File.deleteTitle = Delete file: <% param.fileAlias %>
+File.deleteDescription = the file
+File.downloads.no = 0 downloads
+File.downloads.one = 1 download
+File.downloads.more = downloads
 
-# Picture
-Picture.viewTitle = View image: <% param.imageAlias %>
-Picture.editTitle = Edit image: <% param.imageAlias %>
-Picture.deleteTitle = Delete image: <% param.imageAlias %>
-Picture.deleteDescription = the image
-PictureMgr.listTitle = Images of <% param.parentTitle %>
-PictureMgr.listMyImagesTitle = My images of <% param.parentTitle %>
-PictureMgr.addImage = Add an image to <% param.parentTitle %>
+# Image
+Image.viewTitle = View image: <% param.imageAlias %>
+Image.editTitle = Edit image: <% param.imageAlias %>
+Image.deleteTitle = Delete image: <% param.imageAlias %>
+Image.deleteDescription = the image
+ImageMgr.listTitle = Images of <% param.parentTitle %>
+ImageMgr.listMyImagesTitle = My images of <% param.parentTitle %>
+ImageMgr.addImage = Add an image to <% param.parentTitle %>
 
 # Topic / gallery
 Topic.addStoryToTopic = add a story to this topic
 TopicMgr.mainTitle = Topics of <% param.title %>
 
-PictureTopicMgr.addImageToGallery = add an image to this gallery
-PictureTopicMgr.mainTitle = Galleries of <% param.siteTitle %>
+ImageTopicMgr.addImageToGallery = add an image to this gallery
+ImageTopicMgr.mainTitle = Galleries of <% param.siteTitle %>
 
 # Poll
 Poll.voteTitle = Vote poll: <% param.question %>

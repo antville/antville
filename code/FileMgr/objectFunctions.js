@@ -1,6 +1,6 @@
 /**
  * function checks if file fits to the minimal needs
- * @param Obj Object containing the properties needed for creating a new Asset
+ * @param Obj Object containing the properties needed for creating a new File
  * @param Obj User-Object creating this file
  * @return Obj Object containing two properties:
  *             - error (boolean): true if error happened, false if everything went fine
@@ -20,7 +20,7 @@ function evalFile(param, creator) {
       // disk quota has already been exceeded
       throw new Exception("siteQuotaExceeded");
    }
-   var newFile = new Asset(creator);
+   var newFile = new File(creator);
    // if no alias given try to determine it
    if (!param.alias)
       newFile.alias = buildAliasFromFile(param.rawfile, this);

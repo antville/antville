@@ -12,7 +12,7 @@ function main_action() {
       res.data.title += formatTimestamp(ts, "yyyy-MM-dd");
    } else
       res.data.title += this.groupname;
-   if (this._parent._prototype == "PictureTopicMgr")
+   if (this._parent._prototype == "ImageTopicMgr")
       res.data.body = this.renderSkinAsString("imagetopic");
    else
       res.data.body = this.renderSkinAsString("main");

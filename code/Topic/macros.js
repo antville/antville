@@ -21,7 +21,7 @@ function addstory_macro (param) {
 
 
 /**
- * Display a link to let the use add a new Picture to this topic
+ * Display a link to let the use add a new Image to this topic
  */
 function addimage_macro (param) {
    try {
@@ -35,7 +35,7 @@ function addimage_macro (param) {
    if (param.text)
       res.format(param.text);
    else
-      res.write(getMessage("PictureTopicMgr.addImageToGallery"));
+      res.write(getMessage("ImageTopicMgr.addImageToGallery"));
    Html.closeTag("a");
    return;
 }

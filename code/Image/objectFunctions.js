@@ -23,7 +23,7 @@ function save(rawimage, dir, maxWidth, maxHeight) {
       rawimage.writeToFile(dir.getPath(), this.filename + "." + this.fileext);
       return true;
    }
-   var img = new Image(rawimage.getContent());
+   var img = new Helma.Image(rawimage.getContent());
    this.width = img.getWidth();
    this.height = img.getHeight();
    var resize = false;
@@ -59,14 +59,14 @@ function save(rawimage, dir, maxWidth, maxHeight) {
       app.log("Error in image.save(): can't save image to "+dir);
       throw new Exception("imageSave");
    }
-   var f = new File(dir.getPath(), this.filename + "." + this.fileext);
+   var f = new Helma.File(dir.getPath(), this.filename + "." + this.fileext);
    this.filesize = f.getLength();
    return;
 }
 
 
 /**
- * function checks if new Picture-parameters are correct ...
+ * function checks if new Image-parameters are correct ...
  * @param Obj Object containing the form values
  * @param Obj User-Object modifying this image
  * @return Obj Object containing two properties:
@@ -103,7 +103,7 @@ function evalImg(param, modifier) {
  */
 
 function createThumbnail(rawimage, dir) {
-   var thumb = (this.site ? new Picture(this.creator) : new LayoutPicture(this.creator));
+   var thumb = (this.site ? new Image(this.creator) : new LayoutImage(this.creator));
    thumb.site = this.site;
    thumb.layout = this.layout;
    thumb.filename = this.filename + "_small";

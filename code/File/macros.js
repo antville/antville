@@ -118,12 +118,12 @@ function filetype_macro(param) {
  */
 function clicks_macro(param) {
    if (!this.requestcnt)
-      res.write(param.no ? param.no : getMessage("Asset.download.no"));
+      res.write(param.no ? param.no : getMessage("File.download.no"));
    else if (this.requestcnt == 1)
-      res.write(param.one ? param.one : getMessage("Asset.download.one"));
+      res.write(param.one ? param.one : getMessage("File.download.one"));
    else {
       res.write(this.requestcnt);
-      res.write(param.more ? param.more : " " + getMessage("Asset.download.more"));
+      res.write(param.more ? param.more : " " + getMessage("File.download.more"));
    }
    return;
 }

@@ -49,7 +49,7 @@ function topicchooser_macro(param) {
          options[i] = {value: topic.groupname, display: topic.groupname};
          if (req.data.addToTopic)
             var selected = req.data.addToTopic;
-         else if (path.Picture && path.Picture.topic == topic.groupname)
+         else if (path.Image && path.Image.topic == topic.groupname)
             var selected = topic.groupname;
       }
    }

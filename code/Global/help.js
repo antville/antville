@@ -166,7 +166,7 @@ HELP.skins.Day = {
 
 
 // F I L E
-HELP.macros.Asset = {
+HELP.macros.File = {
    alias: 254484,
    clicks: 254490,
    deletelink: 0,
@@ -179,7 +179,7 @@ HELP.macros.Asset = {
    url: 254504
 };
 
-HELP.skins.Asset = {
+HELP.skins.File = {
    edit: ["response.action"],
    main: ["param.text"]
 }
@@ -187,14 +187,14 @@ HELP.skins.Asset = {
 
 // F I L E M G R
 
-HELP.skins.AssetMgr = {
+HELP.skins.FileMgr = {
    main: ["response.filelist", "response.pagenavigation"]
 };
 
 
 // I M A G E
 
-HELP.macros.Picture = {
+HELP.macros.Image = {
    alias: 254543,
    alttext: 254547,
    code: 0,
@@ -207,19 +207,19 @@ HELP.macros.Picture = {
    width: 254548
 };
 
-HELP.skins.Picture = {
+HELP.skins.Image = {
    edit: ["response.action", "request.topic"]
 };
 
 
 // I M A G E M G R
 
-HELP.macros.PictureMgr = {
+HELP.macros.ImageMgr = {
    imagelist: 0
    //topicchooser: 0
 };
 
-HELP.skins.PictureMgr = {
+HELP.skins.ImageMgr = {
    main: ["response.imagelist", "response.pagenavigation"],
    "new": ["response.action", "request.topic"]
 };
@@ -262,25 +262,25 @@ HELP.skins.Layout = {
 
 // L A Y O U T I M A G E
 
-HELP.macros.LayoutPicture = {
+HELP.macros.LayoutImage = {
    deletelink: 0,
    editlink: 0
 };
 
 
-HELP.skins.LayoutPicture = {
+HELP.skins.LayoutImage = {
    edit: ["response.action"]
 };
 
 
 // L A Y O U T I M A G E M G R
 
-HELP.macros.LayoutPictureMgr = {
+HELP.macros.LayoutImageMgr = {
    navigation: 0
 };
 
 
-HELP.skins.LayoutPictureMgr = {
+HELP.skins.LayoutImageMgr = {
    main: ["response.imagelist", "response.pagenavigation"],
    "new": ["response.action"]
 };
