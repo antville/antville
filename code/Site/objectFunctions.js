@@ -29,19 +29,30 @@ function renderLinkToPrevMonth(cal) {
  */
 
 function renderLinkToNextMonth(cal) {
+	// ts:events
+   if (false)
+   	var calObject = this.allevents;
+   else
+   	var calObject = this;
+
    // create Object used to pass to format-function
    var tsParam = new Object();
    tsParam.format = "MMMM";
 
    if (!this.size())
       return ("&nbsp;");
-   if (parseInt(this.get(0).groupname,10) > parseInt(cal.getTime().format("yyyyMMdd"),10)) {
+
+	// if (parseInt(this.get(0).groupname,10) > parseInt(cal.getTime().format("yyyyMMdd"),10)) {
+   
+   // ts:events
+   if (parseInt(calObject.get(0).groupname,10) > parseInt(cal.getTime().format("yyyyMMdd"),10)) {
+
       // there are any stories, so try to get them ...
       nextDay = false;
       while (!nextDay) {
          cal.add(java.util.Calendar.DATE,1);
-         if (this.get(cal.getTime().format("yyyyMMdd")))
-            nextDay = this.get(cal.getTime().format("yyyyMMdd"));
+         if (calObject.get(cal.getTime().format("yyyyMMdd")))
+            nextDay = calObject.get(cal.getTime().format("yyyyMMdd"));
       }
       return ("<a href=\"" + nextDay.href() + "\">" + this.formatTimestamp(cal.getTime(),tsParam) + "</a>");
    } else {
@@ -224,3 +235,18 @@ function isStoryOnline(st) {
       return true;
    return false;
 }
+
+
+/**
+ * This function parses a string for <img> tags and turns them
+ * into <a> tags.  
+ */ 
+
+function rssConvertHtmlImageToHtmlLink(str) {
+   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
+   re.ignoreCase = true;
+   re.global = true;
+   str = str.replace(re, "[<a href=\"http://" + getProperty("hostname") + "$1\" title=\"$3\">Image</a>]");
+ 	return(str);
+}
+
