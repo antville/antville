@@ -14,8 +14,8 @@ function sysmgr_count_macro(param) {
       res.write(this.comments.size());
    else if (param.what == "images")
       res.write(this.images.size());
-   else if (param.what == "goodies")
-      res.write(this.goodies.size());
+   else if (param.what == "files")
+      res.write(this.files.size());
 }
 
 /**
