@@ -9,7 +9,7 @@ function evalRegistration() {
  		if (newUser) {
          newUser.name = reg.name;
 			newUser.email = reg.email;
-         newUser.url = evalURL(reg.url);
+         newUser.url = reg.url;
          newUser.description = reg.description;
          newUser.registered = new Date();
          newUser.blocked = 0;
