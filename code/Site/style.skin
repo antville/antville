@@ -19,11 +19,11 @@ a:hover { background-color:<% weblog.linkcolor %>;
           color:<% weblog.bgcolor %>;
         }
 
-.title { font-size:20pt;
+.title { font-size:18pt;
          font-weight:bold;
          vertical-align:middle;
          background-color:transparent;
-         color:#666666;
+         color: <% weblog.linkcolor %>;
        }
 
 .message { font-family:<% weblog.smallfont %>;
@@ -109,7 +109,7 @@ li { padding-bottom:3px;
 .commentHead { width:50px;
                border-bottom-style:dotted;
                border-bottom-width:thin;
-               border-bottom-color:CCCCCC;
+               border-bottom-color: #cccccc;
                margin-bottom:2px;
                margin-top:10px;
              }
@@ -149,7 +149,7 @@ li { padding-bottom:3px;
             font-weight:normal;
           }
 
-.offlineStory { background-color:#CCCCCC;
+.offlineStory { background-color: #cccccc;
               }
 
 .pollResultsBar {
