@@ -8,7 +8,7 @@ if (deny) {
 
 res.skin = "weblog.page";
 
-res.data.title = "Antville - " + encode (this.weblog.title);
+res.data.title = "Antville - " + this.weblog.title;
 if (this.title)
   res.data.title += " - " + encode(this.title);
 
