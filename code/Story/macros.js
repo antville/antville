@@ -23,9 +23,9 @@ function content_macro(param) {
       default :
          if (!param.clipping)
             param.clipping = "...";
-         var part = this.getRenderedContentPart(param.part);
+         var part = this.getRenderedContentPart(param.part, param.as);
          if (!part && param.fallback)
-            part = this.getRenderedContentPart(param.fallback);
+            part = this.getRenderedContentPart(param.fallback, param.as);
          if (param.as == "link") {
             if (this._prototype != "comment")
                Html.openLink({href: this.href()});
