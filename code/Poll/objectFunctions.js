@@ -44,8 +44,7 @@ function evalPoll(question, choices, creator) {
  *                - url (String): the URL string of the poll
  */
 function evalVote(param, usr) {
-   if (this.isVoteDenied(usr, req.data.memberlevel))
-      throw new Exception("error");
+   this.checkVote(usr, req.data.memberlevel);
 	if (!param.choice)
 	   throw new Exception("noVote");
 	var c = this.get(param.choice);
