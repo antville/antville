@@ -83,6 +83,7 @@ function evalStory(param,modifier) {
    } else
       result.url = this.weblog.stories.href();
    result.message = "The story was updated successfully!";
+   this.cache.lrText = null;
    return (result);
 }
 

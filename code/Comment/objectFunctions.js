@@ -37,6 +37,7 @@ function updateComment(param) {
       result.message = "You need at least some text!";
       result.error = true;
    }
+   this.cache.lrText = null;
    return (result);
 }
 
