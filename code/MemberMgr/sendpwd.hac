@@ -1,0 +1,13 @@
+var parent = setLayout();
+
+if (req.data.submit == "cancel" || req.data.cancel)
+   res.redirect(parent.href());
+else
+   this.sendPwd();
+
+res.title = "Antville - Password forgotten";
+res.head = parent.renderSkinAsString("javascript");
+res.head += parent.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("sendpwd");
+

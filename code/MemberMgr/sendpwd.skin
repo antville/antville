@@ -1,0 +1,12 @@
+<p>Please enter the eMail-address you most likely used back then when you registered. A mail containing all accounts that were registered with this address will be sent to it.</p>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small" nowrap><form method="post">eMail:</td>
+<td nowrap><% this.input type="text" name="email" %></td>
+</tr>
+<tr>
+<td nowrap>&nbsp;</td>
+<td nowrap><% this.input type="button" name="cancel" value="cancel" %>&nbsp;<% this.input type="button" name="send" value="send" %></td>
+</tr>
+</table>
+</form>
