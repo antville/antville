@@ -1,4 +1,4 @@
-if (!this.isEditAllowed())
+if (!this.isDeleteAllowed())
    res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.weblog.images.href());
 
 if (req.data.submit == "delete")
