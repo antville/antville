@@ -316,10 +316,12 @@ function getMessage(property, value) {
  * @param Obj Destination collection
  */
 function buildAliasFromFile(uploadFile, collection) {
-   var rawName = uploadFile.getName().split("/");
-   var filename = rawName[rawName.length-1];
-   if (filename.lastIndexOf(".") > -1)
-      filename = filename.substring(0, filename.lastIndexOf("."));
+   var filename = uploadFile.getName().split("/").pop();
+   var pos = filename.lastIndexOf(".");
+   if (pos > 0)
+      filename = filename.substring(0, pos);
+   else if (pos > -1)
+      filename = filename.substring(1, filename.length);
    return buildAlias(filename, collection);
 }
 
