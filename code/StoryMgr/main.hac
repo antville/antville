@@ -1,15 +1,15 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isDenied(user);
+var deny = this.isDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(path.weblog.href());
 }
-
-res.skin = "weblog.page";
 
 this.renderStorylist(parseInt(req.data.start,10),req.data.show);
 
 res.data.title = path.weblog.title;
 
 res.data.body = this.renderSkinAsString("main");
+
+path.weblog.renderSkin("page");
