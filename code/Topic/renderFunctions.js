@@ -30,7 +30,7 @@ function renderStorylist(idx) {
          s.renderSkin("dayheader");
          day = s.day;
       }
-      s.renderSkin("mgrlistitem");
+      s.renderSkin("preview");
    }
    res.data.storylist = res.pop();
    if (idx < size) {
