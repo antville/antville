@@ -9,7 +9,7 @@ function evalRegistration() {
  		if (newUser) {
          newUser.name = reg.name;
 			newUser.email = reg.email;
-         newUser.url = reg.url;
+         newUser.url = evalURL(reg.url);
          newUser.description = reg.description;
          newUser.registered = new Date();
          newUser.blocked = 0;
@@ -70,7 +70,7 @@ function checkReg() {
    if (req.data.description)
       reg.description = req.data.description;
    if (req.data.url)
-   	reg.url = req.data.url;
+   	reg.url = evalURL(req.data.url);
 
    return (reg);
 }
@@ -90,7 +90,7 @@ function updateUser() {
       } else
          user.password = req.data.newpwd1;
    }
-   user.url = req.data.url;
+   user.url = evalURL(req.data.url);
    user.email = req.data.email;
    user.description = req.data.description;
    res.message = "Changes were saved successfully!";
