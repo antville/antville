@@ -1,3 +1,5 @@
-<form method="post" action="<% response.action %>"><p class="storyTitle">Warning!</p>
+<form method="post" action="<% response.action %>">
+<p class="storyTitle">Warning!</p>
 <p>You are about to delete <% param.what %>! Be aware of the fact that there is no "undo", so if you klick on "delete" here it will be gone forever!</p>
-<p><% this.input type="button" name="remove" value="delete" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></p></form>
+<p><% this.input type="button" name="remove" value="delete" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></p>
+</form>

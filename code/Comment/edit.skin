@@ -1,6 +1,6 @@
-<p><form method="post" action="<% response.action %>"><span class="small">Title:<br></span>
+<p><form method="post" action="<% response.action %>"><span class="small">Title:<br /></span>
 <% this.title as="editor" width="25" style="formTitle" %></p>
-<p><span class="small">Text:</span><br>
+<p><span class="small">Text:</span><br />
 <% this.text as="editor" width="31" height="10" style="formText" %></p>
 <p><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></p>
 </form>

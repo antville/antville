@@ -1,6 +1,6 @@
 <form method="post" action="<% response.action %>">
 <input type="hidden" name="proto" value="<% request.proto %>">
-<input type="hidden" name="name" value="<% request.name %>"><br>
+<input type="hidden" name="name" value="<% request.name %>"><br />
 <% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %>
 <p><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></p>
 </form>

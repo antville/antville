@@ -1,28 +1,28 @@
 <p>To change the status of this member, simply choose from the dropdown-menu and click on "save" (the member will get a mail telling that his/her status has been changed by you).</p>
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap><form method="post" action="<% response.action %>">Username:</td>
-<td nowrap><b><% this.username %></b></td>
+<td class="small" nowrap="nowrap"><form method="post" action="<% response.action %>">Username:</td>
+<td nowrap="nowrap"><b><% this.username %></b></td>
 </tr>
 <tr>
-<td class="small" nowrap>eMail:</td>
-<td nowrap><% this.email %></td>
+<td class="small" nowrap="nowrap">eMail:</td>
+<td nowrap="nowrap"><% this.email %></td>
 </tr>
 <tr>
-<td class="small" nowrap>url:</td>
-<td nowrap><% this.url %></td>
+<td class="small" nowrap="nowrap">url:</td>
+<td nowrap="nowrap"><% this.url %></td>
 </tr>
 <tr>
-<td class="small" nowrap>currently</td>
-<td nowrap><% this.level %></td>
+<td class="small" nowrap="nowrap">currently</td>
+<td nowrap="nowrap"><% this.level %></td>
 </tr>
 <tr>
-<td class="small" nowrap>change to:</td>
-<td nowrap><% this.level as="editor" %></td>
+<td class="small" nowrap="nowrap">change to:</td>
+<td nowrap="nowrap"><% this.level as="editor" %></td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 </table>
 </form>

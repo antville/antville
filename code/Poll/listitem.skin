@@ -3,8 +3,8 @@
 <td colspan="3" class="small"><% this.creator as="link" %>, <% this.createtime format="short" %> (<% this.total no="votes" one="vote" more="votes" %>)</td>
 </tr>
 <tr valign="top">
-<td><span class="storyTitle"><% this.title suffix="<br>" %></span><% this.question limit="200" suffix="&nbsp;..." %></td>
-<td width="10" nowrap>&nbsp;</td>
-<td align="right" class="small" nowrap><% this.viewlink prefix="...&nbsp;" suffix="<br>" %><% this.editlink prefix="...&nbsp;" suffix="<br>" %><% this.closelink prefix="...&nbsp;" suffix="<br>" %><% this.deletelink prefix="...&nbsp;" %></td>
+<td><span class="storyTitle"><% this.title suffix="<br />" %></span><% this.question limit="200" suffix="&nbsp;..." %></td>
+<td width="10" nowrap="nowrap">&nbsp;</td>
+<td align="right" class="small" nowrap="nowrap"><% this.viewlink prefix="...&nbsp;" suffix="<br />" %><% this.editlink prefix="...&nbsp;" suffix="<br />" %><% this.closelink prefix="...&nbsp;" suffix="<br />" %><% this.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>

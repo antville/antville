@@ -3,8 +3,8 @@
 <td colspan="3" class="small"><% this.author as="link" %>, <% this.createtime format="short" %><% this.online prefix="&nbsp;(" %><% this.commentcounter prefix=",&nbsp;" suffix=")" %></td>
 </tr>
 <tr valign="top">
-<td><span class="storyTitle"><% this.title suffix="<br>" %></span><% this.text limit="200" suffix="&nbsp;..." %></td>
-<td width="10" nowrap>&nbsp;</td>
-<td align="right" class="small" nowrap><% this.editlink prefix="...&nbsp;" suffix="<br>" %><% this.viewlink prefix="...&nbsp;" suffix="<br>" %><% this.onlinelink prefix="...&nbsp;" suffix="<br>" %><% this.deletelink prefix="...&nbsp;" %></td>
+<td><span class="storyTitle"><% this.title suffix="<br />" %></span><% this.text limit="200" suffix="&nbsp;..." %></td>
+<td width="10" nowrap="nowrap">&nbsp;</td>
+<td align="right" class="small" nowrap="nowrap"><% this.editlink prefix="...&nbsp;" suffix="<br />" %><% this.viewlink prefix="...&nbsp;" suffix="<br />" %><% this.onlinelink prefix="...&nbsp;" suffix="<br />" %><% this.deletelink prefix="...&nbsp;" %></td>
 </tr>
 </table>

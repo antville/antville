@@ -1,29 +1,29 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap><form method="post" action="<% response.action %>"><span class="small">Title:</span><br>
+<td nowrap="nowrap"><form method="post" action="<% response.action %>"><span class="small">Title:</span><br />
 <% this.title as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
-<td nowrap><span class="small">Text:</span><br>
+<td nowrap="nowrap"><span class="small">Text:</span><br />
 <% this.text as="editor" width="30" height="15" style="formText" %></td>
 </tr>
 <tr>
 <td><table border="0" cellspacing="0" cellpadding="3">
    <tr>
-   <td class="small">select a topic<br>or create<br>a new one<br>(or leave empty):</td>
-   <td valign="top" nowrap><% this.topicchooser %><br><input type="text" name="topic" value="<% request.topic %>"></td>
+   <td class="small">select a topic<br />or create<br />a new one<br />(or leave empty):</td>
+   <td valign="top" nowrap="nowrap"><% this.topicchooser %><br /><input type="text" name="topic" value="<% request.topic %>"></td>
    </tr>
    <tr>
-   <td class="small" nowrap>status:</td>
-   <td nowrap><% this.online as="editor" %></td>
+   <td class="small" nowrap="nowrap">status:</td>
+   <td nowrap="nowrap"><% this.online as="editor" %></td>
    </tr>
    <tr>
-   <td class="small" nowrap>also editable for:</td>
-   <td nowrap><% this.editableby as="editor" %></td>
+   <td class="small" nowrap="nowrap">also editable for:</td>
+   <td nowrap="nowrap"><% this.editableby as="editor" %></td>
    </tr>
    </table></td>
 <tr>
-<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap="nowrap"><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 <tr>
 <td class="small"><% this.author as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime format="short" prefix="&nbsp;on&nbsp;"%></td>

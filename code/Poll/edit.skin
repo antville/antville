@@ -3,18 +3,18 @@
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap><span class="small">Title:</span><br>
+<td nowrap="nowrap"><span class="small">Title:</span><br />
 <% this.title as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
-<td nowrap><span class="small">Question:</span><br>
+<td nowrap="nowrap"><span class="small">Question:</span><br />
 <% this.question as="editor" width="30" height="3" style="formText" %></td>
 </tr>
 
 <% response.choices %>
 
 <tr>
-<td nowrap><br><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="add choice" %>&nbsp;<% this.input type="button" value="cancel" %>
+<td nowrap="nowrap"><br /><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="add choice" %>&nbsp;<% this.input type="button" value="cancel" %>
 <p class="small"><% this.info %></p></td>
 </tr>
 </table>

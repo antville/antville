@@ -7,20 +7,20 @@
 </tr>
 </table>
 
-<br>
+<br />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <tr>
-<td class="small" nowrap><form method="post" action="<% response.action %>">Name:</td>
-<td nowrap><% this.alias as="editor" width="25" %></td>
+<td class="small" nowrap="nowrap"><form method="post" action="<% response.action %>">Name:</td>
+<td nowrap="nowrap"><% this.alias as="editor" width="25" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Alttext:</td>
-<td nowrap><% this.alttext as="editor" width="25" %></td>
+<td class="small" nowrap="nowrap">Alttext:</td>
+<td nowrap="nowrap"><% this.alttext as="editor" width="25" %></td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 </table>
 </form>
