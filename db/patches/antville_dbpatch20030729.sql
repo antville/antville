@@ -1,3 +1,17 @@
+######################################################
+##                                                  ##
+##   I M P O R T A N T   N O T E :                  ##
+##                                                  ##
+##   Be sure now to point your browser to           ##
+##   http://localhost:8080/antville/convertSites    ##
+##   (you might need to change this URL according   ##
+##   to your local settings) BEFORE proceeding      ##
+##   with patching the database using this file.    ##
+##   Otherwise all of your sites' preferences       ##
+##   will get lost!                                 ##
+##                                                  ##
+######################################################
+
 use antville;
 alter table AV_SITE
    drop column SITE_BGCOLOR,
