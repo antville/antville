@@ -61,6 +61,7 @@ function newPost(appkey, blogid, username, password, content, publish) {
       root.blogger.parseBloggerAPIPosting (param, content);
       param.publish = publish;
       param.addToFront = true;
+      param.discussions = true;
       var result = blog.stories.evalNewStory(param, usr);
       return result.id;
    } catch (e) {
