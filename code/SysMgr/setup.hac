@@ -13,4 +13,4 @@ else if (req.data.save) {
 
 res.data.body = this.renderSkinAsString("setup");
 
-root.renderSkin("page");
+this.renderSkin("page");
