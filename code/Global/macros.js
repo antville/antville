@@ -203,49 +203,16 @@ function poll_macro(param) {
 
 /**
  * macro basically renders a list of sites
- * but first it checks which collection to use
+ * calling root.renderSitelist() to do the real job
  */
 function sitelist_macro(param) {
-   if (param.show == "all")
-      var collection = root.public;
-   else
-      var collection = root;
-   
-   var size = collection.size();
-   if (!size)
-      return;
-   
    // setting some general limitations:
    var minDisplay = 10;
-   var maxDisplay = 100;
-   
-   var idx = parseInt (req.data.start,10);
-   var max = Math.min((param.limit ? parseInt(param.limit,10) : minDisplay),maxDisplay);
-   
-   var scroll = (!param.scroll || param.scroll == "no" ? false : true);
-   
-   if (isNaN(idx) || idx > size-1 || idx < 0)
-      idx = 0;
-   if (scroll && idx > 0) {
-      var sp = new Object();
-      sp.url = root.href("list") + "?start=" + Math.max(0, idx-max);
-      sp.text = "previous weblogs";
-      res.data.prevpage = renderSkinAsString("prevpagelink",sp);
-   }
-   var cnt = 0;
-   while (cnt < max && idx < size) {
-      var w = collection.get(idx++);
-      if (!w.blocked && w.online) {
-         w.renderSkin("preview");
-         cnt++;
-      }
-   }
-   if (scroll && idx < size) {
-      var sp = new Object();
-      sp.url = root.href("list") + "?start=" + idx;
-      sp.text = "more weblogs";
-      res.data.nextpage = renderSkinAsString("nextpagelink",sp);
-   }
+   var maxDisplay = 25;
+   var max = Math.min((param.limit ? parseInt(param.limit, 10) : minDisplay), maxDisplay);
+   root.renderSitelist(max);
+   res.write(res.data.sitelist);
+   delete res.data.sitelist;
    return;
 }
 

@@ -1,3 +1,7 @@
+// preparing res.data.sitelist and prev/next links
+// ("all" shows all sites, "yes" is for scrolling)
+this.renderSitelist(25, "all", "yes");
+
 res.data.title = "Sites of " + root.getSysTitle();
 
 res.data.body = this.renderSkinAsString("list");
