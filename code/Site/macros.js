@@ -405,6 +405,10 @@ function calendar_macro(param) {
       cal.set(java.util.Calendar.YEAR,reqYear);
       cal.set(java.util.Calendar.MONTH,reqMonth);
    }
+
+   // cal is now a calendar object set to the first day of the month
+   // we want to render
+
    // nr. of empty days in rendered calendar before the first day of month appears
    var pre = (7-cal.getFirstDayOfWeek()+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
    var days = cal.getActualMaximum(java.util.Calendar.DATE);
@@ -423,12 +427,18 @@ function calendar_macro(param) {
    var calHead = cal.clone();
    // define the formatting of calendar
    tsParam.format = "EE";
+   var firstDayOfWeek = cal.getFirstDayOfWeek();
    for (var i=0;i<7;i++) {
-      calHead.set(java.util.Calendar.DAY_OF_WEEK,cal.getFirstDayOfWeek() + i);
+      calHead.set(java.util.Calendar.DAY_OF_WEEK, firstDayOfWeek + i);
       dayParam.day = this.formatTimestamp(calHead.getTime(),tsParam);
       weekParam.week += this.renderSkinAsString("calendardayheader",dayParam);
    }
    calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
+
+   // pre-render the year and month so we only have to append the days as we loop
+   var currMonth = cal.getTime().format("yyyyMM");
+   // simply loop through days
+   var currDay = 1;
 
    for (var i=0;i<weeks;i++) {
       weekParam.week = "";
@@ -437,19 +447,21 @@ function calendar_macro(param) {
          if ((i == 0 && j < pre) || daycnt > days)
             dayParam.day = "&nbsp;";
          else {
-            var currGroupname = cal.getTime().format("yyyyMMdd");
-            dayParam.day = this.renderCalendarDay(currGroupname,cal.get(java.util.Calendar.DATE));
-            if (path.day && cal.getTime().format("yyyyMMdd") == path.day.groupname)
+            var currGroupname = currMonth+currDay.format("00");
+            dayParam.day = this.renderCalendarDay(currGroupname, currDay);
+            if (path.day && currGroupname == path.day.groupname)
                dayParam.useskin = "calendarselday";
-            cal.add(java.util.Calendar.DATE,1);
+            currDay++;
             daycnt++;
          }
-         if (cal.get(java.util.Calendar.DATE) == cal.getActualMaximum(java.util.Calendar.DATE))
-            calParam.forward = this.renderLinkToNextMonth(cal.clone());
-         weekParam.week += this.renderSkinAsString((dayParam.useskin ? dayParam.useskin : "calendarday"),dayParam);
+         weekParam.week += this.renderSkinAsString(dayParam.useskin, dayParam);
       }
       calParam.calendar += this.renderSkinAsString("calendarweek",weekParam);
    }
+   // set day to last day of month and try to render next month
+   // check what the last day of the month is
+   cal.set(java.util.Calendar.DATE, cal.getActualMaximum(java.util.Calendar.DATE));
+   calParam.forward = this.renderLinkToNextMonth(cal);
    this.renderSkin("calendar",calParam);
 }
 
@@ -480,7 +492,6 @@ function age_macro(param) {
  */
 
 function image_macro(param) {
-   this.images.filter();
    if (param && param.name && this.images.get(param.name)) {
       res.write(param.prefix)
       if (param.linkto) {
