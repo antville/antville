@@ -1,5 +1,5 @@
-<table border="0" width="400" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
+<table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
 <td valign="top" class="small" nowrap="nowrap">Name:</td>
 <td><% input name="alias" size="25" %><br /><span class="small">If you do not specify a name, Antville will create one based on the name of the file you uploaded.</small></td>
@@ -9,12 +9,12 @@
 <td nowrap="nowrap"><% input type="textarea" name="description" cols="25" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">File:</td>
+<td class="small" nowrap="nowrap">Local file:</td>
 <td nowrap="nowrap"><% input type="file" name="rawfile" width="10" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
-</form>
 </table>
+</form>

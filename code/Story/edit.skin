@@ -1,37 +1,39 @@
-<table border="0" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap="nowrap"><span class="small">title:</span><br />
+<td nowrap="nowrap"><span class="small">Title:</span><br />
 <% story.content part="title" as="editor" width="24" style="formTitle" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><span class="small">text:</span><br />
+<td nowrap="nowrap"><span class="small">Text:</span><br />
 <% story.content part="text" as="editor" width="30" height="15" style="formText" %></td>
 </tr>
 <tr>
-<td><fieldset><legend class="small">options</legend>
-<p>add this story to a topic<br />
-<div style="margin-left:15px;"><table>
+<td><fieldset><legend class="small">Options</legend>
+<p>Publish in topics</p>
+
+<table style="margin-left:15px;">
 <tr>
-<td width="48%" class="small">choose a topic:<br />
+<td width="48%" class="small">Choose a topic...<br />
 <% story.topicchooser %></td>
 <td valign="top" width="4%">&nbsp;</td>
-<td valign="top" width="48%" class="small">
-or create a new one:<br /> 
-<input type="text" name="topic" value="<% request.topic %>"></td>
+<td valign="top" width="48%" class="small">...or create a new one.<br /> 
+<input type="text" name="topic" value="<% request.topic %>" /></td>
 </tr>
 <tr>
-<td colspan="3" class="small"><p><% story.justintopic as="editor" %>&nbsp;publish story just in topic</p></td>
+<td colspan="3" class="small"><% story.justintopic as="editor" %>&nbsp;Publish in topics only</td>
 </tr>
-</table></div></p>
-<p>story is editable by:<br />
-<span class="small"><% story.editableby as="editor" %></span></p>
-<p class="small"><% story.discussions as="editor" %>&nbsp;allow comments</p></div></fieldset></td>
-<tr>
-<td nowrap="nowrap"><% input type="button" name="publish" value="publish" %>&nbsp;<% input type="button" name="save" value="save offline" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
-</tr>
-<tr>
-<td class="small"><% story.creator as="link" prefix="created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;"%></td>
-</tr>
-</form>
 </table>
+
+<p>Story is editable by<br />
+<span class="small"><% story.editableby as="editor" %></span></p>
+<p><% story.discussions as="editor" %>&nbsp;Allow comments</p></fieldset></td>
+</tr>
+<tr>
+<td class="small"><% story.creator as="link" prefix="Created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;" suffix="<br />&nbsp;" %></td>
+</tr>
+<tr>
+<td nowrap="nowrap"><% input type="button" name="publish" value="Publish" %>&nbsp;<% input type="button" name="save" value="Save offline" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
+</tr>
+</table>
+</form>

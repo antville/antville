@@ -3,5 +3,5 @@
 <% comment.content part="title" as="editor" width="25" style="formTitle" %></p>
 <p><span class="small">Text:</span><br />
 <% comment.content part="text" as="editor" width="31" height="10" style="formText" %></p>
-<p><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></p>
+<p><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></p>
 </form>

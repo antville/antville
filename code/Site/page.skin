@@ -26,13 +26,13 @@
 <td width="40" nowrap="nowrap">&nbsp;</td>
 <td width="400" valign="top" nowrap="nowrap">
 
-<span class="message"><% response.message prefix="<br />" suffix="<br />" %></span>
-<br /><% response.body %></td>
+<br /><% response.message prefix='<p class="message">' suffix='</p>' %>
+<% response.body %></td>
 
 <td width="60" nowrap="nowrap">&nbsp;</td>
 <td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
-<% site.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% site.lastupdate prefix="last updated:&nbsp;" format="short" %></div>
+<% site.age prefix="Online for&nbsp;" show="days" suffix=" days<br />" %><% site.lastupdate prefix="Last update:&nbsp;" format="short" %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
 <div class="statushead"><% image name="/status" %></div>

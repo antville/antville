@@ -1,14 +1,14 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>">
 <tr>
-<td nowrap="nowrap"><span class="small">question:</span><br />
+<td nowrap="nowrap"><span class="small">Question:</span><br />
 <% poll.question as="editor" width="30" height="3" style="formText" %></td>
 </tr>
 
 <% response.choices %>
 
 <tr>
-<td nowrap="nowrap"><br /><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" value="add choice" %>&nbsp;<% input type="button" name="cancel" value="cancel" %>
+<td nowrap="nowrap"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="addchoice" value="Add choice" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %>
 <% poll.creator prefix='<p class="small">created by ' suffix=' on ' %><% poll.createtime format="short" suffix=".</p>" %></td>
 </tr>
 </form>

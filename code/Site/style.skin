@@ -199,3 +199,8 @@ li {padding-bottom: 3px;}
 .colorpickerWidget {
    border: 1px solid #cccccc;
 }
+
+.pagelink {
+   margin-top: 2px;
+   margin-bottom: 2px;
+}

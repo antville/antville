@@ -1,7 +1,7 @@
-<table border="0" width="400" cellspacing="0" cellpadding="3">
 <form method="get" action="<% response.action %>">
+<table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td colspan="2">To insert this file into a story copy/paste the following code: <pre>&lt;% file name="<% file.alias %>" %&gt;</pre><br /></td>
+<td colspan="2">To insert this file into a story or comment just copy and paste the following code: <pre>&lt;% file name="<% file.alias %>" %&gt;</pre><br /></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Description:</td>
@@ -9,12 +9,12 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap"></td>
-<td class="small" nowrap="nowrap"><% file.filesize prefix="<b>size:</b>&nbsp;" suffix="<br />" %>
-<% file.mimetype prefix="<b>format:</b>&nbsp;" suffix="<br />" %></td>
+<td class="small" nowrap="nowrap"><% file.filesize prefix="<b>Size:</b>&nbsp;" suffix="<br />" %>
+<% file.mimetype prefix="<b>Format:</b>&nbsp;" suffix="<br />" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
-</form>
 </table>
+</form>

@@ -1,5 +1,5 @@
-<table border="0" cellspacing="0" cellpadding="2">
 <form id="prefs" method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="storytitle"><% response.title %></div><br />
 <b><a name="general">Generic</a></b></td>
@@ -13,7 +13,7 @@
 <td nowrap="nowrap"><% site.tagline as="editor" width="30" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Days on frontpage:</td>
+<td class="small" nowrap="nowrap">Days on front page:</td>
 <td nowrap="nowrap"><% site.showdays as="editor" width="5" %></td>
 </tr>
 <tr>
@@ -21,15 +21,15 @@
 <td nowrap="nowrap"><% site.localechooser %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Timezone:</td>
-<td nowrap><% site.timezonechooser %></td>
+<td class="small" nowrap="nowrap">Time zone:</td>
+<td nowrap="nowrap"><% site.timezonechooser %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Long dateformat:</td>
+<td class="small" nowrap="nowrap">Long date format:</td>
 <td nowrap="nowrap"><% site.longdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Short dateformat:</td>
+<td class="small" nowrap="nowrap">Short date format:</td>
 <td nowrap="nowrap"><% site.shortdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
@@ -42,7 +42,7 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Allow contributions:</td>
-<td><% site.usermaycontrib as="editor" %><br /><span class="small">Enabling this option means that every registered antville-user can create stories.</span></td>
+<td><% site.usermaycontrib as="editor" %><br /><span class="small">Enabling this option means that every registered antville user may create stories.</span></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Enable archive:</td>
@@ -50,11 +50,11 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">E-mail address:</td>
-<td><% site.email as="editor" %><br /><span class="small">This email-address will be used for sending confirmation mails (i.e. when a user registers or signs up).</span></td>
+<td><% site.email as="editor" %><br /><span class="small">This e-mail address will be used for sending confirmation mails, i.e. when a user registers or signs up a weblog.</span></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Notify updates:</td>
-<td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled, <a href="http://www.weblogs.com">weblogs.com</a> will be notified of any update of your weblog.</span></td>
+<td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled <a href="http://www.weblogs.com">weblogs.com</a> will be notified when your weblog is updated.</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% colorpicker name="bgcolor" text="background" %><!-- &nbsp; <span class="small"><a href="javascript: setBg();">preview</a></small> --></td>
+<td nowrap="nowrap"><% colorpicker name="bgcolor" text="background" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
@@ -81,11 +81,11 @@
 <td nowrap="nowrap"><% colorpicker name="linkcolor" text="link" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Active Link:</td>
+<td class="small" nowrap="nowrap">Active link:</td>
 <td nowrap="nowrap"><% colorpicker name="alinkcolor" text="active link" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Visited Link:</td>
+<td class="small" nowrap="nowrap">Visited link:</td>
 <td nowrap="nowrap"><% colorpicker name="vlinkcolor" text="visited link" %></td>
 </tr>
 <tr>
@@ -118,7 +118,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><br /><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
-</form>
 </table>
+</form>

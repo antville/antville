@@ -1,2 +1,2 @@
-<p><% story.skin name="display" %>
-<span class="small"><% story.commentform %></span></p>
+<% story.skin name="display" %>
+<span class="small"><% story.commentform %></span>

@@ -1,4 +1,3 @@
 <% linkedpath %>
-<ul>
-<% this.topiclist itemprefix="<li>" itemsuffix="</li>" %>
-</ul>
+
+<% this.topiclist prefix="<ul>" suffix="</ul>" itemprefix="<li>" itemsuffix="</li>" %>

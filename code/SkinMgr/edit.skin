@@ -1,6 +1,5 @@
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td nowrap="nowrap">
 <td valign="top" nowrap="nowrap"><% skinmgr.skineditor %></td>
 </tr>
 </table>

@@ -1,6 +1,6 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td>To insert this image into a story or comment copy/paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre></td>
+<td>To insert this image into a story or comment just copy and paste the following code: <pre>&lt;% image name="<% image.alias %>" %&gt;</pre></td>
 </tr>
 <tr>
 <td><% image.show %></td>
@@ -12,12 +12,12 @@
 <form method="post" action="<% response.action %>">
 <tr>
 <tr>
-<td class="small" nowrap="nowrap">Alttext:</td>
+<td class="small" nowrap="nowrap">Description:</td>
 <td nowrap="nowrap"><% image.alttext as="editor" width="25" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </form>
 </table>

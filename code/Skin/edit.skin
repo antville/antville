@@ -1,8 +1,10 @@
 <form method="post" action="<% response.action %>">
-<p><input type="hidden" name="proto" value="<% request.proto %>">
-<input type="hidden" name="name" value="<% request.name %>"><br />
-<% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %></p>
-<p><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></p>
+<input type="hidden" name="proto" value="<% request.proto %>" />
+<input type="hidden" name="name" value="<% request.name %>" />
+<% this.skin as="editor" width="50" height="25" wrap="virtual" style="formWide" %>
+
+<p><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %> &nbsp; <a href="#help">Help</a></p>
 </form>
 
+<a name="help"></a>
 <% skin.help prefix='<p class="small"><b>Macros available for this skin:</b><br /><br /><tt>' suffix="</tt></p>" %>

@@ -1,23 +1,6 @@
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td><% linkedpath %></td>
-</tr>
-<tr>
-<td><% response.prevpage %></td>
-</tr>
-</table>
+<div><% linkedpath %></div><br />
+<div><% topic.addstory %></div>
 
-<% topic.storylist %>
-
-<table border="0" cellspacing="0" cellpadding="2">
-
-<tr>
-<td colspan="2"><% response.nextpage %></td>
-</tr>
-</tr>
-<tr>
-<td><% topic.addstory %></td>
-</tr>
-</table>
-
-
+<% response.prevpage prefix="<div>" suffix="</div>" %>
+<% topic.storylist prefix="<br /><br />" suffix="" %>
+<% response.nextpage prefix="<div>" suffix="</div>" %>

@@ -1,4 +1,2 @@
-<b><% param.group %></b>
-<ul>
-<% param.list %>
-</ul>
+<span class="storytitle"><% param.group %></span>
+<% param.list prefix="<ul>" suffix="</ul>" %>

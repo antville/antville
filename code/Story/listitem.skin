@@ -1,9 +1,11 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small"><% story.creator as="link" %>, <% story.createtime format="short" %>&nbsp;(<% story.online  %><% story.commentcounter prefix=",&nbsp;" anchor="comments" %>)</td>
+<td colspan="3" class="small"><% story.creator as="link" %> on <% story.createtime format="short" %>&nbsp;(<% story.online  %><% story.commentcounter prefix=",&nbsp;" anchor="comments" %>)</td>
 </tr>
 <tr valign="top">
-<td><span class="storyTitle"><% story.title suffix="<br />" %></span><% story.text limit="200" suffix="&nbsp;..." %></td>
+<td><span class="storyTitle"><% story.title suffix="<br />" %></span>
+<span class="small"><b>Code:&nbsp;</b>&lt;% story id="<% story.id %>" %&gt;</span><br />
+<% story.text limit="200" suffix="&nbsp;..." %></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
 <td align="right" class="small" nowrap="nowrap"><% story.editlink prefix="...&nbsp;" suffix="<br />" %><% story.viewlink prefix="...&nbsp;" suffix="<br />" %><% story.onlinelink mode="toggle" prefix="...&nbsp;" suffix="<br />" %><% story.deletelink prefix="...&nbsp;" %></td>
 </tr>
