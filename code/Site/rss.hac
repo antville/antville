@@ -26,7 +26,7 @@ if (max > 0 && this.online)
       param.publisher = systitle;
       param.creator = story.creator.name;
       param.email = translateToEntities(story.creator.email);
-		param.date = story.modifytime.format("dd.MM.yyyy, HH:mm'h CET'");
+		param.date = story.modifytime.format(w3fmt);
       param.subject = story.topic ? story.topic : "";
       items += story.renderSkinAsString("rssItem", param);
       resources += story.renderSkinAsString("rssResource", param);
@@ -38,79 +38,10 @@ if (max > 0 && this.online)
    param.creator = this.creator.name
    param.email = translateToEntities(this.creator.email);
    param.year = now.getYear();
-   param.lastupdate = now.format(w3fmt);
+   param.lastupdate = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
 
    param.items = items;
    param.resources = resources;
    
    this.renderSkin("rss", param);
 }   
-
-return;
-
-res.contentType = "text/xml";
-
-var url = encodeXml(this.href());
-var w3fmt = "yyyy-MM-dd'T'HH:mm:ss'+01:00'";
-
-var now = new Date();
-var param1 = new Object();
-var param2 = new Object();
-
-var size = this.allstories.size();
-var max = req.data.max ? parseInt(req.data.max) : 7;
-max = Math.min(max, size, 7);
-
-if (max > 0 && this.online) {
-   param2.resources = "";
-   param2.items = "";
-   for (var i=0; i<max; i++) {
-      var story = this.allstories.get(i);
-      param1.itemUrl = story.href();
-      param1.itemTitle = story.title ? encodeXml(story.title) : "";
-      param1.authorName = encodeXml(story.creator.name);
-      param1.authorMail = encodeXml(story.creator.email);
-      param1.year = now.getYear();
-      param1.subject = story.topic ? encodeXml(story.topic) : "";
-      param1.date = story.modifytime.format(w3fmt);
-      var skin = createSkin(story.getContentPart("text"));
-      var str = this.renderSkinAsString(skin);
-      // str = this.rssConvertHtmlImageToHtmlLink(str);
-      str = clipText(str, 250, "...");
-      param1.itemDescription = encodeXml(str);
-      param2.items += renderSkinAsString("rss10Item", param1);
-      param2.resources += renderSkinAsString("rss10Resource", param1);
-   }
-   param2.textinput = this.renderSkinAsString("rssTextInput", param2);
-   param2.creatorName = encodeXml(this.creator.name);
-   param2.creatorMail = encodeXml(this.creator.email);
-   param2.date = max > 0 ? this.lastUpdate.format(w3fmt): this.createtime.format(w3fmt);
-}
-else {
-   param1.itemUrl = url;
-   param1.authorName = "Antville Weblog Tool";
-   param1.authorMail = encodeXml(root.sys_email);
-   param1.date = this.createtime.format(w3fmt);
-   param2.creatorName = param1.authorName;
-   param2.creatorMail = param1.authorMail;
-   param2.date = param1.date;
-   if (this.online) {
-      param1.itemTitle = "Welcome to " + encodeXml(this.title) + "!";
-      param1.itemDescription = "This weblog doesn't contain any stories, yet";
-   }
-   else {
-      param1.itemTitle = "Access denied";
-      param1.itemDescription = "This weblog is not public.";
-   }
-   param2.items = renderSkinAsString("rss10Item", param1);
-   param2.resources = renderSkinAsString("rss10Resource", param1);
-}
-
-param2.title = encodeXml(this.title);
-param2.url = url;
-param2.description = this.tagline ? encodeXml(this.tagline) : "";
-param2.year = now.getYear();
-param2.updateBase = this.createtime.format(w3fmt);
-param2.language = this.language;
-
-renderSkin("rss10Channel", param2);
