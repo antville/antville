@@ -153,7 +153,15 @@ function linkedpath_macro (param) {
 
 
 function poll_macro(param) {
-	var poll = path.weblog.polls.get(param.id);
+	var parts = param.id.split("/");
+	if (parts.length == 2) {
+		var blog = root.get(parts[0]);
+		var poll = blog.polls.get(parts[1]);
+	}
+	else {
+		var blog = path.weblog;
+		var poll = blog.polls.get(param.id);
+	}
 	if (!poll)
 		return("[poll id " + param.id + " does not exist.]");
 	var deny = poll.isVoteDenied(user);
@@ -161,6 +169,8 @@ function poll_macro(param) {
 		return('<a href="' + poll.href() + '">' + poll.question + '</a>');
 	if (deny || poll.closed || param.as == "results")
 	  poll.renderSkin("results");
-	else
+	else {
+		res.data.action = poll.href("main");
 		poll.renderSkin("main");
+	}
 }
