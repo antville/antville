@@ -1,4 +1,26 @@
 /**
+ * Return a name for the object to be used in the
+ * global linkedpath macro. Not the cleanest way to do
+ * this (lots of heuristics) but a simple one.
+ *
+ */
+function getNavigationName () {
+   var proto = this.__prototype__;
+   if (proto == "weblog")
+      return "Home";
+   else if (proto == "topicmgr")
+      return "Topics";
+   else if (proto == "story" || proto == "comment")
+      if (this.title)
+         return this.title;
+      else
+         return proto;
+   else if (this.groupname)
+      return this.groupname;
+   return this._name;
+}
+
+/**
  * renders single dropdown
  * input values:  current Timestamp
  */
