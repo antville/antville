@@ -1,9 +1,9 @@
 <form method="post" action="<% response.action %>">
-<table cellspacing="0" cellpadding="3">
+<table border="0" cellspacing="3" cellpadding="0">
 <tr>
 <td class="small">Name:</td>
 <td><% image.alias %></td>
-<td rowspan="5" valign="top" nowrap="nowrap">&nbsp;&nbsp;<% image.show what="thumbnail" %></td>
+<td rowspan="5" valign="top" align="right" nowrap="nowrap"><div style="width: 100px; height: 67px; overflow: hidden;"><% image.show what="thumbnail" %></div></td>
 </tr>
 <tr>
 <td class="small">Type:</td>
@@ -18,28 +18,26 @@
 <td><% image.height %> px</td>
 </tr>
 <tr>
-<td class="small" valign="top">Description:</td>
-<td nowrap="nowrap"><% image.alttext as="editor" cols="20" rows="3" %></td>
+<td colspan="3"><div class="small">Description:</div>
+<% image.alttext as="editor" class="formText" %><br />
+
+<fieldset><legend class="small">Options</legend>
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td colspan="3">Add this image to a gallery</td>
 </tr>
 <tr>
-<td class="small" colspan="5">Add this image to a topic</td>
+<td class="small" width="48%">Choose a gallery...<br /><% imagemgr.topicchooser %></td>
+<td valign="top" width="4%">&nbsp;</td>
+<td valign="top" class="small" width="48%">...or enter a new one<br /><input type="text" name="topic" value="<% request.topic %>" /></td>
 </tr>
-<tr>
-<td></td>
-<td colspan="5"><table>
-<tr>
-<td class="small">Choose a gallery...<br /><% imagemgr.topicchooser %></td>
-<td valign="top" class="small">...or enter a new one<br /><input type="text" name="topic" value="<% request.topic %>" /></td>
-</tr>
-</table></td>
-</tr>
-<tr>
-<td></td>
-<td colspan="2" class="small"><% image.creator as="link" prefix="Created by " %><% image.createtime format="short" prefix=" on " suffix="." %></td>
-</tr>
-<tr>
-<td></td>
-<td colspan="2"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+</table><br />
+</fieldset>
+</td>
 </tr>
 </table>
+
+<div class="small"><% image.creator as="link" prefix="Created by " %><% image.createtime format="short" prefix=" on " suffix="." %></div><br />
+<div><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></div>
+
 </form>
