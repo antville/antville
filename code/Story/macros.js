@@ -8,7 +8,7 @@ function title_macro(param) {
    res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
-   else if (param.as == "link" && !this.isViewDenied()) {
+   else if (param.as == "link") {
       var linkParam = new Object();
       linkParam.linkto = "main";
       this.openLink(linkParam);
