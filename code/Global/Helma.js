@@ -159,7 +159,7 @@ Helma.File = function(path) {
    };
 
    this.list = function() {
-      if (!self.isOpened())
+      if (self.isOpened())
          return null;
       if (!file.isDirectory())
          return null;
