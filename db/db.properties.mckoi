@@ -1,0 +1,5 @@
+# Properties of antville's mckoi datasource
+antville.url      = jdbc:mckoi:local://./db.conf
+antville.driver   = com.mckoi.JDBCDriver
+antville.user     = admin
+antville.password = entwil
