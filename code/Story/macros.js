@@ -253,18 +253,18 @@ function commentlink_macro(param) {
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       res.write(param.prefix);
-      var commentCnt = this.allcomments.count();
+      var commentCnt = this.comments.count();
       var linkParam = new Object();
       linkParam.linkto = (param.linkto ? param.linkto : "main");
       linkParam.anchor = param.anchor;
       if (commentCnt == 0) {
-         res.write(commentCnt + " " + (param.no ? param.no : " comments"));
+         res.write(commentCnt + (param.no ? param.no : " comments"));
       } else {
          this.openLink(linkParam);
          if (commentCnt == 1)
-            res.write(commentCnt + " " + (param.one ? param.one : " comment"));
+            res.write(commentCnt + (param.one ? param.one : " comment"));
          else
-            res.write(commentCnt + " " + (param.more ? param.more : " comments"));
+            res.write(commentCnt + (param.more ? param.more : " comments"));
          this.closeLink();
       }
       res.write(param.suffix);
