@@ -1,4 +1,4 @@
-var parent = setLayout();
+var parent = getParent();
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(parent.href());
@@ -7,12 +7,12 @@ else if (req.data.submit == "register" || req.data.register) {
    res.message = result.message;
    if (!result.error) {
       // now we log in the user and send the confirmation mail
-		user.login(result.username, result.password);
+		session.login(result.username, result.password);
       var sender = (parent != root && parent.email ? parent.email : getProperty("adminEmail"));
-      user.sendConfirmationMail(sender);
-      if (user.cache.referrer) {
-         var url = user.cache.referrer;
-         user.cache.referrer = null;
+      session.user.sendConfirmationMail(sender);
+      if (session.data.referrer) {
+         var url = session.data.referrer;
+         session.data.referrer = null;
       } else
          var url = parent.href();
       res.redirect(url);
@@ -25,3 +25,4 @@ res.data.title = path.weblog ? path.weblog.title : "Antville";
 
 res.data.body = this.renderSkinAsString("register");
 
+parent.renderSkin("page");
