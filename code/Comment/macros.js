@@ -28,14 +28,17 @@ function title_macro(param) {
  */
 
 function text_macro(param) {
-   res.write(param.prefix)
+   res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
+      var s = createSkin(format(activateLinks(this.text)));
+      // only the following macros are allowed in the text of a comment
+      this.allowTextMacros(s);
       if (!param.limit)
-         this.renderSkin(createSkin(format(activateLinks(this.text))));
+         this.renderSkin(s);
       else
-         this.renderTextPreview(param.limit);
+         renderTextPreview(this.renderSkinAsString(s),param.limit);
    }
    res.write(param.suffix);
 }
@@ -152,7 +155,7 @@ function replies_macro(param) {
          for (var i=0;i<this.size();i++) {
             res.write("<a name=\""+this.get(i)._id+"\"></a>");
             this.get(i).renderSkin("reply");
-				 }
+         }
          res.write(param.suffix);
       }
    }
