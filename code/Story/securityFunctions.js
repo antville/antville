@@ -13,7 +13,7 @@ function isPostDenied(usr,level) {
    else if (!this.discussions)
       return "storyNoDiscussion";
    return null;
-}   
+}
     
  /** 
  * check if user is allowed to delete this story
@@ -37,7 +37,9 @@ function isDeleteDenied(usr,level) {
 
 function isEditDenied(usr,level) {
    if (this.creator != usr) {
-      if (this.editableby == null && (level & MAY_EDIT_ANYSTORY) == 0)
+      if (level == null)
+         return "storyEditDenied";
+      else if (this.editableby == null && (level & MAY_EDIT_ANYSTORY) == 0)
          return "storyEditDenied";
       else if (this.editableby == 1 && (level & MAY_ADD_STORY) == 0)
          return "storyEditDenied";
