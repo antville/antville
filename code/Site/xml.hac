@@ -1,17 +1,16 @@
 if (!this.online)
 	res.redirect("notfound");
 	
-var base = "http://localhost:8080";
+var base = "http://" + getProperty("server") + getProperty("baseURI");
 var now = new Date();
-
 var param1 = new Object();
-var items = "";
 
 var size = this.allstories.size();
 var max = req.data.max ? req.data.max : 7;
 if (max > size)
 	max = size;
 
+var items = "";
 for (var i=0; i<max; i++) {
 	var story = this.allstories.get(i);
 	param1.itemLink = base + story.href();
@@ -23,7 +22,7 @@ for (var i=0; i<max; i++) {
 var param2 = new Object();
 param2.title = encodeXml(this.title);
 param2.link = base + this.href();
-param2.description =  this.tagline;
+param2.description = encodeXml(this.tagline);
 param2.year = now.getYear();
 param2.name = encodeXml(this.creator.name);
 param2.lastBuildDate = this.lastUpdate;
