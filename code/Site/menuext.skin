@@ -4,7 +4,7 @@ var win = external.menuArguments;
 var url = "<% site.url %>stories/create?content_text=";
 var link = escape('<a href="' + win.location.href + '">' + 
    win.document.title + "</a>: ");
-var text = new String(win.document.selection.createRange().text);
+var text = escape(win.document.selection.createRange().text);
 win.location.href = url + link + text;
 //-->
 </script>
