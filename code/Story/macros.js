@@ -324,23 +324,19 @@ function thumbnail_macro(param) {
  */
 
 function editableby_macro(param) {
+   res.write(param.prefix);
    if (param.as == "editor" && (user == this.author || !this.author)) {
-      res.write(param.prefix);
-      ddParam = new HopObject();
-      ddParam.name = "editableby";
-      ddParam.add(this.createDDOption("-----","",false));
-      ddParam.add(this.createDDOption("Contributors",1,(this.editableby == 1 ? true : false)));
-      ddParam.add(this.createDDOption("Members and Contributors",0,(this.editableby == 0 ? true : false)));
-      this.chooser(ddParam);
-      res.write(param.suffix);
+      var options = new Array("Subscribers and Contributors","Contributors only");
+      res.write(simpleDropDownBox("editableby",options,this.editableby,"----"));
    } else {
       if (this.editableby == 0)
-         res.write("Members and Contributors of " + this.weblog.title);
+         res.write("Subscribers of and Contributors to " + this.weblog.title);
       else if (this.editableby == 1)
-         res.write("Contributors of " + this.weblog.title);
+         res.write("Contributors to " + this.weblog.title);
       else
-         res.write("Admins of " + this.weblog.title);
+         res.write("Content Managers and Admins of " + this.weblog.title);
    }
+   res.write(param.suffix);
 }
 
 /**
