@@ -1,0 +1,1 @@
+javascript:blog='BLOGNAME';str='';if(top.frames.length==0)str=document.selection.createRange().text;void(location.href='http://localhost/helma/antville/'+escape(blog)+'/stories/create/?text='+escape('<a href="'+escape(location.href)+'">')+escape(document.title)+escape('</a> ')+escape(str));
