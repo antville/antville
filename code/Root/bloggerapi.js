@@ -10,7 +10,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
     var user = root.users.get(username);
     var blog = this.get (blogid.toString());
     var param = new Object();
-    param.text = content;
+    param.content_text = content;
     param.online = publish ? 2 : 0;
     var s = new story();
     var result = blog.stories.evalNewStory(s, param, user);
