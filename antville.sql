@@ -75,6 +75,8 @@ create table USER (
    REGISTERED datetime,
    LASTVISIT datetime,
    ISBLOCKED tinyint(1),
+   ISTRUSTED tinyint(1),
+   ISSYSADMIN tinyint(1),
    unique ID (ID));
 
 #----------------------------
@@ -106,7 +108,11 @@ create table WEBLOG (
    SMALLSIZE varchar(4),
    ISONLINE tinyint(1),
    ISBLOCKED tinyint(1),
+   ISTRUSTED tinyint(1),
    LASTUPDATE datetime,
+   LASTOFFLINE datetime,
+   LASTBLOCKWARN datetime,
+   LASTDELWARN datetime,
    HASDISCUSSIONS tinyint(1),
    USERMAYCONTRIB tinyint(1),
    SHOWDAYS tinyint(4),
@@ -251,4 +257,18 @@ create table VOTE (
    CREATETIME datetime,
    MODIFYTIME datetime,
    unique ID (ID)
+);
+
+#----------------------------
+# Table structure for VOTE
+#----------------------------
+
+create table SYSLOG (
+  ID mediumint(9) not null,
+  TYPE tinytext null,
+  OBJECT tinytext null,
+  LOGENTRY mediumtext null,
+  SYSADMIN_ID mediumint(9) null,
+  CREATETIME datetime null,
+  primary key (ID)
 );
