@@ -17,7 +17,9 @@ function username_macro(param) {
  */
 
 function email_macro(param) {
-   res.write(this.user.email);
+   if (this.user.isEmailPublic())
+      return (this.user.email);
+   return ("**********");
 }
 
 /**
