@@ -18,7 +18,7 @@ function save(rawimage, dir, maxWidth, maxHeight) {
    // determine filetype of image (one could do this also by checking the mimetype) 
    this.fileext = this.evalImgType(rawimage.contentType);
    if (this.fileext == "ico") {
-      // the image is an .ico, so we directory write it to disk and return
+      // the image is an .ico, so we directly write it to disk and return
       rawimage.writeToFile(dir, this.filename + "." + this.fileext);
       return true;
    }
