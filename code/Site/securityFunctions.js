@@ -6,67 +6,78 @@
  * @return Obj Exception object or null
  */
 function checkAccess(action, usr, level) {
-   var deny = null;
    var url = this.members.href("login");
-   switch (action) {
-      case "main" :
-         deny = this.isAccessDenied(usr, level);
-         break;
-      case "edit" :
-         checkIfLoggedIn();
-         deny = this.isEditDenied(usr, level);
-         url = this.href();
-         break;
-      case "permissions" :
-         checkIfLoggedIn();
-         deny = this.isEditDenied(usr, level);
-         url = this.href();
-         break;
-      case "delete" :
-         checkIfLoggedIn();
-         deny = this.isAccessDenied(usr, level);
-         url = this.href();
-         break;
-      case "getfile" :
-         deny = this.isAccessDenied(usr, level);
-         break;
-      case "mostread" :
-         deny = this.isAccessDenied(usr, level);
-         break;
-      case "referrers" :
-         deny = this.isAccessDenied(usr, level);
-         break;
-      case "search" :
-         deny = this.isAccessDenied(usr, level);
-         break;
-      case "subscribe" :
-         checkIfLoggedIn();
-         deny = this.isSubscribeDenied(usr, level);
-         break;
-      case "unsubscribe" :
-         checkIfLoggedIn();
-         deny = this.isUnsubscribeDenied(usr, level);
-         app.log("level: " + deny);
-         break;
+   try {
+      switch (action) {
+         case "main" :
+            if (!this.online)
+               checkIfLoggedIn();
+            url = root.href();
+            this.checkView(usr, level);
+            break;
+         case "edit" :
+            checkIfLoggedIn();
+            url = this.href();
+            this.checkEdit(usr, level);
+            break;
+         case "delete" :
+            checkIfLoggedIn();
+            url = this.href();
+            this.checkView(usr, level);
+            break;
+         case "getfile" :
+            if (!this.online)
+               checkIfLoggedIn();
+            url = root.href();
+            this.checkView(usr, level);
+            break;
+         case "mostread" :
+            if (!this.online)
+               checkIfLoggedIn();
+            url = root.href();
+            this.checkView(usr, level);
+            break;
+         case "referrers" :
+            if (!this.online)
+               checkIfLoggedIn();
+            url = root.href();
+            this.checkView(usr, level);
+            break;
+         case "search" :
+            if (!this.online)
+               checkIfLoggedIn();
+            url = root.href();
+            this.checkView(usr, level);
+            break;
+         case "subscribe" :
+            checkIfLoggedIn();
+            this.checkSubscribe(usr, level);
+            break;
+         case "unsubscribe" :
+            checkIfLoggedIn();
+            this.checkUnsubscribe(usr, level);
+            break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(url);
    }
-   if (deny != null)
-      deny.redirectTo = url;
-   return deny;
+   return;
 }
 
 
 /**
- * check if a user is allowed to access a site
+ * check if a user is allowed to view a site
  * @param Obj Userobject
  * @param Int Permission-Level
  */
-function isAccessDenied(usr, level) {
+function checkView(usr, level) {
    if (!this.online) {
       // if not logged in or not logged in with sufficient permissions
       if (!usr || (level < CONTRIBUTOR && !usr.sysadmin))
-         return new Exception("siteAccessDenied");
+         throw new DenyException("siteView");
    }
-   return null;
+   return;
 }
 
 
@@ -76,11 +87,9 @@ function isAccessDenied(usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isEditDenied(usr, level) {
-   if (usr.sysadmin)
-      return null;
-   if ((level & MAY_EDIT_PREFS) == 0)
-      return new Exception("siteEditDenied");
+function checkEdit(usr, level) {
+   if (!usr.sysadmin && (level & MAY_EDIT_PREFS) == 0)
+      throw new DenyException("siteEdit");
    return null;
 }
 
@@ -91,10 +100,10 @@ function isEditDenied(usr, level) {
  * @param Obj Userobject
  * @return String Reason for denial (or null if allowed)
  */
-function isDeleteDenied(usr) {
+function checkDelete(usr) {
    if (!usr.sysadmin && usr != this.creator)
-      return new Exception("siteDeleteDenied");
-   return null;
+      throw new DenyException("siteDelete");
+   return;
 }
 
 
@@ -104,12 +113,12 @@ function isDeleteDenied(usr) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-function isSubscribeDenied(usr, level) {
+function checkSubscribe(usr, level) {
    if (level != null)
-      return new Exception("subscriptionExist");
+      throw new Exception("subscriptionExist");
    else if (!this.online)
-      return new Exception("siteAccessDenied");
-   return null;
+      throw new DenyException("siteView");
+   return;
 }
 
 
@@ -118,12 +127,12 @@ function isSubscribeDenied(usr, level) {
  * @param Obj Userobject
  * @return String Reason for denial (or null if allowed)
  */
-function isUnsubscribeDenied(usr, level) {
+function checkUnsubscribe(usr, level) {
    if (level == null)
-      return new Exception("subscriptionNoExist");
+      throw new Exception("subscriptionNoExist");
    else if (level == ADMIN) {
       // Admins are not allowed to remove a subscription
-      return new Exception("unsubscribeDenied");
+      throw new DenyException("unsubscribe");
    }
-   return null ;
+   return;
 }
