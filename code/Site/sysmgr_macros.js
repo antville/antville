@@ -6,9 +6,8 @@ function sysmgr_count_macro(param) {
    if (!param || !param.what)
       return;
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    if (param.what == "stories")
       res.write(this.allstories.size());
    else if (param.what == "comments")
@@ -17,7 +16,6 @@ function sysmgr_count_macro(param) {
       res.write(this.images.size());
    else if (param.what == "goodies")
       res.write(this.goodies.size());
-   res.write(param.suffix);
 }
 
 /**
@@ -26,9 +24,8 @@ function sysmgr_count_macro(param) {
 
 function sysmgr_statusflags_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    if (this.isTrusted())
       res.write("<span class=\"flagltgreen\" nowrap>TRUSTED</span>");
    if (!parseInt(this.online))
@@ -37,7 +34,6 @@ function sysmgr_statusflags_macro(param) {
       res.write("<span class=\"flagdkgreen\" nowrap>PUBLIC</span>");      
    if (this.isBlocked())
       res.write("<span class=\"flagblack\" nowrap>BLOCKED</span>");
-   res.write(param.suffix);
 }
 
 /**
@@ -46,9 +42,8 @@ function sysmgr_statusflags_macro(param) {
 
 function sysmgr_editlink_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin() || req.data.item == this.alias)
+   if (!isUserSysAdmin() || req.data.item == this.alias)
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.linkto = "weblogs";
    linkParam.urlparam = "?item=" + this.alias;
@@ -59,7 +54,6 @@ function sysmgr_editlink_macro(param) {
    root.manage.openLink(linkParam);
    res.write(param.text ? param.text : "edit");
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -68,9 +62,8 @@ function sysmgr_editlink_macro(param) {
 
 function sysmgr_deletelink_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin() || req.data.item == this.alias)
+   if (!isUserSysAdmin() || req.data.item == this.alias)
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.linkto = "weblogs";
    linkParam.urlparam = "?item=" + this.alias;
@@ -81,7 +74,6 @@ function sysmgr_deletelink_macro(param) {
    root.manage.openLink(linkParam);
    res.write(param.text ? param.text : "delete");
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -91,11 +83,9 @@ function sysmgr_deletelink_macro(param) {
 
 function sysmgr_creator_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    res.write(this.creator.name);
-   res.write(param.suffix);
 }
 
 /**
@@ -104,16 +94,14 @@ function sysmgr_creator_macro(param) {
 
 function sysmgr_trusted_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    if (param.as == "editor") {
       var options = new Array("no","yes");
       var selectedIndex = parseInt(this.trusted,10);
       res.write(simpleDropDownBox("trusted",options,selectedIndex));
    } else
       res.write(this.isTrusted() ? "yes" : "no");
-   res.write(param.suffix);
 }
 
 /**
@@ -122,14 +110,12 @@ function sysmgr_trusted_macro(param) {
 
 function sysmgr_blocked_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!user.isSysAdmin())
+   if (!isUserSysAdmin())
       return;
-   res.write(param.prefix);
    if (param.as == "editor") {
       var options = new Array("no","yes");
       var selectedIndex = parseInt(this.blocked,10);
       res.write(simpleDropDownBox("blocked",options,selectedIndex));
    } else
       res.write(this.isBlocked() ? "yes" : "no");
-   res.write(param.suffix);
 }
