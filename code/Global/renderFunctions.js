@@ -113,7 +113,6 @@ function renderInputTextarea(param) {
    delete param.value;
    delete param.width;
    delete param.height;
-   delete param.as;
    openMarkupElement("textarea", param);
    res.write(value);
    closeMarkupElement("textarea");
@@ -134,7 +133,6 @@ function renderInputButton(param) {
    }
    if (!param.name)
       param.name = param.type;
-   param.value = param.value ? encodeForm(param.value) : param.type;
    renderMarkupElement("input", param);  
 }
 
@@ -153,6 +151,7 @@ function renderInputText(param) {
    if (!param.size)
       param.size = 20;
    delete param.width;
+   param.value = param.value ? encodeForm(param.value) : "";
    renderMarkupElement("input", param);
 }
 
