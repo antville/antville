@@ -6,7 +6,7 @@
 function onRequest() {
    autoLogin();
    // defining skinpath, membershipLevel
-   req.data.memberlevel = 0;
+   req.data.memberlevel = null;
    // if root.sys_frontSite is set and the site is online
    // we put it into res.handlers.site to ensure that the mirrored
    // weblog works as expected
