@@ -193,12 +193,31 @@ function titlecolor_macro(param) {
  */
 
 function lastupdate_macro(param) {
-   if (this.lastUpdate) {
+   if (this.lastupdate) {
       renderPrefix(param);
-      if (param.format)
-         res.write(this.lastupdate.format(param.format));
-      else
-         res.write(this.lastupdate.format("yyyy.MM.dd HH:mm"));
+      this.formatTimestamp(this.lastupdate,param);
+      renderSuffix(param);
+   }
+}
+
+/**
+ * macro rendering createtime of weblog
+ */
+
+function createtime_macro(param) {
+   renderPrefix(param);
+   this.formatTimestamp(this.createtime,param);
+   renderSuffix(param);
+}
+
+/**
+ * macro rendering modifytime of weblog
+ */
+
+function modifytime_macro(param) {
+   if (this.modifytime) {
+      renderPrefix(param);
+      this.formatTimestamp(this.modifytime,param);
       renderSuffix(param);
    }
 }
@@ -255,6 +274,31 @@ function showarchive_macro(param) {
    renderSuffix(param);
 }
 
+/**
+ * macro rendering language of weblog
+ */
+
+function language_macro(param) {
+   renderPrefix(param);
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("language",param));
+   else
+      res.write(this.language);
+   renderSuffix(param);
+}
+
+/**
+ * macro rendering country of weblog
+ */
+
+function country_macro(param) {
+   renderPrefix(param);
+   if (param.as == "editor")
+      this.renderInputText(this.createInputParam("country",param));
+   else
+      res.write(this.country);
+   renderSuffix(param);
+}
 
 /**
  * macro rendering loginStatus of user
@@ -406,9 +450,14 @@ function age_macro(param) {
  */
 
 function image_macro(param) {
-   if (param && param.name) {
+   if (param && param.name && this.images.get(param.name)) {
       renderPrefix(param);
-      this.renderImage(param);
+      if (param.linkto) {
+         this.openLink(param);
+         this.renderImage(this.images.get(param.name),param);
+         this.closeLink(param);
+      } else
+         this.renderImage(this.images.get(param.name),param);
       renderSuffix(param);
    }
 }
