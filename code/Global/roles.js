@@ -23,14 +23,19 @@ MAY_EDIT_MEMBERS = 65536;
 ROLES = new Array("Subscriber","Contributor","Content Manager","Admin");
 
 /**
- * function returns an integer indicating contributor-role
+ * constant containing integer representing permission of subscribers
  */
-CONTRIBUTOR = MAY_ADD_STORY | MAY_ADD_COMMENT | 
+SUBSCRIBER = 0;
+
+/**
+ * constant containing integer representing permission of contributors
+ */
+CONTRIBUTOR = SUBSCRIBER | MAY_ADD_STORY | MAY_ADD_COMMENT | 
               MAY_ADD_IMAGE | MAY_ADD_FILE | 
               MAY_VIEW_STATS;
 
 /**
- * function returns an integer indicating contentmanager-role
+ * constant containing integer representing permission of content manager
  */
 CONTENTMANAGER = CONTRIBUTOR | MAY_VIEW_ANYSTORY | MAY_EDIT_ANYSTORY |
                  MAY_DELETE_ANYSTORY | MAY_EDIT_ANYCOMMENT |
@@ -39,7 +44,7 @@ CONTENTMANAGER = CONTRIBUTOR | MAY_VIEW_ANYSTORY | MAY_EDIT_ANYSTORY |
                  MAY_DELETE_ANYFILE;
 
 /**
- * function returns an integer indicating admin-role
+ * constant containing integer representing permission of admins
  */
 ADMIN = CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_SKINS | MAY_EDIT_MEMBERS;
 
