@@ -154,34 +154,39 @@ function autoLogin() {
 }
 
 /**
- * function checks if weblog or root should handle the image-rendering
- * by checking if there's a slash in the name of the image
- * returns an Object containing the handler that should render the image
- * and the image-object
+ * function checks if the name of the requested object has a slash in it
+ * if true, it tries to fetch the appropriate parent-object (either weblog or root)
+ * and to fetch the object with the requested name in the specified collection
+ * @param String Name of the object to retrieve
+ * @param String Name of the pool to search in
+ * @return Obj Object with two properties: one containing the parent-object of the pool,
+ *             the other containing the object itself;
+ *             If parent or object is null, the function returns null.
  */
 
-function imgDispatch(imgName) {
-   var dp = new Object();
-   if (imgName.indexOf("/") >= 0) {
-      var imgPath = imgName.split("/");
-      dp.handler = (!imgPath[0] || imgPath[0] == "root") ? root : root.get(imgPath[0]);
-      dp.imgName = imgPath[1];
+function getPoolObj(objName,pool) {
+   var p = new Object();
+   if (objName.indexOf("/") >= 0) {
+      var objPath = objName.split("/");
+      p.parent = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
+      p.objName = objPath[1];
    } else {
-      dp.handler = path.weblog;
-      dp.imgName = imgName;
+      p.parent = path.weblog;
+      p.objName = objName;
    }
-   if (!dp.handler)
+   if (!p.parent)
       return null;
-   dp.img = dp.handler.images.get(dp.imgName);
-   if (!dp.img)
+   p.obj = p.parent[pool].get(p.objName);
+   if (!p.obj)
       return null;
-   return (dp);
+   return (p);
 }
 
 /**
  * This function parses a string for <img> tags and turns them
  * into <a> tags.  
  */ 
+
 function convertHtmlImageToHtmlLink(str) {
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
    re.ignoreCase = true;
@@ -189,3 +194,4 @@ function convertHtmlImageToHtmlLink(str) {
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
  	return(str);
 }
+

@@ -16,14 +16,6 @@ function now_macro(param) {
  * macro renders the antville-logos
  */
 
-/*
-big = new Array("big.gif",404,53,"antville.org");
-small = new Array("smallanim.gif",98,30,"resident of antville.org");
-smalltrans = new Array("smallanim.gif",98,30,"resident of antville.org");
-smallstraight = new Array("smallstraight.gif",107,24,"resident of antville.org");
-smallchaos = new Array("smallchaos.gif",107,29,"resident of antville.org");
-*/
-
 function logo_macro(param) {
    if (!param.name)
       return;
@@ -50,16 +42,16 @@ function logo_macro(param) {
 function image_macro(param) {
    if (!param.name)
       return;
-   var dp = imgDispatch(param.name);
-   if (!dp)
+   var p = getPoolObj(param.name,"images");
+   if (!p)
       return;
    res.write(param.prefix);
    if (param.linkto) {
-      dp.handler.openLink(param);
-      dp.handler.renderImage(dp.img,param);
-      dp.handler.closeLink(param);
+      p.parent.openLink(param);
+      p.parent.renderImage(p.obj,param);
+      p.parent.closeLink(param);
    } else
-      dp.handler.renderImage(dp.img,param);
+      p.parent.renderImage(p.obj,param);
    res.write(param.suffix);
 }
 
@@ -76,19 +68,19 @@ function image_macro(param) {
 function thumbnail_macro(param) {
    if (!param.name)
       return;
-   var dp = imgDispatch(param.name);
-   if (!dp || !dp.img.thumbnail)
+   var p = getPoolObj(param.name,"images");
+   if (!p || !p.obj.thumbnail)
       return;
    res.write(param.prefix);
    if (param.linkto) {
-      dp.handler.openLink(param);
+      p.handler.openLink(param);
    } else {
       var linkParam = new Object();
-      linkParam.linkto = dp.img.popupUrl();
-      dp.handler.openLink(linkParam);
+      linkParam.linkto = p.obj.popupUrl();
+      p.parent.openLink(linkParam);
    }
-   dp.handler.renderImage(dp.img.thumbnail,param);
-   dp.handler.closeLink(param);
+   p.parent.renderImage(p.obj.thumbnail,param);
+   p.parent.closeLink(param);
    res.write(param.suffix);
 }
 
@@ -99,13 +91,13 @@ function thumbnail_macro(param) {
 function imageurl_macro(param) {
    if (!param.name)
       return;
-   var dp = imgDispatch(param.name);
-   if (!dp)
+   var p = getPoolObj(param.name,"images");
+   if (!p)
       return;
    res.write(getProperty("imgUrl"));
-   if (dp.handler.alias)
-       res.write(dp.handler.alias + "/");
-   res.write(dp.img.filename + "." + dp.img.fileext);
+   if (p.parent.alias)
+       res.write(p.parent.alias + "/");
+   res.write(p.obj.filename + "." + p.obj.fileext);
 }
 
 /**
@@ -114,4 +106,20 @@ function imageurl_macro(param) {
 
 function link_macro(param) {
    path[path.length-1].link_macro(param);
+}
+
+
+/**
+ * macro fetches a goodie-object and renders a link to "getgoodie"-action
+ */
+
+function goodie_macro(param) {
+   if (!param.name)
+      return;
+   var p = getPoolObj(param.name,"goodies");
+   if (!p)
+      return;
+   res.write(param.prefix);
+   p.obj.renderSkin(param.useskin ? param.useskin : "main");
+   res.write(param.suffix);
 }
