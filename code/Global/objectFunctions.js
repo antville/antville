@@ -118,7 +118,9 @@ function activateLinks (str) {
  */
 
 function evalURL(url) {
-   if (url && url.indexOf("://") < 0)
+   if (url && url.indexOf("@") > 0 && url.indexOf("mailto:") == -1)
+      return ("mailto:" + url);
+   else if (url && url.indexOf("://") == -1)
       return ("http://" + url);
    return (url);
 }
