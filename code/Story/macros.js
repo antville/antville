@@ -128,20 +128,6 @@ function author_macro(param) {
 }
 
 /**
- * macro renders the name of the creator
- */
-
-function creator_macro(param) {
-   if (!this.creator)
-      return;
-   if (param.as == "link" && this.creator.url) {
-      openLink(this.creator.url);
-      res.write(this.creator.name);
-      closeLink();
-   } else
-      res.write(this.creator.name);
-}
-/**
  * macro renders the name of the modifier
  */
 
@@ -231,9 +217,6 @@ function viewlink_macro(param) {
 
 /**
  * macro rendering link to comments
- * DEPRECATED
- * this is just left for compatibility with existing sites
- * use a simple like i.e. <% story.link to="comment" text="place your comment" %> instead
  */
 
 function commentlink_macro(param) {
