@@ -3,14 +3,12 @@
  */
 
 function username_macro(param) {
-   res.write(param.prefix)
    if (param.linkto) {
       this.openLink(param);
       res.write(this.username);
       this.closeLink();
    } else
       res.write(this.username);
-   res.write(param.suffix);
 }
 
 /**
@@ -18,9 +16,7 @@ function username_macro(param) {
  */
 
 function createtime_macro(param) {
-   res.write(param.prefix)
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   res.write(param.suffix);
 }
 
 /**
@@ -28,9 +24,7 @@ function createtime_macro(param) {
  */
 
 function email_macro(param) {
-   res.write(param.prefix)
    res.write(this.user.email);
-   res.write(param.suffix);
 }
 
 /**
@@ -40,13 +34,11 @@ function email_macro(param) {
 function url_macro(param) {
    if (!this.user.url)
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.to = this.user.url;
    this.openLink(linkParam);
    res.write(linkParam.to);
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -54,14 +46,12 @@ function url_macro(param) {
  */
 
 function level_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor") {
       // var options = new Array("Subscriber","Contributor","Content Manager","Administrator");
       // res.write(simpleDropDownBox("level",options,null,"-- select --"));
       res.write(simpleDropDownBox("level",ROLES,null,"-- select --"));
    } else
       res.write(getRole(parseInt(this.level,10)));
-   res.write(param.suffix);
 }
 
 /**
@@ -79,13 +69,11 @@ function weblogtitle_macro(param) {
 function deletelink_macro(param) {
    if (this.level == getAdminLvl())
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.to = "delete";
    this.openLink(linkParam);
    res.write(param.text ? param.text : "remove");
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -95,11 +83,9 @@ function deletelink_macro(param) {
 function unsubscribelink_macro(param) {
    if (this.level > 0)
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.to = "unsubscribe";
    this.weblog.openLink(linkParam);
    res.write(param.text ? param.text : "unsubscribe");
    this.closeLink();
-   res.write(param.suffix);
 }

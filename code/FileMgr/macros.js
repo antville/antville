@@ -4,9 +4,7 @@
  */
 
 function goodies_macro(param) {
-   res.write(param.prefix)
    res.write(res.data.goodielist);
-   res.write(param.suffix);
    return;
 }
 

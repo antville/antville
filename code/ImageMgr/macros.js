@@ -4,9 +4,7 @@
  */
 
 function images_macro(param) {
-   res.write(param.prefix)
    res.write(res.data.imagelist);
-   res.write(param.suffix);
    return;
 }
 
@@ -16,6 +14,4 @@ function images_macro(param) {
  */
 
 function imageeditor_macro(param) {
-   res.write(param.prefix)
-   res.write(param.suffix);
 }
