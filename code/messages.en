@@ -78,6 +78,7 @@ error.storyEditDenied = Sorry, but you're not allowed to edit this story.
 error.storyViewDenied = Sorry, but you're not allowed to view this story!
 error.storyAddDenied = Sorry, you are not allowed to add stories to this weblog.
 error.storyNoDiscussion = Sorry, discussions were disabled for this story.
+error.storyNoExist = [There is no story with the id <% param.value1 %>]
 error.accountModifyOwn = Sorry, you are not allowed to modify your own account.
 error.adminDeleteLast = Sorry, you are not allowed to remove the only admin account.
 error.systemEmailMissing = Oy, the system-wide e-mail address is not specified. Please contact the maintainer of this site.
