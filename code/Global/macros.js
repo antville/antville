@@ -273,8 +273,14 @@ function topiclist_macro(param) {
  * if true it returns the username
  */
 function username_macro(param) {
-   if (session.user)
-      res.write(session.user.name);
+   if (session.user) {
+      if (session.user.url) {
+         openLink(session.user.url);
+         res.write(session.user.name);
+         closeLink();
+      } else
+         res.write(session.user.name);
+   }
    return;
 }
 
