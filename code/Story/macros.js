@@ -18,7 +18,7 @@ function content_macro(param) {
          param.value = this.getContentPart(param.part);
       // if there's still no value get it from request.data if available:
       if (!param.value && req.data[param.part])
-         param.value = req.data[param.part];
+         param.value = unescape(req.data[param.part]);
       param.name = "content_" + param.part;
       delete(param.part);
       if (!param.height || parseInt(param.height,10) == 1) {
