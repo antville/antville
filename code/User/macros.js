@@ -57,50 +57,19 @@ function publishemail_macro(param) {
       res.write(this.publishemail ? "yes" : "no");
 }
 
-/**
- * macro renders a list of memberships of this user
- * meaning all memberships where level > 0
- */
-
-function membershiplist_macro(param) {
-   if (!this.memberships.size())
-      res.writeln("-----");
-   else {
-      for (var i=0;i<this.memberships.size();i++)
-         this.memberships.get(i).renderSkin("membership");
-   }
-}
-
-/**
- * macro renders a list of subscriptions of this user
- * meaning all memberships where level == 0
- */
-
-function subscriptionlist_macro(param) {
-   if (!this.subscriptions.size())
-      res.writeln("-----");
-   else {
-      for (var i=0;i<this.subscriptions.size();i++)
-         this.subscriptions.get(i).renderSkin("subscription");
-   }
-}
 
 /**
  * macro renders the sites the user is a member of or has subscribed to
  * in order of their last update-timestamp
  */
-
 function sitelist_macro(param) {
-   if (!this.size())
-      res.writeln("-----");
-   else {
-      var l = session.user.list();
-      l.sort(this.sortSubscriptions);
-      for (var i in l) {
-         var s = l[i].site;
-         if (!s)
-            continue;
-         s.renderSkin("preview");
-      }
+   var memberships = session.user.list();
+   memberships.sort(new Function("a", "b", "return b.site.lastupdate - a.site.lastupdate"));
+   for (var i in memberships) {
+      var site = memberships[i].site;
+      if (!site)
+         continue;
+      site.renderSkin("preview");
    }
+   return;
 }
