@@ -39,4 +39,7 @@ insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT)
 insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) 
    values ('webloghead','webloghead','gif',404,53,'head');
 
+insert into IMAGE (ALIAS,FILENAME,FILEEXT,WIDTH,HEIGHT,ALTTEXT) 
+   values ('hop','hop','gif',124,25,'helma object publisher');
+
 alter table IMAGE change column ID ID mediumint(9) not null;
