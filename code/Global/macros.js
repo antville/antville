@@ -31,7 +31,7 @@ function image_macro(param) {
    if (!param.name)
       return;
    var img = getPoolObj(param.name, "images");
-   if (!img)
+   if (!img && param.fallback)
       img = getPoolObj(param.fallback, "images");
    if (!img)
       return;
