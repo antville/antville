@@ -19,7 +19,6 @@ else if (req.data.submit == "create" || req.data.create) {
 res.skin = "root.page";
 
 res.data.title = "Antville - Create a new weblog";
-res.head = this.renderSkinAsString("style");
 
 var newLog = new weblog();
 res.data.body = newLog.renderSkinAsString("new");

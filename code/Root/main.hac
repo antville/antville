@@ -4,7 +4,4 @@ res.skin = "root.page";
 
 res.data.title = "Antville";
 
-res.head = this.renderSkinAsString("javascript");
-res.head += this.renderSkinAsString("style");
-
 res.data.body = this.renderSkinAsString("main");
