@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.author as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime format="EEEE,'&nbsp;'dd.MM.yyyy,'&nbsp;'h:mm a" prefix="&nbsp;on&nbsp;"%></td>
+<td class="storyText" nowrap><% this.author as="link" prefix="created by " %><% this.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% this.modifytime prefix="&nbsp;on&nbsp;"%></td>
 </tr>
 </table>
 </form>
