@@ -9,7 +9,12 @@
 
 <body>
 
-<% root.skin name="header" %>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><% logo name="big" %></td>
+<td width="296" class="header">&nbsp;<span class="message"><% response.message %></span></td>
+</tr>
+</table>
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
