@@ -90,6 +90,18 @@ error.mailCCInvalid = Sorry, the mail couldn't be sent because the eMail address
 error.mailSubjectMissing = Sorry, the mail couldn't be sent because the subject is missing.
 error.mailTextMissing = Sorry, the mail couldn't be sent because the text is missing.
 error.mailSend = Sorry, couldn't send the eMail. Please try again or contact the site administrators.
+error.layoutTitleMissing = Please specify a title for the new layout.
+error.layoutCreate = Couldn't create the new layout. Please try again later.
+error.layoutDelete = Couldn't delete the layout '<% param.value1 %>'.
+error.layoutParentMissing = You must choose an existing layout as a basis for your new layout.
+error.layoutParentNotFound = Couldn't find the basic layout. Please choose another one.
+error.layoutNoParent = There are no standard images since this layout isn't based on another one.
+error.layoutExport = Oops, couldn't export the layout '<% param.value1 %>'. Please try again or contact the site administrators.
+
+error.layoutImportTooBig = Oops, the size of the layout archive exceeded the upload limit. Please contact the site administrators.
+error.layoutImportNoUpload = Please upload a .zip archive that contains the layout you want to import.
+error.layoutImportCorrupt = Sorry, couldn't start the import because the .zip file seems to be corrupt.
+
 
 ##
 ## confirm messages
@@ -122,13 +134,18 @@ confirm.imageCreate = The uploaded image was saved successfully. Its name is '<%
 confirm.imageDelete = Successfully deleted the image.
 confirm.introLogin = Please enter your username and password.
 confirm.resultOne = Found one item related to '<% param.value1 %>'!
-confirm.resultMany = Found <% param.value2 %> items related to '<% param.value1 %>'. 
+confirm.resultMany = Found <% param.value2 %> items related to '<% param.value1 %>'.
 confirm.resultDisplay = Displaying items <% param.value1 %> to <% param.value2 %>.
 confirm.resultOneUser = Found one user matching the input.
 confirm.resultTooManyUsers = Found more than 100 users, only displaying the first 100.
 confirm.resultManyUsers = Found <% param.value1 %> users.
 confirm.subscriptionCreate = You successfully subscribed to '<% param.value1 %>'.
 confirm.skinDelete = Successfully deleted the skin.
+confirm.layoutCreate = Successfully created the layout '<% param.value1 %>'.
+confirm.layoutDelete = Successfully deleted the layout '<% param.value1 %>'.
+confirm.layoutUpdate = Successfully update the layout '<% param.value1 %>'.
+confirm.layoutStopTestdrive = Switched back to standard layout
+confirm.layoutImport = Successfully imported the layout '<% param.value1 %>'.
 
 ##
 ## mail messages
@@ -158,6 +175,7 @@ deny.siteView = Sorry, this weblog is only accessible for members.
 deny.siteNoDiscussion = Sorry, discussions were disabled for this weblog.
 deny.skinEdit = Sorry, you need to be administrator of this weblog to edit skins.
 deny.skinDelete = Sorry, you need to be administrator of this weblog to delete a skin.
+deny.layoutEdit = Sorry, you're not allowed to edit layouts.
 deny.storyDelete = You are not allowed to delete the story of somebody else.
 deny.storyEdit = Sorry, but you're not allowed to edit this story.
 deny.storyView = Sorry, but you're not allowed to view this story!
@@ -175,3 +193,4 @@ deny.siteCreateNotAllowed = Sorry, you are not allowed to create a new weblog.
 deny.siteCreateMinMemberAge = Sorry, you are a registered member for now <% param.value1 %> day(s), but you have to be a member for at least <% param.value2 %> day(s) to create a new weblog.
 deny.siteCreateMinMemberSince = Sorry, only members who have registered before <% param.value1 %> are allowed to create a new weblog.
 deny.siteCreateWait = Sorry, you have to wait <% param.value1 %> day(s) between the creation of two weblogs, so you have to wait another <% param.value2 %> day(s).
+deny.layoutExport = Sorry, can't export the layout '<% param.value1 %>' because it's based on another layout.
