@@ -71,6 +71,14 @@ div.box {
    margin: 0em 0em 0.2em 0em;
 }
 
+div.ample { margin-bottom: 5px; }
+
+small, .small {
+   font-family: <% layout.smallfont %>;
+   font-size: <% layout.smallsize %>;
+   color: <% layout.smallcolor %>;
+}
+
 /* this is for mozilla to align tables in boxes right */
 div.box table {
    margin-left: auto; 
@@ -162,7 +170,6 @@ a:hover {text-decoration: underline;}
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
    color: <% layout.smallcolor %>;
-   margin-top: 6px;
    margin-bottom: 6px;
 }
 
@@ -171,12 +178,6 @@ a:hover {text-decoration: underline;}
    font-size: <% layout.titlesize %>;
    color: <% layout.titlecolor %>;
    font-weight: bold;
-}
-
-.small {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.smallcolor %>;
 }
 
 .listSeparator {
@@ -266,12 +267,14 @@ div.pageNav {
    margin-bottom: 0px;
    font-size: 11px;
 }
+
 div.pageNavSummary {
    padding: 1px 5px;
    background-color: #efefef;
    border-bottom: 1px solid #cccccc;
    text-align: left;
 }
+
 div.pageNavBar {
    padding-top: 1px;
    text-align: right;
@@ -280,6 +283,7 @@ span.pageNavItem {
    padding-left: 2px;
    padding-right: 2px;
 }
+
 span.pageNavSelItem {
    padding-left: 2px;
    padding-right: 2px;
@@ -287,10 +291,13 @@ span.pageNavSelItem {
 }
 
 /* tree navigation in skinmgr */
+ul { list-style: url("<% layout.image as="url" name="bullet" %>") circle; } 
+
 ul.skinmgrTree {
    padding-left:15px;
    margin:20px 0px;
 }
+
 ul.skinmgrTree ul {
    padding-left:30px;
    margin:0px;
@@ -300,6 +307,7 @@ ul.skinmgrTree li {
    margin:7px 0px;
    padding:0px;
 }
+
 ul.skinmgrTree li.skinset {
    list-style:square;
    padding-left:0px;
@@ -307,6 +315,7 @@ ul.skinmgrTree li.skinset {
 ul.skinmgrTree a.selected {
    font-weight:bold;
 }
+
 ul.skinmgrTree li div {
    font-family:<% layout.textfont %>;
    font-size:<% layout.smallsize %>;
@@ -319,6 +328,7 @@ ul.skinmgrTree li div {
    font-size:<% layout.titlesize %>;
    margin:10px 0px;
 }
+
 .member {
    margin-left:20px;
    margin-bottom:5px;
