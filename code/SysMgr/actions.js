@@ -32,14 +32,13 @@ function setup_action() {
 function sites_action() {
    res.data.title = "Site manager of " + root.getSysTitle();
    res.data.action = this.href(req.action);
+
    if (req.data.search || req.data.keywords)
       session.data.mgr.searchSites(req.data.show, req.data.sort, req.data.order, req.data.keywords);
    else if (req.data.cancel)
       res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
    else if (req.data.remove && req.data.item) {
-      var site = root.get(req.data.item);
-      if (!site)
-         res.message = getMessage("error.delete", req.data.item);
+      var site = this.sites.get(req.data.item);
       try {
          res.message = root.deleteSite(site);
          res.redirect(res.data.action + "?page=" + req.data.page);
@@ -51,12 +50,13 @@ function sites_action() {
       res.message = result.message;
       if (!result.error)
          res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
-   }
+   } else if (req.data.item)
+      req.data.selectedItem = this.sites.get(req.data.item);
    
-   session.data.mgr.renderPageNavigation("sites", res.data.action, parseInt(req.data.page, 10));
-   session.data.mgr.renderList("sites", root.get(req.data.item), req.data.action, parseInt(req.data.page, 10));
-   res.data.body = this.renderSkinAsString("sitesearchform");
+   res.data.list = renderList(this.sites, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this.sites, this.href(req.action), 10, req.data.page);
    res.data.list = this.renderSkinAsString("list");
+   res.data.body = this.renderSkinAsString("sitesearchform");
    this.renderSkin("page");
 }
 
@@ -76,12 +76,13 @@ function users_action() {
       res.message = result.message;
       if (!result.error)
          res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
-   }
+   } else if (req.data.item)
+      req.data.selectedItem = root.users.get(req.data.item);
    
-   res.data.body = this.renderSkinAsString("usersearchform");
-   session.data.mgr.renderPageNavigation("users", res.data.action,parseInt(req.data.page, 10));
-   session.data.mgr.renderList("users", root.users.get(req.data.item) ,req.data.action, parseInt(req.data.page, 10));
+   res.data.list = renderList(this.users, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this.users, this.href(req.action), 10, req.data.page);
    res.data.list = this.renderSkinAsString("list");
+   res.data.body = this.renderSkinAsString("usersearchform");
    this.renderSkin("page");
 }
 
@@ -95,10 +96,10 @@ function logs_action() {
    if (req.data.search || req.data.keywords)
       session.data.mgr.searchSyslog(req.data.show, req.data.order, req.data.keywords);
    
-   session.data.mgr.renderPageNavigation("syslogs", this.href(req.action), parseInt(req.data.page, 10));
-   session.data.mgr.renderList("syslogs", null, null, parseInt(req.data.page, 10));
-   res.data.body = this.renderSkinAsString("syslogsearchform");
+   res.data.list = renderList(this.syslogs, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(this.syslogs, this.href(req.action), 10, req.data.page);
    res.data.list = this.renderSkinAsString("list");
+   res.data.body = this.renderSkinAsString("syslogsearchform");
    this.renderSkin("page");
 }
 
@@ -127,7 +128,6 @@ function status_action() {
 /**
  * wrapper to make style.skin public
  */
-
 function stylesheet_action() {
    res.dependsOn(app.skinfiles["sysmgr"]["stylesheet"]);
    res.digest();
