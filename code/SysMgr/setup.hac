@@ -1,0 +1,16 @@
+res.data.title = root.getSysTitle() + " Manager - " + req.action;
+
+res.data.action = this.href(req.action);
+
+if (req.data.cancel)
+   res.redirect(root.href());
+else if (req.data.save) {
+   var result = this.evalSystemSetup(req.data,session.user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(root.href());
+}
+
+res.data.body = this.renderSkinAsString("setup");
+
+root.renderSkin("page");
