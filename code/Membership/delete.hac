@@ -1,6 +1,6 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = path.membership.isEditMembersDenied(user);
+var deny = path.membership.isEditMembersDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(path.membership.href());
@@ -9,12 +9,10 @@ if (deny) {
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(path.membership.href());
 else if (req.data.submit == "delete" || req.data.remove) {
-   var result = path.membership.deleteMember(this,user);
+   var result = path.membership.deleteMember(this,session.user);
    res.message = result.message;
    res.redirect(path.membership.href());
 }
-
-res.skin = "weblog.page";
 
 res.data.action = this.href(req.action);
 
@@ -23,3 +21,5 @@ res.data.title = path.weblog.title;
 var skinParam = new Object();
 skinParam.what = "the membership of <b>" + this.username + "</b>";
 res.data.body = this.renderSkinAsString("delete",skinParam);
+
+path.weblog.renderSkin("page");

@@ -1,19 +1,17 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isPostDenied(user);
+var deny = this.isPostDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(path.story.href());
 }
-
-res.skin = "weblog.page";
 
 res.data.action = this.href(req.action);
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.story.href());
 else if (req.data.submit == "save" || req.data.save) {
-   var result = this.evalComment(req.data,path.story,user);
+   var result = this.evalComment(req.data,path.story,session.user);
    res.message = result.message;
    if (!result.error)
       res.redirect(path.story.href());
@@ -27,3 +25,5 @@ res.data.body = this.renderSkinAsString("toplevel");
 
 var r = new comment();
 res.data.body += r.renderSkinAsString("edit");
+
+path.weblog.renderSkin("page");

@@ -1,6 +1,6 @@
 checkIfLoggedIn(this.href(req.action));
 
-var deny = this._parent.isEditMembersDenied(user);
+var deny = this._parent.isEditMembersDenied(session.user);
 if (deny) {
    res.message = deny;
    res.redirect(this.weblog.href());
@@ -9,16 +9,16 @@ if (deny) {
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(path.membership.href());
 else if (req.data.submit == "save" || req.data.save) {
-   var result = this.updateMember(parseInt(req.data.level,10),user);
+   var result = this.updateMember(parseInt(req.data.level,10),session.user);
    res.message = result.message;
    if (!result.error)
       res.redirect(path.membership.href());
 }
-
-res.skin = "weblog.page";
 
 res.data.action = this.href(req.action);
 
 res.data.title = this.weblog.title;
 
 res.data.body = this.renderSkinAsString("edit");
+
+path.weblog.renderSkin("page");
