@@ -225,14 +225,6 @@ function online_macro(param) {
 
 
 /**
- * macro renders the url to this site
- */
-function url_macro(param) {
-  res.write(this.href());
-}
-
-
-/**
  * macro rendering discussion-flag
  */
 function hasdiscussions_macro(param) {
