@@ -17,6 +17,36 @@ DISPLAY["skinmgr"] = "Skins";
 DISPLAY["story"] = "Story";
 
 /**
+ * array containing short dateformats
+ */
+
+SHORTDATEFORMATS = new Array();
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy.MM.dd, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy-MM-dd HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy/MM/dd HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "d. MMMM, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "MMMM d, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "d. MMM, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "MMM d, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE, d. MMM, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE MMM d, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EE, HH:mm";
+SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "HH:mm";
+
+LONGDATEFORMATS = new Array();
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "EEEE, d. MMMM yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "EEEE, MMMM dd, yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE, d. MMM. yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE MMM dd, yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE yyyy-MM-dd HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "yyyy-MM-dd HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMMM yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMMM d, yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMM yyyy, HH:mm";
+LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMM d, yyyy, HH:mm";
+
+/**
  * check if email-adress is syntactically correct
  */
 
@@ -27,7 +57,6 @@ function checkEmail(address) {
       return false;
    return true;
 }
-
 
 /**
  * function checks if the string passed contains special characters like
@@ -324,10 +353,10 @@ function formatTimestamp(ts,dformat) {
    // are not thread safe, so what we do is to cache them per request
    // in the response object
    var sdf = res.data["timeformat"];
-   var fmt = "yyyy/MM/dd HH:mm";
+   var fmt = "yyyy-MM-dd HH:mm";
    var obj = res.handlers.site ? res.handlers.site : root;
    if (dformat == "short")
-      fmt = obj.shortdateformat ? obj.shortdateformat : "yy.MM.dd-HH:mm";
+      fmt = obj.shortdateformat ? obj.shortdateformat : "yyyy-MM-dd HH:mm";
    else if (dformat == "long")
       fmt = obj.longdateformat ? obj.longdateformat : "d. MMMM yyyy HH:mm'h'";
    else if (dformat)
@@ -664,8 +693,6 @@ function rescueText(param) {
    session.data.rescuedText.discussions = param.discussions;
    session.data.rescuedText.topic = param.topic;
    session.data.rescuedText.discussions_array = param.discussions_array;
-   session.data.rescuedText.submit = param.submit;
-   session.data.rescuedText.save = param.save;
    session.data.rescuedText.topicidx = param.topicidx;
    session.data.rescuedText.online = param.online;
    session.data.rescuedText.editableby = param.editableby;
