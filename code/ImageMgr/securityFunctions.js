@@ -1,14 +1,35 @@
 /**
- * function checks if user is allowed to add/edit images of this weblog
+ * check if user is allowed to edit images
  */
 
-function checkPermissions() {
+function isEditAllowed() {
    if (!user.uid) {
-      res.message = "Please login before!";
       user.cache.referer = this.href();
-      res.redirect(this.__parent__.members.href("login"));
+      return false;
+   } else if (user.isBlocked()) {
+      res.message = "Sorry, your account was disabled!";
+      return false;
    } else if (this.__parent__.owner != user) {
-      res.message = "Sorry, you're not allowed to edit images";
-      res.redirect(this.href());
+      res.message = "Sorry, you're not allowed to edit images!";
+      return false;
    }
+   return true;  
+}
+
+/**
+ * check if user is allowed to add images
+ */
+
+function isAddAllowed() {
+   if (!user.uid) {
+      user.cache.referer = this.href("create");
+      return false;
+   } else if (user.isBlocked()) {
+      res.message = "Sorry, your account was disabled!";
+      return false;
+   } else if (this.__parent__.owner != user) {
+      res.message = "Sorry, you're not allowed to add images!";
+      return false;
+   }
+   return true;  
 }

@@ -1,11 +1,14 @@
 /**
- * function checks if user is allowed to edit her/his profile
+ * check if user is allowed to edit this image
  */
 
-function checkPermissions() {
+function isEditAllowed() {
    if (!user.uid) {
-      res.message = "Please login before editing your profile!";
       user.cache.referer = this.href("edit");
-      res.redirect(this.href("login"));
+      return false;
+   } else if (user.isBlocked()) {
+      res.message = "Sorry, your account was disabled!";
+      return false;
    }
+   return true;
 }

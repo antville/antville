@@ -1,5 +1,5 @@
-// check if user is allowed to edit this story
-this.checkPermissions();
+if (!this.isAddAllowed())
+   res.redirect(user.cache.referer ? this.members.href("login") : this.href());
 
 if (req.data.submit == "cancel")
    res.redirect(this.href());

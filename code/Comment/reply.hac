@@ -1,3 +1,6 @@
+if (!this.isReplyAllowed())
+   res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.story.href());
+
 if (this.weblog.hasDiscussions()) {
    res.skin = "main";
    res.title = "Antville - " + this.weblog.title;

@@ -1,5 +1,5 @@
-// check if user is logged in and is the owner of this weblog
-this.checkPermissions();
+if (!this.isEditAllowed())
+   res.redirect(user.cache.referer ? this.weblog.members.href("login") : this.weblog.images.href());
 
 if (req.data.submit == "delete")
    this.__parent__.deleteImage(this);

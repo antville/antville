@@ -1,5 +1,5 @@
-// check if user is logged in and is the owner of this weblog
-this.checkPermissions();
+if (!this.isEditAllowed())
+   res.redirect(user.cache.referer ? this.members.href("login") : this.href());
 
 if (req.data.submit == "cancel")
    res.redirect(this.href());

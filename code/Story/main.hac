@@ -2,7 +2,9 @@ this.filter();
 
 res.skin = "main";
 
-if (req.data.text && this.weblog.hasDiscussions())
+if (req.data.text && !this.isPostAllowed())
+   res.redirect(this.href());
+else if (req.data.text)
    this.addComment();
 
 res.title = "Antville - " + this.weblog.title;

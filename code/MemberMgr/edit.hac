@@ -1,5 +1,5 @@
-// check if user has right to edit this comment
-this.checkPermissions();
+if (!this.isEditAllowed())
+   res.redirect(user.cache.referer ? this.href("login") : this.__parent__.href());
 
 res.skin = "main";
 

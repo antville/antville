@@ -1,10 +1,17 @@
 /**
- * check if user is allowed to edit this story
+ * check if user is allowed to edit this image
  */
 
-function checkPermissions() {
-   if (this.creator != user || user.isBlocked()) {
-      res.message = "Sorry, you're not allowed to edit this image!";
-      res.redirect(this.weblog.href());
+function isEditAllowed() {
+   if (!user.uid) {
+      user.cache.referer = this.href("edit");
+      return false;
+   } else if (user.isBlocked()) {
+      res.message = "Sorry, your account was disabled!";
+      return false;
+   } else if (this.creator != user) {
+      res.message = "Sorry, this image belongs to someone else!";
+      return false;
    }
+   return true;
 }

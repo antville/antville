@@ -1,5 +1,5 @@
-// check if user is logged in and is the owner of this weblog
-this.checkPermissions("delete");
+if (!this.isDeleteAllowed())
+   res.redirect(this.story.href());
 
 if (req.data.submit == "delete")
    if (this.parent)

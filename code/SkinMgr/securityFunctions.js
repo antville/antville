@@ -1,14 +1,17 @@
 /**
- * function checks if user is allowed to edit skins of this weblog
+ * check if user is allowed to edit this image
  */
 
-function checkPermissions() {
+function isEditAllowed() {
    if (!user.uid) {
-      res.message = "Please login before!";
-      user.cache.referer = this.href();
-      res.redirect(this.__parent__.members.href("login"));
+      user.cache.referer = this.href("edit");
+      return false;
+   } else if (user.isBlocked()) {
+      res.message = "Sorry, your account was disabled!";
+      return false;
    } else if (this.__parent__.owner != user) {
-      res.message = "Sorry, you're not allowed to edit skins";
-      res.redirect(this.href());
+      res.message = "Sorry, your're not allowed to edit skins!";
+      return false;
    }
+   return true;
 }

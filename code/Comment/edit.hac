@@ -1,5 +1,5 @@
-// check if user has right to edit this comment
-this.checkPermissions();
+if (!this.isEditAllowed())
+   res.redirect(this.story.href());
 
 res.skin = "main";
 res.title = "Antville - " + this.weblog.title;
