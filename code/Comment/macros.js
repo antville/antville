@@ -5,10 +5,10 @@ function replylink_macro(param) {
    if (this.site.preferences.getProperty("discussions") && req.action == "main") {
       Html.openLink({href: this.href("comment") +
                      (param.anchor ? "#" + param.anchor : "")});
-      if (!param.image)
-         res.write(param.text ? param.text : getMessage("Comment.reply"));
+      if (param.image && this.site.images.get(param.image))
+         renderImage(this.site.images.get(param.image), param);
       else
-         renderImage(param);
+         res.write(param.text ? param.text : getMessage("Comment.reply"));
       Html.closeLink();
    }
    return;
