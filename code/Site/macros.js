@@ -573,8 +573,8 @@ function listReferrers_macro() {
    var d = new Date();
    d.setDate(d.getDate()-1); // 24 hours ago
    var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG " +
-      "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > '" + 
-      d.format("yyyy-MM-dd HH:mm:ss") + "' group by ACCESSLOG_REFERRER "+
+      "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > {ts '" + 
+      d.format("yyyy-MM-dd HH:mm:ss") + "'} group by ACCESSLOG_REFERRER "+
       "order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
