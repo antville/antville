@@ -37,9 +37,9 @@ if (max > 0 && this.online) {
       param.email = "";
       if (story.creator.publishemail)
          param.email = translateToEntities(story.creator.email);
-      param.date = story.modifytime.format(w3fmt);
+      param.date = story.createtime.format(w3fmt);
       param.subject = story.topic ? story.topic : "";
-      param.year = story.modifytime.getYear();
+      param.year = story.createtime.getYear();
       items += story.renderSkinAsString("rssItem", param);
       resources += story.renderSkinAsString("rssResource", param);
    }
