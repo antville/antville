@@ -43,7 +43,7 @@ function input_macro(param) {
       var inputParam = new Object();
       for (var i in param)
          inputParam[i] = param[i];
-      inputParam.value = param.name ? req.data[param.name] : null;
+      inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
       this.renderInputTextarea(inputParam);
    } else if (param.type == "checkbox") {
       this.renderInputCheckbox(param);
@@ -57,7 +57,7 @@ function input_macro(param) {
       var inputParam = new Object();
       for (var i in param)
          inputParam[i] = param[i];
-      inputParam.value = param.name ? req.data[param.name] : null;
+      inputParam.value = (param.name && req.data[param.name] ? req.data[param.name] : param.value);
       this.renderInputText(inputParam);
    }
    res.write(param.suffix);
