@@ -14,19 +14,28 @@ function addstory_macro () {
 /**
  * Get related topics, i.e. topics that contain stories that
  * link back to this topic.
+ * but avoiding self-referential backlinks
  */
 
 function relatedtopics_macro (param) {
-   this.related.subnodeRelation = "where TEXT like '%*"+this.groupname+"*%' ";
+   this.related.subnodeRelation = "where TEXT like '%*" + this.groupname + "*%' AND (TOPIC is null OR TOPIC != '" + this.groupname + "') ORDER BY MODIFYTIME DESC";
    var l = this.related.size();
    if (l == 0)
       return;
    res.write (param.prefix);
-   for (var i=0; i<l; i++) {
-      var s = this.related.get(i);
-      s._parent.renderSkin("relatedLink");
-   }
+   for (var i=0; i<l; i++)
+      this.related.get(i).renderSkin("relatedLink");
    res.write (param.suffix);
 }
 
+/**
+ * macro writes storylist to response-object
+ * kept for backwards-compatibility only
+ */
 
+function storylist_macro(param) {
+   res.write(param.prefix)
+   res.write(res.data.storylist);
+   res.write(param.suffix)
+   return;
+}
