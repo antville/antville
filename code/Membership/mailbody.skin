@@ -1,0 +1,9 @@
+Your status as a member of <% weblog.title %> has changed: You are now
+
+   <% this.userlevel %>
+
+Have fun!
+
+---------------------------------------
+Antville - http://www.antville.org
+---------------------------------------

@@ -1,0 +1,16 @@
+if (!this.weblog.isUserAdmin()) {
+   res.message = "You're have no right to do this!";
+   res.redirect(this.weblog.href());
+}
+
+if (req.data.submit == "cancel")
+   res.redirect(this.weblog.href("memberships"));
+else if (req.data.submit == "save")
+   this.updateMember();
+
+res.skin = "main";
+res.title = "Antville - " + this.weblog.title;
+res.head = this.weblog.renderSkinAsString("style");
+
+res.body = this.weblog.renderSkinAsString("header");
+res.body += this.renderSkinAsString("edit");
