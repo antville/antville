@@ -1,0 +1,9 @@
+<form action="<% this.href action="create" %>" method="post">
+<span class="statuslight">Name: </span>
+<% input name="name" %>
+<span class="statuslight">Parent Skinset: </span>
+<% skinmgr.skinsetchooser %> 
+<br />
+<br />
+<input type="submit" name="action" value="create">
+</form>
