@@ -1,5 +1,14 @@
 checkIfLoggedIn(this.href(req.action));
 
+var limit = getProperty("limitNewWeblogs").toLowerCase();
+if (limit == "sysadmin" && !user.isSysAdmin ()) {
+   res.message = "Sorry! Only administrators are allowed to create new Weblogs."
+   res.redirect(root.href());
+} else if (limit == "trusted" && !(user.isSysAdmin () || user.isTrusted ())) {
+   res.message = "Sorry! You are not allowed to create new Weblogs."
+   res.redirect(root.href());
+}
+
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(root.href());
 else if (req.data.submit == "create" || req.data.create) {
@@ -8,7 +17,6 @@ else if (req.data.submit == "create" || req.data.create) {
    if (!result.error)
       res.redirect(result.weblog.href());
 }
-
    
 res.skin = "root.page";
 
