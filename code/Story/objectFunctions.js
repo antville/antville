@@ -140,6 +140,7 @@ function evalComment(param,story,creator) {
          this.story.comments.add(c);
       this.site.lastupdate = new Date();
       result = getConfirm("commentCreate");
+      result.id = c._id;
    }
    return (result);
 }
