@@ -3,3 +3,7 @@ On <% param.timestamp %> you requested a list of all your accounts for antville,
 <% param.text %>
 
 Have fun!
+
+---------------------------------------
+<% root.systitle %> - <% root.sysurl %>
+---------------------------------------
