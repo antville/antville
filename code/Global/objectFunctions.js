@@ -308,7 +308,7 @@ function pingUpdatedWeblogs() {
 	}
 
 	var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and LASTUPDATE > LASTPING;";
-	c.executeCommand(query);
+	var rows = c.executeRetrieval(query);
 	var error = c.getLastError();
 	if (error) {
 		writeln("Error executing SQL query: " + error);
