@@ -1,6 +1,6 @@
 <div class="storyTitle">Most read stories of this weblog</div>
 
 <p>
-<table width="50%" border="0" cellspacing="0" cellpadding="2">
+<table border="0" cellspacing="0" cellpadding="2">
 <% this.listMostRead %>
 </table>
