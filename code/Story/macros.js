@@ -348,15 +348,29 @@ function topicchooser_macro(param) {
    res.write(param.prefix);
    var size = path.weblog.topics.size();
    var options = new Array();
-   options[0] = "-- choose topic --";
    for (var i=0;i<size;i++) {
       var topic = path.weblog.topics.get(i);
       if (topic.size()) {
-         options[i+1] = topic.groupname;
+         options[i] = topic.groupname;
          if (this.topic == topic.groupname)
-            var selectedIndex = i+1;
+            var selectedIndex = i;
       }
    }
-   res.write(simpleDropDownBox("topic",options,selectedIndex));
+   res.write(simpleDropDownBox("topicidx",options,selectedIndex,"-- choose topic --"));
+   res.write(param.suffix);
+}
+
+/**
+ * macro renders the name of the topic this story belongs to
+ * as link
+ */
+
+function topic_macro(param) {
+   if (!this.topic)
+      return;
+   res.write(param.prefix);
+   this.weblog.topics.get(this.topic).openLink(new Object());
+   res.write(this.topic);
+   this.closeLink();
    res.write(param.suffix);
 }
