@@ -3,10 +3,9 @@
  */
 
 function sys_title_macro(param) {
-   if (param.as == "editor") {
-      param["type"] = "text";
-      renderInputText(this.createInputParam("sys_title",param));
-   } else
+   if (param.as == "editor")
+      Html.input(this.createInputParam("sys_title", param));
+   else
       res.write(this.sys_title);
    return;
 }
@@ -16,10 +15,9 @@ function sys_title_macro(param) {
  */
 
 function sys_url_macro(param) {
-   if (param.as == "editor") {
-      param["type"] = "text";
-      renderInputText(this.createInputParam("sys_url",param));
-   } else
+   if (param.as == "editor")
+      Html.input(this.createInputParam("sys_url", param));
+   else
       res.write(this.sys_url);
    return;
 }
@@ -34,11 +32,11 @@ function sys_email_macro(param) {
       return;
    if (param.as == "editor") {
       param["type"] = "text";
-      var iParam = this.createInputParam("sys_email",param);
+      var iParam = this.createInputParam("sys_email", param);
       // use the users email if sys_email is empty
       if (!iParam.value)
          iParam.value = session.user.email;
-      renderInputText(iParam);
+      Html.input(iParam);
    } else
       res.write(this.sys_email);
    return;
@@ -53,7 +51,7 @@ function sys_allowFiles_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      renderInputCheckbox(this.createInputParam("sys_allowFiles",param));
+      Html.checkBox(this.createInputParam("sys_allowFiles", param));
    } else
       res.write(this.sys_allowFiles ? "yes" : "no");
    return;
@@ -68,8 +66,8 @@ function sys_limitNewSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = new Array("all registered users","only trusted users","---------");
-      renderDropDownBox("sys_limitNewSites",options,this.sys_limitNewSites);
+      var options = ["all registered users", "only trusted users", "---------"];
+      Html.dropDown("sys_limitNewSites", options, this.sys_limitNewSites);
    } else
       res.write(this.sys_limitNewSites);
    return;
@@ -89,7 +87,7 @@ function sys_minMemberAge_macro(param) {
          if (i < 7 || !(i%7))
             options[i] = i;
       }
-      renderDropDownBox("sys_minMemberAge",options,this.sys_minMemberAge,"----");
+      Html.dropDown("sys_minMemberAge", options, this.sys_minMemberAge, "----");
    } else
       res.write(this.sys_minMemberAge);
    return;
@@ -107,7 +105,7 @@ function sys_minMemberSince_macro(param) {
       if (this.sys_minMemberSince)
          param.value = formatTimestamp(this.sys_minMemberSince, "yyyy-MM-dd HH:mm");
       param.name = "sys_minMemberSince";
-      renderInputText(param);
+      Html.input(param);
    } else
       res.write(this.sys_minMemberSince);
    return;
@@ -129,7 +127,7 @@ function sys_waitAfterNewSite_macro(param) {
          if (i < 7 || !(i%7))
             options[i] = i;
       }
-      renderDropDownBox("sys_waitAfterNewSite",options,this.sys_waitAfterNewSite,"----");
+      Html.dropDown("sys_waitAfterNewSite", options, this.sys_waitAfterNewSite, "----");
    } else
       res.write(this.sys_waitAfterNewSite);
    return;
@@ -145,7 +143,7 @@ function sys_enableAutoCleanup_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      renderInputCheckbox(this.createInputParam("sys_enableAutoCleanup",param));
+      Html.checkBox(this.createInputParam("sys_enableAutoCleanup", param));
    } else
       res.write(this.sys_enableAutoCleanup ? "yes" : "no");
    return;
@@ -163,7 +161,7 @@ function sys_startAtHour_macro(param) {
       var options = new Array();
       for (var i=0;i<24;i++)
          options[i] = (i < 10 ? "0" + i : i);
-      renderDropDownBox("sys_startAtHour",options,this.sys_startAtHour);
+      Html.dropDown("sys_startAtHour", options, this.sys_startAtHour);
    } else
       res.write(this.sys_startAtHour);
    return;
@@ -178,7 +176,7 @@ function sys_blockPrivateSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      renderInputCheckbox(this.createInputParam("sys_blockPrivateSites",param));
+      Html.checkBox(this.createInputParam("sys_blockPrivateSites", param));
    } else
       res.write(this.sys_blockPrivateSites ? "yes" : "no");
    return;
@@ -192,9 +190,9 @@ function sys_blockWarningAfter_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (param.as == "editor") {
-      renderInputText(this.createInputParam("sys_blockWarningAfter",param));
-   } else
+   if (param.as == "editor")
+      Html.input(this.createInputParam("sys_blockWarningAfter", param));
+   else
       res.write(this.sys_blockWarningAfter);
    return;
 }
@@ -207,9 +205,9 @@ function sys_blockAfterWarning_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (param.as == "editor") {
-      renderInputText(this.createInputParam("sys_blockAfterWarning",param));
-   } else
+   if (param.as == "editor")
+      Html.input(this.createInputParam("sys_blockAfterWarning", param));
+   else
       res.write(this.sys_blockAfterWarning);
    return;
 }
@@ -223,7 +221,7 @@ function sys_deleteInactiveSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      renderInputCheckbox(this.createInputParam("sys_deleteInactiveSites",param));
+      Html.checkBox(this.createInputParam("sys_deleteInactiveSites", param));
    } else
       res.write(this.sys_deleteInactiveSites ? "yes" : "no");
    return;
@@ -237,9 +235,9 @@ function sys_deleteWarningAfter_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (param.as == "editor") {
-      renderInputText(this.createInputParam("sys_deleteWarningAfter",param));
-   } else
+   if (param.as == "editor")
+      Html.input(this.createInputParam("sys_deleteWarningAfter", param));
+   else
       res.write(this.sys_deleteWarningAfter);
    return;
 }
@@ -252,9 +250,9 @@ function sys_deleteAfterWarning_macro(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
       return;
-   if (param.as == "editor") {
-      renderInputText(this.createInputParam("sys_deleteAfterWarning",param));
-   } else
+   if (param.as == "editor")
+      Html.input(this.createInputParam("sys_deleteAfterWarning", param));
+   else
       res.write(this.sys_deleteAfterWarning);
    return;
 }
@@ -271,12 +269,23 @@ function localechooser_macro(param) {
 }
 
 /**
+ * macro rendering a dropdown containing all available locales
+ */
+
+function timezonechooser_macro(param) {
+   if (!session.user.sysadmin)
+      return;
+   renderTimeZoneChooser(this.getTimeZone());
+   return;
+}
+
+/**
  * macro renders a chooser for the longdateformat
  */
 function longdateformat_macro(param) {
    if (!session.user.sysadmin)
       return;
-   this.renderDateformatChooser("long");
+   renderDateformatChooser("longdateformat", root.getLocale(), this.longdateformat);
 }
 
 /**
@@ -285,7 +294,7 @@ function longdateformat_macro(param) {
 function shortdateformat_macro(param) {
    if (!session.user.sysadmin)
       return;
-   this.renderDateformatChooser("short");
+   renderDateformatChooser("shortdateformat", root.getLocale(), this.shortdateformat);
 }
 
 /**
@@ -298,7 +307,7 @@ function sys_frontSite_macro(param) {
       var inputParam = new Object();
       inputParam.name = "sys_frontSite";
       inputParam.value = root.sys_frontSite ? root.sys_frontSite.alias : null;
-      renderInputText(inputParam);
+      Html.input(inputParam);
    } else
       res.write (root.sys_frontSite);
    return;

@@ -49,9 +49,9 @@ function sysmgr_editlink_macro(param) {
    if (req.data.page)
       param.urlparam += "&page=" + req.data.page;
    param.anchor = this.alias;
-   openMarkupElement("a",root.manage.createLinkParam(param));
+   Html.openTag("a", root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "edit");
-   closeMarkupElement("a");
+   Html.closeTag("a");
 }
 
 /**
@@ -67,9 +67,9 @@ function sysmgr_deletelink_macro(param) {
    if (req.data.page)
       param.urlparam += "&page=" + req.data.page;
    param.anchor = this.alias;
-   openMarkupElement("a",root.manage.createLinkParam(param));
+   Html.openTag("a", root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "delete");
-   closeLink();
+   Html.closeTag("a");
 }
 
 /**
@@ -93,8 +93,8 @@ function sysmgr_trusted_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = new Array("no","yes");
-      renderDropDownBox("trusted",options,this.trusted);
+      var options = ["no", "yes"];
+      Html.dropDown("trusted", options, this.trusted);
    } else
       res.write(this.trusted ? "yes" : "no");
 }
@@ -108,8 +108,8 @@ function sysmgr_blocked_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = new Array("no","yes");
-      renderDropDownBox("blocked",options,this.blocked);
+      var options = ["no", "yes"];
+      Html.dropDown("blocked", options, this.blocked);
    } else
       res.write(this.blocked ? "yes" : "no");
 }
