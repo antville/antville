@@ -76,6 +76,9 @@ function evalRegistration(param) {
          result.error = false;
          result.username = newUser.name;
          result.password = newUser.password;
+         // if user registered within a weblog, we add this weblog to favorites
+         if (path.weblog)
+            this.addMember(newUser);
 		} else
  			result.message = "Sorry, there is already a member with this name.";
 	}
@@ -168,3 +171,140 @@ function sendPwd(email) {
    }
    return (result);
 }
+
+/**
+ * function searches for users using part of username
+ * @param String Part of username or email-address
+ * @return Obj Object containing four properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
+ *             - found (Int): number of users found
+ *             - list (String): rendered list of users found
+ */
+
+function searchUser(key) {
+   var result = new Object();
+   // initializing properties
+   result.error = false;
+   result.list = "";
+   if (!key) {
+      // no keyword to search for
+      result.message = "Please enter a part of the name or email-address!";
+      result.error = true;
+      return (result);
+   }
+	var dbConn = getDBConnection("antville");
+	var error = dbConn.getLastError();
+   if (error) {
+      result.message = error;
+      result.error = true;
+      return (result);
+   }
+   var query = "select USERNAME,EMAIL from USER ";
+   query += "where USERNAME like '%" + key + "%' order by USERNAME asc";
+	var searchResult = dbConn.executeRetrieval(query);
+	var error = dbConn.getLastError();
+   if (error) {
+      result.message = error;
+      result.error = true;
+      return (result);
+   }
+   result.found = 0;
+   while (searchResult.next() && result.found < 100) {
+      var sp = new Object();
+      sp.name = searchResult.getColumnItem("USERNAME");
+      sp.email = searchResult.getColumnItem("EMAIL");
+      result.list += this.renderSkinAsString("searchresultitem",sp);
+      result.found++;
+   }
+   dbConn.release();
+   if (result.found == 0)
+      result.message = "Couldn't find any user!";
+   else if (result.found == 1)
+      result.message = "One user found!";
+   else if (result.found == 100)
+      result.message = "More than 100 users found, displaying the first 100!";
+   else
+      result.message = result.found + " users found!";
+   return (result);
+}
+
+/**
+ * function adds a user with a given username to the list of members
+ * of this weblog
+ * @param String Name of user to add to members
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
+ */
+
+function evalNewMember(uname,creator) {
+   var result = new Object();
+   result.error = true;
+   var u = getUser(uname);
+   if (!u)
+      result.message = "Couldn't find user to add to members!";
+   else if (this.get(uname))
+      result.message = "This user is already a member of this weblog!";
+   else {
+      result.id = this.addMember(u);
+      // send a confirmation mail to the new member
+      var mail = new Mail();
+      mail.setFrom(path.weblog.email ? path.weblog.email : creator.email);
+      mail.setTo(u.email);
+      mail.setSubject("You are now a member of " + path.weblog.title + "!");
+      var skinParam = new Object();
+      skinParam.weblog = path.weblog.title;
+      skinParam.creator = creator.name;
+      skinParam.url = path.weblog.href();
+      skinParam.account = u.name;
+      mail.setText(this.renderSkinAsString("mailnewmember",skinParam));
+      mail.send();
+      result.message = "Added " + u.name + " to list of members!";
+      result.error = false;
+   }
+   return (result);
+}
+
+/**
+ * function adds a member to a weblog
+ * @param Obj User-object to add as member
+ * @param Int optional level of this new member
+ * @return Int ID of membership
+ */
+
+function addMember(usr,level) {
+   var newMember = new member();
+   newMember.weblog = this._parent;
+   newMember.user = usr;
+   newMember.username = usr.name;
+   newMember.level = level ? level : 0;
+   newMember.createtime = new Date();
+   this.add(newMember);
+   return (newMember._id);
+}
+
+/**
+ * function deletes a member
+ * @param Obj Membership-Object to delete
+ * @param Obj User-Object about to delete membership
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
+ */
+
+function deleteMember(member,usr) {
+   var result = new Object();
+   result.error = true;
+   if (!member)
+      result.message = "Please specify a membership to delete!";
+   else if (member.level == 3)
+      result.message = "Sorry, Admins cannot be deleted!";
+   else {
+      this.remove(member);
+      result.message = "Membership deleted successfully!";
+      result.error = false;
+   }
+   return (result);
+}
+
