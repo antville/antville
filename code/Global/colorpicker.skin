@@ -4,7 +4,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <title>Antville Colorpicker</title>
-<script type="text/javascript" src="/static/ colorgenerator.js"></script>
 
 <style type="text/css">
 <!--
