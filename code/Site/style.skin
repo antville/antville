@@ -210,3 +210,29 @@ li {padding-bottom: 3px;}
    margin-top: 2px;
    margin-bottom: 18px;
 }
+
+/* pagewise navigation bar */
+div.pageNav {
+   margin-top:10px;
+   height:14px;
+   font-size:11px;
+}
+div.pageNavSummary {
+   padding:2px;
+   background-color:#efefef;
+   border-bottom:1px solid #cccccc;
+   text-align:left;
+}
+div.pageNavBar {
+   padding:2px;
+   text-align:right;
+}
+span.pageNavItem {
+   padding-left:2px;
+   padding-right:2px;
+}
+span.pageNavSelItem {
+   padding-left:2px;
+   padding-right:2px;
+   font-weight:bold;
+}
