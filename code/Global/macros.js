@@ -236,6 +236,30 @@ function sitelist_macro(param) {
 
 
 /**
+ * wrapper-macro for imagelist
+ */
+function imagelist_macro(param) {
+   var site = param.of ? root.get(param.of) : path.site;
+   if (!site)
+      return;
+   site.images.imagelist_macro(param);
+   return;
+}
+
+
+/**
+ * wrapper-macro for topiclist
+ */
+function topiclist_macro(param) {
+   var site = param.of ? root.get(param.of) : path.site;
+   if (!site)
+      return;
+   site.topics.topiclist_macro(param);
+   return;
+}
+
+
+/**
  * macro checks if the current session is authenticated
  * if true it returns the username
  */
