@@ -631,7 +631,7 @@ function localechooser_macro(param) {
 
 /**
  * renders a list of most read pages, ie. a link
- * to a story followed by the read counter.
+ * to a story together with the read counter et al.
  */
 
 function listMostRead_macro() {
@@ -649,4 +649,59 @@ function listMostRead_macro() {
     str += s.renderSkinAsString("mostread", param);
   }
   return(str);
+}
+
+
+/**
+ * renders a list of referrers, ie. a link
+ * to a url together with the read counter et al.
+ */
+
+function listReferrers_macro() {
+	var str = "";
+
+	var c = getDBConnection("antville");
+	error = c.getLastError();
+	if (error)
+		return("Error establishing DB connection: " + error);
+
+	// we're doing this with direct db access here
+	// (there's no need to do it with prototypes):
+	var query = "select *, count(*) as COUNT from ACCESS where WEBLOG_ID = " + this._id + " and DATE > NOW()-1000000 and REFERRER not like \"%" + this.href() + "%\" group by REFERRER order by COUNT desc;";
+	writeln(query);
+	var rows = c.executeRetrieval(query);
+	error = c.getLastError();
+	if (error)
+		return("Error executing SQL query: " + error);
+	
+	var param = new Object();
+	while (rows.next()) {
+		param.count = rows.getColumnItem("COUNT");
+		param.referrer = rows.getColumnItem("REFERRER");
+		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
+		str += this.renderSkinAsString("referrerItem", param);
+	}
+	return(str);
+	
+	// *****************************************
+	// this is the conventional helma way
+	// (needs appropriate type mapping if used):
+	var str = "";
+	var len = this.access.size();
+	if (len > 0) {
+		for (var i=0; i<len; i++) {
+			var group = this.access.get(i);
+			var a = group.get(0);
+			var cnt = 0;
+			for (var n=0; n<root.cache.access.length; n++) {
+				var c = root.cache.access[n];
+				if (c.referrer == a.referrer)
+					cnt++;
+			}
+			var param = new Object();
+			param.count = group.size()// + cnt;
+			str += a.renderSkinAsString("main", param);
+		}
+	}
+	return(str);
 }
