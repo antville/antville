@@ -402,7 +402,6 @@ function backlinks_macro() {
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
 	var query = "select *, count(*) as COUNT from ACCESS where STORY_ID = " + this._id + " and REFERRER not like \"" + this.weblog.href() + "%\" group by REFERRER order by COUNT desc, REFERRER asc;";                                
-	writeln(query);
 	var rows = c.executeRetrieval(query);
 	error = c.getLastError();
 	if (error)
