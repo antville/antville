@@ -70,9 +70,11 @@ create table STORY (
    TITLE mediumtext,
    TEXT mediumtext,
    ISONLINE tinyint(1),
+   EDITABLEBY tinyint(1),
    AUTHOR mediumint(9),
    CREATETIME datetime,
    MODIFYTIME datetime,
+   MODIFIER mediumint(9),
    unique ID (ID));
 
 #----------------------------
@@ -145,8 +147,7 @@ create table MEMBER (
    WEBLOG_ID mediumint(9),
    USER_ID mediumint(9),
    USERNAME tinytext,
-   ISADMIN tinyint(1),
-   ISCONTRIBUTOR tinyint(1),
+   LEVEL tinyint(1),
    CREATETIME datetime,
    MODIFIER mediumint(9),
    MODIFYTIME datetime,
