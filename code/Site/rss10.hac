@@ -24,8 +24,9 @@ if (max > 0 && this.online) {
       param1.subject = story.topic ? encodeXml(story.topic) : "";
       param1.date = story.modifytime.format(w3fmt);
       var skin = createSkin(story.getContentPart("text"));
-      # var str = renderTextPreviewAsString(this.renderSkinAsString(skin), 250, "...");
+      var str = this.renderSkinAsString(skin);
       str = this.rssConvertHtmlImageToHtmlLink(str);
+      // str = renderTextPreviewAsString(str, 250, "...");
       param1.itemDescription = encodeXml(str);
       param2.items += renderSkinAsString("rss10Item", param1);
       param2.resources += renderSkinAsString("rss10Resource", param1);
