@@ -178,3 +178,17 @@ function ping() {
    this.lastping = new Date();
    return(result);
 }
+
+
+/**
+ *  href URL postprocessor. If a virtual host mapping is defined
+ *  for this site's alias, use it. Otherwise, use normal site URL.
+ */
+function processHref(href) {
+   var vhost = getProperty("vhost."+this.alias);
+   if (vhost)
+      return vhost+href;
+   else
+      return "/"+this.alias+href;
+}
+
