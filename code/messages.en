@@ -228,7 +228,7 @@ skinset.site.various = Various other skins
 skinset.story = Stories|All skins that are used to display stories in different contexts.
 skinset.story.basic = Basic Layout|The skins used for rendering the preview and the full display of stories.
 skinset.story.backlinks = Backlinks|All skins used for rendering the backlinks pointing to a story.
-skinset.story.editor = Story Editor|The form for editing a story.
+skinset.story.editor = Story editor|The form for editing a story.
 skinset.story.list = Story pool|The skins used to display the "stories" section of the site.
 
 skinset.comment = Comments|Skins used to display comments and the form for entering a new or editing an existing comment.
@@ -278,12 +278,12 @@ skin.sysmgr.usersearchform = User search form|The form for searching users in th
 skin.sysmgr.status = Status|Displays the system status information.
 
 ## layout
-skin.layout.main = Overview|Displays a preview of a layout including links to the available options.
+skin.layout.main = Layout overview|Displays a preview of a layout including links to the available options.
 skin.layout.download = Download page|Whenever a user wants to download a layout this skin will be rendered.
 skin.layout.chooserlistitem = Chooserlist item|This skin is used to display a layout in the chooser list (that is rendered after the user clicked on 'choose a new layout').
 skin.layout.testdrive = Testdrive message|Display the name of the layout that is currently tested (and a link to terminate the test). This skin will be shown in the message area of the page.
 skin.layout.mgrlistitem = List item|This skin is used to display a single layout in the list of existing layouts.
-skin.layout.edit = Editor|This is the form for editing a layout.
+skin.layout.edit = Layout editor|This is the form for editing a layout.
 
 ## imagemgr
 skin.imagemgr.main = Image list|Displays the list of images in the "images" section of a site.
@@ -294,13 +294,13 @@ skin.topic.main = Main topic page|The skin for customizing the look of topic pag
 skin.topic.imagetopic = Main gallery page|The skin that is used to display an image gallery.
 
 ## file
-skin.file.main = Display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
+skin.file.main = File display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
 skin.file.mgrlistitem = File list item|Displays a file in the "files" section of a site.
-skin.file.edit = Editor|The form for editing an existing file.
+skin.file.edit = File editor|The form for editing an existing file.
 
 ## choice
 skin.choice.main = Display|The form part for a single choice of a poll.
-skin.choice.result = Result|This skin defines the way a single choice result of a poll will be displayed.
+skin.choice.result = Choice result|This skin defines the way a single choice result of a poll will be displayed.
 skin.choice.graph = Graph bar|The bar for visualizing the percentage of votes for a choice.
 skin.choice.edit = Choice editor|This is the form element for editing a single choice of a poll (used whenever a user is editing a poll).
 
@@ -324,7 +324,7 @@ skin.story.rssItem = RSS item|This skin is used to display a story in the RSS fe
 skin.story.historyview = "recently modified" item|This skin defines how both stories and comments appear in the list of recently modified items.
 skin.story.main = Full story view|This skin is used to display a story in the way you defined it in the "display" skin plus its comments.
 skin.story.embed = Embedded story view|This skin will be used to display a story when you embed it in a skin using the macro.
-skin.story.preview = Preview|This skin is used to display a story on a front page (i.e. either the front page of your site or the front page of a single day).
+skin.story.preview = Story preview|This skin is used to display a story on a front page (i.e. either the front page of your site or the front page of a single day).
 skin.story.backlinks = List of Backlinks|This skin is used whenever there are referrers pointing to a story.
 skin.story.mostread = "Mostread" display|Displays a single story in the list of "most read" stories of a site.
 skin.story.backlinkItem = Backlink|This skin is used to display a single backlink in the list of backlinks of a story.
@@ -332,7 +332,7 @@ skin.story.backlinkItem = Backlink|This skin is used to display a single backlin
 ## comment
 skin.comment.reply = Reply|This skin defines how replies to comments are displayed.
 skin.comment.toplevel = Toplevel comment|Defines the layout of top-level comments to a story.
-skin.comment.edit = Editor|This skin contains the form for adding a top-level comment or reply.
+skin.comment.edit = Comment editor|This skin contains the form for adding a top-level comment or reply.
 
 ## hopobject
 skin.hopobject.delete = Delete confirmation|Displays a confirmation page whenever a user wants to delete something.
@@ -356,7 +356,7 @@ skin.layoutimagemgr.navigation = Additional navigation|This skin contains additi
 ## image
 skin.image.main = Display in image list|This skin is used to display an image with its name and description in the "images" section of the site.
 skin.image.mgrlistitem = Image list item|The way an image is displayed in the "images" section of a site (and in the list of images of a layout).
-skin.image.edit = Editor|The form for editing an already uploaded image.
+skin.image.edit = Image editor|The form for editing an already uploaded image.
 
 ## filemgr
 skin.filemgr.main = File list|This skin contains the list of available files in the "files" section of the site.
@@ -366,7 +366,7 @@ skin.filemgr.new = New file|The form for uploading a new file.
 skin.syslog.sysmgr_listitem = Log entry|Displays a single log entry in the log manager.
 
 ## layoutimage
-skin.layoutimage.edit = Editor|The form for editing an existing layout image.
+skin.layoutimage.edit = Layout image editor|The form for editing an existing layout image.
 
 ## poll
 skin.poll.main = Main display|This skin shows a poll as form for voting.
@@ -406,8 +406,8 @@ skin.membermgr.mailpassword = "Password forgotten" mail|This is the mail that is
 skin.membermgr.mailregconfirm = Registration confirmation|This is the confirmation mail that is sent to a user after registration.
 skin.membermgr.sendpwd = "Password forgotten?" form|This skin contains the form for entering the email address in the "password forgotten?" feature.
 skin.membermgr.statusloggedout = Logged out user|If the user visiting your site is not logged in, this skin will be displayed wherever you place the macro .
-skin.membermgr.memberlist = List of members|This skin contains the list of site members.
-skin.membermgr.main = Search users|This is the form for searching for users in the members secion of a site.
+skin.membermgr.main = List of members|This skin contains the list of site members (either all of them or by role).
+skin.membermgr.new = Add a new member|This is the form for searching for users in the members secion of a site and adding them to the site members.
 skin.membermgr.statusloggedin = Logged in user|If the user visiting your site is logged in, this skin will be displayed wherever you place the macro .
 skin.membermgr.mailnewmember = Membership confirmation|This is the mail message that is sent to a new member of a site.
 skin.membermgr.searchresultitem = User searchresult item|This skin is used to display a single user in the list of searchresults in a site's "members" section.
