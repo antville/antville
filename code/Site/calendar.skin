@@ -2,15 +2,6 @@
 <tr>
 <td colspan="7" align="center" class="calendarheader" nowrap><% param.month %>&nbsp;<% param.year %></td>
 </tr>
-<tr>
-<td class="calendarday" nowrap>mo</td>
-<td class="calendarday" nowrap>tu</td>
-<td class="calendarday" nowrap>we</td>
-<td class="calendarday" nowrap>th</td>
-<td class="calendarday" nowrap>fr</td>
-<td class="calendarday" nowrap>sa</td>
-<td class="calendarday" nowrap>su</td>
-</tr>
 <% param.calendar %>
 <tr>
 <td colspan="3" align="right" class="calendarfooter" nowrap><% param.back %></td>
