@@ -16,7 +16,7 @@ function title_macro(param) {
          res.write(this.title);
       else {
          // no title, so we show the first words of the story-text as link
-         renderTextPreview(this.text,20);
+         renderTextPreview(this.getText(),20);
       }
       this.closeLink();
    } else
@@ -33,13 +33,10 @@ function text_macro(param) {
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
-      var s = createSkin(format(activateLinks(this.text)));
-      // allow macros for text
-      this.allowTextMacros(s);
       if (!param.limit)
-         this.renderSkin(s);
+         res.write(this.getText());
       else
-         renderTextPreview(this.renderSkinAsString(s),param.limit);
+         renderTextPreview(this.getText(),param.limit);
    }
    res.write(param.suffix);
 }
@@ -135,7 +132,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied()) {
+   if (!this.isEditDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "edit";
@@ -155,7 +152,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied()) {
+   if (!this.isDeleteDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "delete";
@@ -175,7 +172,7 @@ function deletelink_macro(param) {
  */
 
 function onlinelink_macro(param) {
-   if (!this.isEditDenied()) {
+   if (!this.isEditDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "edit";
@@ -195,7 +192,7 @@ function onlinelink_macro(param) {
  */
 
 function viewlink_macro(param) {
-   if (this.isViewDenied())
+   if (this.isViewDenied(user))
       return;
    res.write(param.prefix);
    var linkParam = new Object();
@@ -228,23 +225,23 @@ function commentlink_macro(param) {
  * options: text to use when no comment
  *          text to use when one comment
  *          text to use when more than one comment
+ *          action to link to (default: main)
  */
 
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
       res.write(param.prefix);
       var linkParam = new Object();
-      linkParam.linkto = "main";
+      linkParam.linkto = (param.linkto ? param.linkto : "main");
       if (this.allcomments.count() == 0) {
          res.write(this.allcomments.count() + " " + (param.no ? param.no : " comments"));
-      } else if (this.allcomments.count() == 1) {
+      } else {
          this.openLink(linkParam);
-         res.write(this.allcomments.count() + " " + (param.one ? param.one : " comments"));
-         this.closeLink(linkParam);
-      } else if (this.allcomments.count() > 1) {
-         this.openLink(linkParam);
-         res.write(this.allcomments.count() + " " + (param.more ? param.more : " comments"));
-         this.closeLink(linkParam);
+         if (this.allcomments.count() == 1)
+            res.write(this.allcomments.count() + " " + (param.one ? param.one : " comments"));
+         else if (this.allcomments.count() > 1)
+            res.write(this.allcomments.count() + " " + (param.more ? param.more : " comments"));
+         this.closeLink();
       }
       res.write(param.suffix);
    }
