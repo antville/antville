@@ -18,7 +18,7 @@ function renderPollList(idx,show) {
       var st = this.get(idx);
       if (show == "open" && st.closed)
          render = false;
-      else if (show == "mypolls" && st.creator != user)
+      else if (show == "mypolls" && st.creator != session.user)
          render = false;
       if (render) {
          var sp = new Object();
