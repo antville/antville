@@ -18,7 +18,7 @@ function newPost (appkey, blogid, username, password, content, publish) {
     s.editableby = 3;
     blog.add (s);
     blog.lastupdate = s.createtime;
-    return s.__id__;
+    return s._id;
 }
 
 /** 
