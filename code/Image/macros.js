@@ -80,7 +80,7 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is author of this story
+ * if user is author of this image
  */
 
 function deletelink_macro(param) {
