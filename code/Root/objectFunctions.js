@@ -51,16 +51,16 @@ function createNewSite(title,alias,creator) {
    newSite.bgcolor = "#ffffff";
    newSite.textfont = "Verdana, Helvetica, Arial, sans-serif";
    newSite.textsize = "13px";
-   newSite.textcolor = "#000000";
-   newSite.linkcolor = "#ff3300";
-   newSite.alinkcolor = "#ff0000";
-   newSite.vlinkcolor = "#ff3300";
+   newSite.textcolor = "000000";
+   newSite.linkcolor = "ff3300";
+   newSite.alinkcolor = "ff0000";
+   newSite.vlinkcolor = "ff3300";
    newSite.titlefont = "Verdana, Helvetica, Arial, sans-serif";
    newSite.titlesize = "15px";
-   newSite.titlecolor = "#cc0000";
+   newSite.titlecolor = "cc0000";
    newSite.smallfont = "Arial, Helvetica, sans-serif";
    newSite.smallsize = "12px";
-   newSite.smallcolor = "#999999";
+   newSite.smallcolor = "999999";
    newSite.days = 3;
    // retrieve locale-object from root (either specified or default-locale from JVM)
    var loc = this.getLocale();

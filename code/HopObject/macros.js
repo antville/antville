@@ -28,10 +28,10 @@ function loopskin_macro (param) {
  * macro creates an html link
  */
 function link_macro(param) {
-	if (param.checkdeny == "true") {
-		if (this.isDenied(session.user))
-			return("");
-	}
+   if (param.checkdeny == "true") {
+      if (this.isDenied(session.user))
+         return("");
+   }
   var content = param.text ? param.text : param.to;
   param = this.createLinkParam(param);
   openMarkupElement("a", param);
@@ -75,8 +75,8 @@ function colorpicker_macro(param) {
    }
    if (!param.text)
       param.text = param.name;
-   if (param.color && param.color.indexOf("#") < 0)
-         param.color = "#" + param.color;
+   if (param.color)
+   	param.color = renderColorAsString(param.color);
    this.renderSkin("cp_element", param);
 }
 
