@@ -1,3 +1,5 @@
 use antville;
 alter table WEBLOG drop column USERMAYSIGNUP;
-update MEMBER set LEVEL = 3 where LEVEL = 2;
+alter table MEMBER change column LEVEL LEVEL mediumint(10) null;
+update MEMBER set LEVEL = 131071 where LEVEL = 2;
+update MEMBER set LEVEL = 9361 where LEVEL = 1;
