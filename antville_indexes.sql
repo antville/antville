@@ -5,6 +5,7 @@ use antville;
 #-----------------------------
 
 create index IDX_WEBLOG_ID on ACCESS (WEBLOG_ID);
+create index IDX_STORY_ID on ACCESS (STORY_ID);
 create index IDX_DATE on ACCESS (DATE);
 create index IDX_REFERRER on ACCESS (REFERRER(30));
 
