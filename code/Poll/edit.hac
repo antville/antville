@@ -47,18 +47,17 @@ else {
 if (req.data.submit == "add choice")
 	max++;
 
+var c = new choice();
 res.data.choices = "";
 for (var i=0; i<max; i++) {
 	var param = new Object();
 	param.value = (i < len) ? choices[i] : "";
 	param.count = i+1;
- 	res.data.choices += this.renderSkinAsString("choiceInput", param);
+ 	res.data.choices += c.renderSkinAsString("edit", param);
 }
 
 res.skin = "weblog.page";
 
 res.data.command = "Edit";
-res.data.action = this.href("edit");
 res.data.title = "Antville - " + path.weblog.title;
-
 res.data.body = this.renderSkinAsString("edit");
