@@ -7,9 +7,9 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<script type="text/javascript" src="<% site.url %>javascript"></script>
-<script type="text/javascript" src="<% root.url %>safescripts"></script>
 <link rel="alternate" type="text/xml" title="XML" href="<% site.url %>rss10" />
+<script type="text/javascript" src="<% root.url %>safescripts"></script>
+<script type="text/javascript" src="<% site.url %>javascript"></script>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>stylesheet" />
 </head>
 
@@ -30,7 +30,7 @@
 <br /><% response.body %></td>
 
 <td width="60" nowrap="nowrap">&nbsp;</td>
-<td width="2" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
+<td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
 <% site.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% site.lastupdate prefix="last updated:&nbsp;" format="short%></div>
 

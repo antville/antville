@@ -1,5 +1,5 @@
 <tr>
-<td colspan="4" height="1" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><a name="<% site.alias %>"></a><% image name="/pixel" height="1" %></td>
+<td colspan="4" height="1" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><a name="<% site.alias %>"></a><% image name="/pixel" height="1" %></td>
 </tr>
 <tr>
 <td colspan="4" nowrap="nowrap"><% site.sysmgr_statusflags %></td>

@@ -25,7 +25,7 @@ a:hover {
    font-size: 20pt;
    font-weight: bold;
    vertical-align: middle;
-   background-image: url("<% imageurl name="/webloghead" %>");
+   background-image: url("<% image as="url" name="/webloghead" %>");
    background-color: transparent;
    color: #ff3300;
 }
@@ -70,10 +70,10 @@ a:hover {
 .sep {
    height: 1px;
    width: 198px;
-   background-image: url("<% imageurl name="/dot" %>");
+   background-image: url("<% image as="url" name="/dot" %>");
 }
 
-ul {list-style: url("<% imageurl name="/bullet" %>") circle;}
+ul {list-style: url("<% image as="url" name="/bullet" %>") circle;}
 
 li {padding-bottom: 3px;}
 

@@ -3,6 +3,6 @@
 <td nowrap="nowrap">...&nbsp;<a href="<% param.url %>"><% param.text %></a></td>
 </tr>
 <tr>
-<td width="2" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
+<td width="2" style="background-image: url(<% image as="url" name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 </tr>
 </table>
