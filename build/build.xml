@@ -15,7 +15,7 @@
       <echo message=" available targets are:"/>
       <echo/>
       <echo message=" antville   - generates the distribution packages"/>
-      <!-- echo message=" antclick   - generates the antclick packages"/ -->
+      <echo message=" antclick   - generates the antclick packages"/>
       <!-- echo message=" docs       - generates the API helmaDocs"/ -->
       <echo/>
       <echo message=" usage      - provides help on using the build tool (default)"/>
@@ -31,15 +31,20 @@
    <!-- initialize some variables                                           -->
    <!-- =================================================================== -->
    <target name="init">
-      <property name="Name" value="Antville"/>
+      <property name="name" value="Antville"/>
       <property name="year" value="2001-${year}"/>
       <property name="version" value="1.1"/>
-      <property name="project" value="antville"/>
+      <property name="project" value="antville-temp"/>
       <property name="build.compiler" value="classic"/>
 
-      <property name="cvs.apps.root" value=":pserver:anonymous@adele.helma.at:/opt/cvs/apps"/>
+      <property name="cvs.antville.root" 
+         value=":pserver:anonymous@194.232.104.95:/opt/cvs/apps"/>
       <property name="cvs.antville.tag" value="HEAD"/>
-      <property name="cvs.hop.root" value=":pserver:anonymous@adele.helma.at:/opt/cvs/hop"/>
+      <property name="cvs.manage.root" 
+         value=":pserver:anonymous@194.232.104.95:/opt/cvs/apps"/>
+      <property name="cvs.manage.tag" value="HEAD"/>
+      <property name="cvs.hop.root" 
+         value=":pserver:anonymous@194.232.104.95:/opt/cvs/hop"/>
       <property name="cvs.hop.tag" value="HEAD"/>
 
       <property name="home.dir" value=".."/>
@@ -50,9 +55,8 @@
 
       <property name="build.work" value="${build.dir}/work"/>
       <property name="build.dist" value="${build.dir}/dist"/>
-      <property name="build.extra" value="${build.dir}/extras"/>
+      <property name="build.extra" value="${build.dir}/extra"/>
 
-      <property name="jar.name" value="${project}"/>
       <property name="package.name" value="${project}-${version}"/>
       <property name="antclick.name" value="antclick-${version}"/>
 
@@ -65,6 +69,9 @@
       <filter token="year" value="${year}"/>
       <filter token="version" value="${version}"/>
       <filter token="date" value="${TODAY}"/>
+
+      <cvspass cvsroot="${cvs.apps.root}" password=""/>
+      <cvspass cvsroot="${cvs.hop.root}" password=""/>
    </target>
 
 
@@ -73,7 +80,11 @@
    <!-- =================================================================== -->
    <target name="antville" depends="init">
       <mkdir dir="${build.work}"/>
-      <!-- cvs cvsRoot="${cvs.apps.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}"/ -->
+      <cvs cvsRoot="${cvs.antville.root}" 
+         command="export" 
+         tag="${cvs.antville.tag}" 
+         package="${package}" 
+         dest="${build.work}"/>
       <antcall target="package-zip">
          <param name="filename" value="${package.name}"/>
          <param name="path" value="${build.work}/antville"/>
@@ -86,35 +97,99 @@
    </target>
 
 
+<target name="test" depends="init">
+   <mkdir dir="${build.work}/apps"/>
+   <cvs cvsRoot="${cvs.antville.root}" 
+      command="export" 
+      tag="${cvs.antville.tag}" 
+      package="${package}" 
+      dest="${build.work}/apps"/>
+</target>
+
+
    <!-- =================================================================== -->
    <!-- generate the antclick distribution packages                         -->
    <!-- =================================================================== -->
    <target name="antclick" depends="init">
       <mkdir dir="${build.work}"/>
       <copy todir="${build.work}/">
-         <fileset dir="${build.extra}" includes="antclick.sh antclick.bat launcher.jar server.properties"/>
+         <fileset dir="${build.extra}" 
+            includes="antclick.sh antclick.bat apps.properties 
+                      launcher.jar server.properties"/>
       </copy>
 
       <mkdir dir="${build.work}/apps"/>
-      <cvs cvsRoot="${cvs.apps.root}" command="export" tag="${cvs.antville.tag}" package="antville" dest="${build.work}/apps"/>
-      <cvs cvsRoot="${cvs.apps.root}" command="export" tag="HEAD" package="manage" dest="${build.work}/apps"/>
-      <copy file="${build.extra}/db.properties" tofile="${build.work}/apps/antville/db.properties"/>
+      <cvs cvsRoot="${cvs.antville.root}" 
+         command="export" 
+         tag="${cvs.antville.tag}" 
+         package="${project}" 
+         dest="${build.work}/apps"/>
+      <cvs cvsRoot="${cvs.manage.root}" 
+         command="export" 
+         tag="${cvs.manage.tag}" 
+         package="manage" 
+         dest="${build.work}/apps"/>
+      <copy file="${build.extra}/db.properties" 
+         tofile="${build.work}/apps/${project}/db.properties"/>
 
-      <cvs cvsRoot="${cvs.hop.root}" command="export" tag="${cvs.hop.tag}" package="helma/lib" dest="${build.work}/lib"/>
+      <cvs cvsRoot="${cvs.hop.root}" 
+         command="export" 
+         tag="${cvs.hop.tag}" 
+         package="helma/lib" 
+         dest="${build.work}"/>
+
+      <copy todir="${build.work}/lib">
+         <fileset dir="${build.work}/helma/lib" includes="*.jar"/>
+      </copy>
       <copy file="${build.extra}/helma.jar" todir="${build.work}/lib"/>
       <copy file="${build.extra}/mckoidb.jar" todir="${build.work}/lib/ext"/>
+      <delete dir="${build.work}/helma"/>
 
-      <antcall target="package-zip">
-         <param name="filename" value="${package.name}"/>
-         <param name="path" value="${build.work}/antville"/>
+      <!-- antcall target="package-zip">
+         <param name="filename" value="${antclick.name}"/>
+         <param name="path" value="${build.work}"/>
       </antcall>
       <antcall target="package-tgz">
-         <param name="filename" value="${package.name}"/>
-         <param name="path" value="${build.work}/antville"/>
-      </antcall>
+         <param name="filename" value="${antclick.name}"/>
+         <param name="path" value="${build.work}"/>
+      </antcall -->
+
       <!-- delete dir="${build.work}"/ -->
    </target>
 
+
+   <!-- =================================================================== -->
+   <!-- Packages the work directory with TAR-GZIP                           -->
+   <!-- needs parameter ${filename} for final dist-file                     -->
+   <!-- =================================================================== -->
+   <target name="package-tgz" depends="init">
+      <mkdir dir="${build.dist}" />
+      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin" />
+      <tar tarfile="${build.dist}/${filename}.tar" basedir="${path}" excludes="**">
+         <tarfileset prefix="${filename}" dir="${path}" mode="755">
+            <include name="hop.sh"/>
+         </tarfileset>
+         <tarfileset prefix="${filename}" dir="${path}">
+            <include name="**"/>
+            <exclude name="hop.sh"/>
+         </tarfileset>
+      </tar>
+      <gzip zipfile="${build.dist}/${filename}.tgz" src="${build.dist}/${filename}.tar"/>
+      <delete file="${build.dist}/${filename}.tar"/>
+   </target>
+
+
+   <!-- =================================================================== -->
+   <!-- Packages the work directory with ZIP                                -->
+   <!-- needs parameter ${filename} for final dist-file                     -->
+   <!-- =================================================================== -->
+   <target name="package-zip" depends="init">
+      <mkdir dir="${build.dist}" />
+      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, **/*.hac, **/*.js, **/*.skin, **/*.xml" />
+      <zip zipfile="${build.dist}/${filename}.zip">
+         <zipfileset dir="${path}" prefix="${filename}" includes="**" />
+      </zip>
+   </target>
 
 <!-- ************************************************************************* -->
 
@@ -160,8 +235,8 @@
          author="false"
          private="false"
          version="false"
-         windowtitle="${Name} ${version} API"
-         doctitle="${Name} ${version} API"
+         windowtitle="${name} ${version} API"
+         doctitle="${name} ${version} API"
          bottom="Copyright &#169; ${year} Helma.org. All Rights Reserved."
          classpathref="build.class.path"
       />
