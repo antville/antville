@@ -1,9 +1,26 @@
+/**
+ * function returns true if a poll is online
+ * otherwise false.
+ * @return Boolean
+ */
+
 function isOnline() {
    if (parseInt(this.online,10))
       return true;
    return false;
 }
 
+
+/**
+ * check if poll is ok. if true, save modified poll
+ * @param Object the req.data object coming in from the action
+ * @param Object the user as creator of the poll modifications
+ * @return Object containing the properties
+ *                - error (boolean): true if error occured, false otherwise
+ *                - message (String): an error or a confirmation message
+ *                - url (String): the URL string of the poll
+ *                - id (Number): the internal Hop ID of the poll
+ */
 
 function evalPoll(param, creator) {
    var result;
@@ -50,6 +67,16 @@ function evalPoll(param, creator) {
 }
 
 
+/**
+ * check if a vote is ok. if true, save modified vote
+ * @param Object the req.data object coming in from the action
+ * @param Object the user as creator of the poll modifications
+ * @return Object containing the properties
+ *                - error (boolean): true if error occured, false otherwise
+ *                - message (String): an error or a confirmation message
+ *                - url (String): the URL string of the poll
+ */
+
 function evalVote(param, usr) {
 	var result;
 	if (param.choice) {
@@ -76,6 +103,13 @@ function evalVote(param, usr) {
 	return(result);
 }
 
+
+/**
+ * helper function to calculate vote percentages
+ * FIXME this function needs universalisation
+ * @param Object created in results_macro()
+ * @return Float result in percent
+ */
 
 function calcPercent(param) {
 	var sum = this.votes.size();

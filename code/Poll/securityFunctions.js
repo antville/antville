@@ -11,6 +11,12 @@ function isViewDenied(usr) {
 }
 
 
+/**
+ * check if user is allowed to vote in a poll
+ * @param Obj Userobject
+ * @return String Reason for denial (or null if allowed)
+ */
+
 function isVoteDenied(usr) {
    if (this.site.isNotPublic(usr))
       return (getMsg("error","siteNotPublic"));
@@ -22,6 +28,12 @@ function isVoteDenied(usr) {
 }
 
 
+/**
+ * check if user is allowed to create a poll
+ * @param Obj Userobject
+ * @return String Reason for denial (or null if allowed)
+ */
+
 function isPostDenied(usr) {
    if (!this.site.isOnline() && !this.site.isUserMember(usr))
       return (getMsg("error","siteNotPublic"));
@@ -30,6 +42,12 @@ function isPostDenied(usr) {
    return null;
 }
 
+
+/**
+ * check if user is allowed to edit a poll
+ * @param Obj Userobject
+ * @return String Reason for denial (or null if allowed)
+ */
 
 function isEditDenied(usr) {
 	 if (this.votes.size() > 0)
@@ -46,6 +64,12 @@ function isEditDenied(usr) {
    return null;
 }
 
+
+/**
+ * check if user is allowed to delete a poll
+ * @param Obj Userobject
+ * @return String Reason for denial (or null if allowed)
+ */
 
 function isDeleteDenied(usr) {
    if (this.creator != usr) {

@@ -1,5 +1,5 @@
 /**
- * macro writes storylist to response-object
+ * macro writes list of polls to response-object
  * kept for backwards-compatibility only
  */
 

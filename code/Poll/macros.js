@@ -1,3 +1,8 @@
+/**
+ * macro renders the title of a poll
+ * (either as text, link or editor)
+ */
+
 function title_macro(param) {
    if (!this.title && !param.as)
       return;
@@ -20,6 +25,11 @@ function title_macro(param) {
 }
 
 
+/**
+ * macro renders a poll's question
+ * (either as text or editor)
+ */
+
 function question_macro(param) {
    if (param.as == "editor") {
       var param2 = this.createInputParam("question", param);
@@ -33,6 +43,11 @@ function question_macro(param) {
       res.write(this.question);
 }
 
+
+/**
+ * macro renders one choice of a poll
+ * (either as text or as editor)
+ */
 
 function choices_macro(param) {
    if (param.as == "editor") {
@@ -69,6 +84,10 @@ function choices_macro(param) {
 }
 
 
+/**
+ * macro renders results of a poll as bar chart
+ */
+
 function results_macro(param2) {
    var str = "";
    for (var i=0; i<this.size(); i++) {
@@ -81,7 +100,6 @@ function results_macro(param2) {
          param.percent = this.calcPercent(param);
          param.width = Math.round(param.percent * 2.5);
          param.graph = c.renderSkinAsString("graph", param);
-         param.text = " sucker";
          if (param.count == 1)
             param.text = " " + (param2.one ? param2.one : "vote");
          else
@@ -94,6 +112,10 @@ function results_macro(param2) {
    return(str);
 }
 
+
+/**
+ * macro renders totals of a poll
+ */
 
 function total_macro(param) {
    var n = this.votes.size();
@@ -110,6 +132,11 @@ function total_macro(param) {
 }
 
 
+/**
+ * macro renders creator of a poll
+ * (either as link or as text)
+ */
+
 function creator_macro(param) {
    if (!this.creator)
       return;
@@ -122,12 +149,20 @@ function creator_macro(param) {
 }
 
 
+/**
+ * macro renders the time a poll was modified
+ */
+
 function modifytime_macro(param) {
    if (this.modifytime) {
       res.write(formatTimestamp(this.modifytime,param.format));
    }
 }
 
+
+/**
+ * macro renders a link to the poll editor
+ */
 
 function editlink_macro(param) {
    if (!this.isEditDenied(session.user)) {
@@ -139,8 +174,8 @@ function editlink_macro(param) {
 
 
 /**
- * macro rendering a link to delete
- * if user is creator of this poll
+ * macro rendering a link to delete a poll
+ * (only if the user also is the creator)
  */
 
 function deletelink_macro(param) {
@@ -173,6 +208,10 @@ function viewlink_macro(param) {
 }
 
 
+/**
+ * macro renders a link as switch to close/re-open a poll
+ */
+
 function closelink_macro(param) {
    if (!this.isDeleteDenied(session.user)) {
       var str = this.closed ? "re-open" : "close";
@@ -183,12 +222,20 @@ function closelink_macro(param) {
 }
 
 
+/**
+ * macro renders the state (open/closed) of a poll
+ */
+
 function state_macro(param) {
    if (this.closed) {
       return(param.text + formatTimestamp(this.modifytime, param.format));
    }
 }
 
+
+/**
+ * macro renders some details about the poll
+ */
 
 function info_macro(param) {
    if (this.creator)

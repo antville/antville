@@ -1,3 +1,15 @@
+/**
+ * function renders the list of polls and assigns
+ * the rendered list to res.data.storylist
+ * scrollnavigation-links to previous and next page(s) are also
+ * assigned to res.data (res.data.prevpage, res.data.nextpage)
+ * using this separate renderFunction instead of doing the stuff
+ * in storylist_macro() was necessary for completely independent
+ * placement of the prevpage- and nextpage-links
+ * @param Int Index-position to start with
+ * @param String String indicating what kind of polls to show
+ */
+
 function renderPollList(idx,show) {
    var size = this.size();
    if (isNaN (idx)|| idx > size-1)
