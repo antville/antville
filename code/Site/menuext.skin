@@ -1,0 +1,10 @@
+<script language="javascript" defer="defer">
+   var parentwin = external.menuArguments;
+   var doc = parentwin.document;
+   var sel = doc.selection;
+   var rng = sel.createRange();
+   var str = new String(rng.text);
+   var url = "http://project.antville.org/stories/create?content_text=";
+   var link = escape('<a href="' + doc.location.href + '">' + doc.title + "</a>: ");
+   doc.location.href = url + link + str;
+</script>

@@ -1,0 +1,4 @@
+REGEDIT4
+[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
+@="<% site.url %>menuext"
+"contexts"=hex:31

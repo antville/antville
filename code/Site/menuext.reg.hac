@@ -1,0 +1,3 @@
+res.contentType = "text/plain";
+this.renderSkin("menuext.reg");
+return;
