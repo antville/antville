@@ -63,14 +63,16 @@ function deletelink_macro(param) {
 }
 
 /**
- * macro renders a preview of this image
+ * macro renders the image-tag
  */
 
 function show_macro(param) {
    renderPrefix(param);
-   res.write("<IMG SRC=\"" + getProperty("imgUrl") + this.weblog.alias + "/" + this.filename + "." + this.fileext + "\"");
-   res.write(" WIDTH=\"" + (param && param.as == "preview" ? Math.round(this.width / 2) : this.width) + "\"");
-   res.write(" HEIGHT=\"" + (param && param.as == "preview" ? Math.round(this.height / 2) : this.height) + "\"");
-   res.write(" BORDER=\"0\">");
+   if (param.linkto) {
+      this.openLink(param);
+      this.weblog.renderImage(this,param);
+      this.closeLink(param);
+   } else
+      this.weblog.renderImage(this,param);
    renderSuffix(param);
 }
