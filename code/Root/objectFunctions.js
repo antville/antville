@@ -66,7 +66,7 @@ function createNewWeblog(newLog) {
    newLog.createImgDirectory()
    this.add(newLog);
    // create member-object for connecting user <-> weblog with admin-rights
-   newLog.createMember("admin");
+   newLog.createMember(2);
    res.message = "Your weblog was created successfully! Have fun!";
    res.redirect(newLog.href());
 }

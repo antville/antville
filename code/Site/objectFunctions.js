@@ -195,8 +195,12 @@ function createMember(userLvl) {
    newMember.weblog = this;
    newMember.user = user;
    newMember.username = user.name;
-   // we start with a default level of "normal user"
-   newMember.level = 0;
+   if (userLvl)
+      newMember.level = userLvl;
+   else {
+      // we start with a default level of "normal user"
+      newMember.level = 0;
+   }
    newMember.createtime = new Date();
    this.members.add(newMember);
    return;
