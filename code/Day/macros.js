@@ -13,9 +13,9 @@ function storylist_macro(param) {
  *  Overwrite link macro to use groupname. No fancy options.
  */
 function link_macro () {
-   res.write ("<a href=\"");
-   res.write (this.href());
-   res.write ("\">");
-   res.write (this.groupname);
-   res.write ("</a>");
+   var attr = new Object();
+   attr.href = this.href();
+   openMarkupElement("a", attr);
+   res.write(this.groupname);
+   closeMarkupElement("a");
 }

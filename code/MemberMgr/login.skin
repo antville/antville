@@ -1,27 +1,27 @@
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap><form method="post" action="<% response.action %>">Username:</td>
-<td nowrap><% this.input type="text" name="name" width="15" %></td>
+<td class="small" nowrap="nowrap"><form method="post" action="<% response.action %>">Username:</td>
+<td nowrap="nowrap"><% this.input type="text" name="name" width="15" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>Password:</td>
-<td nowrap><% this.input type="password" name="password" width="15" %></td>
+<td class="small" nowrap="nowrap">Password:</td>
+<td nowrap="nowrap"><% this.input type="password" name="password" width="15" %></td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td class="small" nowrap><% this.input type="checkbox" name="remember" %>remember me</td>
+<td nowrap="nowrap">&nbsp;</td>
+<td class="small" nowrap="nowrap"><% this.input type="checkbox" name="remember" %>remember me</td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" name="login" value="login" %></td>
+<td nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><% this.input type="button" name="login" value="login" %></td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td nowrap>If you're not registered, you can do this <% this.link to="register" text="here" %>.</td>
+<td nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap">If you're not registered, you can do this <% this.link to="register" text="here" %>.</td>
 </tr>
 <tr>
-<td nowrap>&nbsp;</td>
-<td nowrap><% this.link to="sendpwd" text="Forgot" %> your password?</td>
+<td nowrap="nowrap">&nbsp;</td>
+<td nowrap="nowrap"><% this.link to="sendpwd" text="Forgot" %> your password?</td>
 </tr>
 </table>
 </form>
