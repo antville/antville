@@ -20,7 +20,7 @@ function parseColor(color) {
       if (c == colorNames[i])
          return(c);
    }
-   var rgb = new RegExp("rgb ?\\(([0-9^,]*),([0-9^,]*),([0-9^\\)]*)\\)");
+   var rgb = new RegExp("rgb ?\\( ?([0-9^,]*), ?([0-9^,]*), ?([0-9^ \\)]*) ?\\)");
    var result = color.match(rgb);
    if (result) {
       var R = parseInt(result[1]).toString(16);
