@@ -14,7 +14,7 @@ function evalEmail(address) {
  * if not it assumes that http is the protocol
  */
 function evalURL(url) {
-   if (url && url.contains("@") && !url.contains("mailto:"))
+   if (url && url.contains("@") && !url.contains("mailto:") && !url.contains("://"))
       return ("mailto:" + url);
    else if (url && !url.contains("://") && !url.contains("mailto:"))
       return ("http://" + url);
