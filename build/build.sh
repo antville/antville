@@ -17,16 +17,7 @@ if test -f ${JAVA_HOME}/lib/tools.jar ; then
     CLASSPATH=${CLASSPATH}:${JAVA_HOME}/lib/tools.jar
 fi
 
-if test -n "${2}" ; then
-    APPNAME=-Dapplication=${2}
-fi
-
-CP=${CLASSPATH}:ant.jar:ant-launcher.jar
-
-echo "Classpath: ${CP}"
-echo "JAVA_HOME: ${JAVA_HOME}"
-
 BUILDFILE=build.xml
 
-${JAVA_HOME}/bin/java -classpath ${CP} ${APPNAME} org.apache.tools.ant.Main -buildfile ${BUILDFILE} ${1}
+${JAVA_HOME}/bin/java -cp ant-launcher.jar ${APPNAME} org.apache.tools.ant.launcher.Launch -buildfile ${BUILDFILE} ${1}
 
