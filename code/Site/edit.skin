@@ -1,4 +1,7 @@
-<table border="0" cellspacing="0" cellpadding="3">
+<table border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Basic Preferences</b></td>
+</tr>
 <tr>
 <td class="small" nowrap><form method="post">Title:</td>
 <td nowrap><% this.title as="editor" width="30" %></td>
@@ -10,46 +13,6 @@
 <tr>
 <td class="small" nowrap>Birthdate:</td>
 <td nowrap><% this.birthdate as="editor" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Background color:</td>
-<td nowrap><% this.bgcolor as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Textfont:</td>
-<td nowrap><% this.textfont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Textsize:</td>
-<td nowrap><% this.textsize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Textcolor:</td>
-<td nowrap><% this.textcolor as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Linkcolor:</td>
-<td nowrap><% this.linkcolor as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>ALinkcolor:</td>
-<td nowrap><% this.alinkcolor as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>VLinkcolor:</td>
-<td nowrap><% this.vlinkcolor as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Titlefont:</td>
-<td nowrap><% this.titlefont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Titlesize:</td>
-<td nowrap><% this.titlesize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap>Titlecolor:</td>
-<td nowrap><% this.titlecolor as="editor" width="10" %></td>
 </tr>
 <tr>
 <td class="small" nowrap>show days:</td>
@@ -68,24 +31,70 @@
 <td nowrap><% this.dateformat as="editor" width="20" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>online:</td>
+<td class="small" nowrap>weblog is public:</td>
 <td nowrap><% this.online as="editor" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>hasDiscussions:</td>
+<td class="small" nowrap>allow comments:</td>
 <td nowrap><% this.hasdiscussions as="editor" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>users may signup:</td>
+<td class="small" nowrap>allow signup:</td>
 <td nowrap><% this.usermaysignup as="editor" %></td>
 </tr>
 <tr>
-<td class="small" nowrap>users may contribute:</td>
+<td class="small" nowrap>allow contributions:</td>
 <td nowrap><% this.usermaycontrib as="editor" %></td>
 </tr>
 <tr>
 <td class="small" nowrap>enable archive:</td>
 <td nowrap><% this.showarchive as="editor" %></td>
+</tr>
+<tr>
+<td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Colors</b></td>
+</tr>
+<tr>
+<td class="small" nowrap>Background:</td>
+<td nowrap><% this.bgcolor as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Text:</td>
+<td nowrap><% this.textcolor as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Titles:</td>
+<td nowrap><% this.titlecolor as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Links:</td>
+<td nowrap><% this.linkcolor as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Active Links:</td>
+<td nowrap><% this.alinkcolor as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Followed Links:</td>
+<td nowrap><% this.vlinkcolor as="editor" width="10" %></td>
+</tr>
+<tr>
+<td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Fonts and sizes</b></td>
+</tr>
+<tr>
+<td class="small" nowrap>Textfont:</td>
+<td nowrap><% this.textfont as="editor" width="30" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Textsize:</td>
+<td nowrap><% this.textsize as="editor" width="10" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Titlefont:</td>
+<td nowrap><% this.titlefont as="editor" width="30" %></td>
+</tr>
+<tr>
+<td class="small" nowrap>Titlesize:</td>
+<td nowrap><% this.titlesize as="editor" width="10" %></td>
 </tr>
 <tr>
 <td class="small" nowrap>&nbsp;</td>
