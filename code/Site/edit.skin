@@ -62,7 +62,7 @@ text="Go to the layouts page" %> to browse, manage or test-drive the list
 of available layouts.</span></td>
 </tr>
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
 <b><a name="spamfilter">Referrer spam filter</a></b></td>
 </tr>
 <tr>

@@ -1,2 +1,2 @@
-<span class="commentHead">&nbsp;</span>
+<div class="listSeparator">&nbsp;</div>
 <% param.layout %>
