@@ -1,6 +1,6 @@
 res.contentType = "text/xml";
 
-var base = "http://" + getProperty("server") + getProperty("baseURI");
+var base = ""; // "http://" + getProperty("server") + getProperty("baseURI");
 var now = new Date();
 var param1 = new Object();
 
