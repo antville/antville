@@ -3,36 +3,9 @@
  */
 
 function main_action() {
-   res.data.title = "Skins of " + res.handlers.context.title;
+   res.data.title = "Skins of " + res.handlers.layout.title;
    res.data.body = this.renderSkinAsString("main");
-   this._parent.renderSkin("page");
-}
-
-/**
- * creates a new skinset
- */
-function create_action() {
-   if (req.data.action) {
-      if (!req.data.name) {
-         res.message = "Skinset name is missing!"
-      } else {
-         var s = new skinset();
-         s.psite = path.site;
-         s.name = req.data.name;
-         s.creator = session.user;
-         s.createtime = new Date();
-         if (req.data.skinset) 
-            s.parent = this.get(req.data.skinset);
-         this.add(s);
-         res.message = "Skinset "+s.name+" created!";
-         res.redirect(s.href());
-      }
-   }
-
-   var s = new skinset();
-   res.data.title = "Create new skinset for " + this._parent.title;
-   res.data.body = this.renderSkinAsString("create");
-   this._parent.renderSkin("page");
+   res.handlers.context.renderSkin("page");
 }
 
 /**
@@ -47,10 +20,14 @@ function diff_action() {
       res.message = new Exception("skinDiff");
       res.redirect(this.href());
    }
-   
+
    // get the modified and original skins
    var modifiedSkin = this[req.data.proto][req.data.name].skin;
-   var originalSkin = app.skinfiles[req.data.proto][req.data.name];
+   var sp = [];
+   if (this._parent.parent)
+      sp.push(this._parent.parent.skins);
+   var s = app.__app__.getSkin(req.data.proto, req.data.name, sp);
+   var originalSkin = s.source;
 
    var buf = new java.lang.StringBuffer();
    if (originalSkin == null || modifiedSkin == null) {
@@ -66,7 +43,7 @@ function diff_action() {
          buf.append(" Lines removed from original skin<br />");
          buf.append("<span style=\"background: #33CC33\">&nbsp;&nbsp;&nbsp;&nbsp;</span> ");
          buf.append(" Lines added to modified skin<br />");
-         
+
          buf.append("<pre>");
          for (var i in diff) {
             var line = diff[i];
@@ -103,19 +80,24 @@ function safe_action() {
 }
 
 /**
- *  action evaluates the result of the default skinset form submission.
+ * edit action
  */
 function edit_action() {
-   this.setDefaultSkinset(req.data.defaultSkinset);
-   // loop through skinsets and set shared flag
-   for (var i in this.list()) {
-      var set = this[i];
-      if (req.data[set._id] == "1") {
-         if (set.shared != 1) set.shared = 1;
-      } else {
-         if (set.shared != 0) set.shared = 0;
+   if (req.data.cancel)
+      res.redirect(this.href() + "#" + req.data.proto + req.data.name);
+   else if (req.data.save) {
+      try {
+         res.message = this.saveSkin(req.data, session.user);
+         res.redirect(this.href() + "#" + req.data.proto + req.data.name);
+      } catch (err) {
+         res.message = err.toString();
       }
    }
-   res.message = "Default skinset was set to "+req.data.defaultSkinset;
-   res.redirect(this.href());
+
+   res.data.skin = this.getSkinSource(req.data.proto, req.data.name);
+   res.data.action = this.href(req.action);
+   res.data.title = req.data.proto + "/" + req.data.name + ".skin of " + res.handlers.layout.title;
+   res.data.body = this.renderSkinAsString("edit");
+   this.renderSkin("page");
 }
+
