@@ -8,6 +8,40 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% context.href %>main.css" />
+<style type="text/css">
+<!--
+
+/* classes for skin diff */
+.diff td {
+   padding:0px 5px;
+}
+.diff pre {
+   font-size:12px;
+   margin:0px;
+   padding:2px 0px;
+}
+.diff .removed {
+   border-top:1px solid <% layout.textcolor %>;
+   background-color: #ff3333;
+}
+.diff .added {
+   border-top:1px solid <% layout.textcolor %>;
+   background-color: #33dd33;
+}
+.diff .line {
+   border-top:1px solid <% layout.textcolor %>;
+}
+.diff .num {
+   border-top:1px solid <% layout.textcolor %>;
+   text-align:right;
+}
+.diff .status {
+   padding:0px 5px;
+   border-top:1px solid <% layout.textcolor %>;
+}
+
+// -->
+</style>
 </head>
 
 <body>
