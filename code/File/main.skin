@@ -1,1 +1,1 @@
-<a href="<% site.url action="getfile" %>?name=<% file.alias encoding="url" %>" <% file.description prefix='title="' suffix='"' %>><% param.text %></a> <span class="small">(<% file.filetype suffix=", " %><% file.filesize %>)</span>
+<a href="<% site.url action="getfile" %>?name=<% asset.alias encoding="url" %>" <% asset.description prefix='title="' suffix='"' %>><% param.text %></a> <span class="small">(<% asset.filetype suffix=", " %><% asset.filesize %>)</span>
