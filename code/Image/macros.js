@@ -90,6 +90,7 @@ function show_macro(param) {
    // if we have a thumbnail, display that
    if (param.what == "thumbnail" && this.thumbnail) 
       img = this.thumbnail;
+   delete(param.what);
    param.src = img.getStaticUrl();
    openLink(this.href());
    renderImage(img, param);
