@@ -370,9 +370,9 @@ function colorpicker_macro(param) {
 
    var param2 = new Object();
    param2.as = "editor";
-   param2.width = "10";
-   param2.onchange = "setColorPreview('" + param.name + "', this.value);";
-   param2.id = "cp1_" + param.name;
+   param2["size"] = "10";
+   param2.onchange = "Antville.ColorPicker.set('" + param.name + "', this.value);";
+   param2.id = "Antville_ColorValue_" + param.name;
    if (!param.text)
       param.text = param.name;
    if (param.color)

@@ -67,31 +67,31 @@ of available skinsets.</span></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% colorpicker name="bgcolor" text="background" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="bgcolor" text="background" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% colorpicker name="titlecolor" text="title" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="titlecolor" text="title" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Text:</td>
-<td nowrap="nowrap"><% colorpicker name="textcolor" text="text" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="textcolor" text="text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Small text:</td>
-<td nowrap="nowrap"><% colorpicker name="smallcolor" text="small text" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="smallcolor" text="small text" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Link:</td>
-<td nowrap="nowrap"><% colorpicker name="linkcolor" text="link" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="linkcolor" text="link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Active link:</td>
-<td nowrap="nowrap"><% colorpicker name="alinkcolor" text="active link" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="alinkcolor" text="active link" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Visited link:</td>
-<td nowrap="nowrap"><% colorpicker name="vlinkcolor" text="visited link" %></td>
+<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="vlinkcolor" text="visited link" %></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />

@@ -75,7 +75,9 @@ function safescripts_action() {
  */
 
 function colorpicker_action() {
-   renderSkin("colorpicker");
+   if (!req.data.skin)
+      req.data.skin = "colorpicker";
+   renderSkin(req.data.skin);
    return;
 }
 
