@@ -156,18 +156,39 @@ function linkedpath_macro (param) {
 
 
 /**
+ * Renders the story with the specified id; uses preview.skin as default
+ * but the skin to be rendered can be chosen with useskin="skinname"
+ */
+function story_macro(param) {
+   if (!param.id)
+      return;
+   var storyPath = param.id.split("/");
+   if (storyPath.length == 2)
+      var site = root.get(storyPath[0]);
+   else
+      var site = path.site;
+   if (!site)
+      return;
+   var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
+   if (!story)
+      return(getMsg("error","storyNoExist",param.id));
+   story.renderSkin(param.useskin ? param.useskin : "preview");
+   return;
+}
+
+
+/**
  * Renders a poll (optionally as link or results)
  */
 function poll_macro(param) {
    var parts = param.id.split("/");
-   if (parts.length == 2) {
-      var blog = root.get(parts[0]);
-      var poll = blog.polls.get(parts[1]);
-   }
-   else {
-      var blog = path.site;
-      var poll = blog.polls.get(param.id);
-   }
+   if (parts.length == 2)
+      var site = root.get(parts[0]);
+   else
+      var site = path.site;
+   if (!site)
+      return;
+   var poll = site.polls.get(parts[1] ? parts[1] : param.id);
    if (!poll)
       return(getMsg("error","pollNoExist",param.id));
    var deny = poll.isVoteDenied(session.user);
@@ -177,8 +198,7 @@ function poll_macro(param) {
       openLink(poll.href());
       res.write(poll.question);
       closeLink();
-   }
-   else {
+   } else {
       res.data.action = poll.href();
       poll.renderSkin("main");
    }
