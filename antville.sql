@@ -125,6 +125,8 @@ create table WEBLOG (
    HASDISCUSSIONS tinyint(1),
    SHOWDAYS tinyint(4),
    SHOWARCHIVE tinyint(1),
+   LANGUAGE varchar2(2),
+   COUNTRY varchar2(2),
    CREATETIME datetime,
    CREATOR mediumint(9),
    MODIFYTIME datetime,
