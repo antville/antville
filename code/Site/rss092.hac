@@ -30,13 +30,13 @@ else {
 
 var param2 = new Object();
 param2.title = encodeXml(this.title);
-param2.link = base + this.href();
+param2.link = encodeXml(base + this.href());
 param2.description = encodeXml(this.tagline);
 param2.year = now.getYear();
 param2.name = encodeXml(this.creator.name);
 param2.lastBuildDate = this.lastUpdate;
-param2.managingEditor = this.creator.email;
-param2.webMaster = this.creator.email;
+param2.managingEditor = encodeXml(this.creator.email);
+param2.webMaster = param2.managingEditor;
 param2.language = this.language;
 param2.items = items;
 
