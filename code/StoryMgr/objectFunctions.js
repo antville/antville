@@ -64,7 +64,7 @@ function evalNewStory(s,param,creator) {
          } else
             result.url = this.href();
          result.message = "The story was created successfully!";
-         result.id = newStory._id;
+         result.id = s._id;
       } else {
          result.message = "Couldn't add the story!";
          result.error = true;
