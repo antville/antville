@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <td nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" name="register" value="register" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %><br>&nbsp;<br>* = optional</td>
+<td nowrap><% this.input type="button" name="cancel" value="cancel" %>&nbsp;<% this.input type="button" name="register" value="register" %><br>&nbsp;<br>* = optional</td>
 </tr>
 </table>
 </form>
