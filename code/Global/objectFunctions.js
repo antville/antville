@@ -320,8 +320,6 @@ function buildAliasFromFile(uploadFile, collection) {
    var pos = filename.lastIndexOf(".");
    if (pos > 0)
       filename = filename.substring(0, pos);
-   else if (pos > -1)
-      filename = filename.substring(1, filename.length);
    return buildAlias(filename, collection);
 }
 
@@ -336,6 +334,10 @@ function buildAliasFromFile(uploadFile, collection) {
 function buildAlias(alias, collection) {
    // clean name from any invalid characters
    var newAlias = alias.toLowerCase().toFileName();
+   // FIXME: we should consider to add this to the
+   // File.toFileName method:
+   if (newAlias.indexOf(".") == 0)
+      newAlias = newAlias.substring(1);
    if (collection && collection.get(newAlias)) {
       // alias is already existing in collection, so we append a number
       var nr = 1;
