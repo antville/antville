@@ -1,3 +1,5 @@
+checkIfLoggedIn(this.href(req.action));
+
 var deny = this.isDenied(session.user);
 if (deny) {
    res.message = deny;
