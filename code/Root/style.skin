@@ -47,6 +47,11 @@ a:hover { background-color:#FF3300;
                padding-bottom:3px;
              }
 
+.small { font-family:Helvetica,Arial,sans-serif;
+         font-size:12px;
+         color:#999999;
+       }
+
 .sep { width:198px;
        background-image:url("<% imageurl name="/dot" %>");
      }
