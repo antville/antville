@@ -266,8 +266,10 @@ function renderColor(c) {
  * function retuns only a part of the text passed as argument
  * length of the string to show is defined by argument "limit"
  */
-function renderTextPreviewAsString(text, limit) {
+function renderTextPreviewAsString(text, limit, clipping) {
    var text = stripTags(text);
+   if (!clipping || text.length <= limit)
+      clipping = "";
    var limit = Math.min(limit, text.length);
    var prev = text.substring(0,text.indexOf(" ",limit));
    if (!prev)
@@ -276,7 +278,7 @@ function renderTextPreviewAsString(text, limit) {
    var str = "";
    for (var i=0; i<prev.length; i=i+30)
       str += prev.substring(i, i+30) + "<wbr />";
-   return(str);
+   return(str + clipping);
 }
 
 
@@ -284,8 +286,8 @@ function renderTextPreviewAsString(text, limit) {
  * function renders only a part of the text passed as argument
  * length of the string to show is defined by argument "limit"
  */
-function renderTextPreview(text, limit) {
-   res.write(renderTextPreviewAsString(text, limit));
+function renderTextPreview(text, limit, clipping) {
+   res.write(renderTextPreviewAsString(text, limit, clipping));
 }
 
 
