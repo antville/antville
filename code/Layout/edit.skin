@@ -5,22 +5,30 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% layout.title as="editor" width="30" %></td>
+<td nowrap="nowrap"><% layout.title as="editor" size="40" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Description:</td>
 <td nowrap="nowrap"><% layout.description as="editor" cols="30" rows="5" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Basis Layout:</td>
-<td><% layout.parent default="none" %></td>
+<td class="small" nowrap="nowrap">Copyright:</td>
+<td nowrap="nowrap"><% layout.copyright as="editor" size="25" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Contact eMail:</td>
+<td nowrap="nowrap"><% layout.email as="editor" size="25" %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Basis Layout:</td>
+<td><% layout.parent as="editor" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Shareable:</td>
-<td><% layout.shareable as="editor" %><br /><span class="small">Enabling this means that other users can use this layout as a basis for new layouts. You can only define those layout as shareable that aren't based on a different layout.</span></td>
+<td><% layout.shareable as="editor" no="---" %><br /><span class="small">If this option is enabled sites can use this layout as a basis for their own.</span></td>
 </tr>
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div><br />
 <b><a name="colors">Colors</a></b></td>
 </tr>
 <tr>
@@ -52,7 +60,7 @@
 <td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="vlinkcolor" text="visited link" %></td>
 </tr>
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div><br />
 <b><a name="fonts">Fonts</a></b></td>
 </tr>
 <tr>
