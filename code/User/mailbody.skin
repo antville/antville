@@ -1,4 +1,4 @@
-Welcome to Antville!
+Welcome to <% root.systitle %>!
 
 Here's your login info:
 
@@ -8,5 +8,5 @@ Here's your login info:
 Have fun!
 
 ---------------------------------------
-Antville - http://www.antville.org
+<% root.systitle %> - <% root.sysurl %>
 ---------------------------------------
