@@ -1,1 +1,1 @@
-<% goodie.alias as="link" %> <span class="small">[<% goodie.description %>]</span>
+<% goodie.alias as="link" %> <span class="small"><% goodie.description prefix="[" suffix="]" %></span>
