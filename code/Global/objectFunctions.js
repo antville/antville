@@ -342,6 +342,8 @@ function onStart() {
    app.data.accessLog = new java.util.Vector();
    // creating the hashtable for storyread-counting
    app.data.readLog = new java.util.Hashtable();
+   // define the global mail queue
+   app.data.mailQueue = new Array();
    return;
 }
 
@@ -538,7 +540,7 @@ function sendMail(from, to, subject, body) {
    mail.setFrom(from ? from : root.sys_email);
    if (to && to instanceof Array) {
       for (var i in to)
-         mail.addTo(to[i]);
+         mail.addBCC(to[i]);
    } else
       mail.addTo(to);
    mail.setSubject(subject);
@@ -578,9 +580,7 @@ function sendMail(from, to, subject, body) {
  * application-wide array (mail queue).
  */
 Mail.prototype.queue = function() {
-   if (!app.data.mailqueue)
-      app.data.mailqueue = new Array();
-   app.data.mailqueue.push(this);
+   app.data.mailQueue.push(this);
    return;
 }
 
@@ -590,10 +590,8 @@ Mail.prototype.queue = function() {
  * application-wide mail queue
  */
 function flushMailQueue() {
-   if (!app.data.mailqueue)
-      return;
-   while (app.data.mailqueue.length) {
-      var mail = app.data.mailqueue.pop();
+   while (app.data.mailQueue.length) {
+      var mail = app.data.mailQueue.pop();
       mail.send();
       if (mail.status > 0) {
          app.debug("Mail transfer status: " + mail.status);
