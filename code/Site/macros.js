@@ -658,7 +658,7 @@ function listReferrers_macro() {
 }
 
 
-function xmlbutton_macro(param) {
+function xmlbutton_macro() {
 	var param = new Object();
 	param.to = this.href("rss10");
 	param.name = "xmlbutton";
