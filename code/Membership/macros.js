@@ -34,6 +34,22 @@ function email_macro(param) {
 }
 
 /**
+ * macro renders URL of member (if existing)
+ */
+
+function url_macro(param) {
+   if (!this.user.url)
+      return;
+   res.write(param.prefix);
+   var linkParam = new Object();
+   linkParam.to = this.user.url;
+   this.openLink(linkParam);
+   res.write(linkParam.to);
+   this.closeLink();
+   res.write(param.suffix);
+}
+
+/**
  * macro renders user-level
  */
 
