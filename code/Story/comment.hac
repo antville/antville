@@ -17,12 +17,12 @@ else if (req.data.submit == "save" || req.data.save) {
       res.redirect(this.href());
 }
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.title)
    res.data.title += " - " + encode(this.title);
 
 res.data.body = this.renderSkinAsString("comment");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
 
 this.incrementReadCounter();

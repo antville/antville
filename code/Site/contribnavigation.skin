@@ -1,4 +1,4 @@
-...&nbsp;<% weblog.link to="stories/create" text="create a story" %><br />
-...&nbsp;<% weblog.link to="stories" text="storypool" %><br />
-...&nbsp;<% weblog.link to="images" text="imagepool" %><br />
-...&nbsp;<% weblog.link to="goodies" text="goodiepool" %><br />
+...&nbsp;<% site.link to="stories/create" text="create a story" %><br />
+...&nbsp;<% site.link to="stories" text="stories" %><br />
+...&nbsp;<% site.link to="images" text="images" %><br />
+...&nbsp;<% site.link to="files" text="files" %><br />

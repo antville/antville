@@ -17,7 +17,7 @@ else if (req.data.submit == "save" || req.data.save) {
       res.redirect(path.story.href());
 }
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.story.title)
    res.data.title += " - " + encode(this.story.title);
 
@@ -26,4 +26,4 @@ res.data.body = this.renderSkinAsString("toplevel");
 var r = new comment();
 res.data.body += r.renderSkinAsString("edit");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
