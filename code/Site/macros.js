@@ -581,10 +581,12 @@ function listReferrers_macro() {
    if (dbError)
       return (getMessage("error","database",dbError));
    var skinParam = new Object();
+   var referrer;
    while (rows.next()) {
       skinParam.count = rows.getColumnItem("COUNT");
-      skinParam.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-      skinParam.text = skinParam.referrer.length > 50 ? skinParam.referrer.substring(0, 50) + "..." : skinParam.referrer;
+      referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
+      skinParam.referrer = encode(referrer);
+      skinParam.text = encode(referrer.length > 50 ? referrer.substring(0, 50) + "..." : referrer);
       this.renderSkin("referrerItem", skinParam);
    }
    rows.release();
