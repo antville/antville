@@ -5,5 +5,5 @@
     <dc:publisher><![CDATA[<% param.publisher %>]]></dc:publisher>
     <dc:creator><![CDATA[<% param.creator %> (mailto:<% param.email %>)]]></dc:creator>
     <dc:rights><![CDATA[Copyright &#169; <% param.year %> <% param.creator %>]]></dc:rights>
-    <dc:date><% param.date %></dc:date>
+    <dc:date><% param.isodate %></dc:date>
   </item> 
