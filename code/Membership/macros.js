@@ -63,13 +63,7 @@ function level_macro(param) {
       ddParam.add(this.createDDOption("Contributor",1));
       ddParam.add(this.createDDOption("Administrator",2));
       this.chooser(ddParam);      
-   } else {
-      if (this.isAdmin())
-         res.write("Admin");
-      else if (this.isContributor())
-         res.write("Contributor");
-      else
-         res.write("Member");
-   }
+   } else
+      this.renderLvl();
    res.write(param.suffix);
 }
