@@ -198,28 +198,6 @@ function chooser(param) {
 
 
 /**
- * function renders only a part of the text
- * length of the string to show is defined by parameter limit
- */
-
-function renderTextPreview(limit) {
-   var text = createSkin(format(this.text));
-   text = stripTags(this.renderSkinAsString(text));
-   var limit = Math.min(limit,text.length);
-   var charCnt = 0;
-   for (var i=0;i<text.length;i++) {
-      charCnt = (text.charAt(i) == " " ? 0 : charCnt+1);
-      if (charCnt > 20) {
-         res.write("<wbr>");
-         charCnt = 0;
-      }
-      if (i >= limit && text.charAt(i) == " ")
-         break;
-      res.write(text.charAt(i));
-   }
-}
-
-/**
  * function renders image-tag
  */
 
