@@ -107,11 +107,27 @@ function imageurl_macro(param) {
 }
 
 /**
- * wrapper-macro to enable calling link_macro without handler-prefix
+ *  Global link macro. In contrast to the hopobject link macro,
+ *  this reproduces the link target without further interpretation.
  */
 
 function link_macro(param) {
-   path[path.length-1].link_macro(param);
+   res.write(param.prefix)
+   res.write("<a href=\"");
+   var url = param.to ? param.to : param.linkto;
+   res.write(url);
+   if (param.urlparam) res.write(param.urlparam);
+   if (param.anchor) res.write(param.anchor);
+   res.write("\"");
+   if (param.target)
+      res.write(" target=\"" + param.target + "\"");
+   res.write(">");
+   if (param.text)
+      res.write(param.text);
+   else
+      res.write(param.to ? param.to : param.linkto);
+   res.write("</a>");
+   res.write(param.suffix);
 }
 
 
