@@ -3,20 +3,20 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isDeleteDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.href());
+   res.redirect(this.site.href());
 }
 
 if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(path.weblog.stories.href());
+   res.redirect(path.site.stories.href());
 else if (req.data.submit == "delete" || req.data.remove) {
-   var result = this.weblog.stories.deleteStory(this);
+   var result = this.site.stories.deleteStory(this);
    res.message = result.message;
-   res.redirect(path.weblog.stories.href());
+   res.redirect(path.site.stories.href());
 }
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.title)
    res.data.title += " - " + encode(this.title);
 
@@ -25,7 +25,7 @@ if (this.title)
    skinParam.what = "the story &quot;" + this.title + "&quot;";
 else
    skinParam.what = "a story";
-skinParam.what += " from <b>" + this.author.name + "</b>";
+skinParam.what += " from <b>" + this.creator.name + "</b>";
 res.data.body = this.renderSkinAsString("delete",skinParam);
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
