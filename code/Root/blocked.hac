@@ -1,4 +1,4 @@
-res.data.title = "Antville - 404 - blocked";
+res.data.title = root.getSysTitle() + " - 404 - blocked";
 
 res.data.body = "<p><b>Sorry!</b></p><p>This weblog was disabled.</p>";
 
