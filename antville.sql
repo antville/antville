@@ -21,7 +21,7 @@ create table IMAGE (
    MODIFYTIME datetime,
    MODIFIER mediumint(9),
    primary key (ID)
-};
+);
 
 #----------------------------
 # Indexes on table IMAGE
