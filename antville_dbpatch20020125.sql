@@ -1,6 +1,6 @@
 use antville;
 
-create table choice (
+create table CHOICE (
    ID bigint(20) not null,
    POLL_ID bigint(20),
    TITLE mediumtext,
@@ -8,7 +8,7 @@ create table choice (
    MODIFYTIME datetime,
    unique ID (ID));
 
-create table poll (
+create table POLL (
    ID bigint(20) not null,
    WEBLOG_ID bigint(20),
    USER_ID bigint(20),
@@ -21,7 +21,7 @@ create table poll (
    MODIFYTIME datetime,
    unique ID (ID));
 
-create table vote (
+create table VOTE (
    ID bigint(20) not null,
    POLL_ID bigint(20),
    USER_ID bigint(20),
