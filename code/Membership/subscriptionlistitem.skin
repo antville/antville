@@ -4,7 +4,7 @@
 <td colspan="3" class="small"><div class="ample"><strong>Status:</strong> <% membership.level %></td>
 </tr>
 <tr valign="top">
-<td><div class="storytitle"><% site.title %></div>
+<td><div class="storytitle"><% site.title default="<i>[untitled]</i>" linkto="main" %></div>
 <div class="storyDate"><% site.lastupdate format="short" prefix="last updated on " %></div></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
 <td align="right" class="small" nowrap="nowrap"><% site.link text="view" prefix="...&nbsp;" %>
