@@ -1,4 +1,5 @@
 <p>The following list contains skins that you will most likely modify if you want to give your weblog a new design.</p>
+
 <p><b>basic layout</b></p>
 <ul>
 <li><a name="weblogpage"></a><% this.link to="edit" urlparam="?proto=weblog&name=page" text="main page" %>&nbsp;<span class="small">(<% this.skinstatus proto="weblog" name="page" %>)</span><br>
@@ -41,6 +42,22 @@ This skin defines the layout of toplevel-comments</li>
 This skin defines how replies to comments are displayed.</li>
 <li><a name="commentedit"></a><% this.link to="edit" urlparam="?proto=comment&name=edit" text="form for creating/editing a comment" %>&nbsp;<span class="small">(<% this.skinstatus proto="comment" name="edit" %>)</span><br>
 This skin contains the form for adding a toplevel-comment or a reply to a comment.</li>
+</ul>
+
+<!-- poll-templates // -->
+
+<p><b>polls</b></p>
+<ul>
+<li><a name="pollmain"></a><% this.link to="edit" urlparam="?proto=poll&name=main" text="form" %>&nbsp;<span class="small">(<% this.skinstatus proto="poll" name="main" %>)</span><br>
+This skin shows the form to be used for voting a poll.</li>
+<li><a name="pollresults"></a><% this.link to="edit" urlparam="?proto=poll&name=results" text="results" %>&nbsp;<span class="small">(<% this.skinstatus proto="poll" name="results" %>)</span><br>
+This skin shows the overall results of a poll.</li>
+<li><a name="choicemain"></a><% this.link to="edit" urlparam="?proto=choice&name=main" text="choice form" %>&nbsp;<span class="small">(<% this.skinstatus proto="choice" name="main" %>)</span><br>
+This skin contains the form part for a single choice.</li>
+<li><a name="choiceresult"></a><% this.link to="edit" urlparam="?proto=choice&name=result" text="choice result" %>&nbsp;<span class="small">(<% this.skinstatus proto="choice" name="result" %>)</span><br>
+Edit this skin to layout a single result for one choice of the poll.</li>
+<li><a name="choicegraph"></a><% this.link to="edit" urlparam="?proto=choice&name=graph" text="choice graph" %>&nbsp;<span class="small">(<% this.skinstatus proto="choice" name="graph" %>)</span><br>
+This skin is used to visualize the result of a single choice.</li>
 </ul>
 
 <!-- advanced skins // -->
@@ -126,6 +143,10 @@ This skin contains the form for uploading a new image.</li>
 This skin contains the form for editing an already uploaded image.</li>
 <li><a name="useredit"></a><% this.link to="edit" urlparam="?proto=user&name=edit" text="profile editor" %>&nbsp;<span class="small">(<% this.skinstatus proto="user" name="edit" %>)</span><br>
 contains the form used for changing the profile of a user</li>
+<li><a name="polledit"></a><% this.link to="edit" urlparam="?proto=poll&name=edit" text="poll editor" %>&nbsp;<span class="small">(<% this.skinstatus proto="poll" name="edit" %>)</span><br>
+This skin displays the form for creating and editing a poll.</li>
+<li><a name="choiceedit"></a><% this.link to="edit" urlparam="?proto=choice&name=edit" text="choice editor" %>&nbsp;<span class="small">(<% this.skinstatus proto="poll" name="edit" %>)</span><br>
+This skin is used as form element for editing a single choice of a poll.</li>
 </ul>
 
 <!-- previews and lists // -->
