@@ -202,7 +202,16 @@ function getRenderedContentPart(name, fmt) {
             // will set this to false to prevent caching of a contentpart
             // containing them
             req.data.cachePart = true;
+            // The following is necessary so that global macros know where they belong to.
+            // Even if they are embeded at some other site.
+            var tmpSite;
+            if (this.site != res.handlers.site) {
+               tmpSite = res.handlers.site;
+               res.handlers.site = this.site;
+            }
             part = this.renderSkinAsString(s).activateURLs();
+            if (tmpSite)
+               res.handlers.site = tmpSite;
       }
       this.cache[key] = part;
       if (req.data.cachePart)
