@@ -6,29 +6,29 @@ Antville
 STATUS
 -----------------------
 
-Antville should be considered alpha-release quality code. It is still developed and chances are good you'll find bugs in this application. Antville should NOT be used for production purposes unless there is a final version.
+Antville should be considered beta-release quality code. It is still developed and chances are good you'll find bugs in this application. Antville should NOT be used for production purposes unless there is a final version.
 
 -----------------------
 SYSTEM REQUIREMENTS
 -----------------------
 
-Basically you'll need two applications to run Antville: Hop and mySql. For setting up please refer to their installation instructions. Since Antville sends confirmation mails to users after their registration, you'll also need a valid SMTP-server (which you should specify in the server.properties in the directory where you installed Hop to.
+Basically you'll need two applications to run Antville: Hop (http://helma.org) and mySql (http://www.mysql.com). For setting up please refer to their installation instructions. Since Antville sends confirmation mails to users after their registration, you'll also need a valid SMTP-server (which you should specify in the server.properties in the directory where you installed Hop).
 
 -----------------------
 INSTALLATION
 -----------------------
 
-First, create a database called "antville". Then use the mySql-dumpfile "antville.sql" that comes with Antville to create the tables needed by the application. Next you'll have to create a user for this application to communicate with your database. Create one with the username "antville" and a password that fits your security-needs. After done so you'll have to modfiy the file "db.properties" in the directory where you installed the application. Change "antville.url", "antville.username" and "antville.password" to wherever your mySql-database resides and the settings you defined for the user.
+First, use the mySql-dumpfile "antville.sql" that comes with Antville to create the user, database and tables needed by the application (the default user is "antville" with the password "antville" - you'll probably want to change that). After done so you'll have to modfiy the file "db.properties" in the directory where you installed the application. Change "antville.url", "antville.username" and "antville.password" to wherever your mySql-database resides and the settings you defined for the user.
 
-Next, modify the file "app.properties" in the application directory. There shouldn't be any need to change baseURI, but change "adminEmail" to the email-address you want to use as FROM-address in confirmation mails.
+Next, modify the file "app.properties" in the application directory. What you should check/change are the "baseURI", the locations and urls for images and goodies and "adminEmail" (which you should change to the email-address you want to use as FROM-address in confirmation mails):
 
-The two application-properties "imgPath" and "imgUrl" are used to store uploaded images and to point correctly to them. If you already have a directory that contains static contents, the easiest way is to create a subdirectory called "antville" and adjust "imgPath" and "imgUrl" to the correct paths. All images uploaded for a weblog will be placed in a subdirectory with the alias of this weblog.
+The two application-properties "imgPath" and "goodiePath" are used to store uploaded images and goodies into separate directories. Antville will create necessary subdirectories if needed (i.e. if a goodie was uploaded for the first time in a weblog, antville will create a subdirectory with the alias of the weblog, same for images). If you already have a directory that contains static contents, the easiest way is to create a subdirectory called "antville" plus two subdirectories called "images" and "goodies". Then you should adjust "imgUrl" and "goodieUrl" - these two properties will be used to create the appropriate URLs.
 
-If your Hop-setup uses Apache as frontend-webserver, chances are that you'll need to modify httpd.conf and insert a rewriteRule to prevent that image-requests are sent to Hop. Please refer to the Apache-documentation on how to use the URL Rewriting Module.
+If your Hop-setup uses Apache as frontend-webserver, chances are that you'll need to modify httpd.conf and insert a rewriteRule to prevent that image-requests are sent to Hop. Please refer to the Apache-documentation on how to use the URL Rewriting Module or have a look at our setup at http://www.antville.org.
 
-The last application-property, "appPath" should contain the path where Antville was installed to (it is necessary to find skin-files).
+There's another property that could be of interest for you: if you set "allowGoodies" to "false", the upload of goodies is disabled. Otherwise it's enabled and you should check if the uploadLimit-parameter of the helma-servlet fit's your needs (if not set anyone could upload a neat linux-distribution onto your harddisk ...)
 
-Finally, you'll need to start the application by including "antville" inside the file "apps.properties" located in the directory where you install Hop to.
+Finally, you'll need to start the application by appending "antville" to the file "apps.properties" located in the directory where you install Hop.
 
 ----------------------------------
 BUG REPORTING AND FEATURE REQUESTS
