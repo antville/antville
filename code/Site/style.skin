@@ -19,7 +19,7 @@ a:hover { background-color:<% weblog.linkcolor %>;
           color:<% weblog.bgcolor %>;
         }
 
-.title { font-size:18pt;
+.title { font-size:20pt;
          font-weight:bold;
          vertical-align:middle;
          background-color:transparent;
