@@ -77,7 +77,7 @@ function weblogtitle_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (this.level > 2)
+   if (this.level == getAdminLvl())
       return;
    res.write(param.prefix);
    var linkParam = new Object();
