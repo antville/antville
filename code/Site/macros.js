@@ -67,7 +67,7 @@ function bgcolor_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("bgcolor",param));
    else
-      res.write(this.bgcolor);
+      renderColor(this.bgcolor);
    res.write(param.suffix);
 }
 
@@ -106,7 +106,7 @@ function textcolor_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("textcolor",param));
    else
-      res.write(this.textcolor);
+      renderColor(this.textcolor);
    res.write(param.suffix);
 }
 
@@ -119,7 +119,7 @@ function linkcolor_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("linkcolor",param));
    else
-      res.write(this.linkcolor);
+      renderColor(this.linkcolor);
    res.write(param.suffix);
 }
 
@@ -132,7 +132,7 @@ function alinkcolor_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alinkcolor",param));
    else
-      res.write(this.alinkcolor);
+      renderColor(this.alinkcolor);
    res.write(param.suffix);
 }
 
@@ -145,7 +145,7 @@ function vlinkcolor_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("vlinkcolor",param));
    else
-      res.write(this.vlinkcolor);
+      renderColor(this.vlinkcolor);
    res.write(param.suffix);
 }
 
@@ -184,7 +184,7 @@ function titlecolor_macro(param) {
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("titlecolor",param));
    else
-      res.write(this.titlecolor);
+      renderColor(this.titlecolor);
    res.write(param.suffix);
 }
 
