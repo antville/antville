@@ -32,15 +32,19 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Who may create<br>new weblogs:</td>
-<td><% root.sys_limitNewSites as="editor" %><br /><span class="small">Here you can choose who may create new weblogs: only those users who have system administration right, those users who are "trusted" or every registered user.</span></td>
+<td><% root.sys_limitNewSites as="editor" %><br /><span class="small">Here you can choose who may create new weblogs: all registered users or just those who are "trusted" (system administrators have this right anyway).</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Users must be<br>registered for:</td>
-<td><% root.sys_minMemberAge as="editor" %><span class="small">&nbsp;days<br />Here you can also specify the time a user has to be registered before being allowed to create a new weblog.</span></td>
+<td><% root.sys_minMemberAge as="editor" %><span class="small">&nbsp;days</span></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">or since:</td>
+<td><% root.sys_minMemberSince as="editor" %><br /><span class="small">Here you can either specify the time a user has to be registered or you define a timestamp which means that only users who have registered <i>before</i> are allowed to create a weblog.</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Time between two<br>new weblogs:</td>
-<td><% root.sys_waitAfterNewSite as="editor" %><span class="small">&nbsp;days<br />This is the amount of time a user has to wait before creating a new weblog.</span></td>
+<td><% root.sys_waitAfterNewSite as="editor" %><span class="small">&nbsp;days<br />This is the amount of time a user has to wait before creating a new weblog (this doesn't affect "trusted" users or system administrators).</span></td>
 </tr>
 
 <tr>
