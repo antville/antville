@@ -1,0 +1,30 @@
+res.data.title = root.getSysTitle() + " Manager - " + req.action;
+res.data.action = this.href(req.action);
+
+if (req.data.search)
+   session.data.mgr.searchSites(req.data.show, req.data.sort, req.data.order, req.data.keywords);
+else if (req.data.cancel)
+   res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
+else if (req.data.remove && req.data.item) {
+   var site = root.get(req.data.item);
+   if (site) {
+      var result = root.deleteSite(site);
+      res.message = result.message;
+   } else
+      res.message = getMsg("error","delete",req.data.item);
+   res.redirect(res.data.action + "?page=" + req.data.page);
+} else if (req.data.save) {
+   var result = this.updateSite(req.data,session.user);
+   res.message = result.message;
+   if (!result.error)
+      res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
+}
+
+session.data.mgr.renderPageNavigation("sites", res.data.action, parseInt(req.data.page, 10));
+session.data.mgr.renderList("sites", root.get(req.data.item), req.data.action, parseInt(req.data.page, 10));
+
+res.data.searchform = this.renderSkinAsString("sitesearchform");
+
+res.data.body = this.renderSkinAsString("list");
+
+this.renderSkin("page");
