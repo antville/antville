@@ -1,0 +1,10 @@
+var ping = this.ping();
+
+if (!ping.flerror)
+	this.lastping = new Date();
+else
+	writeln("Error when pinging weblogs.com for update of weblog " + this._id + ": " + ping.result.message);
+
+res.message = ping.result.message;
+res.writeln(res.message);
+//res.redirect(this.href());
