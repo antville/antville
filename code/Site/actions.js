@@ -79,7 +79,7 @@ function colorpicker_action() {
 /**
  * wrapper to make style.skin public
  */
-function stylesheet_css_action() {
+function main_css_action() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "style"));
@@ -94,15 +94,14 @@ function stylesheet_css_action() {
  * DEPRECATED! left for backwards compatibility only
  */
 function stylesheet_action() {
-   this.stylesheet_css_action();
+   this.main_css_action();
    return;
 }
 
 /**
  * wrapper to make javascript.skin public
  */
-
-function javascript_js_action() {
+function main_js_action() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("site", "javascript"));
@@ -118,7 +117,7 @@ function javascript_js_action() {
  * DEPRECATED! left for backwards compatibility only
  */
 function javascript_action() {
-   this.javascript_js_action();
+   this.main_js_action();
    return;
 }
 

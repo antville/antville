@@ -166,7 +166,7 @@ function sys_error_action() {
 /**
  * action to render external stylesheet
  */
-function stylesheet_css_action() {
+function main_css_action() {
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "style"));
    res.digest();
@@ -180,14 +180,14 @@ function stylesheet_css_action() {
  * DEPRECATED! left for backwards compatibility only
  */
 function stylesheet_action() {
-   this.stylesheet_css_action();
+   this.main_css_action();
    return;
 }
 
 /**
  * action to render external javascript
  */
-function javascript_js_action() {
+function main_js_action() {
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("root", "javascript"));
    res.digest();
@@ -198,10 +198,10 @@ function javascript_js_action() {
 }
 
 /**
- * wrapper for javascript.js action
+ * wrapper for main.js action
  * DEPRECATED! left for backwards compatibility only
  */
 function javascript_action() {
-   this.javascript_js_action();
+   this.main_js_action();
    return;
 }
