@@ -17,7 +17,7 @@
 </tr>
 <tr>
 <td class="small" valign="top" nowrap>&nbsp;</td>
-<td nowrap><% this.input type="button" value="cancel" %>&nbsp;<% this.input type="button" value="save" %></td>
+<td nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
 </tr>
 </table>
 </form>
