@@ -7,7 +7,7 @@
 <tr>
 <td><div class="storyTitle"><% image.alias %></div>
 <div class="storyDate"><% image.creator as="link" %><% image.createtime format="short" prefix=" on&nbsp;" %></div></td>
-<td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" %></td>
+<td align="right" class="small" valign="top" nowrap="nowrap"><% image.editlink prefix="...&nbsp;" suffix="<br />" %><% image.deletelink prefix="...&nbsp;" suffix="<br />" %><% image.replacelink prefix="....&nbsp;" suffix="<br />" %></td>
 </tr>
 <tr>
 <td colspan="2"><% image.show as="thumbnail" vspace="5" %></td>
