@@ -5,7 +5,7 @@
 <% this.choices %>
 <tr>
 <td></td>
-<td><br><input type="submit" name="submit" value="vote">
+<td><br><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><a href="results">view results</a></span>
 <p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.</td>
 </tr>
 </table>
