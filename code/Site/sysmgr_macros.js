@@ -44,16 +44,14 @@ function sysmgr_editlink_macro(param) {
    // this macro is allowed just for sysadmins
    if (!isUserSysAdmin() || req.data.item == this.alias)
       return;
-   var linkParam = new Object();
-   linkParam.linkto = "weblogs";
-   linkParam.urlparam = "?item=" + this.alias;
-   linkParam.urlparam += "&action=edit";
+   param.linkto = "weblogs";
+   param.urlparam = "item=" + this.alias + "&action=edit";
    if (req.data.page)
-      linkParam.urlparam += "&page=" + req.data.page;
-   linkParam.urlparam += "#" + this.alias;
-   root.manage.openLink(linkParam);
+      param.urlparam += "&page=" + req.data.page;
+   param.anchor = this.alias;
+   openMarkupElement("a",root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "edit");
-   this.closeLink();
+   closeMarkupElement("a");
 }
 
 /**
@@ -64,16 +62,14 @@ function sysmgr_deletelink_macro(param) {
    // this macro is allowed just for sysadmins
    if (!isUserSysAdmin() || req.data.item == this.alias)
       return;
-   var linkParam = new Object();
-   linkParam.linkto = "weblogs";
-   linkParam.urlparam = "?item=" + this.alias;
-   linkParam.urlparam += "&action=remove";
+   param.linkto = "weblogs";
+   param.urlparam = "item=" + this.alias + "&action=remove";
    if (req.data.page)
-      linkParam.urlparam += "&page=" + req.data.page;
-   linkParam.urlparam += "#" + this.alias;
-   root.manage.openLink(linkParam);
+      param.urlparam += "&page=" + req.data.page;
+   param.anchor = this.alias;
+   openMarkupElement("a",root.manage.createLinkParam(param));
    res.write(param.text ? param.text : "delete");
-   this.closeLink();
+   closeLink();
 }
 
 /**
