@@ -132,6 +132,7 @@ create table WEBLOG (
    ALIAS tinytext,
    TAGLINE tinytext,
    BIRTHDATE datetime,
+   EMAIL tinytext,
    BGCOLOR varchar(6),
    TEXTFONT tinytext,
    TEXTCOLOR varchar(6),
