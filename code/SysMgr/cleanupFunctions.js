@@ -4,162 +4,161 @@
  */
 
 function autoCleanUp() {
-   var cleanup = getProperty("enableAutoCleanUp");
-   if (cleanup && eval(cleanup)) {
-      var startAtHour = parseInt(getProperty("startAtHour"),10);
+   if (root.sys_enableAutoCleanup) {
+      var startAtHour = root.sys_startAtHour;
       var nextCleanup = new Date();
       nextCleanup.setDate(nextCleanup.getDate() + 1);
       nextCleanup.setHours((!isNaN(startAtHour) ? startAtHour : 0),0,0,0);
       // check if it's time to run autocleanup
-      if (!app.nextCleanup) {
-         app.nextCleanup = nextCleanup;
-         this.add (new syslog("system",null,"next cleanup scheduled for " + app.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
-      } else if (new Date() >= app.nextCleanup) {
+      if (!app.data.nextCleanup) {
+         app.data.nextCleanup = nextCleanup;
+         this.add (new syslog("system",null,"next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
+      } else if (new Date() >= app.data.nextCleanup) {
          this.syslogs.add (new syslog("system",null,"starting automatic cleanup ...",null));
-         app.nextCleanup = nextCleanup;
+         app.data.nextCleanup = nextCleanup;
          // now start the auto-cleanup-functions
-         // this.blockPrivateWeblogs();
-         // this.deleteInactiveWeblogs();
-         this.add (new syslog("system",null,"next cleanup scheduled for " + app.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
+         this.blockPrivateSites();
+         // this.deleteInactiveSites();
+         this.add (new syslog("system",null,"next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"),null));
       }
    }
 }
 
 
 /**
- * function blocks private weblogs that are offline for too long
+ * function blocks private sites that are offline for too long
  * if enabled and configured properly in app.properties
  */
 
-function blockPrivateWeblogs() {
-   var enable = getProperty("blockPrivateWeblogs");
-   var blockWarnAfter = parseInt(getProperty("blockWarningAfter"),10);
-   var blockAfterWarn = parseInt(getProperty("blockAfterWarning"),10);
-   if (!enable || !eval(enable)) {
-      // blocking of private weblogs is disabled
+function blockPrivateSites() {
+   var enable = root.sys_blockPrivateSites;
+   var blockWarningAfter = root.sys_blockWarningAfter;
+   var blockAfterWarning = root.sys_blockAfterWarning;
+   if (!enable) {
+      // blocking of private sites is disabled
       return;
-   } else if (isNaN(blockWarnAfter) || isNaN(blockAfterWarn)) {
+   } else if (!blockWarningAfter || !blockAfterWarning) {
       // something is fishy with blocking properties
-      this.syslogs.add (new syslog("system",null,"blocking of private weblogs cancelled - check app.properties",null));
+      this.syslogs.add (new syslog("system",null,"blocking of private sites cancelled",null));
       return;
    }
-   var size = this.privateWeblogs.size();
-   this.syslogs.add (new syslog("system",null,"checking " + size + " private weblog(s) ...",null));
+   var size = this.privateSites.size();
+   this.syslogs.add (new syslog("system",null,"checking " + size + " private site(s) ...",null));
 
    // get thresholds in millis
-   warnThreshold = blockWarnAfter*1000*60*60*24;
-   blockThreshold = blockAfterWarn*1000*60*60*24;
+   warnThreshold = blockWarningAfter*1000*60*60*24;
+   blockThreshold = blockAfterWarning*1000*60*60*24;
 
    for (var i=0;i<size;i++) {
-      var weblog = this.privateWeblogs.get(i);
-      // if weblog is trusted, we do nothing
-      if (weblog.isTrusted())
+      var site = this.privateSites.get(i);
+      // if site is trusted, we do nothing
+      if (site.isTrusted())
          continue;
 
-      var privateFor = new Date() - weblog.lastoffline;
-      var timeSinceWarning = new Date() - weblog.lastblockwarn;
+      var privateFor = new Date() - site.lastoffline;
+      var timeSinceWarning = new Date() - site.lastblockwarn;
       if (privateFor >= warnThreshold) {
-         // check if weblog-admins have been warned already
+         // check if site-admins have been warned already
          var alreadyWarned = false;
-         if (weblog.lastblockwarn > weblog.lastoffline)
+         if (site.lastblockwarn > site.lastoffline)
             alreadyWarned = true;
-         // check whether warn admins or block weblog
+         // check whether warn admins or block site
          if (!alreadyWarned) {
-            // admins of weblog haven't been warned about upcoming block, so do it now
+            // admins of site haven't been warned about upcoming block, so do it now
             var warning = new Mail;
-            var recipient = weblog.email ? weblog.email : weblog.creator.email;
+            var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
-            warning.setFrom(getProperty("adminEmail"));
-            warning.setSubject("Attention! Your weblog \"" + weblog.title + "\" will soon be blocked!");
+            warning.setFrom(root.sys_email);
+            warning.setSubject(getMsg("mailsubject","blockWarning",site.title));
             var sp = new Object();
-            sp.weblog = weblog.alias;
-            sp.url = weblog.href();
-            sp.privatetime = blockWarnAfter;
-            sp.daysleft = blockAfterWarn;
-            sp.contact = getProperty("adminEmail");
+            sp.site = site.alias;
+            sp.url = site.href();
+            sp.privatetime = blockWarningAfter;
+            sp.daysleft = blockAfterWarning;
+            sp.contact = root.sys_email;
             warning.addText(this.renderSkinAsString("blockwarnmail",sp));
             warning.send();
-            this.syslogs.add (new syslog("weblog",weblog.alias,"weblog is private for more than " + blockWarnAfter + " days, sent warning to " + recipient,null));
-            weblog.lastblockwarn = new Date();
+            this.syslogs.add (new syslog("site",site.alias,"site is private for more than " + blockWarningAfter + " days, sent warning to " + recipient,null));
+            site.lastblockwarn = new Date();
          } else if (timeSinceWarning >= blockThreshold) {
-            // weblog is offline for too long, so block it
-            weblog.blocked = 1;
-            this.syslogs.add (new syslog("weblog",weblog.alias,"blocked weblog",null));
+            // site is offline for too long, so block it
+            site.blocked = 1;
+            this.syslogs.add (new syslog("site",site.alias,"blocked site",null));
          }
       } else
          break;
    }   
-   this.syslogs.add (new syslog("system",null,"finished checking for private weblogs",null));
+   this.syslogs.add (new syslog("system",null,"finished checking for private sites",null));
    return true;
 }
 
 
 /**
- * function disposes weblogs that are inactive for too long
+ * function disposes sites that are inactive for too long
  * FUNCTION DISABLED!
  */
 
-function deleteInactiveWeblogs() {
+function deleteInactiveSites() {
    
    return;
 
-   var enable = getProperty("deleteInactiveWeblogs");
-   var delWarnAfter = parseInt(getProperty("deleteWarningAfter"),10);
-   var delAfterWarn = parseInt(getProperty("deleteAfterWarning"),10);
-   if (!enable || !eval(enable)) {
-      // blocking of private weblogs is disabled
+   var enable = root.sys_deleteInactiveSites;
+   var delWarningAfter = root.sys_deleteWarningAfter;
+   var delAfterWarning = root.sys_deleteAfterWarning;
+   if (!enable) {
+      // blocking of private sites is disabled
       return;
-   } else if (isNaN(delWarnAfter) || isNaN(delAfterWarn)) {
+   } else if (!delWarningAfter || !delAfterWarning) {
       // something is fishy with properties
-      this.syslogs.add (new syslog("system",null,"cleanup of weblogs cancelled - check app.properties",null));
+      this.syslogs.add (new syslog("system",null,"cleanup of sites cancelled",null));
       return;
    }
    var size = root.size();
-   this.syslogs.add (new syslog("system",null,"checking " + size + " weblogs for inactivity ...",null));
+   this.syslogs.add (new syslog("system",null,"checking " + size + " sites for inactivity ...",null));
 
    // get thresholds in millis
-   warnThreshold = delWarnAfter*1000*60*60*24;
-   delThreshold = delAfterWarn*1000*60*60*24;
+   warnThreshold = delWarningAfter*1000*60*60*24;
+   delThreshold = delAfterWarning*1000*60*60*24;
 
    for (var i=size;i>0;i--) {
-      var weblog = root.get(i-1);
-      // if weblog is trusted, we do nothing
-      if (weblog.isTrusted())
+      var site = root.get(i-1);
+      // if site is trusted, we do nothing
+      if (site.isTrusted())
          continue;
 
-      var idleFor = new Date() - weblog.lastupdate;
-      var timeSinceWarning = new Date() - weblog.lastdelwarn;
+      var idleFor = new Date() - site.lastupdate;
+      var timeSinceWarning = new Date() - site.lastdelwarn;
       if (idleFor >= warnThreshold) {
-         // check if weblog-admins have been warned already
+         // check if site-admins have been warned already
          var alreadyWarned = false;
-         if (weblog.lastdelwarn > weblog.lastupdate)
+         if (site.lastdelwarn > site.lastupdate)
             alreadyWarned = true;
-         // check whether warn admins or block weblog
+         // check whether warn admins or block site
          if (!alreadyWarned) {
-            // admins of weblog haven't been warned about upcoming block, so do it now
+            // admins of site haven't been warned about upcoming block, so do it now
             var warning = new Mail();
-            var recipient = weblog.email ? weblog.email : weblog.creator.email;
+            var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
-            warning.setFrom(getProperty("adminEmail"));
-            warning.setSubject("Attention! Your weblog \"" + weblog.title + "\" will soon be deleted!");
+            warning.setFrom(root.sys_email);
+            warning.setSubject(getMsg("mailsubject","deleteWarning",site.title));
             var sp = new Object();
-            sp.weblog = weblog.alias;
-            sp.url = weblog.href();
-            sp.inactivity = delWarnAfter;
-            sp.daysleft = delAfterWarn;
-            sp.contact = getProperty("adminEmail");
+            sp.site = site.alias;
+            sp.url = site.href();
+            sp.inactivity = delWarningAfter;
+            sp.daysleft = delAfterWarning;
+            sp.contact = root.sys_email;
             warning.addText(this.renderSkinAsString("deletewarnmail",sp));
             warning.send();
-            this.syslogs.add (new syslog("weblog",weblog.alias,"weblog was inactive for more than " + delWarnAfter + " days, sent warning to " + recipient,null));
-            weblog.lastdelwarn = new Date();
+            this.syslogs.add (new syslog("site",site.alias,"site was inactive for more than " + delWarningAfter + " days, sent warning to " + recipient,null));
+            site.lastdelwarn = new Date();
          } else if (timeSinceWarning >= blockThreshold) {
-            // weblog is inactive for too long, so delete it
-            root.deleteWeblog(weblog);
+            // site is inactive for too long, so delete it
+            root.deleteSite(site);
          }
       } else
          break;
    }   
-   this.syslogs.add (new syslog("system",null,"finished checking for inactive weblogs",null));
+   this.syslogs.add (new syslog("system",null,"finished checking for inactive sites",null));
    return true;
 }
 
