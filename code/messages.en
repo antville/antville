@@ -264,8 +264,6 @@ skinset.various = Various other skins
 ##
 ## storymgr
 skin.storymgr.main = Main page|The basic view of the "stories" section of a site.
-skin.storymgr.offlinestory = Offline story|used to highlight offline stories in the list view of story manager.
-skin.storymgr.onlinestory = Online story|used to display online stories in the list view of story manager.
 
 ## sysmgr
 skin.sysmgr.list = Listing|This is the generic skin for all listings in the system manager.
@@ -377,8 +375,6 @@ skin.poll.edit = Poll editor|The form for creating a new or editing an existing 
 
 ## layoutmgr
 skin.layoutmgr.main = Layout list|This skin contains the list of available site layouts.
-skin.layoutmgr.inactivelayout = List item|This skin is used to display an inactive layout in layout manager.
-skin.layoutmgr.activelayout = Active layout|This skin is used to highlight the active layout in the layout list.
 skin.layoutmgr.new = New Layout|The form for creating a new layout.
 skin.layoutmgr.import = Import a layout|This is the form for importing a layout zip file.
 
@@ -417,9 +413,7 @@ skin.membermgr.searchresult = Result list of user search|This skin contains any 
 skin.membermgr.register = Registration form|Whenever a user wants to register to Antville via your site, this skin will be used to display the appropriate form.
 
 ## pollmgr
-skin.pollmgr.openpoll = Open poll|This skin is used to display an open poll in the site's "polls" section.
 skin.pollmgr.main = List of polls|This is the main page of a site's "polls" section.
-skin.pollmgr.closedpoll = Closed poll|This skin is used to highlight an already closed poll in the list of existing polls.
 
 ## site
 skin.site.contribnavigation = Navigation bar for contributors|This skin contains additional navigation items for contributors and content managers of your site (i.e. links to add stories or images).
