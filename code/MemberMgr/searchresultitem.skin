@@ -1,4 +1,6 @@
+<table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td valign="top"><input type="radio" name="username" value="<% param.name %>" />&nbsp;</td>
 <td><strong><% param.name %></strong><span class="small"><% param.description prefix="<br />" %></span></td>
 </tr>
+</table>
