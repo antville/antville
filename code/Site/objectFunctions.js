@@ -231,6 +231,17 @@ function processHref(href) {
 
 
 /**
+ * basic check if email notification is enabled for a site
+ * @param Obj site object
+ * @return Boolean true if notification is enabled, false otherwise
+ */
+function isNotificationEnabled() {
+   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.trusted)
+      return true;
+   return false;
+}
+
+/**
  * send e-mail notification if necessary
  * @param String type of changes (e.g. createStory)
  * @param HopObject the HopObject the changes were applied to
@@ -244,9 +255,9 @@ function sendNotification(type, obj) {
       var m = this.members.get(i);
       if ((type != "update" && m.user == obj.creator) || (type == "update" && m.user == obj.modifier))
          continue;
-      if (notify == 1 && (m.level == ADMIN || m.level == CONTENTMANAGER) )
+      if (notify == 1 && m.level >= CONTENTMANAGER)
          recipients.push(m.user.email);
-      if (notify == 2 && (m.level == ADMIN || m.level == CONTENTMANAGER || m.level == CONTRIBUTOR))
+      else if (notify == 2 && m.level >= CONTRIBUTOR)
          recipients.push(m.user.email);
    }
    if (recipients.length > 0) {
@@ -259,15 +270,6 @@ function sendNotification(type, obj) {
       var subject = getMessage("mail.notification");
       var body = this.renderSkinAsString("notificationMail", param);
       sendMail(sender, recipients, subject, body);
-/*
-      var mail = new Mail();
-      mail.setFrom(root.sys_title + "<" + root.sys_email + ">");
-      mail.setSubject("Notification of site changes");
-      mail.setText();
-      for (var i in recipients)
-         mail.addBCC(recipients[i]);
-      mail.queue();
-*/
    }
    return;
 }
