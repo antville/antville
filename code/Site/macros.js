@@ -670,9 +670,9 @@ function xmlbutton_macro(param) {
 	param.to = this.href("rss");
 	param.name = "xmlbutton";
   var img = root.images.get(param.name);
-	if (!logo)
+	if (!img)
   	return;
 	this.openLink(param);
 	root.renderImage(img, param);
-	this.closeLink(param);
+	this.closeLink();
 }
