@@ -3,6 +3,7 @@
  */
 
 function stylesheet_action() {
+   res.contentType = "text/css";
    this.renderSkin("style");
 }
 
@@ -12,5 +13,6 @@ function stylesheet_action() {
  */
 
 function javascript_action() {
+   res.contentType = "text/javascript";
    this.renderSkin("javascript");
 }
