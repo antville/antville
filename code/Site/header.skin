@@ -6,7 +6,7 @@
 <tr>
 <td class="loginStatus" nowrap><% this.loginstatus %>&nbsp;<br><% weblog.link to="signup" text="sign up" %> to <% this.title %>!</td>
 <td class="headerStatus"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days" %>
-<% this.lastupdate prefix="<BR>last updated:&nbsp;" format="EE,'&nbsp;'dd.MM.yyyy,'&nbsp;'h:mm a" %></td>
+<% this.lastupdate prefix="<BR>last updated:&nbsp;" %></td>
 </tr>
 <tr>
 <td colspan="2" class="headerNav" nowrap><% this.navigation %></td>
