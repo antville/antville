@@ -25,7 +25,8 @@ if (this.title)
    skinParam.what = "the story &quot;" + this.title + "&quot;";
 else
    skinParam.what = "a story";
-skinParam.what += " created by " + this.creator.name;
+if (this.creator)
+   skinParam.what += " created by " + this.creator.name;
 res.data.body = this.renderSkinAsString("delete",skinParam);
 
 path.site.renderSkin("page");
