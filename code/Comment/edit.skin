@@ -3,19 +3,16 @@
 <td colspan="2" nowrap>&nbsp;</td>
 </tr>
 <tr>
-<td colspan="2" class="toplevelDate">add your comment:</td>
-</tr>
-<tr>
 <td class="storyText" nowrap><form method="post">Title:</td>
-<td class="storyText" nowrap><% this.title as="editor" %></td>
+<td class="storyText" nowrap><% this.title as="editor" width="40" %></td>
 </tr>
 <tr>
 <td class="storyText" valign="top" nowrap>Text:</td>
-<td class="storyText" nowrap><% this.text as="editor" width="30" height="8" %></td>
+<td class="storyText" nowrap><% this.text as="editor" width="40" height="8" %></td>
 </tr>
 <tr>
 <td class="storyText" nowrap>&nbsp;</td>
-<td class="storyText" nowrap><% this.input type="button" value="save" %>&nbsp;<% this.input type="button" value="cancel" %></td>
+<td class="storyText" nowrap><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </table>
 </form>
