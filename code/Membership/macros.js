@@ -43,7 +43,7 @@ function level_macro(param) {
       ddParam = new HopObject();
       ddParam.name = "level";
       ddParam.add(this.createDDOption("-- select --",""));
-      ddParam.add(this.createDDOption("User",0));
+      ddParam.add(this.createDDOption("Member",0));
       ddParam.add(this.createDDOption("Contributor",1));
       ddParam.add(this.createDDOption("Administrator",2));
       this.chooser(ddParam);      
@@ -53,34 +53,7 @@ function level_macro(param) {
       else if (this.isContributor())
          res.write("Contributor");
       else
-         res.write("User");
+         res.write("Member");
    }
    res.write(param.suffix);
 }
-
-/**
- * macro renders admin-status
- */
-
-function admin_macro(param) {
-   res.write(param.prefix)
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("admin",param));
-   else
-      res.write(parseInt(this.admin,10) ? "yes" : "no");
-   res.write(param.suffix);
-}
-
-/**
- * macro renders conributor-status
- */
-
-function contributor_macro(param) {
-   res.write(param.prefix)
-   if (param.as == "editor")
-      this.renderInputCheckbox(this.createInputParam("contributor",param));
-   else
-      res.write(parseInt(this.contributor,10) ? "yes" : "no");
-   res.write(param.suffix);
-}
-
