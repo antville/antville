@@ -48,7 +48,7 @@ function createtime_macro(param) {
    if (param.as == "editor")
       this.renderDateDropdown(this.createInputParam("createtime",param));
    else {
-      res.write(param.format ? this.createtime.format(param.format) : this.createtime.format());
+      res.write(param.format ? this.createtime.format(param.format) : this.createtime.format("yyyy.MM.dd HH:mm"));
    }
    renderSuffix(param);
 }
@@ -154,7 +154,6 @@ function commentform_macro(param) {
       if (user.uid && !user.isBlocked()) {
          var c = new comment();
          c.renderSkin("edit");
-         // this.renderSkin(param.useskin ? param.useskin : "commentform");
       } else if (!user.isBlocked())
          res.write("<A HREF=\"" + this.weblog.members.href("login") + "\">Login to add your comment</A>");
       renderSuffix(param);
@@ -172,24 +171,6 @@ function image_macro(param) {
    if (param && param.name) {
       renderPrefix(param);
       this.weblog.renderImage(param);
-      /*
-      if (param.linkto)
-         this.openLink(param);
-      var img = this.weblog.images.get(param.name);
-      if (img) {
-         res.write("<IMG SRC=\"" + getProperty("imgUrl") + this.weblog.alias + "/" + img.filename + "." + img.fileext + "\"");
-         res.write(" WIDTH=\"" + (param.width ? param.width : img.width) + "\"");
-         res.write(" HEIGHT=\"" + (param.height ? param.height : img.height) + "\"");
-         res.write(" ALT=\"" + (param.alttext ? param.alttext : img.alttext) + "\"");
-         if (param.align)
-            res.write(" ALIGN=\"" + param.align + "\"");
-         if (param.valign)
-            res.write(" VALIGN=\"" + param.valign + "\"");
-         res.write(" BORDER=\"" + (param.border ? param.border : 0) + "\">");
-      }
-      if (param.linkto)
-         this.closeLink(param);
-      */
       renderSuffix(param);
    }
 }
