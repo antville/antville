@@ -6,7 +6,7 @@
  * @param Object sysadmin
  */
 
-function constructor (type,object,logentry,sysadmin) {
+function constructor (type, object, logentry, sysadmin) {
    this.type = type;
    this.object = object;
    this.logentry = logentry;
