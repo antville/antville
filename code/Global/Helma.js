@@ -315,14 +315,15 @@ Helma.File = function(path) {
             return null;
          }
       
-         // read content line by line to setup properl eol
+         // read content line by line to setup proper eol
          var buffer = new java.lang.StringBuffer(file.length() * 1.10);
          while (true) {
             var line = readerWriter.readLine();
             if (line == null)
                break;
+            if (buffer.length() > 0)
+               buffer.append("\n");  // EcmaScript EOL
             buffer.append(line);
-            buffer.append("\n");  // EcmaScript EOL
          }
      
          // Close the file
