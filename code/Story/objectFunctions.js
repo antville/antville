@@ -1,4 +1,16 @@
 /**
+ * constructor function for story objects
+ */
+function constructor(creator, ipaddress) {
+   this.reads = 0;
+   this.ipaddress = ipaddress;
+   this.creator = creator;
+   this.createtime = new Date();
+   this.modifytime = new Date();
+}
+
+
+/**
  * check if story is ok; if true, save changed story
  * @param Obj Object containing the properties needed for creating a new story
  * @param Obj User-Object modifying this story
@@ -6,92 +18,65 @@
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
-function evalStory(param,modifier) {
-   // loop through param and collect content properties
-   var majorUpdate = false;
-   var contentIsCool = false;
-   var cont = this.getContent();
-   for (var i in param) {
-      if (i.indexOf ("content_") == 0) {
-         var part = i.substring(8);
-         // check if there's a difference between old and
-         // new text of more than 50 characters:
-         if (!majorUpdate) {
-            var len1 = cont[part] ? cont[part].length : 0;
-            var len2 = 0;
-            if (param[i])
-               var len2 = param[i].length;
-            majorUpdate = Math.abs(len1 - len2) >= 50;
-         }
-         cont[part] = param[i].trim();
-         if (!contentIsCool && param[i])
-            contentIsCool = true;
-      }
-   }
+function evalStory(param, modifier) {
+   // collect content
+   var content = extractContent(param, this.content.getAll());
    // if all story parts are null, return with error-message
-   if (!contentIsCool)
-      return (getError("textMissing"));
+   if (!content.exists)
+      throw new Exception("textMissing");
    // check if the createtime is set in param
    if (param.createtime) {
       try {
-         var ctime = parseTimestamp(param.createtime, "yyyy-MM-dd HH:mm");
-      } catch (error) {
-         return (getError("timestampParse",param.createtime));
+         var ctime = param.createtime.toDate("yyyy-MM-dd HH:mm");
+      } catch (err) {
+         throw new Exception("timestampParse", param.createtime);
       }
    }
    // check name of topic (if specified)
    var topicName = null;
-   if (param.topic)
+   if (param.topic) {
+      if (!param.topic.isURL())
+         throw new Exception("topicNoSpecialChars");
       topicName = param.topic;
-   else if (!isNaN(parseInt(param.topicidx,10)))
-      topicName = this.site.topics.get(parseInt(param.topicidx,10)).groupname;
-   if (topicName && !isCleanForURL(topicName)) {
-      // name of topic contains forbidden characters, so return immediatly
-      return (getError("topicNoSpecialChars"));
-   }
-   // check new online-status of story
-   var newStatus = parseInt(param.online,10);
-   if ((param.publish || param.submit == "publish") && isNaN(newStatus))
-      newStatus = parseInt(param.onlinedefault,10);
-   else if (param.save || param.submit == "save")
-      newStatus = 0;
-   if (isNaN(newStatus))
-      return (getError("storyPublish"));
-   // if (newStatus == 1 && !topicName)
-   //    return (getError("storyTopicMissing"));
+   } else if (param.addToTopic)
+      topicName = param.addToTopic;
 
-   // since we came down here we store the new values of the story
-   if (newStatus > 0 && (!this.online || majorUpdate))
-      this.site.lastupdate = new Date();
-   this.online = newStatus;
-   if (majorUpdate)
+   // store the new values of the story
+   if (param.publish) {
+      var newStatus = param.addToFront ? 2 : 1;
+      if (!this.online || content.isMajorUpdate)
+         this.site.lastupdate = new Date();
+      this.online = newStatus;
+   } else
+      this.online = 0;
+   if (content.isMajorUpdate)
       this.modifytime = new Date();
-   this.setContent (cont);
+   this.content.setAll(content.value);
+   this.topic = topicName;
    // let's keep the title property
-   this.title = param.content_title;
+   this.title = content.value.title;
+   // re-create day of story with respect to site-timezone
    if (ctime && ctime != this.createtime) {
       this.createtime = ctime;
-      // create day of story with respect to site-timezone
-      this.day = formatTimestamp(this.createtime,"yyyyMMdd");
+      this.day = ctime.format("yyyyMMdd", this.site.getLocale(), this.site.getTimeZone());
    }
    if (modifier == this.creator)
-      this.editableby = !isNaN(param.editableby) ? parseInt(param.editableby,10) : null;
-   this.discussions = (param.discussions_array || param.discussions == null ? 1 : 0);
+      this.editableby = !isNaN(param.editableby) ? parseInt(param.editableby, 10) : null;
+   this.discussions = param.discussions ? 1 : 0;
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
-   this.topic = topicName;
 
    this.cache.modifytime = new Date();
-   var result = getConfirm("storyUpdate");
+   var result = new Message("storyUpdate");
    result.url = this.online > 0 ? this.href() : this.site.stories.href();
-   return (result);
+   result.id = this.id;
+   return result;
 }
+
 
 /**
  * function sets story either online or offline
  */
-
 function toggleOnline(newStatus) {
    if (newStatus == "online") {
       this.online = 2;
@@ -111,40 +96,27 @@ function toggleOnline(newStatus) {
  *             - message (String): containing a message to user
  */
 
-function evalComment(param,story,creator) {
-   var result;
-   if (!param.content_text) {
-      result = getError("textMissing");
-   } else {
-      var c = new comment();
-      var cont = new HopObject ();
-      for (var i in param) {
-         if (i.indexOf ("content_") == 0)
-            cont[i.substring(8)] = param[i].trim();
-      }
-      c.setContent (cont);
-      // let's keep the title property:
-      c.title = param.content_title;
-      c.site = this.site;
-      c.story = story;
-      c.createtime = c.modifytime = new Date();
-      c.creator = creator;
-      c.online = 1;
-      c.editableby = null;
-      c.ipaddress = param.http_remotehost;
-      this.add(c);
-      // also add to story.comments since it has 
-      // cachemode set to aggressive and wouldn't refetch
-      // its child collection index otherwise
-      if (this._prototype == "story")
-         this.comments.add(c);
-      else
-         this.story.comments.add(c);
-      this.site.lastupdate = new Date();
-      result = getConfirm("commentCreate");
-      result.id = c._id;
-   }
-   return (result);
+function evalComment(param, creator) {
+   // collect content
+   var content = extractContent(param);
+   if (!content.exists)
+      throw new Exception("textMissing");
+   var c = new comment(this.site, creator, param.http_remotehost);
+   c.content.setAll(content.value);
+   // let's keep the title property:
+   c.title = content.value.title;
+   this.add(c);
+   // also add to story.comments since it has 
+   // cachemode set to aggressive and wouldn't refetch
+   // its child collection index otherwise
+   if (this._prototype == "story")
+      this.comments.add(c);
+   else
+      this.story.comments.add(c);
+   this.site.lastupdate = new Date();
+   var result = new Message("commentCreate");
+   result.id = c._id;
+   return result;
 }
 
 /**
@@ -162,10 +134,13 @@ function deleteComment(currComment) {
    var p = currComment.parent;
    if (p == null)
       p = currComment.story;
-   if (p.remove(currComment) && this.comments.remove(currComment))
-      return(getMessage("confirm","commentDelete"));
-   else
-      return(getMessage("error","commentDelete"));
+   try {
+      p.remove(currComment);
+      this.comments.remove(currComment);
+   } catch (err) {
+      throw new Exception("commentDelete");
+   }
+   return new Message("commentDelete");
 }
 
 /**
@@ -174,8 +149,8 @@ function deleteComment(currComment) {
  * if false, it caches it again
  * @return String cached text of story
  */
-function getRenderedContentPart (name) {
-   var partLastRendered = this.cache["lastRendered_"+name];
+function getRenderedContentPart(name) {
+   var partLastRendered = this.cache["lastRendered_" + name];
    if (!partLastRendered || partLastRendered <= this.modifytime ||
        partLastRendered <= this.cache.modifytime) {
       // enable caching; some macros (eg. poll, storylist)
@@ -183,89 +158,28 @@ function getRenderedContentPart (name) {
       // containing them [rg]
       req.data.cachePart = true;
       // cached version of text is too old, so we cache it again
-      var part = this.getContentPart (name);
+      var part = this.content.getProperty(name);
       if (!part)
          return "";
       var s = createSkin(format(part));
       this.allowTextMacros(s);
-      this.cache["rendered_"+name] = activateLinks(this.renderSkinAsString(s));
-      if (req.data.cachePart)
-         this.cache["lastRendered_"+name] = new Date();
+      this.cache["rendered_" + name] = this.renderSkinAsString(s).activateURLs();
+      if (req.data.cachePart == true)
+         this.cache["lastRendered_" + name] = new Date();
    }
-   return (this.cache["rendered_"+name]);
-}
-
-/**
- *  Get a content part by name.
- */
-function getContentPart (name) {
-   // check if this is a story with the old property layout. If so, convert to new.
-   if (this.text && !this.content) {
-      this.convertContentToXML();
-   }
-   var cnt = this.getContent();
-   return cnt[name];
-}
-
-/**
- *  Set a content part to a new value.
- */
-function setContentPart (name, value) {
-   var cnt = this.getContent();
-   cnt[name] = value.trim();
-   this.setContent (cnt);
-}
-
-/**
- *  Return the content parsed into a HopObject.
- */
-function getContent () {
-  if (!this.content)
-     return new HopObject ();
-  return Xml.readFromString (this.content);
-}
-
-/**
- *  Set the content of this story object.
- */
-function setContent (cnt) {
-    this.content = Xml.writeToString (cnt);
-    var raw = new java.lang.StringBuffer();
-    for (var i in cnt) {
-       raw.append(cnt[i]);
-       raw.append(" ");
-    }
-    this.rawcontent = raw.toString().toLowerCase();
+   return (this.cache["rendered_" + name]);
 }
 
 /**
  * function deletes all childobjects of a story (recursive!)
  */
-
 function deleteAll() {
    for (var i=this.comments.size();i>0;i--) {
       var c = this.comments.get(i-1);
-      this.comments.remove(c);
+      if (!this.comments.remove(c))
+         throw new Exception("storyDeleteComments");
    }
    return true;
-}
-
-/**
- *   Function to convert old story content to new XML encoded format.
- */
-function convertContentToXML () {
-    var cnt = new HopObject();
-    var raw = "";
-    if (this.title) {
-       cnt.title = this.title;
-       raw += this.title+" ";
-    }
-    if (this.text) {
-       cnt.text = this.text;
-       raw += this.text;
-    }
-    this.content = Xml.writeToString (cnt);
-    this.rawcontent = raw;
 }
 
 /**
@@ -282,7 +196,7 @@ function incrementReadCounter() {
       logObj.site = this.site.alias;
       logObj.story = this._id;
       logObj.reads = this.reads + 1;
-      app.data.readLog.put(String(this._id),logObj);
+      app.data.readLog.put(String(this._id), logObj);
    } else
       app.data.readLog.get(String(this._id)).reads++;
    return;
