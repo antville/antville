@@ -1,4 +1,17 @@
 /**
+ * check if weblog is online
+ * return false if not
+ */
+
+function isPublic() {
+   if (!this.isOnline() && !this.isUserMember()) {
+      res.message = "This weblog is not public!";
+      return false;
+   }
+   return true;
+}
+
+/**
  * check if user is allowed to edit the preferences of this weblog
  */
 
@@ -57,7 +70,7 @@ function isEditMembersAllowed() {
  */
 
 function isUserAdmin() {
-   if (!this.members.get(user.name))
+   if (!this.isUserMember())
       return false;
    else if (!this.members.get(user.name).isAdmin())
       return false;
@@ -69,7 +82,7 @@ function isUserAdmin() {
  */
 
 function isUserContributor() {
-   if (!this.members.get(user.name))
+   if (!this.isUserMember())
       return false;
    else if (!this.members.get(user.name).isContributor())
       return false;
@@ -81,9 +94,9 @@ function isUserContributor() {
  */
 
 function isUserMember() {
-   if (user.uid && this.members.get(user.name))
-      return true;
-   return false;
+   if (!user.uid || !this.members.get(user.name))
+      return false;
+   return true;
 }
 
 /**
@@ -91,7 +104,13 @@ function isUserMember() {
  */
 
 function isSignUpAllowed() {
-   if (!this.userMaySignup()) {
+   if (this.isUserMember()) {
+      res.message = "You are already a member of this weblog!";
+      return false;
+   } else if (!this.isOnline()) {
+      res.message = "This weblog is not public!";
+      return false;
+   } else if (!this.userMaySignup()) {
       res.message = "Signing up was disabled!";
       return false;
    } else if (!user.uid) {
@@ -111,7 +130,18 @@ function isSignUpAllowed() {
  */
 
 function userMayContrib() {
-   if (parseInt(this.usercontrib,10))
+   if (parseInt(this.usercontrib))
+      return true;
+   return false;
+}
+
+
+/**
+ * function checks if archive of weblog is enabled
+ */
+
+function showArchive() {
+   if (parseInt(this.archive))
       return true;
    return false;
 }
