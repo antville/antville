@@ -1,30 +1,26 @@
 /**
- * macro calls a form-skin for editing a skin-source
+ * macro renders a list of skinsets defined for this site
  */
 
-function skineditor_macro(param) {
-   if (req.data.proto && req.data.name) {
-      var s = this.fetchSkin(req.data.proto, req.data.name);
-      s.renderSkin("edit");
+function skinsets_macro(param) {
+   var l = this.size();
+   if (l == 0) {
+      return "- no skinsets -";
+   } else {
+      this.renderSkin("skinsets");
    }
 }
 
 /**
- * macro checks if the skin was modified or
- * is the default-skin
+ * macro renders a form for creating a new skinset
  */
 
-function skinstatus_macro(param) {
-   if (!param.proto || !param.name)
-      return;
-   var s = this.fetchSkin(param.proto, param.name);
-   if (s.creator) {
-      res.write("customized by " + s.creator.name);
-      res.write("&nbsp;...&nbsp;");
-      Html.link(this.href("diff") + "?proto=" + param.proto + "&name=" + param.name, "diff");
-      res.write("&nbsp;...&nbsp;");
-      Html.link(s.href("delete"), "reset");
-   } else
-      res.write("not customized");
-   return;
+function skinsetchooser_macro(param) {
+   var sets = new Array(["", "default skinset"]);
+   var l = this.size();
+   for (var i=0; i<l; i++) {
+      var sks = this.get(i);
+      sets[sets.length] = [sks._id, sks.name];
+   }
+   Html.dropDown("skinset", sets, param.selected, "Choose Skinset");
 }

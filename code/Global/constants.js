@@ -68,6 +68,7 @@ DISPLAY["membermgr"] = "Members";
 DISPLAY["sysmgr"] = "System Management";
 DISPLAY["pollmgr"] = "Polls";
 DISPLAY["skinmgr"] = "Skins";
+DISPLAY["skinset"] = "Skinset";
 DISPLAY["story"] = "Story";
 
 /**

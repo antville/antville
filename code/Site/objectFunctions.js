@@ -82,6 +82,9 @@ function evalPreferences(param, modifier) {
    prefs.longdateformat = param.longdateformat;
    prefs.shortdateformat = param.shortdateformat;
 
+   // skinset
+   prefs.skinset = param.skinset;
+
    // e-mail notification
    var notifystorycreate = parseInt(param.notifystorycreate,10);
    prefs.notifystorycreate = (modifier == this.creator && !isNaN(notifystorycreate) ? notifystorycreate : null);

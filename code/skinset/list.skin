@@ -1,0 +1,20 @@
+<tr>
+ <td><a href="<% skinset.href %>"><% skinset.name %></a>
+     <br />
+     <span class="small"><% skinset.creator %>,<br /> 
+     <% skinset.createtime format="short" %>
+ </td>
+ <td>
+  <span class="small">
+    <% skinset.link to="skins" text="manage" %> |
+    <% skinset.link to="startTestdrive" text="test" target="_blank" %> |
+    <% skinset.link to="delete" text="delete" %>
+ </span>
+ </td>
+ <td>
+    <% skinset.shared as="editor" %>
+ </td>
+ <td>
+    <% skinset.siteDefault as="editor" %>
+ </td>
+</tr>

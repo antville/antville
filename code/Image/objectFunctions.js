@@ -55,6 +55,7 @@ function save(rawimage, dir, maxWidth, maxHeight) {
       else
          rawimage.writeToFile(dir, this.filename + "." + this.fileext);
    } catch (err) {
+      app.log("Error in image.save(): can't save image to "+dir);
       throw new Exception("imageSave");
    }
    return;
@@ -120,7 +121,7 @@ function evalImgType(ct) {
  */
 
 function createThumbnail(rawimage, dir) {
-   var thumb = new image(this.site, this.creator);
+   var thumb = new image(res.handlers.site, this.creator);
    thumb.filename = this.filename + "_small";
    thumb.save(rawimage, dir, THUMBNAILWIDTH);
    thumb.alttext = this.alttext;

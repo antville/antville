@@ -3,7 +3,7 @@
  */
 function main_action() {
    this.renderImagelist(parseInt(req.data.start, 10));
-   res.data.title = "Images of " + this._parent.title;
+   res.data.title = "Images of " + res.handlers.context.title;
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
 }

@@ -663,6 +663,14 @@ function imagelist_macro(param) {
 }
 
 /**
+ * proxy-macro for skinset chooser
+ */
+function skinsetchooser_macro(param) {
+   param.selected = this.preferences.getProperty("skinset");
+   this.skins.skinsetchooser_macro(param);
+}
+
+/**
  * macro rendering recipients for email notification
  * param.event: storycreate/commentcreate/textupdate/upload
  * please add some error message for undefined param.event

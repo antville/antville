@@ -8,7 +8,7 @@
  */
 
 function evalImg(param, creator) {
-   var newImg = new image(this._parent, creator);
+   var newImg = new image(res.handlers.site, creator);
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
       throw new Exception("imageFileTooBig");
@@ -33,7 +33,11 @@ function evalImg(param, creator) {
    var maxWidth = param.maxwidth ? parseInt(param.maxwidth, 10) : null;
    var maxHeight = param.maxheight ? parseInt(param.maxheight, 10) : null;
    // save/resize the image
-   var dir = getProperty("imgPath") + this._parent.alias + "/";
+   var dir; 
+   if (path.site) 
+      dir = getProperty("imgPath") + this._parent.alias + "/";
+   else 
+      dir = getProperty("imgPath");
    newImg.save(param.rawimage, dir, maxWidth, maxHeight);
    // the fullsize-image is on disk, so we add the image-object (and create the thumbnail-image too)
    newImg.alttext = param.alttext;
@@ -43,8 +47,8 @@ function evalImg(param, creator) {
    if (newImg.width > THUMBNAILWIDTH)
       newImg.createThumbnail(param.rawimage, dir);
    // send e-mail notification
-   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
-      newImg.site.sendNotification("image", newImg.alias);
+   if (path.site && (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted)) 
+      path.site.sendNotification("image", newImg.alias);
    return new Message("imageCreate", newImg.alias);
 }
 
@@ -55,18 +59,24 @@ function evalImg(param, creator) {
  */
 function deleteImage(currImg) {
    // first remove the image from disk (and the thumbnail, if existing)
-   var f = FileLib.get(getProperty("imgPath") + currImg.site.alias, currImg.filename + "." + currImg.fileext);
+   var dir;
+   if (currImg.site)
+      dir = getProperty("imgPath") + currImg.site.alias;
+   else 
+      dir = getProperty("imgPath");
+   var f = FileLib.get(dir, currImg.filename + "." + currImg.fileext);
    f.remove();
    if (currImg.thumbnail) {
       var thumb = currImg.thumbnail;
-      f = FileLib.get(getProperty("imgPath") + thumb.site.alias, thumb.filename + "." + thumb.fileext);
+      f = FileLib.get(dir, thumb.filename + "." + thumb.fileext);
       f.remove();
-      thumb.parent = null;
-      if (!this.remove(thumb))
+      // if (!currImg.remove(thumb))
+      if (!thumb.remove())
          throw new Exception("imageDelete");
    }
    // then, remove the image-object
-   if (!this.remove(currImg))
+   // if (!this.remove(currImg))
+   if (!currImg.remove())
       throw new Exception("imageDelete");
    return new Message("imageDelete");
 }

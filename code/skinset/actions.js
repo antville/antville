@@ -3,36 +3,35 @@
  */
 
 function main_action() {
-   res.data.title = "Skins of " + res.handlers.context.title;
+   res.data.title = "Skins of " + this._parent._parent.title;
    res.data.body = this.renderSkinAsString("main");
-   this._parent.renderSkin("page");
+   this._parent._parent.renderSkin("page");
 }
 
 /**
- * creates a new skinset
+ * edit action
  */
-function create_action() {
-   if (req.data.action) {
-      if (!req.data.name) {
-         res.message = "Skinset name is missing!"
-      } else {
-         var s = new skinset();
-         s.psite = path.site;
-         s.name = req.data.name;
-         s.creator = session.user;
-         s.createtime = new Date();
-         if (req.data.skinset) 
-            s.parent = this.get(req.data.skinset);
-         this.add(s);
-         res.message = "Skinset "+s.name+" created!";
-         res.redirect(s.href());
+function edit_action() {
+   if (req.data.cancel) {
+      res.redirect(this.href("skins") + "#" + req.data.proto + req.data.name);
+   } else if (req.data.save) {
+      try {
+         res.message = this.saveSkin(req.data.proto, req.data.name, req.data.skin, session.user);
+         res.redirect(this.href("skins") + "#" + req.data.proto + req.data.name);
+      } catch (err) {
+         res.message = err.toString();
       }
    }
-
-   var s = new skinset();
-   res.data.title = "Create new skinset for " + this._parent.title;
-   res.data.body = this.renderSkinAsString("create");
+   
+   res.data.action = this.href(req.action);
+   res.data.title = req.data.proto + "/" + req.data.name + ".skin of " + this._parent.title;
+   res.data.body = this.renderSkinAsString("edit");
    this._parent.renderSkin("page");
+}
+
+function edit2_action() {
+   res.data.body = this.renderSkinAsString("edit2");
+   this.getParent().renderSkin("page");
 }
 
 /**
@@ -42,7 +41,7 @@ function create_action() {
 function diff_action() {
    if (!req.data.proto || !req.data.name ||
        !this[req.data.proto] || !this[req.data.proto][req.data.name] ||
-       !app.skinfiles[req.data.proto])
+       !app.skinfiles[req.data.proto]) 
    {
       res.message = new Exception("skinDiff");
       res.redirect(this.href());
@@ -50,7 +49,10 @@ function diff_action() {
    
    // get the modified and original skins
    var modifiedSkin = this[req.data.proto][req.data.name].skin;
-   var originalSkin = app.skinfiles[req.data.proto][req.data.name];
+   var originalSkin = this.parent && this.parent[req.data.proto] && 
+                      this.parent[req.data.proto][req.data.name] ? 
+          this.parent[req.data.proto][req.data.name].skin : 
+          app.skinfiles[req.data.proto][req.data.name];
 
    var buf = new java.lang.StringBuffer();
    if (originalSkin == null || modifiedSkin == null) {
@@ -103,19 +105,56 @@ function safe_action() {
 }
 
 /**
- *  action evaluates the result of the default skinset form submission.
+ * action to test-drive this skinset in the current session.
  */
-function edit_action() {
-   this.setDefaultSkinset(req.data.defaultSkinset);
-   // loop through skinsets and set shared flag
-   for (var i in this.list()) {
-      var set = this[i];
-      if (req.data[set._id] == "1") {
-         if (set.shared != 1) set.shared = 1;
-      } else {
-         if (set.shared != 0) set.shared = 0;
-      }
-   }
-   res.message = "Default skinset was set to "+req.data.defaultSkinset;
-   res.redirect(this.href());
+function startTestdrive_action() {
+   res.message = "Test-driving skinset "+this.name;
+   session.data.skinset = this;
+   res.redirect(this.getParent().href());
 }
+
+/**
+ * stop a skinset test and resume normal browsing.
+ */
+function stopTestdrive_action() {
+   session.data.skinset = null;
+   res.message = "[Switching back to standard skinset]";
+   if (req.data.http_referer)
+      res.redirect(req.data.http_referer);
+   else
+      res.redirect(this.getParent().href());
+}
+
+/**
+ *  action displays a list of skins in this skinset.
+ */
+function skins_action() {
+   res.data.title = "Skins of " + this._parent._parent.title;
+   res.data.body = this.renderSkinAsString("skins");
+   this._parent._parent.renderSkin("page");
+}
+
+/**
+ * action deletes this skinset.
+ */
+function delete_action() {
+   if (req.data.submit == "cancel" || req.data.cancel)
+      res.redirect(this._parent.href());
+   else if (req.data.submit == "delete" || req.data.remove) {
+      var href = this._parent.href();
+      res.message = this._parent.deleteSkinset(this);
+      res.redirect(href);
+   }
+
+   res.data.action = this.href(req.action);
+   res.data.title = this._parent._parent.title;
+
+   var skinParam = new Object();
+   skinParam.what = "the skinset &quot;" + this.name + 
+                    "&quot; (created by " + this.creator.name + ")";
+
+   res.data.body = this.renderSkinAsString("delete",skinParam);
+
+   this._parent._parent.renderSkin("page");
+}
+

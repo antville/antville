@@ -180,12 +180,29 @@ create table AV_POLL (
 CREATE INDEX IDX_POLL_F_SITE ON AV_POLL (POLL_F_SITE);
 CREATE INDEX IDX_POLL_F_USER_CREATOR ON AV_POLL (POLL_F_USER_CREATOR);
 
+#------------------------------
+# Table structure for AV_SKINSET
+#------------------------------
+create table AV_SKINSET (
+   SKINSET_ID mediumint(10) not null,
+   SKINSET_NAME varchar(128),
+   SKINSET_F_SITE mediumint(10),
+   SKINSET_F_SKINSET_PARENT mediumint(10),
+   SKINSET_CREATETIME datetime,
+   SKINSET_MODIFYTIME datetime,
+   SKINSET_F_USER_CREATOR mediumint(10),
+   SKINSET_F_USER_MODIFIER mediumint(10),
+   SKINSET_SHARED tinyint(1),
+   primary key (SKINSET_ID)
+);
+
+
 #----------------------------
 # Table structure for AV_SKIN
 #----------------------------
 create table AV_SKIN (
    SKIN_ID mediumint(10) not null,
-   SKIN_F_SITE mediumint(10),
+   SKIN_F_SKINSET mediumint(10),
    SKIN_PROTOTYPE tinytext,
    SKIN_NAME tinytext,
    SKIN_SOURCE mediumtext,

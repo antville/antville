@@ -14,9 +14,33 @@ function onRequest() {
    if (res.handlers.site) {
       if (res.handlers.site.blocked)
          res.redirect(root.href("blocked"));
-      res.skinpath = [res.handlers.site.skins];
       if (session.user)
          req.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
+      // check if the site has a skinset
+      var skinsetId = res.handlers.site.preferences.getProperty("skinset");
+      if (skinsetId) {
+         var skinset = res.handlers.site.skins.get(skinsetId);
+         var skinpath = [];
+         // loop through skinset parent chain, adding each skinset to the skinpath
+         while (skinset) {
+            skinpath[skinpath.length] = skinset;
+            skinset = skinset.parent;
+         }
+         res.skinpath = skinpath;
+      }
+      // set a context handler that contains the context title
+      res.handlers.context = {
+         title: "site "+res.handlers.site.title
+      };
+   } else {
+      // set a context handler that contains the context title
+      res.handlers.context = {
+         title: root.sys_title 
+      };
+   }
+   if (session.data.skinset) {
+      // test drive a skinset
+      session.data.skinset.testdrive();
    }
    if (session.user && session.user.blocked) {
       // user was blocked recently, so log out
