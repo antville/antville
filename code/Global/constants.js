@@ -217,7 +217,7 @@ SKINSETS.push(newSet);
 
 newSet = new Skinset("story", ["story.display", "story.main", "story.preview", "story.comment", "story.historyview", "story.embed", "story.edit"]);
 newSet.add(new Skinset("story.backlinks", ["story.backlinks", "story.backlinkItem"]));
-newSet.add(new Skinset("story.list", ["storymgr.main", "story.mgrlistitem", "storymgr.onlinestory", "storymgr.offlinestory"]));
+newSet.add(new Skinset("story.list", ["storymgr.main", "story.mgrlistitem"]));
 SKINSETS.push(newSet);
 
 newSet = new Skinset("comment", ["comment.toplevel", "comment.reply", "comment.edit"]);
@@ -231,7 +231,7 @@ SKINSETS.push(newSet);
 
 newSet = new Skinset("poll", ["poll.main", "poll.results", "choice.main", "choice.result", "choice.graph"]);
 newSet.add(new Skinset("poll.editor", ["poll.edit", "choice.edit"]));
-newSet.add(new Skinset("poll.list", ["pollmgr.main", "poll.mgrlistitem", "pollmgr.openpoll", "pollmgr.closedpoll"]));
+newSet.add(new Skinset("poll.list", ["pollmgr.main", "poll.mgrlistitem"]));
 SKINSETS.push(newSet);
 
 newSet = new Skinset("sysmgr", ["sysmgr.status", "sysmgr.list", "site.sysmgr_listitem", "site.sysmgr_edit", "site.sysmgr_delete", "User.sysmgr_listitem", "User.sysmgr_edit", "syslog.sysmgr_listitem"], "root");
@@ -242,7 +242,7 @@ SKINSETS.push(newSet);
 newSet = new Skinset("skinmgr", ["skinmgr.main", "skinmgr.page", "skinmgr.edit", "skinmgr.treebranch", "skinmgr.treeleaf", "skin.status", "skin.statuscustom", "skinmgr.new", "skin.diff", "skin.diffline"], "root");
 SKINSETS.push(newSet);
 
-newSet = new Skinset("layoutmgr", ["layoutmgr.main", "layoutmgr.inactivelayout", "layoutmgr.activelayout", "layoutmgr.new", "layoutmgr.import"], "root");
+newSet = new Skinset("layoutmgr", ["layoutmgr.main", "layoutmgr.new", "layoutmgr.import"], "root");
 newSet.add(new Skinset("layoutmgr.layout", ["layout.mgrlistitem", "layout.main", "layout.edit", "layout.download", "layout.chooserlistitem", "layout.testdrive"]));
 newSet.add(new Skinset("layoutmgr.images", ["layoutimagemgr.main", "layoutimagemgr.navigation", "layoutimagemgr.new"]));
 SKINSETS.push(newSet);
