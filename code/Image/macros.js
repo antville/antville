@@ -64,7 +64,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied()) {
+   if (!this.isEditDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "edit";
@@ -84,7 +84,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied()) {
+   if (!this.isDeleteDenied(user)) {
       res.write(param.prefix);
       var linkParam = new Object();
       linkParam.linkto = "delete";
@@ -108,7 +108,7 @@ function show_macro(param) {
       var img = this.thumbnail;
    else
       var img = this;
-   if (!this.isEditDenied()) {
+   if (!this.isEditDenied(user)) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
