@@ -3,5 +3,5 @@
 	<td align="right" valign="top"><% param.reads %></td>
 	<td valign="top"><% this.createtime format="dd.MM.yy" %></td>
 	<td valign="top"><a href="<% this.url %>"><% this.title as="link" %></a></td>
-	<td valign="top"><% this.author %></td>
+	<td valign="top"><% this.creator %></td>
 </tr>
