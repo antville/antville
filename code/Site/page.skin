@@ -38,8 +38,9 @@
 ...&nbsp;<% site.link to="main" text="home" %><br />
 ...&nbsp;<% site.link to="topics" text="topics" %><br />
 ...&nbsp;<% site.link to="images/topics" text="galleries" %><br />
-<% site.navigation for="contributors" %>
-<% site.navigation for="admins" %><br />
+<% site.navigation modules="all" %>
+<% site.navigation for="contributors" modules="all" %>
+<% site.navigation for="admins" modules="all" %><br />
 ...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a>
 </div>
 
