@@ -20,10 +20,10 @@ for (var i=0; i<max; i++) {
 		param1.itemTitle = weblog.title ? encodeXml(weblog.title) : "[untitled antville weblog]";
 		param1.authorName = encodeXml(weblog.creator.name);
 		param1.authorMail = encodeXml(weblog.creator.email);
-		param1.date = weblog.modifytime.format(w3fmt);
+		param1.date = weblog.lastupdate.format(w3fmt);
 		param1.year = now.getYear();
 		var descr = weblog.tagline ? encodeXml("<br />" + weblog.tagline) : "";
-		var date = weblog.modifytime.format("dd.MM.yyyy, HH:mm'h'");
+		var date = weblog.lastupdate.format("dd.MM.yyyy, HH:mm'h'");
 		param1.itemDescription = date + descr;
 		items += renderSkinAsString("rss10Item", param1);
 	}
