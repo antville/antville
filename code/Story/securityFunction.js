@@ -4,7 +4,9 @@
  * @return String Reason for denial (or null if allowed)   
  */   
  
-function isPostDenied(usr) {   
+function isPostDenied(usr) {
+   if (usr.isSysAdmin())
+      return null;
    if (!this.weblog.isOnline() && !this.weblog.isUserMember(usr))   
       return ("This weblog is not public!");   
    else if (!this.weblog.hasDiscussions())   
