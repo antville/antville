@@ -265,7 +265,11 @@ function ping() {
 	var xr = new Remote("http://rpc.weblogs.com/RPC2");
 	var ping = xr.weblogUpdates.ping(this.title, this.href());
 
+	var result = new Object();
+	result.error = ping.result.flerror;
+	result.message = ping.result.message;
+
 	//var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
 
-	return(ping);
+	return(result);
 }
