@@ -1,0 +1,9 @@
+<br>
+<table width="400" border="0" cellspacing="2" cellpadding="0">
+<tr>
+<td width="2" background="<% imageurl name="/dot" %>" nowrap><% image name="/pixel" width="2" %></td>
+</tr>
+<tr>
+<td align="right" nowrap>...&nbsp;<a href="<% param.url %>">older entries</a></td>
+</tr>
+</table>
