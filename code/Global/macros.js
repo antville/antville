@@ -277,7 +277,7 @@ function shortcut_macro(param) {
       if (sc)
          sc.renderContent(param.text);
       else
-         return("[Shortcut \"" + param.name + "\" not found]");
+         return(param.name);
    }
 }
 
