@@ -30,7 +30,7 @@ function updateComment(param) {
       this.modifytime = new Date();
       // send e-mail notification
       if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
-         this.sendNotification("comment", "update");
+         this.site.sendNotification("update", this);
    }
    this.cache.modifytime = new Date();
    this.ipaddress = param.http_remotehost;

@@ -39,7 +39,7 @@ function evalFile(param, creator) {
       throw new Exception("fileCreate", newFile.alias);
    // send e-mail notification
    if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
-      newFile.site.sendNotification("file", newFile.alias);
+      newFile.site.sendNotification("upload", newFile);
    return new Message("fileCreate", newFile.alias);
 }
 

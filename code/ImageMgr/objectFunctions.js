@@ -48,7 +48,7 @@ function evalImg(param, creator) {
       newImg.createThumbnail(param.rawimage, dir);
    // send e-mail notification
    if (path.site && (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted)) 
-      path.site.sendNotification("image", newImg.alias);
+      newImg.site.sendNotification("upload", newImg);
    return new Message("imageCreate", newImg.alias);
 }
 

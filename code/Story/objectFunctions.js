@@ -75,7 +75,7 @@ function evalStory(param, modifier) {
       //   this.sendNotification("story", "create");
       // major update of an already online story
       if (this.online != 0 && content.isMajorUpdate)
-         this.sendNotification("story", "update");
+         this.site.sendNotification("update", this);
    }
 
    this.cache.modifytime = new Date();
@@ -128,7 +128,7 @@ function evalComment(param, creator) {
    this.site.lastupdate = new Date();
    // send e-mail notification
    if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.site.trusted) 
-      c.sendNotification("comment", "create");
+      this.site.sendNotification("create", c);
    var result = new Message("commentCreate");
    result.id = c._id;
    return result;
@@ -227,33 +227,4 @@ function getNavigationName () {
    if (this.title)
       return this.title;
    return (DISPLAY["story"] + " " + this._id);
-}
-
-
-/**
- * Send e-mail notification
- * type: story/comment
- * event: create/update
- */
-function sendNotification(type, event) {
-   if (event == "create")
-      var e = type + event;
-   else
-      var e = "textupdate";
-   var notify = this.site.preferences.getProperty("notify" + e);
-   if (notify == 0)
-      return;
-   var mail = new Mail();
-   mail.setFrom(root.sys_email);
-   for (var i=0; i<this.site.members.size(); i++) {
-      var m = this.site.members.get(i);
-      if (notify == 1 && (m.level == ADMIN || m.level == CONTENTMANAGER))
-         mail.addBCC(m.user.email);
-      if (notify == 2 && (m.level == ADMIN || m.level == CONTENTMANAGER || m.level == CONTRIBUTOR))
-         mail.addBCC(m.user.email);
-   }
-   mail.setSubject(type + " " + event + "d on " + this.site.title + ": " + this.title);
-   mail.setText(renderSkinAsString("notification", {url: this.href()}));
-   mail.queue();
-   return;
 }
