@@ -17,7 +17,7 @@ MAY_EDIT_ANYFILE = 2048;
 MAY_DELETE_ANYFILE= 4096;
 MAY_VIEW_STATS = 8192;
 MAY_EDIT_PREFS = 16384;
-MAY_EDIT_SKINS = 32768;
+MAY_EDIT_LAYOUTS = 32768;
 MAY_EDIT_MEMBERS = 65536;
 
 /**
@@ -29,22 +29,22 @@ SUBSCRIBER = 0;
  * constant containing integer representing permission of contributors
  */
 CONTRIBUTOR = SUBSCRIBER | MAY_ADD_STORY | MAY_ADD_COMMENT | 
-              MAY_ADD_IMAGE | MAY_ADD_FILE | 
+              MAY_ADD_IMAGE | MAY_ADD_FILE |
               MAY_VIEW_STATS;
 
 /**
  * constant containing integer representing permission of content manager
  */
 CONTENTMANAGER = CONTRIBUTOR | MAY_VIEW_ANYSTORY | MAY_EDIT_ANYSTORY |
-                 MAY_DELETE_ANYSTORY | MAY_EDIT_ANYCOMMENT |
-                 MAY_DELETE_ANYCOMMENT | MAY_EDIT_ANYIMAGE |
+                 MAY_DELETE_ANYSTORY | MAY_EDIT_ANYCOMMENT | 
+                 MAY_DELETE_ANYCOMMENT | MAY_EDIT_ANYIMAGE | 
                  MAY_DELETE_ANYIMAGE | MAY_EDIT_ANYFILE | 
                  MAY_DELETE_ANYFILE;
 
 /**
  * constant containing integer representing permission of admins
  */
-ADMIN = CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_SKINS | MAY_EDIT_MEMBERS;
+ADMIN = CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_LAYOUTS | MAY_EDIT_MEMBERS;
 
 ROLES = new Array();
 ROLES[0] = [SUBSCRIBER, "Subscriber"];
@@ -69,7 +69,10 @@ DISPLAY["membermgr"] = "Members";
 DISPLAY["sysmgr"] = "System Management";
 DISPLAY["pollmgr"] = "Polls";
 DISPLAY["skinmgr"] = "Skins";
-DISPLAY["skinset"] = "Skinset";
+DISPLAY["layout"] = "Layout";
+DISPLAY["layoutmgr"] = "Layouts";
+DISPLAY["layoutimagemgr"] = "Images";
+DISPLAY["rootlayoutmgr"] = "Layouts";
 DISPLAY["story"] = "Story";
 
 /**
