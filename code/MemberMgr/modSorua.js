@@ -26,7 +26,8 @@ function modSorua_action() {
       var now = new Date();
       var arr = new Array();
       for (var i in app.data.modSorua) {
-         if (now.valueOf() - app.data.modSorua[i].time.valueOf() < 1000 * 60) 
+         if (app.data.modSorua[i] && app.data.modSorua[i].time &&
+            now.valueOf() - app.data.modSorua[i].time.valueOf() < 1000 * 60)
             arr[i] = app.data.modSorua[i];
       }
       app.data.modSorua = arr;
