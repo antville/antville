@@ -40,7 +40,7 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">or since:</td>
-<td><% root.sys_minMemberSince as="editor" %><br /><span class="small">Here you can either specify the time a user has to be registered or you define a timestamp which means that only users who have registered <i>before</i> are allowed to create a weblog.</span></td>
+<td><% root.sys_minMemberSince as="editor" %><span class="small">&nbsp;(eg. 2002-05-25 00:00)<br />Here you can either specify the time a user has to be registered or you define a timestamp which means that only users who have registered <i>before</i> are allowed to create a weblog.</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Time between two<br>new weblogs:</td>

@@ -13,14 +13,17 @@
 <td nowrap="nowrap"><% input type="password" name="newpwd2" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">eMail:</td>
-<td><% user.email as="editor" %><br>
-<span class="small"><% input type="checkbox" name="publishemail" %>if you select this the eMail-address above might appear public.</span></td>
+<td class="small" nowrap="nowrap">eMail:</td>
+<td><% user.email as="editor" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Link:*</td>
+<td class="small" valign="top" nowrap="nowrap">eMail is visible:</td>
+<td><% input type="checkbox" name="publishemail" %><br /><span class="small">If you select this checkbox your eMail-address will be visible to weblog administrators.</span></td>
+</tr>
+<tr>
+<td class="small" valign="top" nowrap="nowrap">personal URL:</td>
 <td><% user.url as="editor" %><br>
-<span class="small">If you enter a URL or an eMail-address here, your Username will appear as link.</span></td>
+<span class="small">If you enter a URL or an eMail-address here, your username will appear as link next to your stories or comments (an eMail-address will appear as <i>mailto:</i> link).</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
