@@ -260,7 +260,9 @@ function logAccess() {
 		var weblog = path["weblog"];
 		var referrer = req.data.http_referer;
 
-		if (referrer.indexOf(weblog.href()) > -1 || referrer == root.href())
+      // no logging at all if the referrer comes from the same weblog
+      // or the antville-frontpage
+		if (referrer.indexOf(weblog.href()) > -1 || referrer.indexOf(root.href()) > -1)
 			return;
 
 		var storyID = path["story"] ? path["story"]._id : null;
