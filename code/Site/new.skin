@@ -5,7 +5,7 @@
 <tr>
 <td nowrap><table border="0" cellspacing="0" cellpadding="3">
    <tr>
-   <td nowrap><form method="post">Title:</td>
+   <td nowrap><form method="post" action="<% response.action %>">Title:</td>
    <td nowrap><% this.input type="text" name="title" %></td>
    </tr>
    <tr>

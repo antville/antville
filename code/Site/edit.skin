@@ -3,7 +3,7 @@
 <td colspan="2" nowrap><span class="commentHead">&nbsp;</span><br><b>Basic Preferences</b></td>
 </tr>
 <tr>
-<td class="small" nowrap><form method="post">Title:</td>
+<td class="small" nowrap><form method="post" action="<% response.action %>">Title:</td>
 <td nowrap><% this.title as="editor" width="30" %></td>
 </tr>
 <tr>
