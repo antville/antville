@@ -1,6 +1,7 @@
 <p><% linkedpath %></p>
 
-<p>...&nbsp;<% layoutmgr.link to="choose" text="choose a new layout" %></p>
+<p>...&nbsp;<% layoutmgr.link to="create" text="create a new layout" %><br />
+...&nbsp;<% layoutmgr.link to="import" text="import a layout" %></p>
 
 <p>Below are the existing layouts for <% context.title %>:</p>
 
