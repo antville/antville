@@ -6,7 +6,7 @@ function sysmgr_count_macro(param) {
    if (!param || !param.what)
       return;
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.what == "stories")
       res.write(this.stories.size());
@@ -24,7 +24,7 @@ function sysmgr_count_macro(param) {
 
 function sysmgr_statusflags_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (this.trusted)
       res.write("<span class=\"flagltgreen\" nowrap>TRUSTED</span>");
@@ -40,7 +40,7 @@ function sysmgr_statusflags_macro(param) {
 
 function sysmgr_editlink_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin() || req.data.edit == this.name || session.user == this)
+   if (!session.user.sysadmin || req.data.edit == this.name || session.user == this)
       return;
    param.linkto = "users";
    param.urlparam = "item=" + this.name + "&action=edit";
@@ -66,7 +66,7 @@ function sysmgr_username_macro(param) {
 
 function sysmgr_registered_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    fmt=param.format ? param.format : "dd.MM.yyyy HH:mm";
    res.write(this.registered.format(fmt));
@@ -78,7 +78,7 @@ function sysmgr_registered_macro(param) {
 
 function sysmgr_lastvisit_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (this.lastvisit) {
       fmt=param.format ? param.format : "dd.MM.yyyy HH:mm";
@@ -92,7 +92,7 @@ function sysmgr_lastvisit_macro(param) {
 
 function sysmgr_trusted_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");
@@ -107,7 +107,7 @@ function sysmgr_trusted_macro(param) {
 
 function sysmgr_blocked_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");
@@ -122,7 +122,7 @@ function sysmgr_blocked_macro(param) {
 
 function sysmgr_sysadmin_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");

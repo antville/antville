@@ -6,7 +6,7 @@ function sysmgr_count_macro(param) {
    if (!param || !param.what)
       return;
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.what == "stories")
       res.write(this.allstories.size());
@@ -24,7 +24,7 @@ function sysmgr_count_macro(param) {
 
 function sysmgr_statusflags_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (this.trusted)
       res.write("<span class=\"flagltgreen\" nowrap>TRUSTED</span>");
@@ -42,7 +42,7 @@ function sysmgr_statusflags_macro(param) {
 
 function sysmgr_editlink_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin() || req.data.item == this.alias)
+   if (!session.user.sysadmin || req.data.item == this.alias)
       return;
    param.linkto = "sites";
    param.urlparam = "item=" + this.alias + "&action=edit";
@@ -60,7 +60,7 @@ function sysmgr_editlink_macro(param) {
 
 function sysmgr_deletelink_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin() || req.data.item == this.alias)
+   if (!session.user.sysadmin || req.data.item == this.alias)
       return;
    param.linkto = "sites";
    param.urlparam = "item=" + this.alias + "&action=remove";
@@ -79,7 +79,7 @@ function sysmgr_deletelink_macro(param) {
 
 function sysmgr_creator_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    res.write(this.creator.name);
 }
@@ -90,7 +90,7 @@ function sysmgr_creator_macro(param) {
 
 function sysmgr_trusted_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");
@@ -105,7 +105,7 @@ function sysmgr_trusted_macro(param) {
 
 function sysmgr_blocked_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array("no","yes");

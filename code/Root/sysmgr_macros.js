@@ -30,7 +30,7 @@ function sys_url_macro(param) {
 
 function sys_email_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       param["type"] = "text";
@@ -46,7 +46,7 @@ function sys_email_macro(param) {
 
 function sys_allowFiles_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputCheckbox(this.createInputParam("sys_allowFiles",param));
@@ -61,7 +61,7 @@ function sys_allowFiles_macro(param) {
 
 function sys_limitNewSites_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array("all registered users","only trusted users","---------");
@@ -77,7 +77,7 @@ function sys_limitNewSites_macro(param) {
 
 function sys_minMemberAge_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array();
@@ -97,7 +97,7 @@ function sys_minMemberAge_macro(param) {
  */
 function sys_minMemberSince_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       if (this.sys_minMemberSince)
@@ -117,7 +117,7 @@ function sys_minMemberSince_macro(param) {
 
 function sys_waitAfterNewSite_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array();
@@ -138,7 +138,7 @@ function sys_waitAfterNewSite_macro(param) {
 
 function sys_enableAutoCleanup_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputCheckbox(this.createInputParam("sys_enableAutoCleanup",param));
@@ -153,7 +153,7 @@ function sys_enableAutoCleanup_macro(param) {
 
 function sys_startAtHour_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var options = new Array();
@@ -171,7 +171,7 @@ function sys_startAtHour_macro(param) {
 
 function sys_blockPrivateSites_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputCheckbox(this.createInputParam("sys_blockPrivateSites",param));
@@ -186,7 +186,7 @@ function sys_blockPrivateSites_macro(param) {
 
 function sys_blockWarningAfter_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputText(this.createInputParam("sys_blockWarningAfter",param));
@@ -201,7 +201,7 @@ function sys_blockWarningAfter_macro(param) {
 
 function sys_blockAfterWarning_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputText(this.createInputParam("sys_blockAfterWarning",param));
@@ -216,7 +216,7 @@ function sys_blockAfterWarning_macro(param) {
 
 function sys_deleteInactiveSites_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputCheckbox(this.createInputParam("sys_deleteInactiveSites",param));
@@ -231,7 +231,7 @@ function sys_deleteInactiveSites_macro(param) {
 
 function sys_deleteWarningAfter_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputText(this.createInputParam("sys_deleteWarningAfter",param));
@@ -246,7 +246,7 @@ function sys_deleteWarningAfter_macro(param) {
 
 function sys_deleteAfterWarning_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       renderInputText(this.createInputParam("sys_deleteAfterWarning",param));
@@ -260,7 +260,7 @@ function sys_deleteAfterWarning_macro(param) {
  */
 
 function localechooser_macro(param) {
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    renderLocaleChooser(this.getLocale());
    return;
@@ -270,7 +270,7 @@ function localechooser_macro(param) {
  * macro renders a chooser for the longdateformat
  */
 function longdateformat_macro(param) {
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    this.renderDateformatChooser("long");
 }
@@ -279,7 +279,7 @@ function longdateformat_macro(param) {
  * macro renders a chooser for the shortdateformat
  */
 function shortdateformat_macro(param) {
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    this.renderDateformatChooser("short");
 }
@@ -288,7 +288,7 @@ function shortdateformat_macro(param) {
  * macro renders the alias of the frontpage weblog defined
  */
 function sys_frontSite_macro(param) {
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
       var inputParam = new Object();

@@ -5,7 +5,7 @@
 
 function sysmgr_typeflag_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (this.type == "site")
       res.write("<span class=\"flagdkgreen\" nowrap>SITE</span>");
@@ -22,7 +22,7 @@ function sysmgr_typeflag_macro(param) {
 
 function sysmgr_object_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (!this.object)
       return;
@@ -35,7 +35,7 @@ function sysmgr_object_macro(param) {
 
 function sysmgr_logentry_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    res.write(this.logentry);
 }
@@ -46,7 +46,7 @@ function sysmgr_logentry_macro(param) {
 
 function sysmgr_sysadmin_macro(param) {
    // this macro is allowed just for sysadmins
-   if (!isUserSysAdmin())
+   if (!session.user.sysadmin)
       return;
    if (this.sysadmin)
       this.sysadmin.name_macro(param);

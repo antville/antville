@@ -4,12 +4,12 @@
  */
 
 function isAddSiteDenied(usr) {
-   if (isUserSysAdmin())
+   if (session.user.sysadmin)
       return null;
    if (root.sys_limitNewSites == 2)
       return (getError("siteCreateOnlyAdmins"));
 
-   if (!isUserTrusted()) {
+   if (!session.user.trusted) {
       if (root.sys_limitNewSites == 1)
          return (getError("siteCreateNotAllowed"));
       else if (!root.sys_limitNewSites) {
