@@ -1,4 +1,4 @@
 <tr>
 <td><input type="radio" name="username" value="<% param.name %>"></td>
-<td><% param.name %> (<% param.email %>)</td>
+<td><% param.name %>&nbsp;<% param.description %></td>
 </tr>

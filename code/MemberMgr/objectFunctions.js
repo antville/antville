@@ -189,7 +189,7 @@ function searchUser(key) {
    result.list = "";
    if (!key) {
       // no keyword to search for
-      result.message = "Please enter a part of the name or email-address!";
+      result.message = "Please enter a part of the name!";
       result.error = true;
       return (result);
    }
@@ -200,7 +200,7 @@ function searchUser(key) {
       result.error = true;
       return (result);
    }
-   var query = "select USERNAME,EMAIL from USER ";
+   var query = "select USERNAME,URL from USER ";
    query += "where USERNAME like '%" + key + "%' order by USERNAME asc";
 	var searchResult = dbConn.executeRetrieval(query);
 	var error = dbConn.getLastError();
@@ -213,7 +213,9 @@ function searchUser(key) {
    while (searchResult.next() && result.found < 100) {
       var sp = new Object();
       sp.name = searchResult.getColumnItem("USERNAME");
-      sp.email = searchResult.getColumnItem("EMAIL");
+      var url = searchResult.getColumnItem("URL");
+      if (url)
+         sp.description = "(url: <a href=\"" + url + "\">" + url + "</a>)";
       result.list += this.renderSkinAsString("searchresultitem",sp);
       result.found++;
    }
@@ -307,4 +309,3 @@ function deleteMember(member,usr) {
    }
    return (result);
 }
-
