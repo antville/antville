@@ -64,7 +64,6 @@ function renderMarkupPart(name, attr) {
       delete attr.style;
     }
     delete attr.as;
-    var attributes = "";
     // creating the attribute string
     for (var i in attr) {
       if (!attr[i])
