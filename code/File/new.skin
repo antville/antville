@@ -1,23 +1,20 @@
 <table border="0" width="400" cellspacing="0" cellpadding="3">
-<tr>
-<td colspan="2">Please specify the name of the file. Using this name you will be able to insert it i.e. into a story by typing <pre>&lt;% file name="nameofthefile" %&gt;</pre></td>
-</tr>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <tr>
-<td class="small" nowrap="nowrap">Name:</td>
-<td nowrap="nowrap"><% this.alias as="editor" %></td>
+<td valign="top" class="small" nowrap="nowrap">Name:</td>
+<td><% input name="alias" size="25" %><br /><span class="small">If you do not specify a name, Antville will create one based on the name of the file you uploaded.</small></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Description:</td>
-<td nowrap="nowrap"><% this.description as="editor" width="25" %></td>
+<td nowrap="nowrap"><% input type="textarea" name="description" cols="25" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">File:</td>
-<td nowrap="nowrap"><% this.input type="file" name="rawfile" width="10" %></td>
+<td nowrap="nowrap"><% input type="file" name="rawfile" width="10" %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% this.input type="button" name="save" value="save" %>&nbsp;<% this.input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
 </tr>
 </form>
 </table>
