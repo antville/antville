@@ -8,10 +8,10 @@ function topiclist_macro(param) {
       var topic = this.get(i);
       // check if topic has at least one story that
       // user is allowed to see
-      var render = true;
+      var render = false;
       for (var j=0;j<topic.size();j++) {
-         if (topic.get(j).isViewDenied(session.user))
-            render = false;
+         if (!topic.get(j).isViewDenied(session.user))
+            render = true;
       }
       if (!render)
          continue;
