@@ -3,7 +3,6 @@
 
 <p>antville.org is a weblog-hosting service based on this application. the service was established to demonstrate the power of <%link to=http://helma.org/about text=Helma %> and antville (and because we like to use our own software ;-). It's free of charge, but please read and agree to the <% link to="http://project.antville.org/topics/disclaimer" text="terms of service" %> before you're <% root.link to="new" text="creating a weblog " %> on antville.org.</p>
 
-<p>Until now, <% root.weblogcounter %> Weblogs were created, and the last updated weblogs are</p>
-<ul>
-<% webloglist limit="25" %>
-</ul>
+<p>Number of weblogs hosted here: <% root.weblogcounter count="all" %><br>
+Public accessible weblogs: <% root.weblogcounter %><br>
+<% webloglist limit="25"  prefix="Last updated weblogs: <ul>" suffix="</ul>" %></p>
