@@ -144,6 +144,13 @@ function evalComment(param,story,creator) {
       c.editableby = null;
       c.ipaddress = param.http_remotehost;
       this.add(c);
+      // also add to story.comments since it has 
+      // cachemode set to aggressive and wouldn't refetch
+      // its child collection index otherwise
+      if (this._prototype == "story")
+         this.comments.add(c);
+      else
+         this.story.comments.add(c);
       this.site.lastupdate = new Date();
       result = getConfirm("commentCreate");
    }
@@ -159,7 +166,13 @@ function evalComment(param,story,creator) {
 function deleteComment(currComment) {
    for (var i=currComment.size();i>0;i--)
       this.deleteComment(currComment.get(i-1));
-   if (this.comments.remove(currComment))
+   // also remove from comment's parent since it has 
+   // cachemode set to aggressive and wouldn't refetch
+   // its child collection index otherwise
+   var p = currComment.parent;
+   if (p == null)
+      p = currComment.story;
+   if (p.remove(currComment) && this.comments.remove(currComment))
       return(getMsg("confirm","commentDelete"));
    else
       return(getMsg("error","commentDelete"));
