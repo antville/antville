@@ -9,7 +9,7 @@ function content_macro(param) {
       // this is a first trial to add a title like
       // "Re: title of previous posting" to a new posting
       // (works only if autoresponse="true" is set in the macro)
-      if (param.autoresponse && param.part == "title" && !this.content) {
+      if (param.autoresponse == "true" && param.part == "title" && !this.content) {
          if (path.comment && path.comment.title)
             param.value = "Re: " + path.comment.title;
          else if (path.story && path.story.title)
@@ -21,10 +21,9 @@ function content_macro(param) {
          param.value = unescape(req.data[param.part]);
       param.name = "content_" + param.part;
       delete(param.part);
-      if (!param.height || parseInt(param.height,10) == 1) {
-         param.value = encodeForm(param.value ? param.value : "");
+      if (!param.height || parseInt(param.height,10) == 1)
          renderInputText(param);
-      } else 
+      else
          renderInputTextarea(param);
    } else if (param.as == "image") {
       var part = this.getContentPart (param.part);
