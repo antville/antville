@@ -185,3 +185,11 @@ This skin is used to display the list of images contained in the image manager.<
 <li><a name="imagepreview"></a><% skinmgr.link to="edit" urlparam="proto=image&amp;name=preview" text="image preview" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="image" name="preview" %>)</span><br />
 This skin defines the way an image is displayed in the image manager's list of images.</li>
 </ul>
+
+<!-- various skins // -->
+
+<p><b>Various additional skins</b></p>
+<ul>
+<li><a name="siterobots"></a><% skinmgr.link to="edit" urlparam="proto=site&amp;name=robots" text="robots.txt" %>&nbsp;<span class="small">(<% skinmgr.skinstatus proto="site" name="robots" %>)</span><br />
+This skin is used for the "robots.txt" that controls which search engine spiders are allowed to index which pages of your weblog.</li>
+</ul>
