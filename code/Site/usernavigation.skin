@@ -1,0 +1,3 @@
+...&nbsp;<% site.link to="main" text="home" %><br />
+...&nbsp;<% site.link to="topics" text="topics" %><br />
+...&nbsp;<% site.link to="images/topics" text="galleries" %><br />
