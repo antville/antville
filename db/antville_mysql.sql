@@ -199,13 +199,14 @@ create table AV_LAYOUT (
    LAYOUT_F_USER_CREATOR mediumint(10),
    LAYOUT_F_USER_MODIFIER mediumint(10),
    LAYOUT_SHAREABLE tinyint(1),
+   LAYOUT_ISIMPORT tinyint(1),
    primary key (LAYOUT_ID)
 );
 
 # create an initial layout object
 alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null auto_increment;
 insert into AV_LAYOUT (LAYOUT_ALIAS, LAYOUT_TITLE, LAYOUT_PREFERENCES, LAYOUT_DESCRIPTION, LAYOUT_SHAREABLE)
-values ('default', 'antville.org', '<?xml version="1.0" encoding="UTF-8"?>\r\n<xmlroot xmlns:hop="http://www.helma.org/docs/guide/features/database">\r\n  <hopobject id="t234" name="HopObject" prototype="HopObject" created="1069430202375" lastModified="1069430202375">\r\n    <smallcolor>666666</smallcolor>\r\n    <textcolor>000000</textcolor>\r\n    <vlinkcolor>ff3300</vlinkcolor>\r\n    <titlecolor>cc0000</titlecolor>\r\n    <smallsize>11px</smallsize>\r\n    <alinkcolor>ff0000</alinkcolor>\r\n    <textsize>13px</textsize>\r\n    <titlesize>15px</titlesize>\r\n    <linkcolor>ff3300</linkcolor>\r\n    <smallfont>Verdana, Arial, Helvetica, sans-serif</smallfont>\r\n    <textfont>Verdana, Helvetica, Arial, sans-serif</textfont>\r\n    <titlefont>Verdana, Helvetica, Arial, sans-serif</titlefont>\r\n    <bgcolor>ffffff</bgcolor>\r\n  </hopobject>\r\n</xmlroot>', 'The layout of antville.org', 1);
+values ('default', 'antville.org', '<?xml version="1.0" encoding="UTF-8"?>\r\n<xmlroot xmlns:hop="http://www.helma.org/docs/guide/features/database">\r\n  <hopobject id="t234" name="HopObject" prototype="HopObject" created="1069430202375" lastModified="1069430202375">\r\n    <smallcolor>959595</smallcolor>\r\n    <textcolor>000000</textcolor>\r\n    <vlinkcolor>ff4040</vlinkcolor>\r\n    <titlecolor>d50000</titlecolor>\r\n    <smallsize>11px</smallsize>\r\n    <alinkcolor>ff4040</alinkcolor>\r\n    <textsize>13px</textsize>\r\n    <titlesize>15px</titlesize>\r\n    <linkcolor>ff4040</linkcolor>\r\n    <smallfont>Verdana, Arial, Helvetica, sans-serif</smallfont>\r\n    <textfont>Verdana, Helvetica, Arial, sans-serif</textfont>\r\n    <titlefont>Verdana, Helvetica, Arial, sans-serif</titlefont>\r\n    <bgcolor>ffffff</bgcolor>\r\n  </hopobject>\r\n</xmlroot>', 'The layout of antville.org', 1);
 alter table AV_LAYOUT change column LAYOUT_ID LAYOUT_ID mediumint(10) not null;
 # mark all default images as layout images of default layout
 select @layoutID:=LAYOUT_ID from AV_LAYOUT where LAYOUT_ALIAS = 'default' and LAYOUT_F_SITE is null and LAYOUT_F_LAYOUT_PARENT is null;
@@ -220,6 +221,7 @@ create table AV_SKIN (
    SKIN_F_LAYOUT mediumint(10),
    SKIN_PROTOTYPE tinytext,
    SKIN_NAME tinytext,
+   SKIN_ISCUSTOM tinyint(1),
    SKIN_SOURCE mediumtext,
    SKIN_CREATETIME datetime,
    SKIN_F_USER_CREATOR mediumint(10),
@@ -354,6 +356,7 @@ create table AV_SITE (
    SITE_TITLE tinytext,
    SITE_ALIAS tinytext,
    SITE_EMAIL tinytext,
+   SITE_F_LAYOUT mediumint(10),
    SITE_ISONLINE tinyint(1),
    SITE_ISBLOCKED tinyint(1),
    SITE_ISTRUSTED tinyint(1),
