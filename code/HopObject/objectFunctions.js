@@ -1,23 +1,16 @@
 /**
  * Return a name for the object to be used in the
- * global linkedpath macro. Not the cleanest way to do
- * this (lots of heuristics) but a simple one.
- *
+ * global linkedpath macro
+ * this function is overwritten by day-objects!
+ * @see day.getNavigationName()
+ * @see story.getNavigationName()
+ * @see topic.getNavigationName()
  */
 function getNavigationName () {
    var proto = this._prototype;
-   if (proto == "site")
-      return "Home";
-   else if (proto == "topicmgr")
-      return "Topics";
-   else if (proto == "story" || proto == "comment")
-      if (this.title)
-         return this.title;
-      else
-         return proto;
-   else if (this.groupname)
-      return this.groupname;
-   return this._name;
+   if (DISPLAY[proto])
+      return DISPLAY[proto];
+   return this.__name__;
 }
 
 
