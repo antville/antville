@@ -164,8 +164,8 @@ function sendPwd(email) {
       mailParam.timestamp = formatTimestamp(now);
       mailParam.text = pwdList;
       mail.setText(this.renderSkinAsString("pwdmail",mailParam));
-      var sendResult = mail.send();
-      if (sendResult.status)
+      mail.send();
+      if (mail.status)
          result = getError("emailSend");
       else
          result = getConfirm("mailSendPassword");
