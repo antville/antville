@@ -157,5 +157,5 @@ function blocked_action() {
 function notfound_action() {
    res.data.title = root.getSysTitle() + " - 404 - not found";
    res.data.body = "<p><b>Sorry!</b></p><p>URL /" + req.path + " was not found on this server!</p>";
-   (path.site ? path.site : root).renderSkin("page");
+   (path.site && path.site.online ? path.site : root).renderSkin("page");
 }
