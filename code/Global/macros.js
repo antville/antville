@@ -232,7 +232,7 @@ function topiclist_macro(param) {
 function username_macro(param) {
    if (!session.user)
       return;
-   if (session.user.url)
+   if (session.user.url && param.as == "link")
       Html.link(session.user.url, session.user.name);
    else
       res.write(session.user.name);
