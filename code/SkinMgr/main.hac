@@ -1,9 +1,10 @@
 autoLogin();
+checkIfLoggedIn(this.href(req.action));
 
-var deny = this.isEditDenied(user);
+var deny = this.isDenied(user);
 if (deny) {
    res.message = deny;
-   res.redirect(user.cache.referer ? path.weblog.members.href("login") : path.weblog.href());
+   res.redirect(path.weblog.href());
 }
 
 res.skin = "weblog.page";
