@@ -1,1 +1,1 @@
-<% param.editor %> <span onclick="openColorPicker('<% param.name %>', '<% param.text %>');" id="cp2_<% param.name %>" style="background-color: <% param.color %>; border: 1px solid #cccccc;"><% image name="/pixel" width="13" height="13"  title="Click to pick a color" %></span>
+<% param.editor %> <img src="<% image as="url" name="/pixel" %>" width="13" height="13" title="Click to pick <% param.text %> color" onclick="openColorPicker('<% param.name %>', '<% param.text %>');" id="cp2_<% param.name %>" style="background-color: <% param.color %>; border: 1px solid #cccccc;" />
