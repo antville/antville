@@ -1,2 +1,0 @@
-res.message = this.ping().message;
-res.redirect(this.href());
