@@ -297,32 +297,32 @@ function logAccess() {
  */
  
 function pingUpdatedWeblogs() {
-	var now = new Date();
-	var period = 1000 * 60 * 60; // one hour
+   app.__app__.logEvent("Notifying weblogs.com for updated weblogs...");
+   // var period = 1000 * 60 * 60; // one hour
 
-	var c = getDBConnection("antville");
-	var error = c.getLastError();
-	if (error) {
-		writeln("Error establishing DB connection: " + error);
-		return;
-	}
+   var c = getDBConnection("antville");
+   var error = c.getLastError();
+   if (error) {
+      app.__app__.logEvent("Error establishing DB connection: " + error);
+      return;
+   }
 
-	var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and LASTUPDATE > LASTPING;";
-	var rows = c.executeRetrieval(query);
-	var error = c.getLastError();
-	if (error) {
-		writeln("Error executing SQL query: " + error);
-		return;
-	}
+   var query = "select ID from WEBLOG where ISONLINE = 1 and ENABLEPING = 1 and LASTUPDATE > LASTPING;";
+   var rows = c.executeRetrieval(query);
+   var error = c.getLastError();
+   if (error) {
+      app.__app__.logEvent("Error executing SQL query: " + error);
+      return;
+   }
 
-	while (rows.next()) {
-		var id = rows.getColumnItem("ID");
-		var blog = root.get(id);
-		blog.ping();
-	}
+   while (rows.next()) {
+      var id = rows.getColumnItem("ID");
+      var blog = root.get(id);
+      blog.ping();
+   }
 
-	rows.release();
-	return;
+   rows.release();
+   return;
 }
 
 
