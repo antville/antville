@@ -348,7 +348,7 @@ function loginstatus_macro(param) {
 function navigation_macro(param) {
    if (this.isUserAdmin())
       this.renderSkin("adminnavigation");
-   else if (this.isUserContributor() || this.userMayContrib())
+   else if (this.isUserContributor())
       this.renderSkin("contribnavigation");
    else
       this.renderSkin("usernavigation");
@@ -365,7 +365,7 @@ function storylist_macro() {
    if (this.size() > 0) {
       var idx = 0;
       var days = parseInt(this.days) ? parseInt(this.days) : 2;
-      if (req.data.show) {
+      if (req.data.show && this.showArchive()) {
          var currGroup = this.get(req.data.show);
          if (currGroup) {
             idx = this.contains(currGroup);
@@ -395,6 +395,9 @@ function storylist_macro() {
  */
 
 function calendar_macro(param) {
+   // do nothing if archive of this weblog is disabled
+   if (!this.showArchive())
+      return;
    // define variables needed in this function
    var tsParam = new HopObject();
    var calParam = new HopObject();
