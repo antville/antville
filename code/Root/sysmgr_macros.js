@@ -329,11 +329,3 @@ function sys_allowEmails_macro(param) {
      res.write(this.sys_allowEmails);
   return;
 }
-
-/**
- * proxy-macro for layout chooser
- */
-function sys_layoutchooser_macro(param) {
-   param.selected = this.sys_layout;
-   this.layouts.layoutchooser_macro(param);
-}
