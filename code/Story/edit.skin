@@ -10,22 +10,20 @@
 </tr>
 <tr>
 <td><fieldset><legend class="small">Options</legend>
-<p>Publish in topics</p>
+<p><% story.addtofront as="editor" checked="checked" %>&nbsp;Display this story on the front page</p>
 
+Add this story to a topic<br />
 <table style="margin-left:15px;">
 <tr>
 <td width="48%" class="small">Choose a topic...<br />
 <% story.topicchooser %></td>
 <td valign="top" width="4%">&nbsp;</td>
-<td valign="top" width="48%" class="small">...or create a new one.<br /> 
+<td valign="top" width="48%" class="small">...or enter a new one<br /> 
 <input type="text" name="topic" value="<% request.topic %>" /></td>
-</tr>
-<tr>
-<td colspan="3" class="small"><% story.justintopic as="editor" %>&nbsp;Publish in topics only</td>
 </tr>
 </table>
 
-<p>Story is editable by<br />
+<p>This story is editable by<br />
 <span class="small"><% story.editableby as="editor" %></span></p>
 <p><% story.discussions as="editor" %>&nbsp;Allow comments</p></fieldset></td>
 </tr>

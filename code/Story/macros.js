@@ -487,12 +487,27 @@ function backlinks_macro(param) {
  * macro renders a checkbox whether the story is just published in a topic or also in weblog
  */
 function justintopic_macro(param) {
-  if (param.as == "editor") {
-    if (this.online=="1")
-      param.value="1";
-    param.name = "justintopic";
-    renderInputCheckbox(param);
-  } 
+   if (param.as == "editor") {
+      if (this.online == "1")
+         param.value = "1";
+      param.name = "justintopic";
+      renderInputCheckbox(param);
+   }
+   return;
+}
+
+
+/**
+ * macro renders a checkbox whether the story is published on the weblog's front page
+ */
+function addtofront_macro(param) {
+   if (param.as == "editor") {
+      if (this.online == "1")
+         delete param.checked;
+      param.name = "addtofront";
+      renderInputCheckbox(param);
+   }
+   return;
 }
 
 

@@ -65,14 +65,14 @@ function evalNewStory(s,param,creator) {
    // check the online-status of the story
    var status = parseInt(param.online,10);
    if (param.publish || param.submit == "publish")
-      status = param.justintopic ? 1 : 2;
+      status = param.addtofront ? 2 : 1;
    else if ((param.save || param.submit == "save") && isNaN(status))
       status = 0;
    if (isNaN(status))
       result = getError("storyPublish");
    else if (status == 1 && !s.topic)
       result = getError("storyTopicMissing");
-   else
+   //else
       s.online = status;
    // if everything ok, so proceed with adding the story
    if (!result) {
