@@ -18,40 +18,38 @@ function evalFile(param,creator) {
          result = getError("fileNoUpload");
       } else {
          var newFile = new file();
-         // store extension of uploaded file in variable
-         if (param.rawfile.name.lastIndexOf(".") > 0)
-            var fileExt = param.rawfile.name.substring(param.rawfile.name.lastIndexOf("."));
-         // first, check if alias already exists
+         // if no alias given try to determine it
          if (!param.alias)
-            result = getError("fileNameMissing");
-         else if (this.get(param.alias))
-            result = getError("fileExisting");
+            param.alias = buildAliasFromFile(param.rawfile);
          else if (!isClean(param.alias))
             result = getError("noSpecialChars");
-         else if (!fileExt)
-            result = getError("fileInvalidExtension");
-         else {
-            // store properties necessary for file-creation
-            newFile.alias = param.alias;
-            newFile.site = this._parent;
-            newFile.alttext = param.alttext;
-            newFile.name = param.alias + fileExt;
-            newFile.filesize = param.rawfile.contentLength;
-            newFile.mimetype = param.rawfile.contentType;
-            newFile.description = param.description;
-            var saveTo = getProperty("filePath") + this._parent.alias + "/";
-            // any errors?
-            if (param.rawfile.writeToFile(saveTo,newFile.name)) {
-               // the file is on disk, so we add the file-object
-               newFile.creator = creator;
-               newFile.createtime = new Date();
-               if (this.add(newFile)) {
-                  result = getConfirm("fileCreate",newFile.alias);
-               } else
-                  result = getError("fileCreate",newFile.alias);
-            } else
-               result = getError("fileSave");
+         // check if alias is already in use
+         if (this.get(param.alias)) {
+            var nr = 1;
+            while (this.get(param.alias + nr))
+               nr++;
+            param.alias = param.alias + nr;
          }
+         // store properties necessary for file-creation
+         newFile.alias = param.alias;
+         newFile.site = this._parent;
+         newFile.alttext = param.alttext;
+         newFile.name = param.alias;
+         newFile.filesize = param.rawfile.contentLength;
+         newFile.mimetype = param.rawfile.contentType;
+         newFile.description = param.description;
+         var saveTo = getProperty("filePath") + this._parent.alias + "/";
+         newFile.name = param.rawfile.writeToFile(saveTo,newFile.name);
+         if (newFile.name) {
+            // the file is on disk, so we add the file-object
+            newFile.creator = creator;
+            newFile.createtime = new Date();
+            if (this.add(newFile)) {
+               result = getConfirm("fileCreate",newFile.alias);
+            } else
+               result = getError("fileCreate",newFile.alias);
+         } else
+            result = getError("fileSave");
       }
    }
    return (result);
