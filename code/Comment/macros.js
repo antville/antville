@@ -34,10 +34,8 @@ function text_macro(param) {
    else {
       if (!param.limit)
          this.renderSkin(createSkin(format(activateLinks(this.text))));
-      else {
+      else
          this.renderTextPreview(param.limit);
-         res.write("&nbsp;...");
-      }
    }
    res.write(param.suffix);
 }
