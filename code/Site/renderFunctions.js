@@ -72,12 +72,15 @@ function renderStorylist(day) {
       // the one we're looking for.
       for (var i=0; i<size; i++) {
          if (startdayString >= this.get(i).groupname) {
+            this.get(i).prefetchChildren();
             idx = i;
             break;
          }
       }
    }
    var days = parseInt(this.days,10) ? parseInt(this.days,10) : 2;
+   days = Math.min (days, 14);  // render 14 days max
+   this.prefetchChildren(idx, days);
 
    // only display "newer stories" if we are actually browsing the archive, 
    // and the day parameter has been explicitly specified, 
