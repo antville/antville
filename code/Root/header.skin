@@ -1,2 +1,3 @@
-<P><FONT SIZE="+3"><B>Antville</B>&nbsp;</FONT><% response.message %></P>
+<P><FONT SIZE="+3"><B>Antville</B>&nbsp;</FONT><FONT SIZE="-1" COLOR="#FF0000"><% response.message %></FONT></P>
+<% now prefix="here it is " format="EEEE, dd.MM.yyyy HH:mm" suffix="<BR>" %>
 <% root.loginstatus %>
