@@ -20,7 +20,7 @@ function renderStorylist(idx,show) {
    if (idx > 0) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + Math.max(0, idx-10) + (show ? "&show=" + show : "");
-      sp.text = "older stories";
+      sp.text = "newer stories";
       res.data.prevpage = renderSkinAsString("prevpagelink",sp);
    }
 
@@ -46,7 +46,7 @@ function renderStorylist(idx,show) {
    if (idx < size) {
       var sp = new Object();
       sp.url = this.href() + "?start=" + idx + (show ? "&show=" + show : "");
-      sp.text = "newer stories";
+      sp.text = "older stories";
       res.data.nextpage = renderSkinAsString("nextpagelink",sp);
    }
    return;
