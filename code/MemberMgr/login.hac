@@ -2,15 +2,23 @@ var parent = setLayout();
 
 res.message = "Please enter your login name and password:";
 
-if (req.data.name && req.data.password)
-   this.evalLogin();
+if (req.data.submit == "login" || req.data.login) {
+   var result = this.evalLogin(req.data.name,req.data.password);
+   res.message = result.message;
+   if (!result.error) {
+      if (user.cache.referer) {
+         var url = user.cache.referer;
+         user.cache.referer = null;
+      } else
+         var url = parent.href();
+      res.redirect(url);
+   }
+}
 
 if (!user.cache.referer && req.data.http_referer)
    user.cache.referer = req.data.http_referer;
 
-res.title = "Anville Member Login";
+res.data.title = "Anville Member Login";
 
-res.head = parent.renderSkinAsString("javascript");
-res.head += parent.renderSkinAsString("style");
+res.data.body = this.renderSkinAsString("login");
 
-res.body = this.renderSkinAsString("login");
