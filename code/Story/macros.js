@@ -48,7 +48,7 @@ function online_macro(param) {
          res.write("offline");
       else if (parseInt(this.online,10) < 2) {
          res.write("online in ");
-         openLink(this.weblog.topics.get(this.topic).href());
+         openLink(this.site.topics.get(this.topic).href());
          res.write(this.topic);
          closeLink();
       } else
@@ -87,19 +87,27 @@ function modifytime_macro(param) {
 
 /**
  * macro renders the name of the author
+ * !!! left for backwards-compatibility !!!
  */
 
 function author_macro(param) {
-   if (!this.author)
-      return;
-   if (param.as == "link" && this.author.url) {
-      openLink(this.author.url);
-      res.write(this.author.name);
-      closeLink();
-   } else
-      res.write(this.author.name);
+   this.creator_macro(param);
 }
 
+/**
+ * macro renders the name of the creator
+ */
+
+function creator_macro(param) {
+   if (!this.creator)
+      return;
+   if (param.as == "link" && this.creator.url) {
+      openLink(this.creator.url);
+      res.write(this.creator.name);
+      closeLink();
+   } else
+      res.write(this.creator.name);
+}
 /**
  * macro renders the name of the modifier
  */
@@ -131,8 +139,8 @@ function url_macro(param) {
 function editlink_macro(param) {
    if (!this.isEditDenied(session.user)) {
       openLink(this.href("edit"));
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "edit");
       closeLink();
@@ -141,14 +149,14 @@ function editlink_macro(param) {
 
 /**
  * macro rendering a link to delete
- * if user is author of this story
+ * if user is creator of this story
  */
 
 function deletelink_macro(param) {
    if (!this.isDeleteDenied(session.user)) {
       openLink(this.href("delete"));
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image),param);
       else
          res.write(param.text ? param.text : "delete");
       closeLink();
@@ -165,8 +173,8 @@ function onlinelink_macro(param) {
       param.linkto = "edit";
       param.urlparam = "set=" + (this.isOnline() ? "offline" : "online");
       openMarkupElement("a",this.createLinkParam(param));
-      if (param.image && this.weblog.images.get(param.image))
-         this.weblog.renderImage(this.weblog.images.get(param.image),param);
+      if (param.image && this.site.images.get(param.image))
+         this.site.renderImage(this.site.images.get(param.image),param);
       else
          res.write(this.isOnline() ? "set offline" : "set online");
       closeMarkupElement("a");
@@ -181,8 +189,8 @@ function viewlink_macro(param) {
    if (this.isViewDenied(session.user))
       return;
    openLink(this.href());
-   if (param.image && this.weblog.images.get(param.image))
-      this.weblog.renderImage(this.weblog.images.get(param.image),param);
+   if (param.image && this.site.images.get(param.image))
+      this.site.renderImage(this.site.images.get(param.image),param);
    else
       res.write(param.text ? param.text : "view");
    closeLink();
@@ -191,7 +199,7 @@ function viewlink_macro(param) {
 /**
  * macro rendering link to comments
  * DEPRECATED
- * this is just left for compatibility with existing weblogs
+ * this is just left for compatibility with existing sites
  * use a simple like i.e. <% story.link to="comment" text="place your comment" %> instead
  */
 
@@ -209,7 +217,7 @@ function commentlink_macro(param) {
  */
 
 function commentcounter_macro(param) {
-   if (this.weblog.hasDiscussions()) {
+   if (this.site.hasDiscussions()) {
       var commentCnt = this.comments.count();
       if (!param.linkto)
          param.linkto = "main";
@@ -232,7 +240,7 @@ function commentcounter_macro(param) {
  */
 
 function comments_macro(param) {
-   if (this.weblog.hasDiscussions() && this.count()) {
+   if (this.site.hasDiscussions() && this.count()) {
       for (var i=0;i<this.size();i++) {
          var c = this.get(i);
          var linkParam = new Object();
@@ -256,7 +264,7 @@ function commentform_macro(param) {
       var c = new comment();
       c.renderSkin("edit");
    } else {
-      openLink(this.weblog.members.href("login"));
+      openLink(this.site.members.href("login"));
       res.write (param.text ? param.text : "login to add your comment!");
       closeLink();
    }
@@ -288,16 +296,16 @@ function thumbnail_macro(param) {
  */
 
 function editableby_macro(param) {
-   if (param.as == "editor" && (session.user == this.author || !this.author)) {
+   if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = new Array("Subscribers and Contributors","Contributors only");
       renderDropDownBox("editableby",options,this.editableby,"----");
    } else {
       if (this.editableby == 0)
-         res.write("Subscribers of and Contributors to " + this.weblog.title);
+         res.write("Subscribers of and Contributors to " + this.site.title);
       else if (this.editableby == 1)
-         res.write("Contributors to " + this.weblog.title);
+         res.write("Contributors to " + this.site.title);
       else
-         res.write("Content Managers and Admins of " + this.weblog.title);
+         res.write("Content Managers and Admins of " + this.site.title);
    }
 }
 
@@ -306,10 +314,10 @@ function editableby_macro(param) {
  */
 
 function topicchooser_macro(param) {
-   var size = path.weblog.topics.size();
+   var size = path.site.topics.size();
    var options = new Array();
    for (var i=0;i<size;i++) {
-      var topic = path.weblog.topics.get(i);
+      var topic = path.site.topics.get(i);
       if (topic.size()) {
          options[i] = topic.groupname;
          if (this.topic == topic.groupname)
@@ -327,7 +335,7 @@ function topicchooser_macro(param) {
 function topic_macro(param) {
    if (!this.topic)
       return;
-   openLink(this.weblog.topics.get(this.topic).href());
+   openLink(this.site.topics.get(this.topic).href());
    res.write(this.topic);
    closeLink();
 }
@@ -338,20 +346,20 @@ function topic_macro(param) {
  */
 
 function backlinks_macro() {
-	// this is a clone of weblog.listReferrers_macro.
+	// this is a clone of site.listReferrers_macro.
 	var str = "";
 	var c = getDBConnection("antville");
 	var dbError = c.getLastError();
 	if (dbError)
-		return("Error establishing DB connection: " + dbError);
+      return (getMsg("error","database",dbError));
 
 	// we're doing this with direct db access here
 	// (there's no need to do it with prototypes):
-	var query = "select *, count(*) as \"COUNT\" from ACCESS where STORY_ID = " + this._id + " group by REFERRER order by \"COUNT\" desc, REFERRER asc;";                                
+	var query = "select *, count(*) as \"COUNT\" from AV_ACCESSLOG where ACCESSLOG_F_TEXT = " + this._id + " group by ACCESSLOG_REFERRER order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";                                
 	var rows = c.executeRetrieval(query);
 	var dbError = c.getLastError();
 	if (dbError)
-		return("Error executing SQL query: " + dbError);
+      return (getMsg("error","database",dbError));
 	
 	var param = new Object();
 	while (rows.next()) {
@@ -359,7 +367,7 @@ function backlinks_macro() {
     // these two lines are necessary only for hsqldb connections:
     if (param.count == 0)
       continue;
-		param.referrer = rows.getColumnItem("REFERRER");
+		param.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
 		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
 		str += this.renderSkinAsString("backlinkItem", param);
 	}
