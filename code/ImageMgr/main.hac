@@ -1,10 +1,14 @@
-if (!this.isEditAllowed())
-   res.redirect(user.cache.referer ? this.__parent__.members.href("login") : this.__parent__.href());
+var parent = setLayout();
 
-res.skin = "main";
-res.title = "Antville - " + this.__parent__.title;
-res.head = this.__parent__.renderSkinAsString("style");
-if (path.weblog)
-   res.head += path.weblog.renderSkinAsString("javascript");
-res.body = this.__parent__.renderSkinAsString("header");
-res.body += this.renderSkinAsString("main");
+var deny = this.isEditDenied();
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? parent.members.href("login") : parent.href());
+}
+
+res.title = "Antville - " + parent.title;
+
+res.head = parent.renderSkinAsString("javascript");
+res.head += parent.renderSkinAsString("style");
+
+res.body = this.renderSkinAsString("main");
