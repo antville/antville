@@ -119,7 +119,7 @@ function evalComment(param,story,creator) {
       var cont = new HopObject ();
       for (var i in param) {
          if (i.indexOf ("content_") == 0)
-            cont[i.substring(8)] = param[i];
+            cont[i.substring(8)] = param[i].trim();
       }
       c.setContent (cont);
       // let's keep the title property:

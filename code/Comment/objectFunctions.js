@@ -17,7 +17,7 @@ function updateComment(param) {
       var cont = this.getContent();
       for (var i in param) {
          if (i.indexOf ("content_") == 0)
-             cont[i.substring(8)] = param[i];
+             cont[i.substring(8)] = param[i].trim();
       }
       this.setContent (cont);
 
