@@ -1,0 +1,7 @@
+		<image>
+			<url><% param.imgUrl %></url>
+			<title><% param.description %></title>
+			<link><% param.link %></link>
+			<width><% param.imgWidth %></width>
+			<height><% param.imgHeight %></height>
+		</image>
