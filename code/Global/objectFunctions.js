@@ -49,12 +49,12 @@ function isClean(str) {
  * if false, it uses root and it's page-skin
  */
 
-function setLayout() {
+function setLayout(useSkin) {
    if (path.weblog) {
-      res.skin = "weblog.page";
+      res.skin = "weblog." + (useSkin ? useSkin : "page");
       return (path.weblog);
    } else {
-      res.skin = "root.page";
+      res.skin = "root." + (useSkin ? useSkin : "page");
       return (root);
    }
 }
