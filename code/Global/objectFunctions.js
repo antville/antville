@@ -349,4 +349,6 @@ function parseTimestamp (time, format) {
 function scheduler() {
    // call automatic cleanup if sysmgr is installed
    tryEval("root.manage.autoCleanUp()");
+   // notify updated weblogs
+   pingUpdatedWeblogs();
 }
