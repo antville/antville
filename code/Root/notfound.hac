@@ -2,4 +2,4 @@ var parent = setLayout();
 
 res.data.title = "Antville - 404 - not found";
 
-res.body = "<p><b>Sorry!</b></p><p>URL /"+req.path+" was not found on this server!</p>";
+res.data.body = "<p><b>Sorry!</b></p><p>URL /"+req.path+" was not found on this server!</p>";
