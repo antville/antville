@@ -79,7 +79,7 @@ function isUserContributor(usr) {
  */
 
 function isUserMember(usr) {
-   if (!usr.uid || !this.members.get(usr.name))
+   if (!usr || !usr.uid || !this.members.get(usr.name))
       return false;
    return true;
 }

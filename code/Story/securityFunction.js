@@ -5,7 +5,7 @@
  */
 
 function isPostDenied(usr) {
-   if (!this.weblog.isOnline())
+   if (!this.weblog.isOnline() && !this.weblog.isUserMember(usr))
       return ("This weblog is not public!");
    else if (!this.weblog.hasDiscussions())
       return ("Sorry, discussions were disabled for this weblog!");
