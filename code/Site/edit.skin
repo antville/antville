@@ -121,6 +121,13 @@ of available skinsets.</span></td>
 <td class="small" nowrap="nowrap">Small size:</td>
 <td nowrap="nowrap"><% site.smallsize as="editor" width="10" %></td>
 </tr>
+<tr>
+<td colspan="2" nowrap="nowrap"><div class="commentHead">&nbsp;</div><br />
+<b><a name="spamfilter">Referrer spam filter</a></b></td>
+</tr>
+<tr>
+<td colspan="2" nowrap="nowrap"><% site.preferences name="spamfilter" as="editor" cols="40" rows="7" %></td>
+</tr>
 <% site.notification %>
 <tr>
 <td class="small" nowrap="nowrap">&nbsp;</td>
