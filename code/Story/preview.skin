@@ -1,4 +1,2 @@
-<p><span class="storyDate"><% this.author as="link" %>, <% this.createtime suffix="<br>"%></span>
-<span class="storyTitle"><% this.title suffix="<br>" %></span>
-<% this.text suffix="<br>&nbsp;<br>" %>
-<span class="small"><% this.commentcounter no="comments" one="comment" more="comments" prefix="(" suffix=")&nbsp;&nbsp;" %><% this.link to="comment" text="place your comment!" %>&nbsp;&nbsp;<% this.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %><% this.deletelink prefix="...&nbsp;" %></span><br>&nbsp;</p>
+<p><% story.skin name="display" %>
+<span class="small"><% this.link text="link me" %>&nbsp;<% this.commentcounter no="comments" one="comment" more="comments" prefix="(" suffix=")&nbsp;&nbsp;" %><% this.link to="comment" text="place your comment!" %>&nbsp;&nbsp;<% this.editlink prefix="...&nbsp;" %></span><br>&nbsp;</p>
