@@ -6,20 +6,20 @@ _url = http://macros.antville.org/stories/
 
 global.macros = colorpicker , file, image, imagelist, link, now, poll, sitelist, story, storylist, topiclist, username, linkedpath
 
+global.macro.colorpicker = 246684
+global.macro.file = 15078
 global.macro.image = 14962
 global.macro.imagelist = 142488
 global.macro.link = 14956
-global.macro.logo = 14986
-global.macro.poll = 14957
-global.macro.file = 15078
-global.macro.sitelist = 15372
-global.macro.now = 246588
 global.macro.linkedpath = 235746
+global.macro.logo = 14986
+global.macro.now = 246588
+global.macro.poll = 14957
+global.macro.sitelist = 15372
 global.macro.story = 246618
+global.macro.storylist = 246675
 global.macro.topiclist = 142469
 global.macro.username = 246622
-global.macro.storylist = 246675
-global.macro.colorpicker = 246684
 
 global.skin.colorpickerWidget = param.editor, param.text, param.name, param.color
 global.skin.prevpagelink = param.text, param.url
@@ -30,12 +30,14 @@ global.skin.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
 
 // H O P O B J E C T 
 
-hopobject.macros = skin, link, createtime, modifytime, creator
+hopobject.macros = skin, link, createtime, creator, modifytime
 
 hopobject.macro.createtime = 244877
 hopobject.macro.modifytime = 244877
 hopobject.macro.creator = 142525
 hopobject.macro.link = 14956
+hopobject.macro.modifytime = 244877
+hopobject.macro.skin = 254592
 
 hopobject.skin.delete = response.action, param.what
 
@@ -66,11 +68,18 @@ choice.skin.result = param.graph, param.percent, param.count, param.text, param.
 
 // C O M M E N T
 
-comment.macros = replylink, content, modifytime, modifier, url, editlink, deletelink, onlinelink, viewlink, comments, commentform
+comment.macros = replylink, content, modifier, url, editlink, deletelink, comments, commentform, commentlink
 
+comment.macro.deletelink = 254515
+comment.macro.editlink = 254563
+comment.macro.commentform = 254497
+comment.macro.commentlink = 254605
+comment.macro.comments = 254661
 comment.macro.content = 142506
 comment.macro.modifier = 142525
-comment.macro.modifytime = 244877
+comment.macro.replylink = 254694
+comment.macro.url = 142549
+
 comment.skin.edit = response.action
 
 
@@ -83,8 +92,7 @@ day.skin.main = response.prevpage, response.nextpage
 
 
 // F I L E
-
-file.macros = alias, description, url, filesize, mimetype, filetype, clicks
+file.macros = alias, description, url, editlink, deletelink, creator, filesize, mimetype, filetype, clicks
 
 file.macro.alias = 254484
 file.macro.description = 254488
@@ -107,7 +115,6 @@ filemgr.skin.main = response.prevpage, response.nextpage
 
 
 // I M A G E
-
 image.macros = alias, alttext, width, height, url, show
 
 image.macro.alias = 254543
@@ -153,7 +160,17 @@ membership.skin.edit = response.action
 
 // P O L L
 
-poll.macros = title, question, choices, results, total, creator, modifytime, editlink, deletelink, viewlink, closelink, state, info
+poll.macros = title, question, choices, results, total, editlink, deletelink, viewlink, closelink
+
+poll.macro.choices = 254699
+poll.macro.closelink = 254703
+poll.macro.viewlink = 254713
+poll.macro.editlink = 254714
+poll.macro.deletelink = 254716
+poll.macro.question = 254722
+poll.macro.results = 254729
+poll.macro.title = 254734
+poll.macro.total = 254737
 
 poll.skin.main = response.action
 poll.skin.edit = response.action
@@ -185,7 +202,9 @@ shortcutmgr.skin.main = response.action
 
 // S I T E
 
-site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, lastupdate, linkcolor, membercounter, modifytime, monthlist, navigation, smallcolor, smallfont, smallsize, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist, url, vlinkcolor, xmlbutton
+site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, lastupdate, linkcolor, membercounter, monthlist, navigation, smallcolor, smallfont, smallsize, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topicl
+
+ist, url, vlinkcolor, xmlbutton
 
 site.macro.age = 142397
 site.macro.alias = 142378
@@ -208,7 +227,6 @@ site.macro.email = 142378
 site.macro.history = 142404
 site.macro.membercounter = 247667
 site.macro.lastupdate = 244877
-site.macro.modifytime = 15131
 site.macro.monthlist = 142461
 site.macro.navigation = 244843
 site.macro.title = 15131
@@ -234,19 +252,28 @@ site.skin.searchform = response.action, request.q
 
 // S T O R Y
 
-story.macros = content, modifytime, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+story.macros = content, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks, commentlink
 
 story.macro.backlinks = 40917
 story.macro.commentcounter = 26573
+story.macro.commentform = 254497
+story.macro.commentlink = 142558
+story.macro.comments = 254507
 story.macro.content = 142506
+story.macro.deletelink = 254515
+story.macro.discussions = 254522
+story.macro.editableby = 254559
+story.macro.editlink = 254563
 story.macro.modifier = 142525
-story.macro.modifytime = 244877
+story.macro.onlinelink = 254568
 story.macro.topic = 142577
-story.macro.backlinks = 40917
+story.macro.topicchooser = 254595
+story.macro.url = 142549
+story.macro.viewlink = 254597
 
 story.skin.backlinkItem = param.count, param.referrer, param.text
 story.skin.backlinks = param.referrers
-story.skin.edit = response.action
+story.skin.edit = response.action, request.topic
 story.skin.mostreads = param.rank, param.reads
 story.skin.rssItem = param.url, param.title, param.text, param.publisher, param.creator, param.email, param,subject, param.year, param.creator, param.date
 
