@@ -73,9 +73,9 @@ function createtime_macro(param) {
    if (param.as == "editor") {
       res.write (param.prefix);
       if (this.createtime)
-         param.value = this.createtime.format("yyyy-MM-dd HH:mm");
+         param.value = formatTimestamp(this.createtime, "yyyy-MM-dd HH:mm");
       else
-         param.value = (new Date()).format("yyyy-MM-dd HH:mm");
+         param.value = formatTimestamp(new Date(), "yyyy-MM-dd HH:mm");
       param.name = "createtime";
       this.renderInputText(param);
       res.write (param.suffix);
@@ -83,7 +83,7 @@ function createtime_macro(param) {
       if (!this.createtime)
          return;
       res.write(param.prefix);
-      res.write(this.weblog.formatTimestamp(this.createtime,param));
+      res.write(formatTimestamp(this.createtime,param.format));
       res.write(param.suffix);
    }
 }
@@ -95,7 +95,7 @@ function createtime_macro(param) {
 function modifytime_macro(param) {
    if (this.modifytime) {
       res.write(param.prefix);
-      res.write(this.weblog.formatTimestamp(this.modifytime,param));
+      res.write(formatTimestamp(this.modifytime,param.format));
       res.write(param.suffix);
    }
 }
