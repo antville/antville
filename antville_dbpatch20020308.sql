@@ -1,3 +1,5 @@
+use antville;
+
 alter table WEBLOG add column LASTOFFLINE datetime null after LASTUPDATE;
 alter table WEBLOG add column LASTBLOCKWARN datetime null after LASTOFFLINE;
 alter table WEBLOG add column LASTDELWARN datetime null after LASTBLOCKWARN;
