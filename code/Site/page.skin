@@ -26,7 +26,7 @@
 <br /><% response.body %></td>
 
 <td width="60" nowrap="nowrap">&nbsp;</td>
-<td width="2" background="<% imageurl name="/dot" %>" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
+<td width="2" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight">
 <% this.age prefix="online for&nbsp;" show="days" suffix=" Days<br />" %><% this.lastupdate prefix="last updated:&nbsp;" format="short%></div>
 

@@ -1,7 +1,7 @@
 <br />
 <table width="400" border="0" cellspacing="2" cellpadding="0">
 <tr>
-<td width="2" background="<% imageurl name="/dot" %>" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
+<td width="2" style="background-image: url(<% imageurl name="/dot" %>);" nowrap="nowrap"><% image name="/pixel" width="2" %></td>
 </tr>
 <tr>
 <td align="right" nowrap="nowrap">...&nbsp;<a href="<% param.url %>"><% param.text %></a></td>
