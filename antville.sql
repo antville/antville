@@ -131,6 +131,7 @@ create table WEBLOG (
    SHOWARCHIVE tinyint(1),
    LANGUAGE varchar(2),
    COUNTRY varchar(2),
+   DATEFORMAT varchar(50);
    CREATETIME datetime,
    CREATOR mediumint(9),
    MODIFYTIME datetime,
