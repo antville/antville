@@ -1,18 +1,4 @@
 /**
- * check if user is allowed to post a comment to this story
- * @param Obj Userobject
- * @return String Reason for denial (or null if allowed)
- */
-
-function isPostDenied(usr) {
-   if (!this.weblog.isOnline() && !this.weblog.isUserMember(usr))
-      return ("This weblog is not public!");
-   else if (!this.weblog.hasDiscussions())
-      return ("Sorry, discussions were disabled for this weblog!");
-   return null;
-}
-
-/**
  * check if user is allowed to delete this story
  * @param Obj Userobject
  * @return String Reason for denial (or null if allowed)
@@ -89,5 +75,6 @@ function allowTextMacros(s) {
    s.allowMacro("weblog.link");
    s.allowMacro("story.link");
    s.allowMacro("goodie");
+   s.allowMacro("poll");
    return;
 }
