@@ -4,6 +4,7 @@
  */
 
 function onRequest() {
+   autoLogin();
    // defining skinpath
    res.skinpath = new Array(path.weblog.skinmanager);
    if (path.weblog && path.weblog.isBlocked())
