@@ -20,6 +20,8 @@ function evalNewStory(s,param,creator) {
          cont[i.substring(8)] = param[i];
    }
    s.setContent (cont);
+   // let's keep the title property
+   s.title = param.content_title;
    s.prototype = "story";
    s.creator = creator;
    // check if the create date is set in the param object

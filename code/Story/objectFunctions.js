@@ -29,6 +29,8 @@ function evalStory(param,modifier) {
          cont[i.substring(8)] = param[i];
    }
    this.setContent (cont);
+   // let's keep the title property
+   this.title = param.content_title;
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
    // check if the createtime is set in param
@@ -68,7 +70,6 @@ function evalStory(param,modifier) {
    } else {
       if (newStatus > 0 && majorUpdate)
          this.site.lastupdate = new Date();
-      this.online = newStatus;
       this.online = newStatus;
    }
    if (majorUpdate)
@@ -169,7 +170,7 @@ function getRenderedContentPart (name) {
          return "";
       var s = createSkin(activateLinks(part));
       this.allowTextMacros(s);
-      if (!s.containsMacro("poll"))
+      if (!s.containsMacro("poll") && !s.containsMacro("shortcut") && !s.containsMacro("storylist"))
          this.cache["lastRendered_"+name] = new Date();
       this.cache["rendered_"+name] = this.renderSkinAsString(s);
    }
@@ -180,6 +181,10 @@ function getRenderedContentPart (name) {
  *  Get a content part by name.
  */
 function getContentPart (name) {
+   // check if this is a story with the old property layout. If so, convert to new.
+   if (this.text && !this.content) {
+      this.convertContentToXML();
+   }
    var cnt = this.getContent();
    return cnt[name];
 }

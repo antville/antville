@@ -184,9 +184,9 @@ li {padding-bottom: 3px;}
 }
 
 .searchbox {
-    font-size:11px;
-    margin-top:3px;
-    margin-bottom:3px;
+   font-size:11px;
+   margin-top:3px;
+   margin-bottom:3px;
 }
 
 // -->
