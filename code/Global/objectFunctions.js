@@ -224,12 +224,23 @@ function Exception(name, value) {
 /**
  * constructor function for MailException objects
  * @param String Name of the message
- * @param Obj String or Array of strings passed to message-skin
  */
 function MailException(name) {
    this.name = name;
    this.toString = function() {
       return getMessage("error." + this.name);
+   }
+}
+
+
+/**
+ * constructor function for DenyException objects
+ * @param String Name of the message
+ */
+function DenyException(name) {
+   this.name = name;
+   this.toString = function() {
+      return getMessage("deny." + this.name);
    }
 }
 
