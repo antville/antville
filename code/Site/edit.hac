@@ -19,6 +19,6 @@ res.skin = "weblog.page";
 
 res.data.action = this.href(req.action);
 
-res.data.title = this.title;
+res.data.title = "Preferences";
 
 res.data.body = this.renderSkinAsString("edit");
