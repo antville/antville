@@ -205,7 +205,7 @@ newSet.add(new Skinset("Root.welcome", ["Site.welcome", "Site.welcomeowner", "Si
 newSet.add(new Skinset("Root.various", ["Root.blocked", "Root.notfound", "Root.sysError"]));
 SKINSETS.push(newSet);
 
-newSet = new Skinset("Site", ["Site.page", "Site.style", "Site.javascript", "Site.main", "day.main", "Story.dayheader"]);
+newSet = new Skinset("Site", ["Site.page", "Site.style", "Site.javascript", "Site.main", "Day.main", "Story.dayheader"]);
 newSet.add(new Skinset("Site.navigation", ["Site.contribnavigation", "Site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "MemberMgr.statusloggedin", "MemberMgr.statusloggedout"]));
 newSet.add(new Skinset("Site.topics", ["TopicMgr.main", "Topic.main"]));
 newSet.add(new Skinset("Site.calendar", ["Site.calendar", "Site.calendardayheader", "Site.calendarweek", "Site.calendarday", "Site.calendarselday"]));
