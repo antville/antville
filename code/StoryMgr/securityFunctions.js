@@ -6,30 +6,10 @@
  */
 
 function isDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href();
-      return ("Please login before!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this._parent.isUserAdmin(usr) && !this._parent.isUserContributor(usr))
-      return ("You're not allowed to edit stories!");
+   var membership = this._parent.isUserMember(usr);
+   if (!membership)
+      return ("You're not a member of this weblog!");
+   else if (!this._parent.userMayContrib() && (membership.level & MAY_ADD_STORY) == 0)
+      return ("You're not allowed to do this!");
    return null;
 }
-
-/**
- * check if user is allowed to add a story to this weblog
- * @param Obj Userobject
- * @return String Reason for denial (or null if allowed)
- */
-
-function isAddDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href("create");
-      return ("Please login before adding a story!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!path.weblog.isUserAdmin(usr) && !path.weblog.isUserContributor(usr) && !path.weblog.userMayContrib())
-      return ("You're not allowed to add a story to a foreign weblog!");
-   return null;
-}
-
