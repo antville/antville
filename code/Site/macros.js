@@ -640,7 +640,6 @@ function listMostRead_macro() {
 
 function listReferrers_macro() {
 	var str = "";
-
 	var c = getDBConnection("antville");
 	error = c.getLastError();
 	if (error)
@@ -663,26 +662,17 @@ function listReferrers_macro() {
 		str += this.renderSkinAsString("referrerItem", param);
 	}
 	return(str);
-	
-	// *****************************************
-	// this is the conventional helma way
-	// (needs appropriate type mapping if used):
-	var str = "";
-	var len = this.access.size();
-	if (len > 0) {
-		for (var i=0; i<len; i++) {
-			var group = this.access.get(i);
-			var a = group.get(0);
-			var cnt = 0;
-			for (var n=0; n<root.cache.access.length; n++) {
-				var c = root.cache.access[n];
-				if (c.referrer == a.referrer)
-					cnt++;
-			}
-			var param = new Object();
-			param.count = group.size()// + cnt;
-			str += a.renderSkinAsString("main", param);
-		}
-	}
-	return(str);
+}
+
+
+function xmlbutton_macro(param) {
+	var param = new Object();
+	param.to = this.href("rss");
+	param.name = "xmlbutton";
+  var img = root.images.get(param.name);
+	if (!logo)
+  	return;
+	this.openLink(param);
+	root.renderImage(img, param);
+	this.closeLink(param);
 }
