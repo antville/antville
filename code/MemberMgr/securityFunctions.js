@@ -1,14 +1,13 @@
 /**
- * check if user is allowed to edit this image
+ * check if user is allowed to edit the memberlist of this weblog
  * @param Obj Userobject
  * @return String Reason for denial (or null if allowed)
  */
 
-function isEditDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href("edit");
-      return ("Please login before!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
+function isEditMembersDenied(usr) {
+   var membership = this.get(usr.name);
+   if (!membership || (membership.level & MAY_EDIT_MEMBERS) == 0)
+      return ("You're not allowed to edit memberships!");
    return null;
 }
+

@@ -9,11 +9,6 @@ function isPostDenied(usr) {
       return ("This weblog is not public!");
    else if (!this.weblog.hasDiscussions())
       return ("Sorry, discussions were disabled for this weblog!");
-   else if (!usr.uid) {
-      usr.cache.referer = this.href("comment");
-      return ("Please login before adding a comment!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
    return null;
 }
 
@@ -24,10 +19,13 @@ function isPostDenied(usr) {
  */
 
 function isDeleteDenied(usr) {
-   if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this.weblog.isUserAdmin(usr) && this.author != usr)
-      return ("You cannot delete the story of somebody else!");
+   if (this.author != usr) {
+      var membership = this.weblog.isUserMember(usr);
+      if (!membership)
+         return ("You're not a member of this weblog!");
+      else if ((membership.level & MAY_DELETE_ANYSTORY) == 0)
+         return ("You cannot delete the story of somebody else!");
+   }
    return null;
 }
 
@@ -38,12 +36,15 @@ function isDeleteDenied(usr) {
  */
 
 function isEditDenied(usr) {
-   if (usr.isBlocked())
-      return ("Sorry, your accout was disabled!");
-   if (this.author == usr || this.weblog.isUserAdmin(usr))
-      return null;
-   if (!this.weblog.isUserMember(usr) || this.editableby > this.weblog.members.get(usr.name).level)
-      return ("You're not allowed to edit this story!");
+   if (this.author != usr) {
+      var membership = this.weblog.isUserMember(usr);
+      if (!membership)
+         return ("You're not a member of this weblog!");
+      else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
+         return ("You're not allowed to edit this story!");
+      else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
+         return ("You're not allowed to edit this story!");
+   }
    return null;
 }
 
@@ -55,17 +56,17 @@ function isEditDenied(usr) {
  */
 
 function isViewDenied(usr) {
-   if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   if (!this.isOnline() && this.author != usr) {
-      if (!this.weblog.isUserAdmin(usr))
-         return ("You're not allowed to see this story!");
-      else if (!this.weblog.isUserMember(usr))
-         return ("You're not allowed to see this story!");
-      else if (this.editableby < this.weblog.members.get(usr.name).level)
-         return ("You're not allowed to see this story!");
-   } else if (this.weblog.isNotPublic(usr))
+   if (this.weblog.isNotPublic(usr))
       return ("Sorry, this weblog is not public!");
+   else if (!this.isOnline() && this.author != usr) {
+      var membership = this.weblog.isUserMember(usr);
+      if (!membership)
+         return ("You're not a a member of this weblog!");
+      else if (this.editableby == null && (membership.level & MAY_EDIT_ANYSTORY) == 0)
+         return ("You're not allowed to see this story!");
+      else if (this.editableby == 1 && (membership.level & MAY_ADD_STORY) == 0)
+         return ("Only Contributors are allowed to see this story!");
+   }
    return null;
 }
 

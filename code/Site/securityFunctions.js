@@ -17,71 +17,22 @@ function isNotPublic(usr) {
  */
 
 function isEditDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href("edit");
-      return ("Please login to edit the preferences of this weblog!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this.isUserAdmin(usr))
+   var membership = this.isUserMember(usr);
+   if (!membership || (membership.level & MAY_EDIT_PREFS) == 0)
       return ("You're not allowed to edit the preferences!");
    return null;
 }
 
 /**
- * check if user is allowed to edit the memberlist of this weblog
- * @param Obj Userobject
- * @return String Reason for denial (or null if allowed)
- */
-
-function isEditMembersDenied(usr) {
-   if (!usr.uid) {
-      usr.cache.referer = this.href("memberships");
-      return ("Please login before!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
-   else if (!this.isUserAdmin(usr))
-      return ("You're not allowed to edit memberships!");
-   return null;
-}
-
-/**
- * function checks if the user is admin of this weblog
- * @param Obj Userobject
- * @return Boolean true if user is admin, false if not
- */
-
-function isUserAdmin(usr) {
-   if (!this.isUserMember(usr))
-      return false;
-   else if (!this.members.get(usr.name).isAdmin())
-      return false;
-   return true;
-}
-
-/**
  * function checks if user is a member of this weblog
  * @param Obj Userobject
- * @return Boolean true if user is contributor, false if not
- */
-
-function isUserContributor(usr) {
-   if (usr.uid && this.userMayContrib())
-      return true;
-   else if (this.isUserMember(usr) && this.members.get(usr.name).isContributor())
-      return true;
-   return false;
-}
-
-/**
- * function checks if user is a member of this weblog
- * @param Obj Userobject
- * @return Boolean true if user is member, false if not
+ * @return Obj null in case user is not a member, otherwise member-object
  */
 
 function isUserMember(usr) {
-   if (!usr || !usr.uid || !this.members.get(usr.name))
-      return false;
-   return true;
+   if (!usr)
+      return null;
+   return (this.members.get(usr.name));
 }
 
 /**
@@ -90,21 +41,28 @@ function isUserMember(usr) {
  * @return String Reason for denial (or null if allowed)
  */
 
-function isSignUpDenied(usr) {
+function isSubscribeDenied(usr) {
    if (this.isUserMember(usr))
-      return ("You are already a member of this weblog!");
+      return ("You have already subscribed to this weblog!");
    else if (!this.isOnline())
       return ("This weblog is not public!");
-   else if (!this.userMaySignup())
-      return ("Signing up was disabled!");
-   else if (!usr.uid) {
-      usr.cache.referer = this.href("signup");
-      return ("Please login before!");
-   } else if (usr.isBlocked())
-      return ("Sorry, your account was disabled!");
    return null;
 }
 
+/**
+ * check if user is allowed to unsubscribe
+ * @param Obj Userobject
+ * @return String Reason for denial (or null if allowed)
+ */
+
+function isUnsubscribeDenied(usr) {
+   var membership = this.isUserMember(usr);
+   if (!membership)
+      return ("You're not a subscriber of this weblog!");
+   else if (membership.level > 0)
+      return ("You cannot unsubscribe, because you are a " + getRole(membership.level) + "!");
+   return null;
+}
 
 /**
  * function checks if normal users are allowed to
