@@ -58,7 +58,7 @@ a:hover {
    width: 198px;
    text-align: left;
    letter-spacing: 3px;
-   font-size: <% site.smallsize %>;
+   font-size: 12px;
    display: block;
    padding-top: 1px;
    padding-bottom: 1px;
