@@ -6,9 +6,16 @@ if (deny) {
    res.redirect(this.weblog.href());
 }
 
-if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.href());
-else if (req.data.submit == "save" || req.data.save)
+if (!user.cache.referer && req.data.http_referer)
+   user.cache.referer = req.data.http_referer;
+
+if (req.data.set)
+   this.toggleOnline(req.data.set);
+else if (req.data.submit == "cancel" || req.data.cancel) {
+   var referer = user.cache.referer;
+   user.cache.referer = null;
+   res.redirect(referer ? referer: this.weblog.stories.href());
+} else if (req.data.submit == "save" || req.data.save)
    this.evalStory();
 
 res.skin = "weblog.page";

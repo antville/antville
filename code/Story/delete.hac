@@ -7,9 +7,9 @@ if (deny) {
 }
 
 if (req.data.submit == "delete" || req.data.remove)
-   this.weblog.deleteStory(this);
+   this.weblog.stories.deleteStory(this);
 else if (req.data.submit == "cancel" || req.data.cancel)
-   res.redirect(this.weblog.href("main"));
+   res.redirect(this.weblog.stories.href());
 
 res.skin = "weblog.page";
 
