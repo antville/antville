@@ -28,17 +28,6 @@ function sitecounter_macro(param) {
 }
 
 /**
- * macro renders the root url
- */
-function url_macro(param) {
-   if (param.path)
-      res.write(this.href(param.path));
-   else
-      res.write(this.href());
-}
-
-
-/**
  * render the system title of this antville installation
  */
 function title_macro() {
