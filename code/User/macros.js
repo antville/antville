@@ -4,7 +4,14 @@
 
 function name_macro(param) {
    res.write(param.prefix)
-   res.write(this.name);
+   if (this.url) {
+      var linkParam = new Object();
+      linkParam.to = this.url;
+      this.openLink(linkParam);
+      res.write(this.name);
+      this.closeLink();
+   } else
+      res.write(this.name);
    res.write(param.suffix);
 }
 
