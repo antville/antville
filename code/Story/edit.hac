@@ -24,13 +24,16 @@ if (req.data.set) {
 } else if (req.data.submit == "save" || req.data.save) {
    var result = this.evalStory(req.data,user);
    res.message = result.message;
-   user.cache.referer = null;
-   if (!result.error)
+   if (!result.error) {
+      user.cache.referer = null;
       res.redirect(result.url);
+   }
 }
 
 res.skin = "weblog.page";
 
 res.data.title = "Antville - " + this.weblog.title;
+
+res.data.action = this.href("edit");
 
 res.data.body = this.renderSkinAsString("edit");
