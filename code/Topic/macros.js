@@ -4,7 +4,7 @@
  */
 
 function addstory_macro () {
-   var membership = path.weblog.isUserMember(user);
+   var membership = path.weblog.isUserMember(session.user);
    if (!membership)
       return;
    if ((membership.level & MAY_ADD_STORY) == 0)
@@ -25,10 +25,8 @@ function relatedtopics_macro (param) {
    var l = this.related.size();
    if (l == 0)
       return;
-   res.write (param.prefix);
    for (var i=0; i<l; i++)
       this.related.get(i).renderSkin("relatedLink");
-   res.write (param.suffix);
 }
 
 /**
@@ -37,8 +35,6 @@ function relatedtopics_macro (param) {
  */
 
 function storylist_macro(param) {
-   res.write(param.prefix)
    res.write(res.data.storylist);
-   res.write(param.suffix)
    return;
 }

@@ -3,12 +3,10 @@
  */
 
 function alias_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alias",param));
    else
       res.write(this.alias);
-   res.write(param.suffix);
 }
 
 
@@ -17,12 +15,10 @@ function alias_macro(param) {
  */
 
 function alttext_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alttext",param));
    else
       res.write(this.alttext);
-   res.write(param.suffix);
 }
 
 /**
@@ -30,9 +26,7 @@ function alttext_macro(param) {
  */
 
 function width_macro(param) {
-   res.write(param.prefix);
    res.write(this.width);
-   res.write(param.suffix);
 }
 
 /**
@@ -40,9 +34,7 @@ function width_macro(param) {
  */
 
 function height_macro(param) {
-   res.write(param.prefix);
    res.write(this.height);
-   res.write(param.suffix);
 }
 
 /**
@@ -50,12 +42,10 @@ function height_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(param.prefix);
    res.write(getProperty("imgUrl"));
    if (this.weblog)
        res.write(this.weblog.alias + "/");
    res.write(this.filename + "." + this.fileext);
-   res.write(param.suffix);
 }
 
 
@@ -64,8 +54,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
@@ -74,7 +63,6 @@ function editlink_macro(param) {
       else
          res.write(param.text ? param.text : "edit");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -84,8 +72,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
@@ -94,7 +81,6 @@ function deletelink_macro(param) {
       else
          res.write(param.text ? param.text : "delete");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -104,7 +90,6 @@ function deletelink_macro(param) {
  */
 
 function show_macro(param) {
-   res.write(param.prefix)
    var img = this;
    // if we have a thumbnail, display that
    if (param.what == "thumbnail" && this.thumbnail) 
@@ -114,7 +99,6 @@ function show_macro(param) {
    this.openLink(linkParam);
    path.weblog.renderImage(img,param);
    this.closeLink();
-   res.write(param.suffix);
 }
 
 
@@ -123,9 +107,7 @@ function show_macro(param) {
  */
 
 function creator_macro(param) {
-   res.write(param.prefix);
    res.write(this.creator.name);
-   res.write(param.suffix);
 }
 
 /**
@@ -135,9 +117,7 @@ function creator_macro(param) {
 function createtime_macro(param) {
    if (!this.createtime)
       return;
-   res.write(param.prefix);
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   res.write(param.suffix);
 }
 
 /**
@@ -145,10 +125,8 @@ function createtime_macro(param) {
  */
 
 function hasthumbnail_macro(param) {
-   res.write(param.prefix);
    if (this.thumbnail)
       res.write("yes");
    else
       res.write("no");
-   res.write(param.suffix);
 }

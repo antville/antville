@@ -4,12 +4,10 @@
  */
 
 function membership_macro(param) {
-   var ms = this.get(user.name);
+   var ms = this.get(session.user.name);
    if (!ms)
       return;
-   res.write(param.prefix);
    res.write(getRole(ms.level));
-   res.write(param.suffix);
 }
 
 /**
@@ -20,16 +18,14 @@ function membership_macro(param) {
 function subscribelink_macro(param) {
    if (!path.weblog)
       return;
-   var ms = this.get(user.name);
+   var ms = this.get(session.user.name);
    if (ms)
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.to = "subscribe";
    path.weblog.openLink(linkParam);
    res.write(param.text ? param.text : "sign up");
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -38,15 +34,13 @@ function subscribelink_macro(param) {
  */
 
 function subscriptionslink_macro(param) {
-   if (!user.size())
+   if (!session.user.size())
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.to = "subscriptions";
    this.openLink(linkParam);
    res.write(param.text ? param.text : "subscriptions");
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -54,7 +48,6 @@ function subscriptionslink_macro(param) {
  */
 
 function memberlist_macro(param) {
-   res.write(param.prefix)
    var currLvl;
    var sp = new Object();
    sp.list = "";
@@ -69,6 +62,5 @@ function memberlist_macro(param) {
       sp.list += m.renderSkinAsString("preview");
    }
    this.renderSkin("membergroup",sp);
-   res.write(param.suffix);
 }
 

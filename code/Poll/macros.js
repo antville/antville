@@ -1,7 +1,6 @@
 function title_macro(param) {
    if (!this.title && !param.as)
       return;
-   res.write(param.prefix);
    if (param.as == "editor") {
    		var param2 = this.createInputParam("title", param);
    		if (req.data.title)
@@ -19,12 +18,10 @@ function title_macro(param) {
       this.closeLink();
    } else
       res.write(this.title);
-   res.write(param.suffix);
 }
 
 
 function question_macro(param) {
-   res.write(param.prefix);
    if (param.as == "editor") {
    		var param2 = this.createInputParam("question", param);
    		if (req.data.question)
@@ -35,7 +32,6 @@ function question_macro(param) {
    }
    else
       res.write(this.question);
-   res.write(param.suffix);
 }
 
 
@@ -54,15 +50,13 @@ function choices_macro(param) {
 					param2.value = req.data.choice;
 			}
  	   	this.renderInputText(param2);
-			res.write(param.suffix);
 			res.write("\n");
 		}
 	}
 	else {
 		var chosen = -1;
-		var v = this.votes.get(user.uid);
-		if (v)
-			chosen = v.choice._id;
+      if (session.user)
+         chosen = this.votes.get(session.user.name);
 		for (var i=0; i<this.size(); i++) {
 			var c = this.get(i);
 			param.name = "choice";
@@ -72,9 +66,7 @@ function choices_macro(param) {
 				param.checked = " checked";
 			else
 				param.checked = "";
-			res.write(param.prefix);
 			res.write(c.renderSkinAsString("main", param));
-			res.write(param.suffix);
 			res.write("\n");
 		}
 	}
@@ -125,7 +117,6 @@ function total_macro(param) {
 function creator_macro(param) {
    if (!this.creator)
       return;
-   res.write(param.prefix);
    if (param.as == "link" && this.creator.url) {
       var linkParam = new Object();
       linkParam.to = this.creator.url;
@@ -134,37 +125,30 @@ function creator_macro(param) {
       this.closeLink();
    } else
       res.write(this.creator.name);
-   res.write(param.suffix);
 }
 
 
 function createtime_macro(param) {
    if (!this.createtime)
       return;
-   res.write(param.prefix);
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   res.write(param.suffix);
 }
 
 
 function modifytime_macro(param) {
    if (this.modifytime) {
-      res.write(param.prefix);
       res.write(this.weblog.formatTimestamp(this.modifytime,param));
-      res.write(param.suffix);
    }
 }
 
 
 function editlink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       res.write(param.text ? param.text : "edit");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -174,14 +158,12 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isDeleteDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
       res.write(param.text ? param.text : "delete");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -191,11 +173,10 @@ function deletelink_macro(param) {
  */
 
 function viewlink_macro(param) {
-   if (this.isViewDenied(user))
+   if (this.isViewDenied(session.user))
      return;
-   res.write(param.prefix);
    var linkParam = new Object();
-   if (this.closed || this.isVoteDenied(user)) {
+   if (this.closed || this.isVoteDenied(session.user)) {
    		linkParam.linkto = "results";
    		var str = "view";
    }
@@ -206,13 +187,11 @@ function viewlink_macro(param) {
    this.openLink(linkParam);
    res.write(param.text ? param.text : str);
    this.closeLink();
-   res.write(param.suffix);
 }
 
 
 function closelink_macro(param) {
-   if (!this.isDeleteDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isDeleteDenied(session.user)) {
       var linkParam = new Object();
 	    linkParam.linkto = "toggle";
       if (this.closed)
@@ -222,7 +201,6 @@ function closelink_macro(param) {
       this.openLink(linkParam);
       res.write(param.text ? param.text : str);
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 

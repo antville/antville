@@ -3,7 +3,6 @@
  */
 
 function alias_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("alias",param));
    else if (param.as == "link") {
@@ -15,7 +14,6 @@ function alias_macro(param) {
       this.closeLink();
    } else
       res.write(this.alias);
-   res.write(param.suffix);
 }
 
 
@@ -24,12 +22,10 @@ function alias_macro(param) {
  */
 
 function description_macro(param) {
-   res.write(param.prefix)
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("description",param));
    else
       res.write(this.description);
-   res.write(param.suffix);
 }
 
 /**
@@ -37,12 +33,10 @@ function description_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(param.prefix);
    res.write(getProperty("goodieUrl"));
    if (this.weblog)
        res.write(this.weblog.alias + "/");
    res.write(this.filename + "." + this.fileext);
-   res.write(param.suffix);
 }
 
 /**
@@ -50,14 +44,12 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
       res.write(param.text ? param.text : "edit");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -67,8 +59,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
@@ -77,7 +68,6 @@ function deletelink_macro(param) {
       else
          res.write(param.text ? param.text : "delete");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -86,9 +76,7 @@ function deletelink_macro(param) {
  */
 
 function creator_macro(param) {
-   res.write(param.prefix);
    res.write(this.creator.name);
-   res.write(param.suffix);
 }
 
 /**
@@ -98,9 +86,7 @@ function creator_macro(param) {
 function createtime_macro(param) {
    if (!this.createtime)
       return;
-   res.write(param.prefix);
    res.write(this.weblog.formatTimestamp(this.createtime,param));
-   res.write(param.suffix);
 }
 
 /**
@@ -108,9 +94,7 @@ function createtime_macro(param) {
  */
 
 function filesize_macro(param) {
-   res.write(param.prefix);
    res.write((this.filesize / 1000).format("###,###") + " Kb");
-   res.write(param.suffix);
 }
 
 /**
@@ -118,9 +102,7 @@ function filesize_macro(param) {
  */
 
 function mimetype_macro(param) {
-   res.write(param.prefix);
    res.write(this.mimetype);
-   res.write(param.suffix);
 }
 
 /**
@@ -129,7 +111,5 @@ function mimetype_macro(param) {
  */
 
 function clicks_macro(param) {
-   res.write(param.prefix);
    res.write(this.requestcnt);
-   res.write(param.suffix);
 }

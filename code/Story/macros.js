@@ -5,7 +5,6 @@
 function title_macro(param) {
    if (!this.title && !param.as)
       return;
-   res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputText(this.createInputParam("title",param));
    else if (param.as == "link") {
@@ -21,7 +20,6 @@ function title_macro(param) {
       this.closeLink();
    } else
       res.write(this.title);
-   res.write(param.suffix);
 }
 
 /**
@@ -29,7 +27,6 @@ function title_macro(param) {
  */
 
 function text_macro(param) {
-   res.write(param.prefix);
    if (param.as == "editor")
       this.renderInputTextarea(this.createInputParam("text",param));
    else {
@@ -38,7 +35,6 @@ function text_macro(param) {
       else
          renderTextPreview(this.getText(),param.limit);
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -46,7 +42,6 @@ function text_macro(param) {
  */
 
 function online_macro(param) {
-   res.write(param.prefix);
    if (param.as == "editor") {
       var options = new Array("offline","online in topic","online in weblog");
       res.write(simpleDropDownBox("online",options,this.online));
@@ -62,7 +57,6 @@ function online_macro(param) {
       } else
          res.write("online in weblog");
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -71,20 +65,16 @@ function online_macro(param) {
 
 function createtime_macro(param) {
    if (param.as == "editor") {
-      res.write (param.prefix);
       if (this.createtime)
          param.value = formatTimestamp(this.createtime, "yyyy-MM-dd HH:mm");
       else
          param.value = formatTimestamp(new Date(), "yyyy-MM-dd HH:mm");
       param.name = "createtime";
       this.renderInputText(param);
-      res.write (param.suffix);
    } else {
       if (!this.createtime)
          return;
-      res.write(param.prefix);
       res.write(formatTimestamp(this.createtime,param.format));
-      res.write(param.suffix);
    }
 }
 
@@ -94,9 +84,7 @@ function createtime_macro(param) {
 
 function modifytime_macro(param) {
    if (this.modifytime) {
-      res.write(param.prefix);
       res.write(formatTimestamp(this.modifytime,param.format));
-      res.write(param.suffix);
    }
 }
 
@@ -107,7 +95,6 @@ function modifytime_macro(param) {
 function author_macro(param) {
    if (!this.author)
       return;
-   res.write(param.prefix);
    if (param.as == "link" && this.author.url) {
       var linkParam = new Object();
       linkParam.to = this.author.url;
@@ -116,7 +103,6 @@ function author_macro(param) {
       this.closeLink();
    } else
       res.write(this.author.name);
-   res.write(param.suffix);
 }
 
 /**
@@ -126,7 +112,6 @@ function author_macro(param) {
 function modifier_macro(param) {
    if (!this.modifier)
       return;
-   res.write(param.prefix);
    if (param.as == "link" && this.modifier.url) {
       var linkParam = new Object();
       linkParam.to = this.modifier.url;
@@ -135,7 +120,6 @@ function modifier_macro(param) {
       this.closeLink();
    } else
       res.write(this.modifier.name);
-   res.write(param.suffix);
 }
 
 /**
@@ -143,9 +127,7 @@ function modifier_macro(param) {
  */
 
 function url_macro(param) {
-   res.write(param.prefix);
    res.write(this.href());
-   res.write(param.prefix);
 }
 
 /**
@@ -154,8 +136,7 @@ function url_macro(param) {
  */
 
 function editlink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       this.openLink(linkParam);
@@ -164,7 +145,6 @@ function editlink_macro(param) {
       else
          res.write(param.text ? param.text : "edit");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -174,8 +154,7 @@ function editlink_macro(param) {
  */
 
 function deletelink_macro(param) {
-   if (!this.isDeleteDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isDeleteDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "delete";
       this.openLink(linkParam);
@@ -184,7 +163,6 @@ function deletelink_macro(param) {
       else
          res.write(param.text ? param.text : "delete");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -194,8 +172,7 @@ function deletelink_macro(param) {
  */
 
 function onlinelink_macro(param) {
-   if (!this.isEditDenied(user)) {
-      res.write(param.prefix);
+   if (!this.isEditDenied(session.user)) {
       var linkParam = new Object();
       linkParam.linkto = "edit";
       linkParam.urlparam = "?set=" + (this.isOnline() ? "offline" : "online");
@@ -205,7 +182,6 @@ function onlinelink_macro(param) {
       else
          res.write(this.isOnline() ? "set offline" : "set online");
       this.closeLink();
-      res.write(param.suffix);
    }
 }
 
@@ -214,9 +190,8 @@ function onlinelink_macro(param) {
  */
 
 function viewlink_macro(param) {
-   if (this.isViewDenied(user))
+   if (this.isViewDenied(session.user))
       return;
-   res.write(param.prefix);
    var linkParam = new Object();
    linkParam.linkto = "main";
    this.openLink(linkParam);
@@ -225,7 +200,6 @@ function viewlink_macro(param) {
    else
       res.write(param.text ? param.text : "view");
    this.closeLink();
-   res.write(param.suffix);
 }
 
 /**
@@ -236,9 +210,7 @@ function viewlink_macro(param) {
  */
 
 function commentlink_macro(param) {
-   res.write(param.prefix);
    this.renderSkin(param.useskin ? param.useskin : "commentlink");
-   res.write(param.suffix);
 }
 
 
@@ -252,7 +224,6 @@ function commentlink_macro(param) {
 
 function commentcounter_macro(param) {
    if (this.weblog.hasDiscussions()) {
-      res.write(param.prefix);
       var commentCnt = this.comments.count();
       var linkParam = new Object();
       linkParam.linkto = (param.linkto ? param.linkto : "main");
@@ -267,7 +238,6 @@ function commentcounter_macro(param) {
             res.write(commentCnt + (param.more ? param.more : " comments"));
          this.closeLink();
       }
-      res.write(param.suffix);
    }
 }
 
@@ -277,7 +247,6 @@ function commentcounter_macro(param) {
 
 function comments_macro(param) {
    if (this.weblog.hasDiscussions() && this.count()) {
-      res.write(param.prefix);
       for (var i=0;i<this.size();i++) {
          var c = this.get(i);
          res.write("<a name=\"" + c._id + "\"></a>");
@@ -286,7 +255,6 @@ function comments_macro(param) {
          else
             c.renderSkin("toplevel");
       }
-      res.write(param.suffix);
    }
 }
 
@@ -296,8 +264,7 @@ function comments_macro(param) {
  */
 
 function commentform_macro(param) {
-   res.write(param.prefix);
-   if (user.uid) {
+   if (session.user) {
       var c = new comment();
       c.renderSkin("edit");
    } else {
@@ -307,7 +274,6 @@ function commentform_macro(param) {
       res.write (param.text ? param.text : "login to add your comment!");
       this.closeLink();
    }
-   res.write(param.suffix);
 
 }
 
@@ -336,8 +302,7 @@ function thumbnail_macro(param) {
  */
 
 function editableby_macro(param) {
-   res.write(param.prefix);
-   if (param.as == "editor" && (user == this.author || !this.author)) {
+   if (param.as == "editor" && (session.user == this.author || !this.author)) {
       var options = new Array("Subscribers and Contributors","Contributors only");
       res.write(simpleDropDownBox("editableby",options,this.editableby,"----"));
    } else {
@@ -348,7 +313,6 @@ function editableby_macro(param) {
       else
          res.write("Content Managers and Admins of " + this.weblog.title);
    }
-   res.write(param.suffix);
 }
 
 /**
@@ -356,7 +320,6 @@ function editableby_macro(param) {
  */
 
 function topicchooser_macro(param) {
-   res.write(param.prefix);
    var size = path.weblog.topics.size();
    var options = new Array();
    for (var i=0;i<size;i++) {
@@ -368,7 +331,6 @@ function topicchooser_macro(param) {
       }
    }
    res.write(simpleDropDownBox("topicidx",options,selectedIndex,"-- choose topic --"));
-   res.write(param.suffix);
 }
 
 /**
@@ -379,11 +341,9 @@ function topicchooser_macro(param) {
 function topic_macro(param) {
    if (!this.topic)
       return;
-   res.write(param.prefix);
    this.weblog.topics.get(this.topic).openLink(new Object());
    res.write(this.topic);
    this.closeLink();
-   res.write(param.suffix);
 }
 
 
