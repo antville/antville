@@ -1,4 +1,4 @@
-res.data.title = root.getSysTitle() + " Manager - " + req.action;
+res.data.title = root.getSysTitle() + " system configuration";
 
 res.data.action = this.href(req.action);
 

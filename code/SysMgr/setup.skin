@@ -1,37 +1,34 @@
 <form method="post" action="<% response.action %>">
-<table border=0 cellspacing=0 cellpadding=2>
-<tr>
-<td colspan=2 class="pageTitle" nowrap="nowrap">System Configuration</td>
-</tr>
+<table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td colspan="2" nowrap="nowrap"><b>General</b></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Title:</td>
-<td><% root.sys_title as="editor" size="20" %><br /><span class="small">This is the main title of your Antville-installation.</span></td>
+<td><% root.sys_title as="editor" size="20" %><br /><span class="small">This is the main title of your Antville installation.</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">System-URL:</td>
-<td><% root.sys_url as="editor" size="20" %><br /><span class="small">This URL will be used by Antville in the footer of various confirmation mails. You should set it to the URL of the frontpage of your Antville-Installation.</span></td>
+<td valign="top" nowrap="nowrap">System URL:</td>
+<td><% root.sys_url as="editor" size="20" %><br /><span class="small">This URL will be used by Antville in the footer of various confirmation mails. You should set it to the URL of the frontpage of your Antville installation.</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Frontpage Weblog:</td>
-<td><% root.sys_frontSite as="editor" size="20" %><br /><span class="small">If you enter the alias of a public weblog here the frontpage of this antville-installation will display the selected weblog instead of the default frontpage.</span></td>
+<td valign="top" nowrap="nowrap">Front page weblog:</td>
+<td><% root.sys_frontSite as="editor" size="20" %><br /><span class="small">If you enter the alias of a public weblog here the front page of this Antville installation will display the selected weblog instead of the default front page.</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">eMail:</td>
-<td><% root.sys_email as="editor" size="20" %><br /><span class="small">Antville will use this eMail-address to send various confirmation mail (e.g. when a user registers within the frontpage)</span></td>
+<td valign="top" nowrap="nowrap">E-mail:</td>
+<td><% root.sys_email as="editor" size="20" %><br /><span class="small">Antville will use this e-mail address to send various confirmation messages (e.g. when a user registers within the front page)</span></td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Language:</td>
-<td><% root.localechooser %><br /><span class="small">This defines the language of Antville's confirm- and error-messages. If you select a language that Antville doesn't know, it will display all messages in english. Whatever language you specify here will also be the default for every new weblog created here.</span></td>
+<td><% root.localechooser %><br /><span class="small">This defines the language of Antville's confirm  and error messages. If you select a language that Antville doesn't know, it will display all messages in english. Whatever language you specify here will also be the default for every new weblog created here.</span></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Long dateformat:</td>
+<td nowrap="nowrap">Long date format:</td>
 <td nowrap="nowrap"><% root.longdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Short dateformat:</td>
+<td nowrap="nowrap">Short date format:</td>
 <td nowrap="nowrap"><% root.shortdateformat as="chooser" width="20" %></td>
 </tr>
 <tr>
@@ -43,11 +40,11 @@
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Creation of new weblogs</b></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Who may create<br>new weblogs:</td>
+<td valign="top" nowrap="nowrap">Weblogs may be<br /> created by:</td>
 <td><% root.sys_limitNewSites as="editor" %><br /><span class="small">Here you can choose who may create new weblogs: all registered users or just those who are "trusted" (system administrators have this right anyway).</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Users must be<br>registered for:</td>
+<td valign="top" nowrap="nowrap">Users must be<br />registered for:</td>
 <td><% root.sys_minMemberAge as="editor" %><span class="small">&nbsp;days</span></td>
 </tr>
 <tr>
@@ -55,7 +52,7 @@
 <td><% root.sys_minMemberSince as="editor" %><span class="small">&nbsp;(eg. 2002-05-25 00:00)<br />Here you can either specify the time a user has to be registered or you define a timestamp which means that only users who have registered <i>before</i> are allowed to create a weblog.</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Time between two<br>new weblogs:</td>
+<td valign="top" nowrap="nowrap">Delay between creation<br />of two weblogs:</td>
 <td><% root.sys_waitAfterNewSite as="editor" %><span class="small">&nbsp;days<br />This is the amount of time a user has to wait before creating a new weblog (this doesn't affect "trusted" users or system administrators).</span></td>
 </tr>
 
@@ -63,7 +60,7 @@
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Automatic cleanup</b></td>
 </tr>
 <tr>
-<td colspan="2" class="small" valign="top">Antville has some features that ease system administration: it can automatically clean up the accesslog, block those weblogs that are private for too long and it can automatically remove weblogs that are inactive (both features can be enabled or disabled separately below). Whatever you choose, it will be done once in 24 hours.</td>
+<td colspan="2" class="small" valign="top">Antville has some features that ease system administration: it can automatically clean up the accesslog, block those weblogs being private for too long, and it can automatically remove weblogs that are inactive (both features can be enabled or disabled separately below). Whatever you choose, it will be done once in 24 hours.</td>
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Enable cleanup:</td>
@@ -71,47 +68,47 @@
 </tr>
 <tr>
 <td valign="top" nowrap="nowrap">Start at hour:</td>
-<td><% root.sys_startAtHour as="editor" %><br /><span class="small">Here you can define when Antville should start the cleanup process (you should choose some nighly hour)</span></td>
+<td><% root.sys_startAtHour as="editor" %><br /><span class="small">Here you can define when Antville should start the cleanup process (you should choose a time when there is low traffic, e.g. at night)</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Watching private weblogs</b></td>
 </tr>
 <tr>
-<td colspan="2" class="small" valign="top">Antville can host both public and private weblogs. Since private weblogs are accessible for members only and won't appear on the frontpage or in the weblog-directory, this can be a risky thing (although system administrators can access those private weblogs). To ease administration Antville can automatically search for private weblogs hosted here and disable them if they are private for too long (you can decide how long is too long below). This does not affect weblogs created by "trusted" users!</td>
+<td colspan="2" class="small" valign="top">Antville can host both public and private weblogs. Since private weblogs are accessible for members only and won't appear on the front page or in the weblog directory this can be a risky thing (system administrators can access those private weblogs, though). To ease administration Antville can automatically search for private weblogs hosted here and disable them being private for too long (below you can define the time span). However, please note that his does not affect weblogs created by "trusted" users.</td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Block private<br>weblogs:</td>
+<td valign="top" nowrap="nowrap">Block private<br />weblogs:</td>
 <td><% root.sys_blockPrivateSites as="editor" %></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Warn via mail:</td>
-<td><% root.sys_blockWarningAfter as="editor" size="10" %><span class="small">&nbsp;days<br />Here you can define the time a weblog is allowed to be private before Antville will send an eMail to the owner telling that the weblog will be blocked soon.</span></td>
+<td valign="top" nowrap="nowrap">Warn via e-mail:</td>
+<td><% root.sys_blockWarningAfter as="editor" size="10" %><span class="small">&nbsp;days<br />Here you can define the time a weblog is allowed to be private before Antville will send a message to the owner telling that the weblog will be blocked, soon.</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Time before<br>blocking:</td>
-<td><% root.sys_blockAfterWarning as="editor" size="10" %><span class="small">&nbsp;days<br />Choose the time between sending the warning eMail and actually blocking weblogs that have been private for too long. After blocking those weblogs their owners will receive an eMail telling them that their weblog has been blocked.</span></td>
+<td valign="top" nowrap="nowrap">Time before<br />blocking:</td>
+<td><% root.sys_blockAfterWarning as="editor" size="10" %><span class="small">&nbsp;days<br />Choose the time between sending the warning e-mail and actually blocking a weblog that has been private for too long. After blocking a weblog its owner will receive a message that the weblog was blocked.</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Removing inactive weblogs</b></td>
 </tr>
 <tr>
-<td colspan="2" class="small" valign="top">Antville can automatically remove weblogs that are inactive for too long. Here you can decide if you want to enable this feature, define the number of days of inactivity before Antville will send warning eMails or finally remove inactive weblogs.</td>
+<td colspan="2" class="small" valign="top">Antville can automatically remove weblogs that are inactive for too long. Here you can decide if you want to enable this feature, define the number of days of inactivity before Antville will send warning e-mails or finally remove inactive weblogs.</td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Remove inactive<br>weblogs:</td>
+<td valign="top" nowrap="nowrap">Remove inactive<br />weblogs:</td>
 <td><% root.sys_deleteInactiveSites as="editor" %></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Warn via mail:</td>
-<td><% root.sys_deleteWarningAfter as="editor" size="10" %><span class="small">&nbsp;days<br />Here you can define the time a weblog can be inactive before Antville will send an eMail to the owner telling that the weblog will be removed soon.</span></td>
+<td valign="top" nowrap="nowrap">Warn via e-mail:</td>
+<td><% root.sys_deleteWarningAfter as="editor" size="10" %><span class="small">&nbsp;days<br />Here you can define the time a weblog can be inactive before Antville will send an e-mail to the owner telling that the weblog will be removed soon.</span></td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">Time before<br>removing:</td>
-<td><% root.sys_deleteAfterWarning as="editor" size="10" %><span class="small">&nbsp;days<br />Choose the time between sending the warning eMail and actually removing weblogs that have been inactive for too long. After removing those weblogs their owners will receive an eMail telling them that their weblog has been removed.</span></td>
+<td valign="top" nowrap="nowrap">Time before<br />removing:</td>
+<td><% root.sys_deleteAfterWarning as="editor" size="10" %><span class="small">&nbsp;days<br />Choose the time between sending the warning e-mail and actually removing weblogs that have been inactive for too long. After removing those weblogs their owners will receive an e-mail telling them that their weblog has been removed.</span></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td>&nbsp;<br /><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td>&nbsp;<br /><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>
