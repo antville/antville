@@ -27,6 +27,26 @@ function isBlocked() {
 }
 
 /**
+ * check if user is trusted
+ */
+
+function isTrusted() {
+   if (parseInt(this.trusted,10))
+      return true;
+   return false;
+}
+
+/**
+ * check if user is sysAdmin
+ */
+
+function isSysAdmin() {
+   if (parseInt(this.sysadmin,10))
+      return true;
+   return false;
+}
+
+/**
  * function for sorting member-objects by the lastupdate-timestamp
  * of the according weblog
  */
