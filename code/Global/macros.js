@@ -186,7 +186,7 @@ function poll_macro(param) {
 	if (poll.closed || param.as == "results")
 	  poll.renderSkin("results");
 	else {
-		res.data.action = poll.href("main");
+		res.data.action = poll.href();
 		poll.renderSkin("main");
 	}
 }
@@ -199,7 +199,7 @@ function poll_macro(param) {
 
 function webloglist_macro(param) {
    if (param.show == "all")
-      var collection = root.allWeblogs;
+      var collection = root.public;
    else
       var collection = root;
 
