@@ -64,7 +64,7 @@ function editlink_macro(param) {
       }
       Html.openLink({href: this.href("edit")});
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : getMessage("generic.edit"));
       Html.closeLink();
@@ -84,7 +84,7 @@ function deletelink_macro(param) {
       }
       Html.openLink({href: this.href("delete")});
       if (param.image && this.site.images.get(param.image))
-         this.site.renderImage(this.site.images.get(param.image), param);
+         renderImage(this.site.images.get(param.image), param);
       else
          res.write(param.text ? param.text : getMessage("generic.delete"));
       Html.closeLink();
@@ -162,7 +162,7 @@ function replacelink_macro(param) {
          }
          Html.openLink({href: path.Layout.images.href("create") + "?alias=" + this.alias});
          if (param.image && this.site.images.get(param.image))
-            this.site.renderImage(this.site.images.get(param.image), param);
+            renderImage(this.site.images.get(param.image), param);
          else
             res.write(param.text ? param.text : getMessage("generic.replace"));
          Html.closeLink();
