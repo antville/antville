@@ -193,14 +193,13 @@ function evalImport(data) {
  * @param Object Array ([0] == title, [1] == text)
  */
 function getSkinDescription(prefix, key) {
-   var languages = new Array();
-   if (res.handlers.site)
-      languages[0] = res.handlers.site.getLocale().getLanguage();
-   languages[languages.length] = (root.getLocale()).getLanguage();
+   var languages = getLanguages();
    var propName = prefix + "." + key;
-   for (var i in languages) {
-      var lang = app.data[languages[i]];
-      if (lang && lang.getProperty(propName))
+   var lang;
+   for (var i=0;i<languages.length;i++) {
+      if (!(lang = app.data[languages[i]]))
+         continue;
+      if (lang.getProperty(propName))
          return lang.getProperty(propName).split("|");
    }
    return [key];
