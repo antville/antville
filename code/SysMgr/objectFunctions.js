@@ -213,7 +213,9 @@ function evalSystemSetup(param,admin) {
    root.sys_allowFiles = param.sys_allowFiles ? true : false;
    // limiting site-creation
    var limitArray = new Array(null,"trusted","sysAdmin");
-   root.sys_limitNewSites = parseInt(param.sys_limitNewSites,10);
+   root.sys_limitNewSites = param.sys_limitNewSites ? parseInt(param.sys_limitNewSites,10) : null;
+   root.sys_minMemberAge = param.sys_minMemberAge ? parseInt(param.sys_minMemberAge,10) : null;
+   root.sys_waitAfterNewSite = param.sys_waitAfterNewSite ? parseInt(param.sys_waitAfterNewSite,10) : null;
    // auto-cleanup
    root.sys_enableAutoCleanup = param.sys_enableAutoCleanup ? true : false;
    root.sys_startAtHour = parseInt(param.sys_startAtHour,10);
