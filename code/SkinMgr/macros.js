@@ -25,7 +25,9 @@ function skins_macro(param) {
 function skineditor_macro(param) {
    res.write(param.prefix)
    if (req.data.proto && req.data.name) {
-      // user wants to edit a skin, so we try to get it:
+      var s = this.fetchSkin(req.data.proto,req.data.name);
+      s.renderSkin("edit");
+      /*
       var currProto = this._parent.skinmanager.get(req.data.proto);
       if (currProto && currProto.get(req.data.name)) {
          var currSkin = currProto.get(req.data.name);
@@ -36,7 +38,30 @@ function skineditor_macro(param) {
          newSkin.skin = app.skinfiles[req.data.proto][req.data.name];
          newSkin.renderSkin("edit");
       }
+      */
    }
    res.write(param.suffix);
 }
 
+/**
+ * macro checks if the skin was modified or
+ * is the default-skin
+ */
+
+function skinstatus_macro(param) {
+   if (!param.proto || !param.name)
+      return;
+   var s = this.fetchSkin(param.proto,param.name);
+   res.write(param.prefix);
+   if (s.creator) {
+      res.write("customized by " + s.creator.name);
+      res.write("&nbsp;...&nbsp;");
+      var linkParam = new Object();
+      linkParam.to = "delete";
+      s.openLink(linkParam);
+      res.write("remove skin");
+      this.closeLink();
+   } else
+      res.write("not customized");
+   res.write(param.suffix);
+}
