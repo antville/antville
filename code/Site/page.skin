@@ -12,18 +12,30 @@
 
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20" nowrap>&nbsp;</td>
-<td width="460" valign="top" nowrap><br><% response.body %></td>
-<td width="20" nowrap>&nbsp;</td>
+<td width="40" nowrap>&nbsp;</td>
+<td width="400" valign="top" nowrap><br><% response.body %></td>
+<td width="60" nowrap>&nbsp;</td>
 <td width="2" background="/img/antville/dot.gif" nowrap><img src="/img/antville/pixel.gif" width="2" border="0"></td>
-<td width="198" align="right" valign="top" nowrap><div class="statuslight"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" %></div>
+<td width="198" align="right" valign="top" nowrap><div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="statushead"><img src="/img/antville/head_status.gif" width="48" height="13" border="0"></div>
+<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+
+<div class="statuslight"><% this.age prefix="online since:&nbsp;" show="days" suffix=" Days<br>" %><% this.lastupdate prefix="last updated:&nbsp;" format="EE, MM/dd/yyyy%></div>
 <% this.loginstatus %>
 <div class="statuslight"><% weblog.link to="signup" text="sign up" %> to <% this.title %>!</div>
+
 <div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="statushead"><img src="/img/antville/head_menu.gif" width="36" height="13" border="0"></div>
+<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+
 <div class="statusdark"><% this.navigation %><% root.link to="main" text="antville home" prefix="...&nbsp;" %></div>
 <div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
 <div class="statusdark"><% weblog.calendar %></div>
+
 <div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+<div class="statushead"><img src="/img/antville/head_recent.gif" width="123" height="13" border="0"></div>
+<div class="sep"><img src="/img/antville/pixel.gif" width="198" height="1" border="0"></div>
+
 <div class="statusdark"><% weblog.skin name="history" %></div></td>
 </tr>
 </table>
