@@ -1,3 +1,3 @@
-<br /><% this.title as="link" %><br />
-<% this.text limit="200" suffix="&nbsp;..." %>
-<div class="small">by <% this.creator %> @ <% this.modifytime format="short" %></div>
+<br /><% story.content part="title" as="link" %><br />
+<% story.content part="text" limit="200" suffix="&nbsp;..." %>
+<div class="small">by <% story.creator %> @ <% this.modifytime format="short" %></div>
