@@ -169,8 +169,8 @@ create table GOODIE (
 #----------------------------
 
 create table ACCESS (
-   ID bigint(20) not null auto_increment,
-   WEBLOG_ID bigint(20) not null default '0',
+   ID bigint(20) not null,
+   WEBLOG_ID bigint(20),
    REFERRER mediumtext,
    IP mediumtext,
    URL mediumtext,
@@ -203,5 +203,51 @@ create table TEXT (
    MODIFIER mediumint(9),
    READS bigint,
    IPADDRESS varchar(20),
+   unique ID (ID)
+);
+
+#----------------------------
+# Table structure for POLL
+#----------------------------
+
+create table POLL (
+   ID bigint(20) not null,
+   WEBLOG_ID bigint(20),
+   USER_ID bigint(20),
+   TITLE mediumtext,
+   QUESTION mediumtext,
+   ISONLINE tinyint(1),
+   CLOSED tinyint(4),
+   CLOSETIME datetime,
+   CREATETIME datetime,
+   MODIFYTIME datetime,
+   unique ID (ID)
+);
+
+#----------------------------
+# Table structure for CHOICE
+#----------------------------
+
+create table CHOICE (
+   ID bigint(20) not null,
+   POLL_ID bigint(20),
+   TITLE mediumtext,
+   CREATETIME datetime,
+   MODIFYTIME datetime,
+   unique ID (ID)
+);
+
+#----------------------------
+# Table structure for VOTE
+#----------------------------
+
+create table VOTE (
+   ID bigint(20) not null,
+   POLL_ID bigint(20),
+   USER_ID bigint(20),
+   CHOICE_ID bigint(20),
+   USERNAME tinytext,
+   CREATETIME datetime,
+   MODIFYTIME datetime,
    unique ID (ID)
 );
