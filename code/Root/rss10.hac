@@ -1,7 +1,6 @@
 res.contentType = "text/xml";
 
-var fmt = "yyyy-MM-dd'T'HH:mm:ss'+01:00'";
-var sdf = new java.text.SimpleDateFormat(fmt);
+var w3fmt = "yyyy-MM-dd'T'HH:mm:ss'+01:00'";
 
 var now = new Date();
 var param1 = new Object();
@@ -21,9 +20,9 @@ for (var i=0; i<max; i++) {
 		param1.itemTitle = weblog.title ? encodeXml(weblog.title) : "[untitled antville weblog]";
 		param1.authorName = encodeXml(weblog.creator.name);
 		param1.authorMail = encodeXml(weblog.creator.email);
-		param1.date = sdf.format(weblog.modifytime);
+		param1.date = weblog.modifytime.format(w3fmt);
 		param1.year = now.getYear();
-		var descr = weblog.tagline ? encodeXml("<br/>" + weblog.tagline) : "";
+		var descr = weblog.tagline ? encodeXml("<br />" + weblog.tagline) : "";
 		var date = weblog.modifytime.format("dd.MM.yyyy, HH:mm'h'");
 		param1.itemDescription = date + descr;
 		items += renderSkinAsString("rss10Item", param1);
@@ -37,7 +36,7 @@ param2.description = "Recently updated Antville weblogs ordered by date";
 param2.year = now.getYear();
 param2.creatorName = encodeXml("Tobi Schäfer");
 param2.creatorMail = encodeXml("tobi@helma.org");
-param2.date = sdf.format(now);
+param2.date = now.format(w3fmt);
 param2.updateBase = "2000-01-01T00:00:00Z";
 param2.language = getProperty("language");
 param2.items = items;
