@@ -10,6 +10,8 @@ global.macro.image = 14962
 global.macro.link = 14956
 global.macro.logo = 14986
 global.macro.poll = 14957
+global.macro.file = 15078
+global.macro.sitelist = 15372
 
 global.skin.colorpickerWidget = param.editor, param.text, param.name, param.color
 global.skin.prevpagelink = param.next, param.url
@@ -21,7 +23,11 @@ global.skin.rssImage = param.image, param.imgTitle, param.imgUrl, param.url
 // H O P O B J E C T 
 
 hopobject.macros = skin, link, createtime
-hopobject.macro.delete = response.action, param.what
+
+hopobject.macro.createtime = 44385
+hopobject.macro.link = 14956
+
+hopobject.skin.delete = response.action, param.what
 
 
 
@@ -147,6 +153,21 @@ shortcutmgr.skin.main = response.action
 
 site.macros = age, alias, alinkcolor, bgcolor, calendar, email, history, image, imagelist, lastupdate, linkcolor, membercounter, modifytime, monthlist, navigation, smallcolor, smallfont, smallsize, storylist, tagline, textcolor, textfont, textsize, title, titlecolor, titlefont, titlesize, topiclist, url, vlinkcolor, xmlbutton, listMostRead
 
+site.macro.alinkcolor = 15131
+site.macro.bgcolor = 15131
+site.macro.linkcolor = 15131
+site.macro.smallcolor = 15131
+site.macro.smallfont = 15131
+site.macro.smallsize = 15131
+site.macro.textcolor = 15131
+site.macro.textfont = 15131
+site.macro.textsize = 15131
+site.macro.titlecolor = 15131
+site.macro.titlefont = 15131
+site.macro.titlesize = 15131
+site.macro.vlinkcolor = 15131
+site.macro.xmlbutton = 15492
+
 site.skin.calendar = param.calendar, param.month, param.year, param.back, param.forward
 site.skin.calendarday = param.day
 site.skin.calendardayheader = param.day
@@ -165,7 +186,10 @@ site.skin.searchform = response.action, response.q
 
 // S T O R Y
 
-story.macros = content, createtime, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+story.macros = content, modifytime, creator, modifier, url, editlink, deletelink, onlinelink, viewlink, commentcounter, comments, commentform, editableby, discussions, topicchooser, topic, backlinks
+
+story.macro.backlinks = 40917
+story.macro.commentcounter = 26573
 
 story.skin.backlinkItem = param.count, param.referrer, param.text
 story.skin.backlinks = param.referrers
