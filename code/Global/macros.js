@@ -49,7 +49,7 @@ function image_macro(param) {
          break;
       case "popup" :
          param.linkto = img.getUrl();
-         param.onClick = img.getPopupUrl();
+         param.onclick = img.getPopupUrl();
          if (img.thumbnail)
             img = img.thumbnail;
          break;
