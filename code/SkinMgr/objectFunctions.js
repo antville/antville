@@ -17,34 +17,47 @@ function fetchSkin(proto,name) {
 
 /**
  * function stores skin
- * if no source was posted, the database-skin is deleted
- * (actually there should be a "delete"-button ...)
+ * @param String Name of prototype
+ * @param String Name of skin
+ * @param String Source of modified skin
+ * @param Obj User-object modifying this skin
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
  */
 
-function saveSkin() {
-   if (req.data.proto && req.data.name) {
-      var s = this.fetchSkin(req.data.proto,req.data.name);
-      if (!s.proto && req.data.skin) {
-         s.creator = user;
+function saveSkin(proto,name,source,creator) {
+   var result = new Object();
+   result.error = false;
+   if (proto && name) {
+      var s = this.fetchSkin(proto,name);
+      if (!s.proto && skin) {
+         s.creator = creator;
          s.createtime = new Date();
-         s.name = req.data.name;
-         s.proto = req.data.proto;
+         s.name = name;
+         s.proto = proto;
          this._parent.skinmanager.add(s);
-      } else if (s.proto && !req.data.skin)
+      } else if (s.proto && !source)
          this._parent.skinmanager.get(s.proto).remove(s);
-      if (req.data.skin)
-         s.skin = req.data.skin;
-      res.message = "Changes were saved successfully!";
+      if (source)
+         s.skin = source;
+      result.message = "Changes were saved successfully!";
+   } else {
+      result.message = "Couldn't find skin for update!";
+      result.error = true;
    }
-   res.redirect(this.href() + "#" + s.proto + s.name);
+   return (result);
 }
 
 /**
  * function deletes a skin
+ * @param Obj Skin-HopObject to delete
+ * @return String Message indicating success of failure
  */
 
 function deleteSkin(s) {
-   this._parent.skinmanager.get(s.proto).remove(s);
-   res.message = "Skin deleted successfully!";
-   res.redirect(this.href());
+   if (this._parent.skinmanager.get(s.proto).remove(s))
+      return ("Skin deleted successfully!");
+   else
+      return ("Couldn't delete skin!");
 }
