@@ -1,4 +1,13 @@
 /**
+ * wrapper to access colorpicker
+ */
+
+function colorpicker_action() {
+   this.renderSkin("colorpicker");
+}
+
+
+/**
  * wrapper to make style.skin public
  */
 
