@@ -13,7 +13,7 @@ function renderImage(img, param) {
       param.height = img.height;
    if (!param.border)
       param.border = "0";
-   param.alt = encode(param.description ? param.description : img.alttext);
+   param.alt = encode(param.alt ? param.alt : img.alttext);
    Html.tag("img", param);
    return;
 }
