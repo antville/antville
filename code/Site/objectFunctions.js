@@ -229,3 +229,15 @@ function ping() {
 	return(result);
 }
 
+
+/**
+ * This function returns true if the site prefs were modified
+ * lately, otherwise it returns false.
+ * @return Boolean
+ */
+
+function isModified() {
+   if (req.lastModified && req.lastModified > this.modifytime)
+      return(false);
+   return(true);
+}
