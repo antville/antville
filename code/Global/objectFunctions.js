@@ -238,6 +238,7 @@ function getDefaultDateFormats(version) {
  * each request that contains an HTTP referrer. This is
  * done by direct DB interface due to performance reasons.
  */
+
 function logAccess() {
 	if (req.data.http_referer) {
 		var weblog = path["weblog"];
@@ -246,7 +247,9 @@ function logAccess() {
 		var hopPath = path[path.length-1].href();
 		var action = req.action;
 		var browser = req.data.http_browser;
-		
+
+		// we're doing this with direct db access here
+		// (there's no need to do it with prototypes):
 		var c = getDBConnection("antville");
 		error = c.getLastError();
 		if (error) {
@@ -263,7 +266,9 @@ function logAccess() {
 		}
 		return;
 
-		// this is the conventional Helma way:
+		// *****************************************
+		// this is the conventional Helma way
+		// (needs appropriate type mapping if used):
 		var hopPath = path[path.length-1].href();
 		var a = new access();
 		a.weblog = path["weblog"];
