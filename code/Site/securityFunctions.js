@@ -1,14 +1,15 @@
 /**
  * check if site is online
  * @param Obj Userobject
+ * @param Int Permission-Level
  * @return String String indicating that site is not public (or null if public)
  */
 
-function isNotPublic(usr) {
+function isNotPublic(usr,level) {
    if (!this.online) {
       if (usr && usr.sysadmin)
          return null;
-      else if (req.data.memberlevel)
+      else if (level)
          return null;
       return "siteNotPublic";
    }
@@ -19,13 +20,14 @@ function isNotPublic(usr) {
 /**
  * check if user is allowed to edit the preferences of this site
  * @param Obj Userobject
+ * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
 
-function isEditDenied(usr) {
+function isEditDenied(usr,level) {
    if (usr.sysadmin)
       return null;
-   if ((req.data.memberlevel & MAY_EDIT_PREFS) == 0)
+   if ((level & MAY_EDIT_PREFS) == 0)
       return "siteEditDenied";
    return null;
 }
@@ -46,11 +48,12 @@ function isDeleteDenied(usr) {
 /**
  * function checks if user is allowed to sign up
  * @param Obj Userobject
+ * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
 
-function isSubscribeDenied(usr) {
-   if (req.data.memberlevel)
+function isSubscribeDenied(usr,level) {
+   if (level)
       return "subscriptionExist";
    else if (!this.online)
       return "siteNotPublic";
@@ -63,10 +66,10 @@ function isSubscribeDenied(usr) {
  * @return String Reason for denial (or null if allowed)
  */
 
-function isUnsubscribeDenied(usr) {
-   if (req.data.memberlevel)
+function isUnsubscribeDenied(usr,level) {
+   if (!level)
       return "subscriptionNoExist";
-   else if (req.data.memberlevel > 0)
+   else if (level > 0)
       return "unsubscribeDenied";
    return null;
 }

@@ -12,11 +12,7 @@ function onRequest() {
       res.redirect(root.href());
    }
    // initialize sysmgr-object in session
-   if (!session.data.mgr) {
+   if (!session.data.mgr)
       session.data.mgr = new sysmgr();
-      session.data.mgr.searchSites();
-      session.data.mgr.searchUsers();
-      session.data.mgr.searchSyslog();
-   }
    return;
 }
