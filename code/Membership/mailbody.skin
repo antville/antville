@@ -1,9 +1,0 @@
-The status of your account '<% membership.username %>' as a member of '<% site.title %>' (<% site.url %>) has changed: You are now
-
-   <% membership.level %>
-
-Have fun!
-
----------------------------------------
-<% root.title %> - <% root.url %>
----------------------------------------
