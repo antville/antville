@@ -1,29 +1,4 @@
 /**
- * FIXME!
- * this macro looks like it is obsolete...?
- * (and if it's not i think it deserves a skin)
- *
- * macro renders filebased-skins as list
- */
-
-function skins_macro(param) {
-   for (var i in app.skinfiles) {
-      openMarkupElement("b");
-      res.write(i);
-      closeMarkupElement("b");
-      for (var j in app.skinfiles[i]) {
-         openMarkupElement("li");
-         openLink(this.href() + "?proto=" + i + "&name=" + j);
-         res.write(j);
-         closeLink();
-         closeMarkupElement("li");
-      }
-      renderMarkupElement("br");
-   }
-}
-
-
-/**
  * macro calls a form-skin for editing a skin-source
  */
 
