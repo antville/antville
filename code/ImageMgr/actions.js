@@ -32,8 +32,10 @@ function create_action() {
       if ((!req.data.rawimage || req.data.rawimage.contentLength == 0) && req.data.url)
           req.data.rawimage = getURL(req.data.url);
       try {
-         res.message = this.evalImg(req.data, session.user);
-         res.redirect(this.href());
+         var result = this.evalImg(req.data, session.user);
+         res.message = result.toString();
+         session.data.referrer = null;
+         res.redirect(result.url);
       } catch (err) {
          res.message = err.toString();
       }

@@ -49,7 +49,9 @@ function evalImg(param, creator) {
    // send e-mail notification
    if (newImg.site.isNotificationEnabled()) 
       newImg.site.sendNotification("upload", newImg);
-   return new Message("imageCreate", newImg.alias);
+   var result = new Message("imageCreate", newImg.alias);
+   result.url = newImg.href();
+   return result;
 }
 
 /**
