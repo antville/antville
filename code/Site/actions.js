@@ -77,7 +77,7 @@ function colorpicker_action() {
 
 
 /**
- * wrapper to access safescripts also from site
+ * @DEPRECATED
  */
 
 function safescripts_action() {
@@ -110,6 +110,7 @@ function javascript_action() {
    res.digest();
    res.contentType = "text/javascript";
    this.renderSkin("javascript");
+   root.renderSkin("systemscripts");
    return;
 }
 

@@ -60,18 +60,12 @@ function list_action() {
 }
 
 /**
- * wrapper to make safejs.skin public
- * (contains js code safe from the user)
+ * @DEPRECATED
  */
 
 function safescripts_action() {
-   res.digest();
    res.contentType = "text/javascript";
-   var param = new Object();
-   // this is needed to enable sites with virtual domain hosting
-   // using the colorpicker to circumvent domain-based script security:
-   param.cpHost = path.site ? path.site.href() : root.href();
-   root.renderSkin("safescripts", param);
+   res.write("");
    return;
 }
 
