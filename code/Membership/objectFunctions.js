@@ -40,7 +40,7 @@ function updateMember() {
 function sendConfirmationMail() {
 	var mail = new Mail();
 	mail.setFrom(getProperty("adminEmail"));
-	mail.setTo(this.user.email);
+	mail.addTo(this.user.email);
 	mail.setSubject(this.weblog.title + " - Your status was changed!");
 	mail.setText(this.renderSkinAsString("mailbody"));
 	mail.send();
