@@ -74,10 +74,11 @@ of available layouts.</span></td>
 <td class="small" valign="top">Enter one <a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> per line to be applied on every URL in the referrer and backlink lists.</td>
 <td nowrap="nowrap" valign="top"><% site.preferences name="spamfilter" as="editor" cols="30" rows="7" %></td>
 </tr>
+
 <% site.notification %>
-<tr>
-<td></td>
-<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
-</tr>
-</table>
-</form>
+
+<% site.modulePreferences %>
+
+<tr> <td></td> <td nowrap="nowrap"><br /><% input type="submit" 
+   name="save" value="Save" %>&nbsp;<% input type="submit" 
+   name="cancel" value="Cancel" %></td> </tr> </table> </form>
