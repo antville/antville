@@ -24,14 +24,3 @@ function isBlocked() {
    } else
       return false;
 }
-
-/**
- * check if user owns a weblog
- * returns true|false
- */
-
-function getWeblog() {
-   if (user.weblog)
-      return true;
-   return false;
-}
