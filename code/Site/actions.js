@@ -174,7 +174,7 @@ function rss_action() {
             param.email = story.creator.email.entitize();
          param.date = sdf.format(story.createtime);
          param.subject = story.topic ? story.topic : "";
-         param.year = story.createtime.getYear();
+         param.year = story.createtime.getFullYear();
          items.append(story.renderSkinAsString("rssItem", param));
          resources.append(story.renderSkinAsString("rssResource", param));
       }
