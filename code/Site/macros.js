@@ -68,9 +68,10 @@ function bgcolor_macro(param) {
  * macro rendering textfont
  */
 function textfont_macro(param) {
-  if (param.as == "editor")
+  if (param.as == "editor") {
+    param.size = 40;
     Html.input(this.preferences.createInputParam("textfont", param));
-  else
+  } else
     res.write(this.preferences.getProperty("textfont"));
 }
 
@@ -134,9 +135,10 @@ function vlinkcolor_macro(param) {
  * macro rendering titlefont
  */
 function titlefont_macro(param) {
-  if (param.as == "editor")
+  if (param.as == "editor") {
+    param.size = 40;
     Html.input(this.preferences.createInputParam("titlefont", param));
-  else
+  } else
     res.write(this.preferences.getProperty("titlefont"));
 }
 
@@ -167,9 +169,10 @@ function titlecolor_macro(param) {
  * macro rendering smallfont
  */
 function smallfont_macro(param) {
-  if (param.as == "editor")
+  if (param.as == "editor") {
+    param.size = 40;
     Html.input(this.preferences.createInputParam("smallfont", param));
-  else
+  } else
     res.write(this.preferences.getProperty("smallfont"));
 }
 
@@ -675,7 +678,7 @@ function notify_macro(param) {
             res.write("Contributors and above");
          else if (notify == 1)
             res.write("Admins and content managers");
-         else  
+         else
             res.write("No e-mail notification");
       }
    }
