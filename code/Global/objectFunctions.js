@@ -171,11 +171,11 @@ function getPoolObj(objName, pool) {
 function logAccess() {
    if (req.data.http_referer) {
       var site = res.handlers.site ? res.handlers.site : root;
-      var referrer = req.data.http_referer;
+      var referrer = Http.evalUrl(req.data.http_referer);
 
       // no logging at all if the referrer comes from the same site
       // or is not a http-request
-      if (!referrer.contains("http"))
+      if (!referrer)
          return;
       var siteHref = site.href().toLowerCase();
       if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
