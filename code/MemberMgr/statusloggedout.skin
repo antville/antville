@@ -1,1 +1,1 @@
-<div class="statuslight">You're not logged in ... <% membermgr.link to="login" text="login" %></div>
+You're not logged in ... <% membermgr.link to="login" text="login" %>
