@@ -33,7 +33,6 @@ function updateComment(param) {
       if (this.site.isNotificationEnabled()) 
          this.site.sendNotification("update", this);
    }
-   this.cache.modifytime = new Date();
    this.ipaddress = param.http_remotehost;
    return new Message("update");
 }
