@@ -50,7 +50,10 @@ function sys_allowFiles_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      Html.checkBox(this.createInputParam("sys_allowFiles", param));
+      var inputParam = this.createCheckBoxParam("sys_allowFiles", param);
+      if (req.data.save && !req.data.sys_allowFiles)
+         delete inputParam.checked;
+      Html.checkBox(inputParam);
    } else
       res.write(this.sys_allowFiles ? "yes" : "no");
    return;
@@ -142,7 +145,10 @@ function sys_enableAutoCleanup_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      Html.checkBox(this.createInputParam("sys_enableAutoCleanup", param));
+      var inputParam = this.createCheckBoxParam("sys_enableAutoCleanup", param);
+      if (req.data.save && !req.data.sys_enableAutoCleanup)
+         delete inputParam.checked;
+      Html.checkBox(inputParam);
    } else
       res.write(this.sys_enableAutoCleanup ? "yes" : "no");
    return;
@@ -175,7 +181,10 @@ function sys_blockPrivateSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      Html.checkBox(this.createInputParam("sys_blockPrivateSites", param));
+      var inputParam = this.createCheckBoxParam("sys_blockPrivateSites", param);
+      if (req.data.save && !req.data.sys_blockPrivateSites)
+         delete inputParam.checked;
+      Html.checkBox(inputParam);
    } else
       res.write(this.sys_blockPrivateSites ? "yes" : "no");
    return;
@@ -220,7 +229,10 @@ function sys_deleteInactiveSites_macro(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      Html.checkBox(this.createInputParam("sys_deleteInactiveSites", param));
+      var inputParam = this.createCheckBoxParam("sys_deleteInactiveSites", param);
+      if (req.data.save && !req.data.sys_deleteInactiveSites)
+         delete inputParam.checked;
+      Html.checkBox(inputParam);
    } else
       res.write(this.sys_deleteInactiveSites ? "yes" : "no");
    return;
