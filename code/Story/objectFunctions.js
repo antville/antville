@@ -161,21 +161,15 @@ function evalComment(param, creator) {
  * @return String Message indicating success/failure
  */
 
-function deleteComment(currComment) {
-   for (var i=currComment.size();i>0;i--)
-      this.deleteComment(currComment.get(i-1));
+function deleteComment(commentObj) {
+   for (var i=commentObj.size();i>0;i--)
+      this.deleteComment(commentObj.get(i-1));
    // also remove from comment's parent since it has
    // cachemode set to aggressive and wouldn't refetch
    // its child collection index otherwise
-   var p = currComment.parent;
-   if (p == null)
-      p = currComment.story;
-   try {
-      p.remove(currComment);
-      this.comments.remove(currComment);
-   } catch (err) {
-      throw new Exception("commentDelete");
-   }
+   (commentObj.parent ? commentObj.parent : this).removeChild(commentObj);
+   this.comments.removeChild(commentObj);
+   commentObj.remove();
    return new Message("commentDelete");
 }
 
@@ -210,11 +204,8 @@ function getRenderedContentPart(name) {
  * function deletes all childobjects of a story (recursive!)
  */
 function deleteAll() {
-   for (var i=this.comments.size();i>0;i--) {
-      var c = this.comments.get(i-1);
-      if (!this.comments.remove(c))
-         throw new Exception("storyDeleteComments");
-   }
+   for (var i=this.comments.size();i>0;i--)
+      this.comments.get(i-1).remove();
    return true;
 }
 
