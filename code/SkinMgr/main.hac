@@ -6,7 +6,7 @@ if (deny) {
    res.redirect(user.cache.referer ? path.weblog.members.href("login") : path.weblog.href());
 }
 
-res.skin = "weblog.page";
+res.skin = "weblog.editor";
 
 res.title = "Antville - " + path.weblog.title;
 
