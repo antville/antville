@@ -374,7 +374,7 @@ function storylist_macro(param) {
 function calendar_macro(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this site is disabled
-   if (!this.size() || !this.showArchive())
+   if (!this.allstories.size() || !this.showArchive())
       return;
    // define variables needed in this function
    var calParam = new Object();
@@ -493,10 +493,18 @@ function membercounter_macro(param) {
 function history_macro(param) {
    if (this.isNotPublic(session.user) && !this.isUserMember(session.user))
       return;
-   var max = parseInt(param.show,10) ? parseInt(param.show,10) : 5;
-   max = Math.min(max,this.allcontent.size());
-   for (var i=0;i<max;i++)
-      this.allcontent.get(i).renderSkin("historyview");
+   if (!param.show)
+      param.show = 5;
+   var cnt = 0;
+   var i = 0;
+   while (cnt < param.show && this.allcontent.get(i)) {
+      var item = this.allcontent.get(i++);
+      if (!item.story || (item.story.isOnline() && item.story.hasDiscussions())) {
+         item.renderSkin("historyview");
+         cnt++;
+      }
+   }
+   return;
 }
 
 
