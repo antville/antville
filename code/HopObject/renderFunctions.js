@@ -124,6 +124,7 @@ function renderInputButton(param) {
  * open a normal href-tag
  * valid attributes: -  linkto | to (the url)
  *                   -  urlparam (get-parameter)
+ *                   -  anchor 
  *                   -  target
  */
 
@@ -142,6 +143,7 @@ function openLink(param) {
          res.write(this.href(url));
    }
    if (param.urlparam) res.write(param.urlparam);
+   if (param.anchor) res.write(param.anchor);
    res.write("\"");
    if (param.target)
       res.write(" target=\"" + param.target + "\"");
