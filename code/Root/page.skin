@@ -42,8 +42,8 @@
 <td width="198" align="right" valign="top" nowrap="nowrap"><div class="statuslight"><% now format="long" suffix="<br />" %>
 <% root.loginstatus %></div>
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statusdark"><% root.link to="main" text="antville home" prefix="...&nbsp;" %><br />
-...&nbsp;<% root.link to="new" text="create a new weblog" %><br />
+<div class="statusdark"><% root.link to="main" text="antville home" prefix="...&nbsp;" suffix="<br />" %>
+<% root.link to="new" text="create a new weblog" prefix="...&nbsp;" suffix="<br />" %>
 <% root.managelink prefix="...&nbsp;" suffix="<br />" %>
 <br /><span class="statuslight">Resources:<br />
 ...&nbsp;<a href="http://help.antville.org/">help</a><br />
