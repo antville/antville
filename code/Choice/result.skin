@@ -1,0 +1,2 @@
+<p><% param.graph %><% param.percent %>% <i>(<% param.count %>)</i><br>
+<% param.title %>

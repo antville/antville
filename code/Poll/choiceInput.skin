@@ -1,0 +1,4 @@
+<tr>
+<td><span class="small">Choice <% param.count %>:</small><br>
+<input type="text" size="60" name="choice" value="<% param.value %>"></td>
+</tr>

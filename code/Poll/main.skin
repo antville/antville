@@ -1,0 +1,12 @@
+<span class="storyTitle"><% this.question %></span>
+
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="2" cellpadding="2">
+<% this.choices %>
+<tr>
+<td></td>
+<td><br><input type="submit" name="submit" value="vote">
+<p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.</td>
+</tr>
+</table>
+</form>

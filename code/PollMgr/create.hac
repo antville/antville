@@ -1,0 +1,55 @@
+autoLogin();
+
+var deny = this.isDenied(user);
+if (deny) {
+   res.message = deny;
+   res.redirect(user.cache.referer ? path.weblog.members.href("login") : this.href());
+}
+
+// storing referer in user-cache in case user clicks cancel later
+if (!user.cache.referer && req.data.http_referer)
+   user.cache.referer = req.data.http_referer;
+
+if (req.data.submit == "cancel" || req.data.cancel) {
+   var url = user.cache.referer ? user.cache.referer : this.href();
+   user.cache.referer = null;
+   res.redirect(url);
+} else if (req.data.submit == "save" || req.data.save) {
+   var result = this.evalNewPoll(req.data, user);
+   res.message = result.message;
+   user.cache.referer = null;
+   if (!result.error)
+      res.redirect(result.url);
+}
+
+var len = 0
+if (!req.data.choice_array) {
+	var max = 2;
+	req.data.choice_array = new Array(max);
+	if (req.data.choice)
+		req.data.choice_array[0] = req.data.choice;
+}
+else {
+	var len = req.data.choice_array.length;
+	var max = len;
+}
+
+if (req.data.submit == "add choice")
+	max++;
+
+newPoll = new poll();
+res.data.choices = "";
+for (var i=0; i<max; i++) {
+	var param = new Object();
+	param.value = (i < len) ? req.data.choice_array[i] : "";
+	param.count = i+1;
+ 	res.data.choices += newPoll.renderSkinAsString("choiceInput", param);
+}
+
+res.skin = "weblog.page";
+
+res.data.command = "Create";
+res.data.action = this.href("create");
+res.data.title = "Antville - " + path.weblog.title;
+
+res.data.body = newPoll.renderSkinAsString("edit");

@@ -1,0 +1,17 @@
+<style type="text/css">
+<!--
+.bar {
+	height: 5px;
+	margin-right: 10px;
+	background-color: #ff3300;
+	font-size: 0px;
+}
+// -->
+</style>
+
+<span class="storyTitle"><% this.question %></span>
+<% this.results %>
+
+<p><b>Total:</b> 100% <i>(<% this.total %>)</i>
+
+<p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.<% this.state text="<br>this poll was closed on " format="short" %></span>

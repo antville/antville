@@ -1,0 +1,4 @@
+<tr>
+<td valign="top"><input type="radio" name="<% param.name %>" value="<% param.value %>"<% param.checked %>></td>
+<td><% param.title %></td>
+</tr>
