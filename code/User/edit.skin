@@ -1,33 +1,33 @@
-<table border="0" cellspacing="0" cellpadding="3">
 <form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">old password:</td>
+<td class="small" nowrap="nowrap">Old password:</td>
 <td nowrap="nowrap"><% input type="password" name="oldpwd" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">new password:</td>
+<td class="small" nowrap="nowrap">New password:</td>
 <td nowrap="nowrap"><% input type="password" name="newpwd1" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">confirm password:</td>
+<td class="small" nowrap="nowrap">Confirm password:</td>
 <td nowrap="nowrap"><% input type="password" name="newpwd2" %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">eMail:</td>
+<td class="small" nowrap="nowrap">E-mail:</td>
 <td><% user.email as="editor" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">eMail is visible:</td>
-<td><% input type="checkbox" name="publishemail" %><br /><span class="small">If you select this checkbox your eMail-address will be visible to weblog administrators.</span></td>
+<td class="small" valign="top" nowrap="nowrap">E-mail is visible:</td>
+<td><% input type="checkbox" name="publishemail" %><br /><span class="small">If you select this checkbox your e-mail address will be visible to weblog administrators.</span></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">personal URL:</td>
-<td><% user.url as="editor" %><br>
-<span class="small">If you enter a URL or an eMail-address here, your username will appear as link next to your stories or comments (an eMail-address will appear as <i>mailto:</i> link).</span></td>
+<td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
+<td><% user.url as="editor" %><br />
+<span class="small">If you enter a URL or an e-mail address here, your username will appear as link next to your stories or comments.</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
-</form>
 </table>
+</form>

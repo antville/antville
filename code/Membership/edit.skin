@@ -2,28 +2,28 @@
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">username:</td>
+<td class="small" nowrap="nowrap">Username:</td>
 <td nowrap="nowrap"><b><% membership.username %></b></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">e-mail:</td>
+<td class="small" nowrap="nowrap">E-mail:</td>
 <td nowrap="nowrap"><% membership.email %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">url:</td>
+<td class="small" nowrap="nowrap">Personal URL:</td>
 <td nowrap="nowrap"><% membership.url %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">currently</td>
+<td class="small" nowrap="nowrap">Currently</td>
 <td nowrap="nowrap"><% membership.level %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">change to:</td>
+<td class="small" nowrap="nowrap">Change to:</td>
 <td nowrap="nowrap"><% membership.level as="editor" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><% input type="button" name="save" value="save" %>&nbsp;<% input type="button" name="cancel" value="cancel" %></td>
+<td nowrap="nowrap"><% input type="button" name="save" value="Save" %>&nbsp;<% input type="button" name="cancel" value="Cancel" %></td>
 </tr>
 </table>
 </form>
