@@ -1,11 +1,4 @@
-if (req.data.http_referer)
-   var redirectTo = req.data.http_referer;
-else if (user.weblog)
-   var redirectTo = user.weblog.href();
-else
-   var redirectTo = root.href();
-
 res.message = "Good bye, " + user.name + "! Lookin' forward to see you again!";
 user.logout();
 user.cache.referer = null;
-res.redirect(redirectTo);
+res.redirect(this.__parent__.href());
