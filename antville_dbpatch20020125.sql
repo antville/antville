@@ -14,9 +14,7 @@ create table POLL (
    USER_ID bigint(20),
    TITLE mediumtext,
    QUESTION mediumtext,
-   ISONLINE tinyint(1),
    CLOSED tinyint(4),
-   CLOSETIME datetime,
    CREATETIME datetime,
    MODIFYTIME datetime,
    unique ID (ID));
