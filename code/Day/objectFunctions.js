@@ -1,5 +1,5 @@
 /**
- * function checks if story is published in weblog
+ * function checks if story is published in site
  * @param Obj story to check
  * @return Boolean true if online, false if not
  */
