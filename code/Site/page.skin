@@ -39,7 +39,7 @@
 <div class="statusdark"><% weblog.skin name="history" %></div>
 
 <div class="sep"><% image name="/pixel" width="198" %></div>
-<div class="statushead"><br><% logo name="smallanim" %></div></td>
+<div class="statuslight"><br><% logo name="smallstraight" %><br>powered by<br><% image name="/hop" linkto="http://helma.org" %></div></td>
 </tr>
 </table>
 
