@@ -25,7 +25,7 @@ function modified_action() {
  */
 function custom_action() {
    res.data.title = getMessage("skin.mgr.listCustomTitle", {layoutTitle: this._parent.title});
-   res.data.list = this.renderList(this.custom, req.action);
+   res.data.list = this.renderList(this.getCustomSkins(), req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
    return;
@@ -65,10 +65,10 @@ function edit_action() {
    if (!req.data.key)
       res.redirect(this.href());
    var sp = new Object();
+   var splitKey = req.data.key.split(".");
    var desc = this.getSkinDescription("skin", req.data.key);
    sp.title = desc[0];
    sp.text = desc[1] ? desc[1] : " (" + getMessage("skin.customSkin") + ")";
-   var splitKey = req.data.key.split(".");
    sp.skin = this.getSkinSource(splitKey[0], splitKey[1]);
    sp.action = req.data.action;
 
