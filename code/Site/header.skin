@@ -12,4 +12,4 @@
 <td colspan="2" class="headerNav" nowrap><% this.navigation %></td>
 </tr>
 </table>
-&nbsp;<BR>
+&nbsp;<br>
