@@ -51,32 +51,35 @@ function evalStory(param,modifier) {
       result.message = "The name of the topic contains forbidden characters!";
       result.error = true;
       return (result);
-   } else
+   } else if (topicName)
       this.topic = topicName;
+
    // check online-status of story
-   var online = parseInt(param.online,10);
-   if (online == 1 && !this.topic) {
-      result.message = "Can't set story online just in topic because you didn't specify one!";
+   var newStatus = parseInt(param.online,10);
+   if (isNaN(newStatus)) {
+      result.message = "Should the story appear online or not?";
       result.error = true;
-      this.online = 2;
       return (result);
-   } else if (isNaN(online))
-      this.online = 0;
-   else
-      this.online = online;
-
-   // the modifytimes of a story and its parent weblog will only 
-   // be updated if more than 50 characters have changed.
-   if (majorUpdate) {
-      if (this.online > 0)
-         this.weblog.lastupdate = new Date();
-      this.modifytime = new Date();
    }
-
-   if (this.online > 0)
-      result.url = this.href();
-   else
-      result.url = this.weblog.stories.href();
+   if (newStatus == 1 && !topicName) {
+      result.message = "Can't publish story in a topic because you didn't specify one!";
+      result.error = true;
+      return (result);
+   }
+   if (!this.online) {
+      if (newStatus > 0) {
+         this.online = newStatus;
+         this.weblog.lastupdate = new Date();
+      }
+      this.modifytime = new Date();
+   } else {
+      if (newStatus > 0 && majorUpdate)
+         this.weblog.lastupdate = new Date();
+      this.online = newStatus;
+      this.modifytime = new Date();
+      this.online = newStatus;
+   }
+   result.url = this.online > 0 ? this.href() : this.weblog.stories.href();
    result.message = "The story was updated successfully!";
    this.cache.lrText = null;
    return (result);
