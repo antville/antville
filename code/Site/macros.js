@@ -431,7 +431,7 @@ function calendar_macro(param) {
    for (var i=0;i<weeks;i++) {
       weekBuf = new java.lang.StringBuffer();
       for (var j=0;j<7;j++) {
-         dayParam.useskin = "calendarday";
+         dayParam.skin = "calendarday";
          if ((i == 0 && j < pre) || daycnt > days)
             dayParam.day = "&nbsp;";
          else {
@@ -451,10 +451,10 @@ function calendar_macro(param) {
                dayParam.day = linkText;
             }
             if (currGroupname == today)
-               dayParam.useskin = "calendarselday";
+               dayParam.skin = "calendarselday";
             daycnt++;
          }
-         weekBuf.append(this.renderSkinAsString(dayParam.useskin, dayParam));
+         weekBuf.append(this.renderSkinAsString(dayParam.skin, dayParam));
       }
       weekParam.week = weekBuf.toString();
       calBuf.append(this.renderSkinAsString("calendarweek",weekParam));

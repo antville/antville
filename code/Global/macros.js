@@ -117,7 +117,7 @@ function file_macro(param) {
    var p = getPoolObj(param.name,"files");
    if (!p)
       return;
-   p.obj.renderSkin(param.useskin ? param.useskin : "main");
+   p.obj.renderSkin(param.skin ? param.skin : "main");
 }
 
 
@@ -144,7 +144,7 @@ function linkedpath_macro (param) {
 
 /**
  * Renders the story with the specified id; uses preview.skin as default
- * but the skin to be rendered can be chosen with useskin="skinname"
+ * but the skin to be rendered can be chosen with parameter skin="skinname"
  */
 function story_macro(param) {
    if (!param.id)
@@ -159,7 +159,7 @@ function story_macro(param) {
    var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
    if (!story)
       return(getMessage("error","storyNoExist",param.id));
-   story.renderSkin(param.useskin ? param.useskin : "embed");
+   story.renderSkin(param.skin ? param.skin : "embed");
    return;
 }
 
