@@ -26,13 +26,27 @@
 <td valign="top" nowrap="nowrap">Allow files:</td>
 <td><% root.sys_allowFiles as="editor" %><br /><span class="small">Enabling this means that users can upload files.</span></td>
 </tr>
+
 <tr>
-<td valign="top" nowrap="nowrap">Limit creation<br>of new weblogs:</td>
+<td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Creation of new weblogs</b></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">Who may create<br>new weblogs:</td>
 <td><% root.sys_limitNewSites as="editor" %><br /><span class="small">Here you can choose who may create new weblogs: only those users who have system administration right, those users who are "trusted" or every registered user.</span></td>
 </tr>
 <tr>
+<td valign="top" nowrap="nowrap">Users must be<br>registered for:</td>
+<td><% root.sys_minMemberAge as="editor" %><span class="small">&nbsp;days<br />Here you can also specify the time a user has to be registered before being allowed to create a new weblog.</span></td>
+</tr>
+<tr>
+<td valign="top" nowrap="nowrap">Time between two<br>new weblogs:</td>
+<td><% root.sys_waitAfterNewWeblog as="editor" %><span class="small">&nbsp;days<br />This is the amount of time a user has to wait before creating a new weblog.</span></td>
+</tr>
+
+<tr>
 <td colspan="2" nowrap="nowrap"><div class="blockSeparator">&nbsp;</div><br /><b>Automatic cleanup</b></td>
 </tr>
+<tr>
 <td colspan="2" class="small" valign="top">Antville has some features that ease system administration: it can automatically block those weblogs that are private for too long, and it can automatically remove weblogs that are inactive (both features can be enabled or disabled separately below). Whatever you choose, it will be done once in 24 hours.</td>
 </tr>
 <tr>
