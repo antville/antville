@@ -252,6 +252,7 @@ function evalNewMembership(uname,creator) {
    mail.send();
    result = getConfirm("memberCreate",u.name);
    result.id = this.addMembership(u);
+   result.username = u.name;
    return (result);
 }
 

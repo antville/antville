@@ -23,7 +23,7 @@ if (req.data.keyword) {
    var result = this.evalNewMembership(req.data.username,session.user);
    res.message = result.message;
    if (!result.error)
-      res.redirect(this.get(result.id).href("edit"));
+      res.redirect(this.get(result.username).href("edit"));
    else
       res.redirect(this.href());
 }
