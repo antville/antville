@@ -5,7 +5,7 @@
  */
 
 function loginstatus_macro(param) {
-   if (user.uid)
+   if (session.user)
       this.members.renderSkin("statusloggedin");
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
@@ -29,7 +29,5 @@ function weblogcounter_macro(param) {
       var size = root.size();
    else
       var size = this.public.size();
-   res.write(param.prefix)
    res.write(size);
-   res.write(param.suffix);
 }
