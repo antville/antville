@@ -178,12 +178,12 @@ create table GOODIE (
 create table ACCESS (
    ID bigint(20) not null auto_increment,
    WEBLOG_ID bigint(20),
-   REFERRER mediumtext,
-   IP mediumtext,
-   URL mediumtext,
-   PATH mediumtext,
-   `ACTION` mediumtext,
-   BROWSER mediumtext,
+   REFERRER text,
+   IP varchar(20),
+   URL text,
+   PATH varchar(255),
+   `ACTION` varchar(50),
+   BROWSER varchar(255),
    `DATE` datetime,
    unique ID (ID)
 );
@@ -221,8 +221,8 @@ create table POLL (
    ID bigint(20) not null,
    WEBLOG_ID bigint(20),
    USER_ID bigint(20),
-   TITLE mediumtext,
-   QUESTION mediumtext,
+   TITLE varchar(255),
+   QUESTION text,
    ISONLINE tinyint(1),
    CLOSED tinyint(4),
    CLOSETIME datetime,
@@ -238,7 +238,7 @@ create table POLL (
 create table CHOICE (
    ID bigint(20) not null,
    POLL_ID bigint(20),
-   TITLE mediumtext,
+   TITLE varchar(255),
    CREATETIME datetime,
    MODIFYTIME datetime,
    unique ID (ID)
@@ -260,7 +260,7 @@ create table VOTE (
 );
 
 #----------------------------
-# Table structure for VOTE
+# Table structure for SYSLOG
 #----------------------------
 
 create table SYSLOG (
