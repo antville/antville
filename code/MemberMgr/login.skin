@@ -3,21 +3,24 @@
 <tr>
 <td class="small" nowrap="nowrap">Username:</td>
 <td nowrap="nowrap"><% input type="text" name="name" width="15" tabindex="1" %></td>
-<td rowspan="4">&nbsp;</td>
-<td class="small"><% membermgr.link to="register" text="Not registered, yet?" %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Password:</td>
 <td nowrap="nowrap"><% input type="password" name="password" width="15" tabindex="2" %></td>
-<td class="small"><% membermgr.link to="register" text="Forgot your password?" %></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td colspan="2" class="small" nowrap="nowrap"><% input type="checkbox" name="remember" tabindex="3" %>Remember me</td>
+<td class="small" nowrap="nowrap"><% input type="checkbox" name="remember" tabindex="3" %>Remember me</td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td colspan="2" nowrap="nowrap"><br /><% input type="button" name="login" value="Login" tabindex="4" %></td>
+<td nowrap="nowrap"><br /><% input type="button" name="login" value="Login" tabindex="4" %></td>
+</tr>
+<tr>
+<td class="small" colspan="2">
+<p><% membermgr.link to="register" text="Not registered yet?" %></p>
+<p><% membermgr.link to="sendpwd" text="Forgot your password?" %></p>
+</td>
 </tr>
 </table>
 </form>
