@@ -385,3 +385,36 @@ function topic_macro(param) {
    this.closeLink();
    res.write(param.suffix);
 }
+
+
+
+
+
+function listReferrers_macro() {
+	var str = "";
+	var c = getDBConnection("antville");
+	error = c.getLastError();
+	if (error)
+		return("Error establishing DB connection: " + error);
+
+	// we're doing this with direct db access here
+	// (there's no need to do it with prototypes):
+	var query = "select *, count(*) as COUNT from ACCESS where STORY_ID = " + this._id + " and DATE > NOW()-1000000 and REFERRER not like \"" + this.weblog.href() + "%\" group by REFERRER order by COUNT desc, REFERRER asc;";                                
+	writeln(query);
+	var rows = c.executeRetrieval(query);
+	error = c.getLastError();
+	if (error)
+		return("Error executing SQL query: " + error);
+	
+	var param = new Object();
+	while (rows.next()) {
+		param.count = rows.getColumnItem("COUNT");
+		param.referrer = rows.getColumnItem("REFERRER");
+		param.text = param.referrer.length > 50 ? param.referrer.substring(0, 50) + "..." : param.referrer;
+		str += this.renderSkinAsString("referrerItem", param);
+	}
+	param = new Object();
+	param.referrers = str;
+	str = this.renderSkinAsString("referrers", param);
+	return(str);
+}
