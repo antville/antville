@@ -44,9 +44,9 @@ function evalRegistration(param) {
       result = getError("emailInvalid");
 
    // check if passwords match
-	if (!param.password1 || !param.password2)
-	   result = getError("passwordTwice");
-	else if (param.password1 != param.password2)
+   if (!param.password1 || !param.password2)
+      result = getError("passwordTwice");
+   else if (param.password1 != param.password2)
       result = getError("passwordNoMatch");
 
    // check if username is existing and is clean
@@ -64,11 +64,11 @@ function evalRegistration(param) {
    }
 
    if (!result) {
-		var newUser = app.registerUser(param.name, param.password1);
- 		if (newUser) {
+      var newUser = app.registerUser(param.name, param.password1);
+      if (newUser) {
          newUser.name = param.name;
-			newUser.email = param.email;
-			newUser.publishemail = param.publishemail;
+         newUser.email = param.email;
+         newUser.publishemail = param.publishemail;
          newUser.url = evalURL(param.url);
          newUser.description = param.description;
          newUser.registered = new Date();
@@ -85,13 +85,13 @@ function evalRegistration(param) {
                this.addMembership(newUser);
          } else
             var welcomeWhere = root.getSysTitle();
-			result = getConfirm("welcome",new Array(welcomeWhere,newUser.name));
+         result = getConfirm("welcome",new Array(welcomeWhere,newUser.name));
          result.username = newUser.name;
          result.password = newUser.password;
-		} else
- 			result = getError("memberExisting");
-	}
-	return (result);
+      } else
+         result = getError("memberExisting");
+   }
+   return (result);
 }
 
 
@@ -164,7 +164,7 @@ function sendPwd(email) {
       var now = new Date();
       mailParam.timestamp = formatTimestamp(now);
       mailParam.text = pwdList;
-   	mail.setText(this.renderSkinAsString("pwdmail",mailParam));
+      mail.setText(this.renderSkinAsString("pwdmail",mailParam));
       var sendResult = mail.send();
       if (sendResult.status)
          result = getError("emailSend");
@@ -190,14 +190,14 @@ function searchUser(key) {
       // no keyword to search for
       return (getError("searchNoKeyword"));
    }
-	var dbConn = getDBConnection("antville");
-	var dbError = dbConn.getLastError();
+   var dbConn = getDBConnection("antville");
+   var dbError = dbConn.getLastError();
    if (dbError)
       return (getError("database",dbError));
    var query = "select USER_NAME,USER_URL from AV_USER ";
    query += "where USER_NAME like '%" + key + "%' order by USER_NAME asc";
-	var searchResult = dbConn.executeRetrieval(query);
-	var dbError = dbConn.getLastError();
+   var searchResult = dbConn.executeRetrieval(query);
+   var dbError = dbConn.getLastError();
    if (dbError)
       return (getError("database",dbError));
    var found = 0;

@@ -7,7 +7,7 @@ else if (req.data.submit == "register" || req.data.register) {
    res.message = result.message;
    if (!result.error) {
       // now we log in the user and send the confirmation mail
-		session.login(result.username, result.password);
+      session.login(result.username, result.password);
       var sender = (parent != root && parent.email ? parent.email : root.sys_email);
       // we only send a confirmation mail if there is a sender
       if (sender)
