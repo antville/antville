@@ -6,5 +6,5 @@
    var str = new String(rng.text);
    var url = "<% root.sys_url %>/<% site.alias %>/stories/create?content_text=";
    var link = escape('<a href="' + doc.location.href + '">' + doc.title + "</a>: ");
-   doc.location.href = url + link + str;
+   top.location.href = url + link + str;
 </script>
