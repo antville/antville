@@ -198,18 +198,17 @@ function loginstatus_macro(param) {
  * depending on user-status & rights
  */
 function navigation_macro(param) {
-   if (!param["for"] || param["for"] == "users") {
-      this.renderSkin("usernavigation");
-   }
-   if (!session.user)
+   if (!param["for"] || !session.user)
       return;
-   if (!param["for"] || param["for"] == "contributors") {
-      if (session.user.sysadmin || this.preferences.getProperty("usercontrib") || req.data.memberlevel >= CONTRIBUTOR)
-         this.renderSkin("contribnavigation");
-   }
-   if (!param["for"] || param["for"] == "admins") {
-      if (session.user.sysadmin || req.data.memberlevel >= ADMIN)
-         this.renderSkin("adminnavigation");
+   switch (param["for"]) {
+      case "contributors" :
+         if (session.user.sysadmin || this.preferences.getProperty("usercontrib") || req.data.memberlevel >= CONTRIBUTOR)
+            this.renderSkin("contribnavigation");
+         break;
+      case "admins" :
+         if (session.user.sysadmin || req.data.memberlevel >= ADMIN)
+            this.renderSkin("adminnavigation");
+         break;
    }
    return;
 }
@@ -238,9 +237,7 @@ function calendar_macro(param) {
    var calParam = new Object();
    var dayParam = new Object();
    var weekParam = new Object();
-   // init stringBuffers
-   var weekBuf = new java.lang.StringBuffer();
-   var calBuf = new java.lang.StringBuffer();
+   res.push();
 
    // create new calendar-object
    var cal = java.util.Calendar.getInstance(this.getTimeZone(), this.getLocale());
@@ -249,12 +246,13 @@ function calendar_macro(param) {
    // render header-row of calendar
    var firstDayOfWeek = cal.getFirstDayOfWeek();
    var weekdays = symbols.getShortWeekdays();
+   res.push();
    for (var i=0;i<7;i++) {
       dayParam.day = weekdays[(i+firstDayOfWeek-1)%7+1];
-      weekBuf.append(this.renderSkinAsString("calendardayheader", dayParam));
+      this.renderSkin("calendardayheader", dayParam);
    }
-   weekParam.week = weekBuf.toString();
-   calBuf.append(this.renderSkinAsString("calendarweek", weekParam));
+   weekParam.week = res.pop();
+   this.renderSkin("calendarweek", weekParam);
 
    cal.set(java.util.Calendar.DATE, 1);
    // check whether there's a day or a story in path
@@ -288,7 +286,7 @@ function calendar_macro(param) {
    var firstDayIndex = -1;
 
    for (var i=0;i<weeks;i++) {
-      weekBuf = new java.lang.StringBuffer();
+      res.push();
       for (var j=0;j<7;j++) {
          dayParam.skin = "calendarday";
          if ((i == 0 && j < pre) || daycnt > days)
@@ -313,16 +311,16 @@ function calendar_macro(param) {
                dayParam.skin = "calendarselday";
             daycnt++;
          }
-         weekBuf.append(this.renderSkinAsString(dayParam.skin, dayParam));
+         this.renderSkin(dayParam.skin, dayParam);
       }
-      weekParam.week = weekBuf.toString();
-      calBuf.append(this.renderSkinAsString("calendarweek", weekParam));
+      weekParam.week = res.pop();
+      this.renderSkin("calendarweek", weekParam);
    }
    // set day to last day of month and try to render next month
    // check what the last day of the month is
    calParam.back = this.renderLinkToPrevMonth(firstDayIndex, currMonth + "01", monthNames);
    calParam.forward = this.renderLinkToNextMonth(lastDayIndex, currMonth + "31", monthNames);
-   calParam.calendar = calBuf.toString();
+   calParam.calendar = res.pop();
    this.renderSkin("calendar", calParam);
 }
 
@@ -463,12 +461,8 @@ function listReferrers_macro() {
  * when referring to an rss feed
  */
 function xmlbutton_macro(param) {
-  var img = root.images.get("xmlbutton");
-  if (!img)
-    return;
-  Html.openLink(this.href("rss"));
-  renderImage(img, param);
-  Html.closeLink();
+   param.linkto = this.href("rss");   
+   DEFAULTIMAGES.render("xmlbutton", param);
 }
 
 
@@ -520,7 +514,8 @@ function imagelist_macro(param) {
  * proxy-macro for layout chooser
  */
 function layoutchooser_macro(param) {
-   param.selected = this.preferences.getProperty("layout");
+   if (this.layout)
+      param.selected = this.layout.alias;
    this.layouts.layoutchooser_macro(param);
 }
 
