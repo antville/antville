@@ -268,17 +268,19 @@ function isTrusted() {
  */
 
 function ping() {
+	var title = this.title ? this.title : this.alias;
+
 	// we're doing it the xml-rpc way
 	// (specs at http://newhome.weblogs.com/directory/11)
 	var xr = new Remote("http://rpc.weblogs.com/RPC2");
-	var ping = xr.weblogUpdates.ping(this.title, this.href());
+	var ping = xr.weblogUpdates.ping(title, this.href());
 
 	var result = new Object();
 	result.error = ping.result.flerror;
 	result.message = ping.result.message;
 
 	if (result.error)
-		writeln("Error when notifying weblogs.com for updated weblog #" + this._id + ": " + result.message);
+		app.__app__.logEvenet("Error when notifying weblogs.com for updated weblog #" + this._id + ": " + result.message);
 
 	// this is the easy post url method (maybe faster?)
 	// var ping = getURL("http://newhome.weblogs.com/pingSiteForm?name=" + this.title + "&url=" + this.href());
