@@ -2,7 +2,7 @@
  * main action
  */
 function main_action() {
-   res.redirect(this.href("status"));
+   this.status_action();
 }
 
 /**
@@ -10,27 +10,27 @@ function main_action() {
  */
 function setup_action() {
    if (req.data.cancel)
-      res.redirect(root.href());
+      res.redirect(this.href("status"));
    else if (req.data.save) {
       try {
          res.message = this.evalSystemSetup(req.data, session.user);
-         res.redirect(root.href());
+         res.redirect(root.size() ? this.href("status") : root.href("new"));
       } catch (err) {
          res.message = err.toString();
       }
    }
 
-   res.data.title = "System configuration of " + root.getSysTitle();
+   res.data.title = "System configuration of " + root.getTitle();
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("setup");
-   this.renderSkin("page");
+   root.renderSkin("page");
 }
 
 /**
  * site maintenance action
  */
 function sites_action() {
-   res.data.title = "Site manager of " + root.getSysTitle();
+   res.data.title = "Site manager of " + root.getTitle();
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
@@ -55,16 +55,16 @@ function sites_action() {
 
    res.data.list = renderList(session.data.mgr.sites, this.renderManagerView, 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(session.data.mgr.sites, this.href(req.action), 10, req.data.page);
-   res.data.list = this.renderSkinAsString("list");
    res.data.body = this.renderSkinAsString("sitesearchform");
-   this.renderSkin("page");
+   res.data.body += this.renderSkinAsString("list");
+   root.renderSkin("page");
 }
 
 /**
  * user maintenance action
  */
 function users_action() {
-   res.data.title = "User manager of " + root.getSysTitle();
+   res.data.title = "User manager of " + root.getTitle();
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
@@ -81,16 +81,16 @@ function users_action() {
 
    res.data.list = renderList(session.data.mgr.users, this.renderManagerView, 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(session.data.mgr.users, this.href(req.action), 10, req.data.page);
-   res.data.list = this.renderSkinAsString("list");
    res.data.body = this.renderSkinAsString("usersearchform");
-   this.renderSkin("page");
+   res.data.body += this.renderSkinAsString("list");
+   root.renderSkin("page");
 }
 
 /**
  * action for displaying system logs
  */
 function logs_action() {
-   res.data.title = "Log data of " + root.getSysTitle();
+   res.data.title = "Log data of " + root.getTitle();
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
@@ -98,16 +98,16 @@ function logs_action() {
 
    res.data.list = renderList(session.data.mgr.syslogs, this.renderManagerView, 10, req.data.page);
    res.data.pagenavigation = renderPageNavigation(session.data.mgr.syslogs, this.href(req.action), 10, req.data.page);
-   res.data.list = this.renderSkinAsString("list");
    res.data.body = this.renderSkinAsString("syslogsearchform");
-   this.renderSkin("page");
+   res.data.body += this.renderSkinAsString("list");
+   root.renderSkin("page");
 }
 
 /**
  * system status
  */
 function status_action() {
-   res.data.title = "Status of " + root.getSysTitle();
+   res.data.title = "Status of " + root.getTitle();
    var status = new Object();
    status.upSince = formatTimestamp(new Date(app.upSince.getTime()), "long");
    status.activeThreads = app.activeThreads;
@@ -122,16 +122,5 @@ function status_action() {
    status.freeMemory = Math.round(java.lang.Runtime.getRuntime().freeMemory() / 1024);
    status.usedMemory = status.totalMemory - status.freeMemory;
    res.data.body = this.renderSkinAsString("status", status);
-   this.renderSkin("page");
-}
-
-/**
- * wrapper to make style.skin public
- */
-function stylesheet_action() {
-   res.dependsOn(app.skinfiles["sysmgr"]["stylesheet"]);
-   res.digest();
-   res.contentType = "text/css";
-   this.renderSkin("style");
-   return;
+   root.renderSkin("page");
 }
