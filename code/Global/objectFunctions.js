@@ -183,7 +183,6 @@ function imgDispatch(imgName) {
  * into <a> tags.  
  */ 
 function convertHtmlImageToHtmlLink(str) {
-	// Here <img> tags are turned into 
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>");
    re.ignoreCase = true;
    re.global = true;
