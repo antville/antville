@@ -86,9 +86,13 @@ function online_macro(param) {
          res.write("offline");
       else if (this.online < 2) {
          res.write("online in ");
-         openLink(this.site.topics.get(this.topic).href());
-         res.write(this.topic);
-         closeLink();
+         if (this.topic) {
+           openLink(this.site.topics.get(this.topic).href());
+           res.write(this.topic);
+           closeLink();
+         } else {
+           res.write ("stories");
+         }
       } else
          res.write("online in weblog");
    }
