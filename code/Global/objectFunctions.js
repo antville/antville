@@ -333,7 +333,8 @@ function parseTimestamp (time, format) {
    var df = new java.text.SimpleDateFormat (format);
    if (path.site)
        df.setTimeZone(path.site.getTimeZone());
-   return df.parse (time);
+   // time may be a number like "20021020", so convert to string
+   return df.parse (time.toString());
 }
 
 /**
@@ -553,14 +554,13 @@ function translateToEntities(str) {
 function clipText(text, limit, clipping) {
    var text = stripTags(text);
    if (text.length <= limit)
-      clipping = "";
-   else if (!clipping)
+      return text;
+   if (!clipping)
       clipping = "...";
-   var limit = Math.min(limit, text.length);
-   var prev = text.substring(0,text.indexOf(" ",limit));
-   if (!prev)
-      prev = text;
-   return(prev + clipping);
+   var cut = text.indexOf(" ",limit);
+   if (cut == -1)
+      return text;
+   return text.substring(0,cut)+clipping;
 }
 
 
