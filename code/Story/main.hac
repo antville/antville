@@ -1,16 +1,16 @@
 var deny = this.isViewDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.href());
+   res.redirect(this.site.href());
 }
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.title)
   res.data.title += " - " + encode(this.title);
 
 if (req.data.submit == "cancel" || req.data.cancel)
    res.redirect(this.href());
-else if ((req.data.submit == "save" || req.data.save) && this.weblog.hasDiscussions()) {
+else if ((req.data.submit == "save" || req.data.save) && this.site.hasDiscussions()) {
    var result = this.evalComment(req.data,this,session.user);
    res.message = result.message;
    if (!result.error)
@@ -19,7 +19,7 @@ else if ((req.data.submit == "save" || req.data.save) && this.weblog.hasDiscussi
 
 res.data.body = this.renderSkinAsString("main");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");
 
 this.incrementReadCounter();
 logAccess();

@@ -3,11 +3,11 @@ checkIfLoggedIn(this.href(req.action));
 var deny = this.isDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(path.weblog.href());
+   res.redirect(path.site.href());
 }
 
-res.data.title = path.weblog.title;
+res.data.title = path.site.title;
 
 res.data.body = this.renderSkinAsString("main");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

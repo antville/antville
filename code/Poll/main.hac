@@ -1,10 +1,10 @@
 var deny = this.isVoteDenied(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(this.weblog.polls.href());
+   res.redirect(this.site.polls.href());
 }
 
-res.data.title = this.weblog.title;
+res.data.title = this.site.title;
 if (this.title)
   res.data.title += " - " + encode(this.title);
 
@@ -20,4 +20,4 @@ else if ((req.data.submit == "vote" || req.data.vote)) {
 res.data.action = this.href();
 res.data.body = this.renderSkinAsString("main");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

@@ -1,16 +1,16 @@
-var deny = path.weblog.isNotPublic(session.user);
+var deny = path.site.isNotPublic(session.user);
 if (deny) {
    res.message = deny;
-   res.redirect(path.weblog.members.href("login"));
+   res.redirect(path.site.members.href("login"));
 }
 
-if (!path.weblog.showArchive())
-   res.redirect(path.weblog.href());
+if (!path.site.showArchive())
+   res.redirect(path.site.href());
 
 this.renderStorylist(parseInt(req.data.start,10));
 
-res.data.title = path.weblog.title;
+res.data.title = path.site.title;
 
 res.data.body = this.renderSkinAsString("main");
 
-path.weblog.renderSkin("page");
+path.site.renderSkin("page");

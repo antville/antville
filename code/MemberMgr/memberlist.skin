@@ -1,2 +1,2 @@
-<p>Current members of <b><% weblog.title %></b>:</p>
+<p>Current members of <b><% site.title %></b>:</p>
 <% this.memberlist %>
