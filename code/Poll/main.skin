@@ -1,12 +1,15 @@
-<span class="storyTitle"><% this.question %></span>
+<p class="storyTitle"><% this.question %></p>
 
-<form method="post" action="<% response.action %>">
 <table border="0" cellspacing="2" cellpadding="2">
+<form method="post">
+
 <% this.choices %>
+
 <tr>
 <td></td>
-<td><br><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><a href="results">view results</a></span>
-<p><span class="small">created by <% this.creator %> on <% this.createtime format="short" %>.</td>
+<td><br><input type="submit" name="submit" value="vote"> &nbsp; <span class="small"><% this.link to="results" text="view results" %></span>
+<p class="small"><% this.info %></p></td>
 </tr>
-</table>
+
 </form>
+</table>
