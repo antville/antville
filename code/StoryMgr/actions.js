@@ -42,6 +42,7 @@ function create_action() {
       restoreRescuedText();
    
    var s = new Story();
+   s.discussions = this._parent.preferences.getProperty("discussions");
    // storing referrer in session-cache in case user clicks cancel later
    if (!session.data.referrer && req.data.http_referer)
       session.data.referrer = req.data.http_referer;
