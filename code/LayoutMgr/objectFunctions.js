@@ -53,13 +53,13 @@ function evalImport(param, creator) {
       throw new Exception("layoutImportNoUpload");
    }
    try {
-      var contents = ZipLib.extractAll(param.zipfile.getContent());
+      var contents = Zip.extractData(param.zipfile.getContent());
       // first, check if there's a file called "preferences" in the archive
       // and convert it into a HopObject
       var data = contents.files["preferences.xml"].data;
       var importLayout = Xml.readFromString(new java.lang.String(data, 0, data.length));
       // start with the actual import
-      var newLayout = new Layout(this._parent instanceof Site ? this._parent : null, 
+      var newLayout = new Layout(this._parent instanceof Site ? this._parent : null,
                                  importLayout.title, session.user);
       newLayout.parent = param.layout ? root.layouts.get(param.layout) : null;
       newLayout.preferences.setAll(importLayout.preferences);
