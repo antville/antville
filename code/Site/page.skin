@@ -56,6 +56,7 @@
 <div class="boxline"></div><br />
 <div class="box"><% site.xmlbutton %><br /><br />
 <% logo name="smallchaos" %></div>
+<% logo name="hop" %></div>
 
 </td>
 </tr>
