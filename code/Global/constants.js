@@ -210,7 +210,7 @@ newSet.add(new Skinset("Site.navigation", ["Site.contribnavigation", "Site.admin
 newSet.add(new Skinset("Site.topics", ["TopicMgr.main", "Topic.main"]));
 newSet.add(new Skinset("Site.calendar", ["Site.calendar", "Site.calendardayheader", "Site.calendarweek", "Site.calendarday", "Site.calendarselday"]));
 newSet.add(new Skinset("Site.rss", ["Site.rss", "Story.rssItem", "Story.rssResource"]));
-newSet.add(new Skinset("Site.search", ["Site.searchform", "Site.searchbox", "Story.searchview"]));
+newSet.add(new Skinset("Site.search", ["Site.searchresult", "Site.searchbox", "Story.searchview"]));
 newSet.add(new Skinset("Site.referrers", ["Site.referrers", "Site.referrerItem"]));
 newSet.add(new Skinset("Site.mostread", ["Site.mostread", "Story.mostread"]));
 newSet.add(new Skinset("Site.mails", ["MemberMgr.mailregconfirm", "MemberMgr.mailpassword", "MemberMgr.mailnewmember", "Membership.mailstatuschange", "Membership.mailmessage", "Site.notificationMail"], "Root"));
