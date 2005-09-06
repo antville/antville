@@ -173,13 +173,13 @@ function dumpToZip(z, fullExport) {
          for (var skinName in protoSkinFiles) {
             if (skin = this.getSkin(protoName, skinName)) {
                // skin is locally managed => export
-               z.addData(new java.lang.String(skin.skin).getBytes(),
+               z.addData(new java.lang.String(skin.skin).getBytes("UTF-8"),
                          "skins/" + protoName + "/" + skinName + ".skin");
             } else if (fullExport) {
                // walk up the layout chain and 
                if (!(skin = this.getOriginalSkin(protoName, skinName)))
                   skin = protoSkinFiles[skinName];
-               z.addData(new java.lang.String(skin).getBytes(),
+               z.addData(new java.lang.String(skin).getBytes("UTF-8"),
                          "skins/" + protoName + "/" + skinName + ".skin");
             }
          }
@@ -202,7 +202,7 @@ function evalImport(data) {
          // FIXME: replace session.user with a more intelligent solution ...
          var s = new Skin(this._parent, protoName, name, session.user);
          buf = data[protoName][fileName].data;
-         s.skin = new java.lang.String(buf, 0, buf.length);
+         s.skin = new java.lang.String(buf, 0, buf.length, "UTF-8");
          this.add(s);
       }
    }

@@ -200,7 +200,7 @@ function dumpToZip(z, fullExport) {
    cl.fullExport = fullExport;
    cl.modifier = this.modifier ? this.modifier.name : null;
    cl.modifytime = this.modifytime;
-   var buf = new java.lang.String(Xml.writeToString(cl)).getBytes();
+   var buf = new java.lang.String(Xml.writeToString(cl)).getBytes("UTF-8");
    z.addData(buf, "preferences.xml");
    return true;
 }
