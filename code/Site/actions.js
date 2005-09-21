@@ -166,8 +166,8 @@ function rss_action() {
          var story = collection.get(i);
          var item = {
             url: story.href(),
-            title: story.getRenderedContentPart("title").clip(50),
-            text: story.getRenderedContentPart("text").clip(500),
+            title: story.getRenderedContentPart("title").stripTags().clip(50),
+            text: story.getRenderedContentPart("text").stripTags().clip(500),
             publisher: systitle,
             creator: story.creator.name,
             date: sdf.format(story.createtime),
@@ -182,7 +182,7 @@ function rss_action() {
             if (!item.text)
                item.title = "...";
             else
-               item.title = story.getRenderedContentPart("text").clip(25);
+               item.title = story.getRenderedContentPart("text").stripTags().clip(25);
          }
          items.append(story.renderSkinAsString("rssItem", item));
          resources.append(story.renderSkinAsString("rssResource", item));
