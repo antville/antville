@@ -35,8 +35,13 @@ function content_macro(param) {
          }
          if (!param.limit)
             res.write(part);
-         else
-            res.write(part.clip(param.limit, param.clipping).softwrap(25));
+         else {
+            var stripped = part.stripTags();
+            if (stripped.length < param.limit)
+               res.write(part);
+            else
+               res.write(stripped.clip(param.limit, param.clipping));
+            }
          if (param.as == "link")
             Html.closeLink();
    }
