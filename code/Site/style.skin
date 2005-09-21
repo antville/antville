@@ -126,6 +126,8 @@ a:hover {text-decoration: underline;}
    font-family: <% layout.smallfont %>;
    font-size: <% layout.smallsize %>;
    padding-bottom: 0.3em;
+   width: 180px;
+   overflow: hidden; 
 }
 
 /* calendar */
