@@ -40,7 +40,7 @@ function content_macro(param) {
             if (stripped.length < param.limit)
                res.write(part);
             else
-               res.write(stripped.clip(param.limit, param.clipping));
+               res.write(stripped.clip(param.limit, param.clipping,param.delimiter));
             }
          if (param.as == "link")
             Html.closeLink();
