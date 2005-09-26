@@ -37,10 +37,11 @@ function content_macro(param) {
             res.write(part);
          else {
             var stripped = part.stripTags();
-            if (stripped.length < param.limit)
+            var clipped = stripped.clip(param.limit, param.clipping, param.delimiter);
+            if (stripped == clipped)
                res.write(part);
             else
-               res.write(stripped.clip(param.limit, param.clipping,param.delimiter));
+               res.write(clipped);
             }
          if (param.as == "link")
             Html.closeLink();
