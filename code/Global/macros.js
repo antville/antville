@@ -535,14 +535,11 @@ function randomize_macro(param) {
 
 /**
  * macro renders a random image
- * images can be either specified directly via the images-attribute, 
- *  via their topic or via their site
+ *  list of images can be specified in the images-attribute
  *
- * @param images String (optional), column separated list of image aliases
- * @param topic String (optional), specifies from which topic the image should be taken
+ * @param images String (optional), comma separated list of image aliases
  * all other parameters are passed through to the global image macro
  * this macro is *not* allowed in stories
- * FIXME: this function needs testing and proof of concept
  */
 function randomimage_macro(param) {
    if (param.images) {
@@ -553,19 +550,7 @@ function randomimage_macro(param) {
          var img = getPoolObj(aliases[i], "images");
          if (img && img.obj) items[items.length] = img.obj;
       }
-   } else {
-      var top = param.topic;
-      if (top && top.indexOf("/") >= 0) {
-         var objPath = top.split("/");
-         var s = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
-         top = objPath[1];
-      }
-      if (s==null) var s = res.handlers.site;
-      var pool = (top) ? s.images.topics.get(top) : s.images;
-      if (pool==null) return;
-      var items = pool.list();
-   }
-   delete(param.topic);
+   } 
    delete(param.images);
    var idx = Math.floor(Math.random()*items.length);
    var img = items[idx];
@@ -575,99 +560,17 @@ function randomimage_macro(param) {
 
 
 /**
- * macro renders the most recently created image of a topic or site
- *
+ * macro renders the most recently created image of a site
  * @param topic String (optional), specifies from which topic the image should be taken
  * all other parameters are passed through to the global image macro
  * FIXME: this function needs testing and proof of concept
  */
 function imageoftheday_macro(param) {
    var s = res.handlers.site;
-   var pool = (param.topic) ? s.images.topics.get(param.topic) : res.handlers.site.images;
+   var pool = res.handlers.site.images;
    if (pool==null) return;
    delete(param.topic);
    var img = pool.get(0);
    param.name = img.alias;
    return image_macro(param);
-}
-
-
-/**
- * macro renders images as a thumbnail gallery
- * images can be either specified directly via the images-attribute or via their topic
- *
- * @param images String (optional), column separated list of image aliases
- * @param topic String (optional), specifies from which topic the image should be taken
- * @param as String (optional), default "popup"
- * @param cols Integer (optional), default=4; if 0 then no table is rendered
- * @itemprefix String (optional)
- * @itemsuffix String (optional)
- * @table_params String (optional), default: class="gallery" align="center"
- * @tr_params String (optional)
- * @td_params String (optional)
- * all other parameters are passed through to the global image macro
- * FIXME: the gallery feature needs make-over
- */
-function gallery_macro(param) {
-   if (param.images) {
-      var items = new Array();
-      var aliases = param.images.split(",");
-      for (var i=0; i<aliases.length; i++) {
-         aliases[i] = aliases[i].trim();
-         var img = getPoolObj(aliases[i], "images");
-         if (img && img.obj) items[items.length] = img.obj;
-      }
-   } else if (param.topic == null && path.Topic) {
-      var items = path.Topic.list();
-   } else {
-      var top = param.topic;
-      if (top && top.indexOf("/") >= 0) {
-         var objPath = top.split("/");
-         var s = (!objPath[0] || objPath[0] == "root") ? root : root.get(objPath[0]);
-         top = objPath[1];
-      }
-      if (s==null) var s = res.handlers.site;
-      var pool = (top) ? s.images.topics.get(top) : s.images;
-      if (pool==null) return;
-      var items = pool.list();
-   }
-   var cols = param.cols ? parseInt(param.cols) : 4;
-   var table_params = param.table_params ? " "+param.table_params : " class=\"gallery\"";
-   var tr_params = param.tr_params ? " "+param.tr_params : "";
-   var td_params = param.td_params ? " "+param.td_params : "";
-   var itemprefix = param.itemprefix ? param.itemprefix : "";
-   var itemsuffix = param.itemsuffix ? param.itemsuffix : "";
-   var order = param.order ? param.order : null;
-   delete(param.topic);
-   delete(param.images);
-   delete(param.cols);
-   delete(param.itemprefix);
-   delete(param.itemsuffix);
-   delete(param.table_params);
-   delete(param.tr_params);
-   delete(param.td_params);
-
-   if (param.as==null) param.as = "popup";
-   if (cols>0) res.write("<table"+table_params+">\n");
-   if (cols==0 || items.length%cols==0)
-      var max = items.length;
-   else
-      var max = items.length + (cols - items.length%cols);
-   for (var i=0; i<max; i++) {
-      var img = (i<items.length) ? items[i] : null;
-      if (cols>0 && i%cols==0) res.write("<tr"+tr_params+">\n");
-      if (cols>0) res.write("<td"+td_params+">");
-      if (img) {
-         res.write(itemprefix);
-         var obj = new HopObject();
-         for (var j in param) obj[j] = param[j];
-         obj.name = img.site.alias + "/" + img.alias;
-         image_macro(obj);
-         res.write(itemsuffix);
-      }
-      if (cols>0) res.write("</td>\n");
-      if (cols>0 && i%cols==cols-1) res.write("</tr>\n");
-   }
-   if (cols>0) res.write("</table>\n");
-   return;
 }
