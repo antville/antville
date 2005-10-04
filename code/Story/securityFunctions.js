@@ -127,7 +127,6 @@ function allowTextMacros(s) {
    s.allowMacro("this.topic");
    s.allowMacro("story.topic");
    s.allowMacro("imageoftheday");
-   s.allowMacro("gallery");
    s.allowMacro("spacer");
 
    // allow module text macros
