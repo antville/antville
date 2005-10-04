@@ -114,30 +114,6 @@ function show_macro(param) {
 }
 
 /**
- * macro renders the name of the gallery this image belongs to
- */
-function gallery_macro(param) {
-   if (!this.topic)
-      return;
-   if (!param.as || param.as == "text")
-      res.write(this.topic);
-   else if (param.as == "link") {
-      Html.link({href: path.Site.images.topics.href(this.topic)},
-                param.text ? param.text : this.topic);
-   } else if (param.as == "image") {
-      if (!param.imgprefix)
-         param.imgprefix = "topic_";
-      var img = getPoolObj(param.imgprefix + this.topic, "images");
-      if (!img)
-         return;
-      Html.openLink({href: path.Site.topics.href(this.topic)});
-      renderImage(img.obj, param)
-      Html.closeLink();
-   }
-   return;
-}
-
-/**
  * render the code for embedding this image
  */
 function code_macro(param) {

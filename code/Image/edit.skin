@@ -20,19 +20,6 @@
 <tr>
 <td colspan="3"><div class="small">Description:</div>
 <% image.alttext as="editor" class="formText" %><br />
-
-<fieldset><legend class="small">Options</legend>
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td colspan="3">Add this image to a gallery</td>
-</tr>
-<tr>
-<td class="small" width="48%">Choose a gallery...<br /><% imagemgr.topicchooser  firstOption="--- choose gallery ---"%></td>
-<td valign="top" width="4%">&nbsp;</td>
-<td valign="top" class="small" width="48%">...or enter a new one<br /><input type="text" name="topic" value="<% request.topic %>" /></td>
-</tr>
-</table><br />
-</fieldset>
 </td>
 </tr>
 </table>
