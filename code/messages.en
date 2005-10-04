@@ -294,7 +294,6 @@ skin.ImageMgr.new = New image|This is the form for uploading a new image to the 
 
 ## Topic
 skin.Topic.main = Main topic page|The skin for customizing the look of topic pages.
-skin.Topic.imagetopic = Main gallery page|The skin that is used to display an image gallery.
 
 ## File
 skin.File.main = File display|This skin defines the way files are displayed when embedded in a story or comment using the <% file %> macro.
@@ -485,7 +484,6 @@ skin.Membership.mailto = Form for contacting a member|Contains a form for enteri
 Root = Root
 Site = Home
 TopicMgr = Topics
-ImageTopicMgr = Galleries
 StoryMgr = Stories
 FileMgr = Files
 ImageMgr = Images
@@ -645,9 +643,6 @@ ImageMgr.addImage = Add an image to <% param.parentTitle %>
 # Topic / gallery
 Topic.addStoryToTopic = add a story to this topic
 TopicMgr.mainTitle = Topics of <% param.title %>
-
-ImageTopicMgr.addImageToGallery = add an image to this gallery
-ImageTopicMgr.mainTitle = Galleries of <% param.siteTitle %>
 
 # Poll
 Poll.voteTitle = Vote poll: <% param.question %>
