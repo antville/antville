@@ -68,7 +68,6 @@ function initConstants() {
    DISPLAY["Root"] = getMessage("Root");
    DISPLAY["Site"] = getMessage("Site");
    DISPLAY["TopicMgr"] = getMessage("TopicMgr");
-   DISPLAY["ImageTopicMgr"] = getMessage("ImageTopicMgr");
    DISPLAY["StoryMgr"] = getMessage("StoryMgr");
    DISPLAY["FileMgr"] = getMessage("FileMgr");
    DISPLAY["ImageMgr"] = getMessage("ImageMgr");
@@ -228,7 +227,7 @@ SKINSETS.push(newSet);
 newSet = new Skinset("Comment", ["Comment.toplevel", "Comment.reply", "Comment.edit"]);
 SKINSETS.push(newSet);
 
-newSet = new Skinset("Image", ["Image.main", "Image.edit", "ImageMgr.new", "LayoutImage.edit", "ImageMgr.main", "Image.mgrlistitem", "Topic.imagetopic"]);
+newSet = new Skinset("Image", ["Image.main", "Image.edit", "ImageMgr.new", "LayoutImage.edit", "ImageMgr.main", "Image.mgrlistitem"]);
 SKINSETS.push(newSet);
 
 newSet = new Skinset("File", ["File.main", "File.edit", "FileMgr.new", "FileMgr.main", "File.mgrlistitem"]);

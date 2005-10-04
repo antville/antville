@@ -200,7 +200,7 @@ HELP.macros.Image = {
    code: 0,
    deletelink: 0,
    editlink: 0,
-   gallery: 0,
+   // gallery: 0,
    height: 254548,
    show: 254560,
    url: 254552,
