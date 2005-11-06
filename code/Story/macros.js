@@ -418,7 +418,7 @@ function backlinks_macro(param) {
    while (rows.next() && cnt <= limit) {
       skinParam.count = rows.getColumnItem("COUNT");
       skinParam.referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-      skinParam.text = skinParam.referrer.clip(50, "...");
+      skinParam.text = skinParam.referrer.clip(50);
       this.renderSkin("backlinkItem", skinParam);
       cnt++;
    }

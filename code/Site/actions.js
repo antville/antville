@@ -166,8 +166,8 @@ function rss_action() {
          var story = collection.get(i);
          var item = {
             url: story.href(),
-            title: story.getRenderedContentPart("title").stripTags().clip(50),
-            text: story.getRenderedContentPart("text").stripTags().clip(500),
+            title: story.getRenderedContentPart("title").stripTags(),
+            text: story.getRenderedContentPart("text").stripTags(),
             publisher: systitle,
             creator: story.creator.name,
             date: sdf.format(story.createtime),
@@ -179,10 +179,13 @@ function rss_action() {
          if (!item.title) {
             // shit happens: if a content part contains a markup
             // element only, String.clip() will return nothing...
-            if (!item.text)
+            if (!item.text )
                item.title = "...";
-            else
-               item.title = story.getRenderedContentPart("text").stripTags().clip(25);
+            else {
+               var embody = item.text.embody(10, "...", "\\s");
+               item.title = embody.head;
+               item.text = embody.tail;
+            }
          }
          items.append(story.renderSkinAsString("rssItem", item));
          resources.append(story.renderSkinAsString("rssResource", item));
@@ -241,8 +244,6 @@ function mostread_action() {
 function referrers_action() {
    if (req.data.permanent && session.user) {
       try {
-         // FIXME: unfortunately, the check* methods are
-         // not very handy, anymore... (need try/catch block)
          this.checkEdit(session.user, req.data.memberlevel);
       } catch (err) {
          res.message = err.toString();
@@ -255,7 +256,7 @@ function referrers_action() {
       res.write(this.preferences.getProperty("spamfilter"));
       for (var i in urls) {
          res.write("\n");
-         res.write(urls[i]);
+         res.write(urls[i].replace(/\?/g, "\\\\?"));
       }
       this.preferences.setProperty("spamfilter", res.pop());
       res.redirect(this.href(req.action));

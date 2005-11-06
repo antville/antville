@@ -246,7 +246,7 @@ function description_macro(param) {
       Html.textArea(this.createInputParam("description", param));
    else if (this.description) {
       if (param.limit)
-         res.write(this.description.clip(param.limit));
+         res.write(this.description.clip(param.limit, "...", "\\s"));
       else
          res.write(this.description);
    }

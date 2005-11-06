@@ -377,7 +377,7 @@ function storylist_macro(param) {
          Html.openLink({href: story.href()});
          var str = story.title;
          if (!str)
-            str = story.getRenderedContentPart("text").stripTags().clip(20).softwrap(30);
+            str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
          res.write(str ? str : "...");
          Html.closeLink();
          res.write(param.itemsuffix);
@@ -415,7 +415,7 @@ function storylist_macro(param) {
          Html.openLink({href: story.href()});
          var str = story.title;
          if (!str)
-            str = story.getRenderedContentPart("text").stripTags().clip(20).softwrap(30);
+            str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
          res.write(str ? str : "...");
          Html.closeLink();
          res.write(param.itemsuffix);

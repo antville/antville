@@ -182,7 +182,7 @@ function getRenderedContentPart(name, fmt) {
        lastRendered.getTime() < this.content.getLastModified().getTime()) {
       switch (fmt) {
          case "plaintext":
-            part = stripTags(part);
+            part = stripTags(part).clipURLs(30);
             break;
          case "alttext":
             part = stripTags(part);
@@ -203,7 +203,7 @@ function getRenderedContentPart(name, fmt) {
                tmpSite = res.handlers.site;
                res.handlers.site = this.site;
             }
-            part = this.renderSkinAsString(s).activateURLs();
+            part = this.renderSkinAsString(s).activateURLs(50);
             if (tmpSite)
                res.handlers.site = tmpSite;
       }

@@ -185,6 +185,7 @@ function logAccess() {
       var siteHref = site.href().toLowerCase();
       if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
          return;
+app.log("**************3 " + url);
       var logObj = new Object();
       logObj.storyID = path.Story ? path.Story._id : null;
       logObj.siteID = site._id;
