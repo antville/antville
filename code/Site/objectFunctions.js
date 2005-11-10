@@ -421,16 +421,11 @@ function rebuildIndex() {
       doc.addField("site", self._id, {store: true, index: true, tokenize: false});
       doc.addField("id", rows.getColumnItem("TEXT_ID"), {store: true, index: true, tokenize: false});
       var content = Xml.readFromString(rows.getColumnItem("TEXT_CONTENT"));
-      if (title = stripTags(content.title).trim())
-         doc.addField("title", title, {store: false, index: true, tokenize: true});
-      res.push();
       for (var propName in content) {
-         if (propName != "title") {
-            res.write(stripTags(content[propName]).trim());
-            res.write(" ");
-         }
+         doc.addField((propName == "title") ? "title" : "text",
+                      stripTags(content[propName]),
+                      {store: false, index: true, tokenize: true});
       }
-      doc.addField("text", res.pop(), {store: false, index: true, tokenize: true});
       if (creator = rows.getColumnItem("USER_NAME")) {
          doc.addField("creator", creator, {store: false, index: true, tokenize: false});
          doc.addField("createtime", (new Date(rows.getColumnItem("TEXT_CREATETIME").getTime())).format("yyyyMMdd", locale, timeZone),
