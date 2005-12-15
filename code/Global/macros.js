@@ -412,18 +412,18 @@ function storylist_macro(param) {
          var story = site.allcontent.get(id);
          if (!story)
             continue;
-         res.write(param.itemprefix);
          if (param.skin) {
             story.renderSkin(param.skin);
          } else {
+            res.write(param.itemprefix);
             Html.openLink({href: story.href()});
             var str = story.title;
             if (!str)
                str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
             res.write(str ? str : "...");
             Html.closeLink();
-         }
-         res.write(param.itemsuffix);            
+            res.write(param.itemsuffix); 
+         }         
       }
    }
    rows.release();
