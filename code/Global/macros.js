@@ -357,6 +357,7 @@ function input_macro(param) {
  * (title, createtime, modifytime);
  * param.order determines the sort order (asc or desc)
  * param.show determines the text type (story, comment or all)
+ * param.skin determines the skin used for each stories (default is title as link) 
  */
 
 function storylist_macro(param) {
@@ -412,13 +413,17 @@ function storylist_macro(param) {
          if (!story)
             continue;
          res.write(param.itemprefix);
-         Html.openLink({href: story.href()});
-         var str = story.title;
-         if (!str)
-            str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
-         res.write(str ? str : "...");
-         Html.closeLink();
-         res.write(param.itemsuffix);
+         if (param.skin) {
+            story.renderSkin(param.skin);
+         } else {
+            Html.openLink({href: story.href()});
+            var str = story.title;
+            if (!str)
+               str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
+            res.write(str ? str : "...");
+            Html.closeLink();
+         }
+         res.write(param.itemsuffix);            
       }
    }
    rows.release();
