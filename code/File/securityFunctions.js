@@ -44,7 +44,7 @@ function checkEdit(usr, level) {
  * @return String Reason for denial (or null if allowed)
  */
 function checkDelete(usr, level) {
-   if (this.creator != usr && (level & MAY_DELELTE_ANYIMAGE) == 0)
+   if (this.creator != usr && (level & MAY_DELETE_ANYIMAGE) == 0)
       throw new DenyException("fileDelete");
    return;
 }
