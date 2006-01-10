@@ -15,7 +15,8 @@ function evalLogin(username, password) {
    if (req.data.remember) {
       // user allowed us to set permanent cookies for auto-login
       res.setCookie("avUsr", session.user.name, 365);
-      res.setCookie("avPw", Packages.helma.util.MD5Encoder.encode(session.user.password+req.data.http_remotehost), 365);
+      var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),"","\\.");
+      res.setCookie("avPw", (session.user.password + ip).md5(), 365);   
    }
    return new Message("welcome", [res.handlers.context.getTitle(), session.user.name]);
 }

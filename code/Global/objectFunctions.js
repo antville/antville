@@ -128,7 +128,8 @@ function autoLogin() {
    var u = root.users.get(name);
    if (!u)
       return;
-   if ((u.password + req.data.http_remotehost).md5() != pw)
+   var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),"","\\.");
+   if ((u.password + ip).md5() != pw)
       return;
    else if (session.login(name, u.password)) {
       u.lastVisit = new Date();
