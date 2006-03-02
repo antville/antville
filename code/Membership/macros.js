@@ -38,7 +38,7 @@ function url_macro(param) {
 
 function level_macro(param) {
    if (param.as == "editor")
-      Html.dropDown({name: "level"}, ROLES, this.level, param.firstOption);
+      Html.dropDown({name: "level"}, getRoles(), this.level, param.firstOption);
    else
       res.write(getRole(this.level));
    return;

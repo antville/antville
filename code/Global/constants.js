@@ -64,7 +64,7 @@ function initConstants() {
    ROLES[1] = [CONTRIBUTOR, getMessage("User.role.contributor")];
    ROLES[2] = [CONTENTMANAGER, getMessage("User.role.contentManager")];
    ROLES[3] = [ADMIN, getMessage("User.role.admin")];
-
+   
    DISPLAY["Root"] = getMessage("Root");
    DISPLAY["Site"] = getMessage("Site");
    DISPLAY["TopicMgr"] = getMessage("TopicMgr");
@@ -82,10 +82,26 @@ function initConstants() {
    DISPLAY["Story"] = getMessage("Story");
 }
 
+// FIXME: these two methods circumvent the "losing ROLES" bug
+// which is due to ROLES and DISPLAY being defined once
+// in onStart only and thus get lost in another thread.
+
+function getRoles(name) {
+   if (ROLES.length < 1)
+      initConstants();
+   return name ? ROLES[name] : ROLES;
+}
+
+function getDisplay(name) {
+   if (DISPLAY.length < 1)
+      initConstants();
+   return name ? DISPLAY[name] : DISPLAY;
+}
+
+
 /**
  * array containing short dateformats
  */
-
 SHORTDATEFORMATS = new Array();
 SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy.MM.dd, HH:mm";
 SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy-MM-dd HH:mm";

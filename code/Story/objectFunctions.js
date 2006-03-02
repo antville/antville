@@ -236,6 +236,9 @@ function deleteAll() {
  * in database by scheduler
  */
 function incrementReadCounter() {
+   // do not record requests by the story creator
+   if (session.user == this.creator)
+      return;
    // check if app.data.readLog already contains
    // an Object representing this story
    if (!app.data.readLog.containsKey(String(this._id))) {
@@ -258,7 +261,7 @@ function incrementReadCounter() {
 function getNavigationName () {
    if (this.title)
       return this.title;
-   return DISPLAY["story"] + " " + this._id;
+   return getDisplay("story") + " " + this._id;
 }
 
 

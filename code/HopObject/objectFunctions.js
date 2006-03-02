@@ -8,8 +8,9 @@
  */
 function getNavigationName() {
    var proto = this._prototype;
-   if (DISPLAY[proto])
-      return DISPLAY[proto];
+   var display;
+   if (display = getDisplay(proto))
+      return display;
    return this.__name__;
 }
 
