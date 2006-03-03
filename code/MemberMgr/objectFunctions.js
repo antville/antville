@@ -21,6 +21,7 @@ function evalLogin(username, password) {
    return new Message("welcome", [res.handlers.context.getTitle(), session.user.name]);
 }
 
+
 /**
  * check if a registration attempt is ok
  * @param Obj Object containing form-values needed for registration
@@ -30,7 +31,6 @@ function evalLogin(username, password) {
  *             - username: username of registered user
  *             - password: password of registered user
  */
-
 function evalRegistration(param) {
    // check if username is existing and is clean
    // can't use isClean() here because we accept
@@ -81,7 +81,6 @@ function evalRegistration(param) {
 }
 
 
-
 /**
  * update user-profile
  * @param Obj Object containing form values
@@ -105,6 +104,7 @@ function updateUser(param) {
    return new Message("update");
 }
 
+
 /**
  * function retrieves a list of usernames/passwords for a submitted email-address
  * and sends them as mail
@@ -113,7 +113,6 @@ function updateUser(param) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 function sendPwd(email) {
    if (!email)
       throw new Exception("emailMissing");
@@ -136,6 +135,7 @@ function sendPwd(email) {
    return new Message("mailSendPassword");
 }
 
+
 /**
  * function searches for users using part of username
  * @param String Part of username or email-address
@@ -145,7 +145,6 @@ function sendPwd(email) {
  *             - found (Int): number of users found
  *             - list (String): rendered list of users found
  */
-
 function searchUser(key) {
    var dbConn = getDBConnection("antville");
    var dbError = dbConn.getLastError();
@@ -183,6 +182,7 @@ function searchUser(key) {
    }
 }
 
+
 /**
  * function adds a user with a given username to the list of members
  * of this site
@@ -191,7 +191,6 @@ function searchUser(key) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 function evalNewMembership(username, creator) {
    var newMember = root.users.get(username);
    if (!newMember)
@@ -208,6 +207,7 @@ function evalNewMembership(username, creator) {
    return;
 }
 
+
 /**
  * function deletes a member
  * @param Obj Membership-Object to delete
@@ -216,7 +216,6 @@ function evalNewMembership(username, creator) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 function deleteMembership(membership) {
    if (!membership)
       throw new Error("memberDelete");
@@ -226,15 +225,16 @@ function deleteMembership(membership) {
    return new Message("memberDelete");
 }
 
+
 /**
  * function deletes all members
  */
-
 function deleteAll() {
    for (var i=this.size();i>0;i--)
       this.get(i-1).remove();
    return true;
 }
+
 
 /**
  * function retrieves the level of a users membership
