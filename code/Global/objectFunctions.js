@@ -722,3 +722,14 @@ function rebuildIndexes() {
    app.data.indexManager.rebuildIndexes();
    return;
 }
+
+
+function onCodeUpdate() {
+   var i, module, f;
+   for (i in app.modules) {
+      module = app.modules[i];
+      if (f = module.onCodeUpdate)
+         f.apply(this, arguments);
+   }
+   return;
+}

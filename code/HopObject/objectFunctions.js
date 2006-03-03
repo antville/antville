@@ -87,4 +87,9 @@ function applyModuleMethod(module, funcName, param) {
    if (module && module[funcName])
       module[funcName].apply(this, [param]);
    return;
-};
+}
+
+
+function onCodeUpdate(prototype) {
+   return onCodeUpdate(prototype);
+}
