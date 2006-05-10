@@ -105,9 +105,13 @@ function mimetype_macro(param) {
  * macro rendering the file extension from the name
  */
 function filetype_macro(param) {
-   var i = this.name.lastIndexOf(".");
-   if (i > -1)
-      res.write(this.name.substring(i+1, this.name.length));
+   if (this.mimetype)
+      res.write(this.mimetype.substring(this.mimetype.indexOf("/") + 1));
+   else {
+      var i = this.name.lastIndexOf(".");
+      if (i > -1)
+         res.write(this.name.substring(i+1, this.name.length));
+   }
    return;
 }
 
