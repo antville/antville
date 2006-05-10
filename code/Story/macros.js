@@ -42,7 +42,7 @@ function content_macro(param) {
                res.write(part);
             else
                res.write(clipped);
-            }
+         }
          if (param.as == "link")
             Html.closeLink();
    }
