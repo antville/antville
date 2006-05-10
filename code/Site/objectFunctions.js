@@ -75,11 +75,11 @@ function evalPreferences(param, modifier) {
 
    // e-mail notification
    var n = parseInt(param.notify_create, 10);
-   prefs.notify_create = (modifier == this.creator && !isNaN(n) ? n : null);
+   prefs.notify_create = (!isNaN(n) ? n : null);
    n = parseInt(param.notify_update, 10);
-   prefs.notify_update = (modifier == this.creator && !isNaN(n) ? n : null);
+   prefs.notify_update = (!isNaN(n) ? n : null);
    n = parseInt(param.notify_upload,10);
-   prefs.notify_upload = (modifier == this.creator && !isNaN(n) ? n : null);
+   prefs.notify_upload = (!isNaN(n) ? n : null);
 
    // store preferences
    this.preferences.setAll(prefs);
