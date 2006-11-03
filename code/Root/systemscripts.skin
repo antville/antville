@@ -100,7 +100,7 @@ Antville.Query = function(str) {
       var str = str.split("?")[1];
    if (str == "")
       return this;
-   var parts = Antville.decode(unescape(str)).split("&");
+   var parts = Antville.decode(decodeURIComponent(str)).split("&");
    for (var i in parts) {
       var pair = parts[i].split("=");
       var key = pair[0];
@@ -126,6 +126,7 @@ Antville.Filter = function(def, key) {
    this.test = function(str) {
       if (!str)
          return false;
+      str = str.replace(/&amp;/g, "&");
       for (var n in this.items) {
          var re = new RegExp(this.items[n], "i");
          if (re.test(str))
