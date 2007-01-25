@@ -219,7 +219,7 @@ function isNotificationEnabled() {
  */
 function sendNotification(type, obj) {
    var notify = this.preferences.getProperty("notify_" + type);
-   if (this.online === 0 || !notify || notify == 0)
+   if (obj.online === 0 || !notify || notify == 0)
       return;
    var recipients = new Array();
    for (var i=0; i<this.members.size(); i++) {
