@@ -74,12 +74,9 @@ function evalPreferences(param, modifier) {
    this.layout = param.layout ? this.layouts.get(param.layout) : null;
 
    // e-mail notification
-   var n = parseInt(param.notify_create, 10);
-   prefs.notify_create = (!isNaN(n) ? n : null);
-   n = parseInt(param.notify_update, 10);
-   prefs.notify_update = (!isNaN(n) ? n : null);
-   n = parseInt(param.notify_upload,10);
-   prefs.notify_upload = (!isNaN(n) ? n : null);
+   prefs.notify_create = parseInt(param.notify_create, 10) || null;
+   prefs.notify_update = parseInt(param.notify_update, 10) || null;
+   prefs.notify_upload = parseInt(param.notify_upload, 10) || null;
 
    // store preferences
    this.preferences.setAll(prefs);
@@ -222,7 +219,7 @@ function isNotificationEnabled() {
  */
 function sendNotification(type, obj) {
    var notify = this.preferences.getProperty("notify_" + type);
-   if (!notify || notify == 0)
+   if (this.online === 0 || !notify || notify == 0)
       return;
    var recipients = new Array();
    for (var i=0; i<this.members.size(); i++) {
