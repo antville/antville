@@ -238,7 +238,7 @@ function sendNotification(type, obj) {
          url: obj.href()
       };
       var sender = root.sys_title + "<" + root.sys_email + ">";
-      var subject = getMessage("mail.notification");
+      var subject = "[ + root.sys_title + "] " + getMessage("mail.notification");
       var body = this.renderSkinAsString("notificationMail", param);
       sendMail(sender, recipients, subject, body);
    }
