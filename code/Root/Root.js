@@ -1,5 +1,6 @@
 //
 // The Antville Project
+// http://code.google.com/p/antville
 //
 // Copyright 2001-2007 by The Antville People
 //
@@ -18,7 +19,7 @@
 // $Revision$
 // $LastChangedBy$
 // $LastChangedDate$
-// $HeadURL$
+// $URL$
 //
 
 /**
