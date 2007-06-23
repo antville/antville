@@ -2,10 +2,6 @@
 build/extra/helma.jar -text
 build/extra/launcher.jar -text
 build/extra/mckoidb.jar -text
-build/lib/ant-jsch.jar -text
-build/lib/ant-launcher.jar -text
-build/lib/ant.jar -text
-build/lib/jsch.jar -text
 code/AntvilleLib-1.4.zip -text
 code/HelmaLib-1.0.zip -text
 code/lucene-1.4.3.jar -text
