@@ -1,0 +1,75 @@
+============
+INSTALLATION
+============
+
+Unpack the distribution file. Move the resulting directory "antville" 
+into the directory "apps" of your Helma Object Publisher installation.
+
+Inside the directory "antville" you will find a zipped archive called 
+"db_support.zip". This archive contains all database-related files, 
+ie. several SQL scripts for creating the database needed by the 
+application. So first unpack db_support.zip which will create a 
+directory called "db_support". Change to that directory.
+
+Antville comes with scripts for MySQL (antville_mysql.sql) and for 
+Oracle databases (antville_oracle.sql) - the third one, 
+antville_mckoi.sql, is only used for the Mckoi database used in the 
+AntClick distribution.
+
+Each of these scripts are not only creating the tables, indexes and 
+initial records, but also the account used by the application to 
+communicate with the database. Both the default username and password 
+of this account are "antville", so you probably want to change that 
+(you should!). Open the appropriate script and scroll down to the 
+section called "Database-User". Search for "identified by" and change 
+the value in quotes to the password of your choice.
+
+Please refer to the documentation of your database on how to run the 
+appropriate script. After done so you'll have to tell Antville how it 
+can access your database. This is done in a configuration file named 
+"db.properties".
+
+Antville comes with two templates for db.properties, one for MySQL 
+(db.properties.mysql) and one for Oracle (db.properties.oracle). Open 
+the template for your database and ensure that the line beginning with 
+"antville.url=" points to the server that runs the database (for MySQL 
+this will in most cases look like http://localhost:3306/antville, 
+assuming that the database is running on the same machine as the 
+application). 
+
+Check that user and password are correct and save the file as 
+"db.properties" (without the quotes) in the root directory of the 
+Antville application (if it is already existing you can safely 
+overwrite it).
+
+NOTE: If you're using Oracle you need to install the JDBC driver for 
+your database by placing the appropriate zip file into the 
+subdirectory "lib/ext" located in Helma's installation directory (you 
+can download the JDBC driver for your Oracle-database at 
+http://technet.oracle.com/software/tech/java/sqlj_jdbc/content.html). 
+The driver for MySQL is already contained in the distribution of Helma 
+Object Publisher.
+
+Next you need to copy the default images of Antville to the 
+appropriate place. If you are planning to use the embeded webserver of 
+Helma Object Publisher, change to the directory "static" of your Helma 
+installation. Create a directory called "antville" and in there two 
+subdirectories: "images" and "files" (of course you can use any other 
+schema too, you just need to adapt the application properties in the 
+next step). Unpack the archive "images.zip" located in the application 
+directory of Antville to your newly created directory images. NOTE: 
+Don't place your images outside the directory "static" if you're using 
+Helma's embedded webserver, otherwise it won't find them.
+
+Open the file "apps.properties" located in the directory where you 
+installed Helma and append the word "antville" (without quotes) in a 
+new line. Then start up Helma, and after pointing your browser to 
+http://localhost:8080/antville (assuming that Helma is running on the 
+same machine and uses port 8080) you should see Antville's welcome 
+page. It will tell you about the two additional configuration steps 
+necessary: you need to register once to gain system administration 
+rights and then you must configure the basic preferences (like 
+language settings, date formats etc.)
+
+If everything went fine you can safely delete the directory 
+"db_support".

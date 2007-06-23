@@ -1,0 +1,107 @@
+==============
+ABOUT ANTVILLE
+==============
+
+Antville is an open source project aimed to the development of an 
+"easy to maintain and use" weblog-hosting system. It can easily host 
+up to several hundred or thousand weblogs (the number of weblogs is 
+more limited by the site owner's choice and server power than software 
+limitations).
+
+Antville is entirely written in JavaScript (ECMAScript, to be precise)
+and based on Helma Object Publisher, a powerful and fast scriptable
+open source web application server (which itself is written in Java).
+Antville works with a relational database in the backend.
+
+Check out http://project.antville.org/ for more information.
+
+
+============================
+ABOUT HELMA OBJECT PUBLISHER
+============================
+
+Helma Object Publisher is a web application server.
+
+With Helma Object Publisher (sometimes simply referred to as Helma or 
+Hop) you can define Objects and map them to a relational database 
+table. These so-called HopObjects can be created, modified and deleted 
+using a comfortable object/container model. Hence, no manual fiddling 
+around with database code is necessary.
+
+HopObjects are extended JavaScript objects which can be scripted using 
+server-side JavaScript. Beyond the common JavaScript features, Helma 
+provides special "skin" and template functionalities which facilitate 
+the rendering of objects via a web interface.
+
+Thanks to Helma's relational database mapping technology, HopObjects 
+create a hierarchical structure, the URL space of a Helma site. The 
+parts between slashes in a Helma URL represent HopObjects (similar to 
+the document tree in static sites). The Helma URL space can be thought 
+of as an analogy to the Document Object Model (DOM) in client-side 
+JavaScript.
+
+
+======
+STATUS
+======
+
+Antville should be considered pre-release quality code. Although it is 
+heavily used by several thousands of users at http://www.antville.org 
+chances are that there are still bugs hidden somewhere in this 
+application (if you found one please report it at 
+http://helma.org/bugs).
+
+Antville can be used for production purposes, but please mind that the 
+creators of Antville and Helma do not take any warranty (whichever 
+kind).
+
+
+===================
+SYSTEM REQUIREMENTS
+===================
+
+To run Antville you need Helma Object Publisher (http://helma.org) and 
+a relational database in the backend. Antville was tested with MySQL 
+(http://www.mysql.com) and Oracle (v.8.1.7). For setting up Helma 
+Object Publisher and the database of your choice please refer to their 
+installation instructions. Since Antville sends confirmation mails to 
+users (i.e. after registration or if they were added to the list of 
+members of a site), you'll also need access to an SMTP server.
+
+Helma comes with its own embedded webserver (Jetty) so you don't need 
+to install one, although you can easily use Apache httpd as front-end
+webserver too (this might be necessary for really big Antville 
+installations or if you need advanced features like URL rewriting).
+
+
+=====================================
+DOCUMENTATION AND FURTHER INFORMATION
+=====================================
+
+To get the documentation and further information regarding Antville 
+please refer to:
+http://project.antville.org
+http://macros.antville.org (the documentation of Antville macros)
+http://help.antville.org
+
+Feel free to ask any question regarding the application at 
+http://project.antville.org
+
+For further information about Helma http://helma.org generally is a 
+good place. There is also a mailing-list about Helma-related stuff 
+available at http://helma.org/lists/listinfo/hop.
+
+
+==================================
+BUG REPORTING AND FEATURE REQUESTS
+==================================
+
+If you find any bug please report it at http://helma.org/bugs. Please 
+post feature requests or proposals to http://project.antville.org. 
+Since Antville is open-source, you're definetly encouraged to modify 
+the application, but please keep us informed on what you do/did 
+(either by posting at http://project.antville.org or by sending a mail 
+to antville@helma.org). For those of you who demonstrated a commitment 
+to collaborative open- source development through sustained 
+participation and contributions within the development of Antville, 
+there will also be other ways to participate.
