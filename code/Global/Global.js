@@ -880,7 +880,7 @@ function imageoftheday_macro(param) {
  */
 function onStart() {
    // load application messages and modules
-   var dir = new Helma.File(app.dir);
+   var dir = new Helma.File(app.dir, "../i18n");
    var arr = dir.list();
    for (var i in arr) {
       var fname = arr[i];
