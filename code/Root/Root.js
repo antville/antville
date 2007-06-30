@@ -71,7 +71,7 @@ Root.prototype.main_action = function() {
       logAccess();
    }
    return;
-};;
+};
 
 /**
  * action for creating a new Site
@@ -95,7 +95,7 @@ Root.prototype.new_action = function() {
    res.data.body = this.renderSkinAsString("new");
    root.renderSkin("page");
    return;
-};;
+};
 
 /**
  * action for listing public sites
@@ -108,7 +108,7 @@ Root.prototype.list_action = function() {
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
    return;
-};;
+};
 
 /**
  * wrapper to access colorpicker
@@ -118,7 +118,7 @@ Root.prototype.colorpicker_action = function() {
       req.data.skin = "colorpicker";
    renderSkin(req.data.skin);
    return;
-};;
+};
 
 
 /**
@@ -127,7 +127,7 @@ Root.prototype.colorpicker_action = function() {
 Root.prototype.rss_xml_action = function() {
    res.redirect(root.href("rss"));
    return;
-};;
+};
 
 /**
  * rss action
@@ -175,7 +175,7 @@ Root.prototype.rss_action = function() {
    param.resources = resources.toString();
    this.renderSkin("rss", param);
    return;
-};;
+};
 
 /**
  * action called when a site has been blocked
@@ -185,7 +185,7 @@ Root.prototype.blocked_action = function() {
    res.data.body = root.renderSkinAsString("blocked");
    root.renderSkin("page");
    return;
-};;
+};
 
 /**
  * 404 action
@@ -196,7 +196,7 @@ Root.prototype.notfound_action = function() {
    res.data.body = root.renderSkinAsString("notfound");
    (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
    return;
-};;
+};
 
 /**
  * error action
@@ -207,7 +207,7 @@ Root.prototype.sys_error_action = function() {
    res.data.body += "<p>"+res.error+"</p>";
    (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
    return;
-};;
+};
 
 /**
  * action to render external stylesheet
@@ -219,7 +219,7 @@ Root.prototype.main_css_action = function() {
    res.contentType = "text/css";
    this.renderSkin("style");
    return;
-};;
+};
 
 /**
  * action to render external javascript
@@ -232,7 +232,7 @@ Root.prototype.main_js_action = function() {
    root.renderSkin("javascript");
    root.renderSkin("systemscripts");
    return;
-};;
+};
 
 /**
  * macro rendering loginStatus of user
@@ -245,7 +245,7 @@ Root.prototype.loginstatus_macro = function(param) {
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
    return;
-};;
+};
 
 /**
  * macro renders the number of site (either all or just the public ones)
@@ -262,7 +262,7 @@ Root.prototype.sitecounter_macro = function(param) {
    else
       res.write(size + (param.more ? param.more : ""));
    return;
-};;
+};
 
 /**
  * render the system title of this antville installation
@@ -270,7 +270,7 @@ Root.prototype.sitecounter_macro = function(param) {
 Root.prototype.title_macro = function() {
    res.write(this.getTitle());
    return;
-};;
+};
 
 /**
  * render the system-url of this antville installation
@@ -278,7 +278,7 @@ Root.prototype.title_macro = function() {
 Root.prototype.url_macro = function(param) {
    res.write(this.getUrl());
    return;
-};;
+};
 
 /**
  * render the system manager navigation if user is a system manager
@@ -287,7 +287,7 @@ Root.prototype.sysmgrnavigation_macro = function(param) {
    if (session.user && session.user.sysadmin)
       this.renderSkin("sysmgrnavigation");
    return;
-};;
+};
 
 /**
  * proxy macro for LayoutMgr.layoutchooser
@@ -297,7 +297,7 @@ Root.prototype.layoutchooser_macro = function(param) {
       param.selected = root.sys_layout.alias;
    root.layouts.layoutchooser_macro(param);
    return;
-};;
+};
 
 /**
  * render the system-title of this antville-installation
@@ -308,7 +308,7 @@ Root.prototype.sys_title_macro = function(param) {
    else
       res.write(this.getTitle());
    return;
-};;
+};
 
 /**
  * macro rendering siteurl
@@ -320,7 +320,7 @@ Root.prototype.sys_url_macro = function(param) {
    else
       res.write(this.sys_url);
    return;
-};;
+};
 
 /**
  * macro rendering address used for sending mails
@@ -340,7 +340,7 @@ Root.prototype.sys_email_macro = function(param) {
    } else
       res.write(this.sys_email);
    return;
-};;
+};
 
 /**
  * macro rendering allowFiles-flag
@@ -358,7 +358,7 @@ Root.prototype.sys_allowFiles_macro = function(param) {
    } else
       res.write(this.sys_allowFiles ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering diskquota
@@ -375,7 +375,7 @@ Root.prototype.sys_diskQuota_macro = function(param) {
    } else
       res.write(this.sys_diskquota);
    return;
-};;
+};
 
 /**
  * macro rendering a dropdown for limiting the creation of new Sites
@@ -391,7 +391,7 @@ Root.prototype.sys_limitNewSites_macro = function(param) {
    } else
       res.write(this.sys_limitNewSites);
    return;
-};;
+};
 
 /**
  * macro renders a dropdown containing the minimal registration time
@@ -411,7 +411,7 @@ Root.prototype.sys_minMemberAge_macro = function(param) {
    } else
       res.write(this.sys_minMemberAge);
    return;
-};;
+};
 
 /**
  * macro renders an input type text for editing the system-timestamp
@@ -429,7 +429,7 @@ Root.prototype.sys_minMemberSince_macro = function(param) {
    } else
       res.write(this.sys_minMemberSince);
    return;
-};;
+};
 
 
 /**
@@ -451,7 +451,7 @@ Root.prototype.sys_waitAfterNewSite_macro = function(param) {
    } else
       res.write(this.sys_waitAfterNewSite);
    return;
-};;
+};
 
 
 /**
@@ -470,7 +470,7 @@ Root.prototype.sys_enableAutoCleanup_macro = function(param) {
    } else
       res.write(this.sys_enableAutoCleanup ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering hour when automatic cleanup starts
@@ -488,7 +488,7 @@ Root.prototype.sys_startAtHour_macro = function(param) {
    } else
       res.write(this.sys_startAtHour);
    return;
-};;
+};
 
 /**
  * macro rendering blockPrivateSites-flag
@@ -506,7 +506,7 @@ Root.prototype.sys_blockPrivateSites_macro = function(param) {
    } else
       res.write(this.sys_blockPrivateSites ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering Number of days before sending blockwarning-mail
@@ -521,7 +521,7 @@ Root.prototype.sys_blockWarningAfter_macro = function(param) {
    else
       res.write(this.sys_blockWarningAfter);
    return;
-};;
+};
 
 /**
  * macro rendering Number of days to wait before blocking private site
@@ -536,7 +536,7 @@ Root.prototype.sys_blockAfterWarning_macro = function(param) {
    else
       res.write(this.sys_blockAfterWarning);
    return;
-};;
+};
 
 /**
  * macro rendering deleteInactiveSites-flag
@@ -554,7 +554,7 @@ Root.prototype.sys_deleteInactiveSites_macro = function(param) {
    } else
       res.write(this.sys_deleteInactiveSites ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering Number of days before sending deletewarning-mail
@@ -569,7 +569,7 @@ Root.prototype.sys_deleteWarningAfter_macro = function(param) {
    else
       res.write(this.sys_deleteWarningAfter);
    return;
-};;
+};
 
 /**
  * macro rendering Number of days to wait before deleting inactive site
@@ -584,7 +584,7 @@ Root.prototype.sys_deleteAfterWarning_macro = function(param) {
    else
       res.write(this.sys_deleteAfterWarning);
    return;
-};;
+};
 
 /**
  * macro rendering a dropdown containing all available locales
@@ -595,7 +595,7 @@ Root.prototype.localechooser_macro = function(param) {
       return;
    renderLocaleChooser(this.getLocale());
    return;
-};;
+};
 
 /**
  * macro rendering a dropdown containing all available locales
@@ -606,7 +606,7 @@ Root.prototype.timezonechooser_macro = function(param) {
       return;
    renderTimeZoneChooser(this.getTimeZone());
    return;
-};;
+};
 
 /**
  * macro renders a chooser for the longdateformat
@@ -616,7 +616,7 @@ Root.prototype.longdateformat_macro = function(param) {
       return;
    renderDateformatChooser("longdateformat", root.getLocale(), this.longdateformat);
    return;
-};;
+};
 
 /**
  * macro renders a chooser for the shortdateformat
@@ -626,7 +626,7 @@ Root.prototype.shortdateformat_macro = function(param) {
       return;
    renderDateformatChooser("shortdateformat", root.getLocale(), this.shortdateformat);
    return;
-};;
+};
 
 /**
  * macro renders the alias of the frontpage site defined
@@ -642,7 +642,7 @@ Root.prototype.sys_frontSite_macro = function(param) {
    } else
       res.write (root.sys_frontSite);
    return;
-};;
+};
 
 /* *
  *  macro allow e-mail notification
@@ -662,7 +662,7 @@ Root.prototype.sys_allowEmails_macro = function(param) {
   } else
      res.write(this.sys_allowEmails);
   return;
-};;
+};
 
 /**
  * evaluating new Site
@@ -697,7 +697,7 @@ Root.prototype.evalNewSite = function(title, alias, creator) {
    newSite.members.add(new Membership(creator, ADMIN));
    root.manage.syslogs.add(new SysLog("site", newSite.alias, "added site", creator));
    return new Message("siteCreate", null, newSite);
-};;
+};
 
 
 /**
@@ -711,7 +711,7 @@ Root.prototype.deleteSite = function(site) {
    // add syslog-entry
    this.manage.syslogs.add(new SysLog("site", site.alias, "removed site", session.user));
    return new Message("siteDelete", site.alias);
-};;
+};
 
 /**
  *  Search one or more (public) sites. Returns an array containing site-aliases and
@@ -760,7 +760,7 @@ Root.prototype.searchSites  = function(query, sid) {
    }
    dbres.release();
    return result;
-};;
+};
 
 /**
  * function checks if language and country were specified
@@ -777,7 +777,7 @@ Root.prototype.getLocale = function() {
       locale = java.util.Locale.getDefault();
    this.cache.locale = locale;
    return locale;
-};;
+};
 
 /**
  * function checks if the system title of this antville-installation
@@ -788,7 +788,7 @@ Root.prototype.getTitle = function() {
    if (!root.sys_title)
       return "antville";
    return root.sys_title;
-};;
+};
 
 /**
  * function checks if the system url of this antville-installation
@@ -799,7 +799,7 @@ Root.prototype.getUrl = function() {
    if (!root.sys_url)
       return root.href();
    return root.sys_url;
-};;
+};
 
 /**
  *  href URL postprocessor. If a virtual host mapping is defined
@@ -807,7 +807,7 @@ Root.prototype.getUrl = function() {
  */
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
-};;
+};
 
 /**
  * function returns the (already cached) TimeZone-Object
@@ -820,7 +820,7 @@ Root.prototype.getTimeZone = function() {
    else
        this.cache.timezone = java.util.TimeZone.getDefault();
    return this.cache.timezone;
-};;
+};
 
 /**
  * return the root layout
@@ -840,7 +840,7 @@ Root.prototype.getLayout = function() {
       return defLayout;
    }
    return root.sys_layout;
-};;
+};
 
 /**
  * permission check (called by hopobject.onRequest())
@@ -862,7 +862,7 @@ Root.prototype.checkAccess = function(action, usr, level) {
       res.redirect(this.href());
    }
    return;
-};;
+};
 
 /**
  * function checks if user is allowed to create a new Site
@@ -899,7 +899,7 @@ Root.prototype.checkAdd = function(usr) {
          }
    }
    return;
-};;
+};
 
 /**
  * this function renders a list of sites
@@ -949,4 +949,4 @@ Root.prototype.renderSitelist = function(limit, show, scroll) {
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    return;
-};;
+};

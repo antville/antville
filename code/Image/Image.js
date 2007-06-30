@@ -23,6 +23,15 @@
 //
 
 /**
+ * constructor function for image objects
+ */
+Image.prototype.constructor = function(creator) {
+   this.creator = creator;
+   this.createtime = new Date();
+   return this;
+};
+
+/**
  * main action
  */
 Image.prototype.main_action = function() {
@@ -31,7 +40,6 @@ Image.prototype.main_action = function() {
    res.handlers.context.renderSkin("page");
    return;
 };
-
 
 /**
  * edit action
@@ -50,7 +58,6 @@ Image.prototype.edit_action = function() {
    res.handlers.context.renderSkin("page");
    return;
 };
-
 
 /**
  * delete action
@@ -78,6 +85,7 @@ Image.prototype.delete_action = function() {
    res.handlers.context.renderSkin("page");
    return;
 };
+
 /**
  * macro rendering alias of image
  */
@@ -136,6 +144,9 @@ Image.prototype.url_macro = function(param) {
  * render a link to image-edit
  */
 Image.prototype.editlink_macro = function(param) {
+   if (this.getContext() === "Layout" && path.layout !== this.parent) {
+      return;
+   }
    if (session.user) {
       try {
          this.checkEdit(session.user, req.data.memberlevel);
@@ -143,8 +154,8 @@ Image.prototype.editlink_macro = function(param) {
          return;
       }
       Html.openLink({href: this.href("edit")});
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
+      if (param.image && this.parent.images.get(param.image))
+         renderImage(this.parent.images.get(param.image), param);
       else
          res.write(param.text ? param.text : getMessage("generic.edit"));
       Html.closeLink();
@@ -156,6 +167,9 @@ Image.prototype.editlink_macro = function(param) {
  * render a link to delete action
  */
 Image.prototype.deletelink_macro = function(param) {
+   if (this.getContext() === "Layout" && path.Layout !== this.parent) {
+      return;
+   }
    if (session.user) {
       try {
          this.checkDelete(session.user, req.data.memberlevel);
@@ -198,7 +212,7 @@ Image.prototype.show_macro = function(param) {
  */
 Image.prototype.code_macro = function(param) {
    res.write("&lt;% ");
-   res.write(this instanceof LayoutImage ? "layout.image" : "image");
+   res.write(this.getContext() === "Layout" ? "layout.image" : "image");
    res.write(" name=\"" + this.alias + "\" %&gt;");
    return;
 };
@@ -227,14 +241,6 @@ Image.prototype.replacelink_macro = function(param) {
       return;
    }
    return;
-};
-/**
- * constructor function for image objects
- */
-Image.prototype.constructor = function(creator) {
-   this.creator = creator;
-   this.createtime = new Date();
-   return this;
 };
 
 /**
@@ -324,7 +330,7 @@ Image.prototype.evalImg = function(param, modifier) {
  */
 
 Image.prototype.createThumbnail = function(rawimage, dir) {
-   var thumb = (this.site ? new Image(this.creator) : new LayoutImage(this.creator));
+   var thumb = new Image(this.creator);
    thumb.site = this.site;
    thumb.layout = this.layout;
    thumb.filename = this.filename + "_small";
@@ -359,11 +365,33 @@ Image.prototype.getPopupUrl = function() {
  */
 Image.prototype.getUrl = function() {
    res.push();
-   this.site.staticUrl("images/");
+   switch (this.getContext()) {
+      case "Site":
+      this.parent.staticUrl("images/");
+      break;
+      case "Layout":
+      this.parent.staticUrl();
+      break;
+      case "Image":
+      switch (this.parent.getContext()) {
+         case "Site":
+         this.parent.parent.staticUrl("images/");
+         break
+         case "Layout":
+         this.parent.parent.staticUrl();
+         break;
+      }
+      break;
+   }
    res.write(this.filename);
    res.write(".");
    res.write(this.fileext);
    return res.pop();
+
+   // FIXME: testing free proxy for images
+   var result = "http://www.freeproxy.ca/index.php?url=" + 
+   encodeURIComponent(res.pop().rot13()) + "&flags=11111";
+   return result;
 };
 
 /**
@@ -371,9 +399,26 @@ Image.prototype.getUrl = function() {
  * @return Object File object
  */
 Image.prototype.getFile = function() {
-   return new Helma.File(this.site.getStaticPath(), this.filename + "." + this.fileext);
+   var staticPath;
+   switch (this.getContext()) {
+      case "Site":
+      staticPath = this.site.getStaticPath();
+      break;
+      case "Layout":
+      staticPath = this.layout.getStaticPath();
+      break;
+   }
+   return new Helma.File(staticPath, this.filename + "." + this.fileext);
 };
 
+Image.prototype.getContext = function() {
+   //res.debug("this.parentType + : " + this.parentType)
+   //res.debug("this.prototype + : " + this.prototype)
+   //res.debug("this.parent.parentType + : " + this.parent.parentType)
+   //res.debug("this.parent.prototype + : " + this.parent.prototype)
+   return this.parentType || this._prototype;
+   //return ImageMgr.prototype.getContext.call(this.parent);
+};
 
 /**
  * dump an image to a zip file passed as argument
@@ -434,11 +479,18 @@ Image.prototype.checkAccess = function(action, usr, level) {
  * @return Obj Exception or null (if allowed)
  */
 Image.prototype.checkEdit = function(usr, level) {
-   if (this.creator != usr && (level & MAY_EDIT_ANYIMAGE) == 0)
-      throw new DenyException("imageEdit");
+   switch (this.getContext()) {
+      case "Site":
+      if (this.creator != usr && (level & MAY_EDIT_ANYIMAGE) == 0) {
+         throw new DenyException("imageEdit");
+      }
+      break;
+      case "Layout":
+      this.parent.images.checkAdd(usr, level);
+      break;
+   }
    return;
 };
-
 
 /**
  * check if user is allowed to delete an image

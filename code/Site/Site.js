@@ -79,7 +79,7 @@ Site.prototype.constructor = function(title, alias, creator) {
    prefs.shortdateformat = "yyyy.MM.dd, HH:mm";
    this.preferences_xml = Xml.writeToString(prefs);
    return this;
-};;
+};
 
 /**
  * main action
@@ -101,7 +101,7 @@ Site.prototype.main_action = function() {
    this.renderSkin("page");
    logAccess();
    return;
-};;
+};
 
 /**
  * edit action
@@ -127,7 +127,7 @@ Site.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
    return;
-};;
+};
 
 /**
  * delete action
@@ -153,7 +153,7 @@ Site.prototype.delete_action = function() {
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.renderSkin("page");
    return;
-};;
+};
 
 /**
  * wrapper to access colorpicker also from site
@@ -162,7 +162,7 @@ Site.prototype.colorpicker_action = function() {
    res.handlers.site = this;
    root.colorpicker_action();
    return;
-};;
+};
 
 /**
  * wrapper to make style.skin public
@@ -175,7 +175,7 @@ Site.prototype.main_css_action = function() {
    res.contentType = "text/css";
    this.renderSkin("style");
    return;
-};;
+};
 
 /**
  * wrapper to make javascript.skin public
@@ -189,7 +189,7 @@ Site.prototype.main_js_action = function() {
    this.renderSkin("javascript");
    root.renderSkin("systemscripts");
    return;
-};;
+};
 
 /**
  * wrapper for rss feed
@@ -197,7 +197,7 @@ Site.prototype.main_js_action = function() {
 Site.prototype.rss_xml_action = function() {
    res.redirect(root.href("rss"));
    return;
-};;
+};
 
 /**
  * rss feed
@@ -287,7 +287,7 @@ Site.prototype.rss_action = function() {
       this.renderSkin("rss", site);
    }
    return;
-};;
+};
 
 /**
  * this action tries to get a file with the given name
@@ -305,7 +305,7 @@ Site.prototype.getfile_action = function() {
       res.redirect(this.href());
    }
    return;
-};;
+};
 
 /**
  * most read stories of a site
@@ -315,7 +315,7 @@ Site.prototype.mostread_action = function() {
    res.data.body = this.renderSkinAsString("mostread");
    this.renderSkin("page");
    return;
-};;
+};
 
 /**
  * referrers of a site
@@ -346,7 +346,7 @@ Site.prototype.referrers_action = function() {
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("page");
    return;
-};;
+};
 
 /**
  * search action
@@ -465,7 +465,7 @@ Site.prototype.search_action = function() {
    res.data.body = this.renderSkinAsString("searchresult");
    this.renderSkin("page");
    return;
-};;
+};
 
 /**
  * subscribe action
@@ -476,7 +476,7 @@ Site.prototype.subscribe_action = function() {
    res.message = new Message("subscriptionCreate", this.title);
    res.redirect(this.href());
    return;
-};;
+};
 
 /**
  * unsubscribe action
@@ -501,7 +501,7 @@ Site.prototype.unsubscribe_action = function() {
    res.data.body = this.renderSkinAsString("delete", skinParam);
    this.renderSkin("page");
    return;
-};;
+};
 
 /**
  * context menu extension
@@ -509,7 +509,7 @@ Site.prototype.unsubscribe_action = function() {
 Site.prototype.menuext_action = function() {
    this.renderSkin("menuext");
    return;
-};;
+};
 
 /**
  * context menu extension (accessible as /menuext.reg)
@@ -518,7 +518,7 @@ Site.prototype.menuext_reg_action = function() {
    res.contentType = "text/plain";
    this.renderSkin("menuext.reg");
    return;
-};;
+};
 
 /**
  * robots.txt action
@@ -527,7 +527,7 @@ Site.prototype.robots_txt_action = function() {
    res.contentType = "text/plain";
    this.renderSkin("robots");
    return;
-};;
+};
 
 /**
  * macro rendering title
@@ -549,7 +549,7 @@ Site.prototype.title_macro = function(param) {
          res.write(this.title);
    }
    return;
-};;
+};
 
 /**
  * macro rendering alias
@@ -560,7 +560,7 @@ Site.prototype.alias_macro = function(param) {
    else
       res.write(this.alias);
    return;
-};;
+};
 
 /**
  * macro rendering tagline
@@ -571,7 +571,7 @@ Site.prototype.tagline_macro = function(param) {
    else if (this.preferences.getProperty("tagline"))
       res.write(stripTags(this.preferences.getProperty("tagline")));
    return;
-};;
+};
 
 /**
  * macro rendering email
@@ -582,7 +582,7 @@ Site.prototype.email_macro = function(param) {
    else
       res.write(this.email);
    return;
-};;
+};
 
 /**
  * macro rendering lastupdate
@@ -591,7 +591,7 @@ Site.prototype.lastupdate_macro = function(param) {
    if (this.lastupdate)
       res.write(formatTimestamp(this.lastupdate, param.format));
    return;
-};;
+};
 
 /**
  * macro rendering online-status
@@ -607,7 +607,7 @@ Site.prototype.online_macro = function(param) {
    else
       res.write(param.no ? param.no : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering discussion-flag
@@ -622,7 +622,7 @@ Site.prototype.hasdiscussions_macro = function(param) {
       res.write(this.preferences.getProperty("discussions") ? 
                 getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering usercontrib-flag
@@ -637,7 +637,7 @@ Site.prototype.usermaycontrib_macro = function(param) {
       res.write(this.preferences.getProperty("usercontrib") ? 
                 getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering nr. of days to show on site-fontpage
@@ -648,7 +648,7 @@ Site.prototype.showdays_macro = function(param) {
    else
       res.write(this.preferences.getProperty("days"));
    return;
-};;
+};
 
 /**
  * macro rendering archive-flag
@@ -663,7 +663,7 @@ Site.prototype.showarchive_macro = function(param) {
       res.write(this.preferences.getProperty("archive") ? 
                 getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering enableping-flag
@@ -677,7 +677,7 @@ Site.prototype.enableping_macro = function(param) {
    } else
       res.write(this.enableping ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro rendering default longdateformat
@@ -691,7 +691,7 @@ Site.prototype.longdateformat_macro = function(param) {
    else
       res.write(this.preferences.getProperty("longdateformat"));
    return;
-};;
+};
 
 /**
  * macro rendering default shortdateformat
@@ -705,7 +705,7 @@ Site.prototype.shortdateformat_macro = function(param) {
    else
       res.write(this.preferences.getProperty("shortdateformat"));
    return;
-};;
+};
 
 /**
  * macro rendering loginStatus of user
@@ -718,7 +718,7 @@ Site.prototype.loginstatus_macro = function(param) {
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
    return;
-};;
+};
 
 /**
  * macro rendering two different navigation-skins
@@ -759,7 +759,7 @@ Site.prototype.navigation_macro = function(param) {
       }
    }
    return;
-};;
+};
 
 /**
  * call the site navigation render method
@@ -771,7 +771,7 @@ Site.prototype.moduleNavigation_macro = function(param) {
    this.applyModuleMethod(app.modules[param.module],
                           "renderSiteNavigation", param);
    return;
-};;
+};
 
 /**
  * macro renders a calendar
@@ -872,7 +872,7 @@ Site.prototype.calendar_macro = function(param) {
    calParam.calendar = res.pop();
    this.renderSkin("calendar", calParam);
    return;
-};;
+};
 
 /**
  * macro renders age
@@ -880,7 +880,7 @@ Site.prototype.calendar_macro = function(param) {
 Site.prototype.age_macro = function(param) {
    res.write(Math.floor((new Date() - this.createtime) / ONEDAY));
    return;
-};;
+};
 
 /**
  * macro renders a list of recently added/updated stories/comments
@@ -915,7 +915,7 @@ Site.prototype.history_macro = function(param) {
       cnt++;
    }
    return;
-};;
+};
 
 /**
  * macro renders a list of available locales as dropdown
@@ -923,7 +923,7 @@ Site.prototype.history_macro = function(param) {
 Site.prototype.localechooser_macro = function(param) {
    renderLocaleChooser(this.getLocale());
    return;
-};;
+};
 
 /**
  * macro renders a list of available time zones as dropdown
@@ -931,7 +931,7 @@ Site.prototype.localechooser_macro = function(param) {
 Site.prototype.timezonechooser_macro = function(param) {
    renderTimeZoneChooser(this.getTimeZone());
    return;
-};;
+};
 
 /**
  * renders a list of most read pages, ie. a link
@@ -947,7 +947,7 @@ Site.prototype.listMostRead_macro = function() {
       s.renderSkin("mostread", param);
    }
    return;
-};;
+};
 
 /**
  * renders a list of referrers, ie. a link
@@ -981,7 +981,7 @@ Site.prototype.listReferrers_macro = function() {
    }
    rows.release();
    return;
-};;
+};
 
 /**
  * renders the xml button for use
@@ -991,7 +991,7 @@ Site.prototype.xmlbutton_macro = function(param) {
    param.linkto = this.href("rss");   
    DefaultImages.render("xmlbutton", param);
    return;
-};;
+};
 
 /**
  * renders the searchbox
@@ -999,7 +999,7 @@ Site.prototype.xmlbutton_macro = function(param) {
 Site.prototype.searchbox_macro = function(param) {
    this.renderSkin("searchbox");
    return;
-};;
+};
 
 /**
  * function renders the months of the archive
@@ -1021,7 +1021,7 @@ Site.prototype.monthlist_macro = function(param) {
       }
    }
    return;
-};;
+};
 
 /**
  * proxy-macro for layout chooser
@@ -1031,7 +1031,7 @@ Site.prototype.layoutchooser_macro = function(param) {
       param.selected = this.layout.alias;
    this.layouts.layoutchooser_macro(param);
    return;
-};;
+};
 
 /**
  * macro rendering recipients for email notification
@@ -1061,7 +1061,7 @@ Site.prototype.notify_macro = function(param) {
       }
    }
    return;
-};;
+};
 
 /**
  * macro rendering notification settings if enabled
@@ -1070,7 +1070,7 @@ Site.prototype.notification_macro = function(param) {
    if (this.isNotificationEnabled())
       this.renderSkin("notification");
    return;
-};;
+};
 
 /**
  * render generic preference editor or value
@@ -1086,7 +1086,7 @@ Site.prototype.preferences_macro = function(param) {
    } else
       res.write(this.preferences.getProperty(param.name));
    return;
-};;
+};
 
 /**
  * output spamfilter data appropriate
@@ -1105,7 +1105,7 @@ Site.prototype.spamfilter_macro = function(param) {
          res.write(",");
    }
    return;
-};;
+};
 
 /**
  * macro returns the used disk space for this site
@@ -1113,7 +1113,7 @@ Site.prototype.spamfilter_macro = function(param) {
 Site.prototype.diskusage_macro = function(param) {
    res.write(this.getDiskUsage().format("###,###") + " KB");
    return;
-};;
+};
 
 /**
  * macro checks if there are any modules present
@@ -1123,7 +1123,7 @@ Site.prototype.modulePreferences_macro = function(param) {
    for (var i in app.modules)
       this.applyModuleMethod(app.modules[i], "renderPreferences", param);
    return;
-};;
+};
 
 /**
  * catch some special needs before passing the 
@@ -1144,14 +1144,14 @@ Site.prototype.switch_macro = function(param) {
    } else
       HopObject.switch_macro.apply(this, [param]);
    return;
-};;
+};
 
 /**   
  * returns the number of members of this site
  */   
 Site.prototype.membercounter_macro = function(param) {
    return this.members.size();
-};;
+};
 
 /**
  * renders a dropdown containing the possible occurrences
@@ -1164,7 +1164,7 @@ Site.prototype.searchOccurrence_macro = function() {
                   ["topic", "in the topic name"]];
    Html.dropDown({name: "o"}, options, req.data.o);
    return;
-};;
+};
 
 /**
  * renders a dropdown containing some reasonable
@@ -1179,7 +1179,7 @@ Site.prototype.searchCreatetime_macro = function() {
                   ["12", "the past year"]];
    Html.dropDown({name: "ct"}, options, req.data.ct);
    return;
-};;
+};
 
 /**
  * macro counts
@@ -1201,7 +1201,7 @@ Site.prototype.sysmgr_count_macro = function(param) {
          return this.files.size();
    }
    return;
-};;
+};
 
 /**
  * function renders the statusflags for this site
@@ -1219,7 +1219,7 @@ Site.prototype.sysmgr_statusflags_macro = function(param) {
    if (this.blocked)
       res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
    return;
-};;
+};
 
 /**
  * function renders an edit-link
@@ -1237,7 +1237,7 @@ Site.prototype.sysmgr_editlink_macro = function(param) {
    res.write(param.text ? param.text : "edit");
    Html.closeTag("a");
    return;
-};;
+};
 
 /**
  * function renders a delete-link
@@ -1255,7 +1255,7 @@ Site.prototype.sysmgr_deletelink_macro = function(param) {
    res.write(param.text ? param.text : "delete");
    Html.closeTag("a");
    return;
-};;
+};
 
 /**
  * macro renders the trust-state of this site
@@ -1270,7 +1270,7 @@ Site.prototype.sysmgr_trusted_macro = function(param) {
    } else
       res.write(this.trusted ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * macro renders the block-state of this site
@@ -1285,7 +1285,7 @@ Site.prototype.sysmgr_blocked_macro = function(param) {
    } else
       res.write(this.blocked ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
-};;
+};
 
 /**
  * function saves new properties of site
@@ -1346,7 +1346,7 @@ Site.prototype.evalPreferences = function(param, modifier) {
    this.modifytime = new Date();
    this.modifier = modifier;
    return new Message("update");
-};;
+};
 
 /**
  * function checks if language and country were specified
@@ -1367,7 +1367,7 @@ Site.prototype.getLocale = function() {
       locale = root.getLocale();
    this.cache.locale =locale;
    return locale;
-};;
+};
 
 /**
  * function returns the (already cached) DateFormatSymbols according
@@ -1379,7 +1379,7 @@ Site.prototype.getDateSymbols = function() {
       return symbols;
    this.cache.dateSymbols = new java.text.DateFormatSymbols(this.getLocale());
    return this.cache.dateSymbols;
-};;
+};
 
 /**
  * function returns the (already cached) TimeZone-Object
@@ -1395,7 +1395,7 @@ Site.prototype.getTimeZone = function() {
        tz = root.getTimeZone();
    this.cache.timezone = tz;
    return tz;
-};;
+};
 
 /**
  * function deletes all assets of a site (recursive!)
@@ -1408,7 +1408,7 @@ Site.prototype.deleteAll = function() {
    this.stories.deleteAll();
    this.members.deleteAll();
    return true;
-};;
+};
 
 /**
  * send notification to weblogs.com
@@ -1435,7 +1435,7 @@ Site.prototype.ping = function() {
    // hanging in the scheduler if a fatal error occurs
    this.lastping = new Date();
    return result;
-};;
+};
 
 /**
  *  href URL postprocessor. If a virtual host mapping is defined
@@ -1447,7 +1447,7 @@ Site.prototype.processHref = function(href) {
       return vhost + href;
    else
       return app.properties.defaulthost + "/" + this.alias + href;
-};;
+};
 
 /**
  * basic check if email notification is enabled for a site
@@ -1458,7 +1458,7 @@ Site.prototype.isNotificationEnabled = function() {
    if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.trusted)
       return true;
    return false;
-};;
+};
 
 /**
  * send e-mail notification if necessary
@@ -1491,7 +1491,7 @@ Site.prototype.sendNotification = function(type, obj) {
       sendMail(sender, recipients, subject, body);
    }
    return;
-};;
+};
 
 /**
  * return the currently enabled layout object
@@ -1500,7 +1500,7 @@ Site.prototype.getLayout = function() {
    if (this.layout)
       return this.layout;
    return root.getLayout();
-};;
+};
 
 /**
  * render the path to the static directory
@@ -1514,7 +1514,7 @@ Site.prototype.staticPath = function(subdir) {
    if (subdir)
       res.write(subdir);
    return;
-};;
+};
 
 /**
  * return the path to the static directory
@@ -1526,7 +1526,7 @@ Site.prototype.getStaticPath = function(subdir) {
    res.push();
    this.staticPath(subdir);
    return res.pop();
-};;
+};
 
 /**
  * render the url of the static directory
@@ -1540,7 +1540,7 @@ Site.prototype.staticUrl = function(subdir) {
    if (subdir)
       res.write(subdir);
    return;
-};;
+};
 
 /**
  * return the url of the static directory
@@ -1552,7 +1552,7 @@ Site.prototype.getStaticUrl = function(subdir) {
    res.push();
    this.staticUrl(subdir);
    return res.pop();
-};;
+};
 
 /**
  * return the directory containing static contents
@@ -1563,7 +1563,7 @@ Site.prototype.getStaticDir = function(subdir) {
    var f = new Helma.File(this.getStaticPath(subdir));
    f.mkdir();
    return f;
-};;
+};
 
 /**
  * function returns the title of a site
@@ -1573,7 +1573,7 @@ Site.prototype.getTitle = function() {
      return stripTags(this.title);
    else
      return "[" + getMessage("generic.untitled") + "]";
-};;
+};
 
 /**
  * function returns the used disk space for this site in Kilobyte
@@ -1590,7 +1590,7 @@ Site.prototype.getDiskUsage = function() {
       }
    }
    return Math.round(this.diskusage / 1024);
-};;
+};
 
 /**
  * function returns the disk quota in Kilobyte for this site
@@ -1600,7 +1600,7 @@ Site.prototype.getDiskQuota = function() {
       return Infinity;
    else 
       return root.sys_diskQuota;
-};;
+};
 
 /**
  * returns the corresponding Index object for a site
@@ -1630,7 +1630,7 @@ Site.prototype.getIndex = function(force) {
       this.cache.index = index;
    }
    return this.cache.index;
-};;
+};
 
 /**
  * re-indexes all stories and comments of a site
@@ -1719,7 +1719,7 @@ Site.prototype.rebuildIndex = function() {
    // unlock the queue again
    queue.unlock();
    return cnt;
-};;
+};
 
 /**
  * check if there are any stories in the previous month
@@ -1736,7 +1736,7 @@ Site.prototype.renderLinkToPrevMonth = function(firstDayIndex, currentMonth, mon
    } else {
       return "&nbsp;";
    }
-};;
+};
 
 /**
  * check if there are any stories in the previous month
@@ -1753,7 +1753,7 @@ Site.prototype.renderLinkToNextMonth = function(lastDayIndex, currentMonth, mont
    } else {
       return "&nbsp;";
    }
-};;
+};
 
 /**
  * function renders the list of stories for site-(front-)pages
@@ -1823,7 +1823,7 @@ Site.prototype.renderStorylist = function(day) {
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    return;
-};;
+};
 
 /**
  * permission check (called by hopobject.onRequest())
@@ -1890,7 +1890,7 @@ Site.prototype.checkAccess = function(action, usr, level) {
       res.redirect(url);
    }
    return;
-};;
+};
 
 /**
  * check if a user is allowed to view a site
@@ -1904,7 +1904,7 @@ Site.prototype.checkView = function(usr, level) {
          throw new DenyException("siteView");
    }
    return;
-};;
+};
 
 /**
  * check if user is allowed to edit the preferences of this site
@@ -1916,7 +1916,7 @@ Site.prototype.checkEdit = function(usr, level) {
    if (!usr.sysadmin && (level & MAY_EDIT_PREFS) == 0)
       throw new DenyException("siteEdit");
    return null;
-};;
+};
 
 /**
  * check if user is allowed to delete the site
@@ -1928,7 +1928,7 @@ Site.prototype.checkDelete = function(usr) {
    if (!usr.sysadmin && usr != this.creator)
       throw new DenyException("siteDelete");
    return;
-};;
+};
 
 /**
  * function checks if user is allowed to sign up
@@ -1942,7 +1942,7 @@ Site.prototype.checkSubscribe = function(usr, level) {
    else if (!this.online)
       throw new DenyException("siteView");
    return;
-};;
+};
 
 /**
  * check if user is allowed to unsubscribe
@@ -1957,4 +1957,4 @@ Site.prototype.checkUnsubscribe = function(usr, level) {
       throw new DenyException("unsubscribe");
    }
    return;
-};;
+};
