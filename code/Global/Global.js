@@ -22,6 +22,15 @@
 // $URL$
 //
 
+app.addRepository("modules/core/HopObject.js");
+app.addRepository("modules/helma/Search.js");
+
+app.addRepository("modules/jala/code/IndexManager.js");
+app.addRepository("modules/jala/code/ListRenderer.js");
+app.addRepository("modules/jala/code/Utilities.js");
+
+var search = new helma.Search();
+
 /**
  * constants specifying user-rights
  */
@@ -458,7 +467,7 @@ function story_macro(param) {
          break;
       case "link":
          var title = param.text ? param.text : 
-                     story.content.getProperty("title");
+                     story.content.get("title");
          Html.link({href: story.href()}, title ? title : story._id);
          break;
       default:
@@ -754,7 +763,7 @@ function colorpicker_macro(param) {
       res.push();
       obj.content_macro(param2);
       param.editor = res.pop();
-      param.color = renderColorAsString(obj.content.getProperty(param.name));
+      param.color = renderColorAsString(obj.content.get(param.name));
    } else if (path.Layout) {
       var obj = path.Layout;
       // use res.push()/res.pop(), otherwise the macro
@@ -762,7 +771,7 @@ function colorpicker_macro(param) {
       res.push();
       obj[param.name + "_macro"](param2);
       param.editor = res.pop();
-      param.color = renderColorAsString(obj.preferences.getProperty(param.name));
+      param.color = renderColorAsString(obj.preferences.get(param.name));
    } else
       return;
    renderSkin("colorpickerWidget", param);
@@ -1122,12 +1131,12 @@ function formatTimestamp(ts, dformat) {
    switch (dformat) {
       case "short" :
          fmt = res.handlers.site ?
-               res.handlers.site.preferences.getProperty("shortdateformat") :
+               res.handlers.site.preferences.get("shortdateformat") :
                root.shortdateformat;
          break;
       case "long" :
          fmt = res.handlers.site ?
-               res.handlers.site.preferences.getProperty("longdateformat") :
+               res.handlers.site.preferences.get("longdateformat") :
                root.longdateformat;
          break;
       default :

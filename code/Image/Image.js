@@ -35,6 +35,7 @@ Image.prototype.constructor = function(creator) {
  * main action
  */
 Image.prototype.main_action = function() {
+   res.debug(this._parent);
    res.data.title = getMessage("Image.viewTitle", {imageAlias: this.alias});
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -400,13 +401,10 @@ Image.prototype.getUrl = function() {
  */
 Image.prototype.getFile = function() {
    var staticPath;
-   switch (this.getContext()) {
-      case "Site":
-      staticPath = this.site.getStaticPath();
-      break;
-      case "Layout":
-      staticPath = this.layout.getStaticPath();
-      break;
+   if (this.getContext() !== "Image") {
+      staticPath = this.parent.getStaticPath();
+   } else {
+      staticPath = this.parent.parent.getStaticPath();
    }
    return new Helma.File(staticPath, this.filename + "." + this.fileext);
 };

@@ -54,13 +54,13 @@ Story.prototype.edit_action = function() {
    } else if (req.data.cancel) {
       res.redirect(this.online ? this.href() : this.site.stories.href());
    } else if (req.data.save || req.data.publish) {
-      try {
+      //try {
          var result = this.evalStory(req.data, session.user);
          res.message = result.toString();
          res.redirect(result.url);
-      } catch (err) {
+      //} catch (err) {
          res.message = err.toString();
-      }
+      //}
    }
    
    res.data.action = this.href(req.action);
@@ -149,7 +149,7 @@ Story.prototype.content_macro = function(param) {
          break;
 
       case "image" :
-         var part = this.content.getProperty(param.part);
+         var part = this.content.get(param.part);
          if (part && this.site.images.get(part)) {
             delete param.part;
             renderImage(this.site.images.get(part), param);
@@ -334,7 +334,7 @@ Story.prototype.viewlink_macro = function(param) {
  * macro rendering link to comments
  */
 Story.prototype.commentlink_macro = function(param) {
-   if (this.discussions && this.site.preferences.getProperty("discussions"))
+   if (this.discussions && this.site.preferences.get("discussions"))
       Html.link({href: this.href(param.to ? param.to : "comment")},
                 param.text ? param.text : "comment");
    return;
@@ -349,7 +349,7 @@ Story.prototype.commentlink_macro = function(param) {
  *          action to link to (default: main)
  */
 Story.prototype.commentcounter_macro = function(param) {
-   if (!this.site.preferences.getProperty("discussions") || !this.discussions)
+   if (!this.site.preferences.get("discussions") || !this.discussions)
       return;
    var commentCnt = this.comments.count();
    if (!param.linkto)
@@ -382,7 +382,7 @@ Story.prototype.commentcounter_macro = function(param) {
  */
 Story.prototype.comments_macro = function(param) {
    var s = this.story ? this.story : this;
-   if (!s.site.preferences.getProperty("discussions") || !s.discussions)
+   if (!s.site.preferences.get("discussions") || !s.discussions)
       return;
    this.comments.prefetchChildren();
    for (var i=0;i<this.size();i++) {
@@ -461,7 +461,7 @@ Story.prototype.editableby_macro = function(param) {
  * so that we can check if the checkbox is embedded in story/edit.skin
  */
 Story.prototype.discussions_macro = function(param) {
-   if (!path.Site.preferences.getProperty("discussions"))
+   if (!path.Site.preferences.get("discussions"))
       return;
    if (param.as == "editor") {
       var inputParam = this.createCheckBoxParam("discussions", param);
@@ -616,7 +616,7 @@ Story.prototype.constructor = function(creator, ipaddress) {
  */
 Story.prototype.evalStory = function(param, modifier) {
    // collect content
-   var content = extractContent(param, this.content.getAll());
+   var content = extractContent(param, this.content.get());
    // if all story parts are null, return with error-message
    if (!content.exists)
       throw new Exception("textMissing");
@@ -640,6 +640,9 @@ Story.prototype.evalStory = function(param, modifier) {
    } else if (param.addToTopic)
       topicName = param.addToTopic;
 
+   // Update tags of the story
+   this.setTags(param.content_tags);
+
    // store the new values of the story
    if (param.publish) {
       var newStatus = param.addToFront ? 2 : 1;
@@ -650,7 +653,7 @@ Story.prototype.evalStory = function(param, modifier) {
       this.online = 0;
    if (content.isMajorUpdate)
       this.modifytime = new Date();
-   this.content.setAll(content.value);
+   this.content.set(content.value);
    this.topic = topicName;
    // let's keep the title property
    this.title = content.value.title;
@@ -685,6 +688,42 @@ Story.prototype.evalStory = function(param, modifier) {
    return result;
 };
 
+Story.prototype.setTags = function(input) {
+   var diff = {};
+   var tags = input ? input.split(/\s*,\s*/) : [];
+   this.tags.forEach(function() {
+      diff[this.tag.name] = (tags.indexOf(this.tag.name) < 0) ? this : 0;
+   });
+   for each (var tag in tags) {
+      if (tag && diff[tag] == null) {
+         diff[tag] = 1;
+      }
+   }
+   for (var tag in diff) {
+      switch (diff[tag]) {
+         case 0:
+         // Do nothing (tag already exists)
+         break;
+         case 1:
+         // Add tag to story
+         res.debug("Add " + tag);
+         res.debug(this.tags.size());
+         this.tags.add(new TagHub(tag, this, session.user));
+         break;
+         default:
+         res.debug("Remove " + diff[tag]);
+         // Remove tag from site if necessary
+         var parent = diff[tag]._parent;
+         if (parent.size() === 1) {
+            res.debug("Remove " + parent);
+            parent.remove();
+         }
+         // Remove tag from story
+         diff[tag].remove();
+      }
+   }
+   return;
+};
 
 /**
  * function sets story either online or offline
@@ -710,7 +749,6 @@ Story.prototype.toggleOnline = function(newStatus) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 Story.prototype.evalComment = function(param, creator) {
    // collect content
    var content = extractContent(param);
@@ -744,7 +782,6 @@ Story.prototype.evalComment = function(param, creator) {
  * @param Obj Comment-Object that should be deleted
  * @return String Message indicating success/failure
  */
-
 Story.prototype.deleteComment = function(commentObj) {
    for (var i=commentObj.size();i>0;i--)
       this.deleteComment(commentObj.get(i-1));
@@ -767,13 +804,13 @@ Story.prototype.deleteComment = function(commentObj) {
  * @return String cached text of story
  */
 Story.prototype.getRenderedContentPart = function(name, fmt) {
-   var part = this.content.getProperty(name);
+   var part = this.content.get(name);
    if (!part)
       return "";
    var key = fmt ? name + ":" + fmt : name;
    var lastRendered = this.cache["lastRendered_" + key];
-   if (!lastRendered ||
-       lastRendered.getTime() < this.content.getLastModified().getTime()) {
+   if (!lastRendered) {
+       // FIXME: || lastRendered.getTime() < this.content.getLastModified().getTime())
       switch (fmt) {
          case "plaintext":
             part = stripTags(part).clipURLs(30);
@@ -820,6 +857,7 @@ Story.prototype.deleteAll = function() {
       queue.remove(item._id);
       item.remove();
    }
+   this.setTags(null);
    return true;
 };
 
@@ -881,7 +919,7 @@ Story.prototype.getIndexDocument = function() {
    doc.addField("online", this.online, {store: true, index: true, tokenize: false});
    doc.addField("site", this.site._id, {store: true, index: true, tokenize: false});
    doc.addField("id", this._id, {store: true, index: true, tokenize: false});
-   var content = this.content.getAll();
+   var content = this.content.get();
    var title;
    if (title = stripTags(content.title).trim())
       doc.addField("title", title, {store: false, index: true, tokenize: true});
@@ -949,7 +987,7 @@ Story.prototype.checkAccess = function(action, usr, level) {
 Story.prototype.checkPost = function(usr, level) {
    if (!usr.sysadmin && !this.site.online && level == null)
       throw new DenyException("siteView");
-   else if (!this.site.preferences.getProperty("discussions"))
+   else if (!this.site.preferences.get("discussions"))
       throw new DenyException("siteNoDiscussion");
    else if (!this.discussions)
       throw new DenyException("storyNoDiscussion");

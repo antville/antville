@@ -166,7 +166,7 @@ Layout.prototype.bgcolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("bgcolor", param));
    else
-      renderColor(this.preferences.getProperty("bgcolor"));
+      renderColor(this.preferences.get("bgcolor"));
    return;
 };
 
@@ -178,7 +178,7 @@ Layout.prototype.textfont_macro = function(param) {
       param.size = 40;
       Html.input(this.preferences.createInputParam("textfont", param));
    } else
-      res.write(this.preferences.getProperty("textfont"));
+      res.write(this.preferences.get("textfont"));
    return;
 };
 
@@ -189,7 +189,7 @@ Layout.prototype.textsize_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("textsize", param));
    else
-      res.write(this.preferences.getProperty("textsize"));
+      res.write(this.preferences.get("textsize"));
    return;
 };
 
@@ -200,7 +200,7 @@ Layout.prototype.textcolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("textcolor", param));
    else
-      renderColor(this.preferences.getProperty("textcolor"));
+      renderColor(this.preferences.get("textcolor"));
    return;
 };
 
@@ -211,7 +211,7 @@ Layout.prototype.linkcolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("linkcolor", param));
    else
-      renderColor(this.preferences.getProperty("linkcolor"));
+      renderColor(this.preferences.get("linkcolor"));
    return;
 };
 
@@ -222,7 +222,7 @@ Layout.prototype.alinkcolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("alinkcolor", param));
    else
-      renderColor(this.preferences.getProperty("alinkcolor"));
+      renderColor(this.preferences.get("alinkcolor"));
    return;
 };
 
@@ -233,7 +233,7 @@ Layout.prototype.vlinkcolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("vlinkcolor", param));
    else
-      renderColor(this.preferences.getProperty("vlinkcolor"));
+      renderColor(this.preferences.get("vlinkcolor"));
    return;
 };
 
@@ -245,7 +245,7 @@ Layout.prototype.titlefont_macro = function(param) {
       param.size = 40;
       Html.input(this.preferences.createInputParam("titlefont", param));
    } else
-      res.write(this.preferences.getProperty("titlefont"));
+      res.write(this.preferences.get("titlefont"));
    return;
 };
 
@@ -256,7 +256,7 @@ Layout.prototype.titlesize_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("titlesize", param));
    else
-      res.write(this.preferences.getProperty("titlesize"));
+      res.write(this.preferences.get("titlesize"));
    return;
 };
 
@@ -267,7 +267,7 @@ Layout.prototype.titlecolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("titlecolor", param));
    else
-      renderColor(this.preferences.getProperty("titlecolor"));
+      renderColor(this.preferences.get("titlecolor"));
    return;
 };
 
@@ -279,7 +279,7 @@ Layout.prototype.smallfont_macro = function(param) {
       param.size = 40;
       Html.input(this.preferences.createInputParam("smallfont", param));
    } else
-      res.write(this.preferences.getProperty("smallfont"));
+      res.write(this.preferences.get("smallfont"));
    return;
 };
 
@@ -290,7 +290,7 @@ Layout.prototype.smallsize_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("smallsize", param));
    else
-      res.write(this.preferences.getProperty("smallsize"));
+      res.write(this.preferences.get("smallsize"));
    return;
 };
 
@@ -301,7 +301,7 @@ Layout.prototype.smallcolor_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("smallcolor", param));
    else
-      renderColor(this.preferences.getProperty("smallcolor"));
+      renderColor(this.preferences.get("smallcolor"));
    return;
 };
 
@@ -449,8 +449,8 @@ Layout.prototype.parent_macro = function(param) {
 Layout.prototype.copyright_macro = function(param) {
    if (param.as == "editor" && !this.imported && !this.parent)
       Html.input(this.preferences.createInputParam("copyright", param));
-   else if (this.preferences.getProperty("copyright"))
-      res.write(this.preferences.getProperty("copyright"));
+   else if (this.preferences.get("copyright"))
+      res.write(this.preferences.get("copyright"));
    return;
 };
 
@@ -461,8 +461,8 @@ Layout.prototype.copyright_macro = function(param) {
 Layout.prototype.email_macro = function(param) {
    if (param.as == "editor" && !this.imported)
       Html.input(this.preferences.createInputParam("email", param));
-   else if (this.preferences.getProperty("email"))
-      res.write(this.preferences.getProperty("email"));
+   else if (this.preferences.get("email"))
+      res.write(this.preferences.get("email"));
    return;
 };
 
@@ -728,6 +728,18 @@ Layout.prototype.getImage = function(name, fallback) {
  * @return Object Array containing skinmgr objects
  */
 Layout.prototype.getSkinPath = function() {
+   var skinPath = [];
+   var layout = this;
+   do {
+      res.push();
+      res.write(getProperty("staticPath"));
+      layout.site && res.write(layout.site.alias + "/");
+      res.write("layouts/");
+      res.write(layout.alias);
+      skinPath.push(res.pop());
+   } while (layout = layout.parent);
+   return skinPath;
+
    var sp = [this.skins];
    var handler = this;
    while ((handler = handler.parent) != null)

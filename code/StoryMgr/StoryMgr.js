@@ -22,6 +22,10 @@
 // $URL$
 //
 
+StoryMgr.prototype.getTagType = function() {
+   return "Story";
+};
+
 /**
  * main action
  */
@@ -66,7 +70,7 @@ StoryMgr.prototype.create_action = function() {
       restoreRescuedText();
    
    var s = new Story();
-   s.discussions = this._parent.preferences.getProperty("discussions");
+   s.discussions = this._parent.preferences.get("discussions");
    // storing referrer in session-cache in case user clicks cancel later
    if (!session.data.referrer && req.data.http_referer)
       session.data.referrer = req.data.http_referer;
@@ -76,14 +80,14 @@ StoryMgr.prototype.create_action = function() {
       session.data.referrer = null;
       res.redirect(url);
    } else if (req.data.save || req.data.publish) {
-      try {
+      //try {
          var result = this.evalNewStory(req.data, session.user);
          res.message = result.toString();
          session.data.referrer = null;
          res.redirect(result.url);
-      } catch (err) {
+      //} catch (err) {
          res.message = err.toString();
-      }
+      //}
    }
    
    res.data.title =  getMessage("Story.addStoryTo", {siteTitle: this._parent.title});
@@ -138,6 +142,7 @@ StoryMgr.prototype.evalNewStory = function(param, creator) {
       s.topic = param.topic;
    } else if (param.addToTopic)
       s.topic = param.addToTopic;
+
    // check the online-status of the story
    if (param.publish)
       s.online = param.addToFront ? 2 : 1;
@@ -146,6 +151,10 @@ StoryMgr.prototype.evalNewStory = function(param, creator) {
    // store the story
    if (!this.add(s))
       throw new Exception("storyCreate");
+
+   // Update tags of the story
+   s.setTags(param.content_tags);
+
    // send e-mail notification
    if (s.site.isNotificationEnabled()) 
       s.site.sendNotification("create", s);
@@ -236,7 +245,7 @@ StoryMgr.prototype.checkAccess = function(action, usr, level) {
  */
 
 StoryMgr.prototype.checkAdd = function(usr, level) {
-   if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_STORY) == 0)
+   if (!this._parent.preferences.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
       throw new DenyException("storyAdd");
    return;
 };

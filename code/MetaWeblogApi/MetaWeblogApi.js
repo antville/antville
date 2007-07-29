@@ -345,8 +345,8 @@ MetaWeblogApi.prototype.convertStoryToStruct  = function(entry) {
    obj.userid = entry.creator ? entry.creator.name : null;
    obj.postid = entry._id;
    obj.dateCreated = entry.createtime;
-   obj.title = entry.content.getProperty("title");
-   obj.description = entry.content.getProperty("text");
+   obj.title = entry.content.get("title");
+   obj.description = entry.content.get("text");
    obj.categories = entry.topic ? new Array(entry.topic) : new Array();
    obj.flNotOnHomePage = entry.online==1 ? true : false;
    obj.link = entry.href();

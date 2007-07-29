@@ -30,7 +30,7 @@
   * @arg key
   * @returns content
   */
-PropertyMgr.prototype.getProperty = function(key) {
+PropertyMgr.prototype.get = function(key) {
    this.evalCache();
    return this.cache.content[key];
 };
@@ -42,7 +42,7 @@ PropertyMgr.prototype.getProperty = function(key) {
   * @arg value
   * @returns false if key is invalid
   */
-PropertyMgr.prototype.setProperty = function(key, value) {
+PropertyMgr.prototype.set = function(key, value) {
    if (!key)
       return false;
    this.evalCache();
@@ -55,7 +55,7 @@ PropertyMgr.prototype.setProperty = function(key, value) {
   * at the parent object
   * @param key
   */
-PropertyMgr.prototype.deleteProperty = function(key) {
+PropertyMgr.prototype.remove = function(key) {
    this.evalCache();
    this.cache.content[key] = null;
    delete this.cache.content[key];
@@ -123,7 +123,7 @@ PropertyMgr.prototype.toString = function() {
       res.write("property ");
       res.write(arr[i]);
       res.write(" = ");
-      res.write(this.getProperty(arr[i]));
+      res.write(this.get(arr[i]));
       res.write("\n");
    }
    return res.pop();
@@ -142,7 +142,7 @@ PropertyMgr.prototype.createInputParam = function(propName, param) {
    if (!req.data[param.name + "_array"] && req.data[param.name] != null)
       param.value = req.data[param.name];
    else
-      param.value = this.getProperty(propName);
+      param.value = this.get(propName);
    delete param.as;
    return param;
 };
@@ -153,7 +153,7 @@ PropertyMgr.prototype.createInputParam = function(propName, param) {
 PropertyMgr.prototype.createCheckBoxParam = function(propName, param) {
    param.name = this.__name__ + "_" + propName;
    param.value = 1;
-   if (req.data[param.name] == 1 || this.getProperty(propName) == 1)
+   if (req.data[param.name] == 1 || this.get(propName) == 1)
       param.checked = "checked";
    delete param.as;
    return param;

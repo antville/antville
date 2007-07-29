@@ -1,7 +1,8 @@
 /**
-* Basic page structure.
-* When changing something, make sure widths are coherent.
-*/
+ * Basic page structure.
+ * When changing something, make sure widths are coherent.
+ */
+
 table.main {
    width: 700px;
 }
@@ -26,8 +27,8 @@ td.right {
 }
 
 /**
-* Colors, fonts, styles.
-*/
+ * Colors, fonts, styles.
+ */
 
 body {
    background-color: <% layout.bgcolor %>;
@@ -264,6 +265,7 @@ a:hover {text-decoration: underline;}
 }
 
 /* page navigation bar */
+
 div.pageNav {
    margin-top: 10px;
    margin-bottom: 0px;
@@ -293,6 +295,7 @@ span.pageNavSelItem {
 }
 
 /* tree navigation in skinmgr */
+
 ul { list-style: url("<% layout.image as="url" name="bullet" %>") circle; } 
 
 ul.skinmgrTree {
@@ -325,6 +328,7 @@ ul.skinmgrTree li div {
 }
 
 /* classes for membermgr */
+
 .membergroup {
    font-weight:bold;
    font-size:<% layout.titlesize %>;

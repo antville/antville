@@ -121,7 +121,7 @@ Comment.prototype.delete_action = function() {
  * macro renders a link to reply to a comment
  */
 Comment.prototype.replylink_macro = function(param) {
-   if (this.site.preferences.getProperty("discussions") && req.action == "main") {
+   if (this.site.preferences.get("discussions") && req.action == "main") {
       Html.openLink({href: this.href("comment") +
                      (param.anchor ? "#" + param.anchor : "")});
       if (param.image && this.site.images.get(param.image))

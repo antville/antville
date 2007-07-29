@@ -160,7 +160,7 @@ Root.prototype.rss_action = function() {
          else if (site.creator.publishemail)
             param.email = site.creator.email.entitize();
          param.isodate = sdf.format(site.lastupdate)
-         param.date = site.preferences.getProperty("tagline") ? "" : param.isodate;
+         param.date = site.preferences.get("tagline") ? "" : param.isodate;
          param.year = site.lastupdate.getFullYear();
          items.append(site.renderSkinAsString("rssItem", param));
          resources.append(site.renderSkinAsString("rssResource", param));

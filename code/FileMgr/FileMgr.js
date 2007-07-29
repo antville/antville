@@ -169,7 +169,7 @@ FileMgr.prototype.checkAccess = function(action, usr, level) {
  * @return Obj Exception or null
  */
 FileMgr.prototype.checkAdd = function(usr, level) {
-   if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_FILE) == 0)
+   if (!this._parent.preferences.get("usercontrib") && (level & MAY_ADD_FILE) == 0)
       throw new DenyException("fileAdd");
    return;
 };

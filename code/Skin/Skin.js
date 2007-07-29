@@ -23,17 +23,32 @@
 //
 
 /**
+ * constructor function for skin objects
+ */
+Skin.prototype.constructor = function(layout, proto, name, creator) {
+   this.layout = layout;
+   this.proto = proto;
+   this.name = name;
+   this.custom = 0;
+   this.creator = this.modifier = creator;
+   this.createtime = new Date();
+   this.modifytime = new Date();
+   return this;
+};
+
+/**
  * action rendering the differences between the original skin
  * and the modified one
  */
 Skin.prototype.diff_action = function() {
    // get the modified and original skins
-   var originalSkin = this.layout.skins.getOriginalSkinSource(this.proto, this.name);
+   var originalSkin = this.layout.skins.getOriginalSkinSource(this.proto, 
+         this.name);
 
    if (originalSkin == null) {
       res.data.status = getMessage("Skin.diff.noDiffAvailable");
    } else {
-      var diff = originalSkin.diff(this.skin ? this.skin : "");
+      var diff = originalSkin.diff(this.getSource());
       if (!diff) {
          res.data.status = getMessage("Skin.diff.noDiffFound");
       } else {
@@ -71,7 +86,11 @@ Skin.prototype.diff_action = function() {
       }
    }
    res.data.body = this.renderSkinAsString("diff");
-   res.data.title = getMessage("Skin.diff.displayTitle", {skinProto: this.proto, skinName: this.name, layoutTitle: this.layout.title});
+   res.data.title = getMessage("Skin.diff.displayTitle", {
+      skinProto: this.proto, 
+      skinName: this.name, 
+      layoutTitle: this.layout.title
+   });
    this.layout.skins.renderSkin("page");
    return;
 };
@@ -80,9 +99,9 @@ Skin.prototype.diff_action = function() {
  * delete action
  */
 Skin.prototype.delete_action = function() {
-   if (req.data.cancel)
+   if (req.data.cancel) {
       res.redirect(this.layout.skins.href());
-   else if (req.data.remove) {
+   } else if (req.data.remove) {
       try {
          res.message = this.layout.skins.deleteSkin(this);
          res.redirect(this.layout.skins.href());
@@ -101,6 +120,7 @@ Skin.prototype.delete_action = function() {
    res.handlers.context.renderSkin("page");
    return;
 };
+
 /**
  * drop the "global" prototype to
  * display correct macro syntax 
@@ -130,19 +150,7 @@ Skin.prototype.difflink_macro = function(param) {
    Html.link({href: this.href("diff")}, param.text ? param.text : "diff");
    return;
 };
-/**
- * constructor function for skin objects
- */
-Skin.prototype.constructor = function(layout, proto, name, creator) {
-   this.layout = layout;
-   this.proto = proto;
-   this.name = name;
-   this.custom = 0;
-   this.creator = this.modifier = creator;
-   this.createtime = new Date();
-   this.modifytime = new Date();
-   return this;
-};
+
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action
@@ -161,7 +169,6 @@ Skin.prototype.checkAccess = function(action, usr, level) {
    return;
 };
 
-
 /**
  * check if user is allowed to delete this skin
  * @param Obj Userobject
@@ -174,3 +181,79 @@ Skin.prototype.checkDelete = function(usr, level) {
    return;
 };
 
+Skin.prototype.getSource = function() {
+   var file = this.getFile();
+   if (!file.exists()) {
+      return app.skinfiles[this.proto][this.name];
+   }
+
+   var key = this.proto + ":" + this.name;
+   // FIXME: Remove the false to enable caching
+   // (but not unless the cache is removed after the skin was modified)
+   if (false && this.cache[key]) {
+      return this.cache[key];
+   }
+
+   var fis = new java.io.FileInputStream(file);
+   var isr = new java.io.InputStreamReader(fis, "UTF-8");
+   var reader = new java.io.BufferedReader(isr);
+   var line, source = new java.lang.StringBuffer();
+   while ((line = reader.readLine()) != null) {
+      source.append(line);
+      source.append("\n");
+   }
+   /*
+   var source = java.lang.reflect.Array.newInstance(java.lang.Character.TYPE, 
+         file.length());
+   var offset = 0, read;
+   while (offset < source.length) {
+      read = reader.read(source, offset, source.length - offset);
+      offset += read;
+   }
+   */
+   reader.close();
+   isr.close();
+   fis.close();
+   //this.cache[key] = new java.lang.String(source);
+   this.cache[key] = source.toString();
+   //res.debug(this.cache[key]);
+   return this.cache[key];
+};
+
+Skin.prototype.setSource = function(source) {
+   if (!source) {
+      return;
+   }
+   var fpath = this.getParentDirectory();
+   fpath.mkdirs();
+   var file = this.getFile();
+   if (!file.exists()) {
+      file.createNewFile();
+   }
+   var fos = new java.io.FileOutputStream(file);
+   var bos = new java.io.BufferedOutputStream(fos);
+   var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
+   writer.write(source);
+   writer.close();
+   bos.close();
+   fos.close();
+   delete this.cache[this.proto + ":" + this.name];
+   return;
+};
+
+Skin.prototype.getParentDirectory = function() {
+   res.push();
+   res.write(getProperty("staticPath"));
+   res.write(this.layout.site ? this.layout.site.alias : "default");
+   res.write("/layouts/");
+   res.write(this.layout.alias);
+   res.write("/");
+   res.write(this.proto);
+   var dir = new java.io.File(res.pop());
+   res.debug(dir);
+   return dir;   
+};
+
+Skin.prototype.getFile = function() {
+   return new java.io.File(this.getParentDirectory(), this.name + ".skin");
+};

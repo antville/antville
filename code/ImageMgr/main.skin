@@ -1,7 +1,8 @@
 <p>To insert an image in a story or comment just copy and paste its code.</p>
 
-<div class="ample">...&nbsp;<% imagemgr.link to="create" text="add an image" %></div>
-...&nbsp;show&nbsp;<% imagemgr.link to="main" text="all images" %>&nbsp;|&nbsp;<% imagemgr.link to="myimages" text="my images" %>
+<div class="ample">... <% imagemgr.link to="create" text="add an image" %></div>
+... show <% imagemgr.link to="main" text="all images" %>
+<% imagemgr.link to="myimages" text="my images" prefix=" | " %>
 
 <% response.pagenavigation %>
 <% response.imagelist %>

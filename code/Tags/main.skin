@@ -1,0 +1,7 @@
+<div><% tags.alphabet %></div>
+<div><% tags.pager %></div>
+<ul>
+<% tags.list %>
+</ul>
+<div><% tags.pager %></div>
+<div><% tags.alphabet %></div>

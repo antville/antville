@@ -26,7 +26,8 @@
  * main action
  */
 SkinMgr.prototype.main_action = function() {
-   res.data.title = getMessage("SkinMgr.listTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.listTitle", 
+         {layoutTitle: this._parent.title});
    res.data.list = this.renderTree(req.data);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -37,7 +38,8 @@ SkinMgr.prototype.main_action = function() {
  * list only modified skins
  */
 SkinMgr.prototype.modified_action = function() {
-   res.data.title = getMessage("SkinMgr.listModifiedTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.listModifiedTitle", 
+         {layoutTitle: this._parent.title});
    res.data.list = this.renderList(this.modified, req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -48,7 +50,8 @@ SkinMgr.prototype.modified_action = function() {
  * list only custom skins
  */
 SkinMgr.prototype.custom_action = function() {
-   res.data.title = getMessage("SkinMgr.listCustomTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.listCustomTitle", 
+         {layoutTitle: this._parent.title});
    res.data.list = this.renderList(this.getCustomSkins(), req.action);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.context.renderSkin("page");
@@ -73,17 +76,22 @@ SkinMgr.prototype.safe_action = function() {
  * edit action
  */
 SkinMgr.prototype.edit_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.href(req.data.action) + "?skinset=" + req.data.skinset + "#" + req.data.key);
-   else if (req.data.save || req.data.close) {
-      try {
+   if (req.data.cancel) {
+      res.redirect(this.href(req.data.action) + "?skinset=" + 
+            req.data.skinset + "#" + req.data.key);
+   } else if (req.data.save || req.data.close) {
+      //try {
          res.message = this.saveSkin(req.data, session.user);
-         if (req.data.close)
-            res.redirect(this.href(req.data.action) + "?skinset=" + req.data.skinset + "#" + req.data.key);
-         res.redirect(this.href(req.action) + "?key=" + req.data.key + "&skinset=" + req.data.skinset + "&action=" + req.data.action);
-      } catch (err) {
+         if (req.data.close) {
+            res.redirect(this.href(req.data.action) + "?skinset=" + 
+                  req.data.skinset + "#" + req.data.key);
+         }
+         res.redirect(this.href(req.action) + "?key=" + req.data.key + 
+               "&skinset=" + req.data.skinset + "&action=" + req.data.action);
+      /*} catch (err) {
+         res.debug(err);
          res.message = err.toString();
-      }
+      }*/
    }
 
    if (!req.data.key)
@@ -97,7 +105,8 @@ SkinMgr.prototype.edit_action = function() {
    sp.action = req.data.action;
 
    res.data.action = this.href(req.action);
-   res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin " + getMessage("generic.of") + " " + this._parent.title;
+   res.data.title = splitKey[0] + "/" + splitKey[1] + ".skin " + 
+         getMessage("generic.of") + " " + this._parent.title;
    res.data.body = this.renderSkinAsString("edit", sp);
    this.renderSkin("page");
    return;
@@ -107,25 +116,29 @@ SkinMgr.prototype.edit_action = function() {
  * action for creating a custom skin
  */
 SkinMgr.prototype.create_action = function() {
-   if (req.data.cancel)
+   if (req.data.cancel) {
       res.redirect(this.href());
-   else if (req.data.save) {
+   } else if (req.data.save) {
       try {
          var result = this.evalCustomSkin(req.data, session.user);
          res.message = result.toString();
-         if (!result.error)
-            res.redirect(this.href("edit") + "?key=" + req.data.prototype + "." + req.data.name);
+         if (!result.error) {
+            res.redirect(this.href("edit") + "?key=" + req.data.prototype + 
+                  "." + req.data.name);
+         }
       } catch (err) {
          res.message = err.toString();
       }
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("SkinMgr.createCustomTitle", {layoutTitle: this._parent.title});
+   res.data.title = getMessage("SkinMgr.createCustomTitle", 
+         {layoutTitle: this._parent.title});
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
    return;
 };
+
 /**
  * list the (most important) macros
  * available for a specific skin of a
@@ -137,7 +150,6 @@ SkinMgr.prototype.macros_macro = function(param) {
    this.renderMacroList(param);
    return;
 };
-
 
 /**
  * list macros available in a global
@@ -151,7 +163,6 @@ SkinMgr.prototype.globalmacros_macro = function(param) {
    this.renderMacroList(param);
    return;
 };
-
 
 /**
  * list skin-specific macros (param, 
@@ -181,53 +192,64 @@ SkinMgr.prototype.skinmacros_macro = function(param) {
    return;
 };
 
-
 /**
  * renders a dropdown containing available
  * prototypes
  */
 SkinMgr.prototype.prototypechooser_macro = function(param) {
    var options = [];
-   for (var i in app.skinfiles)
+   for (var i in app.skinfiles) {
       options.push({value: i, display: i});
-   options.sort(function(a, b) {return a.display.charCodeAt(0) - b.display.charCodeAt(0); });
+   }
+   options.sort(function(a, b) {return a.display.charCodeAt(0) - 
+         b.display.charCodeAt(0); });
    Html.dropDown({name: "prototype"}, options, null, param.firstOption);
    return;
 };
+
 /**
  * function stores skin
  * @param Obj object containing submitted form values (req.data)
  * @param Obj User object
  */
 SkinMgr.prototype.saveSkin = function(param, usr) {
-   if (!param.key)
+   if (!param.key) {
       throw new Exception("skinUpdate");
+   }
    var splitKey = param.key.split(".");
-   var s = this.getSkin(splitKey[0], splitKey[1]);
+   var skin = this.getSkin(splitKey[0], splitKey[1]);
    var originalSource = this.getOriginalSkinSource(splitKey[0], splitKey[1]);
-   if (s) {
-      if (param.skin == originalSource) {
+   if (skin) {
+      // FIXME: The removal of linebreaks is necessary but it's not very nice
+      if (originalSource && param.skin.replace(/\r|\n/g, "") == 
+            originalSource.replace(/\r|\n/g, "")) {
          // submitted skin equals original source
          // so delete the skin object
          try {
-            this.deleteSkin(s);
+            this.deleteSkin(skin);
          } catch (err) {
             return new Message("update");
          }
       } else {
-         s.modifytime = new Date();
-         s.modifier = usr;
-         s.skin = param.skin;
+         skin.modifytime = new Date();
+         skin.modifier = usr;
+         //skin.skin = param.skin;
+         skin.setSource(param.skin);
       }
    } else {
-      if (param.skin == originalSource)
+      // FIXME: The removal of linebreaks is necessary but not very nice
+      if (originalSource && param.skin.replace(/\r|\n/g, "") == 
+            originalSource.replace(/\r|\n/g, "")) {
          return new Message("update");
-      s = new Skin(this._parent, splitKey[0], splitKey[1], usr);
-      s.skin = param.skin;
+      }
+      skin = new Skin(this._parent, splitKey[0], splitKey[1], usr);
+      //skin.skin = param.skin;
+      skin.setSource(param.skin);
       var originalSkin = this.getOriginalSkin(splitKey[0], splitKey[1]);
-      if (originalSkin)
-         s.custom = originalSkin.custom;
-      this.add(s);
+      if (originalSkin) {
+         skin.custom = originalSkin.custom;
+      }
+      this.add(skin);
    }
    return new Message("update");
 };
@@ -237,8 +259,18 @@ SkinMgr.prototype.saveSkin = function(param, usr) {
  * @param Obj Skin-HopObject to delete
  * @return String Message indicating success of failure
  */
-SkinMgr.prototype.deleteSkin = function(s) {
-   s.remove();
+SkinMgr.prototype.deleteSkin = function(skin) {
+   var file = skin.getFile();
+   skin.remove();
+   file["delete"]();
+   var parentDir = file.getParentFile();
+   if (parentDir.list().length < 1) {
+      parentDir["delete"]();
+      var layoutDir = parentDir.getParentFile();
+      if (layoutDir.list().length < 1) {
+         layoutDir["delete"]();
+      }
+   }
    return new Message("skinDelete");
 };
 
@@ -246,10 +278,11 @@ SkinMgr.prototype.deleteSkin = function(s) {
  * delete all skins belonging to this manager
  */
 SkinMgr.prototype.deleteAll = function() {
-   for (var i=0;i<this.size();i++) {
+   for (var i=0; i<this.size(); i+=1) {
       var proto = this.get(i);
-      for (var j=proto.size();j>0;j--)
+      for (var j=proto.size(); j>0; j-=1) {
          this.deleteSkin(proto.get(j-1));
+      }
    }
    return;
 };
@@ -260,10 +293,9 @@ SkinMgr.prototype.deleteAll = function() {
  * @param String name of skin
  * @return Object skin object or null
  */
-SkinMgr.prototype.getSkin = function(proto, name) {
-   if (!this.get(proto))
-      return null;
-   return this.get(proto).get(name);
+SkinMgr.prototype.getSkin = function(prototype, name) {
+   var skin = this.get(prototype);
+   return skin ? skin.get(name) : null;
 };
 
 /**
@@ -273,18 +305,21 @@ SkinMgr.prototype.getSkin = function(proto, name) {
  * @return String source of the skin
  */
 SkinMgr.prototype.getSkinSource = function(proto, name) {
-   var s;
-   if ((s = this.getSkin(proto, name)) != null)
-      return s.skin;
-   else if (this._parent.parent) {
-      var handler = this._parent;
-      while ((handler = handler.parent) != null) {
-         if ((s = handler.skins.getSkin(proto, name)) != null)
-            return s.skin;
+   var skin;
+   if (skin = this.getSkin(proto, name)) {
+      return skin.getSource();
+   }
+   
+   var layout = this._parent;
+   while (layout = layout.parent) {
+      if (skin = layout.skins.getSkin(proto, name)) {
+         return skin.getSource();
       }
    }
-   if (app.skinfiles[proto])
+
+   if (app.skinfiles[proto]) {
       return app.skinfiles[proto][name];
+   }
    return null;
 };
 
@@ -295,12 +330,11 @@ SkinMgr.prototype.getSkinSource = function(proto, name) {
  * @return Skin the original skin
  */
 SkinMgr.prototype.getOriginalSkin = function(proto, name) {
-   if (this._parent.parent) {
-      var handler = this._parent;
-      var s;
-      while ((handler = handler.parent) != null) {
-         if ((s = handler.skins.getSkin(proto, name)) != null)
-            return s;
+   var skin;
+   var layout = this._parent;
+   while (layout = layout.parent) {
+      if (skin = layout.skins.getSkin(proto, name)) {
+         return skin;
       }
    }
    return null;
@@ -313,13 +347,14 @@ SkinMgr.prototype.getOriginalSkin = function(proto, name) {
  * @return String source of the original skin
  */
 SkinMgr.prototype.getOriginalSkinSource = function(proto, name) {
-   var originalSkin;
-   if ((originalSkin = this.getOriginalSkin(proto, name)) != null)
-      return originalSkin.skin;
-   else if (app.skinfiles[proto])
+   var skin;
+   if (skin = this.getOriginalSkin(proto, name)) {
+      return skin.getSource();
+   }
+   if (app.skinfiles[proto]) {
       return app.skinfiles[proto][name];
-   else
-      return null;
+   }
+   return null;
 };
 
 /**
@@ -369,7 +404,7 @@ SkinMgr.prototype.dumpToZip = function(z, fullExport) {
          for (var skinName in protoSkinFiles) {
             if (skin = this.getSkin(protoName, skinName)) {
                // skin is locally managed => export
-               z.addData(new java.lang.String(skin.skin).getBytes("UTF-8"),
+               z.addData(new java.lang.String(skin.getSource()).getBytes("UTF-8"),
                          "skins/" + protoName + "/" + skinName + ".skin");
             } else if (fullExport) {
                // walk up the layout chain and 
@@ -384,7 +419,6 @@ SkinMgr.prototype.dumpToZip = function(z, fullExport) {
    return;
 };
 
-
 /**
  * create the skins of an imported layout
  * @param Object JS object tree containing the skins data
@@ -398,7 +432,7 @@ SkinMgr.prototype.evalImport = function(data) {
          // FIXME: replace session.user with a more intelligent solution ...
          var s = new Skin(this._parent, protoName, name, session.user);
          buf = data[protoName][fileName].data;
-         s.skin = new java.lang.String(buf, 0, buf.length, "UTF-8");
+         s.setSource(new java.lang.String(buf, 0, buf.length, "UTF-8"));
          this.add(s);
       }
    }
@@ -445,6 +479,7 @@ SkinMgr.prototype.evalCustomSkin = function(param, creator) {
       throw new Exception("skinCustomCreate");
    return new Message("skinCustomCreate", [param.prototype, param.name]);
 };
+
 /**
  * render the tree view of skin manager
  * @param Object req.data
@@ -520,7 +555,6 @@ SkinMgr.prototype.renderList = function(collection, action) {
    return res.pop();
 };
 
-
 /**
  * render a list of macros
  * FIXME: needs improvement
@@ -562,6 +596,7 @@ SkinMgr.prototype.renderMacroList = function(param) {
    }
    return;
 };
+
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action
@@ -579,7 +614,6 @@ SkinMgr.prototype.checkAccess = function(action, usr, level) {
    }
    return;
 };
-
 
 /**
  * check if user is allowed to edit skins

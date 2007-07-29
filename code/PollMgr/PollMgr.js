@@ -195,7 +195,7 @@ PollMgr.prototype.checkAccess = function(action, usr, level) {
  * @return String Reason for denial (or null if allowed)
  */
 PollMgr.prototype.checkAdd = function(usr, level) {
-   if (!this._parent.preferences.getProperty("usercontrib") && (level & MAY_ADD_STORY) == 0)
+   if (!this._parent.preferences.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
       throw new DenyException("pollAdd");
    return;
 };

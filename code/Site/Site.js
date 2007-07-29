@@ -332,12 +332,12 @@ Site.prototype.referrers_action = function() {
       var urls = req.data.permanent_array ?
                  req.data.permanent_array : [req.data.permanent];
       res.push();
-      res.write(this.preferences.getProperty("spamfilter"));
+      res.write(this.preferences.get("spamfilter"));
       for (var i in urls) {
          res.write("\n");
          res.write(urls[i].replace(/\?/g, "\\\\?"));
       }
-      this.preferences.setProperty("spamfilter", res.pop());
+      this.preferences.set("spamfilter", res.pop());
       res.redirect(this.href(req.action));
       return;
    }
@@ -568,8 +568,8 @@ Site.prototype.alias_macro = function(param) {
 Site.prototype.tagline_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("tagline", param));
-   else if (this.preferences.getProperty("tagline"))
-      res.write(stripTags(this.preferences.getProperty("tagline")));
+   else if (this.preferences.get("tagline"))
+      res.write(stripTags(this.preferences.get("tagline")));
    return;
 };
 
@@ -619,7 +619,7 @@ Site.prototype.hasdiscussions_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("discussions") ? 
+      res.write(this.preferences.get("discussions") ? 
                 getMessage("generic.yes") : getMessage("generic.no"));
    return;
 };
@@ -634,7 +634,7 @@ Site.prototype.usermaycontrib_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("usercontrib") ? 
+      res.write(this.preferences.get("usercontrib") ? 
                 getMessage("generic.yes") : getMessage("generic.no"));
    return;
 };
@@ -646,7 +646,7 @@ Site.prototype.showdays_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.preferences.createInputParam("days", param));
    else
-      res.write(this.preferences.getProperty("days"));
+      res.write(this.preferences.get("days"));
    return;
 };
 
@@ -660,7 +660,7 @@ Site.prototype.showarchive_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.preferences.getProperty("archive") ? 
+      res.write(this.preferences.get("archive") ? 
                 getMessage("generic.yes") : getMessage("generic.no"));
    return;
 };
@@ -685,11 +685,11 @@ Site.prototype.enableping_macro = function(param) {
 Site.prototype.longdateformat_macro = function(param) {
    if (param.as == "chooser")
       renderDateformatChooser("longdateformat", this.getLocale(),
-                              this.preferences.getProperty("longdateformat"));
+                              this.preferences.get("longdateformat"));
    else if (param.as == "editor")
       Html.input(this.preferences.createInputParam("longdateformat", param));
    else
-      res.write(this.preferences.getProperty("longdateformat"));
+      res.write(this.preferences.get("longdateformat"));
    return;
 };
 
@@ -699,11 +699,11 @@ Site.prototype.longdateformat_macro = function(param) {
 Site.prototype.shortdateformat_macro = function(param) {
    if (param.as == "chooser")
       renderDateformatChooser("shortdateformat", this.getLocale(),
-                              this.preferences.getProperty("shortdateformat"));
+                              this.preferences.get("shortdateformat"));
    else if (param.as == "editor")
       Html.input(this.preferences.createInputParam("shortdateformat", param));
    else
-      res.write(this.preferences.getProperty("shortdateformat"));
+      res.write(this.preferences.get("shortdateformat"));
    return;
 };
 
@@ -739,7 +739,7 @@ Site.prototype.navigation_macro = function(param) {
    switch (param["for"]) {
       case "contributors" :
          if (session.user.sysadmin ||
-             this.preferences.getProperty("usercontrib") ||
+             this.preferences.get("usercontrib") ||
              req.data.memberlevel >= CONTRIBUTOR)
             this.renderSkin("contribnavigation");
          break;
@@ -780,7 +780,7 @@ Site.prototype.moduleNavigation_macro = function(param) {
 Site.prototype.calendar_macro = function(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this site is disabled
-   if (!this.allstories.size() || !this.preferences.getProperty("archive"))
+   if (!this.allstories.size() || !this.preferences.get("archive"))
       return;
    // define variables needed in this function
    var calParam = new Object();
@@ -895,7 +895,7 @@ Site.prototype.history_macro = function(param) {
    var limit = param.limit ? parseInt(param.limit, 10) : 5;
    var cnt = i = 0;
    var size = this.lastmod.size();
-   var discussions = this.preferences.getProperty("discussions");
+   var discussions = this.preferences.get("discussions");
    while (cnt < limit && i < size) {
       if (i % limit == 0)
          this.lastmod.prefetchChildren(i, limit);
@@ -1005,7 +1005,7 @@ Site.prototype.searchbox_macro = function(param) {
  * function renders the months of the archive
  */
 Site.prototype.monthlist_macro = function(param) {
-   if (!this.stories.size() || !this.preferences.getProperty("archive"))
+   if (!this.stories.size() || !this.preferences.get("archive"))
       return;
    var size = param.limit ? Math.min(this.size(), param.limit) : this.size();
    for (var i=0;i<size;i++) {
@@ -1046,7 +1046,7 @@ Site.prototype.notify_macro = function(param) {
    var notifyNobody = param.notifyNobody ? 
       param.notifyNobody : getMessage("Site.notifyNobody");
 
-   var pref = this.preferences.getProperty("notify_" + param.event);
+   var pref = this.preferences.get("notify_" + param.event);
    if (param.as == "editor") {
       var options = new Array(notifyNobody, notifyAdmins, notifyContributors);
       Html.dropDown({name: "notify_" + param.event}, options, pref);
@@ -1084,7 +1084,7 @@ Site.prototype.preferences_macro = function(param) {
       else
          Html.input(inputParam);
    } else
-      res.write(this.preferences.getProperty(param.name));
+      res.write(this.preferences.get(param.name));
    return;
 };
 
@@ -1093,7 +1093,7 @@ Site.prototype.preferences_macro = function(param) {
  * for client-side javascript code
  */
 Site.prototype.spamfilter_macro = function(param) {
-   var str = this.preferences.getProperty("spamfilter");
+   var str = this.preferences.get("spamfilter");
    if (!str)
       return;
    var items = str.replace(/\r/g, "").split("\n");
@@ -1357,12 +1357,12 @@ Site.prototype.getLocale = function() {
    var locale = this.cache.locale;
    if (locale)
        return locale;
-   if (this.preferences.getProperty("language")) {
-      if (this.preferences.getProperty("country"))
-         locale = new java.util.Locale(this.preferences.getProperty("language"),
-                                       this.preferences.getProperty("country"));
+   if (this.preferences.get("language")) {
+      if (this.preferences.get("country"))
+         locale = new java.util.Locale(this.preferences.get("language"),
+                                       this.preferences.get("country"));
       else
-         locale = new java.util.Locale(this.preferences.getProperty("language"));
+         locale = new java.util.Locale(this.preferences.get("language"));
    } else
       locale = root.getLocale();
    this.cache.locale =locale;
@@ -1389,8 +1389,8 @@ Site.prototype.getTimeZone = function() {
    var tz = this.cache.timezone;
    if (tz)
        return tz;
-   if (this.preferences.getProperty("timezone"))
-       tz = java.util.TimeZone.getTimeZone(this.preferences.getProperty("timezone"));
+   if (this.preferences.get("timezone"))
+       tz = java.util.TimeZone.getTimeZone(this.preferences.get("timezone"));
    else
        tz = root.getTimeZone();
    this.cache.timezone = tz;
@@ -1466,7 +1466,7 @@ Site.prototype.isNotificationEnabled = function() {
  * @param HopObject the HopObject the changes were applied to
  */
 Site.prototype.sendNotification = function(type, obj) {
-   var notify = this.preferences.getProperty("notify_" + type);
+   var notify = this.preferences.get("notify_" + type);
    if (obj.online === 0 || !notify || notify == 0)
       return;
    var recipients = new Array();
@@ -1791,7 +1791,7 @@ Site.prototype.renderStorylist = function(day) {
          }
       }
    }
-   var days = this.preferences.getProperty("days") ? this.preferences.getProperty("days") : 2;
+   var days = this.preferences.get("days") ? this.preferences.get("days") : 2;
    days = Math.min (days, 14);  // render 14 days max
    this.prefetchChildren(idx, days);
 

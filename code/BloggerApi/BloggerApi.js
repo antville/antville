@@ -53,7 +53,7 @@ BloggerApi.prototype.getPost = function(appkey, postid, username, password) {
       throw ("You're not allowed to edit the entry with id " + postid);
    }
    var result = new Object();
-   result.content = entry.content.getProperty("text");
+   result.content = entry.content.get("text");
    result.userid = entry.creator.name;
    result.postid = entry._id;
    result.dateCreated = entry.createtime;
@@ -120,8 +120,8 @@ BloggerApi.prototype.editPost = function(appkey, postid, username, password, con
    var param = new Object();
    root.blogger.parseBloggerAPIPosting(param, content);
    entry.title = param.content_title;
-   entry.content.setProperty("title", param.content_title);
-   entry.content.setProperty("text", param.content_text);
+   entry.content.set("title", param.content_title);
+   entry.content.set("text", param.content_text);
    entry.online = publish ? 2 : 0;
    entry.modifier = usr;
    entry.modifytime = new Date();
@@ -173,9 +173,9 @@ BloggerApi.prototype.getRecentPosts = function(appkey, blogid, username, passwor
       param.dateCreated = entry.createtime;
       if (entry.title)
          param.content = "<title>"+entry.title+"</title>"+
-             entry.content.getProperty("text");
+             entry.content.get("text");
       else
-         param.content = entry.content.getProperty("text");
+         param.content = entry.content.get("text");
       posts[posts.length] = param;
    }
    return posts;

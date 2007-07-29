@@ -22,6 +22,10 @@
 // $URL$
 //
 
+ImageMgr.prototype.getTagType = function() {
+   return "Image";
+};
+
 /**
  * display all images of a site or layout
  */
@@ -222,7 +226,7 @@ ImageMgr.prototype.checkAccess = function(action, usr, level) {
 ImageMgr.prototype.checkAdd = function(usr, level) {
    switch (this.getContext()) {
       case "Site":
-      if (!this._parent.preferences.getProperty("usercontrib") && 
+      if (!this._parent.preferences.get("usercontrib") && 
           (level & MAY_ADD_IMAGE) == 0) {
          throw new DenyException("imageAdd");
       } else if (this._parent.site) {

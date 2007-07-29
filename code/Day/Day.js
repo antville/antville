@@ -26,7 +26,7 @@
  * main action
  */
 Day.prototype.main_action = function() {
-   if (this._prototype == "Day" && !path.Site.preferences.getProperty("archive"))
+   if (this._prototype == "Day" && !path.Site.preferences.get("archive"))
       res.redirect(path.Site.href());
    
    res.data.title = path.Site.title + ": ";

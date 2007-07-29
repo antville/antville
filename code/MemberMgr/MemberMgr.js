@@ -636,7 +636,7 @@ MemberMgr.prototype.renderMemberlist = function() {
  */
 MemberMgr.prototype.renderView = function(collection, title) {
    if (this._parent != root) {
-      res.data.title = getMessage("MemberMgr.viewListTitle", {titel: title, siteName: this._parent.title});
+      res.data.title = getMessage("MemberMgr.viewListTitle", {title: title, siteName: this._parent.title});
       res.data.memberlist = renderList(collection, "mgrlistitem", 10, req.data.page);
       res.data.pagenavigation = renderPageNavigation(collection, this.href(req.action), 10, req.data.page);
       res.data.body = this.renderSkinAsString("main");
