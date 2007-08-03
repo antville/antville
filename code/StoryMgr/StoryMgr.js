@@ -110,64 +110,25 @@ StoryMgr.prototype.create_action = function() {
 
 StoryMgr.prototype.evalNewStory = function(param, creator) {
    var s = new Story(creator, param.http_remotehost);
-   // collect content
-   var content = extractContent(param);
-   // if all story parts are null, return with error-message
-   if (!content.exists)
-      throw new Exception("textMissing");
-   s.content.setAll(content.value);
-   // let's keep the title property
-   s.title = content.value.title;
-   // check if the create date is set in the param object
-   if (param.createtime) {
-      try {
-         s.createtime = param.createtime.toDate("yyyy-MM-dd HH:mm", this._parent.getTimeZone());
-      } catch (error) {
-         throw new Exception("timestampParse", param.createtime);
-      }
-   }
-   s.editableby = !isNaN(parseInt(param.editableby, 10)) ?
-                  parseInt(param.editableby, 10) : EDITABLEBY_ADMINS;
-   s.discussions = param.discussions ? 1 : 0;
-   // create day of story with respect to site-timezone
-   s.day = formatTimestamp(s.createtime, "yyyyMMdd");
-
-   // check name of topic (if specified)
-   if (param.topic) {
-       // FIXME: this should be solved more elegantly
-      if (String.URLPATTERN.test(param.topic))
-         throw new Exception("topicNoSpecialChars");
-      if (this._parent.topics[param.topic] || this._parent.topics[param.topic + "_action"])
-         throw new Exception("topicReservedWord");
-      s.topic = param.topic;
-   } else if (param.addToTopic)
-      s.topic = param.addToTopic;
-
-   // check the online-status of the story
-   if (param.publish)
-      s.online = param.addToFront ? 2 : 1;
-   else
-      s.online = 0;
-   // store the story
-   if (!this.add(s))
+   s.evalStory(param, creator);
+   
+   if (!this.add(s)) {
       throw new Exception("storyCreate");
-
-   // Update tags of the story
-   s.setTags(param.content_tags);
+   }
 
    // send e-mail notification
-   if (s.site.isNotificationEnabled()) 
+   if (s.site.isNotificationEnabled()) {
       s.site.sendNotification("create", s);
+   }
+
    var result = new Message("storyCreate", null, s);
    result.id = s._id;
    if (s.online) {
       s.site.lastupdate = s.modifytime;
       result.url = s.href();
-   } else
+   } else {
       result.url = this.href();
-
-   // add the new story to search index
-   app.data.indexManager.getQueue(this._parent).add(s);
+   }
    return result;
 };
 

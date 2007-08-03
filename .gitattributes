@@ -4,6 +4,7 @@ build/extra/launcher.jar -text
 build/extra/mckoidb.jar -text
 code/AntvilleLib-1.4.zip -text
 code/HelmaLib-1.0.zip -text
+code/TagHub/TagHub.skin -text
 code/lucene-1.4.3.jar -text
 database/data/062SYS_INFO_sUSRSequenceInfo.koi -text
 database/data/063SYS_INFO_sUSRSequence.koi -text
@@ -41,15 +42,6 @@ database/data/113APP_AV_IMAGE.koi -text
 database/data/115APP_AV_SITE.koi -text
 database/data/BlobStore.koi -text
 database/data/DefaultDatabase_sf.koi -text
-static/default/default/big.gif -text
-static/default/default/bullet.gif -text
-static/default/default/dot.gif -text
-static/default/default/headbg.gif -text
-static/default/default/manage.gif -text
-static/default/default/menu.gif -text
-static/default/default/recent.gif -text
-static/default/default/status.gif -text
-static/default/default/webloghead.gif -text
 static/default/images/dot.gif -text
 static/default/images/hop.gif -text
 static/default/images/marquee.gif -text
@@ -59,3 +51,12 @@ static/default/images/smallchaos.gif -text
 static/default/images/smallstraight.gif -text
 static/default/images/smalltrans.gif -text
 static/default/images/xmlbutton.gif -text
+static/default/layouts/antville-classic/big.gif -text
+static/default/layouts/antville-classic/bullet.gif -text
+static/default/layouts/antville-classic/dot.gif -text
+static/default/layouts/antville-classic/headbg.gif -text
+static/default/layouts/antville-classic/manage.gif -text
+static/default/layouts/antville-classic/menu.gif -text
+static/default/layouts/antville-classic/recent.gif -text
+static/default/layouts/antville-classic/status.gif -text
+static/default/layouts/antville-classic/webloghead.gif -text

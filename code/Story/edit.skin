@@ -11,10 +11,6 @@
 <tr>
 <td><fieldset><legend class="small">Options</legend>
 <p><% story.addtofront as="editor" checked="checked" %>&nbsp;Show this story on the front page</p>
-
-Tags:
-<% story.content part="tags" as="editor" class="formText" %>
-
 Add this story to a topic<br />
 <table style="margin-left:15px;">
 <tr>

@@ -1,6 +1,0 @@
-<div class="listSeparator">&nbsp;</div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td><a href="<% tag.href %>"><% tag.id %></a></td>
-</tr>
-</table>

@@ -23,6 +23,20 @@
 //
 
 /**
+ * constructor function for story objects
+ */
+Story.prototype.constructor = function(creator, createtime, ipaddress) {
+   this.reads = 0;
+   this.ipaddress = ipaddress;
+   this.creator = creator;
+   this.modifier = creator;
+   this.editableby = EDITABLEBY_ADMINS;
+   this.createtime = new Date();
+   this.modifytime = this.createtime;
+   return this;
+};
+
+/**
  * main action
  */
 Story.prototype.main_action = function() {
@@ -196,23 +210,6 @@ Story.prototype.online_macro = function(param) {
       res.write(param.yes ? param.yes : "online");
    return;
 };
-
-
-/**
- * macro rendering the location of the story
- */
-Story.prototype.location_macro = function(param) {
-   switch (this.online) {
-      case 1:
-         Html.link({href: this.site.topics.get(this.topic).href()}, "topic");
-         break;
-      case 2:
-         res.write("site");
-         break;
-   }
-   return;
-};
-
 
 /**
  * macro rendering createtime of story, either as editor,
@@ -474,52 +471,6 @@ Story.prototype.discussions_macro = function(param) {
 };
 
 /**
- * macro renders a list of existing topics as dropdown
- */
-Story.prototype.topicchooser_macro = function(param) {
-   var size = path.Site.topics.size();
-   var options = new Array();
-   for (var i=0;i<size;i++) {
-      var topic = path.Site.topics.get(i);
-      if (topic.size()) {
-         options[i] = {value: topic.groupname, display: topic.groupname};
-         if (req.data.addToTopic)
-            var selected = req.data.addToTopic;
-         else if (this.topic == topic.groupname)
-            var selected = topic.groupname;
-      }
-   }
-   Html.dropDown({name: "addToTopic"}, options, selected, param.firstOption);
-   return;
-};
-
-/**
- * macro renders the name of the topic this story belongs to
- * either as link, image (if an image entiteld by the
- * topic name is available) or plain text
- */
-Story.prototype.topic_macro = function(param) {
-   if (!this.topic || !this.online)
-      return;
-   if (!param.as || param.as == "text")
-      res.write(this.topic);
-   else if (param.as == "link") {
-      Html.link({href: path.Site.topics.href(this.topic)},
-                param.text ? param.text : this.topic);
-   } else if (param.as == "image") {
-      if (!param.imgprefix)
-         param.imgprefix = "topic_";
-      var img = getPoolObj(param.imgprefix + this.topic, "images");
-      if (!img)
-         return;
-      Html.openLink({href: path.Site.topics.href(this.topic)});
-      renderImage(img.obj, param)
-      Html.closeLink();
-   }
-   return;
-};
-
-/**
  * macro returns a list of references linking to a story
  * since referrers are asynchronously written to database by scheduler
  * it makes sense to cache them in story.cache.rBacklinks because they
@@ -592,19 +543,6 @@ Story.prototype.addtofront_macro = function(param) {
    }
    return;
 };
-/**
- * constructor function for story objects
- */
-Story.prototype.constructor = function(creator, ipaddress) {
-   this.reads = 0;
-   this.ipaddress = ipaddress;
-   this.creator = creator;
-   this.editableby = EDITABLEBY_ADMINS;
-   this.createtime = new Date();
-   this.modifytime = new Date();
-   return this;
-};
-
 
 /**
  * check if story is ok; if true, save changed story
@@ -615,62 +553,66 @@ Story.prototype.constructor = function(creator, ipaddress) {
  *             - message (String): containing a message to user
  */
 Story.prototype.evalStory = function(param, modifier) {
+   var site = this.site || res.handlers.site;
+
    // collect content
    var content = extractContent(param, this.content.get());
    // if all story parts are null, return with error-message
-   if (!content.exists)
+   if (!content.exists) {
       throw new Exception("textMissing");
+   }
    // check if the createtime is set in param
    if (param.createtime) {
       try {
-         var ctime = param.createtime.toDate("yyyy-MM-dd HH:mm");
+         var ctime = param.createtime.toDate("yyyy-MM-dd HH:mm", site.getTimeZone());
       } catch (err) {
          throw new Exception("timestampParse", param.createtime);
       }
    }
-   // check name of topic (if specified)
-   var topicName = null;
-   if (param.topic) {
-       // FIXME: this should be solved more elegantly
-      if (String.URLPATTERN.test(param.topic))
-         throw new Exception("topicNoSpecialChars");
-      if (this.site.topics[param.topic] || this.site.topics[param.topic + "_action"])
-         throw new Exception("topicReservedWord");
-      topicName = param.topic;
-   } else if (param.addToTopic)
-      topicName = param.addToTopic;
-
-   // Update tags of the story
-   this.setTags(param.content_tags);
-
-   // store the new values of the story
-   if (param.publish) {
-      var newStatus = param.addToFront ? 2 : 1;
-      if (!this.online || content.isMajorUpdate)
-         this.site.lastupdate = new Date();
-      this.online = newStatus;
-   } else
-      this.online = 0;
-   if (content.isMajorUpdate)
-      this.modifytime = new Date();
-   this.content.set(content.value);
-   this.topic = topicName;
-   // let's keep the title property
-   this.title = content.value.title;
+   
    // re-create day of story with respect to site-timezone
    if (ctime && ctime != this.createtime) {
       this.createtime = ctime;
-      this.day = ctime.format("yyyyMMdd", this.site.getLocale(), this.site.getTimeZone());
    }
-   if (modifier == this.creator)
+   
+   if (!this.day) {
+      this.day = this.createtime.format("yyyyMMdd", site.getLocale(), 
+            site.getTimeZone());
+   }
+   
+   // FIXME: Set the story's topic (backwards-compatible)
+   content.value.tags = this.setTopic(param.topic || param.addToTopic);
+
+   // Update tags of the story
+   this.setTags(content.value.tags);
+   
+   // store the new values of the story
+   if (param.publish) {
+      var newStatus = param.addToFront ? 2 : 1;
+      if (!this.online || content.isMajorUpdate) {
+         site.lastupdate = new Date();
+      }
+      this.online = newStatus;
+   } else {
+      this.online = 0;
+   }
+   if (content.isMajorUpdate) {
+      this.modifytime = new Date();
+   }
+   this.content.set(content.value);
+   // let's keep the title property
+   this.title = content.value.title;
+
+   if (!this.creator || modifier == this.creator) {
       this.editableby = !isNaN(param.editableby) ?
                         parseInt(param.editableby, 10) : EDITABLEBY_ADMINS;
+   }
    this.discussions = param.discussions ? 1 : 0;
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
 
    // send e-mail notification
-   if (this.site.isNotificationEnabled() && newStatus != 0) {
+   if (site.isNotificationEnabled() && newStatus != 0) {
       // status changes from offline to online
       // (this is bad because somebody could send a bunch
       // of e-mails simply by toggling the online status.)
@@ -678,13 +620,13 @@ Story.prototype.evalStory = function(param, modifier) {
       //   this.sendNotification("story", "create");
       // major update of an already online story
       if (this.online != 0 && content.isMajorUpdate)
-         this.site.sendNotification("update", this);
+         site.sendNotification("update", this);
    }
    var result = new Message("storyUpdate");
-   result.url = this.online > 0 ? this.href() : this.site.stories.href();
+   result.url = this.online > 0 ? this.href() : site.stories.href();
    result.id = this._id;
    // add the modified story to search index
-   app.data.indexManager.getQueue(this.site).add(this);
+   app.data.indexManager.getQueue(site).add(this);
    return result;
 };
 
@@ -699,6 +641,7 @@ Story.prototype.setTags = function(input) {
          diff[tag] = 1;
       }
    }
+
    for (var tag in diff) {
       switch (diff[tag]) {
          case 0:

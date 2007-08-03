@@ -516,7 +516,7 @@ Layout.prototype.evalLayout = function(param, modifier) {
    this.title = param.title;
    this.description = param.description;
    // get preferences from param object
-   var prefs = this.preferences.getAll();
+   var prefs = this.preferences.get();
    for (var i in param) {
       if (i.startsWith("preferences_"))
          prefs[i.substring(12)] = param[i];
@@ -640,7 +640,7 @@ Layout.prototype.setParentLayout = function(parent) {
    this.shareable = 0;
    // copy relevant preferences from parent
    var prefs = new HopObject();
-   var parentPrefs = parent.preferences.getAll();
+   var parentPrefs = parent.preferences.get();
    prefs.bgcolor = parentPrefs.bgcolor;
    prefs.textfont = parentPrefs.textfont;
    prefs.textsize = parentPrefs.textsize;
@@ -673,7 +673,7 @@ Layout.prototype.dumpToZip = function(z, fullExport) {
    cl.title = this.title;
    cl.alias = this.alias;
    cl.description = this.description;
-   cl.preferences = this.preferences.getAll();
+   cl.preferences = this.preferences.get();
    cl.creator = this.creator ? this.creator.name : null;
    cl.createtime = this.creator ? this.createtime : null;
    cl.exporttime = new Date();

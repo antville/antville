@@ -314,6 +314,11 @@ Image.prototype.evalImg = function(param, modifier) {
    this.alttext = param.alttext;
    this.modifier = modifier;
    this.modifytime = new Date();
+   
+   param.tags = Story.prototype.setTopic.call(this, 
+        param.topic || param.addToTopic);
+   Story.prototype.setTags.call(this, param.tags);
+   
    if (this.thumbnail) {
       this.thumbnail.alttext = this.alttext;
       this.thumbnail.modifytime = this.modifytime;

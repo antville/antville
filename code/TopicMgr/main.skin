@@ -1,3 +1,0 @@
-<% linkedpath %>
-
-<% topicmgr.topiclist prefix="<ul>" suffix="</ul>" itemprefix="<li>" itemsuffix="</li>" %>

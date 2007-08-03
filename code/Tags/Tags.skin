@@ -1,0 +1,15 @@
+<div class="pagelink"><% linkedpath %></div><br />
+
+<% tags.alphabet prefix='<div>' suffix='</div>' %>
+<% tags.pager prefix='<div>' suffix='</div>' %>
+<% tags.list prefix="<ul>" suffix="</ul>" %>
+<% tags.pager prefix='<div>' suffix='</div>' %>
+<% tags.alphabet prefix='<div>' suffix='</div>' %>
+
+<% #TOBEDELETED %>
+<div class="listSeparator">&nbsp;</div>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td><a href="<% tag.href %>"><% tag.id %></a></td>
+</tr>
+</table>

@@ -1,0 +1,5 @@
+<div class="pagelink"><% linkedpath %></div><br />
+
+<% list.prevLink %>
+<% list.render skin="TagHub" %>
+<% list.nextLink %>

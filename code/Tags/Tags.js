@@ -1,3 +1,27 @@
+//
+// The Antville Project
+// http://code.google.com/p/antville
+//
+// Copyright 2001-2007 by The Antville People
+//
+// Licensed under the Apache License, Version 2.0 (the ``License'');
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an ``AS IS'' BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
+// $URL$
+//
+
 Tags.prototype.main_action = function() {
    if (req.data.group) {
       this.setGroup(req.data.group)
@@ -7,14 +31,13 @@ Tags.prototype.main_action = function() {
       this.setPage(req.data.page);
       res.redirect(this.href());
    }
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Tags");
    res.handlers.context.renderSkin("page");
    return;
 };
 
 Tags.prototype.getChildElement = function(id) {
-   res.debug(id)
-   var child = path.site.tags.get(id);
+   var child = this.getCollection("*").get(id);
    return child;
 
    /* if (child && child.size() > 0) {
@@ -61,12 +84,12 @@ Tags.prototype.getChildElement = function(id) {
 };
 
 Tags.prototype.alphabet_macro = function() {
-   var collection = this.getCollection("+");
-   if (collection.size() < 50) {
-      //return;
+   if (this.getCollection("*").size() < 50) {
+      return;
    }
 
    var self = this;
+   var collection = this.getCollection("+");
    var prefix = "?group=";
    var group = this.getGroup();
 
@@ -115,13 +138,16 @@ Tags.prototype.list_macro = function() {
    var size = this.getPageSize();
    var start = (page - 1) * size;
    var collection = this.getCollection().list(start, size);
-   var id;
+   var id, href;
    for each (var item in collection) {
-      id = item.groupname || item.name;
+      if (item.constructor !== Tag) {
+         item = item.get(0);
+      }
       Html.openTag("li");
-      Html.link({href: this.href() + encodeURIComponent(id)}, id);
+      Html.link({href: item.href()}, item.name);
       Html.closeTag("li");
    }
+   return;
 };
 
 Tags.prototype.getCollection = function(group) {
