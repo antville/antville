@@ -2,14 +2,28 @@
 
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.list prefix="<ul>" suffix="</ul>" %>
+<% tags.list Tag#item prefix="<ul>" suffix="</ul> %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 
-<% #TOBEDELETED %>
-<div class="listSeparator">&nbsp;</div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<% #header %>
+<th><% param.title %></th>
+
+<% #admin %>
+<div class="pagelink"><% linkedpath %> : Admin</div><br />
+
+<% tags.alphabet prefix='<div>' suffix='</div>' %>
+<% tags.pager prefix='<div>' suffix='</div>' %>
+<table>
+<thead>
 <tr>
-<td><a href="<% tag.href %>"><% tag.id %></a></td>
+<% tags.header %>
 </tr>
+</thead>
+<tbody>
+<% tags.list Tag#admin %>
+</tbody>
 </table>
+<% tags.pager prefix='<div>' suffix='</div>' %>
+<% tags.alphabet prefix='<div>' suffix='</div>' %>
+

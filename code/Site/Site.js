@@ -1934,3 +1934,39 @@ Site.prototype.checkUnsubscribe = function(usr, level) {
    }
    return;
 };
+
+Site.prototype.getTags = function(type, group) {
+   var handler;
+   type = type.toLowerCase();
+   switch (type) {
+      case "story":
+      type = "tags";
+      case "tags":
+      handler = this.stories;
+      break;
+      case "image":
+      type = "galleries";
+      case "galleries":
+      handler = this.images;
+      break;
+   }
+   switch (group) {
+      case Tags.ALL:
+      return handler[type];     
+      case Tags.OTHER:
+      case Tags.ALPHABETICAL:
+      return handler[group + type.titleize()];
+      default:
+      return handler.alphabeticalTags.get(group);
+   }
+   return null;
+};
+
+Site.prototype.getAdminHeader = function(name) {
+   switch (name) {
+      case "tags":
+      case "galleries":
+      return ["#", "Name", "Items"];
+   }
+   return [];
+};

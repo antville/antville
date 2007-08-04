@@ -23,11 +23,11 @@
 //
 
 TagHub.prototype.constructor = function(name, tagged, user) {
-   var site = res.handlers.site;
-   var tag = site.tags.get(name);
-   if (!tag || tag.type !== tagged._prototype) {
+   var site = tagged.site || res.handlers.site;
+   var tag = site.getTags(tagged._prototype, Tags.ALL).get(name);
+   if (!tag) {
       tag = new Tag(name, site, tagged._prototype);
-      site.tags.add(tag);
+      site.$tags.add(tag);
    }
    this.tag = tag;
    this.tagged = tagged;

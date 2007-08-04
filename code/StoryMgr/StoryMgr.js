@@ -22,10 +22,6 @@
 // $URL$
 //
 
-StoryMgr.prototype.getTagType = function() {
-   return "Story";
-};
-
 /**
  * main action
  */
@@ -115,7 +111,17 @@ StoryMgr.prototype.evalNewStory = function(param, creator) {
    if (!this.add(s)) {
       throw new Exception("storyCreate");
    }
+   
+   // FIXME: Why must this come after the add() when calling s.evalStory()?
+   var content = extractContent(param, s.content.get());
+   s.content.set(content.value);
 
+   // FIXME: Set the story's topic (backwards-compatible)
+   content.value.tags = s.setTopic(param.topic || param.addToTopic);
+
+   // Update tags of the story
+   s.setTags(content.value.tags);
+   
    // send e-mail notification
    if (s.site.isNotificationEnabled()) {
       s.site.sendNotification("create", s);
@@ -161,6 +167,7 @@ StoryMgr.prototype.deleteAll = function() {
       this.deleteStory(this.get(i-1));
    return true;
 };
+
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action
@@ -204,9 +211,16 @@ StoryMgr.prototype.checkAccess = function(action, usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-
 StoryMgr.prototype.checkAdd = function(usr, level) {
    if (!this._parent.preferences.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
       throw new DenyException("storyAdd");
    return;
+};
+
+StoryMgr.prototype.getTags = function(group) {
+   return this._parent.getTags("tags", group);
+};
+
+StoryMgr.prototype.getAdminHeader = function(name) {
+   return ["#", "Tag", "Items"];
 };

@@ -185,6 +185,7 @@ ImageMgr.prototype.deleteImage = function(imgObj) {
    }
    if (imgObj.site)
       imgObj.site.diskusage -= imgObj.filesize;
+   Story.prototype.setTags.call(imgObj, null);
    // then, remove the image-object
    imgObj.remove();
    return new Message("imageDelete");
@@ -412,3 +413,6 @@ ImageMgr.prototype.mergeImages = function() {
    return coll;
 };
 
+ImageMgr.prototype.getTags = function(group) {
+   return this._parent.getTags("galleries", group);
+};

@@ -23,21 +23,27 @@
 //
 
 Tags.prototype.main_action = function() {
+   var action = this.getAction();
    if (req.data.group) {
       this.setGroup(req.data.group)
-      res.redirect(this.href());
+      res.redirect(this.href(action));
    }
    if (req.data.page) {
       this.setPage(req.data.page);
-      res.redirect(this.href());
+      res.redirect(this.href(action));
    }
-   res.data.body = this.renderSkinAsString("Tags");
+   var skin = (action ? "Tags#" + action : "Tags"); 
+   res.data.body = this.renderSkinAsString(skin);
    res.handlers.context.renderSkin("page");
    return;
 };
 
+Tags.prototype.admin_action = function() {
+   return this.main_action();
+};
+
 Tags.prototype.getChildElement = function(id) {
-   var child = this.getCollection("*").get(id);
+   var child = this[id] || this.get(Tags.ALL).get(id);
    return child;
 
    /* if (child && child.size() > 0) {
@@ -84,38 +90,38 @@ Tags.prototype.getChildElement = function(id) {
 };
 
 Tags.prototype.alphabet_macro = function() {
-   if (this.getCollection("*").size() < 50) {
+   if (this.get(Tags.ALL).size() < 50) {
       return;
    }
 
    var self = this;
-   var collection = this.getCollection("+");
+   var collection = this.get(Tags.ALPHABETICAL);
    var prefix = "?group=";
    var group = this.getGroup();
 
-   var navigation = function(id) {
+   var add = function(text, id) {
       if (group === id) {
-         res.write(id);
+         res.write(text);
       } else {
-         Html.link({href: self.href() + prefix + id}, id);      
+         Html.link({href: self.href(self.getAction()) + prefix + id}, text);      
       }
       res.write(" ");
       return;
    };
 
-   navigation("*");
+   add("*", Tags.ALL);
    collection.forEach(function() {
-      navigation(this._id);
+      add(this._id, this._id);
    });
-   if (this.getCollection("?").size() > 0) {
-      navigation("?");
+   if (this.get(Tags.OTHER).size() > 0) {
+      add("?", Tags.OTHER);
    }
    return;
 };
 
 Tags.prototype.pager_macro = function() {
    var page = this.getPage();
-   var max = this.getCollection().size();
+   var max = this.get(this.getGroup()).size();
    var size = this.getPageSize();
    var total = Math.ceil(max / size);
    if (total < 2) {
@@ -126,48 +132,47 @@ Tags.prototype.pager_macro = function() {
       if (i == page) {
          res.write(i);
       } else {
-         Html.link({href: this.href() + prefix + i}, i);      
+         Html.link({href: this.href(this.getAction()) + prefix + i}, i);      
       }
       res.write(" ");
    }
    return;
 };
 
-Tags.prototype.list_macro = function() {
-   var page = this.getPage();
-   var size = this.getPageSize();
-   var start = (page - 1) * size;
-   var collection = this.getCollection().list(start, size);
-   var id, href;
-   for each (var item in collection) {
-      if (item.constructor !== Tag) {
-         item = item.get(0);
-      }
-      Html.openTag("li");
-      Html.link({href: item.href()}, item.name);
-      Html.closeTag("li");
+Tags.prototype.header_macro = function(param) {
+   var header = this.getHeader();
+   for each (var title in header) {
+      this.renderSkin("Tags#header", {title: title});
    }
    return;
 };
 
-Tags.prototype.getCollection = function(group) {
-   if (!group) {
-      group = this.getGroup();
+Tags.prototype.list_macro = function(param, skin) {
+   var page = this.getPage();
+   var size = this.getPageSize();
+   var start = (page - 1) * size;
+   var collection = this.get(this.getGroup()).list(start, size);
+   // FIXME: ListRenderer should do this
+   //var list = new jala.ListRenderer(collection);
+   //list.render(skin || mgrlistitem);
+   var index = start + 1;
+   for each (var item in collection) {
+      // FIXME: Is there a more elegant solution?
+      if (item.constructor !== Tag) {
+         item = item.get(0);
+      }
+      item.renderSkin(skin || "mgrlistitem", {index: index});
+      index += 1;
    }
-   switch (group) {
-      case "*":
-      return this._parent.allTags;     
-      case "?":
-      return this._parent.otherTags;
-      case "+":
-      return this._parent.alphabeticalTags;
-      default:
-      return this._parent.alphabeticalTags.get(group);
-   }
+   return;
+};
+
+Tags.prototype.get = function(group) {
+   return this._parent.getTags(this._id, group || this.getGroup());
 };
 
 Tags.prototype.getGroup = function() {
-   return decodeURIComponent(session.data[this.href("group")] || "*");
+   return decodeURIComponent(session.data[this.href("group")] || Tags.ALL);
 };
 
 Tags.prototype.setGroup = function(group) {
@@ -189,8 +194,27 @@ Tags.prototype.getPageSize = function() {
    return 25;
 };
 
+Tags.prototype.getNavigationName  = function() {
+   return this._id.titleize();
+};
+
+Tags.prototype.getAction = function() {
+   return (req.action === "main" ? String.EMPTY : req.action);
+};
+
+Tags.prototype.getHeader = function() {
+   if (this._parent.getAdminHeader) {
+      return this._parent.getAdminHeader(this._id) || [];
+   }
+   return [];
+};
+
+Tags.ALL = "all";
+Tags.OTHER = "other";
+Tags.ALPHABETICAL = "alphabetical";
+
 /*
-Tags.prototype.getCollection__ = function(group) {
+Tags.prototype.get__ = function(group) {
    var subnodeRelation = new java.lang.StringBuffer();
    var add = function(s) {
       subnodeRelation.append(s);

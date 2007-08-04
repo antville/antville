@@ -1856,12 +1856,12 @@ function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
    param.pagenavigation = res.pop();
    return renderSkinAsString("pagenavigation", param);
 }
+
 /**
  * function checks if user is logged in or not
  * if false, it redirects to the login-page
  * but before it stores the url to jump back (if passed as argument)
  */
-
 function checkIfLoggedIn(referrer) {
    if (!session.user) {
       // user is not logged in
@@ -1870,4 +1870,18 @@ function checkIfLoggedIn(referrer) {
       res.redirect(res.handlers.site ? res.handlers.site.members.href("login") : root.members.href("login"));
    }
    return;
+}
+
+function singularize(plural) {
+   if (plural.endsWith("ies")) {
+      return plural.substring(0, plural.length-3) + "y";
+   }
+   return plural.substring(0, plural.length-1);
+}
+
+function pluralize(singular) {
+   if (singular.endsWith("y")) {
+      return singular.substring(0, singular.length-1) + "ies";
+   }
+   return singular + "s";
 }

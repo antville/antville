@@ -580,12 +580,6 @@ Story.prototype.evalStory = function(param, modifier) {
             site.getTimeZone());
    }
    
-   // FIXME: Set the story's topic (backwards-compatible)
-   content.value.tags = this.setTopic(param.topic || param.addToTopic);
-
-   // Update tags of the story
-   this.setTags(content.value.tags);
-   
    // store the new values of the story
    if (param.publish) {
       var newStatus = param.addToFront ? 2 : 1;
@@ -599,7 +593,6 @@ Story.prototype.evalStory = function(param, modifier) {
    if (content.isMajorUpdate) {
       this.modifytime = new Date();
    }
-   this.content.set(content.value);
    // let's keep the title property
    this.title = content.value.title;
 
@@ -610,7 +603,20 @@ Story.prototype.evalStory = function(param, modifier) {
    this.discussions = param.discussions ? 1 : 0;
    this.modifier = modifier;
    this.ipaddress = param.http_remotehost;
+   
+   // FIXME: Ugly hack to get back to the StoryMgr
+   if (!this.site) {
+      return;
+   }
 
+   this.content.set(content.value);
+
+   // FIXME: Set the story's topic (backwards-compatible)
+   content.value.tags = this.setTopic(param.topic || param.addToTopic);
+
+   // Update tags of the story
+   this.setTags(content.value.tags);
+   
    // send e-mail notification
    if (site.isNotificationEnabled() && newStatus != 0) {
       // status changes from offline to online
@@ -622,6 +628,7 @@ Story.prototype.evalStory = function(param, modifier) {
       if (this.online != 0 && content.isMajorUpdate)
          site.sendNotification("update", this);
    }
+   
    var result = new Message("storyUpdate");
    result.url = this.online > 0 ? this.href() : site.stories.href();
    result.id = this._id;

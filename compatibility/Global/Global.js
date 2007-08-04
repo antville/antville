@@ -44,7 +44,7 @@ Story.prototype.location_macro = function(param) {
 };
 
 Story.prototype.topic_macro = function(param) {
-   if (!this.online || this.tags.size() < 1)
+   if (this.constructor !== Image && (!this.online || this.tags.size() < 1))
       return;
    var topic = this.tags.get(0).tag;
    if (!param.as || param.as == "text")
@@ -68,7 +68,8 @@ Story.prototype.topic_macro = function(param) {
 Story.prototype.topicchooser_macro = function(param) {
    var site = this.site || res.handlers.site;
    var currentTopic = this.tags.size() > 0 ? this.tags.get(0).tag : null;
-   var topics = site[this.constructor === Story ? "tags" : "slideshows"];
+   var topics = (this.constructor === Story ? site.stories.tags : 
+         site.images.galleries);
    var options = [], topic;
    for (var i=0; i<topics.size(); i++) {
       topic = topics.get(i);
@@ -101,6 +102,11 @@ Image.prototype.topicchooser_macro = function() {
    return Story.prototype.topicchooser_macro.apply(this, arguments);
 };
 
-Image.prototype.topic_macro = function() {
+Image.prototype.gallery_macro = function() {
    return Story.prototype.topic_macro.apply(this, arguments);
 };
+
+ImageMgr.prototype.topicchooser_macro = function() {
+   return "FIXME: Sorry, this is broken... :("; 
+};
+

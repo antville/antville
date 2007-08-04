@@ -3,3 +3,15 @@
 <% list.prevLink %>
 <% list.render skin="TagHub" %>
 <% list.nextLink %>
+
+<% #item %>
+<li>
+   <a href="<% tag.href action=<% request.action %> %>"><% tag.name %></a>
+</li>
+
+<% #admin %>
+<tr>
+   <td><% param.index %></td>
+   <td><% tag.name %></td>
+   <td><% tag.size %></td>
+</tr>

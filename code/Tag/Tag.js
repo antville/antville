@@ -30,40 +30,65 @@ Tag.prototype.constructor = function(name, site, type) {
 };
 
 Tag.prototype.main_action = function() {
-   res.handlers.list = new jala.ListRenderer(this.getCollection(this.type));
+   res.handlers.list = new jala.ListRenderer(this.getTagged());
    res.data.body = this.renderSkinAsString("Tag");
    res.handlers.site.renderSkin("page");
    return;
 };
 
-Tag.prototype.href = function() {
-   var mountpoint;
-   switch (this.type) {
-      case "Story":
-      mountpoint = "stories";
-      break;
-      case "Image":
-      mountpoint = "images";
-      break;
+Tag.prototype.rename_action = function() {
+   var tag = this;
+   if (req.data.name) {
+      tag = this.site.getTags(this.type, Tags.ALL).get(req.data.name);
+      if (!tag) {
+         tag = new Tag(req.data.name, this.site, this.type);
+         this.site.$tags.add(tag);
+      }
+      this.forEach(function() { 
+         this.tag_id = tag._id;
+      });
+      this.remove();
+      res.commit();
    }
-   return this.site[mountpoint].tags.href() + encodeURIComponent(this.name);
+   res.redirect(tag.href());
 };
 
-Tag.prototype.getCollection = function(type) {
-   switch (type) {
-      case "Story":
-      return this.stories;
-      case "Image":
-      return this.images;
-      default:
-      return this;
-   }
+Tag.prototype.delete_action = function() {
+   var parent = this._parent;
+   while (this.size() > 0) {
+      this.get(0).remove();
+   };
+   this.remove();
+   res.redirect(this.site[Tag.MOUNTPOINTS[this.type]].href());
 };
 
-Tag.prototype.getNavigationName  = function() {
+Tag.prototype.href = function(action) {
+   //res.debug(HopObject.prototype.href.call(root, "test", this.name));
+   res.push();
+   //res.write(this.site.getTags(this.type, Tags.ALL).href());
+   res.write(this.site[Tag.MOUNTPOINTS[this.type]].href());
+   res.write(java.net.URLEncoder.encode(this.name));
+   res.write("/");
+   if (action) {
+      res.write(java.net.URLEncoder.encode(action));
+   }
+   return res.pop();
+};
+
+Tag.prototype.getTagged = function() {
+   return this[pluralize(this.type)];
+};
+
+Tag.prototype.getNavigationName = function() {
    return this.name;
 };
 
 Tag.prototype.toString = function() {
-   return "[Tag ``" + this.name + "'' of Site ``" + this.site.alias + "'']";
+   return "[" + this.type + " tag ``" + this.name + "'' of Site ``" + 
+       this.site.alias + "'']";
+};
+
+Tag.MOUNTPOINTS = {
+   Story: "tags",
+   Image: "galleries"
 };
