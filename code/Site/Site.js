@@ -1957,7 +1957,7 @@ Site.prototype.getTags = function(type, group) {
       case Tags.ALPHABETICAL:
       return handler[group + type.titleize()];
       default:
-      return handler.alphabeticalTags.get(group);
+      return handler["alphabetical" + type.titleize()].get(group);
    }
    return null;
 };
