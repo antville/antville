@@ -21,6 +21,10 @@
 <td nowrap="nowrap"><% input type="textarea" name="alttext" cols="25" rows="3" %></td>
 </tr>
 <tr>
+<td class="small" nowrap="nowrap" valign="top">Gallery:</td>
+<td nowrap="nowrap"><input type="text" name="topic" /></td>
+</tr>
+<tr>
 <td colspan="2">If you want to resize the image please specify your desired maximum width and/or maximum height. If you specify both the image will be resized to match both criterias, but the proportions of the image will be preserved.</td>
 </tr>
 <tr>

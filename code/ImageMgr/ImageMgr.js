@@ -22,10 +22,6 @@
 // $URL$
 //
 
-ImageMgr.prototype.getTagType = function() {
-   return "Image";
-};
-
 /**
  * display all images of a site or layout
  */
@@ -149,13 +145,19 @@ ImageMgr.prototype.evalImg = function(param, creator) {
    if (!this.add(newImg)) {
       throw new Exception("imageAdd");
    }
+
+   // Set the tags of the image
+   Story.prototype.setTags.call(newImg, param.tags);
+  
+   // FIXME: Set the image's topic (backwards-compatible)
+   Story.prototype.setTopic.call(newImg, param.topic || param.addToTopic);
+
    // the fullsize-image is stored, so we check if a thumbnail should be created too
    if (newImg.width > THUMBNAILWIDTH) {
       newImg.createThumbnail(param.rawimage, dir);
    }
    // FIXME: newImg.site.diskusage += newImg.filesize;
    var result = new Message("imageCreate", newImg.alias, newImg);
-writeln(newImg.href());
    result.url = newImg.href();
    return result;
 };
@@ -185,8 +187,9 @@ ImageMgr.prototype.deleteImage = function(imgObj) {
    }
    if (imgObj.site)
       imgObj.site.diskusage -= imgObj.filesize;
+   // Remove the tags of the image
    Story.prototype.setTags.call(imgObj, null);
-   // then, remove the image-object
+   // Finally, remove the image iself
    imgObj.remove();
    return new Message("imageDelete");
 };

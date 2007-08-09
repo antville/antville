@@ -1940,14 +1940,14 @@ Site.prototype.getTags = function(type, group) {
    type = type.toLowerCase();
    switch (type) {
       case "story":
-      type = "tags";
       case "tags":
       handler = this.stories;
+      type = "tags";
       break;
       case "image":
-      type = "galleries";
       case "galleries":
       handler = this.images;
+      type = "galleries";
       break;
    }
    switch (group) {

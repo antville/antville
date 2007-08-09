@@ -611,12 +611,12 @@ Story.prototype.evalStory = function(param, modifier) {
 
    this.content.set(content.value);
 
-   // FIXME: Set the story's topic (backwards-compatible)
-   content.value.tags = this.setTopic(param.topic || param.addToTopic);
-
    // Update tags of the story
-   this.setTags(content.value.tags);
-   
+   this.setTags(param.tags);
+
+   // FIXME: Set the story's topic (backwards-compatible)
+   this.setTopic(param.topic || param.addToTopic);
+
    // send e-mail notification
    if (site.isNotificationEnabled() && newStatus != 0) {
       // status changes from offline to online
@@ -637,9 +637,14 @@ Story.prototype.evalStory = function(param, modifier) {
    return result;
 };
 
-Story.prototype.setTags = function(input) {
+Story.prototype.setTags = function(tags) {
+   if (!tags) {
+      tags = [];
+   } else if (tags.constructor === String) {
+      tags = tags.split(/\s*,\s*/);
+   }
+
    var diff = {};
-   var tags = input ? input.split(/\s*,\s*/) : [];
    this.tags.forEach(function() {
       diff[this.tag.name] = (tags.indexOf(this.tag.name) < 0) ? this : 0;
    });
@@ -648,7 +653,7 @@ Story.prototype.setTags = function(input) {
          diff[tag] = 1;
       }
    }
-
+   
    for (var tag in diff) {
       switch (diff[tag]) {
          case 0:
@@ -656,22 +661,33 @@ Story.prototype.setTags = function(input) {
          break;
          case 1:
          // Add tag to story
-         res.debug("Add " + tag);
-         res.debug(this.tags.size());
-         this.tags.add(new TagHub(tag, this, session.user));
+         Story.prototype.addTag.call(this, tag);
          break;
          default:
-         res.debug("Remove " + diff[tag]);
-         // Remove tag from site if necessary
-         var parent = diff[tag]._parent;
-         if (parent.size() === 1) {
-            res.debug("Remove " + parent);
-            parent.remove();
-         }
-         // Remove tag from story
-         diff[tag].remove();
+         // Remove tag
+         Story.prototype.removeTag.call(this, diff[tag]);
       }
    }
+   return;
+};
+
+Story.prototype.addTag = function(name) {
+   res.debug("Add tag " + name);
+   res.debug(this.tags.size());
+   this.tags.add(new TagHub(name, this, session.user));
+   return;
+};
+
+Story.prototype.removeTag = function(tag) {
+   res.debug("Remove " + tag);
+   var parent = tag._parent;
+   // Remove tag from site if necessary
+   if (parent.size() === 1) {
+      res.debug("Remove " + parent);
+      parent.remove();
+   }
+   // Remove tag from story
+   tag.remove();
    return;
 };
 

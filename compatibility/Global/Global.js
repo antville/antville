@@ -84,18 +84,20 @@ Story.prototype.topicchooser_macro = function(param) {
    return;
 };
 
-Story.prototype.setTopic = function(input) {
-   var site = this.site || res.handlers.site;
-   if (input) {
-       // FIXME: this should be solved more elegantly
-      if (String.URLPATTERN.test(input)) {
+Story.prototype.setTopic = function(topic) {
+   Story.prototype.setTags.call(this, null);
+   if (topic) {
+      // FIXME: this should be solved more elegantly
+      if (String.URLPATTERN.test(topic)) {
          throw new Exception("topicNoSpecialChars");
       }
-      if (site.tags[input] || site.tags[input + "_action"]) {
+      var site = this.site || res.handlers.site;
+      if (site.tags[topic] || site.tags[topic + "_action"]) {
          throw new Exception("topicReservedWord");
       }
+      Story.prototype.addTag.call(this, topic);
    }
-   return input;
+   return;
 };
 
 Image.prototype.topicchooser_macro = function() {

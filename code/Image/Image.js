@@ -315,9 +315,11 @@ Image.prototype.evalImg = function(param, modifier) {
    this.modifier = modifier;
    this.modifytime = new Date();
    
-   param.tags = Story.prototype.setTopic.call(this, 
-        param.topic || param.addToTopic);
+   // Set the tags of the image
    Story.prototype.setTags.call(this, param.tags);
+  
+   // FIXME: Set the image's topic (backwards-compatible)
+   Story.prototype.setTopic.call(this, param.topic || param.addToTopic);
    
    if (this.thumbnail) {
       this.thumbnail.alttext = this.alttext;
