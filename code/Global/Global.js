@@ -1885,3 +1885,31 @@ function pluralize(singular) {
    }
    return singular + "s";
 }
+
+/**
+ * Renders a string depending on the comparison of two values. If the first 
+ * value equals the second value, the first result will be returned; the 
+ * second result otherwise.
+ * <p>Example: <code>&lt;% if &lt;% macro %&gt; is "value" then "yes!" else "no :(" %&gt;</code>
+ * </p>
+ * Note that any value or result can be a macro, too. Thus, this can be used as
+ * a simple implementation of an if-then-else statement by using Helma macros
+ * only. 
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} firstValue The first value
+ * @param {String} _is_ Syntactic sugar; should be "is" for legibility
+ * @param {String} secondValue The second value
+ * @param {String} _then_ Syntactic sugar; should be "then" for legibility
+ * @param {String} firstResult The first result, ie. the value that will be 
+ * returned if the first value equals the second one
+ * @param {String} _else_ Syntactic sugar; should be "else" for legibility
+ * @param {String} secondResult The second result, ie. the value that will be 
+ * returned if the first value does not equal the second one
+ * @returns The resulting value
+ * @type String
+ * @member Global
+ */
+function if_macro(param, firstValue, _is_, secondValue, _then_, 
+                  firstResult, _else_, secondResult) {
+   return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
+}

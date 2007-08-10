@@ -1,4 +1,6 @@
-<div class="pagelink"><% linkedpath %></div><br />
+<div class="pagelink"><% linkedpath %>
+<% if <% tag.permission edit %> is true then <% tag.skin name="Tag#controls" %> %>
+</div><br />
 
 <% list.prevLink %>
 <% list.render skin="TagHub" %>
@@ -15,3 +17,13 @@
    <td><% tag.name %></td>
    <td><% tag.size %></td>
 </tr>
+
+<% #controls %>
+<button type="button" onclick='var name; 
+      if (name = prompt("Enter new name for this tag:")) {
+         location.href="<% tag.href action="rename" %>?name=" + name;
+      }'>Rename</button>
+<button type="button" onclick='var name; 
+      if (confirm("Are you sure you want to remove the tag <% tag.name %>?")) {
+         location.href="<% tag.href action="delete" %>";
+      }'>Delete</button>

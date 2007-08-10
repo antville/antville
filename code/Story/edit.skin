@@ -18,7 +18,7 @@ Add this story to a topic<br />
 <% story.topicchooser firstOption="--- choose topic ---" %></td>
 <td valign="top" width="4%">&nbsp;</td>
 <td valign="top" width="48%" class="small">...or enter a new one<br /> 
-<input type="text" name="tags" value="<% request.topic %>" /></td>
+<input type="text" name="topic" value="<% request.topic %>" /></td>
 </tr>
 </table>
 

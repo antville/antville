@@ -673,13 +673,14 @@ Story.prototype.setTags = function(tags) {
 
 Story.prototype.addTag = function(name) {
    res.debug("Add tag " + name);
-   res.debug(this.tags.size());
+   //return;
    this.tags.add(new TagHub(name, this, session.user));
    return;
 };
 
 Story.prototype.removeTag = function(tag) {
    res.debug("Remove " + tag);
+   //return;
    var parent = tag._parent;
    // Remove tag from site if necessary
    if (parent.size() === 1) {

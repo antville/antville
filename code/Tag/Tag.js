@@ -67,12 +67,44 @@ Tag.prototype.href = function(action) {
    res.push();
    //res.write(this.site.getTags(this.type, Tags.ALL).href());
    res.write(this.site[Tag.MOUNTPOINTS[this.type]].href());
-   res.write(java.net.URLEncoder.encode(this.name));
+   //res.write(java.net.URLEncoder.encode(this.name));
+   res.write(encodeURIComponent(this.name));
    res.write("/");
    if (action) {
       res.write(java.net.URLEncoder.encode(action));
    }
    return res.pop();
+};
+
+Tag.prototype.permission_macro = function(param, type) {
+   return this.getPermission(type);
+};
+
+Tag.prototype.getPermission = function(type) {
+   var user = session.user;
+   var level = req.data.memberlevel;
+   switch (type) {
+      case "main":
+      return true;
+
+      case "edit":
+      case "delete":
+      case "rename":
+      return (level & MAY_EDIT_ANYSTORY) > 0;
+   }   
+   return false;
+};
+
+// FIXME: b/w compatibility
+Tag.prototype.checkAccess = function(action, user, level) {
+   try {
+      if (!this.getPermission(action)) {
+         throw DenyException("FIXME");
+      }
+   } catch(ex) {
+      res.message = ex.toString();
+      res.redirect(this.site.href());
+   }
 };
 
 Tag.prototype.getTagged = function() {

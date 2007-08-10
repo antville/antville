@@ -28,6 +28,7 @@ TagHub.prototype.constructor = function(name, tagged, user) {
    if (!tag) {
       tag = new Tag(name, site, tagged._prototype);
       site.$tags.add(tag);
+      //res.commit();
    }
    this.tag = tag;
    this.tagged = tagged;
