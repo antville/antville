@@ -117,11 +117,8 @@ StoryMgr.prototype.evalNewStory = function(param, creator) {
    s.content.set(content.value);
 
    // Update tags of the story
-   s.setTags(param.tags);
+   s.setTags(param.tags || param.tags_array);
     
-   // FIXME: Set the story's topic (backwards-compatible)
-   s.setTopic(param.topic || param.addToTopic);
-
    // send e-mail notification
    if (s.site.isNotificationEnabled()) {
       s.site.sendNotification("create", s);

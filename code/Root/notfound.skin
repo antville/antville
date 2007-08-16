@@ -1,1 +1,2 @@
-<p><strong>Sorry!</strong></p><p>URL <% request.path %> was not found on this server!</p>
+<p><strong>Sorry!</strong></p><p>URL <% request.path encoding="all" %> was not 
+found on this server!</p>

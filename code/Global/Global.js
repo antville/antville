@@ -34,7 +34,7 @@ var search = new helma.Search();
 /**
  * constants specifying user-rights
  */
-
+ 
 MAY_ADD_STORY = 1;
 MAY_VIEW_ANYSTORY = 2;
 MAY_EDIT_ANYSTORY = 4;

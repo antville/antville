@@ -147,11 +147,8 @@ ImageMgr.prototype.evalImg = function(param, creator) {
    }
 
    // Set the tags of the image
-   Story.prototype.setTags.call(newImg, param.tags);
+   Story.prototype.setTags.call(newImg, param.tags || param.tags_array);
   
-   // FIXME: Set the image's topic (backwards-compatible)
-   Story.prototype.setTopic.call(newImg, param.topic || param.addToTopic);
-
    // the fullsize-image is stored, so we check if a thumbnail should be created too
    if (newImg.width > THUMBNAILWIDTH) {
       newImg.createThumbnail(param.rawimage, dir);
