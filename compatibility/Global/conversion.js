@@ -19,7 +19,8 @@ return;
       var rows = db.executeRetrieval(query);
       while (rows && rows.next()) {
          sql = "insert into tag values (" + [tagCounter, siteId, 
-               quote(rows.getColumnItem("tag")), quote(taggedType)] + ")";
+               quote(rows.getColumnItem("tag").replace(/^[\/\.]*$/, "?")), 
+               quote(taggedType)] + ")";
          writeln(sql);
          db.executeCommand(sql);
          tagCounter += 1;
