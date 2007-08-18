@@ -22,10 +22,101 @@
 // $URL$
 //
 
+User.getByName = function(name) {
+   return root.users.get(name);
+};
+
+User.getSalt = function() {
+   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
+   var random = java.security.SecureRandom.getInstance("SHA1PRNG");
+   random.nextBytes(salt);
+   return Packages.sun.misc.BASE64Encoder().encode(salt);
+};
+
+User.register = function(data) {
+   // check if username is existing and is clean
+   // can't use isClean() here because we accept
+   // special characters like umlauts and spaces
+   var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
+   if (!data.name)
+      throw new Exception("usernameMissing");
+   else if (data.name.length > 30)
+      throw new Exception("usernameTooLong");
+   else if (invalidChar.exec(data.name))
+      throw new Exception("usernameNoSpecialChars");
+   else if (this[data.name] || this[data.name + "_action"])
+      throw new Exception("usernameExisting");
+
+   // check if email-address is valid
+   if (!data.email) {
+      throw new Exception("emailMissing");
+   }
+   evalEmail(data.email);
+
+   // Create hash from password for JavaScript-disabled browsers
+   if (!data.hash) {
+      // Check if passwords match
+      if (!data.password1 || !data.password2) {
+         throw new Exception("passwordTwice");
+      } else if (data.password1 !== data.password2) {
+         throw new Exception("passwordNoMatch");
+      }
+      data.hash = (data.password1 + session.data.token).md5();
+   }
+
+   if (User.getByName(data.name)) {
+      throw new Exception("memberExisting");
+   }
+   var user = new User();
+   user.name = data.name;
+   user.hash = data.hash;
+   user.salt = session.data.token;
+   user.email = data.email;
+   user.registered = new Date();
+   user.blocked = 0;
+   // grant trust and sysadmin-rights if there's no sysadmin 'til now
+   if (root.manage.sysadmins.size() == 0) {
+      user.sysadmin = user.trusted = 1;
+   } else {
+      user.sysadmin = user.trusted = 0;
+   }
+   root.users.add(user);
+   var welcomeWhere = path.site ? path.site.title : root.getTitle();
+   return new Message("welcome", [welcomeWhere, user.name], user);
+};
+
+User.prototype.getHash = function(token) {
+   token || (token = String.EMPTY);
+   return (this.hash + token).md5();
+};
+
+User.prototype.login = function(data) {
+   var user = this;
+   var password = data.hash;
+   if (!password) {
+      password = ((data.password + this.salt).md5() + 
+            session.data.token).md5();
+   }
+   // check if login is successful
+   if (password !== this.getHash(session.data.token)) {
+      throw new Exception("loginTypo");
+   }
+   // login was successful
+   session.login(user);
+   user.lastVisit = new Date();
+   if (data.remember) {
+      // user allowed us to set permanent cookies for auto-login
+      res.setCookie("avUsr", user.name, 365);
+      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel","4"), 
+            "", "\\.");
+      res.setCookie("avPw", (user.hash + ip).md5(), 365);   
+   }
+   return new Message("welcome", [res.handlers.context.getTitle(), user.name]);
+};
+
 /**
  * macro rendering username
  */
-
 User.prototype.name_macro = function(param) {
    if (param.as == "link" && this.url)
       Html.link({href: this.url}, this.name);
@@ -37,18 +128,15 @@ User.prototype.name_macro = function(param) {
 /**
  * macro rendering password
  */
-
 User.prototype.password_macro = function(param) {
    if (param.as == "editor")
       Html.password(this.createInputParam("password", param));
    return;
 };
 
-
 /**
  * macro rendering URL
  */
-
 User.prototype.url_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.createInputParam("url", param));
@@ -57,11 +145,9 @@ User.prototype.url_macro = function(param) {
    return;
 };
 
-
 /**
  * macro rendering email
  */
-
 User.prototype.email_macro = function(param) {
    if (param.as == "editor")
       Html.input(this.createInputParam("email", param));
@@ -73,7 +159,6 @@ User.prototype.email_macro = function(param) {
 /**
  * macro rendering checkbox for publishemail
  */
-
 User.prototype.publishemail_macro = function(param) {
    if (param.as == "editor") {
       var inputParam = this.createCheckBoxParam("publishemail", param);
@@ -84,7 +169,6 @@ User.prototype.publishemail_macro = function(param) {
       res.write(this.publishemail ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 };
-
 
 /**
  * macro renders the sites the user is a member of or has subscribed to
@@ -101,10 +185,10 @@ User.prototype.sitelist_macro = function(param) {
    }
    return;
 };
+
 /**
  * macro counts
  */
-
 User.prototype.sysmgr_count_macro = function(param) {
    if (!param || !param.what)
       return;
@@ -127,7 +211,6 @@ User.prototype.sysmgr_count_macro = function(param) {
 /**
  * function renders the statusflags for this user
  */
-
 User.prototype.sysmgr_statusflags_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -144,7 +227,6 @@ User.prototype.sysmgr_statusflags_macro = function(param) {
 /**
  * function renders an edit-link
  */
-
 User.prototype.sysmgr_editlink_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin || req.data.edit == this.name || session.user == this)
@@ -163,7 +245,6 @@ User.prototype.sysmgr_editlink_macro = function(param) {
 /**
  * macro renders the username as plain text
  */
-
 User.prototype.sysmgr_username_macro = function(param) {
    res.write(this.name);
    return;
@@ -172,7 +253,6 @@ User.prototype.sysmgr_username_macro = function(param) {
 /**
  * macro renders the timestamp of registration
  */
-
 User.prototype.sysmgr_registered_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -200,7 +280,6 @@ User.prototype.sysmgr_lastvisit_macro = function(param) {
 /**
  * macro renders the trust-state of this user
  */
-
 User.prototype.sysmgr_trusted_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -216,7 +295,6 @@ User.prototype.sysmgr_trusted_macro = function(param) {
 /**
  * macro renders the block-state of this user
  */
-
 User.prototype.sysmgr_blocked_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -232,7 +310,6 @@ User.prototype.sysmgr_blocked_macro = function(param) {
 /**
  * macro renders the sysadmin-state of this user
  */
-
 User.prototype.sysmgr_sysadmin_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -244,7 +321,6 @@ User.prototype.sysmgr_sysadmin_macro = function(param) {
       res.write(this.sysadmin ? getMessage("generic.yes") : getMessage("generic.no"));
    return;
 };
-
 
 /** 
  * macro renders links to last items of this user
