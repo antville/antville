@@ -42,8 +42,8 @@ Metadata.prototype._set = Metadata.prototype.set;
  * @returns The resulting value
  * @type String
  */
-Metadata.prototype.getDataHandlerName = function() {
-   return this._id + "_data";
+Metadata.prototype.getDataSourceName = function() {
+   return this.__name__ + "_source";
 };
 
 /**
@@ -51,7 +51,7 @@ Metadata.prototype.getDataHandlerName = function() {
  * node.
  */
 Metadata.prototype.load = function() {
-   return eval(this._parent[this.getDataHandlerName()]);
+   return eval(this._parent[this.getDataSourceName()]);
 };
 
 /**
@@ -60,7 +60,7 @@ Metadata.prototype.load = function() {
  */
 Metadata.prototype.save = function() {
    var ref = this.cache.data || {};
-   this._parent[this.getDataHandlerName()] = ref.toSource();
+   this._parent[this.getDataSourceName()] = ref.toSource();
    return;
 };
 
