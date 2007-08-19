@@ -22,106 +22,122 @@
 // $URL$
 //
 
-User.getByName = function(name) {
-   return root.users.get(name);
+User.prototype.constructor = function(data) {
+   var now = new Date;
+   this.update({
+      name: data.name,
+      hash: data.hash,
+      salt: session.data.token,
+      email: data.email,
+      status: User.DEFAULT,
+      registered: now,
+      lastVisit: now
+   });
+   return this;
 };
 
-User.getSalt = function() {
-   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
-   var random = java.security.SecureRandom.getInstance("SHA1PRNG");
-   random.nextBytes(salt);
-   return Packages.sun.misc.BASE64Encoder().encode(salt);
-};
+User.prototype.value = function(key, value) {
+   var self = this;
 
-User.register = function(data) {
-   // check if username is existing and is clean
-   // can't use isClean() here because we accept
-   // special characters like umlauts and spaces
-   var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
-   if (!data.name)
-      throw new Exception("usernameMissing");
-   else if (data.name.length > 30)
-      throw new Exception("usernameTooLong");
-   else if (invalidChar.exec(data.name))
-      throw new Exception("usernameNoSpecialChars");
-   else if (this[data.name] || this[data.name + "_action"])
-      throw new Exception("usernameExisting");
+   var getValue = function() {
+      switch (key) {
+         case "hash":
+         case "salt":
+         case "url":
+         return self.properties.get(key);
 
-   // check if email-address is valid
-   if (!data.email) {
-      throw new Exception("emailMissing");
-   }
-   evalEmail(data.email);
-
-   // Create hash from password for JavaScript-disabled browsers
-   if (!data.hash) {
-      // Check if passwords match
-      if (!data.password1 || !data.password2) {
-         throw new Exception("passwordTwice");
-      } else if (data.password1 !== data.password2) {
-         throw new Exception("passwordNoMatch");
+         default:
+         return self[key];
       }
-      data.hash = (data.password1 + session.data.token).md5();
-   }
+   };
+   
+   var setValue = function() {
+      switch (key) {
+         case "email":
+         case "lastVisit":
+         case "name":
+         case "registered":
+         case "status":
+         return self[key] = value;
+         
+         default:
+         return self.properties.set(key, value);
+      }
+   };
 
-   if (User.getByName(data.name)) {
-      throw new Exception("memberExisting");
-   }
-   var user = new User();
-   user.name = data.name;
-   user.hash = data.hash;
-   user.salt = session.data.token;
-   user.email = data.email;
-   user.registered = new Date();
-   user.blocked = 0;
-   // grant trust and sysadmin-rights if there's no sysadmin 'til now
-   if (root.manage.sysadmins.size() == 0) {
-      user.sysadmin = user.trusted = 1;
-   } else {
-      user.sysadmin = user.trusted = 0;
-   }
-   root.users.add(user);
-   var welcomeWhere = path.site ? path.site.title : root.getTitle();
-   return new Message("welcome", [welcomeWhere, user.name], user);
+   return value === undefined ? getValue() : setValue();
 };
 
-User.prototype.getHash = function(token) {
-   token || (token = String.EMPTY);
-   return (this.hash + token).md5();
+User.prototype.update = function(values) {
+   for (var key in values) {
+      this.value(key, values[key]);
+   }
+   return;
+};
+
+User.prototype.touch = function() {
+   this.value("lastVisit", new Date);
+   return;
 };
 
 User.prototype.login = function(data) {
    var user = this;
-   var password = data.hash;
-   if (!password) {
-      password = ((data.password + this.salt).md5() + 
+   var digest = data.digest;
+   // Calculate digest for JavaScript-disabled browsers
+   if (!digest) {
+      digest = ((data.password + this.value("salt")).md5() + 
             session.data.token).md5();
    }
-   // check if login is successful
-   if (password !== this.getHash(session.data.token)) {
+   // Check if login is correct
+   if (digest !== this.getDigest(session.data.token)) {
       throw new Exception("loginTypo");
    }
-   // login was successful
    session.login(user);
-   user.lastVisit = new Date();
+   user.touch();
    if (data.remember) {
-      // user allowed us to set permanent cookies for auto-login
-      res.setCookie("avUsr", user.name, 365);
-      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel","4"), 
+      // Set long running cookies for automatic login
+      res.setCookie("avUsr", user.value("name"), 365);
+      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
             "", "\\.");
-      res.setCookie("avPw", (user.hash + ip).md5(), 365);   
+      res.setCookie("avPw", (user.value("hash") + ip).md5(), 365);   
    }
    return new Message("welcome", [res.handlers.context.getTitle(), user.name]);
+};
+
+User.prototype.getDigest = function(token) {
+   token || (token = String.EMPTY);
+   return (this.value("hash") + token).md5();
+};
+
+User.prototype.status_macro = function(param) {
+   // this macro is allowed just for sysadmins
+   if (!session.user.sysadmin) {
+      return;
+   }
+   res.debug(Html.dropDown);
+   if (param.as === "editor") {
+      var options = {};
+      for each (var status in User.status) {
+         options[status] = status;
+      }
+      Html.dropDown({name: "status"}, options, this.value("status"));
+   } else {
+      res.write(this.value("status"));
+   }
+   return;
+   
 };
 
 /**
  * macro rendering username
  */
 User.prototype.name_macro = function(param) {
-   if (param.as == "link" && this.url)
-      Html.link({href: this.url}, this.name);
-   else
-      res.write(this.name);
+   var url;
+   if (param.as === "link" && (url = this.value("url"))) {
+      Html.link({href: this.value("url")}, this.value("name"));
+   } else {
+      res.write(this.value("name"));
+   }
    return;
 };
 
@@ -129,8 +145,9 @@ User.prototype.name_macro = function(param) {
  * macro rendering password
  */
 User.prototype.password_macro = function(param) {
-   if (param.as == "editor")
+   if (param.as == "editor") {
       Html.password(this.createInputParam("password", param));
+   }
    return;
 };
 
@@ -138,10 +155,11 @@ User.prototype.password_macro = function(param) {
  * macro rendering URL
  */
 User.prototype.url_macro = function(param) {
-   if (param.as == "editor")
+   if (param.as == "editor") {
       Html.input(this.createInputParam("url", param));
-   else
+   } else {
       res.write(this.url);
+   }
    return;
 };
 
@@ -149,24 +167,11 @@ User.prototype.url_macro = function(param) {
  * macro rendering email
  */
 User.prototype.email_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("email", param));
-   else
-      res.write(this.email);
-   return;
-};
-
-/**
- * macro rendering checkbox for publishemail
- */
-User.prototype.publishemail_macro = function(param) {
    if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("publishemail", param);
-      if (req.data.save && !req.data.publishemail)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.publishemail ? getMessage("generic.yes") : getMessage("generic.no"));
+      Html.input(this.createInputParam("email", param));
+   } else {
+      res.write(this.email);
+   }
    return;
 };
 
@@ -277,51 +282,6 @@ User.prototype.sysmgr_lastvisit_macro = function(param) {
    return;
 };
 
-/**
- * macro renders the trust-state of this user
- */
-User.prototype.sysmgr_trusted_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = [getMessage("generic.no"), getMessage("generic.yes")];
-      Html.dropDown({name: "trusted"}, options, this.trusted);
-   } else
-      res.write(this.trusted ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro renders the block-state of this user
- */
-User.prototype.sysmgr_blocked_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = [getMessage("generic.no"), getMessage("generic.yes")];
-      Html.dropDown({name: "blocked"}, options, this.blocked);
-   } else
-      res.write(this.blocked ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro renders the sysadmin-state of this user
- */
-User.prototype.sysmgr_sysadmin_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = [getMessage("generic.no"), getMessage("generic.yes")];
-      Html.dropDown({name: "sysadmin"}, options, this.sysadmin);
-   } else
-      res.write(this.sysadmin ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
 /** 
  * macro renders links to last items of this user
  */
@@ -334,3 +294,67 @@ User.prototype.sysmgr_lastitems_macro = function(param) {
    }
    return;
 };
+
+User.getByName = function(name) {
+   return root.users.get(name);
+};
+
+User.getSalt = function() {
+   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
+   var random = java.security.SecureRandom.getInstance("SHA1PRNG");
+   random.nextBytes(salt);
+   return Packages.sun.misc.BASE64Encoder().encode(salt);
+};
+
+User.register = function(data) {
+   // check if username is existing and is clean
+   // can't use isClean() here because we accept
+   // special characters like umlauts and spaces
+   var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
+   if (!data.name) {
+      throw new Exception("usernameMissing");
+   } else if (data.name.length > 30) {
+      throw new Exception("usernameTooLong");
+   } else if (invalidChar.exec(data.name)) {
+      throw new Exception("usernameNoSpecialChars");
+   } else if (this[data.name] || this[data.name + "_action"]) {
+      throw new Exception("usernameExisting");
+   }
+
+   // check if email-address is valid
+   if (!data.email) {
+      throw new Exception("emailMissing");
+   }
+   evalEmail(data.email);
+
+   // Create hash from password for JavaScript-disabled browsers
+   if (!data.hash) {
+      // Check if passwords match
+      if (!data.password || !data.passwordConfirm) {
+         throw new Exception("passwordTwice");
+      } else if (data.password !== data.passwordConfirm) {
+         throw new Exception("passwordNoMatch");
+      }
+      data.hash = (data.password + session.data.token).md5();
+   }
+
+   if (User.getByName(data.name)) {
+      throw new Exception("memberExisting");
+   }
+   var user = new User(data);
+   // grant trust and sysadmin-rights if there's no sysadmin 'til now
+   if (root.manage.sysadmins.size() == 0) {
+      user.sysadmin = user.trusted = 1;
+   } else {
+      user.sysadmin = user.trusted = 0;
+   }
+   root.users.add(user);
+   var welcomeWhere = path.site ? path.site.title : root.getTitle();
+   return new Message("welcome", [welcomeWhere, user.name], user);
+};
+
+User.status = ["default", "blocked", "trusted", "privileged"];
+
+for each (status in User.status) {
+   User[status.toUpperCase()] = status;
+}

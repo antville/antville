@@ -22,6 +22,13 @@
 // $URL$
 //
 
+HopObject.prototype.value = function(key, value) {
+   if (value === undefined) {
+      return this[key];
+   }
+   return this[key] = value;
+};
+
 /**
  * user-friendly wrapper for href_macro
  */
@@ -114,10 +121,12 @@ HopObject.prototype.createInputParam = function(propName, param) {
    // submitted values override property value
    // but only if there were not multiple form elements
    // with the same name submitted
-   if (!req.data[propName + "_array"] && req.data[propName] != null)
+   var multiple = req.data[propName + "_array"];
+   if ((!multiple || multiple.length < 2) && req.data[propName] != null) {
       param.value = req.data[propName];
-   else
-      param.value = this[propName];
+   } else {
+      param.value = this.value(propName);
+   }
    delete param.as;
    return param;
 };
@@ -128,8 +137,9 @@ HopObject.prototype.createInputParam = function(propName, param) {
 HopObject.prototype.createCheckBoxParam = function(propName, param) {
    param.name = propName;
    param.value = 1;
-   if (req.data[propName] == 1 || this[propName] == 1)
+   if (req.data[propName] == 1 || this.value(propName)) {
       param.checked = "checked";
+   }
    delete param.as;
    return param;
 };

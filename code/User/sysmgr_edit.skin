@@ -10,16 +10,8 @@
 <% user.sysmgr_count what="files" suffix="&nbsp;files" %><% user.sysmgr_lastitems what="files" prefix=": " %><br /></td>
 <td><table>
    <tr>
-   <td class="small">sysadmin:</td>
-   <td><% user.sysmgr_sysadmin as="editor" %></td>
-   </tr>
-   <tr>
-   <td class="small">trusted:</td>
-   <td><% user.sysmgr_trusted as="editor" %></td>
-   </tr>
-   <tr>
-   <td class="small">blocked:</td>
-   <td><% user.sysmgr_blocked as="editor" %></td>
+   <td class="small">Status:</td>
+   <td><% user.status as="editor" %></td>
    </tr>
    <tr>
    <td class="small"></td>

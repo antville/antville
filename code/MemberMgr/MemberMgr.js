@@ -138,9 +138,9 @@ MemberMgr.prototype.create_action = function() {
  * edit actions for user profiles
  */
 MemberMgr.prototype.edit_action = function() {
-   if (req.data.cancel)
+   if (req.data.cancel) {
       res.redirect(this._parent.href());
-   else if (req.data.save) {
+   } else if (req.data.save) {
       try {
          res.message = this.updateUser(req.data);
          res.redirect(this._parent.href());
@@ -149,6 +149,8 @@ MemberMgr.prototype.edit_action = function() {
       }
    }
 
+   session.data.token = User.getSalt();
+   session.data.salt = session.user.value("salt"); // FIXME
    res.data.title = getMessage("MemberMgr.editProfileTitle", {userName: session.user.name});
    res.data.body = session.user.renderSkinAsString("edit");
    this._parent.renderSkin("page");
@@ -161,21 +163,28 @@ MemberMgr.prototype.edit_action = function() {
 MemberMgr.prototype.login_action = function() {
    res.message = new Message("introLogin");
    if (req.data.login) {
-      try {
-         res.message = this.evalLogin(req.data.name, req.data.password);
+      //try {
+         var user = User.getByName(req.data.name);
+         if (!user) {
+            throw new Exception("loginTypo");
+         }
+         res.message = user.login(req.data);
          if (session.data.referrer) {
             var url = session.data.referrer;
             session.data.referrer = null;
-         } else
+         } else {
             var url = this._parent.href();
+         }
          res.redirect(url);
-      } catch (err) {
-         res.message = err.toString();
-      }
+      //} catch (err) {
+      //   res.message = err.toString();
+      //}
    }
 
-   if (!session.data.referrer && req.data.http_referer)
+   if (!session.data.referrer && req.data.http_referer) {
       session.data.referrer = req.data.http_referer;
+   }
+   session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = getMessage("User.loginTitle");
    res.data.body = this.renderSkinAsString("login");
@@ -202,19 +211,24 @@ MemberMgr.prototype.logout_action = function() {
  * register action
  */
 MemberMgr.prototype.register_action = function() {
-   if (req.data.cancel)
+   if (req.data.cancel) {
       res.redirect(this._parent.href());
-   else if (req.data.register) {
+   } else if (req.data.register) {      
       if (session.data.referrer) {
          var url = session.data.referrer;
          session.data.referrer = null;
-      } else
+      } else {
          var url = this._parent.href();
+      }
       try {
-         var result = this.evalRegistration(req.data);
+         var result = User.register(req.data);
+         // Subscribe user to this site if public
+         if (path.site && path.site.online) {
+            this.add(new Membership(result.obj));
+         }
          res.message = result.toString();
          // now we log in the user and send the confirmation mail
-         session.login(result.obj.name, result.obj.password);
+         session.login(result.obj);
          if (root.sys_email) {
             var sp = {name: result.obj.name, password: result.obj.password};
             sendMail(root.sys_email,
@@ -232,6 +246,7 @@ MemberMgr.prototype.register_action = function() {
       }
    }
 
+   session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = getMessage("User.registerTitle");
    res.data.body = this.renderSkinAsString("register");
@@ -260,11 +275,20 @@ MemberMgr.prototype.sendpwd_action = function() {
    this._parent.renderSkin("page");
    return;
 };
+
+MemberMgr.prototype.salt_js_action = function() {
+   var user;
+   if (user = User.getByName(req.data.user)) {
+      res.write((user.value("salt") || String.EMPTY).toSource());
+   }
+   return;
+};
+
+
 /**
  * macro renders a link to signup if user is not member of this site
  * if user is member, it displays the level of membership
  */
-
 MemberMgr.prototype.membership_macro = function(param) {
    if (req.data.memberlevel == null)
       return;
@@ -277,7 +301,6 @@ MemberMgr.prototype.membership_macro = function(param) {
  * but only if user is not a member of this site
  * and the site is public
  */
-
 MemberMgr.prototype.subscribelink_macro = function(param) {
    if (this._parent.online && req.data.memberlevel == null)
       Html.link({href: this._parent.href("subscribe")},
@@ -365,88 +388,6 @@ MemberMgr.prototype.modSoruaLoginForm_action = function() {
    res.data.action = this.href("modSoruaLoginForm");
    this.renderSkin("modSorua");
 };
-/**
- * check if a login attempt is ok
- * @param String username
- * @param String password
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-MemberMgr.prototype.evalLogin = function(username, password) {
-   // check if login is successful
-   if (!session.login(username, password))
-      throw new Exception("loginTypo");
-   // login was successful
-   session.user.lastVisit = new Date();
-   if (req.data.remember) {
-      // user allowed us to set permanent cookies for auto-login
-      res.setCookie("avUsr", session.user.name, 365);
-      var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),"","\\.");
-      res.setCookie("avPw", (session.user.password + ip).md5(), 365);   
-   }
-   return new Message("welcome", [res.handlers.context.getTitle(), session.user.name]);
-};
-
-
-/**
- * check if a registration attempt is ok
- * @param Obj Object containing form-values needed for registration
- * @return Obj Object containing four properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- *             - username: username of registered user
- *             - password: password of registered user
- */
-MemberMgr.prototype.evalRegistration = function(param) {
-   // check if username is existing and is clean
-   // can't use isClean() here because we accept
-   // special characters like umlauts and spaces
-   var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
-   if (!param.name)
-      throw new Exception("usernameMissing");
-   else if (param.name.length > 30)
-      throw new Exception("usernameTooLong");
-   else if (invalidChar.exec(param.name))
-      throw new Exception("usernameNoSpecialChars");
-   else if (this[param.name] || this[param.name + "_action"])
-      throw new Exception("usernameExisting");
-
-   // check if passwords match
-   if (!param.password1 || !param.password2)
-      throw new Exception("passwordTwice");
-   else if (param.password1 != param.password2)
-      throw new Exception("passwordNoMatch");
-
-   // check if email-address is valid
-   if (!param.email)
-      throw new Exception("emailMissing");
-   evalEmail(param.email);
-
-   var newUser = app.registerUser(param.name, param.password1);
-   if (!newUser)
-      throw new Exception("memberExisting");
-   newUser.email = param.email;
-   newUser.publishemail = param.publishemail;
-   newUser.url = evalURL(param.url);
-   newUser.registered = new Date();
-   newUser.blocked = 0;
-   // grant trust and sysadmin-rights if there's no sysadmin 'til now
-   if (root.manage.sysadmins.size() == 0)
-      newUser.sysadmin = newUser.trusted = 1;
-   else
-      newUser.sysadmin = newUser.trusted = 0;
-   if (path.Site) {
-      var welcomeWhere = path.Site.title;
-      // if user registered within a public site, we subscribe
-      // user to this site
-      if (path.Site.online)
-         this.add(new Membership(newUser));
-   } else
-      var welcomeWhere = root.getTitle();
-   return new Message("welcome", [welcomeWhere, newUser.name], newUser);
-};
-
 
 /**
  * update user-profile
@@ -455,19 +396,35 @@ MemberMgr.prototype.evalRegistration = function(param) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-MemberMgr.prototype.updateUser = function(param) {
-   if (param.oldpwd) {
-      if (session.user.password != param.oldpwd)
-         throw new Exception("accountOldPwd");
-      if (!param.newpwd1 || !param.newpwd2)
-         throw new Exception("accountNewPwdMissing");
-      else if (param.newpwd1 != param.newpwd2)
-         throw new Exception("passwordNoMatch");
-      session.user.password = param.newpwd1;
+MemberMgr.prototype.updateUser = function(data) {
+   var user = session.user;
+
+   if (!data.digest && data.password) {
+      data.digest = ((data.password + user.value("salt")).md5() + 
+            session.data.token).md5();
    }
-   session.user.url = evalURL(param.url);
-   session.user.email = evalEmail(param.email);
-   session.user.publishemail = param.publishemail;
+   if (data.digest) {
+      if (data.digest !== user.getDigest(session.data.token)) {
+         throw new Exception("accountOldPwd");
+      }
+      if (!data.hash) {
+         if (!data.newPassword || !data.newPasswordConfirm) {
+            throw new Exception("accountNewPwdMissing");
+         } else if (data.newPassword !== data.newPasswordConfirm) {
+            throw new Exception("passwordNoMatch");
+         }
+         data.hash = (data.newPassword + session.data.token).md5();
+      }
+      user.update({
+         hash: data.hash,
+         salt: session.data.token         
+      });
+   }
+
+   user.update({
+      url: evalURL(data.url),
+      email: evalEmail(data.email),
+   });
    return new Message("update");
 };
 

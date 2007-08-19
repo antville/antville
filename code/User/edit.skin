@@ -1,33 +1,66 @@
+<script type="text/javascript">
+$(function() {
+   $("#submit").click(function() {
+      var token = "<% session.token %>";
+      var salt = "<% session.salt %>";
+      var password = $("#password").val();
+      if (password) {
+         $("#digest").val($.md5($.md5(password + salt) + token));
+      } 
+
+      var newPassword = $("#newPassword").val();
+      var newPasswordConfirm = $("#newPasswordConfirm").val();
+      $("input:password").val("");
+      // Check both passwords but let the server do the error handling
+      if (!newPassword || !newPasswordConfirm) {
+         return true;
+      } else if (newPassword !== newPasswordConfirm) {
+         $("#newPassword").val(0);
+         $("#newPasswordConfirm").val(1);
+         return true;
+      }
+      var hash = $.md5(newPassword + token);
+      $("#hash").val(hash);
+      return true;
+   });
+});
+</script>
+
 <form method="post" action="<% response.action %>">
+<input type="hidden" name="digest" id="digest" />
+<input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">Old password:</td>
-<td nowrap="nowrap"><% input type="password" name="oldpwd" size="15" %></td>
+<td class="small" nowrap="nowrap">Current password:</td>
+<td nowrap="nowrap"><input type="password" name="password" id="password" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">New password:</td>
-<td nowrap="nowrap"><% input type="password" name="newpwd1" size="15" %></td>
+<td nowrap="nowrap"><input type="password" name="newPassword" 
+id="newPassword" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Confirm password:</td>
-<td nowrap="nowrap"><% input type="password" name="newpwd2" size="15" %></td>
+<td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
+id="newPasswordConfirm" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">e-mail:</td>
 <td><% user.email as="editor" size="35" %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">e-mail is visible:</td>
-<td><% user.publishemail as="editor" %><br /><span class="small">If you select this checkbox your e-mail address will be visible to site administrators.</span></td>
-</tr>
-<tr>
 <td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
-<td><% user.url as="editor" size="35" %><br />
-<span class="small">If you enter a URL or an e-mail address here, your username will appear as link next to your stories or comments.</span></td>
+<td><% user.url as="editor" %><br />
+<span class="small">If you enter a URL or an e-mail address here, your username 
+will appear as link next to your stories or comments.</span></td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br />
+<button type="submit" id="submit" name="save" 
+value="save">Save</button>
+<button type="submit" name="cancel" value="cancel">Cancel</button>
+</td>
 </tr>
 </table>
 </form>

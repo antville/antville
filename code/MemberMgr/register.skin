@@ -1,33 +1,59 @@
+<script type="text/javascript">
+$(function() {
+   $("#submit").click(function() {
+      var token = "<% session.token %>";
+      var password = $("#password").val();
+      var passwordConfirm = $("#passwordConfirm").val();
+      $("input:password").val("");
+      // Check both passwords but let the server do the error handling
+      if (!password || !passwordConfirm) {
+         return true;
+      } else if (password !== passwordConfirm) {
+         $("#password1").val(0);
+         $("#password2").val(1);
+         return true;
+      }
+      var hash = $.md5(password + token);
+      $("#hash").val(hash);
+      return true;
+   });
+});
+</script>
+
 <form method="post" action="<% response.action %>">
+<input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small" nowrap="nowrap">Username:</td>
-<td nowrap="nowrap"><% input type="text" name="name" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Password:</td>
-<td nowrap="nowrap"><% input type="password" name="password1" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Confirm password:</td>
-<td nowrap="nowrap"><% input type="password" name="password2" %></td>
+<td nowrap="nowrap">
+<input type="text" name="name" value="<% request.name %>" />
+</td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">e-mail:</td>
-<td><% input type="text" name="email" %></td>
+<td>
+<input type="text" name="email" value="<% request.email %>" />
+</td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">e-mail is visible:</td>
-<td><span class="small"><% input type="checkbox" name="publishemail" %><br />If you select this checkbox your e-mail address will be visible to site administrators.</span></td>
+<td class="small" nowrap="nowrap">Password:</td>
+<td nowrap="nowrap">
+<input type="password" name="password" id="password" />
+</td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
-<td><% input type="text" name="url" %><br />
-<span class="small">If you enter a URL or an e-mail address here, your username will appear as link next to your stories or comments.</span></td>
+<td class="small" nowrap="nowrap">Confirm password:</td>
+<td nowrap="nowrap">
+<input type="password" name="passwordConfirm" id="passwordConfirm" />
+</td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><br /><% input type="submit" name="register" value="Register" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"><br />
+<button type="submit" id="submit" name="register" 
+value="register">Register</button>
+<button type="submit" name="cancel" value="cancel">Cancel</button>
+</td>
 </tr>
 </table>
 </form>

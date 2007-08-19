@@ -1,24 +1,59 @@
-<form method="post" action="<% response.action %>">
+<script type="text/javascript">
+$(function() {
+   $("#submit").click(function() {
+      var token = "<% session.token %>";
+      var name = $("#name").val();
+      var password = $("#password").val();
+      $("input:password").val("");
+      $.ajax({
+         async: false,
+         url: '<% membermgr.href action="salt.js" %>',
+         data: "user=" + encodeURIComponent(name),
+         dataType: "json",
+         success: function(salt) {
+            $("#digest").val($.md5($.md5(password + salt) + token));
+         }
+      });
+      return true;
+   });
+});
+</script>
+
+<form id="login" method="post" action="<% response.action %>">
+<input type="hidden" name="digest" id="digest" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small" nowrap="nowrap">Username:</td>
-<td nowrap="nowrap"><% input type="text" name="name" size="15" tabindex="1" %></td>
+<td nowrap="nowrap">
+<input type="text" name="name" id="name" size="15" tabindex="1" />
+</td>
 <td rowspan="4">&nbsp;</td>
-<td class="small"><% membermgr.link to="register" text="Not registered yet?" %></td>
+<td class="small">
+<% membermgr.link to="register" text="Not registered yet?" %>
+</td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Password:</td>
-<td nowrap="nowrap"><% input type="password" name="password" size="15" tabindex="2" %></td>
-<td class="small"><% membermgr.link to="sendpwd" text="Forgot your password?" %></td>
+<td nowrap="nowrap">
+<input type="password" name="password" id="password" size="15" tabindex="2" />
+</td>
+<td class="small">
+<% membermgr.link to="sendpwd" text="Forgot your password?" %>
+</td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td colspan="2" class="small" nowrap="nowrap"><% input type="checkbox" name="remember" tabindex="3" %>Remember me</td>
+<td colspan="2" class="small" nowrap="nowrap">
+<input type="checkbox" id="remember" name="remember" tabindex="3" />
+<label for="remember">Remember me</label>
+</td>
 </tr>
 <tr>
 <td nowrap="nowrap">&nbsp;</td>
-<td colspan="2" nowrap="nowrap"><br /><% input type="submit" name="login" value="Login" tabindex="4" %></td>
+<td colspan="2" nowrap="nowrap"><br />
+<button type="submit" id="submit" name="login" value="login" 
+tabindex="4">Login</button>
+</td>
 </tr>
 </table>
 </form>
-

@@ -420,33 +420,33 @@ SysMgr.prototype.searchUsers = function(show, sort, order, keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
    if (show == "1")
-      sql += "WHERE USER_ISBLOCKED=1 ";
+      sql += "where status = 'blocked' ";
    else if (show == "2")
-      sql += "WHERE USER_ISTRUSTED=1 ";
+      sql += "where status = 'trusted' ";
    else if (show == "3")
-      sql += "WHERE USER_ISSYSADMIN=1 ";
+      sql += "where status = 'privileged' ";
    if (keywords) {
       // additional keywords are given, so we're using them
       if (keywords.charAt(0) == "@") {
          // searching for email-addresses
-         sql += sql.length > 0 ? "AND " : "WHERE ";
-         sql += "USER_EMAIL LIKE '%" + keywords + "%' ";
+         sql += sql.length > 0 ? "and " : "where ";
+         sql += "email like '%" + keywords + "%' ";
       } else {
          // doing normal keyword-search
          var kArray = stripTags(keywords).split(" ");
          for (var i in kArray) {
             var k = kArray[i];
-            sql += sql.length > 0 ? "AND " : "WHERE ";
-            sql += "USER_NAME LIKE '%" + k + "%' ";
+            sql += sql.length > 0 ? "and " : "where ";
+            sql += "name like '%" + k + "%' ";
          }
       }
    }
    if (!sort || sort == "0")
-      sql += "ORDER BY USER_LASTVISIT ";
+      sql += "order by modified ";
    else if (sort == "1")
-      sql += "ORDER BY USER_REGISTERED ";
+      sql += "order by created ";
    else if (sort == "2")
-      sql += "ORDER BY USER_NAME ";
+      sql += "order by name ";
    if (!order || order == "0")
       sql += "desc ";
    else if (order == "1")
@@ -517,35 +517,21 @@ SysMgr.prototype.updateSite = function(param, admin) {
  */
 
 SysMgr.prototype.updateUser = function(param, admin) {
-   var u = this.users.get(param.item);
-   if (!u)
+   var user = this.users.get(param.item);
+   if (!user) {
       throw new Exception("userEditMissing");
-   if (u == admin)
-      throw new Exception("accountModifyOwn");
-   // check if this is an attempt to remove the last sysadmin
-   var sysadmin = parseInt(param.sysadmin, 10);
-   var trust = parseInt(param.trusted, 10);
-   var block = parseInt(param.blocked, 10);
-   if (u.sysadmin && this.sysadmins.size() == 1)
-      throw new Exception("adminDeleteLast");
-   else {
-      //logging
-      if (sysadmin > u.sysadmin)
-         this.syslogs.add(new SysLog("user", u.name, "granted sysadmin-rights", admin));
-      else if (sysadmin < u.sysadmin)
-         this.syslogs.add(new SysLog("user", u.name, "revoked sysadmin-rights", admin));
-      u.sysadmin = sysadmin;
    }
-   if (trust > u.trusted)
-      this.syslogs.add(new SysLog("user", u.name, "granted trust", admin));
-   else if (trust < u.trusted)
-      this.syslogs.add(new SysLog("user", u.name, "revoked trust", admin));
-   if (block > u.blocked)
-      this.syslogs.add(new SysLog("user", u.name, "blocked user", admin));
-   else if (block < u.blocked)
-      this.syslogs.add(new SysLog("user", u.name, "unblocked user", admin));
-   u.trusted = trust;
-   u.blocked = block;
+   if (user === admin) {
+      throw new Exception("accountModifyOwn");
+   }
+   var name = user.name;
+   var status = user.value("status");
+   if (param.status !== status) {
+      user.value("status", param.status);
+      // Log activity
+      var msg = "set status to " + param.status;
+      this.syslogs.add(new SysLog("user", name, msg, admin));
+   }
    return new Message("update");
 };
 
