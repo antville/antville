@@ -128,6 +128,11 @@ Root.prototype.altdiff = function() {
    res.abort();
 };
 
+Object.prototype.json_macro = function() {
+   return this.toSource();
+};
+Object.prototype.dontEnum("json_macro");
+
 String.prototype.rot13 = function() {
    var result = "";
    Array.forEach(this, function(chr) {

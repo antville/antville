@@ -1,3 +1,37 @@
+Root.prototype.convert_action = function() {
+   return convert(req.data.type);
+};
+
+var convert = function(type) {
+   type || (type = String.EMPTY);
+   
+   var rows, sql;
+   var db = getDBConnection("antville");
+
+   function quote(s) {
+      return "'" + s.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
+   }
+      
+   switch (type.toLowerCase()) {
+      case "users":
+      var query = "select user_id, hash, salt, user_url from av_user";
+      var rows = db.executeRetrieval(query);
+      while (rows && rows.next()) {
+         sql = "update av_user set metadata = " + quote({
+            hash: rows.getColumnItem("hash"),
+            salt: rows.getColumnItem("salt"),
+            url: rows.getColumnItem("user_url")
+         }.toSource()) + " where user_id = " + rows.getColumnItem("user_id");
+         writeln(sql);
+         db.executeCommand(sql);
+      }
+      break;
+   }
+
+   rows && rows.release();
+   return;
+};
+
 Root.prototype.topic2tag_action = function() {
 return;
    var db = getDBConnection("antville");
