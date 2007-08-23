@@ -299,7 +299,7 @@ Site.prototype.mostread_action = function() {
 Site.prototype.referrers_action = function() {
    if (req.data.permanent && session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (err) {
          res.message = err.toString();
          res.redirect(this.href());
@@ -716,11 +716,11 @@ Site.prototype.navigation_macro = function(param) {
       case "contributors" :
          if (session.user.sysadmin ||
              this.preferences.get("usercontrib") ||
-             req.data.memberlevel >= CONTRIBUTOR)
+             res.data.memberlevel >= CONTRIBUTOR)
             this.renderSkin("contribnavigation");
          break;
       case "admins" :
-         if (session.user.sysadmin || req.data.memberlevel >= ADMIN)
+         if (session.user.sysadmin || res.data.memberlevel >= ADMIN)
             this.renderSkin("adminnavigation");
          break;
    }
@@ -864,7 +864,7 @@ Site.prototype.age_macro = function(param) {
  */
 Site.prototype.history_macro = function(param) {
    try {
-      this.checkView(session.user, req.data.memberlevel);
+      this.checkView(session.user, res.data.memberlevel);
    } catch (deny) {
       return;
    }
@@ -1111,7 +1111,7 @@ Site.prototype.switch_macro = function(param) {
       try {
          // FIXME: unfortunately, the check* methods are
          // not very handy, anymore... (need try/catch block)
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
          res.write(param.on);
       } catch (err) {
          res.write(param.off);

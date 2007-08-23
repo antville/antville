@@ -210,7 +210,7 @@ ImageMgr.prototype.deleteAll = function() {
 ImageMgr.prototype.checkAccess = function(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
    try {
-      this.checkAdd(session.user, req.data.memberlevel);
+      this.checkAdd(session.user, res.data.memberlevel);
    } catch (deny) {
       res.message = deny.toString();
       res.redirect(this._parent.href());

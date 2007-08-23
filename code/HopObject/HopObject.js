@@ -22,11 +22,22 @@
 // $URL$
 //
 
-HopObject.prototype.value = function(key, value) {
+HopObject.prototype.value = function(key, value, getter, setter) {
+   getter || (getter = function() { 
+      return this[key]; 
+   });
+   setter || (setter = new Function);
    if (value === undefined) {
-      return this[key];
+      if (key.constructor === Object) {
+         for (var i in key) {
+            this.value(i, key[i]);
+         }
+         return;
+      }
+      return getter();
    }
-   return this[key] = value;
+   setter();
+   return;
 };
 
 /**
@@ -193,6 +204,7 @@ HopObject.prototype.applyModuleMethod = function(module, funcName, param) {
 HopObject.prototype.onCodeUpdate = function(prototype) {
    return onCodeUpdate(prototype);
 };
+
 /**
  * function checks if there's a site in path
  * if true it checks if the site or the user is blocked
@@ -202,7 +214,7 @@ HopObject.prototype.onRequest = function() {
       res.redirect(app.data.redirectPostRequests);
    autoLogin();
    // defining skinpath, membershipLevel
-   req.data.memberlevel = null;
+   res.data.memberlevel = null;
    // if root.sys_frontSite is set and the site is online
    // we put it into res.handlers.site to ensure that the mirrored
    // site works as expected
@@ -212,7 +224,7 @@ HopObject.prototype.onRequest = function() {
       if (res.handlers.site.blocked)
          res.redirect(root.href("blocked"));
       if (session.user)
-         req.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
+         res.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
       // set a handler that contains the context
       res.handlers.context = res.handlers.site;
    } else {
@@ -241,7 +253,7 @@ HopObject.prototype.onRequest = function() {
    // check access, but only if user is *not* a sysadmin
    // sysadmins are allowed to to everything
    if (!session.user || !session.user.sysadmin)
-      this.checkAccess(req.action, session.user, req.data.memberlevel);
+      this.checkAccess(req.action, session.user, res.data.memberlevel);
    return;
 };
 

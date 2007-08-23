@@ -82,7 +82,7 @@ Tag.prototype.permission_macro = function(param, type) {
 
 Tag.prototype.getPermission = function(type) {
    var user = session.user;
-   var level = req.data.memberlevel;
+   var level = res.data.memberlevel;
    switch (type) {
       case "main":
       return true;

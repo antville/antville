@@ -785,9 +785,7 @@ Root.prototype.getLocale = function() {
  * if not, it returns "Antville"
  */
 Root.prototype.getTitle = function() {
-   if (!root.sys_title)
-      return "antville";
-   return root.sys_title;
+   return root.sys_title || "Antville";
 };
 
 /**

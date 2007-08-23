@@ -219,7 +219,7 @@ Poll.prototype.total_macro = function(param) {
 Poll.prototype.editlink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -237,7 +237,7 @@ Poll.prototype.editlink_macro = function(param) {
 Poll.prototype.deletelink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkDelete(session.user, req.data.memberlevel);
+         this.checkDelete(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -254,7 +254,7 @@ Poll.prototype.deletelink_macro = function(param) {
 Poll.prototype.viewlink_macro = function(param) {
    try {
       if (!this.closed) {
-         this.checkVote(session.user, req.data.memberlevel);
+         this.checkVote(session.user, res.data.memberlevel);
          Html.link({href: this.href()},
                    param.text ? param.text : getMessage("Poll.vote"));
       }
@@ -271,7 +271,7 @@ Poll.prototype.viewlink_macro = function(param) {
 Poll.prototype.closelink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkDelete(session.user, req.data.memberlevel);
+         this.checkDelete(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -339,7 +339,7 @@ Poll.prototype.evalPoll = function(question, choices, creator) {
  *                - url (String): the URL string of the poll
  */
 Poll.prototype.evalVote = function(param, usr) {
-   this.checkVote(usr, req.data.memberlevel);
+   this.checkVote(usr, res.data.memberlevel);
 	if (!param.choice)
 	   throw new Exception("noVote");
 	var c = this.get(param.choice);

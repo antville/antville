@@ -240,7 +240,7 @@ Story.prototype.createtime_macro = function(param) {
 Story.prototype.editlink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -261,7 +261,7 @@ Story.prototype.editlink_macro = function(param) {
 Story.prototype.deletelink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkDelete(session.user, req.data.memberlevel);
+         this.checkDelete(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -282,7 +282,7 @@ Story.prototype.deletelink_macro = function(param) {
 Story.prototype.onlinelink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -313,7 +313,7 @@ Story.prototype.onlinelink_macro = function(param) {
 Story.prototype.viewlink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkView(session.user, req.data.memberlevel);
+         this.checkView(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }

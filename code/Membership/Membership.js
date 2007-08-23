@@ -23,6 +23,17 @@
 //
 
 /**
+ * constructor function for membership objects
+ */
+Membership.prototype.constructor = function(usr, level) {
+   this.user = usr;
+   this.username = usr.name;
+   this.level = level ? level : SUBSCRIBER;
+   this.createtime = new Date();
+   return this;
+};
+
+/**
  * edit action
  */
 Membership.prototype.edit_action = function() {
@@ -81,10 +92,9 @@ Membership.prototype.mailto_action = function() {
       if (req.data.text) {
          try {
             var mailbody = this.renderSkinAsString("mailmessage", {text: req.data.text});
-            res.message = sendMail(session.user.email, 
-                                   this.user.email, 
-                                   getMessage("mail.toUser", root.sys_title),
-                                   mailbody);
+            sendMail(session.user.email, this.user.email, 
+                  getMessage("mail.toUser", root.sys_title), mailbody);
+            res.message = new Message("mailSend");
             res.redirect(this._parent.href());
          } catch (err) {
             res.message = err.toString();
@@ -100,6 +110,7 @@ Membership.prototype.mailto_action = function() {
    this.site.renderSkin("page");
    return;
 };
+
 /**
  * macro renders the username
  */
@@ -110,7 +121,6 @@ Membership.prototype.username_macro = function(param) {
       res.write(this.username);
    return;
 };
-
 
 /**
  * macro renders e-mail address
@@ -137,7 +147,6 @@ Membership.prototype.url_macro = function(param) {
 /**
  * macro renders user-level
  */
-
 Membership.prototype.level_macro = function(param) {
    if (param.as == "editor")
       Html.dropDown({name: "level"}, getRoles(), this.level, param.firstOption);
@@ -154,7 +163,6 @@ Membership.prototype.editlink_macro = function(param) {
       Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("generic.edit"));
    return;
 };
-
 
 /**
  * macro renders a link for deleting a membership
@@ -175,17 +183,6 @@ Membership.prototype.unsubscribelink_macro = function(param) {
                 param.text ? param.text : getMessage("Membership.unsubscribe"));
    return;
 };
-/**
- * constructor function for membership objects
- */
-Membership.prototype.constructor = function(usr, level) {
-   this.user = usr;
-   this.username = usr.name;
-   this.level = level ? level : SUBSCRIBER;
-   this.createtime = new Date();
-   return this;
-};
-
 
 /**
  * function updates a membership
@@ -195,7 +192,6 @@ Membership.prototype.constructor = function(usr, level) {
  *             - error (boolean): true if error happened, false if everything went fine
  *             - message (String): containing a message to user
  */
-
 Membership.prototype.updateMembership = function(lvl, modifier) {
    if (isNaN(lvl))
       throw new Exception("memberNoRole");
@@ -206,14 +202,13 @@ Membership.prototype.updateMembership = function(lvl, modifier) {
       this.level = lvl;
       this.modifier = modifier;
       this.modifytime = new Date();
-      sendMail(root.sys_email,
-               this.user.email,
-               getMessage("mail.statusChange", this.site.title),
-               this.renderSkinAsString("mailstatuschange")
-              );
+      sendMail(root.sys_email, this.user.email,
+            getMessage("mail.statusChange", this.site.title),
+            this.renderSkinAsString("mailstatuschange"));
    }
    return new Message("update");
 };
+
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action
@@ -231,4 +226,3 @@ Membership.prototype.checkAccess = function(action, usr, level) {
    }
    return;
 };
-

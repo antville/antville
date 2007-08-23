@@ -150,7 +150,7 @@ Image.prototype.editlink_macro = function(param) {
    }
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -173,7 +173,7 @@ Image.prototype.deletelink_macro = function(param) {
    }
    if (session.user) {
       try {
-         this.checkDelete(session.user, req.data.memberlevel);
+         this.checkDelete(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -228,7 +228,7 @@ Image.prototype.replacelink_macro = function(param) {
    if (this.layout && path.Layout != this.layout) {
       if (session.user) {
          try {
-            path.Layout.images.checkAdd(session.user, req.data.memberlevel);
+            path.Layout.images.checkAdd(session.user, res.data.memberlevel);
          } catch (deny) {
             return;
          }

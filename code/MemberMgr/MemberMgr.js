@@ -26,7 +26,167 @@
  * main action, lists all members in alpabetical order
  */
 MemberMgr.prototype.main_action = function() {
-   this.renderView(this, getMessage("User.role.members"));
+   this.renderView(this, gettext("Members"));
+   return;
+};
+
+/**
+ * register action
+ */
+MemberMgr.prototype.register_action = function() {
+   if (req.data.cancel) {
+      res.redirect(this._parent.href());
+   } else if (req.data.register) {      
+      try {
+         var user = User.register(req.data);
+         // Subscribe user to this site if public
+         if (res.handlers.site && res.handlers.site.online) {
+            this.add(new Membership(user));
+         }
+         var title = getTitle();
+         if (root.sys_email) {
+            var sp = {name: user.name};
+            sendMail(root.sys_email, user.email, 
+                  gettext('Welcome to "{0}"!', title),
+                  this.renderSkinAsString("mailregconfirm", sp));
+         }
+         var url = session.data.referrer || this._parent.href();
+         delete session.data.referrer;
+         res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+               title, user.name);
+         res.redirect(url);
+      } catch (ex) {
+         app.log(ex);
+         res.message = ex;
+      }
+   }
+
+   session.data.token = User.getSalt();
+   res.data.action = this.href(req.action);
+   res.data.title = gettext("Login");
+   res.data.body = this.renderSkinAsString("register");
+   this._parent.renderSkin("page");
+   return;
+};
+
+/**
+ * login action
+ */
+MemberMgr.prototype.login_action = function() {
+   if (req.data.login) {
+      try {
+         var user = User.login(req.data);
+         var url = session.data.referrer || this._parent.href();
+         delete session.data.referrer;
+         res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+               res.handlers.context.getTitle(), user.name);
+         res.redirect(url);
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+
+   if (!session.data.referrer) {
+      session.data.referrer = req.data.http_referer;
+   }
+   session.data.token = User.getSalt();
+   res.data.action = this.href(req.action);
+   res.data.title = gettext("Login");
+   res.data.body = this.renderSkinAsString("login");
+   this._parent.renderSkin("page");
+   return;
+};
+
+/**
+ * logout action
+ */
+MemberMgr.prototype.logout_action = function() {
+   if (session.user) {
+     res.message = gettext("Good bye, {0}! Lookin' forward to seeing you again!", 
+           session.user.name);
+     session.logout();
+     delete session.data.referrer;
+     res.setCookie("avUsr", "");
+     res.setCookie("avPw", "");
+   }
+   res.redirect(this._parent.href());
+   return;
+};
+
+/**
+ * action for creating a new Membership
+ */
+MemberMgr.prototype.create_action = function() {
+   if (req.data.cancel) {
+      res.redirect(this.href());
+   } else if (req.data.keyword) {
+      try {
+         var result = this.searchUser(req.data.keyword);
+         res.message = result.toString();
+         res.data.searchresult = this.renderSkinAsString("searchresult", 
+               {result: result.obj});
+      } catch (err) {
+         res.message = err.toString();
+      }
+   } else if (req.data.add) {
+      try {
+         var result = this.evalNewMembership(req.data.username, session.user);
+         res.message = result.toString();
+         // send confirmation mail
+         var sp = new Object();
+         sp.site = result.obj.site.title;
+         sp.creator = session.user.name;
+         sp.url = result.obj.site.href();
+         sp.account = result.obj.user.name;
+         var mailbody = this.renderSkinAsString("mailnewmember", sp);
+         sendMail(root.sys_email, result.obj.user.email,
+               getMessage("mail.newMember", result.obj.site.title), mailbody);
+         res.redirect(result.obj.href("edit"));
+      } catch (err) {
+         res.message = err.toString();
+         if (err instanceof MailException)
+            res.redirect(result.obj.href("edit"));
+         res.redirect(this.href());
+      }
+   }
+   res.data.action = this.href(req.action);
+   res.data.title = getMessage("MemberMgr.searchTitle", 
+         {siteTitle: this._parent.title});
+   res.data.body = this.renderSkinAsString("new");
+   res.handlers.context.renderSkin("page");
+   return;
+};
+
+/**
+ * edit actions for user profiles
+ */
+MemberMgr.prototype.edit_action = function() {
+   if (req.data.cancel) {
+      res.redirect(this._parent.href());
+   } else if (req.data.save) {
+      try {
+         session.user.update(req.data);
+         res.message = gettext("The changes were saved successfully.");
+         res.redirect(this._parent.href());
+      } catch (err) {
+         res.message = err.toString();
+      }
+   }
+
+   session.data.token = User.getSalt();
+   session.data.salt = session.user.value("salt"); // FIXME
+   res.data.title = gettext("Profile of user {0}", session.user.name);
+   res.data.body = session.user.renderSkinAsString("edit");
+   this._parent.renderSkin("page");
+   return;
+};
+
+MemberMgr.prototype.salt_js_action = function() {
+   var user;
+   if (user = User.getByName(req.data.user)) {
+      res.write((user.value("salt") || String.EMPTY).toSource());
+   }
    return;
 };
 
@@ -34,7 +194,7 @@ MemberMgr.prototype.main_action = function() {
  * list all subscribers of a site
  */
 MemberMgr.prototype.subscribers_action = function() {
-   this.renderView(this.subscribers, getMessage("User.role.subscribers"));
+   this.renderView(this.subscribers, gettext("Subscribers"));
    return;
 };
 
@@ -42,7 +202,7 @@ MemberMgr.prototype.subscribers_action = function() {
  * list all contributors of a site
  */
 MemberMgr.prototype.contributors_action = function() {
-   this.renderView(this.contributors, getMessage("User.role.contributors"));
+   this.renderView(this.contributors, gettext("Contributors"));
    return;
 };
 
@@ -50,7 +210,7 @@ MemberMgr.prototype.contributors_action = function() {
  * list all content managers of a site
  */
 MemberMgr.prototype.managers_action = function() {
-   this.renderView(this.managers, getMessage("User.role.contentManagers"));
+   this.renderView(this.managers, gettext("Content Managers"));
    return;
 };
 
@@ -58,7 +218,7 @@ MemberMgr.prototype.managers_action = function() {
  * list all admins of a site
  */
 MemberMgr.prototype.admins_action = function() {
-   this.renderView(this.admins, getMessage("User.role.administrators"));
+   this.renderView(this.admins, gettext("Administrators"));
    return;
 };
 
@@ -67,7 +227,7 @@ MemberMgr.prototype.admins_action = function() {
  * site list of a user's subscriptions
  */
 MemberMgr.prototype.updated_action = function() {
-   res.data.title = getMessage("MemberMgr.updateTitle", {userName: session.user.name});
+   res.data.title = gettext("Updated sites for user {0}", session.user.name);
    res.data.sitelist = session.user.renderSkinAsString("sitelist");
    res.data.body = session.user.renderSkinAsString("subscriptions");
    res.handlers.context.renderSkin("page");
@@ -91,208 +251,14 @@ MemberMgr.prototype.memberships_action = function() {
 };
 
 /**
- * action for creating a new Membership
- */
-MemberMgr.prototype.create_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.href());
-   else if (req.data.keyword) {
-      try {
-         var result = this.searchUser(req.data.keyword);
-         res.message = result.toString();
-         res.data.searchresult = this.renderSkinAsString("searchresult", {result: result.obj});
-      } catch (err) {
-         res.message = err.toString();
-      }
-   } else if (req.data.add) {
-      try {
-         var result = this.evalNewMembership(req.data.username, session.user);
-         res.message = result.toString();
-         // send confirmation mail
-         var sp = new Object();
-         sp.site = result.obj.site.title;
-         sp.creator = session.user.name;
-         sp.url = result.obj.site.href();
-         sp.account = result.obj.user.name;
-         var mailbody = this.renderSkinAsString("mailnewmember", sp);
-         sendMail(root.sys_email,
-                  result.obj.user.email,
-                  getMessage("mail.newMember", result.obj.site.title),
-                  mailbody);
-         res.redirect(result.obj.href("edit"));
-      } catch (err) {
-         res.message = err.toString();
-         if (err instanceof MailException)
-            res.redirect(result.obj.href("edit"));
-         res.redirect(this.href());
-      }
-   }
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("MemberMgr.searchTitle", {siteTitle: this._parent.title});
-   res.data.body = this.renderSkinAsString("new");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-
-/**
- * edit actions for user profiles
- */
-MemberMgr.prototype.edit_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this._parent.href());
-   } else if (req.data.save) {
-      try {
-         res.message = this.updateUser(req.data);
-         res.redirect(this._parent.href());
-      } catch (err) {
-         res.message = err.toString();
-      }
-   }
-
-   session.data.token = User.getSalt();
-   session.data.salt = session.user.value("salt"); // FIXME
-   res.data.title = getMessage("MemberMgr.editProfileTitle", {userName: session.user.name});
-   res.data.body = session.user.renderSkinAsString("edit");
-   this._parent.renderSkin("page");
-   return;
-};
-
-/**
- * login action
- */
-MemberMgr.prototype.login_action = function() {
-   res.message = new Message("introLogin");
-   if (req.data.login) {
-      //try {
-         var user = User.getByName(req.data.name);
-         if (!user) {
-            throw new Exception("loginTypo");
-         }
-         res.message = user.login(req.data);
-         if (session.data.referrer) {
-            var url = session.data.referrer;
-            session.data.referrer = null;
-         } else {
-            var url = this._parent.href();
-         }
-         res.redirect(url);
-      //} catch (err) {
-      //   res.message = err.toString();
-      //}
-   }
-
-   if (!session.data.referrer && req.data.http_referer) {
-      session.data.referrer = req.data.http_referer;
-   }
-   session.data.token = User.getSalt();
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("User.loginTitle");
-   res.data.body = this.renderSkinAsString("login");
-   this._parent.renderSkin("page");
-   return;
-};
-
-/**
- * logout action
- */
-MemberMgr.prototype.logout_action = function() {
-   if (session.user) {
-     res.message = new Message("logout", session.user.name);
-     session.logout();
-     session.data.referrer = null;
-     res.setCookie ("avUsr", "");
-     res.setCookie ("avPw", "");
-   }
-   res.redirect(this._parent.href());
-   return;
-};
-
-/**
- * register action
- */
-MemberMgr.prototype.register_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this._parent.href());
-   } else if (req.data.register) {      
-      if (session.data.referrer) {
-         var url = session.data.referrer;
-         session.data.referrer = null;
-      } else {
-         var url = this._parent.href();
-      }
-      try {
-         var result = User.register(req.data);
-         // Subscribe user to this site if public
-         if (path.site && path.site.online) {
-            this.add(new Membership(result.obj));
-         }
-         res.message = result.toString();
-         // now we log in the user and send the confirmation mail
-         session.login(result.obj);
-         if (root.sys_email) {
-            var sp = {name: result.obj.name, password: result.obj.password};
-            sendMail(root.sys_email,
-                     result.obj.email,
-                     getMessage("mail.registration", root.getTitle()),
-                     this.renderSkinAsString("mailregconfirm", sp)
-                    );
-         }
-         res.redirect(url);
-      } catch (err) {
-         res.message = err.toString();
-         // if we got a mail exception redirect back
-         if (err instanceof MailException)
-            res.redirect(url);
-      }
-   }
-
-   session.data.token = User.getSalt();
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("User.registerTitle");
-   res.data.body = this.renderSkinAsString("register");
-   this._parent.renderSkin("page");
-   return;
-};
-
-/**
- * password reminder action
- */
-MemberMgr.prototype.sendpwd_action = function() {
-   if (req.data.cancel)
-      res.redirect(this._parent.href());
-   else if (req.data.send) {
-      try {
-         res.message = this.sendPwd(req.data.email);
-         res.redirect(this._parent.href());
-      } catch (err) {
-         res.message = err.toString();
-      }
-   }
-
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("User.recoverPasswordTitle");
-   res.data.body = this.renderSkinAsString("sendpwd");
-   this._parent.renderSkin("page");
-   return;
-};
-
-MemberMgr.prototype.salt_js_action = function() {
-   var user;
-   if (user = User.getByName(req.data.user)) {
-      res.write((user.value("salt") || String.EMPTY).toSource());
-   }
-   return;
-};
-
-
-/**
  * macro renders a link to signup if user is not member of this site
  * if user is member, it displays the level of membership
  */
 MemberMgr.prototype.membership_macro = function(param) {
-   if (req.data.memberlevel == null)
+   if (res.data.memberlevel == null) {
       return;
-   res.write(getRole(req.data.memberlevel));
+   }
+   res.write(getRole(res.data.memberlevel));
    return;
 };
 
@@ -302,9 +268,10 @@ MemberMgr.prototype.membership_macro = function(param) {
  * and the site is public
  */
 MemberMgr.prototype.subscribelink_macro = function(param) {
-   if (this._parent.online && req.data.memberlevel == null)
+   if (this._parent.online && res.data.memberlevel == null) {
       Html.link({href: this._parent.href("subscribe")},
-                param.text ? param.text : getMessage("MemberMgr.signUp"));
+            param.text ? param.text : getMessage("MemberMgr.signUp"));
+   }
    return;
 };
 
@@ -314,9 +281,10 @@ MemberMgr.prototype.subscribelink_macro = function(param) {
  */
 
 MemberMgr.prototype.subscriptionslink_macro = function(param) {
-   if (session.user.size())
+   if (session.user.size()) {
       Html.link({href: this.href("updated")},
-                param.text ? param.text : getMessage("MemberMgr.subscriptions"));
+            param.text ? param.text : getMessage("MemberMgr.subscriptions"));
+   }
    return;
 };
 
@@ -388,46 +356,6 @@ MemberMgr.prototype.modSoruaLoginForm_action = function() {
    res.data.action = this.href("modSoruaLoginForm");
    this.renderSkin("modSorua");
 };
-
-/**
- * update user-profile
- * @param Obj Object containing form values
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-MemberMgr.prototype.updateUser = function(data) {
-   var user = session.user;
-
-   if (!data.digest && data.password) {
-      data.digest = ((data.password + user.value("salt")).md5() + 
-            session.data.token).md5();
-   }
-   if (data.digest) {
-      if (data.digest !== user.getDigest(session.data.token)) {
-         throw new Exception("accountOldPwd");
-      }
-      if (!data.hash) {
-         if (!data.newPassword || !data.newPasswordConfirm) {
-            throw new Exception("accountNewPwdMissing");
-         } else if (data.newPassword !== data.newPasswordConfirm) {
-            throw new Exception("passwordNoMatch");
-         }
-         data.hash = (data.newPassword + session.data.token).md5();
-      }
-      user.update({
-         hash: data.hash,
-         salt: session.data.token         
-      });
-   }
-
-   user.update({
-      url: evalURL(data.url),
-      email: evalEmail(data.email),
-   });
-   return new Message("update");
-};
-
 
 /**
  * function retrieves a list of usernames/passwords for a submitted email-address
@@ -625,6 +553,7 @@ MemberMgr.prototype.renderSubscriptionView = function(collection, title) {
    res.handlers.context.renderSkin("page");
    return;
 };
+
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action
@@ -642,15 +571,16 @@ MemberMgr.prototype.checkAccess = function(action, usr, level) {
          case "contributors" :
          case "subscribers" :
          case "create" :
-            checkIfLoggedIn(this.href(action));
-            this.checkEditMembers(usr, level);
-            break;
+         checkIfLoggedIn(this.href(action));
+         this.checkEditMembers(usr, level);
+         break;
+         
          case "updated" :
          case "memberships" :
          case "subscriptions" :
          case "edit" :
-            checkIfLoggedIn(this.href(action));
-            break;
+         checkIfLoggedIn(this.href(action));
+         break;
       }
    } catch (deny) {
       res.message = deny.toString();

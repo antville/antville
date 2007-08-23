@@ -24,7 +24,7 @@
 
 User.prototype.constructor = function(data) {
    var now = new Date;
-   this.update({
+   this.value({
       name: data.name,
       hash: data.hash,
       salt: session.data.token,
@@ -39,7 +39,7 @@ User.prototype.constructor = function(data) {
 User.prototype.value = function(key, value) {
    var self = this;
 
-   var getValue = function() {
+   var getter = function() {
       switch (key) {
          case "hash":
          case "salt":
@@ -51,7 +51,7 @@ User.prototype.value = function(key, value) {
       }
    };
    
-   var setValue = function() {
+   var setter = function() {
       switch (key) {
          case "email":
          case "lastVisit":
@@ -65,14 +65,7 @@ User.prototype.value = function(key, value) {
       }
    };
 
-   return value === undefined ? getValue() : setValue();
-};
-
-User.prototype.update = function(values) {
-   for (var key in values) {
-      this.value(key, values[key]);
-   }
-   return;
+   return HopObject.prototype.value.call(this, key, value, getter, setter);
 };
 
 User.prototype.touch = function() {
@@ -80,41 +73,52 @@ User.prototype.touch = function() {
    return;
 };
 
-User.prototype.login = function(data) {
-   var user = this;
-   var digest = data.digest;
-   // Calculate digest for JavaScript-disabled browsers
-   if (!digest) {
-      digest = ((data.password + this.value("salt")).md5() + 
-            session.data.token).md5();
-   }
-   // Check if login is correct
-   if (digest !== this.getDigest(session.data.token)) {
-      throw new Exception("loginTypo");
-   }
-   session.login(user);
-   user.touch();
-   if (data.remember) {
-      // Set long running cookies for automatic login
-      res.setCookie("avUsr", user.value("name"), 365);
-      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
-            "", "\\.");
-      res.setCookie("avPw", (user.value("hash") + ip).md5(), 365);   
-   }
-   return new Message("welcome", [res.handlers.context.getTitle(), user.name]);
-};
-
 User.prototype.getDigest = function(token) {
    token || (token = String.EMPTY);
    return (this.value("hash") + token).md5();
 };
 
+/**
+ * update user-profile
+ * @param Obj Object containing form values
+ * @return Obj Object containing two properties:
+ *             - error (boolean): true if error happened, false if everything went fine
+ *             - message (String): containing a message to user
+ */
+User.prototype.update = function(data) {
+   if (!data.digest && data.password) {
+      data.digest = ((data.password + this.value("salt")).md5() + 
+            session.data.token).md5();
+   }
+   if (data.digest) {
+      if (data.digest !== this.getDigest(session.data.token)) {
+         throw Error(gettext("Oops, your old password is incorrect. Please re-enter it."));
+      }
+      if (!data.hash) {
+         if (!data.newPassword || !data.newPasswordConfirm) {
+            throw Error(gettext("Please specify a new password."));
+         } else if (data.newPassword !== data.newPasswordConfirm) {
+            throw Error(gettext("Unfortunately, your passwords didn't match. Please repeat your input."));
+         }
+         data.hash = (data.newPassword + session.data.token).md5();
+      }
+      this.value({
+         hash: data.hash,
+         salt: session.data.token         
+      });
+   }
+   this.value({
+      url: evalURL(data.url),
+      email: evalEmail(data.email),
+   });
+   return this;
+};
+
 User.prototype.status_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin) {
+   // This macro is allowed for privileged users only
+   if (!getPermission(User.PRIVILEGED)) {
       return;
    }
-   res.debug(Html.dropDown);
    if (param.as === "editor") {
       var options = {};
       for each (var status in User.status) {
@@ -312,18 +316,18 @@ User.register = function(data) {
    // special characters like umlauts and spaces
    var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
    if (!data.name) {
-      throw new Exception("usernameMissing");
+      throw Error(gettext("Please enter a username."));
    } else if (data.name.length > 30) {
-      throw new Exception("usernameTooLong");
+      throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
    } else if (invalidChar.exec(data.name)) {
-      throw new Exception("usernameNoSpecialChars");
+      throw Error(gettext("Please enter alphanumeric characters only in the username field."));
    } else if (this[data.name] || this[data.name + "_action"]) {
-      throw new Exception("usernameExisting");
+      throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
 
    // check if email-address is valid
    if (!data.email) {
-      throw new Exception("emailMissing");
+      throw new Error(gettext("Please enter your e-mail address."));
    }
    evalEmail(data.email);
 
@@ -331,26 +335,51 @@ User.register = function(data) {
    if (!data.hash) {
       // Check if passwords match
       if (!data.password || !data.passwordConfirm) {
-         throw new Exception("passwordTwice");
+         throw new Error(gettext("Could not verify your password. Please repeat your input."))
       } else if (data.password !== data.passwordConfirm) {
-         throw new Exception("passwordNoMatch");
+         throw new Error(gettext("Unfortunately, your passwords didn't match. Please repeat your input."));
       }
       data.hash = (data.password + session.data.token).md5();
    }
 
    if (User.getByName(data.name)) {
-      throw new Exception("memberExisting");
+      throw new Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
    var user = new User(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
-   if (root.manage.sysadmins.size() == 0) {
-      user.sysadmin = user.trusted = 1;
-   } else {
-      user.sysadmin = user.trusted = 0;
+   if (root.manage.sysadmins.size() < 1) {
+      user.value("status", User.PRIVILEGED);
    }
    root.users.add(user);
-   var welcomeWhere = path.site ? path.site.title : root.getTitle();
-   return new Message("welcome", [welcomeWhere, user.name], user);
+   session.login(user);
+   return user;
+};
+
+User.login = function(data) {
+   var user = User.getByName(data.name);
+   if (!user) {
+      throw Error(gettext("Unfortunately, your login failed. Maybe a typo?"));
+   }
+   var digest = data.digest;
+   // Calculate digest for JavaScript-disabled browsers
+   if (!digest) {
+      digest = ((data.password + user.value("salt")).md5() + 
+            session.data.token).md5();
+   }
+   // Check if login is correct
+   if (digest !== user.getDigest(session.data.token)) {
+      throw Error("Unfortunately, your login failed. Maybe a typo?");
+   }
+   if (data.remember) {
+      // Set long running cookies for automatic login
+      res.setCookie("avUsr", user.value("name"), 365);
+      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
+            "", "\\.");
+      res.setCookie("avPw", (user.value("hash") + ip).md5(), 365);   
+   }
+   user.touch();
+   session.login(user);
+   return user;
 };
 
 User.status = ["default", "blocked", "trusted", "privileged"];

@@ -117,7 +117,7 @@ File.prototype.url_macro = function(param) {
 File.prototype.editlink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }
@@ -133,7 +133,7 @@ File.prototype.editlink_macro = function(param) {
 File.prototype.deletelink_macro = function(param) {
    if (session.user) {
       try {
-         this.checkEdit(session.user, req.data.memberlevel);
+         this.checkEdit(session.user, res.data.memberlevel);
       } catch (deny) {
          return;
       }

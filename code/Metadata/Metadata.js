@@ -98,6 +98,10 @@ Metadata.prototype.getData = function() {
  */
 Metadata.prototype.set = function(key, value) {
    if (arguments.length > 1) {
+      // Coerce Java classes into String prototypes
+      if (!value.constructor) {
+         value = String(value);
+      }
       this.get()[key] = value;
    } else if (arguments.length > 0) {
       value = arguments[0];

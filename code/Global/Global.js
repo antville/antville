@@ -23,11 +23,16 @@
 //
 
 app.addRepository("modules/core/HopObject.js");
+app.addRepository("modules/helma/Mail.js");
 app.addRepository("modules/helma/Search.js");
 
+app.addRepository("modules/jala/code/Form.js");
+app.addRepository("modules/jala/code/I18n.js");
 app.addRepository("modules/jala/code/IndexManager.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
+
+var _ = gettext;
 
 var search = new helma.Search();
 
@@ -131,6 +136,16 @@ function getDisplay(name) {
    return name ? DISPLAY[name] : DISPLAY;
 }
 
+function getTitle() {
+   if (res.handlers.site) {
+      return res.handlers.site.title;
+   }
+   return root.getTitle();
+}
+
+function getPermission(role) {
+   return session.user && session.user.value("status") === role;
+};
 
 /**
  * array containing short dateformats
@@ -951,25 +966,25 @@ function scheduler() {
 /**
  * check if email-adress is syntactically correct
  */
-function evalEmail(address) {
-   var m = new Mail();
-   m.addTo(address);
-   if (m.status != 0)
+function evalEmail(str) {
+   if (!str.isEmail()) {
       throw new Exception("emailInvalid");
-   return address;
+   }
+   return str;
 }
 
 /**
  * function checks if url is correct
  * if not it assumes that http is the protocol
  */
-function evalURL(url) {
-   if (!url || url.contains("://") || url.contains("mailto:"))
-      return url;
-   if (url.contains("@"))
-      return "mailto:" + url;
-   else
-      return "http://" + url;
+function evalURL(str) {
+   if (url = helma.Http.evalUrl(str)) {
+      return String(url);
+   } else if (str.contains("@")) {
+      return "mailto:" + str;
+   } else {
+      return "http://" + str;
+   }
 }
 
 /**
@@ -1179,7 +1194,8 @@ function Exception(name, value) {
    this.value = value;
    this.toString = function() {
       return getMessage("error." + this.name, this.value);
-   }
+   };
+   res.debug("Exception  " + name + ": " + value);
    return this;
 }
 
@@ -1464,44 +1480,25 @@ function extractContent(param, origContent) {
  * @param String Body to use in email
  * @return Obj Message object
  */
-function sendMail(from, to, subject, body) {
-   if (!from || !to || !body)
-      throw new MailException("mailMissingParameters");
-   var mail = new Mail();
-   mail.setFrom(from ? from : root.sys_email);
-   if (to && to instanceof Array) {
-      for (var i in to)
-         mail.addBCC(to[i]);
-   } else
-      mail.addTo(to);
+function sendMail(sender, recipient, subject, body) {
+   if (!sender || !recipient || !body) {
+      app.log("Insufficient arguments in method sendMail()");
+      return;
+   }
+   var mail = new helma.Mail();
+   mail.setFrom(sender);
+   if (recipient instanceof Array) {
+      for (var i in recipient) {
+         mail.addBCC(recipient[i]);
+      }
+   } else {
+      mail.addTo(recipient);
+   }
    mail.setSubject(subject);
    mail.setText(body);
-   switch (mail.status) {
-      case 10 :
-         throw new MailException("mailSubjectMissing");
-         break;
-      case 11 :
-         throw new MailException("mailTextMissing");
-         break;
-      case 12 :
-         throw new MailException("mailPartMissing");
-         break;
-      case 20 :
-         throw new MailException("mailToInvalid");
-         break;
-      case 21 :
-         throw new MailException("mailCCInvalid");
-         break;
-      case 22 :
-         throw new MailException("mailCCInvalid");
-         break;
-      case 30 :
-         throw new MailException("mailSend");
-         break;
-   }
-   // finally send the mail
+   // Add the message to the queue (method extension of helma.Mail)
    mail.queue();
-   return new Message("mailSend");
+   return mail.status;
 }
 
 
@@ -1510,10 +1507,10 @@ function sendMail(from, to, subject, body) {
  * that simply adds a mail object to an
  * application-wide array (mail queue).
  */
-Mail.prototype.queue = function() {
+helma.Mail.prototype.queue = function() {
    app.data.mailQueue.push(this);
    return;
-}
+};
 
 
 /**
@@ -1609,7 +1606,6 @@ function rebuildIndexes() {
    return;
 }
 
-
 function onCodeUpdate() {
    var i, module, f;
    for (i in app.modules) {
@@ -1619,6 +1615,7 @@ function onCodeUpdate() {
    }
    return;
 }
+
 /**
  * renders image element
  * @param img Object contains the images's properties
@@ -1638,7 +1635,6 @@ function renderImage(img, param) {
    Html.tag("img", param);
    return;
 }
-
 
 /**
  * function tries to check if the color contains just hex-characters

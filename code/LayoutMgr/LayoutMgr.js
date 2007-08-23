@@ -215,7 +215,7 @@ LayoutMgr.prototype.renderParentLayoutChooser = function(selLayout, firstOption)
 LayoutMgr.prototype.checkAccess = function(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
    try {
-      this.checkEdit(session.user, req.data.memberlevel);
+      this.checkEdit(session.user, res.data.memberlevel);
    } catch (deny) {
       res.message = deny.toString();
       res.redirect(this._parent.href());
