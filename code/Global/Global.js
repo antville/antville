@@ -1020,22 +1020,27 @@ function evalImgType(ct) {
  * storing username and password
  */
 function autoLogin() {
-   if (session.user)
+   if (session.user) {
       return;
-   var name = req.data.avUsr;
-   var pw = req.data.avPw;
-   if (!name || !pw)
-      return;
-   var u = root.users.get(name);
-   if (!u)
-      return;
-   var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),"","\\.");
-   if ((u.password + ip).md5() != pw)
-      return;
-   else if (session.login(name, u.password)) {
-      u.lastVisit = new Date();
-      res.message = getMessage("confirm.welcome", [(res.handlers.site ? res.handlers.site : root).getTitle(), session.user.name]);
    }
+   var name = req.cookies.avUsr;
+   var hash = req.cookies.avPw;
+   if (!name || !hash) {
+      return;
+   }
+   var user = User.getByName(name);
+   if (!user) {
+      return;
+   }
+   var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),
+         "", "\\.");
+   if ((user.value("hash") + ip).md5() !== hash) {
+      return;
+   }
+   session.login(user);
+   user.touch();
+   res.message = gettext('Welcome to "{0}", {1}. Have fun!', getTitle(),
+         user.name);
    return;
 }
 
@@ -1114,7 +1119,8 @@ function pingUpdatedSites() {
       return;
    }
 
-   var query = "select SITE_ALIAS from AV_SITE where SITE_ISONLINE = 1 and SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
+   var query = "select name from AV_SITE where mode = 'online' and " +
+         "SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
    if (dbError) {
@@ -1123,8 +1129,9 @@ function pingUpdatedSites() {
    }
 
    while (rows.next()) {
-      var site = root.get(rows.getColumnItem("SITE_ALIAS"));
-      app.log("Notifying weblogs.com for updated site '" + site.alias + "' (id " + site._id + ")");
+      var site = root.get(rows.getColumnItem("name"));
+      app.log("Notifying weblogs.com for updated site '" + site.alias + 
+            "' (id " + site._id + ")");
       site.ping();
    }
 

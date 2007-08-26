@@ -378,30 +378,30 @@ SysMgr.prototype.searchSites = function(show, sort, order, keywords) {
    // construct the sql-clause for manual subnodeRelation
    var sql = "";
    if (show == "1")
-      sql += "WHERE SITE_ISONLINE=1 AND SITE_ISBLOCKED=0 ";
+      sql += "where mode = 'online' and status <> 'blocked' ";
    else if (show == "2")
-      sql += "WHERE SITE_ISONLINE=0 AND SITE_ISBLOCKED=0 ";
+      sql += "where mode <> 'online' and status <> 'blocked' ";
    else if (show == "3")
-      sql += "WHERE SITE_ISBLOCKED=1 ";
+      sql += "where status = 'blocked' ";
    else if (show == "4")
-      sql += "WHERE SITE_ISTRUSTED=1 ";
+      sql += "where status = 'trusted' ";
    if (keywords) {
       // additional keywords are given, so we're using them
       var kArray = stripTags(keywords).split(" ");
       for (var i in kArray) {
          var k = kArray[i];
-         sql += sql.length > 0 ? "AND " : "WHERE ";
-         sql += "(SITE_ALIAS LIKE '%" + k + "%' OR SITE_TITLE LIKE '%" + k + "%') ";
+         sql += sql.length > 0 ? "and " : "where ";
+         sql += "(name like '%" + k + "%' or title like '%" + k + "%') ";
       }
    }
    if (!sort || sort == "0")
-      sql += "ORDER BY SITE_LASTUPDATE ";
+      sql += "order by SITE_LASTUPDATE ";
    else if (sort == "1")
-      sql += "ORDER BY SITE_CREATETIME ";
+      sql += "order by created ";
    else if (sort == "2")
-      sql += "ORDER BY SITE_ALIAS ";
+      sql += "order by name ";
    else if (sort == "3")
-      sql += "ORDER BY SITE_TITLE ";
+      sql += "order by title ";
    if (!order || order == "0")
       sql += "desc ";
    else if (order == "1")

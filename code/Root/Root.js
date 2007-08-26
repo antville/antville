@@ -733,19 +733,20 @@ Root.prototype.searchSites  = function(query, sid) {
    var qarr = query.split(" ");
 
    // construct query
-   var where = "select AV_TEXT.TEXT_ID, AV_SITE.SITE_ALIAS from AV_TEXT, AV_SITE where "+
-               "AV_TEXT.TEXT_F_SITE = AV_SITE.SITE_ID and "+
-               "AV_TEXT.TEXT_ISONLINE > 0 and ";
+   var where = "select AV_TEXT.TEXT_ID, AV_SITE.name from AV_TEXT, AV_SITE "+
+               "where AV_TEXT.TEXT_F_SITE = AV_SITE.id " +
+               "and AV_TEXT.TEXT_ISONLINE > 0 and ";
    for (var i in qarr) {
-      where += "(AV_TEXT.TEXT_RAWCONTENT like '%"+qarr[i].toLowerCase()+"%') "
+      where += "(AV_TEXT.TEXT_RAWCONTENT like '%" + qarr[i].toLowerCase() + 
+            "%') ";
       if (i < qarr.length-1)
          where += "and ";
    }
    // search only in the specified site
    if (sid)
-      where += "and AV_SITE.SITE_ID = "+sid+" ";
+      where += "and AV_SITE.id = " + sid + " ";
    else
-      where += "and AV_SITE.SITE_ISONLINE > 0 ";
+      where += "and AV_SITE.mode = 'online' ";
    where += "order by AV_TEXT.TEXT_CREATETIME desc";
 
    var dbcon = getDBConnection ("antville");
