@@ -14,7 +14,9 @@ update AV_IMAGE set IMAGE_PARENT = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not nu
 
 alter table AV_IMAGE add column IMAGE_METADATA mediumtext default NULL;
 
+##
 ## Create table tag
+##
 
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL,
@@ -25,7 +27,9 @@ CREATE TABLE `tag` (
   KEY `site_tags` (`site_id`,`type`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+##
 ## Create table tag_hub
+##
 
 CREATE TABLE `tag_hub` (
   `id` int(11) NOT NULL default '0',
@@ -37,7 +41,9 @@ CREATE TABLE `tag_hub` (
   KEY `tagged` (`tag_id`,`tagged_type`,`tagged_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+##
 ## Update table av_user
+##
 
 alter table av_user add column metadata mediumtext default NULL;
 
@@ -51,3 +57,16 @@ alter table av_user add column hash varchar(32) default NULL;
 alter table av_user add column salt varchar(12) default NULL;
 update av_user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), 
    hash = md5(concat(user_password, salt))
+
+##
+## Update table av_site
+##
+
+alter table av_site add column `mode` enum('offline','online') not null default 'offline';
+update av_site set mode = 'offline' where site_isonline <> 1;
+update av_site set mode = 'online' where site_isonline = 1;
+
+alter table av_site add column `status` enum('blocked','default','trusted') not null default 'default';
+update av_site set status = 'default';
+update av_site set status = 'blocked' where site_isblocked = 1;
+update av_site set status = 'trusted' where site_istrusted = 1;
