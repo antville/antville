@@ -28,33 +28,144 @@
  * @param String Alias
  * @param Object Creator
  */
-Site.prototype.constructor = function(title, alias, creator) {
-   this.title = title;
-   this.alias = alias;
-   this.creator = creator;
-   this.createtime = this.lastoffline = new Date();
-   this.email = creator.email;
-   this.online = 0;
-   this.blocked = 0;
-   this.trusted = creator.trusted;
-   this.enableping = 0;
+Site.prototype.constructor = function(data, user) {
+   var now = new Date;
+   var locale = root.getLocale();
 
-   // create initial preferences
-   var prefs = new HopObject();
-   prefs.tagline = null;
-   prefs.discussions = 1;
-   prefs.usercontrib = 0;
-   prefs.archive = 1;
-   prefs.days = 3;
-   // retrieve locale-object from root
-   var loc = root.getLocale();
-   prefs.language = loc.getLanguage();
-   prefs.country = loc.getCountry();
-   prefs.timezone = root.getTimeZone().getID();
-   prefs.longdateformat = "EEEE, dd. MMMM yyyy, h:mm a";
-   prefs.shortdateformat = "yyyy.MM.dd, HH:mm";
-   this.preferences_xml = Xml.writeToString(prefs);
+   this.value({
+      name: data.name,
+      title: data.title,
+      created: now,
+      creator: user,
+      modified: now,
+      modifier: user,
+      email: user.value("email"),
+      status: user.value("status") === User.TRUSTED ? "trusted" : "default",
+      mode: Site.PRIVATE,
+      tagline: "",
+      webHookEnabled: false,
+      commentMode: Comment.ONLINE,
+      archiveMode: Site.ARCHIVE_ONLINE,
+      pageMode: "days",
+      pageSize: 3,
+      language: locale.getLanguage(),
+      country: locale.getCountry(),
+      timeZone: root.getTimeZone().getID(),
+      longDateFormat: "EEEE, dd. MMMM yyyy, h:mm a",
+      shortDateFormat: "yyyy-MM-dd, HH:mm"
+   });
+
    return this;
+};
+
+Site.prototype.value = function(key, value) {
+   var self = this;
+
+   var getter = function() {
+      switch (key) {
+         case "archiveMode":
+         case "commentsMode":
+         case "email":
+         case "language":
+         case "lastUpdate":
+         case "longDateFormat":
+         case "notifiedOfBlocking":
+         case "notifiedOfDeletion":
+         case "offlineSince":
+         case "pageSize":
+         case "pageMode":
+         case "shortDateFormat":
+         case "tagline":
+         case "timeZone":
+         case "title":
+         case "webHookEnabled":
+         case "webHookLastUpdate":
+         case "webHookUrl":
+         return self.properties.get(key);
+         
+         default:
+         return self[key];
+      }
+   };
+   
+   var setter = function() {
+      switch (key) {
+         case "created":
+         case "creator":
+         case "layout":
+         case "mode":
+         case "modified":
+         case "modifier":
+         case "name":
+         case "status":
+         return self[key] = value;
+         
+         default:
+         return self.properties.set(key, value);
+      }
+   };
+
+   return HopObject.prototype.value.call(this, key, value, getter, setter);   
+};
+
+Site.prototype.onPersist = function() {
+   writeln(">>>>>>>>>>>>>>>>>>>> onPersist: " + new Date);
+   return;
+};
+
+Site.prototype.update = function(data) {
+   res.debug(data);
+   // FIXME: Would be nice to do the following in onPersist() or the like
+   if (this.isTransient()) {
+      var name = this.value("name");
+      if (!name) {
+         throw Error(gettext("Please enter a name for your new site."));
+      } else if (name.length > 30) {
+         throw Error(gettext("Sorry, the name you chose is too long. Please enter a shorter one."));
+      } else if (/(\/|\\)/.test(name)) {
+         throw Error(gettext("Sorry, a site name may not contain any (back)slashes."));
+      } else if (name !== root.getAccessName(name)) {
+         throw Error(gettext("Sorry, there is already a site with this name."));
+         //throw Error("siteAliasReserved");
+      }
+   
+      // create an initial layout object that is a child layout
+      // of the currently active root layout
+      var layout = new Layout(this, this.value("title"), session.user);
+      layout.alias = name;
+      layout.setParentLayout(root.getLayout());
+      this.layouts.add(layout);
+      this.layouts.setDefaultLayout(layout.alias);
+      
+      // add the creator to the admins of the new Site
+      this.members.add(new Membership(session.user, ADMIN));
+      return;
+   }
+   
+   if (!evalEmail(data.email)) {
+      throw Error(gettext("Could not process the e-mail address. Are you sure it is correct?"));
+   }
+
+   this.value({
+      title: stripTags(data.title),
+      tagline: data.tagline,
+      email: data.email,
+      mode: data.mode || Site.PRIVATE,
+      webHookUrl: data.webHookUrl,
+      webHookEnabled: data.webHookEnabled ? true : false,
+      pageMode: data.pageMode || 'days',
+      pageSize: parseInt(data.pageSize, 10) || 3,
+      commentsMode: data.commentsMode,
+      archiveMode: data.archiveMode,
+      timeZone: data.timeZone,
+      longDateFormat: data.longDateFormat,
+      shortDateFormat: data.shortDateFormat,
+      language: data.language,
+      layout: Layout.getById(data.layout)
+   });
+   
+   this.touch();
+   return;
 };
 
 /**
@@ -83,23 +194,28 @@ Site.prototype.main_action = function() {
  * edit action
  */
 Site.prototype.edit_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this.href());
-   } else if (req.data.rebuildIndex) {
-      app.data.indexManager.queueForRebuilding(this.alias);
-      res.message = new Message("rebuildIndex");
-      res.redirect(this.href(req.action));
-   } else if (req.data.save) {
+   if (req.postParams.save) {
       try {
-         res.message = this.evalPreferences(req.data, session.user);
+         this.update(req.postParams, session.user);
+         res.message = gettext("The changes were saved successfully.");
          res.redirect(this.href(req.action));
-      } catch (err) {
-         res.message = err.toString();
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+         /*writeln("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+         var e = new Packages.org.mozilla.javascript.EvaluatorException(ex);
+         e.fillInStackTrace();
+         res.debug(e.getScriptStackTrace());
+         res.debug(e.printStackTrace(java.lang.System.out));
+         var trace = e.getStackTrace();
+         writeln(trace.toString());
+         for (var i in ex)
+         app.log(i + ": " + ex[i]);*/
       }
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("Site.preferencesTitle", {siteTitle: this.title});
+   res.data.title = gettext("Preferences of {0}", this.title);
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
    return;
@@ -109,34 +225,39 @@ Site.prototype.edit_action = function() {
  * delete action
  */
 Site.prototype.delete_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.href());
-   else if (req.data.remove) {
+   if (req.postParams.proceed) {
       try {
-         res.message = root.deleteSite(this);
+         Site.remove(this);
+         res.message = gettext("The site {0} was removed successfully.",
+               this.value("name"));
          res.redirect(root.href());
-      } catch (err) {
-         res.message = err.toString();
+      } catch(ex) {
+         res.message = ex;
+         app.log(ex);
       }
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("Site.deleteTitle");
-   var skinParam = {
-      description: getMessage("Site.deleteDescription"),
-      detail: this.title
+   res.data.title = gettext("Delete site");
+   var param = {
+      text: gettext('You are about to {0} {1} {2}.', gettext("delete"), 
+            gettext('the site'), this.value("name"))
    };
-   res.data.body = this.renderSkinAsString("delete", skinParam);
+   res.data.body = this.renderSkinAsString("delete", param);
    this.renderSkin("page");
    return;
 };
 
-/**
- * wrapper to access colorpicker also from site
- */
-Site.prototype.colorpicker_action = function() {
-   res.handlers.site = this;
-   root.colorpicker_action();
+Site.remove = function(site) {
+   site.images.deleteAll();
+   site.files.deleteAll();
+   // FIXME: add deleting of all layouts!
+   //site.layouts.deleteAll();
+   site.stories.deleteAll();
+   site.members.deleteAll();
+   site.remove();
+   // add syslog-entry
+   root.manage.syslogs.add(new SysLog("site", site.alias, "removed site", session.user));
    return;
 };
 
@@ -168,17 +289,9 @@ Site.prototype.main_js_action = function() {
 };
 
 /**
- * wrapper for rss feed
- */
-Site.prototype.rss_xml_action = function() {
-   res.redirect(root.href("rss"));
-   return;
-};
-
-/**
  * rss feed
  */
-Site.prototype.rss_action = function() {
+Site.prototype.rss_xml_action = function() {
    res.contentType = "text/xml";
    res.dependsOn(this.lastupdate);
    res.digest();
@@ -308,12 +421,12 @@ Site.prototype.referrers_action = function() {
       var urls = req.data.permanent_array ?
                  req.data.permanent_array : [req.data.permanent];
       res.push();
-      res.write(this.preferences.get("spamfilter"));
+      res.write(this.properties.get("spamfilter"));
       for (var i in urls) {
          res.write("\n");
          res.write(urls[i].replace(/\?/g, "\\\\?"));
       }
-      this.preferences.set("spamfilter", res.pop());
+      this.properties.set("spamfilter", res.pop());
       res.redirect(this.href(req.action));
       return;
    }
@@ -480,23 +593,6 @@ Site.prototype.unsubscribe_action = function() {
 };
 
 /**
- * context menu extension
- */
-Site.prototype.menuext_action = function() {
-   this.renderSkin("menuext");
-   return;
-};
-
-/**
- * context menu extension (accessible as /menuext.reg)
- */
-Site.prototype.menuext_reg_action = function() {
-   res.contentType = "text/plain";
-   this.renderSkin("menuext.reg");
-   return;
-};
-
-/**
  * robots.txt action
  */
 Site.prototype.robots_txt_action = function() {
@@ -505,182 +601,59 @@ Site.prototype.robots_txt_action = function() {
    return;
 };
 
-/**
- * macro rendering title
- */
-Site.prototype.title_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("title", param));
-   else {
-      if (param && param.linkto) {
-         if (param.linkto == "main")
-            param.linkto = "";
-         Html.openLink({href: this.href(param.linkto)});
-         if (this.title && this.title.trim())
-            res.write(stripTags(this.title));
-         else
-            res.write("<em>[untitled]</em>");
-         Html.closeLink();
-      } else
-         res.write(this.title);
+Site.prototype.onUnhandledMacro = function(name) {
+   switch (name) {
+      default:
+      return this.value(name);
    }
-   return;
 };
 
-/**
- * macro rendering alias
- */
-Site.prototype.alias_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("alias", param));
-   else
-      res.write(this.alias);
-   return;
+Site.prototype.getMacroHandler = function(name) {
+   switch (name) {
+      default:
+      return null;
+   }
 };
 
-/**
- * macro rendering tagline
- */
-Site.prototype.tagline_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.preferences.createInputParam("tagline", param));
-   else if (this.preferences.get("tagline"))
-      res.write(stripTags(this.preferences.get("tagline")));
-   return;
-};
-
-/**
- * macro rendering email
- */
-Site.prototype.email_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("email", param));
-   else
-      res.write(this.email);
-   return;
-};
-
-/**
- * macro rendering lastupdate
- */
-Site.prototype.lastupdate_macro = function(param) {
-   if (this.lastupdate)
-      res.write(formatTimestamp(this.lastupdate, param.format));
-   return;
-};
-
-/**
- * macro rendering online-status
- */
-Site.prototype.online_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("online", param);
-      if (req.data.save && !req.data.online)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else if (this.online)
-      res.write(param.yes ? param.yes : getMessage("generic.yes"));
-   else
-      res.write(param.no ? param.no : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering discussion-flag
- */
-Site.prototype.hasdiscussions_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.preferences.createCheckBoxParam("discussions", param);
-      if (req.data.save && !req.data.preferences_discussions)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.preferences.get("discussions") ? 
-                getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering usercontrib-flag
- */
-Site.prototype.usermaycontrib_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.preferences.createCheckBoxParam("usercontrib", param);
-      if (req.data.save && !req.data.preferences_usercontrib)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.preferences.get("usercontrib") ? 
-                getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering nr. of days to show on site-fontpage
- */
-Site.prototype.showdays_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.preferences.createInputParam("days", param));
-   else
-      res.write(this.preferences.get("days"));
-   return;
-};
-
-/**
- * macro rendering archive-flag
- */
-Site.prototype.showarchive_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.preferences.createCheckBoxParam("archive", param);
-      if (req.data.save && !req.data.preferences_archive)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.preferences.get("archive") ? 
-                getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering enableping-flag
- */
-Site.prototype.enableping_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("enableping", param);
-      if (req.data.save && !req.data.enableping)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.enableping ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering default longdateformat
- */
-Site.prototype.longdateformat_macro = function(param) {
-   if (param.as == "chooser")
-      renderDateformatChooser("longdateformat", this.getLocale(),
-                              this.preferences.get("longdateformat"));
-   else if (param.as == "editor")
-      Html.input(this.preferences.createInputParam("longdateformat", param));
-   else
-      res.write(this.preferences.get("longdateformat"));
-   return;
-};
-
-/**
- * macro rendering default shortdateformat
- */
-Site.prototype.shortdateformat_macro = function(param) {
-   if (param.as == "chooser")
-      renderDateformatChooser("shortdateformat", this.getLocale(),
-                              this.preferences.get("shortdateformat"));
-   else if (param.as == "editor")
-      Html.input(this.preferences.createInputParam("shortdateformat", param));
-   else
-      res.write(this.preferences.get("shortdateformat"));
-   return;
+Site.prototype.getFormOptions = function(name) {
+   var options = [];
+   switch (name) {
+      case "archiveMode":
+      options = [{
+         value: Site.ARCHIVE_ONLINE, 
+         display: gettext("online")
+      }, {
+         value: Site.ARCHIVE_OFFLINE,
+         display: gettext("offline")
+      }]; 
+      break;
+      case "commentsMode":
+      options = [{
+         value: Comment.ONLINE, 
+         display: gettext("online")
+      }, {
+         value: Comment.OFFLINE,
+         display: gettext("offline")
+      }];
+      break;
+      case "language":
+      options = getLocales(); break;
+      case "layout":
+      options = this.getLayouts(); break;
+      case "longDateFormat":
+      options = getDateFormats("long"); break;
+      case "mode":
+      options = Site.getModes(); break;
+      case "pageMode":
+      options = Site.getPageModes(); break;
+      case "shortDateFormat":
+      options = getDateFormats("short"); break;
+      case "timeZone":
+      options = getTimeZones(); break;
+      default:
+      return HopObject.prototype.getFormOptions.apply(this, arguments);
+   }
+   return options;
 };
 
 /**
@@ -700,39 +673,23 @@ Site.prototype.loginstatus_macro = function(param) {
  * macro rendering two different navigation-skins
  * depending on user-status & rights
  */
-Site.prototype.navigation_macro = function(param) {
-   if (param["for"] == "users" && !param.modules) {
-      // FIXME: this is left for backwards-compatibility
-      // sometime in the future we'll get rid of the usernavigation.skin
-      res.write("...&nbsp;");
-      Html.link({href: "http://project.antville.org/project/stories/146"}, "<strong>README</strong>");
-      Html.tag("br");
-      Html.tag("br");
-      this.renderSkin("usernavigation");
-   }
-   if (!session.user)
+Site.prototype.navigation_macro = function(param, type) {
+   if (!session.user) {
       return;
-   switch (param["for"]) {
-      case "contributors" :
-         if (session.user.sysadmin ||
-             this.preferences.get("usercontrib") ||
-             res.data.memberlevel >= CONTRIBUTOR)
-            this.renderSkin("contribnavigation");
-         break;
-      case "admins" :
-         if (session.user.sysadmin || res.data.memberlevel >= ADMIN)
-            this.renderSkin("adminnavigation");
-         break;
    }
-   if (param.modules != null) {
-      var mods = param.modules.split(",");
-      if (mods.length == 1 && mods[0] == "all") {
-         for (var i in app.modules)
-            this.applyModuleMethod(app.modules[i], "renderSiteNavigation", param);
-      } else {
-         for (var i in mods)
-            this.applyModuleMethod(app.modules[mods[i]], "renderSiteNavigation", param);
+   switch (type) {
+      case "contributors":
+      if (session.user.sysadmin || this.properties.get("usercontrib") ||
+            res.data.memberlevel >= CONTRIBUTOR) {
+         this.renderSkin("contribnavigation");
       }
+      break;
+
+      case "admins":
+      if (session.user.sysadmin || res.data.memberlevel >= ADMIN) {
+         this.renderSkin("adminnavigation");
+      }
+      break;
    }
    return;
 };
@@ -756,7 +713,7 @@ Site.prototype.moduleNavigation_macro = function(param) {
 Site.prototype.calendar_macro = function(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this site is disabled
-   if (!this.allstories.size() || !this.preferences.get("archive"))
+   if (!this.allstories.size() || !this.properties.get("archive"))
       return;
    // define variables needed in this function
    var calParam = new Object();
@@ -871,7 +828,7 @@ Site.prototype.history_macro = function(param) {
    var limit = param.limit ? parseInt(param.limit, 10) : 5;
    var cnt = i = 0;
    var size = this.lastmod.size();
-   var discussions = this.preferences.get("discussions");
+   var discussions = this.properties.get("discussions");
    while (cnt < limit && i < size) {
       if (i % limit == 0)
          this.lastmod.prefetchChildren(i, limit);
@@ -890,22 +847,6 @@ Site.prototype.history_macro = function(param) {
       item.renderSkin("historyview");
       cnt++;
    }
-   return;
-};
-
-/**
- * macro renders a list of available locales as dropdown
- */
-Site.prototype.localechooser_macro = function(param) {
-   renderLocaleChooser(this.getLocale());
-   return;
-};
-
-/**
- * macro renders a list of available time zones as dropdown
- */
-Site.prototype.timezonechooser_macro = function(param) {
-   renderTimeZoneChooser(this.getTimeZone());
    return;
 };
 
@@ -981,7 +922,7 @@ Site.prototype.searchbox_macro = function(param) {
  * function renders the months of the archive
  */
 Site.prototype.monthlist_macro = function(param) {
-   if (!this.stories.size() || !this.preferences.get("archive"))
+   if (!this.stories.size() || !this.properties.get("archive"))
       return;
    var size = param.limit ? Math.min(this.size(), param.limit) : this.size();
    for (var i=0;i<size;i++) {
@@ -1000,16 +941,6 @@ Site.prototype.monthlist_macro = function(param) {
 };
 
 /**
- * proxy-macro for layout chooser
- */
-Site.prototype.layoutchooser_macro = function(param) {
-   if (this.layout)
-      param.selected = this.layout.alias;
-   this.layouts.layoutchooser_macro(param);
-   return;
-};
-
-/**
  * macro rendering recipients for email notification
  * param.event: storycreate/commentcreate/textupdate/upload
  * please add some error message for undefined param.event
@@ -1022,7 +953,7 @@ Site.prototype.notify_macro = function(param) {
    var notifyNobody = param.notifyNobody ? 
       param.notifyNobody : getMessage("Site.notifyNobody");
 
-   var pref = this.preferences.get("notify_" + param.event);
+   var pref = this.properties.get("notify_" + param.event);
    if (param.as == "editor") {
       var options = new Array(notifyNobody, notifyAdmins, notifyContributors);
       Html.dropDown({name: "notify_" + param.event}, options, pref);
@@ -1053,14 +984,14 @@ Site.prototype.notification_macro = function(param) {
  */
 Site.prototype.preferences_macro = function(param) {
    if (param.as == "editor") {
-      var inputParam = this.preferences.createInputParam(param.name, param);
+      var inputParam = this.properties.createInputParam(param.name, param);
       delete inputParam.part;
       if (param.cols || param.rows)
          Html.textArea(inputParam);
       else
          Html.input(inputParam);
    } else
-      res.write(this.preferences.get(param.name));
+      res.write(this.properties.get(param.name));
    return;
 };
 
@@ -1069,7 +1000,7 @@ Site.prototype.preferences_macro = function(param) {
  * for client-side javascript code
  */
 Site.prototype.spamfilter_macro = function(param) {
-   var str = this.preferences.get("spamfilter");
+   var str = this.properties.get("spamfilter");
    if (!str)
       return;
    var items = str.replace(/\r/g, "").split("\n");
@@ -1269,9 +1200,13 @@ Site.prototype.sysmgr_blocked_macro = function(param) {
  * @param Obj User-Object modifying this site
  * @throws Exception
  */
-Site.prototype.evalPreferences = function(param, modifier) {
-   if (!evalEmail(param.email))
-      throw new Exception("emailInvalid");
+Site.prototype.evalPreferences = function(data, user) {
+   res.debug(data);
+  //res.abort();
+
+return;
+
+
    this.title = stripTags(param.title);
    this.email = param.email;
    if (this.online && !param.online)
@@ -1282,13 +1217,13 @@ Site.prototype.evalPreferences = function(param, modifier) {
    // store new preferences
    var prefs = new HopObject();
    for (var i in param) {
-      if (i.startsWith("preferences_"))
+      if (i.startsWith("properties_"))
          prefs[i.substring(12)] = param[i];
    }
-   prefs.days = !isNaN(parseInt(param.preferences_days, 10)) ? parseInt(param.preferences_days, 10) : 3;
-   prefs.discussions = param.preferences_discussions ? 1 : 0;
-   prefs.usercontrib = param.preferences_usercontrib ? 1 : 0;
-   prefs.archive = param.preferences_archive ? 1 : 0;
+   prefs.days = !isNaN(parseInt(param.properties_days, 10)) ? parseInt(param.properties_days, 10) : 3;
+   prefs.discussions = param.properties_discussions ? 1 : 0;
+   prefs.usercontrib = param.properties_usercontrib ? 1 : 0;
+   prefs.archive = param.properties_archive ? 1 : 0;
    // store selected locale
    if (param.locale) {
       var loc = param.locale.split("_");
@@ -1308,7 +1243,7 @@ Site.prototype.evalPreferences = function(param, modifier) {
    prefs.notify_upload = parseInt(param.notify_upload, 10) || null;
 
    // store preferences
-   this.preferences.setAll(prefs);
+   this.properties.setAll(prefs);
    // call the evalPreferences method of every module
    for (var i in app.modules)
       this.applyModuleMethod(app.modules[i], "evalPreferences", param);
@@ -1321,7 +1256,25 @@ Site.prototype.evalPreferences = function(param, modifier) {
 
    this.modifytime = new Date();
    this.modifier = modifier;
-   return new Message("update");
+};
+
+Site.prototype.touch = function() {
+   return this.value({
+      modified: new Date,
+      modifier: session.user
+   });
+};
+
+Site.prototype.getLayouts = function() {
+   var result = [];
+   this.layouts.forEach(function() {
+      var layout = this;
+      result.push({
+         value: layout._id,
+         display: layout.title
+      });
+   });
+   return result;
 };
 
 /**
@@ -1330,18 +1283,20 @@ Site.prototype.evalPreferences = function(param, modifier) {
  * otherwise it calls getLocale() for root
  */
 Site.prototype.getLocale = function() {
-   var locale = this.cache.locale;
-   if (locale)
+   var locale, language, country;
+   if (locale = this.cache.locale) {
        return locale;
-   if (this.preferences.get("language")) {
-      if (this.preferences.get("country"))
-         locale = new java.util.Locale(this.preferences.get("language"),
-                                       this.preferences.get("country"));
-      else
-         locale = new java.util.Locale(this.preferences.get("language"));
-   } else
+   }
+   if (language = this.value("language")) {
+      if (country = this.value("country")) {
+         locale = new java.util.Locale(language, country);
+      } else {
+         locale = new java.util.Locale(language);
+      }
+   } else {
       locale = root.getLocale();
-   this.cache.locale =locale;
+   }
+   this.cache.locale = locale;
    return locale;
 };
 
@@ -1365,8 +1320,8 @@ Site.prototype.getTimeZone = function() {
    var tz = this.cache.timezone;
    if (tz)
        return tz;
-   if (this.preferences.get("timezone"))
-       tz = java.util.TimeZone.getTimeZone(this.preferences.get("timezone"));
+   if (this.properties.get("timezone"))
+       tz = java.util.TimeZone.getTimeZone(this.properties.get("timezone"));
    else
        tz = root.getTimeZone();
    this.cache.timezone = tz;
@@ -1442,7 +1397,7 @@ Site.prototype.isNotificationEnabled = function() {
  * @param HopObject the HopObject the changes were applied to
  */
 Site.prototype.sendNotification = function(type, obj) {
-   var notify = this.preferences.get("notify_" + type);
+   var notify = this.properties.get("notify_" + type);
    if (obj.online === 0 || !notify || notify == 0)
       return;
    var recipients = new Array();
@@ -1751,7 +1706,7 @@ Site.prototype.renderStorylist = function(day) {
    // future days. (HW)
    var startdayString = day;
    if (!startdayString)
-      startdayString = formatTimestamp(new Date(), "yyyyMMdd");
+      startdayString = formatDate(new Date, "yyyyMMdd");
 
    var startday = this.get(startdayString);
    if (startday && startday.size()>0) {
@@ -1767,7 +1722,7 @@ Site.prototype.renderStorylist = function(day) {
          }
       }
    }
-   var days = this.preferences.get("days") ? this.preferences.get("days") : 2;
+   var days = this.properties.get("days") ? this.properties.get("days") : 2;
    days = Math.min (days, 14);  // render 14 days max
    this.prefetchChildren(idx, days);
 
@@ -1970,3 +1925,42 @@ Site.prototype.getAdminHeader = function(name) {
    }
    return [];
 };
+
+Site.status = ["default", "blocked", "trusted"];
+
+for each (status in Site.status) {
+   Site[status.toUpperCase()] = status;
+}
+
+Site.modes = ["closed", "private", "readonly", "public", "open"];
+
+for each (mode in Site.modes) {
+   Site[mode.toUpperCase()] = mode;
+}
+
+Site.getModes = function() {
+   var result = [];
+   for each (mode in Site.modes) {
+      result.push({
+         value: mode,
+         display: mode
+      });
+   }
+   return result;
+};
+
+Site.pageModes = ["days", "stories"];
+
+Site.getPageModes = function() {
+   var result = [];
+   for each (mode in Site.pageModes) {
+      result.push({
+         value: mode,
+         display: mode
+      });
+   }
+   return result;
+};
+
+Site.ARCHIVE_ONLINE = "online";
+Site.ARCHIVE_OFFLINE = "offline";

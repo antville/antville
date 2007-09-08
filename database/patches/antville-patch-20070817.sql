@@ -27,7 +27,7 @@ alter table av_user change column user_email email varchar(255);
 alter table av_user change column user_registered created datetime;
 alter table av_user change column user_lastvisit modified datetime;
 
-alter table av_user rename user
+alter table av_user rename user;
 
 ##
 ## Update table av_text
@@ -67,6 +67,13 @@ alter table av_site drop column SITE_TIMEZONE;
 alter table av_site drop column SITE_LONGDATEFORMAT;
 alter table av_site drop column SITE_SHORTDATEFORMAT;
 alter table av_site drop column SITE_PREFERENCES_OLD;
+alter table av_site drop column SITE_EMAIL;
+alter table av_site drop column SITE_LASTUPDATE;
+alter table av_site drop column SITE_LASTOFFLINE;
+alter table av_site drop column SITE_LASTBLOCKWARN;
+alter table av_site drop column SITE_LASTDELWARN;
+alter table av_site drop column SITE_LASTPING;
+alter table av_site drop column SITE_ENABLEPING;
 
 ## Site mode has moved to new column (now 'online' or 'offline')
 alter table av_site drop column site_isonline;
@@ -84,3 +91,5 @@ alter table av_site change column site_f_user_creator creator mediumint(10);
 alter table av_site change column site_f_user_modifier modifier mediumint(10);
 alter table av_site change column site_createtime created datetime;
 alter table av_site change column site_modifytime modified datetime;
+
+alter table av_site rename site;

@@ -40,39 +40,62 @@ HopObject.prototype.value = function(key, value, getter, setter) {
    return;
 };
 
-/**
- * user-friendly wrapper for href_macro
- */
-HopObject.prototype.url_macro = function(param) {
-   this.href_macro(param);
-   return;
+HopObject.prototype.input_macro = function(param, name) {
+   param.name = name;
+   param.value = this.getFormValue(name);
+   return html.input(param);
+};
+
+HopObject.prototype.checkbox_macro = function(param, name) {
+   param.name = name;
+   param.id = name;
+   param.value = String(this.getFormOptions(name)[0].value);
+   param.selectedValue = String(this.getFormValue(name));
+   //res.debug(name + ": " + param.value + " / " + this.getFormValue(name));
+   return html.checkBox(param);
+};
+
+HopObject.prototype.select_macro = function(param, name) {
+   param.name = name;
+   return html.dropDown(param, this.getFormOptions(name), 
+         this.getFormValue(name));
+};
+
+HopObject.prototype.getFormValue = function(name) {
+   //res.debug(name + ": " + req.data[name] + " / " + ((value = req.data[name]) !== null))
+   if (req.isPost()) {
+      return req.postParams[name];
+   } else {
+      var value = this.value(name);
+      return value instanceof HopObject ? value._id : value;
+   }
+   return "";
+};
+
+HopObject.prototype.getFormOptions = function(name) {
+   return [{value: true, display: "enabled"}];
 };
 
 /**
  * macro creates an html link
  */
-HopObject.prototype.link_macro = function(param) {
-   Html.openTag("a", this.createLinkParam(param));
-   res.write(param.text ? param.text : param.to);
-   Html.closeTag("a");
-   return;
+HopObject.prototype.link_macro = function(param, url, text) {
+   return renderLink.call(global, param, url, text, this);
 };
 
 /**
  * macro renders the time the object was created
  */
-HopObject.prototype.createtime_macro = function(param) {
-   if (this.createtime)
-      res.write(formatTimestamp(this.createtime, param.format));
+HopObject.prototype.created_macro = function(param, format) {
+   res.write(formatDate(this.value("created"), format || param.format));
    return;
 };
 
 /**
  * macro rendering modifytime
  */
-HopObject.prototype.modifytime_macro = function(param) {
-   if (this.modifytime)
-      res.write(formatTimestamp(this.modifytime, param.format));
+HopObject.prototype.modified_macro = function(param, format) {
+   res.write(formatDate(this.value("modified"), format || param.format));
    return;
 };
 
@@ -122,74 +145,6 @@ HopObject.prototype.getNavigationName = function() {
    return this.__name__;
 };
 
-
-/**
- * creates parameter object that will be passed to
- * function that renders the input element
- */
-HopObject.prototype.createInputParam = function(propName, param) {
-   param.name = propName;
-   // submitted values override property value
-   // but only if there were not multiple form elements
-   // with the same name submitted
-   var multiple = req.data[propName + "_array"];
-   if ((!multiple || multiple.length < 2) && req.data[propName] != null) {
-      param.value = req.data[propName];
-   } else {
-      param.value = this.value(propName);
-   }
-   delete param.as;
-   return param;
-};
-
-/**
- * create a parameter object for checkboxes
- */
-HopObject.prototype.createCheckBoxParam = function(propName, param) {
-   param.name = propName;
-   param.value = 1;
-   if (req.data[propName] == 1 || this.value(propName)) {
-      param.checked = "checked";
-   }
-   delete param.as;
-   return param;
-};
-
-/**
- * derives parameter object from an object that will
- * be passed to function that renders the link element
- */
-HopObject.prototype.createLinkParam = function(param) {
-   // clone the param object since known non-html
-   // attributes are going to be deleted
-   var linkParam = Object.clone(param);
-   var url = param.to ? param.to : param.linkto;
-   if (!url || url == "main") {
-      if (this._prototype != "Comment")
-         linkParam.href = this.href();
-      else
-         linkParam.href = this.story.href() + "#" + this._id;
-   } else if (url.contains("://") || url.startsWith("javascript"))
-      linkParam.href = url;
-   else {
-      // check if link points to a subcollection
-      if (url.contains("/"))
-         linkParam.href = this.href() + url;
-      else
-         linkParam.href = this.href(url);
-   }
-   if (param.urlparam)
-      linkParam.href += "?" + param.urlparam;
-   if (param.anchor)
-      linkParam.href += "#" + param.anchor;
-   delete linkParam.to;
-   delete linkParam.linkto;
-   delete linkParam.urlparam;
-   delete linkParam.anchor;
-   delete linkParam.text;
-   return linkParam;
-};
-
 /**
  * method for rendering any module navigation
  * by calling the module method renderSiteNavigation
@@ -200,16 +155,20 @@ HopObject.prototype.applyModuleMethod = function(module, funcName, param) {
    return;
 };
 
-
-HopObject.prototype.onCodeUpdate = function(prototype) {
-   return onCodeUpdate(prototype);
-};
-
 /**
  * function checks if there's a site in path
  * if true it checks if the site or the user is blocked
  */
 HopObject.prototype.onRequest = function() {
+   if (req.postParams.cancel) {
+      switch (this.constructor) {
+         case MemberMgr:
+         res.redirect(this._parent.href());
+         default:
+         res.redirect(this.href());
+      }
+   }
+   
    if (app.data.redirectPostRequests && path.site && req.isPost())
       res.redirect(app.data.redirectPostRequests);
    autoLogin();
@@ -263,4 +222,18 @@ HopObject.prototype.onRequest = function() {
  */
 HopObject.prototype.checkAccess = function() {
    return;
+};
+
+HopObject.prototype.toString = function() {
+   return this.constructor.name + " #" + this._id;
+};
+
+/*HopObject.prototype.valueOf = function() {
+   return this._id;
+};*/
+
+HopObject.prototype.link_filter = function(value, param, action) {
+   return renderLink(param, action, value, this);
+   param.href = this.href(action || "");
+   return html.link(param, value);
 };

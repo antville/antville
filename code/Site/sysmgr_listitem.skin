@@ -9,7 +9,7 @@
 <a href="<% site.url %>"><% site.url %></a></div>
 <div class="small">created by <% site.creator as="link" %> on <% site.createtime format="dd.MM.yyyy HH:mm" %><br />
 last update:&nbsp;<% site.lastupdate format="dd.MM.yyyy HH:mm" default="no updates so far" %><br />
-diskusage: <% site.diskusage %></td>
+diskusage: FIXME <%// site.diskusage %></td>
 <td class="small" valign="top" align="right" nowrap="nowrap"><% site.sysmgr_editlink prefix="...&nbsp;" %><br />
 <% site.sysmgr_deletelink prefix="...&nbsp;" %></td>
 </tr>

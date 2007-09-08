@@ -66,7 +66,7 @@ StoryMgr.prototype.create_action = function() {
       restoreRescuedText();
    
    var s = new Story();
-   s.discussions = this._parent.preferences.get("discussions");
+   s.discussions = this._parent.properties.get("discussions");
    // storing referrer in session-cache in case user clicks cancel later
    if (!session.data.referrer && req.data.http_referer)
       session.data.referrer = req.data.http_referer;
@@ -209,7 +209,7 @@ StoryMgr.prototype.checkAccess = function(action, usr, level) {
  * @return String Reason for denial (or null if allowed)
  */
 StoryMgr.prototype.checkAdd = function(usr, level) {
-   if (!this._parent.preferences.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
+   if (!this._parent.properties.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
       throw new DenyException("storyAdd");
    return;
 };

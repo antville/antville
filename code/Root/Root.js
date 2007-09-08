@@ -76,22 +76,29 @@ Root.prototype.main_action = function() {
 /**
  * action for creating a new Site
  */
-Root.prototype.new_action = function() {
-   if (req.data.cancel)
+Root.prototype.create_action = function() {
+   if (!session.user || req.postParams.cancel) {
       res.redirect(root.href());
-   else if (req.data.create) {
+   }
+   
+   if (req.postParams.create) {
       try {
-         var result = this.evalNewSite(req.data.title, req.data.alias, session.user);
-         res.message = result.toString();
-         if (!result.error)
-            res.redirect(result.obj.href());
-      } catch (err) {
-         res.message = err.toString();
+         var site = new Site(req.postParams, session.user);
+         site.update();
+         if (!this.add(site)) {
+            throw Error(gettext("Sorry, I was not able to create your site. Maybe you should try again..."));
+         }
+         root.manage.syslogs.add(new SysLog("site", site.name, "added site", session.user));
+         res.message = gettext("Successfully created your site.");   
+         res.redirect(site.href());
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
       }
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("SysMgr.createSiteTitle");
+   res.data.title = gettext("Create a new site");
    res.data.body = this.renderSkinAsString("new");
    root.renderSkin("page");
    return;
@@ -160,7 +167,7 @@ Root.prototype.rss_action = function() {
          else if (site.creator.publishemail)
             param.email = site.creator.email.entitize();
          param.isodate = sdf.format(site.lastupdate)
-         param.date = site.preferences.get("tagline") ? "" : param.isodate;
+         param.date = site.properties.get("tagline") ? "" : param.isodate;
          param.year = site.lastupdate.getFullYear();
          items.append(site.renderSkinAsString("rssItem", param));
          resources.append(site.renderSkinAsString("rssResource", param));
@@ -701,19 +708,6 @@ Root.prototype.evalNewSite = function(title, alias, creator) {
 
 
 /**
- * function removes a site completely
- * including stories, comments, members
- * @param Object site to remove
- */
-Root.prototype.deleteSite = function(site) {
-   site.deleteAll();
-   site.remove();
-   // add syslog-entry
-   this.manage.syslogs.add(new SysLog("site", site.alias, "removed site", session.user));
-   return new Message("siteDelete", site.alias);
-};
-
-/**
  *  Search one or more (public) sites. Returns an array containing site-aliases and
  *  story ids of matching items.
  *
@@ -733,8 +727,8 @@ Root.prototype.searchSites  = function(query, sid) {
    var qarr = query.split(" ");
 
    // construct query
-   var where = "select AV_TEXT.TEXT_ID, AV_SITE.name from AV_TEXT, AV_SITE "+
-               "where AV_TEXT.TEXT_F_SITE = AV_SITE.id " +
+   var where = "select AV_TEXT.TEXT_ID, site.name from AV_TEXT, site "+
+               "where AV_TEXT.TEXT_F_SITE = site.id " +
                "and AV_TEXT.TEXT_ISONLINE > 0 and ";
    for (var i in qarr) {
       where += "(AV_TEXT.TEXT_RAWCONTENT like '%" + qarr[i].toLowerCase() + 
@@ -744,9 +738,9 @@ Root.prototype.searchSites  = function(query, sid) {
    }
    // search only in the specified site
    if (sid)
-      where += "and AV_SITE.id = " + sid + " ";
+      where += "and site.id = " + sid + " ";
    else
-      where += "and AV_SITE.mode = 'online' ";
+      where += "and site.mode = 'online' ";
    where += "order by AV_TEXT.TEXT_CREATETIME desc";
 
    var dbcon = getDBConnection ("antville");

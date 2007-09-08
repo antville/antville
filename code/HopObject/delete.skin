@@ -1,5 +1,9 @@
-<form method="post" action="<% response.action %>">
+<form action="<% response.action %>" method="post">
 <p class="storyTitle">Warning!</p>
-<p>You are about to <strong>delete <% param.description %><% param.detail prefix=" &quot;" suffix="&quot;" %></strong>... Be aware of the fact that <em>there is no "undo"</em>, so if you click on "Delete" here it will be gone forever.</p>
-<p><% input type="submit" name="remove" value="Delete" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></p>
+<p><% param.text %></p>
+<p>Please be aware of the fact that there is no "undo", so if you click 
+"Proceed" below it will be gone forever.</p>
+<p>Click "Cancel" now if you are not really sure you want to proceed.</p>
+<p><button type="submit" name="proceed" value="1">Proceed</button>
+<button type="submit" name="cancel" value="1"><strong>Cancel</strong></button></p>
 </form>

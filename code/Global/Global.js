@@ -23,10 +23,12 @@
 //
 
 app.addRepository("modules/core/HopObject.js");
+app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Mail.js");
 app.addRepository("modules/helma/Search.js");
 
 app.addRepository("modules/jala/code/Form.js");
+app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/I18n.js");
 app.addRepository("modules/jala/code/IndexManager.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
@@ -35,6 +37,7 @@ app.addRepository("modules/jala/code/Utilities.js");
 var _ = gettext;
 
 var search = new helma.Search();
+var html = new helma.Html();
 
 /**
  * constants specifying user-rights
@@ -321,8 +324,8 @@ SKINSETS.push(newSet);
 /** 
  * macro renders the current timestamp   
  */   
-function now_macro(param) {
-   return formatTimestamp(new Date(), param.format);
+function now_macro(param, format) {
+   return formatDate(new Date, format || param.format);
 }
 
 
@@ -347,7 +350,7 @@ function image_macro(param) {
    if (!param.name)
       return;
    if (param.name.startsWith("/")) {
-      // standard images and logos are handled by constant IMAGES
+      // standard images and logos are handled by DefaultImages
       DefaultImages.render(param.name.substring(1), param);
       return;
    }
@@ -392,24 +395,23 @@ function image_macro(param) {
  *  Global link macro. In contrast to the hopobject link macro,
  *  this reproduces the link target without further interpretation.
  */
-function link_macro(param) {
-   if (!param.to)
-      return;
-   param.href = param.to;
-   if (param.urlparam)
-      param.href += "?" + param.urlparam;
-   if (param.anchor)
-      param.href += "#" + param.anchor;
-   var content = param.text ? param.text : param.href;
-   delete param.to;
-   delete param.linkto;
-   delete param.urlparam;
-   delete param.anchor;
+function link_macro() {
+   return renderLink.apply(this, arguments);
+}
+
+function renderLink(param, url, text, handler) {
+   url || (url = param.url || "");
+   text || (text = param.text || url);
+   delete param.url;
    delete param.text;
-   Html.openTag("a", param);
-   res.write(content);
-   Html.closeTag("a");
-   return;
+   if (!handler || url.contains("://")) {
+      param.href = url;
+   } else if (url.contains("/")) {
+      param.href = handler.href() + url;
+   } else {
+      param.href = handler.href(url);
+   }
+   html.link(param, text);
 }
 
 
@@ -968,7 +970,7 @@ function scheduler() {
  */
 function evalEmail(str) {
    if (!str.isEmail()) {
-      throw new Exception("emailInvalid");
+      return null;
    }
    return str;
 }
@@ -985,6 +987,7 @@ function evalURL(str) {
    } else {
       return "http://" + str;
    }
+   return null;
 }
 
 /**
@@ -1119,7 +1122,7 @@ function pingUpdatedSites() {
       return;
    }
 
-   var query = "select name from AV_SITE where mode = 'online' and " +
+   var query = "select name from site where mode = 'online' and " +
          "SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
    var rows = c.executeRetrieval(query);
    var dbError = c.getLastError();
@@ -1148,31 +1151,27 @@ function pingUpdatedSites() {
  * @param String The format string
  * @return String The date formatted as string
  */
-function formatTimestamp(ts, dformat) {
-   var fmt;
-   switch (dformat) {
-      case "short" :
-         fmt = res.handlers.site ?
-               res.handlers.site.preferences.get("shortdateformat") :
-               root.shortdateformat;
-         break;
-      case "long" :
-         fmt = res.handlers.site ?
-               res.handlers.site.preferences.get("longdateformat") :
-               root.longdateformat;
-         break;
-      default :
-         fmt = dformat;
+function formatDate(date, pattern) {
+   var format, handler;
+   pattern || (pattern = "short");
+   
+   if (handler = res.handlers.site) {
+      format = res.handlers.site.value(pattern.toLowerCase() + "DateFormat");
+   } else {
+      handler = root;
+      format = root[pattern.toLowerCase() + "DateFormat"];
    }
-   // if we still have no format pattern use a default one
-   if (!fmt)
-      var fmt = "yyyy-MM-dd HH:mm";
-   var handler = res.handlers.site ? res.handlers.site : root;
+   if (!format) {
+      format = pattern;
+   }
+   
    try {
-      return ts.format(fmt, handler.getLocale(), handler.getTimeZone());
-   } catch (err) {
-      return "[" + getMessage("error.invalidDatePattern") + "]";
+      return date.format(format, handler.getLocale(), handler.getTimeZone());
+   } catch(ex) {
+      app.log(ex);
+      return "[Macro error: Invalid date format]";
    }
+   return;
 }
 
 /**
@@ -1613,16 +1612,6 @@ function rebuildIndexes() {
    return;
 }
 
-function onCodeUpdate() {
-   var i, module, f;
-   for (i in app.modules) {
-      module = app.modules[i];
-      if (f = module.onCodeUpdate)
-         f.apply(this, arguments);
-   }
-   return;
-}
-
 /**
  * renders image element
  * @param img Object contains the images's properties
@@ -1889,6 +1878,71 @@ function pluralize(singular) {
    return singular + "s";
 }
 
+function getLocale(language) {
+   return java.util.Locale[(language || "english").toUpperCase()];
+}
+
+/**
+ * Creates an array of all available Java locales sorted by their names.
+ * @param {String} language The optional language of the locales
+ * @returns The sorted array containing the locales
+ * @type Array
+ * @member Global 
+ */
+function getLocales(language) {
+   var result = [], locale;
+   var displayLocale = getLocale(language);
+   var locales = java.util.Locale.getAvailableLocales();
+   for (var i in locales) {
+      locale = locales[i].toString();
+      result.push({
+         value: locale,
+         display: locales[i].getDisplayName(displayLocale),
+      });
+   }
+   result.sort(new String.Sorter("display"));
+   return result;
+}
+
+function getTimeZones(language) {
+   var result = [], timeZone, offset;
+   var locale = getLocale(language); 
+   var zones = java.util.TimeZone.getAvailableIDs();
+   for each (var zone in zones) {
+      timeZone = java.util.TimeZone.getTimeZone(zone);
+      offset = timeZone.getRawOffset();
+      /*res.debug("zone id: " +  zone)
+      res.debug("offset: " + timeZone.getRawOffset())
+      res.debug("dst savings: " + timeZone.getDSTSavings())
+      res.debug("old code: " + formatter.format(offset / Date.ONEHOUR))
+      res.debug("new code: " + (offset / Date.ONEHOUR).format("+00;-00") + ":" + 
+            (Math.abs(offset % Date.ONEHOUR) / Date.ONEMINUTE).format("00"))*/
+      result.push({
+         value: zone,
+         display: zone + " (UTC" + (offset / Date.ONEHOUR).format("+00;-00") + 
+               ":" + (Math.abs(offset % Date.ONEHOUR) / 
+               Date.ONEMINUTE).format("00") + ")"
+      });
+   }
+   result.sort(new String.Sorter("display"));
+   return result;   
+}
+
+function getDateFormats(type, language) {
+   var patterns = global[type.toUpperCase() + "DATEFORMATS"];
+   if (!patterns || patterns.constructor !== Array) {
+      return;
+   }
+   var result = [], sdf;
+   var locale = getLocale(language);
+   var now = new Date;
+   for each (var pattern in patterns) {
+      sdf = new java.text.SimpleDateFormat(pattern, locale);
+      result.push([encodeForm(pattern), sdf.format(now)]);
+   }
+   return result;
+}
+
 /**
  * Renders a string depending on the comparison of two values. If the first 
  * value equals the second value, the first result will be returned; the 
@@ -1915,4 +1969,15 @@ function pluralize(singular) {
 function if_macro(param, firstValue, _is_, secondValue, _then_, 
                   firstResult, _else_, secondResult) {
    return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
+}
+
+function age_filter(value, param) {
+   if (!value || value.constructor !== Date) {
+      return value;
+   }
+   return value.getAge()
+}
+
+function link_filter(value, param, url) {
+   return HopObject.prototype.link_filter.apply(path, arguments);
 }

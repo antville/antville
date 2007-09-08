@@ -1,95 +1,108 @@
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><strong><a name="general">General</a></strong></td>
+<td colspan="2" nowrap="nowrap">
+   <strong><a name="general">General</a></strong>
+</td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Mode:</td>
+<td nowrap="nowrap"><% site.select mode %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% site.title as="editor" size="20" %></td>
+<td nowrap="nowrap"><% site.input title %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Tagline:</td>
-<td nowrap="nowrap"><% site.tagline as="editor" size="40" %></td>
+<td nowrap="nowrap"><% site.input tagline %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Paging:</td>
+<td nowrap="nowrap"><% site.input pageSize size="5" maxlength="2" %>
+<% site.select pageMode %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Comments:</td>
+<td nowrap="nowrap"><% site.checkbox commentsMode %>
+<label for="commentsMode">enabled</label></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Archive:</td>
+<td nowrap="nowrap"><% site.checkbox archiveMode %>
+<label for="archiveMode">enabled</label></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Language:</td>
-<td nowrap="nowrap"><% site.localechooser %></td>
+<td nowrap="nowrap"><% site.select language %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Time zone:</td>
-<td nowrap="nowrap"><% site.timezonechooser %></td>
+<td nowrap="nowrap"><% site.select timeZone %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Long date format:</td>
-<td nowrap="nowrap"><% site.longdateformat as="chooser" size="20" %></td>
+<td nowrap="nowrap"><% site.select longDateFormat %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Short date format:</td>
-<td nowrap="nowrap"><% site.shortdateformat as="chooser" size="20" %></td>
+<td nowrap="nowrap"><% site.select shortDateFormat %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Days on front page:</td>
-<td nowrap="nowrap"><% site.showdays as="editor" size="5" maxlength="2" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Site is public:</td>
-<td nowrap="nowrap"><% site.online as="editor" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Allow comments:</td>
-<td nowrap="nowrap"><% site.hasdiscussions as="editor" %></td>
-</tr>
-<tr>
-<td class="small" valign="top" nowrap="nowrap">Allow contributions:</td>
-<td><% site.usermaycontrib as="editor" %><br /><span class="small">Enabling this option means that every registered antville user may create stories.</span></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Enable archive:</td>
-<td nowrap="nowrap"><% site.showarchive as="editor" %></td>
-</tr>
-<tr>
-<!-- FIXME: should site.email be dropped? afaik, bounces should be sent to sys.email? [tobi] -->
+<!-- FIXME: should site.email be dropped? afaik, 
+     bounces should be sent to sys.email? [tobi] -->
 <td class="small" valign="top" nowrap="nowrap">e-mail address:</td>
-<td><% site.email as="editor" %><br /><span class="small">This e-mail address will be used for sending confirmation mails, i.e. when a user registers or signs up a site.</span></td>
+<td><% site.input email %><br />
+<span class="small">This e-mail address will be used for sending confirmation 
+mails, i.e. when a user registers or signs up a site.</span></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Notify updates:</td>
-<td><% site.enableping as="editor" %><br /><span class="small">If this option is enabled <a href="http://www.weblogs.com">weblogs.com</a> will be notified when your site is updated.</span></td>
+<td class="small" valign="top" nowrap="nowrap">Web hook:</td>
+<td><% site.input webHookUrl %><br />
+<% site.checkbox webHookEnabled %> 
+<label for="webHookEnabled">enabled<label></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap">Layout:</td>
-<td><% site.layoutchooser firstOption="--- choose layout ---" %><br /><span class="small">Choose the layout to use for your site. <% site.link to="layouts" 
-text="Go to the layouts page" %> to browse, manage or test-drive the list 
-of available layouts.</span></td>
+<td><% site.select layout %><br />
+<span class="small">Choose the layout to use for your site. 
+<% link layouts "Go to the layouts page" %> to browse, manage or 
+test-drive the list of available layouts.</span></td>
 </tr>
-<tr>
-<td class="small" valign="top" nowrap="nowrap">Context menu:</td>
-<td><span class="small"><% site.link to="menuext.reg" text="Click here" %> to install a  context menu to directly blog to this site from your Windows&reg; desktop.</span></td>
-</tr>
-<tr>
+<!--tr>
 <td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
 <strong><a name="index">Index Maintenance</a></strong></td>
 </tr>
 <tr>
 <td></td>
-<td><span class="small">If the search index of your site is corrupt you can schedule it for rebuilding by klicking on the button below:<% input type="submit" name="rebuildIndex" value="rebuild index" style="display:block;margin:5px 0;" %>Please bear in mind that rebuilding the search index is a quite ressource-intensive operation, so please use this feature only when it's really necessary (e.g. if you receive an error when trying to search).</span></td>
+<td><span class="small">If the search index of your site is corrupt you can 
+schedule it for rebuilding by klicking on the button below:
+<% input type="submit" name="rebuildIndex" value="rebuild index" 
+style="display:block;margin:5px 0;" %>Please bear in mind that rebuilding the 
+search index is a quite ressource-intensive operation, so please use this 
+feature only when it's really necessary (e.g. if you receive an error when 
+trying to search).</span></td>
 </tr>
 <tr>
 <td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
 <strong><a name="spamfilter">Referrer spam filter</a></strong></td>
 </tr>
 <tr>
-<td class="small" valign="top">Enter one <a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> per line to be applied on every URL in the referrer and backlink lists.</td>
-<td nowrap="nowrap" valign="top"><% site.preferences name="spamfilter" as="editor" cols="30" rows="7" %></td>
-</tr>
+<td class="small" valign="top">Enter one 
+<a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> 
+per line to be applied on every URL in the referrer and backlink lists.</td>
+<td nowrap="nowrap" valign="top"><% site.preferences name="spamfilter" 
+as="editor" cols="30" rows="7" %></td>
+</tr-->
 
 <% site.notification %>
-
 <% site.modulePreferences %>
 
 <tr>
 <td></td>
-<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td><br />
+<button type="submit" name="save" value="1">Save</button>
+<button type="submit" name="cancel" value="1">Cancel</button></td>
 </tr>
 </table>
 </form>

@@ -1,1 +1,2 @@
-<li><% site.title linkto="main" %> <span class="small">(<% site.lastupdate prefix="Last update: " default="none so far" format="short" %>)</span></li>
+<li><% site.alias | site.link %> 
+<span class="small"><% site.modified | age %></span></li>

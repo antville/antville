@@ -30,7 +30,7 @@ value="<% request.name %>" />
 </td>
 <td rowspan="4" nowrap="nowrap"> </td>
 <td class="small">
-<a href="<% membermgr.href action="register" %>">Not registered yet?</a>
+<% membermgr.link register "Not registered yet" %>
 </td>
 </tr>
 <tr>
@@ -39,7 +39,7 @@ value="<% request.name %>" />
 <input type="password" name="password" id="password" size="15" tabindex="2" />
 </td>
 <td class="small">
-<a href="<% membermgr.href action="sendpwd" %>">Forgot your password?</a>
+<% membermgr.link sendpwd "Forgot your password?" %>
 </td>
 </tr>
 <tr>

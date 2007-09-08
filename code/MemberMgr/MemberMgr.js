@@ -34,11 +34,9 @@ MemberMgr.prototype.main_action = function() {
  * register action
  */
 MemberMgr.prototype.register_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this._parent.href());
-   } else if (req.data.register) {      
+   if (req.postParams.register) {      
       try {
-         var user = User.register(req.data);
+         var user = User.register(req.postParams);
          // Subscribe user to this site if public
          if (res.handlers.site && res.handlers.site.online) {
             this.add(new Membership(user));
@@ -73,9 +71,9 @@ MemberMgr.prototype.register_action = function() {
  * login action
  */
 MemberMgr.prototype.login_action = function() {
-   if (req.data.login) {
+   if (req.postParams.login) {
       try {
-         var user = User.login(req.data);
+         var user = User.login(req.postParams);
          var url = session.data.referrer || this._parent.href();
          delete session.data.referrer;
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
@@ -118,20 +116,19 @@ MemberMgr.prototype.logout_action = function() {
  * action for creating a new Membership
  */
 MemberMgr.prototype.create_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this.href());
-   } else if (req.data.keyword) {
+   if (req.postParams.keyword) {
       try {
-         var result = this.searchUser(req.data.keyword);
+         var result = this.searchUser(req.postParams.keyword);
          res.message = result.toString();
          res.data.searchresult = this.renderSkinAsString("searchresult", 
                {result: result.obj});
       } catch (err) {
          res.message = err.toString();
       }
-   } else if (req.data.add) {
+   } else if (req.postParams.add) {
       try {
-         var result = this.evalNewMembership(req.data.username, session.user);
+         var result = this.evalNewMembership(req.postParams.username, 
+               session.user);
          res.message = result.toString();
          // send confirmation mail
          var sp = new Object();
@@ -162,11 +159,9 @@ MemberMgr.prototype.create_action = function() {
  * edit actions for user profiles
  */
 MemberMgr.prototype.edit_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this._parent.href());
-   } else if (req.data.save) {
+   if (req.postParams.save) {
       try {
-         session.user.update(req.data);
+         session.user.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this._parent.href());
       } catch (err) {
@@ -184,7 +179,7 @@ MemberMgr.prototype.edit_action = function() {
 
 MemberMgr.prototype.salt_js_action = function() {
    var user;
-   if (user = User.getByName(req.data.user)) {
+   if (user = User.getByName(req.params.user)) {
       res.write((user.value("salt") || String.EMPTY).toSource());
    }
    return;
@@ -336,7 +331,6 @@ MemberMgr.prototype.modSorua_action = function() {
    }   
 };
 
-
 /**
  * SORUA Login Form 
  */
@@ -386,7 +380,6 @@ MemberMgr.prototype.sendPwd = function(email) {
    sendMail(root.sys_email, email, getMessage("mail.sendPwd"), mailbody);
    return new Message("mailSendPassword");
 };
-
 
 /**
  * function searches for users using part of username

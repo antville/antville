@@ -2,8 +2,6 @@
 build/extra/helma.jar -text
 build/extra/launcher.jar -text
 build/extra/mckoidb.jar -text
-code/AntvilleLib-1.4.zip -text
-code/HelmaLib-1.0.zip -text
 code/TagHub/TagHub.skin -text
 code/lucene-1.4.3.jar -text
 database/data/062SYS_INFO_sUSRSequenceInfo.koi -text

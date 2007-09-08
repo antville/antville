@@ -17,7 +17,7 @@
 
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td class="header"><a href="<% site.url %>" title="<% site.tagline %>"><% site.title %></a></td>
+<td class="header"><% site.title | site.link title=<% site.tagline %> %></td>
 </tr>
 </table>
 
@@ -28,7 +28,7 @@
 <td class="right">
 <div class="box">
 <% site.age prefix="Online for " show="days" suffix=" days<br />" %>
-<% site.lastupdate prefix="Last update: " format="short" %>
+<% site.modified short prefix="Last modified: " %>
 </div>
 
 <div class="boxheader">status</div>
@@ -36,17 +36,16 @@
 
 <div class="boxheader">menu</div>
 <div class="box">
-...&nbsp;<% site.link to="main" text="home" %><br />
-...&nbsp;<% site.link to="topics" text="topics" %><br />
-...&nbsp;<% site.link to="images/topics" text="galleries" %><br />
-<% site.navigation modules="all" %>
-<% site.navigation for="contributors" modules="all" %>
-<% site.navigation for="admins" modules="all" %><br />
+...&nbsp;<% site.link . home %><br />
+...&nbsp;<% site.link topics %><br />
+...&nbsp;<% site.link images/topics galleries %><br />
+<% site.navigation contributors %>
+<% site.navigation admins %><br />
 ...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a>
 </div>
 
 <div class="boxheader">search</div>
-<div class="box"><% site.skin name="searchbox" %></div>
+<div class="box"><% site.skin searchbox %></div>
 
 <div class="boxheader">calendar</div>
 <div class="box"><% site.calendar %></div>

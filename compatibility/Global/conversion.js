@@ -11,11 +11,26 @@ var convert = function(type) {
    function quote(s) {
       return "'" + s.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
    }
+   
+   function forEachRow(callback) {
+      if (!rows) {
+         return;
+      }
+      app.invokeAsync(null, function() {
+         var counter = 1;
+         while (rows.next()) {
+            callback(rows);
+            writeln("Processing row #" + counter++);
+         }
+         rows.release();
+      }, [], -1);
+      return;
+   }
       
    switch (type.toLowerCase()) {
       case "users":
       var query = "select user_id, hash, salt, user_url from av_user";
-      var rows = db.executeRetrieval(query);
+      rows = db.executeRetrieval(query);
       while (rows && rows.next()) {
          sql = "update av_user set metadata = " + quote({
             hash: rows.getColumnItem("hash"),
@@ -26,9 +41,50 @@ var convert = function(type) {
          db.executeCommand(sql);
       }
       break;
+      
+      case "site":
+      var query = "select site_email, site_lastupdate, site_lastoffline, " +
+            "site_lastblockwarn, site_lastdelwarn, site_lastping, " +
+            "site_enableping, metadata, mode, title, id from av_site";
+      rows = db.executeRetrieval(query);
+      forEachRow(function(rows) {
+         var id = rows.getColumnItem("id");
+         var metadata = eval(rows.getColumnItem("metadata"));
+         metadata.email = rows.getColumnItem("site_email");
+         metadata.title = rows.getColumnItem("title");
+         /* metadata.lastUpdate = rows.getColumnItem("site_lastupdate");
+         metadata.pageSize = metadata.days || 3;
+         metadata.pageMode = "days";
+         metadata.timeZone = metadata.timezone || "CET";
+         metadata.archiveMode = metadata.archive ? "online" : "offline";
+         metadata.commentsMode = metadata.discussions ? "online" : "offline";
+         metadata.shortDateFormat = metadata.shortdateformat;
+         metadata.longDateFormat = metadata.longdateformat;
+         metadata.offlineSince = rows.getColumnItem("site_lastoffline");
+         metadata.notifiedOfBlocking = rows.getColumnItem("site_lastblockwarn");
+         metadata.notifiedOfDeletion = rows.getColumnItem("site_lastdelwarn");
+         metadata.webHookEnabled = rows.getColumnItem("site_enableping");
+         metadata.webHookLastUpdate = rows.getColumnItem("site_lastping");
+         if (metadata.country) {
+            metadata.locale += "_" + metadata.country;
+         } */
+         var mode = metadata.usercontrib ? 'open' : rows.getColumnItem("mode");
+         for each (var key in ["enableping", "usercontrib", "archive",
+               "discussions", "days", "shortdateformat", "longdateformat",
+               "linkcolor", "alinkcolor", "vlinkcolor", "smallcolor",
+               "titlecolor", "titlefont", "textfont", "textcolor", "smallsize",
+               "smallfont", "textsize", "titlesize", "timezone", "bgcolor",
+               "country"]) {
+            delete metadata[key];
+         }
+         sql = "update av_site set metadata = " + quote(metadata.toSource()) +
+               ", mode = " + quote(mode) + " where id = " + id;
+         db.executeCommand(sql);
+         res.commit();
+         writeln(sql); 
+      });
    }
 
-   rows && rows.release();
    return;
 };
 

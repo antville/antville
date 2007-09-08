@@ -395,7 +395,7 @@ SysMgr.prototype.searchSites = function(show, sort, order, keywords) {
       }
    }
    if (!sort || sort == "0")
-      sql += "order by SITE_LASTUPDATE ";
+      sql += "order by modified ";
    else if (sort == "1")
       sql += "order by created ";
    else if (sort == "2")

@@ -1,5 +1,5 @@
-...&nbsp;<% site.link to="members" text="members" %><br />
-...&nbsp;<% site.link to="edit" text="preferences" %><br />
-...&nbsp;<% site.link to="layouts" text="layouts" %><br />
-...&nbsp;<% site.link to="referrers" text="referrers" %><br />
-...&nbsp;<% site.link to="mostread" text="most read stories" %><br />
+...&nbsp;<% site.link members %><br />
+...&nbsp;<% site.link edit preferences %><br />
+...&nbsp;<% site.link layouts %><br />
+...&nbsp;<% site.link referrers %><br />
+...&nbsp;<% site.link mostread "most read stories" %><br />

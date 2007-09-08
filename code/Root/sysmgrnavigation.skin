@@ -1,9 +1,9 @@
 <div class="boxheader">manage</div>
 <div class="box">
-...&nbsp;<% root.link to="manage/sites" text="sites" %><br />
-...&nbsp;<% root.link to="manage/users" text="users" %><br />
-...&nbsp;<% root.link to="layouts" text="layouts" %><br />
-...&nbsp;<% root.link to="manage/logs" text="system log" %><br />
-...&nbsp;<% root.link to="manage/setup" text="system setup" %><br />
-...&nbsp;<% root.link to="manage/status" text="system status" %>
+...&nbsp;<% root.link manage/sites sites %><br />
+...&nbsp;<% root.link manage/users users %><br />
+...&nbsp;<% root.link layouts %><br />
+...&nbsp;<% root.link manage/logs logs %><br />
+...&nbsp;<% root.link manage/setup setup %><br />
+...&nbsp;<% root.link manage/status status %>
 </div>
