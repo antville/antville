@@ -1,11 +1,11 @@
 <div class="ample">
-   <% membermgr.link add "add a member" prefix="...&nbsp;" %>
+   <% members.link add "add a member" prefix="...&nbsp;" %>
 </div>
-<% membermgr.link . all prefix="... show " %>
-<% membermgr.link owners prefix="| " %>
-<% membermgr.link contributors prefix="| " %>
-<% membermgr.link managers prefix="| " %> 
-<% membermgr.link subscribers prefix="| " %>
+<% members.link . all prefix="... show " %>
+<% members.link owners prefix="| " %>
+<% members.link contributors prefix="| " %>
+<% members.link managers prefix="| " %> 
+<% members.link subscribers prefix="| " %>
 
 <% response.pager %>
 <% response.list %>

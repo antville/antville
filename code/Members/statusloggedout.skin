@@ -1,1 +1,1 @@
-You're not logged in ... <% membermgr.link login %>
+You're not logged in ... <% members.link login %>

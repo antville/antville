@@ -327,7 +327,7 @@ ul.skinmgrTree li div {
    color:<% layout.textcolor %>;
 }
 
-/* classes for membermgr */
+/* classes for members */
 
 .membergroup {
    font-weight:bold;

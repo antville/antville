@@ -7,7 +7,7 @@ $(function() {
       $("input:password").val("");
       $.ajax({
          async: false,
-         url: '<% membermgr.href action="salt.js" %>',
+         url: '<% members.href action="salt.js" %>',
          data: "user=" + encodeURIComponent(name),
          dataType: "json",
          success: function(salt) {
@@ -30,7 +30,7 @@ value="<% request.name %>" />
 </td>
 <td rowspan="4" nowrap="nowrap"> </td>
 <td class="small">
-<% membermgr.link register "Not registered yet" %>
+<% members.link register "Not registered yet" %>
 </td>
 </tr>
 <tr>
@@ -39,7 +39,7 @@ value="<% request.name %>" />
 <input type="password" name="password" id="password" size="15" tabindex="2" />
 </td>
 <td class="small">
-<% membermgr.link sendpwd "Forgot your password?" %>
+<% members.link sendpwd "Forgot your password?" %>
 </td>
 </tr>
 <tr>

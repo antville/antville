@@ -1,6 +1,6 @@
 Logged in as <% username as="link" %><br />
 <% membership.role prefix="(" suffix=")<br />" %>
-<% membermgr.link edit "edit your profile" prefix="...&nbsp;" suffix="<br />" %>
+<% members.link edit "edit your profile" prefix="...&nbsp;" suffix="<br />" %>
 <% site.link subscribe text="subscribe to this site" prefix="...&nbsp;" suffix="<br />" %>
-<% membermgr.link updated subscriptions prefix="...&nbsp;" suffix="<br />" %>
-<% membermgr.link logout prefix="...&nbsp;" %>
+<% members.link updated subscriptions prefix="...&nbsp;" suffix="<br />" %>
+<% members.link logout prefix="...&nbsp;" %>

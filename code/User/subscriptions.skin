@@ -1,7 +1,7 @@
 <div class="ample">
-<% membermgr.link updated "updated sites" prefix="... show " %>
-<% membermgr.link memberships prefix="| " %> 
-<% membermgr.link subscriptions prefix="| " %>
+<% members.link updated "updated sites" prefix="... show " %>
+<% members.link memberships prefix="| " %> 
+<% members.link subscriptions prefix="| " %>
 </div>
 
 <% response.list %>
