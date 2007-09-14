@@ -302,13 +302,13 @@ HELP.skins.LayoutMgr = {
 
 // M E M B E R M G R
 
-HELP.macros.MemberMgr = {
+HELP.macros.Members = {
    membership: 0,
    subscribelink: 0,
    subscriptionslink: 0
 };
 
-HELP.skins.MemberMgr = {
+HELP.skins.Members = {
    login: ["response.action"],
    mailnewmember: ["param.creator", "param.account", "param.site", "param.url"],
    mailpassword: ["param.text"],

@@ -310,7 +310,7 @@ User.getPermission = function(status) {
 User.getMembership = function() {
    var membership;
    if (session.user) {
-      membership = MemberMgr.getByName(session.user.name);
+      membership = Members.getByName(session.user.name);
    }
    return membership || new HopObject;
 };

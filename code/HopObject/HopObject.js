@@ -44,7 +44,7 @@ HopObject.prototype.onRequest = function() {
    if (req.postParams.cancel) {
       switch (this.constructor) {
          case Membership:
-         case MemberMgr:
+         case Members:
          res.redirect(this._parent.href());
          default:
          res.redirect(this.href());

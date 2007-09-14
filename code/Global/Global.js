@@ -205,17 +205,17 @@ newSet.add(new Skinset("Root.various", ["Root.blocked", "Root.notfound", "Root.s
 SKINSETS.push(newSet);
 
 newSet = new Skinset("Site", ["Site.page", "Site.style", "Site.javascript", "Site.main", "Day.main", "Story.dayheader"]);
-newSet.add(new Skinset("Site.navigation", ["Site.contribnavigation", "Site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "MemberMgr.statusloggedin", "MemberMgr.statusloggedout"]));
+newSet.add(new Skinset("Site.navigation", ["Site.contribnavigation", "Site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "Members.statusloggedin", "Members.statusloggedout"]));
 newSet.add(new Skinset("Site.topics", ["TopicMgr.main", "Topic.main"]));
 newSet.add(new Skinset("Site.calendar", ["Site.calendar", "Site.calendardayheader", "Site.calendarweek", "Site.calendarday", "Site.calendarselday"]));
 newSet.add(new Skinset("Site.rss", ["Site.rss", "Story.rssItem", "Story.rssResource"]));
 newSet.add(new Skinset("Site.search", ["Site.searchresult", "Site.searchbox", "Story.searchview"]));
 newSet.add(new Skinset("Site.referrers", ["Site.referrers", "Site.referrerItem"]));
 newSet.add(new Skinset("Site.mostread", ["Site.mostread", "Story.mostread"]));
-newSet.add(new Skinset("Site.mails", ["MemberMgr.mailregconfirm", "MemberMgr.mailpassword", "MemberMgr.mailnewmember", "Membership.mailstatuschange", "Membership.mailmessage", "Site.notificationMail"], "Root"));
+newSet.add(new Skinset("Site.mails", ["Members.mailregconfirm", "Members.mailpassword", "Members.mailnewmember", "Membership.mailstatuschange", "Membership.mailmessage", "Site.notificationMail"], "Root"));
 newSet.add(new Skinset("Site.preferences", ["Site.edit", "Site.notification"], "Root"));
-newSet.add(new Skinset("Site.user", ["MemberMgr.login", "MemberMgr.register", "MemberMgr.sendpwd", "User.edit", "User.sitelist", "User.subscriptions", "Membership.subscriptionlistitem"], "Root"));
-newSet.add(new Skinset("Site.membermgr", ["MemberMgr.main", "MemberMgr.new", "MemberMgr.membergroup", "MemberMgr.searchresult", "MemberMgr.searchresultitem", "Membership.mgrlistitem", "Membership.edit"], "Root"));
+newSet.add(new Skinset("Site.user", ["Members.login", "Members.register", "Members.sendpwd", "User.edit", "User.sitelist", "User.subscriptions", "Membership.subscriptionlistitem"], "Root"));
+newSet.add(new Skinset("Site.membermgr", ["Members.main", "Members.new", "Members.membergroup", "Members.searchresult", "Members.searchresultitem", "Membership.mgrlistitem", "Membership.edit"], "Root"));
 newSet.add(new Skinset("Site.various", ["Site.robots"]));
 SKINSETS.push(newSet);
 

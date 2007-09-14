@@ -16,13 +16,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Revision:3329 $
+// $LastChangedBy:piefke3000 $
+// $LastChangedDate:2007-09-14 15:18:09 +0200 (Fri, 14 Sep 2007) $
 // $URL$
 //
 
-MemberMgr.prototype.main_action = function() {
+Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
    res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pager = renderPageNavigation(this, this.href(req.action), 10, 
@@ -32,7 +32,7 @@ MemberMgr.prototype.main_action = function() {
    return;
 };
 
-MemberMgr.prototype.register_action = function() {
+Members.prototype.register_action = function() {
    if (req.postParams.register) {      
       try {
          var user = User.register(req.postParams);
@@ -66,7 +66,7 @@ MemberMgr.prototype.register_action = function() {
    return;
 };
 
-MemberMgr.prototype.login_action = function() {
+Members.prototype.login_action = function() {
    if (req.postParams.login) {
       try {
          var user = User.login(req.postParams);
@@ -92,7 +92,7 @@ MemberMgr.prototype.login_action = function() {
    return;
 };
 
-MemberMgr.prototype.logout_action = function() {
+Members.prototype.logout_action = function() {
    if (session.user) {
      res.message = gettext("Good bye, {0}! Lookin' forward to seeing you again!", 
            session.user.name);
@@ -105,7 +105,7 @@ MemberMgr.prototype.logout_action = function() {
    return;
 };
 
-MemberMgr.prototype.edit_action = function() {
+Members.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
          session.user.update(req.postParams);
@@ -124,7 +124,7 @@ MemberMgr.prototype.edit_action = function() {
    return;
 };
 
-MemberMgr.prototype.salt_js_action = function() {
+Members.prototype.salt_js_action = function() {
    var user;
    if (user = User.getByName(req.params.user)) {
       res.write((user.value("salt") || String.EMPTY).toSource());
@@ -132,7 +132,7 @@ MemberMgr.prototype.salt_js_action = function() {
    return;
 };
 
-MemberMgr.prototype.subscribers_action = function() {
+Members.prototype.subscribers_action = function() {
    res.data.title = gettext("Subscribers of {0}", this._parent.title);
    res.data.list = renderList(this.subscribers, "mgrlistitem", 10, 
          req.data.page);
@@ -143,7 +143,7 @@ MemberMgr.prototype.subscribers_action = function() {
    return;
 };
 
-MemberMgr.prototype.contributors_action = function() {
+Members.prototype.contributors_action = function() {
    res.data.title = gettext("Contributors of {0}", this._parent.title);
    res.data.list = renderList(this.contributors, "mgrlistitem", 10, 
          req.data.page);
@@ -154,7 +154,7 @@ MemberMgr.prototype.contributors_action = function() {
    return;
 };
 
-MemberMgr.prototype.managers_action = function() {
+Members.prototype.managers_action = function() {
    res.data.title = gettext("Managers of {0}", this._parent.title);
    res.data.list = renderList(this.managers, "mgrlistitem", 10, 
          req.data.page);
@@ -165,7 +165,7 @@ MemberMgr.prototype.managers_action = function() {
    return;
 };
 
-MemberMgr.prototype.owners_action = function() {
+Members.prototype.owners_action = function() {
    res.data.title = gettext("Owners of {0}", this._parent.title);
    res.data.list = renderList(this.owners, "mgrlistitem", 10, 
          req.data.page);
@@ -176,7 +176,7 @@ MemberMgr.prototype.owners_action = function() {
    return;
 };
 
-MemberMgr.prototype.updated_action = function() {
+Members.prototype.updated_action = function() {
    res.data.title = gettext("Updated sites for user {0}", session.user.name);
    res.data.list = session.user.renderSkinAsString("sitelist");
    res.data.body = session.user.renderSkinAsString("subscriptions");
@@ -184,7 +184,7 @@ MemberMgr.prototype.updated_action = function() {
    return;
 };
 
-MemberMgr.prototype.subscriptions_action = function() {
+Members.prototype.subscriptions_action = function() {
    res.data.title = gettext("Subscriptions of user {0}", session.user.name);
    res.data.list = renderList(session.user.subscriptions, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
@@ -192,7 +192,7 @@ MemberMgr.prototype.subscriptions_action = function() {
    return;
 };
 
-MemberMgr.prototype.memberships_action = function() {
+Members.prototype.memberships_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
    res.data.list = renderList(session.user.memberships, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
@@ -200,7 +200,7 @@ MemberMgr.prototype.memberships_action = function() {
    return;
 };
 
-MemberMgr.prototype.add_action = function() {
+Members.prototype.add_action = function() {
    if (req.postParams.term) {
       try {
          var result = this.search(req.postParams.term);
@@ -251,7 +251,7 @@ MemberMgr.prototype.add_action = function() {
    return;
 };
 
-MemberMgr.prototype.search = function(searchString) {
+Members.prototype.search = function(searchString) {
    var mode = "= '";
    if (searchString.contains("*")) {
       searchString = searchString.replace(/\*/g, "%");
@@ -279,7 +279,7 @@ MemberMgr.prototype.search = function(searchString) {
    };
 };
 
-MemberMgr.prototype.addMembership = function(data) {
+Members.prototype.addMembership = function(data) {
    var user = root.users.get(data.name);
    if (!user) {
       throw Error(gettext("Sorry, your input did not match any registered user."));
@@ -292,7 +292,7 @@ MemberMgr.prototype.addMembership = function(data) {
 };
 
 /* FIXME: obsolete?
-MemberMgr.prototype.renderMemberlist = function() {
+Members.prototype.renderMemberlist = function() {
    var currLvl = null;
    res.push();
    for (var i=0;i<this.size();i++) {
@@ -307,7 +307,7 @@ MemberMgr.prototype.renderMemberlist = function() {
 };
 */
 
-MemberMgr.prototype.getPermission = function(action) {
+Members.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
@@ -328,7 +328,7 @@ MemberMgr.prototype.getPermission = function(action) {
    return true;
 };
 
-MemberMgr.prototype.modSorua_action = function() {
+Members.prototype.modSorua_action = function() {
    if (!app.data.modSorua) app.data.modSorua = new Array();
    var returnUrl = req.data["sorua-return-url"];
    var failUrl   = req.data["sorua-fail-url"];
@@ -373,7 +373,7 @@ MemberMgr.prototype.modSorua_action = function() {
    }   
 };
 
-MemberMgr.prototype.modSoruaLoginForm_action = function() {
+Members.prototype.modSoruaLoginForm_action = function() {
    if (!session.data.modSorua || !session.data.modSorua.returnUrl) 
       res.redirect(root.href()); // should not happen anyways
    if (req.data.login) {
@@ -390,7 +390,7 @@ MemberMgr.prototype.modSoruaLoginForm_action = function() {
    this.renderSkin("modSorua");
 };
 
-MemberMgr.getByName = function(name) {
+Members.getByName = function(name) {
    var site = res.handlers.site;
    if (site) {
       return site.members.get(name);
