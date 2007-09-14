@@ -733,7 +733,7 @@ Layout.prototype.getSkinPath = function() {
    do {
       res.push();
       res.write(getProperty("staticPath"));
-      layout.site && res.write(layout.site.value("name") + "/");
+      layout.site && res.write(layout.site.name + "/");
       res.write("layouts/");
       res.write(layout.alias);
       skinPath.push(res.pop());

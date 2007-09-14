@@ -16,7 +16,7 @@ Membership.prototype.username_macro = function(param) {
 
 Membership.prototype.url_macro = function(param) {
    var url;
-   if (url = this.user.value("url")) {
+   if (url = this.user.url) {
       if (param.as === "link") {
          delete param.as;
          link_filter(url, param, url);
@@ -31,13 +31,13 @@ Membership.prototype.level_macro = function(param) {
    if (param.as === "editor") {
       this.select_macro(param, "level");
    } else {
-      res.write(this.value("role"));
+      res.write(this.role);
    }
    return;
 };
 
 Membership.prototype.editlink_macro = function(param) {
-   if (this.value("creator") !== session.user) {
+   if (this.creator !== session.user) {
       this.link_filter(param.text || getMessage("generic.edit"), 
             param, this.href("edit")); 
    }
@@ -45,16 +45,16 @@ Membership.prototype.editlink_macro = function(param) {
 };
 
 Membership.prototype.deletelink_macro = function(param) {
-   if (this.value("role") !== Membership.OWNER)
+   if (this.role !== Membership.OWNER)
       Html.link({href: this.href("delete")},
                 param.text ? param.text : getMessage("generic.remove"));
    return;
 };
 
 Membership.prototype.unsubscribelink_macro = function(param) {
-   if (this.value("role") === Membership.SUBSCRIBER) {
+   if (this.role === Membership.SUBSCRIBER) {
       this.link_filter(param.text || getMessage("Membership.unsubscribe"), 
-            param, this.value("site").href("unsubscribe"));
+            param, this.site.href("unsubscribe"));
    }
    return;
 };

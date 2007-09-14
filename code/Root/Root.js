@@ -22,15 +22,53 @@
 // $URL$
 //
 
+defineConstants(Root, "getScopes", markgettext("every site"), 
+      markgettext("public sites"), markgettext("trusted sites"), 
+      markgettext("no site"));
+
+this.handleMetadata("notificationScope");
+this.handleMetadata("quota");
+this.handleMetadata("creationScope");
+this.handleMetadata("creationDelay");
+this.handleMetadata("qualifyingPeriod");
+this.handleMetadata("qualifyingDate");
+this.handleMetadata("autoCleanupEnabled");
+this.handleMetadata("autoCleanupStartTime");
+this.handleMetadata("phaseOutPrivateSites");
+this.handleMetadata("phaseOutInactiveSites");
+this.handleMetadata("phaseOutNotificationPeriod");
+this.handleMetadata("phaseOutGracePeriod");
+
 Root.prototype.getChildElement = function(name) {
    return this.sites.get(name) || this[name];
 };
 
-/**
- * main action
- */
+Root.prototype.getPermission = function(action) {
+   if (action.contains("admin")) {
+      return User.getPermission(User.PRIVILEGED);
+   }
+   switch (action) {
+      case "create":
+      return this.getCreationPermission();
+   }
+   return Site.prototype.getPermission.apply(this, arguments);
+}
+
+Root.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "notificationScope":
+      return Root.getScopes();
+      case "creationScope":
+      return User.getScopes();
+      case "autoCleanupStartTime":
+      return Admin.getHours();
+      return;
+   }
+   return Site.prototype.getFormOptions.apply(this, arguments);
+};
+
 Root.prototype._main_action = function() {
-   res.data.title = root.value("title");
+   res.data.title = root.title;
 
 /* FIXME: setup routine needs to be rewritten
    // check if this installation is already configured
@@ -53,15 +91,21 @@ Root.prototype._main_action = function() {
 };
 
 Root.prototype.error_action = function() {
-   res.debug(res.error);
-  // res.servletResponse.setContentLength(0);
-  //res.servletResponse.flush();
+   res.data.title = root.getTitle() + " - Error";
+   res.data.body = root.renderSkinAsString("sysError");
+   res.data.body += "<p>"+res.error+"</p>";
+   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
    return;
 };
 
-/**
- * action for creating a new Site
- */
+Root.prototype.notfound_action = function() {
+   res.data.title = root.getTitle() + " - 404 - not found";
+   req.data.path = req.path;
+   res.data.body = root.renderSkinAsString("notfound");
+   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
+   return;
+};
+
 Root.prototype.create_action = function() {
    if (!session.user || req.postParams.cancel) {
       res.redirect(root.href());
@@ -69,12 +113,7 @@ Root.prototype.create_action = function() {
    
    if (req.postParams.create) {
       try {
-         var site = new Site(req.postParams, session.user);
-         site.update();
-         if (!this.add(site)) {
-            throw Error(gettext("Sorry, I was not able to create your site. Maybe you should try again..."));
-         }
-         root.manage.syslogs.add(new SysLog("site", site.name, "added site", session.user));
+         var site = this.addSite(req.postParams);
          res.message = gettext("Successfully created your site.");   
          res.redirect(site.href());
       } catch (ex) {
@@ -90,9 +129,6 @@ Root.prototype.create_action = function() {
    return;
 };
 
-/**
- * action for listing public sites
- */
 Root.prototype.list_action = function() {
    // preparing res.data.sitelist and prev/next links
    // ("all" shows all sites, "yes" is for scrolling)
@@ -103,9 +139,6 @@ Root.prototype.list_action = function() {
    return;
 };
 
-/**
- * rss action
- */
 Root.prototype.rss_xml_action = function() {
    var now = new Date();
    var systitle = root.getTitle();
@@ -149,41 +182,6 @@ Root.prototype.rss_xml_action = function() {
    return;
 };
 
-/**
- * action called when a site has been blocked
- */
-Root.prototype.blocked_action = function() {
-   res.data.title = root.getTitle() + " - 404 - blocked";
-   res.data.body = root.renderSkinAsString("blocked");
-   root.renderSkin("page");
-   return;
-};
-
-/**
- * 404 action
- */
-Root.prototype.notfound_action = function() {
-   res.data.title = root.getTitle() + " - 404 - not found";
-   req.data.path = req.path;
-   res.data.body = root.renderSkinAsString("notfound");
-   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
-   return;
-};
-
-/**
- * error action
- */
-Root.prototype.sys_error_action = function() {
-   res.data.title = root.getTitle() + " - Error";
-   res.data.body = root.renderSkinAsString("sysError");
-   res.data.body += "<p>"+res.error+"</p>";
-   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
-   return;
-};
-
-/**
- * action to render external stylesheet
- */
 Root.prototype.main_css_action = function() {
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("Root", "style"));
@@ -193,9 +191,6 @@ Root.prototype.main_css_action = function() {
    return;
 };
 
-/**
- * action to render external javascript
- */
 Root.prototype.main_js_action = function() {
    res.dependsOn(res.handlers.layout.modifytime);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("Root", "javascript"));
@@ -206,22 +201,6 @@ Root.prototype.main_js_action = function() {
    return;
 };
 
-/**
- * macro rendering loginStatus of user
- * valid params:  -  loginSkin
- *                -  logoutSkin
- */
-Root.prototype.loginstatus_macro = function(param) {
-   if (session.user)
-      this.members.renderSkin("statusloggedin");
-   else if (req.action != "login")
-      this.members.renderSkin("statusloggedout");
-   return;
-};
-
-/**
- * macro renders the number of site (either all or just the public ones)
- */
 Root.prototype.sitecounter_macro = function(param) {
    if (param.count == "all")
       var size = root.size();
@@ -236,450 +215,78 @@ Root.prototype.sitecounter_macro = function(param) {
    return;
 };
 
-/**
- * render the system title of this antville installation
- */
-Root.prototype.title_macro = function() {
-   res.write(this.getTitle());
-   return;
+Root.prototype.addSite = function(data) {
+   if (!data.name) {
+      throw Error(gettext("Please enter a name for your new site."));
+   } else if (data.name.length > 30) {
+      throw Error(gettext("Sorry, the name you chose is too long. Please enter a shorter one."));
+   } else if (/(\/|\\)/.test(data.name)) {
+      throw Error(gettext("Sorry, a site name may not contain any (back)slashes."));
+   } else if (data.name !== root.getAccessName(data.name)) {
+      throw Error(gettext("Sorry, there is already a site with this name."));
+   }
+
+   var site = new Site(data.name, data.title);
+   this.sites.add(site);
+   /* FIXME 
+   var layout = new Layout(this, this.title, session.user);
+   layout.alias = data.name;
+   layout.setParentLayout(root.getLayout());
+   site.layouts.add(layout);
+   site.layouts.setDefaultLayout(layout.alias); 
+   */
+   site.members.add(new Membership(session.user, Membership.OWNER));
+   log("site", site.name, "added site", session.user);
+   return site;
 };
 
-/**
- * render the system-url of this antville installation
- */
-Root.prototype.url_macro = function(param) {
-   res.write(this.getUrl());
-   return;
-};
+Root.prototype.getCreationPermission = function() {
+   var user;
+   if (!(user = session.user)) {
+      return false;
+   } if (User.getPermission(User.PRIVILEGED)) {
+      return true;
+   }
 
-/**
- * render the system manager navigation if user is a system manager
- */
-Root.prototype.sysmgrnavigation_macro = function(param) {
-   if (session.user && session.user.sysadmin)
-      this.renderSkin("sysmgrnavigation");
-   return;
-};
-
-/**
- * proxy macro for LayoutMgr.layoutchooser
- */
-Root.prototype.layoutchooser_macro = function(param) {
-   if (root.sys_layout)
-      param.selected = root.sys_layout.alias;
-   root.layouts.layoutchooser_macro(param);
-   return;
-};
-
-/**
- * render the system-title of this antville-installation
- */
-Root.prototype.sys_title_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_title", param));
-   else
-      res.write(this.getTitle());
-   return;
-};
-
-/**
- * macro rendering siteurl
- */
-
-Root.prototype.sys_url_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_url", param));
-   else
-      res.write(this.sys_url);
-   return;
-};
-
-/**
- * macro rendering address used for sending mails
- */
-
-Root.prototype.sys_email_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      param["type"] = "text";
-      var iParam = this.createInputParam("sys_email", param);
-      // use the users email if sys_email is empty
-      if (!iParam.value)
-         iParam.value = session.user.email;
-      Html.input(iParam);
-   } else
-      res.write(this.sys_email);
-   return;
-};
-
-/**
- * macro rendering allowFiles-flag
- */
-
-Root.prototype.sys_allowFiles_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("sys_allowFiles", param);
-      if (req.data.save && !req.data.sys_allowFiles)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.sys_allowFiles ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering diskquota
- */
-
-Root.prototype.sys_diskQuota_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      param["type"] = "text";
-      var iParam = this.createInputParam("sys_diskQuota", param);
-      Html.input(iParam);
-   } else
-      res.write(this.sys_diskquota);
-   return;
-};
-
-/**
- * macro rendering a dropdown for limiting the creation of new Sites
- */
-
-Root.prototype.sys_limitNewSites_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = [getMessage("SysMgr.registeredUsers"), getMessage("SysMgr.trustedUsers"), "---------"];
-      Html.dropDown({name: "sys_limitNewSites"}, options, this.sys_limitNewSites);
-   } else
-      res.write(this.sys_limitNewSites);
-   return;
-};
-
-/**
- * macro renders a dropdown containing the minimal registration time
- */
-
-Root.prototype.sys_minMemberAge_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = new Array();
-      for (var i=1;i<92;i++) {
-         if (i < 7 || (i % 7) == 0)
-            options[options.length] = i.toString();
+   switch (root.creationScope) {
+      case User.PRIVILEGEDUSERS:
+      return false;
+      
+      case User.TRUSTEDUSERS:
+      return User.getPermission(User.TRUSTED);
+      
+      default:
+      case User.ALLUSERS:
+      if (root.qualifyingPeriod) {
+         var days = Math.floor((new Date - user.created) / Date.ONEDAY);
+         if (days < root.qualifyingPeriod) {
+            //throw Error(gettext("Sorry, you have to be a member for at " +
+            //      "least {0} days to create a new site.", 
+            //      formatDate(root.qualifyingPeriod));
+            return false;
+         }
+      } else if (root.qualifyingDate) {
+         if (user.created > root.qualifyingDate) {
+            //throw Error(gettext("Sorry, only members who have registered " +
+            //      "before {0} are allowed to create a new site.", 
+            //      formatDate(root.qualifyingDate));
+            return false;
+         }
       }
-      Html.dropDown({name: "sys_minMemberAge"}, options, this.sys_minMemberAge, "----");
-   } else
-      res.write(this.sys_minMemberAge);
-   return;
-};
-
-/**
- * macro renders an input type text for editing the system-timestamp
- * that allows users who have registered before it to create a site
- */
-Root.prototype.sys_minMemberSince_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      if (this.sys_minMemberSince)
-         param.value = formatTimestamp(this.sys_minMemberSince, "yyyy-MM-dd HH:mm");
-      param.name = "sys_minMemberSince";
-      Html.input(param);
-   } else
-      res.write(this.sys_minMemberSince);
-   return;
-};
-
-
-/**
- * macro renders a dropdown containing the number of days a user has to wait
- * after having created a site before being allowed to create a new one
- */
-
-Root.prototype.sys_waitAfterNewSite_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = new Array();
-      for (var i=1;i<92;i++) {
-         if (i < 7 || !(i%7))
-            options[i] = i;
+      if (user.sites.count() > 0) {
+         var days = Math.floor((new Date - user.sites.get(0).created) /
+               Date.ONEDAY);
+         if (days < root.creationDelay) {
+            //throw Error(gettext("Sorry, you still have to wait {0} days " +
+            //      "before you can create another site.", 
+            //      root.creationDelay - days));
+            return false;
+         }
       }
-      Html.dropDown({name: "sys_waitAfterNewSite"}, options, this.sys_waitAfterNewSite, "----");
-   } else
-      res.write(this.sys_waitAfterNewSite);
-   return;
+   }
+   return true;
 };
 
-
-/**
- * macro rendering autocleanup-flag
- */
-
-Root.prototype.sys_enableAutoCleanup_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("sys_enableAutoCleanup", param);
-      if (req.data.save && !req.data.sys_enableAutoCleanup)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.sys_enableAutoCleanup ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering hour when automatic cleanup starts
- */
-
-Root.prototype.sys_startAtHour_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var options = new Array();
-      for (var i=0;i<24;i++)
-         options[i] = (i < 10 ? "0" + i : i.toString());
-      Html.dropDown({name: "sys_startAtHour"}, options, this.sys_startAtHour);
-   } else
-      res.write(this.sys_startAtHour);
-   return;
-};
-
-/**
- * macro rendering blockPrivateSites-flag
- */
-
-Root.prototype.sys_blockPrivateSites_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("sys_blockPrivateSites", param);
-      if (req.data.save && !req.data.sys_blockPrivateSites)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.sys_blockPrivateSites ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering Number of days before sending blockwarning-mail
- */
-
-Root.prototype.sys_blockWarningAfter_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_blockWarningAfter", param));
-   else
-      res.write(this.sys_blockWarningAfter);
-   return;
-};
-
-/**
- * macro rendering Number of days to wait before blocking private site
- */
-
-Root.prototype.sys_blockAfterWarning_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_blockAfterWarning", param));
-   else
-      res.write(this.sys_blockAfterWarning);
-   return;
-};
-
-/**
- * macro rendering deleteInactiveSites-flag
- */
-
-Root.prototype.sys_deleteInactiveSites_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("sys_deleteInactiveSites", param);
-      if (req.data.save && !req.data.sys_deleteInactiveSites)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else
-      res.write(this.sys_deleteInactiveSites ? getMessage("generic.yes") : getMessage("generic.no"));
-   return;
-};
-
-/**
- * macro rendering Number of days before sending deletewarning-mail
- */
-
-Root.prototype.sys_deleteWarningAfter_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_deleteWarningAfter", param));
-   else
-      res.write(this.sys_deleteWarningAfter);
-   return;
-};
-
-/**
- * macro rendering Number of days to wait before deleting inactive site
- */
-
-Root.prototype.sys_deleteAfterWarning_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_deleteAfterWarning", param));
-   else
-      res.write(this.sys_deleteAfterWarning);
-   return;
-};
-
-/**
- * macro rendering a dropdown containing all available locales
- */
-
-Root.prototype.localechooser_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderLocaleChooser(this.getLocale());
-   return;
-};
-
-/**
- * macro rendering a dropdown containing all available locales
- */
-
-Root.prototype.timezonechooser_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderTimeZoneChooser(this.getTimeZone());
-   return;
-};
-
-/**
- * macro renders a chooser for the longdateformat
- */
-Root.prototype.longdateformat_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderDateformatChooser("longdateformat", root.getLocale(), this.longdateformat);
-   return;
-};
-
-/**
- * macro renders a chooser for the shortdateformat
- */
-Root.prototype.shortdateformat_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderDateformatChooser("shortdateformat", root.getLocale(), this.shortdateformat);
-   return;
-};
-
-/**
- * macro renders the alias of the frontpage site defined
- */
-Root.prototype.sys_frontSite_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      var inputParam = new Object();
-      inputParam.name = "sys_frontSite";
-      inputParam.value = root.sys_frontSite ? root.sys_frontSite.alias : null;
-      Html.input(inputParam);
-   } else
-      res.write (root.sys_frontSite);
-   return;
-};
-
-/* *
- *  macro allow e-mail notification
- *  0: no notification
- *  1: notification for all sites
- *  2: notification only for trusted sites
- */
-Root.prototype.sys_allowEmails_macro = function(param) {
-  // this macro is allowed just for sysadmins
-  if (!session.user.sysadmin)
-     return;
-  if (param.as == "editor") {
-     var options = new Array(getMessage("SysMgr.allowNotfication.no"), 
-                             getMessage("SysMgr.allowNotfication.all"), 
-                             getMessage("SysMgr.allowNotfication.trusted"));
-     Html.dropDown({name: "sys_allowEmails"}, options, this.sys_allowEmails);
-  } else
-     res.write(this.sys_allowEmails);
-  return;
-};
-
-/**
- * evaluating new Site
- */
-Root.prototype.evalNewSite = function(title, alias, creator) {
-   // check alias
-   if (!alias)
-      throw new Exception("siteAliasMissing");
-   else if (this.get(alias))
-      throw new Exception("siteAliasExisting");
-   else if (!alias.isClean())
-      throw new Exception("siteAliasNoSpecialChars");
-   else if (alias.length > 30)
-      throw new Exception("siteAliasTooLong");
-   else if (this[alias] || this[alias + "_action"])
-      throw new Exception("siteAliasReserved");
-   // check if title is missing
-   if (!title)
-      throw new Exception("siteTitleMissing");
-   // create new Site
-   var newSite = new Site(title, alias, creator);
-   // create an initial layout object that is a child layout
-   // of the currently active root layout
-   var initLayout = new Layout(newSite, newSite.title, creator);
-   initLayout.alias = newSite.alias;
-   initLayout.setParentLayout(root.getLayout());
-   if (!this.add(newSite))
-      throw new Exception("siteCreate");
-   newSite.layouts.add(initLayout);
-   newSite.layouts.setDefaultLayout(initLayout.alias);
-   // add the creator to the admins of the new Site
-   newSite.members.add(new Membership(creator, Membership.OWNER));
-   root.manage.syslogs.add(new SysLog("site", newSite.alias, "added site", creator));
-   return new Message("siteCreate", null, newSite);
-};
-
-
-/**
- *  Search one or more (public) sites. Returns an array containing site-aliases and
- *  story ids of matching items.
- *
- * @param query The unprocessed query string
- * @param sid ID of site in which to search, null searches all
- * @return The result array
- */
 Root.prototype.searchSites  = function(query, sid) {
    // result array
    var result = new Array();
@@ -722,121 +329,10 @@ Root.prototype.searchSites  = function(query, sid) {
    return result;
 };
 
-/**
- * function checks if language and country were specified
- * for root. if so, it returns the specified Locale-object
- * otherwise it returns the default locale of the JVM
- */
-Root.prototype.getLocale = function() {
-   var locale = this.cache.locale;
-   if (locale)
-       return locale;
-   if (this.sys_language)
-      locale = new java.util.Locale(this.sys_language, this.sys_country ? this.sys_country : "");
-   else
-      locale = java.util.Locale.getDefault();
-   this.cache.locale = locale;
-   return locale;
-};
-
-/**
- * function checks if the system url of this antville-installation
- * was defined in setup and returns it.
- * if not set, root.href() is returned.
- */
-Root.prototype.getUrl = function() {
-   if (!root.sys_url)
-      return root.href();
-   return root.sys_url;
-};
-
-/**
- *  href URL postprocessor. If a virtual host mapping is defined
- *  for this site's alias, use it. Otherwise, use normal site URL.
- */
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 };
 
-/**
- * function returns the (already cached) TimeZone-Object
- */
-Root.prototype.getTimeZone = function() {
-   if (this.cache.timezone)
-       return this.cache.timezone;
-   if (this.sys_timezone)
-       this.cache.timezone = java.util.TimeZone.getTimeZone(this.sys_timezone);
-   else
-       this.cache.timezone = java.util.TimeZone.getDefault();
-   return this.cache.timezone;
-};
-
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-Root.prototype.checkAccess = function(action, usr, level) {
-   try {
-      switch (action) {
-         case "new" :
-            checkIfLoggedIn(this.href("new"));
-            this.checkAdd(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this.href());
-   }
-   return;
-};
-
-/**
- * function checks if user is allowed to create a new Site
- * @param Obj User-Object
- */
-Root.prototype.checkAdd = function(usr) {
-   // sysAdmins aren't restricted
-   if (session.user.sysadmin)
-      return null;
-
-   switch (root.sys_limitNewSites) {
-      case 2:
-         if (!usr.sysadmin)
-            throw new DenyException("siteCreateOnlyAdmins");
-      case 1:
-         if (!usr.trusted)
-            throw new DenyException("siteCreateNotAllowed");
-      default:
-         if (root.sys_minMemberAge) {
-            // check if user has been a registered member for long enough
-            var regTime = Math.floor((new Date() - session.user.registered)/ONEDAY);
-            if (regTime < root.sys_minMemberAge)
-               throw new DenyException("siteCreateMinMemberAge", [regTime, root.sys_minMemberAge]);
-         } else if (root.sys_minMemberSince) {
-            // check if user has registered before the defined timestamp
-            if (session.user.registered > root.sys_minMemberSince)
-               throw new DenyException("siteCreateMinMemberSince", formatTimestamp(root.sys_minMemberSince));
-         }
-         if (usr.sites.count()) {
-            // check if user has to wait some more time before creating a new Site
-            var lastCreation = Math.floor((new Date() - usr.sites.get(0).createtime)/ONEDAY);
-            if (lastCreation < root.sys_waitAfterNewSite)
-               throw new DenyException("siteCreateWait", [root.sys_waitAfterNewSite, root.sys_waitAfterNewSite - lastCreation]);
-         }
-   }
-   return;
-};
-
-/**
- * this function renders a list of sites
- * but first checks which collection to use
- * @param limit maximum amount of sites to be displayed
- * @param show set this to "all" to display all sites
- * @param scroll set this to "no" to hide prev/back links
- */
 Root.prototype.renderSitelist = function(limit, show, scroll) {
    if (show && show == "all")
       var collection = root.publicSites;

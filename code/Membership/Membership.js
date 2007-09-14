@@ -23,7 +23,7 @@
 //
 
 Membership.prototype.constructor = function(user, role) {
-   this.value({
+   this.map({
       creator: user,
       name: user.name,
       role: role || Membership.SUBSCRIBER,
@@ -33,33 +33,13 @@ Membership.prototype.constructor = function(user, role) {
    return this;
 };
 
-Membership.prototype.value = function(key, value) {
-   var self = this;
-
-   var getter = function() {
-      switch (key) {
-         default:
-         return self[key];
-      }
-   };
-   
-   var setter = function() {
-      switch (key) {
-         default:
-         return self[key] = value;
-      }
-   };
-
-   return HopObject.prototype.value.call(this, key, value, getter, setter);   
-};
-
 Membership.prototype.update = function(data) {
    if (!data.role) {
       throw Error(gettext("Please choose a role for this member."));
    } else if (this.user === session.user) {
       throw Error(gettext("Sorry, you are not allowed to edit your own membership."));
-   } else if (data.role !== this.value("role")) {
-      this.value("role", data.role);
+   } else if (data.role !== this.role) {
+      this.role = data.role;
       this.touch();
       /* FIXME: sendMail(root.sys_email, this.user.email,
             getMessage("mail.statusChange", this.site.title),
@@ -71,11 +51,11 @@ Membership.prototype.update = function(data) {
 Membership.prototype.getPermission = function(action) {
    switch (action) {
       case "edit":
-      return this.value("creator") !== session.user;
+      return this.creator !== session.user;
       case "delete":
-      return this.value("role") !== Membership.OWNER;
+      return this.role !== Membership.OWNER;
       case "unsubscribe":
-      return this.value("role") === Membership.SUBSCRIBER;
+      return this.role === Membership.SUBSCRIBER;
    }
    return true;
 }
@@ -93,7 +73,7 @@ Membership.prototype.edit_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Edit membership: {0}", this.value("name"));
+   res.data.title = gettext("Edit membership: {0}", this.name);
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
    return;
@@ -107,7 +87,7 @@ Membership.prototype.contact_action = function() {
          }
          var body = this.renderSkinAsString("mailmessage", 
                {text: req.postParams.text});
-         sendMail(session.user.value("email"), this.creator.value("email"), 
+         sendMail(session.user.email, this.creator.email, 
                gettext("Message from a {0} user", root.sys_title), body);
          res.message = new Message("mailSend");
          res.redirect(this._parent.href());
@@ -138,12 +118,10 @@ Membership.prototype.delete_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Delete membership: {0}", this.value("name"));
-   var param = {
-      text: gettext('You are about to {0} {1} {2}.', gettext("delete"), 
-            gettext('the membership'), this.value("name"))
-   };
-   res.data.body = this.renderSkinAsString("delete", param);
+   res.data.title = gettext("Delete membership: {0}", this.name);
+   res.data.body = this.renderSkinAsString("delete", {
+      text: gettext('You are about to delete the membership {0}', this.name)
+   });
    this.site.renderSkin("page");
    return;
 };
@@ -151,7 +129,7 @@ Membership.prototype.delete_action = function() {
 Membership.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "creator":
-      return this.value("creator");
+      return this.creator;
    }
 };
 
@@ -173,7 +151,7 @@ defineConstants(Membership, "getRoles", "Subscriber", "Contributor",
 Membership.getLevel = function(role) {
    if (!role) {
       var membership = User.getMembership();
-      membership && (role = membership.value("role"));
+      membership && (role = membership.role);
    }
    switch (role) {
       case Membership.OWNER:
@@ -190,7 +168,7 @@ Membership.getLevel = function(role) {
 
 Membership.getPermission = function(role) {
    if (role && res.handlers.membership) {
-      return Membership.getLevel(res.handlers.membership.value("role")) - 
+      return Membership.getLevel(res.handlers.membership.role) - 
             Membership.getLevel(role) >= 0;
    }
    return false;
@@ -199,7 +177,7 @@ Membership.getPermission = function(role) {
 Membership.remove = function(membership) {
    if (!membership) {
       throw Error(gettext("Please specify a membership you want to be removed."));
-   } else if (membership.value("role") === Membership.OWNER) {
+   } else if (membership.role === Membership.OWNER) {
       throw Error(gettext("Sorry, an owner of a site cannot be removed."));
    }
    membership.remove();

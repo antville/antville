@@ -8,9 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" src="http://localhost:8080/static/default/jquery-1.1.3.1.pack.js"></script>
-<script type="text/javascript" src="<% root.url %>main.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.url %>main.css" />
-<link rel="alternate" type="text/rss+xml" title="RSS Feed" href="<% root.url %>rss" />
+<script type="text/javascript" src="<% root.href %>main.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href %>main.css" />
+<link rel="alternate" type="text/rss+xml" title="RSS Feed" href="<% root.href %>rss" />
 </head>
 
 <body>
@@ -32,11 +32,19 @@
 
 <div class="boxheader">menu</div>
 <div class="box">
-...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a><br />
+...&nbsp;<a href="<% root.href %>"><% root.title suffix=" " %>home</a><br />
 <% root.link create "create a new site" prefix="...&nbsp;" %>
 </div>
 
-<% root.sysmgrnavigation %>
+<div class="boxheader">manage</div>
+<div class="box">
+<% root.link admin/sites sites prefix="...&nbsp;" suffix="<br />" %>
+<% root.link admin/users users prefix="...&nbsp;" suffix="<br />" %>
+<% root.link layouts prefix="...&nbsp;" suffix="<br />" %>
+<% root.link admin/logs logs prefix="...&nbsp;" suffix="<br />" %>
+<% root.link admin/setup setup prefix="...&nbsp;" suffix="<br />" %>
+<% root.link admin/status status prefix="...&nbsp;" suffix="<br />" %>
+</div>
 
 <div class="boxheader">resources</div>
 <div class="box">
@@ -45,7 +53,7 @@
 ...&nbsp;<a href="http://help.antville.org/">help</a>
 </div>
 
-<div class="boxline">&nbsp;</div>
+<div class="boxline"> </div>
 <div class="box">
 <% root.sitecounter no="no public sites" one="one public site" more=" public sites"%>... 
 <% root.link list %>

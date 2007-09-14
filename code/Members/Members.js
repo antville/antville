@@ -117,7 +117,7 @@ Members.prototype.edit_action = function() {
    }
 
    session.data.token = User.getSalt();
-   session.data.salt = session.user.value("salt"); // FIXME
+   session.data.salt = session.user.salt; // FIXME
    res.data.title = gettext("Profile of user {0}", session.user.name);
    res.data.body = session.user.renderSkinAsString("edit");
    this._parent.renderSkin("page");
@@ -127,7 +127,7 @@ Members.prototype.edit_action = function() {
 Members.prototype.salt_js_action = function() {
    var user;
    if (user = User.getByName(req.params.user)) {
-      res.write((user.value("salt") || String.EMPTY).toSource());
+      res.write((user.salt || String.EMPTY).toSource());
    }
    return;
 };

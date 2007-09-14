@@ -1,0 +1,261 @@
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td colspan="2"><strong>General</strong></td>
+</tr>
+<tr>
+<td valign="top">Title:</td>
+<td>
+   <% root.input title %><br />
+   <span class="small">
+      This is the main title of your Antville installation.
+   </span>
+</td>
+</tr>
+<!-- tr>
+<td valign="top">System URL:</td>
+<td><%// root.sys_url as="editor" size="20" %><br />
+<span class="small">This URL will be used by Antville in the footer of various 
+confirmation mails. You should set it to the URL of the front page of your 
+Antville installation.</span></td>
+</tr -->
+<!-- tr>
+<td valign="top">Front page<br />site:</td>
+<td><% root.sys_frontSite as="editor" size="20" %><br />
+<span class="small">If you enter the alias of a public site here the front page 
+of this Antville installation will display the selected site instead of the 
+default front page.</span></td>
+</tr -->
+<tr>
+<td valign="top">Layout:</td>
+<td>
+   <% root.select layout %><br />
+   <span class="small">
+      Choose the layout to use for this Antville installation. 
+      It will also be the default layout for any newly created site.
+   </span>
+</td>
+</tr>
+<tr>
+<td valign="top">e-mail:</td>
+<td>
+   <% root.input email %><br />
+   <span class="small">
+      Antville will use this e-mail address to send various confirmation 
+      messages (e.g. when a user registers within the front page)
+   </span>
+</td>
+</tr>
+<tr>
+<td valign="top">Notifications:</td>
+<td>
+   <% root.select notificationScope %> may notify members<br />
+   <span class="small">
+      By enabling this option site owners can define the receipients for 
+      notification e-mails. (E.g. for new or updated stories and comments or 
+      uploaded images and files.)
+   </span>
+</td>
+</tr>
+<tr>
+<td valign="top">Language:</td>
+<td>
+   <% root.select language %><br />
+   <span class="small">
+      This defines the language of Antville's confirm  and error messages. 
+      If you select a language that Antville doesn't know, it will display all 
+      messages in english. Whatever language you specify here will also be the 
+      default for every new site created here.
+   </span>
+</td>
+</tr>
+<tr>
+<td>Time zone:</td>
+<td><% root.select timeZone %></td>
+</tr>
+<tr>
+<td>Long date format:</td>
+<td><% root.select longDateFormat %></td>
+</tr>
+<tr>
+<td>Short date format:</td>
+<td><% root.select shortDateFormat %></td>
+</tr>
+<tr>
+<td valign="top">Quota per site:</td>
+<td>
+   <% root.input quota %> Kb<br />
+   <span class="small">
+      Maximum amount of disk space, which can be used for images and files per 
+      site. This does not apply for trusted sites. If left empty, then the disk 
+      space per site is not restricted.
+   </span>
+</td>
+</tr>
+
+<% admin.moduleSetup %>
+
+<tr>
+<td colspan="2">
+   <div class="blockSeparator"> </div><br />
+   <strong>Creation of new sites</strong>
+</td>
+</tr>
+<tr>
+<td valign="top">Sites may be<br /> created by:</td>
+<td>
+   <% root.select creationScope %><br />
+   <span class="small">
+      Here you can choose who may create new sites: all registered users or 
+      just those who are "trusted" (system administrators have this right 
+      anyway).
+   </span>
+</td>
+</tr>
+<tr>
+<td valign="top">Delay between<br />creation of<br />two sites:</td>
+<td>
+   <% root.input creationDelay %>
+   <span class="small">
+      days<br />
+      This is the amount of time a user has to wait before creating a new site 
+      (this doesn't affect "trusted" users or system administrators).
+   </span>
+</td>
+
+<tr>
+<td colspan="2">
+   <div class="blockSeparator"> </div><br />
+   <strong>Qualifying</strong>
+</td>
+</tr>
+</tr>
+<tr>
+<td valign="top">Users must be<br />registered for:</td>
+<td>
+   <% root.input qualifyingPeriod maxlength="2" %>
+   <span class="small"> days</span>
+</td>
+</tr>
+<tr>
+<td valign="top">or since:</td>
+<td>
+   <% root.input qualifyingDate %>
+   <span class="small">
+      (eg. 2002-05-25 00:00)<br />
+      Here you can either specify the time a user has to be registered or you 
+      define a timestamp which means that only users who have registered 
+      <em>before</em> are allowed to participate (ie. create sites, stories,
+      images et al.)
+   </span>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+   <div class="blockSeparator"> </div><br />
+   <strong>Automatic cleanup</strong>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="small" valign="top">
+   Antville has some features that ease system administration: it can 
+   automatically clean up the accesslog, block those sites being private for 
+   too long, and it can automatically remove sites that are inactive (both 
+   features can be enabled or disabled separately below). Whatever you choose, 
+   it will be done once in 24 hours.
+</td>
+</tr>
+<tr>
+<td valign="top">Automatic cleanup:</td>
+<td>
+   <% root.checkbox autoCleanupEnabled label="enabled" %><br />
+   <span class="small">
+      Enabling this feature means that Antville will search for inactive or 
+      private sites once in 24 hours.
+   </span>
+</td>
+</tr>
+<tr>
+<td valign="top">Start at hour:</td>
+<td>
+   <% root.select autoCleanupStartTime %><br />
+   <span class="small">
+      Here you can define when Antville should start the cleanup process 
+      (you should choose a time when there is low traffic, e.g. at night)
+   </span>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+   <div class="blockSeparator"> </div><br />
+   <strong>Phasing out private/inactive sites</strong>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="small" valign="top">
+   Antville can host both public and private sites. Since private sites are 
+   accessible for members only and won't appear on the front page or in the 
+   site directory this can be a risky thing (system administrators can access 
+   those private sites, though). To ease administration Antville can 
+   automatically search for private sites hosted here and disable them being 
+   private for too long (below you can define the time span). However, please 
+   note that his does not affect sites created by "trusted" users.
+</td>
+</tr>
+<tr>
+<td valign="top">Phase out private<br />sites:</td>
+<td><% root.checkbox phaseOutPrivatSites label="enabled" %></td>
+</tr>
+<tr>
+<td colspan="2" class="small" valign="top">
+   Antville can automatically remove sites that are inactive for too long. 
+   Here you can decide if you want to enable this feature, define the number 
+   of days of inactivity before Antville will send warning e-mails or finally 
+   remove inactive sites.
+</td>
+</tr>
+<tr>
+<td valign="top">Phase out inactive<br />sites:</td>
+<td><% root.checkbox phaseOutInactiveSites label="enabled" %></td>
+</tr>
+<tr>
+<td colspan="2" class="small" valign="top">
+   Before finally phasing out a site you can notify the site owners that it's
+   about time. Additionally, you can specify a grace period determining the
+   time between notification and the ultimate deadline when nothing will 
+   save the site anymore. 
+</td>
+</tr>
+<tr>
+<td valign="top">Warn via e-mail:</td>
+<td>
+   <% root.input phaseOutNotificationPeriod %>
+   <span class="small">
+      days<br />
+      Here you can define the time a site is allowed to be private before  
+      Antville will send a message to the owner telling that the site will be 
+      blocked, soon.
+   </span>
+</td>
+</tr>
+<tr>
+<td valign="top">Time before<br />blocking:</td>
+<td>
+   <% root.input phaseOutGracePeriod %>
+   <span class="small">
+      days<br />
+      Choose the time between sending the warning e-mail and actually blocking 
+      a site that has been private for too long. After blocking a site its 
+      owner will receive a message that the site was blocked.
+   </span>
+</td>
+</tr>
+<tr>
+<td> </td>
+<td><br />
+   <button type="submit" name="save" value="1">Save</button>
+   <button type="submit" name="cancel" value="1">Cancel</button>
+</td>
+</tr>
+</table>
+</form>

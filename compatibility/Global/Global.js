@@ -2,22 +2,25 @@ var relocateProperty = function(proto, name, key) {
    if (!proto || !name) {
       return;
    }
-   if (!key) {
-      key = name;
-   }
+   key || (key = name);
    proto.prototype.__defineGetter__(name, function() {
-      return this.value(key);
+      return this[key];
    });
    proto.prototype.__defineSetter__(name, function(value) {
-      this.value(key, value);
+      this[key] = value;
       return;
    });
+   return addPropertyMacro.apply(this, arguments);
+};
+
+var addPropertyMacro = function(proto, name, key) {
+   key || (key = name);
    proto.prototype[name + "_macro"] = function(param) {
       if (param.as === "editor") {
          this.input_macro(param, key);
       } else {
-         res.write(this.value(key));
-      }    
+         res.write(this[key]);
+      }
    };
    return;
 };
@@ -47,7 +50,7 @@ HopObject.prototype.createInputParam = function(propName, param) {
    if ((!multiple || multiple.length < 2) && req.data[propName] != null) {
       param.value = req.data[propName];
    } else {
-      param.value = this.value(propName);
+      param.value = this[propName];
    }
    delete param.as;
    return param;
@@ -56,7 +59,7 @@ HopObject.prototype.createInputParam = function(propName, param) {
 HopObject.prototype.createCheckBoxParam = function(propName, param) {
    param.name = propName;
    param.value = 1;
-   if (req.data[propName] == 1 || this.value(propName)) {
+   if (req.data[propName] == 1 || this[propName]) {
       param.checked = "checked";
    }
    delete param.as;

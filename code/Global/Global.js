@@ -23,6 +23,8 @@
 //
 
 app.addRepository("modules/core/HopObject.js");
+app.addRepository("modules/core/Number.js");
+
 app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Mail.js");
 app.addRepository("modules/helma/Search.js");
@@ -39,25 +41,29 @@ var _ = gettext;
 var search = new helma.Search();
 var html = new helma.Html();
 
-function defineConstants(proto, getterName /* , arguments */) {
-   var constants = [];
+function defineConstants(ctor, getterName /* , arguments */) {
+   var constants = [], name;
    for (var i=2; i<arguments.length; i+=1) {
-      proto[arguments[i].toUpperCase().replace(/\s/g, "")] = arguments[i];
+      name = arguments[i].toUpperCase().replace(/\s/g, "");
+      if (ctor[name]) {
+         app.logger.warn("Constant already defined: " + ctor.name + "." + name);
+      }
+      ctor[name] = arguments[i];
       constants.push({
          value: arguments[i],
          display: arguments[i]
       });
    }
-   proto[getterName] = function() {
+   ctor[getterName] = function() {
       return constants;
    };
    return;
 }
 
-/**
- * constants specifying user-rights
- */
- 
+function log(type, object, text, user) {
+   return root.admin.syslogs.add(new SysLog(type, object, text, user));   
+}
+
 MAY_ADD_STORY = 1;
 MAY_VIEW_ANYSTORY = 2;
 MAY_EDIT_ANYSTORY = 4;
@@ -971,13 +977,13 @@ function autoLogin() {
    }
    var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),
          "", "\\.");
-   if ((user.value("hash") + ip).md5() !== hash) {
+   if ((user.hash + ip).md5() !== hash) {
       return;
    }
    session.login(user);
    user.touch();
    res.message = gettext('Welcome to "{0}", {1}. Have fun!',
-         res.handlers.site.value("title"), user.name);
+         res.handlers.site.title, user.name);
    return;
 }
 
@@ -1076,31 +1082,15 @@ function pingUpdatedSites() {
    return;
 }
 
-
-/**
- * function formats a date to a string. It checks if a site object is
- * in the request path and if so uses its locale and timezone.
- *
- * @param Object Date to be formatted
- * @param String The format string
- * @return String The date formatted as string
- */
 function formatDate(date, pattern) {
-   var format, handler;
    pattern || (pattern = "short");
-   
-   if (handler = res.handlers.site) {
-      format = res.handlers.site.value(pattern.toLowerCase() + "DateFormat");
-   } else {
-      handler = root;
-      format = root[pattern.toLowerCase() + "DateFormat"];
-   }
+   var site = res.handlers.site;
+   var format = site[pattern.toLowerCase() + "DateFormat"];
    if (!format) {
-      format = pattern;
+     format = pattern;
    }
-   
    try {
-      return date.format(format, handler.getLocale(), handler.getTimeZone());
+      return date.format(format, site.getLocale(), site.getTimeZone());
    } catch(ex) {
       app.log(ex);
       return "[Macro error: Invalid date format]";
@@ -1895,4 +1885,12 @@ function age_filter(value, param) {
 function link_filter(value, param, url) {
    url || (url = value);
    return renderLink(param, url, value);
+}
+
+function format_filter(value, param, pattern) {
+   if (value.format) {
+      // FIXME: var locale = res.handlers.site.language;
+      return value.format(pattern || param.pattern);
+   }
+   return;
 }

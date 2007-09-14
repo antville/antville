@@ -8,9 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" src="http://localhost:8080/static/default/jquery-1.1.3.1.pack.js"></script>
-<script type="text/javascript" src="<% site.url %>main.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.url %>main.css" />
-<link rel="alternate" type="text/rss+xml" title="RSS Feed" href="<% site.url %>rss" />
+<script type="text/javascript" src="<% site.href %>main.js"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href %>main.css" />
+<link rel="alternate" type="text/rss+xml" title="RSS Feed" href="<% site.href %>rss" />
 </head>
 
 <body>
@@ -38,23 +38,23 @@
 
 <div class="boxheader">menu</div>
 <div class="box">
-<% site.link . home prefix="...&nbsp;" suffix="<br />" %>
-<% site.link topics prefix="...&nbsp;" suffix="<br />" %>
-<% site.link images/topics galleries prefix="...&nbsp;" suffix="<br />" %><br />
-
-<% site.link stories/create "add a story" prefix="...&nbsp;" suffix="<br />" %>
-<% site.link stories prefix="...&nbsp;" suffix="<br />" %>
-<% site.link images prefix="...&nbsp;" suffix="<br />" %>
-<% site.link files prefix="...&nbsp;" suffix="<br />" %>
-<% site.link polls prefix="...&nbsp;" suffix="<br />" %>
-<% site.link members prefix="...&nbsp;" suffix="<br /><br />" %>
-
+<% site.link . home prefix="... " suffix="<br />" %>
+<% site.link topics prefix="... " suffix="<br />" %>
+<% site.link images/topics galleries prefix="..." suffix="<br />" %>
+<br />
+<% site.link stories/create "add a story" prefix="... " suffix="<br />" %>
+<% site.link stories prefix="... " suffix="<br />" %>
+<% site.link images prefix="... " suffix="<br />" %>
+<% site.link files prefix="... " suffix="<br />" %>
+<% site.link polls prefix="... " suffix="<br />" %>
+<% site.link members prefix="... " suffix="<br />" %>
+<br />
 <% site.link edit preferences prefix="...&nbsp;" suffix="<br />" %>
 <% site.link layouts prefix="...&nbsp;" suffix="<br />" %>
 <% site.link referrers prefix="...&nbsp;" suffix="<br />" %>
-<% site.link mostread "most read stories" prefix="...&nbsp;" suffix="<br /><br />" %>
-
-...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a>
+<% site.link mostread "most read stories" prefix="...&nbsp;" suffix="<br />" %>
+<br />
+...&nbsp;<a href="<% root.href %>"><% root.title suffix=" " %>home</a>
 </div>
 
 <div class="boxheader">search</div>

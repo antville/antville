@@ -22,25 +22,38 @@
 // $URL$
 //
 
-/**
- * constructor function for site objects
- * @param String Title
- * @param String Alias
- * @param Object Creator
- */
-Site.prototype.constructor = function(data, user) {
+this.handleMetadata("archiveMode");
+this.handleMetadata("commentsMode");
+this.handleMetadata("email");
+this.handleMetadata("language");
+this.handleMetadata("lastUpdate");
+this.handleMetadata("longDateFormat");
+this.handleMetadata("notifiedOfBlocking");
+this.handleMetadata("notifiedOfDeletion");
+this.handleMetadata("offlineSince");
+this.handleMetadata("pageSize");
+this.handleMetadata("pageMode");
+this.handleMetadata("shortDateFormat");
+this.handleMetadata("tagline");
+this.handleMetadata("timeZone");
+this.handleMetadata("title"),
+this.handleMetadata("webHookEnabled");
+this.handleMetadata("webHookLastUpdate");
+this.handleMetadata("webHookUrl");
+
+Site.prototype.constructor = function(name, title) {
    var now = new Date;
    var locale = root.getLocale();
+   var user = session.user || new HopObject;
 
-   this.value({
-      name: data.name,
-      title: data.title,
+   this.map({
+      name: name,
+      title: title || name,
       created: now,
       creator: user,
       modified: now,
       modifier: user,
-      email: user.value("email"),
-      status: user.value("status") === User.TRUSTED ? "trusted" : "default",
+      status: user.status === User.TRUSTED ? "trusted" : "default",
       mode: Site.PRIVATE,
       tagline: "",
       webHookEnabled: false,
@@ -58,95 +71,13 @@ Site.prototype.constructor = function(data, user) {
    return this;
 };
 
-Site.prototype.value = function(key, value) {
-   var self = this;
-
-   var getter = function() {
-      switch (key) {
-         case "archiveMode":
-         case "commentsMode":
-         case "email":
-         case "language":
-         case "lastUpdate":
-         case "longDateFormat":
-         case "notifiedOfBlocking":
-         case "notifiedOfDeletion":
-         case "offlineSince":
-         case "pageSize":
-         case "pageMode":
-         case "shortDateFormat":
-         case "tagline":
-         case "timeZone":
-         case "title":
-         case "webHookEnabled":
-         case "webHookLastUpdate":
-         case "webHookUrl":
-         return self.properties.get(key);
-         
-         default:
-         return self[key];
-      }
-   };
-   
-   var setter = function() {
-      switch (key) {
-         case "created":
-         case "creator":
-         case "layout":
-         case "mode":
-         case "modified":
-         case "modifier":
-         case "name":
-         case "status":
-         return self[key] = value;
-         
-         default:
-         return self.properties.set(key, value);
-      }
-   };
-
-   return HopObject.prototype.value.call(this, key, value, getter, setter);   
-};
-
 Site.prototype.onPersist = function() {
    writeln(">>>>>>>>>>>>>>>>>>>> onPersist: " + new Date);
    return;
 };
 
 Site.prototype.update = function(data) {
-   res.debug(data);
-   // FIXME: Would be nice to do the following in onPersist() or the like
-   if (this.isTransient()) {
-      var name = this.value("name");
-      if (!name) {
-         throw Error(gettext("Please enter a name for your new site."));
-      } else if (name.length > 30) {
-         throw Error(gettext("Sorry, the name you chose is too long. Please enter a shorter one."));
-      } else if (/(\/|\\)/.test(name)) {
-         throw Error(gettext("Sorry, a site name may not contain any (back)slashes."));
-      } else if (name !== root.getAccessName(name)) {
-         throw Error(gettext("Sorry, there is already a site with this name."));
-         //throw Error("siteAliasReserved");
-      }
-   
-      // create an initial layout object that is a child layout
-      // of the currently active root layout
-      var layout = new Layout(this, this.value("title"), session.user);
-      layout.alias = name;
-      layout.setParentLayout(root.getLayout());
-      this.layouts.add(layout);
-      this.layouts.setDefaultLayout(layout.alias);
-      
-      // add the creator to the admins of the new Site
-      this.members.add(new Membership(session.user, Membership.OWNER));
-      return;
-   }
-   
-   if (!evalEmail(data.email)) {
-      throw Error(gettext("Could not process the e-mail address. Are you sure it is correct?"));
-   }
-
-   this.value({
+   this.map({
       title: stripTags(data.title),
       tagline: data.tagline,
       email: data.email,
@@ -177,7 +108,7 @@ Site.prototype.getPermission = function(action) {
       case "polls":
       return User.getPermission(User.PRIVILEGED) ||
             Membership.getPermission(Membership.CONTRIBUTOR) ||
-            this.value("mode") === Site.OPEN;
+            this.mode === Site.OPEN;
 
       case "edit":
       case "layouts":
@@ -188,21 +119,20 @@ Site.prototype.getPermission = function(action) {
             Membership.getPermission(Membership.OWNER);
             
       case "subscribe":
-      var mode = this.value("mode");
+      var mode = this.mode;
       return (mode === Site.PUBLIC || mode === Site.OPEN) &&
-            !res.handlers.membership.value("role");
+            !res.handlers.membership.role;
 
       case "unsubscribe":
-      return Site.getMembership().value("role") !== 
-            Membership.OWNER;
+      return this.getMembership().role !== Membership.OWNER;
    }
    return true;
 };
 
-Site.getMembership = function() {
+Site.prototype.getMembership = function() {
    var membership;
    if (session.user) {
-      membership = res.handlers.site.members.get(session.user.value("name"));
+      membership = this.members.get(session.user.name);
    }
    return membership || new HopObject;
 }
@@ -235,7 +165,7 @@ Site.prototype.main_action = function() {
 Site.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
-         this.update(req.postParams, session.user);
+         this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this.href(req.action));
       } catch (ex) {
@@ -268,7 +198,7 @@ Site.prototype.delete_action = function() {
       try {
          Site.remove(this);
          res.message = gettext("The site {0} was removed successfully.",
-               this.value("name"));
+               this.name);
          res.redirect(root.href());
       } catch(ex) {
          res.message = ex;
@@ -278,11 +208,9 @@ Site.prototype.delete_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Delete site");
-   var param = {
-      text: gettext('You are about to {0} {1} {2}.', gettext("delete"), 
-            gettext('the site'), this.value("name"))
-   };
-   res.data.body = this.renderSkinAsString("delete", param);
+   res.data.body = this.renderSkinAsString("delete", {
+      text: gettext('You are about to delete the site {0}', this.title) 
+   });
    this.renderSkin("page");
    return;
 };
@@ -295,8 +223,7 @@ Site.remove = function(site) {
    site.stories.removeChildren();
    site.members.removeChildren();
    site.remove();
-   // add syslog-entry
-   root.manage.syslogs.add(new SysLog("site", site.alias, "removed site", session.user));
+   log("site", site.name, "removed site", session.user);
    return;
 };
 
@@ -599,9 +526,8 @@ Site.prototype.search_action = function() {
  * subscribe action
  */
 Site.prototype.subscribe_action = function() {
-   // create a new member-object and add it to membership-mountpoint
    this.members.add(new Membership(session.user));
-   res.message = new Message("subscriptionCreate", this.title);
+   res.message = gettext("You successfully subscribed to {0}", this.title);
    res.redirect(this.href());
    return;
 };
@@ -610,23 +536,21 @@ Site.prototype.subscribe_action = function() {
  * unsubscribe action
  */
 Site.prototype.unsubscribe_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.members.href("subscriptions"));
-   else if (req.data.remove) {
+   if (req.postParams.proceed) {
       try {
-         res.message = this.members.deleteMembership(this.members.get(session.user.name), session.user);
+         Membership.remove(this.members.get(session.user.name));
+         res.message = gettext("Successfully deleted the membership.");
          res.redirect(this.members.href("subscriptions"));
       } catch (err) {
          res.message = err.toString();
       }
    }
 
-   res.data.title = getMessage("Site.subscription.deleteTitle", {siteTitle: this.title});
-   var skinParam = {
-      description: getMessage("Site.subscription.deleteDescription"),
-      details: this.title
-   };
-   res.data.body = this.renderSkinAsString("delete", skinParam);
+   res.data.title = gettext("Remove subscription to {0}", this.title);
+   res.data.body = this.renderSkinAsString("delete", {
+      text: gettext('You are about to remove the subscription to {0}', 
+            this.title)
+   });
    this.renderSkin("page");
    return;
 };
@@ -1284,60 +1208,47 @@ Site.prototype.getLayouts = function() {
    return result;
 };
 
-/**
- * function checks if language and country were specified
- * for this site. if so, it returns the specified Locale-object
- * otherwise it calls getLocale() for root
- */
 Site.prototype.getLocale = function() {
    var locale, language, country;
    if (locale = this.cache.locale) {
        return locale;
    }
-   if (language = this.value("language")) {
-      if (country = this.value("country")) {
+   if (language = this.language) {
+      if (country = this.country) {
          locale = new java.util.Locale(language, country);
       } else {
          locale = new java.util.Locale(language);
       }
    } else {
-      locale = root.getLocale();
+      locale = java.util.Locale.getDefault();
    }
    this.cache.locale = locale;
    return locale;
 };
 
-/**
- * function returns the (already cached) DateFormatSymbols according
- * to the locale defined for a site
- */
 Site.prototype.getDateSymbols = function() {
-   var symbols = this.cache.dateSymbols;
-   if (symbols)
+   var symbols;
+   if (symbols = this.cache.dateSymbols) {
       return symbols;
+   }
    this.cache.dateSymbols = new java.text.DateFormatSymbols(this.getLocale());
    return this.cache.dateSymbols;
 };
 
-/**
- * function returns the (already cached) TimeZone-Object
- * according to site-preferences
- */
 Site.prototype.getTimeZone = function() {
-   var tz = this.cache.timezone;
-   if (tz)
-       return tz;
-   if (this.properties.get("timezone"))
-       tz = java.util.TimeZone.getTimeZone(this.properties.get("timezone"));
-   else
-       tz = root.getTimeZone();
-   this.cache.timezone = tz;
-   return tz;
+   var timeZone;
+   if (timeZone = this.cache.timeZone) {
+      return timeZone;
+   }
+   if (this.timeZone) {
+       timeZone = java.util.TimeZone.getTimeZone(this.timeZone);
+   } else {
+       timeZone = java.util.TimeZone.getDefault();
+   }
+   this.cache.timezone = timeZone;
+   return timeZone;
 };
 
-/**
- * function deletes all assets of a site (recursive!)
- */
 Site.prototype.deleteAll = function() {
    this.images.deleteAll();
    this.files.deleteAll();
@@ -1501,16 +1412,6 @@ Site.prototype.getStaticDir = function(subdir) {
    var f = new Helma.File(this.getStaticPath(subdir));
    f.mkdir();
    return f;
-};
-
-/**
- * function returns the title of a site
- */
-Site.prototype.getTitle = function() {
-   if (this.title && this.title.trim())
-     return stripTags(this.title);
-   else
-     return "[" + getMessage("generic.untitled") + "]";
 };
 
 /**

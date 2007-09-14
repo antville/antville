@@ -22,21 +22,10 @@
 // $URL$
 //
 
-HopObject.prototype.value = function(key, value, getter, setter) {
-   getter || (getter = function() { 
-      return this[key]; 
-   });
-   setter || (setter = new Function);
-   if (value === undefined) {
-      if (key.constructor === Object) {
-         for (var i in key) {
-            this.value(i, key[i]);
-         }
-         return;
-      }
-      return getter();
+HopObject.prototype.map = function(values) {
+   for (var i in values) {
+      this[i] = values[i];
    }
-   setter();
    return;
 };
 
@@ -102,12 +91,6 @@ HopObject.prototype.onRequest = function() {
       res.redirect(res.handlers.context.href());
    }
    
-   // check access, but only if user is *not* a sysadmin
-   // sysadmins are allowed to to everything
-   if (!session.user || !session.user.sysadmin) {
-      this.checkAccess(req.action, session.user, res.data.memberlevel);
-   }
-      
    if (!this.getPermission(req.action)) {
       res.status = 401;
       res.write("Sorry, you are not allowed to access this part of the site.");
@@ -117,14 +100,16 @@ HopObject.prototype.onRequest = function() {
 };
 
 HopObject.prototype.onUnhandledMacro = function(name) {
+   return;
+   
    switch (name) {
       default:
-      return this.value(name);
+      return this[name];
    }
 };
 
 HopObject.prototype.touch = function() {
-   return this.value({
+   return this.map({
       modified: new Date,
       modifier: session.user
    });
@@ -145,8 +130,14 @@ HopObject.prototype.checkbox_macro = function(param, name) {
    param.id = name;
    param.value = String(this.getFormOptions(name)[0].value);
    param.selectedValue = String(this.getFormValue(name));
+   var label = param.label;
+   delete param.label;
    //res.debug(name + ": " + param.value + " / " + this.getFormValue(name));
-   return html.checkBox(param);
+   html.checkBox(param);
+   if (label) {
+      html.element("label", label, {"for": name});
+   }
+   return;
 };
 
 HopObject.prototype.select_macro = function(param, name) {
@@ -160,7 +151,7 @@ HopObject.prototype.getFormValue = function(name) {
    if (req.isPost()) {
       return req.postParams[name];
    } else {
-      var value = this.value(name);
+      var value = this[name];
       return value instanceof HopObject ? value._id : value;
    }
    return "";
@@ -178,12 +169,12 @@ HopObject.prototype.link_macro = function(param, url, text) {
 };
 
 HopObject.prototype.created_macro = function(param, format) {
-   res.write(formatDate(this.value("created"), format || param.format));
+   res.write(formatDate(this.created, format || param.format));
    return;
 };
 
 HopObject.prototype.modified_macro = function(param, format) {
-   res.write(formatDate(this.value("modified"), format || param.format));
+   res.write(formatDate(this.modified, format || param.format));
    return;
 };
 
@@ -225,10 +216,6 @@ HopObject.prototype.applyModuleMethod = function(module, funcName, param) {
    return;
 };
 
-HopObject.prototype.checkAccess = function() {
-   return;
-};
-
 HopObject.prototype.toString = function() {
    return this.constructor.name + " #" + this._id;
 };
@@ -245,5 +232,15 @@ HopObject.prototype.removeChildren = function() {
    while (this.size() > 0) {
       this.get(0).remove();
    }
+   return;
+};
+
+HopObject.prototype.handleMetadata = function(name) {
+   this.__defineGetter__(name, function() {
+      return this.properties.get(name);
+   });
+   this.__defineSetter__(name, function(value) {
+      return this.properties.set(name, value);
+   });
    return;
 };

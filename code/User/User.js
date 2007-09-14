@@ -22,9 +22,18 @@
 // $URL$
 //
 
+defineConstants(User, "getStatus", "default", "blocked", "trusted", 
+      "privileged");
+defineConstants(User, "getScopes", "all users", "trusted users", 
+      "privileged users");
+
+this.handleMetadata("hash");
+this.handleMetadata("salt");
+this.handleMetadata("url");
+
 User.prototype.constructor = function(data) {
    var now = new Date;
-   this.value({
+   this.map({
       name: data.name,
       hash: data.hash,
       salt: session.data.token,
@@ -36,41 +45,9 @@ User.prototype.constructor = function(data) {
    return this;
 };
 
-User.prototype.value = function(key, value) {
-   var self = this;
-
-   var getter = function() {
-      switch (key) {
-         case "hash":
-         case "salt":
-         case "url":
-         return self.properties.get(key);
-
-         default:
-         return self[key];
-      }
-   };
-   
-   var setter = function() {
-      switch (key) {
-         case "email":
-         case "lastVisit":
-         case "name":
-         case "registered":
-         case "status":
-         return self[key] = value;
-         
-         default:
-         return self.properties.set(key, value);
-      }
-   };
-
-   return HopObject.prototype.value.call(this, key, value, getter, setter);
-};
-
 User.prototype.update = function(data) {
    if (!data.digest && data.password) {
-      data.digest = ((data.password + this.value("salt")).md5() + 
+      data.digest = ((data.password + this.salt).md5() + 
             session.data.token).md5();
    }
    if (data.digest) {
@@ -85,12 +62,12 @@ User.prototype.update = function(data) {
          }
          data.hash = (data.newPassword + session.data.token).md5();
       }
-      this.value({
+      this.map({
          hash: data.hash,
          salt: session.data.token         
       });
    }
-   this.value({
+   this.map({
       url: evalURL(data.url),
       email: evalEmail(data.email),
    });
@@ -98,13 +75,13 @@ User.prototype.update = function(data) {
 };
 
 User.prototype.touch = function() {
-   this.value("lastVisit", new Date);
+   this.lastVisit = new Date;
    return;
 };
 
 User.prototype.getDigest = function(token) {
    token || (token = String.EMPTY);
-   return (this.value("hash") + token).md5();
+   return (this.hash + token).md5();
 };
 
 User.prototype.getFormOptions = function(name) {
@@ -123,7 +100,7 @@ User.prototype.list_macro = function(param, type) {
       case "sites":
       var memberships = session.user.list();
       memberships.sort(function(a, b) {
-         return b.site.value("modified") - a.site.value("modified");
+         return b.site.modified - a.site.modified;
       });
       memberships.forEach(function(membership) {
          var site;
@@ -218,8 +195,6 @@ User.prototype.sysmgr_lastitems_macro = function(param) {
    return;
 };
 
-defineConstants(User, "getStatus", "default", "blocked", "trusted", "privileged");
-
 User.getByName = function(name) {
    return root.users.get(name);
 };
@@ -269,7 +244,7 @@ User.register = function(data) {
    var user = new User(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
    if (root.manage.sysadmins.size() < 1) {
-      user.value("status", User.PRIVILEGED);
+      user.status = User.PRIVILEGED;
    }
    root.users.add(user);
    session.login(user);
@@ -284,8 +259,7 @@ User.login = function(data) {
    var digest = data.digest;
    // Calculate digest for JavaScript-disabled browsers
    if (!digest) {
-      digest = ((data.password + user.value("salt")).md5() + 
-            session.data.token).md5();
+      digest = ((data.password + user.salt).md5() + session.data.token).md5();
    }
    // Check if login is correct
    if (digest !== user.getDigest(session.data.token)) {
@@ -293,10 +267,10 @@ User.login = function(data) {
    }
    if (data.remember) {
       // Set long running cookies for automatic login
-      res.setCookie("avUsr", user.value("name"), 365);
+      res.setCookie("avUsr", user.name, 365);
       var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
             "", "\\.");
-      res.setCookie("avPw", (user.value("hash") + ip).md5(), 365);   
+      res.setCookie("avPw", (user.hash + ip).md5(), 365);   
    }
    user.touch();
    session.login(user);
@@ -304,7 +278,7 @@ User.login = function(data) {
 };
 
 User.getPermission = function(status) {
-   return session.user && session.user.value("status") === status;
+   return session.user && session.user.status === status;
 };
 
 User.getMembership = function() {
@@ -314,4 +288,3 @@ User.getMembership = function() {
    }
    return membership || new HopObject;
 };
-     

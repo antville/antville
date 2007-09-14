@@ -24,6 +24,6 @@ Members.prototype.subscriptionslink_macro = function(param) {
 };
 
 Members.prototype.membership_macro = function(param) {
-   res.write(res.handlers.membership.value());
+   res.write(res.handlers.membership.FIXME);
    return;
 };

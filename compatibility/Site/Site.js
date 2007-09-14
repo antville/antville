@@ -1,41 +1,40 @@
 relocateProperty(Site, "alias", "name");
-relocateProperty(Site, "title");
-relocateProperty(Site, "tagline");
-relocateProperty(Site, "email");
 relocateProperty(Site, "createtime", "created");
 relocateProperty(Site, "modifytime", "modified");
-relocateProperty(Site, "lastUpdate");
 relocateProperty(Site, "showdays", "pageSize");
+
+addPropertyMacro(Site, "tagline");
+addPropertyMacro(Site, "email");
 
 delete Site.prototype.createtime_macro;
 delete Site.prototype.modifytime_macro;
 
 Site.prototype.__defineGetter__("online", function() {
-   return this.value("mode") === Site.PUBLIC;
+   return this.mode === Site.PUBLIC;
 });
 
 Site.prototype.__defineSetter__("online", function(value) {
-   this.value("mode", Site.PUBLIC);
+   this.mode = Site.PUBLIC;
    return;
 });
 
 Site.prototype.__defineGetter__("blocked", function() {
-   return this.value("status") === Site.BLOCKED;
+   return this.status === Site.BLOCKED;
 });
 
 Site.prototype.__defineGetter__("trusted", function() {
-   return this.value("status") === Site.TRUSTED;
+   return this.status === Site.TRUSTED;
 });
 
 Site.prototype.__defineGetter__("discussions", function() {
-   return this.value("commentsMode") === Comment.ONLINE;
+   return this.commentsMode === Comment.ONLINE;
 });
 
 Site.prototype.title_macro = function(param) {
    if (param.as === "editor") {
       this.input_macro(param, "title");
    } else {
-      var title = this.value("title");
+      var title = this.title;
       if (param.linkto) {
          if (param.linkto === "main") {
             param.linkto = "";
@@ -50,7 +49,7 @@ Site.prototype.title_macro = function(param) {
 
 Site.prototype.lastUpdate_macro = function(param) {
    var value;
-   if (value = this.value("created")) {
+   if (value = this.created) {
       res.write(formatDate(value, param.format));
    }
    return;
@@ -58,7 +57,7 @@ Site.prototype.lastUpdate_macro = function(param) {
 
 Site.prototype.online_macro = function(param) {
    var online = true;
-   var value = this.value("mode");
+   var value = this.mode;
    if (value === Site.PRIVATE || value === Site.CLOSED) {
       online = false;
    }
@@ -87,12 +86,11 @@ Site.prototype.usermaycontrib_macro = function(param) {
       if (req.isPost()) {
          param.selectedValue = req.postParams.usermaycontrib;
       } else {
-         param.selectedValue = String(this.value("mode") === Site.OPEN);
+         param.selectedValue = String(this.mode === Site.OPEN);
       }
       return html.checkBox(param);
    } else {
-      res.write(this.value("mode") === Site.OPEN ? 
-            gettext("yes") : gettext("no"));
+      res.write(this.mode === Site.OPEN ? gettext("yes") : gettext("no"));
    }
    return;
 };
@@ -101,7 +99,7 @@ Site.prototype.hasdiscussions_macro = function(param) {
    if (param.as === "editor") {
       this.checkbox_macro(param, "commentsMode");
    } else {
-      res.write(this.value("commentsMode") === Comment.ONLINE ? 
+      res.write(this.commentsMode === Comment.ONLINE ? 
             gettext("yes") : gettext("no"));
    }
    return;
@@ -111,7 +109,7 @@ Site.prototype.showarchive_macro = function(param) {
    if (param.as == "editor") {
       this.checkbox_macro(param, "archiveMode");
    } else {
-      res.write(this.value("archiveMode") === Site.ARCHIVE_ONLINE ? 
+      res.write(this.archiveMode === Site.ARCHIVE_ONLINE ? 
             gettext("yes") : gettext("no"));
    }
    return;
@@ -121,8 +119,7 @@ Site.prototype.enableping_macro = function(param) {
    if (param.as == "editor") {
       this.checkbox_macro(param, "webHookEnabled");
    } else {
-      res.write(this.value("webHookEnabled") === true ?
-            gettext("yes") : gettext("no"));
+      res.write(this.webHookEnabled === true ? gettext("yes") : gettext("no"));
    }
    return;
 };
@@ -177,7 +174,7 @@ Site.renderDateFormat = function(type, site, param) {
    } else if (param.as === "editor") {
       site.input_macro(param, key);
    } else {
-      res.write(site.value(key));
+      res.write(site[key]);
    }
    return;   
 };

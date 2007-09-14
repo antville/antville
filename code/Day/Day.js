@@ -31,7 +31,7 @@ Day.prototype.main_action = function() {
       res.redirect(site.href());
    }
    
-   res.data.title = site.value("title") + ": ";
+   res.data.title = site.title + ": ";
    this.renderStorylist(parseInt(req.data.start, 10));
    if (this._prototype === "Day") {
       var date = this.groupname.toDate("yyyyMMdd", this._parent.getTimeZone());
