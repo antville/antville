@@ -1896,18 +1896,3 @@ function link_filter(value, param, url) {
    url || (url = value);
    return renderLink(param, url, value);
 }
-
-function requireUser(role) {
-   if (User.isAdministrator()) {
-      return;
-   } else if (this.value("role") === role) {
-      return;
-   } else {
-      if (req.data.http_referer) {
-         session.data.referrer = req.data.http_referer;
-      }
-      res.redirect(res.handlers.site.members.href("login"));
-   }
-   return;
-};
-  

@@ -104,8 +104,15 @@ HopObject.prototype.onRequest = function() {
    
    // check access, but only if user is *not* a sysadmin
    // sysadmins are allowed to to everything
-   if (!session.user || !session.user.sysadmin)
+   if (!session.user || !session.user.sysadmin) {
       this.checkAccess(req.action, session.user, res.data.memberlevel);
+   }
+      
+   if (!this.getPermission(req.action)) {
+      res.status = 401;
+      res.write("Sorry, you are not allowed to access this part of the site.");
+      res.stop();
+   }
    return;
 };
 

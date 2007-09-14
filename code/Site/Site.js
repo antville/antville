@@ -138,7 +138,7 @@ Site.prototype.update = function(data) {
       this.layouts.setDefaultLayout(layout.alias);
       
       // add the creator to the admins of the new Site
-      this.members.add(new Membership(session.user, ADMIN));
+      this.members.add(new Membership(session.user, Membership.OWNER));
       return;
    }
    
@@ -183,6 +183,7 @@ Site.prototype.getPermission = function(action) {
       case "layouts":
       case "referrers":
       case "mostread":
+      case "members":
       return User.getPermission(User.PRIVILEGED) ||
             Membership.getPermission(Membership.OWNER);
             
@@ -1207,7 +1208,7 @@ Site.prototype.sysmgr_blocked_macro = function(param) {
    return;
 };
 
-/**
+/** FIXME: to be removed!
  * function saves new properties of site
  * @param Obj Object containing the form values
  * @param Obj User-Object modifying this site

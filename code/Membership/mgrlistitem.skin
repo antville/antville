@@ -12,7 +12,7 @@ prefix="Member since " %></span></div>
 <td width="10" nowrap="nowrap">&nbsp;</td>
 <td align="right" class="small" nowrap="nowrap">
 <% membership.link edit prefix="...&nbsp;" suffix="<br />" %>
-<% membership.link contact prefix="...&nbsp;" %><!--
---><% membership.link delete remove prefix="<br />...&nbsp;" %></td>
+<% membership.link contact prefix="...&nbsp;" suffix="<br />" %>
+<% membership.link delete remove prefix="...&nbsp;" %></td>
 </tr>
 </table>

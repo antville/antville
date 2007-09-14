@@ -22,10 +22,10 @@
 // $URL$
 //
 
-Membership.prototype.constructor = function(role) {
+Membership.prototype.constructor = function(user, role) {
    this.value({
-      creator: session.user,
-      name: session.user.name,
+      creator: user,
+      name: user.name,
       role: role || Membership.SUBSCRIBER,
       createtime: new Date
    });
@@ -55,7 +55,7 @@ Membership.prototype.value = function(key, value) {
 
 Membership.prototype.update = function(data) {
    if (!data.role) {
-      throw Error(gettext("Please choose a new role for this member."));
+      throw Error(gettext("Please choose a role for this member."));
    } else if (this.user === session.user) {
       throw Error(gettext("Sorry, you are not allowed to edit your own membership."));
    } else if (data.role !== this.value("role")) {
@@ -81,10 +81,6 @@ Membership.prototype.getPermission = function(action) {
 }
 
 Membership.prototype.edit_action = function() {
-   requireUser(Membership.MANAGER);
-   if (!this.getPermission(req.action)) {
-      return;
-   }
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
@@ -172,7 +168,7 @@ Membership.prototype.getFormOptions = function(name) {
 };
 
 defineConstants(Membership, "getRoles", "Subscriber", "Contributor", 
-      "Content manager", "Owner");
+      "Manager", "Owner");
       
 Membership.getLevel = function(role) {
    if (!role) {
@@ -182,7 +178,7 @@ Membership.getLevel = function(role) {
    switch (role) {
       case Membership.OWNER:
       return 131071;
-      case Membership.CONTENTMANAGER:
+      case Membership.MANAGER:
       return 16383;
       case Membership.CONTRIBUTOR:
       return 9361;

@@ -1,6 +1,12 @@
-<div class="ample">...&nbsp;<% membermgr.link to="create" text="add a member" %></div>
-...&nbsp;show <% membermgr.link text="all" %>&nbsp;| <% membermgr.link to="admins" %>&nbsp;| <% membermgr.link to="contributors" %>&nbsp;| <% membermgr.link to="managers" %>&nbsp;| <% membermgr.link to="subscribers" %>
+<div class="ample">
+   <% membermgr.link add "add a member" prefix="...&nbsp;" %>
+</div>
+<% membermgr.link . all prefix="... show " %>
+<% membermgr.link owners prefix="| " %>
+<% membermgr.link contributors prefix="| " %>
+<% membermgr.link managers prefix="| " %> 
+<% membermgr.link subscribers prefix="| " %>
 
-<% response.pagenavigation %>
-<% response.memberlist %>
-<% response.pagenavigation %>
+<% response.pager %>
+<% response.list %>
+<% response.pager %>

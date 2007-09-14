@@ -23,7 +23,12 @@
 //
 
 MemberMgr.prototype.main_action = function() {
-   this.renderView(this, gettext("Members"));
+   res.data.title = gettext("Members of {0}", this._parent.title);
+   res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
+   res.data.pager = renderPageNavigation(this, this.href(req.action), 10, 
+         req.data.page);
+   res.data.body = this.renderSkinAsString("main");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
@@ -100,46 +105,6 @@ MemberMgr.prototype.logout_action = function() {
    return;
 };
 
-MemberMgr.prototype.create_action = function() {
-   if (req.postParams.keyword) {
-      try {
-         var result = this.searchUser(req.postParams.keyword);
-         res.message = result.toString();
-         res.data.searchresult = this.renderSkinAsString("searchresult", 
-               {result: result.obj});
-      } catch (err) {
-         res.message = err.toString();
-      }
-   } else if (req.postParams.add) {
-      try {
-         var result = this.evalNewMembership(req.postParams.username, 
-               session.user);
-         res.message = result.toString();
-         // send confirmation mail
-         var sp = new Object();
-         sp.site = result.obj.site.title;
-         sp.creator = session.user.name;
-         sp.url = result.obj.site.href();
-         sp.account = result.obj.user.name;
-         var mailbody = this.renderSkinAsString("mailnewmember", sp);
-         sendMail(root.sys_email, result.obj.user.email,
-               getMessage("mail.newMember", result.obj.site.title), mailbody);
-         res.redirect(result.obj.href("edit"));
-      } catch (err) {
-         res.message = err.toString();
-         if (err instanceof MailException)
-            res.redirect(result.obj.href("edit"));
-         res.redirect(this.href());
-      }
-   }
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("MemberMgr.searchTitle", 
-         {siteTitle: this._parent.title});
-   res.data.body = this.renderSkinAsString("new");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-
 MemberMgr.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
@@ -168,22 +133,46 @@ MemberMgr.prototype.salt_js_action = function() {
 };
 
 MemberMgr.prototype.subscribers_action = function() {
-   this.renderView(this.subscribers, gettext("Subscribers"));
+   res.data.title = gettext("Subscribers of {0}", this._parent.title);
+   res.data.list = renderList(this.subscribers, "mgrlistitem", 10, 
+         req.data.page);
+   res.data.pager = renderPageNavigation(this.subscribers, 
+         this.href(req.action), 10, req.data.page);
+   res.data.body = this.renderSkinAsString("main");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
 MemberMgr.prototype.contributors_action = function() {
-   this.renderView(this.contributors, gettext("Contributors"));
+   res.data.title = gettext("Contributors of {0}", this._parent.title);
+   res.data.list = renderList(this.contributors, "mgrlistitem", 10, 
+         req.data.page);
+   res.data.pager = renderPageNavigation(this.contributors, 
+         this.href(req.action), 10, req.data.page);
+   res.data.body = this.renderSkinAsString("main");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
 MemberMgr.prototype.managers_action = function() {
-   this.renderView(this.managers, gettext("Content Managers"));
+   res.data.title = gettext("Managers of {0}", this._parent.title);
+   res.data.list = renderList(this.managers, "mgrlistitem", 10, 
+         req.data.page);
+   res.data.pager = renderPageNavigation(this.managers, 
+         this.href(req.action), 10, req.data.page);
+   res.data.body = this.renderSkinAsString("main");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-MemberMgr.prototype.admins_action = function() {
-   this.renderView(this.admins, gettext("Administrators"));
+MemberMgr.prototype.owners_action = function() {
+   res.data.title = gettext("Owners of {0}", this._parent.title);
+   res.data.list = renderList(this.owners, "mgrlistitem", 10, 
+         req.data.page);
+   res.data.pager = renderPageNavigation(this.owners, 
+         this.href(req.action), 10, req.data.page);
+   res.data.body = this.renderSkinAsString("main");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
@@ -196,92 +185,113 @@ MemberMgr.prototype.updated_action = function() {
 };
 
 MemberMgr.prototype.subscriptions_action = function() {
-   this.renderSubscriptionView(session.user.subscriptions, 
-         gettext("Subscriptions"));
+   res.data.title = gettext("Subscriptions of user {0}", session.user.name);
+   res.data.list = renderList(session.user.subscriptions, "subscriptionlistitem");
+   res.data.body = session.user.renderSkinAsString("subscriptions");
+   res.handlers.context.renderSkin("page");
    return;
 };
 
 MemberMgr.prototype.memberships_action = function() {
-   this.renderSubscriptionView(session.user.memberships, 
-         gettext("Memberships"));
+   res.data.title = gettext("Memberships of user {0}", session.user.name);
+   res.data.list = renderList(session.user.memberships, "subscriptionlistitem");
+   res.data.body = session.user.renderSkinAsString("subscriptions");
+   res.handlers.context.renderSkin("page");
    return;
 };
 
-MemberMgr.prototype.sendPwd = function(email) {
-   if (!email)
-      throw new Exception("emailMissing");
-   var sqlClause = "select USER_NAME,USER_PASSWORD from AV_USER where USER_EMAIL = '" + email + "'";
-   var dbConn = getDBConnection("antville");
-   var dbResult = dbConn.executeRetrieval(sqlClause);
-   var cnt = 0;
-   var pwdList = "";
-   while (dbResult.next()) {
-      pwdList += getMessage("MemberMgr.userName") + ": " + dbResult.getColumnItem("USER_NAME") + "\n";
-      pwdList += getMessage("MemberMgr.password") + ": " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
-      cnt++;
+MemberMgr.prototype.add_action = function() {
+   if (req.postParams.term) {
+      try {
+         var result = this.search(req.postParams.term);
+         if (result.length < 1) {
+            res.message = gettext("Found no user matching the search input.");
+         } else {
+            if (result.length >= 100) {
+               res.message = gettext("Found too many users, displaying the first {0} matches only.", 
+                     result.length);
+            } else {
+               res.message = ngettext("Found one user matching the search input.",
+                     "Found {0} users matching the search input.", 
+                      result.length);
+            }
+            res.data.result = this.renderSkinAsString("searchresult", result);
+         }
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   } else if (req.postParams.add) {
+      try {
+         var membership = this.addMembership(req.postParams);
+         var message = this.renderSkinAsString("mailnewmember", {
+            site: res.handlers.site.title,
+            creator: session.user.name,
+            url: res.handlers.site.href(),
+            account: req.postParams.name
+         });
+         // FIXME:
+         //sendMail(root.sys_email, result.obj.user.email,
+         //      getMessage("mail.newMember", result.obj.site.title), message);
+         res.message = gettext("Successfully added {0} to the list of members.", 
+               req.postParams.name);
+         res.redirect(membership.href("edit"));
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+      res.redirect(this.href());
+   } else {
+      res.message = gettext("Enter a search term to display a list of matching users.");
    }
-   dbResult.release;
-   if (!cnt)
-      throw new Exception("emailNoAccounts");
-   // now we send the mail containing all accounts for this email-address
-   var mailbody = this.renderSkinAsString("mailpassword", {text: pwdList});
-   sendMail(root.sys_email, email, getMessage("mail.sendPwd"), mailbody);
-   return new Message("mailSendPassword");
+   res.data.action = this.href(req.action);
+   res.data.title = gettext('Add member to {0}', this._parent.title);
+   res.data.body = this.renderSkinAsString("new");
+   res.handlers.context.renderSkin("page");
+   return;
 };
 
-MemberMgr.prototype.searchUser = function(key) {
+MemberMgr.prototype.search = function(searchString) {
+   var mode = "= '";
+   if (searchString.contains("*")) {
+      searchString = searchString.replace(/\*/g, "%");
+      mode = "like '";
+   }
    var dbConn = getDBConnection("antville");
-   var dbError = dbConn.getLastError();
-   if (dbError)
-      throw new Exception("database", dbError);
-   var query = "select USER_NAME,USER_URL from AV_USER ";
-   query += "where USER_NAME like '%" + key + "%' order by USER_NAME asc";
-   var searchResult = dbConn.executeRetrieval(query);
-   var dbError = dbConn.getLastError();
-   if (dbError)
-      throw new Exception("database", dbError);
-   var found = 0;
+   var query = "select name from user where name " + mode + searchString + 
+         "' order by name asc";
+   var rows = dbConn.executeRetrieval(query);
+   var counter = 0, name;
    res.push();
-   while (searchResult.next() && found < 100) {
-      var name = searchResult.getColumnItem("USER_NAME");
-      var url = searchResult.getColumnItem("USER_URL");
-      // do nothing if the user is already a member
-      if (this.get(name))
+   while (rows.next() && counter < 100) {
+      name = rows.getColumnItem("name");
+      // Continue if the user is already a member
+      if (this.get(name)) {
          continue;
-      var sp = {name: name,
-                description: (url ? Html.linkAsString({href: url}, url) : null)};
-      this.renderSkin("searchresultitem", sp);
-      found++;
+      };
+      this.renderSkin("searchresultitem", {name :name});
+      counter += 1;
    }
-   dbConn.release();
-   switch (found) {
-      case 0:
-         throw new Exception("resultNoUser");
-      case 1:
-         return new Message("resultOneUser", null, res.pop());
-      case 100:
-         return new Message("resultTooManyUsers", null, res.pop());
-      default:
-         return new Message("resultManyUsers", found, res.pop());
-   }
+   rows.release();
+   return {
+      result: res.pop(),
+      length: counter
+   };
 };
 
-MemberMgr.prototype.evalNewMembership = function(username, creator) {
-   var newMember = root.users.get(username);
-   if (!newMember)
-      throw new Exception("resultNoUser");
-   else if (this.get(username))
-      throw new Exception("userAlreadyMember");
-   try {
-      var ms = new Membership(newMember);
-      this.add(ms);
-      return new Message("memberCreate", ms.user.name, ms);
-   } catch (err) {
-      throw new Exception("memberCreate", username);
+MemberMgr.prototype.addMembership = function(data) {
+   var user = root.users.get(data.name);
+   if (!user) {
+      throw Error(gettext("Sorry, your input did not match any registered user."));
+   } else if (this.get(data.name)) {
+      throw Error(gettext("This user is already a member of this site."));
    }
-   return;
+   var membership = new Membership(user);
+   this.add(membership);
+   return membership;
 };
 
+/* FIXME: obsolete?
 MemberMgr.prototype.renderMemberlist = function() {
    var currLvl = null;
    res.push();
@@ -295,64 +305,27 @@ MemberMgr.prototype.renderMemberlist = function() {
    }
    return res.pop();
 };
+*/
 
-MemberMgr.prototype.renderView = function(collection, title) {
-   if (this._parent != root) {
-      res.data.title = getMessage("MemberMgr.viewListTitle", {title: title, siteName: this._parent.title});
-      res.data.memberlist = renderList(collection, "mgrlistitem", 10, req.data.page);
-      res.data.pagenavigation = renderPageNavigation(collection, this.href(req.action), 10, req.data.page);
-      res.data.body = this.renderSkinAsString("main");
-      res.handlers.context.renderSkin("page");
+MemberMgr.prototype.getPermission = function(action) {
+   switch (action) {
+      case ".":
+      case "main":
+      case "owners":
+      case "managers":
+      case "contributors":
+      case "subscribers":
+      case "add":
+      return User.getPermission(User.PRIVILEGED) ||
+            Membership.getPermission(Membership.OWNER) || 
+            Membership.getPermission(Membership.MANAGER);
+      
+      case "updated":
+      case "memberships":
+      case "subscriptions":
+      return !!session.user;
    }
-   return;
-};
-
-MemberMgr.prototype.renderSubscriptionView = function(collection, title) {
-   var list = collection.list();
-   list.sort(function(a, b) {
-      var title1 = a.value("site").value("title").toLowerCase();
-      var title2 = b.value("site").value("title").toLowerCase();
-      if (title1 > title2) {
-         return 1;
-      } else if (title1 < title2) {
-         return -1;
-      }
-      return 0;      
-   });
-   res.data.title = getMessage("MemberMgr.subscriptionsTitle", 
-         {titel: title, userName: session.user.name});
-   res.data.list = renderList(list, "subscriptionlistitem");
-   res.data.body = session.user.renderSkinAsString("subscriptions");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-
-MemberMgr.prototype.checkAccess = function(action, usr, level) {
-   var deny = null;
-   try {
-      switch (action) {
-         case "main" :
-         case "admins" :
-         case "managers" :
-         case "contributors" :
-         case "subscribers" :
-         case "create" :
-         checkIfLoggedIn(this.href(action));
-         this.checkEditMembers(usr, level);
-         break;
-         
-         case "updated" :
-         case "memberships" :
-         case "subscriptions" :
-         case "edit" :
-         checkIfLoggedIn(this.href(action));
-         break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this._parent.href());
-   }
-   return;
+   return true;
 };
 
 MemberMgr.prototype.modSorua_action = function() {

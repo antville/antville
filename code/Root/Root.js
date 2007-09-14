@@ -52,6 +52,13 @@ Root.prototype._main_action = function() {
    return;
 };
 
+Root.prototype.error_action = function() {
+   res.debug(res.error);
+  // res.servletResponse.setContentLength(0);
+  //res.servletResponse.flush();
+   return;
+};
+
 /**
  * action for creating a new Site
  */
@@ -659,7 +666,7 @@ Root.prototype.evalNewSite = function(title, alias, creator) {
    newSite.layouts.add(initLayout);
    newSite.layouts.setDefaultLayout(initLayout.alias);
    // add the creator to the admins of the new Site
-   newSite.members.add(new Membership(creator, ADMIN));
+   newSite.members.add(new Membership(creator, Membership.OWNER));
    root.manage.syslogs.add(new SysLog("site", newSite.alias, "added site", creator));
    return new Message("siteCreate", null, newSite);
 };
