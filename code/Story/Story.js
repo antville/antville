@@ -815,7 +815,7 @@ Story.prototype.getRenderedContentPart = function(name, fmt) {
 /**
  * function deletes all childobjects of a story (recursive!)
  */
-Story.prototype.deleteAll = function() {
+Story.prototype.removeChildren = function() {
    var queue = app.data.indexManager.getQueue(this.site);
    var item;
    for (var i=this.comments.size();i>0;i--) {

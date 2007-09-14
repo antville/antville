@@ -99,6 +99,18 @@ Root.prototype.new_action = function() {
    return;
 };
 
+Root.prototype.colorpicker_action = function() {
+   if (!req.data.skin)
+      req.data.skin = "colorpicker";
+   renderSkin(req.data.skin);
+   return;
+};
+
+Root.prototype.rss_action = function() {
+   res.redirect(root.href("rss.xml"));
+   return;
+};
+
 Metadata.prototype.getProperty = Metadata.prototype.get;
 Metadata.prototype.setProperty = Metadata.prototype.set;
 Metadata.prototype.setAll = Metadata.prototype.setData;

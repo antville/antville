@@ -68,23 +68,6 @@ User.prototype.value = function(key, value) {
    return HopObject.prototype.value.call(this, key, value, getter, setter);
 };
 
-User.prototype.touch = function() {
-   this.value("lastVisit", new Date);
-   return;
-};
-
-User.prototype.getDigest = function(token) {
-   token || (token = String.EMPTY);
-   return (this.value("hash") + token).md5();
-};
-
-/**
- * update user-profile
- * @param Obj Object containing form values
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
 User.prototype.update = function(data) {
    if (!data.digest && data.password) {
       data.digest = ((data.password + this.value("salt")).md5() + 
@@ -114,90 +97,45 @@ User.prototype.update = function(data) {
    return this;
 };
 
-User.prototype.status_macro = function(param) {
-   // This macro is allowed for privileged users only
-   if (!getPermission(User.PRIVILEGED)) {
-      return;
-   }
-   if (param.as === "editor") {
-      var options = {};
-      for each (var status in User.status) {
-         options[status] = status;
-      }
-      Html.dropDown({name: "status"}, options, this.value("status"));
-   } else {
-      res.write(this.value("status"));
-   }
-   return;
-   
-};
-
-/**
- * macro rendering username
- */
-User.prototype.name_macro = function(param) {
-   var url;
-   if (param.as === "link" && (url = this.value("url"))) {
-      Html.link({href: this.value("url")}, this.value("name"));
-   } else {
-      res.write(this.value("name"));
-   }
+User.prototype.touch = function() {
+   this.value("lastVisit", new Date);
    return;
 };
 
-/**
- * macro rendering password
- */
+User.prototype.getDigest = function(token) {
+   token || (token = String.EMPTY);
+   return (this.value("hash") + token).md5();
+};
+
+User.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "status":
+      return User.getStatus();
+   }
+}
+
 User.prototype.password_macro = function(param) {
-   if (param.as == "editor") {
-      Html.password(this.createInputParam("password", param));
+   return;
+};
+
+User.prototype.list_macro = function(param, type) {
+   switch (type) {
+      case "sites":
+      var memberships = session.user.list();
+      memberships.sort(function(a, b) {
+         return b.site.value("modified") - a.site.value("modified");
+      });
+      memberships.forEach(function(membership) {
+         var site;
+         if (site = membership.get("site")) {
+            site.renderSkin("preview");
+         }
+         return;
+      });
    }
    return;
 };
 
-/**
- * macro rendering URL
- */
-User.prototype.url_macro = function(param) {
-   if (param.as == "editor") {
-      Html.input(this.createInputParam("url", param));
-   } else {
-      res.write(this.url);
-   }
-   return;
-};
-
-/**
- * macro rendering email
- */
-User.prototype.email_macro = function(param) {
-   if (param.as == "editor") {
-      Html.input(this.createInputParam("email", param));
-   } else {
-      res.write(this.email);
-   }
-   return;
-};
-
-/**
- * macro renders the sites the user is a member of or has subscribed to
- * in order of their last update-timestamp
- */
-User.prototype.sitelist_macro = function(param) {
-   var memberships = session.user.list();
-   memberships.sort(new Function("a", "b", "return b.site.lastupdate - a.site.lastupdate"));
-   for (var i in memberships) {
-      var site = memberships[i].site;
-      if (!site)
-         continue;
-      site.renderSkin("preview");
-   }
-   return;
-};
-
-/**
- * macro counts
- */
 User.prototype.sysmgr_count_macro = function(param) {
    if (!param || !param.what)
       return;
@@ -217,9 +155,6 @@ User.prototype.sysmgr_count_macro = function(param) {
    return;
 };
 
-/**
- * function renders the statusflags for this user
- */
 User.prototype.sysmgr_statusflags_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -233,9 +168,6 @@ User.prototype.sysmgr_statusflags_macro = function(param) {
    return;
 };
 
-/**
- * function renders an edit-link
- */
 User.prototype.sysmgr_editlink_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin || req.data.edit == this.name || session.user == this)
@@ -251,17 +183,11 @@ User.prototype.sysmgr_editlink_macro = function(param) {
    return;
 };
 
-/**
- * macro renders the username as plain text
- */
 User.prototype.sysmgr_username_macro = function(param) {
    res.write(this.name);
    return;
 };
 
-/**
- * macro renders the timestamp of registration
- */
 User.prototype.sysmgr_registered_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin)
@@ -270,10 +196,6 @@ User.prototype.sysmgr_registered_macro = function(param) {
    res.write(this.registered.format(fmt));
    return;
 };
-
-/**
- * macro renders the timestamp of last visit
- */
 
 User.prototype.sysmgr_lastvisit_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -286,9 +208,6 @@ User.prototype.sysmgr_lastvisit_macro = function(param) {
    return;
 };
 
-/** 
- * macro renders links to last items of this user
- */
 User.prototype.sysmgr_lastitems_macro = function(param) {
    var max = param.max ? parseInt(param.max) : 5;
    var coll = this[param.what];
@@ -298,6 +217,8 @@ User.prototype.sysmgr_lastitems_macro = function(param) {
    }
    return;
 };
+
+defineConstants(User, "getStatus", "default", "blocked", "trusted", "privileged");
 
 User.getByName = function(name) {
    return root.users.get(name);
@@ -382,8 +303,15 @@ User.login = function(data) {
    return user;
 };
 
-User.status = ["default", "blocked", "trusted", "privileged"];
+User.getPermission = function(status) {
+   return session.user && session.user.value("status") === status;
+};
 
-for each (status in User.status) {
-   User[status.toUpperCase()] = status;
-}
+User.getMembership = function() {
+   var membership;
+   if (session.user) {
+      membership = MemberMgr.getByName(session.user.name);
+   }
+   return membership || new HopObject;
+};
+     

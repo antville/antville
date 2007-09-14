@@ -139,9 +139,10 @@ FileMgr.prototype.deleteFile = function(fileObj) {
  * function deletes all files
  */
 
-FileMgr.prototype.deleteAll = function() {
-   for (var i=this.size();i>0;i--)
-      this.deleteFile(this.get(i-1));
+FileMgr.prototype.removeChildren = function() {
+   while (this.size() > 0) {
+      this.deleteFile(this.get(0));
+   }
    return true;
 };
 /**

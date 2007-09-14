@@ -1,25 +1,22 @@
-<p>To change the status of this member, simply choose from the dropdown menu and click on "Save". An e-mail will be sent to the member telling him/her that you changed the status.</p>
+<p>To change the status of this member, simply choose from the dropdown menu 
+and click the "Save" button. An e-mail will be sent to the member telling 
+him/her that you changed the member's role.</p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">Username:</td>
-<td nowrap="nowrap"><% membership.username %></td>
+<td class="small" nowrap="nowrap">User:</td>
+<td nowrap="nowrap"><% membership.name %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">e-mail:</td>
-<td nowrap="nowrap"><% membership.email %></td>
+<td class="small" nowrap="nowrap">Role:</td>
+<td nowrap="nowrap"><% membership.select role %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Personal URL:</td>
-<td nowrap="nowrap"><% membership.url as="link" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Status:</td>
-<td nowrap="nowrap"><% membership.level as="editor" firstOption="--- choose role ---" %></td>
-</tr>
-<tr>
-<td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td nowrap="nowrap"> </td>
+<td nowrap="nowrap"><br />
+<button type="submit" name="save" value="1"><strong>Save</strong></button>
+<button type="submit" name="cancel" value="1">Cancel</button>
+</td>
 </tr>
 </table>
 </form>

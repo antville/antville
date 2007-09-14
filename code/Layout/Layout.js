@@ -733,17 +733,19 @@ Layout.prototype.getSkinPath = function() {
    do {
       res.push();
       res.write(getProperty("staticPath"));
-      layout.site && res.write(layout.site.alias + "/");
+      layout.site && res.write(layout.site.value("name") + "/");
       res.write("layouts/");
       res.write(layout.alias);
       skinPath.push(res.pop());
    } while (layout = layout.parent);
    return skinPath;
 
+   // FIXME: to be removed
    var sp = [this.skins];
    var handler = this;
-   while ((handler = handler.parent) != null)
+   while ((handler = handler.parent) != null) {
       sp.push(handler.skins);
+   }
    return sp;
 };
 

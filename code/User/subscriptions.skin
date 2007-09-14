@@ -1,3 +1,6 @@
-<div class="ample">...&nbsp;show <% membermgr.link to="updated" text="updated sites" %>&nbsp;| <% membermgr.link to="memberships" %>&nbsp;| <% membermgr.link to="subscriptions" %></div>
+<div class="ample">...&nbsp;show 
+<% membermgr.link updated "updated sites" %>&nbsp;| 
+<% membermgr.link memberships %>&nbsp;| 
+<% membermgr.link subscriptions %></div>
 
-<% response.sitelist %>
+<% response.list %>

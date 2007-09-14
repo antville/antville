@@ -1,15 +1,18 @@
-<div class="listSeparator">&nbsp;</div>
+<div class="listSeparator"> </div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small"><div class="ample"><strong>Status:</strong> <% membership.level %></div></td>
+<td colspan="3" class="small"><div class="ample"><strong>Status:</strong> 
+<% membership.role %></div></td>
 </tr>
 <tr valign="top">
-<td><div class="storytitle"><% membership.username %></div>
-<div class="ample"><span class="small"><% membership.createtime format="short" prefix="created on " %></span></div>
-<div><% membership.url as="link" %></div></td>
+<td><div class="storytitle"><% membership.name %></div>
+<div class="ample"><span class="small"><% membership.created short
+prefix="Member since " %></span></div>
+<div><% membership.creator.url | link %></div></td>
 <td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% membership.editlink text="edit" prefix="...&nbsp;" suffix="<br />" %>
-<% membership.link to="mailto" text="contact" prefix="...&nbsp;" %>
-<% membership.deletelink text="remove" prefix="<br />...&nbsp;" %></td>
+<td align="right" class="small" nowrap="nowrap">
+<% membership.link edit prefix="...&nbsp;" suffix="<br />" %>
+<% membership.link contact prefix="...&nbsp;" %><!--
+--><% membership.link delete remove prefix="<br />...&nbsp;" %></td>
 </tr>
 </table>

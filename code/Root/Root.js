@@ -22,35 +22,17 @@
 // $URL$
 //
 
-//
-// The Antville Project
-// http://code.google.com/p/antville
-//
-// Copyright 2001-2007 by The Antville People
-//
-// Licensed under the Apache License, Version 2.0 (the ``License'');
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an ``AS IS'' BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $URL$
-//
+Root.prototype.getChildElement = function(name) {
+   return this.sites.get(name) || this[name];
+};
 
 /**
  * main action
  */
-Root.prototype.main_action = function() {
-   res.data.title = root.getTitle();
+Root.prototype._main_action = function() {
+   res.data.title = root.value("title");
+
+/* FIXME: setup routine needs to be rewritten
    // check if this installation is already configured
    // if not, we display the welcome-page as frontpage
    if (!root.sys_issetup) {
@@ -62,14 +44,11 @@ Root.prototype.main_action = function() {
          res.redirect(this.manage.href("setup"));
    } else if (!root.size())
       res.redirect(this.href("new"));
+*/
 
-   if (res.handlers.site) {
-      res.handlers.site.main_action();
-   } else {
-      res.data.body = root.renderSkinAsString("main");
-      root.renderSkin("page");
-      logAccess();
-   }
+   res.data.body = root.renderSkinAsString("main");
+   root.renderSkin("page");
+   logAccess();
    return;
 };
 
@@ -118,30 +97,9 @@ Root.prototype.list_action = function() {
 };
 
 /**
- * wrapper to access colorpicker
- */
-Root.prototype.colorpicker_action = function() {
-   if (!req.data.skin)
-      req.data.skin = "colorpicker";
-   renderSkin(req.data.skin);
-   return;
-};
-
-
-/**
- * wrapper for rss action
- */
-Root.prototype.rss_xml_action = function() {
-   res.redirect(root.href("rss"));
-   return;
-};
-
-/**
  * rss action
  */
-Root.prototype.rss_action = function() {
-   res.contentType = "text/xml";
-
+Root.prototype.rss_xml_action = function() {
    var now = new Date();
    var systitle = root.getTitle();
    var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -775,15 +733,6 @@ Root.prototype.getLocale = function() {
 };
 
 /**
- * function checks if the system title of this antville-installation
- * was defined in setup
- * if not, it returns "Antville"
- */
-Root.prototype.getTitle = function() {
-   return root.sys_title || "Antville";
-};
-
-/**
  * function checks if the system url of this antville-installation
  * was defined in setup and returns it.
  * if not set, root.href() is returned.
@@ -813,26 +762,6 @@ Root.prototype.getTimeZone = function() {
    else
        this.cache.timezone = java.util.TimeZone.getDefault();
    return this.cache.timezone;
-};
-
-/**
- * return the root layout
- * if no layout is activated, check if the default
- * layout is existing, otherwise return a transient
- * layout object
- * @return Object layout object
- */
-Root.prototype.getLayout = function() {
-   if (!this.sys_layout) {
-      // no layout defined, so try to get default
-      // layout. if that doesn't exist either
-      // return a newly created layout object
-      var defLayout = root.layouts.get("default");
-      if (!defLayout)
-         return new Layout();
-      return defLayout;
-   }
-   return root.sys_layout;
 };
 
 /**

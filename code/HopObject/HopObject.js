@@ -40,6 +40,93 @@ HopObject.prototype.value = function(key, value, getter, setter) {
    return;
 };
 
+HopObject.prototype.onRequest = function() {
+   if (req.postParams.cancel) {
+      switch (this.constructor) {
+         case Membership:
+         case MemberMgr:
+         res.redirect(this._parent.href());
+         default:
+         res.redirect(this.href());
+      }
+   }
+   
+   // FIXME: do we still need this?
+   if (app.data.redirectPostRequests && path.site && req.isPost())
+      res.redirect(app.data.redirectPostRequests);
+
+   autoLogin();
+   res.handlers.membership = User.getMembership();
+   
+   // FIXME: this can go, soon
+   res.data.memberlevel = Membership.getLevel();
+
+   // FIXME: context has to go in the end
+   res.handlers.context = res.handlers.site;
+   
+/*
+   // if root.sys_frontSite is set and the site is online
+   // we put it into res.handlers.site to ensure that the mirrored
+   // site works as expected
+   if (!path.Site && root.sys_frontSite && root.sys_frontSite.online)
+      res.handlers.site = root.sys_frontSite;
+   if (res.handlers.site) {
+      if (res.handlers.site.blocked)
+         res.redirect(root.href("blocked"));
+      if (session.user)
+         res.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
+      // set a handler that contains the context
+      res.handlers.context = res.handlers.site;
+   } else {
+      // set a handler that contains the context
+      res.handlers.context = root;
+   }
+*/
+
+   if (session.data.layout) {
+      // test drive a layout
+      res.handlers.layout = session.data.layout;
+      res.message = session.data.layout.renderSkinAsString("testdrive");
+   } else {
+      // define layout handler
+      res.handlers.layout = res.handlers.context.getLayout();
+   }
+
+   // set skinpath
+   res.skinpath = res.handlers.layout.getSkinPath();
+
+   if (session.user && session.user.blocked) {
+      // user was blocked recently, so log out
+      session.logout();
+      res.message = new Exception("accountBlocked");
+      res.redirect(res.handlers.context.href());
+   }
+   
+   // check access, but only if user is *not* a sysadmin
+   // sysadmins are allowed to to everything
+   if (!session.user || !session.user.sysadmin)
+      this.checkAccess(req.action, session.user, res.data.memberlevel);
+   return;
+};
+
+HopObject.prototype.onUnhandledMacro = function(name) {
+   switch (name) {
+      default:
+      return this.value(name);
+   }
+};
+
+HopObject.prototype.touch = function() {
+   return this.value({
+      modified: new Date,
+      modifier: session.user
+   });
+};
+
+HopObject.prototype.getPermission = function() {
+   return true;
+};
+
 HopObject.prototype.input_macro = function(param, name) {
    param.name = name;
    param.value = this.getFormValue(name);
@@ -76,33 +163,23 @@ HopObject.prototype.getFormOptions = function(name) {
    return [{value: true, display: "enabled"}];
 };
 
-/**
- * macro creates an html link
- */
 HopObject.prototype.link_macro = function(param, url, text) {
-   return renderLink.call(global, param, url, text, this);
+   if (this.getPermission(url)) {
+      renderLink.call(global, param, url, text, this);
+   }
+   return;
 };
 
-/**
- * macro renders the time the object was created
- */
 HopObject.prototype.created_macro = function(param, format) {
    res.write(formatDate(this.value("created"), format || param.format));
    return;
 };
 
-/**
- * macro rendering modifytime
- */
 HopObject.prototype.modified_macro = function(param, format) {
    res.write(formatDate(this.value("modified"), format || param.format));
    return;
 };
 
-/**
- * macro renders the name of the creator of an object
- * either as link or as plain text
- */
 HopObject.prototype.creator_macro = function(param) {
    if (!this.creator)
       return;
@@ -115,9 +192,6 @@ HopObject.prototype.creator_macro = function(param) {
    return;
 };
 
-/**
- * macro renders the name of the modifier
- */
 HopObject.prototype.modifier_macro = function(param) {
    if (!this.modifier)
       return;
@@ -129,14 +203,7 @@ HopObject.prototype.modifier_macro = function(param) {
       res.write(this.modifier.name);
    return;
 };
-/**
- * Return a name for the object to be used in the
- * global linkedpath macro
- * this function is overwritten by day-objects!
- * @see day.getNavigationName()
- * @see story.getNavigationName()
- * @see topic.getNavigationName()
- */
+
 HopObject.prototype.getNavigationName = function() {
    var proto = this._prototype;
    var display;
@@ -145,81 +212,12 @@ HopObject.prototype.getNavigationName = function() {
    return this.__name__;
 };
 
-/**
- * method for rendering any module navigation
- * by calling the module method renderSiteNavigation
- */
 HopObject.prototype.applyModuleMethod = function(module, funcName, param) {
    if (module && module[funcName])
       module[funcName].apply(this, [param]);
    return;
 };
 
-/**
- * function checks if there's a site in path
- * if true it checks if the site or the user is blocked
- */
-HopObject.prototype.onRequest = function() {
-   if (req.postParams.cancel) {
-      switch (this.constructor) {
-         case MemberMgr:
-         res.redirect(this._parent.href());
-         default:
-         res.redirect(this.href());
-      }
-   }
-   
-   if (app.data.redirectPostRequests && path.site && req.isPost())
-      res.redirect(app.data.redirectPostRequests);
-   autoLogin();
-   // defining skinpath, membershipLevel
-   res.data.memberlevel = null;
-   // if root.sys_frontSite is set and the site is online
-   // we put it into res.handlers.site to ensure that the mirrored
-   // site works as expected
-   if (!path.Site && root.sys_frontSite && root.sys_frontSite.online)
-      res.handlers.site = root.sys_frontSite;
-   if (res.handlers.site) {
-      if (res.handlers.site.blocked)
-         res.redirect(root.href("blocked"));
-      if (session.user)
-         res.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
-      // set a handler that contains the context
-      res.handlers.context = res.handlers.site;
-   } else {
-      // set a handler that contains the context
-      res.handlers.context = root;
-   }
-
-   if (session.data.layout) {
-      // test drive a layout
-      res.handlers.layout = session.data.layout;
-      res.message = session.data.layout.renderSkinAsString("testdrive");
-   } else {
-      // define layout handler
-      res.handlers.layout = res.handlers.context.getLayout();
-   }
-
-   // set skinpath
-   res.skinpath = res.handlers.layout.getSkinPath();
-
-   if (session.user && session.user.blocked) {
-      // user was blocked recently, so log out
-      session.logout();
-      res.message = new Exception("accountBlocked");
-      res.redirect(res.handlers.context.href());
-   }
-   // check access, but only if user is *not* a sysadmin
-   // sysadmins are allowed to to everything
-   if (!session.user || !session.user.sysadmin)
-      this.checkAccess(req.action, session.user, res.data.memberlevel);
-   return;
-};
-
-/**
- * basic permission check function
- * this method is overwritten by most of the other prototypes
- */
 HopObject.prototype.checkAccess = function() {
    return;
 };
@@ -234,6 +232,11 @@ HopObject.prototype.toString = function() {
 
 HopObject.prototype.link_filter = function(value, param, action) {
    return renderLink(param, action, value, this);
-   param.href = this.href(action || "");
-   return html.link(param, value);
+};
+
+HopObject.prototype.removeChildren = function() {
+   while (this.size() > 0) {
+      this.get(0).remove();
+   }
+   return;
 };

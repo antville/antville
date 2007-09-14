@@ -22,17 +22,11 @@
 // $URL$
 //
 
-/**
- * main action, lists all members in alpabetical order
- */
 MemberMgr.prototype.main_action = function() {
    this.renderView(this, gettext("Members"));
    return;
 };
 
-/**
- * register action
- */
 MemberMgr.prototype.register_action = function() {
    if (req.postParams.register) {      
       try {
@@ -67,9 +61,6 @@ MemberMgr.prototype.register_action = function() {
    return;
 };
 
-/**
- * login action
- */
 MemberMgr.prototype.login_action = function() {
    if (req.postParams.login) {
       try {
@@ -96,9 +87,6 @@ MemberMgr.prototype.login_action = function() {
    return;
 };
 
-/**
- * logout action
- */
 MemberMgr.prototype.logout_action = function() {
    if (session.user) {
      res.message = gettext("Good bye, {0}! Lookin' forward to seeing you again!", 
@@ -112,9 +100,6 @@ MemberMgr.prototype.logout_action = function() {
    return;
 };
 
-/**
- * action for creating a new Membership
- */
 MemberMgr.prototype.create_action = function() {
    if (req.postParams.keyword) {
       try {
@@ -155,9 +140,6 @@ MemberMgr.prototype.create_action = function() {
    return;
 };
 
-/**
- * edit actions for user profiles
- */
 MemberMgr.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
@@ -185,107 +167,194 @@ MemberMgr.prototype.salt_js_action = function() {
    return;
 };
 
-/**
- * list all subscribers of a site
- */
 MemberMgr.prototype.subscribers_action = function() {
    this.renderView(this.subscribers, gettext("Subscribers"));
    return;
 };
 
-/**
- * list all contributors of a site
- */
 MemberMgr.prototype.contributors_action = function() {
    this.renderView(this.contributors, gettext("Contributors"));
    return;
 };
 
-/**
- * list all content managers of a site
- */
 MemberMgr.prototype.managers_action = function() {
    this.renderView(this.managers, gettext("Content Managers"));
    return;
 };
 
-/**
- * list all admins of a site
- */
 MemberMgr.prototype.admins_action = function() {
    this.renderView(this.admins, gettext("Administrators"));
    return;
 };
 
-/**
- * action for displaying the last updated 
- * site list of a user's subscriptions
- */
 MemberMgr.prototype.updated_action = function() {
    res.data.title = gettext("Updated sites for user {0}", session.user.name);
-   res.data.sitelist = session.user.renderSkinAsString("sitelist");
+   res.data.list = session.user.renderSkinAsString("sitelist");
+   res.data.body = session.user.renderSkinAsString("subscriptions");
+   res.handlers.site.renderSkin("page");
+   return;
+};
+
+MemberMgr.prototype.subscriptions_action = function() {
+   this.renderSubscriptionView(session.user.subscriptions, 
+         gettext("Subscriptions"));
+   return;
+};
+
+MemberMgr.prototype.memberships_action = function() {
+   this.renderSubscriptionView(session.user.memberships, 
+         gettext("Memberships"));
+   return;
+};
+
+MemberMgr.prototype.sendPwd = function(email) {
+   if (!email)
+      throw new Exception("emailMissing");
+   var sqlClause = "select USER_NAME,USER_PASSWORD from AV_USER where USER_EMAIL = '" + email + "'";
+   var dbConn = getDBConnection("antville");
+   var dbResult = dbConn.executeRetrieval(sqlClause);
+   var cnt = 0;
+   var pwdList = "";
+   while (dbResult.next()) {
+      pwdList += getMessage("MemberMgr.userName") + ": " + dbResult.getColumnItem("USER_NAME") + "\n";
+      pwdList += getMessage("MemberMgr.password") + ": " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
+      cnt++;
+   }
+   dbResult.release;
+   if (!cnt)
+      throw new Exception("emailNoAccounts");
+   // now we send the mail containing all accounts for this email-address
+   var mailbody = this.renderSkinAsString("mailpassword", {text: pwdList});
+   sendMail(root.sys_email, email, getMessage("mail.sendPwd"), mailbody);
+   return new Message("mailSendPassword");
+};
+
+MemberMgr.prototype.searchUser = function(key) {
+   var dbConn = getDBConnection("antville");
+   var dbError = dbConn.getLastError();
+   if (dbError)
+      throw new Exception("database", dbError);
+   var query = "select USER_NAME,USER_URL from AV_USER ";
+   query += "where USER_NAME like '%" + key + "%' order by USER_NAME asc";
+   var searchResult = dbConn.executeRetrieval(query);
+   var dbError = dbConn.getLastError();
+   if (dbError)
+      throw new Exception("database", dbError);
+   var found = 0;
+   res.push();
+   while (searchResult.next() && found < 100) {
+      var name = searchResult.getColumnItem("USER_NAME");
+      var url = searchResult.getColumnItem("USER_URL");
+      // do nothing if the user is already a member
+      if (this.get(name))
+         continue;
+      var sp = {name: name,
+                description: (url ? Html.linkAsString({href: url}, url) : null)};
+      this.renderSkin("searchresultitem", sp);
+      found++;
+   }
+   dbConn.release();
+   switch (found) {
+      case 0:
+         throw new Exception("resultNoUser");
+      case 1:
+         return new Message("resultOneUser", null, res.pop());
+      case 100:
+         return new Message("resultTooManyUsers", null, res.pop());
+      default:
+         return new Message("resultManyUsers", found, res.pop());
+   }
+};
+
+MemberMgr.prototype.evalNewMembership = function(username, creator) {
+   var newMember = root.users.get(username);
+   if (!newMember)
+      throw new Exception("resultNoUser");
+   else if (this.get(username))
+      throw new Exception("userAlreadyMember");
+   try {
+      var ms = new Membership(newMember);
+      this.add(ms);
+      return new Message("memberCreate", ms.user.name, ms);
+   } catch (err) {
+      throw new Exception("memberCreate", username);
+   }
+   return;
+};
+
+MemberMgr.prototype.renderMemberlist = function() {
+   var currLvl = null;
+   res.push();
+   for (var i=0;i<this.size();i++) {
+      var m = this.get(i);
+      if (m.level != currLvl) {
+         this.renderSkin("membergroup", {group: getRole(m.level)});
+         currLvl = m.level;
+      }
+      m.renderSkin("mgrlistitem");
+   }
+   return res.pop();
+};
+
+MemberMgr.prototype.renderView = function(collection, title) {
+   if (this._parent != root) {
+      res.data.title = getMessage("MemberMgr.viewListTitle", {title: title, siteName: this._parent.title});
+      res.data.memberlist = renderList(collection, "mgrlistitem", 10, req.data.page);
+      res.data.pagenavigation = renderPageNavigation(collection, this.href(req.action), 10, req.data.page);
+      res.data.body = this.renderSkinAsString("main");
+      res.handlers.context.renderSkin("page");
+   }
+   return;
+};
+
+MemberMgr.prototype.renderSubscriptionView = function(collection, title) {
+   var list = collection.list();
+   list.sort(function(a, b) {
+      var title1 = a.value("site").value("title").toLowerCase();
+      var title2 = b.value("site").value("title").toLowerCase();
+      if (title1 > title2) {
+         return 1;
+      } else if (title1 < title2) {
+         return -1;
+      }
+      return 0;      
+   });
+   res.data.title = getMessage("MemberMgr.subscriptionsTitle", 
+         {titel: title, userName: session.user.name});
+   res.data.list = renderList(list, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
    res.handlers.context.renderSkin("page");
    return;
 };
 
-/**
- * action for displaying subscriptions of a user
- */
-MemberMgr.prototype.subscriptions_action = function() {
-   this.renderSubscriptionView(session.user.subscriptions, "Subscriptions");
-   return;
-};
-
-/**
- * action for displaying memberships of a user
- */
-MemberMgr.prototype.memberships_action = function() {
-   this.renderSubscriptionView(session.user.memberships, "Memberships");
-   return;
-};
-
-/**
- * macro renders a link to signup if user is not member of this site
- * if user is member, it displays the level of membership
- */
-MemberMgr.prototype.membership_macro = function(param) {
-   if (res.data.memberlevel == null) {
-      return;
-   }
-   res.write(getRole(res.data.memberlevel));
-   return;
-};
-
-/**
- * macro renders a link to signup-action
- * but only if user is not a member of this site
- * and the site is public
- */
-MemberMgr.prototype.subscribelink_macro = function(param) {
-   if (this._parent.online && res.data.memberlevel == null) {
-      Html.link({href: this._parent.href("subscribe")},
-            param.text ? param.text : getMessage("MemberMgr.signUp"));
+MemberMgr.prototype.checkAccess = function(action, usr, level) {
+   var deny = null;
+   try {
+      switch (action) {
+         case "main" :
+         case "admins" :
+         case "managers" :
+         case "contributors" :
+         case "subscribers" :
+         case "create" :
+         checkIfLoggedIn(this.href(action));
+         this.checkEditMembers(usr, level);
+         break;
+         
+         case "updated" :
+         case "memberships" :
+         case "subscriptions" :
+         case "edit" :
+         checkIfLoggedIn(this.href(action));
+         break;
+      }
+   } catch (deny) {
+      res.message = deny.toString();
+      res.redirect(this._parent.href());
    }
    return;
 };
 
-/**
- * macro renders a link to signup-action
- * but only if user is not a member of this site
- */
-
-MemberMgr.prototype.subscriptionslink_macro = function(param) {
-   if (session.user.size()) {
-      Html.link({href: this.href("updated")},
-            param.text ? param.text : getMessage("MemberMgr.subscriptions"));
-   }
-   return;
-};
-
-/**
- * SORUA AuthURI
- */
 MemberMgr.prototype.modSorua_action = function() {
    if (!app.data.modSorua) app.data.modSorua = new Array();
    var returnUrl = req.data["sorua-return-url"];
@@ -331,9 +400,6 @@ MemberMgr.prototype.modSorua_action = function() {
    }   
 };
 
-/**
- * SORUA Login Form 
- */
 MemberMgr.prototype.modSoruaLoginForm_action = function() {
    if (!session.data.modSorua || !session.data.modSorua.returnUrl) 
       res.redirect(root.href()); // should not happen anyways
@@ -351,246 +417,10 @@ MemberMgr.prototype.modSoruaLoginForm_action = function() {
    this.renderSkin("modSorua");
 };
 
-/**
- * function retrieves a list of usernames/passwords for a submitted email-address
- * and sends them as mail
- * @param String email-address to search for accounts
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-MemberMgr.prototype.sendPwd = function(email) {
-   if (!email)
-      throw new Exception("emailMissing");
-   var sqlClause = "select USER_NAME,USER_PASSWORD from AV_USER where USER_EMAIL = '" + email + "'";
-   var dbConn = getDBConnection("antville");
-   var dbResult = dbConn.executeRetrieval(sqlClause);
-   var cnt = 0;
-   var pwdList = "";
-   while (dbResult.next()) {
-      pwdList += getMessage("MemberMgr.userName") + ": " + dbResult.getColumnItem("USER_NAME") + "\n";
-      pwdList += getMessage("MemberMgr.password") + ": " + dbResult.getColumnItem("USER_PASSWORD") + "\n\n";
-      cnt++;
+MemberMgr.getByName = function(name) {
+   var site = res.handlers.site;
+   if (site) {
+      return site.members.get(name);
    }
-   dbResult.release;
-   if (!cnt)
-      throw new Exception("emailNoAccounts");
-   // now we send the mail containing all accounts for this email-address
-   var mailbody = this.renderSkinAsString("mailpassword", {text: pwdList});
-   sendMail(root.sys_email, email, getMessage("mail.sendPwd"), mailbody);
-   return new Message("mailSendPassword");
+   return null;
 };
-
-/**
- * function searches for users using part of username
- * @param String Part of username or email-address
- * @return Obj Object containing four properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- *             - found (Int): number of users found
- *             - list (String): rendered list of users found
- */
-MemberMgr.prototype.searchUser = function(key) {
-   var dbConn = getDBConnection("antville");
-   var dbError = dbConn.getLastError();
-   if (dbError)
-      throw new Exception("database", dbError);
-   var query = "select USER_NAME,USER_URL from AV_USER ";
-   query += "where USER_NAME like '%" + key + "%' order by USER_NAME asc";
-   var searchResult = dbConn.executeRetrieval(query);
-   var dbError = dbConn.getLastError();
-   if (dbError)
-      throw new Exception("database", dbError);
-   var found = 0;
-   res.push();
-   while (searchResult.next() && found < 100) {
-      var name = searchResult.getColumnItem("USER_NAME");
-      var url = searchResult.getColumnItem("USER_URL");
-      // do nothing if the user is already a member
-      if (this.get(name))
-         continue;
-      var sp = {name: name,
-                description: (url ? Html.linkAsString({href: url}, url) : null)};
-      this.renderSkin("searchresultitem", sp);
-      found++;
-   }
-   dbConn.release();
-   switch (found) {
-      case 0:
-         throw new Exception("resultNoUser");
-      case 1:
-         return new Message("resultOneUser", null, res.pop());
-      case 100:
-         return new Message("resultTooManyUsers", null, res.pop());
-      default:
-         return new Message("resultManyUsers", found, res.pop());
-   }
-};
-
-
-/**
- * function adds a user with a given username to the list of members
- * of this site
- * @param String Name of user to add to members
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-MemberMgr.prototype.evalNewMembership = function(username, creator) {
-   var newMember = root.users.get(username);
-   if (!newMember)
-      throw new Exception("resultNoUser");
-   else if (this.get(username))
-      throw new Exception("userAlreadyMember");
-   try {
-      var ms = new Membership(newMember);
-      this.add(ms);
-      return new Message("memberCreate", ms.user.name, ms);
-   } catch (err) {
-      throw new Exception("memberCreate", username);
-   }
-   return;
-};
-
-
-/**
- * function deletes a member
- * @param Obj Membership-Object to delete
- * @param Obj User-Object about to delete membership
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-MemberMgr.prototype.deleteMembership = function(membership) {
-   if (!membership)
-      throw new Error("memberDelete");
-   else if (membership.level == ADMIN)
-      throw new Error("adminDelete");
-   membership.remove();
-   return new Message("memberDelete");
-};
-
-
-/**
- * function deletes all members
- */
-MemberMgr.prototype.deleteAll = function() {
-   for (var i=this.size();i>0;i--)
-      this.get(i-1).remove();
-   return true;
-};
-
-
-/**
- * function retrieves the level of a users membership
- */
-MemberMgr.prototype.getMembershipLevel = function(usr) {
-   var ms = this.get(usr.name);
-   if (!ms)
-      return null;
-   return ms.level;
-};
-/**
- * render the list of members of a site
- */
-MemberMgr.prototype.renderMemberlist = function() {
-   var currLvl = null;
-   res.push();
-   for (var i=0;i<this.size();i++) {
-      var m = this.get(i);
-      if (m.level != currLvl) {
-         this.renderSkin("membergroup", {group: getRole(m.level)});
-         currLvl = m.level;
-      }
-      m.renderSkin("mgrlistitem");
-   }
-   return res.pop();
-};
-
-/**
- * render the whole page containing a list of members
- * @param Object collection to work on
- * @param String Title to use
- */
-MemberMgr.prototype.renderView = function(collection, title) {
-   if (this._parent != root) {
-      res.data.title = getMessage("MemberMgr.viewListTitle", {title: title, siteName: this._parent.title});
-      res.data.memberlist = renderList(collection, "mgrlistitem", 10, req.data.page);
-      res.data.pagenavigation = renderPageNavigation(collection, this.href(req.action), 10, req.data.page);
-      res.data.body = this.renderSkinAsString("main");
-      res.handlers.context.renderSkin("page");
-   }
-   return;
-};
-
-/**
- * render the whole page containing a list of sites (subscriptions)
- * @param Object collection to work on
- * @param String page title
- */
-MemberMgr.prototype.renderSubscriptionView = function(collection, title) {
-   var sitelist = collection.list();
-   var sorter = function(a, b) {
-      var str1 = a.site.title.toLowerCase();
-      var str2 = b.site.title.toLowerCase();
-      if (str1 > str2)
-         return 1;
-      else if (str1 < str2)
-         return -1;
-      return 0;
-   }
-   sitelist.sort(sorter);
-   res.data.title = getMessage("MemberMgr.subscriptionsTitle", {titel: title, userName: session.user.name});
-   res.data.sitelist = renderList(sitelist, "subscriptionlistitem");
-   res.data.body = session.user.renderSkinAsString("subscriptions");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-MemberMgr.prototype.checkAccess = function(action, usr, level) {
-   var deny = null;
-   try {
-      switch (action) {
-         case "main" :
-         case "admins" :
-         case "managers" :
-         case "contributors" :
-         case "subscribers" :
-         case "create" :
-         checkIfLoggedIn(this.href(action));
-         this.checkEditMembers(usr, level);
-         break;
-         
-         case "updated" :
-         case "memberships" :
-         case "subscriptions" :
-         case "edit" :
-         checkIfLoggedIn(this.href(action));
-         break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this._parent.href());
-   }
-   return;
-};
-
-/**
- * check if user is allowed to edit the memberlist of this site
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-MemberMgr.prototype.checkEditMembers = function(usr, level) {
-   if ((level & MAY_EDIT_MEMBERS) == 0)
-      throw new DenyException("memberEdit");
-   return;
-};
-

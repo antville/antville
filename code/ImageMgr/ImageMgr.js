@@ -194,9 +194,10 @@ ImageMgr.prototype.deleteImage = function(imgObj) {
 /**
  * function deletes all images
  */
-ImageMgr.prototype.deleteAll = function() {
-   for (var i=this.size();i>0;i--)
-      this.deleteImage(this.get(i-1));
+ImageMgr.prototype.removeChildren = function() {
+   while (this.size() > 0) {
+      this.deleteImage(this.get(0));
+   }
    return true;
 };
 

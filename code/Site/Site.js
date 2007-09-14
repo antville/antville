@@ -168,6 +168,44 @@ Site.prototype.update = function(data) {
    return;
 };
 
+Site.prototype.getPermission = function(action) {
+   switch (action) {
+      case "stories/create":
+      case "stories":
+      case "images":
+      case "files":
+      case "polls":
+      return User.getPermission(User.PRIVILEGED) ||
+            Membership.getPermission(Membership.CONTRIBUTOR) ||
+            this.value("mode") === Site.OPEN;
+
+      case "edit":
+      case "layouts":
+      case "referrers":
+      case "mostread":
+      return User.getPermission(User.PRIVILEGED) ||
+            Membership.getPermission(Membership.OWNER);
+            
+      case "subscribe":
+      var mode = this.value("mode");
+      return (mode === Site.PUBLIC || mode === Site.OPEN) &&
+            !res.handlers.membership.value("role");
+
+      case "unsubscribe":
+      return Site.getMembership().value("role") !== 
+            Membership.OWNER;
+   }
+   return true;
+};
+
+Site.getMembership = function() {
+   var membership;
+   if (session.user) {
+      membership = res.handlers.site.members.get(session.user.value("name"));
+   }
+   return membership || new HopObject;
+}
+
 /**
  * main action
  */
@@ -175,7 +213,7 @@ Site.prototype.main_action = function() {
    if (this.allstories.size() == 0) {
       res.data.body = this.renderSkinAsString("welcome");
       if (session.user) {
-         if (session.user == this.creator)
+         if (session.user === this.creator)
             res.data.body += this.renderSkinAsString("welcomeowner");
          if (session.user.sysadmin)
             res.data.body += this.renderSkinAsString("welcomesysadmin");
@@ -249,12 +287,12 @@ Site.prototype.delete_action = function() {
 };
 
 Site.remove = function(site) {
-   site.images.deleteAll();
-   site.files.deleteAll();
+   site.images.removeChildren();
+   site.files.removeChildren();
    // FIXME: add deleting of all layouts!
-   //site.layouts.deleteAll();
-   site.stories.deleteAll();
-   site.members.deleteAll();
+   //site.layouts.clear();
+   site.stories.removeChildren();
+   site.members.removeChildren();
    site.remove();
    // add syslog-entry
    root.manage.syslogs.add(new SysLog("site", site.alias, "removed site", session.user));
@@ -601,13 +639,6 @@ Site.prototype.robots_txt_action = function() {
    return;
 };
 
-Site.prototype.onUnhandledMacro = function(name) {
-   switch (name) {
-      default:
-      return this.value(name);
-   }
-};
-
 Site.prototype.getMacroHandler = function(name) {
    switch (name) {
       default:
@@ -625,8 +656,8 @@ Site.prototype.getFormOptions = function(name) {
       }, {
          value: Site.ARCHIVE_OFFLINE,
          display: gettext("offline")
-      }]; 
-      break;
+      }]; break;
+      
       case "commentsMode":
       options = [{
          value: Comment.ONLINE, 
@@ -634,22 +665,29 @@ Site.prototype.getFormOptions = function(name) {
       }, {
          value: Comment.OFFLINE,
          display: gettext("offline")
-      }];
-      break;
+      }]; break;
+      
       case "language":
       options = getLocales(); break;
+      
       case "layout":
       options = this.getLayouts(); break;
+      
       case "longDateFormat":
       options = getDateFormats("long"); break;
+      
       case "mode":
       options = Site.getModes(); break;
+      
       case "pageMode":
       options = Site.getPageModes(); break;
+      
       case "shortDateFormat":
       options = getDateFormats("short"); break;
+      
       case "timeZone":
       options = getTimeZones(); break;
+      
       default:
       return HopObject.prototype.getFormOptions.apply(this, arguments);
    }
@@ -666,31 +704,6 @@ Site.prototype.loginstatus_macro = function(param) {
       this.members.renderSkin("statusloggedin");
    else if (req.action != "login")
       this.members.renderSkin("statusloggedout");
-   return;
-};
-
-/**
- * macro rendering two different navigation-skins
- * depending on user-status & rights
- */
-Site.prototype.navigation_macro = function(param, type) {
-   if (!session.user) {
-      return;
-   }
-   switch (type) {
-      case "contributors":
-      if (session.user.sysadmin || this.properties.get("usercontrib") ||
-            res.data.memberlevel >= CONTRIBUTOR) {
-         this.renderSkin("contribnavigation");
-      }
-      break;
-
-      case "admins":
-      if (session.user.sysadmin || res.data.memberlevel >= ADMIN) {
-         this.renderSkin("adminnavigation");
-      }
-      break;
-   }
    return;
 };
 
@@ -1258,13 +1271,6 @@ return;
    this.modifier = modifier;
 };
 
-Site.prototype.touch = function() {
-   return this.value({
-      modified: new Date,
-      modifier: session.user
-   });
-};
-
 Site.prototype.getLayouts = function() {
    var result = [];
    this.layouts.forEach(function() {
@@ -1740,10 +1746,12 @@ Site.prototype.renderStorylist = function(day) {
    days = Math.min(idx + days++, this.size());
    res.push();
    while (idx < days) {
-      var day = this.get(idx++);
+      var day = this.get(idx);
       day.get(0).renderSkin("dayheader");
-      for (var i=0;i<day.size();i++)
+      for (var i=0;i<day.size();i++) {
          day.get(i).renderSkin("preview");
+      }
+      idx += 1;
    }
    res.data.storylist = res.pop();
    if (idx < size) {
@@ -1926,41 +1934,9 @@ Site.prototype.getAdminHeader = function(name) {
    return [];
 };
 
-Site.status = ["default", "blocked", "trusted"];
-
-for each (status in Site.status) {
-   Site[status.toUpperCase()] = status;
-}
-
-Site.modes = ["closed", "private", "readonly", "public", "open"];
-
-for each (mode in Site.modes) {
-   Site[mode.toUpperCase()] = mode;
-}
-
-Site.getModes = function() {
-   var result = [];
-   for each (mode in Site.modes) {
-      result.push({
-         value: mode,
-         display: mode
-      });
-   }
-   return result;
-};
-
-Site.pageModes = ["days", "stories"];
-
-Site.getPageModes = function() {
-   var result = [];
-   for each (mode in Site.pageModes) {
-      result.push({
-         value: mode,
-         display: mode
-      });
-   }
-   return result;
-};
-
 Site.ARCHIVE_ONLINE = "online";
 Site.ARCHIVE_OFFLINE = "offline";
+
+defineConstants(Site, null, "default", "blocked", "trusted");
+defineConstants(Site, "getModes", "closed", "private", "readonly", "public", "open");
+defineConstants(Site, "getPageModes", "days", "stories");

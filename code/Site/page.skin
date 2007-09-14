@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+   
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
 <td class="header"><% site.title | site.link title=<% site.tagline %> %></td>
@@ -23,8 +23,10 @@
 
 <table class="main">
 <tr>
-<td class="center"><% response.message prefix='<div class="message">' suffix='</div><br />' %>
-<% response.body %></td>
+<td class="center">
+<% response.message prefix='<div class="message">' suffix='</div><br />' %>
+<% response.body %>
+</td>
 <td class="right">
 <div class="box">
 <% site.age prefix="Online for " show="days" suffix=" days<br />" %>
@@ -36,11 +38,22 @@
 
 <div class="boxheader">menu</div>
 <div class="box">
-...&nbsp;<% site.link . home %><br />
-...&nbsp;<% site.link topics %><br />
-...&nbsp;<% site.link images/topics galleries %><br />
-<% site.navigation contributors %>
-<% site.navigation admins %><br />
+<% site.link . home prefix="...&nbsp;" suffix="<br />" %>
+<% site.link topics prefix="...&nbsp;" suffix="<br />" %>
+<% site.link images/topics galleries prefix="...&nbsp;" suffix="<br />" %><br />
+
+<% site.link stories/create "add a story" prefix="...&nbsp;" suffix="<br />" %>
+<% site.link stories prefix="...&nbsp;" suffix="<br />" %>
+<% site.link images prefix="...&nbsp;" suffix="<br />" %>
+<% site.link files prefix="...&nbsp;" suffix="<br />" %>
+<% site.link polls prefix="...&nbsp;" suffix="<br />" %>
+<% site.link members prefix="...&nbsp;" suffix="<br /><br />" %>
+
+<% site.link edit preferences prefix="...&nbsp;" suffix="<br />" %>
+<% site.link layouts prefix="...&nbsp;" suffix="<br />" %>
+<% site.link referrers prefix="...&nbsp;" suffix="<br />" %>
+<% site.link mostread "most read stories" prefix="...&nbsp;" suffix="<br /><br />" %>
+
 ...&nbsp;<a href="<% root.url %>"><% root.title suffix=" " %>home</a>
 </div>
 

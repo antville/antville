@@ -39,6 +39,21 @@ var _ = gettext;
 var search = new helma.Search();
 var html = new helma.Html();
 
+function defineConstants(proto, getterName /* , arguments */) {
+   var constants = [];
+   for (var i=2; i<arguments.length; i+=1) {
+      proto[arguments[i].toUpperCase().replace(/\s/g, "")] = arguments[i];
+      constants.push({
+         value: arguments[i],
+         display: arguments[i]
+      });
+   }
+   proto[getterName] = function() {
+      return constants;
+   };
+   return;
+}
+
 /**
  * constants specifying user-rights
  */
@@ -62,93 +77,11 @@ MAY_EDIT_LAYOUTS = 32768;
 MAY_EDIT_MEMBERS = 65536;
 
 /**
- * constant containing integer representing permission of subscribers
- */
-SUBSCRIBER = 0;
-
-/**
- * constant containing integer representing permission of contributors
- */
-CONTRIBUTOR = SUBSCRIBER | MAY_ADD_STORY | MAY_ADD_COMMENT | 
-              MAY_ADD_IMAGE | MAY_ADD_FILE |
-              MAY_VIEW_STATS;
-
-/**
- * constant containing integer representing permission of content manager
- */
-CONTENTMANAGER = CONTRIBUTOR | MAY_VIEW_ANYSTORY | MAY_EDIT_ANYSTORY |
-                 MAY_DELETE_ANYSTORY | MAY_EDIT_ANYCOMMENT | 
-                 MAY_DELETE_ANYCOMMENT | MAY_EDIT_ANYIMAGE | 
-                 MAY_DELETE_ANYIMAGE | MAY_EDIT_ANYFILE | 
-                 MAY_DELETE_ANYFILE;
-
-/**
- * constant containing integer representing permission of admins
- */
-ADMIN = CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_LAYOUTS | MAY_EDIT_MEMBERS;
-
-/**
  * constant object containing the values for editableby levels
  */
 EDITABLEBY_ADMINS       = 0;
 EDITABLEBY_CONTRIBUTORS = 1;
 EDITABLEBY_SUBSCRIBERS  = 2;
-
-/**
- * set constants, called by onStart()
- */
-ROLES = new Array();
-DISPLAY = new Array();
-
-function initConstants() {
-   ROLES[0] = [SUBSCRIBER, getMessage("User.role.subscriber")];
-   ROLES[1] = [CONTRIBUTOR, getMessage("User.role.contributor")];
-   ROLES[2] = [CONTENTMANAGER, getMessage("User.role.contentManager")];
-   ROLES[3] = [ADMIN, getMessage("User.role.admin")];
-   
-   DISPLAY["Root"] = getMessage("Root");
-   DISPLAY["Site"] = getMessage("Site");
-   DISPLAY["TopicMgr"] = getMessage("TopicMgr");
-   DISPLAY["StoryMgr"] = getMessage("StoryMgr");
-   DISPLAY["FileMgr"] = getMessage("FileMgr");
-   DISPLAY["ImageMgr"] = getMessage("ImageMgr");
-   DISPLAY["MemberMgr"] = getMessage("MemberMgr");
-   DISPLAY["SysMgr"] = getMessage("SysMgr");
-   DISPLAY["PollMgr"] = getMessage("PollMgr");
-   DISPLAY["SkinMgr"] = getMessage("SkinMgr");
-   DISPLAY["Layout"] = getMessage("Layout");
-   DISPLAY["LayoutMgr"] = getMessage("LayoutMgr");
-   DISPLAY["LayoutImageMgr"] = getMessage("LayoutImageMgr");
-   DISPLAY["RootLayoutMgr"] = getMessage("RootLayoutMgr");
-   DISPLAY["Story"] = getMessage("Story");
-}
-
-// FIXME: these two methods circumvent the "losing ROLES" bug
-// which is due to ROLES and DISPLAY being defined once
-// in onStart only and thus get lost in another thread.
-
-function getRoles(name) {
-   if (ROLES.length < 1)
-      initConstants();
-   return name ? ROLES[name] : ROLES;
-}
-
-function getDisplay(name) {
-   if (DISPLAY.length < 1)
-      initConstants();
-   return name ? DISPLAY[name] : DISPLAY;
-}
-
-function getTitle() {
-   if (res.handlers.site) {
-      return res.handlers.site.title;
-   }
-   return root.getTitle();
-}
-
-function getPermission(role) {
-   return session.user && session.user.value("status") === role;
-};
 
 /**
  * array containing short dateformats
@@ -390,7 +323,6 @@ function image_macro(param) {
    return;
 }
 
-
 /**
  *  Global link macro. In contrast to the hopobject link macro,
  *  this reproduces the link target without further interpretation.
@@ -402,9 +334,12 @@ function link_macro() {
 function renderLink(param, url, text, handler) {
    url || (url = param.url || "");
    text || (text = param.text || url);
+   if (!text) {
+      return;
+   }
    delete param.url;
    delete param.text;
-   if (!handler || url.contains("://")) {
+   if (!handler || url.contains(":")) {
       param.href = url;
    } else if (url.contains("/")) {
       param.href = handler.href() + url;
@@ -413,7 +348,6 @@ function renderLink(param, url, text, handler) {
    }
    html.link(param, text);
 }
-
 
 /**
  * macro fetches a file-object and renders a link to "getfile"-action
@@ -1042,8 +976,8 @@ function autoLogin() {
    }
    session.login(user);
    user.touch();
-   res.message = gettext('Welcome to "{0}", {1}. Have fun!', getTitle(),
-         user.name);
+   res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+         res.handlers.site.value("title"), user.name);
    return;
 }
 
@@ -1424,26 +1358,6 @@ function restoreRescuedText() {
       req.data[i] = session.data.rescuedText[i];
    session.data.rescuedText = null;
    return;
-}
-
-/**
- * function returns the level of the membership in cleartext
- * according to passed level
- */
-function getRole(lvl) {
-   switch (parseInt(lvl, 10)) {
-      case CONTRIBUTOR :
-         return getMessage("User.role.contributor");
-         break;
-      case CONTENTMANAGER :
-         return getMessage("User.role.contentManager");
-         break;
-      case ADMIN :
-         return getMessage("User.role.admin");
-         break;
-      default :
-         return getMessage("User.role.subscriber");
-   }
 }
 
 /**
@@ -1966,8 +1880,8 @@ function getDateFormats(type, language) {
  * @type String
  * @member Global
  */
-function if_macro(param, firstValue, _is_, secondValue, _then_, 
-                  firstResult, _else_, secondResult) {
+function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult, 
+      _else_, secondResult) {
    return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
 }
 
@@ -1979,5 +1893,21 @@ function age_filter(value, param) {
 }
 
 function link_filter(value, param, url) {
-   return HopObject.prototype.link_filter.apply(path, arguments);
+   url || (url = value);
+   return renderLink(param, url, value);
 }
+
+function requireUser(role) {
+   if (User.isAdministrator()) {
+      return;
+   } else if (this.value("role") === role) {
+      return;
+   } else {
+      if (req.data.http_referer) {
+         session.data.referrer = req.data.http_referer;
+      }
+      res.redirect(res.handlers.site.members.href("login"));
+   }
+   return;
+};
+  

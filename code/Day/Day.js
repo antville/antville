@@ -26,18 +26,21 @@
  * main action
  */
 Day.prototype.main_action = function() {
-   if (this._prototype == "Day" && !path.Site.properties.get("archive"))
-      res.redirect(path.Site.href());
+   var site = res.handlers.site;
+   if (this._prototype == "Day" && !site.values("archive")) {
+      res.redirect(site.href());
+   }
    
-   res.data.title = path.Site.title + ": ";
+   res.data.title = site.value("title") + ": ";
    this.renderStorylist(parseInt(req.data.start, 10));
-   if (this._prototype == "Day") {
-      var ts = this.groupname.toDate("yyyyMMdd", this._parent.getTimeZone());
-      res.data.title += formatTimestamp(ts, "yyyy-MM-dd");
-   } else
+   if (this._prototype === "Day") {
+      var date = this.groupname.toDate("yyyyMMdd", this._parent.getTimeZone());
+      res.data.title += formatDate(date, "yyyy-MM-dd");
+   } else {
       res.data.title += this.groupname;
+   }
    res.data.body = this.renderSkinAsString("main");
-   path.Site.renderSkin("page");
+   site.renderSkin("page");
    return;
 };
 
