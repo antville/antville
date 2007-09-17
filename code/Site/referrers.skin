@@ -13,7 +13,7 @@
 
 <script type="text/javascript"><!--
 var referrers = [];
-<% site.listReferrers %>
+<% site.referrers %>
 
 var query = new Antville.Query();
 var spamFilter = new Antville.Filter([<% site.spamfilter %>]);

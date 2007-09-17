@@ -4,11 +4,11 @@
 <table cellspacing="0" cellpadding="2">
 <tr>
 <td>...&nbsp;show</td>
-<td><% sysmgr.dropdown name="show" values="all logs,site-logs,user-logs,system-logs" %></td>
+<td><% admin.dropdown name="show" values="all entries,site entries,user entries,root entries" %></td>
 </tr>
 <tr>
 <td>...&nbsp;order</td>
-<td><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
+<td><% admin.dropdown name="order" values="descending,ascending" %></td>
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>
@@ -16,7 +16,9 @@
 </tr>
 <tr>
 <td></td>
-<td><% input type="submit" name="search" value="Show log-entries" %></td>
+<td>
+   <button type="submit" name="search" value="1">Show</button>
+</td>
 </tr>
 </table>
 </form>

@@ -68,7 +68,10 @@ Root.prototype.getFormOptions = function(name) {
 };
 
 Root.prototype._main_action = function() {
-   res.data.title = root.title;
+   //log();
+   flushLog();
+   res.debug(root.admin.log.cache.size());
+   return;
 
 /* FIXME: setup routine needs to be rewritten
    // check if this installation is already configured
@@ -86,7 +89,6 @@ Root.prototype._main_action = function() {
 
    res.data.body = root.renderSkinAsString("main");
    root.renderSkin("page");
-   logAccess();
    return;
 };
 
@@ -236,7 +238,7 @@ Root.prototype.addSite = function(data) {
    site.layouts.setDefaultLayout(layout.alias); 
    */
    site.members.add(new Membership(session.user, Membership.OWNER));
-   log("site", site.name, "added site", session.user);
+   logAction(site, "added");
    return site;
 };
 

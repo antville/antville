@@ -47,7 +47,7 @@ CREATE TABLE `tag_hub` (
 
 alter table av_user add column metadata mediumtext default NULL;
 
-alter table av_user add column `status` enum('blocked','default','trusted','privileged') not null default 'default'
+alter table av_user add column `status` enum('blocked','default','trusted','privileged') not null default 'default';
 update av_user set status = 'default';
 update av_user set status = 'blocked' where user_isblocked = 1;
 update av_user set status = 'trusted' where user_istrusted = 1;
@@ -55,8 +55,7 @@ update av_user set status = 'privileged' where user_issysadmin = 1;
    
 alter table av_user add column hash varchar(32) default NULL;
 alter table av_user add column salt varchar(12) default NULL;
-update av_user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), 
-   hash = md5(concat(user_password, salt))
+update av_user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = md5(concat(user_password, salt));
 
 ##
 ## Update table av_site
@@ -70,3 +69,24 @@ alter table av_site add column `status` enum('blocked','default','trusted') not 
 update av_site set status = 'default';
 update av_site set status = 'blocked' where site_isblocked = 1;
 update av_site set status = 'trusted' where site_istrusted = 1;
+
+##
+## Update table av_membership
+##
+
+alter table av_membership add column `role` enum('Subscriber','Contributor','Manager','Owner') not null default 'Subscriber';
+update av_membership set role = 'Contributor' where membership_level = 9361;
+update av_membership set role = 'Manager' where membership_level = 16383;
+update av_membership set role = 'Owner' where membership_level = 131071;
+
+##
+## Update table av_accesslog
+##
+
+alter table av_accesslog add column `creator_id` mediumint(10);
+alter table av_accesslog add column `action` varchar(255);
+alter table av_accesslog add column `context_type` varchar(20);
+update av_accesslog set context_type = 'Story', accesslog_f_site = accesslog_f_text where accesslog_f_text is not null;
+update av_accesslog set context_type = 'Site' where accesslog_f_text is null;
+update av_accesslog set creator_id = 0;
+update av_accesslog set action = 'main';

@@ -48,7 +48,7 @@ Story.prototype.main_action = function() {
    this.site.renderSkin("page");
    // increment read-counter
    this.incrementReadCounter();
-   logAccess();
+   logAction();
    return;
 };
 

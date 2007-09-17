@@ -32,6 +32,9 @@ HopObject.prototype.map = function(values) {
 HopObject.prototype.onRequest = function() {
    if (req.postParams.cancel) {
       switch (this.constructor) {
+         case Admin:
+         res.redirect(req.action + "?page=" + req.queryParams.page + 
+               "#" + req.queryParams.id);
          case Membership:
          case Members:
          res.redirect(this._parent.href());
@@ -147,7 +150,6 @@ HopObject.prototype.select_macro = function(param, name) {
 };
 
 HopObject.prototype.getFormValue = function(name) {
-   //res.debug(name + ": " + req.data[name] + " / " + ((value = req.data[name]) !== null))
    if (req.isPost()) {
       return req.postParams[name];
    } else {
@@ -200,6 +202,10 @@ HopObject.prototype.modifier_macro = function(param) {
    else
       res.write(this.modifier.name);
    return;
+};
+
+HopObject.prototype.self_macro = function() {
+   return this;
 };
 
 HopObject.prototype.getNavigationName = function() {

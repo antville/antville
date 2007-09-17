@@ -23,9 +23,9 @@
 //
 
 Admin.prototype.constructor = function() {
-   this.searchSites();
-   this.searchUsers();
-   this.searchSyslog();
+   this.filterSites();
+   this.filterUsers();
+   this.filterLog();
    return this;
 };
 
@@ -50,8 +50,6 @@ Admin.prototype.update = function(data) {
    //for (var i in app.modules) {
    //   this.applyModuleMethod(app.modules[i], "evalSystemSetup", data);
    //}
-
-   log("system", null, "changed system setup", session.user);
    return;
 };
 
@@ -61,6 +59,11 @@ Admin.prototype.onRequest = function() {
       session.data.admin = new Admin();
    }
    return;
+};
+
+Admin.prototype.onUnhandledMacro = function(name) {
+   res.debug("Add " + name + "_macro to Admin!");
+   return null;
 };
 
 Admin.prototype.getPermission = function(action) {
@@ -98,6 +101,7 @@ Admin.prototype.setup_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
+         logAction();
          res.message = gettext("Successfully updated the setup.");
          res.redirect(root.href());
       } catch (ex) {
@@ -114,44 +118,96 @@ Admin.prototype.setup_action = function() {
 };
 
 Admin.prototype.sites_action = function() {
-   res.data.title = gettext("Site administration of {0}", root.title);
-   res.data.action = this.href(req.action);
-
-/*   if (req.data.search || req.data.keywords)
-      session.data.admin.searchSites(req.data.show, req.data.sort, req.data.order, req.data.keywords);
-   else if (req.data.cancel)
-      res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
-   else if (req.data.remove && req.data.item) {
-      var site = this.sites.get(req.data.item);
+   if (req.postParams.search || req.postParams.filter) {
+      session.data.admin.filterSites(req.postParams);
+   } else if (req.postParams.remove && req.postParams.id) {
+      var site = Site.getById(req.postParams.id);
       try {
-         res.message = root.deleteSite(site);
-         res.redirect(res.data.action + "?page=" + req.data.page);
+         Site.remove(site);
+         res.message = gettext("The site {0} was removed successfully.",
+               site.name);
+         res.redirect(req.action + "?page=" + req.postParams.page);
       } catch (err) {
          res.message = err.toString();
       }
-   } else if (req.data.save) {
-      var result = this.updateSite(req.data, session.user);
-      res.message = result.message;
-      if (!result.error)
-         res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
-   } else if (req.data.item)
-      req.data.selectedItem = this.sites.get(req.data.item);
+   } else if (req.postParams.save) {
+      this.updateSite(req.postParams);
+      res.message = gettext("The changes were saved successfully.");
+      res.redirect(req.action + "?page=" + req.postParams.page + 
+            "#" + req.postParams.id);
+   } else if (req.queryParams.id) {
+      res.meta.item = Site.getById(req.queryParams.id);
+   }
 
-   res.data.list = renderList(session.data.admin.sites, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(session.data.admin.sites, this.href(req.action), 10, req.data.page);
+   res.data.list = renderList(session.data.admin.sites, 
+         this.renderManagerView, 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(session.data.admin.sites, 
+         this.href(req.action), 10, req.data.page);
+
+   res.data.title = gettext("Site administration of {0}", root.title);
+   res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("sitesearchform");
    res.data.body += this.renderSkinAsString("list");
-*/
    root.renderSkin("page");
    return;
 };
 
+Admin.prototype.filterSites = function(data) {
+   var sql;
+   switch (data.filter) {
+      case "1":
+      sql = "where mode = 'public' "; break;
+      case "2":
+      sql = "where mode = 'private' "; break;
+      case "3":
+      sql = "where status = 'blocked' "; break;
+      case "4":
+      sql = "where status = 'trusted' "; break;
+      case "0":
+      default:
+      sql = "where true ";
+   }
+   if (data.query) {
+      var parts = stripTags(data.query).split(" ");
+      var keyword, like;
+      for (var i in parts) {
+         sql += i < 1 ? "and " : "or ";
+         keyword = parts[i].replace(/\*/g, "%");
+         like = keyword.contains("%") ? "like" : "=";
+         sql += "(name " + like + " '" + keyword + "') ";
+      }
+   }
+   switch (data.order) {
+      case "1":
+      sql += "order by created "; break;
+      case "2":
+      sql += "order by name "; break;
+      case "0":
+      default:
+      sql += "order by modified "; break;
+   }
+   (data.dir === "0") && (sql += "desc");
+   this.sites.subnodeRelation = sql;
+   return;
+};
+
+Admin.prototype.updateSite = function(data, admin) {
+   var site = Site.getById(data.id);
+   if (!site) {
+      throw Error(gettext("Please choose a site you want to edit."));
+   }
+   var current = site.status;
+   site.status = data.status;
+   logAction(site, "status change from " + current + " to " + site.status);
+   return;
+};
+
 Admin.prototype.users_action = function() {
-   res.data.title = getMessage("Admin.usersTitle", {serverTitle: root.getTitle()});
+   res.data.title = gettext("User manager of {0}", root.title);
    res.data.action = this.href(req.action);
 
    if (req.data.search || req.data.keywords)
-      session.data.admin.searchUsers(req.data.show, req.data.sort, req.data.order, req.data.keywords);
+      session.data.admin.filterUsers(req.data.show, req.data.sort, req.data.order, req.data.keywords);
    else if (req.data.cancel)
       res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
    else if (req.data.save) {
@@ -170,18 +226,156 @@ Admin.prototype.users_action = function() {
    return;
 };
 
+Admin.prototype.filterUsers = function(show, sort, order, keywords) {
+   // construct the sql-clause for manual subnodeRelation
+   var sql = "";
+   if (show == "1")
+      sql += "where status = 'blocked' ";
+   else if (show == "2")
+      sql += "where status = 'trusted' ";
+   else if (show == "3")
+      sql += "where status = 'privileged' ";
+   if (keywords) {
+      // additional keywords are given, so we're using them
+      if (keywords.charAt(0) == "@") {
+         // searching for email-addresses
+         sql += sql.length > 0 ? "and " : "where ";
+         sql += "email like '%" + keywords + "%' ";
+      } else {
+         // doing normal keyword-search
+         var kArray = stripTags(keywords).split(" ");
+         for (var i in kArray) {
+            var k = kArray[i];
+            sql += sql.length > 0 ? "and " : "where ";
+            sql += "name like '%" + k + "%' ";
+         }
+      }
+   }
+   if (!sort || sort == "0")
+      sql += "order by modified ";
+   else if (sort == "1")
+      sql += "order by created ";
+   else if (sort == "2")
+      sql += "order by name ";
+   if (!order || order == "0")
+      sql += "desc ";
+   else if (order == "1")
+      sql += "asc ";
+
+   // now do the actual search with a manual subnodeRelation
+   this.users.subnodeRelation = sql;
+   return;
+};
+
+Admin.prototype.updateUser = function(param, admin) {
+   var user = this.users.get(param.item);
+   if (!user) {
+      throw new Exception("userEditMissing");
+   }
+   if (user === admin) {
+      throw new Exception("accountModifyOwn");
+   }
+   if (param.status !== user.status) {
+      user.status = param.status;
+      logAction(user, param.status);
+   }
+   return new Message("update");
+};
+
 Admin.prototype.logs_action = function() {
-   res.data.title = getMessage("Admin.logTitle", {serverTitle: root.getTitle()});
+   res.data.title = gettext("Log data of {0}", root.title);
    res.data.action = this.href(req.action);
 
-   if (req.data.search || req.data.keywords)
-      session.data.admin.searchSyslog(req.data.show, req.data.order, req.data.keywords);
-
-   res.data.list = renderList(session.data.admin.syslogs, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(session.data.admin.syslogs, this.href(req.action), 10, req.data.page);
+   if (req.data.search || req.data.keywords) {
+      session.data.admin.filterLog(req.data.show, req.data.order, req.data.keywords);
+   }
+   res.data.list = renderList(session.data.admin.log, this.renderManagerView, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(session.data.admin.log, this.href(req.action), 10, req.data.page);
    res.data.body = this.renderSkinAsString("syslogsearchform");
    res.data.body += this.renderSkinAsString("list");
    root.renderSkin("page");
+   return;
+};
+
+Admin.prototype.filterLog = function(show, order, keywords) {
+   var sql = "where action <> 'main' ";
+   if (show == "1") {
+      sql += "and context_type = 'Site' ";
+   } else if (show == "2") {
+      sql += "and context_type = 'User' ";
+   } else if (show == "3") {
+      sql += "and context_type = 'Root' ";
+   }
+   /* FIXME
+   if (keywords) {
+        // additional keywords are given, so we're using them
+      var kArray = stripTags(keywords).split(" ");
+      for (var i in kArray) {
+         var k = kArray[i];
+         sql += sql.length > 0 ? "AND " : "WHERE ";
+         sql += "(SYSLOG_OBJECT LIKE '%" + k + "%' OR SYSLOG_ENTRY LIKE '%" + k + "%') ";
+      }
+   }
+   */
+   if (!order || order == "0") {
+      sql += "order by created desc, id desc ";
+   } else if (order == "1") {
+      sql += "order by created asc, id asc ";
+   }
+
+   this.log.subnodeRelation = sql;
+   return;
+};
+
+Admin.prototype.link_macro = function(param, action, id, text) {
+   switch (action) {
+      case "edit":
+      case "delete":
+      text = action;
+      action = "?action=" + action + "&id=" + id;
+      if (req.queryParams.page) {
+         action += "&page=" + req.queryParams.page;
+      }
+      action += "#" + id;
+   }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
+};
+
+Admin.prototype.count_macro = function(param, object, name) {
+   if (!object || !object.size) {
+      return;
+   }
+   switch (name) {
+      case "comments":
+      res.write("FIXME: takes very long... :(");
+      //res.write(object.allcontent.size() - object.allstories.size());
+      return;
+   }
+   res.write(object.size());
+   return;
+};
+
+Admin.prototype.dropdown_macro = function(param) {
+   if (!param.name || !param.values)
+      return;
+   var options = param.values.split(",");
+   var selectedIndex = req.data[param.name];
+   Html.dropDown({name: param.name},options,selectedIndex);
+   return;
+};
+
+Admin.prototype.moduleSetup_macro = function(param) {
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "renderSetup", param);
+   return;
+};
+
+Admin.prototype.renderManagerView = function(item, action) {
+   item.renderSkin("Admin");
+   if (item === res.meta.item) {
+      item.renderSkin(req.data.action === "delete" ? 
+            "Admin#delete" : "Admin#edit");
+   }
    return;
 };
 
@@ -355,171 +549,6 @@ Admin.prototype.cleanupAccesslog = function() {
       log("system", null, "removed " + delRows + 
             " records from accesslog-table", null);
    }
-   return;
-};
-
-Admin.prototype.dropdown_macro = function(param) {
-   if (!param.name || !param.values)
-      return;
-   var options = param.values.split(",");
-   var selectedIndex = req.data[param.name];
-   Html.dropDown({name: param.name},options,selectedIndex);
-   return;
-};
-
-Admin.prototype.moduleSetup_macro = function(param) {
-   for (var i in app.modules)
-      this.applyModuleMethod(app.modules[i], "renderSetup", param);
-   return;
-};
-
-Admin.prototype.searchSites = function(show, sort, order, keywords) {
-   // construct the sql-clause for manual subnodeRelation
-   var sql = "";
-   if (show == "1")
-      sql += "where mode = 'online' and status <> 'blocked' ";
-   else if (show == "2")
-      sql += "where mode <> 'online' and status <> 'blocked' ";
-   else if (show == "3")
-      sql += "where status = 'blocked' ";
-   else if (show == "4")
-      sql += "where status = 'trusted' ";
-   if (keywords) {
-      // additional keywords are given, so we're using them
-      var kArray = stripTags(keywords).split(" ");
-      for (var i in kArray) {
-         var k = kArray[i];
-         sql += sql.length > 0 ? "and " : "where ";
-         sql += "(name like '%" + k + "%' or title like '%" + k + "%') ";
-      }
-   }
-   if (!sort || sort == "0")
-      sql += "order by modified ";
-   else if (sort == "1")
-      sql += "order by created ";
-   else if (sort == "2")
-      sql += "order by name ";
-   else if (sort == "3")
-      sql += "order by title ";
-   if (!order || order == "0")
-      sql += "desc ";
-   else if (order == "1")
-      sql += "asc ";
-
-   // now do the actual search with a manual subnodeRelation
-   this.sites.subnodeRelation = sql;
-   return;
-};
-
-Admin.prototype.searchUsers = function(show, sort, order, keywords) {
-   // construct the sql-clause for manual subnodeRelation
-   var sql = "";
-   if (show == "1")
-      sql += "where status = 'blocked' ";
-   else if (show == "2")
-      sql += "where status = 'trusted' ";
-   else if (show == "3")
-      sql += "where status = 'privileged' ";
-   if (keywords) {
-      // additional keywords are given, so we're using them
-      if (keywords.charAt(0) == "@") {
-         // searching for email-addresses
-         sql += sql.length > 0 ? "and " : "where ";
-         sql += "email like '%" + keywords + "%' ";
-      } else {
-         // doing normal keyword-search
-         var kArray = stripTags(keywords).split(" ");
-         for (var i in kArray) {
-            var k = kArray[i];
-            sql += sql.length > 0 ? "and " : "where ";
-            sql += "name like '%" + k + "%' ";
-         }
-      }
-   }
-   if (!sort || sort == "0")
-      sql += "order by modified ";
-   else if (sort == "1")
-      sql += "order by created ";
-   else if (sort == "2")
-      sql += "order by name ";
-   if (!order || order == "0")
-      sql += "desc ";
-   else if (order == "1")
-      sql += "asc ";
-
-   // now do the actual search with a manual subnodeRelation
-   this.users.subnodeRelation = sql;
-   return;
-};
-
-Admin.prototype.searchSyslog = function(show, order, keywords) {
-   // construct the sql-clause for manual subnodeRelation
-   var sql = "";
-   if (show == "1")
-      sql += "WHERE SYSLOG_TYPE = 'site' ";
-   else if (show == "2")
-      sql += "WHERE SYSLOG_TYPE = 'user' ";
-   else if (show == "3")
-      sql += "WHERE SYSLOG_TYPE = 'system' ";
-   if (keywords) {
-      // additional keywords are given, so we're using them
-      var kArray = stripTags(keywords).split(" ");
-      for (var i in kArray) {
-         var k = kArray[i];
-         sql += sql.length > 0 ? "AND " : "WHERE ";
-         sql += "(SYSLOG_OBJECT LIKE '%" + k + "%' OR SYSLOG_ENTRY LIKE '%" + k + "%') ";
-      }
-   }
-   if (!order || order == "0")
-      sql += "ORDER BY SYSLOG_CREATETIME desc, SYSLOG_ID desc ";
-   else if (order == "1")
-      sql += "ORDER BY SYSLOG_CREATETIME asc, SYSLOG_ID asc ";
-
-   // now do the actual search with a manual subnodeRelation
-   this.syslogs.subnodeRelation = sql;
-   return;
-};
-
-Admin.prototype.updateSite = function(param, admin) {
-   var site = this.sites.get(param.item);
-   if (!site)
-      throw new Exception("siteEditMissing");
-   var trust = parseInt(param.trusted, 10);
-   var block = parseInt(param.blocked, 10);
-   if (trust > site.trusted)
-      this.syslogs.add(new SysLog("site", site.alias, "granted trust", admin));
-   else if (trust < site.trusted)
-      this.syslogs.add(new SysLog("site", site.alias, "revoked trust", admin));
-   if (block > site.blocked)
-      this.syslogs.add(new SysLog("site", site.alias, "blocked site", admin));
-   else if (block < site.blocked)
-      this.syslogs.add(new SysLog("site", site.alias, "unblocked site", admin));
-   site.trusted = trust;
-   site.blocked = block;
-   return new Message("update");
-};
-
-Admin.prototype.updateUser = function(param, admin) {
-   var user = this.users.get(param.item);
-   if (!user) {
-      throw new Exception("userEditMissing");
-   }
-   if (user === admin) {
-      throw new Exception("accountModifyOwn");
-   }
-   if (param.status !== user.status) {
-      user.status = param.status;
-      // Log activity
-      var msg = "set status to " + param.status;
-      this.syslogs.add(new SysLog("user", user.name, msg, admin));
-   }
-   return new Message("update");
-};
-
-Admin.prototype.renderManagerView = function(item) {
-   item.renderSkin("sysmgr_listitem");
-   if (req.data.selectedItem && item == req.data.selectedItem)
-      item.renderSkin(req.data.action == "remove" ? "sysmgr_delete" : "sysmgr_edit");
    return;
 };
 

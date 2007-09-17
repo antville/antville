@@ -1,3 +1,3 @@
-<% response.pagenavigation %>
+<% response.pager %>
 <% response.list %>
-<% response.pagenavigation %>
+<% response.pager %>

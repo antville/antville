@@ -22,6 +22,10 @@
 // $URL$
 //
 
+defineConstants(Site, "getStatus", "default", "blocked", "trusted");
+defineConstants(Site, "getModes", "closed", "private", "readonly", "public", "open");
+defineConstants(Site, "getPageModes", "days", "stories");
+
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentsMode");
 this.handleMetadata("email");
@@ -155,7 +159,7 @@ Site.prototype.main_action = function() {
    }
    res.data.title = this.title;
    this.renderSkin("page");
-   logAccess();
+   logAction();
    return;
 };
 
@@ -223,7 +227,7 @@ Site.remove = function(site) {
    site.stories.removeChildren();
    site.members.removeChildren();
    site.remove();
-   log("site", site.name, "removed site", session.user);
+   logAction("site", "removed");
    return;
 };
 
@@ -607,6 +611,9 @@ Site.prototype.getFormOptions = function(name) {
       case "pageMode":
       options = Site.getPageModes(); break;
       
+      case "status":
+      options = Site.getStatus(); break;
+      
       case "shortDateFormat":
       options = getDateFormats("short"); break;
       
@@ -804,35 +811,23 @@ Site.prototype.listMostRead_macro = function() {
    return;
 };
 
-/**
- * renders a list of referrers, ie. a link
- * to a url together with the read counter et al.
- */
-Site.prototype.listReferrers_macro = function() {
-   var c = getDBConnection("antville");
-   var dbError = c.getLastError();
-   if (dbError)
-      return getMessage("error.database", dbError);
-   // we're doing this with direct db access here
-   // (there's no need to do it with prototypes):
-   var d = new Date();
-   d.setDate(d.getDate()-1); // 24 hours ago
-   var query = "select ACCESSLOG_REFERRER, count(*) as \"COUNT\" from AV_ACCESSLOG " +
-      "where ACCESSLOG_F_SITE = " + this._id + " and ACCESSLOG_DATE > {ts '" +
-      d.format("yyyy-MM-dd HH:mm:ss") + "'} group by ACCESSLOG_REFERRER "+
-      "order by \"COUNT\" desc, ACCESSLOG_REFERRER asc;";
-   var rows = c.executeRetrieval(query);
-   var dbError = c.getLastError();
-   if (dbError)
-      return getMessage("error.database", dbError);
-   var skinParam = new Object();
+Site.prototype.referrers_macro = function() {
+   var date = new Date;
+   date.setDate(date.getDate() - 1);
+   var db = getDBConnection("antville");
+   var query = "select text, count(*) as count from log " +
+      "where type = 'request' and parent_type = 'Site' and parent_id = " + 
+      this._id + " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
+      "'} group by text order by count desc, text asc;";
    var referrer;
+   var rows = db.executeRetrieval(query);
    while (rows.next()) {
-      skinParam.count = rows.getColumnItem("COUNT");
-      referrer = rows.getColumnItem("ACCESSLOG_REFERRER");
-      skinParam.referrer = encode(referrer);
-      skinParam.text = encode(referrer.length > 50 ? referrer.substring(0, 50) + "..." : referrer);
-      this.renderSkin("referrerItem", skinParam);
+      referrer = rows.getColumnItem("text");
+      this.renderSkin("referrerItem", {
+         count: rows.getColumnItem("count"),
+         referrer: encode(referrer),
+         text: encode(referrer.clip(50))
+      });
    }
    rows.release();
    return;
@@ -1023,46 +1018,6 @@ Site.prototype.searchCreatetime_macro = function() {
                   ["6", "the past half year"],
                   ["12", "the past year"]];
    Html.dropDown({name: "ct"}, options, req.data.ct);
-   return;
-};
-
-/**
- * macro counts
- */
-Site.prototype.sysmgr_count_macro = function(param) {
-   if (!param || !param.what)
-      return;
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   switch (param.what) {
-      case "stories" :
-         return this.allstories.size();
-      case "comments" :
-         return this.allcontent.size() - this.allstories.size();
-      case "images" :
-         return this.images.size();
-      case "files" :
-         return this.files.size();
-   }
-   return;
-};
-
-/**
- * function renders the statusflags for this site
- */
-Site.prototype.sysmgr_statusflags_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (this.trusted)
-      res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">TRUSTED</span>");
-   if (!this.online)
-      res.write("<span class=\"flagDark\" style=\"background-color:#CC0000;\">PRIVATE</span>");
-   else
-      res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">PUBLIC</span>");      
-   if (this.blocked)
-      res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
    return;
 };
 
@@ -1838,7 +1793,3 @@ Site.prototype.getAdminHeader = function(name) {
 
 Site.ARCHIVE_ONLINE = "online";
 Site.ARCHIVE_OFFLINE = "offline";
-
-defineConstants(Site, null, "default", "blocked", "trusted");
-defineConstants(Site, "getModes", "closed", "private", "readonly", "public", "open");
-defineConstants(Site, "getPageModes", "days", "stories");

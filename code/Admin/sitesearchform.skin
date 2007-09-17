@@ -3,24 +3,26 @@
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
-<td>...&nbsp;show</td>
-<td><% sysmgr.dropdown name="show" values="all sites,public sites,private sites,blocked sites,trusted sites" %></td>
+<td>... show</td>
+<td><% admin.dropdown name="filter" 
+values="all sites,public sites,private sites,blocked sites,trusted sites" %></td>
 </tr>
 <tr>
-<td>...&nbsp;sorted by</td>
-<td><% sysmgr.dropdown name="sort" values="last update,create time,alias,title" %></td>
+<td>... sorted by</td>
+<td><% admin.dropdown 
+name="order" values="last update,creation date,name" %></td>
 </tr>
 <tr>
-<td>...&nbsp;order</td>
-<td><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
+<td>... order</td>
+<td><% admin.dropdown name="dir" values="descending,ascending" %></td>
 </tr>
 <tr>
-<td>...&nbsp;keyword(s)</td>
-<td><% input name="keywords" %></td>
+<td>... search</td>
+<td><input name="query" value="<% request.query %>" /></td>
 </tr>
 <tr>
-<td>&nbsp;</td>
-<td><% input type="submit" name="search" value="show sites" %></td>
+<td> </td>
+<td><button input type="submit" name="search" value="1">show sites</button></td>
 </tr>
 </table>
 </form>

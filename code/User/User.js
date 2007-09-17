@@ -132,19 +132,6 @@ User.prototype.sysmgr_count_macro = function(param) {
    return;
 };
 
-User.prototype.sysmgr_statusflags_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (this.trusted)
-      res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">TRUSTED</span>");
-   if (this.sysadmin)
-      res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SYSADMIN</span>");
-   if (this.blocked)
-      res.write("<span class=\"flagDark\" style=\"background-color:#000000;\">BLOCKED</span>");
-   return;
-};
-
 User.prototype.sysmgr_editlink_macro = function(param) {
    // this macro is allowed just for sysadmins
    if (!session.user.sysadmin || req.data.edit == this.name || session.user == this)

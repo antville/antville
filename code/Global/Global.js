@@ -41,6 +41,18 @@ var _ = gettext;
 var search = new helma.Search();
 var html = new helma.Html();
 
+function scheduler() {
+   flushLog();
+   // FIXME: root.manage.autoCleanUp();
+   // FIXME: pingUpdatedSites();
+   // FIXME: countUsers();
+   app.data.lastAccessLogUpdate = new Date();
+   writeReadLog();
+   flushMailQueue();
+   app.data.indexManager.flush();
+   return 5000;
+}
+
 function defineConstants(ctor, getterName /* , arguments */) {
    var constants = [], name;
    for (var i=2; i<arguments.length; i+=1) {
@@ -60,8 +72,49 @@ function defineConstants(ctor, getterName /* , arguments */) {
    return;
 }
 
-function log(type, object, text, user) {
-   return root.admin.syslogs.add(new SysLog(type, object, text, user));   
+function logAction(context, action) {
+   if (context) {
+      root.admin.log.add(new LogEntry(context, action));      
+   } else {
+      root.admin.log.cache.add(new LogEntry(path[path.length - 1]));
+   }
+   return;
+   
+   /* FIXME: check whether request really should be logged
+   var site = res.handlers.site ? res.handlers.site: root;
+   var url = http.evalUrl(req.data.http_referer);
+
+   // no logging at all if the referrer comes from the same site
+   // or is not a http-request
+   if (!url)
+      return;
+   var referrer = url.toString();
+   var siteHref = site.href().toLowerCase();
+   if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
+      return;
+   var logObj = new Object();
+   logObj.storyID = path.Story ? path.Story._id : null;
+   logObj.siteID = site._id;
+   logObj.referrer = referrer;
+   logObj.remoteHost = req.data.http_remotehost;
+   logObj.browser = req.data.http_browser;
+   */
+   return root.admin.syslogs.add(new SysLog(type, object, text, session.user));   
+}
+
+function flushLog() {
+   var log = root.admin.log;
+   var n = log.cache.size();
+   if (n < 1) {
+      return;
+   }
+   log.cache.forEach(function() {
+      return log.add(this);
+   });
+   res.commit();
+   log.clearCache();
+   app.logger.info("Wrote " + n + " log entries to DB");
+   return;
 }
 
 MAY_ADD_STORY = 1;
@@ -345,7 +398,7 @@ function renderLink(param, url, text, handler) {
    }
    delete param.url;
    delete param.text;
-   if (!handler || url.contains(":")) {
+   if (!handler || url.contains(":") || url.contains("?")) {
       param.href = url;
    } else if (url.contains("/")) {
       param.href = handler.href() + url;
@@ -879,32 +932,6 @@ function onStart() {
    return;
 }
 
-
-/**
- * scheduler performing auto-disposal of inactive sites
- * and auto-blocking of private sites
- */
-function scheduler() {
-   // call autocleanup
-   root.manage.autoCleanUp();
-   // notify updated sites
-   pingUpdatedSites();
-   // countUsers();
-   // write the log-entries in app.data.accessLog into DB
-   writeAccessLog();
-   // store a timestamp in app.data indicating when last update
-   // of accessLog was finished
-   app.data.lastAccessLogUpdate = new Date();
-   // store the readLog in app.data.readLog into DB
-   writeReadLog();
-   // send mails and empty mail queue
-   flushMailQueue();
-   // flush the index queue
-   app.data.indexManager.flush();
-   return 5000;
-}
-
-
 /**
  * check if email-adress is syntactically correct
  */
@@ -1016,40 +1043,6 @@ function getPoolObj(objName, pool) {
 }
 
 /**
- * This is a simple logger that creates a DB entry for
- * each request that contains an HTTP referrer.
- * due to performance-reasons this is not written directly
- * into database but instead written to app.data.accessLog (=Vector)
- * and written to database by the scheduler once a minute
- */
-function logAccess() {
-   if (req.data.http_referer) {
-      var site = res.handlers.site ? res.handlers.site : root;
-      var url = Http.evalUrl(req.data.http_referer);
-
-      // no logging at all if the referrer comes from the same site
-      // or is not a http-request
-      if (!url)
-         return;
-      var referrer = url.toString();
-      var siteHref = site.href().toLowerCase();
-      if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
-         return;
-      var logObj = new Object();
-      logObj.storyID = path.Story ? path.Story._id : null;
-      logObj.siteID = site._id;
-      logObj.referrer = referrer;
-      logObj.remoteHost = req.data.http_remotehost;
-      logObj.browser = req.data.http_browser;
-
-      // log to app.data.accessLog
-      app.data.accessLog.add(logObj);
-   }
-   return;
-}
-
-
-/**
  * to register updates of a site at weblogs.com
  * (and probably other services, soon), this
  * function can be called via the scheduler.
@@ -1083,6 +1076,9 @@ function pingUpdatedSites() {
 }
 
 function formatDate(date, pattern) {
+   if (!date) {
+      return null;
+   }
    pattern || (pattern = "short");
    var site = res.handlers.site;
    var format = site[pattern.toLowerCase() + "DateFormat"];
@@ -1091,7 +1087,7 @@ function formatDate(date, pattern) {
    }
    try {
       return date.format(format, site.getLocale(), site.getTimeZone());
-   } catch(ex) {
+   } catch (ex) {
       app.log(ex);
       return "[Macro error: Invalid date format]";
    }
@@ -1255,44 +1251,7 @@ function countUsers() {
 }
 
 /**
- * function swaps app.data.accessLog, loops over the objects
- * contained in Vector and inserts records for every log-entry
- * in AV_ACCESSLOG
- */
-function writeAccessLog() {
-   if (app.data.accessLog.size() == 0)
-      return;
-   // first of all swap app.data.accessLog
-   var size = app.data.accessLog.size();
-   var log = app.data.accessLog;
-   app.data.accessLog = new java.util.Vector(size);
-   // open database-connection
-   var c = getDBConnection("antville");
-   var dbError = c.getLastError();
-   if (dbError) {
-      app.log("Error establishing DB connection: " + dbError);
-      return;
-   }
-   // loop over log-vector
-   var query;
-   for (var i=0;i<log.size();i++) {
-      var logObj = log.get(i);
-      query = "insert into AV_ACCESSLOG (ACCESSLOG_F_SITE,ACCESSLOG_F_TEXT," +
-         "ACCESSLOG_REFERRER,ACCESSLOG_IP,ACCESSLOG_BROWSER) values (" +
-         logObj.siteID + "," + logObj.storyID + ",'" + logObj.referrer + "','" + logObj.remoteHost +
-         "','" + logObj.browser + "')";
-      c.executeCommand(query);
-      if (dbError) {
-         app.log("Error executing SQL query: " + dbError);
-         return;
-      }
-   }
-   app.log("wrote " + i + " referrers into database");
-   return;
-}
-
-/**
- * function swaps app.data.readLog, loops over the logObjects
+ * functionswaps app.data.readLog, loops over the logObjects
  * contained in the Hashtable and updates the read-counter
  * of all stories
  */
@@ -1888,7 +1847,7 @@ function link_filter(value, param, url) {
 }
 
 function format_filter(value, param, pattern) {
-   if (value.format) {
+   if (value && value.format) {
       // FIXME: var locale = res.handlers.site.language;
       return value.format(pattern || param.pattern);
    }

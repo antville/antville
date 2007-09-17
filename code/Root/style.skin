@@ -203,11 +203,36 @@ span.pageNavSelItem {
    padding-bottom:10pt;
 }
 
-.flagDark {
-   font-family:<% layout.smallfont %>;
-   font-size:7pt;
-   padding:2px;
-   color:#ffffff;
+.label {
+   font-family: <% layout.smallfont %>;
+   font-size: 7pt;
+   padding: 2px;
+   color: #ffffff;
+   text-transform: uppercase;
+}
+
+.default {
+   display: none;
+}
+
+.blocked {
+   background-color: #000000;
+}
+
+.trusted, .User {
+   background-color: #009900;
+}
+
+.private {
+   background-color: #cc0000;
+}
+
+.public, .privileged, .Site {
+   background-color: #006600;
+}
+
+.Root {
+   background-color: #ffcc00;
 }
 
 .flagLight {

@@ -1,0 +1,73 @@
+<a name="<% site.id %>" id="<% site.id %>"></name>
+<table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td colspan="2">
+   <span class="label <% site.status %>"><% site.status %></span>
+   <span class="label <% site.mode %>"><% site.mode %></span>
+</td>
+</tr>
+<tr>
+<td width="100%" valign="top">
+   <div><strong><% site.title | site.link %></strong></div>
+   <div><%// site.tagline suffix="<br />" %>
+   <a href="<% site.href %>"><% site.href %></a>
+   </div>
+   <div class="small">created by <% site.creator as="link" %> on 
+   <% site.created | format short %><br />
+   last update: <% site.modified default="no updates so far" | format short %><br />
+   diskusage: FIXME <%// site.diskusage %>
+   </div>
+</td>
+<td class="small" valign="top" align="right">
+   <% admin.link edit <% site.id %> prefix="...&nbsp;" %><br />
+   <% admin.link delete <% site.id %> prefix="...&nbsp;" %>
+</td>
+</tr>
+</table>
+
+<% #edit %>
+<form method="post" action="<% response.action %>#<% site.id %>">
+<input type="hidden" name="id" value="<% request.id %>" />
+<input type="hidden" name="page" value="<% request.page default="0" %>" />
+
+<table cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td valign="top" class="small">
+   <% admin.count <% site.allstories %> suffix=" stories<br />" %>
+   <% admin.count <% site.self %> comments suffix=" comments<br />" %>
+   <% admin.count <% site.images %> suffix=" images<br />" %>
+   <% admin.count <% site.files %> suffix=" files<br />" %>
+</td>
+<td class="small">status:<br />
+   <% site.select status %><br />
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>  
+</td>
+</tr>
+</table>
+</form>
+
+<% #delete %>
+<form method="post" action="<% response.action %>">
+<input type="hidden" name="id" value="<% request.id %>" />
+<input type="hidden" name="page" value="<% request.page %>" />
+
+<table style="background-color: #ffcc00;" cellspacing="0" cellpadding="3" width="100%">
+<tr>
+<td valign="top">
+   <p><strong>Warning!</strong></p>
+   <p>You're about to delete the above site. Please mind that this is an
+   irreversible process, and any asset of this site will be deleted. Just to 
+   remind you: <% site.alias %> currently contains 
+   <strong><% admin.count <% site.allstories %> suffix=" stories" %></strong> with 
+   <strong><% admin.count <% site.self %> comments suffix=" comments" %> </strong>, 
+   <strong><% admin.count <% site.images %> suffix=" images" %> </strong> and 
+   <strong><% admin.count <% site.files %> suffix=" files" %></strong>. 
+   Also all the subscriptions to this site will be removed.</p>
+   <p><strong>Are you sure you want to delete this site?</strong></p>
+   <p><% input type="submit" name="remove" value="Yes" %>
+   <% input type="submit" name="cancel" value=" No " %></p>
+</td>
+</tr>
+</table>
+</form>

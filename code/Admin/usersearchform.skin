@@ -4,15 +4,15 @@
 <table cellspacing="0" cellpadding="2">
 <tr>
 <td>...&nbsp;show</td>
-<td><% sysmgr.dropdown name="show" values="all users,blocked users,trusted users,sysadmins" %></td>
+<td><% admin.dropdown name="show" values="all users,blocked users,trusted users,sysadmins" %></td>
 </tr>
 <tr>
 <td>...&nbsp;sorted by</td>
-<td><% sysmgr.dropdown name="sort" values="last visit,registration,username" %></td>
+<td><% admin.dropdown name="sort" values="last visit,registration,username" %></td>
 </tr>
 <tr>
 <td>...&nbsp;order</td>
-<td><% sysmgr.dropdown name="order" values="descending,ascending" %></td>
+<td><% admin.dropdown name="order" values="descending,ascending" %></td>
 </tr>
 <tr>
 <td>...&nbsp;keyword(s)</td>

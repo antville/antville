@@ -93,3 +93,35 @@ alter table av_site change column site_createtime created datetime;
 alter table av_site change column site_modifytime modified datetime;
 
 alter table av_site rename site;
+
+##
+## Update table av_membership
+##
+
+alter table av_membership change column membership_id id mediumint(10);
+alter table av_membership change column membership_f_site site_id mediumint(10);
+alter table av_membership change column membership_name name varchar(30);
+alter table av_membership change column membership_level level mediumint(10);
+alter table av_membership change column membership_createtime created datetime;
+alter table av_membership change column membership_f_user creator_id mediumint(10);
+alter table av_membership change column membership_modifytime modified datetime;
+alter table av_membership change column membership_f_modifier modifier_id mediumint(10);
+
+alter table av_membership rename membership;
+
+##
+## Update table av_accesslog
+##
+
+alter table av_accesslog change column accesslog_id id int(11);
+alter table av_accesslog change column accesslog_referrer referrer mediumtext;
+alter table av_accesslog change column accesslog_ip ip varchar(20);
+alter table av_accesslog change column accesslog_date created datetime;
+alter table av_accesslog change column accesslog_f_site context_id mediumint(10);
+
+alter table av_accesslog rename log;
+
+## Copy contents of av_syslog to log
+insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, syslog_createtime, syslog_f_user_creator, syslog_entry from user, av_syslog where syslog_object = user.name and syslog_type = 'user';
+insert into log (context_type, context_id, created, creator_id, action) select 'Site', site.id, syslog_createtime, syslog_f_user_creator, syslog_entry from site, av_syslog where syslog_object = site.name and (syslog_type = 'site' or syslog_type = 'weblog');
+insert into log (context_type, context_id, created, creator_id, action) select 'Root', 1, syslog_createtime, syslog_f_user_creator, 'setup' from av_syslog where syslog_type = 'system';
