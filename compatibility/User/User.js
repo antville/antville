@@ -37,9 +37,8 @@ User.prototype.status_macro = function(param) {
 };
 
 User.prototype.name_macro = function(param) {
-   var url;
-   if (param.as === "link" && (url = this.url)) {
-      link_filter(this.name, param, url);
+   if (param.as === "link" && this.url) {
+      link_filter(this.name, param, this.url);
    } else {
       res.write(this.name);
    }
@@ -56,7 +55,7 @@ User.prototype.url_macro = function(param) {
 };
 
 User.prototype.email_macro = function(param) {
-   if (this !== session.user) {
+   if (!User.getPermission(User.PRIVILEGED) && this !== session.user) {
       return;
    }
    if (param.as == "editor") {

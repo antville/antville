@@ -1,40 +1,49 @@
-<a name="<% user.name %>"></a>
+<a name="<% user.id %>" id="<% user.id %>"></name>
 <table class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="2"><span class="label <% user.status %>"><% user.status %></td>
+<td colspan="2">
+   <span class="label <% user.status %>"><% user.status %></span>
+</td>
 </tr>
 <tr>
-<td valign="top" nowrap="nowrap">
-<div><strong><% user.name %></strong></div>
-<div><% user.email suffix="<br />" %>
-<a href="<% user.url %>"><% user.url %></a></div>
-<div class="small">registered:&nbsp;<% user.sysmgr_registered format="dd.MM.yyyy HH:mm" %><br />
-last visit:&nbsp;<% user.sysmgr_lastvisit format="dd.MM.yyyy HH:mm" %></div></td>
-<td class="small" valign="top" align="right" nowrap="nowrap"><% user.sysmgr_editlink prefix="...&nbsp;" %></td>
+<td valign="top">
+   <div><strong><% user.name %></strong></div>
+   <div><% user.email suffix="<br />" %>
+   <a href="<% user.url %>"><% user.url %></a></div>
+   <div class="small">
+      registered: <% user.registered | format "yyyy-MM-dd HH:mm" %><br />
+      last visit:&nbsp;<% user.lastvisit | format "yyyy-MM-dd HH:mm" %>
+   </div>
+</td>
+<td class="small" valign="top" align="right">
+   <% admin.link edit <% user.id %> prefix="... " %>
+</td>
 </tr>
 </table>
 
 <% #edit %>
-<form method="post" action="<% response.action %>#<% request.item %>">
-<input type="hidden" name="item" value="<% request.item %>" />
+<form method="post" action="<% response.action %>">
+<input type="hidden" name="id" value="<% request.id %>" />
 <input type="hidden" name="page" value="<% request.page %>" />
 
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td class="small" valign="top" nowrap="nowrap"><% user.sysmgr_count what="stories" suffix="&nbsp;stories" %><% user.sysmgr_lastitems what="stories" prefix=": " %><br />
-<% user.sysmgr_count what="comments" suffix="&nbsp;comments" %><% user.sysmgr_lastitems what="comments" prefix=": " %><br />
-<% user.sysmgr_count what="images" suffix="&nbsp;images" %><% user.sysmgr_lastitems what="images" prefix=": " %><br />
-<% user.sysmgr_count what="files" suffix="&nbsp;files" %><% user.sysmgr_lastitems what="files" prefix=": " %><br /></td>
-<td><table>
-   <tr>
-   <td class="small">Status:</td>
-   <td><% user.status as="editor" %></td>
-   </tr>
-   <tr>
-   <td class="small"></td>
-   <td><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
-   </tr>
-   </table></td>
+<td class="small" valign="top">
+   <% admin.count <% user.stories %> suffix=" stories" %><!--
+   --><% admin.items <% user.stories %> prefix=": " %><br />
+   <% admin.count <% user.comments %> suffix=" comments" %><!--
+   --><% admin.items <% user.comments %> prefix=": " %><br />
+   <% admin.count <% user.images %> suffix=" images" %><!--
+   --><% admin.items <% user.images %> prefix=": " %><br />
+   <% admin.count <% user.files %> suffix=" files" %><!--
+   --><% admin.items <% user.files %> prefix=": " %><br />
+</td>
+<td class="small">
+   Status:<br />
+   <% user.select status %><br />
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</td>
 </tr>
 </table>
 

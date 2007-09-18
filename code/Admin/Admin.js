@@ -92,7 +92,7 @@ Admin.prototype.status_action = function() {
    system.usedMemory = system.totalMemory - system.freeMemory;
    res.handlers.system = system;
    res.data.title = gettext("{0} System Status", root.title);
-   res.data.body = this.renderSkinAsString("status");
+   res.data.body = this.renderSkinAsString("Admin#status");
    root.renderSkin("page");
    return;
 };
@@ -101,7 +101,7 @@ Admin.prototype.setup_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
-         logAction();
+         logAction(root, "setup");
          res.message = gettext("Successfully updated the setup.");
          res.redirect(root.href());
       } catch (ex) {
@@ -112,7 +112,24 @@ Admin.prototype.setup_action = function() {
 
    res.data.title = gettext("Setup of {0}", root.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("setup");
+   res.data.body = this.renderSkinAsString("Admin#setup");
+   root.renderSkin("page");
+   return;
+};
+
+Admin.prototype.log_action = function() {
+   if (req.postParams.search || req.postParams.filter) {
+      session.data.admin.filterLog(req.postParams);
+   }
+   res.data.list = renderList(session.data.admin.log, 
+         this.renderItem, 10, req.data.page);
+   res.data.pagenavigation = renderPageNavigation(session.data.admin.log, 
+         this.href(req.action), 10, req.data.page);
+
+   res.data.title = gettext("Log data of {0}", root.title);
+   res.data.action = this.href(req.action);
+   res.data.body = this.renderSkinAsString("Admin#log");
+   res.data.body += this.renderSkinAsString("Admin");
    root.renderSkin("page");
    return;
 };
@@ -140,19 +157,128 @@ Admin.prototype.sites_action = function() {
    }
 
    res.data.list = renderList(session.data.admin.sites, 
-         this.renderManagerView, 10, req.queryParams.page);
+         this.renderItem, 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(session.data.admin.sites, 
          this.href(req.action), 10, req.data.page);
 
    res.data.title = gettext("Site administration of {0}", root.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("sitesearchform");
-   res.data.body += this.renderSkinAsString("list");
+   res.data.body = this.renderSkinAsString("Admin#sites");
+   res.data.body += this.renderSkinAsString("Admin");
    root.renderSkin("page");
    return;
 };
 
+Admin.prototype.users_action = function() {
+   if (req.postParams.search || req.postParams.filter) {
+      session.data.admin.filterUsers(req.postParams);
+   } else if (req.postParams.save) {
+      this.updateUser(req.postParams);
+      res.message = gettext("The changes were saved successfully.");
+      res.redirect(req.action + "?page=" + req.postParams.page + 
+            "#" + req.postParams.id);
+   } else if (req.queryParams.id) {
+      res.meta.item = User.getById(req.queryParams.id);
+   }
+
+   res.data.list = renderList(session.data.admin.users, 
+         this.renderItem, 10, req.data.page);
+   res.data.pager = renderPageNavigation(session.data.admin.users, 
+         this.href(req.action), 10, req.data.page);
+
+   res.data.title = gettext("User manager of {0}", root.title);
+   res.data.action = this.href(req.action);
+   res.data.body = this.renderSkinAsString("Admin#users");
+   res.data.body += this.renderSkinAsString("Admin");
+   root.renderSkin("page");
+   return;
+};
+
+Admin.prototype.link_macro = function(param, action, id, text) {
+   switch (action) {
+      case "edit":
+      case "delete":
+      text = action;
+      action = "?action=" + action + "&id=" + id;
+      if (req.queryParams.page) {
+         action += "&page=" + req.queryParams.page;
+      }
+      action += "#" + id;
+   }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
+};
+
+Admin.prototype.count_macro = function(param, object, name) {
+   if (!object || !object.size) {
+      return;
+   }
+   switch (name) {
+      case "comments":
+      if (object.constructor === Site) {
+         res.write("FIXME: takes very long... :(");
+         //res.write(object.allcontent.size() - object.allstories.size());
+      }
+      return;
+   }
+   res.write(object.size());
+   return;
+};
+
+Admin.prototype.items_macro = function(param, object, name) {
+   if (!object || !object.size) {
+      return;
+   }
+   var max = Math.min(object.size(), parseInt(param.limit) || 5);
+   for (var i=0; i<max; i+=1) {
+      html.link({href: object.get(i).href()}, "#" + (object.size()-i) + " ");
+   }
+   return;
+};
+
+Admin.prototype.dropdown_macro = function(param) {
+   if (!param.name || !param.values)
+      return;
+   var options = param.values.split(",");
+   var selectedIndex = req.data[param.name];
+   Html.dropDown({name: param.name},options,selectedIndex);
+   return;
+};
+
+Admin.prototype.moduleSetup_macro = function(param) {
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "renderSetup", param);
+   return;
+};
+
+Admin.prototype.filterLog = function(data) {
+   data || (data = {});
+   var sql = "where action <> 'main' ";
+   switch (data.filter) {
+      case "1":
+      sql += "and context_type = 'Site' "; break;
+      case "2":
+      sql += "and context_type = 'User' "; break;
+      case "3":
+      sql += "and context_type = 'Root' "; break;
+   }
+   if (data.query) {
+      var parts = stripTags(data.query).split(" ");
+      var keyword, like;
+      for (var i in parts) {
+         sql += i < 1 ? "and " : "or ";
+         keyword = parts[i].replace(/\*/g, "%");
+         like = keyword.contains("%") ? "like" : "=";
+         sql += "action " + like + " '" + keyword + "' ";
+      }
+   }
+   sql += "order by created "; 
+   (data.dir === "0") && (sql += "desc");
+   this.log.subnodeRelation = sql;
+   return;
+};
+
 Admin.prototype.filterSites = function(data) {
+   data || (data = {});
    var sql;
    switch (data.filter) {
       case "1":
@@ -182,7 +308,6 @@ Admin.prototype.filterSites = function(data) {
       sql += "order by created "; break;
       case "2":
       sql += "order by name "; break;
-      case "0":
       default:
       sql += "order by modified "; break;
    }
@@ -191,186 +316,77 @@ Admin.prototype.filterSites = function(data) {
    return;
 };
 
-Admin.prototype.updateSite = function(data, admin) {
-   var site = Site.getById(data.id);
-   if (!site) {
-      throw Error(gettext("Please choose a site you want to edit."));
+Admin.prototype.filterUsers = function(data) {
+   data || (data = {});
+   var sql;
+   switch (data.filter) {
+      case "1":
+      sql = "where status = 'blocked' "; break;
+      case "2":
+      sql = "where status = 'trusted' "; break;
+      case "3":
+      sql = "where status = 'privileged' "; break;
+      default:
+      sql = "where true "; break;
    }
-   var current = site.status;
-   site.status = data.status;
-   logAction(site, "status change from " + current + " to " + site.status);
-   return;
-};
-
-Admin.prototype.users_action = function() {
-   res.data.title = gettext("User manager of {0}", root.title);
-   res.data.action = this.href(req.action);
-
-   if (req.data.search || req.data.keywords)
-      session.data.admin.filterUsers(req.data.show, req.data.sort, req.data.order, req.data.keywords);
-   else if (req.data.cancel)
-      res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
-   else if (req.data.save) {
-      var result = this.updateUser(req.data, session.user);
-      res.message = result.message;
-      if (!result.error)
-         res.redirect(res.data.action + "?page=" + req.data.page + "#" + req.data.item);
-   } else if (req.data.item)
-      req.data.selectedItem = root.users.get(req.data.item);
-
-   res.data.list = renderList(session.data.admin.users, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(session.data.admin.users, this.href(req.action), 10, req.data.page);
-   res.data.body = this.renderSkinAsString("usersearchform");
-   res.data.body += this.renderSkinAsString("list");
-   root.renderSkin("page");
-   return;
-};
-
-Admin.prototype.filterUsers = function(show, sort, order, keywords) {
-   // construct the sql-clause for manual subnodeRelation
-   var sql = "";
-   if (show == "1")
-      sql += "where status = 'blocked' ";
-   else if (show == "2")
-      sql += "where status = 'trusted' ";
-   else if (show == "3")
-      sql += "where status = 'privileged' ";
-   if (keywords) {
-      // additional keywords are given, so we're using them
-      if (keywords.charAt(0) == "@") {
-         // searching for email-addresses
-         sql += sql.length > 0 ? "and " : "where ";
-         sql += "email like '%" + keywords + "%' ";
-      } else {
-         // doing normal keyword-search
-         var kArray = stripTags(keywords).split(" ");
-         for (var i in kArray) {
-            var k = kArray[i];
-            sql += sql.length > 0 ? "and " : "where ";
-            sql += "name like '%" + k + "%' ";
+   if (data.query) {
+      var parts = stripTags(data.query).split(" ");
+      var keyword, like;
+      for (var i in parts) {
+         sql += i < 1 ? "and " : "or ";
+         keyword = parts[i].replace(/\*/g, "%");
+         like = keyword.contains("%") ? "like" : "=";
+         if (keyword.contains("@")) {
+            sql += "email " + like + " '" + keyword.replace(/@/g, "") + "' ";
+         } else {
+            sql += "name " + like + " '" + keyword + "' ";
          }
       }
    }
-   if (!sort || sort == "0")
-      sql += "order by modified ";
-   else if (sort == "1")
-      sql += "order by created ";
-   else if (sort == "2")
-      sql += "order by name ";
-   if (!order || order == "0")
-      sql += "desc ";
-   else if (order == "1")
-      sql += "asc ";
-
-   // now do the actual search with a manual subnodeRelation
+   switch (data.order) {
+      case "1":
+      sql += "order by created "; break;
+      case "2":
+      sql += "order by name "; break;
+      case "0":
+      default:
+      sql += "order by modified "; break;
+   }
+   (data.dir === "0") && (sql += "desc");
    this.users.subnodeRelation = sql;
    return;
 };
 
-Admin.prototype.updateUser = function(param, admin) {
-   var user = this.users.get(param.item);
+Admin.prototype.updateSite = function(data) {
+   var site = Site.getById(data.id);
+   if (!site) {
+      throw Error(gettext("Please choose a site you want to edit."));
+   }
+   if (site.status !== data.status) { 
+      var current = site.status;
+      site.status = data.status;
+      logAction(site, "status change from " + current + " to " + site.status);
+   }
+   return;
+};
+
+Admin.prototype.updateUser = function(data) {
+   var user = User.getById(data.id);
    if (!user) {
-      throw new Exception("userEditMissing");
+      throw Error(gettext("Please choose a user you want to edit."));
    }
-   if (user === admin) {
-      throw new Exception("accountModifyOwn");
+   if (user === session.user) {
+      throw Error(gettext("Sorry, you are not allowed to modify your own account."));
    }
-   if (param.status !== user.status) {
-      user.status = param.status;
-      logAction(user, param.status);
+   if (data.status !== user.status) {
+      var current = user.status;
+      user.status = data.status;
+      logAction(user, "status change from " + current + " to " + data.status);
    }
-   return new Message("update");
-};
-
-Admin.prototype.logs_action = function() {
-   res.data.title = gettext("Log data of {0}", root.title);
-   res.data.action = this.href(req.action);
-
-   if (req.data.search || req.data.keywords) {
-      session.data.admin.filterLog(req.data.show, req.data.order, req.data.keywords);
-   }
-   res.data.list = renderList(session.data.admin.log, this.renderManagerView, 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(session.data.admin.log, this.href(req.action), 10, req.data.page);
-   res.data.body = this.renderSkinAsString("syslogsearchform");
-   res.data.body += this.renderSkinAsString("list");
-   root.renderSkin("page");
    return;
 };
 
-Admin.prototype.filterLog = function(show, order, keywords) {
-   var sql = "where action <> 'main' ";
-   if (show == "1") {
-      sql += "and context_type = 'Site' ";
-   } else if (show == "2") {
-      sql += "and context_type = 'User' ";
-   } else if (show == "3") {
-      sql += "and context_type = 'Root' ";
-   }
-   /* FIXME
-   if (keywords) {
-        // additional keywords are given, so we're using them
-      var kArray = stripTags(keywords).split(" ");
-      for (var i in kArray) {
-         var k = kArray[i];
-         sql += sql.length > 0 ? "AND " : "WHERE ";
-         sql += "(SYSLOG_OBJECT LIKE '%" + k + "%' OR SYSLOG_ENTRY LIKE '%" + k + "%') ";
-      }
-   }
-   */
-   if (!order || order == "0") {
-      sql += "order by created desc, id desc ";
-   } else if (order == "1") {
-      sql += "order by created asc, id asc ";
-   }
-
-   this.log.subnodeRelation = sql;
-   return;
-};
-
-Admin.prototype.link_macro = function(param, action, id, text) {
-   switch (action) {
-      case "edit":
-      case "delete":
-      text = action;
-      action = "?action=" + action + "&id=" + id;
-      if (req.queryParams.page) {
-         action += "&page=" + req.queryParams.page;
-      }
-      action += "#" + id;
-   }
-   return HopObject.prototype.link_macro.call(this, param, action, text);
-};
-
-Admin.prototype.count_macro = function(param, object, name) {
-   if (!object || !object.size) {
-      return;
-   }
-   switch (name) {
-      case "comments":
-      res.write("FIXME: takes very long... :(");
-      //res.write(object.allcontent.size() - object.allstories.size());
-      return;
-   }
-   res.write(object.size());
-   return;
-};
-
-Admin.prototype.dropdown_macro = function(param) {
-   if (!param.name || !param.values)
-      return;
-   var options = param.values.split(",");
-   var selectedIndex = req.data[param.name];
-   Html.dropDown({name: param.name},options,selectedIndex);
-   return;
-};
-
-Admin.prototype.moduleSetup_macro = function(param) {
-   for (var i in app.modules)
-      this.applyModuleMethod(app.modules[i], "renderSetup", param);
-   return;
-};
-
-Admin.prototype.renderManagerView = function(item, action) {
+Admin.prototype.renderItem = function(item) {
    item.renderSkin("Admin");
    if (item === res.meta.item) {
       item.renderSkin(req.data.action === "delete" ? 

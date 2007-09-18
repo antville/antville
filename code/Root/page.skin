@@ -41,7 +41,7 @@
 <% root.link admin/sites sites prefix="...&nbsp;" suffix="<br />" %>
 <% root.link admin/users users prefix="...&nbsp;" suffix="<br />" %>
 <% root.link layouts prefix="...&nbsp;" suffix="<br />" %>
-<% root.link admin/logs logs prefix="...&nbsp;" suffix="<br />" %>
+<% root.link admin/log log prefix="...&nbsp;" suffix="<br />" %>
 <% root.link admin/setup setup prefix="...&nbsp;" suffix="<br />" %>
 <% root.link admin/status status prefix="...&nbsp;" suffix="<br />" %>
 </div>

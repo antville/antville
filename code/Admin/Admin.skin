@@ -1,3 +1,157 @@
+<% response.pager %>
+<% response.list %>
+<% response.pager %>
+
+<% #status %>
+<table cellspacing="0" cellpadding="2">
+<tr>
+<td colspan="2" class="pageTitle" nowrap="nowrap"><% response.title %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Uptime:</td>
+<td nowrap="nowrap"><% system.upSince | age %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Active threads:</td>
+<td nowrap="nowrap"><% system.activeThreads %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Maximum threads:</td>
+<td nowrap="nowrap"><% system.maxThreads %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Free threads:</td>
+<td nowrap="nowrap"><% system.freeThreads %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Sessions:</td>
+<td nowrap="nowrap"><% system.sessionCount %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">HTTP requests:</td>
+<td nowrap="nowrap"><% system.requestCount %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Xml-Rpc requests:</td>
+<td nowrap="nowrap"><% system.xmlRpcCount %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Errors:</td>
+<td nowrap="nowrap"><% system.errorCount %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Objects in cache:</td>
+<td nowrap="nowrap"><% system.cacheUsage %></td>
+</tr>
+<tr>
+<td nowrap="nowrap">Free memory:</td>
+<td nowrap="nowrap"><% system.freeMemory | format ###,### %> KB</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Used memory:</td>
+<td nowrap="nowrap"><% system.usedMemory | format ###,### %> KB</td>
+</tr>
+<tr>
+<td nowrap="nowrap">Total memory:</td>
+<td nowrap="nowrap"><% system.totalMemory | format ###,### %> KB</td>
+</tr>
+</table>
+
+<% #sites %>
+<div class="pageTitle">Site Manager</div>
+<form method="post" action="<% response.action %>">
+<table cellspacing="0" cellpadding="2">
+<tr>
+<td>... show</td>
+<td>
+   <% admin.dropdown name="filter" 
+   values="all sites,public sites,private sites,blocked sites,trusted sites" %>
+</td>
+</tr>
+<tr>
+<td>... sorted by</td>
+<td>
+   <% admin.dropdown name="order" values="last update,creation date,name" %>
+</td>
+</tr>
+<tr>
+<td>... order</td>
+<td>
+   <% admin.dropdown name="dir" values="descending,ascending" %>
+</td>
+</tr>
+<tr>
+<td>... search</td>
+<td><input name="query" value="<% request.query %>" /></td>
+</tr>
+<tr>
+<td> </td>
+<td><button input type="submit" name="search" value="1">show sites</button></td>
+</tr>
+</table>
+</form>
+
+<% #users %>
+<div class="pageTitle">User Manager</div>
+<form method="post" action="<% response.action %>">
+<table cellspacing="0" cellpadding="2">
+<tr>
+<td>... show</td>
+<td>
+   <% admin.dropdown name="filter" 
+   values="all users,blocked users,trusted users,admins" %>
+</td>
+</tr>
+<tr>
+<td>... sorted by</td>
+<td>
+   <% admin.dropdown name="order" values="last visit,registration,username" %>
+</td>
+</tr>
+<tr>
+<td>... order</td>
+<td><% admin.dropdown name="dir" values="descending,ascending" %></td>
+</tr>
+<tr>
+<td>... search</td>
+<td><input name="query" value="<% request.query %>" /></td>
+</tr>
+<tr>
+<td> </td>
+<td><button input type="submit" name="search" value="1">show users</button></td>
+</tr>
+</table>
+</form>
+
+<% #log %>
+<div class="pageTitle">System Log</div>
+<form method="post" action="<% response.action %>">
+<table cellspacing="0" cellpadding="2">
+<tr>
+<td>... show</td>
+<td>
+   <% admin.dropdown name="filter" 
+   values="all entries,site entries,user entries,root entries" %>
+</td>
+</tr>
+<tr>
+<td>... order</td>
+<td><% admin.dropdown name="dir" values="descending,ascending" %></td>
+</tr>
+<tr>
+<td>... search</td>
+<td><input name="query" value="<% request.query %>" /></td>
+</tr>
+<tr>
+<td></td>
+<td>
+   <button type="submit" name="search" value="1">show entries</button>
+</td>
+</tr>
+</table>
+</form>
+
+<% #setup %>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>

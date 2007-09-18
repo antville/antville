@@ -33,6 +33,14 @@ LogEntry.prototype.constructor = function(context, action) {
    return this;
 };
 
+LogEntry.prototype.getMacroHandler = function(name) {
+   switch (name) {
+      case "context":
+      return this.context || {name: this.context_id};
+   }
+   return null;
+}
+
 LogEntry.prototype.toString = function() {
    return "[LogEntry #" + this._id + ": " + this.creator + " requested " +
          this.action + " action of " + this.context_type + " #" + 
