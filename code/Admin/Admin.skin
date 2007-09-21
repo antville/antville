@@ -1,3 +1,4 @@
+<% #main %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

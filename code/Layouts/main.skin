@@ -1,0 +1,10 @@
+<p><% breadcrumbs %></p>
+
+<div class="ample">
+   ... <% layouts.link create "create a new layout" %> | 
+   <% layouts.link import "import a layout" %>
+</div>
+
+<% response.pager %>
+<% response.list %>
+<% response.pager %>

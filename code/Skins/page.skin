@@ -48,9 +48,9 @@
 
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20" nowrap="nowrap">&nbsp;</td>
+<td width="20"> </td>
 <td valign="top"><% response.body %></td>
-<td width="20" nowrap="nowrap">&nbsp;</td>
+<td width="20"> </td>
 </tr>
 </table>
 

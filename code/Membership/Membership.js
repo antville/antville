@@ -175,11 +175,11 @@ Membership.getPermission = function(role) {
 };
       
 Membership.remove = function(membership) {
-   if (!membership) {
+   /*if (!membership) {
       throw Error(gettext("Please specify a membership you want to be removed."));
    } else if (membership.role === Membership.OWNER) {
       throw Error(gettext("Sorry, an owner of a site cannot be removed."));
-   }
+   }*/
    membership.remove();
    return;
 };

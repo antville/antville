@@ -141,9 +141,6 @@ Site.prototype.getMembership = function() {
    return membership || new HopObject;
 }
 
-/**
- * main action
- */
 Site.prototype.main_action = function() {
    if (this.allstories.size() == 0) {
       res.data.body = this.renderSkinAsString("welcome");
@@ -163,9 +160,6 @@ Site.prototype.main_action = function() {
    return;
 };
 
-/**
- * edit action
- */
 Site.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
@@ -194,9 +188,6 @@ Site.prototype.edit_action = function() {
    return;
 };
 
-/**
- * delete action
- */
 Site.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       try {
@@ -220,12 +211,11 @@ Site.prototype.delete_action = function() {
 };
 
 Site.remove = function(site) {
-   site.images.removeChildren();
-   site.files.removeChildren();
-   // FIXME: add deleting of all layouts!
-   //site.layouts.clear();
-   site.stories.removeChildren();
-   site.members.removeChildren();
+   HopObject.remove(site.members);
+   HopObject.remove(site.stories);
+   HopObject.remove(site.images);
+   HopObject.remove(site.files)
+   // FIXME: HopObject.remove(site.layouts);
    site.remove();
    logAction("site", "removed");
    return;
@@ -391,12 +381,12 @@ Site.prototype.referrers_action = function() {
       var urls = req.data.permanent_array ?
                  req.data.permanent_array : [req.data.permanent];
       res.push();
-      res.write(this.properties.get("spamfilter"));
+      res.write(this.metadata.get("spamfilter"));
       for (var i in urls) {
          res.write("\n");
          res.write(urls[i].replace(/\?/g, "\\\\?"));
       }
-      this.properties.set("spamfilter", res.pop());
+      this.metadata.set("spamfilter", res.pop());
       res.redirect(this.href(req.action));
       return;
    }
@@ -658,7 +648,7 @@ Site.prototype.moduleNavigation_macro = function(param) {
 Site.prototype.calendar_macro = function(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this site is disabled
-   if (!this.allstories.size() || !this.properties.get("archive"))
+   if (!this.allstories.size() || !this.metadata.get("archive"))
       return;
    // define variables needed in this function
    var calParam = new Object();
@@ -773,7 +763,7 @@ Site.prototype.history_macro = function(param) {
    var limit = param.limit ? parseInt(param.limit, 10) : 5;
    var cnt = i = 0;
    var size = this.lastmod.size();
-   var discussions = this.properties.get("discussions");
+   var discussions = this.metadata.get("discussions");
    while (cnt < limit && i < size) {
       if (i % limit == 0)
          this.lastmod.prefetchChildren(i, limit);
@@ -855,7 +845,7 @@ Site.prototype.searchbox_macro = function(param) {
  * function renders the months of the archive
  */
 Site.prototype.monthlist_macro = function(param) {
-   if (!this.stories.size() || !this.properties.get("archive"))
+   if (!this.stories.size() || !this.metadata.get("archive"))
       return;
    var size = param.limit ? Math.min(this.size(), param.limit) : this.size();
    for (var i=0;i<size;i++) {
@@ -1519,7 +1509,7 @@ Site.prototype.renderStorylist = function(day) {
          }
       }
    }
-   var days = this.properties.get("days") ? this.properties.get("days") : 2;
+   var days = this.metadata.get("days") ? this.metadata.get("days") : 2;
    days = Math.min (days, 14);  // render 14 days max
    this.prefetchChildren(idx, days);
 

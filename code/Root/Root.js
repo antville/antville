@@ -101,7 +101,7 @@ Root.prototype.error_action = function() {
 };
 
 Root.prototype.notfound_action = function() {
-   res.data.title = root.getTitle() + " - 404 - not found";
+   res.data.title = root.title + " - 404 - not found";
    req.data.path = req.path;
    res.data.body = root.renderSkinAsString("notfound");
    (path.Site && path.Site.online ? path.Site : root).renderSkin("page");

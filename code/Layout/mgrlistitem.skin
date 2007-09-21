@@ -1,18 +1,27 @@
-<div class="listSeparator">&nbsp;</div>
+<div class="listSeparator"><br /></div>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<% layout.switch name="active" on='<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" class="listFlag">a<br />c<br />t<br />i<br />v<br />e<td rowspan="2" width="5" nowrap="nowrap"></td>' off="" %>
-<td valign="top"><div class="storyTitle"><% layout.title linkto="main" %></div>
-<div><% layout.description limit="100" suffix="<br />" %></div>
-<div><% layout.parent prefix="(based on the layout '" suffix="')<br />" %></div>
-<div class="small"><% layout.creator prefix="created by " %><% layout.createtime format="short" prefix=" (" suffix=")<br />" %>
-<% layout.modifier prefix="last modified by " %><% layout.modifytime format="short" prefix=" (" suffix=")" %></div></td>
-<td valign="top" align="right" class="small"><% layout.link to="edit" text="preferences" prefix="...&nbsp;" suffix="<br />" %>
-<% layout.link to="skins" text="skins" prefix="...&nbsp;" suffix="<br />" %>
-<% layout.link to="images" text="images" prefix="...&nbsp;" suffix="<br />" %>
-<% layout.testdrivelink target="_blank" prefix="...&nbsp;" suffix="<br />" %>
-<% layout.activatelink prefix="...&nbsp;" suffix="<br />" %>
-<% layout.link to="download" prefix="...&nbsp;" text="download" suffix="<br />" %>
-<% layout.deletelink prefix="...&nbsp;" suffix="<br />" %></td>
+<% if <% layout.active %> is true then 
+   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+   class="listFlag">a<br />c<br />t<br />i<br />v<br />e</td>
+   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+%>
+<td valign="top">
+   <div class="storyTitle"><% layout.title | layout.link %></div>
+   <div><% layout.description suffix="<br />" %></div>
+   <div><% layout.parent prefix="(based on the layout '" suffix="')<br />" %></div>
+   <div class="small"><% layout.creator prefix="created by " %>
+   <% layout.created short prefix=" (" suffix=")<br />" %>
+   <% layout.modifier prefix="last modified by " %>
+   <% layout.modified short prefix=" (" suffix=")" %></div>
+</td>
+<td valign="top" align="right" class="small">
+   <% layout.link edit preferences prefix="... " suffix="<br />" %>
+   <% layout.link skins prefix="... " suffix="<br />" %>
+   <% layout.link images prefix="... " suffix="<br />" %>
+   <% layout.link test prefix="... " suffix="<br />" %>
+   <% layout.link activate prefix="... " suffix="<br />" %>
+   <% layout.link download prefix="... " suffix="<br />" %>
+   <% layout.link delete prefix="... " suffix="<br />" %></td>
 </tr>
 </table>

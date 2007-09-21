@@ -35,14 +35,19 @@ HopObject.prototype.onRequest = function() {
          case Admin:
          res.redirect(req.action + "?page=" + req.queryParams.page + 
                "#" + req.queryParams.id);
-         case Membership:
          case Members:
+         case Membership:
          res.redirect(this._parent.href());
+         case Skin:
+         res.redirect(res.handlers.skins.href());
+         case Skins:
+         res.redirect("?skinset=" + req.postParams.skinset +
+               "#" + req.postParams.key)
          default:
          res.redirect(this.href());
       }
    }
-   
+
    // FIXME: do we still need this?
    if (app.data.redirectPostRequests && path.site && req.isPost())
       res.redirect(app.data.redirectPostRequests);
@@ -102,6 +107,48 @@ HopObject.prototype.onRequest = function() {
    return;
 };
 
+HopObject.prototype.delete_action = function() {
+   if (req.postParams.proceed) {
+      try {
+         var str = this.toString();
+         this.constructor.remove.call(this, this);
+         res.message = gettext("{0} was successfully deleted.", str);
+         res.redirect(session.data.retrace || this._parent.href());
+      } catch(ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+
+   res.data.action = this.href(req.action);
+   res.data.title = gettext("Confirm deletion of " + this);
+   res.data.body = this.renderSkinAsString("delete", {
+      text: gettext('You are about to delete {0}.', this)
+   });
+   res.handlers.site.renderSkin("page");
+   return;
+};
+
+HopObject.remove = function(collection) {
+   var item;
+   
+/*   for (var i=0; i<collection.size(); i+=1) {
+      item = collection.get(i);
+      res.debug("call " + item.constructor.name + ".remove() for object " + item);
+      if (item.constructor === HopObject) {
+         item.constructor.remove.call(item, item);
+      }
+   }
+return;
+res.abort(); */
+
+   while (collection.size() > 0) {
+      item = collection.get(0);
+      item.constructor.remove.call(item, item);
+   }
+   return;
+};
+
 HopObject.prototype.onUnhandledMacro = function(name) {
    return;
    
@@ -128,10 +175,29 @@ HopObject.prototype.input_macro = function(param, name) {
    return html.input(param);
 };
 
+HopObject.prototype.textarea_macro = function(param, name) {
+   param.name = name;
+   param.value = this.getFormValue(name);
+   return html.textArea(param);
+}
+
+HopObject.prototype.select_macro = function(param, name) {
+   param.name = name;
+   var options = this.getFormOptions(name);
+   if (options.length < 2) {
+      param.disabled = "disabled";
+   }
+   return html.dropDown(param, options, this.getFormValue(name));
+};
+
 HopObject.prototype.checkbox_macro = function(param, name) {
    param.name = name;
    param.id = name;
-   param.value = String(this.getFormOptions(name)[0].value);
+   var options = this.getFormOptions(name);
+   if (options.length < 2) {
+      param.disabled = "disabled";
+   }
+   param.value = String(options[0].value);
    param.selectedValue = String(this.getFormValue(name));
    var label = param.label;
    delete param.label;
@@ -141,12 +207,6 @@ HopObject.prototype.checkbox_macro = function(param, name) {
       html.element("label", label, {"for": name});
    }
    return;
-};
-
-HopObject.prototype.select_macro = function(param, name) {
-   param.name = name;
-   return html.dropDown(param, this.getFormOptions(name), 
-         this.getFormValue(name));
 };
 
 HopObject.prototype.getFormValue = function(name) {
@@ -234,19 +294,12 @@ HopObject.prototype.link_filter = function(value, param, action) {
    return renderLink(param, action, value, this);
 };
 
-HopObject.prototype.removeChildren = function() {
-   while (this.size() > 0) {
-      this.get(0).remove();
-   }
-   return;
-};
-
 HopObject.prototype.handleMetadata = function(name) {
    this.__defineGetter__(name, function() {
-      return this.properties.get(name);
+      return this.metadata.get(name);
    });
    this.__defineSetter__(name, function(value) {
-      return this.properties.set(name, value);
+      return this.metadata.set(name, value);
    });
    return;
 };

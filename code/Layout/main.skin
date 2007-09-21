@@ -1,21 +1,21 @@
-<% linkedpath %>
+<% breadcrumbs %>
 
 <p class="storyTitle"><br />Layout '<% layout.title %>'</p>
 
-<p><% layout.description prefix="<p>" suffix="<br />" %>
-<span class="small"><% layout.copyright prefix="<br />Copyright: " %>
-<% layout.email prefix="<br />e-mail: " %></span></p>
+<% layout.description prefix="<div>" suffix="</div>" %>
+<% layout.copyright prefix="<div><small">Copyright: " suffix="</small></div>" %>
 
-<p><% layout.link to="edit" text="Edit the preferences" %> of this layout.</p>
+<p>... <% layout.link edit "edit the preferences" %> of this layout.</p>
+<p>... <% layout.link images "manage images" %> of this layout.</p>
+<p>... <% layout.link skins "manage skins" %> of this layout.</p>
 
-<p><% layout.link to="images" text="Manage images" %> of this layout.</p>
+<% layout.link test "test-drive" prefix="<p>... " 
+suffix=" this layout on this site.</p>" %>
 
-<p><% layout.link to="skins" text="Manage skins" %> of this layout.</p>
+<% layout.link activate "activate" prefix="<p>... " 
+suffix=" this layout on this site.</p>" %>
 
-<% layout.testdrivelink text="Test-drive" prefix="<p>" suffix=" this layout on this site.</p>" %>
+<p>... <% layout.link download %> this layout.</p>
 
-<% layout.activatelink text="Activate" prefix="<p>" suffix=" this layout on this site.</p>" %>
-
-<p><% layout.link to="download" text="Download" %> this layout as a .zip file.</p>
-
-<% layout.deletelink text="Delete" prefix="<p>" suffix=" this layout and all of its skins.</p>" %>
+<% layout.link delete prefix="<p>... " 
+suffix=" this layout and all of its skins.</p>" %>

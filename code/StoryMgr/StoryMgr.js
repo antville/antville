@@ -135,36 +135,6 @@ StoryMgr.prototype.evalNewStory = function(param, creator) {
    return result;
 };
 
-
-/**
- * delete a story
- * including all the comments
- * @param Obj Story-Object that should be deleted
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-StoryMgr.prototype.deleteStory = function(storyObj) {
-   storyObj.deleteAll();
-   if (storyObj.online > 0)
-      this._parent.lastupdate = new Date();
-   storyObj.remove();
-
-   // remove the story from search index
-   app.data.indexManager.getQueue(this._parent).remove(storyObj._id);
-   return new Message("storyDelete");
-};
-
-/**
- * function loops over all stories and removes them (including their comments!)
- * @return Boolean true in any case
- */
-StoryMgr.prototype.deleteAll = function() {
-   for (var i=this.size();i>0;i--)
-      this.deleteStory(this.get(i-1));
-   return true;
-};
-
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action

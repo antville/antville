@@ -1,95 +1,39 @@
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap"><strong><a name="general">General</a></strong></td>
+<td colspan="2"><strong><a name="general">General</a></strong></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% layout.title as="editor" size="40" %></td>
+<td class="small">Title:</td>
+<td><% layout.input title %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Description:</td>
-<td nowrap="nowrap"><% layout.description as="editor" cols="30" rows="5" %></td>
+<td class="small" valign="top">Description:</td>
+<td><% layout.textarea description %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Copyright:</td>
-<td nowrap="nowrap"><% layout.copyright as="editor" size="25" %></td>
+<td class="small">Copyright:</td>
+<td><% layout.input copyright %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Contact e-mail:</td>
-<td nowrap="nowrap"><% layout.email as="editor" size="25" %></td>
+<td class="small">Basis Layout:</td>
+<td><% layout.select parent %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Basis Layout:</td>
-<td><% layout.parent as="editor" firstOption="--- choose layout ---" %></td>
+<td class="small" valign="top">Mode:</td>
+<td>
+   <% layout.select mode %><br />
+   <span class="small">If this option is enabled sites can use this layout as 
+   a basis for their own.</span>
+</td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Shareable:</td>
-<td><% layout.shareable as="editor" no="---" %><br /><span class="small">If this option is enabled sites can use this layout as a basis for their own.</span></td>
-</tr>
-<tr>
-<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div><br />
-<strong><a name="colors">Colors</a></strong></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Background:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="bgcolor" text="background" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="titlecolor" text="title" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Text:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="textcolor" text="text" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Small text:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="smallcolor" text="small text" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Link:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="linkcolor" text="link" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Active link:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="alinkcolor" text="active link" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Visited link:</td>
-<td nowrap="nowrap"><% colorpicker skin="colorpickerExt" name="vlinkcolor" text="visited link" %></td>
-</tr>
-<tr>
-<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div><br />
-<strong><a name="fonts">Fonts</a></strong></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Title font:</td>
-<td nowrap="nowrap"><% layout.titlefont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Title size:</td>
-<td nowrap="nowrap"><% layout.titlesize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Text font:</td>
-<td nowrap="nowrap"><% layout.textfont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Text size:</td>
-<td nowrap="nowrap"><% layout.textsize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Small font:</td>
-<td nowrap="nowrap"><% layout.smallfont as="editor" width="30" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Small size:</td>
-<td nowrap="nowrap"><% layout.smallsize as="editor" width="10" %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td class="small"> </td>
+<td>
+   <br />
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</td>
 </tr>
 </table>
 </form>

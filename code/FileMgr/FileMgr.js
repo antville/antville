@@ -119,32 +119,6 @@ FileMgr.prototype.evalFile = function(param, creator) {
    return new Message("fileCreate", newFile.alias, newFile);
 };
 
-
-/**
- * delete a file
- * @param Obj file-object to delete
- * @return String Message indicating success or failure
- */
-
-FileMgr.prototype.deleteFile = function(fileObj) {
-   // first remove the file from disk
-   var f = new Helma.File(this._parent.getStaticPath("files"), fileObj.name);
-   f.remove();
-   fileObj.site.diskusage -= fileObj.filesize;
-   fileObj.remove();
-   return new Message("fileDelete");
-};
-
-/**
- * function deletes all files
- */
-
-FileMgr.prototype.removeChildren = function() {
-   while (this.size() > 0) {
-      this.deleteFile(this.get(0));
-   }
-   return true;
-};
 /**
  * permission check (called by hopobject.onRequest())
  * @param String name of action

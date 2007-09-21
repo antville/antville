@@ -160,48 +160,6 @@ ImageMgr.prototype.evalImg = function(param, creator) {
 };
 
 /**
- * delete an image
- * @param Obj Image-Object to delete
- * @return String Message indicating success or failure
- */
-ImageMgr.prototype.deleteImage = function(imgObj) {
-   // first remove the image from disk (and the thumbnail, if existing)
-   switch (this.getContext()) {
-      case "Site":
-      var dir = imgObj.parent.getStaticDir("images");
-      break;
-      case "Layout":
-      var dir = imgObj.parent.getStaticDir();
-      break;
-   }
-   var f = new Helma.File(dir, imgObj.filename + "." + imgObj.fileext);
-   f.remove();
-   if (imgObj.thumbnail) {
-      var thumb = imgObj.thumbnail;
-      f = new Helma.File(dir, thumb.filename + "." + thumb.fileext);
-      f.remove();
-      thumb.remove();
-   }
-   if (imgObj.site)
-      imgObj.site.diskusage -= imgObj.filesize;
-   // Remove the tags of the image
-   Story.prototype.setTags.call(imgObj, null);
-   // Finally, remove the image iself
-   imgObj.remove();
-   return new Message("imageDelete");
-};
-
-/**
- * function deletes all images
- */
-ImageMgr.prototype.removeChildren = function() {
-   while (this.size() > 0) {
-      this.deleteImage(this.get(0));
-   }
-   return true;
-};
-
-/**
  * permission check (called by hopobject.onRequest())
  * @param String name of action
  * @param Obj User object

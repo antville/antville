@@ -292,3 +292,13 @@ File.prototype.checkDelete = function(usr, level) {
       throw new DenyException("fileDelete");
    return;
 };
+
+File.remove = function() {
+   var fileObj = this;
+   // first remove the file from disk
+   var f = new Helma.File(this._parent.getStaticPath("files"), fileObj.name);
+   f.remove();
+   fileObj.site.diskusage -= fileObj.filesize;
+   fileObj.remove();
+   return new Message("fileDelete");
+};

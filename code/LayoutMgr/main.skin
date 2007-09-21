@@ -1,7 +1,0 @@
-<p><% linkedpath %></p>
-
-<div class="ample">...&nbsp;<% layoutmgr.link to="create" text="create a new layout" %> | <% layoutmgr.link to="import" text="import a layout" %></div>
-
-<% response.pagenavigation %>
-<% response.layoutlist %>
-<% response.pagenavigation %>

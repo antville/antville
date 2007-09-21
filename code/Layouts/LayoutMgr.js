@@ -22,27 +22,21 @@
 // $URL$
 //
 
-/**
- * main action
- */
-LayoutMgr.prototype.main_action = function() {
+Layouts.prototype.main_action = function() {
    if (req.data["activate"]) {
       this.setDefaultLayout(req.data["activate"]);
       res.redirect(this.href());
    }
-   res.data.title = getMessage("LayoutMgr.mainTitle", {siteTitle: res.handlers.context.getTitle()});
+   res.data.title = gettext("Layouts of {0}", res.handlers.site.title);
    res.data.action = this.href();
-   res.data.layoutlist = renderList(this, "mgrlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
+   res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
+   res.data.pager = renderPageNavigation(this, this.href(), 10, req.data.page);
    res.data.body = this.renderSkinAsString("main");
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-/**
- * choose a new root layout
- */
-LayoutMgr.prototype.create_action = function() {
+Layouts.prototype.create_action = function() {
    if (req.data.cancel)
       res.redirect(this.href());
    else if (req.data.create) {
@@ -59,7 +53,7 @@ LayoutMgr.prototype.create_action = function() {
    res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
    res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
 
-   res.data.title = getMessage("LayoutMgr.createTitle", {siteTitle: res.handlers.context.getTitle()});
+   res.data.title = getMessage("Layouts.createTitle", {siteTitle: res.handlers.context.getTitle()});
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("new");
    res.handlers.context.renderSkin("page");
@@ -69,7 +63,7 @@ LayoutMgr.prototype.create_action = function() {
 /**
  * import action
  */
-LayoutMgr.prototype.import_action = function() {
+Layouts.prototype.import_action = function() {
    if (req.data.cancel)
       res.redirect(this.href());
    else if (req.data["import"]) {
@@ -85,7 +79,7 @@ LayoutMgr.prototype.import_action = function() {
    res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
    res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
 
-   res.data.title = getMessage("LayoutMgr.importTitle", {siteTitle: res.handlers.context.getTitle()});
+   res.data.title = getMessage("Layouts.importTitle", {siteTitle: res.handlers.context.getTitle()});
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("import");
    res.handlers.context.renderSkin("page");
@@ -94,7 +88,7 @@ LayoutMgr.prototype.import_action = function() {
 /**
  * render a dropdown containing available layouts
  */
-LayoutMgr.prototype.layoutchooser_macro = function(param) {
+Layouts.prototype.layoutchooser_macro = function(param) {
    var options = [];
    var size = this.size();
    for (var i=0;i<size;i++) {
@@ -109,7 +103,7 @@ LayoutMgr.prototype.layoutchooser_macro = function(param) {
  * @param Object Object containing the submitted form values
  * @param Object Creator of the layout object
  */
-LayoutMgr.prototype.evalNewLayout = function(param, creator) {
+Layouts.prototype.evalNewLayout = function(param, creator) {
    var newLayout = new Layout(this._parent instanceof Site ? this._parent : null,
                               "untitled", creator);
    if (param.layout) {
@@ -126,21 +120,10 @@ LayoutMgr.prototype.evalNewLayout = function(param, creator) {
 };
 
 /**
- * function deletes a layout
- * @param Obj Layout-HopObject to delete
- */
-LayoutMgr.prototype.deleteLayout = function(layout) {
-   layout.deleteAll();
-   var title = layout.title;
-   layout.remove();
-   return new Message("layoutDelete", title);
-};
-
-/**
  * Set the layout with the alias passed as argument
  * to the default site layout
  */
-LayoutMgr.prototype.setDefaultLayout = function(alias) {
+Layouts.prototype.setDefaultLayout = function(alias) {
    var l = this.get(alias);
    if (l && this._parent.layout != l)
       this._parent.layout = l;
@@ -150,7 +133,7 @@ LayoutMgr.prototype.setDefaultLayout = function(alias) {
 /**
  * import a new Layout that was uploaded as a zip file
  */
-LayoutMgr.prototype.evalImport = function(param, creator) {
+Layouts.prototype.evalImport = function(param, creator) {
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
       throw new Exception("layoutImportTooBig");
@@ -188,11 +171,8 @@ LayoutMgr.prototype.evalImport = function(param, creator) {
    }
    return;
 };
-/**
- * render a dropdown containing shareable system layouts
- * @param Object current layout
- */
-LayoutMgr.prototype.renderParentLayoutChooser = function(selLayout, firstOption) {
+
+Layouts.prototype.renderParentLayoutChooser = function(selLayout, firstOption) {
    var options = [];
    var size = root.layouts.shareable.size();
    for (var i=0;i<size;i++) {
@@ -212,7 +192,7 @@ LayoutMgr.prototype.renderParentLayoutChooser = function(selLayout, firstOption)
  * @param Int Membership level
  * @return Obj Exception object or null
  */
-LayoutMgr.prototype.checkAccess = function(action, usr, level) {
+Layouts.prototype.checkAccess = function(action, usr, level) {
    checkIfLoggedIn(this.href(req.action));
    try {
       this.checkEdit(session.user, res.data.memberlevel);
@@ -229,7 +209,7 @@ LayoutMgr.prototype.checkAccess = function(action, usr, level) {
  * @param Int Permission-Level
  * @return String Reason for denial (or null if allowed)
  */
-LayoutMgr.prototype.checkEdit = function(usr, level) {
+Layouts.prototype.checkEdit = function(usr, level) {
    if ((level & MAY_EDIT_LAYOUTS) == 0)
       throw new DenyException("layoutEdit");
    return;

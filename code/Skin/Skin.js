@@ -22,27 +22,69 @@
 // $URL$
 //
 
-/**
- * constructor function for skin objects
- */
-Skin.prototype.constructor = function(layout, proto, name, creator) {
+Skin.prototype.constructor = function(layout, prototype, name) {
    this.layout = layout;
-   this.proto = proto;
+   this.prototype = prototype;
    this.name = name;
-   this.custom = 0;
-   this.creator = this.modifier = creator;
-   this.createtime = new Date();
-   this.modifytime = new Date();
+   this.custom = false;
+   this.creator = this.modifier = session.user;
+   this.created = this.modified = new Date;
    return this;
 };
 
-/**
- * action rendering the differences between the original skin
- * and the modified one
- */
+Skin.prototype.href = function(action) {
+   if (this.isTransient()) {
+      return res.handlers.skins.href("create") + "?prototype=" + 
+            this.prototype + "&name=" + this.name; 
+   } else {
+      return HopObject.prototype.href.apply(this, arguments);
+   }
+   return href;
+};
+
+Skin.prototype.getPermission = function(action) {
+   switch (action) {
+      case "delete":
+      return User.getPermission(User.PRIVILEGED) ||
+            Member.getPermission(Member.OWNER);
+   }
+   return true;
+};
+
+Skin.prototype.main_action = function() {
+   if (req.postParams.save || req.postParams.close) {
+      try {
+         this.update(req.postParams);
+         res.message = gettext("The changes were saved successfully.");
+         if (req.postParams.close) {
+            res.redirect(this.href() + "?skinset=" + 
+                  req.postParams.skinset + "#" + req.postParams.key);
+         }
+         res.redirect(this.href(req.action) + "?key=" + req.postParams.key + 
+               "&skinset=" + req.postParams.skinset + "&action=" + 
+               req.postParams.action);
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+   res.data.action = this.href(req.action);
+   res.data.title = gettext('{0}/{1}.skin of Layout "{2}"', this.prototype, 
+         this.name, res.handlers.layout.title);
+   res.data.body = this.renderSkinAsString("Skin#edit");
+   res.handlers.skins.renderSkin("page");
+   return;
+};
+
+Skin.prototype.update = function(data) {
+   this.setSource(data.source);
+   this.touch();
+   return;
+};
+
 Skin.prototype.diff_action = function() {
    // get the modified and original skins
-   var originalSkin = this.layout.skins.getOriginalSkinSource(this.proto, 
+   var originalSkin = this.layout.skins.getOriginalSkinSource(this.prototype, 
          this.name);
 
    if (originalSkin == null) {
@@ -95,10 +137,7 @@ Skin.prototype.diff_action = function() {
    return;
 };
 
-/**
- * delete action
- */
-Skin.prototype.delete_action = function() {
+/*Skin.prototype.delete_action = function() {
    if (req.data.cancel) {
       res.redirect(this.layout.skins.href());
    } else if (req.data.remove) {
@@ -120,114 +159,93 @@ Skin.prototype.delete_action = function() {
    res.handlers.context.renderSkin("page");
    return;
 };
+*/
 
-/**
- * drop the "global" prototype to
- * display correct macro syntax 
- */
-Skin.prototype.proto_macro = function() {
-   if (this.proto.toLowerCase() != "global")
-      res.write(this.proto);
-   return;
-};
-
-/**
- * link to delete action
- */
-Skin.prototype.deletelink_macro = function(param) {
-   if (path.Layout != this.layout)
-      return;
-   Html.link({href: this.href("delete")}, param.text ? param.text : "delete");
-   return;
-};
-
-/**
- * link to diff action
- */
-Skin.prototype.difflink_macro = function(param) {
-   if (this.custom == 1 && !this.layout.skins.getOriginalSkin(this.proto, this.name))
-      return;
-   Html.link({href: this.href("diff")}, param.text ? param.text : "diff");
-   return;
-};
-
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-Skin.prototype.checkAccess = function(action, usr, level) {
-   checkIfLoggedIn(this.href(req.action));
-   try {
-      this.checkDelete(usr, level);
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this.site.skins.href());
+Skin.prototype.prototype_macro = function() {
+   if (this.prototype.toLowerCase() !== "global") {
+      res.write(this.prototype);
    }
    return;
 };
 
-/**
- * check if user is allowed to delete this skin
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-Skin.prototype.checkDelete = function(usr, level) {
-   if ((level & MAY_EDIT_LAYOUTS) == 0)
-      throw new DenyException("skinDelete");
+Skin.prototype.summary_macro = function() {
+   var summary = Skins.getSummary("skin", this.prototype, this.name);
+   res.write(summary[0] + ". " + summary[1]);
+   return;
+};
+
+Skin.prototype.source_macro = function() {
+   res.write(this.getSubskin());
    return;
 };
 
 Skin.prototype.getSource = function() {
-   var file = this.getFile();
-   if (!file.exists()) {
-      return app.skinfiles[this.proto][this.name];
+   var skin = this.custom ? "custom" : this.prototype;
+   for (var i in res.skinpath) {
+      var file = this.getFile(res.skinpath[i]);
+      if (!file.exists()) {
+         continue;
+      }
+
+      if (this.cache.source) {
+         return this.cache.source;
+      }
+   
+      var fis = new java.io.FileInputStream(file);
+      var isr = new java.io.InputStreamReader(fis, "UTF-8");
+      var reader = new java.io.BufferedReader(isr);
+      var line, source = new java.lang.StringBuffer();
+      while ((line = reader.readLine()) != null) {
+         source.append(line);
+         source.append("\n");
+      }
+      /*
+      var source = java.lang.reflect.Array.newInstance(java.lang.Character.TYPE, 
+            file.length());
+      var offset = 0, read;
+      while (offset < source.length) {
+         read = reader.read(source, offset, source.length - offset);
+         offset += read;
+      }
+      */
+      reader.close();
+      isr.close();
+      fis.close();
+
+      //this.cache[key] = new java.lang.String(source);
+      //res.debug(this.cache[key]);
+      this.cache.source = source.toString();
+      return this.cache.source;
    }
 
-   var key = this.proto + ":" + this.name;
-   // FIXME: Remove the false to enable caching
-   // (but not unless the cache is removed after the skin was modified)
-   if (false && this.cache[key]) {
-      return this.cache[key];
+   var skins;
+   if (skins = app.skinfiles[this.prototype]) {
+      return skins[skin];
    }
-
-   var fis = new java.io.FileInputStream(file);
-   var isr = new java.io.InputStreamReader(fis, "UTF-8");
-   var reader = new java.io.BufferedReader(isr);
-   var line, source = new java.lang.StringBuffer();
-   while ((line = reader.readLine()) != null) {
-      source.append(line);
-      source.append("\n");
-   }
-   /*
-   var source = java.lang.reflect.Array.newInstance(java.lang.Character.TYPE, 
-         file.length());
-   var offset = 0, read;
-   while (offset < source.length) {
-      read = reader.read(source, offset, source.length - offset);
-      offset += read;
-   }
-   */
-   reader.close();
-   isr.close();
-   fis.close();
-   //this.cache[key] = new java.lang.String(source);
-   this.cache[key] = source.toString();
-   //res.debug(this.cache[key]);
-   return this.cache[key];
+   return null;
 };
 
-Skin.prototype.setSource = function(source) {
-   if (!source) {
+Skin.prototype.setSource = function(subskin) {
+   if (!subskin) {
       return;
    }
-   var fpath = this.getParentDirectory();
-   fpath.mkdirs();
-   var file = this.getFile();
+
+   res.push();
+   var skin = createSkin(this.getSource());
+   var subskins = skin.getSubskinNames();
+   for (var i in subskins) {
+      res.write("<% #" + subskins[i] + " %>\n");
+      if (subskins[i] === this.name) {
+         res.write(subskin);
+      } else {
+         res.write(skin.getSubskin(subskins[i]).source);
+      }
+   }
+   var source = res.pop();
+
+   var file = this.getFile(res.skinpath[0]);
    if (!file.exists()) {
+      file.getParentFile().mkdirs();
       file.createNewFile();
    }
    var fos = new java.io.FileOutputStream(file);
@@ -237,23 +255,48 @@ Skin.prototype.setSource = function(source) {
    writer.close();
    bos.close();
    fos.close();
-   delete this.cache[this.proto + ":" + this.name];
+   
+   this.clearCache();
    return;
 };
 
-Skin.prototype.getParentDirectory = function() {
-   res.push();
-   res.write(getProperty("staticPath"));
-   res.write(this.layout.site ? this.layout.site.alias : "default");
-   res.write("/layouts/");
-   res.write(this.layout.alias);
-   res.write("/");
-   res.write(this.proto);
-   var dir = new java.io.File(res.pop());
-   res.debug(dir);
-   return dir;   
+Skin.prototype.getSubskin = function() {
+   var skin = createSkin(this.getSource());
+   var subskin = skin.getSubskin(this.name);
+   return subskin ? subskin.getSource() : "";
 };
 
-Skin.prototype.getFile = function() {
-   return new java.io.File(this.getParentDirectory(), this.name + ".skin");
+Skin.prototype.getFile = function(fpath) {
+   var name = this.custom ? "custom" : this.prototype;
+   return new java.io.File(fpath, this.prototype + "/" + name + ".skin");
+};
+
+Skin.prototype.isCustom = function() {
+   // FIXME:
+   return true;
+};
+
+Skin.prototype.equals = function(source) {
+   // FIXME: The removal of linebreaks is necessary but it's not very nice
+   var re = /\r|\n/g;
+   var normalize = function(str) {
+      return str.replace(re, String.EMPTY);
+   }
+   return normalize(source) === normalize(this.getSubskin());
+};
+
+Skin.remove = function(skin) {
+   var file = skin.getFile();
+   file["delete"]();
+   var parentDir = file.getParentFile();
+   if (parentDir.list().length < 1) {
+      parentDir["delete"]();
+      var layoutDir = parentDir.getParentFile();
+      if (layoutDir.list().length < 1) {
+         layoutDir["delete"]();
+      }
+   }
+   session.data.retrace = res.handlers.skins.href();
+   skin.remove();
+   return;
 };

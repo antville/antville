@@ -28,18 +28,29 @@ var convert = function(type) {
    }
       
    switch (type.toLowerCase()) {
-      case "users":
-      var query = "select user_id, hash, salt, user_url from av_user";
+      case "layout":
+      var query = "select layout_id, layout_title, layout_description, " +
+            "layout_isimport, layout_preferences_new from av_layout";
       rows = db.executeRetrieval(query);
-      while (rows && rows.next()) {
-         sql = "update av_user set metadata = " + quote({
-            hash: rows.getColumnItem("hash"),
-            salt: rows.getColumnItem("salt"),
-            url: rows.getColumnItem("user_url")
-         }.toSource()) + " where user_id = " + rows.getColumnItem("user_id");
-         writeln(sql);
+      forEachRow(function(rows) {
+         var id = rows.getColumnItem("layout_id");
+         var metadata = eval(rows.getColumnItem("layout_preferences_new"));
+         metadata.title = rows.getColumnItem("layout_title") ||
+               "Layout #" + id;
+         metadata.description = rows.getColumnItem("layout_description");
+         if (rows.getColumnItem("layout_isimport")) { 
+            var layout = Layout.getById(id);
+            if (layout.site) {
+               // FIXME: metadata.origin = layout.href();
+               metadata.origin = "http://" + layout.site.name + 
+                     ".antville.org/layouts/" + layout.alias + "/";
+            }
+         }
+         sql = "update av_layout set layout_preferences_new = " + 
+               quote(metadata.toSource()) + " where layout_id = " + id;
          db.executeCommand(sql);
-      }
+         writeln(sql);
+      });
       break;
       
       case "site":
@@ -83,6 +94,21 @@ var convert = function(type) {
          res.commit();
          writeln(sql); 
       });
+      break;
+
+      case "users":
+      var query = "select user_id, hash, salt, user_url from av_user";
+      rows = db.executeRetrieval(query);
+      while (rows && rows.next()) {
+         sql = "update av_user set metadata = " + quote({
+            hash: rows.getColumnItem("hash"),
+            salt: rows.getColumnItem("salt"),
+            url: rows.getColumnItem("user_url")
+         }.toSource()) + " where user_id = " + rows.getColumnItem("user_id");
+         writeln(sql);
+         db.executeCommand(sql);
+      }
+      break;
    }
 
    return;

@@ -1,0 +1,13 @@
+<p><% breadcrumbs %></p>
+
+<div class="ample">
+   <% skins.link create "add a custom skin" prefix="... " %>
+</div>
+<div>
+   <% skins.link . "default skins" prefix="... show " %>
+   <% skins.link modified "modified skins" prefix=" | " %> 
+   <% skins.link custom "custom skins" prefix=" | " %>
+
+<ul class="skinmgrTree">
+<% response.list %>
+</ul>

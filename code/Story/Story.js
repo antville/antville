@@ -331,7 +331,7 @@ Story.prototype.viewlink_macro = function(param) {
  * macro rendering link to comments
  */
 Story.prototype.commentlink_macro = function(param) {
-   if (this.discussions && this.site.properties.get("discussions"))
+   if (this.discussions && this.site.metadata.get("discussions"))
       Html.link({href: this.href(param.to ? param.to : "comment")},
                 param.text ? param.text : "comment");
    return;
@@ -346,7 +346,7 @@ Story.prototype.commentlink_macro = function(param) {
  *          action to link to (default: main)
  */
 Story.prototype.commentcounter_macro = function(param) {
-   if (!this.site.properties.get("discussions") || !this.discussions)
+   if (!this.site.metadata.get("discussions") || !this.discussions)
       return;
    var commentCnt = this.comments.count();
    if (!param.linkto)
@@ -379,7 +379,7 @@ Story.prototype.commentcounter_macro = function(param) {
  */
 Story.prototype.comments_macro = function(param) {
    var s = this.story ? this.story : this;
-   if (!s.site.properties.get("discussions") || !s.discussions)
+   if (!s.site.metadata.get("discussions") || !s.discussions)
       return;
    this.comments.prefetchChildren();
    for (var i=0;i<this.size();i++) {
@@ -458,7 +458,7 @@ Story.prototype.editableby_macro = function(param) {
  * so that we can check if the checkbox is embedded in story/edit.skin
  */
 Story.prototype.discussions_macro = function(param) {
-   if (!path.Site.properties.get("discussions"))
+   if (!path.Site.metadata.get("discussions"))
       return;
    if (param.as == "editor") {
       var inputParam = this.createCheckBoxParam("discussions", param);
@@ -954,7 +954,7 @@ Story.prototype.checkAccess = function(action, usr, level) {
 Story.prototype.checkPost = function(usr, level) {
    if (!usr.sysadmin && !this.site.online && level == null)
       throw new DenyException("siteView");
-   else if (!this.site.properties.get("discussions"))
+   else if (!this.site.metadata.get("discussions"))
       throw new DenyException("siteNoDiscussion");
    else if (!this.discussions)
       throw new DenyException("storyNoDiscussion");
@@ -1042,4 +1042,16 @@ Story.prototype.allowTextMacros = function(s) {
          app.modules[i].allowTextMacros(s);
    }
    return;
+};
+
+Story.remove = function() {
+   var storyObj = this;
+   storyObj.removeChildren();
+   if (storyObj.online > 0)
+      this._parent.lastupdate = new Date();
+   storyObj.remove();
+
+   // remove the story from search index
+   app.data.indexManager.getQueue(this._parent).remove(storyObj._id);
+   return new Message("storyDelete");
 };

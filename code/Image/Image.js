@@ -505,3 +505,31 @@ Image.prototype.checkDelete = function(usr, level) {
       throw new DenyException("imageDelete");
    return;
 };
+
+Image.remove = function() {
+   var imgObj = this;
+   // first remove the image from disk (and the thumbnail, if existing)
+   switch (this._parent.getContext()) {
+      case "Site":
+      var dir = imgObj.parent.getStaticDir("images");
+      break;
+      case "Layout":
+      var dir = imgObj.parent.getStaticDir();
+      break;
+   }
+   var f = new Helma.File(dir, imgObj.filename + "." + imgObj.fileext);
+   f.remove();
+   if (imgObj.thumbnail) {
+      var thumb = imgObj.thumbnail;
+      f = new Helma.File(dir, thumb.filename + "." + thumb.fileext);
+      f.remove();
+      thumb.remove();
+   }
+   if (imgObj.site)
+      imgObj.site.diskusage -= imgObj.filesize;
+   // Remove the tags of the image
+   Story.prototype.setTags.call(imgObj, null);
+   // Finally, remove the image iself
+   imgObj.remove();
+   return new Message("imageDelete");
+};

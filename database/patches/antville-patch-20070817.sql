@@ -125,3 +125,40 @@ alter table av_accesslog rename log;
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, syslog_createtime, syslog_f_user_creator, syslog_entry from user, av_syslog where syslog_object = user.name and syslog_type = 'user';
 insert into log (context_type, context_id, created, creator_id, action) select 'Site', site.id, syslog_createtime, syslog_f_user_creator, syslog_entry from site, av_syslog where syslog_object = site.name and (syslog_type = 'site' or syslog_type = 'weblog');
 insert into log (context_type, context_id, created, creator_id, action) select 'Root', 1, syslog_createtime, syslog_f_user_creator, 'setup' from av_syslog where syslog_type = 'system';
+
+##
+## Update table av_layout
+##
+
+alter table av_layout drop column layout_title;
+alter table av_layout drop column layout_preferences;
+alter table av_layout drop column layout_description;
+alter table av_layout drop column layout_isimport;
+
+alter table av_layout change column layout_id id mediumint(10);
+alter table av_layout change column layout_alias name varchar(30);
+alter table av_layout change column layout_f_site site_id mediumint(10);
+alter table av_layout change column layout_f_layout_parent layout_id mediumint(10);
+alter table av_layout change column layout_preferences_new metadata mediumtext;
+alter table av_layout change column layout_createtime created datetime;
+alter table av_layout change column layout_modifytime modified datetime;
+alter table av_layout change column layout_f_user_creator creator_id mediumint(10);
+alter table av_layout change column layout_f_user_modifier modifier_id mediumint(10);
+alter table av_layout change column layout_shareable mode enum('default','shared');
+
+alter table av_layout rename layout;
+
+###
+### Update table av_skin
+###
+
+alter table av_skin change column skin_id id mediumint(10);
+alter table av_skin change column skin_f_layout layout_id mediumint(10);
+alter table av_skin change column skin_prototype prototype varchar(30);
+alter table av_skin change column skin_name name varchar(30);
+alter table av_skin change column skin_f_user_creator creator_id mediumint(10);
+alter table av_skin change column skin_f_user_modifier modifier_id mediumint(10);
+alter table av_skin change column skin_createtime created datetime;
+alter table av_skin change column skin_modifytime modified datetime;
+
+alter table av_skin rename skin;

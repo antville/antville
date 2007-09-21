@@ -24,6 +24,7 @@
 
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
+app.addRepository("modules/core/Filters.js");
 
 app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Mail.js");
@@ -230,88 +231,6 @@ DefaultImages = {
       return;
    }
 }
-
-/**
- * constructor function for Skinset objects
- * used to build the constan SKINS
- */
-function Skinset(key, skins, context) {
-   this.key = key;
-   this.skins = skins;
-   this.context = context;
-   this.children = [];
-   this.add = function(obj) {
-      this.children.push(obj);
-   }
-   return this;
-}
-
-/**
- * constant that contains the menu structure of the skin manager
- * it is basically an Array containing Skinset objects (which themselves
- * can contain child objects too)
- */
-SKINSETS = [];
-var newSet;
-
-newSet = new Skinset("Root", ["Root.page", "Root.main", "Root.style", "Root.javascript", "Root.sysmgrnavigation", "Root.new"], "Root");
-newSet.add(new Skinset("Root.scripts", ["Root.systemscripts", "Global.colorpickerScripts"]));
-newSet.add(new Skinset("Root.sitelist", ["Site.preview", "Root.list"]));
-newSet.add(new Skinset("Root.rss", ["Root.rss", "Site.rssItem", "Site.rssResource", "Global.rssImage"]));
-newSet.add(new Skinset("Root.colorpicker", ["Global.colorpicker", "Global.colorpickerExt", "Global.colorpickerWidget", "Global.colorpickerScripts"]));
-newSet.add(new Skinset("Root.welcome", ["Site.welcome", "Site.welcomeowner", "Site.welcomesysadmin", "Root.welcome"]));
-newSet.add(new Skinset("Root.various", ["Root.blocked", "Root.notfound", "Root.sysError"]));
-SKINSETS.push(newSet);
-
-newSet = new Skinset("Site", ["Site.page", "Site.style", "Site.javascript", "Site.main", "Day.main", "Story.dayheader"]);
-newSet.add(new Skinset("Site.navigation", ["Site.contribnavigation", "Site.adminnavigation", "Global.nextpagelink", "Global.prevpagelink", "Global.pagenavigation", "Global.pagenavigationitem", "Members.statusloggedin", "Members.statusloggedout"]));
-newSet.add(new Skinset("Site.topics", ["TopicMgr.main", "Topic.main"]));
-newSet.add(new Skinset("Site.calendar", ["Site.calendar", "Site.calendardayheader", "Site.calendarweek", "Site.calendarday", "Site.calendarselday"]));
-newSet.add(new Skinset("Site.rss", ["Site.rss", "Story.rssItem", "Story.rssResource"]));
-newSet.add(new Skinset("Site.search", ["Site.searchresult", "Site.searchbox", "Story.searchview"]));
-newSet.add(new Skinset("Site.referrers", ["Site.referrers", "Site.referrerItem"]));
-newSet.add(new Skinset("Site.mostread", ["Site.mostread", "Story.mostread"]));
-newSet.add(new Skinset("Site.mails", ["Members.mailregconfirm", "Members.mailpassword", "Members.mailnewmember", "Membership.mailstatuschange", "Membership.mailmessage", "Site.notificationMail"], "Root"));
-newSet.add(new Skinset("Site.preferences", ["Site.edit", "Site.notification"], "Root"));
-newSet.add(new Skinset("Site.user", ["Members.login", "Members.register", "Members.sendpwd", "User.edit", "User.sitelist", "User.subscriptions", "Membership.subscriptionlistitem"], "Root"));
-newSet.add(new Skinset("Site.members", ["Members.main", "Members.new", "Members.membergroup", "Members.searchresult", "Members.searchresultitem", "Membership.mgrlistitem", "Membership.edit"], "Root"));
-newSet.add(new Skinset("Site.various", ["Site.robots"]));
-SKINSETS.push(newSet);
-
-newSet = new Skinset("Story", ["Story.display", "Story.main", "Story.preview", "Story.comment", "Story.historyview", "Story.embed", "Story.edit"]);
-newSet.add(new Skinset("Story.backlinks", ["Story.backlinks", "Story.backlinkItem"]));
-newSet.add(new Skinset("Story.list", ["StoryMgr.main", "Story.mgrlistitem"]));
-SKINSETS.push(newSet);
-
-newSet = new Skinset("Comment", ["Comment.toplevel", "Comment.reply", "Comment.edit"]);
-SKINSETS.push(newSet);
-
-newSet = new Skinset("Image", ["Image.main", "Image.edit", "ImageMgr.new", "LayoutImage.edit", "ImageMgr.main", "Image.mgrlistitem"]);
-SKINSETS.push(newSet);
-
-newSet = new Skinset("File", ["File.main", "File.edit", "FileMgr.new", "FileMgr.main", "File.mgrlistitem"]);
-SKINSETS.push(newSet);
-
-newSet = new Skinset("Poll", ["Poll.main", "Poll.results", "Choice.main", "Choice.result", "Choice.graph"]);
-newSet.add(new Skinset("Poll.editor", ["Poll.edit", "Choice.edit"]));
-newSet.add(new Skinset("Poll.list", ["PollMgr.main", "Poll.mgrlistitem"]));
-SKINSETS.push(newSet);
-
-newSet = new Skinset("SysMgr", ["SysMgr.status", "SysMgr.list", "Site.sysmgr_listitem", "Site.sysmgr_edit", "Site.sysmgr_delete", "User.sysmgr_listitem", "User.sysmgr_edit", "SysLog.sysmgr_listitem"], "Root");
-newSet.add(new Skinset("SysMgr.forms", ["SysMgr.setup", "SysMgr.sitesearchform", "SysMgr.usersearchform", "SysMgr.syslogsearchform"]));
-newSet.add(new Skinset("SysMgr.mails", ["SysMgr.blockwarnmail", "SysMgr.deletewarnmail"]));
-SKINSETS.push(newSet);
-
-newSet = new Skinset("SkinMgr", ["SkinMgr.main", "SkinMgr.page", "SkinMgr.edit", "SkinMgr.treebranch", "SkinMgr.treeleaf", "Skin.status", "Skin.statuscustom", "SkinMgr.new", "Skin.diff", "Skin.diffline"], "Root");
-SKINSETS.push(newSet);
-
-newSet = new Skinset("LayoutMgr", ["LayoutMgr.main", "LayoutMgr.new", "LayoutMgr.import"], "Root");
-newSet.add(new Skinset("LayoutMgr.layout", ["Layout.mgrlistitem", "Layout.main", "Layout.edit", "Layout.download", "Layout.chooserlistitem", "Layout.testdrive"]));
-newSet.add(new Skinset("LayoutMgr.images", ["LayoutImageMgr.main", "LayoutImageMgr.navigation", "LayoutImageMgr.new"]));
-SKINSETS.push(newSet);
-
-newSet = new Skinset("various", ["HopObject.delete"], "Root");
-SKINSETS.push(newSet);
 
 /** 
  * macro renders the current timestamp   
