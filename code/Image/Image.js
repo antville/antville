@@ -22,410 +22,207 @@
 // $URL$
 //
 
-/**
- * constructor function for image objects
- */
-Image.prototype.constructor = function(creator) {
-   this.creator = creator;
-   this.createtime = new Date();
+this.handleMetadata("description");
+this.handleMetadata("contentType");
+this.handleMetadata("contentLength");
+this.handleMetadata("width");
+this.handleMetadata("height");
+this.handleMetadata("url");
+this.handleMetadata("thumbnailWidth");
+this.handleMetadata("thumbnailHeight");
+
+Image.prototype.constructor = function() {
+   this.creator = session.user;
+   this.created = new Date;
+   this.touch();
    return this;
 };
 
-/**
- * main action
- */
+Image.prototype.getPermission = function(action) {
+   switch (action) {
+      case "delete":
+      case "edit":
+      return User.getPermission(User.PRIVILEGED) ||
+            Membership.getPermission(Membership.MANAGER) ||
+            this.creator === session.user;
+   }
+   return true;
+};
+
+Image.prototype.getFormValue = function(name) {
+   switch (name) {
+      case "file":
+      return this.url || this.name;
+      case "maxWidth":
+      case "maxHeight":
+      return this[name] || 400;
+      case "tags":
+      return this.tags.list();
+   }
+   return this[name];
+};
+
 Image.prototype.main_action = function() {
-   res.debug(this._parent);
-   res.data.title = getMessage("Image.viewTitle", {imageAlias: this.alias});
+   res.data.title = gettext("Image {0}", this.name);
    res.data.body = this.renderSkinAsString("main");
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-/**
- * edit action
- */
 Image.prototype.edit_action = function() {
-   if (req.data.cancel)
+   if (req.postParams.save) {
+      this.update(req.postParams);
+      res.message = gettext("The changes were saved successfully.");
       res.redirect(this.href());
-   else if (req.data.save) {
-      res.message = this.evalImg(req.data, session.user);
-      res.redirect(this.href());
    }
-
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("Image.editTitle", {imageAlias: this.alias});
-   res.data.body = this.renderSkinAsString("edit");
-   res.handlers.context.renderSkin("page");
+   res.data.title = gettext("Edit image {0}", this.name);
+   res.data.body = this.renderSkinAsString("Image#form");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-/**
- * delete action
- */
-Image.prototype.delete_action = function() {
-   if (req.data.cancel)
-      res.redirect(path.ImageMgr.href());
-   else if (req.data.remove) {
-      try {
-         var url = this._parent.href();
-         res.message = this._parent.deleteImage(this);
-         res.redirect(url);
-      } catch (err) {
-         res.message = err.toString();
+Image.prototype.update = function(data) {
+   if (data.uploadError) {
+      // looks like the file uploaded has exceeded uploadLimit ...
+      throw Error(gettext("Oy, this file is exceeding the upload limit. Please try to decrease its size."));
+   }
+      
+   var upload = data.file_upload;
+   if (!upload && data.url && data.url !== this.url) {
+      this.url = data.url;
+      upload = getURL(data.url);
+   }
+
+   if (upload && upload.contentLength > 0) {
+      if (!Image.validateType(upload.contentType)) {
+         throw Error(gettext("Unrecognized file extension. Are you sure this is an image?"));
       }
-   }
+      
+      this.name || (this.name = this.getAccessName(data.name || upload.name));
+      this.contentLength = upload.contentLength;
+      this.contentType = upload.contentType;
+      var file = this.getFile();
 
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("Image.deleteTitle", {imageAlias: this.alias});
-   var skinParam = {
-      description: getMessage("Image.deleteDescription"),
-      detail: this.alias
-   };
-   res.data.body = this.renderSkinAsString("delete", skinParam);
-   res.handlers.context.renderSkin("page");
-   return;
-};
+      var image = Image.writeToFile(upload, file, 
+            data.maxWidth, data.maxHeight);
+      this.width = image.width;
+      this.height = image.height;
 
-/**
- * macro rendering alias of image
- */
-Image.prototype.alias_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("alias", param));
-   else
-      res.write(this.alias);
-   return;
-};
-
-/**
- * macro rendering alternate text of image
- */
-Image.prototype.alttext_macro = function(param) {
-   if (param.as == "editor")
-      Html.textArea(this.createInputParam("alttext", param));
-   else
-      res.write(this.alttext);
-   return;
-};
-
-/**
- * macro renders the width of the image
- */
-Image.prototype.width_macro = function(param) {
-   res.write(this.width);
-   return;
-};
-
-/**
- * macro renders the height of the image
- */
-Image.prototype.height_macro = function(param) {
-   res.write(this.height);
-   return;
-};
-
-/**
- * macro rendering filesize
- */
-Image.prototype.filesize_macro = function(param) {
-   res.write((this.filesize / 1024).format("###,###") + " KB");
-   return;
-};
-
-/**
- * macro renders the url to this image
- */
-Image.prototype.url_macro = function(param) {
-   res.write(this.getUrl());
-   return;
-};
-
-/**
- * render a link to image-edit
- */
-Image.prototype.editlink_macro = function(param) {
-   if (this.getContext() === "Layout" && path.layout !== this.parent) {
-      return;
-   }
-   if (session.user) {
-      try {
-         this.checkEdit(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
+      if (this.width > Image.THUMBNAILWIDTH) {
+         image = Image.writeToFile(upload, this.getThumbnailFile(), 
+               Image.THUMBNAILWIDTH);
+         this.thumbnailWidth = image.width; 
+         this.thumbnailHeight = image.height; 
       }
-      Html.openLink({href: this.href("edit")});
-      if (param.image && this.parent.images.get(param.image))
-         renderImage(this.parent.images.get(param.image), param);
-      else
-         res.write(param.text ? param.text : getMessage("generic.edit"));
-      Html.closeLink();
+   } else if (this.isTransient()) {
+      throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
    }
+
+   this.description = data.description;
+   this.touch();
+   // FIXME: Don't set the tags of the image via Story.prototype.setTags
+   //Story.prototype.setTags.call(this, data.tags || data.tags_array); 
    return;
 };
 
-/**
- * render a link to delete action
- */
-Image.prototype.deletelink_macro = function(param) {
-   if (this.getContext() === "Layout" && path.Layout !== this.parent) {
-      return;
-   }
-   if (session.user) {
-      try {
-         this.checkDelete(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      Html.openLink({href: this.href("delete")});
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
-      else
-         res.write(param.text ? param.text : getMessage("generic.delete"));
-      Html.closeLink();
-   }
+Image.prototype.tags_macro = function() {
+   return res.write(this.getFormValue("tags"));
+};
+
+Image.prototype.contentLength_macro = function() {
+   res.write((this.contentLength / 1024).format("###,###") + " KB");
    return;
 };
 
-/**
- * render the image-tag (link to main action if image
- * is a thumbnail)
- */
-Image.prototype.show_macro = function(param) {
-   var img = this;
-   // if we have a thumbnail, display that
-   if (param.as == "thumbnail" && this.thumbnail) {
-      var url = this.href();
-      img = this.thumbnail;
-   } else
-      var url = img.getUrl();
-   delete param.what;
-   delete param.as;
-   param.src = img.getUrl();
-   Html.openLink({href: url});
-   renderImage(img, param);
-   Html.closeLink();
-   return;
-};
-
-/**
- * render the code for embedding this image
- */
-Image.prototype.code_macro = function(param) {
+Image.prototype.code_macro = function() {
    res.write("&lt;% ");
-   res.write(this.getContext() === "Layout" ? "layout.image" : "image");
-   res.write(" name=\"" + this.alias + "\" %&gt;");
+   res.write(this.parent_type === "Layout" ? "layout.image" : "image");
+   res.write(' ' + this.name + ' %&gt;');
    return;
 };
 
-/**
- * render a link to delete action
- * calls image.deletelink_macro, but only
- * if the layout in path is the one this image
- * belongs to
- */
-Image.prototype.replacelink_macro = function(param) {
-   if (this.layout && path.Layout != this.layout) {
-      if (session.user) {
-         try {
-            path.Layout.images.checkAdd(session.user, res.data.memberlevel);
-         } catch (deny) {
-            return;
-         }
-         Html.openLink({href: path.Layout.images.href("create") + "?alias=" + this.alias});
-         if (param.image && this.site.images.get(param.image))
-            renderImage(this.site.images.get(param.image), param);
-         else
-            res.write(param.text ? param.text : getMessage("generic.replace"));
-         Html.closeLink();
-      }
-      return;
+Image.prototype.thumbnail_macro = function() {
+   if (!this.thumbnailWidth || !this.thumbnailHeight) {
+      return this.render_macro({});
    }
-   return;
+   var description = encode("Thumbnail of image " + this.name);
+   return html.tag("img", {
+      src: this.getUrl(this.getThumbnailFile().getName()),
+      title: description,
+      width: this.thumbnailWidth || String.EMPTY,
+      height: this.thumbnailHeight || String.EMPTY,
+      border: 0,
+      alt: description
+   });
 };
 
-/**
- * save image as file on local disk
- * but before check if image should be resized
- * @param Object uploaded image
- * @param Object File-Object representing the destination directory
- * @param Int maximum width
- * @param Int maximum height
- */
-Image.prototype.save = function(rawimage, dir, maxWidth, maxHeight) {
-   // determine filetype of image (one could do this also by checking the mimetype)
-   this.fileext = evalImgType(rawimage.contentType);
-   if (this.fileext == "ico") {
-      // the image is an .ico, so we directory write it to disk and return
-      rawimage.writeToFile(dir.getPath(), this.filename + "." + this.fileext);
-      return true;
-   }
-   var img = new Helma.Image(rawimage.getContent());
-   this.width = img.getWidth();
-   this.height = img.getHeight();
-   var resize = false;
-   var hfact = 1;
-   var vfact = 1;
-   if (maxWidth && this.width > maxWidth) {
-      hfact = maxWidth / this.width;
-      resize = true;
-   }
-   if (maxHeight && this.height > maxHeight) {
-      vfact = maxHeight / this.height;
-      resize = true;
-   }
-
-   if (resize) {
-      this.width = Math.ceil(this.width * (hfact < vfact ? hfact : vfact));
-      this.height = Math.ceil(this.height * (hfact < vfact ? hfact : vfact));
-      try {
-         img.resize(this.width, this.height);
-         if (rawimage.contentType == 'image/gif' || this.fileext == "gif")
-            img.reduceColors(256);
-      } catch (err) {
-         throw new Exception("imageResize");
-      }
-   }
-   // finally we try  to save the resized image
-   try {
-      if (resize)
-         img.saveAs(dir.getPath() + "/" + this.filename + "." + this.fileext);
-      else
-         rawimage.writeToFile(dir.getPath(), this.filename + "." + this.fileext);
-   } catch (err) {
-      app.log("Error in image.save(): can't save image to "+dir);
-      throw new Exception("imageSave");
-   }
-   var f = new Helma.File(dir.getPath(), this.filename + "." + this.fileext);
-   this.filesize = f.getLength();
-   return;
+Image.prototype.url_macro = function() {
+   return res.write(this.url || this.getUrl());
 };
 
-
-/**
- * function checks if new Image-parameters are correct ...
- * @param Obj Object containing the form values
- * @param Obj User-Object modifying this image
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
-Image.prototype.evalImg = function(param, modifier) {
-   this.alttext = param.alttext;
-   this.modifier = modifier;
-   this.modifytime = new Date();
-   
-   // Set the tags of the image
-   Story.prototype.setTags.call(this, param.tags || param.tags_array);
-  
-   if (this.thumbnail) {
-      this.thumbnail.alttext = this.alttext;
-      this.thumbnail.modifytime = this.modifytime;
-      this.thumbnail.modifier = this.modifier;
-   }
-   return new Message("update");
+Image.prototype.render_macro = function(param) {
+   param.src = this.getUrl();
+   param.title || (param.title = encode(this.description));
+   param.width || (param.width = this.width);
+   param.height || (param.height = this.height);
+   param.border || (param.border = 0);
+   param.alt = encode(param.alt || param.title);
+   return html.tag("img", param);
 };
 
-
-/**
- * function creates a thumbnail of this image
- * does nothing if the image uploaded is smaller than 100x100px
- * @param uploaded image
- * @return Boolean true in any case ...
- */
-
-Image.prototype.createThumbnail = function(rawimage, dir) {
-   var thumb = new Image(this.creator);
-   thumb.site = this.site;
-   thumb.layout = this.layout;
-   thumb.filename = this.filename + "_small";
-   thumb.save(rawimage, dir, THUMBNAILWIDTH);
-   thumb.alttext = this.alttext;
-   thumb.alias = this.alias;
-   thumb.parent = this;
-   this.thumbnail = thumb;
-   return;
-};
-
-/**
- * return the call to the client-side popup-script
- * for image-object
- * @return String call of popup-script
- */
-Image.prototype.getPopupUrl = function() {
-   res.push();
-   res.write("javascript:openPopup('");
-   res.write(this.getUrl());
-   res.write("',");
-   res.write(this.width);
-   res.write(",");
-   res.write(this.height);
-   res.write(");return false;");
-   return res.pop();
-};
-
-
-/**
- * return the url of the image
- */
-Image.prototype.getUrl = function() {
-   res.push();
-   switch (this.getContext()) {
-      case "Site":
-      this.parent.staticUrl("images/");
-      break;
-      case "Layout":
-      this.parent.staticUrl();
-      break;
-      case "Image":
-      switch (this.parent.getContext()) {
-         case "Site":
-         this.parent.parent.staticUrl("images/");
-         break
-         case "Layout":
-         this.parent.parent.staticUrl();
-         break;
-      }
-      break;
-   }
-   res.write(this.filename);
-   res.write(".");
-   res.write(this.fileext);
-   return res.pop();
-
+Image.prototype.getUrl = function(fname) {
+   return Image.getUrl(fname || this.name); 
    // FIXME: testing free proxy for images
-   var result = "http://www.freeproxy.ca/index.php?url=" + 
+   /* var result = "http://www.freeproxy.ca/index.php?url=" + 
    encodeURIComponent(res.pop().rot13()) + "&flags=11111";
-   return result;
+   return result; */
 };
 
-/**
- * return the image file on disk
- * @return Object File object
- */
-Image.prototype.getFile = function() {
-   var staticPath;
-   if (this.getContext() !== "Image") {
-      staticPath = this.parent.getStaticPath();
-   } else {
-      staticPath = this.parent.parent.getStaticPath();
+Image.prototype.getFile = function(fname) {
+   return Image.getDirectory(fname || this.name);
+};
+
+Image.prototype.getThumbnailFile = function() {
+   return this.getFile(this.name.replace(/(\.[^.]+)?$/, "_small$1"));
+};
+
+Image.writeToFile = function(mime, file, maxWidth, maxHeight) {
+   if (mime.contentType.endsWith("ico")) {
+      mime.writeToFile(file.getParent(), file.getName());
+      return {};
    }
-   return new Helma.File(staticPath, this.filename + "." + this.fileext);
+
+   var image = new helma.Image(mime.inputStream);
+   var factorH = 1, factorV = 1;
+   if (maxWidth && image.width > maxWidth) {
+      factorH = maxWidth / image.width;
+   }
+   if (maxHeight && image.height > maxHeight) {
+      factorV = maxHeight / image.height;
+   }
+
+   try {
+      if (factorH !== 1 || factorV !== 1) {
+         var width = Math.ceil(image.width * 
+               (factorH < factorV ? factorH : factorV));
+         var height = Math.ceil(image.height * 
+               (factorH < factorV ? factorH : factorV));
+         image.resize(width, height);
+         if (mime.contentType.endsWith("gif")) {
+            image.reduceColors(256);
+         }
+         image.saveAs(file);
+      } else {
+         mime.writeToFile(file.getParent(), file.getName());
+      }
+   } catch (ex) {
+      app.log(ex);
+      throw Error(gettext("Oops, couldn't save the image on disk."));
+   }
+   return image;
 };
 
-Image.prototype.getContext = function() {
-   //res.debug("this.parentType + : " + this.parentType)
-   //res.debug("this.prototype + : " + this.prototype)
-   //res.debug("this.parent.parentType + : " + this.parent.parentType)
-   //res.debug("this.parent.prototype + : " + this.parent.prototype)
-   return this.parentType || this._prototype;
-   //return ImageMgr.prototype.getContext.call(this.parent);
-};
-
-/**
- * dump an image to a zip file passed as argument
- * @return Object HopObject containing the metadata of the image(s)
- */
 Image.prototype.dumpToZip = function(z) {
    var data = new HopObject();
    if (this.thumbnail)
@@ -448,88 +245,52 @@ Image.prototype.dumpToZip = function(z) {
    }
    return data;
 };
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-Image.prototype.checkAccess = function(action, usr, level) {
-   try {
-      switch (action) {
-         case "edit" :
-            checkIfLoggedIn(this.href(req.action));
-            this.checkEdit(usr, level);
-            break;
-         case "delete" :
-            checkIfLoggedIn();
-            this.checkDelete(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this._parent.href());
+
+Image.validateType = function(type) {
+   switch (type) {
+      case "image/x-icon":
+      case "image/gif":
+      case "image/jpeg":
+      case "image/pjpeg":
+      case "image/png":
+      case "image/x-png":
+      return true;
    }
-   return;
+   return false;
 };
 
-/**
- * check if user is allowed to edit an image
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return Obj Exception or null (if allowed)
- */
-Image.prototype.checkEdit = function(usr, level) {
-   switch (this.getContext()) {
-      case "Site":
-      if (this.creator != usr && (level & MAY_EDIT_ANYIMAGE) == 0) {
-         throw new DenyException("imageEdit");
-      }
-      break;
-      case "Layout":
-      this.parent.images.checkAdd(usr, level);
-      break;
+Image.getDirectory = function(file) {
+   if (res.handlers.images._parent.constructor === Layout) {
+      return File.getDirectory(file, "layouts/" + res.handlers.layout.name);
    }
-   return;
+   return File.getDirectory("images/" + file);
 };
 
-/**
- * check if user is allowed to delete an image
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return Obj Exception or null (if allowed)
- */
-Image.prototype.checkDelete = function(usr, level) {
-   if (this.creator != usr && (level & MAY_DELETE_ANYIMAGE) == 0)
-      throw new DenyException("imageDelete");
-   return;
+Image.getUrl = function(action) {
+   action || (action = String.EMPTY);
+   if (res.handlers.images._parent.constructor === Layout) {
+      res.push();
+      res.write(File.getUrl("layouts/"));
+      writeln(res.handlers.images);
+      res.write(res.handlers.images._parent.name);
+      res.write("/");
+      res.write(action);
+      return res.pop();
+   }
+   return File.getUrl("images/" + action);
 };
 
 Image.remove = function() {
-   var imgObj = this;
-   // first remove the image from disk (and the thumbnail, if existing)
-   switch (this._parent.getContext()) {
-      case "Site":
-      var dir = imgObj.parent.getStaticDir("images");
-      break;
-      case "Layout":
-      var dir = imgObj.parent.getStaticDir();
-      break;
+   this.getFile().remove();
+   var thumbnail = this.getThumbnailFile();
+   if (thumbnail) {
+      thumbnail.remove();
    }
-   var f = new Helma.File(dir, imgObj.filename + "." + imgObj.fileext);
-   f.remove();
-   if (imgObj.thumbnail) {
-      var thumb = imgObj.thumbnail;
-      f = new Helma.File(dir, thumb.filename + "." + thumb.fileext);
-      f.remove();
-      thumb.remove();
-   }
-   if (imgObj.site)
-      imgObj.site.diskusage -= imgObj.filesize;
-   // Remove the tags of the image
-   Story.prototype.setTags.call(imgObj, null);
+   // FIXME: Don't use Story.prototype.setTags tor remove the tags of the image
+   //Story.prototype.setTags.call(this, null);
    // Finally, remove the image iself
-   imgObj.remove();
-   return new Message("imageDelete");
+   this.remove();
+   return;
 };
+
+Image.THUMBNAILWIDTH = 100;

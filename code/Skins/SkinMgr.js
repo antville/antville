@@ -16,9 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Revision:3337 $
+// $LastChangedBy:piefke3000 $
+// $LastChangedDate:2007-09-21 15:54:30 +0200 (Fri, 21 Sep 2007) $
 // $URL$
 //
 
@@ -27,7 +27,7 @@ Skins.prototype.getPermission = function(action) {
       case "edit":
       case "create":
       return User.getPermission(User.PRIVILEGED) ||
-            Member.getPermission(Member.OWNER);
+            Membership.getPermission(Membership.OWNER);
    }
    return true;
 };

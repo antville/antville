@@ -30,6 +30,7 @@ HopObject.prototype.map = function(values) {
 };
 
 HopObject.prototype.onRequest = function() {
+res.debug(res.handlers.images);
    if (req.postParams.cancel) {
       switch (this.constructor) {
          case Admin:
@@ -111,9 +112,10 @@ HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       try {
          var str = this.toString();
+         var href = this._parent.href();
          this.constructor.remove.call(this, this);
          res.message = gettext("{0} was successfully deleted.", str);
-         res.redirect(session.data.retrace || this._parent.href());
+         res.redirect(session.data.retrace || href);
       } catch(ex) {
          res.message = ex;
          app.log(ex);
@@ -171,18 +173,21 @@ HopObject.prototype.getPermission = function() {
 
 HopObject.prototype.input_macro = function(param, name) {
    param.name = name;
+   param.id = name;
    param.value = this.getFormValue(name);
    return html.input(param);
 };
 
 HopObject.prototype.textarea_macro = function(param, name) {
    param.name = name;
+   param.id = name;
    param.value = this.getFormValue(name);
    return html.textArea(param);
 }
 
 HopObject.prototype.select_macro = function(param, name) {
    param.name = name;
+   param.id = name;
    var options = this.getFormOptions(name);
    if (options.length < 2) {
       param.disabled = "disabled";
@@ -206,6 +211,16 @@ HopObject.prototype.checkbox_macro = function(param, name) {
    if (label) {
       html.element("label", label, {"for": name});
    }
+   return;
+};
+
+HopObject.prototype.upload_macro = function(param, name) {
+   param.name = name;
+   param.id = name;
+   param.value = this.getFormValue(name);
+   html.input(param);
+   var id = name + "_upload";
+   html.file({name: id, id: id});
    return;
 };
 
@@ -301,5 +316,23 @@ HopObject.prototype.handleMetadata = function(name) {
    this.__defineSetter__(name, function(value) {
       return this.metadata.set(name, value);
    });
+   this[name + "_macro"] = function(param) {
+      return res.write(this[name]);
+   };
    return;
+};
+
+HopObject.getFromPath = function(name, collection) {
+   var site;
+   if (name.contains("/")) {
+      var parts = name.split("/");
+      site = root.get(parts[0]);
+      name = parts[1];
+   } else {
+      site = res.handlers.site;
+   }
+   if (site) {
+      return site[collection].get(name);
+   }
+   return null;
 };

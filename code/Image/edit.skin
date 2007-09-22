@@ -3,11 +3,15 @@
 <tr>
 <td class="small">Name:</td>
 <td><% image.alias %></td>
-<td rowspan="5" valign="top" align="right" nowrap="nowrap"><div style="width: 100px; height: 67px; overflow: hidden;"><% image.show as="thumbnail" %></div></td>
+<td rowspan="5" valign="top" align="right">
+   <div style="width: 100px; height: 67px; overflow: hidden;">
+      <% image.show as="thumbnail" %>
+   </div>
+</td>
 </tr>
 <tr>
 <td class="small">Type:</td>
-<td><% image.fileext %> image</td>
+<td><% image.fileType %> image</td>
 </tr>
 <tr>
 <td class="small">Width:</td>
@@ -19,7 +23,7 @@
 </tr>
 <tr>
 <td colspan="3"><div class="small">Description:</div>
-<% image.alttext as="editor" class="formText" %><br />
+<% image.input description %><br />
 </td>
 </tr>
 <tr>
@@ -38,7 +42,12 @@ Add this image to a topic<br />
 </tr>
 </table>
 
-<div class="small"><% image.creator as="link" prefix="Created by " %><% image.createtime format="short" prefix=" on " suffix="." %></div><br />
-<div><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></div>
-
+<div class="small">
+   <% image.creator as="link" prefix="Created by " %>
+   <% image.createtime format="short" prefix=" on " suffix="." %>
+</div><br />
+<div>
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</div>
 </form>

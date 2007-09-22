@@ -1,0 +1,9 @@
+<p>To insert an image in a story or comment just copy and paste its code.</p>
+
+<div class="ample">... <% images.link create "add an image" %></div>
+... show <% images.link . "all images" %>
+<% images.link member "member images" prefix=" | " %>
+
+<% response.pager %>
+<% response.list %>
+<% response.pager %>

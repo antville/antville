@@ -651,6 +651,9 @@ Story.prototype.setTags = function(tags) {
       }
    }
    this.tags.forEach(function() {
+      if (!this.tag) {
+         return;
+      }
       diff[this.tag.name] = (tags.indexOf(this.tag.name) < 0) ? this : 0;
    });
 

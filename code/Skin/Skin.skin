@@ -1,0 +1,45 @@
+<% #edit %>
+<p class="storyTitle"><% response.title %></p>
+<p class="small"><% skin.summary %></p>
+
+<% response.message prefix='<div class="message">' suffix="</div>" %>
+
+<form method="post" action="<% response.action %>">
+<input type="hidden" name="prototype" value="<% request.prototype %>" />
+<input type="hidden" name="name" value="<% request.name %>" />
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td valign="top" nowrap="nowrap">
+   <input type="hidden" name="action" value="<% response.action %>" />
+   <input type="hidden" name="key" value="<% request.key %>" />
+   <input type="hidden" name="skinset" value="<% request.skinset %>" />
+   <textarea name="source" cols="50" rows="23" wrap="virtual" 
+   class="formWide"><% skin.source encoding="form" %></textarea>
+   <p>
+      <button type="submit" name="close" value="1">save and close</button>
+      <button type="submit" name="save" value="1">save</button>
+      <button type="submit" name="cancel" value="1">cancel</button>
+   </p>
+</td>
+</tr>
+</table>
+</form>
+
+<% #listItem %>
+<li>
+   <% skin.link . <% skin.name %> %> %>
+   <% skin.skin Skin#status prefix="<div>" suffix="</div>" %>
+   <% skin.summary prefix="<div>" suffix="</div>" %>
+</li>
+
+<% #status %>
+<span class="small">
+   (modified by <% skin.creator %><% if <% skin.custom %> is false then
+      <% skin.link diff prefix=" ... " 
+      suffix=<% skin.link delete reset prefix=" ... " %> %>
+   else 
+      <% skin.link delete prefix=" ... " %>
+   %>)<br />
+   <strong>Macro:</strong> 
+   &lt;% <% skin.prototype suffix="." | lowercase %>skin <% skin.name %> %&gt;
+</span>

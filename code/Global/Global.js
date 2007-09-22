@@ -26,6 +26,7 @@ app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
 app.addRepository("modules/core/Filters.js");
 
+app.addRepository("modules/helma/Image.js");
 app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Mail.js");
 app.addRepository("modules/helma/Search.js");
@@ -172,133 +173,50 @@ LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMMM d, yyyy, HH:mm";
 LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMM yyyy, HH:mm";
 LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMM d, yyyy, HH:mm";
 
-/**
- * width and height of thumbnail images
- */
-THUMBNAILWIDTH = 100;
-THUMBNAILHEIGHT = 100;
-
-/**
- * various constants
- */
 ONEMINUTE = 60000;
 ONEHOUR = 3600000;
 ONEDAY = 86400000;
 
-/**
- * object containing the metadata of
- * standard antville images plus the method
- * for rendering them
- */
-DefaultImages = {
-   smallanim: {name: "smallanim.gif", width: 98, height: 30, alt: "made with antville", linkto: "http://antville.org"},
-   smallchaos: {name: "smallchaos.gif", width: 107, height: 29, alt: "made with antville", linkto: "http://antville.org"},
-   smallstraight: {name: "smallstraight.gif", width: 107, height: 24, alt: "made with antville", linkto: "http://antville.org"},
-   smalltrans: {name: "smalltrans.gif", width: 98, height: 30, alt: "made with antville", linkto: "http://antville.org"},
-   xmlbutton: {name: "xmlbutton.gif", width: 36, height: 14, alt: "xml version of this page", linkto: "http://antville.org"},
-   hop: {name: "hop.gif", width: 124, height: 25, alt: "helma object publisher", linkto: "http://helma.org"},
-   marquee: {name: "marquee.gif", width: 15, height: 15, alt: "marquee"},
-   pixel: {name: "pixel.gif", width: 1, height: 1, alt: ""},
-   dot: {name: "dot.gif", width: 30, height: 30, alt: ""},
-
-   /**
-    * render a standard image
-    */
-   render: function(name, param) {
-      if (!this[name])
-         return;
-      param.src = app.properties.staticUrl + this[name].name;
-      if (param.as == "url") {
-         res.write(param.src);
-         return;
-      }
-      delete param.name;
-      param.border = 0;
-      if (!param.width)
-         param.width = this[name].width;
-      if (!param.height)
-         param.height = this[name].height;
-      if (!param.alt)
-         param.alt = this[name].alt;
-      if (!param.linkto && !this[name].linkto)
-         Html.tag("img", param);
-      else {
-         Html.openLink({href: param.linkto ? param.linkto : this[name].linkto});
-         delete(param.linkto);
-         Html.tag("img", param);
-         Html.closeLink();
-      }
-      return;
-   }
-}
-
-/** 
- * macro renders the current timestamp   
- */   
 function now_macro(param, format) {
    return formatDate(new Date, format || param.format);
 }
 
-
-/**
- * macro renders the antville-logos
- */
-function logo_macro(param) {
-   if (!param.name)
-      param.name = "smallchaos";
-   DefaultImages.render(param.name, param);
+function logo_macro(param, name) {
+   Images.Default.render(name || param.name || "smallchaos", param);
    return;
 }
 
-
-/**
- * macro renders an image out of image-pool
- * either as plain image, thumbnail, popup or url
- * param.name can contain a slash indicating that
- * the image belongs to a different site or to root
- */
-function image_macro(param) {
-   if (!param.name)
-      return;
-   if (param.name.startsWith("/")) {
-      // standard images and logos are handled by DefaultImages
-      DefaultImages.render(param.name.substring(1), param);
+function image_macro(param, name, mode) {
+  name || (name = param.name);
+   if (!name) {
       return;
    }
-   var result = getPoolObj(param.name, "images");
-   if (!result && param.fallback)
-      result = getPoolObj(param.fallback, "images");
-   if (!result)
-      return;
-   var img = result.obj;
-   // return different display according to param.as
-   switch (param.as) {
-      case "url" :
-         return img.getUrl();
-      case "thumbnail" :
-         if (!param.linkto)
-            param.linkto = img.getUrl();
-         if (img.thumbnail)
-            img = img.thumbnail;
-         break;
-      case "popup" :
-         param.linkto = img.getUrl();
-         param.onclick = img.getPopupUrl();
-         if (img.thumbnail)
-            img = img.thumbnail;
-         break;
-   }
+   mode || (mode = param.as);
+   var action = param.linkto;
    delete(param.name);
    delete(param.as);
-   // render image tag
-   if (param.linkto) {
-      Html.openLink({href: param.linkto});
-      delete(param.linkto);
-      renderImage(img, param);
-      Html.closeLink();
-   } else
-      renderImage(img, param);
-   return;
+   delete(param.linkto);
+
+   if (name.startsWith("/")) {
+      return Images.Default.render(name.substring(1), param);
+   }
+
+   var image = HopObject.getFromPath(name, "images");
+   if (!image && param.fallback) {
+      image = HopObject.getFromPath(param.fallback, "images");
+   }
+   if (!image) {
+      return;
+   }
+
+   switch (mode) {
+      case "url" :
+      return image.getUrl();
+      case "thumbnail":
+      action || (action = image.getUrl());
+      return image.thumbnail_macro(param);
+   }
+   return image.render_macro(param);
 }
 
 /**
@@ -877,34 +795,6 @@ function evalURL(str) {
 }
 
 /**
- * function returns file-extension according to mimetype of raw-image
- * returns false if mimetype is unknown
- * @param String Mimetype of image
- * @return String File-Extension to use
- */
-function evalImgType(ct) {
-   switch (ct) {
-      case "image/jpeg" :
-         return "jpg";
-         break;
-      case "image/pjpeg" :
-         return "jpg";
-         break;
-      case "image/gif" :
-         return "gif";
-         break;
-      case "image/x-png" :
-         return "png";
-         break;
-      case "image/png" :
-         return "png";
-         break;
-      case "image/x-icon" :
-         return "ico";
-   }
-}
-
-/**
  * function checks if user has permanent cookies
  * storing username and password
  */
@@ -931,34 +821,6 @@ function autoLogin() {
    res.message = gettext('Welcome to "{0}", {1}. Have fun!',
          res.handlers.site.title, user.name);
    return;
-}
-
-/**
- * function checks if the name of the requested object has a slash in it
- * if true, it tries to fetch the appropriate parent-object (either site or root)
- * and to fetch the object with the requested name in the specified collection
- * @param String Name of the object to retrieve
- * @param String Name of the pool to search in
- * @return Obj Object with two properties: one containing the parent-object of the pool,
- *             the other containing the object itself;
- *             If parent or object is null, the function returns null.
- */
-function getPoolObj(objName, pool) {
-   var p = new Object();
-   if (objName.contains("/")) {
-      var objPath = objName.split("/");
-      p.parent = root.get(objPath[0]);
-      p.objName = objPath[1];
-   } else {
-      p.parent = res.handlers.site;
-      p.objName = objName;
-   }
-   if (!p.parent)
-      return null;
-   p.obj = p.parent[pool].get(p.objName);
-   if (!p.obj)
-      return null;
-   return p;
 }
 
 /**
@@ -1391,26 +1253,6 @@ function buildMacroHelp() {
  */
 function rebuildIndexes() {
    app.data.indexManager.rebuildIndexes();
-   return;
-}
-
-/**
- * renders image element
- * @param img Object contains the images's properties
- * @param param Object contains user-defined properties
- */
-function renderImage(img, param) {
-   if (!param.title)
-      param.title = img.alttext ? encode(img.alttext) : "";
-   param.src = img.getUrl();
-   if (!param.width)
-      param.width = img.width;
-   if (!param.height)
-      param.height = img.height;
-   if (!param.border)
-      param.border = "0";
-   param.alt = encode(param.alt ? param.alt : img.alttext);
-   Html.tag("img", param);
    return;
 }
 

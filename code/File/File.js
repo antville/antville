@@ -293,6 +293,24 @@ File.prototype.checkDelete = function(usr, level) {
    return;
 };
 
+File.getDirectory = function(dir) {
+   res.push();
+   res.write(app.properties.staticPath);
+   res.write(res.handlers.site.name);
+   res.write("/");
+   dir && res.write(dir);
+   return new helma.File(res.pop());
+};
+
+File.getUrl = function(action) {
+   res.push();
+   res.write(app.properties.staticUrl);
+   res.write(res.handlers.site.name);
+   res.write("/");
+   action && res.write(action);
+   return res.pop();
+};
+
 File.remove = function() {
    var fileObj = this;
    // first remove the file from disk

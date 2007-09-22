@@ -16,7 +16,7 @@ HopObject.prototype.onCodeUpdate = function() {
 };
 
 Image.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "evalImg", aspects.setTopics);
+   return helma.aspects.addBefore(this, "update", aspects.setTopics);
 };
 
 ImageMgr.prototype.onCodeUpdate = function() {

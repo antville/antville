@@ -221,9 +221,6 @@ Site.remove = function(site) {
    return;
 };
 
-/**
- * wrapper to make style.skin public
- */
 Site.prototype.main_css_action = function() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
@@ -234,9 +231,6 @@ Site.prototype.main_css_action = function() {
    return;
 };
 
-/**
- * wrapper to make javascript.skin public
- */
 Site.prototype.main_js_action = function() {
    res.dependsOn(this.modifytime);
    res.dependsOn(res.handlers.layout.modifytime);
@@ -248,9 +242,6 @@ Site.prototype.main_js_action = function() {
    return;
 };
 
-/**
- * rss feed
- */
 Site.prototype.rss_xml_action = function() {
    res.contentType = "text/xml";
    res.dependsOn(this.lastupdate);
@@ -338,11 +329,6 @@ Site.prototype.rss_xml_action = function() {
    return;
 };
 
-/**
- * this action tries to get a file with the given name
- * if it finds it, it increases the request-counter of this file
- * sets the appropriate mimetype and redirects the browser to the file
- */
 Site.prototype.getfile_action = function() {
    var f = this.files.get(req.data.name);
    if (f) {
@@ -356,9 +342,6 @@ Site.prototype.getfile_action = function() {
    return;
 };
 
-/**
- * most read stories of a site
- */
 Site.prototype.mostread_action = function() {
    res.data.title = getMessage("Site.mostReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("mostread");
@@ -366,9 +349,6 @@ Site.prototype.mostread_action = function() {
    return;
 };
 
-/**
- * referrers of a site
- */
 Site.prototype.referrers_action = function() {
    if (req.data.permanent && session.user) {
       try {
@@ -397,9 +377,6 @@ Site.prototype.referrers_action = function() {
    return;
 };
 
-/**
- * search action
- */
 Site.prototype.search_action = function() {
    var self = this;
 
@@ -516,9 +493,6 @@ Site.prototype.search_action = function() {
    return;
 };
 
-/**
- * subscribe action
- */
 Site.prototype.subscribe_action = function() {
    this.members.add(new Membership(session.user));
    res.message = gettext("You successfully subscribed to {0}", this.title);
@@ -526,9 +500,6 @@ Site.prototype.subscribe_action = function() {
    return;
 };
 
-/**
- * unsubscribe action
- */
 Site.prototype.unsubscribe_action = function() {
    if (req.postParams.proceed) {
       try {
@@ -549,9 +520,6 @@ Site.prototype.unsubscribe_action = function() {
    return;
 };
 
-/**
- * robots.txt action
- */
 Site.prototype.robots_txt_action = function() {
    res.contentType = "text/plain";
    this.renderSkin("robots");
@@ -616,11 +584,6 @@ Site.prototype.getFormOptions = function(name) {
    return options;
 };
 
-/**
- * macro rendering loginStatus of user
- * valid params:  -  loginSkin
- *                -  logoutSkin
- */
 Site.prototype.loginstatus_macro = function(param) {
    if (session.user)
       this.members.renderSkin("statusloggedin");
@@ -629,10 +592,6 @@ Site.prototype.loginstatus_macro = function(param) {
    return;
 };
 
-/**
- * call the site navigation render method
- * of a module
- */
 Site.prototype.moduleNavigation_macro = function(param) {
    if (!param.module)
       return;
@@ -641,10 +600,6 @@ Site.prototype.moduleNavigation_macro = function(param) {
    return;
 };
 
-/**
- * macro renders a calendar
- * version 2
- */
 Site.prototype.calendar_macro = function(param) {
    // do nothing if there is not a single story :-))
    // or if archive of this site is disabled
@@ -742,18 +697,11 @@ Site.prototype.calendar_macro = function(param) {
    return;
 };
 
-/**
- * macro renders age
- */
 Site.prototype.age_macro = function(param) {
    res.write(Math.floor((new Date() - this.createtime) / ONEDAY));
    return;
 };
 
-/**
- * macro renders a list of recently added/updated stories/comments
- * of this site
- */
 Site.prototype.history_macro = function(param) {
    try {
       this.checkView(session.user, res.data.memberlevel);
@@ -785,10 +733,6 @@ Site.prototype.history_macro = function(param) {
    return;
 };
 
-/**
- * renders a list of most read pages, ie. a link
- * to a story together with the read counter et al.
- */
 Site.prototype.listMostRead_macro = function() {
    var param = new Object();
    var size = this.mostread.size();
@@ -823,13 +767,9 @@ Site.prototype.referrers_macro = function() {
    return;
 };
 
-/**
- * renders the xml button for use
- * when referring to an rss feed
- */
 Site.prototype.xmlbutton_macro = function(param) {
-   param.linkto = this.href("rss");   
-   DefaultImages.render("xmlbutton", param);
+   param.href = this.href("rss.xml");   
+   Images.Default.render("xmlbutton", param);
    return;
 };
 
@@ -1138,11 +1078,6 @@ Site.prototype.deleteAll = function() {
    return true;
 };
 
-/**
- * send notification to weblogs.com
- * that this site was updated
- * @return Object with properties error and message
- */
 Site.prototype.ping = function() {
    var title = this.title ? this.title : this.alias;
 
@@ -1165,10 +1100,6 @@ Site.prototype.ping = function() {
    return result;
 };
 
-/**
- *  href URL postprocessor. If a virtual host mapping is defined
- *  for this site's alias, use it. Otherwise, use normal site URL.
- */
 Site.prototype.processHref = function(href) {
    var vhost = app.properties["vhost." + this.alias];
    if (vhost)
@@ -1177,22 +1108,12 @@ Site.prototype.processHref = function(href) {
       return app.properties.defaulthost + "/" + this.alias + href;
 };
 
-/**
- * basic check if email notification is enabled for a site
- * @param Obj site object
- * @return Boolean true if notification is enabled, false otherwise
- */
 Site.prototype.isNotificationEnabled = function() {
    if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.trusted)
       return true;
    return false;
 };
 
-/**
- * send e-mail notification if necessary
- * @param String type of changes (e.g. createStory)
- * @param HopObject the HopObject the changes were applied to
- */
 Site.prototype.sendNotification = function(type, obj) {
    var notify = this.properties.get("notify_" + type);
    if (obj.online === 0 || !notify || notify == 0)
@@ -1221,81 +1142,18 @@ Site.prototype.sendNotification = function(type, obj) {
    return;
 };
 
-/**
- * return the currently enabled layout object
- */
 Site.prototype.getLayout = function() {
    if (this.layout)
       return this.layout;
    return root.getLayout();
 };
 
-/**
- * render the path to the static directory
- * of this site
- * @param String name of subdirectory (optional)
- */
-Site.prototype.staticPath = function(subdir) {
-   res.write(app.properties.staticPath);
-   res.write(this.alias);
-   res.write("/");
-   if (subdir)
-      res.write(subdir);
-   return;
-};
-
-/**
- * return the path to the static directory
- * of this site
- * @param String name of subdirectory (optional)
- * @return String path to the static directory
- */
-Site.prototype.getStaticPath = function(subdir) {
-   res.push();
-   this.staticPath(subdir);
-   return res.pop();
-};
-
-/**
- * render the url of the static directory
- * of this site
- * @param String optional subdirectory
- */
-Site.prototype.staticUrl = function(subdir) {
-   res.write(app.properties.staticUrl);
-   res.write(this.alias);
-   res.write("/");
-   if (subdir)
-      res.write(subdir);
-   return;
-};
-
-/**
- * return the url of the static directory
- * of this site
- * @param String optional subdirectory
- * @return String static url
- */
-Site.prototype.getStaticUrl = function(subdir) {
-   res.push();
-   this.staticUrl(subdir);
-   return res.pop();
-};
-
-/**
- * return the directory containing static contents
- * @param String subdirectory (optional)
- * @return Object File object
- */
 Site.prototype.getStaticDir = function(subdir) {
    var f = new Helma.File(this.getStaticPath(subdir));
    f.mkdir();
    return f;
 };
 
-/**
- * function returns the used disk space for this site in Kilobyte
- */
 Site.prototype.getDiskUsage = function() {
    if (this.diskusage == null) {
       this.diskusage = 0;

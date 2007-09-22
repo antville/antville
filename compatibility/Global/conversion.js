@@ -5,7 +5,7 @@ Root.prototype.convert_action = function() {
 var convert = function(type) {
    type || (type = String.EMPTY);
    
-   var rows, sql;
+   var rows, sql, counter = 1;
    var db = getDBConnection("antville");
 
    function quote(s) {
@@ -13,22 +13,66 @@ var convert = function(type) {
    }
    
    function forEachRow(callback) {
-      if (!rows) {
-         return;
-      }
-      app.invokeAsync(null, function() {
-         var counter = 1;
+      return app.invokeAsync(null, function() {
+         if (!rows) {
+            return;
+         }
          while (rows.next()) {
             callback(rows);
-            writeln("Processing row #" + counter++);
+            write(".");
          }
+         writeln("");
          rows.release();
       }, [], -1);
-      return;
    }
       
    switch (type.toLowerCase()) {
-      case "layout":
+      case "images":
+      var where = "where img.image_f_image_thumb = thumb.id and " +
+                  "thumb.image_width is not null and thumb.image_height is " +
+                  "not null";
+      app.invokeAsync(null, function() {
+         rows = db.executeRetrieval("select count(*) as max from " + 
+               "av_image img, av_image thumb " + where);
+         rows.next();
+         var max = rows.getColumnItem("max");
+         var offset = 0;
+         rows.release();
+         do {
+            var query = "select img.image_id as id, img.image_filename as " + 
+                  "name, img.image_fileext as type, img.image_width as " +
+                  "width, img.image_height as height, img.image_alttext as " +
+                  "description, img.image_filesize as size, " +
+                  "img.image_metadata as metadata, thumb.image_width as twd " +
+                  "thumb.image_height as twh from av_image img, " +
+                  "av_image thumb " + where + " order by image_id limit " +
+                  "10000 offset " + offset;
+            rows = db.executeRetrieval(query);
+            writeln("Processing rows #" + offset + " - #" + (offset + 10000));
+            forEachRow(function(rows) {
+               var id = rows.getColumnItem("id");
+               var metadata = eval(rows.getColumnItem("metadata")) || {};
+               var fileName = rows.getColumnItem("name");
+               metadata.fileName = fileName;
+               metadata.fileType = rows.getColumnItem("type");
+               metadata.fileSize  = rows.getColumnItem("fileSize") || 0;
+               metadata.width = rows.getColumnItem("width");
+               metadata.height = rows.getColumnItem("height");
+               metadata.description = rows.getColumnItem("description");
+               metadata.thumbnailWidth = rows.getColumnItem("twd");
+               metadata.thumbnailHeight = rows.getColumnItem("twh");
+               sql = "update av_image set image_metadata = " +
+                     quote(metadata.toSource()) + " where image_id = " + id;
+               db.executeCommand(sql);
+               //writeln(sql);
+            }).waitForResult();
+            res.commit();
+            offset += 10000;
+         } while (offset < max);
+      }, [], -1);
+      break;
+
+      case "layouts":
       var query = "select layout_id, layout_title, layout_description, " +
             "layout_isimport, layout_preferences_new from av_layout";
       rows = db.executeRetrieval(query);
@@ -53,7 +97,7 @@ var convert = function(type) {
       });
       break;
       
-      case "site":
+      case "sites":
       var query = "select site_email, site_lastupdate, site_lastoffline, " +
             "site_lastblockwarn, site_lastdelwarn, site_lastping, " +
             "site_enableping, metadata, mode, title, id from av_site";

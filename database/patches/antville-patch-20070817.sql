@@ -162,3 +162,21 @@ alter table av_skin change column skin_createtime created datetime;
 alter table av_skin change column skin_modifytime modified datetime;
 
 alter table av_skin rename skin;
+
+###
+### Update table av_image
+###
+
+alter table av_image change column image_id id mediumint(10);
+alter table av_image change column image_f_site site_id mediumint(10);
+alter table av_image change column image_prototype prototype varchar(30);
+alter table av_image change column image_parent parent_id mediumint(10);
+alter table av_image change column image_parent_prototype parent_type varchar(30);
+alter table av_image change column image_alias name varchar(255);
+alter table av_image change column image_metadata metadata mediumtext;
+alter table av_image change column image_f_user_creator creator_id mediumint(10);
+alter table av_image change column image_f_user_modifier modifier_id mediumint(10);
+alter table av_image change column image_createtime created datetime;
+alter table av_image change column image_modifytime modified datetime;
+
+alter table av_image rename image;

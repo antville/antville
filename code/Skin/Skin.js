@@ -46,7 +46,7 @@ Skin.prototype.getPermission = function(action) {
    switch (action) {
       case "delete":
       return User.getPermission(User.PRIVILEGED) ||
-            Member.getPermission(Member.OWNER);
+            Membership.getPermission(Membership.OWNER);
    }
    return true;
 };

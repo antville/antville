@@ -172,37 +172,30 @@ Layout.prototype.download_zip_action = function() {
    return;
 };
 
-Layout.prototype.image_macro = function(param) {
-   var img;
-   if ((img = this.getImage(param.name, param.fallback)) == null)
+Layout.prototype.image_macro = function(param, name, mode) {
+   name || (name = param.name);
+   if (!name) {
       return;
-   // return different display according to param.as
-   switch (param.as) {
-      case "url" :
-         return img.getUrl();
-      case "thumbnail" :
-         if (!param.linkto)
-            param.linkto = img.getUrl();
-         if (img.thumbnail)
-            img = img.thumbnail;
-         break;
-      case "popup" :
-         param.linkto = img.getUrl();
-         param.onclick = img.getPopupUrl();
-         if (img.thumbnail)
-            img = img.thumbnail;
-         break;
    }
+   var image = this.getImage(name, param.fallback);
+   if (!image) {
+      return;
+   }
+
+   mode || (mode = param.as);
+   var action = param.linkto;
    delete(param.name);
    delete(param.as);
-   // render image tag
-   if (param.linkto) {
-      Html.openLink({href: param.linkto});
-      delete(param.linkto);
-      renderImage(img, param);
-      Html.closeLink();
-   } else
-      renderImage(img, param);
+   delete(param.linkto);
+
+   switch (mode) {
+      case "url" :
+      return image.getUrl();
+      case "thumbnail" :
+      action || (action = image.getUrl());
+      return image.thumbnail_macro(param);
+   }
+   image.render_macro(param);
    return;
 };
 
@@ -225,42 +218,6 @@ Layout.prototype.active_macro = function() {
 
 Layout.prototype.getNavigationName = function() {
    return this.title;
-};
-
-Layout.prototype.staticPath = function(subdir) {
-   if (this.site)
-      this.site.staticPath();
-   else
-      res.write(app.properties.staticPath);
-   res.write("layouts/");
-   res.write(this.alias);
-   res.write("/");
-   if (subdir)
-      res.write(subdir);
-   return;
-};
-
-Layout.prototype.getStaticPath = function(subdir) {
-   res.push();
-   this.staticPath(subdir);
-   return res.pop();
-};
-
-Layout.prototype.staticUrl = function() {
-   if (this.site)
-      this.site.staticUrl();
-   else
-      res.write(app.properties.staticUrl);
-   res.write("layouts/");
-   res.write(this.alias);
-   res.write("/");
-   return;
-};
-
-Layout.prototype.getStaticUrl = function() {
-   res.push();
-   this.staticUrl();
-   return res.pop();
 };
 
 Layout.prototype.getStaticDir = function(subdir) {
@@ -314,13 +271,15 @@ Layout.prototype.evalDownload = function(fullExport) {
 };
 
 Layout.prototype.getImage = function(name, fallback) {
-   var handler = this;
-   while (handler) {
-      if (handler.images.get(name))
-         return handler.images.get(name);
-      if (handler.images.get(fallback))
-         handler.images.get(fallback)
-      handler = handler.parent;
+   var layout = this;
+   while (layout) {
+      if (layout.images.get(name)) {
+         return layout.images.get(name);
+      }
+      if (layout.images.get(fallback)) {
+         return layout.images.get(fallback);
+      }
+      layout = layout.parent;
    }
    return null;
 };
