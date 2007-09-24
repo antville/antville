@@ -22,12 +22,13 @@
 // $URL$
 //
 
+this.handleMetadata("url");
 this.handleMetadata("description");
 this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
 this.handleMetadata("width");
 this.handleMetadata("height");
-this.handleMetadata("url");
+this.handleMetadata("thumbnailName");
 this.handleMetadata("thumbnailWidth");
 this.handleMetadata("thumbnailHeight");
 
@@ -49,20 +50,8 @@ Image.prototype.getPermission = function(action) {
    return true;
 };
 
-Image.prototype.getFormValue = function(name) {
-   switch (name) {
-      case "file":
-      return this.url || this.name;
-      case "maxWidth":
-      case "maxHeight":
-      return this[name] || 400;
-      case "tags":
-      return this.tags.list();
-   }
-   return this[name];
-};
-
 Image.prototype.main_action = function() {
+   this.thumbnail_macro();
    res.data.title = gettext("Image {0}", this.name);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
@@ -80,6 +69,19 @@ Image.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("Image#form");
    res.handlers.site.renderSkin("page");
    return;
+};
+
+Image.prototype.getFormValue = function(name) {
+   switch (name) {
+      case "file":
+      return this.url || this.name;
+      case "maxWidth":
+      case "maxHeight":
+      return this[name] || 400;
+      case "tags":
+      return this.tags.list();
+   }
+   return this[name];
 };
 
 Image.prototype.update = function(data) {
@@ -135,10 +137,15 @@ Image.prototype.contentLength_macro = function() {
    return;
 };
 
+Image.prototype.url_macro = function() {
+   return res.write(this.url || this.getUrl());
+};
+
 Image.prototype.code_macro = function() {
    res.write("&lt;% ");
-   res.write(this.parent_type === "Layout" ? "layout.image" : "image");
-   res.write(' ' + this.name + ' %&gt;');
+   res.write(this.parent_type === "Layout" ? "layout.image " : "image ");
+   res.write(this.name); 
+   res.write(" %&gt;");
    return;
 };
 
@@ -157,10 +164,6 @@ Image.prototype.thumbnail_macro = function() {
    });
 };
 
-Image.prototype.url_macro = function() {
-   return res.write(this.url || this.getUrl());
-};
-
 Image.prototype.render_macro = function(param) {
    param.src = this.getUrl();
    param.title || (param.title = encode(this.description));
@@ -171,16 +174,29 @@ Image.prototype.render_macro = function(param) {
    return html.tag("img", param);
 };
 
-Image.prototype.getUrl = function(fname) {
-   return Image.getUrl(fname || this.name); 
+Image.prototype.getFile = function(name) {
+   name || (name = this.name);
+   if (res.handlers.images._parent.constructor === Layout) {
+      return Site.getStaticFile(name, "layouts/" + res.handlers.layout.name);
+   }
+   return Site.getStaticFile("images/" + name);
+};
+
+Image.prototype.getUrl = function(name) {
+   name || (name = this.name);
+   if (res.handlers.images._parent.constructor === Layout) {
+      res.push();
+      res.write(Site.getStaticUrl("layouts/"));
+      res.write(res.handlers.images._parent.name);
+      res.write("/");
+      res.write(name);
+      return res.pop();
+   }
+   return Site.getStaticUrl("images/" + name);
    // FIXME: testing free proxy for images
    /* var result = "http://www.freeproxy.ca/index.php?url=" + 
    encodeURIComponent(res.pop().rot13()) + "&flags=11111";
    return result; */
-};
-
-Image.prototype.getFile = function(fname) {
-   return Image.getDirectory(fname || this.name);
 };
 
 Image.prototype.getThumbnailFile = function() {
@@ -259,28 +275,7 @@ Image.validateType = function(type) {
    return false;
 };
 
-Image.getDirectory = function(file) {
-   if (res.handlers.images._parent.constructor === Layout) {
-      return File.getDirectory(file, "layouts/" + res.handlers.layout.name);
-   }
-   return File.getDirectory("images/" + file);
-};
-
-Image.getUrl = function(action) {
-   action || (action = String.EMPTY);
-   if (res.handlers.images._parent.constructor === Layout) {
-      res.push();
-      res.write(File.getUrl("layouts/"));
-      writeln(res.handlers.images);
-      res.write(res.handlers.images._parent.name);
-      res.write("/");
-      res.write(action);
-      return res.pop();
-   }
-   return File.getUrl("images/" + action);
-};
-
-Image.remove = function() {
+Image.remove = function(image) {
    this.getFile().remove();
    var thumbnail = this.getThumbnailFile();
    if (thumbnail) {

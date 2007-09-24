@@ -329,19 +329,6 @@ Site.prototype.rss_xml_action = function() {
    return;
 };
 
-Site.prototype.getfile_action = function() {
-   var f = this.files.get(req.data.name);
-   if (f) {
-      f.requestcnt++;
-      res.contentType = f.mimetype;
-      res.redirect(f.getUrl());
-   } else {
-      res.message = getMessage("error.fileNotFound", req.data.name);
-      res.redirect(this.href());
-   }
-   return;
-};
-
 Site.prototype.mostread_action = function() {
    res.data.title = getMessage("Site.mostReadTitle", {siteTitle: this.title});
    res.data.body = this.renderSkinAsString("mostread");
@@ -1571,6 +1558,29 @@ Site.prototype.getAdminHeader = function(name) {
       return ["#", "Name", "Items"];
    }
    return [];
+};
+
+Site.getPermission = function(status) {
+   return Membership.getPermission(Membership.SUBSCRIBER) &&
+         res.handlers.site.mode === status;
+};
+
+Site.getStaticFile = function(fpath) {
+   res.push();
+   res.write(app.properties.staticPath);
+   res.write(res.handlers.site.name);
+   res.write("/");
+   fpath && res.write(fpath);
+   return new helma.File(res.pop());
+};
+
+Site.getStaticUrl = function(fpath) {
+   res.push();
+   res.write(app.properties.staticUrl);
+   res.write(res.handlers.site.name);
+   res.write("/");
+   fpath && res.write(fpath);
+   return res.pop();
 };
 
 Site.ARCHIVE_ONLINE = "online";

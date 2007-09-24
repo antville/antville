@@ -180,3 +180,18 @@ alter table av_image change column image_createtime created datetime;
 alter table av_image change column image_modifytime modified datetime;
 
 alter table av_image rename image;
+
+###
+### Update table av_file
+###
+
+alter table av_file change column file_id id mediumint(10);
+alter table av_file change column file_f_site site_id mediumint(10);
+alter table av_file change column file_alias name varchar(255);
+alter table av_file change column file_requestcnt requests mediumint(10);
+alter table av_file change column file_createtime created datetime;
+alter table av_file change column file_modifytime modified datetime;
+alter table av_file change column file_f_user_creator creator_id mediumint(10);
+alter table av_file change column file_f_user_modifier modifier_id mediumint(10);
+
+alter table av_file rename file;

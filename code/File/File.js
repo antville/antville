@@ -22,301 +22,107 @@
 // $URL$
 //
 
-/**
- * main action simply redirects to "view" url
- */
-File.prototype.main_action = function() {
-   res.redirect(this.site.href("getfile") + "?name=" + this.alias);
-   return;
+this.handleMetadata("url");
+this.handleMetadata("description");
+this.handleMetadata("contentType");
+this.handleMetadata("contentLength");
+
+File.prototype.constructor = function() {
+   this.creator = this.modifier = session.user;
+   this.created = this.modified = new Date;
+   this.requests = 0;
+   return this;
 };
 
+File.prototype.getPermission = function(action) {
+   switch (action) {
+      case ".":
+      case "main":
+      return true;
+      case "delete":
+      case "edit":
+      return User.getPermission(User.PRIVILEGED) ||
+            Membership.getPermission(Membership.OWNER);
+   }
+   return false;
+};
 
-/**
- * edit action
- */
+File.prototype.main_action = function() {
+   if (!User.getPermission(User.PRIVILEGED) && 
+         session.user !== this.creator && session.user !== this.modifier) {
+      this.requests += 1;
+   }
+   return res.redirect(this.getUrl());
+};
+
 File.prototype.edit_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.site.files.href());
-   else if (req.data.save) {
-      res.message = this.evalFile(req.data, session.user);
+   if (req.postParams.save) {
+      this.update(req.postParams);
+      res.message = gettext();
       res.redirect(this._parent.href());
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("File.editTitle", {fileAlias: this.alias});
-   res.data.body = this.renderSkinAsString("edit");
-   this.site.renderSkin("page");
-   return;
+   res.data.title = gettext("Edit file {0}", this.alias);
+   res.data.body = this.renderSkinAsString("File#form");
+   return this.site.renderSkin("page");
 };
 
-/**
- * delete action
- */
-File.prototype.delete_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.site.files.href());
-   else if (req.data.remove) {
-      try {
-         var url = this._parent.href();
-         res.message = this.site.files.deleteFile(this);
-         res.redirect(url);
-      } catch (err) {
-         res.message = err.toString();
-      }
+File.prototype.getFormValue = function(name) {
+   switch (name) {
+      case "file":
+      return this.name;
    }
-   
-   res.data.action = this.href(req.action);
-   res.data.title = getMessage("File.deleteTitle", {fileAlias: this.alias});
-   var skinParam = {
-      description: getMessage("File.deleteDescription"),
-      detail: this.alias
-   };
-   res.data.body = this.renderSkinAsString("delete", skinParam);
-   this.site.renderSkin("page");
-   return;
-};
-/**
- * macro rendering alias
- */
-File.prototype.alias_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("alias", param));
-   else if (param.as == "link") {
-      param.to = "getfile"
-      param.urlparam = "name=" + escape(this.alias);
-      param.title = encodeForm(this.description);
-      Html.openTag("a", this.site.createLinkParam(param));
-      res.write(this.alias);
-      Html.closeTag("a");
-   } else
-      res.write(this.alias);
-   return;
-};
+   return this[name];
+}
 
-/**
- * macro rendering description
- */
-File.prototype.description_macro = function(param) {
-   if (param.as == "editor")
-      Html.textArea(this.createInputParam("description", param));
-   else if (this.description)
-      res.write(this.description);
-   return;
-};
-
-/**
- * macro renders the url of this file
- */
-File.prototype.url_macro = function(param) {
-   return this.getUrl();
-};
-
-/**
- * macro renders a link for editing a file
- */
-File.prototype.editlink_macro = function(param) {
-   if (session.user) {
-      try {
-         this.checkEdit(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      Html.link({href: this.href("edit")}, param.text ? param.text : getMessage("generic.edit"));
+File.prototype.update = function(data) {
+   if (data.uploadError) {
+      // looks like the file uploaded has exceeded uploadLimit ...
+      throw Error(gettext("Oy, this file is exceeding the upload limit. Please try to decrease its size."));
    }
-   return;
-};
-
-/**
- * macro rendering a link to delete
- * if user is creator of this file
- */
-File.prototype.deletelink_macro = function(param) {
-   if (session.user) {
-      try {
-         this.checkEdit(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      Html.openLink({href: this.href("delete")});
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
-      else
-         res.write(param.text ? param.text : getMessage("generic.delete"));
-      Html.closeLink();
+      
+   var upload = data.file_upload;
+   if (data.url && data.url !== this.url) {
+      this.url = data.url;
+      upload = getURL(data.url);
    }
-   return;
-};
 
-/**
- * macro rendering a link to view the file
- */
-File.prototype.viewlink_macro = function(param) {
-   if (session.user) {
-      param.to = "getfile"
-      param.urlparam = "name=" + escape(this.alias);
-      param.title = encodeForm(this.description);
-      Html.openTag("a", this.site.createLinkParam(param));
-      res.write(param.text ? param.text : getMessage("generic.view"));
-      Html.closeTag("a");
+   if (upload && upload.contentLength > 0) {
+      this.name || (this.name = this.getAccessName(data.name || upload.name));
+      this.contentLength = upload.contentLength;
+      this.contentType = upload.contentType;
+      var file = this.getFile();
+      upload.writeToFile(file.getParent(), file.getName());
+   } else if (this.isTransient()) {
+      throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
    }
+
+   this.description = data.description;
+   this.touch();
+   // FIXME: Don't set the tags of the image via Story.prototype.setTags
+   //Story.prototype.setTags.call(this, data.tags || data.tags_array); 
    return;
 };
 
-/**
- * macro rendering filesize
- */
-File.prototype.filesize_macro = function(param) {
-   res.write((this.filesize / 1024).format("###,###") + " KB");
-   return;
+File.prototype.url_macro = function() {
+   return res.write(this.url || this.getUrl());
 };
 
-/**
- * macro rendering the mimetype
- */
-File.prototype.mimetype_macro = function(param) {
-   res.write(this.mimetype);
-   return;
+File.prototype.contentLength_macro = function(param) {
+   return res.write((this.contentLength / 1024).format("###,###") + " KB");
 };
 
-/**
- * macro rendering the file extension from the name
- */
-File.prototype.filetype_macro = function(param) {
-   if (this.mimetype)
-      res.write(this.mimetype.substring(this.mimetype.indexOf("/") + 1));
-   else {
-      var i = this.name.lastIndexOf(".");
-      if (i > -1)
-         res.write(this.name.substring(i+1, this.name.length));
-   }
-   return;
+File.prototype.getFile = function() {
+   return Site.getStaticFile("files/" + this.name);
 };
 
-/**
- * macro rendering the number of requests so far
- * for a file-object
- */
-File.prototype.clicks_macro = function(param) {
-   if (!this.requestcnt)
-      res.write(param.no ? param.no : getMessage("File.download.no"));
-   else if (this.requestcnt == 1)
-      res.write(param.one ? param.one : getMessage("File.download.one"));
-   else {
-      res.write(this.requestcnt);
-      res.write(param.more ? param.more : " " + getMessage("File.download.more"));
-   }
-   return;
-};
-/**
- * constructor function
- */
-File.prototype.constructor = function(creator) {
-   this.requestcnt = 0;
-   this.creator = creator;
-   this.createtime = new Date();
-   return this;
-};
-
-
-/**
- * function checks if new property-values for a file are correct
- * @param Obj Object containing form-values
- * @param Obj User-Object modifying file
- * @return Obj Object containing two properties:
- *             - error (boolean): false
- *             - message (String): containing a message to user
- */
-File.prototype.evalFile = function(param, modifier) {
-   this.description = param.description;
-   this.modifier = modifier;
-   this.modifytime = new Date();
-   return new Message("update");
-};
-
-/**
- * return the url of the file
- */
 File.prototype.getUrl = function() {
-   res.push();
-   this.site.staticUrl("files/");
-   res.write(this.name);
-   return res.pop();
+   return Site.getStaticUrl("files/" + this.name);
 };
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-File.prototype.checkAccess = function(action, usr, level) {
-   try {
-      switch (action) {
-         case "edit" :
-            checkIfLoggedIn(this.href(req.action));
-            this.checkEdit(usr, level);
-            break;
-         case "delete" :
-            checkIfLoggedIn();
-            this.checkDelete(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this.site.files.href());
-   }
-   return;
-};
-
-/**
- * check if user is allowed to edit a file
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-File.prototype.checkEdit = function(usr, level) {
-   if (this.creator != usr && (level & MAY_EDIT_ANYFILE) == 0)
-      throw new DenyException("fileEdit");
-   return;
-};
-
-
-/**
- * check if user is allowed to delete a file
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-File.prototype.checkDelete = function(usr, level) {
-   if (this.creator != usr && (level & MAY_DELETE_ANYIMAGE) == 0)
-      throw new DenyException("fileDelete");
-   return;
-};
-
-File.getDirectory = function(dir) {
-   res.push();
-   res.write(app.properties.staticPath);
-   res.write(res.handlers.site.name);
-   res.write("/");
-   dir && res.write(dir);
-   return new helma.File(res.pop());
-};
-
-File.getUrl = function(action) {
-   res.push();
-   res.write(app.properties.staticUrl);
-   res.write(res.handlers.site.name);
-   res.write("/");
-   action && res.write(action);
-   return res.pop();
-};
-
+   
 File.remove = function() {
-   var fileObj = this;
-   // first remove the file from disk
-   var f = new Helma.File(this._parent.getStaticPath("files"), fileObj.name);
-   f.remove();
-   fileObj.site.diskusage -= fileObj.filesize;
-   fileObj.remove();
-   return new Message("fileDelete");
+   this.getFile().remove();
+   this.remove();
+   return;
 };

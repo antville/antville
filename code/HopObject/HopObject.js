@@ -30,7 +30,6 @@ HopObject.prototype.map = function(values) {
 };
 
 HopObject.prototype.onRequest = function() {
-res.debug(res.handlers.images);
    if (req.postParams.cancel) {
       switch (this.constructor) {
          case Admin:

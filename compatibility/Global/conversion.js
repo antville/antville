@@ -27,6 +27,32 @@ var convert = function(type) {
    }
       
    switch (type.toLowerCase()) {
+      case "files":
+      rows = db.executeRetrieval("select count(*) as max from av_file");
+      rows.next();
+      var max = rows.getColumnItem("max");
+      rows.release();
+      var query = "select file_id as id, file_name as fileName, " +
+            "file_alias as name, file_mimetype as type, file_size as size, " +
+            "file_description as description from av_file order by file_id";
+      rows = db.executeRetrieval(query);
+      writeln("Processing rows #1 - #" + max);
+      forEachRow(function(rows) {
+         var id = rows.getColumnItem("id");
+         var metadata = {
+            fileName: rows.getColumnItem("fileName"),
+            contentType: rows.getColumnItem("type"),
+            contentLength: rows.getColumnItem("size"),
+            description: rows.getColumnItem("description")
+         };
+         sql = "update av_file set prototype = 'File', parent_type = 'Site', " +
+               "parent_id = file_f_site, metadata = " +
+               quote(metadata.toSource()) + " where file_id = " + id;
+         db.executeCommand(sql);
+         //writeln(sql);
+      });
+      break;
+      
       case "images":
       var where = "where img.image_f_image_thumb = thumb.id and " +
                   "thumb.image_width is not null and thumb.image_height is " +
@@ -39,8 +65,9 @@ var convert = function(type) {
          var offset = 0;
          rows.release();
          do {
-            var query = "select img.image_id as id, img.image_filename as " + 
-                  "name, img.image_fileext as type, img.image_width as " +
+            var query = "select img.image_id as id, img.image_alias as " + 
+                  "name, img.image_filename as fileName, " +
+                  "img.image_fileext as type, img.image_width as " +
                   "width, img.image_height as height, img.image_alttext as " +
                   "description, img.image_filesize as size, " +
                   "img.image_metadata as metadata, thumb.image_width as twd " +
@@ -52,13 +79,14 @@ var convert = function(type) {
             forEachRow(function(rows) {
                var id = rows.getColumnItem("id");
                var metadata = eval(rows.getColumnItem("metadata")) || {};
-               var fileName = rows.getColumnItem("name");
-               metadata.fileName = fileName;
-               metadata.fileType = rows.getColumnItem("type");
-               metadata.fileSize  = rows.getColumnItem("fileSize") || 0;
+               metadata.fileName = rows.getColumnItem("fileName") + "." + 
+                     rows.getColumnItem("type");
+               metadata.contentLength = rows.getColumnItem("size") || 0;
                metadata.width = rows.getColumnItem("width");
                metadata.height = rows.getColumnItem("height");
                metadata.description = rows.getColumnItem("description");
+               metadata.thumbnailName = rows.getColumnItem("fileName") + 
+                     "_small" + rows.getColumnItem("type");
                metadata.thumbnailWidth = rows.getColumnItem("twd");
                metadata.thumbnailHeight = rows.getColumnItem("twh");
                sql = "update av_image set image_metadata = " +

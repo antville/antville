@@ -90,3 +90,12 @@ update av_accesslog set context_type = 'Story', accesslog_f_site = accesslog_f_t
 update av_accesslog set context_type = 'Site' where accesslog_f_text is null;
 update av_accesslog set creator_id = 0;
 update av_accesslog set action = 'main';
+
+##
+## Update table av_file
+##
+
+alter table av_file add column metadata mediumtext;
+alter table av_file add column parent_id mediumint(10);
+alter table av_file add column parent_type varchar(30);
+alter table av_file add column prototype varchar(30);

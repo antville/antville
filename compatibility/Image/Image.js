@@ -8,21 +8,18 @@ relocateProperty(Image, "alttext", "description")
 delete Image.prototype.createtime_macro;
 delete Image.prototype.modifytime_macro;
 
-Image.getCompatibleFileName = function(image, fname) {
-   var fileName;
-   if (fileName = image.metadata.get("fileName")) {
-      return (fname || fileName) + "." + image.metadata.get("fileType");
-   } else {
-      return fname || image.name;
-   }
-}
-
-Image.prototype.getFile = function(fname) {
-   return Image.getDirectory(Image.getCompatibleFileName(this, fname)); 
+Image.getCompatibleFileName = function(image, name) {
+   name || (name = image.name);
+   var ext = image.metadata.get("fileType");
+   return ext ? name + "." + ext : name;
 };
 
-Image.prototype.getUrl = function(fname) {
-   return Image.getUrl(fname || (Image.getCompatibleFileName(this))); 
+Image.prototype.getFile = function(name) {
+   name || (name = Image.getCompatibleFileName(this));
+   if (res.handlers.images._parent.constructor === Layout) {
+      return Site.getStaticFile(name, "layouts/" + res.handlers.layout.name);
+   }
+   return Site.getStaticFile("images/" + name);
 };
 
 Image.prototype.filename_macro = function() {

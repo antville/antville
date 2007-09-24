@@ -1,9 +1,0 @@
-<p>To insert a file in a story or comment just copy and paste its code.</p>
-
-<div class="ample">...&nbsp;<% filemgr.link to="create" text="add a file" %></div>
-...&nbsp;show&nbsp;<% filemgr.link to="main" text="all files" %>&nbsp;|&nbsp;<% filemgr.link to="myfiles" text="my files" %>
-
-<% response.pagenavigation %>
-<% response.filelist %>
-<% response.pagenavigation %>
-

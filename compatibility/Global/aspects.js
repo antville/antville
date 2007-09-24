@@ -16,6 +16,9 @@ HopObject.prototype.onCodeUpdate = function() {
 };
 
 Image.prototype.onCodeUpdate = function() {
+   helma.aspects.addAfter(this, "getUrl", function(value, args, func, obj) {
+      return Image.getCompatibleFileName(obj, value);
+   });
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 };
 
