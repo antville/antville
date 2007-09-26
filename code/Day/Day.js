@@ -22,12 +22,9 @@
 // $URL$
 //
 
-/**
- * main action
- */
 Day.prototype.main_action = function() {
    var site = res.handlers.site;
-   if (this._prototype == "Day" && !site.values("archive")) {
+   if (this._prototype === "Day" && site.archiveMode == Site.ARCHIVE_ONLINE) {
       res.redirect(site.href());
    }
    
@@ -44,28 +41,17 @@ Day.prototype.main_action = function() {
    return;
 };
 
-/**
- * rss feed for specific days and topics
- */
 Day.prototype.rss_action = function() {
   req.data.show = this._prototype;
   req.data[this._prototype] = this.groupname;
   path.Site.rss_action();
   return;
 };
-/**
- *  Overwrite link macro to use groupname.
- *  FIXME: (???) No fancy options.
- */
+
 Day.prototype.link_macro  = function() {
-   Html.link({href: this.href()}, this.groupname);
-   return;
+   return html.link({href: this.href()}, this.groupname);
 };
 
-
-/**
- * return the groupname as formatted date
- */
 Day.prototype.date_macro = function(param) {
    var ts = this.groupname.toDate("yyyyMMdd", this._parent.getTimeZone());
    try {
@@ -74,9 +60,7 @@ Day.prototype.date_macro = function(param) {
       return "[" + getMessage("error.invalidDatePattern") + "]";
    }
 };
-/**
- * function deletes all childobjects of a day (recursive!)
- */
+
 Day.prototype.deleteAll = function() {
    for (var i=this.size();i>0;i--) {
       var story = this.get(i-1);
@@ -86,24 +70,10 @@ Day.prototype.deleteAll = function() {
    return true;
 };
 
-/**
- * Return the groupname of a day-object formatted as
- * date-string to be used in the global linkedpath macro
- * @see hopobject.getNavigationName()
- */
 Day.prototype.getNavigationName  = function() {
    var ts = this.groupname.toDate("yyyyMMdd", this._parent.getTimeZone());
    return formatTimestamp(ts, "EEEE, dd.MM.yyyy");
 };
-
-/**
- * function renders the list of stories for day-pages
- * and assigns the rendered list to res.data.storylist
- * scrollnavigation-links to previous and next page(s) are also
- * assigned to res.data (res.data.prevpage, res.data.nextpage)
- * prevpage- and nextpage-links always link to the previous
- * or next day
- */
 
 Day.prototype.renderStorylist = function() {
    var dayIdx = this._parent.contains(this);
@@ -124,24 +94,6 @@ Day.prototype.renderStorylist = function() {
       sp.url = this._parent.get(dayIdx + 1).href();
       sp.text = getMessage("Story.olderStories");
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
-   }
-   return;
-};
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-Day.prototype.checkAccess = function(action, usr, level) {
-   if (!path.Site.online)
-      checkIfLoggedIn();
-   try {
-      path.Site.checkView(usr, level);
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(root.href());
    }
    return;
 };

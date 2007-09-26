@@ -38,13 +38,6 @@ Layout.prototype.constructor = function(site, title, creator) {
    return this;
 };
 
-Layout.prototype.main_action = function() {
-   res.data.title = gettext("Layout {0}", this.title);
-   res.data.body = this.renderSkinAsString("main");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-
 Layout.prototype.getPermission = function(action) {
    var defaultPermission = User.getPermission(User.PRIVILEGED) ||
          Membership.getPermission(Membership.OWNER)
@@ -63,14 +56,12 @@ Layout.prototype.getPermission = function(action) {
    return true;
 };
 
-Layout.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "mode":
-      return Layout.getModes();
-      case "parent":
-      return this.getParentOptions();
-   }
-}
+Layout.prototype.main_action = function() {
+   res.data.title = gettext("Layout {0}", this.title);
+   res.data.body = this.renderSkinAsString("main");
+   res.handlers.context.renderSkin("page");
+   return;
+};
 
 Layout.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -92,12 +83,27 @@ Layout.prototype.edit_action = function() {
    return;
 };
 
+Layout.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "mode":
+      return Layout.getModes();
+      case "parent":
+      return this.getParentOptions();
+   }
+};
+
 Layout.prototype.update = function(data) {
+   if (data.name) {
+      this.name = this.getAccessName(data.name);
+   }
    this.title = data.title.trim() || "Layout #" + this._id;
    this.description = data.description;
    this.copyright = data.copyright;
    if (data.parent) {
       var parent = root.layouts.getById(data.parent);
+      if (!parent) {
+         throw Error(gettext("Couldn't find the basic layout. Please choose another one."));
+      }
       if (parent !== this) {
          this.parent = parent;
       }
@@ -114,38 +120,72 @@ Layout.remove = function() {
    return;
 };
 
-Layout.prototype.startTestdrive_action = function() {
-   session.data.layout = this;
-   if (req.data.http_referer)
-      res.redirect(req.data.http_referer);
-   else
-      res.redirect(res.handlers.context.href());
+Layout.prototype.activate_action = function() {
+   if (this !== res.handlers.site.layout) {
+      res.handlers.site.layout = this;
+   }
+   res.redirect(this._parent.href());
    return;
 };
 
-Layout.prototype.stopTestdrive_action = function() {
-   session.data.layout = null;
-   res.message = new Message("layoutStopTestdrive");
-   if (req.data.http_referer)
-      res.redirect(req.data.http_referer);
-   else
-      res.redirect(res.handlers.context.href());
+Layout.prototype.test_action = function() {
+   if (!session.data.layout) {
+      session.data.layout = this;
+   } else {
+      delete session.data.layout;
+      res.message = gettext("Switched back to the currently active layout.");
+   }
+   res.redirect(req.data.http_referer || res.handlers.site.href());
    return;
 };
 
-Layout.prototype.download_action = function() {
-   if (req.data.cancel)
-      res.redirect(this._parent.href());
-   else if (req.data.full)
-      res.redirect(this.href("download_full.zip"));
-   else if (req.data.changesonly)
-      res.redirect(this.href("download.zip"));
-   
+Layout.prototype.export_action = function() {
+   var mode;
+   if (mode = req.postParams.mode) {
+      //try {
+         var zip = new helma.Zip();
+         this.exportToZip(zip);
+         this.images.exportToZip(zip, mode);
+         this.skins.exportToZip(zip, mode);
+         zip.addData(new java.lang.String({
+            source: this.href(),
+            created: new Date,
+            creator: session.user.name,
+            mode: mode
+         }.toSource()).getBytes("UTF-8"), "export.js");
+         zip.close();
+         res.contentType = "application/zip";
+         res.setHeader("Content-Disposition", 
+               "attachment; filename=" + this.name + ".zip");
+         res.writeBinary(zip.getData());
+         //res.redirect(this.href());
+      /*} catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }*/
+   }
    res.data.action = this.href(req.action);
-   res.data.title = getMessage("Layout.downloadTitle", {layoutTitle: this.title});
+   res.data.title = gettext("Export layout {0}", this.title);
    res.data.body = this.renderSkinAsString("download");
    res.handlers.context.renderSkin("page");
    return;
+};
+
+Layout.prototype.exportToZip = function(zip) {
+   var str = new java.lang.String(this.getJSON()).getBytes("UTF-8");
+   return zip.addData(str, "layout.js");
+};
+
+Layout.prototype.getJSON = function() {
+   return {
+      title: this.title,
+      name: this.name,
+      description: this.description,
+      created: this.created,
+      creator: this.creator ? this.creator.name : null,
+      modified: this.modified,
+      modifier: this.modifier ? this.modifier.name : null
+   }.toSource();
 };
 
 Layout.prototype.download_full_zip_action = function() {
@@ -199,20 +239,11 @@ Layout.prototype.image_macro = function(param, name, mode) {
    return;
 };
 
-Layout.prototype.shareable_macro = function(param) {
-   if (param.as == "editor" && !this.site) {
-      var inputParam = this.createCheckBoxParam("shareable", param);
-      if (req.data.save && !req.data.shareable)
-         delete inputParam.checked;
-      Html.checkBox(inputParam);
-   } else if (this.shareable)
-      res.write(param.yes ? param.yes : getMessage("generic.yes"));
-   else
-      res.write(param.no ? param.no : getMessage("generic.no"));
-   return;
+Layout.prototype.active_macro = function() {
+   return res.write(this.isActive());
 };
 
-Layout.prototype.active_macro = function() {
+Layout.prototype.isActive = function() {
    return this === res.handlers.site.getLayout();
 };
 
@@ -226,48 +257,12 @@ Layout.prototype.getStaticDir = function(subdir) {
    return f;
 };
 
-Layout.prototype.isDefaultLayout = function() {
-   if (this.site && this.site.layout == this)
-      return true;
-   if (!this.site && root.sys_layout == this)
-      return true;
-   return false;
-};
-
 Layout.prototype.setParentLayout = function(parent) {
    this.parent = parent;
    // Offspring layouts cannot be shared
    this.mode = Layout.DEFAULT;
    this.copyright = parent.copyright;
    return;
-};
-
-Layout.prototype.dumpToZip = function(z, fullExport) {
-   var cl = new HopObject();
-   cl.title = this.title;
-   cl.alias = this.alias;
-   cl.description = this.description;
-   cl.preferences = this.preferences.get();
-   cl.creator = this.creator ? this.creator.name : null;
-   cl.createtime = this.creator ? this.createtime : null;
-   cl.exporttime = new Date();
-   cl.exporter = session.user.name;
-   cl.fullExport = fullExport;
-   cl.modifier = this.modifier ? this.modifier.name : null;
-   cl.modifytime = this.modifytime;
-   var buf = new java.lang.String(Xml.writeToString(cl)).getBytes("UTF-8");
-   z.addData(buf, "preferences.xml");
-   return true;
-};
-
-Layout.prototype.evalDownload = function(fullExport) {
-   // create the zip file
-   var z = new Zip();
-   this.dumpToZip(z, fullExport);
-   this.images.dumpToZip(z, fullExport);
-   this.skins.dumpToZip(z, fullExport);
-   z.close();
-   return z.getData();
 };
 
 Layout.prototype.getImage = function(name, fallback) {

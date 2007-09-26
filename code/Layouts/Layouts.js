@@ -23,116 +23,65 @@
 //
 
 Layouts.prototype.main_action = function() {
-   if (req.data["activate"]) {
-      this.setDefaultLayout(req.data["activate"]);
-      res.redirect(this.href());
-   }
    res.data.title = gettext("Layouts of {0}", res.handlers.site.title);
    res.data.action = this.href();
-   res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
-   res.data.pager = renderPageNavigation(this, this.href(), 10, req.data.page);
+   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this, 
+         this.href(), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
    return;
 };
 
 Layouts.prototype.create_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.href());
-   else if (req.data.create) {
+   var layout = new Layout();
+
+   if (req.postParams.create) {
       try {
-         var result = this.evalNewLayout(req.data, session.user);
-         res.message = result.toString();
-         res.redirect(result.obj.href("edit"));
-      } catch (err) {
-         res.message = err.toString();
+         this.update(req.postParams);
+         res.message = gettext('Successfully created the layout "{0}".', layout.name);
+         res.redirect(layout.href("edit"));
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
       }
    }
 
-   // render a list of root layouts that are shareable
-   res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
+   res.data.list = renderList(root.layouts.commons, 
+         "chooserlistitem", 5, req.queryParams.page);
+   res.data.pager = renderPageNavigation(root.layouts.commons, 
+         this.href(req.action), 5, req.queryParams.page);
 
-   res.data.title = getMessage("Layouts.createTitle", {siteTitle: res.handlers.context.getTitle()});
+   res.data.title = gettext("Create layout for {0}", res.handlers.site.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("new");
-   res.handlers.context.renderSkin("page");
+   res.data.body = layout.renderSkinAsString("Layout#create");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-/**
- * import action
- */
 Layouts.prototype.import_action = function() {
-   if (req.data.cancel)
-      res.redirect(this.href());
-   else if (req.data["import"]) {
+   var layout = new Layout;
+   if (req.postParams["import"]) {
       try {
-         var result = this.evalImport(req.data, session.user);
-         res.message = result.toString();
+         layout["import"](req.postParams);
+         res.message;
          res.redirect(this.href());
-      } catch (err) {
-         res.message = err.toString();
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
       }
    }
-   // render a list of root layouts that are shareable
-   res.data.layoutlist = renderList(root.layouts.shareable, "chooserlistitem", 5, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(root.layouts.shareable, this.href(req.action), 5, req.data.page);
-
-   res.data.title = getMessage("Layouts.importTitle", {siteTitle: res.handlers.context.getTitle()});
+   res.data.list = renderList(root.layouts.commons, 
+         "chooserlistitem", 5, req.postParams.page);
+   res.data.pager = renderPageNavigation(root.layouts.commons, 
+         this.href(req.action), 5, req.postParams.page);
+   res.data.title = gettext("Import layout for {0}", res.handlers.site.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("import");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-/**
- * render a dropdown containing available layouts
- */
-Layouts.prototype.layoutchooser_macro = function(param) {
-   var options = [];
-   var size = this.size();
-   for (var i=0;i<size;i++) {
-      var l = this.get(i);
-      options.push({value: l.alias, display: l.title});
-   }
-   Html.dropDown({name: "layout"}, options, param.selected, param.firstOption);
-   return;
-};
-/**
- * create a new Layout based on a chosen parent layout
- * @param Object Object containing the submitted form values
- * @param Object Creator of the layout object
- */
-Layouts.prototype.evalNewLayout = function(param, creator) {
-   var newLayout = new Layout(this._parent instanceof Site ? this._parent : null,
-                              "untitled", creator);
-   if (param.layout) {
-      var parentLayout = root.layouts.get(param.layout);
-      if (!parentLayout)
-         throw new Exception("layoutParentNotFound");
-      newLayout.setParentLayout(parentLayout);
-      newLayout.title = parentLayout.title;
-   }
-   newLayout.alias = buildAlias(newLayout.title, this);
-   if (!this.add(newLayout))
-      throw new Exception("layoutCreate");
-   return new Message("layoutCreate", newLayout.title, newLayout);
-};
-
-/**
- * Set the layout with the alias passed as argument
- * to the default site layout
- */
-Layouts.prototype.setDefaultLayout = function(alias) {
-   var l = this.get(alias);
-   if (l && this._parent.layout != l)
-      this._parent.layout = l;
+   res.data.body = layout.renderSkinAsString("import");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-/**
- * import a new Layout that was uploaded as a zip file
- */
 Layouts.prototype.evalImport = function(param, creator) {
    if (param.uploadError) {
       // looks like the file uploaded has exceeded uploadLimit ...
@@ -169,48 +118,5 @@ Layouts.prototype.evalImport = function(param, creator) {
    } catch (err) {
       throw new Exception("layoutImportCorrupt");
    }
-   return;
-};
-
-Layouts.prototype.renderParentLayoutChooser = function(selLayout, firstOption) {
-   var options = [];
-   var size = root.layouts.shareable.size();
-   for (var i=0;i<size;i++) {
-      var l = root.layouts.shareable.get(i);
-      options.push({value: l.alias, display: l.title});
-   }
-   var selected = null;
-   if (selLayout && selLayout.parent)
-      selected = selLayout.parent.alias;
-   Html.dropDown({name: "layout"}, options, selected, firstOption);
-   return;
-};
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-Layouts.prototype.checkAccess = function(action, usr, level) {
-   checkIfLoggedIn(this.href(req.action));
-   try {
-      this.checkEdit(session.user, res.data.memberlevel);
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this._parent.href());
-   }
-   return;
-};
-
-/**
- * check if user is allowed to edit layouts
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-Layouts.prototype.checkEdit = function(usr, level) {
-   if ((level & MAY_EDIT_LAYOUTS) == 0)
-      throw new DenyException("layoutEdit");
    return;
 };

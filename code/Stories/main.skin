@@ -1,0 +1,9 @@
+<div class="ample">... <% stories.link create "add a story" %></div>
+... show
+<% stories.link . "all stories" %> |
+<% stories.link private "private stories" %> |
+<% stories.link member "my stories" %>
+
+<% response.pager %>
+<% response.list %>
+<% response.pager %>

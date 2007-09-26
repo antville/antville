@@ -307,28 +307,26 @@ Skins.prototype.getCustomSkins = function() {
    return coll;
 };
 
-/**
- * dump all skins of this skinmgr
- * @param Object Zip object to add the skins to
- */
-Skins.prototype.dumpToZip = function(z, fullExport) {
+Skins.prototype.exportToZip = function(zip, mode) {
    var appSkinFiles = app.getSkinfiles();
-   var it = app.__app__.getPrototypes().iterator();
-   var protoName, proto, protoSkinFiles, skinName, skin, buf;
-   while (it.hasNext()) {
-      protoName = it.next().getName();
-      if ((proto = this.get(protoName)) || fullExport) {
+   var iterator = app.__app__.getPrototypes().iterator();
+   var protoName, proto, protoSkinFiles, skinName, skin, data;
+   while (iterator.hasNext()) {
+      protoName = iterator.next().getName();
+      if ((proto = this.get(protoName)) || (mode === "full")) {
          protoSkinFiles = appSkinFiles[protoName];
          for (var skinName in protoSkinFiles) {
             if (skin = this.getSkin(protoName, skinName)) {
                // skin is locally managed => export
-               z.addData(new java.lang.String(skin.getSource()).getBytes("UTF-8"),
-                         "skins/" + protoName + "/" + skinName + ".skin");
-            } else if (fullExport) {
+               data = new java.lang.String(skin.getSource() || "").getBytes("UTF-8");
+               zip.addData(data, "skins/" + protoName 
+                     + "/" + skinName + ".skin");
+            } else if (mode === "full") {
                // walk up the layout chain and 
-               if (!(skin = this.getOriginalSkin(protoName, skinName)))
+               if (!(skin = this.getOriginalSkin(protoName, skinName))) {
                   skin = protoSkinFiles[skinName];
-               z.addData(new java.lang.String(skin).getBytes("UTF-8"),
+               }
+               zip.addData(new java.lang.String(skin).getBytes("UTF-8"),
                          "skins/" + protoName + "/" + skinName + ".skin");
             }
          }

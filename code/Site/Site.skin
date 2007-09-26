@@ -1,0 +1,7 @@
+Hello, World!
+
+<% #foo %>
+Hello, Foo!
+
+<% #bar %>
+Hello, Bar!

@@ -195,3 +195,35 @@ alter table av_file change column file_f_user_creator creator_id mediumint(10);
 alter table av_file change column file_f_user_modifier modifier_id mediumint(10);
 
 alter table av_file rename file;
+
+##
+## Update table av_text
+##
+
+alter table av_text add column status enum('private','hidden','public');
+update av_text set status = 'private';
+update av_text set status = 'hidden' where text_isonline = 1;
+update av_text set status = 'public' where text_isonline = 2;
+
+alter table av_text add column mode enum('default','shared','open');
+update av_text set mode = 'default';
+update av_text set mode = 'shared' where text_editableby = 1;
+update av_text set mode = 'open' where text_editableby = 2;
+
+alter table av_text add column comment_mode enum('closed','readonly','moderated','open');
+update av_text set comment_mode = 'closed';
+update av_text set comment_mode = 'open' where text_hasdiscussions = 1;
+
+alter table av_text change column text_id id mediumint(10);
+alter table av_text change column text_alias name varchar(255);
+alter table av_text change column text_f_site site_id mediumint(10);
+alter table av_text change column text_f_text_story story_id mediumint(10);
+alter table av_text change column text_f_text_parent parent_id mediumint(10);
+alter table av_text change column text_reads requests mediumint(10);
+alter table av_text change column text_prototype prototype enum('Story','Comment');
+alter table av_text change column text_content_new metadata mediumtext;
+alter table av_text change column text_f_user_creator creator_id mediumint(10);
+alter table av_text change column text_f_user_modifier modifier_id mediumint(10);
+alter table av_text change column text_createtime created datetime;
+alter table av_text change column text_modifytime modified datetime;
+

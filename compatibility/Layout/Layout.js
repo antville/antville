@@ -16,61 +16,62 @@ Layout.prototype.__defineSetter__("shareable", function(value) {
 });
 
 Layout.prototype.title_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("title", param));
-   else {
-      if (param.linkto) {
-         Html.openLink({href: this.href(param.linkto == "main" ? "" : param.linkto)});
-         res.write(this.title);
-         Html.closeLink();
-      } else
-         res.write(this.title);
+   if (param.as === "editor") {
+      this.input_macro(param, "title");
+   } else if (param.linkto) {
+      (param.linkto === "main") && (param.linkto = "");
+      this.link_filter(this.title, param, param.linkto);
+   } else {
+      res.write(this.title);
    }
    return;
 };
 
 Layout.prototype.description_macro = function(param) {
-   if (param.as == "editor")
-      Html.textArea(this.createInputParam("description", param));
-   else if (this.description) {
-      if (param.limit)
+   if (param.as == "editor") {
+      this.textarea_macro(param, "description");
+   } else if (this.description) {
+      if (param.limit) {
          res.write(this.description.clip(param.limit, "...", "\\s"));
-      else
+      } else {
          res.write(this.description);
+      }
    }
    return;
 };
 
 Layout.prototype.parent_macro = function(param) {
-   if (param.as == "editor") {
-      this._parent.renderParentLayoutChooser(this, param.firstOption);
-   } else if (this.parent)
-      return this.parent.title;
+   if (param.as === "editor") {
+      this.select_macro(param, "parent");
+   } else if (this.parent) {
+      res.write(this.parent.title);
+   }
+   return;
+};
+
+Layout.prototype.shareable_macro = function(param) {
+   if (param.as == "editor" && !this.site) {
+      var inputParam = this.createCheckBoxParam("shareable", param);
+      if (req.data.save && !req.data.shareable)
+         delete inputParam.checked;
+      Html.checkBox(inputParam);
+   } else if (this.shareable)
+      res.write(param.yes ? param.yes : getMessage("generic.yes"));
+   else
+      res.write(param.no ? param.no : getMessage("generic.no"));
    return;
 };
 
 Layout.prototype.testdrivelink_macro = function(param) {
-   if (this.isDefaultLayout())
-      return;
-   Html.link({href: this.href("startTestdrive")},
-             param.text ? param.text : getMessage("Layout.test"));
-   return;
+   return this.link_macro(param, "test", param.text || gettext("test"));
 };
 
 Layout.prototype.deletelink_macro = function(param) {
-   if (this.isDefaultLayout() || this.sharedBy.size() > 0)
-      return;
-   Html.link({href: this.href("delete")},
-             param.text ? param.text : getMessage("generic.delete"));
-   return;
+   return this.link_macro(param, "delete", param.text || gettext("delete"));
 };
 
 Layout.prototype.activatelink_macro = function(param) {
-   if (this.isDefaultLayout())
-      return;
-   Html.link({href: this._parent.href() + "?activate=" + this.alias},
-             param.text ? param.text : getMessage("Layout.activate"));
-   return;
+   return this.link_macro(param, "activate", param.text || gettext("activate"));
 };
 
 Layout.prototype.bgcolor_macro = function(param) {

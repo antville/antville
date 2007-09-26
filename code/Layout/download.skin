@@ -1,6 +1,24 @@
 <form method="post" action="<% response.action %>">
-<p>Please choose if you want to get a full download of the layout '<% layout.title %>' or just the changes made (which includes modified skins and any added images):</p>
-<p><% input type="submit" name="changesonly" value="Changes only" %>&nbsp;<% input type="submit" name="full" value="Full download" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></p>
-<p class="small"><strong>Changes only</strong><br />results in a .zip file that contains only the changes made in this layout, including its preferences, any modified skins and all images added to this layout. Use this option for backup purposes or to import this layout in a site within the same system.</p>
-<p class="small"><strong>Full download</strong><br />results in a .zip file that contains all of the above plus all the skins that were <em>not</em> modified and all standard images of this layout. Use this option for backup purposes or to transport this layout to another site where the basis layout used isn't available.</p>
+<p>Please choose if you want to get a full download of the layout 
+'<% layout.title %>' or just the changes made (which includes modified skins 
+and any added images):</p>
+<p>
+   <button type="submit" name="mode" value="complement">Changes only</button>
+   <button type="submit" name="mode" value="full">Full download</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</p>
+<p class="small">
+   <strong>Changes only</strong><br />
+   results in a .zip file that contains only the changes made in this layout, 
+   including its preferences, any modified skins and all images added to this 
+   layout. Use this option for backup purposes or to import this layout in a 
+   site within the same system.
+</p>
+<p class="small">
+   <strong>Full download</strong><br />
+   results in a .zip file that contains all of the above plus all the skins 
+   that were <em>not</em> modified and all standard images of this layout. 
+   Use this option for backup purposes or to transport this layout to another 
+   site where the basis layout used isn't available.
+</p>
 </form>

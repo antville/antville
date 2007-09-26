@@ -22,45 +22,42 @@
 // $URL$
 //
 
-/**
- * main action
- */
-StoryMgr.prototype.main_action = function() {
-   res.data.storylist = renderList(this, "mgrlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this, this.href(), 10, req.data.page);
-   res.data.title = getMessage("Story.onlineStoriesTitle", {siteTitle: this._parent.title});
+Stories.prototype.main_action = function() {
+   this.years.forEach(function() {res.debug(this.size())});
+   res.abort();
+   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this, 
+         this.href(), 10, req.queryParams.page);
+   res.data.title = gettext("Public stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
 };
 
-StoryMgr.prototype.offline_action = function() {
-   res.data.storylist = renderList(this.offline, "mgrlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this.offline, this.href(req.action), 10, req.data.page);
-   res.data.title = getMessage("Story.offlineStoriesTitle", {siteTitle: this._parent.title});
+Stories.prototype.private_action = function() {
+   res.data.list = renderList(this["private"], 
+         "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this.offline, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Private stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
 };
 
-/**
- * list all stories of a user inside the site the
- * membership belongs to
- */
-StoryMgr.prototype.mystories_action = function() {
-   var ms = this._parent.members.get(session.user.name);
-   res.data.storylist = renderList(ms.stories, "mgrlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(ms.stories, this.href(req.action), 10, req.data.page);
-   res.data.title = getMessage("Story.myStoriesTitle", {siteTitle: this._parent.title});
+Stories.prototype.member_action = function() {
+   var membership = this._parent.members.get(session.user.name);
+   res.data.list = renderList(membership.stories, 
+         "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(membership.stories, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Member stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
 };
 
-/**
- * action for creating a new Story
- */
-StoryMgr.prototype.create_action = function() {
+Stories.prototype.create_action = function() {
    // restore any rescued text
    if (session.data.rescuedText)
       restoreRescuedText();
@@ -92,19 +89,8 @@ StoryMgr.prototype.create_action = function() {
    this._parent.renderSkin("page");
    return;
 };
-/**
- * function checks if story fits to the minimal needs (must have at least a text ;-)
- * @param Obj story-object to work on
- * @param Obj Object containing the properties needed for creating a new Story
- * @param Obj User-Object creating this story
- * @return Obj Object containing three properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- *             - story (Obj): story-object containing assigned form-values
- *             - id (Int): id of created story
- */
 
-StoryMgr.prototype.evalNewStory = function(param, creator) {
+Stories.prototype.evalNewStory = function(param, creator) {
    var s = new Story(creator, param.http_remotehost);
    s.evalStory(param, creator);
    
@@ -135,14 +121,7 @@ StoryMgr.prototype.evalNewStory = function(param, creator) {
    return result;
 };
 
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-StoryMgr.prototype.checkAccess = function(action, usr, level) {
+Stories.prototype.checkAccess = function(action, usr, level) {
    try {
       switch (action) {
          case "main" :
@@ -171,23 +150,16 @@ StoryMgr.prototype.checkAccess = function(action, usr, level) {
    return;
 };
 
-/**
- * function checks if user is allowed to access the storymanager
- * of this site
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-StoryMgr.prototype.checkAdd = function(usr, level) {
+Stories.prototype.checkAdd = function(usr, level) {
    if (!this._parent.properties.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
       throw new DenyException("storyAdd");
    return;
 };
 
-StoryMgr.prototype.getTags = function(group) {
+Stories.prototype.getTags = function(group) {
    return this._parent.getTags("tags", group);
 };
 
-StoryMgr.prototype.getAdminHeader = function(name) {
+Stories.prototype.getAdminHeader = function(name) {
    return ["#", "Tag", "Items"];
 };

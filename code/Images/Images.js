@@ -16,9 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Revision:3338 $
+// $LastChangedBy:piefke3000 $
+// $LastChangedDate:2007-09-22 23:48:33 +0200 (Sat, 22 Sep 2007) $
 // $URL$
 //
 
@@ -159,25 +159,31 @@ Images.prototype.navigation_macro = function(param) {
    return;
 };
 
-Images.prototype.dumpToZip = function(z, fullExport, log) {
-   // create the export log
-   if (!log)
-      var log = {};
-   var img, data, file;
-   var size = this.size();
-   for (var i=0;i<size;i++) {
-      img = this.get(i);
-      if (log[img.alias])
-         continue;
-      if (data = img.dumpToZip(z)) {
-         var buf = new java.lang.String(Xml.writeToString(data)).getBytes();
-         z.addData(buf, "imagedata/" + img.alias + ".xml");
-         log[img.alias] = true;
+Images.prototype.exportToZip = function(zip, mode, log) {
+   log || (log = {});
+   this.forEach(function() {
+      var json, file, thumbnail;
+      if (log[this.name]) {
+         return;
       }
+      if (json = this.getJSON()) {
+         var str = new java.lang.String(json).getBytes("UTF-8");
+         zip.addData(str, "images/" + this.name + ".js");
+         file = this.getFile();
+         if (file.exists()) {
+            zip.add(file, "images");
+         }
+         file = this.getThumbnailFile();
+         if (file.exists()) {
+            zip.add(file, "images");
+         }
+         log[this.name] = true;
+      }
+   });
+   if (mode === "full" && this._parent.parent) {
+      this._parent.parent.images.exportToZip(zip, mode, log);
    }
-   if (fullExport && this._parent.parent)
-      this._parent.parent.images.dumpToZip(z, fullExport, log);
-   return log;
+   return log;   
 };
 
 Images.prototype.evalImport = function(metadata, files) {

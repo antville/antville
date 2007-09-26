@@ -176,7 +176,7 @@ Image.prototype.render_macro = function(param) {
 
 Image.prototype.getFile = function(name) {
    name || (name = this.name);
-   if (res.handlers.images._parent.constructor === Layout) {
+   if (this.parent_type === "Layout") {
       return Site.getStaticFile(name, "layouts/" + res.handlers.layout.name);
    }
    return Site.getStaticFile("images/" + name);
@@ -239,27 +239,23 @@ Image.writeToFile = function(mime, file, maxWidth, maxHeight) {
    return image;
 };
 
-Image.prototype.dumpToZip = function(z) {
-   var data = new HopObject();
-   if (this.thumbnail)
-      data.thumbnail = this.thumbnail.dumpToZip(z);
-   data.alias = this.alias;
-   data.filename = this.filename;
-   data.fileext = this.fileext;
-   data.width = this.width;
-   data.height = this.height;
-   data.alttext = this.alttext;
-   data.createtime = this.createtime;
-   data.modifytime = this.modifytime;
-   data.exporttime = new Date();
-   data.creator = this.creator ? this.creator.name : null;
-   data.modifier = this.modifier ? this.modifier.name : null;
-   var file = this.getFile();
-   if (file.exists()) {
-      // add the image file to the zip archive
-      z.add(file, "images");
-   }
-   return data;
+Image.prototype.getJSON = function(zip) {
+   return {
+      name: this.name,
+      url: this.url,
+      description: this.description,
+      contentType: this.contentType,
+      contentLength: this.contentLength,
+      width: this.width,
+      height: this.height,
+      thumbnailName: this.thumbnailName,
+      thumbnailWidth: this.thumbnailWidth,
+      thumbnailHeight: this.thumbnailHeight,
+      created: this.created,
+      creator: this.creator ? this.creator.name : null,
+      modified: this.modified,
+      modifier: this.modifier ? this.modifier.name : null,
+   }.toSource();
 };
 
 Image.validateType = function(type) {

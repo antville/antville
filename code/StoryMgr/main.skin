@@ -1,7 +1,0 @@
-<div class="ample">...&nbsp;<% storymgr.link to="create" text="add a story" %></div>
-...&nbsp;show&nbsp;<% storymgr.link to="main" text="all stories" %>&nbsp;|&nbsp;<% storymgr.link to="offline" text="offline stories"%>&nbsp;|&nbsp;<% storymgr.link to="mystories" text="my stories" %>
-
-<% response.pagenavigation %>
-<% response.storylist %>
-<% response.pagenavigation %>
-

@@ -86,9 +86,6 @@ Story.prototype.edit_action = function() {
    return;
 };
 
-/**
- * delete action
- */
 Story.prototype.delete_action = function() {
    if (req.data.cancel)
       res.redirect(this.site.stories.href());
@@ -118,9 +115,18 @@ Story.prototype.delete_action = function() {
    return;
 };
 
-/**
- * comment action
- */
+Story.remove = function() {
+   var storyObj = this;
+   storyObj.removeChildren();
+   if (storyObj.online > 0)
+      this._parent.lastupdate = new Date();
+   storyObj.remove();
+
+   // remove the story from search index
+   app.data.indexManager.getQueue(this._parent).remove(storyObj._id);
+   return new Message("storyDelete");
+};
+
 Story.prototype.comment_action = function() {
    // restore any rescued text
    if (session.data.rescuedText)
@@ -148,13 +154,11 @@ Story.prototype.comment_action = function() {
    this.incrementReadCounter();
    return;
 };
-/*
- * macro for rendering a part of the story content
- */
+
 Story.prototype.content_macro = function(param) {
    switch (param.as) {
       case "editor" :
-         var inputParam = this.content.createInputParam(param.part, param);
+         var inputParam = this.metadata.createInputParam(param.part, param);
          delete inputParam.part;
          if (param.cols || param.rows)
             Html.textArea(inputParam);
@@ -163,7 +167,7 @@ Story.prototype.content_macro = function(param) {
          break;
 
       case "image" :
-         var part = this.content.get(param.part);
+         var part = this.metadata.get(param.part);
          if (part && this.site.images.get(part)) {
             delete param.part;
             renderImage(this.site.images.get(part), param);
@@ -199,10 +203,6 @@ Story.prototype.content_macro = function(param) {
    return;
 };
 
-
-/**
- * macro rendering online status of story
- */
 Story.prototype.online_macro = function(param) {
    if (!this.online)
       res.write(param.no ? param.no : "offline");
@@ -211,10 +211,6 @@ Story.prototype.online_macro = function(param) {
    return;
 };
 
-/**
- * macro rendering createtime of story, either as editor,
- * plain text or as link to the frontpage of the day
- */
 Story.prototype.createtime_macro = function(param) {
    if (param.as == "editor") {
       if (this.createtime)
@@ -233,10 +229,6 @@ Story.prototype.createtime_macro = function(param) {
    return;
 };
 
-/**
- * macro rendering a link to edit
- * if user is allowed to edit
- */
 Story.prototype.editlink_macro = function(param) {
    if (session.user) {
       try {
@@ -254,10 +246,6 @@ Story.prototype.editlink_macro = function(param) {
    return;
 };
 
-/**
- * macro rendering a link to delete
- * if user is creator of this story
- */
 Story.prototype.deletelink_macro = function(param) {
    if (session.user) {
       try {
@@ -275,10 +263,6 @@ Story.prototype.deletelink_macro = function(param) {
    return;
 };
 
-/**
- * macro renders a link to
- * toggle the online-status of this story
- */
 Story.prototype.onlinelink_macro = function(param) {
    if (session.user) {
       try {
@@ -307,9 +291,6 @@ Story.prototype.onlinelink_macro = function(param) {
    return;
 };
 
-/**
- * macro renders a link to the story
- */
 Story.prototype.viewlink_macro = function(param) {
    if (session.user) {
       try {
@@ -327,9 +308,6 @@ Story.prototype.viewlink_macro = function(param) {
    return;
 };
 
-/**
- * macro rendering link to comments
- */
 Story.prototype.commentlink_macro = function(param) {
    if (this.discussions && this.site.metadata.get("discussions"))
       Html.link({href: this.href(param.to ? param.to : "comment")},
@@ -337,14 +315,6 @@ Story.prototype.commentlink_macro = function(param) {
    return;
 };
 
-
-/**
- * macro renders number of comments
- * options: text to use when no comment
- *          text to use when one comment
- *          text to use when more than one comment
- *          action to link to (default: main)
- */
 Story.prototype.commentcounter_macro = function(param) {
    if (!this.site.metadata.get("discussions") || !this.discussions)
       return;
@@ -374,9 +344,6 @@ Story.prototype.commentcounter_macro = function(param) {
    return;
 };
 
-/**
- * macro loops over comments and renders them
- */
 Story.prototype.comments_macro = function(param) {
    var s = this.story ? this.story : this;
    if (!s.site.metadata.get("discussions") || !s.discussions)
@@ -396,10 +363,6 @@ Story.prototype.comments_macro = function(param) {
    return;
 };
 
-/**
- * macro checks if user is logged in and not blocked
- * if true, render form to add a comment
- */
 Story.prototype.commentform_macro = function(param) {
    if (!this.discussions)
       return;
@@ -413,10 +376,6 @@ Story.prototype.commentform_macro = function(param) {
    return;
 };
 
-/**
- * macro renders the property of story that defines if
- * other users may edit this story
- */
 Story.prototype.editableby_macro = function(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = [EDITABLEBY_ADMINS,
@@ -452,11 +411,6 @@ Story.prototype.editableby_macro = function(param) {
    return;
 };
 
-/**
- * macro renders a checkbox for enabling/disabling discussions
- * for backwards compatibility this macro also renders a hidden input
- * so that we can check if the checkbox is embedded in story/edit.skin
- */
 Story.prototype.discussions_macro = function(param) {
    if (!path.Site.metadata.get("discussions"))
       return;
@@ -470,13 +424,6 @@ Story.prototype.discussions_macro = function(param) {
    return;
 };
 
-/**
- * macro returns a list of references linking to a story
- * since referrers are asynchronously written to database by scheduler
- * it makes sense to cache them in story.cache.rBacklinks because they
- * won't change until the next referrer-update was done
- * @return String rendered backlinks
- */
 Story.prototype.backlinks_macro = function(param) {
    // check if scheduler has done a new update of accesslog
    // if not and we have cached backlinks simply return them
@@ -522,10 +469,6 @@ Story.prototype.backlinks_macro = function(param) {
    return;
 };
 
-/**
- * macro renders a checkbox whether the story is
- * published on the site's front page
- */
 Story.prototype.addtofront_macro = function(param) {
    if (param.as == "editor") {
       // if we're in a submit, use the submitted form value.
@@ -544,19 +487,11 @@ Story.prototype.addtofront_macro = function(param) {
    return;
 };
 
-/**
- * check if story is ok; if true, save changed story
- * @param Obj Object containing the properties needed for creating a new Story
- * @param Obj User-Object modifying this story
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
 Story.prototype.evalStory = function(param, modifier) {
    var site = this.site || res.handlers.site;
 
    // collect content
-   var content = extractContent(param, this.content.get());
+   var content = extractContent(param, this.metadata.get());
    // if all story parts are null, return with error-message
    if (!content.exists) {
       throw new Exception("textMissing");
@@ -609,7 +544,7 @@ Story.prototype.evalStory = function(param, modifier) {
       return;
    }
 
-   this.content.set(content.value);
+   this.metadata.set(content.value);
 
    // Update tags of the story
    this.setTags(param.tags || param.tag_array)
@@ -695,9 +630,6 @@ Story.prototype.removeTag = function(tag) {
    return;
 };
 
-/**
- * function sets story either online or offline
- */
 Story.prototype.toggleOnline = function(newStatus) {
    if (newStatus == "online") {
       this.online = 2;
@@ -710,15 +642,6 @@ Story.prototype.toggleOnline = function(newStatus) {
    return true;
 };
 
-/**
- * function evaluates comment and adds it if ok
- * @param Obj Object containing properties needed for creation of comment
- * @param Obj Story-Object
- * @param Obj User-Object (creator of comment)
- * @return Obj Object containing two properties:
- *             - error (boolean): true if error happened, false if everything went fine
- *             - message (String): containing a message to user
- */
 Story.prototype.evalComment = function(param, creator) {
    // collect content
    var content = extractContent(param);
@@ -747,11 +670,6 @@ Story.prototype.evalComment = function(param, creator) {
    return result;
 };
 
-/**
- * function deletes a whole thread
- * @param Obj Comment-Object that should be deleted
- * @return String Message indicating success/failure
- */
 Story.prototype.deleteComment = function(commentObj) {
    for (var i=commentObj.size();i>0;i--)
       this.deleteComment(commentObj.get(i-1));
@@ -767,20 +685,14 @@ Story.prototype.deleteComment = function(commentObj) {
    return new Message("commentDelete");
 };
 
-/**
- * function checks if the text of the story was already cached
- * and if it's still valid
- * if false, it caches it again
- * @return String cached text of story
- */
 Story.prototype.getRenderedContentPart = function(name, fmt) {
-   var part = this.content.get(name);
+   var part = this.metadata.get(name);
    if (!part)
       return "";
    var key = fmt ? name + ":" + fmt : name;
    var lastRendered = this.cache["lastRendered_" + key];
    if (!lastRendered) {
-       // FIXME: || lastRendered.getTime() < this.content.getLastModified().getTime())
+       // FIXME: || lastRendered.getTime() < this.metadata.getLastModified().getTime())
       switch (fmt) {
          case "plaintext":
             part = stripTags(part).clipURLs(30);
@@ -815,9 +727,6 @@ Story.prototype.getRenderedContentPart = function(name, fmt) {
    return this.cache[key];
 };
 
-/**
- * function deletes all childobjects of a story (recursive!)
- */
 Story.prototype.removeChildren = function() {
    var queue = app.data.indexManager.getQueue(this.site);
    var item;
@@ -831,12 +740,6 @@ Story.prototype.removeChildren = function() {
    return true;
 };
 
-/**
- * function records the access to a story-object
- * by incrementing the counter of the Object representing
- * this story in app.data.readLog which will be stored
- * in database by scheduler
- */
 Story.prototype.incrementReadCounter = function() {
    // do not record requests by the story creator
    if (session.user == this.creator)
@@ -854,23 +757,12 @@ Story.prototype.incrementReadCounter = function() {
    return;
 };
 
-/**
- * Return either the title of the story or
- * the id prefixed with standard display name
- * to be used in the global linkedpath macro
- * @see hopobject.getNavigationName()
- */
 Story.prototype.getNavigationName  = function() {
    if (this.title)
       return this.title;
    return getDisplay("story") + " " + this._id;
 };
 
-
-/**
- * creates a Lucene Document object for a story
- * @return Object instance of Search.Document representing the story
- */
 Story.prototype.getIndexDocument = function() {
    var doc = new Search.Document();
    switch (this._prototype) {
@@ -889,7 +781,7 @@ Story.prototype.getIndexDocument = function() {
    doc.addField("online", this.online, {store: true, index: true, tokenize: false});
    doc.addField("site", this.site._id, {store: true, index: true, tokenize: false});
    doc.addField("id", this._id, {store: true, index: true, tokenize: false});
-   var content = this.content.get();
+   var content = this.metadata.get();
    var title;
    if (title = stripTags(content.title).trim())
       doc.addField("title", title, {store: false, index: true, tokenize: true});
@@ -908,13 +800,7 @@ Story.prototype.getIndexDocument = function() {
    }
    return doc;
 };
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
+
 Story.prototype.checkAccess = function(action, usr, level) {
    var url = this.site.href();
    try {
@@ -947,13 +833,6 @@ Story.prototype.checkAccess = function(action, usr, level) {
    return;
 };
 
-
-/**
- * check if user is allowed to post a comment to this story   
- * @param Obj Userobject   
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)   
- */   
 Story.prototype.checkPost = function(usr, level) {
    if (!usr.sysadmin && !this.site.online && level == null)
       throw new DenyException("siteView");
@@ -964,24 +843,12 @@ Story.prototype.checkPost = function(usr, level) {
    return;
 };
     
- /** 
- * check if user is allowed to delete a story
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
 Story.prototype.checkDelete = function(usr, level) {
    if (this.creator != usr && (level & MAY_DELETE_ANYSTORY) == 0)
       throw new DenyException("storyDelete");
    return;
 };
 
-/**
- * check if user is allowed to edit a story
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
 Story.prototype.checkEdit = function(usr, level) {
    if (this.creator != usr) {
       if (level == null)
@@ -994,13 +861,6 @@ Story.prototype.checkEdit = function(usr, level) {
    return;
 };
 
-
-/**
- * check if user is allowed to view story
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
 Story.prototype.checkView = function(usr, level) {
    this.site.checkView(usr, level);
    if (!this.online && this.creator != usr) {
@@ -1012,10 +872,6 @@ Story.prototype.checkView = function(usr, level) {
    return;
 };
 
-/**
- * function explicitly allowes some macros for use in the text of a story
- * @param Obj Skin-object to allow macros for
- */
 Story.prototype.allowTextMacros = function(s) {
    s.allowMacro("image");
    s.allowMacro("this.image");
@@ -1045,16 +901,4 @@ Story.prototype.allowTextMacros = function(s) {
          app.modules[i].allowTextMacros(s);
    }
    return;
-};
-
-Story.remove = function() {
-   var storyObj = this;
-   storyObj.removeChildren();
-   if (storyObj.online > 0)
-      this._parent.lastupdate = new Date();
-   storyObj.remove();
-
-   // remove the story from search index
-   app.data.indexManager.getQueue(this._parent).remove(storyObj._id);
-   return new Message("storyDelete");
 };

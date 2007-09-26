@@ -75,34 +75,6 @@ Site.prototype.constructor = function(name, title) {
    return this;
 };
 
-Site.prototype.onPersist = function() {
-   writeln(">>>>>>>>>>>>>>>>>>>> onPersist: " + new Date);
-   return;
-};
-
-Site.prototype.update = function(data) {
-   this.map({
-      title: stripTags(data.title),
-      tagline: data.tagline,
-      email: data.email,
-      mode: data.mode || Site.PRIVATE,
-      webHookUrl: data.webHookUrl,
-      webHookEnabled: data.webHookEnabled ? true : false,
-      pageMode: data.pageMode || 'days',
-      pageSize: parseInt(data.pageSize, 10) || 3,
-      commentsMode: data.commentsMode,
-      archiveMode: data.archiveMode,
-      timeZone: data.timeZone,
-      longDateFormat: data.longDateFormat,
-      shortDateFormat: data.shortDateFormat,
-      language: data.language,
-      layout: Layout.getById(data.layout)
-   });
-   
-   this.touch();
-   return;
-};
-
 Site.prototype.getPermission = function(action) {
    switch (action) {
       case "stories/create":
@@ -132,14 +104,6 @@ Site.prototype.getPermission = function(action) {
    }
    return true;
 };
-
-Site.prototype.getMembership = function() {
-   var membership;
-   if (session.user) {
-      membership = this.members.get(session.user.name);
-   }
-   return membership || new HopObject;
-}
 
 Site.prototype.main_action = function() {
    if (this.allstories.size() == 0) {
@@ -185,6 +149,29 @@ Site.prototype.edit_action = function() {
    res.data.title = gettext("Preferences of {0}", this.title);
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
+   return;
+};
+
+Site.prototype.update = function(data) {
+   this.map({
+      title: stripTags(data.title),
+      tagline: data.tagline,
+      email: data.email,
+      mode: data.mode || Site.PRIVATE,
+      webHookUrl: data.webHookUrl,
+      webHookEnabled: data.webHookEnabled ? true : false,
+      pageMode: data.pageMode || 'days',
+      pageSize: parseInt(data.pageSize, 10) || 3,
+      commentsMode: data.commentsMode,
+      archiveMode: data.archiveMode,
+      timeZone: data.timeZone,
+      longDateFormat: data.longDateFormat,
+      shortDateFormat: data.shortDateFormat,
+      language: data.language,
+      layout: Layout.getById(data.layout)
+   });
+   
+   this.touch();
    return;
 };
 
@@ -1002,6 +989,14 @@ return;
    this.modifier = modifier;
 };
 
+Site.prototype.getMembership = function() {
+   var membership;
+   if (session.user) {
+      membership = this.members.get(session.user.name);
+   }
+   return membership || new HopObject;
+}
+
 Site.prototype.getLayouts = function() {
    var result = [];
    this.layouts.forEach(function() {
@@ -1053,16 +1048,6 @@ Site.prototype.getTimeZone = function() {
    }
    this.cache.timezone = timeZone;
    return timeZone;
-};
-
-Site.prototype.deleteAll = function() {
-   this.images.deleteAll();
-   this.files.deleteAll();
-   // FIXME: add deleting of all layouts!
-   // this.layouts.deleteAll();
-   this.stories.deleteAll();
-   this.members.deleteAll();
-   return true;
 };
 
 Site.prototype.ping = function() {
@@ -1386,140 +1371,6 @@ Site.prototype.renderStorylist = function(day) {
       sp.url = this.href() + "?day=" + next.groupname;
       sp.text = getMessage("Story.olderStories");
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
-   }
-   return;
-};
-
-/**
- * permission check (called by hopobject.onRequest())
- * @param String name of action
- * @param Obj User object
- * @param Int Membership level
- * @return Obj Exception object or null
- */
-Site.prototype.checkAccess = function(action, usr, level) {
-   var url = this.members.href("login");
-   try {
-      switch (action) {
-         case "main" :
-            if (!this.online)
-               checkIfLoggedIn();
-            url = root.href();
-            this.checkView(usr, level);
-            break;
-         case "edit" :
-            checkIfLoggedIn();
-            url = this.href();
-            this.checkEdit(usr, level);
-            break;
-         case "delete" :
-            checkIfLoggedIn();
-            url = this.href();
-            this.checkDelete(usr, level);
-            break;
-         case "getfile" :
-            if (!this.online)
-               checkIfLoggedIn();
-            url = root.href();
-            this.checkView(usr, level);
-            break;
-         case "mostread" :
-            if (!this.online)
-               checkIfLoggedIn();
-            url = root.href();
-            this.checkView(usr, level);
-            break;
-         case "referrers" :
-            if (!this.online)
-               checkIfLoggedIn();
-            url = root.href();
-            this.checkView(usr, level);
-            break;
-         case "search" :
-            if (!this.online)
-               checkIfLoggedIn();
-            url = root.href();
-            this.checkView(usr, level);
-            break;
-         case "subscribe" :
-            checkIfLoggedIn();
-            this.checkSubscribe(usr, level);
-            break;
-         case "unsubscribe" :
-            checkIfLoggedIn();
-            this.checkUnsubscribe(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(url);
-   }
-   return;
-};
-
-/**
- * check if a user is allowed to view a site
- * @param Obj Userobject
- * @param Int Permission-Level
- */
-Site.prototype.checkView = function(usr, level) {
-   if (!this.online) {
-      // if not logged in or not logged in with sufficient permissions
-      if (!usr || (level < CONTRIBUTOR && !usr.sysadmin))
-         throw new DenyException("siteView");
-   }
-   return;
-};
-
-/**
- * check if user is allowed to edit the preferences of this site
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-Site.prototype.checkEdit = function(usr, level) {
-   if (!usr.sysadmin && (level & MAY_EDIT_PREFS) == 0)
-      throw new DenyException("siteEdit");
-   return null;
-};
-
-/**
- * check if user is allowed to delete the site
- * (only SysAdmins or the creator of a site are allowed to delete it!)
- * @param Obj Userobject
- * @return String Reason for denial (or null if allowed)
- */
-Site.prototype.checkDelete = function(usr) {
-   if (!usr.sysadmin && usr != this.creator)
-      throw new DenyException("siteDelete");
-   return;
-};
-
-/**
- * function checks if user is allowed to sign up
- * @param Obj Userobject
- * @param Int Permission-Level
- * @return String Reason for denial (or null if allowed)
- */
-Site.prototype.checkSubscribe = function(usr, level) {
-   if (level != null)
-      throw new Exception("subscriptionExist");
-   else if (!this.online)
-      throw new DenyException("siteView");
-   return;
-};
-
-/**
- * check if user is allowed to unsubscribe
- * @param Obj Userobject
- * @return String Reason for denial (or null if allowed)
- */
-Site.prototype.checkUnsubscribe = function(usr, level) {
-   if (level == null)
-      throw new Exception("subscriptionNoExist");
-   else if (level == ADMIN) {
-      // Admins are not allowed to remove a subscription
-      throw new DenyException("unsubscribe");
    }
    return;
 };

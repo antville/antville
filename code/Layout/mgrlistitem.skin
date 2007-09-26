@@ -21,7 +21,7 @@
    <% layout.link images prefix="... " suffix="<br />" %>
    <% layout.link test prefix="... " suffix="<br />" %>
    <% layout.link activate prefix="... " suffix="<br />" %>
-   <% layout.link download prefix="... " suffix="<br />" %>
+   <% layout.link export prefix="... " suffix="<br />" %>
    <% layout.link delete prefix="... " suffix="<br />" %></td>
 </tr>
 </table>
