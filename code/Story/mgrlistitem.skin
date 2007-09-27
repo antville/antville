@@ -1,15 +1,32 @@
-<div class="listSeparator">&nbsp;</div>
+<div class="listSeparator"> </div>
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<% story.switch name="online" on="" off='<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" class="listFlag">o<br />f<br />f<br />l<br />i<br />n<br />e<td rowspan="2" width="5" nowrap="nowrap"></td>' %>
-<td colspan="3" class="small"><strong>Macro:</strong>&nbsp;&lt;% story id="<% story.id %>" %&gt;<br />
-<div class="ample"><strong>Status:&nbsp;</strong><% story.online yes="online" no="offline" %><% story.topic prefix=" in " as="link" text="topic" %><% story.commentcounter prefix=",&nbsp;" anchor="comments" %></div></td>
+<% if <% story.status %> is private then 
+   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+   class="listFlag">p<br />r<br />i<br />v<br />a<br />t<br />e</td>
+   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+%>
+<td colspan="3" class="small">
+   <strong>Macro:</strong> &lt;% story <% story.id %> %&gt;<br />
+   <div class="ample"><strong>Status: </strong><% story.status %><!--
+   --><% story.tags prefix=" in " as="link" %>,
+   <a href="<% story.link %>#comments"><% ngettext "{0} comment" 
+   "{0} comments" <% story.comments.size %> %></a></div>
+</td>
 </tr>
 <tr valign="top">
-<td><div class="storyTitle"><% story.content part="title" %></div>
-<div class="storyDate"><% story.creator as="link" %><% story.createtime format="short" prefix=" on&nbsp;" %></div>
-<% story.content part="text" limit="200" %></td>
-<td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% story.editlink prefix="...&nbsp;" suffix="<br />" %><% story.viewlink prefix="...&nbsp;" suffix="<br />" %><% story.onlinelink mode="toggle" prefix="...&nbsp;" suffix="<br />" %><% story.deletelink prefix="...&nbsp;" %></td>
+<td>
+   <div class="storyTitle"><% story.title %><% story.creator.hash %></div>
+   <div class="storyDate"><% story.creator | link <% story.creator.url %> %>
+   <% story.created short prefix=" on " %></div>
+   <% story.text | clip %>
+</td>
+<td width="10" nowrap="nowrap"> </td>
+<td align="right" class="small">
+   <% story.link edit prefix="... " suffix="<br />" %>
+   <% story.link . view prefix="... " suffix="<br />" %>
+   <% story.link publish prefix="... " suffix="<br />" %>
+   <% story.link delete prefix="... " %>
+</td>
 </tr>
 </table>

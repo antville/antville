@@ -24,8 +24,7 @@
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Comments:</td>
-<td nowrap="nowrap"><% site.checkbox commentsMode %>
-<label for="commentsMode">enabled</label></td>
+<td nowrap="nowrap"><% site.select commentsMode %></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap">Archive:</td>

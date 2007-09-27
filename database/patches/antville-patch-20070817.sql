@@ -205,7 +205,7 @@ update av_text set status = 'private';
 update av_text set status = 'hidden' where text_isonline = 1;
 update av_text set status = 'public' where text_isonline = 2;
 
-alter table av_text add column mode enum('default','shared','open');
+alter table av_text add column mode enum('readonly','shared','open');
 update av_text set mode = 'default';
 update av_text set mode = 'shared' where text_editableby = 1;
 update av_text set mode = 'open' where text_editableby = 2;

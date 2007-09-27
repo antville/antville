@@ -1,9 +1,11 @@
-<% story.skin name="dayheader" %>
-<% story.skin name="display" %>
+<% story.skin dayheader %>
+<% story.skin display %>
 
-<p class="small"><% story.commentlink prefix="...&nbsp;" %><% story.editlink prefix="&nbsp;&nbsp;...&nbsp;" %><% story.onlinelink prefix="&nbsp;&nbsp;...&nbsp;" %></p>
+<p class="small">
+   <% story.link comment prefix="... " %>
+   <% story.link edit prefix=" ... " %>
+   <% story.link online prefix=" ... " %></p>
 
-<p><a name="comments"></a></p>
-<% story.comments %>
-
+<a name="comments" id="comments"></a>
+<p><% story.comments %></p>
 <p><% story.backlinks %></p>

@@ -64,6 +64,6 @@ Story.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "evalStory", aspects.setTopics);
 };
 
-StoryMgr.prototype.onCodeUpdate = function() {
+Stories.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "evalNewStory", aspects.setTopics);
 };

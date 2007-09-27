@@ -31,6 +31,10 @@ this.handleMetadata("hash");
 this.handleMetadata("salt");
 this.handleMetadata("url");
 
+disableMacro(User, "password");
+disableMacro(User, "hash");
+disableMacro(User, "email");
+
 User.prototype.constructor = function(data) {
    var now = new Date;
    this.map({
@@ -90,10 +94,6 @@ User.prototype.getFormOptions = function(name) {
       return User.getStatus();
    }
 }
-
-User.prototype.password_macro = function(param) {
-   return;
-};
 
 User.prototype.list_macro = function(param, type) {
    switch (type) {

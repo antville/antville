@@ -72,6 +72,9 @@ Image.prototype.edit_action = function() {
 };
 
 Image.prototype.getFormValue = function(name) {
+   if (req.isPost()) {
+      return req.postParams[name];
+   }
    switch (name) {
       case "file":
       return this.url || this.name;

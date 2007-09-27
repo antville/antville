@@ -1,36 +1,35 @@
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap="nowrap"><span class="small">Title:</span><br />
-<% story.content part="title" as="editor" size="24" class="formTitle" %></td>
+<td><span class="small">Title:</span><br />
+<% story.input title class="formTitle" %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><span class="small">Text:</span><br />
-<% story.content part="text" as="editor" cols="30" rows="15" class="formText" %></td>
+<td><span class="small">Text:</span><br />
+<% story.textarea text cols="30" rows="15" class="formText" %></td>
 </tr>
 <tr>
-<td><fieldset><legend class="small">Options</legend>
-<p><% story.addtofront as="editor" checked="checked" %>&nbsp;Show this story on the front page</p>
-Add this story to a topic<br />
-<table style="margin-left:15px;">
-<tr>
-<td width="48%" class="small">Choose a topic...<br />
-<% story.topicchooser firstOption="--- choose topic ---" %></td>
-<td valign="top" width="4%">&nbsp;</td>
-<td valign="top" width="48%" class="small">...or enter a new one<br /> 
-<input type="text" name="topic" value="<% request.topic %>" /></td>
-</tr>
-</table>
-
-<p>This story is editable by<br />
-<span class="small"><% story.editableby as="editor" %></span></p>
-<% story.discussions as="editor" prefix="<p>" suffix="&nbsp;Allow comments</p>" %></fieldset></td>
+<td>
+   <fieldset><legend class="small">Options</legend>
+   <p>Tags: <% story.input tags %></p> 
+   <p>The story is <% story.select status %> and <% story.select mode %></p>
+   <p>Comments of the story are <% story.select commentsMode %>
+</td>
 </tr>
 <tr>
-<td class="small"><% story.creator as="link" prefix="Created by " %><% story.modifier as="link" prefix=", last modified&nbsp;by&nbsp;" %><% story.modifytime format="short" prefix="&nbsp;on&nbsp;" %></td>
+<td class="small">
+   <% story.creator prefix="Created by " %>
+   <% story.created short prefix=" on " suffix="<br />" %>
+   <% story.modifier prefix="Last modified by " %>
+   <% story.modified short prefix=" on " %></td>
 </tr>
 <tr>
-<td nowrap="nowrap"><br /><% input type="submit" name="publish" value="Publish" %>&nbsp;<% input type="submit" name="save" value="Save offline" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td>
+   <br />
+   <button type="submit" name="save" value="1">save</button>
+   <!--button type="submit" name="save" value="2">publish</button-->
+   <button type="submit" name="cancel" value="1">cancel</button>
+</td>
 </tr>
 </table>
 </form>

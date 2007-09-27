@@ -117,6 +117,18 @@ Comment.prototype.delete_action = function() {
    this.site.renderSkin("page");
    return;
 };
+
+Comment.remove = function() {
+   if (this.constructor !== Comment) {
+      return;
+   }
+   while (this.size() > 0) {
+      Comment.remove.call(this.get(0));
+   }
+   this.remove();
+   return;
+};
+
 /**
  * macro renders a link to reply to a comment
  */

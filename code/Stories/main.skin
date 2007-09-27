@@ -1,8 +1,10 @@
-<div class="ample">... <% stories.link create "add a story" %></div>
-... show
-<% stories.link . "all stories" %> |
-<% stories.link private "private stories" %> |
-<% stories.link member "my stories" %>
+<div class="ample">
+   <% stories.link create "add a story" prefix="... " %>
+</div>
+
+<% stories.link . "all stories" prefix="... show " %>
+<% stories.link private "private stories" prefix=" | " %>
+<% stories.link member "my stories" prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>

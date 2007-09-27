@@ -227,10 +227,9 @@ HopObject.prototype.getFormValue = function(name) {
    if (req.isPost()) {
       return req.postParams[name];
    } else {
-      var value = this[name];
+      var value = this[name] || "";
       return value instanceof HopObject ? value._id : value;
    }
-   return "";
 };
 
 HopObject.prototype.getFormOptions = function(name) {

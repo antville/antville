@@ -25,6 +25,7 @@
 defineConstants(Site, "getStatus", "default", "blocked", "trusted");
 defineConstants(Site, "getModes", "closed", "private", "readonly", "public", "open");
 defineConstants(Site, "getPageModes", "days", "stories");
+defineConstants(Site, "getCommentsModes", "closed", "readonly", "moderated", "open");
 
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentsMode");
@@ -68,8 +69,8 @@ Site.prototype.constructor = function(name, title) {
       language: locale.getLanguage(),
       country: locale.getCountry(),
       timeZone: root.getTimeZone().getID(),
-      longDateFormat: "EEEE, dd. MMMM yyyy, h:mm a",
-      shortDateFormat: "yyyy-MM-dd, HH:mm"
+      longDateFormat: LONGDATEFORMAT,
+      shortDateFormat: SHORTDATEFORMAT
    });
 
    return this;
@@ -150,6 +151,51 @@ Site.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("edit");
    this.renderSkin("page");
    return;
+};
+
+Site.prototype.getFormOptions = function(name) {
+   var options = [];
+   switch (name) {
+      case "archiveMode":
+      options = [{
+         value: Site.ARCHIVE_ONLINE, 
+         display: gettext("online")
+      }, {
+         value: Site.ARCHIVE_OFFLINE,
+         display: gettext("offline")
+      }]; break;
+      
+      case "commentsMode":
+      options = Site.getCommentsModes(); break;
+      
+      case "language":
+      options = getLocales(); break;
+      
+      case "layout":
+      options = this.getLayouts(); break;
+      
+      case "longDateFormat":
+      options = getDateFormats("long"); break;
+      
+      case "mode":
+      options = Site.getModes(); break;
+      
+      case "pageMode":
+      options = Site.getPageModes(); break;
+      
+      case "status":
+      options = Site.getStatus(); break;
+      
+      case "shortDateFormat":
+      options = getDateFormats("short"); break;
+      
+      case "timeZone":
+      options = getTimeZones(); break;
+      
+      default:
+      return HopObject.prototype.getFormOptions.apply(this, arguments);
+   }
+   return options;
 };
 
 Site.prototype.update = function(data) {
@@ -505,57 +551,6 @@ Site.prototype.getMacroHandler = function(name) {
       default:
       return null;
    }
-};
-
-Site.prototype.getFormOptions = function(name) {
-   var options = [];
-   switch (name) {
-      case "archiveMode":
-      options = [{
-         value: Site.ARCHIVE_ONLINE, 
-         display: gettext("online")
-      }, {
-         value: Site.ARCHIVE_OFFLINE,
-         display: gettext("offline")
-      }]; break;
-      
-      case "commentsMode":
-      options = [{
-         value: Comment.ONLINE, 
-         display: gettext("online")
-      }, {
-         value: Comment.OFFLINE,
-         display: gettext("offline")
-      }]; break;
-      
-      case "language":
-      options = getLocales(); break;
-      
-      case "layout":
-      options = this.getLayouts(); break;
-      
-      case "longDateFormat":
-      options = getDateFormats("long"); break;
-      
-      case "mode":
-      options = Site.getModes(); break;
-      
-      case "pageMode":
-      options = Site.getPageModes(); break;
-      
-      case "status":
-      options = Site.getStatus(); break;
-      
-      case "shortDateFormat":
-      options = getDateFormats("short"); break;
-      
-      case "timeZone":
-      options = getTimeZones(); break;
-      
-      default:
-      return HopObject.prototype.getFormOptions.apply(this, arguments);
-   }
-   return options;
 };
 
 Site.prototype.loginstatus_macro = function(param) {

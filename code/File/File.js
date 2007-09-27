@@ -69,6 +69,9 @@ File.prototype.edit_action = function() {
 };
 
 File.prototype.getFormValue = function(name) {
+   if (req.isPost()) {
+      return req.postParams[name];
+   }
    switch (name) {
       case "file":
       return this.name;
@@ -122,7 +125,9 @@ File.prototype.getUrl = function() {
 };
    
 File.remove = function() {
-   this.getFile().remove();
-   this.remove();
+   if (this.constructor === File) {
+      this.getFile().remove();
+      this.remove();
+   }
    return;
 };

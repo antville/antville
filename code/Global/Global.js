@@ -44,6 +44,14 @@ var _ = gettext;
 var search = new helma.Search();
 var html = new helma.Html();
 
+/**
+ * Extend the Mail prototype with a method that simply adds a mail object 
+ * to an application-wide array (mail queue).
+ */
+helma.Mail.prototype.queue = function() {
+   return app.data.mailQueue.push(this);
+};
+
 function scheduler() {
    flushLog();
    // FIXME: root.manage.autoCleanUp();
@@ -55,6 +63,10 @@ function scheduler() {
    app.data.indexManager.flush();
    return 5000;
 }
+
+function disableMacro(ctor, name) {
+   return ctor.prototype[name + "_macro"] = function() {return};
+};
 
 function defineConstants(ctor, getterName /* , arguments */) {
    var constants = [], name;
@@ -138,41 +150,12 @@ MAY_EDIT_PREFS = 16384;
 MAY_EDIT_LAYOUTS = 32768;
 MAY_EDIT_MEMBERS = 65536;
 
-/**
- * constant object containing the values for editableby levels
- */
 EDITABLEBY_ADMINS       = 0;
 EDITABLEBY_CONTRIBUTORS = 1;
 EDITABLEBY_SUBSCRIBERS  = 2;
 
-/**
- * array containing short dateformats
- */
-SHORTDATEFORMATS = new Array();
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy.MM.dd, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy-MM-dd HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "yyyy/MM/dd HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "d. MMMM, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "MMMM d, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "d. MMM, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "MMM d, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE, d. MMM, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE MMM d, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EEE, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "EE, HH:mm";
-SHORTDATEFORMATS[SHORTDATEFORMATS.length] = "HH:mm";
-
-LONGDATEFORMATS = new Array();
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EEEE, d. MMMM yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EEEE, MMMM dd, yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE, d. MMM. yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE MMM dd, yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "EE yyyy-MM-dd HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "yyyy-MM-dd HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMMM yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMMM d, yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "d. MMM yyyy, HH:mm";
-LONGDATEFORMATS[LONGDATEFORMATS.length] = "MMM d, yyyy, HH:mm";
+SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
+LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
 
 ONEMINUTE = 60000;
 ONEHOUR = 3600000;
@@ -265,12 +248,11 @@ function file_macro(param) {
    return;
 }
 
-
 /**
  * Macro creates a string representing the objects in the
  * current request path, linked to their main action.
  */
-function linkedpath_macro (param) {
+function breadcrumbs_macro (param) {
    var separator = param.separator;
    if (!separator)
       separator = " : ";
@@ -278,17 +260,16 @@ function linkedpath_macro (param) {
    var start = (path.Site == null) ? 0 : 1;
    for (var i=start; i<path.length-1; i++) {
       title = path[i].getNavigationName();
-      Html.link({href: path[i].href()}, title);
+      html.link({href: path[i].href()}, title);
       res.write(separator);
    }
    title = path[i].getNavigationName();
    if (req.action != "main" && path[i].main_action)
-      Html.link({href: path[i].href()}, title);
+      html.link({href: path[i].href()}, title);
    else
       res.write(title);
    return;
 }
-
 
 /**
  * Renders the story with the specified id; uses preview.skin as default
@@ -316,14 +297,13 @@ function story_macro(param) {
       case "link":
          var title = param.text ? param.text : 
                      story.content.get("title");
-         Html.link({href: story.href()}, title ? title : story._id);
+         html.link({href: story.href()}, title ? title : story._id);
          break;
       default:
          story.renderSkin(param.skin ? param.skin : "embed");
    }
    return;
 }
-
 
 /**
  * Renders a poll (optionally as link or results)
@@ -332,7 +312,7 @@ function poll_macro(param) {
    if (!param.id)
       return;
    // disable caching of any contentPart containing this macro
-   req.data.cachePart = false;
+   res.meta.cachePart = false;
    var parts = param.id.split("/");
    if (parts.length == 2)
       var site = root.get(parts[0]);
@@ -348,7 +328,7 @@ function poll_macro(param) {
          res.write(poll.href());
          break;
       case "link":
-         Html.link({
+         html.link({
             href: poll.href(poll.closed ? "results" : "")
          }, poll.question);
          break;
@@ -362,7 +342,6 @@ function poll_macro(param) {
    }
    return;
 }
-
 
 /**
  * macro basically renders a list of sites
@@ -378,7 +357,6 @@ function sitelist_macro(param) {
    delete res.data.sitelist;
    return;
 }
-
 
 /**
  * wrapper-macro for imagelist
@@ -419,9 +397,9 @@ function imagelist_macro(param) {
                imgObj = imgObj.thumbnail;
          default:
             if (linkParam.href) {
-               Html.openLink(linkParam);
+               html.openLink(linkParam);
                renderImage(imgObj, imgParam);
-               Html.closeLink();
+               html.closeLink();
             } else
                renderImage(imgObj, imgParam);
       }
@@ -429,7 +407,6 @@ function imagelist_macro(param) {
    }
    return;
 }
-
 
 /**
  * wrapper-macro for topiclist
@@ -442,7 +419,6 @@ function topiclist_macro(param) {
    return;
 }
 
-
 /**
  * macro checks if the current session is authenticated
  * if true it returns the username
@@ -451,14 +427,13 @@ function username_macro(param) {
    if (!session.user)
       return;
    if (session.user.url && param.as == "link")
-      Html.link({href: session.user.url}, session.user.name);
+      html.link({href: session.user.url}, session.user.name);
    else if (session.user.url && param.as == "url")
       res.write(session.user.url);
    else
       res.write(session.user.name);
    return;
 }
-
 
 /**
  * function renders a form-input
@@ -475,33 +450,32 @@ function input_macro(param) {
    }
    switch (param.type) {
       case "textarea" :
-         Html.textArea(param);
+         html.textArea(param);
          break;
       case "checkbox" :
-         Html.checkBox(param);
+         html.checkBox(param);
          break;
       case "button" :
          // FIXME: this is left for backwards compatibility
-         Html.submit(param);
+         html.submit(param);
          break;
       case "submit" :
-         Html.submit(param);
+         html.submit(param);
          break;
       case "password" :
-         Html.password(param);
+         html.password(param);
          break;
       case "radio" :
-         Html.radioButton(param);
+         html.radioButton(param);
          break;
       case "file" :
-         Html.file(param);
+         html.file(param);
          break;
       default :
-         Html.input(param);
+         html.input(param);
    }
    return;
 }
-
 
 /**
  * function renders a list of stories either contained
@@ -512,10 +486,9 @@ function input_macro(param) {
  * param.show determines the text type (story, comment or all)
  * param.skin determines the skin used for each stories (default is title as link) 
  */
-
 function storylist_macro(param) {
    // disable caching of any contentPart containing this macro
-   req.data.cachePart = false;
+   res.meta.cachePart = false;
    var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
       return;
@@ -528,12 +501,12 @@ function storylist_macro(param) {
          if (!story)
             continue;
          res.write(param.itemprefix);
-         Html.openLink({href: story.href()});
+         html.openLink({href: story.href()});
          var str = story.title;
          if (!str)
             str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
          res.write(str ? str : "...");
-         Html.closeLink();
+         html.closeLink();
          res.write(param.itemsuffix);
       }
       return;
@@ -569,12 +542,12 @@ function storylist_macro(param) {
             story.renderSkin(param.skin);
          } else {
             res.write(param.itemprefix);
-            Html.openLink({href: story.href()});
+            html.openLink({href: story.href()});
             var str = story.title;
             if (!str)
                str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
             res.write(str ? str : "...");
-            Html.closeLink();
+            html.closeLink();
             res.write(param.itemsuffix); 
          }         
       }
@@ -583,12 +556,10 @@ function storylist_macro(param) {
    return;
 }
 
-
 /**
  * a not yet sophisticated macro to display a
  * colorpicker. works in site prefs and story editors
  */
-
 function colorpicker_macro(param) {
    if (!param || !param.name)
       return;
@@ -626,14 +597,12 @@ function colorpicker_macro(param) {
    return;
 }
 
-
 /**
  * fakemail macro <%fakemail number=%>
  * generates and renders faked email-adresses
  * param.number
  * (contributed by hr@conspirat)
  */
-
 function fakemail_macro(param) {
 	var tldList = ["com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl"];
    var nOfMails = param.number ? (param.number <= 50 ? param.number : 50) : 20;
@@ -648,13 +617,12 @@ function fakemail_macro(param) {
    	for (var j=0;j<serverLength;j++)
    		serverName += String.fromCharCode(Math.round(Math.random()*25) + 97);
       var addr = mailName + "@" + serverName + "." + tld;
-      Html.link({href: "mailto:" + addr}, addr);
+      html.link({href: "mailto:" + addr}, addr);
       if (i+1 < nOfMails)
          res.write(param.delimiter ? param.delimiter : ", ");
    }
 	return;
 }
-
 
 /**
  * picks a random site, image or story by setting
@@ -690,7 +658,6 @@ function randomize_macro(param) {
    return;
 }
 
-
 /**
  * macro renders a random image
  *  list of images can be specified in the images-attribute
@@ -716,7 +683,6 @@ function randomimage_macro(param) {
    return image_macro(param);
 }
 
-
 /**
  * macro renders the most recently created image of a site
  * @param topic String (optional), specifies from which topic the image should be taken
@@ -732,6 +698,7 @@ function imageoftheday_macro(param) {
    param.name = img.alias;
    return image_macro(param);
 }
+
 /**
  * function loads messages on startup
  */
@@ -919,7 +886,6 @@ function MailException(name) {
    return this;
 }
 
-
 /**
  * constructor function for DenyException objects
  * @param String Name of the message
@@ -931,7 +897,6 @@ function DenyException(name) {
    }
    return this;
 }
-
 
 /**
  * function retrieves a message from the message file
@@ -1011,7 +976,6 @@ function fixRssText(str) {
    str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
    return str;
 }
-
 
 /**
  * function counting active users and anonymous sessions
@@ -1152,18 +1116,6 @@ function sendMail(sender, recipient, subject, body) {
    return mail.status;
 }
 
-
-/**
- * extend the Mail prototype with a method
- * that simply adds a mail object to an
- * application-wide array (mail queue).
- */
-helma.Mail.prototype.queue = function() {
-   app.data.mailQueue.push(this);
-   return;
-};
-
-
 /**
  * send all mails contained in the
  * application-wide mail queue
@@ -1197,7 +1149,6 @@ function getLanguages() {
    }
    return languages;
 }
-
 
 /**
  * build a more scripting-compatible object
@@ -1276,7 +1227,6 @@ function renderColor(c) {
    return;
 }
 
-
 /**
  * Do Wiki style substitution, transforming
  * stuff contained between asterisks into links.
@@ -1312,23 +1262,20 @@ function doWikiStuff (src) {
    return text;
 }
 
-
 /**
  * function renders a dropdown-box containing all available
  * locales
  * @param Obj Locale-Object to preselect
  */
-
 function renderLocaleChooser(loc) {
    var locs = java.util.Locale.getAvailableLocales();
    var options = new Array();
    // get the defined locale of this site for comparison
    for (var i in locs)
       options[i] = new Array(locs[i], locs[i].getDisplayName());
-   Html.dropDown({name: "locale"}, options, loc ? loc.toString() : null);
+   html.dropDown({name: "locale"}, options, loc ? loc.toString() : null);
    return;
 }
-
 
 /**
  * function renders a dropdown-box for choosing dateformats
@@ -1346,10 +1293,9 @@ function renderDateformatChooser(version, locale, selectedValue) {
       var sdf = new java.text.SimpleDateFormat(patterns[i], locale);
       options[i] = [encodeForm(patterns[i]), sdf.format(now)];
    }
-   Html.dropDown({name: version}, options, selectedValue);
+   html.dropDown({name: version}, options, selectedValue);
    return;
 }
-
 
 /**
  * function renders a dropdown-box for choosing timezones
@@ -1363,7 +1309,7 @@ function renderTimeZoneChooser(tz) {
       var zone = java.util.TimeZone.getTimeZone(zones[i]);
       options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/ONEHOUR)) + " (" + zones[i] + ")"];
    }
-   Html.dropDown({name: "timezone"}, options, tz ? tz.getID() : null);
+   html.dropDown({name: "timezone"}, options, tz ? tz.getID() : null);
    return;
 }
 
@@ -1420,9 +1366,9 @@ function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
          param.text = text;
       else {
          if (url.contains("?"))
-            param.text = Html.linkAsString({href: url + "&page=" + page}, text);
+            param.text = html.linkAsString({href: url + "&page=" + page}, text);
          else
-            param.text = Html.linkAsString({href: url + "?page=" + page}, text);
+            param.text = html.linkAsString({href: url + "?page=" + page}, text);
       }
       renderSkin("pagenavigationitem", param);
       return;
@@ -1554,9 +1500,17 @@ function getTimeZones(language) {
 }
 
 function getDateFormats(type, language) {
-   var patterns = global[type.toUpperCase() + "DATEFORMATS"];
-   if (!patterns || patterns.constructor !== Array) {
-      return;
+   var patterns;
+   if (type === "short") {
+      patterns = [SHORTDATEFORMAT, "yyyy/MM/dd HH:mm", 
+            "yyyy.MM.dd, HH:mm", "d. MMMM, HH:mm", "MMMM d, HH:mm", 
+            "d. MMM, HH:mm", "MMM d, HH:mm", "EEE, d. MMM, HH:mm", 
+            "EEE MMM d, HH:mm", "EEE, HH:mm", "EE, HH:mm", "HH:mm"];
+   } else if (type === "long") {
+      patterns = [LONGDATEFORMAT, "EEEE, MMMM dd, yyyy, HH:mm", 
+            "EE, d. MMM. yyyy, HH:mm", "EE MMM dd, yyyy, HH:mm", 
+            "EE yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm", "d. MMMM yyyy, HH:mm", 
+            "MMMM d, yyyy, HH:mm", "d. MMM yyyy, HH:mm", "MMM d, yyyy, HH:mm"];
    }
    var result = [], sdf;
    var locale = getLocale(language);
@@ -1615,3 +1569,33 @@ function format_filter(value, param, pattern) {
    }
    return;
 }
+
+function clip_filter(input, param, limit, clipping, delimiter) {
+   var len = 0;
+   if (input) {
+      len = input.length;
+      input = input.stripTags();
+   }
+   input || (input = ngettext("({0} character)", "({0} characters)", len));
+   limit || (limit = 20);
+   clipping || (clipping = "...");
+   delimiter || (delimiter = "\\s");
+   return String(input || "").head(limit, clipping, delimiter);
+}
+
+var gettext_macro = function(param, text /*, value1, value2, ...*/) {
+   var args = [text];
+   for (var i=2; i<arguments.length; i+=1) {
+      args.push(arguments[i]);
+   }
+   return gettext.apply(this, args);
+};
+
+var ngettext_macro = function(param, singular, plural, value1 /*, value2, value3, ...*/) {
+   var args = [singular, plural, value1];
+   for (var i=4; i<arguments.length; i+=1) {
+      args.push(arguments[i]);
+   }
+   return ngettext.apply(this, args);
+};
+
