@@ -179,9 +179,12 @@ User.login = function(data) {
    if (!digest) {
       digest = ((data.password + user.salt).md5() + session.data.token).md5();
    }
+   res.debug(data.password)
+   res.debug(("helm2000" + user.salt).md5());
+   res.debug(user.hash);
    // Check if login is correct
    if (digest !== user.getDigest(session.data.token)) {
-      throw Error("Unfortunately, your login failed. Maybe a typo?");
+      throw Error(gettext("Unfortunately, your login failed. Maybe a typo?"))
    }
    if (data.remember) {
       // Set long running cookies for automatic login

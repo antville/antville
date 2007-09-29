@@ -7,10 +7,11 @@ $(function() {
       $("input:password").val("");
       $.ajax({
          async: false,
-         url: '<% members.href action="salt.js" %>',
+         url: '<% members.href salt.js %>',
          data: "user=" + encodeURIComponent(name),
          dataType: "json",
          success: function(salt) {
+            alert($.md5(password + salt));
             $("#digest").val($.md5($.md5(password + salt) + token));
          }
       });
@@ -53,8 +54,8 @@ value="<% request.name %>" />
 <tr>
 <td nowrap="nowrap"> </td>
 <td colspan="2"><br />
-<button type="submit" id="submit" name="login" value="login" 
-tabindex="4">Login</button>
+<button type="submit" id="submit" name="login" value="1" 
+tabindex="4">login</button>
 </td>
 </tr>
 </table>

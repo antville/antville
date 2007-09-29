@@ -236,49 +236,63 @@ HopObject.prototype.getFormOptions = function(name) {
    return [{value: true, display: "enabled"}];
 };
 
+HopObject.prototype.self_macro = function() {
+   return this;
+};
+
+HopObject.prototype.type_macro = function() {
+   return res.write(this.constructor.name);
+};
+
 HopObject.prototype.link_macro = function(param, url, text) {
-   if (this.getPermission(url)) {
-      renderLink.call(global, param, url, text, this);
+   var action = url.split(/#|\?/)[0];
+   if (this.getPermission(action)) {
+      renderLink.call(global, param, url, text || action, this);
    }
    return;
 };
 
 HopObject.prototype.created_macro = function(param, format) {
-   res.write(formatDate(this.created, format || param.format));
+   if (this.created && !this.isTransient()) {
+      res.write(formatDate(this.created, format || param.format));
+   }
    return;
 };
 
 HopObject.prototype.modified_macro = function(param, format) {
-   res.write(formatDate(this.modified, format || param.format));
+   if (this.modified && !this.isTransient()) {
+      res.write(formatDate(this.modified, format || param.format));
+   }
    return;
 };
 
-HopObject.prototype.creator_macro = function(param) {
-   if (!this.creator)
+HopObject.prototype.creator_macro = function(param, mode) {
+   if (!this.creator || this.isTransient()) {
       return;
-   if (param.as == "link" && this.creator.url)
-      Html.link({href: this.creator.url}, this.creator.name);
-   else if (param.as == "url")
+   }
+   mode || (mode = param.as);
+   if (mode === "link" && this.creator.url) {
+      html.link({href: this.creator.url}, this.creator.name);
+   } else if (mode === "url") {
       res.write(this.creator.url);
-   else
+   } else {
       res.write(this.creator.name);
-   return;
+   } return;
 };
 
-HopObject.prototype.modifier_macro = function(param) {
-   if (!this.modifier)
+HopObject.prototype.modifier_macro = function(param, mode) {
+   if (!this.modifier || this.isTransient()) {
       return;
-   if (param.as == "link" && this.modifier.url)
-      Html.link({href: this.modifier.url}, this.modifier.name);
-   else if (param.as == "url")
+   }
+   mode || (mode = param.as);
+   if (mode === "link" && this.modifier.url) {
+      html.link({href: this.modifier.url}, this.modifier.name);
+   } else if (mode === "url") {
       res.write(this.modifier.url);
-   else
+   } else {
       res.write(this.modifier.name);
+   }
    return;
-};
-
-HopObject.prototype.self_macro = function() {
-   return this;
 };
 
 HopObject.prototype.getNavigationName = function() {

@@ -9,15 +9,14 @@
 <td colspan="3" class="small">
    <strong>Macro:</strong> &lt;% story <% story.id %> %&gt;<br />
    <div class="ample"><strong>Status: </strong><% story.status %><!--
-   --><% story.tags prefix=" in " as="link" %>,
-   <a href="<% story.link %>#comments"><% ngettext "{0} comment" 
-   "{0} comments" <% story.comments.size %> %></a></div>
+   --><% story.tags link prefix=" in " %>,
+   <% story.comments link %></div>
 </td>
 </tr>
 <tr valign="top">
 <td>
-   <div class="storyTitle"><% story.title %><% story.creator.hash %></div>
-   <div class="storyDate"><% story.creator | link <% story.creator.url %> %>
+   <div class="storyTitle"><% story.title %></div>
+   <div class="storyDate"><% story.creator link %>
    <% story.created short prefix=" on " %></div>
    <% story.text | clip %>
 </td>

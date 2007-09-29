@@ -2,7 +2,7 @@
    <% story.title %>
 </div>
 <div class="storyDate">
-   <% story.creator | link <% story.creator.url %> %>
+   <% story.creator link %>
    <% story.created HH:mm suffix="h" %>
 </div>
 

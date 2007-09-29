@@ -218,6 +218,7 @@ Site.prototype.update = function(data) {
    });
    
    this.touch();
+   this.clearCache();
    return;
 };
 
@@ -1007,7 +1008,7 @@ Site.prototype.getLayouts = function() {
 Site.prototype.getLocale = function() {
    var locale, language, country;
    if (locale = this.cache.locale) {
-       return locale;
+      return locale;
    }
    if (language = this.language) {
       if (country = this.country) {
@@ -1018,8 +1019,7 @@ Site.prototype.getLocale = function() {
    } else {
       locale = java.util.Locale.getDefault();
    }
-   this.cache.locale = locale;
-   return locale;
+   return this.cache.locale = locale;
 };
 
 Site.prototype.getDateSymbols = function() {
@@ -1334,7 +1334,7 @@ Site.prototype.renderStorylist = function(day) {
          }
       }
    }
-   var days = this.metadata.get("days") ? this.metadata.get("days") : 2;
+   var days = this.pageSize || 2;
    days = Math.min (days, 14);  // render 14 days max
    this.prefetchChildren(idx, days);
 
@@ -1346,16 +1346,16 @@ Site.prototype.renderStorylist = function(day) {
       var sp = new Object();
       var prev = this.get (Math.max(0, idx-days));
       sp.url = this.href() + "?day=" + prev.groupname;
-      sp.text = getMessage("Story.newerStories");
+      sp.text = gettext("later stories");
       res.data.prevpage = renderSkinAsString("prevpagelink", sp);
    }
    days = Math.min(idx + days++, this.size());
    res.push();
    while (idx < days) {
       var day = this.get(idx);
-      day.get(0).renderSkin("dayheader");
+      day.get(0).renderSkin("Story#day");
       for (var i=0;i<day.size();i++) {
-         day.get(i).renderSkin("preview");
+         day.get(i).renderSkin("Story#preview");
       }
       idx += 1;
    }
@@ -1364,7 +1364,7 @@ Site.prototype.renderStorylist = function(day) {
       var sp = new Object();
       var next = this.get (idx);
       sp.url = this.href() + "?day=" + next.groupname;
-      sp.text = getMessage("Story.olderStories");
+      sp.text = gettext("earlier stories");
       res.data.nextpage = renderSkinAsString("nextpagelink", sp);
    }
    return;

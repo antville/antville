@@ -219,14 +219,15 @@ function renderLink(param, url, text, handler) {
    }
    delete param.url;
    delete param.text;
-   if (!handler || url.contains(":") || url.contains("?")) {
+   if (!handler || url.contains(":")) {
       param.href = url;
-   } else if (url.contains("/")) {
-      param.href = handler.href() + url;
+   } else if (url.contains("/") || url.contains("?") || url.contains("#")) {
+      var parts = url.split(/(\/|\?|#)/);
+      param.href = handler.href(parts[0]) + parts.splice(1).join(String.EMPTY);
    } else {
       param.href = handler.href(url);
    }
-   html.link(param, text);
+   html.link(param, gettext(text));
 }
 
 /**
@@ -832,7 +833,7 @@ function formatDate(date, pattern) {
    var site = res.handlers.site;
    var format = site[pattern.toLowerCase() + "DateFormat"];
    if (!format) {
-     format = pattern;
+      format = pattern;
    }
    try {
       return date.format(format, site.getLocale(), site.getTimeZone());
@@ -1563,11 +1564,14 @@ function link_filter(value, param, url) {
 }
 
 function format_filter(value, param, pattern) {
-   if (value && value.format) {
-      // FIXME: var locale = res.handlers.site.language;
-      return value.format(pattern || param.pattern);
+   if (!value) {
+      return;
    }
-   return;
+   var f = "format" + value.constructor.name;
+   if (f && f.constructor === Function) {
+      return f(value, pattern || param.pattern);
+   }
+   return value;
 }
 
 function clip_filter(input, param, limit, clipping, delimiter) {

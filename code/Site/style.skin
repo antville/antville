@@ -185,6 +185,7 @@ a:hover {text-decoration: underline;}
 
 .listSeparator {
    width: 50px;
+   height: 1em;
    border-bottom: 2px dotted #dddddd;
    margin-top: 10px;
    margin-bottom: 4px;

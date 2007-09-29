@@ -39,10 +39,10 @@ Stories.prototype.getPermission = function(action) {
 };
 
 Stories.prototype.main_action = function() {
-   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.list = renderList(this, "Story#stories", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(this, 
          this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Public stories of {0}", this._parent.title);
+   res.data.title = gettext("Stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -53,7 +53,7 @@ Stories.prototype.create_action = function() {
       restoreRescuedText();
    }
    
-   var story = new Story();
+   var story = new Story;
    if (req.postParams.save) {
       //try {
          story.update(req.postParams);
@@ -67,8 +67,8 @@ Stories.prototype.create_action = function() {
    }
    
    res.data.title = gettext("Add story to {0}", this._parent.title);
-   res.data.action = this.href("create");
-   res.data.body = story.renderSkinAsString("edit");
+   res.data.action = this.href(req.action);
+   res.data.body = story.renderSkinAsString("Story#edit");
    this._parent.renderSkin("page");
    return;
 };

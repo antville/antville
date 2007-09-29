@@ -1,8 +1,20 @@
-<br /><a name="form"></a>
+<br />
+<a name="form" id="form"></a>
 <form method="post" action="<% response.action %>">
-<p><span class="small">Title:<br /></span>
-<% comment.content part="title" as="editor" size="25" class="formTitle" %></p>
-<p><span class="small">Text:</span><br />
-<% comment.content part="text" as="editor" cols="31" rows="10" class="formText" %></p>
-<p><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></p>
+<p>
+   <span class="small">Title:</span><br />
+   <% comment.input title class="formTitle" %>
+</p>
+<p>
+   <span class="small">Text:</span><br />
+   <% comment.textarea text cols="31" rows="10" class="formText" %>
+</p>
+<p class="small">
+   Created by <% comment.creator %> on <% comment.created %><br />
+   Last modified by <% comment.modifier %> on <% comment.modified %>
+</p>
+<p>
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</p>
 </form>

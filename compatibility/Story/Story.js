@@ -230,3 +230,32 @@ Story.prototype.createtime_macro = function(param) {
    }
    return;
 };
+
+Story.prototype.commentcounter_macro = function(param) {
+   if (!this.site.metadata.get("discussions") || !this.discussions)
+      return;
+   var commentCnt = this.comments.count();
+   if (!param.linkto)
+      param.linkto = "main";
+   var linkParam = this.createLinkParam(param);
+   // delete the macro-specific attributes for valid markup output
+   delete linkParam.as;
+   delete linkParam.one;
+   delete linkParam.more;
+   delete linkParam.no;
+   var linkflag = (param.as == "link" && param.as != "text" || 
+                   !param.as && commentCnt > 0);
+   if (linkflag)
+      html.openTag("a", linkParam);
+   if (commentCnt == 0)
+      res.write(param.no || param.no == "" ? 
+                param.no : getMessage("Comment.no"));
+   else if (commentCnt == 1)
+      res.write(param.one ? param.one : getMessage("Comment.one"));
+   else
+      res.write(commentCnt + (param.more ? 
+                param.more : " " + getMessage("Comment.more")));
+   if (linkflag)
+      html.closeTag("a");
+   return;
+};

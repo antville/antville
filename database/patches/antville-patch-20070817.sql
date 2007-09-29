@@ -200,6 +200,10 @@ alter table av_file rename file;
 ## Update table av_text
 ##
 
+alter table av_text add column parent_type varchar(30);
+update av_text set parent_type = "Story";
+update av_text set parent_type = "Comment" where parent_id is not null;
+
 alter table av_text add column status enum('private','hidden','public');
 update av_text set status = 'private';
 update av_text set status = 'hidden' where text_isonline = 1;
@@ -210,9 +214,9 @@ update av_text set mode = 'default';
 update av_text set mode = 'shared' where text_editableby = 1;
 update av_text set mode = 'open' where text_editableby = 2;
 
-alter table av_text add column comment_mode enum('closed','readonly','moderated','open');
-update av_text set comment_mode = 'closed';
-update av_text set comment_mode = 'open' where text_hasdiscussions = 1;
+alter table av_text add column comments_mode enum('closed','readonly','moderated','open');
+update av_text set comments_mode = 'closed';
+update av_text set comments_mode = 'open' where text_hasdiscussions = 1;
 
 alter table av_text change column text_id id mediumint(10);
 alter table av_text change column text_alias name varchar(255);

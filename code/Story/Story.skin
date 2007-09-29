@@ -1,0 +1,105 @@
+<% #main %>
+<% story.skin Story#day %>
+<% story.skin Story#content %>
+<p class="small">
+   <% story.link comment#form prefix="... " %>
+   <% story.link edit prefix=" ... " %>
+   <% story.link online prefix=" ... " %>
+</p>
+<a name="comments" id="comments"></a>
+<p><% story.comments %></p>
+<p><% story.backlinks %></p>
+
+<% #day %>
+<div class="dayHeader"><% story.created format="EEEE, d. MMMM yyyy" %></div>
+
+<% #content %>
+<div class="storyTitle">
+   <% story.title %>
+</div>
+<div class="storyDate">
+   <% story.creator link %>
+   <% story.created HH:mm suffix="h" %>
+</div>
+<div><% story.text %></div>
+
+<% #preview %>
+<% story.skin Story#content %>
+<p class="small">
+   <% story.link . link prefix="... " %>
+   <% story.comments link prefix="(" suffix=")" %>
+   <% story.link comment#form prefix=" ... " %>
+   <% story.link edit prefix=" ... " %>
+</p>
+<br />
+
+<% #comment %>
+<% story.skin Story#day %>
+<% story.skin Story#content %>
+
+<% #stories %>
+<div class="listSeparator"> </div>
+<table cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<% if <% story.status %> is private then 
+   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+   class="listFlag">p<br />r<br />i<br />v<br />a<br />t<br />e</td>
+   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+%>
+<% if <% story.status %> is hidden then 
+   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+   class="listFlag">h<br />i<br />d<br />d<br />e<br />n</td>
+   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+%>
+<td colspan="3" class="small">
+   <strong>Macro:</strong> &lt;% story <% story.id %> %&gt;<br />
+   <div class="ample"><strong>Status: </strong><% story.status %><!--
+   --><% story.tags link prefix=" in " %>,
+   <% story.comments link %></div>
+</td>
+</tr>
+<tr valign="top">
+<td>
+   <div class="storyTitle"><% story.title %></div>
+   <div class="storyDate"><% story.creator link %>
+   <% story.created short prefix=" on " %></div>
+   <% story.text | clip %>
+</td>
+<td width="10" nowrap="nowrap"> </td>
+<td align="right" class="small">
+   <% story.link edit prefix="... " suffix="<br />" %>
+   <% story.link . view prefix="... " suffix="<br />" %>
+   <% story.link rotate prefix="... " suffix="<br />" %>
+   <% story.link delete prefix="... " %>
+</td>
+</tr>
+</table>
+
+<% #edit %>
+<form method="post" action="<% response.action %>">
+<p>
+   <div class="small">Title:</div>
+   <div><% story.input title class="formTitle" %></div>
+</p>
+<p>
+   <div class="small">Text:</div>
+   <div><% story.textarea text cols="30" rows="15" class="formText" %></div>
+</p>
+<p><fieldset>
+   <legend class="small">Options</legend>
+   <p>Tags: <% story.input tags %></p> 
+   <p>The story is <% story.select status %> and <% story.select mode %></p>
+   <p>Comments of the story are <% story.select commentsMode %></p>
+</fieldset></p>
+<p class="small">
+   <% story.creator prefix="Created by " %>
+   <% story.created short prefix=" on " suffix="<br />" %>
+   <% story.modifier prefix="Last modified by " %>
+   <% story.modified short prefix=" on " %>
+</p>
+<p>
+   <button type="submit" name="save" value="1">save</button>
+   <!--button type="submit" name="save" value="2">publish</button-->
+   <button type="submit" name="cancel" value="1">cancel</button>
+</p>
+</form>

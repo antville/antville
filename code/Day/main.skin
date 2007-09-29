@@ -1,5 +1,3 @@
-<div class="pagelink">
-   <% response.prevpage %>
-</div>
+<div class="pagelink"><% response.prevpage %></div>
 <% response.list %>
 <% response.nextpage %>

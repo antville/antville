@@ -1,20 +1,16 @@
-<div class="listSeparator">&nbsp;</div>
+<div class="listSeparator"></div>
 <div class="storyDate">
- <% comment.creator as="link"  %>, 
- <% comment.createtime format="long" %>
+   <% comment.creator link  %>, 
+   <% comment.created long %>
 </div>
-<div class="title">
- <% comment.content part="title" %>
-</div>
-<div>
- <% comment.content part="text" %>
-</div>
+<div class="title"><% comment.title %></div>
+<div><% comment.text %></div>
 <p class="small">
- <% comment.link text="link" prefix="...&nbsp;" %>&nbsp;&nbsp;
- <% comment.editlink prefix="...&nbsp;" suffix="&nbsp;&nbsp;" %>
- <% comment.deletelink prefix="...&nbsp;" %>
+   <% comment.link . link prefix="... " %> 
+   <% comment.link edit prefix="... " %>
+   <% comment.link delete prefix="... " %>
 </p>
 <% comment.comments %>
-<div class="reply"><span class="small">
- <% comment.replylink text="comment" anchor="form" prefix="<br />...&nbsp;" %>
-</span></div>
+<div class="reply small">
+   <% comment.link comment#form prefix="<br />... " %>
+</div>

@@ -1,0 +1,63 @@
+<% #main %>
+<div class="listSeparator"></div>
+<% comment.skin Comment#content %>
+<p class="small">
+   <% comment.link . link prefix="... " %> 
+   <% comment.link edit prefix="... " %>
+   <% comment.link delete prefix="... " %>
+</p>
+<% comment.comments %>
+<div class="reply small">
+   <% comment.link comment#form prefix="<br />... " %>
+</div>
+
+<% #content %>
+<div class="storyDate">
+   <!-- This is: <% comment.self %><br />
+   Prototype: <% comment.prototype %><br />
+   Parent: <% comment.parent_type %> #<% comment.parent_id %><br />
+   Story: <% comment.story %><br /> -->
+   <% comment.creator link  %>, <% comment.created short %>
+</div>
+<div class="title"><% comment.title %></div>
+<div><% comment.text %></div>
+
+<% #comment %>
+<% comment.skin Comment#content %>
+
+<% #level_2 %>
+<div class="reply">
+   <div class="listSeparator"></div>
+   <% comment.skin Comment#content %>
+   <p class="small">
+      <% comment.link . link prefix="... " %>
+      <% comment.link edit prefix="... " %>
+      <% comment.link delete prefix="... " %>
+   </p>
+</div>
+
+<% #edit %>
+<% parent.skin <% parent.type suffix="#comment" %> %>
+<a name="form" id="form"></a>
+<br />
+<a name="form" id="form"></a>
+<form method="post" action="<% response.action %>">
+<p>
+   <span class="small">Title:</span><br />
+   <% comment.input title class="formTitle" %>
+</p>
+<p>
+   <span class="small">Text:</span><br />
+   <% comment.textarea text cols="31" rows="10" class="formText" %>
+</p>
+<p class="small">
+   <% comment.creator prefix="Created by " %>
+   <% comment.created prefix=" on " suffix="<br />" %>
+   <% comment.modifier prefix="Last modified by " %>
+   <% comment.modified prefix=" on " %>
+</p>
+<p>
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</p>
+</form>

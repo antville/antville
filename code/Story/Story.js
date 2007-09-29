@@ -41,9 +41,11 @@ Story.prototype.getPermission = function(action) {
       case ".":
       case "main":
       return true;
+      case "comment":
+      return !!session.user;
       case "delete":
       case "edit":
-      case "publish":
+      case "rotate":
       return User.getPermission(User.PRIVILEGED) ||
             Membership.getPermission(Membership.OWNER);
    }
@@ -52,7 +54,7 @@ Story.prototype.getPermission = function(action) {
 
 Story.prototype.main_action = function() {
    res.data.title = this.getTitle();
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Story#main");
    this.site.renderSkin("page");
    this.incrementReadCounter();
    logAction();
@@ -81,7 +83,7 @@ Story.prototype.edit_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext('Edit story "{0}"', this.getTitle());
-   res.data.body = this.renderSkinAsString("edit");
+   res.data.body = this.renderSkinAsString("Story#edit");
    this.site.renderSkin("page");
    return;
 };
@@ -184,42 +186,85 @@ Story.remove = function() {
    return;
 };
 
+Story.prototype.rotate_action = function() {
+   this.status = this.getRotation();
+   return res.redirect(this._parent.href());
+};
+
+Story.prototype.getRotation = function() {
+   var rotation = [Story.PRIVATE, Story.PUBLIC, Story.HIDDEN];
+   return rotation[(rotation.indexOf(this.status) + 1) % 3];
+};
+
 Story.prototype.comment_action = function() {
-   // restore any rescued text
-   if (session.data.rescuedText)
+   if (session.data.rescuedText) {
       restoreRescuedText();
-   
-   if (req.data.cancel)
-      res.redirect(this.href());
-   else if (req.data.save) {
+   }
+   var comment = new Comment(this);
+   if (req.postParams.save) {
       try {
-         var result = this.evalComment(req.data, session.user);
-         res.message = result.toString();
-         res.redirect(this.href() + "#" + result.id);
-      } catch (err) {
-         res.message = err.toString();
+         comment.update(req.postParams);
+         this.add(comment);
+         // Force addition to aggressively cached subcollection
+         (this.story || this).comments.add(comment);
+         res.message = gettext("The comment was successfully created.");
+         res.redirect(comment.href());
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
       }
    }
-   
+   res.handlers.parent = this;
    res.data.action = this.href(req.action);
-   res.data.title = this.site.title;
-   if (this.title)
-      res.data.title += " - " + encode(this.title);
-   res.data.body = this.renderSkinAsString("comment");
+   res.data.title = gettext("Add comment to {0}", this.getTitle());
+   res.data.body = comment.renderSkinAsString("Comment#edit");
    this.site.renderSkin("page");
-   // increment read-counter
    this.incrementReadCounter();
    return;
 };
 
-Story.prototype.getMacroHandler = function(name) {
-   switch (name) {
-      case "comments":
-      return this.comments;
-      case "creator":
-      return this.creator;
+Story.prototype.link_macro = function(param, action, text) {
+   switch (action) {
+      case "rotate":
+      switch (this.getRotation()) {
+         case Story.PUBLIC:
+         text = gettext("publish"); break;
+         case Story.HIDDEN:
+         text = gettext("hide"); break;
+         case Story.PRIVATE:
+         text = gettext("unpublish"); break;
+      }
    }
-   return null;
+   return HopObject.prototype.link_macro.call(this, param, action, text);
+};
+
+Story.prototype.comments_macro = function(param, mode) {
+   var story = this.story || this;
+   if (mode) {
+      var n = this.comments.size() || 0;
+      var text = ngettext("{0} comment", "{0} comments", n);
+      if (mode === "count" || mode === "size") {
+         res.write(text);
+      } else if (mode === "link") {
+         n < 1 ? res.write(text) : 
+               html.link({href: this.href() + "#comments"}, text);
+      }
+   } else {
+      if (story.site.commentsMode === Site.CLOSED || 
+            story.commentsMode === Site.CLOSED) {
+         //html.element("em", gettext("This story''s comments are closed."));
+      } else {
+         this.comments.prefetchChildren();
+         this.forEach(function() {
+            html.openTag("a", {name: this._id});
+            //res.write(this.size())
+            html.closeTag("a");
+            this.renderSkin(this.parent.constructor === Story ? 
+                  "Comment#main" : "Comment#level_2");
+         });
+      }
+   }
+   return;
 };
 
 Story.prototype.content_macro = function(param) {
@@ -270,57 +315,10 @@ Story.prototype.content_macro = function(param) {
    return;
 };
 
-Story.prototype.commentcounter_macro = function(param) {
-   if (!this.site.metadata.get("discussions") || !this.discussions)
-      return;
-   var commentCnt = this.comments.count();
-   if (!param.linkto)
-      param.linkto = "main";
-   var linkParam = this.createLinkParam(param);
-   // delete the macro-specific attributes for valid markup output
-   delete linkParam.as;
-   delete linkParam.one;
-   delete linkParam.more;
-   delete linkParam.no;
-   var linkflag = (param.as == "link" && param.as != "text" || 
-                   !param.as && commentCnt > 0);
-   if (linkflag)
-      html.openTag("a", linkParam);
-   if (commentCnt == 0)
-      res.write(param.no || param.no == "" ? 
-                param.no : getMessage("Comment.no"));
-   else if (commentCnt == 1)
-      res.write(param.one ? param.one : getMessage("Comment.one"));
-   else
-      res.write(commentCnt + (param.more ? 
-                param.more : " " + getMessage("Comment.more")));
-   if (linkflag)
-      html.closeTag("a");
-   return;
-};
-
-Story.prototype.comments_macro = function(param) {
-   var s = this.story ? this.story : this;
-   if (!s.site.metadata.get("discussions") || !s.discussions)
-      return;
-   this.comments.prefetchChildren();
-   for (var i=0;i<this.size();i++) {
-      var c = this.get(i);
-      var linkParam = new Object();
-      linkParam.name = c._id;
-      html.openTag("a", linkParam);
-      html.closeTag("a");
-      if (c.parent)
-         c.renderSkin("reply");
-      else
-         c.renderSkin("toplevel");
-   }
-   return;
-};
-
 Story.prototype.commentform_macro = function(param) {
-   if (!this.discussions)
+   if (this.commentsMode === "closed") {
       return;
+   }
    if (session.user) {
       res.data.action = this.href("comment");
       (new Comment()).renderSkin("edit");
@@ -443,46 +441,6 @@ Story.prototype.removeTag = function(tag) {
    return;
 };
 
-Story.prototype.toggleOnline = function(newStatus) {
-   if (newStatus == "online") {
-      this.online = 2;
-      this.site.lastupdate = new Date();
-   } else if (newStatus == "offline")
-      this.online = 0;
-
-   // add the modified story to search index
-   app.data.indexManager.getQueue(this.site).add(this);
-   return true;
-};
-
-Story.prototype.evalComment = function(param, creator) {
-   // collect content
-   var content = extractContent(param);
-   if (!content.exists)
-      throw new Exception("textMissing");
-   var c = new Comment(this.site, creator, param.http_remotehost);
-   c.content.setAll(content.value);
-   // let's keep the title property:
-   c.title = content.value.title;
-   this.add(c);
-   // also add to story.comments since it has
-   // cachemode set to aggressive and wouldn't refetch
-   // its child collection index otherwise
-   if (this.story)
-      this.story.comments.add(c);
-   else
-      this.comments.add(c);
-   this.site.lastupdate = new Date();
-   // send e-mail notification
-   if (this.site.isNotificationEnabled())
-      this.site.sendNotification("create", c);
-   var result = new Message("commentCreate");
-   result.id = c._id;
-   // add the new comment to search index
-   app.data.indexManager.getQueue(this.site).add(c);
-   return result;
-};
-
 Story.prototype.deleteComment = function(commentObj) {
    for (var i=commentObj.size();i>0;i--)
       this.deleteComment(commentObj.get(i-1));
@@ -543,6 +501,7 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
 };
 
 Story.prototype.incrementReadCounter = function() {
+   return; // FIXME FIXME FIXME
    // Do not record requests by the story creator
    if (session.user === this.creator) {
       return;

@@ -33,7 +33,6 @@ User.prototype.status_macro = function(param) {
       res.write(this.status);
    }
    return;
-   
 };
 
 User.prototype.name_macro = function(param) {

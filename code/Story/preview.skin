@@ -1,7 +1,7 @@
-<% story.skin name="display" %>
+<% story.skin Story#main %>
 <p class="small">
 <% story.link . link prefix="... " %>
-<% story.comments.size prefix="(" suffix=")" | story.link %>
+<% story.comments link prefix="(" suffix=")" %>
 <% story.link comment prefix=" ... " %>
 <% story.link edit prefix=" ... " %>
 </p>

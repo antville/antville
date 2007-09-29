@@ -4,7 +4,8 @@
 <p class="small">
    <% story.link comment prefix="... " %>
    <% story.link edit prefix=" ... " %>
-   <% story.link online prefix=" ... " %></p>
+   <% story.link online prefix=" ... " %>
+</p>
 
 <a name="comments" id="comments"></a>
 <p><% story.comments %></p>
