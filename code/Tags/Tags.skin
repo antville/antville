@@ -1,4 +1,4 @@
-<div class="pagelink"><% linkedpath %></div><br />
+<div class="pagelink"><% breadcrumbs %></div><br />
 
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>

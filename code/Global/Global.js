@@ -253,22 +253,18 @@ function file_macro(param) {
  * Macro creates a string representing the objects in the
  * current request path, linked to their main action.
  */
-function breadcrumbs_macro (param) {
-   var separator = param.separator;
-   if (!separator)
-      separator = " : ";
-   var title;
-   var start = (path.Site == null) ? 0 : 1;
-   for (var i=start; i<path.length-1; i++) {
-      title = path[i].getNavigationName();
-      html.link({href: path[i].href()}, title);
-      res.write(separator);
+function breadcrumbs_macro (param, delimiter) {
+   delimiter || (delimiter = param.separator || " : ");
+   for (var i = 0; i < path.length - 1; i += 1) {
+      html.link({href: path[i].href()}, path[i].getTitle());
+      res.write(delimiter);
    }
-   title = path[i].getNavigationName();
-   if (req.action != "main" && path[i].main_action)
+   var title = path[i].getTitle();
+   if (req.action !== "main" && path[i].main_action) {
       html.link({href: path[i].href()}, title);
-   else
+   } else {
       res.write(title);
+   }
    return;
 }
 

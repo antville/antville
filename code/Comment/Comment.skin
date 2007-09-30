@@ -20,7 +20,7 @@
    <% comment.creator link  %>, <% comment.created short %>
 </div>
 <div class="title"><% comment.title %></div>
-<div><% comment.text %></div>
+<div><% comment.text | comment.format %></div>
 
 <% #comment %>
 <% comment.skin Comment#content %>

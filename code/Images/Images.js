@@ -28,6 +28,8 @@ Images.prototype.getPermission = function(action) {
       case "main":
       case "create":
       case "member":
+      case "default":
+      case "additional":
       return User.getPermission(User.PRIVILEGED) ||
             Membership.getPermission(Membership.MANAGER);
    }
@@ -35,30 +37,35 @@ Images.prototype.getPermission = function(action) {
 };
 
 Images.prototype.main_action = function() {
-   switch (this.getContext()) {
-      case "Site":
+   switch (this._parent.constructor) {
+      case Site:
+      res.data.pager = renderPageNavigation(this, this.href(), 
+           10, req.queryParams.page);
       res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
       res.data.title = gettext("Images of {0}", this._parent.title);
+      res.data.body = this.renderSkinAsString("Images#main");
       break;
-      case "Layout":
-      res.data.list = renderList(this.mergeImages(), 
+      case Layout:
+      var images = this.mergeImages();
+      res.data.pager = renderPageNavigation(images,
+            this.href(), 10, req.queryParams.page);
+      res.data.list = renderList(images, 
             "mgrlistitem", 10, req.queryParams.page);
       res.data.title = gettext("Layout images of {0}", this._parent.title);
+      res.data.body = this.renderSkinAsString("Images#layout");
       break;
    }
-   res.data.pager = renderPageNavigation(this, 
-         this.href(), 10, req.queryParams.page);
-   res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
    return;
 };
 
 Images.prototype.create_action = function() {
    var image = new Image;
-
+   image.parent_type = this._parent._prototype;
+   
    if (req.postParams.save) {
       try {
-         image.update(req.data);
+         image.update(req.postParams);
          this.add(image);
          res.message = gettext('The uploaded image was saved successfully. Its name is "{0}"', 
                image.name);
@@ -86,10 +93,6 @@ Images.prototype.member_action = function() {
    res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
    return;
-};
-
-Images.prototype.getContext = function() {
-   return this._parent._prototype;
 };
 
 Images.Default = {
@@ -132,30 +135,28 @@ Images.Default = {
 
 Images.prototype.default_action = function() {
    if (!this._parent.parent) {
-      res.message = new Exception("layoutNoParent");
+      res.message = new Error(gettext("There are no standard images since this layout isn't based on another one."));
       res.redirect(this.href());
    }
-   res.data.imagelist = renderList(this._parent.parent.images, "mgrlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this._parent.parent.images, this.href(req.action), 10, req.data.page);
-   res.data.title = getMessage("LayoutMgr.listParentImagesTitle", {parentLayoutTitle: this._parent.parent.title});
-   res.data.body = this.renderSkinAsString("main");
-   res.handlers.context.renderSkin("page");
+   res.data.list = renderList(this._parent.parent.images, 
+         "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this._parent.parent.images, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Default layout images of {0}", 
+         res.handlers.site.title);
+   res.data.body = this.renderSkinAsString("Images#layout");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
 Images.prototype.additional_action = function() {
-   res.data.imagelist = renderList(this, "mgrlistitem", 10, req.data.page);
-   res.data.pagenavigation = renderPageNavigation(this, this.href(req.action), 10, req.data.page);
-   res.data.title = getMessage("LayoutMgr.listImagesTitle", {parentLayoutTitle: this._parent.title});
-   res.data.body = this.renderSkinAsString("main");
+   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Additional layout images of {0}",
+         res.handlers.site.title);
+   res.data.body = this.renderSkinAsString("Images#layout");
    res.handlers.context.renderSkin("page");
-   return;
-};
-
-Images.prototype.navigation_macro = function(param) {
-   if (!this._parent.parent || !this._parent.parent.images.size())
-      return;
-   this.renderSkin(param.skin ? param.skin : "navigation");
    return;
 };
 
@@ -208,13 +209,6 @@ Images.prototype.evalImport = function(metadata, files) {
    return true;
 };
 
-/**
- * create a new Image based on the metadata passed
- * as argument
- * @param Object Layout-Object this image should belong to
- * @param Object JS object containing the image-metadata
- * @return Object created image object
- */
 Images.prototype.importImage = function(layout, data) {
    // FIXME: replace the creator with a more intelligent solution ...
    var img = new Image(session.user);
@@ -236,30 +230,19 @@ Images.prototype.importImage = function(layout, data) {
 };
 
 Images.prototype.mergeImages = function() {
-   var coll = [];
-   // object to store the already added image aliases
-   // used to avoid duplicate images in the list
-   var keys = {};
-
-   // private method to add a custom skin
-   var addImages = function(mgr) {
-      var size = mgr.size();
-      for (var i=0;i<size;i++) {
-         var img = mgr.get(i);
-         var key = img.alias;
-         if (!keys[key]) {
-            keys[key] = img;
-            coll.push(img);
-         }
-      }
-   }
+   var images = [];
    var layout = this._parent;
    while (layout) {
-      addImages(layout.images);
+      layout.images.forEach(function() {
+         if (images.indexOf(this) < 0) {
+       res.debug(this.name);
+            images.push(this);
+         }
+         return;
+      });
       layout = layout.parent;
    }
-   coll.sort(new Function("a", "b", "return b.createtime - a.createtime"));
-   return coll;
+   return images.sort(Number.Sorter("created", Number.Sorter.DESC));
 };
 
 Images.prototype.getTags = function(group) {

@@ -54,19 +54,6 @@ Root.prototype.getPermission = function(action) {
    return Site.prototype.getPermission.apply(this, arguments);
 }
 
-Root.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "notificationScope":
-      return Root.getScopes();
-      case "creationScope":
-      return User.getScopes();
-      case "autoCleanupStartTime":
-      return Admin.getHours();
-      return;
-   }
-   return Site.prototype.getFormOptions.apply(this, arguments);
-};
-
 Root.prototype._main_action = function() {
    //log();
    flushLog();
@@ -90,6 +77,19 @@ Root.prototype._main_action = function() {
    res.data.body = root.renderSkinAsString("main");
    root.renderSkin("page");
    return;
+};
+
+Root.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "notificationScope":
+      return Root.getScopes();
+      case "creationScope":
+      return User.getScopes();
+      case "autoCleanupStartTime":
+      return Admin.getHours();
+      return;
+   }
+   return Site.prototype.getFormOptions.apply(this, arguments);
 };
 
 Root.prototype.error_action = function() {

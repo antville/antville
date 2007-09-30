@@ -194,10 +194,6 @@ Tags.prototype.getPageSize = function() {
    return 25;
 };
 
-Tags.prototype.getNavigationName  = function() {
-   return this._id.titleize();
-};
-
 Tags.prototype.getAction = function() {
    return (req.action === "main" ? String.EMPTY : req.action);
 };

@@ -1,4 +1,4 @@
-<div class="pagelink"><% linkedpath %>
+<div class="pagelink"><% breadcrumbs %>
 <% if <% tag.permission edit %> is true then <% tag.skin name="Tag#controls" %> %>
 </div><br />
 

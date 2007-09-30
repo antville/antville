@@ -39,13 +39,17 @@ HopObject.prototype.onRequest = function() {
          case Membership:
          res.redirect(this._parent.href());
          case Skin:
-         res.redirect(res.handlers.skins.href());
          case Skins:
-         res.redirect("?skinset=" + req.postParams.skinset +
-               "#" + req.postParams.key)
+         res.redirect(Skins.getRedirectUrl(req.postParams));
          default:
          res.redirect(this.href());
       }
+   }
+
+   if (!this.getPermission(req.action)) {
+      res.status = 401;
+      res.write("Sorry, you are not allowed to access this part of the site.");
+      res.stop();
    }
 
    // FIXME: do we still need this?
@@ -86,7 +90,7 @@ HopObject.prototype.onRequest = function() {
       res.message = session.data.layout.renderSkinAsString("testdrive");
    } else {
       // define layout handler
-      res.handlers.layout = res.handlers.context.getLayout();
+      res.handlers.layout = res.handlers.site.layout;
    }
 
    // set skinpath
@@ -99,26 +103,21 @@ HopObject.prototype.onRequest = function() {
       res.redirect(res.handlers.context.href());
    }
    
-   if (!this.getPermission(req.action)) {
-      res.status = 401;
-      res.write("Sorry, you are not allowed to access this part of the site.");
-      res.stop();
-   }
    return;
 };
 
 HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
-      try {
+      //try {
          var str = this.toString();
          var href = this._parent.href();
          this.constructor.remove.call(this, this);
          res.message = gettext("{0} was successfully deleted.", str);
          res.redirect(session.data.retrace || href);
-      } catch(ex) {
+      /*} catch(ex) {
          res.message = ex;
          app.log(ex);
-      }
+      }*/
    }
 
    res.data.action = this.href(req.action);
@@ -227,7 +226,7 @@ HopObject.prototype.getFormValue = function(name) {
    if (req.isPost()) {
       return req.postParams[name];
    } else {
-      var value = this[name] || "";
+      var value = this[name] || req.queryParams[name] || String.EMPTY;
       return value instanceof HopObject ? value._id : value;
    }
 };
@@ -295,12 +294,8 @@ HopObject.prototype.modifier_macro = function(param, mode) {
    return;
 };
 
-HopObject.prototype.getNavigationName = function() {
-   var proto = this._prototype;
-   var display;
-   if (display = getDisplay(proto))
-      return display;
-   return this.__name__;
+HopObject.prototype.getTitle = function() {
+   return this.title || this.__name__.capitalize();
 };
 
 HopObject.prototype.applyModuleMethod = function(module, funcName, param) {

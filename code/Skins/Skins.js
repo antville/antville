@@ -24,6 +24,8 @@
 
 Skins.prototype.getPermission = function(action) {
    switch (action) {
+      case ".":
+      case "main":
       case "edit":
       case "create":
       return User.getPermission(User.PRIVILEGED) ||
@@ -35,16 +37,21 @@ Skins.prototype.getPermission = function(action) {
 Skins.prototype.main_action = function() {
    res.push();
    var skin;
-   var skins = Skins.getOutline();
+   var skins = this.getOutline();
    html.openTag("ul");
+   var prototype, skins;
    for each (var item in skins) {
-      if (item[1] && item[1].length > 0) {
+      prototype = item[0];
+      skins = item[1];
+      if (skins && skins.length > 0) {
+         html.openTag("a", {name: prototype, id: prototype});
+         html.closeTag("a");
          html.openTag("li");
-         res.write(item[0]);
+         res.write(prototype);
          html.openTag("ul");
-         for each (var subskin in item[1]) {
-            skin = this.getSkin(item[0], subskin) || 
-                  new Skin(res.handlers.site.layout, item[0], subskin);
+         for each (var subskin in skins) {
+            skin = this.getSkin(prototype, subskin) || 
+                  new Skin(prototype, subskin);
             skin.renderSkin("Skin#listItem");
          }
          html.closeTag("ul");
@@ -59,15 +66,15 @@ Skins.prototype.main_action = function() {
    return;
 };
 
-Skins.getOutline = function() {
-   var outline = [];
-   var prototypes = [];
-   for (var prototype in app.skinfiles) {
-      prototypes.push(prototype);
+Skins.prototype.getOutline = function() {
+   var outline = this.cache.outline || []
+   if (outline.length > 0) {
+      return outline;
    }
-   prototypes.sort();
-   var skin, subskins, names;
-   for each (var prototype in prototypes) {
+   var options = Skin.getPrototypeOptions();
+   var prototype, skin, subskins, names;
+   for each (var option in options) {
+      prototype = option.value;
       for (var name in app.skinfiles[prototype]) {
          if (name !== prototype) {
             continue;
@@ -85,58 +92,41 @@ Skins.getOutline = function() {
          outline.push([prototype, names]);
       }
    }
-   return outline
+   this.cache.outline = outline;
+   return outline;
  };
 
-Skins.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "prototype":
-      return Skins.getPrototypeOptions();
-   }
-};
-
 Skins.prototype.create_action = function() {
-   if (req.data.prototype && req.data.name) {
+   var skin = new Skin(req.data.prototype, req.data.name);
+   if (req.postParams.save) {
       try {
-         var skin = this.createSkin(req.data);
-         if (req.postParams.save && !skin.equals(req.postParams.source)) {
+         if (!skin.equals(req.postParams.source)) {
+            skin.setSource(req.postParams.source);
             this.add(skin);
-            res.message = gettext("The changes were saved successfully.");
-            res.redirect(skin.href());
          }
-         res.data.action = this.href(req.action);
-         res.data.title = gettext("Edit skin {0}.{1} of layout {2}", 
-               skin.prototype, skin.name, res.handlers.layout.name);
-         res.data.body = skin.renderSkinAsString("Skin#edit");
-         this.renderSkin("page");
+         res.message = gettext("The changes were saved successfully.");
+         if (req.postParams.save == 1) {
+            res.redirect(skin.href("edit"));
+         } else {
+            res.redirect(Skins.getRedirectUrl(req.postParams));
+         }
       } catch (ex) {
          res.message = ex;
          app.log(ex);
       }
    } else {
-      res.data.action = this.href(req.action);
-      res.data.title = gettext('Create a custom skin for layout "{0}"', 
-            this._parent.title);
-      res.data.body = this.renderSkinAsString("new");
-      res.handlers.site.renderSkin("page");
+      if (skin.getSource()) {
+         res.data.title = gettext("Edit skin {0}.{1} of layout {2}", 
+               skin.prototype, skin.name, res.handlers.layout.name);
+      } else {
+         res.data.title = gettext('Create a custom skin for layout "{0}"', 
+               this._parent.title);
+      }
    }
+   res.data.action = this.href(req.action);
+   res.data.body = skin.renderSkinAsString("Skin#edit");
+   this.renderSkin("page");
    return;
-};
-
-Skins.prototype.createSkin = function(data) {
-   if (!data.prototype) {
-      throw Error(gettext("Please choose a prototype for the custom skin."));
-   } else if (!data.name) {
-      throw Error(gettext("Please choose a name for the custom skin."));
-   } else if (data.name === data.prototype ||
-         (this[data.prototype] && this[data.prototype][data.name]) ||
-         this.getOriginalSkin(data.prototype, data.name) || 
-         (app.skinfiles[data.prototype] && 
-         app.skinfiles[data.prototype][data.name])) {
-      throw Error(gettext("There is already a skin with this name. Please choose another one."));
-   }
-   var skin = new Skin(this._parent, data.prototype, data.name, data.custom);
-   return skin;
 };
 
 Skins.prototype.updateSkin = function(data) {
@@ -205,20 +195,6 @@ Skins.prototype.safe_action = function() {
    res.data.body = this.renderSkinAsString("main");
    this.renderSkin("page");
    return;
-};
-
-Skins.getPrototypeOptions = function() {
-   var prototypes = [];
-   for (var name in app.skinfiles) {
-      if (name.charCodeAt(0) < 91 && name !== "CVS") {
-         if ((name === "Admin" || name === "Root") && 
-               res.handlers.site !== root) {
-            continue;
-         }
-         prototypes.push({value: name, display: name});
-      }
-   }
-   return prototypes.sort(new String.Sorter("display"));
 };
 
 /* FIXME: check if HopObject.remove / Skin.remove do their jobs
@@ -428,6 +404,14 @@ Skins.prototype.renderList = function(collection, action) {
       this.renderSkin("treeleaf", param);
    }
    return res.pop();
+};
+
+Skins.getRedirectUrl = function(data) {
+   var href = res.handlers.skins.href();
+   if (data.prototype) { 
+      return href + "#" + data.prototype;
+   }
+   return href;
 };
 
 Skins.getSummary = function(prefix, prototype, name) {

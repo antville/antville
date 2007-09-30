@@ -1,1 +1,29 @@
+<% #main %>
+<p>To insert an image in a story or comment just copy and paste its code.</p>
+
+<div class="ample">
+   <% images.link create "add an image" prefix="... " %>
+</div>
+<% images.link . "all images" prefix="... show " %>
+<% images.link member "member images" prefix=" | " %>
+
+<% response.pager %>
+<% response.list %>
+<% response.pager %>
+
+<% #layout %>
+<p><% breadcrumbs %></p>
+
+<div class="ample">
+   <% images.link create "add a layout image" prefix="... " %>
+</div>
+<% images.link . "all images" prefix="... show " %>
+<% images.link default "default images" prefix=" | " %>
+<% images.link additional "additional images" prefix=" | " %>
+
+<% response.pager %>
+<% response.list %>
+<% response.pager %>
+
+<% #??? %>
 <% #listItemLayout %>

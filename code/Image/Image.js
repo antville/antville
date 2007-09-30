@@ -43,15 +43,32 @@ Image.prototype.getPermission = function(action) {
    switch (action) {
       case "delete":
       case "edit":
-      return User.getPermission(User.PRIVILEGED) ||
+      return (User.getPermission(User.PRIVILEGED) ||
             Membership.getPermission(Membership.MANAGER) ||
-            this.creator === session.user;
+            this.creator === session.user) && 
+            (this.parent_type !== "Layout" ||
+            this.parent === path.layout);
+      case "replace":
+      return (User.getPermission(User.PRIVILEGED) ||
+            Membership.getPermission(Membership.MANAGER)) &&
+            (this.parent_type === "Layout" && 
+            this.parent !== path.layout);
    }
    return true;
 };
 
+Image.prototype.href = function(action) {
+   if (action !== "replace") {
+      if (this.parent_type === "Layout" && this.parent !== path.layout) {
+         return this.getUrl();
+      }
+   } else {
+      return res.handlers.images.href("create") + "?name=" + this.name;
+   }
+   return HopObject.prototype.href.apply(this, arguments);
+};
+
 Image.prototype.main_action = function() {
-   this.thumbnail_macro();
    res.data.title = gettext("Image {0}", this.name);
    res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
@@ -84,7 +101,7 @@ Image.prototype.getFormValue = function(name) {
       case "tags":
       return this.tags.list();
    }
-   return this[name];
+   return this[name] || req.queryParams[name];
 };
 
 Image.prototype.update = function(data) {
@@ -115,8 +132,10 @@ Image.prototype.update = function(data) {
       this.height = image.height;
 
       if (this.width > Image.THUMBNAILWIDTH) {
-         image = Image.writeToFile(upload, this.getThumbnailFile(), 
+         file = this.getThumbnailFile();
+         image = Image.writeToFile(upload, file, 
                Image.THUMBNAILWIDTH);
+         this.thumbnailName = file.getName();
          this.thumbnailWidth = image.width; 
          this.thumbnailHeight = image.height; 
       }
@@ -146,7 +165,7 @@ Image.prototype.url_macro = function() {
 
 Image.prototype.code_macro = function() {
    res.write("&lt;% ");
-   res.write(this.parent_type === "Layout" ? "layout.image " : "image ");
+   res.write(this.parent.constructor === Layout ? "layout.image " : "image ");
    res.write(this.name); 
    res.write(" %&gt;");
    return;
@@ -180,22 +199,31 @@ Image.prototype.render_macro = function(param) {
 Image.prototype.getFile = function(name) {
    name || (name = this.name);
    if (this.parent_type === "Layout") {
-      return Site.getStaticFile(name, "layouts/" + res.handlers.layout.name);
+      var layout = this.parent || res.handlers.layout;
+      res.push();
+      res.write("layouts/");
+      res.write(layout.name);
+      res.write("/");
+      res.write(name);
+      return layout.site.getStaticFile(res.pop());
    }
-   return Site.getStaticFile("images/" + name);
+   var site = this.parent || res.handlers.site;
+   return site.getStaticFile("images/" + name);
 };
 
 Image.prototype.getUrl = function(name) {
    name || (name = this.name);
-   if (res.handlers.images._parent.constructor === Layout) {
+   if (this.parent_type === "Layout") {
+      var layout = this.parent || res.handlers.layout;
       res.push();
-      res.write(Site.getStaticUrl("layouts/"));
-      res.write(res.handlers.images._parent.name);
+      res.write("layouts/");
+      res.write(layout.name);
       res.write("/");
       res.write(name);
-      return res.pop();
+      return layout.site.getStaticUrl(res.pop());
    }
-   return Site.getStaticUrl("images/" + name);
+   var site = this.parent || res.handlers.site;
+   return site.getStaticUrl("images/" + name);
    // FIXME: testing free proxy for images
    /* var result = "http://www.freeproxy.ca/index.php?url=" + 
    encodeURIComponent(res.pop().rot13()) + "&flags=11111";
@@ -203,7 +231,8 @@ Image.prototype.getUrl = function(name) {
 };
 
 Image.prototype.getThumbnailFile = function() {
-   return this.getFile(this.name.replace(/(\.[^.]+)?$/, "_small$1"));
+   return this.getFile(this.thumbnailName || 
+         this.name.replace(/(\.[^.]+)?$/, "_small$1"));
 };
 
 Image.writeToFile = function(mime, file, maxWidth, maxHeight) {

@@ -16,6 +16,7 @@
 <td align="right" class="small" valign="top">
    <% image.link edit prefix="... " suffix="<br />" %>
    <% image.link delete prefix="... " suffix="<br />" %>
+   <% image.link replace prefix="..." suffix="<br />" %> 
 </td>
 </tr>
 <tr>

@@ -61,8 +61,19 @@ Story.prototype.main_action = function() {
    return;
 };
 
-Story.prototype.getTitle = function() {
-   return stripTags(this.title || this.text).clip(5, "...", "\\s") || this; 
+Story.prototype.getTitle = function(limit) {
+   return this.title || this;
+   var key = this + ":title:" + limit;
+   if (!res.meta[key]) {
+      if (this.title) {
+         res.meta[key] = stripTags(this.title.clip(limit, "...", "\\s"));
+      } else if (this.text) {
+         var parts = stripTags(this.text.embody(limit, "...", "\\s"));
+         res.meta[key] = parts.head;
+         res.meta[this + ":text:" + limit] = parts.tail;
+      }
+   }
+   return res.meta[key] || this; 
 };
 
 Story.prototype.edit_action = function() {
@@ -238,6 +249,37 @@ Story.prototype.link_macro = function(param, action, text) {
    return HopObject.prototype.link_macro.call(this, param, action, text);
 };
 
+Story.prototype.summary_macro = function(param) {
+   param.limit || (param.limit = 15);
+   var keys, summary;
+   if (arguments > 1) {
+      res.push();
+      var content;
+      for (var i=1; i<arguments.length; i+=1) {
+         if (content = this.metadata.get("content_" + arguments[i])) {
+            res.write(content);
+            res.write(String.SPACE);
+         }
+      }      
+      summary = res.pop();
+   }
+   if (!summary) {
+      summary = (this.title || String.EMPTY) + String.SPACE + 
+            (this.text || String.EMPTY);
+   }
+   var clipped = stripTags(summary).clip(param.limit, param.clipping, "\\s");
+   var head = clipped.split(/(\s)/, param.limit * 0.6).join(String.EMPTY);
+   var tail = clipped.substring(head.length).trim();
+   head = head.trim();
+   if (!head && !tail) {
+      head = "...";
+   }
+   html.link({href: this.href()}, head);
+   res.writeln("\n");
+   res.write(tail);
+   return;
+};
+
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
    if (mode) {
@@ -259,58 +301,10 @@ Story.prototype.comments_macro = function(param, mode) {
             html.openTag("a", {name: this._id});
             //res.write(this.size())
             html.closeTag("a");
-            this.renderSkin(this.parent.constructor === Story ? 
+            this.renderSkin(  this.parent.constructor === Story ? 
                   "Comment#main" : "Comment#level_2");
          });
       }
-   }
-   return;
-};
-
-Story.prototype.content_macro = function(param) {
-   switch (param.as) {
-      case "editor" :
-      var inputParam = this.metadata.createInputParam(param.part, param);
-      delete inputParam.part;
-      if (param.cols || param.rows)
-         html.textArea(inputParam);
-      else
-         html.input(inputParam);
-      break;
-
-      case "image" :
-      var part = this.metadata.get(param.part);
-      if (part && this.site.images.get(part)) {
-         delete param.part;
-         renderImage(this.site.images.get(part), param);
-      }
-      break;
-
-      default :
-      if (param.clipping == null)
-         param.clipping = "...";
-      var part = this.getRenderedContentPart(param.part, param.as);
-      if (!part && param.fallback)
-         part = this.getRenderedContentPart(param.fallback, param.as);
-      if (param.as == "link") {
-         if (this._prototype != "Comment")
-            html.openLink({href: this.href()});
-         else
-            html.openLink({href: this.story.href() + "#" + this._id});
-         part = part ? part.stripTags() : param.clipping;
-      }
-      if (!param.limit)
-         res.write(part);
-      else {
-         var stripped = part.stripTags();
-         var clipped = stripped.clip(param.limit, param.clipping, param.delimiter);
-         if (stripped == clipped)
-            res.write(part);
-         else
-            res.write(clipped);
-      }
-      if (param.as == "link")
-         html.closeLink();
    }
    return;
 };
@@ -324,7 +318,7 @@ Story.prototype.commentform_macro = function(param) {
       (new Comment()).renderSkin("edit");
    } else {
       html.link({href: this.site.members.href("login")},
-                param.text ? param.text : getMessage("Comment.loginToAdd"));
+                param.text || gettext("Please login to add a comment"));
    }
    return;
 };
@@ -333,50 +327,31 @@ Story.prototype.tags_macro = function() {
    return res.write(this.getFormValue("tags"));
 };
 
-Story.prototype.backlinks_macro = function(param) {
-   // check if scheduler has done a new update of accesslog
-   // if not and we have cached backlinks simply return them
-   if (this.cache.lrBacklinks >= app.data.lastAccessLogUpdate)
-      return this.cache.rBacklinks;
-
-   var c = getDBConnection("antville");
-   var dbError = c.getLastError();
-   if (dbError)
-      return dbError;
-
-   // we're doing this with direct db access here
-   // (there's no need to do it with prototypes):
+Story.prototype.backlinks_macro = function(param, limit) {
+   limit || (limit = param.limit);
+   var db = getDBConnection("antville");
    var query = "select referrer, count(*) as count from log where " +
          "context_type = 'Story' and context_id = " + this._id + " group by " +
          "referrer order by count desc, referrer asc;";
-   var rows = c.executeRetrieval(query);
-   var dbError = c.getLastError();
-   if (dbError)
-      return dbError;
-
-   // we show a maximum of 100 backlinks
-   var limit = Math.min((param.limit ? parseInt(param.limit, 10) : 100), 100);
+   var rows = db.executeRetrieval(query);
+   var limit = Math.min(parseInt(limit, 10) || 100, 100);
+   var counter = 0;
+   var param;
    res.push();
-
-   var skinParam = new Object();
-   var cnt = 0;
-   while (rows.next() && cnt <= limit) {
-      skinParam.count = rows.getColumnItem("count");
-      skinParam.referrer = rows.getColumnItem("referrer");
-      skinParam.referrer && (skinParam.text = skinParam.referrer.clip(50));
-      this.renderSkin("backlinkItem", skinParam);
-      cnt++;
+   while (rows.next() && counter <= limit) {
+      param = {
+         requests: rows.getColumnItem("count"),
+         referrer: rows.getColumnItem("referrer")
+      };
+      param.referrer && (param.text = param.referrer.clip(50));  
+      this.renderSkin("Story#backlink", param);
+      counter += 1;
    }
    rows.release();
-   // cache rendered backlinks and set timestamp for
-   // checking if backlinks should be rendered again
-   skinParam = {referrers: res.pop()};
-   if (skinParam.referrers.length > 0)
-      this.cache.rBacklinks = this.renderSkinAsString("backlinks", skinParam);
-   else
-      this.cache.rBacklinks = "";
-   this.cache.lrBacklinks = new Date();
-   res.write(this.cache.rBacklinks);
+   param = {referrers: res.pop()};
+   if (param.referrers.length > 0) {
+      this.renderSkin("Story#backlinks", param);
+   }
    return;
 };
 
@@ -441,65 +416,6 @@ Story.prototype.removeTag = function(tag) {
    return;
 };
 
-Story.prototype.deleteComment = function(commentObj) {
-   for (var i=commentObj.size();i>0;i--)
-      this.deleteComment(commentObj.get(i-1));
-   // also remove from comment's parent since it has
-   // cachemode set to aggressive and wouldn't refetch
-   // its child collection index otherwise
-   (commentObj.parent ? commentObj.parent : this).removeChild(commentObj);
-   this.comments.removeChild(commentObj);
-   commentObj.remove();
-
-   // remove the modified comment from search index
-   app.data.indexManager.getQueue(this.site).remove(commentObj._id);
-   return new Message("commentDelete");
-};
-
-Story.prototype.getRenderedContentPart = function(name, mode) {
-   var part = this.metadata.get(name);
-   if (!part) {
-      return "";
-   }
-   var key = mode ? (name + ":" + mode) : name;
-   var lastRendered = this.cache["lastRendered_" + key];
-   if (!lastRendered) {
-       // FIXME: || lastRendered.getTime() < this.metadata.getLastModified().getTime())
-      switch (mode) {
-         case "plaintext":
-         part = stripTags(part).clipURLs(30);
-         break;
-         
-         case "alttext":
-         part = stripTags(part);
-         part = part.replace(/\"/g, "&quot;");
-         part = part.replace(/\'/g, "&#39;");
-         break;
-         
-         default:
-         var skin = createSkin(format(part));
-         this.allowTextMacros(skin);
-         // Enable caching; some macros (eg. poll, storylist) will set this 
-         // to false to prevent caching of a contentpart containing them.
-         res.meta.cachePart = true;
-         // The following is necessary so that global macros know where they belong to.
-         // Even if they are embedded at some other site.
-         var site;
-         if (this.site != res.handlers.site) {
-            site = res.handlers.site;
-            res.handlers.site = this.site;
-         }
-         part = this.renderSkinAsString(skin); // FIXME: .activateURLs(50);
-         site && (res.handlers.site = site);
-      }
-      this.cache[key] = part;
-      if (res.meta.cachePart) {
-         this.cache["lastRendered_" + key] = new Date();
-      }
-   }   
-   return this.cache[key];
-};
-
 Story.prototype.incrementReadCounter = function() {
    return; // FIXME FIXME FIXME
    // Do not record requests by the story creator
@@ -516,50 +432,6 @@ Story.prototype.incrementReadCounter = function() {
       app.data.readLog.get(String(this._id)).reads += 1;
    }
    return;
-};
-
-Story.prototype.getNavigationName  = function() {
-   if (this.title)
-      return this.title;
-   return getDisplay("story") + " " + this._id;
-};
-
-Story.prototype.getIndexDocument = function() {
-   var doc = new Search.Document();
-   switch (this._prototype) {
-      case "Comment":
-         doc.addField("story", this.story._id, {store: true, index: true, tokenize: false});
-         if (this.parent)
-            doc.addField("parent", this.parent._id, {store: true, index: true, tokenize: false});
-         break;
-      default:
-         doc.addField("day", this.day, {store: true, index: true, tokenize: false});
-         if (this.topic)
-            doc.addField("topic", this.topic, {store: true, index: true, tokenize: true});
-         break;
-   }
-
-   doc.addField("online", this.online, {store: true, index: true, tokenize: false});
-   doc.addField("site", this.site._id, {store: true, index: true, tokenize: false});
-   doc.addField("id", this._id, {store: true, index: true, tokenize: false});
-   var content = this.metadata.get();
-   var title;
-   if (title = stripTags(content.title).trim())
-      doc.addField("title", title, {store: false, index: true, tokenize: true});
-   var text = new java.lang.StringBuffer();
-   for (var propName in content) {
-      if (propName != "title") {
-         text.append(stripTags(content[propName]).trim());
-         text.append(" ");
-      }
-   }
-   doc.addField("text", text.toString(), {store: false, index: true, tokenize: true});
-   if (this.creator) {
-      // FIXME: checking this shouldn't be necessary, but somehow it is ...
-      doc.addField("creator", this.creator.name, {store: false, index: true, tokenize: false});
-      doc.addField("createtime", this.createtime.format("yyyyMMdd"), {store: false, index: true, tokenize: false});
-   }
-   return doc;
 };
 
 Story.prototype.checkAccess = function(action, usr, level) {
@@ -633,35 +505,78 @@ Story.prototype.checkView = function(usr, level) {
    return;
 };
 
-Story.prototype.allowTextMacros = function(s) {
-   s.allowMacro("image");
-   s.allowMacro("this.image");
-   s.allowMacro("site.image");
-   s.allowMacro("story.image");
-   s.allowMacro("thumbnail");
-   s.allowMacro("this.thumbnail");
-   s.allowMacro("site.thumbnail");
-   s.allowMacro("story.thumbnail");
-   s.allowMacro("link");
-   s.allowMacro("this.link");
-   s.allowMacro("site.link");
-   s.allowMacro("story.link");
-   s.allowMacro("file");
-   s.allowMacro("poll");
-   s.allowMacro("logo");
-   s.allowMacro("storylist");
-   s.allowMacro("fakemail");
-   s.allowMacro("this.topic");
-   s.allowMacro("story.topic");
-   s.allowMacro("imageoftheday");
-   s.allowMacro("spacer");
+Story.prototype.format_filter = function(value, param, mode) {
+   if (value) {
+      switch (mode) {
+         case "text":
+         return this.url_filter(stripTags(value), param, mode);
+         case "quotes":
+         return stripTags(value).replace(/(\"|\')/g, function(str, quotes) {
+            return "&#" + quotes.charCodeAt(0) + ";";
+         });
+         default:
+         value = this.macro_filter(value, param);
+         return this.url_filter(value, param);
+      }
+   }
+   return String.EMTPY;
+};
 
-   // allow module text macros
+Story.prototype.macro_filter = function(value, param) {
+   var skin = createSkin(format(value));
+   skin.allowMacro("image");
+   skin.allowMacro("this.image");
+   skin.allowMacro("site.image");
+   skin.allowMacro("story.image");
+   skin.allowMacro("thumbnail");
+   skin.allowMacro("this.thumbnail");
+   skin.allowMacro("site.thumbnail");
+   skin.allowMacro("story.thumbnail");
+   skin.allowMacro("link");
+   skin.allowMacro("this.link");
+   skin.allowMacro("site.link");
+   skin.allowMacro("story.link");
+   skin.allowMacro("file");
+   skin.allowMacro("poll");
+   skin.allowMacro("logo");
+   skin.allowMacro("storylist");
+   skin.allowMacro("fakemail");
+   skin.allowMacro("this.topic");
+   skin.allowMacro("story.topic");
+   skin.allowMacro("imageoftheday");
+   skin.allowMacro("spacer");
+
+   // FIXME: allow module text macros
    for (var i in app.modules) {
       if (app.modules[i].allowTextMacros)
-         app.modules[i].allowTextMacros(s);
+         app.modules[i].allowTextMacros(skin);
    }
-   return;
+
+   var site;
+   if (this.site !== res.handlers.site) {
+      site = res.handlers.site;
+      res.handlers.site = this.site;
+   }
+   value = this.renderSkinAsString(skin);
+   site && (res.handlers.site = site);
+   return value;
+};
+
+Story.prototype.url_filter = function(value, param, mode) {
+   param.limit || (param.limit = 20);
+   var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
+   return value.replace(re, function(str, head, url, tail) {
+      res.push();
+      res.write(head);
+      if (mode === "plain") {
+         res.write(url.clip(param.limit));
+      } else {
+         var text = /:\/\/([^\/]*)/.exec(url)[1].clip(param.limit);
+         html.link({href: url, title: url}, text);
+      }
+      res.write(tail);
+      return res.pop();
+   });
 };
 
 Story.prototype.getDelta = function(data) {

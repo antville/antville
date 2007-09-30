@@ -10,3 +10,10 @@ ImageMgr.prototype.link_macro = function(param) {
    }
    return HopObject.prototype.link_macro.apply(this, arguments);
 };
+
+Images.prototype.navigation_macro = function(param) {
+   if (!this._parent.parent || !this._parent.parent.images.size())
+      return;
+   this.renderSkin(param.skin ? param.skin : "navigation");
+   return;
+};

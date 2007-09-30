@@ -111,7 +111,7 @@ Tag.prototype.getTagged = function() {
    return this[pluralize(this.type)];
 };
 
-Tag.prototype.getNavigationName = function() {
+Tag.prototype.getTitle = function() {
    return this.name;
 };
 

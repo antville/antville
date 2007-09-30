@@ -231,3 +231,6 @@ alter table av_text change column text_f_user_modifier modifier_id mediumint(10)
 alter table av_text change column text_createtime created datetime;
 alter table av_text change column text_modifytime modified datetime;
 
+alter table av_text rename content;
+
+update content set parent_id = story_id  where parent_id is null and prototype = "Comment" and parent_type = "Story";

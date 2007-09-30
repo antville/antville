@@ -21,7 +21,7 @@
    <% story.creator link %>
    <% story.created HH:mm suffix="h" %>
 </div>
-<div><% story.text %></div>
+<div><% story.text | story.format %></div>
 
 <% #preview %>
 <% story.skin Story#content %>
@@ -74,6 +74,87 @@
 </td>
 </tr>
 </table>
+
+<% #backlinks %>
+<a name="backlinks" id="backlinks"></a><br />
+<table border="0" cellspacing="0" cellpadding="1">
+<script type="text/javascript"><!--
+var referrers = [];
+<% param.referrers %>
+var query = new Antville.Query();
+var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
+var searchFilter = new Antville.Filter(query.filter);
+var searchEngineFilters = [
+   new Antville.Filter("http:\/\/.*google.*\?", "q"),
+   new Antville.Filter("http:\/\/.*search\.msn.*\?", "q"),
+   new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
+   new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
+];
+var cnt = 0;
+var prefix = "<em>Search request:</em> ";
+for (var i in referrers) {
+   var ref = referrers[i];
+   var text = ref.text;
+   if (spamFilter.test(ref.url)) {
+      continue;
+   }
+   if (query.filter && !searchFilter.test(ref.url)) {
+      continue;
+   }
+   for (var e in searchEngineFilters) {
+      var filter = searchEngineFilters[e];
+      if (filter.test(ref.url)) {
+         text = ref.compose(filter.key, prefix);
+         break;
+      }
+   }
+   if (++cnt == 1) {
+      document.writeln('<tr>');
+      document.writeln('<td align="right" class="small">&nbsp;</td>');
+      document.writeln('<td rowspan="999" class="small">&nbsp;&nbsp;</td>');
+      document.writeln('<td class="small"><strong>Backlinks</strong></td>');
+      document.writeln('</tr>');
+   }
+   document.writeln('<tr>');
+   document.writeln('<td align="right" valign="top" class="small">', 
+         ref.requests, '</td>');
+   document.writeln('<td class="small"><a href="', ref.url, '">', 
+         text, '</a></td>');
+   document.writeln('</tr>');
+}
+//--></script>
+<noscript>
+<tr>
+<td colspan="3">
+   To prevent spam abuse referrers and backlinks are displayed using 
+   client-side JavaScript code. Thus, you should enable the option to 
+   execute JavaScript code in your browser. Otherwise you will only see this 
+   information.
+</td>
+</tr>
+</noscript>
+</table>
+
+<% #history %>
+<div class="historyItem">
+   <% story.summary %>
+   <div class="small">
+      by <% story.creator %> (<% story.modified short %>)
+   </div>
+</div>
+
+<% #backlink %>
+referrers.push(new Antville.Referrer("<% param.referrer %>", 
+      "<% param.text %>", <% param.count %>));
+
+<% #mostread %>
+<tr>
+<td align="right" valign="baseline" class="small"><% param.position %></td>
+<td align="right" valign="baseline"><% story.requests %></td>
+<td valign="baseline"><% story.created "yyyy-MM-dd" %></td>
+<td valign="baseline"><% story.title | story.link %></td>
+<td valign="baseline"><% story.creator %></td>
+</tr>
 
 <% #edit %>
 <form method="post" action="<% response.action %>">

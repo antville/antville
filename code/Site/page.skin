@@ -14,7 +14,6 @@
 </head>
 
 <body>
-   
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
 <td class="header"><% site.title | site.link title=<% site.tagline %> %></td>
@@ -39,8 +38,8 @@
 <div class="boxheader">menu</div>
 <div class="box">
 <% site.link . home prefix="... " suffix="<br />" %>
-<% site.link topics prefix="... " suffix="<br />" %>
-<% site.link images/topics galleries prefix="..." suffix="<br />" %>
+<% site.link tags prefix="... " suffix="<br />" %>
+<% site.link images/tags galleries prefix="..." suffix="<br />" %>
 <br />
 <% site.link stories/create "add a story" prefix="... " suffix="<br />" %>
 <% site.link stories prefix="... " suffix="<br />" %>
@@ -52,7 +51,7 @@
 <% site.link edit preferences prefix="...&nbsp;" suffix="<br />" %>
 <% site.link layouts prefix="...&nbsp;" suffix="<br />" %>
 <% site.link referrers prefix="...&nbsp;" suffix="<br />" %>
-<% site.link mostread "most read stories" prefix="...&nbsp;" suffix="<br />" %>
+<% site.link stories/top "most read stories" prefix="...&nbsp;" suffix="<br />" %>
 <br />
 ...&nbsp;<a href="<% root.href %>"><% root.title suffix=" " %>home</a>
 </div>
@@ -63,8 +62,8 @@
 <div class="boxheader">calendar</div>
 <div class="box"><% site.calendar %></div>
 
-<div class="boxheader">recent updates</div>
-<div class="box"><% site.history %></div>
+<div class="boxheader">recent comments</div>
+<div class="box"><% site.history comments %></div>
 
 <div class="boxline"></div><br />
 <div class="box"><% site.xmlbutton %><br /><br />

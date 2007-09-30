@@ -244,11 +244,7 @@ Layout.prototype.active_macro = function() {
 };
 
 Layout.prototype.isActive = function() {
-   return this === res.handlers.site.getLayout();
-};
-
-Layout.prototype.getNavigationName = function() {
-   return this.title;
+   return this === res.handlers.site.layout;
 };
 
 Layout.prototype.getStaticDir = function(subdir) {
@@ -271,7 +267,7 @@ Layout.prototype.getImage = function(name, fallback) {
       if (layout.images.get(name)) {
          return layout.images.get(name);
       }
-      if (layout.images.get(fallback)) {
+      if (fallback && layout.images.get(fallback)) {
          return layout.images.get(fallback);
       }
       layout = layout.parent;

@@ -26,6 +26,7 @@ Stories.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
+      case "top":
       return true;
       case "create":
       case "member":
@@ -93,6 +94,24 @@ Stories.prototype.member_action = function() {
    res.data.title = gettext("Member stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
+   return;
+};
+
+Stories.prototype.top_action = function() {
+   res.data.title = gettext("Top 25 most read stories of {0}", this._parent.title);
+   res.data.body = this.renderSkinAsString("Stories#top");
+   this._parent.renderSkin("page");
+   return;
+};
+
+Stories.prototype.top_macro = function() {
+   var counter = 1;
+   this._parent.mostread.forEach(function() {
+      this.renderSkin("Story#mostread", {
+         position: counter
+      });
+      counter += 1;
+   });
    return;
 };
 

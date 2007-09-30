@@ -166,6 +166,10 @@ Site.prototype.rss_action = function() {
    return res.redirect("rss.xml");
 };
 
+Site.prototype.mostread_action = function() {
+   return res.redirect(this.stories.href("top"));
+};
+
 Site.renderDateFormat = function(type, site, param) {
    param.size = 1;
    var key = type + "DateFormat";

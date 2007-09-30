@@ -1,8 +1,14 @@
 <form action="<% response.action %>" method="get">
-<input type="text" name="filter" value="<% request.filter %>" size="30" /> <input type="submit" name="submit" value="Filter" /> <input type="button" onclick="document.location='<% site.href action="referrers" %>';" value="Reset" />
-<div class="small"><input type="checkbox" name="includeSpam" value="checked" <% request.includeSpam prefix='checked="' suffix='"' %> /> include referrer spam</div>
+<input type="text" name="filter" value="<% request.filter %>" size="30" /> 
+<input type="submit" name="submit" value="Filter" /> 
+<input type="button" onclick="document.location='<% site.href 
+      action="referrers" %>';" value="Reset" />
+<div class="small">
+   <input type="checkbox" name="includeSpam" value="checked" 
+         <% request.includeSpam prefix='checked="' suffix='"' %> /> 
+         include referrer spam
+</div>
 <br />
-
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td align="right" class="small">Visits</td>
@@ -10,11 +16,9 @@
 <td></td>
 <td class="small">Referrer</td>
 </tr>
-
 <script type="text/javascript"><!--
 var referrers = [];
 <% site.referrers %>
-
 var query = new Antville.Query();
 var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
 var searchFilter = new Antville.Filter(query.filter);
@@ -49,12 +53,15 @@ for (var i in referrers) {
    document.writeln('</tr>');
 }
 // --></script>
-
 <noscript>
 <tr>
-<td colspan="3">To prevent spam abuse referrers and backlinks are displayed using client-side JavaScript code. Thus, you should enable the option to execute JavaScript code in your browser. Otherwise you will only see this information.</td>
+<td colspan="3">
+   To prevent spam abuse referrers and backlinks are displayed using 
+   client-side JavaScript code. Thus, you should enable the option to 
+   execute JavaScript code in your browser. Otherwise you will only see 
+   this information.
+</td>
 </tr>
 </noscript>
-
 </table>
 </form>

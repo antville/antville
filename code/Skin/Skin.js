@@ -22,8 +22,8 @@
 // $URL$
 //
 
-Skin.prototype.constructor = function(layout, prototype, name) {
-   this.layout = layout;
+Skin.prototype.constructor = function(prototype, name) {
+   this.layout = res.handlers.layout;
    this.prototype = prototype;
    this.name = name;
    this.custom = false;
@@ -43,26 +43,32 @@ Skin.prototype.href = function(action) {
 };
 
 Skin.prototype.getPermission = function(action) {
-   switch (action) {
-      case "delete":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.OWNER);
-   }
-   return true;
+   return User.getPermission(User.PRIVILEGED) ||
+         Membership.getPermission(Membership.OWNER);
 };
 
 Skin.prototype.main_action = function() {
-   if (req.postParams.save || req.postParams.close) {
+   return res.redirect(this.href("edit"));
+};
+
+Skin.prototype.edit_action = function() {
+   if (req.postParams.save) {
       try {
          this.update(req.postParams);
-         res.message = gettext("The changes were saved successfully.");
-         if (req.postParams.close) {
-            res.redirect(this.href() + "?skinset=" + 
-                  req.postParams.skinset + "#" + req.postParams.key);
+         var url = this.href(req.action);
+         // FIXME:
+         if (false && this.equals(req.postParams.source)) {
+            Skin.remove.call(this);
+            url = Skins.getRedirectUrl(req.postParams);
+         } else {
+            this.setSource(req.postParams.source);
          }
-         res.redirect(this.href(req.action) + "?key=" + req.postParams.key + 
-               "&skinset=" + req.postParams.skinset + "&action=" + 
-               req.postParams.action);
+         res.message = gettext("The changes were saved successfully.");
+         if (req.postParams.save == 1) {
+            res.redirect(url);
+         } else {
+            res.redirect(Skins.getRedirectUrl(req.postParams));
+         }
       } catch (ex) {
          res.message = ex;
          app.log(ex);
@@ -76,9 +82,57 @@ Skin.prototype.main_action = function() {
    return;
 };
 
+Skin.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "prototype":
+      return Skin.getPrototypeOptions();
+   }
+};
+
+Skin.getPrototypeOptions = function() {
+   var prototypes = [];
+   for (var name in app.skinfiles) {
+      if (name.charCodeAt(0) < 91 && name !== "CVS") {
+         if ((name === "Admin" || name === "Root") && 
+               res.handlers.site !== root) {
+            continue;
+         }
+         prototypes.push({value: name, display: name});
+      }
+   }
+   return prototypes.sort(new String.Sorter("display"));
+};
+
 Skin.prototype.update = function(data) {
-   this.setSource(data.source);
+   if (!data.prototype) {
+      throw Error(gettext("Please choose a prototype for the custom skin."));
+   } else if (!data.name) {
+      throw Error(gettext("Please choose a name for the custom skin."));
+   } else if (data.name === data.prototype ||
+         (this[data.prototype] && this[data.prototype][data.name]) ||
+         res.handlers.skins.getOriginalSkin(data.prototype, data.name) || 
+         (app.skinfiles[data.prototype] && 
+         app.skinfiles[data.prototype][data.name])) {
+      throw Error(gettext("There is already a skin with this name. Please choose another one."));
+   }
+   this.prototype = data.prototype;
+   this.name = data.name;
    this.touch();
+   return;
+};
+
+Skin.remove = function() {
+   var file = this.getFile(res.skinpath[0]);
+   file["delete"]();
+   var parentDir = file.getParentFile();
+   if (parentDir.isDirectory() && parentDir.list().length < 1) {
+      parentDir["delete"]();
+      var layoutDir = parentDir.getParentFile();
+      if (layoutDir.list().length < 1) {
+         layoutDir["delete"]();
+      }
+   }
+   this.remove();
    return;
 };
 
@@ -87,8 +141,8 @@ Skin.prototype.diff_action = function() {
    var originalSkin = this.layout.skins.getOriginalSkinSource(this.prototype, 
          this.name);
 
-   if (originalSkin == null) {
-      res.data.status = getMessage("Skin.diff.noDiffAvailable");
+   if (!originalSkin) {
+      res.data.status = gettext("This is a custom skin, therefor no differences can be displayed");
    } else {
       var diff = originalSkin.diff(this.getSource());
       if (!diff) {
@@ -166,6 +220,10 @@ Skin.prototype.prototype_macro = function() {
       res.write(this.prototype);
    }
    return;
+};
+
+Skin.prototype.status_macro = function() {
+   return this.isTransient() ? "inherited" : "modified"; 
 };
 
 Skin.prototype.summary_macro = function() {
@@ -285,18 +343,6 @@ Skin.prototype.equals = function(source) {
    return normalize(source) === normalize(this.getSubskin());
 };
 
-Skin.remove = function(skin) {
-   var file = skin.getFile();
-   file["delete"]();
-   var parentDir = file.getParentFile();
-   if (parentDir.list().length < 1) {
-      parentDir["delete"]();
-      var layoutDir = parentDir.getParentFile();
-      if (layoutDir.list().length < 1) {
-         layoutDir["delete"]();
-      }
-   }
-   session.data.retrace = res.handlers.skins.href();
-   skin.remove();
-   return;
+Skin.prototype.toString = function() {
+   return "Skin #" + this._id + ": " + this.prototype + "." + this.name;
 };

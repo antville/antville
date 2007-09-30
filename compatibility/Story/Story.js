@@ -1,3 +1,95 @@
+Story.prototype.content_macro = function(param) {
+   switch (param.as) {
+      case "editor" :
+      var inputParam = this.metadata.createInputParam(param.part, param);
+      delete inputParam.part;
+      if (param.cols || param.rows)
+         html.textArea(inputParam);
+      else
+         html.input(inputParam);
+      break;
+
+      case "image" :
+      var part = this.metadata.get(param.part);
+      if (part && this.site.images.get(part)) {
+         delete param.part;
+         renderImage(this.site.images.get(part), param);
+      }
+      break;
+
+      default :
+      if (param.clipping == null)
+         param.clipping = "...";
+      var part = this.getRenderedContentPart(param.part, param.as);
+      if (!part && param.fallback)
+         part = this.getRenderedContentPart(param.fallback, param.as);
+      if (param.as == "link") {
+         if (this._prototype != "Comment")
+            html.openLink({href: this.href()});
+         else
+            html.openLink({href: this.story.href() + "#" + this._id});
+         part = part ? part.stripTags() : param.clipping;
+      }
+      if (!param.limit)
+         res.write(part);
+      else {
+         var stripped = part.stripTags();
+         var clipped = stripped.clip(param.limit, param.clipping, param.delimiter);
+         if (stripped == clipped)
+            res.write(part);
+         else
+            res.write(clipped);
+      }
+      if (param.as == "link")
+         html.closeLink();
+   }
+   return;
+};
+
+Story.prototype.getRenderedContentPart = function(name, mode) {
+   var part = this.metadata.get(name);
+   if (!part) {
+      return "";
+   }
+   var key = mode ? (name + ":" + mode) : name;
+   var lastRendered = this.cache["lastRendered_" + key];
+   if (!lastRendered) {
+       // FIXME: || lastRendered.getTime() < this.metadata.getLastModified().getTime())
+      switch (mode) {
+         case "plaintext":
+         part = stripTags(part).clipURLs(30);
+         break;
+         
+         case "alttext":
+         part = stripTags(part);
+         part = part.replace(/\"/g, "&quot;");
+         part = part.replace(/\'/g, "&#39;");
+         break;
+         
+         default:
+         var skin = createSkin(format(part));
+         this.allowTextMacros(skin);
+         // Enable caching; some macros (eg. poll, storylist) will set this 
+         // to false to prevent caching of a contentpart containing them.
+         res.meta.cachePart = true;
+         // The following is necessary so that global macros know where they belong to.
+         // Even if they are embedded at some other site.
+         var site;
+         if (this.site != res.handlers.site) {
+            site = res.handlers.site;
+            res.handlers.site = this.site;
+         }
+         part = this.renderSkinAsString(skin); // FIXME: .activateURLs(50);
+         site && (res.handlers.site = site);
+      }
+      this.cache[key] = part;
+      if (res.meta.cachePart) {
+         this.cache["lastRendered_" + key] = new Date();
+      }
+   }   
+   return this.cache[key];
+};
+
 Story.prototype.location_macro = function(param) {
    switch (this.online) {
       case 1:

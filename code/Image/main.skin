@@ -19,11 +19,11 @@ code: <pre><% image.code %></pre></p>
 </td>
 <td align="right" class="small" valign="top">
    <% image.link edit prefix="... " suffix="<br />" %>
-   <% image.link delete prefix="... " %>
+   <% image.link delete prefix="..." suffix="<br />" %>
+   <% image.link replace prefix="..." suffix="<br />" %> 
 </td>
 </tr>
 </table>
-   <% image.url %><br />
 
 <p><% image.render | link <% image.url %> %></p>
 <p><% image.description %></p>

@@ -78,6 +78,15 @@ Site.prototype.constructor = function(name, title) {
 
 Site.prototype.getPermission = function(action) {
    switch (action) {
+      case ".":
+      case "main":
+      case "main.js":
+      case "main.css":
+      case "rss.xml":
+      case "tags":
+      case "images/tags":
+      return true;
+      
       case "stories/create":
       case "stories":
       case "images":
@@ -90,7 +99,7 @@ Site.prototype.getPermission = function(action) {
       case "edit":
       case "layouts":
       case "referrers":
-      case "mostread":
+      case "stories/top":
       case "members":
       return User.getPermission(User.PRIVILEGED) ||
             Membership.getPermission(Membership.OWNER);
@@ -103,7 +112,7 @@ Site.prototype.getPermission = function(action) {
       case "unsubscribe":
       return this.getMembership().role !== Membership.OWNER;
    }
-   return true;
+   return false;
 };
 
 Site.prototype.main_action = function() {
@@ -164,34 +173,24 @@ Site.prototype.getFormOptions = function(name) {
          value: Site.ARCHIVE_OFFLINE,
          display: gettext("offline")
       }]; break;
-      
       case "commentsMode":
       options = Site.getCommentsModes(); break;
-      
       case "language":
       options = getLocales(); break;
-      
       case "layout":
       options = this.getLayouts(); break;
-      
       case "longDateFormat":
       options = getDateFormats("long"); break;
-      
       case "mode":
       options = Site.getModes(); break;
-      
       case "pageMode":
       options = Site.getPageModes(); break;
-      
       case "status":
       options = Site.getStatus(); break;
-      
       case "shortDateFormat":
       options = getDateFormats("short"); break;
-      
       case "timeZone":
       options = getTimeZones(); break;
-      
       default:
       return HopObject.prototype.getFormOptions.apply(this, arguments);
    }
@@ -216,31 +215,8 @@ Site.prototype.update = function(data) {
       language: data.language,
       layout: Layout.getById(data.layout)
    });
-   
    this.touch();
    this.clearCache();
-   return;
-};
-
-Site.prototype.delete_action = function() {
-   if (req.postParams.proceed) {
-      try {
-         Site.remove(this);
-         res.message = gettext("The site {0} was removed successfully.",
-               this.name);
-         res.redirect(root.href());
-      } catch(ex) {
-         res.message = ex;
-         app.log(ex);
-      }
-   }
-
-   res.data.action = this.href(req.action);
-   res.data.title = gettext("Delete site");
-   res.data.body = this.renderSkinAsString("delete", {
-      text: gettext('You are about to delete the site {0}', this.title) 
-   });
-   this.renderSkin("page");
    return;
 };
 
@@ -363,24 +339,10 @@ Site.prototype.rss_xml_action = function() {
    return;
 };
 
-Site.prototype.mostread_action = function() {
-   res.data.title = getMessage("Site.mostReadTitle", {siteTitle: this.title});
-   res.data.body = this.renderSkinAsString("mostread");
-   this.renderSkin("page");
-   return;
-};
-
 Site.prototype.referrers_action = function() {
-   if (req.data.permanent && session.user) {
-      try {
-         this.checkEdit(session.user, res.data.memberlevel);
-      } catch (err) {
-         res.message = err.toString();
-         res.redirect(this.href());
-         return;
-      }
-      var urls = req.data.permanent_array ?
-                 req.data.permanent_array : [req.data.permanent];
+   if (req.postParams.permanent && (User.getPermission(User.PRIVILEGED) ||
+         Membership.getPermission(Member.OWNER)))  {
+      var urls = req.postParams.permanent_array;
       res.push();
       res.write(this.metadata.get("spamfilter"));
       for (var i in urls) {
@@ -392,7 +354,7 @@ Site.prototype.referrers_action = function() {
       return;
    }
    res.data.action = this.href("referrers");
-   res.data.title = getMessage("Site.referrersReadTitle", {siteTitle: this.title});
+   res.data.title = gettext("Referrers in the last 24 hours of {0}", this.title);
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("page");
    return;
@@ -672,45 +634,35 @@ Site.prototype.age_macro = function(param) {
    return;
 };
 
-Site.prototype.history_macro = function(param) {
-   try {
-      this.checkView(session.user, res.data.memberlevel);
-   } catch (deny) {
-      return;
-   }
-   var limit = param.limit ? parseInt(param.limit, 10) : 5;
-   var cnt = i = 0;
+Site.prototype.history_macro = function(param, type) {
+   param.limit = Math.min(param.limit || 10, 20);
+   type || (type = param.show);
+   var counter = i = 0;
    var size = this.lastmod.size();
    var discussions = this.metadata.get("discussions");
-   while (cnt < limit && i < size) {
-      if (i % limit == 0)
-         this.lastmod.prefetchChildren(i, limit);
-      var item = this.lastmod.get(i++);
-      switch (item._prototype) {
-         case "Story":
-            if (param.show == "comments")
-               continue;
-            break;
-         case "Comment":
-            if (param.show == "stories" || !item.story.online ||
-                  !item.story.discussions || !discussions)
-               continue;
-            break;
+   var item;
+   while (counter < param.limit && i < size) {
+      if (i % param.limit === 0) {
+         this.lastmod.prefetchChildren(i, param.limit);
       }
-      item.renderSkin("historyview");
-      cnt++;
-   }
-   return;
-};
-
-Site.prototype.listMostRead_macro = function() {
-   var param = new Object();
-   var size = this.mostread.size();
-   for (var i=0; i<size; i++) {
-      var s = this.mostread.get(i);
-      param.reads = s.reads;
-      param.rank = i+1;
-      s.renderSkin("mostread", param);
+      item = this.lastmod.get(i);
+      i += 1;
+      switch (item.constructor) {
+         case Story:
+         if (type === "comments") {
+            continue;
+         }
+         break;
+         case Comment:
+         if (type === "stories" || item.story.mode === Story.PRIVATE ||
+               item.story.commentsMode === Story.CLOSED || 
+               this.commentsMode === Site.CLOSED) {
+            continue;
+         }
+         break;
+      }
+      item.renderSkin("Story#history");
+      counter += 1;
    }
    return;
 };
@@ -719,16 +671,18 @@ Site.prototype.referrers_macro = function() {
    var date = new Date;
    date.setDate(date.getDate() - 1);
    var db = getDBConnection("antville");
-   var query = "select text, count(*) as count from log " +
-      "where type = 'request' and parent_type = 'Site' and parent_id = " + 
+   var query = "select referrer, count(*) as requests from log " +
+      "where action = 'main' and context_type = 'Site' and context_id = " + 
       this._id + " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
-      "'} group by text order by count desc, text asc;";
-   var referrer;
+      "'} group by referrer order by requests desc, referrer asc;";
    var rows = db.executeRetrieval(query);
+   var referrer;
    while (rows.next()) {
-      referrer = rows.getColumnItem("text");
+      if (!(referrer = rows.getColumnItem("referrer"))) {
+         continue;
+      }
       this.renderSkin("referrerItem", {
-         count: rows.getColumnItem("count"),
+         requests: rows.getColumnItem("requests"),
          referrer: encode(referrer),
          text: encode(referrer.clip(50))
       });
@@ -833,16 +787,18 @@ Site.prototype.preferences_macro = function(param) {
  * for client-side javascript code
  */
 Site.prototype.spamfilter_macro = function(param) {
-   var str = this.properties.get("spamfilter");
-   if (!str)
+   var str = this.metadata.get("spamfilter");
+   if (!str) {
       return;
+   }
    var items = str.replace(/\r/g, "").split("\n");
    for (var i in items) {
       res.write('"');
       res.write(items[i]);
       res.write('"');
-      if (i < items.length-1)
+      if (i < items.length-1) {
          res.write(",");
+      }
    }
    return;
 };
@@ -1107,12 +1063,6 @@ Site.prototype.sendNotification = function(type, obj) {
       sendMail(sender, recipients, subject, body);
    }
    return;
-};
-
-Site.prototype.getLayout = function() {
-   if (this.layout)
-      return this.layout;
-   return root.getLayout();
 };
 
 Site.prototype.getStaticDir = function(subdir) {
@@ -1397,6 +1347,24 @@ Site.prototype.getTags = function(type, group) {
    return null;
 };
 
+Site.prototype.getStaticFile = function(fpath) {
+   res.push();
+   res.write(app.properties.staticPath);
+   res.write(this.name);
+   res.write("/");
+   fpath && res.write(fpath);
+   return new helma.File(res.pop());
+};
+
+Site.prototype.getStaticUrl = function(fpath) {
+   res.push();
+   res.write(app.properties.staticUrl);
+   res.write(this.name);
+   res.write("/");
+   fpath && res.write(fpath);
+   return res.pop();
+};
+
 Site.prototype.getAdminHeader = function(name) {
    switch (name) {
       case "tags":
@@ -1409,24 +1377,6 @@ Site.prototype.getAdminHeader = function(name) {
 Site.getPermission = function(status) {
    return Membership.getPermission(Membership.SUBSCRIBER) &&
          res.handlers.site.mode === status;
-};
-
-Site.getStaticFile = function(fpath) {
-   res.push();
-   res.write(app.properties.staticPath);
-   res.write(res.handlers.site.name);
-   res.write("/");
-   fpath && res.write(fpath);
-   return new helma.File(res.pop());
-};
-
-Site.getStaticUrl = function(fpath) {
-   res.push();
-   res.write(app.properties.staticUrl);
-   res.write(res.handlers.site.name);
-   res.write("/");
-   fpath && res.write(fpath);
-   return res.pop();
 };
 
 Site.ARCHIVE_ONLINE = "online";

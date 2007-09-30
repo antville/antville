@@ -1,1 +1,2 @@
-referrers.push(new Antville.Referrer("<% param.referrer %>", "<% param.text %>", <% param.count %>));
+referrers.push(new Antville.Referrer("<% param.referrer %>", 
+      "<% param.text %>", <% param.requests %>));
