@@ -80,17 +80,15 @@ Tag.prototype.permission_macro = function(param, type) {
    return this.getPermission(type);
 };
 
-Tag.prototype.getPermission = function(type) {
-   var user = session.user;
-   var level = res.data.memberlevel;
-   switch (type) {
+Tag.prototype.getPermission = function(action) {
+   switch (action) {
       case "main":
       return true;
-
       case "edit":
       case "delete":
       case "rename":
-      return (level & MAY_EDIT_ANYSTORY) > 0;
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.MANAGER);
    }   
    return false;
 };

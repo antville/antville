@@ -30,8 +30,8 @@ Images.prototype.getPermission = function(action) {
       case "member":
       case "default":
       case "additional":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.MANAGER);
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.MANAGER);
    }
    return;
 };

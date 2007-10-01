@@ -16,9 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Revision:3339 $
+// $LastChangedBy:piefke3000 $
+// $LastChangedDate:2007-09-25 00:00:46 +0200 (Tue, 25 Sep 2007) $
 // $URL$
 //
 
@@ -28,8 +28,8 @@ Files.prototype.getPermission = function(action) {
       case "main":
       case "create":
       case "member":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.MANAGER) ||
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.MANAGER) ||
             Site.getPermission(Site.OPEN);
    }
    return false;

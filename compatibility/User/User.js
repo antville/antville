@@ -24,7 +24,7 @@ User.prototype.__defineSetter__("sysadmin", function(privileged) {
 
 User.prototype.status_macro = function(param) {
    // This macro is allowed for privileged users only
-   if (!User.getPermission(User.PRIVILEGED)) {
+   if (!User.require(User.PRIVILEGED)) {
       return;
    }
    if (param.as === "editor") {
@@ -54,7 +54,7 @@ User.prototype.url_macro = function(param) {
 };
 
 User.prototype.email_macro = function(param) {
-   if (!User.getPermission(User.PRIVILEGED) && this !== session.user) {
+   if (!User.require(User.PRIVILEGED) && this !== session.user) {
       return;
    }
    if (param.as == "editor") {

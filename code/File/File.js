@@ -41,14 +41,14 @@ File.prototype.getPermission = function(action) {
       return true;
       case "delete":
       case "edit":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.OWNER);
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.OWNER);
    }
    return false;
 };
 
 File.prototype.main_action = function() {
-   if (!User.getPermission(User.PRIVILEGED) && 
+   if (!User.require(User.PRIVILEGED) && 
          session.user !== this.creator && session.user !== this.modifier) {
       this.requests += 1;
    }

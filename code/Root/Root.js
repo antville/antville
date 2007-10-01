@@ -45,7 +45,7 @@ Root.prototype.getChildElement = function(name) {
 
 Root.prototype.getPermission = function(action) {
    if (action.contains("admin")) {
-      return User.getPermission(User.PRIVILEGED);
+      return User.require(User.PRIVILEGED);
    }
    switch (action) {
       case "create":
@@ -246,7 +246,7 @@ Root.prototype.getCreationPermission = function() {
    var user;
    if (!(user = session.user)) {
       return false;
-   } if (User.getPermission(User.PRIVILEGED)) {
+   } if (User.require(User.PRIVILEGED)) {
       return true;
    }
 
@@ -255,7 +255,7 @@ Root.prototype.getCreationPermission = function() {
       return false;
       
       case User.TRUSTEDUSERS:
-      return User.getPermission(User.TRUSTED);
+      return User.require(User.TRUSTED);
       
       default:
       case User.ALLUSERS:

@@ -22,6 +22,9 @@
 // $URL$
 //
 
+defineConstants(Membership, "getRoles", "Subscriber", "Contributor", 
+      "Manager", "Owner");
+      
 Membership.prototype.constructor = function(user, role) {
    this.map({
       creator: user,
@@ -145,9 +148,6 @@ Membership.prototype.getFormOptions = function(name) {
    return;
 };
 
-defineConstants(Membership, "getRoles", "Subscriber", "Contributor", 
-      "Manager", "Owner");
-      
 Membership.getLevel = function(role) {
    if (!role) {
       var membership = User.getMembership();
@@ -166,12 +166,18 @@ Membership.getLevel = function(role) {
    }
 };
 
-Membership.getPermission = function(role) {
+Membership.require = function(role) {
+   var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
+         Membership.MANAGER, Membership.OWNER];
    if (role && res.handlers.membership) {
+      return roles.indexOf(res.handlers.membership.role) >= roles.indexOf(role);
+   }
+   return false;
+   /* if (role && res.handlers.membership) {
       return Membership.getLevel(res.handlers.membership.role) - 
             Membership.getLevel(role) >= 0;
    }
-   return false;
+   return false; */
 };
       
 Membership.remove = function(membership) {

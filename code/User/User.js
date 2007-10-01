@@ -22,9 +22,9 @@
 // $URL$
 //
 
-defineConstants(User, "getStatus", "default", "blocked", "trusted", 
+defineConstants(User, "getStatus", "blocked", "regular", "trusted", 
       "privileged");
-defineConstants(User, "getScopes", "all users", "trusted users", 
+defineConstants(User, "getScopes", "regular users", "trusted users", 
       "privileged users");
 
 this.handleMetadata("hash");
@@ -42,7 +42,7 @@ User.prototype.constructor = function(data) {
       hash: data.hash,
       salt: session.data.token,
       email: data.email,
-      status: User.DEFAULT,
+      status: User.REGULAR,
       registered: now,
       lastVisit: now
    });
@@ -198,8 +198,19 @@ User.login = function(data) {
    return user;
 };
 
-User.getPermission = function(status) {
-   return session.user && session.user.status === status;
+User.require = function(s) {
+   var status = [User.BLOCKED, User.REGULAR, User.PRIVILEGED];
+   if (s && session.user) {
+      return status.indexOf(session.user.status) >= status.indexOf(s);
+   }
+   return false;
+};
+
+User.getStatus = function() {
+   if (session.user) {
+      return session.user.status;
+   }
+   return null;
 };
 
 User.getMembership = function() {

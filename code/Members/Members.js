@@ -316,9 +316,9 @@ Members.prototype.getPermission = function(action) {
       case "contributors":
       case "subscribers":
       case "add":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.OWNER) || 
-            Membership.getPermission(Membership.MANAGER);
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.OWNER) || 
+            Membership.require(Membership.MANAGER);
       
       case "updated":
       case "memberships":

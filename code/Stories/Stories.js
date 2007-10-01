@@ -31,10 +31,10 @@ Stories.prototype.getPermission = function(action) {
       case "create":
       case "member":
       case "private":
-      return User.getPermission(User.PRIVILEGED) || 
-            Membership.getPermission(Membership.OWNER) || 
+      return User.require(User.PRIVILEGED) || 
+            Membership.require(Membership.OWNER) || 
             ((Site.getPermission(Site.OPEN) || story.mode === "open") && 
-            Membership.getPermission(Membership.CONTRIBUTOR));
+            Membership.require(Membership.CONTRIBUTOR));
    }
    return false;
 };

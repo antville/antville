@@ -67,7 +67,7 @@ Admin.prototype.onUnhandledMacro = function(name) {
 };
 
 Admin.prototype.getPermission = function(action) {
-   return User.getPermission(User.PRIVILEGED);
+   return User.require(User.PRIVILEGED);
 };
 
 Admin.prototype.main_action = function() {

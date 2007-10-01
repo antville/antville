@@ -46,63 +46,28 @@ HopObject.prototype.onRequest = function() {
       }
    }
 
+   autoLogin();
+   res.handlers.membership = User.getMembership();
+   if (User.getStatus() === User.BLOCKED) {
+      session.logout();
+      res.message = new Error(gettext("Sorry, your account has been disabled. Please contact the maintainer of this site for further information."));
+      res.redirect(root.href());
+   }
+   
    if (!this.getPermission(req.action)) {
       res.status = 401;
       res.write("Sorry, you are not allowed to access this part of the site.");
       res.stop();
    }
 
-   // FIXME: do we still need this?
-   if (app.data.redirectPostRequests && path.site && req.isPost())
-      res.redirect(app.data.redirectPostRequests);
-
-   autoLogin();
-   res.handlers.membership = User.getMembership();
-   
-   // FIXME: this can go, soon
-   res.data.memberlevel = Membership.getLevel();
-
-   // FIXME: context has to go in the end
-   res.handlers.context = res.handlers.site;
-   
-/*
-   // if root.sys_frontSite is set and the site is online
-   // we put it into res.handlers.site to ensure that the mirrored
-   // site works as expected
-   if (!path.Site && root.sys_frontSite && root.sys_frontSite.online)
-      res.handlers.site = root.sys_frontSite;
-   if (res.handlers.site) {
-      if (res.handlers.site.blocked)
-         res.redirect(root.href("blocked"));
-      if (session.user)
-         res.data.memberlevel = res.handlers.site.members.getMembershipLevel(session.user);
-      // set a handler that contains the context
-      res.handlers.context = res.handlers.site;
-   } else {
-      // set a handler that contains the context
-      res.handlers.context = root;
-   }
-*/
-
    if (session.data.layout) {
-      // test drive a layout
+      // Test-drive a layout
       res.handlers.layout = session.data.layout;
       res.message = session.data.layout.renderSkinAsString("testdrive");
    } else {
-      // define layout handler
       res.handlers.layout = res.handlers.site.layout;
    }
-
-   // set skinpath
    res.skinpath = res.handlers.layout.getSkinPath();
-
-   if (session.user && session.user.blocked) {
-      // user was blocked recently, so log out
-      session.logout();
-      res.message = new Exception("accountBlocked");
-      res.redirect(res.handlers.context.href());
-   }
-   
    return;
 };
 

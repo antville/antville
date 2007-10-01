@@ -22,12 +22,13 @@
 // $URL$
 //
 
-defineConstants(Site, "getStatus", "default", "blocked", "trusted");
-defineConstants(Site, "getModes", "closed", "private", "readonly", "public", "open");
+defineConstants(Site, "getStatus", "blocked", "regular", "trusted");
+defineConstants(Site, "getModes", "closed", "public", "shared", "open");
 defineConstants(Site, "getPageModes", "days", "stories");
 defineConstants(Site, "getCommentsModes", "closed", "readonly", "moderated", "open");
+defineConstants(Site, "getArchiveModes", "closed", "public");
 
-this.handleMetadata("archiveMode");
+this.handleMetadata("archieode");
 this.handleMetadata("commentsMode");
 this.handleMetadata("email");
 this.handleMetadata("language");
@@ -58,13 +59,13 @@ Site.prototype.constructor = function(name, title) {
       creator: user,
       modified: now,
       modifier: user,
-      status: user.status === User.TRUSTED ? "trusted" : "default",
-      mode: Site.PRIVATE,
+      status: user.status,
+      mode: Site.CLOSED,
       tagline: "",
       webHookEnabled: false,
-      commentMode: Comment.ONLINE,
-      archiveMode: Site.ARCHIVE_ONLINE,
-      pageMode: "days",
+      commentsMode: Site.OPEN,
+      archiveMode: Site.PUBLIC,
+      pageMode: Site.DAYS,
       pageSize: 3,
       language: locale.getLanguage(),
       country: locale.getCountry(),
@@ -92,8 +93,8 @@ Site.prototype.getPermission = function(action) {
       case "images":
       case "files":
       case "polls":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.CONTRIBUTOR) ||
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.CONTRIBUTOR) ||
             this.mode === Site.OPEN;
 
       case "edit":
@@ -101,8 +102,8 @@ Site.prototype.getPermission = function(action) {
       case "referrers":
       case "stories/top":
       case "members":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.OWNER);
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.OWNER);
             
       case "subscribe":
       var mode = this.mode;
@@ -340,8 +341,8 @@ Site.prototype.rss_xml_action = function() {
 };
 
 Site.prototype.referrers_action = function() {
-   if (req.postParams.permanent && (User.getPermission(User.PRIVILEGED) ||
-         Membership.getPermission(Member.OWNER)))  {
+   if (req.postParams.permanent && (User.require(User.PRIVILEGED) ||
+         Membership.require(Member.OWNER)))  {
       var urls = req.postParams.permanent_array;
       res.push();
       res.write(this.metadata.get("spamfilter"));
@@ -1374,10 +1375,7 @@ Site.prototype.getAdminHeader = function(name) {
    return [];
 };
 
-Site.getPermission = function(status) {
-   return Membership.getPermission(Membership.SUBSCRIBER) &&
-         res.handlers.site.mode === status;
+Site.require = function(mode) {
+   var modes = [Site.CLOSED, Site.PRIVATE, Site.PUBLIC, Site.OPEN];
+   return modes.indexOf(res.handlers.site.mode) >= modes.indexOf(mode);
 };
-
-Site.ARCHIVE_ONLINE = "online";
-Site.ARCHIVE_OFFLINE = "offline";

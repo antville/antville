@@ -48,7 +48,7 @@ LogEntry.prototype.toString = function() {
 } 
 
 LogEntry.prototype.label_macro = function(param) {
-   if (!User.getPermission(User.PRIVILEGED)) {
+   if (!User.require(User.PRIVILEGED)) {
       return;
    }
    switch (this.context_type) {

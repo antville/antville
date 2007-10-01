@@ -204,15 +204,15 @@ alter table av_text add column parent_type varchar(30);
 update av_text set parent_type = "Story";
 update av_text set parent_type = "Comment" where parent_id is not null;
 
-alter table av_text add column status enum('private','hidden','public');
+alter table av_text add column status enum('closed','pending','readonly','public','shared','open');
 update av_text set status = 'private';
-update av_text set status = 'hidden' where text_isonline = 1;
-update av_text set status = 'public' where text_isonline = 2;
+update av_text set status = 'public' where text_isonline <> 0 or parent_type = "Comment";
+update av_text set status = 'shared' where text_editableby = 1;
+update av_text set status = 'open' where text_editableby = 2;
 
-alter table av_text add column mode enum('readonly','shared','open');
-update av_text set mode = 'default';
-update av_text set mode = 'shared' where text_editableby = 1;
-update av_text set mode = 'open' where text_editableby = 2;
+alter table av_text add column mode enum('hidden','featured');
+update av_text set mode = 'hidden' where text_isonline = 1;
+update av_text set mode = 'featured' where text_isonline = 2;
 
 alter table av_text add column comments_mode enum('closed','readonly','moderated','open');
 update av_text set comments_mode = 'closed';

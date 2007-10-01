@@ -22,6 +22,8 @@
 // $URL$
 //
 
+defineConstants(Comment, "getStatus", "closed", "pending", "readonly", "public");
+
 Comment.prototype.constructor = function(parent) {
    this.site = parent.site;
    this.story = parent.story || parent;
@@ -52,7 +54,7 @@ Comment.prototype.getPermission = function(action) {
       return !!session.user;
       case "delete":
       case "edit":
-      return User.getPermission(User.PRIVILEGED) ||
+      return User.require(User.PRIVILEGED) ||
             session.user === this.creator;
    }
    return false;
@@ -172,6 +174,3 @@ Comment.prototype.checkEdit = function(usr, level) {
       throw new DenyException("commentEdit");
    return;
 };
-
-Comment.ONLINE = "online";
-Comment.OFFLINE = "offline";

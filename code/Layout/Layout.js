@@ -39,8 +39,8 @@ Layout.prototype.constructor = function(site, title, creator) {
 };
 
 Layout.prototype.getPermission = function(action) {
-   var defaultPermission = User.getPermission(User.PRIVILEGED) ||
-         Membership.getPermission(Membership.OWNER)
+   var defaultPermission = User.require(User.PRIVILEGED) ||
+         Membership.require(Membership.OWNER)
    switch (action) {
       case "delete":
       return defaultPermission && this !== this.site.layout && 

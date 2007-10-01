@@ -22,15 +22,15 @@
 // $URL$
 //
 
-defineConstants(Story, "getModes", "readonly", "shared", "open");
-defineConstants(Story, "getStatus", "private", "hidden", "public");
+defineConstants(Story, "getStatus", "closed", "public", "shared", "open");
+defineConstants(Story, "getModes", "hidden", "featured");
 
 this.handleMetadata("title");
 this.handleMetadata("text");
 
 Story.prototype.constructor = function() {
    this.requests = 0;
-   this.mode = Story.DEFAULT;
+   this.status = Story.PUBLIC;
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
@@ -46,10 +46,24 @@ Story.prototype.getPermission = function(action) {
       case "delete":
       case "edit":
       case "rotate":
-      return User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.OWNER);
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.OWNER);
    }
    return false;
+};
+
+Story.prototype.link_macro = function(param, action, text) {
+   switch (action) {
+      case "rotate":
+      if (this.status === Story.CLOSED) {
+         text = gettext("publish");
+      } else if (this.mode === Story.FEATURED) {
+         text = gettext("hide");
+      } else {
+         text = gettext("unpublish");
+      }
+   }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
 };
 
 Story.prototype.main_action = function() {
@@ -198,13 +212,15 @@ Story.remove = function() {
 };
 
 Story.prototype.rotate_action = function() {
-   this.status = this.getRotation();
+   if (this.status === Story.CLOSED) {
+      this.status = Story.PUBLIC;
+   } else if (this.mode === Story.FEATURED) {
+      this.mode = Story.HIDDEN;
+   } else {
+      this.mode = Story.FEATURED;
+      this.status = Story.CLOSED;
+   }
    return res.redirect(this._parent.href());
-};
-
-Story.prototype.getRotation = function() {
-   var rotation = [Story.PRIVATE, Story.PUBLIC, Story.HIDDEN];
-   return rotation[(rotation.indexOf(this.status) + 1) % 3];
 };
 
 Story.prototype.comment_action = function() {
@@ -232,21 +248,6 @@ Story.prototype.comment_action = function() {
    this.site.renderSkin("page");
    this.incrementReadCounter();
    return;
-};
-
-Story.prototype.link_macro = function(param, action, text) {
-   switch (action) {
-      case "rotate":
-      switch (this.getRotation()) {
-         case Story.PUBLIC:
-         text = gettext("publish"); break;
-         case Story.HIDDEN:
-         text = gettext("hide"); break;
-         case Story.PRIVATE:
-         text = gettext("unpublish"); break;
-      }
-   }
-   return HopObject.prototype.link_macro.call(this, param, action, text);
 };
 
 Story.prototype.summary_macro = function(param) {

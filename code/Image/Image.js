@@ -43,14 +43,14 @@ Image.prototype.getPermission = function(action) {
    switch (action) {
       case "delete":
       case "edit":
-      return (User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.MANAGER) ||
+      return (User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.MANAGER) ||
             this.creator === session.user) && 
             (this.parent_type !== "Layout" ||
             this.parent === path.layout);
       case "replace":
-      return (User.getPermission(User.PRIVILEGED) ||
-            Membership.getPermission(Membership.MANAGER)) &&
+      return (User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.MANAGER)) &&
             (this.parent_type === "Layout" && 
             this.parent !== path.layout);
    }

@@ -47,8 +47,8 @@ CREATE TABLE `tag_hub` (
 
 alter table av_user add column metadata mediumtext default NULL;
 
-alter table av_user add column `status` enum('blocked','default','trusted','privileged') not null default 'default';
-update av_user set status = 'default';
+alter table av_user add column `status` enum('blocked','regular','trusted','privileged') not null default 'regular';
+update av_user set status = 'regular';
 update av_user set status = 'blocked' where user_isblocked = 1;
 update av_user set status = 'trusted' where user_istrusted = 1;
 update av_user set status = 'privileged' where user_issysadmin = 1;
@@ -61,12 +61,12 @@ update av_user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash =
 ## Update table av_site
 ##
 
-alter table av_site add column `mode` enum('closed','private','readonly','public','open') not null default 'private';
-update av_site set mode = 'private' where site_isonline <> 1;
-update av_site set mode = 'public' where site_isonline = 1;
+alter table av_site add column `mode` enum('closed','shared','public','open') not null;
+update av_site set mode = 'public';
+update av_site set mode = 'shared' where site_isonline <> 1;
 
-alter table av_site add column `status` enum('blocked','default','trusted') not null default 'default';
-update av_site set status = 'default';
+alter table av_site add column `status` enum('blocked','regular','trusted') not null;
+update av_site set status = 'regular';
 update av_site set status = 'blocked' where site_isblocked = 1;
 update av_site set status = 'trusted' where site_istrusted = 1;
 
