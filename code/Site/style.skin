@@ -238,6 +238,7 @@ a:hover {text-decoration: underline;}
    height: 5px;
    overflow: hidden;
    float:left;
+   margin-top: 7px;
    margin-right: 10px;
    background-color: <% layout.linkcolor %>;
    font-size: 0px;

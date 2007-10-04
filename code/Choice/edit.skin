@@ -1,4 +1,6 @@
-<tr>
-<td><span class="small">Choice #<% param.count %>:</span><br />
-<% choice.title as="editor" class="formText" %></td>
+<tr class="choice">
+<td>
+   <span class="small">Choice #<% param.index %>:</span><br />
+   <input type="text" name="title" class="formText" value="<% choice.title %>" />
+</td>
 </tr>

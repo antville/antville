@@ -22,31 +22,56 @@
 // $URL$
 //
 
-/**
- * render the title of a choice, either as editor
- * or as plain text
- */
-Choice.prototype.title_macro = function(param) {
-   if (param.as = "editor")
-      Html.input(this.createInputParam("title", param));
-   else
-      res.write(this.title);
-   return;
-};
-/**
- * constructor function for choice objects
- */
 Choice.prototype.constructor = function(title) {
    this.title = title;
-   this.createtime = this.modifytime = new Date();
+   this.created = this.modified = new Date;
    return this;
 };
 
-/**
- * function removes all votes from a choice
- */
-Choice.prototype.deleteAll = function() {
-   for (var i=this.size();i>0;i--)
-      this.get(i-1).remove();
-   return true;
+Choice.remove = function() {
+   if (this.constructor !== Choice) {
+      return;
+   }
+   while (this.size() > 0) {
+      this.get(0).remove();
+   }
+   this.remove();
+   return;
+};
+
+Choice.prototype.selected_macro = function() {
+   var votes;
+   if (session.user && (votes = this._parent.votes.get(session.user.name))) {
+      res.write(this === votes.choice);
+   } else {
+      res.write(false);
+   }
+   return;
+};
+
+Choice.prototype.votes_macro = function(param, variant) {
+   var votes = 0;
+   if (variant) {
+      if (variant.endsWith("%")) {
+         variant = parseInt(variant) || 1;
+         var max = this._parent.votes.size();
+         votes = this.size() / max * variant;
+      } else {
+         var max = 1;
+         this._parent.forEach(function() {
+            var n = this.size();
+            if (n > max) {
+               max = n;
+            }
+            return;
+         });
+         votes = Math.round(this.size() / max * variant);
+      }
+   } else {
+      votes = this.size();
+   }
+   if (!votes && param["default"]) {
+      return param["default"];
+   }
+   return votes;
 };

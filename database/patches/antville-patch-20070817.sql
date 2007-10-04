@@ -234,3 +234,45 @@ alter table av_text change column text_modifytime modified datetime;
 alter table av_text rename content;
 
 update content set parent_id = story_id  where parent_id is null and prototype = "Comment" and parent_type = "Story";
+
+##
+## Update table av_poll
+##
+
+alter table av_poll change column poll_id id mediumint(10);
+alter table av_poll change column poll_f_site site_id mediumint(10);
+alter table av_poll change column poll_f_user_creator creator_id mediumint(10);
+alter table av_poll change column poll_f_user_modifier modifier_id mediumint(10);
+alter table av_poll change column poll_question question mediumtext;
+alter table av_poll change column poll_closed status enum('closed','readonly','open');
+alter table av_poll change column poll_closetime closed datetime;
+alter table av_poll change column poll_createtime created datetime;
+alter table av_poll change column poll_modifytime modified datetime;
+
+alter table av_poll rename poll;
+
+##
+## Update table av_choice
+##
+
+alter table av_choice change column choice_id id mediumint(10);
+alter table av_choice change column choice_f_poll poll_id mediumint(10);
+alter table av_choice change column choice_title title varchar(255);
+alter table av_choice change column choice_createtime created datetime;
+alter table av_choice change column choice_modifytime modified datetime;
+
+alter table av_choice rename choice;
+
+##
+## Update table av_vote
+##
+
+alter table av_vote change column vote_id id mediumint(10);
+alter table av_vote change column vote_f_poll poll_id mediumint(10);
+alter table av_vote change column vote_f_choice choice_id mediumint(10);
+alter table av_vote change column vote_f_user creator_id mediumint(10);
+alter table av_vote change column vote_username creator_name varchar(255);
+alter table av_vote change column vote_createtime created datetime;
+alter table av_vote change column vote_modifytime modified datetime;
+
+alter table av_vote rename vote;

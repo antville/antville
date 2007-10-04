@@ -1,17 +1,38 @@
+<script type="text/javascript">
+$(function() {
+   var index = $(".choice").length + 1;
+   $("#add").click(function() {
+      var choice = $(".choice:last").clone();
+      choice.find(".small").text('<% gettext Choice %> #' + index + ':');
+      choice.find("input").val("");
+      $(".choice:last").after(choice);
+      index += 1;
+   });
+});
+</script>
+
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td nowrap="nowrap"><span class="small">Question:</span><br />
-<% poll.question as="editor" cols="30" rows="3" class="formText" %></td>
+<td>
+   <span class="small">Question:</span><br />
+   <% poll.input question cols="30" rows="3" class="formText" %>
+</td>
 </tr>
-
-<% response.choices %>
-
+<% poll.input choices %>
 <tr>
-<td class="small"><% poll.creator as="link" prefix='Created by ' suffix=' on ' %><% poll.createtime format="short" suffix="." %></td>
+<td class="small">
+   <% poll.creator link prefix='Created by ' suffix=' on ' %>
+   <% poll.created short suffix="." %>
+</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><br /><% input type="submit" name="save" value="Save" %>&nbsp;<% input type="submit" name="addchoice" value="Add choice" %>&nbsp;<% input type="submit" name="cancel" value="Cancel" %></td>
+<td>
+   <br />
+   <button type="submit" name="save" value="1">save</button>
+   <button type="button" id="add">add choice</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</td>
 </tr>
 </table>
 </form>

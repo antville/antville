@@ -1,12 +1,18 @@
-<% poll.question %>
+<% poll.question %><br /><br />
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="2" cellpadding="2">
-
-<% poll.choices %>
-
+<% poll.loop skin="main" %>
 <tr>
-<td colspan="2"><br /><input type="submit" name="vote" value="Vote" /> &nbsp; <span class="small"><% poll.link to="results" text="view results" %></span>
-<p class="small">Created by <% poll.creator as="link" %> on <% poll.createtime format="short" %>.</p></td>
+<td colspan="2">
+   <br />
+   <button type="submit" name="vote" value="1">vote</button> 
+   <span class="small"><% poll.link results "view results" %></span>
+   <p class="small"><br />
+   Created by <% poll.creator %> on <% poll.created short %>
+   <% poll.modifier prefix="<br />Last modified by " %>
+   <% poll.modified short prefix="on " %>
+   </p>
+</td>
 </tr>
 
 </table>

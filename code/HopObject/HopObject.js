@@ -177,6 +177,24 @@ HopObject.prototype.checkbox_macro = function(param, name) {
    return;
 };
 
+HopObject.prototype.radiobutton_macro = function(param, name) {
+   param.name = name;
+   param.id = name;
+   var options = this.getFormOptions(name);
+   if (options.length < 2) {
+      param.disabled = "disabled";
+   }
+   param.value = String(options[0].value);
+   param.selectedValue = String(this.getFormValue(name));
+   var label = param.label;
+   delete param.label;
+   html.radioButton(param);
+   if (label) {
+      html.element("label", label, {"for": name});
+   }
+   return;
+};
+
 HopObject.prototype.upload_macro = function(param, name) {
    param.name = name;
    param.id = name;

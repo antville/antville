@@ -821,6 +821,10 @@ function pingUpdatedSites() {
    return;
 }
 
+function formatNumber(number, pattern) {
+   return number.format(pattern);
+};
+
 function formatDate(date, pattern) {
    if (!date) {
       return null;
@@ -1560,10 +1564,10 @@ function link_filter(value, param, url) {
 }
 
 function format_filter(value, param, pattern) {
-   if (!value) {
+   if (!value && value !== 0) {
       return;
    }
-   var f = "format" + value.constructor.name;
+   var f = global["format" + value.constructor.name];
    if (f && f.constructor === Function) {
       return f(value, pattern || param.pattern);
    }

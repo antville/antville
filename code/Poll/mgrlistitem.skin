@@ -1,14 +1,32 @@
-<div class="listSeparator">&nbsp;</div>
+<a name="<% poll.id %>" id="<% poll.id %>"></a>
+<div class="listSeparator"> </div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<% poll.switch name="closed" on='<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" class="listFlag">c<br />l<br />d</td><td rowspan="2" width="5" nowrap="nowrap"></td>' off="" %>
-<td colspan="3" class="small"><strong>Macro:</strong>&nbsp;&lt;% poll id="<% poll.id %>" %&gt;
-<div class="ample"><strong>Status:</strong> <% poll.total no="votes" one="vote" more="votes" %></td>
+<% if <% poll.status %> is closed then 
+   '<td rowspan="2" width="10" align="center" valign="top" class="listFlag">
+      c<br />l<br />o<br />s<br />e<br />d
+    </td>
+    <td rowspan="2" width="5"></td>'
+%>
+<td colspan="3" class="small">
+   <strong>Macro:</strong> &lt;% poll <% poll.id %> %&gt;
+   <div class="ample"><strong>Status:</strong> 
+   <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
+</td>
 </tr>
 <tr valign="top">
-<td><div class="storytitle"><% poll.question %></div>
-<div class="storyDate"><% poll.creator as="link" %>, <% poll.createtime format="short" %></div></td>
-<td width="10" nowrap="nowrap">&nbsp;</td>
-<td align="right" class="small" nowrap="nowrap"><% poll.viewlink prefix="...&nbsp;" suffix="<br />" %><% poll.link to="results" text="results" prefix="...&nbsp;" suffix="<br />" %><% poll.editlink prefix="...&nbsp;" suffix="<br />" %><% poll.closelink prefix="...&nbsp;" suffix="<br />" %><% poll.deletelink prefix="...&nbsp;" %></td>
+<td>
+   <div class="storytitle"><% poll.question %></div>
+   <div class="storyDate"><% poll.creator as="link" %>, 
+   <% poll.createtime format="short" %></div>
+</td>
+<td width="10" nowrap="nowrap"> </td>
+<td align="right" class="small">
+   <% poll.link . vote prefix="... " suffix="<br />" %>
+   <% poll.link results text="results" prefix="... " suffix="<br />" %>
+   <% poll.link edit prefix="... " suffix="<br />" %>
+   <% poll.link rotate prefix="... " suffix="<br />" %>
+   <% poll.link delete prefix="... " %>
+</td>
 </tr>
 </table>

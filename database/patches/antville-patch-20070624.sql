@@ -99,3 +99,11 @@ alter table av_file add column metadata mediumtext;
 alter table av_file add column parent_id mediumint(10);
 alter table av_file add column parent_type varchar(30);
 alter table av_file add column prototype varchar(30);
+
+##
+## Update table av_poll
+##
+
+alter table av_poll add column status enum('closed'.'readonly','open');
+update av_poll set status = 'closed';
+update av_poll set status = 'public' where poll_closed = 1;

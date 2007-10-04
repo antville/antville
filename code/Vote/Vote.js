@@ -22,13 +22,10 @@
 // $URL$
 //
 
-/**
- * constructor function for vote objects
- */
-Vote.prototype.constructor = function(choice, usr) {
+Vote.prototype.constructor = function(choice) {
    this.choice = choice;
-   this.user = usr;
-   this.username = usr.name;
-   this.createtime = this.modifytime = new Date();
+   this.creator = session.user;
+   this.creator_name = session.user.name;
+   this.created = this.modified = new Date;
    return this;
 };

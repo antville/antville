@@ -213,10 +213,11 @@ Story.remove = function() {
 
 Story.prototype.rotate_action = function() {
    if (this.status === Story.CLOSED) {
-      this.status = Story.PUBLIC;
+      this.status = this.cache.status || Story.PUBLIC;
    } else if (this.mode === Story.FEATURED) {
       this.mode = Story.HIDDEN;
    } else {
+      this.cache.status = this.status;
       this.mode = Story.FEATURED;
       this.status = Story.CLOSED;
    }
