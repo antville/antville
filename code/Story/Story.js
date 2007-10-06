@@ -121,7 +121,7 @@ Story.prototype.getFormValue = function(name) {
       case "commentsMode":
       return this.commentsMode || res.handlers.site.commentsMode;
       case "mode":
-      return this.mode || Story.READONLY;
+      return this.mode || Story.FEATURED;
       case "status":
       return this.status || Story.PUBLIC;
       case "tags":

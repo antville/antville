@@ -26,13 +26,15 @@ defineConstants(Membership, "getRoles", "Subscriber", "Contributor",
       "Manager", "Owner");
       
 Membership.prototype.constructor = function(user, role) {
-   this.map({
-      creator: user,
-      name: user.name,
-      role: role || Membership.SUBSCRIBER,
-      createtime: new Date
-   });
-   this.touch();
+   if (user && role) {
+      this.map({
+         creator: user,
+         name: user.name,
+         role: role || Membership.SUBSCRIBER,
+         createtime: new Date
+      });
+      this.touch();
+   }
    return this;
 };
 
@@ -187,6 +189,11 @@ Membership.remove = function(membership) {
       throw Error(gettext("Sorry, an owner of a site cannot be removed."));
    }*/
    membership.remove();
+   return;
+};
+
+Membership.prototype.status_macro = function() {
+   this.renderSkin(session.user ? "Membership#status" : "Membership#login");
    return;
 };
 

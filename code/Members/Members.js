@@ -22,6 +22,40 @@
 // $URL$
 //
 
+Members.prototype.getPermission = function(action) {
+   switch (action) {
+      case "login":
+      case "logout":
+      case "salt.js":
+      return true;
+      case ".":
+      case "main":
+      case "owners":
+      case "managers":
+      case "contributors":
+      case "subscribers":
+      case "add":
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.OWNER) || 
+            Membership.require(Membership.MANAGER);
+      case "updated":
+      case "memberships":
+      case "subscriptions":
+      return !!session.user;
+   }
+   return false;
+};
+
+Members.prototype.link_macro = function(param, action, text) {
+   switch (action) {
+      case "login":
+      if (req.action === action) {
+         return;
+      }
+   }
+   return HopObject.prototype.link_macro.apply(this, arguments);
+};
+
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
    res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
@@ -73,7 +107,7 @@ Members.prototype.login_action = function() {
          var url = session.data.referrer || this._parent.href();
          delete session.data.referrer;
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
-               res.handlers.context.getTitle(), user.name);
+               res.handlers.site.getTitle(), user.name);
          res.redirect(url);
       } catch (ex) {
          res.message = ex;
@@ -188,7 +222,7 @@ Members.prototype.subscriptions_action = function() {
    res.data.title = gettext("Subscriptions of user {0}", session.user.name);
    res.data.list = renderList(session.user.subscriptions, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
@@ -196,7 +230,7 @@ Members.prototype.memberships_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
    res.data.list = renderList(session.user.memberships, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
@@ -247,7 +281,7 @@ Members.prototype.add_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext('Add member to {0}', this._parent.title);
    res.data.body = this.renderSkinAsString("new");
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
@@ -306,27 +340,6 @@ Members.prototype.renderMemberlist = function() {
    return res.pop();
 };
 */
-
-Members.prototype.getPermission = function(action) {
-   switch (action) {
-      case ".":
-      case "main":
-      case "owners":
-      case "managers":
-      case "contributors":
-      case "subscribers":
-      case "add":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER) || 
-            Membership.require(Membership.MANAGER);
-      
-      case "updated":
-      case "memberships":
-      case "subscriptions":
-      return !!session.user;
-   }
-   return true;
-};
 
 Members.prototype.modSorua_action = function() {
    if (!app.data.modSorua) app.data.modSorua = new Array();

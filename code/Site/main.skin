@@ -1,3 +1,1 @@
-<div class="pagelink"><% response.prevpage %></div>
-<% response.storylist %>
-<% response.nextpage %>
+<% site.stories %>

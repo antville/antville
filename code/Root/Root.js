@@ -39,10 +39,6 @@ this.handleMetadata("phaseOutInactiveSites");
 this.handleMetadata("phaseOutNotificationPeriod");
 this.handleMetadata("phaseOutGracePeriod");
 
-Root.prototype.getChildElement = function(name) {
-   return this.sites.get(name) || this[name];
-};
-
 Root.prototype.getPermission = function(action) {
    if (action.contains("admin")) {
       return User.require(User.PRIVILEGED);
@@ -50,6 +46,8 @@ Root.prototype.getPermission = function(action) {
    switch (action) {
       case "create":
       return this.getCreationPermission();
+      case "list":
+      return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
 }

@@ -106,7 +106,7 @@ Stories.prototype.top_action = function() {
 
 Stories.prototype.top_macro = function() {
    var counter = 1;
-   this._parent.mostread.forEach(function() {
+   this.top.forEach(function() {
       this.renderSkin("Story#mostread", {
          position: counter
       });

@@ -28,7 +28,7 @@ defineConstants(Site, "getPageModes", "days", "stories");
 defineConstants(Site, "getCommentsModes", "closed", "readonly", "moderated", "open");
 defineConstants(Site, "getArchiveModes", "closed", "public");
 
-this.handleMetadata("archieode");
+this.handleMetadata("archiveMode");
 this.handleMetadata("commentsMode");
 this.handleMetadata("email");
 this.handleMetadata("language");
@@ -85,10 +85,8 @@ Site.prototype.getPermission = function(action) {
       case "main.css":
       case "rss.xml":
       case "tags":
-      case "images/tags":
       return true;
       
-      case "stories/create":
       case "stories":
       case "images":
       case "files":
@@ -100,7 +98,6 @@ Site.prototype.getPermission = function(action) {
       case "edit":
       case "layouts":
       case "referrers":
-      case "stories/top":
       case "members":
       return User.require(User.PRIVILEGED) ||
             Membership.require(Membership.OWNER);
@@ -112,23 +109,15 @@ Site.prototype.getPermission = function(action) {
 
       case "unsubscribe":
       return this.getMembership().role !== Membership.OWNER;
+      
+      case "archive":
+      return this.archiveMode === Site.PUBLIC;
    }
    return false;
 };
 
 Site.prototype.main_action = function() {
-   if (this.allstories.size() == 0) {
-      res.data.body = this.renderSkinAsString("welcome");
-      if (session.user) {
-         if (session.user === this.creator)
-            res.data.body += this.renderSkinAsString("welcomeowner");
-         if (session.user.sysadmin)
-            res.data.body += this.renderSkinAsString("welcomesysadmin");
-      }
-   } else {
-      this.renderStorylist(req.data.day);
-      res.data.body = this.renderSkinAsString("main");
-   }
+   res.data.body = this.renderSkinAsString("main");
    res.data.title = this.title;
    this.renderSkin("page");
    logAction();
@@ -167,13 +156,7 @@ Site.prototype.getFormOptions = function(name) {
    var options = [];
    switch (name) {
       case "archiveMode":
-      options = [{
-         value: Site.ARCHIVE_ONLINE, 
-         display: gettext("online")
-      }, {
-         value: Site.ARCHIVE_OFFLINE,
-         display: gettext("offline")
-      }]; break;
+      options = Site.getArchiveModes(); break;
       case "commentsMode":
       options = Site.getCommentsModes(); break;
       case "language":
@@ -266,7 +249,7 @@ Site.prototype.rss_xml_action = function() {
    var collection, subtitle;
    switch (true) {
       case (req.data.show == "all") :
-         collection = this.allcontent;
+         collection = this.stories.all;
          subtitle = "with comments";
          break;
       // FIXME: i don't think a day makes much sense as rss output [tobi]
@@ -512,16 +495,31 @@ Site.prototype.robots_txt_action = function() {
 
 Site.prototype.getMacroHandler = function(name) {
    switch (name) {
+      case "files":
+      case "images":
+      case "members":
+      case "polls":
+      case "stories":
+      return this[name];
       default:
       return null;
    }
 };
 
-Site.prototype.loginstatus_macro = function(param) {
-   if (session.user)
-      this.members.renderSkin("statusloggedin");
-   else if (req.action != "login")
-      this.members.renderSkin("statusloggedout");
+Site.prototype.stories_macro = function() {
+   if (this.stories["public"].size() < 1) {
+      this.renderSkin("welcome");
+      if (session.user) {
+         if (session.user === this.creator) {
+            this.renderSkin("welcomeowner");
+         }
+         if (User.require(User.PRIVILEGED)) {
+            this.renderSkin("welcomesysadmin");
+         }
+      }
+   } else {
+      this.archive.renderSkin("main");
+   }
    return;
 };
 
@@ -534,99 +532,12 @@ Site.prototype.moduleNavigation_macro = function(param) {
 };
 
 Site.prototype.calendar_macro = function(param) {
-   // do nothing if there is not a single story :-))
-   // or if archive of this site is disabled
-   if (!this.allstories.size() || !this.metadata.get("archive"))
-      return;
-   // define variables needed in this function
-   var calParam = new Object();
-   var dayParam = new Object();
-   var weekParam = new Object();
-   res.push();
-
-   // create new calendar-object
-   var cal = java.util.Calendar.getInstance(this.getTimeZone(), this.getLocale());
-   var symbols = this.getDateSymbols();
-
-   // render header-row of calendar
-   var firstDayOfWeek = cal.getFirstDayOfWeek();
-   var weekdays = symbols.getShortWeekdays();
-   res.push();
-   for (var i=0;i<7;i++) {
-      dayParam.day = weekdays[(i+firstDayOfWeek-1)%7+1];
-      this.renderSkin("calendardayheader", dayParam);
-   }
-   weekParam.week = res.pop();
-   this.renderSkin("calendarweek", weekParam);
-
-   cal.set(java.util.Calendar.DATE, 1);
-   // check whether there's a day or a story in path
-   // if so, use it to determine the month to render
-   if (path.Story)
-      var today = path.Story.day.toString();
-   else if (path.Day && path.Day._prototype == "Day")
-      var today = path.Day.groupname.toString();
-   if (today) {
-      // instead of using String.toDate
-      // we do it manually here to avoid that a day like 20021001
-      // would be changed to 20020930 in some cases
-      cal.set(java.util.Calendar.YEAR, parseInt(today.substring(0, 4), 10));
-      cal.set(java.util.Calendar.MONTH, parseInt(today.substring(4, 6), 10)-1);
-   }
-   // nr. of empty days in rendered calendar before the first day of month appears
-   var pre = (7-firstDayOfWeek+cal.get(java.util.Calendar.DAY_OF_WEEK)) % 7;
-   var days = cal.getActualMaximum(java.util.Calendar.DATE);
-   var weeks = Math.ceil((pre + days) / 7);
-   var daycnt = 1;
-
-   var monthNames = symbols.getMonths();
-   calParam.month = monthNames[cal.get(java.util.Calendar.MONTH)];
-   calParam.year =  cal.get(java.util.Calendar.YEAR);
-
-   // pre-render the year and month so we only have to append the days as we loop
-   var currMonth = formatTimestamp(new Date(cal.getTime().getTime()), "yyyyMM");
-   // remember the index of the first and last days within this month.
-   // this is needed to optimize previous and next month links.
-   var lastDayIndex = 9999999;
-   var firstDayIndex = -1;
-
-   for (var i=0;i<weeks;i++) {
-      res.push();
-      for (var j=0;j<7;j++) {
-         dayParam.skin = "calendarday";
-         if ((i == 0 && j < pre) || daycnt > days)
-            dayParam.day = "&nbsp;";
-         else {
-            var currGroupname = currMonth+daycnt.format("00");
-            var linkText = daycnt < 10 ? "&nbsp;" + daycnt + "&nbsp;" : daycnt.toString();
-            var currGroup = this.get(currGroupname);
-            if (currGroup) {
-               var idx = this.contains(currGroup);
-               if (idx > -1) {
-                  if  (idx > firstDayIndex)
-                     firstDayIndex = idx;
-                  if (idx < lastDayIndex)
-                     lastDayIndex = idx;
-               }
-               dayParam.day = Html.linkAsString({href: currGroup.href()}, linkText);
-            } else {
-               dayParam.day = linkText;
-            }
-            if (currGroupname == today)
-               dayParam.skin = "calendarselday";
-            daycnt++;
-         }
-         this.renderSkin(dayParam.skin, dayParam);
-      }
-      weekParam.week = res.pop();
-      this.renderSkin("calendarweek", weekParam);
-   }
-   // set day to last day of month and try to render next month
-   // check what the last day of the month is
-   calParam.back = this.renderLinkToPrevMonth(firstDayIndex, currMonth + "01", monthNames);
-   calParam.forward = this.renderLinkToNextMonth(lastDayIndex, currMonth + "31", monthNames);
-   calParam.calendar = res.pop();
-   this.renderSkin("calendar", calParam);
+   var calendar = new jala.Date.Calendar(this.archive);
+   //calendar.setAccessNameFormat("yyyy/MM/dd");
+   calendar.setHrefFormat("yyyy/MM/dd/");
+   calendar.setLocale(this.getLocale());
+   calendar.setTimeZone(this.getTimeZone());
+   calendar.render(this.archive.getDate() || new Date);
    return;
 };
 
@@ -638,15 +549,15 @@ Site.prototype.age_macro = function(param) {
 Site.prototype.history_macro = function(param, type) {
    param.limit = Math.min(param.limit || 10, 20);
    type || (type = param.show);
+   var stories = this.stories.recent;
+   var size = stories.size();
    var counter = i = 0;
-   var size = this.lastmod.size();
-   var discussions = this.metadata.get("discussions");
    var item;
    while (counter < param.limit && i < size) {
       if (i % param.limit === 0) {
-         this.lastmod.prefetchChildren(i, param.limit);
+         stories.prefetchChildren(i, param.limit);
       }
-      item = this.lastmod.get(i);
+      item = stories.get(i);
       i += 1;
       switch (item.constructor) {
          case Story:
@@ -942,14 +853,6 @@ return;
    this.modifier = modifier;
 };
 
-Site.prototype.getMembership = function() {
-   var membership;
-   if (session.user) {
-      membership = this.members.get(session.user.name);
-   }
-   return membership || new HopObject;
-}
-
 Site.prototype.getLayouts = function() {
    var result = [];
    this.layouts.forEach(function() {
@@ -1086,239 +989,11 @@ Site.prototype.getDiskUsage = function() {
    return Math.round(this.diskusage / 1024);
 };
 
-/**
- * function returns the disk quota in Kilobyte for this site
- */
 Site.prototype.getDiskQuota = function() {
    if (this.trusted || !root.sys_diskQuota) 
       return Infinity;
    else 
       return root.sys_diskQuota;
-};
-
-/**
- * returns the corresponding Index object for a site
- * for performance reasons the Index object is cached
- */
-Site.prototype.getIndex = function(force) {
-   if (!this.cache.index || force) {
-      var baseDir = new Helma.File(app.properties.indexPath);
-      var index, analyzer;
-      if (this.getLocale().getLanguage() == java.util.Locale.GERMAN)
-         analyzer = Search.getAnalyzer(java.util.Locale.GERMAN);
-      else
-         analyzer = Search.getAnalyzer();
-      // try to mount an existing index, if this fails create a new one
-      try {
-         index = Search.mountIndex(this.alias, baseDir, analyzer);
-         app.log("[" + this.alias + "] mounted index " + index);
-      } catch (e) {
-         try {
-            index = Search.createIndex(this.alias, baseDir, analyzer);
-            app.log("[" + this.alias + "] created index " + index);
-         } catch (e) {
-            throw ("[" + this.alias + "] Error: unable to mount or create index");
-            return;
-         }
-      }
-      this.cache.index = index;
-   }
-   return this.cache.index;
-};
-
-/**
- * re-indexes all stories and comments of a site
- * @param Object instance of Search.Index
- * @return void
- */
-Site.prototype.rebuildIndex = function() {
-   /**
-    * private method for constructing an index document
-    * based on the data retrieved via direct db
-    */
-   function getIndexDocument() {
-      var doc = new Search.Document();
-      doc.addField("prototype", rows.getColumnItem("TEXT_PROTOTYPE"));
-      switch (rows.getColumnItem("TEXT_PROTOTYPE")) {
-         case "Comment":
-            doc.addField("story", rows.getColumnItem("TEXT_F_TEXT_STORY"), {store: true, index: true, tokenize: false});
-            if (parent = rows.getColumnItem("TEXT_F_TEXT_PARENT"))
-               doc.addField("parent", parent, {store: true, index: true, tokenize: false});
-            break;
-         default:
-            doc.addField("day", rows.getColumnItem("TEXT_DAY"), {store: true, index: true, tokenize: false});
-            if (topic = rows.getColumnItem("TEXT_TOPIC"))
-               doc.addField("topic", topic, {store: true, index: true, tokenize: true});
-            break;
-      }
-   
-      doc.addField("online", rows.getColumnItem("TEXT_ISONLINE"), {store: true, index: true, tokenize: false});
-      doc.addField("site", self._id, {store: true, index: true, tokenize: false});
-      doc.addField("id", rows.getColumnItem("TEXT_ID"), {store: true, index: true, tokenize: false});
-      var content = Xml.readFromString(rows.getColumnItem("TEXT_CONTENT"));
-      for (var propName in content) {
-         doc.addField((propName == "title") ? "title" : "text",
-                      stripTags(content[propName]),
-                      {store: false, index: true, tokenize: true});
-      }
-      if (creator = rows.getColumnItem("USER_NAME")) {
-         doc.addField("creator", creator, {store: false, index: true, tokenize: false});
-         doc.addField("createtime", (new Date(rows.getColumnItem("TEXT_CREATETIME").getTime())).format("yyyyMMdd", locale, timeZone),
-                      {store: false, index: true, tokenize: false});
-      }
-      return doc;
-   }
-
-   var parent, topic, title, text, creator;
-   // lock the index queue to prevent it
-   // from being flushed by the IndexManager
-   var queue = app.data.indexManager.getQueue(this);
-   queue.lock();
-   var index = this.getIndex();
-   index.clear();
-
-   var buf = new java.util.Vector(500, 500);
-   var cnt = 0;
-   var now = new Date();
-   var start = new Date();
-   var locale = this.getLocale();
-   var timeZone = this.getTimeZone();
-   var dbCon = getDBConnection("antville");
-   var rows = dbCon.executeRetrieval("select TEXT_ID, TEXT_PROTOTYPE, TEXT_DAY, TEXT_TOPIC, TEXT_ALIAS, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_PROTOTYPE, TEXT_ISONLINE, TEXT_CONTENT, USER_NAME, TEXT_CREATETIME from AV_TEXT, AV_USER where TEXT_F_SITE = " + this._id + " and TEXT_F_USER_CREATOR = USER_ID");
-   app.log("[" + this.alias + "] retrieved indexable contents in " + ((new Date()).diff(now)) + " ms");
-   if (dbCon.lastError != null) {
-      app.log("[" + this.alias + "] unable to retrieve indexable contents, reason: " + dbCon.lastError);
-   } else {
-      var self = this;
-      while (rows.next()) {
-         try {
-            buf.add(getIndexDocument());
-            if (cnt > 0 && cnt % 2000 == 0) {
-               index.addDocument(buf);
-               buf.clear();
-               app.log("[" + this.alias + "] added " + cnt + " documents to index (last 1000 in " + ((new Date()).diff(now)) + " ms)");
-               now = new Date();
-            }
-         } catch (e) {
-            app.log("[" + this.alias + "] Error: unable to add document " + cnt + " to index. Reason: " + e.toString());
-         }
-         cnt++;
-      }
-      rows.release();
-      index.addDocument(buf);
-      app.log("[" + this.alias + "] finished adding " + cnt + " documents to index in " + ((new Date()).diff(start)) + " ms");
-      index.optimize();
-   }
-
-   // unlock the queue again
-   queue.unlock();
-   return cnt;
-};
-
-/**
- * check if there are any stories in the previous month
- */
-Site.prototype.renderLinkToPrevMonth = function(firstDayIndex, currentMonth, monthNames) {
-   var l = this.size();
-   if (l == 0 || l <= firstDayIndex)
-      return "&nbsp;";
-
-   var prevDay = this.get(firstDayIndex + 1);
-   if (prevDay && prevDay.groupname < currentMonth) {
-      var month = prevDay.groupName.toString().substring(4, 6) - 1;
-      return Html.linkAsString({href: prevDay.href()}, monthNames[month]);
-   } else {
-      return "&nbsp;";
-   }
-};
-
-/**
- * check if there are any stories in the previous month
- */
-Site.prototype.renderLinkToNextMonth = function(lastDayIndex, currentMonth, monthNames) {
-   var l = this.size();
-   if (l == 0 || lastDayIndex == 0)
-      return "&nbsp;";
-
-   var nextDay = this.get(lastDayIndex - 1);
-   if (nextDay && nextDay.groupname > currentMonth) {
-      var month = nextDay.groupName.toString().substring(4, 6) - 1;
-      return Html.linkAsString({href: nextDay.href()}, monthNames[month]);
-   } else {
-      return "&nbsp;";
-   }
-};
-
-/**
- * function renders the list of stories for site-(front-)pages
- * and assigns the rendered list to res.data.storylist
- * scrollnavigation-links to previous and next page(s) are also
- * assigned to res.data (res.data.prevpage, res.data.nextpage)
- * using this separate renderFunction instead of doing the stuff
- * in storylist_macro() was necessary for completely independent
- * placement of the prevpage- and nextpage-links
- * @param Int Index-position to start with
- */
-Site.prototype.renderStorylist = function(day) {
-   var size = this.size();
-   var idx = 0;
-
-   // if no day is specified, start with today. we may need 
-   // to search for today's entries (or the latest entry 
-   // before today) because there may be stories posted for 
-   // future days. (HW)
-   var startdayString = day;
-   if (!startdayString)
-      startdayString = formatDate(new Date, "yyyyMMdd");
-
-   var startday = this.get(startdayString);
-   if (startday && startday.size()>0) {
-      idx = this.contains(startday);
-   } else {
-      // loop through days until we find a day less or equal than 
-      // the one we're looking for.
-      for (var i=0; i<size; i++) {
-         if (startdayString >= this.get(i).groupname) {
-            this.get(i).prefetchChildren();
-            idx = i;
-            break;
-         }
-      }
-   }
-   var days = this.pageSize || 2;
-   days = Math.min (days, 14);  // render 14 days max
-   this.prefetchChildren(idx, days);
-
-   // only display "newer stories" if we are actually browsing the archive, 
-   // and the day parameter has been explicitly specified, 
-   // i.e. suppress the link if we are on the home page and there are 
-   // stories on future days. (HW)
-   if (idx > 0 && day) {
-      var sp = new Object();
-      var prev = this.get (Math.max(0, idx-days));
-      sp.url = this.href() + "?day=" + prev.groupname;
-      sp.text = gettext("later stories");
-      res.data.prevpage = renderSkinAsString("prevpagelink", sp);
-   }
-   days = Math.min(idx + days++, this.size());
-   res.push();
-   while (idx < days) {
-      var day = this.get(idx);
-      day.get(0).renderSkin("Story#day");
-      for (var i=0;i<day.size();i++) {
-         day.get(i).renderSkin("Story#preview");
-      }
-      idx += 1;
-   }
-   res.data.storylist = res.pop();
-   if (idx < size) {
-      var sp = new Object();
-      var next = this.get (idx);
-      sp.url = this.href() + "?day=" + next.groupname;
-      sp.text = gettext("earlier stories");
-      res.data.nextpage = renderSkinAsString("nextpagelink", sp);
-   }
-   return;
 };
 
 Site.prototype.getTags = function(type, group) {

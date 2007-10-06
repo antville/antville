@@ -179,9 +179,6 @@ User.login = function(data) {
    if (!digest) {
       digest = ((data.password + user.salt).md5() + session.data.token).md5();
    }
-   res.debug(data.password)
-   res.debug(("helm2000" + user.salt).md5());
-   res.debug(user.hash);
    // Check if login is correct
    if (digest !== user.getDigest(session.data.token)) {
       throw Error(gettext("Unfortunately, your login failed. Maybe a typo?"))
@@ -218,5 +215,5 @@ User.getMembership = function() {
    if (session.user) {
       membership = Members.getByName(session.user.name);
    }
-   return membership || new HopObject;
+   return membership || new Membership;
 };

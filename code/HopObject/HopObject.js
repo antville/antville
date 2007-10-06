@@ -165,7 +165,7 @@ HopObject.prototype.checkbox_macro = function(param, name) {
    if (options.length < 2) {
       param.disabled = "disabled";
    }
-   param.value = String(options[0].value);
+   param.value = String((options[1] || options[0]).value);
    param.selectedValue = String(this.getFormValue(name));
    var label = param.label;
    delete param.label;
@@ -227,9 +227,11 @@ HopObject.prototype.type_macro = function() {
 };
 
 HopObject.prototype.link_macro = function(param, url, text) {
+   url || (url = ".");
    var action = url.split(/#|\?/)[0];
    if (this.getPermission(action)) {
-      renderLink.call(global, param, url, text || action, this);
+      text || (text = (action === "." ? this._id : action));
+      renderLink.call(global, param, url, gettext(text), this);
    }
    return;
 };

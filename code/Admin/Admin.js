@@ -216,7 +216,7 @@ Admin.prototype.count_macro = function(param, object, name) {
       case "comments":
       if (object.constructor === Site) {
          res.write("FIXME: takes very long... :(");
-         //res.write(object.allcontent.size() - object.allstories.size());
+         //res.write(object.stories.all.size() - object.stories.size());
       }
       return;
    }

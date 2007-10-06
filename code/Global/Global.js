@@ -32,11 +32,12 @@ app.addRepository("modules/helma/Mail.js");
 app.addRepository("modules/helma/Search.js");
 app.addRepository("modules/helma/Zip.js");
 
-app.addRepository("modules/jala/code/Form.js");
+app.addRepository("modules/jala/code/Date.js");
+//app.addRepository("modules/jala/code/Form.js");
 app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/I18n.js");
-app.addRepository("modules/jala/code/IndexManager.js");
-app.addRepository("modules/jala/code/ListRenderer.js");
+//app.addRepository("modules/jala/code/IndexManager.js");
+//app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
 var _ = gettext;
@@ -57,10 +58,10 @@ function scheduler() {
    // FIXME: root.manage.autoCleanUp();
    // FIXME: pingUpdatedSites();
    // FIXME: countUsers();
-   app.data.lastAccessLogUpdate = new Date();
-   writeReadLog();
-   flushMailQueue();
-   app.data.indexManager.flush();
+   //app.data.lastAccessLogUpdate = new Date();
+   //writeReadLog();
+   //flushMailQueue();
+   //app.data.indexManager.flush();
    return 5000;
 }
 
@@ -494,7 +495,7 @@ function storylist_macro(param) {
    if (res.handlers.site && !res.handlers.site.trusted) {
       param.limit = param.limit ? Math.min(site.allstories.count(), parseInt(param.limit), 50) : 25;
       for (var i=0; i<param.limit; i++) {
-         var story = site.allcontent.get(i);
+         var story = site.stories.all.get(i);
          if (!story)
             continue;
          res.write(param.itemprefix);
@@ -532,7 +533,7 @@ function storylist_macro(param) {
       while (rows.next() && (cnt < param.limit)) {
          cnt++;
          var id = rows.getColumnItem("TEXT_ID").toString();
-         var story = site.allcontent.get(id);
+         var story = site.stories.all.get(id);
          if (!story)
             continue;
          if (param.skin) {
@@ -700,6 +701,7 @@ function imageoftheday_macro(param) {
  * function loads messages on startup
  */
 function onStart() {
+   return;
    // load application messages and modules
    var dir = new Helma.File(app.dir, "../i18n");
    var arr = dir.list();

@@ -33,7 +33,7 @@ Images.prototype.getPermission = function(action) {
       return User.require(User.PRIVILEGED) ||
             Membership.require(Membership.MANAGER);
    }
-   return;
+   return false;
 };
 
 Images.prototype.main_action = function() {
