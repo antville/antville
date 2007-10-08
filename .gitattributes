@@ -58,3 +58,20 @@ static/default/layouts/antville-classic/menu.gif -text
 static/default/layouts/antville-classic/recent.gif -text
 static/default/layouts/antville-classic/status.gif -text
 static/default/layouts/antville-classic/webloghead.gif -text
+static/www/big.gif -text svneol=unset#image/gif
+static/www/bullet.gif -text svneol=unset#image/gif
+static/www/dot.gif -text svneol=unset#image/gif
+static/www/headbg.gif -text svneol=unset#image/gif
+static/www/hop.gif -text svneol=unset#image/gif
+static/www/manage.gif -text svneol=unset#image/gif
+static/www/marquee.gif -text svneol=unset#image/gif
+static/www/menu.gif -text svneol=unset#image/gif
+static/www/pixel.gif -text svneol=unset#image/gif
+static/www/recent.gif -text svneol=unset#image/gif
+static/www/smallanim.gif -text svneol=unset#image/gif
+static/www/smallchaos.gif -text svneol=unset#image/gif
+static/www/smallstraight.gif -text svneol=unset#image/gif
+static/www/smalltrans.gif -text svneol=unset#image/gif
+static/www/status.gif -text svneol=unset#image/gif
+static/www/webloghead.gif -text svneol=unset#image/gif
+static/www/xmlbutton.gif -text svneol=unset#image/gif
