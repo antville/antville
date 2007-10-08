@@ -43,8 +43,7 @@ Skin.prototype.href = function(action) {
 };
 
 Skin.prototype.getPermission = function(action) {
-   return User.require(User.PRIVILEGED) ||
-         Membership.require(Membership.OWNER);
+   return this._parent.getPermission("main");
 };
 
 Skin.prototype.main_action = function() {

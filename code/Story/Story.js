@@ -24,7 +24,8 @@
 
 defineConstants(Story, "getStatus", "closed", "public", "shared", "open");
 defineConstants(Story, "getModes", "hidden", "featured");
-
+defineConstants(Story, "getCommentsModes", "closed", 
+      "readonly", "moderated", "open");
 this.handleMetadata("title");
 this.handleMetadata("text");
 
@@ -37,17 +38,33 @@ Story.prototype.constructor = function() {
 };
 
 Story.prototype.getPermission = function(action) {
+   if (!this.site.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case ".":
       case "main":
-      return true;
+      return this.creator === session.user || 
+            Membership.require(Membership.MANAGER) || 
+            this.status !== Story.CLOSED || 
+            User.require(User.PRIVILEGED);
       case "comment":
-      return !!session.user;
+      return this.site.commentsMode === Site.ENABLED &&
+            this.commentsMode === Story.OPEN ||
+            this.commentsMode === Story.MODERATED;
       case "delete":
+      return this.creator === session.user || 
+            Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);            
       case "edit":
       case "rotate":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER);
+      return this.creator === session.user || 
+            Membership.require(Membership.MANAGER) || 
+            this.status === Story.SHARED &&
+            Membership.require(Membership.CONTRIBUTOR) || 
+            this.status === Story.OPEN && 
+            Membership.require(Membership.SUBSCRIBER) ||
+            User.require(User.PRIVILEGED);
    }
    return false;
 };
@@ -119,7 +136,7 @@ Story.prototype.getFormValue = function(name) {
    }
    switch (name) {
       case "commentsMode":
-      return this.commentsMode || res.handlers.site.commentsMode;
+      return this.commentsMode || Story.OPEN;
       case "mode":
       return this.mode || Story.FEATURED;
       case "status":
@@ -137,7 +154,7 @@ Story.prototype.getFormOptions = function(name) {
       case "status":
       return Story.getStatus();
       case "commentsMode":
-      return Site.getCommentsModes();
+      return Story.getCommentsModes();
    }
    return;
 }
@@ -284,7 +301,10 @@ Story.prototype.summary_macro = function(param) {
 
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
-   if (mode) {
+   if (story.site.commentsMode === Site.CLOSED || 
+         story.commentsMode === Site.CLOSED) {
+      return;
+   } else if (mode) {
       var n = this.comments.size() || 0;
       var text = ngettext("{0} comment", "{0} comments", n);
       if (mode === "count" || mode === "size") {
@@ -294,19 +314,14 @@ Story.prototype.comments_macro = function(param, mode) {
                html.link({href: this.href() + "#comments"}, text);
       }
    } else {
-      if (story.site.commentsMode === Site.CLOSED || 
-            story.commentsMode === Site.CLOSED) {
-         //html.element("em", gettext("This story''s comments are closed."));
-      } else {
-         this.comments.prefetchChildren();
-         this.forEach(function() {
-            html.openTag("a", {name: this._id});
-            //res.write(this.size())
-            html.closeTag("a");
-            this.renderSkin(  this.parent.constructor === Story ? 
-                  "Comment#main" : "Comment#level_2");
-         });
-      }
+      this.comments.prefetchChildren();
+      this.forEach(function() {
+         html.openTag("a", {name: this._id});
+         //res.write(this.size())
+         html.closeTag("a");
+         this.renderSkin(  this.parent.constructor === Story ? 
+               "Comment#main" : "Comment#level_2");
+      });
    }
    return;
 };

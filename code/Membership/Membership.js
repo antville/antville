@@ -26,16 +26,28 @@ defineConstants(Membership, "getRoles", "Subscriber", "Contributor",
       "Manager", "Owner");
       
 Membership.prototype.constructor = function(user, role) {
-   if (user && role) {
+   if (user) {
       this.map({
          creator: user,
          name: user.name,
          role: role || Membership.SUBSCRIBER,
-         createtime: new Date
+         created: new Date
       });
       this.touch();
    }
    return this;
+};
+
+Membership.prototype.getPermission = function(action) {
+   switch (action) {
+      case "edit":
+      return this.creator !== session.user;
+      case "delete":
+      return this.role !== Membership.OWNER;
+      case "unsubscribe":
+      return this.role === Membership.SUBSCRIBER;
+   }
+   return true;
 };
 
 Membership.prototype.update = function(data) {
@@ -52,18 +64,6 @@ Membership.prototype.update = function(data) {
    }
    return;
 };
-
-Membership.prototype.getPermission = function(action) {
-   switch (action) {
-      case "edit":
-      return this.creator !== session.user;
-      case "delete":
-      return this.role !== Membership.OWNER;
-      case "unsubscribe":
-      return this.role === Membership.SUBSCRIBER;
-   }
-   return true;
-}
 
 Membership.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -168,6 +168,14 @@ Membership.getLevel = function(role) {
    }
 };
 
+Membership.getByName = function(name) {
+   var site = res.handlers.site;
+   if (site) {
+      return site.members.get(name);
+   }
+   return null;
+};
+
 Membership.require = function(role) {
    var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
          Membership.MANAGER, Membership.OWNER];
@@ -193,6 +201,7 @@ Membership.remove = function(membership) {
 };
 
 Membership.prototype.status_macro = function() {
+   this.role || (res.handlers.members = {});
    this.renderSkin(session.user ? "Membership#status" : "Membership#login");
    return;
 };

@@ -23,27 +23,32 @@
 //
 
 Stories.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case ".":
       case "main":
-      case "top":
-      return true;
       case "create":
-      case "member":
-      case "private":
-      return User.require(User.PRIVILEGED) || 
-            Membership.require(Membership.OWNER) || 
-            ((Site.getPermission(Site.OPEN) || story.mode === "open") && 
-            Membership.require(Membership.CONTRIBUTOR));
+      return Site.require(Site.OPEN) ||
+            Membership.require(Membership.CONTRIBUTOR) || 
+            User.require(User.PRIVILEGED); 
+      case "all":
+      case "top":
+      case "closed":
+      return Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);
    }
    return false;
 };
 
 Stories.prototype.main_action = function() {
-   res.data.list = renderList(this, "Story#stories", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this, 
-         this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Stories of {0}", this._parent.title);
+   var stories = User.getMembership().stories;
+   res.data.list = renderList(stories, "Story#stories", 
+         10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(stories, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Member stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
@@ -56,15 +61,15 @@ Stories.prototype.create_action = function() {
    
    var story = new Story;
    if (req.postParams.save) {
-      //try {
+      try {
          story.update(req.postParams);
          this.add(story);
          res.message = gettext("The story was successfully created.");
          res.redirect(story.href());
-      //} catch (ex) {
-      //   res.message = ex;
-      //   app.log(ex);
-      //}
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
    }
    
    res.data.title = gettext("Add story to {0}", this._parent.title);
@@ -74,9 +79,9 @@ Stories.prototype.create_action = function() {
    return;
 };
 
-Stories.prototype.private_action = function() {
-   res.data.list = renderList(this["private"], 
-         "mgrlistitem", 10, req.queryParams.page);
+Stories.prototype.closed_action = function() {
+   res.data.list = renderList(this.closed, 
+         "Story#stories", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(this.offline, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Private stories of {0}", this._parent.title);
@@ -85,20 +90,19 @@ Stories.prototype.private_action = function() {
    return;
 };
 
-Stories.prototype.member_action = function() {
-   var membership = this._parent.members.get(session.user.name);
-   res.data.list = renderList(membership.stories, 
-         "mgrlistitem", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(membership.stories, 
-         this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Member stories of {0}", this._parent.title);
+Stories.prototype.all_action = function() {
+   res.data.list = renderList(this, "Story#stories", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this, 
+         this.href(), 10, req.queryParams.page);
+   res.data.title = gettext("Stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
 };
 
 Stories.prototype.top_action = function() {
-   res.data.title = gettext("Top 25 most read stories of {0}", this._parent.title);
+   res.data.title = gettext("Top 25 most read stories of {0}", 
+         this._parent.title);
    res.data.body = this.renderSkinAsString("Stories#top");
    this._parent.renderSkin("page");
    return;
@@ -112,41 +116,6 @@ Stories.prototype.top_macro = function() {
       });
       counter += 1;
    });
-   return;
-};
-
-Stories.prototype.checkAccess = function(action, usr, level) {
-   try {
-      switch (action) {
-         case "main" :
-            checkIfLoggedIn(this.href(req.action));
-            this.checkAdd(usr, level);
-            break;
-         case "offline" :
-            checkIfLoggedIn(this.href(req.action));
-            this.checkAdd(usr, level);
-            break;
-         case "mystories" :
-            checkIfLoggedIn(this.href(req.action));
-            this.checkAdd(usr, level);
-            break;
-         case "create" :
-            if (!usr)
-               rescueText(req.data);
-            checkIfLoggedIn(this.href(req.action));
-            this.checkAdd(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this._parent.href());
-   }
-   return;
-};
-
-Stories.prototype.checkAdd = function(usr, level) {
-   if (!this._parent.properties.get("usercontrib") && (level & MAY_ADD_STORY) == 0)
-      throw new DenyException("storyAdd");
    return;
 };
 

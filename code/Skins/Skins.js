@@ -23,15 +23,7 @@
 //
 
 Skins.prototype.getPermission = function(action) {
-   switch (action) {
-      case ".":
-      case "main":
-      case "edit":
-      case "create":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER);
-   }
-   return true;
+   return this._parent.getPermission("main");
 };
 
 Skins.prototype.main_action = function() {

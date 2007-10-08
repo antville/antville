@@ -50,7 +50,15 @@ Root.prototype.getPermission = function(action) {
       return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
-}
+};
+
+Root.prototype.getMacroHandler = function(name) {
+   switch (name) {
+      case "sites":
+      return this[name];
+   }
+   return Site.prototype.getMacroHandler.apply(this, arguments);
+};
 
 Root.prototype._main_action = function() {
    //log();
@@ -107,13 +115,13 @@ Root.prototype.notfound_action = function() {
 };
 
 Root.prototype.create_action = function() {
-   if (!session.user || req.postParams.cancel) {
-      res.redirect(root.href());
-   }
-   
+   var site = new Site;
    if (req.postParams.create) {
       try {
-         var site = this.addSite(req.postParams);
+         site.update(req.postParams);
+         this.add(site);
+         site.members.add(new Membership(session.user, Membership.OWNER));
+         logAction(site, "added");
          res.message = gettext("Successfully created your site.");   
          res.redirect(site.href());
       } catch (ex) {
@@ -124,7 +132,7 @@ Root.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Create a new site");
-   res.data.body = this.renderSkinAsString("new");
+   res.data.body = site.renderSkinAsString("Site#create");
    root.renderSkin("page");
    return;
 };
@@ -213,31 +221,6 @@ Root.prototype.sitecounter_macro = function(param) {
    else
       res.write(size + (param.more ? param.more : ""));
    return;
-};
-
-Root.prototype.addSite = function(data) {
-   if (!data.name) {
-      throw Error(gettext("Please enter a name for your new site."));
-   } else if (data.name.length > 30) {
-      throw Error(gettext("Sorry, the name you chose is too long. Please enter a shorter one."));
-   } else if (/(\/|\\)/.test(data.name)) {
-      throw Error(gettext("Sorry, a site name may not contain any (back)slashes."));
-   } else if (data.name !== root.getAccessName(data.name)) {
-      throw Error(gettext("Sorry, there is already a site with this name."));
-   }
-
-   var site = new Site(data.name, data.title);
-   this.sites.add(site);
-   /* FIXME 
-   var layout = new Layout(this, this.title, session.user);
-   layout.alias = data.name;
-   layout.setParentLayout(root.getLayout());
-   site.layouts.add(layout);
-   site.layouts.setDefaultLayout(layout.alias); 
-   */
-   site.members.add(new Membership(session.user, Membership.OWNER));
-   logAction(site, "added");
-   return site;
 };
 
 Root.prototype.getCreationPermission = function() {

@@ -1,75 +1,76 @@
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td colspan="2" nowrap="nowrap">
+<td colspan="2">
    <strong><a name="general">General</a></strong>
 </td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Mode:</td>
-<td nowrap="nowrap"><% site.select mode %></td>
+<td class="small">Mode:</td>
+<td><% site.select mode %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Title:</td>
-<td nowrap="nowrap"><% site.input title %></td>
+<td class="small">Title:</td>
+<td><% site.input title %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Tagline:</td>
-<td nowrap="nowrap"><% site.input tagline %></td>
+<td class="small">Tagline:</td>
+<td><% site.input tagline %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Paging:</td>
-<td nowrap="nowrap"><% site.input pageSize size="5" maxlength="2" %>
+<td class="small">Paging:</td>
+<td><% site.input pageSize size="5" maxlength="2" %>
 <% site.select pageMode %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Comments:</td>
-<td nowrap="nowrap"><% site.select commentsMode %></td>
+<td class="small">Comments:</td>
+<td><% site.checkbox commentsMode %>
+<label for="commentsMode">enabled</label></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Archive:</td>
-<td nowrap="nowrap"><% site.checkbox archiveMode %>
+<td class="small">Archive:</td>
+<td><% site.checkbox archiveMode %>
 <label for="archiveMode">enabled</label></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Language:</td>
-<td nowrap="nowrap"><% site.select language %></td>
+<td class="small">Language:</td>
+<td><% site.select language %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Time zone:</td>
-<td nowrap="nowrap"><% site.select timeZone %></td>
+<td class="small">Time zone:</td>
+<td><% site.select timeZone %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Long date format:</td>
-<td nowrap="nowrap"><% site.select longDateFormat %></td>
+<td class="small">Long date format:</td>
+<td><% site.select longDateFormat %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Short date format:</td>
-<td nowrap="nowrap"><% site.select shortDateFormat %></td>
+<td class="small">Short date format:</td>
+<td><% site.select shortDateFormat %></td>
 </tr>
 <tr>
 <!-- FIXME: should site.email be dropped? afaik, 
      bounces should be sent to sys.email? [tobi] -->
-<td class="small" valign="top" nowrap="nowrap">e-mail address:</td>
+<td class="small" valign="top">e-mail address:</td>
 <td><% site.input email %><br />
 <span class="small">This e-mail address will be used for sending confirmation 
 mails, i.e. when a user registers or signs up a site.</span></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Web hook:</td>
+<td class="small" valign="top">Web hook:</td>
 <td><% site.input webHookUrl %><br />
 <% site.checkbox webHookEnabled %> 
 <label for="webHookEnabled">enabled<label></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Layout:</td>
+<td class="small" valign="top">Layout:</td>
 <td><% site.select layout %><br />
 <span class="small">Choose the layout to use for your site. 
 <% link layouts "Go to the layouts page" %> to browse, manage or 
 test-drive the list of available layouts.</span></td>
 </tr>
 <!--tr>
-<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
+<td colspan="2"><div class="listSeparator">&nbsp;</div>
 <strong><a name="index">Index Maintenance</a></strong></td>
 </tr>
 <tr>
@@ -83,14 +84,14 @@ feature only when it's really necessary (e.g. if you receive an error when
 trying to search).</span></td>
 </tr>
 <tr>
-<td colspan="2" nowrap="nowrap"><div class="listSeparator">&nbsp;</div>
+<td colspan="2"><div class="listSeparator">&nbsp;</div>
 <strong><a name="spamfilter">Referrer spam filter</a></strong></td>
 </tr>
 <tr>
 <td class="small" valign="top">Enter one 
 <a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> 
 per line to be applied on every URL in the referrer and backlink lists.</td>
-<td nowrap="nowrap" valign="top"><% site.preferences name="spamfilter" 
+<td valign="top"><% site.preferences name="spamfilter" 
 as="editor" cols="30" rows="7" %></td>
 </tr-->
 

@@ -31,13 +31,18 @@ Archive.prototype.constructor = function(name, parent) {
 };
 
 Archive.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case "previous":
       return this.getPage() > 1
       case "next":
       return this.getPage() < this.getSize() / this.getPageSize();
+      default:
+      return this._parent.archiveMode === Site.PUBLIC;
    }
-   return res.handlers.site.archiveMode === Site.PUBLIC;
+   return false;
 };
 
 Archive.prototype.link_macro = function(param, action, text) {
@@ -88,66 +93,71 @@ Archive.prototype.main_action = function() {
    return;
 };
 
-Archive.prototype.stories_macro = function() {
-   var day, storyDay; 
-   var page = this.getPage();
-   var pageSize = this.getPageSize();
-  
-   var renderStory = function(story) {
-      storyDay = story.created.getDate();
-      if (day !== storyDay) {
-         story.renderSkin("Story#day");
-         day = storyDay;
-      }
-      story.renderSkin("Story#preview");
-      return;
-   };
-
-   if (!this.parent) {
-      var site = res.handlers.site;
-      var offset = (page - 1) * pageSize;
-      var stories = site.stories.all.list(offset, pageSize);
-      for each (var story in stories) {
-         renderStory(story);
+Archive.prototype.list_macro = function(param, type) {
+   switch (type) {
+      default:
+      var day, storyDay; 
+      var page = this.getPage();
+      var pageSize = this.getPageSize();
+     
+      var renderStory = function(story) {
+         storyDay = story.created.getDate();
+         if (day !== storyDay) {
+            story.renderSkin("Story#day");
+            day = storyDay;
+         }
+         story.renderSkin("Story#preview");
+         return;
       };
-      return;
+   
+      if (!this.parent) {
+         var site = res.handlers.site;
+         var offset = (page - 1) * pageSize;
+         var stories = site.stories["public"].list(offset, pageSize);
+         for each (var story in stories) {
+            renderStory(story);
+         };
+         return;
+      }
+   
+      res.push();
+      res.write("select id from content ");
+      res.write(this.getFilter());
+      res.write(" limit " + pageSize);
+      res.write(" offset " + (page - 1) * pageSize);
+      sql = res.pop();
+   
+      var db = getDBConnection("antville");
+      rows = db.executeRetrieval(sql);
+      var story, storyDay, day;
+      while (rows.next()) {
+         story = Story.getById(rows.getColumnItem("id"));
+         renderStory(story);
+      }
+      rows.release();
    }
-
-   res.push();
-   res.write("select id from content ");
-   res.write(this.getFilter());
-   res.write(" limit " + pageSize);
-   res.write(" offset " + (page - 1) * pageSize);
-   sql = res.pop();
-
-   var db = getDBConnection("antville");
-   rows = db.executeRetrieval(sql);
-   var story, storyDay, day;
-   while (rows.next()) {
-      story = Story.getById(rows.getColumnItem("id"));
-      renderStory(story);
-   }
-   rows.release();
    return;
 };
 
 Archive.prototype.getDate = function(part) {
-   var value;
-   if (part) {
-      var site = res.handlers.site;
-      var offset = path.contains(site);
-      var index = Archive.Fields.indexOf(part);
-      var value = path[offset + 2 + index];
-      if (value && value.parent) {
-         return (part === "month" ? value.name - 1 : value.name);
-      }
-   } else {
+   if (path.contains(this) > -1) {
       var value;
-      var date = new Date;
-      (value = this.getDate("year")) && date.setYear(value);
-      (value = this.getDate("month")) && date.setMonth(value);
-      (value = this.getDate("day"))  && date.setDate(value);
-      return new Date(date);
+      if (part) {
+         var site = res.handlers.site;
+         var offset = path.contains(site);
+         var index = Archive.Fields.indexOf(part);
+         var value = path[offset + 2 + index];
+         if (value && value.parent) {
+            return (part === "month" ? value.name - 1 : value.name);
+         }
+      } else {
+         var value;
+         var date = new Date;
+         (value = this.getDate("year")) && date.setYear(value);
+         (value = this.getDate("month")) && date.setMonth(value);
+         (value = this.getDate("day"))  && date.setDate(value);
+         return new Date(date);
+      }
    }
    return null;
 };

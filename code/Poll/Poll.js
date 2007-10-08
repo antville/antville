@@ -22,7 +22,7 @@
 // $URL$
 //
 
-defineConstants(Poll, "getStatus", "closed", "private", "public");
+defineConstants(Poll, "getStatus", "closed", "readonly", "open");
 
 Poll.prototype.constructor = function(question) {
    this.question = question;
@@ -33,18 +33,23 @@ Poll.prototype.constructor = function(question) {
 };
 
 Poll.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case ".":
       case "main":
-      return !!session.user;
       case "results":
       return true;
       case "edit":
-      return this.status === Poll.CLOSED;
-      case "delete":
+      if (this.status === Poll.CLOSED) {
+         return false;
+      }
       case "rotate":
-      return User.require(User.PRIVILEGED) || 
-            Membership.require(Membership.MANAGER);
+      case "delete":
+      return this.creator === session.user || 
+            Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);            
    }
    return false;
 };

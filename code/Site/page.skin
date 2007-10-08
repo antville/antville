@@ -7,68 +7,74 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<script type="text/javascript" src="http://localhost:8080/static/www/jquery-1.1.3.1.pack.js"></script>
-<script type="text/javascript" src="<% site.href %>main.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href %>main.css" />
-<link rel="alternate" type="text/rss+xml" title="RSS Feed" href="<% site.href %>rss" />
+<script type="text/javascript" 
+      src="<% file /jquery-1.1.3.1.pack.js url %>"></script>
+<script type="text/javascript" src="<% site.href main.js %>"></script>
+<link rel="stylesheet" type="text/css" 
+      title="CSS Stylesheet" href="<% site.href main.css %>" />
+<link rel="alternate" type="text/rss+xml" 
+      title="RSS Feed" href="<% site.href rss.xml %>" />
 </head>
-
 <body>
+
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td class="header"><% site.title | site.link title=<% site.tagline %> %></td>
+<td class="header">
+   <% site.title | site.link title=<% site.tagline %> %>
+</td>
 </tr>
 </table>
 
 <table class="main">
 <tr>
 <td class="center">
-<% response.message prefix='<div class="message">' suffix='</div><br />' %>
-<% response.body %>
+   <% response.message prefix='<div class="message">' suffix='</div><br />' %>
+   <% response.body %>
 </td>
 <td class="right">
-<div class="box">
-<% site.age prefix="Online for " show="days" suffix=" days<br />" %>
-<% site.modified short prefix="Last modified: " %>
-</div>
-
-<div class="boxheader">status</div>
-<div class="box"><% membership.status %></div>
-
-<div class="boxheader">menu</div>
-<div class="box">
-<% site.link . home prefix="... " suffix="<br />" %>
-<% site.link tags prefix="... " suffix="<br />" %>
-<% site.images.link tags galleries prefix="..." suffix="<br />" %>
-<br />
-<% site.stories.link create "add a story" prefix="... " suffix="<br />" %>
-<% site.stories.link prefix="... " suffix="<br />" %>
-<% site.images.link prefix="... " suffix="<br />" %>
-<% site.files.link prefix="... " suffix="<br />" %>
-<% site.polls.link prefix="... " suffix="<br />" %>
-<% site.members.link prefix="... " suffix="<br />" %>
-<br />
-<% site.link edit preferences prefix="...&nbsp;" suffix="<br />" %>
-<% site.link layouts prefix="...&nbsp;" suffix="<br />" %>
-<% site.link referrers prefix="...&nbsp;" suffix="<br />" %>
-<% site.stories.link top "most read stories" prefix="...&nbsp;" suffix="<br />" %>
-<br />
-...&nbsp;<a href="<% root.href %>"><% root.title suffix=" " %>home</a>
-</div>
-
-<div class="boxheader">search</div>
-<div class="box"><% site.skin searchbox %></div>
-
-<div class="boxheader">calendar</div>
-<div class="box"><% site.calendar %></div>
-
-<div class="boxheader">recent comments</div>
-<div class="box"><% site.history comments %></div>
-
-<div class="boxline"></div><br />
-<div class="box"><% site.xmlbutton %><br /><br />
-<% logo name="smallchaos" %>
-<% logo name="hop" %></div>
+   <div class="box">
+   <% site.age prefix="Online for " suffix=" days<br />" %>
+   <% site.modified short prefix="Last modified: " %>
+   </div>
+   
+   <div class="boxheader">status</div>
+   <div class="box"><% membership.status %></div>
+   
+   <div class="boxheader">menu</div>
+   <div class="box">
+   <% site.link . home prefix="... " suffix="<br />" %>
+   <% site.tags.link prefix="... " suffix="<br />" %>
+   <% site.images.link tags galleries prefix="..." suffix="<br />" %>
+   <br />
+   <% site.stories.link create "add a story" prefix="... " suffix="<br />" %>
+   <% site.stories.link prefix="... " suffix="<br />" %>
+   <% site.images.link prefix="... " suffix="<br />" %>
+   <% site.files.link prefix="... " suffix="<br />" %>
+   <% site.polls.link prefix="... " suffix="<br />" %>
+   <% site.members.link prefix="... " suffix="<br />" %>
+   <br />
+   <% site.link edit preferences prefix="...&nbsp;" suffix="<br />" %>
+   <% site.layouts.link prefix="... " suffix="<br />" %>
+   <% site.link referrers prefix="... " suffix="<br />" %>
+   <% site.stories.link top "most read stories" prefix="... " suffix="<br />" %>
+   <br />
+   <% root.title | root.link . %>
+   </div>
+   
+   <div class="boxheader">search</div>
+   <div class="box"><% site.skin searchbox %></div>
+   
+   <div class="boxheader">calendar</div>
+   <div class="box"><% site.calendar %></div>
+   
+   <div class="boxheader">recent comments</div>
+   <div class="box"><% site.history comments %></div>
+   
+   <div class="boxline"></div><br />
+   <div class="box"><% image /rss.png | site.link rss.xml %><br />
+   <br />
+   <% image /smallchaos %>
+   <% image /hop %></div>
 
 </td>
 </tr>

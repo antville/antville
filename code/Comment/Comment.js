@@ -31,7 +31,6 @@ Comment.prototype.constructor = function(parent) {
    // FIXME: Correct parent_type (Helma bug?)
    this.parent_type = parent._prototype;
    this.status = Story.PUBLIC;
-   this.mode = Story.READONLY;
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
@@ -49,13 +48,11 @@ Comment.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      return true;
       case "comment":
-      return !!session.user;
+      return this.story.getPermission.call(this, action);
       case "delete":
       case "edit":
-      return User.require(User.PRIVILEGED) ||
-            session.user === this.creator;
+      return this.story.getPermission.call(this, "delete");
    }
    return false;
 };
@@ -88,15 +85,18 @@ Comment.prototype.edit_action = function() {
 };
 
 Comment.prototype.update = function(data) {
-   var delta = this.getDelta(data);
    if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
    }
    this.title = data.title;
    this.text = data.text;
    this.setContent(data);
-   if (res.handlers.story.status === Story.PRIVATE && delta > 50) {
-      res.handlers.site.lastUpdate = new Date;
+   if (this.site.commentsMode === Site.MODERATED || 
+         this.story.commentsMode === Site.MODERATED) {
+      this.mode = Comment.PENDING;
+   } else if (this.story.status === Story.PRIVATE && 
+         this.getDelta(data) > 50) {
+      this.site.lastUpdate = new Date;
    }
    this.touch();
    return;

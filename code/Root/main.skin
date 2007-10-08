@@ -1,6 +1,12 @@
-<p>Antville is an open source project aimed to the development of an "easy to maintain and use" site hosting system. It's not limited to just one site, it can easily host up to several hundred or thousand sites (the number of sites is rather limited by the site owners choice and server power than by the software).</p>
+<p>Antville is an open source project aimed to the development of an 
+"easy to maintain and use" site hosting system. It's not limited to just 
+one site, it can easily host up to several hundred or thousand sites.</p> 
 
-Number of sites hosted here: <% root.sitecounter count="all" %><br />
-Publicly accessible sites: <% root.sitecounter %>
+<p>(Note: The number of sites is rather limited by server power and the site 
+owner's choice than by the software.)</p>
 
-<% sitelist limit="25" prefix="<br /><br />Recently updated sites:<ul>" suffix="</ul>" %>
+Number of sites hosted here: <% root.size %><br />
+Publicly accessible sites: <% root.sites.size %>
+
+<br /><br />
+<% root.loop sites skin="preview" limit="25" prefix="Recently updated sites:<ul>" suffix="</ul>" %>

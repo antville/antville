@@ -61,9 +61,9 @@ update av_user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash =
 ## Update table av_site
 ##
 
-alter table av_site add column `mode` enum('closed','shared','public','open') not null;
+alter table av_site add column `mode` enum('closed','restricted','public','open') not null;
 update av_site set mode = 'public';
-update av_site set mode = 'shared' where site_isonline <> 1;
+update av_site set mode = 'restricted' where site_isonline <> 1;
 
 alter table av_site add column `status` enum('blocked','regular','trusted') not null;
 update av_site set status = 'regular';

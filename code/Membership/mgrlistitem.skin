@@ -9,7 +9,7 @@
 <div class="ample"><span class="small"><% membership.created short
 prefix="Member since " %></span></div>
 <div><% membership.creator.url | link %></div></td>
-<td width="10" nowrap="nowrap">&nbsp;</td>
+<td width="10" nowrap="nowrap"> </td>
 <td align="right" class="small" nowrap="nowrap">
 <% membership.link edit prefix="...&nbsp;" suffix="<br />" %>
 <% membership.link contact prefix="...&nbsp;" suffix="<br />" %>

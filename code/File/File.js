@@ -35,21 +35,25 @@ File.prototype.constructor = function() {
 };
 
 File.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case ".":
       case "main":
       return true;
       case "delete":
       case "edit":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER);
+      return this.creator === session.user || 
+            Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);            
    }
    return false;
 };
 
 File.prototype.main_action = function() {
-   if (!User.require(User.PRIVILEGED) && 
-         session.user !== this.creator && session.user !== this.modifier) {
+   if (Membership.require(Membership.SUBSCRIBER) &&
+         User.require(User.REGULAR)) {
       this.requests += 1;
    }
    return res.redirect(this.getUrl());
@@ -117,11 +121,13 @@ File.prototype.contentLength_macro = function(param) {
 };
 
 File.prototype.getFile = function() {
-   return Site.getStaticFile("files/" + this.name);
+   var site = this.parent || res.handlers.site;
+   return site.getStaticFile("files/" + this.name);
 };
 
 File.prototype.getUrl = function() {
-   return Site.getStaticUrl("files/" + this.name);
+   var site = this.parent || res.handlers.site;
+   return site.getStaticUrl("files/" + this.name);
 };
    
 File.remove = function() {

@@ -2,7 +2,7 @@
    <% archive.link previous <% gettext "newer stories" %> 
          prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
 </div>
-<% archive.stories %>
+<% archive.list %>
 <div class="pagelink">
    <% archive.link next <% gettext "older stories" %>
          prefix='<div class="pagelinkBottom">... ' suffix="</div>" %>

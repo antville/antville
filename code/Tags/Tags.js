@@ -22,6 +22,18 @@
 // $URL$
 //
 
+Tags.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
+   switch (action) {
+      case ".":
+      case "main":
+      return true;
+   }
+   return false;
+};
+
 Tags.prototype.main_action = function() {
    var action = this.getAction();
    if (req.data.group) {

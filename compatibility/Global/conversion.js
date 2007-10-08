@@ -135,12 +135,12 @@ var convert = function(type) {
          var metadata = eval(rows.getColumnItem("metadata"));
          metadata.email = rows.getColumnItem("site_email");
          metadata.title = rows.getColumnItem("title");
-         /* metadata.lastUpdate = rows.getColumnItem("site_lastupdate");
+         metadata.lastUpdate = rows.getColumnItem("site_lastupdate");
          metadata.pageSize = metadata.days || 3;
          metadata.pageMode = "days";
          metadata.timeZone = metadata.timezone || "CET";
          metadata.archiveMode = metadata.archive ? "online" : "offline";
-         metadata.commentsMode = metadata.discussions ? "online" : "offline";
+         metadata.commentsMode = metadata.discussions ? "enabled" : "disabled";
          metadata.shortDateFormat = metadata.shortdateformat;
          metadata.longDateFormat = metadata.longdateformat;
          metadata.offlineSince = rows.getColumnItem("site_lastoffline");
@@ -150,7 +150,7 @@ var convert = function(type) {
          metadata.webHookLastUpdate = rows.getColumnItem("site_lastping");
          if (metadata.country) {
             metadata.locale += "_" + metadata.country;
-         } */
+         }
          var mode = metadata.usercontrib ? 'open' : rows.getColumnItem("mode");
          for each (var key in ["enableping", "usercontrib", "archive",
                "discussions", "days", "shortdateformat", "longdateformat",

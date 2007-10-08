@@ -39,21 +39,24 @@ Layout.prototype.constructor = function(site, title, creator) {
 };
 
 Layout.prototype.getPermission = function(action) {
-   var defaultPermission = User.require(User.PRIVILEGED) ||
-         Membership.require(Membership.OWNER)
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
-      case "delete":
-      return defaultPermission && this !== this.site.layout && 
-            this.offsprings.size() < 1;
+      case ".":
+      case "main":
       case "edit":
       case "images":
       case "skins":
-      return defaultPermission;
+      return true;
+      case "delete":
+      return this !== this.site.layout && 
+            this.offsprings.size() < 1;
       case "test":
       case "activate":
-      return defaultPermission && this !== this.site.layout;
+      return this !== this.site.layout;
    }
-   return true;
+   return false;
 };
 
 Layout.prototype.main_action = function() {
@@ -212,6 +215,19 @@ Layout.prototype.download_zip_action = function() {
    return;
 };
 
+Layout.prototype.value_macro = function(param, name, value) {
+   if (!name) {
+      return;
+   }
+   var key = ["layout_" + name];
+   if (!value) {
+      return res.meta[key];
+   } else {
+      res.meta[key] = value;
+   }
+   return;
+};
+
 Layout.prototype.image_macro = function(param, name, mode) {
    name || (name = param.name);
    if (!name) {
@@ -276,6 +292,10 @@ Layout.prototype.getImage = function(name, fallback) {
 };
 
 Layout.prototype.getSkinPath = function() {
+   // FIXME: Do we need this or not?
+   /* if (!this.site) {
+      return [app.dir];
+   } */
    var skinPath = [];
    var layout = this;
    do {

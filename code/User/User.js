@@ -161,7 +161,7 @@ User.register = function(data) {
    }
    var user = new User(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
-   if (root.manage.sysadmins.size() < 1) {
+   if (root.admins.size() < 1) {
       user.status = User.PRIVILEGED;
    }
    root.users.add(user);
@@ -213,7 +213,7 @@ User.getStatus = function() {
 User.getMembership = function() {
    var membership;
    if (session.user) {
-      membership = Members.getByName(session.user.name);
+      membership = Membership.getByName(session.user.name);
    }
    return membership || new Membership;
 };

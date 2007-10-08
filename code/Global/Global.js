@@ -22,6 +22,7 @@
 // $URL$
 //
 
+app.addRepository("modules/core/Global.js");
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
 app.addRepository("modules/core/Filters.js");
@@ -52,6 +53,50 @@ var html = new helma.Html();
 helma.Mail.prototype.queue = function() {
    return app.data.mailQueue.push(this);
 };
+
+function onStart() {
+   // FIXME: Does database exist?
+   /*var db = getDBConnection("antville");
+   var rows = db.executeRetrieval("select min(id) as id from site");
+   rows.next();
+   var id = rows.getColumnItem("id");
+   //Packages.helma.main.Server.getServer().stopApplication(app.name);
+   rows.release();*/
+   return;
+
+   // load application messages and modules
+   var dir = new Helma.File(app.dir, "../i18n");
+   var arr = dir.list();
+   for (var i in arr) {
+      var fname = arr[i];
+   	if (fname.startsWith("messages.")) {
+         var name = fname.substring(fname.indexOf(".") + 1, fname.length);
+   		var msgFile = new Helma.File(dir, fname);
+   		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
+   		app.log("loaded application messages (language: " + name + ")");
+   	}
+   }
+   // init index manager
+   app.data.indexManager = new IndexManager();
+   // build macro help
+   app.data.macros = buildMacroHelp();
+   //eval(macroHelpFile.readAll());
+   app.log("loaded macro help file");
+   // creating the vector for referrer-logging
+   app.data.accessLog = new java.util.Vector();
+   // creating the hashtable for storyread-counting
+   app.data.readLog = new java.util.Hashtable();
+   // define the global mail queue
+   app.data.mailQueue = new Array();
+   // init constants
+   initConstants();
+   // call onStart methods of modules
+   for (var i in app.modules) {
+      if (app.modules[i].onStart)
+         app.modules[i].onStart();
+   }
+   return;
+}
 
 function scheduler() {
    flushLog();
@@ -158,21 +203,42 @@ EDITABLEBY_SUBSCRIBERS  = 2;
 SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
 LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
 
-ONEMINUTE = 60000;
-ONEHOUR = 3600000;
-ONEDAY = 86400000;
-
 function now_macro(param, format) {
    return formatDate(new Date, format || param.format);
 }
 
-function logo_macro(param, name) {
-   Images.Default.render(name || param.name || "smallchaos", param);
+function file_macro(param, name, mode) {
+   name || (name = param.name);
+   if (!name) {
+      return;
+   }
+   mode || (mode = param.as);
+   delete(param.name);
+   delete(param.as);
+
+   var file;
+   if (name.startsWith("/")) {
+      if (mode === "url") {
+         res.write(root.getStaticUrl(name.substring(1)));
+      }
+      return;
+   }
+
+   file = HopObject.getFromPath(name, "files");
+   if (!file) {
+      return;
+   }
+   if (mode === "url") {
+      res.write(file.getUrl());
+   } else {
+      param.text || (param.text = file.name);
+      file.renderSkin(param.skin || "main", param);
+   }
    return;
 }
 
 function image_macro(param, name, mode) {
-  name || (name = param.name);
+   name || (name = param.name);
    if (!name) {
       return;
    }
@@ -182,11 +248,23 @@ function image_macro(param, name, mode) {
    delete(param.as);
    delete(param.linkto);
 
-   if (name.startsWith("/")) {
-      return Images.Default.render(name.substring(1), param);
+   var image;
+   if (name.startsWith("/") && (image = Images.Default[name.substring(1)])) {
+      param.src = root.getStaticUrl(image.name);
+      param.border = 0;
+      if (mode === "url") {
+         res.write(param.src);
+      } else if (image.href) {
+         res.push();
+         html.tag("img", param);
+         link_filter(res.pop(), param, image.href);
+      } else {
+         html.tag("img", param);
+      }
+      return;
    }
 
-   var image = HopObject.getFromPath(name, "images");
+   image = HopObject.getFromPath(name, "images");
    if (!image && param.fallback) {
       image = HopObject.getFromPath(param.fallback, "images");
    }
@@ -201,13 +279,10 @@ function image_macro(param, name, mode) {
       action || (action = image.getUrl());
       return image.thumbnail_macro(param);
    }
-   return image.render_macro(param);
+   image.render_macro(param);
+   return;
 }
 
-/**
- *  Global link macro. In contrast to the hopobject link macro,
- *  this reproduces the link target without further interpretation.
- */
 function link_macro() {
    return renderLink.apply(this, arguments);
 }
@@ -231,29 +306,6 @@ function renderLink(param, url, text, handler) {
    html.link(param, gettext(text));
 }
 
-/**
- * macro fetches a file-object and renders a link to "getfile"-action
- */
-function file_macro(param) {
-   if (!param.name)
-      return;
-   var p = getPoolObj(param.name, "files");
-   if (!p)
-      return;
-   if (param.as == "url")
-      res.write(p.obj.getUrl());
-   else {
-      if (!param.text)
-         param.text = p.obj.alias;
-      p.obj.renderSkin(param.skin ? param.skin : "main", param);
-   }
-   return;
-}
-
-/**
- * Macro creates a string representing the objects in the
- * current request path, linked to their main action.
- */
 function breadcrumbs_macro (param, delimiter) {
    delimiter || (delimiter = param.separator || " : ");
    for (var i = 0; i < path.length - 1; i += 1) {
@@ -269,10 +321,7 @@ function breadcrumbs_macro (param, delimiter) {
    return;
 }
 
-/**
- * Renders the story with the specified id; uses preview.skin as default
- * but the skin to be rendered can be chosen with parameter skin="skinname"
- */
+// FIXME:
 function story_macro(param) {
    if (!param.id)
       return;
@@ -303,9 +352,7 @@ function story_macro(param) {
    return;
 }
 
-/**
- * Renders a poll (optionally as link or results)
- */
+// FIXME:
 function poll_macro(param) {
    if (!param.id)
       return;
@@ -341,10 +388,7 @@ function poll_macro(param) {
    return;
 }
 
-/**
- * macro basically renders a list of sites
- * calling root.renderSitelist() to do the real job
- */
+// FIXME:
 function sitelist_macro(param) {
    // setting some general limitations:
    var minDisplay = 10;
@@ -356,9 +400,7 @@ function sitelist_macro(param) {
    return;
 }
 
-/**
- * wrapper-macro for imagelist
- */
+// FIXME:
 function imagelist_macro(param) {
    var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
@@ -406,9 +448,7 @@ function imagelist_macro(param) {
    return;
 }
 
-/**
- * wrapper-macro for topiclist
- */
+// FIXME: -> tags!
 function topiclist_macro(param) {
    var site = param.of ? root.get(param.of) : res.handlers.site;
    if (!site)
@@ -417,10 +457,7 @@ function topiclist_macro(param) {
    return;
 }
 
-/**
- * macro checks if the current session is authenticated
- * if true it returns the username
- */
+// FIXME: obsolete?
 function username_macro(param) {
    if (!session.user)
       return;
@@ -433,131 +470,7 @@ function username_macro(param) {
    return;
 }
 
-/**
- * function renders a form-input
- */
-function input_macro(param) {
-   switch (param.type) {
-      case "button" :
-         break;
-      case "radio" :
-         param.selectedValue = req.data[param.name];
-         break;
-      default :
-         param.value = param.name && req.data[param.name] ? req.data[param.name] : param.value;
-   }
-   switch (param.type) {
-      case "textarea" :
-         html.textArea(param);
-         break;
-      case "checkbox" :
-         html.checkBox(param);
-         break;
-      case "button" :
-         // FIXME: this is left for backwards compatibility
-         html.submit(param);
-         break;
-      case "submit" :
-         html.submit(param);
-         break;
-      case "password" :
-         html.password(param);
-         break;
-      case "radio" :
-         html.radioButton(param);
-         break;
-      case "file" :
-         html.file(param);
-         break;
-      default :
-         html.input(param);
-   }
-   return;
-}
-
-/**
- * function renders a list of stories either contained
- * in a topic or from the story collection.
- * param.sortby determines the sort criteria
- * (title, createtime, modifytime);
- * param.order determines the sort order (asc or desc)
- * param.show determines the text type (story, comment or all)
- * param.skin determines the skin used for each stories (default is title as link) 
- */
-function storylist_macro(param) {
-   // disable caching of any contentPart containing this macro
-   res.meta.cachePart = false;
-   var site = param.of ? root.get(param.of) : res.handlers.site;
-   if (!site)
-      return;
-
-   // untrusted sites are only allowed to use "light" version
-   if (res.handlers.site && !res.handlers.site.trusted) {
-      param.limit = param.limit ? Math.min(site.allstories.count(), parseInt(param.limit), 50) : 25;
-      for (var i=0; i<param.limit; i++) {
-         var story = site.stories.all.get(i);
-         if (!story)
-            continue;
-         res.write(param.itemprefix);
-         html.openLink({href: story.href()});
-         var str = story.title;
-         if (!str)
-            str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
-         res.write(str ? str : "...");
-         html.closeLink();
-         res.write(param.itemsuffix);
-      }
-      return;
-   }
-
-   // this is db-heavy action available for trusted users only (yet?)
-   if (param.sortby != "title" && param.sortby != "createtime" && param.sortby != "modifytime")
-      param.sortby = "modifytime";
-   if (param.order != "asc" && param.order != "desc")
-      param.order = "asc";
-   var order = " order by TEXT_" + param.sortby.toUpperCase() + " " + param.order;
-   var rel = "";
-   if (param.show == "stories")
-      rel += " and TEXT_PROTOTYPE = 'story'";
-   else if (param.show == "comments")
-      rel += " and TEXT_PROTOTYPE = 'comment'";
-   if (param.topic)
-      rel += " and TEXT_TOPIC = '" + param.topic + "'";
-   var query = "select TEXT_ID from AV_TEXT where TEXT_F_SITE = " + site._id + " and TEXT_ISONLINE > 0" + rel + order;
-   var connex = getDBConnection("antville");
-   var rows = connex.executeRetrieval(query);
-
-   if (rows) {
-      var cnt = 0;
-      param.limit = param.limit ? Math.min(parseInt(param.limit), 100) : 25;
-      while (rows.next() && (cnt < param.limit)) {
-         cnt++;
-         var id = rows.getColumnItem("TEXT_ID").toString();
-         var story = site.stories.all.get(id);
-         if (!story)
-            continue;
-         if (param.skin) {
-            story.renderSkin(param.skin);
-         } else {
-            res.write(param.itemprefix);
-            html.openLink({href: story.href()});
-            var str = story.title;
-            if (!str)
-               str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
-            res.write(str ? str : "...");
-            html.closeLink();
-            res.write(param.itemsuffix); 
-         }         
-      }
-   }
-   rows.release();
-   return;
-}
-
-/**
- * a not yet sophisticated macro to display a
- * colorpicker. works in site prefs and story editors
- */
+// FIXME:
 function colorpicker_macro(param) {
    if (!param || !param.name)
       return;
@@ -595,39 +508,7 @@ function colorpicker_macro(param) {
    return;
 }
 
-/**
- * fakemail macro <%fakemail number=%>
- * generates and renders faked email-adresses
- * param.number
- * (contributed by hr@conspirat)
- */
-function fakemail_macro(param) {
-	var tldList = ["com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl"];
-   var nOfMails = param.number ? (param.number <= 50 ? param.number : 50) : 20;
-   for (var i=0;i<nOfMails;i++) {
-   	var tld = tldList[Math.floor(Math.random()*tldList.length)];
-   	var mailName = "";
-      var serverName = "";
-   	var nameLength = Math.round(Math.random()*7) + 3;
-   	for (var j=0;j<nameLength;j++)
-   		mailName += String.fromCharCode(Math.round(Math.random()*25) + 97);
-   	var serverLength = Math.round(Math.random()*16) + 8;
-   	for (var j=0;j<serverLength;j++)
-   		serverName += String.fromCharCode(Math.round(Math.random()*25) + 97);
-      var addr = mailName + "@" + serverName + "." + tld;
-      html.link({href: "mailto:" + addr}, addr);
-      if (i+1 < nOfMails)
-         res.write(param.delimiter ? param.delimiter : ", ");
-   }
-	return;
-}
-
-/**
- * picks a random site, image or story by setting
- * param.what to the corresponding prototype
- * by default, embed.skin will be rendered but this
- * can be overriden using param.skin
- */
+// FIXME:
 function randomize_macro(param) {
    var site, obj;
    if (param.site) {
@@ -656,14 +537,7 @@ function randomize_macro(param) {
    return;
 }
 
-/**
- * macro renders a random image
- *  list of images can be specified in the images-attribute
- *
- * @param images String (optional), comma separated list of image aliases
- * all other parameters are passed through to the global image macro
- * this macro is *not* allowed in stories
- */
+// FIXME:
 function randomimage_macro(param) {
    if (param.images) {
       var items = new Array();
@@ -681,12 +555,7 @@ function randomimage_macro(param) {
    return image_macro(param);
 }
 
-/**
- * macro renders the most recently created image of a site
- * @param topic String (optional), specifies from which topic the image should be taken
- * all other parameters are passed through to the global image macro
- * FIXME: this function needs testing and proof of concept
- */
+// FIXME:
 function imageoftheday_macro(param) {
    var s = res.handlers.site;
    var pool = res.handlers.site.images;
@@ -697,48 +566,7 @@ function imageoftheday_macro(param) {
    return image_macro(param);
 }
 
-/**
- * function loads messages on startup
- */
-function onStart() {
-   return;
-   // load application messages and modules
-   var dir = new Helma.File(app.dir, "../i18n");
-   var arr = dir.list();
-   for (var i in arr) {
-      var fname = arr[i];
-   	if (fname.startsWith("messages.")) {
-         var name = fname.substring(fname.indexOf(".") + 1, fname.length);
-   		var msgFile = new Helma.File(dir, fname);
-   		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
-   		app.log("loaded application messages (language: " + name + ")");
-   	}
-   }
-   // init index manager
-   app.data.indexManager = new IndexManager();
-   // build macro help
-   app.data.macros = buildMacroHelp();
-   //eval(macroHelpFile.readAll());
-   app.log("loaded macro help file");
-   // creating the vector for referrer-logging
-   app.data.accessLog = new java.util.Vector();
-   // creating the hashtable for storyread-counting
-   app.data.readLog = new java.util.Hashtable();
-   // define the global mail queue
-   app.data.mailQueue = new Array();
-   // init constants
-   initConstants();
-   // call onStart methods of modules
-   for (var i in app.modules) {
-      if (app.modules[i].onStart)
-         app.modules[i].onStart();
-   }
-   return;
-}
-
-/**
- * check if email-adress is syntactically correct
- */
+// FIXME:
 function evalEmail(str) {
    if (!str.isEmail()) {
       return null;
@@ -746,10 +574,7 @@ function evalEmail(str) {
    return str;
 }
 
-/**
- * function checks if url is correct
- * if not it assumes that http is the protocol
- */
+// FIXME:
 function evalURL(str) {
    if (url = helma.Http.evalUrl(str)) {
       return String(url);
@@ -761,10 +586,7 @@ function evalURL(str) {
    return null;
 }
 
-/**
- * function checks if user has permanent cookies
- * storing username and password
- */
+// FIXME:
 function autoLogin() {
    if (session.user) {
       return;
@@ -790,11 +612,7 @@ function autoLogin() {
    return;
 }
 
-/**
- * to register updates of a site at weblogs.com
- * (and probably other services, soon), this
- * function can be called via the scheduler.
- */
+// FIXME:
 function pingUpdatedSites() {
    var c = getDBConnection("antville");
    var dbError = c.getLastError();
@@ -844,93 +662,6 @@ function formatDate(date, pattern) {
       return "[Macro error: Invalid date format]";
    }
    return;
-}
-
-/**
- * constructor function for Message objects
- * @param String Name of the message
- * @param Obj String or Array of strings passed to message-skin
- * @param Obj Result Object (optional)
- */
-function Message(name, value, obj) {
-   this.name = name;
-   this.value = value;
-   this.obj = obj;
-   this.toString = function() {
-      return getMessage("confirm." + this.name, this.value);
-   }
-   return this;
-}
-
-/**
- * constructor function for Exception objects
- * @param String Name of the message
- * @param Obj String or Array of strings passed to message-skin
- */
-function Exception(name, value) {
-   this.name = name;
-   this.value = value;
-   this.toString = function() {
-      return getMessage("error." + this.name, this.value);
-   };
-   res.debug("Exception  " + name + ": " + value);
-   return this;
-}
-
-/**
- * constructor function for MailException objects
- * @param String Name of the message
- */
-function MailException(name) {
-   this.name = name;
-   this.toString = function() {
-      return getMessage("error." + this.name);
-   }
-   return this;
-}
-
-/**
- * constructor function for DenyException objects
- * @param String Name of the message
- */
-function DenyException(name) {
-   this.name = name;
-   this.toString = function() {
-      return getMessage("deny." + this.name);
-   }
-   return this;
-}
-
-/**
- * function retrieves a message from the message file
- * of the appropriate language
- */
-function getMessage(property, value) {
-   var languages = getLanguages();
-   // loop over languages and try to find the message
-   var lang;
-   var source;
-   for (var i=0;i<languages.length;i++) {
-      if (!(lang = app.data[languages[i]]))
-         continue;
-      if (!(source = lang.getProperty(property)))
-         continue;
-      var param = new Object();
-      // check if value passed is a string or an array
-      if (value) {
-         if (value instanceof Array) {
-            for (var j=0;j<value.length;j++)
-               param["value" + (j+1)] = value[j];
-         } else if (typeof value == "object") {
-            param = value;
-         } else {
-            param.value1 = value;
-         }
-      }
-      return renderSkinAsString(createSkin(source), param);
-   }
-   // still no message found, so return
-   return "[couldn't find message!]";
 }
 
 /**
@@ -1310,7 +1041,7 @@ function renderTimeZoneChooser(tz) {
    var format = new java.text.DecimalFormat ("-0;+0");
    for (var i in zones) {
       var zone = java.util.TimeZone.getTimeZone(zones[i]);
-      options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/ONEHOUR)) + " (" + zones[i] + ")"];
+      options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/Date.ONEHOUR)) + " (" + zones[i] + ")"];
    }
    html.dropDown({name: "timezone"}, options, tz ? tz.getID() : null);
    return;
@@ -1561,8 +1292,11 @@ function age_filter(value, param) {
 }
 
 function link_filter(value, param, url) {
-   url || (url = value);
-   return renderLink(param, url, value);
+   if (value) { 
+      url || (url = value);
+      return renderLink(param, url, value);
+   }
+   return;
 }
 
 function format_filter(value, param, pattern) {

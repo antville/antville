@@ -23,10 +23,14 @@
 //
 
 Members.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case "login":
       case "logout":
       case "salt.js":
+      case "register":
       return true;
       case ".":
       case "main":
@@ -36,12 +40,12 @@ Members.prototype.getPermission = function(action) {
       case "subscribers":
       case "add":
       return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER) || 
-            Membership.require(Membership.MANAGER);
-      case "updated":
-      case "memberships":
+            Membership.require(Membership.OWNER);
+      case "edit":
+      case "privileges":
       case "subscriptions":
-      return !!session.user;
+      case "updated":
+      return Membership.require(Membership.SUBSCRIBER);
    }
    return false;
 };
@@ -70,11 +74,11 @@ Members.prototype.register_action = function() {
    if (req.postParams.register) {      
       try {
          var user = User.register(req.postParams);
-         // Subscribe user to this site if public
-         if (res.handlers.site && res.handlers.site.online) {
+         // Subscribe user to this site if it is public
+         if (Site.require(Site.PUBLIC)) {
             this.add(new Membership(user));
          }
-         var title = getTitle();
+         var title = res.handlers.site.title;
          if (root.sys_email) {
             var sp = {name: user.name};
             sendMail(root.sys_email, user.email, 
@@ -94,7 +98,7 @@ Members.prototype.register_action = function() {
 
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Login");
+   res.data.title = gettext("Register");
    res.data.body = this.renderSkinAsString("register");
    this._parent.renderSkin("page");
    return;
@@ -160,7 +164,7 @@ Members.prototype.edit_action = function() {
 
 Members.prototype.salt_js_action = function() {
    var user;
-   if (user = User.getByName(req.params.user)) {
+   if (user = User.getByName(req.queryParams.user)) {
       res.write((user.salt || String.EMPTY).toSource());
    }
    return;
@@ -226,7 +230,7 @@ Members.prototype.subscriptions_action = function() {
    return;
 };
 
-Members.prototype.memberships_action = function() {
+Members.prototype.privileges_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
    res.data.list = renderList(session.user.memberships, "subscriptionlistitem");
    res.data.body = session.user.renderSkinAsString("subscriptions");
@@ -401,12 +405,4 @@ Members.prototype.modSoruaLoginForm_action = function() {
    }
    res.data.action = this.href("modSoruaLoginForm");
    this.renderSkin("modSorua");
-};
-
-Members.getByName = function(name) {
-   var site = res.handlers.site;
-   if (site) {
-      return site.members.get(name);
-   }
-   return null;
 };

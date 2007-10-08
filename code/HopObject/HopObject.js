@@ -65,7 +65,7 @@ HopObject.prototype.onRequest = function() {
       res.handlers.layout = session.data.layout;
       res.message = session.data.layout.renderSkinAsString("testdrive");
    } else {
-      res.handlers.layout = res.handlers.site.layout;
+      res.handlers.layout = res.handlers.site.layout || new Layout;
    }
    res.skinpath = res.handlers.layout.getSkinPath();
    return;
@@ -309,7 +309,11 @@ HopObject.prototype.handleMetadata = function(name) {
       return this.metadata.set(name, value);
    });
    this[name + "_macro"] = function(param) {
-      return res.write(this[name]);
+      var value;
+      if (value = this[name]) {
+         res.write(value);
+      }
+      return;
    };
    return;
 };

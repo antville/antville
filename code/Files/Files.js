@@ -23,14 +23,19 @@
 //
 
 Files.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case ".":
       case "main":
       case "create":
-      case "member":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.MANAGER) ||
-            Site.getPermission(Site.OPEN);
+      return Site.require(Site.OPEN) ||
+            Membership.require(Membership.CONTRIBUTOR) ||
+            User.require(User.PRIVILEGED);
+      case "all":
+      return Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);
    }
    return false;
 };
@@ -41,7 +46,7 @@ Files.prototype.create_action = function() {
       try {
          file.update(req.postParams);
          this.add(file);
-         res.message = gettext('The file was added successfully. Its name is "{0}"', this.name);
+         res.message = gettext('The file was added successfully. Its name is "{0}"', file.name);
          res.redirect(this.href());
       } catch (ex) {
          res.message = ex;
@@ -57,22 +62,21 @@ Files.prototype.create_action = function() {
 };
 
 Files.prototype.main_action = function() {
-   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this, 
-         this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Files of {0}", this._parent.title);
+   var files = User.getMembership().files;
+   res.data.list = renderList(files, "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(files, this.href(), 
+         10, req.queryParams.page);
+   res.data.title = gettext("Member files of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;
 };
 
-Files.prototype.member_action = function() {
-   var membership = this._parent.members.get(session.user.name);
-   res.data.list = renderList(membership.files, 
-         "mgrlistitem", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(membership.files, 
+Files.prototype.all_action = function() {
+   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this, 
          this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Member files of {0}", this._parent.title);
+   res.data.title = gettext("Files of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("main");
    this._parent.renderSkin("page");
    return;

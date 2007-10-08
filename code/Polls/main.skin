@@ -3,9 +3,9 @@
 <div class="ample">
    <% polls.link create "add a poll" prefix="... " %>
 </div>
-<% polls.link . "all polls" prefix="... show " %>
-<% polls.link public "public polls" prefix=" | " %>
-<% polls.link member "member polls" prefix=" | " %>
+<% polls.link . "member polls" prefix="... show " %>
+<% polls.link open "open polls" prefix=" | " %>
+<% polls.link all "all polls" prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>

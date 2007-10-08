@@ -40,21 +40,30 @@ Image.prototype.constructor = function() {
 };
 
 Image.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
+      case ".":
+      case "main":
+      return true;
       case "delete":
-      case "edit":
-      return (User.require(User.PRIVILEGED) ||
+      return this.creator === session.user || 
             Membership.require(Membership.MANAGER) ||
-            this.creator === session.user) && 
-            (this.parent_type !== "Layout" ||
-            this.parent === path.layout);
+            User.require(User.PRIVILEGED);            
+      case "edit":
+      return this.creator === session.user || 
+            Membership.require(Membership.MANAGER) || 
+            User.require(User.PRIVILEGED) &&
+            this.parent_type !== "Layout" ||
+            this.parent === path.layout;
       case "replace":
       return (User.require(User.PRIVILEGED) ||
             Membership.require(Membership.MANAGER)) &&
             (this.parent_type === "Layout" && 
             this.parent !== path.layout);
    }
-   return true;
+   return false;
 };
 
 Image.prototype.href = function(action) {

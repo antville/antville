@@ -4,8 +4,8 @@
 <div class="ample">
    <% images.link create "add an image" prefix="... " %>
 </div>
-<% images.link . "all images" prefix="... show " %>
-<% images.link member "member images" prefix=" | " %>
+<% images.link . "member images" prefix="... show " %>
+<% images.link all "all images" prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>

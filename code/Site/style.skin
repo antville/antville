@@ -1,7 +1,19 @@
-/**
- * Basic page structure.
- * When changing something, make sure widths are coherent.
- */
+<% layout.value bgcolor #ffffff %>
+<% layout.value linkcolor #ff4040 %>
+<% layout.value alinkcolor #ff4040 %>
+<% layout.value vlinkcolor #ff4040 %>
+
+<% layout.value titlecolor #d50000 %>
+<% layout.value titlesize 15px %>
+<% layout.value titlefont "Verdana, Helvetica, Arial, sans-serif" %>
+
+<% layout.value textcolor #000000 %>
+<% layout.value textsize 13px %>
+<% layout.value textfont "Verdana, Helvetica, Arial, sans-serif" %>
+
+<% layout.value smallcolor #959595 %>
+<% layout.value smallsize 11px %>
+<% layout.value smallfont "Verdana, Arial, Helvetica, sans-serif" %>
 
 table.main {
    width: 700px;
@@ -26,30 +38,26 @@ td.right {
    border-left: 1px solid #dddddd;
 }
 
-/**
- * Colors, fonts, styles.
- */
-
 body {
-   background-color: <% layout.bgcolor %>;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.textsize %>;
-   color: <% layout.textcolor %>;
+   background-color: <% layout.value bgcolor %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value textsize %>;
+   color: <% layout.value textcolor %>;
 }
 
 td {
-   font-size: <%layout.textsize %>;
+   font-size: <%layout.value textsize %>;
    line-height: 1.2em;
 }
 
 td.header {
-   background-image: url("<% layout.image name="webloghead" as="url" %>");
+   background-image: url(<% image /webloghead url %>);
    font-size: 25px;
    font-weight: bold;
 }
 
 div.boxheader {
-   color: <% layout.smallcolor %>;
+   color: <% layout.value smallcolor %>;
    overflow: hidden;
    font-size: 10px;
    padding-left: 6px;
@@ -63,9 +71,9 @@ div.boxline {
 }
 
 div.box {
-   font-size: <% layout.smallsize %>;
-   font-family: <% layout.smallfont %>;
-   color: <% layout.smallcolor %>;
+   font-size: <% layout.value smallsize %>;
+   font-family: <% layout.value smallfont %>;
+   color: <% layout.value smallcolor %>;
    line-height: 1.4em;
    text-align: right;
    padding: 0em 0em 0.4em 0.4em;
@@ -75,9 +83,9 @@ div.box {
 div.ample { margin-bottom: 5px; }
 
 small, .small {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.smallcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
+   color: <% layout.value smallcolor %>;
 }
 
 /* this is for mozilla to align tables in boxes right */
@@ -101,19 +109,19 @@ p {
 form { margin: 0px; }
 
 a {text-decoration: none;}
-a:link {color: <% layout.linkcolor %>;}
-a:visited {color: <% layout.vlinkcolor %>;}
-a:active {color: <% layout.alinkcolor %>;}
+a:link {color: <% layout.value linkcolor %>;}
+a:visited {color: <% layout.value vlinkcolor %>;}
+a:active {color: <% layout.value alinkcolor %>;}
 a:hover {text-decoration: underline;}
 
 .message {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
    font-weight: bold;
    padding: 1px;
    margin-top: 6px;
    margin-bottom: 6px;
-   color: <% layout.titlecolor %>;
+   color: <% layout.value titlecolor %>;
 }
 
 .message input {
@@ -123,63 +131,35 @@ a:hover {text-decoration: underline;}
 }
 
 .historyItem {
-   color: <% layout.textcolor %>;
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
+   color: <% layout.value textcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
    padding-bottom: 0.3em;
    width: 180px;
    overflow: hidden; 
 }
 
-/* calendar */
-
-.calHead {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   font-weight: bold;
-   text-align: center;
-}
-
-.calDay {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   text-align: center;
-}
-
-.calSelDay {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   border: 1px solid <% layout.linkcolor %>;
-   text-align: center;
-}
-
-.calFoot {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   text-align: center;
-}
-
 .dayHeader {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.smallcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
+   color: <% layout.value smallcolor %>;
    font-weight: bold;
-   margin-bottom:10px;
+   margin-bottom: 20px;
+   margin-top: 10px;
+   text-align: left;
 }
-
-/* story display classes */
 
 .storyDate {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.smallcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
+   color: <% layout.value smallcolor %>;
    margin-bottom: 6px;
 }
 
 .storyTitle {
-   font-family: <% layout.titlefont %>;
-   font-size: <% layout.titlesize %>;
-   color: <% layout.titlecolor %>;
+   font-family: <% layout.value titlefont %>;
+   font-size: <% layout.value titlesize %>;
+   color: <% layout.value titlecolor %>;
    font-weight: bold;
 }
 
@@ -192,46 +172,44 @@ a:hover {text-decoration: underline;}
 }
 
 .title {
-   font-family: <% layout.titlefont %>;
-   font-size: <% layout.titlesize %>;
-   color: <% layout.textcolor %>;
+   font-family: <% layout.value titlefont %>;
+   font-size: <% layout.value titlesize %>;
+   color: <% layout.value textcolor %>;
    font-weight: bold;
    margin-bottom: 2px;
 }
 
 .reply { padding-left: 40px; }
 
-/* form input classes */
-
 .formTitle {
    width: 380px;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.titlesize %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value titlesize %>;
    font-weight: bold;
-   border: 1px solid <% layout.textcolor %>;
+   border: 1px solid <% layout.value textcolor %>;
 }
 
 .formText {
    width: 380px;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.textsize %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value textsize %>;
    font-weight: normal;
-   border: 1px solid <% layout.textcolor %>;
+   border: 1px solid <% layout.value textcolor %>;
 }
 
 .formWide {
    width: 660px;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.textsize %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value textsize %>;
    font-weight: normal;
 }
 
 .listFlag {
    background-color: #cccccc;
    padding: 1px;
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.textcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
+   color: <% layout.value textcolor %>;
 }
 
 .pollResultsBar {
@@ -240,7 +218,7 @@ a:hover {text-decoration: underline;}
    float:left;
    margin-top: 7px;
    margin-right: 10px;
-   background-color: <% layout.linkcolor %>;
+   background-color: <% layout.value linkcolor %>;
    font-size: 0px;
 }
 
@@ -265,8 +243,6 @@ a:hover {text-decoration: underline;}
    border-top:1px solid #dddddd;
    text-align:right;
 }
-
-/* page navigation bar */
 
 div.pageNav {
    margin-top: 10px;
@@ -296,9 +272,7 @@ span.pageNavSelItem {
    font-weight: bold;
 }
 
-/* tree navigation in skinmgr */
-
-ul { list-style: url("<% layout.image as="url" name="bullet" %>") circle; } 
+ul { list-style: url("<% image /bullet url %>") circle; } 
 
 ul.skinmgrTree {
    padding-left:15px;
@@ -324,16 +298,14 @@ ul.skinmgrTree a.selected {
 }
 
 ul.skinmgrTree li div {
-   font-family:<% layout.textfont %>;
-   font-size:<% layout.smallsize %>;
-   color:<% layout.textcolor %>;
+   font-family:<% layout.value textfont %>;
+   font-size:<% layout.value smallsize %>;
+   color:<% layout.value textcolor %>;
 }
-
-/* classes for members */
 
 .membergroup {
    font-weight:bold;
-   font-size:<% layout.titlesize %>;
+   font-size:<% layout.value titlesize %>;
    margin:10px 0px;
 }
 

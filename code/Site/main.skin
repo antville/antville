@@ -1,1 +1,1 @@
-<% site.stories %>
+<% site.list stories %>

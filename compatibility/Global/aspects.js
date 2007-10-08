@@ -43,18 +43,17 @@ Site.prototype.onCodeUpdate = function() {
    });
    
    return helma.aspects.addBefore(this, "update", function(args, func, obj) {
-      if (obj.isTransient()) {
-         return;
-      }
-      var data = args[0];
-      data.tagline || (data.tagline = data.properties_tagline);
-      data.pageSize || (data.pageSize = data.properties_days);
-      if (data.usermaycontrib && data.online) {
-         data.mode = Site.OPEN;
-      } else if (data.online) {
-         data.mode = Site.PUBLIC;
-      } else if (!data.mode) {
-         data.mode = Site.PRIVATE;
+      if (!obj.isTransient()) {
+         var data = args[0];
+         data.tagline || (data.tagline = data.properties_tagline);
+         data.pageSize || (data.pageSize = data.properties_days);
+         if (data.usermaycontrib && data.online) {
+            data.mode = Site.OPEN;
+         } else if (data.online) {
+            data.mode = Site.PUBLIC;
+         } else if (!data.mode) {
+            data.mode = Site.PRIVATE;
+         }
       }
       return args;
    });

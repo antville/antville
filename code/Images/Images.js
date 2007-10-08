@@ -23,38 +23,32 @@
 //
 
 Images.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
       case ".":
       case "main":
       case "create":
-      case "member":
+      return Site.require(Site.OPEN) || 
+            Membership.require(Membership.CONTRIBUTOR) ||
+            User.require(User.PRIVILEGED);
+      case "all":
       case "default":
       case "additional":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.MANAGER);
+      return Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);
    }
    return false;
 };
 
 Images.prototype.main_action = function() {
-   switch (this._parent.constructor) {
-      case Site:
-      res.data.pager = renderPageNavigation(this, this.href(), 
-           10, req.queryParams.page);
-      res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
-      res.data.title = gettext("Images of {0}", this._parent.title);
-      res.data.body = this.renderSkinAsString("Images#main");
-      break;
-      case Layout:
-      var images = this.mergeImages();
-      res.data.pager = renderPageNavigation(images,
-            this.href(), 10, req.queryParams.page);
-      res.data.list = renderList(images, 
-            "mgrlistitem", 10, req.queryParams.page);
-      res.data.title = gettext("Layout images of {0}", this._parent.title);
-      res.data.body = this.renderSkinAsString("Images#layout");
-      break;
-   }
+   var images = User.getMembership().images;
+   res.data.list = renderList(images, "mgrlistitem", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(images, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Member images of {0}", this._parent.title);
+   res.data.body = this.renderSkinAsString("Images#main");
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -80,22 +74,38 @@ Images.prototype.create_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add image to {0}", this._parent.title);
    res.data.body = image.renderSkinAsString("Image#form");
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 
-Images.prototype.member_action = function() {
-   var images = User.getMembership().images;
-   res.data.list = renderList(images, "mgrlistitem", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(images, 
-         this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Member images of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+Images.prototype.all_action = function() {
+   switch (this._parent.constructor) {
+      case Site:
+      res.data.pager = renderPageNavigation(this, this.href(), 
+           10, req.queryParams.page);
+      res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+      res.data.title = gettext("Images of {0}", this._parent.title);
+      res.data.body = this.renderSkinAsString("Images#main");
+      break;
+      case Layout:
+      var images = this.mergeImages();
+      res.data.pager = renderPageNavigation(images,
+            this.href(), 10, req.queryParams.page);
+      res.data.list = renderList(images, 
+            "mgrlistitem", 10, req.queryParams.page);
+      res.data.title = gettext("Layout images of {0}", this._parent.title);
+      res.data.body = this.renderSkinAsString("Images#layout");
+      break;
+   }
    res.handlers.site.renderSkin("page");
    return;
 };
 
 Images.Default = {
+   "rss.png": {name: "rss.png", width: 16, height: 16, alt: "RSS feed"},
+   webloghead: {name: "webloghead.gif", width: 700, 
+         height: 53, alt: "Antville"},
+   bullet: {name: "bullet.gif", width: 3, height: 10, alt: "*"},
    smallanim: {name: "smallanim.gif", width: 98, height: 30, 
          alt: "made with antville", href: "http://antville.org"},
    smallchaos: {name: "smallchaos.gif", width: 107, height: 29, 
@@ -105,30 +115,12 @@ Images.Default = {
    smalltrans: {name: "smalltrans.gif", width: 98, height: 30, 
          alt: "made with antville", href: "http://antville.org"},
    xmlbutton: {name: "xmlbutton.gif", width: 36, height: 14, 
-         alt: "xml version of this page", href: "http://antville.org/rss.xml"},
+         alt: "xml version of this page"},
    hop: {name: "hop.gif", width: 124, height: 25, 
          alt: "helma object publisher", href: "http://helma.org"},
    marquee: {name: "marquee.gif", width: 15, height: 15, alt: "marquee"},
    pixel: {name: "pixel.gif", width: 1, height: 1, alt: ""},
-   dot: {name: "dot.gif", width: 30, height: 30, alt: ""},
-
-   render: function(name, param) {
-      var image = this[name];
-      if (!image) {
-         return;
-      }
-      image.src = app.properties.staticUrl + image.name;
-      image.border = 0;
-      var href = param.href ||Êimage.href;
-      if (href) {
-         res.push();
-         html.tag("img", image);
-         link_filter(res.pop(), param, href);
-      } else {
-         html.tag("img", image);
-      }
-      return;
-   }
+   dot: {name: "dot.gif", width: 30, height: 30, alt: ""}
 };
 
 ///// Copied from LayoutImageMgr /////

@@ -22,6 +22,21 @@
 // $URL$
 //
 
+Layouts.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
+   switch (action) {
+      case ".":
+      case "main":
+      case "create":
+      case "import":
+      return Membership.require(Membership.OWNER) || 
+            User.require(User.PRIVILEGED);
+   }
+   return false;
+};
+
 Layouts.prototype.main_action = function() {
    res.data.title = gettext("Layouts of {0}", res.handlers.site.title);
    res.data.action = this.href();

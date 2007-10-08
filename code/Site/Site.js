@@ -23,9 +23,9 @@
 //
 
 defineConstants(Site, "getStatus", "blocked", "regular", "trusted");
-defineConstants(Site, "getModes", "closed", "public", "shared", "open");
+defineConstants(Site, "getModes", "closed", "restricted", "public", "open");
 defineConstants(Site, "getPageModes", "days", "stories");
-defineConstants(Site, "getCommentsModes", "closed", "readonly", "moderated", "open");
+defineConstants(Site, "getCommentsModes", "disabled", "enabled");
 defineConstants(Site, "getArchiveModes", "closed", "public");
 
 this.handleMetadata("archiveMode");
@@ -79,39 +79,36 @@ Site.prototype.constructor = function(name, title) {
 
 Site.prototype.getPermission = function(action) {
    switch (action) {
+      case "robots.txt":
+      return true;
       case ".":
       case "main":
       case "main.js":
       case "main.css":
       case "rss.xml":
       case "tags":
-      return true;
-      
-      case "stories":
-      case "images":
-      case "files":
-      case "polls":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.CONTRIBUTOR) ||
-            this.mode === Site.OPEN;
-
+      return this.status !== Site.BLOCKED &&
+            User.require(User.REGULAR) && 
+            Site.require(Site.PUBLIC) ||
+            Site.require(Site.RESTRICTED) && 
+            Membership.require(Membership.SUBSCRIBER) ||
+            Site.require(Site.CLOSED) &&
+            Membership.require(Membership.OWNER) || 
+            User.require(User.PRIVILEGED);
       case "edit":
-      case "layouts":
       case "referrers":
-      case "members":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER);
-            
+      return this.status !== Site.BLOCKED && 
+            User.require(User.REGULAR) && 
+            Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED);
       case "subscribe":
-      var mode = this.mode;
-      return (mode === Site.PUBLIC || mode === Site.OPEN) &&
-            !res.handlers.membership.role;
-
+      return this.status !== Site.BLOCKED &&
+            User.require(User.REGULAR) && 
+            Site.require(Site.PUBLIC) &&
+            !Membership.require(Membership.SUBSCRIBER);
       case "unsubscribe":
-      return this.getMembership().role !== Membership.OWNER;
-      
-      case "archive":
-      return this.archiveMode === Site.PUBLIC;
+      return User.require(User.REGULAR) && 
+            !Membership.require(Membership.OWNER);
    }
    return false;
 };
@@ -182,6 +179,21 @@ Site.prototype.getFormOptions = function(name) {
 };
 
 Site.prototype.update = function(data) {
+   if (this.isTransient()) {
+      if (!data.name) {
+         throw Error(gettext("Please enter a name for your new site."));
+      } else if (data.name.length > 30) {
+         throw Error(gettext("Sorry, the name you chose is too long. Please enter a shorter one."));
+      } else if (/(\/|\\)/.test(data.name)) {
+         throw Error(gettext("Sorry, a site name may not contain any (back)slashes."));
+      } else if (data.name !== root.getAccessName(data.name)) {
+         throw Error(gettext("Sorry, there is already a site with this name."));
+      }
+      this.name = data.name;
+      this.title = data.title || data.name;
+      return;
+   }
+
    this.map({
       title: stripTags(data.title),
       tagline: data.tagline,
@@ -497,28 +509,33 @@ Site.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "files":
       case "images":
+      case "layouts":
       case "members":
       case "polls":
       case "stories":
+      case "tags":
       return this[name];
       default:
       return null;
    }
 };
 
-Site.prototype.stories_macro = function() {
-   if (this.stories["public"].size() < 1) {
-      this.renderSkin("welcome");
-      if (session.user) {
-         if (session.user === this.creator) {
-            this.renderSkin("welcomeowner");
+Site.prototype.list_macro = function(param, type) {
+   switch (type) {
+      case "stories":
+      if (this.stories["public"].size() < 1) {
+         this.renderSkin("welcome");
+         if (session.user) {
+            if (session.user === this.creator) {
+               this.renderSkin("welcomeowner");
+            }
+            if (User.require(User.PRIVILEGED)) {
+               this.renderSkin("welcomesysadmin");
+            }
          }
-         if (User.require(User.PRIVILEGED)) {
-            this.renderSkin("welcomesysadmin");
-         }
+      } else {
+         this.archive.renderSkin("main");
       }
-   } else {
-      this.archive.renderSkin("main");
    }
    return;
 };
@@ -542,7 +559,11 @@ Site.prototype.calendar_macro = function(param) {
 };
 
 Site.prototype.age_macro = function(param) {
-   res.write(Math.floor((new Date() - this.createtime) / ONEDAY));
+   if (!this.createtime) {
+      this.createtime = new Date;
+   }
+   //res.write(this.createtime.getAge());
+   res.write(Math.floor((new Date() - this.createtime) / Date.ONEDAY));
    return;
 };
 
@@ -1051,6 +1072,6 @@ Site.prototype.getAdminHeader = function(name) {
 };
 
 Site.require = function(mode) {
-   var modes = [Site.CLOSED, Site.PRIVATE, Site.PUBLIC, Site.OPEN];
+   var modes = [Site.CLOSED, Site.RESTRICTED, Site.PUBLIC, Site.OPEN];
    return modes.indexOf(res.handlers.site.mode) >= modes.indexOf(mode);
 };

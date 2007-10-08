@@ -1,3 +1,20 @@
+Root.prototype.new_action = function() {
+   res.redirect(this.href("create"));
+   return;
+};
+
+Root.prototype.colorpicker_action = function() {
+   if (!req.data.skin)
+      req.data.skin = "colorpicker";
+   renderSkin(req.data.skin);
+   return;
+};
+
+Root.prototype.rss_action = function() {
+   res.redirect(root.href("rss.xml"));
+   return;
+};
+
 Root.prototype.url_macro = function(param) {
    return this.href_macro(param);
 };

@@ -1,8 +1,8 @@
 <p><% breadcrumbs %></p>
 
 <div class="ample">
-   ... <% layouts.link create "create a new layout" %> | 
-   <% layouts.link import "import a layout" %>
+   <% layouts.link create "create a new layout" prefix="... " %>
+   <% layouts.link import "import a layout" prefix=" | " %>
 </div>
 
 <% response.pager %>

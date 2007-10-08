@@ -43,7 +43,7 @@
 <tr>
 <% if <% story.status %> is closed then 
    '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
-   class="listFlag">p<br />r<br />i<br />v<br />a<br />t<br />e</td>
+   class="listFlag">c<br />l<br />o<br />s<br />e<br />d</td>
    <td rowspan="2" width="5" nowrap="nowrap"></td>' 
 else <% if <% story.mode %> is hidden then 
    '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 

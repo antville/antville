@@ -1,1 +1,6 @@
-<p><em>Note</em>: Since you are system administrator of this Antville installation you can also define &raquo;<% site.title %>&laquo; as its front page site. To do so simply enter &raquo;<% site.alias %>&laquo; (without the quotes) into the option &raquo;front page site&laquo; of the <% root.link to="manage/setup" text="system preferences" %>. If this site is set online it will replace the default front page (of course you can change that anytime you want).</p>
+<p><em>Note</em>: Since you are system administrator of this Antville 
+installation you can also define "<% site.title %>" as its front page site. 
+To do so simply enter <code><% site.name %></code> into the option 
+"front page site" of the <% root.admin.link setup "system preferences" %>. 
+If this site is open it will replace the default front page. 
+(Of course you can change this setting anytime you want.)</p>

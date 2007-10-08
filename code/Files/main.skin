@@ -3,8 +3,8 @@
 <div class="ample">
    <% files.link create "add a file" prefix="... " suffix="" %>
 </div>
-<% files.link . "all files" prefix="... show " %> | 
-<% files.link member "my files" %>
+<% files.link . "member files" prefix="... show " %>
+<% files.link all "all files" prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>
