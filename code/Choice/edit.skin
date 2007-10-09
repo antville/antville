@@ -1,6 +1,0 @@
-<tr class="choice">
-<td>
-   <span class="small">Choice #<% param.index %>:</span><br />
-   <input type="text" name="title" class="formText" value="<% choice.title %>" />
-</td>
-</tr>

@@ -7,28 +7,35 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<script type="text/javascript" src="http://localhost:8080/static/default/jquery-1.1.3.1.pack.js"></script>
+<script type="text/javascript" 
+      src="<% property staticUrl %>www/jquery-1.1.3.1.pack.js"></script>
 <script type="text/javascript" src="<% root.href %>main.js"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href %>main.css" />
-<link rel="alternate" type="text/rss+xml" title="RSS Feed" href="<% root.href %>rss" />
+<link rel="stylesheet" type="text/css" 
+      title="CSS Stylesheet" href="<% root.href main.css %>" />
+<link rel="alternate" type="text/rss+xml" 
+      title="RSS Feed" href="<% root.href rss.xml %>" />
 </head>
-
 <body>
-
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
-<td class="header"><% layout.image name="big" linkto="main"%></td>
+<td class="header">
+   <% layout.image name="big" linkto="main"%>
+</td>
 </tr>
 </table>
 
 <table class="main">
 <tr>
-<td class="center"><% response.message prefix='<span class="message">' suffix='</span><br /><br />' %>
-<% response.body %></td>
+<td class="center">
+   <% response.message prefix='<span class="message">' 
+         suffix='</span><br /><br />' %>
+   <% response.body %>
+</td>
 <td class="right">
-<div class="box">
-<% now "EEEE, dd-MM-yyyy, HH:mm" %><% root.loginstatus prefix="<br />" %>
-</div>
+   <div class="box">
+   <% now "EEEE, dd-MM-yyyy, HH:mm" %>
+   <% root.loginstatus prefix="<br />" %>
+   </div>
 
 <div class="boxheader">menu</div>
 <div class="box">

@@ -1,1 +1,0 @@
-<a href="<% site.url action="getfile" %>?name=<% file.alias encoding="url" %>" <% file.description prefix='title="' suffix='"' %>><% param.text %></a> <span class="small">(<% file.filetype suffix=", " %><% file.filesize %>)</span>

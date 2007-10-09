@@ -1,0 +1,103 @@
+<% #main %>
+<% poll.question %><br /><br />
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="2" cellpadding="2">
+<% poll.loop skin="Choice#main" %>
+<tr>
+<td colspan="2">
+   <br />
+   <button type="submit" name="vote" value="1">vote</button> 
+   <span class="small"><% poll.link result "view results" %></span>
+   <p class="small"><br />
+   Created by <% poll.creator %> on <% poll.created short %>
+   <% poll.modifier prefix="<br />Last modified by " %>
+   <% poll.modified short prefix="on " %>
+   </p>
+</td>
+</tr>
+</table>
+</form>
+
+<% #result %>
+<% poll.question %><br />
+<% poll.loop skin="Choice#result" %>
+<p><br />
+   Total: <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
+</p>
+<div class="small">
+   <% poll.closed short prefix=<% poll.modifier 
+   prefix="<br />This poll was closed by " suffix=" on " %> %>
+</div>
+
+<% #polls %>
+<a name="<% poll.id %>" id="<% poll.id %>"></a>
+<div class="listSeparator"> </div>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<% if <% poll.status %> is closed then 
+   '<td rowspan="2" width="10" align="center" valign="top" class="listFlag">
+      c<br />l<br />o<br />s<br />e<br />d
+    </td>
+    <td rowspan="2" width="5"></td>'
+%>
+<td colspan="3" class="small">
+   <strong>Macro:</strong> &lt;% poll <% poll.id %> %&gt;
+   <div class="ample"><strong>Status:</strong> 
+   <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
+</td>
+</tr>
+<tr valign="top">
+<td>
+   <div class="storytitle"><% poll.question %></div>
+   <div class="storyDate"><% poll.creator link %>, 
+   <% poll.created short %></div>
+</td>
+<td width="10" nowrap="nowrap"> </td>
+<td align="right" class="small">
+   <% poll.link . vote prefix="... " suffix="<br />" %>
+   <% poll.link results text="results" prefix="... " suffix="<br />" %>
+   <% poll.link edit prefix="... " suffix="<br />" %>
+   <% poll.link rotate prefix="... " suffix="<br />" %>
+   <% poll.link delete prefix="... " %>
+</td>
+</tr>
+</table>
+
+<% #edit %>
+<script type="text/javascript">
+$(function() {
+   var index = $(".choice").length + 1;
+   $("#add").click(function() {
+      var choice = $(".choice:last").clone();
+      choice.find(".small").text('<% gettext Choice %> #' + index + ':');
+      choice.find("input").val("");
+      $(".choice:last").after(choice);
+      index += 1;
+   });
+});
+</script>
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td>
+   <span class="small">Question:</span><br />
+   <% poll.input question cols="30" rows="3" class="formText" %>
+</td>
+</tr>
+<% poll.input choices %>
+<tr>
+<td class="small">
+   <% poll.creator link prefix='Created by ' suffix=' on ' %>
+   <% poll.created short suffix="." %>
+</td>
+</tr>
+<tr>
+<td>
+   <br />
+   <button type="submit" name="save" value="1">save</button>
+   <button type="button" id="add">add choice</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</td>
+</tr>
+</table>
+</form>

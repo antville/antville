@@ -319,8 +319,8 @@ Story.prototype.comments_macro = function(param, mode) {
          html.openTag("a", {name: this._id});
          //res.write(this.size())
          html.closeTag("a");
-         this.renderSkin(  this.parent.constructor === Story ? 
-               "Comment#main" : "Comment#level_2");
+         this.renderSkin(this.parent.constructor === Story ? 
+               "Comment#main" : "Comment#reply");
       });
    }
    return;
@@ -332,7 +332,7 @@ Story.prototype.commentform_macro = function(param) {
    }
    if (session.user) {
       res.data.action = this.href("comment");
-      (new Comment()).renderSkin("edit");
+      (new Comment()).renderSkin("Comment#edit");
    } else {
       html.link({href: this.site.members.href("login")},
                 param.text || gettext("Please login to add a comment"));

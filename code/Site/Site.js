@@ -114,7 +114,7 @@ Site.prototype.getPermission = function(action) {
 };
 
 Site.prototype.main_action = function() {
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Site#main");
    res.data.title = this.title;
    this.renderSkin("page");
    logAction();
@@ -144,7 +144,7 @@ Site.prototype.edit_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Preferences of {0}", this.title);
-   res.data.body = this.renderSkinAsString("edit");
+   res.data.body = this.renderSkinAsString("Site#edit");
    this.renderSkin("page");
    return;
 };
@@ -524,17 +524,17 @@ Site.prototype.list_macro = function(param, type) {
    switch (type) {
       case "stories":
       if (this.stories["public"].size() < 1) {
-         this.renderSkin("welcome");
+         this.renderSkin("Site#welcome");
          if (session.user) {
             if (session.user === this.creator) {
-               this.renderSkin("welcomeowner");
+               this.renderSkin("User#welcome");
             }
             if (User.require(User.PRIVILEGED)) {
-               this.renderSkin("welcomesysadmin");
+               this.renderSkin("Admin#welcome");
             }
          }
       } else {
-         this.archive.renderSkin("main");
+         this.archive.renderSkin("Archive#main");
       }
    }
    return;

@@ -65,7 +65,7 @@ Members.prototype.main_action = function() {
    res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
    res.data.pager = renderPageNavigation(this, this.href(req.action), 10, 
          req.data.page);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Members#main");
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -99,7 +99,7 @@ Members.prototype.register_action = function() {
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = gettext("Register");
-   res.data.body = this.renderSkinAsString("register");
+   res.data.body = this.renderSkinAsString("Members#register");
    this._parent.renderSkin("page");
    return;
 };
@@ -125,7 +125,7 @@ Members.prototype.login_action = function() {
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = gettext("Login");
-   res.data.body = this.renderSkinAsString("login");
+   res.data.body = this.renderSkinAsString("Members#login");
    this._parent.renderSkin("page");
    return;
 };
@@ -157,7 +157,7 @@ Members.prototype.edit_action = function() {
    session.data.token = User.getSalt();
    session.data.salt = session.user.salt; // FIXME
    res.data.title = gettext("Profile of user {0}", session.user.name);
-   res.data.body = session.user.renderSkinAsString("edit");
+   res.data.body = session.user.renderSkinAsString("User#edit");
    this._parent.renderSkin("page");
    return;
 };
@@ -170,70 +170,72 @@ Members.prototype.salt_js_action = function() {
    return;
 };
 
-Members.prototype.subscribers_action = function() {
-   res.data.title = gettext("Subscribers of {0}", this._parent.title);
-   res.data.list = renderList(this.subscribers, "mgrlistitem", 10, 
-         req.data.page);
-   res.data.pager = renderPageNavigation(this.subscribers, 
-         this.href(req.action), 10, req.data.page);
-   res.data.body = this.renderSkinAsString("main");
-   res.handlers.site.renderSkin("page");
-   return;
-};
-
-Members.prototype.contributors_action = function() {
-   res.data.title = gettext("Contributors of {0}", this._parent.title);
-   res.data.list = renderList(this.contributors, "mgrlistitem", 10, 
-         req.data.page);
-   res.data.pager = renderPageNavigation(this.contributors, 
-         this.href(req.action), 10, req.data.page);
-   res.data.body = this.renderSkinAsString("main");
+Members.prototype.owners_action = function() {
+   res.data.title = gettext("Owners of {0}", this._parent.title);
+   res.data.list = renderList(this.owners, 
+         "Membership#members", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this.owners, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.body = this.renderSkinAsString("Members#main");
    res.handlers.site.renderSkin("page");
    return;
 };
 
 Members.prototype.managers_action = function() {
    res.data.title = gettext("Managers of {0}", this._parent.title);
-   res.data.list = renderList(this.managers, "mgrlistitem", 10, 
-         req.data.page);
+   res.data.list = renderList(this.managers, 
+         "Membership#members", 10, req.queryParams.page); 
    res.data.pager = renderPageNavigation(this.managers, 
-         this.href(req.action), 10, req.data.page);
-   res.data.body = this.renderSkinAsString("main");
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.body = this.renderSkinAsString("Members#main");
    res.handlers.site.renderSkin("page");
    return;
 };
 
-Members.prototype.owners_action = function() {
-   res.data.title = gettext("Owners of {0}", this._parent.title);
-   res.data.list = renderList(this.owners, "mgrlistitem", 10, 
-         req.data.page);
-   res.data.pager = renderPageNavigation(this.owners, 
+Members.prototype.contributors_action = function() {
+   res.data.title = gettext("Contributors of {0}", this._parent.title);
+   res.data.list = renderList(this.contributors, 
+         "Membership#members", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this.contributors, 
          this.href(req.action), 10, req.data.page);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Members#main");
+   res.handlers.site.renderSkin("page");
+   return;
+};
+
+Members.prototype.subscribers_action = function() {
+   res.data.title = gettext("Subscribers of {0}", this._parent.title);
+   res.data.list = renderList(this.subscribers, 
+         "Membership#members", 10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this.subscribers, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.body = this.renderSkinAsString("Members#main");
    res.handlers.site.renderSkin("page");
    return;
 };
 
 Members.prototype.updated_action = function() {
    res.data.title = gettext("Updated sites for user {0}", session.user.name);
-   res.data.list = session.user.renderSkinAsString("sitelist");
-   res.data.body = session.user.renderSkinAsString("subscriptions");
-   res.handlers.site.renderSkin("page");
-   return;
-};
-
-Members.prototype.subscriptions_action = function() {
-   res.data.title = gettext("Subscriptions of user {0}", session.user.name);
-   res.data.list = renderList(session.user.subscriptions, "subscriptionlistitem");
-   res.data.body = session.user.renderSkinAsString("subscriptions");
+   res.data.list = session.user.renderSkinAsString("User#sites");
+   res.data.body = session.user.renderSkinAsString("User#subscriptions");
    res.handlers.site.renderSkin("page");
    return;
 };
 
 Members.prototype.privileges_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
-   res.data.list = renderList(session.user.memberships, "subscriptionlistitem");
-   res.data.body = session.user.renderSkinAsString("subscriptions");
+   res.data.list = renderList(session.user.memberships, 
+         "Membership#subscriptions");
+   res.data.body = session.user.renderSkinAsString("User#subscriptions");
+   res.handlers.site.renderSkin("page");
+   return;
+};
+
+Members.prototype.subscriptions_action = function() {
+   res.data.title = gettext("Subscriptions of user {0}", session.user.name);
+   res.data.list = renderList(session.user.subscriptions, 
+         "Membership#subscriptions");
+   res.data.body = session.user.renderSkinAsString("User#subscriptions");
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -253,7 +255,7 @@ Members.prototype.add_action = function() {
                      "Found {0} users matching the search input.", 
                       result.length);
             }
-            res.data.result = this.renderSkinAsString("searchresult", result);
+            res.data.result = this.renderSkinAsString("Members#result", result);
          }
       } catch (ex) {
          res.message = ex;
@@ -284,7 +286,7 @@ Members.prototype.add_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext('Add member to {0}', this._parent.title);
-   res.data.body = this.renderSkinAsString("new");
+   res.data.body = this.renderSkinAsString("Members#add");
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -307,7 +309,7 @@ Members.prototype.search = function(searchString) {
       if (this.get(name)) {
          continue;
       };
-      this.renderSkin("searchresultitem", {name :name});
+      this.renderSkin("Members#resultItem", {name :name});
       counter += 1;
    }
    rows.release();

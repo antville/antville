@@ -43,11 +43,11 @@ Polls.prototype.getPermission = function(action) {
 
 Polls.prototype.main_action = function() {
    var polls = User.getMembership().polls;
-   res.data.list = renderList(polls, "mgrlistitem", 10, req.queryParams.page);
+   res.data.list = renderList(polls, "Poll#polls", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(polls, this.href(req.action), 
          10, req.queryParams.page);
    res.data.title = gettext("Member polls of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Polls#main");
    this._parent.renderSkin("page");
    return;
 };
@@ -58,7 +58,7 @@ Polls.prototype.create_action = function() {
       try {
          poll.update(req.postParams);
          this.add(poll);
-         res.message = "The poll was created successfully.";
+         res.message = gettext("The poll was created successfully.");
          res.redirect(poll.href());
       } catch (err) {
          res.message = err.toString();
@@ -68,28 +68,28 @@ Polls.prototype.create_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add poll to {0}", this._parent.title);
-   res.data.body = poll.renderSkinAsString("edit");
+   res.data.body = poll.renderSkinAsString("Poll#edit");
    this._parent.renderSkin("page");
    return;
 };
 
 Polls.prototype.open_action = function() {
    res.data.list = renderList(this.open, 
-         "mgrlistitem", 10, req.queryParams.page);
+         "Poll#polls", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(this.open, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Open polls of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Polls#main");
    this._parent.renderSkin("page");
    return;
 };
 
 Polls.prototype.all_action = function() {
-   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.list = renderList(this, "Poll#polls", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Polls of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Polls#main");
    this._parent.renderSkin("page");
    return;
 };

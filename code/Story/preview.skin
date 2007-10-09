@@ -1,8 +1,0 @@
-<% story.skin Story#main %>
-<p class="small">
-<% story.link . link prefix="... " %>
-<% story.comments link prefix="(" suffix=")" %>
-<% story.link comment prefix=" ... " %>
-<% story.link edit prefix=" ... " %>
-</p>
-<br />

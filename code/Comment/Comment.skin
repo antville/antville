@@ -25,7 +25,7 @@
 <% #comment %>
 <% comment.skin Comment#content %>
 
-<% #level_2 %>
+<% #reply %>
 <div class="reply">
    <div class="listSeparator"></div>
    <% comment.skin Comment#content %>

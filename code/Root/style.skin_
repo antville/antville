@@ -1,7 +1,20 @@
-/**
-* Basic page structure.
-* When changing something, make sure widths are coherent.
-*/
+<% layout.value bgcolor #ffffff %>
+<% layout.value linkcolor #ff4040 %>
+<% layout.value alinkcolor #ff4040 %>
+<% layout.value vlinkcolor #ff4040 %>
+
+<% layout.value titlecolor #d50000 %>
+<% layout.value titlesize 15px %>
+<% layout.value titlefont "Verdana, Helvetica, Arial, sans-serif" %>
+
+<% layout.value textcolor #000000 %>
+<% layout.value textsize 13px %>
+<% layout.value textfont "Verdana, Helvetica, Arial, sans-serif" %>
+
+<% layout.value smallcolor #959595 %>
+<% layout.value smallsize 11px %>
+<% layout.value smallfont "Verdana, Arial, Helvetica, sans-serif" %>
+
 table.main {
    width: 700px;
 }
@@ -24,19 +37,15 @@ td.right {
    border-left: 1px solid #dddddd;
 }
 
-/**
-* Colors, fonts, styles.
-*/
-
 body {
-   background-color: <% layout.bgcolor %>;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.textsize %>;
-   color: <% layout.textcolor %>;
+   background-color: <% layout.value bgcolor %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value textsize %>;
+   color: <% layout.value textcolor %>;
 }
 
 td {
-   font-size: <%layout.textsize %>;
+   font-size: <%layout.value textsize %>;
    line-height: 1.2em;
 }
 
@@ -49,7 +58,7 @@ td.header {
 }
 
 div.boxheader {
-   color: <% layout.smallcolor %>;
+   color: <% layout.value smallcolor %>;
    overflow: hidden;
    font-size: 10px;
    padding-left: 6px;
@@ -63,9 +72,9 @@ div.boxline {
 }
 
 div.box {
-   font-size: <% layout.smallsize %>;
-   font-family: <% layout.smallfont %>;
-   color: <% layout.smallcolor %>;
+   font-size: <% layout.value smallsize %>;
+   font-family: <% layout.value smallfont %>;
+   color: <% layout.value smallcolor %>;
    line-height: 1.4em;
    text-align: right;
    padding: 0em 0em 0.4em 0.4em;
@@ -93,26 +102,26 @@ p {
 form { margin: 0px; }
 
 a {text-decoration: none;}
-a:link {color: <% layout.linkcolor %>;}
-a:visited {color: <% layout.vlinkcolor %>;}
-a:active {color: <% layout.alinkcolor %>;}
+a:link {color: <% layout.value linkcolor %>;}
+a:visited {color: <% layout.value vlinkcolor %>;}
+a:active {color: <% layout.value alinkcolor %>;}
 a:hover {text-decoration: underline;}
 
 .message {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
    font-weight: bold;
    padding: 1px;
    margin-top: 6px;
    margin-bottom: 6px;
-   color: <% layout.titlecolor %>;
-   background-color: <% layout.bgcolor %>;
+   color: <% layout.value titlecolor %>;
+   background-color: <% layout.value bgcolor %>;
 }
 
 .small {
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.smallcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
+   color: <% layout.value smallcolor %>;
 }
 
 .listSeparator {
@@ -123,51 +132,48 @@ a:hover {text-decoration: underline;}
 }
 
 .storyTitle {
-   font-family: <% layout.titlefont %>;
-   font-size: <% layout.titlesize %>;
-   color: <% layout.titlecolor %>;
+   font-family: <% layout.value titlefont %>;
+   font-size: <% layout.value titlesize %>;
+   color: <% layout.value titlecolor %>;
    font-weight: bold;
    margin-bottom: 2px;
 }
 
-/* form input classes */
-
 .formTitle {
    width: 380px;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.titlesize %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value titlesize %>;
    font-weight: bold;
-   border: 1px solid <% layout.textcolor %>;
+   border: 1px solid <% layout.value textcolor %>;
 }
 
 .formText {
    width: 380px;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.textsize %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value textsize %>;
    font-weight: normal;
-   border: 1px solid <% layout.textcolor %>;
+   border: 1px solid <% layout.value textcolor %>;
 }
 
 .formWide {
    width: 660px;
-   font-family: <% layout.textfont %>;
-   font-size: <% layout.textsize %>;
+   font-family: <% layout.value textfont %>;
+   font-size: <% layout.value textsize %>;
    font-weight: normal;
 }
 
 .listFlag {
    background-color: #cccccc;
    padding: 1px;
-   font-family: <% layout.smallfont %>;
-   font-size: <% layout.smallsize %>;
-   color: <% layout.textcolor %>;
+   font-family: <% layout.value smallfont %>;
+   font-size: <% layout.value smallsize %>;
+   color: <% layout.value textcolor %>;
 }
 
 .colorpickerWidget {
    border: 1px solid #cccccc;
 }
 
-/* page navigation bar */
 div.pageNav {
    margin-top: 10px;
    margin-bottom: 0px;
@@ -193,18 +199,16 @@ span.pageNavSelItem {
    font-weight: bold;
 }
 
-/* system manager classes */
-
 .pageTitle {
-   font-family:<% layout.titlefont %>;
-   font-size:<% layout.titlesize %>;
+   font-family:<% layout.value titlefont %>;
+   font-size:<% layout.value titlesize %>;
    font-weight:bold;
-   color:<% layout.titlecolor %>;
+   color:<% layout.value titlecolor %>;
    padding-bottom:10pt;
 }
 
 .label {
-   font-family: <% layout.smallfont %>;
+   font-family: <% layout.value smallfont %>;
    font-size: 7pt;
    padding: 2px;
    color: #ffffff;
@@ -236,7 +240,7 @@ span.pageNavSelItem {
 }
 
 .flagLight {
-   font-family:<% layout.smallfont %>;
+   font-family:<% layout.value smallfont %>;
    font-size:7pt;
    padding:2px;
    color:#333333;
@@ -247,7 +251,6 @@ span.pageNavSelItem {
    border-top:1px solid #dddddd;
 }
 
-/* tree navigation in skinmgr */
 ul.skinmgrTree {
    padding-left:15px;
    margin:20px 0px;
@@ -270,12 +273,11 @@ ul.skinmgrTree a.selected {
    font-weight:bold;
 }
 ul.skinmgrTree li div {
-   font-family:<% layout.textfont %>;
-   font-size:<% layout.smallsize %>;
-   color:<% layout.textcolor %>;
+   font-family:<% layout.value textfont %>;
+   font-size:<% layout.value smallsize %>;
+   color:<% layout.value textcolor %>;
 }
 
-/* classes for skin diff */
 .diff td {
    padding:0px 5px;
 }
@@ -285,22 +287,22 @@ ul.skinmgrTree li div {
    padding:2px 0px;
 }
 .diff .removed {
-   border-top:1px solid <% layout.smallcolor %>;
+   border-top:1px solid <% layout.value smallcolor %>;
    background-color: #ff3333;
 }
 .diff .added {
-   border-top:1px solid <% layout.smallcolor %>;
+   border-top:1px solid <% layout.value smallcolor %>;
    background-color: #33cc33;
 }
 .diff .line {
-   border-top:1px solid <% layout.smallcolor %>;
+   border-top:1px solid <% layout.value smallcolor %>;
 }
 .diff .num {
-   border-top:1px solid <% layout.smallcolor %>;
-   color:<% layout.smallcolor %>;
+   border-top:1px solid <% layout.value smallcolor %>;
+   color:<% layout.value smallcolor %>;
    text-align:right;
 }
 .diff .status {
    padding:0px 5px;
-   border-top:1px solid <% layout.smallcolor %>;
+   border-top:1px solid <% layout.value smallcolor %>;
 }

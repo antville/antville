@@ -1,2 +1,0 @@
-<li><% site.name | site.link %> 
-<span class="small"><% site.modified | age %></span></li>

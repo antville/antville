@@ -74,6 +74,10 @@ else <% if <% story.mode %> is hidden then
 </tr>
 </table>
 
+<% #backlink %>
+referrers.push(new Antville.Referrer("<% param.referrer %>", 
+      "<% param.text %>", <% param.count %>));
+
 <% #backlinks %>
 <a name="backlinks" id="backlinks"></a><br />
 <table border="0" cellspacing="0" cellpadding="1">
@@ -142,11 +146,7 @@ for (var i in referrers) {
    </div>
 </div>
 
-<% #backlink %>
-referrers.push(new Antville.Referrer("<% param.referrer %>", 
-      "<% param.text %>", <% param.count %>));
-
-<% #mostread %>
+<% #top %>
 <tr>
 <td align="right" valign="baseline" class="small"><% param.position %></td>
 <td align="right" valign="baseline"><% story.requests %></td>

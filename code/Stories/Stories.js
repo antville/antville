@@ -49,7 +49,7 @@ Stories.prototype.main_action = function() {
    res.data.pager = renderPageNavigation(stories, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Member stories of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Stories#main");
    this._parent.renderSkin("page");
    return;
 };
@@ -85,7 +85,7 @@ Stories.prototype.closed_action = function() {
    res.data.pager = renderPageNavigation(this.offline, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Private stories of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Stories#main");
    this._parent.renderSkin("page");
    return;
 };
@@ -95,7 +95,7 @@ Stories.prototype.all_action = function() {
    res.data.pager = renderPageNavigation(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Stories of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Stories#main");
    this._parent.renderSkin("page");
    return;
 };
@@ -108,14 +108,18 @@ Stories.prototype.top_action = function() {
    return;
 };
 
-Stories.prototype.top_macro = function() {
-   var counter = 1;
-   this.top.forEach(function() {
-      this.renderSkin("Story#mostread", {
-         position: counter
-      });
-      counter += 1;
-   });
+Stories.prototype.list_macro = function(type) {
+   switch (type) {
+      case "top":
+      var counter = 1;
+      this.top.forEach(function() {
+         this.renderSkin("Story#top", {
+            position: counter
+         });
+         counter += 1;
+      }); 
+      break;
+   }
    return;
 };
 

@@ -152,6 +152,14 @@
 </table>
 </form>
 
+<% welcome %>
+<p><em>Note</em>: Since you are system administrator of this Antville 
+installation you can also define "<% site.title %>" as its front page site. 
+To do so simply enter <code><% site.name %></code> into the option 
+"front page site" of the <% root.admin.link setup "system preferences" %>. 
+If this site is open it will replace the default front page. 
+(Of course you can change this setting anytime you want.)</p>
+
 <% #setup %>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">

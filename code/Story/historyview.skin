@@ -1,3 +1,0 @@
-<div class="historyItem"><% story.content part="title" as="link" fallback="text" limit="4" delimiter="\\s" %><br />
-<% story.content part="text" as="plaintext" limit="6" delimiter="\\s" clipping="..." %>
-<div class="small">by <% story.creator %> (<% story.modifytime format="short" %>)</div></div>

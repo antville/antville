@@ -1,8 +1,0 @@
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td valign="top">
-   <input type="radio" name="name" id="<% param.name %>" value="<% param.name %>" />
-</td>
-<td><label for="<% param.name %>"><% param.name %></label></td>
-</tr>
-</table>

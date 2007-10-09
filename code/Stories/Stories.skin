@@ -1,15 +1,26 @@
+<% #main %>
+<div class="ample">
+   <% stories.link create "create a story" prefix="... " %>
+</div>
+<% stories.link . "member stories" prefix="... show " %>
+<% stories.link closed "closed stories" prefix=" | " %>
+<% stories.link all "all stories" prefix=" | " %>
+<% response.pager %>
+<% response.list %>
+<% response.pager %>
+
 <% #top %>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td></td>
-<td rowspan="999">&nbsp;</td>
+<td rowspan="999"> </td>
 <td align="right" class="small">Count</td>
-<td rowspan="999">&nbsp;</td>
+<td rowspan="999"> </td>
 <td class="small">Date</td>
-<td rowspan="999">&nbsp;</td>
+<td rowspan="999"> </td>
 <td class="small">Title</td>
-<td rowspan="999">&nbsp;</td>
+<td rowspan="999"> </td>
 <td class="small">Author</td>
 </tr>
-<% stories.top %>
+<% stories.list top %>
 </table>

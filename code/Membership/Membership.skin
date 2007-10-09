@@ -8,3 +8,72 @@ Logged in as <% username as="link" %><br />
 <% site.link subscribe text="subscribe to this site" prefix="...&nbsp;" suffix="<br />" %>
 <% members.link updated subscriptions prefix="...&nbsp;" suffix="<br />" %>
 <% members.link logout prefix="...&nbsp;" %>
+
+<% #members %>
+<div class="listSeparator"> </div>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td colspan="3" class="small">
+   <div class="ample"><strong>Status:</strong> <% membership.role %></div>
+</td>
+</tr>
+<tr valign="top">
+<td>
+   <div class="storytitle"><% membership.name %></div>
+   <div class="ample"><span class="small"><% membership.created short
+   prefix="Member since " %></span></div>
+   <div><% membership.creator.url | link %></div>
+</td>
+<td width="10"> </td>
+<td align="right" class="small">
+   <% membership.link edit prefix="... " suffix="<br />" %>
+   <% membership.link contact prefix="... " suffix="<br />" %>
+   <% membership.link delete remove prefix="... " %>
+</td>
+</tr>
+</table>
+
+<% #subscriptions %>
+<div class="listSeparator"> </div>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td colspan="3" class="small">
+   <div class="ample"><strong>Status:</strong> <% membership.role %></div>
+</td>
+</tr>
+<tr valign="top">
+<td>
+   <div class="storytitle"><% site.title default="<em>[untitled]</em>" %></div>
+   <div class="small"><% site.modified short prefix="last updated on " %></div>
+</td>
+<td width="10"> </td>
+<td align="right" class="small">
+   <% site.link . view prefix="... " %><!--
+--><% site.link unsubscribe prefix="<br />... " %>
+</td>
+</tr>
+</table>
+
+<% #edit %>
+<p>To change the status of this member, simply choose from the dropdown menu 
+and click the "Save" button. An e-mail will be sent to the member telling 
+him/her that you changed the member's role.</p>
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small" nowrap="nowrap">User:</td>
+<td nowrap="nowrap"><% membership.name %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Role:</td>
+<td nowrap="nowrap"><% membership.select role %></td>
+</tr>
+<tr>
+<td nowrap="nowrap"> </td>
+<td nowrap="nowrap"><br />
+<button type="submit" name="save" value="1"><strong>Save</strong></button>
+<button type="submit" name="cancel" value="1">Cancel</button>
+</td>
+</tr>
+</table>
+</form>

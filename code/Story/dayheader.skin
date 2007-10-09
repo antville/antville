@@ -1,1 +1,0 @@
-<div class="dayHeader"><% story.created format="EEEE, d. MMMM yyyy" %></div>

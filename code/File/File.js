@@ -68,7 +68,7 @@ File.prototype.edit_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit file {0}", this.alias);
-   res.data.body = this.renderSkinAsString("File#form");
+   res.data.body = this.renderSkinAsString("File#edit");
    return this.site.renderSkin("page");
 };
 

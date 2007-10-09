@@ -1,0 +1,28 @@
+<% #main %>
+<tr>
+<td valign="top" width="5%">
+   <input type="radio" id="<% choice.id %>" name="choice" 
+   value="<% choice.id %>" <% if <% choice.selected %> is true then
+      'checked="checked"'
+   %> />
+</td>
+<td><label for="<% choice.id %>"><% choice.title %></label></td>
+</tr>
+
+<% #result %>
+<p>
+   <div style="width: <% choice.votes 300 default="1" %>px;" 
+   class="pollResultsBar"></div>
+   <span class="small"><% choice.votes % | format #.#% %> 
+   <% ngettext "{0} vote" "{0} votes" <% choice.votes %> 
+   prefix="(" suffix=")" %></span><br />
+   <% choice.title %>
+</p>
+
+<% #edit %>
+<tr class="choice">
+<td>
+   <span class="small">Choice #<% param.index %>:</span><br />
+   <input type="text" name="title" class="formText" value="<% choice.title %>" />
+</td>
+</tr>

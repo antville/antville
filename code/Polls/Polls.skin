@@ -1,12 +1,11 @@
+<% #main %>
 <p>To insert a poll in a story or comment just copy and paste its code.</p>
-
 <div class="ample">
    <% polls.link create "add a poll" prefix="... " %>
 </div>
 <% polls.link . "member polls" prefix="... show " %>
 <% polls.link open "open polls" prefix=" | " %>
 <% polls.link all "all polls" prefix=" | " %>
-
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

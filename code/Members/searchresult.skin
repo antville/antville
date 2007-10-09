@@ -1,6 +1,0 @@
-<form method="post" action="<% response.action %>">
-<% param.result prefix="<br />" %>
-<br />
-<button type="submit" id="add" name="add" value="1">Add to members</button>
-<button type="submit" id="cancel" name="cancel" value="1">Cancel</button>
-</form>

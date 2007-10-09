@@ -49,7 +49,7 @@ Comment.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "comment":
-      return this.story.getPermission.call(this, action);
+      return this.story.getPermission(action);
       case "delete":
       case "edit":
       return this.story.getPermission.call(this, "delete");
@@ -77,9 +77,11 @@ Comment.prototype.edit_action = function() {
       }
    }
    
+   res.handlers.parent = this.parent;
    res.data.action = this.href(req.action);
-   res.data.title = "Edit comment to story " + res.handlers.story.getTitle();
-   res.data.body = this.renderSkinAsString("edit");
+   res.data.title = gettext("Edit comment to story {0}", 
+         res.handlers.story.getTitle());
+   res.data.body = this.renderSkinAsString("Comment#edit");
    this.site.renderSkin("page");
    return;
 };
@@ -136,41 +138,8 @@ Comment.prototype.___comment_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Reply to comment of story {0}", 
          res.handlers.story.getTitle());
-   res.data.body = this.renderSkinAsString("toplevel");
-   res.data.body += comment.renderSkinAsString("edit");
+   res.data.body = this.renderSkinAsString("Comment#replay");
+   res.data.body += comment.renderSkinAsString("Comment#edit");
    this.site.renderSkin("page");
-   return;
-};
-
-Comment.prototype.checkAccess = function(action, usr, level) {
-   try {
-      switch (action) {
-         case "edit" :
-            if (!usr && req.data.save)
-               rescueText(req.data);
-            checkIfLoggedIn(this.href(req.action));
-            this.checkEdit(usr, level);
-            break;
-         case "delete" :
-            checkIfLoggedIn();
-            this.checkDelete(usr, level);
-            break;
-         case "comment" :
-            if (!usr && req.data.save)
-               rescueText(req.data);
-            checkIfLoggedIn(this.href(req.action));
-            this.story.checkPost(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this.story.href());
-   }
-   return;
-};
-
-Comment.prototype.checkEdit = function(usr, level) {
-   if (this.creator != usr && (level & MAY_EDIT_ANYCOMMENT) == 0)
-      throw new DenyException("commentEdit");
    return;
 };

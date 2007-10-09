@@ -1,9 +1,0 @@
-<% poll.question %><br />
-<% poll.loop skin="result" %>
-<p><br />
-   Total: <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
-</p>
-<div class="small">
-   <% poll.closed short prefix=<% poll.modifier 
-   prefix="<br />This poll was closed by " suffix=" on " %> %>
-</div>

@@ -1,4 +1,40 @@
-<% #form %>
+<% #main %>
+<a href="<% file.href %>" title="<% file.description %>"><% param.text %></a> 
+<span class="small">
+   (<% file.contentType suffix=", " %><% file.contentLength %>)
+</span>
+
+<% #files %>
+<div class="listSeparator"> </div>
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="2" class="small">
+   <strong>Macro:</strong> &lt;% file <% file.name %> %&gt;
+   <div class="ample"><strong>Details: </strong><% file.fileSize %>
+   <% file.contentType prefix=" " %><% file.requests prefix=", " 
+   no="0 downloads" one="1 download" more=" downloads"%></div>
+</td>
+</tr>
+<tr>
+<td>
+   <div class="storyTitle"><% file.name %></div>
+   <div class="storyDate"><% file.creator as="link" %> on 
+   <% file.created short %></div>
+</td>
+<td class="small" align="right" valign="top" rowspan="2">
+   <% file.link edit prefix=" ... " suffix="<br />" %>
+   <% file.link delete prefix="... " suffix="<br />" %>
+   <% file.link . download prefix=" ... " suffix="<br />" %>
+</td>
+</tr>
+<tr>
+<td>
+   <p><% file.description suffix="<br />" %></p>
+</td>
+</tr>
+</table>
+
+<% #edit %>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>

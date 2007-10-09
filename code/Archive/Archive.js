@@ -88,7 +88,7 @@ Archive.prototype.href = function(action, full) {
 };
 
 Archive.prototype.main_action = function() {
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Archive#main");
    res.handlers.site.renderSkin("page");
    return;
 };

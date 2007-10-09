@@ -105,7 +105,7 @@ User.prototype.list_macro = function(param, type) {
       memberships.forEach(function(membership) {
          var site;
          if (site = membership.get("site")) {
-            site.renderSkin("preview");
+            site.renderSkin("Site#preview");
          }
          return;
       });

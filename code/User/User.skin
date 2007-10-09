@@ -1,3 +1,37 @@
+<% #welcome %>
+<p>"<% site.title %>" is currently <% site.mode %>.
+<% if <% site.mode %> is closed then 
+   <% site.members.link subscribers prefix="This means that only you and " 
+   suffix=" to this site have access to it. You can safely start to 
+   customize it or to fill it with all the content you have in mind." %> 
+else
+   "Thus, it's publicly accessible for every visitor."
+%></p>
+<p>The easiest way to customize your site is to change its 
+<% site.link edit preferences %>. You can change the language and time zone or 
+the main title of your site, open or close it and much more.</p>
+<p>Of course, you can now also start to create 
+<% site.stories.link create stories %>, upload some 
+<% site.images.link create images %> or 
+<% site.files.link create files %>, create your first 
+<% site.polls.link create poll %> or get a glimpse of Antville's wonderful 
+customization possibilities by having a look at the <% site.layouts.link . %> 
+section where you can modify the appearance of your site according to your 
+needs.</p>
+<p>Have a lot of fun!</p>
+
+<% #sites %>
+<% user.list sites prefix="<ul>" suffix="</ul>" %>
+
+<% #subscriptions %>
+<div class="ample">
+<% members.link updated "updated sites" prefix="... show " %>
+<% members.link privileges prefix="| " %> 
+<% members.link subscriptions prefix="| " %>
+</div>
+<% response.list %>
+
+<% #edit %>
 <script type="text/javascript">
 $(function() {
    $("#submit").click(function() {
@@ -7,7 +41,6 @@ $(function() {
       if (password) {
          $("#digest").val($.md5($.md5(password + salt) + token));
       } 
-
       var newPassword = $("#newPassword").val();
       var newPasswordConfirm = $("#newPasswordConfirm").val();
       $("input:password").val("");
@@ -25,7 +58,6 @@ $(function() {
    });
 });
 </script>
-
 <form method="post" action="<% response.action %>">
 <input type="hidden" name="digest" id="digest" />
 <input type="hidden" name="hash" id="hash" />

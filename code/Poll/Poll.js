@@ -39,12 +39,12 @@ Poll.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      case "results":
+      case "result":
       return true;
       case "edit":
-      if (this.status === Poll.CLOSED) {
-         return false;
-      }
+      return this.status === Poll.CLOSED ||
+            Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED);
       case "rotate":
       case "delete":
       return this.creator === session.user || 
@@ -69,8 +69,8 @@ Poll.prototype.link_macro = function(param, action, text) {
          text = this.closed ? gettext("re-open") : gettext("open");  
       }
       break;
-   }
-   return HopObject.prototype.link_macro.apply(this, arguments);
+  }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
 };
 
 Poll.prototype.main_action = function() {
@@ -83,7 +83,7 @@ Poll.prototype.main_action = function() {
       try {
          this.vote(req.postParams);
          res.message = gettext("Thanks, your vote was registered. You can change your vote until the poll is closed.");
-         res.redirect(this.href("results"));
+         res.redirect(this.href("result"));
       } catch (ex) {
          res.message = ex;
          app.log(ex);
@@ -91,7 +91,7 @@ Poll.prototype.main_action = function() {
    }
    res.data.action = this.href();
    res.data.title = gettext("Poll {0}", this.question);
-   res.data.body = this.renderSkinAsString("main");
+   res.data.body = this.renderSkinAsString("Poll#main");
    this.site.renderSkin("page");
    return;
 };
@@ -124,7 +124,7 @@ Poll.prototype.edit_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit poll {0}", this.question);
-   res.data.body = this.renderSkinAsString("edit");
+   res.data.body = this.renderSkinAsString("Poll#edit");
    this.site.renderSkin("page");
    return;
 };
@@ -132,9 +132,10 @@ Poll.prototype.edit_action = function() {
 Poll.prototype.input_macro = function(param, name) {
    switch (name) {
       case "choices":
-      var index = 1;
+      var index = 0;
       var add = function(choice) {
-         return choice.renderSkin("edit", {index: index++});
+         index += 1;
+         return choice.renderSkin("Choice#edit", {index: index});
       };
       var choices;
       if (choices = req.postParams.title_array) {
@@ -187,9 +188,9 @@ Poll.remove = function() {
    return;
 };
 
-Poll.prototype.results_action = function() {
+Poll.prototype.result_action = function() {
    res.data.title = gettext('Results of poll "{0}"', this.question);
-   res.data.body = this.renderSkinAsString("results");
+   res.data.body = this.renderSkinAsString("Poll#result");
    this.site.renderSkin("page");
    return;
 };

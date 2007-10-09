@@ -1,9 +1,0 @@
-<tr>
-<td valign="top" width="5%">
-   <input type="radio" id="<% choice.id %>" name="choice" 
-   value="<% choice.id %>" <% if <% choice.selected %> is true then
-      'checked="checked"'
-   %> />
-</td>
-<td><label for="<% choice.id %>"><% choice.title %></label></td>
-</tr>

@@ -1,0 +1,45 @@
+<% #main %>
+<div class="ample">
+   <% members.link add "add a member" prefix="...&nbsp;" %>
+</div>
+<% members.link . all prefix="... show " %>
+<% members.link owners prefix="| " %>
+<% members.link contributors prefix="| " %>
+<% members.link managers prefix="| " %> 
+<% members.link subscribers prefix="| " %>
+<% response.pager %>
+<% response.list %>
+<% response.pager %>
+
+<% #add %>
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td nowrap="nowrap">
+   <input type="text" name="term" id="term" value="<% request.term %>" />
+</td>
+<td nowrap="nowrap"> 
+   <button type="submit" name="search" value="1">Search</button>
+</td>
+</tr>
+</table>
+</form>
+<% response.result %>
+
+<% #result %>
+<form method="post" action="<% response.action %>">
+<% param.result prefix="<br />" %>
+<br />
+<button type="submit" id="add" name="add" value="1">Add to members</button>
+<button type="submit" id="cancel" name="cancel" value="1">Cancel</button>
+</form>
+
+<% #resultItem %>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td valign="top">
+   <input type="radio" name="name" id="<% param.name %>" value="<% param.name %>" />
+</td>
+<td><label for="<% param.name %>"><% param.name %></label></td>
+</tr>
+</table>

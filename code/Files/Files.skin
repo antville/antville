@@ -1,11 +1,10 @@
+<% #main %>
 <p>To insert a file in a story or comment just copy and paste its code.</p>
-
 <div class="ample">
    <% files.link create "add a file" prefix="... " suffix="" %>
 </div>
 <% files.link . "member files" prefix="... show " %>
 <% files.link all "all files" prefix=" | " %>
-
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

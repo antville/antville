@@ -60,7 +60,8 @@ Root.prototype.getMacroHandler = function(name) {
    return Site.prototype.getMacroHandler.apply(this, arguments);
 };
 
-Root.prototype._main_action = function() {
+Root.prototype.main_action = function() {
+   return Site.prototype.main_action.apply(this);
    //log();
    flushLog();
    res.debug(root.admin.log.cache.size());

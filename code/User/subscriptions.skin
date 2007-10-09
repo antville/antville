@@ -1,7 +1,0 @@
-<div class="ample">
-<% members.link updated "updated sites" prefix="... show " %>
-<% members.link privileges prefix="| " %> 
-<% members.link subscriptions prefix="| " %>
-</div>
-
-<% response.list %>

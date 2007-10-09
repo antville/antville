@@ -44,7 +44,7 @@ Images.prototype.getPermission = function(action) {
 
 Images.prototype.main_action = function() {
    var images = User.getMembership().images;
-   res.data.list = renderList(images, "mgrlistitem", 10, req.queryParams.page);
+   res.data.list = renderList(images, "Image#images", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(images, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Member images of {0}", this._parent.title);
@@ -73,7 +73,7 @@ Images.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add image to {0}", this._parent.title);
-   res.data.body = image.renderSkinAsString("Image#form");
+   res.data.body = image.renderSkinAsString("Image#edit");
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -82,8 +82,9 @@ Images.prototype.all_action = function() {
    switch (this._parent.constructor) {
       case Site:
       res.data.pager = renderPageNavigation(this, this.href(), 
-           10, req.queryParams.page);
-      res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+            10, req.queryParams.page);
+      res.data.list = renderList(this, "Image#images", 
+            10, req.queryParams.page);
       res.data.title = gettext("Images of {0}", this._parent.title);
       res.data.body = this.renderSkinAsString("Images#main");
       break;
@@ -123,15 +124,13 @@ Images.Default = {
    dot: {name: "dot.gif", width: 30, height: 30, alt: ""}
 };
 
-///// Copied from LayoutImageMgr /////
-
 Images.prototype.default_action = function() {
    if (!this._parent.parent) {
       res.message = new Error(gettext("There are no standard images since this layout isn't based on another one."));
       res.redirect(this.href());
    }
    res.data.list = renderList(this._parent.parent.images, 
-         "mgrlistitem", 10, req.queryParams.page);
+         "Image#images", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(this._parent.parent.images, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Default layout images of {0}", 
@@ -142,7 +141,7 @@ Images.prototype.default_action = function() {
 };
 
 Images.prototype.additional_action = function() {
-   res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
+   res.data.list = renderList(this, "Image#images", 10, req.queryParams.page);
    res.data.pager = renderPageNavigation(this, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Additional layout images of {0}",
