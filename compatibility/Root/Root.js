@@ -62,6 +62,20 @@ Root.prototype.shortdateformat_macro = function(param) {
    return;
 };
 
+Root.prototype.sitecounter_macro = function(param) {
+   if (param.count == "all")
+      var size = root.size();
+   else
+      var size = this.publicSites.size();
+   if (size == 0)
+      res.write(param.no ? param.no : size);
+   else if (size == 1)
+      res.write(param.one ? param.one : size);
+   else
+      res.write(size + (param.more ? param.more : ""));
+   return;
+};
+
 Root.prototype.sysmgrnavigation_macro = function(param) {
    if (session.user && session.user.sysadmin)
       this.renderSkin("sysmgrnavigation");

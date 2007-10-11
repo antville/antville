@@ -2,7 +2,7 @@
 You're not logged in <% site.members.link login prefix="... " %>
 
 <% #status %>
-Logged in as <% username as="link" %><br />
+Logged in as <% membership.name | membership.link %><br />
 <% membership.role prefix="(" suffix=")<br />" %>
 <% members.link edit "edit your profile" prefix="...&nbsp;" suffix="<br />" %>
 <% site.link subscribe text="subscribe to this site" prefix="...&nbsp;" suffix="<br />" %>

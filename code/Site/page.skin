@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" 
-      src="<% file /jquery-1.1.3.1.pack.js url %>"></script>
+      src="<% file /jquery-1.2.1.min.js url %>"></script>
 <script type="text/javascript" src="<% site.href main.js %>"></script>
 <link rel="stylesheet" type="text/css" 
       title="CSS Stylesheet" href="<% site.href main.css %>" />
@@ -67,8 +67,8 @@
    <div class="boxheader">calendar</div>
    <div class="box"><% site.calendar %></div>
    
-   <div class="boxheader">recent comments</div>
-   <div class="box"><% site.history comments %></div>
+   <div class="boxheader">recent postings</div>
+   <div class="box"><% list postings skin=Story#history %></div>
    
    <div class="boxline"></div><br />
    <div class="box"><% image /rss.png | site.link rss.xml %><br />

@@ -22,10 +22,11 @@
 // $URL$
 //
 
-defineConstants(Story, "getStatus", "closed", "public", "shared", "open");
-defineConstants(Story, "getModes", "hidden", "featured");
-defineConstants(Story, "getCommentsModes", "closed", 
+Story.getStatus = defineConstants(Story, "closed", "public", "shared", "open");
+Story.getModes = defineConstants(Story, "hidden", "featured");
+Story.getCommentsModes = defineConstants(Story, "closed", 
       "readonly", "moderated", "open");
+
 this.handleMetadata("title");
 this.handleMetadata("text");
 
@@ -182,9 +183,7 @@ Story.prototype.update = function(data) {
    this.setContent(data);
    //this.setTags(data.tags || data.tag_array)
    this.commentsMode = data.commentsMode;
-   if (this.creator === session.user) {
-      this.mode = data.mode;
-   }
+   this.mode = data.mode;
    if (this.status === Story.PRIVATE && data.status !== Story.PRIVATE) {
       if (delta > 50) {
          site.lastUpdate = new Date;
@@ -238,7 +237,7 @@ Story.prototype.rotate_action = function() {
       this.mode = Story.FEATURED;
       this.status = Story.CLOSED;
    }
-   return res.redirect(this._parent.href());
+   return res.redirect(req.data.http_referer || this._parent.href());
 };
 
 Story.prototype.comment_action = function() {
@@ -301,7 +300,7 @@ Story.prototype.summary_macro = function(param) {
 
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
-   if (story.site.commentsMode === Site.CLOSED || 
+   if (story.site.commentsMode === Site.DISABLED || 
          story.commentsMode === Site.CLOSED) {
       return;
    } else if (mode) {

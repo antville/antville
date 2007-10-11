@@ -29,6 +29,7 @@ app.addRepository("modules/core/Filters.js");
 
 app.addRepository("modules/helma/Image.js");
 app.addRepository("modules/helma/Html.js");
+app.addRepository("modules/helma/Http.js");
 app.addRepository("modules/helma/Mail.js");
 app.addRepository("modules/helma/Search.js");
 app.addRepository("modules/helma/Zip.js");
@@ -41,9 +42,6 @@ app.addRepository("modules/jala/code/I18n.js");
 //app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
-var _ = gettext;
-
-var search = new helma.Search();
 var html = new helma.Html();
 
 /**
@@ -51,7 +49,33 @@ var html = new helma.Html();
  * to an application-wide array (mail queue).
  */
 helma.Mail.prototype.queue = function() {
-   return app.data.mailQueue.push(this);
+   app.data.mails || (app.data.mails = []);
+   return app.data.mails.push(this);
+};
+
+SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
+LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
+
+function defineConstants(ctor /*, arguments */) {
+   var constants = [], name;
+   for (var i=1; i<arguments.length; i+=1) {
+      name = arguments[i].toUpperCase().replace(/\s/g, "");
+      if (ctor[name]) {
+         app.logger.warn("Constant already defined: " + ctor.name + "." + name);
+      }
+      ctor[name] = arguments[i];
+      constants.push({
+         value: arguments[i],
+         display: arguments[i]
+      });
+   }
+   return function() {
+      return constants;
+   };
+}
+
+function disableMacro(ctor, name) {
+   return ctor.prototype[name + "_macro"] = function() {return};
 };
 
 function onStart() {
@@ -62,34 +86,7 @@ function onStart() {
    var id = rows.getColumnItem("id");
    //Packages.helma.main.Server.getServer().stopApplication(app.name);
    rows.release();*/
-   return;
 
-   // load application messages and modules
-   var dir = new Helma.File(app.dir, "../i18n");
-   var arr = dir.list();
-   for (var i in arr) {
-      var fname = arr[i];
-   	if (fname.startsWith("messages.")) {
-         var name = fname.substring(fname.indexOf(".") + 1, fname.length);
-   		var msgFile = new Helma.File(dir, fname);
-   		app.data[name] = new Packages.helma.util.SystemProperties(msgFile.getAbsolutePath());
-   		app.log("loaded application messages (language: " + name + ")");
-   	}
-   }
-   // init index manager
-   app.data.indexManager = new IndexManager();
-   // build macro help
-   app.data.macros = buildMacroHelp();
-   //eval(macroHelpFile.readAll());
-   app.log("loaded macro help file");
-   // creating the vector for referrer-logging
-   app.data.accessLog = new java.util.Vector();
-   // creating the hashtable for storyread-counting
-   app.data.readLog = new java.util.Hashtable();
-   // define the global mail queue
-   app.data.mailQueue = new Array();
-   // init constants
-   initConstants();
    // call onStart methods of modules
    for (var i in app.modules) {
       if (app.modules[i].onStart)
@@ -110,29 +107,6 @@ function scheduler() {
    return 5000;
 }
 
-function disableMacro(ctor, name) {
-   return ctor.prototype[name + "_macro"] = function() {return};
-};
-
-function defineConstants(ctor, getterName /* , arguments */) {
-   var constants = [], name;
-   for (var i=2; i<arguments.length; i+=1) {
-      name = arguments[i].toUpperCase().replace(/\s/g, "");
-      if (ctor[name]) {
-         app.logger.warn("Constant already defined: " + ctor.name + "." + name);
-      }
-      ctor[name] = arguments[i];
-      constants.push({
-         value: arguments[i],
-         display: arguments[i]
-      });
-   }
-   ctor[getterName] = function() {
-      return constants;
-   };
-   return;
-}
-
 function logAction(context, action) {
    if (context) {
       root.admin.log.add(new LogEntry(context, action));      
@@ -140,7 +114,6 @@ function logAction(context, action) {
       root.admin.log.cache.add(new LogEntry(path[path.length - 1]));
    }
    return;
-   
    /* FIXME: check whether request really should be logged
    var site = res.handlers.site ? res.handlers.site: root;
    var url = http.evalUrl(req.data.http_referer);
@@ -178,109 +151,52 @@ function flushLog() {
    return;
 }
 
-MAY_ADD_STORY = 1;
-MAY_VIEW_ANYSTORY = 2;
-MAY_EDIT_ANYSTORY = 4;
-MAY_DELETE_ANYSTORY = 8;
-MAY_ADD_COMMENT = 16;
-MAY_EDIT_ANYCOMMENT = 32;
-MAY_DELETE_ANYCOMMENT = 64;
-MAY_ADD_IMAGE = 128;
-MAY_EDIT_ANYIMAGE = 256;
-MAY_DELETE_ANYIMAGE = 512;
-MAY_ADD_FILE = 1024;
-MAY_EDIT_ANYFILE = 2048;
-MAY_DELETE_ANYFILE= 4096;
-MAY_VIEW_STATS = 8192;
-MAY_EDIT_PREFS = 16384;
-MAY_EDIT_LAYOUTS = 32768;
-MAY_EDIT_MEMBERS = 65536;
+/**
+ * Renders a string depending on the comparison of two values. If the first 
+ * value equals the second value, the first result will be returned; the 
+ * second result otherwise.
+ * <p>Example: <code>&lt;% if &lt;% macro %&gt; is "value" then "yes!" else "no :(" %&gt;</code>
+ * </p>
+ * Note that any value or result can be a macro, too. Thus, this can be used as
+ * a simple implementation of an if-then-else statement by using Helma macros
+ * only. 
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} firstValue The first value
+ * @param {String} _is_ Syntactic sugar; should be "is" for legibility
+ * @param {String} secondValue The second value
+ * @param {String} _then_ Syntactic sugar; should be "then" for legibility
+ * @param {String} firstResult The first result, ie. the value that will be 
+ * returned if the first value equals the second one
+ * @param {String} _else_ Syntactic sugar; should be "else" for legibility
+ * @param {String} secondResult The second result, ie. the value that will be 
+ * returned if the first value does not equal the second one
+ * @returns The resulting value
+ * @type String
+ * @member Global
+ */
+function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult, 
+      _else_, secondResult) {
+   return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
+}
 
-EDITABLEBY_ADMINS       = 0;
-EDITABLEBY_CONTRIBUTORS = 1;
-EDITABLEBY_SUBSCRIBERS  = 2;
+function gettext_macro(param, text /*, value1, value2, ...*/) {
+   var args = [text];
+   for (var i=2; i<arguments.length; i+=1) {
+      args.push(arguments[i]);
+   }
+   return gettext.apply(this, args);
+}
 
-SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
-LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
+function ngettext_macro(param, singular, plural, value1 /*, value2, value3, ...*/) {
+   var args = [singular, plural, value1];
+   for (var i=4; i<arguments.length; i+=1) {
+      args.push(arguments[i]);
+   }
+   return ngettext.apply(this, args);
+}
 
 function now_macro(param, format) {
    return formatDate(new Date, format || param.format);
-}
-
-function file_macro(param, name, mode) {
-   name || (name = param.name);
-   if (!name) {
-      return;
-   }
-   mode || (mode = param.as);
-   delete(param.name);
-   delete(param.as);
-
-   var file;
-   if (name.startsWith("/")) {
-      if (mode === "url") {
-         res.write(root.getStaticUrl(name.substring(1)));
-      }
-      return;
-   }
-
-   file = HopObject.getFromPath(name, "files");
-   if (!file) {
-      return;
-   }
-   if (mode === "url") {
-      res.write(file.getUrl());
-   } else {
-      param.text || (param.text = file.name);
-      file.renderSkin(param.skin || "main", param);
-   }
-   return;
-}
-
-function image_macro(param, name, mode) {
-   name || (name = param.name);
-   if (!name) {
-      return;
-   }
-   mode || (mode = param.as);
-   var action = param.linkto;
-   delete(param.name);
-   delete(param.as);
-   delete(param.linkto);
-
-   var image;
-   if (name.startsWith("/") && (image = Images.Default[name.substring(1)])) {
-      param.src = root.getStaticUrl(image.name);
-      param.border = 0;
-      if (mode === "url") {
-         res.write(param.src);
-      } else if (image.href) {
-         res.push();
-         html.tag("img", param);
-         link_filter(res.pop(), param, image.href);
-      } else {
-         html.tag("img", param);
-      }
-      return;
-   }
-
-   image = HopObject.getFromPath(name, "images");
-   if (!image && param.fallback) {
-      image = HopObject.getFromPath(param.fallback, "images");
-   }
-   if (!image) {
-      return;
-   }
-
-   switch (mode) {
-      case "url" :
-      return image.getUrl();
-      case "thumbnail":
-      action || (action = image.getUrl());
-      return image.thumbnail_macro(param);
-   }
-   image.render_macro(param);
-   return;
 }
 
 function link_macro() {
@@ -321,295 +237,278 @@ function breadcrumbs_macro (param, delimiter) {
    return;
 }
 
-// FIXME:
-function story_macro(param) {
-   if (!param.id)
+function story_macro(param, id, mode) {
+   id || (id = param.id);
+   var story = HopObject.getFromPath(id, "stories");
+   if (!story || !story.getPermission("main")) {
       return;
-   var storyPath = param.id.split("/");
-   if (storyPath.length == 2) {
-      var site = root.get(storyPath[0]);
-      if (!site || !site.online)
-         return;
-   } else if (res.handlers.site)
-      var site = res.handlers.site;
-   else
-      return;
-   var story = site.allstories.get(storyPath[1] ? storyPath[1] : param.id);
-   if (!story)
-      return getMessage("error", "storyNoExist", param.id);
-   switch (param.as) {
+   }
+
+   mode || (mode = param.as);
+   delete(param.name);
+   delete(param.as);
+
+   switch (mode) {
       case "url":
-         res.write(story.href());
-         break;
+      res.write(story.href());
+      break;
       case "link":
-         var title = param.text ? param.text : 
-                     story.content.get("title");
-         html.link({href: story.href()}, title ? title : story._id);
-         break;
+      html.link({href: story.href()}, story.getTitle());
+      break;
       default:
-         story.renderSkin(param.skin ? param.skin : "embed");
+      story.renderSkin(param.skin ? param.skin : "Story#main");
    }
    return;
 }
 
-// FIXME:
-function poll_macro(param) {
-   if (!param.id)
+function file_macro(param, id, mode) {
+   id || (id = param.name);
+   if (!id) {
       return;
-   // disable caching of any contentPart containing this macro
-   res.meta.cachePart = false;
-   var parts = param.id.split("/");
-   if (parts.length == 2)
-      var site = root.get(parts[0]);
-   else
-      var site = res.handlers.site;
-   if (!site)
+   }
+
+   mode || (mode = param.as);
+   delete(param.name);
+   delete(param.as);
+
+   var file;
+   if (id.startsWith("/")) {
+      name = id.substring(1);
+      if (mode === "url") {
+         res.write(root.getStaticUrl(name));
+      } else {
+         file = root.getStaticFile(name);
+         res.push();
+         File.prototype.contentLength_macro.call({
+            contentLength: file.getLength()
+         });
+         res.handlers.file = {
+            href: root.getStaticUrl(name),
+            name: name,
+            contentLength: res.pop()
+         };
+         File.prototype.renderSkin("File#main");
+      }
       return;
-   var poll = site.polls.get(parts[1] ? parts[1] : param.id);
-   if (!poll)
-      return getMessage("error.pollNoExist", param.id);
-   switch (param.as) {
-      case "url":
-         res.write(poll.href());
-         break;
-      case "link":
-         html.link({
-            href: poll.href(poll.closed ? "results" : "")
-         }, poll.question);
-         break;
-      default:
-         if (poll.closed || param.as == "results")
-            poll.renderSkin("results");
-         else {
-            res.data.action = poll.href();
-            poll.renderSkin("main");
-         }
+   }
+
+   file = HopObject.getFromPath(id, "files");
+   if (!file) {
+      return;
+   }
+   if (mode === "url") {
+      res.write(file.getUrl());
+   } else {
+      file.renderSkin(param.skin || "File#main");
    }
    return;
 }
 
-// FIXME:
-function sitelist_macro(param) {
-   // setting some general limitations:
-   var minDisplay = 10;
-   var maxDisplay = 25;
-   var max = Math.min((param.limit ? parseInt(param.limit, 10) : minDisplay), maxDisplay);
-   root.renderSitelist(max);
-   res.write(res.data.sitelist);
-   delete res.data.sitelist;
+function image_macro(param, id, mode) {
+   id || (id = param.name);
+   if (!id) {
+      return;
+   }
+
+   mode || (mode = param.as);
+   delete(param.name);
+   delete(param.as);
+   delete(param.linkto);
+
+   var image;
+   if (id.startsWith("/") && (image = Images.Default[id.substring(1)])) {
+      param.src = root.getStaticUrl(image.name);
+      param.border = 0;
+      if (mode === "url") {
+         res.write(param.src);
+      } else if (image.href) {
+         res.push();
+         html.tag("img", param);
+         link_filter(res.pop(), param, image.href);
+      } else {
+         html.tag("img", param);
+      }
+      return;
+   }
+
+   image = HopObject.getFromPath(id, "images");
+   if (!image && param.fallback) {
+      image = HopObject.getFromPath(param.fallback, "images");
+   }
+   if (!image) {
+      return;
+   }
+   switch (mode) {
+      case "url" :
+      res.write(image.getUrl());
+      break;
+      case "thumbnail":
+      image.thumbnail_macro(param);
+      break;
+      default:
+      image.render_macro(param);
+   }
    return;
 }
 
-// FIXME:
-function imagelist_macro(param) {
-   var site = param.of ? root.get(param.of) : res.handlers.site;
-   if (!site)
+function poll_macro(param, id, mode) {
+   id || (param.id = id);
+   if (!id) {
       return;
-   if (!site.images.size())
+   }
+
+   var poll = HopObject.getFromPath(id, "polls");
+   if (!poll) {
       return;
-   var max = Math.min(param.limit ? param.limit : 5, site.images.size());
-   var idx = 0;
-   var imgParam;
-   var linkParam = {};
-   delete param.limit;
+   }
 
-   while (idx < max) {
-      var imgObj = site.images.get(idx++);
+   mode || (mode = param.as);
+   var action = param.linkto;
+   delete(param.name);
+   delete(param.as);
+   delete(param.linkto);
+   
+   switch (mode) {
+      case "url":
+      res.write(poll.href());
+      break;
+      case "link":
+      html.link({
+         href: poll.href(poll.closed ? "results" : "")
+      }, poll.question);
+      break;
+      default:
+      if (poll.status === Poll.CLOSED || mode === "results")
+         poll.renderSkin("Poll#results");
+      else {
+         res.data.action = poll.href();
+         poll.renderSkin("Poll#main");
+      }
+   }
+   return;
+}
 
-      imgParam = Object.clone(param);
-      delete imgParam.itemprefix;
-      delete imgParam.itemsuffix;
-      delete imgParam.as;
-      delete linkParam.href;
-      delete linkParam.onclick;
+function list_macro(param /*, limit, id */) {
+   var id = arguments[2] || arguments[1];
+   var limit = arguments[2] && arguments[1] || 0;
+   if (!id && !limit) {
+      return;
+   }
 
-      res.write(param.itemprefix);
-      // return different display according to param.as
-      switch (param.as) {
-         case "url":
-            res.write(imgObj.getUrl());
-            break;
-         case "popup":
-            linkParam.onclick = imgObj.getPopupUrl();
-         case "thumbnail":
-            linkParam.href = param.linkto ? param.linkto : imgObj.getUrl();
-            if (imgObj.thumbnail)
-               imgObj = imgObj.thumbnail;
+   var max = Math.min(Math.max(limit, 5), 20);
+   var collection, skin;
+   if (id === "sites") {
+      collection = root.sites;
+      skin = "Site#preview";
+   } else {
+      var site;
+      var parts = id.split("/");
+      if (parts.length > 1) {
+         type = parts[1];
+         site = root.sites.get(parts[0]);
+      } else {
+         type = parts[0];
+      }
+
+      site || (site = res.handlers.site);
+      var filter = function(item, index) {
+         return index < max && item.getPermission("main");
+      };
+
+      switch (type) {
+         case "images":
+         collection = site.images.list(0, max);
+         skin = "Image#preview";
+         break;
+         
+         case "featured":
+         collection = site.stories.featured.list(0, max);
+         skin = "Story#preview";
+         break;
+         
+         case "stories":
+         var stories = site.stories.recent;
+         collection = stories.list().filter(function(item, index) {
+            return item.constructor === Story && filter(item, index);
+         });
+         skin = "Story#preview";
+         break;
+         
+         case "comments":
+         var comments = site.stories.comments;
+         collection = comments.list().filter(filter);
+         skin = "Comment#preview";
+         break;
+         
+         case "postings":
+         content = site.stories.recent;
+         collection = content.list().filter(filter);
+         skin = "Story#preview";
+         break;
+         
          default:
-            if (linkParam.href) {
-               html.openLink(linkParam);
-               renderImage(imgObj, imgParam);
-               html.closeLink();
-            } else
-               renderImage(imgObj, imgParam);
+         break;
       }
-      res.write(param.itemsuffix);
+   }
+   param.skin && (skin = param.skin);
+   for each (var item in collection) {
+      item.renderSkin(skin);
    }
    return;
-}
+};
 
-// FIXME: -> tags!
-function topiclist_macro(param) {
-   var site = param.of ? root.get(param.of) : res.handlers.site;
-   if (!site)
+function randomize_macro(param, id) {
+   var getRandom = function(n) {
+      return Math.floor(Math.random() * n);
+   };
+
+   var site;
+   if (id === "sites") {
+      site = root.sites.get(getRandom(root.sites.size()));
+      site.renderSkin(param.skin || "Site#preview");
       return;
-   site.topics.topiclist_macro(param);
-   return;
-}
+   }
 
-// FIXME: obsolete?
-function username_macro(param) {
-   if (!session.user)
-      return;
-   if (session.user.url && param.as == "link")
-      html.link({href: session.user.url}, session.user.name);
-   else if (session.user.url && param.as == "url")
-      res.write(session.user.url);
-   else
-      res.write(session.user.name);
-   return;
-}
-
-// FIXME:
-function colorpicker_macro(param) {
-   if (!param || !param.name)
-      return;
-
-   var param2 = new Object();
-   param2.as = "editor";
-   param2["size"] = "10";
-   param2.onchange = "Antville.ColorPicker.set('" + param.name + "', this.value);";
-   param2.id = "Antville_ColorValue_" + param.name;
-   if (!param.text)
-      param.text = param.name;
-   if (param.color)
-   	param.color = renderColorAsString(param.color);
-
-   if (path.Story || path.StoryMgr) {
-      var obj = path.Story ? path.Story : new Story();
-      param2.part = param.name;
-      // use res.push()/res.pop(), otherwise the macro
-      // would directly write to response
-      res.push();
-      obj.content_macro(param2);
-      param.editor = res.pop();
-      param.color = renderColorAsString(obj.content.get(param.name));
-   } else if (path.Layout) {
-      var obj = path.Layout;
-      // use res.push()/res.pop(), otherwise the macro
-      // would directly write to response
-      res.push();
-      obj[param.name + "_macro"](param2);
-      param.editor = res.pop();
-      param.color = renderColorAsString(obj.preferences.get(param.name));
-   } else
-      return;
-   renderSkin("colorpickerWidget", param);
-   return;
-}
-
-// FIXME:
-function randomize_macro(param) {
-   var site, obj;
-   if (param.site) {
-      var site = root.get(param.site);
-      if (!site.online)
-         return;
+   var parts = id.split("/");
+   if (parts.length > 1) {
+      type = parts[1];
+      site = root.sites.get(parts[0]);
    } else {
-      var max = root.publicSites.size();
-      while (!site || site.online < 1)
-         site = root.publicSites.get(Math.floor(Math.random() * max));
+      type = parts[0];
    }
-   var coll;
-   switch (param.what) {
+   site || (site = res.handlers.site);
+   switch (type) {
       case "stories":
-         obj = site.stories.get(Math.floor(Math.random() * site.allstories.size()));
-         break;
+      var stories = site.stories["public"];
+      var story = stories.get(getRandom(stories.size()));
+      story && story.renderSkin(param.skin || "Story#preview");
+      break;
       case "images":
-         obj = site.images.get(Math.floor(Math.random() * site.images.size()));
-         break;
-      case "sites":
-      default:
-         obj = site;
-         break;
+      var image = site.images.get(getRandom(site.images.size()));
+      image && image.renderSkin(param.skin || "Image#preview");
+      break;
    }
-   obj.renderSkin(param.skin ? param.skin : "embed");
    return;
 }
 
-// FIXME:
-function randomimage_macro(param) {
-   if (param.images) {
-      var items = new Array();
-      var aliases = param.images.split(",");
-      for (var i=0; i<aliases.length; i++) {
-         aliases[i] = aliases[i].trim();
-         var img = getPoolObj(aliases[i], "images");
-         if (img && img.obj) items[items.length] = img.obj;
-      }
-   } 
-   delete(param.images);
-   var idx = Math.floor(Math.random()*items.length);
-   var img = items[idx];
-   param.name = img.alias;
-   return image_macro(param);
-}
-
-// FIXME:
-function imageoftheday_macro(param) {
-   var s = res.handlers.site;
-   var pool = res.handlers.site.images;
-   if (pool==null) return;
-   delete(param.topic);
-   var img = pool.get(0);
-   param.name = img.alias;
-   return image_macro(param);
-}
-
-// FIXME:
-function evalEmail(str) {
-   if (!str.isEmail()) {
-      return null;
-   }
-   return str;
-}
-
-// FIXME:
-function evalURL(str) {
-   if (url = helma.Http.evalUrl(str)) {
-      return String(url);
-   } else if (str.contains("@")) {
-      return "mailto:" + str;
-   } else {
-      return "http://" + str;
+function validateEmail(str) {
+   if (str.isEmail()) {
+      return str;
    }
    return null;
 }
 
-// FIXME:
-function autoLogin() {
-   if (session.user) {
-      return;
+function validateUrl(str) {
+   if (str) {
+      if (url = helma.Http.evalUrl(str)) {
+         return String(url);
+      } else if (str.contains("@")) {
+         return "mailto:" + str;
+      } else {
+         return "http://" + str;
+      }
    }
-   var name = req.cookies.avUsr;
-   var hash = req.cookies.avPw;
-   if (!name || !hash) {
-      return;
-   }
-   var user = User.getByName(name);
-   if (!user) {
-      return;
-   }
-   var ip = req.data.http_remotehost.clip(getProperty ("cookieLevel","4"),
-         "", "\\.");
-   if ((user.hash + ip).md5() !== hash) {
-      return;
-   }
-   session.login(user);
-   user.touch();
-   res.message = gettext('Welcome to "{0}", {1}. Have fun!',
-         res.handlers.site.title, user.name);
-   return;
+   return null;
 }
 
 // FIXME:
@@ -934,15 +833,6 @@ function buildMacroHelp() {
 }
 
 /**
- * wrapper method to expose the indexManager's
- * rebuildIndexes method to cron
- */
-function rebuildIndexes() {
-   app.data.indexManager.rebuildIndexes();
-   return;
-}
-
-/**
  * function tries to check if the color contains just hex-characters
  * if so, it returns the color-definition prefixed with a '#'
  * otherwise it assumes the color is a named one
@@ -1154,21 +1044,6 @@ function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
    return renderSkinAsString("pagenavigation", param);
 }
 
-/**
- * function checks if user is logged in or not
- * if false, it redirects to the login-page
- * but before it stores the url to jump back (if passed as argument)
- */
-function checkIfLoggedIn(referrer) {
-   if (!session.user) {
-      // user is not logged in
-      if (referrer)
-         session.data.referrer = referrer;
-      res.redirect(res.handlers.site ? res.handlers.site.members.href("login") : root.members.href("login"));
-   }
-   return;
-}
-
 function singularize(plural) {
    if (plural.endsWith("ies")) {
       return plural.substring(0, plural.length-3) + "y";
@@ -1256,34 +1131,6 @@ function getDateFormats(type, language) {
    return result;
 }
 
-/**
- * Renders a string depending on the comparison of two values. If the first 
- * value equals the second value, the first result will be returned; the 
- * second result otherwise.
- * <p>Example: <code>&lt;% if &lt;% macro %&gt; is "value" then "yes!" else "no :(" %&gt;</code>
- * </p>
- * Note that any value or result can be a macro, too. Thus, this can be used as
- * a simple implementation of an if-then-else statement by using Helma macros
- * only. 
- * @param {Object} param The default Helma macro parameter object
- * @param {String} firstValue The first value
- * @param {String} _is_ Syntactic sugar; should be "is" for legibility
- * @param {String} secondValue The second value
- * @param {String} _then_ Syntactic sugar; should be "then" for legibility
- * @param {String} firstResult The first result, ie. the value that will be 
- * returned if the first value equals the second one
- * @param {String} _else_ Syntactic sugar; should be "else" for legibility
- * @param {String} secondResult The second result, ie. the value that will be 
- * returned if the first value does not equal the second one
- * @returns The resulting value
- * @type String
- * @member Global
- */
-function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult, 
-      _else_, secondResult) {
-   return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
-}
-
 function age_filter(value, param) {
    if (!value || value.constructor !== Date) {
       return value;
@@ -1322,20 +1169,3 @@ function clip_filter(input, param, limit, clipping, delimiter) {
    delimiter || (delimiter = "\\s");
    return String(input || "").head(limit, clipping, delimiter);
 }
-
-var gettext_macro = function(param, text /*, value1, value2, ...*/) {
-   var args = [text];
-   for (var i=2; i<arguments.length; i+=1) {
-      args.push(arguments[i]);
-   }
-   return gettext.apply(this, args);
-};
-
-var ngettext_macro = function(param, singular, plural, value1 /*, value2, value3, ...*/) {
-   var args = [singular, plural, value1];
-   for (var i=4; i<arguments.length; i+=1) {
-      args.push(arguments[i]);
-   }
-   return ngettext.apply(this, args);
-};
-

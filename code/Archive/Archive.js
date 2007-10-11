@@ -31,7 +31,8 @@ Archive.prototype.constructor = function(name, parent) {
 };
 
 Archive.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
+   var site = res.handlers.site;
+   if (!site.getPermission("main")) {
       return false;
    }
    switch (action) {
@@ -40,7 +41,7 @@ Archive.prototype.getPermission = function(action) {
       case "next":
       return this.getPage() < this.getSize() / this.getPageSize();
       default:
-      return this._parent.archiveMode === Site.PUBLIC;
+      return site.archiveMode === Site.PUBLIC;
    }
    return false;
 };
@@ -113,7 +114,7 @@ Archive.prototype.list_macro = function(param, type) {
       if (!this.parent) {
          var site = res.handlers.site;
          var offset = (page - 1) * pageSize;
-         var stories = site.stories["public"].list(offset, pageSize);
+         var stories = site.stories.featured.list(offset, pageSize);
          for each (var story in stories) {
             renderStory(story);
          };
@@ -190,7 +191,7 @@ Archive.prototype.getFilter = function() {
       res.push();
       res.write("where site_id = ");
       res.write(site._id);
-      res.write(" and prototype = 'Story' and status <> 'private'");
+      res.write(" and prototype = 'Story' and status <> 'closed'");
       var part;
       if (part = this.getDate("year")) {
           res.write(" and year(created) = " + part);

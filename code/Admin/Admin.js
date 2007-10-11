@@ -29,6 +29,10 @@ Admin.prototype.constructor = function() {
    return this;
 };
 
+Admin.prototype.getPermission = function(action) {
+   return User.require(User.PRIVILEGED);
+};
+
 Admin.prototype.onRequest = function() {
    HopObject.prototype.onRequest.apply(this);
    if (!session.data.admin) {
@@ -40,10 +44,6 @@ Admin.prototype.onRequest = function() {
 Admin.prototype.onUnhandledMacro = function(name) {
    res.debug("Add " + name + "_macro to Admin!");
    return null;
-};
-
-Admin.prototype.getPermission = function(action) {
-   return User.require(User.PRIVILEGED);
 };
 
 Admin.prototype.main_action = function() {
@@ -216,7 +216,7 @@ Admin.prototype.count_macro = function(param, object, name) {
       case "comments":
       if (object.constructor === Site) {
          res.write("FIXME: takes very long... :(");
-         //res.write(object.stories.all.size() - object.stories.size());
+         //res.write(object.stories.comments.size());
       }
       return;
    }

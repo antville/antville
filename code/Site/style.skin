@@ -313,3 +313,61 @@ ul.skinmgrTree li div {
    margin-left:20px;
    margin-bottom:5px;
 }
+
+
+
+
+
+/* Admin styles */
+
+.pageTitle {
+   font-family:<% layout.value titlefont %>;
+   font-size:<% layout.value titlesize %>;
+   font-weight:bold;
+   color:<% layout.value titlecolor %>;
+   padding-bottom:10pt;
+}
+
+.label {
+   font-family: <% layout.value smallfont %>;
+   font-size: 7pt;
+   padding: 2px;
+   color: #ffffff;
+   text-transform: uppercase;
+}
+
+.regular {
+   display: none;
+}
+
+.blocked {
+   background-color: #000000;
+}
+
+.trusted, .User {
+   background-color: #0000cc;
+}
+
+.closed {
+   background-color: #cc0000;
+}
+
+.public, .Site {
+   background-color: #006600;
+}
+
+.Root, .privileged {
+   background-color: #ffcc00;
+}
+
+.flagLight {
+   font-family:<% layout.value smallfont %>;
+   font-size:7pt;
+   padding:2px;
+   color:#333333;
+}
+
+.sysmgrListitem {
+   margin-top:15px;
+   border-top:1px solid #dddddd;
+}

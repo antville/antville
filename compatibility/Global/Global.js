@@ -163,3 +163,95 @@ function fakemail_macro(param) {
    }
 	return;
 }
+
+// FIXME:
+function sitelist_macro(param) {
+   // setting some general limitations:
+   var minDisplay = 10;
+   var maxDisplay = 25;
+   var max = Math.min((param.limit ? parseInt(param.limit, 10) : minDisplay), maxDisplay);
+   root.renderSitelist(max);
+   res.write(res.data.sitelist);
+   delete res.data.sitelist;
+   return;
+}
+
+// FIXME:
+function imagelist_macro(param) {
+   var site = param.of ? root.get(param.of) : res.handlers.site;
+   if (!site)
+      return;
+   if (!site.images.size())
+      return;
+   var max = Math.min(param.limit ? param.limit : 5, site.images.size());
+   var idx = 0;
+   var imgParam;
+   var linkParam = {};
+   delete param.limit;
+
+   while (idx < max) {
+      var imgObj = site.images.get(idx++);
+
+      imgParam = Object.clone(param);
+      delete imgParam.itemprefix;
+      delete imgParam.itemsuffix;
+      delete imgParam.as;
+      delete linkParam.href;
+      delete linkParam.onclick;
+
+      res.write(param.itemprefix);
+      // return different display according to param.as
+      switch (param.as) {
+         case "url":
+            res.write(imgObj.getUrl());
+            break;
+         case "popup":
+            linkParam.onclick = imgObj.getPopupUrl();
+         case "thumbnail":
+            linkParam.href = param.linkto ? param.linkto : imgObj.getUrl();
+            if (imgObj.thumbnail)
+               imgObj = imgObj.thumbnail;
+         default:
+            if (linkParam.href) {
+               html.openLink(linkParam);
+               renderImage(imgObj, imgParam);
+               html.closeLink();
+            } else
+               renderImage(imgObj, imgParam);
+      }
+      res.write(param.itemsuffix);
+   }
+   return;
+}
+
+// FIXME: -> tags!
+function topiclist_macro(param) {
+   var site = param.of ? root.get(param.of) : res.handlers.site;
+   if (!site)
+      return;
+   site.topics.topiclist_macro(param);
+   return;
+}
+
+function imageoftheday_macro(param) {
+   var s = res.handlers.site;
+   var pool = res.handlers.site.images;
+   if (pool==null) return;
+   delete(param.topic);
+   var img = pool.get(0);
+   param.name = img.alias;
+   return image_macro(param);
+}
+
+// FIXME: obsolete?
+function username_macro(param) {
+   if (!session.user)
+      return;
+   if (session.user.url && param.as == "link")
+      html.link({href: session.user.url}, session.user.name);
+   else if (session.user.url && param.as == "url")
+      res.write(session.user.url);
+   else
+      res.write(session.user.name);
+   return;
+}

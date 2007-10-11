@@ -1,5 +1,5 @@
 <% #main %>
-<a href="<% file.href %>" title="<% file.description %>"><% param.text %></a> 
+<a href="<% file.href %>" title="<% file.description %>"><% file.name %></a> 
 <span class="small">
    (<% file.contentType suffix=", " %><% file.contentLength %>)
 </span>
@@ -9,10 +9,10 @@
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td colspan="2" class="small">
-   <strong>Macro:</strong> &lt;% file <% file.name %> %&gt;
-   <div class="ample"><strong>Details: </strong><% file.fileSize %>
-   <% file.contentType prefix=" " %><% file.requests prefix=", " 
-   no="0 downloads" one="1 download" more=" downloads"%></div>
+   <strong>Macro:</strong> <% file.macro %>
+   <div class="ample"><strong>Details: </strong><% file.contentLength %>
+   <% file.contentType prefix=" " %><% ngettext "{0} download" "{0} downloads"
+   <% file.requests %> prefix=", " %></div>
 </td>
 </tr>
 <tr>

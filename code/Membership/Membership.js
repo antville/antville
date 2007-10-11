@@ -22,7 +22,7 @@
 // $URL$
 //
 
-defineConstants(Membership, "getRoles", "Subscriber", "Contributor", 
+Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor", 
       "Manager", "Owner");
       
 Membership.prototype.constructor = function(user, role) {
@@ -50,21 +50,6 @@ Membership.prototype.getPermission = function(action) {
    return true;
 };
 
-Membership.prototype.update = function(data) {
-   if (!data.role) {
-      throw Error(gettext("Please choose a role for this member."));
-   } else if (this.user === session.user) {
-      throw Error(gettext("Sorry, you are not allowed to edit your own membership."));
-   } else if (data.role !== this.role) {
-      this.role = data.role;
-      this.touch();
-      /* FIXME: sendMail(root.sys_email, this.user.email,
-            getMessage("mail.statusChange", this.site.title),
-            this.renderSkinAsString("mailstatuschange"));*/
-   }
-   return;
-};
-
 Membership.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
@@ -81,6 +66,29 @@ Membership.prototype.edit_action = function() {
    res.data.title = gettext("Edit membership: {0}", this.name);
    res.data.body = this.renderSkinAsString("edit");
    this.site.renderSkin("page");
+   return;
+};
+
+Membership.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "role":
+      return Membership.getRoles();
+   }
+   return;
+};
+
+Membership.prototype.update = function(data) {
+   if (!data.role) {
+      throw Error(gettext("Please choose a role for this member."));
+   } else if (this.user === session.user) {
+      throw Error(gettext("Sorry, you are not allowed to edit your own membership."));
+   } else if (data.role !== this.role) {
+      this.role = data.role;
+      this.touch();
+      /* FIXME: sendMail(root.sys_email, this.user.email,
+            getMessage("mail.statusChange", this.site.title),
+            this.renderSkinAsString("mailstatuschange"));*/
+   }
    return;
 };
 
@@ -109,28 +117,6 @@ Membership.prototype.contact_action = function() {
    return;
 };
 
-Membership.prototype.delete_action = function() {
-   if (req.postParams.proceed) {
-      try {
-         var url = this._parent.href();
-         Membership.remove(this);
-         res.message = gettext("Successfully deleted the membership.");
-         res.redirect(url);
-      } catch(ex) {
-         res.message = ex;
-         app.log(ex);
-      }
-   }
-   
-   res.data.action = this.href(req.action);
-   res.data.title = gettext("Delete membership: {0}", this.name);
-   res.data.body = this.renderSkinAsString("delete", {
-      text: gettext('You are about to delete the membership {0}', this.name)
-   });
-   this.site.renderSkin("page");
-   return;
-};
-
 Membership.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "creator":
@@ -138,17 +124,70 @@ Membership.prototype.getMacroHandler = function(name) {
    }
 };
 
+Membership.prototype.link_filter = function(value, param) {
+   return HopObject.prototype.link_filter.call(this, value, 
+         param, this.creator.url);
+};
+
 Membership.prototype.email_macro = function(param) {
    throw Error("Due to privacy reasons the display of e-mail addresses is disabled.")
 };
 
-Membership.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "role":
-      return Membership.getRoles();
-   }
+Membership.prototype.status_macro = function() {
+   this.role || (res.handlers.members = {});
+   this.renderSkin(session.user ? "Membership#status" : "Membership#login");
    return;
 };
+
+Membership.getByName = function(name) {
+   var site = res.handlers.site;
+   if (site) {
+      return site.members.get(name);
+   }
+   return null;
+};
+
+Membership.require = function(role) {
+   var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
+         Membership.MANAGER, Membership.OWNER];
+   if (role && res.handlers.membership) {
+      return roles.indexOf(res.handlers.membership.role) >= roles.indexOf(role);
+   }
+   return false;
+};
+      
+Membership.remove = function(membership) {
+   /*if (!membership) {
+      throw Error(gettext("Please specify a membership you want to be removed."));
+   } else if (membership.role === Membership.OWNER) {
+      throw Error(gettext("Sorry, an owner of a site cannot be removed."));
+   }*/
+   membership.remove();
+   return;
+};
+
+/*
+MAY_ADD_STORY = 1;
+MAY_VIEW_ANYSTORY = 2;
+MAY_EDIT_ANYSTORY = 4;
+MAY_DELETE_ANYSTORY = 8;
+MAY_ADD_COMMENT = 16;
+MAY_EDIT_ANYCOMMENT = 32;
+MAY_DELETE_ANYCOMMENT = 64;
+MAY_ADD_IMAGE = 128;
+MAY_EDIT_ANYIMAGE = 256;
+MAY_DELETE_ANYIMAGE = 512;
+MAY_ADD_FILE = 1024;
+MAY_EDIT_ANYFILE = 2048;
+MAY_DELETE_ANYFILE= 4096;
+MAY_VIEW_STATS = 8192;
+MAY_EDIT_PREFS = 16384;
+MAY_EDIT_LAYOUTS = 32768;
+MAY_EDIT_MEMBERS = 65536;
+
+EDITABLEBY_ADMINS       = 0;
+EDITABLEBY_CONTRIBUTORS = 1;
+EDITABLEBY_SUBSCRIBERS  = 2;
 
 Membership.getLevel = function(role) {
    if (!role) {
@@ -168,45 +207,6 @@ Membership.getLevel = function(role) {
    }
 };
 
-Membership.getByName = function(name) {
-   var site = res.handlers.site;
-   if (site) {
-      return site.members.get(name);
-   }
-   return null;
-};
-
-Membership.require = function(role) {
-   var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
-         Membership.MANAGER, Membership.OWNER];
-   if (role && res.handlers.membership) {
-      return roles.indexOf(res.handlers.membership.role) >= roles.indexOf(role);
-   }
-   return false;
-   /* if (role && res.handlers.membership) {
-      return Membership.getLevel(res.handlers.membership.role) - 
-            Membership.getLevel(role) >= 0;
-   }
-   return false; */
-};
-      
-Membership.remove = function(membership) {
-   /*if (!membership) {
-      throw Error(gettext("Please specify a membership you want to be removed."));
-   } else if (membership.role === Membership.OWNER) {
-      throw Error(gettext("Sorry, an owner of a site cannot be removed."));
-   }*/
-   membership.remove();
-   return;
-};
-
-Membership.prototype.status_macro = function() {
-   this.role || (res.handlers.members = {});
-   this.renderSkin(session.user ? "Membership#status" : "Membership#login");
-   return;
-};
-
-/*
 Membership.getRoles = function() {
    return [{
       display: Membership.SUBSCRIBER,

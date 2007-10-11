@@ -33,6 +33,31 @@
 </p>
 <br />
 
+<% #embed %>
+<% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
+<% story.text | clip %>
+<span class="small">
+   <% story.link . "[read more]" %>
+   <% story.link edit prefix=" ... " %>
+</span><br />
+
+<% #history %>
+<div class="historyItem">
+   <% story.summary %>
+   <div class="small">
+      by <% story.creator %> (<% story.modified short %>)
+   </div>
+</div>
+
+<% #top %>
+<tr>
+<td align="right" valign="baseline" class="small"><% param.position %></td>
+<td align="right" valign="baseline"><% story.requests %></td>
+<td valign="baseline"><% story.created "yyyy-MM-dd" %></td>
+<td valign="baseline"><% story.title | story.link %></td>
+<td valign="baseline"><% story.creator %></td>
+</tr>
+
 <% #comment %>
 <% story.skin Story#day %>
 <% story.skin Story#content %>
@@ -51,7 +76,7 @@ else <% if <% story.mode %> is hidden then
    <td rowspan="2" width="5" nowrap="nowrap"></td>' %>
 %>
 <td colspan="3" class="small">
-   <strong>Macro:</strong> &lt;% story <% story.id %> %&gt;<br />
+   <strong>Macro:</strong> <% story.macro %><br />
    <div class="ample"><strong>Status: </strong><% story.status %><!--
    --><% story.tags link prefix=" in " %>,
    <% story.comments link %></div>
@@ -137,23 +162,6 @@ for (var i in referrers) {
 </tr>
 </noscript>
 </table>
-
-<% #history %>
-<div class="historyItem">
-   <% story.summary %>
-   <div class="small">
-      by <% story.creator %> (<% story.modified short %>)
-   </div>
-</div>
-
-<% #top %>
-<tr>
-<td align="right" valign="baseline" class="small"><% param.position %></td>
-<td align="right" valign="baseline"><% story.requests %></td>
-<td valign="baseline"><% story.created "yyyy-MM-dd" %></td>
-<td valign="baseline"><% story.title | story.link %></td>
-<td valign="baseline"><% story.creator %></td>
-</tr>
 
 <% #edit %>
 <form method="post" action="<% response.action %>">

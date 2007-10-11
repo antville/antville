@@ -1,1 +1,0 @@
-<% param.editor %> <img src="<% image name="/pixel" as="url" %>" width="13" height="13" alt="" style="margin-left:5px;background-color:<% param.color %>;" title="Click to pick the <% param.text %> color" onclick="Antville.ColorPicker.open('<% param.name %>', '<% param.text %>', '<% param.skin %>');" id="Antville_ColorPicker_<% param.name %>" class="colorpickerWidget" />

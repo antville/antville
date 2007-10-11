@@ -22,7 +22,7 @@
 // $URL$
 //
 
-defineConstants(Poll, "getStatus", "closed", "readonly", "open");
+Poll.getStatus = defineConstants(Poll, "closed", "readonly", "open");
 
 Poll.prototype.constructor = function(question) {
    this.question = question;

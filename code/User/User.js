@@ -22,10 +22,13 @@
 // $URL$
 //
 
-defineConstants(User, "getStatus", "blocked", "regular", "trusted", 
-      "privileged");
-defineConstants(User, "getScopes", "regular users", "trusted users", 
-      "privileged users");
+User.COOKIE = getProperty("userCookie", "antvilleUser");
+User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
+
+User.getStatus = defineConstants(User, "blocked", 
+      "regular", "trusted", "privileged");
+User.getScopes = defineConstants(User, "regular users", 
+      "trusted users", "privileged users");
 
 this.handleMetadata("hash");
 this.handleMetadata("salt");
@@ -71,10 +74,10 @@ User.prototype.update = function(data) {
          salt: session.data.token         
       });
    }
-   this.map({
-      url: evalURL(data.url),
-      email: evalEmail(data.email),
-   });
+   if (!(this.email = validateEmail(data.email))) {
+      throw Error(gettext("Please enter a valid e-mail address"));
+   }
+   this.url = validateUrl(data.url);
    return this;
 };
 
@@ -105,7 +108,7 @@ User.prototype.list_macro = function(param, type) {
       memberships.forEach(function(membership) {
          var site;
          if (site = membership.get("site")) {
-            site.renderSkin("Site#preview");
+            site.renderSkin("Site#list");
          }
          return;
       });
@@ -169,6 +172,31 @@ User.register = function(data) {
    return user;
 };
 
+User.autoLogin = function() {
+   if (session.user) {
+      return;
+   }
+   var name = req.cookies[User.COOKIE];
+   var hash = req.cookies[User.HASHCOOKIE];
+   if (!name || !hash) {
+      return;
+   }
+   var user = User.getByName(name);
+   if (!user) {
+      return;
+   }
+   var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"),
+         "", "\\.");
+   if ((user.hash + ip).md5() !== hash) {
+      return;
+   }
+   session.login(user);
+   user.touch();
+   res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+         res.handlers.site.title, user.name);
+   return;
+};
+
 User.login = function(data) {
    var user = User.getByName(data.name);
    if (!user) {
@@ -185,10 +213,10 @@ User.login = function(data) {
    }
    if (data.remember) {
       // Set long running cookies for automatic login
-      res.setCookie("avUsr", user.name, 365);
+      res.setCookie(User.COOKIE, user.name, 365);
       var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
             "", "\\.");
-      res.setCookie("avPw", (user.hash + ip).md5(), 365);   
+      res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);   
    }
    user.touch();
    session.login(user);
@@ -203,7 +231,7 @@ User.require = function(s) {
    return false;
 };
 
-User.getStatus = function() {
+User.getCurrentStatus = function() {
    if (session.user) {
       return session.user.status;
    }

@@ -46,9 +46,9 @@ HopObject.prototype.onRequest = function() {
       }
    }
 
-   autoLogin();
+   User.autoLogin();
    res.handlers.membership = User.getMembership();
-   if (User.getStatus() === User.BLOCKED) {
+   if (User.getCurrentStatus() === User.BLOCKED) {
       session.logout();
       res.message = new Error(gettext("Sorry, your account has been disabled. Please contact the maintainer of this site for further information."));
       res.redirect(root.href());
@@ -112,15 +112,6 @@ res.abort(); */
       item.constructor.remove.call(item, item);
    }
    return;
-};
-
-HopObject.prototype.onUnhandledMacro = function(name) {
-   return;
-   
-   switch (name) {
-      default:
-      return this[name];
-   }
 };
 
 HopObject.prototype.touch = function() {
@@ -202,6 +193,24 @@ HopObject.prototype.upload_macro = function(param, name) {
    html.input(param);
    var id = name + "_upload";
    html.file({name: id, id: id});
+   return;
+};
+
+HopObject.prototype.macro_macro = function(param, handler) {
+   var ctor = this.constructor;
+   if ([Story, Image, File, Poll].indexOf(ctor) > -1) {
+      var quote = function(str) {
+         if (/\s/.test(str)) {
+            str = '"' + str + '"';
+         }
+         return str;
+      };
+      res.encode("<% ");
+      res.write(handler || ctor.name.toLowerCase());
+      res.write(String.SPACE);
+      res.write(quote(this.name) || this._id);
+      res.encode(" %>");
+   }
    return;
 };
 
@@ -327,7 +336,7 @@ HopObject.getFromPath = function(name, collection) {
    } else {
       site = res.handlers.site;
    }
-   if (site) {
+   if (site && site.getPermission("main")) {
       return site[collection].get(name);
    }
    return null;

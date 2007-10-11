@@ -22,7 +22,7 @@
 // $URL$
 //
 
-defineConstants(Layout, "getModes", "default", "shared");
+Layout.getModes = defineConstants(Layout, "default", "shared");
 
 this.handleMetadata("title");
 this.handleMetadata("description");

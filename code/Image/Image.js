@@ -172,12 +172,9 @@ Image.prototype.url_macro = function() {
    return res.write(this.url || this.getUrl());
 };
 
-Image.prototype.code_macro = function() {
-   res.write("&lt;% ");
-   res.write(this.parent.constructor === Layout ? "layout.image " : "image ");
-   res.write(this.name); 
-   res.write(" %&gt;");
-   return;
+Image.prototype.macro_macro = function() {
+   return HopObject.prototype.macro_macro.call(this, null,  
+         this.parent.constructor === Layout ? "layout.image" : "image");
 };
 
 Image.prototype.thumbnail_macro = function() {

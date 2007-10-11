@@ -22,7 +22,8 @@
 // $URL$
 //
 
-defineConstants(Comment, "getStatus", "closed", "pending", "readonly", "public");
+Comment.getStatus = defineConstants(Comment, "closed", 
+      "pending", "readonly", "public");
 
 Comment.prototype.constructor = function(parent) {
    this.site = parent.site;
@@ -49,7 +50,10 @@ Comment.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "comment":
-      return this.story.getPermission(action);
+      return this.site.commentsMode === Site.ENABLED &&
+            this.story.getPermission(action) && 
+            this.status !== Comment.CLOSED &&
+            this.status !== Comment.PENDING;
       case "delete":
       case "edit":
       return this.story.getPermission.call(this, "delete");

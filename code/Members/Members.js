@@ -62,9 +62,10 @@ Members.prototype.link_macro = function(param, action, text) {
 
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
-   res.data.list = renderList(this, "mgrlistitem", 10, req.data.page);
-   res.data.pager = renderPageNavigation(this, this.href(req.action), 10, 
-         req.data.page);
+   res.data.list = renderList(this, "Membership#members", 
+         10, req.queryParams.page);
+   res.data.pager = renderPageNavigation(this, this.href(req.action), 
+         10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("Members#main");
    res.handlers.site.renderSkin("page");
    return;
@@ -136,8 +137,8 @@ Members.prototype.logout_action = function() {
            session.user.name);
      session.logout();
      delete session.data.referrer;
-     res.setCookie("avUsr", "");
-     res.setCookie("avPw", "");
+     res.setCookie(User.COOKIE, String.EMPTY);
+     res.setCookie(User.HASHCOOKIE, String.EMPTY);
    }
    res.redirect(this._parent.href());
    return;

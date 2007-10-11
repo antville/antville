@@ -1,4 +1,5 @@
 <% #main %>
+<% list tobi/comments %>
 <% site.list stories %>
 
 <% #preview %>

@@ -22,7 +22,7 @@
 // $URL$
 //
 
-defineConstants(Root, "getScopes", markgettext("every site"), 
+Root.getScopes = defineConstants(Root, markgettext("every site"), 
       markgettext("public sites"), markgettext("trusted sites"), 
       markgettext("no site"));
 
@@ -191,39 +191,6 @@ Root.prototype.rss_xml_action = function() {
    return;
 };
 
-Root.prototype.main_css_action = function() {
-   res.dependsOn(res.handlers.layout.modifytime);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("Root", "style"));
-   res.digest();
-   res.contentType = "text/css";
-   this.renderSkin("style");
-   return;
-};
-
-Root.prototype.main_js_action = function() {
-   res.dependsOn(res.handlers.layout.modifytime);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("Root", "javascript"));
-   res.digest();
-   res.contentType = "text/javascript";
-   root.renderSkin("javascript");
-   root.renderSkin("systemscripts");
-   return;
-};
-
-Root.prototype.sitecounter_macro = function(param) {
-   if (param.count == "all")
-      var size = root.size();
-   else
-      var size = this.publicSites.size();
-   if (size == 0)
-      res.write(param.no ? param.no : size);
-   else if (size == 1)
-      res.write(param.one ? param.one : size);
-   else
-      res.write(size + (param.more ? param.more : ""));
-   return;
-};
-
 Root.prototype.getCreationPermission = function() {
    var user;
    if (!(user = session.user)) {
@@ -235,10 +202,8 @@ Root.prototype.getCreationPermission = function() {
    switch (root.creationScope) {
       case User.PRIVILEGEDUSERS:
       return false;
-      
       case User.TRUSTEDUSERS:
       return User.require(User.TRUSTED);
-      
       default:
       case User.ALLUSERS:
       if (root.qualifyingPeriod) {
@@ -345,7 +310,7 @@ Root.prototype.renderSitelist = function(limit, show, scroll) {
    while (cnt < limit && idx < size) {
       var s = collection.get(idx++);
       if (!s.blocked && s.online) {
-         s.renderSkin("preview");
+         s.renderSkin("Site#list");
          cnt++;
       }
    }

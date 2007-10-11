@@ -17,7 +17,7 @@
    Prototype: <% comment.prototype %><br />
    Parent: <% comment.parent_type %> #<% comment.parent_id %><br />
    Story: <% comment.story %><br /> -->
-   <% comment.creator link  %>, <% comment.created short %>
+   <% comment.creator link %>, <% comment.created short %>
 </div>
 <div class="title"><% comment.title %></div>
 <div><% comment.text | comment.format %></div>

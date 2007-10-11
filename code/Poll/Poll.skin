@@ -41,7 +41,7 @@
     <td rowspan="2" width="5"></td>'
 %>
 <td colspan="3" class="small">
-   <strong>Macro:</strong> &lt;% poll <% poll.id %> %&gt;
+   <strong>Macro:</strong> <% poll.macro %>
    <div class="ample"><strong>Status:</strong> 
    <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
 </td>

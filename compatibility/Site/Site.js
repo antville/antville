@@ -145,6 +145,39 @@ Site.prototype.layoutchooser_macro = function(param) {
    return this.select_macro(param, "layout");
 };
 
+Site.prototype.history_macro = function(param, type) {
+   param.limit = Math.min(param.limit || 10, 20);
+   type || (type = param.show);
+   var stories = this.stories.recent;
+   var size = stories.size();
+   var counter = i = 0;
+   var item;
+   while (counter < param.limit && i < size) {
+      if (i % param.limit === 0) {
+         stories.prefetchChildren(i, param.limit);
+      }
+      item = stories.get(i);
+      i += 1;
+      switch (item.constructor) {
+         case Story:
+         if (type === "comments") {
+            continue;
+         }
+         break;
+         case Comment:
+         if (type === "stories" || item.story.mode === Story.PRIVATE ||
+               item.story.commentsMode === Story.CLOSED || 
+               this.commentsMode === Site.DISABLED) {
+            continue;
+         }
+         break;
+      }
+      item.renderSkin("Story#history");
+      counter += 1;
+   }
+   return;
+};
+
 Site.prototype.menuext_action = function() {
    this.renderSkin("menuext");
    return;

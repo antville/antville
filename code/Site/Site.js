@@ -22,11 +22,11 @@
 // $URL$
 //
 
-defineConstants(Site, "getStatus", "blocked", "regular", "trusted");
-defineConstants(Site, "getModes", "closed", "restricted", "public", "open");
-defineConstants(Site, "getPageModes", "days", "stories");
-defineConstants(Site, "getCommentsModes", "disabled", "enabled");
-defineConstants(Site, "getArchiveModes", "closed", "public");
+Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
+Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
+Site.getPageModes = defineConstants(Site, "days", "stories");
+Site.getCommentsModes = defineConstants(Site, "disabled", "enabled");
+Site.getArchiveModes = defineConstants(Site, "closed", "public");
 
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentsMode");
@@ -88,7 +88,7 @@ Site.prototype.getPermission = function(action) {
       case "rss.xml":
       case "tags":
       return this.status !== Site.BLOCKED &&
-            User.require(User.REGULAR) && 
+            !User.require(User.BLOCKED) && 
             Site.require(Site.PUBLIC) ||
             Site.require(Site.RESTRICTED) && 
             Membership.require(Membership.SUBSCRIBER) ||
@@ -98,12 +98,12 @@ Site.prototype.getPermission = function(action) {
       case "edit":
       case "referrers":
       return this.status !== Site.BLOCKED && 
-            User.require(User.REGULAR) && 
+            !User.require(User.BLOCKED) && 
             Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
       case "subscribe":
       return this.status !== Site.BLOCKED &&
-            User.require(User.REGULAR) && 
+            !User.require(User.BLOCKED) && 
             Site.require(Site.PUBLIC) &&
             !Membership.require(Membership.SUBSCRIBER);
       case "unsubscribe":
@@ -201,10 +201,10 @@ Site.prototype.update = function(data) {
       mode: data.mode || Site.PRIVATE,
       webHookUrl: data.webHookUrl,
       webHookEnabled: data.webHookEnabled ? true : false,
-      pageMode: data.pageMode || 'days',
+      pageMode: data.pageMode || Site.DAYS,
       pageSize: parseInt(data.pageSize, 10) || 3,
-      commentsMode: data.commentsMode,
-      archiveMode: data.archiveMode,
+      commentsMode: data.commentsMode || Site.DISABLED,
+      archiveMode: data.archiveMode || Site.CLOSED,
       timeZone: data.timeZone,
       longDateFormat: data.longDateFormat,
       shortDateFormat: data.shortDateFormat,
@@ -228,8 +228,8 @@ Site.remove = function(site) {
 };
 
 Site.prototype.main_css_action = function() {
-   res.dependsOn(this.modifytime);
-   res.dependsOn(res.handlers.layout.modifytime);
+   res.dependsOn(this.modified);
+   res.dependsOn(res.handlers.layout.modified);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "style"));
    res.digest();
    res.contentType = "text/css";
@@ -238,13 +238,13 @@ Site.prototype.main_css_action = function() {
 };
 
 Site.prototype.main_js_action = function() {
-   res.dependsOn(this.modifytime);
-   res.dependsOn(res.handlers.layout.modifytime);
+   res.dependsOn(this.modified);
+   res.dependsOn(res.handlers.layout.modified);
    res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "javascript"));
    res.digest();
    res.contentType = "text/javascript";
    this.renderSkin("javascript");
-   root.renderSkin("systemscripts");
+   root.renderSkin("javascript");
    return;
 };
 
@@ -523,7 +523,7 @@ Site.prototype.getMacroHandler = function(name) {
 Site.prototype.list_macro = function(param, type) {
    switch (type) {
       case "stories":
-      if (this.stories["public"].size() < 1) {
+      if (this.stories.featured.size() < 1) {
          this.renderSkin("Site#welcome");
          if (session.user) {
             if (session.user === this.creator) {
@@ -564,39 +564,6 @@ Site.prototype.age_macro = function(param) {
    }
    //res.write(this.createtime.getAge());
    res.write(Math.floor((new Date() - this.createtime) / Date.ONEDAY));
-   return;
-};
-
-Site.prototype.history_macro = function(param, type) {
-   param.limit = Math.min(param.limit || 10, 20);
-   type || (type = param.show);
-   var stories = this.stories.recent;
-   var size = stories.size();
-   var counter = i = 0;
-   var item;
-   while (counter < param.limit && i < size) {
-      if (i % param.limit === 0) {
-         stories.prefetchChildren(i, param.limit);
-      }
-      item = stories.get(i);
-      i += 1;
-      switch (item.constructor) {
-         case Story:
-         if (type === "comments") {
-            continue;
-         }
-         break;
-         case Comment:
-         if (type === "stories" || item.story.mode === Story.PRIVATE ||
-               item.story.commentsMode === Story.CLOSED || 
-               this.commentsMode === Site.CLOSED) {
-            continue;
-         }
-         break;
-      }
-      item.renderSkin("Story#history");
-      counter += 1;
-   }
    return;
 };
 
@@ -808,70 +775,6 @@ Site.prototype.searchCreatetime_macro = function() {
                   ["12", "the past year"]];
    Html.dropDown({name: "ct"}, options, req.data.ct);
    return;
-};
-
-/** FIXME: to be removed!
- * function saves new properties of site
- * @param Obj Object containing the form values
- * @param Obj User-Object modifying this site
- * @throws Exception
- */
-Site.prototype.evalPreferences = function(data, user) {
-   res.debug(data);
-  //res.abort();
-
-return;
-
-
-   this.title = stripTags(param.title);
-   this.email = param.email;
-   if (this.online && !param.online)
-      this.lastoffline = new Date();
-   this.online = param.online ? 1 : 0;
-   this.enableping = param.enableping ? 1 : 0;
-
-   // store new preferences
-   var prefs = new HopObject();
-   for (var i in param) {
-      if (i.startsWith("properties_"))
-         prefs[i.substring(12)] = param[i];
-   }
-   prefs.days = !isNaN(parseInt(param.properties_days, 10)) ? parseInt(param.properties_days, 10) : 3;
-   prefs.discussions = param.properties_discussions ? 1 : 0;
-   prefs.usercontrib = param.properties_usercontrib ? 1 : 0;
-   prefs.archive = param.properties_archive ? 1 : 0;
-   // store selected locale
-   if (param.locale) {
-      var loc = param.locale.split("_");
-      prefs.language = loc[0];
-      prefs.country = loc.length == 2 ? loc[1] : null;
-   }
-   prefs.timezone = param.timezone;
-   prefs.longdateformat = param.longdateformat;
-   prefs.shortdateformat = param.shortdateformat;
-
-   // layout
-   this.layout = param.layout ? this.layouts.get(param.layout) : null;
-
-   // e-mail notification
-   prefs.notify_create = parseInt(param.notify_create, 10) || null;
-   prefs.notify_update = parseInt(param.notify_update, 10) || null;
-   prefs.notify_upload = parseInt(param.notify_upload, 10) || null;
-
-   // store preferences
-   this.properties.setAll(prefs);
-   // call the evalPreferences method of every module
-   for (var i in app.modules)
-      this.applyModuleMethod(app.modules[i], "evalPreferences", param);
-
-
-   // reset cached locale, timezone and dateSymbols
-   this.cache.locale = null;
-   this.cache.timezone = null;
-   this.cache.dateSymbols = null;
-
-   this.modifytime = new Date();
-   this.modifier = modifier;
 };
 
 Site.prototype.getLayouts = function() {
