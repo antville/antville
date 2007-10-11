@@ -87,7 +87,7 @@ HopObject.prototype.delete_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Confirm deletion of " + this);
-   res.data.body = this.renderSkinAsString("delete", {
+   res.data.body = this.renderSkinAsString("HopObject#delete", {
       text: gettext('You are about to delete {0}.', this)
    });
    res.handlers.site.renderSkin("page");
