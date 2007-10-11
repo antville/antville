@@ -100,7 +100,7 @@
 <td>... show</td>
 <td>
    <% admin.dropdown name="filter" 
-   values="all users,blocked users,trusted users,admins" %>
+   values="all users,blocked users,trusted users,privileged users" %>
 </td>
 </tr>
 <tr>
@@ -152,7 +152,7 @@
 </table>
 </form>
 
-<% welcome %>
+<% #welcome %>
 <p><em>Note</em>: Since you are system administrator of this Antville 
 installation you can also define "<% site.title %>" as its front page site. 
 To do so simply enter <code><% site.name %></code> into the option 

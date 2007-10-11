@@ -29,6 +29,47 @@ Admin.prototype.constructor = function() {
    return this;
 };
 
+Admin.prototype.onRequest = function() {
+   HopObject.prototype.onRequest.apply(this);
+   if (!session.data.admin) {
+      session.data.admin = new Admin();
+   }
+   return;
+};
+
+Admin.prototype.onUnhandledMacro = function(name) {
+   res.debug("Add " + name + "_macro to Admin!");
+   return null;
+};
+
+Admin.prototype.getPermission = function(action) {
+   return User.require(User.PRIVILEGED);
+};
+
+Admin.prototype.main_action = function() {
+   return res.redirect(this.href("status"));
+};
+
+Admin.prototype.setup_action = function() {
+   if (req.postParams.save) {
+      try {
+         this.update(req.postParams);
+         logAction(root, "setup");
+         res.message = gettext("Successfully updated the setup.");
+         res.redirect(root.href());
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+
+   res.data.title = gettext("Setup of {0}", root.title);
+   res.data.action = this.href(req.action);
+   res.data.body = this.renderSkinAsString("Admin#setup");
+   root.renderSkin("page");
+   return;
+};
+
 Admin.prototype.update = function(data) {
    root.update(data);
    root.map({
@@ -51,27 +92,6 @@ Admin.prototype.update = function(data) {
    //   this.applyModuleMethod(app.modules[i], "evalSystemSetup", data);
    //}
    return;
-};
-
-Admin.prototype.onRequest = function() {
-   HopObject.prototype.onRequest.apply(this);
-   if (!session.data.admin) {
-      session.data.admin = new Admin();
-   }
-   return;
-};
-
-Admin.prototype.onUnhandledMacro = function(name) {
-   res.debug("Add " + name + "_macro to Admin!");
-   return null;
-};
-
-Admin.prototype.getPermission = function(action) {
-   return User.require(User.PRIVILEGED);
-};
-
-Admin.prototype.main_action = function() {
-   return res.redirect(this.href("status"));
 };
 
 Admin.prototype.status_action = function() {
@@ -97,26 +117,6 @@ Admin.prototype.status_action = function() {
    return;
 };
 
-Admin.prototype.setup_action = function() {
-   if (req.postParams.save) {
-      try {
-         this.update(req.postParams);
-         logAction(root, "setup");
-         res.message = gettext("Successfully updated the setup.");
-         res.redirect(root.href());
-      } catch (ex) {
-         res.message = ex;
-         app.log(ex);
-      }
-   }
-
-   res.data.title = gettext("Setup of {0}", root.title);
-   res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("Admin#setup");
-   root.renderSkin("page");
-   return;
-};
-
 Admin.prototype.log_action = function() {
    if (req.postParams.search || req.postParams.filter) {
       session.data.admin.filterLog(req.postParams);
@@ -129,7 +129,7 @@ Admin.prototype.log_action = function() {
    res.data.title = gettext("Log data of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#log");
-   res.data.body += this.renderSkinAsString("Admin");
+   res.data.body += this.renderSkinAsString("Admin#main");
    root.renderSkin("page");
    return;
 };
@@ -164,7 +164,7 @@ Admin.prototype.sites_action = function() {
    res.data.title = gettext("Site administration of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#sites");
-   res.data.body += this.renderSkinAsString("Admin");
+   res.data.body += this.renderSkinAsString("Admin#main");
    root.renderSkin("page");
    return;
 };
@@ -189,7 +189,7 @@ Admin.prototype.users_action = function() {
    res.data.title = gettext("User manager of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#users");
-   res.data.body += this.renderSkinAsString("Admin");
+   res.data.body += this.renderSkinAsString("Admin#main");
    root.renderSkin("page");
    return;
 };
@@ -199,7 +199,7 @@ Admin.prototype.link_macro = function(param, action, id, text) {
       case "edit":
       case "delete":
       text = action;
-      action = "?action=" + action + "&id=" + id;
+      action = req.action + "?action=" + action + "&id=" + id;
       if (req.queryParams.page) {
          action += "&page=" + req.queryParams.page;
       }
@@ -239,8 +239,8 @@ Admin.prototype.dropdown_macro = function(param) {
    if (!param.name || !param.values)
       return;
    var options = param.values.split(",");
-   var selectedIndex = req.data[param.name];
-   Html.dropDown({name: param.name},options,selectedIndex);
+   var selectedIndex = req.postParams[param.name];
+   html.dropDown({name: param.name}, options, selectedIndex);
    return;
 };
 

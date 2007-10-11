@@ -65,8 +65,8 @@
    <strong><% admin.count <% site.files %> suffix=" files" %></strong>. 
    Also all the subscriptions to this site will be removed.</p>
    <p><strong>Are you sure you want to delete this site?</strong></p>
-   <p><% input type="submit" name="remove" value="Yes" %>
-   <% input type="submit" name="cancel" value=" No " %></p>
+   <p><button type="submit" name="remove" value="1">yes</button>
+   <button type="submit" name="cancel" value="1"> No </button></p>
 </td>
 </tr>
 </table>

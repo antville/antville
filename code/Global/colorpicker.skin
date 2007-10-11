@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 <head>
 <title>Antville Colorpicker</title>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% context.url %>main.css" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" 
+      href="<% site.href main.css %>" />
 <style type="text/css">
 <!--
 body {
