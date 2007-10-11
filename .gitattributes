@@ -67,6 +67,7 @@ static/www/marquee.gif -text svneol=unset#image/gif
 static/www/menu.gif -text svneol=unset#image/gif
 static/www/pixel.gif -text svneol=unset#image/gif
 static/www/recent.gif -text svneol=unset#image/gif
+static/www/rss.png -text svneol=unset#image/png
 static/www/smallanim.gif -text svneol=unset#image/gif
 static/www/smallchaos.gif -text svneol=unset#image/gif
 static/www/smallstraight.gif -text svneol=unset#image/gif
