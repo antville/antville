@@ -56,6 +56,7 @@ Root.prototype.getPermission = function(action) {
 Root.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "sites":
+      case "admin":
       return this[name];
    }
    return Site.prototype.getMacroHandler.apply(this, arguments);

@@ -231,10 +231,10 @@ Site.remove = function(site) {
 Site.prototype.main_css_action = function() {
    res.dependsOn(this.modified);
    res.dependsOn(res.handlers.layout.modified);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "style"));
+   res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "stylesheet"));
    res.digest();
    res.contentType = "text/css";
-   this.renderSkin("style");
+   this.renderSkin("stylesheet");
    return;
 };
 

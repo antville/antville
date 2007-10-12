@@ -1,9 +1,0 @@
-<div class="boxheader">manage</div>
-<div class="box">
-...&nbsp;<% root.link manage/sites sites %><br />
-...&nbsp;<% root.link manage/users users %><br />
-...&nbsp;<% root.link layouts %><br />
-...&nbsp;<% root.link manage/logs logs %><br />
-...&nbsp;<% root.link manage/setup setup %><br />
-...&nbsp;<% root.link manage/status status %>
-</div>

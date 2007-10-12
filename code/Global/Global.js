@@ -1017,7 +1017,7 @@ function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
          else
             param.text = html.linkAsString({href: url + "?page=" + page}, text);
       }
-      renderSkin("pagenavigationitem", param);
+      renderSkin("Global#pagerItem", param);
       return;
    }
 
@@ -1064,7 +1064,7 @@ function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
    if (pageIdx < lastPageIdx)
       renderItem("next", "pageNavItem", url, pageIdx +1);
    param.pagenavigation = res.pop();
-   return renderSkinAsString("pagenavigation", param);
+   return renderSkinAsString("Global#pager", param);
 }
 
 function singularize(plural) {

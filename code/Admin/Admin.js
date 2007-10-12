@@ -30,6 +30,12 @@ Admin.prototype.constructor = function() {
 };
 
 Admin.prototype.getPermission = function(action) {
+   switch (action) {
+      case "users":
+      if (req.queryParams.id === session.user._id) {
+         return false;
+      }
+   }
    return User.require(User.PRIVILEGED);
 };
 
@@ -122,9 +128,9 @@ Admin.prototype.log_action = function() {
       session.data.admin.filterLog(req.postParams);
    }
    res.data.list = renderList(session.data.admin.log, 
-         this.renderItem, 10, req.data.page);
+         this.renderItem, 10, req.queryParams.page);
    res.data.pagenavigation = renderPageNavigation(session.data.admin.log, 
-         this.href(req.action), 10, req.data.page);
+         this.href(req.action), 10, req.queryParams.page);
 
    res.data.title = gettext("Log data of {0}", root.title);
    res.data.action = this.href(req.action);
@@ -197,6 +203,9 @@ Admin.prototype.users_action = function() {
 Admin.prototype.link_macro = function(param, action, id, text) {
    switch (action) {
       case "edit":
+      if (req.action === "users" && (id === session.user._id)) {
+         return;
+      }
       case "delete":
       text = action;
       action = req.action + "?action=" + action + "&id=" + id;
@@ -221,6 +230,13 @@ Admin.prototype.count_macro = function(param, object, name) {
       return;
    }
    res.write(object.size());
+   return;
+};
+
+Admin.prototype.skin_macro = function(param, name) {
+   if (this.getPermission("main")) {
+      return HopObject.prototype.skin_macro.apply(this, arguments);
+   }
    return;
 };
 
@@ -272,7 +288,7 @@ Admin.prototype.filterLog = function(data) {
       }
    }
    sql += "order by created "; 
-   (data.dir === "0") && (sql += "desc");
+   (data.dir == 1) || (sql += "desc");
    this.log.subnodeRelation = sql;
    return;
 };
@@ -311,7 +327,7 @@ Admin.prototype.filterSites = function(data) {
       default:
       sql += "order by modified "; break;
    }
-   (data.dir === "0") && (sql += "desc");
+   (data.dir == 1) || (sql += "desc");
    this.sites.subnodeRelation = sql;
    return;
 };
@@ -350,9 +366,9 @@ Admin.prototype.filterUsers = function(data) {
       sql += "order by name "; break;
       case "0":
       default:
-      sql += "order by modified "; break;
+      sql += "order by visited "; break;
    }
-   (data.dir === "0") && (sql += "desc");
+   (data.dir == 1) || (sql += "desc");
    this.users.subnodeRelation = sql;
    return;
 };
@@ -387,10 +403,13 @@ Admin.prototype.updateUser = function(data) {
 };
 
 Admin.prototype.renderItem = function(item) {
-   item.renderSkin("Admin");
+   res.handlers.item = item;
+   var name = item._prototype;
+   (name === "Root") && (name = "Site");
+   Admin.prototype.renderSkin("Admin#" + name);
    if (item === res.meta.item) {
-      item.renderSkin(req.data.action === "delete" ? 
-            "Admin#delete" : "Admin#edit");
+      Admin.prototype.renderSkin((req.data.action === "delete" ? 
+            "Admin#delete" : "Admin#edit") + name);
    }
    return;
 };

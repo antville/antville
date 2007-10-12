@@ -16,7 +16,7 @@
       title="RSS Feed" href="<% site.href rss.xml %>" />
 </head>
 <body>
-
+   
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
 <td class="header">
@@ -39,6 +39,8 @@
    
    <div class="boxheader">status</div>
    <div class="box"><% membership.status %></div>
+   
+   <% root.admin.skin Admin#navigation %>
    
    <div class="boxheader">menu</div>
    <div class="box">

@@ -1,1 +1,0 @@
-<div class="pagelinkBottom">...&nbsp;<a href="<% param.url %>"><% param.text %></a></div>

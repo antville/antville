@@ -1,4 +1,0 @@
-<div class="pageNav">
-<div class="pageNavSummary">displaying <% param.display %><% param.total prefix=" (of " suffix=")" %></div>
-<div class="pageNavBar"><% param.pagenavigation %></div>
-</div>

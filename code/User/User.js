@@ -46,8 +46,9 @@ User.prototype.constructor = function(data) {
       salt: session.data.token,
       email: data.email,
       status: User.REGULAR,
-      registered: now,
-      lastVisit: now
+      visited: now,
+      created: now,
+      modified: now
    });
    return this;
 };
@@ -82,7 +83,7 @@ User.prototype.update = function(data) {
 };
 
 User.prototype.touch = function() {
-   this.lastVisit = new Date;
+   this.modified = this.visited = new Date;
    return;
 };
 
@@ -96,7 +97,7 @@ User.prototype.getFormOptions = function(name) {
       case "status":
       return User.getStatus();
    }
-}
+};
 
 User.prototype.list_macro = function(param, type) {
    switch (type) {
