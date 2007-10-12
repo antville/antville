@@ -1,1 +1,0 @@
-            <rdf:li rdf:resource="<% story.url encoding="xml" %>" />

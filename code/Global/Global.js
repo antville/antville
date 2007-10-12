@@ -22,6 +22,17 @@
 // $URL$
 //
 
+app.addRepository(app.dir + "/../lib/rome-0.9.jar");
+app.addRepository(app.dir + "/../lib/jdom.jar");
+app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
+
+var rome = new JavaImporter(
+   Packages.com.sun.syndication.feed.synd,
+   Packages.com.sun.syndication.io.SyndFeedOutput,
+   Packages.com.sun.syndication.feed.module.itunes,
+   Packages.com.sun.syndication.feed.module.itunes.types
+);
+
 app.addRepository("modules/core/Global.js");
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
@@ -61,7 +72,7 @@ function defineConstants(ctor /*, arguments */) {
    for (var i=1; i<arguments.length; i+=1) {
       name = arguments[i].toUpperCase().replace(/\s/g, "");
       if (ctor[name]) {
-         app.logger.warn("Constant already defined: " + ctor.name + "." + name);
+         //app.logger.warn("Constant already defined: " + ctor.name + "." + name);
       }
       ctor[name] = arguments[i];
       constants.push({
@@ -598,6 +609,18 @@ function buildAlias(alias, collection) {
       return newAlias + nr.toString();
    } else
       return newAlias;
+}
+
+/**
+ * Injects the XSLT stylesheet until Mozilla developers will have mercy.
+ * @param {String} xml The original XML code
+ * @returns The XML code with the appropriate element for the XSLT stylesheet
+ * @type String
+ */
+function injectXslDeclaration(xml) {
+   res.push();
+   renderSkin("Global#xslDeclaration");
+   return xml.replace(/(\?>\r?\n?)/, "$1" + res.pop());
 }
 
 /**

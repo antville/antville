@@ -47,6 +47,7 @@ Root.prototype.getPermission = function(action) {
       case "create":
       return this.getCreationPermission();
       case "list":
+      case "updates.xml":
       return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
@@ -148,46 +149,35 @@ Root.prototype.list_action = function() {
    return;
 };
 
-Root.prototype.rss_xml_action = function() {
-   var now = new Date();
-   var systitle = root.getTitle();
-   var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-   sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
-
-   var size = this.size();
-   var max = req.data.max ? parseInt(req.data.max) : 25;
-   max = Math.min(max, size, 50);
-
-   var param = new Object();
-   var items = new java.lang.StringBuffer();
-   var resources = new java.lang.StringBuffer();
-
-   for (var i=0; i<max; i++) {
-      var site = this.get(i);
-      if (site.online && site.lastupdate) {
-         param.title = site.title ? site.title : site.alias;
-         param.publisher = systitle;
-         param.creator = site.creator.name;
-         param.email = "";
-         if (site.email)
-            param.email = site.email.entitize();
-         else if (site.creator.publishemail)
-            param.email = site.creator.email.entitize();
-         param.isodate = sdf.format(site.lastupdate)
-         param.date = site.properties.get("tagline") ? "" : param.isodate;
-         param.year = site.lastupdate.getFullYear();
-         items.append(site.renderSkinAsString("rssItem", param));
-         resources.append(site.renderSkinAsString("rssResource", param));
-      }
+Root.prototype.updates_xml_action = function() {
+   var now = new Date;
+   var feed = new rome.SyndFeedImpl();   
+   feed.setFeedType("rss_2.0");
+   feed.setLink(root.href());
+   feed.setTitle(root.title);
+   feed.setDescription(root.tagline);
+   feed.setLanguage(root.language.replace("_", "-"));
+   feed.setPublishedDate(now);
+   var entries = new java.util.ArrayList();
+   var entry, description;
+   for each (var site in root.sites.list(0, 25)) {
+      entry = new rome.SyndEntryImpl();
+      entry.setTitle(site.title);
+      entry.setLink(site.href());
+      entry.setAuthor(site.creator.name);
+      entry.setPublishedDate(site.created);
+      description = new rome.SyndContentImpl();
+      description.setType("text/plain");
+      description.setValue(site.tagline);
+      entry.setDescription(description);
+      entries.add(entry);
    }
-   param = new Object();
-   param.title = systitle;
-   param.email = root.sys_email.entitize();
-   param.year = now.getFullYear();
-   param.lastupdate = sdf.format(now);
-   param.items = items.toString();
-   param.resources = resources.toString();
-   this.renderSkin("rss", param);
+   feed.setEntries(entries);
+   var output = new rome.SyndFeedOutput();
+   //output.output(feed, res.servletResponse.writer); return;
+   var xml = output.outputString(feed);
+   res.contentType = "text/xml";
+   res.write(injectXslDeclaration(xml));
    return;
 };
 

@@ -86,6 +86,7 @@ Site.prototype.getPermission = function(action) {
       case "main.js":
       case "main.css":
       case "rss.xml":
+      case "rss.xsl":
       case "tags":
       return this.status !== Site.BLOCKED &&
             !User.require(User.BLOCKED) && 
@@ -249,89 +250,89 @@ Site.prototype.main_js_action = function() {
 };
 
 Site.prototype.rss_xml_action = function() {
-   res.contentType = "text/xml";
-   res.dependsOn(this.lastupdate);
+   res.dependsOn(this.lastUpdate);
    res.digest();
+   res.contentType = "text/xml";
+   res.write(this.getXml());
+   return;
+};
 
-   var now = new Date();
-   var systitle = root.getTitle();
-   var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-   sdf.setTimeZone(new java.util.SimpleTimeZone(0, "UTC"));
+Site.prototype.getXml = function() {
+   var now = new Date;
+   var feed = new rome.SyndFeedImpl();   
+   feed.setFeedType("rss_2.0");
+   feed.setLink(this.href());
+   feed.setTitle(this.title);
+   feed.setDescription(this.tagline);
+   feed.setLanguage(this.language.replace("_", "-"));
+   feed.setPublishedDate(now);
 
-   var collection, subtitle;
-   switch (true) {
-      case (req.data.show == "all") :
-         collection = this.stories.all;
-         subtitle = "with comments";
-         break;
-      // FIXME: i don't think a day makes much sense as rss output [tobi]
-      case (req.data.day != null) :
-         collection = this.get(req.data.day);
-         subtitle = req.data.day;
-         break;
-      case (req.data.topic != null) :
-         collection = this.topics.get(req.data.topic);
-         subtitle = req.data.topic;
-         break;
-      default :
-         collection = this.allstories;
+   /*
+   var feedInfo = new rome.FeedInformationImpl();
+   var feedModules = new java.util.ArrayList();
+   feedModules.add(feedInfo);
+   feed.setModules(feedModules);
+   //feedInfo.setImage(new java.net.URL(this.getProperty("imageUrl")));
+   feedInfo.setSubtitle(this.tagline);
+   feedInfo.setSummary(this.description);
+   feedInfo.setAuthor(this.creator.name);
+   feedInfo.setOwnerName(this.creator.name);
+   //feedInfo.setOwnerEmailAddress(this.getProperty("email"));
+   */
+
+   var entry, entryInfo, entryModules;
+   var enclosure, enclosures, keywords;
+   var entries = new java.util.ArrayList();
+   var description;
+
+   for each (var story in this.stories.recent.list(0, 25)) {
+      entry = new rome.SyndEntryImpl();
+      entry.setTitle(story.getTitle());
+      entry.setLink(story.href());
+      entry.setAuthor(story.creator.name);
+      entry.setPublishedDate(story.created);
+
+      description = new rome.SyndContentImpl();
+      description.setType("text/plain");
+      description.setValue(story.text);
+      entry.setDescription(description);
+      entries.add(entry);
+      
+      /*
+      entryInfo = new rome.EntryInformationImpl();
+      entryModules = new java.util.ArrayList();
+      entryModules.add(entryInfo);
+      entry.setModules(entryModules);
+
+      enclosure = new rome.SyndEnclosureImpl();
+      enclosure.setUrl(episode.getProperty("fileUrl"));
+      enclosure.setType(episode.getProperty("contentType"));
+      enclosure.setLength(episode.getProperty("filesize") || 0);
+      enclosures = new java.util.ArrayList();
+      enclosures.add(enclosure);
+      entry.setEnclosures(enclosures);
+
+      entryInfo.setAuthor(entry.getAuthor());
+      entryInfo.setBlock(false);
+      entryInfo.setDuration(new rome.Duration(episode.getProperty("length") || 0));
+      entryInfo.setExplicit(false);
+      entryInfo.setKeywords(episode.getProperty("keywords"));
+      entryInfo.setSubtitle(episode.getProperty("subtitle"));
+      entryInfo.setSummary(episode.getProperty("description"));
+      */
    }
-   var size = (collection != null) ? collection.size() : 0;
+   feed.setEntries(entries);
+   
+   var output = new rome.SyndFeedOutput();
+   //output.output(feed, res.servletResponse.writer); return;
+   var xml = output.outputString(feed);
+   return injectXslDeclaration(xml);
+};
 
-   var max = req.data.max ? parseInt(req.data.max) : 7;
-   max = Math.min(max, size);
-   max = Math.min(max, 10);
-
-   var item = {};
-   if (max > 0 && this.online) {
-      var items = new java.lang.StringBuffer();
-      var resources = new java.lang.StringBuffer();
-      collection.prefetchChildren(0, max);
-      for (var i=0; i<max; i++) {
-         var story = collection.get(i);
-         var item = {
-            url: story.href(),
-            title: story.getRenderedContentPart("title").stripTags(),
-            text: story.getRenderedContentPart("text").stripTags(),
-            publisher: systitle,
-            creator: story.creator.name,
-            date: sdf.format(story.createtime),
-            subject: story.topic ? story.topic : "",
-            year: story.createtime.getFullYear()
-         };
-         if (story.creator.publishemail)
-            item.email = story.creator.email.entitize();
-         if (!item.title) {
-            // shit happens: if a content part contains a markup
-            // element only, String.clip() will return nothing...
-            if (!item.text )
-               item.title = "...";
-            else {
-               var embody = item.text.embody(10, "...", "\\s");
-               item.title = embody.head;
-               item.text = embody.tail;
-            }
-         }
-         items.append(story.renderSkinAsString("rssItem", item));
-         resources.append(story.renderSkinAsString("rssResource", item));
-      }
-
-      var site = {
-         subtitle: subtitle,
-         url: this.href(),
-         title: systitle,
-         creator: this.creator.name,
-         year: now.getFullYear(),
-         lastupdate: max > 0 ? sdf.format(this.lastUpdate): sdf.format(this.createtime),
-         items: items.toString(),
-         resources: resources.toString()
-      };
-      if (this.email)
-         site.email = this.email.entitize();
-      else if (this.creator.publishemail)
-         site.email = this.creator.email.entitize();
-      this.renderSkin("rss", site);
-   }
+Site.prototype.rss_xsl_action = function() {
+   res.charset = "UTF-8";
+   res.contentType = "text/xml";
+   renderSkin("Global#xslStylesheet");
    return;
 };
 
