@@ -108,7 +108,7 @@ Stories.prototype.top_action = function() {
    return;
 };
 
-Stories.prototype.list_macro = function(type) {
+Stories.prototype.list_macro = function(param, type) {
    switch (type) {
       case "top":
       var counter = 1;
@@ -129,4 +129,13 @@ Stories.prototype.getTags = function(group) {
 
 Stories.prototype.getAdminHeader = function(name) {
    return ["#", "Tag", "Items"];
+};
+
+Stories.flushRequests = function() {
+   for each (var entry in app.data.stories) {
+      entry.story.requests += entry.requests;
+      delete app.data.stories[entry.story._id];
+      return;
+   };
+   return;
 };

@@ -243,7 +243,6 @@ function imageoftheday_macro(param) {
    return image_macro(param);
 }
 
-// FIXME: obsolete?
 function username_macro(param) {
    if (!session.user)
       return;
@@ -253,5 +252,16 @@ function username_macro(param) {
       res.write(session.user.url);
    else
       res.write(session.user.name);
+   return;
+}
+
+function renderColorAsString(c) {
+   if (c && c.isHexColor())
+      return "#" + c;
+   return c;
+}
+
+function renderColor(c) {
+   res.write(renderColorAsString(c));
    return;
 }

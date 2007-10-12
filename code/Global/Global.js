@@ -55,13 +55,32 @@ app.addRepository("modules/jala/code/Utilities.js");
 
 var html = new helma.Html();
 
+app.data.mails || (app.data.mails = []);
+app.data.stories || (app.data.stories = {});
+
 /**
  * Extend the Mail prototype with a method that simply adds a mail object 
  * to an application-wide array (mail queue).
  */
 helma.Mail.prototype.queue = function() {
-   app.data.mails || (app.data.mails = []);
    return app.data.mails.push(this);
+};
+
+helma.Mail.flushQueue = function() {
+   if (app.data.mails.length > 0) {
+      app.debug("Flushing mail queue, sending " + 
+            app.data.mails.length + " messages");
+      var mail;
+      while (app.data.mails.length > 0) {
+         mail = app.data.mails.pop();
+         mail.send();
+         if (mail.status > 0) {
+            app.debug("Error while sending e-mail to " + mail.recipient + 
+                  "(status " + mail.status + ")");
+         }
+      }
+   }
+   return;
 };
 
 SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
@@ -87,7 +106,7 @@ function defineConstants(ctor /*, arguments */) {
 
 function disableMacro(ctor, name) {
    return ctor.prototype[name + "_macro"] = function() {return};
-};
+}
 
 function onStart() {
    // FIXME: Does database exist?
@@ -108,13 +127,12 @@ function onStart() {
 
 function scheduler() {
    flushLog();
+   Stories.flushRequests();
+   helma.Mail.flushQueue();
    // FIXME: root.manage.autoCleanUp();
    // FIXME: pingUpdatedSites();
    // FIXME: countUsers();
    //app.data.lastAccessLogUpdate = new Date();
-   //writeReadLog();
-   //flushMailQueue();
-   //app.data.indexManager.flush();
    return 5000;
 }
 
@@ -522,35 +540,6 @@ function validateUrl(str) {
    return null;
 }
 
-// FIXME:
-function pingUpdatedSites() {
-   var c = getDBConnection("antville");
-   var dbError = c.getLastError();
-   if (dbError) {
-      app.log("Error establishing DB connection: " + dbError);
-      return;
-   }
-
-   var query = "select name from site where mode = 'online' and " +
-         "SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
-   var rows = c.executeRetrieval(query);
-   var dbError = c.getLastError();
-   if (dbError) {
-      app.log("Error executing SQL query: " + dbError);
-      return;
-   }
-
-   while (rows.next()) {
-      var site = root.get(rows.getColumnItem("name"));
-      app.log("Notifying weblogs.com for updated site '" + site.alias + 
-            "' (id " + site._id + ")");
-      site.ping();
-   }
-
-   rows.release();
-   return;
-}
-
 function formatNumber(number, pattern) {
    return number.format(pattern);
 };
@@ -575,43 +564,6 @@ function formatDate(date, pattern) {
 }
 
 /**
- * function gets a MimePart passed as argument and
- * constructs an object-alias based on the name of the uploaded file
- * @param Obj MimePart-Object
- * @param Obj Destination collection
- */
-function buildAliasFromFile(uploadFile, collection) {
-   var filename = uploadFile.getName().split("/").pop();
-   var pos = filename.lastIndexOf(".");
-   if (pos > 0)
-      filename = filename.substring(0, pos);
-   return buildAlias(filename, collection);
-}
-
-/**
- * function gets a String passed as argument and
- * constructs an object-alias which is unique in
- * a collection
- * @param String proposed alias for object
- * @param Obj Destination collection
- * @return String determined name
- */
-function buildAlias(alias, collection) {
-   // clean name from any invalid characters
-   var newAlias = alias.toLowerCase().toFileName();
-   if (newAlias.startsWith("."))
-      newAlias = newAlias.substring(1);
-   if (collection && collection.get(newAlias)) {
-      // alias is already existing in collection, so we append a number
-      var nr = 1;
-      while (collection.get(newAlias + nr.toString()))
-         nr++;
-      return newAlias + nr.toString();
-   } else
-      return newAlias;
-}
-
-/**
  * Injects the XSLT stylesheet until Mozilla developers will have mercy.
  * @param {String} xml The original XML code
  * @returns The XML code with the appropriate element for the XSLT stylesheet
@@ -624,132 +576,13 @@ function injectXslDeclaration(xml) {
 }
 
 /**
- * This function parses a string for <img> tags and turns them
- * into <a> tags.
- */
-function fixRssText(str) {
-   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
-   str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
-   return str;
-}
-
-/**
- * function counting active users and anonymous sessions
- * (thought to be called by the scheduler)
- */
-function countUsers() {
-   app.data.activeUsers = new Array();
-   var l = app.getActiveUsers();
-   for (var i in l)
-      app.data.activeUsers[app.data.activeUsers.length] = l[i];
-   l = app.getSessions();
-   app.data.sessions = 0;
-   for (var i in l) {
-      if (!l[i].user)
-         app.data.sessions++;
-   }
-   app.data.activeUsers.sort();
-   return;
-}
-
-/**
- * functionswaps app.data.readLog, loops over the logObjects
- * contained in the Hashtable and updates the read-counter
- * of all stories
- */
-function writeReadLog() {
-   if (app.data.readLog.size() == 0)
-      return;
-   // first of all swap app.data.readLog
-   var size = app.data.readLog.size();
-   var log = app.data.readLog;
-   app.data.readLog = new java.util.Hashtable(size);
-   // loop over Hashtable
-   var reads = log.elements();
-   while (reads.hasMoreElements()) {
-      var el = reads.nextElement();
-      var story = Story.getById(String(el.story));
-      if (!story)
-         continue;
-      story.reads = el.reads;
-   }
-   app.log("updated read-counter of " + log.size() + " stories in database");
-   return;
-}
-
-/**
- * rescue story/comment by copying all necessary properties to
- * session.data.rescuedText. this will be copied back to
- * req.data by restoreRescuedText() after successful login
- * @param Object req.data
- */
-function rescueText(param) {
-   session.data.rescuedText = new Object();
-   for (var i in param) {
-      if (i.startsWith("content_"))
-         session.data.rescuedText[i] = param[i];
-   }
-   session.data.rescuedText.discussions = param.discussions;
-   session.data.rescuedText.topic = param.topic;
-   session.data.rescuedText.discussions_array = param.discussions_array;
-   session.data.rescuedText.topicidx = param.topicidx;
-   session.data.rescuedText.online = param.online;
-   session.data.rescuedText.editableby = param.editableby;
-   session.data.rescuedText.createtime = param.createtime;
-   return;
-}
-
-/**
- * restore rescued Text in session.data by copying
- * all properties back to req.data
- */
-function restoreRescuedText() {
-   // copy story-parameters back to req.data
-   for (var i in session.data.rescuedText)
-      req.data[i] = session.data.rescuedText[i];
-   session.data.rescuedText = null;
-   return;
-}
-
-/**
- * extract content properties from the object containing
- * the submitted form values (req.data)
- * @param Obj Parameter object (usually req.data)
- * @param Obj HopObject containing any already existing content
- * @return Obj JS object containing the following properties:
- *             .value: HopObject() containing extracted content
- *             .exists: Boolean true in case content was found
- *             .isMajorUpdate: Boolean true in case one content property
- *                             differs for more than 50 characters
- */
-function extractContent(param, origContent) {
-   var result = {isMajorUpdate: false, exists: false, value: new HopObject()};
-   for (var i in param) {
-      if (i.startsWith("content_")) {
-         var partName = i.substring(8);
-         var newContentPart = param[i].trim();
-         // check if there's a difference between old and
-         // new text of more than 50 characters:
-         if (!result.isMajorUpdate && origContent) {
-            var len1 = origContent[partName] ? origContent[partName].length : 0;
-            var len2 = newContentPart.length;
-            result.isMajorUpdate = Math.abs(len1 - len2) >= 50;
-         }
-         result.value[partName] = newContentPart;
-         if (newContentPart)
-            result.exists = true;
-      }
-   }
-   return result;
-}
-
-/**
- * general mail-sending function
- * @param String sending email address
- * @param Obj String or Array of Strings containing recipient email addresses
- * @param String subject line
- * @param String Body to use in email
- * @return Obj Message object
+ * General mail sending function. Mails will be queued in app.data.mails.
+ * @param {String} sender The sender's e-mail address
+ * @param {Object} recipient The recipient's email addresses
+ * @param {String} subject The e-mail's subject
+ * @param {String} body The body text of the e-mail
+ * @return The status code of the underlying helma.Mail instance.
+ * @type Number
  */
 function sendMail(sender, recipient, subject, body) {
    if (!sender || !recipient || !body) {
@@ -767,318 +600,8 @@ function sendMail(sender, recipient, subject, body) {
    }
    mail.setSubject(subject);
    mail.setText(body);
-   // Add the message to the queue (method extension of helma.Mail)
    mail.queue();
    return mail.status;
-}
-
-/**
- * send all mails contained in the
- * application-wide mail queue
- */
-function flushMailQueue() {
-   if (app.data.mailQueue.length > 0) {
-      app.debug("flushing mailQueue, sending " + app.data.mailQueue.length + " e-mail(s) ...");
-      while (app.data.mailQueue.length) {
-         var mail = app.data.mailQueue.pop();
-         mail.send();
-         if (mail.status > 0)
-            app.debug("Error while sending e-mail, status = " + mail.status);
-      }
-   }
-   return;
-}
-
-/**
- * construct an array containing languages keys
- * used for retrieving a localized message
- */
-function getLanguages() {
-   var languages = new Array("en");
-   var syslang;
-   if ((syslang = root.getLocale().getLanguage()) != "en")
-      languages.unshift(syslang);
-   if (res.handlers.site) {
-      var lang = res.handlers.site.getLocale().getLanguage();
-      if (lang != "en" && lang != syslang)
-         languages.unshift(lang);
-   }
-   return languages;
-}
-
-/**
- * build a more scripting-compatible object
- * structure of the HELP.macros
- * @return Object the resulting object tree
- */
-function buildMacroHelp() {
-   var sorter = function(a, b) {
-      var str1 = a.name.toLowerCase();
-      var str2 = b.name.toLowerCase();
-      if (str1 > str2)
-         return 1;
-      else if (str1 < str2)
-         return -1;
-      return 0;
-   }
-
-   var macroHelp = {};
-   var ref = macroHelp.Global = [];
-   var macrolist = HELP.macros.Global;
-   for (var i in macrolist)
-      ref.push({name: i, storyid: macrolist[i]});
-   ref.sort(sorter);
-
-   var ref = macroHelp.HopObject = [];
-   var macrolist = HELP.macros.HopObject;
-   for (var i in macrolist)
-      ref.push({name: i, storyid: macrolist[i]});
-   ref.sort(sorter);
-
-   for (var proto in HELP.macros) {
-      if (proto.indexOf("_") == 0 || proto == "Global" || proto == "HopObject")
-         continue;
-      var macrolist = HELP.macros[proto];
-      var ref = macroHelp[proto] = [];
-      var keys = "";
-      for (var i in macrolist) {
-         ref.push({name: i, storyid: macrolist[i]});
-         keys += i + ",";
-      }
-      for (var n in macroHelp.HopObject) {
-         var shared = macroHelp.HopObject[n];
-         if (keys.indexOf(shared.name + ",") < 0)
-            ref.push(shared);
-      }
-      ref.sort(sorter);
-   }
-   return macroHelp;
-}
-
-/**
- * function tries to check if the color contains just hex-characters
- * if so, it returns the color-definition prefixed with a '#'
- * otherwise it assumes the color is a named one
- */
-function renderColorAsString(c) {
-   if (c && c.isHexColor())
-      return "#" + c;
-   return c;
-}
-
-/**
- * renders a color as hex or named string
- */
-function renderColor(c) {
-   res.write(renderColorAsString(c));
-   return;
-}
-
-/**
- * Do Wiki style substitution, transforming
- * stuff contained between asterisks into links.
- */
-function doWikiStuff (src) {
-   // robert, disabled: didn't get the reason for this:
-   // var src= " "+src;
-   if (src == null || !src.contains("<*"))
-      return src;
-
-   // do the Wiki link thing, <*asterisk style*>
-   var regex = new RegExp ("<[*]([^*]+)[*]>");
-   regex.ignoreCase=true;
-   
-   var text = "";
-   var start = 0;
-   while (true) {
-      var found = regex.exec (src.substring(start));
-      var to = found == null ? src.length : start + found.index;
-      text += src.substring(start, to);
-      if (found == null)
-         break;
-      var name = ""+(new java.lang.String (found[1])).trim();
-      var item = res.handlers.site.topics.get (name);
-      if (item == null && name.lastIndexOf("s") == name.length-1)
-         item = res.handlers.site.topics.get (name.substring(0, name.length-1));
-      if (item == null || !item.size())
-         text += format(name)+" <small>[<a href=\""+res.handlers.site.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
-      else
-         text += "<a href=\""+item.href()+"\">"+name+"</a>";
-      start += found.index + found[1].length+4;
-   }
-   return text;
-}
-
-/**
- * function renders a dropdown-box containing all available
- * locales
- * @param Obj Locale-Object to preselect
- */
-function renderLocaleChooser(loc) {
-   var locs = java.util.Locale.getAvailableLocales();
-   var options = new Array();
-   // get the defined locale of this site for comparison
-   for (var i in locs)
-      options[i] = new Array(locs[i], locs[i].getDisplayName());
-   html.dropDown({name: "locale"}, options, loc ? loc.toString() : null);
-   return;
-}
-
-/**
- * function renders a dropdown-box for choosing dateformats
- * @param String String indicating version of dateformat to use:
- *               "short" - short date format
- *               "long" - long date format
- * @param Obj Locale object (java.util.Locale)
- * @param Obj String Pattern to preselect
- */
-function renderDateformatChooser(version, locale, selectedValue) {
-   var patterns = (version == "shortdateformat" ? SHORTDATEFORMATS : LONGDATEFORMATS);
-   var now = new Date();
-   var options = new Array();
-   for (var i in patterns) {
-      var sdf = new java.text.SimpleDateFormat(patterns[i], locale);
-      options[i] = [encodeForm(patterns[i]), sdf.format(now)];
-   }
-   html.dropDown({name: version}, options, selectedValue);
-   return;
-}
-
-/**
- * function renders a dropdown-box for choosing timezones
- * @param Obj Timezone object (java.util.TimeZone)
- */
-function renderTimeZoneChooser(tz) {
-   var zones = java.util.TimeZone.getAvailableIDs();
-   var options = new Array();
-   var format = new java.text.DecimalFormat ("-0;+0");
-   for (var i in zones) {
-      var zone = java.util.TimeZone.getTimeZone(zones[i]);
-      options[i] = [zones[i], "GMT" + (format.format(zone.getRawOffset()/Date.ONEHOUR)) + " (" + zones[i] + ")"];
-   }
-   html.dropDown({name: "timezone"}, options, tz ? tz.getID() : null);
-   return;
-}
-
-/**
- * generic list render function. if the argument
- * "itemsPerPage" is given it renders a pagelist, otherwise
- * the *whole* collection will be rendered
- * @param Object collection to work on
- * @param Object either a string which is interpreted as name of a skin
- *               or a function to call for each item (the item is passed
- *               as argument)
- * @param Int Number of items per page
- * @param Object String or Integer representing the currently viewed page
- * @return String rendered list
- */
-function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
-   var currIdx = 0;
-   var isArray = collection instanceof Array;
-   var stop = size = isArray ? collection.length : collection.size();
-
-   if (itemsPerPage) {
-      var totalPages = Math.ceil(size/itemsPerPage);
-      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
-         pageIdx = 0;
-      currIdx = pageIdx * itemsPerPage;
-      stop = Math.min(currIdx + itemsPerPage, size);
-   }
-   var isFunction = (funcOrSkin instanceof Function) ? true : false;
-   res.push();
-   while (currIdx < stop) {
-      var item = isArray ? collection[currIdx] : collection.get(currIdx);
-      isFunction ? funcOrSkin(item) : item.renderSkin(funcOrSkin);
-      currIdx++;
-   }
-   return res.pop();
-}
-
-/**
- * render pagewise-navigationbar
- * @param Object collection to work on (either HopObject or Array)
- * @param String url of action to link to
- * @param String Number of items on one page
- * @param Int currently viewed page index
- * @return String rendered Navigationbar
- */
-function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
-
-   /**
-    * render a single item for page-navigation bar
-    */
-   var renderItem = function(text, cssClass, url, page) {
-      var param = {"class": cssClass};
-      if (!url)
-         param.text = text;
-      else {
-         if (url.contains("?"))
-            param.text = html.linkAsString({href: url + "&page=" + page}, text);
-         else
-            param.text = html.linkAsString({href: url + "?page=" + page}, text);
-      }
-      renderSkin("Global#pagerItem", param);
-      return;
-   }
-
-   var maxItems = 10;
-   var size = 0;
-   if (collectionOrSize instanceof Array)
-      size = collectionOrSize.length;
-   else if (collectionOrSize instanceof HopObject)
-      size = collectionOrSize.size();
-   else if (!isNaN(collectionOrSize))
-      size = parseInt(collectionOrSize, 10);
-   var lastPageIdx = Math.ceil(size/itemsPerPage)-1;
-   // if we have just one page, there's no need for navigation
-   if (lastPageIdx <= 0)
-      return null;
-
-   // init parameter object
-   var param = {};
-   var pageIdx = parseInt(pageIdx, 10);
-   // check if the passed page-index is correct
-   if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0)
-      pageIdx = 0;
-   param.display = ((pageIdx*itemsPerPage) +1) + "-" + (Math.min((pageIdx*itemsPerPage)+itemsPerPage, size));
-   param.total = size;
-
-   // render the navigation-bar
-   res.push();
-   if (pageIdx > 0)
-      renderItem("prev", "pageNavItem", url, pageIdx-1);
-   var offset = Math.floor(pageIdx/maxItems)*maxItems;
-   if (offset > 0)
-      renderItem("[..]", "pageNavItem", url, offset-1);
-   var currPage = offset;
-   var stop = Math.min(currPage + maxItems, lastPageIdx+1);
-   while (currPage < stop) {
-      if (currPage == pageIdx)
-         renderItem("[" + (currPage +1) + "]", "pageNavSelItem");
-      else
-         renderItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
-      currPage++;
-   }
-   if (currPage < lastPageIdx)
-      renderItem("[..]", "pageNavItem", url, offset + maxItems);
-   if (pageIdx < lastPageIdx)
-      renderItem("next", "pageNavItem", url, pageIdx +1);
-   param.pagenavigation = res.pop();
-   return renderSkinAsString("Global#pager", param);
-}
-
-function singularize(plural) {
-   if (plural.endsWith("ies")) {
-      return plural.substring(0, plural.length-3) + "y";
-   }
-   return plural.substring(0, plural.length-1);
-}
-
-function pluralize(singular) {
-   if (singular.endsWith("y")) {
-      return singular.substring(0, singular.length-1) + "ies";
-   }
-   return singular + "s";
 }
 
 function getLocale(language) {
@@ -1191,4 +714,238 @@ function clip_filter(input, param, limit, clipping, delimiter) {
    clipping || (clipping = "...");
    delimiter || (delimiter = "\\s");
    return String(input || "").head(limit, clipping, delimiter);
+}
+
+// FIXME:
+function fixRssText(str) {
+   var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
+   str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
+   return str;
+}
+
+// FIXME:
+function countUsers() {
+   app.data.activeUsers = new Array();
+   var l = app.getActiveUsers();
+   for (var i in l)
+      app.data.activeUsers[app.data.activeUsers.length] = l[i];
+   l = app.getSessions();
+   app.data.sessions = 0;
+   for (var i in l) {
+      if (!l[i].user)
+         app.data.sessions++;
+   }
+   app.data.activeUsers.sort();
+   return;
+}
+
+// FIXME:
+function pingUpdatedSites() {
+   var c = getDBConnection("antville");
+   var dbError = c.getLastError();
+   if (dbError) {
+      app.log("Error establishing DB connection: " + dbError);
+      return;
+   }
+
+   var query = "select name from site where mode = 'online' and " +
+         "SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
+   var rows = c.executeRetrieval(query);
+   var dbError = c.getLastError();
+   if (dbError) {
+      app.log("Error executing SQL query: " + dbError);
+      return;
+   }
+
+   while (rows.next()) {
+      var site = root.get(rows.getColumnItem("name"));
+      app.log("Notifying weblogs.com for updated site '" + site.alias + 
+            "' (id " + site._id + ")");
+      site.ping();
+   }
+
+   rows.release();
+   return;
+}
+
+// FIXME:
+function rescueText(param) {
+   session.data.rescuedText = new Object();
+   for (var i in param) {
+      if (i.startsWith("content_"))
+         session.data.rescuedText[i] = param[i];
+   }
+   session.data.rescuedText.discussions = param.discussions;
+   session.data.rescuedText.topic = param.topic;
+   session.data.rescuedText.discussions_array = param.discussions_array;
+   session.data.rescuedText.topicidx = param.topicidx;
+   session.data.rescuedText.online = param.online;
+   session.data.rescuedText.editableby = param.editableby;
+   session.data.rescuedText.createtime = param.createtime;
+   return;
+}
+
+// FIXME:
+function restoreRescuedText() {
+   // copy story-parameters back to req.data
+   for (var i in session.data.rescuedText)
+      req.data[i] = session.data.rescuedText[i];
+   session.data.rescuedText = null;
+   return;
+}
+
+// FIXME:
+function extractContent(param, origContent) {
+   var result = {isMajorUpdate: false, exists: false, value: new HopObject()};
+   for (var i in param) {
+      if (i.startsWith("content_")) {
+         var partName = i.substring(8);
+         var newContentPart = param[i].trim();
+         // check if there's a difference between old and
+         // new text of more than 50 characters:
+         if (!result.isMajorUpdate && origContent) {
+            var len1 = origContent[partName] ? origContent[partName].length : 0;
+            var len2 = newContentPart.length;
+            result.isMajorUpdate = Math.abs(len1 - len2) >= 50;
+         }
+         result.value[partName] = newContentPart;
+         if (newContentPart)
+            result.exists = true;
+      }
+   }
+   return result;
+}
+
+// FIXME:
+function doWikiStuff (src) {
+   // robert, disabled: didn't get the reason for this:
+   // var src= " "+src;
+   if (src == null || !src.contains("<*"))
+      return src;
+
+   // do the Wiki link thing, <*asterisk style*>
+   var regex = new RegExp ("<[*]([^*]+)[*]>");
+   regex.ignoreCase=true;
+   
+   var text = "";
+   var start = 0;
+   while (true) {
+      var found = regex.exec (src.substring(start));
+      var to = found == null ? src.length : start + found.index;
+      text += src.substring(start, to);
+      if (found == null)
+         break;
+      var name = ""+(new java.lang.String (found[1])).trim();
+      var item = res.handlers.site.topics.get (name);
+      if (item == null && name.lastIndexOf("s") == name.length-1)
+         item = res.handlers.site.topics.get (name.substring(0, name.length-1));
+      if (item == null || !item.size())
+         text += format(name)+" <small>[<a href=\""+res.handlers.site.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
+      else
+         text += "<a href=\""+item.href()+"\">"+name+"</a>";
+      start += found.index + found[1].length+4;
+   }
+   return text;
+}
+
+// FIXME: -> jala.ListRenderer?
+function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
+   var currIdx = 0;
+   var isArray = collection instanceof Array;
+   var stop = size = isArray ? collection.length : collection.size();
+
+   if (itemsPerPage) {
+      var totalPages = Math.ceil(size/itemsPerPage);
+      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
+         pageIdx = 0;
+      currIdx = pageIdx * itemsPerPage;
+      stop = Math.min(currIdx + itemsPerPage, size);
+   }
+   var isFunction = (funcOrSkin instanceof Function) ? true : false;
+   res.push();
+   while (currIdx < stop) {
+      var item = isArray ? collection[currIdx] : collection.get(currIdx);
+      isFunction ? funcOrSkin(item) : item.renderSkin(funcOrSkin);
+      currIdx++;
+   }
+   return res.pop();
+}
+
+// FIXME: -> jala.ListRenderer?
+function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
+   /**
+    * render a single item for page-navigation bar
+    */
+   var renderItem = function(text, cssClass, url, page) {
+      var param = {"class": cssClass};
+      if (!url)
+         param.text = text;
+      else {
+         if (url.contains("?"))
+            param.text = html.linkAsString({href: url + "&page=" + page}, text);
+         else
+            param.text = html.linkAsString({href: url + "?page=" + page}, text);
+      }
+      renderSkin("Global#pagerItem", param);
+      return;
+   }
+
+   var maxItems = 10;
+   var size = 0;
+   if (collectionOrSize instanceof Array)
+      size = collectionOrSize.length;
+   else if (collectionOrSize instanceof HopObject)
+      size = collectionOrSize.size();
+   else if (!isNaN(collectionOrSize))
+      size = parseInt(collectionOrSize, 10);
+   var lastPageIdx = Math.ceil(size/itemsPerPage)-1;
+   // if we have just one page, there's no need for navigation
+   if (lastPageIdx <= 0)
+      return null;
+
+   // init parameter object
+   var param = {};
+   var pageIdx = parseInt(pageIdx, 10);
+   // check if the passed page-index is correct
+   if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0)
+      pageIdx = 0;
+   param.display = ((pageIdx*itemsPerPage) +1) + "-" + (Math.min((pageIdx*itemsPerPage)+itemsPerPage, size));
+   param.total = size;
+
+   // render the navigation-bar
+   res.push();
+   if (pageIdx > 0)
+      renderItem("prev", "pageNavItem", url, pageIdx-1);
+   var offset = Math.floor(pageIdx/maxItems)*maxItems;
+   if (offset > 0)
+      renderItem("[..]", "pageNavItem", url, offset-1);
+   var currPage = offset;
+   var stop = Math.min(currPage + maxItems, lastPageIdx+1);
+   while (currPage < stop) {
+      if (currPage == pageIdx)
+         renderItem("[" + (currPage +1) + "]", "pageNavSelItem");
+      else
+         renderItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
+      currPage++;
+   }
+   if (currPage < lastPageIdx)
+      renderItem("[..]", "pageNavItem", url, offset + maxItems);
+   if (pageIdx < lastPageIdx)
+      renderItem("next", "pageNavItem", url, pageIdx +1);
+   param.pagenavigation = res.pop();
+   return renderSkinAsString("Global#pager", param);
+}
+
+function singularize(plural) {
+   if (plural.endsWith("ies")) {
+      return plural.substring(0, plural.length-3) + "y";
+   }
+   return plural.substring(0, plural.length-1);
+}
+
+function pluralize(singular) {
+   if (singular.endsWith("y")) {
+      return singular.substring(0, singular.length-1) + "ies";
+   }
+   return singular + "s";
 }

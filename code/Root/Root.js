@@ -141,6 +141,7 @@ Root.prototype.create_action = function() {
 };
 
 Root.prototype.list_action = function() {
+   // FIXME:
    // preparing res.data.sitelist and prev/next links
    // ("all" shows all sites, "yes" is for scrolling)
    this.renderSitelist(25, "all", "yes");

@@ -88,7 +88,7 @@ Story.prototype.main_action = function() {
    res.data.title = this.getTitle();
    res.data.body = this.renderSkinAsString("Story#main");
    this.site.renderSkin("page");
-   this.incrementReadCounter();
+   this.logRequest();
    logAction();
    return;
 };
@@ -263,7 +263,7 @@ Story.prototype.comment_action = function() {
    res.data.title = gettext("Add comment to {0}", this.getTitle());
    res.data.body = comment.renderSkinAsString("Comment#edit");
    this.site.renderSkin("page");
-   this.incrementReadCounter();
+   this.logRequest();
    return;
 };
 
@@ -432,91 +432,18 @@ Story.prototype.removeTag = function(tag) {
    return;
 };
 
-Story.prototype.incrementReadCounter = function() {
-   return; // FIXME FIXME FIXME
-   // Do not record requests by the story creator
+Story.prototype.logRequest = function() {
    if (session.user === this.creator) {
       return;
    }
-   if (!app.data.readLog.containsKey(String(this._id))) {
-      var logObj = new Object();
-      logObj.site = this.site.alias;
-      logObj.story = this._id;
-      logObj.reads = this.reads + 1;
-      app.data.readLog.put(String(this._id), logObj);
+   var entry;
+   if (entry = app.data.stories[this._id]) {
+      entry.requests += 1;
    } else {
-      app.data.readLog.get(String(this._id)).reads += 1;
-   }
-   return;
-};
-
-Story.prototype.checkAccess = function(action, usr, level) {
-   var url = this.site.href();
-   try {
-      switch (action) {
-         case "main" :
-            this.checkView(usr, level);
-            break;
-         case "edit" :
-            if (!usr && req.data.save)
-               rescueText(req.data);
-            checkIfLoggedIn(this.href(req.action));
-            this.checkEdit(usr, level);
-            break;
-         case "delete" :
-            checkIfLoggedIn();
-            this.checkDelete(usr, level);
-            break;
-         case "comment" :
-            if (!usr && req.data.save)
-               rescueText(req.data);
-            checkIfLoggedIn(this.href(req.action));
-            url = this.href();
-            this.checkPost(usr, level);
-            break;
-      }
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(url);
-   }
-   return;
-};
-
-Story.prototype.checkPost = function(usr, level) {
-   if (!usr.sysadmin && !this.site.online && level == null)
-      throw new DenyException("siteView");
-   else if (!this.site.metadata.get("discussions"))
-      throw new DenyException("siteNoDiscussion");
-   else if (!this.discussions)
-      throw new DenyException("storyNoDiscussion");
-   return;
-};
-    
-Story.prototype.checkDelete = function(usr, level) {
-   if (this.creator != usr && (level & MAY_DELETE_ANYSTORY) == 0)
-      throw new DenyException("storyDelete");
-   return;
-};
-
-Story.prototype.checkEdit = function(usr, level) {
-   if (this.creator != usr) {
-      if (level == null)
-         throw new DenyException("storyEdit");
-      else if (this.editableby == EDITABLEBY_ADMINS && (level & MAY_EDIT_ANYSTORY) == 0)
-         throw new DenyException("storyEdit");
-      else if (this.editableby == EDITABLEBY_CONTRIBUTORS && (level & MAY_ADD_STORY) == 0)
-         throw new DenyException("storyEdit");
-   }
-   return;
-};
-
-Story.prototype.checkView = function(usr, level) {
-   this.site.checkView(usr, level);
-   if (!this.online && this.creator != usr) {
-      if (this.editableby == EDITABLEBY_ADMINS && (level & MAY_EDIT_ANYSTORY) == 0)
-         throw new DenyException("storyView");
-      else if (this.editableby == EDITABLEBY_CONTRIBUTORS && (level & MAY_ADD_STORY) == 0)
-         throw new DenyException("storyView");
+      app.data.stories[this._id] = {
+         story: this,
+         requests: this.requests + 1
+      };
    }
    return;
 };

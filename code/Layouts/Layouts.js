@@ -118,7 +118,7 @@ Layouts.prototype.evalImport = function(param, creator) {
       newLayout.preferences.setAll(importLayout.preferences);
       newLayout.shareable = 0;
       newLayout.imported = 1;
-      newLayout.alias = buildAlias(importLayout.alias, this);
+      newLayout.alias = this.getAccessName(importLayout.name);
       newLayout.description = importLayout.description;
       newLayout.creator = session.user;
       // FIXME: this should be done after importing skins

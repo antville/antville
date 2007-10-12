@@ -409,7 +409,15 @@ Skins.getRedirectUrl = function(data) {
 Skins.getSummary = function(prefix, prototype, name) {
    var key = prefix + "." + prototype;
    name && (key += "." + name);
-   var languages = getLanguages();
+   var languages = new Array("en");
+   var syslang;
+   if ((syslang = root.getLocale().getLanguage()) != "en")
+      languages.unshift(syslang);
+   if (res.handlers.site) {
+      var lang = res.handlers.site.getLocale().getLanguage();
+      if (lang != "en" && lang != syslang)
+         languages.unshift(lang);
+   }
    var lang;
    for (var i=0; i<languages.length; i+=1) {
       if (!(lang = app.data[languages[i]])) {
@@ -494,4 +502,48 @@ new function() {
    
    newSet = new Skins.Skinset("various", ["HopObject.delete"], "Root");
    Skins.SKINSETS.push(newSet);
+};
+
+Skins.buildMacroHelp = function() {
+   var sorter = function(a, b) {
+      var str1 = a.name.toLowerCase();
+      var str2 = b.name.toLowerCase();
+      if (str1 > str2)
+         return 1;
+      else if (str1 < str2)
+         return -1;
+      return 0;
+   }
+
+   var macroHelp = {};
+   var ref = macroHelp.Global = [];
+   var macrolist = HELP.macros.Global;
+   for (var i in macrolist)
+      ref.push({name: i, storyid: macrolist[i]});
+   ref.sort(sorter);
+
+   var ref = macroHelp.HopObject = [];
+   var macrolist = HELP.macros.HopObject;
+   for (var i in macrolist)
+      ref.push({name: i, storyid: macrolist[i]});
+   ref.sort(sorter);
+
+   for (var proto in HELP.macros) {
+      if (proto.indexOf("_") == 0 || proto == "Global" || proto == "HopObject")
+         continue;
+      var macrolist = HELP.macros[proto];
+      var ref = macroHelp[proto] = [];
+      var keys = "";
+      for (var i in macrolist) {
+         ref.push({name: i, storyid: macrolist[i]});
+         keys += i + ",";
+      }
+      for (var n in macroHelp.HopObject) {
+         var shared = macroHelp.HopObject[n];
+         if (keys.indexOf(shared.name + ",") < 0)
+            ref.push(shared);
+      }
+      ref.sort(sorter);
+   }
+   return macroHelp;
 };
