@@ -1,7 +1,0 @@
-<% membership.username %>, one of the administrators of '<% site.title %>' (URL: <% site.url %>), sent you the following message:
-
-<% param.text %>
-
----------------------------------------
-<% root.title %> - <% root.url %>
----------------------------------------

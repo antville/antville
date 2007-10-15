@@ -71,6 +71,10 @@ HopObject.prototype.onRequest = function() {
    return;
 };
 
+HopObject.prototype.getPermission = function() {
+   return true;
+};
+
 HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       //try {
@@ -121,8 +125,25 @@ HopObject.prototype.touch = function() {
    });
 };
 
-HopObject.prototype.getPermission = function() {
-   return true;
+HopObject.prototype.notify = function(action) {
+   var site = res.handlers.site;
+   if (site.notificationMode === Site.NOBODY) {
+      return;
+   }
+   switch (action) {
+      case "comment":
+      action = "create"; break;
+   }
+   var membership;
+   for (var i=0; i<site.members.size(); i+=1) {
+      membership = site.members.get(i);
+      if (membership.require(site.notificationMode)) {
+         sendMail(root.email, membership.creator.email,
+               gettext("Notification of changes at site {0}", site.title),
+               this.renderSkinAsString("Messages#" + action));
+      }
+   }
+   return;
 };
 
 HopObject.prototype.input_macro = function(param, name) {
@@ -210,6 +231,16 @@ HopObject.prototype.macro_macro = function(param, handler) {
       res.write(String.SPACE);
       res.write(quote(this.name) || this._id);
       res.encode(" %>");
+   }
+   return;
+};
+
+HopObject.prototype.kind_macro = function() {
+   var type = this.constructor.name.toLowerCase();
+   switch (type) {
+      default:
+      res.write(gettext(type));
+      break;
    }
    return;
 };

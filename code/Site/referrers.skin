@@ -1,11 +1,12 @@
 <form action="<% response.action %>" method="get">
-<input type="text" name="filter" value="<% request.filter %>" size="30" /> 
+<input type="text" name="filter" value="<% request.filter encoding="form" %>" 
+size="30" /> 
 <input type="submit" name="submit" value="Filter" /> 
 <input type="button" onclick="document.location='<% site.href 
       action="referrers" %>';" value="Reset" />
 <div class="small">
    <input type="checkbox" name="includeSpam" value="checked" 
-         <% request.includeSpam prefix='checked="' suffix='"' %> /> 
+         <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
          include referrer spam
 </div>
 <br />

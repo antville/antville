@@ -68,8 +68,8 @@ You can change it anytime you want.</p>
 </tr>
 <tr>
 <td class="small">Comments:</td>
-<td><% site.checkbox commentsMode %>
-<label for="commentsMode">enabled</label></td>
+<td><% site.checkbox commentMode %>
+<label for="commentMode">enabled</label></td>
 </tr>
 <tr>
 <td class="small">Archive:</td>
@@ -93,12 +93,9 @@ You can change it anytime you want.</p>
 <td><% site.select shortDateFormat %></td>
 </tr>
 <tr>
-<!-- FIXME: should site.email be dropped? afaik, 
-     bounces should be sent to sys.email? [tobi] -->
-<td class="small" valign="top">e-mail address:</td>
-<td><% site.input email %><br />
-<span class="small">This e-mail address will be used for sending confirmation 
-mails, i.e. when a user registers or signs up a site.</span></td>
+<td class="small">Notifications:</td>
+<td><% site.select notificationMode %></td>
+</td>
 </tr>
 <tr>
 <td class="small" valign="top">Web hook:</td>
@@ -113,21 +110,8 @@ mails, i.e. when a user registers or signs up a site.</span></td>
 <% link layouts "Go to the layouts page" %> to browse, manage or 
 test-drive the list of available layouts.</span></td>
 </tr>
+
 <!--tr>
-<td colspan="2"><div class="listSeparator">&nbsp;</div>
-<strong><a name="index">Index Maintenance</a></strong></td>
-</tr>
-<tr>
-<td></td>
-<td><span class="small">If the search index of your site is corrupt you can 
-schedule it for rebuilding by klicking on the button below:
-<% input type="submit" name="rebuildIndex" value="rebuild index" 
-style="display:block;margin:5px 0;" %>Please bear in mind that rebuilding the 
-search index is a quite ressource-intensive operation, so please use this 
-feature only when it's really necessary (e.g. if you receive an error when 
-trying to search).</span></td>
-</tr>
-<tr>
 <td colspan="2"><div class="listSeparator">&nbsp;</div>
 <strong><a name="spamfilter">Referrer spam filter</a></strong></td>
 </tr>
@@ -139,7 +123,6 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 as="editor" cols="30" rows="7" %></td>
 </tr-->
 
-<% site.notification %>
 <% site.modulePreferences %>
 
 <tr>

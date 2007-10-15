@@ -1,0 +1,54 @@
+<% #contact %>
+<% request.text %>
+
+<% gettext 
+'This message was sent to you by the user "{1}" of the site "{2}" at {3}.
+
+PLEASE DO NOT REPLY TO THIS E-MAIL simply by hitting the "reply" button. 
+If the user did not include contact data in the message anyway, you can use 
+the contact form at {4}.'
+<% membership.name %> <% sender.name %> <% site.title %> 
+<% site.href %> <% sender.href contact %> %>
+
+
+<% #register %>
+Welcome to <% root.title %>, <% membership.name %>!
+
+You can edit your profile and change your password at any time.
+Just point your browser to <% members.href edit %>.
+
+Have fun!
+The Management
+
+
+<% #add %>
+<% gettext 'Dear {0},
+
+the user "{1}" of the site "{2}" at {3} has added your account to the list of members of the site.
+
+Have fun!
+The Management'
+<% membership.name %> <% sender.name %> <% site.title %> <% site.href %> %>
+
+
+<% #edit %>
+<% gettext 'Dear {0},
+
+the user "{1}" of the site "{2}" at {3} has modified your membership. You are now {4} of the site.
+
+Best regards.
+The Management'
+<% membership.name %> <% sender.name %> <% site.title %> <% site.href %> 
+<% gettext <% membership.role %> %> %>
+
+
+<% #delete %>
+<% gettext 'Dear {0},
+
+we are sorry to inform you that the user "{1}" of the site "{2}" at {3} has cancelled your membership.
+
+Best regards.
+The Management'
+<% membership.name %> <% sender.name %> <% site.title %> <% site.href %> 
+<% gettext <% membership.role %> %> %>
+

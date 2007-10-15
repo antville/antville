@@ -53,6 +53,10 @@ User.prototype.constructor = function(data) {
    return this;
 };
 
+User.prototype.getPermission = function(action) {
+   return User.require(User.PRIVILEGED);
+};
+
 User.prototype.update = function(data) {
    if (!data.digest && data.password) {
       data.digest = ((data.password + this.salt).md5() + 
@@ -147,7 +151,7 @@ User.register = function(data) {
    if (!data.email) {
       throw new Error(gettext("Please enter your e-mail address."));
    }
-   evalEmail(data.email);
+   validateEmail(data.email);
 
    // Create hash from password for JavaScript-disabled browsers
    if (!data.hash) {

@@ -101,7 +101,7 @@ If this site is open it will replace the default front page.
 </tr>
 <tr>
 <td>... search</td>
-<td><input name="query" value="<% request.query %>" /></td>
+<td><input name="query" value="<% request.query encoding="form" %>" /></td>
 </tr>
 <tr>
 <td> </td>
@@ -321,15 +321,6 @@ If this site is open it will replace the default front page.
 <tr>
 <td colspan="2"><strong>General</strong></td>
 </tr>
-<tr>
-<td valign="top">Title:</td>
-<td>
-   <% root.input title %><br />
-   <span class="small">
-      This is the main title of your Antville installation.
-   </span>
-</td>
-</tr>
 <!-- tr>
 <td valign="top">System URL:</td>
 <td><%// root.sys_url as="editor" size="20" %><br />
@@ -344,16 +335,6 @@ Antville installation.</span></td>
 of this Antville installation will display the selected site instead of the 
 default front page.</span></td>
 </tr -->
-<tr>
-<td valign="top">Layout:</td>
-<td>
-   <% root.select layout %><br />
-   <span class="small">
-      Choose the layout to use for this Antville installation. 
-      It will also be the default layout for any newly created site.
-   </span>
-</td>
-</tr>
 <tr>
 <td valign="top">e-mail:</td>
 <td>
@@ -374,30 +355,6 @@ default front page.</span></td>
       uploaded images and files.)
    </span>
 </td>
-</tr>
-<tr>
-<td valign="top">Language:</td>
-<td>
-   <% root.select language %><br />
-   <span class="small">
-      This defines the language of Antville's confirm  and error messages. 
-      If you select a language that Antville doesn't know, it will display all 
-      messages in english. Whatever language you specify here will also be the 
-      default for every new site created here.
-   </span>
-</td>
-</tr>
-<tr>
-<td>Time zone:</td>
-<td><% root.select timeZone %></td>
-</tr>
-<tr>
-<td>Long date format:</td>
-<td><% root.select longDateFormat %></td>
-</tr>
-<tr>
-<td>Short date format:</td>
-<td><% root.select shortDateFormat %></td>
 </tr>
 <tr>
 <td valign="top">Quota per site:</td>

@@ -214,9 +214,9 @@ alter table av_text add column mode enum('hidden','featured');
 update av_text set mode = 'hidden' where text_isonline = 1;
 update av_text set mode = 'featured' where text_isonline = 2;
 
-alter table av_text add column comments_mode enum('closed','readonly','moderated','open');
-update av_text set comments_mode = 'closed';
-update av_text set comments_mode = 'open' where text_hasdiscussions = 1;
+alter table av_text add column comment_mode enum('closed','readonly','moderated','open');
+update av_text set comment_mode = 'closed';
+update av_text set comment_mode = 'open' where text_hasdiscussions = 1;
 
 alter table av_text change column text_id id mediumint(10);
 alter table av_text change column text_alias name varchar(255);

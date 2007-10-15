@@ -24,7 +24,7 @@
 
 Story.getStatus = defineConstants(Story, "closed", "public", "shared", "open");
 Story.getModes = defineConstants(Story, "hidden", "featured");
-Story.getCommentsModes = defineConstants(Story, "closed", 
+Story.getCommentModes = defineConstants(Story, "closed", 
       "readonly", "moderated", "open");
 
 this.handleMetadata("title");
@@ -50,9 +50,9 @@ Story.prototype.getPermission = function(action) {
             this.status !== Story.CLOSED || 
             User.require(User.PRIVILEGED);
       case "comment":
-      return this.site.commentsMode === Site.ENABLED &&
-            this.commentsMode === Story.OPEN ||
-            this.commentsMode === Story.MODERATED;
+      return this.site.commentMode === Site.ENABLED &&
+            this.commentMode === Story.OPEN ||
+            this.commentMode === Story.MODERATED;
       case "delete":
       return this.creator === session.user || 
             Membership.require(Membership.MANAGER) ||
@@ -116,6 +116,7 @@ Story.prototype.edit_action = function() {
    if (req.postParams.save) {
       //try {
          this.update(req.postParams);
+         this.notify(req.action);
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());
       //} catch (ex) {
@@ -136,8 +137,8 @@ Story.prototype.getFormValue = function(name) {
       return req.postParams[name];
    }
    switch (name) {
-      case "commentsMode":
-      return this.commentsMode || Story.OPEN;
+      case "commentMode":
+      return this.commentMode || Story.OPEN;
       case "mode":
       return this.mode || Story.FEATURED;
       case "status":
@@ -154,8 +155,8 @@ Story.prototype.getFormOptions = function(name) {
       return Story.getModes();
       case "status":
       return Story.getStatus();
-      case "commentsMode":
-      return Story.getCommentsModes();
+      case "commentMode":
+      return Story.getCommentModes();
    }
    return;
 }
@@ -182,7 +183,7 @@ Story.prototype.update = function(data) {
    this.text = data.text;
    this.setContent(data);
    //this.setTags(data.tags || data.tag_array)
-   this.commentsMode = data.commentsMode;
+   this.commentMode = data.commentMode;
    this.mode = data.mode;
    if (this.status === Story.PRIVATE && data.status !== Story.PRIVATE) {
       if (delta > 50) {
@@ -191,9 +192,7 @@ Story.prototype.update = function(data) {
    }
    this.status = data.status;
    this.touch();
-
-   // FIXME: send e-mail notification
-   if (false && site.isNotificationEnabled() && newStatus != 0) {
+   /* if (false && site.isNotificationEnabled() && newStatus != 0) {
       // status changes from offline to online
       // (this is bad because somebody could send a bunch
       // of e-mails simply by toggling the online status.)
@@ -202,7 +201,7 @@ Story.prototype.update = function(data) {
       // major update of an already online story
       if (this.online != 0 && content.isMajorUpdate)
          site.sendNotification("update", this);
-   }
+   } */
    return;
 };
 
@@ -251,6 +250,7 @@ Story.prototype.comment_action = function() {
          this.add(comment);
          // Force addition to aggressively cached subcollection
          (this.story || this).comments.add(comment);
+         comment.notify(req.action);
          res.message = gettext("The comment was successfully created.");
          res.redirect(comment.href());
       } catch (ex) {
@@ -300,8 +300,8 @@ Story.prototype.summary_macro = function(param) {
 
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
-   if (story.site.commentsMode === Site.DISABLED || 
-         story.commentsMode === Site.CLOSED) {
+   if (story.site.commentMode === Site.DISABLED || 
+         story.commentMode === Site.CLOSED) {
       return;
    } else if (mode) {
       var n = this.comments.size() || 0;

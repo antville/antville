@@ -25,15 +25,18 @@
 Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
 Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
 Site.getPageModes = defineConstants(Site, "days", "stories");
-Site.getCommentsModes = defineConstants(Site, "disabled", "enabled");
+Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
 Site.getArchiveModes = defineConstants(Site, "closed", "public");
+Site.getNotificationModes = defineConstants(Site, "Nobody", 
+      "Owner", "Manager", "Contributor", "Subscriber" );
 
 this.handleMetadata("archiveMode");
-this.handleMetadata("commentsMode");
+this.handleMetadata("commentMode");
 this.handleMetadata("email");
 this.handleMetadata("language");
 this.handleMetadata("lastUpdate");
 this.handleMetadata("longDateFormat");
+this.handleMetadata("notificationMode");
 this.handleMetadata("notifiedOfBlocking");
 this.handleMetadata("notifiedOfDeletion");
 this.handleMetadata("offlineSince");
@@ -63,8 +66,9 @@ Site.prototype.constructor = function(name, title) {
       mode: Site.CLOSED,
       tagline: "",
       webHookEnabled: false,
-      commentsMode: Site.OPEN,
+      commentMode: Site.OPEN,
       archiveMode: Site.PUBLIC,
+      notificationMode: Site.DISABLED,
       pageMode: Site.DAYS,
       pageSize: 3,
       language: locale.getLanguage(),
@@ -151,32 +155,32 @@ Site.prototype.edit_action = function() {
 };
 
 Site.prototype.getFormOptions = function(name) {
-   var options = [];
    switch (name) {
       case "archiveMode":
-      options = Site.getArchiveModes(); break;
-      case "commentsMode":
-      options = Site.getCommentsModes(); break;
+      return Site.getArchiveModes();
+      case "commentMode":
+      return Site.getCommentModes();
       case "language":
-      options = getLocales(); break;
+      return getLocales();
       case "layout":
-      options = this.getLayouts(); break;
+      return this.getLayouts();
       case "longDateFormat":
-      options = getDateFormats("long"); break;
+      return getDateFormats("long");
       case "mode":
-      options = Site.getModes(); break;
+      return Site.getModes();
+      case "notificationMode":
+      return Site.getNotificationModes();
       case "pageMode":
-      options = Site.getPageModes(); break;
+      return Site.getPageModes();
       case "status":
-      options = Site.getStatus(); break;
+      return Site.getStatus();
       case "shortDateFormat":
-      options = getDateFormats("short"); break;
+      return getDateFormats("short");
       case "timeZone":
-      options = getTimeZones(); break;
+      return getTimeZones();
       default:
       return HopObject.prototype.getFormOptions.apply(this, arguments);
    }
-   return options;
 };
 
 Site.prototype.update = function(data) {
@@ -204,8 +208,9 @@ Site.prototype.update = function(data) {
       webHookEnabled: data.webHookEnabled ? true : false,
       pageMode: data.pageMode || Site.DAYS,
       pageSize: parseInt(data.pageSize, 10) || 3,
-      commentsMode: data.commentsMode || Site.DISABLED,
+      commentMode: data.commentMode || Site.DISABLED,
       archiveMode: data.archiveMode || Site.CLOSED,
+      notificationMode: data.notificationMode || Site.DISABLED,
       timeZone: data.timeZone,
       longDateFormat: data.longDateFormat,
       shortDateFormat: data.shortDateFormat,

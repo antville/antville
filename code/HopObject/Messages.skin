@@ -1,0 +1,20 @@
+<% #create %>
+<% gettext 'Dear {0},
+
+this message wants to inform you that a new {1} was published at {2} by user {3} on {4}.
+
+Best regards.
+The Management'  
+<% membership.name %> <% this.kind %> <% this.href %> 
+<% this.modifier %> <% this.modified short %> %>
+
+
+<% #edit %>
+<% gettext 'Dear {0},
+
+this message wants to inform you that the {1} at {2} was modified by user {3} on {4}.
+
+Best regards.
+The Management'  
+<% membership.name %> <% this.kind %> <% this.href %> 
+<% this.modifier %> <% this.modified short %> %>

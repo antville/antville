@@ -50,7 +50,7 @@ Comment.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "comment":
-      return this.site.commentsMode === Site.ENABLED &&
+      return this.site.commentMode === Site.ENABLED &&
             this.story.getPermission(action) && 
             this.status !== Comment.CLOSED &&
             this.status !== Comment.PENDING;
@@ -97,8 +97,8 @@ Comment.prototype.update = function(data) {
    this.title = data.title;
    this.text = data.text;
    this.setContent(data);
-   if (this.site.commentsMode === Site.MODERATED || 
-         this.story.commentsMode === Site.MODERATED) {
+   if (this.site.commentMode === Site.MODERATED || 
+         this.story.commentMode === Site.MODERATED) {
       this.mode = Comment.PENDING;
    } else if (this.story.status === Story.PRIVATE && 
          this.getDelta(data) > 50) {

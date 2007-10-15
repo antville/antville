@@ -29,8 +29,9 @@ Members.prototype.getPermission = function(action) {
    switch (action) {
       case "login":
       case "logout":
-      case "salt.js":
       case "register":
+      case "reset":
+      case "salt.js":
       return true;
       case ".":
       case "main":
@@ -74,18 +75,12 @@ Members.prototype.main_action = function() {
 Members.prototype.register_action = function() {
    if (req.postParams.register) {      
       try {
-         var user = User.register(req.postParams);
-         // Subscribe user to this site if it is public
-         if (Site.require(Site.PUBLIC)) {
-            this.add(new Membership(user));
-         }
          var title = res.handlers.site.title;
-         if (root.sys_email) {
-            var sp = {name: user.name};
-            sendMail(root.sys_email, user.email, 
-                  gettext('Welcome to "{0}"!', title),
-                  this.renderSkinAsString("mailregconfirm", sp));
-         }
+         var user = User.register(req.postParams);
+         var membership = new Membership(user);
+         this.add(membership);
+         membership.notify(req.action, user.email, 
+               gettext('Welcome to "{0}"!', title));
          var url = session.data.referrer || this._parent.href();
          delete session.data.referrer;
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
@@ -101,6 +96,36 @@ Members.prototype.register_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Register");
    res.data.body = this.renderSkinAsString("Members#register");
+   this._parent.renderSkin("page");
+   return;
+};
+
+Members.prototype.reset_action = function() {
+   if (req.postParams.reset) {
+      try {
+         if (!req.postParams.name || !req.postParams.email) {
+            throw Error(gettext("Please enter username and e-mail of the desired account."));
+         }
+         var user = User.getByName(req.postParams.name);
+         if (!user || user.email !== req.postParams.email) {
+            throw Error(gettext("Username and e-mail do not match."))
+         }
+         var password = jala.util.createPassword(25, 2);
+         user.hash = (password + user.salt).md5()
+         sendMail(root.email, user.email, 
+               gettext("Your login at {0}", this._parent.title), 
+               user.renderSkinAsString("Messages#reset", 
+               {password: password}));
+         res.message = "A new password is sent to the account's e-mail address.";
+         res.redirect(this._parent.href());
+      } catch(ex) {
+         app.log(ex);
+         res.message = ex;
+      }
+   }
+   res.data.action = this.href(req.action);
+   res.data.title = gettext("Reset password");
+   res.data.body = this.renderSkinAsString("Members#reset");
    this._parent.renderSkin("page");
    return;
 };
@@ -264,16 +289,10 @@ Members.prototype.add_action = function() {
       }
    } else if (req.postParams.add) {
       try {
+         res.handlers.sender = User.getMembership();
          var membership = this.addMembership(req.postParams);
-         var message = this.renderSkinAsString("mailnewmember", {
-            site: res.handlers.site.title,
-            creator: session.user.name,
-            url: res.handlers.site.href(),
-            account: req.postParams.name
-         });
-         // FIXME:
-         //sendMail(root.sys_email, result.obj.user.email,
-         //      getMessage("mail.newMember", result.obj.site.title), message);
+         membership.notify(req.action, membership.creator.email,  
+               gettext('Notification of membership change', root.title));
          res.message = gettext("Successfully added {0} to the list of members.", 
                req.postParams.name);
          res.redirect(membership.href("edit"));

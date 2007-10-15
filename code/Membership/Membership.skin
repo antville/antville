@@ -54,10 +54,28 @@ Logged in as <% membership.name | membership.link %><br />
 </tr>
 </table>
 
+<% #contact %>
+<p>Please enter your message to user "<% membership.name %>" below. 
+To prevent abuse the sender address and the subject of the e-mail are
+predefined. A generic disclaimer will be appended to your text. 
+Please make sure your own e-mail address in your 
+<% members.link edit profile %> is up-to-date.</p>
+<form method="post" action="<% response.action %>">
+<p>
+<span class="small">Message:</span><br />
+<textarea cols="31" rows="10" class="formText" wrap="virtual" 
+      name="text"><% request.text encoding="form" %></textarea>
+</p>
+<p>
+   <button type="submit" name="send" value="1">send</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</p>
+</form>
+
 <% #edit %>
-<p>To change the status of this member, simply choose from the dropdown menu 
-and click the "Save" button. An e-mail will be sent to the member telling 
-him/her that you changed the member's role.</p>
+<p>To modify the membership, simply choose the desired role from the 
+drop-down menu and click the "save" button. An e-mail will be sent to the 
+member informing about the membership change.</p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
@@ -71,8 +89,8 @@ him/her that you changed the member's role.</p>
 <tr>
 <td nowrap="nowrap"> </td>
 <td nowrap="nowrap"><br />
-<button type="submit" name="save" value="1"><strong>Save</strong></button>
-<button type="submit" name="cancel" value="1">Cancel</button>
+<button type="submit" name="save" value="1"><strong>save</strong></button>
+<button type="submit" name="cancel" value="1">cancel</button>
 </td>
 </tr>
 </table>

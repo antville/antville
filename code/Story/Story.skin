@@ -177,7 +177,7 @@ for (var i in referrers) {
    <legend class="small">Options</legend>
    <p>Tags: <% story.input tags %></p> 
    <p>The story is <% story.select status %> and <% story.select mode %></p>
-   <p>Comments of the story are <% story.select commentsMode %></p>
+   <p>Comments of the story are <% story.select commentMode %></p>
 </fieldset></p>
 <p class="small">
    <% story.creator prefix="Created by " %>

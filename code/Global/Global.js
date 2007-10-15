@@ -586,8 +586,7 @@ function injectXslDeclaration(xml) {
  */
 function sendMail(sender, recipient, subject, body) {
    if (!sender || !recipient || !body) {
-      app.log("Insufficient arguments in method sendMail()");
-      return;
+      throw Error("Insufficient arguments in method sendMail()");
    }
    var mail = new helma.Mail();
    mail.setFrom(sender);

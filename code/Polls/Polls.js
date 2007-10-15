@@ -58,6 +58,7 @@ Polls.prototype.create_action = function() {
       try {
          poll.update(req.postParams);
          this.add(poll);
+         poll.notify(req.action);
          res.message = gettext("The poll was created successfully.");
          res.redirect(poll.href());
       } catch (err) {

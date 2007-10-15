@@ -1,7 +1,0 @@
-<% param.creator %> has added you (meaning your account "<% param.account %>") to the list of members of <% param.site %> (<% param.url %>).
-
-Have fun!
-
----------------------------------------
-<% root.title %> - <% root.url %>
----------------------------------------

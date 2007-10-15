@@ -40,6 +40,7 @@ Membership.prototype.constructor = function(user, role) {
 
 Membership.prototype.getPermission = function(action) {
    switch (action) {
+      case "contact":
       case "edit":
       return this.creator !== session.user;
       case "delete":
@@ -64,7 +65,7 @@ Membership.prototype.edit_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit membership: {0}", this.name);
-   res.data.body = this.renderSkinAsString("edit");
+   res.data.body = this.renderSkinAsString("Membership#edit");
    this.site.renderSkin("page");
    return;
 };
@@ -85,9 +86,8 @@ Membership.prototype.update = function(data) {
    } else if (data.role !== this.role) {
       this.role = data.role;
       this.touch();
-      /* FIXME: sendMail(root.sys_email, this.user.email,
-            getMessage("mail.statusChange", this.site.title),
-            this.renderSkinAsString("mailstatuschange"));*/
+      this.notify(req.action, this.creator.email, 
+            gettext("Notification of membership change"));
    }
    return;
 };
@@ -98,11 +98,10 @@ Membership.prototype.contact_action = function() {
          if (!req.postParams.text) {
             throw Error(gettext("Please enter the message text."));
          }
-         var body = this.renderSkinAsString("mailmessage", 
-               {text: req.postParams.text});
-         sendMail(session.user.email, this.creator.email, 
-               gettext("Message from a {0} user", root.sys_title), body);
-         res.message = new Message("mailSend");
+         this.notify(req.action, this.creator.email, 
+               gettext('Message from user {0} of {1}', 
+               session.user.name, root.title));
+         res.message = gettext("Your message was sent successfully.");
          res.redirect(this._parent.href());
       } catch(ex) {
          res.message = ex;
@@ -111,9 +110,24 @@ Membership.prototype.contact_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Send e-mail to {0}", this.username);
-   res.data.body = this.renderSkinAsString("mailto");
+   res.data.title = gettext('Contact user "{0}"', this.name);
+   res.data.body = this.renderSkinAsString("Membership#contact");
    this.site.renderSkin("page");
+   return;
+};
+
+Membership.prototype.notify = function(action, recipient, subject) {
+   switch (action) {
+      case "add":
+      case "contact":
+      case "delete":
+      case "edit":
+      case "register":
+      default:
+      res.handlers.sender = User.getMembership();
+      sendMail(root.email, recipient, subject,
+               this.renderSkinAsString("Messages#" + action));
+   }
    return;
 };
 
@@ -147,22 +161,32 @@ Membership.getByName = function(name) {
    return null;
 };
 
-Membership.require = function(role) {
+Membership.prototype.require = function(role) {
    var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
          Membership.MANAGER, Membership.OWNER];
-   if (role && res.handlers.membership) {
-      return roles.indexOf(res.handlers.membership.role) >= roles.indexOf(role);
+   if (role) {
+      return roles.indexOf(this.role) >= roles.indexOf(role);
+   }
+   return false;
+};
+
+Membership.require = function(role) {
+   if (res.handlers.membership) {
+      return res.handlers.membership.require(role);
    }
    return false;
 };
       
 Membership.remove = function(membership) {
-   /*if (!membership) {
-      throw Error(gettext("Please specify a membership you want to be removed."));
-   } else if (membership.role === Membership.OWNER) {
-      throw Error(gettext("Sorry, an owner of a site cannot be removed."));
-   }*/
-   membership.remove();
+   if (membership && membership.constructor === Membership) {
+      if (!this.getPermission("delete")) {
+         throw Error(gettext("Sorry, an owner of a site cannot be removed."));
+      }
+      var recipient = membership.creator.email;
+      membership.remove();
+      this.notify(req.action, recipient,  
+            gettext("Notification of membership cancellation"));
+   }
    return;
 };
 

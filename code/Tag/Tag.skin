@@ -8,7 +8,7 @@
 
 <% #item %>
 <li>
-   <a href="<% tag.href action=<% request.action %> %>"><% tag.name %></a>
+   <a href="<% tag.href action=<% request.action encoding="form" %> %>"><% tag.name %></a>
 </li>
 
 <% #admin %>

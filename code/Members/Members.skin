@@ -1,6 +1,6 @@
 <% #main %>
 <div class="ample">
-   <% members.link add "add a member" prefix="...&nbsp;" %>
+   <% members.link add "add a member" prefix="..." %>
 </div>
 <% members.link . all prefix="... show " %>
 <% members.link owners prefix="| " %>
@@ -37,26 +37,26 @@ $(function() {
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small">Username:</td>
-<td nowrap="nowrap">
+<td>
 <input type="text" name="name" id="name" size="15" tabindex="1" 
-value="<% request.name %>" />
+value="<% request.name encoding="form" %>" />
 </td>
-<td rowspan="4" nowrap="nowrap"> </td>
+<td rowspan="4"> </td>
 <td class="small">
 <% members.link register "Not registered yet" %>
 </td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Password:</td>
+<td class="small">Password:</td>
 <td>
 <input type="password" name="password" id="password" size="15" tabindex="2" />
 </td>
 <td class="small">
-<% members.link sendpwd "Forgot your password?" %>
+<% members.link reset "Password forgotten?" %>
 </td>
 </tr>
 <tr>
-<td nowrap="nowrap"> </td>
+<td> </td>
 <td colspan="2" class="small">
 <input type="checkbox" id="remember" name="remember" tabindex="3" 
 <% if <% request.remember %> is "on" then 'checked="checked"' %> />
@@ -64,7 +64,7 @@ value="<% request.name %>" />
 </td>
 </tr>
 <tr>
-<td nowrap="nowrap"> </td>
+<td> </td>
 <td colspan="2"><br />
 <button type="submit" id="submit" name="login" value="1" 
 tabindex="4">login</button>
@@ -99,32 +99,32 @@ $(function() {
 <input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">Username:</td>
-<td nowrap="nowrap">
-<input type="text" name="name" value="<% request.name %>" />
-</td>
-</tr>
-<tr>
-<td class="small" valign="top" nowrap="nowrap">e-mail:</td>
+<td class="small">Username:</td>
 <td>
-<input type="text" name="email" value="<% request.email %>" />
+<input type="text" name="name" value="<% request.name encoding="form" %>" />
 </td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Password:</td>
-<td nowrap="nowrap">
+<td class="small" valign="top">e-mail:</td>
+<td>
+<input type="text" name="email" value="<% request.email encoding="form" %>" />
+</td>
+</tr>
+<tr>
+<td class="small">Password:</td>
+<td>
 <input type="password" name="password" id="password" />
 </td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Confirm password:</td>
-<td nowrap="nowrap">
+<td class="small">Confirm password:</td>
+<td>
 <input type="password" name="passwordConfirm" id="passwordConfirm" />
 </td>
 </tr>
 <tr>
-<td nowrap="nowrap">&nbsp;</td>
-<td nowrap="nowrap"><br />
+<td></td>
+<td><br />
 <button type="submit" id="submit" name="register" 
 value="register">Register</button>
 <button type="submit" name="cancel" value="cancel">Cancel</button>
@@ -133,14 +133,28 @@ value="register">Register</button>
 </table>
 </form>
 
+<% #reset %>
+<form id="login" method="post" action="<% response.action %>">
+<div class="small">Username:</div>
+<div><input type="text" name="name" id="name" size="15" tabindex="1" 
+value="<% request.name encoding="form" %>" /></div>
+<div class="small">e-mail:</div>
+<div><input type="text" name="email" id="email" size="15" tabindex="2" 
+value="<% request.email encoding="form" %>"/></div>
+<br />
+<button type="submit" id="submit" name="reset" value="1" 
+tabindex="4">reset</button>
+</form>
+
 <% #add %>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td nowrap="nowrap">
-   <input type="text" name="term" id="term" value="<% request.term %>" />
+<td>
+   <input type="text" name="term" id="term" 
+   value="<% request.term encoding="form" %>" />
 </td>
-<td nowrap="nowrap"> 
+<td> 
    <button type="submit" name="search" value="1">Search</button>
 </td>
 </tr>

@@ -77,8 +77,8 @@ Admin.prototype.setup_action = function() {
 };
 
 Admin.prototype.update = function(data) {
-   root.update(data);
    root.map({
+      email: data.email,
       notificationScope: data.notificationScope,
       quota: data.quota,
       creationScope: data.creationScope,
@@ -403,7 +403,6 @@ Admin.prototype.updateUser = function(data) {
 };
 
 Admin.prototype.renderItem = function(item) {
-   res.handlers.item = item;
    var name = item._prototype;
    (name === "Root") && (name = "Site");
    Admin.prototype.renderSkin("Admin#" + name);

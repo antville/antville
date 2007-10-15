@@ -64,6 +64,7 @@ Stories.prototype.create_action = function() {
       try {
          story.update(req.postParams);
          this.add(story);
+         story.notify(req.action);
          res.message = gettext("The story was successfully created.");
          res.redirect(story.href());
       } catch (ex) {
