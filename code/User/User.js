@@ -228,10 +228,18 @@ User.login = function(data) {
    return user;
 };
 
-User.require = function(s) {
-   var status = [User.BLOCKED, User.REGULAR, User.PRIVILEGED];
-   if (s && session.user) {
-      return status.indexOf(session.user.status) >= status.indexOf(s);
+User.logout = function() {
+  session.logout();
+  res.setCookie(User.COOKIE, String.EMPTY);
+  res.setCookie(User.HASHCOOKIE, String.EMPTY);
+  delete session.data.referrer;
+  return;
+};
+
+User.require = function(requiredStatus) {
+   var status = [User.BLOCKED, User.REGULAR, User.TRUSTED, User.PRIVILEGED];
+   if (requiredStatus && session.user) {
+      return status.indexOf(session.user.status) >= status.indexOf(requiredStatus);
    }
    return false;
 };

@@ -42,8 +42,9 @@ You can change it anytime you want.</p>
 <% site.creator link %>.</p>
 
 <% #search %>
-<form method="get" action="<% site.href search %>">
-   <input type="text" name="q" class="searchbox" value="" />
+<form method="post" action="<% site.href search %>">
+   <input type="text" name="q" class="searchbox" 
+   value="<% request.q encoding="form" %>" />
    <button type="submit" name="search" value="1" 
    class="searchbox">search</button>
 </form>

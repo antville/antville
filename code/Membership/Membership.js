@@ -26,11 +26,12 @@ Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor",
       "Manager", "Owner");
       
 Membership.prototype.constructor = function(user, role) {
+   user || (user = session.user);
    if (user) {
       this.map({
          creator: user,
          name: user.name,
-         role: role || Membership.SUBSCRIBER,
+         role: role,
          created: new Date
       });
       this.touch();
@@ -45,8 +46,6 @@ Membership.prototype.getPermission = function(action) {
       return this.creator !== session.user;
       case "delete":
       return this.role !== Membership.OWNER;
-      case "unsubscribe":
-      return this.role === Membership.SUBSCRIBER;
    }
    return true;
 };
@@ -84,7 +83,7 @@ Membership.prototype.update = function(data) {
    } else if (this.user === session.user) {
       throw Error(gettext("Sorry, you are not allowed to edit your own membership."));
    } else if (data.role !== this.role) {
-      this.role = data.role;
+      this.role = data.role || Membership.SUBSCRIBER;
       this.touch();
       this.notify(req.action, this.creator.email, 
             gettext("Notification of membership change"));
@@ -139,8 +138,11 @@ Membership.prototype.getMacroHandler = function(name) {
 };
 
 Membership.prototype.link_filter = function(value, param) {
+   if (this.isTransient()) {
+      return value;
+   }
    return HopObject.prototype.link_filter.call(this, value, 
-         param, this.creator.url);
+         param, this.creator.url); // || this.href());
 };
 
 Membership.prototype.email_macro = function(param) {
@@ -179,13 +181,15 @@ Membership.require = function(role) {
       
 Membership.remove = function(membership) {
    if (membership && membership.constructor === Membership) {
-      if (!this.getPermission("delete")) {
+      if (!membership.getPermission("delete")) {
          throw Error(gettext("Sorry, an owner of a site cannot be removed."));
       }
       var recipient = membership.creator.email;
       membership.remove();
-      this.notify(req.action, recipient,  
-            gettext("Notification of membership cancellation"));
+      if (req.action === "delete") {
+         membership.notify(req.action, recipient,  
+               gettext("Notification of membership cancellation"));
+      }
    }
    return;
 };

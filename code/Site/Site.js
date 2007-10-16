@@ -84,37 +84,33 @@ Site.prototype.constructor = function(name, title) {
 
 Site.prototype.getPermission = function(action) {
    switch (action) {
+      case "main.js":
+      case "main.css":
       case "robots.txt":
       return true;
       case ".":
       case "main":
-      case "main.js":
-      case "main.css":
       case "rss.xml":
       case "rss.xsl":
+      case "search":
       case "tags":
-      return this.status !== Site.BLOCKED &&
-            !User.require(User.BLOCKED) && 
-            Site.require(Site.PUBLIC) ||
-            Site.require(Site.RESTRICTED) && 
-            Membership.require(Membership.SUBSCRIBER) ||
-            Site.require(Site.CLOSED) &&
-            Membership.require(Membership.OWNER) || 
+      return Site.require(Site.PUBLIC) ||
+            (Site.require(Site.RESTRICTED) && 
+            Membership.require(Membership.SUBSCRIBER)) ||
+            (Site.require(Site.CLOSED) &&
+            Membership.require(Membership.OWNER)) || 
             User.require(User.PRIVILEGED);
       case "edit":
       case "referrers":
-      return this.status !== Site.BLOCKED && 
-            !User.require(User.BLOCKED) && 
-            Membership.require(Membership.OWNER) ||
-            User.require(User.PRIVILEGED);
+      return (Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED));
       case "subscribe":
-      return this.status !== Site.BLOCKED &&
-            !User.require(User.BLOCKED) && 
-            Site.require(Site.PUBLIC) &&
+      return Site.require(Site.PUBLIC) &&
             !Membership.require(Membership.SUBSCRIBER);
       case "unsubscribe":
+      var membership = this.members.get(session.user.name)
       return User.require(User.REGULAR) && 
-            !Membership.require(Membership.OWNER);
+            !membership.require(Membership.OWNER);
    }
    return false;
 };
@@ -366,142 +362,53 @@ Site.prototype.referrers_action = function() {
 };
 
 Site.prototype.search_action = function() {
-   var self = this;
-
-   /**
-    * private method for rendering the results
-    */
-   var renderResult = function(hits, itemsPerPage, pageIdx) {
-      var currIdx = 0;
-      var size = hits.length();
-      var validCnt = 0;
-   
-      var totalPages = Math.ceil(size/itemsPerPage);
-      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
-         pageIdx = 0;
-      var start = (pageIdx * itemsPerPage);
-      stop = Math.min(start + itemsPerPage, size);
-      res.push();
-      while (currIdx < size && validCnt < stop) {
-         var item = Story.getById(hits.doc(currIdx).get("id"));
-         if (item) {
-            var status = (item instanceof Comment) ? item.story.online : item.online;
-            if (status > 0) {
-               if (validCnt >= start) {
-                  item.renderSkin("searchview", {score: Math.round(hits.score(currIdx) * 100)});
-               }
-               validCnt++;
-            } else {
-               // "correct" the number of hits since
-               // the story/comment is offline
-               total--;
-            }
-         }
-         currIdx++;
-      }
-      return res.pop();
+   var search = stripTags(req.postParams.q);
+   var db = getDBConnection("antville");
+   var query = 'select id from content where site_id = ' + this._id +
+         " and prototype = 'Story' and status <> 'closed' and " +
+         " metadata like '%title:\"%" + search + "%\"%' or " +
+         " metadata like '%text:\"%" + search + "%\"%' " +
+         " order by created desc limit 25";
+   var rows = db.executeRetrieval(query);
+   var ref, counter = 0;
+   res.push();
+   while (rows.next()) {
+      ref = Story.getById(rows.getColumnItem("id"));
+      ref.renderSkin("Story#preview");
+      counter += 1;
    }
-
-   /**
-    * main action body
-    */
-   if (req.isGet() && req.data.q != null) {
-      var query = stripTags(req.data.q);
-      var queryArr = ["q=" + query];
-
-      // construct the filter query
-      var fq = new Search.BooleanQuery();
-      fq.addQuery(new Search.RangeQuery("online", 1, 2));
-      // filter by creator
-      if (req.data.c) {
-         fq.addTerm("creator", req.data.c);
-         queryArr.push("c=" + req.data.c);
-      }
-      // filter by createtime
-      if (req.data.ct) {
-         var then = new Date();
-         var min = new Date(then.setMonth(then.getMonth() - parseInt(req.data.ct, 10)));
-         min = min.format("yyyyMMdd", this.getLocale(), this.getTimeZone());
-         fq.addQuery(new Search.RangeQuery("createtime", min));
-         queryArr.push("ct=" + req.data.ct);
-      }
-      var filter = new Search.QueryFilter(fq);
-
-      // construct the query itself
-      var q = new Search.BooleanQuery();
-      q.addTerm("site", this._id);
-      // occurrence
-      queryArr.push("o=" + req.data.o);
-      switch (req.data.o) {
-         case "topic":
-            q.addTerm("topic", query);
-            break;
-         case "title":
-            q.addTerm("title", query);
-            break;
-         case "text":
-            q.addTerm("text", query);
-            break;
-         default:
-            q.addTerm(["title", "text", "topic"], query);
-            break;
-      }
-
-      var index = this.getIndex();
-      if (!index) {
-         res.message = getMessage("error.searchNothingFound", encodeForm(query));
-      } else {
-         var now = new Date();
-         var searcher = new index.Searcher();
-         var total = searcher.search(q, filter);
-         res.data.resultlist = renderResult(searcher.hits, 10, req.data.page);
-         switch(total) {
-            case 0:
-               res.message = getMessage("error.searchNothingFound", encodeForm(query));
-               break;
-            case 1:
-               res.message = getMessage("confirm.resultOne", encodeForm(query));
-               break;
-            default:
-               res.message = getMessage("confirm.resultMany", [encodeForm(query), total]);
-               break;
-         }
-         res.data.pagenavigation = renderPageNavigation(total, this.href(req.action) + "?" + queryArr.join("&"), 10, req.data.page);
-         searcher.close();
-      }
-      app.debug("[" + this.alias + "] search for " + q.toString() +
-                ", filter: " + filter.toString() +
-                " (" + (new Date()).diff(now) + "ms)");
-   }
-
-   res.data.action = this.href(req.action);
-   res.data.title = this.title;
-   res.data.body = this.renderSkinAsString("searchresult");
+   rows.release();
+   res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
+   res.data.title = gettext('Search results for "{0}" in site "{1}"', 
+         search, this.title);
+   res.data.body = res.pop();
    this.renderSkin("page");
    return;
 };
 
 Site.prototype.subscribe_action = function() {
-   this.members.add(new Membership(session.user));
-   res.message = gettext("You successfully subscribed to {0}", this.title);
+   var membership = new Membership(session.user, Membership.SUBSCRIBER);
+   this.members.add(membership);
+   res.message = gettext('You successfully subscribed to the site "{0}".', 
+         this.title);
    res.redirect(this.href());
    return;
 };
 
 Site.prototype.unsubscribe_action = function() {
    if (req.postParams.proceed) {
-      try {
+      //try {
          Membership.remove(this.members.get(session.user.name));
-         res.message = gettext("Successfully deleted the membership.");
-         res.redirect(this.members.href("subscriptions"));
-      } catch (err) {
+         res.message = gettext("Successfully unsubscribed the membership.");
+         res.redirect(this.href());
+      /*} catch (err) {
          res.message = err.toString();
-      }
+      }*/
    }
 
    res.data.title = gettext("Remove subscription to {0}", this.title);
-   res.data.body = this.renderSkinAsString("delete", {
-      text: gettext('You are about to remove the subscription to {0}', 
+   res.data.body = this.renderSkinAsString("HopObject#delete", {
+      text: gettext('You are about to remove the subscription to the site "{0}".', 
             this.title)
    });
    this.renderSkin("page");
@@ -616,15 +523,6 @@ Site.prototype.getLocale = function() {
       locale = java.util.Locale.getDefault();
    }
    return this.cache.locale = locale;
-};
-
-Site.prototype.getDateSymbols = function() {
-   var symbols;
-   if (symbols = this.cache.dateSymbols) {
-      return symbols;
-   }
-   this.cache.dateSymbols = new java.text.DateFormatSymbols(this.getLocale());
-   return this.cache.dateSymbols;
 };
 
 Site.prototype.getTimeZone = function() {

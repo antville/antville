@@ -249,6 +249,7 @@ function renderLink(param, url, text, handler) {
       param.href = handler.href(url);
    }
    html.link(param, gettext(text));
+   return;
 }
 
 function breadcrumbs_macro (param, delimiter) {

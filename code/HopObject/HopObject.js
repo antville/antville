@@ -48,15 +48,26 @@ HopObject.prototype.onRequest = function() {
 
    User.autoLogin();
    res.handlers.membership = User.getMembership();
+   
    if (User.getCurrentStatus() === User.BLOCKED) {
-      session.logout();
-      res.message = new Error(gettext("Sorry, your account has been disabled. Please contact the maintainer of this site for further information."));
-      res.redirect(root.href());
+      User.logout();
+      res.status = 401;
+      res.writeln(gettext("Sorry, your account has been blocked."));
+      res.writeln(gettext("Please contact the maintainer of this site for further information."));
+      res.stop();
    }
    
+   if (res.handlers.site.status === Site.BLOCKED && 
+         !User.require(User.PRIVILEGED)) {
+      res.status = 401;
+      res.writeln(gettext("Sorry, this site has been blocked."));
+      res.writeln(gettext("Please contact the maintainer of this site for further information."));
+      res.stop();
+   }
+
    if (!this.getPermission(req.action)) {
       res.status = 401;
-      res.write("Sorry, you are not allowed to access this part of the site.");
+      res.write(gettext("Sorry, you are not allowed to access this part of the site."));
       res.stop();
    }
 
@@ -338,6 +349,9 @@ HopObject.prototype.toString = function() {
 };*/
 
 HopObject.prototype.link_filter = function(value, param, action) {
+   if (!action) {
+      return value;
+   }
    return renderLink(param, action, value, this);
 };
 

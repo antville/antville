@@ -51,8 +51,8 @@ Story.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
       case "comment":
       return this.site.commentMode === Site.ENABLED &&
-            this.commentMode === Story.OPEN ||
-            this.commentMode === Story.MODERATED;
+            (this.commentMode === Story.OPEN ||
+            this.commentMode === Story.MODERATED);
       case "delete":
       return this.creator === session.user || 
             Membership.require(Membership.MANAGER) ||
@@ -61,10 +61,10 @@ Story.prototype.getPermission = function(action) {
       case "rotate":
       return this.creator === session.user || 
             Membership.require(Membership.MANAGER) || 
-            this.status === Story.SHARED &&
-            Membership.require(Membership.CONTRIBUTOR) || 
-            this.status === Story.OPEN && 
-            Membership.require(Membership.SUBSCRIBER) ||
+            (this.status === Story.SHARED &&
+            Membership.require(Membership.CONTRIBUTOR)) || 
+            (this.status === Story.OPEN && 
+            Membership.require(Membership.SUBSCRIBER)) ||
             User.require(User.PRIVILEGED);
    }
    return false;

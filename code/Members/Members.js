@@ -23,9 +23,6 @@
 //
 
 Members.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
    switch (action) {
       case "login":
       case "logout":
@@ -40,13 +37,16 @@ Members.prototype.getPermission = function(action) {
       case "contributors":
       case "subscribers":
       case "add":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER);
+      return this._parent.getPermission("main") &&
+            (User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.OWNER));
       case "edit":
+      return this._parent.getPermission("main");
       case "privileges":
       case "subscriptions":
       case "updated":
-      return Membership.require(Membership.SUBSCRIBER);
+      return this._parent.getPermission("main") &&
+            Membership.require(Membership.SUBSCRIBER);
    }
    return false;
 };
@@ -77,7 +77,7 @@ Members.prototype.register_action = function() {
       try {
          var title = res.handlers.site.title;
          var user = User.register(req.postParams);
-         var membership = new Membership(user);
+         var membership = new Membership(user, Membership.SUBSCRIBER);
          this.add(membership);
          membership.notify(req.action, user.email, 
                gettext('Welcome to "{0}"!', title));
@@ -158,12 +158,9 @@ Members.prototype.login_action = function() {
 
 Members.prototype.logout_action = function() {
    if (session.user) {
-     res.message = gettext("Good bye, {0}! Lookin' forward to seeing you again!", 
-           session.user.name);
-     session.logout();
-     delete session.data.referrer;
-     res.setCookie(User.COOKIE, String.EMPTY);
-     res.setCookie(User.HASHCOOKIE, String.EMPTY);
+      res.message = gettext("Good bye, {0}! Lookin' forward to seeing you again!", 
+            session.user.name);
+      User.logout();
    }
    res.redirect(this._parent.href());
    return;
@@ -346,7 +343,7 @@ Members.prototype.addMembership = function(data) {
    } else if (this.get(data.name)) {
       throw Error(gettext("This user is already a member of this site."));
    }
-   var membership = new Membership(user);
+   var membership = new Membership(user, Membership.SUBSCRIBER);
    this.add(membership);
    return membership;
 };

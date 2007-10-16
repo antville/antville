@@ -4,10 +4,10 @@ You're not logged in <% site.members.link login prefix="... " %>
 <% #status %>
 Logged in as <% membership.name | membership.link %><br />
 <% membership.role prefix="(" suffix=")<br />" %>
-<% members.link edit "edit your profile" prefix="...&nbsp;" suffix="<br />" %>
-<% site.link subscribe text="subscribe to this site" prefix="...&nbsp;" suffix="<br />" %>
-<% members.link updated subscriptions prefix="...&nbsp;" suffix="<br />" %>
-<% members.link logout prefix="...&nbsp;" %>
+<% site.members.link edit "edit your profile" prefix="... " suffix="<br />" %>
+<% site.link subscribe prefix="... " suffix="<br />" %>
+<% site.members.link updated subscriptions prefix="... " suffix="<br />" %>
+<% site.members.link logout prefix="... " %>
 
 <% #members %>
 <div class="listSeparator"> </div>

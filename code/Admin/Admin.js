@@ -403,6 +403,7 @@ Admin.prototype.updateUser = function(data) {
 };
 
 Admin.prototype.renderItem = function(item) {
+   res.handlers.item = item;
    var name = item._prototype;
    (name === "Root") && (name = "Site");
    Admin.prototype.renderSkin("Admin#" + name);
