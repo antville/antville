@@ -1,3 +1,17 @@
+Story.prototype.commentform_macro = function(param) {
+   if (this.commentsMode === "closed") {
+      return;
+   }
+   if (session.user) {
+      res.data.action = this.href("comment");
+      (new Comment()).renderSkin("Comment#edit");
+   } else {
+      html.link({href: this.site.members.href("login")},
+                param.text || gettext("Please login to add a comment"));
+   }
+   return;
+};
+
 Story.prototype.content_macro = function(param) {
    switch (param.as) {
       case "editor" :

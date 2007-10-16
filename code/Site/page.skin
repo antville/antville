@@ -68,7 +68,7 @@
    </div>
    
    <div class="boxheader">search</div>
-   <div class="box"><% site.skin searchbox %></div>
+   <div class="box"><% site.skin Site#search %></div>
    
    <div class="boxheader">calendar</div>
    <div class="box"><% site.calendar %></div>

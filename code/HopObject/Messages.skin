@@ -18,3 +18,16 @@ Best regards.
 The Management'  
 <% membership.name %> <% this.kind %> <% this.href %> 
 <% this.modifier %> <% this.modified short %> %>
+
+<% #disclaimer %>
+<% gettext 
+'DISCLAIMER
+===========
+This is message was automatically sent to you because you are listed as 
+recipient of notification e-mails of the aforementioned site. 
+
+Thus, you will be notified whenever the site has undergone changes as 
+specified in the site preferences.
+
+If you think you have received this e-mail in error please contact the 
+maintainer of the site.' %>

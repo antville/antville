@@ -44,6 +44,8 @@ Root.prototype.getPermission = function(action) {
       return User.require(User.PRIVILEGED);
    }
    switch (action) {
+      case "backup.js":
+      return true;
       case "create":
       return this.getCreationPermission();
       case "default.hook":
@@ -150,6 +152,25 @@ Root.prototype.list_action = function() {
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
    return;
+};
+
+Root.prototype.backup_js_action = function() {
+   if (req.isPost()) {
+      session.data.backup = {};
+      for (var key in req.postParams) {
+         session.data.backup[key] = req.postParams[key];
+      }
+   }
+   return;
+};
+
+Root.restore = function(ref) {
+   var backup;
+   if (backup = session.data.backup) {
+      ref.title = decodeURIComponent(backup.title);
+      ref.text = decodeURIComponent(backup.text);
+   }
+   return ref; 
 };
 
 Root.prototype.default_hook_action = function() {

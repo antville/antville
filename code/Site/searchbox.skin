@@ -1,4 +1,0 @@
-<form method="get" action="<% site.href search %>">
-   <input type="text" name="q" class="searchbox" value="" />
-   <button type="submit" name="search" value="1" class="searchbox">search</button>
-</form>

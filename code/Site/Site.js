@@ -510,7 +510,7 @@ Site.prototype.unsubscribe_action = function() {
 
 Site.prototype.robots_txt_action = function() {
    res.contentType = "text/plain";
-   this.renderSkin("robots");
+   this.renderSkin("Site#robots");
    return;
 };
 

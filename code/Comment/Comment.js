@@ -66,13 +66,10 @@ Comment.prototype.main_action = function() {
 };
 
 Comment.prototype.edit_action = function() {
-   if (session.data.rescuedText) {
-      restoreRescuedText();
-   }
-   
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
+         delete session.data.backup;
          res.message = gettext("The comment was successfully updated.");;
          res.redirect(this.story.href() + "#" + this._id);
       } catch (ex) {
@@ -119,31 +116,5 @@ Comment.remove = function() {
    (this.parent || this).removeChild(this);
    this.story.comments.removeChild(this);
    this.remove();
-   return;
-};
-
-Comment.prototype.___comment_action = function() {
-   if (session.data.rescuedText) {
-      restoreRescuedText();
-   }
-   
-   var comment = new Comment;
-   if (req.postParams.save) {
-      try {
-         comment.update(req.postParams);
-         this.add(comment);
-         res.message;
-         res.redirect(comment.href());
-      } catch (err) {
-         res.message = err.toString();
-      }
-   }
-   
-   res.data.action = this.href(req.action);
-   res.data.title = gettext("Reply to comment of story {0}", 
-         res.handlers.story.getTitle());
-   res.data.body = this.renderSkinAsString("Comment#replay");
-   res.data.body += comment.renderSkinAsString("Comment#edit");
-   this.site.renderSkin("page");
    return;
 };

@@ -55,16 +55,13 @@ Stories.prototype.main_action = function() {
 };
 
 Stories.prototype.create_action = function() {
-   if (session.data.rescuedText) {
-      restoreRescuedText();
-   }
-   
    var story = new Story;
    if (req.postParams.save) {
       try {
          story.update(req.postParams);
          this.add(story);
          story.notify(req.action);
+         delete session.data.backup;
          res.message = gettext("The story was successfully created.");
          res.redirect(story.href());
       } catch (ex) {

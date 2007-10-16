@@ -768,32 +768,6 @@ function pingUpdatedSites() {
 }
 
 // FIXME:
-function rescueText(param) {
-   session.data.rescuedText = new Object();
-   for (var i in param) {
-      if (i.startsWith("content_"))
-         session.data.rescuedText[i] = param[i];
-   }
-   session.data.rescuedText.discussions = param.discussions;
-   session.data.rescuedText.topic = param.topic;
-   session.data.rescuedText.discussions_array = param.discussions_array;
-   session.data.rescuedText.topicidx = param.topicidx;
-   session.data.rescuedText.online = param.online;
-   session.data.rescuedText.editableby = param.editableby;
-   session.data.rescuedText.createtime = param.createtime;
-   return;
-}
-
-// FIXME:
-function restoreRescuedText() {
-   // copy story-parameters back to req.data
-   for (var i in session.data.rescuedText)
-      req.data[i] = session.data.rescuedText[i];
-   session.data.rescuedText = null;
-   return;
-}
-
-// FIXME:
 function extractContent(param, origContent) {
    var result = {isMajorUpdate: false, exists: false, value: new HopObject()};
    for (var i in param) {

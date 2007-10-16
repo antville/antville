@@ -109,13 +109,10 @@ Story.prototype.getTitle = function(limit) {
 };
 
 Story.prototype.edit_action = function() {
-   if (session.data.rescuedText) {
-      restoreRescuedText();
-   }
-   
    if (req.postParams.save) {
       //try {
          this.update(req.postParams);
+         delete session.data.backup;
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());
       //} catch (ex) {
@@ -228,9 +225,6 @@ Story.prototype.rotate_action = function() {
 };
 
 Story.prototype.comment_action = function() {
-   if (session.data.rescuedText) {
-      restoreRescuedText();
-   }
    var comment = new Comment(this);
    if (req.postParams.save) {
       try {
@@ -239,6 +233,7 @@ Story.prototype.comment_action = function() {
          // Force addition to aggressively cached subcollection
          (this.story || this).comments.add(comment);
          comment.notify(req.action);
+         delete session.data.backup;
          res.message = gettext("The comment was successfully created.");
          res.redirect(comment.href());
       } catch (ex) {
@@ -309,20 +304,6 @@ Story.prototype.comments_macro = function(param, mode) {
          this.renderSkin(this.parent.constructor === Story ? 
                "Comment#main" : "Comment#reply");
       });
-   }
-   return;
-};
-
-Story.prototype.commentform_macro = function(param) {
-   if (this.commentsMode === "closed") {
-      return;
-   }
-   if (session.user) {
-      res.data.action = this.href("comment");
-      (new Comment()).renderSkin("Comment#edit");
-   } else {
-      html.link({href: this.site.members.href("login")},
-                param.text || gettext("Please login to add a comment"));
    }
    return;
 };
@@ -476,12 +457,6 @@ Story.prototype.macro_filter = function(value, param) {
    skin.allowMacro("story.topic");
    skin.allowMacro("imageoftheday");
    skin.allowMacro("spacer");
-
-   // FIXME: allow module text macros
-   for (var i in app.modules) {
-      if (app.modules[i].allowTextMacros)
-         app.modules[i].allowTextMacros(skin);
-   }
 
    var site;
    if (this.site !== res.handlers.site) {

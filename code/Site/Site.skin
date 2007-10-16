@@ -41,6 +41,36 @@ You can change it anytime you want.</p>
 <p>This site was created on <% site.created long %> by 
 <% site.creator link %>.</p>
 
+<% #search %>
+<form method="get" action="<% site.href search %>">
+   <input type="text" name="q" class="searchbox" value="" />
+   <button type="submit" name="search" value="1" 
+   class="searchbox">search</button>
+</form>
+
+<% #robots %>
+User-agent: *
+Disallow: /referrers
+Disallow: /stories/top
+
+<% #menuExt %>
+<script type="text/javascript" defer="defer">
+<!--
+var win = external.menuArguments;
+var url = "<% site.url %>stories/create?content_text=";
+var link = escape('<a href="' + win.location.href + '">' + 
+   win.document.title + "</a>: ");
+var text = escape(win.document.selection.createRange().text);
+win.location.href = url + link + text;
+//-->
+</script>
+
+<% #menuExtRegistry %>
+REGEDIT4
+[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
+@="<% site.url %>menuext"
+"contexts"=hex:31
+
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">

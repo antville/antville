@@ -37,16 +37,17 @@
 </div>
 
 <% #edit %>
+<% comment.skin Story#restore %>
 <% parent.skin <% parent.type suffix="#comment" %> %>
 <a name="form" id="form"></a>
 <br />
 <a name="form" id="form"></a>
 <form method="post" action="<% response.action %>">
-<p>
+<p class="backup">
    <span class="small">Title:</span><br />
    <% comment.input title class="formTitle" %>
 </p>
-<p>
+<p class="backup">
    <span class="small">Text:</span><br />
    <% comment.textarea text cols="31" rows="10" class="formText" %>
 </p>
@@ -59,5 +60,6 @@
 <p>
    <button type="submit" name="save" value="1">save</button>
    <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="button" id="restore" value="1">restore</button>
 </p>
 </form>

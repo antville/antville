@@ -163,15 +163,56 @@ for (var i in referrers) {
 </noscript>
 </table>
 
+<% #restore %>
+<script type="text/javascript">
+<!--
+$(function() {
+   if (!"<% session.backup %>") {
+      $("#restore").hide();
+   } else {
+      $("#restore").click(function() {
+         $("#title").val(decodeURIComponent("<% session.backup.title %>"));
+         $("#text").val(decodeURIComponent("<% session.backup.text %>"));
+         $(this).hide();
+         return;
+      });
+   }
+   
+   var currentTitle, currentText;
+   $(".backup > :input").blur(function() {
+      var title = $.trim($("#title").val());
+      var text = $.trim($("#text").val());
+      if ((title || text) && (currentTitle || currentText) && 
+            (currentTitle !== title || currentText !== text)) {
+         $.ajax({
+            async: true,
+            type: "POST",
+            url: '<% root.href backup.js %>',
+            data: {title: encodeURIComponent(title),
+                  text: encodeURIComponent(text)},
+            dataType: "json"
+         });
+      }
+      currentTitle = title;
+      currentText = text
+      return;;
+   });
+   return;
+});
+//-->
+</script>
+
 <% #edit %>
+<% story.skin Story#restore %>
 <form method="post" action="<% response.action %>">
 <p>
    <div class="small">Title:</div>
-   <div><% story.input title class="formTitle" %></div>
+   <div class="backup"><% story.input title class="formTitle" %></div>
 </p>
 <p>
    <div class="small">Text:</div>
-   <div><% story.textarea text cols="30" rows="15" class="formText" %></div>
+   <div class="backup"><% story.textarea text cols="30" rows="15" 
+   class="formText" %></div>
 </p>
 <p><fieldset>
    <legend class="small">Options</legend>
@@ -189,5 +230,6 @@ for (var i in referrers) {
    <button type="submit" name="save" value="1">save</button>
    <!--button type="submit" name="save" value="2">publish</button-->
    <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="button" id="restore" value="1">restore</button>
 </p>
 </form>
