@@ -29,6 +29,7 @@ Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
 Site.getArchiveModes = defineConstants(Site, "closed", "public");
 Site.getNotificationModes = defineConstants(Site, "Nobody", 
       "Owner", "Manager", "Contributor", "Subscriber" );
+Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
 
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentMode");
@@ -46,7 +47,7 @@ this.handleMetadata("shortDateFormat");
 this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
 this.handleMetadata("title"),
-this.handleMetadata("webHookEnabled");
+this.handleMetadata("webHookMode");
 this.handleMetadata("webHookLastUpdate");
 this.handleMetadata("webHookUrl");
 
@@ -178,6 +179,8 @@ Site.prototype.getFormOptions = function(name) {
       return getDateFormats("short");
       case "timeZone":
       return getTimeZones();
+      case "webHookMode":
+      return Site.getWebHookModes();
       default:
       return HopObject.prototype.getFormOptions.apply(this, arguments);
    }
@@ -205,7 +208,7 @@ Site.prototype.update = function(data) {
       email: data.email,
       mode: data.mode || Site.PRIVATE,
       webHookUrl: data.webHookUrl,
-      webHookEnabled: data.webHookEnabled ? true : false,
+      webHookMode: data.webHookMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
       pageSize: parseInt(data.pageSize, 10) || 3,
       commentMode: data.commentMode || Site.DISABLED,
@@ -546,14 +549,6 @@ Site.prototype.list_macro = function(param, type) {
    return;
 };
 
-Site.prototype.moduleNavigation_macro = function(param) {
-   if (!param.module)
-      return;
-   this.applyModuleMethod(app.modules[param.module],
-                          "renderSiteNavigation", param);
-   return;
-};
-
 Site.prototype.calendar_macro = function(param) {
    var calendar = new jala.Date.Calendar(this.archive);
    //calendar.setAccessNameFormat("yyyy/MM/dd");
@@ -565,9 +560,6 @@ Site.prototype.calendar_macro = function(param) {
 };
 
 Site.prototype.age_macro = function(param) {
-   if (!this.createtime) {
-      this.createtime = new Date;
-   }
    //res.write(this.createtime.getAge());
    res.write(Math.floor((new Date() - this.createtime) / Date.ONEDAY));
    return;
@@ -594,192 +586,6 @@ Site.prototype.referrers_macro = function() {
       });
    }
    rows.release();
-   return;
-};
-
-Site.prototype.xmlbutton_macro = function(param) {
-   param.href = this.href("rss.xml");   
-   Images.Default.render("xmlbutton", param);
-   return;
-};
-
-/**
- * renders the searchbox
- */
-Site.prototype.searchbox_macro = function(param) {
-   this.renderSkin("searchbox");
-   return;
-};
-
-/**
- * function renders the months of the archive
- */
-Site.prototype.monthlist_macro = function(param) {
-   if (!this.stories.size() || !this.metadata.get("archive"))
-      return;
-   var size = param.limit ? Math.min(this.size(), param.limit) : this.size();
-   for (var i=0;i<size;i++) {
-      var curr = this.get(i);
-      var next = this.get(i+1);
-      if (!next || next.groupname.substring(0, 6) < curr.groupname.substring(0, 6)) {
-         res.write(param.itemprefix);
-         Html.openLink({href: curr.href()});
-         var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", this.getTimeZone());
-         res.write(formatTimestamp(ts, param.format ? param.format : "MMMM yyyy"));
-         Html.closeLink();
-         res.write(param.itemsuffix);
-      }
-   }
-   return;
-};
-
-/**
- * macro rendering recipients for email notification
- * param.event: storycreate/commentcreate/textupdate/upload
- * please add some error message for undefined param.event
- */
-Site.prototype.notify_macro = function(param) {
-   var notifyContributors = param.notifyContributors ? 
-      param.notifyContributors : getMessage("Site.notifyContributors");
-   var notifyAdmins = param.notifyAdmins ? 
-      param.notifyAdmins : getMessage("Site.notifyAdmins");
-   var notifyNobody = param.notifyNobody ? 
-      param.notifyNobody : getMessage("Site.notifyNobody");
-
-   var pref = this.properties.get("notify_" + param.event);
-   if (param.as == "editor") {
-      var options = new Array(notifyNobody, notifyAdmins, notifyContributors);
-      Html.dropDown({name: "notify_" + param.event}, options, pref);
-   } else {
-      switch (pref) {
-         case 2:
-            return notifyContributors;
-         case 1:
-            return notifyAdmins;
-         default:
-            return notifyNobody;
-      }
-   }
-   return;
-};
-
-/**
- * macro rendering notification settings if enabled
- */
-Site.prototype.notification_macro = function(param) {
-   if (this.isNotificationEnabled())
-      this.renderSkin("notification");
-   return;
-};
-
-/**
- * render generic preference editor or value
- */
-Site.prototype.preferences_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.properties.createInputParam(param.name, param);
-      delete inputParam.part;
-      if (param.cols || param.rows)
-         Html.textArea(inputParam);
-      else
-         Html.input(inputParam);
-   } else
-      res.write(this.properties.get(param.name));
-   return;
-};
-
-/**
- * output spamfilter data appropriate
- * for client-side javascript code
- */
-Site.prototype.spamfilter_macro = function(param) {
-   var str = this.metadata.get("spamfilter");
-   if (!str) {
-      return;
-   }
-   var items = str.replace(/\r/g, "").split("\n");
-   for (var i in items) {
-      res.write('"');
-      res.write(items[i]);
-      res.write('"');
-      if (i < items.length-1) {
-         res.write(",");
-      }
-   }
-   return;
-};
-
-/**
- * macro returns the used disk space for this site
- */
-Site.prototype.diskusage_macro = function(param) {
-   res.write(this.getDiskUsage().format("###,###") + " KB");
-   return;
-};
-
-/**
- * macro checks if there are any modules present
- * and if they need to be included in the system setup page
- */
-Site.prototype.modulePreferences_macro = function(param) {
-   for (var i in app.modules)
-      this.applyModuleMethod(app.modules[i], "renderPreferences", param);
-   return;
-};
-
-/**
- * catch some special needs before passing the 
- * macro call up to the HopObject prototype
- * FIXME: this is probably to hackish...
- */
-Site.prototype.switch_macro = function(param) {
-   if (param.name == "userMayEdit") {
-      try {
-         // FIXME: unfortunately, the check* methods are
-         // not very handy, anymore... (need try/catch block)
-         this.checkEdit(session.user, res.data.memberlevel);
-         res.write(param.on);
-      } catch (err) {
-         res.write(param.off);
-         return;
-      }
-   } else
-      HopObject.switch_macro.apply(this, [param]);
-   return;
-};
-
-/**   
- * returns the number of members of this site
- */   
-Site.prototype.membercounter_macro = function(param) {
-   return this.members.size();
-};
-
-/**
- * renders a dropdown containing the possible occurrences
- * of search terms in a content object
- */
-Site.prototype.searchOccurrence_macro = function() {
-   var options = [["", "anywhere"],
-                  ["title", "in the title"],
-                  ["text", "in the text"],
-                  ["topic", "in the topic name"]];
-   Html.dropDown({name: "o"}, options, req.data.o);
-   return;
-};
-
-/**
- * renders a dropdown containing some reasonable
- * timespans for searching
- */
-Site.prototype.searchCreatetime_macro = function() {
-   var options = [["", "anytime"],
-                  ["1", "the past month"],
-                  ["2", "the past 2 months"],
-                  ["4", "the past 4 months"],
-                  ["6", "the past half year"],
-                  ["12", "the past year"]];
-   Html.dropDown({name: "ct"}, options, req.data.ct);
    return;
 };
 
@@ -835,95 +641,41 @@ Site.prototype.getTimeZone = function() {
    return timeZone;
 };
 
-Site.prototype.ping = function() {
-   var title = this.title ? this.title : this.alias;
-
-   // we're doing it the xml-rpc way
-   // (specs at http://newhome.weblogs.com/directory/11)
-   var xr = new Remote("http://rpc.weblogs.com/RPC2");
-   var ping = xr.weblogUpdates.ping(title, this.href());
-   if (!ping.result)
-      return;
-   var result = new Object();
-   result.error = ping.result.flerror;
-   result.message = ping.result.message;
-
-   if (result.error)
-      app.log("Error when notifying weblogs.com for updated site \"" + this.alias + "\": " + result.message);
-
-   // lastping is always set to now to prevent blogs
-   // hanging in the scheduler if a fatal error occurs
-   this.lastping = new Date();
-   return result;
-};
-
-Site.prototype.processHref = function(href) {
-   var vhost = app.properties["vhost." + this.alias];
-   if (vhost)
-      return vhost + href;
-   else
-      return app.properties.defaulthost + "/" + this.alias + href;
-};
-
-Site.prototype.isNotificationEnabled = function() {
-   if (root.sys_allowEmails == 1 || root.sys_allowEmails == 2 && this.trusted)
-      return true;
-   return false;
-};
-
-Site.prototype.sendNotification = function(type, obj) {
-   var notify = this.properties.get("notify_" + type);
-   if (obj.online === 0 || !notify || notify == 0)
-      return;
-   var recipients = new Array();
-   for (var i=0; i<this.members.size(); i++) {
-      var m = this.members.get(i);
-      if ((type != "update" && m.user == obj.creator) || (type == "update" && m.user == obj.modifier))
-         continue;
-      if (notify == 1 && m.level >= CONTENTMANAGER)
-         recipients.push(m.user.email);
-      else if (notify == 2 && m.level >= CONTRIBUTOR)
-         recipients.push(m.user.email);
-   }
-   if (recipients.length > 0) {
-      var param = {
-         user: obj.modifier ? obj.modifier.name :
-            (obj.creator ? obj.creator.name : null),
-         url: obj.href()
-      };
-      var sender = root.sys_title + "<" + root.sys_email + ">";
-      var subject = "[" + root.sys_title + "] " + getMessage("mail.notification");
-      var body = this.renderSkinAsString("notificationMail", param);
-      sendMail(sender, recipients, subject, body);
+Site.prototype.hitchWebHook = function(ref) {
+   ref || (ref = this);
+   var now = new Date;
+   if (this.webHookMode === Site.ENABLED && this.webHookUrl) {
+      if (this.webHookLastUpdate && 
+            now - this.webHookLastUpdate < Date.ONEMINUTE) {
+         return;
+      }
+      app.log("Hitching web hook " + this.webHookUrl + " for " + ref);
+      var http = helma.Http();
+      try {
+         http.setTimeout(100);
+         http.setReadTimeout(100);
+         http.setMethod("POST");
+         http.setContent({
+            url: ref.href(),
+            type: ref.constructor.name,
+            id: ref.name || ref._id,
+            user: ref.modifier.name,
+            date: ref.modified,
+            content: ref.toString()
+         });
+         http.getUrl(this.webHookUrl);
+      } catch (ex) {
+         app.debug("Hitching web hook " + this.webHookUrl + " failed: " + ex);
+      }
+      this.webHookLastUpdate = now;
    }
    return;
 };
 
-Site.prototype.getStaticDir = function(subdir) {
-   var f = new Helma.File(this.getStaticPath(subdir));
-   f.mkdir();
-   return f;
-};
-
-Site.prototype.getDiskUsage = function() {
-   if (this.diskusage == null) {
-      this.diskusage = 0;
-      for (var i=0; i<this.files.count(); i++)
-         this.diskusage += this.files.get(i).filesize;
-      for (var i=0; i<this.images.count(); i++) {
-         if (this.images.get(i).filesize == null)
-            this.images.get(i).filesize = this.images.get(i).getFile().getLength();
-         this.diskusage += this.images.get(i).filesize;
-      }
-   }
-   return Math.round(this.diskusage / 1024);
-};
-
-Site.prototype.getDiskQuota = function() {
-   if (this.trusted || !root.sys_diskQuota) 
-      return Infinity;
-   else 
-      return root.sys_diskQuota;
+Site.prototype.processHref = function(href) {
+   var vhost = app.getProperty("vhost." + this.name, 
+         app.properties.defaultHost + "/" + this.name);
+   return vhost + href;
 };
 
 Site.prototype.getTags = function(type, group) {

@@ -215,3 +215,132 @@ Site.renderDateFormat = function(type, site, param) {
    }
    return;   
 };
+
+Site.prototype.xmlbutton_macro = function(param) {
+   param.href = this.href("rss.xml");   
+   Images.Default.render("xmlbutton", param);
+   return;
+};
+
+Site.prototype.moduleNavigation_macro = function(param) {
+   if (!param.module)
+      return;
+   this.applyModuleMethod(app.modules[param.module],
+                          "renderSiteNavigation", param);
+   return;
+};
+
+Site.prototype.modulePreferences_macro = function(param) {
+   for (var i in app.modules)
+      this.applyModuleMethod(app.modules[i], "renderPreferences", param);
+   return;
+};
+
+Site.prototype.membercounter_macro = function(param) {
+   return this.members.size();
+};
+
+Site.prototype.searchOccurrence_macro = function() {
+   var options = [["", "anywhere"],
+                  ["title", "in the title"],
+                  ["text", "in the text"],
+                  ["topic", "in the topic name"]];
+   Html.dropDown({name: "o"}, options, req.data.o);
+   return;
+};
+
+Site.prototype.searchCreatetime_macro = function() {
+   var options = [["", "anytime"],
+                  ["1", "the past month"],
+                  ["2", "the past 2 months"],
+                  ["4", "the past 4 months"],
+                  ["6", "the past half year"],
+                  ["12", "the past year"]];
+   Html.dropDown({name: "ct"}, options, req.data.ct);
+   return;
+};
+
+Site.prototype.preferences_macro = function(param) {
+   if (param.as == "editor") {
+      var inputParam = this.properties.createInputParam(param.name, param);
+      delete inputParam.part;
+      if (param.cols || param.rows)
+         Html.textArea(inputParam);
+      else
+         Html.input(inputParam);
+   } else
+      res.write(this.properties.get(param.name));
+   return;
+};
+
+Site.prototype.monthlist_macro = function(param) {
+   if (!this.stories.size() || !this.metadata.get("archive"))
+      return;
+   var size = param.limit ? Math.min(this.size(), param.limit) : this.size();
+   for (var i=0;i<size;i++) {
+      var curr = this.get(i);
+      var next = this.get(i+1);
+      if (!next || next.groupname.substring(0, 6) < curr.groupname.substring(0, 6)) {
+         res.write(param.itemprefix);
+         Html.openLink({href: curr.href()});
+         var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", this.getTimeZone());
+         res.write(formatTimestamp(ts, param.format ? param.format : "MMMM yyyy"));
+         Html.closeLink();
+         res.write(param.itemsuffix);
+      }
+   }
+   return;
+};
+
+Site.prototype.spamfilter_macro = function(param) {
+   var str = this.metadata.get("spamfilter");
+   if (!str) {
+      return;
+   }
+   var items = str.replace(/\r/g, "").split("\n");
+   for (var i in items) {
+      res.write('"');
+      res.write(items[i]);
+      res.write('"');
+      if (i < items.length-1) {
+         res.write(",");
+      }
+   }
+   return;
+};
+
+Site.prototype.searchbox_macro = function(param) {
+   this.renderSkin("searchbox");
+   return;
+};
+
+Site.prototype.notify_macro = function(param) {
+   var notifyContributors = param.notifyContributors ? 
+      param.notifyContributors : getMessage("Site.notifyContributors");
+   var notifyAdmins = param.notifyAdmins ? 
+      param.notifyAdmins : getMessage("Site.notifyAdmins");
+   var notifyNobody = param.notifyNobody ? 
+      param.notifyNobody : getMessage("Site.notifyNobody");
+
+   var pref = this.properties.get("notify_" + param.event);
+   if (param.as == "editor") {
+      var options = new Array(notifyNobody, notifyAdmins, notifyContributors);
+      Html.dropDown({name: "notify_" + param.event}, options, pref);
+   } else {
+      switch (pref) {
+         case 2:
+            return notifyContributors;
+         case 1:
+            return notifyAdmins;
+         default:
+            return notifyNobody;
+      }
+   }
+   return;
+};
+
+Site.prototype.notification_macro = function(param) {
+   if (this.isNotificationEnabled())
+      this.renderSkin("notification");
+   return;
+};

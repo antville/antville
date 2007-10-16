@@ -46,6 +46,7 @@ Root.prototype.getPermission = function(action) {
    switch (action) {
       case "create":
       return this.getCreationPermission();
+      case "default.hook":
       case "list":
       case "updates.xml":
       return this.mode !== Site.CLOSED;
@@ -148,6 +149,28 @@ Root.prototype.list_action = function() {
    res.data.title = getMessage("SysMgr.listTitle", {serverTitle: root.getTitle()});
    res.data.body = this.renderSkinAsString("list");
    root.renderSkin("page");
+   return;
+};
+
+Root.prototype.default_hook_action = function() {
+   var ping = function(data) {
+      if (data.type !== "Site") {
+         return;
+      }
+      var remote = new Remote("http://rpc.weblogs.com/RPC2");
+      var call = remote.weblogUpdates.ping(data.id, data.url);
+      if (call.error || call.result.flerror) {
+         app.debug("Error on hitching web hook " + data.url);
+         app.debug(call.error || call.result.message);
+      }
+      return;
+   };
+
+   if (req.isGet()) {
+      this.renderSkin("Root#code", {name: req.action, code: ping.toString()});
+   } else if (req.isPost()) {
+      app.invokeAsync(this, ping, [req.postParams], 1000);
+   }
    return;
 };
 

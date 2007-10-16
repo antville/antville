@@ -116,7 +116,6 @@ Story.prototype.edit_action = function() {
    if (req.postParams.save) {
       //try {
          this.update(req.postParams);
-         this.notify(req.action);
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());
       //} catch (ex) {
@@ -185,23 +184,12 @@ Story.prototype.update = function(data) {
    //this.setTags(data.tags || data.tag_array)
    this.commentMode = data.commentMode;
    this.mode = data.mode;
-   if (this.status === Story.PRIVATE && data.status !== Story.PRIVATE) {
-      if (delta > 50) {
-         site.lastUpdate = new Date;
-      }
-   }
    this.status = data.status;
+   if (this.status !== Story.CLOSED && delta > 50) {
+      site.hitchWebHook();
+      site.lastUpdate = new Date;
+   }
    this.touch();
-   /* if (false && site.isNotificationEnabled() && newStatus != 0) {
-      // status changes from offline to online
-      // (this is bad because somebody could send a bunch
-      // of e-mails simply by toggling the online status.)
-      //if (this.online == 0)
-      //   this.sendNotification("story", "create");
-      // major update of an already online story
-      if (this.online != 0 && content.isMajorUpdate)
-         site.sendNotification("update", this);
-   } */
    return;
 };
 
@@ -523,6 +511,10 @@ Story.prototype.url_filter = function(value, param, mode) {
 };
 
 Story.prototype.getDelta = function(data) {
+   if (this.isTransient()) {
+      return Infinity;
+   }
+
    var deltify = function(o1, o2) {
       var len1 = o1 ? String(o1).length : 0;
       var len2 = o2 ? String(o2).length : 0;

@@ -263,12 +263,6 @@ Layout.prototype.isActive = function() {
    return this === res.handlers.site.layout;
 };
 
-Layout.prototype.getStaticDir = function(subdir) {
-   var f = new Helma.File(this.getStaticPath(subdir));
-   f.mkdir();
-   return f;
-};
-
 Layout.prototype.setParentLayout = function(parent) {
    this.parent = parent;
    // Offspring layouts cannot be shared

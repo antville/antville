@@ -146,7 +146,8 @@ var convert = function(type) {
          metadata.offlineSince = rows.getColumnItem("site_lastoffline");
          metadata.notifiedOfBlocking = rows.getColumnItem("site_lastblockwarn");
          metadata.notifiedOfDeletion = rows.getColumnItem("site_lastdelwarn");
-         metadata.webHookEnabled = rows.getColumnItem("site_enableping");
+         metadata.webHookMode = rows.getColumnItem("site_enableping") ? 
+               "enabled" : "disabled";
          metadata.webHookLastUpdate = rows.getColumnItem("site_lastping");
          if (metadata.country) {
             metadata.locale += "_" + metadata.country;

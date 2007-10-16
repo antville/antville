@@ -100,8 +100,8 @@ You can change it anytime you want.</p>
 <tr>
 <td class="small" valign="top">Web hook:</td>
 <td><% site.input webHookUrl %><br />
-<% site.checkbox webHookEnabled %> 
-<label for="webHookEnabled">enabled<label></td>
+<% site.checkbox webHookMode %> 
+<label for="webHookMode">enabled<label></td>
 </tr>
 <tr>
 <td class="small" valign="top">Layout:</td>
@@ -119,11 +119,8 @@ test-drive the list of available layouts.</span></td>
 <td class="small" valign="top">Enter one 
 <a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> 
 per line to be applied on every URL in the referrer and backlink lists.</td>
-<td valign="top"><% site.preferences name="spamfilter" 
-as="editor" cols="30" rows="7" %></td>
+<td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
 </tr-->
-
-<% site.modulePreferences %>
 
 <tr>
 <td></td>
