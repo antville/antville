@@ -272,48 +272,6 @@ Root.prototype.getCreationPermission = function() {
    return true;
 };
 
-Root.prototype.searchSites  = function(query, sid) {
-   // result array
-   var result = new Array();
-
-   // break up search string
-   var unquote = new RegExp("\\\\", "g");
-   query = query.replace(unquote, "\\\\");
-   unquote = new RegExp("\'", "g");
-   query = query.replace(unquote, "\'\'");
-   var qarr = query.split(" ");
-
-   // construct query
-   var where = "select AV_TEXT.TEXT_ID, site.name from AV_TEXT, site "+
-               "where AV_TEXT.TEXT_F_SITE = site.id " +
-               "and AV_TEXT.TEXT_ISONLINE > 0 and ";
-   for (var i in qarr) {
-      where += "(AV_TEXT.TEXT_RAWCONTENT like '%" + qarr[i].toLowerCase() + 
-            "%') ";
-      if (i < qarr.length-1)
-         where += "and ";
-   }
-   // search only in the specified site
-   if (sid)
-      where += "and site.id = " + sid + " ";
-   else
-      where += "and site.mode = 'online' ";
-   where += "order by AV_TEXT.TEXT_CREATETIME desc";
-
-   var dbcon = getDBConnection ("antville");
-   var dbres = dbcon.executeRetrieval(where);
-   if (dbres) {
-      while (dbres.next()) {
-         var item = new Object();
-         item.sid = dbres.getColumnItem (1).toString();
-         item.sitealias = dbres.getColumnItem (2);
-         result[result.length] = item;
-      }
-   }
-   dbres.release();
-   return result;
-};
-
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 };

@@ -81,11 +81,9 @@ Members.prototype.register_action = function() {
          this.add(membership);
          membership.notify(req.action, user.email, 
                gettext('Welcome to "{0}"!', title));
-         var url = session.data.referrer || this._parent.href();
-         delete session.data.referrer;
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
                title, user.name);
-         res.redirect(url);
+         res.redirect(User.popLocation() || this._parent.href());
       } catch (ex) {
          app.log(ex);
          res.message = ex;
@@ -134,20 +132,16 @@ Members.prototype.login_action = function() {
    if (req.postParams.login) {
       try {
          var user = User.login(req.postParams);
-         var url = session.data.referrer || this._parent.href();
-         delete session.data.referrer;
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
                res.handlers.site.getTitle(), user.name);
-         res.redirect(url);
+         res.redirect(User.popLocation() || this._parent.href());
       } catch (ex) {
          res.message = ex;
          app.log(ex);
       }
    }
 
-   if (!session.data.referrer) {
-      session.data.referrer = req.data.http_referer;
-   }
+   User.pushLocation(req.data.http_referer);
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = gettext("Login");

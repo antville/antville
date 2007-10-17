@@ -90,10 +90,10 @@ HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       //try {
          var str = this.toString();
-         var href = this._parent.href();
+         var url = this._parent.href();
          this.constructor.remove.call(this, this);
          res.message = gettext("{0} was successfully deleted.", str);
-         res.redirect(session.data.retrace || href);
+         res.redirect(User.popLocation() || url);
       /*} catch(ex) {
          res.message = ex;
          app.log(ex);

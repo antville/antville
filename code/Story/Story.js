@@ -225,6 +225,11 @@ Story.prototype.rotate_action = function() {
 };
 
 Story.prototype.comment_action = function() {
+   if (!User.require(User.REGULAR)) {
+      User.pushLocation(this.href(req.action) + "#form");
+      res.message = gettext("Please login to add a comment.");
+      res.redirect(this.site.members.href("login"));
+   }
    var comment = new Comment(this);
    if (req.postParams.save) {
       try {

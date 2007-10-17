@@ -362,26 +362,30 @@ Site.prototype.referrers_action = function() {
 };
 
 Site.prototype.search_action = function() {
-   var search = stripTags(req.postParams.q);
-   var db = getDBConnection("antville");
-   var query = 'select id from content where site_id = ' + this._id +
-         " and prototype = 'Story' and status <> 'closed' and " +
-         " metadata like '%title:\"%" + search + "%\"%' or " +
-         " metadata like '%text:\"%" + search + "%\"%' " +
-         " order by created desc limit 25";
-   var rows = db.executeRetrieval(query);
-   var ref, counter = 0;
-   res.push();
-   while (rows.next()) {
-      ref = Story.getById(rows.getColumnItem("id"));
-      ref.renderSkin("Story#preview");
-      counter += 1;
+   var search = req.postParams.q = stripTags(req.postParams.q);
+   if (!search) {
+      res.message = gettext("Please enter a query in the search form.");
+   } else {
+      var db = getDBConnection("antville");
+      var query = 'select id from content where site_id = ' + this._id +
+            " and prototype = 'Story' and status <> 'closed' and " +
+            " (metadata like '%title:\"%" + search + "%\"%' or " +
+            " metadata like '%text:\"%" + search + "%\"%') " +
+            " order by created desc limit 25";
+      var rows = db.executeRetrieval(query);
+      var ref, counter = 0;
+      res.push();
+      while (rows.next()) {
+         ref = Story.getById(rows.getColumnItem("id"));
+         ref.renderSkin("Story#preview");
+         counter += 1;
+      }
+      rows.release();
+      res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
+      res.data.body = res.pop();
    }
-   rows.release();
-   res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
    res.data.title = gettext('Search results for "{0}" in site "{1}"', 
          search, this.title);
-   res.data.body = res.pop();
    this.renderSkin("page");
    return;
 };

@@ -64,7 +64,6 @@ Images.prototype.create_action = function() {
          image.notify(req.action);
          res.message = gettext('The uploaded image was saved successfully. Its name is "{0}"', 
                image.name);
-         session.data.referrer = null;
          res.redirect(image.href());
       } catch (ex) {
          res.message = ex.toString();

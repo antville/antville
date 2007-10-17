@@ -232,7 +232,7 @@ User.logout = function() {
   session.logout();
   res.setCookie(User.COOKIE, String.EMPTY);
   res.setCookie(User.HASHCOOKIE, String.EMPTY);
-  delete session.data.referrer;
+  User.popLocation();
   return;
 };
 
@@ -257,4 +257,18 @@ User.getMembership = function() {
       membership = Membership.getByName(session.user.name);
    }
    return membership || new Membership;
+};
+
+User.pushLocation = function(url) {
+   if (!session.data.location) {
+      res.debug("Pushing location " + url);
+      session.data.location = url;
+   }
+   return;
+};
+
+User.popLocation = function() {
+   var url = session.data.location;
+   delete session.data.location;
+   return url;
 };
