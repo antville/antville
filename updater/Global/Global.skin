@@ -1,0 +1,35 @@
+<html>
+<head>
+   <script type="text/javascript" 
+         src="<% root.href %>../../static/www/jquery-1.1.3.1.pack.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+var scheduler = setInterval(function() {
+   $.ajax({
+      async: true,
+      type: "GET",
+      url: '<% root.href status.js %>',
+      dataType: "text",
+      error: function(xmlObject, error, exception) {
+         clearInterval(scheduler);
+      },
+      success: function(result) {
+         if (!result) {
+            clearInterval(scheduler);
+         } else {
+            $("#out").append(result);
+         }
+      }
+   });
+   return;
+}, 1000);
+//-->
+</script>
+
+Antville Updater v0.1
+<pre id="out"></pre>
+
+</body>
+</html>
