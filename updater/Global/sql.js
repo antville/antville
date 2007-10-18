@@ -21,7 +21,7 @@ var ResultWrapper = function(result) {
 
 var print = function(str) {
    app.data.out || (app.data.out = new java.lang.StringBuffer());
-   app.data.out.append(str);
+   app.data.out.append(encodeForm(str));
    return;
 }
 

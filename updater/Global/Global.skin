@@ -28,7 +28,7 @@ var scheduler = setInterval(function() {
 //-->
 </script>
 
-Antville Updater v0.1
+<h3>Antville Updater v0.1</h3>
 <pre id="out"></pre>
 
 </body>

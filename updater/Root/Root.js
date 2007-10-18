@@ -1,18 +1,20 @@
 Root.prototype.start_action = function() {
    app.invokeAsync(global, function() {
-      //execute(sql("tag"));
-      //execute(sql("tag_hub"));
-      //update("AV_ACCESSLOG");
-      //update("AV_CHOICE");
-      //update("AV_FILE");
-      //update("AV_IMAGE");
-      //update("AV_LAYOUT");
-      //update("AV_MEMBERSHIP");
-      //update("AV_POLL");
-      //update("AV_SITE");
-      //update("AV_SKIN");
-      //update("AV_SYSLOG");
+      execute(sql("tag"));
+      execute(sql("tag_hub"));
+      update("AV_ACCESSLOG");
+      update("AV_CHOICE");
+      update("AV_FILE");
+      update("AV_IMAGE");
+      update("AV_LAYOUT");
+      update("AV_MEMBERSHIP");
+      update("AV_POLL");
+      update("AV_SITE");
+      update("AV_SKIN");
+      update("AV_SYSLOG");
       update("AV_TEXT");
+      update("AV_USER");
+      update("AV_VOTE");
       return;
    }, [], -1);
    renderSkin("Global");

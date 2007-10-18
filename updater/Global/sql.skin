@@ -61,7 +61,7 @@ alter table AV_FILE change column FILE_F_USER_MODIFIER modifier_id mediumint(10)
 alter table AV_FILE rename file;
 #!files
 alter table file drop column FILE_MIMETYPE;
-alter table file drop column FILE_NAMEE;
+alter table file drop column FILE_NAME;
 alter table file drop column FILE_SIZE;
 alter table file drop column FILE_DESCRIPTION;
 
@@ -159,6 +159,7 @@ alter table AV_POLL change column POLL_QUESTION question mediumtext;
 alter table AV_POLL change column POLL_CLOSETIME closed datetime;
 alter table AV_POLL change column POLL_CREATETIME created datetime;
 alter table AV_POLL change column POLL_MODIFYTIME modified datetime;
+alter table AV_POLL drop column POLL_CLOSED;
 alter table AV_POLL rename poll;
 
 <% #AV_SITE %>
@@ -237,48 +238,105 @@ alter table AV_SKIN change column SKIN_F_USER_MODIFIER modifier_id mediumint(10)
 alter table AV_SKIN change column SKIN_CREATETIME created datetime;
 alter table AV_SKIN change column SKIN_MODIFYTIME modified datetime;
 alter table AV_SKIN rename skin;
+#!skins
+alter table skin drop column SKIN_ISCUSTOM;
+alter table skin drop column SKIN_SOURCE;
+
+<% #skins %>
+select skin.id, site.name as site_name, layout.name, skin.name as skin_name, 
+prototype, SKIN_SOURCE from site, layout, skin where skin.layout_id =
+layout.id and layout.site_id = site.id order by skin.id
 
 <% #AV_SYSLOG %>
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from user, AV_SYSLOG where SYSLOG_OBJECT = user.name and SYSLOG_TYPE = 'user';
 insert into log (context_type, context_id, created, creator_id, action) select 'Site', site.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from site, AV_SYSLOG where SYSLOG_OBJECT = site.name and (SYSLOG_TYPE = 'site' or SYSLOG_TYPE = 'weblog');
 insert into log (context_type, context_id, created, creator_id, action) select 'Root', 1, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, 'setup' from AV_SYSLOG where SYSLOG_TYPE = 'system';
 
-<% #AV_TEXT %>
-#alter table AV_TEXT change column TEXT_ID id mediumint(10);
-#alter table AV_TEXT add column metadata mediumtext;
-#alter table AV_TEXT change column TEXT_CONTENT xml mediumtext;
-#alter table AV_TEXT rename content;
+<% #AV_TEXT_ %>
+alter table AV_TEXT change column TEXT_ID id mediumint(10);
+alter table content change column TEXT_TOPIC topic varchar(255);
+alter table AV_TEXT add column metadata mediumtext;
+alter table AV_TEXT change column TEXT_CONTENT xml mediumtext;
+alter table AV_TEXT rename content;
 #!content
-
-<% #_ %>
-alter table av_text add column parent_type varchar(30);
-update av_text set parent_type = "Story";
-update av_text set parent_type = "Comment" where parent_id is not null;
-
-alter table av_text add column status enum('closed','pending','readonly','public','shared','open');
-update av_text set status = 'private';
-update av_text set status = 'public' where text_isonline <> 0 or parent_type = "Comment";
-update av_text set status = 'shared' where text_editableby = 1;
-update av_text set status = 'open' where text_editableby = 2;
-
-alter table av_text add column mode enum('hidden','featured');
-update av_text set mode = 'hidden' where text_isonline = 1;
-update av_text set mode = 'featured' where text_isonline = 2;
-
-alter table av_text add column comment_mode enum('closed','readonly','moderated','open');
-update av_text set comment_mode = 'closed';
-update av_text set comment_mode = 'open' where text_hasdiscussions = 1;
-
-alter table av_text change column text_alias name varchar(255);
-alter table av_text change column text_f_site site_id mediumint(10);
-alter table av_text change column text_f_text_story story_id mediumint(10);
-alter table av_text change column text_f_text_parent parent_id mediumint(10);
-alter table av_text change column text_reads requests mediumint(10);
-alter table av_text change column text_prototype prototype enum('Story','Comment');
-alter table av_text change column text_content_new metadata mediumtext;
-alter table av_text change column text_f_user_creator creator_id mediumint(10);
-alter table av_text change column text_f_user_modifier modifier_id mediumint(10);
-alter table av_text change column text_createtime created datetime;
-alter table av_text change column text_modifytime modified datetime;
-
+alter table content add column parent_type varchar(30);
+alter table content change column TEXT_ALIAS name varchar(255);
+alter table content change column TEXT_F_SITE site_id mediumint(10);
+alter table content change column TEXT_F_TEXT_STORY story_id mediumint(10);
+alter table content change column TEXT_READS requests mediumint(10);
+alter table content change column TEXT_F_USER_CREATOR creator_id mediumint(10);
+alter table content change column TEXT_F_USER_MODIFIER modifier_id mediumint(10);
+alter table content change column TEXT_CREATETIME created datetime;
+alter table content change column TEXT_MODIFYTIME modified datetime;
+alter table content change column TEXT_F_TEXT_PARENT parent_id mediumint(10);
+alter table content change column TEXT_PROTOTYPE prototype enum('Story','Comment');
+## Set parent mapping
+update content set parent_type = "Story";
+update content set parent_type = "Comment" where parent_id is not null;
 update content set parent_id = story_id  where parent_id is null and prototype = "Comment" and parent_type = "Story";
+## Set status
+alter table content add column status enum('closed','pending','readonly','public','shared','open');
+update content set status = 'closed';
+update content set status = 'public' where TEXT_ISONLINE <> 0 or parent_type = "Comment";
+update content set status = 'shared' where TEXT_EDITABLEBY = 1;
+update content set status = 'open' where TEXT_EDITABLEBY = 2;
+## Set mode
+alter table content add column mode enum('hidden','featured');
+update content set mode = 'hidden' where TEXT_ISONLINE = 1;
+update content set mode = 'featured' where TEXT_ISONLINE = 2;
+## Set comment mode
+alter table content add column comment_mode enum('closed','readonly','moderated','open');
+update content set comment_mode = 'closed';
+update content set comment_mode = 'open' where TEXT_HASDISCUSSIONS = 1;
+## Remove obsolete columns
+alter table content drop column xml;
+alter table content drop column topic;
+alter table content drop column TEXT_DAY;
+alter table content drop column TEXT_TITLE;
+alter table content drop column TEXT_TEXT;
+alter table content drop column TEXT_RAWCONTENT;
+alter table content drop column TEXT_ISONLINE;
+alter table content drop column TEXT_EDITABLEBY;
+alter table content drop column TEXT_HASDISCUSSIONS;
+alter table content drop column TEXT_IPADDRESS;
+
+<% #AV_USER %>
+alter table AV_USER change column USER_ID id mediumint(10);
+alter table AV_USER add column metadata mediumtext default NULL;
+alter table AV_USER add column `status` enum('blocked','regular','trusted','privileged') not null;
+update AV_USER set status = 'regular';
+update AV_USER set status = 'blocked' where USER_ISBLOCKED = 1;
+update AV_USER set status = 'trusted' where USER_ISTRUSTED = 1;
+update AV_USER set status = 'privileged' where USER_ISSYSADMIN = 1;
+alter table AV_USER add column hash varchar(32) default NULL;
+alter table AV_USER add column salt varchar(12) default NULL;
+update AV_USER set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = md5(concat(user_password, salt));
+#!users
+## After conversion to Metadata these columns are obsolete
+alter table AV_USER drop column hash;
+alter table AV_USER drop column salt;
+alter table AV_USER drop column USER_URL;
+## Passwords are not stored in the database anymore
+alter table AV_USER drop column USER_PASSWORD;
+## Option to display e-mail in public is obsolete
+alter table AV_USER drop column USER_EMAIL_ISPUBLIC;
+## User status is now stored in one column
+alter table AV_USER drop column USER_ISBLOCKED;
+alter table AV_USER drop column USER_ISTRUSTED;
+alter table AV_USER drop column USER_ISSYSADMIN;
+## Renaming the remaining columns with nice names
+alter table AV_USER change column USER_NAME name varchar(30);
+alter table AV_USER change column USER_EMAIL email varchar(255);
+alter table AV_USER change column USER_REGISTERED created datetime;
+alter table AV_USER change column USER_LASTVISIT modified datetime;
+alter table AV_USER rename user;
+
+<% #AV_VOTE %>
+alter table AV_VOTE change column VOTE_ID id mediumint(10);
+alter table AV_VOTE change column VOTE_F_POLL poll_id mediumint(10);
+alter table AV_VOTE change column VOTE_F_CHOICE choice_id mediumint(10);
+alter table AV_VOTE change column VOTE_F_USER creator_id mediumint(10);
+alter table AV_VOTE change column VOTE_USERNAME creator_name varchar(255);
+alter table AV_VOTE change column VOTE_CREATETIME created datetime;
+alter table AV_VOTE change column VOTE_MODIFYTIME modified datetime;
+alter table AV_VOTE rename vote;
