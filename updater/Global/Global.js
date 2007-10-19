@@ -1,3 +1,27 @@
+//
+// The Antville Project
+// http://code.google.com/p/antville
+//
+// Copyright 2001-2007 by The Antville People
+//
+// Licensed under the Apache License, Version 2.0 (the ``License'');
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an ``AS IS'' BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
+// $URL$
+//
+
 app.addRepository("modules/core/HopObject.js");
 
 var convert = function(type) {
@@ -66,21 +90,23 @@ convert.sites = function() {
    traverse(function() {
       var metadata = eval(this.metadata) || {};
       metadata.email = this.SITE_EMAIL;
-      metadata.title = this.title;
+      metadata.title = this.SITE_TITLE;
       metadata.lastUpdate = this.SITE_LASTUPDATE;
       metadata.pageSize = metadata.days || 3;
       metadata.pageMode = "days";
       metadata.timeZone = metadata.timezone || "CET";
-      metadata.archiveMode = metadata.archive ? "online" : "offline";
+      metadata.archiveMode = metadata.archive ? "public" : "closed";
       metadata.commentMode = metadata.discussions ? "enabled" : "disabled";
       metadata.shortDateFormat = metadata.shortdateformat;
       metadata.longDateFormat = metadata.longdateformat;
-      metadata.offlineSince = this.site_lastoffline;
-      metadata.notifiedOfBlocking = this.site_lastblockwarn;
-      metadata.notifiedOfDeletion = this.site_lastdelwarn;
-      metadata.webHookMode = this.site_enableping ? 
+      metadata.offlineSince = this.SITE_LASTOFFLINE;
+      metadata.notifiedOfBlocking = this.SITE_LASTBLOCKWARN;
+      metadata.notifiedOfDeletion = this.SITE_LASTDELWARN;
+      metadata.webHookMode = this.SITE_ENABLEPING ? 
             "enabled" : "disabled";
-      metadata.webHookLastUpdate = this.site_lastping;
+      metadata.webHookLastUpdate = this.SITE_LASTPING;
+      // FIXME: metadata.webHookUrl = "";
+      metadata.locale = metadata.language;
       if (metadata.country) {
          metadata.locale += "_" + metadata.country;
       }
@@ -90,7 +116,7 @@ convert.sites = function() {
             "linkcolor", "alinkcolor", "vlinkcolor", "smallcolor",
             "titlecolor", "titlefont", "textfont", "textcolor", "smallsize",
             "smallfont", "textsize", "titlesize", "timezone", "bgcolor",
-            "country"]) {
+            "language", "country"]) {
          delete metadata[key];
       }
       execute("update site set metadata = " + quote(metadata.toSource()) +
@@ -104,14 +130,14 @@ convert.content = function() {
 };
 
 convert.users = function() {
-   retrieve("select id, hash, salt, USER_URL from AV_USER");
+   retrieve("select id, hash, salt, USER_URL from user");
    traverse(function() {
       var metadata = {
          hash: this.hash,
          salt: this.salt,
          url: this.USER_URL
       }
-      execute("update AV_USER set metadata = " + quote(metadata.toSource()) +
+      execute("update user set metadata = " + quote(metadata.toSource()) +
             " where id = " + this.id);
    });
 }
@@ -176,7 +202,7 @@ convert.skins = function() {
          file.mkdirs();
          file = new java.io.File(file, 
                this.skin_name.replace(/\//, "_") + ".skin");
-         println(file);
+         debug(file.getCanonicalPath());
          file["delete"]();
          var fos = new java.io.FileOutputStream(file);
          var bos = new java.io.BufferedOutputStream(fos);

@@ -1,3 +1,27 @@
+//
+// The Antville Project
+// http://code.google.com/p/antville
+//
+// Copyright 2001-2007 by The Antville People
+//
+// Licensed under the Apache License, Version 2.0 (the ``License'');
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an ``AS IS'' BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
+// $URL$
+//
+
 var db = getDBConnection("antville");
 var query, result;
 
@@ -19,14 +43,18 @@ var ResultWrapper = function(result) {
    return this;
 }
 
-var print = function(str) {
+var log = function(str) {
+   var now = "[" + new Date + "] ";
    app.data.out || (app.data.out = new java.lang.StringBuffer());
-   app.data.out.append(encodeForm(str));
+   app.data.out.insert(0, now + encodeForm(str) + "\n");
    return;
 }
 
-var println = function(str) {
-   return print(str + "\n"); 
+var debug = function(str) {
+   if (app.properties.debug === "true") {
+      log(str);
+   }
+   return;
 }
 
 var quote = function(str) {
@@ -42,6 +70,7 @@ var sql = function(type) {
 }
 
 var update = function(tableName) {
+   log("Updating table " + tableName);
    var sql = renderSkinAsString("sql#" + tableName);
    sql.split(/\n|\r|\n\r/).forEach(function(line) {
       if (!line) {
@@ -64,7 +93,7 @@ var id = function() {
 var error = function() {
    var error = db.getLastError()
    if (error) {
-      println(error);
+      log(error);
       res.abort();
    }
    return;
@@ -73,7 +102,7 @@ var error = function() {
 var count = function(sql) {
    var count = 0;
    sql = "select count(*) from " + sql;
-   println(sql);
+   debug(sql);
    result = db.executeRetrieval(sql);
    if (result.next()) {
       count = result.getColumnItem("count(*)");
@@ -83,15 +112,15 @@ var count = function(sql) {
 }
    
 var execute = function(sql) {
-   println(sql);
+   debug(sql);
    db.executeCommand(sql);
    error();
    return;
 }
 
 var retrieve = function(sql) {
+   debug(sql);
    query = sql;
-   println(query);
    return;
 }
 

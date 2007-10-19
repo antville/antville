@@ -1,3 +1,30 @@
+##
+## The Antville Project
+## http://code.google.com/p/antville
+##
+## Copyright 2001-2007 by The Antville People
+##
+## Licensed under the Apache License, Version 2.0 (the ``License'');
+## you may not use this file except in compliance with the License.
+## You may obtain a copy of the License at
+##
+##    http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an ``AS IS'' BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.
+##
+## $Revision:3355 $
+## $LastChangedBy:piefke3000 $
+## $LastChangedDate:2007-10-11 15:38:29 +0200 (Thu, 11 Oct 2007) $
+## $URL$
+##
+
+<% #legacy %>
+alter table site drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, drop column SITE_HASDISCUSSIONS, drop column SITE_SHOWDAYS, drop column SITE_SHOWARCHIVE, drop column SITE_LANGUAGE, drop column SITE_COUNTRY, drop column SITE_TIMEZONE, drop column SITE_LONGDATEFORMAT, drop column SITE_SHORTDATEFORMAT, drop column SITE_BGCOLOR, drop column SITE_TEXTFONT, drop column SITE_TEXTCOLOR, drop column SITE_TEXTSIZE, drop column SITE_LINKCOLOR, drop column SITE_ALINKCOLOR, drop column SITE_VLINKCOLOR, drop column SITE_TITLEFONT, drop column SITE_TITLECOLOR, drop column SITE_TITLESIZE, drop column SITE_SMALLFONT, drop column SITE_SMALLCOLOR, drop column SITE_SMALLSIZE;
+
 <% #jsonize %>
 select id, xml, metadata from <% param.value1 %> order by id
 
@@ -23,83 +50,71 @@ CREATE TABLE `tag_hub` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #AV_ACCESSLOG %>
-alter table AV_ACCESSLOG add column `creator_id` mediumint(10);
-alter table AV_ACCESSLOG add column `action` varchar(255);
-alter table AV_ACCESSLOG add column `context_type` varchar(20);
-update AV_ACCESSLOG set context_type = 'Story', ACCESSLOG_F_SITE = ACCESSLOG_F_TEXT where ACCESSLOG_F_TEXT is not null;
-update AV_ACCESSLOG set context_type = 'Site' where ACCESSLOG_F_TEXT is null;
-update AV_ACCESSLOG set creator_id = 0;
-update AV_ACCESSLOG set action = 'main';
-alter table AV_ACCESSLOG change column ACCESSLOG_ID id int(11);
-alter table AV_ACCESSLOG change column ACCESSLOG_REFERRER referrer mediumtext;
-alter table AV_ACCESSLOG change column ACCESSLOG_IP ip varchar(20);
-alter table AV_ACCESSLOG change column ACCESSLOG_DATE created datetime;
-alter table AV_ACCESSLOG change column ACCESSLOG_F_SITE context_id mediumint(10);
 alter table AV_ACCESSLOG rename log;
+alter table log add column `creator_id` mediumint(10);
+alter table log add column `action` varchar(255);
+alter table log add column `context_type` varchar(20);
+update log set context_type = 'Story', ACCESSLOG_F_SITE = ACCESSLOG_F_TEXT where ACCESSLOG_F_TEXT is not null;
+update log set context_type = 'Site' where ACCESSLOG_F_TEXT is null;
+update log set creator_id = 0;
+update log set action = 'main';
+alter table log change column ACCESSLOG_ID id int(11);
+alter table log change column ACCESSLOG_REFERRER referrer mediumtext;
+alter table log change column ACCESSLOG_IP ip varchar(20);
+alter table log change column ACCESSLOG_DATE created datetime;
+alter table log change column ACCESSLOG_F_SITE context_id mediumint(10);
 
 <% #AV_CHOICE %>
-alter table AV_CHOICE change column CHOICE_ID id mediumint(10);
-alter table AV_CHOICE change column CHOICE_F_POLL poll_id mediumint(10);
-alter table AV_CHOICE change column CHOICE_TITLE title varchar(255);
-alter table AV_CHOICE change column CHOICE_CREATETIME created datetime;
-alter table AV_CHOICE change column CHOICE_MODIFYTIME modified datetime;
 alter table AV_CHOICE rename choice;
+alter table choice change column CHOICE_ID id mediumint(10);
+alter table choice change column CHOICE_F_POLL poll_id mediumint(10);
+alter table choice change column CHOICE_TITLE title varchar(255);
+alter table choice change column CHOICE_CREATETIME created datetime;
+alter table choice change column CHOICE_MODIFYTIME modified datetime;
 
 <% #AV_FILE %>
-alter table AV_FILE add column `metadata` mediumtext;
-alter table AV_FILE add column `parent_id` mediumint(10);
-alter table AV_FILE add column `parent_type` varchar(30);
-alter table AV_FILE add column `prototype` varchar(30);
-alter table AV_FILE change column FILE_ID id mediumint(10);
-alter table AV_FILE change column FILE_F_SITE site_id mediumint(10);
-alter table AV_FILE change column FILE_ALIAS name varchar(255);
-alter table AV_FILE change column FILE_REQUESTCNT requests mediumint(10);
-alter table AV_FILE change column FILE_CREATETIME created datetime;
-alter table AV_FILE change column FILE_MODIFYTIME modified datetime;
-alter table AV_FILE change column FILE_F_USER_CREATOR creator_id mediumint(10);
-alter table AV_FILE change column FILE_F_USER_MODIFIER modifier_id mediumint(10);
 alter table AV_FILE rename file;
+alter table file add column `metadata` mediumtext;
+alter table file add column `parent_id` mediumint(10);
+alter table file add column `parent_type` varchar(30);
+alter table file add column `prototype` varchar(30);
+alter table file change column FILE_ID id mediumint(10);
+alter table file change column FILE_F_SITE site_id mediumint(10);
+alter table file change column FILE_ALIAS name varchar(255);
+alter table file change column FILE_REQUESTCNT requests mediumint(10);
+alter table file change column FILE_CREATETIME created datetime;
+alter table file change column FILE_MODIFYTIME modified datetime;
+alter table file change column FILE_F_USER_CREATOR creator_id mediumint(10);
+alter table file change column FILE_F_USER_MODIFIER modifier_id mediumint(10);
 #!files
-alter table file drop column FILE_MIMETYPE;
-alter table file drop column FILE_NAME;
-alter table file drop column FILE_SIZE;
-alter table file drop column FILE_DESCRIPTION;
+alter table file drop column FILE_MIMETYPE, drop column FILE_NAME, drop column FILE_SIZE, drop column FILE_DESCRIPTION;
 
 <% #files %>
 select id, FILE_NAME as fileName, FILE_MIMETYPE as type, FILE_SIZE as size,
 FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
-alter table AV_IMAGE change column IMAGE_ID id mediumint(10);
-alter table AV_IMAGE change column IMAGE_F_SITE site_id mediumint(10);
-alter table AV_IMAGE change column IMAGE_PROTOTYPE prototype varchar(30);
-alter table AV_IMAGE change column IMAGE_ALIAS name varchar(255);
-alter table AV_IMAGE change column IMAGE_F_USER_CREATOR creator_id mediumint(10);
-alter table AV_IMAGE change column IMAGE_F_USER_MODIFIER modifier_id mediumint(10);
-alter table AV_IMAGE change column IMAGE_CREATETIME created datetime;
-alter table AV_IMAGE change column IMAGE_MODIFYTIME modified datetime;
-alter table AV_IMAGE change column IMAGE_TOPIC topic varchar(255);
-alter table AV_IMAGE add column `parent_id` varchar(20) default NULL;
-alter table AV_IMAGE add column `parent_type` varchar(30);
-alter table AV_IMAGE add column `metadata` mediumtext;
-update AV_IMAGE set parent_type = 'Site' where prototype = 'Image';
-update AV_IMAGE set parent_type = 'Layout' where prototype = 'LayoutImage';
-update AV_IMAGE set prototype = "Image" where prototype = "LayoutImage";
-delete from AV_IMAGE where IMAGE_F_IMAGE_PARENT is not null;
-update AV_IMAGE set parent_id = site_id where site_id is not null and parent_id is null;
-update AV_IMAGE set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and parent_id is null;
 alter table AV_IMAGE rename image;
+alter table image change column IMAGE_ID id mediumint(10);
+alter table image change column IMAGE_F_SITE site_id mediumint(10);
+alter table image change column IMAGE_PROTOTYPE prototype varchar(30);
+alter table image change column IMAGE_ALIAS name varchar(255);
+alter table image change column IMAGE_F_USER_CREATOR creator_id mediumint(10);
+alter table image change column IMAGE_F_USER_MODIFIER modifier_id mediumint(10);
+alter table image change column IMAGE_CREATETIME created datetime;
+alter table image change column IMAGE_MODIFYTIME modified datetime;
+alter table image change column IMAGE_TOPIC topic varchar(255);
+alter table image add column `parent_id` varchar(20) default NULL;
+alter table image add column `parent_type` varchar(30);
+alter table image add column `metadata` mediumtext;
+update image set parent_type = 'Site' where prototype = 'Image';
+update image set parent_type = 'Layout' where prototype = 'LayoutImage';
+update image set prototype = "Image" where prototype = "LayoutImage";
+delete from image where IMAGE_F_IMAGE_PARENT is not null;
+update image set parent_id = site_id where site_id is not null and parent_id is null;
+update image set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and parent_id is null;
 #!images
-alter table image drop column IMAGE_F_LAYOUT;
-alter table image drop column IMAGE_F_IMAGE_PARENT;
-alter table image drop column IMAGE_F_IMAGE_THUMB;
-alter table image drop column IMAGE_FILENAME;
-alter table image drop column IMAGE_FILEEXT;
-alter table image drop column IMAGE_WIDTH;
-alter table image drop column IMAGE_HEIGHT;
-alter table image drop column IMAGE_ALTTEXT;
-alter table image drop column IMAGE_FILESIZE;
-alter table image drop column topic;
+alter table image drop column topic, drop column IMAGE_F_LAYOUT, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_IMAGE_THUMB, drop column IMAGE_FILENAME, drop column IMAGE_FILEEXT, drop column IMAGE_WIDTH, drop column IMAGE_HEIGHT, drop column IMAGE_ALTTEXT, drop column IMAGE_FILESIZE;
 
 <% #images %>
 select i.id, i.name, i.IMAGE_FILENAME as fileName, i.IMAGE_FILEEXT as type, 
@@ -110,137 +125,93 @@ i.IMAGE_F_IMAGE_THUMB = t.id where i.IMAGE_WIDTH is not null and
 i.IMAGE_HEIGHT is not null order by id
 
 <% #AV_LAYOUT %>
-alter table AV_LAYOUT add column metadata mediumtext;
-alter table AV_LAYOUT change column LAYOUT_PREFERENCES xml mediumtext;
-alter table AV_LAYOUT change column LAYOUT_ID id mediumint(10);
-alter table AV_LAYOUT change column LAYOUT_ALIAS name varchar(30);
-alter table AV_LAYOUT change column LAYOUT_F_SITE site_id mediumint(10);
-alter table AV_LAYOUT change column LAYOUT_F_LAYOUT_PARENT layout_id mediumint(10);
-alter table AV_LAYOUT change column LAYOUT_CREATETIME created datetime;
-alter table AV_LAYOUT change column LAYOUT_MODIFYTIME modified datetime;
-alter table AV_LAYOUT change column LAYOUT_F_USER_CREATOR creator_id mediumint(10);
-alter table AV_LAYOUT change column LAYOUT_F_USER_MODIFIER modifier_id mediumint(10);
-alter table AV_LAYOUT change column LAYOUT_SHAREABLE mode enum('default','shared');
 alter table AV_LAYOUT rename layout;
+alter table layout add column metadata mediumtext;
+alter table layout change column LAYOUT_PREFERENCES xml mediumtext;
+alter table layout change column LAYOUT_ID id mediumint(10);
+alter table layout change column LAYOUT_ALIAS name varchar(30);
+alter table layout change column LAYOUT_F_SITE site_id mediumint(10);
+alter table layout change column LAYOUT_F_LAYOUT_PARENT layout_id mediumint(10);
+alter table layout change column LAYOUT_CREATETIME created datetime;
+alter table layout change column LAYOUT_MODIFYTIME modified datetime;
+alter table layout change column LAYOUT_F_USER_CREATOR creator_id mediumint(10);
+alter table layout change column LAYOUT_F_USER_MODIFIER modifier_id mediumint(10);
+alter table layout change column LAYOUT_SHAREABLE mode enum('default','shared');
 #!layouts
-alter table layout drop column xml;
-alter table layout drop column LAYOUT_TITLE;
-alter table layout drop column LAYOUT_DESCRIPTION;
-alter table layout drop column LAYOUT_ISIMPORT;
+alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
 
 <% #layouts %>
 select id, LAYOUT_TITLE, LAYOUT_DESCRIPTION, LAYOUT_ISIMPORT, 
 metadata from layout
 
 <% #AV_MEMBERSHIP %>
-alter table AV_MEMBERSHIP add column `role` enum('Subscriber','Contributor','Manager','Owner') not null;
-update AV_MEMBERSHIP set role = 'Contributor' where MEMBERSHIP_LEVEL = 9361;
-update AV_MEMBERSHIP set role = 'Manager' where MEMBERSHIP_LEVEL = 16383;
-update AV_MEMBERSHIP set role = 'Owner' where MEMBERSHIP_LEVEL = 131071;
-alter table AV_MEMBERSHIP change column MEMBERSHIP_ID id mediumint(10);
-alter table AV_MEMBERSHIP change column MEMBERSHIP_F_SITE site_id mediumint(10);
-alter table AV_MEMBERSHIP change column MEMBERSHIP_USERNAME name varchar(30);
-alter table AV_MEMBERSHIP change column MEMBERSHIP_CREATETIME created datetime;
-alter table AV_MEMBERSHIP change column MEMBERSHIP_F_USER creator_id mediumint(10);
-alter table AV_MEMBERSHIP change column MEMBERSHIP_MODIFYTIME modified datetime;
-alter table AV_MEMBERSHIP change column MEMBERSHIP_F_USER_MODIFIER modifier_id mediumint(10);
-alter table AV_MEMBERSHIP drop column MEMBERSHIP_LEVEL;
 alter table AV_MEMBERSHIP rename membership;
+alter table membership add column `role` enum('Subscriber','Contributor','Manager','Owner') not null;
+update membership set role = 'Contributor' where MEMBERSHIP_LEVEL = 9361;
+update membership set role = 'Manager' where MEMBERSHIP_LEVEL = 16383;
+update membership set role = 'Owner' where MEMBERSHIP_LEVEL = 131071;
+alter table membership change column MEMBERSHIP_ID id mediumint(10);
+alter table membership change column MEMBERSHIP_F_SITE site_id mediumint(10);
+alter table membership change column MEMBERSHIP_USERNAME name varchar(30);
+alter table membership change column MEMBERSHIP_CREATETIME created datetime;
+alter table membership change column MEMBERSHIP_F_USER creator_id mediumint(10);
+alter table membership change column MEMBERSHIP_MODIFYTIME modified datetime;
+alter table membership change column MEMBERSHIP_F_USER_MODIFIER modifier_id mediumint(10);
+alter table membership drop column MEMBERSHIP_LEVEL;
 
 <% #AV_POLL %>
-alter table AV_POLL add column `status` enum('closed','readonly','open');
-update AV_POLL set status = 'closed';
-update AV_POLL set status = 'public' where poll_closed = 1;
-alter table AV_POLL change column POLL_ID id mediumint(10);
-alter table AV_POLL change column POLL_F_SITE site_id mediumint(10);
-alter table AV_POLL change column POLL_F_USER_CREATOR creator_id mediumint(10);
-alter table AV_POLL change column POLL_F_USER_MODIFIER modifier_id mediumint(10);
-alter table AV_POLL change column POLL_QUESTION question mediumtext;
-alter table AV_POLL change column POLL_CLOSETIME closed datetime;
-alter table AV_POLL change column POLL_CREATETIME created datetime;
-alter table AV_POLL change column POLL_MODIFYTIME modified datetime;
-alter table AV_POLL drop column POLL_CLOSED;
 alter table AV_POLL rename poll;
+alter table poll add column `status` enum('closed','readonly','open');
+update poll set status = 'closed';
+update poll set status = 'public' where poll_closed = 1;
+alter table poll change column POLL_ID id mediumint(10);
+alter table poll change column POLL_F_SITE site_id mediumint(10);
+alter table poll change column POLL_F_USER_CREATOR creator_id mediumint(10);
+alter table poll change column POLL_F_USER_MODIFIER modifier_id mediumint(10);
+alter table poll change column POLL_QUESTION question mediumtext;
+alter table poll change column POLL_CLOSETIME closed datetime;
+alter table poll change column POLL_CREATETIME created datetime;
+alter table poll change column POLL_MODIFYTIME modified datetime;
+alter table poll drop column POLL_CLOSED;
 
 <% #AV_SITE %>
-#alter table AV_SITE add column metadata mediumtext;
-#alter table AV_SITE change column SITE_PREFERENCES xml mediumtext;
-#alter table AV_SITE add column `mode` enum('closed','restricted','public','open') not null;
-#update AV_SITE set mode = 'public';
-#update AV_SITE set mode = 'restricted' where SITE_ISONLINE <> 1;
-#alter table av_site add column `status` enum('blocked','regular','trusted') not null;
-#update AV_SITE set status = 'regular';
-#update AV_SITE set status = 'blocked' where SITE_ISBLOCKED = 1;
-#update AV_SITE set status = 'trusted' where SITE_ISTRUSTED = 1;
-#alter table AV_SITE change column SITE_ID id mediumint(10);
-#alter table AV_SITE rename site;
-##!sites
-## After conversion to Metadata these columns are obsolete
-#alter table site drop column xml;
-alter table site drop column SITE_TITLE;
-#alter table site drop column SITE_DISKUSAGE;
-alter table site drop column SITE_EMAIL;
-alter table site drop column SITE_LASTUPDATE;
-alter table site drop column SITE_LASTOFFLINE;
-alter table site drop column SITE_LASTBLOCKWARN;
-alter table site drop column SITE_LASTDELWARN;
-alter table site drop column SITE_LASTPING;
-alter table site drop column SITE_ENABLEPING;
-## Site mode is now stored mode column
-alter table site drop column SITE_ISONLINE;
-## Site status is now stored in status column
-alter table site drop column SITE_ISBLOCKED;
-alter table site drop column SITE_ISTRUSTED;
-## Renaming the remaining columns with nice names
+alter table AV_SITE rename site;
+alter table site add column metadata mediumtext;
+alter table site change column SITE_PREFERENCES xml mediumtext;
+alter table site add column `mode` enum('closed','restricted','public','open') not null;
+update site set mode = 'public';
+update site set mode = 'restricted' where SITE_ISONLINE <> 1;
+alter table site add column `status` enum('blocked','regular','trusted') not null;
+update site set status = 'regular';
+update site set status = 'blocked' where SITE_ISBLOCKED = 1;
+update site set status = 'trusted' where SITE_ISTRUSTED = 1;
+alter table site change column SITE_ID id mediumint(10);
+#!sites
 alter table site change column SITE_ALIAS name varchar(30);
 alter table site change column SITE_F_LAYOUT layout_id mediumint(10);
-alter table site change column SITE_F_USER_CREATOR creator mediumint(10);
-alter table site change column SITE_F_USER_MODIFIER modifier mediumint(10);
+alter table site change column SITE_F_USER_CREATOR creator_id mediumint(10);
+alter table site change column SITE_F_USER_MODIFIER modifier_id mediumint(10);
 alter table site change column SITE_CREATETIME created datetime;
 alter table site change column SITE_MODIFYTIME modified datetime;
-
-<% #legacy %>
-alter table site drop column SITE_TAGLINE;
-alter table site drop column SITE_USERMAYCONTRIB;
-alter table site drop column SITE_HASDISCUSSIONS;
-alter table site drop column SITE_SHOWDAYS;
-alter table site drop column SITE_SHOWARCHIVE;
-alter table site drop column SITE_LANGUAGE;
-alter table site drop column SITE_COUNTRY;
-alter table site drop column SITE_TIMEZONE;
-alter table site drop column SITE_LONGDATEFORMAT;
-alter table site drop column SITE_SHORTDATEFORMAT;
-alter table site drop column SITE_BGCOLOR;
-alter table site drop column SITE_TEXTFONT;
-alter table site drop column SITE_TEXTCOLOR;
-alter table site drop column SITE_TEXTSIZE;
-alter table site drop column SITE_LINKCOLOR;
-alter table site drop column SITE_ALINKCOLOR;
-alter table site drop column SITE_VLINKCOLOR;
-alter table site drop column SITE_TITLEFONT;
-alter table site drop column SITE_TITLECOLOR;
-alter table site drop column SITE_TITLESIZE;
-alter table site drop column SITE_SMALLFONT;
-alter table site drop column SITE_SMALLCOLOR;
-alter table site drop column SITE_SMALLSIZE;
+alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKUSAGE, drop column SITE_EMAIL, drop column SITE_LASTUPDATE, drop column SITE_LASTOFFLINE, drop column SITE_LASTBLOCKWARN, drop column SITE_LASTDELWARN, drop column SITE_LASTPING, drop column SITE_ENABLEPING, drop column SITE_ISONLINE, drop column SITE_ISBLOCKED, drop column SITE_ISTRUSTED;
 
 <% #sites %>
-select id, SITE_EMAIL, SITE_LASTUPDATE, SITE_LASTOFFLINE, SITE_LASTBLOCKWARN, 
-SITE_LASTDELWARN, SITE_LASTPING, SITE_ENABLEPING, SITE_TITLE, mode from site
+select id, metadata, SITE_EMAIL, SITE_LASTUPDATE, SITE_LASTOFFLINE, 
+SITE_LASTBLOCKWARN, SITE_LASTDELWARN, SITE_LASTPING, SITE_ENABLEPING, 
+SITE_TITLE, mode from site
 
 <% #AV_SKIN %>
-alter table AV_SKIN change column SKIN_ID id mediumint(10);
-alter table AV_SKIN change column SKIN_F_LAYOUT layout_id mediumint(10);
-alter table AV_SKIN change column SKIN_PROTOTYPE prototype varchar(30);
-alter table AV_SKIN change column SKIN_NAME name varchar(30);
-alter table AV_SKIN change column SKIN_F_USER_CREATOR creator_id mediumint(10);
-alter table AV_SKIN change column SKIN_F_USER_MODIFIER modifier_id mediumint(10);
-alter table AV_SKIN change column SKIN_CREATETIME created datetime;
-alter table AV_SKIN change column SKIN_MODIFYTIME modified datetime;
 alter table AV_SKIN rename skin;
+alter table skin change column SKIN_ID id mediumint(10);
+alter table skin change column SKIN_F_LAYOUT layout_id mediumint(10);
+alter table skin change column SKIN_PROTOTYPE prototype varchar(30);
+alter table skin change column SKIN_NAME name varchar(30);
+alter table skin change column SKIN_F_USER_CREATOR creator_id mediumint(10);
+alter table skin change column SKIN_F_USER_MODIFIER modifier_id mediumint(10);
+alter table skin change column SKIN_CREATETIME created datetime;
+alter table skin change column SKIN_MODIFYTIME modified datetime;
 #!skins
-alter table skin drop column SKIN_ISCUSTOM;
-alter table skin drop column SKIN_SOURCE;
+alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
 
 <% #skins %>
 select skin.id, site.name as site_name, layout.name, skin.name as skin_name, 
@@ -251,92 +222,67 @@ layout.id and layout.site_id = site.id order by skin.id
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from user, AV_SYSLOG where SYSLOG_OBJECT = user.name and SYSLOG_TYPE = 'user';
 insert into log (context_type, context_id, created, creator_id, action) select 'Site', site.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from site, AV_SYSLOG where SYSLOG_OBJECT = site.name and (SYSLOG_TYPE = 'site' or SYSLOG_TYPE = 'weblog');
 insert into log (context_type, context_id, created, creator_id, action) select 'Root', 1, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, 'setup' from AV_SYSLOG where SYSLOG_TYPE = 'system';
+drop table AV_SYSLOG;
 
-<% #AV_TEXT_ %>
-alter table AV_TEXT change column TEXT_ID id mediumint(10);
-alter table content change column TEXT_TOPIC topic varchar(255);
-alter table AV_TEXT add column metadata mediumtext;
-alter table AV_TEXT change column TEXT_CONTENT xml mediumtext;
+<% #AV_TEXT %>
 alter table AV_TEXT rename content;
+alter table content change column TEXT_ID id mediumint(10);
+alter table content change column TEXT_F_SITE site_id mediumint(10);
+alter table content change column TEXT_TOPIC topic varchar(255);
+alter table content add column metadata mediumtext;
+alter table content change column TEXT_CONTENT xml mediumtext;
+alter table content change column TEXT_F_USER_CREATOR creator_id mediumint(10);
+alter table content change column TEXT_F_USER_MODIFIER modifier_id mediumint(10);
 #!content
 alter table content add column parent_type varchar(30);
 alter table content change column TEXT_ALIAS name varchar(255);
-alter table content change column TEXT_F_SITE site_id mediumint(10);
 alter table content change column TEXT_F_TEXT_STORY story_id mediumint(10);
 alter table content change column TEXT_READS requests mediumint(10);
-alter table content change column TEXT_F_USER_CREATOR creator_id mediumint(10);
-alter table content change column TEXT_F_USER_MODIFIER modifier_id mediumint(10);
 alter table content change column TEXT_CREATETIME created datetime;
 alter table content change column TEXT_MODIFYTIME modified datetime;
 alter table content change column TEXT_F_TEXT_PARENT parent_id mediumint(10);
 alter table content change column TEXT_PROTOTYPE prototype enum('Story','Comment');
-## Set parent mapping
 update content set parent_type = "Story";
 update content set parent_type = "Comment" where parent_id is not null;
 update content set parent_id = story_id  where parent_id is null and prototype = "Comment" and parent_type = "Story";
-## Set status
 alter table content add column status enum('closed','pending','readonly','public','shared','open');
 update content set status = 'closed';
 update content set status = 'public' where TEXT_ISONLINE <> 0 or parent_type = "Comment";
 update content set status = 'shared' where TEXT_EDITABLEBY = 1;
 update content set status = 'open' where TEXT_EDITABLEBY = 2;
-## Set mode
 alter table content add column mode enum('hidden','featured');
 update content set mode = 'hidden' where TEXT_ISONLINE = 1;
 update content set mode = 'featured' where TEXT_ISONLINE = 2;
-## Set comment mode
 alter table content add column comment_mode enum('closed','readonly','moderated','open');
 update content set comment_mode = 'closed';
 update content set comment_mode = 'open' where TEXT_HASDISCUSSIONS = 1;
-## Remove obsolete columns
-alter table content drop column xml;
-alter table content drop column topic;
-alter table content drop column TEXT_DAY;
-alter table content drop column TEXT_TITLE;
-alter table content drop column TEXT_TEXT;
-alter table content drop column TEXT_RAWCONTENT;
-alter table content drop column TEXT_ISONLINE;
-alter table content drop column TEXT_EDITABLEBY;
-alter table content drop column TEXT_HASDISCUSSIONS;
-alter table content drop column TEXT_IPADDRESS;
+alter table content drop column xml, drop column topic, drop column TEXT_DAY, drop column TEXT_TITLE, drop column TEXT_TEXT, drop column TEXT_RAWCONTENT, drop column TEXT_ISONLINE, drop column TEXT_EDITABLEBY, drop column TEXT_HASDISCUSSIONS, drop column TEXT_IPADDRESS;
 
 <% #AV_USER %>
-alter table AV_USER change column USER_ID id mediumint(10);
-alter table AV_USER add column metadata mediumtext default NULL;
-alter table AV_USER add column `status` enum('blocked','regular','trusted','privileged') not null;
-update AV_USER set status = 'regular';
-update AV_USER set status = 'blocked' where USER_ISBLOCKED = 1;
-update AV_USER set status = 'trusted' where USER_ISTRUSTED = 1;
-update AV_USER set status = 'privileged' where USER_ISSYSADMIN = 1;
-alter table AV_USER add column hash varchar(32) default NULL;
-alter table AV_USER add column salt varchar(12) default NULL;
-update AV_USER set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = md5(concat(user_password, salt));
-#!users
-## After conversion to Metadata these columns are obsolete
-alter table AV_USER drop column hash;
-alter table AV_USER drop column salt;
-alter table AV_USER drop column USER_URL;
-## Passwords are not stored in the database anymore
-alter table AV_USER drop column USER_PASSWORD;
-## Option to display e-mail in public is obsolete
-alter table AV_USER drop column USER_EMAIL_ISPUBLIC;
-## User status is now stored in one column
-alter table AV_USER drop column USER_ISBLOCKED;
-alter table AV_USER drop column USER_ISTRUSTED;
-alter table AV_USER drop column USER_ISSYSADMIN;
-## Renaming the remaining columns with nice names
-alter table AV_USER change column USER_NAME name varchar(30);
-alter table AV_USER change column USER_EMAIL email varchar(255);
-alter table AV_USER change column USER_REGISTERED created datetime;
-alter table AV_USER change column USER_LASTVISIT modified datetime;
 alter table AV_USER rename user;
+alter table user change column USER_ID id mediumint(10);
+alter table user add column metadata mediumtext default NULL;
+alter table user add column `status` enum('blocked','regular','trusted','privileged') not null;
+update user set status = 'regular';
+update user set status = 'blocked' where USER_ISBLOCKED = 1;
+update user set status = 'trusted' where USER_ISTRUSTED = 1;
+update user set status = 'privileged' where USER_ISSYSADMIN = 1;
+alter table user add column hash varchar(32) default NULL;
+alter table user add column salt varchar(12) default NULL;
+update user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = md5(concat(user_password, salt));
+#!users
+alter table user change column USER_NAME name varchar(30);
+alter table user change column USER_EMAIL email varchar(255);
+alter table user change column USER_REGISTERED created datetime;
+alter table user change column USER_LASTVISIT modified datetime;
+alter table user drop column hash, drop column salt, drop column USER_URL, drop column USER_PASSWORD, drop column USER_EMAIL_ISPUBLIC, drop column USER_ISBLOCKED, drop column USER_ISTRUSTED, drop column USER_ISSYSADMIN;
 
 <% #AV_VOTE %>
-alter table AV_VOTE change column VOTE_ID id mediumint(10);
-alter table AV_VOTE change column VOTE_F_POLL poll_id mediumint(10);
-alter table AV_VOTE change column VOTE_F_CHOICE choice_id mediumint(10);
-alter table AV_VOTE change column VOTE_F_USER creator_id mediumint(10);
-alter table AV_VOTE change column VOTE_USERNAME creator_name varchar(255);
-alter table AV_VOTE change column VOTE_CREATETIME created datetime;
-alter table AV_VOTE change column VOTE_MODIFYTIME modified datetime;
 alter table AV_VOTE rename vote;
+alter table vote change column VOTE_ID id mediumint(10);
+alter table vote change column VOTE_F_POLL poll_id mediumint(10);
+alter table vote change column VOTE_F_CHOICE choice_id mediumint(10);
+alter table vote change column VOTE_F_USER creator_id mediumint(10);
+alter table vote change column VOTE_USERNAME creator_name varchar(255);
+alter table vote change column VOTE_CREATETIME created datetime;
+alter table vote change column VOTE_MODIFYTIME modified datetime;
