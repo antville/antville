@@ -232,7 +232,7 @@ If this site is open it will replace the default front page.
    <a href="<% item.url %>"><% item.url %></a></div>
    <div class="small">
       registered: <% item.created | format "yyyy-MM-dd HH:mm" %><br />
-      last visit: <% item.visited | format "yyyy-MM-dd HH:mm" %>
+      last visit: <% item.modified | format "yyyy-MM-dd HH:mm" %>
    </div>
 </td>
 <td class="small" valign="top" align="right">

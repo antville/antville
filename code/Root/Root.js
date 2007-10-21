@@ -202,7 +202,7 @@ Root.prototype.updates_xml_action = function() {
    feed.setLink(root.href());
    feed.setTitle(root.title);
    feed.setDescription(root.tagline);
-   feed.setLanguage(root.language.replace("_", "-"));
+   feed.setLanguage(root.locale.replace("_", "-"));
    feed.setPublishedDate(now);
    var entries = new java.util.ArrayList();
    var entry, description;

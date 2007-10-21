@@ -440,7 +440,7 @@ Story.prototype.format_filter = function(value, param, mode) {
 };
 
 Story.prototype.macro_filter = function(value, param) {
-   var skin = createSkin(format(value));
+   var skin = value.constructor === String ? createSkin(format(value)) : value;
    skin.allowMacro("image");
    skin.allowMacro("this.image");
    skin.allowMacro("site.image");
@@ -509,5 +509,7 @@ Story.prototype.getDelta = function(data) {
          delta += deltify(data.key, this.metadata.get(key))
       }
    }
-   return delta;
+   // In-between updates (10 min) get zero delta
+   var timex = (new Date - this.modified) > Date.ONEMINUTE * 10 ? 1 : 0;
+   return delta * timex;
 };

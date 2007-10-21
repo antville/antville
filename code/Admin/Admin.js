@@ -366,7 +366,7 @@ Admin.prototype.filterUsers = function(data) {
       sql += "order by name "; break;
       case "0":
       default:
-      sql += "order by visited "; break;
+      sql += "order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
    this.users.subnodeRelation = sql;

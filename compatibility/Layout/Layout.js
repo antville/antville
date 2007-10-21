@@ -74,109 +74,41 @@ Layout.prototype.activatelink_macro = function(param) {
    return this.link_macro(param, "activate", param.text || gettext("activate"));
 };
 
-Layout.prototype.bgcolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("bgcolor", param));
-   else
-      renderColor(this.metadata.get("bgcolor"));
+Layout.prototype.value_macro = function(param, name, value) {
+   if (!name) {
+      return;
+   }
+   var key = ["layout_" + name];
+   if (!value) {
+      if (value = this.metadata.get(name.toLowerCase())) {
+         return value;
+      }
+      return res.meta[key];
+   } else {
+      this.metadata.set(name.toLowerCase(), value);
+      res.meta[key] = value;
+   }
    return;
 };
 
-Layout.prototype.textfont_macro = function(param) {
-   if (param.as == "editor") {
-      param.size = 40;
-      Html.input(this.metadata.createInputParam("textfont", param));
-   } else
-      res.write(this.metadata.get("textfont"));
+Layout.prototype.onUnhandledMacro = function(name) {
+   // FIXME: editors?
+   switch (name) {
+      case "bgcolor":
+      case "linkcolor":
+      case "alinkcolor":
+      case "vlinkcolor":
+      case "titlecolor":
+      case "textcolor":
+      case "smallcolor":
+      renderColor(this.metadata.get(name)); break;
+      case "textfont":
+      case "textsize":
+      case "titlefont":
+      case "titlesize":
+      case "smallfont":
+      case "smallsize":
+      res.write(this.metadata.get(name)); break;
+   }
    return;
-};
-
-Layout.prototype.textsize_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("textsize", param));
-   else
-      res.write(this.metadata.get("textsize"));
-   return;
-};
-
-Layout.prototype.textcolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("textcolor", param));
-   else
-      renderColor(this.metadata.get("textcolor"));
-   return;
-};
-
-Layout.prototype.linkcolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("linkcolor", param));
-   else
-      renderColor(this.metadata.get("linkcolor"));
-   return;
-};
-
-Layout.prototype.alinkcolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("alinkcolor", param));
-   else
-      renderColor(this.metadata.get("alinkcolor"));
-   return;
-};
-
-Layout.prototype.vlinkcolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("vlinkcolor", param));
-   else
-      renderColor(this.metadata.get("vlinkcolor"));
-   return;
-};
-
-Layout.prototype.titlefont_macro = function(param) {
-   if (param.as == "editor") {
-      param.size = 40;
-      Html.input(this.metadata.createInputParam("titlefont", param));
-   } else
-      res.write(this.metadata.get("titlefont"));
-   return;
-};
-
-Layout.prototype.titlesize_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("titlesize", param));
-   else
-      res.write(this.metadata.get("titlesize"));
-   return;
-};
-
-Layout.prototype.titlecolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("titlecolor", param));
-   else
-      renderColor(this.metadata.get("titlecolor"));
-   return;
-};
-
-Layout.prototype.smallfont_macro = function(param) {
-   if (param.as == "editor") {
-      param.size = 40;
-      Html.input(this.metadata.createInputParam("smallfont", param));
-   } else
-      res.write(this.metadata.get("smallfont"));
-   return;
-};
-
-Layout.prototype.smallsize_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("smallsize", param));
-   else
-      res.write(this.metadata.get("smallsize"));
-   return;
-};
-
-Layout.prototype.smallcolor_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.metadata.createInputParam("smallcolor", param));
-   else
-      renderColor(this.metadata.get("smallcolor"));
-   return;
-};
+}

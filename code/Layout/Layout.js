@@ -285,19 +285,22 @@ Layout.prototype.getImage = function(name, fallback) {
    return null;
 };
 
+Layout.prototype.getFile = function() {
+   return this.site.getStaticFile("layouts/" + this.name);
+};
+
 Layout.prototype.getSkinPath = function() {
-   // FIXME: Do we need this or not?
-   /* if (!this.site) {
-      return [app.dir];
-   } */
-   var skinPath = [];
+   var skinPath = [this.getFile().toString()];
+   this.parent && (skinPath.push(this.parent.getFile().toString()));
+   return skinPath;
+   
    var layout = this;
    do {
       res.push();
       res.write(getProperty("staticPath"));
       layout.site && res.write(layout.site.name + "/");
       res.write("layouts/");
-      res.write(layout.alias);
+      res.write(layout.name);
       skinPath.push(res.pop());
    } while (layout = layout.parent);
    return skinPath;

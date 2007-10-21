@@ -146,11 +146,11 @@ convert.xml = function(table) {
    var metadata = function(xml) {
       var clean = xml.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "");
       try {
-         return Xml.readFromString(clean).toSource();
+         return Xml.readFromString(clean);
       } catch (ex) {
-         app.debug(xml);
+         app.debug(ex);
       }
-      return {}.toSource();
+      return {};
    };
    
    retrieve(sql("jsonize", table));
@@ -160,7 +160,7 @@ convert.xml = function(table) {
       }
       var data = metadata(this.xml);
       execute("update " + table + " set metadata = " + 
-            quote(data) + " where id = " + this.id);
+            quote(data.toSource()) + " where id = " + this.id);
    });
 }
 
@@ -193,11 +193,39 @@ convert.tags = function(table) {
 }
 
 convert.skins = function() {
+   var rename = function(prototype) {
+      switch (prototype) {
+         case "Day":
+         return "Archive";
+         case "LayoutImage":
+         return "Image";
+         case "LayoutImageMgr":
+         return "Images";
+         case "RootLayoutMgr":
+         return "Layouts";
+         case "StoryMgr":
+         return "Stories";
+         case "SysMgr":
+         return "Admin";
+         case "SysLog":
+         return "LogEntry";
+         case "Topic":
+         return "Tag";
+         case "TopicMgr":
+         return "Tags";
+         default:
+         if (prototype.lastIndexOf("Mgr") > 0) {
+            return prototype.substr(0, prototype.length - 3) + "s";
+         }
+         return prototype;
+      }
+   }
+   
    var dump = function(sql) {
       retrieve(sql);
       traverse(function() {
          var fpath = app.dir + "/../static/" + this.site_name + 
-               "/layouts/" + this.name + "/" + this["prototype"];
+               "/layouts/" + this.name + "/" + rename(this["prototype"]);
          var file = new java.io.File(fpath);
          file.mkdirs();
          file = new java.io.File(file, 

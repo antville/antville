@@ -1,3 +1,17 @@
+(function() {
+   var renderSkin = HopObject.prototype.renderSkin;
+   HopObject.prototype.renderSkin = function(name) {
+      res.write(" [[" + this._prototype + "." + name + "]] ");
+      renderSkin.call(this, name);
+   }
+})();
+
+HopObject.prototype.renderSkinAsString = function(name) {
+   res.push();
+   this.renderSkin(name);
+   return res.pop();
+}
+
 HopObject.prototype.createtime_macro = function(param) {
    return this.created_macro.apply(this, arguments);
 };

@@ -1,3 +1,7 @@
+Story.prototype.allowTextMacros = function(skin) {
+   return Story.prototype.macro_filter(skin);
+}
+
 Story.prototype.commentform_macro = function(param) {
    if (this.commentsMode === "closed") {
       return;

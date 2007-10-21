@@ -1,5 +1,0 @@
-...&nbsp;<% site.link stories/create "add a story" %><br />
-...&nbsp;<% site.link stories %><br />
-...&nbsp;<% site.link images %><br />
-...&nbsp;<% site.link files %><br />
-...&nbsp;<% site.link polls %><br />

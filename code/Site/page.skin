@@ -73,7 +73,7 @@
    <div class="boxheader">calendar</div>
    <div class="box"><% site.calendar %></div>
    
-   <div class="boxheader">recent postings</div>
+   <div class="boxheader">recent updates</div>
    <div class="box"><% list postings skin=Story#history %></div>
    
    <div class="boxline"></div><br />

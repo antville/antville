@@ -255,6 +255,16 @@ function username_macro(param) {
    return;
 }
 
+function spacer_macro(param) {
+   param.width || (param.width = 2);
+   param.height || (param.height = 2);
+   param.border || (param.border = 0);
+   param.src = getProperty("staticUrl") + "www/pixel.gif";
+   param.alt = "";
+   html.tag("img", param);
+   return;
+}
+
 function renderColorAsString(c) {
    if (c && c.isHexColor())
       return "#" + c;

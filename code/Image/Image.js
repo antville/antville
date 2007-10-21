@@ -206,12 +206,7 @@ Image.prototype.getFile = function(name) {
    name || (name = this.name);
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
-      res.push();
-      res.write("layouts/");
-      res.write(layout.name);
-      res.write("/");
-      res.write(name);
-      return layout.site.getStaticFile(res.pop());
+      return layout.getFile() + "/" + name;
    }
    var site = this.parent || res.handlers.site;
    return site.getStaticFile("images/" + name);

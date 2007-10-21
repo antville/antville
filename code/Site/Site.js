@@ -34,8 +34,8 @@ Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentMode");
 this.handleMetadata("email");
-this.handleMetadata("language");
 this.handleMetadata("lastUpdate");
+this.handleMetadata("locale");
 this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
 this.handleMetadata("notifiedOfBlocking");
@@ -72,8 +72,7 @@ Site.prototype.constructor = function(name, title) {
       notificationMode: Site.DISABLED,
       pageMode: Site.DAYS,
       pageSize: 3,
-      language: locale.getLanguage(),
-      country: locale.getCountry(),
+      locale: locale.toString(),
       timeZone: root.getTimeZone().getID(),
       longDateFormat: LONGDATEFORMAT,
       shortDateFormat: SHORTDATEFORMAT
@@ -117,6 +116,8 @@ Site.prototype.getPermission = function(action) {
 
 Site.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("Site#main");
+   res.data.body += '\n<script type="text/javascript" src="' + 
+         root.getStaticUrl("jquery-1.1.3.1.pack.js") + '"></script>\n';
    res.data.title = this.title;
    this.renderSkin("page");
    logAction();
@@ -157,7 +158,7 @@ Site.prototype.getFormOptions = function(name) {
       return Site.getArchiveModes();
       case "commentMode":
       return Site.getCommentModes();
-      case "language":
+      case "locale":
       return getLocales();
       case "layout":
       return this.getLayouts();
@@ -213,7 +214,7 @@ Site.prototype.update = function(data) {
       timeZone: data.timeZone,
       longDateFormat: data.longDateFormat,
       shortDateFormat: data.shortDateFormat,
-      language: data.language,
+      locale: data.locale,
       layout: Layout.getById(data.layout)
    });
    this.touch();
@@ -268,7 +269,7 @@ Site.prototype.getXml = function() {
    feed.setLink(this.href());
    feed.setTitle(this.title);
    feed.setDescription(this.tagline);
-   feed.setLanguage(this.language.replace("_", "-"));
+   feed.setLanguage(this.locale.replace("_", "-"));
    feed.setPublishedDate(now);
 
    /*
@@ -427,6 +428,7 @@ Site.prototype.robots_txt_action = function() {
 
 Site.prototype.getMacroHandler = function(name) {
    switch (name) {
+      case "archive":
       case "files":
       case "images":
       case "layouts":
@@ -471,8 +473,7 @@ Site.prototype.calendar_macro = function(param) {
 };
 
 Site.prototype.age_macro = function(param) {
-   //res.write(this.createtime.getAge());
-   res.write(Math.floor((new Date() - this.createtime) / Date.ONEDAY));
+   res.write(Math.floor((new Date() - this.created) / Date.ONEDAY));
    return;
 };
 
@@ -513,16 +514,13 @@ Site.prototype.getLayouts = function() {
 };
 
 Site.prototype.getLocale = function() {
-   var locale, language, country;
+   var locale;
    if (locale = this.cache.locale) {
       return locale;
-   }
-   if (language = this.language) {
-      if (country = this.country) {
-         locale = new java.util.Locale(language, country);
-      } else {
-         locale = new java.util.Locale(language);
-      }
+   } else if (this.locale) {
+      var parts = this.locale.split("_");
+      locale = new java.util.Locale(parts[0] || String.EMPTY, 
+            parts[1] || String.EMPTY, parts.splice(2).join("_"));
    } else {
       locale = java.util.Locale.getDefault();
    }

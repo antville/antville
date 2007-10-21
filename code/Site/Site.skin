@@ -109,7 +109,7 @@ REGEDIT4
 </tr>
 <tr>
 <td class="small">Language:</td>
-<td><% site.select language %></td>
+<td><% site.select locale %></td>
 </tr>
 <tr>
 <td class="small">Time zone:</td>

@@ -1,5 +1,0 @@
-...&nbsp;<% site.link members %><br />
-...&nbsp;<% site.link edit preferences %><br />
-...&nbsp;<% site.link layouts %><br />
-...&nbsp;<% site.link referrers %><br />
-...&nbsp;<% site.link mostread "most read stories" %><br />

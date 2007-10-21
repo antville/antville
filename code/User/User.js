@@ -46,7 +46,6 @@ User.prototype.constructor = function(data) {
       salt: session.data.token,
       email: data.email,
       status: User.REGULAR,
-      visited: now,
       created: now,
       modified: now
    });
@@ -87,7 +86,7 @@ User.prototype.update = function(data) {
 };
 
 User.prototype.touch = function() {
-   this.modified = this.visited = new Date;
+   this.modified = new Date;
    return;
 };
 

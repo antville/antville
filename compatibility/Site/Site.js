@@ -1,3 +1,28 @@
+Site.prototype.onCodeUpdate = function() {
+   helma.aspects.addBefore(this, "main_action", function(args, func, site) {
+      res.handlers.day = site.archive;
+      res.push();
+      list_macro({}, "stories");
+      res.data.storylist = res.pop();
+      return args;
+   });
+   return helma.aspects.addBefore(this, "update", function(args, func, site) {
+      if (!site.isTransient()) {
+         var data = args[0];
+         data.tagline || (data.tagline = data.properties_tagline);
+         data.pageSize || (data.pageSize = data.properties_days);
+         if (data.usermaycontrib && data.online) {
+            data.mode = Site.OPEN;
+         } else if (data.online) {
+            data.mode = Site.PUBLIC;
+         } else if (!data.mode) {
+            data.mode = Site.PRIVATE;
+         }
+      }
+      return args;
+   });
+};
+
 relocateProperty(Site, "alias", "name");
 relocateProperty(Site, "createtime", "created");
 relocateProperty(Site, "modifytime", "modified");
@@ -30,6 +55,46 @@ Site.prototype.__defineGetter__("discussions", function() {
    return this.commentsMode === Comment.ONLINE;
 });
 
+/*
+Site.prototype.renderSkin = function(name) {
+   switch (name) {
+      case "stylesheet":
+      name = "style"; break;
+      case "Site#main":
+      name = "main"; break;
+   }
+   HopObject.prototype.renderSkin.call(this, name);
+}
+*/
+
+Site.prototype.link_macro = function(param) {
+   if (!param.to) {
+      return;
+   }
+   var handler;
+   var parts = param.to.split("/");
+   var action = parts[0];
+   switch (action) {
+      case "feeds":
+      case "files":
+      case "images":
+      case "layouts":
+      case "members":
+      case "polls":
+      case "stories":
+      handler = this[action];
+      if (!handler) {
+         return;
+      }
+      param.to = parts[1];
+      break;
+      default:
+      handler = this;
+   }
+   HopObject.prototype.link_macro.call(handler, param, param.to, param.text);
+   return;
+};
+
 Site.prototype.title_macro = function(param) {
    if (param.as === "editor") {
       this.input_macro(param, "title");
@@ -46,6 +111,112 @@ Site.prototype.title_macro = function(param) {
    }
    return;
 };
+
+Site.prototype.loginstatus_macro = function(param) {
+   if (session.user) {
+      this.members.renderSkin("statusloggedin");
+   } else if (req.action !== "login") {
+      this.members.renderSkin("statusloggedout");
+   }
+   return;
+}
+
+Site.prototype.navigation_macro = function(param) {
+   if (param["for"] == "users" && !param.modules) {
+      // FIXME: this is left for backwards-compatibility
+      // sometime in the future we'll get rid of the usernavigation.skin
+      res.write("...&nbsp;");
+      Html.link({href: "http://project.antville.org/project/stories/146"}, "<strong>README</strong>");
+      Html.tag("br");
+      Html.tag("br");
+      this.renderSkin("usernavigation");
+   }
+   if (param["for"] === "admins") {
+      this.renderSkin("adminnavigation");
+   } else if (param["for"] === "contributors") {
+      this.renderSkin("contribnavigation");
+   }
+   return;
+}
+
+Site.prototype.xmlbutton_macro = function(param) {
+   param.href = this.href("rss.xml");   
+   image_macro(param, "/xmlbutton");
+   return;
+};
+
+Site.prototype.renderStoryList = function(day) {
+   res.push();
+   list_macro(param, "stories");
+   res.write(res.pop());
+   return;
+   
+   var site = param.of ? root.get(param.of) : res.handlers.site;
+   if (!site)
+      return;
+
+   // untrusted sites are only allowed to use "light" version
+   if (res.handlers.site && !res.handlers.site.trusted) {
+      param.limit = param.limit ? Math.min(site.allstories.count(), parseInt(param.limit), 50) : 25;
+      for (var i=0; i<param.limit; i++) {
+         var story = site.allcontent.get(i);
+         if (!story)
+            continue;
+         res.write(param.itemprefix);
+         Html.openLink({href: story.href()});
+         var str = story.title;
+         if (!str)
+            str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
+         res.write(str ? str : "...");
+         Html.closeLink();
+         res.write(param.itemsuffix);
+      }
+      return;
+   }
+
+   // this is db-heavy action available for trusted users only (yet?)
+   if (param.sortby != "title" && param.sortby != "createtime" && param.sortby != "modifytime")
+      param.sortby = "modifytime";
+   if (param.order != "asc" && param.order != "desc")
+      param.order = "asc";
+   var order = " order by TEXT_" + param.sortby.toUpperCase() + " " + param.order;
+   var rel = "";
+   if (param.show == "stories")
+      rel += " and TEXT_PROTOTYPE = 'story'";
+   else if (param.show == "comments")
+      rel += " and TEXT_PROTOTYPE = 'comment'";
+   if (param.topic)
+      rel += " and TEXT_TOPIC = '" + param.topic + "'";
+   var query = "select TEXT_ID from AV_TEXT where TEXT_F_SITE = " + site._id + " and TEXT_ISONLINE > 0" + rel + order;
+   var connex = getDBConnection("antville");
+   var rows = connex.executeRetrieval(query);
+
+   if (rows) {
+      var cnt = 0;
+      param.limit = param.limit ? Math.min(parseInt(param.limit), 100) : 25;
+      while (rows.next() && (cnt < param.limit)) {
+         cnt++;
+         var id = rows.getColumnItem("TEXT_ID").toString();
+         var story = site.allcontent.get(id);
+         if (!story)
+            continue;
+         if (param.skin) {
+            story.renderSkin(param.skin);
+         } else {
+            res.write(param.itemprefix);
+            Html.openLink({href: story.href()});
+            var str = story.title;
+            if (!str)
+               str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
+            res.write(str ? str : "...");
+            Html.closeLink();
+            res.write(param.itemsuffix); 
+         }         
+      }
+   }
+   rows.release();
+   return;
+}
 
 Site.prototype.lastUpdate_macro = function(param) {
    var value;
@@ -214,12 +385,6 @@ Site.renderDateFormat = function(type, site, param) {
       res.write(site[key]);
    }
    return;   
-};
-
-Site.prototype.xmlbutton_macro = function(param) {
-   param.href = this.href("rss.xml");   
-   Images.Default.render("xmlbutton", param);
-   return;
 };
 
 Site.prototype.moduleNavigation_macro = function(param) {
