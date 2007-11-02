@@ -1,8 +1,13 @@
 (function() {
    var renderSkin = HopObject.prototype.renderSkin;
    HopObject.prototype.renderSkin = function(name) {
-      res.write(" [[" + this._prototype + "." + name + "]] ");
+      if (res.contentType === "text/html") {
+         res.write('<div class="debug skin">');
+         res.write('<div class="debug title">' + 
+               this._prototype + "." + name + "</div>");
+      }
       renderSkin.call(this, name);
+      (res.contentType === "text/html") && (res.write("</div>"));
    }
 })();
 

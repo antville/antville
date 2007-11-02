@@ -79,6 +79,8 @@ HopObject.prototype.onRequest = function() {
       res.handlers.layout = res.handlers.site.layout || new Layout;
    }
    res.skinpath = res.handlers.layout.getSkinPath();
+   // FIXME: remove after debugging
+   ((res.contentType === "text/html") && res.debug(res.skinpath.toSource()));
    return;
 };
 

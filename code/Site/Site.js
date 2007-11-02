@@ -116,8 +116,6 @@ Site.prototype.getPermission = function(action) {
 
 Site.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("Site#main");
-   res.data.body += '\n<script type="text/javascript" src="' + 
-         root.getStaticUrl("jquery-1.1.3.1.pack.js") + '"></script>\n';
    res.data.title = this.title;
    this.renderSkin("page");
    logAction();
@@ -249,8 +247,12 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "javascript"));
    res.digest();
    res.contentType = "text/javascript";
+   // FIXME: Find a better way to reliably include jQuery (via script tag?)
+   var file = new helma.File(root.getStaticFile("jquery-1.1.3.1.pack.js"));
+   res.writeln(file.readAll());
    this.renderSkin("javascript");
-   root.renderSkin("javascript");
+   file = new helma.File(root.getStaticFile("antville-1.2.js"));
+   res.writeln(file.readAll());
    return;
 };
 

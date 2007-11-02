@@ -226,7 +226,6 @@ Images.prototype.mergeImages = function() {
    while (layout) {
       layout.images.forEach(function() {
          if (images.indexOf(this) < 0) {
-       res.debug(this.name);
             images.push(this);
          }
          return;

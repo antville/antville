@@ -78,20 +78,21 @@ Layout.prototype.value_macro = function(param, name, value) {
    if (!name) {
       return;
    }
-   var key = ["layout_" + name];
+   var key = "layout_" + name;
    if (!value) {
       if (value = this.metadata.get(name.toLowerCase())) {
          return value;
       }
       return res.meta[key];
    } else {
-      this.metadata.set(name.toLowerCase(), value);
+      //this.metadata.set(name.toLowerCase(), value);
       res.meta[key] = value;
    }
    return;
 };
 
 Layout.prototype.onUnhandledMacro = function(name) {
+   res.write(name)
    // FIXME: editors?
    switch (name) {
       case "bgcolor":

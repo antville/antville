@@ -11,7 +11,7 @@ var relocateProperty = function(proto, name, key) {
       return;
    });
    return addPropertyMacro.apply(this, arguments);
-};
+}
 
 var addPropertyMacro = function(proto, name, key) {
    key || (key = name);
@@ -23,14 +23,14 @@ var addPropertyMacro = function(proto, name, key) {
       }
    };
    return;
-};
+}
 
 var formatTimestamp = function() {
    return formatDate.apply(this, arguments);
-};
+}
 
 function logo_macro(param, name) {
-   Images.Default.render(name || param.name || "smallchaos", param);
+   image_macro.call(global, param, "/" + (name || param.name || "smallchaos"));
    return;
 }
 

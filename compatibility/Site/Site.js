@@ -70,11 +70,19 @@ Site.prototype.renderSkin = function(name) {
 Site.prototype.link_macro = function(param) {
    if (!param.to) {
       return;
+   } else if (param.to.contains(":")) {
+      link_macro.call(global, param, param.to, param.text);
+      return;
    }
    var handler;
    var parts = param.to.split("/");
    var action = parts[0];
    switch (action) {
+      case "mostread":
+      handler = this.stories;
+      param.to = "top";
+      break;
+      case "topics":
       case "feeds":
       case "files":
       case "images":
@@ -114,9 +122,9 @@ Site.prototype.title_macro = function(param) {
 
 Site.prototype.loginstatus_macro = function(param) {
    if (session.user) {
-      this.members.renderSkin("statusloggedin");
+      res.handlers.membership.renderSkin("Membership#status");
    } else if (req.action !== "login") {
-      this.members.renderSkin("statusloggedout");
+      res.handlers.membership.renderSkin("Membership#login");
    }
    return;
 }
@@ -125,15 +133,18 @@ Site.prototype.navigation_macro = function(param) {
    if (param["for"] == "users" && !param.modules) {
       // FIXME: this is left for backwards-compatibility
       // sometime in the future we'll get rid of the usernavigation.skin
-      res.write("...&nbsp;");
+      res.write("... ");
       Html.link({href: "http://project.antville.org/project/stories/146"}, "<strong>README</strong>");
       Html.tag("br");
       Html.tag("br");
       this.renderSkin("usernavigation");
    }
-   if (param["for"] === "admins") {
+   if (param["for"] === "admins" && (Membership.require(Membership.OWNER) ||
+         User.require(User.PRIVILEGED))) {
       this.renderSkin("adminnavigation");
-   } else if (param["for"] === "contributors") {
+   } else if (param["for"] === "contributors" && 
+         (Membership.require(Membership.CONTRIBUTOR) || 
+         User.require(User.PRIVILEGED))) {
       this.renderSkin("contribnavigation");
    }
    return;
@@ -218,7 +229,7 @@ Site.prototype.renderStoryList = function(day) {
    return;
 }
 
-Site.prototype.lastUpdate_macro = function(param) {
+Site.prototype.lastupdate_macro = function(param) {
    var value;
    if (value = this.created) {
       res.write(formatDate(value, param.format));

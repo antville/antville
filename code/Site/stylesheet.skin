@@ -371,3 +371,15 @@ ul.skinmgrTree li div {
    margin-top:15px;
    border-top:1px solid #dddddd;
 }
+
+div.skin {
+   margin: 1px;
+   border: 1px solid gray;
+}
+
+div.skin div.title {
+   padding: 2px;
+   color: gray;
+   font: normal 8px verdana, sans-serif;
+}
+

@@ -180,6 +180,7 @@ Members.prototype.edit_action = function() {
 };
 
 Members.prototype.salt_js_action = function() {
+   res.contentType = "text/javascript";
    var user;
    if (user = User.getByName(req.queryParams.user)) {
       res.write((user.salt || String.EMPTY).toSource());
