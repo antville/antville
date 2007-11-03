@@ -26,13 +26,6 @@ app.addRepository(app.dir + "/../lib/rome-0.9.jar");
 app.addRepository(app.dir + "/../lib/jdom.jar");
 app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
 
-var rome = new JavaImporter(
-   Packages.com.sun.syndication.feed.synd,
-   Packages.com.sun.syndication.io.SyndFeedOutput,
-   Packages.com.sun.syndication.feed.module.itunes,
-   Packages.com.sun.syndication.feed.module.itunes.types
-);
-
 app.addRepository("modules/core/Global.js");
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
@@ -53,10 +46,20 @@ app.addRepository("modules/jala/code/I18n.js");
 //app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
-var html = new helma.Html();
-
 app.data.mails || (app.data.mails = []);
 app.data.stories || (app.data.stories = {});
+
+var rome = new JavaImporter(
+   Packages.com.sun.syndication.feed.synd,
+   Packages.com.sun.syndication.io.SyndFeedOutput,
+   Packages.com.sun.syndication.feed.module.itunes,
+   Packages.com.sun.syndication.feed.module.itunes.types
+);
+
+var html = new helma.Html();
+
+SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
+LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
 
 /**
  * Extend the Mail prototype with a method that simply adds a mail object 
@@ -83,8 +86,9 @@ helma.Mail.flushQueue = function() {
    return;
 };
 
-SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
-LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
+jala.i18n.setLocaleGetter(function() {
+   return res.handlers.site.getLocale();
+});
 
 function defineConstants(ctor /*, arguments */) {
    var constants = [], name;

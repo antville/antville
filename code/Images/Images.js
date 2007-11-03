@@ -103,7 +103,7 @@ Images.prototype.all_action = function() {
 };
 
 Images.Default = (function() {
-   var DefaultImage = function(name, description) {
+   var Image = function(name, description) {
       var fpath = app.properties.staticPath + "www/" + name;
       var image = new helma.Image(fpath);
       this.name = name;
@@ -113,15 +113,16 @@ Images.Default = (function() {
       this.getUrl = function() {
          return app.properties.staticUrl + "www/" + name;
       }
-      this.render_macro = Image.prototype.render_macro;
-      this.thumbnail_macro = Image.prototype.thumbnail_macro;
+      this.render_macro = global.Image.prototype.render_macro;
+      this.thumbnail_macro = global.Image.prototype.thumbnail_macro;
       return this;
    }
+
+   var images = {};
    var add = function(name, description) {
-      images[name] = new DefaultImage(name, description);
+      images[name] = new Image(name, description);
       return;
    }
-   var images = {};
    add("rss.png", "RSS feed");
    add("webloghead.gif", "Antville");
    add("bullet.gif", "*");
