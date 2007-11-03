@@ -32,10 +32,16 @@ this.handleMetadata("thumbnailName");
 this.handleMetadata("thumbnailWidth");
 this.handleMetadata("thumbnailHeight");
 
-Image.prototype.constructor = function() {
-   this.creator = session.user;
+Image.prototype.constructor = function(data) {
+   // Images.Default is using the constructor on code compilation
+   if (typeof session !== "undefined") {
+      this.creator = session.user;
+      this.touch();
+   }
+   if (data) {
+      this.map(data);
+   }
    this.created = new Date;
-   this.touch();
    return this;
 };
 

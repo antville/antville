@@ -346,24 +346,14 @@ function image_macro(param, id, mode) {
    delete(param.linkto);
 
    var image;
-   if (id.startsWith("/") && (image = Images.Default[id.substring(1)])) {
-      param.src = root.getStaticUrl(image.name);
-      param.border = 0;
-      if (mode === "url") {
-         res.write(param.src);
-      } else if (image.href) {
-         res.push();
-         html.tag("img", param);
-         link_filter(res.pop(), param, image.href);
-      } else {
-         html.tag("img", param);
+   if (id.startsWith("/")) {
+      image = Images.Default[id.substring(1)];
+      param.onclick = encode(image.onclick);
+   } else {
+      image = HopObject.getFromPath(id, "images");
+      if (!image && param.fallback) {
+         image = HopObject.getFromPath(param.fallback, "images");
       }
-      return;
-   }
-
-   image = HopObject.getFromPath(id, "images");
-   if (!image && param.fallback) {
-      image = HopObject.getFromPath(param.fallback, "images");
    }
    if (!image) {
       return;

@@ -102,27 +102,33 @@ Images.prototype.all_action = function() {
    return;
 };
 
-Images.Default = {
-   "rss.png": {name: "rss.png", width: 16, height: 16, alt: "RSS feed"},
-   webloghead: {name: "webloghead.gif", width: 700, 
-         height: 53, alt: "Antville"},
-   bullet: {name: "bullet.gif", width: 3, height: 10, alt: "*"},
-   smallanim: {name: "smallanim.gif", width: 98, height: 30, 
-         alt: "made with antville", href: "http://antville.org"},
-   smallchaos: {name: "smallchaos.gif", width: 107, height: 29, 
-         alt: "made with antville", href: "http://antville.org"},
-   smallstraight: {name: "smallstraight.gif", width: 107, height: 24, 
-         alt: "made with antville", href: "http://antville.org"},
-   smalltrans: {name: "smalltrans.gif", width: 98, height: 30, 
-         alt: "made with antville", href: "http://antville.org"},
-   xmlbutton: {name: "xmlbutton.gif", width: 36, height: 14, 
-         alt: "xml version of this page"},
-   hop: {name: "hop.gif", width: 124, height: 25, 
-         alt: "helma object publisher", href: "http://helma.org"},
-   marquee: {name: "marquee.gif", width: 15, height: 15, alt: "marquee"},
-   pixel: {name: "pixel.gif", width: 1, height: 1, alt: ""},
-   dot: {name: "dot.gif", width: 30, height: 30, alt: ""}
-};
+Images.Default = (function() {
+   var images = {};
+   var add = function(name, description) {
+      var fpath = app.properties.staticPath + "www/" + name;
+      var image = new helma.Image(fpath);
+      images[name] = new Image({
+         name: name,
+         description: description,
+         width: image.width,
+         height: image.height
+      });
+      return;
+   }
+   add("rss.png", "RSS feed");
+   add("webloghead.gif", "Antville");
+   add("bullet.gif", "*");
+   add("smallanim.gif", "Made with Antville");
+   add("smallchaos.gif", "Made with Antville");
+   add("smallstraight.gif", "Made with Antville");
+   add("smalltrans.gif", "Made with Antville");
+   add("xmlbutton.gif", "XML version of this page");
+   add("hop.gif", "Helma Object Publisher");
+   add("marquee.gif", String.EMPTY);
+   add("pixel.gif", String.EMPTY);
+   add("dot.gif", String.EMPTY);
+   return images;
+})();
 
 Images.prototype.default_action = function() {
    if (!this._parent.parent) {

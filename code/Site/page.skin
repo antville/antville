@@ -79,8 +79,8 @@
    <div class="boxline"></div><br />
    <div class="box"><% image /rss.png | site.link rss.xml %><br />
    <br />
-   <% image /smallchaos %>
-   <% image /hop %></div>
+   <% image /smallchaos.gif | link http://antville.org %><br />
+   <% image /hop.gif | link http://helma.org %></div>
 
 </td>
 </tr>
