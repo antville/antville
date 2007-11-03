@@ -1,5 +1,0 @@
-<li class="skinset">
-   <a class="<% param.class %>" href="?skinset=<% param.skinset %>#<% param.anchor %>" name="<% param.anchor %>"><% param.title %></a>
-   <% param.text prefix="<div>" suffix="</div>" %><% param.skins prefix="<ul>" suffix="</ul>" %>
-   <% param.children prefix="<ul>" suffix="</ul>" %>
-</li>

@@ -33,17 +33,18 @@ Skin.prototype.constructor = function(prototype, name) {
 };
 
 Skin.prototype.href = function(action) {
-   if (this.isTransient()) {
-      return res.handlers.skins.href("create") + "?prototype=" + 
-            this.prototype + "&name=" + this.name; 
-   } else {
-      return HopObject.prototype.href.apply(this, arguments);
-   }
-   return href;
+   res.push();
+   res.write(res.handlers.layout.skins.href());
+   res.write(this.prototype);
+   res.write("/");
+   res.write(this.name);
+   res.write("/");
+   action && (res.write(action));
+   return res.pop();
 };
 
 Skin.prototype.getPermission = function(action) {
-   return this._parent.getPermission("main");
+   return res.handlers.skins.getPermission("main");
 };
 
 Skin.prototype.main_action = function() {
@@ -53,8 +54,10 @@ Skin.prototype.main_action = function() {
 Skin.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
-         this.update(req.postParams);
+         this.setSource(req.postParams.source);
          var url = this.href(req.action);
+         /*
+         this.update(req.postParams);
          // FIXME:
          if (false && this.equals(req.postParams.source)) {
             Skin.remove.call(this);
@@ -63,6 +66,7 @@ Skin.prototype.edit_action = function() {
             this.setSource(req.postParams.source);
          }
          res.message = gettext("The changes were saved successfully.");
+         */
          if (req.postParams.save == 1) {
             res.redirect(url);
          } else {
@@ -74,7 +78,7 @@ Skin.prototype.edit_action = function() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext('{0}/{1}.skin of Layout "{2}"', this.prototype, 
+   res.data.title = gettext('Edit {0}.{1} skin of Layout "{2}"', this.prototype, 
          this.name, res.handlers.layout.title);
    res.data.body = this.renderSkinAsString("Skin#edit");
    res.handlers.skins.renderSkin("page");
@@ -121,7 +125,7 @@ Skin.prototype.update = function(data) {
 };
 
 Skin.remove = function() {
-   var file = this.getFile(res.skinpath[0]);
+   var file = this.getStaticFile(res.skinpath[0]);
    file["delete"]();
    var parentDir = file.getParentFile();
    if (parentDir.isDirectory() && parentDir.list().length < 1) {
@@ -232,75 +236,46 @@ Skin.prototype.summary_macro = function() {
 };
 
 Skin.prototype.source_macro = function() {
-   res.write(this.getSubskin());
+   res.write(this.getSource());
    return;
 };
 
 Skin.prototype.getSource = function() {
-   var skin = this.custom ? "custom" : this.prototype;
-   for (var i in res.skinpath) {
-      var file = this.getFile(res.skinpath[i]);
-      if (!file.exists()) {
-         continue;
-      }
-
-      if (this.cache.source) {
-         return this.cache.source;
-      }
-   
-      var fis = new java.io.FileInputStream(file);
-      var isr = new java.io.InputStreamReader(fis, "UTF-8");
-      var reader = new java.io.BufferedReader(isr);
-      var line, source = new java.lang.StringBuffer();
-      while ((line = reader.readLine()) != null) {
-         source.append(line);
-         source.append("\n");
-      }
-      /*
-      var source = java.lang.reflect.Array.newInstance(java.lang.Character.TYPE, 
-            file.length());
-      var offset = 0, read;
-      while (offset < source.length) {
-         read = reader.read(source, offset, source.length - offset);
-         offset += read;
-      }
-      */
-      reader.close();
-      isr.close();
-      fis.close();
-
-      //this.cache[key] = new java.lang.String(source);
-      //res.debug(this.cache[key]);
-      this.cache.source = source.toString();
-      return this.cache.source;
+   var skinFiles = app.getSkinfilesInPath(res.skinpath)[this.prototype];
+   if (!skinFiles) {
+      res.message = gettext("Unknown prototype {0}", this.prototype);
+      res.redirect(res.handlers.layout.skins.href());
+      return;
    }
-
-   var skins;
-   if (skins = app.skinfiles[this.prototype]) {
-      return skins[skin];
+   var source = skinFiles[this.name];
+   if (!source) {
+      skin = createSkin(skinFiles[this.prototype]).getSubskin(this.name);
+      source = skin && skin.getSource();
    }
-   return null;
+   return source || String.EMPTY;
 };
 
-Skin.prototype.setSource = function(subskin) {
-   if (!subskin) {
+Skin.prototype.setSource = function(source) {
+   if (!source) {
       return;
    }
 
-   res.push();
-   var skin = createSkin(this.getSource());
-   var subskins = skin.getSubskinNames();
-   for (var i in subskins) {
-      res.write("<% #" + subskins[i] + " %>\n");
-      if (subskins[i] === this.name) {
-         res.write(subskin);
-      } else {
-         res.write(skin.getSubskin(subskins[i]).source);
+   if (this.isSubskin()) {
+      res.push();
+      var skin = this.getMainSkin();
+      var subskins = skin.getSubskinNames();
+      for (var i in subskins) {
+         res.write("<% #" + subskins[i] + " %>\n");
+         if (subskins[i] === this.name) {
+            res.write(source);
+         } else {
+            res.write(skin.getSubskin(subskins[i]).source);
+         }
       }
+      source = res.pop();
    }
-   var source = res.pop();
-
-   var file = this.getFile(res.skinpath[0]);
+   
+   var file = this.getStaticFile(res.skinpath[0], skin);   
    if (!file.exists()) {
       file.getParentFile().mkdirs();
       file.createNewFile();
@@ -312,21 +287,24 @@ Skin.prototype.setSource = function(subskin) {
    writer.close();
    bos.close();
    fos.close();
-   
+
    this.clearCache();
    return;
 };
 
-Skin.prototype.getSubskin = function() {
-   var skin = createSkin(this.getSource());
-   var subskin = skin.getSubskin(this.name);
-   return subskin ? subskin.getSource() : "";
-};
-
-Skin.prototype.getFile = function(fpath) {
-   var name = this.custom ? "custom" : this.prototype;
+Skin.prototype.getStaticFile = function(fpath, skin) {
+   var name = this.isSubskin() ? this.prototype : this.name;
    return new java.io.File(fpath, this.prototype + "/" + name + ".skin");
 };
+
+Skin.prototype.isSubskin = function() {
+   return this.getMainSkin().hasSubskin(this.name);
+}
+
+Skin.prototype.getMainSkin = function() {
+   var source = app.getSkinfilesInPath(res.skinpath)[this.prototype][this.prototype];
+   return createSkin(source);
+}
 
 Skin.prototype.isCustom = function() {
    // FIXME:

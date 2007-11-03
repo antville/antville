@@ -20,9 +20,9 @@ Name: <% skin.input name %>
 </table>
 </form>
 
-<% #listItem %>
+<% #skins %>
 <li>
-   <% skin.link . <% skin.name %> %>
+   <% skin.link edit <% skin.name %> %>
    <% if <% skin.status %> is modified then 
       <% skin.skin Skin#status prefix="<div>" suffix="</div>" %>
    %>

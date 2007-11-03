@@ -348,7 +348,6 @@ function image_macro(param, id, mode) {
    var image;
    if (id.startsWith("/")) {
       image = Images.Default[id.substring(1)];
-      param.onclick = encode(image.onclick);
    } else {
       image = HopObject.getFromPath(id, "images");
       if (!image && param.fallback) {

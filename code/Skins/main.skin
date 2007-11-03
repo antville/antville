@@ -5,8 +5,8 @@
 </div>
 <div>
    <% skins.link . "default skins" prefix="... show " %>
-   <% skins.link modified "modified skins" prefix=" | " %> 
    <% skins.link custom "custom skins" prefix=" | " %>
+   <% skins.link modified "modified skins" prefix=" | " %> 
 
 <ul class="skinmgrTree">
 <% response.list %>

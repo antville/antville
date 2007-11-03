@@ -51,7 +51,7 @@ td {
 }
 
 td.header {
-   background-image: url(<% image /webloghead url %>);
+   background-image: url(<% image /webloghead.gif url %>);
    font-size: 25px;
    font-weight: bold;
 }
@@ -373,11 +373,12 @@ ul.skinmgrTree li div {
 }
 
 div.skin {
-   margin: 1px;
-   border: 1px solid gray;
+   /*margin: 1px;
+   border: 1px solid gray;*/
 }
 
 div.skin div.title {
+   display: none;
    padding: 2px;
    color: gray;
    font: normal 8px verdana, sans-serif;

@@ -22,16 +22,80 @@
 // $URL$
 //
 
+Skins.prototype.constructor = function(name, parent) {
+  this.name = name; 
+  this.parent = parent;
+  return this;
+}
+
 Skins.prototype.getPermission = function(action) {
-   return this._parent.getPermission("main");
+   return res.handlers.layout.getPermission("main");
 };
 
+Skins.prototype.getChildElement = function(name) {
+   return new Skins(name, this);
+}
+
 Skins.prototype.main_action = function() {
+   var offset = path.contains(res.handlers.layout);
+   var skins = path[offset + 1];
+   var group = path[offset + 2];
+   if (!group) {
+      res.data.list = this.getOutline();
+      res.data.title = gettext("Skins of {0}", res.handlers.layout.title);
+      res.data.body = this.renderSkinAsString("main");
+      res.handlers.site.renderSkin("page");
+      return;
+   }
+   var skin = path[offset + 3] || res.redirect(res.handlers.layout.skins.href());
+   skin = new Skin(group.name, skin.name); 
+   skin.edit_action();
+   return;
+   
+   res.debug("skins: " + skins);
+   res.debug("group: " + group.name);
+   res.debug("skin: " + skin.name);
+
+   var skinFiles = app.getSkinfilesInPath(res.skinpath)[group.name];
+   var source = skinFiles[skin.name];
+   if (!source) {
+      skin = createSkin(skinFiles[group.name]).getSubskin(skin.name);
+      source = skin && skin.getSource();
+   }
+   res.encode(source);
+   return;
+};
+
+Skins.prototype.getOutline = function(type) {
+   var key = "outline:" + type;
+   var outline = this.cache[key];
+   if (outline) {
+      return outline;
+   }
+
+   var prototype, skin, subskins, names, skins = [];
+   var options = Skin.getPrototypeOptions();
+
+   for each (var option in options) {
+      prototype = option.value;
+      names = [];
+      for (var name in app.skinfiles[prototype]) {
+         if (name === prototype && type !== "custom") {
+            skin = createSkin(app.skinfiles[prototype][name]);
+            subskins = skin.getSubskinNames();
+            for each (var subskin in subskins) {
+               names.push(subskin);
+            }
+         } else if (name !== prototype && type === "custom") {
+            names.push(name);
+         }
+      }
+      names.sort();
+      skins.push([prototype, names]);
+   }
+
    res.push();
-   var skin;
-   var skins = this.getOutline();
    html.openTag("ul");
-   var prototype, skins;
    for each (var item in skins) {
       prototype = item[0];
       skins = item[1];
@@ -44,45 +108,18 @@ Skins.prototype.main_action = function() {
          for each (var subskin in skins) {
             skin = this.getSkin(prototype, subskin) || 
                   new Skin(prototype, subskin);
-            skin.renderSkin("Skin#listItem");
+            skin.renderSkin("Skin#skins");
          }
          html.closeTag("ul");
          html.closeTag("li");
       }
    }
    html.closeTag("ul");
-   res.data.list = res.pop();
-   res.data.title = gettext("Skins of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("main");
-   res.handlers.site.renderSkin("page");
-   return;
-};
+   return this.cache[key] = res.pop();
 
-Skins.prototype.getOutline = function() {
    var outline = this.cache.outline || []
    if (outline.length > 0) {
       return outline;
-   }
-   var options = Skin.getPrototypeOptions();
-   var prototype, skin, subskins, names;
-   for each (var option in options) {
-      prototype = option.value;
-      for (var name in app.skinfiles[prototype]) {
-         if (name !== prototype) {
-            continue;
-         }
-         skin = createSkin(app.skinfiles[prototype][name]);
-         subskins = skin.getSubskinNames();
-         names = [];
-         /*if (skin.hasMainskin()) {
-            names.push("main");
-         }*/
-         for (var i in subskins) {
-            names.push(subskins[i]);
-         }
-         names.sort();
-         outline.push([prototype, names]);
-      }
    }
    this.cache.outline = outline;
    return outline;
@@ -121,52 +158,13 @@ Skins.prototype.create_action = function() {
    return;
 };
 
-Skins.prototype.updateSkin = function(data) {
-   if (!data.key) {
-      throw Error(gettext("Oops, was not able to update the desired skin. Maybe you should try again..."));
-   }
-   var parts = data.key.split(".");
-   var skin = this.getSkin(parts[0], parts[1]);
-   var originalSource = this.getOriginalSkinSource(parts[0], parts[1]);
-   if (skin) {
-      // FIXME: The removal of linebreaks is necessary but it's not very nice
-      if (originalSource && data.skin.replace(/\r|\n/g, "") == 
-            originalSource.replace(/\r|\n/g, "")) {
-         // submitted skin equals original source
-         // so delete the skin object
-         try {
-            Skin.remove(skin);
-         } catch (ex) {
-            res.debug(ex);
-            app.log(ex);
-            return;
-         }
-      } else {
-         skin.touch();
-         //skin.skin = param.skin;
-         skin.setSource(data.skin);
-      }
-   } else {
-      // FIXME: The removal of linebreaks is necessary but not very nice
-      if (originalSource && data.skin.replace(/\r|\n/g, "") == 
-            originalSource.replace(/\r|\n/g, "")) {
-         return;
-      }
-      skin = new Skin(this._parent, parts[0], parts[1]);
-      //skin.skin = param.skin;
-      skin.setSource(data.skin);
-      var originalSkin = this.getOriginalSkin(parts[0], parts[1]);
-      if (originalSkin) {
-         skin.custom = originalSkin.custom;
-      }
-      this.add(skin);
-   }
-   return;
-};
-
 Skins.prototype.modified_action = function() {
    res.data.title = gettext("Modified skins of {0}", this._parent.title);
-   res.data.list = this.renderList(this.modified, req.action);
+   res.push();
+   this.modified.forEach(function() {
+      this.renderSkin("Skin#skins");
+   });
+   res.data.list = res.pop();
    res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
    return;
@@ -174,7 +172,7 @@ Skins.prototype.modified_action = function() {
 
 Skins.prototype.custom_action = function() {
    res.data.title = gettext("Custom skins of {0}", this._parent.title);
-   res.data.list = this.renderList(this.getCustomSkins(), req.action);
+   res.data.list = this.getOutline("custom");
    res.data.body = this.renderSkinAsString("main");
    res.handlers.site.renderSkin("page");
    return;
@@ -250,6 +248,8 @@ Skins.prototype.getOriginalSkinSource = function(proto, name) {
 };
 
 Skins.prototype.getCustomSkins = function() {
+   
+   
    var coll = [];
    // object to store the already added skin keys
    // used to avoid duplicate skins in the list
@@ -319,87 +319,8 @@ Skins.prototype.evalImport = function(data) {
    return true;
 };
 
-Skins.prototype.renderTree = function(data, collection) {
-   var self = this;
-   
-   var renderBranches = function(skinset) {
-      res.push();
-      var param;
-      for (var i in skinset.skins) {
-         param = {
-            key: skinset.skins[i], 
-            skinset: skinset.key
-         };
-         var parts = param.key.split(".");
-         var skin = self.getSkin(parts[0], parts[1]);
-         if (skin) {
-            skin.renderSkin("Skin#listItem");
-         } else {
-         }
-         var description = Skins.getSummary("skin", parts[0], parts[1]);
-         param.title = description[0];
-         param.text = description[1];
-      }
-      return res.pop();
-   };
-
-   res.push();
-   if (!collection) {
-      collection = Skins.SKINSETS;
-   }
-   var skinset, description, param;
-   for (var i in collection) {
-      skinset = collection[i];
-      if (skinset.context && skinset.context.toLowerCase() !== 
-            res.handlers.site._prototype.toLowerCase()) {
-         continue;
-      }
-      description = Skins.getSummary("skinset", skinset.key);
-      param = {
-         skinset: skinset.key, 
-         anchor: skinset.key, 
-         "class": "closed",
-         title: description[0],
-         text: description[1]
-      };
-      if (data.skinset && data.skinset.startsWith(skinset.key)) {
-         param["class"] = "selected";
-         if (skinset.skins) {
-            param.skins = renderBranches(skinset);
-         }
-         param.skinset = param.skinset.substring(0, param.skinset.indexOf("."));
-         if (skinset.children) {
-            param.children = this.renderTree(data, skinset.children);
-         }
-      }
-      this.renderSkin("treebranch", param);
-   }
-   return res.pop();
-};
-
-Skins.prototype.renderList = function(collection, action) {
-   res.push();
-   var param = {action: action};
-   var list = (collection instanceof Array ? collection : collection.list());
-   var skin;
-   for (var i=0; i<list.length; i+=1) {
-      skin = list[i];
-      param.key = skin.proto + "." + skin.name;
-      param.status = skin.renderSkinAsString("status");
-      if (!skin.custom) {
-         var desc = Skins.getSummary("skin", param.key);
-         param.title = desc[0];
-         param.text = desc[1];
-      } else {
-         param.title = param.key;
-      }
-      this.renderSkin("treeleaf", param);
-   }
-   return res.pop();
-};
-
 Skins.getRedirectUrl = function(data) {
-   var href = res.handlers.skins.href();
+   var href = res.handlers.layout.skins.href();
    if (data.prototype) { 
       return href + "#" + data.prototype;
    }
