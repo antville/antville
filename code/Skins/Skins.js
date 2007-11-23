@@ -34,12 +34,22 @@ Skins.prototype.getPermission = function(action) {
 
 Skins.prototype.getChildElement = function(name) {
    return new Skins(name, this);
-}
+};
+
+// FIXME: It's not totally clear why this is necessary;
+// but somehow Helma does not provide the correct path...
+Skins.prototype.href = function(action) {
+   res.push();
+   res.write(res.handlers.site.href());
+   res.write("layout/skins/");
+   action && (res.write(action));
+   return res.pop();
+};
 
 Skins.prototype.main_action = function() {
-   var offset = path.contains(res.handlers.layout);
-   var skins = path[offset + 1];
-   var group = path[offset + 2];
+   var offset = Array.prototype.indexOf.call(path, res.handlers.site);
+   var skins = path[offset + 2];
+   var group = path[offset + 3];
    if (!group) {
       res.data.list = this.getOutline();
       res.data.title = gettext("Skins of {0}", res.handlers.layout.title);
@@ -47,7 +57,7 @@ Skins.prototype.main_action = function() {
       res.handlers.site.renderSkin("page");
       return;
    }
-   var skin = path[offset + 3] || res.redirect(res.handlers.layout.skins.href());
+   var skin = path[offset + 4] || res.redirect(res.handlers.layout.skins.href());
    skin = new Skin(group.name, skin.name); 
    skin.edit_action();
    return;
@@ -467,4 +477,13 @@ Skins.buildMacroHelp = function() {
       ref.sort(sorter);
    }
    return macroHelp;
+};
+
+Skins.remove = function() {
+   if (this.constructor === Skins) {
+      this.forEach(function() {
+         HopObject.remove(this);         
+      });
+   }
+   return;
 };

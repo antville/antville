@@ -63,7 +63,7 @@ Site.prototype.constructor = function(name, title) {
       creator: user,
       modified: now,
       modifier: user,
-      status: user.status,
+      status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
       mode: Site.CLOSED,
       tagline: "",
       webHookEnabled: false,
@@ -213,7 +213,6 @@ Site.prototype.update = function(data) {
       longDateFormat: data.longDateFormat,
       shortDateFormat: data.shortDateFormat,
       locale: data.locale,
-      layout: Layout.getById(data.layout)
    });
    this.touch();
    this.clearCache();
@@ -232,10 +231,12 @@ Site.remove = function(site) {
 };
 
 Site.prototype.main_css_action = function() {
-   res.dependsOn(this.modified);
-   res.dependsOn(res.handlers.layout.modified);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "stylesheet"));
-   res.digest();
+   if (res.handlers.layout) {
+      res.dependsOn(this.modified);
+      res.dependsOn(res.handlers.layout.modified);
+      res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "stylesheet"));
+      res.digest();
+   }
    res.contentType = "text/css";
    this.renderSkin("stylesheet");
    return;
@@ -433,12 +434,12 @@ Site.prototype.getMacroHandler = function(name) {
       case "archive":
       case "files":
       case "images":
-      case "layouts":
       case "members":
       case "polls":
       case "stories":
       case "tags":
       return this[name];
+      
       default:
       return null;
    }

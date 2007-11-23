@@ -126,13 +126,15 @@ Skin.prototype.update = function(data) {
 
 Skin.remove = function() {
    var file = this.getStaticFile(res.skinpath[0]);
-   file["delete"]();
-   var parentDir = file.getParentFile();
-   if (parentDir.isDirectory() && parentDir.list().length < 1) {
-      parentDir["delete"]();
-      var layoutDir = parentDir.getParentFile();
-      if (layoutDir.list().length < 1) {
-         layoutDir["delete"]();
+   if (file.exists()) {
+      file["delete"]();
+      var parentDir = file.getParentFile();
+      if (parentDir.isDirectory() && parentDir.list().length < 1) {
+         parentDir["delete"]();
+         var layoutDir = parentDir.getParentFile();
+         if (layoutDir.list().length < 1) {
+            layoutDir["delete"]();
+         }
       }
    }
    this.remove();

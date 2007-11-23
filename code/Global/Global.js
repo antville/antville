@@ -480,6 +480,18 @@ function list_macro(param /*, limit, id */) {
    return;
 };
 
+function meta_macro(param, name, value) {
+   if (!name) {
+      return;
+   }
+   if (!value) {
+      return res.meta[name];
+   } else {
+      res.meta[name] = value;
+   }
+   return;
+}
+
 function randomize_macro(param, id) {
    var getRandom = function(n) {
       return Math.floor(Math.random() * n);
@@ -579,11 +591,11 @@ function injectXslDeclaration(xml) {
  * @type Number
  */
 function sendMail(sender, recipient, subject, body) {
-   if (!sender || !recipient || !body) {
+   if (!recipient || !body) {
       throw Error("Insufficient arguments in method sendMail()");
    }
    var mail = new helma.Mail();
-   mail.setFrom(sender);
+   mail.setFrom("noreply@antville.org");
    if (recipient instanceof Array) {
       for (var i in recipient) {
          mail.addBCC(recipient[i]);

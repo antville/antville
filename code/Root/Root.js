@@ -125,6 +125,7 @@ Root.prototype.create_action = function() {
    if (req.postParams.create) {
       try {
          site.update(req.postParams);
+         site.layout = new Layout(site);
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
          logAction(site, "added");

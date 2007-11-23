@@ -34,21 +34,33 @@ Images.prototype.getPermission = function(action) {
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":
-      case "default":
-      case "additional":
-      return Membership.require(Membership.MANAGER) ||
-            User.require(User.PRIVILEGED);
+      return this._parent.constructor === Site &&
+            (Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED));
    }
    return false;
 };
 
 Images.prototype.main_action = function() {
-   var images = User.getMembership().images;
-   res.data.list = renderList(images, "Image#images", 10, req.queryParams.page);
+   var images, skin;
+   switch (this._parent.constructor) {
+      case Site:
+      images = User.getMembership().images;
+      skin = "Images#main";
+      res.data.title = gettext("Member images of {0}", this._parent.title);
+      break;
+      
+      case Layout:
+      images = res.handlers.layout.images;
+      skin = "Images#layout";
+      res.data.title = gettext("Layout images of {0}", res.handlers.site.title);
+      break;
+   }
+   res.data.list = renderList(images, "Image#images", 
+         10, req.queryParams.page);
    res.data.pager = renderPageNavigation(images, 
          this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Member images of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Images#main");
+   res.data.body = this.renderSkinAsString(skin);
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -79,25 +91,12 @@ Images.prototype.create_action = function() {
 };
 
 Images.prototype.all_action = function() {
-   switch (this._parent.constructor) {
-      case Site:
-      res.data.pager = renderPageNavigation(this, this.href(), 
-            10, req.queryParams.page);
-      res.data.list = renderList(this, "Image#images", 
-            10, req.queryParams.page);
-      res.data.title = gettext("Images of {0}", this._parent.title);
-      res.data.body = this.renderSkinAsString("Images#main");
-      break;
-      case Layout:
-      var images = this.mergeImages();
-      res.data.pager = renderPageNavigation(images,
-            this.href(), 10, req.queryParams.page);
-      res.data.list = renderList(images, 
-            "mgrlistitem", 10, req.queryParams.page);
-      res.data.title = gettext("Layout images of {0}", this._parent.title);
-      res.data.body = this.renderSkinAsString("Images#layout");
-      break;
-   }
+   res.data.pager = renderPageNavigation(this, this.href(), 
+         10, req.queryParams.page);
+   res.data.list = renderList(this, "Image#images", 
+         10, req.queryParams.page);
+   res.data.title = gettext("Images of {0}", this._parent.title);
+   res.data.body = this.renderSkinAsString("Images#main");
    res.handlers.site.renderSkin("page");
    return;
 };
@@ -138,60 +137,6 @@ Images.Default = (function() {
    return images;
 })();
 
-Images.prototype.default_action = function() {
-   if (!this._parent.parent) {
-      res.message = new Error(gettext("There are no standard images since this layout isn't based on another one."));
-      res.redirect(this.href());
-   }
-   res.data.list = renderList(this._parent.parent.images, 
-         "Image#images", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this._parent.parent.images, 
-         this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Default layout images of {0}", 
-         res.handlers.site.title);
-   res.data.body = this.renderSkinAsString("Images#layout");
-   res.handlers.site.renderSkin("page");
-   return;
-};
-
-Images.prototype.additional_action = function() {
-   res.data.list = renderList(this, "Image#images", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this, 
-         this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Additional layout images of {0}",
-         res.handlers.site.title);
-   res.data.body = this.renderSkinAsString("Images#layout");
-   res.handlers.context.renderSkin("page");
-   return;
-};
-
-Images.prototype.exportToZip = function(zip, mode, log) {
-   log || (log = {});
-   this.forEach(function() {
-      var json, file, thumbnail;
-      if (log[this.name]) {
-         return;
-      }
-      if (json = this.getJSON()) {
-         var str = new java.lang.String(json).getBytes("UTF-8");
-         zip.addData(str, "images/" + this.name + ".js");
-         file = this.getFile();
-         if (file.exists()) {
-            zip.add(file, "images");
-         }
-         file = this.getThumbnailFile();
-         if (file.exists()) {
-            zip.add(file, "images");
-         }
-         log[this.name] = true;
-      }
-   });
-   if (mode === "full" && this._parent.parent) {
-      this._parent.parent.images.exportToZip(zip, mode, log);
-   }
-   return log;   
-};
-
 Images.prototype.evalImport = function(metadata, files) {
    for (var i in metadata) {
       var data = Xml.readFromString(new java.lang.String(metadata[i].data, 0, metadata[i].data.length));
@@ -214,26 +159,6 @@ Images.prototype.evalImport = function(metadata, files) {
    return true;
 };
 
-Images.prototype.importImage = function(layout, data) {
-   // FIXME: replace the creator with a more intelligent solution ...
-   var img = new Image(session.user);
-   if (data.thumbnail) {
-      img.thumbnail = this.importImage(layout, data.thumbnail);
-      // FIXME: not sure if this is really necessary ...
-      img.thumbnail.parent = img;
-   }
-   img.layout = layout;
-   img.alias = data.alias;
-   img.filename = data.filename;
-   img.fileext = data.fileext;
-   img.width = data.width;
-   img.height = data.height;
-   img.alttext = data.alttext;
-   img.createtime = data.createtime;
-   img.modifytime = data.modifytime;
-   return img;
-};
-
 Images.prototype.mergeImages = function() {
    var images = [];
    var layout = this._parent;
@@ -251,4 +176,11 @@ Images.prototype.mergeImages = function() {
 
 Images.prototype.getTags = function(group) {
    return this._parent.getTags("galleries", group);
+};
+
+Images.remove = function() {
+   if (this.constructor === Images) {
+      HopObject.remove(this);
+   }
+   return;
 };

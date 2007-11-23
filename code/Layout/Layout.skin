@@ -1,0 +1,58 @@
+<% #main %>
+<% breadcrumbs %>
+
+<div class="ample">
+   <% layout.link reset "reset layout" prefix="... " %>
+</div>
+
+<p class="storyTitle"><br />
+<% gettext "Layout of site {0}" <% site.title %> %></p>
+
+<p><% layout.link images prefix="... maintain layout " %>
+<% layout.link skins prefix=" | " %></p>
+
+<p><% layout.link import prefix="... " %>
+<% layout.link export prefix=" | " suffix=" layout" %></p>
+
+<p>FIXME: color pickers!</p>
+<p>FIXME: switch layout!</p>
+
+<form id="prefs" method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td class="small">Title:</td>
+<td><% layout.input title %></td>
+</tr>
+<tr>
+<td class="small" valign="top">Description:</td>
+<td><% layout.textarea description %></td>
+</tr>
+<tr>
+<td class="small">Origin:</td>
+<td><% layout.origin %></td>
+</tr>
+<tr>
+<td></td>
+<td>
+   <% layout.checkbox mode %><label for="mode">share this layout</label><br />
+   <span class="small">If this option is enabled other users can download 
+   the layout.</span>
+</td>
+</tr>
+<tr>
+<td class="small"> </td>
+<td>
+   <br />
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+</td>
+</tr>
+</table>
+</form>
+
+<% #import %>
+<form method="post" action="<% response.action %>" 
+enctype="multipart/form-data">
+<input type="file" name="upload" />
+<button type="submit" name="submit" value="1">import</button>
+</form>

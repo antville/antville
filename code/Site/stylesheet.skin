@@ -1,19 +1,19 @@
-<% layout.value bgcolor #ffffff %>
-<% layout.value linkcolor #ff4040 %>
-<% layout.value alinkcolor #ff4040 %>
-<% layout.value vlinkcolor #ff4040 %>
+<% meta bgcolor #ffffff %>
+<% meta linkcolor #ff4040 %>
+<% meta alinkcolor #ff4040 %>
+<% meta vlinkcolor #ff4040 %>
 
-<% layout.value titlecolor #d50000 %>
-<% layout.value titlesize 15px %>
-<% layout.value titlefont "Verdana, Helvetica, Arial, sans-serif" %>
+<% meta titlecolor #d50000 %>
+<% meta titlesize 15px %>
+<% meta titlefont "Verdana, Helvetica, Arial, sans-serif" %>
 
-<% layout.value textcolor #000000 %>
-<% layout.value textsize 13px %>
-<% layout.value textfont "Verdana, Helvetica, Arial, sans-serif" %>
+<% meta textcolor #000000 %>
+<% meta textsize 13px %>
+<% meta textfont "Verdana, Helvetica, Arial, sans-serif" %>
 
-<% layout.value smallcolor #959595 %>
-<% layout.value smallsize 11px %>
-<% layout.value smallfont "Verdana, Arial, Helvetica, sans-serif" %>
+<% meta smallcolor #959595 %>
+<% meta smallsize 11px %>
+<% meta smallfont "Verdana, Arial, Helvetica, sans-serif" %>
 
 table.main {
    width: 700px;
@@ -39,14 +39,14 @@ td.right {
 }
 
 body {
-   background-color: <% layout.value bgcolor %>;
-   font-family: <% layout.value textfont %>;
-   font-size: <% layout.value textsize %>;
-   color: <% layout.value textcolor %>;
+   background-color: <% meta bgcolor %>;
+   font-family: <% meta textfont %>;
+   font-size: <% meta textsize %>;
+   color: <% meta textcolor %>;
 }
 
 td {
-   font-size: <%layout.value textsize %>;
+   font-size: <%meta textsize %>;
    line-height: 1.2em;
 }
 
@@ -57,7 +57,7 @@ td.header {
 }
 
 div.boxheader {
-   color: <% layout.value smallcolor %>;
+   color: <% meta smallcolor %>;
    overflow: hidden;
    font-size: 10px;
    padding-left: 6px;
@@ -71,9 +71,9 @@ div.boxline {
 }
 
 div.box {
-   font-size: <% layout.value smallsize %>;
-   font-family: <% layout.value smallfont %>;
-   color: <% layout.value smallcolor %>;
+   font-size: <% meta smallsize %>;
+   font-family: <% meta smallfont %>;
+   color: <% meta smallcolor %>;
    line-height: 1.4em;
    text-align: right;
    padding: 0em 0em 0.4em 0.4em;
@@ -83,9 +83,9 @@ div.box {
 div.ample { margin-bottom: 5px; }
 
 small, .small {
-   font-family: <% layout.value smallfont %>;
-   font-size: <% layout.value smallsize %>;
-   color: <% layout.value smallcolor %>;
+   font-family: <% meta smallfont %>;
+   font-size: <% meta smallsize %>;
+   color: <% meta smallcolor %>;
 }
 
 /* this is for mozilla to align tables in boxes right */
@@ -109,19 +109,19 @@ p {
 form { margin: 0px; }
 
 a {text-decoration: none;}
-a:link {color: <% layout.value linkcolor %>;}
-a:visited {color: <% layout.value vlinkcolor %>;}
-a:active {color: <% layout.value alinkcolor %>;}
+a:link {color: <% meta linkcolor %>;}
+a:visited {color: <% meta vlinkcolor %>;}
+a:active {color: <% meta alinkcolor %>;}
 a:hover {text-decoration: underline;}
 
 .message {
-   font-family: <% layout.value smallfont %>;
-   font-size: <% layout.value smallsize %>;
+   font-family: <% meta smallfont %>;
+   font-size: <% meta smallsize %>;
    font-weight: bold;
    padding: 1px;
    margin-top: 6px;
    margin-bottom: 6px;
-   color: <% layout.value titlecolor %>;
+   color: <% meta titlecolor %>;
 }
 
 .message input {
@@ -131,18 +131,18 @@ a:hover {text-decoration: underline;}
 }
 
 .historyItem {
-   color: <% layout.value textcolor %>;
-   font-family: <% layout.value smallfont %>;
-   font-size: <% layout.value smallsize %>;
+   color: <% meta textcolor %>;
+   font-family: <% meta smallfont %>;
+   font-size: <% meta smallsize %>;
    padding-bottom: 0.3em;
    width: 180px;
    overflow: hidden; 
 }
 
 .dayHeader {
-   font-family: <% layout.value smallfont %>;
-   font-size: <% layout.value smallsize %>;
-   color: <% layout.value smallcolor %>;
+   font-family: <% meta smallfont %>;
+   font-size: <% meta smallsize %>;
+   color: <% meta smallcolor %>;
    font-weight: bold;
    margin-bottom: 20px;
    margin-top: 10px;
@@ -150,16 +150,16 @@ a:hover {text-decoration: underline;}
 }
 
 .storyDate {
-   font-family: <% layout.value smallfont %>;
-   font-size: <% layout.value smallsize %>;
-   color: <% layout.value smallcolor %>;
+   font-family: <% meta smallfont %>;
+   font-size: <% meta smallsize %>;
+   color: <% meta smallcolor %>;
    margin-bottom: 6px;
 }
 
 .storyTitle {
-   font-family: <% layout.value titlefont %>;
-   font-size: <% layout.value titlesize %>;
-   color: <% layout.value titlecolor %>;
+   font-family: <% meta titlefont %>;
+   font-size: <% meta titlesize %>;
+   color: <% meta titlecolor %>;
    font-weight: bold;
 }
 
@@ -172,9 +172,9 @@ a:hover {text-decoration: underline;}
 }
 
 .title {
-   font-family: <% layout.value titlefont %>;
-   font-size: <% layout.value titlesize %>;
-   color: <% layout.value textcolor %>;
+   font-family: <% meta titlefont %>;
+   font-size: <% meta titlesize %>;
+   color: <% meta textcolor %>;
    font-weight: bold;
    margin-bottom: 2px;
 }
@@ -183,33 +183,33 @@ a:hover {text-decoration: underline;}
 
 .formTitle {
    width: 380px;
-   font-family: <% layout.value textfont %>;
-   font-size: <% layout.value titlesize %>;
+   font-family: <% meta textfont %>;
+   font-size: <% meta titlesize %>;
    font-weight: bold;
-   border: 1px solid <% layout.value textcolor %>;
+   border: 1px solid <% meta textcolor %>;
 }
 
 .formText {
    width: 380px;
-   font-family: <% layout.value textfont %>;
-   font-size: <% layout.value textsize %>;
+   font-family: <% meta textfont %>;
+   font-size: <% meta textsize %>;
    font-weight: normal;
-   border: 1px solid <% layout.value textcolor %>;
+   border: 1px solid <% meta textcolor %>;
 }
 
 .formWide {
    width: 660px;
-   font-family: <% layout.value textfont %>;
-   font-size: <% layout.value textsize %>;
+   font-family: <% meta textfont %>;
+   font-size: <% meta textsize %>;
    font-weight: normal;
 }
 
 .listFlag {
    background-color: #cccccc;
    padding: 1px;
-   font-family: <% layout.value smallfont %>;
-   font-size: <% layout.value smallsize %>;
-   color: <% layout.value textcolor %>;
+   font-family: <% meta smallfont %>;
+   font-size: <% meta smallsize %>;
+   color: <% meta textcolor %>;
 }
 
 .pollResultsBar {
@@ -218,7 +218,7 @@ a:hover {text-decoration: underline;}
    float:left;
    margin-top: 7px;
    margin-right: 10px;
-   background-color: <% layout.value linkcolor %>;
+   background-color: <% meta linkcolor %>;
    font-size: 0px;
 }
 
@@ -272,7 +272,7 @@ span.pageNavSelItem {
    font-weight: bold;
 }
 
-ul { list-style: url("<% image /bullet url %>") circle; } 
+ul { list-style: url(<% image /bullet.gif url %>) circle; } 
 
 ul.skinmgrTree {
    padding-left:15px;
@@ -298,14 +298,14 @@ ul.skinmgrTree a.selected {
 }
 
 ul.skinmgrTree li div {
-   font-family:<% layout.value textfont %>;
-   font-size:<% layout.value smallsize %>;
-   color:<% layout.value textcolor %>;
+   font-family:<% meta textfont %>;
+   font-size:<% meta smallsize %>;
+   color:<% meta textcolor %>;
 }
 
 .membergroup {
    font-weight:bold;
-   font-size:<% layout.value titlesize %>;
+   font-size:<% meta titlesize %>;
    margin:10px 0px;
 }
 
@@ -321,15 +321,15 @@ ul.skinmgrTree li div {
 /* Admin styles */
 
 .pageTitle {
-   font-family:<% layout.value titlefont %>;
-   font-size:<% layout.value titlesize %>;
+   font-family:<% meta titlefont %>;
+   font-size:<% meta titlesize %>;
    font-weight:bold;
-   color:<% layout.value titlecolor %>;
+   color:<% meta titlecolor %>;
    padding-bottom:10pt;
 }
 
 .label {
-   font-family: <% layout.value smallfont %>;
+   font-family: <% meta smallfont %>;
    font-size: 7pt;
    padding: 2px;
    color: #ffffff;
@@ -361,7 +361,7 @@ ul.skinmgrTree li div {
 }
 
 .flagLight {
-   font-family:<% layout.value smallfont %>;
+   font-family:<% meta smallfont %>;
    font-size:7pt;
    padding:2px;
    color:#333333;

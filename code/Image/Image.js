@@ -145,7 +145,7 @@ Image.prototype.update = function(data) {
             data.maxWidth, data.maxHeight);
       this.width = image.width;
       this.height = image.height;
-
+      
       if (this.width > Image.THUMBNAILWIDTH) {
          file = this.getThumbnailFile();
          image = Image.writeToFile(upload, file, 
@@ -212,7 +212,7 @@ Image.prototype.getFile = function(name) {
    name || (name = this.name);
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
-      return layout.getFile() + "/" + name;
+      return layout.getFile(name);
    }
    var site = this.parent || res.handlers.site;
    return site.getStaticFile("images/" + name);
@@ -223,9 +223,7 @@ Image.prototype.getUrl = function(name) {
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
       res.push();
-      res.write("layouts/");
-      res.write(layout.name);
-      res.write("/");
+      res.write("layout/");
       res.write(name);
       return layout.site.getStaticUrl(res.pop());
    }
@@ -310,7 +308,7 @@ Image.validateType = function(type) {
    return false;
 };
 
-Image.remove = function(image) {
+Image.remove = function() {
    this.getFile().remove();
    var thumbnail = this.getThumbnailFile();
    if (thumbnail) {

@@ -71,14 +71,9 @@ HopObject.prototype.onRequest = function() {
       res.stop();
    }
 
-   if (session.data.layout) {
-      // Test-drive a layout
-      res.handlers.layout = session.data.layout;
-      res.message = session.data.layout.renderSkinAsString("testdrive");
-   } else {
-      res.handlers.layout = res.handlers.site.layout || new Layout;
-   }
+   res.handlers.layout = res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
+
    // FIXME: remove after debugging
    ((res.contentType === "text/html") && res.debug(res.skinpath.toSource()));
    return;
@@ -113,17 +108,6 @@ HopObject.prototype.delete_action = function() {
 
 HopObject.remove = function(collection) {
    var item;
-   
-/*   for (var i=0; i<collection.size(); i+=1) {
-      item = collection.get(i);
-      res.debug("call " + item.constructor.name + ".remove() for object " + item);
-      if (item.constructor === HopObject) {
-         item.constructor.remove.call(item, item);
-      }
-   }
-return;
-res.abort(); */
-
    while (collection.size() > 0) {
       item = collection.get(0);
       item.constructor.remove.call(item, item);

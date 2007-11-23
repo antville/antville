@@ -1,8 +1,8 @@
 <% #main %>
 <% site.list stories %>
 
-<% #preview %>
-<li><% site.name | site.link %> 
+<% #list %>
+<li><% site.title | site.link %> 
 <span class="small"><% site.modified | age %></span></li>
 
 <% #create %>
@@ -134,13 +134,6 @@ REGEDIT4
 <% site.checkbox webHookMode %> 
 <label for="webHookMode">enabled<label></td>
 </tr>
-<tr>
-<td class="small" valign="top">Layout:</td>
-<td><% site.select layout %><br />
-<span class="small">Choose the layout to use for your site. 
-<% link layouts "Go to the layouts page" %> to browse, manage or 
-test-drive the list of available layouts.</span></td>
-</tr>
 
 <!--tr>
 <td colspan="2"><div class="listSeparator">&nbsp;</div>
@@ -156,8 +149,8 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 <tr>
 <td></td>
 <td><br />
-<button type="submit" name="save" value="1">Save</button>
-<button type="submit" name="cancel" value="1">Cancel</button></td>
+<button type="submit" name="save" value="1">save</button>
+<button type="submit" name="cancel" value="1">cancel</button></td>
 </tr>
 </table>
 </form>
