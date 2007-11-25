@@ -238,6 +238,7 @@ Site.prototype.main_css_action = function() {
       res.digest();
    }
    res.contentType = "text/css";
+   this.renderSkin("Site#values");
    this.renderSkin("stylesheet");
    return;
 };

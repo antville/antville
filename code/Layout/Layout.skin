@@ -14,7 +14,7 @@
 <p><% layout.link import prefix="... " %>
 <% layout.link export prefix=" | " suffix=" layout" %></p>
 
-<p>FIXME: color pickers!</p>
+<p><% layout.values %></p>
 <p>FIXME: switch layout!</p>
 
 <form id="prefs" method="post" action="<% response.action %>">

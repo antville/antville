@@ -32,7 +32,6 @@ this.handleMetadata("originated");
 
 Layout.prototype.constructor = function(site) {
    this.site = site;
-   //this.title = title;
    this.creator = session.user;
    this.created = new Date;
    this.mode = Layout.DEFAULT;
@@ -87,9 +86,7 @@ Layout.prototype.update = function(data) {
    if (data.name) {
       this.name = this.getAccessName(data.name);
    }
-   this.title = data.title.trim() || "Layout #" + this._id;
    this.description = data.description;
-   this.copyright = data.copyright;
    if (data.parent) {
       var parent = root.layouts.getById(data.parent);
       if (!parent) {
@@ -99,7 +96,7 @@ Layout.prototype.update = function(data) {
          this.parent = parent;
       }
    }
-   this.mode = data.mode;
+   this.mode= data.mode;
    this.touch();
    return;
 };
@@ -138,13 +135,13 @@ Layout.prototype.export_action = function() {
          data.images.add(image);
       }
    });
-   data.origin = this.metadata.get("origin") || this.href();
-   data.originator = this.metadata.get("originator") || session.user.name;
-   data.originated = this.metadata.get("originated") || new Date;
+   data.origin = this.origin || this.site.href();
+   data.originator = this.originator || session.user.name;
+   data.originated = this.originated || new Date;
    var xml = new java.lang.String(Xml.writeToString(data));
    zip.addData(xml.getBytes("UTF-8"), "data.xml");
    zip.close();
-   
+
    res.contentType = "application/zip";
    res.setHeader("Content-Disposition", 
          "attachment; filename=" + this.site.name + "-layout.zip");
@@ -184,9 +181,9 @@ Layout.prototype.import_action = function() {
       // Update database with imported data
       layout = this;
       var data = Xml.read(new helma.File(temp, "data.xml"));
-      this.metadata.set("origin", data.origin);
-      this.metadata.set("originator", data.originator);
-      this.metadata.set("originated", data.originated)
+      this.origin = data.origin;
+      this.originator = data.originator;
+      this.originated = data.originated;
       data.images.forEach(function() {
          layout.images.add(new Image(this));
       });
@@ -197,18 +194,6 @@ Layout.prototype.import_action = function() {
    res.data.body = this.renderSkinAsString("Layout#import");
    res.handlers.site.renderSkin("page");
    return;
-};
-
-Layout.prototype.getJSON = function() {
-   return {
-      title: this.title,
-      name: this.name,
-      description: this.description,
-      created: this.created,
-      creator: this.creator ? this.creator.name : null,
-      modified: this.modified,
-      modifier: this.modifier ? this.modifier.name : null
-   }.toSource();
 };
 
 Layout.prototype.image_macro = function(param, name, mode) {
@@ -238,14 +223,6 @@ Layout.prototype.image_macro = function(param, name, mode) {
    return;
 };
 
-Layout.prototype.setParentLayout = function(parent) {
-   this.parent = parent;
-   // Offspring layouts cannot be shared
-   this.mode = Layout.DEFAULT;
-   this.copyright = parent.copyright;
-   return;
-};
-
 Layout.prototype.getImage = function(name, fallback) {
    var layout = this;
    while (layout) {
@@ -269,50 +246,28 @@ Layout.prototype.getSkinPath = function() {
    if (!this.site) {
       return null;
    }
-
    var skinPath = [this.getFile().toString()];
    this.parent && (skinPath.push(this.parent.getFile().toString()));
    return skinPath;
-   
-   var layout = this;
-   do {
-      res.push();
-      res.write(getProperty("staticPath"));
-      layout.site && res.write(layout.site.name + "/");
-      res.write("layouts/");
-      res.write(layout.name);
-      skinPath.push(res.pop());
-   } while (layout = layout.parent);
-   return skinPath;
-
-   // FIXME: to be removed
-   var sp = [this.skins];
-   var handler = this;
-   while ((handler = handler.parent) != null) {
-      sp.push(handler.skins);
-   }
-   return sp;
-};
-
-Layout.prototype.getParents = function() {
-   var parents = new java.util.Hashtable();
-   var handler = this;
-   while ((handler = handler.parent) != null)
-      parents.put(handler._id, true);
-   return parents;
-};
-
-Layout.prototype.getParentOptions = function() {
-   var self = this;
-   var commons = [{value: 0, display: "none"}];
-   root.layouts.commons.forEach(function() {
-      if (this !== self) {
-         commons.push({display: this.title, value: this._id});
-      } 
-   });
-   return commons;
 };
 
 Layout.prototype.getTitle = function() {
    return "Layout";
+};
+
+Layout.prototype.values_macro = function() {
+   var skin = createSkin(app.skinfiles.Site.Site);
+   if (skin.hasSubskin("values")) {
+      res.push();
+      renderSkin(skin.getSubskin("values"));
+      res.pop();
+   }
+   for each (var key in ["bgcolor", "linkcolor", "alinkcolor", "vlinkcolor", 
+         "textcolor", "textfont", "textsize", "titlecolor", "titlefont", "titlesize", 
+         "smallcolor", "smallfont", "smallsize"]) {
+      html.element("legend", key + ": ");
+      html.input({value: res.meta[key]});
+      html.tag("br");
+   }
+   return;
 };

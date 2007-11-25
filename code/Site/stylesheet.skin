@@ -1,20 +1,3 @@
-<% meta bgcolor #ffffff %>
-<% meta linkcolor #ff4040 %>
-<% meta alinkcolor #ff4040 %>
-<% meta vlinkcolor #ff4040 %>
-
-<% meta titlecolor #d50000 %>
-<% meta titlesize 15px %>
-<% meta titlefont "Verdana, Helvetica, Arial, sans-serif" %>
-
-<% meta textcolor #000000 %>
-<% meta textsize 13px %>
-<% meta textfont "Verdana, Helvetica, Arial, sans-serif" %>
-
-<% meta smallcolor #959595 %>
-<% meta smallsize 11px %>
-<% meta smallfont "Verdana, Arial, Helvetica, sans-serif" %>
-
 table.main {
    width: 700px;
 }
@@ -39,10 +22,10 @@ td.right {
 }
 
 body {
-   background-color: <% meta bgcolor %>;
-   font-family: <% meta textfont %>;
-   font-size: <% meta textsize %>;
-   color: <% meta textcolor %>;
+   background-color: <% value bgcolor %>;
+   font-family: <% value textfont %>;
+   font-size: <% value textsize %>;
+   color: <% value textcolor %>;
 }
 
 td {
@@ -57,7 +40,7 @@ td.header {
 }
 
 div.boxheader {
-   color: <% meta smallcolor %>;
+   color: <% value smallcolor %>;
    overflow: hidden;
    font-size: 10px;
    padding-left: 6px;
@@ -71,9 +54,9 @@ div.boxline {
 }
 
 div.box {
-   font-size: <% meta smallsize %>;
-   font-family: <% meta smallfont %>;
-   color: <% meta smallcolor %>;
+   font-size: <% value smallsize %>;
+   font-family: <% value smallfont %>;
+   color: <% value smallcolor %>;
    line-height: 1.4em;
    text-align: right;
    padding: 0em 0em 0.4em 0.4em;
@@ -83,9 +66,9 @@ div.box {
 div.ample { margin-bottom: 5px; }
 
 small, .small {
-   font-family: <% meta smallfont %>;
-   font-size: <% meta smallsize %>;
-   color: <% meta smallcolor %>;
+   font-family: <% value smallfont %>;
+   font-size: <% value smallsize %>;
+   color: <% value smallcolor %>;
 }
 
 /* this is for mozilla to align tables in boxes right */
@@ -109,19 +92,19 @@ p {
 form { margin: 0px; }
 
 a {text-decoration: none;}
-a:link {color: <% meta linkcolor %>;}
-a:visited {color: <% meta vlinkcolor %>;}
-a:active {color: <% meta alinkcolor %>;}
+a:link {color: <% value linkcolor %>;}
+a:visited {color: <% value vlinkcolor %>;}
+a:active {color: <% value alinkcolor %>;}
 a:hover {text-decoration: underline;}
 
 .message {
-   font-family: <% meta smallfont %>;
-   font-size: <% meta smallsize %>;
+   font-family: <% value smallfont %>;
+   font-size: <% value smallsize %>;
    font-weight: bold;
    padding: 1px;
    margin-top: 6px;
    margin-bottom: 6px;
-   color: <% meta titlecolor %>;
+   color: <% value titlecolor %>;
 }
 
 .message input {
@@ -131,18 +114,18 @@ a:hover {text-decoration: underline;}
 }
 
 .historyItem {
-   color: <% meta textcolor %>;
-   font-family: <% meta smallfont %>;
-   font-size: <% meta smallsize %>;
+   color: <% value textcolor %>;
+   font-family: <% value smallfont %>;
+   font-size: <% value smallsize %>;
    padding-bottom: 0.3em;
    width: 180px;
    overflow: hidden; 
 }
 
 .dayHeader {
-   font-family: <% meta smallfont %>;
-   font-size: <% meta smallsize %>;
-   color: <% meta smallcolor %>;
+   font-family: <% value smallfont %>;
+   font-size: <% value smallsize %>;
+   color: <% value smallcolor %>;
    font-weight: bold;
    margin-bottom: 20px;
    margin-top: 10px;
@@ -150,16 +133,16 @@ a:hover {text-decoration: underline;}
 }
 
 .storyDate {
-   font-family: <% meta smallfont %>;
-   font-size: <% meta smallsize %>;
-   color: <% meta smallcolor %>;
+   font-family: <% value smallfont %>;
+   font-size: <% value smallsize %>;
+   color: <% value smallcolor %>;
    margin-bottom: 6px;
 }
 
 .storyTitle {
-   font-family: <% meta titlefont %>;
-   font-size: <% meta titlesize %>;
-   color: <% meta titlecolor %>;
+   font-family: <% value titlefont %>;
+   font-size: <% value titlesize %>;
+   color: <% value titlecolor %>;
    font-weight: bold;
 }
 
@@ -172,9 +155,9 @@ a:hover {text-decoration: underline;}
 }
 
 .title {
-   font-family: <% meta titlefont %>;
-   font-size: <% meta titlesize %>;
-   color: <% meta textcolor %>;
+   font-family: <% value titlefont %>;
+   font-size: <% value titlesize %>;
+   color: <% value textcolor %>;
    font-weight: bold;
    margin-bottom: 2px;
 }
@@ -183,33 +166,33 @@ a:hover {text-decoration: underline;}
 
 .formTitle {
    width: 380px;
-   font-family: <% meta textfont %>;
-   font-size: <% meta titlesize %>;
+   font-family: <% value textfont %>;
+   font-size: <% value titlesize %>;
    font-weight: bold;
-   border: 1px solid <% meta textcolor %>;
+   border: 1px solid <% value textcolor %>;
 }
 
 .formText {
    width: 380px;
-   font-family: <% meta textfont %>;
-   font-size: <% meta textsize %>;
+   font-family: <% value textfont %>;
+   font-size: <% value textsize %>;
    font-weight: normal;
-   border: 1px solid <% meta textcolor %>;
+   border: 1px solid <% value textcolor %>;
 }
 
 .formWide {
    width: 660px;
-   font-family: <% meta textfont %>;
-   font-size: <% meta textsize %>;
+   font-family: <% value textfont %>;
+   font-size: <% value textsize %>;
    font-weight: normal;
 }
 
 .listFlag {
    background-color: #cccccc;
    padding: 1px;
-   font-family: <% meta smallfont %>;
-   font-size: <% meta smallsize %>;
-   color: <% meta textcolor %>;
+   font-family: <% value smallfont %>;
+   font-size: <% value smallsize %>;
+   color: <% value textcolor %>;
 }
 
 .pollResultsBar {
@@ -218,7 +201,7 @@ a:hover {text-decoration: underline;}
    float:left;
    margin-top: 7px;
    margin-right: 10px;
-   background-color: <% meta linkcolor %>;
+   background-color: <% value linkcolor %>;
    font-size: 0px;
 }
 
@@ -298,14 +281,14 @@ ul.skinmgrTree a.selected {
 }
 
 ul.skinmgrTree li div {
-   font-family:<% meta textfont %>;
-   font-size:<% meta smallsize %>;
-   color:<% meta textcolor %>;
+   font-family:<% value textfont %>;
+   font-size:<% value smallsize %>;
+   color:<% value textcolor %>;
 }
 
 .membergroup {
    font-weight:bold;
-   font-size:<% meta titlesize %>;
+   font-size:<% value titlesize %>;
    margin:10px 0px;
 }
 
@@ -321,15 +304,15 @@ ul.skinmgrTree li div {
 /* Admin styles */
 
 .pageTitle {
-   font-family:<% meta titlefont %>;
-   font-size:<% meta titlesize %>;
+   font-family:<% value titlefont %>;
+   font-size:<% value titlesize %>;
    font-weight:bold;
-   color:<% meta titlecolor %>;
+   color:<% value titlecolor %>;
    padding-bottom:10pt;
 }
 
 .label {
-   font-family: <% meta smallfont %>;
+   font-family: <% value smallfont %>;
    font-size: 7pt;
    padding: 2px;
    color: #ffffff;
@@ -361,7 +344,7 @@ ul.skinmgrTree li div {
 }
 
 .flagLight {
-   font-family:<% meta smallfont %>;
+   font-family:<% value smallfont %>;
    font-size:7pt;
    padding:2px;
    color:#333333;

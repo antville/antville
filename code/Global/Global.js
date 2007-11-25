@@ -480,7 +480,7 @@ function list_macro(param /*, limit, id */) {
    return;
 };
 
-function meta_macro(param, name, value) {
+function value_macro(param, name, value) {
    if (!name) {
       return;
    }

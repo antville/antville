@@ -276,7 +276,7 @@ Image.writeToFile = function(mime, file, maxWidth, maxHeight) {
    return image;
 };
 
-Image.prototype.getJSON = function(zip) {
+Image.prototype.getJSON = function() {
    return {
       name: this.name,
       url: this.url,
