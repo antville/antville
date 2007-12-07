@@ -23,6 +23,8 @@
 //
 
 app.addRepository("modules/core/HopObject.js");
+app.addRepository("modules/core/String.js");
+app.addRepository("modules/helma/Color.js");
 
 var convert = function(type) {
    if (!type) {
@@ -224,27 +226,78 @@ convert.skins = function() {
    var dump = function(sql) {
       retrieve(sql);
       traverse(function() {
-         var fpath = app.dir + "/../static/" + this.site_name + 
-               "/layouts/" + this.name + "/" + rename(this["prototype"]);
-         var file = new java.io.File(fpath);
-         file.mkdirs();
-         file = new java.io.File(file, 
-               this.skin_name.replace(/\//, "_") + ".skin");
-         debug(file.getCanonicalPath());
-         file["delete"]();
-         var fos = new java.io.FileOutputStream(file);
-         var bos = new java.io.BufferedOutputStream(fos);
-         var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
-         writer.write(this.SKIN_SOURCE || "");
-         writer.close();
-         bos.close();
-         fos.close();
+         var sitePath = app.dir + "/../static/" + this.site_name;
+         var layoutPath = sitePath + "/layouts/" + this.name;
+         var fpath = layoutPath + "/" + rename(this["prototype"]);
+         save(fpath, this.skin_name, this.SKIN_SOURCE);
+         if (this.current_layout === this.layout_id && !layouts[sitePath]) {
+            layouts[sitePath] = layoutPath;
+            metadata[sitePath] = this.metadata; 
+         }
       });
    }
    
+   var save = function(fpath, fname, data) {
+      var file = new java.io.File(fpath);
+      file.mkdirs();
+      file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
+      debug(file.getCanonicalPath());
+      file["delete"]();
+      var fos = new java.io.FileOutputStream(file);
+      var bos = new java.io.BufferedOutputStream(fos);
+      var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
+      writer.write(data || "");
+      writer.close();
+      bos.close();
+      fos.close();
+      return
+   } 
+
+   var layouts = {};
+   var metadata = {};
    dump(sql("skins"));
    dump("select skin.id, 'www' as site_name, layout.name, " +
          "skin.name as skin_name, prototype, SKIN_SOURCE from " +
          "skin, layout where skin.layout_id = layout.id and " +
          "layout.site_id is null");
+   for (var sitePath in layouts) {
+      var source = new java.io.File(layouts[sitePath]);
+      var target = new java.io.File(sitePath + "/layout");
+      target["delete"]();
+      source.renameTo(target);
+   }
+   
+   var keys = {
+      "bgcolor": "Background color",
+      "linkcolor": "Link color",
+      "alinkcolor": "Active link color",
+      "vlinkcolor": "Visited link color",
+      "titlefont": "Title font",
+      "titlesize": "Title font size",
+      "titlecolor": "Tite font color",
+      "textfont": "Text font",
+      "textsize": "Text font size",
+      "textcolor": "Text font color",
+      "smallfont": "Small font",
+      "smallsize": "Small font size",
+      "smallcolor": "Small font color"
+   }
+   for (var sitePath in metadata) {
+      var data = eval(metadata[sitePath]);
+      if (!data) {
+         continue;
+      }
+      res.push();
+      res.writeln("<% #values %>");
+      for (var key in keys) {
+         var name = keys[key];
+         var value = data[key];
+         if (key.endsWith("color") && !helma.Color.COLORNAMES[key] &&
+               !value.startsWith("#")) {
+            value = "#" + value;
+         }
+         res.writeln('<% value "' + name + '" "' + value + '" %>');
+      }
+      save(sitePath + "/layout/Site", "Site", res.pop());
+   }
 }

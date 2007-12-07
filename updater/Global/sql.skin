@@ -138,7 +138,7 @@ alter table layout change column LAYOUT_F_USER_CREATOR creator_id mediumint(10);
 alter table layout change column LAYOUT_F_USER_MODIFIER modifier_id mediumint(10);
 alter table layout change column LAYOUT_SHAREABLE mode enum('default','shared');
 #!layouts
-alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
+#alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
 
 <% #layouts %>
 select id, LAYOUT_TITLE, LAYOUT_DESCRIPTION, LAYOUT_ISIMPORT, 
@@ -211,12 +211,13 @@ alter table skin change column SKIN_F_USER_MODIFIER modifier_id mediumint(10);
 alter table skin change column SKIN_CREATETIME created datetime;
 alter table skin change column SKIN_MODIFYTIME modified datetime;
 #!skins
-alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
+#alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
 
 <% #skins %>
-select skin.id, site.name as site_name, layout.name, skin.name as skin_name, 
-prototype, SKIN_SOURCE from site, layout, skin where skin.layout_id =
-layout.id and layout.site_id = site.id order by skin.id
+select skin.id, site.name as site_name, site.layout_id as current_layout, 
+layout.id as layout_id, layout.name, layout.metadata, skin.name as skin_name, 
+prototype, SKIN_SOURCE from site, layout, skin where skin.layout_id = layout.id 
+and layout.site_id = site.id order by skin.id
 
 <% #AV_SYSLOG %>
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from user, AV_SYSLOG where SYSLOG_OBJECT = user.name and SYSLOG_TYPE = 'user';
