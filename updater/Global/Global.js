@@ -268,19 +268,19 @@ convert.skins = function() {
    }
    
    var keys = {
-      "bgcolor": "Background color",
-      "linkcolor": "Link color",
-      "alinkcolor": "Active link color",
-      "vlinkcolor": "Visited link color",
-      "titlefont": "Title font",
-      "titlesize": "Title font size",
-      "titlecolor": "Tite font color",
-      "textfont": "Text font",
-      "textsize": "Text font size",
-      "textcolor": "Text font color",
-      "smallfont": "Small font",
-      "smallsize": "Small font size",
-      "smallcolor": "Small font color"
+      "bgcolor": "background color",
+      "linkcolor": "link color",
+      "alinkcolor": "active link color",
+      "vlinkcolor": "visited link color",
+      "titlefont": "big font",
+      "titlesize": "big font size",
+      "titlecolor": "big font color",
+      "textfont": "base font",
+      "textsize": "base font size",
+      "textcolor": "base font color",
+      "smallfont": "small font",
+      "smallsize": "small font size",
+      "smallcolor": "small font color"
    }
    for (var sitePath in metadata) {
       var data = eval(metadata[sitePath]);
@@ -291,11 +291,12 @@ convert.skins = function() {
       res.writeln("<% #values %>");
       for (var key in keys) {
          var name = keys[key];
-         var value = data[key];
+         var value = String(data[key]).toLowerCase();
          if (key.endsWith("color") && !helma.Color.COLORNAMES[key] &&
                !value.startsWith("#")) {
             value = "#" + value;
          }
+         value = value.replace(/([0-9]+) +px/, "$1px");
          res.writeln('<% value "' + name + '" "' + value + '" %>');
       }
       save(sitePath + "/layout/Site", "Site", res.pop());
