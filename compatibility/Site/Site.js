@@ -1,3 +1,27 @@
+//
+// The Antville Project
+// http://code.google.com/p/antville
+//
+// Copyright 2001-2007 by The Antville People
+//
+// Licensed under the Apache License, Version 2.0 (the ``License'');
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an ``AS IS'' BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
+// $URL$
+//
+
 Site.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "main_action", function(args, func, site) {
       res.handlers.day = site.archive;
@@ -67,6 +91,17 @@ Site.prototype.renderSkin = function(name) {
 }
 */
 
+Site.prototype.skin_macro = function(param) {
+   if (param.name) {
+      switch (param.name) {
+         case "searchbox":
+         param.name = "Site#search"; break;
+      }
+      return HopObject.prototype.skin_macro.call(this, param, param.name);
+   }
+   return HopObject.prototype.skin_macro.apply(this, arguments);
+}
+
 Site.prototype.link_macro = function(param) {
    if (!param.to) {
       return;
@@ -130,23 +165,7 @@ Site.prototype.loginstatus_macro = function(param) {
 }
 
 Site.prototype.navigation_macro = function(param) {
-   if (param["for"] == "users" && !param.modules) {
-      // FIXME: this is left for backwards-compatibility
-      // sometime in the future we'll get rid of the usernavigation.skin
-      res.write("... ");
-      Html.link({href: "http://project.antville.org/project/stories/146"}, "<strong>README</strong>");
-      Html.tag("br");
-      Html.tag("br");
-      this.renderSkin("usernavigation");
-   }
-   if (param["for"] === "admins" && (Membership.require(Membership.OWNER) ||
-         User.require(User.PRIVILEGED))) {
-      this.renderSkin("adminnavigation");
-   } else if (param["for"] === "contributors" && 
-         (Membership.require(Membership.CONTRIBUTOR) || 
-         User.require(User.PRIVILEGED))) {
-      this.renderSkin("contribnavigation");
-   }
+   res.write(" FIXME ");
    return;
 }
 
