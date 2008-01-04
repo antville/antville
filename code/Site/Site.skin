@@ -156,19 +156,19 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 </form>
 
 <% #values %>
-<% value bgcolor #ffffff %>
-<% value linkcolor #ff4040 %>
-<% value alinkcolor #ff4040 %>
-<% value vlinkcolor #ff4040 %>
+<% value "background color" #ffffff %>
+<% value "link color" #ff4040 %>
+<% value "active link color" #ff4040 %>
+<% value "visited link color" #ff4040 %>
 
-<% value titlecolor #d50000 %>
-<% value titlesize 15px %>
-<% value titlefont "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "big font" "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "big font size" 15px %>
+<% value "big font color" #d50000 %>
 
-<% value textcolor #000000 %>
-<% value textsize 13px %>
-<% value textfont "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "base font" "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "base font size" 13px %>
+<% value "base font color" #000000 %>
 
-<% value smallcolor #959595 %>
-<% value smallsize 11px %>
-<% value smallfont "Verdana, Arial, Helvetica, sans-serif" %>
+<% value "small font" "Verdana, Arial, Helvetica, sans-serif" %>
+<% value "small font size" 11px %>
+<% value "small font color" #959595 %>

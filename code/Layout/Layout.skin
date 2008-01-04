@@ -1,9 +1,7 @@
 <% #main %>
 <% breadcrumbs %>
 
-<div class="ample">
-   <% layout.link reset "reset layout" prefix="... " %>
-</div>
+<div class="ample"></div>
 
 <p class="storyTitle"><br />
 <% gettext "Layout of site {0}" <% site.title %> %></p>
@@ -12,10 +10,8 @@
 <% layout.link skins prefix=" | " %></p>
 
 <p><% layout.link import prefix="... " %>
-<% layout.link export prefix=" | " suffix=" layout" %></p>
-
-<p><% layout.values %></p>
-<p>FIXME: switch layout!</p>
+<% layout.link export prefix=" | " %>
+<% layout.link reset "reset" prefix=" | " suffix=" layout" %></p>
 
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
@@ -36,9 +32,10 @@
 <td>
    <% layout.checkbox mode %><label for="mode">share this layout</label><br />
    <span class="small">If this option is enabled other users can download 
-   the layout.</span>
+   the layout.</span><br /><br />
 </td>
 </tr>
+<% layout.values %>
 <tr>
 <td class="small"> </td>
 <td>
@@ -56,3 +53,9 @@ enctype="multipart/form-data">
 <input type="file" name="upload" />
 <button type="submit" name="submit" value="1">import</button>
 </form>
+
+<% #value %>
+<tr>
+<td class="small"><% param.key %>:</td>
+<td><input type="text" name="value_<% param.key %>" value="<% param.value %>" /></td>
+</tr>

@@ -49,6 +49,7 @@ Layout.prototype.getPermission = function(action) {
       case "export":
       case "images":
       case "import":
+      case "reset":
       case "skins":
       return true;
    }
@@ -56,6 +57,7 @@ Layout.prototype.getPermission = function(action) {
 };
 
 Layout.prototype.main_action = function() {
+   res.debug(this.skins.getSkin("Site", "values"));
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
@@ -83,29 +85,42 @@ Layout.prototype.getFormOptions = function(name) {
 };
 
 Layout.prototype.update = function(data) {
-   if (data.name) {
-      this.name = this.getAccessName(data.name);
+   var skin = this.skins.getSkin("Site", "values");
+   if (!skin) {
+      skin = new Skin("Site", "values");
+      this.skins.add(skin);
    }
+   res.push();
+   for (var key in data) {
+      if (key.startsWith("value_")) {
+         var value = data[key];
+         key = key.substr(6);
+         res.write("<% value ");
+         res.write(quote(key));
+         res.write(" ");
+         res.write(quote(value));
+         res.write(" %>\n");
+      }
+   }
+   res.write("\n");
+   skin.setSource(res.pop());
    this.description = data.description;
-   if (data.parent) {
-      var parent = root.layouts.getById(data.parent);
-      if (!parent) {
-         throw Error(gettext("Couldn't find the basic layout. Please choose another one."));
-      }
-      if (parent !== this) {
-         this.parent = parent;
-      }
-   }
    this.mode= data.mode;
    this.touch();
    return;
 };
 
 Layout.remove = function() {
-   HopObject.remove(this.skins);
-   HopObject.remove(this.images);
-   this.remove();
+   Skins.remove.call(this.skins);
+   this.getFile().removeDirectory();
+   Images.remove.call(this.images);
    return;
+};
+
+Layout.prototype.reset_action = function() {
+   Skins.remove.call(this.skins);
+   this.getFile().removeDirectory();
+   return res.redirect(this.href());
 };
 
 Layout.prototype.export_action = function() {
@@ -256,18 +271,15 @@ Layout.prototype.getTitle = function() {
 };
 
 Layout.prototype.values_macro = function() {
-   var skin = createSkin(app.skinfiles.Site.Site);
-   if (skin.hasSubskin("values")) {
-      res.push();
-      renderSkin(skin.getSubskin("values"));
-      res.pop();
-   }
-   for each (var key in ["bgcolor", "linkcolor", "alinkcolor", "vlinkcolor", 
-         "textcolor", "textfont", "textsize", "titlecolor", "titlefont", "titlesize", 
-         "smallcolor", "smallfont", "smallsize"]) {
-      html.element("legend", key + ": ");
-      html.input({value: res.meta[key]});
-      html.tag("br");
+   res.push();
+   var skin = new Skin("Site", "values");
+   skin.render();
+   res.pop();
+   for (var key in res.meta.values) {
+      this.renderSkin("Layout#value", {
+         key: key.capitalize(), 
+         value: res.meta.values[key]
+      });
    }
    return;
 };

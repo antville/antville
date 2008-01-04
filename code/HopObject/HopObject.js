@@ -71,6 +71,7 @@ HopObject.prototype.onRequest = function() {
       res.stop();
    }
 
+   res.meta.values = {};
    res.handlers.layout = res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
 
@@ -217,12 +218,6 @@ HopObject.prototype.upload_macro = function(param, name) {
 HopObject.prototype.macro_macro = function(param, handler) {
    var ctor = this.constructor;
    if ([Story, Image, File, Poll].indexOf(ctor) > -1) {
-      var quote = function(str) {
-         if (/\s/.test(str)) {
-            str = '"' + str + '"';
-         }
-         return str;
-      };
       res.encode("<% ");
       res.write(handler || ctor.name.toLowerCase());
       res.write(String.SPACE);

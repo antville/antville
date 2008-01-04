@@ -197,38 +197,16 @@ Skins.prototype.safe_action = function() {
    return;
 };
 
-/* FIXME: check if HopObject.remove / Skin.remove do their jobs
-Skins.remove = function() {
-   for (var i=0; i<this.size(); i+=1) {
-      var proto = this.get(i);
-      for (var j=proto.size(); j>0; j-=1) {
-         this.deleteSkin(proto.get(j-1));
-      }
-   }
-   return;
-};
-*/
-
 Skins.prototype.getSkin = function(prototype, name) {
-   var skins = this.get(prototype);
-   return skins ? skins.get(name) : null;
+   var skinset = this.get(prototype);
+   return skinset ? skinset.get(name) : null;
 };
 
 Skins.prototype.getSkinSource = function(proto, name) {
    var skin;
    if (skin = this.getSkin(proto, name)) {
-res.debug(skin._id);
       return skin.getSource();
    }
-   
-   var layout = this._parent;
-   while (layout = layout.parent) {
-      if (skin = layout.skins.getSkin(proto, name)) {
-res.debug(skin._id);
-         return skin.getSource();
-      }
-   }
-
    if (app.skinfiles[proto]) {
       return app.skinfiles[proto][name];
    }
@@ -258,8 +236,6 @@ Skins.prototype.getOriginalSkinSource = function(proto, name) {
 };
 
 Skins.prototype.getCustomSkins = function() {
-   
-   
    var coll = [];
    // object to store the already added skin keys
    // used to avoid duplicate skins in the list
@@ -283,50 +259,6 @@ Skins.prototype.getCustomSkins = function() {
       handler = handler.parent;
    }
    return coll;
-};
-
-Skins.prototype.exportToZip = function(zip, mode) {
-   var appSkinFiles = app.getSkinfiles();
-   var iterator = app.__app__.getPrototypes().iterator();
-   var protoName, proto, protoSkinFiles, skinName, skin, data;
-   while (iterator.hasNext()) {
-      protoName = iterator.next().getName();
-      if ((proto = this.get(protoName)) || (mode === "full")) {
-         protoSkinFiles = appSkinFiles[protoName];
-         for (var skinName in protoSkinFiles) {
-            if (skin = this.getSkin(protoName, skinName)) {
-               // skin is locally managed => export
-               data = new java.lang.String(skin.getSource() || "").getBytes("UTF-8");
-               zip.addData(data, "skins/" + protoName 
-                     + "/" + skinName + ".skin");
-            } else if (mode === "full") {
-               // walk up the layout chain and 
-               if (!(skin = this.getOriginalSkin(protoName, skinName))) {
-                  skin = protoSkinFiles[skinName];
-               }
-               zip.addData(new java.lang.String(skin).getBytes("UTF-8"),
-                         "skins/" + protoName + "/" + skinName + ".skin");
-            }
-         }
-      }
-   }
-   return;
-};
-
-Skins.prototype.evalImport = function(data) {
-   var proto, buf, name;
-   for (var protoName in data) {
-      proto = data[protoName];
-      for (var fileName in proto) {
-         name = fileName.substring(0, fileName.lastIndexOf("."));
-         // FIXME: replace session.user with a more intelligent solution ...
-         var s = new Skin(this._parent, protoName, name, session.user);
-         buf = data[protoName][fileName].data;
-         s.setSource(new java.lang.String(buf, 0, buf.length, "UTF-8"));
-         this.add(s);
-      }
-   }
-   return true;
 };
 
 Skins.getRedirectUrl = function(data) {

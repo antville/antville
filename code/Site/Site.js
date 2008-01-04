@@ -231,12 +231,10 @@ Site.remove = function(site) {
 };
 
 Site.prototype.main_css_action = function() {
-   if (res.handlers.layout) {
-      res.dependsOn(this.modified);
-      res.dependsOn(res.handlers.layout.modified);
-      res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "stylesheet"));
-      res.digest();
-   }
+   res.dependsOn(this.modified);
+   res.dependsOn(Skin("Site", "values").getSource());
+   res.dependsOn(Skin("Site", "stylesheet").getSource());
+   res.digest();
    res.contentType = "text/css";
    this.renderSkin("Site#values");
    this.renderSkin("stylesheet");
@@ -245,8 +243,7 @@ Site.prototype.main_css_action = function() {
 
 Site.prototype.main_js_action = function() {
    res.dependsOn(this.modified);
-   res.dependsOn(res.handlers.layout.modified);
-   res.dependsOn(res.handlers.layout.skins.getSkinSource("Site", "javascript"));
+   res.dependsOn(Skin("Site", "javascript").getSource());
    res.digest();
    res.contentType = "text/javascript";
    // FIXME: Find a better way to reliably include jQuery (via script tag?)

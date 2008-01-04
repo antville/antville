@@ -484,10 +484,11 @@ function value_macro(param, name, value) {
    if (!name) {
       return;
    }
+   name = name.toLowerCase();
    if (!value) {
-      return res.meta[name];
+      return res.meta.values[name];
    } else {
-      res.meta[name] = value;
+      res.meta.values[name] = value;
    }
    return;
 }
@@ -544,6 +545,13 @@ function validateUrl(str) {
       }
    }
    return null;
+}
+
+function quote(str) {
+   if (/\s/.test(str)) {
+      str = '"' + str + '"';
+   }
+   return str;
 }
 
 function formatNumber(number, pattern) {

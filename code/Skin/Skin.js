@@ -23,7 +23,6 @@
 //
 
 Skin.prototype.constructor = function(prototype, name) {
-   this.layout = res.handlers.layout;
    this.prototype = prototype;
    this.name = name;
    this.custom = false;
@@ -196,30 +195,6 @@ Skin.prototype.diff_action = function() {
    return;
 };
 
-/*Skin.prototype.delete_action = function() {
-   if (req.data.cancel) {
-      res.redirect(this.layout.skins.href());
-   } else if (req.data.remove) {
-      try {
-         res.message = this.layout.skins.deleteSkin(this);
-         res.redirect(this.layout.skins.href());
-      } catch (err) {
-         res.message = err.toString();
-      }
-   }
-
-   res.data.action = this.href(req.action);
-   res.data.title = res.handlers.context.getTitle();
-   var skinParam = {
-      description: getMessage("Skin.deleteDescription"),
-      detail: this.name
-   };
-   res.data.body = this.renderSkinAsString("delete", skinParam);
-   res.handlers.context.renderSkin("page");
-   return;
-};
-*/
-
 Skin.prototype.prototype_macro = function() {
    if (this.prototype.toLowerCase() !== "global") {
       res.write(this.prototype);
@@ -311,6 +286,10 @@ Skin.prototype.getMainSkin = function() {
 Skin.prototype.isCustom = function() {
    // FIXME:
    return true;
+};
+
+Skin.prototype.render = function() {
+   return renderSkin(createSkin(this.getSource()));
 };
 
 Skin.prototype.equals = function(source) {
