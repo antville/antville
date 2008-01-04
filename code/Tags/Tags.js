@@ -46,7 +46,7 @@ Tags.prototype.main_action = function() {
    }
    var skin = (action ? "Tags#" + action : "Tags"); 
    res.data.body = this.renderSkinAsString(skin);
-   res.handlers.context.renderSkin("page");
+   res.handlers.site.renderSkin("page");
    return;
 };
 

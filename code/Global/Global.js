@@ -44,6 +44,7 @@ app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/I18n.js");
 //app.addRepository("modules/jala/code/IndexManager.js");
 //app.addRepository("modules/jala/code/ListRenderer.js");
+app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
 app.data.mails || (app.data.mails = []);

@@ -19,6 +19,7 @@
 <link rel="alternate" type="application/rss+xml" 
       title="RSS Feed (site updates)" href="<% root.href updates.xml %>" />
 
+<!-- Testing ColourMod plugin for jQuery -->
 <link href="<% file /ColourModStyle.css url %>" rel="stylesheet" type="text/css" />
 <script src="<% file /StyleModScript.js url %>" type="text/javascript"></script>
 <script src="<% file /ColourModScript.js url %>" type="text/javascript"></script>
@@ -86,7 +87,6 @@
    <br />
    <% image /smallchaos.gif | link http://antville.org %><br />
    <% image /hop.gif | link http://helma.org %></div>
-
 </td>
 </tr>
 </table>
