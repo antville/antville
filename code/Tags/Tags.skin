@@ -2,7 +2,7 @@
 
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.list Tag#item prefix="<ul>" suffix="</ul> %>
+<% tags.list prefix="<ul>" suffix="</ul> %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 

@@ -419,11 +419,11 @@ function list_macro(param /*, limit, id */) {
       return;
    }
 
-   var max = Math.min(Math.max(limit, 5), 20);
+   var max = Math.min(Math.max(limit, 1), 20);
    var collection, skin;
    if (id === "sites") {
-      collection = root.sites;
-      skin = "Site#preview";
+      collection = root.sites.list(0, max);
+      skin = "Site#list"; // FIXME: #preview or #list?
    } else {
       var site;
       var parts = id.split("/");
@@ -440,9 +440,10 @@ function list_macro(param /*, limit, id */) {
       };
 
       switch (type) {
-         case "images":
-         collection = site.images.list(0, max);
-         skin = "Image#preview";
+         case "comments":
+         var comments = site.stories.comments;
+         collection = comments.list().filter(filter);
+         skin = "Comment#preview";
          break;
          
          case "featured":
@@ -450,24 +451,28 @@ function list_macro(param /*, limit, id */) {
          skin = "Story#preview";
          break;
          
-         case "stories":
-         var stories = site.stories.recent;
-         collection = stories.list().filter(function(item, index) {
-            return item.constructor === Story && filter(item, index);
-         });
-         skin = "Story#preview";
-         break;
-         
-         case "comments":
-         var comments = site.stories.comments;
-         collection = comments.list().filter(filter);
-         skin = "Comment#preview";
+         case "images":
+         collection = site.images.list(0, max);
+         skin = "Image#preview";
          break;
          
          case "postings":
          content = site.stories.recent;
          collection = content.list().filter(filter);
          skin = "Story#preview";
+         break;
+         
+         case "stories":
+         var stories = site.stories.recent;
+         var counter = 0;
+         collection = stories.list().filter(function(item, index) {
+            return item.constructor === Story && filter(item, counter++);
+         });
+         skin = "Story#preview";
+         break;
+         
+         case "tags":
+         return site.tags.list_macro(param, "Tag#item");
          break;
          
          default:

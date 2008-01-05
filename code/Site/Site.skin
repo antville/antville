@@ -2,7 +2,7 @@
 <% site.list stories %>
 
 <% #list %>
-<li><% site.title | site.link %> 
+<li><% site.title | site.link . %> 
 <span class="small"><% site.modified | age %></span></li>
 
 <% #create %>
