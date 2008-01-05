@@ -414,12 +414,12 @@ function poll_macro(param, id, mode) {
 
 function list_macro(param /*, limit, id */) {
    var id = arguments[2] || arguments[1];
-   var limit = arguments[2] && arguments[1] || 0;
+   var limit = arguments[2] && arguments[1] || 5;
    if (!id && !limit) {
       return;
    }
 
-   var max = Math.min(Math.max(limit, 1), 20);
+   var max = Math.min(limit, 20);
    var collection, skin;
    if (id === "sites") {
       collection = root.sites.list(0, max);
