@@ -147,22 +147,27 @@ Story.prototype.location_macro = function(param) {
 };
 
 Story.prototype.topic_macro = function(param) {
-   if (this.constructor !== Image && (!this.online || this.tags.size() < 1))
+   // This method is applied to images as well, thus we check what we got first:
+   if (this.constructor !== Image && (!this.online || this.tags.size() < 1)) {
       return;
-   var topic = this.tags.get(0).tag;
-   if (!param.as || param.as == "text")
-      res.write(topic.name);
-   else if (param.as == "link") {
-      Html.link({href: topic.href()}, param.text ? param.text : topic.name);
-   } else if (param.as == "image") {
+   }
+   if (this.tags.size() < 1) {
+      return;
+   }
+   var tag = this.tags.get(0).tag;
+   if (!param.as || param.as === "text") {
+      res.write(tag.name);
+   } else if (param.as === "link") {
+      html.link({href: tag.href()}, param.text || tag.name);
+   } else if (param.as === "image") {
       if (!param.imgprefix) {
          param.imgprefix = "topic_";
       }
-      var img = getPoolObj(param.imgprefix + topic.name, "images");
+      var img = HopObject.getFromPath(param.imgprefix + tag.name, "images");
       if (img) {
-         Html.openLink({href: topic.href()});
+         html.openLink({href: tag.href()});
          renderImage(img.obj, param)
-         Html.closeLink();
+         html.closeLink();
       }
    }
    return;
@@ -183,7 +188,7 @@ Story.prototype.topicchooser_macro = function(param) {
          var selected = topic.name;
       }
    }
-   Html.dropDown({name: "addToTopic"}, options, selected, param.firstOption);
+   html.dropDown({name: "addToTopic"}, options, selected, param.firstOption);
    return;
 };
 

@@ -78,9 +78,9 @@ Site.prototype.skin_macro = function(param) {
 }
 
 Site.prototype.link_macro = function(param, url, text) {
-   param.text || (param.text = text);
+   param.text || (param.text = text || this.name);
    if (!param.to) {
-      param.to = url;
+      param.to = url || ".";
    } else if (param.to.contains(":")) {
       link_macro.call(global, param, param.to, param.text);
       return;

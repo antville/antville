@@ -363,7 +363,7 @@ function image_macro(param, id, mode) {
       return;
    }
    switch (mode) {
-      case "url" :
+      case "url":
       res.write(image.getUrl());
       break;
       case "thumbnail":

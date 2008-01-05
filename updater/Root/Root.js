@@ -26,6 +26,7 @@ Root.prototype.start_action = function() {
    app.invokeAsync(global, function() {
       execute(sql("tag"));
       execute(sql("tag_hub"));
+      execute(sql("log"));
       //update("AV_ACCESSLOG");
       update("AV_CHOICE");
       update("AV_FILE");

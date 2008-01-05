@@ -330,9 +330,7 @@ HopObject.prototype.toString = function() {
 };*/
 
 HopObject.prototype.link_filter = function(value, param, action) {
-   if (!action) {
-      return value;
-   }
+   action || (action = ".");
    return renderLink(param, action, value, this);
 };
 

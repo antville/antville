@@ -475,6 +475,7 @@ Story.prototype.macro_filter = function(value, param) {
 
 Story.prototype.url_filter = function(value, param, mode) {
    param.limit || (param.limit = 20);
+   // FIXME: Check query strings et al.
    var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
    return value.replace(re, function(str, head, url, tail) {
       res.push();
@@ -482,8 +483,16 @@ Story.prototype.url_filter = function(value, param, mode) {
       if (mode === "plain") {
          res.write(url.clip(param.limit));
       } else {
-         var text = /:\/\/([^\/]*)/.exec(url)[1].clip(param.limit);
+         var origin = /:\/\/([^\/]*)/.exec(url)[1].clip(param.limit);
+         if (/\.[^\/]*$/.test(url)) {
+            var text = url.replace(/.*\//, String.EMPTY);
+         } else {
+            var text = origin;
+         }
          html.link({href: url, title: url}, text);
+         if (text !== origin) {
+            res.write(" <small>(" + origin + ")</small>");
+         }
       }
       res.write(tail);
       return res.pop();

@@ -30,6 +30,7 @@ Images.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "create":
+      case "tags":
       return Site.require(Site.OPEN) || 
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
@@ -44,6 +45,7 @@ Images.prototype.getPermission = function(action) {
 Images.prototype.main_action = function() {
    var images, skin;
    switch (this._parent.constructor) {
+      case Root:
       case Site:
       images = User.getMembership().images;
       skin = "Images#main";

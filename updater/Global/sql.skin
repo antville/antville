@@ -49,6 +49,19 @@ CREATE TABLE `tag_hub` (
   KEY `tagged` (`tag_id`,`tagged_type`,`tagged_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+<% #log %>
+CREATE TABLE `log` (
+  `id` int(11) NOT NULL auto_increment,
+  `context_id` mediumint(10) default NULL,
+  `context_type` varchar(20) default NULL,
+  `referrer` mediumtext,
+  `action` varchar(255) default NULL,
+  `ip` varchar(20) default NULL,
+  `created` datetime default NULL,
+  `creator_id` mediumint(10) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 <% #AV_ACCESSLOG %>
 alter table AV_ACCESSLOG rename log;
 alter table log add column `creator_id` mediumint(10);
@@ -110,10 +123,10 @@ alter table image add column `metadata` mediumtext;
 update image set parent_type = 'Site' where prototype = 'Image';
 update image set parent_type = 'Layout' where prototype = 'LayoutImage';
 update image set prototype = "Image" where prototype = "LayoutImage";
-delete from image where IMAGE_F_IMAGE_PARENT is not null;
 update image set parent_id = site_id where site_id is not null and parent_id is null;
 update image set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and parent_id is null;
 #!images
+delete from image where IMAGE_F_IMAGE_PARENT is not null;
 alter table image drop column topic, drop column IMAGE_F_LAYOUT, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_IMAGE_THUMB, drop column IMAGE_FILENAME, drop column IMAGE_FILEEXT, drop column IMAGE_WIDTH, drop column IMAGE_HEIGHT, drop column IMAGE_ALTTEXT, drop column IMAGE_FILESIZE;
 
 <% #images %>
@@ -122,7 +135,7 @@ i.IMAGE_WIDTH as width, i.IMAGE_HEIGHT as height, i.IMAGE_ALTTEXT as description
 i.IMAGE_FILESIZE as size, t.IMAGE_WIDTH as thumbnailWidth, 
 t.IMAGE_HEIGHT as thumbnailHeight from image i left join image t on 
 i.IMAGE_F_IMAGE_THUMB = t.id where i.IMAGE_WIDTH is not null and 
-i.IMAGE_HEIGHT is not null order by id
+i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null order by id
 
 <% #AV_LAYOUT %>
 alter table AV_LAYOUT rename layout;

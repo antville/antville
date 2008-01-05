@@ -31,10 +31,12 @@ delete Membership.prototype.createtime_macro;
 delete Membership.prototype.modifytime_macro;
 
 Membership.prototype.username_macro = function(param) {
-   if (param.linkto && (param.linkto != "edit" || this.user != session.user))
-      Html.link({href: this.href(param.linkto)}, this.username);
-   else
+   if (param.linkto && (param.linkto !== "edit" || 
+         this.user !== session.user)) {
+      html.link({href: this.href(param.linkto)}, this.username);
+   } else {
       res.write(this.username);
+   }
    return;
 };
 
@@ -53,7 +55,7 @@ Membership.prototype.url_macro = function(param) {
 
 Membership.prototype.level_macro = function(param) {
    if (param.as === "editor") {
-      this.select_macro(param, "level");
+      this.select_macro(param, "role");
    } else {
       res.write(this.role);
    }
@@ -70,8 +72,8 @@ Membership.prototype.editlink_macro = function(param) {
 
 Membership.prototype.deletelink_macro = function(param) {
    if (this.role !== Membership.OWNER)
-      Html.link({href: this.href("delete")},
-                param.text ? param.text : getMessage("generic.remove"));
+      html.link({href: this.href("delete")}, param.text || 
+                getMessage("generic.remove"));
    return;
 };
 
@@ -79,16 +81,6 @@ Membership.prototype.unsubscribelink_macro = function(param) {
    if (this.role === Membership.SUBSCRIBER) {
       this.link_filter(param.text || getMessage("Membership.unsubscribe"), 
             param, this.site.href("unsubscribe"));
-   }
-   return;
-};
-
-Membership.prototype.checkAccess = function(action, usr, level) {
-   try {
-      this._parent.checkEditMembers(usr, level);
-   } catch (deny) {
-      res.message = deny.toString();
-      res.redirect(this.site.href());
    }
    return;
 };

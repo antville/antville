@@ -33,9 +33,7 @@ delete Image.prototype.createtime_macro;
 delete Image.prototype.modifytime_macro;
 
 Image.getCompatibleFileName = function(image, name) {
-   name || (name = image.name);
-   var ext = image.metadata.get("fileType");
-   return ext ? name + "." + ext : name;
+   return name.replace(/\/[^\/]*$/, "/" + image.metadata.get("fileName"));
 };
 
 /*Image.prototype.getFile = function(name) {
@@ -61,7 +59,7 @@ Image.prototype.gallery_macro = function() {
 Image.prototype.topic_macro = Image.prototype.gallery_macro;
 
 Image.prototype.show_macro = function(param) {
-   if (param.as === "thumbnail" && this.thumbnail) {
+   if (param.as === "thumbnail" && this.thumbnailWidth) {
       res.push();
       this.thumbnail_macro(param);
       this.link_filter(res.pop(), param, this.href());
@@ -86,13 +84,13 @@ Image.prototype.deletelink_macro = function(param) {
    if (param.image && this.parent.images.get(param.image)) {
       renderImage(this.parent.images.get(param.image), param);
    } else {
-      res.write(param.text || gettext("edit"));
+      res.write(param.text || gettext("delete"));
    }   
    return this.link_macro(param, "delete", res.pop());
 };
 
 Image.prototype.replacelink_macro = function(param) {
-   return String.EMPTY;
+   return;
 };
 
 Image.prototype.getPopupUrl = function() {

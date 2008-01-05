@@ -23,20 +23,19 @@
 //
 
 Root.prototype.new_action = function() {
-   res.redirect(this.href("create"));
-   return;
+   return res.redirect(root.href("create"));
 };
 
 Root.prototype.colorpicker_action = function() {
-   if (!req.data.skin)
+   if (!req.data.skin) {
       req.data.skin = "colorpicker";
+   }
    renderSkin(req.data.skin);
    return;
 };
 
 Root.prototype.rss_action = function() {
-   res.redirect(root.href("rss.xml"));
-   return;
+   return res.redirect(root.href("rss.xml"));
 };
 
 Root.prototype.url_macro = function(param) {
@@ -44,17 +43,15 @@ Root.prototype.url_macro = function(param) {
 };
 
 Root.prototype.loginstatus_macro = function(param) {
-   if (session.user)
+   if (session.user) {
       this.members.renderSkin("statusloggedin");
-   else if (req.action != "login")
+   } else if (req.action !== "login") {
       this.members.renderSkin("statusloggedout");
+   }
    return;
 };
 
-Root.prototype.layoutchooser_macro = function(param) {
-   if (root.sys_layout)
-      param.selected = root.sys_layout.alias;
-   root.layouts.layoutchooser_macro(param);
+Root.prototype.layoutchooser_macro = function() {
    return;
 };
 

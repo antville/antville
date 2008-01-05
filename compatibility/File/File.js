@@ -34,11 +34,13 @@ File.getCompatibleFileName = function(file, name) {
 };
 
 File.prototype.getFile = function() {
-   return Site.getStaticFile("files/" + File.getCompatibleFileName(this));
+   return res.handlers.site.getStaticFile("files/" + 
+         File.getCompatibleFileName(this));
 };
 
 File.prototype.getUrl = function() {
-   return Site.getStaticUrl("files/" + File.getCompatibleFileName(this));
+   return res.handlers.site.getStaticUrl("files/" + 
+         File.getCompatibleFileName(this));
 };
 
 File.prototype.alias_macro = function(param) {
@@ -83,7 +85,7 @@ File.prototype.deletelink_macro = function(param) {
 
 File.prototype.viewlink_macro = function(param) {
    param.title = encodeForm(this.description);
-   return this.link_macro(param, "view", param.text || gettext("view"))
+   return this.link_macro(param, ".", param.text || gettext("view"))
 };
 
 File.prototype.mimetype_macro = function(param) {
@@ -105,10 +107,11 @@ File.prototype.filetype_macro = function(param) {
 File.prototype.clicks_macro = function(param) {
    if (!this.requests) {
       res.write(param.no || gettext("no downloads"));
-   } else if (this.requests === 1) {
+   } else if (this.requests < 2) {
       res.write(param.one || gettext("one download"));
    } else {
-      res.write(param.more || gettext("{0} downloads", this.requests));
+      res.write(param.more ? this.requests + " " + param.more : 
+            gettext("{0} downloads", this.requests));
    }
    return;
 };

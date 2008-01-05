@@ -58,10 +58,11 @@ convert.images = function() {
       var metadata = {
          fileName: this.fileName + "." + this.type,
          contentLength: this.size || 0,
+         contentType: "image/" + this.type,
          width: this.width,
          height: this.height,
          description: this.description,
-         thumbnailName: this.fileName + "_small" + this.type,
+         thumbnailName: this.fileName + "_small" + "." + this.type,
          thumbnailWidth: this.thumbnailWidth,
          thumbnailHeight: this.thumbnailHeight
       }

@@ -30,7 +30,7 @@
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
 <td class="header">
-   <% site.title | site.link . title=<% site.tagline %> %>
+   <% site.title | site.link title=<% site.tagline %> %>
 </td>
 </tr>
 </table>
@@ -66,11 +66,11 @@
    <% site.members.link prefix="... " suffix="<br />" %>
    <br />
    <% site.link edit preferences prefix="... " suffix="<br />" %>
-   <% layout.link . layout prefix="... " suffix="<br />" %>
+   <% layout.link layout prefix="... " suffix="<br />" %>
    <% site.link referrers prefix="... " suffix="<br />" %>
    <% site.stories.link top "most read stories" prefix="... " suffix="<br />" %>
    <br />
-   <% root.title prefix="... " | root.link .  %>
+   <% root.title prefix="... " | root.link %>
    </div>
    
    <div class="boxheader">search</div>
