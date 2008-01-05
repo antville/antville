@@ -22,31 +22,6 @@
 // $URL$
 //
 
-Site.prototype.onCodeUpdate = function() {
-   helma.aspects.addBefore(this, "main_action", function(args, func, site) {
-      res.handlers.day = site.archive;
-      res.push();
-      list_macro({}, "stories");
-      res.data.storylist = res.pop();
-      return args;
-   });
-   return helma.aspects.addBefore(this, "update", function(args, func, site) {
-      if (!site.isTransient()) {
-         var data = args[0];
-         data.tagline || (data.tagline = data.properties_tagline);
-         data.pageSize || (data.pageSize = data.properties_days);
-         if (data.usermaycontrib && data.online) {
-            data.mode = Site.OPEN;
-         } else if (data.online) {
-            data.mode = Site.PUBLIC;
-         } else if (!data.mode) {
-            data.mode = Site.PRIVATE;
-         }
-      }
-      return args;
-   });
-};
-
 relocateProperty(Site, "alias", "name");
 relocateProperty(Site, "createtime", "created");
 relocateProperty(Site, "modifytime", "modified");
@@ -102,9 +77,10 @@ Site.prototype.skin_macro = function(param) {
    return HopObject.prototype.skin_macro.apply(this, arguments);
 }
 
-Site.prototype.link_macro = function(param) {
+Site.prototype.link_macro = function(param, url, text) {
+   param.text || (param.text = text);
    if (!param.to) {
-      return;
+      param.to = url;
    } else if (param.to.contains(":")) {
       link_macro.call(global, param, param.to, param.text);
       return;
@@ -117,6 +93,7 @@ Site.prototype.link_macro = function(param) {
       handler = this.stories;
       param.to = "top";
       break;
+      
       case "topics":
       case "feeds":
       case "files":
@@ -131,6 +108,7 @@ Site.prototype.link_macro = function(param) {
       }
       param.to = parts[1];
       break;
+      
       default:
       handler = this;
    }
