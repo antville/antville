@@ -245,6 +245,7 @@ function renderLink(param, url, text, handler) {
    }
    delete param.url;
    delete param.text;
+   param.title || (param.title = String.EMPTY);
    if (!handler || url.contains(":")) {
       param.href = url;
    } else if (url.contains("/") || url.contains("?") || url.contains("#")) {
@@ -273,15 +274,10 @@ function breadcrumbs_macro (param, delimiter) {
 }
 
 function story_macro(param, id, mode) {
-   id || (id = param.id);
    var story = HopObject.getFromPath(id, "stories");
    if (!story || !story.getPermission("main")) {
       return;
    }
-
-   mode || (mode = param.as);
-   delete(param.name);
-   delete(param.as);
 
    switch (mode) {
       case "url":
@@ -297,14 +293,9 @@ function story_macro(param, id, mode) {
 }
 
 function file_macro(param, id, mode) {
-   id || (id = param.name);
    if (!id) {
       return;
    }
-
-   mode || (mode = param.as);
-   delete(param.name);
-   delete(param.as);
 
    var file;
    if (id.startsWith("/")) {
@@ -340,15 +331,9 @@ function file_macro(param, id, mode) {
 }
 
 function image_macro(param, id, mode) {
-   id || (id = param.name);
    if (!id) {
       return;
    }
-
-   mode || (mode = param.as);
-   delete(param.name);
-   delete(param.as);
-   delete(param.linkto);
 
    var image;
    if (id.startsWith("/")) {
@@ -376,7 +361,6 @@ function image_macro(param, id, mode) {
 }
 
 function poll_macro(param, id, mode) {
-   id || (param.id = id);
    if (!id) {
       return;
    }
@@ -386,12 +370,6 @@ function poll_macro(param, id, mode) {
       return;
    }
 
-   mode || (mode = param.as);
-   var action = param.linkto;
-   delete(param.name);
-   delete(param.as);
-   delete(param.linkto);
-   
    switch (mode) {
       case "url":
       res.write(poll.href());

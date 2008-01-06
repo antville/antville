@@ -5,6 +5,25 @@
 <li><% site.title | site.link %> 
 <span class="small"><% site.modified | age %></span></li>
 
+<% #navigation %>
+<% site.link . home prefix="... " suffix="<br />" %>
+<% site.tags.link prefix="... " suffix="<br />" %>
+<% site.images.link tags galleries prefix="... " suffix="<br />" %>
+<br />
+<% site.stories.link create "add a story" prefix="... " suffix="<br />" %>
+<% site.stories.link prefix="... " suffix="<br />" %>
+<% site.images.link prefix="... " suffix="<br />" %>
+<% site.files.link prefix="... " suffix="<br />" %>
+<% site.polls.link prefix="... " suffix="<br />" %>
+<% site.members.link prefix="... " suffix="<br />" %>
+<br />
+<% site.link edit preferences prefix="... " suffix="<br />" %>
+<% layout.link . layout prefix="... " suffix="<br />" %>
+<% site.link referrers prefix="... " suffix="<br />" %>
+<% site.stories.link top "most read stories" prefix="... " suffix="<br />" %>
+<br />
+<% root.title prefix="... " | root.link %>
+
 <% #create %>
 To create a new site you need to fill out the form below.
 <p>The <em>name</em> will be part of the URL of your site. E.g. if you 

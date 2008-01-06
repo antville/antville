@@ -158,20 +158,38 @@ Site.prototype.title_macro = function(param) {
 
 Site.prototype.loginstatus_macro = function(param) {
    if (session.user) {
-      res.handlers.membership.renderSkin("Membership#status");
+      (new Skin("Members", "statusloggedin").getSource()) ?
+            this.members.renderSkin("statusloggedin") :
+            res.handlers.membership.renderSkin("Membership#status");
    } else if (req.action !== "login") {
-      res.handlers.membership.renderSkin("Membership#login");
+      (new Skin("Members", "statusloggedout").getSource()) ?
+            this.members.renderSkin("statusloggedout") :
+            res.handlers.membership.renderSkin("Membership#login");
    }
    return;
 }
 
 Site.prototype.navigation_macro = function(param) {
-   res.write(" FIXME ");
+   switch (param["for"]) {
+      case "contributors":
+      if ((new Skin("Site", "contribnavigation")).getSource()) {
+         this.renderSkin("contribnavigation");
+      } break;
+      
+      case "admins":
+      if ((new Skin("Site", "adminnavigation")).getSource()) {
+         this.renderSkin("adminnavigation");
+      } break;
+      break;
+      
+      default:
+      this.renderSkin("Site#navigation");
+   }
    return;
 }
 
 Site.prototype.xmlbutton_macro = function(param) {
-   param.href = this.href("rss.xml");   
+   param.linkto = this.href("rss.xml");
    image_macro(param, "/xmlbutton.gif");
    return;
 };

@@ -25,6 +25,7 @@
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/String.js");
 app.addRepository("modules/helma/Color.js");
+app.addRepository("modules/helma/File.js");
 
 var convert = function(type) {
    if (!type) {
@@ -261,10 +262,11 @@ convert.skins = function() {
          "skin.name as skin_name, prototype, SKIN_SOURCE from " +
          "skin, layout where skin.layout_id = layout.id and " +
          "layout.site_id is null");
+   
    for (var sitePath in layouts) {
-      var source = new java.io.File(layouts[sitePath]);
-      var target = new java.io.File(sitePath + "/layout");
-      target["delete"]();
+      var source = new helma.File(layouts[sitePath]);
+      var target = new helma.File(sitePath + "/layout");
+      target.removeDirectory();
       source.renameTo(target);
    }
    

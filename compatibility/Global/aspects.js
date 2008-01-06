@@ -29,8 +29,45 @@ var aspects = {
       var param = args[0];
       param.tags = [param.topic || param.addToTopic];
       return args;
+   },
+   
+   upgradeArguments: function(args) {
+      var param = args[0];
+      var id = args[1] || param.name;
+      var mode = args[2] || param.as;
+      var url = param.linkto;
+      delete(param.name);
+      delete(param.as);
+      delete(param.linkto);
+      return [param, id, mode, url];
    }
 }
+
+helma.aspects.addAround(global, "image_macro", function(args, func, obj) {
+   args = aspects.upgradeArguments(args);
+   var url = args[3];
+   url && res.push();
+   func.apply(global, args);
+   url && link_filter(res.pop(), {}, url);
+   return;
+});
+
+helma.aspects.addAround(global, "poll_macro", function(args, func, obj) {
+   args = aspects.upgradeArguments(args);
+   var url = args[3];
+   url && res.push();
+   func.apply(global, args);
+   url && link_filter(res.pop(), {}, url);
+   return;
+});
+
+helma.aspects.addAround(global, "file_macro", function(args, func, obj) {
+   return func.apply(global, aspects.upgradeArguments(args));
+});
+
+helma.aspects.addAround(global, "story_macro", function(args, func, obj) {
+   return func.apply(global, aspects.upgradeArguments(args));
+});
 
 HopObject.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
