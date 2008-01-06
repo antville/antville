@@ -364,8 +364,9 @@ Site.prototype.referrers_action = function() {
 };
 
 Site.prototype.search_action = function() {
-   var search = req.postParams.q = stripTags(req.postParams.q);
-   if (!search) {
+   var search;
+   if (!req.postParams.q || 
+         !(search = req.postParams.q = stripTags(req.postParams.q))) {
       res.message = gettext("Please enter a query in the search form.");
    } else {
       var db = getDBConnection("antville");

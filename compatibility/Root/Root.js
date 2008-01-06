@@ -42,47 +42,6 @@ Root.prototype.url_macro = function(param) {
    return this.href_macro(param);
 };
 
-Root.prototype.loginstatus_macro = function(param) {
-   if (session.user) {
-      this.members.renderSkin("statusloggedin");
-   } else if (req.action !== "login") {
-      this.members.renderSkin("statusloggedout");
-   }
-   return;
-};
-
-Root.prototype.layoutchooser_macro = function() {
-   return;
-};
-
-Root.prototype.localechooser_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderLocaleChooser(this.getLocale());
-   return;
-};
-
-Root.prototype.timezonechooser_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderTimeZoneChooser(this.getTimeZone());
-   return;
-};
-
-Root.prototype.longdateformat_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderDateformatChooser("longdateformat", root.getLocale(), this.longdateformat);
-   return;
-};
-
-Root.prototype.shortdateformat_macro = function(param) {
-   if (!session.user.sysadmin)
-      return;
-   renderDateformatChooser("shortdateformat", root.getLocale(), this.shortdateformat);
-   return;
-};
-
 Root.prototype.sitecounter_macro = function(param) {
    if (param.count == "all")
       var size = root.size();

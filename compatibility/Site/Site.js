@@ -66,6 +66,31 @@ Site.prototype.renderSkin = function(name) {
 }
 */
 
+// FIXME: We need something like this for plug-ins:
+//addPermission(Site, "menuext", function() {return true;});
+
+Site.prototype.menuext_action = function() {
+   return this.renderSkin("menuext");
+};
+
+Site.prototype.menuext_reg_action = function() {
+   res.contentType = "text/plain";
+   return this.renderSkin("menuext.reg");
+};
+
+Site.prototype.colorpicker_action = function() {
+   res.handlers.site = this;
+   return root.colorpicker_action();
+};
+
+Site.prototype.rss_action = function() {
+   return res.redirect("rss.xml");
+};
+
+Site.prototype.mostread_action = function() {
+   return res.redirect(this.stories.href("top"));
+};
+
 Site.prototype.skin_macro = function(param) {
    if (param.name) {
       switch (param.name) {
@@ -78,7 +103,7 @@ Site.prototype.skin_macro = function(param) {
 }
 
 Site.prototype.link_macro = function(param, url, text) {
-   param.text || (param.text = text || this.name);
+   param.text || (param.text = text);
    if (!param.to) {
       param.to = url || ".";
    } else if (param.to.contains(":")) {
@@ -91,8 +116,7 @@ Site.prototype.link_macro = function(param, url, text) {
    switch (action) {
       case "mostread":
       handler = this.stories;
-      param.to = "top";
-      break;
+      param.to = "top"; break;
       
       case "topics":
       case "feeds":
@@ -106,8 +130,7 @@ Site.prototype.link_macro = function(param, url, text) {
       if (!handler) {
          return;
       }
-      param.to = parts[1];
-      break;
+      param.to = parts[1]; break;
       
       default:
       handler = this;
@@ -123,7 +146,7 @@ Site.prototype.title_macro = function(param) {
       var title = this.title;
       if (param.linkto) {
          if (param.linkto === "main") {
-            param.linkto = "";
+            param.linkto = ".";
          }
          this.link_filter(title, param, param.linkto);
       } else {
@@ -149,82 +172,9 @@ Site.prototype.navigation_macro = function(param) {
 
 Site.prototype.xmlbutton_macro = function(param) {
    param.href = this.href("rss.xml");   
-   image_macro(param, "/xmlbutton");
+   image_macro(param, "/xmlbutton.gif");
    return;
 };
-
-Site.prototype.renderStoryList = function(day) {
-   res.push();
-   list_macro(param, "stories");
-   res.write(res.pop());
-   return;
-   
-   var site = param.of ? root.get(param.of) : res.handlers.site;
-   if (!site)
-      return;
-
-   // untrusted sites are only allowed to use "light" version
-   if (res.handlers.site && !res.handlers.site.trusted) {
-      param.limit = param.limit ? Math.min(site.allstories.count(), parseInt(param.limit), 50) : 25;
-      for (var i=0; i<param.limit; i++) {
-         var story = site.allcontent.get(i);
-         if (!story)
-            continue;
-         res.write(param.itemprefix);
-         Html.openLink({href: story.href()});
-         var str = story.title;
-         if (!str)
-            str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
-         res.write(str ? str : "...");
-         Html.closeLink();
-         res.write(param.itemsuffix);
-      }
-      return;
-   }
-
-   // this is db-heavy action available for trusted users only (yet?)
-   if (param.sortby != "title" && param.sortby != "createtime" && param.sortby != "modifytime")
-      param.sortby = "modifytime";
-   if (param.order != "asc" && param.order != "desc")
-      param.order = "asc";
-   var order = " order by TEXT_" + param.sortby.toUpperCase() + " " + param.order;
-   var rel = "";
-   if (param.show == "stories")
-      rel += " and TEXT_PROTOTYPE = 'story'";
-   else if (param.show == "comments")
-      rel += " and TEXT_PROTOTYPE = 'comment'";
-   if (param.topic)
-      rel += " and TEXT_TOPIC = '" + param.topic + "'";
-   var query = "select TEXT_ID from AV_TEXT where TEXT_F_SITE = " + site._id + " and TEXT_ISONLINE > 0" + rel + order;
-   var connex = getDBConnection("antville");
-   var rows = connex.executeRetrieval(query);
-
-   if (rows) {
-      var cnt = 0;
-      param.limit = param.limit ? Math.min(parseInt(param.limit), 100) : 25;
-      while (rows.next() && (cnt < param.limit)) {
-         cnt++;
-         var id = rows.getColumnItem("TEXT_ID").toString();
-         var story = site.allcontent.get(id);
-         if (!story)
-            continue;
-         if (param.skin) {
-            story.renderSkin(param.skin);
-         } else {
-            res.write(param.itemprefix);
-            Html.openLink({href: story.href()});
-            var str = story.title;
-            if (!str)
-               str = story.getRenderedContentPart("text").stripTags().clip(10, "...", "\\s").softwrap(30);
-            res.write(str ? str : "...");
-            Html.closeLink();
-            res.write(param.itemsuffix); 
-         }         
-      }
-   }
-   rows.release();
-   return;
-}
 
 Site.prototype.lastupdate_macro = function(param) {
    var value;
@@ -276,7 +226,7 @@ Site.prototype.usermaycontrib_macro = function(param) {
 
 Site.prototype.hasdiscussions_macro = function(param) {
    if (param.as === "editor") {
-      this.checkbox_macro(param, "commentsMode");
+      this.checkbox_macro(param, "commentMode");
    } else {
       res.write(this.commentsMode === Comment.ONLINE ? 
             gettext("yes") : gettext("no"));
@@ -285,20 +235,21 @@ Site.prototype.hasdiscussions_macro = function(param) {
 };
 
 Site.prototype.showarchive_macro = function(param) {
-   if (param.as == "editor") {
+   if (param.as === "editor") {
       this.checkbox_macro(param, "archiveMode");
    } else {
-      res.write(this.archiveMode === Site.ARCHIVE_ONLINE ? 
+      res.write(this.archiveMode === Site.PUBLIC ? 
             gettext("yes") : gettext("no"));
    }
    return;
 };
 
 Site.prototype.enableping_macro = function(param) {
-   if (param.as == "editor") {
-      this.checkbox_macro(param, "webHookEnabled");
+   if (param.as === "editor") {
+      this.checkbox_macro(param, "webHookMode");
    } else {
-      res.write(this.webHookEnabled === true ? gettext("yes") : gettext("no"));
+      res.write(this.webHookMode === Site.ENABLED ? 
+            gettext("yes") : gettext("no"));
    }
    return;
 };
@@ -312,8 +263,7 @@ Site.prototype.shortdateformat_macro = function(param) {
 };
 
 Site.prototype.localechooser_macro = function(param) {
-   return this.select_macro(param, "language");
-   return;
+   return this.select_macro(param, "locale");
 };
 
 Site.prototype.timezonechooser_macro = function(param) {
@@ -321,7 +271,7 @@ Site.prototype.timezonechooser_macro = function(param) {
 };
 
 Site.prototype.layoutchooser_macro = function(param) {
-   return this.select_macro(param, "layout");
+   return; // this.select_macro(param, "layout");
 };
 
 Site.prototype.history_macro = function(param, type) {
@@ -341,15 +291,14 @@ Site.prototype.history_macro = function(param, type) {
          case Story:
          if (type === "comments") {
             continue;
-         }
-         break;
+         } break;
+         
          case Comment:
          if (type === "stories" || item.story.mode === Story.PRIVATE ||
                item.story.commentsMode === Story.CLOSED || 
                this.commentsMode === Site.DISABLED) {
             continue;
-         }
-         break;
+         } break;
       }
       item.renderSkin("Story#history");
       counter += 1;
@@ -357,108 +306,39 @@ Site.prototype.history_macro = function(param, type) {
    return;
 };
 
-Site.prototype.menuext_action = function() {
-   this.renderSkin("menuext");
-   return;
-};
-
-Site.prototype.menuext_reg_action = function() {
-   res.contentType = "text/plain";
-   this.renderSkin("menuext.reg");
-   return;
-};
-
-Site.prototype.colorpicker_action = function() {
-   res.handlers.site = this;
-   root.colorpicker_action();
-   return;
-};
-
-Site.prototype.rss_action = function() {
-   return res.redirect("rss.xml");
-};
-
-Site.prototype.mostread_action = function() {
-   return res.redirect(this.stories.href("top"));
-};
-
-Site.renderDateFormat = function(type, site, param) {
-   param.size = 1;
-   var key = type + "DateFormat";
-   if (param.as === "chooser") {
-      site.select_macro(param, key);
-   } else if (param.as === "editor") {
-      site.input_macro(param, key);
-   } else {
-      res.write(site[key]);
-   }
-   return;   
-};
-
-Site.prototype.moduleNavigation_macro = function(param) {
-   if (!param.module)
-      return;
-   this.applyModuleMethod(app.modules[param.module],
-                          "renderSiteNavigation", param);
-   return;
-};
-
-Site.prototype.modulePreferences_macro = function(param) {
-   for (var i in app.modules)
-      this.applyModuleMethod(app.modules[i], "renderPreferences", param);
-   return;
-};
-
 Site.prototype.membercounter_macro = function(param) {
    return this.members.size();
 };
 
-Site.prototype.searchOccurrence_macro = function() {
-   var options = [["", "anywhere"],
-                  ["title", "in the title"],
-                  ["text", "in the text"],
-                  ["topic", "in the topic name"]];
-   Html.dropDown({name: "o"}, options, req.data.o);
-   return;
-};
-
-Site.prototype.searchCreatetime_macro = function() {
-   var options = [["", "anytime"],
-                  ["1", "the past month"],
-                  ["2", "the past 2 months"],
-                  ["4", "the past 4 months"],
-                  ["6", "the past half year"],
-                  ["12", "the past year"]];
-   Html.dropDown({name: "ct"}, options, req.data.ct);
-   return;
-};
-
 Site.prototype.preferences_macro = function(param) {
-   if (param.as == "editor") {
-      var inputParam = this.properties.createInputParam(param.name, param);
-      delete inputParam.part;
-      if (param.cols || param.rows)
-         Html.textArea(inputParam);
-      else
-         Html.input(inputParam);
-   } else
-      res.write(this.properties.get(param.name));
-   return;
+   if (param.as === "editor") {
+      html.input({
+         name: param.name,
+         value: this.metadata.get(param.name)
+      });
+   } else {
+      res.write(this.metadata.get(param.name));
+   } return;
 };
 
 Site.prototype.monthlist_macro = function(param) {
-   if (!this.stories.size() || !this.metadata.get("archive"))
+   if (!this.stories.size() || this.archiveMode !== Site.PUBLIC) {
       return;
-   var size = param.limit ? Math.min(this.size(), param.limit) : this.size();
-   for (var i=0;i<size;i++) {
-      var curr = this.get(i);
-      var next = this.get(i+1);
-      if (!next || next.groupname.substring(0, 6) < curr.groupname.substring(0, 6)) {
+   }
+   var collection = this.archive;
+   var size = Math.min(collection.size(), param.limit || Infinity);
+   for (var i=0; i<size; i+=1) {
+      var curr = collection.get(i);
+      var next = collection.get(i+1);
+      if (!next || next.groupname.substring(0, 6) < 
+            curr.groupname.substring(0, 6)) {
          res.write(param.itemprefix);
-         Html.openLink({href: curr.href()});
-         var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", this.getTimeZone());
-         res.write(formatTimestamp(ts, param.format ? param.format : "MMMM yyyy"));
-         Html.closeLink();
+         html.openLink({href: collection.href() + 
+               formatDate(curr.groupname.toDate("yyyyMMdd"), "yyyy/MM/dd")});
+         var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", 
+               this.getTimeZone());
+         res.write(formatDate(ts, param.format || "MMMM yyyy"));
+         html.closeLink();
          res.write(param.itemsuffix);
       }
    }
@@ -483,37 +363,25 @@ Site.prototype.spamfilter_macro = function(param) {
 };
 
 Site.prototype.searchbox_macro = function(param) {
-   this.renderSkin("searchbox");
-   return;
+   return this.renderSkin("Site#search");
 };
 
-Site.prototype.notify_macro = function(param) {
-   var notifyContributors = param.notifyContributors ? 
-      param.notifyContributors : getMessage("Site.notifyContributors");
-   var notifyAdmins = param.notifyAdmins ? 
-      param.notifyAdmins : getMessage("Site.notifyAdmins");
-   var notifyNobody = param.notifyNobody ? 
-      param.notifyNobody : getMessage("Site.notifyNobody");
-
-   var pref = this.properties.get("notify_" + param.event);
-   if (param.as == "editor") {
-      var options = new Array(notifyNobody, notifyAdmins, notifyContributors);
-      Html.dropDown({name: "notify_" + param.event}, options, pref);
+Site.renderDateFormat = function(type, site, param) {
+   //param.size = 1;
+   var key = type + "DateFormat";
+   if (param.as === "chooser") {
+      site.select_macro(param, key);
+   } else if (param.as === "editor") {
+      site.input_macro(param, key);
    } else {
-      switch (pref) {
-         case 2:
-            return notifyContributors;
-         case 1:
-            return notifyAdmins;
-         default:
-            return notifyNobody;
-      }
+      res.write(site[key]);
    }
-   return;
+   return;   
 };
 
-Site.prototype.notification_macro = function(param) {
-   if (this.isNotificationEnabled())
-      this.renderSkin("notification");
+Site.prototype.renderStoryList = function(day) {
+   res.push();
+   list_macro(param, "stories");
+   res.write(res.pop());
    return;
-};
+}

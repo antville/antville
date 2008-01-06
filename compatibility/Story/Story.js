@@ -27,12 +27,13 @@ Story.prototype.allowTextMacros = function(skin) {
 }
 
 Story.prototype.commentform_macro = function(param) {
-   if (this.commentsMode === "closed") {
+   if (this.commentMode === "closed") {
       return;
    }
    if (session.user) {
       res.data.action = this.href("comment");
-      (new Comment()).renderSkin("Comment#edit");
+      res.handlers.parent = this;
+      (new Comment(this)).renderSkin("Comment#edit");
    } else {
       html.link({href: this.site.members.href("login")},
                 param.text || gettext("Please login to add a comment"));
@@ -40,6 +41,7 @@ Story.prototype.commentform_macro = function(param) {
    return;
 };
 
+// FIXME!
 Story.prototype.content_macro = function(param) {
    switch (param.as) {
       case "editor" :
@@ -88,6 +90,7 @@ Story.prototype.content_macro = function(param) {
    return;
 };
 
+// FIXME!
 Story.prototype.getRenderedContentPart = function(name, mode) {
    var part = this.metadata.get(name);
    if (!part) {
@@ -133,22 +136,21 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
 };
 
 Story.prototype.location_macro = function(param) {
-   switch (this.online) {
-      case 1:
+   switch (this.mode) {
+      case Story.FEATURED:
+      res.write(gettext("site")); break;
+      
+      default:
       if (this.tags.size() > 0) {
-         Html.link({href: this.tags.get(0).tag.href()}, "topic");
+         html.link({href: this.tags.get(0).tag.href()}, gettext("topic"));
       }
-      break;
-      case 2:
-      res.write("site");
-      break;
    }
    return;
 };
 
 Story.prototype.topic_macro = function(param) {
    // This method is applied to images as well, thus we check what we got first:
-   if (this.constructor !== Image && (!this.online || this.tags.size() < 1)) {
+   if (this.constructor !== Image && this.status !== Story.PUBLIC) {
       return;
    }
    if (this.tags.size() < 1) {
@@ -160,9 +162,7 @@ Story.prototype.topic_macro = function(param) {
    } else if (param.as === "link") {
       html.link({href: tag.href()}, param.text || tag.name);
    } else if (param.as === "image") {
-      if (!param.imgprefix) {
-         param.imgprefix = "topic_";
-      }
+      param.imgprefix || (param.imgprefix = "topic_");
       var img = HopObject.getFromPath(param.imgprefix + tag.name, "images");
       if (img) {
          html.openLink({href: tag.href()});
@@ -193,13 +193,14 @@ Story.prototype.topicchooser_macro = function(param) {
 };
 
 Story.prototype.addtofront_macro = function(param) {
-   if (param.as == "editor") {
+   if (param.as === "editor") {
       // if we're in a submit, use the submitted form value.
       // otherwise, render the object's value.
       if (req.data.publish || req.data.save) {
-         if (!req.data.addToFront)
+         if (!req.data.addToFront) {
             delete param.checked;
-      } else if (this.online != null && this.online < 2) {
+         }
+      } else if (this.mode !== Story.FEATURED) {
          delete param.checked;
       }
       param.name = "addToFront";
@@ -211,18 +212,23 @@ Story.prototype.addtofront_macro = function(param) {
 };
 
 Story.prototype.discussions_macro = function(param) {
-   if (!path.Site.metadata.get("discussions"))
+   if (res.handlers.site.commentMode === Site.DISABLED) {
       return;
-   if (param.as == "editor") {
-      var inputParam = this.createCheckBoxParam("discussions", param);
-      if ((req.data.publish || req.data.save) && !req.data.discussions)
-         delete inputParam.checked;
-      html.checkBox(inputParam);
-   } else
-      res.write(this.discussions ? getMessage("generic.yes") : getMessage("generic.no"));
+   }
+   if (param.as === "editor") {
+      (this.commentMode === Story.OPEN) && (param.checked = "checked"); 
+      if ((req.data.publish || req.data.save) && req.data.discussions) {
+         delete param.checked;
+      }
+      html.checkBox(param);
+   } else {
+      res.write(this.commentMode === Story.OPEN ? 
+            gettext("yes") : gettext("no"));
+   }
    return;
 };
 
+// FIXME!
 Story.prototype.editableby_macro = function(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = [EDITABLEBY_ADMINS,
@@ -259,142 +265,100 @@ Story.prototype.editableby_macro = function(param) {
 };
 
 Story.prototype.editlink_macro = function(param) {
-   if (session.user) {
-      try {
-         this.checkEdit(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      html.openLink({href: this.href("edit")});
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
-      else
-         res.write(param.text ? param.text : getMessage("generic.edit"));
-      html.closeLink();
-   }
-   return;
+   res.push();
+   if (param.image && this.site.images.get(param.image)) {
+      renderImage(this.site.images.get(param.image), param);
+   } else {
+      res.write(param.text || gettext("edit"));
+   }   
+   return this.link_macro(param, "edit", res.pop());
 };
 
 Story.prototype.deletelink_macro = function(param) {
-   if (session.user) {
-      try {
-         this.checkDelete(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      html.openLink({href: this.href("delete")});
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
-      else
-         res.write(param.text ? param.text : getMessage("generic.delete"));
-      html.closeLink();
+   res.push();
+   if (param.image && this.site.images.get(param.image)) {
+      renderImage(this.site.images.get(param.image), param);
+   } else {
+      res.write(param.text || gettext("delete"));
+   }   
+   return this.link_macro(param, "delete", res.pop());
+};
+
+Story.prototype.viewlink_macro = function(param) {
+   res.push();
+   if (param.image && this.site.images.get(param.image)) {
+      renderImage(this.site.images.get(param.image), param);
+   } else {
+      res.write(param.text || gettext("view"));
+   }   
+   return this.link_macro(param, ".", res.pop());
+};
+
+Story.prototype.commentlink_macro = function(param) {
+   if (this.commentMode === Story.OPEN && 
+         this.site.commentMode === Site.ENABLED) {
+      html.link({href: this.href(param.to || "comment")},
+                param.text || "comment");
    }
    return;
 };
 
 Story.prototype.onlinelink_macro = function(param) {
-   if (session.user) {
-      try {
-         this.checkEdit(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      if (this.online && param.mode != "toggle")
-         return;
-      delete param.mode;
-      param.linkto = "edit";
-      param.urlparam = "set=" + (this.online ? "offline" : "online");
-      html.openTag("a", this.createLinkParam(param));
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
-      else {
-         // currently, only the "set online" text is customizable, since this macro
-         // is by default only used in that context outside the story manager.
-         if (this.online)
-            res.write(getMessage("Story.setOffline"));
-         else
-            res.write(param.text ? param.text : getMessage("Story.setOnline"));
-      }
-      html.closeTag("a");
-   }
-   return;
-};
-
-Story.prototype.viewlink_macro = function(param) {
-   if (session.user) {
-      try {
-         this.checkView(session.user, res.data.memberlevel);
-      } catch (deny) {
-         return;
-      }
-      html.openLink({href: this.href()});
-      if (param.image && this.site.images.get(param.image))
-         renderImage(this.site.images.get(param.image), param);
-      else
-         res.write(param.text ? param.text : "view");
-      html.closeLink();
-   }
-   return;
-};
-
-Story.prototype.commentlink_macro = function(param) {
-   if (this.discussions && this.site.metadata.get("discussions"))
-      html.link({href: this.href(param.to ? param.to : "comment")},
-                param.text ? param.text : "comment");
-   return;
+   return this.link_macro(param, "rotate");
 };
 
 Story.prototype.online_macro = function(param) {
-   if (!this.online)
-      res.write(param.no ? param.no : "offline");
-   else
-      res.write(param.yes ? param.yes : "online");
-   return;
+   if (this.satus === Story.CLOSED) {
+      res.write(param.no || gettext("offline"));
+   } else if (this.status === Story.PUBLIC || this.status === Story.HIDDEN) {
+      res.write(param.yes || gettext("online"));
+   } return;
 };
 
 Story.prototype.createtime_macro = function(param) {
-   if (param.as == "editor") {
-      if (this.createtime)
-         param.value = formatTimestamp(this.createtime, "yyyy-MM-dd HH:mm");
-      else
-         param.value = formatTimestamp(new Date(), "yyyy-MM-dd HH:mm");
+   if (param.as === "editor") {
+      if (this.created) {
+         param.value = formatDate(this.createtime, "yyyy-MM-dd HH:mm");
+      } else {
+         param.value = formatDate(new Date(), "yyyy-MM-dd HH:mm");
+      }
       param.name = "createtime";
       html.input(param);
-   } else if (this.createtime) {
-      var text = formatTimestamp(this.createtime, param.format);
-      if (param.as == "link" && this.online == 2)
-         html.link({href: path.Site.get(String(this.day)).href()}, text);
-      else
+   } else if (this.created) {
+      var text = formatDate(this.created, param.format);
+      if (param.as === "link" && this.status === Story.PUBLIC) {
+         var group = this.site.archive.get(this.created.format("yyyyMMdd"));
+         var path = formatDate(group._id.toDate("yyyyMMdd"), "yyyy/MM/dd");
+         html.link({href: this.site.archive.href() + path}, text);
+      } else {
          res.write(text);
+      }
    }
    return;
 };
 
 Story.prototype.commentcounter_macro = function(param) {
-   if (!this.site.metadata.get("discussions") || !this.discussions)
+   if (this.site.commentMode === Site.DISABLED || 
+         this.commentMode === Story.CLOSED ||
+         this.commentMode === Story.READONLY) {
       return;
+   }
    var commentCnt = this.comments.count();
-   if (!param.linkto)
-      param.linkto = "main";
-   var linkParam = this.createLinkParam(param);
-   // delete the macro-specific attributes for valid markup output
-   delete linkParam.as;
-   delete linkParam.one;
-   delete linkParam.more;
-   delete linkParam.no;
-   var linkflag = (param.as == "link" && param.as != "text" || 
+   param.linkto || (param.linkto = "main");
+   var linkflag = (param.as === "link" && param.as !== "text" || 
                    !param.as && commentCnt > 0);
-   if (linkflag)
-      html.openTag("a", linkParam);
-   if (commentCnt == 0)
-      res.write(param.no || param.no == "" ? 
-                param.no : getMessage("Comment.no"));
-   else if (commentCnt == 1)
-      res.write(param.one ? param.one : getMessage("Comment.one"));
-   else
-      res.write(commentCnt + (param.more ? 
-                param.more : " " + getMessage("Comment.more")));
-   if (linkflag)
+   if (linkflag) {
+      html.openTag("a", {href: this.href("comment")});
+   }
+   if (commentCnt < 1) {
+      res.write(param.no || gettext("no comments"));
+   } else if (commentCnt < 2) {
+      res.write(param.one || gettext("one comment"));
+   } else {
+      res.write(commentCnt + (param.more || " " + gettext("comments")));
+   }
+   if (linkflag) {
       html.closeTag("a");
+   }
    return;
 };

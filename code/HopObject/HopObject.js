@@ -315,12 +315,6 @@ HopObject.prototype.getTitle = function() {
    return this.title || this.__name__.capitalize();
 };
 
-HopObject.prototype.applyModuleMethod = function(module, funcName, param) {
-   if (module && module[funcName])
-      module[funcName].apply(this, [param]);
-   return;
-};
-
 HopObject.prototype.toString = function() {
    return this.constructor.name + " #" + this._id;
 };
