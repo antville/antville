@@ -191,7 +191,7 @@ Story.prototype.update = function(data) {
 };
 
 Story.prototype.setContent = function(data) {
-   for each (var key in data) {
+   for (var key in data) {
       if (key.startsWith("content_")) {
          this.metadata.set(key, data[key]);
       }
@@ -452,7 +452,7 @@ Story.prototype.getDelta = function(data) {
    var delta = 0;
    delta += deltify(data.title, this.title);
    delta += deltify(data.text, this.text);
-   for each (var key in data) {
+   for (var key in data) {
       if (key.startsWith("content_")) {
          delta += deltify(data.key, this.metadata.get(key))
       }

@@ -159,7 +159,7 @@ Image.prototype.update = function(data) {
    }
 
    this.description = data.description;
-   this.setTags(data.tags || data.tags_array); 
+   this.setTags(data.tags || data.tag_array)
    this.touch();
    return;
 };
