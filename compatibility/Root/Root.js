@@ -27,11 +27,7 @@ Root.prototype.new_action = function() {
 };
 
 Root.prototype.colorpicker_action = function() {
-   if (!req.data.skin) {
-      req.data.skin = "colorpicker";
-   }
-   renderSkin(req.data.skin);
-   return;
+   return renderSkin(req.data.skin || "colorpicker");
 };
 
 Root.prototype.rss_action = function() {
@@ -43,16 +39,18 @@ Root.prototype.url_macro = function(param) {
 };
 
 Root.prototype.sitecounter_macro = function(param) {
-   if (param.count == "all")
+   if (param.count === "all") {
       var size = root.size();
-   else
-      var size = this.publicSites.size();
-   if (size == 0)
-      res.write(param.no ? param.no : size);
-   else if (size == 1)
-      res.write(param.one ? param.one : size);
-   else
-      res.write(size + (param.more ? param.more : ""));
+   } else {
+      var size = root.sites.size();
+   }
+   if (size < 1) {
+      res.write(param.no || size);
+   } else if (size < 2) {
+      res.write(param.one || size);
+   } else {
+      res.write(size + (param.more || String.EMPTY));
+   }
    return;
 };
 
@@ -71,28 +69,14 @@ Root.prototype.sys_title_macro = function(param) {
 };
 
 Root.prototype.sys_url_macro = function(param) {
-   if (param.as == "editor")
-      Html.input(this.createInputParam("sys_url", param));
-   else
-      res.write(this.sys_url);
-   return;
+   return this.title_macro(param);
 };
 
 Root.prototype.sys_email_macro = function(param) {
-   // this macro is allowed just for sysadmins
-   if (!session.user.sysadmin)
-      return;
-   if (param.as == "editor") {
-      param["type"] = "text";
-      var iParam = this.createInputParam("sys_email", param);
-      // use the users email if sys_email is empty
-      if (!iParam.value)
-         iParam.value = session.user.email;
-      Html.input(iParam);
-   } else
-      res.write(this.sys_email);
    return;
 };
+
+// FIXME: The following macros will be replaced by rewritten code
 
 Root.prototype.sys_allowFiles_macro = function(param) {
    // this macro is allowed just for sysadmins

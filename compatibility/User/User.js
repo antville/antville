@@ -81,7 +81,7 @@ User.prototype.email_macro = function(param) {
    if (!User.require(User.PRIVILEGED) && this !== session.user) {
       return;
    }
-   if (param.as == "editor") {
+   if (param.as === "editor") {
       this.input_macro(param, "email");
    } else {
       res.write(this.email);

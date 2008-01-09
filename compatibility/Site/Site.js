@@ -118,11 +118,16 @@ Site.prototype.link_macro = function(param, url, text) {
       handler = this.stories;
       param.to = "top"; break;
       
+      case "layouts":
+      action = ".";
+      handler = this.layout;
+      param.text = "layout";
+      param.to = "."; break;
+
       case "topics":
       case "feeds":
       case "files":
       case "images":
-      case "layouts":
       case "members":
       case "polls":
       case "stories":
@@ -330,10 +335,13 @@ Site.prototype.membercounter_macro = function(param) {
 
 Site.prototype.preferences_macro = function(param) {
    if (param.as === "editor") {
-      html.input({
-         name: param.name,
-         value: this.metadata.get(param.name)
-      });
+      var inputParam = this.metadata.createInputParam(param.name, param);
+      delete inputParam.part;
+      if (param.cols || param.rows) {
+         html.textArea(inputParam);
+      } else {
+         html.input(inputParam);
+      }
    } else {
       res.write(this.metadata.get(param.name));
    } return;

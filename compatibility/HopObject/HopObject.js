@@ -23,7 +23,10 @@
 //
 
 (function() {
+   return; // FIXME!
+   
    var renderSkin = HopObject.prototype.renderSkin;
+
    HopObject.prototype.renderSkin = function(name, param) {
       var constraint = res.contentType === "text/html" && 
             name.constructor === String;
@@ -40,13 +43,14 @@
       renderSkin.call(this, name, param);
       constraint && (res.write("</div>"));
    }
-})();
 
-HopObject.prototype.renderSkinAsString = function(name, param) {
-   res.push();
-   this.renderSkin(name, param);
-   return res.pop();
-}
+   HopObject.prototype.renderSkinAsString = function(name, param) {
+      res.push();
+      this.renderSkin(name, param);
+      return res.pop();
+   }
+
+})();
 
 HopObject.prototype.createtime_macro = function() {
    return this.created_macro.apply(this, arguments);

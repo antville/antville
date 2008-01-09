@@ -44,16 +44,17 @@ Story.prototype.commentform_macro = function(param) {
 // FIXME!
 Story.prototype.content_macro = function(param) {
    switch (param.as) {
-      case "editor" :
+      case "editor":
       var inputParam = this.metadata.createInputParam(param.part, param);
       delete inputParam.part;
-      if (param.cols || param.rows)
+      if (param.cols || param.rows) {
          html.textArea(inputParam);
-      else
+      } else {
          html.input(inputParam);
+      }
       break;
 
-      case "image" :
+      case "image":
       var part = this.metadata.get(param.part);
       if (part && this.site.images.get(part)) {
          delete param.part;

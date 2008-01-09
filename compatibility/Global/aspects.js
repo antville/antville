@@ -27,7 +27,12 @@ app.addRepository("modules/helma/Aspects.js");
 var aspects = {
    setTopics: function(args, func, obj) {
       var param = args[0];
-      param.tags = [param.topic || param.addToTopic];
+      //res.debug("aspects before: "+param.tags.toSource());
+      var topic = param.topic || param.addToTopic;
+      if (!param.tags && topic) {
+         param.tags = [topic];
+      }
+      //res.debug("aspects after: " +param.tags.toSource());
       return args;
    },
    
@@ -83,10 +88,6 @@ Image.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
-ImageMgr.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "evalImg", aspects.setTopics);
-}
-
 Site.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "main_action", function(args, func, site) {
       res.handlers.day = site.archive;
@@ -113,9 +114,5 @@ Site.prototype.onCodeUpdate = function() {
 }
 
 Story.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "evalStory", aspects.setTopics);
-}
-
-Stories.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "evalNewStory", aspects.setTopics);
+   return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
