@@ -56,6 +56,16 @@ Layout.prototype.getPermission = function(action) {
    return false;
 };
 
+// FIXME: For safety reasons the Layout.href method is overwritten.
+// Otherwise it sometimes results in strange URLs containing the layout id.
+Layout.prototype.href = function(action) {
+   res.push();
+   res.write(this._parent.href());
+   res.write("layout/");
+   action && res.write(action);
+   return res.pop();
+}
+
 Layout.prototype.main_action = function() {
    res.debug(this.skins.getSkin("Site", "values"));
    if (req.postParams.save) {

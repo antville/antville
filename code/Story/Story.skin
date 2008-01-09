@@ -228,7 +228,6 @@ $(function() {
 </p>
 <p>
    <button type="submit" name="save" value="1">save</button>
-   <!--button type="submit" name="save" value="2">publish</button-->
    <button type="submit" name="cancel" value="1">cancel</button>
    <button type="button" id="restore" value="1">restore</button>
 </p>

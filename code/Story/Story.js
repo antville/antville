@@ -140,7 +140,9 @@ Story.prototype.getFormValue = function(name) {
       case "status":
       return this.status || Story.PUBLIC;
       case "tags":
-      return this.tags.list();
+      return this.tags.list().map(function(item) {
+         return item.tag.name;
+      });
    }
    return this[name];
 };
@@ -178,7 +180,7 @@ Story.prototype.update = function(data) {
    this.title = data.title;
    this.text = data.text;
    this.setContent(data);
-   //this.setTags(data.tags || data.tag_array)
+   this.setTags(data.tags || data.tag_array)
    this.commentMode = data.commentMode;
    this.mode = data.mode;
    this.status = data.status;

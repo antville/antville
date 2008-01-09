@@ -161,7 +161,7 @@ Image.prototype.update = function(data) {
    this.description = data.description;
    this.touch();
    // FIXME: Don't set the tags of the image via Story.prototype.setTags
-   //Story.prototype.setTags.call(this, data.tags || data.tags_array); 
+   Story.prototype.setTags.call(this, data.tags || data.tags_array); 
    return;
 };
 
