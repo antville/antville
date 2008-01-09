@@ -1,1 +1,1 @@
-<% taghub.tagged.skin name="Story#preview" %>
+<% taghub.tagged.skin name=<% taghub.tagged.type suffix="#preview" %> %>

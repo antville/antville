@@ -114,7 +114,7 @@ Image.prototype.getFormValue = function(name) {
       case "maxHeight":
       return this[name] || 400;
       case "tags":
-      return this.tags.list();
+      return this.getTags();
    }
    return this[name] || req.queryParams[name];
 };
@@ -159,9 +159,8 @@ Image.prototype.update = function(data) {
    }
 
    this.description = data.description;
+   this.setTags(data.tags || data.tags_array); 
    this.touch();
-   // FIXME: Don't set the tags of the image via Story.prototype.setTags
-   Story.prototype.setTags.call(this, data.tags || data.tags_array); 
    return;
 };
 

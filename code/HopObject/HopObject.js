@@ -144,6 +144,80 @@ HopObject.prototype.notify = function(action) {
    return;
 };
 
+HopObject.prototype.getTags = function() {
+   if (typeof this.tags === "object") {
+      return this.tags.list().map(function(item) {
+         return item.tag.name;
+      });
+   }
+   return String.EMPTY;   
+};
+
+HopObject.prototype.setTags = function(tags) {
+   if (typeof this.tags !== "object") {
+      return String.EMPTY;
+   }
+
+   if (!tags) {
+      tags = [];
+   } else if (tags.constructor === String) {
+      tags = tags.split(/\s*,\s*/);
+   }
+   
+   var diff = {};
+   var tag;
+   for (var i in tags) {
+       // Trim and remove URL characters  (like ../.. etc.)
+      tag = tags[i] = String(tags[i]).trim().replace(/^[\/\.]+$/, "?");
+      if (tag && diff[tag] == null) {
+         diff[tag] = 1;
+      }
+   }
+   this.tags.forEach(function() {
+      if (!this.tag) {
+         return;
+      }
+      diff[this.tag.name] = (tags.indexOf(this.tag.name) < 0) ? this : 0;
+   });
+   
+   for (var tag in diff) {
+      switch (diff[tag]) {
+         case 0:
+         // Do nothing (tag already exists)
+         break;
+         case 1:
+         // Add tag to story
+         this.addTag(tag);
+         break;
+         default:
+         // Remove tag
+         this.removeTag(diff[tag]);
+      }
+   }
+   return;
+};
+
+HopObject.prototype.addTag = function(name) {
+   //res.debug("Add tag " + name);
+   //return;
+   this.tags.add(new TagHub(name, this, session.user));
+   return;
+};
+
+HopObject.prototype.removeTag = function(tag) {
+   //res.debug("Remove " + tag);
+   //return;
+   var parent = tag._parent;
+   // Remove tag from site if necessary
+   if (parent.size() === 1) {
+      //res.debug("Remove " + parent);
+      parent.remove();
+   }
+   // Remove tag from object
+   tag.remove();
+   return;
+};
+
 HopObject.prototype.input_macro = function(param, name) {
    param.name = name;
    param.id = name;

@@ -140,9 +140,7 @@ Story.prototype.getFormValue = function(name) {
       case "status":
       return this.status || Story.PUBLIC;
       case "tags":
-      return this.tags.list().map(function(item) {
-         return item.tag.name;
-      });
+      return this.getTags();
    }
    return this[name];
 };
@@ -344,67 +342,6 @@ Story.prototype.backlinks_macro = function(param, limit) {
    if (param.referrers.length > 0) {
       this.renderSkin("Story#backlinks", param);
    }
-   return;
-};
-
-Story.prototype.setTags = function(tags) {
-   if (!tags) {
-      tags = [];
-   } else if (tags.constructor === String) {
-      tags = tags.split(/\s*,\s*/);
-   }
-   
-   var diff = {};
-   var tag;
-   for (var i in tags) {
-       // Trim and remove URL characters  (like ../.. etc.)
-      tag = tags[i] = String(tags[i]).trim().replace(/^[\/\.]+$/, "?");
-      if (tag && diff[tag] == null) {
-         diff[tag] = 1;
-      }
-   }
-   this.tags.forEach(function() {
-      if (!this.tag) {
-         return;
-      }
-      diff[this.tag.name] = (tags.indexOf(this.tag.name) < 0) ? this : 0;
-   });
-
-   for (var tag in diff) {
-      switch (diff[tag]) {
-         case 0:
-         // Do nothing (tag already exists)
-         break;
-         case 1:
-         // Add tag to story
-         Story.prototype.addTag.call(this, tag);
-         break;
-         default:
-         // Remove tag
-         Story.prototype.removeTag.call(this, diff[tag]);
-      }
-   }
-   return;
-};
-
-Story.prototype.addTag = function(name) {
-   //res.debug("Add tag " + name);
-   //return;
-   this.tags.add(new TagHub(name, this, session.user));
-   return;
-};
-
-Story.prototype.removeTag = function(tag) {
-   //res.debug("Remove " + tag);
-   //return;
-   var parent = tag._parent;
-   // Remove tag from site if necessary
-   if (parent.size() === 1) {
-      res.debug("Remove " + parent);
-      parent.remove();
-   }
-   // Remove tag from story
-   tag.remove();
    return;
 };
 
