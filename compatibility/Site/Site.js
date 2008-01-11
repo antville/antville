@@ -391,6 +391,10 @@ Site.prototype.spamfilter_macro = function(param) {
    return;
 };
 
+Site.prototype.listReferrers_macro = function(param) {
+   return this.referrers_macro(param);
+}
+
 Site.prototype.searchbox_macro = function(param) {
    return this.renderSkin("Site#search");
 };

@@ -43,7 +43,7 @@ var addPropertyMacro = function(proto, name, key) {
       if (param.as === "editor") {
          this.input_macro(param, key);
       } else {
-         return this[key + "_macro"](param);
+         res.write(this[key]);
       }
    };
    return;
