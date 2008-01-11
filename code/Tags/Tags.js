@@ -23,15 +23,7 @@
 //
 
 Tags.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
-   switch (action) {
-      case ".":
-      case "main":
-      return true;
-   }
-   return false;
+   return this._parent.getPermission("main");
 };
 
 Tags.prototype.main_action = function() {

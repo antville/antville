@@ -23,6 +23,10 @@
 //
 
 Members.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
+
    switch (action) {
       case "login":
       case "logout":
@@ -30,23 +34,25 @@ Members.prototype.getPermission = function(action) {
       case "reset":
       case "salt.js":
       return true;
+      
+      case "edit":
+      return session.user;
+      
+      // FIXME: Maybe these should be always allowed...?
+      case "privileges":
+      case "subscriptions":
+      case "updated":
+      return Membership.require(Membership.SUBSCRIBER);
+
       case ".":
+      case "add":
       case "main":
       case "owners":
       case "managers":
       case "contributors":
       case "subscribers":
-      case "add":
-      return this._parent.getPermission("main") &&
-            (User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.OWNER));
-      case "edit":
-      return this._parent.getPermission("main");
-      case "privileges":
-      case "subscriptions":
-      case "updated":
-      return this._parent.getPermission("main") &&
-            Membership.require(Membership.SUBSCRIBER);
+      return Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED);
    }
    return false;
 };

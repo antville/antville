@@ -38,7 +38,7 @@ Comment.prototype.constructor = function(parent) {
 };
 
 Comment.prototype.href = function(action) {
-   if (!action || action === "." ||Êaction === "main") {
+   if (!action || action === "." || action === "main") {
       return this.story.href() + "#" + this._id;
    } else {
       return HopObject.prototype.href.apply(this, arguments);

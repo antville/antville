@@ -213,8 +213,7 @@ Skin.prototype.summary_macro = function() {
 };
 
 Skin.prototype.source_macro = function() {
-   res.write(this.getSource());
-   return;
+   return res.write(this.getSource());
 };
 
 Skin.prototype.getSource = function() {
@@ -226,6 +225,9 @@ Skin.prototype.getSource = function() {
    }
    var source = skinFiles[this.name];
    if (!source) {
+      // FIXME: Strange, the subskin can be rendered but it's not found
+      // in app.getSkinFilesInPath() ...
+      //global[this.prototype].prototype.renderSkin(this.prototype + "#" + this.name);
       skin = createSkin(skinFiles[this.prototype]).getSubskin(this.name);
       source = skin && skin.getSource();
    }

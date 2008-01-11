@@ -17,9 +17,6 @@
 <div class="ample">
    <% images.link create "add a layout image" prefix="... " %>
 </div>
-<% images.link . "all images" prefix="... show " %>
-<% images.link default "default images" prefix=" | " %>
-<% images.link additional "additional images" prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>

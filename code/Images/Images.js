@@ -35,7 +35,7 @@ Images.prototype.getPermission = function(action) {
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":
-      return this._parent.constructor === Site &&
+      return this._parent.constructor !== Layout &&
             (Membership.require(Membership.MANAGER) ||
             User.require(User.PRIVILEGED));
    }

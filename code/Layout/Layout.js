@@ -40,9 +40,6 @@ Layout.prototype.constructor = function(site) {
 };
 
 Layout.prototype.getPermission = function(action) {
-   if (!res.handlers.site.getPermission("main")) {
-      return false;
-   }
    switch (action) {
       case ".":
       case "main":
@@ -51,7 +48,9 @@ Layout.prototype.getPermission = function(action) {
       case "import":
       case "reset":
       case "skins":
-      return true;
+      return res.handlers.site.getPermission("main") &&
+            Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED);
    }
    return false;
 };

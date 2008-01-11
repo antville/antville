@@ -38,6 +38,8 @@ Skins.prototype.getChildElement = function(name) {
 
 // FIXME: It's not totally clear why this is necessary;
 // but somehow Helma does not provide the correct path...
+// FIXME 2: Probably obsolete thanks to a custom Layout.href() method
+/*
 Skins.prototype.href = function(action) {
    res.push();
    res.write(res.handlers.site.href());
@@ -45,6 +47,7 @@ Skins.prototype.href = function(action) {
    action && (res.write(action));
    return res.pop();
 };
+*/
 
 Skins.prototype.main_action = function() {
    var offset = Array.prototype.indexOf.call(path, res.handlers.site);
