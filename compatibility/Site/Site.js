@@ -30,8 +30,10 @@ relocateProperty(Site, "showdays", "pageSize");
 addPropertyMacro(Site, "tagline");
 addPropertyMacro(Site, "email");
 
-delete Site.prototype.createtime_macro;
-delete Site.prototype.modifytime_macro;
+// FIXME: Due to latest changes in addPropertyMacro()
+// this seems to be obsolete
+//delete Site.prototype.createtime_macro;
+//delete Site.prototype.modifytime_macro;
 
 Site.prototype.__defineGetter__("online", function() {
    return this.mode === Site.PUBLIC;
@@ -300,6 +302,7 @@ Site.prototype.layoutchooser_macro = function(param) {
 Site.prototype.history_macro = function(param, type) {
    param.limit = Math.min(param.limit || 10, 20);
    type || (type = param.show);
+   var skin = getCompatibleSkin("Story", "historyview");
    var stories = this.stories.recent;
    var size = stories.size();
    var counter = i = 0;
@@ -323,7 +326,7 @@ Site.prototype.history_macro = function(param, type) {
             continue;
          } break;
       }
-      item.renderSkin("Story#history");
+      item.renderSkin(skin);
       counter += 1;
    }
    return;

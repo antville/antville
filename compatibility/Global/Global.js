@@ -43,14 +43,42 @@ var addPropertyMacro = function(proto, name, key) {
       if (param.as === "editor") {
          this.input_macro(param, key);
       } else {
-         res.write(this[key]);
+         return this[key + "_macro"](param);
       }
    };
    return;
 }
 
+var getCompatibleSkin = function(prototype, name) {
+   var renamedSkins = {
+      Story: {
+         "historyview": "Story#history"
+      }
+   };
+   
+   var getRenamedSkin = function() {
+      var skins;
+      if (skins = renamedSkins[prototype]) {
+         return skins[name];
+      }
+      throw Error("Undefined renaming of skin " + prototype + "." + name);
+   }
+   
+   return (new Skin(prototype, name)).getSource() ? 
+         name : getRenamedSkin();
+}
+
 var formatTimestamp = function() {
    return formatDate.apply(this, arguments);
+}
+
+function link_macro() {
+   var param = arguments[0];
+   if (param.to) {
+      param.url = param.to;
+      delete param.to;
+   }
+   return renderLink.apply(this, arguments);
 }
 
 function logo_macro(param, name) {
