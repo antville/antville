@@ -101,8 +101,8 @@ Site.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
       case "edit":
       case "referrers":
-      return (Membership.require(Membership.OWNER) ||
-            User.require(User.PRIVILEGED));
+      return Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED);
       case "subscribe":
       return Site.require(Site.PUBLIC) &&
             !Membership.require(Membership.SUBSCRIBER);
