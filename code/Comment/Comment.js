@@ -37,14 +37,6 @@ Comment.prototype.constructor = function(parent) {
    return this;
 };
 
-Comment.prototype.href = function(action) {
-   if (!action || action === "." || action === "main") {
-      return this.story.href() + "#" + this._id;
-   } else {
-      return HopObject.prototype.href.apply(this, arguments);
-   }
-};
-
 Comment.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
@@ -62,7 +54,7 @@ Comment.prototype.getPermission = function(action) {
 };
 
 Comment.prototype.main_action = function() {
-   return res.redirect(this.href());
+   return res.redirect(this.story.href() + "#" + this._id);
 };
 
 Comment.prototype.edit_action = function() {
@@ -116,5 +108,5 @@ Comment.remove = function() {
    (this.parent || this).removeChild(this);
    this.story.comments.removeChild(this);
    this.remove();
-   return;
+   return this.parent.href();
 };

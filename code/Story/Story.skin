@@ -101,7 +101,7 @@ else <% if <% story.mode %> is hidden then
 
 <% #backlink %>
 referrers.push(new Antville.Referrer("<% param.referrer %>", 
-      "<% param.text %>", <% param.count %>));
+      "<% param.text %>", <% param.requests %>));
 
 <% #backlinks %>
 <a name="backlinks" id="backlinks"></a><br />
@@ -145,7 +145,7 @@ for (var i in referrers) {
    }
    document.writeln('<tr>');
    document.writeln('<td align="right" valign="top" class="small">', 
-         ref.requests, '</td>');
+         ref.count, '</td>');
    document.writeln('<td class="small"><a href="', ref.url, '">', 
          text, '</a></td>');
    document.writeln('</tr>');

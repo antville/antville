@@ -55,8 +55,8 @@ Layout.prototype.getPermission = function(action) {
    return false;
 };
 
-// FIXME: For safety reasons the Layout.href method is overwritten.
-// Otherwise it sometimes results in strange URLs containing the layout id.
+// FIXME: The Layout.href method is overwritten to guarantee that
+// URLs won't contain the layout ID instead of "layout"
 Layout.prototype.href = function(action) {
    res.push();
    res.write(this._parent.href());
@@ -66,7 +66,6 @@ Layout.prototype.href = function(action) {
 }
 
 Layout.prototype.main_action = function() {
-   res.debug(this.skins.getSkin("Site", "values"));
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
@@ -218,6 +217,16 @@ Layout.prototype.import_action = function() {
    res.data.body = this.renderSkinAsString("Layout#import");
    res.handlers.site.renderSkin("page");
    return;
+};
+
+Layout.prototype.getMacroHandler = function(name) {
+   switch (name) {
+      case "skins":
+      return this[name];
+      
+      default:
+      return null;
+   }
 };
 
 Layout.prototype.image_macro = function(param, name, mode) {

@@ -23,7 +23,7 @@
 //
 
 Tags.prototype.getPermission = function(action) {
-   return this._parent.getPermission("main");
+   return res.handlers.site.getPermission("main");
 };
 
 Tags.prototype.main_action = function() {

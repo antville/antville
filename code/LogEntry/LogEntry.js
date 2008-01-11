@@ -27,7 +27,7 @@ LogEntry.prototype.constructor = function(context, action) {
    this.context_type = context._prototype;
    this.action = action || req.action;
    this.ip = req.data.http_remotehost;
-   this.referrer = req.data.http_referrer;
+   this.referrer = req.data.http_referer;
    this.creator = session.user;
    this.created = new Date;
    return this;

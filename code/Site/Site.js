@@ -250,6 +250,7 @@ Site.prototype.main_js_action = function() {
    var file = new helma.File(root.getStaticFile("jquery-1.1.3.1.pack.js"));
    res.writeln(file.readAll());
    this.renderSkin("javascript");
+   // FIXME: Find a better way to reliably include Antville scripts
    file = new helma.File(root.getStaticFile("antville-1.2.js"));
    res.writeln(file.readAll());
    return;
@@ -269,7 +270,7 @@ Site.prototype.getXml = function() {
    feed.setFeedType("rss_2.0");
    feed.setLink(this.href());
    feed.setTitle(this.title);
-   feed.setDescription(this.tagline);
+   feed.setDescription(this.tagline || String.EMPTY);
    feed.setLanguage(this.locale.replace("_", "-"));
    feed.setPublishedDate(now);
 
@@ -432,6 +433,7 @@ Site.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "archive":
       case "files":
+      case "galleries":
       case "images":
       case "members":
       case "polls":
@@ -493,7 +495,7 @@ Site.prototype.referrers_macro = function() {
       if (!(referrer = rows.getColumnItem("referrer"))) {
          continue;
       }
-      this.renderSkin("referrerItem", {
+      this.renderSkin("Site#referrerItem", {
          requests: rows.getColumnItem("requests"),
          referrer: encode(referrer),
          text: encode(referrer.clip(50))
@@ -503,6 +505,7 @@ Site.prototype.referrers_macro = function() {
    return;
 };
 
+// FIXME: This can be removed if Layouts really are to disappear
 Site.prototype.getLayouts = function() {
    var result = [];
    this.layouts.forEach(function() {

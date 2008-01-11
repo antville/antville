@@ -25,7 +25,7 @@
 Story.getStatus = defineConstants(Story, "closed", "public", "shared", "open");
 Story.getModes = defineConstants(Story, "hidden", "featured");
 Story.getCommentModes = defineConstants(Story, "closed", 
-      "readonly", "moderated", "open");
+      "readonly", /*"moderated",*/ "open");
 
 this.handleMetadata("title");
 this.handleMetadata("text");
@@ -333,6 +333,9 @@ Story.prototype.backlinks_macro = function(param, limit) {
          requests: rows.getColumnItem("count"),
          referrer: rows.getColumnItem("referrer")
       };
+      if (!param.requests || !param.referrer) {
+         continue;
+      }
       param.referrer && (param.text = param.referrer.clip(50));  
       this.renderSkin("Story#backlink", param);
       counter += 1;

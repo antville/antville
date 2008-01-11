@@ -8,7 +8,7 @@
 <% #navigation %>
 <% site.link . home prefix="... " suffix="<br />" %>
 <% site.tags.link prefix="... " suffix="<br />" %>
-<% site.images.link tags galleries prefix="... " suffix="<br />" %>
+<% site.galleries.link prefix="... " suffix="<br />" %>
 <br />
 <% site.stories.link create "add a story" prefix="... " suffix="<br />" %>
 <% site.stories.link prefix="... " suffix="<br />" %>
@@ -19,6 +19,7 @@
 <br />
 <% site.link edit preferences prefix="... " suffix="<br />" %>
 <% layout.link . layout prefix="... " suffix="<br />" %>
+<% layout.skins.link . skins prefix="... " suffix="<br />" %>
 <% site.link referrers prefix="... " suffix="<br />" %>
 <% site.stories.link top "most read stories" prefix="... " suffix="<br />" %>
 <br />
@@ -173,6 +174,10 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 </tr>
 </table>
 </form>
+
+<% #referrerItem %>
+referrers.push(new Antville.Referrer("<% param.referrer %>", 
+      "<% param.text %>", <% param.requests %>));
 
 <% #values %>
 <% value "background color" #ffffff %>
