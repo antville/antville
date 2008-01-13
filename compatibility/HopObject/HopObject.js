@@ -52,6 +52,23 @@
 
 })();
 
+HopObject.prototype.peel_macro = function(param, name) {
+   var prototype = (this === root) ? "Site" : this.constructor.name;
+   var parts = name.split("#");
+   var skinName = parts[0];
+   var subskinName = parts[1];
+   var skinFiles = app.getSkinfilesInPath([app.dir])[prototype];
+   var source;
+   if (skinFiles && (source = skinFiles[skinName])) {
+      var skin = createSkin(source);
+      if (subskinName && skin.hasSubskin(subskinName)) {
+         this.renderSkin(skin.getSubskin(subskinName));
+      } else {
+         this.renderSkin(skin);
+      }
+   }
+};
+
 HopObject.prototype.createtime_macro = function() {
    return this.created_macro.apply(this, arguments);
 };

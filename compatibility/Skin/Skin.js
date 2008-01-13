@@ -25,6 +25,3 @@
 relocateProperty(Skin, "createtime", "created");
 relocateProperty(Skin, "modifytime", "modified");
 relocateProperty(Skin, "proto", "prototype");
-
-delete Skin.prototype.createtime_macro;
-delete Skin.prototype.modifytime_macro;

@@ -25,9 +25,6 @@
 relocateProperty(Site, "createtime", "created");
 relocateProperty(Site, "modifytime", "modified");
 
-delete File.prototype.createtime_macro;
-delete File.prototype.modifytime_macro;
-
 File.getCompatibleFileName = function(file, name) {
    name || (name = file.name);
    return file.metadata.get("fileName") || name;

@@ -27,9 +27,6 @@ relocateProperty(Layout, "parent", "ancestor");
 relocateProperty(Layout, "createtime", "created");
 relocateProperty(Layout, "modifytime", "modified");
 
-delete Layout.prototype.createtime_macro;
-delete Layout.prototype.modifytime_macro;
-
 Layout.prototype.__defineGetter__("shareable", function() {
    return this.mode === Layout.SHARED;
 });
@@ -116,7 +113,6 @@ Layout.prototype.value_macro = function(param, name, value) {
 };
 
 Layout.prototype.onUnhandledMacro = function(name) {
-   res.write(name)
    // FIXME: editors?
    switch (name) {
       case "bgcolor":

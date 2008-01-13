@@ -1,0 +1,8 @@
+<% #page %>
+<% site.skin page %>
+
+<% #stylesheet %>
+<% site.skin style %>
+
+<% #javascript %>
+<% site.skin javascript %>

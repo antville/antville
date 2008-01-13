@@ -30,11 +30,6 @@ relocateProperty(Site, "showdays", "pageSize");
 addPropertyMacro(Site, "tagline");
 addPropertyMacro(Site, "email");
 
-// FIXME: Due to latest changes in addPropertyMacro()
-// this seems to be obsolete
-//delete Site.prototype.createtime_macro;
-//delete Site.prototype.modifytime_macro;
-
 Site.prototype.__defineGetter__("online", function() {
    return this.mode === Site.PUBLIC;
 });

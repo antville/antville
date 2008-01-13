@@ -38,6 +38,10 @@ var relocateProperty = function(proto, name, key) {
 }
 
 var addPropertyMacro = function(proto, name, key) {
+   // These two are managed by the HopObject prototype already
+   if (name === "createtime" || name === "modifytime") {
+      return;
+   }
    key || (key = name);
    proto.prototype[name + "_macro"] = function(param) {
       if (param.as === "editor") {

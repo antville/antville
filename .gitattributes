@@ -3,6 +3,7 @@ build/extra/helma.jar -text
 build/extra/launcher.jar -text
 build/extra/mckoidb.jar -text
 code/TagHub/TagHub.skin -text
+compatibility/Site/page.skin -text
 database/data/062SYS_INFO_sUSRSequenceInfo.koi -text
 database/data/063SYS_INFO_sUSRSequence.koi -text
 database/data/064SYS_INFO_sUSRPKeyInfo.koi -text

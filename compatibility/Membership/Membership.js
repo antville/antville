@@ -27,9 +27,6 @@ relocateProperty(Membership, "createtime", "created");
 relocateProperty(Membership, "modifytime", "modified");
 relocateProperty(Membership, "user", "creator");
 
-delete Membership.prototype.createtime_macro;
-delete Membership.prototype.modifytime_macro;
-
 Membership.prototype.username_macro = function(param) {
    if (param.linkto && (param.linkto !== "edit" || 
          this.user !== session.user)) {

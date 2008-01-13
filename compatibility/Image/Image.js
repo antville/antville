@@ -29,9 +29,6 @@ relocateProperty(Image, "fileext", "contentType");
 relocateProperty(Image, "filesize", "contentLength");
 relocateProperty(Image, "alttext", "description")
 
-delete Image.prototype.createtime_macro;
-delete Image.prototype.modifytime_macro;
-
 Image.getCompatibleFileName = function(image, name) {
    return name.replace(/\/[^\/]*$/, "/" + image.metadata.get("fileName"));
 };

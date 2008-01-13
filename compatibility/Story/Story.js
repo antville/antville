@@ -25,11 +25,6 @@
 relocateProperty(Story, "createtime", "created");
 relocateProperty(Story, "modifytime", "modified");
 
-// FIXME: Due to latest changes in addPropertyMacro()
-// this seems to be obsolete
-//delete Story.prototype.createtime_macro;
-//delete Story.prototype.modifytime_macro;
-
 Story.prototype.allowTextMacros = function(skin) {
    return Story.prototype.macro_filter(skin);
 }
