@@ -918,7 +918,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
    if (pageIdx < lastPageIdx) {
       renderItem("next", "pageNavItem", url, pageIdx +1);
    }
-   param.pagenavigation = res.pop();
+   param.pager = res.pop();
    return renderSkinAsString("Global#pager", param);
 }
 

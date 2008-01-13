@@ -129,7 +129,7 @@ Admin.prototype.log_action = function() {
    }
    res.data.list = renderList(session.data.admin.log, 
          this.renderItem, 10, req.queryParams.page);
-   res.data.pagenavigation = renderPager(session.data.admin.log, 
+   res.data.pager = renderPager(session.data.admin.log, 
          this.href(req.action), 10, req.queryParams.page);
 
    res.data.title = gettext("Log data of {0}", root.title);

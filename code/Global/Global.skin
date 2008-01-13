@@ -3,7 +3,7 @@
 <div class="pageNavSummary">
    displaying <% param.display %><% param.total prefix=" (of " suffix=")" %>
 </div>
-<div class="pageNavBar"><% param.pagenavigation %></div>
+<div class="pageNavBar"><% param.pager %></div>
 </div>
 
 <% #pagerItem %>
