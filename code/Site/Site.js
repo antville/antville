@@ -467,10 +467,10 @@ Site.prototype.list_macro = function(param, type) {
          this.renderSkin("Site#welcome");
          if (session.user) {
             if (session.user === this.creator) {
-               this.renderSkin("User#welcome");
+               session.user.renderSkin("User#welcome");
             }
             if (User.require(User.PRIVILEGED)) {
-               this.renderSkin("Admin#welcome");
+               this.admin.renderSkin("Admin#welcome");
             }
          }
       } else {
