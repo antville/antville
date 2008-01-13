@@ -150,7 +150,7 @@ Skin.prototype.diff_action = function() {
    } else {
       var diff = originalSkin.diff(this.getSource());
       if (!diff) {
-         res.data.status = getMessage("Skin.diff.noDiffFound");
+         res.data.status = gettext("No differences were found");
       } else {
          res.push();
          var sp = new Object();
@@ -186,11 +186,8 @@ Skin.prototype.diff_action = function() {
       }
    }
    res.data.body = this.renderSkinAsString("diff");
-   res.data.title = getMessage("Skin.diff.displayTitle", {
-      skinProto: this.proto, 
-      skinName: this.name, 
-      layoutTitle: this.layout.title
-   });
+   res.data.title = gettext("Diffs for {0}/{1}.skin of layout {2}", 
+         this.proto, this.name, this.layout.title);
    this.layout.skins.renderSkin("Site#page");
    return;
 };

@@ -88,7 +88,7 @@ Root.prototype.sys_allowFiles_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_allowFiles ? getMessage("generic.yes") : getMessage("generic.no"));
+      res.write(this.sys_allowFiles ? gettext("yes") : gettext("no"));
    return;
 };
 
@@ -110,7 +110,8 @@ Root.prototype.sys_limitNewSites_macro = function(param) {
    if (!session.user.sysadmin)
       return;
    if (param.as == "editor") {
-      var options = [getMessage("SysMgr.registeredUsers"), getMessage("SysMgr.trustedUsers"), "---------"];
+      var options = [gettext("all registered users"), 
+            gettext("only trusted users"), "---------"];
       Html.dropDown({name: "sys_limitNewSites"}, options, this.sys_limitNewSites);
    } else
       res.write(this.sys_limitNewSites);
@@ -173,7 +174,7 @@ Root.prototype.sys_enableAutoCleanup_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_enableAutoCleanup ? getMessage("generic.yes") : getMessage("generic.no"));
+      res.write(this.sys_enableAutoCleanup ? gettext("yes") : gettext("no"));
    return;
 };
 
@@ -201,7 +202,7 @@ Root.prototype.sys_blockPrivateSites_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_blockPrivateSites ? getMessage("generic.yes") : getMessage("generic.no"));
+      res.write(this.sys_blockPrivateSites ? gettext("yes") : gettext("no"));
    return;
 };
 
@@ -237,7 +238,7 @@ Root.prototype.sys_deleteInactiveSites_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else
-      res.write(this.sys_deleteInactiveSites ? getMessage("generic.yes") : getMessage("generic.no"));
+      res.write(this.sys_deleteInactiveSites ? gettext("yes") : gettext("no"));
    return;
 };
 
@@ -281,9 +282,9 @@ Root.prototype.sys_allowEmails_macro = function(param) {
   if (!session.user.sysadmin)
      return;
   if (param.as == "editor") {
-     var options = new Array(getMessage("SysMgr.allowNotfication.no"), 
-                             getMessage("SysMgr.allowNotfication.all"), 
-                             getMessage("SysMgr.allowNotfication.trusted"));
+     var options = [gettext("no notification e-mails"), 
+           gettext("notification for all sites"), 
+           gettext("only trusted sites")];
      Html.dropDown({name: "sys_allowEmails"}, options, this.sys_allowEmails);
   } else
      res.write(this.sys_allowEmails);

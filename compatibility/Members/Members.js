@@ -32,7 +32,7 @@ Members.prototype.sendpwd_action = function() {
 Members.prototype.subscribelink_macro = function(param) {
    if (this._parent.online && res.data.memberlevel == null) {
       html.link({href: this._parent.href("subscribe")},
-            param.text || getMessage("Members.signUp"));
+            param.text || gettext("sign up"));
    }
    return;
 };
@@ -40,7 +40,7 @@ Members.prototype.subscribelink_macro = function(param) {
 Members.prototype.subscriptionslink_macro = function(param) {
    if (session.user.size()) {
       html.link({href: this.href("updated")},
-            param.text || getMessage("Members.subscriptions"));
+            param.text || gettext("subscriptions"));
    }
    return;
 };

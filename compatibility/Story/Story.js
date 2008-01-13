@@ -235,34 +235,35 @@ Story.prototype.discussions_macro = function(param) {
 // FIXME!
 Story.prototype.editableby_macro = function(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
-      var options = [EDITABLEBY_ADMINS,
-                     EDITABLEBY_CONTRIBUTORS,
-                     EDITABLEBY_SUBSCRIBERS];
-      var labels = [getMessage("Story.editableBy.admins"), 
-                    getMessage("Story.editableBy.contributors"), 
-                    getMessage("Story.editableBy.subscribers")];
+      var options = [EDITABLEBY_ADMINS, EDITABLEBY_CONTRIBUTORS,
+            EDITABLEBY_SUBSCRIBERS];
+      var labels = [gettext("the author"), gettext("all contributors"), 
+            gettext("all subscribers")];
       delete param.as;
       if (req.data.publish || req.data.save)
          var selValue = !isNaN(req.data.editableby) ? req.data.editableby : null;
       else
          var selValue = this.editableby;
       for (var i=0;i<options.length;i++) {
-         html.radioButton({name: "editableby", value: options[i], selectedValue: selValue});
+         html.radioButton({name: "editableby", 
+               value: options[i], selectedValue: selValue});
          res.write("&nbsp;");
          res.write(labels[i]);
          res.write("&nbsp;");
       }
    } else {
       switch (this.editableby) {
-         case 0 :
-            res.write(getMessage("Story.editableBy.adminsLong", {siteTitle: path.Site.title}));
-            return;
-         case 1 :
-            res.write(getMessage("Story.editableBy.contributorsLong", {siteTitle: path.Site.title}));
-            break;
+         case 0:
+         res.write(gettext("Content managers and admins of {0}", 
+               path.site.title));
+         break;
+         case 1:
+         res.write(gettext("Contributors to {0}", path.site.title));
+         break;
          case 2 :
-            res.write(getMessage("Story.editableBy.subscribersLong", {siteTitle: path.Site.title}));
-            break;
+         res.write(gettext("Subscribers of and contributors to {0}", 
+               path.site.title));
+         break;
       }
    }
    return;

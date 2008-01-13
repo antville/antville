@@ -61,7 +61,7 @@ Membership.prototype.level_macro = function(param) {
 
 Membership.prototype.editlink_macro = function(param) {
    if (this.creator !== session.user) {
-      this.link_filter(param.text || getMessage("generic.edit"), 
+      this.link_filter(param.text || gettext("edit"), 
             param, this.href("edit")); 
    }
    return;
@@ -70,13 +70,13 @@ Membership.prototype.editlink_macro = function(param) {
 Membership.prototype.deletelink_macro = function(param) {
    if (this.role !== Membership.OWNER)
       html.link({href: this.href("delete")}, param.text || 
-                getMessage("generic.remove"));
+                gettext("remove"));
    return;
 };
 
 Membership.prototype.unsubscribelink_macro = function(param) {
    if (this.role === Membership.SUBSCRIBER) {
-      this.link_filter(param.text || getMessage("Membership.unsubscribe"), 
+      this.link_filter(param.text || gettext("unsubscribe"), 
             param, this.site.href("unsubscribe"));
    }
    return;

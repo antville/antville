@@ -479,7 +479,7 @@ Admin.prototype.blockPrivateSites = function() {
             var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
             warning.setFrom(root.sys_email);
-            warning.setSubject(getMessage("mail.blockWarning", site.title));
+            warning.setSubject(gettext("Attention! Your site {0} will soon be blocked!", site.title));
             var sp = new Object();
             sp.site = site.alias;
             sp.url = site.href();
@@ -544,7 +544,7 @@ Admin.prototype.deleteInactiveSites = function() {
             var recipient = site.email ? site.email : site.creator.email;
             warning.addTo(recipient);
             warning.setFrom(root.sys_email);
-            warning.setSubject(getMessage("mail.deleteWarning", site.title));
+            warning.setSubject(gettext("Attention! Your site {0} will soon be deleted!", site.title));
             var sp = new Object();
             sp.site = site.alias;
             sp.url = site.href();

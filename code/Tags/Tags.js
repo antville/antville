@@ -59,8 +59,7 @@ Tags.prototype.getChildElement = function(id) {
       return {main_action: new Function};
       
       var self = this;
-      res.data.title = getMessage("Tags.viewTitle", {title: "Tags", 
-            siteName: self._parent.title});
+      res.data.title = gettext("Tags of site {0}", self._parent.title);
       res.data.list = renderList(child, function(item) {
          item.parent.renderSkin("preview");
       }, 10, req.data.page);

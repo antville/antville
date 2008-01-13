@@ -49,6 +49,10 @@
    </div>
 </div>
 
+<% #result %>
+<br /><% story.summary %>
+<div class="small">by <% story.creator %> (<% story.modified short %>)</div>
+
 <% #top %>
 <tr>
 <td align="right" valign="baseline" class="small"><% param.position %></td>

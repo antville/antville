@@ -77,9 +77,9 @@ Layout.prototype.shareable_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.shareable)
-      res.write(param.yes ? param.yes : getMessage("generic.yes"));
+      res.write(param.yes || gettext("yes"));
    else
-      res.write(param.no ? param.no : getMessage("generic.no"));
+      res.write(param.no  || gettext("no"));
    return;
 };
 

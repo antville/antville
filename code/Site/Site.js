@@ -395,7 +395,7 @@ Site.prototype.search_action = function() {
       res.push();
       while (rows.next()) {
          ref = Story.getById(rows.getColumnItem("id"));
-         ref.renderSkin("Story#preview");
+         ref.renderSkin("Story#result");
          counter += 1;
       }
       rows.release();

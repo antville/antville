@@ -42,11 +42,11 @@ Poll.prototype.choices_macro = function(param) {
 Poll.prototype.total_macro = function(param) {
    var n = this.votes.size();
    if (n == 0)
-      n += " " + (param.no ? param.no : getMessage("Poll.votes.no"));
+      n += " " + (param.no || gettext("votes"));
    else if (n == 1)
-      n += " " + (param.one ? param.one : getMessage("Poll.votes.one"));
+      n += " " + (param.one || gettext("vote"));
    else
-      n += " " + (param.more ? param.more : getMessage("Poll.votes.more"));
+      n += " " + (param.more || gettext("votes"));
    return n;
 };
 
@@ -86,11 +86,11 @@ Poll.prototype.results_macro = function() {
          param.width = Math.round(param.percent * 2.5);
          param.graph = c.renderSkinAsString("graph", param);
          if (param.count == 1)
-            param.text = " " + (param2.one ? param2.one : getMessage("Poll.votes.one"));
+            param.text = " " + (param2.one || gettext("vote"));
          else
-            param.text = " " + (param2.more ? param2.more : getMessage("Poll.votes.more"));
+            param.text = " " + (param2.more || gettext("votes"));
       } else
-         param.text = " " + (param2.no ? param2.no : getMessage("Poll.votes.no"));
+         param.text = " " + (param2.no || gettext("votes"));
       c.renderSkin("result", param);
    }
    return;
@@ -104,7 +104,7 @@ Poll.prototype.editlink_macro = function(param) {
          return;
       }
       Html.link({href: this.href("edit")},
-                param.text ? param.text : getMessage("generic.edit"));
+                param.text || gettext("edit"));
    }
    return;
 };
@@ -117,7 +117,7 @@ Poll.prototype.deletelink_macro = function(param) {
          return;
       }
       Html.link({href: this.href("delete")},
-                param.text ? param.text : getMessage("generic.delete"));
+                param.text || gettext("delete"));
    }
    return;
 };
@@ -127,7 +127,7 @@ Poll.prototype.viewlink_macro = function(param) {
       if (!this.closed) {
          this.checkVote(session.user, res.data.memberlevel);
          Html.link({href: this.href()},
-                   param.text ? param.text : getMessage("Poll.vote"));
+                   param.text || gettext("vote"));
       }
    } catch (deny) {
       return;
@@ -142,7 +142,7 @@ Poll.prototype.closelink_macro = function(param) {
       } catch (deny) {
          return;
       }
-      var str = this.closed ? getMessage("Poll.reopen") : getMessage("Poll.close");
+      var str = this.closed ? gettext("re-open") : gettext("close");
       Html.link({href: this.href("toggle")},
                 param.text ? param.text : str);
    }
