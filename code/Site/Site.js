@@ -86,6 +86,7 @@ Site.prototype.getPermission = function(action) {
       case "main.js":
       case "main.css":
       case "robots.txt":
+      case "search.xml":
       return true;
       case ".":
       case "main":
@@ -117,7 +118,7 @@ Site.prototype.getPermission = function(action) {
 Site.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("Site#main");
    res.data.title = this.title;
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    logAction();
    return;
 };
@@ -146,7 +147,7 @@ Site.prototype.edit_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Preferences of {0}", this.title);
    res.data.body = this.renderSkinAsString("Site#edit");
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    return;
 };
 
@@ -237,7 +238,7 @@ Site.prototype.main_css_action = function() {
    res.digest();
    res.contentType = "text/css";
    this.renderSkin("Site#values");
-   this.renderSkin("stylesheet");
+   this.renderSkin("Site#stylesheet");
    return;
 };
 
@@ -246,13 +247,12 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(Skin("Site", "javascript").getSource());
    res.digest();
    res.contentType = "text/javascript";
-   // FIXME: Find a better way to reliably include jQuery (via script tag?)
-   var file = new helma.File(root.getStaticFile("jquery-1.1.3.1.pack.js"));
-   res.writeln(file.readAll());
-   this.renderSkin("javascript");
-   // FIXME: Find a better way to reliably include Antville scripts
-   file = new helma.File(root.getStaticFile("antville-1.2.js"));
-   res.writeln(file.readAll());
+   // FIXME: Better way to safely include system scripts?
+   for each (script in ["jquery-1.2.1.min.js", "antville-1.2.js"]) {
+      var file = new helma.File(root.getStaticFile(script));
+      res.writeln(file.readAll());
+   }
+   this.renderSkin("Site#javascript");
    return;
 };
 
@@ -263,6 +263,20 @@ Site.prototype.rss_xml_action = function() {
    res.write(this.getXml());
    return;
 };
+
+Site.prototype.search_xml_action = function() {
+   return; // FIXME
+   res.contentType = "application/opensearchdescription+xml";
+   res.write(<OpenSearchDescription xmlns="http://antville.org/">
+      	<ShortName>Antville Search</ShortName>
+      	<Description>Search on Antville</Description>
+      	<Tags>antville search</Tags>
+      	<Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.youtube.com/favicon.ico</Image>
+      	<Url type="text/html" template="http://antville.org/search?q={searchTerms}" />
+      	<Query role="example" searchTerms="cat" />
+         </OpenSearchDescription>);
+   return;   
+}
 
 Site.prototype.getXml = function() {
    var now = new Date;
@@ -360,7 +374,7 @@ Site.prototype.referrers_action = function() {
    res.data.action = this.href("referrers");
    res.data.title = gettext("Referrers in the last 24 hours of {0}", this.title);
    res.data.body = this.renderSkinAsString("referrers");
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    return;
 };
 
@@ -390,7 +404,7 @@ Site.prototype.search_action = function() {
    }
    res.data.title = gettext('Search results for "{0}" in site "{1}"', 
          search, this.title);
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    return;
 };
 
@@ -419,7 +433,7 @@ Site.prototype.unsubscribe_action = function() {
       text: gettext('You are about to remove the subscription to the site "{0}".', 
             this.title)
    });
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    return;
 };
 

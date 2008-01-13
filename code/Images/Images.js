@@ -60,10 +60,10 @@ Images.prototype.main_action = function() {
    }
    res.data.list = renderList(images, "Image#images", 
          10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(images, 
+   res.data.pager = renderPager(images, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString(skin);
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -88,18 +88,18 @@ Images.prototype.create_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add image to {0}", this._parent.title);
    res.data.body = image.renderSkinAsString("Image#edit");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
 Images.prototype.all_action = function() {
-   res.data.pager = renderPageNavigation(this, this.href(), 
+   res.data.pager = renderPager(this, this.href(), 
          10, req.queryParams.page);
    res.data.list = renderList(this, "Image#images", 
          10, req.queryParams.page);
    res.data.title = gettext("Images of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Images#main");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 

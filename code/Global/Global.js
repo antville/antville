@@ -402,6 +402,16 @@ function list_macro(param /*, limit, id */) {
    if (id === "sites") {
       collection = root.sites.list(0, max);
       skin = "Site#list"; // FIXME: #preview or #list?
+   } else if (id === "updates") {
+      var counter = 0;
+      collection = [];
+      root.forEach(function() {
+         if (this.mode === Site.OPEN || this.mode === Site.PUBLIC &&
+               this.status !== Site.BLOCKED) {
+            collection.push(this);
+         }
+      });
+      skin = "Site#list";
    } else {
       var site;
       var parts = id.split("/");
@@ -819,39 +829,39 @@ function doWikiStuff (src) {
    return text;
 }
 
-// FIXME: -> jala.ListRenderer?
+// FIXME: Rewrite with jala.ListRenderer?
 function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
-   var currIdx = 0;
+   var currIdx = 0, item;
    var isArray = collection instanceof Array;
    var stop = size = isArray ? collection.length : collection.size();
 
    if (itemsPerPage) {
       var totalPages = Math.ceil(size/itemsPerPage);
-      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0)
+      if (isNaN(pageIdx) || pageIdx > totalPages || pageIdx < 0) {
          pageIdx = 0;
+      }
       currIdx = pageIdx * itemsPerPage;
       stop = Math.min(currIdx + itemsPerPage, size);
    }
+
    var isFunction = (funcOrSkin instanceof Function) ? true : false;
    res.push();
    while (currIdx < stop) {
-      var item = isArray ? collection[currIdx] : collection.get(currIdx);
+      item = isArray ? collection[currIdx] : collection.get(currIdx);
       isFunction ? funcOrSkin(item) : item.renderSkin(funcOrSkin);
-      currIdx++;
+      currIdx += 1;
    }
    return res.pop();
 }
 
-// FIXME: -> jala.ListRenderer?
-function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
-   /**
-    * render a single item for page-navigation bar
-    */
+// FIXME: Rewrite using jala.ListRenderer?
+function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
+   // Render a single item for the navigation bar
    var renderItem = function(text, cssClass, url, page) {
       var param = {"class": cssClass};
-      if (!url)
+      if (!url) {
          param.text = text;
-      else {
+      } else {
          if (url.contains("?"))
             param.text = html.linkAsString({href: url + "&page=" + page}, text);
          else
@@ -863,46 +873,51 @@ function renderPageNavigation(collectionOrSize, url, itemsPerPage, pageIdx) {
 
    var maxItems = 10;
    var size = 0;
-   if (collectionOrSize instanceof Array)
+   if (collectionOrSize instanceof Array) {
       size = collectionOrSize.length;
-   else if (collectionOrSize instanceof HopObject)
+   } else if (collectionOrSize instanceof HopObject) {
       size = collectionOrSize.size();
-   else if (!isNaN(collectionOrSize))
+   } else if (!isNaN(collectionOrSize)) {
       size = parseInt(collectionOrSize, 10);
+   }
    var lastPageIdx = Math.ceil(size/itemsPerPage)-1;
-   // if we have just one page, there's no need for navigation
-   if (lastPageIdx <= 0)
+   // If there's just one page no navigation will be rendered
+   if (lastPageIdx <= 0) {
       return null;
+   }
 
-   // init parameter object
+   // Initialize the parameter object
    var param = {};
    var pageIdx = parseInt(pageIdx, 10);
-   // check if the passed page-index is correct
-   if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0)
+   // Check if the passed index is correct
+   if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0) {
       pageIdx = 0;
-   param.display = ((pageIdx*itemsPerPage) +1) + "-" + (Math.min((pageIdx*itemsPerPage)+itemsPerPage, size));
+   }
+   param.display = ((pageIdx * itemsPerPage) + 1) + "-" + 
+         (Math.min((pageIdx * itemsPerPage) + itemsPerPage, size));
    param.total = size;
 
-   // render the navigation-bar
+   // Render the navigation-bar
    res.push();
-   if (pageIdx > 0)
-      renderItem("prev", "pageNavItem", url, pageIdx-1);
-   var offset = Math.floor(pageIdx/maxItems)*maxItems;
-   if (offset > 0)
-      renderItem("[..]", "pageNavItem", url, offset-1);
+   (pageIdx > 0) && renderItem("prev", "pageNavItem", url, pageIdx-1);
+   var offset = Math.floor(pageIdx / maxItems) * maxItems;
+   (offset > 0) && renderItem("[..]", "pageNavItem", url, offset-1);
    var currPage = offset;
    var stop = Math.min(currPage + maxItems, lastPageIdx+1);
    while (currPage < stop) {
-      if (currPage == pageIdx)
+      if (currPage === pageIdx) {
          renderItem("[" + (currPage +1) + "]", "pageNavSelItem");
-      else
+      } else {
          renderItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
-      currPage++;
+      }
+      currPage += 1;
    }
-   if (currPage < lastPageIdx)
+   if (currPage < lastPageIdx) {
       renderItem("[..]", "pageNavItem", url, offset + maxItems);
-   if (pageIdx < lastPageIdx)
+   }
+   if (pageIdx < lastPageIdx) {
       renderItem("next", "pageNavItem", url, pageIdx +1);
+   }
    param.pagenavigation = res.pop();
    return renderSkinAsString("Global#pager", param);
 }

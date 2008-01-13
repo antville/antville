@@ -1,6 +1,5 @@
 <% #main %>
 <% breadcrumbs %>
-
 <div class="ample"></div>
 
 <p class="storyTitle"><br />
@@ -15,7 +14,7 @@
 
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
-<tr>
+<!-- tr>
 <td class="small">Title:</td>
 <td><% layout.input title %></td>
 </tr>
@@ -34,7 +33,7 @@
    <span class="small">If this option is enabled other users can download 
    the layout.</span><br /><br />
 </td>
-</tr>
+</tr -->
 <% layout.values %>
 <tr>
 <td class="small"> </td>

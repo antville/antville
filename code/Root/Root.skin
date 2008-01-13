@@ -6,10 +6,33 @@ one site, it can easily host up to several hundred or thousand sites.</p>
 owner's choice than by the software.)</p>
 Number of sites hosted here: <% root.size %><br />
 Publicly accessible sites: <% root.sites.size %>
-<br /><br />
-<% root.loop sites skin="preview" limit="25" 
-prefix="Recently updated sites:<ul>" suffix="</ul>" %>
+<br />
+<% list updates prefix=<ul> suffix=</ul> %>
 
-<% #code %>
-<h1><% param.name %></h1>
-<pre><code><% param.code %></code></pre>
+<% #sites %>
+<p>This is the complete list of public sites hosted here, in alphabetical 
+order.</p>
+<% response.pager %>
+<% response.list prefix="<ul>" suffix="</ul>" %>
+<% response.pager %>
+
+<div style="margin: 200px 0 20px 0;">FIXME:</div>
+
+<div class="boxheader">menu</div>
+<div class="box">
+... <a href="<% root.href %>"><% root.title suffix=" " %>home</a><br />
+<% root.link create "create a new site" prefix="...&nbsp;" %>
+</div>
+
+<div class="boxheader">resources</div>
+<div class="box">
+... <a href="http://project.antville.org/">project site</a><br />
+... <a href="http://macros.antville.org/">macro docs</a><br />
+... <a href="http://help.antville.org/">help</a>
+</div>
+
+<div class="boxline"> </div>
+<div class="box">
+<% root.sitecounter no="no public sites" one="one public site" more=" public sites"%>... 
+<% root.link sites list %>
+</div>

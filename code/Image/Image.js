@@ -86,7 +86,7 @@ Image.prototype.href = function(action) {
 Image.prototype.main_action = function() {
    res.data.title = gettext("Image {0}", this.name);
    res.data.body = this.renderSkinAsString("Image#main");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -99,7 +99,7 @@ Image.prototype.edit_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit image {0}", this.name);
    res.data.body = this.renderSkinAsString("Image#edit");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 

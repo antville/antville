@@ -75,7 +75,7 @@ Comment.prototype.edit_action = function() {
    res.data.title = gettext("Edit comment to story {0}", 
          res.handlers.story.getTitle());
    res.data.body = this.renderSkinAsString("Comment#edit");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    return;
 };
 

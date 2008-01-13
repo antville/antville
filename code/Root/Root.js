@@ -49,7 +49,7 @@ Root.prototype.getPermission = function(action) {
       case "create":
       return this.getCreationPermission();
       case "default.hook":
-      case "list":
+      case "sites":
       case "updates.xml":
       return this.mode !== Site.CLOSED;
    }
@@ -78,7 +78,7 @@ Root.prototype.main_action = function() {
    if (!root.sys_issetup) {
       if (!root.users.size()) {
          res.data.body = this.renderSkinAsString("welcome");
-         root.renderSkin("page");
+         root.renderSkin("Site#page");
          return;
       } else
          res.redirect(this.manage.href("setup"));
@@ -87,7 +87,7 @@ Root.prototype.main_action = function() {
 */
 
    res.data.body = root.renderSkinAsString("main");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 
@@ -108,7 +108,7 @@ Root.prototype.error_action = function() {
    res.data.title = root.getTitle() + " - Error";
    res.data.body = root.renderSkinAsString("sysError");
    res.data.body += "<p>"+res.error+"</p>";
-   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
+   (path.Site && path.Site.online ? path.Site : root).renderSkin("Site#page");
    return;
 };
 
@@ -116,7 +116,7 @@ Root.prototype.notfound_action = function() {
    res.data.title = root.title + " - 404 - not found";
    req.data.path = req.path;
    res.data.body = root.renderSkinAsString("notfound");
-   (path.Site && path.Site.online ? path.Site : root).renderSkin("page");
+   (path.Site && path.Site.online ? path.Site : root).renderSkin("Site#page");
    return;
 };
 
@@ -140,18 +140,18 @@ Root.prototype.create_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Create a new site");
    res.data.body = site.renderSkinAsString("Site#create");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 
-Root.prototype.list_action = function() {
-   // FIXME:
-   // preparing res.data.sitelist and prev/next links
-   // ("all" shows all sites, "yes" is for scrolling)
-   this.renderSitelist(25, "all", "yes");
-   res.data.title = getMessage("SysMgr.listTitle", {serverTitle: root.getTitle()});
-   res.data.body = this.renderSkinAsString("list");
-   root.renderSkin("page");
+Root.prototype.sites_action = function() {
+   res.data.list = renderList(root.sites, 
+         "Site#list", 10, req.queryParams.page);
+   res.data.pager = renderPager(root.sites, 
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("Sites of {0}", root.title);
+   res.data.body = this.renderSkinAsString("Root#sites");
+   root.renderSkin("Site#page");
    return;
 };
 
@@ -277,7 +277,9 @@ Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 };
 
-Root.prototype.renderSitelist = function(limit, show, scroll) {
+// FIXME!
+Root.prototype.getSiteList = function(limit, show, scroll) {
+   return;
    if (show && show == "all")
       var collection = root.publicSites;
    else

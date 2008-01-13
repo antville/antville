@@ -32,7 +32,7 @@ Tag.prototype.constructor = function(name, site, type) {
 Tag.prototype.main_action = function() {
    res.handlers.list = new jala.ListRenderer(this.getTagged());
    res.data.body = this.renderSkinAsString("Tag");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 

@@ -38,7 +38,7 @@ Tags.prototype.main_action = function() {
    }
    var skin = (action ? "Tags#" + action : "Tags"); 
    res.data.body = this.renderSkinAsString(skin);
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -55,7 +55,7 @@ Tags.prototype.getChildElement = function(id) {
       
       renderList(child, "mgrlistitem", 10, req.data.page);
       res.data.body = this._parent.renderSkinAsString("main");
-      path.site.renderSkin("page");
+      path.site.renderSkin("Site#page");
       return {main_action: new Function};
       
       var self = this;
@@ -64,10 +64,10 @@ Tags.prototype.getChildElement = function(id) {
       res.data.list = renderList(child, function(item) {
          item.parent.renderSkin("preview");
       }, 10, req.data.page);
-      res.data.pagenavigation = renderPageNavigation(child, 
+      res.data.pagenavigation = renderPager(child, 
             child.href(req.action), 20, req.data.page);
       res.data.body = self.renderSkinAsString("main");
-      path.site.renderSkin("page");
+      path.site.renderSkin("Site#page");
       return {main_action: new Function};
 
       var manager = new Manager(this, child);

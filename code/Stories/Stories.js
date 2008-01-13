@@ -46,11 +46,11 @@ Stories.prototype.main_action = function() {
    var stories = User.getMembership().stories;
    res.data.list = renderList(stories, "Story#stories", 
          10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(stories, 
+   res.data.pager = renderPager(stories, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Member stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Stories#main");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
@@ -73,28 +73,28 @@ Stories.prototype.create_action = function() {
    res.data.title = gettext("Add story to {0}", this._parent.title);
    res.data.action = this.href(req.action);
    res.data.body = story.renderSkinAsString("Story#edit");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
 Stories.prototype.closed_action = function() {
    res.data.list = renderList(this.closed, 
          "Story#stories", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this.offline, 
+   res.data.pager = renderPager(this.offline, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Private stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Stories#main");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
 Stories.prototype.all_action = function() {
    res.data.list = renderList(this, "Story#stories", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this, 
+   res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Stories#main");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
@@ -102,7 +102,7 @@ Stories.prototype.top_action = function() {
    res.data.title = gettext("Top 25 most read stories of {0}", 
          this._parent.title);
    res.data.body = this.renderSkinAsString("Stories#top");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 

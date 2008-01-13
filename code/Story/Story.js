@@ -78,7 +78,7 @@ Story.prototype.link_macro = function(param, action, text) {
       } else if (this.mode === Story.FEATURED) {
          text = gettext("hide");
       } else {
-         text = gettext("unpublish");
+         text = gettext("close");
       }
    }
    return HopObject.prototype.link_macro.call(this, param, action, text);
@@ -87,7 +87,7 @@ Story.prototype.link_macro = function(param, action, text) {
 Story.prototype.main_action = function() {
    res.data.title = this.getTitle();
    res.data.body = this.renderSkinAsString("Story#main");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    this.logRequest();
    logAction();
    return;
@@ -124,7 +124,7 @@ Story.prototype.edit_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext('Edit story "{0}"', this.getTitle());
    res.data.body = this.renderSkinAsString("Story#edit");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    return;
 };
 
@@ -250,7 +250,7 @@ Story.prototype.comment_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add comment to {0}", this.getTitle());
    res.data.body = comment.renderSkinAsString("Comment#edit");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    this.logRequest();
    return;
 };
@@ -319,10 +319,13 @@ Story.prototype.tags_macro = function() {
 
 Story.prototype.backlinks_macro = function(param, limit) {
    limit || (limit = param.limit);
+   var date = new Date;
+   date.setDate(date.getDate() - 1);
    var db = getDBConnection("antville");
    var query = "select referrer, count(*) as count from log where " +
-         "context_type = 'Story' and context_id = " + this._id + " group by " +
-         "referrer order by count desc, referrer asc;";
+         "context_type = 'Story' and context_id = " + this._id + 
+         " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
+         "'} group by referrer order by count desc, referrer asc;";
    var rows = db.executeRetrieval(query);
    var limit = Math.min(parseInt(limit, 10) || 100, 100);
    var counter = 0;

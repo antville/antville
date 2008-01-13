@@ -57,7 +57,7 @@ Skins.prototype.main_action = function() {
       res.data.list = this.getOutline();
       res.data.title = gettext("Skins of {0}", res.handlers.layout.title);
       res.data.body = this.renderSkinAsString("main");
-      res.handlers.site.renderSkin("page");
+      res.handlers.site.renderSkin("Site#page");
       return;
    }
    var skin = path[offset + 4] || res.redirect(res.handlers.layout.skins.href());
@@ -167,7 +167,7 @@ Skins.prototype.create_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.body = skin.renderSkinAsString("Skin#edit");
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    return;
 };
 
@@ -179,7 +179,7 @@ Skins.prototype.modified_action = function() {
    });
    res.data.list = res.pop();
    res.data.body = this.renderSkinAsString("main");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -187,7 +187,7 @@ Skins.prototype.custom_action = function() {
    res.data.title = gettext("Custom skins of {0}", this._parent.title);
    res.data.list = this.getOutline("custom");
    res.data.body = this.renderSkinAsString("main");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -196,7 +196,7 @@ Skins.prototype.safe_action = function() {
    res.data.title = this._parent.title;
    res.data.list = this.renderList(this.modified);
    res.data.body = this.renderSkinAsString("main");
-   this.renderSkin("page");
+   this.renderSkin("Site#page");
    return;
 };
 

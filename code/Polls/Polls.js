@@ -44,11 +44,11 @@ Polls.prototype.getPermission = function(action) {
 Polls.prototype.main_action = function() {
    var polls = User.getMembership().polls;
    res.data.list = renderList(polls, "Poll#polls", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(polls, this.href(req.action), 
+   res.data.pager = renderPager(polls, this.href(req.action), 
          10, req.queryParams.page);
    res.data.title = gettext("Member polls of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Polls#main");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
@@ -70,27 +70,27 @@ Polls.prototype.create_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add poll to {0}", this._parent.title);
    res.data.body = poll.renderSkinAsString("Poll#edit");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
 Polls.prototype.open_action = function() {
    res.data.list = renderList(this.open, 
          "Poll#polls", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this.open, 
+   res.data.pager = renderPager(this.open, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Open polls of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Polls#main");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };
 
 Polls.prototype.all_action = function() {
    res.data.list = renderList(this, "Poll#polls", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this, 
+   res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Polls of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Polls#main");
-   this._parent.renderSkin("page");
+   this._parent.renderSkin("Site#page");
    return;
 };

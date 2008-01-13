@@ -41,10 +41,10 @@ Layouts.prototype.main_action = function() {
    res.data.title = gettext("Layouts of {0}", res.handlers.site.title);
    res.data.action = this.href();
    res.data.list = renderList(this, "mgrlistitem", 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(this, 
+   res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("main");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -64,13 +64,13 @@ Layouts.prototype.create_action = function() {
 
    res.data.list = renderList(root.layouts.commons, 
          "chooserlistitem", 5, req.queryParams.page);
-   res.data.pager = renderPageNavigation(root.layouts.commons, 
+   res.data.pager = renderPager(root.layouts.commons, 
          this.href(req.action), 5, req.queryParams.page);
 
    res.data.title = gettext("Create layout for {0}", res.handlers.site.title);
    res.data.action = this.href(req.action);
    res.data.body = layout.renderSkinAsString("Layout#create");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -88,12 +88,12 @@ Layouts.prototype.import_action = function() {
    }
    res.data.list = renderList(root.layouts.commons, 
          "chooserlistitem", 5, req.postParams.page);
-   res.data.pager = renderPageNavigation(root.layouts.commons, 
+   res.data.pager = renderPager(root.layouts.commons, 
          this.href(req.action), 5, req.postParams.page);
    res.data.title = gettext("Import layout for {0}", res.handlers.site.title);
    res.data.action = this.href(req.action);
    res.data.body = layout.renderSkinAsString("import");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 

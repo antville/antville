@@ -72,7 +72,7 @@ Admin.prototype.setup_action = function() {
    res.data.title = gettext("Setup of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#setup");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 
@@ -119,7 +119,7 @@ Admin.prototype.status_action = function() {
    res.handlers.system = system;
    res.data.title = gettext("{0} System Status", root.title);
    res.data.body = this.renderSkinAsString("Admin#status");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 
@@ -129,14 +129,14 @@ Admin.prototype.log_action = function() {
    }
    res.data.list = renderList(session.data.admin.log, 
          this.renderItem, 10, req.queryParams.page);
-   res.data.pagenavigation = renderPageNavigation(session.data.admin.log, 
+   res.data.pagenavigation = renderPager(session.data.admin.log, 
          this.href(req.action), 10, req.queryParams.page);
 
    res.data.title = gettext("Log data of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#log");
    res.data.body += this.renderSkinAsString("Admin#main");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 
@@ -164,14 +164,14 @@ Admin.prototype.sites_action = function() {
 
    res.data.list = renderList(session.data.admin.sites, 
          this.renderItem, 10, req.queryParams.page);
-   res.data.pager = renderPageNavigation(session.data.admin.sites, 
+   res.data.pager = renderPager(session.data.admin.sites, 
          this.href(req.action), 10, req.data.page);
 
    res.data.title = gettext("Site administration of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#sites");
    res.data.body += this.renderSkinAsString("Admin#main");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 
@@ -189,14 +189,14 @@ Admin.prototype.users_action = function() {
 
    res.data.list = renderList(session.data.admin.users, 
          this.renderItem, 10, req.data.page);
-   res.data.pager = renderPageNavigation(session.data.admin.users, 
+   res.data.pager = renderPager(session.data.admin.users, 
          this.href(req.action), 10, req.data.page);
 
    res.data.title = gettext("User manager of {0}", root.title);
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("Admin#users");
    res.data.body += this.renderSkinAsString("Admin#main");
-   root.renderSkin("page");
+   root.renderSkin("Site#page");
    return;
 };
 

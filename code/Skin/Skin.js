@@ -80,7 +80,7 @@ Skin.prototype.edit_action = function() {
    res.data.title = gettext('Edit {0}.{1} skin of Layout "{2}"', this.prototype, 
          this.name, res.handlers.layout.title);
    res.data.body = this.renderSkinAsString("Skin#edit");
-   res.handlers.skins.renderSkin("page");
+   res.handlers.skins.renderSkin("Site#page");
    return;
 };
 
@@ -191,7 +191,7 @@ Skin.prototype.diff_action = function() {
       skinName: this.name, 
       layoutTitle: this.layout.title
    });
-   this.layout.skins.renderSkin("page");
+   this.layout.skins.renderSkin("Site#page");
    return;
 };
 

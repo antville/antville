@@ -92,7 +92,7 @@ Poll.prototype.main_action = function() {
    res.data.action = this.href();
    res.data.title = gettext("Poll {0}", this.question);
    res.data.body = this.renderSkinAsString("Poll#main");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    return;
 };
 
@@ -125,7 +125,7 @@ Poll.prototype.edit_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit poll {0}", this.question);
    res.data.body = this.renderSkinAsString("Poll#edit");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    return;
 };
 
@@ -191,7 +191,7 @@ Poll.remove = function() {
 Poll.prototype.result_action = function() {
    res.data.title = gettext('Results of poll "{0}"', this.question);
    res.data.body = this.renderSkinAsString("Poll#result");
-   this.site.renderSkin("page");
+   this.site.renderSkin("Site#page");
    return;
 };
 

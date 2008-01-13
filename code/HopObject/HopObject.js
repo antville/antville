@@ -35,6 +35,8 @@ HopObject.prototype.onRequest = function() {
          case Admin:
          res.redirect(req.action + "?page=" + req.queryParams.page + 
                "#" + req.queryParams.id);
+         case File:
+         res.redirect(res.handlers.files.href());
          case Members:
          case Membership:
          res.redirect(this._parent.href());
@@ -88,8 +90,8 @@ HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       //try {
          var str = this.toString();
-         var url = this.constructor.remove.call(this, this) ||
-               this._parent.href();
+         var parent = this._parent;
+         var url = this.constructor.remove.call(this, this) || parent.href();
          res.message = gettext("{0} was successfully deleted.", str);
          res.redirect(User.popLocation() || url);
       /*} catch(ex) {
@@ -103,7 +105,7 @@ HopObject.prototype.delete_action = function() {
    res.data.body = this.renderSkinAsString("HopObject#delete", {
       text: gettext('You are about to delete {0}.', this)
    });
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 

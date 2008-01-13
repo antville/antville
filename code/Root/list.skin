@@ -1,5 +1,0 @@
-<p>This is the complete list of public sites hosted here, in alphabetical order.</p>
-
-<% response.prevpage %>
-<% response.sitelist prefix="<ul>" suffix="</ul>" %>
-<% response.nextpage %>

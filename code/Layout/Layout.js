@@ -79,7 +79,7 @@ Layout.prototype.main_action = function() {
    }
    res.data.title = gettext("Layout of site {0}", res.handlers.site.title);
    res.data.body = this.renderSkinAsString("Layout#main");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -215,7 +215,7 @@ Layout.prototype.import_action = function() {
    }
    res.data.title = gettext("Import layout");
    res.data.body = this.renderSkinAsString("Layout#import");
-   res.handlers.site.renderSkin("page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 };
 
@@ -280,7 +280,7 @@ Layout.prototype.getSkinPath = function() {
       return null;
    }
    var skinPath = [this.getFile().toString()];
-   this.parent && (skinPath.push(this.parent.getFile().toString()));
+   //this.parent && (skinPath.push(this.parent.getFile().toString()));
    return skinPath;
 };
 
@@ -293,10 +293,15 @@ Layout.prototype.values_macro = function() {
    var skin = new Skin("Site", "values");
    skin.render();
    res.pop();
+   var values = [];
    for (var key in res.meta.values) {
+      values.push({key: key, value: res.meta.values[key]});
+   }
+   values.sort(new String.Sorter("key"));
+   for each (var pair in values) {
       this.renderSkin("Layout#value", {
-         key: key.capitalize(), 
-         value: res.meta.values[key]
+         key: pair.key.capitalize(), 
+         value: pair.value
       });
    }
    return;
