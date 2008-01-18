@@ -1,2 +1,0 @@
-<% // At this point we "peel" off this old skin again and render the new one instead %>
-<% site.peel Site#javascript %>

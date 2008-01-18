@@ -224,72 +224,29 @@ convert.skins = function() {
          return prototype;
       }
    }
-   
-   var dump = function(sql) {
-      retrieve(sql);
-      traverse(function() {
-         var sitePath = app.dir + "/../static/" + this.site_name;
-         var layoutPath = sitePath + "/layouts/" + this.name;
-         var fpath = layoutPath + "/" + rename(this["prototype"]);
-         save(fpath, this.skin_name, this.SKIN_SOURCE);
-         if (this.current_layout === this.layout_id && !layouts[sitePath]) {
-            layouts[sitePath] = layoutPath;
-            metadata[sitePath] = this.metadata; 
-         }
-      });
-   }
-   
-   var save = function(fpath, fname, data) {
-      var file = new java.io.File(fpath);
-      file.mkdirs();
-      file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
-      debug(file.getCanonicalPath());
-      file["delete"]();
-      var fos = new java.io.FileOutputStream(file);
-      var bos = new java.io.BufferedOutputStream(fos);
-      var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
-      writer.write(data || "");
-      writer.close();
-      bos.close();
-      fos.close();
-      return
-   } 
 
-   var layouts = {};
-   var metadata = {};
-   dump(sql("skins"));
-   dump("select skin.id, 'www' as site_name, layout.name, " +
-         "skin.name as skin_name, prototype, SKIN_SOURCE from " +
-         "skin, layout where skin.layout_id = layout.id and " +
-         "layout.site_id is null");
-   
-   for (var sitePath in layouts) {
-      var source = new helma.File(layouts[sitePath]);
-      var target = new helma.File(sitePath + "/layout");
-      target.removeDirectory();
-      source.renameTo(target);
-   }
-   
-   var keys = {
-      "bgcolor": "background color",
-      "linkcolor": "link color",
-      "alinkcolor": "active link color",
-      "vlinkcolor": "visited link color",
-      "titlefont": "big font",
-      "titlesize": "big font size",
-      "titlecolor": "big font color",
-      "textfont": "base font",
-      "textsize": "base font size",
-      "textcolor": "base font color",
-      "smallfont": "small font",
-      "smallsize": "small font size",
-      "smallcolor": "small font color"
-   }
-   for (var sitePath in metadata) {
-      var data = eval(metadata[sitePath]);
-      if (!data) {
-         continue;
+   var values = function(metadata) {
+      if (!metadata) {
+         return;
       }
+
+      var keys = {
+         "bgcolor": "background color",
+         "linkcolor": "link color",
+         "alinkcolor": "active link color",
+         "vlinkcolor": "visited link color",
+         "titlefont": "big font",
+         "titlesize": "big font size",
+         "titlecolor": "big font color",
+         "textfont": "base font",
+         "textsize": "base font size",
+         "textcolor": "base font color",
+         "smallfont": "small font",
+         "smallsize": "small font size",
+         "smallcolor": "small font color"
+      }
+
+      var data = eval(metadata);
       res.push();
       res.writeln("<% #values %>");
       for (var key in keys) {
@@ -302,6 +259,72 @@ convert.skins = function() {
          value = value.replace(/([0-9]+) +px/, "$1px");
          res.writeln('<% value "' + name + '" "' + value + '" %>');
       }
-      save(sitePath + "/layout/Site", "Site", res.pop());
+      return res.pop();
    }
+
+   var save = function(fpath, data) {
+      var file = new java.io.File(fpath);
+      file.mkdirs();
+      //file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
+      debug(file.getCanonicalPath());
+      file["delete"]();
+      if (data) {
+         var fos = new java.io.FileOutputStream(file);
+         var bos = new java.io.BufferedOutputStream(fos);
+         var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
+         writer.write(data);
+         writer.close();
+         bos.close();
+         fos.close();
+      }
+      return
+   } 
+
+   var skinNames = {
+      style: "stylesheet"
+   }
+
+   var dump = function(sql) {
+      var buffer = {};
+      retrieve(sql);
+      traverse(function() {
+         var fpath = app.dir + "/../static/" + this.site_name;
+         var prototype = rename(this.prototype);
+         var skinPath = prototype + "/" + prototype + ".skin";
+         if (this.current_layout === this.layout_id) {
+            fpath += "/layout/" + skinPath;
+         } else {
+            fpath += "/layouts/" + this.name + "/" + skinPath;
+         }
+         if (!buffer[fpath]) {
+            buffer[fpath] = [];
+            if (prototype === "Site") {
+               buffer[fpath].push(values(this.metadata));
+            }
+         }
+         var name = skinNames[this.skin_name] || this.skin_name;
+         res.push();
+         res.writeln("<% #" + name + " %>");
+         res.writeln(this.SKIN_SOURCE);
+         buffer[fpath].push(res.pop());
+         return;
+      });
+      
+      for (var fpath in buffer) {
+         var skin = buffer[fpath].join("\n");
+         save(fpath, skin);
+      }
+      
+      return;
+   }
+   
+   dump(sql("skins"));
+
+   // Exporting the skins of the former root layouts
+   var server = Packages.helma.main.Server.getServer();
+   var antville = server.getApplication("antville");
+   var rootLayout = antville.dataRoot.sys_layout;
+   var rootLayoutId = rootLayout ? rootLayout._id : app.properties.rootLayoutId;
+   rootLayoutId && dump(sql("skins2", rootLayoutId));
+   return;
 }

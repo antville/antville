@@ -230,7 +230,14 @@ alter table skin change column SKIN_MODIFYTIME modified datetime;
 select skin.id, site.name as site_name, site.layout_id as current_layout, 
 layout.id as layout_id, layout.name, layout.metadata, skin.name as skin_name, 
 prototype, SKIN_SOURCE from site, layout, skin where skin.layout_id = layout.id 
-and layout.site_id = site.id order by skin.id
+and layout.site_id = site.id order by layout_id, site_name, prototype, skin.name
+
+<% #skins2 %>
+select 'www' as site_name, <% param.value1 %> as current_layout, layout.id as layout_id, 
+layout.name, layout.metadata, skin.id, skin.name as skin_name, prototype, 
+SKIN_SOURCE from layout, skin where site_id is null and skin.layout_id = 
+layout.id and layout.site_id is null order by layout_id, site_name, prototype, 
+skin_name
 
 <% #AV_SYSLOG %>
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from user, AV_SYSLOG where SYSLOG_OBJECT = user.name and SYSLOG_TYPE = 'user';
