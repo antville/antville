@@ -69,7 +69,7 @@ Members.prototype.link_macro = function(param, action, text) {
 
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
-   res.data.list = renderList(this, "Membership#members", 
+   res.data.list = renderList(this, "Membership#listItem", 
          10, req.queryParams.page);
    res.data.pager = renderPager(this, this.href(req.action), 
          10, req.queryParams.page);

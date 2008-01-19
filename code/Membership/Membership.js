@@ -47,7 +47,7 @@ Membership.prototype.getPermission = function(action) {
       case "delete":
       return this.role !== Membership.OWNER;
    }
-   return true;
+   return false;
 };
 
 Membership.prototype.edit_action = function() {
