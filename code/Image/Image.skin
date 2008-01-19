@@ -26,38 +26,6 @@ code: <pre><% image.macro %></pre></p>
 <p><% image.render | link <% image.url %> %></p>
 <p><% image.description %></p>
 
-<% #preview %>
-<p><% image.render %></p>
-
-<% #images %>
-<div class="listSeparator"> </div>
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td colspan="2" class="small">
-   <strong>Macro:</strong> <% image.macro %>
-   <div class="ample"><strong>Format: </strong><% image.contentType %>, 
-   <% image.width %>&times;<% image.height %> pixels</div>
-</td>
-</tr>
-<tr>
-<td>
-   <div class="storyTitle"><% image.name %></div>
-   <div class="storyDate"><% image.creator as="link" %>
-   <% image.created short prefix=" on " %></div>
-</td>
-<td align="right" class="small" valign="top">
-   <% image.link edit prefix="... " suffix="<br />" %>
-   <% image.link delete prefix="... " suffix="<br />" %>
-   <% image.link replace prefix="..." suffix="<br />" %> 
-</td>
-</tr>
-<tr>
-<td colspan="2">
-   <% image.thumbnail vspace="5" | image.link %>
-</td>
-</tr>
-</table>
-
 <% #edit %>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
@@ -121,3 +89,35 @@ code: <pre><% image.macro %></pre></p>
 </tr>
 </table>
 </form>
+
+<% #preview %>
+<p><% image.render %></p>
+
+<% #listItem %>
+<div class="listSeparator"> </div>
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="2" class="small">
+   <strong>Macro:</strong> <% image.macro %>
+   <div class="ample"><strong>Format: </strong><% image.contentType %>, 
+   <% image.width %>&times;<% image.height %> pixels</div>
+</td>
+</tr>
+<tr>
+<td>
+   <div class="storyTitle"><% image.name %></div>
+   <div class="storyDate"><% image.creator as="link" %>
+   <% image.created short prefix=" on " %></div>
+</td>
+<td align="right" class="small" valign="top">
+   <% image.link edit prefix="... " suffix="<br />" %>
+   <% image.link delete prefix="... " suffix="<br />" %>
+   <% image.link replace prefix="..." suffix="<br />" %> 
+</td>
+</tr>
+<tr>
+<td colspan="2">
+   <% image.thumbnail vspace="5" | image.link %>
+</td>
+</tr>
+</table>

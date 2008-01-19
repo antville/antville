@@ -401,7 +401,7 @@ function list_macro(param /*, limit, id */) {
    var collection, skin;
    if (id === "sites") {
       collection = root.sites.list(0, max);
-      skin = "Site#list"; // FIXME: #preview or #list?
+      skin = "Site#preview";
    } else if (id === "updates") {
       var counter = 0;
       collection = [];
@@ -411,7 +411,7 @@ function list_macro(param /*, limit, id */) {
             collection.push(this);
          }
       });
-      skin = "Site#list";
+      skin = "Site#preview";
    } else {
       var site;
       var parts = id.split("/");
@@ -480,8 +480,9 @@ function value_macro(param, name, value) {
    }
    name = name.toLowerCase();
    if (!value) {
-      return res.meta.values[name];
+      res.write(res.meta.values[name]);
    } else {
+      res.write("/* set " + name + " to " + value + " */");
       res.meta.values[name] = value;
    }
    return;

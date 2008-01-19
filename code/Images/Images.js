@@ -58,7 +58,7 @@ Images.prototype.main_action = function() {
       res.data.title = gettext("Layout images of {0}", res.handlers.site.title);
       break;
    }
-   res.data.list = renderList(images, "Image#images", 
+   res.data.list = renderList(images, "Image#listItem", 
          10, req.queryParams.page);
    res.data.pager = renderPager(images, 
          this.href(req.action), 10, req.queryParams.page);
@@ -95,7 +95,7 @@ Images.prototype.create_action = function() {
 Images.prototype.all_action = function() {
    res.data.pager = renderPager(this, this.href(), 
          10, req.queryParams.page);
-   res.data.list = renderList(this, "Image#images", 
+   res.data.list = renderList(this, "Image#listItem", 
          10, req.queryParams.page);
    res.data.title = gettext("Images of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("Images#main");

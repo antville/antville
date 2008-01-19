@@ -76,7 +76,7 @@ Poll.prototype.link_macro = function(param, action, text) {
 Poll.prototype.main_action = function() {
    if (this.status === "closed") {
       res.message = gettext("Sorry, this poll is closed. Voting is not possible.");
-      res.redirect(this.href("results"));
+      res.redirect(this.href("result"));
       return;
    }
    if (req.postParams.vote) {
@@ -190,7 +190,7 @@ Poll.remove = function() {
 
 Poll.prototype.result_action = function() {
    res.data.title = gettext('Results of poll "{0}"', this.question);
-   res.data.body = this.renderSkinAsString("Poll#result");
+   res.data.body = this.renderSkinAsString("Poll#results");
    this.site.renderSkin("Site#page");
    return;
 };

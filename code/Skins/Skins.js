@@ -55,7 +55,7 @@ Skins.prototype.main_action = function() {
    var group = path[offset + 3];
    if (!group) {
       res.data.list = this.getOutline();
-      res.data.title = gettext("Skins of {0}", res.handlers.layout.title);
+      res.data.title = gettext("Skins of {0}", res.handlers.site.title);
       res.data.body = this.renderSkinAsString("main");
       res.handlers.site.renderSkin("Site#page");
       return;
@@ -63,19 +63,6 @@ Skins.prototype.main_action = function() {
    var skin = path[offset + 4] || res.redirect(res.handlers.layout.skins.href());
    skin = new Skin(group.name, skin.name); 
    skin.edit_action();
-   return;
-   
-   res.debug("skins: " + skins);
-   res.debug("group: " + group.name);
-   res.debug("skin: " + skin.name);
-
-   var skinFiles = app.getSkinfilesInPath(res.skinpath)[group.name];
-   var source = skinFiles[skin.name];
-   if (!source) {
-      skin = createSkin(skinFiles[group.name]).getSubskin(skin.name);
-      source = skin && skin.getSource();
-   }
-   res.encode(source);
    return;
 };
 
@@ -129,13 +116,6 @@ Skins.prototype.getOutline = function(type) {
    }
    html.closeTag("ul");
    return this.cache[key] = res.pop();
-
-   var outline = this.cache.outline || []
-   if (outline.length > 0) {
-      return outline;
-   }
-   this.cache.outline = outline;
-   return outline;
  };
 
 Skins.prototype.create_action = function() {

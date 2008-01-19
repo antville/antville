@@ -237,7 +237,6 @@ Site.prototype.main_css_action = function() {
    res.dependsOn(Skin("Site", "stylesheet").getSource());
    res.digest();
    res.contentType = "text/css";
-   this.renderSkin("Site#values");
    this.renderSkin("Site#stylesheet");
    return;
 };

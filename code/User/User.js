@@ -112,7 +112,7 @@ User.prototype.list_macro = function(param, type) {
       memberships.forEach(function(membership) {
          var site;
          if (site = membership.get("site")) {
-            site.renderSkin("Site#list");
+            site.renderSkin("Site#preview");
          }
          return;
       });
@@ -135,7 +135,7 @@ User.register = function(data) {
    // check if username is existing and is clean
    // can't use isClean() here because we accept
    // special characters like umlauts and spaces
-   var invalidChar = new RegExp("[^a-zA-Z0-9äöüß\\.\\-_ ]");
+   var invalidChar = new RegExp("[^a-zA-Z0-9ï¿½ï¿½ï¿½ï¿½\\.\\-_ ]");
    if (!data.name) {
       throw Error(gettext("Please enter a username."));
    } else if (data.name.length > 30) {

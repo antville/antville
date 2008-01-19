@@ -44,7 +44,7 @@ Stories.prototype.getPermission = function(action) {
 
 Stories.prototype.main_action = function() {
    var stories = User.getMembership().stories;
-   res.data.list = renderList(stories, "Story#stories", 
+   res.data.list = renderList(stories, "Story#listItem", 
          10, req.queryParams.page);
    res.data.pager = renderPager(stories, 
          this.href(req.action), 10, req.queryParams.page);
@@ -79,7 +79,7 @@ Stories.prototype.create_action = function() {
 
 Stories.prototype.closed_action = function() {
    res.data.list = renderList(this.closed, 
-         "Story#stories", 10, req.queryParams.page);
+         "Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this.offline, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Private stories of {0}", this._parent.title);
@@ -89,7 +89,7 @@ Stories.prototype.closed_action = function() {
 };
 
 Stories.prototype.all_action = function() {
-   res.data.list = renderList(this, "Story#stories", 10, req.queryParams.page);
+   res.data.list = renderList(this, "Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Stories of {0}", this._parent.title);

@@ -10,7 +10,38 @@
 <p><% story.comments %></p>
 <p><% story.backlinks %></p>
 
-<% #day %>
+<% #edit %>
+<% story.skin Story#restore %>
+<form method="post" action="<% response.action %>">
+<p>
+   <div class="small">Title:</div>
+   <div class="backup"><% story.input title class="formTitle" %></div>
+</p>
+<p>
+   <div class="small">Text:</div>
+   <div class="backup"><% story.textarea text cols="30" rows="15" 
+   class="formText" %></div>
+</p>
+<p><fieldset>
+   <legend class="small">Options</legend>
+   <p>Tags: <% story.input tags %></p> 
+   <p>The story is <% story.select status %> and <% story.select mode %></p>
+   <p>Comments of the story are <% story.select commentMode %></p>
+</fieldset></p>
+<p class="small">
+   <% story.creator prefix="Created by " %>
+   <% story.created short prefix=" on " suffix="<br />" %>
+   <% story.modifier prefix="Last modified by " %>
+   <% story.modified short prefix=" on " %>
+</p>
+<p>
+   <button type="submit" name="save" value="1">save</button>
+   <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="button" id="restore" value="1">restore</button>
+</p>
+</form>
+
+<% #date %>
 <div class="dayHeader"><% story.created format="EEEE, d. MMMM yyyy" %></div>
 
 <% #content %>
@@ -66,7 +97,7 @@
 <% story.skin Story#day %>
 <% story.skin Story#content %>
 
-<% #stories %>
+<% #listItem %>
 <div class="listSeparator"> </div>
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -205,34 +236,3 @@ $(function() {
 });
 //-->
 </script>
-
-<% #edit %>
-<% story.skin Story#restore %>
-<form method="post" action="<% response.action %>">
-<p>
-   <div class="small">Title:</div>
-   <div class="backup"><% story.input title class="formTitle" %></div>
-</p>
-<p>
-   <div class="small">Text:</div>
-   <div class="backup"><% story.textarea text cols="30" rows="15" 
-   class="formText" %></div>
-</p>
-<p><fieldset>
-   <legend class="small">Options</legend>
-   <p>Tags: <% story.input tags %></p> 
-   <p>The story is <% story.select status %> and <% story.select mode %></p>
-   <p>Comments of the story are <% story.select commentMode %></p>
-</fieldset></p>
-<p class="small">
-   <% story.creator prefix="Created by " %>
-   <% story.created short prefix=" on " suffix="<br />" %>
-   <% story.modifier prefix="Last modified by " %>
-   <% story.modified short prefix=" on " %>
-</p>
-<p>
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
-   <button type="button" id="restore" value="1">restore</button>
-</p>
-</form>

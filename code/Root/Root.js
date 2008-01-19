@@ -146,7 +146,7 @@ Root.prototype.create_action = function() {
 
 Root.prototype.sites_action = function() {
    res.data.list = renderList(root.sites, 
-         "Site#list", 10, req.queryParams.page);
+         "Site#preview", 10, req.queryParams.page);
    res.data.pager = renderPager(root.sites, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Sites of {0}", root.title);

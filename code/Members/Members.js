@@ -249,7 +249,7 @@ Members.prototype.updated_action = function() {
 Members.prototype.privileges_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
    res.data.list = renderList(session.user.memberships, 
-         "Membership#subscriptions");
+         "Membership#listItem");
    res.data.body = session.user.renderSkinAsString("User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -258,7 +258,7 @@ Members.prototype.privileges_action = function() {
 Members.prototype.subscriptions_action = function() {
    res.data.title = gettext("Subscriptions of user {0}", session.user.name);
    res.data.list = renderList(session.user.subscriptions, 
-         "Membership#subscriptions");
+         "Membership#listItem");
    res.data.body = session.user.renderSkinAsString("User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -279,7 +279,7 @@ Members.prototype.add_action = function() {
                      "Found {0} users matching the search input.", 
                       result.length);
             }
-            res.data.result = this.renderSkinAsString("Members#result", result);
+            res.data.result = this.renderSkinAsString("Members#results", result);
          }
       } catch (ex) {
          res.message = ex;
@@ -327,7 +327,7 @@ Members.prototype.search = function(searchString) {
       if (this.get(name)) {
          continue;
       };
-      this.renderSkin("Members#resultItem", {name :name});
+      this.renderSkin("Members#result", {name :name});
       counter += 1;
    }
    rows.release();

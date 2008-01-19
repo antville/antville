@@ -162,7 +162,7 @@ tabindex="4">reset</button>
 </form>
 <% response.result %>
 
-<% #result %>
+<% #results %>
 <form method="post" action="<% response.action %>">
 <% param.result prefix="<br />" %>
 <br />
@@ -170,7 +170,7 @@ tabindex="4">reset</button>
 <button type="submit" id="cancel" name="cancel" value="1">Cancel</button>
 </form>
 
-<% #resultItem %>
+<% #result %>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td valign="top">

@@ -1,3 +1,27 @@
+<% #edit %>
+<p>To modify the membership, simply choose the desired role from the 
+drop-down menu and click the "save" button. An e-mail will be sent to the 
+member informing about the membership change.</p>
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small" nowrap="nowrap">User:</td>
+<td nowrap="nowrap"><% membership.name %></td>
+</tr>
+<tr>
+<td class="small" nowrap="nowrap">Role:</td>
+<td nowrap="nowrap"><% membership.select role %></td>
+</tr>
+<tr>
+<td nowrap="nowrap"> </td>
+<td nowrap="nowrap"><br />
+<button type="submit" name="save" value="1"><strong>save</strong></button>
+<button type="submit" name="cancel" value="1">cancel</button>
+</td>
+</tr>
+</table>
+</form>
+
 <% #login %>
 You're not logged in <% site.members.link login prefix="... " %>
 
@@ -9,7 +33,7 @@ Logged in as <% membership.name | membership.link %><br />
 <% site.members.link updated subscriptions prefix="... " suffix="<br />" %>
 <% site.members.link logout prefix="... " %>
 
-<% #members %>
+<% #listItem %>
 <div class="listSeparator"> </div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -33,7 +57,7 @@ Logged in as <% membership.name | membership.link %><br />
 </tr>
 </table>
 
-<% #subscriptions %>
+<% #subscription %>
 <div class="listSeparator"> </div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -70,28 +94,4 @@ Please make sure your own e-mail address in your
    <button type="submit" name="send" value="1">send</button>
    <button type="submit" name="cancel" value="1">cancel</button>
 </p>
-</form>
-
-<% #edit %>
-<p>To modify the membership, simply choose the desired role from the 
-drop-down menu and click the "save" button. An e-mail will be sent to the 
-member informing about the membership change.</p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small" nowrap="nowrap">User:</td>
-<td nowrap="nowrap"><% membership.name %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap">Role:</td>
-<td nowrap="nowrap"><% membership.select role %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"> </td>
-<td nowrap="nowrap"><br />
-<button type="submit" name="save" value="1"><strong>save</strong></button>
-<button type="submit" name="cancel" value="1">cancel</button>
-</td>
-</tr>
-</table>
 </form>

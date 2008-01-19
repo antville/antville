@@ -20,7 +20,7 @@ Name: <% skin.input name %>
 </table>
 </form>
 
-<% #skins %>
+<% #listItem %>
 <li>
    <% skin.link edit <% skin.name %> %>
    <% if <% skin.status %> is modified then 

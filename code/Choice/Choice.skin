@@ -9,6 +9,14 @@
 <td><label for="<% choice.id %>"><% choice.title %></label></td>
 </tr>
 
+<% #edit %>
+<tr class="choice">
+<td>
+   <span class="small">Choice #<% param.index %>:</span><br />
+   <input type="text" name="title" class="formText" value="<% choice.title %>" />
+</td>
+</tr>
+
 <% #result %>
 <p>
    <div style="width: <% choice.votes 300 default="1" %>px;" 
@@ -19,10 +27,5 @@
    <% choice.title %>
 </p>
 
-<% #edit %>
-<tr class="choice">
-<td>
-   <span class="small">Choice #<% param.index %>:</span><br />
-   <input type="text" name="title" class="formText" value="<% choice.title %>" />
-</td>
-</tr>
+<% #graph %>
+<div style="width:<% param.width %>px;" class="pollResultsBar">&nbsp;</div>

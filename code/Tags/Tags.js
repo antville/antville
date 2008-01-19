@@ -164,7 +164,7 @@ Tags.prototype.list_macro = function(param, skin) {
       if (item.constructor !== Tag) {
          item = item.get(0);
       }
-      item.renderSkin(skin || "Tag#item", {index: index});
+      item.renderSkin(skin || "Tag#listItem", {index: index});
       index += 1;
    }
    return;

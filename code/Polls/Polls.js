@@ -43,7 +43,7 @@ Polls.prototype.getPermission = function(action) {
 
 Polls.prototype.main_action = function() {
    var polls = User.getMembership().polls;
-   res.data.list = renderList(polls, "Poll#polls", 10, req.queryParams.page);
+   res.data.list = renderList(polls, "Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(polls, this.href(req.action), 
          10, req.queryParams.page);
    res.data.title = gettext("Member polls of {0}", this._parent.title);
@@ -76,7 +76,7 @@ Polls.prototype.create_action = function() {
 
 Polls.prototype.open_action = function() {
    res.data.list = renderList(this.open, 
-         "Poll#polls", 10, req.queryParams.page);
+         "Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this.open, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Open polls of {0}", this._parent.title);
@@ -86,7 +86,7 @@ Polls.prototype.open_action = function() {
 };
 
 Polls.prototype.all_action = function() {
-   res.data.list = renderList(this, "Poll#polls", 10, req.queryParams.page);
+   res.data.list = renderList(this, "Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Polls of {0}", this._parent.title);

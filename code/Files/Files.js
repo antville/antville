@@ -64,7 +64,7 @@ Files.prototype.create_action = function() {
 
 Files.prototype.main_action = function() {
    var files = User.getMembership().files;
-   res.data.list = renderList(files, "File#files", 10, req.queryParams.page);
+   res.data.list = renderList(files, "File#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(files, this.href(), 
          10, req.queryParams.page);
    res.data.title = gettext("Member files of {0}", this._parent.title);
@@ -74,7 +74,7 @@ Files.prototype.main_action = function() {
 };
 
 Files.prototype.all_action = function() {
-   res.data.list = renderList(this, "File#files", 10, req.queryParams.page);
+   res.data.list = renderList(this, "File#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Files of {0}", this._parent.title);
