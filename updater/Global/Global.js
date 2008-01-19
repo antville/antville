@@ -197,6 +197,22 @@ convert.tags = function(table) {
 }
 
 convert.skins = function() {
+   var styles = {
+      "bgcolor": "background color",
+      "linkcolor": "link color",
+      "alinkcolor": "active link color",
+      "vlinkcolor": "visited link color",
+      "titlefont": "big font",
+      "titlesize": "big font size",
+      "titlecolor": "big font color",
+      "textfont": "base font",
+      "textsize": "base font size",
+      "textcolor": "base font color",
+      "smallfont": "small font",
+      "smallsize": "small font size",
+      "smallcolor": "small font color"
+   }
+
    var rename = function(prototype, skin) {
       var map = {
          Day: "Archive",
@@ -251,27 +267,11 @@ convert.skins = function() {
          return;
       }
 
-      var keys = {
-         "bgcolor": "background color",
-         "linkcolor": "link color",
-         "alinkcolor": "active link color",
-         "vlinkcolor": "visited link color",
-         "titlefont": "big font",
-         "titlesize": "big font size",
-         "titlecolor": "big font color",
-         "textfont": "base font",
-         "textsize": "base font size",
-         "textcolor": "base font color",
-         "smallfont": "small font",
-         "smallsize": "small font size",
-         "smallcolor": "small font color"
-      }
-
       var data = eval(metadata);
       res.push();
       res.writeln("<% #values %>");
-      for (var key in keys) {
-         var name = keys[key];
+      for (var key in styles) {
+         var name = styles[key];
          var value = String(data[key]).toLowerCase();
          if (key.endsWith("color") && !helma.Color.COLORNAMES[key] &&
                !value.startsWith("#")) {
@@ -286,12 +286,21 @@ convert.skins = function() {
    var clean = function(source) {
       //return source;
       if (source) {
-         var re = /(<%\s*)([^.]*)(\.skin\s+name="?)([^"\s]*)/g;
+         // Renaming prototype and skin names in skin macros
+         var re = /(<%\s*)([^.]+)(\.skin\s+name="?)([^"\s]+)/g;
          source = source.replace(re, function() {
             var $ = arguments;
             var renamed = rename($[2].capitalize(), $[4]);
             return $[1] + renamed[0].toLowerCase() + $[3] + 
                   renamed[0] + "#" + renamed[1];
+         });
+         // Replacing layout.XXX macros with corresponding value macros
+         source = source.replace(/(<%\s*)layout\.([^\s]+)/g, function() {
+            var value = styles[arguments[2]];
+            if (value) {
+               return arguments[1] + "value " + quote(value);
+            }
+            return arguments[0];
          });
          return source;
       }
