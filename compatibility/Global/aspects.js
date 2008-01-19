@@ -75,6 +75,15 @@ helma.aspects.addAround(global, "story_macro", function(args, func, obj) {
 });
 
 HopObject.prototype.onCodeUpdate = function() {
+   /* FIXME: Does not work :(
+   helma.aspects.addBefore(this, "skin_macro", function(args, func, obj) {
+      var param = args[0];
+      if (param.name) {
+         param.name = this._prototype + "#" + param.name;
+      }
+      return args;
+   });
+   */
    return helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
       var param = args[0];
       return [param, args[1] || param.to, args[2] || param.text];

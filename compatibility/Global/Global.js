@@ -53,24 +53,35 @@ var addPropertyMacro = function(proto, name, key) {
    return;
 }
 
+// FIXME: Most likely obsolete
+/*
 var getCompatibleSkin = function(prototype, name) {
+   return name;
+   
    var renamedSkins = {
+      Site: {
+         searchbox: "Site#search"
+      },
       Story: {
-         "historyview": "Story#history"
+         display: "Story#display",
+         historyview: "Story#history"
       }
    };
    
    var getRenamedSkin = function() {
       var skins;
       if (skins = renamedSkins[prototype]) {
-         return skins[name];
+         var renamed;
+         if (renamed = skins[name]) {
+            return renamed;
+         }
       }
       throw Error("Undefined renaming of skin " + prototype + "." + name);
    }
    
-   return (new Skin(prototype, name)).getSource() ? 
-         name : getRenamedSkin();
+   return getRenamedSkin();
 }
+*/
 
 var formatTimestamp = function() {
    return formatDate.apply(this, arguments);

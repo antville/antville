@@ -29,6 +29,12 @@ Story.prototype.allowTextMacros = function(skin) {
    return Story.prototype.macro_filter(skin);
 }
 
+//Story.prototype.skin_macro = Skin.compatibleMacro; 
+// FIXME: Define the function if the above does not work reliably
+//function() {
+//   return Skin.rename.apply(this, arguments);
+//}
+
 Story.prototype.commentform_macro = function(param) {
    if (this.commentMode === "closed") {
       return;

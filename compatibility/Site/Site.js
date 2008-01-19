@@ -88,16 +88,11 @@ Site.prototype.mostread_action = function() {
    return res.redirect(this.stories.href("top"));
 };
 
-Site.prototype.skin_macro = function(param) {
-   if (param.name) {
-      switch (param.name) {
-         case "searchbox":
-         param.name = "Site#search"; break;
-      }
-      return HopObject.prototype.skin_macro.call(this, param, param.name);
-   }
-   return HopObject.prototype.skin_macro.apply(this, arguments);
-}
+//Site.prototype.skin_macro = Skin.compatibleMacro; 
+// FIXME: Define the function if the above does not work reliably
+//function() {
+//   return Skin.rename.apply(this, arguments);
+//}
 
 Site.prototype.link_macro = function(param, url, text) {
    param.text || (param.text = text);
@@ -174,15 +169,10 @@ Site.prototype.loginstatus_macro = function(param) {
 Site.prototype.navigation_macro = function(param) {
    switch (param["for"]) {
       case "contributors":
-      if ((new Skin("Site", "contribnavigation")).getSource()) {
-         this.renderSkin("contribnavigation");
-      } break;
+      this.renderSkin("Site#contribnavigation"); break;
       
       case "admins":
-      if ((new Skin("Site", "adminnavigation")).getSource()) {
-         this.renderSkin("adminnavigation");
-      } break;
-      break;
+      this.renderSkin("Site#adminnavigation"); break;
       
       default:
       this.renderSkin("Site#navigation");
@@ -297,7 +287,6 @@ Site.prototype.layoutchooser_macro = function(param) {
 Site.prototype.history_macro = function(param, type) {
    param.limit = Math.min(param.limit || 10, 20);
    type || (type = param.show);
-   var skin = getCompatibleSkin("Story", "historyview");
    var stories = this.stories.recent;
    var size = stories.size();
    var counter = i = 0;
@@ -321,7 +310,7 @@ Site.prototype.history_macro = function(param, type) {
             continue;
          } break;
       }
-      item.renderSkin(skin);
+      item.renderSkin("Story#history");
       counter += 1;
    }
    return;

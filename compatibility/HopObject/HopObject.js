@@ -22,9 +22,8 @@
 // $URL$
 //
 
+/*
 (function() {
-   return; // FIXME!
-   
    var renderSkin = HopObject.prototype.renderSkin;
 
    HopObject.prototype.renderSkin = function(name, param) {
@@ -51,7 +50,22 @@
    }
 
 })();
+*/
 
+HopObject.prototype.createtime_macro = function() {
+   return this.created_macro.apply(this, arguments);
+};
+
+HopObject.prototype.modifytime_macro = function() {
+   return this.modified_macro.apply(this, arguments);
+};
+
+HopObject.prototype.url_macro = function(param) {
+   return this.href_macro(param);
+};
+
+// FIME: Most likely obsolete
+/*
 HopObject.prototype.peel_macro = function(param, name) {
    var prototype = (this === root) ? "Site" : this.constructor.name;
    var parts = name.split("#");
@@ -68,15 +82,4 @@ HopObject.prototype.peel_macro = function(param, name) {
       }
    }
 };
-
-HopObject.prototype.createtime_macro = function() {
-   return this.created_macro.apply(this, arguments);
-};
-
-HopObject.prototype.modifytime_macro = function() {
-   return this.modified_macro.apply(this, arguments);
-};
-
-HopObject.prototype.url_macro = function(param) {
-   return this.href_macro(param);
-};
+*/
