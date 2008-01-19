@@ -197,34 +197,55 @@ convert.tags = function(table) {
 }
 
 convert.skins = function() {
-   var rename = function(prototype) {
-      switch (prototype) {
-         case "Day":
-         return "Archive";
-         case "LayoutImage":
-         return "Image";
-         case "LayoutImageMgr":
-         return "Images";
-         case "RootLayoutMgr":
-         return "Layouts";
-         case "StoryMgr":
-         return "Stories";
-         case "SysMgr":
-         return "Admin";
-         case "SysLog":
-         return "LogEntry";
-         case "Topic":
-         return "Tag";
-         case "TopicMgr":
-         return "Tags";
-         default:
-         if (prototype.lastIndexOf("Mgr") > 0) {
-            return prototype.substr(0, prototype.length - 3) + "s";
+   var rename = function(prototype, skin) {
+      var map = {
+         Day: "Archive",
+         LayoutImage: "Image",
+         LayoutImageMgr: "Images",
+         RootLayoutMgr: "Layouts",
+         StoryMgr: "Stories",
+         SysMgr: "Admin",
+         SysLog: "LogEntry",
+         Topic: "Tag",
+         TopicMgr: "Tags",
+         
+         Members: {
+            statusloggedin: ["Membership", "status"],
+            statusloggedout: ["Membership", "login"]
+         },
+         
+         Site: {
+            searchbox: "search",
+            style: "stylesheet" 
+         },
+         
+         Story: {
+            historyview: "history"
          }
-         return prototype;
       }
+      
+      var renamed;
+      if (renamed = map[prototype]) {
+         if (renamed.constructor === String) {
+            return rename(renamed, skin);
+         } else  if (skin) {
+            renamed = renamed[skin];
+            if (renamed) {
+               if (renamed.constructor === Array) {
+                  prototype = renamed[0];
+                  skin = renamed[1];
+               } else {
+                  skin = renamed;
+               }
+            }
+         }
+      } else if (prototype.lastIndexOf("Mgr") > 0) {
+         prototype = prototype.substr(0, prototype.length - 3) + "s";
+         return rename(prototype, skin);
+      }
+      return [prototype, skin];
    }
-
+   
    var values = function(metadata) {
       if (!metadata) {
          return;
@@ -262,6 +283,19 @@ convert.skins = function() {
       return res.pop();
    }
 
+   var clean = function(source) {
+      //return source;
+      if (source) {
+         var re = /(<%\s*)([^.]*)(\.skin\s+name="?)([^"\s]*)/g;
+         return source.replace(re, function() {
+            var $ = arguments;
+            var renamed = rename($[2].capitalize(), $[4]);
+            return $[1] + renamed[0].toLowerCase() + $[3] + 
+                  renamed[0] + "#" + renamed[1];
+         });
+      }
+   }
+
    var save = function(fpath, data) {
       var file = new java.io.File(fpath);
       file.mkdirs();
@@ -280,16 +314,14 @@ convert.skins = function() {
       return
    } 
 
-   var skinNames = {
-      style: "stylesheet"
-   }
-
    var dump = function(sql) {
       var buffer = {};
       retrieve(sql);
       traverse(function() {
          var fpath = app.dir + "/../static/" + this.site_name;
-         var prototype = rename(this.prototype);
+         var renamed = rename(this.prototype, this.skin_name);
+         var prototype = renamed[0];
+         var subskin = renamed[1];
          var skinPath = prototype + "/" + prototype + ".skin";
          if (this.current_layout === this.layout_id) {
             fpath += "/layout/" + skinPath;
@@ -302,10 +334,11 @@ convert.skins = function() {
                buffer[fpath].push(values(this.metadata));
             }
          }
-         var name = skinNames[this.skin_name] || this.skin_name;
+         //debug(this.prototype + "#" + this.skin_name + " >>> " + prototype + "#" + subskin)
+         //return;
          res.push();
-         res.writeln("<% #" + name + " %>");
-         res.writeln(this.SKIN_SOURCE);
+         res.writeln("<% #" + subskin + " %>");
+         res.writeln(clean(this.SKIN_SOURCE));
          buffer[fpath].push(res.pop());
          return;
       });
@@ -319,6 +352,7 @@ convert.skins = function() {
    }
    
    dump(sql("skins"));
+return;
 
    // Exporting the skins of the former root layouts
    var server = Packages.helma.main.Server.getServer();
