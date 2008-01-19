@@ -202,7 +202,7 @@ convert.skins = function() {
          Day: "Archive",
          LayoutImage: "Image",
          LayoutImageMgr: "Images",
-         RootLayoutMgr: "Layouts",
+         RootLayoutMgr: "Layouts", // FIXME: obsolete
          StoryMgr: "Stories",
          SysMgr: "Admin",
          SysLog: "LogEntry",
@@ -287,12 +287,13 @@ convert.skins = function() {
       //return source;
       if (source) {
          var re = /(<%\s*)([^.]*)(\.skin\s+name="?)([^"\s]*)/g;
-         return source.replace(re, function() {
+         source = source.replace(re, function() {
             var $ = arguments;
             var renamed = rename($[2].capitalize(), $[4]);
             return $[1] + renamed[0].toLowerCase() + $[3] + 
                   renamed[0] + "#" + renamed[1];
          });
+         return source;
       }
    }
 
@@ -334,11 +335,18 @@ convert.skins = function() {
                buffer[fpath].push(values(this.metadata));
             }
          }
-         //debug(this.prototype + "#" + this.skin_name + " >>> " + prototype + "#" + subskin)
+         var source = clean(this.SKIN_SOURCE);
+         // FIXME: Ugly special hack for linking from Membership back to Members
+         if (prototype === "Membership" && 
+               (subskin === "login" || subskin === "status")) {
+            source = source.replace(/(<%\s*)this./g, "$1members.");
+         }
+         //debug(this.prototype + "#" + this.skin_name + " >>> " + 
+         //      prototype + "#" + subskin)
          //return;
          res.push();
          res.writeln("<% #" + subskin + " %>");
-         res.writeln(clean(this.SKIN_SOURCE));
+         res.writeln(source);
          buffer[fpath].push(res.pop());
          return;
       });
