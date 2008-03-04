@@ -25,7 +25,7 @@
 Story.getStatus = defineConstants(Story, "closed", "public", "shared", "open");
 Story.getModes = defineConstants(Story, "hidden", "featured");
 Story.getCommentModes = defineConstants(Story, "closed", 
-      "readonly", /*"moderated",*/ "open");
+      /*"readonly", "moderated",*/ "open");
 
 this.handleMetadata("title");
 this.handleMetadata("text");
@@ -110,15 +110,15 @@ Story.prototype.getTitle = function(limit) {
 
 Story.prototype.edit_action = function() {
    if (req.postParams.save) {
-      //try {
+      try {
          this.update(req.postParams);
          delete session.data.backup;
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());
-      //} catch (ex) {
-      //   res.message = ex;
-      //   app.log(ex);
-      //}
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
    }
    
    res.data.action = this.href(req.action);
@@ -161,7 +161,14 @@ Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
    var delta = this.getDelta(data);
 
-   if (!data.title && !data.text) {
+   var content = "";
+   for (var key in data) {
+      if (key.startsWith("metadata_")) {
+         content += data[key];
+      }
+   }
+
+   if (!data.title && !data.text && !content) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
    }
 
@@ -191,9 +198,10 @@ Story.prototype.update = function(data) {
 };
 
 Story.prototype.setContent = function(data) {
+   var name;
    for (var key in data) {
-      if (key.startsWith("content_")) {
-         this.metadata.set(key, data[key]);
+      if (key.startsWith("metadata_")) {
+         this.metadata.set(key.substr(9), data[key]);
       }
    }
    return;
@@ -262,7 +270,7 @@ Story.prototype.summary_macro = function(param) {
       res.push();
       var content;
       for (var i=1; i<arguments.length; i+=1) {
-         if (content = this.metadata.get("content_" + arguments[i])) {
+         if (content = this.metadata.get("metadata_" + arguments[i])) {
             res.write(content);
             res.write(String.SPACE);
          }
@@ -449,9 +457,9 @@ Story.prototype.getDelta = function(data) {
       return Infinity;
    }
 
-   var deltify = function(o1, o2) {
-      var len1 = o1 ? String(o1).length : 0;
-      var len2 = o2 ? String(o2).length : 0;
+   var deltify = function(s1, s2) {
+      var len1 = s1 ? String(s1).length : 0;
+      var len2 = s2 ? String(s2).length : 0;
       return Math.abs(len1 - len2);
    };
 
@@ -459,7 +467,7 @@ Story.prototype.getDelta = function(data) {
    delta += deltify(data.title, this.title);
    delta += deltify(data.text, this.text);
    for (var key in data) {
-      if (key.startsWith("content_")) {
+      if (key.startsWith("metadata_")) {
          delta += deltify(data.key, this.metadata.get(key))
       }
    }

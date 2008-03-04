@@ -214,7 +214,7 @@ Story.prototype.addtofront_macro = function(param) {
          delete param.checked;
       }
       param.name = "addToFront";
-      param.value = 1;
+      param.value = "1";
       delete param.as;
       html.checkBox(param);
    }
@@ -226,10 +226,16 @@ Story.prototype.discussions_macro = function(param) {
       return;
    }
    if (param.as === "editor") {
-      (this.commentMode === Story.OPEN) && (param.checked = "checked"); 
-      if ((req.data.publish || req.data.save) && req.data.discussions) {
-         delete param.checked;
+      if (req.data.publish || req.data.save) {
+         param.checked = req.data.discussions;
+      } else if (this.commentMode === Story.OPEN) {
+         param.checked = "checked";
+      } else {
+         param.checked = null;
       }
+      delete param.as;
+      param.name = "discussions";
+      param.value = "1";
       html.checkBox(param);
    } else {
       res.write(this.commentMode === Story.OPEN ? 
@@ -238,19 +244,18 @@ Story.prototype.discussions_macro = function(param) {
    return;
 };
 
-// FIXME!
 Story.prototype.editableby_macro = function(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
-      var options = [EDITABLEBY_ADMINS, EDITABLEBY_CONTRIBUTORS,
-            EDITABLEBY_SUBSCRIBERS];
-      var labels = [gettext("the author"), gettext("all contributors"), 
-            gettext("all subscribers")];
+      var options = [Story.PUBLIC, Story.SHARED, Story.OPEN];
+      var labels = [gettext("content managers"), gettext("contributors"), 
+            gettext("subscribers")];
       delete param.as;
-      if (req.data.publish || req.data.save)
-         var selValue = !isNaN(req.data.editableby) ? req.data.editableby : null;
-      else
-         var selValue = this.editableby;
-      for (var i=0;i<options.length;i++) {
+      if (req.data.publish || req.data.save) {
+         var selValue = Number(req.data.editableby) || null;
+      } else {
+         var selValue = this.status;
+      }
+      for (var i=0; i<options.length; i+=1) {
          html.radioButton({name: "editableby", 
                value: options[i], selectedValue: selValue});
          res.write("&nbsp;");
@@ -258,15 +263,14 @@ Story.prototype.editableby_macro = function(param) {
          res.write("&nbsp;");
       }
    } else {
-      switch (this.editableby) {
-         case 0:
-         res.write(gettext("Content managers and admins of {0}", 
-               path.site.title));
+      switch (this.status) {
+         case Stoy.PUBLIC:
+         res.write(gettext("Content managers of {0}", path.site.title));
          break;
-         case 1:
+         case Story.SHARED:
          res.write(gettext("Contributors to {0}", path.site.title));
          break;
-         case 2 :
+         case Story.OPEN:
          res.write(gettext("Subscribers of and contributors to {0}", 
                path.site.title));
          break;

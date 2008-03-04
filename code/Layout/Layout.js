@@ -289,12 +289,14 @@ Layout.prototype.getTitle = function() {
 };
 
 Layout.prototype.values_macro = function() {
+   /* FIXME: should be enough to render res.meta.values in HopObject.onRequest
    res.push();
    var skin = new Skin("Site", "values");
    skin.render();
    res.pop();
+   */
    var values = [];
-   for (var key in res.meta.values) {
+   for each (var key in Layout.VALUES) {
       values.push({key: key, value: res.meta.values[key]});
    }
    values.sort(new String.Sorter("key"));
@@ -306,3 +308,19 @@ Layout.prototype.values_macro = function() {
    }
    return;
 };
+
+Layout.VALUES = [
+   "background color",
+   "link color",
+   "active link color",
+   "visited link color",
+   "big font",
+   "big font size",
+   "big font color",
+   "base font",
+   "base font size",
+   "base font color",
+   "small font",
+   "small font size",
+   "small font color"
+]

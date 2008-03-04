@@ -94,49 +94,46 @@ Archive.prototype.main_action = function() {
    return;
 };
 
-Archive.prototype.list_macro = function(param, type) {
-   switch (type) {
-      default:
-      var day, storyDay; 
-      var page = this.getPage();
-      var pageSize = this.getPageSize();
-     
-      var renderStory = function(story) {
-         storyDay = story.created.getDate();
-         if (day !== storyDay) {
-            story.renderSkin("Story#day");
-            day = storyDay;
-         }
-         story.renderSkin("Story#preview");
-         return;
-      };
-   
-      if (!this.parent) {
-         var site = res.handlers.site;
-         var offset = (page - 1) * pageSize;
-         var stories = site.stories.featured.list(offset, pageSize);
-         for each (var story in stories) {
-            renderStory(story);
-         };
-         return;
+Archive.prototype.stories_macro = function() {
+   var day, storyDay; 
+   var page = this.getPage();
+   var pageSize = this.getPageSize();
+  
+   var renderStory = function(story) {
+      storyDay = story.created.getDate();
+      if (day !== storyDay) {
+         story.renderSkin("Story#date");
+         day = storyDay;
       }
-   
-      res.push();
-      res.write("select id from content ");
-      res.write(this.getFilter());
-      res.write(" limit " + pageSize);
-      res.write(" offset " + (page - 1) * pageSize);
-      sql = res.pop();
-   
-      var db = getDBConnection("antville");
-      rows = db.executeRetrieval(sql);
-      var story, storyDay, day;
-      while (rows.next()) {
-         story = Story.getById(rows.getColumnItem("id"));
+      story.renderSkin("Story#preview");
+      return;
+   };
+
+   if (!this.parent) {
+      var site = res.handlers.site;
+      var offset = (page - 1) * pageSize;
+      var stories = site.stories.featured.list(offset, pageSize);
+      for each (var story in stories) {
          renderStory(story);
-      }
-      rows.release();
+      };
+      return;
    }
+
+   res.push();
+   res.write("select id from content ");
+   res.write(this.getFilter());
+   res.write(" limit " + pageSize);
+   res.write(" offset " + (page - 1) * pageSize);
+   sql = res.pop();
+
+   var db = getDBConnection("antville");
+   rows = db.executeRetrieval(sql);
+   var story, storyDay, day;
+   while (rows.next()) {
+      story = Story.getById(rows.getColumnItem("id"));
+      renderStory(story);
+   }
+   rows.release();
    return;
 };
 

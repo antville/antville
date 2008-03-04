@@ -36,7 +36,7 @@ var aspects = {
       return args;
    },
    
-   upgradeArguments: function(args) {
+   fixMacroParams: function(args) {
       var param = args[0];
       var id = args[1] || param.name;
       var mode = args[2] || param.as;
@@ -45,11 +45,28 @@ var aspects = {
       delete(param.as);
       delete(param.linkto);
       return [param, id, mode, url];
+   },
+   
+   fixStoryEditorParams: function(args, func, story) {
+      if (req.postParams.publish || req.postParams.save) {
+         if (req.postParams.publish) {
+            req.postParams.save = 1;
+         }
+         if (req.postParams.save !== 1) {
+            req.postParams.save = 1;
+            req.postParams.status = Story.CLOSED;
+         } else if (req.postParams.editableby) {
+            req.postParams.status = req.postParams.editableby
+         }
+         req.postParams.mode = (req.postParams.addToFront ? Story.FEATURED : Story.HIDDEN);
+         req.postParams.commentMode = (req.postParams.discussions ? Story.OPEN : Story.CLOSED);
+      }
+      return args;
    }
 }
 
 helma.aspects.addAround(global, "image_macro", function(args, func, obj) {
-   args = aspects.upgradeArguments(args);
+   args = aspects.fixMacroParams(args);
    var url = args[3];
    url && res.push();
    func.apply(global, args);
@@ -58,7 +75,7 @@ helma.aspects.addAround(global, "image_macro", function(args, func, obj) {
 });
 
 helma.aspects.addAround(global, "poll_macro", function(args, func, obj) {
-   args = aspects.upgradeArguments(args);
+   args = aspects.fixMacroParams(args);
    var url = args[3];
    url && res.push();
    func.apply(global, args);
@@ -67,11 +84,11 @@ helma.aspects.addAround(global, "poll_macro", function(args, func, obj) {
 });
 
 helma.aspects.addAround(global, "file_macro", function(args, func, obj) {
-   return func.apply(global, aspects.upgradeArguments(args));
+   return func.apply(global, aspects.fixMacroParams(args));
 });
 
 helma.aspects.addAround(global, "story_macro", function(args, func, obj) {
-   return func.apply(global, aspects.upgradeArguments(args));
+   return func.apply(global, aspects.fixMacroParams(args));
 });
 
 HopObject.prototype.onCodeUpdate = function() {
@@ -94,6 +111,7 @@ Image.prototype.onCodeUpdate = function() {
    helma.aspects.addAfter(this, "getUrl", function(value, args, func, obj) {
       return Image.getCompatibleFileName(obj, value);
    });
+   
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
@@ -101,10 +119,11 @@ Site.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "main_action", function(args, func, site) {
       res.handlers.day = site.archive;
       res.push();
-      list_macro({}, "stories");
+      site.archive.stories_macro();
       res.data.storylist = res.pop();
       return args;
    });
+   
    return helma.aspects.addBefore(this, "update", function(args, func, site) {
       if (!site.isTransient()) {
          var data = args[0];
@@ -123,5 +142,11 @@ Site.prototype.onCodeUpdate = function() {
 }
 
 Story.prototype.onCodeUpdate = function() {
+   helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);   
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
+}
+
+Stories.prototype.onCodeUpdate = function() {
+   return helma.aspects.addBefore(this, "create_action", 
+         aspects.fixStoryEditorParams);
 }

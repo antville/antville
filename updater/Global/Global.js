@@ -225,6 +225,10 @@ convert.skins = function() {
          Topic: "Tag",
          TopicMgr: "Tags",
          
+         Comment: {
+            toplevel: "main"
+         },
+         
          Members: {
             statusloggedin: ["Membership", "status"],
             statusloggedout: ["Membership", "login"]
@@ -236,6 +240,7 @@ convert.skins = function() {
          },
          
          Story: {
+            dayheader: "date",
             historyview: "history"
          }
       }
@@ -355,7 +360,7 @@ convert.skins = function() {
          //return;
          res.push();
          res.writeln("<% #" + subskin + " %>");
-         res.writeln(source);
+         res.writeln(source || "");
          buffer[fpath].push(res.pop());
          return;
       });

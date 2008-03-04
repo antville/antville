@@ -1,5 +1,5 @@
 <% #main %>
-<% site.list stories %>
+<% site.stories %>
 
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">

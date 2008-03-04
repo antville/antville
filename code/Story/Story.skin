@@ -1,5 +1,5 @@
 <% #main %>
-<% story.skin Story#day %>
+<% story.skin Story#date %>
 <% story.skin Story#content %>
 <p class="small">
    <% story.link comment#form prefix="... " %>
@@ -94,7 +94,7 @@
 </tr>
 
 <% #comment %>
-<% story.skin Story#day %>
+<% story.skin Story#date %>
 <% story.skin Story#content %>
 
 <% #listItem %>

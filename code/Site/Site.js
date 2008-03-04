@@ -459,22 +459,19 @@ Site.prototype.getMacroHandler = function(name) {
    }
 };
 
-Site.prototype.list_macro = function(param, type) {
-   switch (type) {
-      case "stories":
-      if (this.stories.featured.size() < 1) {
-         this.renderSkin("Site#welcome");
-         if (session.user) {
-            if (session.user === this.creator) {
-               session.user.renderSkin("User#welcome");
-            }
-            if (User.require(User.PRIVILEGED)) {
-               this.admin.renderSkin("Admin#welcome");
-            }
+Site.prototype.stories_macro = function() {
+   if (this.stories.featured.size() < 1) {
+      this.renderSkin("Site#welcome");
+      if (session.user) {
+         if (session.user === this.creator) {
+            session.user.renderSkin("User#welcome");
          }
-      } else {
-         this.archive.renderSkin("Archive#main");
+         if (User.require(User.PRIVILEGED)) {
+            this.admin.renderSkin("Admin#welcome");
+         }
       }
+   } else {
+      this.archive.renderSkin("Archive#main");
    }
    return;
 };
