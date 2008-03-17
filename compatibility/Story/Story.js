@@ -50,8 +50,42 @@ Story.prototype.commentform_macro = function(param) {
    return;
 };
 
-// FIXME!
 Story.prototype.content_macro = function(param) {
+   switch (param.as) {
+      case "editor":
+      if (param.cols || param.rows) {
+         this.metadata.textarea_macro(param, param.part);
+      } else {
+         this.metadata.input_macro(param, param.part);
+      }
+      break;
+      
+      case "image":
+      var part = this.metadata.get(param.part);
+      part && res.write(this.format_filter(part, null, "image"));
+      break;
+      
+      default:
+      var part = this.getRenderedContentPart(param.part, param.as);
+      if (!part && param.fallback) {
+         part = this.getRenderedContentPart(param.fallback, param.as);
+      }
+      if (part) {
+         if (param.limit) {
+            part = part.stripTags().head(param.limit, 
+                  param.clipping, param.delimiter);
+         }
+         if (param.as === "link") {
+            res.write(this.link_filter(param, part));
+         } else {
+            res.write(part);
+         }
+      }
+   }
+   return;
+}
+
+/* Story.prototype.content_macro = function(param) {
    switch (param.as) {
       case "editor":
       var inputParam = this.metadata.createInputParam(param.part, param);
@@ -98,9 +132,8 @@ Story.prototype.content_macro = function(param) {
          html.closeLink();
    }
    return;
-};
+}; */
 
-// FIXME!
 Story.prototype.getRenderedContentPart = function(name, mode) {
    var part = this.metadata.get(name);
    if (!part) {
@@ -112,30 +145,18 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
        // FIXME: || lastRendered.getTime() < this.metadata.getLastModified().getTime())
       switch (mode) {
          case "plaintext":
-         part = stripTags(part).clipURLs(30);
+         part = this.format_filter(part, null, "plain");
          break;
          
          case "alttext":
-         part = stripTags(part);
-         part = part.replace(/\"/g, "&quot;");
-         part = part.replace(/\'/g, "&#39;");
+         part = this.format_filter(part, null, "quotes");
          break;
          
          default:
-         var skin = createSkin(format(part));
-         this.allowTextMacros(skin);
          // Enable caching; some macros (eg. poll, storylist) will set this 
          // to false to prevent caching of a contentpart containing them.
          res.meta.cachePart = true;
-         // The following is necessary so that global macros know where they belong to.
-         // Even if they are embedded at some other site.
-         var site;
-         if (this.site != res.handlers.site) {
-            site = res.handlers.site;
-            res.handlers.site = this.site;
-         }
-         part = this.renderSkinAsString(skin); // FIXME: .activateURLs(50);
-         site && (res.handlers.site = site);
+         part = this.format_filter(part);
       }
       this.cache[key] = part;
       if (res.meta.cachePart) {
@@ -210,7 +231,7 @@ Story.prototype.addtofront_macro = function(param) {
          if (!req.data.addToFront) {
             delete param.checked;
          }
-      } else if (this.mode !== Story.FEATURED) {
+      } else if (req.action !== "create" && this.mode !== Story.FEATURED) {
          delete param.checked;
       }
       param.name = "addToFront";
@@ -230,7 +251,7 @@ Story.prototype.discussions_macro = function(param) {
          param.checked = req.data.discussions;
       } else if (this.commentMode === Story.OPEN) {
          param.checked = "checked";
-      } else {
+      } else if (req.action !== "create") {
          param.checked = null;
       }
       delete param.as;
@@ -245,13 +266,14 @@ Story.prototype.discussions_macro = function(param) {
 };
 
 Story.prototype.editableby_macro = function(param) {
+   res.debug(req.data)
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = [Story.PUBLIC, Story.SHARED, Story.OPEN];
       var labels = [gettext("content managers"), gettext("contributors"), 
             gettext("subscribers")];
       delete param.as;
       if (req.data.publish || req.data.save) {
-         var selValue = Number(req.data.editableby) || null;
+         var selValue = req.data.status || null;
       } else {
          var selValue = this.status;
       }

@@ -48,18 +48,33 @@ var aspects = {
    },
    
    fixStoryEditorParams: function(args, func, story) {
-      if (req.postParams.publish || req.postParams.save) {
+      if (req.isPost() && (req.postParams.save != 1)) {
          if (req.postParams.publish) {
             req.postParams.save = 1;
          }
-         if (req.postParams.save !== 1) {
+         if (req.postParams.save != 1) {
             req.postParams.save = 1;
             req.postParams.status = Story.CLOSED;
          } else if (req.postParams.editableby) {
             req.postParams.status = req.postParams.editableby
          }
-         req.postParams.mode = (req.postParams.addToFront ? Story.FEATURED : Story.HIDDEN);
-         req.postParams.commentMode = (req.postParams.discussions ? Story.OPEN : Story.CLOSED);
+         req.postParams.mode = (req.postParams.addToFront ? 
+               Story.FEATURED : Story.HIDDEN);
+         req.postParams.commentMode = (req.postParams.discussions ? 
+               Story.OPEN : Story.CLOSED);
+      }
+      aspects.setTextAndTitle(args, func, story);
+      return args;
+   },
+   
+   setTextAndTitle: function(args) {
+      if (req.postParams.metadata_title && !req.postParams.title) {
+         req.postParams.title = req.postParams.metadata_title;
+         delete req.postParams.metadata_title;
+      }
+      if (req.postParams.metadata_text && !req.postParams.text) {
+         req.postParams.text = req.postParams.metadata_text;
+         delete req.postParams.metadata_text;
       }
       return args;
    }
@@ -101,10 +116,20 @@ HopObject.prototype.onCodeUpdate = function() {
       return args;
    });
    */
+   helma.aspects.addAfter(this, "onRequest", function(args, func, obj) {
+      res.handlers.members = res.handlers.site.members;
+      res.handlers.membermgr = res.handlers.site.members;
+      return args;
+   });
    return helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
       var param = args[0];
       return [param, args[1] || param.to, args[2] || param.text];
    });
+}
+
+Comment.prototype.onCodeUpdate = function() {
+   helma.aspects.addBefore(this, "update", aspects.setTextAndTitle);
+   return;
 }
 
 Image.prototype.onCodeUpdate = function() {
