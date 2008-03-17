@@ -202,22 +202,15 @@ HopObject.prototype.setTags = function(tags) {
 };
 
 HopObject.prototype.addTag = function(name) {
-   //res.debug("Add tag " + name);
-   //return;
    this.tags.add(new TagHub(name, this, session.user));
    return;
 };
 
 HopObject.prototype.removeTag = function(tag) {
-   //res.debug("Remove " + tag);
-   //return;
    var parent = tag._parent;
-   // Remove tag from site if necessary
    if (parent.size() === 1) {
-      //res.debug("Remove " + parent);
       parent.remove();
    }
-   // Remove tag from object
    tag.remove();
    return;
 };
