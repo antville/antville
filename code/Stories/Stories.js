@@ -60,6 +60,7 @@ Stories.prototype.create_action = function() {
       try {
          story.update(req.postParams);
          this.add(story);
+         story.setTags(req.postParams.tags || req.postParams.tag_array);
          story.notify(req.action);
          delete session.data.backup;
          res.message = gettext("The story was successfully created.");

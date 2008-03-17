@@ -75,6 +75,7 @@ Images.prototype.create_action = function() {
       try {
          image.update(req.postParams);
          this.add(image);
+         image.setTags(req.postParams.tags || req.postParams.tag_array);
          image.notify(req.action);
          res.message = gettext('The uploaded image was saved successfully. Its name is "{0}"', 
                image.name);

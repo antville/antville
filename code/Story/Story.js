@@ -68,7 +68,14 @@ Story.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
    return false;
-};
+}
+
+Story.prototype.getMacroHandler = function(name) {
+   if (name === "metadata") {
+      return this.metadata;
+   }
+   return null;
+}
 
 Story.prototype.link_macro = function(param, action, text) {
    switch (action) {
@@ -112,6 +119,7 @@ Story.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
+         this.setTags(req.postParams.tags || req.postParams.tags_array);
          delete session.data.backup;
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());
@@ -161,14 +169,7 @@ Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
    var delta = this.getDelta(data);
 
-   var content = "";
-   for (var key in data) {
-      if (key.startsWith("metadata_")) {
-         content += data[key];
-      }
-   }
-
-   if (!data.title && !data.text && !content) {
+   if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
    }
 
@@ -184,28 +185,37 @@ Story.prototype.update = function(data) {
    
    this.title = data.title;
    this.text = data.text;
-   this.setContent(data);
-   this.setTags(data.tags || data.tag_array)
-   this.commentMode = data.commentMode;
-   this.mode = data.mode;
    this.status = data.status;
+   this.mode = data.mode;
+   this.commentMode = data.commentMode;
+   // FIXME: Would be nice to do this here once instead of
+   // twice in Stories.create_action and Story.edit_action.
+   //this.setTags(data.tags || data.tag_array);
+   this.setMetadata(data);
+
    if (this.status !== Story.CLOSED && delta > 50) {
       site.hitchWebHook();
       site.lastUpdate = new Date;
    }
+   
+   this.clearCache();
    this.touch();
    return;
 };
 
-Story.prototype.setContent = function(data) {
+Story.prototype.setMetadata = function(data) {
    var name;
    for (var key in data) {
-      if (key.startsWith("metadata_")) {
-         this.metadata.set(key.substr(9), data[key]);
+      if (this.isMetadata(key)) {
+         this.metadata.set(key, data[key]);
       }
    }
    return;
 };
+
+Story.prototype.isMetadata = function(name) {
+   return this[name] === undefined && name !== "save";
+}
 
 Story.remove = function() {
    if (this.constructor !== Story) {
@@ -375,15 +385,46 @@ Story.prototype.logRequest = function() {
    return;
 };
 
+Story.prototype.getDelta = function(data) {
+   if (this.isTransient()) {
+      return Infinity;
+   }
+
+   var deltify = function(s1, s2) {
+      var len1 = s1 ? String(s1).length : 0;
+      var len2 = s2 ? String(s2).length : 0;
+      return Math.abs(len1 - len2);
+   };
+
+   var delta = 0;
+   delta += deltify(data.title, this.title);
+   delta += deltify(data.text, this.text);
+   for (var key in data) {
+      if (this.isMetadata(key)) {
+         delta += deltify(data[key], this.metadata.get(key))
+      }
+   }
+   // In-between updates (10 min) get zero delta
+   var timex = (new Date - this.modified) > Date.ONEMINUTE * 10 ? 1 : 0;
+   return delta * timex;
+};
+
 Story.prototype.format_filter = function(value, param, mode) {
    if (value) {
       switch (mode) {
-         case "text":
+         case "plain":
          return this.url_filter(stripTags(value), param, mode);
+         
          case "quotes":
          return stripTags(value).replace(/(\"|\')/g, function(str, quotes) {
             return "&#" + quotes.charCodeAt(0) + ";";
          });
+         
+         case "image":
+         var image = HopObject.getFromPath(value, "images");
+         image && image.render_macro(param);
+         break;
+         
          default:
          value = this.macro_filter(value, param);
          return this.url_filter(value, param);
@@ -450,28 +491,4 @@ Story.prototype.url_filter = function(value, param, mode) {
       res.write(tail);
       return res.pop();
    });
-};
-
-Story.prototype.getDelta = function(data) {
-   if (this.isTransient()) {
-      return Infinity;
-   }
-
-   var deltify = function(s1, s2) {
-      var len1 = s1 ? String(s1).length : 0;
-      var len2 = s2 ? String(s2).length : 0;
-      return Math.abs(len1 - len2);
-   };
-
-   var delta = 0;
-   delta += deltify(data.title, this.title);
-   delta += deltify(data.text, this.text);
-   for (var key in data) {
-      if (key.startsWith("metadata_")) {
-         delta += deltify(data.key, this.metadata.get(key))
-      }
-   }
-   // In-between updates (10 min) get zero delta
-   var timex = (new Date - this.modified) > Date.ONEMINUTE * 10 ? 1 : 0;
-   return delta * timex;
 };

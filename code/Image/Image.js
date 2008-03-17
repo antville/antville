@@ -93,6 +93,7 @@ Image.prototype.main_action = function() {
 Image.prototype.edit_action = function() {
    if (req.postParams.save) {
       this.update(req.postParams);
+      this.setTags(req.postParams.tags || req.postParams.tag_array);
       res.message = gettext("The changes were saved successfully.");
       res.redirect(this.href());
    }
@@ -159,7 +160,9 @@ Image.prototype.update = function(data) {
    }
 
    this.description = data.description;
-   this.setTags(data.tags || data.tag_array)
+   // FIXME: Would be nice to do this here once instead of
+   // twice in Images.create_action and Image.edit_action.
+   //this.setTags(data.tags || data.tag_array);
    this.touch();
    return;
 };

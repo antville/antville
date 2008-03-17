@@ -29,6 +29,8 @@
 // Resolve dependencies
 app.addRepository("modules/core/Object.js");
 
+Metadata.PREFIX = Metadata().__name__.toLowerCase() + "_";
+
 // Save internal methods for good
 /** @ignore */
 Metadata.prototype._get = Metadata.prototype.get;
@@ -43,7 +45,7 @@ Metadata.prototype._set = Metadata.prototype.set;
  * @type String
  */
 Metadata.prototype.getDataSourceName = function() {
-   return this.__name__ + "_source";
+   return Metadata.PREFIX + "source";
 };
 
 /**
@@ -78,18 +80,6 @@ Metadata.prototype.get = function(key) {
 };
 
 /**
- * Retrieves all properties and values of the Metadata instance.
- * @returns The property map of the Metadata instance
- * @type Object
- */
-Metadata.prototype.getData = function() {
-   if (this.cache.data == null) {
-      this.cache.data = this.load() || {};
-   }
-   return this.cache.data;
-};
-
-/**
  * Copies a value into a property of the Metadata instance. If the first 
  * argument is omitted the complete metadata is replaced with the second
  * argument.
@@ -110,24 +100,6 @@ Metadata.prototype.set = function(key, value) {
       }
       this.cache.data = value;
    }
-   this.save();
-   return;
-};
-
-/**
- * Replaces all properties and values of the Metadata instance with those of
- * another object.
- * @param {Object} obj The replacing data
- * @type Boolean
- */
-Metadata.prototype.setData = function(obj) {
-   if (!obj) {
-      return;
-   }
-   if (obj instanceof Object === false) {
-      obj = obj.clone({});
-   }
-   this.cache.data = obj;
    this.save();
    return;
 };
@@ -157,7 +129,7 @@ Metadata.prototype.destroy = function() {
  * @type Array
  */
 Metadata.prototype.keys = function() {
-   var cache = this.getData();
+   var cache = this.get();
    var keys = [];
    for (var i in cache) {
       keys.push(i);
@@ -203,5 +175,40 @@ Metadata.prototype.toString = function() {
  * @type String
  */
 Metadata.prototype.toSource = function() {
-   return this.getData().toSource();
+   return this.get().toSource();
 };
+
+/**
+ * Retrieves all properties and values of the Metadata instance.
+ * @returns The property map of the Metadata instance
+ * @type Object
+ * @deprecated Use get() without a parameter instead.
+ */
+Metadata.prototype.getData = function() {
+   return this.get();
+};
+
+/**
+ * Replaces all properties and values of the Metadata instance with those of
+ * another object.
+ * @param {Object} obj The replacing data
+ * @type Boolean
+ * @deprecated Use set() with a single object parameter instead.
+ */
+Metadata.prototype.setData = function(obj) {
+   obj && this.set(obj);
+   return;
+};
+
+// FIXME: Should this really be included here?
+Metadata.prototype.getFormValue = function(name) {
+   if (req.isPost()) {
+      return req.postParams[name];
+   } else {
+      return this.get(name) || req.queryParams[name] || String.EMPTY;
+   }
+}
+
+Metadata.prototype.onUnhandledMacro = function(name) {
+   return this.get(name);
+}

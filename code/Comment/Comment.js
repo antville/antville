@@ -93,6 +93,7 @@ Comment.prototype.update = function(data) {
          this.getDelta(data) > 50) {
       this.site.lastUpdate = new Date;
    }
+   this.clearCache();
    this.touch();
    return;
 };
