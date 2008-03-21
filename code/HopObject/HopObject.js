@@ -103,8 +103,8 @@ HopObject.prototype.delete_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Confirm deletion of " + this);
-   res.data.body = this.renderSkinAsString("HopObject#delete", {
+   res.data.title = gettext("Confirm deletion of {0}", this);
+   res.data.body = this.renderSkinAsString("HopObject#confirm", {
       text: gettext('You are about to delete {0}.', this)
    });
    res.handlers.site.renderSkin("Site#page");
@@ -250,7 +250,6 @@ HopObject.prototype.checkbox_macro = function(param, name) {
    param.selectedValue = String(this.getFormValue(name));
    var label = param.label;
    delete param.label;
-   //res.debug(name + ": " + param.value + " / " + this.getFormValue(name));
    html.checkBox(param);
    if (label) {
       html.element("label", label, {"for": name});

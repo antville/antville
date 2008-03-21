@@ -1,4 +1,21 @@
 <% #main %>
+<script type="text/javascript">
+$(document).ready(function() {
+   $("#addValueFields").hide();
+   $("#addValueLink").click(function() {
+      var name = prompt('<% gettext "Please enter the name of the new value:" %>');
+      if (name) {
+         var key = "value_" + name;
+         var emptyFields = $("#addValueFields").clone();
+         $("#newKey").html(name + ":").attr("id", null);
+         $("#newValue").attr("name", key).attr("id", key);
+         $("#addValueFields").show().after(emptyFields).attr("id", null);
+      }
+      return false;
+   });
+});
+</script>
+
 <% breadcrumbs %>
 <div class="ample"></div>
 
@@ -35,8 +52,12 @@
 </td>
 </tr -->
 <% layout.values %>
+<tr id="addValueFields">
+<td id="newKey" class="small"></td>
+<td><input type="text" name="newValue" id="newValue" /></td>
+</tr>
 <tr>
-<td class="small"> </td>
+<td class="small"><a href="" id="addValueLink">Add value</a></td>
 <td>
    <br />
    <button type="submit" name="save" value="1">save</button>

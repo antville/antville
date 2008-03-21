@@ -32,10 +32,10 @@ Name: <% skin.input name %>
 <% #status %>
 <span class="small">
    (modified by <% skin.creator %><% if <% skin.custom %> is false then
-      <% skin.link diff prefix=" ... " 
-      suffix=<% skin.link delete reset prefix=" ... " %> %>
+      <% skin.link compare prefix=" ... " 
+      suffix=<% skin.link restore prefix=" ... " %> %>
    else 
-      <% skin.link delete prefix=" ... " %>
+      <% skin.link restore prefix=" ... " %>
    %>)<br />
    <strong>Macro:</strong> 
    &lt;% <% skin.prototype suffix="." | lowercase %>skin <% skin.name %> %&gt;

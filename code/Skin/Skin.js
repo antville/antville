@@ -53,10 +53,9 @@ Skin.prototype.main_action = function() {
 Skin.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
-         this.setSource(req.postParams.source);
          var url = this.href(req.action);
-         /*
          this.update(req.postParams);
+         /*
          // FIXME:
          if (false && this.equals(req.postParams.source)) {
             Skin.remove.call(this);
@@ -80,7 +79,7 @@ Skin.prototype.edit_action = function() {
    res.data.title = gettext('Edit {0}.{1} skin of Layout "{2}"', this.prototype, 
          this.name, res.handlers.layout.title);
    res.data.body = this.renderSkinAsString("Skin#edit");
-   res.handlers.skins.renderSkin("Site#page");
+   res.handlers.skins.renderSkin("Skins#page");
    return;
 };
 
@@ -106,6 +105,13 @@ Skin.getPrototypeOptions = function() {
 };
 
 Skin.prototype.update = function(data) {
+   if (this.isTransient()) {
+      this.source = this.getSource();
+      res.handlers.layout.skins.add(this);
+   }
+   this.setSource(data.source);
+   return;
+   
    if (!data.prototype) {
       throw Error(gettext("Please choose a prototype for the custom skin."));
    } else if (!data.name) {
@@ -124,6 +130,15 @@ Skin.prototype.update = function(data) {
 };
 
 Skin.remove = function() {
+   if (this.source) {
+      this.setSource(this.source);
+      delete this.source;
+   } else {
+      this.setSource();
+   }
+   this.remove();
+   return;
+   
    var file = this.getStaticFile(res.skinpath[0]);
    if (file.exists()) {
       file["delete"]();
@@ -140,10 +155,31 @@ Skin.remove = function() {
    return;
 };
 
-Skin.prototype.diff_action = function() {
+Skin.prototype.restore_action = function() {
+   if (req.postParams.proceed) {
+      try {
+         var str = this.toString();
+         this.setSource(this.source);
+         this.remove();
+         res.message = gettext("{0} was successfully restored.", str);
+         res.redirect(req.data.http_referer);
+      } catch(ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+
+   res.data.action = this.href(req.action);
+   res.data.title = gettext("Confirm restore of {0}", this);
+   res.data.body = this.renderSkinAsString("HopObject#confirm", {
+      text: gettext('You are about to restore {0}.', this)
+   });
+   res.handlers.site.renderSkin("Site#page");
+}
+
+Skin.prototype.compare_action = function() {
    // get the modified and original skins
-   var originalSkin = this.layout.skins.getOriginalSkinSource(this.prototype, 
-         this.name);
+   var originalSkin = this.source;
 
    if (!originalSkin) {
       res.data.status = gettext("This is a custom skin, therefor no differences can be displayed");
@@ -187,8 +223,8 @@ Skin.prototype.diff_action = function() {
    }
    res.data.body = this.renderSkinAsString("diff");
    res.data.title = gettext("Diffs for {0}/{1}.skin of layout {2}", 
-         this.proto, this.name, this.layout.title);
-   this.layout.skins.renderSkin("Site#page");
+         this.prototype, this.name, res.handlers.layout.title);
+   res.handlers.skins.renderSkin("Skins#page");
    return;
 };
 
@@ -216,9 +252,7 @@ Skin.prototype.source_macro = function() {
 Skin.prototype.getSource = function() {
    var skinFiles = app.getSkinfilesInPath(res.skinpath)[this.prototype];
    if (!skinFiles) {
-      res.message = gettext("Unknown prototype {0}", this.prototype);
-      res.redirect(res.handlers.layout.skins.href());
-      return;
+      return String.EMPTY;
    }
    var source = skinFiles[this.name];
    if (!source) {
@@ -232,25 +266,25 @@ Skin.prototype.getSource = function() {
 };
 
 Skin.prototype.setSource = function(source) {
-   if (!source) {
+   if (source === null) {
       return;
    }
 
    if (this.isSubskin()) {
       res.push();
+      res.writeln("<% #" + this.name + " %>");
+      res.writeln(source);
       var skin = this.getMainSkin();
       var subskins = skin.getSubskinNames();
       for (var i in subskins) {
-         res.write("<% #" + subskins[i] + " %>\n");
-         if (subskins[i] === this.name) {
-            res.write(source);
-         } else {
-            res.write(skin.getSubskin(subskins[i]).source);
+         if (subskins[i] !== this.name) {
+            res.writeln("<% #" + subskins[i] + " %>");
+            res.writeln(skin.getSubskin(subskins[i]).source);
          }
       }
       source = res.pop();
    }
-   
+
    var file = this.getStaticFile(res.skinpath[0], skin);   
    if (!file.exists()) {
       file.getParentFile().mkdirs();
@@ -274,7 +308,8 @@ Skin.prototype.getStaticFile = function(fpath, skin) {
 };
 
 Skin.prototype.isSubskin = function() {
-   return this.getMainSkin().hasSubskin(this.name);
+   // FIXME: OK to use subskins only?
+   return true; //this.getMainSkin().hasSubskin(this.name);
 }
 
 Skin.prototype.getMainSkin = function() {

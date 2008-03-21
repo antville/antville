@@ -136,13 +136,13 @@ Layout.prototype.export_action = function() {
    for each (var fpath in res.skinpath) {
       zip.add(new helma.File(fpath), "layout");
    }
-   var file, prototype;
+   var file, fname;
    var dir = new helma.File(app.dir);
    for each (var fpath in dir.listRecursive(/\.skin$/)) {
-      prototype = fpath.split("/").splice(-2)[0];
+      fname = fpath.split("/").splice(-2)[0];
       file = new helma.File(fpath);
       try {
-         zip.add(file, "layout/" + prototype);
+         zip.add(file, "layout/" + fname);
       } catch (ex) {
          app.log(ex);
       }
@@ -296,7 +296,8 @@ Layout.prototype.values_macro = function() {
    res.pop();
    */
    var values = [];
-   for each (var key in Layout.VALUES) {
+   //for each (var key in Layout.VALUES) {
+   for (var key in res.meta.values) {
       values.push({key: key, value: res.meta.values[key]});
    }
    values.sort(new String.Sorter("key"));
