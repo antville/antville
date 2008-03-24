@@ -22,15 +22,56 @@
 // $URL$
 //
 
-var ref;
-
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Object.js");
 app.addRepository("modules/core/String.js");
 app.addRepository("modules/helma/Color.js");
 app.addRepository("modules/helma/File.js");
 
-var convert = function(type) {
+Updater.prototype.main_action = function() {
+   app.invokeAsync(global, function() {
+      convert.skins(); // DEBUG
+      return;
+      
+      sql.execute(sql.query("tag"));
+      sql.execute(sql.query("tag_hub"));
+      sql.execute(sql.query("log"));
+      //sql.update("AV_ACCESSLOG");
+      sql.update("AV_CHOICE");
+      sql.update("AV_FILE");
+      sql.update("AV_IMAGE");
+      sql.update("AV_LAYOUT");
+      sql.update("AV_MEMBERSHIP");
+      sql.update("AV_POLL");
+      sql.update("AV_SITE");
+      sql.update("AV_SKIN");
+      sql.update("AV_TEXT");
+      sql.update("AV_USER");
+      sql.update("AV_VOTE");
+      sql.update("AV_SYSLOG"); // This has to go last
+      return;
+   }, [], -1);
+   this.renderSkin("Updater");
+   return;
+
+   app.invokeAsync(global, function() {
+      for (var i=0; i<10; i+=1) {
+         log(i);
+         for (var w=0; w<10000000; w+=1) {}
+      }
+   }, [], 5000);
+};
+
+Updater.prototype.out_action = function() {
+   res.contentType = "text/plain";
+   if (app.data.out) {
+      res.write(app.data.out.toString());
+      app.data.out.setLength(0);
+   }
+   return;
+};
+
+Updater.convert = function(type) {
    if (!type) {
       return;
    }
@@ -41,24 +82,28 @@ var convert = function(type) {
    }
 }
 
-convert.files = function() {
-   retrieve(sql("files"));
-   traverse(function() {
+Updater.convert.quotes = function(str) {
+   return "'" + str.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
+}
+
+Updater.convert.files = function() {
+   sql.retrieve(sql.query("files"));
+   sql.traverse(function() {
       var metadata = {
          fileName: this.fileName,
          contentType: this.type,
          contentLength: this.size,
          description: this.description
       }
-      execute("update file set prototype = 'File', parent_type = 'Site', " +
+      sql.execute("update file set prototype = 'File', parent_type = 'Site', " +
             "parent_id = site_id, metadata = " +
-            quote(metadata.toSource()) + " where id = " + this.id);
+            convert.quotes(metadata.toSource()) + " where id = " + this.id);
    });
 }
 
-convert.images = function() {
-   retrieve(sql("images"));
-   traverse(function() {
+Updater.convert.images = function() {
+   sql.retrieve(sql.query("images"));
+   sql.traverse(function() {
       var metadata = {
          fileName: this.fileName + "." + this.type,
          contentLength: this.size || 0,
@@ -70,31 +115,31 @@ convert.images = function() {
          thumbnailWidth: this.thumbnailWidth,
          thumbnailHeight: this.thumbnailHeight
       }
-      execute("update image set metadata = " +
-            quote(metadata.toSource()) + " where id = " + this.id);
+      sql.execute("update image set metadata = " +
+            convert.quotes(metadata.toSource()) + " where id = " + this.id);
    });
    convert.tags("image");
 };
 
-convert.layouts = function() {
+Updater.convert.layouts = function() {
    convert.xml("layout");
-   retrieve(sql("layouts"));
-   traverse(function() {
+   sql.retrieve(sql.query("layouts"));
+   sql.traverse(function() {
       var metadata = eval(this.metadata) || {};
       metadata.title = this.LAYOUT_TITLE || "Layout #" + this.id;
       metadata.description = this.LAYOUT_DESCRIPTION;
       if (this.LAYOUT_ISIMPORT) {
          // FIXME: metadata.origin = Layout.getById(id).href();
       }
-      execute("update layout set metadata = " + quote(metadata.toSource()) + 
-            " where id = " + this.id);
+      sql.execute("update layout set metadata = " + 
+            convert.quotes(metadata.toSource()) + " where id = " + this.id);
    });
 }
 
-convert.sites = function() {
+Updater.convert.sites = function() {
    convert.xml("site");
-   retrieve(sql("sites"));
-   traverse(function() {
+   sql.retrieve(sql.query("sites"));
+   sql.traverse(function() {
       var metadata = eval(this.metadata) || {};
       metadata.email = this.SITE_EMAIL;
       metadata.title = this.SITE_TITLE;
@@ -126,30 +171,30 @@ convert.sites = function() {
             "language", "country"]) {
          delete metadata[key];
       }
-      execute("update site set metadata = " + quote(metadata.toSource()) +
-            ", mode = " + quote(mode) + " where id = " + this.id);
+      sql.execute("update site set metadata = " + convert.quotes(metadata.toSource()) +
+            ", mode = " + convert.quotes(mode) + " where id = " + this.id);
    });
 }
 
-convert.content = function() {
+Updater.convert.content = function() {
    convert.xml("content");
    convert.tags("content");
 };
 
-convert.users = function() {
-   retrieve("select id, hash, salt, USER_URL from user");
-   traverse(function() {
+Updater.convert.users = function() {
+   sql.retrieve("select id, hash, salt, USER_URL from user");
+   sql.traverse(function() {
       var metadata = {
          hash: this.hash,
          salt: this.salt,
          url: this.USER_URL
       }
-      execute("update user set metadata = " + quote(metadata.toSource()) +
-            " where id = " + this.id);
+      sql.execute("update user set metadata = " + 
+            convert.quotes(metadata.toSource()) + " where id = " + this.id);
    });
 }
 
-convert.xml = function(table) {
+Updater.convert.xml = function(table) {
    var metadata = function(xml) {
       var clean = xml.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "");
       try {
@@ -160,18 +205,18 @@ convert.xml = function(table) {
       return {};
    };
    
-   retrieve(sql("jsonize", table));
-   traverse(function() {
+   sql.retrieve(sql.query("jsonize", table));
+   sql.traverse(function() {
       if (!this.xml) {
          return;
       }
       var data = metadata(this.xml);
-      execute("update " + table + " set metadata = " + 
-            quote(data.toSource()) + " where id = " + this.id);
+      sql.execute("update " + table + " set metadata = " + 
+            convert.quotes(data.toSource()) + " where id = " + this.id);
    });
 }
 
-convert.tags = function(table) {
+Updater.convert.tags = function(table) {
    var prototype;
    switch (table) {
       case "image":
@@ -179,27 +224,27 @@ convert.tags = function(table) {
       case "content":
       prototype = "Story"; break;
    }
-   retrieve("select site_id, topic from " + table + 
+   sql.retrieve("select site_id, topic from " + table + 
          " where topic is not null group by topic");
-   traverse(function() {
-      execute("insert into tag set id = " + id() + ", site_id = " + 
+   sql.traverse(function() {
+      sql.execute("insert into tag set id = " + id() + ", site_id = " + 
             this.site_id + ", name = " +
-            quote(this.topic).replace(/^[\/\.]*$/, "?") + ", type = " +  
-            quote(prototype));
+            convert.quotes(this.topic).replace(/^[\/\.]*$/, "?") + ", type = " +  
+            convert.quotes(prototype));
    });
-   retrieve("select topic, tag.id, metadata, " + table + ".id as tagged_id, " +
+   sql.retrieve("select topic, tag.id, metadata, " + table + ".id as tagged_id, " +
          "modifier_id, creator_id, " + table + ".site_id from " + table + 
          ", tag where " + "topic is not null and topic = tag.name and " +
-         "tag.type = " + quote(prototype));
-   traverse(function() {
-      execute("insert into tag_hub set id = " + id() + ", tag_id = " + 
+         "tag.type = " + convert.quotes(prototype));
+   sql.traverse(function() {
+      sql.execute("insert into tag_hub set id = " + id() + ", tag_id = " + 
             this.id + ", tagged_id = " + this.tagged_id + 
-            ", tagged_type = " + quote(prototype) + ", user_id = " +
+            ", tagged_type = " + convert.quotes(prototype) + ", user_id = " +
             this.modifier_id || this.creator_id);
    });
 }
 
-convert.skins = function() {
+Updater.convert.skins = function() {
    var styles = {
       "bgcolor": "background color",
       "linkcolor": "link color",
@@ -306,7 +351,7 @@ convert.skins = function() {
          source = source.replace(/(<%\s*)layout\.([^\s]+)/g, function() {
             var value = styles[arguments[2]];
             if (value) {
-               return arguments[1] + "value " + quote(value);
+               return arguments[1] + "value " + convert.quotes(value);
             }
             return arguments[0];
          });
@@ -338,7 +383,7 @@ convert.skins = function() {
          var file = new java.io.File(fpath + "/" + prototype + "/" + prototype + ".skin");
          file.mkdirs();
          //file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
-         debug(file.getCanonicalPath());
+         sql.debug(file.getCanonicalPath());
          file["delete"]();
          if (data) {
             var fos = new java.io.FileOutputStream(file);
@@ -353,12 +398,8 @@ convert.skins = function() {
       return;
    }
 
-   var server= Packages.helma.main.Server.getServer();
-   var av = server.getApplication("antville");
-   var antville = new Packages.helma.framework.core.ApplicationBean(av);
-
    var appSkins = {};
-   var skinfiles = antville.getSkinfilesInPath([antville.dir]);
+   var skinfiles = app.getSkinfilesInPath([app.dir]);
 
    for (var prototype in skinfiles) {
       // Ignore lowercase prototypes
@@ -376,15 +417,15 @@ convert.skins = function() {
    }
    
    var current, fpath, skins;
-   retrieve(sql("skins4"));
-   traverse(function() {
+   sql.retrieve(sql.query("skins4"));
+   sql.traverse(function() {
       var site = this.site_name || "www";
       if (current !== site + this.layout_name) {
          save(skins, fpath);
          current = site + this.layout_name;
-         fpath = antville.dir + "/../static/" + site;
+         fpath = app.dir + "/../static/" + site;
          if (site === "www") {
-            var rootLayoutId = 6; // FIXME: av.getDataRoot().sys_layout._id;
+            var rootLayoutId = 6; // FIXME: app.__app__.getDataRoot().sys_layout._id;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
          } else {
@@ -417,11 +458,144 @@ convert.skins = function() {
          ref[skinName] = clean(source);
       }
       if (parent !== null && parent !== undefined) {
-         //execute("update skin set source = '" + clean(parent).replace(/'/g, "\\'") + 
-         //      "' where " + 'id = ' + this.id);
+         sql.execute("update skin set source = '" + 
+               clean(parent).replace(/'/g, "\\'") + "' where " + 
+               'id = ' + this.id);
       }
    });
 
    save(skins, fpath);
    return;
 }
+
+Updater.SqlUtility = function() {
+   var db = getDBConnection("antville");
+   var query, result;
+
+   var ResultWrapper = function(result) {
+      var columns = [];
+      this.values = {};
+      
+      for (var i=1; i<=result.getColumnCount(); i+=1) {
+         columns.push(result.getColumnName(i));
+      }
+   
+      this.update = function() {
+         for each (var key in columns) {
+            this.values[key] = result.getColumnItem(key);
+         }
+         return;
+      }
+      
+      return this;
+   }
+   
+   this.log = function(str) {
+      var now = "[" + new Date + "] ";
+      app.data.out || (app.data.out = new java.lang.StringBuffer());
+      app.data.out.insert(0, now + encodeForm(str) + "\n");
+      return;
+   }
+   
+   this.debug = function(str) {
+      if (app.properties.debug === "true") {
+         this.log(str);
+      }
+      return;
+   }
+   
+   this.query = function(type) {
+      var param = {};
+      for (var i=1; i<arguments.length; i+=1) {
+         param["value" + i] = arguments[i];
+      } 
+      return updater.renderSkinAsString("sql#" + type, param).replace(/\n|\r/g, " ");   
+   }
+   
+   this.update = function(tableName) {
+      log("Updating table " + tableName);
+      var sql = renderSkinAsString("sql#" + tableName);
+      sql.split(/\n|\r|\n\r/).forEach(function(line) {
+         if (!line) {
+            return;
+         } else if (line.indexOf("#!") === 0) {
+            convert(line.substr(2));
+         } else {
+            this.execute(line);
+         }
+         return;
+      });
+      return;
+   }
+   
+   this.id = function() {
+      app.data.id || (app.data.id = 0);
+      return (app.data.id += 1);
+   };
+   
+   this.error = function() {
+      var error = db.getLastError()
+      if (error) {
+         this.log(error);
+         res.abort();
+      }
+      return;
+   };
+   
+   this.count = function(sql) {
+      var count = 0;
+      sql = "select count(*) from " + sql;
+      this.debug(sql);
+      result = db.executeRetrieval(sql);
+      if (result.next()) {
+         count = result.getColumnItem("count(*)");
+      }
+      result.release();
+      return count;
+   }
+      
+   this.execute = function(sql) {
+      this.debug(sql.substr(0, sql.indexOf("\n")));
+      db.executeCommand(sql);
+      this.error();
+      return;
+   }
+   
+   this.retrieve = function(sql) {
+      this.debug(sql);
+      query = sql;
+      return;
+   }
+   
+   this.traverse = function(callback) {
+      if (!query || !callback) {
+         return;
+      }
+      var STEP = 10000;
+      var rows, offset = 0;      
+      while (true) {
+         result = db.executeRetrieval(query + 
+               " limit " + STEP + " offset " + offset);
+         this.error();
+         // FIXME: The hasMoreRows() method does not work as expected
+         rows = result.next();
+         if (!rows) {
+            break;
+         }
+         do {
+            var wrapper = new ResultWrapper(result);
+            wrapper.update(result);
+            callback.call(wrapper.values, result);
+         } while (rows = result.next());
+         offset += STEP;
+      }
+      result.release();
+      return;
+   }
+   
+   return this;
+}
+
+global.updater = this;
+global.convert = Updater.convert;
+global.sql = new Updater.SqlUtility();

@@ -10,7 +10,7 @@ var scheduler = setInterval(function() {
    $.ajax({
       async: true,
       type: "GET",
-      url: '<% root.href out %>',
+      url: '<% updater.href out %>',
       dataType: "text",
       error: function(xmlObject, error, exception) {
          clearInterval(scheduler);
