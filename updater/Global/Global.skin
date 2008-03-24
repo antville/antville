@@ -1,7 +1,7 @@
 <html>
 <head>
    <script type="text/javascript" 
-         src="<% root.href %>../../static/www/jquery-1.1.3.1.pack.js"></script>
+         src="/helma/static/antville/www/jquery-1.1.3.1.pack.js"></script>
 </head>
 <body>
 <script type="text/javascript">

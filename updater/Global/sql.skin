@@ -223,6 +223,30 @@ alter table skin change column SKIN_F_USER_CREATOR creator_id mediumint(10);
 alter table skin change column SKIN_F_USER_MODIFIER modifier_id mediumint(10);
 alter table skin change column SKIN_CREATETIME created datetime;
 alter table skin change column SKIN_MODIFYTIME modified datetime;
+alter table skin add column source mediumtext;
+update skin set prototype = "Files" where prototype = "FileMgr";
+update skin set prototype = "Images" where prototype = "ImageMgr";
+update skin set prototype = "Layouts" where prototype = "LayoutMgr";
+update skin set prototype = "Members" where prototype = "MemberMgr";
+update skin set prototype = "Polls" where prototype = "PollMgr";
+update skin set prototype = "Skins" where prototype = "SkinMgr";
+update skin set prototype = "Stories" where prototype = "StoryMgr";
+update skin set prototype = "Archive" where prototype = "Day";
+#update skin set prototype = "Image" where prototype = "LayoutImage";
+#update skin set prototype = "Images" where prototype = "LayoutImageMgr";
+#update skin set prototype = "Layouts" where prototype = "RootLayoutMgr";
+update skin set prototype = "Admin" where prototype = "SysMgr";
+update skin set prototype = "LogEntry" where prototype = "SysLog";
+update skin set prototype = "Tag" where prototype = "Topic";
+update skin set prototype = "Tags" where prototype = "TopicMgr";
+update skin set name = "main" where prototype = "Comment" and name = "toplevel";
+update skin set prototype = "Membership", name = "status" where prototype = "Members" and name = "statusloggedin";
+update skin set prototype = "Membership", name = "login" where prototype = "Members" and name = "statusloggedout";
+update skin set name = "search" where prototype = "Site" and name = "searchbox";
+update skin set name = "stylesheet" where prototype = "Site" and name = "style";
+update skin set name = "date" where prototype = "Story" and name = "dayheader";
+update skin set name = "content" where prototype = "Story" and name = "display";
+update skin set name = "history" where prototype = "Story" and name = "historyview";
 #!skins
 #alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
 
@@ -238,6 +262,19 @@ layout.name, layout.metadata, skin.id, skin.name as skin_name, prototype,
 SKIN_SOURCE from layout, skin where site_id is null and skin.layout_id = 
 layout.id and layout.site_id is null order by layout_id, site_name, prototype, 
 skin_name
+
+<% #skins3 %>
+select skin.id, site.name as site_name, site.layout_id as current_layout, 
+layout.id as layout_id, layout.name as layout_name, layout.metadata as meta,
+skin.prototype, skin.name, SKIN_SOURCE as source, (select SKIN_SOURCE from 
+site p_site, skin p_skin where p_site.id = site.id and p_skin.layout_id = 
+layout.layout_id and p_skin.prototype = skin.prototype and p_skin.name = 
+skin.name) as parent from site, layout, skin where site.id = layout.site_id 
+and layout.id = skin.layout_id and layout.id = <% param.value2 %> order by 
+site_name, layout_name, prototype, name
+
+<% #skins4 %>
+select skin.id, skin.prototype, skin.name, skin.SKIN_SOURCE as source, layout.id as layout_id, layout.name as layout_name, layout.metadata as layout_metadata, site.name as site_name, site.layout_id as current_layout, (select SKIN_SOURCE from site p_site, skin p_skin where p_site.id = site.id and p_skin.layout_id = layout.layout_id and p_skin.prototype = skin.prototype and p_skin.name = skin.name) as parent from skin left join layout on skin.layout_id = layout.id left join site on layout.site_id = site.id order by site_name, layout_name, prototype, name
 
 <% #AV_SYSLOG %>
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from user, AV_SYSLOG where SYSLOG_OBJECT = user.name and SYSLOG_TYPE = 'user';

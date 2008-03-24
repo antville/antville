@@ -22,7 +22,10 @@
 // $URL$
 //
 
+var ref;
+
 app.addRepository("modules/core/HopObject.js");
+app.addRepository("modules/core/Object.js");
 app.addRepository("modules/core/String.js");
 app.addRepository("modules/helma/Color.js");
 app.addRepository("modules/helma/File.js");
@@ -241,6 +244,7 @@ convert.skins = function() {
          
          Story: {
             dayheader: "date",
+            display: "content",
             historyview: "history"
          }
       }
@@ -289,7 +293,6 @@ convert.skins = function() {
    }
 
    var clean = function(source) {
-      //return source;
       if (source) {
          // Renaming prototype and skin names in skin macros
          var re = /(<%\s*)([^.]+)(\.skin\s+name="?)([^"\s]+)/g;
@@ -299,7 +302,7 @@ convert.skins = function() {
             return $[1] + renamed[0].toLowerCase() + $[3] + 
                   renamed[0] + "#" + renamed[1];
          });
-         // Replacing layout.XXX macros with corresponding value macros
+         // Replacing layout.* macros with corresponding value macros
          source = source.replace(/(<%\s*)layout\.([^\s]+)/g, function() {
             var value = styles[arguments[2]];
             if (value) {
@@ -311,76 +314,113 @@ convert.skins = function() {
       }
    }
 
-   var save = function(fpath, data) {
-      var file = new java.io.File(fpath);
-      file.mkdirs();
-      //file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
-      debug(file.getCanonicalPath());
-      file["delete"]();
-      if (data) {
-         var fos = new java.io.FileOutputStream(file);
-         var bos = new java.io.BufferedOutputStream(fos);
-         var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
-         writer.write(data);
-         writer.close();
-         bos.close();
-         fos.close();
-      }
-      return
-   } 
-
-   var dump = function(sql) {
-      var buffer = {};
-      retrieve(sql);
-      traverse(function() {
-         var fpath = app.dir + "/../static/" + this.site_name;
-         var renamed = rename(this.prototype, this.skin_name);
-         var prototype = renamed[0];
-         var subskin = renamed[1];
-         var skinPath = prototype + "/" + prototype + ".skin";
-         if (this.current_layout === this.layout_id) {
-            fpath += "/layout/" + skinPath;
-         } else {
-            fpath += "/layouts/" + this.name + "/" + skinPath;
-         }
-         if (!buffer[fpath]) {
-            buffer[fpath] = [];
-            if (prototype === "Site") {
-               buffer[fpath].push(values(this.metadata));
-            }
-         }
-         var source = clean(this.SKIN_SOURCE);
-         // FIXME: Ugly special hack for linking from Membership back to Members
-         if (prototype === "Membership" && 
-               (subskin === "login" || subskin === "status")) {
-            source = source.replace(/(<%\s*)this./g, "$1members.");
-         }
-         //debug(this.prototype + "#" + this.skin_name + " >>> " + 
-         //      prototype + "#" + subskin)
-         //return;
-         res.push();
-         res.writeln("<% #" + subskin + " %>");
-         res.writeln(source || "");
-         buffer[fpath].push(res.pop());
+   var save = function(skins, fpath) {
+      if (!skins) {
          return;
-      });
-      
-      for (var fpath in buffer) {
-         var skin = buffer[fpath].join("\n");
-         save(fpath, skin);
       }
       
+      var allow = ["Global", "Site", "Story", "Comment", "Image", "File", 
+            "Poll", "Members", "Membership"];
+
+      for (var prototype in skins) {
+         if (allow.indexOf(prototype) < 0) {
+            continue;
+         }
+         
+         res.push();
+         var skinset = skins[prototype];
+         for (var skinName in skinset) {
+            res.writeln("<% #" + skinName + " %>");
+            res.writeln(skinset[skinName] || "");
+         }
+         var data = res.pop();
+         
+         var file = new java.io.File(fpath + "/" + prototype + "/" + prototype + ".skin");
+         file.mkdirs();
+         //file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
+         debug(file.getCanonicalPath());
+         file["delete"]();
+         if (data) {
+            var fos = new java.io.FileOutputStream(file);
+            var bos = new java.io.BufferedOutputStream(fos);
+            var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
+            writer.write(data);
+            writer.close();
+            bos.close();
+            fos.close();
+         }
+      }
       return;
    }
-   
-   dump(sql("skins"));
-return;
 
-   // Exporting the skins of the former root layouts
-   var server = Packages.helma.main.Server.getServer();
-   var antville = server.getApplication("antville");
-   var rootLayout = antville.dataRoot.sys_layout;
-   var rootLayoutId = rootLayout ? rootLayout._id : app.properties.rootLayoutId;
-   rootLayoutId && dump(sql("skins2", rootLayoutId));
+   var server= Packages.helma.main.Server.getServer();
+   var av = server.getApplication("antville");
+   var antville = new Packages.helma.framework.core.ApplicationBean(av);
+
+   var appSkins = {};
+   var skinfiles = antville.getSkinfilesInPath([antville.dir]);
+
+   for (var prototype in skinfiles) {
+      // Ignore lowercase prototypes
+      if (prototype.charCodeAt(0) > 90) {
+         continue;
+      }
+      appSkins[prototype] || (appSkins[prototype] = {});
+      for each (var source in skinfiles[prototype]) {
+         var skin = createSkin(source);
+         var subskins = skin.getSubskinNames();
+         for each (var name in subskins) {
+            appSkins[prototype][name] = skin.getSubskin(name).getSource();
+         }
+      }
+   }
+   
+   var current, fpath, skins;
+   retrieve(sql("skins4"));
+   traverse(function() {
+      var site = this.site_name || "www";
+      if (current !== site + this.layout_name) {
+         save(skins, fpath);
+         current = site + this.layout_name;
+         fpath = antville.dir + "/../static/" + site;
+         if (site === "www") {
+            var rootLayoutId = 6; //av.getDataRoot().sys_layout._id;
+            fpath += rootLayoutId == this.layout_id ?
+                  "/layout/" : "/layouts/" + this.layout_name;
+         } else {
+            fpath += this.current_layout === this.layout_id ?
+                  "/layout/" : "/layouts/" + this.layout_name;
+         }
+         skins = appSkins.clone({}, true);
+         skins.Site.values = values(this.layout_metadata);
+      }
+
+      var renamed = rename(this.prototype, this.name);
+      var prototype = renamed[0];
+      var skinName = renamed[1];
+      var source, parent;
+      var appSkin = (skins[prototype] && skins[prototype][skinName]);
+      if (this.source !== null) {
+         source = this.source;
+         parent = this.parent !== null ? this.parent : appSkin;
+      } else {
+         source = this.parent;
+         parent = appSkin;
+      }
+      if (source !== null && source !== undefined) {
+         // FIXME: Ugly special hack for linking from Membership back to Members
+         if (prototype === "Membership" && 
+               (skinName === "login" || skinName === "status")) {
+            source = source.replace(/(<%\s*)this./g, "$1members.");
+         }
+         ref = (skins[prototype] || (skins[prototype] = {}));
+         ref[skinName] = clean(source);
+      }
+      if (parent !== null && parent !== undefined) {
+         execute("update skin set source = '" + clean(parent).replace(/'/g, "\\'") + 
+               "' where " + 'id = ' + this.id);
+      }
+   });
+
    return;
 }
