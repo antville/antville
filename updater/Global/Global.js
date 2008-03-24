@@ -384,7 +384,7 @@ convert.skins = function() {
          current = site + this.layout_name;
          fpath = antville.dir + "/../static/" + site;
          if (site === "www") {
-            var rootLayoutId = 6; //av.getDataRoot().sys_layout._id;
+            var rootLayoutId = 6; // FIXME: av.getDataRoot().sys_layout._id;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
          } else {
@@ -417,10 +417,11 @@ convert.skins = function() {
          ref[skinName] = clean(source);
       }
       if (parent !== null && parent !== undefined) {
-         execute("update skin set source = '" + clean(parent).replace(/'/g, "\\'") + 
-               "' where " + 'id = ' + this.id);
+         //execute("update skin set source = '" + clean(parent).replace(/'/g, "\\'") + 
+         //      "' where " + 'id = ' + this.id);
       }
    });
 
+   save(skins, fpath);
    return;
 }
