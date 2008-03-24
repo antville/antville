@@ -69,7 +69,7 @@ Images.prototype.main_action = function() {
 
 Images.prototype.create_action = function() {
    var image = new Image;
-   image.parent_type = this._parent._prototype;
+   // FIXME: image.parent_type = this._parent._prototype;
    
    if (req.postParams.save) {
       try {

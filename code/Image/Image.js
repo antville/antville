@@ -32,6 +32,10 @@ this.handleMetadata("thumbnailName");
 this.handleMetadata("thumbnailWidth");
 this.handleMetadata("thumbnailHeight");
 
+Image.KEYS = ["name", "created", "modified", "url", "description", 
+            "contentType", "contentLength", "width", "height", "thumbnailName", 
+            "thumbnailWidth", "thumbnailHeight", "fileName"];
+
 Image.prototype.constructor = function(data) {
    // Images.Default is using the constructor on code compilation
    if (typeof session !== "undefined") {
@@ -39,7 +43,9 @@ Image.prototype.constructor = function(data) {
       this.touch();
    }
    if (data) {
-      this.map(data);
+      for each (var key in Image.KEYS) {
+         this[key] = data[key];
+      }
    }
    this.created = new Date;
    return this;

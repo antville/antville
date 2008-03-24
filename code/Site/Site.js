@@ -466,7 +466,7 @@ Site.prototype.stories_macro = function() {
          if (session.user === this.creator) {
             session.user.renderSkin("User#welcome");
          }
-         if (User.require(User.PRIVILEGED)) {
+         if (this === root && User.require(User.PRIVILEGED)) {
             this.admin.renderSkin("Admin#welcome");
          }
       }

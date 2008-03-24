@@ -136,6 +136,7 @@ Layout.prototype.export_action = function() {
    for each (var fpath in res.skinpath) {
       zip.add(new helma.File(fpath), "layout");
    }
+   
    var file, fname;
    var dir = new helma.File(app.dir);
    for each (var fpath in dir.listRecursive(/\.skin$/)) {
@@ -147,13 +148,12 @@ Layout.prototype.export_action = function() {
          app.log(ex);
       }
    }
+   
    var data = new HopObject;
    data.images = new HopObject;
    this.images.forEach(function() {
-      var keys = ["name", "width", "height", "description", "contentLength", 
-            "thumbnailName", "thumbnailWidth", "thumbnailHeight"];
       var image = new HopObject;
-      for each (var key in keys) {
+      for each (var key in Image.KEYS) {
          image[key] = this[key];
          data.images.add(image);
       }
@@ -161,8 +161,14 @@ Layout.prototype.export_action = function() {
    data.origin = this.origin || this.site.href();
    data.originator = this.originator || session.user.name;
    data.originated = this.originated || new Date;
+   
+   // FIXME: XML encoder is losing all mixed-case properties :(
    var xml = new java.lang.String(Xml.writeToString(data));
    zip.addData(xml.getBytes("UTF-8"), "data.xml");
+   /*file = java.io.File.createTempFile(Date.now(), ".antville");
+   serialize(data, file);
+   var str = new java.lang.String((new helma.File(file)).readAll());
+   zip.addData(str.getBytes("UTF-8"), "data.xml");*/
    zip.close();
 
    res.contentType = "application/zip";
@@ -181,11 +187,12 @@ Layout.prototype.import_action = function() {
          destination.makeDirectory();
       }
       // Extract imported layout to temporary directory
-      var temp = new helma.File(destination, "../import.temp");
-      var file = data.upload.writeToFile(new helma.File(destination, ".."));
-      var zip = new helma.Zip(file);
+      var dir = new helma.File(destination, "..");
+      var temp = new helma.File(dir, "import.temp");
+      var fname = data.upload.writeToFile(dir);
+      var zip = new helma.Zip(new helma.File(dir, fname));
       zip.extractAll(temp);
-      (new helma.File(file)).remove();
+      dir.remove();
       // Backup the current layout if necessary
       if (destination.list().length > 0) {
          var timestamp = (new Date).format("yyyyMMdd-HHmmss");
@@ -204,12 +211,14 @@ Layout.prototype.import_action = function() {
       // Update database with imported data
       layout = this;
       var data = Xml.read(new helma.File(temp, "data.xml"));
+      //var data = deserialize(new helma.File(temp, "data.xml"));
       this.origin = data.origin;
       this.originator = data.originator;
       this.originated = data.originated;
       data.images.forEach(function() {
          layout.images.add(new Image(this));
       });
+      temp.remove();
       res.redirect(this.href());
       return;
    }
