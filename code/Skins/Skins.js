@@ -42,7 +42,7 @@ Skins.prototype.getChildElement = function(name) {
             return skin;
          }
       }
-      if (global[groupName]) {
+      if (global[groupName] || groupName === "Global") {
          return new Skin(groupName, name);         
       }
    }
@@ -63,11 +63,8 @@ Skins.prototype.href = function(action) {
 */
 
 Skins.prototype.main_action = function() {
-   if (this.parent) {
-      res.redirect(res.handlers.layout.skins.href());
-   }
-   res.data.list = this.getOutline();
-   res.data.title = gettext("Skins of {0}", res.handlers.site.title);
+   res.data.title = gettext("Custom skins of {0}", this._parent.title);
+   res.data.list = this.renderSkinAsString("Skins#basic");
    res.data.body = this.renderSkinAsString("Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -100,28 +97,26 @@ Skins.prototype.getOutline = function(type) {
       names.sort();
       skins.push([prototype, names]);
    }
-   
+      
    res.push();
-   html.openTag("ul");
    for each (var item in skins) {
       prototype = item[0];
-      skins = item[1];
-      if (skins && skins.length > 0) {
+      skin = item[1];
+      if (skin && skin.length > 0) {
          html.openTag("li");
          html.openTag("a", {href: "#", name: prototype, id: prototype});
          res.write(prototype);
          html.closeTag("a");
          html.openTag("ul");
-         for each (var subskin in skins) {
-            skin = this.getSkin(prototype, subskin) || 
-                  new Skin(prototype, subskin);
-            skin.renderSkin("Skin#skins");
+         for each (var name in skin) {
+            subskin = this.getSkin(prototype, name) || 
+                  new Skin(prototype, name);
+            subskin.renderSkin("Skin#listItem");
          }
          html.closeTag("ul");
          html.closeTag("li");
       }
    }
-   html.closeTag("ul");
    return this.cache[key] = res.pop();
  };
 
@@ -148,13 +143,13 @@ Skins.prototype.create_action = function() {
          res.data.title = gettext("Edit skin {0}.{1} of layout {2}", 
                skin.prototype, skin.name, res.handlers.layout.name);
       } else {
-         res.data.title = gettext('Create a custom skin for layout "{0}"', 
-               this._parent.title);
+         res.data.title = gettext('Create a custom skin of "{0}"', 
+               res.handlers.site.title);
       }
    }
    res.data.action = this.href(req.action);
    res.data.body = skin.renderSkinAsString("Skin#edit");
-   this.renderSkin("Site#page");
+   this.renderSkin("Skins#page");
    return;
 };
 
@@ -170,10 +165,13 @@ Skins.prototype.modified_action = function() {
    return;
 };
 
-Skins.prototype.custom_action = function() {
-   res.data.title = gettext("Custom skins of {0}", this._parent.title);
-   res.data.list = this.getOutline("custom");
-   res.data.body = this.renderSkinAsString("main");
+Skins.prototype.advanced_action = function() {
+   if (this.parent) {
+      res.redirect(res.handlers.layout.skins.href());
+   }
+   res.data.list = this.getOutline();
+   res.data.title = gettext("Skins of {0}", res.handlers.site.title);
+   res.data.body = this.renderSkinAsString("Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -260,6 +258,7 @@ Skins.getRedirectUrl = function(data) {
 };
 
 Skins.getSummary = function(prefix, prototype, name) {
+   return gettext("Description of skin " + prototype + "." + name);
    var key = prefix + "." + prototype;
    name && (key += "." + name);
    var languages = new Array("en");

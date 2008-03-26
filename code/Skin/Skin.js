@@ -22,6 +22,9 @@
 // $URL$
 //
 
+Skin.CUSTOMIZABLE_PROTOTYPES = ["Archive", "Choice", "Comment", "File", 
+      "Global", "Image", "Membership", "Poll", "Site", "Story", "Tag"];
+
 Skin.prototype.constructor = function(prototype, name) {
    this.prototype = prototype;
    this.name = name;
@@ -76,8 +79,8 @@ Skin.prototype.edit_action = function() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Edit {0}.{1} skin of Layout "{2}"', this.prototype, 
-         this.name, res.handlers.layout.title);
+   res.data.title = gettext('Edit {0}.{1} skin of "{2}"', this.prototype, 
+         this.name, res.handlers.site.title);
    res.data.body = this.renderSkinAsString("Skin#edit");
    res.handlers.skins.renderSkin("Skins#page");
    return;
@@ -92,14 +95,8 @@ Skin.prototype.getFormOptions = function(name) {
 
 Skin.getPrototypeOptions = function() {
    var prototypes = [];
-   for (var name in app.skinfiles) {
-      if (name.charCodeAt(0) < 91 && name !== "CVS") {
-         if ((name === "Admin" || name === "Root") && 
-               res.handlers.site !== root) {
-            continue;
-         }
-         prototypes.push({value: name, display: name});
-      }
+   for each (var name in Skin.CUSTOMIZABLE_PROTOTYPES) {
+      prototypes.push({value: name, display: name});
    }
    return prototypes.sort(new String.Sorter("display"));
 };
@@ -162,7 +159,7 @@ Skin.prototype.restore_action = function() {
          this.setSource(this.source);
          this.remove();
          res.message = gettext("{0} was successfully restored.", str);
-         res.redirect(req.data.http_referer);
+         res.redirect(res.handlers.layout.skins.href("modified"));
       } catch(ex) {
          res.message = ex;
          app.log(ex);
@@ -240,9 +237,7 @@ Skin.prototype.status_macro = function() {
 };
 
 Skin.prototype.summary_macro = function() {
-   var summary = Skins.getSummary("skin", this.prototype, this.name);
-   res.write(summary[0] + ". " + summary[1]);
-   return;
+   return Skins.getSummary("skin", this.prototype, this.name);
 };
 
 Skin.prototype.source_macro = function() {

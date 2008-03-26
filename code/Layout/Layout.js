@@ -158,6 +158,7 @@ Layout.prototype.export_action = function() {
          data.images.add(image);
       }
    });
+   data.version = Root.VERSION;
    data.origin = this.origin || this.site.href();
    data.originator = this.originator || session.user.name;
    data.originated = this.originated || new Date;
@@ -165,10 +166,6 @@ Layout.prototype.export_action = function() {
    // FIXME: XML encoder is losing all mixed-case properties :(
    var xml = new java.lang.String(Xml.writeToString(data));
    zip.addData(xml.getBytes("UTF-8"), "data.xml");
-   /*file = java.io.File.createTempFile(Date.now(), ".antville");
-   serialize(data, file);
-   var str = new java.lang.String((new helma.File(file)).readAll());
-   zip.addData(str.getBytes("UTF-8"), "data.xml");*/
    zip.close();
 
    res.contentType = "application/zip";
@@ -190,13 +187,17 @@ Layout.prototype.import_action = function() {
       var dir = new helma.File(destination, "..");
       var temp = new helma.File(dir, "import.temp");
       var fname = data.upload.writeToFile(dir);
-      var zip = new helma.Zip(new helma.File(dir, fname));
-      zip.extractAll(temp);
-      dir.remove();
+      var zip = new helma.File(dir, fname);
+      (new helma.Zip(zip)).extractAll(temp);
+      zip.remove();
+      var data = Xml.read(new helma.File(temp, "data.xml"));
+      if (!data.version || data.version < Root.VERSION) {
+         throw Error("Incompatible layout version");
+      }
       // Backup the current layout if necessary
       if (destination.list().length > 0) {
          var timestamp = (new Date).format("yyyyMMdd-HHmmss");
-         zip = new helma.Zip();
+         var zip = new helma.Zip();
          zip.add(destination);
          zip.save(this.getFile("../layout-" + timestamp + ".zip"));
          zip.close();
@@ -210,15 +211,13 @@ Layout.prototype.import_action = function() {
       layout.renameTo(destination);
       // Update database with imported data
       layout = this;
-      var data = Xml.read(new helma.File(temp, "data.xml"));
-      //var data = deserialize(new helma.File(temp, "data.xml"));
       this.origin = data.origin;
       this.originator = data.originator;
       this.originated = data.originated;
       data.images.forEach(function() {
          layout.images.add(new Image(this));
       });
-      temp.remove();
+      temp.removeDirectory();
       res.redirect(this.href());
       return;
    }

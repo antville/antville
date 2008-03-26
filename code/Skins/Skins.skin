@@ -8,6 +8,7 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+<script type="text/javascript" src="<% site.href main.js %>"></script>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" 
       href="<% site.href main.css %>" />
 <style type="text/css">
@@ -60,16 +61,55 @@
 </html>
 
 <% #main %>
+<script type="text/javascript">
+$(document).ready(function() {
+   $("ul ul").hide();
+   $("ul li a[@href=#]").toggle(function() {
+      $(this).css("color", "<% value 'base font color' %>");
+      $(this).next("ul").show();
+      return false;
+   }, function() {
+      $(this).css("color", "<% value 'link color' %>");
+      $(this).next("ul").hide();
+      return false;
+   });
+});
+</script>
 <p><% breadcrumbs %></p>
 
 <div class="ample">
    <% skins.link create "add a custom skin" prefix="... " %>
 </div>
 <div>
-   <% skins.link . "default skins" prefix="... show " %>
-   <% skins.link custom "custom skins" prefix=" | " %>
+   <% skins.link . "basic skins" prefix="... show " %>
+   <% skins.link advanced "all skins" prefix=" | " %>
    <% skins.link modified "modified skins" prefix=" | " %> 
-
+</div>
 <ul class="skinmgrTree">
 <% response.list %>
 </ul>
+
+<% #basic %>
+<li>
+   <% skins.link Site/page/edit "Site Page" %>
+   <div class="small"><% gettext "This skin defines the basic structure of your  
+   site. Modifying it will affect the general appearance of your site." %></div>
+</li>
+<li>
+   <% skins.link Site/stylesheet/edit "CSS Stylesheet" %>
+   <div class="small"><% gettext "This skin contains the Cascaded Stylesheet 
+   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
+   will affect the general appearance of your site." %></div>
+</li>
+<li>
+   <% skins.link Site/javascript/edit JavaScript %>
+   <div class="small"><% gettext "This skin contains additional JavaScript code  
+   that will be included in every page." %></div>
+</li>
+<li>
+   <% skins.link Site/main/edit Frontpage %>
+   <div class="small"><% gettext "This skin is used to render the front page of 
+   your site." %></div>
+</li>
+FIXME...
+
