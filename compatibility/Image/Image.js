@@ -22,15 +22,20 @@
 // $URL$
 //
 
+this.handleMetadata("fileName");
 relocateProperty(Image, "alias", "name");
 relocateProperty(Image, "createtime", "created");
 relocateProperty(Image, "modifytime", "modified");
 relocateProperty(Image, "fileext", "contentType");
 relocateProperty(Image, "filesize", "contentLength");
-relocateProperty(Image, "alttext", "description")
+relocateProperty(Image, "alttext", "description");
 
 Image.getCompatibleFileName = function(image, name) {
-   return name.replace(/\/[^\/]*$/, "/" + image.metadata.get("fileName"));
+   var fname = image.metadata.get("fileName");
+   if (fname) {
+      return name.replace(/\/[^\/]*$/, "/" + fname);
+   }
+   return name;
 };
 
 /*Image.prototype.getFile = function(name) {

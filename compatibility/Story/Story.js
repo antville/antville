@@ -62,7 +62,7 @@ Story.prototype.content_macro = function(param) {
       
       case "image":
       var part = this.metadata.get(param.part);
-      part && res.write(this.format_filter(part, null, "image"));
+      part && res.write(this.format_filter(part, param, "image"));
       break;
       
       default:
@@ -145,18 +145,18 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
        // FIXME: || lastRendered.getTime() < this.metadata.getLastModified().getTime())
       switch (mode) {
          case "plaintext":
-         part = this.format_filter(part, null, "plain");
+         part = this.format_filter(part, {}, "plain");
          break;
          
          case "alttext":
-         part = this.format_filter(part, null, "quotes");
+         part = this.format_filter(part, {}, "quotes");
          break;
          
          default:
          // Enable caching; some macros (eg. poll, storylist) will set this 
          // to false to prevent caching of a contentpart containing them.
          res.meta.cachePart = true;
-         part = this.format_filter(part);
+         part = this.format_filter(part, {});
       }
       this.cache[key] = part;
       if (res.meta.cachePart) {
@@ -266,7 +266,6 @@ Story.prototype.discussions_macro = function(param) {
 };
 
 Story.prototype.editableby_macro = function(param) {
-   res.debug(req.data)
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = [Story.PUBLIC, Story.SHARED, Story.OPEN];
       var labels = [gettext("content managers"), gettext("contributors"), 

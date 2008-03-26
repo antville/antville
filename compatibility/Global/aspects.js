@@ -63,10 +63,11 @@ var aspects = {
          req.postParams.commentMode = (req.postParams.discussions ? 
                Story.OPEN : Story.CLOSED);
       }
-      aspects.setTextAndTitle(args, func, story);
+      //aspects.setTextAndTitle(args, func, story);
       return args;
    },
    
+   // Obsolete?
    setTextAndTitle: function(args) {
       if (req.postParams.metadata_title && !req.postParams.title) {
          req.postParams.title = req.postParams.metadata_title;
@@ -127,10 +128,10 @@ HopObject.prototype.onCodeUpdate = function() {
    });
 }
 
-Comment.prototype.onCodeUpdate = function() {
+/* Comment.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "update", aspects.setTextAndTitle);
    return;
-}
+} */
 
 Image.prototype.onCodeUpdate = function() {
    helma.aspects.addAfter(this, "getUrl", function(value, args, func, obj) {
