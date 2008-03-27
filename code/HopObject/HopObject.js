@@ -74,7 +74,7 @@ HopObject.prototype.onRequest = function() {
    }
 
    res.handlers.layout = res.handlers.site.layout || new Layout;
-   res.skinpath = res.handlers.layout.getSkinPath();
+   //res.skinpath = res.handlers.layout.getSkinPath();
 
    res.meta.values = {};
    res.handlers.site.renderSkinAsString("Site#values");
@@ -332,7 +332,7 @@ HopObject.prototype.link_macro = function(param, url, text) {
    url || (url = ".");
    var action = url.split(/#|\?/)[0];
    if (this.getPermission(action)) {
-      text || (text = (action === "." ? this._id : action));
+      text || (text = (action === "." ? this._id : action).capitalize());
       renderLink.call(global, param, url, gettext(text), this);
    }
    return;
@@ -395,7 +395,9 @@ HopObject.prototype.toString = function() {
 
 HopObject.prototype.link_filter = function(value, param, action) {
    action || (action = ".");
-   return renderLink(param, action, value, this);
+   res.push();
+   renderLink(param, action, value, this);
+   return res.pop();
 };
 
 HopObject.prototype.handleMetadata = function(name) {

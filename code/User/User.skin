@@ -1,31 +1,31 @@
 <% #welcome %>
-<p>"<% site.title %>" is currently <% site.mode %>.
+<p><% gettext "{0} is currently {1}." <% site.title %> <% site.mode %> %>
 <% if <% site.mode %> is closed then 
-   <% site.members.link subscribers prefix="This means that only you and " 
-   suffix=" to this site have access to it. You can safely start to 
-   customize it or to fill it with all the content you have in mind." %> 
+   <% gettext "This means that only you and {0} of this site have access to it. 
+   You can safely start to customize it or to fill it with all the content you 
+   have in mind." <% site.members.link subscribers %> %> 
 else
-   "Thus, it's publicly accessible for every visitor."
+   <% gettext "Thus, it’s publicly accessible for every visitor." %>
 %></p>
-<p>The easiest way to customize your site is to change its 
-<% site.link edit preferences %>. You can change the language and time zone or 
-the main title of your site, open or close it and much more.</p>
-<p>Of course, you can now also start to create 
-<% site.stories.link create stories %>, upload some 
-<% site.images.link create images %> or 
-<% site.files.link create files %>, create your first 
-<% site.polls.link create poll %> or get a glimpse of Antville's wonderful 
-customization possibilities by having a look at the <% layout.link . layout %> 
-section where you can modify the appearance of your site according to your 
-needs.</p>
-<p>Have a lot of fun!</p>
+<p><% gettext "The easiest way to customize your site is to change its {0}. 
+You can change the language and time zone or the main title of your site, open 
+or close it and much more." <% site.link edit preferences %> %></p>
+<p><% gettext "Of course, you can now also start to create {0}, upload some 
+{1} or {2}, create your first {3} or get a glimpse of Antville’s wonderful 
+customization possibilities by having a look at the {4} section where you can 
+modify the appearance of your site according to your needs." 
+<% site.stories.link create stories %> <% site.images.link create images %> 
+<% site.files.link create files %> <% site.polls.link create poll %>
+<% layout.link . layout %> %></p>
+<p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
 <% user.list sites prefix="<ul>" suffix="</ul>" %>
 
 <% #subscriptions %>
 <div class="ample">
-<% members.link updated "updated sites" prefix="... show " %>
+<% gettext Show prefix="...  " %>
+<% members.link updated "updated sites" %>
 <% members.link privileges prefix="| " %> 
 <% members.link subscriptions prefix="| " %>
 </div>
@@ -63,35 +63,34 @@ $(function() {
 <input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">Current password:</td>
+<td class="small" nowrap="nowrap"><% gettext "Current password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="password" id="password" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">New password:</td>
+<td class="small" nowrap="nowrap"><% gettext "New password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="newPassword" 
 id="newPassword" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Confirm password:</td>
+<td class="small" nowrap="nowrap"><% gettext "Confirm password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
 id="newPasswordConfirm" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">e-mail:</td>
+<td class="small" nowrap="nowrap"><% gettext e-mail suffix=: %></td>
 <td><% user.input email %></td>
 </tr>
 <tr>
-<td class="small" valign="top" nowrap="nowrap">Personal URL:</td>
+<td class="small" valign="top" nowrap="nowrap"><% gettext "Personal URL" suffix=: %></td>
 <td><% user.input url %><br />
-<span class="small">If you enter a URL here your user name 
-will appear as link next to your posted items.</span></td>
+<span class="small"><% gettext "If you enter a URL here your user name will 
+appear as link next to your posted items." %></span></td>
 </tr>
 <tr>
 <td nowrap="nowrap"> </td>
 <td><br />
-<button type="submit" id="submit" name="save" 
-value="1"><strong>Save</strong></button>
-<button type="submit" name="cancel" value="1">Cancel</button>
+<button type="submit" id="submit" name="save" value="1"><% gettext Save %></button>
+<a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>

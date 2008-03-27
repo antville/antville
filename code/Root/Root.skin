@@ -1,20 +1,23 @@
 <% #main %>
-<p>Antville is an open source project aimed to the development of an 
-"easy to maintain and use" site hosting system. It's not limited to just 
-one site, it can easily host up to several hundred or thousand sites.</p> 
-<p>(Note: The number of sites is rather limited by server power and the site 
-owner's choice than by the software.)</p>
-Number of sites hosted here: <% root.size %><br />
-Publicly accessible sites: <% root.sites.size %>
+<p><% gettext 'Antville is an open source project aimed to the development of an 
+”easy to maintain and use“ site hosting system. It’s not limited to just 
+one site, it can easily host up to several hundred or thousand sites. ' %></p> 
+<p>(<% gettext 'Note: The number of sites is rather limited by server power and 
+the site owner’s choice than by the software.' %>)</p>
+<% gettext "Number of sites hosted here" suffix=: %> <% root.size %><br />
+<% gettext "Publicly accessible sites" suffix=: %> <% root.sites.size %>
 <br />
 <% list updates prefix=<ul> suffix=</ul> %>
 
 <% #sites %>
-<p>This is the complete list of public sites hosted here, in alphabetical 
-order.</p>
+<p><% gettext "This is the complete list of public sites hosted here, in 
+alphabetical order." %></p>
 <% response.pager %>
 <% response.list prefix="<ul>" suffix="</ul>" %>
 <% response.pager %>
+
+
+
 
 <div style="margin: 200px 0 20px 0;">FIXME:</div>
 

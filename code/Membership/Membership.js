@@ -41,7 +41,7 @@ Membership.prototype.constructor = function(user, role) {
 
 Membership.prototype.getPermission = function(action) {
    switch (action) {
-      case "contact":
+      case "contact": return true;
       case "edit":
       return this.creator !== session.user;
       case "delete":
@@ -125,7 +125,7 @@ Membership.prototype.notify = function(action, recipient, subject) {
       default:
       res.handlers.sender = User.getMembership();
       sendMail(root.email, recipient, subject,
-               this.renderSkinAsString("Messages#" + action));
+            this.renderSkinAsString("Messages#" + action));
    }
    return;
 };

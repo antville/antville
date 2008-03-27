@@ -117,7 +117,7 @@ Admin.prototype.status_action = function() {
    };
    system.usedMemory = system.totalMemory - system.freeMemory;
    res.handlers.system = system;
-   res.data.title = gettext("{0} System Status", root.title);
+   res.data.title = gettext("System status of {0}", root.title);
    res.data.body = this.renderSkinAsString("Admin#status");
    root.renderSkin("Site#page");
    return;
@@ -252,8 +252,9 @@ Admin.prototype.items_macro = function(param, object, name) {
 };
 
 Admin.prototype.dropdown_macro = function(param) {
-   if (!param.name || !param.values)
+   if (!param.name || !param.values) {
       return;
+   }
    var options = param.values.split(",");
    var selectedIndex = req.postParams[param.name];
    html.dropDown({name: param.name}, options, selectedIndex);
@@ -261,8 +262,9 @@ Admin.prototype.dropdown_macro = function(param) {
 };
 
 Admin.prototype.moduleSetup_macro = function(param) {
-   for (var i in app.modules)
+   for (var i in app.modules) {
       this.applyModuleMethod(app.modules[i], "renderSetup", param);
+   }
    return;
 };
 

@@ -10,7 +10,7 @@
 <th><% param.title %></th>
 
 <% #admin %>
-<div class="pagelink"><% linkedpath %> : Admin</div><br />
+<div class="pagelink"><% breadcrumbs %> : <% gettext Admin %></div><br />
 
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>

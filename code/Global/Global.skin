@@ -1,7 +1,7 @@
 <% #pager %>
 <div class="pageNav">
 <div class="pageNavSummary">
-   displaying <% param.display %><% param.total prefix=" (of " suffix=")" %>
+   <% gettext "displaying {0} (of {1})" <% param.display %> <% param.total %> %>
 </div>
 <div class="pageNavBar"><% param.pager %></div>
 </div>

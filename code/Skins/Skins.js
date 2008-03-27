@@ -63,6 +63,9 @@ Skins.prototype.href = function(action) {
 */
 
 Skins.prototype.main_action = function() {
+   if (!this._parent) {
+      res.redirect(res.handlers.layout.skins.href());
+   }
    res.data.title = gettext("Custom skins of {0}", this._parent.title);
    res.data.list = this.renderSkinAsString("Skins#basic");
    res.data.body = this.renderSkinAsString("Skins#main");
@@ -247,14 +250,6 @@ Skins.prototype.getCustomSkins = function() {
       handler = handler.parent;
    }
    return coll;
-};
-
-Skins.getRedirectUrl = function(data) {
-   var href = res.handlers.layout.skins.href();
-   if (data.prototype) { 
-      return href + "#" + data.prototype;
-   }
-   return href;
 };
 
 Skins.getSummary = function(prefix, prototype, name) {

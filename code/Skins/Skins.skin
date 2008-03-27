@@ -78,12 +78,13 @@ $(document).ready(function() {
 <p><% breadcrumbs %></p>
 
 <div class="ample">
-   <% skins.link create "add a custom skin" prefix="... " %>
+   <% skins.link create <% gettext "Add custom skin" %> prefix="... " %>
 </div>
 <div>
-   <% skins.link . "basic skins" prefix="... show " %>
-   <% skins.link advanced "all skins" prefix=" | " %>
-   <% skins.link modified "modified skins" prefix=" | " %> 
+   <% gettext Show prefix="... " %>
+   <% skins.link . <% gettext "basic skins" %> %>
+   <% skins.link advanced <% gettext "all skins" %> prefix=" | " %>
+   <% skins.link modified <% gettext "modified skins" %> prefix=" | " %> 
 </div>
 <ul class="skinmgrTree">
 <% response.list %>
@@ -112,4 +113,3 @@ $(document).ready(function() {
    your site." %></div>
 </li>
 FIXME...
-

@@ -21,10 +21,10 @@
 
 <% #controls %>
 <button type="button" onclick='var name; 
-      if (name = prompt("Enter new name for this tag:")) {
+      if (name = prompt("<% gettext 'Please enter new name for this tag' suffix=: %>")) {
          location.href="<% tag.href action="rename" %>?name=" + name;
       }'>Rename</button>
 <button type="button" onclick='var name; 
-      if (confirm("Are you sure you want to remove the tag <% tag.name %>?")) {
+      if (confirm("<% gettext 'Are you sure you want to remove the tag {0}?' <% tag.name %> %>)) {
          location.href="<% tag.href action="delete" %>";
       }'>Delete</button>

@@ -1,5 +1,0 @@
-<tr>
-<td class="num"><% param.num %></td>
-<td class="status"><% param.status %></td>
-<td class="<% param.class %>"><pre>&nbsp;<% param.line %></pre></td>
-</tr>

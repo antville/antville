@@ -4,7 +4,7 @@
 <% response.pager %>
 
 <% #navigation %>
-<div class="boxheader">admin</div>
+<div class="boxheader"><% gettext Admin %></div>
 <div class="box">
 <% admin.link sites prefix="... " suffix="<br />" %>
 <% admin.link users prefix="... " suffix="<br />" %>
@@ -14,12 +14,12 @@
 </div>
 
 <% #welcome %>
-<p><em>Note</em>: Since you are system administrator of this Antville 
-installation you can also define "<% site.title %>" as its front page site. 
-To do so simply enter <code><% site.name %></code> into the option 
-"front page site" of the <% root.admin.link setup "system preferences" %>. 
-If this site is open it will replace the default front page. 
-(Of course you can change this setting anytime you want.)</p>
+<p><em><% gettext Note %></em>: <% gettext 'Since you are system administrator 
+of this Antville installation you can also define the site {0} as its front page. 
+To do so simply enter <code>{1}</code> into the option "Front page site" of the 
+{2}.' <% site.title %> <% site.name %> <% root.admin.link setup <% gettext 
+"system preferences" %> %> %>
+<% gettext "(Of course you can change this setting anytime you want.)" %></p>
 
 <% #status %>
 <table cellspacing="0" cellpadding="2">
@@ -27,51 +27,51 @@ If this site is open it will replace the default front page.
 <td colspan="2" class="pageTitle" nowrap="nowrap"><% response.title %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Uptime:</td>
+<td nowrap="nowrap"><% gettext Uptime suffix=: %></td>
 <td nowrap="nowrap"><% system.upSince | age %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Active threads:</td>
+<td nowrap="nowrap"><% gettext "Active threads" suffix=: %></td>
 <td nowrap="nowrap"><% system.activeThreads %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Maximum threads:</td>
+<td nowrap="nowrap"><% gettext "Maximum threads" suffix=: %></td>
 <td nowrap="nowrap"><% system.maxThreads %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Free threads:</td>
+<td nowrap="nowrap"><% gettext "Free threads" suffix=: %></td>
 <td nowrap="nowrap"><% system.freeThreads %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Sessions:</td>
+<td nowrap="nowrap"><% gettext Sessions suffix=: %></td>
 <td nowrap="nowrap"><% system.sessionCount %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">HTTP requests:</td>
+<td nowrap="nowrap"><% gettext "HTTP requests" suffix=: %></td>
 <td nowrap="nowrap"><% system.requestCount %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Xml-Rpc requests:</td>
+<td nowrap="nowrap"><% gettext "XML-RPC requests" suffix=: %></td>
 <td nowrap="nowrap"><% system.xmlRpcCount %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Errors:</td>
+<td nowrap="nowrap"><% gettext Errors suffix=: %></td>
 <td nowrap="nowrap"><% system.errorCount %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Objects in cache:</td>
+<td nowrap="nowrap"><% gettext "Objects in cache" suffix=: %></td>
 <td nowrap="nowrap"><% system.cacheUsage %></td>
 </tr>
 <tr>
-<td nowrap="nowrap">Free memory:</td>
+<td nowrap="nowrap"><% gettext "Free memory" suffix=: %></td>
 <td nowrap="nowrap"><% system.freeMemory | format ###,### %> KB</td>
 </tr>
 <tr>
-<td nowrap="nowrap">Used memory:</td>
+<td nowrap="nowrap"><% gettext "Used memory" suffix=: %></td>
 <td nowrap="nowrap"><% system.usedMemory | format ###,### %> KB</td>
 </tr>
 <tr>
-<td nowrap="nowrap">Total memory:</td>
+<td nowrap="nowrap"><% gettext "Total memory" suffix=: %></td>
 <td nowrap="nowrap"><% system.totalMemory | format ###,### %> KB</td>
 </tr>
 </table>

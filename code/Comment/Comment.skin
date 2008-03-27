@@ -19,11 +19,11 @@
 <a name="form" id="form"></a>
 <form method="post" action="<% response.action %>">
 <p class="backup">
-   <span class="small">Title:</span><br />
+   <span class="small"><% gettext Title suffix=: %></span><br />
    <% comment.input title class="formTitle" %>
 </p>
 <p class="backup">
-   <span class="small">Text:</span><br />
+   <span class="small"><% gettext Text suffix=: %></span><br />
    <% comment.textarea text cols="31" rows="10" class="formText" %>
 </p>
 <p class="small">
@@ -33,9 +33,9 @@
    <% comment.modified prefix=" on " %>
 </p>
 <p>
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
-   <button type="button" id="restore" value="1">restore</button>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="button" id="restore" value="1"><% gettext Restore %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
 

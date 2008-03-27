@@ -1,10 +1,11 @@
 <% #confirm %>
 <form action="<% response.action %>" method="post">
-<p class="storyTitle">Warning!</p>
+<p class="storyTitle"><% gettext Warning! %></p>
 <p><% param.text %></p>
-<p>Please be aware of the fact that there is no "undo", so if you click 
-"Proceed" below the changes will be applied irreversibly.</p>
-<p>Click "Cancel" now if you are not really sure you want to proceed.</p>
+<p><% gettext 'Please be aware of the fact that there is no "undo", so if you 
+click "Proceed" below the changes will be applied irreversibly.' %></p>
+<p><% gettext 'Click ’Cancel‘ now if you are not really sure you want to 
+proceed.' %></p>
 <p><button type="submit" name="proceed" value="1">Proceed</button>
-<button type="submit" name="cancel" value="1"><strong>Cancel</strong></button></p>
+<a href="" class="cancel"><strong><% gettext Cancel %></strong></a></p>
 </form>

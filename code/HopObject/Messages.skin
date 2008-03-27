@@ -1,33 +1,39 @@
 <% #create %>
-<% gettext 'Dear {0},
+<% gettext 'Hello {0}.' <% membership.name %> %>
 
-this message wants to inform you that a new {1} was published at {2} by user {3} on {4}.
+<% gettext 'This message wants to inform you that on {0} user {1} published the
+{2} "{3}" [1].' <% this.modified short %> <% this.modifier %> 
+<% this.kind %> <% this.title %> %>
 
-Best regards.
-The Management'  
-<% membership.name %> <% this.kind %> <% this.href %> 
-<% this.modifier %> <% this.modified short %> %>
+<% gettext "Best regards." %>
+<% gettext "The Management" %>
+
+--
+[1] <% this.href %> 
 
 
 <% #edit %>
-<% gettext 'Dear {0},
+<% gettext 'Hello {0}.' <% membership.name %> %>
 
-this message wants to inform you that the {1} at {2} was modified by user {3} on {4}.
+<% gettext 'This message wants to inform you that on {0} user {1} modified the
+{2} "{3}" [1].' <% this.modified short %> <% this.modifier %> 
+<% this.kind %> <% this.title %> %>
 
-Best regards.
-The Management'  
-<% membership.name %> <% this.kind %> <% this.href %> 
-<% this.modifier %> <% this.modified short %> %>
+<% gettext "Best regards." %>
+<% gettext "The Management" %>
+
+--
+[1] <% this.href %> 
+
 
 <% #disclaimer %>
-<% gettext 
-'DISCLAIMER
-===========
-This is message was automatically sent to you because you are listed as 
-recipient of notification e-mails of the aforementioned site. 
+<% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
 
-Thus, you will be notified whenever the site has undergone changes as 
-specified in the site preferences.
+<% gettext 'This message was automatically sent to you because you are listed as 
+recipient of notification e-mails of the aforementioned site.' %>
 
-If you think you have received this e-mail in error please contact the 
-maintainer of the site.' %>
+<% gettext 'Thus, you will be notified whenever the site has undergone changes 
+as specified in the site preferences.' %>
+
+<% gettext 'If you think you have received this e-mail in error please contact 
+the maintainer of the site.' %>

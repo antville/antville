@@ -1,11 +1,13 @@
 <% #main %>
-<p>To insert an image in a story or comment just copy and paste its code.</p>
+<p><% gettext "To insert an image in a story or comment just copy and paste its 
+code." %></p>
 
 <div class="ample">
-   <% images.link create "add an image" prefix="... " %>
+   <% images.link create <% gettext "Add image" %> prefix="... " %>
 </div>
-<% images.link . "member images" prefix="... show " %>
-<% images.link all "all images" prefix=" | " %>
+<% gettext Show prefix="... " %>
+<% images.link . <% gettext "member images" %> %>
+<% images.link all <% gettext "all images" %> prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>
@@ -15,7 +17,7 @@
 <p><% breadcrumbs %></p>
 
 <div class="ample">
-   <% images.link create "add a layout image" prefix="... " %>
+   <% images.link create <% gettext "Add layout image" %> prefix="... " %>
 </div>
 
 <% response.pager %>

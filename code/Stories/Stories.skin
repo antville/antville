@@ -1,10 +1,11 @@
 <% #main %>
 <div class="ample">
-   <% stories.link create "create a story" prefix="... " %>
+   <% stories.link create <% gettext "Add story" %> prefix="... " %>
 </div>
-<% stories.link . "member stories" prefix="... show " %>
-<% stories.link closed "closed stories" prefix=" | " %>
-<% stories.link all "all stories" prefix=" | " %>
+<% gettext Show prefix="... " %>
+<% stories.link . <% gettext "member stories" %> %>
+<% stories.link closed <% gettext "closed stories" %> prefix=" | " %>
+<% stories.link all <% gettext "all stories" %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>
@@ -14,13 +15,13 @@
 <tr>
 <td></td>
 <td rowspan="999"> </td>
-<td align="right" class="small">Count</td>
+<td align="right" class="small"><% gettext Count %></td>
 <td rowspan="999"> </td>
-<td class="small">Date</td>
+<td class="small"><% gettext Date %></td>
 <td rowspan="999"> </td>
-<td class="small">Title</td>
+<td class="small"><% gettext Title %></td>
 <td rowspan="999"> </td>
-<td class="small">Author</td>
+<td class="small"><% gettext Author %></td>
 </tr>
 <% stories.list top %>
 </table>

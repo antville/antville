@@ -6,62 +6,62 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td colspan="2">
-   <strong><a name="general">General</a></strong>
+   <strong><a name="general"><% gettext General %></a></strong>
 </td>
 </tr>
 <tr>
-<td class="small">Mode:</td>
+<td class="small"><% gettext Mode suffix=: %></td>
 <td><% site.select mode %></td>
 </tr>
 <tr>
-<td class="small">Title:</td>
+<td class="small"><% gettext Title suffix=: %></td>
 <td><% site.input title %></td>
 </tr>
 <tr>
-<td class="small">Tagline:</td>
+<td class="small"><% gettext Tagline suffix=: %></td>
 <td><% site.input tagline %></td>
 </tr>
 <tr>
-<td class="small">Paging:</td>
+<td class="small"><% gettext Paging suffix=: %></td>
 <td><% site.input pageSize size="5" maxlength="2" %>
 <% site.select pageMode %></td>
 </tr>
 <tr>
-<td class="small">Comments:</td>
+<td class="small"><% gettext Comments suffix=: %></td>
 <td><% site.checkbox commentMode %>
-<label for="commentMode">enabled</label></td>
+<label for="commentMode"><% gettext enabled %></label></td>
 </tr>
 <tr>
-<td class="small">Archive:</td>
+<td class="small"><% gettext Archive suffix=: %></td>
 <td><% site.checkbox archiveMode %>
-<label for="archiveMode">enabled</label></td>
+<label for="archiveMode"><% gettext enabled %></label></td>
 </tr>
 <tr>
-<td class="small">Language:</td>
+<td class="small"><% gettext Language suffix=: %></td>
 <td><% site.select locale %></td>
 </tr>
 <tr>
-<td class="small">Time zone:</td>
+<td class="small"><% gettext "Time zone" suffix=: %></td>
 <td><% site.select timeZone %></td>
 </tr>
 <tr>
-<td class="small">Long date format:</td>
+<td class="small"><% gettext "Long date format" suffix=: %></td>
 <td><% site.select longDateFormat %></td>
 </tr>
 <tr>
-<td class="small">Short date format:</td>
+<td class="small"><% gettext "Short date format" suffix=: %></td>
 <td><% site.select shortDateFormat %></td>
 </tr>
 <tr>
-<td class="small">Notifications:</td>
+<td class="small"><% gettext Notifications suffix=: %></td>
 <td><% site.select notificationMode %></td>
 </td>
 </tr>
 <tr>
-<td class="small" valign="top">Web hook:</td>
+<td class="small" valign="top"><% gettext "Web hook" suffix=: %></td>
 <td><% site.input webHookUrl %><br />
 <% site.checkbox webHookMode %> 
-<label for="webHookMode">enabled<label></td>
+<label for="webHookMode"><% gettext enabled %><label></td>
 </tr>
 <!--tr>
 <td colspan="2"><div class="listSeparator">&nbsp;</div>
@@ -76,8 +76,8 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 <tr>
 <td></td>
 <td><br />
-<button type="submit" name="save" value="1">save</button>
-<button type="submit" name="cancel" value="1">cancel</button></td>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </tr>
 </table>
 </form>
@@ -87,50 +87,51 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 <span class="small"><% site.modified | age %></span></li>
 
 <% #navigation %>
-<% site.link . home prefix="... " suffix="<br />" %>
+<% site.link . <% gettext Home %> prefix="... " suffix="<br />" %>
 <% site.tags.link prefix="... " suffix="<br />" %>
 <% site.galleries.link prefix="... " suffix="<br />" %>
 <br />
-<% site.stories.link create "add a story" prefix="... " suffix="<br />" %>
+<% site.stories.link create <% gettext "Add story" %> prefix="... " suffix="<br />" %>
 <% site.stories.link prefix="... " suffix="<br />" %>
 <% site.images.link prefix="... " suffix="<br />" %>
 <% site.files.link prefix="... " suffix="<br />" %>
 <% site.polls.link prefix="... " suffix="<br />" %>
 <% site.members.link prefix="... " suffix="<br />" %>
 <br />
-<% site.link edit preferences prefix="... " suffix="<br />" %>
-<% layout.link . layout prefix="... " suffix="<br />" %>
-<% layout.skins.link . skins prefix="... " suffix="<br />" %>
+<% site.link edit <% gettext Preferences %> prefix="... " suffix="<br />" %>
+<% layout.link . <% gettext Layout %> prefix="... " suffix="<br />" %>
+<% layout.skins.link prefix="... " suffix="<br />" %>
 <% site.link referrers prefix="... " suffix="<br />" %>
-<% site.stories.link top "most read stories" prefix="... " suffix="<br />" %>
+<% site.stories.link top <% gettext "Top stories" %> prefix="... " suffix="<br />" %>
 <br />
 <% root.title prefix="... " | root.link %>
 
 <% #create %>
-To create a new site you need to fill out the form below.
-<p>The <em>name</em> will be part of the URL of your site. E.g. if you 
-enter "foo" as the name, your site will be reachable via the url
-<code><% root.href %>foo</code></o>
-<p>Please note that you cannot change the name after the site was created.</p>
-<p>The <em>title</em> will appear in the header of every page of your site. 
-You can change it anytime you want.</p>
+<% gettext "To create a new site you need to fill out the form below." %>
+<p><% gettext 'The name will be part of the URL of your site. E.g. if you 
+enter ”{0}“ as the name, your site will be reachable via the url {1}'
+foo <% root.href prefix=<code> suffix=foo</code> %> %></p>
+<p><% gettext "Please note that you cannot change the name after the site was 
+created." %></p>
+<p><% gettext "The title will appear in the header of every page of your site. 
+You can change it anytime you want." %></p>
 <p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td>Name:</td>
+<td class="small"><% gettext Name suffix=: %></td>
 <td><% site.input name %></td>
 </tr>
 <tr>
-<td>Title:</td>
+<td class="small"><% gettext Title suffix=: %></td>
 <td><% site.input title %></td>
 </tr>
 <tr>
 <td></td>
 <td>
    <br />
-   <button type="submit" name="create" value="1">create</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="submit" name="create" value="1"><% gettext Create %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -138,9 +139,9 @@ You can change it anytime you want.</p>
 </p>
 
 <% #welcome %>
-<p class="storyTitle">Welcome to "<% site.title %>".</p>
-<p>This site was created on <% site.created long %> by 
-<% site.creator link %>.</p>
+<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
+<p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
+<% site.created long %> %></p>
 
 <% #search %>
 <form method="post" action="<% site.href search %>">
@@ -233,15 +234,18 @@ for (var i in referrers) {
 <noscript>
 <tr>
 <td colspan="3">
-   To prevent spam abuse referrers and backlinks are displayed using 
-   client-side JavaScript code. Thus, you should enable the option to 
-   execute JavaScript code in your browser. Otherwise you will only see 
-   this information.
+<% skite.skin noscript %>
 </td>
 </tr>
 </noscript>
 </table>
 </form>
+
+<% #noscript %>
+<% gettext "To prevent spam abuse referrers and backlinks are displayed 
+using client-side JavaScript code. Thus, you should enable the option to 
+execute JavaScript code in your browser. Otherwise you will only see this 
+information." %>
 
 <% #referrer %>
 referrers.push(new Antville.Referrer("<% param.referrer %>", 
@@ -274,7 +278,9 @@ function openPopup(img, width, height) {
       height = Math.min(height + 30, 480);
       if (imgWindow.location && !imgWindow.closed)
          imgWindow.close();
-      imgWindow = window.open(img, "imgWindow" + width + height, "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + width + ",height=" + height);
+      imgWindow = window.open(img, "imgWindow" + width + height, 
+      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + 
+      width + ",height=" + height);
       // imgWindow.focus();
    }
 }
@@ -331,23 +337,23 @@ function openPopup(img, width, height) {
    <% site.modified short prefix="Last modified: " %>
    </div>
    
-   <div class="boxheader">status</div>
+   <div class="boxheader"><% gettext Status %></div>
    <div class="box"><% membership.status %></div>
    
    <% root.admin.skin Admin#navigation %>
    
-   <div class="boxheader">menu</div>
+   <div class="boxheader"><% gettext Menu %></div>
    <div class="box">
    <% site.skin Site#navigation %>
    </div>
    
-   <div class="boxheader">search</div>
+   <div class="boxheader"><% gettext Search %></div>
    <div class="box"><% site.skin Site#search %></div>
    
-   <div class="boxheader">calendar</div>
+   <div class="boxheader"><% gettext Calendar %></div>
    <div class="box"><% site.calendar %></div>
    
-   <div class="boxheader">recent updates</div>
+   <div class="boxheader"><% gettext "Recent updates" %></div>
    <div class="box"><% list postings skin=Story#history %></div>
    
    <div class="boxline"></div><br />

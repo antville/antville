@@ -59,6 +59,8 @@ var rome = new JavaImporter(
 
 var html = new helma.Html();
 
+var idle = new Function;
+
 SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
 LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
 
@@ -79,8 +81,8 @@ helma.Mail.flushQueue = function() {
          mail = app.data.mails.pop();
          mail.send();
          if (mail.status > 0) {
-            app.debug("Error while sending e-mail to " + mail.recipient + 
-                  "(status " + mail.status + ")");
+            app.debug("Error while sending e-mail (status " + mail.status + ")");
+            mail.writeToFile(getProperty("smtp.dir"));
          }
       }
    }
@@ -110,7 +112,7 @@ function defineConstants(ctor /*, arguments */) {
 }
 
 function disableMacro(ctor, name) {
-   return ctor.prototype[name + "_macro"] = function() {return};
+   return ctor.prototype[name + "_macro"] = idle;
 }
 
 function onStart() {

@@ -1,7 +1,7 @@
 <% #main %>
 <p><% breadcrumbs %></p>
-<p>To insert this image into a story, comment or skin copy/paste the following 
-code: <pre><% image.macro %></pre></p>
+<p><% gettext 'To insert this image into a story, comment or skin copy and 
+paste the following code:' %> <pre><% image.macro %></pre></p>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td colspan="2" class="small">
@@ -30,61 +30,63 @@ code: <pre><% image.macro %></pre></p>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small">Local file:</td>
+<td class="small"><% gettext "Local file" suffix=: %></td>
 <td><% image.upload file %></td>
 </tr>
 <tr>
-<td align="center"><em>&#151; or &#151;</em></td>
-<td class="small">(only specify either a local file or a remote URL)</td>
+<td align="center"><em>&#151; <% gettext or %> &#151;</em></td>
+<td class="small">(<% gettext "Only specify either a local file or a remote 
+URL" %>)</td>
 </tr>
 <tr>
-<td class="small">Remote URL:</td>
+<td class="small"><% gettext "Remote URL" suffix=: %></td>
 <td><% image.input url %></td>
 </tr>
 <tr>
-<td valign="top" class="small">Name:</td>
+<td valign="top" class="small"><% gettext Name suffix=: %></td>
 <td>
    <% image.input name %><br />
-   <span class="small">If you do not specify a name Antville will create one 
-   based on the name of the local or remote file, resp.</span>
+   <span class="small"><% gettext "If you do not specify a name Antville will 
+   create one based on the name of the local or remote file, resp." %></span>
 </td>
 </tr>
 <tr>
-<td class="small" valign="top">Description:</td>
+<td class="small" valign="top"><% gettext Description suffix=: %></td>
 <td><% image.textarea description %></td>
 </tr>
 <tr>
-<td class="small" valign="top">Tags:</td>
+<td class="small" valign="top"><% gettext Tags suffix=: %></td>
 <td><% image.input tags %></td>
 </tr>
 <tr>
 <td colspan="2">
-   If you want to resize the image please specify your desired maximum width 
-   and/or maximum height. If you specify both the image will be resized to 
-   match both criterias, but the proportions of the image will be preserved.
+   <% gettext "If you want to resize the image please specify your desired 
+   maximum width and/or maximum height. If you specify both the image will be 
+   resized to match both criterias, but the proportions of the image will be 
+   preserved." %>
 </td>
 </tr>
 <tr>
-<td class="small">max. width:</td>
+<td class="small"><% gettext "Max. width" suffix=: %></td>
 <td><% image.input maxWidth value="400" %> pixel</td>
 </tr>
 <tr>
-<td class="small">max. height:</td>
+<td class="small"><% gettext "Max. height" suffix=: %></td>
 <td><% image.input maxHeight value="400" %> pixel</td>
 </tr>
 <tr>
 <td class="small"> </td>
 <td class="small">
-   If the width or height of your image exceeds 100 pixels Antville 
-   automatically creates a thumbnail of it, too.
+   <% gettext "If the width or height of your image exceeds 100 pixels Antville 
+   automatically creates a thumbnail of it, too." %>
 </td>
 </tr>
 <tr>
 <td class="small" valign="top"> </td>
 <td>
    <br />
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -98,16 +100,17 @@ code: <pre><% image.macro %></pre></p>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td colspan="2" class="small">
-   <strong>Macro:</strong> <% image.macro %>
-   <div class="ample"><strong>Format: </strong><% image.contentType %>, 
-   <% image.width %>&times;<% image.height %> pixels</div>
+   <strong><% gettext Macro suffix=: %></strong> <% image.macro %>
+   <div class="ample"><strong><% gettext Format suffix=: %></strong>
+   <% image.contentType %>, <% image.width %>&times;<% image.height %> 
+   <% gettext pixels %></div>
 </td>
 </tr>
 <tr>
 <td>
    <div class="storyTitle"><% image.name %></div>
    <div class="storyDate"><% image.creator as="link" %>
-   <% image.created short prefix=" on " %></div>
+   <% image.created short prefix=<% gettext on prefix=" " suffix=" " %> %></div>
 </td>
 <td align="right" class="small" valign="top">
    <% image.link edit prefix="... " suffix="<br />" %>

@@ -14,30 +14,33 @@
 <% story.skin Story#restore %>
 <form method="post" action="<% response.action %>">
 <p>
-   <div class="small">Title:</div>
+   <div class="small"><% gettext Title suffix=: %></div>
    <div class="backup"><% story.input title class="formTitle" %></div>
 </p>
 <p>
-   <div class="small">Text:</div>
+   <div class="small"><% gettext Text suffix=: %></div>
    <div class="backup"><% story.textarea text cols="30" rows="15" 
    class="formText" %></div>
 </p>
 <p><fieldset>
-   <legend class="small">Options</legend>
-   <p>Tags: <% story.input tags %></p> 
-   <p>The story is <% story.select status %> and <% story.select mode %></p>
-   <p>Comments of the story are <% story.select commentMode %></p>
+   <legend class="small"><% gettext Options %></legend>
+   <p><% gettext Tags suffix=: %> <% story.input tags %></p> 
+   <p><% gettext "The story is {0} and {1}" <% story.select status %>
+   <% story.select mode %> %></p>
+   <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
 </fieldset></p>
 <p class="small">
-   <% story.creator prefix="Created by " %>
-   <% story.created short prefix=" on " suffix="<br />" %>
-   <% story.modifier prefix="Last modified by " %>
-   <% story.modified short prefix=" on " %>
+   <% gettext "Created by {0} on {1}" <% story.creator %> 
+   <% story.created short %> %>
+   <% if <% story.created %> is <% story.modified %> then "" else 
+      <% gettext "Last modified by {0} on {1}" <% story.modifier %>
+      <% story.modified short %> prefix="<br />" %>
+   %>
 </p>
 <p>
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
-   <button type="button" id="restore" value="1">restore</button>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="button" id="restore" value="1"><% gettext Restore %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
 
@@ -68,8 +71,8 @@
 <% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
 <% story.text | clip %>
 <span class="small">
-   <% story.link . "[read more]" %>
-   <% story.link edit prefix=" ... " %>
+   <% story.link . <% gettext "Read more" prefix=[ suffix=] %> %>
+   <% story.link edit <% gettext Edit %> prefix=" ... " %>
 </span><br />
 
 <% #history %>
@@ -111,17 +114,17 @@ else <% if <% story.mode %> is hidden then
    <td rowspan="2" width="5" nowrap="nowrap"></td>' %>
 %>
 <td colspan="3" class="small">
-   <strong>Macro:</strong> <% story.macro %><br />
-   <div class="ample"><strong>Status: </strong><% story.status %><!--
-   --><% story.tags link prefix=" in " %>,
+   <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
+   <div class="ample"><strong><% gettext Status suffix=: %></strong>
+   <% story.status %><% story.tags link prefix=" in " %>,
    <% story.comments link %></div>
 </td>
 </tr>
 <tr valign="top">
 <td>
    <div class="storyTitle"><% story.title %></div>
-   <div class="storyDate"><% story.creator link %>
-   <% story.created short prefix=" on " %></div>
+   <div class="storyDate"><% gettext "{0} on {1}" <% story.creator link %>
+   <% story.created short %> %></div>
    <% story.text | clip %>
 </td>
 <td width="10" nowrap="nowrap"> </td>
@@ -189,10 +192,7 @@ for (var i in referrers) {
 <noscript>
 <tr>
 <td colspan="3">
-   To prevent spam abuse referrers and backlinks are displayed using 
-   client-side JavaScript code. Thus, you should enable the option to 
-   execute JavaScript code in your browser. Otherwise you will only see this 
-   information.
+<% site.skin noscript %>
 </td>
 </tr>
 </noscript>

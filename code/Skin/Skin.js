@@ -66,12 +66,12 @@ Skin.prototype.edit_action = function() {
          } else {
             this.setSource(req.postParams.source);
          }
-         res.message = gettext("The changes were saved successfully.");
          */
+         res.message = gettext("The changes were saved successfully.");
          if (req.postParams.save == 1) {
             res.redirect(url);
          } else {
-            res.redirect(Skins.getRedirectUrl(req.postParams));
+            res.redirect(res.handlers.layout.skins.href("modified"));
          }
       } catch (ex) {
          res.message = ex;
@@ -196,7 +196,7 @@ Skin.prototype.compare_action = function() {
                for (var j=0;j<line.deleted.length;j++) {
                   sp.num = line.num + j;
                   sp.line = encode(line.deleted[j]);
-                  this.renderSkin("diffline", sp);
+                  this.renderSkin("Skin#difference", sp);
                }
             }
             if (line.inserted) {
@@ -205,20 +205,20 @@ Skin.prototype.compare_action = function() {
                for (var j=0;j<line.inserted.length;j++) {
                   sp.num = line.num + j;
                   sp.line = encode(line.inserted[j]);
-                  this.renderSkin("diffline", sp);
+                  this.renderSkin("Skin#difference", sp);
                }
             }
             if (line.value != null) {
                sp.status = "&nbsp;";
                sp["class"] = "line";
                sp.line = encode(line.value);
-               this.renderSkin("diffline", sp);
+               this.renderSkin("Skin#difference", sp);
             }
          }
          res.data.diff = res.pop();
       }
    }
-   res.data.body = this.renderSkinAsString("diff");
+   res.data.body = this.renderSkinAsString("Skin#compare");
    res.data.title = gettext("Diffs for {0}/{1}.skin of layout {2}", 
          this.prototype, this.name, res.handlers.layout.title);
    res.handlers.skins.renderSkin("Skins#page");

@@ -1,8 +1,9 @@
 <% #main %>
 <div class="ample">
-   <% members.link add "add a member" prefix="..." %>
+   <% members.link add <% gettext "Add member" %> prefix="... " %>
 </div>
-<% members.link . all prefix="... show " %>
+<% gettext Show prefix="... " %>
+<% members.link . all %>
 <% members.link owners prefix="| " %>
 <% members.link contributors prefix="| " %>
 <% members.link managers prefix="| " %> 
@@ -36,23 +37,23 @@ $(function() {
 <input type="hidden" name="digest" id="digest" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small">Username:</td>
+<td class="small"><% gettext "Username" suffix=":" %></td>
 <td>
 <input type="text" name="name" id="name" size="15" tabindex="1" 
 value="<% request.name encoding="form" %>" />
 </td>
 <td rowspan="4"> </td>
 <td class="small">
-<% members.link register "Not registered yet" %>
+<% members.link register <% gettext "Not registered yet" %> %>
 </td>
 </tr>
 <tr>
-<td class="small">Password:</td>
+<td class="small"><% gettext Password suffix=: %></td>
 <td>
 <input type="password" name="password" id="password" size="15" tabindex="2" />
 </td>
 <td class="small">
-<% members.link reset "Password forgotten?" %>
+<% members.link reset <% gettext "Password forgotten?" %> %>
 </td>
 </tr>
 <tr>
@@ -60,14 +61,15 @@ value="<% request.name encoding="form" %>" />
 <td colspan="2" class="small">
 <input type="checkbox" id="remember" name="remember" tabindex="3" 
 <% if <% request.remember %> is "on" then 'checked="checked"' %> />
-<label for="remember">Remember me</label>
+<label for="remember"><% gettext "Remember me" %></label>
 </td>
 </tr>
 <tr>
 <td> </td>
 <td colspan="2"><br />
 <button type="submit" id="submit" name="login" value="1" 
-tabindex="4">login</button>
+tabindex="4"><% gettext Login %></button>
+<a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -99,25 +101,25 @@ $(function() {
 <input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small">Username:</td>
+<td class="small"><% gettext Username suffix=: %></td>
 <td>
 <input type="text" name="name" value="<% request.name encoding="form" %>" />
 </td>
 </tr>
 <tr>
-<td class="small" valign="top">e-mail:</td>
+<td class="small" valign="top"><% gettext e-mail suffix=: %></td>
 <td>
 <input type="text" name="email" value="<% request.email encoding="form" %>" />
 </td>
 </tr>
 <tr>
-<td class="small">Password:</td>
+<td class="small"><% gettext Password suffix=: %></td>
 <td>
 <input type="password" name="password" id="password" />
 </td>
 </tr>
 <tr>
-<td class="small">Confirm password:</td>
+<td class="small"><% gettext "Confirm password" suffix=: %></td>
 <td>
 <input type="password" name="passwordConfirm" id="passwordConfirm" />
 </td>
@@ -126,8 +128,8 @@ $(function() {
 <td></td>
 <td><br />
 <button type="submit" id="submit" name="register" 
-value="register">Register</button>
-<button type="submit" name="cancel" value="cancel">Cancel</button>
+value="register"><% gettext Register %></button>
+<a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -135,15 +137,16 @@ value="register">Register</button>
 
 <% #reset %>
 <form id="login" method="post" action="<% response.action %>">
-<div class="small">Username:</div>
+<div class="small"><% gettext Username suffix=: %></div>
 <div><input type="text" name="name" id="name" size="15" tabindex="1" 
 value="<% request.name encoding="form" %>" /></div>
-<div class="small">e-mail:</div>
+<div class="small"><% gettext e-mail suffix=: %></div>
 <div><input type="text" name="email" id="email" size="15" tabindex="2" 
 value="<% request.email encoding="form" %>"/></div>
 <br />
 <button type="submit" id="submit" name="reset" value="1" 
-tabindex="4">reset</button>
+tabindex="4"><% gettext "Reset password" %></button>
+<a href="" class="cancel"><% gettext Cancel %></a>
 </form>
 
 <% #add %>
@@ -155,7 +158,8 @@ tabindex="4">reset</button>
    value="<% request.term encoding="form" %>" />
 </td>
 <td> 
-   <button type="submit" name="search" value="1">Search</button>
+   <button type="submit" name="search" value="1"><% gettext Search %></button>
+   <a href="<% this.href %>"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -166,8 +170,9 @@ tabindex="4">reset</button>
 <form method="post" action="<% response.action %>">
 <% param.result prefix="<br />" %>
 <br />
-<button type="submit" id="add" name="add" value="1">Add to members</button>
-<button type="submit" id="cancel" name="cancel" value="1">Cancel</button>
+<button type="submit" id="add" name="add" value="1">
+   <% gettext "Add to members" %>
+</button>
 </form>
 
 <% #result %>

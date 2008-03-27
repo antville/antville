@@ -3,10 +3,10 @@
 <% response.message prefix='<div class="message">' suffix="</div>" %>
 <form method="post" action="<% response.action %>">
 <% if <% skin.name %> is null then 
-   <% skin.select prototype prefix="Prototype: " 
-   suffix=<% skin.input name prefix="Name: " %> %>
+   <% skin.select prototype prefix=<% gettext Prototype suffix=": " %>
+   suffix=<% skin.input name prefix=<% gettext Name suffix=": " %> %> %>
 else 
-   <% skin.summary prefix='<p class="small">' suffix='</p>' %>
+   <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
 %>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -14,9 +14,11 @@ else
    <textarea name="source" cols="50" rows="23" wrap="virtual" 
    class="formWide"><% skin.source encoding="form" %></textarea>
    <p>
-      <button type="submit" name="save" value="2">save and close</button>
-      <button type="submit" name="save" value="1">save</button>
-      <a class="cancel" href="#">cancel</a>
+      <button type="submit" name="save" value="2">
+         <% gettext "Save and close" %>
+      </button>
+      <button type="submit" name="save" value="1"><% gettext Save %></button>
+      <a class="cancel" href="#"><% gettext Cancel %></a>
    </p>
 </td>
 </tr>
@@ -34,12 +36,37 @@ else
 
 <% #status %>
 <span class="small">
-   (modified by <% skin.creator %><% if <% skin.custom %> is false then
-      <% skin.link compare prefix=" ... " 
-      suffix=<% skin.link restore prefix=" ... " %> %>
+   (<% gettext "Modified by {0}" <% skin.creator %> %><% if <% skin.custom %> is false then
+      <% skin.link compare prefix=" ... " suffix=<% skin.link restore prefix=" ... " %> %>
    else 
       <% skin.link restore prefix=" ... " %>
    %>)<br />
-   <strong>Macro:</strong> 
+   <strong><% gettext Macro suffix=: %></strong> 
    &lt;% <% skin.prototype suffix="." | lowercase %>skin <% skin.name %> %&gt;
 </span>
+
+<% #compare %>
+<h3>Comparing <% skin.prototype %>.<% skin.name %> of layout '<% layout.title %>'
+with the original version:</h3>
+
+<table class="diff" cellspacing="0" cellpadding="0">
+<tr>
+<td class="removed">&nbsp;</td>
+<td colspan="2">Lines removed from original skin</td>
+</tr>
+<tr>
+<td class="added">&nbsp;</td>
+<td colspan="2">Lines added to modified skin</td>
+</tr>
+<tr>
+<td colspan="3"><% response.status prefix="<br />" default="&nbsp;" %></td>
+</tr>
+<% response.diff %>
+</table>
+
+<% #difference %>
+<tr>
+<td class="num"><% param.num %></td>
+<td class="status"><% param.status %></td>
+<td class="<% param.class %>"><pre>&nbsp;<% param.line %></pre></td>
+</tr>

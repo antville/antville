@@ -7,12 +7,14 @@
 <td colspan="2">
    <br />
    <button type="submit" name="vote" value="1">vote</button> 
-   <span class="small"><% poll.link result "view results" %></span>
+   <span class="small"><% poll.link result <% gettext "view results" %> %></span>
    <p class="small"><br />
-   Created by <% poll.creator %> on <% poll.created short %>
-   <% poll.modifier prefix="<br />Last modified by " %>
-   <% poll.modified short prefix="on " %>
-   </p>
+   <% gettext "Created by {0} on {1}" <% poll.creator %> 
+   <% poll.created short %> %>
+   <% if <% poll.created %> is <% poll.modified %> then "" else 
+      <% gettext "Last modified by {0} on {1}" <% poll.modifier %> 
+      <% poll.modified short %> prefix="<br />" %>
+   %></p>
 </td>
 </tr>
 </table>
@@ -22,11 +24,15 @@
 <% poll.question %><br />
 <% poll.loop skin="Choice#result" %>
 <p><br />
-   Total: <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
+   <% gettext Total suffix=: %> 
+   <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
 </p>
 <div class="small">
-   <% poll.closed short prefix=<% poll.modifier 
-   prefix="<br />This poll was closed by " suffix=" on " %> %>
+   <% if <% poll.status %> is closed then
+      <% gettext "This poll was closed by {0} on {1}"
+      <% poll.modifier %> <% poll.closed short %>
+      prefix="<br />" %> 
+   %>
 </div>
 
 <% #listItem %>
@@ -41,8 +47,8 @@
     <td rowspan="2" width="5"></td>'
 %>
 <td colspan="3" class="small">
-   <strong>Macro:</strong> <% poll.macro %>
-   <div class="ample"><strong>Status:</strong> 
+   <strong><% gettext Macro suffix=: %></strong> <% poll.macro %>
+   <div class="ample"><strong><% gettext Status suffix=: %></strong> 
    <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
 </td>
 </tr>
@@ -80,7 +86,7 @@ $(function() {
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td>
-   <span class="small">Question:</span><br />
+   <span class="small"><% gettext Question suffix=: %></span><br />
    <% poll.input question cols="30" rows="3" class="formText" %>
 </td>
 </tr>
@@ -94,9 +100,9 @@ $(function() {
 <tr>
 <td>
    <br />
-   <button type="submit" name="save" value="1">save</button>
-   <button type="button" id="add">add choice</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="button" id="add"><% gettext "Add choice" %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>

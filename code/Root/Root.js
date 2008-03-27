@@ -214,7 +214,7 @@ Root.prototype.updates_xml_action = function() {
       entry.setTitle(site.title);
       entry.setLink(site.href());
       entry.setAuthor(site.creator.name);
-      entry.setPublishedDate(site.created);
+      entry.setPublishedDate(site.modified);
       description = new rome.SyndContentImpl();
       description.setType("text/plain");
       description.setValue(site.tagline);
@@ -226,7 +226,7 @@ Root.prototype.updates_xml_action = function() {
    //output.output(feed, res.servletResponse.writer); return;
    var xml = output.outputString(feed);
    res.contentType = "text/xml";
-   res.write(injectXslDeclaration(xml));
+   res.write(xml); //injectXslDeclaration(xml));
    return;
 };
 

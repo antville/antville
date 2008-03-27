@@ -280,7 +280,7 @@ Site.prototype.search_xml_action = function() {
 Site.prototype.getXml = function() {
    var now = new Date;
    var feed = new rome.SyndFeedImpl();   
-   feed.setFeedType("rss_2.0");
+   feed.setFeedType("rss_1.0");
    feed.setLink(this.href());
    feed.setTitle(this.title);
    feed.setDescription(this.tagline || String.EMPTY);
@@ -346,7 +346,7 @@ Site.prototype.getXml = function() {
    var output = new rome.SyndFeedOutput();
    //output.output(feed, res.servletResponse.writer); return;
    var xml = output.outputString(feed);
-   return injectXslDeclaration(xml);
+   return xml; //injectXslDeclaration(xml);
 };
 
 Site.prototype.rss_xsl_action = function() {

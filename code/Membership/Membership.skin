@@ -1,32 +1,35 @@
 <% #edit %>
-<p>To modify the membership, simply choose the desired role from the 
-drop-down menu and click the "save" button. An e-mail will be sent to the 
-member informing about the membership change.</p>
+<p><% gettext 'To modify the membership, simply choose the desired role from the 
+drop-down menu and click the "save" button.' %>
+<% gettext 'An e-mail will be sent to the member informing about the membership 
+change.' %></p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap">User:</td>
+<td class="small" nowrap="nowrap"><% gettext User suffix=: %></td>
 <td nowrap="nowrap"><% membership.name %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap">Role:</td>
+<td class="small" nowrap="nowrap"><% gettext Role suffix=: %></td>
 <td nowrap="nowrap"><% membership.select role %></td>
 </tr>
 <tr>
 <td nowrap="nowrap"> </td>
 <td nowrap="nowrap"><br />
-<button type="submit" name="save" value="1"><strong>save</strong></button>
-<button type="submit" name="cancel" value="1">cancel</button>
+<button type="submit" name="save" value="1">
+   <strong><% gettext Save %></strong>
+</button>
+<a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
 </form>
 
 <% #login %>
-You're not logged in <% site.members.link login prefix="... " %>
+<% gettext "You're not logged in" %> <% site.members.link login prefix="... " %>
 
 <% #status %>
-Logged in as <% membership.name | membership.link %><br />
+<% gettext "Logged in as {0}" <% membership.name | membership.link %> %><br />
 <% membership.role prefix="(" suffix=")<br />" %>
 <% site.members.link edit "edit your profile" prefix="... " suffix="<br />" %>
 <% site.link subscribe prefix="... " suffix="<br />" %>
@@ -38,14 +41,15 @@ Logged in as <% membership.name | membership.link %><br />
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="3" class="small">
-   <div class="ample"><strong>Status:</strong> <% membership.role %></div>
+   <div class="ample"><strong><% gettext Status suffix=: %></strong> 
+   <% membership.role %></div>
 </td>
 </tr>
 <tr valign="top">
 <td>
    <div class="storytitle"><% membership.name %></div>
    <div class="ample"><span class="small"><% membership.created short
-   prefix="Member since " %></span></div>
+   prefix=<% gettext "Member since" suffix=" " %>  %></span></div>
    <div><% membership.creator.url | link %></div>
 </td>
 <td width="10"> </td>
@@ -62,13 +66,16 @@ Logged in as <% membership.name | membership.link %><br />
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="3" class="small">
-   <div class="ample"><strong>Status:</strong> <% membership.role %></div>
+   <div class="ample"><strong><% gettext Status suffix=: %></strong> 
+   <% membership.role %></div>
 </td>
 </tr>
 <tr valign="top">
 <td>
-   <div class="storytitle"><% site.title default="<em>[untitled]</em>" %></div>
-   <div class="small"><% site.modified short prefix="last updated on " %></div>
+   <div class="storytitle"><% site.title default=<% gettext Untitled 
+   prefix="<em>[" suffix="]" %> %></em>" %></div>
+   <div class="small"><% site.modified short prefix=<% gettext 
+   "Last updated on" suffix=" " %> %></div>
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
@@ -79,11 +86,12 @@ Logged in as <% membership.name | membership.link %><br />
 </table>
 
 <% #contact %>
-<p>Please enter your message to user "<% membership.name %>" below. 
-To prevent abuse the sender address and the subject of the e-mail are
-predefined. A generic disclaimer will be appended to your text. 
-Please make sure your own e-mail address in your 
-<% members.link edit profile %> is up-to-date.</p>
+<p><% gettext 'Please enter your message to the user {0} below.' 
+<% membership.name %> %> 
+<% gettext 'To prevent abuse the sender address and the subject of the e-mail 
+are set to predefined values.' %>
+<% gettext 'A generic disclaimer will be automatically appended to your 
+message.' %></p>
 <form method="post" action="<% response.action %>">
 <p>
 <span class="small">Message:</span><br />

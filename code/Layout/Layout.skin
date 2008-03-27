@@ -22,46 +22,27 @@ $(document).ready(function() {
 <p class="storyTitle"><br />
 <% gettext "Layout of site {0}" <% site.title %> %></p>
 
-<p><% layout.link images prefix="... maintain layout " %>
-<% layout.link skins prefix=" | " %></p>
+<p><% gettext "Show" prefix="... "%> 
+<% layout.link images <% gettext "layout images" %> %>
+<% layout.link skins <% gettext "layout skins" %> prefix=" | " %></p>
 
 <p><% layout.link import prefix="... " %>
 <% layout.link export prefix=" | " %>
-<% layout.link reset "reset" prefix=" | " suffix=" layout" %></p>
+<% layout.link reset prefix=" | " suffix=" layout" %></p>
 
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
-<!-- tr>
-<td class="small">Title:</td>
-<td><% layout.input title %></td>
-</tr>
-<tr>
-<td class="small" valign="top">Description:</td>
-<td><% layout.textarea description %></td>
-</tr>
-<tr>
-<td class="small">Origin:</td>
-<td><% layout.origin %></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <% layout.checkbox mode %><label for="mode">share this layout</label><br />
-   <span class="small">If this option is enabled other users can download 
-   the layout.</span><br /><br />
-</td>
-</tr -->
 <% layout.values %>
 <tr id="addValueFields">
 <td id="newKey" class="small"></td>
 <td><input type="text" name="newValue" id="newValue" /></td>
 </tr>
 <tr>
-<td class="small"><a href="" id="addValueLink">Add value</a></td>
+<td class="small"><a href="" id="addValueLink"><% gettext "Add value" %></a></td>
 <td>
    <br />
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -71,11 +52,12 @@ $(document).ready(function() {
 <form method="post" action="<% response.action %>" 
 enctype="multipart/form-data">
 <input type="file" name="upload" />
-<button type="submit" name="submit" value="1">import</button>
+<button type="submit" name="submit" value="1"><% gettext Import %></button>
 </form>
 
 <% #value %>
 <tr>
 <td class="small"><% param.key %>:</td>
-<td><input type="text" name="value_<% param.key %>" value="<% param.value %>" /></td>
+<td><input type="text" name="value_<% param.key %>" 
+value="<% param.value %>" /></td>
 </tr>

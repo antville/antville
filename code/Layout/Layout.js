@@ -132,42 +132,7 @@ Layout.prototype.reset_action = function() {
 };
 
 Layout.prototype.export_action = function() {
-   var zip = new helma.Zip();
-   for each (var fpath in res.skinpath) {
-      zip.add(new helma.File(fpath), "layout");
-   }
-   
-   var file, fname;
-   var dir = new helma.File(app.dir);
-   for each (var fpath in dir.listRecursive(/\.skin$/)) {
-      fname = fpath.split("/").splice(-2)[0];
-      file = new helma.File(fpath);
-      try {
-         zip.add(file, "layout/" + fname);
-      } catch (ex) {
-         app.log(ex);
-      }
-   }
-   
-   var data = new HopObject;
-   data.images = new HopObject;
-   this.images.forEach(function() {
-      var image = new HopObject;
-      for each (var key in Image.KEYS) {
-         image[key] = this[key];
-         data.images.add(image);
-      }
-   });
-   data.version = Root.VERSION;
-   data.origin = this.origin || this.site.href();
-   data.originator = this.originator || session.user.name;
-   data.originated = this.originated || new Date;
-   
-   // FIXME: XML encoder is losing all mixed-case properties :(
-   var xml = new java.lang.String(Xml.writeToString(data));
-   zip.addData(xml.getBytes("UTF-8"), "data.xml");
-   zip.close();
-
+   var zip = this.getArchive(res.skinpath);
    res.contentType = "application/zip";
    res.setHeader("Content-Disposition", 
          "attachment; filename=" + this.site.name + "-layout.zip");
@@ -295,6 +260,45 @@ Layout.prototype.getSkinPath = function() {
 Layout.prototype.getTitle = function() {
    return "Layout";
 };
+
+Layout.prototype.getArchive = function(skinpath) {
+   var zip = new helma.Zip();
+   for each (var fpath in skinpath) {
+      zip.add(new helma.File(fpath), "layout");
+   }
+   
+   var file, fname;
+   var dir = new helma.File(app.dir);
+   for each (var fpath in dir.listRecursive(/\.skin$/)) {
+      fname = fpath.split("/").splice(-2)[0];
+      file = new helma.File(fpath);
+      try {
+         zip.add(file, "layout/" + fname);
+      } catch (ex) {
+         app.log(ex);
+      }
+   }
+   
+   var data = new HopObject;
+   data.images = new HopObject;
+   this.images.forEach(function() {
+      var image = new HopObject;
+      for each (var key in Image.KEYS) {
+         image[key] = this[key];
+         data.images.add(image);
+      }
+   });
+   data.version = Root.VERSION;
+   data.origin = this.origin || this.site.href();
+   data.originator = this.originator || session.user.name;
+   data.originated = this.originated || new Date;
+   
+   // FIXME: XML encoder is losing all mixed-case properties :(
+   var xml = new java.lang.String(Xml.writeToString(data));
+   zip.addData(xml.getBytes("UTF-8"), "data.xml");
+   zip.close();
+   return zip;
+}
 
 Layout.prototype.values_macro = function() {
    /* FIXME: should be enough to render res.meta.values in HopObject.onRequest
