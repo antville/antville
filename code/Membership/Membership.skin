@@ -31,12 +31,14 @@ change.' %></p>
 <% #status %>
 <% gettext "Logged in as {0}" <% membership.name | membership.link %> %><br />
 <% membership.role prefix="(" suffix=")<br />" %>
-<% site.members.link edit "edit your profile" prefix="... " suffix="<br />" %>
+<% site.members.link edit <% gettext "Edit your profile" %> prefix="... " 
+suffix="<br />" %>
 <% site.link subscribe prefix="... " suffix="<br />" %>
-<% site.members.link updated subscriptions prefix="... " suffix="<br />" %>
+<% site.members.link updated <% gettext Subscriptions %> prefix="... " 
+suffix="<br />" %>
 <% site.members.link logout prefix="... " %>
 
-<% #listItem %>
+<% #member %>
 <div class="listSeparator"> </div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -61,7 +63,7 @@ change.' %></p>
 </tr>
 </table>
 
-<% #subscription %>
+<% #site %>
 <div class="listSeparator"> </div>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -73,7 +75,7 @@ change.' %></p>
 <tr valign="top">
 <td>
    <div class="storytitle"><% site.title default=<% gettext Untitled 
-   prefix="<em>[" suffix="]" %> %></em>" %></div>
+   prefix="<em>[" suffix="]</em>" %> %></div>
    <div class="small"><% site.modified short prefix=<% gettext 
    "Last updated on" suffix=" " %> %></div>
 </td>

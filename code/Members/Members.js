@@ -69,7 +69,7 @@ Members.prototype.link_macro = function(param, action, text) {
 
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
-   res.data.list = renderList(this, "Membership#listItem", 
+   res.data.list = renderList(this, "Membership#member", 
          10, req.queryParams.page);
    res.data.pager = renderPager(this, this.href(req.action), 
          10, req.queryParams.page);
@@ -197,7 +197,7 @@ Members.prototype.salt_js_action = function() {
 Members.prototype.owners_action = function() {
    res.data.title = gettext("Owners of {0}", this._parent.title);
    res.data.list = renderList(this.owners, 
-         "Membership#members", 10, req.queryParams.page);
+         "Membership#member", 10, req.queryParams.page);
    res.data.pager = renderPager(this.owners, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("Members#main");
@@ -208,7 +208,7 @@ Members.prototype.owners_action = function() {
 Members.prototype.managers_action = function() {
    res.data.title = gettext("Managers of {0}", this._parent.title);
    res.data.list = renderList(this.managers, 
-         "Membership#members", 10, req.queryParams.page); 
+         "Membership#member", 10, req.queryParams.page); 
    res.data.pager = renderPager(this.managers, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("Members#main");
@@ -219,7 +219,7 @@ Members.prototype.managers_action = function() {
 Members.prototype.contributors_action = function() {
    res.data.title = gettext("Contributors of {0}", this._parent.title);
    res.data.list = renderList(this.contributors, 
-         "Membership#members", 10, req.queryParams.page);
+         "Membership#member", 10, req.queryParams.page);
    res.data.pager = renderPager(this.contributors, 
          this.href(req.action), 10, req.data.page);
    res.data.body = this.renderSkinAsString("Members#main");
@@ -230,7 +230,7 @@ Members.prototype.contributors_action = function() {
 Members.prototype.subscribers_action = function() {
    res.data.title = gettext("Subscribers of {0}", this._parent.title);
    res.data.list = renderList(this.subscribers, 
-         "Membership#members", 10, req.queryParams.page);
+         "Membership#member", 10, req.queryParams.page);
    res.data.pager = renderPager(this.subscribers, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("Members#main");
@@ -249,7 +249,7 @@ Members.prototype.updated_action = function() {
 Members.prototype.privileges_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
    res.data.list = renderList(session.user.memberships, 
-         "Membership#listItem");
+         "Membership#site");
    res.data.body = session.user.renderSkinAsString("User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -258,7 +258,7 @@ Members.prototype.privileges_action = function() {
 Members.prototype.subscriptions_action = function() {
    res.data.title = gettext("Subscriptions of user {0}", session.user.name);
    res.data.list = renderList(session.user.subscriptions, 
-         "Membership#listItem");
+         "Membership#site");
    res.data.body = session.user.renderSkinAsString("User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
