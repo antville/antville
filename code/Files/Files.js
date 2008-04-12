@@ -56,7 +56,7 @@ Files.prototype.create_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Add a file to {0}", this._parent.title);
+   res.data.title = gettext("Add file to {0}", this._parent.title);
    res.data.body = file.renderSkinAsString("File#edit");
    this._parent.renderSkin("Site#page");
    return;

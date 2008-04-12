@@ -79,7 +79,7 @@ Skin.prototype.edit_action = function() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Edit {0}.{1} skin of "{2}"', this.prototype, 
+   res.data.title = gettext('Edit skin {0}.{1} of {2}', this.prototype, 
          this.name, res.handlers.site.title);
    res.data.body = this.renderSkinAsString("Skin#edit");
    res.handlers.skins.renderSkin("Skins#page");
@@ -167,7 +167,7 @@ Skin.prototype.restore_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Confirm restore of {0}", this);
+   res.data.title = gettext("Confirm restoration of {0}", this);
    res.data.body = this.renderSkinAsString("HopObject#confirm", {
       text: gettext('You are about to restore {0}.', this)
    });
@@ -218,9 +218,9 @@ Skin.prototype.compare_action = function() {
          res.data.diff = res.pop();
       }
    }
+   res.data.title = gettext("Compare versions of skin {0}.{1}", 
+         this.prototype, this.name);
    res.data.body = this.renderSkinAsString("Skin#compare");
-   res.data.title = gettext("Diffs for {0}/{1}.skin of layout {2}", 
-         this.prototype, this.name, res.handlers.layout.title);
    res.handlers.skins.renderSkin("Skins#page");
    return;
 };

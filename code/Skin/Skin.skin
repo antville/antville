@@ -46,8 +46,7 @@ else
 </span>
 
 <% #compare %>
-<h3>Comparing <% skin.prototype %>.<% skin.name %> of layout '<% layout.title %>'
-with the original version:</h3>
+<h3><% response.title %></h3>
 
 <table class="diff" cellspacing="0" cellpadding="0">
 <tr>

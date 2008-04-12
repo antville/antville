@@ -31,3 +31,12 @@ markgettext("Referrers");
 markgettext("Skins");
 markgettext("Stories");
 markgettext("Tags");
+
+markgettext("Edit");
+markgettext("Delete");
+markgettext("Show");
+markgettext("Close");
+markgettext("Publish");
+markgettext("Hide");
+
+markgettext('"ÄÖÜß"');

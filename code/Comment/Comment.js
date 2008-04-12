@@ -72,7 +72,7 @@ Comment.prototype.edit_action = function() {
    
    res.handlers.parent = this.parent;
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Edit comment to story {0}", 
+   res.data.title = gettext("Edit comment to story: {0}", 
          res.handlers.story.getTitle());
    res.data.body = this.renderSkinAsString("Comment#edit");
    this.site.renderSkin("Site#page");

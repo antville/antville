@@ -143,10 +143,10 @@ Skins.prototype.create_action = function() {
       }
    } else {
       if (skin.getSource()) {
-         res.data.title = gettext("Edit skin {0}.{1} of layout {2}", 
-               skin.prototype, skin.name, res.handlers.layout.name);
+         res.data.title = gettext("Edit skin {0}.{1} of {2}", 
+               skin.prototype, skin.name, res.handlers.site.title);
       } else {
-         res.data.title = gettext('Create a custom skin of "{0}"', 
+         res.data.title = gettext('Create a custom skin of {0}', 
                res.handlers.site.title);
       }
    }
@@ -253,7 +253,7 @@ Skins.prototype.getCustomSkins = function() {
 };
 
 Skins.getSummary = function(prefix, prototype, name) {
-   return gettext("Description of skin " + prototype + "." + name);
+   return gettext("Description of skin {0}", prototype + "." + name);
    var key = prefix + "." + prototype;
    name && (key += "." + name);
    var languages = new Array("en");

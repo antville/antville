@@ -74,7 +74,7 @@ HopObject.prototype.onRequest = function() {
    }
 
    res.handlers.layout = res.handlers.site.layout || new Layout;
-   //res.skinpath = res.handlers.layout.getSkinPath();
+   res.skinpath = res.handlers.layout.getSkinPath();
 
    res.meta.values = {};
    res.handlers.site.renderSkinAsString("Site#values");
