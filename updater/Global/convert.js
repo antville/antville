@@ -16,10 +16,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $URL$
+// $Revision:3427 $
+// $LastChangedBy:piefke3000 $
+// $LastChangedDate:2008-04-12 19:31:20 +0200 (Sat, 12 Apr 2008) $
+// $URL:https://antville.googlecode.com/svn/trunk/updater/Global/Updater.js $
 //
 
 var convert = function(type) {

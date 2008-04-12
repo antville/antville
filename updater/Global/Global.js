@@ -16,10 +16,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $URL$
+// $Revision:3427 $
+// $LastChangedBy:piefke3000 $
+// $LastChangedDate:2008-04-12 19:31:20 +0200 (Sat, 12 Apr 2008) $
+// $URL:https://antville.googlecode.com/svn/trunk/updater/Global/Global.js $
 //
 
 app.data.out = new java.lang.StringBuffer();
@@ -50,13 +50,39 @@ var ResultWrapper = function(result) {
    return this;
 }
 
+var version = function() {
+   try {
+      var rootSite = antville.__app__.getDataRoot();
+      var metadata = eval(rootSite.metadata_source);
+      return metadata.version || "";
+   } catch (ex) {
+      return "";
+   }
+}
+
 var init = function() {
-   delete app.data.finalized;
+   var currentVersion = version();
+   if (app.data.running) {
+      throw Error("Updater is already running");
+      res.abort();
+   } else if (getProperty("version.to") == currentVersion) {
+      log("Antville installation is already up-to-date");
+      res.abort();
+   } else if (getProperty("version.from") != currentVersion) {
+      log("Updater cannot upgrade version " + currentVersion);
+      res.abort();
+   } else {
+      app.data.running = true;
+   }
    return; 
 }
 
 var finalize = function() {
-   app.data.finalized = true;
+   var rootSite = antville.__app__.getDataRoot();
+   var metadata = eval(rootSite.metadata_source);
+   metadata.version = getProperty("version.to");
+   rootSite.metadata_source = metadata.toSource();
+   app.data.running = false;
    return;
 }
 
@@ -64,7 +90,7 @@ var out = function() {
    if (app.data.out.length() > 0) {
       res.write(app.data.out.toString());
       app.data.out.setLength(0);
-   } else if (app.data.finalized) {
+   } else if (!app.data.running) {
       res.status = 410;
    }
    return;
@@ -106,12 +132,12 @@ var query = function(type) {
    for (var i=1; i<arguments.length; i+=1) {
       param["value" + i] = arguments[i];
    } 
-   return renderSkinAsString("sql#" + type, param).replace(/\n|\r/g, " ");   
+   return renderSkinAsString("convert#" + type, param).replace(/\n|\r/g, " ");   
 }
 
 var update = function(tableName) {
    log("Updating table " + tableName);
-   var sql = renderSkinAsString("sql#" + tableName);
+   var sql = renderSkinAsString("convert#" + tableName);
    sql.split(/\n|\r|\n\r/).forEach(function(line) {
       if (!line) {
          return;
