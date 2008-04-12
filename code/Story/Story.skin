@@ -113,11 +113,18 @@ else <% if <% story.mode %> is hidden then
    class="listFlag">h<br />i<br />d<br />d<br />e<br />n</td>
    <td rowspan="2" width="5" nowrap="nowrap"></td>' %>
 %>
-<td colspan="3" class="small">
+<td class="small">
    <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
    <div class="ample"><strong><% gettext Status suffix=: %></strong>
    <% story.status %><% story.tags link prefix=" in " %>,
    <% story.comments link %></div>
+</td>
+<td rowspan="2" width="10" nowrap="nowrap"> </td>
+<td valign="bottom" rowspan="2" align="right" class="small">
+   <% story.link edit prefix="... " suffix="<br />" %>
+   <% story.link . <% gettext Show %> prefix="... " suffix="<br />" %>
+   <% story.link rotate prefix="... " suffix="<br />" %>
+   <% story.link delete prefix="... " %>
 </td>
 </tr>
 <tr valign="top">
@@ -126,13 +133,6 @@ else <% if <% story.mode %> is hidden then
    <div class="storyDate"><% gettext "{0} on {1}" <% story.creator link %>
    <% story.created short %> %></div>
    <% story.text | clip %>
-</td>
-<td width="10" nowrap="nowrap"> </td>
-<td align="right" class="small">
-   <% story.link edit prefix="... " suffix="<br />" %>
-   <% story.link . view prefix="... " suffix="<br />" %>
-   <% story.link rotate prefix="... " suffix="<br />" %>
-   <% story.link delete prefix="... " %>
 </td>
 </tr>
 </table>

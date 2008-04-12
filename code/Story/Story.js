@@ -81,11 +81,11 @@ Story.prototype.link_macro = function(param, action, text) {
    switch (action) {
       case "rotate":
       if (this.status === Story.CLOSED) {
-         text = gettext("publish");
+         text = gettext("Publish");
       } else if (this.mode === Story.FEATURED) {
-         text = gettext("hide");
+         text = gettext("Hide");
       } else {
-         text = gettext("close");
+         text = gettext("Close");
       }
    }
    return HopObject.prototype.link_macro.call(this, param, action, text);
@@ -101,13 +101,12 @@ Story.prototype.main_action = function() {
 };
 
 Story.prototype.getTitle = function(limit) {
-   return this.title || this;
    var key = this + ":title:" + limit;
    if (!res.meta[key]) {
       if (this.title) {
-         res.meta[key] = stripTags(this.title.clip(limit, "...", "\\s"));
+         res.meta[key] = stripTags(this.title).clip(limit, "...", "\\s");
       } else if (this.text) {
-         var parts = stripTags(this.text.embody(limit, "...", "\\s"));
+         var parts = stripTags(this.text).embody(limit, "...", "\\s");
          res.meta[key] = parts.head;
          res.meta[this + ":text:" + limit] = parts.tail;
       }
@@ -119,7 +118,8 @@ Story.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
-         this.setTags(req.postParams.tags || req.postParams.tags_array);
+         // FIXME: To be removed if work-around for Helma bug #607 passes
+         //this.setTags(req.postParams.tags || req.postParams.tags_array);
          delete session.data.backup;
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());
@@ -130,7 +130,7 @@ Story.prototype.edit_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Edit story "{0}"', this.getTitle());
+   res.data.title = gettext('Edit story: {0}', this.getTitle(3));
    res.data.body = this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
    return;
@@ -188,10 +188,12 @@ Story.prototype.update = function(data) {
    this.status = data.status;
    this.mode = data.mode;
    this.commentMode = data.commentMode;
-   // FIXME: Would be nice to do this here once instead of
-   // twice in Stories.create_action and Story.edit_action.
-   //this.setTags(data.tags || data.tag_array);
    this.setMetadata(data);
+
+   // FIXME: To be removed resp. moved to Stories.create_action and 
+   // Story.edit_action if work-around for Helma bug #607 fails
+   this.isTransient() && this.persist();
+   this.setTags(data.tags || data.tag_array);
 
    if (this.status !== Story.CLOSED && delta > 50) {
       site.hitchWebHook();

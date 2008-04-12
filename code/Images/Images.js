@@ -71,12 +71,14 @@ Images.prototype.create_action = function() {
    var image = new Image;
    // FIXME: We need to set the parent's type for getting the correct file path
    image.parent_type = this._parent._prototype;
+   image.site = res.handlers.site;
    
    if (req.postParams.save) {
       try {
          image.update(req.postParams);
          this.add(image);
-         image.setTags(req.postParams.tags || req.postParams.tag_array);
+         // FIXME: To be removed if work-around for Helma bug #607 passes
+         //image.setTags(req.postParams.tags || req.postParams.tag_array);
          image.notify(req.action);
          res.message = gettext('The uploaded image was saved successfully. Its name is "{0}"', 
                image.name);

@@ -33,8 +33,8 @@ this.handleMetadata("thumbnailWidth");
 this.handleMetadata("thumbnailHeight");
 
 Image.KEYS = ["name", "created", "modified", "url", "description", 
-            "contentType", "contentLength", "width", "height", "thumbnailName", 
-            "thumbnailWidth", "thumbnailHeight", "fileName"];
+      "contentType", "contentLength", "width", "height", "thumbnailName", 
+      "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
 
 Image.prototype.constructor = function(data) {
    // Images.Default is using the constructor on code compilation
@@ -99,7 +99,8 @@ Image.prototype.main_action = function() {
 Image.prototype.edit_action = function() {
    if (req.postParams.save) {
       this.update(req.postParams);
-      this.setTags(req.postParams.tags || req.postParams.tag_array);
+      // FIXME: To be removed if work-around for Helma bug #607 passes
+      //this.setTags(req.postParams.tags || req.postParams.tag_array);
       res.message = gettext("The changes were saved successfully.");
       res.redirect(this.href());
    }
@@ -166,9 +167,12 @@ Image.prototype.update = function(data) {
    }
 
    this.description = data.description;
-   // FIXME: Would be nice to do this here once instead of
-   // twice in Images.create_action and Image.edit_action.
-   //this.setTags(data.tags || data.tag_array);
+
+   // FIXME: To be removed resp. moved to Images.create_action and 
+   // Image.edit_action if work-around for Helma bug #607 fails
+   this.isTransient() && this.persist();
+   this.setTags(data.tags || data.tag_array);
+
    this.touch();
    return;
 };
@@ -322,9 +326,7 @@ Image.remove = function() {
    if (thumbnail) {
       thumbnail.remove();
    }
-   // FIXME: Don't use Story.prototype.setTags tor remove the tags of the image
-   //Story.prototype.setTags.call(this, null);
-   // Finally, remove the image iself
+   this.setTags(null);
    this.remove();
    return;
 };
