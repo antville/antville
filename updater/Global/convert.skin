@@ -217,7 +217,6 @@ alter table site change column SITE_F_USER_CREATOR creator_id mediumint(10);
 alter table site change column SITE_F_USER_MODIFIER modifier_id mediumint(10);
 alter table site change column SITE_CREATETIME created datetime;
 alter table site change column SITE_MODIFYTIME modified datetime;
-alter table site alter column name charset=utf8;
 alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKUSAGE, drop column SITE_EMAIL, drop column SITE_LASTUPDATE, drop column SITE_LASTOFFLINE, drop column SITE_LASTBLOCKWARN, drop column SITE_LASTDELWARN, drop column SITE_LASTPING, drop column SITE_ENABLEPING, drop column SITE_ISONLINE, drop column SITE_ISBLOCKED, drop column SITE_ISTRUSTED;
 
 <% #sites %>
