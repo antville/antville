@@ -22,6 +22,9 @@
 ## $URL:https://antville.googlecode.com/svn/trunk/updater/Updater/sql.skin $
 ##
 
+# Prerequisite for running the updater
+#grant CREATE, DROP, INDEX, ALTER on `antville`.* to 'antville'@'localhost';
+
 <% #legacy %>
 alter table site drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, drop column SITE_HASDISCUSSIONS, drop column SITE_SHOWDAYS, drop column SITE_SHOWARCHIVE, drop column SITE_LANGUAGE, drop column SITE_COUNTRY, drop column SITE_TIMEZONE, drop column SITE_LONGDATEFORMAT, drop column SITE_SHORTDATEFORMAT, drop column SITE_BGCOLOR, drop column SITE_TEXTFONT, drop column SITE_TEXTCOLOR, drop column SITE_TEXTSIZE, drop column SITE_LINKCOLOR, drop column SITE_ALINKCOLOR, drop column SITE_VLINKCOLOR, drop column SITE_TITLEFONT, drop column SITE_TITLECOLOR, drop column SITE_TITLESIZE, drop column SITE_SMALLFONT, drop column SITE_SMALLCOLOR, drop column SITE_SMALLSIZE;
 

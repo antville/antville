@@ -327,6 +327,9 @@ convert.skins = function() {
          res.push();
          var skinset = skins[prototype];
          for (var skinName in skinset) {
+            if (skinName === "values") {
+               continue;
+            }
             res.writeln("<% #" + skinName + " %>");
             res.writeln(skinset[skinName] || "");
          }
@@ -375,7 +378,7 @@ convert.skins = function() {
       if (current !== site + this.layout_name) {
          save(skins, fpath);
          current = site + this.layout_name;
-         fpath = app.dir + "/../static/" + site;
+         fpath = antville.properties.staticPath + site;
          if (site === "www") {
             var rootLayoutId = 6; // FIXME: antville.__app__.getDataRoot().sys_layout._id;
             fpath += rootLayoutId == this.layout_id ?
