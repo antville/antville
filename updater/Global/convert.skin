@@ -67,6 +67,7 @@ CREATE TABLE `log` (
 
 <% #AV_ACCESSLOG %>
 alter table AV_ACCESSLOG rename log;
+alter table log convert to character set utf8;
 alter table log add column `creator_id` mediumint(10);
 alter table log add column `action` varchar(255);
 alter table log add column `context_type` varchar(20);
@@ -82,6 +83,7 @@ alter table log change column ACCESSLOG_F_SITE context_id mediumint(10);
 
 <% #AV_CHOICE %>
 alter table AV_CHOICE rename choice;
+alter table choice convert to character set utf8;
 alter table choice change column CHOICE_ID id mediumint(10);
 alter table choice change column CHOICE_F_POLL poll_id mediumint(10);
 alter table choice change column CHOICE_TITLE title varchar(255);
@@ -90,6 +92,7 @@ alter table choice change column CHOICE_MODIFYTIME modified datetime;
 
 <% #AV_FILE %>
 alter table AV_FILE rename file;
+alter table file convert to character set utf8;
 alter table file add column `metadata` mediumtext;
 alter table file add column `parent_id` mediumint(10);
 alter table file add column `parent_type` varchar(30);
@@ -111,6 +114,7 @@ FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
 alter table AV_IMAGE rename image;
+alter table image convert to character set utf8;
 alter table image change column IMAGE_ID id mediumint(10);
 alter table image change column IMAGE_F_SITE site_id mediumint(10);
 alter table image change column IMAGE_PROTOTYPE prototype varchar(30);
@@ -142,6 +146,7 @@ i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null order by id
 
 <% #AV_LAYOUT %>
 alter table AV_LAYOUT rename layout;
+alter table layout convert to character set utf8;
 alter table layout add column metadata mediumtext;
 alter table layout change column LAYOUT_PREFERENCES xml mediumtext;
 alter table layout change column LAYOUT_ID id mediumint(10);
@@ -162,6 +167,7 @@ metadata from layout
 
 <% #AV_MEMBERSHIP %>
 alter table AV_MEMBERSHIP rename membership;
+alter table membership convert to character set utf8;
 alter table membership add column `role` enum('Subscriber','Contributor','Manager','Owner') not null;
 update membership set role = 'Contributor' where MEMBERSHIP_LEVEL = 9361;
 update membership set role = 'Manager' where MEMBERSHIP_LEVEL = 16383;
@@ -177,6 +183,7 @@ alter table membership drop column MEMBERSHIP_LEVEL;
 
 <% #AV_POLL %>
 alter table AV_POLL rename poll;
+alter table poll convert to character set utf8;
 alter table poll add column `status` enum('closed','readonly','open');
 update poll set status = 'closed';
 update poll set status = 'public' where poll_closed = 1;
@@ -192,6 +199,7 @@ alter table poll drop column POLL_CLOSED;
 
 <% #AV_SITE %>
 alter table AV_SITE rename site;
+alter table site convert to character set utf8;
 alter table site add column metadata mediumtext;
 alter table site change column SITE_PREFERENCES xml mediumtext;
 alter table site add column `mode` enum('closed','restricted','public','open') not null;
@@ -209,6 +217,7 @@ alter table site change column SITE_F_USER_CREATOR creator_id mediumint(10);
 alter table site change column SITE_F_USER_MODIFIER modifier_id mediumint(10);
 alter table site change column SITE_CREATETIME created datetime;
 alter table site change column SITE_MODIFYTIME modified datetime;
+alter table site alter column name charset=utf8;
 alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKUSAGE, drop column SITE_EMAIL, drop column SITE_LASTUPDATE, drop column SITE_LASTOFFLINE, drop column SITE_LASTBLOCKWARN, drop column SITE_LASTDELWARN, drop column SITE_LASTPING, drop column SITE_ENABLEPING, drop column SITE_ISONLINE, drop column SITE_ISBLOCKED, drop column SITE_ISTRUSTED;
 
 <% #sites %>
@@ -218,6 +227,7 @@ SITE_TITLE, mode from site
 
 <% #AV_SKIN %>
 alter table AV_SKIN rename skin;
+alter table skin convert to character set utf8;
 alter table skin change column SKIN_ID id mediumint(10);
 alter table skin change column SKIN_F_LAYOUT layout_id mediumint(10);
 alter table skin change column SKIN_PROTOTYPE prototype varchar(30);
@@ -287,6 +297,7 @@ drop table AV_SYSLOG;
 
 <% #AV_TEXT %>
 alter table AV_TEXT rename content;
+alter table content convert to character set utf8;
 alter table content change column TEXT_ID id mediumint(10);
 alter table content change column TEXT_F_SITE site_id mediumint(10);
 alter table content change column TEXT_TOPIC topic varchar(255);
@@ -321,6 +332,7 @@ alter table content drop column xml, drop column topic, drop column TEXT_DAY, dr
 
 <% #AV_USER %>
 alter table AV_USER rename user;
+alter table user convert to character set utf8;
 alter table user change column USER_ID id mediumint(10);
 alter table user add column metadata mediumtext default NULL;
 alter table user add column `status` enum('blocked','regular','trusted','privileged') not null;
@@ -340,6 +352,7 @@ alter table user drop column hash, drop column salt, drop column USER_URL, drop 
 
 <% #AV_VOTE %>
 alter table AV_VOTE rename vote;
+alter table file vote to character set utf8;
 alter table vote change column VOTE_ID id mediumint(10);
 alter table vote change column VOTE_F_POLL poll_id mediumint(10);
 alter table vote change column VOTE_F_CHOICE choice_id mediumint(10);
