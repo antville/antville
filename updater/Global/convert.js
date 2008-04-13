@@ -274,7 +274,7 @@ convert.skins = function() {
 
       var data = eval(metadata);
       res.push();
-      res.writeln("<% #values %>");
+      //res.writeln("<% #values %>");
       for (var key in styles) {
          var name = styles[key];
          var value = String(data[key]).toLowerCase();
@@ -327,9 +327,6 @@ convert.skins = function() {
          res.push();
          var skinset = skins[prototype];
          for (var skinName in skinset) {
-            if (skinName === "values") {
-               continue;
-            }
             res.writeln("<% #" + skinName + " %>");
             res.writeln(skinset[skinName] || "");
          }
