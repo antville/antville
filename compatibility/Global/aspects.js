@@ -128,6 +128,9 @@ HopObject.prototype.onCodeUpdate = function() {
    });
 }
 
+// Call onCodeUpdate() to be sure that aspects apply
+HopObject.prototype.onCodeUpdate();
+
 /* Comment.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "update", aspects.setTextAndTitle);
    return;
