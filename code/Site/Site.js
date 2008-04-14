@@ -90,9 +90,11 @@ Site.prototype.getPermission = function(action) {
       return true;
       case ".":
       case "main":
+      case "comments.xml":
       case "rss.xml":
       case "rss.xsl":
       case "search":
+      case "stories.xml":
       case "tags":
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
@@ -259,9 +261,25 @@ Site.prototype.rss_xml_action = function() {
    res.dependsOn(this.lastUpdate);
    res.digest();
    res.contentType = "text/xml";
-   res.write(this.getXml());
+   res.write(this.getXml("union"));
+   return;
+}
+
+Site.prototype.stories_xml_action = function() {
+   res.dependsOn(this.lastUpdate);
+   res.digest();
+   res.contentType = "text/xml";
+   res.write(this.getXml("recent"));
    return;
 };
+
+Site.prototype.comments_xml_action = function() {
+   res.dependsOn(this.lastUpdate);
+   res.digest();
+   res.contentType = "text/xml";
+   res.write(this.getXml("comments"));
+   return;
+}
 
 Site.prototype.search_xml_action = function() {
    return; // FIXME
@@ -277,10 +295,11 @@ Site.prototype.search_xml_action = function() {
    return;   
 }
 
-Site.prototype.getXml = function() {
+Site.prototype.getXml = function(type) {
+   type || (type = "recent");
    var now = new Date;
    var feed = new rome.SyndFeedImpl();   
-   feed.setFeedType("rss_1.0");
+   feed.setFeedType("rss_2.0");
    feed.setLink(this.href());
    feed.setTitle(this.title);
    feed.setDescription(this.tagline || String.EMPTY);
@@ -305,17 +324,19 @@ Site.prototype.getXml = function() {
    var entries = new java.util.ArrayList();
    var description;
 
-   for each (var story in this.stories.recent.list(0, 25)) {
+   var list = this.stories[type].list(0, 25);
+   for each (var item in list) {
       entry = new rome.SyndEntryImpl();
-      entry.setTitle(story.getTitle());
-      entry.setLink(story.href());
-      entry.setAuthor(story.creator.name);
-      entry.setPublishedDate(story.created);
-
-      description = new rome.SyndContentImpl();
-      description.setType("text/plain");
-      description.setValue(story.text);
-      entry.setDescription(description);
+      item.title && entry.setTitle(item.title);
+      entry.setLink(item.href());
+      entry.setAuthor(item.creator.name);
+      entry.setPublishedDate(item.created);
+      if (item.text) {
+         description = new rome.SyndContentImpl();
+         description.setType("text/plain");
+         description.setValue(item.text);
+         entry.setDescription(description);
+      }
       entries.add(entry);
       
       /*
