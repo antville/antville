@@ -274,6 +274,7 @@ convert.skins = function() {
 
       var data = eval(metadata);
       res.push();
+      // FIXME: obsolete
       //res.writeln("<% #values %>");
       for (var key in styles) {
          var name = styles[key];
@@ -359,17 +360,15 @@ convert.skins = function() {
          continue;
       }
       appSkins[prototype] || (appSkins[prototype] = {});
-      for each (var source in skinfiles[prototype]) {
-         var skin = createSkin(source);
-         var subskins = skin.getSubskinNames();
-         for each (var name in subskins) {
-            appSkins[prototype][name] = skin.getSubskin(name).getSource();
-         }
+      var skin = createSkin(skinfiles[prototype][prototype]);
+      var subskins = skin.getSubskinNames();
+      for each (var name in subskins) {
+         appSkins[prototype][name] = skin.getSubskin(name).getSource();
       }
    }
    
    var current, fpath, skins;
-   retrieve(query("skins4"));
+   retrieve(query("skins"));
    traverse(function() {
       var site = this.site_name || "www";
       if (current !== site + this.layout_name) {

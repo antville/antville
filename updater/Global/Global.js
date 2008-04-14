@@ -83,6 +83,7 @@ var finalize = function() {
    metadata.version = getProperty("version.to");
    rootSite.metadata_source = metadata.toSource();
    app.data.running = false;
+   log("OK, good.");
    return;
 }
 

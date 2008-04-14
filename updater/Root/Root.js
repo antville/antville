@@ -34,7 +34,7 @@ Root.prototype.main_action = function() {
       execute(query("tag"));
       execute(query("tag_hub"));
       execute(query("log"));
-      //update("AV_ACCESSLOG");
+      // FIXME: update("AV_ACCESSLOG");
       update("AV_CHOICE");
       update("AV_FILE");
       update("AV_IMAGE");
