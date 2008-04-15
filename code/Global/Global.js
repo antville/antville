@@ -484,7 +484,7 @@ function value_macro(param, name, value) {
    if (!value) {
       res.write(res.meta.values[name]);
    } else {
-      res.write("/* set " + name + " to " + value + " */");
+      //res.write("/* set " + name + " to " + value + " */");
       res.meta.values[name] = value;
    }
    return;

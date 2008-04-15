@@ -29,7 +29,6 @@ this.handleMetadata("contentLength");
 this.handleMetadata("fileName");
 
 File.prototype.constructor = function() {
-   this.site = res.handlers.site;
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    this.requests = 0;

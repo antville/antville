@@ -69,9 +69,9 @@ Images.prototype.main_action = function() {
 
 Images.prototype.create_action = function() {
    var image = new Image;
-   // FIXME: We need to set the parent's type for getting the correct file path
-   image.parent_type = this._parent._prototype;
    image.site = res.handlers.site;
+   // We need to set the parent's type for getting the correct file path
+   image.parent_type = this._parent._prototype;
    
    if (req.postParams.save) {
       try {

@@ -22,11 +22,10 @@
 // $URL$
 //
 
-Poll.getStatus = defineConstants(Poll, "closed", "readonly", "open");
+Poll.getStatus = defineConstants(Poll, "closed", "open");
 
 Poll.prototype.constructor = function(question) {
    this.question = question;
-   this.status = 'closed';
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
@@ -54,6 +53,14 @@ Poll.prototype.getPermission = function(action) {
    return false;
 };
 
+Poll.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "status":
+      return Poll.getStatus();
+   }
+   return;
+}
+
 Poll.prototype.link_macro = function(param, action, text) {
    switch (action) {
       case ".":
@@ -64,9 +71,9 @@ Poll.prototype.link_macro = function(param, action, text) {
       break;
       case "rotate":
       if (this.status === Poll.OPEN) {
-         text = gettext("close");
+         text = gettext("Close");
       } else {
-         text = this.closed ? gettext("re-open") : gettext("open");  
+         text = this.closed ? gettext("Re-open") : gettext("Open");  
       }
       break;
   }
@@ -74,15 +81,14 @@ Poll.prototype.link_macro = function(param, action, text) {
 };
 
 Poll.prototype.main_action = function() {
-   if (this.status === "closed") {
-      res.message = gettext("Sorry, this poll is closed. Voting is not possible.");
+   if (this.status !== Poll.OPEN) {
       res.redirect(this.href("result"));
       return;
    }
    if (req.postParams.vote) {
       try {
          this.vote(req.postParams);
-         res.message = gettext("Thanks, your vote was registered. You can change your vote until the poll is closed.");
+         res.message = gettext("Thanks, your vote was registered. You can change your mind until the poll is closed.");
          res.redirect(this.href("result"));
       } catch (ex) {
          res.message = ex;
@@ -172,6 +178,12 @@ Poll.prototype.update = function(data) {
    for (var i=0; i<choices.length; i+=1) {
       this.add(new Choice(choices[i]));
    }
+   if (data.save !== Poll.CLOSED) {
+      delete this.closed;
+   } else if (this.status) {
+      this.closed = new Date;
+   }
+   this.status = data.save;
    this.question = data.question;
    this.touch();
    return;
@@ -203,7 +215,8 @@ Poll.prototype.rotate_action = function() {
       this.closed = new Date;
    }
    this.touch();
-   return res.redirect(this._parent.href() + "#" + this._id);
+   return res.redirect(this.href());
+   //return res.redirect(this._parent.href() + "#" + this._id);
 };
 
 Poll.prototype.votes_macro = function(param) {

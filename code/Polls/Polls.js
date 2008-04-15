@@ -68,7 +68,7 @@ Polls.prototype.create_action = function() {
       req.postParams.title_array = [,,];
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Add poll to {0}", this._parent.title);
+   res.data.title = gettext("Add poll to site {0}", this._parent.title);
    res.data.body = poll.renderSkinAsString("Poll#edit");
    this._parent.renderSkin("Site#page");
    return;

@@ -42,6 +42,7 @@ Files.prototype.getPermission = function(action) {
 
 Files.prototype.create_action = function() {
    var file = new File;
+   file.site = res.handlers.site;
    if (req.postParams.save) {
       try {
          file.update(req.postParams);

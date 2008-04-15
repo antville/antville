@@ -47,6 +47,7 @@ Root.prototype.getPermission = function(action) {
    }
    switch (action) {
       case "backup.js":
+      case "debug":
       return true;
       case "create":
       return this.getCreationPermission();
@@ -68,6 +69,14 @@ Root.prototype.getMacroHandler = function(name) {
 };
 
 Root.prototype.main_action = function() {
+   /*var re = /("[^"]*"|'[^']*'|<%(\S*)|/gm;
+   var macro = '"1xfoo {0} 2xbar {1}" foo "bar bar" <% test %>';
+   var result = macro.replace(re, function() {
+      res.debug(arguments[1])
+   });
+//   res.debug(result)
+   return;*/
+   
    return Site.prototype.main_action.apply(this);
    //log();
    flushLog();
@@ -203,13 +212,15 @@ Root.prototype.updates_xml_action = function() {
    var feed = new rome.SyndFeedImpl();   
    feed.setFeedType("rss_2.0");
    feed.setLink(root.href());
-   feed.setTitle(root.title);
+   feed.setTitle("Recently updated sites at " + root.title);
    feed.setDescription(root.tagline);
    feed.setLanguage(root.locale.replace("_", "-"));
    feed.setPublishedDate(now);
    var entries = new java.util.ArrayList();
    var entry, description;
-   for each (var site in root.sites.list(0, 25)) {
+   var sites = root.sites.list(0, 25).sort(Number.Sorter("modified", 
+         Number.Sorter.DESC));
+   for each (var site in sites) {
       entry = new rome.SyndEntryImpl();
       entry.setTitle(site.title);
       entry.setLink(site.href());

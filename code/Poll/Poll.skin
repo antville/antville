@@ -7,7 +7,7 @@
 <td colspan="2">
    <br />
    <button type="submit" name="vote" value="1">vote</button> 
-   <span class="small"><% poll.link result <% gettext "view results" %> %></span>
+   <% poll.link result <% gettext "Results" %> %>
    <p class="small"><br />
    <% gettext "Created by {0} on {1}" <% poll.creator %> 
    <% poll.created short %> %>
@@ -23,15 +23,16 @@
 <% #results %>
 <% poll.question %><br />
 <% poll.loop skin="Choice#result" %>
-<p><br />
+<p class="small"><br />
    <% gettext Total suffix=: %> 
    <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
 </p>
 <div class="small">
-   <% if <% poll.status %> is closed then
-      <% gettext "This poll was closed by {0} on {1}"
-      <% poll.modifier %> <% poll.closed short %>
-      prefix="<br />" %> 
+   <% if <% poll.status %> is open then "" else
+      <% if <% poll.closed %> is null then "" else  
+         <% gettext "This poll was closed by {0} on {1}"
+         <% poll.modifier %> <% poll.closed short %> prefix="<br />" %> 
+      %>
    %>
 </div>
 
@@ -60,7 +61,7 @@
 </td>
 <td width="10" nowrap="nowrap"> </td>
 <td align="right" class="small">
-   <% poll.link . vote prefix="... " suffix="<br />" %>
+   <% poll.link . <% gettext Vote %> prefix="... " suffix="<br />" %>
    <% poll.link results text="results" prefix="... " suffix="<br />" %>
    <% poll.link edit prefix="... " suffix="<br />" %>
    <% poll.link rotate prefix="... " suffix="<br />" %>
@@ -78,10 +79,13 @@ $(function() {
       choice.find(".small").text('<% gettext Choice %> #' + index + ':');
       choice.find("input").val("");
       $(".choice:last").after(choice);
+      $(".choice:last").find("input").focus();
       index += 1;
+      return false;
    });
 });
 </script>
+<p class="storyTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
@@ -92,16 +96,25 @@ $(function() {
 </tr>
 <% poll.input choices %>
 <tr>
-<td class="small">
+   <td class="small" colspan="2"><a href="" id="add"><% gettext "Add choice" %></a></td>
+</tr>
+<tr>
+<td class="small"><br />
    <% poll.creator link prefix='Created by ' suffix=' on ' %>
-   <% poll.created short suffix="." %>
-</td>
+   <% poll.created short %>
+   <% if <% poll.created %> is <% poll.modified %> then "" else 
+      <% gettext "Last modified by {0} on {1}" <% poll.modifier link %> 
+      <% poll.modified short %> prefix="<br />" %>
+   %></td>
 </tr>
 <tr>
 <td>
-   <br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <button type="button" id="add"><% gettext "Add choice" %></button>
+   <button type="submit" name="save" value="<% poll.status default=closed %>">
+      <strong><% gettext Save %></strong>
+   </button>
+   <button type="submit" name="save" value="<% if <% poll.status %> is open then closed else open %>">
+      <% if <% poll.status %> is open then <% gettext Close %> else <% gettext Open %> %>
+   </button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
