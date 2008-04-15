@@ -5,22 +5,22 @@
 </span>
 
 <% #edit %>
+<script type="text/javascript">
+$(document).ready(function() {
+   if ("<% file.created %>") {
+      $(".name").hide();
+      $(".resize").hide();  
+   };
+});
+</script>
+<p class="storyTitle"><% response.title %></p><br />
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small"><% gettext "Local file" suffix=: %></td>
+<td class="small"><% gettext "File" suffix=: %></td>
 <td><% file.upload file %></td>
 </tr>
-<tr>
-<td align="center"><em>&#151; <% gettext or %> &#151;</em></td>
-<td class="small">(<% gettext "Only specify either a local file or a remote 
-URL" %>)</td>
-</tr>
-<tr>
-<td class="small"><% gettext "Remote URL" suffix=: %></td>
-<td><% file.input url %></td>
-</tr>
-<tr>
+<tr class="name">
 <td valign="top" class="small"><% gettext Name suffix=: %></td>
 <td>
    <% file.input name %><br />
@@ -64,7 +64,7 @@ URL" %>)</td>
 <td class="small" align="right" valign="top" rowspan="2">
    <% file.link edit prefix=" ... " suffix="<br />" %>
    <% file.link delete prefix="... " suffix="<br />" %>
-   <% file.link . download prefix=" ... " suffix="<br />" %>
+   <% file.link . <% gettext Download %> prefix=" ... " suffix="<br />" %>
 </td>
 </tr>
 <tr>

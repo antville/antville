@@ -26,8 +26,10 @@ this.handleMetadata("url");
 this.handleMetadata("description");
 this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
+this.handleMetadata("fileName");
 
 File.prototype.constructor = function() {
+   this.site = res.handlers.site;
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    this.requests = 0;
@@ -61,52 +63,92 @@ File.prototype.main_action = function() {
 
 File.prototype.edit_action = function() {
    if (req.postParams.save) {
-      this.update(req.postParams);
-      res.message = gettext();
-      res.redirect(this._parent.href());
+      try {
+         this.update(req.postParams);
+         res.message = gettext("The changes were saved successfully.");
+         res.redirect(this._parent.href());
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Edit file {0}", this.alias);
+   res.data.title = gettext("Edit file {0}", this.name);
    res.data.body = this.renderSkinAsString("File#edit");
    return this.site.renderSkin("Site#page");
 };
 
 File.prototype.getFormValue = function(name) {
+   var self = this;
+   
+   var getOrigin = function(str) {
+      var origin = req.postParams.file_origin || self.origin;
+      if (origin && origin.contains("://")) {
+         return origin;
+      }
+      return null;
+   }
+   
    if (req.isPost()) {
+      if (name === "file") {
+         return getOrigin();
+      }
       return req.postParams[name];
    }
    switch (name) {
       case "file":
-      return this.name;
+      return getOrigin();
    }
    return this[name];
 }
 
 File.prototype.update = function(data) {
    if (data.uploadError) {
-      // looks like the file uploaded has exceeded uploadLimit ...
-      throw Error(gettext("Oy, this file is exceeding the upload limit. Please try to decrease its size."));
+      app.log(data.uploadError);
+      // Looks like the file uploaded has exceeded the upload limit ...
+      throw Error(gettext("File size is exceeding the upload limit."));
    }
       
-   var upload = data.file_upload;
-   if (data.url && data.url !== this.url) {
-      this.url = data.url;
-      upload = getURL(data.url);
-   }
+   if (!data.file_origin) {
+      if (this.isTransient()) { 
+         throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
+      }
+   } else if (data.file_origin !== this.origin) {
+      var mime = data.file;
+      if (mime.contentLength < 1) {
+         mime = getURL(data.file_origin);
+         if (!mime) {
+            throw Error(gettext("Could not fetch the file from the given URL."));
+         }
+      }
 
-   if (upload && upload.contentLength > 0) {
-      this.name || (this.name = this.getAccessName(data.name || upload.name));
-      this.contentLength = upload.contentLength;
-      this.contentType = upload.contentType;
+      this.origin = data.file_origin;
+      var mimeName = mime.normalizeFilename(mime.name);
+      this.name || (this.name = this.site.files.getAccessName(data.name || 
+            mimeName.split(".")[0]));
+      this.contentLength = mime.contentLength;
+      this.contentType = mime.contentType;
+      
+      // Make the image persistent before proceeding with writing files and 
+      // setting tags (also see Helma bug #607)
+      this.isTransient() && this.persist();
+
+      var extension = mimeName.substr(mimeName.lastIndexOf(".")) || String.EMPTY;
+      var fileName = this._id + extension;
+      res.debug(fileName)
+      if (fileName !== this.fileName) {
+         // Remove existing file if the file name has changed
+         this.getFile().remove();
+      }
+      this.fileName = fileName;
       var file = this.getFile();
-      upload.writeToFile(file.getParent(), file.getName());
-   } else if (this.isTransient()) {
-      throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
+      mime.writeToFile(file.getParent(), file.getName());
    }
-
+      
+   // FIXME: one day? 
+   //this.setTags(data.tags || data.tag_array); 
    this.description = data.description;
-   // FIXME: this.setTags(data.tags || data.tag_array); 
    this.touch();
    return;
 };
@@ -121,7 +163,7 @@ File.prototype.contentLength_macro = function(param) {
 
 File.prototype.getFile = function() {
    var site = this.parent || res.handlers.site;
-   return site.getStaticFile("files/" + this.name);
+   return site.getStaticFile("files/" + this.fileName);
 };
 
 File.prototype.getUrl = function() {

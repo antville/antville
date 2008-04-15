@@ -150,7 +150,7 @@ Image.prototype.update = function(data) {
    if (data.uploadError) {
       app.log(data.uploadError);
       // Looks like the file uploaded has exceeded the upload limit ...
-      throw Error(gettext("File is exceeding the upload limit."));
+      throw Error(gettext("File size is exceeding the upload limit."));
    }
    
    if (!data.file_origin) {
@@ -172,8 +172,8 @@ Image.prototype.update = function(data) {
       }
       
       this.origin = data.file_origin;
-      this.name || (this.name = this.site.images.getAccessName((data.name || 
-            mime.normalizeFilename(mime.name).split(".")[0])));
+      this.name || (this.name = this.site.images.getAccessName(data.name || 
+            mime.normalizeFilename(mime.name).split(".")[0]));
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
    

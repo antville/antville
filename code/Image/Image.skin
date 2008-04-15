@@ -30,7 +30,7 @@ paste the following code:' %> <pre><% image.macro %></pre></p>
 <script type="text/javascript">
 $(document).ready(function() {
    if ("<% image.created %>") {
-      $("#name").hide();
+      $(".name").hide();
       $(".resize").hide();  
    };
 });
@@ -43,7 +43,7 @@ $(document).ready(function() {
 <td class="small"><% gettext "File" suffix=: %></td>
 <td><% image.upload file %></td>
 </tr>
-<tr id="name">
+<tr class="name">
 <td valign="top" class="small"><% gettext Name suffix=: %></td>
 <td>
    <% image.input name %><br />
