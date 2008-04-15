@@ -2,7 +2,7 @@
 <div class="listSeparator"></div>
 <% comment.skin Comment#content %>
 <p class="small">
-   <% comment.link . link prefix="... " %> 
+   <% comment.link . Link prefix="... " %> 
    <% comment.link edit prefix="... " %>
    <% comment.link delete prefix="... " %>
 </p>

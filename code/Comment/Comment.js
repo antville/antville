@@ -85,7 +85,7 @@ Comment.prototype.update = function(data) {
    }
    this.title = data.title;
    this.text = data.text;
-   this.setContent(data);
+   this.setMetadata(data);
    if (this.site.commentMode === Site.MODERATED || 
          this.story.commentMode === Site.MODERATED) {
       this.mode = Comment.PENDING;

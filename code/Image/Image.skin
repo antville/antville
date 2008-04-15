@@ -27,22 +27,23 @@ paste the following code:' %> <pre><% image.macro %></pre></p>
 <p><% image.description %></p>
 
 <% #edit %>
+<script type="text/javascript">
+$(document).ready(function() {
+   if ("<% image.created %>") {
+      $("#name").hide();
+      $(".resize").hide();  
+   };
+});
+</script>
+<p class="storyTitle"><% response.title %></p><br />
+<div style="width: 100px; overflow: hidden; float: left; margin-right: 10px"><% image.thumbnail %></div>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small"><% gettext "Local file" suffix=: %></td>
+<td class="small"><% gettext "File" suffix=: %></td>
 <td><% image.upload file %></td>
 </tr>
-<tr>
-<td align="center"><em>&#151; <% gettext or %> &#151;</em></td>
-<td class="small">(<% gettext "Only specify either a local file or a remote 
-URL" %>)</td>
-</tr>
-<tr>
-<td class="small"><% gettext "Remote URL" suffix=: %></td>
-<td><% image.input url %></td>
-</tr>
-<tr>
+<tr id="name">
 <td valign="top" class="small"><% gettext Name suffix=: %></td>
 <td>
    <% image.input name %><br />
@@ -58,25 +59,27 @@ URL" %>)</td>
 <td class="small" valign="top"><% gettext Tags suffix=: %></td>
 <td><% image.input tags %></td>
 </tr>
-<tr>
-<td colspan="2">
-   <% gettext "If you want to resize the image please specify your desired 
-   maximum width and/or maximum height. If you specify both the image will be 
-   resized to match both criterias, but the proportions of the image will be 
-   preserved." %>
+<tr class="resize">
+<td></td>
+<td>
+   <span class="small"></small>
 </td>
 </tr>
-<tr>
+<tr class="resize">
 <td class="small"><% gettext "Max. width" suffix=: %></td>
 <td><% image.input maxWidth value="400" %> pixel</td>
 </tr>
-<tr>
+<tr class="resize">
 <td class="small"><% gettext "Max. height" suffix=: %></td>
 <td><% image.input maxHeight value="400" %> pixel</td>
 </tr>
-<tr>
+<tr class="resize">
 <td class="small"> </td>
 <td class="small">
+   <% gettext "If you want to resize the image please specify your desired 
+   maximum width and/or maximum height in pixels. If you specify both the image 
+   will be resized to match both criterias, but the image ratio will be 
+   preserved." %><br /><br />
    <% gettext "If the width or height of your image exceeds 100 pixels Antville 
    automatically creates a thumbnail of it, too." %>
 </td>

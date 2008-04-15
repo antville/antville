@@ -1,0 +1,11 @@
+<% #upload %>
+<div class="upload" style="position: relative;">
+   <input type="file" id="<% param.name %>" name="<% param.name %>" 
+         onchange='$("#<% param.name %>_origin").val($(this).val());' 
+         style="position: relative; z-index: 1;" />
+   <div class="text" style="position: absolute; z-index: 2; top: 0; left: 0;">
+      <input type="text" name="<% param.name %>_origin" 
+            id="<% param.name %>_origin" value="<% param.value %>" 
+            onblur='$("#<% param.name %>").val("");' />
+   </div>
+</div>

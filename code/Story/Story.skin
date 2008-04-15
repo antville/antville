@@ -60,7 +60,7 @@
 <% #preview %>
 <% story.skin Story#content %>
 <p class="small">
-   <% story.link . link prefix="... " %>
+   <% story.link . Link prefix="... " %>
    <% story.comments link prefix="(" suffix=")" %>
    <% story.link comment#form prefix=" ... " %>
    <% story.link edit prefix=" ... " %>

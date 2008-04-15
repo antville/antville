@@ -22,17 +22,18 @@
 // $URL$
 //
 
-this.handleMetadata("url");
-this.handleMetadata("description");
-this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
-this.handleMetadata("width");
+this.handleMetadata("contentType");
+this.handleMetadata("description");
+this.handleMetadata("fileName");
 this.handleMetadata("height");
+this.handleMetadata("thumbnailHeight");
 this.handleMetadata("thumbnailName");
 this.handleMetadata("thumbnailWidth");
-this.handleMetadata("thumbnailHeight");
+this.handleMetadata("origin");
+this.handleMetadata("width");
 
-Image.KEYS = ["name", "created", "modified", "url", "description", 
+Image.KEYS = ["name", "created", "modified", "origin", "description", 
       "contentType", "contentLength", "width", "height", "thumbnailName", 
       "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
 
@@ -98,11 +99,16 @@ Image.prototype.main_action = function() {
 
 Image.prototype.edit_action = function() {
    if (req.postParams.save) {
-      this.update(req.postParams);
-      // FIXME: To be removed if work-around for Helma bug #607 passes
-      //this.setTags(req.postParams.tags || req.postParams.tag_array);
-      res.message = gettext("The changes were saved successfully.");
-      res.redirect(this.href());
+      try {
+         this.update(req.postParams);
+        // FIXME: To be removed if work-around for Helma bug #607 passes
+         //this.setTags(req.postParams.tags || req.postParams.tag_array);
+         res.message = gettext("The changes were saved successfully.");
+         res.redirect(this.href());
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit image {0}", this.name);
@@ -112,12 +118,25 @@ Image.prototype.edit_action = function() {
 };
 
 Image.prototype.getFormValue = function(name) {
+   var self = this;
+   
+   var getOrigin = function(str) {
+      var origin = req.postParams.file_origin || self.origin;
+      if (origin.contains("://")) {
+         return origin;
+      }
+      return null;
+   }
+   
    if (req.isPost()) {
+      if (name === "file") {
+         return getOrigin();
+      }
       return req.postParams[name];
    }
    switch (name) {
       case "file":
-      return this.url || this.name;
+      return getOrigin();
       case "maxWidth":
       case "maxHeight":
       return this[name] || 400;
@@ -129,50 +148,68 @@ Image.prototype.getFormValue = function(name) {
 
 Image.prototype.update = function(data) {
    if (data.uploadError) {
-      // looks like the file uploaded has exceeded uploadLimit ...
-      throw Error(gettext("Oy, this file is exceeding the upload limit. Please try to decrease its size."));
+      app.log(data.uploadError);
+      // Looks like the file uploaded has exceeded the upload limit ...
+      throw Error(gettext("File is exceeding the upload limit."));
    }
-      
-   var upload = data.file_upload;
-   if (!upload && data.url && data.url !== this.url) {
-      this.url = data.url;
-      upload = getURL(data.url);
-   }
+   
+   if (!data.file_origin) {
+      if (this.isTransient()) { 
+         throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
+      }
+   } else if (data.file_origin !== this.origin) {
+      var mime = data.file;
+      if (mime.contentLength < 1) {
+         mime = getURL(data.file_origin);
+         if (!mime) {
+            throw Error(gettext("Could not fetch the image from the given URL."));
+         }
+      }
 
-   if (upload && upload.contentLength > 0) {
-      if (!Image.validateType(upload.contentType)) {
-         throw Error(gettext("Unrecognized file extension. Are you sure this is an image?"));
+      var extension = Image.getFileExtension(mime.contentType);
+      if (!extension) {
+         throw Error(gettext("This type of file cannot be uploaded as image."));
       }
       
-      this.name || (this.name = this.getAccessName(data.name || upload.name));
-      this.contentLength = upload.contentLength;
-      this.contentType = upload.contentType;
-      var file = this.getFile();
-
-      var image = Image.writeToFile(upload, file, 
-            data.maxWidth, data.maxHeight);
+      this.origin = data.file_origin;
+      this.name || (this.name = this.site.images.getAccessName((data.name || 
+            mime.normalizeFilename(mime.name).split(".")[0])));
+      this.contentLength = mime.contentLength;
+      this.contentType = mime.contentType;
+   
+      var image = Image.constrain(mime, data.maxWidth, data.maxHeight);
       this.width = image.width;
       this.height = image.height;
       
-      if (this.width > Image.THUMBNAILWIDTH) {
-         file = this.getThumbnailFile();
-         image = Image.writeToFile(upload, file, 
-               Image.THUMBNAILWIDTH);
-         this.thumbnailName = file.getName();
-         this.thumbnailWidth = image.width; 
-         this.thumbnailHeight = image.height; 
+      var thumbnail;
+      if (image.width > Image.THUMBNAILWIDTH) {
+         thumbnail = Image.constrain(mime, Image.THUMBNAILWIDTH);
+         this.thumbnailWidth = thumbnail.width; 
+         this.thumbnailHeight = thumbnail.height; 
+      } else if (this.isPersistent()) {
+         this.getThumbnailFile().remove();
+         // NOTE: delete won't work here due to getter/setter methods
+         this.metadata.remove("thumbnailName");
+         this.metadata.remove("thumbnailWidth");
+         this.metadata.remove("thumbnailHeight");
       }
-   } else if (this.isTransient()) {
-      throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
+
+      // Make the image persistent before proceeding with writing files and 
+      // setting tags (also see Helma bug #607)
+      this.isTransient() && this.persist();
+      
+      var fileName = this._id + extension;
+      if (fileName !== this.fileName) {
+         // Remove existing image files if the file name has changed
+         this.removeFiles();
+      }
+      this.fileName = fileName;
+      thumbnail && (this.thumbnailName = this._id + "_small" + extension);
+      this.writeFiles(image, thumbnail);
    }
 
-   this.description = data.description;
-
-   // FIXME: To be removed resp. moved to Images.create_action and 
-   // Image.edit_action if work-around for Helma bug #607 fails
-   this.isTransient() && this.persist();
    this.setTags(data.tags || data.tag_array);
-
+   this.description = data.description;
    this.touch();
    return;
 };
@@ -187,7 +224,7 @@ Image.prototype.contentLength_macro = function() {
 };
 
 Image.prototype.url_macro = function() {
-   return res.write(this.url || this.getUrl());
+   return res.write(this.getUrl());
 };
 
 Image.prototype.macro_macro = function() {
@@ -196,7 +233,7 @@ Image.prototype.macro_macro = function() {
 };
 
 Image.prototype.thumbnail_macro = function() {
-   if (!this.thumbnailWidth || !this.thumbnailHeight) {
+   if (!this.thumbnailName) {
       return this.render_macro({});
    }
    var description = encode("Thumbnail of image " + this.name);
@@ -221,7 +258,7 @@ Image.prototype.render_macro = function(param) {
 };
 
 Image.prototype.getFile = function(name) {
-   name || (name = this.name);
+   name || (name = this.fileName);
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
       return layout.getFile(name);
@@ -231,7 +268,7 @@ Image.prototype.getFile = function(name) {
 };
 
 Image.prototype.getUrl = function(name) {
-   name || (name = this.name);
+   name || (name = this.fileName);
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
       res.push();
@@ -248,50 +285,14 @@ Image.prototype.getUrl = function(name) {
 };
 
 Image.prototype.getThumbnailFile = function() {
-   return this.getFile(this.thumbnailName || 
-         this.name.replace(/(\.[^.]+)?$/, "_small$1"));
-};
-
-Image.writeToFile = function(mime, file, maxWidth, maxHeight) {
-   if (mime.contentType.endsWith("ico")) {
-      mime.writeToFile(file.getParent(), file.getName());
-      return {};
-   }
-
-   var image = new helma.Image(mime.inputStream);
-   var factorH = 1, factorV = 1;
-   if (maxWidth && image.width > maxWidth) {
-      factorH = maxWidth / image.width;
-   }
-   if (maxHeight && image.height > maxHeight) {
-      factorV = maxHeight / image.height;
-   }
-
-   try {
-      if (factorH !== 1 || factorV !== 1) {
-         var width = Math.ceil(image.width * 
-               (factorH < factorV ? factorH : factorV));
-         var height = Math.ceil(image.height * 
-               (factorH < factorV ? factorH : factorV));
-         image.resize(width, height);
-         if (mime.contentType.endsWith("gif")) {
-            image.reduceColors(256);
-         }
-         image.saveAs(file);
-      } else {
-         mime.writeToFile(file.getParent(), file.getName());
-      }
-   } catch (ex) {
-      app.log(ex);
-      throw Error(gettext("Oops, couldn't save the image on disk."));
-   }
-   return image;
+   return this.getFile(this.thumbnailName);
+   // || this.fileName.replace(/(\.[^.]+)?$/, "_small$1"));
 };
 
 Image.prototype.getJSON = function() {
    return {
       name: this.name,
-      url: this.url,
+      origin: this.origin,
       description: this.description,
       contentType: this.contentType,
       contentLength: this.contentLength,
@@ -307,25 +308,81 @@ Image.prototype.getJSON = function() {
    }.toSource();
 };
 
-Image.validateType = function(type) {
+Image.prototype.writeFiles = function(image, thumbnail) {
+   if (image) {
+      try {
+         var file = this.getFile();
+         image.saveAs(file);
+         if (thumbnail) {
+            thumbnail.saveAs(this.getThumbnailFile());
+         }
+      } catch (ex) {
+         app.log(ex);
+         throw Error(gettext("Could not save the image's files on disk."));         
+      }
+   }
+   return;
+}
+
+Image.prototype.removeFiles = function() {
+   try {
+      this.getFile().remove();
+      var thumbnail = this.getThumbnailFile();
+      if (thumbnail) {
+         thumbnail.remove();
+      }
+   } catch (ex) {
+      app.log(ex);
+      throw Error(gettext("Could not remove the image's files from disk."));
+   }
+   return;
+}
+
+Image.getFileExtension = function(type) {
    switch (type) {
-      case "image/x-icon":
+      //case "image/x-icon":
+      //return ".ico";
       case "image/gif":
+      return ".gif";
       case "image/jpeg":
       case "image/pjpeg":
+      return ".jpg";
       case "image/png":
       case "image/x-png":
-      return true;
+      return ".png";
    }
-   return false;
+   return null;
 };
 
-Image.remove = function() {
-   this.getFile().remove();
-   var thumbnail = this.getThumbnailFile();
-   if (thumbnail) {
-      thumbnail.remove();
+Image.constrain = function(mime, maxHeight, maxWidth) {
+   try {
+      var image = new helma.Image(mime.inputStream);
+      var factorH = 1, factorV = 1;
+      if (maxWidth && image.width > maxWidth) {
+         factorH = maxWidth / image.width;
+      }
+      if (maxHeight && image.height > maxHeight) {
+         factorV = maxHeight / image.height;
+      }
+      if (factorH !== 1 || factorV !== 1) {
+         var width = Math.ceil(image.width * 
+               (factorH < factorV ? factorH : factorV));
+         var height = Math.ceil(image.height * 
+               (factorH < factorV ? factorH : factorV));
+         image.resize(width, height);
+         if (mime.contentType.endsWith("gif")) {
+            image.reduceColors(256);
+         }
+      }
+      return image;
+   } catch (ex) {
+      app.log(ex);
+      throw Error(gettext("Could not resize the image."));
    }
+}
+
+Image.remove = function() {
+   this.removeFiles();
    this.setTags(null);
    this.remove();
    return;
