@@ -135,7 +135,7 @@ Skins.prototype.create_action = function() {
          if (req.postParams.save == 1) {
             res.redirect(skin.href("edit"));
          } else {
-            res.redirect(Skins.getRedirectUrl(req.postParams));
+            res.redirect(res.handlers.layout.skins.href("modified"));
          }
       } catch (ex) {
          res.message = ex;

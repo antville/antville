@@ -37,7 +37,7 @@ else
 <% #status %>
 <span class="small">
    (<% gettext "Modified by {0}" <% skin.creator %> %><% if <% skin.custom %> is false then
-      <% skin.link compare prefix=" ... " suffix=<% skin.link restore prefix=" ... " %> %>
+      <% skin.link compare prefix=" ... " suffix=<% skin.link reset prefix=" ... " %> %>
    else 
       <% skin.link restore prefix=" ... " %>
    %>)<br />

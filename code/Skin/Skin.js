@@ -107,24 +107,9 @@ Skin.prototype.update = function(data) {
       res.handlers.layout.skins.add(this);
    }
    this.setSource(data.source);
-   return;
-   
-   if (!data.prototype) {
-      throw Error(gettext("Please choose a prototype for the custom skin."));
-   } else if (!data.name) {
-      throw Error(gettext("Please choose a name for the custom skin."));
-   } else if (data.name === data.prototype ||
-         (this[data.prototype] && this[data.prototype][data.name]) ||
-         res.handlers.skins.getOriginalSkin(data.prototype, data.name) || 
-         (app.skinfiles[data.prototype] && 
-         app.skinfiles[data.prototype][data.name])) {
-      throw Error(gettext("There is already a skin with this name. Please choose another one."));
-   }
-   this.prototype = data.prototype;
-   this.name = data.name;
    this.touch();
    return;
-};
+}
 
 Skin.remove = function() {
    if (this.source) {
@@ -152,13 +137,13 @@ Skin.remove = function() {
    return;
 };
 
-Skin.prototype.restore_action = function() {
+Skin.prototype.reset_action = function() {
    if (req.postParams.proceed) {
       try {
          var str = this.toString();
          this.setSource(this.source);
          this.remove();
-         res.message = gettext("{0} was successfully restored.", str);
+         res.message = gettext("{0} was successfully reset.", str);
          res.redirect(res.handlers.layout.skins.href("modified"));
       } catch(ex) {
          res.message = ex;
@@ -167,9 +152,9 @@ Skin.prototype.restore_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Confirm restoration of {0}", this);
+   res.data.title = gettext("Confirm reset of {0}", this);
    res.data.body = this.renderSkinAsString("HopObject#confirm", {
-      text: gettext('You are about to restore {0}.', this)
+      text: gettext('You are about to reset {0}.', this)
    });
    res.handlers.site.renderSkin("Site#page");
 }
@@ -225,13 +210,6 @@ Skin.prototype.compare_action = function() {
    return;
 };
 
-Skin.prototype.prototype_macro = function() {
-   if (this.prototype.toLowerCase() !== "global") {
-      res.write(this.prototype);
-   }
-   return;
-};
-
 Skin.prototype.status_macro = function() {
    return this.isTransient() ? "inherited" : "modified"; 
 };
@@ -261,24 +239,20 @@ Skin.prototype.getSource = function() {
 };
 
 Skin.prototype.setSource = function(source) {
-   if (source === null) {
-      return;
-   }
-
-   if (this.isSubskin()) {
-      res.push();
+   res.push();
+   if (source !== null) {
       res.writeln("<% #" + this.name + " %>");
-      res.writeln(source);
-      var skin = this.getMainSkin();
-      var subskins = skin.getSubskinNames();
-      for (var i in subskins) {
-         if (subskins[i] !== this.name) {
-            res.writeln("<% #" + subskins[i] + " %>");
-            res.writeln(skin.getSubskin(subskins[i]).source);
-         }
-      }
-      source = res.pop();
+      res.writeln(source.trim());
    }
+   var skin = this.getMainSkin();
+   var subskins = skin.getSubskinNames();
+   for (var i in subskins) {
+      if (subskins[i] !== this.name) {
+         res.writeln("<% #" + subskins[i] + " %>");
+         res.writeln(skin.getSubskin(subskins[i]).source.trim());
+      }
+   }
+   source = res.pop();
 
    var file = this.getStaticFile(res.skinpath[0], skin);   
    if (!file.exists()) {
@@ -298,24 +272,14 @@ Skin.prototype.setSource = function(source) {
 };
 
 Skin.prototype.getStaticFile = function(fpath, skin) {
-   var name = this.isSubskin() ? this.prototype : this.name;
-   return new java.io.File(fpath, this.prototype + "/" + name + ".skin");
+   return new java.io.File(fpath, this.prototype + "/" + 
+         this.prototype + ".skin");
 };
-
-Skin.prototype.isSubskin = function() {
-   // FIXME: OK to use subskins only?
-   return true; //this.getMainSkin().hasSubskin(this.name);
-}
 
 Skin.prototype.getMainSkin = function() {
    var source = app.getSkinfilesInPath(res.skinpath)[this.prototype][this.prototype];
    return createSkin(source);
 }
-
-Skin.prototype.isCustom = function() {
-   // FIXME:
-   return true;
-};
 
 Skin.prototype.render = function() {
    return renderSkin(createSkin(this.getSource()));
@@ -327,7 +291,7 @@ Skin.prototype.equals = function(source) {
    var normalize = function(str) {
       return str.replace(re, String.EMPTY);
    }
-   return normalize(source) === normalize(this.getSubskin());
+   return normalize(source) === normalize(this.getSource());
 };
 
 Skin.prototype.toString = function() {

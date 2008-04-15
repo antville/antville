@@ -98,6 +98,9 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 <% site.polls.link prefix="... " suffix="<br />" %>
 <% site.members.link prefix="... " suffix="<br />" %>
 <br />
+
+<% message text=AAAAAAAAAAAAAAA %>
+
 <% site.link edit <% gettext Preferences %> prefix="... " suffix="<br />" %>
 <% layout.link . <% gettext Layout %> prefix="... " suffix="<br />" %>
 <% layout.skins.link prefix="... " suffix="<br />" %>
@@ -301,11 +304,13 @@ function openPopup(img, width, height) {
 <link rel="stylesheet" type="text/css" 
       title="CSS Stylesheet" href="<% site.href main.css %>" />
 <link rel="alternate" type="application/rss+xml" 
-      title="RSS Feed (stories and comments)" href="<% site.href rss.xml %>" />
+      title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
 <link rel="alternate" type="application/rss+xml" 
-      title="RSS Feed (comments only)" href="<% site.href comments.xml %>" />
+      title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
 <link rel="alternate" type="application/rss+xml" 
-      title="RSS Feed (site updates)" href="<% root.href updates.xml %>" />
+      title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
+<link rel="alternate" type="application/rss+xml" 
+      title="Site updates of <% root.title %>" href="<% root.href updates.xml %>" />
 <!-- link rel="search" type="application/opensearchdescription+xml" 
       href="<% site.href search.xml %>" title="Antville Search" -->
 
