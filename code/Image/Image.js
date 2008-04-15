@@ -122,7 +122,7 @@ Image.prototype.getFormValue = function(name) {
    
    var getOrigin = function(str) {
       var origin = req.postParams.file_origin || self.origin;
-      if (origin.contains("://")) {
+      if (origin && origin.contains("://")) {
          return origin;
       }
       return null;

@@ -62,9 +62,11 @@ convert.images = function() {
          width: this.width,
          height: this.height,
          description: this.description,
-         thumbnailName: this.fileName + "_small" + "." + this.type,
-         thumbnailWidth: this.thumbnailWidth,
-         thumbnailHeight: this.thumbnailHeight
+      }
+      if (this.thumbnailWidth && this.thumbnailHeight) {
+         metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
+         metadata.thumbnailWidth = this.thumbnailWidth;
+         metadata.thumbnailHeight = this.thumbnailHeight;
       }
       execute("update image set metadata = " +
             quote(metadata.toSource()) + " where id = " + this.id);

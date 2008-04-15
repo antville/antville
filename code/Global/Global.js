@@ -262,7 +262,7 @@ function renderLink(param, url, text, handler) {
 
 function breadcrumbs_macro (param, delimiter) {
    delimiter || (delimiter = param.separator || " : ");
-   for (var i = 0; i < path.length - 1; i += 1) {
+   for (var i=1; i<path.length-1; i+=1) {
       html.link({href: path[i].href()}, path[i].getTitle());
       res.write(delimiter);
    }

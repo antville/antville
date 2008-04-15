@@ -30,6 +30,7 @@ relocateProperty(Image, "fileext", "contentType");
 relocateProperty(Image, "filesize", "contentLength");
 relocateProperty(Image, "alttext", "description");
 
+// FIXME: obsolete?
 Image.getCompatibleFileName = function(image, name) {
    var fname = image.metadata.get("fileName");
    if (fname) {
