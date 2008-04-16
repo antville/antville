@@ -28,7 +28,6 @@ Skin.CUSTOMIZABLE_PROTOTYPES = ["Archive", "Choice", "Comment", "File",
 Skin.prototype.constructor = function(prototype, name) {
    this.prototype = prototype;
    this.name = name;
-   this.custom = false;
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
@@ -280,6 +279,11 @@ Skin.prototype.getMainSkin = function() {
    var source = app.getSkinfilesInPath(res.skinpath)[this.prototype][this.prototype];
    return createSkin(source);
 }
+
+Skin.prototype.custom_macro = function() {
+   // FIXME:
+   return false;
+};
 
 Skin.prototype.render = function() {
    return renderSkin(createSkin(this.getSource()));

@@ -270,15 +270,22 @@ Admin.prototype.moduleSetup_macro = function(param) {
 
 Admin.prototype.filterLog = function(data) {
    data || (data = {});
-   var sql = "where action <> 'main' ";
-   switch (data.filter) {
-      case "1":
-      sql += "and context_type = 'Site' "; break;
-      case "2":
-      sql += "and context_type = 'User' "; break;
-      case "3":
-      sql += "and context_type = 'Root' "; break;
+   var sql = "";
+   if (data.filter > 0) {
+      sql += "where context_type = '";
+      switch (data.filter) {
+         case "1":
+         sql += "Site"; break;
+         case "2":
+         sql += "User"; break;
+         case "3":
+         sql += "Root"; break;
+      }
+      sql += "' and ";
+   } else {
+      sql += "where "
    }
+   sql += "action <> 'main' "; 
    if (data.query) {
       var parts = stripTags(data.query).split(" ");
       var keyword, like;
@@ -291,6 +298,7 @@ Admin.prototype.filterLog = function(data) {
    }
    sql += "order by created "; 
    (data.dir == 1) || (sql += "desc");
+   res.debug(sql)
    this.log.subnodeRelation = sql;
    return;
 };

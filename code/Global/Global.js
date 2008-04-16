@@ -93,6 +93,23 @@ jala.i18n.setLocaleGetter(function() {
    return res.handlers.site.getLocale();
 });
 
+function onStart() {
+   // FIXME: Does database exist?
+   /*var db = getDBConnection("antville");
+   var rows = db.executeRetrieval("select min(id) as id from site");
+   rows.next();
+   var id = rows.getColumnItem("id");
+   //Packages.helma.main.Server.getServer().stopApplication(app.name);
+   rows.release();*/
+
+   // call onStart methods of modules
+   for (var i in app.modules) {
+      if (app.modules[i].onStart)
+         app.modules[i].onStart();
+   }
+   return;
+}
+
 function defineConstants(ctor /*, arguments */) {
    var constants = [], name;
    for (var i=1; i<arguments.length; i+=1) {
@@ -113,23 +130,6 @@ function defineConstants(ctor /*, arguments */) {
 
 function disableMacro(ctor, name) {
    return ctor.prototype[name + "_macro"] = idle;
-}
-
-function onStart() {
-   // FIXME: Does database exist?
-   /*var db = getDBConnection("antville");
-   var rows = db.executeRetrieval("select min(id) as id from site");
-   rows.next();
-   var id = rows.getColumnItem("id");
-   //Packages.helma.main.Server.getServer().stopApplication(app.name);
-   rows.release();*/
-
-   // call onStart methods of modules
-   for (var i in app.modules) {
-      if (app.modules[i].onStart)
-         app.modules[i].onStart();
-   }
-   return;
 }
 
 function scheduler() {

@@ -525,9 +525,9 @@ Site.prototype.referrers_macro = function() {
    date.setDate(date.getDate() - 1);
    var db = getDBConnection("antville");
    var query = "select referrer, count(*) as requests from log " +
-      "where action = 'main' and context_type = 'Site' and context_id = " + 
-      this._id + " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
-      "'} group by referrer order by requests desc, referrer asc;";
+      "where context_type = 'Site' and context_id = " + this._id + 
+      " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
+      "'} and action = 'main' group by referrer order by requests desc, referrer asc;";
    var rows = db.executeRetrieval(query);
    var referrer;
    while (rows.next()) {
