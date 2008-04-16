@@ -1,6 +1,9 @@
+<% #href %>
+http://<% site.name %>.antville.org<% param.path %>
+
 <% #main %>
 <% site.stories %>
-
+<
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
@@ -24,7 +27,7 @@
 <tr>
 <td class="small"><% gettext Paging suffix=: %></td>
 <td><% site.input pageSize size="5" maxlength="2" %>
-<% site.select pageMode %></td>
+<% site.select pageMode %> per page</td>
 </tr>
 <tr>
 <td class="small"><% gettext Comments suffix=: %></td>

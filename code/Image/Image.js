@@ -208,7 +208,9 @@ Image.prototype.update = function(data) {
       this.writeFiles(image, thumbnail);
    }
 
-   this.setTags(data.tags || data.tag_array);
+   if (this.parent_type !== "Layout") {
+      this.setTags(data.tags || data.tag_array);
+   }
    this.description = data.description;
    this.touch();
    return;

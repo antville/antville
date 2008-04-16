@@ -1,6 +1,6 @@
 <% #main %>
 <div class="pagelink"><% breadcrumbs %>
-<% if <% tag.permission edit %> is true then <% tag.skin name="Tag#controls" %> %>
+<% if <% tag.permission edit %> is true then <% tag.skin Tag#controls %> %>
 </div><br />
 
 <% list.prevLink %>
@@ -25,6 +25,6 @@
          location.href="<% tag.href action="rename" %>?name=" + name;
       }'>Rename</button>
 <button type="button" onclick='var name; 
-      if (confirm("<% gettext 'Are you sure you want to remove the tag {0}?' <% tag.name %> %>)) {
+      if (confirm("<% gettext 'Are you sure you want to remove the tag {0}?' <% tag.name %> %>")) {
          location.href="<% tag.href action="delete" %>";
       }'>Delete</button>

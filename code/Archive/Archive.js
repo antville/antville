@@ -22,13 +22,15 @@
 // $URL$
 //
 
-Archive.Fields = ["year", "month", "day"];
+Archive.PAGER = "page";
+Archive.COLLECTION = "collection";
 
-Archive.prototype.constructor = function(name, parent) {
+Archive.prototype.constructor = function(name, type, parent) {
    this.name = name;
+   this.type = type;
    this.parent = parent;
    return this;
-};
+}
 
 Archive.prototype.getPermission = function(action) {
    var site = res.handlers.site;
@@ -44,7 +46,44 @@ Archive.prototype.getPermission = function(action) {
       return site.archiveMode === Site.PUBLIC;
    }
    return false;
-};
+}
+
+Archive.prototype.main_action = function() {
+   res.data.body = this.renderSkinAsString("Archive#main");
+   res.handlers.site.renderSkin("Site#page");
+   return;
+}
+
+Archive.prototype.page1_action = function() {
+   return res.redirect(this.href());
+}
+
+Archive.prototype.href = function(action) {
+   var buffer = [];
+   var archive = this;
+   while (archive.parent) {
+      buffer.push(archive.name);
+      archive = archive.parent;
+   }
+   buffer.push(res.handlers.site.href("archive"));
+   buffer.reverse();
+   if (action) {
+      if (this.type === Archive.PAGER) {
+         buffer.pop();
+      }
+      buffer.push(action);
+   }
+   return buffer.join("/");
+}
+
+Archive.prototype.getChildElement = function(name) {
+   if (name.startsWith(Archive.PAGER)) {
+      return new Archive(name, Archive.PAGER, this);
+   } else if (!isNaN(name)) {
+      return new Archive(name, Archive.COLLECTION, this);
+   }
+   return this.get(name);
+}
 
 Archive.prototype.link_macro = function(param, action, text) {
    if (!this.getPermission(action)) {
@@ -52,47 +91,13 @@ Archive.prototype.link_macro = function(param, action, text) {
    }
    switch (action) {
       case "previous":
-      var page = this.getPage() - 1; 
-      action = this.href("page" + page, true); break;
+      var page = this.getPage() - 1; break; 
       case "next":
-      var page = this.getPage() + 1; 
-      action = this.href("page" + page, true); break;
+      var page = this.getPage() + 1; break;
    }
+   var action = "page" + page;
    return renderLink.call(global, param, action, text, this);
-};
-
-Archive.prototype.getChildElement = function(name) {
-   if (name.startsWith("page")) {
-      return new Archive(name);
-   } else if (!isNaN(name)) {
-      return new Archive(name, this);
-   }
-   return this.get(name);
-};
-
-Archive.prototype.href = function(action, full) {
-   res.push();
-   res.write(res.handlers.site.href("archive"));
-   res.write("/");
-   // FIXME: jala.Date.Calendar does not fully conform with href() generation
-   if (full) {
-      var value;
-      for each (var field in Archive.Fields) {
-         if (value = this.getDate(field)) {
-            res.write(value);
-            res.write("/");
-         }
-      }
-   }
-   action && res.write(action);
-   return res.pop();
-};
-
-Archive.prototype.main_action = function() {
-   res.data.body = this.renderSkinAsString("Archive#main");
-   res.handlers.site.renderSkin("Site#page");
-   return;
-};
+}
 
 Archive.prototype.stories_macro = function() {
    var day, storyDay; 
@@ -107,11 +112,15 @@ Archive.prototype.stories_macro = function() {
       }
       story.renderSkin("Story#preview");
       return;
-   };
+   }
 
-   if (!this.parent) {
+   // FIXME: This is a little bit inconsistent and thus needs special care
+   var archive = this.type === Archive.PAGER ? this.parent : this;
+   if (!archive.parent) {
       var site = res.handlers.site;
       var offset = (page - 1) * pageSize;
+      res.debug(offset)
+      res.debug(pageSize)
       var stories = site.stories.featured.list(offset, pageSize);
       for each (var story in stories) {
          renderStory(story);
@@ -124,7 +133,7 @@ Archive.prototype.stories_macro = function() {
    res.write(this.getFilter());
    res.write(" limit " + pageSize);
    res.write(" offset " + (page - 1) * pageSize);
-   sql = res.pop();
+   var sql = res.pop();
 
    var db = getDBConnection("antville");
    rows = db.executeRetrieval(sql);
@@ -137,74 +146,81 @@ Archive.prototype.stories_macro = function() {
    return;
 };
 
-Archive.prototype.getDate = function(part) {
-   if (path.contains(this) > -1) {
-      var value;
-      if (part) {
-         var site = res.handlers.site;
-         var offset = path.contains(site);
-         var index = Archive.Fields.indexOf(part);
-         var value = path[offset + 2 + index];
-         if (value && value.parent) {
-            return (part === "month" ? value.name - 1 : value.name);
-         }
-      } else {
-         var value;
-         var date = new Date;
-         (value = this.getDate("year")) && date.setYear(value);
-         (value = this.getDate("month")) && date.setMonth(value);
-         (value = this.getDate("day"))  && date.setDate(value);
-         return new Date(date);
-      }
+Archive.prototype.getSize = function() {
+   // FIXME: This is a little bit inconsistent and thus needs special care
+   var archive = this.type === Archive.PAGER ? this.parent : this;
+   if (!archive.parent) {
+      return res.handlers.site.stories.size();
    }
-   return null;
-};
+   var db = getDBConnection("antville");
+   var sql = "select count(*) as max from content " + this.getFilter();
+   var rows = db.executeRetrieval(sql);
+   rows.next();
+   return rows.getColumnItem("max");
+}
+
+Archive.prototype.getFilter = function() {
+   var buffer = [];
+   var archive = this;
+   do {
+      if (archive.type === Archive.COLLECTION) {
+         buffer.push(Number(archive.name));
+      }
+   } while (archive = archive.parent);
+   
+   if (buffer.length > 0) {
+      buffer.reverse();
+      //buffer[1] && (buffer[1] += 1);
+   } else {
+      var now = new Date;
+      buffer.push(now.getDate());
+      buffer.push(now.getMonth() + 1);
+      buffer.push(now.getFullYear());
+   }
+    
+   res.push();
+   var site = res.handlers.site;
+   res.write("where site_id = ");
+   res.write(site._id);
+   res.write(" and prototype = 'Story' and status <> 'closed'");
+
+   var keys = ["year", "month", "day"];
+   for (var i in buffer) {
+      res.write(" and ");
+      res.write(keys[i]);
+      res.write("(created) = ");
+      res.write(buffer[i]);
+   }
+   res.write(" order by created desc");
+   return res.pop();
+}
 
 Archive.prototype.getPage = function() {
-   if (this.name && this.name.startsWith("page")) {
+   if (this.type === Archive.PAGER) {
       return Number(this.name.substr(4));
    }
    return 1;
-};
+}
 
 Archive.prototype.getPageSize = function() {
-   return 10;
-};
+   return res.handlers.site.pageSize;
+}
 
-Archive.prototype.getSize = function() {
-   if (!res.meta.archiveSize) {
-      var db = getDBConnection("antville");
-      var sql = "select count(*) as max from content " + this.getFilter();
-      var rows = db.executeRetrieval(sql);
-      rows.next();
-      res.meta.archiveSize = rows.getColumnItem("max");
+Archive.prototype.getDate = function() {
+   var date = new Date;
+   var offset = path.contains(res.handlers.site.archive) + 1;
+   if (offset > -1) {
+      var archive;
+      var buffer = [];
+      for (var i=offset; i<path.length; i+=1) {
+         archive = path[i];
+         if (archive.type === Archive.COLLECTION) {
+            buffer.push(Number(archive.name));
+         }
+      }
    }
-   return res.meta.archiveSize;
-};
-
-Archive.prototype.getFilter = function() {
-   if (!res.meta.archiveFilter) {
-      var site = res.handlers.site;
-      res.push();
-      res.write("where site_id = ");
-      res.write(site._id);
-      res.write(" and prototype = 'Story' and status <> 'closed'");
-      var part;
-      if (part = this.getDate("year")) {
-          res.write(" and year(created) = " + part);
-      }
-      if (part = this.getDate("month")) {
-         res.write(" and month(created) = " + (part + 1));
-      }
-      if (part = this.getDate("day")) {
-         res.write(" and day(created) = " + part);
-      }
-      res.write(" order by created desc");
-      res.meta.archiveFilter = res.pop();
-   }
-   return res.meta.archiveFilter;
-};
-
-Archive.prototype.page1_action = function() {
-   return res.redirect(this.href());
-};
+   buffer[0] && date.setYear(buffer[0]);
+   buffer[1] && date.setMonth(buffer[1] - 1);
+   buffer[2] && date.setDate(buffer[2]);
+   return date;
+}

@@ -24,7 +24,7 @@
 
 Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
 Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
-Site.getPageModes = defineConstants(Site, "days", "stories");
+Site.getPageModes = defineConstants(Site, "stories"); //, "days");
 Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
 Site.getArchiveModes = defineConstants(Site, "closed", "public");
 Site.getNotificationModes = defineConstants(Site, "Nobody", 
@@ -110,7 +110,7 @@ Site.prototype.getPermission = function(action) {
       return Site.require(Site.PUBLIC) &&
             !Membership.require(Membership.SUBSCRIBER);
       case "unsubscribe":
-      var membership = this.members.get(session.user.name)
+      var membership = this.members.get(session.user.name);
       return User.require(User.REGULAR) && 
             !membership.require(Membership.OWNER);
    }
@@ -189,11 +189,11 @@ Site.prototype.update = function(data) {
       if (!data.name) {
          throw Error(gettext("Please enter a name for your new site."));
       } else if (data.name.length > 30) {
-         throw Error(gettext("Sorry, the name you chose is too long. Please enter a shorter one."));
+         throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
       } else if (/(\/|\\)/.test(data.name)) {
-         throw Error(gettext("Sorry, a site name may not contain any (back)slashes."));
+         throw Error(gettext("A site name may not contain any (back)slashes."));
       } else if (data.name !== root.getAccessName(data.name)) {
-         throw Error(gettext("Sorry, there is already a site with this name."));
+         throw Error(gettext("There already is a site with this name."));
       }
       this.name = data.name;
       this.title = data.title || data.name;
@@ -227,7 +227,6 @@ Site.remove = function(site) {
    HopObject.remove(site.stories);
    HopObject.remove(site.images);
    HopObject.remove(site.files)
-   // FIXME: HopObject.remove(site.layouts);
    site.remove();
    logAction("site", "removed");
    return;
@@ -261,7 +260,7 @@ Site.prototype.rss_xml_action = function() {
    res.dependsOn(this.lastUpdate);
    res.digest();
    res.contentType = "text/xml";
-   res.write(this.getXml("union"));
+   res.write(this.getXml(this.stories.union));
    return;
 }
 
@@ -269,7 +268,7 @@ Site.prototype.stories_xml_action = function() {
    res.dependsOn(this.lastUpdate);
    res.digest();
    res.contentType = "text/xml";
-   res.write(this.getXml("recent"));
+   res.write(this.getXml(this.stories.recent));
    return;
 };
 
@@ -277,7 +276,7 @@ Site.prototype.comments_xml_action = function() {
    res.dependsOn(this.lastUpdate);
    res.digest();
    res.contentType = "text/xml";
-   res.write(this.getXml("comments"));
+   res.write(this.getXml(this.stories.comments));
    return;
 }
 
@@ -295,8 +294,8 @@ Site.prototype.search_xml_action = function() {
    return;   
 }
 
-Site.prototype.getXml = function(type) {
-   type || (type = "recent");
+Site.prototype.getXml = function(collection) {
+   collection || (collection = this.stories.recent);
    var now = new Date;
    var feed = new rome.SyndFeedImpl();   
    feed.setFeedType("rss_2.0");
@@ -324,7 +323,7 @@ Site.prototype.getXml = function(type) {
    var entries = new java.util.ArrayList();
    var description;
 
-   var list = this.stories[type].list(0, 25);
+   var list = collection.list(0, 25);
    for each (var item in list) {
       entry = new rome.SyndEntryImpl();
       item.title && entry.setTitle(item.title);
@@ -429,28 +428,34 @@ Site.prototype.search_action = function() {
 };
 
 Site.prototype.subscribe_action = function() {
-   var membership = new Membership(session.user, Membership.SUBSCRIBER);
-   this.members.add(membership);
-   res.message = gettext('You successfully subscribed to the site "{0}".', 
-         this.title);
+   try {
+      var membership = new Membership(session.user, Membership.SUBSCRIBER);
+      this.members.add(membership);
+      res.message = gettext('Successfully subscribed to site {0}.', 
+            this.title);
+   } catch (ex) {
+      app.log(ex);
+      res.message = ex.toString();
+   }
    res.redirect(this.href());
    return;
 };
 
 Site.prototype.unsubscribe_action = function() {
    if (req.postParams.proceed) {
-      //try {
-         Membership.remove(this.members.get(session.user.name));
-         res.message = gettext("Successfully unsubscribed the membership.");
+      try {
+         Membership.remove(Membership.getByName(session.user.name));
+         res.message = gettext("Successfully unsubscribed from site {0}.",
+               this.title);
          res.redirect(this.href());
-      /*} catch (err) {
-         res.message = err.toString();
-      }*/
+      } catch (ex) {
+         app.log(ex)
+         res.message = ex.toString();
+      }
    }
-
    res.data.title = gettext("Remove subscription to {0}", this.title);
    res.data.body = this.renderSkinAsString("HopObject#delete", {
-      text: gettext('You are about to remove the subscription to the site "{0}".', 
+      text: gettext('You are about to unsubscribe from site {0}.', 
             this.title)
    });
    this.renderSkin("Site#page");
@@ -474,7 +479,6 @@ Site.prototype.getMacroHandler = function(name) {
       case "stories":
       case "tags":
       return this[name];
-      
       default:
       return null;
    }
@@ -498,12 +502,15 @@ Site.prototype.stories_macro = function() {
 };
 
 Site.prototype.calendar_macro = function(param) {
+   if (this.archiveMode !== Site.PUBLIC) {
+      return;
+   }
    var calendar = new jala.Date.Calendar(this.archive);
    //calendar.setAccessNameFormat("yyyy/MM/dd");
-   calendar.setHrefFormat("yyyy/MM/dd/");
+   calendar.setHrefFormat("/yyyy/MM/dd/");
    calendar.setLocale(this.getLocale());
    calendar.setTimeZone(this.getTimeZone());
-   calendar.render(this.archive.getDate() || new Date);
+   calendar.render(this.archive.getDate());
    return;
 };
 
@@ -534,19 +541,6 @@ Site.prototype.referrers_macro = function() {
    }
    rows.release();
    return;
-};
-
-// FIXME: This can be removed if Layouts really are to disappear
-Site.prototype.getLayouts = function() {
-   var result = [];
-   this.layouts.forEach(function() {
-      var layout = this;
-      result.push({
-         value: layout._id,
-         display: layout.title
-      });
-   });
-   return result;
 };
 
 Site.prototype.getLocale = function() {

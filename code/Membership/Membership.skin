@@ -81,7 +81,7 @@ suffix="<br />" %>
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
-   <% site.link . view prefix="... " %><!--
+   <% site.link . <% gettext View %> prefix="... " %><!--
 --><% site.link unsubscribe prefix="<br />... " %>
 </td>
 </tr>
@@ -101,7 +101,7 @@ message.' %></p>
       name="text"><% request.text encoding="form" %></textarea>
 </p>
 <p>
-   <button type="submit" name="send" value="1">send</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
+   <button type="submit" name="send" value="1">Send</button>
+   <button type="submit" name="cancel" value="1">Cancel</button>
 </p>
 </form>

@@ -156,11 +156,7 @@ Membership.prototype.status_macro = function() {
 };
 
 Membership.getByName = function(name) {
-   var site = res.handlers.site;
-   if (site) {
-      return site.members.get(name);
-   }
-   return null;
+   return res.handlers.site.members.get(name);
 };
 
 Membership.prototype.require = function(role) {

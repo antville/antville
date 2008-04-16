@@ -31,8 +31,11 @@ paste the following code:' %> <pre><% image.macro %></pre></p>
 $(document).ready(function() {
    if ("<% image.created %>") {
       $(".name").hide();
-      $(".resize").hide();  
+      $(".resize").hide();
    };
+   if ("<% image.parent_type %>" === "Layout") {
+      $(".tags").hide();
+   }
 });
 </script>
 <p class="storyTitle"><% response.title %></p><br />
@@ -55,7 +58,7 @@ $(document).ready(function() {
 <td class="small" valign="top"><% gettext Description suffix=: %></td>
 <td><% image.textarea description %></td>
 </tr>
-<tr>
+<tr class="tags">
 <td class="small" valign="top"><% gettext Tags suffix=: %></td>
 <td><% image.input tags %></td>
 </tr>
