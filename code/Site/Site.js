@@ -208,7 +208,7 @@ Site.prototype.update = function(data) {
       webHookUrl: data.webHookUrl,
       webHookMode: data.webHookMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
-      pageSize: parseInt(data.pageSize, 10) || 3,
+      pageSize: parseInt(data.pageSize, 10) || this.pageSize || 3,
       commentMode: data.commentMode || Site.DISABLED,
       archiveMode: data.archiveMode || Site.CLOSED,
       notificationMode: data.notificationMode || Site.DISABLED,
@@ -323,7 +323,8 @@ Site.prototype.getXml = function(collection) {
    var entries = new java.util.ArrayList();
    var description;
 
-   var list = collection.list(0, 25);
+   var list = collection.constructor === Array ? 
+         collection : collection.list(0, 25);
    for each (var item in list) {
       entry = new rome.SyndEntryImpl();
       item.title && entry.setTitle(item.title);
@@ -333,7 +334,7 @@ Site.prototype.getXml = function(collection) {
       if (item.text) {
          description = new rome.SyndContentImpl();
          description.setType("text/plain");
-         description.setValue(item.text);
+         description.setValue(item.renderSkinAsString("Story#rss"));
          entry.setDescription(description);
       }
       entries.add(entry);

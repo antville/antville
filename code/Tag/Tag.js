@@ -22,19 +22,52 @@
 // $URL$
 //
 
+Tag.MOUNTPOINTS = {
+   Story: "tags",
+   Image: "galleries"
+}
+
 Tag.prototype.constructor = function(name, site, type) {
    this.name = name;
    this.site = site;
    this.type = type;
    return this;
-};
+}
+
+Tag.prototype.getPermission = function(action) {
+   switch (action) {
+      case "main":
+      case "rss.xml":
+      return true;
+      case "edit":
+      case "delete":
+      case "rename":
+      return User.require(User.PRIVILEGED) ||
+            Membership.require(Membership.MANAGER);
+   }   
+   return false;
+}
 
 Tag.prototype.main_action = function() {
    res.handlers.list = new jala.ListRenderer(this.getTagged());
+   res.handlers.list.setPageSize(this.site.pageSize);
    res.data.body = this.renderSkinAsString("Tag#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
+
+Tag.prototype.rss_xml_action = function() {
+   res.dependsOn(this.lastUpdate);
+   res.digest();
+   res.contentType = "text/xml";
+   var tagHubs = this.getTagged().list(0, this.site.pageSize);
+   var stories = [];
+   for (var i in tagHubs) {
+      stories.push(tagHubs[i].tagged);
+   }
+   res.write(this.site.getXml(stories));
+   return;
+}
 
 Tag.prototype.rename_action = function() {
    var tag = this;
@@ -51,7 +84,7 @@ Tag.prototype.rename_action = function() {
       res.commit();
    }
    res.redirect(tag.href());
-};
+}
 
 Tag.prototype.delete_action = function() {
    var parent = this._parent;
@@ -60,7 +93,7 @@ Tag.prototype.delete_action = function() {
    };
    this.remove();
    res.redirect(this.site[Tag.MOUNTPOINTS[this.type]].href());
-};
+}
 
 Tag.prototype.href = function(action) {
    //res.debug(HopObject.prototype.href.call(root, "test", this.name));
@@ -74,24 +107,11 @@ Tag.prototype.href = function(action) {
       res.write(java.net.URLEncoder.encode(action));
    }
    return res.pop();
-};
+}
 
 Tag.prototype.permission_macro = function(param, type) {
    return this.getPermission(type);
-};
-
-Tag.prototype.getPermission = function(action) {
-   switch (action) {
-      case "main":
-      return true;
-      case "edit":
-      case "delete":
-      case "rename":
-      return User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.MANAGER);
-   }   
-   return false;
-};
+}
 
 // FIXME: b/w compatibility
 Tag.prototype.checkAccess = function(action, user, level) {
@@ -103,22 +123,17 @@ Tag.prototype.checkAccess = function(action, user, level) {
       res.message = ex.toString();
       res.redirect(this.site.href());
    }
-};
+}
 
 Tag.prototype.getTagged = function() {
    return this[pluralize(this.type)];
-};
+}
 
 Tag.prototype.getTitle = function() {
    return this.name;
-};
+}
 
 Tag.prototype.toString = function() {
    return "[" + this.type + " tag ``" + this.name + "'' of Site ``" + 
        this.site.alias + "'']";
-};
-
-Tag.MOUNTPOINTS = {
-   Story: "tags",
-   Image: "galleries"
-};
+}

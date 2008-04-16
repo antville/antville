@@ -34,16 +34,17 @@ Archive.prototype.constructor = function(name, type, parent) {
 
 Archive.prototype.getPermission = function(action) {
    var site = res.handlers.site;
-   if (!site.getPermission("main")) {
+   if (!site.getPermission("main") || site.archiveMode !== Site.PUBLIC) {
       return false;
    }
    switch (action) {
+      case "main":
+      case "page1":
+      return true;
       case "previous":
       return this.getPage() > 1
       case "next":
       return this.getPage() < this.getSize() / this.getPageSize();
-      default:
-      return site.archiveMode === Site.PUBLIC;
    }
    return false;
 }
@@ -72,6 +73,9 @@ Archive.prototype.href = function(action) {
          buffer.pop();
       }
       buffer.push(action);
+   } else {
+      // Be sure to have a trailing slash
+      buffer.push(String.EMPTY);
    }
    return buffer.join("/");
 }
@@ -119,8 +123,6 @@ Archive.prototype.stories_macro = function() {
    if (!archive.parent) {
       var site = res.handlers.site;
       var offset = (page - 1) * pageSize;
-      res.debug(offset)
-      res.debug(pageSize)
       var stories = site.stories.featured.list(offset, pageSize);
       for each (var story in stories) {
          renderStory(story);

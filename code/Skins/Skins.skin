@@ -9,11 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" src="<% site.href main.js %>"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" 
-      href="<% site.href main.css %>" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href main.css %>" />
 <style type="text/css">
-<!--
-
 /* classes for skin diff */
 .diff td {
    padding:0px 5px;
@@ -24,26 +21,24 @@
    padding:2px 0px;
 }
 .diff .removed {
-   border-top:1px solid <% layout.textcolor %>;
+   border-top: 1px solid <% values "base font color" %>;
    background-color: #ff3333;
 }
 .diff .added {
-   border-top:1px solid <% layout.textcolor %>;
+   border-top: 1px solid <% values "base font color" %>;
    background-color: #33dd33;
 }
 .diff .line {
-   border-top:1px solid <% layout.textcolor %>;
+   border-top: 1px solid <% values "base font color" %>;
 }
 .diff .num {
-   border-top:1px solid <% layout.textcolor %>;
+   border-top: 1px solid <% values "base font color" %>;
    text-align:right;
 }
 .diff .status {
-   padding:0px 5px;
-   border-top:1px solid <% layout.textcolor %>;
+   padding: 0px 5px;
+   border-top: 1px solid <% values "base font color" %>;
 }
-
-// -->
 </style>
 </head>
 

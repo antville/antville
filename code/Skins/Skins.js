@@ -181,10 +181,14 @@ Skins.prototype.advanced_action = function() {
 
 // FIXME: i'd like to have this by default (ie. always safe)
 Skins.prototype.safe_action = function() {
-   res.data.title = this._parent.title;
-   res.data.list = this.renderList(this.modified);
-   res.data.body = this.renderSkinAsString("main");
-   this.renderSkin("Site#page");
+   res.data.title = gettext("Modified skins of {0}", this._parent.title);
+   res.push();
+   this.modified.forEach(function() {
+      this.renderSkin("Skin#listItem");
+   });
+   res.data.list = res.pop();
+   res.data.body = this.renderSkinAsString("Skins#main");
+   this.renderSkin("Skins#page");
    return;
 };
 

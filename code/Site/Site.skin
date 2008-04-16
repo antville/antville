@@ -3,7 +3,7 @@ http://<% site.name %>.antville.org<% param.path %>
 
 <% #main %>
 <% site.stories %>
-<
+
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
@@ -301,27 +301,18 @@ function openPopup(img, width, height) {
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<!--script type="text/javascript" 
-      src="<% file /jquery-1.2.1.min.js url %>"></script-->
+<!--script type="text/javascript" src="<% file /jquery-1.2.1.min.js url %>"></script-->
 <script type="text/javascript" src="<% site.href main.js %>"></script>
-<link rel="stylesheet" type="text/css" 
-      title="CSS Stylesheet" href="<% site.href main.css %>" />
-<link rel="alternate" type="application/rss+xml" 
-      title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
-<link rel="alternate" type="application/rss+xml" 
-      title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
-<link rel="alternate" type="application/rss+xml" 
-      title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
-<link rel="alternate" type="application/rss+xml" 
-      title="Site updates of <% root.title %>" href="<% root.href updates.xml %>" />
-<!-- link rel="search" type="application/opensearchdescription+xml" 
-      href="<% site.href search.xml %>" title="Antville Search" -->
-
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+<link rel="alternate" type="application/rss+xml" title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
+<link rel="alternate" type="application/rss+xml" title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
+<link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
+<link rel="alternate" type="application/rss+xml" title="Site updates of <% root.title %>" href="<% root.href updates.xml %>" />
+<!-- link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="Antville Search" -->
 <!-- Testing ColourMod plugin for jQuery -->
 <link href="<% file /ColourModStyle.css url %>" rel="stylesheet" type="text/css" />
 <script src="<% file /StyleModScript.js url %>" type="text/javascript"></script>
 <script src="<% file /ColourModScript.js url %>" type="text/javascript"></script>
-
 </head>
 <body>
 
@@ -358,8 +349,8 @@ function openPopup(img, width, height) {
    <div class="boxheader"><% gettext Search %></div>
    <div class="box"><% site.skin Site#search %></div>
    
-   <div class="boxheader"><% gettext Calendar %></div>
-   <div class="box"><% site.calendar %></div>
+   <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">' 
+   suffix='</div><div class="box">' %> suffix="</div>" %>
    
    <div class="boxheader"><% gettext "Recent updates" %></div>
    <div class="box"><% list postings skin=Story#history %></div>

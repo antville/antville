@@ -1,11 +1,19 @@
 <% #main %>
-<div class="pagelink"><% breadcrumbs %>
-<% if <% tag.permission edit %> is true then <% tag.skin Tag#controls %> %>
-</div><br />
+<div class="pagelink"><% breadcrumbs %></div>
+<% if <% tag.permission edit %> is true then 
+   <% tag.skin Tag#controls prefix=<p> suffix=</p> %> 
+%>
+<br />
 
-<% list.prevLink %>
+<div class="pagelink">
+   <% list.prevLink text=<% gettext "Previous page" %>
+         prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
+</div>
 <% list.render skin="TagHub" %>
-<% list.nextLink %>
+<div class="pagelink">
+   <% list.nextLink text=<% gettext "Next page" %>
+         prefix='<div class="pagelinkBottom">... ' suffix="</div>" %>
+</div>
 
 <% #listItem %>
 <li>

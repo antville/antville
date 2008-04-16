@@ -80,7 +80,7 @@ HopObject.prototype.onRequest = function() {
    res.handlers.site.renderSkinAsString("Site#values");
 
    // FIXME: remove after debugging
-   ((res.contentType === "text/html") && res.debug(res.skinpath.toSource()));
+   res.contentType === "text/html" && res.debug(res.skinpath.toSource());
    return;
 };
 
@@ -90,16 +90,16 @@ HopObject.prototype.getPermission = function() {
 
 HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
-      //try {
+      try {
          var str = this.toString();
          var parent = this._parent;
          var url = this.constructor.remove.call(this, this) || parent.href();
          res.message = gettext("{0} was successfully deleted.", str);
          res.redirect(User.popLocation() || url);
-      /*} catch(ex) {
+      } catch(ex) {
          res.message = ex;
          app.log(ex);
-      }*/
+      }
    }
 
    res.data.action = this.href(req.action);
@@ -217,6 +217,9 @@ HopObject.prototype.removeTag = function(tag) {
 
 // FIXME: This looks a little bit dangerous...
 HopObject.prototype.skin_macro = function(param, name) {
+   if (!name) {
+      return;
+   }
    if (name.contains("#")) {
       this.renderSkin(name);
    } else {
