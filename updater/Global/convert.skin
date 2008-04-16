@@ -38,7 +38,8 @@ CREATE TABLE `tag` (
   `site_id` int(11) default NULL,
   `type` enum('Story','Image') default NULL,
   PRIMARY KEY  (`id`),
-  KEY `tags` (`site_id`,`type`,`name`)
+  KEY `tags` (`site_id`,`type`,`name`(1)),
+  KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #tag_hub %>
@@ -49,7 +50,8 @@ CREATE TABLE `tag_hub` (
   `tagged_type` enum('Story','Image') default NULL,
   `user_id` int(11) default NULL,
   PRIMARY KEY  (`id`),
-  KEY `tagged` (`tag_id`,`tagged_type`,`tagged_id`)
+  KEY `tagged` (`tagged_id`, `tagged_type`),
+  KEY `tags` (`tag_id`,`tagged_type`,`tagged_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #log %>
@@ -62,10 +64,13 @@ CREATE TABLE `log` (
   `ip` varchar(20) default NULL,
   `created` datetime default NULL,
   `creator_id` mediumint(10) default NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  KEY `entries` (`context_type`(5),`action`(5),`created`),
+  KEY `requests` (`context_type`(5),`context_id`,created,`action`(5))
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #AV_ACCESSLOG %>
+delete from AV_ACCESSLOG where ACCESSLOG_DATE < {ts '2008-04-01'};
 alter table AV_ACCESSLOG rename log;
 alter table log convert to character set utf8;
 alter table log add column `creator_id` mediumint(10);
@@ -77,9 +82,15 @@ update log set creator_id = 0;
 update log set action = 'main';
 alter table log change column ACCESSLOG_ID id int(11);
 alter table log change column ACCESSLOG_REFERRER referrer mediumtext;
-alter table log change column ACCESSLOG_IP ip varchar(20);
+#alter table log change column ACCESSLOG_IP ip varchar(20);
 alter table log change column ACCESSLOG_DATE created datetime;
 alter table log change column ACCESSLOG_F_SITE context_id mediumint(10);
+alter table log drop column ACCESSLOG_F_TEXT;
+alter table log drop column ACCESSLOG_BROWSER;
+alter table log drop column ACCESSLOG_IP;
+alter table log drop index IDX_ACCESSLOG_MIXED;
+create index entries on log (context_type(5), action(5), created);
+create index requests on log (context_type(5), context_id, created, action(5));
 
 <% #AV_CHOICE %>
 alter table AV_CHOICE rename choice;
@@ -89,6 +100,8 @@ alter table choice change column CHOICE_F_POLL poll_id mediumint(10);
 alter table choice change column CHOICE_TITLE title varchar(255);
 alter table choice change column CHOICE_CREATETIME created datetime;
 alter table choice change column CHOICE_MODIFYTIME modified datetime;
+alter table choice drop index IDX_CHOICE_F_POLL;
+create index poll_id on choice (poll_id);
 
 <% #AV_FILE %>
 alter table AV_FILE rename file;
@@ -107,6 +120,14 @@ alter table file change column FILE_F_USER_CREATOR creator_id mediumint(10);
 alter table file change column FILE_F_USER_MODIFIER modifier_id mediumint(10);
 #!files
 alter table file drop column FILE_MIMETYPE, drop column FILE_NAME, drop column FILE_SIZE, drop column FILE_DESCRIPTION;
+alter table file drop index IDX_FILE_F_SITE;
+alter table file drop index IDX_FILE_ALIAS;
+alter table file drop index IDX_FILE_F_USER_CREATOR;
+create index site_id on file (site_id);
+create index creator_id on file (creator_id);
+create index name on file (name(20));
+create index prototype on file (prototype(10));
+create index files on file (parent_id, parent_type, created desc); 
 
 <% #files %>
 select id, FILE_MIMETYPE as type, FILE_SIZE as size,
@@ -135,6 +156,13 @@ update image set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and
 #!images
 delete from image where IMAGE_F_IMAGE_PARENT is not null;
 alter table image drop column topic, drop column IMAGE_F_LAYOUT, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_IMAGE_THUMB, drop column IMAGE_FILENAME, drop column IMAGE_FILEEXT, drop column IMAGE_WIDTH, drop column IMAGE_HEIGHT, drop column IMAGE_ALTTEXT, drop column IMAGE_FILESIZE;
+alter table image drop index IDX_IMAGE_F_USER_CREATOR;
+alter table image drop index IDX_IMAGE_MIXED;
+create index site_id on image (site_id);
+create index creator_id on image (creator_id);
+create index name on image (name(20));
+create index prototype on image (prototype(10));
+create index images on image (parent_id, parent_type, created desc); 
 
 <% #images %>
 select i.id, i.name, i.IMAGE_FILENAME as fileName, i.IMAGE_FILEEXT as type, 
@@ -159,7 +187,8 @@ alter table layout change column LAYOUT_F_USER_CREATOR creator_id mediumint(10);
 alter table layout change column LAYOUT_F_USER_MODIFIER modifier_id mediumint(10);
 alter table layout change column LAYOUT_SHAREABLE mode enum('default','shared');
 #!layouts
-#alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
+alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
+create index site_id on layout (site_id);
 
 <% #layouts %>
 select id, LAYOUT_TITLE, LAYOUT_DESCRIPTION, LAYOUT_ISIMPORT, 
@@ -180,13 +209,22 @@ alter table membership change column MEMBERSHIP_F_USER creator_id mediumint(10);
 alter table membership change column MEMBERSHIP_MODIFYTIME modified datetime;
 alter table membership change column MEMBERSHIP_F_USER_MODIFIER modifier_id mediumint(10);
 alter table membership drop column MEMBERSHIP_LEVEL;
+alter table membership drop index IDX_MEMBERSHIP_F_SITE;
+alter table membership drop index IDX_MEMBERSHIP_F_USER;
+alter table membership drop index IDX_MEMBERSHIP_USERNAME;
+create index site_id on membership (site_id);
+create index creator_id on membership(creator_id);
+create index name on membership (name(20));
+create index role on membership(role);
+create index roles on membership (name(20), site_id, role); 
+create index memberships on membership (creator_id, site_id, role);
 
 <% #AV_POLL %>
 alter table AV_POLL rename poll;
 alter table poll convert to character set utf8;
-alter table poll add column `status` enum('closed','readonly','open');
+alter table poll add column `status` enum('closed','open');
 update poll set status = 'closed';
-update poll set status = 'public' where poll_closed = 1;
+update poll set status = 'open' where poll_closed = 1;
 alter table poll change column POLL_ID id mediumint(10);
 alter table poll change column POLL_F_SITE site_id mediumint(10);
 alter table poll change column POLL_F_USER_CREATOR creator_id mediumint(10);
@@ -196,6 +234,12 @@ alter table poll change column POLL_CLOSETIME closed datetime;
 alter table poll change column POLL_CREATETIME created datetime;
 alter table poll change column POLL_MODIFYTIME modified datetime;
 alter table poll drop column POLL_CLOSED;
+alter table poll drop index IDX_POLL_F_SITE;
+alter table poll drop index IDX_POLL_F_USER_CREATOR;
+create index site_id on poll (site_id);
+create index creator_id on poll (creator_id);
+create index status on poll (status);
+create index polls on poll (site_id, creator_id, created);
 
 <% #AV_SITE %>
 alter table AV_SITE rename site;
@@ -218,6 +262,16 @@ alter table site change column SITE_F_USER_MODIFIER modifier_id mediumint(10);
 alter table site change column SITE_CREATETIME created datetime;
 alter table site change column SITE_MODIFYTIME modified datetime;
 alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKUSAGE, drop column SITE_EMAIL, drop column SITE_LASTUPDATE, drop column SITE_LASTOFFLINE, drop column SITE_LASTBLOCKWARN, drop column SITE_LASTDELWARN, drop column SITE_LASTPING, drop column SITE_ENABLEPING, drop column SITE_ISONLINE, drop column SITE_ISBLOCKED, drop column SITE_ISTRUSTED;
+alter table site drop index IDX_SITE_ALIAS;
+alter table site drop index IDX_SITE_F_USER_CREATOR;
+create index name on site (name(20));
+create index layout_id on site (layout_id);
+create index creator_id on site (creator_id);
+create index status on site (status);
+create index mode on site (mode);
+create index created on site(created);
+create index modified on site (modified);
+create index sites on site (name(20), mode, status);
 
 <% #sites %>
 select id, metadata, SITE_EMAIL, SITE_LASTUPDATE, SITE_LASTOFFLINE, 
@@ -244,9 +298,6 @@ update skin set prototype = "Polls" where prototype = "PollMgr";
 update skin set prototype = "Skins" where prototype = "SkinMgr";
 update skin set prototype = "Stories" where prototype = "StoryMgr";
 update skin set prototype = "Archive" where prototype = "Day";
-#update skin set prototype = "Image" where prototype = "LayoutImage";
-#update skin set prototype = "Images" where prototype = "LayoutImageMgr";
-#update skin set prototype = "Layouts" where prototype = "RootLayoutMgr";
 update skin set prototype = "Admin" where prototype = "SysMgr";
 update skin set prototype = "LogEntry" where prototype = "SysLog";
 update skin set prototype = "Tag" where prototype = "Topic";
@@ -260,7 +311,12 @@ update skin set name = "date" where prototype = "Story" and name = "dayheader";
 update skin set name = "content" where prototype = "Story" and name = "display";
 update skin set name = "history" where prototype = "Story" and name = "historyview";
 #!skins
-#alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
+alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
+alter table skin drop index IDX_SKIN_MIXED;
+create index layout_id on skin (layout_id);
+create index prototype on skin (prototype);
+create index name on skin (name);
+create index skins on skin (name(10), layout_id, prototype);
 
 <% #skins %>
 select skin.id, skin.prototype, skin.name, skin.SKIN_SOURCE as source, 
@@ -312,6 +368,21 @@ alter table content add column comment_mode enum('closed','readonly','moderated'
 update content set comment_mode = 'closed';
 update content set comment_mode = 'open' where TEXT_HASDISCUSSIONS = 1;
 alter table content drop column xml, drop column topic, drop column TEXT_DAY, drop column TEXT_TITLE, drop column TEXT_TEXT, drop column TEXT_RAWCONTENT, drop column TEXT_ISONLINE, drop column TEXT_EDITABLEBY, drop column TEXT_HASDISCUSSIONS, drop column TEXT_IPADDRESS;
+#alter table content drop index IDX_TEXT_F_TEXT_STORY;
+alter table content drop index IDX_TEXT_F_TEXT_PARENT;
+alter table content drop index IDX_TEXT_F_USER_CREATOR;
+alter table content drop index IDX_TEXT_MIXED_ALL;
+alter table content drop index IDX_TEXT_MIXED_TOPIC;
+alter table content drop index IDX_TEXT_MIXED_DAY;
+alter table content drop index IDX_TEXT_MIXED_STORIES;
+alter table content drop index IDX_TEXT_F_TEXT_STORY;
+create index story_id on content (story_id);
+create index parent_id on content (parent_id);
+create index parent_type on content (parent_type);
+create index creator_id on content (creator_id);
+create index status on content (status);
+create index requests on content (requests);
+create index content on content (site_id, prototype, status, mode);
 
 <% #AV_USER %>
 alter table AV_USER rename user;
@@ -332,6 +403,10 @@ alter table user change column USER_EMAIL email varchar(255);
 alter table user change column USER_REGISTERED created datetime;
 alter table user change column USER_LASTVISIT modified datetime;
 alter table user drop column hash, drop column salt, drop column USER_URL, drop column USER_PASSWORD, drop column USER_EMAIL_ISPUBLIC, drop column USER_ISBLOCKED, drop column USER_ISTRUSTED, drop column USER_ISSYSADMIN;
+alter table user drop index IDX_USER_NAME;
+create index name on user (name(20));
+create index status on user (status);
+create index email on user (email);
 
 <% #AV_VOTE %>
 alter table AV_VOTE rename vote;
@@ -343,6 +418,12 @@ alter table vote change column VOTE_F_USER creator_id mediumint(10);
 alter table vote change column VOTE_USERNAME creator_name varchar(255);
 alter table vote change column VOTE_CREATETIME created datetime;
 alter table vote change column VOTE_MODIFYTIME modified datetime;
+alter table vote drop index IDX_VOTE_F_POLL;
+alter table vote drop index IDX_VOTE_F_USER;
+alter table vote drop index IDX_VOTE_F_CHOICE;
+alter table vote drop index IDX_VOTE_USERNAME;
+create index choice_id on vote (choice_id);
+create index votes on vote (creator_name, poll_id);
 
 <% #archive %>
 select * from image, layout, site where image.name = '<% param.value1 %>' and image.parent_type = "Layout" and layout.id = image.parent_id and layout.name = '<% param.value2 %>' and site.id = layout.site_id and site.name = '<% param.value3 %>'

@@ -33,8 +33,8 @@ Root.prototype.main_action = function() {
       init();
       execute(query("tag"));
       execute(query("tag_hub"));
-      execute(query("log"));
-      // FIXME: update("AV_ACCESSLOG");
+      //execute(query("log"));
+      update("AV_ACCESSLOG");
       update("AV_CHOICE");
       update("AV_FILE");
       update("AV_IMAGE");

@@ -331,7 +331,7 @@ convert.skins = function() {
          var skinset = skins[prototype];
          for (var skinName in skinset) {
             res.writeln("<% #" + skinName + " %>");
-            res.writeln(skinset[skinName] || "");
+            res.writeln(skinset[skinName].trim() || "");
          }
          var data = res.pop();
          
