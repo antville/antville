@@ -68,13 +68,13 @@ var version = function() {
 var init = function() {
    var currentVersion = version();
    if (app.data.status === "running") {
-      log("Updater is already running");
+      write("Updater is already running");
       return false;
    } else if (getProperty("version.to") == currentVersion) {
-      log("Antville installation is already up-to-date");
+      write("Antville installation is already up-to-date");
       return false;
    } else if (getProperty("version.from") != currentVersion) {
-      log("Updater cannot upgrade version " + currentVersion);
+      write("Updater cannot upgrade version " + currentVersion);
       app.data.status = "failed";
       return false;
    } else {
@@ -106,16 +106,15 @@ var out = function() {
 }
 
 var log = function(str) {
+   app.log(str);
+   return;
+}
+
+var write = function(str) {
    if (str !== undefined) {
       var now = "[" + new Date + "] ";
       //app.data.out.insert(0, now + encodeForm(str) + "\n");
       app.data.out.append(now + encodeForm(str) + "\n");
-   }
-   return;
-}
-
-var debug = function(str) {
-   if (app.properties.debug === "true") {
       log(str);
    }
    return;
@@ -125,7 +124,7 @@ var error = function(exception) {
    exception && log(exception);
    var error = db().getLastError();
    if (error) {
-      log(error);
+      write(error);
       app.data.status = "failed";
       res.abort();
    }
@@ -145,7 +144,7 @@ var query = function(type) {
 }
 
 var update = function(tableName) {
-   log("Updating table " + tableName);
+   write("Updating table " + tableName);
    var sql = renderSkinAsString("convert#" + tableName);
    sql.split(/\n|\r|\n\r/).forEach(function(line) {
       if (!line) {
@@ -168,7 +167,7 @@ var id = function() {
 var count = function(sql) {
    var count = 0;
    sql = "select count(*) from " + sql;
-   debug(sql);
+   log(sql);
    result = db().executeRetrieval(sql);
    if (result.next()) {
       count = result.getColumnItem("count(*)");
@@ -178,7 +177,7 @@ var count = function(sql) {
 }
 
 var execute = function(sql) {
-   debug(sql);
+   //log(sql);
    try {
       db().executeCommand(sql);
    } catch (ex) {
@@ -188,7 +187,7 @@ var execute = function(sql) {
 }
 
 var retrieve = function(sql) {
-   //debug(sql);
+   //log(sql);
    app.data.query = sql;
    return;
 }
@@ -203,12 +202,12 @@ var traverse = function(callback) {
       sql = app.data.query + " limit " + STEP + " offset " + offset;
       result = db().executeRetrieval(sql);
       error();
+      write(sql);
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();
       if (!rows) {
          break;
       }
-      log(sql);
       do {
          var wrapper = new ResultWrapper(result);
          wrapper.update(result);
@@ -238,7 +237,7 @@ var archive = function() {
             retrieve(query("archive", name, layoutName, siteName));
             traverse(function() {
                var img = new Image(this);
-               debug(img)
+               log(img);
             });
          }
       }

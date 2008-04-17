@@ -338,7 +338,7 @@ convert.skins = function() {
          var file = new java.io.File(fpath + "/" + prototype + "/" + prototype + ".skin");
          file.mkdirs();
          //file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
-         debug(file.getCanonicalPath());
+         log(file.getCanonicalPath());
          file["delete"]();
          if (data) {
             var fos = new java.io.FileOutputStream(file);

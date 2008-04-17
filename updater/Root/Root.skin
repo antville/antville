@@ -32,7 +32,7 @@ var scheduler = setInterval(function() {
          result = eval(result);
          result.log && $("#out").append(result.log);
          if (result.status === "running") {
-            $("#status").toggle();
+            // ...?
          } else if (result.status === "idle") {
             // ...?
          } else {
@@ -42,11 +42,16 @@ var scheduler = setInterval(function() {
             } else if (result.status === "failed") {
                $("#status").css("color", "red").html("failed :(").show();
             }
+            clearInterval(status);
             clearInterval(scheduler);
          }
       }
    });
    return;
+}, 5000);
+
+var status = setInterval(function() {
+   $("#status").toggle();
 }, 700);
 </script>
 
