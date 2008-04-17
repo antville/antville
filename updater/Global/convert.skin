@@ -70,7 +70,7 @@ CREATE TABLE `log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #AV_ACCESSLOG %>
-delete from AV_ACCESSLOG where ACCESSLOG_DATE < {ts '2008-04-01'};
+delete from AV_ACCESSLOG where ACCESSLOG_DATE < curdate();
 alter table AV_ACCESSLOG rename log;
 alter table log convert to character set utf8;
 alter table log add column `creator_id` mediumint(10);
@@ -329,9 +329,11 @@ skin.layout_id = layout.id left join site on layout.site_id = site.id order
 by site_name, layout_name, prototype, name
 
 <% #AV_SYSLOG %>
+alter table log change id id int(11) not null auto_increment;
 insert into log (context_type, context_id, created, creator_id, action) select 'User', user.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from user, AV_SYSLOG where SYSLOG_OBJECT = user.name and SYSLOG_TYPE = 'user';
 insert into log (context_type, context_id, created, creator_id, action) select 'Site', site.id, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, SYSLOG_ENTRY from site, AV_SYSLOG where SYSLOG_OBJECT = site.name and (SYSLOG_TYPE = 'site' or SYSLOG_TYPE = 'weblog');
 insert into log (context_type, context_id, created, creator_id, action) select 'Root', 1, SYSLOG_CREATETIME, SYSLOG_F_USER_CREATOR, 'setup' from AV_SYSLOG where SYSLOG_TYPE = 'system';
+alter table log change id id int(11) not null;
 drop table AV_SYSLOG;
 
 <% #AV_TEXT %>
