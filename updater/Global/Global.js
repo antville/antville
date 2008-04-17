@@ -170,7 +170,7 @@ var count = function(sql) {
 }
 
 var execute = function(sql) {
-   debug(sql.substr(0, sql.indexOf("\n")));
+   debug(sql);
    try {
       db.executeCommand(sql);
    } catch (ex) {
@@ -180,7 +180,7 @@ var execute = function(sql) {
 }
 
 var retrieve = function(sql) {
-   debug(sql);
+   //debug(sql);
    app.data.query = sql;
    return;
 }
@@ -190,16 +190,17 @@ var traverse = function(callback) {
       return;
    }
    var STEP = 10000;
-   var rows, offset = 0;      
+   var sql, rows, offset = 0;      
    while (true) {
-      result = db.executeRetrieval(app.data.query + 
-            " limit " + STEP + " offset " + offset);
+      sql = app.data.query + " limit " + STEP + " offset " + offset;
+      result = db.executeRetrieval(sql);
       error();
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();
       if (!rows) {
          break;
       }
+      log(sql);
       do {
          var wrapper = new ResultWrapper(result);
          wrapper.update(result);
