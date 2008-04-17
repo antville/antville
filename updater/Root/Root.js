@@ -30,24 +30,24 @@ app.addRepository("modules/helma/File.js");
 
 Root.prototype.main_action = function() {
    app.invokeAsync(global, function() {
-      init();
-      execute(query("tag"));
-      execute(query("tag_hub"));
-      //execute(query("log"));
-      update("AV_ACCESSLOG");
-      update("AV_CHOICE");
-      update("AV_FILE");
-      update("AV_IMAGE");
-      update("AV_LAYOUT");
-      update("AV_MEMBERSHIP");
-      update("AV_POLL");
-      update("AV_SITE");
-      update("AV_SKIN");
-      update("AV_TEXT");
-      update("AV_USER");
-      update("AV_VOTE");
-      update("AV_SYSLOG"); // This has to go last!
-      //archive();
+      if (init()) {
+         execute(query("tag"));
+         execute(query("tag_hub"));
+         //execute(query("log"));
+         update("AV_ACCESSLOG");
+         update("AV_CHOICE");
+         update("AV_FILE");
+         update("AV_IMAGE");
+         update("AV_LAYOUT");
+         update("AV_MEMBERSHIP");
+         update("AV_POLL");
+         update("AV_SITE");
+         update("AV_SKIN");
+         update("AV_TEXT");
+         update("AV_USER");
+         update("AV_VOTE");
+         update("AV_SYSLOG"); // This has to go last!
+      }
       finalize();
       return;
    }, [], -1);

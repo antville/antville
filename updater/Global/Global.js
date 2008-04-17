@@ -23,14 +23,19 @@
 //
 
 app.data.out = new java.lang.StringBuffer();
+app.data.status = "idle";
 
 var server = Packages.helma.main.Server.getServer();
 
-var antville = new Packages.helma.framework.core.ApplicationBean(server.
-      getApplication("antville"));
+var antville = function() {
+   return new Packages.helma.framework.core.ApplicationBean(server.
+         getApplication("antville"));
+}
 
-var db = new Packages.helma.scripting.rhino.extensions.
-      DatabaseObject(antville.getDbSource("antville"));
+var db = function() {
+   return new Packages.helma.scripting.rhino.extensions.
+         DatabaseObject(antville().getDbSource("antville"));
+}
 
 var ResultWrapper = function(result) {
    var columns = [];
@@ -52,7 +57,7 @@ var ResultWrapper = function(result) {
 
 var version = function() {
    try {
-      var rootSite = antville.__app__.getDataRoot();
+      var rootSite = antville().__app__.getDataRoot();
       var metadata = eval(rootSite.metadata_source);
       return metadata.version || "";
    } catch (ex) {
@@ -62,38 +67,41 @@ var version = function() {
 
 var init = function() {
    var currentVersion = version();
-   if (app.data.running) {
-      throw Error("Updater is already running");
-      res.abort();
+   if (app.data.status === "running") {
+      log("Updater is already running");
+      return false;
    } else if (getProperty("version.to") == currentVersion) {
       log("Antville installation is already up-to-date");
-      res.abort();
+      return false;
    } else if (getProperty("version.from") != currentVersion) {
       log("Updater cannot upgrade version " + currentVersion);
-      res.abort();
+      app.data.status = "failed";
+      return false;
    } else {
-      app.data.running = true;
+      app.data.status = "running";
    }
-   return; 
+  return true; 
 }
 
 var finalize = function() {
-   var rootSite = antville.__app__.getDataRoot();
+   var rootSite = antville().__app__.getDataRoot();
    var metadata = eval(rootSite.metadata_source);
    metadata.version = getProperty("version.to");
    rootSite.metadata_source = metadata.toSource();
-   app.data.running = false;
-   log("OK, good.");
+   app.data.status = "finished";
    return;
 }
 
 var out = function() {
+   var str;
    if (app.data.out.length() > 0) {
-      res.write(app.data.out.toString());
+      str = app.data.out.toString();
       app.data.out.setLength(0);
-   } else if (!app.data.running) {
-      res.status = 410;
    }
+   res.write({
+      status: app.data.status,
+      log: str
+   }.toSource());
    return;
 }
 
@@ -115,11 +123,11 @@ var debug = function(str) {
 
 var error = function(exception) {
    exception && log(exception);
-   var error = db.getLastError();
+   var error = db().getLastError();
    if (error) {
       log(error);
-      //throw(exception);
-      //res.abort();
+      app.data.status = "failed";
+      res.abort();
    }
    return;
 };
@@ -161,7 +169,7 @@ var count = function(sql) {
    var count = 0;
    sql = "select count(*) from " + sql;
    debug(sql);
-   result = db.executeRetrieval(sql);
+   result = db().executeRetrieval(sql);
    if (result.next()) {
       count = result.getColumnItem("count(*)");
    }
@@ -172,7 +180,7 @@ var count = function(sql) {
 var execute = function(sql) {
    debug(sql);
    try {
-      db.executeCommand(sql);
+      db().executeCommand(sql);
    } catch (ex) {
       error(ex);
    }
@@ -193,7 +201,7 @@ var traverse = function(callback) {
    var sql, rows, offset = 0;      
    while (true) {
       sql = app.data.query + " limit " + STEP + " offset " + offset;
-      result = db.executeRetrieval(sql);
+      result = db().executeRetrieval(sql);
       error();
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();

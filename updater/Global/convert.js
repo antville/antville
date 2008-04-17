@@ -354,7 +354,7 @@ convert.skins = function() {
    }
 
    var appSkins = {};
-   var skinfiles = antville.getSkinfiles(); //InPath([app.dir + "/../code"]);
+   var skinfiles = antville().getSkinfiles(); //InPath([app.dir + "/../code"]);
 
    for (var prototype in skinfiles) {
       // Ignore lowercase prototypes
@@ -376,9 +376,9 @@ convert.skins = function() {
       if (current !== site + this.layout_name) {
          save(skins, fpath);
          current = site + this.layout_name;
-         fpath = antville.properties.staticPath + site;
+         fpath = antville().properties.staticPath + site;
          if (site === "www") {
-            var rootLayoutId = 6; // FIXME: antville.__app__.getDataRoot().sys_layout._id;
+            var rootLayoutId = 6; // FIXME: antville().__app__.getDataRoot().sys_layout._id;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
          } else {
