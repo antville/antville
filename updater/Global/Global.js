@@ -177,7 +177,7 @@ var count = function(sql) {
 }
 
 var execute = function(sql) {
-   //log(sql);
+   log(sql.contains("\n") ? sql.substr(0, sql.indexOf("\n")) + "..." : sql);
    try {
       db().executeCommand(sql);
    } catch (ex) {
@@ -187,7 +187,6 @@ var execute = function(sql) {
 }
 
 var retrieve = function(sql) {
-   //log(sql);
    app.data.query = sql;
    return;
 }
