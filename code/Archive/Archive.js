@@ -73,9 +73,6 @@ Archive.prototype.href = function(action) {
          buffer.pop();
       }
       buffer.push(action);
-   } else {
-      // Be sure to have a trailing slash
-      buffer.push(String.EMPTY);
    }
    return buffer.join("/");
 }
