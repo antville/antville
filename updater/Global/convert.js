@@ -130,7 +130,7 @@ convert.sites = function() {
 }
 
 convert.content = function() {
-   convert.xml("content");
+   convert.xml("AV_TEXT", "content");
    convert.tags("content");
 };
 
@@ -147,7 +147,7 @@ convert.users = function() {
    });
 }
 
-convert.xml = function(table) {
+convert.xml = function(table, table2) {
    var metadata = function(xml) {
       try {
          return Xml.readFromString(clean(xml));
@@ -157,13 +157,13 @@ convert.xml = function(table) {
       return {};
    };
    
-   retrieve(query("jsonize", table));
+   retrieve(query("jsonize", table2 || table));
    traverse(function() {
       if (!this.xml) {
          return;
       }
       var data = metadata(this.xml);
-      execute("update " + table + " set metadata = " + 
+      execute("update " + (table2 || table) + " set metadata = " + 
             quote(data.toSource()) + " where id = " + this.id);
    });
 }

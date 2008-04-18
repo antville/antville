@@ -37,6 +37,7 @@ Root.prototype.main_action = function() {
          update("AV_ACCESSLOG");
          update("AV_CHOICE");
          update("AV_FILE");
+         execute(query("imageTable"));
          update("AV_IMAGE");
          update("AV_LAYOUT");
          update("AV_MEMBERSHIP");
