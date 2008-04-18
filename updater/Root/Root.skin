@@ -26,7 +26,7 @@ var scheduler = setInterval(function() {
       url: '<% root.href out %>',
       dataType: "text",
       error: function(xmlObject, error, exception) {
-         clearInterval(scheduler);
+         // ...
       },
       success: function(result) {
          result = eval(result);

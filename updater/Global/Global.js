@@ -144,6 +144,10 @@ var query = function(type) {
    return renderSkinAsString("convert#" + type, param).replace(/\n|\r/g, " ");   
 }
 
+var clean = function(str) {
+   return str.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "");
+}
+
 var update = function(tableName) {
    msg("Updating table " + tableName);
    var sql = renderSkinAsString("convert#" + tableName);

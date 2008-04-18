@@ -44,7 +44,7 @@ convert.files = function() {
          //fileName: this.name,
          contentType: this.type,
          contentLength: this.size,
-         description: this.description
+         description: clean(this.description)
       }
       execute("update file set prototype = 'File', parent_type = 'Site', " +
             "parent_id = site_id, metadata = " +
@@ -61,7 +61,7 @@ convert.images = function() {
          contentType: "image/" + this.type,
          width: this.width,
          height: this.height,
-         description: this.description,
+         description: clean(this.description),
       }
       if (this.thumbnailWidth && this.thumbnailHeight) {
          metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
@@ -149,9 +149,8 @@ convert.users = function() {
 
 convert.xml = function(table) {
    var metadata = function(xml) {
-      var clean = xml.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "");
       try {
-         return Xml.readFromString(clean);
+         return Xml.readFromString(clean(xml));
       } catch (ex) {
          app.debug(ex);
       }
