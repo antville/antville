@@ -68,14 +68,14 @@ var version = function() {
 var init = function() {
    var currentVersion = version();
    if (app.data.status === "running") {
-      write("Updater is already running");
+      msg("Updater is already running");
       return false;
    } else if (getProperty("version.to") == currentVersion) {
-      write("Antville installation is already up-to-date");
+      msg("Antville installation is already up-to-date");
       app.data.status = "finished";
       return false;
    } else if (getProperty("version.from") != currentVersion) {
-      write("Updater cannot upgrade version " + currentVersion);
+      msg("Updater cannot upgrade version " + currentVersion);
       app.data.status = "failed";
       return false;
    } else {
@@ -111,7 +111,7 @@ var log = function(str) {
    return;
 }
 
-var write = function(str) {
+var msg = function(str) {
    if (str !== undefined) {
       var now = "[" + new Date + "] ";
       //app.data.out.insert(0, now + encodeForm(str) + "\n");
@@ -125,7 +125,7 @@ var error = function(exception) {
    exception && log(exception);
    var error = db().getLastError();
    if (error) {
-      write(error);
+      msg(error);
       app.data.status = "failed";
       res.abort();
    }
@@ -145,7 +145,7 @@ var query = function(type) {
 }
 
 var update = function(tableName) {
-   write("Updating table " + tableName);
+   msg("Updating table " + tableName);
    var sql = renderSkinAsString("convert#" + tableName);
    sql.split(/\n|\r|\n\r/).forEach(function(line) {
       if (!line) {
@@ -172,6 +172,7 @@ var count = function(sql) {
    result = db().executeRetrieval(sql);
    if (result.next()) {
       count = result.getColumnItem("count(*)");
+      msg("Converting " + count + " records");
    }
    result.release();
    return count;
@@ -202,7 +203,7 @@ var traverse = function(callback) {
       sql = app.data.query + " limit " + STEP + " offset " + offset;
       result = db().executeRetrieval(sql);
       error();
-      write(sql);
+      msg(sql);
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();
       if (!rows) {

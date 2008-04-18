@@ -177,7 +177,6 @@ convert.tags = function(table) {
       case "content":
       prototype = "Story"; break;
    }
-   execute("lock tables tag, tag_hub, content, image write");
    retrieve("select site_id, topic from " + table + 
          " where topic is not null group by topic");
    traverse(function() {
@@ -196,7 +195,6 @@ convert.tags = function(table) {
             ", tagged_type = " + quote(prototype) + ", user_id = " +
             this.modifier_id || this.creator_id);
    });
-   execute("unlock tables");
 }
 
 convert.skins = function() {

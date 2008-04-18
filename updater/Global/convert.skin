@@ -141,7 +141,7 @@ FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
 alter table AV_IMAGE rename image;
-lock tables image write;
+lock tables image, tag, tag_hub write;
 alter table image drop index IDX_IMAGE_F_USER_CREATOR;
 alter table image drop index IDX_IMAGE_MIXED;
 alter table image add column `parent_id` varchar(20) default NULL;
@@ -359,7 +359,7 @@ unlock tables;
 
 <% #AV_TEXT %>
 alter table AV_TEXT rename content;
-lock tables content write;
+lock tables content, tag, tag_hub write;
 alter table content drop index IDX_TEXT_F_TEXT_PARENT;
 alter table content drop index IDX_TEXT_F_USER_CREATOR;
 alter table content drop index IDX_TEXT_MIXED_ALL;
