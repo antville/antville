@@ -47,8 +47,8 @@ Root.prototype.main_action = function() {
          update("AV_USER");
          update("AV_VOTE");
          update("AV_SYSLOG"); // This has to go last!
+         finalize();
       }
-      finalize();
       return;
    }, [], -1);
    this.renderSkin("Root");
