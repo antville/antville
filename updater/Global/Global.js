@@ -33,8 +33,9 @@ var antville = function() {
 }
 
 var db = function() {
-   return new Packages.helma.scripting.rhino.extensions.
-         DatabaseObject(antville().getDbSource("antville"));
+   app.data.db || (app.data.db = new Packages.helma.scripting.rhino.extensions.
+         DatabaseObject(antville().getDbSource("antville")));
+   return app.data.db;
 }
 
 var ResultWrapper = function(result) {
@@ -122,8 +123,7 @@ var msg = function(str) {
 }
 
 var error = function(exception) {
-   exception && log(exception);
-   var error = db().getLastError();
+   var error = exception || db().getLastError();
    if (error) {
       msg(error);
       app.data.status = "failed";
@@ -145,6 +145,9 @@ var query = function(type) {
 }
 
 var clean = function(str) {
+   if (!str) {
+      return;
+   }
    return str.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, "");
 }
 
@@ -162,6 +165,16 @@ var update = function(tableName) {
       return;
    });
    return;
+
+   var parts = sql.split("#!");
+   execute(parts[0]);
+   if (parts[1]) {
+      var index = parts[1].indexOf("\n");
+      convert(parts[1].substr(0, index));
+      execute(parts[1].substr(index));
+   }
+   return;
+   
 }
 
 var id = function() {
@@ -183,9 +196,10 @@ var count = function(sql) {
 }
 
 var execute = function(sql) {
-   log(sql.contains("\n") ? sql.substr(0, sql.indexOf("\n")) + "..." : sql);
+   log(sql.contains("\n") ? sql.substr(0, sql.indexOf("\n")) + " ..." : sql);
    try {
       db().executeCommand(sql);
+      error();
    } catch (ex) {
       error(ex);
    }

@@ -43,6 +43,7 @@ Root.prototype.main_action = function() {
          update("AV_POLL");
          update("AV_SITE");
          update("AV_SKIN");
+         execute(query("contentTable"));
          update("AV_TEXT");
          update("AV_USER");
          update("AV_VOTE");
