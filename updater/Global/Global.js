@@ -72,6 +72,7 @@ var init = function() {
       return false;
    } else if (getProperty("version.to") == currentVersion) {
       write("Antville installation is already up-to-date");
+      app.data.status = "finished";
       return false;
    } else if (getProperty("version.from") != currentVersion) {
       write("Updater cannot upgrade version " + currentVersion);

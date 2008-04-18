@@ -177,7 +177,7 @@ convert.tags = function(table) {
       case "content":
       prototype = "Story"; break;
    }
-   excecute("lock tables tag, tag_hub, content, image write");
+   execute("lock tables tag, tag_hub, content, image write");
    retrieve("select site_id, topic from " + table + 
          " where topic is not null group by topic");
    traverse(function() {
