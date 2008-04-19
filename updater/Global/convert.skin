@@ -28,6 +28,10 @@
 <% #legacy %>
 alter table site drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, drop column SITE_HASDISCUSSIONS, drop column SITE_SHOWDAYS, drop column SITE_SHOWARCHIVE, drop column SITE_LANGUAGE, drop column SITE_COUNTRY, drop column SITE_TIMEZONE, drop column SITE_LONGDATEFORMAT, drop column SITE_SHORTDATEFORMAT, drop column SITE_BGCOLOR, drop column SITE_TEXTFONT, drop column SITE_TEXTCOLOR, drop column SITE_TEXTSIZE, drop column SITE_LINKCOLOR, drop column SITE_ALINKCOLOR, drop column SITE_VLINKCOLOR, drop column SITE_TITLEFONT, drop column SITE_TITLECOLOR, drop column SITE_TITLESIZE, drop column SITE_SMALLFONT, drop column SITE_SMALLCOLOR, drop column SITE_SMALLSIZE;
 
+<% #size %>
+delete from AV_IMAGE where IMAGE_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d');
+delete from AV_TEXT where TEXT_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d');
+
 <% #jsonize %>
 select id, xml, metadata from <% param.value1 %> order by id
 
@@ -186,7 +190,7 @@ alter table AV_MEMBERSHIP rename membership;
 lock tables membership write;
 alter table membership drop index IDX_MEMBERSHIP_F_SITE, drop index IDX_MEMBERSHIP_F_USER, drop index IDX_MEMBERSHIP_USERNAME;
 alter table membership add column `role` enum('Subscriber','Contributor','Manager','Owner') not null;
-alter table membership change column MEMBERSHIP_ID id mediumint(10), change column MEMBERSHIP_F_SITE site_id mediumint(10), change column MEMBERSHIP_USERNAME name varchar(30), change column MEMBERSHIP_CREATETIME created datetime, change column MEMBERSHIP_F_USER creator_id mediumint(10), change column MEMBERSHIP_MODIFYTIME modified datetime, change column MEMBERSHIP_F_USER_MODIFIER modifier_id mediumint(10);
+alter table membership change column MEMBERSHIP_ID id mediumint(10), change column MEMBERSHIP_F_SITE site_id mediumint(10), change column MEMBERSHIP_USERNAME name varchar(100), change column MEMBERSHIP_CREATETIME created datetime, change column MEMBERSHIP_F_USER creator_id mediumint(10), change column MEMBERSHIP_MODIFYTIME modified datetime, change column MEMBERSHIP_F_USER_MODIFIER modifier_id mediumint(10);
 create index site_id on membership (site_id);
 create index creator_id on membership(creator_id);
 create index name on membership (name(20));
@@ -250,7 +254,7 @@ alter table AV_SKIN rename skin;
 lock tables skin write, skin as p_skin write, layout write, site write, site as p_site write;
 alter table skin drop index IDX_SKIN_MIXED;
 alter table skin add column source mediumtext;
-alter table skin change column SKIN_ID id mediumint(10), change column SKIN_F_LAYOUT layout_id mediumint(10), change column SKIN_PROTOTYPE prototype varchar(30), change column SKIN_NAME name varchar(30), change column SKIN_F_USER_CREATOR creator_id mediumint(10), change column SKIN_F_USER_MODIFIER modifier_id mediumint(10), change column SKIN_CREATETIME created datetime, change column SKIN_MODIFYTIME modified datetime;
+alter table skin change column SKIN_ID id mediumint(10), change column SKIN_F_LAYOUT layout_id mediumint(10), change column SKIN_PROTOTYPE prototype varchar(30), change column SKIN_NAME name varchar(50), change column SKIN_F_USER_CREATOR creator_id mediumint(10), change column SKIN_F_USER_MODIFIER modifier_id mediumint(10), change column SKIN_CREATETIME created datetime, change column SKIN_MODIFYTIME modified datetime;
 create index layout_id on skin (layout_id);
 create index prototype on skin (prototype);
 create index name on skin (name);
@@ -327,8 +331,10 @@ CREATE TABLE `content` (
 lock tables AV_TEXT read, content write, tag write, tag_hub write;
 #alter table content add column metadata mediumtext, add column parent_type varchar(30), add column status enum('closed','pending','readonly','public','shared','open'), add column mode enum('hidden','featured'), add column comment_mode enum('closed','readonly','moderated','open');
 #insert into content select TEXT_ID, TEXT_F_SITE, TEXT_DAY, TEXT_TOPIC, TEXT_PROTOTYPE, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_TITLE, TEXT_TEXT, TEXT_CONTENT, TEXT_RAWCONTENT, TEXT_ISONLINE, TEXT_EDITABLEBY, TEXT_HASDISCUSSIONS, TEXT_F_USER_CREATOR, TEXT_CREATETIME, TEXT_MODIFYTIME, TEXT_F_USER_MODIFIER, TEXT_READS, TEXT_IPADDRESS, TEXT_ALIAS, null, null, null, null, null from AV_TEXT;
+alter table content disable keys;
 insert into content select TEXT_ID, TEXT_F_SITE, TEXT_TOPIC, TEXT_PROTOTYPE, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_CONTENT, TEXT_F_USER_CREATOR, TEXT_CREATETIME, TEXT_MODIFYTIME, TEXT_F_USER_MODIFIER, TEXT_READS, TEXT_ALIAS, null, null, null, null, null from AV_TEXT;
 #!content
+alter table content enable keys;
 create index story_id on content (story_id);
 create index parent_id on content (parent_id);
 create index parent_type on content (parent_type);
@@ -358,7 +364,7 @@ alter table AV_USER rename user;
 lock tables user write;
 alter table user drop index IDX_USER_NAME;
 alter table user add column metadata mediumtext default NULL, add column `status` enum('blocked','regular','trusted','privileged') not null, add column hash varchar(32) default NULL, add column salt varchar(12) default NULL;
-alter table user change column USER_ID id mediumint(10), change column USER_NAME name varchar(30), change column USER_EMAIL email varchar(255), change column USER_REGISTERED created datetime, change column USER_LASTVISIT modified datetime;
+alter table user change column USER_ID id mediumint(10), change column USER_NAME name varchar(100), change column USER_EMAIL email varchar(255), change column USER_REGISTERED created datetime, change column USER_LASTVISIT modified datetime;
 create index name on user (name(20));
 create index status on user (status);
 create index email on user (email);
