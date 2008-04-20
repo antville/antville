@@ -651,7 +651,7 @@ Site.prototype.getStaticUrl = function(fpath) {
    res.write(this.name);
    res.write("/");
    fpath && res.write(fpath);
-   return res.pop();
+   return encodeURI(res.pop());
 };
 
 Site.prototype.getAdminHeader = function(name) {

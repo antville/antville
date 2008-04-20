@@ -207,6 +207,7 @@ Layout.prototype.image_macro = function(param, name, mode) {
    if (!name) {
       return;
    }
+
    var image = this.getImage(name, param.fallback);
    if (!image) {
       return;
@@ -220,7 +221,7 @@ Layout.prototype.image_macro = function(param, name, mode) {
 
    switch (mode) {
       case "url" :
-      return image.getUrl();
+      return res.write(image.getUrl());
       case "thumbnail" :
       action || (action = image.getUrl());
       return image.thumbnail_macro(param);

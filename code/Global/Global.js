@@ -256,7 +256,7 @@ function renderLink(param, url, text, handler) {
    } else {
       param.href = handler.href(url);
    }
-   html.link(param, gettext(text));
+   html.link(param, text);
    return;
 }
 

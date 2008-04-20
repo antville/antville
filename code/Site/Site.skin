@@ -102,8 +102,6 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 <% site.members.link prefix="... " suffix="<br />" %>
 <br />
 
-<% message text=AAAAAAAAAAAAAAA %>
-
 <% site.link edit <% gettext Preferences %> prefix="... " suffix="<br />" %>
 <% layout.link . <% gettext Layout %> prefix="... " suffix="<br />" %>
 <% layout.skins.link prefix="... " suffix="<br />" %>
