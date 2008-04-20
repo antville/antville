@@ -215,7 +215,7 @@ var traverse = function(callback) {
    if (!app.data.query || !callback) {
       return;
    }
-   var STEP = 10000;
+   var STEP = 5000;
    var sql, rows, offset = 0;      
    while (true) {
       sql = app.data.query + " limit " + STEP + " offset " + offset;
@@ -225,6 +225,7 @@ var traverse = function(callback) {
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();
       if (!rows) {
+         result.release();
          break;
       }
       do {
@@ -233,8 +234,8 @@ var traverse = function(callback) {
          callback.call(wrapper.values, result);
       } while (rows = result.next());
       offset += STEP;
+      result.release();
    }
-   result.release();
    return;
 }
 

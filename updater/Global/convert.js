@@ -164,7 +164,7 @@ convert.xml = function(table, table2) {
       }
       var data = metadata(this.xml);
       execute("update " + (table2 || table) + " set metadata = " + 
-            quote(data.toSource()) + " where id = " + this.id);
+            quote(data.toSource()) + ", xml = '' where id = " + this.id);
    });
 }
 
@@ -178,22 +178,28 @@ convert.tags = function(table) {
    }
    retrieve("select site_id, topic from " + table + 
          " where topic is not null group by topic");
+   execute("alter table tag change id id int(11) not null auto_increment")
    traverse(function() {
-      execute("insert into tag set id = " + id() + ", site_id = " + 
+      execute("insert into tag set site_id = " + 
             this.site_id + ", name = " +
             quote(this.topic).replace(/^[\/\.]*$/, "?") + ", type = " +  
             quote(prototype));
    });
-   retrieve("select topic, tag.id, metadata, " + table + ".id as tagged_id, " +
+   execute("alter table tag change id id int(11)")
+
+   // FIXME: removed metadata from select statement!!!
+   retrieve("select topic, tag.id, " + table + ".id as tagged_id, " +
          "modifier_id, creator_id, " + table + ".site_id from " + table + 
          ", tag where " + "topic is not null and topic = tag.name and " +
          "tag.type = " + quote(prototype));
+   execute("alter table tag_hub change id id int(11) not null auto_increment;")
    traverse(function() {
-      execute("insert into tag_hub set id = " + id() + ", tag_id = " + 
+      execute("insert into tag_hub set tag_id = " + 
             this.id + ", tagged_id = " + this.tagged_id + 
             ", tagged_type = " + quote(prototype) + ", user_id = " +
             this.modifier_id || this.creator_id);
    });
+   execute("alter table tag_hub change id id int(11)")
 }
 
 convert.skins = function() {
