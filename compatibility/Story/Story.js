@@ -76,7 +76,7 @@ Story.prototype.content_macro = function(param) {
                   param.clipping, param.delimiter);
          }
          if (param.as === "link") {
-            res.write(this.link_filter(param, part));
+            res.write(this.link_filter(part, param));
          } else {
             res.write(part);
          }

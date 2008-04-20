@@ -139,6 +139,17 @@ Image.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
+Layout.prototype.onCodeUpdate = function() {
+   return helma.aspects.addAround(this, "image_macro", function(args, func, obj) {
+      args = aspects.fixMacroParams(args);
+      var url = args[3];
+      url && res.push();
+      func.apply(obj, args);
+      url && link_filter(res.pop(), {}, url);
+      return;
+   })
+}
+
 Site.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "main_action", function(args, func, site) {
       res.handlers.day = site.archive;
