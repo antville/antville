@@ -132,10 +132,6 @@ HopObject.prototype.onCodeUpdate();
 } */
 
 Image.prototype.onCodeUpdate = function() {
-   /*helma.aspects.addAfter(this, "getUrl", function(value, args, func, obj) {
-      return Image.getCompatibleFileName(obj, value);
-   });*/
-   
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
@@ -148,6 +144,19 @@ Layout.prototype.onCodeUpdate = function() {
       url && link_filter(res.pop(), {}, url);
       return;
    })
+}
+
+Members.prototype.onCodeUpdate = function() {
+   helma.aspects.addAround(this, "getPermission", function(args, func, obj) {
+      var permission = func.apply(obj, args);
+      if (!permission) {
+         switch(args[0]) {
+            case "sendpwd":
+            return true;
+         }
+      }
+      return permission;
+   });
 }
 
 Site.prototype.onCodeUpdate = function() {

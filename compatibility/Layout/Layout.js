@@ -46,7 +46,7 @@ Layout.prototype.title_macro = function(param) {
       res.write(this.title);
    }
    return;
-};
+}
 
 Layout.prototype.description_macro = function(param) {
    if (param.as == "editor") {
@@ -59,7 +59,7 @@ Layout.prototype.description_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Layout.prototype.parent_macro = function(param) {
    if (param.as === "editor") {
@@ -68,7 +68,7 @@ Layout.prototype.parent_macro = function(param) {
       res.write(this.parent.title);
    }
    return;
-};
+}
 
 Layout.prototype.shareable_macro = function(param) {
    if (param.as == "editor" && !this.site) {
@@ -81,26 +81,26 @@ Layout.prototype.shareable_macro = function(param) {
    else
       res.write(param.no  || gettext("no"));
    return;
-};
+}
 
 Layout.prototype.testdrivelink_macro = function(param) {
    return this.link_macro(param, "test", param.text || gettext("test"));
-};
+}
 
 Layout.prototype.deletelink_macro = function(param) {
    return this.link_macro(param, "delete", param.text || gettext("delete"));
-};
+}
 
 Layout.prototype.activatelink_macro = function(param) {
    return this.link_macro(param, "activate", param.text || gettext("activate"));
-};
+}
 
 /*
 Layout.prototype.value_macro = function(param, name) {
    if (name = Layout.compatibilityMap[name]) {
       return value_macro(null, name);
    }
-};
+}
 
 Layout.prototype.onUnhandledMacro = function(name, param) {
    // FIXME: editors?

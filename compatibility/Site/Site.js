@@ -68,28 +68,28 @@ Site.prototype.renderSkin = function(name) {
 
 Site.prototype.menuext_action = function() {
    return this.renderSkin("menuext");
-};
+}
 
 Site.prototype.menuext_reg_action = function() {
    res.contentType = "text/plain";
    return this.renderSkin("menuext.reg");
-};
+}
 
 Site.prototype.colorpicker_action = function() {
    res.handlers.site = this;
    return root.colorpicker_action();
-};
+}
 
 Site.prototype.rss_action = function() {
    if (req.queryParams.show === "all") {
       return res.redirect(this.href("rss.xml"))
    }
    return res.redirect("stories.xml");
-};
+}
 
 Site.prototype.mostread_action = function() {
    return res.redirect(this.stories.href("top"));
-};
+}
 
 //Site.prototype.skin_macro = Skin.compatibleMacro; 
 // FIXME: Define the function if the above does not work reliably
@@ -137,7 +137,7 @@ Site.prototype.link_macro = function(param, url, text) {
    }
    HopObject.prototype.link_macro.call(handler, param, param.to, param.text);
    return;
-};
+}
 
 Site.prototype.title_macro = function(param) {
    if (param.as === "editor") {
@@ -154,7 +154,7 @@ Site.prototype.title_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Site.prototype.loginstatus_macro = function(param) {
    return res.handlers.membership.status_macro(param);
@@ -189,7 +189,7 @@ Site.prototype.xmlbutton_macro = function(param) {
    param.linkto = this.href("rss.xml");
    image_macro(param, "/xmlbutton.gif");
    return;
-};
+}
 
 Site.prototype.lastupdate_macro = function(param) {
    var value;
@@ -197,7 +197,7 @@ Site.prototype.lastupdate_macro = function(param) {
       res.write(formatDate(value, param.format));
    }
    return;
-};
+}
 
 Site.prototype.online_macro = function(param) {
    var online = true;
@@ -221,7 +221,7 @@ Site.prototype.online_macro = function(param) {
       res.write(param.no || gettext("no"));
    }
    return;
-};
+}
 
 Site.prototype.usermaycontrib_macro = function(param) {
    if (param.as === "editor") {
@@ -237,7 +237,7 @@ Site.prototype.usermaycontrib_macro = function(param) {
       res.write(this.mode === Site.OPEN ? gettext("yes") : gettext("no"));
    }
    return;
-};
+}
 
 Site.prototype.hasdiscussions_macro = function(param) {
    if (param.as === "editor") {
@@ -247,7 +247,7 @@ Site.prototype.hasdiscussions_macro = function(param) {
             gettext("yes") : gettext("no"));
    }
    return;
-};
+}
 
 Site.prototype.showarchive_macro = function(param) {
    if (param.as === "editor") {
@@ -257,7 +257,7 @@ Site.prototype.showarchive_macro = function(param) {
             gettext("yes") : gettext("no"));
    }
    return;
-};
+}
 
 Site.prototype.enableping_macro = function(param) {
    if (param.as === "editor") {
@@ -267,27 +267,27 @@ Site.prototype.enableping_macro = function(param) {
             gettext("yes") : gettext("no"));
    }
    return;
-};
+}
 
 Site.prototype.longdateformat_macro = function(param) {
    return Site.renderDateFormat("long", this, param);
-};
+}
 
 Site.prototype.shortdateformat_macro = function(param) {
    return Site.renderDateFormat("short", this, param);
-};
+}
 
 Site.prototype.localechooser_macro = function(param) {
    return this.select_macro(param, "locale");
-};
+}
 
 Site.prototype.timezonechooser_macro = function(param) {
    return this.select_macro(param, "timeZone");
-};
+}
 
 Site.prototype.layoutchooser_macro = function(param) {
    return; // this.select_macro(param, "layout");
-};
+}
 
 Site.prototype.history_macro = function(param, type) {
    //param.skin = "Story#history";
@@ -322,11 +322,11 @@ Site.prototype.history_macro = function(param, type) {
       counter += 1;
    }
    return;
-};
+}
 
 Site.prototype.membercounter_macro = function(param) {
    return this.members.size();
-};
+}
 
 Site.prototype.preferences_macro = function(param) {
    if (param.as === "editor") {
@@ -340,7 +340,7 @@ Site.prototype.preferences_macro = function(param) {
    } else {
       res.write(this.metadata.get(param.name));
    } return;
-};
+}
 
 Site.prototype.monthlist_macro = function(param) {
    if (!this.stories.size() || this.archiveMode !== Site.PUBLIC) {
@@ -364,7 +364,7 @@ Site.prototype.monthlist_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Site.prototype.spamfilter_macro = function(param) {
    var str = this.metadata.get("spamfilter");
@@ -381,7 +381,7 @@ Site.prototype.spamfilter_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Site.prototype.listReferrers_macro = function(param) {
    return this.referrers_macro(param);
@@ -389,7 +389,7 @@ Site.prototype.listReferrers_macro = function(param) {
 
 Site.prototype.searchbox_macro = function(param) {
    return this.renderSkin("$Site#search");
-};
+}
 
 Site.renderDateFormat = function(type, site, param) {
    //param.size = 1;
@@ -402,7 +402,7 @@ Site.renderDateFormat = function(type, site, param) {
       res.write(site[key]);
    }
    return;   
-};
+}
 
 Site.prototype.renderStoryList = function(day) {
    res.push();

@@ -34,7 +34,7 @@ Metadata.prototype.createInputParam = function(propName, param) {
       param.value = this.get(propName);
    delete param.as;
    return param;
-};
+}
 
 Metadata.prototype.createCheckBoxParam = function(propName, param) {
    param.name = Metadata.PREFIX + propName;
@@ -43,4 +43,4 @@ Metadata.prototype.createCheckBoxParam = function(propName, param) {
       param.checked = "checked";
    delete param.as;
    return param;
-};
+}

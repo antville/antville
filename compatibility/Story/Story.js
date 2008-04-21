@@ -48,7 +48,7 @@ Story.prototype.commentform_macro = function(param) {
                 param.text || gettext("Please login to add a comment"));
    }
    return;
-};
+}
 
 Story.prototype.content_macro = function(param) {
    switch (param.as) {
@@ -164,7 +164,7 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
       }
    }   
    return this.cache[key];
-};
+}
 
 Story.prototype.location_macro = function(param) {
    switch (this.mode) {
@@ -177,7 +177,7 @@ Story.prototype.location_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Story.prototype.topic_macro = function(param) {
    // This method is applied to images as well, thus we check what we got first:
@@ -202,7 +202,7 @@ Story.prototype.topic_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Story.prototype.topicchooser_macro = function(param) {
    var site = this.site || res.handlers.site;
@@ -221,7 +221,7 @@ Story.prototype.topicchooser_macro = function(param) {
    }
    html.dropDown({name: "addToTopic"}, options, selected, param.firstOption);
    return;
-};
+}
 
 Story.prototype.addtofront_macro = function(param) {
    if (param.as === "editor") {
@@ -240,7 +240,7 @@ Story.prototype.addtofront_macro = function(param) {
       html.checkBox(param);
    }
    return;
-};
+}
 
 Story.prototype.discussions_macro = function(param) {
    if (res.handlers.site.commentMode === Site.DISABLED) {
@@ -263,7 +263,7 @@ Story.prototype.discussions_macro = function(param) {
             gettext("yes") : gettext("no"));
    }
    return;
-};
+}
 
 Story.prototype.editableby_macro = function(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
@@ -298,7 +298,7 @@ Story.prototype.editableby_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Story.prototype.editlink_macro = function(param) {
    res.push();
@@ -308,7 +308,7 @@ Story.prototype.editlink_macro = function(param) {
       res.write(param.text || gettext("edit"));
    }   
    return this.link_macro(param, "edit", res.pop());
-};
+}
 
 Story.prototype.deletelink_macro = function(param) {
    res.push();
@@ -318,7 +318,7 @@ Story.prototype.deletelink_macro = function(param) {
       res.write(param.text || gettext("delete"));
    }   
    return this.link_macro(param, "delete", res.pop());
-};
+}
 
 Story.prototype.viewlink_macro = function(param) {
    res.push();
@@ -328,7 +328,7 @@ Story.prototype.viewlink_macro = function(param) {
       res.write(param.text || gettext("view"));
    }   
    return this.link_macro(param, ".", res.pop());
-};
+}
 
 Story.prototype.commentlink_macro = function(param) {
    if (this.commentMode === Story.OPEN && 
@@ -337,11 +337,11 @@ Story.prototype.commentlink_macro = function(param) {
                 param.text || "comment");
    }
    return;
-};
+}
 
 Story.prototype.onlinelink_macro = function(param) {
    return this.link_macro(param, "rotate");
-};
+}
 
 Story.prototype.online_macro = function(param) {
    if (this.satus === Story.CLOSED) {
@@ -349,7 +349,7 @@ Story.prototype.online_macro = function(param) {
    } else if (this.status === Story.PUBLIC || this.status === Story.HIDDEN) {
       res.write(param.yes || gettext("online"));
    } return;
-};
+}
 
 Story.prototype.createtime_macro = function(param) {
    if (param.as === "editor") {
@@ -371,7 +371,7 @@ Story.prototype.createtime_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Story.prototype.commentcounter_macro = function(param) {
    if (this.site.commentMode === Site.DISABLED || 
@@ -397,4 +397,4 @@ Story.prototype.commentcounter_macro = function(param) {
       html.closeTag("a");
    }
    return;
-};
+}

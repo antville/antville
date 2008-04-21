@@ -24,19 +24,19 @@
 
 Root.prototype.new_action = function() {
    return res.redirect(root.href("create"));
-};
+}
 
 Root.prototype.colorpicker_action = function() {
    return renderSkin(req.data.skin || "colorpicker");
-};
+}
 
 Root.prototype.rss_action = function() {
    return res.redirect(root.href("rss.xml"));
-};
+}
 
 Root.prototype.url_macro = function(param) {
    return this.href_macro(param);
-};
+}
 
 Root.prototype.sitecounter_macro = function(param) {
    if (param.count === "all") {
@@ -52,13 +52,13 @@ Root.prototype.sitecounter_macro = function(param) {
       res.write(size + (param.more || String.EMPTY));
    }
    return;
-};
+}
 
 Root.prototype.sysmgrnavigation_macro = function(param) {
    if (session.user && session.user.sysadmin)
       this.renderSkin("sysmgrnavigation");
    return;
-};
+}
 
 Root.prototype.sys_title_macro = function(param) {
    if (param.as == "editor")
@@ -66,15 +66,15 @@ Root.prototype.sys_title_macro = function(param) {
    else
       res.write(this.getTitle());
    return;
-};
+}
 
 Root.prototype.sys_url_macro = function(param) {
    return this.title_macro(param);
-};
+}
 
 Root.prototype.sys_email_macro = function(param) {
    return;
-};
+}
 
 // FIXME: The following macros will be replaced by rewritten code
 
@@ -90,7 +90,7 @@ Root.prototype.sys_allowFiles_macro = function(param) {
    } else
       res.write(this.sys_allowFiles ? gettext("yes") : gettext("no"));
    return;
-};
+}
 
 Root.prototype.sys_diskQuota_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -103,7 +103,7 @@ Root.prototype.sys_diskQuota_macro = function(param) {
    } else
       res.write(this.sys_diskquota);
    return;
-};
+}
 
 Root.prototype.sys_limitNewSites_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -116,7 +116,7 @@ Root.prototype.sys_limitNewSites_macro = function(param) {
    } else
       res.write(this.sys_limitNewSites);
    return;
-};
+}
 
 Root.prototype.sys_minMemberAge_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -132,7 +132,7 @@ Root.prototype.sys_minMemberAge_macro = function(param) {
    } else
       res.write(this.sys_minMemberAge);
    return;
-};
+}
 
 Root.prototype.sys_minMemberSince_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -146,7 +146,7 @@ Root.prototype.sys_minMemberSince_macro = function(param) {
    } else
       res.write(this.sys_minMemberSince);
    return;
-};
+}
 
 Root.prototype.sys_waitAfterNewSite_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -162,7 +162,7 @@ Root.prototype.sys_waitAfterNewSite_macro = function(param) {
    } else
       res.write(this.sys_waitAfterNewSite);
    return;
-};
+}
 
 Root.prototype.sys_enableAutoCleanup_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -176,7 +176,7 @@ Root.prototype.sys_enableAutoCleanup_macro = function(param) {
    } else
       res.write(this.sys_enableAutoCleanup ? gettext("yes") : gettext("no"));
    return;
-};
+}
 
 Root.prototype.sys_startAtHour_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -190,7 +190,7 @@ Root.prototype.sys_startAtHour_macro = function(param) {
    } else
       res.write(this.sys_startAtHour);
    return;
-};
+}
 
 Root.prototype.sys_blockPrivateSites_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -204,7 +204,7 @@ Root.prototype.sys_blockPrivateSites_macro = function(param) {
    } else
       res.write(this.sys_blockPrivateSites ? gettext("yes") : gettext("no"));
    return;
-};
+}
 
 Root.prototype.sys_blockWarningAfter_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -215,7 +215,7 @@ Root.prototype.sys_blockWarningAfter_macro = function(param) {
    else
       res.write(this.sys_blockWarningAfter);
    return;
-};
+}
 
 Root.prototype.sys_blockAfterWarning_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -226,7 +226,7 @@ Root.prototype.sys_blockAfterWarning_macro = function(param) {
    else
       res.write(this.sys_blockAfterWarning);
    return;
-};
+}
 
 Root.prototype.sys_deleteInactiveSites_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -240,7 +240,7 @@ Root.prototype.sys_deleteInactiveSites_macro = function(param) {
    } else
       res.write(this.sys_deleteInactiveSites ? gettext("yes") : gettext("no"));
    return;
-};
+}
 
 Root.prototype.sys_deleteWarningAfter_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -251,7 +251,7 @@ Root.prototype.sys_deleteWarningAfter_macro = function(param) {
    else
       res.write(this.sys_deleteWarningAfter);
    return;
-};
+}
 
 Root.prototype.sys_deleteAfterWarning_macro = function(param) {
    // this macro is allowed just for sysadmins
@@ -262,7 +262,7 @@ Root.prototype.sys_deleteAfterWarning_macro = function(param) {
    else
       res.write(this.sys_deleteAfterWarning);
    return;
-};
+}
 
 Root.prototype.sys_frontSite_macro = function(param) {
    if (!session.user.sysadmin)
@@ -275,7 +275,7 @@ Root.prototype.sys_frontSite_macro = function(param) {
    } else
       res.write (root.sys_frontSite);
    return;
-};
+}
 
 Root.prototype.sys_allowEmails_macro = function(param) {
   // this macro is allowed just for sysadmins
@@ -289,5 +289,5 @@ Root.prototype.sys_allowEmails_macro = function(param) {
   } else
      res.write(this.sys_allowEmails);
   return;
-};
+}
 

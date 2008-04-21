@@ -35,7 +35,7 @@ Membership.prototype.username_macro = function(param) {
       res.write(this.username);
    }
    return;
-};
+}
 
 Membership.prototype.url_macro = function(param) {
    var url;
@@ -48,7 +48,7 @@ Membership.prototype.url_macro = function(param) {
       }
    }
    return;
-};
+}
 
 Membership.prototype.level_macro = function(param) {
    if (param.as === "editor") {
@@ -65,14 +65,14 @@ Membership.prototype.editlink_macro = function(param) {
             param, this.href("edit")); 
    }
    return;
-};
+}
 
 Membership.prototype.deletelink_macro = function(param) {
    if (this.role !== Membership.OWNER)
       html.link({href: this.href("delete")}, param.text || 
                 gettext("remove"));
    return;
-};
+}
 
 Membership.prototype.unsubscribelink_macro = function(param) {
    return res.handlers.site.link_macro(param, "unsubscribe");
@@ -81,4 +81,4 @@ Membership.prototype.unsubscribelink_macro = function(param) {
             param, this.site.href("unsubscribe"));
    }
    return;
-};
+}

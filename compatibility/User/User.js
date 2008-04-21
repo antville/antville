@@ -57,7 +57,7 @@ User.prototype.status_macro = function(param) {
       res.write(this.status);
    }
    return;
-};
+}
 
 User.prototype.name_macro = function(param) {
    if (param.as === "link" && this.url) {
@@ -66,7 +66,7 @@ User.prototype.name_macro = function(param) {
       res.write(this.name);
    }
    return;
-};
+}
 
 User.prototype.url_macro = function(param) {
    if (param.as === "editor") {
@@ -75,7 +75,7 @@ User.prototype.url_macro = function(param) {
       res.write(this.url);
    }
    return;
-};
+}
 
 User.prototype.email_macro = function(param) {
    if (!User.require(User.PRIVILEGED) && this !== session.user) {
@@ -87,4 +87,4 @@ User.prototype.email_macro = function(param) {
       res.write(this.email);
    }
    return;
-};
+}

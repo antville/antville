@@ -31,4 +31,4 @@ Layouts.prototype.layoutchooser_macro = function(param) {
    }
    Html.dropDown({name: "layout"}, options, param.selected, param.firstOption);
    return;
-};
+}

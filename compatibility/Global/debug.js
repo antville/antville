@@ -40,7 +40,7 @@ return;
    param.foo = "World";
    renderSkin(createSkin(s), param);
    return;
-};
+}
 
 Root.prototype.altdiff = function() {
    //var diff = WDiffString(originalSkin, this.getSource());
@@ -126,11 +126,11 @@ Root.prototype.altdiff = function() {
    }
    res.writeln("</pre>");
    res.abort();
-};
+}
 
 Object.prototype.json_macro = function() {
    return this.toSource();
-};
+}
 Object.prototype.dontEnum("json_macro");
 
 String.prototype.rot13 = function() {
@@ -159,7 +159,7 @@ String.ROT13 = String.ALPHABET.substr(13) + String.ALPHABET.substr(0, 13);
 
 Array.forEach = function(ref) {
    return Array.prototype.forEach.call(ref, arguments[1]);
-};
+}
 
 function alert(str) {
    res.writeln('<script type="text/javascript">alert("' + str + '");</script>');

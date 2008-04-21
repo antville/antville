@@ -37,7 +37,7 @@ Image.getCompatibleFileName = function(image, name) {
       return name.replace(/\/[^\/]*$/, "/" + fname);
    }
    return name;
-};
+}
 
 /*Image.prototype.getFile = function(name) {
    name || (name = Image.getCompatibleFileName(this));
@@ -51,15 +51,15 @@ Image.prototype.code_macro = Image.prototype.macro_macro;
 
 Image.prototype.filename_macro = function() {
    return this.name;
-};
+}
 
 Image.prototype.topicchooser_macro = function() {
    return Story.prototype.topicchooser_macro.apply(this, arguments);
-};
+}
 
 Image.prototype.gallery_macro = function() {
    return Story.prototype.topic_macro.apply(this, arguments);
-};
+}
 
 Image.prototype.topic_macro = Image.prototype.gallery_macro;
 
@@ -72,7 +72,7 @@ Image.prototype.show_macro = function(param) {
       this.render_macro(param);
    }
    return;
-};
+}
 
 Image.prototype.editlink_macro = function(param) {
    res.push();
@@ -82,7 +82,7 @@ Image.prototype.editlink_macro = function(param) {
       res.write(param.text || gettext("edit"));
    }   
    return this.link_macro(param, "edit", res.pop());
-};
+}
 
 Image.prototype.deletelink_macro = function(param) {
    res.push();
@@ -92,11 +92,11 @@ Image.prototype.deletelink_macro = function(param) {
       res.write(param.text || gettext("delete"));
    }   
    return this.link_macro(param, "delete", res.pop());
-};
+}
 
 Image.prototype.replacelink_macro = function(param) {
    return;
-};
+}
 
 Image.prototype.getPopupUrl = function() {
    res.push();
@@ -108,4 +108,4 @@ Image.prototype.getPopupUrl = function() {
    res.write(this.height);
    res.write("); return false;");
    return res.pop();
-};
+}

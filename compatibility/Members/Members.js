@@ -25,7 +25,9 @@
 // FIXME: Won't be called because Members.getPermissions() disallows it
 Members.prototype.sendpwd_action = function() {
    res.data.title = gettext("Recover your password");
-   res.data.body = gettext("Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, either. Please use the password reset option.");
+   res.data.body = gettext("Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, anymore.");
+   res.data.body += "<p>" + gettext("If you should really have forgotten your password, you can use the {0}password reset{1} option.",
+         '<a href="' + this.href("reset") + '">', "</a>") + "</p>";
    this._parent.renderSkin("Site#page");
    return;
 }

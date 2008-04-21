@@ -24,14 +24,14 @@
 
 Topics.prototype.main_action = function() {
    return res.redirect(this.href());
-};
+}
 
 Topics.prototype.getChildElement = function(id) {
    return res.redirect(this.href() + id);
-};
+}
 
 Topics.prototype.href = function() {
    var mountpoint = (this._parent.constructor === Site ||
          this._parent.constructor === Root ? "tags" : "galleries");
    return this._parent[mountpoint].href();  
-};
+}

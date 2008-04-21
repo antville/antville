@@ -28,17 +28,17 @@ relocateProperty(Site, "modifytime", "modified");
 File.getCompatibleFileName = function(file, name) {
    name || (name = file.name);
    return file.metadata.get("fileName") || name;
-};
+}
 
 File.prototype.getFile = function() {
    return res.handlers.site.getStaticFile("files/" + 
          File.getCompatibleFileName(this));
-};
+}
 
 File.prototype.getUrl = function() {
    return res.handlers.site.getStaticUrl("files/" + 
          File.getCompatibleFileName(this));
-};
+}
 
 File.prototype.alias_macro = function(param) {
    if (param.as === "editor") {
@@ -50,7 +50,7 @@ File.prototype.alias_macro = function(param) {
       res.write(this.name);
    }
    return;
-};
+}
 
 File.prototype.description_macro = function(param) {
    if (param.as === "editor") {
@@ -59,15 +59,15 @@ File.prototype.description_macro = function(param) {
       res.write(this.description);
    }
    return;
-};
+}
 
 File.prototype.filesize_macro = function(param) {
    return this.contentLength_macro(param);
-};
+}
 
 File.prototype.editlink_macro = function(param) {
    return this.link_macro(param, "edit", param.text || gettext("edit"));
-};
+}
 
 File.prototype.deletelink_macro = function(param) {
    res.push();
@@ -78,16 +78,16 @@ File.prototype.deletelink_macro = function(param) {
       res.write(param.text || gettext("delete"));
    }
    return this.link_macro(param, "delete", res.pop());
-};
+}
 
 File.prototype.viewlink_macro = function(param) {
    param.title = encodeForm(this.description);
    return this.link_macro(param, ".", param.text || gettext("view"))
-};
+}
 
 File.prototype.mimetype_macro = function(param) {
    return res.write(this.contentType);
-};
+}
 
 File.prototype.filetype_macro = function(param) {
    if (this.contentType) {
@@ -99,7 +99,7 @@ File.prototype.filetype_macro = function(param) {
       }
    }
    return;
-};
+}
 
 File.prototype.clicks_macro = function(param) {
    if (!this.requests) {
@@ -111,4 +111,4 @@ File.prototype.clicks_macro = function(param) {
             gettext("{0} downloads", this.requests));
    }
    return;
-};
+}

@@ -54,15 +54,15 @@
 
 HopObject.prototype.createtime_macro = function() {
    return this.created_macro.apply(this, arguments);
-};
+}
 
 HopObject.prototype.modifytime_macro = function() {
    return this.modified_macro.apply(this, arguments);
-};
+}
 
 HopObject.prototype.url_macro = function(param) {
    return this.href_macro(param);
-};
+}
 
 // FIME: Most likely obsolete
 /*
@@ -81,5 +81,5 @@ HopObject.prototype.peel_macro = function(param, name) {
          this.renderSkin(skin);
       }
    }
-};
+}
 */

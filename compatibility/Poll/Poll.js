@@ -37,7 +37,7 @@ Poll.prototype.choices_macro = function(param) {
       res.write(choice.renderSkinAsString("main", param));
    }
    return;
-};
+}
 
 Poll.prototype.total_macro = function(param) {
    var n = this.votes.size();
@@ -48,7 +48,7 @@ Poll.prototype.total_macro = function(param) {
    else
       n += " " + (param.more || gettext("votes"));
    return n;
-};
+}
 
 Poll.prototype.toggle_action = function() {
    var closed = !this.closed;
@@ -56,7 +56,7 @@ Poll.prototype.toggle_action = function() {
    this.modifytime = new Date();
    res.redirect(this._parent.href());
    return;
-};
+}
 
 Poll.prototype.question_macro = function(param) {
    if (param.as == "editor")
@@ -64,12 +64,12 @@ Poll.prototype.question_macro = function(param) {
    else
       res.write(this.question);
    return;
-};
+}
    
 Poll.prototype.closetime_macro = function(param, format) {
    formar || (format = param.format);
    return this.closed_macro(param, format);
-};
+}
 
 Poll.prototype.results_macro = function() {
    this.forEach(function() {
@@ -94,7 +94,7 @@ Poll.prototype.results_macro = function() {
       c.renderSkin("result", param);
    }
    return;
-};
+}
 
 Poll.prototype.editlink_macro = function(param) {
    if (session.user) {
@@ -107,7 +107,7 @@ Poll.prototype.editlink_macro = function(param) {
                 param.text || gettext("edit"));
    }
    return;
-};
+}
 
 Poll.prototype.deletelink_macro = function(param) {
    if (session.user) {
@@ -120,7 +120,7 @@ Poll.prototype.deletelink_macro = function(param) {
                 param.text || gettext("delete"));
    }
    return;
-};
+}
 
 Poll.prototype.viewlink_macro = function(param) {
    try {
@@ -133,7 +133,7 @@ Poll.prototype.viewlink_macro = function(param) {
       return;
    }
    return;
-};
+}
 
 Poll.prototype.closelink_macro = function(param) {
    if (session.user) {
@@ -147,4 +147,4 @@ Poll.prototype.closelink_macro = function(param) {
                 param.text ? param.text : str);
    }
    return;
-};
+}
