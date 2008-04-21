@@ -317,6 +317,16 @@ convert.skins = function() {
          return source;
       }
    }
+   
+   var move = function(sourcePath, destPath) {
+      var source = new helma.File(sourcePath);
+      if (source.exists()) {
+         var destination = new helma.File(destPath);
+         destination && destination.removeDirectory();
+         source.renameTo(destination);
+      }
+      return destPath;
+   }
 
    var save = function(skins, fpath) {
       if (!skins) {
@@ -387,8 +397,14 @@ convert.skins = function() {
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
          } else {
-            fpath += this.current_layout === this.layout_id ?
-                  "/layout/" : "/layouts/" + this.layout_name;
+            if (this.layout_id === this.current_layout) {
+               fpath = move(fpath + "/layouts/" + this.layout_name, 
+                     fpath + "/layout/");
+            } else {
+               fpath += "/layouts/" + this.layout_name;
+            }
+            //fpath += this.current_layout === this.layout_id ?
+            //      "/layout/" : "/layouts/" + this.layout_name;
          }
          skins = appSkins.clone({}, true);
          skins.Site.values = values(this.layout_metadata);
