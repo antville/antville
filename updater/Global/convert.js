@@ -72,7 +72,7 @@ convert.images = function() {
             quote(metadata.toSource()) + " where id = " + this.id);
    });
    convert.tags("image");
-};
+}
 
 convert.layouts = function() {
    convert.xml("layout");
@@ -132,7 +132,7 @@ convert.sites = function() {
 convert.content = function() {
    convert.xml("AV_TEXT", "content");
    convert.tags("content");
-};
+}
 
 convert.users = function() {
    retrieve("select id, hash, salt, USER_URL from user");
@@ -177,7 +177,7 @@ convert.tags = function(table) {
       prototype = "Story"; break;
    }
    retrieve("select distinct(topic), site_id from " + table + 
-         " where topic is not null group by topic");
+         " where topic is not null");
    execute("alter table tag change id id int(11) not null auto_increment")
    traverse(function() {
       execute("insert into tag set site_id = " + 

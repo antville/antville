@@ -142,7 +142,7 @@ CREATE TABLE `image` (
 
 <% #AV_IMAGE %>
 lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, image write, tag write, tag_hub write;
-insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, IMAGE_TOPIC, null, null, null, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
+insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, null, null, null, IMAGE_TOPIC, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
 create index topic on image (topic);
 #!images
 drop table AV_IMAGE;

@@ -56,10 +56,10 @@ Root.prototype.main_action = function() {
    }, [], -1);
    this.renderSkin("Root");
    return;
-};
+}
 
 Root.prototype.out_action = function() {
    res.contentType = "text/plain";
    return out();
-};
+}
 

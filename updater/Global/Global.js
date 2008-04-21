@@ -130,7 +130,7 @@ var error = function(exception) {
       res.abort();
    }
    return;
-};
+}
 
 var quote = function(str) {
    return "'" + str.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
@@ -180,7 +180,7 @@ var update = function(tableName) {
 var id = function() {
    app.data.id || (app.data.id = 0);
    return (app.data.id += 1);
-};
+}
 
 var count = function(sql) {
    var count = 0;
