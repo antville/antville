@@ -62,7 +62,7 @@ convert.images = function() {
          width: this.width,
          height: this.height,
       }
-      this.description && (metatada.description = clean(this.description));
+      this.description && (metadata.description = clean(this.description));
       if (this.thumbnailWidth && this.thumbnailHeight) {
          metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
          metadata.thumbnailWidth = this.thumbnailWidth;
