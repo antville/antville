@@ -403,8 +403,6 @@ convert.skins = function() {
             } else {
                fpath += "/layouts/" + this.layout_name;
             }
-            //fpath += this.current_layout === this.layout_id ?
-            //      "/layout/" : "/layouts/" + this.layout_name;
          }
          skins = appSkins.clone({}, true);
          skins.Site.values = values(this.layout_metadata);

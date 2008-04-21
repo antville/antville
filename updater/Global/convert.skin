@@ -25,12 +25,13 @@
 # Prerequisite for running the updater
 #grant all privileges on `antville`.* to 'antville'@'localhost';
 
-<% #legacy %>
-alter table site drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, drop column SITE_HASDISCUSSIONS, drop column SITE_SHOWDAYS, drop column SITE_SHOWARCHIVE, drop column SITE_LANGUAGE, drop column SITE_COUNTRY, drop column SITE_TIMEZONE, drop column SITE_LONGDATEFORMAT, drop column SITE_SHORTDATEFORMAT, drop column SITE_BGCOLOR, drop column SITE_TEXTFONT, drop column SITE_TEXTCOLOR, drop column SITE_TEXTSIZE, drop column SITE_LINKCOLOR, drop column SITE_ALINKCOLOR, drop column SITE_VLINKCOLOR, drop column SITE_TITLEFONT, drop column SITE_TITLECOLOR, drop column SITE_TITLESIZE, drop column SITE_SMALLFONT, drop column SITE_SMALLCOLOR, drop column SITE_SMALLSIZE;
-
 <% #size %>
 delete from AV_IMAGE where IMAGE_PROTOTYPE <> "LayoutImage" and IMAGE_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d');
 delete from AV_TEXT where TEXT_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d');
+
+<% #legacy %>
+alter table AV_SITE drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, drop column SITE_HASDISCUSSIONS, drop column SITE_SHOWDAYS, drop column SITE_SHOWARCHIVE, drop column SITE_LANGUAGE, drop column SITE_COUNTRY, drop column SITE_TIMEZONE, drop column SITE_LONGDATEFORMAT, drop column SITE_SHORTDATEFORMAT, drop column SITE_BGCOLOR, drop column SITE_TEXTFONT, drop column SITE_TEXTCOLOR, drop column SITE_TEXTSIZE, drop column SITE_LINKCOLOR, drop column SITE_ALINKCOLOR, drop column SITE_VLINKCOLOR, drop column SITE_TITLEFONT, drop column SITE_TITLECOLOR, drop column SITE_TITLESIZE, drop column SITE_SMALLFONT, drop column SITE_SMALLCOLOR, drop column SITE_SMALLSIZE;
+alter table AV_POLL drop column POLL_TITLE, drop column POLL_ISONLINE;
 
 <% #jsonize %>
 select id, xml, metadata from <% param.value1 %> order by id

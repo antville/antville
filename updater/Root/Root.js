@@ -32,6 +32,7 @@ Root.prototype.main_action = function() {
    app.invokeAsync(global, function() {
       if (init()) {
          update("size"); // DEBUG
+         execute(query("legacy"));
          execute(query("tag"));
          execute(query("tag_hub"));
          //execute(query("log"));
