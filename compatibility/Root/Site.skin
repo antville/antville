@@ -1,7 +1,3 @@
 <% #main %>
-
-<div>TESTING</div>
-<% layout.image name="03" as="url" %>
-
 <% // Render the list of updated sites %>
-<%// root.skin Root#main %>
+<% root.skin Root#main %>

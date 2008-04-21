@@ -38,10 +38,12 @@ var aspects = {
    
    fixMacroParams: function(args) {
       var param = args[0];
-      var id = args[1] || param.name;
+      var id = args[1] || param.name || param.id;
       var mode = args[2] || param.as;
       var url = param.linkto;
+      !param.skin && (param.skin = param.useskin);
       delete(param.name);
+      delete(param.id);
       delete(param.as);
       delete(param.linkto);
       return [param, id, mode, url];
@@ -81,7 +83,7 @@ var aspects = {
    }
 }
 
-helma.aspects.addAround(global, "image_macro", function(args, func, obj) {
+helma.aspects.addAround(global, "image_macro", function(args, func) {
    args = aspects.fixMacroParams(args);
    var url = args[3];
    url && res.push();
@@ -90,21 +92,20 @@ helma.aspects.addAround(global, "image_macro", function(args, func, obj) {
    return;
 });
 
-helma.aspects.addAround(global, "poll_macro", function(args, func, obj) {
+helma.aspects.addAround(global, "poll_macro", function(args, func) {
+   return func.apply(global, aspects.fixMacroParams(args));
+});
+
+helma.aspects.addAround(global, "file_macro", function(args, func) {
+   return func.apply(global, aspects.fixMacroParams(args));
+});
+
+helma.aspects.addBefore(global, "story_macro", function(args, func) {
    args = aspects.fixMacroParams(args);
-   var url = args[3];
-   url && res.push();
-   func.apply(global, args);
-   url && link_filter(res.pop(), {}, url);
-   return;
-});
-
-helma.aspects.addAround(global, "file_macro", function(args, func, obj) {
-   return func.apply(global, aspects.fixMacroParams(args));
-});
-
-helma.aspects.addAround(global, "story_macro", function(args, func, obj) {
-   return func.apply(global, aspects.fixMacroParams(args));
+   if (args[0].skin == "display") {
+      args[0].skin = "content";
+   }
+   return args;
 });
 
 HopObject.prototype.onCodeUpdate = function() {
@@ -135,20 +136,33 @@ Image.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
+Images.prototype.onCodeUpdate = function() {
+   return helma.aspects.addAround(this, "getPermission", function(args, func, images) {
+      var permission = func.apply(images, args);
+      if (!permission) {
+         switch (args[0]) {
+            case "topics":
+            return true;
+         }
+      }
+      return args;
+   });
+}
+
 Layout.prototype.onCodeUpdate = function() {
-   return helma.aspects.addAround(this, "image_macro", function(args, func, obj) {
+   return helma.aspects.addAround(this, "image_macro", function(args, func, layout) {
       args = aspects.fixMacroParams(args);
       var url = args[3];
       url && res.push();
-      func.apply(obj, args);
+      func.apply(layout, args);
       url && link_filter(res.pop(), {}, url);
       return;
-   })
+   });
 }
 
 Members.prototype.onCodeUpdate = function() {
-   helma.aspects.addAround(this, "getPermission", function(args, func, obj) {
-      var permission = func.apply(obj, args);
+   helma.aspects.addAround(this, "getPermission", function(args, func, members) {
+      var permission = func.apply(members, args);
       if (!permission) {
          switch(args[0]) {
             case "sendpwd":
@@ -165,33 +179,18 @@ Site.prototype.onCodeUpdate = function() {
       if (!permission) {
          switch(args[0]) {
             case "rss":
+            case "feeds":
             return true;
          }
       }
       return permission;
    });
    
-   helma.aspects.addBefore(this, "main_action", function(args, func, site) {
+   return helma.aspects.addBefore(this, "main_action", function(args, func, site) {
       res.handlers.day = site.archive;
       res.push();
       site.archive.stories_macro();
       res.data.storylist = res.pop();
-      return args;
-   });
-   
-   return helma.aspects.addBefore(this, "update", function(args, func, site) {
-      if (!site.isTransient()) {
-         var data = args[0];
-         data.tagline || (data.tagline = data.properties_tagline);
-         data.pageSize || (data.pageSize = data.properties_days);
-         if (data.usermaycontrib && data.online) {
-            data.mode = Site.OPEN;
-         } else if (data.online) {
-            data.mode = Site.PUBLIC;
-         } else if (!data.mode) {
-            data.mode = Site.PRIVATE;
-         }
-      }
       return args;
    });
 }

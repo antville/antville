@@ -22,6 +22,13 @@
 // $URL$
 //
 
+var disableAction = function(msg) {
+   res.data.title = msg + " :(";
+   res.data.body = gettext(msg) + ". " + gettext("Sorry.");
+   this.renderSkin("Site#page");
+   return;
+}
+
 var relocateProperty = function(proto, name, key) {
    if (!proto || !name) {
       return;
@@ -149,19 +156,19 @@ function input_macro(param) {
 // (eg. itempre/suffix)
 function storylist_macro(param) {
    var id = param.of ? param.of + "/stories" : "stories";
-   return list_macro(param, param.limit, id);
+   return list_macro(param, id, param.limit);
 }
 
 function sitelist_macro(param) {
    param.limit || (param.limit = 10);
-   return list_macro(param, Math.min(param.limit, 25), "sites");
+   return list_macro(param, "updates", Math.min(param.limit, 25));
 }
 
 // FIXME: This method deserves some more compatibility pampering
 // (eg. itempre/suffix, as="thumbnail")
 function imagelist_macro(param) {
    var id = param.of ? param.of + "/images" : "images";
-   return list_macro(param, param.limit, id);
+   return list_macro(param, id, param.limit);
 }
 
 // FIXME: This method deserves some more compatibility pampering

@@ -212,7 +212,7 @@ Story.prototype.topicchooser_macro = function(param) {
    var options = [], topic;
    for (var i=0; i<topics.size(); i++) {
       topic = topics.get(i);
-      options[i] = {value: topic.name, display: topic.name};
+      options.push({value: topic.name, display: topic.name});
       if (req.data.addToTopic) {
          var selected = req.data.addToTopic;
       } else if (currentTopic === topic) {
@@ -396,5 +396,10 @@ Story.prototype.commentcounter_macro = function(param) {
    if (linkflag) {
       html.closeTag("a");
    }
+   return;
+}
+
+Story.prototype.reads_macro = function(param) {
+   res.write(this.requests);
    return;
 }

@@ -87,6 +87,10 @@ Site.prototype.rss_action = function() {
    return res.redirect("stories.xml");
 }
 
+Site.prototype.feeds_action = function() {
+   return disableAction.call(this, "Feeds are currently not available");
+}
+
 Site.prototype.mostread_action = function() {
    return res.redirect(this.stories.href("top"));
 }
@@ -120,7 +124,7 @@ Site.prototype.link_macro = function(param, url, text) {
       param.to = "."; break;
 
       case "topics":
-      case "feeds":
+      //case "feeds":
       case "files":
       case "images":
       case "members":
@@ -172,15 +176,14 @@ Site.prototype.loginstatus_macro = function(param) {
 }
 
 Site.prototype.navigation_macro = function(param) {
-   switch (param["for"]) {
-      case "contributors":
-      this.renderSkin("Site#contribnavigation"); break;
-      
-      case "admins":
-      this.renderSkin("Site#adminnavigation"); break;
-      
-      default:
+   var navigation = {};
+   navigation.contributors = this.renderSkinAsString("Site#contribnavigation");
+   navigation.admins = this.renderSkinAsString("Site#adminnavigation");
+   if (!navigation.contributors && !navigation.admins && !res.meta.navigation) {
+      res.meta.navigation = true;
       this.renderSkin("Site#navigation");
+   } else {
+      param["for"] && res.write(navigation[param["for"]]);
    }
    return;
 }
@@ -388,7 +391,8 @@ Site.prototype.listReferrers_macro = function(param) {
 }
 
 Site.prototype.searchbox_macro = function(param) {
-   return this.renderSkin("$Site#search");
+   this.renderSkin("$Site#search");
+   return;
 }
 
 Site.renderDateFormat = function(type, site, param) {
