@@ -44,7 +44,7 @@ CREATE TABLE `tag` (
   PRIMARY KEY  (`id`),
   KEY `tags` (`site_id`,`type`,`name`(1)),
   KEY `type` (`type`),
-  KEY `name` (`name`),
+  KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #tag_hub %>
@@ -142,18 +142,18 @@ CREATE TABLE `image` (
 
 <% #AV_IMAGE %>
 lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, image write, tag write, tag_hub write;
-insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, IMAGE_TOPIC, null, null, null. IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
+insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, IMAGE_TOPIC, null, null, null, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
 create index topic on image (topic);
-drop table AV_IMAGE;
 #!images
+drop table AV_IMAGE;
 create index prototype on image (prototype(10));
 update image set parent_type = 'Site' where prototype = 'Image';
 update image set parent_type = 'Layout' where prototype = 'LayoutImage';
 update image set prototype = "Image" where prototype = "LayoutImage";
 update image set parent_id = site_id where site_id is not null and parent_id is null;
-update image, AV_IMAGE set parent_id = IMAGE_F_LAYOUT where id = IMAGE_ID and IMAGE_F_LAYOUT is not null and parent_id is null;
+update image set parent_id = IMAGE_F_LAYOUT where    IMAGE_F_LAYOUT is not null and parent_id is null;
 delete from image where IMAGE_F_IMAGE_PARENT is not null;
-alter table image drop column topic, drop column IMAGE_F_IMAGE_PARENT. drop column IMAGE_F_LAYOUT;
+alter table image drop column topic, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_LAYOUT;
 create index site_id on image (site_id);
 create index creator_id on image (creator_id);
 create index name on image (name(20));

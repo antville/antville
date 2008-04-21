@@ -61,8 +61,8 @@ convert.images = function() {
          contentType: "image/" + this.type,
          width: this.width,
          height: this.height,
-         description: clean(this.description),
       }
+      this.description && (metatada.description = clean(this.description));
       if (this.thumbnailWidth && this.thumbnailHeight) {
          metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
          metadata.thumbnailWidth = this.thumbnailWidth;
@@ -176,7 +176,7 @@ convert.tags = function(table) {
       case "content":
       prototype = "Story"; break;
    }
-   retrieve("select site_id, topic from " + table + 
+   retrieve("select distinct(topic), site_id from " + table + 
          " where topic is not null group by topic");
    execute("alter table tag change id id int(11) not null auto_increment")
    traverse(function() {
