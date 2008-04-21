@@ -1,4 +1,3 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
@@ -80,8 +79,8 @@ Skin.prototype.edit_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext('Edit skin {0}.{1} of {2}', this.prototype, 
          this.name, res.handlers.site.title);
-   res.data.body = this.renderSkinAsString("Skin#edit");
-   res.handlers.skins.renderSkin("Skins#page");
+   res.data.body = this.renderSkinAsString("$Skin#edit");
+   res.handlers.skins.renderSkin("$Skins#page");
    return;
 };
 
@@ -180,7 +179,7 @@ Skin.prototype.compare_action = function() {
                for (var j=0;j<line.deleted.length;j++) {
                   sp.num = line.num + j;
                   sp.line = encode(line.deleted[j]);
-                  this.renderSkin("Skin#difference", sp);
+                  this.renderSkin("$Skin#difference", sp);
                }
             }
             if (line.inserted) {
@@ -189,14 +188,14 @@ Skin.prototype.compare_action = function() {
                for (var j=0;j<line.inserted.length;j++) {
                   sp.num = line.num + j;
                   sp.line = encode(line.inserted[j]);
-                  this.renderSkin("Skin#difference", sp);
+                  this.renderSkin("$Skin#difference", sp);
                }
             }
             if (line.value != null) {
                sp.status = "&nbsp;";
                sp["class"] = "line";
                sp.line = encode(line.value);
-               this.renderSkin("Skin#difference", sp);
+               this.renderSkin("$Skin#difference", sp);
             }
          }
          res.data.diff = res.pop();
@@ -204,8 +203,8 @@ Skin.prototype.compare_action = function() {
    }
    res.data.title = gettext("Compare versions of skin {0}.{1}", 
          this.prototype, this.name);
-   res.data.body = this.renderSkinAsString("Skin#compare");
-   res.handlers.skins.renderSkin("Skins#page");
+   res.data.body = this.renderSkinAsString("$Skin#compare");
+   res.handlers.skins.renderSkin("$Skins#page");
    return;
 };
 

@@ -1,1 +1,2 @@
+<% #main %>
 <% taghub.tagged.skin <% taghub.tagged.type suffix="#preview" %> %>

@@ -36,8 +36,7 @@ Tags.prototype.main_action = function() {
       this.setPage(req.data.page);
       res.redirect(this.href(action));
    }
-   var skin = (action ? "Tags#" + action : "Tags"); 
-   res.data.body = this.renderSkinAsString(skin);
+   res.data.body = this.renderSkinAsString("$Tags#" + req.action);
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -106,7 +105,7 @@ Tags.prototype.alphabet_macro = function() {
       if (group === id) {
          res.write(text);
       } else {
-         Html.link({href: self.href(self.getAction()) + prefix + id}, text);      
+         html.link({href: self.href(self.getAction()) + prefix + id}, text);      
       }
       res.write(" ");
       return;
@@ -135,7 +134,7 @@ Tags.prototype.pager_macro = function() {
       if (i == page) {
          res.write(i);
       } else {
-         Html.link({href: this.href(this.getAction()) + prefix + i}, i);      
+         html.link({href: this.href(this.getAction()) + prefix + i}, i);      
       }
       res.write(" ");
    }
@@ -164,7 +163,7 @@ Tags.prototype.list_macro = function(param, skin) {
       if (item.constructor !== Tag) {
          item = item.get(0);
       }
-      item.renderSkin(skin || "Tag#listItem", {index: index});
+      item.renderSkin(skin || "$Tag#listItem", {index: index});
       index += 1;
    }
    return;

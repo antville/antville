@@ -48,17 +48,17 @@ Images.prototype.main_action = function() {
       case Root:
       case Site:
       images = User.getMembership().images;
-      skin = "Images#main";
+      skin = "$Images#main";
       res.data.title = gettext("Member images of {0}", this._parent.title);
       break;
       
       case Layout:
       images = res.handlers.layout.images;
-      skin = "Images#layout";
+      skin = "$Images#layout";
       res.data.title = gettext("Layout images of {0}", res.handlers.site.title);
       break;
    }
-   res.data.list = renderList(images, "Image#listItem", 
+   res.data.list = renderList(images, "$Image#listItem", 
          10, req.queryParams.page);
    res.data.pager = renderPager(images, 
          this.href(req.action), 10, req.queryParams.page);
@@ -91,7 +91,7 @@ Images.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add image to site {0}", res.handlers.site.title);
-   res.data.body = image.renderSkinAsString("Image#edit");
+   res.data.body = image.renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -99,10 +99,10 @@ Images.prototype.create_action = function() {
 Images.prototype.all_action = function() {
    res.data.pager = renderPager(this, this.href(), 
          10, req.queryParams.page);
-   res.data.list = renderList(this, "Image#listItem", 
+   res.data.list = renderList(this, "$Image#listItem", 
          10, req.queryParams.page);
    res.data.title = gettext("Images of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Images#main");
+   res.data.body = this.renderSkinAsString("$Images#main");
    res.handlers.site.renderSkin("Site#page");
    return;
 };

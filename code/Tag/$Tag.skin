@@ -9,7 +9,7 @@
    <% list.prevLink text=<% gettext "Previous page" %>
          prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
 </div>
-<% list.render skin="TagHub" %>
+<% list.render skin="$TagHub#main" %>
 <div class="pagelink">
    <% list.nextLink text=<% gettext "Next page" %>
          prefix='<div class="pagelinkBottom">... ' suffix="</div>" %>

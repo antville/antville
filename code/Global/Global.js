@@ -611,6 +611,7 @@ function sendMail(sender, recipient, subject, body) {
    }
    mail.setSubject(subject);
    mail.setText(body);
+   mail.addText(renderSkinAsString("$Global#disclaimer"));
    mail.queue();
    return mail.status;
 }

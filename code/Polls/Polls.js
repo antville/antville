@@ -47,7 +47,7 @@ Polls.prototype.main_action = function() {
    res.data.pager = renderPager(polls, this.href(req.action), 
          10, req.queryParams.page);
    res.data.title = gettext("Member polls of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Polls#main");
+   res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -80,7 +80,7 @@ Polls.prototype.open_action = function() {
    res.data.pager = renderPager(this.open, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Open polls of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Polls#main");
+   res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -90,7 +90,7 @@ Polls.prototype.all_action = function() {
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Polls of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Polls#main");
+   res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
 };

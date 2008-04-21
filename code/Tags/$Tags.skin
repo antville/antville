@@ -1,3 +1,4 @@
+<% #main %>
 <div class="pagelink"><% breadcrumbs %></div><br />
 
 <% tags.alphabet prefix='<div>' suffix='</div>' %>

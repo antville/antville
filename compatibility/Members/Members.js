@@ -22,31 +22,22 @@
 // $URL$
 //
 
+// FIXME: Won't be called because Members.getPermissions() disallows it
 Members.prototype.sendpwd_action = function() {
    res.data.title = gettext("Recover your password");
    res.data.body = gettext("Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, either. Please use the password reset option.");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.subscribelink_macro = function(param) {
-   if (this._parent.online && res.data.memberlevel == null) {
-      html.link({href: this._parent.href("subscribe")},
-            param.text || gettext("sign up"));
-   }
-   return;
-};
+   return res.handlers.site.link_macro(param, "subscribe");
+}
 
 Members.prototype.subscriptionslink_macro = function(param) {
-   if (session.user.size()) {
-      html.link({href: this.href("updated")},
-            param.text || gettext("subscriptions"));
-   }
-   return;
-};
+   return this.link_macro(param, "subscriptions");
+}
 
-// FIXME:
 Members.prototype.membership_macro = function(param) {
-   res.write(res.handlers.membership.FIXME);
-   return;
-};
+   return res.handlers.membership.role;
+}

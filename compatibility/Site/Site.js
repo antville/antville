@@ -81,7 +81,10 @@ Site.prototype.colorpicker_action = function() {
 };
 
 Site.prototype.rss_action = function() {
-   return res.redirect("rss.xml");
+   if (req.queryParams.show === "all") {
+      return res.redirect(this.href("rss.xml"))
+   }
+   return res.redirect("stories.xml");
 };
 
 Site.prototype.mostread_action = function() {
@@ -113,7 +116,7 @@ Site.prototype.link_macro = function(param, url, text) {
       case "layouts":
       action = ".";
       handler = this.layout;
-      param.text = "layout";
+      param.text = gettext("Layout");
       param.to = "."; break;
 
       case "topics":
@@ -145,7 +148,7 @@ Site.prototype.title_macro = function(param) {
          if (param.linkto === "main") {
             param.linkto = ".";
          }
-         this.link_filter(title, param, param.linkto);
+         res.write(this.link_filter(title, param, param.linkto));
       } else {
          res.write(title);
       }
@@ -154,6 +157,8 @@ Site.prototype.title_macro = function(param) {
 };
 
 Site.prototype.loginstatus_macro = function(param) {
+   return res.handlers.membership.status_macro(param);
+   
    if (session.user) {
       (new Skin("Members", "statusloggedin").getSource()) ?
             this.members.renderSkin("statusloggedin") :
@@ -285,6 +290,9 @@ Site.prototype.layoutchooser_macro = function(param) {
 };
 
 Site.prototype.history_macro = function(param, type) {
+   //param.skin = "Story#history";
+   //return list_macro(param, "postings");
+   
    param.limit = Math.min(param.limit || 10, 20);
    type || (type = param.show);
    var stories = this.stories.recent;
@@ -380,7 +388,7 @@ Site.prototype.listReferrers_macro = function(param) {
 }
 
 Site.prototype.searchbox_macro = function(param) {
-   return this.renderSkin("Site#search");
+   return this.renderSkin("$Site#search");
 };
 
 Site.renderDateFormat = function(type, site, param) {

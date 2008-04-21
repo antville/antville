@@ -2,7 +2,7 @@
 <% poll.question %><br /><br />
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="2" cellpadding="2">
-<% poll.loop skin="Choice#main" %>
+<% poll.loop skin="$Choice#main" %>
 <tr>
 <td colspan="2">
    <br />
@@ -22,7 +22,7 @@
 
 <% #results %>
 <% poll.question %><br />
-<% poll.loop skin="Choice#result" %>
+<% poll.loop skin="$Choice#result" %>
 <p class="small"><br />
    <% gettext Total suffix=: %> 
    <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>

@@ -78,7 +78,7 @@ Layout.prototype.main_action = function() {
       }
    }
    res.data.title = gettext("Layout of site {0}", res.handlers.site.title);
-   res.data.body = this.renderSkinAsString("Layout#main");
+   res.data.body = this.renderSkinAsString("$Layout#main");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -187,7 +187,7 @@ Layout.prototype.import_action = function() {
       return;
    }
    res.data.title = gettext("Import layout");
-   res.data.body = this.renderSkinAsString("Layout#import");
+   res.data.body = this.renderSkinAsString("$Layout#import");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -315,7 +315,7 @@ Layout.prototype.values_macro = function() {
    }
    values.sort(new String.Sorter("key"));
    for each (var pair in values) {
-      this.renderSkin("Layout#value", {
+      this.renderSkin("$Layout#value", {
          key: pair.key.capitalize(), 
          value: pair.value
       });

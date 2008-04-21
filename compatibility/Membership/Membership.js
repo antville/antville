@@ -57,7 +57,7 @@ Membership.prototype.level_macro = function(param) {
       res.write(this.role);
    }
    return;
-};
+}
 
 Membership.prototype.editlink_macro = function(param) {
    if (this.creator !== session.user) {
@@ -75,6 +75,7 @@ Membership.prototype.deletelink_macro = function(param) {
 };
 
 Membership.prototype.unsubscribelink_macro = function(param) {
+   return res.handlers.site.link_macro(param, "unsubscribe");
    if (this.role === Membership.SUBSCRIBER) {
       this.link_filter(param.text || gettext("unsubscribe"), 
             param, this.site.href("unsubscribe"));

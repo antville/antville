@@ -112,7 +112,7 @@ Image.prototype.edit_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit image {0}", this.name);
-   res.data.body = this.renderSkinAsString("Image#edit");
+   res.data.body = this.renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
 };

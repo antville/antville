@@ -80,7 +80,7 @@ HopObject.prototype.onRequest = function() {
    res.handlers.site.renderSkinAsString("Site#values");
 
    // FIXME: remove after debugging
-   res.contentType === "text/html" && res.debug(res.skinpath.toSource());
+   //res.contentType === "text/html" && res.debug(res.skinpath.toSource());
    return;
 };
 
@@ -142,7 +142,7 @@ HopObject.prototype.notify = function(action) {
       if (membership.require(site.notificationMode)) {
          sendMail(root.email, membership.creator.email,
                gettext("Notification of changes at site {0}", site.title),
-               this.renderSkinAsString("Messages#" + action));
+               this.renderSkinAsString("$HopObject#notify_" + action));
       }
    }
    return;

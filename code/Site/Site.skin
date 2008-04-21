@@ -1,93 +1,10 @@
-<% #href %>
-http://<% site.name %>.antville.org<% param.path %>
-
 <% #main %>
 <% site.stories %>
 
-<% #edit %>
-<form id="prefs" method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2">
-   <strong><a name="general"><% gettext General %></a></strong>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Mode suffix=: %></td>
-<td><% site.select mode %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Title suffix=: %></td>
-<td><% site.input title %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Tagline suffix=: %></td>
-<td><% site.input tagline %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Paging suffix=: %></td>
-<td><% site.input pageSize size="5" maxlength="2" %>
-<% site.select pageMode %> per page</td>
-</tr>
-<tr>
-<td class="small"><% gettext Comments suffix=: %></td>
-<td><% site.checkbox commentMode %>
-<label for="commentMode"><% gettext enabled %></label></td>
-</tr>
-<tr>
-<td class="small"><% gettext Archive suffix=: %></td>
-<td><% site.checkbox archiveMode %>
-<label for="archiveMode"><% gettext enabled %></label></td>
-</tr>
-<tr>
-<td class="small"><% gettext Language suffix=: %></td>
-<td><% site.select locale %></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Time zone" suffix=: %></td>
-<td><% site.select timeZone %></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Long date format" suffix=: %></td>
-<td><% site.select longDateFormat %></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Short date format" suffix=: %></td>
-<td><% site.select shortDateFormat %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Notifications suffix=: %></td>
-<td><% site.select notificationMode %></td>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"><% gettext "Web hook" suffix=: %></td>
-<td><% site.input webHookUrl %><br />
-<% site.checkbox webHookMode %> 
-<label for="webHookMode"><% gettext enabled %><label></td>
-</tr>
-<!--tr>
-<td colspan="2"><div class="listSeparator">&nbsp;</div>
-<strong><a name="spamfilter">Referrer spam filter</a></strong></td>
-</tr>
-<tr>
-<td class="small" valign="top">Enter one 
-<a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> 
-per line to be applied on every URL in the referrer and backlink lists.</td>
-<td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
-</tr-->
-<tr>
-<td></td>
-<td><br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</tr>
-</table>
-</form>
-
-<% #preview %>
-<li><% site.title | site.link %> 
-<span class="small"><% site.modified | age %></span></li>
+<% #welcome %>
+<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
+<p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
+<% site.created long %> %></p>
 
 <% #navigation %>
 <% site.link . <% gettext Home %> prefix="... " suffix="<br />" %>
@@ -110,42 +27,9 @@ per line to be applied on every URL in the referrer and backlink lists.</td>
 <br />
 <% root.title prefix="... " | root.link %>
 
-<% #create %>
-<% gettext "To create a new site you need to fill out the form below." %>
-<p><% gettext 'The name will be part of the URL of your site. E.g. if you 
-enter ”{0}“ as the name, your site will be reachable via the url {1}'
-foo <% root.href prefix=<code> suffix=foo</code> %> %></p>
-<p><% gettext "Please note that you cannot change the name after the site was 
-created." %></p>
-<p><% gettext "The title will appear in the header of every page of your site. 
-You can change it anytime you want." %></p>
-<p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext Name suffix=: %></td>
-<td><% site.input name %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Title suffix=: %></td>
-<td><% site.input title %></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <br />
-   <button type="submit" name="create" value="1"><% gettext Create %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
-</p>
-
-<% #welcome %>
-<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
-<p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
-<% site.created long %> %></p>
+<% #preview %>
+<li><% site.title | site.link %> 
+<span class="small"><% site.modified | age %></span></li>
 
 <% #search %>
 <form method="post" action="<% site.href search %>">
@@ -159,135 +43,6 @@ You can change it anytime you want." %></p>
 User-agent: *
 Disallow: /referrers
 Disallow: /stories/top
-
-<% #menuExt %>
-<script type="text/javascript" defer="defer">
-<!--
-var win = external.menuArguments;
-var url = "<% site.url %>stories/create?content_text=";
-var link = escape('<a href="' + win.location.href + '">' + 
-   win.document.title + "</a>: ");
-var text = escape(win.document.selection.createRange().text);
-win.location.href = url + link + text;
-//-->
-</script>
-
-<% #menuExtRegistry %>
-REGEDIT4
-[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
-@="<% site.url %>menuext"
-"contexts"=hex:31
-
-<% #referrers %>
-<form action="<% response.action %>" method="get">
-<input type="text" name="filter" value="<% request.filter encoding="form" %>" 
-size="30" /> 
-<input type="submit" name="submit" value="Filter" /> 
-<input type="button" onclick="document.location='<% site.href 
-      action="referrers" %>';" value="Reset" />
-<div class="small">
-   <input type="checkbox" name="includeSpam" value="checked" 
-         <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
-         include referrer spam
-</div>
-<br />
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td align="right" class="small">Visits</td>
-<td width="10" nowrap="nowrap" rowspan="999"> </td>
-<td></td>
-<td class="small">Referrer</td>
-</tr>
-<script type="text/javascript"><!--
-var referrers = [];
-<% site.referrers %>
-var query = new Antville.Query();
-var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
-var searchFilter = new Antville.Filter(query.filter);
-var searchEngineFilters = [
-   new Antville.Filter("http:\/\/.*google.*\?", "q"),
-   new Antville.Filter("http:\/\/.*search\.msn.*\?", "q"),
-   new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
-   new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
-]
-for (var i in referrers) {
-   var ref = referrers[i];
-   var text = ref.text;
-   var isSpam = spamFilter.test(ref.url);
-   if (isSpam && !query.includeSpam)
-      continue;
-   if (query.filter && !searchFilter.test(ref.url))
-      continue;
-   var done = false;
-   for (var e in searchEngineFilters) {
-      var filter = searchEngineFilters[e];
-      if (!done && filter.test(ref.url)) {
-         text = ref.compose(filter.key, "<em>Search request:</em> ");
-         done = true;
-      }
-   }
-   document.writeln('<tr>');
-   document.writeln('<td align="right" valign="top">', ref.count, '</td>');
-   document.writeln('<td valign="top"><% site.switch name="userMayEdit" on="<input type=\"checkbox\" name=\"permanent\" value=\"', ref.url, '\" />" off="" %></td>');
-   document.writeln('<td><a href="', ref.url, '"',
-      (isSpam ? ' style="color: <% layout.smallcolor %>;"' : ''),
-      '>', text, '</a></td>');
-   document.writeln('</tr>');
-}
-// --></script>
-<noscript>
-<tr>
-<td colspan="3">
-<% skite.skin noscript %>
-</td>
-</tr>
-</noscript>
-</table>
-</form>
-
-<% #noscript %>
-<% gettext "To prevent spam abuse referrers and backlinks are displayed 
-using client-side JavaScript code. Thus, you should enable the option to 
-execute JavaScript code in your browser. Otherwise you will only see this 
-information." %>
-
-<% #referrer %>
-referrers.push(new Antville.Referrer("<% param.referrer %>", 
-      "<% param.text %>", <% param.requests %>));
-
-<% #values %>
-<% value "background color" #ffffff %>
-<% value "link color" #ff4040 %>
-<% value "active link color" #ff4040 %>
-<% value "visited link color" #ff4040 %>
-
-<% value "big font" "Verdana, Helvetica, Arial, sans-serif" %>
-<% value "big font size" 15px %>
-<% value "big font color" #d50000 %>
-
-<% value "base font" "Verdana, Helvetica, Arial, sans-serif" %>
-<% value "base font size" 13px %>
-<% value "base font color" #000000 %>
-
-<% value "small font" "Verdana, Arial, Helvetica, sans-serif" %>
-<% value "small font size" 11px %>
-<% value "small font color" #959595 %>
-
-<% #javascript %>
-var imgWindow = "";
-
-function openPopup(img, width, height) {
-   if (img && width && height) {
-      width = Math.min(width + 36, 640);
-      height = Math.min(height + 30, 480);
-      if (imgWindow.location && !imgWindow.closed)
-         imgWindow.close();
-      imgWindow = window.open(img, "imgWindow" + width + height, 
-      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + 
-      width + ",height=" + height);
-      // imgWindow.focus();
-   }
-}
 
 <% #page %>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -364,6 +119,40 @@ function openPopup(img, width, height) {
 
 </body>
 </html>
+
+<% #javascript %>
+var imgWindow = "";
+
+function openPopup(img, width, height) {
+   if (img && width && height) {
+      width = Math.min(width + 36, 640);
+      height = Math.min(height + 30, 480);
+      if (imgWindow.location && !imgWindow.closed)
+         imgWindow.close();
+      imgWindow = window.open(img, "imgWindow" + width + height, 
+      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + 
+      width + ",height=" + height);
+      // imgWindow.focus();
+   }
+}
+
+<% #values %>
+<% value "background color" #ffffff %>
+<% value "link color" #ff4040 %>
+<% value "active link color" #ff4040 %>
+<% value "visited link color" #ff4040 %>
+
+<% value "big font" "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "big font size" 15px %>
+<% value "big font color" #d50000 %>
+
+<% value "base font" "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "base font size" 13px %>
+<% value "base font color" #000000 %>
+
+<% value "small font" "Verdana, Arial, Helvetica, sans-serif" %>
+<% value "small font size" 11px %>
+<% value "small font color" #959595 %>
 
 <% #stylesheet %>
 table.main {

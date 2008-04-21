@@ -1,0 +1,70 @@
+<% #edit %>
+<script type="text/javascript">
+$(document).ready(function() {
+   if ("<% file.created %>") {
+      $(".name").hide();
+      $(".resize").hide();  
+   };
+});
+</script>
+<p class="storyTitle"><% response.title %></p><br />
+<form method="post" action="<% response.action %>" enctype="multipart/form-data">
+<table border="0" width="400" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small"><% gettext "File" suffix=: %></td>
+<td><% file.upload file %></td>
+</tr>
+<tr class="name">
+<td valign="top" class="small"><% gettext Name suffix=: %></td>
+<td>
+   <% file.input name %><br />
+   <span class="small"><% gettext "If you do not specify a name Antville will 
+   create one based on the name of the local or remote file, resp." %></span>
+</td>
+</tr>
+<tr>
+<td class="small" valign="top"><% gettext Description suffix=: %></td>
+<td><% file.textarea description %></td>
+</tr>
+<tr>
+<td class="small" valign="top"> </td>
+<td>
+   <br />
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></button>
+</td>
+</tr>
+</table>
+</form>
+
+
+<% #listItem %>
+<div class="listSeparator"> </div>
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="2" class="small">
+   <strong><% gettext Macro suffix=: %></strong> <% file.macro %>
+   <div class="ample"><strong><% gettext Details suffix=: %> 
+   </strong><% file.contentLength %>
+   <% file.contentType prefix=" " %><% ngettext "{0} download" "{0} downloads"
+   <% file.requests %> prefix=", " %></div>
+</td>
+</tr>
+<tr>
+<td>
+   <div class="storyTitle"><% file.name %></div>
+   <div class="storyDate"><% file.creator as="link" %> on 
+   <% file.created short %></div>
+</td>
+<td class="small" align="right" valign="top" rowspan="2">
+   <% file.link edit prefix=" ... " suffix="<br />" %>
+   <% file.link delete prefix="... " suffix="<br />" %>
+   <% file.link . <% gettext Download %> prefix=" ... " suffix="<br />" %>
+</td>
+</tr>
+<tr>
+<td>
+   <p><% file.description suffix="<br />" %></p>
+</td>
+</tr>
+</table>

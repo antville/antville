@@ -64,7 +64,7 @@ Membership.prototype.edit_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit membership {0}", this.name);
-   res.data.body = this.renderSkinAsString("Membership#edit");
+   res.data.body = this.renderSkinAsString("$Membership#edit");
    this.site.renderSkin("Site#page");
    return;
 };
@@ -110,7 +110,7 @@ Membership.prototype.contact_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext('Contact user {0}', this.name);
-   res.data.body = this.renderSkinAsString("Membership#contact");
+   res.data.body = this.renderSkinAsString("$Membership#contact");
    this.site.renderSkin("Site#page");
    return;
 };
@@ -122,10 +122,9 @@ Membership.prototype.notify = function(action, recipient, subject) {
       case "delete":
       case "edit":
       case "register":
-      default:
       res.handlers.sender = User.getMembership();
       sendMail(root.email, recipient, subject,
-            this.renderSkinAsString("Messages#" + action));
+            this.renderSkinAsString("$Membership#notify_" + action));
    }
    return;
 };

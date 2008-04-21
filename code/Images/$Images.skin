@@ -1,4 +1,6 @@
 <% #main %>
+<p><% breadcrumbs %></p>
+<p class="storyTitle"><% response.title %></p>
 <p><% gettext "To insert an image in a story or comment just copy and paste its 
 code." %></p>
 
@@ -15,6 +17,7 @@ code." %></p>
 
 <% #layout %>
 <p><% breadcrumbs %></p>
+<p class="storyTitle"><% response.title %></p>
 
 <div class="ample">
    <% images.link create <% gettext "Add layout image" %> prefix="... " %>

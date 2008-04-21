@@ -58,28 +58,28 @@ Files.prototype.create_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add file to site {0}", this._parent.title);
-   res.data.body = file.renderSkinAsString("File#edit");
+   res.data.body = file.renderSkinAsString("$File#edit");
    this._parent.renderSkin("Site#page");
    return;
 };
 
 Files.prototype.main_action = function() {
    var files = User.getMembership().files;
-   res.data.list = renderList(files, "File#listItem", 10, req.queryParams.page);
+   res.data.list = renderList(files, "$File#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(files, this.href(), 
          10, req.queryParams.page);
    res.data.title = gettext("Member files of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Files#main");
+   res.data.body = this.renderSkinAsString("$Files#main");
    this._parent.renderSkin("Site#page");
    return;
 };
 
 Files.prototype.all_action = function() {
-   res.data.list = renderList(this, "File#listItem", 10, req.queryParams.page);
+   res.data.list = renderList(this, "$File#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Files of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Files#main");
+   res.data.body = this.renderSkinAsString("$Files#main");
    this._parent.renderSkin("Site#page");
    return;
 };

@@ -150,7 +150,7 @@ Root.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Create a new site");
-   res.data.body = site.renderSkinAsString("Site#create");
+   res.data.body = site.renderSkinAsString("$Site#create");
    root.renderSkin("Site#page");
    return;
 };

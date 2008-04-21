@@ -97,7 +97,7 @@ Poll.prototype.main_action = function() {
    }
    res.data.action = this.href();
    res.data.title = gettext("Poll {0}", this.question);
-   res.data.body = this.renderSkinAsString("Poll#main");
+   res.data.body = this.renderSkinAsString("$Poll#main");
    this.site.renderSkin("Site#page");
    return;
 };
@@ -130,7 +130,7 @@ Poll.prototype.edit_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit poll {0}", this.question);
-   res.data.body = this.renderSkinAsString("Poll#edit");
+   res.data.body = this.renderSkinAsString("$Poll#edit");
    this.site.renderSkin("Site#page");
    return;
 };
@@ -141,7 +141,7 @@ Poll.prototype.input_macro = function(param, name) {
       var index = 0;
       var add = function(choice) {
          index += 1;
-         return choice.renderSkin("Choice#edit", {index: index});
+         return choice.renderSkin("$Choice#edit", {index: index});
       };
       var choices;
       if (choices = req.postParams.title_array) {
@@ -202,7 +202,7 @@ Poll.remove = function() {
 
 Poll.prototype.result_action = function() {
    res.data.title = gettext('Results of poll "{0}"', this.question);
-   res.data.body = this.renderSkinAsString("Poll#results");
+   res.data.body = this.renderSkinAsString("$Poll#results");
    this.site.renderSkin("Site#page");
    return;
 };

@@ -151,6 +151,17 @@ Layout.prototype.onCodeUpdate = function() {
 }
 
 Site.prototype.onCodeUpdate = function() {
+   helma.aspects.addAround(this, "getPermission", function(args, func, site) {
+      var permission = func.apply(site, args);
+      if (!permission) {
+         switch(args[0]) {
+            case "rss":
+            return true;
+         }
+      }
+      return permission;
+   });
+   
    helma.aspects.addBefore(this, "main_action", function(args, func, site) {
       res.handlers.day = site.archive;
       res.push();

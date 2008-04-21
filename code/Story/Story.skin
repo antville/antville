@@ -11,7 +11,6 @@
 <p><% story.backlinks %></p>
 
 <% #edit %>
-<% story.skin Story#restore %>
 <form method="post" action="<% response.action %>">
 <p>
    <div class="small"><% gettext Title suffix=: %></div>
@@ -87,58 +86,12 @@
 <br /><% story.summary %>
 <div class="small">by <% story.creator %> (<% story.modified short %>)</div>
 
-<% #top %>
-<tr>
-<td align="right" valign="baseline" class="small"><% param.position %></td>
-<td align="right" valign="baseline"><% story.requests %></td>
-<td valign="baseline"><% story.created "yyyy-MM-dd" %></td>
-<td valign="baseline"><% story.title | story.link %></td>
-<td valign="baseline"><% story.creator %></td>
-</tr>
-
 <% #comment %>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 
 <% #rss %>
 <% story.text | story.format %>
-
-<% #listItem %>
-<div class="listSeparator"> </div>
-<table cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<% if <% story.status %> is closed then 
-   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
-   class="listFlag">c<br />l<br />o<br />s<br />e<br />d</td>
-   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
-else <% if <% story.mode %> is hidden then 
-   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
-   class="listFlag">h<br />i<br />d<br />d<br />e<br />n</td>
-   <td rowspan="2" width="5" nowrap="nowrap"></td>' %>
-%>
-<td class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
-   <div class="ample"><strong><% gettext Status suffix=: %></strong>
-   <% story.status %><% story.tags link prefix=" in " %>,
-   <% story.comments link %></div>
-</td>
-<td rowspan="2" width="10" nowrap="nowrap"> </td>
-<td valign="bottom" rowspan="2" align="right" class="small">
-   <% story.link edit prefix="... " suffix="<br />" %>
-   <% story.link . <% gettext Show %> prefix="... " suffix="<br />" %>
-   <% story.link rotate prefix="... " suffix="<br />" %>
-   <% story.link delete prefix="... " %>
-</td>
-</tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% story.title %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% story.creator link %>
-   <% story.created short %> %></div>
-   <% story.text | clip %>
-</td>
-</tr>
-</table>
 
 <% #backlink %>
 referrers.push(new Antville.Referrer("<% param.referrer %>", 
@@ -200,42 +153,3 @@ for (var i in referrers) {
 </tr>
 </noscript>
 </table>
-
-<% #restore %>
-<script type="text/javascript">
-<!--
-$(function() {
-   if (!"<% session.backup %>") {
-      $("#restore").hide();
-   } else {
-      $("#restore").click(function() {
-         $("#title").val(decodeURIComponent("<% session.backup.title %>"));
-         $("#text").val(decodeURIComponent("<% session.backup.text %>"));
-         $(this).hide();
-         return;
-      });
-   }
-   
-   var currentTitle, currentText;
-   $(".backup > :input").blur(function() {
-      var title = $.trim($("#title").val());
-      var text = $.trim($("#text").val());
-      if ((title || text) && (currentTitle || currentText) && 
-            (currentTitle !== title || currentText !== text)) {
-         $.ajax({
-            async: true,
-            type: "POST",
-            url: '<% root.href backup.js %>',
-            data: {title: encodeURIComponent(title),
-                  text: encodeURIComponent(text)},
-            dataType: "json"
-         });
-      }
-      currentTitle = title;
-      currentText = text
-      return;;
-   });
-   return;
-});
-//-->
-</script>

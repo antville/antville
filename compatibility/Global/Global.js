@@ -87,6 +87,8 @@ var formatTimestamp = function() {
    return formatDate.apply(this, arguments);
 }
 
+var linkedpath_macro = breadcrumbs_macro;
+
 function link_macro() {
    var param = arguments[0];
    if (param.to) {

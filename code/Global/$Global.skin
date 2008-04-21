@@ -9,3 +9,15 @@
             onblur='$("#<% param.name %>").val("");' />
    </div>
 </div>
+
+<% #disclaimer %>
+<% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
+
+<% gettext 'This message was automatically sent to you because you are listed as 
+recipient of notification e-mails of the aforementioned site.' %>
+
+<% gettext 'Thus, you will be notified whenever the site has undergone changes 
+as specified in the site preferences.' %>
+
+<% gettext 'If you think you have received this e-mail in error please contact 
+the maintainer of the site.' %>

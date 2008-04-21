@@ -131,7 +131,8 @@ Story.prototype.edit_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext('Edit story: {0}', this.getTitle(3));
-   res.data.body = this.renderSkinAsString("Story#edit");
+   res.data.body = this.renderSkinAsString("$Story#restore");
+   res.data.body += this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
    return;
 };
@@ -436,6 +437,13 @@ Story.prototype.format_filter = function(value, param, mode) {
 };
 
 Story.prototype.macro_filter = function(value, param) {
+   res.debug(value.indexOf(String.fromCharCode(0x19)))
+   var skin = createSkin(value);
+   var rendered = this.renderSkinAsString(skin);
+   var gremlin = String.fromCharCode(0x19);
+   res.debug(rendered.indexOf(gremlin))
+   res.format(rendered.replace(gremlin, "XXXXXXXXXXXXXXXXXXXX"))
+   
    var skin = value.constructor === String ? createSkin(format(value)) : value;
    skin.allowMacro("image");
    skin.allowMacro("this.image");
@@ -470,7 +478,7 @@ Story.prototype.macro_filter = function(value, param) {
 };
 
 Story.prototype.url_filter = function(value, param, mode) {
-   param.limit || (param.limit = 20);
+   param.limit || (param.limit = 50);
    // FIXME: Check query strings et al.
    var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
    return value.replace(re, function(str, head, url, tail) {
@@ -479,15 +487,14 @@ Story.prototype.url_filter = function(value, param, mode) {
       if (mode === "plain") {
          res.write(url.clip(param.limit));
       } else {
-         var origin = /:\/\/([^\/]*)/.exec(url)[1].clip(param.limit);
-         if (/\.[^\/]*$/.test(url)) {
-            var text = url.replace(/.*\//, String.EMPTY);
-         } else {
-            var text = origin;
+         var text, location = /:\/\/([^\/]*)/.exec(url)[1];
+         text = location;
+         if (mode === "extended") {
+            text = url.replace(/^.+\/([^\/]*)$/, "$1");
          }
-         html.link({href: url, title: url}, text);
-         if (text !== origin) {
-            res.write(" <small>(" + origin + ")</small>");
+         html.link({href: url, title: url}, text.clip(param.limit));
+         if (mode === "extended" && text !== location) {
+            res.write(" <small>(" + location + ")</small>");
          }
       }
       res.write(tail);

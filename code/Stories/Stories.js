@@ -49,7 +49,7 @@ Stories.prototype.main_action = function() {
    res.data.pager = renderPager(stories, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Member stories of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Stories#main");
+   res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -74,7 +74,8 @@ Stories.prototype.create_action = function() {
    
    res.data.title = gettext("Add story to {0}", this._parent.title);
    res.data.action = this.href(req.action);
-   res.data.body = story.renderSkinAsString("Story#edit");
+   res.data.body = story.renderSkinAsString("$Story#restore");
+   res.data.body += story.renderSkinAsString("Story#edit");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -85,7 +86,7 @@ Stories.prototype.closed_action = function() {
    res.data.pager = renderPager(this.offline, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Private stories of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Stories#main");
+   res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -95,7 +96,7 @@ Stories.prototype.all_action = function() {
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Stories of {0}", this._parent.title);
-   res.data.body = this.renderSkinAsString("Stories#main");
+   res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -103,7 +104,7 @@ Stories.prototype.all_action = function() {
 Stories.prototype.top_action = function() {
    res.data.title = gettext("Top 25 most read stories of {0}", 
          this._parent.title);
-   res.data.body = this.renderSkinAsString("Stories#top");
+   res.data.body = this.renderSkinAsString("$Stories#top");
    this._parent.renderSkin("Site#page");
    return;
 };
@@ -113,7 +114,7 @@ Stories.prototype.list_macro = function(param, type) {
       case "top":
       var counter = 1;
       this.top.forEach(function() {
-         this.renderSkin("Story#top", {
+         this.renderSkin("$Story#top", {
             position: counter
          });
          counter += 1;
@@ -122,6 +123,44 @@ Stories.prototype.list_macro = function(param, type) {
    }
    return;
 };
+
+Stories.prototype.filter = function(prototype /*, switch1..n, limit */) {
+   if (!prototype) {
+      return new HopObject;
+   }
+   var args = Array.prototype.splice.call(arguments, 0, arguments.length);
+   res.push();
+   res.write('where site_id = ');
+   res.write(this._parent._id);
+   if (typeof args[args.length-1] !== "number") {
+      args[args.length] = Infinity;
+   }
+   if (args.length > 2) {
+      switch (args[1]) {
+         case "stories":
+         res.write(" and prototype = 'Story'");
+         break;
+         case "comments":
+         res.write(" and prototype = 'Comment'");
+         break;
+      }
+      switch (args[2]) {
+         case "public":
+         res.write(" and status <> 'closed'");
+         break;
+      }
+      for (var i=1; i<args.length-1; i+=1) {
+         res.write(args[i]);
+         (i < args.length-2) && res.write(" and ");
+      }
+   }
+   if (args[args.length-1] !== Infinity) {
+      res.write(" limit ");
+      res.write(args[args.length-1]);
+   }
+   this.all.subnodeRelation = res.pop();
+   return this.all;
+}
 
 Stories.prototype.getTags = function(group) {
    return this._parent.getTags("tags", group);

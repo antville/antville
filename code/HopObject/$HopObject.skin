@@ -1,4 +1,20 @@
-<% #create %>
+<% #confirm %>
+<form action="<% response.action %>" method="post">
+<p class="storyTitle"><% gettext Warning! %></p>
+<p><% param.text %></p>
+<p><% gettext 'Please be aware of the fact that there is no "undo", so if you 
+click "Proceed" below the changes will be applied irreversibly.' %></p>
+<p><% gettext 'Click ’Cancel‘ now if you are not really sure you want to 
+proceed.' %></p>
+<p><button type="submit" name="proceed" value="1">Proceed</button>
+<a href="" class="cancel"><strong><% gettext Cancel %></strong></a></p>
+</form>
+
+<% 
+////////////////////// Notification skins 
+%>
+
+<% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext 'This message wants to inform you that on {0} user {1} published the
@@ -12,7 +28,7 @@
 [1] <% this.href %> 
 
 
-<% #edit %>
+<% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext 'This message wants to inform you that on {0} user {1} modified the
@@ -24,16 +40,3 @@
 
 --
 [1] <% this.href %> 
-
-
-<% #disclaimer %>
-<% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
-
-<% gettext 'This message was automatically sent to you because you are listed as 
-recipient of notification e-mails of the aforementioned site.' %>
-
-<% gettext 'Thus, you will be notified whenever the site has undergone changes 
-as specified in the site preferences.' %>
-
-<% gettext 'If you think you have received this e-mail in error please contact 
-the maintainer of the site.' %>

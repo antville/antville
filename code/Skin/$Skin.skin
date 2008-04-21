@@ -29,7 +29,7 @@ else
 <li>
    <% skin.link edit <% skin.name prefix=<% skin.prototype suffix="." %> %> %>
    <% if <% skin.status %> is modified then 
-      <% skin.skin Skin#status prefix="<div>" suffix="</div>" %>
+      <% skin.skin $Skin#status prefix="<div>" suffix="</div>" %>
    %>
    <% // skin.summary prefix="<div>" suffix="</div>" %>
 </li>

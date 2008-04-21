@@ -67,8 +67,8 @@ Skins.prototype.main_action = function() {
       res.redirect(res.handlers.layout.skins.href());
    }
    res.data.title = gettext("Custom skins of {0}", this._parent.title);
-   res.data.list = this.renderSkinAsString("Skins#basic");
-   res.data.body = this.renderSkinAsString("Skins#main");
+   res.data.list = this.renderSkinAsString("$Skins#basic");
+   res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -114,7 +114,7 @@ Skins.prototype.getOutline = function(type) {
          for each (var name in skin) {
             subskin = this.getSkin(prototype, name) || 
                   new Skin(prototype, name);
-            subskin.renderSkin("Skin#listItem");
+            subskin.renderSkin("$Skin#listItem");
          }
          html.closeTag("ul");
          html.closeTag("li");
@@ -151,8 +151,8 @@ Skins.prototype.create_action = function() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.body = skin.renderSkinAsString("Skin#edit");
-   this.renderSkin("Skins#page");
+   res.data.body = skin.renderSkinAsString("$Skin#edit");
+   this.renderSkin("$Skins#page");
    return;
 };
 
@@ -160,10 +160,10 @@ Skins.prototype.modified_action = function() {
    res.data.title = gettext("Modified skins of {0}", this._parent.title);
    res.push();
    this.modified.forEach(function() {
-      this.renderSkin("Skin#listItem");
+      this.renderSkin("$Skin#listItem");
    });
    res.data.list = res.pop();
-   res.data.body = this.renderSkinAsString("Skins#main");
+   res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -174,7 +174,7 @@ Skins.prototype.advanced_action = function() {
    }
    res.data.list = this.getOutline();
    res.data.title = gettext("Skins of {0}", res.handlers.site.title);
-   res.data.body = this.renderSkinAsString("Skins#main");
+   res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
 };
@@ -184,11 +184,11 @@ Skins.prototype.safe_action = function() {
    res.data.title = gettext("Modified skins of {0}", this._parent.title);
    res.push();
    this.modified.forEach(function() {
-      this.renderSkin("Skin#listItem");
+      this.renderSkin("$Skin#listItem");
    });
    res.data.list = res.pop();
-   res.data.body = this.renderSkinAsString("Skins#main");
-   this.renderSkin("Skins#page");
+   res.data.body = this.renderSkinAsString("$Skins#main");
+   this.renderSkin("$Skins#page");
    return;
 };
 

@@ -47,6 +47,8 @@ Image.getCompatibleFileName = function(image, name) {
    return Site.getStaticFile("images/" + name);
 };*/
 
+Image.prototype.code_macro = Image.prototype.macro_macro;
+
 Image.prototype.filename_macro = function() {
    return this.name;
 };

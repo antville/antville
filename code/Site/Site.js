@@ -148,7 +148,7 @@ Site.prototype.edit_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Preferences of {0}", this.title);
-   res.data.body = this.renderSkinAsString("Site#edit");
+   res.data.body = this.renderSkinAsString("$Site#edit");
    this.renderSkin("Site#page");
    return;
 };
@@ -415,7 +415,7 @@ Site.prototype.search_action = function() {
       res.push();
       while (rows.next()) {
          ref = Story.getById(rows.getColumnItem("id"));
-         ref.renderSkin("Story#result");
+         ref.renderSkin("$Story#result");
          counter += 1;
       }
       rows.release();
@@ -455,9 +455,8 @@ Site.prototype.unsubscribe_action = function() {
       }
    }
    res.data.title = gettext("Remove subscription to {0}", this.title);
-   res.data.body = this.renderSkinAsString("HopObject#delete", {
-      text: gettext('You are about to unsubscribe from site {0}.', 
-            this.title)
+   res.data.body = this.renderSkinAsString("HopObject#confirm", {
+      text: gettext('You are about to unsubscribe from site {0}.', this.title)
    });
    this.renderSkin("Site#page");
    return;
@@ -490,7 +489,7 @@ Site.prototype.stories_macro = function() {
       this.renderSkin("Site#welcome");
       if (session.user) {
          if (session.user === this.creator) {
-            session.user.renderSkin("User#welcome");
+            session.user.renderSkin("$User#welcome");
          }
          if (this === root && User.require(User.PRIVILEGED)) {
             this.admin.renderSkin("Admin#welcome");
