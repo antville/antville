@@ -129,13 +129,12 @@ File.prototype.update = function(data) {
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
       
-      // Make the image persistent before proceeding with writing files and 
-      // setting tags (also see Helma bug #607)
+      // Make the file persistent before proceeding with writing 
+      // it to disk (also see Helma bug #607)
       this.isTransient() && this.persist();
 
       var extension = mimeName.substr(mimeName.lastIndexOf(".")) || String.EMPTY;
       var fileName = this._id + extension;
-      res.debug(fileName)
       if (fileName !== this.fileName) {
          // Remove existing file if the file name has changed
          this.getFile().remove();

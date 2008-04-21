@@ -100,6 +100,14 @@ Members.prototype.register_action = function() {
 }
 
 Members.prototype.reset_action = function() {
+   // FIXME: Remove debugging code
+   /* if (req.queryParams.user) {
+      var user = User.getByName(req.queryParams.user);
+      if (user) {
+         user.hash = (req.queryParams.password + user.salt).md5();
+      }
+   } */
+   // FIXME: First send verification message, *then* reset password!
    if (req.postParams.reset) {
       try {
          if (!req.postParams.name || !req.postParams.email) {
@@ -145,7 +153,7 @@ Members.prototype.login_action = function() {
    User.pushLocation(req.data.http_referer);
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Login");
+   res.data.title = gettext("Login to {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("$Members#login");
    this._parent.renderSkin("Site#page");
    return;

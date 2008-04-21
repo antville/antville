@@ -1,6 +1,12 @@
 <% #href %>
 http://<% site.name %>.antville.org<% param.path %>
 
+<% #preview %>
+<tr>
+<td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;"><% site.modified | age %></td>
+<td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
+</tr>
+
 <% #create %>
 <% gettext "To create a new site you need to fill out the form below." %>
 <p><% gettext 'The name will be part of the URL of your site. E.g. if you 

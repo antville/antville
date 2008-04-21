@@ -20,7 +20,13 @@ modify the appearance of your site according to your needs."
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
-<% user.list sites prefix="<ul>" suffix="</ul>" %>
+<table border="0" cellpadding="0" cellspacing="0">
+<colgroup>
+   <col width="150">
+   <col width="*">
+</colgroup>
+<% user.list sites %>
+</table>
 
 <% #subscriptions %>
 <div class="ample">

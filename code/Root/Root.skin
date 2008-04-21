@@ -6,8 +6,15 @@ one site, it can easily host up to several hundred or thousand of sites.' %></p>
 the site owner’s choice than by the software.' %>)</p>
 <% gettext "Number of sites hosted here" suffix=: %> <% root.size %><br />
 <% gettext "Publicly accessible sites" suffix=: %> <% root.sites.size %>
-<br />
-<% list updates prefix=<ul> suffix=</ul> %>
+<p>
+<table border="0" cellpadding="1" cellspacing="0">
+<colgroup>
+   <col width="150">
+   <col width="*">
+</colgroup>
+<% list updates 25 %>
+</table>
+</p>
 
 <% #sites %>
 <p><% gettext "This is the complete list of public sites hosted here, in 

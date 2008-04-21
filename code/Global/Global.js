@@ -290,7 +290,7 @@ function story_macro(param, id, mode) {
       html.link({href: story.href()}, story.getTitle());
       break;
       default:
-      story.renderSkin(param.skin ? param.skin : "Story#main");
+      story.renderSkin("Story#" + (param.skin || "main"));
    }
    return;
 }
@@ -393,28 +393,35 @@ function poll_macro(param, id, mode) {
    return;
 }
 
-function list_macro(param /*, limit, id */) {
-   var id = arguments[2] || arguments[1];
-   var limit = arguments[2] && arguments[1] || 5;
-   if (!id && !limit) {
+function list_macro(param, id, limit) {
+   if (!id) {
       return;
    }
 
+   limit || (limit = 25);
    var max = Math.min(limit, 20);
    var collection, skin;
    if (id === "sites") {
       collection = root.sites.list(0, max);
-      skin = "Site#preview";
+      skin = "$Site#preview";
    } else if (id === "updates") {
-      var counter = 0;
+      collection = root.updates.list(0, limit);
+      skin = "$Site#preview";
+      /*
+      var site;
       collection = [];
-      root.forEach(function() {
+      for (var i=0; i<root.size(); i+=1) {
+         site = root.get(i);
+         res.debug(site)
          if (this.mode === Site.OPEN || this.mode === Site.PUBLIC &&
                this.status !== Site.BLOCKED) {
-            collection.push(this);
+            collection.push(site);
+        }
+         if (collection.length >= limit) {
+            break;
          }
-      });
-      skin = "Site#preview";
+      }
+      */
    } else {
       var site;
       var parts = id.split("/");
@@ -434,23 +441,23 @@ function list_macro(param /*, limit, id */) {
          case "comments":
          var comments = site.stories.comments;
          collection = comments.list().filter(filter);
-         skin = "Comment#preview";
+         skin = "$Comment#preview";
          break;
          
          case "featured":
          collection = site.stories.featured.list(0, max);
-         skin = "Story#preview";
+         skin = "$Story#preview";
          break;
          
          case "images":
          collection = site.images.list(0, max);
-         skin = "Image#preview";
+         skin = "$Image#preview";
          break;
          
          case "postings":
          content = site.stories.recent;
          collection = content.list().filter(filter);
-         skin = "Story#preview";
+         skin = "$Story#preview";
          break;
          
          case "stories":
@@ -459,11 +466,11 @@ function list_macro(param /*, limit, id */) {
          collection = stories.list().filter(function(item, index) {
             return item.constructor === Story && filter(item, counter++);
          });
-         skin = "Story#preview";
+         skin = "$Story#preview";
          break;
          
          case "tags":
-         return site.tags.list_macro(param, "Tag#item");
+         return site.tags.list_macro(param, "$Tag#item");
          break;
          
          default:

@@ -201,7 +201,7 @@ Site.prototype.update = function(data) {
    }
 
    this.map({
-      title: stripTags(data.title),
+      title: stripTags(data.title) || this.name,
       tagline: data.tagline,
       email: data.email,
       mode: data.mode || Site.PRIVATE,

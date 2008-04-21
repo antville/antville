@@ -437,13 +437,6 @@ Story.prototype.format_filter = function(value, param, mode) {
 }
 
 Story.prototype.macro_filter = function(value, param) {
-   res.debug(value.indexOf(String.fromCharCode(0x19)))
-   var skin = createSkin(value);
-   var rendered = this.renderSkinAsString(skin);
-   var gremlin = String.fromCharCode(0x19);
-   res.debug(rendered.indexOf(gremlin))
-   res.format(rendered.replace(gremlin, "XXXXXXXXXXXXXXXXXXXX"))
-   
    var skin = value.constructor === String ? createSkin(format(value)) : value;
    skin.allowMacro("image");
    skin.allowMacro("this.image");
@@ -480,6 +473,7 @@ Story.prototype.macro_filter = function(value, param) {
 Story.prototype.url_filter = function(value, param, mode) {
    param.limit || (param.limit = 50);
    // FIXME: Check query strings et al.
+   // FIXME: Strange output with <a href=antville.org>...</a> (no quotes)
    var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
    return value.replace(re, function(str, head, url, tail) {
       res.push();

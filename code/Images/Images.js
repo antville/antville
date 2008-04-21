@@ -30,7 +30,7 @@ Images.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "create":
-      case "tags":
+      // FIXME: case "tags":
       return Site.require(Site.OPEN) || 
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
@@ -97,7 +97,7 @@ Images.prototype.create_action = function() {
 }
 
 Images.prototype.all_action = function() {
-   res.data.pager = renderPager(this, this.href(), 
+   res.data.pager = renderPager(this, this.href(req.action), 
          10, req.queryParams.page);
    res.data.list = renderList(this, "$Image#listItem", 
          10, req.queryParams.page);

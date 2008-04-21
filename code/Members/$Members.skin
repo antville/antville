@@ -13,6 +13,7 @@
 <% response.pager %>
 
 <% #login %>
+<p class="storyTitle"><% response.title %></p>
 <script type="text/javascript">
 $(function() {
    $("#submit").click(function() {
@@ -25,6 +26,7 @@ $(function() {
          url: '<% members.href salt.js %>',
          data: "user=" + encodeURIComponent(name),
          dataType: "json",
+         error: function() { /* ... */ },
          success: function(salt) {
             $("#digest").val($.md5($.md5(password + salt) + token));
          }

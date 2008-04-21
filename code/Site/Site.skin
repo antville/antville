@@ -7,29 +7,29 @@
 <% site.created long %> %></p>
 
 <% #navigation %>
-<% site.link . <% gettext Home %> prefix="... " suffix="<br />" %>
-<% site.tags.link prefix="... " suffix="<br />" %>
-<% site.galleries.link prefix="... " suffix="<br />" %>
-<br />
-<% site.stories.link create <% gettext "Add story" %> prefix="... " suffix="<br />" %>
-<% site.stories.link prefix="... " suffix="<br />" %>
-<% site.images.link prefix="... " suffix="<br />" %>
-<% site.files.link prefix="... " suffix="<br />" %>
-<% site.polls.link prefix="... " suffix="<br />" %>
-<% site.members.link prefix="... " suffix="<br />" %>
-<br />
-
-<% site.link edit <% gettext Preferences %> prefix="... " suffix="<br />" %>
-<% layout.link . <% gettext Layout %> prefix="... " suffix="<br />" %>
-<% layout.skins.link prefix="... " suffix="<br />" %>
-<% site.link referrers prefix="... " suffix="<br />" %>
-<% site.stories.link top <% gettext "Top stories" %> prefix="... " suffix="<br />" %>
-<br />
+<p class="navigation">
+<div><% site.link . <% gettext Home %> prefix="... " %></div>
+<div><% site.tags.link prefix="... " %></div>
+<div><% site.galleries.link prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% site.stories.link create <% gettext "Add story" %> prefix="... " %></div>
+<div><% site.stories.link prefix="... " %></div>
+<div><% site.images.link prefix="... " %></div>
+<div><% site.files.link prefix="... " %></div>
+<div><% site.polls.link prefix="... " %></div>
+<div><% site.members.link prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
+<div><% layout.link . <% gettext Layout %> prefix="... " %></div>
+<div><% layout.skins.link prefix="... " %></div>
+<div><% site.link referrers prefix="... " %></div>
+<div><% site.stories.link top <% gettext "Top stories" %> prefix="... " %></div>
+</p>
+<p class="navigation">
 <% root.title prefix="... " | root.link %>
-
-<% #preview %>
-<li><% site.title | site.link %> 
-<span class="small"><% site.modified | age %></span></li>
+</p>
 
 <% #search %>
 <form method="post" action="<% site.href search %>">

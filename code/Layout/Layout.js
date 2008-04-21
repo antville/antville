@@ -59,7 +59,7 @@ Layout.prototype.getPermission = function(action) {
 // URLs won't contain the layout ID instead of "layout"
 Layout.prototype.href = function(action) {
    res.push();
-   res.write(this._parent.href());
+   res.write(res.handlers.site.href());
    res.write("layout/");
    action && res.write(action);
    return res.pop();
@@ -126,9 +126,24 @@ Layout.remove = function() {
 }
 
 Layout.prototype.reset_action = function() {
-   Skins.remove.call(this.skins);
-   this.getFile().removeDirectory();
-   return res.redirect(this.href());
+   if (req.postParams.proceed) {
+      try {
+         Skins.remove.call(this.skins);
+         this.getFile().removeDirectory();
+         res.message = gettext("The layout was successfully reset.");
+         res.redirect(this.href());
+      } catch(ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+
+   res.data.action = this.href(req.action);
+   res.data.title = gettext("Confirm reset of {0}", this);
+   res.data.body = this.renderSkinAsString("$HopObject#confirm", {
+      text: gettext('You are about to reset {0}.', this)
+   });
+   res.handlers.site.renderSkin("Site#page");
 }
 
 Layout.prototype.export_action = function() {

@@ -118,21 +118,6 @@ Skin.remove = function() {
    }
    this.remove();
    return;
-   
-   var file = this.getStaticFile(res.skinpath[0]);
-   if (file.exists()) {
-      file["delete"]();
-      var parentDir = file.getParentFile();
-      if (parentDir.isDirectory() && parentDir.list().length < 1) {
-         parentDir["delete"]();
-         var layoutDir = parentDir.getParentFile();
-         if (layoutDir.list().length < 1) {
-            layoutDir["delete"]();
-         }
-      }
-   }
-   this.remove();
-   return;
 }
 
 Skin.prototype.reset_action = function() {
@@ -151,7 +136,7 @@ Skin.prototype.reset_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Confirm reset of {0}", this);
-   res.data.body = this.renderSkinAsString("HopObject#confirm", {
+   res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to reset {0}.', this)
    });
    res.handlers.site.renderSkin("Site#page");
@@ -238,7 +223,7 @@ Skin.prototype.getSource = function() {
 
 Skin.prototype.setSource = function(source) {
    res.push();
-   if (source !== null) {
+   if (source != null) {
       res.writeln("<% #" + this.name + " %>");
       res.writeln(source.trim());
    }
@@ -247,7 +232,8 @@ Skin.prototype.setSource = function(source) {
    for (var i in subskins) {
       if (subskins[i] !== this.name) {
          res.writeln("<% #" + subskins[i] + " %>");
-         res.writeln(skin.getSubskin(subskins[i]).source.trim());
+         source = skin.getSubskin(subskins[i]).source;
+         source && res.writeln(source.trim());
       }
    }
    source = res.pop();

@@ -69,6 +69,8 @@ Root.prototype.getMacroHandler = function(name) {
 }
 
 Root.prototype.main_action = function() {
+   return Site.prototype.main_action.apply(this);
+
    /*var re = /("[^"]*"|'[^']*'|<%(\S*)|/gm;
    var macro = '"1xfoo {0} 2xbar {1}" foo "bar bar" <% test %>';
    var result = macro.replace(re, function() {
@@ -77,7 +79,6 @@ Root.prototype.main_action = function() {
 //   res.debug(result)
    return;*/
    
-   return Site.prototype.main_action.apply(this);
    //log();
    flushLog();
    res.debug(root.admin.log.cache.size());

@@ -112,7 +112,7 @@ User.prototype.list_macro = function(param, type) {
       memberships.forEach(function(membership) {
          var site;
          if (site = membership.get("site")) {
-            site.renderSkin("Site#preview");
+            site.renderSkin("$Site#preview");
          }
          return;
       });
@@ -260,7 +260,7 @@ User.getMembership = function() {
 
 User.pushLocation = function(url) {
    if (!session.data.location) {
-      res.debug("Pushing location " + url);
+      //res.debug("Pushing location " + url);
       session.data.location = url;
    }
    return;
