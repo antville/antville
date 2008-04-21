@@ -36,7 +36,7 @@ Story.prototype.constructor = function() {
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
-};
+}
 
 Story.prototype.getPermission = function(action) {
    if (!this.site.getPermission("main")) {
@@ -89,7 +89,7 @@ Story.prototype.link_macro = function(param, action, text) {
       }
    }
    return HopObject.prototype.link_macro.call(this, param, action, text);
-};
+}
 
 Story.prototype.main_action = function() {
    res.data.title = this.getTitle();
@@ -98,7 +98,7 @@ Story.prototype.main_action = function() {
    this.logRequest();
    logAction();
    return;
-};
+}
 
 Story.prototype.getTitle = function(limit) {
    var key = this + ":title:" + limit;
@@ -112,7 +112,7 @@ Story.prototype.getTitle = function(limit) {
       }
    }
    return res.meta[key] || this; 
-};
+}
 
 Story.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -135,7 +135,7 @@ Story.prototype.edit_action = function() {
    res.data.body += this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Story.prototype.getFormValue = function(name) {
    if (req.isPost()) {
@@ -152,7 +152,7 @@ Story.prototype.getFormValue = function(name) {
       return this.getTags();
    }
    return this[name];
-};
+}
 
 Story.prototype.getFormOptions = function(name) {
    switch (name) {
@@ -204,7 +204,7 @@ Story.prototype.update = function(data) {
    this.clearCache();
    this.touch();
    return;
-};
+}
 
 Story.prototype.setMetadata = function(data) {
    var name;
@@ -214,7 +214,7 @@ Story.prototype.setMetadata = function(data) {
       }
    }
    return;
-};
+}
 
 Story.prototype.isMetadata = function(name) {
    return this[name] === undefined && name !== "save";
@@ -230,7 +230,7 @@ Story.remove = function() {
    this.setTags(null);
    this.remove();
    return;
-};
+}
 
 Story.prototype.rotate_action = function() {
    if (this.status === Story.CLOSED) {
@@ -243,7 +243,7 @@ Story.prototype.rotate_action = function() {
       this.status = Story.CLOSED;
    }
    return res.redirect(req.data.http_referer || this._parent.href());
-};
+}
 
 Story.prototype.comment_action = function() {
    if (!User.require(User.REGULAR)) {
@@ -274,7 +274,7 @@ Story.prototype.comment_action = function() {
    this.site.renderSkin("Site#page");
    this.logRequest();
    return;
-};
+}
 
 Story.prototype.summary_macro = function(param) {
    param.limit || (param.limit = 15);
@@ -305,7 +305,7 @@ Story.prototype.summary_macro = function(param) {
    res.writeln("\n");
    res.write(tail);
    return;
-};
+}
 
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
@@ -332,11 +332,11 @@ Story.prototype.comments_macro = function(param, mode) {
       });
    }
    return;
-};
+}
 
 Story.prototype.tags_macro = function() {
    return res.write(this.getFormValue("tags"));
-};
+}
 
 Story.prototype.backlinks_macro = function(param, limit) {
    limit || (limit = param.limit);
@@ -370,7 +370,7 @@ Story.prototype.backlinks_macro = function(param, limit) {
       this.renderSkin("Story#backlinks", param);
    }
    return;
-};
+}
 
 Story.prototype.logRequest = function() {
    if (session.user === this.creator) {
@@ -386,7 +386,7 @@ Story.prototype.logRequest = function() {
       };
    }
    return;
-};
+}
 
 Story.prototype.getDelta = function(data) {
    if (this.isTransient()) {
@@ -410,7 +410,7 @@ Story.prototype.getDelta = function(data) {
    // In-between updates (10 min) get zero delta
    var timex = (new Date - this.modified) > Date.ONEMINUTE * 10 ? 1 : 0;
    return delta * timex;
-};
+}
 
 Story.prototype.format_filter = function(value, param, mode) {
    if (value) {
@@ -434,7 +434,7 @@ Story.prototype.format_filter = function(value, param, mode) {
       }
    }
    return String.EMTPY;
-};
+}
 
 Story.prototype.macro_filter = function(value, param) {
    res.debug(value.indexOf(String.fromCharCode(0x19)))
@@ -475,7 +475,7 @@ Story.prototype.macro_filter = function(value, param) {
    value = this.renderSkinAsString(skin);
    site && (res.handlers.site = site);
    return value;
-};
+}
 
 Story.prototype.url_filter = function(value, param, mode) {
    param.limit || (param.limit = 50);
@@ -500,4 +500,4 @@ Story.prototype.url_filter = function(value, param, mode) {
       res.write(tail);
       return res.pop();
    });
-};
+}

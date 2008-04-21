@@ -40,7 +40,7 @@ Images.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED));
    }
    return false;
-};
+}
 
 Images.prototype.main_action = function() {
    var images, skin;
@@ -65,7 +65,7 @@ Images.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString(skin);
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Images.prototype.create_action = function() {
    var image = new Image;
@@ -94,7 +94,7 @@ Images.prototype.create_action = function() {
    res.data.body = image.renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Images.prototype.all_action = function() {
    res.data.pager = renderPager(this, this.href(), 
@@ -105,7 +105,7 @@ Images.prototype.all_action = function() {
    res.data.body = this.renderSkinAsString("$Images#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Images.Default = (function() {
    var Image = function(name, description) {
@@ -163,7 +163,7 @@ Images.prototype.evalImport = function(metadata, files) {
       outStream.close();
    }
    return true;
-};
+}
 
 Images.prototype.mergeImages = function() {
    var images = [];
@@ -178,15 +178,15 @@ Images.prototype.mergeImages = function() {
       layout = layout.parent;
    }
    return images.sort(Number.Sorter("created", Number.Sorter.DESC));
-};
+}
 
 Images.prototype.getTags = function(group) {
    return this._parent.getTags("galleries", group);
-};
+}
 
 Images.remove = function() {
    if (this.constructor === Images) {
       HopObject.remove(this);
    }
    return;
-};
+}

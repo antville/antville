@@ -33,7 +33,7 @@ File.prototype.constructor = function() {
    this.created = this.modified = new Date;
    this.requests = 0;
    return this;
-};
+}
 
 File.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
@@ -50,7 +50,7 @@ File.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);            
    }
    return false;
-};
+}
 
 File.prototype.main_action = function() {
    if (Membership.require(Membership.SUBSCRIBER) &&
@@ -58,7 +58,7 @@ File.prototype.main_action = function() {
       this.requests += 1;
    }
    return res.redirect(this.getUrl());
-};
+}
 
 File.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -76,7 +76,7 @@ File.prototype.edit_action = function() {
    res.data.title = gettext("Edit file {0}", this.name);
    res.data.body = this.renderSkinAsString("File#edit");
    return this.site.renderSkin("Site#page");
-};
+}
 
 File.prototype.getFormValue = function(name) {
    var self = this;
@@ -150,25 +150,25 @@ File.prototype.update = function(data) {
    this.description = data.description;
    this.touch();
    return;
-};
+}
 
 File.prototype.url_macro = function() {
    return res.write(this.url || this.getUrl());
-};
+}
 
 File.prototype.contentLength_macro = function(param) {
    return res.write((this.contentLength / 1024).format("###,###") + " KB");
-};
+}
 
 File.prototype.getFile = function() {
    var site = this.parent || res.handlers.site;
    return site.getStaticFile("files/" + this.fileName);
-};
+}
 
 File.prototype.getUrl = function() {
    var site = this.parent || res.handlers.site;
    return site.getStaticUrl("files/" + this.name);
-};
+}
    
 File.remove = function() {
    if (this.constructor === File) {
@@ -176,4 +176,4 @@ File.remove = function() {
       this.remove();
    }
    return;
-};
+}

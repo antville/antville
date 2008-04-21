@@ -31,7 +31,7 @@ LogEntry.prototype.constructor = function(context, action) {
    this.creator = session.user;
    this.created = new Date;
    return this;
-};
+}
 
 LogEntry.prototype.getMacroHandler = function(name) {
    switch (name) {
@@ -62,4 +62,4 @@ LogEntry.prototype.label_macro = function(param) {
       res.write("<span class=\"flagLight\" style=\"background-color:#FFCC00;\">ROOT</span>");
    }
    return;
-};
+}

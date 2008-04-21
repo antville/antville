@@ -40,7 +40,7 @@ Stories.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
    return false;
-};
+}
 
 Stories.prototype.main_action = function() {
    var stories = User.getMembership().stories;
@@ -52,7 +52,7 @@ Stories.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Stories.prototype.create_action = function() {
    var story = new Story;
@@ -78,7 +78,7 @@ Stories.prototype.create_action = function() {
    res.data.body += story.renderSkinAsString("Story#edit");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Stories.prototype.closed_action = function() {
    res.data.list = renderList(this.closed, 
@@ -89,7 +89,7 @@ Stories.prototype.closed_action = function() {
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Stories.prototype.all_action = function() {
    res.data.list = renderList(this, "Story#listItem", 10, req.queryParams.page);
@@ -99,7 +99,7 @@ Stories.prototype.all_action = function() {
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Stories.prototype.top_action = function() {
    res.data.title = gettext("Top 25 most read stories of {0}", 
@@ -107,7 +107,7 @@ Stories.prototype.top_action = function() {
    res.data.body = this.renderSkinAsString("$Stories#top");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Stories.prototype.list_macro = function(param, type) {
    switch (type) {
@@ -122,7 +122,7 @@ Stories.prototype.list_macro = function(param, type) {
       break;
    }
    return;
-};
+}
 
 Stories.prototype.filter = function(prototype /*, switch1..n, limit */) {
    if (!prototype) {
@@ -164,11 +164,11 @@ Stories.prototype.filter = function(prototype /*, switch1..n, limit */) {
 
 Stories.prototype.getTags = function(group) {
    return this._parent.getTags("tags", group);
-};
+}
 
 Stories.prototype.getAdminHeader = function(name) {
    return ["#", "Tag", "Items"];
-};
+}
 
 Stories.flushRequests = function() {
    for each (var entry in app.data.stories) {
@@ -177,4 +177,4 @@ Stories.flushRequests = function() {
       return;
    };
    return;
-};
+}

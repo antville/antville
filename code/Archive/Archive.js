@@ -143,7 +143,7 @@ Archive.prototype.stories_macro = function() {
    }
    rows.release();
    return;
-};
+}
 
 Archive.prototype.getSize = function() {
    // FIXME: This is a little bit inconsistent and thus needs special care

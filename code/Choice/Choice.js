@@ -26,7 +26,7 @@ Choice.prototype.constructor = function(title) {
    this.title = title;
    this.created = this.modified = new Date;
    return this;
-};
+}
 
 Choice.remove = function() {
    if (this.constructor !== Choice) {
@@ -37,7 +37,7 @@ Choice.remove = function() {
    }
    this.remove();
    return;
-};
+}
 
 Choice.prototype.selected_macro = function() {
    var votes;
@@ -47,7 +47,7 @@ Choice.prototype.selected_macro = function() {
       res.write(false);
    }
    return;
-};
+}
 
 Choice.prototype.votes_macro = function(param, variant) {
    var votes = 0;
@@ -74,4 +74,4 @@ Choice.prototype.votes_macro = function(param, variant) {
       return param["default"];
    }
    return votes;
-};
+}

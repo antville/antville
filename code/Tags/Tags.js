@@ -24,7 +24,7 @@
 
 Tags.prototype.getPermission = function(action) {
    return res.handlers.site.getPermission("main");
-};
+}
 
 Tags.prototype.main_action = function() {
    var action = this.getAction();
@@ -39,11 +39,11 @@ Tags.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Tags#" + req.action);
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Tags.prototype.admin_action = function() {
    return this.main_action();
-};
+}
 
 Tags.prototype.getChildElement = function(id) {
    var child = this[id] || this.get(Tags.ALL).get(id);
@@ -89,7 +89,7 @@ Tags.prototype.getChildElement = function(id) {
       return manager;
    }
    return child; */ 
-};
+}
 
 Tags.prototype.alphabet_macro = function() {
    if (this.get(Tags.ALL).size() < 50) {
@@ -119,7 +119,7 @@ Tags.prototype.alphabet_macro = function() {
       add("?", Tags.OTHER);
    }
    return;
-};
+}
 
 Tags.prototype.pager_macro = function() {
    var page = this.getPage();
@@ -139,7 +139,7 @@ Tags.prototype.pager_macro = function() {
       res.write(" ");
    }
    return;
-};
+}
 
 Tags.prototype.header_macro = function(param) {
    var header = this.getHeader();
@@ -147,7 +147,7 @@ Tags.prototype.header_macro = function(param) {
       this.renderSkin("Tags#header", {title: title});
    }
    return;
-};
+}
 
 Tags.prototype.list_macro = function(param, skin) {
    var page = this.getPage();
@@ -167,45 +167,45 @@ Tags.prototype.list_macro = function(param, skin) {
       index += 1;
    }
    return;
-};
+}
 
 Tags.prototype.get = function(group) {
    return this._parent.getTags(this._id, group || this.getGroup());
-};
+}
 
 Tags.prototype.getGroup = function() {
    return decodeURIComponent(session.data[this.href("group")] || Tags.ALL);
-};
+}
 
 Tags.prototype.setGroup = function(group) {
    session.data[this.href("group")] = encodeURIComponent(group);
    this.setPage(1);
    return;
-};
+}
 
 Tags.prototype.getPage = function() {
    return session.data[this.href("page")] || 1;
-};
+}
 
 Tags.prototype.setPage = function(page) {
    session.data[this.href("page")] = page;
    return;
-};
+}
 
 Tags.prototype.getPageSize = function() {
    return 25;
-};
+}
 
 Tags.prototype.getAction = function() {
    return (req.action === "main" ? String.EMPTY : req.action);
-};
+}
 
 Tags.prototype.getHeader = function() {
    if (this._parent.getAdminHeader) {
       return this._parent.getAdminHeader(this._id) || [];
    }
    return [];
-};
+}
 
 Tags.ALL = "all";
 Tags.OTHER = "other";
@@ -247,5 +247,5 @@ Tags.prototype.get__ = function(group) {
    add("order by tagjoin.name asc");
    collection.subnodeRelation = subnodeRelation.toString();
    return collection;
-};
+}
 */

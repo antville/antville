@@ -35,7 +35,7 @@ Comment.prototype.constructor = function(parent) {
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
-};
+}
 
 Comment.prototype.getPermission = function(action) {
    switch (action) {
@@ -51,11 +51,11 @@ Comment.prototype.getPermission = function(action) {
       return this.story.getPermission.call(this, "delete");
    }
    return false;
-};
+}
 
 Comment.prototype.main_action = function() {
    return res.redirect(this.story.href() + "#" + this._id);
-};
+}
 
 Comment.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -77,7 +77,7 @@ Comment.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("Comment#edit");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Comment.prototype.update = function(data) {
    if (!data.title && !data.text) {
@@ -96,7 +96,7 @@ Comment.prototype.update = function(data) {
    this.clearCache();
    this.touch();
    return;
-};
+}
 
 Comment.remove = function() {
    if (this.constructor !== Comment) {
@@ -110,4 +110,4 @@ Comment.remove = function() {
    this.story.comments.removeChild(this);
    this.remove();
    return this.parent.href();
-};
+}

@@ -70,7 +70,7 @@ LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
  */
 helma.Mail.prototype.queue = function() {
    return app.data.mails.push(this);
-};
+}
 
 helma.Mail.flushQueue = function() {
    if (app.data.mails.length > 0) {
@@ -87,7 +87,7 @@ helma.Mail.flushQueue = function() {
       }
    }
    return;
-};
+}
 
 jala.i18n.setLocaleGetter(function() {
    return res.handlers.site.getLocale();
@@ -475,7 +475,7 @@ function list_macro(param /*, limit, id */) {
       item.renderSkin(skin);
    }
    return;
-};
+}
 
 function value_macro(param, name, value) {
    if (!name) {
@@ -554,7 +554,7 @@ function quote(str) {
 
 function formatNumber(number, pattern) {
    return number.format(pattern);
-};
+}
 
 function formatDate(date, pattern) {
    if (!date) {

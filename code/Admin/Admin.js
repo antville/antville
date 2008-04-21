@@ -27,7 +27,7 @@ Admin.prototype.constructor = function() {
    this.filterUsers();
    this.filterLog();
    return this;
-};
+}
 
 Admin.prototype.getPermission = function(action) {
    switch (action) {
@@ -37,7 +37,7 @@ Admin.prototype.getPermission = function(action) {
       }
    }
    return User.require(User.PRIVILEGED);
-};
+}
 
 Admin.prototype.onRequest = function() {
    HopObject.prototype.onRequest.apply(this);
@@ -45,16 +45,16 @@ Admin.prototype.onRequest = function() {
       session.data.admin = new Admin();
    }
    return;
-};
+}
 
 Admin.prototype.onUnhandledMacro = function(name) {
    res.debug("Add " + name + "_macro to Admin!");
    return null;
-};
+}
 
 Admin.prototype.main_action = function() {
    return res.redirect(this.href("status"));
-};
+}
 
 Admin.prototype.setup_action = function() {
    if (req.postParams.save) {
@@ -74,7 +74,7 @@ Admin.prototype.setup_action = function() {
    res.data.body = this.renderSkinAsString("Admin#setup");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Admin.prototype.update = function(data) {
    root.map({
@@ -98,7 +98,7 @@ Admin.prototype.update = function(data) {
    //   this.applyModuleMethod(app.modules[i], "evalSystemSetup", data);
    //}
    return;
-};
+}
 
 Admin.prototype.status_action = function() {
    var runtime = java.lang.Runtime.getRuntime();
@@ -121,7 +121,7 @@ Admin.prototype.status_action = function() {
    res.data.body = this.renderSkinAsString("Admin#status");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Admin.prototype.log_action = function() {
    if (req.postParams.search || req.postParams.filter) {
@@ -138,7 +138,7 @@ Admin.prototype.log_action = function() {
    res.data.body += this.renderSkinAsString("Admin#main");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Admin.prototype.sites_action = function() {
    if (req.postParams.search || req.postParams.filter) {
@@ -173,7 +173,7 @@ Admin.prototype.sites_action = function() {
    res.data.body += this.renderSkinAsString("Admin#main");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Admin.prototype.users_action = function() {
    if (req.postParams.search || req.postParams.filter) {
@@ -198,7 +198,7 @@ Admin.prototype.users_action = function() {
    res.data.body += this.renderSkinAsString("Admin#main");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Admin.prototype.link_macro = function(param, action, id, text) {
    switch (action) {
@@ -215,7 +215,7 @@ Admin.prototype.link_macro = function(param, action, id, text) {
       action += "#" + id;
    }
    return HopObject.prototype.link_macro.call(this, param, action, text);
-};
+}
 
 Admin.prototype.count_macro = function(param, object, name) {
    if (!object || !object.size) {
@@ -231,14 +231,14 @@ Admin.prototype.count_macro = function(param, object, name) {
    }
    res.write(object.size());
    return;
-};
+}
 
 Admin.prototype.skin_macro = function(param, name) {
    if (this.getPermission("main")) {
       return HopObject.prototype.skin_macro.apply(this, arguments);
    }
    return;
-};
+}
 
 Admin.prototype.items_macro = function(param, object, name) {
    if (!object || !object.size) {
@@ -249,7 +249,7 @@ Admin.prototype.items_macro = function(param, object, name) {
       html.link({href: object.get(i).href()}, "#" + (object.size()-i) + " ");
    }
    return;
-};
+}
 
 Admin.prototype.dropdown_macro = function(param) {
    if (!param.name || !param.values) {
@@ -259,14 +259,14 @@ Admin.prototype.dropdown_macro = function(param) {
    var selectedIndex = req.postParams[param.name];
    html.dropDown({name: param.name}, options, selectedIndex);
    return;
-};
+}
 
 Admin.prototype.moduleSetup_macro = function(param) {
    for (var i in app.modules) {
       this.applyModuleMethod(app.modules[i], "renderSetup", param);
    }
    return;
-};
+}
 
 Admin.prototype.filterLog = function(data) {
    data || (data = {});
@@ -301,7 +301,7 @@ Admin.prototype.filterLog = function(data) {
    res.debug(sql)
    this.log.subnodeRelation = sql;
    return;
-};
+}
 
 Admin.prototype.filterSites = function(data) {
    data || (data = {});
@@ -340,7 +340,7 @@ Admin.prototype.filterSites = function(data) {
    (data.dir == 1) || (sql += "desc");
    this.sites.subnodeRelation = sql;
    return;
-};
+}
 
 Admin.prototype.filterUsers = function(data) {
    data || (data = {});
@@ -381,7 +381,7 @@ Admin.prototype.filterUsers = function(data) {
    (data.dir == 1) || (sql += "desc");
    this.users.subnodeRelation = sql;
    return;
-};
+}
 
 Admin.prototype.updateSite = function(data) {
    var site = Site.getById(data.id);
@@ -394,7 +394,7 @@ Admin.prototype.updateSite = function(data) {
       logAction(site, "status change from " + current + " to " + site.status);
    }
    return;
-};
+}
 
 Admin.prototype.updateUser = function(data) {
    var user = User.getById(data.id);
@@ -410,7 +410,7 @@ Admin.prototype.updateUser = function(data) {
       logAction(user, "status change from " + current + " to " + data.status);
    }
    return;
-};
+}
 
 Admin.prototype.renderItem = function(item) {
    res.handlers.item = item;
@@ -422,7 +422,7 @@ Admin.prototype.renderItem = function(item) {
             "Admin#delete" : "Admin#edit") + name);
    }
    return;
-};
+}
 
 Admin.prototype.autoCleanUp = function() {
    return;
@@ -446,7 +446,7 @@ Admin.prototype.autoCleanUp = function() {
          this.add (new SysLog("system", null, "next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"), null));
       }
    }
-};
+}
 
 Admin.prototype.blockPrivateSites = function() {
    return;
@@ -511,7 +511,7 @@ Admin.prototype.blockPrivateSites = function() {
    }   
    log("system", null, "finished checking for private sites", null);
    return true;
-};
+}
 
 Admin.prototype.deleteInactiveSites = function() {
    return;
@@ -575,7 +575,7 @@ Admin.prototype.deleteInactiveSites = function() {
    }   
    log("system", null, "finished checking for inactive sites", null);
    return true;
-};
+}
 
 Admin.prototype.cleanupAccesslog = function() {
    return;
@@ -595,7 +595,7 @@ Admin.prototype.cleanupAccesslog = function() {
             " records from accesslog-table", null);
    }
    return;
-};
+}
 
 Admin.getHours = function() {
    var hours = [];
@@ -603,4 +603,4 @@ Admin.getHours = function() {
       hours.push(String(i).pad("0", 2, String.LEFT) + ":00");
    }
    return hours;
-};
+}

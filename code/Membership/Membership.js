@@ -37,7 +37,7 @@ Membership.prototype.constructor = function(user, role) {
       this.touch();
    }
    return this;
-};
+}
 
 Membership.prototype.getPermission = function(action) {
    switch (action) {
@@ -48,7 +48,7 @@ Membership.prototype.getPermission = function(action) {
       return this.role !== Membership.OWNER;
    }
    return false;
-};
+}
 
 Membership.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -67,7 +67,7 @@ Membership.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("$Membership#edit");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Membership.prototype.getFormOptions = function(name) {
    switch (name) {
@@ -75,7 +75,7 @@ Membership.prototype.getFormOptions = function(name) {
       return Membership.getRoles();
    }
    return;
-};
+}
 
 Membership.prototype.update = function(data) {
    if (!data.role) {
@@ -89,7 +89,7 @@ Membership.prototype.update = function(data) {
             gettext("Notification of membership change"));
    }
    return;
-};
+}
 
 Membership.prototype.contact_action = function() {
    if (req.postParams.send) {
@@ -113,7 +113,7 @@ Membership.prototype.contact_action = function() {
    res.data.body = this.renderSkinAsString("$Membership#contact");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Membership.prototype.notify = function(action, recipient, subject) {
    switch (action) {
@@ -127,14 +127,14 @@ Membership.prototype.notify = function(action, recipient, subject) {
             this.renderSkinAsString("$Membership#notify_" + action));
    }
    return;
-};
+}
 
 Membership.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "creator":
       return this.creator;
    }
-};
+}
 
 Membership.prototype.link_filter = function(value, param) {
    if (this.isTransient()) {
@@ -142,21 +142,21 @@ Membership.prototype.link_filter = function(value, param) {
    }
    return HopObject.prototype.link_filter.call(this, value, 
          param, this.creator.url); // || this.href());
-};
+}
 
 Membership.prototype.email_macro = function(param) {
    throw Error("Due to privacy reasons the display of e-mail addresses is disabled.")
-};
+}
 
 Membership.prototype.status_macro = function() {
    this.role || (res.handlers.members = {});
    this.renderSkin(session.user ? "Membership#status" : "Membership#login");
    return;
-};
+}
 
 Membership.getByName = function(name) {
    return res.handlers.site.members.get(name);
-};
+}
 
 Membership.prototype.require = function(role) {
    var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
@@ -165,14 +165,14 @@ Membership.prototype.require = function(role) {
       return roles.indexOf(this.role) >= roles.indexOf(role);
    }
    return false;
-};
+}
 
 Membership.require = function(role) {
    if (res.handlers.membership) {
       return res.handlers.membership.require(role);
    }
    return false;
-};
+}
       
 Membership.remove = function(membership) {
    if (membership && membership.constructor === Membership) {
@@ -187,7 +187,7 @@ Membership.remove = function(membership) {
       }
    }
    return;
-};
+}
 
 /*
 MAY_ADD_STORY = 1;
@@ -228,7 +228,7 @@ Membership.getLevel = function(role) {
       default:
       return 0;
    }
-};
+}
 
 Membership.getRoles = function() {
    return [{
@@ -249,7 +249,7 @@ Membership.getRoles = function() {
       value: Membership.CONTENTMANAGER | MAY_EDIT_PREFS | MAY_EDIT_LAYOUTS | 
             MAY_EDIT_MEMBERS
    }];
-};
+}
 
 Membership.getRole = function(level) {
    switch (parseInt(level, 10)) {
@@ -265,5 +265,5 @@ Membership.getRole = function(level) {
       default:
       return gettext(Membership.SUBSCRIBER);
    }
-};
+}
 */

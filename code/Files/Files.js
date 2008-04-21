@@ -38,7 +38,7 @@ Files.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
    return false;
-};
+}
 
 Files.prototype.create_action = function() {
    var file = new File;
@@ -61,7 +61,7 @@ Files.prototype.create_action = function() {
    res.data.body = file.renderSkinAsString("$File#edit");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Files.prototype.main_action = function() {
    var files = User.getMembership().files;
@@ -72,7 +72,7 @@ Files.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Files#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Files.prototype.all_action = function() {
    res.data.list = renderList(this, "$File#listItem", 10, req.queryParams.page);
@@ -82,4 +82,4 @@ Files.prototype.all_action = function() {
    res.data.body = this.renderSkinAsString("$Files#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}

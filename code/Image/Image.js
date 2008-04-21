@@ -50,7 +50,7 @@ Image.prototype.constructor = function(data) {
    }
    this.created = new Date;
    return this;
-};
+}
 
 Image.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
@@ -77,7 +77,7 @@ Image.prototype.getPermission = function(action) {
             this.parent !== path.layout);
    }
    return false;
-};
+}
 
 Image.prototype.href = function(action) {
    if (action !== "replace") {
@@ -88,14 +88,14 @@ Image.prototype.href = function(action) {
       return res.handlers.images.href("create") + "?name=" + this.name;
    }
    return HopObject.prototype.href.apply(this, arguments);
-};
+}
 
 Image.prototype.main_action = function() {
    res.data.title = gettext("Image {0}", this.name);
    res.data.body = this.renderSkinAsString("Image#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Image.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -115,7 +115,7 @@ Image.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Image.prototype.getFormValue = function(name) {
    var self = this;
@@ -144,7 +144,7 @@ Image.prototype.getFormValue = function(name) {
       return this.getTags();
    }
    return this[name] || req.queryParams[name];
-};
+}
 
 Image.prototype.update = function(data) {
    if (data.uploadError) {
@@ -214,25 +214,25 @@ Image.prototype.update = function(data) {
    this.description = data.description;
    this.touch();
    return;
-};
+}
 
 Image.prototype.tags_macro = function() {
    return res.write(this.getFormValue("tags"));
-};
+}
 
 Image.prototype.contentLength_macro = function() {
    res.write((this.contentLength / 1024).format("###,###") + " KB");
    return;
-};
+}
 
 Image.prototype.url_macro = function() {
    return res.write(this.getUrl());
-};
+}
 
 Image.prototype.macro_macro = function() {
    return HopObject.prototype.macro_macro.call(this, null,  
          this.parent.constructor === Layout ? "layout.image" : "image");
-};
+}
 
 Image.prototype.thumbnail_macro = function() {
    if (!this.thumbnailName) {
@@ -247,7 +247,7 @@ Image.prototype.thumbnail_macro = function() {
       border: 0,
       alt: description
    });
-};
+}
 
 Image.prototype.render_macro = function(param) {
    param.src = this.getUrl();
@@ -257,7 +257,7 @@ Image.prototype.render_macro = function(param) {
    param.border || (param.border = 0);
    param.alt = encode(param.alt || param.title);
    return html.tag("img", param);
-};
+}
 
 Image.prototype.getFile = function(name) {
    name || (name = this.fileName);
@@ -267,7 +267,7 @@ Image.prototype.getFile = function(name) {
    }
    var site = this.parent || res.handlers.site;
    return site.getStaticFile("images/" + name);
-};
+}
 
 Image.prototype.getUrl = function(name) {
    name || (name = this.fileName);
@@ -284,12 +284,12 @@ Image.prototype.getUrl = function(name) {
    /* var result = "http://www.freeproxy.ca/index.php?url=" + 
    encodeURIComponent(res.pop().rot13()) + "&flags=11111";
    return result; */
-};
+}
 
 Image.prototype.getThumbnailFile = function() {
    return this.getFile(this.thumbnailName);
    // || this.fileName.replace(/(\.[^.]+)?$/, "_small$1"));
-};
+}
 
 Image.prototype.getJSON = function() {
    return {
@@ -308,7 +308,7 @@ Image.prototype.getJSON = function() {
       modified: this.modified,
       modifier: this.modifier ? this.modifier.name : null,
    }.toSource();
-};
+}
 
 Image.prototype.writeFiles = function(image, thumbnail) {
    if (image) {
@@ -354,7 +354,7 @@ Image.getFileExtension = function(type) {
       return ".png";
    }
    return null;
-};
+}
 
 Image.constrain = function(mime, maxHeight, maxWidth) {
    try {
@@ -388,6 +388,6 @@ Image.remove = function() {
    this.setTags(null);
    this.remove();
    return;
-};
+}
 
 Image.THUMBNAILWIDTH = 100;

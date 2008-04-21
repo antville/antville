@@ -50,11 +50,11 @@ User.prototype.constructor = function(data) {
       modified: now
    });
    return this;
-};
+}
 
 User.prototype.getPermission = function(action) {
    return User.require(User.PRIVILEGED);
-};
+}
 
 User.prototype.update = function(data) {
    if (!data.digest && data.password) {
@@ -83,24 +83,24 @@ User.prototype.update = function(data) {
    }
    this.url = validateUrl(data.url);
    return this;
-};
+}
 
 User.prototype.touch = function() {
    this.modified = new Date;
    return;
-};
+}
 
 User.prototype.getDigest = function(token) {
    token || (token = String.EMPTY);
    return (this.hash + token).md5();
-};
+}
 
 User.prototype.getFormOptions = function(name) {
    switch (name) {
       case "status":
       return User.getStatus();
    }
-};
+}
 
 User.prototype.list_macro = function(param, type) {
    switch (type) {
@@ -118,18 +118,18 @@ User.prototype.list_macro = function(param, type) {
       });
    }
    return;
-};
+}
 
 User.getByName = function(name) {
    return root.users.get(name);
-};
+}
 
 User.getSalt = function() {
    var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
    var random = java.security.SecureRandom.getInstance("SHA1PRNG");
    random.nextBytes(salt);
    return Packages.sun.misc.BASE64Encoder().encode(salt);
-};
+}
 
 User.register = function(data) {
    // check if username is existing and is clean
@@ -174,7 +174,7 @@ User.register = function(data) {
    root.users.add(user);
    session.login(user);
    return user;
-};
+}
 
 User.autoLogin = function() {
    if (session.user) {
@@ -199,7 +199,7 @@ User.autoLogin = function() {
    res.message = gettext('Welcome to "{0}", {1}. Have fun!',
          res.handlers.site.title, user.name);
    return;
-};
+}
 
 User.login = function(data) {
    var user = User.getByName(data.name);
@@ -225,7 +225,7 @@ User.login = function(data) {
    user.touch();
    session.login(user);
    return user;
-};
+}
 
 User.logout = function() {
   session.logout();
@@ -233,7 +233,7 @@ User.logout = function() {
   res.setCookie(User.HASHCOOKIE, String.EMPTY);
   User.popLocation();
   return;
-};
+}
 
 User.require = function(requiredStatus) {
    var status = [User.BLOCKED, User.REGULAR, User.TRUSTED, User.PRIVILEGED];
@@ -241,14 +241,14 @@ User.require = function(requiredStatus) {
       return status.indexOf(session.user.status) >= status.indexOf(requiredStatus);
    }
    return false;
-};
+}
 
 User.getCurrentStatus = function() {
    if (session.user) {
       return session.user.status;
    }
    return null;
-};
+}
 
 User.getMembership = function() {
    var membership;
@@ -256,7 +256,7 @@ User.getMembership = function() {
       membership = Membership.getByName(session.user.name);
    }
    return membership || new Membership;
-};
+}
 
 User.pushLocation = function(url) {
    if (!session.data.location) {
@@ -264,10 +264,10 @@ User.pushLocation = function(url) {
       session.data.location = url;
    }
    return;
-};
+}
 
 User.popLocation = function() {
    var url = session.data.location;
    delete session.data.location;
    return url;
-};
+}

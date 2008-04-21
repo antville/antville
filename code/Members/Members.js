@@ -56,11 +56,11 @@ Members.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
    return false;
-};
+}
 
 Members.prototype.link_macro = function(param, action, text) {
    return HopObject.prototype.link_macro.apply(this, arguments);
-};
+}
 
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
@@ -71,7 +71,7 @@ Members.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.register_action = function() {
    if (req.postParams.register) {      
@@ -97,7 +97,7 @@ Members.prototype.register_action = function() {
    res.data.body = this.renderSkinAsString("$Members#register");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.reset_action = function() {
    if (req.postParams.reset) {
@@ -127,7 +127,7 @@ Members.prototype.reset_action = function() {
    res.data.body = this.renderSkinAsString("$Members#reset");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.login_action = function() {
    if (req.postParams.login) {
@@ -149,7 +149,7 @@ Members.prototype.login_action = function() {
    res.data.body = this.renderSkinAsString("$Members#login");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.logout_action = function() {
    if (session.user) {
@@ -159,7 +159,7 @@ Members.prototype.logout_action = function() {
    }
    res.redirect(this._parent.href());
    return;
-};
+}
 
 Members.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -178,7 +178,7 @@ Members.prototype.edit_action = function() {
    res.data.body = session.user.renderSkinAsString("$User#edit");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.salt_js_action = function() {
    res.contentType = "text/javascript";
@@ -187,7 +187,7 @@ Members.prototype.salt_js_action = function() {
       res.write((user.salt || String.EMPTY).toSource());
    }
    return;
-};
+}
 
 Members.prototype.owners_action = function() {
    res.data.title = gettext("Owners of {0}", this._parent.title);
@@ -198,7 +198,7 @@ Members.prototype.owners_action = function() {
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.managers_action = function() {
    res.data.title = gettext("Managers of {0}", this._parent.title);
@@ -209,7 +209,7 @@ Members.prototype.managers_action = function() {
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.contributors_action = function() {
    res.data.title = gettext("Contributors of {0}", this._parent.title);
@@ -220,7 +220,7 @@ Members.prototype.contributors_action = function() {
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.subscribers_action = function() {
    res.data.title = gettext("Subscribers of {0}", this._parent.title);
@@ -231,7 +231,7 @@ Members.prototype.subscribers_action = function() {
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.updated_action = function() {
    res.data.title = gettext("Updated sites for user {0}", session.user.name);
@@ -239,7 +239,7 @@ Members.prototype.updated_action = function() {
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.privileges_action = function() {
    res.data.title = gettext("Memberships of user {0}", session.user.name);
@@ -248,7 +248,7 @@ Members.prototype.privileges_action = function() {
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.subscriptions_action = function() {
    res.data.title = gettext("Subscriptions of user {0}", session.user.name);
@@ -257,7 +257,7 @@ Members.prototype.subscriptions_action = function() {
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.add_action = function() {
    if (req.postParams.term) {
@@ -302,7 +302,7 @@ Members.prototype.add_action = function() {
    res.data.body = this.renderSkinAsString("$Members#add");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Members.prototype.search = function(searchString) {
    var mode = "= '";
@@ -330,7 +330,7 @@ Members.prototype.search = function(searchString) {
       result: res.pop(),
       length: counter
    };
-};
+}
 
 Members.prototype.addMembership = function(data) {
    var user = root.users.get(data.name);
@@ -342,7 +342,7 @@ Members.prototype.addMembership = function(data) {
    var membership = new Membership(user, Membership.SUBSCRIBER);
    this.add(membership);
    return membership;
-};
+}
 
 /* FIXME: obsolete?
 Members.prototype.renderMemberlist = function() {
@@ -357,7 +357,7 @@ Members.prototype.renderMemberlist = function() {
       m.renderSkin("mgrlistitem");
    }
    return res.pop();
-};
+}
 */
 
 Members.prototype.modSorua_action = function() {
@@ -403,7 +403,7 @@ Members.prototype.modSorua_action = function() {
      res.redirect(root.href("main"));
 
    }   
-};
+}
 
 Members.prototype.modSoruaLoginForm_action = function() {
    if (!session.data.modSorua || !session.data.modSorua.returnUrl) 
@@ -420,4 +420,4 @@ Members.prototype.modSoruaLoginForm_action = function() {
    }
    res.data.action = this.href("modSoruaLoginForm");
    this.renderSkin("modSorua");
-};
+}

@@ -30,7 +30,7 @@ Skin.prototype.constructor = function(prototype, name) {
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
-};
+}
 
 Skin.prototype.href = function(action) {
    res.push();
@@ -41,15 +41,15 @@ Skin.prototype.href = function(action) {
    res.write("/");
    action && (res.write(action));
    return res.pop();
-};
+}
 
 Skin.prototype.getPermission = function(action) {
    return res.handlers.skins.getPermission("main");
-};
+}
 
 Skin.prototype.main_action = function() {
    return res.redirect(this.href("edit"));
-};
+}
 
 Skin.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -82,14 +82,14 @@ Skin.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("$Skin#edit");
    res.handlers.skins.renderSkin("$Skins#page");
    return;
-};
+}
 
 Skin.prototype.getFormOptions = function(name) {
    switch (name) {
       case "prototype":
       return Skin.getPrototypeOptions();
    }
-};
+}
 
 Skin.getPrototypeOptions = function() {
    var prototypes = [];
@@ -97,7 +97,7 @@ Skin.getPrototypeOptions = function() {
       prototypes.push({value: name, display: name});
    }
    return prototypes.sort(new String.Sorter("display"));
-};
+}
 
 Skin.prototype.update = function(data) {
    if (this.isTransient()) {
@@ -133,7 +133,7 @@ Skin.remove = function() {
    }
    this.remove();
    return;
-};
+}
 
 Skin.prototype.reset_action = function() {
    if (req.postParams.proceed) {
@@ -206,19 +206,19 @@ Skin.prototype.compare_action = function() {
    res.data.body = this.renderSkinAsString("$Skin#compare");
    res.handlers.skins.renderSkin("$Skins#page");
    return;
-};
+}
 
 Skin.prototype.status_macro = function() {
    return this.isTransient() ? "inherited" : "modified"; 
-};
+}
 
 Skin.prototype.summary_macro = function() {
    return Skins.getSummary("skin", this.prototype, this.name);
-};
+}
 
 Skin.prototype.source_macro = function() {
    return res.write(this.getSource());
-};
+}
 
 Skin.prototype.getSource = function() {
    var skinFiles = app.getSkinfilesInPath(res.skinpath)[this.prototype];
@@ -234,7 +234,7 @@ Skin.prototype.getSource = function() {
       source = skin && skin.getSource();
    }
    return source || String.EMPTY;
-};
+}
 
 Skin.prototype.setSource = function(source) {
    res.push();
@@ -267,12 +267,12 @@ Skin.prototype.setSource = function(source) {
 
    this.clearCache();
    return;
-};
+}
 
 Skin.prototype.getStaticFile = function(fpath, skin) {
    return new java.io.File(fpath, this.prototype + "/" + 
          this.prototype + ".skin");
-};
+}
 
 Skin.prototype.getMainSkin = function() {
    var source = app.getSkinfilesInPath(res.skinpath)[this.prototype][this.prototype];
@@ -282,11 +282,11 @@ Skin.prototype.getMainSkin = function() {
 Skin.prototype.custom_macro = function() {
    // FIXME:
    return false;
-};
+}
 
 Skin.prototype.render = function() {
    return renderSkin(createSkin(this.getSource()));
-};
+}
 
 Skin.prototype.equals = function(source) {
    // FIXME: The removal of linebreaks is necessary but it's not very nice
@@ -295,8 +295,8 @@ Skin.prototype.equals = function(source) {
       return str.replace(re, String.EMPTY);
    }
    return normalize(source) === normalize(this.getSource());
-};
+}
 
 Skin.prototype.toString = function() {
    return "Skin #" + this._id + ": " + this.prototype + "." + this.name;
-};
+}

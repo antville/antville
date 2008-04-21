@@ -30,7 +30,7 @@ Skins.prototype.constructor = function(name, parent) {
 
 Skins.prototype.getPermission = function(action) {
    return res.handlers.layout.getPermission("main");
-};
+}
 
 Skins.prototype.getChildElement = function(name) {
    if (this.parent) {
@@ -47,7 +47,7 @@ Skins.prototype.getChildElement = function(name) {
       }
    }
    return new Skins(name, this);
-};
+}
 
 // FIXME: It's not totally clear why this is necessary;
 // but somehow Helma does not provide the correct path...
@@ -59,7 +59,7 @@ Skins.prototype.href = function(action) {
    res.write("layout/skins/");
    action && (res.write(action));
    return res.pop();
-};
+}
 */
 
 Skins.prototype.main_action = function() {
@@ -71,7 +71,7 @@ Skins.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Skins.prototype.getOutline = function(type) {
    var key = "outline:" + type;
@@ -154,7 +154,7 @@ Skins.prototype.create_action = function() {
    res.data.body = skin.renderSkinAsString("$Skin#edit");
    this.renderSkin("$Skins#page");
    return;
-};
+}
 
 Skins.prototype.modified_action = function() {
    res.data.title = gettext("Modified skins of {0}", this._parent.title);
@@ -166,7 +166,7 @@ Skins.prototype.modified_action = function() {
    res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Skins.prototype.advanced_action = function() {
    if (this.parent) {
@@ -177,7 +177,7 @@ Skins.prototype.advanced_action = function() {
    res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 // FIXME: i'd like to have this by default (ie. always safe)
 Skins.prototype.safe_action = function() {
@@ -190,12 +190,12 @@ Skins.prototype.safe_action = function() {
    res.data.body = this.renderSkinAsString("$Skins#main");
    this.renderSkin("$Skins#page");
    return;
-};
+}
 
 Skins.prototype.getSkin = function(prototype, name) {
    var skinset = this.get(prototype);
    return skinset ? skinset.get(name) : null;
-};
+}
 
 Skins.prototype.getSkinSource = function(proto, name) {
    var skin;
@@ -206,7 +206,7 @@ Skins.prototype.getSkinSource = function(proto, name) {
       return app.skinfiles[proto][name];
    }
    return null;
-};
+}
 
 Skins.prototype.getOriginalSkin = function(proto, name) {
    var skin;
@@ -217,7 +217,7 @@ Skins.prototype.getOriginalSkin = function(proto, name) {
       }
    }
    return null;
-};
+}
 
 Skins.prototype.getOriginalSkinSource = function(proto, name) {
    var skin;
@@ -228,7 +228,7 @@ Skins.prototype.getOriginalSkinSource = function(proto, name) {
       return app.skinfiles[proto][name];
    }
    return null;
-};
+}
 
 Skins.prototype.getCustomSkins = function() {
    var coll = [];
@@ -254,7 +254,7 @@ Skins.prototype.getCustomSkins = function() {
       handler = handler.parent;
    }
    return coll;
-};
+}
 
 Skins.getSummary = function(prefix, prototype, name) {
    return gettext("Description of skin {0}", prototype + "." + name);
@@ -279,7 +279,7 @@ Skins.getSummary = function(prefix, prototype, name) {
       }
    }
    return [prototype + "." + name];
-};
+}
 
 Skins.Skinset = function(key, skins, context) {
    this.key = key;
@@ -290,7 +290,7 @@ Skins.Skinset = function(key, skins, context) {
       this.children.push(obj);
    }
    return this;
-};
+}
 
 Skins.SKINSETS = [];
 
@@ -353,7 +353,7 @@ new function() {
    
    newSet = new Skins.Skinset("various", ["HopObject.delete"], "Root");
    Skins.SKINSETS.push(newSet);
-};
+}
 
 Skins.buildMacroHelp = function() {
    var sorter = function(a, b) {
@@ -397,7 +397,7 @@ Skins.buildMacroHelp = function() {
       ref.sort(sorter);
    }
    return macroHelp;
-};
+}
 
 Skins.remove = function() {
    if (this.constructor === Skins) {
@@ -406,4 +406,4 @@ Skins.remove = function() {
       });
    }
    return;
-};
+}

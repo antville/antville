@@ -79,7 +79,7 @@ Site.prototype.constructor = function(name, title) {
    });
 
    return this;
-};
+}
 
 Site.prototype.getPermission = function(action) {
    switch (action) {
@@ -115,7 +115,7 @@ Site.prototype.getPermission = function(action) {
             !membership.require(Membership.OWNER);
    }
    return false;
-};
+}
 
 Site.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("Site#main");
@@ -123,7 +123,7 @@ Site.prototype.main_action = function() {
    this.renderSkin("Site#page");
    logAction();
    return;
-};
+}
 
 Site.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -151,7 +151,7 @@ Site.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("$Site#edit");
    this.renderSkin("Site#page");
    return;
-};
+}
 
 Site.prototype.getFormOptions = function(name) {
    switch (name) {
@@ -182,7 +182,7 @@ Site.prototype.getFormOptions = function(name) {
       default:
       return HopObject.prototype.getFormOptions.apply(this, arguments);
    }
-};
+}
 
 Site.prototype.update = function(data) {
    if (this.isTransient()) {
@@ -220,7 +220,7 @@ Site.prototype.update = function(data) {
    this.touch();
    this.clearCache();
    return;
-};
+}
 
 Site.remove = function(site) {
    HopObject.remove(site.members);
@@ -230,7 +230,7 @@ Site.remove = function(site) {
    site.remove();
    logAction("site", "removed");
    return;
-};
+}
 
 Site.prototype.main_css_action = function() {
    res.dependsOn(this.modified);
@@ -240,7 +240,7 @@ Site.prototype.main_css_action = function() {
    res.contentType = "text/css";
    this.renderSkin("Site#stylesheet");
    return;
-};
+}
 
 Site.prototype.main_js_action = function() {
    res.dependsOn(this.modified);
@@ -254,7 +254,7 @@ Site.prototype.main_js_action = function() {
    }
    this.renderSkin("Site#javascript");
    return;
-};
+}
 
 Site.prototype.rss_xml_action = function() {
    res.dependsOn(this.lastUpdate);
@@ -270,7 +270,7 @@ Site.prototype.stories_xml_action = function() {
    res.contentType = "text/xml";
    res.write(this.getXml(this.stories.recent));
    return;
-};
+}
 
 Site.prototype.comments_xml_action = function() {
    res.dependsOn(this.lastUpdate);
@@ -368,14 +368,14 @@ Site.prototype.getXml = function(collection) {
    //output.output(feed, res.servletResponse.writer); return;
    var xml = output.outputString(feed);
    return xml; //injectXslDeclaration(xml);
-};
+}
 
 Site.prototype.rss_xsl_action = function() {
    res.charset = "UTF-8";
    res.contentType = "text/xml";
    renderSkin("Global#xslStylesheet");
    return;
-};
+}
 
 Site.prototype.referrers_action = function() {
    if (req.postParams.permanent && (User.require(User.PRIVILEGED) ||
@@ -396,7 +396,7 @@ Site.prototype.referrers_action = function() {
    res.data.body = this.renderSkinAsString("referrers");
    this.renderSkin("Site#page");
    return;
-};
+}
 
 Site.prototype.search_action = function() {
    var search;
@@ -426,7 +426,7 @@ Site.prototype.search_action = function() {
          search, this.title);
    this.renderSkin("Site#page");
    return;
-};
+}
 
 Site.prototype.subscribe_action = function() {
    try {
@@ -440,7 +440,7 @@ Site.prototype.subscribe_action = function() {
    }
    res.redirect(this.href());
    return;
-};
+}
 
 Site.prototype.unsubscribe_action = function() {
    if (req.postParams.proceed) {
@@ -460,13 +460,13 @@ Site.prototype.unsubscribe_action = function() {
    });
    this.renderSkin("Site#page");
    return;
-};
+}
 
 Site.prototype.robots_txt_action = function() {
    res.contentType = "text/plain";
    this.renderSkin("Site#robots");
    return;
-};
+}
 
 Site.prototype.getMacroHandler = function(name) {
    switch (name) {
@@ -482,7 +482,7 @@ Site.prototype.getMacroHandler = function(name) {
       default:
       return null;
    }
-};
+}
 
 Site.prototype.stories_macro = function() {
    if (this.stories.featured.size() < 1) {
@@ -499,7 +499,7 @@ Site.prototype.stories_macro = function() {
       this.archive.renderSkin("Archive#main");
    }
    return;
-};
+}
 
 Site.prototype.calendar_macro = function(param) {
    if (this.archiveMode !== Site.PUBLIC) {
@@ -512,12 +512,12 @@ Site.prototype.calendar_macro = function(param) {
    calendar.setTimeZone(this.getTimeZone());
    calendar.render(this.archive.getDate());
    return;
-};
+}
 
 Site.prototype.age_macro = function(param) {
    res.write(Math.floor((new Date() - this.created) / Date.ONEDAY));
    return;
-};
+}
 
 Site.prototype.referrers_macro = function() {
    var date = new Date;
@@ -541,7 +541,7 @@ Site.prototype.referrers_macro = function() {
    }
    rows.release();
    return;
-};
+}
 
 Site.prototype.getLocale = function() {
    var locale;
@@ -555,7 +555,7 @@ Site.prototype.getLocale = function() {
       locale = java.util.Locale.getDefault();
    }
    return this.cache.locale = locale;
-};
+}
 
 Site.prototype.getTimeZone = function() {
    var timeZone;
@@ -569,7 +569,7 @@ Site.prototype.getTimeZone = function() {
    }
    this.cache.timezone = timeZone;
    return timeZone;
-};
+}
 
 Site.prototype.hitchWebHook = function(ref) {
    ref || (ref = this);
@@ -600,13 +600,13 @@ Site.prototype.hitchWebHook = function(ref) {
       this.webHookLastUpdate = now;
    }
    return;
-};
+}
 
 Site.prototype.processHref = function(href) {
    var vhost = app.getProperty("vhost." + this.name, 
          app.properties.defaultHost + "/" + this.name);
    return vhost + href;
-};
+}
 
 Site.prototype.getTags = function(type, group) {
    var handler;
@@ -633,7 +633,7 @@ Site.prototype.getTags = function(type, group) {
       return handler["alphabetical" + type.titleize()].get(group);
    }
    return null;
-};
+}
 
 Site.prototype.getStaticFile = function(fpath) {
    res.push();
@@ -642,7 +642,7 @@ Site.prototype.getStaticFile = function(fpath) {
    res.write("/");
    fpath && res.write(fpath);
    return new helma.File(res.pop());
-};
+}
 
 Site.prototype.getStaticUrl = function(fpath) {
    res.push();
@@ -651,7 +651,7 @@ Site.prototype.getStaticUrl = function(fpath) {
    res.write("/");
    fpath && res.write(fpath);
    return encodeURI(res.pop());
-};
+}
 
 Site.prototype.getAdminHeader = function(name) {
    switch (name) {
@@ -660,9 +660,9 @@ Site.prototype.getAdminHeader = function(name) {
       return ["#", "Name", "Items"];
    }
    return [];
-};
+}
 
 Site.require = function(mode) {
    var modes = [Site.CLOSED, Site.RESTRICTED, Site.PUBLIC, Site.OPEN];
    return modes.indexOf(res.handlers.site.mode) >= modes.indexOf(mode);
-};
+}

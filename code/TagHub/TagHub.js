@@ -34,7 +34,7 @@ TagHub.prototype.constructor = function(name, tagged, user) {
    this.tagged = tagged;
    this.user = user;
    return this;
-};
+}
 
 TagHub.prototype.getMacroHandler = function(name) {
    switch (name.toLowerCase()) {
@@ -44,9 +44,9 @@ TagHub.prototype.getMacroHandler = function(name) {
       return this.tagged;
       break;
    }
-};
+}
 
 TagHub.prototype.toString = function() {
    return "[Tag ``" + this.tag.name + "'' of " + this.tagged_type + " " + 
          this.tagged_id + "]";
-};
+}

@@ -28,4 +28,4 @@ Vote.prototype.constructor = function(choice) {
    this.creator_name = session.user.name;
    this.created = this.modified = new Date;
    return this;
-};
+}

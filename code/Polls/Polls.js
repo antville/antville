@@ -39,7 +39,7 @@ Polls.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
    return false;
-};
+}
 
 Polls.prototype.main_action = function() {
    var polls = User.getMembership().polls;
@@ -50,7 +50,7 @@ Polls.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Polls.prototype.create_action = function() {
    var poll = new Poll;
@@ -72,7 +72,7 @@ Polls.prototype.create_action = function() {
    res.data.body = poll.renderSkinAsString("Poll#edit");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Polls.prototype.open_action = function() {
    res.data.list = renderList(this.open, 
@@ -83,7 +83,7 @@ Polls.prototype.open_action = function() {
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}
 
 Polls.prototype.all_action = function() {
    res.data.list = renderList(this, "Poll#listItem", 10, req.queryParams.page);
@@ -93,4 +93,4 @@ Polls.prototype.all_action = function() {
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
-};
+}

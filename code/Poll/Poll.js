@@ -29,7 +29,7 @@ Poll.prototype.constructor = function(question) {
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
-};
+}
 
 Poll.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
@@ -51,7 +51,7 @@ Poll.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);            
    }
    return false;
-};
+}
 
 Poll.prototype.getFormOptions = function(name) {
    switch (name) {
@@ -78,7 +78,7 @@ Poll.prototype.link_macro = function(param, action, text) {
       break;
   }
    return HopObject.prototype.link_macro.call(this, param, action, text);
-};
+}
 
 Poll.prototype.main_action = function() {
    if (this.status !== Poll.OPEN) {
@@ -100,7 +100,7 @@ Poll.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Poll#main");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Poll.prototype.vote = function(data) {
 	if (!data.choice) {
@@ -115,7 +115,7 @@ Poll.prototype.vote = function(data) {
 		this.votes.add(new Vote(choice));
 	}
 	return;
-};
+}
 
 Poll.prototype.edit_action = function() {
    if (req.postParams.save) {
@@ -133,7 +133,7 @@ Poll.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("$Poll#edit");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Poll.prototype.input_macro = function(param, name) {
    switch (name) {
@@ -159,7 +159,7 @@ Poll.prototype.input_macro = function(param, name) {
       return;
    }
    return HopObject.prototype.input_macro.apply(this, arguments);
-};
+}
 
 Poll.prototype.update = function(data) {
    var choices = [];
@@ -187,7 +187,7 @@ Poll.prototype.update = function(data) {
    this.question = data.question;
    this.touch();
    return;
-};
+}
 
 Poll.remove = function() {
    if (this.constructor !== Poll) {
@@ -198,14 +198,14 @@ Poll.remove = function() {
    }
    this.remove();
    return;
-};
+}
 
 Poll.prototype.result_action = function() {
    res.data.title = gettext('Results of poll "{0}"', this.question);
    res.data.body = this.renderSkinAsString("$Poll#results");
    this.site.renderSkin("Site#page");
    return;
-};
+}
 
 Poll.prototype.rotate_action = function() {
    if (this.status === Poll.CLOSED) {
@@ -217,15 +217,15 @@ Poll.prototype.rotate_action = function() {
    this.touch();
    return res.redirect(this.href());
    //return res.redirect(this._parent.href() + "#" + this._id);
-};
+}
 
 Poll.prototype.votes_macro = function(param) {
    return this.votes.size();
-};
+}
 
 Poll.prototype.closed_macro = function(param, format) {
    if (this.status === Poll.CLOSED) {
       res.write(formatDate(this.closed, param.format || format));
    }
    return;
-};
+}

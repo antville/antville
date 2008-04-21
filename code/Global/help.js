@@ -6,7 +6,7 @@
 HELP = {
    macros: {_url: "http://macros.antville.org/stories/"},
    skins: {}
-};
+}
 
 
 //////////////////////
@@ -37,7 +37,7 @@ HELP.macros.Global = {
    storylist: 246675, 
    topiclist: 142469, 
    username: 246622
-};
+}
 
 HELP.skins.Global = {
    colorpicker: ["request.text"],
@@ -48,7 +48,7 @@ HELP.skins.Global = {
    pagenavigationitem: ["param.class", "param.text"],
    prevpagelink: ["param.text", "param.url"],
    rssImage: ["param.image", "param.imgTitle", "param.imgUrl", "param.url"]
-};
+}
 
 
 // H O P O B J E C T 
@@ -65,11 +65,11 @@ HELP.macros.HopObject = {
    skin: 254592,
    "switch": 0,
    url: 142549
-};
+}
 
 HELP.skins.HopObject = {
    "delete": ["response.action", "param.description", "param.detail"]
-};
+}
 
 
 // R O O T
@@ -81,14 +81,14 @@ HELP.macros.Root = {
    //sysmgrnavigation: 0,
    title: 142337,
    url: 142339
-};
+}
 
 HELP.skins.Root = {
    rss: ["param.title", "param.email", "param.lastupdate", "param.resources", "param.textinput", "param.items"],
    list: ["response.sitelist", "response.prevpage", "response.nextpage"],
    "new": ["response.action"],
    page: ["response.title", "response.message", "response.body"]
-};
+}
 
 
 // U S E R
@@ -109,28 +109,28 @@ HELP.macros.User = {
    //sysmgr_trusted: 0, 
    //sysmgr_blocked: 0, 
    //sysmgr_sysadmin: 0
-};
+}
 
 HELP.skins.User = {
    mailbody: ["param.name, param.password"],
    edit: ["response.action"],
    subscription: ["response.sitelist"]
    //sysmgr_edit: ["response.action", "request.item", "request.page"]
-};
+}
 
 
 // C H O I C E
 
 HELP.macros.Choice = {
    title: 0
-};
+}
 
 HELP.skins.Choice = {
    edit: ["param.count", "param.value"],
    graph: ["param.width"],
    main: ["param.name", "param.value", "param.checked", "param.title"],
    result: ["param.graph", "param.percent", "param.count", "param.text", "param.title"]
-};
+}
 
 
 // C O M M E N T
@@ -145,11 +145,11 @@ HELP.macros.Comment = {
    modifier: 142525,
    replylink: 254694,
    url: 0
-};
+}
 
 HELP.skins.Comment = {
    edit: ["response.action"]
-};
+}
 
 
 // D A Y
@@ -158,11 +158,11 @@ HELP.macros.Day = {
    date: 0,
    link: 0,
    storylist: 0
-};
+}
 
 HELP.skins.Day = {
    main: ["response.storylist", "response.prevpage", "response.nextpage"]
-};
+}
 
 
 // F I L E
@@ -177,7 +177,7 @@ HELP.macros.File = {
    mimetype: 254498,
    viewlink: 0,
    url: 254504
-};
+}
 
 HELP.skins.File = {
    edit: ["response.action"],
@@ -189,7 +189,7 @@ HELP.skins.File = {
 
 HELP.skins.FileMgr = {
    main: ["response.filelist", "response.pagenavigation"]
-};
+}
 
 
 // I M A G E
@@ -205,11 +205,11 @@ HELP.macros.Image = {
    show: 254560,
    url: 254552,
    width: 254548
-};
+}
 
 HELP.skins.Image = {
    edit: ["response.action", "request.topic"]
-};
+}
 
 
 // I M A G E M G R
@@ -217,12 +217,12 @@ HELP.skins.Image = {
 HELP.macros.ImageMgr = {
    imagelist: 0
    //topicchooser: 0
-};
+}
 
 HELP.skins.ImageMgr = {
    main: ["response.imagelist", "response.pagenavigation"],
    "new": ["response.action", "request.topic"]
-};
+}
 
 
 // L A Y O U T
@@ -252,12 +252,12 @@ HELP.macros.Layout = {
    titlesize: 650901, 
    titlecolor: 650901, 
    vlinkcolor: 650901
-};
+}
 
 HELP.skins.Layout = {
    download: ["response.action"],
    edit: ["response.action"]
-};
+}
 
 
 // L A Y O U T I M A G E
@@ -265,39 +265,39 @@ HELP.skins.Layout = {
 HELP.macros.LayoutImage = {
    deletelink: 0,
    editlink: 0
-};
+}
 
 
 HELP.skins.LayoutImage = {
    edit: ["response.action"]
-};
+}
 
 
 // L A Y O U T I M A G E M G R
 
 HELP.macros.LayoutImageMgr = {
    navigation: 0
-};
+}
 
 
 HELP.skins.LayoutImageMgr = {
    main: ["response.imagelist", "response.pagenavigation"],
    "new": ["response.action"]
-};
+}
 
 
 // L A Y O U T M G R
 
 HELP.macros.LayoutMgr = {
    layoutchooser: 0
-};
+}
 
 
 HELP.skins.LayoutMgr = {
    "import": ["response.layoutlist", "response.pagenavigation"],
    main: ["response.layoutlist", "response.pagenavigation"],
    "new": ["response.action", "response.layoutlist", "response.pagenavigation"]
-};
+}
 
 
 // M E M B E R M G R
@@ -306,7 +306,7 @@ HELP.macros.Members = {
    membership: 0,
    subscribelink: 0,
    subscriptionslink: 0
-};
+}
 
 HELP.skins.Members = {
    login: ["response.action"],
@@ -319,7 +319,7 @@ HELP.skins.Members = {
    searchresult: ["response.action", "param.result"],
    searchresultitem: ["param.name", "param.description"],
    sendpwd: ["response.action"]
-};
+}
 
 
 // M E M B E R S H I P
@@ -333,13 +333,13 @@ HELP.macros.Membership = {
    unsubscribelink: 0,
    url: 0, 
    username: 0
-};
+}
 
 HELP.skins.Membership = {
    edit: ["response.action"],
    mailmessage: ["param.text"],
    mailto: ["response.action", "request.text"]
-};
+}
 
 
 // P O L L
@@ -354,19 +354,19 @@ HELP.macros.Poll = {
    results: 254729,
    viewlink: 254713,
    total: 254737
-};
+}
 
 HELP.skins.Poll = {
    edit: ["response.action", "response.choices"],
    main: ["response.action"]
-};
+}
 
 
 // P O L L M G R
 
 HELP.skins.PollMgr = {
    main: ["response.pollList", "response.pagenavigation"]
-};
+}
 
 
 // S I T E
@@ -407,7 +407,7 @@ HELP.macros.Site = {
    tagline: 15131,
    //usermaycontrib: 0,
    xmlbutton: 15492
-};
+}
 
 HELP.skins.Site = {
    calendar: ["param.calendar", "param.month", "param.year", "param.back", "param.forward"],
@@ -427,7 +427,7 @@ HELP.skins.Site = {
    searchform: ["response.action", "request.q"]
    //sysmgr_delete: ["response.action", "request.page"],
    //sysmgr_edit: ["response.action", "request.page", "request.item"]
-};
+}
 
 
 // S K I N
@@ -482,7 +482,7 @@ HELP.macros.Story = {
    topic: 142577,
    topicchooser: 254595,
    viewlink: 254597
-};
+}
 
 HELP.skins.Story = {
    backlinkItem: ["param.count", "param.referrer", "param.text"],
@@ -490,21 +490,21 @@ HELP.skins.Story = {
    edit: ["response.action", "request.topic"],
    mostreads: ["param.rank", "param.reads"],
    rssItem: ["param.url", "param.title", "param.text", "param.publisher", "param.creator", "param.email", "param,subject", "param.year", "param.creator", "param.date"]
-};
+}
 
 
 // S T O R Y M G R
 
 HELP.skins.StoryMgr = {
    main: ["response.storylist", "response.pagenavigation"],
-};
+}
 
 
 // S Y S M G R
 
 HELP.macros.SysMgr = {
    //drowdown: 0
-};
+}
 
 
 HELP.skins.SysMgr = {
@@ -524,15 +524,15 @@ HELP.skins.SysMgr = {
 HELP.macros.Topic = {
    addstory: 0,
    addimage: 0
-};
+}
 
 HELP.skins.Topic = {
    main: ["response.storylist", "response.prevpage", "response.nextpage"]
-};
+}
 
 
 // T O P I C M G R
 
 HELP.macros.TopicMgr = {
    topiclist: 0
-};
+}

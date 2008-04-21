@@ -57,7 +57,7 @@ Root.prototype.getPermission = function(action) {
       return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
-};
+}
 
 Root.prototype.getMacroHandler = function(name) {
    switch (name) {
@@ -66,7 +66,7 @@ Root.prototype.getMacroHandler = function(name) {
       return this[name];
    }
    return Site.prototype.getMacroHandler.apply(this, arguments);
-};
+}
 
 Root.prototype.main_action = function() {
    /*var re = /("[^"]*"|'[^']*'|<%(\S*)|/gm;
@@ -100,7 +100,7 @@ Root.prototype.main_action = function() {
    res.data.body = root.renderSkinAsString("main");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Root.prototype.getFormOptions = function(name) {
    switch (name) {
@@ -113,7 +113,7 @@ Root.prototype.getFormOptions = function(name) {
       return;
    }
    return Site.prototype.getFormOptions.apply(this, arguments);
-};
+}
 
 Root.prototype.error_action = function() {
    res.data.title = root.getTitle() + " - Error";
@@ -121,7 +121,7 @@ Root.prototype.error_action = function() {
    res.data.body += "<p>"+res.error+"</p>";
    (path.Site && path.Site.online ? path.Site : root).renderSkin("Site#page");
    return;
-};
+}
 
 Root.prototype.notfound_action = function() {
    res.data.title = root.title + " - 404 - not found";
@@ -129,7 +129,7 @@ Root.prototype.notfound_action = function() {
    res.data.body = root.renderSkinAsString("notfound");
    (path.Site && path.Site.online ? path.Site : root).renderSkin("Site#page");
    return;
-};
+}
 
 Root.prototype.create_action = function() {
    var site = new Site;
@@ -153,7 +153,7 @@ Root.prototype.create_action = function() {
    res.data.body = site.renderSkinAsString("$Site#create");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Root.prototype.sites_action = function() {
    res.data.list = renderList(root.sites, 
@@ -164,7 +164,7 @@ Root.prototype.sites_action = function() {
    res.data.body = this.renderSkinAsString("Root#sites");
    root.renderSkin("Site#page");
    return;
-};
+}
 
 Root.prototype.backup_js_action = function() {
    if (req.isPost()) {
@@ -174,7 +174,7 @@ Root.prototype.backup_js_action = function() {
       }
    }
    return;
-};
+}
 
 Root.restore = function(ref) {
    var backup;
@@ -183,7 +183,7 @@ Root.restore = function(ref) {
       ref.text = decodeURIComponent(backup.text);
    }
    return ref; 
-};
+}
 
 Root.prototype.default_hook_action = function() {
    var ping = function(data) {
@@ -205,7 +205,7 @@ Root.prototype.default_hook_action = function() {
       app.invokeAsync(this, ping, [req.postParams], 1000);
    }
    return;
-};
+}
 
 Root.prototype.updates_xml_action = function() {
    var now = new Date;
@@ -239,7 +239,7 @@ Root.prototype.updates_xml_action = function() {
    res.contentType = "text/xml";
    res.write(xml); //injectXslDeclaration(xml));
    return;
-};
+}
 
 Root.prototype.getCreationPermission = function() {
    var user;
@@ -284,8 +284,8 @@ Root.prototype.getCreationPermission = function() {
       }
    }
    return true;
-};
+}
 
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
-};
+}

@@ -46,7 +46,7 @@ Metadata.prototype._set = Metadata.prototype.set;
  */
 Metadata.prototype.getDataSourceName = function() {
    return Metadata.PREFIX + "source";
-};
+}
 
 /**
  * Retrieves the properties and values of the Metadata instance from the parent 
@@ -54,7 +54,7 @@ Metadata.prototype.getDataSourceName = function() {
  */
 Metadata.prototype.load = function() {
    return eval(this._parent[this.getDataSourceName()]);
-};
+}
 
 /**
  * Copies the properties and values of the Metadata instance to the parent 
@@ -64,7 +64,7 @@ Metadata.prototype.save = function() {
    var ref = this.cache.data || {};
    this._parent[this.getDataSourceName()] = ref.toSource();
    return;
-};
+}
 
 /**
  * Retrieves the value of a property of the Metadata instance. If no argument
@@ -77,7 +77,7 @@ Metadata.prototype.get = function(key) {
       this.cache.data = this.load() || {};
    }
    return (arguments.length > 0) ? this.cache.data[key] : this.cache.data;
-};
+}
 
 /**
  * Copies a value into a property of the Metadata instance. If the first 
@@ -102,7 +102,7 @@ Metadata.prototype.set = function(key, value) {
    }
    this.save();
    return;
-};
+}
 
 /**
  * Removes a property from the Metadata instance.
@@ -112,7 +112,7 @@ Metadata.prototype.remove = function(key) {
    delete this.cache.data[key];
    this.save();
    return;
-};
+}
 
 /**
  * Removes all properties and values from the Metadata instance.
@@ -121,7 +121,7 @@ Metadata.prototype.destroy = function() {
    delete this.cache.data;
    this.save();
    return;
-};
+}
 
 /**
  * Get all valid keys of the Metadata instance.
@@ -135,7 +135,7 @@ Metadata.prototype.keys = function() {
       keys.push(i);
    }
    return keys;
-};
+}
 
 /**
  * Retrieves the number of properties contained in the Metadata instance.
@@ -144,7 +144,7 @@ Metadata.prototype.keys = function() {
  */
 Metadata.prototype.size = function() {
    return this.keys().length;   
-};
+}
 
 /**
  * Concatenates a string representation of the Metadata instance.
@@ -166,7 +166,7 @@ Metadata.prototype.toString = function() {
    }
    res.write(")]");
    return res.pop();
-};
+}
 
 /**
  * Concatenates the source of the underlying HopObject of the Metadata 
@@ -176,7 +176,7 @@ Metadata.prototype.toString = function() {
  */
 Metadata.prototype.toSource = function() {
    return this.get().toSource();
-};
+}
 
 /**
  * Retrieves all properties and values of the Metadata instance.
@@ -186,7 +186,7 @@ Metadata.prototype.toSource = function() {
  */
 Metadata.prototype.getData = function() {
    return this.get();
-};
+}
 
 /**
  * Replaces all properties and values of the Metadata instance with those of
@@ -198,7 +198,7 @@ Metadata.prototype.getData = function() {
 Metadata.prototype.setData = function(obj) {
    obj && this.set(obj);
    return;
-};
+}
 
 // FIXME: Should this really be included here?
 Metadata.prototype.getFormValue = function(name) {

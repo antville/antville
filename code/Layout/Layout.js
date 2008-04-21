@@ -37,7 +37,7 @@ Layout.prototype.constructor = function(site) {
    this.mode = Layout.DEFAULT;
    this.touch();
    return this;
-};
+}
 
 Layout.prototype.getPermission = function(action) {
    switch (action) {
@@ -53,7 +53,7 @@ Layout.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
    return false;
-};
+}
 
 // FIXME: The Layout.href method is overwritten to guarantee that
 // URLs won't contain the layout ID instead of "layout"
@@ -81,7 +81,7 @@ Layout.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("$Layout#main");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Layout.prototype.getFormOptions = function(name) {
    switch (name) {
@@ -90,7 +90,7 @@ Layout.prototype.getFormOptions = function(name) {
       case "parent":
       return this.getParentOptions();
    }
-};
+}
 
 Layout.prototype.update = function(data) {
    var skin = this.skins.getSkin("Site", "values");
@@ -116,20 +116,20 @@ Layout.prototype.update = function(data) {
    this.mode= data.mode;
    this.touch();
    return;
-};
+}
 
 Layout.remove = function() {
    Skins.remove.call(this.skins);
    this.getFile().removeDirectory();
    Images.remove.call(this.images);
    return;
-};
+}
 
 Layout.prototype.reset_action = function() {
    Skins.remove.call(this.skins);
    this.getFile().removeDirectory();
    return res.redirect(this.href());
-};
+}
 
 Layout.prototype.export_action = function() {
    var zip = this.getArchive(res.skinpath);
@@ -138,7 +138,7 @@ Layout.prototype.export_action = function() {
          "attachment; filename=" + this.site.name + "-layout.zip");
    res.writeBinary(zip.getData());
    return;
-};
+}
 
 Layout.prototype.import_action = function() {
    var data = req.postParams;
@@ -190,7 +190,7 @@ Layout.prototype.import_action = function() {
    res.data.body = this.renderSkinAsString("$Layout#import");
    res.handlers.site.renderSkin("Site#page");
    return;
-};
+}
 
 Layout.prototype.getMacroHandler = function(name) {
    switch (name) {
@@ -200,7 +200,7 @@ Layout.prototype.getMacroHandler = function(name) {
       default:
       return null;
    }
-};
+}
 
 Layout.prototype.image_macro = function(param, name, mode) {
    name || (name = param.name);
@@ -228,7 +228,7 @@ Layout.prototype.image_macro = function(param, name, mode) {
    }
    image.render_macro(param);
    return;
-};
+}
 
 Layout.prototype.getImage = function(name, fallback) {
    var layout = this;
@@ -242,12 +242,12 @@ Layout.prototype.getImage = function(name, fallback) {
       layout = layout.parent;
    }
    return null;
-};
+}
 
 Layout.prototype.getFile = function(name) {
    name || (name = String.EMPTY);
    return this.site.getStaticFile("layout/" + name);
-};
+}
 
 Layout.prototype.getSkinPath = function() {
    if (!this.site) {
@@ -256,11 +256,11 @@ Layout.prototype.getSkinPath = function() {
    var skinPath = [this.getFile().toString()];
    //this.parent && (skinPath.push(this.parent.getFile().toString()));
    return skinPath;
-};
+}
 
 Layout.prototype.getTitle = function() {
    return "Layout";
-};
+}
 
 Layout.prototype.getArchive = function(skinpath) {
    var zip = new helma.Zip();
@@ -321,7 +321,7 @@ Layout.prototype.values_macro = function() {
       });
    }
    return;
-};
+}
 
 Layout.VALUES = [
    "background color",
