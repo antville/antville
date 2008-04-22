@@ -3,7 +3,9 @@ http://<% site.name %>.antville.org<% param.path %>
 
 <% #preview %>
 <tr>
-<td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;"><% site.modified | age %></td>
+<td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
+   <% site.modified short %>
+</td>
 <td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
 </tr>
 

@@ -360,10 +360,12 @@ HopObject.prototype.created_macro = function(param, format) {
 }
 
 HopObject.prototype.modified_macro = function(param, format) {
-   if (this.modified && !this.isTransient()) {
-      res.write(formatDate(this.modified, format || param.format));
+   !format && (format = param.format);
+   if (format && this.modified && !this.isTransient()) {
+      res.write(formatDate(this.modified, format));
+      return;
    }
-   return;
+   return this.modified;
 }
 
 HopObject.prototype.creator_macro = function(param, mode) {

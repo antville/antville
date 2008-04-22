@@ -569,7 +569,7 @@ function formatDate(date, pattern) {
    }
    pattern || (pattern = "short");
    var site = res.handlers.site;
-   var format = site[pattern.toLowerCase() + "DateFormat"];
+   var format = global[pattern.toUpperCase() + "DATEFORMAT"];
    if (!format) {
       format = pattern;
    }
