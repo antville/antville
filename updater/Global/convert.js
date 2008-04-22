@@ -92,7 +92,7 @@ convert.layoutImages = function() {
       var dest = new helma.File(fpath + this.site_name + "/layouts/" + this.layout_name, meta.fileName);
       log("Copy " + source + " to " + dest);
       if (source.exists()) {
-         dest.exists() && dest.remove();
+         dest.exists() ? dest.remove() : dest.makeDirectory();
          source.hardCopy(dest);
       }
    });
