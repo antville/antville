@@ -89,10 +89,12 @@ convert.layoutImages = function() {
       var meta = eval(this.metadata);
       var fpath = antville().properties.staticPath;
       var source = new helma.File(fpath + "/layouts/" + this.parent_name, meta.fileName);
-      var dest = new helma.File(fpath + this.site_name + "/layouts/" + this.layout_name, meta.fileName);
+      var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
+      !layoutDir.exists() && layoutDir.makeDirectory();
+      var dest = new helma.File(layoutDir, meta.fileName);
       log("Copy " + source + " to " + dest);
       if (source.exists()) {
-         dest.exists() ? dest.remove() : dest.makeDirectory();
+         dest.exists() && dest.remove();
          source.hardCopy(dest);
       }
    });
