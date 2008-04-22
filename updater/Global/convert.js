@@ -34,6 +34,8 @@ var convert = function(type) {
       } catch (ex) {
          error(ex.toString());
       }
+   } else {
+      execute(query(type));
    }
 }
 
@@ -72,6 +74,29 @@ convert.images = function() {
             quote(metadata.toSource()) + " where id = " + this.id);
    });
    convert.tags("image");
+}
+
+convert.layoutImages = function() {
+   retrieve(query("layoutImages"));
+   execute("alter table image change id id int(11) not null auto_increment");
+   traverse(function() {
+      execute("insert into image values (null, " + this.site_id + ", 'Image', " + 
+            quote(this.name) + ", str_to_date('" + 
+            this.created.format("yyyyMMdd HHmmss") + "', '%Y%m%d %H%i%s')," + 
+            this.creator_id + ", null, null, " + 
+            this.layout_id + ", 'Layout', " + quote(this.metadata) + 
+            ", null, null, null)");
+      var meta = eval(this.metadata);
+      var fpath = antville().properties.staticPath;
+      var source = new helma.File(fpath + "/layouts/" + this.parent_name, meta.fileName);
+      var dest = new helma.File(fpath + this.site_name + "/layouts/" + this.layout_name, meta.fileName);
+      log("Copy " + source + " to " + dest);
+      if (source.exists()) {
+         dest.exists() && dest.remove();
+         source.hardCopy(dest);
+      }
+   });
+   execute("alter table image change id id int(11) not null");
 }
 
 convert.layouts = function() {

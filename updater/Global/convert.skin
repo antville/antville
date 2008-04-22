@@ -25,6 +25,9 @@
 # Prerequisite for running the updater
 #grant all privileges on `antville`.* to 'antville'@'localhost';
 
+<% #test %>
+#!imageTable
+
 <% #size %>
 delete from AV_IMAGE where IMAGE_PROTOTYPE <> "LayoutImage" and IMAGE_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d');
 delete from AV_TEXT where TEXT_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d');
@@ -32,6 +35,7 @@ delete from AV_TEXT where TEXT_CREATETIME < str_to_date('2008-01-01', '%Y-%m-%d'
 <% #legacy %>
 alter table AV_SITE drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, drop column SITE_HASDISCUSSIONS, drop column SITE_SHOWDAYS, drop column SITE_SHOWARCHIVE, drop column SITE_LANGUAGE, drop column SITE_COUNTRY, drop column SITE_TIMEZONE, drop column SITE_LONGDATEFORMAT, drop column SITE_SHORTDATEFORMAT, drop column SITE_BGCOLOR, drop column SITE_TEXTFONT, drop column SITE_TEXTCOLOR, drop column SITE_TEXTSIZE, drop column SITE_LINKCOLOR, drop column SITE_ALINKCOLOR, drop column SITE_VLINKCOLOR, drop column SITE_TITLEFONT, drop column SITE_TITLECOLOR, drop column SITE_TITLESIZE, drop column SITE_SMALLFONT, drop column SITE_SMALLCOLOR, drop column SITE_SMALLSIZE;
 alter table AV_POLL drop column POLL_TITLE, drop column POLL_ISONLINE;
+delete from AV_IMAGE where IMAGE_ID = 686854;
 
 <% #jsonize %>
 select id, xml, metadata from <% param.value1 %> order by id
@@ -122,6 +126,29 @@ unlock tables;
 select id, FILE_MIMETYPE as type, FILE_SIZE as size,
 FILE_DESCRIPTION as description from file order by id
 
+<% #AV_IMAGE %>
+#!imageTable
+lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, image write, tag write, tag_hub write, AV_SITE as site read, AV_LAYOUT as layout read, AV_LAYOUT as parent read;
+insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, null, null, null, IMAGE_TOPIC, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
+create index topic on image (topic);
+#!images
+create index prototype on image (prototype(10));
+update image set parent_type = 'Site' where prototype = 'Image';
+update image set parent_type = 'Layout' where prototype = 'LayoutImage';
+update image set prototype = "Image" where prototype = "LayoutImage";
+update image set parent_id = site_id where site_id is not null and parent_id is null;
+update image set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and parent_id is null;
+#!layoutImages
+drop table AV_IMAGE;
+delete from image where IMAGE_F_IMAGE_PARENT is not null;
+alter table image drop column topic, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_LAYOUT;
+create index site_id on image (site_id);
+create index creator_id on image (creator_id);
+create index name on image (name(20));
+create index images on image (parent_id, parent_type, created desc); 
+alter table image convert to character set utf8;
+unlock tables;
+
 <% #imageTable %>
 CREATE TABLE `image` (
   `id` mediumint(10) NOT NULL default '0',
@@ -141,27 +168,6 @@ CREATE TABLE `image` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=831 DEFAULT CHARSET=utf8;
 
-<% #AV_IMAGE %>
-lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, image write, tag write, tag_hub write;
-insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, null, null, null, IMAGE_TOPIC, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
-create index topic on image (topic);
-#!images
-drop table AV_IMAGE;
-create index prototype on image (prototype(10));
-update image set parent_type = 'Site' where prototype = 'Image';
-update image set parent_type = 'Layout' where prototype = 'LayoutImage';
-update image set prototype = "Image" where prototype = "LayoutImage";
-update image set parent_id = site_id where site_id is not null and parent_id is null;
-update image set parent_id = IMAGE_F_LAYOUT where    IMAGE_F_LAYOUT is not null and parent_id is null;
-delete from image where IMAGE_F_IMAGE_PARENT is not null;
-alter table image drop column topic, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_LAYOUT;
-create index site_id on image (site_id);
-create index creator_id on image (creator_id);
-create index name on image (name(20));
-create index images on image (parent_id, parent_type, created desc); 
-alter table image convert to character set utf8;
-unlock tables;
-
 <% #images %>
 select i.IMAGE_ID as id, i.IMAGE_ALIAS as name, i.IMAGE_FILENAME as fileName, i.IMAGE_FILEEXT as type, 
 i.IMAGE_WIDTH as width, i.IMAGE_HEIGHT as height, i.IMAGE_ALTTEXT as description, 
@@ -169,6 +175,16 @@ i.IMAGE_FILESIZE as size, t.IMAGE_WIDTH as thumbnailWidth,
 t.IMAGE_HEIGHT as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on 
 i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID where i.IMAGE_WIDTH is not null and 
 i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null order by id
+
+<% #layoutImages %>
+select site.SITE_ID as site_id, SITE_ALIAS as site_name, parent.LAYOUT_ALIAS as 
+parent_name, layout.LAYOUT_ID as layout_id, layout.LAYOUT_ALIAS as layout_name,
+id, name, layout.LAYOUT_F_USER_CREATOR as creator_id, 
+layout.LAYOUT_CREATETIME created, metadata
+from image, AV_LAYOUT layout, AV_LAYOUT parent, AV_SITE site where 
+SITE_F_LAYOUT = layout.LAYOUT_ID and layout.LAYOUT_F_LAYOUT_PARENT = 
+parent.LAYOUT_ID and  IMAGE_F_IMAGE_PARENT is null and (IMAGE_F_LAYOUT = 
+parent.LAYOUT_ID) # and site.SITE_ID = 3
 
 <% #AV_LAYOUT %>
 alter table AV_LAYOUT rename layout;
@@ -304,33 +320,8 @@ alter table log change id id int(11) not null;
 drop table AV_SYSLOG;
 unlock tables;
 
-<% #contentTable %>
-CREATE TABLE `content` (
-  `id` mediumint(10) NOT NULL default '0',
-  `site_id` mediumint(10) default NULL,
-  `topic` varchar(255) default NULL,
-  `prototype` enum('Story','Comment') default NULL,
-  `story_id` mediumint(10) default NULL,
-  `parent_id` mediumint(10) default NULL,
-  `xml` mediumtext,
-  `creator_id` mediumint(10) default NULL,
-  `created` datetime default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` mediumint(10) default NULL,
-  `requests` mediumint(10) default NULL,
-  `name` varchar(255) default NULL,
-  `metadata` mediumtext,
-  `parent_type` varchar(30) default NULL,
-  `status` enum('closed','pending','readonly','public','shared','open') default NULL,
-  `mode` enum('hidden','featured') default NULL,
-  `comment_mode` enum('closed','readonly','moderated','open') default NULL,
-  `TEXT_ISONLINE` tinyint(4) default NULL,
-  `TEXT_EDITABLEBY` tinyint(1) default NULL,
-  `TEXT_HASDISCUSSIONS` tinyint(1) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 <% #AV_TEXT %>
+#!contentTable
 lock tables AV_TEXT read, content write, tag write, tag_hub write;
 insert into content select TEXT_ID, TEXT_F_SITE, TEXT_TOPIC, TEXT_PROTOTYPE, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_CONTENT, TEXT_F_USER_CREATOR, TEXT_CREATETIME, TEXT_MODIFYTIME, TEXT_F_USER_MODIFIER, TEXT_READS, TEXT_ALIAS, null, null, null, null, null, TEXT_ISONLINE, TEXT_EDITABLEBY, TEXT_HASDISCUSSIONS from AV_TEXT;
 create index topic on content (topic);
@@ -357,6 +348,32 @@ create index content on content (site_id, prototype, status, mode);
 alter table content convert to character set utf8;
 drop table AV_TEXT;
 unlock tables;
+
+<% #contentTable %>
+CREATE TABLE `content` (
+  `id` mediumint(10) NOT NULL default '0',
+  `site_id` mediumint(10) default NULL,
+  `topic` varchar(255) default NULL,
+  `prototype` enum('Story','Comment') default NULL,
+  `story_id` mediumint(10) default NULL,
+  `parent_id` mediumint(10) default NULL,
+  `xml` mediumtext,
+  `creator_id` mediumint(10) default NULL,
+  `created` datetime default NULL,
+  `modified` datetime default NULL,
+  `modifier_id` mediumint(10) default NULL,
+  `requests` mediumint(10) default NULL,
+  `name` varchar(255) default NULL,
+  `metadata` mediumtext,
+  `parent_type` varchar(30) default NULL,
+  `status` enum('closed','pending','readonly','public','shared','open') default NULL,
+  `mode` enum('hidden','featured') default NULL,
+  `comment_mode` enum('closed','readonly','moderated','open') default NULL,
+  `TEXT_ISONLINE` tinyint(4) default NULL,
+  `TEXT_EDITABLEBY` tinyint(1) default NULL,
+  `TEXT_HASDISCUSSIONS` tinyint(1) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 <% #AV_USER %>
 alter table AV_USER rename user;

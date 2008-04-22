@@ -112,7 +112,11 @@ var log = function(str) {
    return;
 }
 
-var msg = function(str) {
+var msg = function(str1 /* , str2, str2, ... */) {
+   var str = "";
+   for (var i=0; i<arguments.length; i+=1) {
+      str += String(arguments[i]) + " ";
+   }
    if (str !== undefined) {
       var now = "[" + new Date + "] ";
       //app.data.out.insert(0, now + encodeForm(str) + "\n");
@@ -133,6 +137,9 @@ var error = function(exception) {
 }
 
 var quote = function(str) {
+   if (!str) {
+      return str;
+   }
    return "'" + str.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
 }
 
@@ -215,13 +222,16 @@ var traverse = function(callback) {
    if (!app.data.query || !callback) {
       return;
    }
-   var STEP = 5000;
+   var STEP = 5000, start = Date.now();
    var sql, rows, offset = 0;      
    while (true) {
+      msg("Starting bulk after " + (Date.now() - start) + " millis");
+      start = Date.now();
       sql = app.data.query + " limit " + STEP + " offset " + offset;
       result = db().executeRetrieval(sql);
       error();
       msg(sql);
+      msg("Select statement took " + (Date.now() - start) + " millis");
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();
       if (!rows) {
@@ -235,6 +245,7 @@ var traverse = function(callback) {
       } while (rows = result.next());
       offset += STEP;
       result.release();
+      msg("Update took " + (Date.now() - start) + " millis");
    }
    return;
 }
