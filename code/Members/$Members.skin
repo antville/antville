@@ -138,6 +138,10 @@ value="register"><% gettext Register %></button>
 </form>
 
 <% #reset %>
+<p class="storyTitle"><% response.title %></p>
+<p class="small"><% gettext "Enter your user name and the e-mail address you
+have used when you registered. You will then receive a confirmation e-mail 
+containing further instructions." %></p> 
 <form id="login" method="post" action="<% response.action %>">
 <div class="small"><% gettext Username suffix=: %></div>
 <div><input type="text" name="name" id="name" size="15" tabindex="1" 
@@ -148,6 +152,22 @@ value="<% request.email encoding="form" %>"/></div>
 <br />
 <button type="submit" id="submit" name="reset" value="1" 
 tabindex="4"><% gettext "Reset password" %></button>
+<a href="" class="cancel"><% gettext Cancel %></a>
+</form>
+
+<% #password %>
+<p class="storyTitle"><% response.title %></p>
+<form id="login" method="post" action="<% response.action %>">
+<div class="small"><% gettext Password suffix=: %></div>
+<div><input type="password" name="password" id="password" size="15" tabindex="1" /></div>
+<div class="small"><% gettext "Confirm Password" suffix=: %></div>
+<div><input type="password" name="passwordConfirm" id="passwordConfirm" 
+size="15" tabindex="2" /></div>
+<input type="hidden" name="user" id="user" value="<% request.user %>" />
+<input type="hidden" name="token" id="token" value="<% request.token %>" />
+<br />
+<button type="submit" id="submit" name="save" value="1" 
+tabindex="4"><% gettext Save %></button>
 <a href="" class="cancel"><% gettext Cancel %></a>
 </form>
 

@@ -109,13 +109,12 @@ appear as link next to your posted items." %></span></td>
 <% #reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>
 
-<% gettext "You (or someone pretending to be you) requested to reset the 
-password of your account for the site {0} [1]." <% site.title %> %>
+<% gettext "You (or someone pretending to be you) requested to reset the password of your account for the site {0} [1]." <% site.title %> %>
 
-<% gettext "Below you find a new password that temporarily will give you access 
-to the site. Please change the password immediately after your next login." %>
+<% gettext "To confirm the request please click the link below." %>
+<% gettext "You will then be asked to change your password." %>
 
-<% gettext "Your temporary password: {0}" <% param.password %> %>
+<% param.href %>?user=<% user.id %>&token=<% param.token %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>

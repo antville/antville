@@ -100,35 +100,56 @@ Members.prototype.register_action = function() {
 }
 
 Members.prototype.reset_action = function() {
-   // FIXME: Remove debugging code
-   /* if (req.queryParams.user) {
-      var user = User.getByName(req.queryParams.user);
-      if (user) {
-         user.hash = (req.queryParams.password + user.salt).md5();
-      }
-   } */
-   // FIXME: First send verification message, *then* reset password!
    if (req.postParams.reset) {
       try {
          if (!req.postParams.name || !req.postParams.email) {
-            throw Error(gettext("Please enter username and e-mail of the desired account."));
+            throw Error(gettext("Please enter a user name and e-mail address."));
          }
          var user = User.getByName(req.postParams.name);
          if (!user || user.email !== req.postParams.email) {
-            throw Error(gettext("Username and e-mail do not match."))
+            throw Error(gettext("User name and e-mail address do not match."))
          }
-         var password = jala.util.createPassword(25, 2);
-         user.hash = (password + user.salt).md5()
+         var token = User.getSalt();
+         user.metadata.set("resetToken", token);
          sendMail(root.email, user.email, 
-               gettext("Your login at {0}", this._parent.title), 
-               user.renderSkinAsString("$$User#reset", 
-               {password: password}));
-         res.message = "A new password is sent to the account's e-mail address.";
+               gettext("Confirmation for password reset at {0}", this._parent.title), 
+               user.renderSkinAsString("$User#reset", {
+                  href: this.href("reset"),
+                  token: token
+               }));
+         res.message = gettext("A confirmation mail was sent to your e-mail address.");
          res.redirect(this._parent.href());
       } catch(ex) {
          app.log(ex);
          res.message = ex;
       }
+   } else if (req.data.user && req.data.token) {
+      var user = User.getById(req.data.user);
+      if (user) {
+         var token = user.metadata.get("resetToken");
+         if (token) {
+            session.login(user);
+            if (req.postParams.save) {
+               var password = req.postParams.password;
+               if (!password) {
+                  res.message = gettext("Please enter a new password.");
+               } else if (password !== req.postParams.passwordConfirm) {
+                  res.message = gettext("The passwords do not match.");
+               } else {
+                  user.hash = (password + user.salt).md5();
+                  user.metadata.remove("resetToken");
+                  res.message = gettext("Your password was changed.");
+                  res.redirect(this._parent.href());
+               }
+            }
+            res.data.title = gettext("Enter new password");
+            res.data.body = this.renderSkinAsString("$Members#password");
+            this._parent.renderSkin("Site#page");
+            return;
+         }
+      }
+      res.message = gettext("This URL is not valid for resetting your password.");
+      res.redirect(this.href(req.action));
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Reset password");

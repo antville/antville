@@ -22,7 +22,7 @@
 // $URL$
 //
 
-Root.VERSION = 1.2;
+Root.VERSION = "1.2";
 
 Root.getScopes = defineConstants(Root, markgettext("every site"), 
       markgettext("public sites"), markgettext("trusted sites"), 
