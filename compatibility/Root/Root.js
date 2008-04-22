@@ -22,6 +22,8 @@
 // $URL$
 //
 
+Root.VERSION = "1.2-compatible";
+
 Root.prototype.new_action = function() {
    return res.redirect(root.href("create"));
 }
