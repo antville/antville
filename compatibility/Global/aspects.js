@@ -145,7 +145,7 @@ Images.prototype.onCodeUpdate = function() {
             return true;
          }
       }
-      return args;
+      return permission;
    });
 }
 
