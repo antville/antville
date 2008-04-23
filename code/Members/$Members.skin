@@ -23,6 +23,7 @@ $(function() {
          url: '<% members.href salt.js %>',
          data: "user=" + encodeURIComponent(name),
          dataType: "json",
+         cache: false,
          error: function() { /* ... */ },
          success: function(salt) {
             var password = $("#password").val();

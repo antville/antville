@@ -209,6 +209,7 @@ User.login = function(data) {
    var digest = data.digest;
    // Calculate digest for JavaScript-disabled browsers
    if (!digest) {
+      app.logger.warn("Received clear text passoword from " + req.data.http_referer);
       digest = ((data.password + user.salt).md5() + session.data.token).md5();
    }
    // Check if login is correct
