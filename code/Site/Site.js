@@ -257,7 +257,7 @@ Site.prototype.main_js_action = function() {
 }
 
 Site.prototype.rss_xml_action = function() {
-   res.dependsOn(this.lastUpdate);
+   res.dependsOn(this.modified);
    res.digest();
    res.contentType = "text/xml";
    res.write(this.getXml(this.stories.union));
@@ -265,7 +265,7 @@ Site.prototype.rss_xml_action = function() {
 }
 
 Site.prototype.stories_xml_action = function() {
-   res.dependsOn(this.lastUpdate);
+   res.dependsOn(this.modified);
    res.digest();
    res.contentType = "text/xml";
    res.write(this.getXml(this.stories.recent));
@@ -273,7 +273,7 @@ Site.prototype.stories_xml_action = function() {
 }
 
 Site.prototype.comments_xml_action = function() {
-   res.dependsOn(this.lastUpdate);
+   res.dependsOn(this.modified);
    res.digest();
    res.contentType = "text/xml";
    res.write(this.getXml(this.stories.comments));

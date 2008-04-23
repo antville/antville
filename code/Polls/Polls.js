@@ -43,7 +43,7 @@ Polls.prototype.getPermission = function(action) {
 
 Polls.prototype.main_action = function() {
    var polls = User.getMembership().polls;
-   res.data.list = renderList(polls, "Poll#listItem", 10, req.queryParams.page);
+   res.data.list = renderList(polls, "$Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(polls, this.href(req.action), 
          10, req.queryParams.page);
    res.data.title = gettext("Member polls of {0}", this._parent.title);
@@ -69,7 +69,7 @@ Polls.prototype.create_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add poll to site {0}", this._parent.title);
-   res.data.body = poll.renderSkinAsString("Poll#edit");
+   res.data.body = poll.renderSkinAsString("$Poll#edit");
    this._parent.renderSkin("Site#page");
    return;
 }

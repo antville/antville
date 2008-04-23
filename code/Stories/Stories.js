@@ -44,7 +44,7 @@ Stories.prototype.getPermission = function(action) {
 
 Stories.prototype.main_action = function() {
    var stories = User.getMembership().stories;
-   res.data.list = renderList(stories, "Story#listItem", 
+   res.data.list = renderList(stories, "$Story#listItem", 
          10, req.queryParams.page);
    res.data.pager = renderPager(stories, 
          this.href(req.action), 10, req.queryParams.page);

@@ -89,9 +89,8 @@ Comment.prototype.update = function(data) {
    if (this.site.commentMode === Site.MODERATED || 
          this.story.commentMode === Site.MODERATED) {
       this.mode = Comment.PENDING;
-   } else if (this.story.status === Story.PRIVATE && 
-         this.getDelta(data) > 50) {
-      this.site.lastUpdate = new Date;
+   } else if (this.story.status !== Story.PRIVATE && this.getDelta(data) > 50) {
+      this.site.modified = new Date;
    }
    this.clearCache();
    this.touch();

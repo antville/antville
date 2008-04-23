@@ -198,7 +198,7 @@ Story.prototype.update = function(data) {
 
    if (this.status !== Story.CLOSED && delta > 50) {
       site.hitchWebHook();
-      site.lastUpdate = new Date;
+      site.modified = new Date;
    }
    
    this.clearCache();
