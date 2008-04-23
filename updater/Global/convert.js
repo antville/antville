@@ -84,14 +84,12 @@ convert.layoutImages = function() {
             quote(this.name) + ", str_to_date('" + 
             this.created.format("yyyyMMdd HHmmss") + "', '%Y%m%d %H%i%s')," + 
             this.creator_id + ", null, null, " + 
-            this.layout_id + ", 'Layout', " + quote(this.metadata) + 
-            ", null, null, null)");
-      var meta = eval(this.metadata);
+            this.layout_id + ", 'Layout', null, null, null, null)");
       var fpath = antville().properties.staticPath;
-      var source = new helma.File(fpath + "/layouts/" + this.parent_name, meta.fileName);
+      var source = new helma.File(fpath + "/layouts/" + this.parent_name, this.fileName);
       var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
       !layoutDir.exists() && layoutDir.makeDirectory();
-      var dest = new helma.File(layoutDir, meta.fileName);
+      var dest = new helma.File(layoutDir, this.fileName);
       log("Copy " + source + " to " + dest);
       if (source.exists()) {
          dest.exists() && dest.remove();

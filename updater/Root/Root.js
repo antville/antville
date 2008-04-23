@@ -31,18 +31,14 @@ app.addRepository("modules/helma/File.js");
 Root.prototype.main_action = function() {
    app.invokeAsync(global, function() {
       if (init()) {
-         update("size"); // DEBUG
+         //update("size"); // DEBUG
          update("legacy");
          execute(query("tag"));
          execute(query("tag_hub"));
-///*
-         //execute(query("log"));
          update("AV_ACCESSLOG");
          update("AV_CHOICE");
          update("AV_FILE");
-//*/
          update("AV_IMAGE");
-///*
          update("AV_LAYOUT");
          update("AV_MEMBERSHIP");
          update("AV_POLL");
@@ -52,7 +48,6 @@ Root.prototype.main_action = function() {
          update("AV_USER");
          update("AV_VOTE");
          update("AV_SYSLOG"); // This has to go last!
-//*/
          finalize();
       }
       return;
