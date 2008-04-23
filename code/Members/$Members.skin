@@ -17,10 +17,7 @@
 <script type="text/javascript">
 $(function() {
    $("#submit").click(function() {
-      var token = "<% session.token %>";
       var name = $("#name").val();
-      var password = $("#password").val();
-      $("input:password").val("");
       $.ajax({
          async: false,
          url: '<% members.href salt.js %>',
@@ -28,6 +25,9 @@ $(function() {
          dataType: "json",
          error: function() { /* ... */ },
          success: function(salt) {
+            var password = $("#password").val();
+            var token = "<% session.token %>";
+            $("input:password").val("");
             $("#digest").val($.md5($.md5(password + salt) + token));
          }
       });
