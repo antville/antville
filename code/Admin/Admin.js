@@ -540,12 +540,12 @@ Admin.prototype.deleteInactiveSites = function() {
       if (site.trusted)
          continue;
 
-      var idleFor = new Date() - site.lastupdate;
+      var idleFor = new Date() - site.modified;
       var timeSinceWarning = new Date() - site.lastdelwarn;
       if (idleFor >= warnThreshold) {
          // check if site-admins have been warned already
          var alreadyWarned = false;
-         if (site.lastdelwarn > site.lastupdate)
+         if (site.lastdelwarn > site.modified)
             alreadyWarned = true;
          // check whether warn admins or block site
          if (!alreadyWarned) {

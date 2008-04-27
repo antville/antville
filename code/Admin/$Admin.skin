@@ -534,3 +534,27 @@ default front page.</span></td>
 </tr>
 </table>
 </form>
+
+<% 
+////////////////////// Notification skins 
+%>
+
+<% #block %>
+(You're receiving this mail because you are Administrator of <% param.site %>).
+
+<% param.site %> (<% param.url %>) has been private for more than <% param.privatetime %> days. Due to policy reasons your site will be blocked in <% param.daysleft %> days if you keep it private. This does *not* mean that your site will be removed, but neither you nor other members of it will have access to <% param.site %> unless one of the system administrators decides to unblock your site.
+
+So please either change the preferences of your site (select the checkbox "public") or send a mail to <% param.contact %> containing reasons why your site should stay private.
+
+---------------------------------------
+<% root.title %> - <% root.url %>
+---------------------------------------
+
+<& #delete %>
+(You're receiving this mail because you are Administrator of <% param.site %>).
+
+<% param.site %> (<% param.url %>) was inactive for more than <% param.inactivity %> days. You have <% param.daysleft %> days time to reactivate your site, otherwise it will be deleted. Please note that the removal of <% param.site %> is an irreversible process!
+
+---------------------------------------
+<% root.title %> - <% root.url %>
+---------------------------------------

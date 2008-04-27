@@ -22,6 +22,32 @@
 // $URL$
 //
 
+Layout.VALUES = [
+   "background color",
+   "link color",
+   "active link color",
+   "visited link color",
+   "big font",
+   "big font size",
+   "big font color",
+   "base font",
+   "base font size",
+   "base font color",
+   "small font",
+   "small font size",
+   "small font color"
+];
+
+Layout.remove = function(layout) {
+   layout || (layout = this);
+   if (layout.constructor === Layout) {
+      Skins.remove.call(layout.skins);
+      Images.remove.call(layout.images);
+      layout.getFile().removeDirectory();
+   }
+   return;
+}
+
 Layout.getModes = defineConstants(Layout, "default", "shared");
 
 this.handleMetadata("title");
@@ -118,18 +144,22 @@ Layout.prototype.update = function(data) {
    return;
 }
 
-Layout.remove = function() {
-   Skins.remove.call(this.skins);
-   this.getFile().removeDirectory();
-   Images.remove.call(this.images);
-   return;
-}
-
 Layout.prototype.reset_action = function() {
-   if (req.postParams.proceed) {
+   if (req.data.proceed) {
       try {
-         Skins.remove.call(this.skins);
-         this.getFile().removeDirectory();
+         Layout.remove.call(this);
+         var skinFiles = app.getSkinfilesInPath(res.skinpath);
+         var content, file;
+         for (var name in skinFiles) {
+            if (content = skinFiles[name][name]) {
+               var dir = this.getFile(name);
+               var file = new helma.File(dir, name + ".skin");
+               dir.makeDirectory();
+               file.open();
+               file.write(content);
+               file.close();
+            }
+         }
          res.message = gettext("The layout was successfully reset.");
          res.redirect(this.href());
       } catch(ex) {
@@ -207,42 +237,8 @@ Layout.prototype.import_action = function() {
    return;
 }
 
-Layout.prototype.getMacroHandler = function(name) {
-   switch (name) {
-      case "skins":
-      return this[name];
-      
-      default:
-      return null;
-   }
-}
-
-Layout.prototype.image_macro = function(param, name, mode) {
-   name || (name = param.name);
-   if (!name) {
-      return;
-   }
-
-   var image = this.getImage(name, param.fallback);
-   if (!image) {
-      return;
-   }
-
-   mode || (mode = param.as);
-   var action = param.linkto;
-   delete(param.name);
-   delete(param.as);
-   delete(param.linkto);
-
-   switch (mode) {
-      case "url" :
-      return res.write(image.getUrl());
-      case "thumbnail" :
-      action || (action = image.getUrl());
-      return image.thumbnail_macro(param);
-   }
-   image.render_macro(param);
-   return;
+Layout.prototype.getTitle = function() {
+   return "Layout";
 }
 
 Layout.prototype.getImage = function(name, fallback) {
@@ -269,12 +265,7 @@ Layout.prototype.getSkinPath = function() {
       return null;
    }
    var skinPath = [this.getFile().toString()];
-   //this.parent && (skinPath.push(this.parent.getFile().toString()));
    return skinPath;
-}
-
-Layout.prototype.getTitle = function() {
-   return "Layout";
 }
 
 Layout.prototype.getArchive = function(skinpath) {
@@ -316,15 +307,46 @@ Layout.prototype.getArchive = function(skinpath) {
    return zip;
 }
 
+Layout.prototype.getMacroHandler = function(name) {
+   switch (name) {
+      case "skins":
+      return this[name];
+      
+      default:
+      return null;
+   }
+}
+
+Layout.prototype.image_macro = function(param, name, mode) {
+   name || (name = param.name);
+   if (!name) {
+      return;
+   }
+
+   var image = this.getImage(name, param.fallback);
+   if (!image) {
+      return;
+   }
+
+   mode || (mode = param.as);
+   var action = param.linkto;
+   delete(param.name);
+   delete(param.as);
+   delete(param.linkto);
+
+   switch (mode) {
+      case "url" :
+      return res.write(image.getUrl());
+      case "thumbnail" :
+      action || (action = image.getUrl());
+      return image.thumbnail_macro(param);
+   }
+   image.render_macro(param);
+   return;
+}
+
 Layout.prototype.values_macro = function() {
-   /* FIXME: should be enough to render res.meta.values in HopObject.onRequest
-   res.push();
-   var skin = new Skin("Site", "values");
-   skin.render();
-   res.pop();
-   */
    var values = [];
-   //for each (var key in Layout.VALUES) {
    for (var key in res.meta.values) {
       values.push({key: key, value: res.meta.values[key]});
    }
@@ -337,19 +359,3 @@ Layout.prototype.values_macro = function() {
    }
    return;
 }
-
-Layout.VALUES = [
-   "background color",
-   "link color",
-   "active link color",
-   "visited link color",
-   "big font",
-   "big font size",
-   "big font color",
-   "base font",
-   "base font size",
-   "base font color",
-   "small font",
-   "small font size",
-   "small font color"
-]
