@@ -49,7 +49,7 @@ Stories.prototype.main_action = function() {
    res.data.list = renderList(stories, "$Story#listItem", 
          10, req.queryParams.page);
    res.data.pager = renderPager(stories, 
-         this.href(req.action), 10, req.queryParams.page);
+         this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Member stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
@@ -87,7 +87,7 @@ Stories.prototype.closed_action = function() {
          "$Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this.closed, 
          this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Private stories of {0}", this._parent.title);
+   res.data.title = gettext("Closed stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
@@ -96,8 +96,8 @@ Stories.prototype.closed_action = function() {
 Stories.prototype.all_action = function() {
    res.data.list = renderList(this, "$Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
-         this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Stories of {0}", this._parent.title);
+         this.href(req.action), 10, req.queryParams.page);
+   res.data.title = gettext("All stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
