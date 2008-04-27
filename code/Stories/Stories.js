@@ -84,8 +84,8 @@ Stories.prototype.create_action = function() {
 
 Stories.prototype.closed_action = function() {
    res.data.list = renderList(this.closed, 
-         "Story#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.offline, 
+         "$Story#listItem", 10, req.queryParams.page);
+   res.data.pager = renderPager(this.closed, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Private stories of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("$Stories#main");
@@ -94,7 +94,7 @@ Stories.prototype.closed_action = function() {
 }
 
 Stories.prototype.all_action = function() {
-   res.data.list = renderList(this, "Story#listItem", 10, req.queryParams.page);
+   res.data.list = renderList(this, "$Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Stories of {0}", this._parent.title);
