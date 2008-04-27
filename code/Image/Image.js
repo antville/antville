@@ -356,7 +356,7 @@ Image.getFileExtension = function(type) {
    return null;
 }
 
-Image.constrain = function(mime, maxHeight, maxWidth) {
+Image.constrain = function(mime, maxWidth, maxHeight) {
    try {
       var image = new helma.Image(mime.inputStream);
       var factorH = 1, factorV = 1;
