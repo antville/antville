@@ -33,9 +33,34 @@ this.handleMetadata("thumbnailWidth");
 this.handleMetadata("origin");
 this.handleMetadata("width");
 
+Image.THUMBNAILWIDTH = 100;
+
 Image.KEYS = ["name", "created", "modified", "origin", "description", 
       "contentType", "contentLength", "width", "height", "thumbnailName", 
       "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
+
+Image.remove = function() {
+   this.removeFiles();
+   this.setTags(null);
+   this.remove();
+   return;
+}
+
+Image.getFileExtension = function(type) {
+   switch (type) {
+      //case "image/x-icon":
+      //return ".ico";
+      case "image/gif":
+      return ".gif";
+      case "image/jpeg":
+      case "image/pjpeg":
+      return ".jpg";
+      case "image/png":
+      case "image/x-png":
+      return ".png";
+   }
+   return null;
+}
 
 Image.prototype.constructor = function(data) {
    // Images.Default is using the constructor on code compilation
@@ -177,9 +202,7 @@ Image.prototype.update = function(data) {
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
    
-      var image = Image.constrain(mime, data.maxWidth, data.maxHeight);
-      this.width = image.width;
-      this.height = image.height;
+      var image = this.constrain(mime, data.maxWidth, data.maxHeight);
       
       var thumbnail;
       if (image.width > Image.THUMBNAILWIDTH) {
@@ -310,11 +333,48 @@ Image.prototype.getJSON = function() {
    }.toSource();
 }
 
+Image.prototype.constrain = function(mime, maxWidth, maxHeight) {
+   try {
+      var image = new helma.Image(mime.inputStream);
+      this.width = image.width;
+      this.height = image.height;
+
+      var factorH = 1, factorV = 1;
+      if (maxWidth && image.width > maxWidth) {
+         factorH = maxWidth / image.width;
+      }
+      if (maxHeight && image.height > maxHeight) {
+         factorV = maxHeight / image.height;
+      }
+      if (factorH !== 1 || factorV !== 1) {
+         var width = Math.ceil(image.width * 
+               (factorH < factorV ? factorH : factorV));
+         var height = Math.ceil(image.height * 
+               (factorH < factorV ? factorH : factorV));
+         image.resize(width, height);
+         if (mime.contentType.endsWith("gif")) {
+            image.reduceColors(256);
+         }
+         this.width = image.width;
+         this.height = image.height;
+         return image
+      }
+      return mime;
+   } catch (ex) {
+      app.log(ex);
+      throw Error(gettext("Could not resize the image."));
+   }
+}
+
 Image.prototype.writeFiles = function(image, thumbnail) {
    if (image) {
       try {
          var file = this.getFile();
-         image.saveAs(file);
+         if (image.saveAs) {
+            image.saveAs(file);
+         } else if (image.writeToFile) {
+            image.writeToFile(file.getParent(), file.getName());
+         }
          if (thumbnail) {
             thumbnail.saveAs(this.getThumbnailFile());
          }
@@ -339,55 +399,3 @@ Image.prototype.removeFiles = function() {
    }
    return;
 }
-
-Image.getFileExtension = function(type) {
-   switch (type) {
-      //case "image/x-icon":
-      //return ".ico";
-      case "image/gif":
-      return ".gif";
-      case "image/jpeg":
-      case "image/pjpeg":
-      return ".jpg";
-      case "image/png":
-      case "image/x-png":
-      return ".png";
-   }
-   return null;
-}
-
-Image.constrain = function(mime, maxWidth, maxHeight) {
-   try {
-      var image = new helma.Image(mime.inputStream);
-      var factorH = 1, factorV = 1;
-      if (maxWidth && image.width > maxWidth) {
-         factorH = maxWidth / image.width;
-      }
-      if (maxHeight && image.height > maxHeight) {
-         factorV = maxHeight / image.height;
-      }
-      if (factorH !== 1 || factorV !== 1) {
-         var width = Math.ceil(image.width * 
-               (factorH < factorV ? factorH : factorV));
-         var height = Math.ceil(image.height * 
-               (factorH < factorV ? factorH : factorV));
-         image.resize(width, height);
-         if (mime.contentType.endsWith("gif")) {
-            image.reduceColors(256);
-         }
-      }
-      return image;
-   } catch (ex) {
-      app.log(ex);
-      throw Error(gettext("Could not resize the image."));
-   }
-}
-
-Image.remove = function() {
-   this.removeFiles();
-   this.setTags(null);
-   this.remove();
-   return;
-}
-
-Image.THUMBNAILWIDTH = 100;
