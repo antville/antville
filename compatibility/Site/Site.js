@@ -196,7 +196,7 @@ Site.prototype.xmlbutton_macro = function(param) {
 
 Site.prototype.lastupdate_macro = function(param) {
    var value;
-   if (value = this.created) {
+   if (value = this.modified) {
       res.write(formatDate(value, param.format));
    }
    return;
