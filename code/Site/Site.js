@@ -461,7 +461,7 @@ Site.prototype.unsubscribe_action = function() {
       }
    }
    res.data.title = gettext("Remove subscription to {0}", this.title);
-   res.data.body = this.renderSkinAsString("HopObject#confirm", {
+   res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to unsubscribe from site {0}.', this.title)
    });
    this.renderSkin("Site#page");
