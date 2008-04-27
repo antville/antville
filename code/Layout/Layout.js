@@ -188,11 +188,11 @@ Layout.prototype.export_action = function() {
 Layout.prototype.import_action = function() {
    var data = req.postParams;
    if (data.submit) {
-      // Create destination directory if it does not exist
+      Layout.remove(this);
+      res.commit();
+      // Create destination directory
       var destination = this.getFile();
-      if (!destination.exists()) {
-         destination.makeDirectory();
-      }
+      destination.makeDirectory();
       // Extract imported layout to temporary directory
       var dir = new helma.File(destination, "..");
       var temp = new helma.File(dir, "import.temp");
@@ -212,10 +212,6 @@ Layout.prototype.import_action = function() {
          zip.save(this.getFile("../layout-" + timestamp + ".zip"));
          zip.close();
       }
-      // Clear database from obsolete data
-      Images.remove.call(this.images);
-      Skins.remove.call(this.skins);
-      res.commit();
       // Replace the current layout with the imported one
       var layout = new helma.File(temp, "layout");
       layout.renameTo(destination);
