@@ -31,7 +31,8 @@ Images.prototype.getPermission = function(action) {
       case "main":
       case "create":
       // FIXME: case "tags":
-      return Site.require(Site.OPEN) && session.user || 
+      return Site.require(Site.OPEN) && 
+            Membership.require(Membership.SUBSCRIBER) || 
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":

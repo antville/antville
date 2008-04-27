@@ -30,7 +30,8 @@ Stories.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "create":
-      return Site.require(Site.OPEN) && session.user ||
+      return Site.require(Site.OPEN) && 
+            Membership.require(Membership.SUBSCRIBER) ||
             Membership.require(Membership.CONTRIBUTOR) || 
             User.require(User.PRIVILEGED); 
 

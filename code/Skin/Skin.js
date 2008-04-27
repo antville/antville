@@ -140,6 +140,7 @@ Skin.prototype.reset_action = function() {
       text: gettext('You are about to reset {0}.', this)
    });
    res.handlers.site.renderSkin("Site#page");
+   return;
 }
 
 Skin.prototype.compare_action = function() {
