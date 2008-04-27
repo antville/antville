@@ -34,13 +34,13 @@ Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentMode");
 this.handleMetadata("email");
-this.handleMetadata("lastUpdate");
+this.handleMetadata("configured");
 this.handleMetadata("locale");
 this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
 this.handleMetadata("notifiedOfBlocking");
 this.handleMetadata("notifiedOfDeletion");
-this.handleMetadata("offlineSince");
+this.handleMetadata("closed");
 this.handleMetadata("pageSize");
 this.handleMetadata("pageMode");
 this.handleMetadata("shortDateFormat");
@@ -48,7 +48,7 @@ this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
 this.handleMetadata("title"),
 this.handleMetadata("webHookMode");
-this.handleMetadata("webHookLastUpdate");
+this.handleMetadata("webHookCalled");
 this.handleMetadata("webHookUrl");
 
 Site.prototype.constructor = function(name, title) {
@@ -217,7 +217,9 @@ Site.prototype.update = function(data) {
       shortDateFormat: data.shortDateFormat,
       locale: data.locale,
    });
-   this.touch();
+
+   this.configured = new Date;
+   this.modifier = session.user;
    this.clearCache();
    return;
 }
@@ -575,8 +577,8 @@ Site.prototype.hitchWebHook = function(ref) {
    ref || (ref = this);
    var now = new Date;
    if (this.webHookMode === Site.ENABLED && this.webHookUrl) {
-      if (this.webHookLastUpdate && 
-            now - this.webHookLastUpdate < Date.ONEMINUTE) {
+      if (this.webHookCalled && 
+            now - this.webHookCalled < Date.ONEMINUTE) {
          return;
       }
       app.log("Hitching web hook " + this.webHookUrl + " for " + ref);
@@ -597,7 +599,7 @@ Site.prototype.hitchWebHook = function(ref) {
       } catch (ex) {
          app.debug("Hitching web hook " + this.webHookUrl + " failed: " + ex);
       }
-      this.webHookLastUpdate = now;
+      this.webHookCalled = now;
    }
    return;
 }
