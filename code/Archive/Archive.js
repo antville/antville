@@ -149,7 +149,7 @@ Archive.prototype.getSize = function() {
    // FIXME: This is a little bit inconsistent and thus needs special care
    var archive = this.type === Archive.PAGER ? this.parent : this;
    if (!archive.parent) {
-      return res.handlers.site.stories.size();
+      return res.handlers.site.stories.featured.size();
    }
    var db = getDBConnection("antville");
    var sql = "select count(*) as max from content " + this.getFilter();
