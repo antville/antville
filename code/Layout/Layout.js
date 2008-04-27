@@ -216,9 +216,7 @@ Layout.prototype.import_action = function() {
             zip.save(this.getFile("../layout-" + timestamp + ".zip"));
             zip.close();
          }
-         // Replace the current layout with the imported one
-         var layout = new helma.File(temp, "layout");
-         layout.renameTo(destination);
+         temp.renameTo(destination);
          // Update database with imported data
          layout = this;
          this.origin = data.origin;
@@ -227,7 +225,6 @@ Layout.prototype.import_action = function() {
          data.images.forEach(function() {
             layout.images.add(new Image(this));
          });
-         temp.removeDirectory();
          res.redirect(this.href());
          return;
       } catch (ex) {
@@ -272,13 +269,17 @@ Layout.prototype.getSkinPath = function() {
    return skinPath;
 }
 
-Layout.prototype.getArchive = function(skinpath) {
+Layout.prototype.getArchive = function(skinPath) {
    var zip = new helma.Zip();
-   for each (var fpath in skinpath) {
-      zip.add(new helma.File(fpath), "layout");
+   var skinFiles = app.getSkinfilesInPath(skinPath);
+   for (var name in skinFiles) {
+      if (skinFiles[name][name]) {
+         zip.add(new helma.File(this.getFile(name), name + ".skin"), name);
+      }
    }
    
-   var file, fname;
+
+/*  var file, fname;
    var dir = new helma.File(app.dir);
    for each (var fpath in dir.listRecursive(/\.skin$/)) {
       fname = fpath.split("/").splice(-2)[0];
@@ -288,17 +289,20 @@ Layout.prototype.getArchive = function(skinpath) {
       } catch (ex) {
          app.log(ex);
       }
-   }
+   } */
    
    var data = new HopObject;
    data.images = new HopObject;
    this.images.forEach(function() {
+      zip.add(this.getFile());
+      zip.add(this.getThumbnailFile());
       var image = new HopObject;
       for each (var key in Image.KEYS) {
          image[key] = this[key];
          data.images.add(image);
       }
    });
+      
    data.version = Root.VERSION;
    data.origin = this.origin || this.site.href();
    data.originator = this.originator || session.user.name;
