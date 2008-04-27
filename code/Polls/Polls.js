@@ -31,7 +31,7 @@ Polls.prototype.getPermission = function(action) {
       case "main":
       case "create":
       case "open":
-      return Site.require(Site.OPEN) || 
+      return Site.require(Site.OPEN) && session.user || 
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":

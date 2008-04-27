@@ -36,18 +36,14 @@ Members.prototype.getPermission = function(action) {
       return true;
       
       case "edit":
-      return session.user;
-      
-      // FIXME: Should these be always allowed or not?
       case "privileges":
       case "subscriptions":
       case "updated":
-      return true || Membership.require(Membership.SUBSCRIBER) ||
-            User.require(User.PRIVILEGED);;
-
+      return !!session.user;
+      
       case ".":
-      case "add":
       case "main":
+      case "add":
       case "owners":
       case "managers":
       case "contributors":
