@@ -88,6 +88,7 @@ Site.prototype.getPermission = function(action) {
       case "robots.txt":
       case "search.xml":
       return true;
+
       case ".":
       case "main":
       case "comments.xml":
@@ -102,13 +103,16 @@ Site.prototype.getPermission = function(action) {
             (Site.require(Site.CLOSED) &&
             Membership.require(Membership.OWNER)) || 
             User.require(User.PRIVILEGED);
+
       case "edit":
       case "referrers":
       return Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
+
       case "subscribe":
       return Site.require(Site.PUBLIC) &&
             !Membership.require(Membership.SUBSCRIBER);
+
       case "unsubscribe":
       var membership = this.members.get(session.user.name);
       return User.require(User.REGULAR) && 

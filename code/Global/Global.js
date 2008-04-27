@@ -384,10 +384,10 @@ function poll_macro(param, id, mode) {
       break;
       default:
       if (poll.status === Poll.CLOSED || mode === "results")
-         poll.renderSkin("Poll#results");
+         poll.renderSkin("$Poll#results");
       else {
          res.data.action = poll.href();
-         poll.renderSkin("Poll#main");
+         poll.renderSkin("$Poll#main");
       }
    }
    return;

@@ -33,6 +33,7 @@ Stories.prototype.getPermission = function(action) {
       return Site.require(Site.OPEN) && session.user ||
             Membership.require(Membership.CONTRIBUTOR) || 
             User.require(User.PRIVILEGED); 
+
       case "all":
       case "top":
       case "closed":
