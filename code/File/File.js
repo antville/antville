@@ -36,16 +36,14 @@ File.prototype.constructor = function() {
 }
 
 File.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
    switch (action) {
       case ".":
       case "main":
       return true;
       case "delete":
       case "edit":
-      return this.creator === session.user || 
+      return this._parent.getPermission("main") &&
+            this.creator === session.user || 
             Membership.require(Membership.MANAGER) ||
             User.require(User.PRIVILEGED);            
    }
