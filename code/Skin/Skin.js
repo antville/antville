@@ -229,6 +229,9 @@ Skin.prototype.setSource = function(source) {
       res.writeln(source.trim());
    }
    var skin = this.getMainSkin();
+   if (!skin) {
+      return;
+   }
    var subskins = skin.getSubskinNames();
    for (var i in subskins) {
       if (subskins[i] !== this.name) {
@@ -262,8 +265,11 @@ Skin.prototype.getStaticFile = function(fpath, skin) {
 }
 
 Skin.prototype.getMainSkin = function() {
-   var source = app.getSkinfilesInPath(res.skinpath)[this.prototype][this.prototype];
-   return createSkin(source);
+   var skinSet = app.getSkinfilesInPath(res.skinpath)[this.prototype];
+   if (skinSet && skinSet[this.prototype]) {
+      return createSkin(skinSet[this.prototype]);
+   }
+   return null;
 }
 
 Skin.prototype.custom_macro = function() {

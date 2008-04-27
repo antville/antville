@@ -115,7 +115,9 @@ HopObject.remove = function(collection) {
    var item;
    while (collection.size() > 0) {
       item = collection.get(0);
-      item.constructor.remove.call(item, item);
+      if (item.constructor.remove) {
+         item.constructor.remove.call(item, item);
+      }
    }
    return;
 }
