@@ -188,44 +188,52 @@ Layout.prototype.export_action = function() {
 Layout.prototype.import_action = function() {
    var data = req.postParams;
    if (data.submit) {
-      Layout.remove(this);
-      res.commit();
-      // Create destination directory
-      var destination = this.getFile();
-      destination.makeDirectory();
-      // Extract imported layout to temporary directory
-      var dir = new helma.File(destination, "..");
-      var temp = new helma.File(dir, "import.temp");
-      var fname = data.upload.writeToFile(dir);
-      var zip = new helma.File(dir, fname);
-      (new helma.Zip(zip)).extractAll(temp);
-      zip.remove();
-      var data = Xml.read(new helma.File(temp, "data.xml"));
-      if (!data.version || data.version !== Root.VERSION) {
-         throw Error("Incompatible layout version");
+      try {
+         if (!data.upload || data.upload.contentLength === 0) {
+            throw Error(gettext("Please upload a layout package."));
+         }
+         Layout.remove(this);
+         res.commit();
+         // Create destination directory
+         var destination = this.getFile();
+         destination.makeDirectory();
+         // Extract imported layout to temporary directory
+         var dir = new helma.File(destination, "..");
+         var temp = new helma.File(dir, "import.temp");
+         var fname = data.upload.writeToFile(dir);
+         var zip = new helma.File(dir, fname);
+         (new helma.Zip(zip)).extractAll(temp);
+         zip.remove();
+         var data = Xml.read(new helma.File(temp, "data.xml"));
+         if (!data.version || data.version !== Root.VERSION) {
+            throw Error("Incompatible layout version.");
+         }
+         // Backup the current layout if necessary
+         if (destination.list().length > 0) {
+            var timestamp = (new Date).format("yyyyMMdd-HHmmss");
+            var zip = new helma.Zip();
+            zip.add(destination);
+            zip.save(this.getFile("../layout-" + timestamp + ".zip"));
+            zip.close();
+         }
+         // Replace the current layout with the imported one
+         var layout = new helma.File(temp, "layout");
+         layout.renameTo(destination);
+         // Update database with imported data
+         layout = this;
+         this.origin = data.origin;
+         this.originator = data.originator;
+         this.originated = data.originated;
+         data.images.forEach(function() {
+            layout.images.add(new Image(this));
+         });
+         temp.removeDirectory();
+         res.redirect(this.href());
+         return;
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
       }
-      // Backup the current layout if necessary
-      if (destination.list().length > 0) {
-         var timestamp = (new Date).format("yyyyMMdd-HHmmss");
-         var zip = new helma.Zip();
-         zip.add(destination);
-         zip.save(this.getFile("../layout-" + timestamp + ".zip"));
-         zip.close();
-      }
-      // Replace the current layout with the imported one
-      var layout = new helma.File(temp, "layout");
-      layout.renameTo(destination);
-      // Update database with imported data
-      layout = this;
-      this.origin = data.origin;
-      this.originator = data.originator;
-      this.originated = data.originated;
-      data.images.forEach(function() {
-         layout.images.add(new Image(this));
-      });
-      temp.removeDirectory();
-      res.redirect(this.href());
-      return;
    }
    res.data.title = gettext("Import layout");
    res.data.body = this.renderSkinAsString("$Layout#import");
