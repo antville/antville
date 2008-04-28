@@ -455,7 +455,7 @@ function list_macro(param, id, limit) {
          break;
          
          case "postings":
-         content = site.stories.recent;
+         content = site.stories.union;
          collection = content.list().filter(filter);
          skin = "$Story#preview";
          break;
