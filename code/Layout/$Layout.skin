@@ -1,6 +1,6 @@
 <% #main %>
 <script type="text/javascript">
-$(document).ready(function() {
+$(function() {
    $("#addValueFields").hide();
    $("#addValueLink").click(function() {
       var name = prompt('<% gettext "Please enter the name of the new value:" %>');

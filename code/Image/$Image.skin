@@ -1,6 +1,6 @@
 <% #edit %>
 <script type="text/javascript">
-$(document).ready(function() {
+$(function() {
    if ("<% image.created %>") {
       $(".name").hide();
       $(".resize").hide();

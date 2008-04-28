@@ -1,6 +1,10 @@
 <% #href %>
 http://<% site.name %>.antville.org<% param.path %>
 
+<% #include %>
+document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +  
+      'src="<% param.href %>"></' + 'scr' + 'ipt>');
+
 <% #preview %>
 <tr>
 <td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;">

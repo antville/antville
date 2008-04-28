@@ -295,7 +295,11 @@ Layout.prototype.getArchive = function(skinPath) {
    data.images = new HopObject;
    this.images.forEach(function() {
       zip.add(this.getFile());
-      zip.add(this.getThumbnailFile());
+      try {
+         zip.add(this.getThumbnailFile());
+      } catch (ex) {
+         /* Most likely the thumbnail file is identical to the image */ 
+      }
       var image = new HopObject;
       for each (var key in Image.KEYS) {
          image[key] = this[key];

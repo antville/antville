@@ -57,7 +57,7 @@
 
 <% #main %>
 <script type="text/javascript">
-$(document).ready(function() {
+$(function() {
    $("ul ul").hide();
    $("ul li a[@href=#]").toggle(function() {
       $(this).css("color", "<% value 'base font color' %>");

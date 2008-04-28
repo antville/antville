@@ -202,11 +202,13 @@ Image.prototype.update = function(data) {
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
    
-      var image = this.constrain(mime, data.maxWidth, data.maxHeight);
-      
+      var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);
+      this.height = image.height; 
+      this.width = image.width;
+
       var thumbnail;
       if (image.width > Image.THUMBNAILWIDTH) {
-         thumbnail = Image.constrain(mime, Image.THUMBNAILWIDTH);
+         thumbnail = this.getConstraint(mime, Image.THUMBNAILWIDTH);
          this.thumbnailWidth = thumbnail.width; 
          this.thumbnailHeight = thumbnail.height; 
       } else if (this.isPersistent()) {
@@ -228,7 +230,7 @@ Image.prototype.update = function(data) {
       }
       this.fileName = fileName;
       thumbnail && (this.thumbnailName = this._id + "_small" + extension);
-      this.writeFiles(image, thumbnail);
+      this.writeFiles(image.resized || mime, thumbnail && thumbnail.resized);
    }
 
    if (this.parent_type !== "Layout") {
@@ -333,12 +335,9 @@ Image.prototype.getJSON = function() {
    }.toSource();
 }
 
-Image.prototype.constrain = function(mime, maxWidth, maxHeight) {
+Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
    try {
       var image = new helma.Image(mime.inputStream);
-      this.width = image.width;
-      this.height = image.height;
-
       var factorH = 1, factorV = 1;
       if (maxWidth && image.width > maxWidth) {
          factorH = maxWidth / image.width;
@@ -355,32 +354,30 @@ Image.prototype.constrain = function(mime, maxWidth, maxHeight) {
          if (mime.contentType.endsWith("gif")) {
             image.reduceColors(256);
          }
-         this.width = image.width;
-         this.height = image.height;
-         return image
+         return {resized: image, width: image.width, height: image.height};
       }
-      return mime;
+      return {width: image.width, height: image.height};
    } catch (ex) {
       app.log(ex);
       throw Error(gettext("Could not resize the image."));
    }
 }
 
-Image.prototype.writeFiles = function(image, thumbnail) {
-   if (image) {
+Image.prototype.writeFiles = function(data, thumbnail) {
+   if (data) {
       try {
          var file = this.getFile();
-         if (image.saveAs) {
-            image.saveAs(file);
-         } else if (image.writeToFile) {
-            image.writeToFile(file.getParent(), file.getName());
+         if (data.saveAs) {
+            data.saveAs(file);
+         } else if (data.writeToFile) {
+            data.writeToFile(file.getParent(), file.getName());
          }
          if (thumbnail) {
             thumbnail.saveAs(this.getThumbnailFile());
          }
       } catch (ex) {
          app.log(ex);
-         throw Error(gettext("Could not save the image's files on disk."));         
+         throw Error(gettext("Could not save the image’s files on disk."));         
       }
    }
    return;

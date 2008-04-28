@@ -253,10 +253,9 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(Skin("Site", "javascript").getSource());
    res.digest();
    res.contentType = "text/javascript";
-   // FIXME: Is there a better way to reliably include system scripts?
+   var href;
    for each (script in ["jquery-1.2.3.min.js", "antville-1.2.js"]) {
-      var file = new helma.File(root.getStaticFile(script));
-      res.writeln(file.readAll());
+      this.renderSkin("$Site#include", {href: root.getStaticUrl(script)});
    }
    this.renderSkin("Site#javascript");
    return;
