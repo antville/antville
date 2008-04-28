@@ -1,79 +1,9 @@
-Antville = {};
-Antville.prefix = "Antville_";
-
-Antville.encode = function(str) {
-   var chars = ["&", "<", ">", '"'];
-   for (var i in chars) {
-      var c = chars[i];
-      var re = new RegExp(c, "g");
-      str = str.replace(re, "&#" + c.charCodeAt() + ";");
-   }
-   return str;
-};
-
-Antville.decode = function(str) {
-   return str.replace(/&amp;/g, "&");
-};
-
-Antville.Referrer = function(url, text, count) {
-   this.url = url;
-   this.text = text;
-   this.count = count;
-   this.compose = function(key, prefix) {
-      var query = new Antville.Query(this.url);
-      if (query[key]) {
-         if (prefix == null)
-            prefix = "";
-         return prefix + Antville.encode(query[key]);
-      }
-      return this.text;
-   }
-   return this;
-};
-
-Antville.Query = function(str) {
-   if (str == undefined)
-      var str = location.search.substring(1);
-   else if (str.indexOf("?") > -1)
-      var str = str.split("?")[1];
-   if (str == "")
-      return this;
-   var parts = Antville.decode(decodeURIComponent(str)).split("&");
-   for (var i in parts) {
-      var pair = parts[i].split("=");
-      var key = pair[0];
-      if (key) {
-         key = key.replace(/\+/g, " ");
-         var value = pair[1];
-         if (value)
-            value = value.replace(/\+/g, " ");
-         this[key] = value;
-      }
-   }
-   return this;
-};
-
-Antville.Filter = function(def, key) {
-   this.key = key;
-   if (def == null)
-      this.items = [];
-   else if (def instanceof Array)
-      this.items = def;
-   else
-      this.items = def.replace(/\r/g, "\n").split("\n");
-   this.test = function(str) {
-      if (!str)
-         return false;
-      str = str.replace(/&amp;/g, "&");
-      for (var n in this.items) {
-         var re = new RegExp(this.items[n], "i");
-         if (re.test(str))
-            return true;
-      }
+$(function() {
+   $("a.cancel").click(function() {
+      history.back();
       return false;
-   }
-   return this;
-};
+   });
+});
 
 /**
  * MD5 (Message-Digest Algorithm)
@@ -275,4 +205,81 @@ jQuery.md5 = function (string) {
 	}
 	var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
 	return temp.toLowerCase();
+};
+
+Antville = {};
+Antville.prefix = "Antville_";
+
+Antville.encode = function(str) {
+   var chars = ["&", "<", ">", '"'];
+   for (var i in chars) {
+      var c = chars[i];
+      var re = new RegExp(c, "g");
+      str = str.replace(re, "&#" + c.charCodeAt() + ";");
+   }
+   return str;
+};
+
+Antville.decode = function(str) {
+   return str.replace(/&amp;/g, "&");
+};
+
+Antville.Referrer = function(url, text, count) {
+   this.url = url;
+   this.text = text;
+   this.count = count;
+   this.compose = function(key, prefix) {
+      var query = new Antville.Query(this.url);
+      if (query[key]) {
+         if (prefix == null)
+            prefix = "";
+         return prefix + Antville.encode(query[key]);
+      }
+      return this.text;
+   }
+   return this;
+};
+
+Antville.Query = function(str) {
+   if (str == undefined)
+      var str = location.search.substring(1);
+   else if (str.indexOf("?") > -1)
+      var str = str.split("?")[1];
+   if (str == "")
+      return this;
+   var parts = Antville.decode(decodeURIComponent(str)).split("&");
+   for (var i in parts) {
+      var pair = parts[i].split("=");
+      var key = pair[0];
+      if (key) {
+         key = key.replace(/\+/g, " ");
+         var value = pair[1];
+         if (value)
+            value = value.replace(/\+/g, " ");
+         this[key] = value;
+      }
+   }
+   return this;
+};
+
+Antville.Filter = function(def, key) {
+   this.key = key;
+   if (def == null)
+      this.items = [];
+   else if (def instanceof Array)
+      this.items = def;
+   else
+      this.items = def.replace(/\r/g, "\n").split("\n");
+   this.test = function(str) {
+      if (!str)
+         return false;
+      str = str.replace(/&amp;/g, "&");
+      for (var n in this.items) {
+         var re = new RegExp(this.items[n], "i");
+         if (re.test(str))
+            return true;
+      }
+      return false;
+   }
+   return this;
 };

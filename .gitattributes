@@ -44,24 +44,6 @@ lib/itunes-0.4.jar -text svneol=unset#application/x-compressed
 lib/jdom.jar -text svneol=unset#application/x-compressed
 lib/opml-0.1.jar -text svneol=unset#application/x-compressed
 lib/rome-0.9.jar -text svneol=unset#application/x-compressed
-static/default/images/dot.gif -text
-static/default/images/hop.gif -text
-static/default/images/marquee.gif -text
-static/default/images/pixel.gif -text
-static/default/images/smallanim.gif -text
-static/default/images/smallchaos.gif -text
-static/default/images/smallstraight.gif -text
-static/default/images/smalltrans.gif -text
-static/default/images/xmlbutton.gif -text
-static/default/layouts/antville-classic/big.gif -text
-static/default/layouts/antville-classic/bullet.gif -text
-static/default/layouts/antville-classic/dot.gif -text
-static/default/layouts/antville-classic/headbg.gif -text
-static/default/layouts/antville-classic/manage.gif -text
-static/default/layouts/antville-classic/menu.gif -text
-static/default/layouts/antville-classic/recent.gif -text
-static/default/layouts/antville-classic/status.gif -text
-static/default/layouts/antville-classic/webloghead.gif -text
 static/www/big.gif -text svneol=unset#image/gif
 static/www/bullet.gif -text svneol=unset#image/gif
 static/www/dot.gif -text svneol=unset#image/gif
