@@ -88,7 +88,7 @@ convert.layoutImages = function() {
       var fpath = antville().properties.staticPath;
       var source = new helma.File(fpath + "/layouts/" + this.parent_name, this.fileName);
       var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
-      !layoutDir.exists() && layoutDir.makeDirectory();
+      layoutDir.exists() || layoutDir.makeDirectory();
       var dest = new helma.File(layoutDir, this.fileName);
       log("Copy " + source + " to " + dest);
       if (source.exists()) {
@@ -308,8 +308,6 @@ convert.skins = function() {
 
       var data = eval(metadata);
       res.push();
-      // FIXME: obsolete
-      //res.writeln("<% #values %>");
       for (var key in styles) {
          var name = styles[key];
          var value = String(data[key]).toLowerCase();
@@ -429,6 +427,10 @@ convert.skins = function() {
          skins.Site.values = values(this.layout_metadata);
       }
 
+      if (!this.prototype || !this.name) {
+         return;
+      }
+
       var renamed = rename(this.prototype, this.name);
       var prototype = renamed[0];
       var skinName = renamed[1];
@@ -442,7 +444,7 @@ convert.skins = function() {
          parent = appSkin;
       }
       if (source !== null && source !== undefined) {
-         // FIXME: Ugly special hack for linking from Membership back to Members
+         // FIXME: Ugly hack to change Membership to Members in a few skins
          if (prototype === "Membership" && 
                (skinName === "login" || skinName === "status")) {
             source = source.replace(/(<%\s*)this./g, "$1members.");
@@ -456,7 +458,7 @@ convert.skins = function() {
                'id = ' + this.id);
       }
    });
-
+   // One last time to be sure every layout's skins are saved
    save(skins, fpath);
    return;
 }

@@ -308,8 +308,8 @@ layout.id as layout_id, layout.name as layout_name, layout.metadata as
 layout_metadata, site.name as site_name, site.layout_id as current_layout, 
 (select SKIN_SOURCE from site p_site, skin p_skin where p_site.id = site.id 
 and p_skin.layout_id = layout.layout_id and p_skin.prototype = skin.prototype 
-and p_skin.name = skin.name) as parent from skin left join layout on 
-skin.layout_id = layout.id left join site on layout.site_id = site.id order 
+and p_skin.name = skin.name) as parent from site left join layout on 
+layout.site_id = site.id left join skin on skin.layout_id = layout.id order 
 by site_name, layout_name, prototype, name
 
 <% #AV_SYSLOG %>
