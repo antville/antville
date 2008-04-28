@@ -115,13 +115,15 @@ convert.layouts = function() {
 }
 
 convert.sites = function() {
+   execute("update site set name = 'www' where id = " + 
+         antville().__app__.getProperty("rootId"));
    convert.xml("site");
    retrieve(query("sites"));
    traverse(function() {
       var metadata = eval(this.metadata) || {};
       metadata.email = this.SITE_EMAIL;
       metadata.title = this.SITE_TITLE;
-      metadata.lastUpdate = this.SITE_LASTUPDATE;
+      metadata.configured = this.SITE_LASTUPDATE;
       metadata.pageSize = metadata.days || 3;
       metadata.pageMode = "days";
       metadata.timeZone = metadata.timezone || "CET";
@@ -129,12 +131,12 @@ convert.sites = function() {
       metadata.commentMode = metadata.discussions ? "enabled" : "disabled";
       metadata.shortDateFormat = metadata.shortdateformat;
       metadata.longDateFormat = metadata.longdateformat;
-      metadata.offlineSince = this.SITE_LASTOFFLINE;
+      metadata.closed = this.SITE_LASTOFFLINE;
       metadata.notifiedOfBlocking = this.SITE_LASTBLOCKWARN;
       metadata.notifiedOfDeletion = this.SITE_LASTDELWARN;
       metadata.webHookMode = this.SITE_ENABLEPING ? 
             "enabled" : "disabled";
-      metadata.webHookLastUpdate = this.SITE_LASTPING;
+      metadata.webHookCalled = this.SITE_LASTPING;
       // FIXME: metadata.webHookUrl = "";
       metadata.locale = metadata.language;
       if (metadata.country) {
@@ -358,15 +360,7 @@ convert.skins = function() {
          return;
       }
       
-      // Copied from Skin.CUSTOMIZABLEPROTOTYPES in antville/code
-      var allow = ["Archive", "Choice", "Comment", "File", "Global", "Image", 
-            "Membership", "Poll", "Site", "Story", "Tag"];
-
       for (var prototype in skins) {
-         if (allow.indexOf(prototype) < 0) {
-            continue;
-         }
-         
          res.push();
          var skinset = skins[prototype];
          for (var skinName in skinset) {
@@ -374,13 +368,13 @@ convert.skins = function() {
             skinset[skinName] && res.writeln(skinset[skinName].trim());
          }
          var data = res.pop();
-         
-         var file = new java.io.File(fpath + "/" + prototype + "/" + prototype + ".skin");
-         file.mkdirs();
-         //file = new java.io.File(file, fname.replace(/\//, "_") + ".skin");
-         log(file.getCanonicalPath());
-         file["delete"]();
+
          if (data) {
+            var file = new java.io.File(fpath + "/" + prototype + "/" + 
+                  prototype + ".skin");
+            file.mkdirs();
+            log(file.getCanonicalPath());
+            file["delete"]();
             var fos = new java.io.FileOutputStream(file);
             var bos = new java.io.BufferedOutputStream(fos);
             var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
@@ -394,7 +388,7 @@ convert.skins = function() {
    }
 
    var appSkins = {};
-   var skinfiles = antville().getSkinfiles(); //InPath([app.dir + "/../code"]);
+   var skinfiles = antville().getSkinfiles();
 
    for (var prototype in skinfiles) {
       // Ignore lowercase prototypes
@@ -418,7 +412,9 @@ convert.skins = function() {
          current = site + this.layout_name;
          fpath = antville().properties.staticPath + site;
          if (site === "www") {
-            var rootLayoutId = 6; // FIXME: antville().__app__.getDataRoot().sys_layout._id;
+            var file = new helma.File("db/antville/0.xml");
+            var xml = file.readAll();
+            var rootLayoutId = /sys_layout idref="(\d)*"/.exec(xml)[1] || 1;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
          } else {

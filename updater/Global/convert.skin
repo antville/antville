@@ -255,6 +255,8 @@ update site set mode = 'restricted' where SITE_ISONLINE <> 1;
 update site set status = 'regular';
 update site set status = 'blocked' where SITE_ISBLOCKED = 1;
 update site set status = 'trusted' where SITE_ISTRUSTED = 1;
+set @timestamp = unix_timestamp(now());
+update site set name = concat("www-", @timestamp) where name = "www";
 #!sites
 alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKUSAGE, drop column SITE_EMAIL, drop column SITE_LASTUPDATE, drop column SITE_LASTOFFLINE, drop column SITE_LASTBLOCKWARN, drop column SITE_LASTDELWARN, drop column SITE_LASTPING, drop column SITE_ENABLEPING, drop column SITE_ISONLINE, drop column SITE_ISBLOCKED, drop column SITE_ISTRUSTED;
 alter table site convert to character set utf8 collate utf8_bin;

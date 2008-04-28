@@ -32,7 +32,7 @@ Root.prototype.main_action = function() {
    app.invokeAsync(global, function() {
       if (init()) {
          //update("size"); // DEBUG
-         update("legacy");
+         //update("legacy");
          execute(query("tag"));
          execute(query("tag_hub"));
          update("AV_ACCESSLOG");
