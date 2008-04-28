@@ -289,42 +289,16 @@ Site.prototype.timezonechooser_macro = function(param) {
 }
 
 Site.prototype.layoutchooser_macro = function(param) {
-   return; // this.select_macro(param, "layout");
+   return;
 }
 
 Site.prototype.history_macro = function(param, type) {
-   //param.skin = "Story#history";
-   //return list_macro(param, "postings");
-   
-   param.limit = Math.min(param.limit || 10, 20);
-   type || (type = param.show);
-   var stories = this.stories.recent;
-   var size = stories.size();
-   var counter = i = 0;
-   var item;
-   while (counter < param.limit && i < size) {
-      if (i % param.limit === 0) {
-         stories.prefetchChildren(i, param.limit);
-      }
-      item = stories.get(i);
-      i += 1;
-      switch (item.constructor) {
-         case Story:
-         if (type === "comments") {
-            continue;
-         } break;
-         
-         case Comment:
-         if (type === "stories" || item.story.mode === Story.PRIVATE ||
-               item.story.commentsMode === Story.CLOSED || 
-               this.commentsMode === Site.DISABLED) {
-            continue;
-         } break;
-      }
-      item.renderSkin("Story#history");
-      counter += 1;
-   }
-   return;
+   param.skin || (param.skin = "Story#history");
+   var type = param.show || "stories";
+   var limit = Math.min(param.limit || 10, 20);
+   delete param.show;
+   delete param.limit;
+   return list_macro(param, type, limit);
 }
 
 Site.prototype.membercounter_macro = function(param) {
