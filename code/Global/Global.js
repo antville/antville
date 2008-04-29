@@ -438,8 +438,7 @@ function list_macro(param, id, limit) {
       }
       
       var commentFilter = function(item) {
-         if (item.constructor === Comment && 
-               item.story.status !== Story.CLOSED && 
+         if (item.story.status !== Story.CLOSED && 
                item.site.commentMode !== Site.DISABLED &&
                item.story.commentMode !== Story.CLOSED) {
             return true;
@@ -466,7 +465,12 @@ function list_macro(param, id, limit) {
          
          case "postings":
          content = site.stories.union;
-         collection = content.list().filter(filter).filter(commentFilter);
+         collection = content.list().filter(filter).filter(function(item) {
+            if (item.constructor === Comment) {
+               return commentFilter(item);
+            }
+            return true;
+         });
          skin = "$Story#preview";
          break;
          
