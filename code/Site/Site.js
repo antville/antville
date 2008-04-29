@@ -259,6 +259,7 @@ Site.prototype.main_js_action = function() {
 }
 
 Site.prototype.user_js_action = function() {
+   res.contentType = "text/javascript";
    res.dependsOn(this.modified);
    res.dependsOn(Skin("Site", "javascript").getSource());
    res.digest();
