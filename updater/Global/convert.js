@@ -131,8 +131,6 @@ convert.layouts = function() {
 }
 
 convert.sites = function() {
-   execute("update site set name = 'www' where id = " + 
-         antville().__app__.getProperty("rootId"));
    convert.xml("site");
    retrieve(query("sites"));
    traverse(function() {
@@ -420,25 +418,28 @@ convert.skins = function() {
    var current, fpath, skins;
    retrieve(query("skins"));
    traverse(function() {
-      var site = this.site_name || "www";
+      var site = this.site_name; // || "www";
+      if (!site) {
+         return; // FIXME: TESTING
+      }
       if (current !== site + this.layout_name) {
          save(skins, fpath);
          current = site + this.layout_name;
          fpath = antville().properties.staticPath + site;
-         if (site === "www") {
+         /*if (site === "www") {
             var file = new helma.File("db/antville/0.xml");
             var xml = file.readAll();
             var rootLayoutId = /sys_layout idref="(\d)*"/.exec(xml)[1] || 1;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
-         } else {
+         }  else {*/
             if (this.layout_id === this.current_layout) {
                fpath = move(fpath + "/layouts/" + this.layout_name, 
                      fpath + "/layout/");
             } else {
                fpath += "/layouts/" + this.layout_name;
             }
-         }
+         //}
          skins = appSkins.clone({}, true);
          skins.Site.values = values(this.layout_metadata);
       }
@@ -476,5 +477,24 @@ convert.skins = function() {
    });
    // One last time to be sure every layout's skins are saved
    save(skins, fpath);
+   return;
+}
+
+convert.root = function() {
+   var rootId = antville().__app__.getProperty("rootId");
+   var staticDir = antville().properties.staticPath;
+   retrieve("select name from site where id = " + rootId);
+   traverse(function() {
+      var dir = new helma.File(staticDir, this.name);
+      var files = dir.list();
+      for each (fname in files) {
+         var source = new helma.File(dir, fname);
+         var dest = new helma.File(staticDir, "www/" + fname);
+         log("Rename " + source + " to " + dest);
+         source.renameTo(dest);
+      }
+      return;
+   });
+   execute("update site set name = 'www' where id = " + rootId);
    return;
 }

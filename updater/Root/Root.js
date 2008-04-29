@@ -47,7 +47,8 @@ Root.prototype.main_action = function() {
          update("AV_TEXT");
          update("AV_USER");
          update("AV_VOTE");
-         update("AV_SYSLOG"); // This has to go last!
+         update("AV_SYSLOG"); // This table has to go last!
+         update("root");
          finalize();
       }
       return;
