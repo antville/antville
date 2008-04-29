@@ -435,12 +435,22 @@ function list_macro(param, id, limit) {
       site || (site = res.handlers.site);
       var filter = function(item, index) {
          return index < max && item.getPermission("main");
-      };
+      }
+      
+      var commentFilter = function(item) {
+         if (item.constructor === Comment && 
+               item.story.status !== Story.CLOSED && 
+               item.site.commentMode !== Site.DISABLED &&
+               item.story.commentMode !== Story.CLOSED) {
+            return true;
+         }
+         return false;
+      }
 
       switch (type) {
          case "comments":
          var comments = site.stories.comments;
-         collection = comments.list().filter(filter);
+         collection = comments.list().filter(filter).filter(commentFilter);
          skin = "$Comment#preview";
          break;
          
@@ -456,7 +466,7 @@ function list_macro(param, id, limit) {
          
          case "postings":
          content = site.stories.union;
-         collection = content.list().filter(filter);
+         collection = content.list().filter(filter).filter(commentFilter);
          skin = "$Story#preview";
          break;
          
