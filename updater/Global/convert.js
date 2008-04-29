@@ -62,8 +62,8 @@ convert.images = function() {
          contentLength: this.size || 0,
          contentType: "image/" + this.type,
          width: this.width,
-         height: this.height,
-      }
+         height: this.height
+      };
       this.description && (metadata.description = clean(this.description));
       if (this.thumbnailWidth && this.thumbnailHeight) {
          metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
@@ -80,20 +80,36 @@ convert.layoutImages = function() {
    retrieve(query("layoutImages"));
    execute("alter table image change id id int(11) not null auto_increment");
    traverse(function() {
-      execute("insert into image values (null, " + this.site_id + ", 'Image', " + 
+      var metadata = {
+         fileName: this.fileName + "." + this.type,
+         contentLength: this.contentLength || 0,
+         contentType: "image/" + this.type,
+         width: this.width,
+         height: this.height
+      };
+      this.description && (metadata.description = clean(this.description));
+      if (this.thumbnailWidth && this.thumbnailHeight) {
+         metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
+         metadata.thumbnailWidth = this.thumbnailWidth;
+         metadata.thumbnailHeight = this.thumbnailHeight;
+      }
+      execute("insert into image values (null, " + this.site_id + ", 'LayoutImage', " + 
             quote(this.name) + ", str_to_date('" + 
-            this.created.format("yyyyMMdd HHmmss") + "', '%Y%m%d %H%i%s')," + 
+            this.created.format("yyyyMMdd HHmmss") + "', '%Y%m%d %H%i%s'), " + 
             this.creator_id + ", null, null, " + 
-            this.layout_id + ", 'Layout', null, null, null, null)");
+            this.layout_id + ", 'Layout', " + quote(metadata.toSource()) + ", null, null, null)");
       var fpath = antville().properties.staticPath;
-      var source = new helma.File(fpath + "/layouts/" + this.parent_name, this.fileName);
-      var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
-      layoutDir.exists() || layoutDir.makeDirectory();
-      var dest = new helma.File(layoutDir, this.fileName);
-      log("Copy " + source + " to " + dest);
-      if (source.exists()) {
-         dest.exists() && dest.remove();
-         source.hardCopy(dest);
+      var files = [metadata.fileName, metadata.thumbnailName];
+      for each (var fname in files) {
+         var source = new helma.File(fpath + "/layouts/" + this.parent_name, fname);
+         var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
+         layoutDir.exists() || layoutDir.makeDirectory();
+         var dest = new helma.File(layoutDir, fname);
+         log("Copy " + source + " to " + dest);
+         if (source.exists()) {
+            dest.exists() && dest.remove();
+            source.hardCopy(dest);
+         }
       }
    });
    execute("alter table image change id id int(11) not null");

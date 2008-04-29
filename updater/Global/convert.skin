@@ -128,7 +128,7 @@ FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
 #!imageTable
-lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, image write, tag write, tag_hub write, AV_SITE as site read, AV_LAYOUT as layout read, AV_LAYOUT as parent read;
+lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, AV_IMAGE as i2 read, image write, tag write, tag_hub write, AV_SITE as site read, AV_LAYOUT as layout read, AV_LAYOUT as parent read;
 insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, null, null, null, IMAGE_TOPIC, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
 #!layoutImages
 create index topic on image (topic);
@@ -168,6 +168,22 @@ CREATE TABLE `image` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
+<% #layoutImages %>
+select site.SITE_ID as site_id, SITE_ALIAS as site_name, parent.LAYOUT_ALIAS as 
+parent_name, layout.LAYOUT_ID as layout_id, layout.LAYOUT_ALIAS as layout_name,
+i.IMAGE_ID as id, i.IMAGE_ALIAS as name, layout.LAYOUT_F_USER_CREATOR as creator_id, 
+layout.LAYOUT_CREATETIME created, i.IMAGE_FILEEXT as type, i.IMAGE_FILENAME as 
+fileName, i.IMAGE_WIDTH as width, i.IMAGE_HEIGHT as height, i.IMAGE_ALTTEXT as 
+description, i.IMAGE_FILESIZE as contentLength, 
+t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight
+from AV_IMAGE i left join AV_IMAGE t on
+i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID, AV_LAYOUT layout, AV_LAYOUT parent, AV_SITE site where 
+SITE_F_LAYOUT = layout.LAYOUT_ID and layout.LAYOUT_F_LAYOUT_PARENT = 
+parent.LAYOUT_ID and i.IMAGE_F_IMAGE_PARENT is null and i.IMAGE_F_LAYOUT = 
+parent.LAYOUT_ID and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE i2 
+where i2.IMAGE_ALIAS = i.IMAGE_ALIAS and i2.IMAGE_PROTOTYPE = "LayoutImage" and 
+i2.IMAGE_F_LAYOUT = layout.LAYOUT_ID)
+
 <% #images %>
 select i.IMAGE_ID as id, i.IMAGE_ALIAS as name, i.IMAGE_FILENAME as fileName, i.IMAGE_FILEEXT as type, 
 i.IMAGE_WIDTH as width, i.IMAGE_HEIGHT as height, i.IMAGE_ALTTEXT as description, 
@@ -175,16 +191,6 @@ i.IMAGE_FILESIZE as size, t.IMAGE_WIDTH as thumbnailWidth,
 t.IMAGE_HEIGHT as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on 
 i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID where i.IMAGE_WIDTH is not null and 
 i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null order by id
-
-<% #layoutImages %>
-select site.SITE_ID as site_id, SITE_ALIAS as site_name, parent.LAYOUT_ALIAS as 
-parent_name, layout.LAYOUT_ID as layout_id, layout.LAYOUT_ALIAS as layout_name,
-IMAGE_ID as id, IMAGE_ALIAS as name, layout.LAYOUT_F_USER_CREATOR as creator_id, 
-layout.LAYOUT_CREATETIME created, concat(IMAGE_FILENAME, ".", IMAGE_FILEEXT) as fileName
-from AV_IMAGE, AV_LAYOUT layout, AV_LAYOUT parent, AV_SITE site where 
-SITE_F_LAYOUT = layout.LAYOUT_ID and layout.LAYOUT_F_LAYOUT_PARENT = 
-parent.LAYOUT_ID and  IMAGE_F_IMAGE_PARENT is null and IMAGE_F_LAYOUT = 
-parent.LAYOUT_ID
 
 <% #AV_LAYOUT %>
 alter table AV_LAYOUT rename layout;
