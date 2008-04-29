@@ -87,6 +87,7 @@ Site.prototype.getPermission = function(action) {
       case "main.css":
       case "robots.txt":
       case "search.xml":
+      case "user.js":
       return true;
 
       case ".":
@@ -249,16 +250,20 @@ Site.prototype.main_css_action = function() {
 }
 
 Site.prototype.main_js_action = function() {
-   res.dependsOn(this.modified);
-   res.dependsOn(Skin("Site", "javascript").getSource());
-   res.digest();
    res.contentType = "text/javascript";
-   var href;
    for each (script in ["jquery-1.2.3.min.js", "antville-1.2.js"]) {
       this.renderSkin("$Site#include", {href: root.getStaticUrl(script)});
    }
-   this.renderSkin("Site#javascript");
+   this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;
+}
+
+Site.prototype.user_js_action = function() {
+   res.dependsOn(this.modified);
+   res.dependsOn(Skin("Site", "javascript").getSource());
+   res.digest();
+   this.renderSkin("Site#javascript");
+   return;  
 }
 
 Site.prototype.rss_xml_action = function() {
