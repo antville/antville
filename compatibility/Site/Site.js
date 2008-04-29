@@ -294,7 +294,7 @@ Site.prototype.layoutchooser_macro = function(param) {
 
 Site.prototype.history_macro = function(param, type) {
    param.skin || (param.skin = "Story#history");
-   var type = param.show || "stories";
+   var type = param.show || "postings";
    var limit = Math.min(param.limit || 10, 20);
    delete param.show;
    delete param.limit;

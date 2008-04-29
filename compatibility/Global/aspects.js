@@ -43,7 +43,6 @@ var aspects = {
       var url = param.linkto;
       !param.skin && (param.skin = param.useskin);
       delete(param.name);
-      delete(param.id);
       delete(param.as);
       delete(param.linkto);
       return [param, id, mode, url];
