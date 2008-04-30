@@ -365,8 +365,14 @@ convert.skins = function() {
       var source = new helma.File(sourcePath);
       if (source.exists()) {
          var destination = new helma.File(destPath);
-         destination && destination.removeDirectory();
-         source.renameTo(destination);
+         if (destination.exists()) {
+            destination.removeDirectory();
+         }
+         destination.makeDirectory();
+         var files = source.list();
+         for each (var fname in files) {
+            (new helma.File(source, fname)).hardCopy(new helma.File(destination, fname));
+         }
       }
       return destPath;
    }
