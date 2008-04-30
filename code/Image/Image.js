@@ -78,25 +78,23 @@ Image.prototype.constructor = function(data) {
 }
 
 Image.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
+   var defaultGrant = this._parent.getPermission("main");
    switch (action) {
       case ".":
       case "main":
       return true;
       case "delete":
-      return this.creator === session.user || 
+      return defaultGrant && this.creator === session.user || 
             Membership.require(Membership.MANAGER) ||
             User.require(User.PRIVILEGED);            
       case "edit":
-      return this.creator === session.user || 
+      return defaultGrant && this.creator === session.user || 
             Membership.require(Membership.MANAGER) || 
             User.require(User.PRIVILEGED) &&
             this.parent_type !== "Layout" ||
             this.parent === path.layout;
       case "replace":
-      return (User.require(User.PRIVILEGED) ||
+      return defaultGrant && (User.require(User.PRIVILEGED) ||
             Membership.require(Membership.MANAGER)) &&
             (this.parent_type === "Layout" && 
             this.parent !== path.layout);

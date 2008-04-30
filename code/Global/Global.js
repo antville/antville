@@ -893,7 +893,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
          else
             param.text = html.linkAsString({href: url + "?page=" + page}, text);
       }
-      renderSkin("Global#pagerItem", param);
+      renderSkin("$Global#pagerItem", param);
       return;
    }
 
@@ -925,7 +925,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
 
    // Render the navigation-bar
    res.push();
-   (pageIdx > 0) && renderItem("prev", "pageNavItem", url, pageIdx-1);
+   (pageIdx > 0) && renderItem("[–]", "pageNavItem", url, pageIdx-1);
    var offset = Math.floor(pageIdx / maxItems) * maxItems;
    (offset > 0) && renderItem("[..]", "pageNavItem", url, offset-1);
    var currPage = offset;
@@ -942,10 +942,10 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
       renderItem("[..]", "pageNavItem", url, offset + maxItems);
    }
    if (pageIdx < lastPageIdx) {
-      renderItem("next", "pageNavItem", url, pageIdx +1);
+      renderItem("[+]", "pageNavItem", url, pageIdx +1);
    }
    param.pager = res.pop();
-   return renderSkinAsString("Global#pager", param);
+   return renderSkinAsString("$Global#pager", param);
 }
 
 function singularize(plural) {

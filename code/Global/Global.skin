@@ -1,14 +1,3 @@
-<% #pager %>
-<div class="pageNav">
-<div class="pageNavSummary">
-   <% gettext "displaying {0} (of {1})" <% param.display %> <% param.total %> %>
-</div>
-<div class="pageNavBar"><% param.pager %></div>
-</div>
-
-<% #pagerItem %>
-<span class="<% param.class %>"><% param.text %></span>
-
 <% #xslDeclaration %>
 <?xml-stylesheet title="Xml Stylesheet" type="text/xsl" 
       href="<% site.href rss.xsl %>"?>

@@ -1,3 +1,14 @@
+<% #pager %>
+<div class="pageNav">
+<div class="pageNavSummary">
+   <% gettext "Displaying {0} (of {1})" <% param.display %> <% param.total %> %>
+</div>
+<div class="pageNavBar"><% param.pager %></div>
+</div>
+
+<% #pagerItem %>
+<span class="<% param.class %>"><% param.text %></span>
+
 <% #upload %>
 <div class="upload" style="position: relative;">
    <input type="file" id="<% param.name %>" name="<% param.name %>" 

@@ -42,6 +42,10 @@ Comment.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "comment":
+      // FIXME: temporary fix for lost stories due to shrunk database
+      if (!this.story) {
+         return false;
+      }
       return this.site.commentMode === Site.ENABLED &&
             this.story.getPermission(action) && 
             this.status !== Comment.CLOSED &&

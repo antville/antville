@@ -92,6 +92,16 @@ $(function() {
    site. Modifying it will affect the general appearance of your site." %></div>
 </li>
 <li>
+   <% skins.link Site/navigation/edit "Navigation" %>
+   <div class="small"><% gettext "This skin is used to display the navigation 
+   links on the page." %></div>
+</li>
+<li>
+   <% skins.link Site/main/edit Frontpage %>
+   <div class="small"><% gettext "This skin is used to render the front page of 
+   your site." %></div>
+</li>
+<li>
    <% skins.link Site/stylesheet/edit "CSS Stylesheet" %>
    <div class="small"><% gettext "This skin contains the Cascaded Stylesheet 
    (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
@@ -102,9 +112,3 @@ $(function() {
    <div class="small"><% gettext "This skin contains additional JavaScript code  
    that will be included in every page." %></div>
 </li>
-<li>
-   <% skins.link Site/main/edit Frontpage %>
-   <div class="small"><% gettext "This skin is used to render the front page of 
-   your site." %></div>
-</li>
-FIXME...
