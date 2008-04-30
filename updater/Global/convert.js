@@ -105,12 +105,10 @@ convert.layoutImages = function() {
          var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
          layoutDir.exists() || layoutDir.makeDirectory();
          var dest = new helma.File(layoutDir, fname);
-         log("Copy " + source + " to " + dest);
          if (source.exists()) {
+            log("Copy " + source + " to " + dest);
             if (dest.exists()) {
                dest.remove();
-            } else {
-               continue;
             }
             source.hardCopy(dest);
          }
@@ -440,13 +438,13 @@ convert.skins = function() {
             var rootLayoutId = /sys_layout idref="(\d)*"/.exec(xml)[1] || 1;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
-         }  else {
-            if (this.layout_id === this.current_layout) {
+         } else { // FIXME: CLEANUP!!!!
+            /*if (this.layout_id === this.current_layout) {
                fpath = move(fpath + "/layouts/" + this.layout_name, 
                      fpath + "/layout/");
-            } else {
+            } else {*/
                fpath += "/layouts/" + this.layout_name;
-            }
+            //}
          }
          skins = appSkins.clone({}, true);
          skins.Site.values = values(this.layout_metadata);
@@ -486,6 +484,21 @@ convert.skins = function() {
    // One last time to be sure every layout's skins are saved
    save(skins, fpath);
    return;
+}
+
+convert.folders = function() {
+   retrieve("select site.name as site_name, layout.name as layout_name from " +
+         "site left join layout on site.layout_id = layout.id");
+   traverse(function() {
+      var dir = antville().properties.staticPath + this.site_name;
+      var source = new helma.File(dir, "layouts/" + this.layout_name);
+      var dest = new helma.File(dir, "layout");
+      log("Copy " + source + " to " + dest);
+      if (dest.exists()) {
+         dest.removeDirectory();
+      }
+      source.renameTo(dest);
+   });
 }
 
 convert.root = function() {

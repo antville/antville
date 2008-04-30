@@ -48,6 +48,7 @@ Root.prototype.main_action = function() {
          update("AV_USER");
          update("AV_VOTE");
          update("AV_SYSLOG"); // This table has to go last!
+         convert("folders");
          convert("root");
          finalize();
       }
