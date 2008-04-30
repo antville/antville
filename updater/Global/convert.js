@@ -107,7 +107,11 @@ convert.layoutImages = function() {
          var dest = new helma.File(layoutDir, fname);
          log("Copy " + source + " to " + dest);
          if (source.exists()) {
-            dest.exists() && dest.remove();
+            if (dest.exists()) {
+               dest.remove();
+            } else {
+               continue;
+            }
             source.hardCopy(dest);
          }
       }
@@ -382,11 +386,11 @@ convert.skins = function() {
          var data = res.pop();
 
          if (data) {
-            var file = new java.io.File(fpath + "/" + prototype + "/" + 
-                  prototype + ".skin");
-            file.mkdirs();
+            var dir =  new java.io.File(fpath, prototype);
+            dir.exists() || dir.mkdirs();
+            var file = new java.io.File(dir, prototype + ".skin");
+            file.exists() && file["delete"]();
             log(file.getCanonicalPath());
-            file["delete"]();
             var fos = new java.io.FileOutputStream(file);
             var bos = new java.io.BufferedOutputStream(fos);
             var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
@@ -483,6 +487,9 @@ convert.root = function() {
    var staticDir = antville().properties.staticPath;
    retrieve("select name from site where id = " + rootId);
    traverse(function() {
+      if (this.name === "www") {
+         return;
+      }
       var dir = new helma.File(staticDir, this.name);
       var files = dir.list();
       for each (fname in files) {
