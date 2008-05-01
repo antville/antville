@@ -137,7 +137,7 @@ var error = function(exception) {
 }
 
 var quote = function(str) {
-   if (!str) {
+   if (str === null) {
       return str;
    }
    return "'" + str.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
@@ -202,7 +202,36 @@ var count = function(sql) {
    return count;
 }
 
-var execute = function(sql) {
+var value = function(obj) {
+   if (obj === null) {
+      return obj;
+   }
+   if (obj === undefined) {
+      obj = String(obj);
+   }
+   switch (obj.constructor) {
+      case Number:
+      return obj;
+      case String:
+      return quote(obj);
+      case Date:
+      return "from_unixtime(" + (obj.getTime() / 1000) + ")";
+      case HopObject:
+      return quote(obj.toSource());
+   }
+   return quote(String(obj));
+}
+
+var execute = function(sql /*, value1, ..., valueN */) {
+   if (arguments.length > 1) {
+      var values = Array.prototype.splice.call(arguments, 1);
+      if (typeof values[0] === "object") {
+         values = values[0];
+      }
+      sql = sql.replace(/\$(\w*)/g, function() {
+         return value(values[arguments[1]]);
+      });
+   }
    log(sql.contains("\n") ? sql.substr(0, sql.indexOf("\n")) + " ..." : sql);
    try {
       db().executeCommand(sql);
@@ -218,16 +247,17 @@ var retrieve = function(sql) {
    return;
 }
 
-var traverse = function(callback) {
+var traverse = function(callback, noOffset) {
    if (!app.data.query || !callback) {
       return;
    }
    var STEP = 5000, start = Date.now();
    var sql, rows, offset = 0;      
    while (true) {
-      msg("Starting bulk after " + (Date.now() - start) + " millis");
+      //msg("Starting bulk after " + (Date.now() - start) + " millis");
       start = Date.now();
-      sql = app.data.query + " limit " + STEP + " offset " + offset;
+      sql = app.data.query + " limit " + STEP;
+      noOffset || (sql += " offset " + offset);
       result = db().executeRetrieval(sql);
       error();
       msg(sql);

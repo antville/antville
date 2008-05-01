@@ -41,6 +41,10 @@ delete from AV_IMAGE where IMAGE_ID = 686854;
 select id, xml, metadata from <% param.value1 %> order by id
 
 <% #tag %>
+drop table if exists tag;
+#!tagTable
+
+<% #tagTable %>
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL default '0',
   `name` varchar(255) default NULL,
@@ -53,6 +57,10 @@ CREATE TABLE `tag` (
 ) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #tag_hub %>
+drop table if exists tag_hub;
+#!tagHubTable
+
+<% #tagHubTable %>
 CREATE TABLE `tag_hub` (
   `id` int(11) NOT NULL default '0',
   `tag_id` int(11) default NULL,
@@ -197,6 +205,7 @@ alter table AV_LAYOUT rename layout;
 lock tables layout write;
 alter table layout add column metadata mediumtext;
 alter table layout change column LAYOUT_PREFERENCES xml mediumtext, change column LAYOUT_ID id mediumint(10), change column LAYOUT_ALIAS name varchar(30), change column LAYOUT_F_SITE site_id mediumint(10), change column LAYOUT_F_LAYOUT_PARENT layout_id mediumint(10), change column LAYOUT_CREATETIME created datetime, change column LAYOUT_MODIFYTIME modified datetime, change column LAYOUT_F_USER_CREATOR creator_id mediumint(10), change column LAYOUT_F_USER_MODIFIER modifier_id mediumint(10), change column LAYOUT_SHAREABLE mode enum('default','shared');
+update layout set mode = 'default';
 create index site_id on layout (site_id);
 #!layouts
 alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
@@ -329,23 +338,11 @@ drop table AV_SYSLOG;
 unlock tables;
 
 <% #AV_TEXT %>
+drop table if exists content;
 #!contentTable
-lock tables AV_TEXT read, content write, tag write, tag_hub write;
-insert into content select TEXT_ID, TEXT_F_SITE, TEXT_TOPIC, TEXT_PROTOTYPE, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_CONTENT, TEXT_F_USER_CREATOR, TEXT_CREATETIME, TEXT_MODIFYTIME, TEXT_F_USER_MODIFIER, TEXT_READS, TEXT_ALIAS, null, null, null, null, null, TEXT_ISONLINE, TEXT_EDITABLEBY, TEXT_HASDISCUSSIONS from AV_TEXT;
-create index topic on content (topic);
+lock tables AV_TEXT write, content write, tag write, tag_hub write;
 #!content
-update content set parent_type = "Story";
-update content set parent_type = "Comment" where parent_id is not null;
-update content set parent_id = story_id  where parent_id is null and prototype = "Comment" and parent_type = "Story";
-update content set status = 'closed';
-update content set status = 'public' where TEXT_ISONLINE <> 0 or parent_type = "Comment";
-update content set status = 'shared' where TEXT_EDITABLEBY = 1;
-update content set status = 'open' where TEXT_EDITABLEBY = 2;
-update content set mode = 'hidden' where TEXT_ISONLINE = 1;
-update content set mode = 'featured' where TEXT_ISONLINE = 2;
-update content set comment_mode = 'closed';
-update content set comment_mode = 'open' where TEXT_HASDISCUSSIONS = 1;
-alter table content drop column xml, drop column topic, drop column TEXT_HASDISCUSSIONS, drop column TEXT_ISONLINE, drop column TEXT_EDITABLEBY;
+create index site_id on content(site_id);
 create index story_id on content (story_id);
 create index parent_id on content (parent_id);
 create index parent_type on content (parent_type);
@@ -353,33 +350,56 @@ create index creator_id on content (creator_id);
 create index requests on content (requests);
 create index status on content (status);
 create index content on content (site_id, prototype, status, mode);
-alter table content convert to character set utf8 collate utf8_bin;
+unlock tables;
+
+<% #AV_TEXT_disabled %>
+#!contentTable
+#lock tables AV_TEXT read, content write, tag write, tag_hub write;
+#insert into content select TEXT_ID, TEXT_F_SITE, TEXT_TOPIC, TEXT_PROTOTYPE, TEXT_F_TEXT_STORY, TEXT_F_TEXT_PARENT, TEXT_CONTENT, TEXT_F_USER_CREATOR, TEXT_CREATETIME, TEXT_MODIFYTIME, TEXT_F_USER_MODIFIER, TEXT_READS, TEXT_ALIAS, null, null, null, null, null, TEXT_ISONLINE, TEXT_EDITABLEBY, TEXT_HASDISCUSSIONS from AV_TEXT;
+create index topic on content (topic);
+#create index site_id on content(site_id);
+#!content
+#update content set parent_type = "Story";
+#update content set parent_type = "Comment" where parent_id is not null;
+#update content set parent_id = story_id  where parent_id is null and prototype = "Comment" and parent_type = "Story";
+#update content set status = 'closed';
+#update content set status = 'public' where TEXT_ISONLINE <> 0 or parent_type = "Comment";
+#update content set status = 'shared' where TEXT_EDITABLEBY = 1;
+#update content set status = 'open' where TEXT_EDITABLEBY = 2;
+#update content set mode = 'hidden' where TEXT_ISONLINE = 1;
+#update content set mode = 'featured' where TEXT_ISONLINE = 2;
+#update content set comment_mode = 'closed';
+#update content set comment_mode = 'open' where TEXT_HASDISCUSSIONS = 1;
+#alter table content drop column xml, drop column topic, drop column TEXT_HASDISCUSSIONS, drop column TEXT_ISONLINE, drop column TEXT_EDITABLEBY;
+#create index story_id on content (story_id);
+#create index parent_id on content (parent_id);
+#create index parent_type on content (parent_type);
+#create index creator_id on content (creator_id);
+#create index requests on content (requests);
+#create index status on content (status);
+#create index content on content (site_id, prototype, status, mode);
+#alter table content convert to character set utf8 collate utf8_bin;
 drop table AV_TEXT;
 unlock tables;
 
 <% #contentTable %>
 CREATE TABLE `content` (
   `id` mediumint(10) NOT NULL default '0',
-  `site_id` mediumint(10) default NULL,
-  `topic` varchar(255) default NULL,
+  `name` varchar(255) NOT NULL,
   `prototype` enum('Story','Comment') default NULL,
+  `site_id` mediumint(10) default NULL,
   `story_id` mediumint(10) default NULL,
   `parent_id` mediumint(10) default NULL,
-  `xml` mediumtext,
-  `creator_id` mediumint(10) default NULL,
-  `created` datetime default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` mediumint(10) default NULL,
-  `requests` mediumint(10) default NULL,
-  `name` varchar(255) default NULL,
-  `metadata` mediumtext,
   `parent_type` varchar(30) default NULL,
+  `requests` mediumint(10) default NULL,
   `status` enum('closed','pending','readonly','public','shared','open') default NULL,
   `mode` enum('hidden','featured') default NULL,
   `comment_mode` enum('closed','readonly','moderated','open') default NULL,
-  `TEXT_ISONLINE` tinyint(4) default NULL,
-  `TEXT_EDITABLEBY` tinyint(1) default NULL,
-  `TEXT_HASDISCUSSIONS` tinyint(1) default NULL,
+  `metadata` mediumtext,
+  `created` datetime default NULL,
+  `creator_id` mediumint(10) default NULL,
+  `modified` datetime default NULL,
+  `modifier_id` mediumint(10) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 

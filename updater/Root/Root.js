@@ -33,8 +33,8 @@ Root.prototype.main_action = function() {
       if (init()) {
          //update("size"); // DEBUG
          //update("legacy");
-         execute(query("tag"));
-         execute(query("tag_hub"));
+         update("tag");
+         update("tag_hub");
          update("AV_ACCESSLOG");
          update("AV_CHOICE");
          update("AV_FILE");

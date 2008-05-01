@@ -173,8 +173,90 @@ convert.sites = function() {
 }
 
 convert.content = function() {
-   convert.xml("AV_TEXT", "content");
-   convert.tags("content");
+   execute("alter table tag change id id int(11) not null auto_increment")
+   execute("alter table tag_hub change id id int(11) not null auto_increment");
+
+   /* retrieve("select TEXT_ID as id from AV_TEXT where TEXT_TOPIC is null");
+   traverse(function() {
+      execute("update AV_TEXT set TEXT_TOPIC = '' where TEXT_ID = " + this.id);
+   }); */
+
+   retrieve("select distinct(TEXT_TOPIC) as topic, TEXT_F_SITE as site_id from AV_TEXT where TEXT_TOPIC <> ''");
+   traverse(function() {
+      execute("insert into tag set site_id = " + 
+            this.site_id + ", name = " +
+            quote(this.topic.replace(/^[\/\.]*$/, "?")) + ", type = 'Story'");
+   });
+
+   /* retrieve("select TEXT_TOPIC, tag.id, TEXT_ID as tagged_id, " +
+         "TEXT_F_USER_MODIFIER as modifier_id, TEXT_F_USER_CREATOR as creator_id, TEXT_F_SITE from AV_TEXT, " +
+         "tag where TEXT_TOPIC is not null and TEXT_TOPIC = tag.name and " +
+         "tag.type = 'Story'");
+   traverse(function() {
+      execute("insert into tag_hub set tag_id = " + 
+            this.id + ", tagged_id = " + this.tagged_id + 
+            ", tagged_type = 'Story', user_id = " +
+            this.modifier_id || this.creator_id);
+   }); */
+
+   var metadata = function(xml) {
+      try {
+         return Xml.readFromString(clean(xml));
+      } catch (ex) {
+         app.debug(ex);
+      }
+      return {};
+   }
+
+   retrieve("select * from AV_TEXT left join tag on TEXT_F_SITE = site_id and TEXT_TOPIC = name and type = 'Story' order by TEXT_ID");
+   traverse(function() {
+      this.name = this.ALIAS || "";
+      if (this.TEXT_PROTOTYPE === "Comment") {
+         if (!this.TEXT_F_TEXT_PARENT) {
+            this.parent_type = "Story";
+            this.TEXT_F_TEXT_PARENT = this.TEXT_F_TEXT_STORY;
+         } else {
+            this.parent_type = "Comment";
+         }
+         this.status = "public";
+         this.mode = "hidden";
+         this.comment_mode = "open"; 
+      } else {
+         this.TEXT_F_TEXT_STORY = this.TEXT_F_TEXT_PARENT = null;
+         this.parent_type = null;
+         this.status = "closed";
+         if (this.TEXT_ISONLINE != 1) {
+            this.status = "public";
+         }
+         if (this.TEXT_EDITABLEBY == 1) {
+            this.status = "shared";
+         } else if (this.TEXT_EDITABLEBY == 2) {
+            this.status = "open";
+         }
+         if (this.TEXT_ISONLINE == 1) {
+            this.mode = "hidden";
+         } else {
+            this.mode = "featured";
+         }
+         this.comment_mode = this.TEXT_HASDISCUSSIONS == 1 ? "open" : "closed";
+      }
+      this.metadata = metadata(this.TEXT_CONTENT);
+      execute("insert into content values ($TEXT_ID, $name, " +
+            "$TEXT_PROTOTYPE, $TEXT_F_SITE, $TEXT_F_TEXT_STORY, " +
+            "$TEXT_F_TEXT_PARENT, $parent_type, $TEXT_READS, $status, " +
+            "$mode, $comment_mode, $metadata, $TEXT_CREATETIME, " +
+            "$TEXT_F_USER_CREATOR, $TEXT_MODIFYTIME, $TEXT_F_USER_MODIFIER)", 
+            this);
+      if (this.TEXT_TOPIC) {
+         execute("insert into tag_hub set tag_id = $0, tagged_id = $1, " +
+               "tagged_type = 'Story', user_id = $2", this.id, this.TEXT_ID, 
+               this.TEXT_F_USER_MODIFIER || this.TEXT_F_USER_CREATOR);
+      }
+      execute("delete from AV_TEXT where TEXT_ID = " + this.TEXT_ID);
+   }, true);
+
+   execute("alter table tag change id id int(11)")
+   execute("alter table tag_hub change id id int(11)");
 }
 
 convert.users = function() {
@@ -190,7 +272,7 @@ convert.users = function() {
    });
 }
 
-convert.xml = function(table, table2) {
+convert.xml = function(table) {
    var metadata = function(xml) {
       try {
          return Xml.readFromString(clean(xml));
@@ -199,14 +281,10 @@ convert.xml = function(table, table2) {
       }
       return {};
    };
-   
-   retrieve(query("jsonize", table2 || table));
+   retrieve(query("jsonize", table));
    traverse(function() {
-      if (!this.xml) {
-         return;
-      }
       var data = metadata(this.xml);
-      execute("update " + (table2 || table) + " set metadata = " + 
+      execute("update " + table + " set metadata = " + 
             quote(data.toSource()) + ", xml = '' where id = " + this.id);
    });
 }
@@ -219,21 +297,24 @@ convert.tags = function(table) {
       case "content":
       prototype = "Story"; break;
    }
-   retrieve("select distinct(topic), site_id from " + table + 
-         " where topic is not null");
+
+   /* retrieve("select id from " + table + " where topic is null");
+   traverse(function() {
+      execute("update " + table + " set topic = '' where id = " + this.id);
+   }); */
+   retrieve("select distinct(topic), site_id from " + table + " where topic <> ''");
    execute("alter table tag change id id int(11) not null auto_increment")
    traverse(function() {
       execute("insert into tag set site_id = " + 
             this.site_id + ", name = " +
-            quote(this.topic).replace(/^[\/\.]*$/, "?") + ", type = " +  
+            quote(this.topic.replace(/^[\/\.]*$/, "?")) + ", type = " +  
             quote(prototype));
    });
    execute("alter table tag change id id int(11)")
 
-   // FIXME: removed metadata from select statement!!!
    retrieve("select topic, tag.id, " + table + ".id as tagged_id, " +
          "modifier_id, creator_id, " + table + ".site_id from " + table + 
-         ", tag where " + "topic is not null and topic = tag.name and " +
+         ", tag where " + "topic <> '' and topic = tag.name and " +
          "tag.type = " + quote(prototype));
    execute("alter table tag_hub change id id int(11) not null auto_increment;")
    traverse(function() {
