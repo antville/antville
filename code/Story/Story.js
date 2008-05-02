@@ -184,6 +184,7 @@ Story.prototype.update = function(data) {
       }
    }
    
+   this.name = String.EMPTY;
    this.title = data.title;
    this.text = data.text;
    this.status = data.status;
@@ -437,7 +438,7 @@ Story.prototype.format_filter = function(value, param, mode) {
 }
 
 Story.prototype.macro_filter = function(value, param) {
-   var skin = value.constructor === String ? createSkin(format(value)) : value;
+   var skin = value.constructor === String ? createSkin(value) : value;
    skin.allowMacro("image");
    skin.allowMacro("this.image");
    skin.allowMacro("site.image");

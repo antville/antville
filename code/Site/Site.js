@@ -646,21 +646,21 @@ Site.prototype.getTags = function(type, group) {
    return null;
 }
 
-Site.prototype.getStaticFile = function(fpath) {
+Site.prototype.getStaticFile = function(tail) {
    res.push();
    res.write(app.properties.staticPath);
    res.write(this.name);
    res.write("/");
-   fpath && res.write(fpath);
+   tail && res.write(tail);
    return new helma.File(res.pop());
 }
 
-Site.prototype.getStaticUrl = function(fpath) {
+Site.prototype.getStaticUrl = function(tail) {
    res.push();
    res.write(app.properties.staticUrl);
    res.write(this.name);
    res.write("/");
-   fpath && res.write(fpath);
+   tail && res.write(tail);
    return encodeURI(res.pop());
 }
 

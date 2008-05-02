@@ -22,6 +22,21 @@
 // $URL$
 //
 
+HopObject.getFromPath = function(name, collection) {
+   var site;
+   if (name.contains("/")) {
+      var parts = name.split("/");
+      site = root.get(parts[0]);
+      name = parts[1];
+   } else {
+      site = res.handlers.site;
+   }
+   if (site && site.getPermission("main")) {
+      return site[collection].get(name);
+   }
+   return null;
+}
+
 HopObject.prototype.map = function(values) {
    for (var i in values) {
       this[i] = values[i];
@@ -433,19 +448,4 @@ HopObject.prototype.handleMetadata = function(name) {
       return;
    };
    return;
-}
-
-HopObject.getFromPath = function(name, collection) {
-   var site;
-   if (name.contains("/")) {
-      var parts = name.split("/");
-      site = root.get(parts[0]);
-      name = parts[1];
-   } else {
-      site = res.handlers.site;
-   }
-   if (site && site.getPermission("main")) {
-      return site[collection].get(name);
-   }
-   return null;
 }

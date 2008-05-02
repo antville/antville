@@ -28,6 +28,14 @@ this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
 this.handleMetadata("fileName");
 
+File.getName = function(name) {
+   if (name) {
+      //return name.replace(/[^\w\d\s._-]/g, String.EMPTY);
+      return name.replace(/[\/\\:;?+\[\]{}|#"`^]/g, String.EMPTY);
+   }
+   return null;
+}
+
 File.prototype.constructor = function() {
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
@@ -122,17 +130,20 @@ File.prototype.update = function(data) {
 
       this.origin = data.file_origin;
       var mimeName = mime.normalizeFilename(mime.name);
-      this.name || (this.name = this.site.files.getAccessName(data.name || 
-            mimeName.split(".")[0]));
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
       
+      if (!this.name) {
+          var name = File.getName(data.name) || mimeName.split(".")[0];
+          this.name = this.site.files.getAccessName(name);
+      }
+
       // Make the file persistent before proceeding with writing 
       // it to disk (also see Helma bug #607)
       this.isTransient() && this.persist();
 
       var extension = mimeName.substr(mimeName.lastIndexOf(".")) || String.EMPTY;
-      var fileName = this._id + extension;
+      var fileName = this.name + extension;
       if (fileName !== this.fileName) {
          // Remove existing file if the file name has changed
          this.getFile().remove();

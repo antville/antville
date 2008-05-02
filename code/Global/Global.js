@@ -567,7 +567,7 @@ function validateUrl(str) {
 }
 
 function quote(str) {
-   if (/\s/.test(str)) {
+   if (/\W\D/.test(str)) {
       str = '"' + str + '"';
    }
    return str;

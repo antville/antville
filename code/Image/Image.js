@@ -195,11 +195,15 @@ Image.prototype.update = function(data) {
       }
       
       this.origin = data.file_origin;
-      this.name || (this.name = this.site.images.getAccessName(data.name || 
-            mime.normalizeFilename(mime.name).split(".")[0]));
+      var mimeName = mime.normalizeFilename(mime.name);
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
    
+      if (!this.name) {
+          var name = File.getName(data.name) || mimeName.split(".")[0];
+          this.name = this.site.images.getAccessName(name);
+      }
+
       var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);
       this.height = image.height; 
       this.width = image.width;
@@ -221,13 +225,13 @@ Image.prototype.update = function(data) {
       // setting tags (also see Helma bug #607)
       this.isTransient() && this.persist();
       
-      var fileName = this._id + extension;
+      var fileName = this.name + extension;
       if (fileName !== this.fileName) {
          // Remove existing image files if the file name has changed
          this.removeFiles();
       }
       this.fileName = fileName;
-      thumbnail && (this.thumbnailName = this._id + "_small" + extension);
+      thumbnail && (this.thumbnailName = this.name + "_small" + extension);
       this.writeFiles(image.resized || mime, thumbnail && thumbnail.resized);
    }
 
@@ -294,6 +298,7 @@ Image.prototype.getFile = function(name) {
 
 Image.prototype.getUrl = function(name) {
    name || (name = this.fileName);
+   //name = encodeURIComponent(name);
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
       res.push();
