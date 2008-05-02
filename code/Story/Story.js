@@ -31,6 +31,7 @@ this.handleMetadata("title");
 this.handleMetadata("text");
 
 Story.prototype.constructor = function() {
+   this.name = String.EMPTY;
    this.requests = 0;
    this.status = Story.PUBLIC;
    this.creator = this.modifier = session.user;
@@ -184,7 +185,6 @@ Story.prototype.update = function(data) {
       }
    }
    
-   this.name = String.EMPTY;
    this.title = data.title;
    this.text = data.text;
    this.status = data.status;

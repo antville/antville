@@ -24,6 +24,17 @@
 
 Poll.getStatus = defineConstants(Poll, "closed", "open");
 
+Poll.remove = function() {
+   if (this.constructor !== Poll) {
+      return;
+   }
+   while (this.size() > 0) {
+      Choice.remove.call(this.get(0));
+   }
+   this.remove();
+   return;
+}
+
 Poll.prototype.constructor = function(question) {
    this.question = question;
    this.creator = this.modifier = session.user;
@@ -59,25 +70,6 @@ Poll.prototype.getFormOptions = function(name) {
       return Poll.getStatus();
    }
    return;
-}
-
-Poll.prototype.link_macro = function(param, action, text) {
-   switch (action) {
-      case ".":
-      case "main":
-      if (this.status === Poll.CLOSED) {
-         return;
-      }
-      break;
-      case "rotate":
-      if (this.status === Poll.OPEN) {
-         text = gettext("Close");
-      } else {
-         text = this.closed ? gettext("Re-open") : gettext("Open");  
-      }
-      break;
-  }
-   return HopObject.prototype.link_macro.call(this, param, action, text);
 }
 
 Poll.prototype.main_action = function() {
@@ -135,32 +127,6 @@ Poll.prototype.edit_action = function() {
    return;
 }
 
-Poll.prototype.input_macro = function(param, name) {
-   switch (name) {
-      case "choices":
-      var index = 0;
-      var add = function(choice) {
-         index += 1;
-         return choice.renderSkin("$Choice#edit", {index: index});
-      };
-      var choices;
-      if (choices = req.postParams.title_array) {
-         while (choices.length < 2) {
-            choices.push(null);
-         }
-         choices.forEach(function(title) {
-            return add(new Choice(title));
-         });
-      } else {
-         this.forEach(function() {
-            return add(this);
-         });
-      }
-      return;
-   }
-   return HopObject.prototype.input_macro.apply(this, arguments);
-}
-
 Poll.prototype.update = function(data) {
    var choices = [];
    for each (var title in data.title_array) {
@@ -189,17 +155,6 @@ Poll.prototype.update = function(data) {
    return;
 }
 
-Poll.remove = function() {
-   if (this.constructor !== Poll) {
-      return;
-   }
-   while (this.size() > 0) {
-      Choice.remove.call(this.get(0));
-   }
-   this.remove();
-   return;
-}
-
 Poll.prototype.result_action = function() {
    res.data.title = gettext('Results of poll "{0}"', this.question);
    res.data.body = this.renderSkinAsString("$Poll#results");
@@ -217,6 +172,51 @@ Poll.prototype.rotate_action = function() {
    this.touch();
    return res.redirect(this.href());
    //return res.redirect(this._parent.href() + "#" + this._id);
+}
+
+Poll.prototype.link_macro = function(param, action, text) {
+   switch (action) {
+      case ".":
+      case "main":
+      if (this.status === Poll.CLOSED) {
+         return;
+      }
+      break;
+      case "rotate":
+      if (this.status === Poll.OPEN) {
+         text = gettext("Close");
+      } else {
+         text = this.closed ? gettext("Re-open") : gettext("Open");  
+      }
+      break;
+  }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
+}
+
+Poll.prototype.input_macro = function(param, name) {
+   switch (name) {
+      case "choices":
+      var index = 0;
+      var add = function(choice) {
+         index += 1;
+         return choice.renderSkin("$Choice#edit", {index: index});
+      };
+      var choices;
+      if (choices = req.postParams.title_array) {
+         while (choices.length < 2) {
+            choices.push(null);
+         }
+         choices.forEach(function(title) {
+            return add(new Choice(title));
+         });
+      } else {
+         this.forEach(function() {
+            return add(this);
+         });
+      }
+      return;
+   }
+   return HopObject.prototype.input_macro.apply(this, arguments);
 }
 
 Poll.prototype.votes_macro = function(param) {

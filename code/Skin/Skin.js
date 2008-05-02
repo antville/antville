@@ -21,6 +21,17 @@
 // $URL$
 //
 
+Skin.getByName = function(group, name) {
+   var skinSet = (res.handlers.layout || path.layout).skins.get(group);
+   if (skinSet) {
+      var skin = skinSet.get(name);
+      if (skin) {
+         return skin;
+      } 
+   }
+   return null;
+}
+
 Skin.remove = function(skin) {
    skin || (skin = this);
    if (skin.constructor === Skin) {

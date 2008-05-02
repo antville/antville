@@ -369,6 +369,8 @@ Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
 Image.prototype.writeFiles = function(data, thumbnail) {
    if (data) {
       try {
+         // If data is a MimeObject (ie. has the writeToFile method)
+         // the image was not resized and thus, we directly write it to disk
          var file = this.getFile();
          if (data.saveAs) {
             data.saveAs(file);

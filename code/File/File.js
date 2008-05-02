@@ -28,6 +28,14 @@ this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
 this.handleMetadata("fileName");
 
+File.remove = function() {
+   if (this.constructor === File) {
+      this.getFile().remove();
+      this.remove();
+   }
+   return;
+}
+
 File.getName = function(name) {
    if (name) {
       //return name.replace(/[^\w\d\s._-]/g, String.EMPTY);
@@ -175,13 +183,5 @@ File.prototype.getFile = function() {
 
 File.prototype.getUrl = function() {
    var site = this.parent || res.handlers.site;
-   return site.getStaticUrl("files/" + this.name);
-}
-   
-File.remove = function() {
-   if (this.constructor === File) {
-      this.getFile().remove();
-      this.remove();
-   }
-   return;
+   return site.getStaticUrl("files/" + this.fileName);
 }

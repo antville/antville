@@ -22,6 +22,16 @@
 // $URL$
 //
 
+Skins.remove = function(skins) {
+   skins || (skins = this);
+   if (skins.constructor === Skins) {
+      while (skins.size() > 0) {
+         HopObject.remove(skins.get(0));
+      }
+   }
+   return;
+}
+
 Skins.prototype.constructor = function(name, parent) {
   this.name = name; 
   this.parent = parent;
@@ -175,22 +185,5 @@ Skins.prototype.safe_action = function() {
 }
 
 Skins.prototype.getSkin = function(group, name) {
-   var skinSet = path.layout.skins.get(group);
-   if (skinSet) {
-      var skin = skinSet.get(name);
-      if (skin) {
-         return skin;
-      } 
-   }
-   return new Skin(group, name);
-}
-
-Skins.remove = function(skins) {
-   skins || (skins = this);
-   if (skins.constructor === Skins) {
-      while (skins.size() > 0) {
-         HopObject.remove(skins.get(0));
-      }
-   }
-   return;
+   return Skin.getByName(group, name) || new Skin(group, name);
 }

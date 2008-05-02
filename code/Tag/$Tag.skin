@@ -1,7 +1,7 @@
 <% #main %>
 <div class="pagelink"><% breadcrumbs %></div>
 <% if <% tag.permission edit %> is true then 
-   <% tag.skin Tag#controls prefix=<p> suffix=</p> %> 
+   <% tag.skin $Tag#controls prefix=<p> suffix=</p> %> 
 %>
 <br />
 

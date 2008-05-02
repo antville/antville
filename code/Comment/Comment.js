@@ -26,6 +26,7 @@ Comment.getStatus = defineConstants(Comment, "closed",
       "pending", "readonly", "public");
 
 Comment.prototype.constructor = function(parent) {
+   this.name = String.EMPTY;
    this.site = parent.site;
    this.story = parent.story || parent;
    this.parent = parent;

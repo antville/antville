@@ -54,9 +54,10 @@ Members.prototype.getPermission = function(action) {
    return false;
 }
 
-Members.prototype.link_macro = function(param, action, text) {
+// FIXME: Was this necessary to fix unexpected behaviour? Looks redundant...
+/*Members.prototype.link_macro = function(param, action, text) {
    return HopObject.prototype.link_macro.apply(this, arguments);
-}
+}*/
 
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
