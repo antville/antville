@@ -66,10 +66,11 @@ convert.images = function() {
             "?")), 'Image');
    });
 
-   retrieve("select * from AV_IMAGE i left join AV_IMAGE t on " +
+   retrieve("select *, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT " +
+         "as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on " +
          "i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join tag on " +
          "i.IMAGE_F_SITE = site_id and i.IMAGE_TOPIC = name and " +
-         "type = 'Image' where i.IMAGE_WIDTH is not null and " +
+         "type = 'Image' left join AV_LAYOUT l on LAYOUT_ID = i.IMAGE_F_LAYOUT where i.IMAGE_WIDTH is not null and " +
          "i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null " +
          "order by i.IMAGE_ID");
 
@@ -90,15 +91,15 @@ convert.images = function() {
       }
       this.metadata = metadata;
 
-      this.IMAGE_F_SITE || (this.IMAGE_F_SITE = null);
-      this.IMAGE_F_IMAGE_PARENT || (this.IMAGE_F_IMAGE_PARENT = null);
+      this.IMAGE_F_SITE = this.IMAGE_F_SITE || this.LAYOUT_F_SITE || null;
+      this.IMAGE_F_IMAGE_PARENT = this.IMAGE_F_LAYOUT || this.IMAGE_F_SITE;
       this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = null);
       this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = null);
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
       
-      execute("insert into image values ($IMAGE_ID, $IMAGE_ALIAS, " +
-            "$IMAGE_PROTOTYPE, $IMAGE_F_SITE, null, $IMAGE_F_IMAGE_PARENT, " +
+      execute("insert into image values (null, $IMAGE_ALIAS, " +
+            "$IMAGE_PROTOTYPE, $IMAGE_F_SITE, $IMAGE_F_IMAGE_PARENT, null, " +
             "$metadata, $IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, " +
             "$IMAGE_MODIFYTIME, $IMAGE_F_USER_MODIFIER)", this);
       if (this.IMAGE_TOPIC) {
@@ -114,18 +115,8 @@ convert.images = function() {
 }
 
 convert.layoutImages = function() {
-   return;
-   retrieve("select *, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT " +
-         "as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on " +
-         "i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID, AV_LAYOUT layout, " +
-         "AV_LAYOUT parent, AV_SITE site where SITE_ID = " +
-         "layout.LAYOUT_F_SITE and layout.LAYOUT_F_LAYOUT_PARENT = " +
-         "parent.LAYOUT_ID and i.IMAGE_F_IMAGE_PARENT is null and " +
-         "i.IMAGE_F_LAYOUT = parent.LAYOUT_ID and i.IMAGE_ALIAS not in " +
-         "(select IMAGE_ALIAS from AV_IMAGE i2 where i2.IMAGE_ALIAS = " +
-         "i.IMAGE_ALIAS and i2.IMAGE_PROTOTYPE = 'LayoutImage' and " +
-         "i2.IMAGE_F_LAYOUT = layout.LAYOUT_ID)");
-
+   retrieve("select *, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join AV_LAYOUT pl on i.IMAGE_F_LAYOUT = pl.LAYOUT_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = LAYOUT_F_SITE where i.IMAGE_PROTOTYPE = 'LayoutImage' and pl.LAYOUT_F_SITE is null and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE)");
+   
    traverse(function() {
       var metadata = {
          fileName: this.IMAGE_FILENAME + "." + this.IMAGE_FILEEXT,
@@ -134,7 +125,7 @@ convert.layoutImages = function() {
          width: this.IMAGE_WIDTH,
          height: this.IMAGE_HEIGHT
       };
-      this.description && (metadata.description = clean(this.description));
+      this.IMAGE_ALTTEXT && (metadata.description = clean(this.IMAGE_ALTTEXT));
       if (this.thumbnailWidth && this.thumbnailHeight) {
          metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." + 
                this.IMAGE_FILEEXT;
@@ -143,21 +134,26 @@ convert.layoutImages = function() {
       }
       this.metadata = metadata;
  
-      this.modified || (this.modified = null);
-      this.modifier_id || (this.modifier_id = null);
+      this.IMAGE_F_SITE = this.IMAGE_F_SITE || this.LAYOUT_F_SITE || null;
+      this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = null);
+      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = null);
+      this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
+      this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
  
-      execute("insert into image values (null, $IMAGE_ALIAS, 'Image', " +
-            "$IMAGE_F_SITE, null, 'LayoutImage', $metadata, " +
-            "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $modified, " +
-            "$modifier_id, null, null, null)", this);
+      execute("insert into image values (null, $IMAGE_ALIAS, 'LayoutImage', " +
+            "$IMAGE_F_SITE, $layoutId, 'Layout', $metadata, " +
+            "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $IMAGE_MODIFYTIME, " +
+            "$IMAGE_F_USER_MODIFIER)", this);
+
+      execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
 
       var fpath = antville().properties.staticPath;
       var files = [metadata.fileName, metadata.thumbnailName];
       for each (var fname in files) {
          var source = new helma.File(fpath + "/layouts/" + 
-               this.parent_name, fname);
-         var layoutDir = new helma.File(fpath + this.site_name + 
-               "/layouts/", this.layout_name);
+               this.LAYOUT_ALIAS, fname);
+         var layoutDir = new helma.File(fpath + this.SITE_ALIAS + 
+               "/layouts/", this.layoutName);
          layoutDir.exists() || layoutDir.makeDirectory();
          var dest = new helma.File(layoutDir, fname);
          if (source.exists()) {
@@ -168,7 +164,7 @@ convert.layoutImages = function() {
             source.hardCopy(dest);
          }
       }
-   });
+   }, true);
 }
 
 convert.layouts = function() {
