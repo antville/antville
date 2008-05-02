@@ -135,7 +135,7 @@ alter table file convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #files %>
-select id, FILE_MIMETYPE as type, FILE_SIZE as size,
+select id, FILE_MIMETYPE as type, FILE_SIZE as size, FILE_NAME as fileName, 
 FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
@@ -155,6 +155,7 @@ create index creator_id on image (creator_id);
 create index name on image (name(20));
 create index images on image (parent_id, parent_type, created desc); 
 alter table image convert to character set utf8 collate utf8_bin;
+drop table AV_IMAGE;
 unlock tables;
 
 <% #imageTable %>
@@ -322,12 +323,13 @@ create index creator_id on content (creator_id);
 create index requests on content (requests);
 create index status on content (status);
 create index content on content (site_id, prototype, status, mode);
+#drop table AV_TEXT;
 unlock tables;
 
 <% #contentTable %>
 CREATE TABLE IF NOT EXISTS `content` (
   `id` mediumint(10) NOT NULL default '0',
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) default '',
   `prototype` enum('Story','Comment') default NULL,
   `site_id` mediumint(10) default NULL,
   `story_id` mediumint(10) default NULL,

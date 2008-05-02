@@ -43,14 +43,14 @@ convert.files = function() {
    retrieve(query("files"));
    traverse(function() {
       var metadata = {
-         //fileName: this.name,
+         fileName: this.fileName,
          contentType: this.type,
          contentLength: this.size,
          description: clean(this.description)
       }
       execute("update file set prototype = 'File', parent_type = 'Site', " +
-            "parent_id = site_id, metadata = " +
-            quote(metadata.toSource()) + " where id = " + this.id);
+            "parent_id = site_id, metadata = $0 where id = $1",
+            metadata.toSource(), this.id);
    });
 }
 
@@ -62,17 +62,16 @@ convert.images = function() {
          "from AV_IMAGE where IMAGE_TOPIC is not null");
    traverse(function() {
       execute("insert into tag set site_id = $0, name = $1, type = $2", 
-            this.IMAGE_F_SITE, quote(this.IMAGE_TOPIC.replace(/^[\/\.]*$/, 
-            "?")), 'Image');
+            this.IMAGE_F_SITE, this.IMAGE_TOPIC.replace(/^[\/\.]*$/, "?"), 'Image');
    });
 
    retrieve("select *, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT " +
          "as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on " +
          "i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join tag on " +
          "i.IMAGE_F_SITE = site_id and i.IMAGE_TOPIC = name and " +
-         "type = 'Image' left join AV_LAYOUT l on LAYOUT_ID = i.IMAGE_F_LAYOUT where i.IMAGE_WIDTH is not null and " +
-         "i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null " +
-         "order by i.IMAGE_ID");
+         "type = 'Image' left join AV_LAYOUT l on LAYOUT_ID = i.IMAGE_F_LAYOUT " +
+         "where i.IMAGE_WIDTH is not null and i.IMAGE_HEIGHT is not null and " +
+         "i.IMAGE_F_IMAGE_PARENT is null order by i.IMAGE_ID");
 
    traverse(function() {
       var metadata = {
@@ -102,11 +101,13 @@ convert.images = function() {
             "$IMAGE_PROTOTYPE, $IMAGE_F_SITE, $IMAGE_F_IMAGE_PARENT, null, " +
             "$metadata, $IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, " +
             "$IMAGE_MODIFYTIME, $IMAGE_F_USER_MODIFIER)", this);
+
       if (this.IMAGE_TOPIC) {
          execute("insert into tag_hub set tag_id = $0, tagged_id = $1, " +
                "tagged_type = 'Story', user_id = $2", this.id, this.IMAGE_ID, 
                this.IMAGE_F_USER_MODIFIER || this.IMAGE_F_USER_CREATOR);
       }
+
       execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
    }, true);
 
@@ -230,7 +231,7 @@ convert.content = function() {
          "from AV_TEXT where TEXT_TOPIC is not null");
    traverse(function() {
       execute("insert into tag set site_id = $0, name = $1, type = 'Story'", 
-            this.TEXT_F_SITE, quote(this.TEXT_TOPIC.replace(/^[\/\.]*$/, "?")));
+            this.TEXT_F_SITE, this.TEXT_TOPIC.replace(/^[\/\.]*$/, "?"));
    });
 
    var metadata = function(xml) {
@@ -259,19 +260,19 @@ convert.content = function() {
       } else {
          this.TEXT_F_TEXT_STORY = this.TEXT_F_TEXT_PARENT = null;
          this.parent_type = null;
-         this.status = "closed";
-         if (this.TEXT_ISONLINE != 1) {
-            this.status = "public";
+
+         this.status = "public";
+         this.mode = "featured";
+         if (this.TEXT_ISONLINE == 1) {
+            this.mode = "hidden";
+         } else if (this.TEXT_ISONLINE != 2) {
+            this.status = "closed";
          }
+
          if (this.TEXT_EDITABLEBY == 1) {
             this.status = "shared";
          } else if (this.TEXT_EDITABLEBY == 2) {
             this.status = "open";
-         }
-         if (this.TEXT_ISONLINE == 1) {
-            this.mode = "hidden";
-         } else {
-            this.mode = "featured";
          }
          this.comment_mode = this.TEXT_HASDISCUSSIONS == 1 ? "open" : "closed";
       }
@@ -324,39 +325,6 @@ convert.xml = function(table) {
       execute("update " + table + " set metadata = " + 
             quote(data.toSource()) + ", xml = '' where id = " + this.id);
    });
-}
-
-convert.tags = function(table) {
-   var prototype;
-   switch (table) {
-      case "image":
-      prototype = "Image"; break;
-      case "content":
-      prototype = "Story"; break;
-   }
-
-   retrieve("select distinct(topic), site_id from " + table + " where topic <> ''");
-   execute("alter table tag change id id int(11) not null auto_increment")
-   traverse(function() {
-      execute("insert into tag set site_id = " + 
-            this.site_id + ", name = " +
-            quote(this.topic.replace(/^[\/\.]*$/, "?")) + ", type = " +  
-            quote(prototype));
-   });
-   execute("alter table tag change id id int(11)")
-
-   retrieve("select topic, tag.id, " + table + ".id as tagged_id, " +
-         "modifier_id, creator_id, " + table + ".site_id from " + table + 
-         ", tag where " + "topic <> '' and topic = tag.name and " +
-         "tag.type = " + quote(prototype));
-   execute("alter table tag_hub change id id int(11) not null auto_increment;")
-   traverse(function() {
-      execute("insert into tag_hub set tag_id = " + 
-            this.id + ", tagged_id = " + this.tagged_id + 
-            ", tagged_type = " + quote(prototype) + ", user_id = " +
-            this.modifier_id || this.creator_id);
-   });
-   execute("alter table tag_hub change id id int(11)")
 }
 
 convert.skins = function() {
