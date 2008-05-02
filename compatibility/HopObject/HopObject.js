@@ -22,64 +22,8 @@
 // $URL$
 //
 
-/*
-(function() {
-   var renderSkin = HopObject.prototype.renderSkin;
+HopObject.prototype.createtime_macro = HopObject.prototype.created_macro;
 
-   HopObject.prototype.renderSkin = function(name, param) {
-      var constraint = res.contentType === "text/html" && 
-            name.constructor === String;
-      if (constraint) {
-         var prototype = this.constructor === Root ? 
-               "Site" : this.constructor.name;
-         var skin = name.replace(/.*#/, "");
-         res.write('<div class="debug skin">');
-         res.write('<div class="debug title">');
-         skin = new Skin(prototype, skin);
-         html.link({href: skin.href()}, skin.prototype + "." + skin.name);
-         res.write("</div>");
-      }
-      renderSkin.call(this, name, param);
-      constraint && (res.write("</div>"));
-   }
+HopObject.prototype.modifytime_macro = HopObject.prototype.modified_macro;
 
-   HopObject.prototype.renderSkinAsString = function(name, param) {
-      res.push();
-      this.renderSkin(name, param);
-      return res.pop();
-   }
-
-})();
-*/
-
-HopObject.prototype.createtime_macro = function() {
-   return this.created_macro.apply(this, arguments);
-}
-
-HopObject.prototype.modifytime_macro = function() {
-   return this.modified_macro.apply(this, arguments);
-}
-
-HopObject.prototype.url_macro = function(param) {
-   return this.href_macro(param);
-}
-
-// FIME: Most likely obsolete
-/*
-HopObject.prototype.peel_macro = function(param, name) {
-   var prototype = (this === root) ? "Site" : this.constructor.name;
-   var parts = name.split("#");
-   var skinName = parts[0];
-   var subskinName = parts[1];
-   var skinFiles = app.getSkinfilesInPath([app.dir])[prototype];
-   var source;
-   if (skinFiles && (source = skinFiles[skinName])) {
-      var skin = createSkin(source);
-      if (subskinName && skin.hasSubskin(subskinName)) {
-         this.renderSkin(skin.getSubskin(subskinName));
-      } else {
-         this.renderSkin(skin);
-      }
-   }
-}
-*/
+HopObject.prototype.url_macro = HopObject.prototype.href_macro;

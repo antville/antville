@@ -94,35 +94,3 @@ Layout.prototype.deletelink_macro = function(param) {
 Layout.prototype.activatelink_macro = function(param) {
    return this.link_macro(param, "activate", param.text || gettext("activate"));
 }
-
-/*
-Layout.prototype.value_macro = function(param, name) {
-   if (name = Layout.compatibilityMap[name]) {
-      return value_macro(null, name);
-   }
-}
-
-Layout.prototype.onUnhandledMacro = function(name, param) {
-   // FIXME: editors?
-   if (name = Layout.compatibilityMap[name]) {
-      return value_macro(param, name);
-   }
-   return;
-}
-
-Layout.compatibilityMap = {
-   "bgcolor": "background color",
-   "linkcolor": "link color",
-   "alinkcolor": "active link color",
-   "vlinkcolor": "visited link color",
-   "titlefont": "big font",
-   "titlesize": "big font size",
-   "titlecolor": "big font color",
-   "textfont": "base font",
-   "textsize": "base font size",
-   "textcolor": "base font color",
-   "smallfont": "small font",
-   "smallsize": "small font size",
-   "smallcolor": "small font color"
-}
-*/

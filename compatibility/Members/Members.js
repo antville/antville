@@ -22,7 +22,6 @@
 // $URL$
 //
 
-// FIXME: Won't be called because Members.getPermissions() disallows it
 Members.prototype.sendpwd_action = function() {
    res.data.title = gettext("Recover your password");
    res.data.body = gettext("Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, anymore.");

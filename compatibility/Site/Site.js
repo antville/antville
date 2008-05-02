@@ -22,6 +22,9 @@
 // $URL$
 //
 
+// FIXME: We need something like this for plug-ins:
+//addPermission(Site, "menuext", function() {return true;});
+
 relocateProperty(Site, "alias", "name");
 relocateProperty(Site, "createtime", "created");
 relocateProperty(Site, "modifytime", "modified");
@@ -51,33 +54,25 @@ Site.prototype.__defineGetter__("discussions", function() {
    return this.commentsMode === Comment.ONLINE;
 });
 
-/*
-Site.prototype.renderSkin = function(name) {
-   switch (name) {
-      case "stylesheet":
-      name = "style"; break;
-      case "Site#main":
-      name = "main"; break;
+Site.renderDateFormat = function(type, site, param) {
+   //param.size = 1;
+   var key = type + "DateFormat";
+   if (param.as === "chooser") {
+      site.select_macro(param, key);
+   } else if (param.as === "editor") {
+      site.input_macro(param, key);
+   } else {
+      res.write(site[key]);
    }
-   HopObject.prototype.renderSkin.call(this, name);
-}
-*/
-
-// FIXME: We need something like this for plug-ins:
-//addPermission(Site, "menuext", function() {return true;});
-
-Site.prototype.menuext_action = function() {
-   return this.renderSkin("menuext");
+   return;   
 }
 
-Site.prototype.menuext_reg_action = function() {
-   res.contentType = "text/plain";
-   return this.renderSkin("menuext.reg");
-}
-
-Site.prototype.colorpicker_action = function() {
-   res.handlers.site = this;
-   return root.colorpicker_action();
+// FIXME: obsolete?
+Site.prototype.renderStoryList = function(day) {
+   res.push();
+   list_macro(param, "stories");
+   res.write(res.pop());
+   return;
 }
 
 Site.prototype.rss_action = function() {
@@ -94,12 +89,6 @@ Site.prototype.feeds_action = function() {
 Site.prototype.mostread_action = function() {
    return res.redirect(this.stories.href("top"));
 }
-
-//Site.prototype.skin_macro = Skin.compatibleMacro; 
-// FIXME: Define the function if the above does not work reliably
-//function() {
-//   return Skin.rename.apply(this, arguments);
-//}
 
 Site.prototype.link_macro = function(param, url, text) {
    param.text || (param.text = text);
@@ -124,7 +113,6 @@ Site.prototype.link_macro = function(param, url, text) {
       param.to = "."; break;
 
       case "topics":
-      //case "feeds":
       case "files":
       case "images":
       case "members":
@@ -161,18 +149,7 @@ Site.prototype.title_macro = function(param) {
 }
 
 Site.prototype.loginstatus_macro = function(param) {
-   return res.handlers.membership.status_macro(param);
-   
-   if (session.user) {
-      (new Skin("Members", "statusloggedin").getSource()) ?
-            this.members.renderSkin("statusloggedin") :
-            res.handlers.membership.renderSkin("Membership#status");
-   } else if (req.action !== "login") {
-      (new Skin("Members", "statusloggedout").getSource()) ?
-            this.members.renderSkin("statusloggedout") :
-            res.handlers.membership.renderSkin("Membership#login");
-   }
-   return;
+   return res.handlers.membership.status_macro();
 }
 
 Site.prototype.navigation_macro = function(param) {
@@ -288,10 +265,6 @@ Site.prototype.timezonechooser_macro = function(param) {
    return this.select_macro(param, "timeZone");
 }
 
-Site.prototype.layoutchooser_macro = function(param) {
-   return;
-}
-
 Site.prototype.history_macro = function(param, type) {
    param.skin || (param.skin = "Story#history");
    var type = param.show || "postings";
@@ -319,6 +292,16 @@ Site.prototype.preferences_macro = function(param) {
    } return;
 }
 
+Site.prototype.listReferrers_macro = function(param) {
+   return this.referrers_macro(param);
+}
+
+Site.prototype.searchbox_macro = function(param) {
+   this.renderSkin("$Site#search");
+   return;
+}
+
+// FIXME: working?
 Site.prototype.monthlist_macro = function(param) {
    if (!this.stories.size() || this.archiveMode !== Site.PUBLIC) {
       return;
@@ -343,6 +326,7 @@ Site.prototype.monthlist_macro = function(param) {
    return;
 }
 
+// FIXME: refactor!
 Site.prototype.spamfilter_macro = function(param) {
    var str = this.metadata.get("spamfilter");
    if (!str) {
@@ -357,34 +341,5 @@ Site.prototype.spamfilter_macro = function(param) {
          res.write(",");
       }
    }
-   return;
-}
-
-Site.prototype.listReferrers_macro = function(param) {
-   return this.referrers_macro(param);
-}
-
-Site.prototype.searchbox_macro = function(param) {
-   this.renderSkin("$Site#search");
-   return;
-}
-
-Site.renderDateFormat = function(type, site, param) {
-   //param.size = 1;
-   var key = type + "DateFormat";
-   if (param.as === "chooser") {
-      site.select_macro(param, key);
-   } else if (param.as === "editor") {
-      site.input_macro(param, key);
-   } else {
-      res.write(site[key]);
-   }
-   return;   
-}
-
-Site.prototype.renderStoryList = function(day) {
-   res.push();
-   list_macro(param, "stories");
-   res.write(res.pop());
    return;
 }

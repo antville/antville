@@ -60,36 +60,6 @@ var addPropertyMacro = function(proto, name, key) {
    return;
 }
 
-// FIXME: Most likely obsolete
-/*
-var getCompatibleSkin = function(prototype, name) {
-   return name;
-   
-   var renamedSkins = {
-      Site: {
-         searchbox: "Site#search"
-      },
-      Story: {
-         display: "Story#display",
-         historyview: "Story#history"
-      }
-   };
-   
-   var getRenamedSkin = function() {
-      var skins;
-      if (skins = renamedSkins[prototype]) {
-         var renamed;
-         if (renamed = skins[name]) {
-            return renamed;
-         }
-      }
-      throw Error("Undefined renaming of skin " + prototype + "." + name);
-   }
-   
-   return getRenamedSkin();
-}
-*/
-
 var formatTimestamp = function() {
    return formatDate.apply(this, arguments);
 }
@@ -227,6 +197,7 @@ function fakemail_macro(param) {
 	return;
 }
 
+// FIXME: This cannot be working...
 function imageoftheday_macro(param) {
    var images = res.handlers.site.images;
    delete param.topic;

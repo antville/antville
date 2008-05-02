@@ -25,21 +25,6 @@
 relocateProperty(Site, "createtime", "created");
 relocateProperty(Site, "modifytime", "modified");
 
-File.getCompatibleFileName = function(file, name) {
-   name || (name = file.name);
-   return file.metadata.get("fileName") || name;
-}
-
-File.prototype.getFile = function() {
-   return res.handlers.site.getStaticFile("files/" + 
-         File.getCompatibleFileName(this));
-}
-
-File.prototype.getUrl = function() {
-   return res.handlers.site.getStaticUrl("files/" + 
-         File.getCompatibleFileName(this));
-}
-
 File.prototype.alias_macro = function(param) {
    if (param.as === "editor") {
       this.input_macro(param, "name");

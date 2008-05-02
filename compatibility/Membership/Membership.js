@@ -30,9 +30,9 @@ relocateProperty(Membership, "user", "creator");
 Membership.prototype.username_macro = function(param) {
    if (param.linkto && (param.linkto !== "edit" || 
          this.user !== session.user)) {
-      html.link({href: this.href(param.linkto)}, this.username);
+      html.link({href: this.href(param.linkto)}, this.name);
    } else {
-      res.write(this.username);
+      res.write(this.name);
    }
    return;
 }
@@ -60,25 +60,13 @@ Membership.prototype.level_macro = function(param) {
 }
 
 Membership.prototype.editlink_macro = function(param) {
-   if (this.creator !== session.user) {
-      this.link_filter(param.text || gettext("edit"), 
-            param, this.href("edit")); 
-   }
-   return;
+   return this.link_macro(param, "edit");
 }
 
 Membership.prototype.deletelink_macro = function(param) {
-   if (this.role !== Membership.OWNER)
-      html.link({href: this.href("delete")}, param.text || 
-                gettext("remove"));
-   return;
+   return this.link_macro(param, "delete");
 }
 
 Membership.prototype.unsubscribelink_macro = function(param) {
    return res.handlers.site.link_macro(param, "unsubscribe");
-   if (this.role === Membership.SUBSCRIBER) {
-      this.link_filter(param.text || gettext("unsubscribe"), 
-            param, this.site.href("unsubscribe"));
-   }
-   return;
 }

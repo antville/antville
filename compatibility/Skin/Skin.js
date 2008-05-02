@@ -25,12 +25,3 @@
 relocateProperty(Skin, "createtime", "created");
 relocateProperty(Skin, "modifytime", "modified");
 relocateProperty(Skin, "proto", "prototype");
-
-// FIXME: Obsolete
-/* Skin.compatibleMacro = function(param) {
-   if (param.name) {
-      param.name = getCompatibleSkin(this._prototype, param.name);
-      return HopObject.prototype.skin_macro.call(this, param, param.name);
-   }
-   return HopObject.prototype.skin_macro.apply(this, arguments);
-} */

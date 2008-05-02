@@ -29,12 +29,6 @@ Story.prototype.allowTextMacros = function(skin) {
    return Story.prototype.macro_filter(skin);
 }
 
-//Story.prototype.skin_macro = Skin.compatibleMacro; 
-// FIXME: Define the function if the above does not work reliably
-//function() {
-//   return Skin.rename.apply(this, arguments);
-//}
-
 Story.prototype.commentform_macro = function(param) {
    if (this.commentMode === "closed") {
       return;
@@ -45,7 +39,7 @@ Story.prototype.commentform_macro = function(param) {
       (new Comment(this)).renderSkin("Comment#edit");
    } else {
       html.link({href: this.site.members.href("login")},
-                param.text || gettext("Please login to add a comment"));
+            param.text || gettext("Please login to add a comment"));
    }
    return;
 }
@@ -85,6 +79,7 @@ Story.prototype.content_macro = function(param) {
    return;
 }
 
+// FIXME: To be removed when content handling works after update
 /* Story.prototype.content_macro = function(param) {
    switch (param.as) {
       case "editor":
@@ -305,7 +300,7 @@ Story.prototype.editlink_macro = function(param) {
    if (param.image && this.site.images.get(param.image)) {
       renderImage(this.site.images.get(param.image), param);
    } else {
-      res.write(param.text || gettext("edit"));
+      res.write(param.text || gettext("Edit"));
    }   
    return this.link_macro(param, "edit", res.pop());
 }
@@ -315,7 +310,7 @@ Story.prototype.deletelink_macro = function(param) {
    if (param.image && this.site.images.get(param.image)) {
       renderImage(this.site.images.get(param.image), param);
    } else {
-      res.write(param.text || gettext("delete"));
+      res.write(param.text || gettext("Delete"));
    }   
    return this.link_macro(param, "delete", res.pop());
 }
@@ -325,7 +320,7 @@ Story.prototype.viewlink_macro = function(param) {
    if (param.image && this.site.images.get(param.image)) {
       renderImage(this.site.images.get(param.image), param);
    } else {
-      res.write(param.text || gettext("view"));
+      res.write(param.text || gettext("View"));
    }   
    return this.link_macro(param, ".", res.pop());
 }

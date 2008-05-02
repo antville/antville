@@ -22,7 +22,6 @@
 // $URL$
 //
 
-this.handleMetadata("fileName");
 relocateProperty(Image, "alias", "name");
 relocateProperty(Image, "createtime", "created");
 relocateProperty(Image, "modifytime", "modified");
@@ -30,28 +29,7 @@ relocateProperty(Image, "fileext", "contentType");
 relocateProperty(Image, "filesize", "contentLength");
 relocateProperty(Image, "alttext", "description");
 
-// FIXME: obsolete?
-Image.getCompatibleFileName = function(image, name) {
-   var fname = image.metadata.get("fileName");
-   if (fname) {
-      return name.replace(/\/[^\/]*$/, "/" + fname);
-   }
-   return name;
-}
-
-/*Image.prototype.getFile = function(name) {
-   name || (name = Image.getCompatibleFileName(this));
-   if (res.handlers.images._parent.constructor === Layout) {
-      return Site.getStaticFile(name, "layouts/" + res.handlers.layout.name);
-   }
-   return Site.getStaticFile("images/" + name);
-};*/
-
 Image.prototype.code_macro = Image.prototype.macro_macro;
-
-Image.prototype.filename_macro = function() {
-   return this.name;
-}
 
 Image.prototype.topicchooser_macro = function() {
    return Story.prototype.topicchooser_macro.apply(this, arguments);

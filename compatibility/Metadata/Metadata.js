@@ -28,10 +28,11 @@ Metadata.prototype.setAll = Metadata.prototype.setData;
 
 Metadata.prototype.createInputParam = function(propName, param) {
    param.name = Metadata.PREFIX + propName;
-   if (!req.data[param.name + "_array"] && req.data[param.name] != null)
+   if (!req.data[param.name + "_array"] && req.data[param.name] != null) {
       param.value = req.data[param.name];
-   else
+   } else {
       param.value = this.get(propName);
+   }
    delete param.as;
    return param;
 }
@@ -39,8 +40,9 @@ Metadata.prototype.createInputParam = function(propName, param) {
 Metadata.prototype.createCheckBoxParam = function(propName, param) {
    param.name = Metadata.PREFIX + propName;
    param.value = 1;
-   if (req.data[param.name] == 1 || this.get(propName) == 1)
+   if (req.data[param.name] == 1 || this.get(propName) == 1) {
       param.checked = "checked";
+   }
    delete param.as;
    return param;
 }
