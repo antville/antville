@@ -31,7 +31,7 @@ this.handleMetadata("fileName");
 File.getName = function(name) {
    if (name) {
       //return name.replace(/[^\w\d\s._-]/g, String.EMPTY);
-      return name.replace(/[\/\\:;?+\[\]{}|#"`^]/g, String.EMPTY);
+      return name.replace(/[\/\\:;?+\[\]{}|#"`<>^]/g, String.EMPTY);
    }
    return null;
 }
