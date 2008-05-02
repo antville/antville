@@ -37,15 +37,20 @@ alter table AV_SITE drop column SITE_TAGLINE, drop column SITE_USERMAYCONTRIB, d
 alter table AV_POLL drop column POLL_TITLE, drop column POLL_ISONLINE;
 delete from AV_IMAGE where IMAGE_ID = 686854;
 
+<% #clear %>
+drop table if exists tag;
+drop table if exists tag_hub;
+drop table if exists content;
+drop table if exists image;
+
 <% #jsonize %>
 select id, xml, metadata from <% param.value1 %> order by id
 
 <% #tag %>
-drop table if exists tag;
 #!tagTable
 
 <% #tagTable %>
-CREATE TABLE `tag` (
+CREATE TABLE IF NOT EXISTS `tag` (
   `id` int(11) NOT NULL default '0',
   `name` varchar(255) default NULL,
   `site_id` int(11) default NULL,
@@ -57,11 +62,10 @@ CREATE TABLE `tag` (
 ) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #tag_hub %>
-drop table if exists tag_hub;
 #!tagHubTable
 
 <% #tagHubTable %>
-CREATE TABLE `tag_hub` (
+CREATE TABLE IF NOT EXISTS `tag_hub` (
   `id` int(11) NOT NULL default '0',
   `tag_id` int(11) default NULL,
   `tagged_id` int(11) default NULL,
@@ -73,7 +77,7 @@ CREATE TABLE `tag_hub` (
 ) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #log %>
-CREATE TABLE `log` (
+CREATE TABLE IF NOT EXISTS `log` (
   `id` int(11) NOT NULL auto_increment,
   `context_id` mediumint(10) default NULL,
   `context_type` varchar(20) default NULL,
@@ -135,20 +139,40 @@ select id, FILE_MIMETYPE as type, FILE_SIZE as size,
 FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
+drop table if exists image;
 #!imageTable
 lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, AV_IMAGE as i2 read, image write, tag write, tag_hub write, AV_SITE as site read, AV_LAYOUT as layout read, AV_LAYOUT as parent read;
-insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, null, null, null, IMAGE_TOPIC, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
+alter table image change id id int(11) not null auto_increment;
 #!layoutImages
-create index topic on image (topic);
 #!images
+alter table image change id id int(11) not null;
 create index prototype on image (prototype(10));
 update image set parent_type = 'Site' where prototype = 'Image';
 update image set parent_type = 'Layout' where prototype = 'LayoutImage';
 update image set prototype = "Image" where prototype = "LayoutImage";
 update image set parent_id = site_id where site_id is not null and parent_id is null;
-update image set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and parent_id is null;
+create index site_id on image (site_id);
+create index creator_id on image (creator_id);
+create index name on image (name(20));
+create index images on image (parent_id, parent_type, created desc); 
+alter table image convert to character set utf8 collate utf8_bin;
+unlock tables;
+
+<% #AV_IMAGE_disabled %>
+#!imageTable
+#lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, AV_IMAGE as i2 read, image write, tag write, tag_hub write, AV_SITE as site read, AV_LAYOUT as layout read, AV_LAYOUT as parent read;
+#insert into image select IMAGE_ID, IMAGE_F_SITE, IMAGE_PROTOTYPE, IMAGE_ALIAS, IMAGE_CREATETIME, IMAGE_F_USER_CREATOR, IMAGE_MODIFYTIME, IMAGE_F_USER_MODIFIER, null, null, null, IMAGE_TOPIC, IMAGE_F_IMAGE_PARENT, IMAGE_F_LAYOUT from AV_IMAGE;
+#!layoutImages
+#create index topic on image (topic);
+#!images
+#create index prototype on image (prototype(10));
+#update image set parent_type = 'Site' where prototype = 'Image';
+#update image set parent_type = 'Layout' where prototype = 'LayoutImage';
+#update image set prototype = "Image" where prototype = "LayoutImage";
+#update image set parent_id = site_id where site_id is not null and parent_id is null;
+#update image set parent_id = IMAGE_F_LAYOUT where IMAGE_F_LAYOUT is not null and parent_id is null;
 drop table AV_IMAGE;
-delete from image where IMAGE_F_IMAGE_PARENT is not null;
+#delete from image where IMAGE_F_IMAGE_PARENT is not null;
 alter table image drop column topic, drop column IMAGE_F_IMAGE_PARENT, drop column IMAGE_F_LAYOUT;
 create index site_id on image (site_id);
 create index creator_id on image (creator_id);
@@ -158,21 +182,18 @@ alter table image convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #imageTable %>
-CREATE TABLE `image` (
+CREATE TABLE IF NOT EXISTS `image` (
   `id` mediumint(10) NOT NULL default '0',
-  `site_id` mediumint(10) default NULL,
-  `prototype` varchar(30) default NULL,
   `name` varchar(255) default NULL,
+  `prototype` varchar(30) default NULL,
+  `site_id` mediumint(10) default NULL,
+  `parent_id` varchar(20) default NULL,
+  `parent_type` varchar(30) default NULL,
+  `metadata` mediumtext,
   `created` datetime default NULL,
   `creator_id` mediumint(10) default NULL,
   `modified` datetime default NULL,
   `modifier_id` mediumint(10) default NULL,
-  `parent_id` varchar(20) default NULL,
-  `parent_type` varchar(30) default NULL,
-  `metadata` mediumtext,
-  `topic` varchar(255),
-  `IMAGE_F_IMAGE_PARENT` mediumint(10) default NULL,
-  `IMAGE_F_LAYOUT` mediumint(10) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
@@ -338,7 +359,6 @@ drop table AV_SYSLOG;
 unlock tables;
 
 <% #AV_TEXT %>
-drop table if exists content;
 #!contentTable
 lock tables AV_TEXT write, content write, tag write, tag_hub write;
 #!content
@@ -383,7 +403,7 @@ drop table AV_TEXT;
 unlock tables;
 
 <% #contentTable %>
-CREATE TABLE `content` (
+CREATE TABLE IF NOT EXISTS `content` (
   `id` mediumint(10) NOT NULL default '0',
   `name` varchar(255) NOT NULL,
   `prototype` enum('Story','Comment') default NULL,

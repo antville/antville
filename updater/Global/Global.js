@@ -217,6 +217,7 @@ var value = function(obj) {
       case Date:
       return "from_unixtime(" + (obj.getTime() / 1000) + ")";
       case HopObject:
+      case Object:
       return quote(obj.toSource());
    }
    return quote(String(obj));
@@ -258,9 +259,9 @@ var traverse = function(callback, noOffset) {
       start = Date.now();
       sql = app.data.query + " limit " + STEP;
       noOffset || (sql += " offset " + offset);
+      msg(sql + (noOffset ? " offset " + offset : ""));
       result = db().executeRetrieval(sql);
       error();
-      msg(sql);
       msg("Select statement took " + (Date.now() - start) + " millis");
       // FIXME: The hasMoreRows() method does not work as expected
       rows = result.next();

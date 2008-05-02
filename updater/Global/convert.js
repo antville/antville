@@ -55,54 +55,109 @@ convert.files = function() {
 }
 
 convert.images = function() {
-   retrieve(query("images"));
+   execute("alter table tag change id id int(11) not null auto_increment")
+   execute("alter table tag_hub change id id int(11) not null auto_increment");
+
+   retrieve("select distinct(IMAGE_TOPIC), IMAGE_F_SITE " +
+         "from AV_IMAGE where IMAGE_TOPIC is not null");
+   traverse(function() {
+      execute("insert into tag set site_id = $0, name = $1, type = $2", 
+            this.IMAGE_F_SITE, quote(this.IMAGE_TOPIC.replace(/^[\/\.]*$/, 
+            "?")), 'Image');
+   });
+
+   retrieve("select * from AV_IMAGE i left join AV_IMAGE t on " +
+         "i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join tag on " +
+         "i.IMAGE_F_SITE = site_id and i.IMAGE_TOPIC = name and " +
+         "type = 'Image' where i.IMAGE_WIDTH is not null and " +
+         "i.IMAGE_HEIGHT is not null and i.IMAGE_F_IMAGE_PARENT is null " +
+         "order by i.IMAGE_ID");
+
    traverse(function() {
       var metadata = {
-         fileName: this.fileName + "." + this.type,
-         contentLength: this.size || 0,
-         contentType: "image/" + this.type,
-         width: this.width,
-         height: this.height
+         fileName: this.IMAGE_FILENAME + "." + this.IMAGE_FILEEXT,
+         contentLength: this.IMAGE_FILESIZE || 0,
+         contentType: "image/" + this.IMAGE_FILEEXT,
+         width: this.IMAGE_WIDTH,
+         height: this.IMAGE_HEIGHT
       };
       this.description && (metadata.description = clean(this.description));
       if (this.thumbnailWidth && this.thumbnailHeight) {
-         metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
+         metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." + 
+               this.IMAGE_FILEEXT;
          metadata.thumbnailWidth = this.thumbnailWidth;
          metadata.thumbnailHeight = this.thumbnailHeight;
       }
-      execute("update image set metadata = " +
-            quote(metadata.toSource()) + " where id = " + this.id);
-   });
-   convert.tags("image");
+      this.metadata = metadata;
+
+      this.IMAGE_F_SITE || (this.IMAGE_F_SITE = null);
+      this.IMAGE_F_IMAGE_PARENT || (this.IMAGE_F_IMAGE_PARENT = null);
+      this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = null);
+      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = null);
+      this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
+      this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
+      
+      execute("insert into image values ($IMAGE_ID, $IMAGE_ALIAS, " +
+            "$IMAGE_PROTOTYPE, $IMAGE_F_SITE, null, $IMAGE_F_IMAGE_PARENT, " +
+            "$metadata, $IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, " +
+            "$IMAGE_MODIFYTIME, $IMAGE_F_USER_MODIFIER)", this);
+      if (this.IMAGE_TOPIC) {
+         execute("insert into tag_hub set tag_id = $0, tagged_id = $1, " +
+               "tagged_type = 'Story', user_id = $2", this.id, this.IMAGE_ID, 
+               this.IMAGE_F_USER_MODIFIER || this.IMAGE_F_USER_CREATOR);
+      }
+      execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
+   }, true);
+
+   execute("alter table tag change id id int(11)")
+   execute("alter table tag_hub change id id int(11)");
 }
 
 convert.layoutImages = function() {
-   retrieve(query("layoutImages"));
-   execute("alter table image change id id int(11) not null auto_increment");
+   return;
+   retrieve("select *, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT " +
+         "as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on " +
+         "i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID, AV_LAYOUT layout, " +
+         "AV_LAYOUT parent, AV_SITE site where SITE_ID = " +
+         "layout.LAYOUT_F_SITE and layout.LAYOUT_F_LAYOUT_PARENT = " +
+         "parent.LAYOUT_ID and i.IMAGE_F_IMAGE_PARENT is null and " +
+         "i.IMAGE_F_LAYOUT = parent.LAYOUT_ID and i.IMAGE_ALIAS not in " +
+         "(select IMAGE_ALIAS from AV_IMAGE i2 where i2.IMAGE_ALIAS = " +
+         "i.IMAGE_ALIAS and i2.IMAGE_PROTOTYPE = 'LayoutImage' and " +
+         "i2.IMAGE_F_LAYOUT = layout.LAYOUT_ID)");
+
    traverse(function() {
       var metadata = {
-         fileName: this.fileName + "." + this.type,
-         contentLength: this.contentLength || 0,
-         contentType: "image/" + this.type,
-         width: this.width,
-         height: this.height
+         fileName: this.IMAGE_FILENAME + "." + this.IMAGE_FILEEXT,
+         contentLength: this.IMAGE_FILESIZE || 0,
+         contentType: "image/" + this.IMAGE_FILEEXT,
+         width: this.IMAGE_WIDTH,
+         height: this.IMAGE_HEIGHT
       };
       this.description && (metadata.description = clean(this.description));
       if (this.thumbnailWidth && this.thumbnailHeight) {
-         metadata.thumbnailName = this.fileName + "_small" + "." + this.type;
+         metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." + 
+               this.IMAGE_FILEEXT;
          metadata.thumbnailWidth = this.thumbnailWidth;
          metadata.thumbnailHeight = this.thumbnailHeight;
       }
-      execute("insert into image values (null, " + this.site_id + ", 'LayoutImage', " + 
-            quote(this.name) + ", str_to_date('" + 
-            this.created.format("yyyyMMdd HHmmss") + "', '%Y%m%d %H%i%s'), " + 
-            this.creator_id + ", null, null, " + 
-            this.layout_id + ", 'Layout', " + quote(metadata.toSource()) + ", null, null, null)");
+      this.metadata = metadata;
+ 
+      this.modified || (this.modified = null);
+      this.modifier_id || (this.modifier_id = null);
+ 
+      execute("insert into image values (null, $IMAGE_ALIAS, 'Image', " +
+            "$IMAGE_F_SITE, null, 'LayoutImage', $metadata, " +
+            "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $modified, " +
+            "$modifier_id, null, null, null)", this);
+
       var fpath = antville().properties.staticPath;
       var files = [metadata.fileName, metadata.thumbnailName];
       for each (var fname in files) {
-         var source = new helma.File(fpath + "/layouts/" + this.parent_name, fname);
-         var layoutDir = new helma.File(fpath + this.site_name + "/layouts/", this.layout_name);
+         var source = new helma.File(fpath + "/layouts/" + 
+               this.parent_name, fname);
+         var layoutDir = new helma.File(fpath + this.site_name + 
+               "/layouts/", this.layout_name);
          layoutDir.exists() || layoutDir.makeDirectory();
          var dest = new helma.File(layoutDir, fname);
          if (source.exists()) {
@@ -114,7 +169,6 @@ convert.layoutImages = function() {
          }
       }
    });
-   execute("alter table image change id id int(11) not null");
 }
 
 convert.layouts = function() {
@@ -176,28 +230,12 @@ convert.content = function() {
    execute("alter table tag change id id int(11) not null auto_increment")
    execute("alter table tag_hub change id id int(11) not null auto_increment");
 
-   /* retrieve("select TEXT_ID as id from AV_TEXT where TEXT_TOPIC is null");
+   retrieve("select distinct(TEXT_TOPIC), TEXT_F_SITE " +
+         "from AV_TEXT where TEXT_TOPIC is not null");
    traverse(function() {
-      execute("update AV_TEXT set TEXT_TOPIC = '' where TEXT_ID = " + this.id);
-   }); */
-
-   retrieve("select distinct(TEXT_TOPIC) as topic, TEXT_F_SITE as site_id from AV_TEXT where TEXT_TOPIC <> ''");
-   traverse(function() {
-      execute("insert into tag set site_id = " + 
-            this.site_id + ", name = " +
-            quote(this.topic.replace(/^[\/\.]*$/, "?")) + ", type = 'Story'");
+      execute("insert into tag set site_id = $0, name = $1, type = 'Story'", 
+            this.TEXT_F_SITE, quote(this.TEXT_TOPIC.replace(/^[\/\.]*$/, "?")));
    });
-
-   /* retrieve("select TEXT_TOPIC, tag.id, TEXT_ID as tagged_id, " +
-         "TEXT_F_USER_MODIFIER as modifier_id, TEXT_F_USER_CREATOR as creator_id, TEXT_F_SITE from AV_TEXT, " +
-         "tag where TEXT_TOPIC is not null and TEXT_TOPIC = tag.name and " +
-         "tag.type = 'Story'");
-   traverse(function() {
-      execute("insert into tag_hub set tag_id = " + 
-            this.id + ", tagged_id = " + this.tagged_id + 
-            ", tagged_type = 'Story', user_id = " +
-            this.modifier_id || this.creator_id);
-   }); */
 
    var metadata = function(xml) {
       try {
@@ -208,9 +246,10 @@ convert.content = function() {
       return {};
    }
 
-   retrieve("select * from AV_TEXT left join tag on TEXT_F_SITE = site_id and TEXT_TOPIC = name and type = 'Story' order by TEXT_ID");
+   retrieve("select * from AV_TEXT left join tag on TEXT_F_SITE = site_id " +
+         "and TEXT_TOPIC = name and type = 'Story' order by TEXT_ID");
+
    traverse(function() {
-      this.name = this.ALIAS || "";
       if (this.TEXT_PROTOTYPE === "Comment") {
          if (!this.TEXT_F_TEXT_PARENT) {
             this.parent_type = "Story";
@@ -240,6 +279,8 @@ convert.content = function() {
          }
          this.comment_mode = this.TEXT_HASDISCUSSIONS == 1 ? "open" : "closed";
       }
+
+      this.name = this.ALIAS || "";
       this.metadata = metadata(this.TEXT_CONTENT);
       execute("insert into content values ($TEXT_ID, $name, " +
             "$TEXT_PROTOTYPE, $TEXT_F_SITE, $TEXT_F_TEXT_STORY, " +
@@ -298,10 +339,6 @@ convert.tags = function(table) {
       prototype = "Story"; break;
    }
 
-   /* retrieve("select id from " + table + " where topic is null");
-   traverse(function() {
-      execute("update " + table + " set topic = '' where id = " + this.id);
-   }); */
    retrieve("select distinct(topic), site_id from " + table + " where topic <> ''");
    execute("alter table tag change id id int(11) not null auto_increment")
    traverse(function() {
