@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS `tag` (
   KEY `tags` (`site_id`,`type`,`name`(1)),
   KEY `type` (`type`),
   KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
+)
+#) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #tag_hub %>
 #!tagHubTable
@@ -74,7 +75,8 @@ CREATE TABLE IF NOT EXISTS `tag_hub` (
   PRIMARY KEY  (`id`),
   KEY `tagged` (`tagged_id`, `tagged_type`),
   KEY `tags` (`tag_id`,`tagged_type`,`tagged_id`)
-) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
+)
+#) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #log %>
 CREATE TABLE IF NOT EXISTS `log` (
@@ -89,7 +91,8 @@ CREATE TABLE IF NOT EXISTS `log` (
   PRIMARY KEY  (`id`),
   KEY `entries` (`context_type`(5),`action`(5),`created`),
   KEY `requests` (`context_type`(5),`context_id`,created,`action`(5))
-) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
+)
+#) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #AV_ACCESSLOG %>
 alter table AV_ACCESSLOG rename log;
@@ -106,7 +109,7 @@ update log set context_type = 'Site' where ACCESSLOG_F_TEXT is null;
 update log set creator_id = 0;
 update log set action = 'main';
 alter table log drop column ACCESSLOG_F_TEXT, drop column ACCESSLOG_BROWSER, drop column ACCESSLOG_IP;
-alter table log convert to character set utf8 collate utf8_bin;
+#alter table log convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #AV_CHOICE %>
@@ -115,7 +118,7 @@ lock tables choice write;
 alter table choice drop index IDX_CHOICE_F_POLL;
 alter table choice change column CHOICE_ID id mediumint(10), change column CHOICE_F_POLL poll_id mediumint(10), change column CHOICE_TITLE title varchar(255), change column CHOICE_CREATETIME created datetime, change column CHOICE_MODIFYTIME modified datetime;
 create index poll_id on choice (poll_id);
-alter table choice convert to character set utf8 collate utf8_bin;
+#alter table choice convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #AV_FILE %>
@@ -131,7 +134,7 @@ create index prototype on file (prototype(10));
 create index files on file (parent_id, parent_type, created desc); 
 #!files
 alter table file drop column FILE_MIMETYPE, drop column FILE_NAME, drop column FILE_SIZE, drop column FILE_DESCRIPTION;
-alter table file convert to character set utf8 collate utf8_bin;
+#alter table file convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #files %>
@@ -154,7 +157,7 @@ create index site_id on image (site_id);
 create index creator_id on image (creator_id);
 create index name on image (name(20));
 create index images on image (parent_id, parent_type, created desc); 
-alter table image convert to character set utf8 collate utf8_bin;
+#alter table image convert to character set utf8 collate utf8_bin;
 drop table AV_IMAGE;
 unlock tables;
 
@@ -172,7 +175,8 @@ CREATE TABLE IF NOT EXISTS `image` (
   `modified` datetime default NULL,
   `modifier_id` mediumint(10) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
+)
+#) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #AV_LAYOUT %>
 alter table AV_LAYOUT rename layout;
@@ -183,7 +187,7 @@ update layout set mode = 'default';
 create index site_id on layout (site_id);
 #!layouts
 alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT_DESCRIPTION, drop column LAYOUT_ISIMPORT;
-alter table layout convert to character set utf8 collate utf8_bin;
+#alter table layout convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #layouts %>
@@ -206,7 +210,7 @@ update membership set role = 'Contributor' where MEMBERSHIP_LEVEL = 9361;
 update membership set role = 'Manager' where MEMBERSHIP_LEVEL = 16383;
 update membership set role = 'Owner' where MEMBERSHIP_LEVEL = 131071;
 alter table membership drop column MEMBERSHIP_LEVEL;
-alter table membership convert to character set utf8 collate utf8_bin;
+#alter table membership convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #AV_POLL %>
@@ -222,7 +226,7 @@ create index polls on poll (site_id, creator_id, created);
 update poll set status = 'closed';
 update poll set status = 'open' where POLL_CLOSED = 1;
 alter table poll drop column POLL_CLOSED;
-alter table poll convert to character set utf8 collate utf8_bin;
+#alter table poll convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #AV_SITE %>
@@ -248,7 +252,7 @@ set @timestamp = unix_timestamp(now());
 update site set name = concat("www-", @timestamp) where name = "www";
 #!sites
 alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKUSAGE, drop column SITE_EMAIL, drop column SITE_LASTUPDATE, drop column SITE_LASTOFFLINE, drop column SITE_LASTBLOCKWARN, drop column SITE_LASTDELWARN, drop column SITE_LASTPING, drop column SITE_ENABLEPING, drop column SITE_ISONLINE, drop column SITE_ISBLOCKED, drop column SITE_ISTRUSTED;
-alter table site convert to character set utf8 collate utf8_bin;
+#alter table site convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #sites %>
@@ -288,7 +292,7 @@ update skin set name = "content" where prototype = "Story" and name = "display";
 update skin set name = "history" where prototype = "Story" and name = "historyview";
 #!skins
 alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
-alter table skin convert to character set utf8 collate utf8_bin;
+#alter table skin convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #skins %>
@@ -323,7 +327,7 @@ create index creator_id on content (creator_id);
 create index requests on content (requests);
 create index status on content (status);
 create index content on content (site_id, prototype, status, mode);
-#drop table AV_TEXT;
+drop table AV_TEXT;
 unlock tables;
 
 <% #contentTable %>
@@ -345,7 +349,8 @@ CREATE TABLE IF NOT EXISTS `content` (
   `modified` datetime default NULL,
   `modifier_id` mediumint(10) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
+)
+#) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
 
 <% #AV_USER %>
 alter table AV_USER rename user;
@@ -363,7 +368,7 @@ update user set status = 'privileged' where USER_ISSYSADMIN = 1;
 update user set salt = conv(floor(0 + (rand() * pow(2, 48))), 10, 16), hash = md5(concat(user_password, salt));
 #!users
 alter table user drop column hash, drop column salt, drop column USER_URL, drop column USER_PASSWORD, drop column USER_EMAIL_ISPUBLIC, drop column USER_ISBLOCKED, drop column USER_ISTRUSTED, drop column USER_ISSYSADMIN;
-alter table user convert to character set utf8 collate utf8_bin;
+#alter table user convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #AV_VOTE %>
@@ -373,7 +378,7 @@ alter table vote drop index IDX_VOTE_F_POLL, drop index IDX_VOTE_F_USER, drop in
 alter table vote change column VOTE_ID id mediumint(10), change column VOTE_F_POLL poll_id mediumint(10), change column VOTE_F_CHOICE choice_id mediumint(10), change column VOTE_F_USER creator_id mediumint(10), change column VOTE_USERNAME creator_name varchar(255), change column VOTE_CREATETIME created datetime, change column VOTE_MODIFYTIME modified datetime;
 create index choice_id on vote (choice_id);
 create index votes on vote (creator_name, poll_id);
-alter table vote convert to character set utf8 collate utf8_bin;
+#alter table vote convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #archive %>
