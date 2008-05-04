@@ -45,9 +45,9 @@ convert.files = function() {
       var metadata = {
          fileName: this.fileName,
          contentType: this.type,
-         contentLength: this.size,
-         description: clean(this.description)
+         contentLength: this.size || 0,
       }
+      this.description && (metadata.description = clean(this.description));
       execute("update file set prototype = 'File', parent_type = 'Site', " +
             "parent_id = site_id, metadata = $0 where id = $1",
             metadata.toSource(), this.id);
@@ -81,7 +81,7 @@ convert.images = function() {
          width: this.IMAGE_WIDTH,
          height: this.IMAGE_HEIGHT
       };
-      this.description && (metadata.description = clean(this.description));
+      this.IMAGE_ALTTEXT && (metadata.description = clean(this.IMAGE_ALTTEXT));
       if (this.thumbnailWidth && this.thumbnailHeight) {
          metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." + 
                this.IMAGE_FILEEXT;
@@ -116,7 +116,7 @@ convert.images = function() {
 }
 
 convert.layoutImages = function() {
-   retrieve("select *, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join AV_LAYOUT pl on i.IMAGE_F_LAYOUT = pl.LAYOUT_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = LAYOUT_F_SITE where i.IMAGE_PROTOTYPE = 'LayoutImage' and pl.LAYOUT_F_SITE is null and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE)");
+   retrieve("select *, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join AV_LAYOUT pl on i.IMAGE_F_LAYOUT = pl.LAYOUT_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = l.LAYOUT_F_SITE where i.IMAGE_PROTOTYPE = 'LayoutImage' and pl.LAYOUT_F_SITE is null and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE)");
    
    traverse(function() {
       var metadata = {
@@ -136,8 +136,8 @@ convert.layoutImages = function() {
       this.metadata = metadata;
  
       this.IMAGE_F_SITE = this.IMAGE_F_SITE || this.LAYOUT_F_SITE || null;
-      this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = null);
-      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = null);
+      this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = this.SITE_CREATETIME);
+      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = this.SITE_F_USER_CREATOR);
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
  
