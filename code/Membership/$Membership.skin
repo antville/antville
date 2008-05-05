@@ -125,7 +125,8 @@ the following link: {0}' <% members.href edit %> %>
 <% gettext "Have fun!" %>
 <% gettext "The Management" %>
 
-<% #add %>
+
+<% #notify_add %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext 'The user {0} has added your account to the list of members of \

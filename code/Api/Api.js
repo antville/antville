@@ -26,7 +26,7 @@ Api.getUser = function(name, password) {
    var user = User.getByName(name);
    if (!user) {
       throw Error("User " + name + " does not exist on this server");
-   } else if (user.hash !== (password + user.salt).md5()) {
+   } else if (user.hash !== String(password + user.salt).md5()) {
       throw Error("Authentication failed for user " + name);
    } else if (user.status === User.BLOCKED) {
       throw Error("This user account is currently blocked");
@@ -45,7 +45,6 @@ Api.getSite = function(name) {
 }
 
 Api.prototype.main_action = function() {
-   res.debug(res.handlers.membership.valueOf())
    res.write("Describe API options here.");
 }
 
