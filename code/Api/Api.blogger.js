@@ -16,10 +16,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $URL$
+// $Revision: 3539 $
+// $LastChangedBy: piefke3000 $
+// $LastChangedDate: 2008-05-05 02:35:28 +0200 (Mon, 05 May 2008) $
+// $URL: https://antville.googlecode.com/svn/trunk/code/Api/Api.blogger.js $
 //
 
 // Functions that implement Blogger's XML-RPC API
@@ -98,7 +98,7 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
 
    var result = [];
    var stories = res.handlers.membership.stories;
-   var max = Math.min(stories.size(), limit || Infinity, 20);
+   var max = Math.min(stories.size(), Number(limit) || Infinity, 20);
    for each (var story in stories.list(0, max)) {
       result.push({
          postid: story._id,
@@ -162,7 +162,7 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: Story.FEATURED
    });
-   
+   site.stories.add(story);
    return story._id;
 }
 
