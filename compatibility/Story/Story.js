@@ -379,7 +379,7 @@ Story.prototype.commentcounter_macro = function(param) {
    var linkflag = (param.as === "link" && param.as !== "text" || 
                    !param.as && commentCnt > 0);
    if (linkflag) {
-      html.openTag("a", {href: this.href("comment")});
+      html.openTag("a", {href: this.href() + "#comments"});
    }
    if (commentCnt < 1) {
       res.write(param.no || gettext("no comments"));
