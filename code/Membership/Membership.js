@@ -187,3 +187,9 @@ Membership.prototype.notify = function(action, recipient, subject) {
    }
    return;
 }
+
+Membership.prototype.valueOf = Membership.prototype.toString;
+
+Membership.prototype.toString = function() {
+   return "the membership of user " + this.name + " in site " + this.site.name;
+}

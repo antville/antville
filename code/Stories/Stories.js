@@ -126,6 +126,7 @@ Stories.prototype.list_macro = function(param, type) {
    return;
 }
 
+// FIXME: This method does dangerous things (setting subnode relation)
 Stories.prototype.filter = function(prototype /*, switch1..n, limit */) {
    if (!prototype) {
       return new HopObject;

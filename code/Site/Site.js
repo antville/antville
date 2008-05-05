@@ -22,15 +22,6 @@
 // $URL$
 //
 
-Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
-Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
-Site.getPageModes = defineConstants(Site, "stories"); //, "days");
-Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
-Site.getArchiveModes = defineConstants(Site, "closed", "public");
-Site.getNotificationModes = defineConstants(Site, "Nobody", 
-      "Owner", "Manager", "Contributor", "Subscriber" );
-Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
-
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentMode");
 this.handleMetadata("email");
@@ -50,6 +41,24 @@ this.handleMetadata("title"),
 this.handleMetadata("webHookMode");
 this.handleMetadata("webHookCalled");
 this.handleMetadata("webHookUrl");
+
+Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
+Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
+Site.getPageModes = defineConstants(Site, "stories"); //, "days");
+Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
+Site.getArchiveModes = defineConstants(Site, "closed", "public");
+Site.getNotificationModes = defineConstants(Site, "Nobody", 
+      "Owner", "Manager", "Contributor", "Subscriber" );
+Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
+
+Site.getByName = function(name) {
+   return root.sites.get(name);
+}
+
+Site.require = function(mode) {
+   var modes = [Site.CLOSED, Site.RESTRICTED, Site.PUBLIC, Site.OPEN];
+   return modes.indexOf(res.handlers.site.mode) >= modes.indexOf(mode);
+}
 
 Site.prototype.constructor = function(name, title) {
    var now = new Date;
@@ -671,9 +680,4 @@ Site.prototype.getAdminHeader = function(name) {
       return ["#", "Name", "Items"];
    }
    return [];
-}
-
-Site.require = function(mode) {
-   var modes = [Site.CLOSED, Site.RESTRICTED, Site.PUBLIC, Site.OPEN];
-   return modes.indexOf(res.handlers.site.mode) >= modes.indexOf(mode);
 }

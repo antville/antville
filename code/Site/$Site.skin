@@ -5,7 +5,7 @@ http://<% site.name %>.antville.org<% param.path %>
 document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +  
       'src="<% param.href %>"></' + 'scr' + 'ipt>');
 
-<% #preview %>
+<% #listItem %>
 <tr>
 <td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
    <% site.modified short %>

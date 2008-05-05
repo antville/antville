@@ -170,7 +170,7 @@ Story.prototype.getFormOptions = function(name) {
 Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
    var delta = this.getDelta(data);
-
+   
    if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
    }
@@ -185,8 +185,8 @@ Story.prototype.update = function(data) {
       }
    }
    
-   this.title = data.title;
-   this.text = data.text;
+   this.title = data.title.trim();
+   this.text = data.text.trim();
    this.status = data.status;
    this.mode = data.mode;
    this.commentMode = data.commentMode;

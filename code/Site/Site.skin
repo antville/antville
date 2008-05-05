@@ -1,6 +1,10 @@
 <% #main %>
 <% site.stories %>
 
+<% #preview %>
+<li><% site.title | site.link %> <span class="small">(<% site.modified short 
+prefix="Last update: " default="None so far" %>)</span></li>
+
 <% #welcome %>
 <p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
 <p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 

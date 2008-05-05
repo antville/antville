@@ -12,7 +12,7 @@ the site owner’s choice than by the software.' %>)</p>
    <col width="150">
    <col width="*">
 </colgroup>
-<% list updates 25 %>
+<% root.loop updates skin=$Site#listItem limit=25 %>
 </table>
 </p>
 
