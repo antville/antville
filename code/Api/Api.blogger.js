@@ -26,9 +26,9 @@
 // see http://www.blogger.com/developers/api/1_docs/ for further details
 // blogger.getTemplate and blogger.setTemplate are not supported
 
-Api.Blogger = {};
+Api.blogger = {};
 
-Api.Blogger.util = {
+Api.blogger.util = {
    getContentParts: function(content) {
       content && (content = content.trim());
       content || (content = "");
@@ -48,7 +48,7 @@ Api.Blogger.util = {
    }
 }
 
-Api.Blogger.getUserInfo = function(appKey, name, password) {
+Api.blogger.getUserInfo = function(appKey, name, password) {
    var user = User.getByName(name);
    if (!user) {
       throw Error("User " + name + " does not exist on this server");
@@ -60,7 +60,7 @@ Api.Blogger.getUserInfo = function(appKey, name, password) {
    }
 }
 
-Api.Blogger.getUsersBlogs = function(appKey, name, password) {
+Api.blogger.getUsersBlogs = function(appKey, name, password) {
    var user = Api.getUser(name, password);
    var result = [];
    user.forEach(function() {
@@ -80,7 +80,7 @@ Api.Blogger.getUsersBlogs = function(appKey, name, password) {
    return result;
 }
 
-Api.Blogger.getRecentPosts = function(appKey, id, name, password, limit) {
+Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
    var user = Api.getUser(name, password);
    var site = Api.getSite(id);
    if (!site) { 
@@ -111,7 +111,7 @@ Api.Blogger.getRecentPosts = function(appKey, id, name, password, limit) {
    return result;
 }
 
-Api.Blogger.getPost = function(appKey, id, name, password) {
+Api.blogger.getPost = function(appKey, id, name, password) {
    var user = Api.getUser(name, password);
    var story = Story.getById(id);
    if (!story) {
@@ -136,7 +136,7 @@ Api.Blogger.getPost = function(appKey, id, name, password) {
    }
 }
 
-Api.Blogger.newPost = function(appKey, id, name, password, content, publish) {
+Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    var user = Api.getUser(name, password);
    var site = Api.getSite(id);
    if (!site) {
@@ -152,7 +152,7 @@ Api.Blogger.newPost = function(appKey, id, name, password, content, publish) {
             " to add a story to site " + site.name);
    }
 
-   var parts = Api.Blogger.util.getContentParts(content);
+   var parts = Api.blogger.util.getContentParts(content);
    var story = new Story;
    story.site = site;
    story.creator = user;
@@ -166,7 +166,7 @@ Api.Blogger.newPost = function(appKey, id, name, password, content, publish) {
    return story._id;
 }
 
-Api.Blogger.editPost = function(appkey, id, name, password, content, publish) {
+Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
    var user = Api.getUser(name, password);
    var story = Story.getById(id);
    if (!story) {
@@ -182,7 +182,7 @@ Api.Blogger.editPost = function(appkey, id, name, password, content, publish) {
             " to edit story #" + id);
    }
 
-   var parts = Api.Blogger.util.getContentParts(content);
+   var parts = Api.blogger.util.getContentParts(content);
    story.update({
       title: parts.title,
       text: parts.text,
@@ -193,7 +193,7 @@ Api.Blogger.editPost = function(appkey, id, name, password, content, publish) {
    return true;
 }
 
-Api.Blogger.deletePost = function(appKey, id, name, password, publish) {
+Api.blogger.deletePost = function(appKey, id, name, password, publish) {
    var user = Api.getUser(name, password);
    var story = Story.getById(id);
    if (!story) {

@@ -50,10 +50,10 @@ Api.prototype.main_action = function() {
 }
 
 Api.prototype.blogger_action_xmlrpc = function(method) {
-   if (method && Api.Blogger[method]) {
+   if (method && Api.blogger[method]) {
       var args = Array.prototype.splice.call(arguments, 1);
-      return Api.Blogger[method].apply(null, args);
+      return Api.blogger[method].apply(null, args);
    }
-   throw Error("Method " + method + "() is not implemented");
+   throw Error("Method blogger." + method + "() is not implemented");
    return;
 }
