@@ -350,12 +350,20 @@ function image_macro(param, id, mode) {
    if (!image) {
       return;
    }
+
    switch (mode) {
       case "url":
       res.write(image.getUrl());
       break;
       case "thumbnail":
+      case "popup":
+      var url = image.getUrl();
+      html.openTag("a", {href: url});
+      // FIXME: Bloody popups belong to compatibility layer
+      (mode === "popup") && (param.onclick = 'javascript:openPopup(\'' + 
+            url + '\', ' + image.width + ', ' + image.height + '); return false;')
       image.thumbnail_macro(param);
+      html.closeTag("a");
       break;
       default:
       image.render_macro(param);
