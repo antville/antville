@@ -153,14 +153,18 @@ Site.prototype.loginstatus_macro = function(param) {
 }
 
 Site.prototype.navigation_macro = function(param) {
+   var group;
    var navigation = {};
    navigation.contributors = this.renderSkinAsString("Site#contribnavigation");
    navigation.admins = this.renderSkinAsString("Site#adminnavigation");
    if (!navigation.contributors && !navigation.admins && !res.meta.navigation) {
       res.meta.navigation = true;
       this.renderSkin("Site#navigation");
-   } else {
-      param["for"] && res.write(navigation[param["for"]]);
+   } else if ((group = param["for"]) && navigation[group]) {
+      if (group === "contributors" && Membership.require("Contributor") ||
+            group === "admins" && Membership.require("Owner")) {
+         res.write(navigation[group]);
+      }
    }
    return;
 }
