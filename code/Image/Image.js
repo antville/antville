@@ -261,29 +261,29 @@ Image.prototype.macro_macro = function() {
          this.parent.constructor === Layout ? "layout.image" : "image");
 }
 
-Image.prototype.thumbnail_macro = function() {
+Image.prototype.thumbnail_macro = function(param) {
    if (!this.thumbnailName) {
-      return this.render_macro({});
+      return this.render_macro(param);
    }
-   var description = encode("Thumbnail of image " + this.name);
-   return html.tag("img", {
-      src: this.getUrl(this.getThumbnailFile().getName()),
-      title: description,
-      width: this.thumbnailWidth || String.EMPTY,
-      height: this.thumbnailHeight || String.EMPTY,
-      border: 0,
-      alt: description
-   });
+   param.src = this.getUrl(this.getThumbnailFile().getName());
+   param.title || (param.title = encode(this.description));
+   param.alt = encode(param.alt || param.title);
+   param.width = this.thumbnailWidth || String.EMPTY;
+   param.height = this.thumbnailHeight || String.EMPTY;
+   param.border = (param.border = 0);
+   html.tag("img", param);
+   return;
 }
 
 Image.prototype.render_macro = function(param) {
    param.src = this.getUrl();
    param.title || (param.title = encode(this.description));
+   param.alt = encode(param.alt || param.title);
    param.width || (param.width = this.width);
    param.height || (param.height = this.height);
    param.border || (param.border = 0);
-   param.alt = encode(param.alt || param.title);
-   return html.tag("img", param);
+   html.tag("img", param);
+   return;
 }
 
 Image.prototype.getFile = function(name) {
