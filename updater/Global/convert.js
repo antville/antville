@@ -116,7 +116,17 @@ convert.images = function() {
 }
 
 convert.layoutImages = function() {
-   retrieve("select *, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight from AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID left join AV_LAYOUT pl on i.IMAGE_F_LAYOUT = pl.LAYOUT_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = l.LAYOUT_F_SITE where i.IMAGE_PROTOTYPE = 'LayoutImage' and pl.LAYOUT_F_SITE is null and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE)");
+   retrieve("select *, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, " +
+         "t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight " +
+         "from AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = " +
+         "t.IMAGE_ID left join AV_LAYOUT pl on i.IMAGE_F_LAYOUT = " +
+         "pl.LAYOUT_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = " +
+         "l.LAYOUT_F_SITE where i.IMAGE_PROTOTYPE = 'LayoutImage' and " +
+         "pl.LAYOUT_F_SITE is null and i.IMAGE_ALIAS not in (select " +
+         "IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = " +
+         "IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where " +
+         "IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null " +
+         "and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE)");
    
    traverse(function() {
       var metadata = {
@@ -142,11 +152,12 @@ convert.layoutImages = function() {
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
  
       execute("insert into image values (null, $IMAGE_ALIAS, 'LayoutImage', " +
-            "$IMAGE_F_SITE, $layoutId, 'Layout', $metadata, " +
+            "$SITE_ID, $layoutId, 'Layout', $metadata, " +
             "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $IMAGE_MODIFYTIME, " +
             "$IMAGE_F_USER_MODIFIER)", this);
 
-      execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
+      // FIXME: Hellooooo, stooooopid!
+      //execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
 
       var fpath = antville().properties.staticPath;
       var files = [metadata.fileName, metadata.thumbnailName];
