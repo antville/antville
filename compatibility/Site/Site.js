@@ -163,7 +163,7 @@ Site.prototype.navigation_macro = function(param) {
    } else if ((group = param["for"]) && navigation[group]) {
       if (group === "contributors" && Membership.require(Membership.CONTRIBUTOR) ||
             group === "admins" && Membership.require(Membership.OWNER) || 
-            User.required(User.PRIVILEGED)) {
+            User.require(User.PRIVILEGED)) {
          res.write(navigation[group]);
       }
    }
