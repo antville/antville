@@ -176,7 +176,7 @@ convert.layoutImages = function() {
             source.hardCopy(dest);
          }
       }
-   }, true);
+   });
 }
 
 convert.layouts = function() {
