@@ -161,8 +161,9 @@ Site.prototype.navigation_macro = function(param) {
       res.meta.navigation = true;
       this.renderSkin("Site#navigation");
    } else if ((group = param["for"]) && navigation[group]) {
-      if (group === "contributors" && Membership.require("Contributor") ||
-            group === "admins" && Membership.require("Owner")) {
+      if (group === "contributors" && Membership.require(Membership.CONTRIBUTOR) ||
+            group === "admins" && Membership.require(Membership.OWNER) || 
+            User.required(User.PRIVILEGED)) {
          res.write(navigation[group]);
       }
    }
