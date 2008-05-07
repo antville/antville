@@ -117,19 +117,7 @@ convert.images = function() {
 }
 
 convert.layoutImages = function() {
-   retrieve("select *, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, " +
-         "t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight " +
-         "from AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = " +
-         "t.IMAGE_ID left join AV_LAYOUT pl on i.IMAGE_F_LAYOUT = " +
-         "pl.LAYOUT_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = " +
-         "l.LAYOUT_F_SITE where i.IMAGE_PROTOTYPE = 'LayoutImage' and " +
-         "pl.LAYOUT_F_SITE is null and i.IMAGE_ALIAS not in (select " +
-         "IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = " +
-         "IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where " +
-         "IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null " +
-         "and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE) " +
-         "and l.LAYOUT_ID > $min and l.LAYOUT_ID <= $max order by " +
-         "l.LAYOUT_ID");
+   retrieve("select *, i.IMAGE_ALIAS, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight, pl.LAYOUT_ALIAS as parentLayout from AV_LAYOUT pl, AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = l.LAYOUT_F_SITE where i.IMAGE_F_LAYOUT = pl.LAYOUT_ID and l.LAYOUT_F_LAYOUT_PARENT = pl.LAYOUT_ID and pl.LAYOUT_F_SITE is null and i.IMAGE_PROTOTYPE = 'LayoutImage' and i.IMAGE_F_IMAGE_PARENT is null and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE,  AV_LAYOUT, AV_SITE where LAYOUT_ID = IMAGE_F_LAYOUT and SITE_ID = LAYOUT_F_SITE and IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = site.SITE_ID) and l.LAYOUT_ID > $min and l.LAYOUT_ID <= $max order by l.LAYOUT_ID");
    
    traverse(function() {
       var metadata = {
@@ -164,7 +152,7 @@ convert.layoutImages = function() {
       var files = [metadata.fileName, metadata.thumbnailName];
       for each (var fname in files) {
          var source = new helma.File(fpath + "/layouts/" + 
-               this.LAYOUT_ALIAS, fname);
+               this.parentLayout, fname);
          var layoutDir = new helma.File(fpath + this.SITE_ALIAS + 
                "/layouts/", this.layoutName);
          layoutDir.exists() || layoutDir.makeDirectory();
