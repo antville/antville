@@ -156,9 +156,6 @@ convert.layoutImages = function() {
             "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $IMAGE_MODIFYTIME, " +
             "$IMAGE_F_USER_MODIFIER)", this);
 
-      // FIXME: Hellooooo, stooooopid!
-      //execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
-
       var fpath = antville().properties.staticPath;
       var files = [metadata.fileName, metadata.thumbnailName];
       for each (var fname in files) {
@@ -176,7 +173,7 @@ convert.layoutImages = function() {
             source.hardCopy(dest);
          }
       }
-   });
+   }, 100, "l.LAYOUT_ID");
 }
 
 convert.layouts = function() {
@@ -487,7 +484,7 @@ convert.skins = function() {
             dir.exists() || dir.mkdirs();
             var file = new java.io.File(dir, prototype + ".skin");
             file.exists() && file["delete"]();
-            log(file.getCanonicalPath());
+            log("Write " + prototype + ".skin" + " to " + file.getCanonicalPath());
             var fos = new java.io.FileOutputStream(file);
             var bos = new java.io.BufferedOutputStream(fos);
             var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
@@ -531,13 +528,8 @@ convert.skins = function() {
             var rootLayoutId = /sys_layout idref="(\d)*"/.exec(xml)[1] || 1;
             fpath += rootLayoutId == this.layout_id ?
                   "/layout/" : "/layouts/" + this.layout_name;
-         } else { // FIXME: CLEANUP!!!!
-            /*if (this.layout_id === this.current_layout) {
-               fpath = move(fpath + "/layouts/" + this.layout_name, 
-                     fpath + "/layout/");
-            } else {*/
-               fpath += "/layouts/" + this.layout_name;
-            //}
+         } else {
+            fpath += "/layouts/" + this.layout_name;
          }
          skins = appSkins.clone({}, true);
          skins.Site.values = values(this.layout_metadata);
@@ -564,6 +556,17 @@ convert.skins = function() {
          if (prototype === "Membership" && 
                (skinName === "login" || skinName === "status")) {
             source = source.replace(/(<%\s*)this./g, "$1members.");
+         }
+         // Adding the new calendar CSS classes to the old ones
+         if (prototype === "Site" && skinName === "stylesheet") {
+            source = source.replace(/(\.calHead)/g, 
+                  "table.calendar thead, $1");
+            source = source.replace(/(\.calDay)/g, 
+                  "table.calendar th, table.calendar tbody td.day, $1");
+            source = source.replace(/(\.calSelDay)/g, 
+                  "table.calendar tbody td.selected, $1");
+            source = source.replace(/(\.calFoot)/g, 
+                  "table.calendar tfoot td, $1");
          }
          ref = (skins[prototype] || (skins[prototype] = {}));
          ref[skinName] = clean(source);

@@ -248,18 +248,25 @@ var retrieve = function(sql) {
    return;
 }
 
-var traverse = function(callback, noOffset) {
+var traverse = function(callback, noOffset, idName) {
    if (!app.data.query || !callback) {
       return;
    }
    var STEP = 5000, start = Date.now();
-   var sql, rows, offset = 0;      
+   var sql, rows, offset = 0;;
    while (true) {
-      //msg("Starting bulk after " + (Date.now() - start) + " millis");
       start = Date.now();
-      sql = app.data.query + " limit " + STEP;
-      noOffset || (sql += " offset " + offset);
-      msg(sql + (noOffset ? " offset " + offset : ""));
+      if (idName) {
+         sql = app.data.query + " and " + idName + " > " + offset + 
+               " and " + idName + " < " + (offset += noOffset || STEP) + 
+               " order by " + idName;
+         msg(sql);
+      } else {
+         sql = app.data.query + " limit " + STEP;
+         noOffset || (sql += " offset " + offset);
+         offset += STEP;
+         msg(sql + (noOffset ? " offset " + offset : ""));
+      }
       result = db().executeRetrieval(sql);
       error();
       msg("Select statement took " + (Date.now() - start) + " millis");
@@ -274,7 +281,6 @@ var traverse = function(callback, noOffset) {
          wrapper.update(result);
          callback.call(wrapper.values, result);
       } while (rows = result.next());
-      offset += STEP;
       result.release();
       msg("Update took " + (Date.now() - start) + " millis");
    }
