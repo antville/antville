@@ -109,7 +109,7 @@ Site.prototype.getPermission = function(action) {
       case "tags":
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
-            Membership.require(Membership.SUBSCRIBER)) ||
+            Membership.require(Membership.CONTRIBUTOR)) ||
             (Site.require(Site.CLOSED) &&
             Membership.require(Membership.OWNER)) || 
             User.require(User.PRIVILEGED);
@@ -494,6 +494,7 @@ Site.prototype.getMacroHandler = function(name) {
       case "files":
       case "galleries":
       case "images":
+      case "layout":
       case "members":
       case "polls":
       case "stories":
