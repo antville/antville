@@ -253,7 +253,7 @@ var traverse = function(callback, noOffset, idName) {
       return;
    }
    var STEP = 5000, start = Date.now();
-   var sql, rows, offset = 0;;
+   var sql, rows, offset = 0;
    while (true) {
       start = Date.now();
       if (noOffset) {
