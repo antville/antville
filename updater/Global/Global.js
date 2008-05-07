@@ -256,16 +256,15 @@ var traverse = function(callback, noOffset, idName) {
    var sql, rows, offset = 0;;
    while (true) {
       start = Date.now();
-      if (idName) {
-         sql = app.data.query + " and " + idName + " > " + offset + 
-               " and " + idName + " < " + (offset += noOffset || STEP) + 
-               " order by " + idName;
+      if (noOffset) {
+         sql = app.data.query.replace(/\$min/, offset);
+         sql = sql.replace(/\$max/, offset += noOffset);
          msg(sql);
       } else {
          sql = app.data.query + " limit " + STEP;
-         noOffset || (sql += " offset " + offset);
+         sql += " offset " + offset;
          offset += STEP;
-         msg(sql + (noOffset ? " offset " + offset : ""));
+         msg(sql);
       }
       result = db().executeRetrieval(sql);
       error();

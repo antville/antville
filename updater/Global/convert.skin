@@ -158,7 +158,7 @@ create index creator_id on image (creator_id);
 create index name on image (name(20));
 create index images on image (parent_id, parent_type, created desc); 
 #alter table image convert to character set utf8 collate utf8_bin;
-drop table AV_IMAGE;
+#drop table AV_IMAGE;
 unlock tables;
 
 <% #imageTable %>
@@ -302,7 +302,7 @@ layout_metadata, site.name as site_name, site.layout_id as current_layout,
 (select SKIN_SOURCE from site p_site, skin p_skin where p_site.id = site.id 
 and p_skin.layout_id = layout.layout_id and p_skin.prototype = skin.prototype 
 and p_skin.name = skin.name) as parent from site left join layout on 
-layout.site_id = site.id left join skin on skin.layout_id = layout.id order 
+layout.site_id = site.id left join skin on skin.layout_id = layout.id order
 by site_name, layout_name, prototype, name
 
 <% #AV_SYSLOG %>
@@ -327,7 +327,7 @@ create index creator_id on content (creator_id);
 create index requests on content (requests);
 create index status on content (status);
 create index content on content (site_id, prototype, status, mode);
-drop table AV_TEXT;
+#drop table AV_TEXT;
 unlock tables;
 
 <% #contentTable %>

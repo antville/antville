@@ -71,7 +71,8 @@ convert.images = function() {
          "i.IMAGE_F_SITE = site_id and i.IMAGE_TOPIC = name and " +
          "type = 'Image' left join AV_LAYOUT l on LAYOUT_ID = i.IMAGE_F_LAYOUT " +
          "where i.IMAGE_WIDTH is not null and i.IMAGE_HEIGHT is not null and " +
-         "i.IMAGE_F_IMAGE_PARENT is null order by i.IMAGE_ID");
+         "i.IMAGE_F_IMAGE_PARENT is null and i.IMAGE_ID > $min and " +
+         "i.IMAGE_ID <= $max order by i.IMAGE_ID");
 
    traverse(function() {
       var metadata = {
@@ -108,8 +109,8 @@ convert.images = function() {
                this.IMAGE_F_USER_MODIFIER || this.IMAGE_F_USER_CREATOR);
       }
 
-      execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
-   }, true);
+      //execute("delete from AV_IMAGE where IMAGE_ID = $0", this.IMAGE_ID);
+   }, 5000);
 
    execute("alter table tag change id id int(11)")
    execute("alter table tag_hub change id id int(11)");
@@ -126,7 +127,9 @@ convert.layoutImages = function() {
          "IMAGE_ALIAS from AV_IMAGE left join AV_LAYOUT on LAYOUT_ID = " +
          "IMAGE_F_LAYOUT left join AV_SITE on SITE_ID = LAYOUT_F_SITE where " +
          "IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null " +
-         "and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE)");
+         "and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = l.LAYOUT_F_SITE) " +
+         "and l.LAYOUT_ID > $min and l.LAYOUT_ID <= $max order by " +
+         "l.LAYOUT_ID");
    
    traverse(function() {
       var metadata = {
@@ -145,9 +148,10 @@ convert.layoutImages = function() {
       }
       this.metadata = metadata;
  
-      this.IMAGE_F_SITE = this.IMAGE_F_SITE || this.LAYOUT_F_SITE || null;
+      this.SITE_ID || (this.SITE_ID = null);
       this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = this.SITE_CREATETIME);
-      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = this.SITE_F_USER_CREATOR);
+      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = 
+            this.SITE_F_USER_CREATOR || null);
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
  
@@ -173,7 +177,7 @@ convert.layoutImages = function() {
             source.hardCopy(dest);
          }
       }
-   }, 100, "l.LAYOUT_ID");
+   }, 100);
 }
 
 convert.layouts = function() {
@@ -252,7 +256,8 @@ convert.content = function() {
    }
 
    retrieve("select * from AV_TEXT left join tag on TEXT_F_SITE = site_id " +
-         "and TEXT_TOPIC = name and type = 'Story' order by TEXT_ID");
+         "and TEXT_TOPIC = name and type = 'Story' where TEXT_ID > $min " +
+         "and TEXT_ID <= $max order by TEXT_ID");
 
    traverse(function() {
       if (this.TEXT_PROTOTYPE === "Comment") {
@@ -284,6 +289,8 @@ convert.content = function() {
          }
          this.comment_mode = this.TEXT_HASDISCUSSIONS == 1 ? "open" : "closed";
       }
+      
+      this.TEXT_F_USER_MODIFIER || (this.TEXT_F_USER_MODIFIER = null);
 
       this.name = this.ALIAS || "";
       this.metadata = metadata(this.TEXT_CONTENT);
@@ -298,8 +305,8 @@ convert.content = function() {
                "tagged_type = 'Story', user_id = $2", this.id, this.TEXT_ID, 
                this.TEXT_F_USER_MODIFIER || this.TEXT_F_USER_CREATOR);
       }
-      execute("delete from AV_TEXT where TEXT_ID = " + this.TEXT_ID);
-   }, true);
+      //execute("delete from AV_TEXT where TEXT_ID = " + this.TEXT_ID);
+   }, 5000);
 
    execute("alter table tag change id id int(11)")
    execute("alter table tag_hub change id id int(11)");
