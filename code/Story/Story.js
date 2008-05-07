@@ -185,8 +185,8 @@ Story.prototype.update = function(data) {
       }
    }
    
-   this.title = data.title.trim();
-   this.text = data.text.trim();
+   this.title = data.title ? data.title.trim() : String.EMPTY;
+   this.text = data.text ? data.text.trim() : String.EMPTY;
    this.status = data.status;
    this.mode = data.mode;
    this.commentMode = data.commentMode;
