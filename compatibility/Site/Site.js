@@ -79,7 +79,7 @@ Site.prototype.rss_action = function() {
    if (req.queryParams.show === "all") {
       return res.redirect(this.href("rss.xml"))
    }
-   return res.redirect("stories.xml");
+   return res.redirect(this.href("stories.xml"));
 }
 
 Site.prototype.feeds_action = function() {
