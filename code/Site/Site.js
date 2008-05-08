@@ -422,6 +422,9 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
+   res.write("Search is currently disabled. Not for long, so please stay tuned.");
+   return;
+   
    var search;
    if (!req.postParams.q || 
          !(search = req.postParams.q = stripTags(req.postParams.q))) {
