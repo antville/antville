@@ -68,6 +68,20 @@ var aspects = {
       return args;
    },
    
+   fixPager: function(args, func, obj) {
+      var archive = res.handlers.day = obj.archive || obj;
+      res.push();
+      archive.stories_macro();
+      res.data.storylist = res.pop();
+      res.push();
+      archive.link_macro({}, "previous", gettext("Previous page"));
+      res.data.prevpage = res.pop();
+      res.push();
+      archive.link_macro({}, "next", gettext("Next page"));
+      res.data.nextpage = res.pop();
+      return args;
+   },
+   
    // Obsolete?
    setTextAndTitle: function(args) {
       if (req.postParams.metadata_title && !req.postParams.title) {
@@ -125,6 +139,10 @@ HopObject.prototype.onCodeUpdate = function() {
 
 // Call onCodeUpdate() to be sure that aspects apply
 HopObject.prototype.onCodeUpdate();
+
+Archive.prototype.onCodeUpdate = function() {
+   return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
+}
 
 /* Comment.prototype.onCodeUpdate = function() {
    helma.aspects.addBefore(this, "update", aspects.setTextAndTitle);
@@ -185,13 +203,7 @@ Site.prototype.onCodeUpdate = function() {
       return permission;
    });
    
-   return helma.aspects.addBefore(this, "main_action", function(args, func, site) {
-      res.handlers.day = site.archive;
-      res.push();
-      site.archive.stories_macro();
-      res.data.storylist = res.pop();
-      return args;
-   });
+   return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
 }
 
 Story.prototype.onCodeUpdate = function() {
