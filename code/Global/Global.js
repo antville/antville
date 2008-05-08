@@ -347,10 +347,11 @@ function image_macro(param, id, mode) {
          image = HopObject.getFromPath(param.fallback, "images");
       }
    }
+
    if (!image) {
       return;
    }
-
+   
    switch (mode) {
       case "url":
       res.write(image.getUrl());
