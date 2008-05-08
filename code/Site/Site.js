@@ -398,6 +398,9 @@ Site.prototype.rss_xsl_action = function() {
 }
 
 Site.prototype.referrers_action = function() {
+   res.write("Referrers are currently disabled. Not for long, so please stay tuned.");
+   return;
+   
    if (req.postParams.permanent && (User.require(User.PRIVILEGED) ||
          Membership.require(Member.OWNER)))  {
       var urls = req.postParams.permanent_array;

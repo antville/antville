@@ -340,6 +340,9 @@ Story.prototype.tags_macro = function() {
 }
 
 Story.prototype.backlinks_macro = function(param, limit) {
+   res.write("Backlinks are currently disabled. Not for long, please stay tuned.");
+   return;
+
    limit || (limit = param.limit);
    var date = new Date;
    date.setDate(date.getDate() - 1);
