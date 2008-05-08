@@ -23,10 +23,6 @@
 //
 
 Members.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
-
    switch (action) {
       case "login":
       case "logout":
@@ -34,7 +30,13 @@ Members.prototype.getPermission = function(action) {
       case "reset":
       case "salt.js":
       return true;
+   }
       
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
+
+   switch (action) {
       case "edit":
       case "privileges":
       case "subscriptions":

@@ -83,6 +83,10 @@ HopObject.prototype.onRequest = function() {
    }
 
    if (!this.getPermission(req.action)) {
+      if (!session.user) {
+         res.message = gettext("Please login first.");
+         res.redirect(res.handlers.site.members.href("login"));
+      }
       res.status = 401;
       res.write(gettext("Sorry, you are not allowed to access this part of the site."));
       res.stop();

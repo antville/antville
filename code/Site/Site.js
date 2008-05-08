@@ -108,7 +108,6 @@ Site.prototype.getPermission = function(action) {
       case "rss.xsl":
       case "search":
       case "stories.xml":
-      case "tags":
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
             Membership.require(Membership.CONTRIBUTOR)) ||
