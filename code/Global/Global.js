@@ -340,7 +340,8 @@ function image_macro(param, id, mode) {
 
    var image;
    if (id.startsWith("/")) {
-      image = Images.Default[id.substring(1)];
+      var name = id.substring(1);
+      image = Images.Default[name] || Images.Default[name + ".gif"];
    } else {
       image = HopObject.getFromPath(id, "images");
       if (!image && param.fallback) {

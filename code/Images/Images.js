@@ -126,7 +126,7 @@ Images.Default = (function() {
 
    var images = {};
    var add = function(name, description) {
-      images[name.split(".")[0]] = new Image(name, description);
+      images[name] = new Image(name, description);
       return;
    }
    add("rss.png", "RSS feed");
