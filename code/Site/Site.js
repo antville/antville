@@ -94,6 +94,8 @@ Site.prototype.getPermission = function(action) {
    switch (action) {
       case "main.js":
       case "main.css":
+      case "error":
+      case "notfound":
       case "robots.txt":
       case "search.xml":
       case "user.js":
