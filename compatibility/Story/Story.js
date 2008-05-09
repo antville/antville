@@ -280,7 +280,7 @@ Story.prototype.editableby_macro = function(param) {
       }
    } else {
       switch (this.status) {
-         case Stoy.PUBLIC:
+         case Story.PUBLIC:
          res.write(gettext("Content managers of {0}", path.site.title));
          break;
          case Story.SHARED:
