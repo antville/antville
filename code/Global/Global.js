@@ -407,16 +407,16 @@ function list_macro(param, id, limit) {
    if (!id) {
       return;
    }
-
+   
    limit || (limit = 25);
    var max = Math.min(limit, 20);
    var collection, skin;
    if (id === "sites") {
       collection = root.sites.list(0, max);
-      skin = "$Site#preview";
+      skin = "Site#preview";
    } else if (id === "updates") {
       collection = root.updates.list(0, limit);
-      skin = "$Site#preview";
+      skin = "Site#preview";
       /*
       var site;
       collection = [];
@@ -460,17 +460,17 @@ function list_macro(param, id, limit) {
          case "comments":
          var comments = site.stories.comments;
          collection = comments.list().filter(filter).filter(commentFilter);
-         skin = "$Comment#preview";
+         skin = "Story#preview";
          break;
          
          case "featured":
          collection = site.stories.featured.list(0, max);
-         skin = "$Story#preview";
+         skin = "Story#preview";
          break;
          
          case "images":
          collection = site.images.list(0, max);
-         skin = "$Image#preview";
+         skin = "Image#preview";
          break;
          
          case "postings":
@@ -481,7 +481,7 @@ function list_macro(param, id, limit) {
             }
             return true;
          });
-         skin = "$Story#preview";
+         skin = "Story#preview";
          break;
          
          case "stories":
@@ -490,7 +490,7 @@ function list_macro(param, id, limit) {
          collection = stories.list().filter(function(item, index) {
             return item.constructor === Story && filter(item, counter++);
          });
-         skin = "$Story#preview";
+         skin = "Story#preview";
          break;
          
          case "tags":
