@@ -355,7 +355,7 @@ Story.prototype.createtime_macro = function(param) {
       } else {
          param.value = formatDate(new Date(), "yyyy-MM-dd HH:mm");
       }
-      param.name = "createtime";
+      param.name = "created";
       html.input(param);
    } else if (this.created) {
       var text = formatDate(this.created, param.format);
