@@ -219,7 +219,7 @@ Root.prototype.updates_xml_action = function() {
    feed.setPublishedDate(now);
    var entries = new java.util.ArrayList();
    var entry, description;
-   var sites = root.sites.list(0, 25).sort(Number.Sorter("modified", 
+   var sites = root.updates.list(0, 25).sort(Number.Sorter("modified", 
          Number.Sorter.DESC));
    for each (var site in sites) {
       entry = new rome.SyndEntryImpl();
