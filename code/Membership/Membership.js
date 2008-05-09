@@ -158,11 +158,11 @@ Membership.prototype.status_macro = function() {
 }
 
 Membership.prototype.link_filter = function(value, param) {
-   if (this.isTransient()) {
+   if (!session.user || !session.user.url) {
       return value;
    }
    return HopObject.prototype.link_filter.call(this, value, 
-         param, this.creator.url); // || this.href());
+         param, session.user.url); // || this.href());
 }
 
 Membership.prototype.require = function(role) {
