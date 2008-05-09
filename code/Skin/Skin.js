@@ -207,14 +207,15 @@ Skin.prototype.getSource = function() {
 }
 
 Skin.prototype.setSource = function(source) {
-   res.push();
-   if (source != null) {
-      res.writeln("<% #" + this.name + " %>");
-      res.writeln(source.trim());
-   }
    var skin = this.getMainSkin();
    if (!skin) {
       return;
+   }
+
+   res.push();
+   if (source != null) {
+      res.writeln("<% #" + this.name + " %>");
+      res.writeln(source.trim().replace(/(<%\s*)#/g, "$1// #"));
    }
    var subskins = skin.getSubskinNames();
    for (var i in subskins) {
