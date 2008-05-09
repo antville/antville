@@ -20,6 +20,7 @@ modify the appearance of your site according to your needs."
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
+<br />
 <table border="0" cellpadding="0" cellspacing="0">
 <colgroup>
    <col width="150">
