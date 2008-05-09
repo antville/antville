@@ -197,6 +197,7 @@ Site.prototype.onCodeUpdate = function() {
          switch(args[0]) {
             case "rss":
             case "feeds":
+            case "mostread":
             return true;
          }
       }
