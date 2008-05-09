@@ -161,10 +161,10 @@ Site.prototype.navigation_macro = function(param) {
       res.meta.navigation = true;
       this.renderSkin("Site#navigation");
    } else if ((group = param["for"]) && navigation[group]) {
-      if (group === "contributors" && Membership.require(Membership.CONTRIBUTOR) ||
-            group === "admins" && Membership.require(Membership.OWNER) || 
-            User.require(User.PRIVILEGED)) {
-         res.write(navigation[group]);
+      if (group === "contributors" && this.stories.getPermission("create")) {
+         res.write(navigation.contributors);
+      } else if (group === "admins" && this.getPermission("edit")) {
+         res.write(navigation.admins);
       }
    }
    return;
