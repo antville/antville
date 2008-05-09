@@ -298,7 +298,9 @@ Story.prototype.editableby_macro = function(param) {
 Story.prototype.editlink_macro = function(param) {
    res.push();
    if (param.image && this.site.images.get(param.image)) {
-      renderImage(this.site.images.get(param.image), param);
+      var image = this.site.images.get(param.image);
+      delete param.image;
+      image && image.render_macro(param);
    } else {
       res.write(param.text || gettext("Edit"));
    }   
