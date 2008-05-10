@@ -187,8 +187,8 @@ Story.prototype.update = function(data) {
    var delta = this.getDelta(data);
    this.title = data.title ? data.title.trim() : String.EMPTY;
    this.text = data.text ? data.text.trim() : String.EMPTY;
-   this.status = data.status;
-   this.mode = data.mode;
+   this.status = data.status || Story.PUBLIC;
+   this.mode = data.mode || Story.FEATURED;
    this.commentMode = data.commentMode;
    this.setMetadata(data);
 
