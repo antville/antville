@@ -189,7 +189,7 @@ Story.prototype.update = function(data) {
    this.text = data.text ? data.text.trim() : String.EMPTY;
    this.status = data.status || Story.PUBLIC;
    this.mode = data.mode || Story.FEATURED;
-   this.commentMode = data.commentMode;
+   this.commentMode = data.commentMode || Story.OPEN;
    this.setMetadata(data);
 
    // FIXME: To be removed resp. moved to Stories.create_action and 
