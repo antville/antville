@@ -169,12 +169,10 @@ Story.prototype.getFormOptions = function(name) {
 
 Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
-   var delta = this.getDelta(data);
    
    if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
    }
-
    if (data.created) {
       try {
          this.created = data.created.toDate("yyyy-MM-dd HH:mm", 
@@ -185,6 +183,8 @@ Story.prototype.update = function(data) {
       }
    }
    
+   // Get difference to current content before applying changes
+   var delta = this.getDelta(data);
    this.title = data.title ? data.title.trim() : String.EMPTY;
    this.text = data.text ? data.text.trim() : String.EMPTY;
    this.status = data.status;
@@ -197,13 +197,16 @@ Story.prototype.update = function(data) {
    this.isTransient() && this.persist();
    this.setTags(data.tags || data.tag_array);
 
-   if (this.status !== Story.CLOSED && delta > 50) {
+   if (delta > 50) {
       site.hitchWebHook();
-      site.modified = new Date;
+      this.modified = new Date;
+      if (this.status !== Story.CLOSED) {
+         site.modified = this.modified;
+      }
    }
    
    this.clearCache();
-   this.touch();
+   this.modifier = session.user;
    return;
 }
 
@@ -257,7 +260,7 @@ Story.prototype.comment_action = function() {
       try {
          comment.update(req.postParams);
          this.add(comment);
-         // Force addition to aggressively cached subcollection
+         // Force addition to aggressively cached collection
          (this.story || this).comments.add(comment);
          comment.notify(req.action);
          delete session.data.backup;
@@ -410,8 +413,8 @@ Story.prototype.getDelta = function(data) {
          delta += deltify(data[key], this.metadata.get(key))
       }
    }
-   // In-between updates (10 min) get zero delta
-   var timex = (new Date - this.modified) > Date.ONEMINUTE * 10 ? 1 : 0;
+   // In-between updates (1 hour) get zero delta
+   var timex = (new Date - this.modified) > Date.ONEHOUR ? 1 : 0;
    return delta * timex;
 }
 

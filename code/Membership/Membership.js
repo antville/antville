@@ -66,8 +66,12 @@ Membership.prototype.constructor = function(user, role) {
 }
 
 Membership.prototype.getPermission = function(action) {
+   if (!this._parent.getPermission("main")) {
+      return false;
+   }
    switch (action) {
-      case "contact": return true;
+      case "contact":
+      return true;
       case "edit":
       return this.creator !== session.user;
       case "delete":

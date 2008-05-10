@@ -88,17 +88,21 @@ Comment.prototype.update = function(data) {
    if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
    }
+   // Get difference to current content before applying changes
+   var delta = this.getDelta(data);
    this.title = data.title;
    this.text = data.text;
    this.setMetadata(data);
-   if (this.site.commentMode === Site.MODERATED || 
-         this.story.commentMode === Site.MODERATED) {
+   if (this.story.commentMode === Story.MODERATED) {
       this.mode = Comment.PENDING;
-   } else if (this.story.status !== Story.PRIVATE && this.getDelta(data) > 50) {
-      this.site.modified = new Date;
+   } else if (delta > 50) {
+      this.modified = new Date;
+      if (this.story.status !== Story.CLOSED) { 
+         this.site.modified = this.modified;
+      }
    }
    this.clearCache();
-   this.touch();
+   this.modifier = session.user;
    return;
 }
 

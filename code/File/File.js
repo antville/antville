@@ -39,7 +39,7 @@ File.remove = function() {
 File.getName = function(name) {
    if (name) {
       //return name.replace(/[^\w\d\s._-]/g, String.EMPTY);
-      return name.replace(/[\/\\:;?+\[\]{}|#"`<>^]/g, String.EMPTY);
+      return String(name).trim().replace(/[\/\\:;?+\[\]{}|#"`<>^]/g, String.EMPTY);
    }
    return null;
 }
