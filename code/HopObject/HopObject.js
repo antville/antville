@@ -192,8 +192,9 @@ HopObject.prototype.setTags = function(tags) {
    var diff = {};
    var tag;
    for (var i in tags) {
-       // Trim and remove URL characters  (like ../.. etc.)
-      tag = tags[i] = String(tags[i]).trim().replace(/^[\/\.]+$/, "?");
+      // Trim and remove troublesome characters  (like ../.. etc.)
+      // We call getAccessName with a virgin HopObject to allow most names
+      tag = tags[i] = this.getAccessName.call(new HopObject, File.getName(tags[i]));
       if (tag && diff[tag] == null) {
          diff[tag] = 1;
       }

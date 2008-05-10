@@ -72,18 +72,37 @@ Tag.prototype.rss_xml_action = function() {
 Tag.prototype.rename_action = function() {
    var tag = this;
    if (req.data.name) {
-      tag = this.site.getTags(this.type, Tags.ALL).get(req.data.name);
+      // Trim and remove troublesome characters  (like ../.. etc.)
+      // We call getAccessName with a virgin HopObject to allow most names
+      var name = this.getAccessName.call(new HopObject, File.getName(req.data.name));
+      tag = this.site.getTags(this.type, Tags.ALL).get(name);
       if (!tag) {
-         tag = new Tag(req.data.name, this.site, this.type);
+         tag = new Tag(name, this.site, this.type);
          this.site.$tags.add(tag);
       }
-      this.forEach(function() { 
-         this.tag_id = tag._id;
-      });
-      this.remove();
-      res.commit();
+      if (tag !== this) {
+         this.forEach(function() { 
+            this.tag_id = tag._id;
+         });
+         this.remove();
+         res.commit();
+      }
    }
    res.redirect(tag.href());
+   return;
+   
+   // FIXME: Actually, the method should work like this but it caused a mess:
+   if (req.data.name) {
+      var name = this.getAccessName.call(new HopObject, File.getName(req.data.name));
+      var tag = this.site.getTags(this.type, Tags.ALL).get(name);
+      if (tag) {
+         if (tag !== this) {
+            // move tagged items to tag like above
+         }
+      } else {
+         // rename tag like: this.name = name
+      }
+   }
 }
 
 Tag.prototype.delete_action = function() {
