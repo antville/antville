@@ -190,10 +190,17 @@ Story.prototype.topic_macro = function(param) {
    } else if (param.as === "image") {
       param.imgprefix || (param.imgprefix = "topic_");
       var img = HopObject.getFromPath(param.imgprefix + tag.name, "images");
+      delete param.imgprefix;
+      delete param.as;
       if (img) {
-         html.openLink({href: tag.href()});
-         renderImage(img.obj, param)
-         html.closeLink();
+         res.push();
+         img.render_macro(param);
+         delete param.height;
+         delete param.width;
+         delete param.border;
+         delete param.src;
+         delete param.alt;
+         link_filter(res.pop(), param, tag.href());
       }
    }
    return;
