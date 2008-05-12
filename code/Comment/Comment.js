@@ -61,6 +61,8 @@ Comment.prototype.getPermission = function(action) {
 Comment.prototype.href = function(action) {
    var buffer = [];
    switch (action) {
+      case null:
+      case undefined:
       case "":
       case ".":
       case "main":
