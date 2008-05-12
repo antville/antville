@@ -126,7 +126,7 @@ Site.prototype.getPermission = function(action) {
 
       case "unsubscribe":
       var membership = this.members.get(session.user.name);
-      return User.require(User.REGULAR) && 
+      return User.require(User.REGULAR) && membership && 
             !membership.require(Membership.OWNER);
    }
    return false;
@@ -475,12 +475,14 @@ Site.prototype.unsubscribe_action = function() {
          Membership.remove(Membership.getByName(session.user.name));
          res.message = gettext("Successfully unsubscribed from site {0}.",
                this.title);
-         res.redirect(this.href());
+         res.redirect(User.popLocation() || this.href());
       } catch (ex) {
          app.log(ex)
          res.message = ex.toString();
       }
    }
+
+   User.pushLocation();
    res.data.title = gettext("Remove subscription to {0}", this.title);
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to unsubscribe from site {0}.', this.title)

@@ -260,10 +260,7 @@ User.getMembership = function() {
 }
 
 User.pushLocation = function(url) {
-   if (!session.data.location) {
-      //res.debug("Pushing location " + url);
-      session.data.location = url;
-   }
+   session.data.location = url || req.data.http_referer;
    return;
 }
 

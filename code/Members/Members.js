@@ -170,7 +170,7 @@ Members.prototype.login_action = function() {
       }
    }
 
-   User.pushLocation(req.data.http_referer);
+   User.pushLocation();
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = gettext("Login to {0}", this._parent.title);
