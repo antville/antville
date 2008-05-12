@@ -76,7 +76,14 @@ Metadata.prototype.get = function(key) {
    if (this.cache.data == null) {
       this.cache.data = this.load() || {};
    }
-   return (arguments.length > 0) ? this.cache.data[key] : this.cache.data;
+   if (arguments.length < 1) {
+      return this.cache.data;
+   }
+   var value = this.cache.data[key];
+   if (value !== undefined) {
+      return value;
+   }
+   return null;
 }
 
 /**
