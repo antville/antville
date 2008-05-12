@@ -249,10 +249,10 @@ Story.prototype.discussions_macro = function(param) {
    if (param.as === "editor") {
       if (req.data.publish || req.data.save) {
          param.checked = req.data.discussions;
-      } else if (this.commentMode === Story.OPEN) {
-         param.checked = "checked";
       } else if (req.action !== "create") {
-         param.checked = null;
+         param.checked = this.commentMode === Story.OPEN ? "checked" : null;
+      } else {
+         param.checked || (param.checked = "checked");
       }
       delete param.as;
       param.name = "discussions";
