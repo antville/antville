@@ -322,11 +322,9 @@ Members.prototype.add_action = function() {
          app.log(ex);
       }
       res.redirect(this.href());
-   } else {
-      res.message = gettext("Enter a search term to display a list of matching users.");
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Add member to {0}', this._parent.title);
+   res.data.title = gettext('Add member to site {0}', this._parent.title);
    res.data.body = this.renderSkinAsString("$Members#add");
    res.handlers.site.renderSkin("Site#page");
    return;

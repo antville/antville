@@ -5,8 +5,8 @@
 <% gettext Show prefix="... " %>
 <% members.link . all %>
 <% members.link owners prefix="| " %>
-<% members.link contributors prefix="| " %>
 <% members.link managers prefix="| " %> 
+<% members.link contributors prefix="| " %>
 <% members.link subscribers prefix="| " %>
 <% response.pager %>
 <% response.list %>
@@ -173,6 +173,9 @@ tabindex="4"><% gettext Save %></button>
 </form>
 
 <% #add %>
+<p class="storyTitle"><% response.title %></p>
+<div>Enter a search term to display a list of matching users.</div>
+<div class="small">You can use the asterisk * as wildcard.</div><br />
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

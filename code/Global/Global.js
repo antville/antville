@@ -39,11 +39,8 @@ app.addRepository("modules/helma/Search.js");
 app.addRepository("modules/helma/Zip.js");
 
 app.addRepository("modules/jala/code/Date.js");
-//app.addRepository("modules/jala/code/Form.js");
 app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/I18n.js");
-//app.addRepository("modules/jala/code/IndexManager.js");
-//app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
