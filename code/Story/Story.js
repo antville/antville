@@ -480,11 +480,6 @@ Story.prototype.url_filter = function(value, param, mode) {
    //var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
    var re = /(^|\/>|\s+)([fhtpsr]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim
    return value.replace(re, function(str, head, url, tail) {
-      res.debug(str);
-      res.debug("head: "+head);
-      res.debug("url : "+url);
-      res.debug("tail: "+tail);
-      res.debug("<hr>")
       res.push();
       res.write(head);
       if (mode === "plain") {
