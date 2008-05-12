@@ -64,16 +64,14 @@ Story.prototype.content_macro = function(param) {
       if (!part && param.fallback) {
          part = this.getRenderedContentPart(param.fallback, param.as);
       }
-      if (part) {
-         if (param.limit) {
-            part = part.stripTags().head(param.limit, 
-                  param.clipping, param.delimiter);
-         }
-         if (param.as === "link") {
-            res.write(this.link_filter(part, param));
-         } else {
-            res.write(part);
-         }
+      if (part && param.limit) {
+         part = part.stripTags().head(param.limit, 
+               param.clipping, param.delimiter);
+      }
+      if (param.as === "link") {
+         res.write(this.link_filter(part || "...", param));
+      } else {
+         res.write(part);
       }
    }
    return;
