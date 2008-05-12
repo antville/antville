@@ -436,7 +436,7 @@ Story.prototype.format_filter = function(value, param, mode) {
          
          default:
          value = this.macro_filter(value, param);
-         return this.url_filter(value, param).replace(/\r\n|\n|\r/g, "<br >");
+         return format(this.url_filter(value, param));
       }
    }
    return String.EMTPY;
