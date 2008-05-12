@@ -417,21 +417,6 @@ function list_macro(param, id, limit) {
    } else if (id === "updates") {
       collection = root.updates.list(0, limit);
       skin = "Site#preview";
-      /*
-      var site;
-      collection = [];
-      for (var i=0; i<root.size(); i+=1) {
-         site = root.get(i);
-         res.debug(site)
-         if (this.mode === Site.OPEN || this.mode === Site.PUBLIC &&
-               this.status !== Site.BLOCKED) {
-            collection.push(site);
-        }
-         if (collection.length >= limit) {
-            break;
-         }
-      }
-      */
    } else {
       var site;
       var parts = id.split("/");
