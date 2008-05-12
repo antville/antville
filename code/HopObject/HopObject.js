@@ -297,10 +297,7 @@ HopObject.prototype.upload_macro = function(param, name) {
    param.name = name;
    param.id = name;
    param.value = this.getFormValue(name);
-   //html.input(param);
-   //var id = name + "_upload";
    renderSkin("$Global#upload", param);
-   //html.file({name: id, id: id});
    return;
 }
 
