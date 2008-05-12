@@ -290,7 +290,7 @@ function story_macro(param, id, mode) {
       html.link({href: story.href()}, story.getTitle());
       break;
       default:
-      story.renderSkin("Story#" + (param.skin || "main"));
+      story.renderSkin("Story#" + (param.skin || "embed"));
    }
    return;
 }
