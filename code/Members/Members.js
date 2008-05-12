@@ -83,7 +83,7 @@ Members.prototype.register_action = function() {
                gettext('Welcome to "{0}"!', title));
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
                title, user.name);
-         res.redirect(User.popLocation() || this._parent.href());
+         res.redirect(User.getLocation() || this._parent.href());
       } catch (ex) {
          app.log(ex);
          res.message = ex;
@@ -163,14 +163,12 @@ Members.prototype.login_action = function() {
          var user = User.login(req.postParams);
          res.message = gettext('Welcome to "{0}", {1}. Have fun!',
                res.handlers.site.getTitle(), user.name);
-         res.redirect(User.popLocation() || this._parent.href());
+         res.redirect(User.getLocation() || this._parent.href());
       } catch (ex) {
          res.message = ex;
          app.log(ex);
       }
    }
-
-   User.pushLocation();
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
    res.data.title = gettext("Login to {0}", this._parent.title);

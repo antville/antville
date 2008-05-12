@@ -46,9 +46,9 @@ Story.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      return this.creator === session.user || 
+      return this.status !== Story.CLOSED || 
+            this.creator === session.user || 
             Membership.require(Membership.MANAGER) || 
-            this.status !== Story.CLOSED || 
             User.require(User.PRIVILEGED);
       case "comment":
       return this.site.commentMode === Site.ENABLED &&
@@ -248,9 +248,10 @@ Story.prototype.rotate_action = function() {
 }
 
 Story.prototype.comment_action = function() {
+   // Check if user is logged in since we allow linking here for any user
    if (!User.require(User.REGULAR)) {
-      User.pushLocation(this.href(req.action) + "#form");
-      res.message = gettext("Please login to add a comment.");
+      User.setLocation(this.href(req.action) + "#form");
+      res.message = gettext("Please login first.");
       res.redirect(this.site.members.href("login"));
    }
    var comment = new Comment(this);

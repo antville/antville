@@ -45,24 +45,6 @@ HopObject.prototype.map = function(values) {
 }
 
 HopObject.prototype.onRequest = function() {
-   if (req.postParams.cancel) {
-      switch (this.constructor) {
-         case Admin:
-         res.redirect(req.action + "?page=" + req.queryParams.page + 
-               "#" + req.queryParams.id);
-         case File:
-         res.redirect(res.handlers.files.href());
-         case Members:
-         case Membership:
-         res.redirect(this._parent.href());
-         case Skin:
-         case Skins:
-         res.redirect(Skins.getRedirectUrl(req.postParams));
-         default:
-         res.redirect(this.href());
-      }
-   }
-
    User.autoLogin();
    res.handlers.membership = User.getMembership();
    
@@ -84,22 +66,21 @@ HopObject.prototype.onRequest = function() {
 
    if (!this.getPermission(req.action)) {
       if (!session.user) {
+         User.setLocation(root.href() + req.path);
          res.message = gettext("Please login first.");
          res.redirect(res.handlers.site.members.href("login"));
       }
+      User.getLocation();
       res.status = 401;
       res.write(gettext("Sorry, you are not allowed to access this part of the site."));
       res.stop();
    }
-
+   
    res.handlers.layout = res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
 
    res.meta.values = {};
    res.handlers.site.renderSkinAsString("Site#values");
-
-   // FIXME: remove after debugging
-   //res.contentType === "text/html" && res.debug(res.skinpath.toSource());
    return;
 }
 
@@ -114,7 +95,7 @@ HopObject.prototype.delete_action = function() {
          var parent = this._parent;
          var url = this.constructor.remove.call(this, this) || parent.href();
          res.message = gettext("{0} was successfully deleted.", str);
-         res.redirect(User.popLocation() || url);
+         res.redirect(User.getLocation() || url);
       } catch(ex) {
          res.message = ex;
          app.log(ex);

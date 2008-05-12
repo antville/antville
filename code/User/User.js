@@ -259,13 +259,15 @@ User.getMembership = function() {
    return membership || new Membership;
 }
 
-User.pushLocation = function(url) {
+User.setLocation = function(url) {
    session.data.location = url || req.data.http_referer;
+   //app.debug("Pushed location " + session.data.location);
    return;
 }
 
-User.popLocation = function() {
+User.getLocation = function() {
    var url = session.data.location;
    delete session.data.location;
+   //app.debug("Popped location " + url);
    return url;
 }
