@@ -66,7 +66,7 @@ Membership.prototype.constructor = function(user, role) {
 }
 
 Membership.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
+   if (!res.handlers.site.getPermission("main")) {
       return false;
    }
    switch (action) {

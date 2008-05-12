@@ -66,10 +66,6 @@ Disallow: /stories/top
 <link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
 <link rel="alternate" type="application/rss+xml" title="Site updates of <% root.title %>" href="<% root.href updates.xml %>" />
 <!-- link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="Antville Search" -->
-<!-- Testing ColourMod plugin for jQuery -->
-<link href="<% file /ColourModStyle.css url %>" rel="stylesheet" type="text/css" />
-<script src="<% file /StyleModScript.js url %>" type="text/javascript"></script>
-<script src="<% file /ColourModScript.js url %>" type="text/javascript"></script>
 </head>
 <body>
 

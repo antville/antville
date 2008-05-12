@@ -31,8 +31,7 @@ Polls.prototype.getPermission = function(action) {
       case "main":
       case "create":
       case "open":
-      return Site.require(Site.OPEN) && 
-            Membership.require(Membership.SUBSCRIBER) || 
+      return Site.require(Site.OPEN) && session.user ||
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":
@@ -77,7 +76,7 @@ Polls.prototype.create_action = function() {
 
 Polls.prototype.open_action = function() {
    res.data.list = renderList(this.open, 
-         "Poll#listItem", 10, req.queryParams.page);
+         "$Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this.open, 
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Open polls of {0}", this._parent.title);
@@ -87,7 +86,7 @@ Polls.prototype.open_action = function() {
 }
 
 Polls.prototype.all_action = function() {
-   res.data.list = renderList(this, "Poll#listItem", 10, req.queryParams.page);
+   res.data.list = renderList(this, "$Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Polls of {0}", this._parent.title);

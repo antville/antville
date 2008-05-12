@@ -30,8 +30,7 @@ Files.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "create":
-      return Site.require(Site.OPEN) && 
-            Membership.require(Membership.SUBSCRIBER) ||
+      return Site.require(Site.OPEN) && session.user ||
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":

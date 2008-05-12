@@ -327,7 +327,7 @@ HopObject.prototype.macro_macro = function(param, handler) {
       res.encode("<% ");
       res.write(handler || ctor.name.toLowerCase());
       res.write(String.SPACE);
-      res.write(quote(this.name) || this._id);
+      res.write(quote(this.name || this._id));
       res.encode(" %>");
    }
    return;
