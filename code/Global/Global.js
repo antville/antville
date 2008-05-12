@@ -405,8 +405,7 @@ function list_macro(param, id, limit) {
       return;
    }
    
-   limit || (limit = 25);
-   var max = Math.min(limit, 20);
+   var max = Math.min(limit || 25, 50);
    var collection, skin;
    if (id === "sites") {
       collection = root.sites.list(0, max);
