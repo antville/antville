@@ -66,7 +66,7 @@ Story.prototype.content_macro = function(param) {
       }
       if (part && param.limit) {
          part = part.stripTags().head(param.limit, 
-               param.clipping, param.delimiter);
+               param.clipping, param.delimiter || String.SPACE);
       }
       if (param.as === "link") {
          res.write(this.link_filter(part || "...", param));
