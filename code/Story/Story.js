@@ -476,10 +476,15 @@ Story.prototype.macro_filter = function(value, param) {
 
 Story.prototype.url_filter = function(value, param, mode) {
    param.limit || (param.limit = 50);
-   // FIXME: Check query strings et al.
-   // FIXME: Strange output with <a href=antville.org>...</a> (no quotes)
-   var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
+   // FIXME: The first RegExp has troubles with <a href=http://... (no quotes)
+   //var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
+   var re = /(^|\/>|\s+)([fhtpsr]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim
    return value.replace(re, function(str, head, url, tail) {
+      res.debug(str);
+      res.debug("head: "+head);
+      res.debug("url : "+url);
+      res.debug("tail: "+tail);
+      res.debug("<hr>")
       res.push();
       res.write(head);
       if (mode === "plain") {
