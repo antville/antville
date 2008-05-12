@@ -76,6 +76,7 @@ function link_macro() {
 }
 
 function logo_macro(param, name) {
+   param.linkto = "http://antville.org"; 
    image_macro.call(global, param, "/" + (name || param.name || "smallchaos"));
    return;
 }
