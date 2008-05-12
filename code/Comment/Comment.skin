@@ -13,10 +13,11 @@
 
 <% #edit %>
 <% comment.skin Story#restore %>
-<% parent.skin <% parent.type suffix="#comment" %> %>
+<% if <% comment.created %> is null then 
+   <% parent.skin <% parent.type suffix=#comment %> %>
+%>
 <a name="form" id="form"></a>
 <br />
-<a name="form" id="form"></a>
 <form method="post" action="<% response.action %>">
 <p class="backup">
    <span class="small"><% gettext Title suffix=: %></span><br />
@@ -52,6 +53,7 @@
 
 <% #comment %>
 <% comment.skin Comment#content %>
+<% comment.comments %>
 
 <% #reply %>
 <div class="reply">
