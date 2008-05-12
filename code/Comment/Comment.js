@@ -58,8 +58,18 @@ Comment.prototype.getPermission = function(action) {
    return false;
 }
 
-Comment.prototype.main_action = function() {
-   return res.redirect(this.story.href() + "#" + this._id);
+Comment.prototype.href = function(action) {
+   var buffer = [];
+   switch (action) {
+      case "":
+      case ".":
+      case "main":
+      buffer.push(this.story.href(), "#", this._id);
+      break;
+      default:
+      buffer.push(this.story.comments.href(), this._id, "/", action);
+   }
+   return buffer.join(String.EMPTY);
 }
 
 Comment.prototype.edit_action = function() {
