@@ -119,8 +119,6 @@ Story.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
-         // FIXME: To be removed if work-around for Helma bug #607 passes
-         //this.setTags(req.postParams.tags || req.postParams.tags_array);
          delete session.data.backup;
          res.message = gettext("The story was successfully updated.");
          res.redirect(this.href());

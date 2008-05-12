@@ -158,14 +158,16 @@ HopObject.prototype.notify = function(action) {
       action = "create"; break;
    }
    var membership;
+   var currentMembership = res.handlers.membership;
    for (var i=0; i<site.members.size(); i+=1) {
-      membership = site.members.get(i);
+      res.handlers.membership = membership = site.members.get(i);
       if (membership.require(site.notificationMode)) {
          sendMail(root.email, membership.creator.email,
                gettext("Notification of changes at site {0}", site.title),
                this.renderSkinAsString("$HopObject#notify_" + action));
       }
    }
+   res.handlers.membership = currentMembership;
    return;
 }
 
