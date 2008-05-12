@@ -4,14 +4,18 @@ $(function() {
    if ("<% image.created %>") {
       $(".name").hide();
       $(".resize").hide();
-   };
+   } else {
+      $("#image").hide();
+   }
    if ("<% image.parent_type %>" === "Layout") {
       $(".tags").hide();
    }
 });
 </script>
 <p class="storyTitle"><% response.title %></p><br />
-<div style="width: 100px; overflow: hidden; float: left; margin-right: 10px"><% image.thumbnail %></div>
+<div id="image" style="width: 100px; overflow: hidden; float: left; margin-right: 10px">
+   <% image.thumbnail %>
+</div>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
