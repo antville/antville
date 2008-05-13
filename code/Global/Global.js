@@ -386,7 +386,7 @@ function poll_macro(param, id, mode) {
       break;
       case "link":
       html.link({
-         href: poll.href(poll.closed ? "results" : "")
+         href: poll.href(poll.status === Poll.CLOSED ? "result" : "")
       }, poll.question);
       break;
       default:
