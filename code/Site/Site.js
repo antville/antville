@@ -91,10 +91,6 @@ Site.prototype.constructor = function(name, title) {
 }
 
 Site.prototype.getPermission = function(action) {
-   if (User.require(User.PRIVILEGED)) {
-      return true;
-   }
-
    switch (action) {
       case "main.js":
       case "main.css":
@@ -116,11 +112,13 @@ Site.prototype.getPermission = function(action) {
             (Site.require(Site.RESTRICTED) && 
             Membership.require(Membership.CONTRIBUTOR)) ||
             (Site.require(Site.CLOSED) &&
-            Membership.require(Membership.OWNER));
+            Membership.require(Membership.OWNER)) ||
+            User.require(User.PRIVILEGED);
 
       case "edit":
       case "referrers":
-      return Membership.require(Membership.OWNER);
+      return Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED);
 
       case "subscribe":
       return Site.require(Site.PUBLIC) &&
