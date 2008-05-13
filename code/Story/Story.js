@@ -479,8 +479,11 @@ Story.prototype.url_filter = function(value, param, mode) {
    param.limit || (param.limit = 50);
    // FIXME: The first RegExp has troubles with <a href=http://... (no quotes)
    //var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
-   var re = /(^|\/>|\s+)([fhtpsr]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim
+   var re = /(^|\/>|\s+)([!fhtpsr]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim
    return value.replace(re, function(str, head, url, tail) {
+      if (url.startsWith("!")) {
+         return head + url.substring(1) + tail;
+      }
       res.push();
       res.write(head);
       if (mode === "plain") {
