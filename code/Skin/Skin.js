@@ -65,6 +65,11 @@ Skin.prototype.constructor = function(prototype, name) {
 }
 
 Skin.prototype.getPermission = function(action) {
+   switch (action) {
+      case ".":
+      case "main":
+      return true;
+   }
    return res.handlers.skins.getPermission("main");
 }
 
