@@ -232,7 +232,7 @@ User.logout = function() {
   session.logout();
   res.setCookie(User.COOKIE, String.EMPTY);
   res.setCookie(User.HASHCOOKIE, String.EMPTY);
-  User.popLocation();
+  User.getLocation();
   return;
 }
 
