@@ -23,6 +23,21 @@
 //
 
 HopObject.getFromPath = function(name, collection) {
+   // FIXME: This is an ugly work-around for Helma bug #625
+   var translate = function(str) {
+      return str.replace(/&([^;]*);/g, function(s, $1) {
+         switch ($1) {
+            case "auml": return "ä";
+            case "ouml": return "ö";
+            case "uuml": return "ü";
+            case "Auml": return "Ä";
+            case "Ouml": return "Ö";
+            case "Uuml": return "Ü";
+            case "szlig": return "ß";
+         }
+         return s;
+      })
+   }
    var site;
    if (name.contains("/")) {
       var parts = name.split("/");
@@ -32,7 +47,9 @@ HopObject.getFromPath = function(name, collection) {
       site = res.handlers.site;
    }
    if (site && site.getPermission("main")) {
-      return site[collection].get(name);
+      var o = site[collection].get(name);
+      o || (o = site[collection].get(translate(name)));
+      return o;
    }
    return null;
 }
