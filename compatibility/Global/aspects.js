@@ -49,7 +49,9 @@ var aspects = {
    },
    
    fixStoryEditorParams: function(args, func, story) {
-      if (req.isPost() && (req.postParams.save != 1)) {
+      // FIXME: IE sends the button text instead of the value; thus, we
+      // need to check for the "editableby" property as well :/
+      if (req.isPost() && req.postParams.save != 1 && req.postParams.editableby) {
          if (req.postParams.publish) {
             req.postParams.save = 1;
          }
