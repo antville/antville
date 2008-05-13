@@ -220,7 +220,6 @@ HopObject.prototype.removeTag = function(tag) {
    return;
 }
 
-// FIXME: This looks a little bit dangerous...
 HopObject.prototype.skin_macro = function(param, name) {
    if (!name) {
       return;

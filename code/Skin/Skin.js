@@ -80,7 +80,13 @@ Skin.prototype.href = function(action) {
 }
 
 Skin.prototype.main_action = function() {
-   return res.redirect(this.href("edit"));
+   if (res.handlers.site === root) {
+      res.contentType = "text/plain";
+      res.write(this.getSource());
+      return;
+   }
+   res.redirect(this.href("edit"));
+   return;
 }
 
 Skin.prototype.edit_action = function() {
