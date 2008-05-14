@@ -50,6 +50,17 @@ Root.restore = function(ref) {
    return ref; 
 }
 
+Root.updateHealth = function() {
+   var health = Root.health || {};
+   if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
+      health.modified = new Date;
+      health.totalRequests = app.requestCount;
+      health.totalErrors = app.errorCount;
+      Root.health = health;
+   }
+   return;
+}
+
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 }
@@ -61,6 +72,7 @@ Root.prototype.getPermission = function(action) {
    switch (action) {
       case "backup.js":
       case "debug":
+      case "health":
       return true;
       case "create":
       return this.getCreationPermission();
@@ -235,6 +247,32 @@ Root.prototype.updates_xml_action = function() {
    res.contentType = "text/xml";
    res.write(xml); //injectXslDeclaration(xml));
    return;
+}
+
+Root.prototype.health_action = function() {
+   var param = {};
+   var properties = ["activeThreads", "freeThreads", "requestCount", 
+         "errorCount", "xmlrpcCount", "cacheusage"];
+   for each (var key in properties) {
+      param[key] = app[key];
+   }
+
+   var jvm = java.lang.Runtime.getRuntime();
+   var totalMemory = jvm.totalMemory() / 1024 / 1024;
+   var freeMemory = jvm.freeMemory()  / 1024 / 1024;
+   param.freeMemory = freeMemory.format();
+   param.totalMemory = totalMemory.format();
+   param.usedMemory = (totalMemory - freeMemory).format("0.##");
+
+   param.uptime = ((new Date - app.upSince.getTime()) / 
+         Date.ONEDAY).format("0.##");
+   param.sessions = app.countSessions();
+   param.requestsPerUnit = param.requestCount - Root.health.totalRequests;
+   param.errorsPerUnit = param.errorCount - Root.health.totalErrors;
+
+   res.data.title = "Health of " + root.getTitle();
+   res.data.body = this.renderSkinAsString("$Root#health", param);
+   this.renderSkin("Site#page");
 }
 
 Root.prototype.getMacroHandler = function(name) {

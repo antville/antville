@@ -133,6 +133,7 @@ function scheduler() {
    flushLog();
    Stories.flushRequests();
    helma.Mail.flushQueue();
+   Root.updateHealth();
    // FIXME: root.manage.autoCleanUp();
    // FIXME: pingUpdatedSites();
    // FIXME: countUsers();

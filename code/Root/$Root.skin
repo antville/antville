@@ -33,6 +33,67 @@ was not found on this server!</p>
 <p>An error occurred while processing your request:</p>
 <% param.error %>
 
+<% #health %>
+<p class="storyTitle"><% response.title %></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<colgroup>
+   <col width="60%" />
+   <col width="*" />
+</colgroup>
+<tr>
+   <td>Uptime</td>
+   <td><% param.uptime suffix=" d" %></td>
+</tr>
+<tr>
+   <td>Active threads</td>
+   <td><% param.activeThreads %></td>
+</tr>
+<tr>
+   <td>Free threads</td>
+   <td><% param.freeThreads %></td>
+</tr>
+<tr>
+   <td>Number of requests (last 5 min)</td>
+   <td><% param.requestsPerUnit %></td>
+</tr>
+<tr>
+   <td>Total requests</td>
+   <td><% param.requestCount %></td>
+</tr>
+<tr>
+   <td>Number of errors (last 5 min)</td>
+   <td><% param.errorsPerUnit %></td>
+</tr>
+<tr>
+   <td>Total errors</td>
+   <td><% param.errorCount %></td>
+</tr>
+<tr>
+   <td>Total XML-RPC requests</td>
+   <td><% param.xmlrpcCount %></td>
+</tr>
+<tr>
+   <td>Cached objects</td>
+   <td><% param.cacheusage %> of <% property cacheSize %></td>
+</tr>
+<tr>
+   <td>Number of sessions</td>
+   <td><% param.sessions %></td>
+</tr>
+<tr>
+   <td>Free memory</td>
+   <td><% param.freeMemory suffix=" MB" %></td>
+</tr>
+<tr>
+   <td>Used memory</td>
+   <td><% param.usedMemory suffix=" MB" %></td>
+</tr>
+<tr>
+   <td>Total memory</td>
+   <td><% param.totalMemory suffix=" MB" %></td>
+</tr>
+</table>
+
 
 
 
