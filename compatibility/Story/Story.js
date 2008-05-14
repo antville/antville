@@ -181,6 +181,9 @@ Story.prototype.topic_macro = function(param) {
       return;
    }
    var tag = this.tags.get(0).tag;
+   if (!tag) {
+      return;
+   }
    if (!param.as || param.as === "text") {
       res.write(tag.name);
    } else if (param.as === "link") {
