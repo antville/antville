@@ -274,23 +274,13 @@ Layout.prototype.getArchive = function(skinPath) {
    var skinFiles = app.getSkinfilesInPath(skinPath);
    for (var name in skinFiles) {
       if (skinFiles[name][name]) {
-         zip.add(new helma.File(this.getFile(name), name + ".skin"), name);
+         var file = new helma.File(this.getFile(name), name + ".skin");
+         if (file.exists()) {
+            zip.add(file, name);
+         }
       }
    }
-   
 
-/*  var file, fname;
-   var dir = new helma.File(app.dir);
-   for each (var fpath in dir.listRecursive(/\.skin$/)) {
-      fname = fpath.split("/").splice(-2)[0];
-      file = new helma.File(fpath);
-      try {
-         zip.add(file, "layout/" + fname);
-      } catch (ex) {
-         app.log(ex);
-      }
-   } */
-   
    var data = new HopObject;
    data.images = new HopObject;
    this.images.forEach(function() {
