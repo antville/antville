@@ -49,6 +49,10 @@ Skin.getPrototypeOptions = function() {
    var content, file;
    var skinFiles = app.getSkinfilesInPath(res.skinpath);
    for (var name in skinFiles) {
+      // Include root skins only for root site
+      if (name === root.constructor.name && res.handlers.site !== root) {
+         continue;
+      }
       if (skinFiles[name][name]) {
          prototypes.push({value: name, display: name});
       }
