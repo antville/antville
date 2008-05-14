@@ -263,17 +263,17 @@ Root.prototype.health_action = function() {
    var jvm = java.lang.Runtime.getRuntime();
    var totalMemory = jvm.totalMemory() / 1024 / 1024;
    var freeMemory = jvm.freeMemory()  / 1024 / 1024;
-   param.freeMemory = freeMemory.format();
-   param.totalMemory = totalMemory.format();
-   param.usedMemory = (totalMemory - freeMemory).format("0.##");
+   param.freeMemory = formatNumber(freeMemory);
+   param.totalMemory = formatNumber(totalMemory);
+   param.usedMemory = formatNumber(totalMemory - freeMemory);
 
-   param.uptime = ((new Date - app.upSince.getTime()) / 
-         Date.ONEDAY).format("0.##");
-   param.sessions = app.countSessions();
+   param.uptime = formatNumber((new Date - app.upSince.getTime()) / 
+         Date.ONEDAY, "0.##");
+   param.sessions = formatNumber(app.countSessions());
 
    if (Root.health) {
-      param.requestsPerUnit = Root.health.requestsPerUnit;
-      param.errorsPerUnit = Root.health.errorsPerUnit;
+      param.requestsPerUnit = formatNumber(Root.health.requestsPerUnit);
+      param.errorsPerUnit = formatNumber(Root.health.errorsPerUnit);
    }
 
    res.data.title = "Health of " + root.getTitle();
