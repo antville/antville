@@ -153,9 +153,6 @@ function openPopup(img, width, height) {
 <% value "small font size" 11px %>
 <% value "small font color" #959595 %>
 
-<% #health %>
-<p>System is up and running.</p>
-
 <% #stylesheet %>
 table.main {
    width: 700px;
