@@ -253,23 +253,24 @@ Root.prototype.updates_xml_action = function() {
 }
 
 Root.prototype.health_action = function() {
-   var param = {};
-   var properties = ["activeThreads", "freeThreads", "requestCount", 
-         "errorCount", "xmlrpcCount", "cacheusage"];
-   for each (var key in properties) {
-      param[key] = app[key];
-   }
-
    var jvm = java.lang.Runtime.getRuntime();
    var totalMemory = jvm.totalMemory() / 1024 / 1024;
    var freeMemory = jvm.freeMemory()  / 1024 / 1024;
-   param.freeMemory = formatNumber(freeMemory);
-   param.totalMemory = formatNumber(totalMemory);
-   param.usedMemory = formatNumber(totalMemory - freeMemory);
 
-   param.uptime = formatNumber((new Date - app.upSince.getTime()) / 
-         Date.ONEDAY, "0.##");
-   param.sessions = formatNumber(app.countSessions());
+   var param = {
+      uptime: formatNumber((new Date - app.upSince.getTime()) / 
+            Date.ONEDAY, "0.##"),
+      freeMemory: formatNumber(freeMemory),
+      totalMemory: formatNumber(totalMemory),
+      usedMemory: formatNumber(totalMemory - freeMemory),
+      sessions: formatNumber(app.countSessions()),
+      cacheSize: formatNumber(getProperty("cacheSize"))
+   };
+
+   for each (key in ["activeThreads", "freeThreads", "requestCount", 
+         "errorCount", "xmlrpcCount", "cacheusage"]) {
+      param[key] = formatNumber(app[key]);
+   }
 
    if (Root.health) {
       param.requestsPerUnit = formatNumber(Root.health.requestsPerUnit);

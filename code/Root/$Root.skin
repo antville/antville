@@ -74,7 +74,7 @@ was not found on this server!</p>
 </tr>
 <tr>
    <td>Cached objects</td>
-   <td><% param.cacheusage %> of <% property cacheSize %></td>
+   <td><% param.cacheusage %> of <% param.cacheSize %></td>
 </tr>
 <tr>
    <td>Number of sessions</td>

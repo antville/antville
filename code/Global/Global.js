@@ -566,7 +566,7 @@ function quote(str) {
 }
 
 function formatNumber(number, pattern) {
-   return number.format(pattern);
+   return Number(number).format(pattern, res.handlers.site.getLocale());
 }
 
 function formatDate(date, pattern) {
