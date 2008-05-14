@@ -54,7 +54,7 @@ was not found on this server!</p>
 </tr>
 <tr>
    <td>Number of requests (last 5 min)</td>
-   <td><% param.requestsPerUnit %></td>
+   <td><% param.requestsPerUnit default=n.a. %></td>
 </tr>
 <tr>
    <td>Total requests</td>
@@ -62,7 +62,7 @@ was not found on this server!</p>
 </tr>
 <tr>
    <td>Number of errors (last 5 min)</td>
-   <td><% param.errorsPerUnit %></td>
+   <td><% param.errorsPerUnit default=n.a. %></td>
 </tr>
 <tr>
    <td>Total errors</td>
