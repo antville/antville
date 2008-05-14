@@ -54,8 +54,10 @@ Root.updateHealth = function() {
    var health = Root.health || {};
    if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
       health.modified = new Date;
-      health.totalRequests = app.requestCount;
-      health.totalErrors = app.errorCount;
+      health.requestsPerUnit = app.requestCount - health.currentRequestCount;
+      health.currentRequestCount = app.requestCount;
+      health.errorsPerUnit = app.errorCount - health.currentErrorCount;
+      health.currentErrorCount = app.errorCount;
       Root.health = health;
    }
    return;
@@ -267,8 +269,8 @@ Root.prototype.health_action = function() {
    param.uptime = ((new Date - app.upSince.getTime()) / 
          Date.ONEDAY).format("0.##");
    param.sessions = app.countSessions();
-   param.requestsPerUnit = param.requestCount - Root.health.totalRequests;
-   param.errorsPerUnit = param.errorCount - Root.health.totalErrors;
+   param.requestsPerUnit = Root.health.requestsPerUnit;
+   param.errorsPerUnit = Root.health.errorsPerUnit;
 
    res.data.title = "Health of " + root.getTitle();
    res.data.body = this.renderSkinAsString("$Root#health", param);
