@@ -35,7 +35,11 @@ Tag.prototype.constructor = function(name, site, type) {
 }
 
 Tag.prototype.getPermission = function(action) {
+   if (!res.handlers.site.getPermission("main")) {
+      return false;
+   }
    switch (action) {
+      case ".":
       case "main":
       case "rss.xml":
       return true;
