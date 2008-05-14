@@ -41,6 +41,19 @@ this.handleMetadata("phaseOutInactiveSites");
 this.handleMetadata("phaseOutNotificationPeriod");
 this.handleMetadata("phaseOutGracePeriod");
 
+Root.restore = function(ref) {
+   var backup;
+   if (backup = session.data.backup) {
+      ref.title = decodeURIComponent(backup.title);
+      ref.text = decodeURIComponent(backup.text);
+   }
+   return ref; 
+}
+
+Root.prototype.processHref = function(href) {
+   return app.properties.defaulthost + href;
+}
+
 Root.prototype.getPermission = function(action) {
    if (action.contains("admin")) {
       return User.require(User.PRIVILEGED);
@@ -57,15 +70,6 @@ Root.prototype.getPermission = function(action) {
       return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
-}
-
-Root.prototype.getMacroHandler = function(name) {
-   switch (name) {
-      case "sites":
-      case "admin":
-      return this[name];
-   }
-   return Site.prototype.getMacroHandler.apply(this, arguments);
 }
 
 Root.prototype.main_action = function() {
@@ -117,18 +121,18 @@ Root.prototype.getFormOptions = function(name) {
 }
 
 Root.prototype.error_action = function() {
+   res.status = 500;
    res.data.title = root.getTitle() + " - Error";
-   res.data.body = root.renderSkinAsString("sysError");
-   res.data.body += "<p>"+res.error+"</p>";
-   (path.Site && path.Site.online ? path.Site : root).renderSkin("Site#page");
+   res.data.body = root.renderSkinAsString("$Root#error", res);
+   res.handlers.site.renderSkin("Site#page");
    return;
 }
 
 Root.prototype.notfound_action = function() {
-   res.data.title = root.title + " - 404 - not found";
-   req.data.path = req.path;
-   res.data.body = root.renderSkinAsString("notfound");
-   (path.Site && path.Site.online ? path.Site : root).renderSkin("Site#page");
+   res.status = 404;
+   res.data.title = root.getTitle() + " - Error";
+   res.data.body = root.renderSkinAsString("$Root#notfound", req);
+   res.handlers.site.renderSkin("Site#page");
    return;
 }
 
@@ -175,15 +179,6 @@ Root.prototype.backup_js_action = function() {
       }
    }
    return;
-}
-
-Root.restore = function(ref) {
-   var backup;
-   if (backup = session.data.backup) {
-      ref.title = decodeURIComponent(backup.title);
-      ref.text = decodeURIComponent(backup.text);
-   }
-   return ref; 
 }
 
 Root.prototype.default_hook_action = function() {
@@ -242,6 +237,15 @@ Root.prototype.updates_xml_action = function() {
    return;
 }
 
+Root.prototype.getMacroHandler = function(name) {
+   switch (name) {
+      case "sites":
+      case "admin":
+      return this[name];
+   }
+   return Site.prototype.getMacroHandler.apply(this, arguments);
+}
+
 Root.prototype.getCreationPermission = function() {
    var user;
    if (!(user = session.user)) {
@@ -285,8 +289,4 @@ Root.prototype.getCreationPermission = function() {
       }
    }
    return true;
-}
-
-Root.prototype.processHref = function(href) {
-   return app.properties.defaulthost + href;
 }

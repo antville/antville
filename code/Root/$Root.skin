@@ -23,9 +23,20 @@ alphabetical order." %></p>
 <% response.list prefix="<ul>" suffix="</ul>" %>
 <% response.pager %>
 
+<% #notfound %>
+<p><strong>Sorry!</strong></p>
+<p>The URL <% root.href %><% param.path encoding="all" %> 
+was not found on this server!</p>
+
+<% #error %>
+<p><strong>Sorry!</strong></p>
+<p>An error occurred while processing your request:</p>
+<% param.error %>
 
 
 
+
+<% #FIXME %>
 <div style="margin: 200px 0 20px 0;">FIXME:</div>
 
 <div class="boxheader">menu</div>

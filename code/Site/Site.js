@@ -51,6 +51,16 @@ Site.getNotificationModes = defineConstants(Site, "Nobody",
       "Owner", "Manager", "Contributor", "Subscriber" );
 Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
 
+Site.remove = function(site) {
+   HopObject.remove(site.members);
+   HopObject.remove(site.stories);
+   HopObject.remove(site.images);
+   HopObject.remove(site.files)
+   site.remove();
+   logAction("site", "removed");
+   return;
+}
+
 Site.getByName = function(name) {
    return root.sites.get(name);
 }
@@ -236,16 +246,6 @@ Site.prototype.update = function(data) {
    this.configured = new Date;
    this.modifier = session.user;
    this.clearCache();
-   return;
-}
-
-Site.remove = function(site) {
-   HopObject.remove(site.members);
-   HopObject.remove(site.stories);
-   HopObject.remove(site.images);
-   HopObject.remove(site.files)
-   site.remove();
-   logAction("site", "removed");
    return;
 }
 
