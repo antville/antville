@@ -213,7 +213,6 @@ Story.prototype.comment_action = function() {
    res.data.title = gettext("Add comment to {0}", this.getTitle());
    res.data.body = comment.renderSkinAsString("Comment#edit");
    this.site.renderSkin("Site#page");
-   this.logRequest();
    return;
 }
 
