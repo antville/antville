@@ -25,6 +25,8 @@
 relocateProperty(Story, "createtime", "created");
 relocateProperty(Story, "modifytime", "modified");
 
+Story.prototype.backlinks_macro = Story.prototype.referrers_macro;
+
 Story.prototype.allowTextMacros = function(skin) {
    return Story.prototype.macro_filter(skin);
 }
