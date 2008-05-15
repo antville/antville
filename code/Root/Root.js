@@ -75,6 +75,7 @@ Root.commitRequests = function() {
          break;
       }
    }
+   res.commit();
    return;
 }
 
@@ -90,9 +91,9 @@ Root.commitReferrers = function() {
    for each (var item in referrers) {
       var referrer = helma.Http.evalUrl(item.referrer);
       if (!referrer) {
-         return;
+         continue;
       }
-      
+
       // Only log unique combinations of context, ip and referrer
       referrer = String(referrer);
       var key = item.context_type + "#" + item.context_id + ":" + 
@@ -105,17 +106,14 @@ Root.commitReferrers = function() {
       // Exclude requests coming from the same site
       if (item.site) {
          var href = item.site.href().toLowerCase();
-         if (referrer.toLowerCase().contains(href.substr(0, href.length -1))) {
+         if (referrer.toLowerCase().contains(href.substr(0, href.length-1))) {
             continue;
          }
       }
-      
       root.referrers.add(item);
-      return;
    }
-   
+
    res.commit();
-   app.logger.info("Committed " + history.length + " log entries to database");
    return;
 }
 

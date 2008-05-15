@@ -401,9 +401,9 @@ Site.prototype.rss_xsl_action = function() {
 }
 
 Site.prototype.referrers_action = function() {
-   if (req.postParams.permanent && (User.require(User.PRIVILEGED) ||
+   if (req.data.permanent && (User.require(User.PRIVILEGED) ||
          Membership.require(Member.OWNER)))  {
-      var urls = req.postParams.permanent_array;
+      var urls = req.data.permanent_array;
       res.write(this.metadata.get("spamfilter"));
       for (var i in urls) {
          res.write("\n");

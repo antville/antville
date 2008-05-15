@@ -64,7 +64,7 @@ REGEDIT4
 "contexts"=hex:31
 
 <% #referrers %>
-<form action="<% response.action %>" method="post">
+<form action="<% response.action %>" method="get">
 <input type="text" name="filter" value="<% request.filter encoding="form" %>" 
 size="30" /> 
 <input type="submit" name="submit" value="Filter" /> 
@@ -120,7 +120,7 @@ for (var i in referrers) {
    }
    document.writeln('</td>');
    document.writeln('<td><a href="', ref.url, '"', (isSpam ? 
-         ' style="<% value "Small font color" prefix="color: " %>' : ''),
+         ' style="<% value "Small font color" prefix="color: " %>"' : ''),
          '>', text, '</a></td>');
    document.writeln('</tr>');
 }
