@@ -110,7 +110,8 @@ Root.commitReferrers = function() {
             continue;
          }
       }
-      root.referrers.add(item);
+      item.persist();
+      //root.referrers.add(item);
    }
 
    res.commit();
