@@ -421,32 +421,34 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
-   res.write("Search is currently disabled. Not for long, so please stay tuned.");
-   return;
-   
+   if (!User.require(User.PRIVILEGED)) {
+      return;
+   }
+
    var search;
-   if (!req.postParams.q || 
-         !(search = req.postParams.q = stripTags(req.postParams.q))) {
+   if (!(search = req.postParams.q) || !stripTags(search)) {
       res.message = gettext("Please enter a query in the search form.");
    } else {
-      var db = getDBConnection("antville");
-      var query = 'select id from content where site_id = ' + this._id +
-            " and prototype = 'Story' and status <> 'closed' and " +
-            " (metadata like '%title:\"%" + search + "%\"%' or " +
-            " metadata like '%text:\"%" + search + "%\"%') " +
-            " order by created desc limit 25";
-      var rows = db.executeRetrieval(query);
-      var ref, counter = 0;
+      var title = '%title:"%' + search + '%"%';
+      var text = '%text:"%' + search + '%"%';
+      var sql = new Sql();
+      sql.retrieve("select id from content where site_id = $0 and " +
+            "prototype = $1 and status <> $2 and (metadata like $3 or " +
+            "metadata like $4) order by created desc limit $5", 
+            this._id, "Story", Story.CLOSED, text, title, 25);
+
       res.push();
-      while (rows.next()) {
-         ref = Story.getById(rows.getColumnItem("id"));
-         ref.renderSkin("$Story#result");
+      var counter = 0;
+      sql.traverse(function() {
+         var story = Story.getById(this.id);
+         story.renderSkin("Story#result");
          counter += 1;
-      }
-      rows.release();
-      res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
+      });
+      res.message = ngettext("Found {0} result.", 
+            "Found {0} results.", counter);
       res.data.body = res.pop();
    }
+   
    res.data.title = gettext('Search results for "{0}" in site "{1}"', 
          search, this.title);
    this.renderSkin("Site#page");
