@@ -102,14 +102,15 @@ var Sql = function() {
    
    this.traverse = function(callback) {
       var rows = db.executeRetrieval(query);
-      if (rows.next()) {
+      if (rows && rows.next()) {
          do {
             var sql = new SqlData(rows);
             sql.update();
             callback.call(sql.values, rows);
          } while (record = rows.next());
+         rows.release();
       }
-      rows.release();
+      return;
    }
    
    return this;
