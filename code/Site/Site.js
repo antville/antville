@@ -424,9 +424,14 @@ Site.prototype.referrers_action = function() {
 
 Site.prototype.search_action = function() {
    var search;
-   if (!(search = req.postParams.q) || !stripTags(search)) {
+   if (!(search = req.data.q) || !stripTags(search)) {
       res.message = gettext("Please enter a query in the search form.");
    } else {
+      // FIXME: Trying to prepare search string for encoded metadata
+      /*var source = String(search).toSource();
+      search = source.substring(source.indexOf('"') + 1, 
+            source.lastIndexOf('"'));
+      res.debug(search)*/
       var title = '%title:"%' + search + '%"%';
       var text = '%text:"%' + search + '%"%';
       var sql = new Sql();
