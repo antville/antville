@@ -302,7 +302,9 @@ Site.prototype.listReferrers_macro = function(param) {
 }
 
 Site.prototype.searchbox_macro = function(param) {
-   this.renderSkin("$Site#search");
+   if (this.getPermission("search")) {
+      this.renderSkin("Site#search");
+   }
    return;
 }
 
