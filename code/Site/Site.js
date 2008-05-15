@@ -558,8 +558,10 @@ Site.prototype.referrers_macro = function() {
          "'main' and created > date_add(now(), interval -1 day) group " +
          "by referrer order by requests desc, referrer asc", this._id);
    sql.traverse(function() {
-      this.text = encode(this.referrer.head(50));
-      self.renderSkin("$Site#referrer", this);
+      if (this.requests && this.referrer) {
+         this.text = encode(this.referrer.head(50));
+         self.renderSkin("$Site#referrer", this);
+      }
    });
    return;
 }
