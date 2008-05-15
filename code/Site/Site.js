@@ -85,7 +85,7 @@ Site.prototype.constructor = function(name, title) {
       modifier: user,
       status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
       mode: Site.CLOSED,
-      tagline: "",
+      tagline: String.EMPTY,
       webHookEnabled: false,
       commentMode: Site.OPEN,
       archiveMode: Site.PUBLIC,
@@ -112,12 +112,15 @@ Site.prototype.getPermission = function(action) {
       case "user.js":
       return true;
 
+      case "search":
+      return Membership.require(Membership.MANAGER) ||
+            User.require(User.PRIVILEGED);
+
       case ".":
       case "main":
       case "comments.xml":
       case "rss.xml":
       case "rss.xsl":
-      case "search":
       case "stories.xml":
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
@@ -401,8 +404,7 @@ Site.prototype.rss_xsl_action = function() {
 }
 
 Site.prototype.referrers_action = function() {
-   if (req.data.permanent && (User.require(User.PRIVILEGED) ||
-         Membership.require(Member.OWNER)))  {
+   if (req.data.permanent && this.getPermission("edit"))  {
       var urls = req.data.permanent_array;
       res.write(this.metadata.get("spamfilter"));
       for (var i in urls) {
@@ -421,10 +423,6 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
-   if (!User.require(User.PRIVILEGED)) {
-      return;
-   }
-
    var search;
    if (!(search = req.postParams.q) || !stripTags(search)) {
       res.message = gettext("Please enter a query in the search form.");
