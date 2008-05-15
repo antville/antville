@@ -51,7 +51,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #referrers %>
 <a name="backlinks" id="backlinks"></a><br />
 <table border="0" cellspacing="0" cellpadding="1">
-<script type="text/javascript"><!--
+<script type="text/javascript">
 var referrers = [];
 <% param.referrers %>
 var query = new Antville.Query();
@@ -95,7 +95,7 @@ for (var i in referrers) {
          text, '</a></td>');
    document.writeln('</tr>');
 }
-//--></script>
+</script>
 <noscript>
 <tr>
 <td colspan="3">

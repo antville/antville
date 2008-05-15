@@ -148,7 +148,7 @@ HopObject.prototype.touch = function() {
 }
 
 HopObject.prototype.log = function() {
-   var entry = new LogEntry(this, "main" || req.action);
+   var entry = new LogEntry(this, "main");
    app.data.referrers.push(entry);
    return;
 }

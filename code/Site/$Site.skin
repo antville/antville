@@ -64,7 +64,7 @@ REGEDIT4
 "contexts"=hex:31
 
 <% #referrers %>
-<form action="<% response.action %>" method="get">
+<form action="<% response.action %>" method="post">
 <input type="text" name="filter" value="<% request.filter encoding="form" %>" 
 size="30" /> 
 <input type="submit" name="submit" value="Filter" /> 
@@ -83,7 +83,7 @@ size="30" />
 <td></td>
 <td class="small">Referrer</td>
 </tr>
-<script type="text/javascript"><!--
+<script type="text/javascript">
 var referrers = [];
 <% site.referrers %>
 var query = new Antville.Query();
@@ -113,32 +113,37 @@ for (var i in referrers) {
    }
    document.writeln('<tr>');
    document.writeln('<td align="right" valign="top">', ref.count, '</td>');
-   document.writeln('<td valign="top"><% site.switch name="userMayEdit" on="<input type=\"checkbox\" name=\"permanent\" value=\"', ref.url, '\" />" off="" %></td>');
-   document.writeln('<td><a href="', ref.url, '"',
-      (isSpam ? ' style="color: <% layout.smallcolor %>;"' : ''),
-      '>', text, '</a></td>');
+   document.write('<td valign="top">'); 
+   if ("<% membership.role %>" === "Owner") {
+      document.write('<input type="checkbox" name="permanent" value="', 
+            ref.url, '" />');
+   }
+   document.writeln('</td>');
+   document.writeln('<td><a href="', ref.url, '"', (isSpam ? 
+         ' style="<% value "Small font color" prefix="color: " %>' : ''),
+         '>', text, '</a></td>');
    document.writeln('</tr>');
 }
-// --></script>
+</script>
 <noscript>
 <tr>
 <td colspan="3">
-<% skite.skin noscript %>
+<% site.skin $Site#noscript %>
 </td>
 </tr>
 </noscript>
 </table>
 </form>
 
+<% #referrer %>
+referrers.push(new Antville.Referrer("<% param.referrer %>", 
+      "<% param.text %>", <% param.requests %>));
+
 <% #noscript %>
 <% gettext "To prevent spam abuse referrers and backlinks are displayed 
 using client-side JavaScript code. Thus, you should enable the option to 
 execute JavaScript code in your browser. Otherwise you will only see this 
 information." %>
-
-<% #referrer %>
-referrers.push(new Antville.Referrer("<% param.referrer %>", 
-      "<% param.text %>", <% param.requests %>));
 
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">
@@ -202,16 +207,16 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% site.checkbox webHookMode %> 
 <label for="webHookMode"><% gettext enabled %><label></td>
 </tr>
-<!--tr>
+<tr>
 <td colspan="2"><div class="listSeparator">&nbsp;</div>
 <strong><a name="spamfilter">Referrer spam filter</a></strong></td>
 </tr>
 <tr>
 <td class="small" valign="top">Enter one 
-<a href="http://devedge.netscape.com/library/manuals/2000/javascript/1.5/reference/regexp.html">filter pattern</a> 
+<a href="http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions">filter pattern</a> 
 per line to be applied on every URL in the referrer and backlink lists.</td>
 <td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
-</tr-->
+</tr>
 <tr>
 <td></td>
 <td><br />

@@ -23,15 +23,22 @@
 //
 
 LogEntry.prototype.constructor = function(context, action) {
-   this.context_id = context._id;
-   this.context_type = context._prototype;
-   this.action = action || req.action;
-   //this.ip = req.data.http_remotehost;
+   this.context = context;
+   this.action = action;
    this.referrer = req.data.http_referer;
    this.creator = session.user;
    this.created = new Date;
+   // Won't be stored in database
+   this.ip = req.data.http_remotehost;
+   this.site = res.handlers.site;
    return this;
 }
+
+LogEntry.prototype.toString = function() {
+   return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") + 
+         " requested " + this.action + " action of " + this.context_type + 
+         " #" + this.context_id + " on " + formatDate(this.created) + "]";
+} 
 
 LogEntry.prototype.getMacroHandler = function(name) {
    switch (name) {
@@ -40,12 +47,6 @@ LogEntry.prototype.getMacroHandler = function(name) {
    }
    return null;
 }
-
-LogEntry.prototype.toString = function() {
-   return "[LogEntry #" + this._id + ": " + this.creator + " requested " +
-         this.action + " action of " + this.context_type + " #" + 
-         this.context_id + " on " + formatDate(this.created) + "]";
-} 
 
 LogEntry.prototype.label_macro = function(param) {
    if (!User.require(User.PRIVILEGED)) {
