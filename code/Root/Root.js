@@ -119,10 +119,8 @@ Root.commitReferrers = function() {
 
 Root.purgeReferrers = function() {
    var sql = new Sql;
-   var threshold = new Date();
-   threshold.setDate(threshold.getDate() - 1);
    var result = sql.execute("delete from log where action = 'main' and " +
-         "created < $0", threshold.format(SQLDATEFORMAT));
+         "created < date_add(now(), interval -1 day)");
    return result;
 }
 
