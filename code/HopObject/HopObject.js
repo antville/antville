@@ -22,8 +22,20 @@
 // $URL$
 //
 
+HopObject.remove = function(collection) {
+   var item;
+   while (collection.size() > 0) {
+      item = collection.get(0);
+      if (item.constructor.remove) {
+         item.constructor.remove.call(item, item);
+      }
+   }
+   return;
+}
+
 HopObject.getFromPath = function(name, collection) {
    // FIXME: This is an ugly work-around for Helma bug #625
+   // NOTE: Bug is fixed; to be removed with Helma update on Antville.org
    var translate = function(str) {
       return str.replace(/&([^;]*);/g, function(s, $1) {
          switch ($1) {
@@ -128,22 +140,17 @@ HopObject.prototype.delete_action = function() {
    return;
 }
 
-HopObject.remove = function(collection) {
-   var item;
-   while (collection.size() > 0) {
-      item = collection.get(0);
-      if (item.constructor.remove) {
-         item.constructor.remove.call(item, item);
-      }
-   }
-   return;
-}
-
 HopObject.prototype.touch = function() {
    return this.map({
       modified: new Date,
       modifier: session.user
    });
+}
+
+HopObject.prototype.log = function() {
+   var entry = new LogEntry(this, "main" || req.action);
+   app.data.referrers.push(entry);
+   return;
 }
 
 HopObject.prototype.notify = function(action) {

@@ -41,6 +41,7 @@ this.handleMetadata("title"),
 this.handleMetadata("webHookMode");
 this.handleMetadata("webHookCalled");
 this.handleMetadata("webHookUrl");
+this.handleMetadata("spamfilter");
 
 Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
 Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
@@ -57,7 +58,7 @@ Site.remove = function(site) {
    HopObject.remove(site.images);
    HopObject.remove(site.files)
    site.remove();
-   logAction("site", "removed");
+   root.admin.log.add(site, "removed");
    return;
 }
 
@@ -146,7 +147,7 @@ Site.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("Site#main");
    res.data.title = this.title;
    this.renderSkin("Site#page");
-   logAction();
+   this.log();
    return;
 }
 
@@ -241,6 +242,7 @@ Site.prototype.update = function(data) {
       longDateFormat: data.longDateFormat,
       shortDateFormat: data.shortDateFormat,
       locale: data.locale,
+      spamfilter: data.spamfilter
    });
 
    this.configured = new Date;
@@ -399,13 +401,9 @@ Site.prototype.rss_xsl_action = function() {
 }
 
 Site.prototype.referrers_action = function() {
-   res.write("Referrers are currently disabled. Not for long, so please stay tuned.");
-   return;
-   
    if (req.postParams.permanent && (User.require(User.PRIVILEGED) ||
          Membership.require(Member.OWNER)))  {
       var urls = req.postParams.permanent_array;
-      res.push();
       res.write(this.metadata.get("spamfilter"));
       for (var i in urls) {
          res.write("\n");
@@ -415,9 +413,9 @@ Site.prototype.referrers_action = function() {
       res.redirect(this.href(req.action));
       return;
    }
-   res.data.action = this.href("referrers");
+   res.data.action = this.href(req.action);
    res.data.title = gettext("Referrers in the last 24 hours of {0}", this.title);
-   res.data.body = this.renderSkinAsString("referrers");
+   res.data.body = this.renderSkinAsString("$Site#referrers");
    this.renderSkin("Site#page");
    return;
 }
@@ -550,26 +548,19 @@ Site.prototype.age_macro = function(param) {
 }
 
 Site.prototype.referrers_macro = function() {
-   var date = new Date;
-   date.setDate(date.getDate() - 1);
-   var db = getDBConnection("antville");
-   var query = "select referrer, count(*) as requests from log " +
-      "where context_type = 'Site' and context_id = " + this._id + 
-      " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
-      "'} and action = 'main' group by referrer order by requests desc, referrer asc;";
-   var rows = db.executeRetrieval(query);
-   var referrer;
-   while (rows.next()) {
-      if (!(referrer = rows.getColumnItem("referrer"))) {
-         continue;
-      }
-      this.renderSkin("Site#referrerItem", {
-         requests: rows.getColumnItem("requests"),
-         referrer: encode(referrer),
-         text: encode(referrer.clip(50))
-      });
+   if (!User.require(User.PRIVILEGED)) {
+      return;
    }
-   rows.release();
+   var self = this;
+   var sql = new Sql();
+   sql.retrieve("select referrer, count(*) as requests from " +
+         "log where context_type = 'Site' and context_id = $0 and action = " +
+         "'main' and created > date_add(now(), interval -1 day) group " +
+         "by referrer order by requests desc, referrer asc", this._id);
+   sql.traverse(function() {
+      this.text = encode(this.referrer.head(50));
+      self.renderSkin("$Site#referrer", this);
+   });
    return;
 }
 

@@ -44,11 +44,11 @@ else <% if <% story.mode %> is hidden then
 </tr>
 </table>
 
-<% #backlink %>
+<% #referrer %>
 referrers.push(new Antville.Referrer("<% param.referrer %>", 
       "<% param.text %>", <% param.requests %>));
 
-<% #backlinks %>
+<% #referrers %>
 <a name="backlinks" id="backlinks"></a><br />
 <table border="0" cellspacing="0" cellpadding="1">
 <script type="text/javascript"><!--

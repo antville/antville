@@ -45,21 +45,8 @@ app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
 app.data.mails || (app.data.mails = []);
-app.data.stories || (app.data.stories = {});
-
-var rome = new JavaImporter(
-   Packages.com.sun.syndication.feed.synd,
-   Packages.com.sun.syndication.io.SyndFeedOutput,
-   Packages.com.sun.syndication.feed.module.itunes,
-   Packages.com.sun.syndication.feed.module.itunes.types
-);
-
-var html = new helma.Html();
-
-var idle = new Function;
-
-SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
-LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
+app.data.requests || (app.data.requests = {});
+app.data.referrers || (app.data.referrers = []);
 
 /**
  * Extend the Mail prototype with a method that simply adds a mail object 
@@ -90,7 +77,23 @@ jala.i18n.setLocaleGetter(function() {
    return res.handlers.site.getLocale();
 });
 
+var SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
+var LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
+var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
+
+var idle = new Function;
+var html = new helma.Html();
+
+var rome = new JavaImporter(
+   Packages.com.sun.syndication.feed.synd,
+   Packages.com.sun.syndication.io.SyndFeedOutput,
+   Packages.com.sun.syndication.feed.module.itunes,
+   Packages.com.sun.syndication.feed.module.itunes.types
+);
+
 function onStart() {
+   app.addCronJob("nightly", "*", "*", "*", "*", "5", "0");
+
    // FIXME: Does database exist?
    /*var db = getDBConnection("antville");
    var rows = db.executeRetrieval("select min(id) as id from site");
@@ -130,58 +133,16 @@ function disableMacro(ctor, name) {
 }
 
 function scheduler() {
-   flushLog();
-   Stories.flushRequests();
-   helma.Mail.flushQueue();
    Root.updateHealth();
-   // FIXME: root.manage.autoCleanUp();
-   // FIXME: pingUpdatedSites();
-   // FIXME: countUsers();
-   //app.data.lastAccessLogUpdate = new Date();
+   Root.commitReferrers();
+   Root.commitRequests();
+   helma.Mail.flushQueue();
    return 5000;
 }
 
-function logAction(context, action) {
-   if (context) {
-      root.admin.log.add(new LogEntry(context, action));      
-   } else {
-      root.admin.log.cache.add(new LogEntry(path[path.length - 1]));
-   }
-   return;
-   /* FIXME: check whether request really should be logged
-   var site = res.handlers.site ? res.handlers.site: root;
-   var url = http.evalUrl(req.data.http_referer);
-
-   // no logging at all if the referrer comes from the same site
-   // or is not a http-request
-   if (!url)
-      return;
-   var referrer = url.toString();
-   var siteHref = site.href().toLowerCase();
-   if (referrer.toLowerCase().contains(siteHref.substring(0, siteHref.length-1)))
-      return;
-   var logObj = new Object();
-   logObj.storyID = path.Story ? path.Story._id : null;
-   logObj.siteID = site._id;
-   logObj.referrer = referrer;
-   logObj.remoteHost = req.data.http_remotehost;
-   logObj.browser = req.data.http_browser;
-   */
-   return root.admin.syslogs.add(new SysLog(type, object, text, session.user));   
-}
-
-function flushLog() {
-   var log = root.admin.log;
-   var n = log.cache.size();
-   if (n < 1) {
-      return;
-   }
-   log.cache.forEach(function() {
-      return log.add(this);
-   });
-   res.commit();
-   log.clearCache();
-   app.logger.info("Wrote " + n + " log entries to DB");
+function nightly() {
+   Root.purgeReferrers();
+   //Admin.purgeDatabase();
    return;
 }
 
@@ -952,4 +913,13 @@ function pluralize(singular) {
       return singular.substring(0, singular.length-1) + "ies";
    }
    return singular + "s";
+}
+
+var wait = function(millis) {
+   millis || (millis = Date.ONESECOND);
+   var now = new Date;
+   while (new Date - now < millis) {
+      void null;
+   }
+   return;
 }

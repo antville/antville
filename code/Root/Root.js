@@ -64,6 +64,70 @@ Root.updateHealth = function() {
    return;
 }
 
+Root.commitRequests = function() {
+   var requests = app.data.requests;
+   app.data.requests = {};
+   for each (var item in requests) {
+      switch (item.type) {
+         case Story:
+         var story = Story.getById(item.id);
+         story && (story.requests = item.requests);
+         break;
+      }
+   }
+   return;
+}
+
+Root.commitReferrers = function() {
+   var referrers = app.data.referrers;   
+   if (referrers.length < 1) {
+      return;
+   }
+   
+   app.data.referrers = [];
+   var history = [];
+
+   for each (var item in referrers) {
+      var referrer = helma.Http.evalUrl(item.referrer);
+      if (!referrer) {
+         return;
+      }
+      
+      // Only log unique combinations of context, ip and referrer
+      referrer = String(referrer);
+      var key = item.context_type + "#" + item.context_id + ":" + 
+            item.ip + ":" + referrer;
+      if (history.indexOf(key) > -1) {
+         continue;
+      }
+      history.push(key);
+
+      // Exclude requests coming from the same site
+      if (item.site) {
+         var href = item.site.href().toLowerCase();
+         if (referrer.toLowerCase().contains(href.substr(0, href.length -1))) {
+            continue;
+         }
+      }
+      
+      root.referrers.add(item);
+      return;
+   }
+   
+   res.commit();
+   app.logger.info("Committed " + history.length + " log entries to database");
+   return;
+}
+
+Root.purgeReferrers = function() {
+   var sql = new Sql;
+   var threshold = new Date();
+   threshold.setDate(threshold.getDate() - 1);
+   var result = sql.execute("delete from log where action = 'main' and " +
+         "created < $0", threshold.format(SQLDATEFORMAT));
+   return result;
+}
+
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 }
@@ -98,11 +162,6 @@ Root.prototype.main_action = function() {
 //   res.debug(result)
    return;*/
    
-   //log();
-   flushLog();
-   res.debug(root.admin.log.cache.size());
-   return;
-
 /* FIXME: setup routine needs to be rewritten
    // check if this installation is already configured
    // if not, we display the welcome-page as frontpage
@@ -116,10 +175,6 @@ Root.prototype.main_action = function() {
    } else if (!root.size())
       res.redirect(this.href("new"));
 */
-
-   res.data.body = root.renderSkinAsString("main");
-   root.renderSkin("Site#page");
-   return;
 }
 
 Root.prototype.getFormOptions = function(name) {
@@ -159,7 +214,7 @@ Root.prototype.create_action = function() {
          site.layout = new Layout(site);
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
-         logAction(site, "added");
+         root.admin.log.add(site, "added");
          res.message = gettext("Successfully created your site.");   
          res.redirect(site.href());
       } catch (ex) {

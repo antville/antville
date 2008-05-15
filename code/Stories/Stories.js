@@ -169,12 +169,3 @@ Stories.prototype.getTags = function(group) {
 Stories.prototype.getAdminHeader = function(name) {
    return ["#", "Tag", "Items"];
 }
-
-Stories.flushRequests = function() {
-   for each (var entry in app.data.stories) {
-      entry.story.requests += entry.requests;
-      delete app.data.stories[entry.story._id];
-      return;
-   };
-   return;
-}

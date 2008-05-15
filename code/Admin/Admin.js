@@ -22,6 +22,10 @@
 // $URL$
 //
 
+Admin.purgeDatabase = function() {
+   return;
+}
+
 Admin.prototype.constructor = function() {
    this.filterSites();
    this.filterUsers();
@@ -423,6 +427,9 @@ Admin.prototype.renderItem = function(item) {
    }
    return;
 }
+
+
+
 
 Admin.prototype.autoCleanUp = function() {
    return;

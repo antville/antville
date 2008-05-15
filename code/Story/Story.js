@@ -27,6 +27,18 @@ Story.getModes = defineConstants(Story, "hidden", "featured");
 Story.getCommentModes = defineConstants(Story, "closed", 
       /*"readonly", "moderated",*/ "open");
 
+Story.remove = function() {
+   if (this.constructor !== Story) {
+      return;
+   }
+   while (this.comments.size() > 0) {
+      Comment.remove.call(this.comments.get(0));
+   }
+   this.setTags(null);
+   this.remove();
+   return;
+}
+
 this.handleMetadata("title");
 this.handleMetadata("text");
 
@@ -34,6 +46,8 @@ Story.prototype.constructor = function() {
    this.name = String.EMPTY;
    this.requests = 0;
    this.status = Story.PUBLIC;
+   this.mode = Story.FEATURED;
+   this.commentMode = Story.OPEN;
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
@@ -71,33 +85,12 @@ Story.prototype.getPermission = function(action) {
    return false;
 }
 
-Story.prototype.getMacroHandler = function(name) {
-   if (name === "metadata") {
-      return this.metadata;
-   }
-   return null;
-}
-
-Story.prototype.link_macro = function(param, action, text) {
-   switch (action) {
-      case "rotate":
-      if (this.status === Story.CLOSED) {
-         text = gettext("Publish");
-      } else if (this.mode === Story.FEATURED) {
-         text = gettext("Hide");
-      } else {
-         text = gettext("Close");
-      }
-   }
-   return HopObject.prototype.link_macro.call(this, param, action, text);
-}
-
 Story.prototype.main_action = function() {
    res.data.title = this.getTitle();
    res.data.body = this.renderSkinAsString("Story#main");
    this.site.renderSkin("Site#page");
-   this.logRequest();
-   logAction();
+   this.count();
+   this.log();
    return;
 }
 
@@ -133,35 +126,6 @@ Story.prototype.edit_action = function() {
    res.data.body = this.renderSkinAsString("$Story#restore");
    res.data.body += this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
-   return;
-}
-
-Story.prototype.getFormValue = function(name) {
-   if (req.isPost()) {
-      return req.postParams[name];
-   }
-   switch (name) {
-      case "commentMode":
-      return this.commentMode || Story.OPEN;
-      case "mode":
-      return this.mode || Story.FEATURED;
-      case "status":
-      return this.status || Story.PUBLIC;
-      case "tags":
-      return this.getTags();
-   }
-   return this[name];
-}
-
-Story.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "mode":
-      return Story.getModes();
-      case "status":
-      return Story.getStatus();
-      case "commentMode":
-      return Story.getCommentModes();
-   }
    return;
 }
 
@@ -208,32 +172,6 @@ Story.prototype.update = function(data) {
    return;
 }
 
-Story.prototype.setMetadata = function(data) {
-   var name;
-   for (var key in data) {
-      if (this.isMetadata(key)) {
-         this.metadata.set(key, data[key]);
-      }
-   }
-   return;
-}
-
-Story.prototype.isMetadata = function(name) {
-   return this[name] === undefined && name !== "save";
-}
-
-Story.remove = function() {
-   if (this.constructor !== Story) {
-      return;
-   }
-   while (this.comments.size() > 0) {
-      Comment.remove.call(this.comments.get(0));
-   }
-   this.setTags(null);
-   this.remove();
-   return;
-}
-
 Story.prototype.rotate_action = function() {
    if (this.status === Story.CLOSED) {
       this.status = this.cache.status || Story.PUBLIC;
@@ -277,6 +215,112 @@ Story.prototype.comment_action = function() {
    this.site.renderSkin("Site#page");
    this.logRequest();
    return;
+}
+
+Story.prototype.getFormValue = function(name) {
+   if (req.isPost()) {
+      return req.postParams[name];
+   }
+   switch (name) {
+      case "commentMode":
+      return this.commentMode || Story.OPEN;
+      case "mode":
+      return this.mode || Story.FEATURED;
+      case "status":
+      return this.status || Story.PUBLIC;
+      case "tags":
+      return this.getTags();
+   }
+   return this[name];
+}
+
+Story.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "mode":
+      return Story.getModes();
+      case "status":
+      return Story.getStatus();
+      case "commentMode":
+      return Story.getCommentModes();
+   }
+   return;
+}
+
+Story.prototype.setMetadata = function(data) {
+   var name;
+   for (var key in data) {
+      if (this.isMetadata(key)) {
+         this.metadata.set(key, data[key]);
+      }
+   }
+   return;
+}
+
+Story.prototype.isMetadata = function(name) {
+   return this[name] === undefined && name !== "save";
+}
+
+Story.prototype.count = function() {
+   if (session.user === this.creator) {
+      return;
+   }
+   var story;
+   var key = "Story#" + this._id;
+   if (story = app.data.requests[key]) {
+      story.requests += 1;
+   } else {
+      app.data.requests[key] = {
+         type: this.constructor,
+         id: this._id,
+         requests: this.requests + 1
+      };
+   }
+   return;
+}
+
+Story.prototype.getDelta = function(data) {
+   if (this.isTransient()) {
+      return Infinity;
+   }
+
+   var deltify = function(s1, s2) {
+      var len1 = s1 ? String(s1).length : 0;
+      var len2 = s2 ? String(s2).length : 0;
+      return Math.abs(len1 - len2);
+   };
+
+   var delta = 0;
+   delta += deltify(data.title, this.title);
+   delta += deltify(data.text, this.text);
+   for (var key in data) {
+      if (this.isMetadata(key)) {
+         delta += deltify(data[key], this.metadata.get(key))
+      }
+   }
+   // In-between updates (1 hour) get zero delta
+   var timex = (new Date - this.modified) > Date.ONEHOUR ? 1 : 0;
+   return delta * timex;
+}
+
+Story.prototype.getMacroHandler = function(name) {
+   if (name === "metadata") {
+      return this.metadata;
+   }
+   return null;
+}
+
+Story.prototype.link_macro = function(param, action, text) {
+   switch (action) {
+      case "rotate":
+      if (this.status === Story.CLOSED) {
+         text = gettext("Publish");
+      } else if (this.mode === Story.FEATURED) {
+         text = gettext("Hide");
+      } else {
+         text = gettext("Close");
+      }
+   }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
 }
 
 Story.prototype.summary_macro = function(param) {
@@ -341,80 +385,37 @@ Story.prototype.tags_macro = function() {
    return res.write(this.getFormValue("tags"));
 }
 
-Story.prototype.backlinks_macro = function(param, limit) {
-   return;
-
-   limit || (limit = param.limit);
-   var date = new Date;
-   date.setDate(date.getDate() - 1);
-   var db = getDBConnection("antville");
-   var query = "select referrer, count(*) as count from log where " +
-         "context_type = 'Story' and context_id = " + this._id + 
-         " and created > {ts '" + date.format("yyyy-MM-dd HH:mm:ss") + 
-         "'} group by referrer order by count desc, referrer asc;";
-   var rows = db.executeRetrieval(query);
-   var limit = Math.min(parseInt(limit, 10) || 100, 100);
-   var counter = 0;
-   var param;
-   res.push();
-   while (rows.next() && counter <= limit) {
-      param = {
-         requests: rows.getColumnItem("count"),
-         referrer: rows.getColumnItem("referrer")
-      };
-      if (!param.requests || !param.referrer) {
-         continue;
-      }
-      param.referrer && (param.text = param.referrer.clip(50));  
-      this.renderSkin("Story#backlink", param);
-      counter += 1;
-   }
-   rows.release();
-   param = {referrers: res.pop()};
-   if (param.referrers.length > 0) {
-      this.renderSkin("Story#backlinks", param);
-   }
-   return;
-}
-
-Story.prototype.logRequest = function() {
-   if (session.user === this.creator) {
+Story.prototype.referrers_macro = function(param, limit) {
+   if (!User.require(User.PRIVILEGED)) {
       return;
    }
-   var entry;
-   if (entry = app.data.stories[this._id]) {
-      entry.requests += 1;
-   } else {
-      app.data.stories[this._id] = {
-         story: this,
-         requests: this.requests + 1
-      };
-   }
-   return;
-}
 
-Story.prototype.getDelta = function(data) {
-   if (this.isTransient()) {
-      return Infinity;
+   limit = Math.min(limit || param.limit || 100, 100);
+   if (limit < 1) {
+      return;
    }
 
-   var deltify = function(s1, s2) {
-      var len1 = s1 ? String(s1).length : 0;
-      var len2 = s2 ? String(s2).length : 0;
-      return Math.abs(len1 - len2);
-   };
+   var self = this;
+   var sql = new Sql();
+   sql.retrieve("select referrer, count(*) as requests from " +
+         "log where context_type = 'Story' and context_id = $0 and action = " +
+         "'main' and created > date_add(now(), interval -1 day) group " +
+         "by referrer order by requests desc, referrer asc", this._id);
 
-   var delta = 0;
-   delta += deltify(data.title, this.title);
-   delta += deltify(data.text, this.text);
-   for (var key in data) {
-      if (this.isMetadata(key)) {
-         delta += deltify(data[key], this.metadata.get(key))
+   res.push();
+   var n = 0;
+   sql.traverse(function() {
+      if (n < limit && this.requests && this.referrer) {
+         this.text = encode(this.referrer.head(50));
+         self.renderSkin("$Story#referrer", this);
       }
+      n += 1;
+   });
+   param.referrers = res.pop();
+   if (param.referrers) {
+      this.renderSkin("$Story#referrers", param);
    }
-   // In-between updates (1 hour) get zero delta
-   var timex = (new Date - this.modified) > Date.ONEHOUR ? 1 : 0;
-   return delta * timex;
+   return;   
 }
 
 Story.prototype.format_filter = function(value, param, mode) {
