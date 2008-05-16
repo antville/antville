@@ -430,7 +430,11 @@ Story.prototype.format_filter = function(value, param, mode) {
          
          case "image":
          var image = HopObject.getFromPath(value, "images");
-         image && image.render_macro(param);
+         if (image) {
+            res.push();
+            image.render_macro(param);
+            return res.pop();
+         }
          break;
          
          default:
