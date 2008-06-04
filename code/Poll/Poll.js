@@ -49,8 +49,9 @@ Poll.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      case "result":
       return !!session.user;
+      case "result":
+      return true;
       case "edit":
       return this.status === Poll.CLOSED ||
             Membership.require(Membership.OWNER) ||
