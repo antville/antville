@@ -198,25 +198,10 @@ function link_macro() {
    return renderLink.apply(this, arguments);
 }
 
-function renderLink(param, url, text, handler) {
-   url || (url = param.url || "");
-   text || (text = param.text || url);
-   if (!text) {
-      return;
-   }
-   delete param.url;
-   delete param.text;
-   param.title || (param.title = String.EMPTY);
-   if (!handler || url.contains(":")) {
-      param.href = url;
-   } else if (url.contains("/") || url.contains("?") || url.contains("#")) {
-      var parts = url.split(/(\/|\?|#)/);
-      param.href = handler.href(parts[0]) + parts.splice(1).join(String.EMPTY);
-   } else {
-      param.href = handler.href(url);
-   }
-   html.link(param, text);
-   return;
+// FIXME: The definition with "var" is necessary; otherwise the skin_macro()
+// method won't be overwritten reliably. (Looks like a Helma bug.)
+var skin_macro = function(param, name) {
+  return HopObject.prototype.skin_macro.apply(this, arguments);
 }
 
 function breadcrumbs_macro (param, delimiter) {
@@ -496,6 +481,27 @@ function randomize_macro(param, id) {
       image && image.renderSkin(param.skin || "Image#preview");
       break;
    }
+   return;
+}
+
+function renderLink(param, url, text, handler) {
+   url || (url = param.url || "");
+   text || (text = param.text || url);
+   if (!text) {
+      return;
+   }
+   delete param.url;
+   delete param.text;
+   param.title || (param.title = String.EMPTY);
+   if (!handler || url.contains(":")) {
+      param.href = url;
+   } else if (url.contains("/") || url.contains("?") || url.contains("#")) {
+      var parts = url.split(/(\/|\?|#)/);
+      param.href = handler.href(parts[0]) + parts.splice(1).join(String.EMPTY);
+   } else {
+      param.href = handler.href(url);
+   }
+   html.link(param, text);
    return;
 }
 

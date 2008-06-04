@@ -40,7 +40,10 @@ else
    <% skin.link compare prefix=" ... " %> 
    <% skin.link reset prefix=" ... " %>)<br />
    <strong><% gettext Macro suffix=: %></strong> 
-   &lt;% <% skin.prototype suffix="." | lowercase %>skin <% skin.name %> %&gt;
+   &lt;% <% if <% skin.prototype %> is "Global" then 
+      <% skin.name prefix="skin " %> else 
+      <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %>
+   %> %&gt;
 </span>
 
 <% #compare %>

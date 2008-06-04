@@ -251,7 +251,8 @@ HopObject.prototype.skin_macro = function(param, name) {
    if (name.contains("#")) {
       this.renderSkin(name);
    } else {
-      this.renderSkin(this.constructor.name + "#" + name);
+      var prototype = this._prototype || "Global";
+      this.renderSkin(prototype + "#" + name);
    }
    return;
 }

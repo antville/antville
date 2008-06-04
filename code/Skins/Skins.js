@@ -70,7 +70,7 @@ Skins.prototype.main_action = function() {
 Skins.prototype.getOutline = function(type) {
    var key = "outline:" + type;
    var outline = this.cache[key];
-   if (false && outline) {
+   if (outline) {
       return outline;
    }
 
