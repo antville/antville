@@ -43,14 +43,14 @@ Poll.prototype.constructor = function(question) {
 }
 
 Poll.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
+   if (!this.site.getPermission("main")) {
       return false;
    }
    switch (action) {
       case ".":
       case "main":
       case "result":
-      return true;
+      return !!session.user;
       case "edit":
       return this.status === Poll.CLOSED ||
             Membership.require(Membership.OWNER) ||
