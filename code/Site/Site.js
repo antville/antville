@@ -553,9 +553,6 @@ Site.prototype.age_macro = function(param) {
 }
 
 Site.prototype.referrers_macro = function() {
-   if (!User.require(User.PRIVILEGED)) {
-      return;
-   }
    var self = this;
    var sql = new Sql();
    sql.retrieve("select referrer, count(*) as requests from " +
