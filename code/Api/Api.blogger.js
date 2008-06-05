@@ -31,7 +31,7 @@ Api.blogger = {};
 Api.blogger.util = {
    getContentParts: function(content) {
       content && (content = content.trim());
-      content || (content = "");
+      content || (content = String.EMPTY);
       var result = {};
       if (!content.startsWith("<title>")) {
          result.text = content;
@@ -83,9 +83,6 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
 Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
    var user = Api.getUser(name, password);
    var site = Api.getSite(id);
-   if (!site) { 
-      throw Error("Site " + id + " does not exist on this server");
-   }
 
    // FIXME: This should become obsolete (needs refactoring of 
    // permission model or modification of URL entrypoint)
@@ -139,9 +136,6 @@ Api.blogger.getPost = function(appKey, id, name, password) {
 Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    var user = Api.getUser(name, password);
    var site = Api.getSite(id);
-   if (!site) {
-      throw Error("Site " + id + " does not exist on this server");
-   }
    
    // FIXME: This should become obsolete (needs refactoring of 
    // permission model or modification of URL entrypoint)
