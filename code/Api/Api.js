@@ -22,6 +22,25 @@
 // $URL$
 //
 
+Api.constrain = function(site, user) {
+   res.handlers.site = site;
+   res.handlers.membership = Membership.getByName(user.name);
+   return;
+}
+
+Api.dispatch = function() {
+   var handler = Api[this];
+   var method = arguments[0];
+   if (!method.startsWith("_")) {
+      if (handler && method && handler[method]) {
+         var args = Array.prototype.splice.call(arguments, 1);
+         return handler[method].apply(null, args);
+      }
+   }
+   throw Error("Method " + this + "." + method + "() is not implemented");
+   return;
+}
+
 Api.getUser = function(name, password) {
    var user = User.getByName(name);
    if (!user) {
@@ -44,25 +63,26 @@ Api.getSite = function(name) {
    return site;
 }
 
+Api.getStory = function(id) {
+   var story = Story.getById(id);
+   if (!story) {
+      throw Error("Story #" + id + " does not exist on this server");
+   }
+   return story;
+}
+
 Api.prototype.main_action = function() {
-   app.log(req.data)
    res.write("Describe API options here.");
 }
 
 Api.prototype.blogger_action_xmlrpc = function(method) {
-   if (method && Api.blogger[method]) {
-      var args = Array.prototype.splice.call(arguments, 1);
-      return Api.blogger[method].apply(null, args);
-   }
-   throw Error("Method blogger." + method + "() is not implemented");
-   return;
+   return Api.dispatch.apply("blogger", arguments);
 }
 
 Api.prototype.mt_action_xmlrpc = function(method) {
-   if (method && Api.movableType[method]) {
-      var args = Array.prototype.splice.call(arguments, 1);
-      return Api.movableType[method].apply(null, args);
-   }
-   throw Error("Method mt." + method + "() is not implemented");
-   return;
+   return Api.dispatch.apply("movableType", arguments);
+}
+
+Api.prototype.metaWeblog_action_xmlrpc = function() {
+   return Api.dispatch.apply("metaWeblog", arguments);
 }

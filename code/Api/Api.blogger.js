@@ -22,30 +22,28 @@
 // $URL: https://antville.googlecode.com/svn/trunk/code/Api/Api.blogger.js $
 //
 
-// Functions that implement Blogger's XML-RPC API
-// see http://www.blogger.com/developers/api/1_docs/ for further details
-// blogger.getTemplate and blogger.setTemplate are not supported
+// Methods that implement Blogger's XML-RPC API.
+// See http://www.blogger.com/developers/api/1_docs/ for further details.
+// The blogger.getTemplate and blogger.setTemplate methods are not supported
 
 Api.blogger = {};
 
-Api.blogger.util = {
-   getContentParts: function(content) {
-      content && (content = content.trim());
-      content || (content = String.EMPTY);
-      var result = {};
-      if (!content.startsWith("<title>")) {
-         result.text = content;
+Api.blogger._getContentParts = function(content) {
+   content && (content = content.trim());
+   content || (content = String.EMPTY);
+   var result = {};
+   if (!content.startsWith("<title>")) {
+      result.text = content;
+   } else {
+      var pos = content.lastIndexOf("</title>");
+      if (pos > 0) {
+         result.title = content.substring(7, pos);
+         result.text = content.substring (pos + 8); 
       } else {
-         var pos = content.lastIndexOf("</title>");
-         if (pos > 0) {
-            result.title = content.substring(7, pos);
-            result.text = content.substring (pos + 8); 
-         } else {
-            result.text = content;
-         }
+         result.text = content;
       }
-      return result;
    }
+   return result;
 }
 
 Api.blogger.getUserInfo = function(appKey, name, password) {
@@ -64,10 +62,7 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
    var user = Api.getUser(name, password);
    var result = [];
    user.forEach(function() {
-      // FIXME: This should become obsolete (needs refactoring of 
-      // permission model or modification of URL entrypoint)
-      res.handlers.membership = this;
-      res.handlers.site = this.site;
+      Api.constrain(this.site, user);
       if (this.site.stories.getPermission("create")) {
          result.push({
             blogid: this.site.name,
@@ -81,16 +76,13 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
 }
 
 Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
-   var user = Api.getUser(name, password);
    var site = Api.getSite(id);
+   var user = Api.getUser(name, password);
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = site;
-   res.handlers.membership = Membership.getByName(user.name);
+   Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
       throw Error("Permission denied for user " + user.name + 
-            " to access site " + site.name);
+            " to get recent posts of site " + site.name);
    }
 
    var result = [];
@@ -109,24 +101,18 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
 }
 
 Api.blogger.getPost = function(appKey, id, name, password) {
+   var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   var story = Story.getById(id);
-   if (!story) {
-      throw Error("Story #" + id + " does not exist on this server");
-   }
-
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = story.site;
-   res.handlers.membership = Membership.getByName(user.name);
+   
+   Api.constrain(story.site, user);
    if (!story.getPermission("main")) {
       throw Error("Permission denied for user " + name + 
-            " to access story #" + id);
+            " to get post #" + id);
    }
 
    return {
-      content: story.title ? "<title>" + story.title + 
-            "</title>" + story.text : story.text,
+      content: story.title ? html.elementAsString("title", story.title) + 
+            story.text : story.text,
       userid: story.creator.name,
       postid: story._id,
       dateCreated: story.created
@@ -134,19 +120,16 @@ Api.blogger.getPost = function(appKey, id, name, password) {
 }
 
 Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
-   var user = Api.getUser(name, password);
    var site = Api.getSite(id);
+   var user = Api.getUser(name, password);
    
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = site;
-   res.handlers.membership = Membership.getByName(user.name);   
+   Api.constrain(site, user);
    if (!site.stories.getPermission("create")) {
       throw Error("Permission denied for user " + user.name + 
-            " to add a story to site " + site.name);
+            " to add a post to site " + site.name);
    }
 
-   var parts = Api.blogger.util.getContentParts(content);
+   var parts = Api.blogger._getContentParts(content);
    var story = new Story;
    story.site = site;
    story.creator = user;
@@ -161,22 +144,16 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
 }
 
 Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
+   var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   var story = Story.getById(id);
-   if (!story) {
-      throw Error("Story #" + id + " does not exist on this server");
-   } 
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = story.site;
-   res.handlers.membership = Membership.getByName(user.name);
+   Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
       throw Error("Permission denied for user " + name + 
-            " to edit story #" + id);
+            " to edit post #" + id);
    }
 
-   var parts = Api.blogger.util.getContentParts(content);
+   var parts = Api.blogger._getContentParts(content);
    story.update({
       title: parts.title,
       text: parts.text,
@@ -187,21 +164,16 @@ Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
    return true;
 }
 
-Api.blogger.deletePost = function(appKey, id, name, password, publish) {
+Api.blogger.deletePost = function(appKey, id, name, password) {
+   var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   var story = Story.getById(id);
-   if (!story) {
-      throw Error("Story #" + id + " does not exist on this server");
-   } else {
-      // FIXME: This should become obsolete (needs refactoring of 
-      // permission model or modification of URL entrypoint)
-      res.handlers.site = story.site;
-      res.handlers.membership = Membership.getByName(user.name);
-      if (!story.getPermission("delete")) {
-         throw Error("Permission denied for user " + name + 
-               " to delete story #" + id);
-      }
+
+   Api.constrain(story.site, user);
+   if (!story.getPermission("delete")) {
+      throw Error("Permission denied for user " + name + 
+            " to delete story #" + id);
    }
+
    Story.remove.call(story);
    return true;
 }

@@ -22,23 +22,19 @@
 // $URL$
 //
 
-// Functions that implement Movable Type's XML-RPC API
-// see http://www.sixapart.com/developers/xmlrpc/movable_type_api/
+// Methods that implement Movable Type's XML-RPC API.
+// See http://www.sixapart.com/developers/xmlrpc/movable_type_api for details.
 
 Api.movableType = {};
 
 Api.movableType.getRecentPostTitles = function(id, name, password, limit) {
-   var user = Api.getUser(name, password);
    var site = Api.getSite(id);
+   var user = Api.getUser(name, password);
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = site;
-   res.handlers.membership = Membership.getByName(user.name);
-
+   Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
       throw Error("Permission denied for user " + user.name + 
-            " to access site " + site.name);
+            " to get recent post titles from site " + site.name);
    }
 
    var result = [];
@@ -56,14 +52,10 @@ Api.movableType.getRecentPostTitles = function(id, name, password, limit) {
 }
 
 Api.movableType.getCategoryList = function(id, name, password) {
-   var user = Api.getUser(name, password);
    var site = Api.getSite(id);
+   var user = Api.getUser(name, password);
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = site;
-   res.handlers.membership = Membership.getByName(user.name);
-
+   Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
       throw Error("Permission denied for user " + user.name + 
             " to access site " + site.name);
@@ -81,16 +73,10 @@ Api.movableType.getCategoryList = function(id, name, password) {
 }
 
 Api.movableType.getPostCategories = function(id, name, password) {
+   var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   var story = Story.getById(id);
-   if (!story) {
-      throw Error("Story #" + id + " does not exist on this server");
-   }
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = story.site;
-   res.handlers.membership = Membership.getByName(user.name);
+   Api.constrain(story.site, user);
    if (!story.getPermission("main")) {
       throw Error("Permission denied for user " + name + 
             " to access story #" + id);
@@ -109,16 +95,10 @@ Api.movableType.getPostCategories = function(id, name, password) {
 
 // FIXME: What kind of stupid API is this?
 Api.movableType.publishPost = function(id, name, password) {
+   var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   var story = Story.getById(id);
-   if (!story) {
-      throw Error("Story #" + id + " does not exist on this server");
-   }
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = story.site;
-   res.handlers.membership = Membership.getByName(user.name);
+   Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
       throw Error("Permission denied for user " + name + 
             " to edit story #" + id);
@@ -133,16 +113,10 @@ Api.movableType.setPostCategories = function(id, name, password, categories) {
       return;
    }
 
+   var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   var story = Story.getById(id);
-   if (!story) {
-      throw Error("Story #" + id + " does not exist on this server");
-   }
 
-   // FIXME: This should become obsolete (needs refactoring of 
-   // permission model or modification of URL entrypoint)
-   res.handlers.site = story.site;
-   res.handlers.membership = Membership.getByName(user.name);
+   Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
       throw Error("Permission denied for user " + name + 
             " to edit story #" + id);
