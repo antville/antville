@@ -37,6 +37,6 @@ method of the weblogs.com API: <% api.href callback | link %></p>
 This callback URL invokes the ping method of the 
 <a href="http://www.weblogs.com/api.html">weblogs.com API</a>. The essential
 ECMAScript code can be seen below.
-<pre>
+<pre style="overflow: scroll; width: 450px;">
    <code><% param.code %></code>
 </pre>
