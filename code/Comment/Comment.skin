@@ -12,7 +12,7 @@
 </div>
 
 <% #edit %>
-<% comment.skin Story#restore %>
+<% comment.skin $Story#restore %>
 <% if <% comment.created %> is null then 
    <% parent.skin <% parent.type suffix=#comment %> %>
 %>

@@ -108,6 +108,7 @@ Site.prototype.getPermission = function(action) {
       case "robots.txt":
       case "search.xml":
       case "user.js":
+      case "backup.js":
       return true;
 
       case "search":
@@ -277,6 +278,16 @@ Site.prototype.user_js_action = function() {
    res.digest();
    this.renderSkin("Site#javascript");
    return;  
+}
+
+Site.prototype.backup_js_action = function() {
+   if (req.isPost()) {
+      session.data.backup = {};
+      for (var key in req.postParams) {
+         session.data.backup[key] = req.postParams[key];
+      }
+   }
+   return;
 }
 
 Site.prototype.rss_xml_action = function() {

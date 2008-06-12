@@ -122,6 +122,7 @@ $(function() {
    
    var currentTitle, currentText;
    $(".backup > :input").blur(function() {
+      $("#restore").hide();
       var title = $.trim($("#title").val());
       var text = $.trim($("#text").val());
       if ((title || text) && (currentTitle || currentText) && 
@@ -129,7 +130,7 @@ $(function() {
          $.ajax({
             async: true,
             type: "POST",
-            url: '<% root.href backup.js %>',
+            url: '<% site.href backup.js %>',
             data: {title: encodeURIComponent(title),
                   text: encodeURIComponent(text)},
             dataType: "json"

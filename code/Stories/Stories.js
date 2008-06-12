@@ -73,8 +73,7 @@ Stories.prototype.create_action = function() {
    
    res.data.title = gettext("Add story to {0}", this._parent.title);
    res.data.action = this.href(req.action);
-   res.data.body = story.renderSkinAsString("$Story#restore");
-   res.data.body += story.renderSkinAsString("Story#edit");
+   res.data.body = story.renderSkinAsString("Story#edit");
    this._parent.renderSkin("Site#page");
    return;
 }

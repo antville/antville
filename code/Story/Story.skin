@@ -11,6 +11,7 @@
 <p><% story.referrers %></p>
 
 <% #edit %>
+<% story.skin $Story#restore %>
 <form method="post" action="<% response.action %>">
 <p>
    <div class="small"><% gettext Title suffix=: %></div>

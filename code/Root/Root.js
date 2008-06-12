@@ -166,7 +166,6 @@ Root.prototype.getPermission = function(action) {
       return User.require(User.PRIVILEGED);
    }
    switch (action) {
-      case "backup.js":
       case "debug":
       case "health":
       return true;
@@ -267,16 +266,6 @@ Root.prototype.sites_action = function() {
    res.data.title = gettext("Sites of {0}", root.title);
    res.data.body = this.renderSkinAsString("Root#sites");
    root.renderSkin("Site#page");
-   return;
-}
-
-Root.prototype.backup_js_action = function() {
-   if (req.isPost()) {
-      session.data.backup = {};
-      for (var key in req.postParams) {
-         session.data.backup[key] = req.postParams[key];
-      }
-   }
    return;
 }
 

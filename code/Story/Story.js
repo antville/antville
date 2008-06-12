@@ -123,8 +123,7 @@ Story.prototype.edit_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext('Edit story: {0}', this.getTitle(3));
-   res.data.body = this.renderSkinAsString("$Story#restore");
-   res.data.body += this.renderSkinAsString("Story#edit");
+   res.data.body = this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
    return;
 }
