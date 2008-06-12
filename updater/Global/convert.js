@@ -201,9 +201,8 @@ convert.sites = function() {
       metadata.closed = this.SITE_LASTOFFLINE;
       metadata.notifiedOfBlocking = this.SITE_LASTBLOCKWARN;
       metadata.notifiedOfDeletion = this.SITE_LASTDELWARN;
-      metadata.webHookMode = this.SITE_ENABLEPING ? 
+      metadata.callbackMode = this.SITE_ENABLEPING ? 
             "enabled" : "disabled";
-      metadata.webHookCalled = this.SITE_LASTPING;
       // FIXME: metadata.webHookUrl = "";
       metadata.locale = metadata.language;
       if (metadata.country) {

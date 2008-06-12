@@ -246,9 +246,9 @@ Site.prototype.showarchive_macro = function(param) {
 
 Site.prototype.enableping_macro = function(param) {
    if (param.as === "editor") {
-      this.checkbox_macro(param, "webHookMode");
+      this.checkbox_macro(param, "callbackMode");
    } else {
-      res.write(this.webHookMode === Site.ENABLED ? 
+      res.write(this.callbackMode === Site.ENABLED ? 
             gettext("yes") : gettext("no"));
    }
    return;
