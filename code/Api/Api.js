@@ -113,6 +113,6 @@ Api.prototype.main_action_xmlrpc = function(methodName) {
          return handler[method].apply(null, args);
       }
    }
-   throw Error("Method " + this + "." + method + "() is not implemented");
+   throw Error("Method " + methodName + "() is not implemented");
    return;
 }
