@@ -1,0 +1,10 @@
+<% #main %>
+<p class="storyTitle"><% response.title %></p>
+<ul>
+   <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger API 1.0</a><br />
+   URL endpoint: <% api.url blogger %></li>
+   <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a><br />
+   URL endpoint: <% api.url metaWeblog %></li>
+   <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a><br />
+   URL endpoint: <% api.url movableType %></li>
+</ul>

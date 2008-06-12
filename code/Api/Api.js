@@ -72,14 +72,16 @@ Api.getStory = function(id) {
 }
 
 Api.prototype.main_action = function() {
-   res.write("Describe API options here.");
+   res.data.title = "Supported Application Programming Interfaces";
+   res.data.body = this.renderSkinAsString("Api#main");
+   res.handlers.site.renderSkin("Site#page");
 }
 
 Api.prototype.blogger_action_xmlrpc = function(method) {
    return Api.dispatch.apply("blogger", arguments);
 }
 
-Api.prototype.mt_action_xmlrpc = function(method) {
+Api.prototype.movableType_action_xmlrpc = function(method) {
    return Api.dispatch.apply("movableType", arguments);
 }
 
