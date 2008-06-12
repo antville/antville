@@ -1,13 +1,12 @@
 <% #main %>
 <p class="storyTitle"><% response.title %></p>
+Antville supports the following application programming interfaces:
 <ul>
-   <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger API 1.0</a><br />
-   URL endpoint: <% api.url blogger %></li>
-   <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a><br />
-   URL endpoint: <% api.url metaWeblog %></li>
-   <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a><br />
-   URL endpoint: <% api.url movableType %></li>
+   <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger API 1.0</a></li>
+   <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a></li>
+   <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a></li>
 </ul>
+The URL endpoint for each of these APIs is located at <% api.url | link %>.
 
 <p><strong>Callbacks</strong></p>
 <p>Each Antville site provides an option in the preferences form to define a 
@@ -30,7 +29,7 @@ parameters:
 </p>
 
 <p>Antville itself provides a default callback URL invoking the basic ping 
-method of the weblogs.com API: <% api.href callback | link %></p>
+method of the weblogs.com API: <% api.href callback | link %>.</p>
 
 <% #callback %>
 <p class="storyTitle"><% response.title %></p>
