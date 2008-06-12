@@ -43,7 +43,7 @@ Api.metaWeblog._getStruct = function(story) {
       mt_allow_comments: story.COMMENT_MODE === Story.OPEN ? 1 : 0,
       mt_allow_pings: 0,
       mt_convert_breaks: null,
-      mt_keywords: null,
+      mt_keywords: null
    }
 }
 

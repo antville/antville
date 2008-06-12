@@ -76,9 +76,14 @@ Api.prototype.getPermission = function(){
 }
 
 Api.prototype.main_action = function() {
-   res.data.title = "Supported Application Programming Interfaces";
-   res.data.body = this.renderSkinAsString("$Api#main");
-   res.handlers.site.renderSkin("Site#page");
+   if (req.isPost && req.getHeader("Content-type").startsWith("text/xml")) {
+      Api.prototype.main_action_xmlrpc.apply(this, arguments);
+   } else {
+      res.data.title = "Supported Application Programming Interfaces";
+      res.data.body = this.renderSkinAsString("$Api#main");
+      res.handlers.site.renderSkin("Site#page");
+   }
+   return;
 }
 
 Api.prototype.callback_action = function() {
