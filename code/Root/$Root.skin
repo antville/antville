@@ -94,6 +94,14 @@ was not found on this server!</p>
    <td>Total memory</td>
    <td><% param.totalMemory suffix=" MB" %></td>
 </tr>
+<tr>
+   <td>Number of queued mails</td>
+   <td><% param.mails %></td>
+</tr>
+<tr>
+   <td>Number of queued callbacks</td>
+   <td><% param.callbacks %></td>
+</tr>
 </table>
 
 

@@ -50,20 +50,6 @@ Root.restore = function(ref) {
    return ref; 
 }
 
-Root.updateHealth = function() {
-   var health = Root.health || {};
-   if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
-      health.modified = new Date;
-      health.requestsPerUnit = app.requestCount - 
-            (health.currentRequestCount || 0);
-      health.currentRequestCount = app.requestCount;
-      health.errorsPerUnit = app.errorCount - (health.currentErrorCount || 0);
-      health.currentErrorCount = app.errorCount;
-      Root.health = health;
-   }
-   return;
-}
-
 Root.commitRequests = function() {
    var requests = app.data.requests;
    app.data.requests = {};
@@ -123,6 +109,52 @@ Root.purgeReferrers = function() {
    var result = sql.execute("delete from log where action = 'main' and " +
          "created < date_add(now(), interval -1 day)");
    return result;
+}
+
+Root.invokeCallbacks = function() {
+   var http = helma.Http();
+   http.setTimeout(200);
+   http.setReadTimeout(300);
+   http.setMethod("POST");
+
+   var ref, site, item;
+   while (ref = app.data.callbacks.pop()) {
+      site = Site.getById(ref.site);
+      item = ref.handler && ref.handler.getById(ref.id);
+      if (!site || !item) {
+         continue;
+      }
+      app.log("Invoking callback URL " + site.callbackUrl + " for " + item);
+      try {
+         http.setContent({
+            type: item.constructor.name,
+            id: item.name || item._id,
+            url: item.href(),
+            date: item.modified.valueOf(),
+            user: item.modifier.name,
+            siteTitle: site.title || site.name,
+            siteUrl: site.href()
+         });
+         http.getUrl(site.callbackUrl);
+      } catch (ex) {
+         app.debug("Invoking callback URL " + site.callbackUrl + " failed: " + ex);
+      }
+   }
+   return;
+}
+
+Root.updateHealth = function() {
+   var health = Root.health || {};
+   if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
+      health.modified = new Date;
+      health.requestsPerUnit = app.requestCount - 
+            (health.currentRequestCount || 0);
+      health.currentRequestCount = app.requestCount;
+      health.errorsPerUnit = app.errorCount - (health.currentErrorCount || 0);
+      health.currentErrorCount = app.errorCount;
+      Root.health = health;
+   }
+   return;
 }
 
 Root.prototype.processHref = function(href) {
@@ -248,28 +280,6 @@ Root.prototype.backup_js_action = function() {
    return;
 }
 
-Root.prototype.default_hook_action = function() {
-   var ping = function(data) {
-      if (data.type !== "Site") {
-         return;
-      }
-      var remote = new Remote("http://rpc.weblogs.com/RPC2");
-      var call = remote.weblogUpdates.ping(data.id, data.url);
-      if (call.error || call.result.flerror) {
-         app.debug("Error on hitching web hook " + data.url);
-         app.debug(call.error || call.result.message);
-      }
-      return;
-   };
-
-   if (req.isGet()) {
-      this.renderSkin("Root#code", {name: req.action, code: ping.toString()});
-   } else if (req.isPost()) {
-      app.invokeAsync(this, ping, [req.postParams], 1000);
-   }
-   return;
-}
-
 Root.prototype.updates_xml_action = function() {
    var now = new Date;
    var feed = new rome.SyndFeedImpl();   
@@ -328,6 +338,9 @@ Root.prototype.health_action = function() {
       param.requestsPerUnit = formatNumber(Root.health.requestsPerUnit);
       param.errorsPerUnit = formatNumber(Root.health.errorsPerUnit);
    }
+   
+   param.mails = app.data.mails.length;
+   param.callbacks = app.data.callbacks.toSource();
 
    res.data.title = "Health of " + root.getTitle();
    res.data.body = this.renderSkinAsString("$Root#health", param);

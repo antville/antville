@@ -203,9 +203,9 @@ information." %>
 </tr>
 <tr>
 <td class="small" valign="top"><% gettext "Web hook" suffix=: %></td>
-<td><% site.input webHookUrl %><br />
-<% site.checkbox webHookMode %> 
-<label for="webHookMode"><% gettext enabled %><label></td>
+<td><% site.input callbackUrl %><br />
+<% site.checkbox callbackMode %> 
+<label for="callbackMode"><% gettext enabled %><label></td>
 </tr>
 <tr>
 <td colspan="2"><div class="listSeparator">&nbsp;</div>

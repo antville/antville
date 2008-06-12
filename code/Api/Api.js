@@ -81,6 +81,34 @@ Api.prototype.main_action = function() {
    res.handlers.site.renderSkin("Site#page");
 }
 
+Api.prototype.callback_action = function() {
+   var ping = function(data) {
+      if (data.type !== "Story" && data.type !== "Comment") {
+         return;
+      }
+      var remote = new Remote("http://rpc.weblogs.com/RPC2");
+      var call = remote.weblogUpdates.ping(data.site, data.origin);
+      if (call.error || call.result.flerror) {
+         app.debug("Error invoking weblogs.com ping() method for " + 
+               data.site + ": " + call.error || call.result.message);
+      } else {
+         app.debug(call.result);
+      }
+      return;
+   };
+
+   if (req.isGet()) {
+      res.data.title = "Default callback";
+      res.data.body = this.renderSkinAsString("Api#callback", 
+            {name: req.action, code: ping.toString()});
+      res.handlers.site.renderSkin("Site#page");
+   } else if (req.isPost()) {
+      app.debug("Invoked default callback with POST params: " + req.postParams);
+      app.invokeAsync(this, ping, [req.postParams], 1000);
+   }
+   return;
+}
+
 Api.prototype.blogger_action_xmlrpc = function(method) {
    return Api.dispatch.apply("blogger", arguments);
 }

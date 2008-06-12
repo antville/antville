@@ -105,6 +105,7 @@ Comment.prototype.update = function(data) {
    this.title = data.title;
    this.text = data.text;
    this.setMetadata(data);
+
    if (this.story.commentMode === Story.MODERATED) {
       this.mode = Comment.PENDING;
    } else if (delta > 50) {
@@ -112,6 +113,10 @@ Comment.prototype.update = function(data) {
       if (this.story.status !== Story.CLOSED) { 
          this.site.modified = this.modified;
       }
+      // We need persistence for adding the callback
+      this.isTransient() && this.persist();
+      res.handlers.site.queueCallback(this);
+      // FIXME: Where did this.notify(req.action) go?
    }
    this.clearCache();
    this.modifier = session.user;

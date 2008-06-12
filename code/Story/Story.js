@@ -156,15 +156,17 @@ Story.prototype.update = function(data) {
 
    // FIXME: To be removed resp. moved to Stories.create_action and 
    // Story.edit_action if work-around for Helma bug #607 fails
+   // We need persistence for setting the tags
    this.isTransient() && this.persist();
    this.setTags(data.tags || data.tag_array);
 
    if (delta > 50) {
-      site.hitchWebHook();
       this.modified = new Date;
       if (this.status !== Story.CLOSED) {
          site.modified = this.modified;
       }
+      site.queueCallback(this);
+      // FIXME: Where did this.notify(req.action) go?
    }
    
    this.clearCache();

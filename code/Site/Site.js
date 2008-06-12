@@ -37,9 +37,8 @@ this.handleMetadata("shortDateFormat");
 this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
 this.handleMetadata("title"),
-this.handleMetadata("webHookMode");
-this.handleMetadata("webHookCalled");
-this.handleMetadata("webHookUrl");
+this.handleMetadata("callbackMode");
+this.handleMetadata("callbackUrl");
 this.handleMetadata("spamfilter");
 
 Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
@@ -49,7 +48,7 @@ Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
 Site.getArchiveModes = defineConstants(Site, "closed", "public");
 Site.getNotificationModes = defineConstants(Site, "Nobody", 
       "Owner", "Manager", "Contributor", "Subscriber" );
-Site.getWebHookModes = defineConstants(Site, "disabled", "enabled");
+Site.getCallbackModes = defineConstants(Site, "disabled", "enabled");
 
 Site.remove = function(site) {
    HopObject.remove(site.members);
@@ -85,7 +84,7 @@ Site.prototype.constructor = function(name, title) {
       status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
       mode: Site.CLOSED,
       tagline: String.EMPTY,
-      webHookEnabled: false,
+      callbackEnabled: false,
       commentMode: Site.OPEN,
       archiveMode: Site.PUBLIC,
       notificationMode: Site.DISABLED,
@@ -205,8 +204,8 @@ Site.prototype.getFormOptions = function(name) {
       return getDateFormats("short");
       case "timeZone":
       return getTimeZones();
-      case "webHookMode":
-      return Site.getWebHookModes();
+      case "callbackMode":
+      return Site.getCallbackModes();
       default:
       return HopObject.prototype.getFormOptions.apply(this, arguments);
    }
@@ -232,8 +231,8 @@ Site.prototype.update = function(data) {
       title: stripTags(data.title) || this.name,
       tagline: data.tagline,
       mode: data.mode || Site.PRIVATE,
-      webHookUrl: data.webHookUrl,
-      webHookMode: data.webHookMode || Site.DISABLED,
+      callbackUrl: data.callbackUrl,
+      callbackMode: data.callbackMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
       pageSize: parseInt(data.pageSize, 10) || this.pageSize || 3,
       commentMode: data.commentMode || Site.DISABLED,
@@ -594,37 +593,6 @@ Site.prototype.getTimeZone = function() {
    return timeZone;
 }
 
-Site.prototype.hitchWebHook = function(ref) {
-   ref || (ref = this);
-   var now = new Date;
-   if (this.webHookMode === Site.ENABLED && this.webHookUrl) {
-      if (this.webHookCalled && 
-            now - this.webHookCalled < Date.ONEMINUTE) {
-         return;
-      }
-      app.log("Hitching web hook " + this.webHookUrl + " for " + ref);
-      var http = helma.Http();
-      try {
-         http.setTimeout(100);
-         http.setReadTimeout(100);
-         http.setMethod("POST");
-         http.setContent({
-            url: ref.href(),
-            type: ref.constructor.name,
-            id: ref.name || ref._id,
-            user: ref.modifier.name,
-            date: ref.modified,
-            content: ref.toString()
-         });
-         http.getUrl(this.webHookUrl);
-      } catch (ex) {
-         app.debug("Hitching web hook " + this.webHookUrl + " failed: " + ex);
-      }
-      this.webHookCalled = now;
-   }
-   return;
-}
-
 Site.prototype.processHref = function(href) {
    var vhost = app.getProperty("vhost." + this.name, 
          app.properties.defaultHost + "/" + this.name);
@@ -674,6 +642,17 @@ Site.prototype.getStaticUrl = function(tail) {
    res.write("/");
    tail && res.write(tail);
    return encodeURI(res.pop());
+}
+
+Site.prototype.queueCallback = function(ref) {
+    if (this.callbackMode === Site.ENABLED && this.callbackUrl) {
+      app.data.callbacks.push({
+         site: this._id,
+         handler: ref.constructor,
+         id: ref._id
+      });
+   }
+   return;
 }
 
 Site.prototype.getAdminHeader = function(name) {

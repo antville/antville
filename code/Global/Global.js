@@ -47,6 +47,7 @@ app.addRepository("modules/jala/code/Utilities.js");
 app.data.mails || (app.data.mails = []);
 app.data.requests || (app.data.requests = {});
 app.data.referrers || (app.data.referrers = []);
+app.data.callbacks || (app.data.callbacks = []);
 
 /**
  * Extend the Mail prototype with a method that simply adds a mail object 
@@ -133,9 +134,10 @@ function disableMacro(ctor, name) {
 }
 
 function scheduler() {
-   Root.updateHealth();
    Root.commitReferrers();
    Root.commitRequests();
+   Root.invokeCallbacks();
+   Root.updateHealth();
    helma.Mail.flushQueue();
    return 5000;
 }
