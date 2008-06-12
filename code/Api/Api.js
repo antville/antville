@@ -29,16 +29,6 @@ Api.constrain = function(site, user) {
 }
 
 Api.dispatch = function() {
-   var handler = Api[this];
-   var method = arguments[0];
-   if (method && !method.startsWith("_")) {
-      if (handler && handler[method]) {
-         var args = Array.prototype.splice.call(arguments, 1);
-         return handler[method].apply(null, args);
-      }
-   }
-   throw Error("Method " + this + "." + method + "() is not implemented");
-   return;
 }
 
 Api.getUser = function(name, password) {
@@ -110,23 +100,19 @@ Api.prototype.callback_action = function() {
    return;
 }
 
-Api.prototype.main_action_xmlrpc = function(method) {
-   if (!method) {
+Api.prototype.main_action_xmlrpc = function(methodName) {
+   if (!methodName) {
       return false;
+   } 
+   var parts = methodName.split(".");
+   var method = parts[1];
+   if (method && !method.startsWith("_")) {
+      var handler = Api[parts[0]];
+      if (handler && handler[method]) {
+         var args = Array.prototype.splice.call(arguments, 1);
+         return handler[method].apply(null, args);
+      }
    }
-   var parts = method.split(".");
-   arguments[0] = parts[1];
-   return Api.dispatch.apply(parts[0], arguments);
-}
-
-Api.prototype.blogger_action_xmlrpc = function() {
-   return Api.dispatch.apply("blogger", arguments);
-}
-
-Api.prototype.movableType_action_xmlrpc = function() {
-   return Api.dispatch.apply("movableType", arguments);
-}
-
-Api.prototype.metaWeblog_action_xmlrpc = function() {
-   return Api.dispatch.apply("metaWeblog", arguments);
+   throw Error("Method " + this + "." + method + "() is not implemented");
+   return;
 }

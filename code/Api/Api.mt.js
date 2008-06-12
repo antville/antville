@@ -25,9 +25,9 @@
 // Methods that implement Movable Type's XML-RPC API.
 // See http://www.sixapart.com/developers/xmlrpc/movable_type_api for details.
 
-Api.movableType = {};
+Api.mt = {};
 
-Api.movableType.getRecentPostTitles = function(id, name, password, limit) {
+Api.mt.getRecentPostTitles = function(id, name, password, limit) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
 
@@ -51,7 +51,7 @@ Api.movableType.getRecentPostTitles = function(id, name, password, limit) {
    return result;
 }
 
-Api.movableType.getCategoryList = function(id, name, password) {
+Api.mt.getCategoryList = function(id, name, password) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
 
@@ -72,7 +72,7 @@ Api.movableType.getCategoryList = function(id, name, password) {
    return result;
 }
 
-Api.movableType.getPostCategories = function(id, name, password) {
+Api.mt.getPostCategories = function(id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
 
@@ -94,7 +94,7 @@ Api.movableType.getPostCategories = function(id, name, password) {
 }
 
 // FIXME: What kind of stupid API is this?
-Api.movableType.publishPost = function(id, name, password) {
+Api.mt.publishPost = function(id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
 
@@ -108,7 +108,7 @@ Api.movableType.publishPost = function(id, name, password) {
    return true;   
 }
 
-Api.movableType.setPostCategories = function(id, name, password, categories) {
+Api.mt.setPostCategories = function(id, name, password, categories) {
    if (!categories || !categories.length) {
       return;
    }
@@ -126,17 +126,17 @@ Api.movableType.setPostCategories = function(id, name, password, categories) {
    return true;
 }
 
-Api.movableType.supportedTextFilters = function() {
+Api.mt.supportedTextFilters = function() {
    return [];
 }
 
-Api.movableType.getTrackbackPings = function() {
+Api.mt.getTrackbackPings = function() {
    return [];
 }
 
-Api.movableType.supportedMethods = function() {
+Api.mt.supportedMethods = function() {
    var result = [];
-   for (var method in Api.movableType) {
+   for (var method in Api.mt) {
       result.push(method);
    }
    return result.sort();
