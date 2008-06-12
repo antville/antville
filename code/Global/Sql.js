@@ -113,5 +113,9 @@ var Sql = function() {
       return;
    }
    
+   this.toString = function() {
+      return query;
+   }
+   
    return this;
 }
