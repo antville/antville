@@ -77,7 +77,7 @@ Api.prototype.getPermission = function(){
 
 Api.prototype.main_action = function() {
    res.data.title = "Supported Application Programming Interfaces";
-   res.data.body = this.renderSkinAsString("Api#main");
+   res.data.body = this.renderSkinAsString("$Api#main");
    res.handlers.site.renderSkin("Site#page");
 }
 
@@ -99,7 +99,7 @@ Api.prototype.callback_action = function() {
 
    if (req.isGet()) {
       res.data.title = "Default callback";
-      res.data.body = this.renderSkinAsString("Api#callback", 
+      res.data.body = this.renderSkinAsString("$Api#callback", 
             {name: req.action, code: ping.toString()});
       res.handlers.site.renderSkin("Site#page");
    } else if (req.isPost()) {
