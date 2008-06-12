@@ -8,7 +8,7 @@
 </p>
 <a name="comments" id="comments"></a>
 <p><% story.comments %></p>
-<p><% story.backlinks %></p>
+<p><% story.referrers %></p>
 
 <% #edit %>
 <form method="post" action="<% response.action %>">
@@ -74,21 +74,21 @@
    <% story.link edit <% gettext Edit %> prefix=" ... " %>
 </span><br />
 
-<% #history %>
-<div class="historyItem">
-   <% story.summary %>
-   <div class="small">
-      by <% story.creator %> (<% story.modified short %>)
-   </div>
-</div>
-
-<% #result %>
-<br /><% story.summary %>
-<div class="small">by <% story.creator %> (<% story.modified short %>)</div>
-
 <% #comment %>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 
 <% #rss %>
-<% story.text | story.format %>
+<% this.text | this.format %>
+
+<% #history %>
+<div class="historyItem">
+   <% this.summary %>
+   <div class="small">
+      by <% this.creator %> (<% this.modified short %>)
+   </div>
+</div>
+
+<% #result %>
+<br /><% this.summary %>
+<div class="small">by <% this.creator %> (<% this.modified short %>)</div>
