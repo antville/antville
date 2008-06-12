@@ -336,8 +336,9 @@ Root.prototype.health_action = function() {
 
 Root.prototype.getMacroHandler = function(name) {
    switch (name) {
-      case "sites":
       case "admin":
+      case "api":
+      case "sites":
       return this[name];
    }
    return Site.prototype.getMacroHandler.apply(this, arguments);

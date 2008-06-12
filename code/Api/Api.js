@@ -71,6 +71,10 @@ Api.getStory = function(id) {
    return story;
 }
 
+Api.prototype.getPermission = function(){
+   return true;
+}
+
 Api.prototype.main_action = function() {
    res.data.title = "Supported Application Programming Interfaces";
    res.data.body = this.renderSkinAsString("Api#main");
