@@ -31,8 +31,8 @@ Api.constrain = function(site, user) {
 Api.dispatch = function() {
    var handler = Api[this];
    var method = arguments[0];
-   if (!method.startsWith("_")) {
-      if (handler && method && handler[method]) {
+   if (method && !method.startsWith("_")) {
+      if (handler && handler[method]) {
          var args = Array.prototype.splice.call(arguments, 1);
          return handler[method].apply(null, args);
       }
@@ -109,11 +109,20 @@ Api.prototype.callback_action = function() {
    return;
 }
 
-Api.prototype.blogger_action_xmlrpc = function(method) {
+Api.prototype.main_action_xmlrpc = function(method) {
+   if (!method) {
+      return false;
+   }
+   var parts = method.split(".");
+   arguments[0] = parts[1];
+   return Api.dispatch.apply(parts[0], arguments);
+}
+
+Api.prototype.blogger_action_xmlrpc = function() {
    return Api.dispatch.apply("blogger", arguments);
 }
 
-Api.prototype.movableType_action_xmlrpc = function(method) {
+Api.prototype.movableType_action_xmlrpc = function() {
    return Api.dispatch.apply("movableType", arguments);
 }
 
