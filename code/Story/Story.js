@@ -105,7 +105,7 @@ Story.prototype.getTitle = function(limit) {
          res.meta[this + ":text:" + limit] = parts.tail;
       }
    }
-   return res.meta[key] || this; 
+   return String(res.meta[key]) || "..."; 
 }
 
 Story.prototype.edit_action = function() {
