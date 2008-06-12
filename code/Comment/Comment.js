@@ -115,7 +115,7 @@ Comment.prototype.update = function(data) {
       }
       // We need persistence for adding the callback
       this.isTransient() && this.persist();
-      res.handlers.site.queueCallback(this);
+      res.handlers.site.callback(this);
       // FIXME: Where did this.notify(req.action) go?
    }
    this.clearCache();

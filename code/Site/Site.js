@@ -644,7 +644,7 @@ Site.prototype.getStaticUrl = function(tail) {
    return encodeURI(res.pop());
 }
 
-Site.prototype.queueCallback = function(ref) {
+Site.prototype.callback = function(ref) {
     if (this.callbackMode === Site.ENABLED && this.callbackUrl) {
       app.data.callbacks.push({
          site: this._id,

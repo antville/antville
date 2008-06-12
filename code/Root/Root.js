@@ -132,8 +132,8 @@ Root.invokeCallbacks = function() {
             url: item.href(),
             date: item.modified.valueOf(),
             user: item.modifier.name,
-            siteTitle: site.title || site.name,
-            siteUrl: site.href()
+            site: site.title || site.name,
+            origin: site.href()
          });
          http.getUrl(site.callbackUrl);
       } catch (ex) {
@@ -340,7 +340,12 @@ Root.prototype.health_action = function() {
    }
    
    param.mails = app.data.mails.length;
-   param.callbacks = app.data.callbacks.toSource();
+   param.referrers = app.data.referrers.length;
+   param.requests = 0;
+   for (var i in app.data.requests) {
+      param.requests += 1;
+   }
+   param.callbacks = app.data.callbacks.length;
 
    res.data.title = "Health of " + root.getTitle();
    res.data.body = this.renderSkinAsString("$Root#health", param);

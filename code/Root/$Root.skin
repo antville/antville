@@ -99,6 +99,14 @@ was not found on this server!</p>
    <td><% param.mails %></td>
 </tr>
 <tr>
+   <td>Number of queued referrers</td>
+   <td><% param.referrers %></td>
+</tr>
+<tr>
+   <td>Number of queued requests</td>
+   <td><% param.requests %></td>
+</tr>
+<tr>
    <td>Number of queued callbacks</td>
    <td><% param.callbacks %></td>
 </tr>

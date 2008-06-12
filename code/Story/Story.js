@@ -165,7 +165,7 @@ Story.prototype.update = function(data) {
       if (this.status !== Story.CLOSED) {
          site.modified = this.modified;
       }
-      site.queueCallback(this);
+      site.callback(this);
       // FIXME: Where did this.notify(req.action) go?
    }
    
