@@ -386,7 +386,8 @@ Story.prototype.tags_macro = function() {
 }
 
 Story.prototype.referrers_macro = function(param, limit) {
-   if (!User.require(User.PRIVILEGED)) {
+   if (!User.require(User.PRIVILEGED) && 
+         !Membership.require(Membership.OWNER)) {
       return;
    }
 
