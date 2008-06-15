@@ -435,6 +435,11 @@ function list_macro(param, id, limit) {
    }
    param.skin && (skin = param.skin);
    for each (var item in collection) {
+      // FIXME: Work-around for "story" handlers in comment skins
+      // (Obsolete as soon as "story" handlers are replaced with "this")
+      if (item.constructor === Comment) {
+         res.handlers.story = item;
+      }
       item.renderSkin(skin);
    }
    return;
