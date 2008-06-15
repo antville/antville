@@ -212,7 +212,6 @@ Admin.prototype.filterLog = function(data) {
    }
    sql += "order by created "; 
    (data.dir == 1) || (sql += "desc");
-   res.debug(sql)
    this.entries.subnodeRelation = sql;
    return;
 }
@@ -252,7 +251,6 @@ Admin.prototype.filterSites = function(data) {
       sql += "order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
-   res.debug(sql)
    this.sites.subnodeRelation = sql;
    return;
 }
@@ -368,7 +366,6 @@ Admin.prototype.link_macro = function(param, action, id, text) {
 }
 
 Admin.prototype.count_macro = function(param, object, name) {
-   res.debug(object)
    if (!object || !object.size) {
       return;
    }
