@@ -44,7 +44,9 @@ app.addRepository("modules/jala/code/I18n.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
-app.data.log || (app.data.log = []);
+// FIXME: Be careful with property names of app.data;
+// they inherit all properties from HopObject!
+app.data.entries || (app.data.entries = []);
 app.data.mails || (app.data.mails = []);
 app.data.requests || (app.data.requests = {});
 app.data.callbacks || (app.data.callbacks = []);
@@ -134,7 +136,7 @@ function disableMacro(ctor, name) {
 }
 
 function scheduler() {
-   Root.commitLog();
+   Root.commitEntries();
    Root.commitRequests();
    Root.invokeCallbacks();
    Root.updateHealth();

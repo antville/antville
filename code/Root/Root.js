@@ -65,13 +65,13 @@ Root.commitRequests = function() {
    return;
 }
 
-Root.commitLog = function() {
-   var referrers = app.data.log;   
+Root.commitEntries = function() {
+   var referrers = app.data.entries;   
    if (referrers.length < 1) {
       return;
    }
    
-   app.data.log = [];
+   app.data.entries = [];
    var history = [];
 
    for each (var item in referrers) {
@@ -327,7 +327,7 @@ Root.prototype.health_action = function() {
       param.errorsPerUnit = formatNumber(Root.health.errorsPerUnit);
    }
    
-   param.log = app.data.log.length;
+   param.entries = app.data.entries.length;
    param.mails = app.data.mails.length;
    param.requests = 0;
    for (var i in app.data.requests) {
