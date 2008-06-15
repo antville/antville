@@ -1,9 +1,9 @@
 <% #welcome %>
 <p><% gettext "{0} is currently {1}." <% site.title %> <% site.mode %> %>
 <% if <% site.mode %> is closed then 
-   <% gettext "This means that only you and {0} of this site have access to it. 
-   You can safely start to customize it or to fill it with all the content you 
-   have in mind." <% site.members.link subscribers %> %> 
+   <% gettext "This means that only you and other {0} of this site have access 
+   to it. You can safely start to customize it or to fill it with all the 
+   content you have in mind." <% site.members.link owners %> %> 
 else
    <% gettext "Thus, it’s publicly accessible for every visitor." %>
 %></p>

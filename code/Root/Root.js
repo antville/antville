@@ -66,15 +66,15 @@ Root.commitRequests = function() {
 }
 
 Root.commitEntries = function() {
-   var referrers = app.data.entries;   
-   if (referrers.length < 1) {
+   var entries = app.data.entries;   
+   if (entries.length < 1) {
       return;
    }
    
    app.data.entries = [];
    var history = [];
 
-   for each (var item in referrers) {
+   for each (var item in entries) {
       var referrer = helma.Http.evalUrl(item.referrer);
       if (!referrer) {
          continue;
@@ -241,7 +241,7 @@ Root.prototype.create_action = function() {
          site.layout = new Layout(site);
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
-         root.admin.log.add(site, "added");
+         root.admin.log(site, "Added site");
          res.message = gettext("Successfully created your site.");   
          res.redirect(site.href());
       } catch (ex) {

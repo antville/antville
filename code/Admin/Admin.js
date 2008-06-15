@@ -57,16 +57,16 @@ Admin.prototype.onUnhandledMacro = function(name) {
 }
 
 Admin.prototype.main_action = function() {
-   return res.redirect(this.href("status"));
+   return res.redirect(this.href("log"));
 }
 
 Admin.prototype.setup_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
-         logAction(root, "setup");
+         this.log(root, "setup");
          res.message = gettext("Successfully updated the setup.");
-         res.redirect(root.href());
+         res.redirect(this.href(req.action));
       } catch (ex) {
          res.message = ex;
          app.log(ex);
@@ -75,7 +75,7 @@ Admin.prototype.setup_action = function() {
 
    res.data.title = gettext("Setup of {0}", root.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("Admin#setup");
+   res.data.body = this.renderSkinAsString("$Admin#setup");
    root.renderSkin("Site#page");
    return;
 }
@@ -96,6 +96,7 @@ Admin.prototype.update = function(data) {
       phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
       phaseOutGracePeriod: data.phaseOutGracePeriod
    });
+   this.log(root, "Updated setup");
    
    // FIXME:
    //for (var i in app.modules) {
@@ -104,42 +105,19 @@ Admin.prototype.update = function(data) {
    return;
 }
 
-Admin.prototype.status_action = function() {
-   var runtime = java.lang.Runtime.getRuntime();
-   var system = {
-      upSince: app.upSince,
-      activeThreads: app.activeThreads,
-      maxThreads: app.maxThreads,
-      freeThreads: app.freeThreads,
-      requestCount: app.requestCount,
-      errorCount: app.errorCount,
-      xmlRpcCount: app.xmlrpcCount,
-      cacheUsage: app.cacheusage,
-      sessionCount: app.countSessions(),
-      totalMemory: Math.round(runtime.totalMemory() / 1024),
-      freeMemory: Math.round(runtime.freeMemory() / 1024)     
-   };
-   system.usedMemory = system.totalMemory - system.freeMemory;
-   res.handlers.system = system;
-   res.data.title = gettext("System status of {0}", root.title);
-   res.data.body = this.renderSkinAsString("Admin#status");
-   root.renderSkin("Site#page");
-   return;
-}
-
 Admin.prototype.log_action = function() {
    if (req.postParams.search || req.postParams.filter) {
       session.data.admin.filterLog(req.postParams);
    }
-   res.data.list = renderList(session.data.admin.log, 
+   res.data.list = renderList(session.data.admin.entries, 
          this.renderItem, 10, req.queryParams.page);
-   res.data.pager = renderPager(session.data.admin.log, 
+   res.data.pager = renderPager(session.data.admin.entries, 
          this.href(req.action), 10, req.queryParams.page);
 
-   res.data.title = gettext("Log data of {0}", root.title);
+   res.data.title = gettext("Administration log of {0}", root.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("Admin#log");
-   res.data.body += this.renderSkinAsString("Admin#main");
+   res.data.body = this.renderSkinAsString("$Admin#log");
+   res.data.body += this.renderSkinAsString("$Admin#main");
    root.renderSkin("Site#page");
    return;
 }
@@ -173,8 +151,8 @@ Admin.prototype.sites_action = function() {
 
    res.data.title = gettext("Site administration of {0}", root.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("Admin#sites");
-   res.data.body += this.renderSkinAsString("Admin#main");
+   res.data.body = this.renderSkinAsString("$Admin#sites");
+   res.data.body += this.renderSkinAsString("$Admin#main");
    root.renderSkin("Site#page");
    return;
 }
@@ -196,79 +174,11 @@ Admin.prototype.users_action = function() {
    res.data.pager = renderPager(session.data.admin.users, 
          this.href(req.action), 10, req.data.page);
 
-   res.data.title = gettext("User manager of {0}", root.title);
+   res.data.title = gettext("User administration of {0}", root.title);
    res.data.action = this.href(req.action);
-   res.data.body = this.renderSkinAsString("Admin#users");
-   res.data.body += this.renderSkinAsString("Admin#main");
+   res.data.body = this.renderSkinAsString("$Admin#users");
+   res.data.body += this.renderSkinAsString("$Admin#main");
    root.renderSkin("Site#page");
-   return;
-}
-
-Admin.prototype.link_macro = function(param, action, id, text) {
-   switch (action) {
-      case "edit":
-      if (req.action === "users" && (id === session.user._id)) {
-         return;
-      }
-      case "delete":
-      text = action;
-      action = req.action + "?action=" + action + "&id=" + id;
-      if (req.queryParams.page) {
-         action += "&page=" + req.queryParams.page;
-      }
-      action += "#" + id;
-   }
-   return HopObject.prototype.link_macro.call(this, param, action, text);
-}
-
-Admin.prototype.count_macro = function(param, object, name) {
-   if (!object || !object.size) {
-      return;
-   }
-   switch (name) {
-      case "comments":
-      if (object.constructor === Site) {
-         res.write("FIXME: takes very long... :(");
-         //res.write(object.stories.comments.size());
-      }
-      return;
-   }
-   res.write(object.size());
-   return;
-}
-
-Admin.prototype.skin_macro = function(param, name) {
-   if (this.getPermission("main")) {
-      return HopObject.prototype.skin_macro.apply(this, arguments);
-   }
-   return;
-}
-
-Admin.prototype.items_macro = function(param, object, name) {
-   if (!object || !object.size) {
-      return;
-   }
-   var max = Math.min(object.size(), parseInt(param.limit) || 5);
-   for (var i=0; i<max; i+=1) {
-      html.link({href: object.get(i).href()}, "#" + (object.size()-i) + " ");
-   }
-   return;
-}
-
-Admin.prototype.dropdown_macro = function(param) {
-   if (!param.name || !param.values) {
-      return;
-   }
-   var options = param.values.split(",");
-   var selectedIndex = req.postParams[param.name];
-   html.dropDown({name: param.name}, options, selectedIndex);
-   return;
-}
-
-Admin.prototype.moduleSetup_macro = function(param) {
-   for (var i in app.modules) {
-      this.applyModuleMethod(app.modules[i], "renderSetup", param);
-   }
    return;
 }
 
@@ -303,7 +213,7 @@ Admin.prototype.filterLog = function(data) {
    sql += "order by created "; 
    (data.dir == 1) || (sql += "desc");
    res.debug(sql)
-   this.log.subnodeRelation = sql;
+   this.entries.subnodeRelation = sql;
    return;
 }
 
@@ -342,6 +252,7 @@ Admin.prototype.filterSites = function(data) {
       sql += "order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
+   res.debug(sql)
    this.sites.subnodeRelation = sql;
    return;
 }
@@ -395,7 +306,7 @@ Admin.prototype.updateSite = function(data) {
    if (site.status !== data.status) { 
       var current = site.status;
       site.status = data.status;
-      logAction(site, "status change from " + current + " to " + site.status);
+      this.log(site, "Changed status from " + current + " to " + site.status);
    }
    return;
 }
@@ -411,7 +322,7 @@ Admin.prototype.updateUser = function(data) {
    if (data.status !== user.status) {
       var current = user.status;
       user.status = data.status;
-      logAction(user, "status change from " + current + " to " + data.status);
+      this.log(user, "Changed status from " + current + " to " + data.status);
    }
    return;
 }
@@ -420,13 +331,94 @@ Admin.prototype.renderItem = function(item) {
    res.handlers.item = item;
    var name = item._prototype;
    (name === "Root") && (name = "Site");
-   Admin.prototype.renderSkin("Admin#" + name);
+   Admin.prototype.renderSkin("$Admin#" + name);
    if (item === res.meta.item) {
       Admin.prototype.renderSkin((req.data.action === "delete" ? 
-            "Admin#delete" : "Admin#edit") + name);
+            "$Admin#delete" : "$Admin#edit") + name);
    }
    return;
 }
+
+Admin.prototype.log = function(context, action) {
+   var entry = new LogEntry(context, action);
+   this.entries.add(entry);
+}
+
+Admin.prototype.link_macro = function(param, action, id, text) {
+   switch (action) {
+      case "edit":
+      case "delete":
+      if (req.action === "users" && (id === session.user._id)) {
+         return;
+      }
+      if (req.action === "sites" && (id === root._id)) {
+         return;
+      }
+      text = gettext(action.capitalize());
+      action = req.action + "?action=" + action + "&id=" + id;
+      if (req.queryParams.page) {
+         action += "&page=" + req.queryParams.page;
+      }
+      action += "#" + id;
+      break;
+      default:
+      text = id;
+   }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
+}
+
+Admin.prototype.count_macro = function(param, object, name) {
+   res.debug(object)
+   if (!object || !object.size) {
+      return;
+   }
+   switch (name) {
+      case "comments":
+      if (object.constructor === Site) {
+         res.write("FIXME: takes very long... :(");
+         //res.write(object.stories.comments.size());
+      }
+      return;
+   }
+   res.write(object.size());
+   return;
+}
+
+Admin.prototype.skin_macro = function(param, name) {
+   if (this.getPermission("main")) {
+      return HopObject.prototype.skin_macro.apply(this, arguments);
+   }
+   return;
+}
+
+Admin.prototype.items_macro = function(param, object, name) {
+   if (!object || !object.size) {
+      return;
+   }
+   var max = Math.min(object.size(), parseInt(param.limit) || 5);
+   for (var i=0; i<max; i+=1) {
+      html.link({href: object.get(i).href()}, "#" + (object.size()-i) + " ");
+   }
+   return;
+}
+
+Admin.prototype.dropdown_macro = function(param) {
+   if (!param.name || !param.values) {
+      return;
+   }
+   var options = param.values.split(",");
+   var selectedIndex = req.postParams[param.name];
+   html.dropDown({name: param.name}, options, selectedIndex);
+   return;
+}
+
+Admin.prototype.moduleSetup_macro = function(param) {
+   for (var i in app.modules) {
+      this.applyModuleMethod(app.modules[i], "renderSetup", param);
+   }
+   return;
+}
+
 
 
 

@@ -6,11 +6,10 @@
 <% #navigation %>
 <div class="boxheader"><% gettext Admin %></div>
 <div class="box">
+<% admin.link . Log prefix="... " suffix="<br />" %>
 <% admin.link sites prefix="... " suffix="<br />" %>
 <% admin.link users prefix="... " suffix="<br />" %>
-<% admin.link log prefix="... " suffix="<br />" %>
 <% admin.link setup prefix="... " suffix="<br />" %>
-<% admin.link status prefix="... " suffix="<br />" %>
 </div>
 
 <% #welcome %>
@@ -21,91 +20,30 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
 "system preferences" %> %> %>
 <% gettext "(Of course you can change this setting anytime you want.)" %></p>
 
-<% #status %>
-<table cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2" class="pageTitle" nowrap="nowrap"><% response.title %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext Uptime suffix=: %></td>
-<td nowrap="nowrap"><% system.upSince | age %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Active threads" suffix=: %></td>
-<td nowrap="nowrap"><% system.activeThreads %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Maximum threads" suffix=: %></td>
-<td nowrap="nowrap"><% system.maxThreads %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Free threads" suffix=: %></td>
-<td nowrap="nowrap"><% system.freeThreads %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext Sessions suffix=: %></td>
-<td nowrap="nowrap"><% system.sessionCount %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "HTTP requests" suffix=: %></td>
-<td nowrap="nowrap"><% system.requestCount %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "XML-RPC requests" suffix=: %></td>
-<td nowrap="nowrap"><% system.xmlRpcCount %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext Errors suffix=: %></td>
-<td nowrap="nowrap"><% system.errorCount %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Objects in cache" suffix=: %></td>
-<td nowrap="nowrap"><% system.cacheUsage %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Free memory" suffix=: %></td>
-<td nowrap="nowrap"><% system.freeMemory | format ###,### %> KB</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Used memory" suffix=: %></td>
-<td nowrap="nowrap"><% system.usedMemory | format ###,### %> KB</td>
-</tr>
-<tr>
-<td nowrap="nowrap"><% gettext "Total memory" suffix=: %></td>
-<td nowrap="nowrap"><% system.totalMemory | format ###,### %> KB</td>
-</tr>
-</table>
-
 <% #sites %>
-<div class="pageTitle">Site Manager</div>
+<div class="pageTitle"><% response.title %></div>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
-<td>... show</td>
+<td>... Show</td>
 <td>
    <% admin.dropdown name="filter" 
    values="all sites,public sites,private sites,blocked sites,trusted sites" %>
 </td>
 </tr>
 <tr>
-<td>... sorted by</td>
+<td>... Sort by</td>
 <td>
    <% admin.dropdown name="order" values="last update,creation date,name" %>
-</td>
-</tr>
-<tr>
-<td>... order</td>
-<td>
    <% admin.dropdown name="dir" values="descending,ascending" %>
 </td>
 </tr>
 <tr>
-<td>... search</td>
-<td><input name="query" value="<% request.query encoding="form" %>" /></td>
-</tr>
-<tr>
-<td> </td>
-<td><button input type="submit" name="search" value="1">show sites</button></td>
+<td>... Search</td>
+<td>
+   <input name="query" value="<% request.query encoding="form" %>" />
+   <button input type="submit" name="search" value="1">Update</button>
+</td>
 </tr>
 </table>
 </form>
@@ -125,10 +63,10 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
    <div><%// item.tagline suffix="<br />" %>
    <a href="<% item.href %>"><% item.href %></a>
    </div>
-   <div class="small">created by <% item.creator as="link" %> on 
+   <div class="small">Created by <% item.creator as="link" %> on 
    <% item.created | format short %><br />
-   last update: <% item.modified default="no updates so far" | format short %><br />
-   diskusage: FIXME <%// item.diskusage %>
+   Last update: <% item.modified default="no updates so far" | format short %><br />
+   <!-- Disk usage: FIXME <%// item.diskusage %> -->
    </div>
 </td>
 <td class="small" valign="top" align="right">
@@ -146,15 +84,15 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td valign="top" class="small">
-   <% admin.count <% item.stories %> suffix=" stories<br />" %>
+   <% admin.count <% item.stories.self %> suffix=" stories<br />" %>
    <% admin.count <% item.stories.comments %> suffix=" comments<br />" %>
    <% admin.count <% item.images %> suffix=" images<br />" %>
    <% admin.count <% item.files %> suffix=" files<br />" %>
 </td>
-<td class="small">status:<br />
-   <% item.select status %><br />
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>  
+<td class="small" align="right">status:
+   <% item.select status %>
+   <button type="submit" id="save" name="save" value="1">Save</button>
+   <a href="" class="cancel">Cancel</a>
 </td>
 </tr>
 </table>
@@ -171,8 +109,8 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
    <p><strong>Warning!</strong></p>
    <p>You're about to delete the above site. Please mind that this is an
    irreversible process, and any asset of this site will be deleted. Just to 
-   remind you: <% item.alias %> currently contains 
-   <strong><% admin.count <% item.stories %> suffix=" stories" %></strong> with 
+   remind you: <% item.name %> currently contains 
+   <strong><% admin.count <% item.stories.self %> suffix=" stories" %></strong> with 
    <strong><% admin.count <% item.stories.comments %> suffix=" comments" %> </strong>, 
    <strong><% admin.count <% item.images %> suffix=" images" %> </strong> and 
    <strong><% admin.count <% item.files %> suffix=" files" %></strong>. 
@@ -186,33 +124,29 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
 </form>
 
 <% #users %>
-<div class="pageTitle">User Manager</div>
+<div class="pageTitle"><% response.title %></div>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
-<td>... show</td>
+<td>... Show</td>
 <td>
    <% admin.dropdown name="filter" 
    values="all users,blocked users,trusted users,privileged users" %>
 </td>
 </tr>
 <tr>
-<td>... sorted by</td>
+<td>... Sort by</td>
 <td>
    <% admin.dropdown name="order" values="last visit,registration,username" %>
+   <% admin.dropdown name="dir" values="descending,ascending" %>
 </td>
 </tr>
 <tr>
-<td>... order</td>
-<td><% admin.dropdown name="dir" values="descending,ascending" %></td>
-</tr>
-<tr>
-<td>... search</td>
-<td><input name="query" value="<% request.query %>" /></td>
-</tr>
-<tr>
-<td> </td>
-<td><button input type="submit" name="search" value="1">show users</button></td>
+<td>... Search</td>
+<td>
+   <input name="query" value="<% request.query %>" />
+   <button input type="submit" name="search" value="1">Update</button>
+</td>
 </tr>
 </table>
 </form>
@@ -231,8 +165,8 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
    <div><% item.email suffix="<br />" %>
    <a href="<% item.url %>"><% item.url %></a></div>
    <div class="small">
-      registered: <% item.created | format "yyyy-MM-dd HH:mm" %><br />
-      last visit: <% item.modified | format "yyyy-MM-dd HH:mm" %>
+      Registered: <% item.created | format "yyyy-MM-dd HH:mm" %><br />
+      Last visit: <% item.modified | format "yyyy-MM-dd HH:mm" %>
    </div>
 </td>
 <td class="small" valign="top" align="right">
@@ -257,18 +191,17 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
    <% admin.count <% item.files %> suffix=" files" %><!--
    --><% admin.items <% item.files %> prefix=": " %><br />
 </td>
-<td class="small">
-   Status:<br />
-   <% item.select status %><br />
-   <button type="submit" name="save" value="1">save</button>
-   <button type="submit" name="cancel" value="1">cancel</button>
+<td class="small" align="right">
+   Status: <% item.select status %>
+   <button type="submit" id="save" name="save" value="1">Save</button>
+   <a href="" class="cancel">Cancel</button>
 </td>
 </tr>
 </table>
 </form>
 
 <% #log %>
-<div class="pageTitle">System Log</div>
+<div class="pageTitle"><% response.title %></div>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
@@ -316,6 +249,7 @@ To do so simply enter <code>{1}</code> into the option "Front page site" of the
 </table>
 
 <% #setup %>
+<div class="pageTitle"><% response.title %></div>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
@@ -338,7 +272,7 @@ default front page.</span></td>
 <tr>
 <td valign="top">e-mail:</td>
 <td>
-   <% root.input email %><br />
+   <% root.input email default=noreply@localhost %><br />
    <span class="small">
       Antville will use this e-mail address to send various confirmation 
       messages (e.g. when a user registers within the front page)

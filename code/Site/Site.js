@@ -56,7 +56,7 @@ Site.remove = function(site) {
    HopObject.remove(site.images);
    HopObject.remove(site.files)
    site.remove();
-   root.admin.log.add(site, "removed");
+   root.admin.log(site, "Removed site");
    return;
 }
 

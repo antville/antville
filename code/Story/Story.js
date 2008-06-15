@@ -372,7 +372,6 @@ Story.prototype.comments_macro = function(param, mode) {
       this.comments.prefetchChildren();
       this.forEach(function() {
          html.openTag("a", {name: this._id});
-         //res.write(this.size())
          html.closeTag("a");
          this.renderSkin(this.parent.constructor === Story ? 
                "Comment#main" : "Comment#reply");
