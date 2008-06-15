@@ -24,7 +24,7 @@
 
 Root.VERSION = "1.2";
 
-Root.getScopes = defineConstants(Root, markgettext("every site"), 
+Root.getScopes = defineConstants(Root, markgettext("any site"), 
       markgettext("public sites"), markgettext("trusted sites"), 
       markgettext("no site"));
 
@@ -65,13 +65,13 @@ Root.commitRequests = function() {
    return;
 }
 
-Root.commitReferrers = function() {
-   var referrers = app.data.referrers;   
+Root.commitLog = function() {
+   var referrers = app.data.log;   
    if (referrers.length < 1) {
       return;
    }
    
-   app.data.referrers = [];
+   app.data.log = [];
    var history = [];
 
    for each (var item in referrers) {
@@ -97,7 +97,6 @@ Root.commitReferrers = function() {
          }
       }
       item.persist();
-      //root.referrers.add(item);
    }
 
    res.commit();
@@ -328,8 +327,8 @@ Root.prototype.health_action = function() {
       param.errorsPerUnit = formatNumber(Root.health.errorsPerUnit);
    }
    
+   param.log = app.data.log.length;
    param.mails = app.data.mails.length;
-   param.referrers = app.data.referrers.length;
    param.requests = 0;
    for (var i in app.data.requests) {
       param.requests += 1;

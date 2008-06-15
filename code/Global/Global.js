@@ -44,9 +44,9 @@ app.addRepository("modules/jala/code/I18n.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
+app.data.log || (app.data.log = []);
 app.data.mails || (app.data.mails = []);
 app.data.requests || (app.data.requests = {});
-app.data.referrers || (app.data.referrers = []);
 app.data.callbacks || (app.data.callbacks = []);
 
 /**
@@ -134,7 +134,7 @@ function disableMacro(ctor, name) {
 }
 
 function scheduler() {
-   Root.commitReferrers();
+   Root.commitLog();
    Root.commitRequests();
    Root.invokeCallbacks();
    Root.updateHealth();

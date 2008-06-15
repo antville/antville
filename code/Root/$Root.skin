@@ -95,16 +95,16 @@ was not found on this server!</p>
    <td><% param.totalMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td>Number of queued mails</td>
-   <td><% param.mails %></td>
-</tr>
-<tr>
-   <td>Number of queued referrers</td>
-   <td><% param.referrers %></td>
+   <td>Number of queued log entries</td>
+   <td><% param.log %></td>
 </tr>
 <tr>
    <td>Number of queued requests</td>
    <td><% param.requests %></td>
+</tr>
+<tr>
+   <td>Number of queued mails</td>
+   <td><% param.mails %></td>
 </tr>
 <tr>
    <td>Number of queued callbacks</td>

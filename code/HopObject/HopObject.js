@@ -149,7 +149,7 @@ HopObject.prototype.touch = function() {
 
 HopObject.prototype.log = function() {
    var entry = new LogEntry(this, "main");
-   app.data.referrers.push(entry);
+   app.data.log.push(entry);
    return;
 }
 
