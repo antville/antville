@@ -131,14 +131,14 @@ Admin.prototype.sites_action = function() {
          Site.remove(site);
          res.message = gettext("The site {0} was removed successfully.",
                site.name);
-         res.redirect(req.action + "?page=" + req.postParams.page);
+         res.redirect(this.href(req.action) + "?page=" + req.postParams.page);
       } catch (err) {
          res.message = err.toString();
       }
    } else if (req.postParams.save) {
       this.updateSite(req.postParams);
       res.message = gettext("The changes were saved successfully.");
-      res.redirect(req.action + "?page=" + req.postParams.page + 
+      res.redirect(this.href(req.action) + "?page=" + req.postParams.page + 
             "#" + req.postParams.id);
    } else if (req.queryParams.id) {
       res.meta.item = Site.getById(req.queryParams.id);
@@ -163,7 +163,7 @@ Admin.prototype.users_action = function() {
    } else if (req.postParams.save) {
       this.updateUser(req.postParams);
       res.message = gettext("The changes were saved successfully.");
-      res.redirect(req.action + "?page=" + req.postParams.page + 
+      res.redirect(this.href(req.action) + "?page=" + req.postParams.page + 
             "#" + req.postParams.id);
    } else if (req.queryParams.id) {
       res.meta.item = User.getById(req.queryParams.id);
