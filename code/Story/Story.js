@@ -89,6 +89,7 @@ Story.prototype.main_action = function() {
    res.data.title = this.getTitle();
    res.data.body = this.renderSkinAsString("Story#main");
    this.site.renderSkin("Site#page");
+   this.site.log();
    this.count();
    this.log();
    return;
