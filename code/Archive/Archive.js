@@ -32,6 +32,15 @@ Archive.prototype.constructor = function(name, type, parent) {
    return this;
 }
 
+Archive.prototype.getChildElement = function(name) {
+   if (name.startsWith(Archive.PAGER)) {
+      return new Archive(name, Archive.PAGER, this);
+   } else if (!isNaN(name)) {
+      return new Archive(name, Archive.COLLECTION, this);
+   }
+   return this.get(name);
+}
+
 Archive.prototype.getPermission = function(action) {
    var site = res.handlers.site;
    if (!site.getPermission("main") || site.archiveMode !== Site.PUBLIC) {
@@ -52,6 +61,7 @@ Archive.prototype.getPermission = function(action) {
 Archive.prototype.main_action = function() {
    res.data.body = this.renderSkinAsString("Archive#main");
    res.handlers.site.renderSkin("Site#page");
+   res.handlers.site.log();
    return;
 }
 
@@ -75,15 +85,6 @@ Archive.prototype.href = function(action) {
       buffer.push(action);
    }
    return buffer.join("/");
-}
-
-Archive.prototype.getChildElement = function(name) {
-   if (name.startsWith(Archive.PAGER)) {
-      return new Archive(name, Archive.PAGER, this);
-   } else if (!isNaN(name)) {
-      return new Archive(name, Archive.COLLECTION, this);
-   }
-   return this.get(name);
 }
 
 Archive.prototype.link_macro = function(param, action, text) {

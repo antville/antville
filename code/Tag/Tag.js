@@ -57,6 +57,7 @@ Tag.prototype.main_action = function() {
    res.handlers.list.setPageSize(this.site.pageSize);
    res.data.body = this.renderSkinAsString("$Tag#main");
    res.handlers.site.renderSkin("Site#page");
+   res.handlers.site.log();
    return;
 }
 
