@@ -61,7 +61,7 @@ Site.remove = function(site) {
 }
 
 Site.getByName = function(name) {
-   return root.sites.get(name);
+   return root.get(name);
 }
 
 Site.require = function(mode) {
