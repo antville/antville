@@ -89,7 +89,7 @@ message.' %></p>
 </p>
 <p>
    <button type="submit" name="send" value="1">Send</button>
-   <button type="submit" name="cancel" value="1">Cancel</button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
 
