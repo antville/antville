@@ -608,7 +608,7 @@ Site.prototype.getTimeZone = function() {
 }
 
 Site.prototype.processHref = function(href) {
-   var vhost = app.getProperty("vhost." + this.name, 
+   var vhost = getProperty("vhost." + this.name, 
          app.properties.defaultHost + "/" + this.name);
    return vhost + href;
 }
