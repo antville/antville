@@ -77,7 +77,7 @@ Files.prototype.main_action = function() {
 Files.prototype.all_action = function() {
    res.data.list = renderList(this, "$File#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
-         this.href(), 10, req.queryParams.page);
+         this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Files of {0}", this._parent.title);
    res.data.body = this.renderSkinAsString("$Files#main");
    this._parent.renderSkin("Site#page");
