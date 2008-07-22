@@ -30,7 +30,7 @@
    <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
 </fieldset></p>
 <p class="small">
-   <% if <% story.created %> is null then "" else 
+   <% if <% story.creator %> is null then "" else 
       <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created short %> %> 
    %>
    <% if <% story.created %> is <% story.modified %> then "" else 
