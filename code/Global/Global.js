@@ -551,9 +551,9 @@ function formatDate(date, pattern) {
    }
    pattern || (pattern = "short");
    var site = res.handlers.site;
-   var format = global[pattern.toUpperCase() + "DATEFORMAT"];
+   var format = res.handlers.site.metadata.get(pattern.toLowerCase() + "DateFormat");
    if (!format) {
-      format = pattern;
+      format = global[pattern.toUpperCase() + "DATEFORMAT"] || pattern;
    }
    try {
       return date.format(format, site.getLocale(), site.getTimeZone());
