@@ -272,8 +272,8 @@ Site.prototype.timezonechooser_macro = function(param) {
 
 Site.prototype.history_macro = function(param, type) {
    param.skin || (param.skin = "Story#history");
-   var type = (param.show === "comments" ? "comments" : "postings");
-   var limit = Math.min(param.limit || 10, 50);
+   var type = isNaN(param.show) ? param.show : "postings";
+   var limit = Math.min(param.limit || parseInt(param.show) || 10, 50);
    delete param.show;
    delete param.limit;
    return list_macro(param, type, limit);

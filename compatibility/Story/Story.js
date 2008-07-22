@@ -365,7 +365,7 @@ Story.prototype.online_macro = function(param) {
 Story.prototype.createtime_macro = function(param) {
    if (param.as === "editor") {
       if (this.created) {
-         param.value = formatDate(this.createtime, "yyyy-MM-dd HH:mm");
+         param.value = formatDate(this.created, "yyyy-MM-dd HH:mm");
       } else {
          param.value = formatDate(new Date(), "yyyy-MM-dd HH:mm");
       }
