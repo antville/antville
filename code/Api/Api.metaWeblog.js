@@ -40,7 +40,7 @@ Api.metaWeblog._getStruct = function(story) {
       permaLink: story.href(),
       mt_excerpt: null, // FIXME: What are these "mt_" prefixed properties?
       mt_text_more: null,
-      mt_allow_comments: story.COMMENT_MODE === Story.OPEN ? 1 : 0,
+      mt_allow_comments: story.commentMode === Story.OPEN ? 1 : 0,
       mt_allow_pings: 0,
       mt_convert_breaks: null,
       mt_keywords: null
@@ -95,7 +95,7 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
       text: content.description,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: content.flNotOnHomePage ? Story.HIDDEN : Story.FEATURED,
-      commentMode: content.discussions ? Story.OPEN : Story.CLOSED,
+      commentMode: content.discussions === 0 ? Story.CLOSED : Story.OPEN,
       tags: content.categories
    });
    site.stories.add(story);
