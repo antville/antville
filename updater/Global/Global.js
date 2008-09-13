@@ -27,6 +27,15 @@ app.data.status = "idle";
 
 var server = Packages.helma.main.Server.getServer();
 
+var status = function(type) {
+   if (type) {
+      app.data.status = type;
+      return;
+   } else {
+      return app.data.status;
+   }
+}
+
 var antville = function() {
    return new Packages.helma.framework.core.ApplicationBean(server.
          getApplication("antville"));
@@ -68,19 +77,19 @@ var version = function() {
 
 var init = function() {
    var currentVersion = version();
-   if (app.data.status === "running") {
+   if (status() === "running") {
       msg("Updater is already running");
       return false;
    } else if (getProperty("version.to") == currentVersion) {
       msg("Antville installation is already up-to-date");
-      app.data.status = "finished";
+      status("finished");
       return false;
    } else if (getProperty("version.from") != currentVersion) {
       msg("Updater cannot upgrade version " + currentVersion);
-      app.data.status = "failed";
+      status("failed")
       return false;
    } else {
-      app.data.status = "running";
+      status("running");
    }
   return true; 
 }
@@ -90,7 +99,7 @@ var finalize = function() {
    var metadata = eval(rootSite.metadata_source);
    metadata.version = getProperty("version.to");
    rootSite.metadata_source = metadata.toSource();
-   app.data.status = "finished";
+   status("finished");
    return;
 }
 
@@ -101,7 +110,7 @@ var out = function() {
       app.data.out.setLength(0);
    }
    res.write({
-      status: app.data.status,
+      status: status(),
       log: str
    }.toSource());
    return;
@@ -130,7 +139,7 @@ var error = function(exception) {
    var error = exception || db().getLastError();
    if (error) {
       msg(error);
-      app.data.status = "failed";
+      status("failed");
       res.abort();
    }
    return;
@@ -223,28 +232,27 @@ var value = function(obj) {
    return quote(String(obj));
 }
 
-var execute = function(sql /*, value1, ..., valueN */) {
-   if (arguments.length > 1) {
-      var values = Array.prototype.splice.call(arguments, 1);
+var stringf = function(str /*, value1, ..., valueN */) {
+   var values = Array.prototype.slice.call(arguments, 1);
+   if (values.length > 0) {
+      var callback;
+      if (typeof values[values.length - 1] === "function") {
+         callback = values.pop();
+      }
       if (typeof values[0] === "object") {
          values = values[0];
       }
-      sql = sql.replace(/\$(\w*)/g, function() {
-         return value(values[arguments[1]]);
+      str = str.replace(/\$(\w*)/g, function(str, key) {
+         return callback ? callback(values[key]) : values[key];
       });
    }
-   log(sql.contains("\n") ? sql.substr(0, sql.indexOf("\n")) + " ..." : sql);
-   try {
-      db().executeCommand(sql);
-      error();
-   } catch (ex) {
-      error(ex);
-   }
-   return;
+   return str;
 }
 
-var retrieve = function(sql) {
-   app.data.query = sql;
+var retrieve = function(sql /*, value1, ..., valueN */) {
+   // Add callback for global value() method to stringf() arguments
+   Array.prototype.push.call(arguments, value);
+   app.data.query = stringf.apply(null, arguments);
    return;
 }
 
@@ -282,6 +290,20 @@ var traverse = function(callback, noOffset, idName) {
       } while (rows = result.next());
       result.release();
       msg("Update took " + (Date.now() - start) + " millis");
+   }
+   return;
+}
+
+var execute = function(sql /*, value1, ..., valueN */) {
+   // Add callback for global value() method to stringf() arguments
+   Array.prototype.push.call(arguments, value);
+   sql = stringf.apply(null, arguments);
+   log(sql.contains("\n") ? sql.substr(0, sql.indexOf("\n")) + " ..." : sql);
+   try {
+      db().executeCommand(sql);
+      error();
+   } catch (ex) {
+      error(ex);
    }
    return;
 }

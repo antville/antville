@@ -29,6 +29,9 @@ app.addRepository("modules/helma/Color.js");
 app.addRepository("modules/helma/File.js");
 
 Root.prototype.main_action = function() {
+   // Disabled for safety reasons
+   return;
+
    app.invokeAsync(global, function() {
       if (init()) {
          //update("size"); // DEBUG
@@ -63,3 +66,24 @@ Root.prototype.out_action = function() {
    return out();
 }
 
+Root.prototype.galleries_action = function() {
+   var oldDatabase = "antville_org_1_1";
+   app.invokeAsync(global, function() {
+      execute("alter table tag_hub add column `tagged_id_old` int(11) default NULL");
+      execute("alter table tag_hub add column `tagged_type_old` enum('Story','Image') default NULL");
+      execute("update tag_hub set tagged_type_old = tagged_type, tagged_id_old = tagged_id;");
+      retrieve(stringf("select tag_hub.*, IMAGE_ALIAS as name, " +
+            "IMAGE_F_SITE as site from tag_hub left join $0.AV_IMAGE on " +
+            "IMAGE_ID = tagged_id where tagged_id in " +
+            "(select IMAGE_ID from $0.AV_IMAGE where IMAGE_TOPIC is not " +
+            "null and IMAGE_F_IMAGE_PARENT is null)", oldDatabase));
+      traverse(function() {
+         execute("update tag_hub set tagged_type = 'Image', tagged_id = " +
+               "(select id from image where name = $name and site_id = " +
+               "$site and parent_type = 'Site') where id = $id", this);
+      });
+      status("finished");
+   }, [], -1);
+   this.renderSkin("Root");
+   return;
+}
