@@ -66,6 +66,27 @@ Root.prototype.out_action = function() {
    return out();
 }
 
+Root.prototype.nonames_action = function() {
+   app.invokeAsync(global, function() {
+      ["image", "file"].forEach(function(table) {
+         retrieve("select * from " + table + " where name = ''");
+         traverse(function() {
+            this.name = Date.now() + "-" + this.id;
+            var metadata = eval(this.metadata);
+            var extension = metadata.contentType.split("/").pop();
+            metadata.fileName = this.name + "." + extension; 
+            metadata.thumbnailName = this.name + "_small." + extension;
+            this.metadata = metadata;
+            execute("update " + table + " set name = $name, metadata = " +
+                  "$metadata where id = $id", this);
+         });
+      });
+      status("finished");
+   }, [], -1);
+   this.renderSkin("Root");
+   return;
+}
+
 Root.prototype.galleries_action = function() {
    var oldDatabase = "antville_org_1_1";
    app.invokeAsync(global, function() {
