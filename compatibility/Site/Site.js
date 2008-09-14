@@ -321,7 +321,7 @@ Site.prototype.monthlist_macro = function(param) {
       if (!next || next.groupname.substring(0, 6) < 
             curr.groupname.substring(0, 6)) {
          res.write(param.itemprefix);
-         html.openLink({href: collection.href() + 
+         html.openLink({href: collection.href() + "/" +
                formatDate(curr.groupname.toDate("yyyyMMdd"), "yyyy/MM/dd")});
          var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", 
                this.getTimeZone());
