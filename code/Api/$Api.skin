@@ -6,9 +6,9 @@ Antville supports the following application programming interfaces:
    <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a></li>
    <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a></li>
 </ul>
-The URL endpoint for each of these APIs is located at <% api.url | link %>.
+The URL endpoint for each of these APIs is located at <% api.href | link %>.</p>
 
-<p><strong>Callbacks</strong></p>
+<p><br /><strong>Callbacks</strong></p>
 <p>Each Antville site provides an option in the preferences form to define a 
 callback URL that will be invoked each time the site content has changed. 
 This way users can define custom handlers for different site events with their 
