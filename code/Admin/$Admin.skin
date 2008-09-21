@@ -13,12 +13,13 @@
 </div>
 
 <% #welcome %>
-<p><em><% gettext Note %></em>: <% gettext 'Since you are system administrator 
-of this Antville installation you can also define the site {0} as its front page. 
-To do so simply enter <code>{1}</code> into the option "Front page site" of the 
-{2}.' <% site.title %> <% site.name %> <% root.admin.link setup <% gettext 
-"system preferences" %> %> %>
-<% gettext "(Of course you can change this setting anytime you want.)" %></p>
+<p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator 
+of this Antville installation you also have access to the {0}, the {1},  
+the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
+      <% root.admin.link sites <% gettext "site administration" %> %>
+      <% root.admin.link users <% gettext "user administration" %> %> 
+      <% root.admin.link setup <% gettext "system setup" %> %>
+%></p>
 
 <% #sites %>
 <div class="pageTitle"><% response.title %></div>

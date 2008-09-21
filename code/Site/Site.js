@@ -536,7 +536,7 @@ Site.prototype.stories_macro = function() {
             session.user.renderSkin("$User#welcome");
          }
          if (this === root && User.require(User.PRIVILEGED)) {
-            this.admin.renderSkin("Admin#welcome");
+            this.admin.renderSkin("$Admin#welcome");
          }
       }
    } else {

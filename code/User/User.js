@@ -52,6 +52,8 @@ User.prototype.constructor = function(data) {
    return this;
 }
 
+User.prototype.onLogout = function() { /* ... */ }
+
 User.prototype.getPermission = function(action) {
    return User.require(User.PRIVILEGED);
 }

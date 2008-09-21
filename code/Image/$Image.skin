@@ -1,7 +1,7 @@
 <% #edit %>
 <script type="text/javascript">
 $(function() {
-   if ("<% image.created %>") {
+   if ("<% image.fileName %>") {
       $(".name").hide();
       $(".resize").hide();
    } else {
@@ -67,7 +67,7 @@ $(function() {
 <td class="small" valign="top"> </td>
 <td>
    <br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>

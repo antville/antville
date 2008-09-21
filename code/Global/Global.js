@@ -95,8 +95,11 @@ var rome = new JavaImporter(
 );
 
 function onStart() {
-   app.addCronJob("nightly", "*", "*", "*", "*", "5", "0");
-
+   if (typeof root === "undefined") {
+      app.logger.error("Error in database configuration: no root site found.");
+      return;
+   }
+   app.addCronJob("nightly", "*", "*", "*", "*", "5", "0");      
    // FIXME: Does database exist?
    /*var db = getDBConnection("antville");
    var rows = db.executeRetrieval("select min(id) as id from site");
@@ -104,12 +107,6 @@ function onStart() {
    var id = rows.getColumnItem("id");
    //Packages.helma.main.Server.getServer().stopApplication(app.name);
    rows.release();*/
-
-   // call onStart methods of modules
-   for (var i in app.modules) {
-      if (app.modules[i].onStart)
-         app.modules[i].onStart();
-   }
    return;
 }
 
@@ -558,7 +555,6 @@ function formatDate(date, pattern) {
    try {
       return date.format(format, site.getLocale(), site.getTimeZone());
    } catch (ex) {
-      app.log(ex);
       return "[Macro error: Invalid date format]";
    }
    return;

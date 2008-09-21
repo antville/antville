@@ -179,6 +179,18 @@ Root.prototype.getPermission = function(action) {
 }
 
 Root.prototype.main_action = function() {
+   // FIXME: Should this better go into HopObject.onRequest?
+   if (this.users.size() < 1) {
+      root.title = "Antville";
+      res.redirect(this.members.href("register"));
+   } else if (session.user && this.members.owners.size() < 1) {
+      this.creator = this.modifier = this.layout.creator = 
+            this.layout.modifier = session.user;
+      this.created = this.modified = 
+            this.layout.created = this.layout.modified = new Date;
+      session.user.role = User.PRIVILEGED;
+      res.handlers.membership.role = Membership.OWNER;
+   }
    return Site.prototype.main_action.apply(this);
 
    /*var re = /("[^"]*"|'[^']*'|<%(\S*)|/gm;
@@ -188,20 +200,6 @@ Root.prototype.main_action = function() {
    });
 //   res.debug(result)
    return;*/
-   
-/* FIXME: setup routine needs to be rewritten
-   // check if this installation is already configured
-   // if not, we display the welcome-page as frontpage
-   if (!root.sys_issetup) {
-      if (!root.users.size()) {
-         res.data.body = this.renderSkinAsString("welcome");
-         root.renderSkin("Site#page");
-         return;
-      } else
-         res.redirect(this.manage.href("setup"));
-   } else if (!root.size())
-      res.redirect(this.href("new"));
-*/
 }
 
 Root.prototype.getFormOptions = function(name) {
@@ -239,6 +237,21 @@ Root.prototype.create_action = function() {
       try {
          site.update(req.postParams);
          site.layout = new Layout(site);
+
+         // FIXME: This copies the root layout to a new site causing macro errors
+         /* var copy = function(source, destination) {
+            source.list().forEach(function(name) {
+               var file = new helma.File(source, name);
+               if (file.isDirectory()) {
+                  copy(file, new helma.File(destination, name));
+               } else {
+                  destination.makeDirectory();
+                  file.hardCopy(new helma.File(destination, name));
+               }
+            })
+         }
+         copy(root.layout.getFile(), site.layout.getFile()); */
+
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
          root.admin.log(site, "Added site");

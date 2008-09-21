@@ -56,11 +56,6 @@ Members.prototype.getPermission = function(action) {
    return false;
 }
 
-// FIXME: Was this necessary to fix unexpected behaviour? Looks redundant...
-/*Members.prototype.link_macro = function(param, action, text) {
-   return HopObject.prototype.link_macro.apply(this, arguments);
-}*/
-
 Members.prototype.main_action = function() {
    res.data.title = gettext("Members of {0}", this._parent.title);
    res.data.list = renderList(this, "$Membership#member", 
@@ -85,7 +80,6 @@ Members.prototype.register_action = function() {
                title, user.name);
          res.redirect(User.getLocation() || this._parent.href());
       } catch (ex) {
-         app.log(ex);
          res.message = ex;
       }
    }
@@ -119,7 +113,6 @@ Members.prototype.reset_action = function() {
          res.message = gettext("A confirmation mail was sent to your e-mail address.");
          res.redirect(this._parent.href());
       } catch(ex) {
-         app.log(ex);
          res.message = ex;
       }
    } else if (req.data.user && req.data.token) {
@@ -166,7 +159,6 @@ Members.prototype.login_action = function() {
          res.redirect(User.getLocation() || this._parent.href());
       } catch (ex) {
          res.message = ex;
-         app.log(ex);
       }
    }
    session.data.token = User.getSalt();

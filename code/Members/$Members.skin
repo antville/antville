@@ -79,6 +79,7 @@ tabindex="4"><% gettext Login %></button>
 </form>
 
 <% #register %>
+<p class="storyTitle"><% response.title %></p>
 <script type="text/javascript">
 $(function() {
    $("#submit").click(function() {
