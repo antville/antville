@@ -341,7 +341,6 @@ function poll_macro(param, id, mode) {
       if (poll.status === Poll.CLOSED || mode === "results")
          poll.renderSkin("$Poll#results");
       else {
-         res.data.action = poll.href();
          poll.renderSkin("$Poll#main");
       }
    }

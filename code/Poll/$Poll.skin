@@ -1,6 +1,6 @@
 <% #main %>
 <% poll.question %><br /><br />
-<form method="post" action="<% response.action %>">
+<form method="post" action="<% poll.href %>">
 <table border="0" cellspacing="2" cellpadding="2">
 <% poll.loop skin="$Choice#main" %>
 <tr>
