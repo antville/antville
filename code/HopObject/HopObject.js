@@ -34,18 +34,12 @@ HopObject.remove = function(collection) {
 }
 
 HopObject.getFromPath = function(name, collection) {
-   // FIXME: This is an ugly work-around for Helma bug #625
-   // NOTE: Bug is fixed; to be removed with Helma update on Antville.org
+   // FIXME: Still working around Helma bug #625
+   // http://helma.org/bugs/show_bug.cgi?id=625
    var translate = function(str) {
       return str.replace(/&([^;]*);/g, function(s, $1) {
          switch ($1) {
-            case "auml": return "ä";
-            case "ouml": return "ö";
-            case "uuml": return "ü";
-            case "Auml": return "Ä";
-            case "Ouml": return "Ö";
-            case "Uuml": return "Ü";
-            case "szlig": return "ß";
+            case "amp": return "&";
          }
          return s;
       })
@@ -59,9 +53,7 @@ HopObject.getFromPath = function(name, collection) {
       site = res.handlers.site;
    }
    if (site && site.getPermission("main")) {
-      var o = site[collection].get(name);
-      o || (o = site[collection].get(translate(name)));
-      return o;
+      return site[collection].get(translate(name));
    }
    return null;
 }
@@ -74,6 +66,13 @@ HopObject.prototype.map = function(values) {
 }
 
 HopObject.prototype.onRequest = function() {
+   // Checking if we are on the correct host to prevent at least some XSS issues
+   if (false && req.action !== "notfound" && req.action !== "error" && 
+         !this.href().toLowerCase().startsWith(req.servletRequest.scheme + 
+         "://" + req.servletRequest.serverName.toLowerCase())) {   
+      res.redirect(this.href(req.action === "main" ? String.EMPTY : req.action));
+   }
+
    User.autoLogin();
    res.handlers.membership = User.getMembership();
    
@@ -379,14 +378,16 @@ HopObject.prototype.link_macro = function(param, url, text) {
 }
 
 HopObject.prototype.created_macro = function(param, format) {
-   if (this.created && !this.isTransient()) {
-      res.write(formatDate(this.created, format || param.format));
+   format || (format = param.format);
+   if (format && this.created && !this.isTransient()) {
+      res.write(formatDate(this.created, format));
+      return;
    }
-   return;
+   return this.created;
 }
 
 HopObject.prototype.modified_macro = function(param, format) {
-   !format && (format = param.format);
+   format || (format = param.format);
    if (format && this.modified && !this.isTransient()) {
       res.write(formatDate(this.modified, format));
       return;
