@@ -26,7 +26,6 @@
 
 global["patch-20080913"] = function() {
    root.forEach(function(site) {
-      this.constructor == Site && (site = this);
       if (site.layout) {
          res.handlers.layout = site.layout;
          res.skinpath = site.layout.getSkinPath();
@@ -36,11 +35,12 @@ global["patch-20080913"] = function() {
          var source = skin.getSource();
          
          var newSource = source.replace(/<%(\s+site#(history|searchbox)"[^%]*%>)/g, function() {
-            res.debug(arguments[0]);
+            res.debug("Found " + encode(arguments[0]));
             return "<% // " + arguments[1];
          });
          if (newSource !== source) {
-            skin.setSource(newSource);
+            res.debug("Replacing source of skin " + skin + " with " + encode(newSource));
+            //skin.setSource(newSource);
          }
          
          // Fixing the macro handlers in skins shared between Story and Comment
@@ -49,18 +49,19 @@ global["patch-20080913"] = function() {
             var source = skin.getSource();
             if (!source) {
                // FIXME: What the heck is going on here?
-               res.debug(site.name + ": " + skin);
+               res.debug("????? " + site.name + ": " + skin);
                return;
             }
             var newSource = source.replace(/(<%\s+)story\./g, "$1this.");
             var delta = source.length - newSource.length;
             if (delta !== 0) {
-               skin.setSource(newSource);
+               res.debug("Replacing source of skin " + skin + " with " + encode(newSource));
+               //skin.setSource(newSource);
             }
          });
      } else {
         res.debug("Creating missing layout for site " + site.name);
-        site.layout = new Layout(site);
+        //site.layout = new Layout(site);
       }
    });
 }
