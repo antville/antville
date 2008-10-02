@@ -101,19 +101,16 @@ Site.prototype.constructor = function(name, title) {
 
 Site.prototype.getPermission = function(action) {
    switch (action) {
+      case "backup.js":
       case "main.js":
       case "main.css":
       case "error":
       case "notfound":
       case "robots.txt":
+      case "search":
       case "search.xml":
       case "user.js":
-      case "backup.js":
       return true;
-
-      case "search":
-      return Membership.require(Membership.MANAGER) ||
-            User.require(User.PRIVILEGED);
 
       case ".":
       case "main":
