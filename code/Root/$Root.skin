@@ -95,19 +95,19 @@ was not found on this server!</p>
    <td><% param.totalMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td>Number of queued log entries</td>
+   <td>Queued log entries</td>
    <td><% param.entries %></td>
 </tr>
 <tr>
-   <td>Number of queued requests</td>
+   <td>Queued requests</td>
    <td><% param.requests %></td>
 </tr>
 <tr>
-   <td>Number of queued mails</td>
+   <td>Queued mails</td>
    <td><% param.mails %></td>
 </tr>
 <tr>
-   <td>Number of queued callbacks</td>
+   <td>Queued callbacks</td>
    <td><% param.callbacks %></td>
 </tr>
 </table>
