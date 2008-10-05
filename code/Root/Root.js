@@ -167,6 +167,7 @@ Root.prototype.getPermission = function(action) {
    switch (action) {
       case "debug":
       case "health":
+      case "mrtg":
       return true;
       case "create":
       return this.getCreationPermission();
@@ -352,6 +353,56 @@ Root.prototype.health_action = function() {
    res.data.body = this.renderSkinAsString("$Root#health", param);
    this.renderSkin("Site#page");
 }
+
+Root.prototype.mrtg_action = function() {
+   res.contentType = "text/plain";
+   switch (req.queryParams.target) {
+      case "load":
+      var f = new helma.File("/proc/loadavg");
+      res.writeln(f.exists() ? f.readAll().split(String.SPACE)[1] * 100 : 0);
+      res.writeln(0);
+      break;
+      case "cache":
+      res.writeln(formatNumber(app.cacheusage));
+      res.writeln(formatNumber(getProperty("cacheSize")));
+      break;
+      case "threads":
+      res.writeln(formatNumber(app.activeThreads));
+      res.writeln(formatNumber(app.freeThreads));
+      break;
+      case "requests":
+      res.writeln(formatNumber(app.requestCount));
+      res.writeln(formatNumber(app.errorCount));
+      break;
+      case "users":
+      res.writeln(app.countSessions());
+      res.writeln(root.users.size());
+      break;
+      case "postings":
+      var db = getDBConnection("antville");
+      var stories = db.executeRetrieval("select count(*) as count from content where prototype = 'Story'");
+      var comments = db.executeRetrieval("select count(*) as count from content where prototype = 'Comment'");
+      stories.next();
+      comments.next()
+      res.writeln(stories.getColumnItem("count"));
+      res.writeln(comments.getColumnItem("count"));
+      stories.release();
+      comments.release();
+      break;
+      case "uploads":
+      var db = getDBConnection("antville");
+      var files = db.executeRetrieval("select count(*) as count from file");
+      var images = db.executeRetrieval("select count(*) as count from image");
+      files.next();
+      images.next()
+      res.writeln(files.getColumnItem("count"));
+      res.writeln(images.getColumnItem("count"));
+      files.release();
+      images.release();
+      break;
+   }
+   return;
+} 
 
 Root.prototype.getMacroHandler = function(name) {
    switch (name) {
