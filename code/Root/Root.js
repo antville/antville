@@ -380,13 +380,14 @@ Root.prototype.mrtg_action = function() {
       break;
       case "postings":
       var db = getDBConnection("antville");
-      var stories = db.executeRetrieval("select count(*) as count from content where prototype = 'Story'");
+      var postings = db.executeRetrieval("select count(*) as count from content");
       var comments = db.executeRetrieval("select count(*) as count from content where prototype = 'Comment'");
-      stories.next();
+      postings.next();
       comments.next()
-      res.writeln(stories.getColumnItem("count"));
-      res.writeln(comments.getColumnItem("count"));
-      stories.release();
+      var commentCount = comments.getColumnItem("count");
+      res.writeln(postings.getColumnItem("count") - commentCount);
+      res.writeln(commentCount);
+      postings.release();
       comments.release();
       break;
       case "uploads":
