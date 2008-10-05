@@ -363,16 +363,16 @@ Root.prototype.mrtg_action = function() {
       res.writeln(0);
       break;
       case "cache":
-      res.writeln(formatNumber(app.cacheusage));
-      res.writeln(formatNumber(getProperty("cacheSize")));
+      res.writeln(app.cacheusage);
+      res.writeln(getProperty("cacheSize"));
       break;
       case "threads":
-      res.writeln(formatNumber(app.activeThreads));
-      res.writeln(formatNumber(app.freeThreads));
+      res.writeln(app.activeThreads);
+      res.writeln(app.freeThreads);
       break;
       case "requests":
-      res.writeln(formatNumber(app.requestCount));
-      res.writeln(formatNumber(app.errorCount));
+      res.writeln(app.requestCount);
+      res.writeln(app.errorCount);
       break;
       case "users":
       res.writeln(app.countSessions());
