@@ -371,8 +371,8 @@ Root.prototype.mrtg_action = function() {
       res.writeln(app.freeThreads);
       break;
       case "requests":
-      res.writeln(app.requestCount);
-      res.writeln(app.errorCount);
+      res.writeln(Root.health.requestsPerUnit);
+      res.writeln(Root.health.errorsPerUnit);
       break;
       case "users":
       res.writeln(app.countSessions());
