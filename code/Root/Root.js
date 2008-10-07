@@ -378,12 +378,6 @@ Root.prototype.mrtg_action = function() {
       var postings = db.executeRetrieval("select count(*) as count from content");
       postings.next();
       res.writeln(postings.getColumnItem("count"));
-      //var comments = db.executeRetrieval("select count(*) as count from content where prototype = 'Comment'");
-      //comments.next()
-      //var commentCount = comments.getColumnItem("count");
-      //res.writeln(postings.getColumnItem("count") - commentCount);
-      //res.writeln(commentCount);
-      //comments.release();
       postings.release();
       break;
       case "uploads":
