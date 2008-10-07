@@ -357,11 +357,6 @@ Root.prototype.health_action = function() {
 Root.prototype.mrtg_action = function() {
    res.contentType = "text/plain";
    switch (req.queryParams.target) {
-      case "load":
-      var f = new helma.File("/proc/loadavg");
-      res.writeln(f.exists() ? f.readAll().split(String.SPACE)[1] * 100 : 0);
-      res.writeln(0);
-      break;
       case "cache":
       res.writeln(app.cacheusage);
       res.writeln(getProperty("cacheSize"));
