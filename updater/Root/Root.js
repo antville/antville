@@ -88,7 +88,7 @@ Root.prototype.nonames_action = function() {
 }
 
 Root.prototype.galleries_action = function() {
-   var oldDatabase = "antville_org_1_1";
+   var oldDatabase = "antville_1_1";
    app.invokeAsync(global, function() {
       execute("alter table tag_hub add column `tagged_id_old` int(11) default NULL");
       execute("alter table tag_hub add column `tagged_type_old` enum('Story','Image') default NULL");
