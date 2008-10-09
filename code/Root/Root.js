@@ -358,16 +358,17 @@ Root.prototype.mrtg_action = function() {
    res.contentType = "text/plain";
    switch (req.queryParams.target) {
       case "cache":
-      res.writeln(app.cacheusage);
-      res.writeln(getProperty("cacheSize"));
+      var usage = app.cacheusage;
+      res.writeln(getProperty("cacheSize") - usage);
+      res.writeln(usage);
       break;
       case "threads":
       res.writeln(app.activeThreads);
       res.writeln(app.freeThreads);
       break;
       case "requests":
-      res.writeln(Root.health.requestsPerUnit);
-      res.writeln(Root.health.errorsPerUnit);
+      res.writeln(app.errorCount);
+      res.writeln(app.requestCount);
       break;
       case "users":
       res.writeln(app.countSessions());
@@ -377,6 +378,7 @@ Root.prototype.mrtg_action = function() {
       var db = getDBConnection("antville");
       var postings = db.executeRetrieval("select count(*) as count from content");
       postings.next();
+      res.write("\n");
       res.writeln(postings.getColumnItem("count"));
       postings.release();
       break;
