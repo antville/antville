@@ -25,7 +25,8 @@
 // Needs to be applied from within antville code (does not work inside updater)
 
 global["patch-20080913"] = function() {
-   root.forEach(function(site) {
+   root.forEach(function() {
+      var site = this;
       if (site.layout) {
          res.handlers.layout = site.layout;
          res.skinpath = site.layout.getSkinPath();
@@ -35,12 +36,14 @@ global["patch-20080913"] = function() {
          var source = skin.getSource();
          
          var newSource = source.replace(/<%(\s+site#(history|searchbox)"[^%]*%>)/g, function() {
-            res.debug("Found " + encode(arguments[0]));
-            return "<% // " + arguments[1];
+            var replacement = "<% // " + arguments[1];
+            app.log(arguments[0] + " ==> " + replacement);
+            return replacement;
          });
          if (newSource !== source) {
-            res.debug("Replacing source of skin " + skin + " with " + encode(newSource));
-            //skin.setSource(newSource);
+            var delta = source.length - newSource.length;
+            //if (Math.abs(delta) > 5) res.debug("!!! Delta in " + site + ": " + delta);
+            skin.setSource(newSource);
          }
          
          // Fixing the macro handlers in skins shared between Story and Comment
@@ -52,16 +55,20 @@ global["patch-20080913"] = function() {
                res.debug("????? " + site.name + ": " + skin);
                return;
             }
-            var newSource = source.replace(/(<%\s+)story\./g, "$1this.");
+            var newSource = source.replace(/(<%\s+)story\./g, function() {
+               var replacement = arguments[1] + "this.";
+               app.log(arguments[0] + " ==> " + replacement);
+               return replacement;
+            });
             var delta = source.length - newSource.length;
             if (delta !== 0) {
-               res.debug("Replacing source of skin " + skin + " with " + encode(newSource));
-               //skin.setSource(newSource);
+               //if (Math.abs(delta) > 5) res.debug("!!! Delta in " + site + " skin Story:" + name + ": " + delta);
+               skin.setSource(newSource);
             }
          });
      } else {
         res.debug("Creating missing layout for site " + site.name);
-        //site.layout = new Layout(site);
+        site.layout = new Layout(site);
       }
    });
 }
