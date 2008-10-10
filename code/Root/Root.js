@@ -170,6 +170,7 @@ Root.prototype.getPermission = function(action) {
       case "mrtg":
       return true;
       case "create":
+return User.require(User.PRIVILEGED);
       return this.getCreationPermission();
       case "default.hook":
       case "sites":
@@ -358,13 +359,12 @@ Root.prototype.mrtg_action = function() {
    res.contentType = "text/plain";
    switch (req.queryParams.target) {
       case "cache":
-      var usage = app.cacheusage;
-      res.writeln(getProperty("cacheSize") - usage);
-      res.writeln(usage);
+      res.writeln(0);
+      res.writeln(app.cacheusage * 100 / getProperty("cacheSize"));
       break;
       case "threads":
-      res.writeln(app.activeThreads);
-      res.writeln(app.freeThreads);
+      res.writeln(0);
+      res.writeln(app.activeThreads * 100 / app.freeThreads);
       break;
       case "requests":
       res.writeln(app.errorCount);
@@ -378,7 +378,7 @@ Root.prototype.mrtg_action = function() {
       var db = getDBConnection("antville");
       var postings = db.executeRetrieval("select count(*) as count from content");
       postings.next();
-      res.write("\n");
+      res.writeln(0);
       res.writeln(postings.getColumnItem("count"));
       postings.release();
       break;
@@ -394,6 +394,8 @@ Root.prototype.mrtg_action = function() {
       images.release();
       break;
    }
+   res.writeln(app.upSince);
+   res.writeln("mrtg." + req.queryParams.target + " of Antville version " + Root.VERSION);
    return;
 } 
 
