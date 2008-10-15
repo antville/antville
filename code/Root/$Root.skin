@@ -20,7 +20,9 @@ the site owner’s choice than by the software.' %>)</p>
 <p><% gettext "This is the complete list of public sites hosted here, in 
 alphabetical order." %></p>
 <% response.pager %>
+<table border="0" cellspacing="0" cellpadding="1">
 <% response.list prefix="<ul>" suffix="</ul>" %>
+</table>
 <% response.pager %>
 
 <% #notfound %>

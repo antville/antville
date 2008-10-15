@@ -166,14 +166,14 @@ Root.prototype.getPermission = function(action) {
    }
    switch (action) {
       case "debug":
-      case "health":
-      case "mrtg":
       return true;
       case "create":
-return User.require(User.PRIVILEGED);
-      return this.getCreationPermission();
+      return User.require(User.PRIVILEGED); // this.getCreationPermission();
       case "default.hook":
+      case "health":
+      case "mrtg":
       case "sites":
+      case "sitemap.xml":
       case "updates.xml":
       return this.mode !== Site.CLOSED;
    }
@@ -274,11 +274,11 @@ Root.prototype.create_action = function() {
 
 Root.prototype.sites_action = function() {
    res.data.list = renderList(root.sites, 
-         "Site#preview", 10, req.queryParams.page);
+         "$Site#listItem", 25, req.queryParams.page);
    res.data.pager = renderPager(root.sites, 
-         this.href(req.action), 10, req.queryParams.page);
+         this.href(req.action), 25, req.queryParams.page);
    res.data.title = gettext("Sites of {0}", root.title);
-   res.data.body = this.renderSkinAsString("Root#sites");
+   res.data.body = this.renderSkinAsString("$Root#sites");
    root.renderSkin("Site#page");
    return;
 }
@@ -314,6 +314,22 @@ Root.prototype.updates_xml_action = function() {
    var xml = output.outputString(feed);
    res.contentType = "text/xml";
    res.write(xml); //injectXslDeclaration(xml));
+   return;
+}
+
+Root.prototype.sitemap_xml_action = function() {
+   res.contentType = "text/xml";
+   res.writeln('<?xml version="1.0" encoding="UTF-8"?>');
+   res.writeln('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+   this.sites.forEach(function() {
+      res.writeln('<url>');
+      res.writeln('<loc>' + this.href() + '</loc>');
+      if (this.modified) {
+         res.writeln('<lastmod>' + this.modified.format("yyyy-MM-dd") + '</lastmod>');
+      }
+      res.writeln('</url>');
+   });
+   res.writeln('</urlset>');
    return;
 }
 
