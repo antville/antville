@@ -150,7 +150,7 @@ Tag.prototype.checkAccess = function(action, user, level) {
 }
 
 Tag.prototype.getTagged = function() {
-   return this[pluralize(this.type)];
+   return this[pluralize(this.type.toLowerCase())];
 }
 
 Tag.prototype.getTitle = function() {
