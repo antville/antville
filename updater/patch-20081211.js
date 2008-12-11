@@ -26,7 +26,7 @@
 
 global["patch-20081211"] = function() {
    root.forEach(function() {
-      var site = root;
+      var site = this;
       if (site.layout) {
          res.handlers.layout = site.layout;
          res.skinpath = site.layout.getSkinPath();
@@ -34,9 +34,7 @@ global["patch-20081211"] = function() {
          // Fixing the <% if <% comment.created %> %> macro
          var skin = site.layout.skins.getSkin("Comment", "edit");
          var source = skin.getSource();
-         res.debug(123)
-         res.debug(source.contains("<% if <% comment.created %>"))
-         var re = /<%(\s+if\s+<%\s+comment\.creat)ed/g;
+         var re = /(<%\s+if\s+<%\s+comment\.creat)ed/g;
          var newSource = source.replace(re, function() {
             var replacement = arguments[1] + "or";
             app.log(arguments[0] + " ==> " + replacement);
