@@ -378,21 +378,19 @@ HopObject.prototype.link_macro = function(param, url, text) {
 }
 
 HopObject.prototype.created_macro = function(param, format) {
-   format || (format = param.format);
-   if (format && this.created && !this.isTransient()) {
+   if (this.isPersistent()) {
+      format || (format = param.format);
       res.write(formatDate(this.created, format));
-      return;
    }
-   return this.created;
+   return;
 }
 
 HopObject.prototype.modified_macro = function(param, format) {
-   format || (format = param.format);
-   if (format && this.modified && !this.isTransient()) {
+   if (this.isPersistent()) {
+      format || (format = param.format);
       res.write(formatDate(this.modified, format));
-      return;
    }
-   return this.modified;
+   return;
 }
 
 HopObject.prototype.creator_macro = function(param, mode) {

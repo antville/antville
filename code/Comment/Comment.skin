@@ -13,7 +13,7 @@
 
 <% #edit %>
 <% comment.skin $Story#restore %>
-<% if <% comment.created %> is null then 
+<% if <% comment.creator %> is null then 
    <% parent.skin <% parent.type suffix=#comment %> %>
 %>
 <a name="form" id="form"></a>
@@ -28,10 +28,13 @@
    <% comment.textarea text cols="31" rows="10" class="formText" %>
 </p>
 <p class="small">
-   <% comment.creator prefix="Created by " %>
-   <% comment.created prefix=" on " suffix="<br />" %>
-   <% comment.modifier prefix="Last modified by " %>
-   <% comment.modified prefix=" on " %>
+   <% if <% comment.creator %> is null then "" else 
+      <% gettext "Created by {0} on {1}" <% comment.creator %> <% comment.created %> %> 
+   %>
+   <% if <% comment.created %> is <% comment.modified %> then "" else 
+      <% gettext "Last modified by {0} on {1}" <% comment.modifier %>
+      <% comment.modified %> prefix="<br />" %>
+   %>
 </p>
 <p>
    <button type="submit" name="save" value="1"><% gettext Save %></button>

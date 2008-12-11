@@ -31,11 +31,11 @@
 </fieldset></p>
 <p class="small">
    <% if <% story.creator %> is null then "" else 
-      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created short %> %> 
+      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %> 
    %>
    <% if <% story.created %> is <% story.modified %> then "" else 
       <% gettext "Last modified by {0} on {1}" <% story.modifier %>
-      <% story.modified short %> prefix="<br />" %>
+      <% story.modified %> prefix="<br />" %>
    %>
 </p>
 <p>

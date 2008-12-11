@@ -234,6 +234,7 @@ div.box table {
 }
 
 fieldset {
+   width: 360px;
    padding-left: 8px;
    padding-top: 0px;
    margin-top: 6px;
