@@ -98,14 +98,14 @@ convert.images = function() {
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
       
-      execute("insert into image values (null, $IMAGE_ALIAS, " +
+      execute("insert into image values ($IMAGE_ID, $IMAGE_ALIAS, " +
             "$IMAGE_PROTOTYPE, $IMAGE_F_SITE, $IMAGE_F_IMAGE_PARENT, null, " +
             "$metadata, $IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, " +
             "$IMAGE_MODIFYTIME, $IMAGE_F_USER_MODIFIER)", this);
 
       if (this.IMAGE_TOPIC) {
          execute("insert into tag_hub set tag_id = $0, tagged_id = $1, " +
-               "tagged_type = 'Story', user_id = $2", this.id, this.IMAGE_ID, 
+               "tagged_type = 'Image', user_id = $2", this.id, this.IMAGE_ID, 
                this.IMAGE_F_USER_MODIFIER || this.IMAGE_F_USER_CREATOR);
       }
 
@@ -117,7 +117,21 @@ convert.images = function() {
 }
 
 convert.layoutImages = function() {
-   retrieve("select *, i.IMAGE_ALIAS, l.LAYOUT_ALIAS as layoutName, l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, t.IMAGE_HEIGHT as thumbnailHeight, pl.LAYOUT_ALIAS as parentLayout from AV_LAYOUT pl, AV_IMAGE i left join AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID, AV_LAYOUT l left join AV_SITE site on SITE_ID = l.LAYOUT_F_SITE where i.IMAGE_F_LAYOUT = pl.LAYOUT_ID and l.LAYOUT_F_LAYOUT_PARENT = pl.LAYOUT_ID and pl.LAYOUT_F_SITE is null and i.IMAGE_PROTOTYPE = 'LayoutImage' and i.IMAGE_F_IMAGE_PARENT is null and i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE,  AV_LAYOUT, AV_SITE where LAYOUT_ID = IMAGE_F_LAYOUT and SITE_ID = LAYOUT_F_SITE and IMAGE_PROTOTYPE = 'LayoutImage' and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID and SITE_ID = site.SITE_ID) and l.LAYOUT_ID > $min and l.LAYOUT_ID <= $max order by l.LAYOUT_ID");
+   retrieve("select *, i.IMAGE_ALIAS, l.LAYOUT_ALIAS as layoutName, " +
+         "l.LAYOUT_ID as layoutId, t.IMAGE_WIDTH as thumbnailWidth, " +
+         "t.IMAGE_HEIGHT as thumbnailHeight, pl.LAYOUT_ALIAS as " +
+         "parentLayout from AV_LAYOUT pl, AV_IMAGE i left join " +
+         "AV_IMAGE t on i.IMAGE_F_IMAGE_THUMB = t.IMAGE_ID, AV_LAYOUT l " +
+         "left join AV_SITE site on SITE_ID = l.LAYOUT_F_SITE where " +
+         "i.IMAGE_F_LAYOUT = pl.LAYOUT_ID and l.LAYOUT_F_LAYOUT_PARENT = " +
+         "pl.LAYOUT_ID and pl.LAYOUT_F_SITE is null and i.IMAGE_PROTOTYPE " +
+         "= 'LayoutImage' and i.IMAGE_F_IMAGE_PARENT is null and " +
+         "i.IMAGE_ALIAS not in (select IMAGE_ALIAS from AV_IMAGE, " +
+         "AV_LAYOUT, AV_SITE where LAYOUT_ID = IMAGE_F_LAYOUT and " +
+         "SITE_ID = LAYOUT_F_SITE and IMAGE_PROTOTYPE = 'LayoutImage' " +
+         "and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID " +
+         "and SITE_ID = site.SITE_ID) and l.LAYOUT_ID > $min and " +
+         "l.LAYOUT_ID <= $max order by l.LAYOUT_ID");
    
    traverse(function() {
       var metadata = {
@@ -143,8 +157,8 @@ convert.layoutImages = function() {
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
  
-      execute("insert into image values (null, $IMAGE_ALIAS, 'LayoutImage', " +
-            "$SITE_ID, $layoutId, 'Layout', $metadata, " +
+      execute("insert into image values ($IMAGE_ID, $IMAGE_ALIAS, " +
+            "'LayoutImage', $SITE_ID, $layoutId, 'Layout', $metadata, " +
             "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $IMAGE_MODIFYTIME, " +
             "$IMAGE_F_USER_MODIFIER)", this);
 

@@ -51,9 +51,9 @@ select id, xml, metadata from <% param.value1 %> order by id
 
 <% #tagTable %>
 CREATE TABLE IF NOT EXISTS `tag` (
-  `id` int(11) NOT NULL default '0',
+  `id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) default NULL,
-  `site_id` int(11) default NULL,
+  `site_id` int(10) unsigned default NULL,
   `type` enum('Story','Image') default NULL,
   PRIMARY KEY  (`id`),
   KEY `tags` (`site_id`,`type`,`name`(1)),
@@ -66,11 +66,11 @@ CREATE TABLE IF NOT EXISTS `tag` (
 
 <% #tagHubTable %>
 CREATE TABLE IF NOT EXISTS `tag_hub` (
-  `id` int(11) NOT NULL default '0',
-  `tag_id` int(11) default NULL,
-  `tagged_id` int(11) default NULL,
+  `id` int(10) unsigned NOT NULL default '0',
+  `tag_id` int(10) unsigned default NULL,
+  `tagged_id` int(10) unsigned default NULL,
   `tagged_type` enum('Story','Image') default NULL,
-  `user_id` int(11) default NULL,
+  `user_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`),
   KEY `tagged` (`tagged_id`, `tagged_type`),
   KEY `tags` (`tag_id`,`tagged_type`,`tagged_id`)
@@ -79,14 +79,14 @@ CREATE TABLE IF NOT EXISTS `tag_hub` (
 
 <% #log %>
 CREATE TABLE IF NOT EXISTS `log` (
-  `id` int(11) NOT NULL auto_increment,
-  `context_id` mediumint(10) default NULL,
-  `context_type` varchar(20) default NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `context_id` int(10) unsigned default NULL,
+  `context_type` enum('Root','User','Site','Story') default NULL,
   `referrer` mediumtext,
   `action` varchar(255) default NULL,
   `ip` varchar(20) default NULL,
   `created` datetime default NULL,
-  `creator_id` mediumint(10) default NULL,
+  `creator_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`),
   KEY `entries` (`context_type`(5),`action`(5),`created`),
   KEY `requests` (`context_type`(5),`context_id`,created,`action`(5))
@@ -124,7 +124,7 @@ unlock tables;
 alter table AV_FILE rename file;
 lock tables file write;
 alter table file drop index IDX_FILE_F_SITE, drop index IDX_FILE_ALIAS, drop index IDX_FILE_F_USER_CREATOR;
-alter table file add column `metadata` mediumtext, add column `parent_id` mediumint(10), add column `parent_type` varchar(30), add column `prototype` varchar(30);
+alter table file add column `metadata` mediumtext, add column `parent_id` mediumint(10), add column `parent_type` enum('Site'), add column `prototype` varchar(30);
 alter table file change column FILE_ID id mediumint(10), change column FILE_F_SITE site_id mediumint(10), change column FILE_ALIAS name varchar(255), change column FILE_REQUESTCNT requests mediumint(10), change column FILE_CREATETIME created datetime, change column FILE_MODIFYTIME modified datetime, change column FILE_F_USER_CREATOR creator_id mediumint(10), change column FILE_F_USER_MODIFIER modifier_id mediumint(10);
 create index site_id on file (site_id);
 create index creator_id on file (creator_id);
@@ -144,10 +144,12 @@ FILE_DESCRIPTION as description from file order by id
 drop table if exists image;
 #!imageTable
 lock tables AV_IMAGE write, AV_IMAGE as i read, AV_IMAGE as t read, AV_SITE read, AV_SITE as site read, AV_LAYOUT read, AV_LAYOUT as l read, AV_LAYOUT as pl read, image write, tag write, tag_hub write;
-alter table image change id id int(11) not null auto_increment;
+## FIXME: With auto_increment image tags get lost!!! Disabling it.
+## (But beware: this is untested and could lead to other side-effects, e.g. non-unique IDs...)
+#alter table image change id id int(11) not null auto_increment;
 #!layoutImages
 #!images
-alter table image change id id int(11) not null;
+#alter table image change id id int(11) not null;
 create index prototype on image (prototype(10));
 update image set parent_type = 'Site' where prototype = 'Image';
 update image set parent_type = 'Layout' where prototype = 'LayoutImage';
@@ -162,17 +164,17 @@ unlock tables;
 
 <% #imageTable %>
 CREATE TABLE IF NOT EXISTS `image` (
-  `id` mediumint(10) NOT NULL default '0',
+  `id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) default NULL,
   `prototype` varchar(30) default NULL,
-  `site_id` mediumint(10) default NULL,
-  `parent_id` varchar(20) default NULL,
-  `parent_type` varchar(30) default NULL,
+  `site_id` int(10) unsigned default NULL,
+  `parent_id` int(10) unsigned default NULL,
+  `parent_type` enum('Site','Layout') default NULL,
   `metadata` mediumtext,
   `created` datetime default NULL,
-  `creator_id` mediumint(10) default NULL,
+  `creator_id` int(10) unsigned default NULL,
   `modified` datetime default NULL,
-  `modifier_id` mediumint(10) default NULL,
+  `modifier_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`)
 )
 #) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
@@ -331,22 +333,22 @@ unlock tables;
 
 <% #contentTable %>
 CREATE TABLE IF NOT EXISTS `content` (
-  `id` mediumint(10) NOT NULL default '0',
+  `id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) default '',
   `prototype` enum('Story','Comment') default NULL,
-  `site_id` mediumint(10) default NULL,
-  `story_id` mediumint(10) default NULL,
-  `parent_id` mediumint(10) default NULL,
-  `parent_type` varchar(30) default NULL,
-  `requests` mediumint(10) default NULL,
+  `site_id` int(10) unsigned default NULL,
+  `story_id` int(10) unsigned default NULL,
+  `parent_id` int(10) unsigned default NULL,
+  `parent_type` enum('Story','Comment') default NULL,
+  `requests` int(10) unsigned default NULL,
   `status` enum('closed','pending','readonly','public','shared','open') default NULL,
   `mode` enum('hidden','featured') default NULL,
   `comment_mode` enum('closed','readonly','moderated','open') default NULL,
   `metadata` mediumtext,
   `created` datetime default NULL,
-  `creator_id` mediumint(10) default NULL,
+  `creator_id` int(10) unsigned default NULL,
   `modified` datetime default NULL,
-  `modifier_id` mediumint(10) default NULL,
+  `modifier_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`)
 )
 #) ENGINE=MyISAM DEFAULT CHARSET utf8 COLLATE utf8_bin;
