@@ -436,11 +436,9 @@ Site.prototype.search_action = function() {
       res.message = gettext("Please enter a query in the search form.");
       res.data.body = this.renderSkinAsString("Site#search");
    } else {
-      // FIXME: Trying to prepare search string for encoded metadata
-      /*var source = String(search).toSource();
-      search = source.substring(source.indexOf('"') + 1, 
-            source.lastIndexOf('"'));
-      res.debug(search)*/
+      // Prepare search string for metadata: Get source and remove 
+      // '(new String("..."))' wrapper; finally, double all backslashes
+      search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
       var title = '%title:"%' + search + '%"%';
       var text = '%text:"%' + search + '%"%';
       var sql = new Sql();
