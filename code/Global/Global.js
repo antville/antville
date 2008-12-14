@@ -50,6 +50,8 @@ app.data.entries || (app.data.entries = []);
 app.data.mails || (app.data.mails = []);
 app.data.requests || (app.data.requests = {});
 app.data.callbacks || (app.data.callbacks = []);
+app.data.exports || (app.data.exports = []);
+app.data.imports || (app.data.imports = []);
 
 /**
  * Extend the Mail prototype with a method that simply adds a mail object 
@@ -137,6 +139,7 @@ function scheduler() {
    Root.commitRequests();
    Root.invokeCallbacks();
    Root.updateHealth();
+   Root.exportImport();
    helma.Mail.flushQueue();
    return 5000;
 }

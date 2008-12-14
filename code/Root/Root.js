@@ -156,6 +156,18 @@ Root.updateHealth = function() {
    return;
 }
 
+Root.exportImport = function() {
+   if (root.exportImportIsRunning === true) {
+      return;
+   }
+   app.invokeAsync(this, function() {
+      root.exportImportIsRunning = true;
+      Exporter.run();
+      root.exportImportIsRunning = false;
+   }, [], -1);
+   return;
+}
+
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 }
@@ -257,7 +269,7 @@ Root.prototype.create_action = function() {
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
          root.admin.log(site, "Added site");
-         res.message = gettext("Successfully created your site.");   
+         res.message = gettext("Successfully created your site.");
          res.redirect(site.href());
       } catch (ex) {
          res.message = ex;

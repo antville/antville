@@ -94,6 +94,7 @@ var searchEngineFilters = [
    new Antville.Filter("http:\/\/.*search\.msn.*\?", "q"),
    new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
    new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
+   new Antville.Filter("http:\/\/search\.live\.com.*\?", "q")
 ]
 for (var i in referrers) {
    var ref = referrers[i];
@@ -144,6 +145,18 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 using client-side JavaScript code. Thus, you should enable the option to 
 execute JavaScript code in your browser. Otherwise you will only see this 
 information." %>
+
+<% #exportImport %>
+<p class="title">Export Site</p><br />
+<% param.fileUrl prefix='<p><a href="' suffix=<% param.fileDate 
+      prefix='">Download ZIP file</a> <small>(as of ' suffix=')</small></p>' | 
+      format short %> %>
+<br />
+<form action="" method="post">
+<button type="submit" name="submit" value="export">Export</button>
+<a href="?action=run">Run (debug)</a>
+</form>
+
 
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">
