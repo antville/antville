@@ -163,6 +163,7 @@ Root.exportImport = function() {
    app.invokeAsync(this, function() {
       root.exportImportIsRunning = true;
       Exporter.run();
+      Importer.run();
       root.exportImportIsRunning = false;
    }, [], -1);
    return;
@@ -180,6 +181,7 @@ Root.prototype.getPermission = function(action) {
       case "debug":
       return true;
       case "create":
+      case "import":
       return User.require(User.PRIVILEGED); // this.getCreationPermission();
       case "default.hook":
       case "health":
@@ -250,7 +252,6 @@ Root.prototype.create_action = function() {
    if (req.postParams.create) {
       try {
          site.update(req.postParams);
-         site.layout = new Layout(site);
 
          // FIXME: This copies the root layout to a new site causing macro errors
          /* var copy = function(source, destination) {
@@ -381,6 +382,40 @@ Root.prototype.health_action = function() {
    res.data.title = "Health of " + root.getTitle();
    res.data.body = this.renderSkinAsString("$Root#health", param);
    this.renderSkin("Site#page");
+}
+
+Root.prototype.import_action = function() {
+   res.debug(app.data.imports.toSource())
+   var baseDir = this.getStaticFile();
+   var importDir = new java.io.File(baseDir, "import");
+   if (req.postParams.submit === "import") {
+      var data = req.postParams;
+      try {
+         if (!data.file) {
+            throw Error(gettext("Please choose a ZIP file to import"));
+         }
+         var site = new Site;
+         site.update({name: data.name});
+         site.members.add(new Membership(session.user, Membership.OWNER));
+         root.add(site);
+         Importer.add(new java.io.File(importDir, data.file), 
+             site, session.user);
+         res.redirect(this.href(req.action));
+      } catch (ex) {
+         res.message = ex.toString();
+         app.log(ex.toString());
+      }
+   }
+
+   res.push();
+   for each (var file in importDir.listFiles()) {
+      if (file.toString().endsWith(".zip")) {
+         this.renderSkin("$Root#importItem", {file: file.getName()});
+      }
+   }
+   res.data.body = this.renderSkinAsString("$Root#import", {list: res.pop()});
+   this.renderSkin("Site#page");
+   return;
 }
 
 Root.prototype.mrtg_action = function() {

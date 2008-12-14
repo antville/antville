@@ -1,10 +1,6 @@
 var Exporter = {}
 
 Exporter.run = function() {
-   writeln("Running Exporter")
-
-   for (var i=0; i<10000000; i+=1) { }
-
    var exportXml = function(object, fname) {
       var result = new HopObject;
       for (var key in object) {
@@ -45,17 +41,6 @@ Exporter.run = function() {
          exportXml(this);
       });
    
-      dir = new java.io.File(exportDir, "images");
-      dir.mkdirs();
-      site.images.forEach(function() {
-         exportXml(this);
-         try {
-            zip.add(this.getFile(), "images");
-         } catch (ex) {
-            res.debug(ex)
-         }
-      });
-   
       dir = new java.io.File(exportDir, "files");
       dir.mkdirs();
       site.files.forEach(function() {
@@ -67,6 +52,18 @@ Exporter.run = function() {
          }
       });
       
+      dir = new java.io.File(exportDir, "images");
+      dir.mkdirs();
+      site.images.forEach(function() {
+         exportXml(this);
+         try {
+            zip.add(this.getFile(), "images");
+            zip.add(this.getThumbnailFile(), "images");
+         } catch (ex) {
+            res.debug(ex)
+         }
+      });
+   
       zip.add(exportDir);
       zip.save(new java.io.File(baseDir, site.name + "-export.zip"));
       exportDir.removeDirectory();

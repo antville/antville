@@ -127,7 +127,6 @@ Site.prototype.getPermission = function(action) {
 
       case "edit":
       case "export":
-      case "import":
       case "referrers":
       return Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
@@ -222,6 +221,7 @@ Site.prototype.update = function(data) {
       } else if (data.name !== root.getAccessName(data.name)) {
          throw Error(gettext("There already is a site with this name."));
       }
+      this.layout = new Layout(this);
       this.name = data.name;
       this.title = data.title || data.name;
       return;
@@ -519,169 +519,8 @@ Site.prototype.export_action = function() {
       fileUrl: zip.exists() ? this.getStaticUrl(zip.getName()) : null,
       fileDate: new Date(zip.lastModified())
    }
-   res.data.body = this.renderSkinAsString("$Site#exportImport", param);
+   res.data.body = this.renderSkinAsString("$Site#export", param);
    this.renderSkin("Site#page");
-   return;
-   
-   return;
-   
-   var dir = baseDir = new java.io.File(this.getStaticFile("export.temp"));
-
-   var exportXml = function(object, name) {
-      var result = new HopObject;
-      for (var key in object) {
-         result.version = Root.VERSION;
-         result.origin = object.href();
-         result.origin_id = object._id;
-         var value = object[key];
-         if (!value || (value._id && value.constructor !== User)) {
-            continue;
-         }
-         if (value.constructor === User) {
-            result[key] = value.name;
-         } else {
-            result[key] = value;
-         }
-      }
-      Xml.write(result, new java.io.File(dir, (name || object._id) + ".xml"));
-      return;
-   }
-   
-   dir.mkdirs();
-   exportXml(this, "site");
-
-   var zip = new helma.Zip();
-
-   dir = new java.io.File(baseDir, "stories");
-   dir.mkdirs();
-   this.stories.forEach(function() {
-      exportXml(this);
-   });
-
-   dir = new java.io.File(baseDir, "images");
-   dir.mkdirs();
-   this.images.forEach(function() {
-      exportXml(this);
-      try {
-         zip.add(this.getFile(), "images");
-      } catch (ex) {
-         res.debug(ex)
-      }
-   });
-
-   dir = new java.io.File(baseDir, "files");
-   dir.mkdirs();
-   this.files.forEach(function() {
-      exportXml(this);
-      try {
-         zip.add(this.getFile(), "files");
-      } catch (ex) {
-         res.debug(ex)
-      }
-   });
-   
-   zip.add(baseDir);
-
-   // Unzip to debug
-   dir = new java.io.File("/Users/tobi/Desktop/export/");
-   dir.mkdirs();
-   zip.save(dir + "/export.zip");
-   new helma.Zip(dir + "/export.zip").extractAll(dir);
-
-   res.contentType = "application/zip";
-   res.setHeader("Content-Disposition", 
-         "attachment; filename=" + this.name + "-export.zip");
-   res.writeBinary(zip.getData());
-   return;
-}
-
-Site.prototype.import_action = function() {
-   var site = this;
-   
-   HopObject.remove(site.stories);
-   HopObject.remove(site.images);
-   HopObject.remove(site.files)
-
-   var baseDir = dir = new java.io.File(this.getStaticFile(), "import.temp");
-   var zip = new helma.Zip("/Users/tobi/Desktop/www-export.zip");
-   zip.extractAll(dir);
-
-   var importXml = function(name, target, callback) {
-      var object = Xml.read(new java.io.File(dir, name));
-      for (var key in object) {
-         if (key !== "creator" && key !== "modifier") {
-            if (callback) {
-               callback.call(target, object, key);
-            } else {
-               target[key] = object[key];
-            }
-         }
-      }
-      target.creator = session.user;
-      target.modifier = session.user;
-   }
-   
-   importXml("site.xml", this, function(object, key) {
-      if (key !== "name") {
-         this[key] = object[key];
-      }
-   });
-
-   this.invalidate();
-
-   dir = new java.io.File(baseDir, "stories");
-   for each (var file in dir.listFiles()) {
-      if (file.toString().endsWith(".xml")) {
-         var object = Xml.read(file);
-         object.site = site;
-         object.creator = object.modifier = session.user;
-         var story = new Story;
-         for (var key in object) {
-            story[key] = object[key];
-         }
-         site.stories.add(story);
-      }
-   }
-
-   dir = new java.io.File(baseDir, "images");
-   for each (var file in dir.listFiles()) {
-      if (file.toString().endsWith(".xml")) {
-         var object = Xml.read(file);
-         object.parent = site;
-         object.creator = object.modifier = session.user;
-         var image = new Image;
-         for (var key in object) {
-            image[key] = object[key];
-         }
-         site.images.add(image);
-         file["delete"]();
-      }
-   }
-   // Move images directory to final destination
-   var dest = site.getStaticFile("images");
-   dest.removeDirectory();
-   (new helma.File(dir)).renameTo(dest);
-   
-   dir = new java.io.File(baseDir, "files");
-   for each (var file in dir.listFiles()) {
-      if (file.toString().endsWith(".xml")) {
-         var object = Xml.read(file);
-         object.site = site;
-         object.creator = object.modifier = session.user;
-         var avFile = new File;
-         for (var key in object) {
-            avFile[key] = object[key];
-         }
-         site.files.add(avFile);
-         file["delete"]();
-      }
-   }
-   // Move files directory to final destination
-   dest = site.getStaticFile("files");
-   dest.removeDirectory();
-   (new helma.File(dir)).renameTo(dest);
-   
-   site.getStaticFile("import.temp").removeDirectory();
    return;
 }
 

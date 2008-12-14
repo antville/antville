@@ -114,7 +114,21 @@ was not found on this server!</p>
 </tr>
 </table>
 
+<% #import %>
+<div class="title">Import site data</div>
+<form method="post">
+<% param.list %>
+<div>Site name: <input type="text" name="name" value="<% request.name %>" /></div>
+<button type="submit" name="submit" value="import">Import</button>
+</form>
 
+<% #importItem %>
+<div>
+   <input type="radio" id="<% param.file %>" name="file" 
+         value="<% param.file %>" <% if <% request.file %> is 
+         <% param.file %> then 'checked="checked"' %> />
+   <label for="<% param.file %>"><% param.file %></label>
+</div>
 
 
 <% #FIXME %>

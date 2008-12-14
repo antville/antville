@@ -75,7 +75,7 @@ Membership.prototype.getPermission = function(action) {
       case "edit":
       return this.creator !== session.user;
       case "delete":
-      return this.role !== Membership.OWNER;
+      return this.role !== Membership.OWNER || User.require(User.PRIVILEGED);
    }
    return false;
 }

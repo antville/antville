@@ -95,7 +95,7 @@ var searchEngineFilters = [
    new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
    new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
    new Antville.Filter("http:\/\/search\.live\.com.*\?", "q")
-]
+];
 for (var i in referrers) {
    var ref = referrers[i];
    var text = ref.text;
@@ -146,17 +146,14 @@ using client-side JavaScript code. Thus, you should enable the option to
 execute JavaScript code in your browser. Otherwise you will only see this 
 information." %>
 
-<% #exportImport %>
-<p class="title">Export Site</p><br />
+<% #export %>
+<p class="title">Export Site Data</p><br />
 <% param.fileUrl prefix='<p><a href="' suffix=<% param.fileDate 
-      prefix='">Download ZIP file</a> <small>(as of ' suffix=')</small></p>' | 
-      format short %> %>
-<br />
+      prefix='">Download ZIP file</a> <small>(as of ' 
+      suffix=')</small></p><br />' | format short %> %>
 <form action="" method="post">
-<button type="submit" name="submit" value="export">Export</button>
-<a href="?action=run">Run (debug)</a>
+<button type="submit" name="submit" value="export">Start</button>
 </form>
-
 
 <% #edit %>
 <form id="prefs" method="post" action="<% response.action %>">
