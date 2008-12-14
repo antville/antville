@@ -248,8 +248,7 @@ Image.prototype.tags_macro = function() {
 }
 
 Image.prototype.contentLength_macro = function() {
-   res.write((this.contentLength / 1024).format("###,###") + " KB");
-   return;
+   return res.write((this.contentLength / 1024).format("###,###") + " KB");
 }
 
 Image.prototype.url_macro = function() {

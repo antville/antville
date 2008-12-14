@@ -17,9 +17,9 @@ proceed.' %></p>
 <% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that on {0} user {1} published the
-{2} "{3}" [1].' <% this.modified short %> <% this.modifier %> 
-<% this.kind %> <% this.title %> %>
+<% gettext 'This message wants to inform you that on {0} user {1} published a
+new {2} [1].' <% this.modified short %> <% this.modifier %> 
+<% this.kind %> %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
@@ -31,9 +31,9 @@ proceed.' %></p>
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that on {0} user {1} modified the
-{2} "{3}" [1].' <% this.modified short %> <% this.modifier %> 
-<% this.kind %> <% this.title %> %>
+<% gettext 'This message wants to inform you that on {0} user {1} modified 
+{2} #{3} [1].' <% this.modified short %> <% this.modifier %> 
+<% this.kind %> <% this.id %> %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>

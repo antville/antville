@@ -327,7 +327,7 @@ Story.prototype.link_macro = function(param, action, text) {
 Story.prototype.summary_macro = function(param) {
    param.limit || (param.limit = 15);
    var keys, summary;
-   if (arguments > 1) {
+   if (arguments.length > 1) {
       res.push();
       var content;
       for (var i=1; i<arguments.length; i+=1) {
