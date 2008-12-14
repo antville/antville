@@ -38,7 +38,7 @@ Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor",
       
 Membership.remove = function(membership) {
    if (membership && membership.constructor === Membership) {
-      if (!membership.getPermission("delete")) {
+      if (!membership.getPermission("delete") && !User.require(User.PRIVILEGED)) {
          throw Error(gettext("Sorry, an owner of a site cannot be removed."));
       }
       var recipient = membership.creator.email;
@@ -75,7 +75,7 @@ Membership.prototype.getPermission = function(action) {
       case "edit":
       return this.creator !== session.user;
       case "delete":
-      return this.role !== Membership.OWNER || User.require(User.PRIVILEGED);
+      return this.role !== Membership.OWNER;
    }
    return false;
 }
