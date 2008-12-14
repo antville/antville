@@ -56,9 +56,11 @@ Importer.run = function() {
             throw Error("Invalid collection name");
          }
          
+         var index = 1;
          var dir = new java.io.File(importDir, name);
-         res.debug(dir)
-         for each (var file in dir.listFiles()) {
+         var list = dir.listFiles();
+         for each (var file in list) {
+            item.status = "importing " + name + ": " + index++ + " of " + list.length;
             if (file.toString().endsWith(".xml")) {
                var object = Xml.read(file);
                object[parent] = site;
@@ -97,14 +99,20 @@ Importer.run = function() {
 }
 
 Importer.add = function(file, site, user) {
-   //if (!app.data.imports[file]) {
-      app.data.imports.push({
+   if (!app.data.imports[file]) {
+      var item = {
          file: file,
          site: site._id,
          user: user._id,
          status: "queued"
-      });
-      return app.data.imports[file] = true; 
-   //}
+      }
+      app.data.imports.push(item);
+      return app.data.imports[file] = item; 
+   }
    return false;
+}
+
+Importer.getStatus = function(file) {
+   var item = app.data.imports[file];
+   return item ? item.status : null;
 }

@@ -400,6 +400,8 @@ Root.prototype.import_action = function() {
          root.add(site);
          Importer.add(new java.io.File(importDir, data.file), 
              site, session.user);
+         res.message = gettext("Queued import of {0} into site »{1}«",
+               data.file, site.name);
          res.redirect(this.href(req.action));
       } catch (ex) {
          res.message = ex.toString();
@@ -410,7 +412,10 @@ Root.prototype.import_action = function() {
    res.push();
    for each (var file in importDir.listFiles()) {
       if (file.toString().endsWith(".zip")) {
-         this.renderSkin("$Root#importItem", {file: file.getName()});
+         this.renderSkin("$Root#importItem", {
+            file: file.getName(),
+            status: Importer.getStatus(file)
+         });
       }
    }
    res.data.body = this.renderSkinAsString("$Root#import", {list: res.pop()});

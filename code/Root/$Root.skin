@@ -127,8 +127,11 @@ was not found on this server!</p>
    <input type="radio" id="<% param.file %>" name="file" 
          value="<% param.file %>" <% if <% request.file %> is 
          <% param.file %> then 'checked="checked"' %> />
-   <label for="<% param.file %>"><% param.file %></label>
+   <label for="<% param.file %>"><% param.file %> <% param.status 
+         prefix=( suffix=) %></label>
 </div>
+
+
 
 
 <% #FIXME %>
