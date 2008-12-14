@@ -16,17 +16,26 @@ Importer.run = function() {
       for (var key in object) {
          switch (key) {
             case "name":
+            case "origin":
+            case "origin_id":
+            case "version":
             break;
             case "creator":
             case "modifier":
             site[key] = user;
             break;
             default:
+            res.debug("Settting " + key + " to " + object[key]);
             site[key] = object[key];
+            res.debug("New value: " + site[key])
          }
       }
       site.creator = user;
       site.modifier = user;
+      
+      // Commit is necessary or the mode is set incorrectly (which is strange)
+      // Invalidate is necessary to immediately apply metadata values
+      res.commit();
       site.invalidate();
       
       var importCollection = function(name) {
