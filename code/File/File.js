@@ -177,11 +177,11 @@ File.prototype.contentLength_macro = function(param) {
 }
 
 File.prototype.getFile = function() {
-   var site = this.parent || res.handlers.site;
+   var site = this.site || res.handlers.site;
    return site.getStaticFile("files/" + this.fileName);
 }
 
 File.prototype.getUrl = function() {
-   var site = this.parent || res.handlers.site;
+   var site = this.site || res.handlers.site;
    return site.getStaticUrl("files/" + this.fileName);
 }

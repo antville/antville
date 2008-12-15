@@ -26,10 +26,12 @@ Exporter.run = function() {
       var site = Site.getById(item.site);
       delete app.data.exports[site.name];
 
-      res.debug(site)
       var baseDir = site.getStaticFile();
       var dir = exportDir = new helma.File(baseDir, "export.temp");
    
+      var log = new helma.File(exportDir, "export.log");
+      log.open();
+
       exportDir.makeDirectory();
       exportXml(site, "site.xml");
    
@@ -48,7 +50,7 @@ Exporter.run = function() {
          try {
             zip.add(this.getFile(), "files");
          } catch (ex) {
-            res.debug(ex)
+            log.writeln(ex);
          }
       });
       
@@ -60,10 +62,12 @@ Exporter.run = function() {
             zip.add(this.getFile(), "images");
             zip.add(this.getThumbnailFile(), "images");
          } catch (ex) {
-            res.debug(ex)
+            log.writeln(ex);
          }
       });
-   
+
+      log.close();
+
       zip.add(exportDir);
       zip.save(new java.io.File(baseDir, site.name + "-export.zip"));
       exportDir.removeDirectory();
