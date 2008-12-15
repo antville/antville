@@ -29,7 +29,7 @@ Exporter.run = function() {
       var baseDir = site.getStaticFile();
       var dir = exportDir = new helma.File(baseDir, "export.temp");
    
-      var log = new helma.File(exportDir, "export.log");
+      var log = new helma.File(exportDir, "error.log");
       log.open();
 
       exportDir.makeDirectory();
