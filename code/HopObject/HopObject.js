@@ -34,26 +34,18 @@ HopObject.remove = function(collection) {
 }
 
 HopObject.getFromPath = function(name, collection) {
-   // FIXME: Still working around Helma bug #625
-   // http://helma.org/bugs/show_bug.cgi?id=625
-   var translate = function(str) {
-      return str.replace(/&([^;]*);/g, function(s, $1) {
-         switch ($1) {
-            case "amp": return "&";
-         }
-         return s;
-      })
-   }
-   var site;
-   if (name.contains("/")) {
-      var parts = name.split("/");
-      site = root.get(parts[0]);
-      name = parts[1];
-   } else {
-      site = res.handlers.site;
-   }
-   if (site && site.getPermission("main")) {
-      return site[collection].get(translate(name));
+   if (name) {
+      var site;
+      if (name.contains("/")) {
+         var parts = name.split("/");
+         site = root.get(parts[0]);
+         name = parts[1];
+      } else {
+         site = res.handlers.site;
+      }
+      if (site && site.getPermission("main")) {
+         return site[collection].get(name);
+      }
    }
    return null;
 }
