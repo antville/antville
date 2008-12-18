@@ -425,7 +425,7 @@ function list_macro(param, id, limit) {
          break;
          
          case "tags":
-         return site.tags.list_macro(param, "$Tag#item");
+         return site.tags.list_macro(param, param.skin || "$Tag#preview");
          break;
          
          default:

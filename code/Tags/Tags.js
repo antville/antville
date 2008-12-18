@@ -151,7 +151,7 @@ Tags.prototype.header_macro = function(param) {
 
 Tags.prototype.list_macro = function(param, skin) {
    var page = this.getPage();
-   var size = this.getPageSize();
+   var size = param.limit ? Math.min(param.limit, 100) : this.getPageSize();
    var start = (page - 1) * size;
    var collection = this.get(this.getGroup()).list(start, size);
    // FIXME: ListRenderer should do this
