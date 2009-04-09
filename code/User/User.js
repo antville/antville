@@ -83,7 +83,12 @@ User.prototype.update = function(data) {
    if (!(this.email = validateEmail(data.email))) {
       throw Error(gettext("Please enter a valid e-mail address"));
    }
-   this.url = validateUrl(data.url);
+   
+	if(data.url != "") {
+      if (!(this.url = validateUrl(data.url))) {
+        throw Error(gettext("Please enter a valid URL"));
+      }
+   }
    return this;
 }
 
@@ -136,8 +141,8 @@ User.getSalt = function() {
 User.register = function(data) {
    // check if username is existing and is clean
    // can't use isClean() here because we accept
-   // special characters like umlauts and spaces
-   var invalidChar = new RegExp("[^a-zA-Z0-9����\\.\\-_ ]");
+   // special characters like . - and space
+   var invalidChar = new RegExp("[^a-zA-Z0-9\\.\\-_ ]");
    if (!data.name) {
       throw Error(gettext("Please enter a username."));
    } else if (data.name.length > 30) {
