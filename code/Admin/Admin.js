@@ -125,7 +125,7 @@ Admin.prototype.log_action = function() {
 Admin.prototype.sites_action = function() {
    if (req.postParams.search || req.postParams.filter) {
       session.data.admin.filterSites(req.postParams);
-   } else if (req.postParams.action = "delete" && req.postParams.id) {
+   } else if (req.postParams.action == "delete" && req.postParams.id) {
       var site = Site.getById(req.postParams.id);
       try {
          Site.remove(site);
