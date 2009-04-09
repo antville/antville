@@ -3,7 +3,6 @@
 $(function() {
    if ("<% image.fileName %>") {
       $(".name").hide();
-      $(".resize").hide();
    } else {
       $("#image").hide();
    }
@@ -12,12 +11,13 @@ $(function() {
    }
 });
 </script>
-<p class="storyTitle"><% response.title %></p><br />
-<div id="image" style="width: 100px; overflow: hidden; float: left; margin-right: 10px">
+<div id="image" style="width: 100px; margin: 0px 10px 10px 0px; float: left;">
    <% image.thumbnail %>
 </div>
+
+<p class="storyTitle"><% response.title %></p><br />
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
-<table border="0" width="400" cellspacing="0" cellpadding="3">
+<table border="0" width="400" cellspacing="0" cellpadding="3" style="clear: both;">
 <tr>
 <td class="small"><% gettext "File" suffix=: %></td>
 <td><% image.upload file %></td>
