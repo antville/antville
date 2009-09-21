@@ -593,6 +593,7 @@ Site.prototype.referrers_macro = function() {
    sql.traverse(function() {
       if (this.requests && this.referrer) {
          this.text = encode(this.referrer.head(50));
+         this.referrer = encode(this.referrer);
          self.renderSkin("$Site#referrer", this);
       }
    });

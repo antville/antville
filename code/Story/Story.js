@@ -408,6 +408,7 @@ Story.prototype.referrers_macro = function(param, limit) {
    sql.traverse(function() {
       if (n < limit && this.requests && this.referrer) {
          this.text = encode(this.referrer.head(50));
+         this.referrer = encode(this.referrer);
          self.renderSkin("$Story#referrer", this);
       }
       n += 1;
