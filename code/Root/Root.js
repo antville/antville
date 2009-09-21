@@ -157,14 +157,14 @@ Root.updateHealth = function() {
 }
 
 Root.exportImport = function() {
-   if (root.exportImportIsRunning === true) {
+   if (app.data.exportImportIsRunning) {
       return;
    }
    app.invokeAsync(this, function() {
-      root.exportImportIsRunning = true;
+      app.data.exportImportIsRunning = true;
       Exporter.run();
       Importer.run();
-      root.exportImportIsRunning = false;
+      app.data.exportImportIsRunning = false;
    }, [], -1);
    return;
 }
@@ -253,19 +253,18 @@ Root.prototype.create_action = function() {
       try {
          site.update(req.postParams);
 
-         // FIXME: This copies the root layout to a new site causing macro errors
-         /* var copy = function(source, destination) {
+         var copy = function(source, target) {
             source.list().forEach(function(name) {
                var file = new helma.File(source, name);
                if (file.isDirectory()) {
-                  copy(file, new helma.File(destination, name));
+                  copy(file, new helma.File(target, name));
                } else {
-                  destination.makeDirectory();
-                  file.hardCopy(new helma.File(destination, name));
+                  target.makeDirectory();
+                  file.hardCopy(new helma.File(target, name));
                }
             })
          }
-         copy(root.layout.getFile(), site.layout.getFile()); */
+         copy(root.layout.getFile(), site.layout.getFile());
 
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
