@@ -1,4 +1,0 @@
-antville.url = jdbc:mysql://localhost/antville
-antville.driver = com.mycsql.jdbc.Driver
-antville.user = antville
-antville.password = antville
