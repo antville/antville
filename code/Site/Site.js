@@ -368,9 +368,9 @@ Site.prototype.getXml = function(collection) {
       if (item.text) {
          // FIXME: Work-around for "story" handlers in comment skins
          // (Obsolete as soon as "story" handlers are replaced with "this")
-         res.handlers.story = item;
+         //res.handlers.story = item;
          description = new rome.SyndContentImpl();
-         description.setType("text/plain");
+         //description.setType("text/plain");
          description.setValue(item.renderSkinAsString("Story#rss"));
          entry.setDescription(description);
       }
