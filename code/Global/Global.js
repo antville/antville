@@ -599,7 +599,7 @@ function sendMail(sender, recipient, subject, body) {
    if (!recipient || !body) {
       throw Error("Insufficient arguments in method sendMail()");
    }
-   var mail = new helma.Mail();
+   var mail = new helma.Mail(getProperty("smtp", "localhost"), getProperty("smtp.port", "25"));
    mail.setFrom("noreply@antville.org");
    if (recipient instanceof Array) {
       for (var i in recipient) {
