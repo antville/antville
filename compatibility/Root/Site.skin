@@ -1,3 +1,4 @@
 <% #main %>
+<% root.skin Root#welcome %>
 <% // Render the list of updated sites %>
 <% root.skin $Root#main %>

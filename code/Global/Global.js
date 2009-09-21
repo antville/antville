@@ -22,7 +22,7 @@
 // $URL$
 //
 
-app.addRepository(app.dir + "/../lib/rome-0.9.jar");
+app.addRepository(app.dir + "/../lib/rome-1.0.jar");
 app.addRepository(app.dir + "/../lib/jdom.jar");
 app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
 
