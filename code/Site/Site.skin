@@ -11,11 +11,11 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <% site.created long %> %></p>
 
 <% #navigation %>
-<p class="navigation">
+<div class="navigation">
 <div><% site.link . <% gettext Home %> prefix="... " %></div>
 <div><% site.tags.link prefix="... " %></div>
 <div><% site.galleries.link prefix="... " %></div>
-</p>
+</div>
 <p class="navigation">
 <div><% site.stories.link create <% gettext "Add story" %> prefix="... " %></div>
 <div><% site.stories.link prefix="... " %></div>
@@ -32,7 +32,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <div><% site.stories.link top <% gettext "Top stories" %> prefix="... " %></div>
 </p>
 <p class="navigation">
-<% root.title prefix="... " | root.link %>
+<div><% root.title prefix="... " | root.link %></div>
 </p>
 
 <% #search %>

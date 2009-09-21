@@ -1,7 +1,8 @@
 <% #main %>
 <p><% gettext 'Antville is an open source project aimed to the development of an 
 “easy to maintain and use” site hosting system. It’s not limited to just 
-one site, it can easily host up to several hundred or thousand of sites.' %></p> 
+one site, it can easily host up to several hundred or thousand of sites.' %></p>
+<p><% root.link create <% gettext "Click here to create a new site." %> %></p> 
 <p>(<% gettext 'Note: The number of sites is rather limited by server power and 
 the site owner’s choice than by the software.' %>)</p>
 <% gettext "Number of sites hosted here" suffix=: %> <% root.size %><br />
