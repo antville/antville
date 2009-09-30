@@ -168,12 +168,13 @@ HopObject.prototype.notify = function(action) {
 }
 
 HopObject.prototype.getTags = function() {
+   var tags = [];
    if (typeof this.tags === "object") {
-      return this.tags.list().map(function(item) {
-         return item.tag.name;
+      this.tags.list().forEach(function(item) {
+         item.tag && tags.push(item.tag.name);
       });
    }
-   return String.EMPTY;   
+   return tags;
 }
 
 HopObject.prototype.setTags = function(tags) {

@@ -34,6 +34,9 @@ Admin.prototype.constructor = function() {
 }
 
 Admin.prototype.getPermission = function(action) {
+   if (!session.user) {
+      return false;
+   }
    switch (action) {
       case "users":
       if (req.queryParams.id === session.user._id) {

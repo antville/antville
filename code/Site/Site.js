@@ -137,9 +137,11 @@ Site.prototype.getPermission = function(action) {
             !Membership.require(Membership.SUBSCRIBER);
 
       case "unsubscribe":
-      var membership = this.members.get(session.user.name);
-      return User.require(User.REGULAR) && membership && 
-            !membership.require(Membership.OWNER);
+      if (Membership.require(Membership.SUBSCRIBER)) {
+         var membership = Membership.getByName(session.user.name);
+         return User.require(User.REGULAR) && membership && 
+               !membership.require(Membership.OWNER);
+      }
    }
    return false;
 }
@@ -404,6 +406,10 @@ Site.prototype.getXml = function(collection) {
    var output = new rome.SyndFeedOutput();
    //output.output(feed, res.servletResponse.writer); return;
    var xml = output.outputString(feed);
+   // FIXME: Ugly hack for adding PubSubHubbub and rssCloud elements to XML
+   xml = xml.replace("<rss", '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
+   xml = xml.replace("<channel>", '<channel>\n    <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
+   xml = xml.replace("<channel>", '<channel>\n    <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>'); 
    return xml; //injectXslDeclaration(xml);
 }
 
