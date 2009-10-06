@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.0//EN" 
+      "http://tuckey.org/res/dtds/urlrewrite3.0.dtd">
+
+<urlrewrite>
+   <rule enabled="false">
+      <name>
+         Maintenance rule
+      </name>
+      <condition type="remote-addr" operator="notequal">
+         ^127\.0\.0\.1
+      </condition>
+      <from>
+         ^.*
+      </from>
+      <to>
+         /static/www/maintenance.html
+      </to>
+   </rule>
+   
+   <rule enabled="false">
+      <name>
+         Notification rule
+      </name>
+      <condition type="server-name" operator="notequal">
+         ^www.antville.org
+      </condition>
+      <condition type="cookie" name="antville-notification" operator="notequal">
+         ^2008-10-20-notification
+      </condition>
+      <from>
+         ^.*
+      </from>
+      <to>
+         /static/www/notification.html
+      </to>
+      <set type="cookie" name="antville-notification">
+         2008-10-20-notification:.antville.org:1440:/
+      </set>
+   </rule>
+   
+   <rule>
+      <name>
+         Administration rule
+      </name>
+      <condition type="remote-addr">
+         ^127\.0\.0\.1
+      </condition>
+      <from>
+         ^/admin(.*)
+      </from>
+      <to>
+         /admin$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect t4 to m1
+      </name>
+      <condition type="server-name">
+         ^t4\.antville\.org
+      </condition>
+      <from>
+         ^(.*)
+      </from>
+      <to type="permanent-redirect">
+         http://m1.antville.org$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect layout to layouts
+      </name>
+      <condition type="server-name">
+         ^layout\.antville\.org
+      </condition>
+      <from>
+         ^(.*)
+      </from>
+      <to type="permanent-redirect">
+         http://layouts.antville.org$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect project to Google Code
+      </name>
+      <condition type="server-name">
+         ^project\.antville\.org
+      </condition>
+      <from>
+         ^.*
+      </from>
+      <to type="permanent-redirect">
+         http://code.google.com/p/antville/
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Resolve redundant www prefix
+      </name>
+      <condition type="server-name">
+         ^www\.[^.]+\.antville\.org
+      </condition>
+      <from>
+         ^(.*)
+      </from>
+      <to type="permanent-redirect">
+         %{scheme}://${replace:%{server-name}:www.:}$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect legacy goodie URLs
+      </name>
+      <from>
+         ^/gd/(.*)/(.*)
+      </from>
+      <to type="permanent-redirect">
+         /static/$1/files/$2
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect legacy image URLs
+      </name>
+      <from>
+         ^/img/(.*)/(.*)
+      </from>
+      <to type="permanent-redirect">
+         /static/$1/images/$2
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect legacy archive URLs
+      </name>
+      <from>
+         ^/([0-9]{4})([0-9]{2})([0-9]{2})/?
+      </from>
+      <to type="permanent-redirect">
+         /archive/$1/$2/$3/
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Forward static HTML and CGI files
+      </name>
+      <from>
+         ^/(.*\.(?:html|cgi))
+      </from>
+      <to>
+         /$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Forward static files
+      </name>
+      <from>
+         ^/static(.*)
+      </from>
+      <to>
+         /static$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Redirect antville.org to www.antville.org
+      </name>
+      <condition type="server-name">
+         ^antville.org
+      </condition>
+      <from>
+         ^(.*)
+      </from>
+      <to type="permanent-redirect">
+         http://www.antville.org$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Forward www.antville.org to application
+      </name>
+      <condition type="server-name">
+         ^(?:www\.)?antville\.org
+      </condition>
+      <from>
+         ^(.*)
+      </from>
+      <to>
+         /helma/antville$1
+      </to>
+   </rule>
+   
+   <rule>
+      <name>
+         Forward to application
+      </name>
+      <condition type="server-name">
+         ^[^.]+\.antville\.org
+      </condition>
+      <from>
+         ^(.*)
+      </from>
+      <to>
+         /helma/antville/${replace:%{server-name}:.antville.org:}$1
+      </to>
+   </rule>
+</urlrewrite>
