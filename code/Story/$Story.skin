@@ -23,8 +23,7 @@ else <% if <% story.mode %> is hidden then
 <td class="small">
    <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
    <div class="ample"><strong><% gettext Status suffix=: %></strong>
-   <% story.status %><% story.tags link prefix=" in " %>,
-   <% story.comments link %></div>
+   <% story.status %><% story.tags link prefix=" in " %><% story.comments link prefix="; " %></div>
 </td>
 <td rowspan="2" width="10" nowrap="nowrap"> </td>
 <td valign="bottom" rowspan="2" align="right" class="small">

@@ -381,7 +381,18 @@ Story.prototype.comments_macro = function(param, mode) {
    return;
 }
 
-Story.prototype.tags_macro = function() {
+Story.prototype.tags_macro = function(param, arg1) {
+   if (arg1 === "link") {
+      var links = [];
+      this.tags.list().forEach(function(item) {
+         res.push();
+         if (item.tag) {
+            renderLink(param, item.tag.href(), item.tag.name);
+            links.push(res.pop());
+         }
+      });
+      return res.write(links.join(", "));
+   }
    return res.write(this.getFormValue("tags"));
 }
 
