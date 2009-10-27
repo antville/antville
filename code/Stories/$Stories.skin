@@ -19,7 +19,7 @@
 <td rowspan="999"> </td>
 <td class="small"><% gettext Date %></td>
 <td rowspan="999"> </td>
-<td class="small"><% gettext Title %></td>
+<td class="small"><% gettext Summary %></td>
 <td rowspan="999"> </td>
 <td class="small"><% gettext Author %></td>
 </tr>
