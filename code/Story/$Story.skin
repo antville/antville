@@ -3,7 +3,7 @@
 <td align="right" valign="baseline" class="small"><% param.position %></td>
 <td align="right" valign="baseline"><% story.requests %></td>
 <td valign="baseline"><% story.created "yyyy-MM-dd" %></td>
-<td valign="baseline"><% story.summary | story.link %></td>
+<td valign="baseline"><% story.title | default <% story.text | clip 5 %> | story.link  %></td>
 <td valign="baseline"><% story.creator %></td>
 </tr>
 
