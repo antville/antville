@@ -55,6 +55,7 @@ Tag.prototype.getPermission = function(action) {
 Tag.prototype.main_action = function() {
    res.handlers.list = new jala.ListRenderer(this.getTagged());
    res.handlers.list.setPageSize(this.site.pageSize);
+   res.data.title = gettext("Tag {0} of {1}", this.name, res.handlers.site.getTitle());
    res.data.body = this.renderSkinAsString("$Tag#main");
    res.handlers.site.renderSkin("Site#page");
    res.handlers.site.log();

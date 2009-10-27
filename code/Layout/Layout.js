@@ -225,13 +225,12 @@ Layout.prototype.import_action = function() {
          data.images.forEach(function() {
             layout.images.add(new Image(this));
          });
-         res.redirect(this.href());
-         return;
       } catch (ex) {
          res.message = ex;
          app.log(ex);
       }
       res.redirect(this.href());
+      return;
    }
    res.data.title = gettext("Import layout");
    res.data.body = this.renderSkinAsString("$Layout#import");
