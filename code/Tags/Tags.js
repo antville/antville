@@ -36,6 +36,7 @@ Tags.prototype.main_action = function() {
       this.setPage(req.data.page);
       res.redirect(this.href(action));
    }
+   res.data.title = gettext("{0} of {1}", this.getTitle(), res.handlers.site.getTitle());
    res.data.body = this.renderSkinAsString("$Tags#" + req.action);
    res.handlers.site.renderSkin("Site#page");
    return;

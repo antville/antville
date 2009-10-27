@@ -103,7 +103,7 @@ Layout.prototype.main_action = function() {
          app.log(ex);
       }
    }
-   res.data.title = gettext("Layout of site {0}", res.handlers.site.title);
+   res.data.title = gettext("Layout of {0}", res.handlers.site.title);
    res.data.body = this.renderSkinAsString("$Layout#main");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -192,8 +192,6 @@ Layout.prototype.import_action = function() {
          if (!data.upload || data.upload.contentLength === 0) {
             throw Error(gettext("Please upload a layout package."));
          }
-         Layout.remove(this);
-         res.commit();
          // Create destination directory
          var destination = this.getFile();
          destination.makeDirectory();
@@ -208,14 +206,16 @@ Layout.prototype.import_action = function() {
          if (!data.version || data.version !== Root.VERSION) {
             throw Error("Incompatible layout version.");
          }
-         // Backup the current layout if necessary
+         // Backup the current layout if possible
          if (destination.list().length > 0) {
             var timestamp = (new Date).format("yyyyMMdd-HHmmss");
-            var zip = new helma.Zip();
-            zip.add(destination);
+            var zip = this.getArchive(res.skinpath);
             zip.save(this.getFile("../layout-" + timestamp + ".zip"));
-            zip.close();
          }
+         // Remove old layout and replace it with new one
+         Layout.remove(this);
+         res.commit();
+         destination.makeDirectory(); // FIXME: This is in fact necessary again (s. line 197)
          temp.renameTo(destination);
          // Update database with imported data
          layout = this;
@@ -231,6 +231,7 @@ Layout.prototype.import_action = function() {
          res.message = ex;
          app.log(ex);
       }
+      res.redirect(this.href());
    }
    res.data.title = gettext("Import layout");
    res.data.body = this.renderSkinAsString("$Layout#import");

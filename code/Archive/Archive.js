@@ -59,6 +59,7 @@ Archive.prototype.getPermission = function(action) {
 }
 
 Archive.prototype.main_action = function() {
+   res.data.title = "Archive of " + res.handlers.site.getTitle();
    res.data.body = this.renderSkinAsString("Archive#main");
    res.handlers.site.renderSkin("Site#page");
    res.handlers.site.log();

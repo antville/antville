@@ -60,7 +60,7 @@ Skins.prototype.main_action = function() {
    if (!this._parent) {
       res.redirect(res.handlers.layout.skins.href());
    }
-   res.data.title = gettext("Custom skins of {0}", this._parent.title);
+   res.data.title = gettext("Basic skins of {0}", res.handlers.site.title);
    res.data.list = this.renderSkinAsString("$Skins#basic");
    res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
@@ -149,7 +149,7 @@ Skins.prototype.create_action = function() {
 }
 
 Skins.prototype.modified_action = function() {
-   res.data.title = gettext("Modified skins of {0}", this._parent.title);
+   res.data.title = gettext("Modified skins of {0}", res.handlers.site.title);
    res.push();
    this.modified.forEach(function() {
       this.renderSkin("$Skin#listItem");
