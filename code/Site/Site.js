@@ -373,7 +373,10 @@ Site.prototype.getXml = function(collection) {
          //res.handlers.story = item;
          description = new rome.SyndContentImpl();
          //description.setType("text/plain");
-         description.setValue(item.renderSkinAsString("Story#rss"));
+         // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters 
+         description.setValue(item.renderSkinAsString("Story#rss").replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
+            return "&#" + c.charCodeAt(0) + ";";
+         }));
          entry.setDescription(description);
       }
       entries.add(entry);
