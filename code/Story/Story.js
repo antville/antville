@@ -86,7 +86,7 @@ Story.prototype.getPermission = function(action) {
 }
 
 Story.prototype.main_action = function() {
-   res.data.title = this.getTitle(15);
+   res.data.title = this.getTitle(5);
    res.data.body = this.renderSkinAsString("Story#main");
    this.site.renderSkin("Site#page");
    this.site.log();
@@ -237,12 +237,15 @@ Story.prototype.getFormValue = function(name) {
 
 Story.prototype.getFormOptions = function(name) {
    switch (name) {
+      case "commentMode":
+      return Story.getCommentModes();
       case "mode":
       return Story.getModes();
       case "status":
       return Story.getStatus();
-      case "commentMode":
-      return Story.getCommentModes();
+      case "tags":
+      // FIXME: This could become a huge select element...
+      return [];
    }
    return;
 }
