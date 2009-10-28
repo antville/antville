@@ -284,11 +284,17 @@ Root.prototype.create_action = function() {
 }
 
 Root.prototype.sites_action = function() {
-   res.data.list = renderList(root.sites, 
+   var now = new Date;
+   if (!this.cache.sites || (now - this.cache.sites.modified > Date.ONEHOUR)) {
+      var sites = this.sites.list();
+      sites.sort(new String.Sorter("title"));
+      this.cache.sites = {list: sites, modified: now};
+   }
+   res.data.list = renderList(this.cache.sites.list, 
          "$Site#listItem", 25, req.queryParams.page);
-   res.data.pager = renderPager(root.sites, 
+   res.data.pager = renderPager(this.cache.sites.list, 
          this.href(req.action), 25, req.queryParams.page);
-   res.data.title = gettext("Sites of {0}", root.title);
+   res.data.title = gettext("Public sites of {0}", root.title);
    res.data.body = this.renderSkinAsString("$Root#sites");
    root.renderSkin("Site#page");
    return;

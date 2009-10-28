@@ -1,24 +1,24 @@
 <% #main %>
-<p><% gettext 'Antville is an open source project aimed to the development of an 
-“easy to maintain and use” site hosting system. It’s not limited to just 
-one site, it can easily host up to several hundred or thousand of sites.' %></p>
-<p><% root.link create <% gettext "Click here to create a new site." %> %></p> 
-<p>(<% gettext 'Note: The number of sites is rather limited by server power and 
-the site owner’s choice than by the software.' %>)</p>
-<% gettext "Number of sites hosted here" suffix=: %> <% root.size %><br />
-<% gettext "Publicly accessible sites" suffix=: %> <% root.sites.size %>
+<p><% gettext 'Antville is an open source project aimed to the development of a
+simple site hosting system with many advanced 
+<a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
+<p><% gettext 'One Antville installation can easily host up to several thousands of {0}.'
+<% site.link sites <% gettext sites %> %> %></p>
+<p><% site.link create <% gettext "Create a site. It only takes a few clicks." %> %></p>
 <p>
+<% gettext "Total sites hosted here" suffix=: %> <% root.size %><br />
+<% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+</p>
 <table border="0" cellpadding="1" cellspacing="0">
 <colgroup>
-   <col width="150">
-   <col width="*">
+   <col width="150" />
+   <col width="*" />
 </colgroup>
 <% root.loop updates skin=$Site#listItem limit=25 %>
 </table>
-</p>
 
 <% #sites %>
-<p><% gettext "This is the complete list of public sites hosted here, in 
+<p><% gettext "This is the directory of public sites hosted here, in 
 alphabetical order." %></p>
 <% response.pager %>
 <table border="0" cellspacing="0" cellpadding="1">
