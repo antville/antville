@@ -223,7 +223,7 @@ information." %>
 </tr>
 <tr>
 <td class="small" valign="top">Enter one 
-<a href="http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions">filter pattern</a> 
+<a href="http://en.wikipedia.org/wiki/Regular_expression">filter pattern</a> 
 per line to be applied on every URL in the referrer and backlink lists.</td>
 <td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
 </tr>
