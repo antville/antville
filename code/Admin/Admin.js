@@ -126,10 +126,8 @@ Admin.prototype.log_action = function() {
 }
 
 Admin.prototype.sites_action = function() {
-   if (req.isPost()) {
-      if (req.postParams.search || req.postParams.filter) {
-         session.data.admin.filterSites(req.postParams);
-      } else if (req.postParams.remove === "1" && req.postParams.id) {
+   if (req.postParams.id) {
+      if (req.postParams.remove === "1") {
          var site = Site.getById(req.postParams.id);
          try {
             Site.remove(site);
@@ -139,12 +137,17 @@ Admin.prototype.sites_action = function() {
          } catch (err) {
             res.message = err.toString();
          }
-      } else if (req.postParams.save) {
+      } else if (req.postParams.save === "1") {
          this.updateSite(req.postParams);
          res.message = gettext("The changes were saved successfully.");
       }
       res.redirect(this.href(req.action) + "?page=" + req.postParams.page + 
             "#" + req.postParams.id);
+      return;
+   }
+   
+   if (req.postParams.search || req.postParams.filter) {
+      session.data.admin.filterSites(req.postParams);
    } else if (req.queryParams.id) {
       res.meta.item = Site.getById(req.queryParams.id);
    }
