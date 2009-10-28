@@ -187,7 +187,6 @@ Root.prototype.getPermission = function(action) {
       case "health":
       case "mrtg":
       case "sites":
-      case "sitemap.xml":
       case "updates.xml":
       return this.mode !== Site.CLOSED;
    }
@@ -329,6 +328,10 @@ Root.prototype.updates_xml_action = function() {
    return;
 }
 
+/**
+ * Sitemap for Google Webmaster Tools
+ * (Unfortunately, utterly useless.)
+ */
 Root.prototype.sitemap_xml_action = function() {
    res.contentType = "text/xml";
    res.writeln('<?xml version="1.0" encoding="UTF-8"?>');
