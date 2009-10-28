@@ -45,6 +45,7 @@ Layout.remove = function(layout) {
       Images.remove.call(layout.images);
       layout.getFile().removeDirectory();
    }
+   layout.remove();
    return;
 }
 

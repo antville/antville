@@ -126,21 +126,23 @@ Admin.prototype.log_action = function() {
 }
 
 Admin.prototype.sites_action = function() {
-   if (req.postParams.search || req.postParams.filter) {
-      session.data.admin.filterSites(req.postParams);
-   } else if (req.postParams.action == "delete" && req.postParams.id) {
-      var site = Site.getById(req.postParams.id);
-      try {
-         Site.remove(site);
-         res.message = gettext("The site {0} was removed successfully.",
-               site.name);
-         res.redirect(this.href(req.action) + "?page=" + req.postParams.page);
-      } catch (err) {
-         res.message = err.toString();
+   if (req.isPost()) {
+      if (req.postParams.search || req.postParams.filter) {
+         session.data.admin.filterSites(req.postParams);
+      } else if (req.postParams.remove === "1" && req.postParams.id) {
+         var site = Site.getById(req.postParams.id);
+         try {
+            Site.remove(site);
+            res.message = gettext("The site {0} was removed successfully.",
+                  site.name);
+            res.redirect(this.href(req.action) + "?page=" + req.postParams.page);
+         } catch (err) {
+            res.message = err.toString();
+         }
+      } else if (req.postParams.save) {
+         this.updateSite(req.postParams);
+         res.message = gettext("The changes were saved successfully.");
       }
-   } else if (req.postParams.save) {
-      this.updateSite(req.postParams);
-      res.message = gettext("The changes were saved successfully.");
       res.redirect(this.href(req.action) + "?page=" + req.postParams.page + 
             "#" + req.postParams.id);
    } else if (req.queryParams.id) {
