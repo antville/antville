@@ -182,7 +182,7 @@ Root.prototype.getPermission = function(action) {
       return true;
       case "create":
       case "import":
-      return User.require(User.PRIVILEGED); // this.getCreationPermission();
+      return this.getCreationPermission();
       case "default.hook":
       case "health":
       case "mrtg":
