@@ -17,7 +17,7 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <% gettext "To create a new site you need to fill out the form below." %>
 <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
 enter “{0}” as the name, your site will be reachable via the url {1}'
-foo <% root.href prefix=<code> suffix=foo</code> %> %></p>
+<% example.name %> <% example.href prefix=<code> suffix=</code> %> %></p>
 <p><% gettext "Please note that you cannot change the name after the site was 
 created." %></p>
 <p><% gettext "The title will appear in the header of every page of your site. 

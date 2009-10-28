@@ -276,6 +276,8 @@ Root.prototype.create_action = function() {
       }
    }
 
+   res.handlers.example = new Site;
+   res.handlers.example.name = "foo";
    res.data.action = this.href(req.action);
    res.data.title = gettext("Create a new site");
    res.data.body = site.renderSkinAsString("$Site#create");
