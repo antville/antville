@@ -148,7 +148,10 @@ Layout.prototype.update = function(data) {
 Layout.prototype.reset_action = function() {
    if (req.data.proceed) {
       try {
+         var site = this.site;
          Layout.remove.call(this);
+         // FIXME: The layout is now removed from DB and a new one needs to be added
+         site.layout = new Layout(site);
          var skinFiles = app.getSkinfilesInPath(res.skinpath);
          var content, file;
          for (var name in skinFiles) {
