@@ -7,6 +7,9 @@ code/Api/Api.blogger.js -text
 code/Choice/$Choice.skin -text
 code/Poll/$Poll.skin -text
 code/TagHub/$TagHub.skin -text
+i18n/antville.pot -text
+i18n/de.po -text
+i18n/en.po -text
 lib/itunes-0.4.jar -text svneol=unset#application/x-compressed
 lib/jdom.jar -text svneol=unset#application/x-compressed
 lib/opml-0.1.jar -text svneol=unset#application/x-compressed
