@@ -56,10 +56,11 @@ Site.remove = function(site) {
    HopObject.remove(site.images);
    HopObject.remove(site.files);
    HopObject.remove(site.polls);
-   Layout.remove.call(site.layout);
+   site.layout && Layout.remove.call(site.layout);
    site.getStaticFile().removeDirectory();
-   root.admin.log(site, "Removed site");
    site.remove();
+   // FIXME: There is a problem in the log structure for a deleted site
+   root.admin.log(root, "Removed site " + site.name);
    return;
 }
 
