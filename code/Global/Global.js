@@ -40,9 +40,12 @@ app.addRepository("modules/helma/Zip.js");
 
 app.addRepository("modules/jala/code/Date.js");
 app.addRepository("modules/jala/code/HopObject.js");
-app.addRepository("modules/jala/code/I18n.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
+
+app.addRepository(app.dir + "/../i18n/messages.en.js");
+app.addRepository(app.dir + "/../i18n/messages.de.js");
+app.addRepository("modules/jala/code/I18n.js"); // Pls. test before moving around!
 
 // FIXME: Overwriting some String patterns and methods with more reliable ones
 /*
