@@ -1,21 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# I18n template for the translation of Antville.
+# Copyright (C) 2009 by The Antville People
+# This file is distributed under the same license as the Antville package.
+# Tobi Schäfer <interface@p3k.org>, 2009.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Antville.org 1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-30 23:12+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2009-10-31 01:21+0100\n"
+"Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
+"Language-Team: The Antville People <antville-dev@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:42
 msgid "\"ÄÖÜß\""
@@ -33,8 +33,7 @@ msgid "A confirmation mail was sent to your e-mail address."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:82
-msgid "A generic disclaimer will be automatically appended to your 
-message."
+msgid "A generic disclaimer will be automatically appended to you"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:226
@@ -99,14 +98,11 @@ msgid "All stories of {0}"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:4
-msgid "An e-mail will be sent to the member informing about the membership 
-change."
+msgid "An e-mail will be sent to the member informing about the membershi"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:2
-msgid "Antville is an open source project aimed to the development of a
-simple site hosting system with many advanced 
-<a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>."
+msgid "Antville is an open source project aimed to the development of "
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:36
@@ -168,8 +164,7 @@ msgid "Choice"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:7
-msgid "Click ‘Cancel’ now if you are not really sure you want to 
-proceed."
+msgid "Click ‘Cancel’ now if you are not really sure you want t"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:38
@@ -323,9 +318,7 @@ msgid "Enter new password"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:144
-msgid "Enter your user name and the e-mail address you
-have used when you registered. You will then receive a confirmation e-mail 
-containing further instructions."
+msgid "Enter your user name and the e-mail address yo"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:123
@@ -402,36 +395,28 @@ msgid "Hide"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:108
-msgid "If the user did not include contact information in the message 
-itself, you can send your reply via the user’s contact form [2]."
+msgid "If the user did not include contact information in the messag"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:62
-msgid "If the width or height of your image exceeds 100 pixels Antville 
-   automatically creates a thumbnail of it, too."
+msgid "If the width or height of your image exceeds 100 pixels Antvill"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:21
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:29
-msgid "If you do not specify a name Antville will 
-   create one based on the name of the local or remote file, resp."
+msgid "If you do not specify a name Antville wil"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:93
-msgid "If you enter a URL here your user name will 
-appear as link next to your posted items."
+msgid "If you enter a URL here your user name wil"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:47
-msgid "If you think you have received this e-mail in error please contact 
-the maintainer of the site."
+msgid "If you think you have received this e-mail in error please contac"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:58
-msgid "If you want to resize the image please specify your desired 
-   maximum width and/or maximum height in pixels. If you specify both the image 
-   will be resized to match both criterias, but the image ratio will be 
-   preserved."
+msgid "If you want to resize the image please specify your desire"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:117
@@ -568,10 +553,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:13
 #, java-format
-msgid "Of course, you can now also start to create {0}, upload some 
-{1} or {2}, create your first {3} or get a glimpse of Antville’s wonderful 
-customization possibilities by having a look at the {4} section where you can 
-modify the appearance of your site according to your needs."
+msgid "Of course, you can now also start to create {0}, upload som"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:5
@@ -607,8 +589,7 @@ msgid "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
-msgid "Please be aware of the fact that there is no \"undo\", so if you 
-click \"Proceed\" below the changes will be applied irreversibly."
+msgid "Please be aware of the fact that there is no \"undo\", so if yo"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:405
@@ -696,8 +677,7 @@ msgid "Please login first."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:21
-msgid "Please note that you cannot change the name after the site was 
-created."
+msgid "Please note that you cannot change the name after the site wa"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:72
@@ -832,9 +812,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:16
 #, java-format
-msgid "Since you are an administrator 
-of this Antville installation you also have access to the {0}, the {1},  
-the {2} and the {3}."
+msgid "Since you are an administrato"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:160
@@ -993,9 +971,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:10
 #, java-format
-msgid "The easiest way to customize your site is to change its {0}. 
-You can change the language and time zone or the main title of your site, open 
-or close it and much more."
+msgid "The easiest way to customize your site is to change its {0}"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:51
@@ -1009,8 +985,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:18
 #, java-format
-msgid "The name will be part of the URL of your site. E.g. if you 
-enter “{0}” as the name, your site will be reachable via the url {1}"
+msgid "The name will be part of the URL of your site. E.g. if yo"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:129
@@ -1044,8 +1019,7 @@ msgid "The story was successfully updated."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:23
-msgid "The title will appear in the header of every page of your site. 
-You can change it anytime you want."
+msgid "The title will appear in the header of every page of your site"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:83
@@ -1060,8 +1034,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:145
 #, java-format
-msgid "The user {0} has modified your membership of the site \"{1}\" [1]. 
-You are now {2} of the site."
+msgid "The user {0} has modified your membership of the site \"{1}\" [1]"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:228
@@ -1078,25 +1051,21 @@ msgid "This URL is not valid for resetting your password."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:21
-msgid "This is the directory of public sites hosted here, in 
-alphabetical order."
+msgid "This is the directory of public sites hosted here, i"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:34
 #, java-format
-msgid "This message wants to inform you that on {0} user {1} modified 
-{2} #{3} [1]."
+msgid "This message wants to inform you that on {0} user {1} modifie"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:20
 #, java-format
-msgid "This message wants to inform you that on {0} user {1} published a
-new {2} [1]."
+msgid "This message wants to inform you that on {0} user {1} published "
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:41
-msgid "This message was automatically sent to you because you are listed as 
-recipient of notification e-mails of the aforementioned site."
+msgid "This message was automatically sent to you because you are listed a"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:103
@@ -1110,29 +1079,23 @@ msgid "This site was created by {0} on {1}."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:112
-msgid "This skin contains additional JavaScript code  
-   that will be included in every page."
+msgid "This skin contains additional JavaScript cod"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:106
-msgid "This skin contains the Cascaded Stylesheet 
-   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
-   will affect the general appearance of your site."
+msgid "This skin contains the Cascaded Styleshee"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:91
-msgid "This skin defines the basic structure of your  
-   site. Modifying it will affect the general appearance of your site."
+msgid "This skin defines the basic structure of you"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:96
-msgid "This skin is used to display the navigation 
-   links on the page."
+msgid "This skin is used to display the navigatio"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:101
-msgid "This skin is used to render the front page of 
-   your site."
+msgid "This skin is used to render the front page o"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:194
@@ -1144,8 +1107,7 @@ msgid "This user is already a member of this site."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:44
-msgid "Thus, you will be notified whenever the site has undergone changes 
-as specified in the site preferences."
+msgid "Thus, you will be notified whenever the site has undergone change"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:115
@@ -1157,40 +1119,31 @@ msgid "To create a new site you need to fill out the form below."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:2
-msgid "To insert a file in a story or comment just copy and paste its 
-code."
+msgid "To insert a file in a story or comment just copy and paste it"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:2
-msgid "To insert a poll in a story or comment just copy and paste its 
-code."
+msgid "To insert a poll in a story or comment just copy and paste it"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:4
-msgid "To insert an image in a story or comment just copy and paste its 
-code."
+msgid "To insert an image in a story or comment just copy and paste it"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:3
-msgid "To insert this image into a story, comment or skin copy and 
-paste the following code:"
+msgid "To insert this image into a story, comment or skin copy an"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:2
-msgid "To modify the membership, simply choose the desired role from the 
-drop-down menu and click the \"save\" button."
+msgid "To modify the membership, simply choose the desired role from th"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:80
-msgid "To prevent abuse the sender address and the subject of the e-mail 
-are set to predefined values."
+msgid "To prevent abuse the sender address and the subject of the e-mai"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:144
-msgid "To prevent spam abuse referrers and backlinks are displayed 
-using client-side JavaScript code. Thus, you should enable the option to 
-execute JavaScript code in your browser. Otherwise you will only see this 
-information."
+msgid "To prevent spam abuse referrers and backlinks are displaye"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:103
@@ -1238,8 +1191,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:172
 #, java-format
-msgid "We are sorry to inform you that the user {0} has cancelled your 
-membership of the site \"{1}\" [1]."
+msgid "We are sorry to inform you that the user {0} has cancelled you"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:78
@@ -1287,8 +1239,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:122
 #, java-format
-msgid "You can edit your profile and change your password at any time via
-the following link: {0}"
+msgid "You can edit your profile and change your password at any time vi"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:100
