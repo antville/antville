@@ -6,9 +6,9 @@ if (!global.messages) {
 }
 
 /**
- * Messages for locale "de_DE"
+ * Messages for locale "de"
  */
-global.messages.de_DE = {
+global.messages.de = {
    "({0} character)": "",
    "({0} characters)": "",
    "Add a file to {0}": "",

@@ -6,9 +6,9 @@ if (!global.messages) {
 }
 
 /**
- * Messages for locale "en_EN"
+ * Messages for locale "en"
  */
-global.messages.en_EN = {
+global.messages.en = {
    "\"€…†§\"": "",
    "({0} character)": "",
    "({0} characters)": "",
