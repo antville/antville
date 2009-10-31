@@ -140,10 +140,9 @@ Site.prototype.getPermission = function(action) {
             !Membership.require(Membership.SUBSCRIBER);
 
       case "unsubscribe":
-      if (Membership.require(Membership.SUBSCRIBER)) {
+      if (User.require(User.REGULAR)) {
          var membership = Membership.getByName(session.user.name);
-         return User.require(User.REGULAR) && membership && 
-               !membership.require(Membership.OWNER);
+         return membership && !membership.require(Membership.OWNER);
       }
    }
    return false;

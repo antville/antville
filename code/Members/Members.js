@@ -260,18 +260,28 @@ Members.prototype.updated_action = function() {
 }
 
 Members.prototype.privileges_action = function() {
+   var site = res.handlers.site;
    res.data.title = gettext("Memberships of user {0}", session.user.name);
-   res.data.list = renderList(session.user.memberships, 
-         "$Membership#site");
+   res.data.list = renderList(session.user.memberships, function(item) {
+      res.handlers.site = item.site;
+      item.renderSkin("$Membership#site");
+      return;
+   });
+   res.handlers.site = site;
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
 }
 
 Members.prototype.subscriptions_action = function() {
+   var site = res.handlers.site;
    res.data.title = gettext("Subscriptions of user {0}", session.user.name);
-   res.data.list = renderList(session.user.subscriptions, 
-         "$Membership#site");
+   res.data.list = renderList(session.user.subscriptions, function(item) {
+      res.handlers.site = item.site;
+      item.renderSkin("$Membership#site");
+      return;
+   });
+   res.handlers.site = site;
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
    return;
