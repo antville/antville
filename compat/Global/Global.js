@@ -22,6 +22,8 @@
 // $URL$
 //
 
+app.addRepository("modules/helma/Color.js");
+
 var disableAction = function(msg) {
    res.data.title = msg + " :(";
    res.data.body = gettext(msg) + ". " + gettext("Sorry.");

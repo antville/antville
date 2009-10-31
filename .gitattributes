@@ -1,5 +1,4 @@
 * text=auto !eol
-WEB-INF/lib/urlrewrite-3.2.0.jar -text svneol=unset#application/x-compressed
 build/extra/helma.jar -text
 build/extra/launcher.jar -text
 build/extra/mckoidb.jar -text
@@ -7,6 +6,9 @@ code/Api/Api.blogger.js -text
 code/Choice/$Choice.skin -text
 code/Poll/$Poll.skin -text
 code/TagHub/$TagHub.skin -text
+extra/WEB-INF/lib/urlrewrite-3.2.0.jar -text svneol=unset#application/x-compressed
+extra/mrtg.cfg -text
+extra/updater/patch-20080913.js -text
 i18n/antville.pot -text
 i18n/de.po -text
 i18n/en.po -text
@@ -14,7 +16,6 @@ lib/itunes-0.4.jar -text svneol=unset#application/x-compressed
 lib/jdom.jar -text svneol=unset#application/x-compressed
 lib/opml-0.1.jar -text svneol=unset#application/x-compressed
 lib/rome-1.0.jar -text svneol=unset#application/x-compressed
-misc/mrtg.cfg -text
 static/www/big.gif -text svneol=unset#image/gif
 static/www/bullet.gif -text svneol=unset#image/gif
 static/www/dot.gif -text svneol=unset#image/gif
@@ -33,4 +34,3 @@ static/www/smalltrans.gif -text svneol=unset#image/gif
 static/www/status.gif -text svneol=unset#image/gif
 static/www/webloghead.gif -text svneol=unset#image/gif
 static/www/xmlbutton.gif -text svneol=unset#image/gif
-updater/patch-20080913.js -text

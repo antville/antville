@@ -169,6 +169,16 @@ Images.prototype.onCodeUpdate = function() {
 }
 
 Layout.prototype.onCodeUpdate = function() {
+   helma.aspects.addAround(this, "getPermission", function(args, func, layout) {
+      var permission = func.apply(layout, args);
+      if (!permission) {
+         switch (args[0]) {
+            case "convert":
+            return true;
+         }
+      }
+      return permission;
+   });
    return helma.aspects.addAround(this, "image_macro", function(args, func, layout) {
       args = aspects.fixMacroParams(args);
       var url = args[3];

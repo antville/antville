@@ -1,6 +1,6 @@
-WEB-INF/lib/urlrewrite-2.6.0.jar.disabled
-WEB-INF/lib/urlrewrite-3.1.0-patched.jar.disabled
 code/Global/ParssClientLibrary.js
+extra/WEB-INF/lib/urlrewrite-2.6.0.jar.disabled
+extra/WEB-INF/lib/urlrewrite-3.1.0-patched.jar.disabled
 /feedmgr
 /feedsubscr
 /feedviewer

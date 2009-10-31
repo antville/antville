@@ -82,9 +82,9 @@ Site.prototype.rss_action = function() {
    return res.redirect(this.href("stories.xml"));
 }
 
-Site.prototype.feeds_action = function() {
-   return disableAction.call(this, "Feeds are currently not available");
-}
+//Site.prototype.feeds_action = function() {
+//   return disableAction.call(this, "Feeds are currently not available");
+//}
 
 Site.prototype.mostread_action = function() {
    return res.redirect(this.stories.href("top"));
