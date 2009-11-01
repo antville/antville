@@ -118,6 +118,9 @@
 			<fileset dir="${extra.dir}" includes="antville.*.db" />
 		</copy>
 		<move file="${work.dir}/license.txt" todir="${work.dir}/licenses/helma.txt" />
+		<move todir="${work.dir}/licenses">
+			<fileset dir="${antville.dir}/legal" includes="**" />
+		</move>
 
 		<delete>
 			<fileset dir="${modules.dir}" includes="test/**" />
@@ -125,12 +128,13 @@
 		<delete>
 			<fileset dir="${modules.dir}/helma" includes="*.jar Search.js Ssh.js Chart.js" />
 		</delete>
-		<delete>
+		<delete includeemptydirs="true">
 			<fileset dir="${modules.dir}/jala" includes="lib/** tests/** docs/** util/**" />
 		</delete>
 		<delete includeemptydirs="true">
 			<fileset dir="${antville.dir}" includes="build/** compat/** db/** extra/**" />
 		</delete>
+		<delete dir="${antville.dir}/legal" />
 
 		<antcall target="make-zip">
 			<param name="filename" value="antclick-${version}" />
