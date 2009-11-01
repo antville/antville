@@ -17,6 +17,9 @@ extra/updater/patch-20080913.js -text
 i18n/antville.pot -text
 i18n/de.po -text
 i18n/en.po -text
+legal/h2.txt svneol=native#text/plain
+legal/jdom.txt svneol=native#text/plain
+legal/rome.txt svneol=native#text/plain
 lib/itunes-0.4.jar -text svneol=unset#application/x-compressed
 lib/jdom.jar -text svneol=unset#application/x-compressed
 lib/opml-0.1.jar -text svneol=unset#application/x-compressed
