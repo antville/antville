@@ -130,7 +130,7 @@
 			<fileset dir="${extra.dir}" includes="start.bat apps.properties
 					server.properties launcher.jar"/>
 		</copy>
-		<copy todir="${antville.dir}">
+		<copy todir="${apps.dir}">
 			<fileset dir="${extra.dir}" includes="antclick/**"/>
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib"/>
