@@ -35,7 +35,6 @@ app.addRepository("modules/helma/Image.js");
 app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Http.js");
 app.addRepository("modules/helma/Mail.js");
-app.addRepository("modules/helma/Search.js");
 app.addRepository("modules/helma/Zip.js");
 
 app.addRepository("modules/jala/code/Date.js");
