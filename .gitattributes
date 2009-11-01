@@ -8,6 +8,8 @@ code/Api/Api.blogger.js -text
 code/Choice/$Choice.skin -text
 code/Poll/$Poll.skin -text
 code/TagHub/$TagHub.skin -text
+db/antville.h2.db -text
+db/antville.trace.db -text
 extra/WEB-INF/lib/urlrewrite-3.2.0.jar -text svneol=unset#application/x-compressed
 extra/mrtg.cfg -text
 extra/updater/patch-20080913.js -text
