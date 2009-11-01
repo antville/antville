@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
+ "http://jetty.mortbay.org/configure.dtd">
+
+<Configure class="org.mortbay.jetty.Server">
+   <Set name="anonymous">
+      false
+   </Set>
+   
+   <Set name="requestsPerGC">
+      1
+   </Set>
+   
+   <Set name="resolveRemoteHost">
+      true
+   </Set>
+   
+   <Set name="requestLog">
+      <New class="org.mortbay.http.NCSARequestLog">
+         <Set name="filename">
+            <SystemProperty name="jetty.home" default="."/>/log/jetty-yyyy_mm_dd.log
+         </Set>
+         <Set name="retainDays">
+            90
+         </Set>
+         <Set name="append">
+            true
+         </Set>
+         <Set name="extended">
+            true
+         </Set>
+         <Set name="LogTimeZone">
+            GMT
+         </Set>
+         <Set name="ignorePaths">
+            <Array type="java.lang.String">
+               <Item>
+                  *.gif
+               </Item>
+               <Item>
+                  *.jpg
+               </Item>
+               <Item>
+                  *.jpeg
+               </Item>
+               <Item>
+                  *.png
+               </Item>
+            </Array>
+         </Set>
+      </New>
+   </Set>
+   
+   <Call name="addListener">
+      <Arg>
+         <New class="org.mortbay.http.SocketListener">
+            <Set name="Port">
+               <SystemProperty name="jetty.port" default="80"/>
+            </Set>
+            <Set name="ConfidentialPort">
+               443
+            </Set>
+            <Set name="IntegralPort">
+               443
+            </Set>
+            <Set name="MinThreads">
+               5
+            </Set>
+            <Set name="MaxThreads">
+               255
+            </Set>
+            <Set name="MaxIdleTimeMs">
+               30000
+            </Set>
+            <Set name="LowResourcePersistTimeMs">
+               5000
+            </Set>
+            <Set name="PoolName">
+               Listener
+            </Set>
+         </New>
+      </Arg>
+   </Call>
+   
+   <Call name="addListener">
+      <Arg>
+         <New class="org.mortbay.http.SslListener">
+            <Set name="Port">
+               443
+            </Set>
+            <Set name="MinThreads">
+               5
+            </Set>
+            <Set name="MaxThreads">
+               100
+            </Set>
+            <Set name="MaxIdleTimeMs">
+               30000
+            </Set>
+            <Set name="LowResourcePersistTimeMs">
+               2000
+            </Set>
+            <Set name="Keystore">
+               <SystemProperty name="jetty.home" default="."/>/etc/jetty.keystore
+            </Set>
+            <Set name="Password">
+               123456
+            </Set>
+            <Set name="KeyPassword">
+               123456
+            </Set>
+            <Set name="PoolName">
+               Listener
+            </Set>
+            <Set name="HttpHandler">
+               <New class="org.mortbay.http.handler.MsieSslHandler">
+                  <Set name="UserAgentSubString">
+                     MSIE 5
+                  </Set>
+               </New>
+            </Set>
+         </New>
+      </Arg>
+   </Call>
+   
+   <Call name="addListener">
+      <Arg>
+         <New class="org.mortbay.http.ajp.AJP13Listener">
+            <Set name="Port">
+               <SystemProperty name="jetty.ajp.port" default="8009"/>
+            </Set>
+            <Set name="RemoteServers">
+               <Array type="java.lang.String">
+                  <Item>
+                     127.0.0.1
+                  </Item>
+               </Array>
+            </Set>
+            <Set name="MinThreads">
+               5
+            </Set>
+            <Set name="MaxThreads">
+               20
+            </Set>
+            <Set name="MaxIdleTimeMs">
+               0
+            </Set>
+            <Set name="confidentialPort">
+               443
+            </Set>
+            <Set name="PoolName">
+               Listener
+            </Set>
+         </New>
+      </Arg>
+   </Call>
+   
+   <Call name="addContext">
+      <Arg>
+         /helma/static
+      </Arg>
+      <Set name="resourceBase">
+         ./static
+      </Set>
+      <Set name="welcomeFiles">
+         <Array type="java.lang.String">
+            <!-- <Item>index.html</Item> -->
+         </Array>
+      </Set>
+      <Call name="addHandler">
+         <Arg>
+            <New class="org.mortbay.http.handler.ResourceHandler">
+               <Set name="dirAllowed">
+                  true
+               </Set>
+               <Set name="allowedMethods">
+                  <Array type="java.lang.String">
+                     <Item>
+                        HEAD
+                     </Item>
+                     <Item>
+                        GET
+                     </Item>
+                  </Array>
+               </Set>
+               <Set name="acceptRanges">
+                  true
+               </Set>
+            </New>
+         </Arg>
+      </Call>
+   </Call>
+   
+   <Call name="addRealm">
+      <Arg>
+         <New class="org.mortbay.http.HashUserRealm">
+            <Arg>
+               Admin Realm
+            </Arg>
+            <Put name="admin">
+               admin
+            </Put>
+            <Call name="addUserToRole">
+               <Arg>
+                  admin
+               </Arg>
+               <Arg>
+                  server-administrator
+               </Arg>
+            </Call>
+         </New>
+      </Arg>
+   </Call>
+   
+   <Call name="addContext">
+      <Arg>
+         /admin
+      </Arg>
+      
+      <Set name="realmName">
+         Admin Realm
+      </Set>
+      
+      <Set name="authenticator">
+         <New class="org.mortbay.http.BasicAuthenticator"/>
+      </Set>
+      
+      <Call name="addHandler">
+         <Arg>
+            <New class="org.mortbay.http.handler.SecurityHandler"/>
+         </Arg>
+      </Call>
+      
+      <Call name="addSecurityConstraint">
+         <Arg>
+            /
+         </Arg>
+         <Arg>
+            <New class="org.mortbay.http.SecurityConstraint">
+               <Arg>
+                  Admin
+               </Arg>
+               <Arg>
+                  server-administrator
+               </Arg>
+            </New>
+         </Arg>
+      </Call>
+      
+      <Call name="addServlet">
+         <Arg>
+            Admin
+         </Arg>
+         <Arg>
+            /servers
+         </Arg>
+         <Arg>
+            org.mortbay.servlet.AdminServlet
+         </Arg>
+      </Call>
+      
+      <Call name="addServlet">
+         <Arg>
+            Dump
+         </Arg>
+         <Arg>
+            /dump/*
+         </Arg>
+         <Arg>
+            org.mortbay.servlet.Dump
+         </Arg>
+      </Call>
+      
+      <Call name="setAttribute">
+         <Arg>
+            org.mortbay.http.HttpServer
+         </Arg>
+         <Arg>
+            <Call name="getHttpServer"/>
+         </Arg>
+      </Call>
+   </Call>
+   
+   <Call name="addWebApplication">
+      <Arg>
+         /helma/antville
+      </Arg>
+      <Arg>
+         ./apps/antville
+      </Arg>
+      <Set name="defaultsDescriptor">
+         ./etc/webdefault.xml
+      </Set>
+   </Call>
+   
+   <Call name="addContext">
+      <Arg>
+         /helma/static/antville
+      </Arg>
+      <Set name="resourceBase">
+         ./apps/antville/static
+      </Set>
+      <Set name="welcomeFiles">
+         <Array type="java.lang.String">
+            <!-- <Item>index.html</Item> -->
+         </Array>
+      </Set>
+      <Call name="addHandler">
+         <Arg>
+            <New class="org.mortbay.http.handler.ResourceHandler">
+               <Set name="dirAllowed">
+                  true
+               </Set>
+               <Set name="allowedMethods">
+                  <Array type="java.lang.String">
+                     <Item>
+                        HEAD
+                     </Item>
+                     <Item>
+                        GET
+                     </Item>
+                  </Array>
+               </Set>
+               <Set name="acceptRanges">
+                  true
+               </Set>
+            </New>
+         </Arg>
+      </Call>
+   </Call>
+</Configure>
