@@ -252,11 +252,11 @@ Admin.prototype.filterSites = function(data) {
    }
    switch (data.order) {
       case "1":
-      sql += "order by created "; break;
+      sql += "group by created order by created "; break;
       case "2":
-      sql += "order by name "; break;
+      sql += "group by name order by name "; break;
       default:
-      sql += "order by modified "; break;
+      sql += "group by modified order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
    this.sites.subnodeRelation = sql;
@@ -292,12 +292,12 @@ Admin.prototype.filterUsers = function(data) {
    }
    switch (data.order) {
       case "1":
-      sql += "order by created "; break;
+      sql += "group by created order by created "; break;
       case "2":
-      sql += "order by name "; break;
+      sql += "group by created order by name "; break;
       case "0":
       default:
-      sql += "order by modified "; break;
+      sql += "group by modified order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
    this.users.subnodeRelation = sql;

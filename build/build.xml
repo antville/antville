@@ -193,6 +193,7 @@
 	
 	<target name="clean" depends="init">
 		<delete dir="${work.dir}"/>
+		<delete dir="${dist.dir}"/>
 	</target>
 
 </project>
