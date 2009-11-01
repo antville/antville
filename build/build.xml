@@ -7,15 +7,16 @@
       <echo message="==========================="/>
       <echo message="Available targets are:"/>
       <echo message="   *          Generate the Antville and AntClick packages"/>
-      <echo message="   packages   Generate the Antville packages"/>
+      <echo message="   antville   Generate the Antville packages"/>
       <echo message="   antclick   Generate the AntClick packages"/>
-      <echo message="   publish    Copy packages to the download server"/>
+      <!--echo message="   publish    Copy packages to the download server"/-->
+      <!--echo message="   docs       Generate the API documentation"/-->
       <echo message="   pot        Extract gettext call strings into POT file" />
       <echo message="   messages   Generate JavaScript message files" />
-      <!-- echo message="   docs       Generate the API helmaDocs"/ -->
-      <echo message="   usage      Show build instructions (default)"/>
-      <echo message="See comments inside the build.xml file for more details."/>
+      <echo message="   usage      Show these build instructions (default)"/>
    </target>
+	
+	<target name="*" depends="antville, antclick" />
    
    <target name="init">
       <property name="name" value="antville"/>
@@ -43,25 +44,6 @@
       <filter token="date" value="${TODAY}"/>
    </target>
 	
-	<target name="export" depends="init">
-		<mkdir dir="${apps.dir}"/>
-		<exec dir="${apps.dir}" executable="svn">
-			<arg line="export ${antville.src} antville"/>
-		</exec>
-   </target>
-	
-   <target name="packages" depends="export">
-		<delete dir="${antville.dir}/build"/>
-      <antcall target="make-tar">
-         <param name="filename" value="${package.name}"/>
-         <param name="path" value="${antville.dir}"/>
-      </antcall>		
-      <antcall target="make-zip">
-         <param name="filename" value="${package.name}"/>
-         <param name="path" value="${antville.dir}"/>
-      </antcall>
-	</target>
-
    <target name="pot" depends="init">
     	<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" 
     				classname="helma.main.launcher.Commandline" fork="true">
@@ -81,31 +63,24 @@
       </java>		
 	</target>
 
-   <target name="make-tar" depends="init">
-      <mkdir dir="${dist.dir}" />
-      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, 
-      		**/*.properties, **/*.hac, **/*.js, **/*.skin, **/.xml, **/.sh" />
-      <tar tarfile="${dist.dir}/${filename}.tar" basedir="${path}" excludes="**">
-         <tarfileset prefix="${filename}" dir="${path}" mode="755">
-            <include name="**/*.sh"/>
-         </tarfileset>
-         <tarfileset prefix="${filename}" dir="${path}">
-            <include name="**"/>
-            <exclude name="**/*.sh"/>
-         </tarfileset>
-      </tar>
-      <gzip zipfile="${dist.dir}/${filename}.tgz" src="${dist.dir}/${filename}.tar"/>
-      <delete file="${dist.dir}/${filename}.tar"/>
+	<target name="export" depends="init">
+		<mkdir dir="${apps.dir}"/>
+		<exec dir="${apps.dir}" executable="svn">
+			<arg line="export ${antville.src} antville"/>
+		</exec>
    </target>
-
-   <target name="make-zip" depends="init">
-      <mkdir dir="${dist.dir}" />
-      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, 
-      		**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat" />
-      <zip zipfile="${dist.dir}/${filename}.zip">
-         <zipfileset dir="${path}" prefix="${filename}" includes="**" />
-      </zip>
-   </target>
+	
+   <target name="antville" depends="export">
+		<delete dir="${antville.dir}/build"/>
+      <antcall target="make-tar">
+         <param name="filename" value="${package.name}"/>
+         <param name="path" value="${antville.dir}"/>
+      </antcall>		
+      <antcall target="make-zip">
+         <param name="filename" value="${package.name}"/>
+         <param name="path" value="${antville.dir}"/>
+      </antcall>
+	</target>
 
 	<target name="antclick" depends="export">
 		<exec dir="${work.dir}" executable="svn">
@@ -135,11 +110,12 @@
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib"/>
 		<copy file="${extra.dir}/h2.jar" todir="${work.dir}/lib/ext"/>
-		<copy todir="${helma.dir}/db">
+		<copy todir="${work.dir}/db">
 			<fileset dir="${extra.dir}" includes="antville.*.db"/>
 		</copy>
 		<move file="${work.dir}/license.txt" todir="${work.dir}/licenses/helma.txt"/>
 
+		<delete dir="${antville.dir}/build"/>
 		<antcall target="make-zip">
          <param name="filename" value="antclick-${version}"/>
          <param name="path" value="${dist.dir}"/>
@@ -150,10 +126,32 @@
       </antcall>
    </target>
 
-   <target name="publish" depends="init">
-   	<echo message="Sorry, this target is currently not available"/>
+   <target name="make-tar" depends="init">
+      <mkdir dir="${dist.dir}" />
+      <fixcrlf srcdir="${path}" eol="lf" eof="remove" includes="**/*.txt, 
+      		**/*.properties, **/*.hac, **/*.js, **/*.skin, **/.xml, **/.sh" />
+      <tar tarfile="${dist.dir}/${filename}.tar" basedir="${path}" excludes="**">
+         <tarfileset prefix="${filename}" dir="${path}" mode="755">
+            <include name="**/*.sh"/>
+         </tarfileset>
+         <tarfileset prefix="${filename}" dir="${path}">
+            <include name="**"/>
+            <exclude name="**/*.sh"/>
+         </tarfileset>
+      </tar>
+      <bzip2 zipfile="${dist.dir}/${filename}.bz2" src="${dist.dir}/${filename}.tar"/>
+      <delete file="${dist.dir}/${filename}.tar"/>
    </target>
-	
+
+   <target name="make-zip" depends="init">
+      <mkdir dir="${dist.dir}" />
+      <fixcrlf srcdir="${path}" eol="crlf" includes="**/*.txt, **/*.properties, 
+      		**/*.hac, **/*.js, **/*.skin, **/*.xml, **/.bat" />
+      <zip zipfile="${dist.dir}/${filename}.zip">
+         <zipfileset dir="${path}" prefix="${filename}" includes="**" />
+      </zip>
+   </target>
+
 	<target name="clean" depends="init">
 		<delete dir="${work.dir}"/>
 		<delete dir="${dist.dir}"/>
