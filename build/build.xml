@@ -135,56 +135,19 @@
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib"/>
 		<copy file="${extra.dir}/h2.jar" todir="${work.dir}/lib/ext"/>
+		<copy todir="${helma.dir}/db">
+			<fileset dir="${extra.dir}" includes="antville.*.db"/>
+		</copy>
 		<move file="${work.dir}/license.txt" todir="${work.dir}/licenses/helma.txt"/>
-   </target>
 
-	<target name="antclick-disabled" depends="export">
-      <copy todir="${build.work}/">
-         <fileset dir="${build.extra}" 
-            includes="antclick.sh antclick.bat apps.properties 
-                      launcher.jar server.properties"/>
-      </copy>
-      <copy file="${build.extra}/db.properties" 
-         todir="${build.work}/apps/${project}/code"
-         overwrite="true"/>
-
-      <cvs cvsRoot="${cvs.manage.root}" 
-         command="export" 
-         tag="${cvs.manage.tag}" 
-         package="manage" 
-         dest="${build.work}/apps"/>
-
-      <cvs cvsRoot="${cvs.hop.root}" 
-         command="export" 
-         tag="${cvs.hop.tag}" 
-         package="helma/lib helma/licenses helma/license.txt" 
-         dest="${build.work}"/>
-
-      <copy todir="${build.work}/lib">
-         <fileset dir="${build.work}/helma/lib" includes="*.jar"/>
-      </copy>
-      <copy file="${build.extra}/helma.jar" todir="${build.work}/lib"/>
-      <copy file="${build.extra}/mckoidb.jar" todir="${build.work}/lib/ext"/>
-
-      <copy todir="${build.work}/licenses">
-         <fileset dir="${build.work}/helma/licenses"/>
-      </copy>
-      <copy file="${build.work}/helma/license.txt" 
-         tofile="${build.work}/licenses/helma.txt"/>
-      <move file="${build.work}/apps/${project}/license.txt" 
-         tofile="${build.work}/licenses/antville.txt"/>
-
-      <delete dir="${build.work}/helma"/>
-
-      <antcall target="package-zip">
-         <param name="filename" value="${antclick.name}"/>
-         <param name="path" value="${build.work}"/>
+		<antcall target="make-zip">
+         <param name="filename" value="antclick-${version}"/>
+         <param name="path" value="${dist.dir}"/>
       </antcall>
-      <antcall target="package-tgz">
-         <param name="filename" value="${antclick.name}"/>
-         <param name="path" value="${build.work}"/>
+      <antcall target="make-tar">
+         <param name="filename" value="antclick-${version}"/>
+         <param name="path" value="${dist.dir}"/>
       </antcall>
-      <antcall target="cleanup"/>
    </target>
 
    <target name="publish" depends="init">
