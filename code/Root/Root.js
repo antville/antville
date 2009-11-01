@@ -207,14 +207,6 @@ Root.prototype.main_action = function() {
       res.handlers.membership.role = Membership.OWNER;
    }
    return Site.prototype.main_action.apply(this);
-
-   /*var re = /("[^"]*"|'[^']*'|<%(\S*)|/gm;
-   var macro = '"1xfoo {0} 2xbar {1}" foo "bar bar" <% test %>';
-   var result = macro.replace(re, function() {
-      res.debug(arguments[1])
-   });
-//   res.debug(result)
-   return;*/
 }
 
 Root.prototype.getFormOptions = function(name) {
