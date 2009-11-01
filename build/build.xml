@@ -29,6 +29,7 @@
       <property name="home.dir" location="${build.dir}/.."/>
    	<property name="extra.dir" location="${build.dir}/extra"/>
    	<property name="work.dir" location="${build.dir}/work"/>
+   	<property name="modules.dir" location="${work.dir}/modules"/>
    	<property name="apps.dir" location="${work.dir}/apps"/>
    	<property name="antville.dir" location="${apps.dir}/antville"/>
    	<property name="dist.dir" location="${build.dir}/dist"/>
@@ -71,7 +72,6 @@
    </target>
 	
    <target name="antville" depends="export">
-		<delete dir="${antville.dir}/build"/>
       <antcall target="make-tar">
          <param name="filename" value="${package.name}"/>
          <param name="path" value="${antville.dir}"/>
@@ -88,7 +88,7 @@
 		</exec>
 		<exec dir="${work.dir}" executable="svn">
 			<arg line="export ${apps.src}/modules/trunk modules"/>
-		</exec>		
+		</exec>
 		<exec dir="${work.dir}" executable="svn">
 			<arg line="export ${helma.src}/licenses"/>
 		</exec>
@@ -101,11 +101,12 @@
 		<exec dir="${extra.dir}" executable="cp">
 			<arg line="-p start.sh ${work.dir}"/>
 		</exec>
+
 		<copy todir="${work.dir}">
 			<fileset dir="${extra.dir}" includes="start.bat apps.properties
 					server.properties launcher.jar"/>
 		</copy>
-		<copy todir="${apps.dir}">
+		<copy todir="${antville.dir}">
 			<fileset dir="${extra.dir}" includes="antclick/**"/>
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib"/>
@@ -115,14 +116,26 @@
 		</copy>
 		<move file="${work.dir}/license.txt" todir="${work.dir}/licenses/helma.txt"/>
 
-		<delete dir="${antville.dir}/build"/>
+		<delete>
+			<fileset dir="${modules.dir}" includes="test/**"/>
+		</delete>
+		<delete>
+			<fileset dir="${modules.dir}/helma" includes="*.jar Search.js Ssh.js Chart.js"/>
+		</delete>
+		<delete>
+			<fileset dir="${modules.dir}/jala" includes="lib/** tests/** docs/** util/**"/>
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${antville.dir}" includes="build/** compat/** db/** extra/**"/>
+		</delete>
+		
 		<antcall target="make-zip">
          <param name="filename" value="antclick-${version}"/>
-         <param name="path" value="${dist.dir}"/>
+         <param name="path" value="${work.dir}"/>
       </antcall>
       <antcall target="make-tar">
          <param name="filename" value="antclick-${version}"/>
-         <param name="path" value="${dist.dir}"/>
+         <param name="path" value="${work.dir}"/>
       </antcall>
    </target>
 
