@@ -10,7 +10,7 @@
 		<echo message="   antville   Generate the Antville packages" />
 		<echo message="   antclick   Generate the AntClick packages" />
 		<!--echo message="   publish    Copy packages to the download server"/-->
-		<!--echo message="   docs       Generate the API documentation"/-->
+		<echo message="   docs       Generate the API documentation" />
 		<echo message="   pot        Extract gettext call strings into POT file" />
 		<echo message="   messages   Generate JavaScript message files" />
 		<echo message="   usage      Show these build instructions (default)" />
@@ -37,6 +37,10 @@
 		<property name="antville.dir" location="${apps.dir}/antville" />
 		<property name="hopkit.dir" location="${helma.dir}/modules/jala/util/HopKit" />
 
+		<property name="docs.title" value="Antville&amp;#32;${version}&amp;#32;API&amp;#32;Reference" />
+		<property name="docs.infiles" location="${home.dir}/code" />
+		<property name="docs.outfiles" location="${home.dir}/docs" />
+
 		<property name="i18n.scan" location="code" />
 		<property name="i18n.destination" location="${home.dir}/i18n" />
 		<property name="i18n.poDirectory" location="${i18n.destination}" />
@@ -49,29 +53,14 @@
 		<filter token="date" value="${TODAY}" />
 	</target>
 
-	<target name="pot" depends="init">
-		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
-			<arg value="antville.xgettext" />
-			<arg value="${hopkit.dir}/scripts/MessageParser.js" />
-			<arg line="${i18n.scan}" />
-			<arg value="${i18n.template}" />
-		</java>
-	</target>
-
-	<target name="messages" depends="init">
-		<java classname="org.mozilla.javascript.tools.shell.Main">
-			<arg value="${hopkit.dir}/scripts/PoParser.js" />
-			<arg value="${i18n.poDirectory}" />
-			<arg value="${i18n.destination}" />
-			<arg value="${i18n.namespace}" />
-		</java>
-	</target>
-
 	<target name="export" depends="init">
 		<mkdir dir="${apps.dir}" />
 		<exec dir="${apps.dir}" executable="svn">
 			<arg line="export ${antville.src} antville" />
 		</exec>
+		<delete includeemptydirs="true">
+			<fileset dir="${antville.dir}" includes="build/** docs/**" />
+		</delete>
 	</target>
 
 	<target name="antville" depends="export">
@@ -132,7 +121,7 @@
 			<fileset dir="${modules.dir}/jala" includes="lib/** tests/** docs/** util/**" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${antville.dir}" includes="build/** compat/** db/** extra/**" />
+			<fileset dir="${antville.dir}" includes="build/** compat/** db/** docs/** extra/**" />
 		</delete>
 		<delete dir="${antville.dir}/legal" />
 
@@ -144,6 +133,31 @@
 			<param name="filename" value="antclick-${version}" />
 			<param name="path" value="${work.dir}" />
 		</antcall>
+	</target>
+
+	<target name="docs" depends="init">
+		<exec dir="${extra.dir}/jsdoc-toolkit" executable="${extra.dir}/jsdoc-toolkit/jsrun.sh">
+			<arg line='-D="title:${docs.title}" -q -r=2 -t=templates/jsdoc 
+				-d=${docs.outfiles} ${docs.infiles}' />
+		</exec>
+	</target>
+
+	<target name="pot" depends="init">
+		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
+			<arg value="antville.xgettext" />
+			<arg value="${extra.dir}/MessageParser.js" />
+			<arg line="${i18n.scan}" />
+			<arg value="${i18n.template}" />
+		</java>
+	</target>
+
+	<target name="messages" depends="init">
+		<java classname="org.mozilla.javascript.tools.shell.Main">
+			<arg value="${hopkit.dir}/scripts/PoParser.js" />
+			<arg value="${i18n.poDirectory}" />
+			<arg value="${i18n.destination}" />
+			<arg value="${i18n.namespace}" />
+		</java>
 	</target>
 
 	<target name="make-tar" depends="init">
