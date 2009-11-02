@@ -1,5 +1,7 @@
 * text=auto !eol
 build/build.properties svneol=native#text/plain
+build/extra/MessageParser.js svneol=native#text/plain
+build/extra/Skin.java.patch -text
 build/extra/antclick/Archive/Archive.properties svneol=native#text/plain
 build/extra/antville.h2.db -text
 build/extra/antville.trace.db -text
