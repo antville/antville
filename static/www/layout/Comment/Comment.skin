@@ -1,0 +1,66 @@
+<% #main %>
+<div class="listSeparator"></div>
+<% comment.skin Comment#content %>
+<p class="small">
+   <% comment.link . Link prefix="... " %> 
+   <% comment.link edit prefix="... " %>
+   <% comment.link delete prefix="... " %>
+</p>
+<% comment.comments %>
+<div class="reply small">
+   <% comment.link comment#form prefix="<br />... " %>
+</div>
+
+<% #edit %>
+<% comment.skin $Story#restore %>
+<% if <% comment.creator %> is null then 
+   <% parent.skin <% parent.type suffix=#comment %> %>
+%>
+<a name="form" id="form"></a>
+<br />
+<form method="post" action="<% response.action %>">
+<p class="backup">
+   <span class="small"><% gettext Title suffix=: %></span><br />
+   <% comment.input title class="formTitle" %>
+</p>
+<p class="backup">
+   <span class="small"><% gettext Text suffix=: %></span><br />
+   <% comment.textarea text cols="31" rows="10" class="formText" %>
+</p>
+<p class="small">
+   <% if <% comment.creator %> is null then "" else 
+      <% gettext "Created by {0} on {1}" <% comment.creator %> <% comment.created %> %> 
+   %>
+   <% if <% comment.created %> is <% comment.modified %> then "" else 
+      <% gettext "Last modified by {0} on {1}" <% comment.modifier %>
+      <% comment.modified %> prefix="<br />" %>
+   %>
+</p>
+<p>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="button" id="restore" value="1"><% gettext Restore %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
+</p>
+</form>
+
+<% #content %>
+<div class="storyDate">
+   <% comment.creator link %>, <% comment.created short %>
+</div>
+<div class="title"><% comment.title %></div>
+<div><% comment.text | comment.format %></div>
+
+<% #comment %>
+<% comment.skin Comment#content %>
+<% comment.comments %>
+
+<% #reply %>
+<div class="reply">
+   <div class="listSeparator"></div>
+   <% comment.skin Comment#content %>
+   <p class="small">
+      <% comment.link . Link prefix="... " %>
+      <% comment.link edit prefix="... " %>
+      <% comment.link delete prefix="... " %>
+   </p>
+</div>
