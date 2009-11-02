@@ -23,13 +23,21 @@
 //
 
 /**
- * @fileoverview Fields and methods of the Metadata prototype.
+ * @fileoverview Defines a Metadata prototype.
+ * @requires Object.js module
  */
 
 // Resolve dependencies
 app.addRepository("modules/core/Object.js");
 
 Metadata.PREFIX = Metadata().__name__.toLowerCase() + "_";
+
+/**
+ * This prototype provides dynamic database records by storing data as 
+ * JavaScript object source (similar to JSON) in a dedicated database column.
+ * @name Metadata
+ * @constructor
+ */
 
 // Save internal methods for good
 /** @ignore */
@@ -41,23 +49,23 @@ Metadata.prototype._set = Metadata.prototype.set;
  * Retrieves the name of the property that contains the data for the 
  * Metadata instance. The name is constructed out of the instances's mountpoint 
  * and the suffix "_data".
- * @returns The resulting value
- * @type String
+ * @returns {String} The resulting value
  */
 Metadata.prototype.getDataSourceName = function() {
    return Metadata.PREFIX + "source";
 }
 
 /**
- * Retrieves the properties and values of the Metadata instance from the parent 
+ * Retrieves the properties and values of a Metadata instance from the parent 
  * node.
+ * @returns {Object}
  */
 Metadata.prototype.load = function() {
    return eval(this._parent[this.getDataSourceName()]);
 }
 
 /**
- * Copies the properties and values of the Metadata instance to the parent 
+ * Copies the properties and values of a Metadata instance to the parent 
  * node.
  */
 Metadata.prototype.save = function() {
@@ -67,10 +75,10 @@ Metadata.prototype.save = function() {
 }
 
 /**
- * Retrieves the value of a property of the Metadata instance. If no argument
+ * Retrieves the value of a property of a Metadata instance. If no argument
  * is given the complete metadata structure is returned.
  * @param {String} key The name of the desired property
- * @returns The resulting value
+ * @returns {Object} The resulting value
  */
 Metadata.prototype.get = function(key) {
    if (this.cache.data == null) {
@@ -87,7 +95,7 @@ Metadata.prototype.get = function(key) {
 }
 
 /**
- * Copies a value into a property of the Metadata instance. If the first 
+ * Copies a value into a property of a Metadata instance. If the first 
  * argument is omitted the complete metadata is replaced with the second
  * argument.
  * @param {String} key The name of the desired property
@@ -112,7 +120,7 @@ Metadata.prototype.set = function(key, value) {
 }
 
 /**
- * Removes a property from the Metadata instance.
+ * Removes a property from a Metadata instance.
  * @param {String} key The name of the desired property
  */
 Metadata.prototype.remove = function(key) {
@@ -122,7 +130,7 @@ Metadata.prototype.remove = function(key) {
 }
 
 /**
- * Removes all properties and values from the Metadata instance.
+ * Removes all properties and values from a Metadata instance.
  */
 Metadata.prototype.destroy = function() {
    delete this.cache.data;
@@ -131,9 +139,8 @@ Metadata.prototype.destroy = function() {
 }
 
 /**
- * Get all valid keys of the Metadata instance.
- * @returns The list of valid keys
- * @type Array
+ * Get all valid keys of a Metadata instance.
+ * @returns {String[]} The list of valid keys
  */
 Metadata.prototype.keys = function() {
    var cache = this.get();
@@ -145,18 +152,16 @@ Metadata.prototype.keys = function() {
 }
 
 /**
- * Retrieves the number of properties contained in the Metadata instance.
- * @returns The size of the Metadata instance.
- * @type Number
+ * Retrieves the number of properties contained in a Metadata instance.
+ * @returns {Number} The size of a Metadata instance
  */
 Metadata.prototype.size = function() {
    return this.keys().length;   
 }
 
 /**
- * Concatenates a string representation of the Metadata instance.
- * @returns A string representing the Metadata object
- * @type String
+ * Concatenates a string representation of a Metadata instance.
+ * @returns {String} A string representing a Metadata object
  */
 Metadata.prototype.toString = function() {
    res.push();
@@ -176,38 +181,35 @@ Metadata.prototype.toString = function() {
 }
 
 /**
- * Concatenates the source of the underlying HopObject of the Metadata 
+ * Concatenates the source of the underlying HopObject of a Metadata 
  * instance. Useful for debugging purposes.
- * @returns The source of the underlying HopObject.
- * @type String
+ * @returns {String} The source of the underlying HopObject
  */
 Metadata.prototype.toSource = function() {
    return this.get().toSource();
 }
 
 /**
- * Retrieves all properties and values of the Metadata instance.
- * @returns The property map of the Metadata instance
- * @type Object
- * @deprecated Use get() without a parameter instead.
+ * Retrieves all properties and values of a Metadata instance.
+ * @returns {Object} The property map of a Metadata instance
+ * @deprecated Use get() with no arguments instead
  */
 Metadata.prototype.getData = function() {
    return this.get();
 }
 
 /**
- * Replaces all properties and values of the Metadata instance with those of
+ * Replaces all properties and values of a Metadata instance with those of
  * another object.
  * @param {Object} obj The replacing data
- * @type Boolean
- * @deprecated Use set() with a single object parameter instead.
+ * @deprecated Use set() with a single argument instead
  */
 Metadata.prototype.setData = function(obj) {
    obj && this.set(obj);
    return;
 }
 
-// FIXME: Should this really be included here?
+// FIXME: This is Antville-specific code and should be removed from here
 Metadata.prototype.getFormValue = function(name) {
    if (req.isPost()) {
       return req.postParams[name];
@@ -216,6 +218,11 @@ Metadata.prototype.getFormValue = function(name) {
    }
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 Metadata.prototype.onUnhandledMacro = function(name) {
    return this.get(name);
 }

@@ -22,12 +22,19 @@
 // $URL: https://antville.googlecode.com/svn/trunk/code/Api/Api.blogger.js $
 //
 
-// Methods that implement Blogger's XML-RPC API.
-// See http://www.blogger.com/developers/api/1_docs/ for further details.
-// The blogger.getTemplate and blogger.setTemplate methods are not supported
+/**
+ * @fileOverview Methods that implement Blogger's XML-RPC API.
+ * See http://www.blogger.com/developers/api/1_docs/ for further details.
+ * The blogger.getTemplate and blogger.setTemplate methods are not supported
+ */
 
+/** @namespace */
 Api.blogger = {};
 
+/**
+ * 
+ * @param {String} content
+ */
 Api.blogger._getContentParts = function(content) {
    content && (content = content.trim());
    content || (content = String.EMPTY);
@@ -46,6 +53,14 @@ Api.blogger._getContentParts = function(content) {
    return result;
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Object} Properties: userid, nickname and url
+ */
 Api.blogger.getUserInfo = function(appKey, name, password) {
    var user = User.getByName(name);
    if (!user) {
@@ -58,6 +73,14 @@ Api.blogger.getUserInfo = function(appKey, name, password) {
    }
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {String} name
+ * @param {String} password
+ * @returns {Object[]} A list of objects with the properties blogid, blogName and 
+ * url
+ */
 Api.blogger.getUsersBlogs = function(appKey, name, password) {
    var user = Api.getUser(name, password);
    var result = [];
@@ -75,6 +98,17 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
    return result;
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {Number} limit
+ * @throws {Error}
+ * @returns {Object[]} A list of objects with the properties postid, userid,
+ * dateCreated and content
+ */
 Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -100,6 +134,15 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
    return result;
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Object} Properties: content, userid, postid, dateCreated
+ */
 Api.blogger.getPost = function(appKey, id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
@@ -119,6 +162,17 @@ Api.blogger.getPost = function(appKey, id, name, password) {
    }
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {String} content
+ * @param {Boolean} publish
+ * @throws {Error}
+ * @returns {Number} The ID of the new story
+ */
 Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -143,6 +197,17 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    return story._id;
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {String} content
+ * @param {Boolean} publish
+ * @throws {Error}
+ * @returns {Boolean} Always true
+ */
 Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
@@ -164,6 +229,15 @@ Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
    return true;
 }
 
+/**
+ * 
+ * @param {String} appKey
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Boolean} Always true
+ */
 Api.blogger.deletePost = function(appKey, id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);

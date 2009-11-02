@@ -22,6 +22,13 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Sql prototype, a utility for relational queries
+ */
+
+/**
+ * @constructor
+ */
 var Sql = function() {
    var db = getDBConnection("antville");
    var query;
@@ -86,6 +93,11 @@ var Sql = function() {
       return sql;
    }
    
+   /**
+    * 
+    * @param {String} sql
+    * @returns {Object}
+    */
    this.execute = function(sql) {
       sql = resolve(arguments);
       var error;
@@ -96,10 +108,17 @@ var Sql = function() {
       return result;
    }
    
+   /**
+    * @returns {String}
+    */
    this.retrieve = function() {
       return query = resolve(arguments);
    }
    
+   /**
+    * 
+    * @param {Function} callback
+    */
    this.traverse = function(callback) {
       var rows = db.executeRetrieval(query);
       if (rows && rows.next()) {
@@ -113,6 +132,9 @@ var Sql = function() {
       return;
    }
    
+   /**
+    * @return {String}
+    */
    this.toString = function() {
       return query;
    }

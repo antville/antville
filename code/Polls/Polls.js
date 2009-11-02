@@ -22,6 +22,23 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Polls prototype
+ */
+
+/**
+ * @name Polls
+ * @constructor
+ * @property {Poll[]} _children
+ * @property {Poll[]} open
+ * @extends HopObject
+ */
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Polls.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
       return false;

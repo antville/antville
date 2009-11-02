@@ -22,15 +22,32 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Api prototype.
+ */
+
+/**
+ * 
+ * @param {Site} site
+ * @param {User} user
+ */
 Api.constrain = function(site, user) {
    res.handlers.site = site;
    res.handlers.membership = Membership.getByName(user.name);
    return;
 }
 
+/** @ignore */
 Api.dispatch = function() {
 }
 
+/**
+ * 
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {User} 
+ */
 Api.getUser = function(name, password) {
    var user = User.getByName(name);
    if (!user) {
@@ -43,6 +60,12 @@ Api.getUser = function(name, password) {
    return user;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @throws {Error}
+ * @returns {Site}
+ */
 Api.getSite = function(name) {
    var site = Site.getByName(String(name));
    if (!site) {
@@ -53,6 +76,12 @@ Api.getSite = function(name) {
    return site;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @throws {Error}
+ * @returns {Story}
+ */
 Api.getStory = function(id) {
    var story = Story.getById(id);
    if (!story) {
@@ -61,6 +90,15 @@ Api.getStory = function(id) {
    return story;
 }
 
+/**
+ * @name Api
+ * @constructor
+ * @extends HopObject
+ */
+
+/**
+ * @returns {Boolean}
+ */
 Api.prototype.getPermission = function(){
    return true;
 }
@@ -100,6 +138,11 @@ Api.prototype.callback_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} methodName
+ * @throws {Error}
+ */
 Api.prototype.main_action_xmlrpc = function(methodName) {
    if (!methodName) {
       return false;

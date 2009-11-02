@@ -22,6 +22,10 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Site prototype.
+ */
+
 this.handleMetadata("archiveMode");
 this.handleMetadata("commentMode");
 this.handleMetadata("configured");
@@ -41,15 +45,54 @@ this.handleMetadata("callbackMode");
 this.handleMetadata("callbackUrl");
 this.handleMetadata("spamfilter");
 
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getPageModes = defineConstants(Site, "stories"); //, "days");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getArchiveModes = defineConstants(Site, "closed", "public");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getNotificationModes = defineConstants(Site, "Nobody", 
       "Owner", "Manager", "Contributor", "Subscriber" );
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Site.getCallbackModes = defineConstants(Site, "disabled", "enabled");
 
+/**
+ * 
+ * @param {Site} site
+ */
 Site.remove = function(site) {
    HopObject.remove(site.members);
    HopObject.remove(site.stories);
@@ -64,15 +107,60 @@ Site.remove = function(site) {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Site}
+ */
 Site.getByName = function(name) {
    return root.get(name);
 }
 
+/**
+ * 
+ * @param {String} mode
+ * @returns {Boolean}
+ */
 Site.require = function(mode) {
    var modes = [Site.CLOSED, Site.RESTRICTED, Site.PUBLIC, Site.OPEN];
    return modes.indexOf(res.handlers.site.mode) >= modes.indexOf(mode);
 }
 
+/**
+ * A Site object is the basic container of Antville.
+ * @name Site
+ * @constructor
+ * @param {String} name A unique identifier also used in the URL of a site
+ * @param {String} title An arbitrary string branding a site
+ * @property {Tag[]} $tags
+ * @property {Archive} archive
+ * @property {String} archiveMode The way the archive of a site is displayed
+ * @property {String} commentMode The way comments of a site are displayed
+ * @property {Date} created The date and time of site creation
+ * @property {User} creator A reference to a user who created a site
+ * @property {Tags} galleries
+ * @property {Files} files
+ * @property {Images} images
+ * @property {Layout} layout
+ * @property {String} locale The place and language settings of a site
+ * @property {String} longDateFormat The long date format string
+ * @property {Members} members
+ * @property {Metadata} metadata
+ * @property {String} mode The access level of a site
+ * @property {Date} modified The date and time when a site was last modified
+ * @property {User} modifier A reference to a user who modified a site
+ * @property {String} notificationMode The way notifications are sent from a site
+ * @property {String} pageMode The way stories of a site are displayed
+ * @property {Number} pageSize The amount of stories to be displayed simultaneously
+ * @property {Polls} polls
+ * @property {String} shortDateFormat The short date format string
+ * @property {String} status The trust level of a site
+ * @property {Stories} stories
+ * @property {String} tagline An arbitrary text describing a site
+ * @property {Tags} tags
+ * @property {String} timeZone The time and date settings of a site
+ * @extends HopObject
+ */
 Site.prototype.constructor = function(name, title) {
    var now = new Date;
    var locale = root.getLocale();
@@ -103,6 +191,11 @@ Site.prototype.constructor = function(name, title) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Site.prototype.getPermission = function(action) {
    switch (action) {
       case "backup.js":
@@ -184,6 +277,11 @@ Site.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 Site.prototype.getFormOptions = function(name) {
    switch (name) {
       case "archiveMode":
@@ -215,6 +313,10 @@ Site.prototype.getFormOptions = function(name) {
    }
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Site.prototype.update = function(data) {
    if (this.isTransient()) {
       if (!data.name) {
@@ -332,6 +434,10 @@ Site.prototype.search_xml_action = function() {
    return;   
 }
 
+/**
+ * 
+ * @param {Story[]} collection
+ */
 Site.prototype.getXml = function(collection) {
    collection || (collection = this.stories.recent);
    var now = new Date;
@@ -542,6 +648,11 @@ Site.prototype.robots_txt_ction = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 Site.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "archive":
@@ -559,6 +670,9 @@ Site.prototype.getMacroHandler = function(name) {
    }
 }
 
+/**
+ * 
+ */
 Site.prototype.stories_macro = function() {
    if (this.stories.featured.size() < 1) {
       this.renderSkin("Site#welcome");
@@ -576,6 +690,10 @@ Site.prototype.stories_macro = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Site.prototype.calendar_macro = function(param) {
    if (this.archiveMode !== Site.PUBLIC) {
       return;
@@ -589,11 +707,18 @@ Site.prototype.calendar_macro = function(param) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Site.prototype.age_macro = function(param) {
    res.write(Math.floor((new Date() - this.created) / Date.ONEDAY));
    return;
 }
 
+/**
+ * 
+ */
 Site.prototype.referrers_macro = function() {
    var self = this;
    var sql = new Sql();
@@ -611,6 +736,9 @@ Site.prototype.referrers_macro = function() {
    return;
 }
 
+/**
+ * @returns {java.util.Locale}
+ */
 Site.prototype.getLocale = function() {
    var locale;
    if (locale = this.cache.locale) {
@@ -625,6 +753,9 @@ Site.prototype.getLocale = function() {
    return this.cache.locale = locale;
 }
 
+/**
+ * @returns {java.util.TimeZone}
+ */
 Site.prototype.getTimeZone = function() {
    var timeZone;
    if (timeZone = this.cache.timeZone) {
@@ -639,12 +770,22 @@ Site.prototype.getTimeZone = function() {
    return timeZone;
 }
 
+/**
+ * 
+ * @param {String} href
+ */
 Site.prototype.processHref = function(href) {
    var vhost = getProperty("vhost." + this.name, 
          app.properties.defaultHost + "/" + this.name);
    return vhost + href;
 }
 
+/**
+ * 
+ * @param {String} type
+ * @param {String} group
+ * @returns {Tag[]}
+ */
 Site.prototype.getTags = function(type, group) {
    var handler;
    type = type.toLowerCase();
@@ -672,6 +813,11 @@ Site.prototype.getTags = function(type, group) {
    return null;
 }
 
+/**
+ * 
+ * @param {String} tail
+ * @returns {helma.File}
+ */
 Site.prototype.getStaticFile = function(tail) {
    res.push();
    res.write(app.properties.staticPath);
@@ -681,6 +827,11 @@ Site.prototype.getStaticFile = function(tail) {
    return new helma.File(res.pop());
 }
 
+/**
+ * 
+ * @param {String} tail
+ * @returns {String}
+ */
 Site.prototype.getStaticUrl = function(tail) {
    res.push();
    res.write(app.properties.staticUrl);
@@ -690,6 +841,10 @@ Site.prototype.getStaticUrl = function(tail) {
    return encodeURI(res.pop());
 }
 
+/**
+ * 
+ * @param {Object} ref
+ */
 Site.prototype.callback = function(ref) {
     if (this.callbackMode === Site.ENABLED && this.callbackUrl) {
       app.data.callbacks.push({
@@ -701,6 +856,11 @@ Site.prototype.callback = function(ref) {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {String[]}
+ */
 Site.prototype.getAdminHeader = function(name) {
    switch (name) {
       case "tags":

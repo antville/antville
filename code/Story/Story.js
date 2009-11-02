@@ -22,11 +22,33 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defindes the Story prototype.
+ */
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Story.getStatus = defineConstants(Story, "closed", "public", "shared", "open");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Story.getModes = defineConstants(Story, "hidden", "featured");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Story.getCommentModes = defineConstants(Story, "closed", 
       /*"readonly", "moderated",*/ "open");
 
+/**
+ * 
+ */
 Story.remove = function() {
    if (this.constructor !== Story) {
       return;
@@ -42,6 +64,30 @@ Story.remove = function() {
 this.handleMetadata("title");
 this.handleMetadata("text");
 
+/**
+ * @name Story
+ * @constructor
+ * @property {Comment[]} _children
+ * @property {String} commentMode
+ * @property {Comment[]} comments
+ * @property {Date} created
+ * @property {User} creator
+ * @property {Metadata} metadata
+ * @property {String} mode
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} name
+ * @property {Number} parent_id
+ * @property {String} parent_type
+ * @property {String} prototype
+ * @property {Number} requests
+ * @property {Site} site
+ * @property {String} status
+ * @property {TagHub[]} tags
+ * @property {String} text
+ * @property {String} title
+ * @extends HopObject
+ */
 Story.prototype.constructor = function() {
    this.name = String.EMPTY;
    this.requests = 0;
@@ -53,6 +99,11 @@ Story.prototype.constructor = function() {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Story.prototype.getPermission = function(action) {
    if (!this.site.getPermission("main")) {
       return false;
@@ -95,6 +146,11 @@ Story.prototype.main_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Number} limit
+ * @returns {String}
+ */
 Story.prototype.getTitle = function(limit) {
    var key = this + ":title:" + limit;
    if (!res.meta[key]) {
@@ -129,6 +185,10 @@ Story.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
    
@@ -218,6 +278,11 @@ Story.prototype.comment_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 Story.prototype.getFormValue = function(name) {
    if (req.isPost()) {
       return req.postParams[name];
@@ -235,6 +300,11 @@ Story.prototype.getFormValue = function(name) {
    return this[name];
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {String[]}
+ */
 Story.prototype.getFormOptions = function(name) {
    switch (name) {
       case "commentMode":
@@ -250,6 +320,10 @@ Story.prototype.getFormOptions = function(name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Story.prototype.setMetadata = function(data) {
    var name;
    for (var key in data) {
@@ -260,10 +334,17 @@ Story.prototype.setMetadata = function(data) {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ */
 Story.prototype.isMetadata = function(name) {
    return this[name] === undefined && name !== "save";
 }
 
+/**
+ * Increment the request counter
+ */
 Story.prototype.count = function() {
    if (session.user === this.creator) {
       return;
@@ -282,6 +363,11 @@ Story.prototype.count = function() {
    return;
 }
 
+/**
+ * Calculate the difference of a story’s current and its updated content
+ * @param {Object} data
+ * @returns {Number}
+ */
 Story.prototype.getDelta = function(data) {
    if (this.isTransient()) {
       return Infinity;
@@ -306,6 +392,11 @@ Story.prototype.getDelta = function(data) {
    return delta * timex;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 Story.prototype.getMacroHandler = function(name) {
    if (name === "metadata") {
       return this.metadata;
@@ -313,6 +404,12 @@ Story.prototype.getMacroHandler = function(name) {
    return null;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} action
+ * @param {String} text
+ */
 Story.prototype.link_macro = function(param, action, text) {
    switch (action) {
       case "rotate":
@@ -327,6 +424,10 @@ Story.prototype.link_macro = function(param, action, text) {
    return HopObject.prototype.link_macro.call(this, param, action, text);
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Story.prototype.summary_macro = function(param) {
    param.limit || (param.limit = 15);
    var keys, summary;
@@ -358,6 +459,11 @@ Story.prototype.summary_macro = function(param) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} mode
+ */
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
    if (story.site.commentMode === Site.DISABLED || 
@@ -384,8 +490,13 @@ Story.prototype.comments_macro = function(param, mode) {
    return;
 }
 
-Story.prototype.tags_macro = function(param, arg1) {
-   if (arg1 === "link") {
+/**
+ * 
+ * @param {Object} param
+ * @param {String} mode
+ */
+Story.prototype.tags_macro = function(param, mode) {
+   if (mode === "link") {
       var links = [];
       this.tags.list().forEach(function(item) {
          res.push();
@@ -399,6 +510,11 @@ Story.prototype.tags_macro = function(param, arg1) {
    return res.write(this.getFormValue("tags"));
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {Number} limit
+ */
 Story.prototype.referrers_macro = function(param, limit) {
    if (!User.require(User.PRIVILEGED) && 
          !Membership.require(Membership.OWNER)) {
@@ -434,6 +550,13 @@ Story.prototype.referrers_macro = function(param, limit) {
    return;   
 }
 
+/**
+ * 
+ * @param {Object} value
+ * @param {Object} param
+ * @param {String} mode
+ * @returns {String}
+ */
 Story.prototype.format_filter = function(value, param, mode) {
    if (value) {
       switch (mode) {
@@ -462,6 +585,12 @@ Story.prototype.format_filter = function(value, param, mode) {
    return String.EMTPY;
 }
 
+/**
+ * 
+ * @param {String|Skin} value
+ * @param {Object} param
+ * @returns {String}
+ */
 Story.prototype.macro_filter = function(value, param) {
    var skin = value.constructor === String ? createSkin(value) : value;
    skin.allowMacro("image");
@@ -496,6 +625,13 @@ Story.prototype.macro_filter = function(value, param) {
    return value;
 }
 
+/**
+ * 
+ * @param {String} value
+ * @param {Object} param
+ * @param {String} mode
+ * @returns {String}
+ */
 Story.prototype.url_filter = function(value, param, mode) {
    param.limit || (param.limit = 50);
    // FIXME: The first RegExp has troubles with <a href=http://... (no quotes)

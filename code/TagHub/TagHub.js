@@ -22,6 +22,24 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the TagHub prototype
+ */
+
+/**
+ * @name TagHub
+ * @constructor
+ * @param {String} name
+ * @param {Story|Image} tagged
+ * @param {User} user
+ * @property {Tag} tag
+ * @property {Number} tag_id
+ * @property {Story|Image} tagged
+ * @property {Number} tagged_id
+ * @property {String} tagged_type
+ * @property {User} user
+ * @extends HopObject
+ */
 TagHub.prototype.constructor = function(name, tagged, user) {
    var site = tagged.site || res.handlers.site;
    var tag = site.getTags(tagged._prototype, Tags.ALL).get(name);
@@ -36,6 +54,11 @@ TagHub.prototype.constructor = function(name, tagged, user) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 TagHub.prototype.getMacroHandler = function(name) {
    switch (name.toLowerCase()) {
       case "tagged":
@@ -46,6 +69,9 @@ TagHub.prototype.getMacroHandler = function(name) {
    }
 }
 
+/**
+ * @return {String}
+ */
 TagHub.prototype.toString = function() {
    return "[Tag ``" + this.tag.name + "'' of " + this.tagged_type + " " + 
          this.tagged_id + "]";

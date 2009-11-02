@@ -22,6 +22,21 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Comment prototype.
+ */
+
+/**
+ * @name Files
+ * @constructor
+ * @extends HopObject
+ */
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Files.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
       return false;

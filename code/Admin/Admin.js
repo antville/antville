@@ -22,10 +22,26 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Admin prototype.
+ */
+
+/**
+ * 
+ */
 Admin.purgeDatabase = function() {
    return;
 }
 
+/**
+ * @name Admin
+ * @constructor
+ * @property {LogEntry[]} entries
+ * @property {Sites[]} privateSites
+ * @property {Sites[]} sites
+ * @property {Users[]} users
+ * @extends HopObject
+ */
 Admin.prototype.constructor = function() {
    this.filterSites();
    this.filterUsers();
@@ -33,6 +49,11 @@ Admin.prototype.constructor = function() {
    return this;
 }
 
+/**
+ * 
+ * @param {Object} action
+ * @returns {Boolean}
+ */
 Admin.prototype.getPermission = function(action) {
    if (!session.user) {
       return false;
@@ -46,6 +67,9 @@ Admin.prototype.getPermission = function(action) {
    return User.require(User.PRIVILEGED);
 }
 
+/**
+ * 
+ */
 Admin.prototype.onRequest = function() {
    HopObject.prototype.onRequest.apply(this);
    if (!session.data.admin) {
@@ -54,6 +78,10 @@ Admin.prototype.onRequest = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ */
 Admin.prototype.onUnhandledMacro = function(name) {
    res.debug("Add " + name + "_macro to Admin!");
    return null;
@@ -83,6 +111,10 @@ Admin.prototype.setup_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Admin.prototype.update = function(data) {
    root.map({
       email: data.email,
@@ -190,6 +222,10 @@ Admin.prototype.users_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Admin.prototype.filterLog = function(data) {
    data || (data = {});
    var sql = "";
@@ -224,6 +260,10 @@ Admin.prototype.filterLog = function(data) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Admin.prototype.filterSites = function(data) {
    data || (data = {});
    var sql;
@@ -263,6 +303,10 @@ Admin.prototype.filterSites = function(data) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Admin.prototype.filterUsers = function(data) {
    data || (data = {});
    var sql;
@@ -304,6 +348,10 @@ Admin.prototype.filterUsers = function(data) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Admin.prototype.updateSite = function(data) {
    var site = Site.getById(data.id);
    if (!site) {
@@ -317,6 +365,10 @@ Admin.prototype.updateSite = function(data) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Admin.prototype.updateUser = function(data) {
    var user = User.getById(data.id);
    if (!user) {
@@ -333,6 +385,10 @@ Admin.prototype.updateUser = function(data) {
    return;
 }
 
+/**
+ * 
+ * @param {HopObject} item
+ */
 Admin.prototype.renderItem = function(item) {
    res.handlers.item = item;
    var name = item._prototype;
@@ -345,11 +401,24 @@ Admin.prototype.renderItem = function(item) {
    return;
 }
 
+/**
+ * 
+ * @param {HopObject} context
+ * @param {String} action
+ */
 Admin.prototype.log = function(context, action) {
    var entry = new LogEntry(context, action);
    this.entries.add(entry);
+   return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} action
+ * @param {Number} id
+ * @param {String} text
+ */
 Admin.prototype.link_macro = function(param, action, id, text) {
    switch (action) {
       case "edit":
@@ -373,6 +442,12 @@ Admin.prototype.link_macro = function(param, action, id, text) {
    return HopObject.prototype.link_macro.call(this, param, action, text);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {HopObject} object
+ * @param {String} name
+ */
 Admin.prototype.count_macro = function(param, object, name) {
    if (!object || !object.size) {
       return;
@@ -389,6 +464,11 @@ Admin.prototype.count_macro = function(param, object, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 Admin.prototype.skin_macro = function(param, name) {
    if (this.getPermission("main")) {
       return HopObject.prototype.skin_macro.apply(this, arguments);
@@ -396,6 +476,12 @@ Admin.prototype.skin_macro = function(param, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {HopObject} object
+ * @param {String} name
+ */
 Admin.prototype.items_macro = function(param, object, name) {
    if (!object || !object.size) {
       return;
@@ -407,6 +493,10 @@ Admin.prototype.items_macro = function(param, object, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Admin.prototype.dropdown_macro = function(param) {
    if (!param.name || !param.values) {
       return;
@@ -417,6 +507,10 @@ Admin.prototype.dropdown_macro = function(param) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Admin.prototype.moduleSetup_macro = function(param) {
    for (var i in app.modules) {
       this.applyModuleMethod(app.modules[i], "renderSetup", param);
@@ -424,10 +518,9 @@ Admin.prototype.moduleSetup_macro = function(param) {
    return;
 }
 
-
-
-
-
+/**
+ * FIXME!
+ */
 Admin.prototype.autoCleanUp = function() {
    return;
    
@@ -452,6 +545,9 @@ Admin.prototype.autoCleanUp = function() {
    }
 }
 
+/**
+ * FIXME!
+ */
 Admin.prototype.blockPrivateSites = function() {
    return;
    
@@ -517,6 +613,9 @@ Admin.prototype.blockPrivateSites = function() {
    return true;
 }
 
+/**
+ * FIXME!
+ */
 Admin.prototype.deleteInactiveSites = function() {
    return;
 
@@ -581,6 +680,9 @@ Admin.prototype.deleteInactiveSites = function() {
    return true;
 }
 
+/**
+ * FIXME!
+ */
 Admin.prototype.cleanupAccesslog = function() {
    return;
    
@@ -601,6 +703,9 @@ Admin.prototype.cleanupAccesslog = function() {
    return;
 }
 
+/**
+ * @returns {String[]} List of 24 formatted hour strings
+ */
 Admin.getHours = function() {
    var hours = [];
    for (var i=0; i<24; i+=1) {

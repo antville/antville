@@ -22,9 +22,25 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Archive prototype.
+ */
+
 Archive.PAGER = "page";
 Archive.COLLECTION = "collection";
 
+/**
+ * @name Archive
+ * @constructor
+ * @param {Object} name
+ * @param {Object} type
+ * @param {Object} parent
+ * @property {Story[]} _children
+ * @property {String} name
+ * @property {String} parent
+ * @property {String} type
+ * @extends HopObject
+ */
 Archive.prototype.constructor = function(name, type, parent) {
    this.name = name;
    this.type = type;
@@ -32,6 +48,11 @@ Archive.prototype.constructor = function(name, type, parent) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 Archive.prototype.getChildElement = function(name) {
    if (name.startsWith(Archive.PAGER)) {
       return new Archive(name, Archive.PAGER, this);
@@ -41,6 +62,11 @@ Archive.prototype.getChildElement = function(name) {
    return this.get(name);
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Archive.prototype.getPermission = function(action) {
    var site = res.handlers.site;
    if (!site.getPermission("main") || site.archiveMode !== Site.PUBLIC) {
@@ -70,6 +96,11 @@ Archive.prototype.page1_action = function() {
    return res.redirect(this.href());
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {String}
+ */
 Archive.prototype.href = function(action) {
    var buffer = [];
    var archive = this;
@@ -88,6 +119,13 @@ Archive.prototype.href = function(action) {
    return buffer.join("/");
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} action
+ * @param {String} text
+ * @see renderLink
+ */
 Archive.prototype.link_macro = function(param, action, text) {
    if (!this.getPermission(action)) {
       return;
@@ -102,6 +140,9 @@ Archive.prototype.link_macro = function(param, action, text) {
    return renderLink.call(global, param, action, text, this);
 }
 
+/**
+ * 
+ */
 Archive.prototype.stories_macro = function() {
    var day, storyDay; 
    var page = this.getPage();
@@ -147,6 +188,9 @@ Archive.prototype.stories_macro = function() {
    return;
 }
 
+/**
+ * @returns {Number}
+ */
 Archive.prototype.getSize = function() {
    // FIXME: This is a little bit inconsistent and thus needs special care
    var archive = this.type === Archive.PAGER ? this.parent : this;
@@ -160,6 +204,9 @@ Archive.prototype.getSize = function() {
    return rows.getColumnItem("max");
 }
 
+/**
+ * @returns {String}
+ */
 Archive.prototype.getFilter = function() {
    var buffer = [];
    var archive = this;
@@ -196,6 +243,9 @@ Archive.prototype.getFilter = function() {
    return res.pop();
 }
 
+/**
+ * @returns {Number}
+ */
 Archive.prototype.getPage = function() {
    if (this.type === Archive.PAGER) {
       return Number(this.name.substr(4));
@@ -203,10 +253,16 @@ Archive.prototype.getPage = function() {
    return 1;
 }
 
+/**
+ * @returns {Number}
+ */
 Archive.prototype.getPageSize = function() {
    return res.handlers.site.pageSize;
 }
 
+/**
+ * @returns {Date}
+ */
 Archive.prototype.getDate = function() {
    var date = new Date;
    var offset = path.contains(res.handlers.site.archive) + 1;

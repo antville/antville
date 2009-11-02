@@ -22,6 +22,25 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Images prototype
+ */
+
+/**
+ * @name Images
+ * @constructor
+ * @property {Image} _children
+ * @property {Tag[]} alphabeticalGalleries 
+ * @property {Tag[]} galleries
+ * @property {Tag[]} otherGalleries
+ * @extends HopObject
+ */
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Images.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
       return false;
@@ -107,6 +126,10 @@ Images.prototype.all_action = function() {
    return;
 }
 
+/**
+ * @namespace
+ * @field
+ */
 Images.Default = (function() {
    var Image = function(name, description) {
       var fpath = app.properties.staticPath + "www/" + name;
@@ -143,28 +166,9 @@ Images.Default = (function() {
    return images;
 })();
 
-Images.prototype.evalImport = function(metadata, files) {
-   for (var i in metadata) {
-      var data = Xml.readFromString(new java.lang.String(metadata[i].data, 0, metadata[i].data.length));
-      var newImg = this.importImage(this._parent, data);
-      newImg.layout = this._parent;
-      // finally, add the new Image to the collection of this LayoutImageMgr
-      this.add(newImg);
-   }
-   // store the image files to the appropriate directory
-   var dir = this._parent.getStaticDir().getAbsolutePath();
-   var re = /[\\\/]/;
-   for (var i in files) {
-      var f = files[i];
-      var arr = f.name.split(re);
-      var fos = new java.io.FileOutputStream(dir + "/" + arr.pop());
-      var outStream = new java.io.BufferedOutputStream(fos);
-      outStream.write(f.data, 0, f.data.length);
-      outStream.close();
-   }
-   return true;
-}
-
+/**
+ * @returns {Image[]}
+ */
 Images.prototype.mergeImages = function() {
    var images = [];
    var layout = this._parent;
@@ -180,10 +184,19 @@ Images.prototype.mergeImages = function() {
    return images.sort(Number.Sorter("created", Number.Sorter.DESC));
 }
 
+/**
+ * 
+ * @param {String} group
+ * @returns {Tag[]}
+ * @see Site#getTags
+ */
 Images.prototype.getTags = function(group) {
    return this._parent.getTags("galleries", group);
 }
 
+/**
+ * 
+ */
 Images.remove = function() {
    if (this.constructor === Images) {
       HopObject.remove(this);

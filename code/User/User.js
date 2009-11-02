@@ -22,11 +22,27 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the User prototype.
+ */
+
+/** @constant */
 User.COOKIE = getProperty("userCookie", "antvilleUser");
+/** @constant */
 User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
 
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 User.getStatus = defineConstants(User, "blocked", 
       "regular", "trusted", "privileged");
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 User.getScopes = defineConstants(User, "regular users", 
       "trusted users", "privileged users");
 
@@ -38,6 +54,30 @@ disableMacro(User, "password");
 disableMacro(User, "hash");
 disableMacro(User, "email");
 
+/**
+ * A User object represents a login to Antville.
+ * @name User
+ * @constructor
+ * @param {Object} data
+ * @extends HopObject
+ * @property {Membership[]} _children
+ * @property {Date} created
+ * @property {Comment[]} comments
+ * @property {String} email
+ * @property {File[]} files
+ * @property {String} hash
+ * @property {Image[]} images
+ * @property {Membership[]} memberships
+ * @property {Metadata} metadata
+ * @property {Date} modified
+ * @property {String} name 
+ * @property {String} salt
+ * @property {Site[]} sites
+ * @property {Membership[]} subscriptions
+ * @property {String} status
+ * @property {Story[]} stories
+ * @extends HopObject
+ */
 User.prototype.constructor = function(data) {
    var now = new Date;
    this.map({
@@ -52,12 +92,24 @@ User.prototype.constructor = function(data) {
    return this;
 }
 
+/**
+ * 
+ */
 User.prototype.onLogout = function() { /* ... */ }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 User.prototype.getPermission = function(action) {
    return User.require(User.PRIVILEGED);
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 User.prototype.update = function(data) {
    if (!data.digest && data.password) {
       data.digest = ((data.password + this.salt).md5() + 
@@ -92,16 +144,29 @@ User.prototype.update = function(data) {
    return this;
 }
 
+/**
+ * 
+ */
 User.prototype.touch = function() {
    this.modified = new Date;
    return;
 }
 
+/**
+ * 
+ * @param {String} token
+ * @returns {String}
+ */
 User.prototype.getDigest = function(token) {
    token || (token = String.EMPTY);
    return (this.hash + token).md5();
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 User.prototype.getFormOptions = function(name) {
    switch (name) {
       case "status":
@@ -109,6 +174,11 @@ User.prototype.getFormOptions = function(name) {
    }
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} type
+ */
 User.prototype.list_macro = function(param, type) {
    switch (type) {
       case "sites":
@@ -127,10 +197,18 @@ User.prototype.list_macro = function(param, type) {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {User}
+ */
 User.getByName = function(name) {
    return root.users.get(name);
 }
 
+/**
+ * @returns {String}
+ */
 User.getSalt = function() {
    var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
    var random = java.security.SecureRandom.getInstance("SHA1PRNG");
@@ -138,6 +216,12 @@ User.getSalt = function() {
    return Packages.sun.misc.BASE64Encoder().encode(salt);
 }
 
+/**
+ * 
+ * @param {Object} data
+ * @throws {Error}
+ * @returns {User}
+ */
 User.register = function(data) {
    // check if username is existing and is clean
    // can't use isClean() here because we accept
@@ -183,6 +267,9 @@ User.register = function(data) {
    return user;
 }
 
+/**
+ * 
+ */
 User.autoLogin = function() {
    if (session.user) {
       return;
@@ -208,6 +295,11 @@ User.autoLogin = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ * @returns {User}
+ */
 User.login = function(data) {
    var user = User.getByName(data.name);
    if (!user) {
@@ -235,6 +327,9 @@ User.login = function(data) {
    return user;
 }
 
+/**
+ * 
+ */
 User.logout = function() {
   session.logout();
   res.setCookie(User.COOKIE, String.EMPTY);
@@ -243,6 +338,11 @@ User.logout = function() {
   return;
 }
 
+/**
+ * 
+ * @param {String} requiredStatus
+ * @returns {Boolean}
+ */
 User.require = function(requiredStatus) {
    var status = [User.BLOCKED, User.REGULAR, User.TRUSTED, User.PRIVILEGED];
    if (requiredStatus && session.user) {
@@ -251,6 +351,9 @@ User.require = function(requiredStatus) {
    return false;
 }
 
+/**
+ * @returns {String}
+ */
 User.getCurrentStatus = function() {
    if (session.user) {
       return session.user.status;
@@ -258,6 +361,9 @@ User.getCurrentStatus = function() {
    return null;
 }
 
+/**
+ * @returns {Membership}
+ */
 User.getMembership = function() {
    var membership;
    if (session.user) {
@@ -266,12 +372,19 @@ User.getMembership = function() {
    return membership || new Membership;
 }
 
+/**
+ * 
+ * @param {String} url
+ */
 User.setLocation = function(url) {
    session.data.location = url || req.data.http_referer;
    //app.debug("Pushed location " + session.data.location);
    return;
 }
 
+/**
+ * @returns {String}
+ */
 User.getLocation = function() {
    var url = session.data.location;
    delete session.data.location;

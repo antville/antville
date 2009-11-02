@@ -22,6 +22,31 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Stories prototype
+ */
+
+/**
+ * @name Stories
+ * @constructor
+ * @property {Story[]} _children
+ * @property {Tag[]} alphabeticalTags
+ * @property {Story[]} closed
+ * @property {Comment[]} comments
+ * @property {Story[]} featured
+ * @property {Tag[]} otherTags
+ * @property {Story[]} recent
+ * @property {Tag[]} tags
+ * @property {Story[]} top
+ * @property {Story[]} union
+ * @extends HopObject
+ */
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Stories.prototype.getPermission = function(action) {
    if (!this._parent.getPermission("main")) {
       return false;
@@ -107,6 +132,11 @@ Stories.prototype.top_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} type
+ */
 Stories.prototype.list_macro = function(param, type) {
    switch (type) {
       case "top":
@@ -122,49 +152,21 @@ Stories.prototype.list_macro = function(param, type) {
    return;
 }
 
-// FIXME: This method does dangerous things (setting subnode relation)
-Stories.prototype.filter = function(prototype /*, switch1..n, limit */) {
-   if (!prototype) {
-      return new HopObject;
-   }
-   var args = Array.prototype.splice.call(arguments, 0, arguments.length);
-   res.push();
-   res.write('where site_id = ');
-   res.write(this._parent._id);
-   if (typeof args[args.length-1] !== "number") {
-      args[args.length] = Infinity;
-   }
-   if (args.length > 2) {
-      switch (args[1]) {
-         case "stories":
-         res.write(" and prototype = 'Story'");
-         break;
-         case "comments":
-         res.write(" and prototype = 'Comment'");
-         break;
-      }
-      switch (args[2]) {
-         case "public":
-         res.write(" and status <> 'closed'");
-         break;
-      }
-      for (var i=1; i<args.length-1; i+=1) {
-         res.write(args[i]);
-         (i < args.length-2) && res.write(" and ");
-      }
-   }
-   if (args[args.length-1] !== Infinity) {
-      res.write(" limit ");
-      res.write(args[args.length-1]);
-   }
-   this.all.subnodeRelation = res.pop();
-   return this.all;
-}
-
+/**
+ * 
+ * @param {String} group
+ * @returns {Tag[]}
+ * @see Site#getTags
+ */
 Stories.prototype.getTags = function(group) {
    return this._parent.getTags("tags", group);
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {String[]}
+ */
 Stories.prototype.getAdminHeader = function(name) {
    return ["#", "Tag", "Items"];
 }

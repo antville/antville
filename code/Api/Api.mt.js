@@ -22,11 +22,23 @@
 // $URL$
 //
 
-// Methods that implement Movable Type's XML-RPC API.
-// See http://www.sixapart.com/developers/xmlrpc/movable_type_api for details.
+/**
+ * @fileOverview Methods that implement Movable Type's XML-RPC API.
+ * See http://www.sixapart.com/developers/xmlrpc/movable_type_api for details.
+ */
 
+/** @namespace */
 Api.mt = {};
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {Number} limit
+ * @throws {Error}
+ * @returns {Object[]}
+ */
 Api.mt.getRecentPostTitles = function(id, name, password, limit) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -51,6 +63,14 @@ Api.mt.getRecentPostTitles = function(id, name, password, limit) {
    return result;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Object[]}
+ */
 Api.mt.getCategoryList = function(id, name, password) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -72,6 +92,14 @@ Api.mt.getCategoryList = function(id, name, password) {
    return result;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Object[]}
+ */
 Api.mt.getPostCategories = function(id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
@@ -94,6 +122,14 @@ Api.mt.getPostCategories = function(id, name, password) {
 }
 
 // FIXME: What kind of stupid API is this?
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Boolean}
+ */
 Api.mt.publishPost = function(id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
@@ -108,6 +144,15 @@ Api.mt.publishPost = function(id, name, password) {
    return true;   
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {String[]} categories
+ * @throws {Error}
+ * @returns {Boolean}
+ */
 Api.mt.setPostCategories = function(id, name, password, categories) {
    if (!categories || !categories.length) {
       return;
@@ -126,14 +171,26 @@ Api.mt.setPostCategories = function(id, name, password, categories) {
    return true;
 }
 
+/**
+ * 
+ * @returns {Array}
+ */
 Api.mt.supportedTextFilters = function() {
    return [];
 }
 
+/**
+ * 
+ * @returns {Array}
+ */
 Api.mt.getTrackbackPings = function() {
    return [];
 }
 
+/**
+ * 
+ * @returns {String[]}
+ */
 Api.mt.supportedMethods = function() {
    var result = [];
    for (var method in Api.mt) {

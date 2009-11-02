@@ -22,6 +22,28 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Tags prototype.
+ */
+
+/** @constant */
+Tags.ALL = "all";
+/** @constant */
+Tags.OTHER = "other";
+/** @constant */
+Tags.ALPHABETICAL = "alphabetical";
+
+/**
+ * @name Tags
+ * @constructor
+ * @extends HopObject
+ */
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Tags.prototype.getPermission = function(action) {
    return res.handlers.site.getPermission("main");
 }
@@ -46,52 +68,19 @@ Tags.prototype.admin_action = function() {
    return this.main_action();
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @returns {HopObject}
+ */
 Tags.prototype.getChildElement = function(id) {
    var child = this[id] || this.get(Tags.ALL).get(id);
    return child;
-
-   /* if (child && child.size() > 0) {
-      return;
-      
-      renderList(child, "mgrlistitem", 10, req.data.page);
-      res.data.body = this._parent.renderSkinAsString("main");
-      path.site.renderSkin("Site#page");
-      return {main_action: new Function};
-      
-      var self = this;
-      res.data.title = gettext("Tags of site {0}", self._parent.title);
-      res.data.list = renderList(child, function(item) {
-         item.parent.renderSkin("preview");
-      }, 10, req.data.page);
-      res.data.pagenavigation = renderPager(child, 
-            child.href(req.action), 20, req.data.page);
-      res.data.body = self.renderSkinAsString("main");
-      path.site.renderSkin("Site#page");
-      return {main_action: new Function};
-
-      var manager = new Manager(this, child);
-      manager.getItemHref = function() {
-         return this.parent.href();
-      };
-      manager.setDefaultHandler("Date", -1);
-      manager.addHandler("Story", function() {
-         if (this.parent.title) {
-            return this.parent.title.toLowerCase();
-         } else {
-            return "Story " + this.parent._id;
-         }
-      })
-      manager.addHandler("Author", function() {
-         return this.user.name.toLowerCase();
-      });
-      manager.addHandler("Date", function() {
-         return this.parent.createtime.format("yyyy-MM-dd HH:mm");
-      });
-      return manager;
-   }
-   return child; */ 
 }
 
+/**
+ * 
+ */
 Tags.prototype.alphabet_macro = function() {
    if (this.get(Tags.ALL).size() < 50) {
       return;
@@ -122,6 +111,9 @@ Tags.prototype.alphabet_macro = function() {
    return;
 }
 
+/**
+ * 
+ */
 Tags.prototype.pager_macro = function() {
    var page = this.getPage();
    var max = this.get(this.getGroup()).size();
@@ -142,6 +134,10 @@ Tags.prototype.pager_macro = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Tags.prototype.header_macro = function(param) {
    var header = this.getHeader();
    for each (var title in header) {
@@ -150,6 +146,9 @@ Tags.prototype.header_macro = function(param) {
    return;
 }
 
+/**
+ * 
+ */
 Tags.prototype.list_macro = function(param, skin) {
    var page = this.getPage();
    var size = param.limit ? Math.min(param.limit, 100) : this.getPageSize();
@@ -170,83 +169,70 @@ Tags.prototype.list_macro = function(param, skin) {
    return;
 }
 
+/**
+ * 
+ * @param {String} group
+ * @returns {TagHub[]}
+ */
 Tags.prototype.get = function(group) {
    return this._parent.getTags(this._id, group || this.getGroup());
 }
 
+/**
+ * @returns {String}
+ */
 Tags.prototype.getGroup = function() {
    return decodeURIComponent(session.data[this.href("group")] || Tags.ALL);
 }
 
+/**
+ * 
+ * @param {String} group
+ */
 Tags.prototype.setGroup = function(group) {
    session.data[this.href("group")] = encodeURIComponent(group);
    this.setPage(1);
    return;
 }
 
+/**
+ * @returns {Number}
+ */
 Tags.prototype.getPage = function() {
    return session.data[this.href("page")] || 1;
 }
 
+/**
+ * 
+ * @param {Number} page
+ */
 Tags.prototype.setPage = function(page) {
    session.data[this.href("page")] = page;
    return;
 }
 
+/**
+ * @returns {Number}
+ */
 Tags.prototype.getPageSize = function() {
    return 25;
 }
 
+/**
+ * @returns {String}
+ */
 Tags.prototype.getAction = function() {
    return (req.action === "main" ? String.EMPTY : req.action);
 }
 
+/**
+ * @returns {String[]}
+ * @see Stories#getAdminHeader
+ * @see Images#getAdminHeader
+ */
 Tags.prototype.getHeader = function() {
    if (this._parent.getAdminHeader) {
       return this._parent.getAdminHeader(this._id) || [];
    }
    return [];
 }
-
-Tags.ALL = "all";
-Tags.OTHER = "other";
-Tags.ALPHABETICAL = "alphabetical";
-
-/*
-Tags.prototype.get__ = function(group) {
-   var subnodeRelation = new java.lang.StringBuffer();
-   var add = function(s) {
-      subnodeRelation.append(s);
-      return;
-   };
-   
-   var collection = this._parent.tagList;
-   add("where tagjoin.site_id = ");
-   add(path.site._id);
-   add(" and tagjoin.parent_type = '" + this._parent.getTagType() + "' ");
-
-   var group = group || this.getGroup();
-   switch (group) {
-      case "*":
-      break;
-      
-      case "+":
-      add("and substr(tagjoin.name, 1, 1) >= 'a' and ");
-      add("substr(tagjoin.name, 1, 1) <= 'z' ");
-      break;
-      
-      case "?":
-      add("and (substr(tagjoin.name, 1, 1) < 'a' or ");
-      add("substr(tagjoin.name, 1, 1) > 'z') ");
-      break;
-
-      default:
-      add(" and substr(tagjoin.name, 1, 1) = '" + group + "' ");
-   }
-
-   add("group by tagjoin.name ");
-   add("order by tagjoin.name asc");
-   collection.subnodeRelation = subnodeRelation.toString();
-   return collection;
-}
-*/

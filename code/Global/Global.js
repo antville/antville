@@ -22,6 +22,10 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines global variables and functions.
+ */
+
 app.addRepository(app.dir + "/../lib/rome-1.0.jar");
 app.addRepository(app.dir + "/../lib/jdom.jar");
 app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
@@ -47,30 +51,53 @@ app.addRepository(app.dir + "/../i18n/messages.de.js");
 app.addRepository("modules/jala/code/I18n.js"); // Pls. test before moving around!
 
 // FIXME: Overwriting some String patterns and methods with more reliable ones
-/*
- * Regex contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
- * licensed unter MIT license - http://www.opensource.org/licenses/mit-license.php
+// Regex contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
+// licensed unter MIT license - http://www.opensource.org/licenses/mit-license.php
+/**
+ * @name String
+ * @namespace
  */
+/** @constant */
 String.EMAILPATTERN = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i;
+/** @constant */
 String.URLPATTERN = /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
 
 // FIXME: Be careful with property names of app.data;
 // they inherit all properties from HopObject!
+
+/**
+ * @name app.data 
+ * @namespace
+ */
+/** @name app.data.entries */
 app.data.entries || (app.data.entries = []);
+/** @name app.data.mails */
 app.data.mails || (app.data.mails = []);
+/** @name app.data.requests */
 app.data.requests || (app.data.requests = {});
+/** @name app.data.callbacks */
 app.data.callbacks || (app.data.callbacks = []);
+/** @name app.data.exports */
 app.data.exports || (app.data.exports = []);
+/** @name app.data.imports */
 app.data.imports || (app.data.imports = []);
 
 /**
+ * @name helma.Mail
+ * @namespace
+ */
+/**
  * Extend the Mail prototype with a method that simply adds a mail object 
  * to an application-wide array (mail queue).
+ * @returns {Number} The number of mails waiting in the queue
  */
 helma.Mail.prototype.queue = function() {
    return app.data.mails.push(this);
 }
 
+/**
+ * 
+ */
 helma.Mail.flushQueue = function() {
    if (app.data.mails.length > 0) {
       app.debug("Flushing mail queue, sending " + 
@@ -92,13 +119,19 @@ jala.i18n.setLocaleGetter(function() {
    return res.handlers.site.getLocale();
 });
 
+/** @constant */
 var SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
+/** @constant */
 var LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
+/** @constant */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
+/** */
 var idle = new Function;
+/** */
 var html = new helma.Html();
 
+/** */
 var rome = new JavaImporter(
    Packages.com.sun.syndication.feed.synd,
    Packages.com.sun.syndication.io.SyndFeedOutput,
@@ -106,6 +139,9 @@ var rome = new JavaImporter(
    Packages.com.sun.syndication.feed.module.itunes.types
 );
 
+/**
+ * 
+ */
 function onStart() {
    if (typeof root === "undefined") {
       app.logger.error("Error in database configuration: no root site found.");
@@ -122,6 +158,11 @@ function onStart() {
    return;
 }
 
+/**
+ * 
+ * @param {HopObject} ctor
+ * @returns {Function} 
+ */
 function defineConstants(ctor /*, arguments */) {
    var constants = [], name;
    for (var i=1; i<arguments.length; i+=1) {
@@ -140,10 +181,20 @@ function defineConstants(ctor /*, arguments */) {
    };
 }
 
+/**
+ * Disable a macro with the idle function
+ * @param {HopObject} ctor
+ * @param {String} name
+ * @returns {Function}
+ */
 function disableMacro(ctor, name) {
    return ctor.prototype[name + "_macro"] = idle;
 }
 
+/**
+ * @returns {Number} The period in milliseconds the scheduler will be 
+ * called again. 
+ */
 function scheduler() {
    Root.commitEntries();
    Root.commitRequests();
@@ -154,6 +205,9 @@ function scheduler() {
    return 5000;
 }
 
+/**
+ * 
+ */
 function nightly() {
    Root.purgeReferrers();
    //Admin.purgeDatabase();
@@ -179,15 +233,18 @@ function nightly() {
  * @param {String} _else_ Syntactic sugar; should be "else" for legibility
  * @param {String} secondResult The second result, ie. the value that will be 
  * returned if the first value does not equal the second one
- * @returns The resulting value
- * @type String
- * @member Global
+ * @returns {String} The resulting value
  */
 function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult, 
       _else_, secondResult) {
    return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} text
+ */
 function gettext_macro(param, text /*, value1, value2, ...*/) {
    var args = [text];
    for (var i=2; i<arguments.length; i+=1) {
@@ -196,28 +253,57 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
    return gettext.apply(this, args);
 }
 
-function ngettext_macro(param, singular, plural, value1 /*, value2, value3, ...*/) {
-   var args = [singular, plural, value1];
-   for (var i=4; i<arguments.length; i+=1) {
+/**
+ * 
+ * @param {Object} param
+ * @param {String} singular
+ * @param {String} plural
+ */
+function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
+   var args = [singular, plural];
+   for (var i=3; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
    return ngettext.apply(this, args);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} format
+ * @returns {String} The formatted current date string
+ * @see formatDate
+ */
 function now_macro(param, format) {
    return formatDate(new Date, format || param.format);
 }
 
+/**
+ * @returns {String} The rendered link element
+ * @see renderLink
+ */
 function link_macro() {
    return renderLink.apply(this, arguments);
 }
 
 // FIXME: The definition with "var" is necessary; otherwise the skin_macro()
 // method won't be overwritten reliably. (Looks like a Helma bug.)
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ * @returns {String} The rendered skin
+ * @see HopObject#skin_macro
+ */
 var skin_macro = function(param, name) {
   return HopObject.prototype.skin_macro.apply(this, arguments);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} delimiter
+ */
 function breadcrumbs_macro (param, delimiter) {
    delimiter || (delimiter = param.separator || " : ");
    var offset = res.handlers.site === root ? 0 : 1;
@@ -234,6 +320,12 @@ function breadcrumbs_macro (param, delimiter) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ * @param {String} mode
+ */
 function story_macro(param, id, mode) {
    var story = HopObject.getFromPath(id, "stories");
    if (!story || !story.getPermission("main")) {
@@ -253,6 +345,12 @@ function story_macro(param, id, mode) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ * @param {String} mode
+ */
 function file_macro(param, id, mode) {
    if (!id) {
       return;
@@ -291,6 +389,12 @@ function file_macro(param, id, mode) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ * @param {String} mode
+ */
 function image_macro(param, id, mode) {
    if (!id) {
       return;
@@ -331,6 +435,12 @@ function image_macro(param, id, mode) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ * @param {String} mode
+ */
 function poll_macro(param, id, mode) {
    if (!id) {
       return;
@@ -360,6 +470,12 @@ function poll_macro(param, id, mode) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ * @param {String} limit
+ */
 function list_macro(param, id, limit) {
    if (!id) {
       return;
@@ -454,6 +570,12 @@ function list_macro(param, id, limit) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ * @param {String} value
+ */
 function value_macro(param, name, value) {
    if (!name) {
       return;
@@ -468,6 +590,11 @@ function value_macro(param, name, value) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ */
 function randomize_macro(param, id) {
    var getRandom = function(n) {
       return Math.floor(Math.random() * n);
@@ -502,6 +629,13 @@ function randomize_macro(param, id) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} url
+ * @param {String} text
+ * @param {HopObject} handler
+ */
 function renderLink(param, url, text, handler) {
    url || (url = param.url || "");
    text || (text = param.text || url);
@@ -523,6 +657,11 @@ function renderLink(param, url, text, handler) {
    return;
 }
 
+/**
+ * 
+ * @param {String} str
+ * @returns {String|null} The e-mail string if valid, null otherwise
+ */
 function validateEmail(str) {
 	if (str) {
       if (str.isEmail(str)) {
@@ -532,6 +671,11 @@ function validateEmail(str) {
    return null;
 }
 
+/**
+ * 
+ * @param {String} str
+ * @returns {String|null} The URL string if valid, null otherwise
+ */
 function validateUrl(str) {
    if (str) {
       if (str.isUrl(str)) {
@@ -545,6 +689,11 @@ function validateUrl(str) {
    return null;
 }
 
+/**
+ * 
+ * @param {String} str
+ * @returns {String} The processed string
+ */
 function quote(str) {
    if (/[\W\D]/.test(str)) {
       str = '"' + str + '"';
@@ -552,10 +701,22 @@ function quote(str) {
    return str;
 }
 
+/**
+ * 
+ * @param {Number} number
+ * @param {String} pattern
+ * @returns {String} The formatted number string
+ */
 function formatNumber(number, pattern) {
    return Number(number).format(pattern, res.handlers.site.getLocale());
 }
 
+/**
+ * 
+ * @param {Date} date
+ * @param {pattern} pattern
+ * @returns {String} The formatted date string
+ */
 function formatDate(date, pattern) {
    if (!date) {
       return null;
@@ -575,10 +736,10 @@ function formatDate(date, pattern) {
 }
 
 /**
- * Injects the XSLT stylesheet until Mozilla developers will have mercy.
- * @param {String} xml The original XML code
- * @returns The XML code with the appropriate element for the XSLT stylesheet
- * @type String
+ * Injects the XSLT stylesheet declaration into an XML string until  
+ * Mozilla developers will have mercy.
+ * @param {String} xml An XML string
+ * @returns {String} An XML string containing the XSLT stylesheet declaration
  */
 function injectXslDeclaration(xml) {
    res.push();
@@ -592,8 +753,7 @@ function injectXslDeclaration(xml) {
  * @param {Object} recipient The recipient's email addresses
  * @param {String} subject The e-mail's subject
  * @param {String} body The body text of the e-mail
- * @return The status code of the underlying helma.Mail instance.
- * @type Number
+ * @returns {Number} The status code of the underlying helma.Mail instance
  */
 function sendMail(sender, recipient, subject, body) {
    if (!recipient || !body) {
@@ -615,6 +775,11 @@ function sendMail(sender, recipient, subject, body) {
    return mail.status;
 }
 
+/**
+ * 
+ * @param {String} language
+ * @returns {java.util.Locale} The corresponding locale object
+ */
 function getLocale(language) {
    return java.util.Locale[(language || "english").toUpperCase()];
 }
@@ -622,9 +787,7 @@ function getLocale(language) {
 /**
  * Creates an array of all available Java locales sorted by their names.
  * @param {String} language The optional language of the locales
- * @returns The sorted array containing the locales
- * @type Array
- * @member Global 
+ * @returns {Object[]} A sorted array containing the corresponding locales
  */
 function getLocales(language) {
    var result = [], locale;
@@ -641,6 +804,11 @@ function getLocales(language) {
    return result;
 }
 
+/**
+ * 
+ * @param {String} language
+ * @returns {Object[]} A sorted array containing the corresponding timezones
+ */
 function getTimeZones(language) {
    var result = [], timeZone, offset;
    var locale = getLocale(language); 
@@ -665,6 +833,12 @@ function getTimeZones(language) {
    return result;   
 }
 
+/**
+ * 
+ * @param {String} type
+ * @param {String} language
+ * @returns {Array[]} An array containing the corresponding date formats
+ */
 function getDateFormats(type, language) {
    var patterns;
    if (type === "short") {
@@ -688,10 +862,24 @@ function getDateFormats(type, language) {
    return result;
 }
 
+/**
+ * 
+ * @param {Object} value
+ * @param {Object} param
+ * @param {Object} defaultValue
+ * @returns {Object} The value argument if truthy, the defaultValue argument
+ * otherwise
+ */
 function default_filter(value, param, defaultValue) {
    return value || defaultValue;
 }
 
+/**
+ * 
+ * @param {Date} value
+ * @param {Object} param
+ * @returns {String} The age string of a date
+ */
 function age_filter(value, param) {
    if (!value || value.constructor !== Date) {
       return value;
@@ -699,14 +887,29 @@ function age_filter(value, param) {
    return value.getAge()
 }
 
-function link_filter(value, param, url) {
-   if (value) { 
-      url || (url = value);
-      return renderLink(param, url, value);
+/**
+ * 
+ * @param {String} text
+ * @param {String} param
+ * @param {Object} url
+ * @returns {String} The rendered link element
+ * @see renderLink
+ */
+function link_filter(text, param, url) {
+   if (text) { 
+      url || (url = text);
+      return renderLink(param, url, text);
    }
    return;
 }
 
+/**
+ * 
+ * @param {Object} string
+ * @param {Object} param
+ * @param {String} pattern
+ * @returns {String} The formatted string
+ */
 function format_filter(value, param, pattern) {
    if (!value && value !== 0) {
       return;
@@ -718,6 +921,15 @@ function format_filter(value, param, pattern) {
    return value;
 }
 
+/**
+ * 
+ * @param {String} input
+ * @param {Object} param
+ * @param {Number} limit
+ * @param {String} clipping
+ * @param {String} delimiter
+ * @returns {String} The clipped input
+ */
 function clip_filter(input, param, limit, clipping, delimiter) {
    var len = 0;
    if (input) {
@@ -732,13 +944,21 @@ function clip_filter(input, param, limit, clipping, delimiter) {
 }
 
 // FIXME:
-function fixRssText(str) {
+/**
+ * 
+ * @param {String} rss
+ * @returns {String} The fixed RSS string
+ */
+function fixRssText(rss) {
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
-   str = str.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
-   return str;
+   rss = rss.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
+   return rss;
 }
 
 // FIXME:
+/**
+ * 
+ */
 function countUsers() {
    app.data.activeUsers = new Array();
    var l = app.getActiveUsers();
@@ -755,57 +975,10 @@ function countUsers() {
 }
 
 // FIXME:
-function pingUpdatedSites() {
-   var c = getDBConnection("antville");
-   var dbError = c.getLastError();
-   if (dbError) {
-      app.log("Error establishing DB connection: " + dbError);
-      return;
-   }
-
-   var query = "select name from site where mode = 'online' and " +
-         "SITE_ENABLEPING = 1 and  (SITE_LASTUPDATE > SITE_LASTPING or SITE_LASTPING is null)";
-   var rows = c.executeRetrieval(query);
-   var dbError = c.getLastError();
-   if (dbError) {
-      app.log("Error executing SQL query: " + dbError);
-      return;
-   }
-
-   while (rows.next()) {
-      var site = root.get(rows.getColumnItem("name"));
-      app.log("Notifying weblogs.com for updated site '" + site.alias + 
-            "' (id " + site._id + ")");
-      site.ping();
-   }
-
-   rows.release();
-   return;
-}
-
-// FIXME:
-function extractContent(param, origContent) {
-   var result = {isMajorUpdate: false, exists: false, value: new HopObject()};
-   for (var i in param) {
-      if (i.startsWith("content_")) {
-         var partName = i.substring(8);
-         var newContentPart = param[i].trim();
-         // check if there's a difference between old and
-         // new text of more than 50 characters:
-         if (!result.isMajorUpdate && origContent) {
-            var len1 = origContent[partName] ? origContent[partName].length : 0;
-            var len2 = newContentPart.length;
-            result.isMajorUpdate = Math.abs(len1 - len2) >= 50;
-         }
-         result.value[partName] = newContentPart;
-         if (newContentPart)
-            result.exists = true;
-      }
-   }
-   return result;
-}
-
-// FIXME:
+/**
+ * @ignore
+ * @param {Object} src
+ */
 function doWikiStuff (src) {
    // robert, disabled: didn't get the reason for this:
    // var src= " "+src;
@@ -838,6 +1011,14 @@ function doWikiStuff (src) {
 }
 
 // FIXME: Rewrite with jala.ListRenderer?
+/**
+ * 
+ * @param {HopObject|Array} collection
+ * @param {Function|Skin} funcOrSkin
+ * @param {Number} itemsPerPage
+ * @param {Number} pageIdx
+ * @returns {String} The rendered list
+ */
 function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
    var currIdx = 0, item;
    var isArray = collection instanceof Array;
@@ -862,7 +1043,15 @@ function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
    return res.pop();
 }
 
-// FIXME: Rewrite using jala.ListRenderer?
+// FIXME: Rewrite using jala.ListRenderer or rename (eg. renderIndex)
+/**
+ * 
+ * @param {HopObject|Array|Number} collectionOrSize
+ * @param {String} url
+ * @param {Number} itemsPerPage
+ * @param {Number} pageIdx
+ * @returns {String} The rendered index
+ */
 function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
    // Render a single item for the navigation bar
    var renderItem = function(text, cssClass, url, page) {
@@ -930,6 +1119,11 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
    return renderSkinAsString("$Global#pager", param);
 }
 
+/**
+ * 
+ * @param {String} plural
+ * @returns {String} The english singular form of the input
+ */
 function singularize(plural) {
    if (plural.endsWith("ies")) {
       return plural.substring(0, plural.length-3) + "y";
@@ -937,6 +1131,11 @@ function singularize(plural) {
    return plural.substring(0, plural.length-1);
 }
 
+/**
+ * 
+ * @param {String} singular
+ * @returns {String} The english plural form of the input
+ */
 function pluralize(singular) {
    if (singular.endsWith("y")) {
       return singular.substring(0, singular.length-1) + "ies";
@@ -944,6 +1143,10 @@ function pluralize(singular) {
    return singular + "s";
 }
 
+/**
+ * 
+ * @param {Number} millis
+ */
 var wait = function(millis) {
    millis || (millis = Date.ONESECOND);
    var now = new Date;

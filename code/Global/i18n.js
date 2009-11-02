@@ -22,6 +22,10 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Contains markgettext() calls to complete i18n
+ */
+
 markgettext("Files");
 markgettext("Galleries");
 markgettext("Images");
@@ -38,5 +42,3 @@ markgettext("Show");
 markgettext("Close");
 markgettext("Publish");
 markgettext("Hide");
-
-markgettext('"ÄÖÜß"');

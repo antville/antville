@@ -22,8 +22,21 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Poll prototype
+ */
+
+/**
+ * @function
+ * @param {String} ctor
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Poll.getStatus = defineConstants(Poll, "closed", "open");
 
+/**
+ * 
+ */
 Poll.remove = function() {
    if (this.constructor !== Poll) {
       return;
@@ -35,6 +48,22 @@ Poll.remove = function() {
    return;
 }
 
+/**
+ * @name Poll
+ * @constructor
+ * @param {String} question
+ * @property {Choice[]} _children
+ * @property {String} closed
+ * @property {Date} created
+ * @property {User} creator
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} question
+ * @property {Site} site
+ * @property {String} status
+ * @property {Vote[]} votes
+ * @extends HopObject
+ */
 Poll.prototype.constructor = function(question) {
    this.question = question;
    this.creator = this.modifier = session.user;
@@ -42,6 +71,11 @@ Poll.prototype.constructor = function(question) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Poll.prototype.getPermission = function(action) {
    if (!this.site.getPermission("main")) {
       return false;
@@ -65,6 +99,11 @@ Poll.prototype.getPermission = function(action) {
    return false;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 Poll.prototype.getFormOptions = function(name) {
    switch (name) {
       case "status":
@@ -95,6 +134,10 @@ Poll.prototype.main_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Poll.prototype.vote = function(data) {
 	if (!data.choice) {
 	   throw Error(gettext("You did not vote, yet. You can vote until the poll is closed."));
@@ -128,6 +171,10 @@ Poll.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Poll.prototype.update = function(data) {
    var choices = [];
    for each (var title in data.title_array) {
@@ -175,6 +222,13 @@ Poll.prototype.rotate_action = function() {
    //return res.redirect(this._parent.href() + "#" + this._id);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} action
+ * @param {String} text
+ * @see HopObject#link_macro
+ */
 Poll.prototype.link_macro = function(param, action, text) {
    switch (action) {
       case ".":
@@ -194,6 +248,12 @@ Poll.prototype.link_macro = function(param, action, text) {
    return HopObject.prototype.link_macro.call(this, param, action, text);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ * @see HopObject#link_macro
+ */
 Poll.prototype.input_macro = function(param, name) {
    switch (name) {
       case "choices":
@@ -220,10 +280,18 @@ Poll.prototype.input_macro = function(param, name) {
    return HopObject.prototype.input_macro.apply(this, arguments);
 }
 
-Poll.prototype.votes_macro = function(param) {
+/**
+ * 
+ */
+Poll.prototype.votes_macro = function() {
    return this.votes.size();
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} format
+ */
 Poll.prototype.closed_macro = function(param, format) {
    if (this.status === Poll.CLOSED) {
       res.write(formatDate(this.closed, param.format || format));

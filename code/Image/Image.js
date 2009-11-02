@@ -22,6 +22,10 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Image prototype.
+ */
+
 this.handleMetadata("contentLength");
 this.handleMetadata("contentType");
 this.handleMetadata("description");
@@ -33,12 +37,17 @@ this.handleMetadata("thumbnailWidth");
 this.handleMetadata("origin");
 this.handleMetadata("width");
 
+/** @constant */
 Image.THUMBNAILWIDTH = 100;
 
+/** @constant */
 Image.KEYS = ["name", "created", "modified", "origin", "description", 
       "contentType", "contentLength", "width", "height", "thumbnailName", 
       "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
 
+/**
+ * 
+ */
 Image.remove = function() {
    this.removeFiles();
    this.setTags(null);
@@ -46,6 +55,11 @@ Image.remove = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} type
+ * @returns {String}
+ */
 Image.getFileExtension = function(type) {
    switch (type) {
       //case "image/x-icon":
@@ -62,6 +76,34 @@ Image.getFileExtension = function(type) {
    return null;
 }
 
+/**
+ * @name Image
+ * @constructor
+ * @param {Object} data
+ * @property {Number} contentLength
+ * @property {String} contentType
+ * @property {Date} created
+ * @property {User} creator
+ * @property {String} description
+ * @property {String} fileName
+ * @property {Number} height
+ * @property {Metadata} metadata
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} name
+ * @property {} origin
+ * @property {HopObject} parent
+ * @property {Number} parent_id
+ * @property {String} parent_type
+ * @property {String} prototype
+ * @property {Site} site
+ * @property {Tag[]} tags 
+ * @property {Number} thumbnailHeight
+ * @property {String} thumbnailName
+ * @property {Number} thumbnailWidth
+ * @property {Number} width
+ * @extends HopObject
+ */
 Image.prototype.constructor = function(data) {
    // Images.Default is using the constructor on code compilation
    if (typeof session !== "undefined") {
@@ -77,6 +119,11 @@ Image.prototype.constructor = function(data) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @return {Boolean}
+ */
 Image.prototype.getPermission = function(action) {
    var defaultGrant = this._parent.getPermission("main");
    switch (action) {
@@ -102,6 +149,11 @@ Image.prototype.getPermission = function(action) {
    return false;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {String}
+ */
 Image.prototype.href = function(action) {
    if (action !== "replace") {
       if (this.parent_type === "Layout" && this.parent !== path.layout) {
@@ -140,6 +192,11 @@ Image.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 Image.prototype.getFormValue = function(name) {
    var self = this;
    
@@ -169,6 +226,10 @@ Image.prototype.getFormValue = function(name) {
    return this[name] || req.queryParams[name];
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Image.prototype.update = function(data) {
    if (data.uploadError) {
       app.log(data.uploadError);
@@ -243,23 +304,39 @@ Image.prototype.update = function(data) {
    return;
 }
 
+/**
+ * 
+ */
 Image.prototype.tags_macro = function() {
    return res.write(this.getFormValue("tags"));
 }
 
+/**
+ * 
+ */
 Image.prototype.contentLength_macro = function() {
    return res.write((this.contentLength / 1024).format("###,###") + " KB");
 }
 
+/**
+ * 
+ */
 Image.prototype.url_macro = function() {
    return res.write(this.getUrl());
 }
 
+/**
+ * 
+ */
 Image.prototype.macro_macro = function() {
    return HopObject.prototype.macro_macro.call(this, null,  
          this.parent.constructor === Layout ? "layout.image" : "image");
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Image.prototype.thumbnail_macro = function(param) {
    if (!this.thumbnailName) {
       return this.render_macro(param);
@@ -274,6 +351,10 @@ Image.prototype.thumbnail_macro = function(param) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 Image.prototype.render_macro = function(param) {
    param.src = this.getUrl();
    param.title || (param.title = encode(this.description));
@@ -285,6 +366,12 @@ Image.prototype.render_macro = function(param) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} name
+ * @returns {helma.File}
+ * @see Site#getStaticFile
+ */
 Image.prototype.getFile = function(name) {
    name || (name = this.fileName);
    if (this.parent_type === "Layout") {
@@ -295,6 +382,12 @@ Image.prototype.getFile = function(name) {
    return site.getStaticFile("images/" + name);
 }
 
+/**
+ * 
+ * @param {Object} name
+ * @returns {String}
+ * @see Site#getStaticUrl
+ */
 Image.prototype.getUrl = function(name) {
    name || (name = this.fileName);
    //name = encodeURIComponent(name);
@@ -313,11 +406,17 @@ Image.prototype.getUrl = function(name) {
    return result; */
 }
 
+/**
+ * @returns {helma.File}
+ */
 Image.prototype.getThumbnailFile = function() {
    return this.getFile(this.thumbnailName);
    // || this.fileName.replace(/(\.[^.]+)?$/, "_small$1"));
 }
 
+/**
+ * @returns {String}
+ */
 Image.prototype.getJSON = function() {
    return {
       name: this.name,
@@ -337,6 +436,14 @@ Image.prototype.getJSON = function() {
    }.toSource();
 }
 
+/**
+ * 
+ * @param {helma.util.MimePart} mime
+ * @param {Number} maxWidth
+ * @param {Number} maxHeight
+ * @throws {Error}
+ * @returns {Object}
+ */
 Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
    try {
       var image = new helma.Image(mime.inputStream);
@@ -365,6 +472,12 @@ Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
    }
 }
 
+/**
+ * 
+ * @param {helma.Image|helma.util.MimePart} data
+ * @param {Object} thumbnail
+ * @throws {Error}
+ */
 Image.prototype.writeFiles = function(data, thumbnail) {
    if (data) {
       try {
@@ -387,6 +500,9 @@ Image.prototype.writeFiles = function(data, thumbnail) {
    return;
 }
 
+/**
+ * @throws {Error}
+ */
 Image.prototype.removeFiles = function() {
    try {
       this.getFile().remove();

@@ -22,6 +22,11 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Layout prototype
+ */
+
+/** @constant */
 Layout.VALUES = [
    "background color",
    "link color",
@@ -38,6 +43,10 @@ Layout.VALUES = [
    "small font color"
 ];
 
+/**
+ * 
+ * @param {Layout} layout
+ */
 Layout.remove = function(layout) {
    layout || (layout = this);
    if (layout.constructor === Layout) {
@@ -49,6 +58,11 @@ Layout.remove = function(layout) {
    return;
 }
 
+/** 
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Layout.getModes = defineConstants(Layout, "default", "shared");
 
 this.handleMetadata("title");
@@ -57,6 +71,26 @@ this.handleMetadata("origin");
 this.handleMetadata("originator");
 this.handleMetadata("originated");
 
+/**
+ * @name Layout
+ * @constructor
+ * @param {Site} site
+ * @property {Date} created
+ * @property {User} creator
+ * @property {String} description
+ * @property {Images} images
+ * @property {Metadata} metadata
+ * @property {String} mode
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} origin
+ * @property {String} originator
+ * @property {Date} originated
+ * @property {Site} site
+ * @property {Skins} skins
+ * @property {String} title
+ * @extends HopObject
+ */
 Layout.prototype.constructor = function(site) {
    this.site = site;
    this.creator = session.user;
@@ -66,6 +100,11 @@ Layout.prototype.constructor = function(site) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Layout.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
@@ -84,6 +123,11 @@ Layout.prototype.getPermission = function(action) {
 
 // FIXME: The Layout.href method is overwritten to guarantee that
 // URLs won't contain the layout ID instead of "layout"
+/**
+ * 
+ * @param {String} action
+ * @returns {String}
+ */
 Layout.prototype.href = function(action) {
    res.push();
    res.write(res.handlers.site.href());
@@ -110,6 +154,11 @@ Layout.prototype.main_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 Layout.prototype.getFormOptions = function(name) {
    switch (name) {
       case "mode":
@@ -119,6 +168,10 @@ Layout.prototype.getFormOptions = function(name) {
    }
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Layout.prototype.update = function(data) {
    var skin = this.skins.getSkin("Site", "values");
    if (!skin) {
@@ -242,10 +295,19 @@ Layout.prototype.import_action = function() {
    return;
 }
 
+/**
+ * @returns {String}
+ */
 Layout.prototype.getTitle = function() {
    return "Layout";
 }
 
+/**
+ * 
+ * @param {String} name
+ * @param {String} fallback
+ * @returns {Image}
+ */
 Layout.prototype.getImage = function(name, fallback) {
    var layout = this;
    while (layout) {
@@ -260,6 +322,11 @@ Layout.prototype.getImage = function(name, fallback) {
    return null;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {helma.File}
+ */
 Layout.prototype.getFile = function(name) {
    name || (name = String.EMPTY);
    return this.site.getStaticFile("layout/" + name);
@@ -273,6 +340,11 @@ Layout.prototype.getSkinPath = function() {
    return skinPath;
 }
 
+/**
+ * 
+ * @param {String} skinPath
+ * @returns {helma.Zip}
+ */
 Layout.prototype.getArchive = function(skinPath) {
    var zip = new helma.Zip();
    var skinFiles = app.getSkinfilesInPath(skinPath);
@@ -313,6 +385,11 @@ Layout.prototype.getArchive = function(skinPath) {
    return zip;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 Layout.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "skins":
@@ -323,6 +400,12 @@ Layout.prototype.getMacroHandler = function(name) {
    }
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ * @param {String} mode
+ */
 Layout.prototype.image_macro = function(param, name, mode) {
    name || (name = param.name);
    if (!name) {
@@ -351,6 +434,9 @@ Layout.prototype.image_macro = function(param, name, mode) {
    return;
 }
 
+/**
+ * 
+ */
 Layout.prototype.values_macro = function() {
    var values = [];
    for (var key in res.meta.values) {

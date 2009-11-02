@@ -22,6 +22,24 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the LogEntry prototype.
+ */
+
+/**
+ * @name LogEntry
+ * @constructor
+ * @param {HopObject} context
+ * @param {String} action
+ * @property {String} action
+ * @property {HopObject} context
+ * @property {Number} context_id
+ * @property {String} context_type
+ * @property {Date} created
+ * @property {User} creator
+ * @property {String} referrer 
+ * @extends HopObject
+ */
 LogEntry.prototype.constructor = function(context, action) {
    this.context = context;
    this.action = action;
@@ -34,12 +52,20 @@ LogEntry.prototype.constructor = function(context, action) {
    return this;
 }
 
+/**
+ * @returns {String}
+ */
 LogEntry.prototype.toString = function() {
    return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") + 
          " requested " + this.action + " action of " + this.context_type + 
          " #" + this.context_id + " on " + formatDate(this.created) + "]";
 } 
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 LogEntry.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "context":
@@ -48,6 +74,10 @@ LogEntry.prototype.getMacroHandler = function(name) {
    return null;
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 LogEntry.prototype.label_macro = function(param) {
    if (!User.require(User.PRIVILEGED)) {
       return;

@@ -22,11 +22,18 @@
 // $URL$
 //
 
-// Methods that implement Blogger's XML-RPC API.
-// See http://www.xmlrpc.com/metaWeblogApi for further details.
+/**
+ * @fileOverview Methods that implement Blogger's XML-RPC API.
+ * See http://www.xmlrpc.com/metaWeblogApi for further details.
+ */
 
+/** @namespace */
 Api.metaWeblog = {}
 
+/**
+ * @param {Story} story
+ * @returns {Object}
+ */
 Api.metaWeblog._getStruct = function(story) {
    return {
       userid: story.creator.name,
@@ -47,6 +54,15 @@ Api.metaWeblog._getStruct = function(story) {
    }
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {Number} limit
+ * @throws {Error}
+ * @returns {Object[]}
+ */
 Api.metaWeblog.getRecentPosts = function(id, name, password, limit) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -66,6 +82,14 @@ Api.metaWeblog.getRecentPosts = function(id, name, password, limit) {
    return result;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Object}
+ */
 Api.metaWeblog.getPost = function(id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
@@ -77,6 +101,16 @@ Api.metaWeblog.getPost = function(id, name, password) {
    return Api.metaWeblog._getStruct(story);
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {String} content
+ * @param {Boolean} publish
+ * @throws {Error}
+ * @returns {Number}
+ */
 Api.metaWeblog.newPost = function(id, name, password, content, publish) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -102,6 +136,16 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
    return story._id;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {String} content
+ * @param {Boolean} publish
+ * @throws {Error}
+ * @returns {Boolean}
+ */
 Api.metaWeblog.editPost = function(id, name, password, content, publish) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
@@ -123,6 +167,14 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
    return true;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @throws {Error}
+ * @returns {Object[]}
+ */
 Api.metaWeblog.getCategories = function(id, name, password) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
@@ -145,6 +197,15 @@ Api.metaWeblog.getCategories = function(id, name, password) {
    return result;
 }
 
+/**
+ * 
+ * @param {Number} id
+ * @param {String} name
+ * @param {String} password
+ * @param {String} media
+ * @throws {Error}
+ * @returns {Object}
+ */
 Api.metaWeblog.newMediaObject = function(id, name, password, media) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);

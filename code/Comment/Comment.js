@@ -22,9 +22,44 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Comment prototype.
+ */
+
+/**
+ * @see defineConstants
+ */
 Comment.getStatus = defineConstants(Comment, "closed", 
       "pending", "readonly", "public");
 
+
+/**
+ * @returns {String}
+ */
+Comment.remove = function() {
+   if (this.constructor !== Comment) {
+      return;
+   }
+   while (this.size() > 0) {
+      Comment.remove.call(this.get(0));
+   }
+   // Force removal from aggressively cached collections:
+   (this.parent || this).removeChild(this);
+   this.story.comments.removeChild(this);
+   this.remove();
+   return this.parent.href();
+}
+
+/**
+ * @name Comment
+ * @constructor
+ * @param {Object} parent
+ * @property {Comment[]} _children
+ * @property {String} name
+ * @property {Story|Comment} parent
+ * @property {Story} story
+ * @extends Story
+ */
 Comment.prototype.constructor = function(parent) {
    this.name = String.EMPTY;
    this.site = parent.site;
@@ -38,6 +73,11 @@ Comment.prototype.constructor = function(parent) {
    return this;
 }
 
+/**
+ * 
+ * @param {Object} action
+ * @returns {Boolean}
+ */
 Comment.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
@@ -58,6 +98,11 @@ Comment.prototype.getPermission = function(action) {
    return false;
 }
 
+/**
+ * 
+ * @param {Object} action
+ * @returns {String}
+ */
 Comment.prototype.href = function(action) {
    var buffer = [];
    switch (action) {
@@ -96,6 +141,10 @@ Comment.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Comment.prototype.update = function(data) {
    if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
@@ -121,18 +170,4 @@ Comment.prototype.update = function(data) {
    this.clearCache();
    this.modifier = session.user;
    return;
-}
-
-Comment.remove = function() {
-   if (this.constructor !== Comment) {
-      return;
-   }
-   while (this.size() > 0) {
-      Comment.remove.call(this.get(0));
-   }
-   // Force removal from aggressively cached collections:
-   (this.parent || this).removeChild(this);
-   this.story.comments.removeChild(this);
-   this.remove();
-   return this.parent.href();
 }

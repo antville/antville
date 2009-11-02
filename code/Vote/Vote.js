@@ -22,6 +22,22 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Vote prototype.
+ */
+
+/**
+ * @name Vote
+ * @constructor
+ * @param {Choice} choice
+ * @property {Choice} choice
+ * @property {Date} created
+ * @property {User} creator
+ * @property {String} creator_name
+ * @property {Date} modified
+ * @property {Poll} poll
+ * @extends HopObject
+ */
 Vote.prototype.constructor = function(choice) {
    this.choice = choice;
    this.creator = session.user;

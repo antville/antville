@@ -22,12 +22,19 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Comment prototype.
+ */
+
 this.handleMetadata("url");
 this.handleMetadata("description");
 this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
 this.handleMetadata("fileName");
 
+/**
+ * 
+ */
 File.remove = function() {
    if (this.constructor === File) {
       this.getFile().remove();
@@ -36,6 +43,10 @@ File.remove = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ */
 File.getName = function(name) {
    if (name) {
       //return name.replace(/[^\w\d\s._-]/g, String.EMPTY);
@@ -44,6 +55,22 @@ File.getName = function(name) {
    return null;
 }
 
+/**
+ * @name File
+ * @constructor
+ * @property {Date} created
+ * @property {User} creator
+ * @property {Metadata} metadata
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} name
+ * @property {Number} parent_id
+ * @property {String} parent_type
+ * @property {String} prototype
+ * @property {Number} requests
+ * @property {Site} site
+ * @extends HopObject
+ */
 File.prototype.constructor = function() {
    this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
@@ -51,6 +78,11 @@ File.prototype.constructor = function() {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @return {Boolean}
+ */
 File.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
@@ -92,6 +124,11 @@ File.prototype.edit_action = function() {
    return this.site.renderSkin("Site#page");
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 File.prototype.getFormValue = function(name) {
    var self = this;
    
@@ -116,6 +153,10 @@ File.prototype.getFormValue = function(name) {
    return this[name];
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 File.prototype.update = function(data) {
    if (data.uploadError) {
       app.log(data.uploadError);
@@ -168,19 +209,32 @@ File.prototype.update = function(data) {
    return;
 }
 
+/**
+ * 
+ */
 File.prototype.url_macro = function() {
    return res.write(this.url || this.getUrl());
 }
 
+/**
+ * 
+ * @param {Object} param
+ */
 File.prototype.contentLength_macro = function(param) {
    return res.write((this.contentLength / 1024).format("###,###") + " KB");
 }
 
+/**
+ * 
+ */
 File.prototype.getFile = function() {
    var site = this.site || res.handlers.site;
    return site.getStaticFile("files/" + this.fileName);
 }
 
+/**
+ * 
+ */
 File.prototype.getUrl = function() {
    var site = this.site || res.handlers.site;
    return site.getStaticUrl("files/" + this.fileName);

@@ -22,12 +22,13 @@
 // $URL$
 //
 
-Choice.prototype.constructor = function(title) {
-   this.title = title;
-   this.created = this.modified = new Date;
-   return this;
-}
+/**
+ * @fileOverview Defines the Choice prototype.
+ */
 
+/**
+ * 
+ */
 Choice.remove = function() {
    if (this.constructor !== Choice) {
       return;
@@ -39,6 +40,26 @@ Choice.remove = function() {
    return;
 }
 
+/**
+ * @name Choice
+ * @constructor
+ * @param {Object} title
+ * @property {Vote[]} _children
+ * @property {Date} created
+ * @property {Date} modified
+ * @property {Poll} poll
+ * @property {String} title
+ * @extends HopObject
+ */
+Choice.prototype.constructor = function(title) {
+   this.title = title;
+   this.created = this.modified = new Date;
+   return this;
+}
+
+/**
+ * 
+ */
 Choice.prototype.selected_macro = function() {
    var votes;
    if (session.user && (votes = this._parent.votes.get(session.user.name))) {
@@ -49,6 +70,11 @@ Choice.prototype.selected_macro = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} variant
+ */
 Choice.prototype.votes_macro = function(param, variant) {
    var votes = 0;
    if (variant) {

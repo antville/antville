@@ -21,7 +21,17 @@
 // $URL$
 //
 
-Skin.getByName = function(group, name) {
+/**
+ * @fileOverview Defines the Skin prototype
+ */
+
+
+/**
+ * 
+ * @param {String} group
+ * @param {String} name
+ * @returns {Skin}
+ */Skin.getByName = function(group, name) {
    var skinSet = (res.handlers.layout || path.layout).skins.get(group);
    if (skinSet) {
       var skin = skinSet.get(name);
@@ -32,6 +42,10 @@ Skin.getByName = function(group, name) {
    return null;
 }
 
+/**
+ * 
+ * @param {Skin} skin
+ */
 Skin.remove = function(skin) {
    skin || (skin = this);
    if (skin.constructor === Skin) {
@@ -44,6 +58,9 @@ Skin.remove = function(skin) {
    return;
 }
 
+/**
+ * @returns  {String[]}
+ */
 Skin.getPrototypeOptions = function() {
    var prototypes = [];
    var content, file;
@@ -60,6 +77,20 @@ Skin.getPrototypeOptions = function() {
    return prototypes.sort(new String.Sorter("display"));
 }
 
+/**
+ * @name Skin
+ * @constructor
+ * @param {String} prototype
+ * @param {String} name
+ * @property {Date} created
+ * @property {User} creator
+ * @property {Layout} layout
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} prototype
+ * @property {String} source
+ * @extends HopObject
+ */
 Skin.prototype.constructor = function(prototype, name) {
    this.prototype = prototype || String.EMPTY;
    this.name = name || String.EMPTY;
@@ -68,6 +99,11 @@ Skin.prototype.constructor = function(prototype, name) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Skin.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
@@ -77,6 +113,11 @@ Skin.prototype.getPermission = function(action) {
    return res.handlers.skins.getPermission("main");
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {String}
+ */
 Skin.prototype.href = function(action) {
    res.push();
    res.write(res.handlers.layout.skins.href());
@@ -122,6 +163,10 @@ Skin.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Skin.prototype.update = function(data) {
    if (this.isTransient()) {
       res.handlers.layout.skins.add(this);
@@ -200,6 +245,11 @@ Skin.prototype.compare_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @return {Object}
+ */
 Skin.prototype.getFormOptions = function(name) {
    switch (name) {
       case "prototype":
@@ -207,6 +257,9 @@ Skin.prototype.getFormOptions = function(name) {
    }
 }
 
+/**
+ * @returns {String}
+ */
 Skin.prototype.getSource = function() {
    var skinSet = app.getSkinfilesInPath(res.skinpath)[this.prototype];
    if (skinSet) {
@@ -221,6 +274,10 @@ Skin.prototype.getSource = function() {
    return null; //String.EMPTY;
 }
 
+/**
+ * 
+ * @param {String} source
+ */
 Skin.prototype.setSource = function(source) {
    var skin = this.getMainSkin();
    if (!skin) {
@@ -259,11 +316,19 @@ Skin.prototype.setSource = function(source) {
    return;
 }
 
-Skin.prototype.getStaticFile = function(fpath, skin) {
+/**
+ * 
+ * @param {String} fpath
+ * @returns {java.io.File}
+ */
+Skin.prototype.getStaticFile = function(fpath) {
    return new java.io.File(fpath, this.prototype + "/" + 
          this.prototype + ".skin");
 }
 
+/**
+ * @returns {Skin}
+ */
 Skin.prototype.getMainSkin = function() {
    var skinSet = app.getSkinfilesInPath(res.skinpath)[this.prototype];
    if (skinSet && skinSet[this.prototype]) {
@@ -272,10 +337,18 @@ Skin.prototype.getMainSkin = function() {
    return null;
 }
 
+/**
+ * 
+ */
 Skin.prototype.render = function() {
    return renderSkin(createSkin(this.getSource()));
 }
 
+/**
+ * 
+ * @param {String} source
+ * @returns {Boolean}
+ */
 Skin.prototype.equals = function(source) {
    // FIXME: The removal of linebreaks is necessary but it's not very nice
    var re = /\r|\n/g;
@@ -285,14 +358,23 @@ Skin.prototype.equals = function(source) {
    return normalize(source) === normalize(this.getSource());
 }
 
+/**
+ * @returns {String}
+ */
 Skin.prototype.toString = function() {
    return "Skin #" + this._id + ": " + this.prototype + "." + this.name;
 }
 
+/**
+ * 
+ */
 Skin.prototype.status_macro = function() {
    return this.isTransient() ? "inherited" : "modified"; 
 }
 
+/**
+ * 
+ */
 Skin.prototype.content_macro = function() {
    return res.write(this.getSource());
 }

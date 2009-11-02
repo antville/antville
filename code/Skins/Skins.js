@@ -22,6 +22,14 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Skins prototype.
+ */
+
+/**
+ * 
+ * @param {Skins} skins
+ */
 Skins.remove = function(skins) {
    skins || (skins = this);
    if (skins.constructor === Skins) {
@@ -32,16 +40,38 @@ Skins.remove = function(skins) {
    return;
 }
 
+/**
+ * @name Skins
+ * @constructor
+ * @param {String} name
+ * @param {Skins} parent
+ * @property {Skin[]} _children
+ * @property {Skin[]} custom
+ * @property {Skin[]} modified
+ * @property {String} name
+ * @property {Skins} parent
+ * @extends HopObject
+ */
 Skins.prototype.constructor = function(name, parent) {
   this.name = name; 
   this.parent = parent;
   return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Skins.prototype.getPermission = function(action) {
    return res.handlers.layout.getPermission("main");
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Skins|Skin}
+ */
 Skins.prototype.getChildElement = function(name) {
    if (this.parent) {
       var group = path[path.length - 1].name;
@@ -67,6 +97,11 @@ Skins.prototype.main_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} type
+ * @returns {String}
+ */
 Skins.prototype.getOutline = function(type) {
    var key = "outline:" + type;
    var outline = this.cache[key];
@@ -184,6 +219,12 @@ Skins.prototype.safe_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} group
+ * @param {String} name
+ * @returns {Skin}
+ */
 Skins.prototype.getSkin = function(group, name) {
    return Skin.getByName(group, name) || new Skin(group, name);
 }

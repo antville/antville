@@ -22,20 +22,43 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Membership prototype
+ */
+
+/**
+ * 
+ * @param {String} name
+ * @returns {Membership}
+ */
 Membership.getByName = function(name) {
    return res.handlers.site.members.get(name);
 }
 
+/**
+ * 
+ * @param {String} role
+ * @returns {Boolean}
+ */
 Membership.require = function(role) {
    if (res.handlers.membership) {
       return res.handlers.membership.require(role);
    }
    return false;
 }
-      
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor", 
       "Manager", "Owner");
-      
+
+/**
+ * 
+ * @param {Membership} membership
+ */
 Membership.remove = function(membership) {
    if (membership && membership.constructor === Membership) {
       if (!membership.getPermission("delete") && !User.require(User.PRIVILEGED)) {
@@ -51,6 +74,24 @@ Membership.remove = function(membership) {
    return;
 }
 
+/**
+ * @name Membership
+ * @constructor
+ * @param {Object} user
+ * @param {Object} role
+ * @property {Date} created
+ * @property {User} creator
+ * @property {File[]} files
+ * @property {Image[]} images
+ * @property {Date} modified
+ * @property {User} modifier
+ * @property {String} name
+ * @property {Poll[]} polls
+ * @property {String} role
+ * @property {Site} site
+ * @property {Story[]} stories
+ * @extends HopObject
+ */
 Membership.prototype.constructor = function(user, role) {
    user || (user = session.user);
    if (user) {
@@ -65,6 +106,11 @@ Membership.prototype.constructor = function(user, role) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @return {Boolean}
+ */
 Membership.prototype.getPermission = function(action) {
    if (!res.handlers.site.getPermission("main")) {
       return false;
@@ -80,6 +126,11 @@ Membership.prototype.getPermission = function(action) {
    return false;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
 Membership.prototype.getFormOptions = function(name) {
    switch (name) {
       case "role":
@@ -107,6 +158,10 @@ Membership.prototype.edit_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {Object} data
+ */
 Membership.prototype.update = function(data) {
    if (!data.role) {
       throw Error(gettext("Please choose a role for this member."));
@@ -145,6 +200,11 @@ Membership.prototype.contact_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ */
 Membership.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "creator":
@@ -152,15 +212,30 @@ Membership.prototype.getMacroHandler = function(name) {
    }
 }
 
+/**
+ * @deprecated
+ * @param {Object} param
+ * @throws {Error}
+ */
 Membership.prototype.email_macro = function(param) {
    throw Error("Due to privacy reasons the display of e-mail addresses is disabled.")
 }
 
+/**
+ * 
+ */
 Membership.prototype.status_macro = function() {
    this.renderSkin(session.user ? "Membership#status" : "Membership#login");
    return;
 }
 
+/**
+ * 
+ * @param {Object} value
+ * @param {Object} param
+ * @returns {String}
+ * @see HopObject#link_filter
+ */
 Membership.prototype.link_filter = function(value, param) {
    if (!session.user || !session.user.url) {
       return value;
@@ -169,6 +244,11 @@ Membership.prototype.link_filter = function(value, param) {
          param, session.user.url); // || this.href());
 }
 
+/**
+ * 
+ * @param {String} role
+ * @returns {Boolean}
+ */
 Membership.prototype.require = function(role) {
    var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
          Membership.MANAGER, Membership.OWNER];
@@ -178,6 +258,12 @@ Membership.prototype.require = function(role) {
    return false;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @param {String} recipient
+ * @param {String} subject
+ */
 Membership.prototype.notify = function(action, recipient, subject) {
    switch (action) {
       case "add":
@@ -192,8 +278,15 @@ Membership.prototype.notify = function(action, recipient, subject) {
    return;
 }
 
+/**
+ * @function
+ * @see #toString
+ */
 Membership.prototype.valueOf = Membership.prototype.toString;
 
+/**
+ * @returns {String}
+ */
 Membership.prototype.toString = function() {
    return "the membership of user " + this.name + " in site " + this.site.name;
 }

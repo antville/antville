@@ -22,6 +22,26 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Members prototype.
+ */
+
+/**
+ * @name Members
+ * @constructor
+ * @property {Membership[]} _children
+ * @property {Membership[]} contributors
+ * @property {Membership[]} managers
+ * @property {Membership[]} owners
+ * @property {Membership[]} subscribers
+ * @extends HopObject
+ */
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Members.prototype.getPermission = function(action) {
    switch (action) {
       case "login":
@@ -330,6 +350,11 @@ Members.prototype.add_action = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} searchString
+ * @returns {Object}
+ */
 Members.prototype.search = function(searchString) {
    var mode = "= '";
    if (searchString.contains("*")) {
@@ -358,6 +383,11 @@ Members.prototype.search = function(searchString) {
    };
 }
 
+/**
+ * 
+ * @param {Object} data
+ * @returns {Membership}
+ */
 Members.prototype.addMembership = function(data) {
    var user = root.users.get(data.name);
    if (!user) {
@@ -369,22 +399,6 @@ Members.prototype.addMembership = function(data) {
    this.add(membership);
    return membership;
 }
-
-/* FIXME: obsolete?
-Members.prototype.renderMemberlist = function() {
-   var currLvl = null;
-   res.push();
-   for (var i=0;i<this.size();i++) {
-      var m = this.get(i);
-      if (m.level != currLvl) {
-         this.renderSkin("membergroup", {group: getRole(m.level)});
-         currLvl = m.level;
-      }
-      m.renderSkin("mgrlistitem");
-   }
-   return res.pop();
-}
-*/
 
 Members.prototype.modSorua_action = function() {
    if (!app.data.modSorua) app.data.modSorua = new Array();

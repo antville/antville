@@ -22,8 +22,18 @@
 // $URL$
 //
 
-Root.VERSION = "1.2";
+/**
+ * @fileOverview Defines the Root prototype.
+ */
 
+/** @constant */
+Root.VERSION = "1.2-beta";
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
 Root.getScopes = defineConstants(Root, markgettext("any site"), 
       markgettext("public sites"), markgettext("trusted sites"), 
       markgettext("no site"));
@@ -41,6 +51,10 @@ this.handleMetadata("phaseOutInactiveSites");
 this.handleMetadata("phaseOutNotificationPeriod");
 this.handleMetadata("phaseOutGracePeriod");
 
+/**
+ * 
+ * @param {Story} ref
+ */
 Root.restore = function(ref) {
    var backup;
    if (backup = session.data.backup) {
@@ -50,6 +64,9 @@ Root.restore = function(ref) {
    return ref; 
 }
 
+/**
+ * 
+ */
 Root.commitRequests = function() {
    var requests = app.data.requests;
    app.data.requests = {};
@@ -65,6 +82,9 @@ Root.commitRequests = function() {
    return;
 }
 
+/**
+ * 
+ */
 Root.commitEntries = function() {
    var entries = app.data.entries;   
    if (entries.length < 1) {
@@ -103,6 +123,9 @@ Root.commitEntries = function() {
    return;
 }
 
+/**
+ * 
+ */
 Root.purgeReferrers = function() {
    var sql = new Sql;
    var result = sql.execute("delete from log where action = 'main' and " +
@@ -110,6 +133,9 @@ Root.purgeReferrers = function() {
    return result;
 }
 
+/**
+ * 
+ */
 Root.invokeCallbacks = function() {
    var http = helma.Http();
    http.setTimeout(200);
@@ -142,6 +168,9 @@ Root.invokeCallbacks = function() {
    return;
 }
 
+/**
+ * 
+ */
 Root.updateHealth = function() {
    var health = Root.health || {};
    if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
@@ -156,6 +185,9 @@ Root.updateHealth = function() {
    return;
 }
 
+/**
+ * 
+ */
 Root.exportImport = function() {
    if (app.data.exportImportIsRunning) {
       return;
@@ -169,10 +201,46 @@ Root.exportImport = function() {
    return;
 }
 
+/**
+ * Antville’s root object is an extent of the Site prototype.
+ * @name Root
+ * @constructor
+ * @property {Site[]} _children 
+ * @property {Admin} admin
+ * @property {User[]} admins
+ * @property {Api} api
+ * @property {String} autoCleanupEnabled
+ * @property {String} autoCleanupStartTime
+ * @property {String} creationDelay
+ * @property {String} creationScope
+ * @property {String} notificationScope
+ * @property {String} phaseOutGracePeriod
+ * @property {String} phaseOutInactiveSites
+ * @property {String} phaseOutNotificationPeriod
+ * @property {String} phaseOutPrivateSites
+ * @property {String} qualifyingDate
+ * @property {String} qualifyingPeriod
+ * @property {String} quote
+ * @property {Site[]} sites
+ * @property {Site[]} updates
+ * @property {User[]} users
+ * @extends Site
+ */
+
+/**
+ * 
+ * @param {String} href
+ * @returns {String}
+ */
 Root.prototype.processHref = function(href) {
    return app.properties.defaulthost + href;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Root.prototype.getPermission = function(action) {
    if (action.contains("admin")) {
       return User.require(User.PRIVILEGED);
@@ -209,6 +277,12 @@ Root.prototype.main_action = function() {
    return Site.prototype.main_action.apply(this);
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ * @see Site#getFormOptions
+ */
 Root.prototype.getFormOptions = function(name) {
    switch (name) {
       case "notificationScope":
@@ -469,6 +543,12 @@ Root.prototype.mrtg_action = function() {
    return;
 } 
 
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject}
+ * @see Site#getMacroHandler
+ */
 Root.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "admin":
@@ -479,6 +559,9 @@ Root.prototype.getMacroHandler = function(name) {
    return Site.prototype.getMacroHandler.apply(this, arguments);
 }
 
+/**
+ * @returns {Boolean}
+ */
 Root.prototype.getCreationPermission = function() {
    var user;
    if (!(user = session.user)) {
@@ -525,7 +608,11 @@ Root.prototype.getCreationPermission = function() {
 }
 
 /**
- * This method is called from the build script to extract gettext call strings from scripts and skins.
+ * This method is called from the build script to extract gettext call strings 
+ * from scripts and skins.
+ * @param {String} script
+ * @param {String} scanDirs
+ * @param {String} potFile
  */
 Root.prototype.xgettext = function(script, scanDirs, potFile) {
    var temp = {print: global.print, readFile: global.readFile};

@@ -22,11 +22,32 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the Tag prototype.
+ */
+
+/**
+ * @constant
+ */
 Tag.MOUNTPOINTS = {
    Story: "tags",
    Image: "galleries"
 }
 
+/**
+ * @name Tag
+ * @constructor
+ * @param {String} name
+ * @param {Site} site
+ * @param {String} type
+ * @property {TagHub[]} _children
+ * @property {Images[]} images
+ * @property {String} name
+ * @property {Site} site
+ * @property {Story[]} stories
+ * @property {String} type
+ * @extends HopObject
+ */
 Tag.prototype.constructor = function(name, site, type) {
    this.name = name;
    this.site = site;
@@ -34,6 +55,11 @@ Tag.prototype.constructor = function(name, site, type) {
    return this;
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
 Tag.prototype.getPermission = function(action) {
    if (!res.handlers.site.getPermission("main")) {
       return false;
@@ -120,12 +146,14 @@ Tag.prototype.delete_action = function() {
    res.redirect(this.site[Tag.MOUNTPOINTS[this.type]].href());
 }
 
+/**
+ * 
+ * @param {String} action
+ * @returns {String}
+ */
 Tag.prototype.href = function(action) {
-   //res.debug(HopObject.prototype.href.call(root, "test", this.name));
    res.push();
-   //res.write(this.site.getTags(this.type, Tags.ALL).href());
    res.write(this.site[Tag.MOUNTPOINTS[this.type]].href());
-   //res.write(java.net.URLEncoder.encode(this.name));
    res.write(encodeURIComponent(this.name));
    res.write("/");
    if (action) {
@@ -134,30 +162,32 @@ Tag.prototype.href = function(action) {
    return res.pop();
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} type
+ */
 Tag.prototype.permission_macro = function(param, type) {
    return this.getPermission(type);
 }
 
-// FIXME: b/w compatibility
-Tag.prototype.checkAccess = function(action, user, level) {
-   try {
-      if (!this.getPermission(action)) {
-         throw DenyException("FIXME");
-      }
-   } catch(ex) {
-      res.message = ex.toString();
-      res.redirect(this.site.href());
-   }
-}
-
+/**
+ * @returns {Story[]|Image[]}
+ */
 Tag.prototype.getTagged = function() {
    return this[pluralize(this.type.toLowerCase())];
 }
 
+/**
+ * @returns {String}
+ */
 Tag.prototype.getTitle = function() {
    return this.name;
 }
 
+/**
+ * @returns {String}
+ */
 Tag.prototype.toString = function() {
    return "[" + this.type + " tag ``" + this.name + "'' of Site ``" + 
        this.site.alias + "'']";

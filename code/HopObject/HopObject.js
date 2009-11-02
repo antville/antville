@@ -22,6 +22,15 @@
 // $URL$
 //
 
+/**
+ * @fileOverview Defines the extensions of Helma’s built-in 
+ * HopObject prototype.
+ */
+
+/**
+ * 
+ * @param {HopObject} collection
+ */
 HopObject.remove = function(collection) {
    var item;
    while (collection.size() > 0) {
@@ -33,6 +42,11 @@ HopObject.remove = function(collection) {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @param {HopObject} collection
+ */
 HopObject.getFromPath = function(name, collection) {
    if (name) {
       var site;
@@ -50,6 +64,16 @@ HopObject.getFromPath = function(name, collection) {
    return null;
 }
 
+/**
+ * Helma’s built-in HopObject with Antville’s extensions.
+ * @name HopObject
+ * @constructor
+ */
+
+/**
+ * 
+ * @param {Object} values
+ */
 HopObject.prototype.map = function(values) {
    for (var i in values) {
       this[i] = values[i];
@@ -57,6 +81,9 @@ HopObject.prototype.map = function(values) {
    return;
 }
 
+/**
+ * 
+ */
 HopObject.prototype.onRequest = function() {
    // Checking if we are on the correct host to prevent at least some XSS issues
    if (req.action !== "notfound" && req.action !== "error" && this.href().startsWith("http://") && 
@@ -104,6 +131,9 @@ HopObject.prototype.onRequest = function() {
    return;
 }
 
+/**
+ * @returns Boolean
+ */
 HopObject.prototype.getPermission = function() {
    return true;
 }
@@ -131,6 +161,9 @@ HopObject.prototype.delete_action = function() {
    return;
 }
 
+/**
+ * @returns {Object}
+ */
 HopObject.prototype.touch = function() {
    return this.map({
       modified: new Date,
@@ -138,12 +171,19 @@ HopObject.prototype.touch = function() {
    });
 }
 
+/**
+ * 
+ */
 HopObject.prototype.log = function() {
    var entry = new LogEntry(this, "main");
    app.data.entries.push(entry);
    return;
 }
 
+/**
+ * 
+ * @param {String} action
+ */
 HopObject.prototype.notify = function(action) {
    var site = res.handlers.site;
    if (site.notificationMode === Site.NOBODY) {
@@ -167,6 +207,9 @@ HopObject.prototype.notify = function(action) {
    return;
 }
 
+/**
+ * @returns {Tag[]}
+ */
 HopObject.prototype.getTags = function() {
    var tags = [];
    if (typeof this.tags === "object") {
@@ -177,6 +220,10 @@ HopObject.prototype.getTags = function() {
    return tags;
 }
 
+/**
+ * 
+ * @param {Tag[]|String} tags
+ */
 HopObject.prototype.setTags = function(tags) {
    if (typeof this.tags !== "object") {
       return String.EMPTY;
@@ -222,11 +269,19 @@ HopObject.prototype.setTags = function(tags) {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ */
 HopObject.prototype.addTag = function(name) {
    this.tags.add(new TagHub(name, this, session.user));
    return;
 }
 
+/**
+ * 
+ * @param {String} tag
+ */
 HopObject.prototype.removeTag = function(tag) {
    var parent = tag._parent;
    if (parent.size() === 1) {
@@ -236,6 +291,11 @@ HopObject.prototype.removeTag = function(tag) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.skin_macro = function(param, name) {
    if (!name) {
       return;
@@ -249,6 +309,11 @@ HopObject.prototype.skin_macro = function(param, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.input_macro = function(param, name) {
    param.name = name;
    param.id = name;
@@ -256,6 +321,11 @@ HopObject.prototype.input_macro = function(param, name) {
    return html.input(param);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.textarea_macro = function(param, name) {
    param.name = name;
    param.id = name;
@@ -263,6 +333,11 @@ HopObject.prototype.textarea_macro = function(param, name) {
    return html.textArea(param);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.select_macro = function(param, name) {
    param.name = name;
    param.id = name;
@@ -273,6 +348,11 @@ HopObject.prototype.select_macro = function(param, name) {
    return html.dropDown(param, options, this.getFormValue(name));
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.checkbox_macro = function(param, name) {
    param.name = name;
    param.id = name;
@@ -291,6 +371,11 @@ HopObject.prototype.checkbox_macro = function(param, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.radiobutton_macro = function(param, name) {
    param.name = name;
    param.id = name;
@@ -309,6 +394,11 @@ HopObject.prototype.radiobutton_macro = function(param, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 HopObject.prototype.upload_macro = function(param, name) {
    param.name = name;
    param.id = name;
@@ -317,6 +407,11 @@ HopObject.prototype.upload_macro = function(param, name) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {HopObject} [handler]
+ */
 HopObject.prototype.macro_macro = function(param, handler) {
    var ctor = this.constructor;
    if ([Story, Image, File, Poll].indexOf(ctor) > -1) {
@@ -329,6 +424,9 @@ HopObject.prototype.macro_macro = function(param, handler) {
    return;
 }
 
+/**
+ * 
+ */
 HopObject.prototype.kind_macro = function() {
    var type = this.constructor.name.toLowerCase();
    switch (type) {
@@ -339,6 +437,11 @@ HopObject.prototype.kind_macro = function() {
    return;
 }
 
+/**
+ * 
+ * @param {String} name
+ * @returns {Number|String}
+ */
 HopObject.prototype.getFormValue = function(name) {
    if (req.isPost()) {
       return req.postParams[name];
@@ -348,18 +451,33 @@ HopObject.prototype.getFormValue = function(name) {
    }
 }
 
-HopObject.prototype.getFormOptions = function(name) {
+/**
+ * @returns {Object[]}
+ */
+HopObject.prototype.getFormOptions = function() {
    return [{value: true, display: "enabled"}];
 }
 
+/**
+ * @returns {HopObject}
+ */
 HopObject.prototype.self_macro = function() {
    return this;
 }
 
+/**
+ * 
+ */
 HopObject.prototype.type_macro = function() {
    return res.write(this.constructor.name);
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} url
+ * @param {String} text
+ */
 HopObject.prototype.link_macro = function(param, url, text) {
    url || (url = ".");
    var action = url.split(/#|\?/)[0];
@@ -370,6 +488,11 @@ HopObject.prototype.link_macro = function(param, url, text) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} format
+ */
 HopObject.prototype.created_macro = function(param, format) {
    if (this.isPersistent()) {
       format || (format = param.format);
@@ -378,6 +501,11 @@ HopObject.prototype.created_macro = function(param, format) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} format
+ */
 HopObject.prototype.modified_macro = function(param, format) {
    if (this.isPersistent()) {
       format || (format = param.format);
@@ -386,6 +514,11 @@ HopObject.prototype.modified_macro = function(param, format) {
    return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} mode
+ */
 HopObject.prototype.creator_macro = function(param, mode) {
    if (!this.creator || this.isTransient()) {
       return;
@@ -400,6 +533,11 @@ HopObject.prototype.creator_macro = function(param, mode) {
    } return;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} mode
+ */
 HopObject.prototype.modifier_macro = function(param, mode) {
    if (!this.modifier || this.isTransient()) {
       return;
@@ -415,25 +553,38 @@ HopObject.prototype.modifier_macro = function(param, mode) {
    return;
 }
 
+/**
+ * @returns {String}
+ */
 HopObject.prototype.getTitle = function() {
    return this.title || this.__name__.capitalize();
 }
 
+/**
+ * @returns {String}
+ */
 HopObject.prototype.toString = function() {
    return this.constructor.name + " #" + this._id;
 }
 
-/*HopObject.prototype.valueOf = function() {
-   return this._id;
-};*/
-
-HopObject.prototype.link_filter = function(value, param, action) {
+/**
+ * 
+ * @param {String} text
+ * @param {Object} param
+ * @param {String} action
+ * @returns {String}
+ */
+HopObject.prototype.link_filter = function(text, param, action) {
    action || (action = ".");
    res.push();
-   renderLink(param, action, value, this);
+   renderLink(param, action, text, this);
    return res.pop();
 }
 
+/**
+ * 
+ * @param {String} name
+ */
 HopObject.prototype.handleMetadata = function(name) {
    this.__defineGetter__(name, function() {
       return this.metadata.get(name);
