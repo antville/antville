@@ -104,7 +104,7 @@
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib" />
 		<copy file="${extra.dir}/h2.jar" todir="${work.dir}/lib/ext" />
 		<copy todir="${work.dir}/db">
-			<fileset dir="${extra.dir}" includes="antville.*.db" />
+			<fileset dir="${extra.dir}" includes="antville.h2.db" />
 		</copy>
 		<move file="${work.dir}/license.txt" todir="${work.dir}/licenses/helma.txt" />
 		<move todir="${work.dir}/licenses">
