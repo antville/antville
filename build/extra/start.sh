@@ -1,15 +1,15 @@
 #!/bin/sh
 
-#JAVA_HOME=/usr/lib/java
-#HOP_HOME=/usr/local/helma
-
-JAVA_OPTIONS="-server -Xmx256m -Djava.awt.headless=true -Dfile.encoding=utf-8"
-
 HTTP_PORT=8080
 #XMLRPC_PORT=8081
 #AJP13_PORT=8009
 #RMI_PORT=5050
 #CONFIG_FILE=./etc/jetty.xml
+
+#JAVA_HOME=/usr/lib/java
+#HOP_HOME=/usr/local/helma
+
+JAVA_OPTIONS="-server -Xmx256m -Djava.awt.headless=true -Dfile.encoding=utf-8"
 
 if [ "$JAVA_HOME" ]; then
    JAVACMD="$JAVA_HOME/bin/java"
@@ -27,8 +27,6 @@ cd $INSTALL_DIR
 INSTALL_DIR=$PWD
 
 if [ -z "$HOP_HOME" ]; then
-  ## try to get HOP_HOME from script file and pwd
-  ## strip everyting behind last slash
   HOP_HOME="${0%/*}"
   cd $HOP_HOME
   HOP_HOME=$PWD
