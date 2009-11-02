@@ -94,6 +94,11 @@ build/extra/jsdoc-toolkit/app/test/synonyms.js svneol=native#text/plain
 build/extra/jsdoc-toolkit/app/test/tosource.js svneol=native#text/plain
 build/extra/jsdoc-toolkit/app/test/variable_redefine.js svneol=native#text/plain
 build/extra/jsdoc-toolkit/changes.txt svneol=native#text/plain
+build/extra/jsdoc-toolkit/java/build.xml svneol=native#text/plain
+build/extra/jsdoc-toolkit/java/build_1.4.xml svneol=native#text/plain
+build/extra/jsdoc-toolkit/java/classes/js.jar -text svneol=unset#application/x-compressed
+build/extra/jsdoc-toolkit/java/src/JsDebugRun.java svneol=native#text/plain
+build/extra/jsdoc-toolkit/java/src/JsRun.java svneol=native#text/plain
 build/extra/jsdoc-toolkit/jsdebug.jar -text svneol=unset#application/x-compressed
 build/extra/jsdoc-toolkit/jsrun.jar -text svneol=unset#application/x-compressed
 build/extra/jsdoc-toolkit/templates/jsdoc/allclasses.tmpl -text
