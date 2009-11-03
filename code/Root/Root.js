@@ -318,6 +318,8 @@ Root.prototype.create_action = function() {
       try {
          site.update(req.postParams);
 
+         // FIXME: Could this be replaced with call for Layout.reset()?
+         // (Such method should be added to helma.File, anyway.)
          var copy = function(source, target) {
             source.list().forEach(function(name) {
                var file = new helma.File(source, name);

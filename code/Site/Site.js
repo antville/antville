@@ -99,7 +99,7 @@ Site.remove = function(site) {
    HopObject.remove(site.images);
    HopObject.remove(site.files);
    HopObject.remove(site.polls);
-   site.layout && Layout.remove.call(site.layout);
+   site.layout && Layout.remove.call(site.layout, true);
    site.getStaticFile().removeDirectory();
    site.remove();
    // FIXME: There is a problem in the log structure for a deleted site

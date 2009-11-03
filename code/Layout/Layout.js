@@ -46,15 +46,17 @@ Layout.VALUES = [
 /**
  * 
  * @param {Layout} layout
+ * @param {Boolean} includeSelf
  */
-Layout.remove = function(layout) {
+Layout.remove = function(layout, includeSelf) {
    layout || (layout = this);
    if (layout.constructor === Layout) {
       Skins.remove.call(layout.skins);
       Images.remove.call(layout.images);
       layout.getFile().removeDirectory();
    }
-   layout.remove();
+   // The “includeSelf” flag is set e.g. when a whole site is removed
+   includeSelf && layout.remove();
    return;
 }
 
@@ -203,8 +205,6 @@ Layout.prototype.reset_action = function() {
       try {
          var site = this.site;
          Layout.remove.call(this);
-         // FIXME: The layout is now removed from DB and a new one needs to be added
-         site.layout = new Layout(site);
          var skinFiles = app.getSkinfilesInPath(res.skinpath);
          var content, file;
          for (var name in skinFiles) {
@@ -243,17 +243,15 @@ Layout.prototype.export_action = function() {
 }
 
 Layout.prototype.import_action = function() {
+   var self = this;
    var data = req.postParams;
    if (data.submit) {
       try {
          if (!data.upload || data.upload.contentLength === 0) {
             throw Error(gettext("Please upload a layout package."));
          }
-         // Create destination directory
-         var destination = this.getFile();
-         destination.makeDirectory();
-         // Extract imported layout to temporary directory
-         var dir = new helma.File(destination, "..");
+         // Extract zipped layout to temporary directory
+         var dir = this.site.getStaticFile();
          var temp = new helma.File(dir, "import.temp");
          var fname = data.upload.writeToFile(dir);
          var zip = new helma.File(dir, fname);
@@ -263,24 +261,22 @@ Layout.prototype.import_action = function() {
          if (!data.version || data.version !== Root.VERSION) {
             throw Error("Incompatible layout version.");
          }
-         // Backup the current layout if possible
-         if (destination.list().length > 0) {
+         dir = this.getFile();
+         // Archive current layout if possible
+         if (res.skinpath && res.skinpath[0].equals(dir) && 
+                  dir.exists() && dir.list().length > 0) {
             var timestamp = (new Date).format("yyyyMMdd-HHmmss");
             var zip = this.getArchive(res.skinpath);
-            zip.save(this.getFile("../layout-" + timestamp + ".zip"));
+            zip.save(this.site.getStaticFile("layout-" + timestamp + ".zip"));
          }
-         // Remove old layout and replace it with new one
-         Layout.remove(this);
-         res.commit();
-         destination.makeDirectory(); // FIXME: This is in fact necessary again (s. line 197)
-         temp.renameTo(destination);
-         // Update database with imported data
-         layout = this;
+         // Remove current layout and replace it with imported one
+         Layout.remove.call(this);
+         temp.renameTo(this.getFile());
          this.origin = data.origin;
          this.originator = data.originator;
          this.originated = data.originated;
          data.images.forEach(function() {
-            layout.images.add(new Image(this));
+            self.images.add(new Image(this));
          });
       } catch (ex) {
          res.message = ex;
