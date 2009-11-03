@@ -1,0 +1,12 @@
+<% #convert %>
+<div class="storyTitle"><% response.title %></div>
+<br />
+<div>Upload a zipped layout archive created from an Antville 1.1 version to
+convert it to an archive working with Antville 1.2.</div>
+<br />
+<form method="post" action="<% response.action %>" enctype="multipart/form-data">
+<% layout.upload file %>
+<br />
+<button type="submit" name="save" value="1"><% gettext Convert %></button>
+<a href="" class="cancel"><% gettext Cancel %></button>
+</form>
