@@ -130,7 +130,7 @@ Images.prototype.all_action = function() {
  * @namespace
  * @field
  */
-Images.Default = (function() {
+Images.Default = new function() {
    var Image = function(name, description) {
       var fpath = app.properties.staticPath + "www/" + name;
       var image = new helma.Image(fpath);
@@ -151,20 +151,22 @@ Images.Default = (function() {
       images[name] = new Image(name, description);
       return;
    }
-   add("rss.png", "RSS feed");
-   add("webloghead.gif", "Antville");
+   add("ant.png", "Ant");
+   add("ant-icon.png", "Tiny Ant");
+   add("dot.gif", String.EMPTY);
    add("bullet.gif", "*");
+   add("hop.gif", "Helma Object Publisher");
+   add("marquee.gif", String.EMPTY);
+   add("pixel.gif", String.EMPTY);
+   add("rss.png", "RSS feed");
    add("smallanim.gif", "Made with Antville");
    add("smallchaos.gif", "Made with Antville");
    add("smallstraight.gif", "Made with Antville");
    add("smalltrans.gif", "Made with Antville");
+   add("webloghead.gif", "Antville");
    add("xmlbutton.gif", "XML version of this page");
-   add("hop.gif", "Helma Object Publisher");
-   add("marquee.gif", String.EMPTY);
-   add("pixel.gif", String.EMPTY);
-   add("dot.gif", String.EMPTY);
    return images;
-})();
+}
 
 /**
  * @returns {Image[]}
