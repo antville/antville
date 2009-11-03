@@ -248,7 +248,7 @@ Layout.prototype.import_action = function() {
    if (data.submit) {
       try {
          if (!data.upload || data.upload.contentLength === 0) {
-            throw Error(gettext("Please upload a layout package."));
+            throw Error(gettext("Please upload a zipped layout archive"));
          }
          // Extract zipped layout to temporary directory
          var dir = this.site.getStaticFile();
@@ -259,7 +259,7 @@ Layout.prototype.import_action = function() {
          zip.remove();
          var data = Xml.read(new helma.File(temp, "data.xml"));
          if (!data.version || data.version !== Root.VERSION) {
-            throw Error("Incompatible layout version.");
+            throw Error(gettext("Sorry, this layout is not compatible with Antville."));
          }
          dir = this.getFile();
          // Archive current layout if possible
@@ -281,6 +281,7 @@ Layout.prototype.import_action = function() {
       } catch (ex) {
          res.message = ex;
          app.log(ex);
+         res.redirect(this.href(req.action));
       }
       res.redirect(this.href());
       return;

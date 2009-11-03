@@ -49,10 +49,13 @@ $(function() {
 </form>
 
 <% #import %>
+<p class="storyTitle">Import Layout</p>
 <form method="post" action="<% response.action %>" 
 enctype="multipart/form-data">
-<input type="file" name="upload" />
+<% layout.upload upload %>
+<br />
 <button type="submit" name="submit" value="1"><% gettext Import %></button>
+<a href="" class="cancel"><% gettext Cancel %></button>
 </form>
 
 <% #value %>
