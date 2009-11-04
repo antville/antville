@@ -111,7 +111,7 @@ Disallow: /stories/top
    <div class="box"><% image /rss.png | site.link rss.xml %><br />
    <br />
    <% image /smallchaos.gif | link http://antville.org %><br />
-   <% image /hop.gif | link http://helma.org %></div>
+   <% image /helma.png | link http://helma.org %></div>
 </td>
 </tr>
 </table>

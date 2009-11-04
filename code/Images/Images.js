@@ -153,16 +153,23 @@ Images.Default = new function() {
    }
    add("ant.png", "Ant");
    add("ant-icon.png", "Tiny Ant");
-   add("dot.gif", String.EMPTY);
+   add("big.gif", String.EMPTY);
    add("bullet.gif", "*");
+   add("dot.gif", String.EMPTY);
+   add("headbg.gif", String.EMPTY);
+   add("helma.png", "Helma Object Publisher");
    add("hop.gif", "Helma Object Publisher");
+   add("manage.gif", "manage");
    add("marquee.gif", String.EMPTY);
+   add("menu.gif", "menu");
    add("pixel.gif", String.EMPTY);
+   add("recent.gif", "recent");
    add("rss.png", "RSS feed");
    add("smallanim.gif", "Made with Antville");
    add("smallchaos.gif", "Made with Antville");
    add("smallstraight.gif", "Made with Antville");
    add("smalltrans.gif", "Made with Antville");
+   add("status.gif", "status");
    add("webloghead.gif", "Antville");
    add("xmlbutton.gif", "XML version of this page");
    return images;
