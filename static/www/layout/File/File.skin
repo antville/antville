@@ -1,0 +1,5 @@
+<% #main %>
+<a href="<% file.href %>" title="<% file.description %>"><% file.name %></a> 
+<span class="small">
+   (<% file.contentType suffix=", " %><% file.contentLength %>)
+</span>
