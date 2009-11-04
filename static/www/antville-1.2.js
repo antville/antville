@@ -283,3 +283,19 @@ Antville.Filter = function(def, key) {
    }
    return this;
 };
+
+var app = {
+   clearCache: function() {
+      $.ajax({
+         async: true,
+         type: "POST",
+         url: '/helma/antville/debug',
+         data: "action=clearCache",
+         cache: false,
+         error: function() { /* ... */ },
+         success: function(str) {
+            console.log(str);
+         }
+      });
+   }
+}
