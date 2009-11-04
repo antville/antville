@@ -217,7 +217,6 @@ static/www/dot.gif -text svneol=unset#image/gif
 static/www/headbg.gif -text svneol=unset#image/gif
 static/www/helma.png -text svneol=unset#image/png
 static/www/hop.gif -text svneol=unset#image/gif
-static/www/layout/Site/Site.skin -text
 static/www/manage.gif -text svneol=unset#image/gif
 static/www/marquee.gif -text svneol=unset#image/gif
 static/www/menu.gif -text svneol=unset#image/gif
