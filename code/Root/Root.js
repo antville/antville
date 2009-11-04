@@ -317,22 +317,8 @@ Root.prototype.create_action = function() {
    if (req.postParams.create) {
       try {
          site.update(req.postParams);
-
-         // FIXME: Could this be replaced with call for Layout.reset()?
-         // (Such method should be added to helma.File, anyway.)
-         var copy = function(source, target) {
-            source.list().forEach(function(name) {
-               var file = new helma.File(source, name);
-               if (file.isDirectory()) {
-                  copy(file, new helma.File(target, name));
-               } else {
-                  target.makeDirectory();
-                  file.hardCopy(new helma.File(target, name));
-               }
-            })
-         }
-         copy(root.layout.getFile(), site.layout.getFile());
-
+         //root.layout.getFile().copyDirectory(site.layout.getFile());
+         site.layout.reset();
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
          root.admin.log(site, "Added site");

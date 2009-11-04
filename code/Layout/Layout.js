@@ -205,18 +205,7 @@ Layout.prototype.reset_action = function() {
       try {
          var site = this.site;
          Layout.remove.call(this);
-         var skinFiles = app.getSkinfilesInPath(res.skinpath);
-         var content, file;
-         for (var name in skinFiles) {
-            if (content = skinFiles[name][name]) {
-               var dir = this.getFile(name);
-               var file = new helma.File(dir, name + ".skin");
-               dir.makeDirectory();
-               file.open();
-               file.write(content);
-               file.close();
-            }
-         }
+         this.reset();
          res.message = gettext("The layout was successfully reset.");
          res.redirect(this.href());
       } catch(ex) {
@@ -335,6 +324,25 @@ Layout.prototype.getSkinPath = function() {
    }
    var skinPath = [this.getFile().toString()];
    return skinPath;
+}
+
+/**
+ * 
+ */
+Layout.prototype.reset = function() {
+   var skinFiles = app.getSkinfilesInPath([app.dir]);
+   var content, file;
+   for (var name in skinFiles) {
+      if (content = skinFiles[name][name]) {
+         var dir = this.getFile(name);
+         var file = new helma.File(dir, name + ".skin");
+         dir.makeDirectory();
+         file.open();
+         file.write(content);
+         file.close();
+      }
+   }
+   return;
 }
 
 /**
