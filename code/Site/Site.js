@@ -329,7 +329,7 @@ Site.prototype.update = function(data) {
          throw Error(gettext("There already is a site with this name."));
       }
       this.layout = new Layout(this);
-      this.name = data.name;
+      this.name = java.net.IDN.toASCII(data.name);
       this.title = data.title || data.name;
       return;
    }
