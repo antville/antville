@@ -135,7 +135,9 @@ HopObject.prototype.onCodeUpdate = function() {
    });
    return helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
       var param = args[0];
-      return [param, args[1] || param.to, args[2] || param.text];
+      var to = param.to;
+      delete param.to;
+      return [param, args[1] || to, args[2] || param.text];
    });
 }
 
