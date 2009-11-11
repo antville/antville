@@ -637,10 +637,13 @@ function randomize_macro(param, id) {
  * @param {HopObject} handler
  */
 function renderLink(param, url, text, handler) {
-   url || (url = param.url || "");
+   url || (url = param.url || String.EMPTY);
    text || (text = param.text || url);
    if (!text || (handler && !handler.href)) {
       return;
+   }
+   if (url === "." || url === "main") {
+      url = String.EMPTY;
    }
    delete param.url;
    delete param.text;
