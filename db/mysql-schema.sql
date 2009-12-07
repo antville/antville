@@ -160,6 +160,7 @@ CREATE TABLE `skin` (
   `id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) default NULL,
   `prototype` varchar(30) default NULL,
+  `source` mediumtext default NULL,
   `layout_id` int(10) unsigned default NULL,
   `created` datetime default NULL,
   `creator_id` int(10) unsigned default NULL,
