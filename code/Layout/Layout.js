@@ -150,7 +150,7 @@ Layout.prototype.main_action = function() {
          app.log(ex);
       }
    }
-   res.data.title = gettext("Layout of {0}", res.handlers.site.title);
+   res.data.title = gettext("Layout");
    res.data.body = this.renderSkinAsString("$Layout#main");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -215,7 +215,7 @@ Layout.prototype.reset_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Confirm reset of {0}", this);
+   res.data.title = gettext("Confirm Reset");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to reset {0}.', this)
    });
@@ -270,12 +270,13 @@ Layout.prototype.import_action = function() {
       } catch (ex) {
          res.message = ex;
          app.log(ex);
+         temp.removeDirectory();
          res.redirect(this.href(req.action));
       }
       res.redirect(this.href());
       return;
    }
-   res.data.title = gettext("Import layout");
+   res.data.title = gettext("Import Layout");
    res.data.body = this.renderSkinAsString("$Layout#import");
    res.handlers.site.renderSkin("Site#page");
    return;

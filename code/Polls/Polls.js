@@ -63,7 +63,7 @@ Polls.prototype.main_action = function() {
    res.data.list = renderList(polls, "$Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(polls, this.href(req.action), 
          10, req.queryParams.page);
-   res.data.title = gettext("Member polls of {0}", this._parent.title);
+   res.data.title = gettext("Member Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
@@ -85,7 +85,7 @@ Polls.prototype.create_action = function() {
       req.postParams.title_array = [,,];
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Add poll to site {0}", this._parent.title);
+   res.data.title = gettext("Add Poll");
    res.data.body = poll.renderSkinAsString("$Poll#edit");
    this._parent.renderSkin("Site#page");
    return;
@@ -96,7 +96,7 @@ Polls.prototype.open_action = function() {
          "$Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this.open, 
          this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Open polls of {0}", this._parent.title);
+   res.data.title = gettext("Open Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;
@@ -106,7 +106,7 @@ Polls.prototype.all_action = function() {
    res.data.list = renderList(this, "$Poll#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Polls of {0}", this._parent.title);
+   res.data.title = gettext("All Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;

@@ -86,15 +86,94 @@ Skins.prototype.getChildElement = function(name) {
    return new Skins(name, this);
 }
 
-Skins.prototype.main_action = function() {
-   if (!this._parent) {
-      res.redirect(res.handlers.layout.skins.href());
+Skins.prototype.onRequest = function() {
+   if (this.parent) {
+      res.redirect(res.handlers.layout.skins.href(req.action));
    }
-   res.data.title = gettext("Basic skins of {0}", res.handlers.site.title);
-   res.data.list = this.renderSkinAsString("$Skins#basic");
+   return HopObject.prototype.onRequest.call(this);
+}
+
+Skins.prototype.main_action = function() {
+   res.data.title = gettext("Basic Skins");
    res.data.body = this.renderSkinAsString("$Skins#main");
    res.handlers.site.renderSkin("Site#page");
    return;
+}
+
+Skins.prototype.create_action = function() {
+   var skin = this.getSkin(req.postParams.prototype, req.postParams.name);
+   if (req.postParams.save) {
+      try {
+         if (!req.postParams.prototype || !req.postParams.name) {
+            throw Error("Please choose a prototype and enter a skin name");
+         }
+         skin.update(req.postParams);
+         res.message = gettext("The changes were saved successfully.");
+         if (req.postParams.save == 1) {
+            res.redirect(skin.href("edit"));
+         } else {
+            res.redirect(res.handlers.layout.skins.href("modified"));
+         }
+      } catch (ex) {
+         res.message = ex;
+         app.log(ex);
+      }
+   }
+   if (skin.getSource()) {
+      res.redirect(skin.href("edit")); // FIXME: Needs testing
+      //res.data.title = gettext("Edit skin: {0}.{1}", skin.prototype, skin.name);
+   } else {
+      res.data.title = gettext('Add Skin');
+   }
+   res.data.action = this.href(req.action);
+   res.data.body = skin.renderSkinAsString("$Skin#edit");
+   this.renderSkin("$Skins#page");
+   return;
+}
+
+Skins.prototype.modified_action = function() {
+   res.data.title = gettext("Modified Skins");
+   res.push();
+   this.renderSkin("$Skins#header");
+   this.modified.forEach(function() {
+      this.renderSkin("$Skin#listItem");
+   });
+   res.data.body = res.pop();
+   res.handlers.site.renderSkin("Site#page");
+   return;
+}
+
+Skins.prototype.advanced_action = function() {
+   if (this.parent) {
+      res.redirect(res.handlers.layout.skins.href(req.action));
+   }
+   res.data.list = this.getOutline();
+   res.data.title = gettext("All Skins");
+   res.data.body = this.renderSkinAsString("$Skins#advanced");
+   res.handlers.site.renderSkin("Site#page");
+   return;
+}
+
+Skins.prototype.safe_action = function() {
+   res.data.title = gettext("Modified Skins");
+   res.push();
+   this.modified.forEach(function() {
+      this.renderSkin("$Skin#listItem");
+   });
+   res.data.title = "Modified Skins";
+   res.data.body = res.pop();
+   this.renderSkin("$Skins#page");
+   return;
+}
+
+/**
+ * 
+ * @param {String} group
+ * @param {String} name
+ * @returns {Skin}
+ */
+Skins.prototype.getSkin = function(group, name) {
+   return Skin.getByName(group, name) || new Skin(group, name);
 }
 
 /**
@@ -129,7 +208,7 @@ Skins.prototype.getOutline = function(type) {
       names.sort();
       skins.push([prototype, names]);
    }
-      
+
    res.push();
    for each (var item in skins) {
       prototype = item[0];
@@ -142,89 +221,14 @@ Skins.prototype.getOutline = function(type) {
          html.openTag("ul");
          for each (var name in skin) {
             subskin = this.getSkin(prototype, name);
-            subskin.renderSkin("$Skin#listItem");
+            html.openTag("li");
+            html.link({href: subskin.href("edit")}, 
+                  subskin.prototype + "." + subskin.name);
+            html.closeTag("li");
          }
          html.closeTag("ul");
          html.closeTag("li");
       }
    }
    return this.cache[key] = res.pop();
- };
-
-Skins.prototype.create_action = function() {
-   var skin = this.getSkin(req.postParams.prototype, req.postParams.name);
-   if (req.postParams.save) {
-      try {
-         if (!req.postParams.prototype || !req.postParams.name) {
-            throw Error("Please choose a prototype and enter a skin name");
-         }
-         skin.update(req.postParams);
-         res.message = gettext("The changes were saved successfully.");
-         if (req.postParams.save == 1) {
-            res.redirect(skin.href("edit"));
-         } else {
-            res.redirect(res.handlers.layout.skins.href("modified"));
-         }
-      } catch (ex) {
-         res.message = ex;
-         app.log(ex);
-      }
-   }
-   if (skin.getSource()) {
-      res.data.title = gettext("Edit skin {0}.{1} of {2}", 
-            skin.prototype, skin.name, res.handlers.site.title);
-   } else {
-      res.data.title = gettext('Create a custom skin of {0}', 
-            res.handlers.site.title);
-   }
-   res.data.action = this.href(req.action);
-   res.data.body = skin.renderSkinAsString("$Skin#edit");
-   this.renderSkin("$Skins#page");
-   return;
-}
-
-Skins.prototype.modified_action = function() {
-   res.data.title = gettext("Modified skins of {0}", res.handlers.site.title);
-   res.push();
-   this.modified.forEach(function() {
-      this.renderSkin("$Skin#listItem");
-   });
-   res.data.list = res.pop();
-   res.data.body = this.renderSkinAsString("$Skins#main");
-   res.handlers.site.renderSkin("Site#page");
-   return;
-}
-
-Skins.prototype.advanced_action = function() {
-   if (this.parent) {
-      res.redirect(res.handlers.layout.skins.href());
-   }
-   res.data.list = this.getOutline();
-   res.data.title = gettext("Skins of {0}", res.handlers.site.title);
-   res.data.body = this.renderSkinAsString("$Skins#main");
-   res.handlers.site.renderSkin("Site#page");
-   return;
-}
-
-// FIXME: i'd like to have this by default (ie. always safe)
-Skins.prototype.safe_action = function() {
-   res.data.title = gettext("Modified skins of {0}", this._parent.title);
-   res.push();
-   this.modified.forEach(function() {
-      this.renderSkin("$Skin#listItem");
-   });
-   res.data.list = res.pop();
-   res.data.body = this.renderSkinAsString("$Skins#main");
-   this.renderSkin("$Skins#page");
-   return;
-}
-
-/**
- * 
- * @param {String} group
- * @param {String} name
- * @returns {Skin}
- */
-Skins.prototype.getSkin = function(group, name) {
-   return Skin.getByName(group, name) || new Skin(group, name);
 }

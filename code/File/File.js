@@ -119,7 +119,7 @@ File.prototype.edit_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Edit file {0}", this.name);
+   res.data.title = gettext("Edit file");
    res.data.body = this.renderSkinAsString("$File#edit");
    return this.site.renderSkin("Site#page");
 }

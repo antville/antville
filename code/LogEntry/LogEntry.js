@@ -26,6 +26,11 @@
  * @fileOverview Defines the LogEntry prototype.
  */
 
+LogEntry.remove = function(entry) {
+   entry.remove();
+   return;
+}
+
 /**
  * @name LogEntry
  * @constructor

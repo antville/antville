@@ -27,23 +27,24 @@
  */
 
 this.handleMetadata("archiveMode");
+this.handleMetadata("callbackMode");
+this.handleMetadata("callbackUrl");
+this.handleMetadata("closed");
 this.handleMetadata("commentMode");
 this.handleMetadata("configured");
+this.handleMetadata("deleted");
 this.handleMetadata("locale");
 this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
 this.handleMetadata("notifiedOfBlocking");
 this.handleMetadata("notifiedOfDeletion");
-this.handleMetadata("closed");
 this.handleMetadata("pageSize");
 this.handleMetadata("pageMode");
 this.handleMetadata("shortDateFormat");
+this.handleMetadata("spamfilter");
 this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
 this.handleMetadata("title"),
-this.handleMetadata("callbackMode");
-this.handleMetadata("callbackUrl");
-this.handleMetadata("spamfilter");
 
 /**
  * @function
@@ -56,7 +57,7 @@ Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getModes = defineConstants(Site, "closed", "restricted", "public", "open");
+Site.getModes = defineConstants(Site, "deleted", "closed", "restricted", "public", "open");
 /**
  * @function
  * @returns {String[]}
@@ -94,16 +95,15 @@ Site.getCallbackModes = defineConstants(Site, "disabled", "enabled");
  * @param {Site} site
  */
 Site.remove = function(site) {
-   HopObject.remove(site.members);
    HopObject.remove(site.stories);
    HopObject.remove(site.images);
    HopObject.remove(site.files);
    HopObject.remove(site.polls);
+   HopObject.remove(site.entries);
+   HopObject.remove(site.members, true);
    site.layout && Layout.remove.call(site.layout, true);
    site.getStaticFile().removeDirectory();
    site.remove();
-   // FIXME: There is a problem in the log structure for a deleted site
-   root.admin.log(root, "Removed site " + site.name);
    return;
 }
 
@@ -218,7 +218,7 @@ Site.prototype.getPermission = function(action) {
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
             Membership.require(Membership.CONTRIBUTOR)) ||
-            (Site.require(Site.CLOSED) &&
+            ((Site.require(Site.DELETED) || Site.require(Site.CLOSED)) &&
             Membership.require(Membership.OWNER)) ||
             User.require(User.PRIVILEGED);
 
@@ -242,8 +242,8 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
-   res.data.body = this.renderSkinAsString("Site#main");
-   res.data.title = this.title;
+   res.data.body = this.renderSkinAsString(this.deleted ? "$Site#deleted" : "Site#main");
+   res.data.title = this.getTitle();
    this.renderSkin("Site#page");
    this.log();
    return;
@@ -271,7 +271,7 @@ Site.prototype.edit_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Preferences of {0}", this.title);
+   res.data.title = gettext("Site Preferences");
    res.data.body = this.renderSkinAsString("$Site#edit");
    this.renderSkin("Site#page");
    return;
@@ -333,6 +333,10 @@ Site.prototype.update = function(data) {
       this.title = data.title || data.name;
       return;
    }
+   
+   if (this.mode !== Site.DELETED && data.mode === Site.DELETED) {
+      this.deleted = new Date;
+   }
 
    this.map({
       title: stripTags(data.title) || this.name,
@@ -362,8 +366,10 @@ Site.prototype.main_css_action = function() {
    res.dependsOn(this.modified);
    res.dependsOn(Skin("Site", "values").getSource());
    res.dependsOn(Skin("Site", "stylesheet").getSource());
+   res.dependsOn(Skin("$Root", "stylesheet").getSource());
    res.digest();
    res.contentType = "text/css";
+   root.renderSkin("$Root#stylesheet");
    this.renderSkin("Site#stylesheet");
    return;
 }
@@ -544,7 +550,7 @@ Site.prototype.referrers_action = function() {
       return;
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Referrers in the last 24 hours of {0}", this.title);
+   res.data.title = gettext("Site Referrers");
    res.data.body = this.renderSkinAsString("$Site#referrers");
    this.renderSkin("Site#page");
    return;
@@ -578,8 +584,7 @@ Site.prototype.search_action = function() {
       res.data.body = res.pop();
    }
    
-   res.data.title = gettext('Search results for "{0}" in site "{1}"', 
-         search, this.title);
+   res.data.title = gettext('Search results');
    this.renderSkin("Site#page");
    return;
 }
@@ -612,7 +617,7 @@ Site.prototype.unsubscribe_action = function() {
    }
 
    User.setLocation();
-   res.data.title = gettext("Remove subscription to {0}", this.title);
+   res.data.title = gettext("Confirm Unsubscribe");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to unsubscribe from site {0}.', this.title)
    });
@@ -713,6 +718,15 @@ Site.prototype.calendar_macro = function(param) {
  */
 Site.prototype.age_macro = function(param) {
    res.write(Math.floor((new Date() - this.created) / Date.ONEDAY));
+   return;
+}
+
+/**
+ * 
+ */
+Site.prototype.deleted_macro = function() {
+   res.write(new Date(this.deleted.getTime() + Date.ONEDAY * Root.SITEREMOVALGRACEPERIOD) 
+         .format("EEEEE, d. MMMMM yyyy"));
    return;
 }
 

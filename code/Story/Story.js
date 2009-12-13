@@ -179,7 +179,7 @@ Story.prototype.edit_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Edit story: {0}', this.getTitle(3));
+   res.data.title = gettext('Edit story: {0}', this.getTitle(5));
    res.data.body = this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
    return;
@@ -272,7 +272,7 @@ Story.prototype.comment_action = function() {
    }
    res.handlers.parent = this;
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Add comment to {0}", this.getTitle());
+   res.data.title = gettext("Add Comment");
    res.data.body = comment.renderSkinAsString("Comment#edit");
    this.site.renderSkin("Site#page");
    return;

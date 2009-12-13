@@ -58,10 +58,11 @@ Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor",
 /**
  * 
  * @param {Membership} membership
+ * @param {Boolean} force Overrides permission check to prevent removal of owners
  */
-Membership.remove = function(membership) {
+Membership.remove = function(membership, force) {
    if (membership && membership.constructor === Membership) {
-      if (!membership.getPermission("delete") && !User.require(User.PRIVILEGED)) {
+      if (!force && !membership.getPermission("delete") && !User.require(User.PRIVILEGED)) {
          throw Error(gettext("Sorry, an owner of a site cannot be removed."));
       }
       var recipient = membership.creator.email;
@@ -152,7 +153,7 @@ Membership.prototype.edit_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Edit membership {0}", this.name);
+   res.data.title = gettext("Edit Membership: {0}", this.name);
    res.data.body = this.renderSkinAsString("$Membership#edit");
    this.site.renderSkin("Site#page");
    return;
@@ -194,7 +195,7 @@ Membership.prototype.contact_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Contact user {0}', this.name);
+   res.data.title = gettext('Contact User: {0}', this.name);
    res.data.body = this.renderSkinAsString("$Membership#contact");
    this.site.renderSkin("Site#page");
    return;

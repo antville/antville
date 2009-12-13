@@ -49,9 +49,7 @@
 Skin.remove = function(skin) {
    skin || (skin = this);
    if (skin.constructor === Skin) {
-      if (skin.source) {
-         skin.setSource(skin.source);
-      } 
+      skin.setSource(skin.source);
       skin.source = null;
       skin.remove();
    }
@@ -108,7 +106,8 @@ Skin.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      return true;
+      res.status = 403;
+      return false;
    }
    return res.handlers.skins.getPermission("main");
 }
@@ -156,8 +155,7 @@ Skin.prototype.edit_action = function() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Edit skin {0}.{1} of {2}', this.prototype, 
-         this.name, res.handlers.site.title);
+   res.data.title = gettext('Edit Skin: {0}.{1}', this.prototype, this.name);
    res.data.body = this.renderSkinAsString("$Skin#edit");
    res.handlers.skins.renderSkin("$Skins#page");
    return;
@@ -170,7 +168,16 @@ Skin.prototype.edit_action = function() {
 Skin.prototype.update = function(data) {
    if (this.isTransient()) {
       res.handlers.layout.skins.add(this);
-      this.source = this.getSource();
+      this.source = this.getSource(); // Copies the skin file source to database
+   }
+   if (this.prototype === "Site" && this.name === "page") {
+      var macro = "response.body";
+      if (!createSkin(data.source).containsMacro(macro)) {
+         throw Error(gettext("The {0} macro is missing. It is essential for accessing the site and must be present in this skin.", 
+               ["<code><% ", macro, " %></code>"].join(String.EMPTY)));
+         //data.source = ["<% // ", gettext("The following macro was automatically added to prevent the site from becoming inacessible."), 
+         //      " %>\n<% ", macro, " %>\n\n", data.source].join(String.EMPTY);
+      }
    }
    this.setSource(data.source);   
    this.touch();
@@ -181,7 +188,6 @@ Skin.prototype.reset_action = function() {
    if (req.postParams.proceed) {
       try {
          var str = this.toString();
-         res.debug(this.source);
          Skin.remove(this);
          res.message = gettext("{0} was successfully reset.", str);
          res.redirect(res.handlers.layout.skins.href("modified"));
@@ -192,11 +198,11 @@ Skin.prototype.reset_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Confirm reset of {0}", this);
+   res.data.title = gettext("Confirm Reset");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to reset {0}.', this)
    });
-   res.handlers.skins.renderSkin("$Skins#page");
+   res.handlers.site.renderSkin("Site#page");
    return;
 }
 
@@ -238,8 +244,7 @@ Skin.prototype.compare_action = function() {
       }
       res.data.diff = res.pop();
    }
-   res.data.title = gettext("Compare versions of skin {0}.{1}", 
-         this.prototype, this.name);
+   res.data.title = gettext("Compare Skin");
    res.data.body = this.renderSkinAsString("$Skin#compare");
    res.handlers.skins.renderSkin("$Skins#page");
    return;
@@ -254,6 +259,13 @@ Skin.prototype.getFormOptions = function(name) {
    switch (name) {
       case "prototype":
       return Skin.getPrototypeOptions();
+   }
+}
+
+Skin.prototype.getFormValue = function(name) {
+   switch (name) {
+      case "source":
+      return req.data.source || this.getSource();
    }
 }
 

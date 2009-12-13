@@ -96,7 +96,6 @@ Image.getFileExtension = function(type) {
  * @property {Number} parent_id
  * @property {String} parent_type
  * @property {String} prototype
- * @property {Site} site
  * @property {Tag[]} tags 
  * @property {Number} thumbnailHeight
  * @property {String} thumbnailName
@@ -166,7 +165,7 @@ Image.prototype.href = function(action) {
 }
 
 Image.prototype.main_action = function() {
-   res.data.title = gettext("Image {0}", this.name);
+   res.data.title = gettext("Image: {0}", this.getTitle());
    res.data.body = this.renderSkinAsString("Image#main");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -186,7 +185,7 @@ Image.prototype.edit_action = function() {
       }
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Edit image {0}", this.name);
+   res.data.title = gettext("Edit Image");
    res.data.body = this.renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -262,7 +261,7 @@ Image.prototype.update = function(data) {
    
       if (!this.name) {
           var name = File.getName(data.name) || mimeName.split(".")[0];
-          this.name = this.site.images.getAccessName(name);
+          this.name = this.parent.images.getAccessName(name);
       }
 
       var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);

@@ -77,7 +77,7 @@ Members.prototype.getPermission = function(action) {
 }
 
 Members.prototype.main_action = function() {
-   res.data.title = gettext("Members of {0}", this._parent.title);
+   res.data.title = gettext("Site Members");
    res.data.list = renderList(this, "$Membership#member", 
          10, req.queryParams.page);
    res.data.pager = renderPager(this, this.href(req.action), 
@@ -154,7 +154,7 @@ Members.prototype.reset_action = function() {
                   res.redirect(this._parent.href());
                }
             }
-            res.data.title = gettext("Enter new password");
+            res.data.title = gettext("Reset Password");
             res.data.body = this.renderSkinAsString("$Members#password");
             this._parent.renderSkin("Site#page");
             return;
@@ -164,7 +164,7 @@ Members.prototype.reset_action = function() {
       res.redirect(this.href(req.action));
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Reset password");
+   res.data.title = gettext("Request Password Reset");
    res.data.body = this.renderSkinAsString("$Members#reset");
    this._parent.renderSkin("Site#page");
    return;
@@ -183,7 +183,7 @@ Members.prototype.login_action = function() {
    }
    session.data.token = User.getSalt();
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Login to {0}", this._parent.title);
+   res.data.title = gettext("Login");
    res.data.body = this.renderSkinAsString("$Members#login");
    this._parent.renderSkin("Site#page");
    return;
@@ -191,7 +191,7 @@ Members.prototype.login_action = function() {
 
 Members.prototype.logout_action = function() {
    if (session.user) {
-      res.message = gettext("Good bye, {0}! Lookin' forward to seeing you again!", 
+      res.message = gettext("Good bye, {0}! Looking forward to seeing you again!", 
             session.user.name);
       User.logout();
    }
@@ -212,7 +212,7 @@ Members.prototype.edit_action = function() {
 
    session.data.token = User.getSalt();
    session.data.salt = session.user.salt; // FIXME
-   res.data.title = gettext("Profile of user {0}", session.user.name);
+   res.data.title = gettext("User Profile");
    res.data.body = session.user.renderSkinAsString("$User#edit");
    this._parent.renderSkin("Site#page");
    return;
@@ -228,7 +228,7 @@ Members.prototype.salt_js_action = function() {
 }
 
 Members.prototype.owners_action = function() {
-   res.data.title = gettext("Owners of {0}", this._parent.title);
+   res.data.title = gettext("Site Owners");
    res.data.list = renderList(this.owners, 
          "$Membership#member", 10, req.queryParams.page);
    res.data.pager = renderPager(this.owners, 
@@ -239,7 +239,7 @@ Members.prototype.owners_action = function() {
 }
 
 Members.prototype.managers_action = function() {
-   res.data.title = gettext("Managers of {0}", this._parent.title);
+   res.data.title = gettext("Site Managers");
    res.data.list = renderList(this.managers, 
          "$Membership#member", 10, req.queryParams.page); 
    res.data.pager = renderPager(this.managers, 
@@ -250,7 +250,7 @@ Members.prototype.managers_action = function() {
 }
 
 Members.prototype.contributors_action = function() {
-   res.data.title = gettext("Contributors of {0}", this._parent.title);
+   res.data.title = gettext("Site Contributors");
    res.data.list = renderList(this.contributors, 
          "$Membership#member", 10, req.queryParams.page);
    res.data.pager = renderPager(this.contributors, 
@@ -261,7 +261,7 @@ Members.prototype.contributors_action = function() {
 }
 
 Members.prototype.subscribers_action = function() {
-   res.data.title = gettext("Subscribers of {0}", this._parent.title);
+   res.data.title = gettext("Site Subscribers");
    res.data.list = renderList(this.subscribers, 
          "$Membership#member", 10, req.queryParams.page);
    res.data.pager = renderPager(this.subscribers, 
@@ -272,7 +272,7 @@ Members.prototype.subscribers_action = function() {
 }
 
 Members.prototype.updated_action = function() {
-   res.data.title = gettext("Updated sites for user {0}", session.user.name);
+   res.data.title = gettext("Updated Sites");
    res.data.list = session.user.renderSkinAsString("$User#sites");
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
@@ -281,7 +281,7 @@ Members.prototype.updated_action = function() {
 
 Members.prototype.privileges_action = function() {
    var site = res.handlers.site;
-   res.data.title = gettext("Memberships of user {0}", session.user.name);
+   res.data.title = gettext("Privileges");
    res.data.list = renderList(session.user.memberships, function(item) {
       res.handlers.site = item.site;
       item.renderSkin("$Membership#site");
@@ -295,7 +295,7 @@ Members.prototype.privileges_action = function() {
 
 Members.prototype.subscriptions_action = function() {
    var site = res.handlers.site;
-   res.data.title = gettext("Subscriptions of user {0}", session.user.name);
+   res.data.title = gettext("Subscriptions");
    res.data.list = renderList(session.user.subscriptions, function(item) {
       res.handlers.site = item.site;
       item.renderSkin("$Membership#site");
@@ -312,14 +312,13 @@ Members.prototype.add_action = function() {
       try {
          var result = this.search(req.postParams.term);
          if (result.length < 1) {
-            res.message = gettext("Found no user matching the search input.");
+            res.message = gettext("No user found to add as member.");
          } else {
             if (result.length >= 100) {
-               res.message = gettext("Found too many users, displaying the first {0} matches only.", 
+               res.message = gettext("Too many users found, displaying the first {0} matches only.", 
                      result.length);
             } else {
-               res.message = ngettext("Found one user matching the search input.",
-                     "Found {0} users matching the search input.", 
+               res.message = ngettext("One user found.", "{0} users found.", 
                       result.length);
             }
             res.data.result = this.renderSkinAsString("$Members#results", result);
@@ -344,7 +343,7 @@ Members.prototype.add_action = function() {
       res.redirect(this.href());
    }
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Add member to site {0}', this._parent.title);
+   res.data.title = gettext('Add Member');
    res.data.body = this.renderSkinAsString("$Members#add");
    res.handlers.site.renderSkin("Site#page");
    return;

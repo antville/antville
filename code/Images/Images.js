@@ -68,13 +68,13 @@ Images.prototype.main_action = function() {
       case Site:
       images = User.getMembership().images;
       skin = "$Images#main";
-      res.data.title = gettext("Member images of {0}", this._parent.title);
+      res.data.title = gettext("Member Images");
       break;
       
       case Layout:
       images = res.handlers.layout.images;
       skin = "$Images#layout";
-      res.data.title = gettext("Layout images of {0}", res.handlers.site.title);
+      res.data.title = gettext("Layout Images");
       break;
    }
    res.data.list = renderList(images, "$Image#listItem", 
@@ -88,19 +88,14 @@ Images.prototype.main_action = function() {
 
 Images.prototype.create_action = function() {
    var image = new Image;
-   image.site = res.handlers.site;
-   // We need to set the parent's type for getting the correct file path
-   image.parent_type = this._parent._prototype;
+   image.parent = this._parent;
    
    if (req.postParams.save) {
       try {
          image.update(req.postParams);
          this.add(image);
-         // FIXME: To be removed if work-around for Helma bug #607 passes
-         //image.setTags(req.postParams.tags || req.postParams.tag_array);
          image.notify(req.action);
-         res.message = gettext('The uploaded image was saved successfully. Its name is "{0}"', 
-               image.name);
+         res.message = gettext('The uploaded image was saved successfully.');
          res.redirect(image.href());
       } catch (ex) {
          res.message = ex.toString();
@@ -109,7 +104,7 @@ Images.prototype.create_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Add image to site {0}", res.handlers.site.title);
+   res.data.title = gettext("Add Image");
    res.data.body = image.renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -120,7 +115,7 @@ Images.prototype.all_action = function() {
          10, req.queryParams.page);
    res.data.list = renderList(this, "$Image#listItem", 
          10, req.queryParams.page);
-   res.data.title = gettext("Images of {0}", this._parent.title);
+   res.data.title = gettext("All Images");
    res.data.body = this.renderSkinAsString("$Images#main");
    res.handlers.site.renderSkin("Site#page");
    return;

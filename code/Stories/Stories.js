@@ -74,7 +74,7 @@ Stories.prototype.main_action = function() {
          10, req.queryParams.page);
    res.data.pager = renderPager(stories, 
          this.href(), 10, req.queryParams.page);
-   res.data.title = gettext("Member stories of {0}", this._parent.title);
+   res.data.title = gettext("Member Stories");
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
@@ -96,7 +96,7 @@ Stories.prototype.create_action = function() {
       }
    }
    
-   res.data.title = gettext("Add story to {0}", this._parent.title);
+   res.data.title = gettext("Add Story");
    res.data.action = this.href(req.action);
    res.data.body = story.renderSkinAsString("Story#edit");
    this._parent.renderSkin("Site#page");
@@ -108,7 +108,7 @@ Stories.prototype.closed_action = function() {
          "$Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this.closed, 
          this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Closed stories of {0}", this._parent.title);
+   res.data.title = gettext("Closed Stories");
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
@@ -118,15 +118,14 @@ Stories.prototype.all_action = function() {
    res.data.list = renderList(this, "$Story#listItem", 10, req.queryParams.page);
    res.data.pager = renderPager(this, 
          this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("All stories of {0}", this._parent.title);
+   res.data.title = gettext("All Stories");
    res.data.body = this.renderSkinAsString("$Stories#main");
    this._parent.renderSkin("Site#page");
    return;
 }
 
 Stories.prototype.top_action = function() {
-   res.data.title = gettext("Top 25 most read stories of {0}", 
-         this._parent.title);
+   res.data.title = gettext("Top Stories");
    res.data.body = this.renderSkinAsString("$Stories#top");
    this._parent.renderSkin("Site#page");
    return;

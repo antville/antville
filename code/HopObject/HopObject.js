@@ -30,13 +30,16 @@
 /**
  * 
  * @param {HopObject} collection
+ * @param {Boolean} force Set to true to force removal preventing any conditional checks
  */
-HopObject.remove = function(collection) {
+HopObject.remove = function(collection, force) {
    var item;
    while (collection.size() > 0) {
       item = collection.get(0);
       if (item.constructor.remove) {
-         item.constructor.remove.call(item, item);
+         item.constructor.remove.call(item, item, force);
+      } else {
+         throw Error("Missing static " + item.constructor.name + ".remove() method");
       }
    }
    return;
@@ -86,7 +89,8 @@ HopObject.prototype.map = function(values) {
  */
 HopObject.prototype.onRequest = function() {
    // Checking if we are on the correct host to prevent at least some XSS issues
-   if (req.action !== "notfound" && req.action !== "error" && this.href().startsWith("http://") && 
+   if (req.action !== "notfound" && req.action !== "error" && 
+         this.href().startsWith("http://") && 
          !this.href().toLowerCase().startsWith(req.servletRequest.scheme + 
          "://" + req.servletRequest.serverName.toLowerCase())) {   
       res.redirect(this.href(req.action === "main" ? String.EMPTY : req.action));
@@ -97,18 +101,18 @@ HopObject.prototype.onRequest = function() {
    
    if (User.getCurrentStatus() === User.BLOCKED) {
       User.logout();
-      res.status = 401;
-      res.writeln(gettext("Sorry, your account has been blocked."));
-      res.writeln(gettext("Please contact the maintainer of this site for further information."));
-      res.stop();
+      session.data.status = 403;
+      session.data.error =  gettext("Your account has been blocked.") + String.SPACE + 
+            gettext("Please contact an administrator for further information.");
+      res.redirect(root.href("error"));
    }
    
    if (res.handlers.site.status === Site.BLOCKED && 
          !User.require(User.PRIVILEGED)) {
-      res.status = 401;
-      res.writeln(gettext("Sorry, this site has been blocked."));
-      res.writeln(gettext("Please contact the maintainer of this site for further information."));
-      res.stop();
+      session.data.status = 403;
+      session.data.error =  gettext("The site you requested has been blocked.") +
+            String.SPACE + gettext("Please contact an administrator for further information.");
+      res.redirect(root.href("error"));
    }
 
    if (!this.getPermission(req.action)) {
@@ -119,7 +123,10 @@ HopObject.prototype.onRequest = function() {
       }
       User.getLocation();
       res.status = 401;
-      res.write(gettext("Sorry, you are not allowed to access this part of the site."));
+      res.data.title = gettext("{0} 401 Error", root.title);
+      res.data.body = root.renderSkinAsString("$Root#error", {error: 
+            gettext("You are not allowed to access this part of the site.")});
+      res.handlers.site.renderSkin("Site#page");
       res.stop();
    }
    
@@ -153,7 +160,7 @@ HopObject.prototype.delete_action = function() {
    }
 
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Confirm deletion of {0}", this);
+   res.data.title = gettext("Confirm Deletion");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
       text: gettext('You are about to delete {0}.', this)
    });
