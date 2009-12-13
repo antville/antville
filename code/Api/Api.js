@@ -104,7 +104,7 @@ Api.prototype.getPermission = function(){
 }
 
 Api.prototype.main_action = function() {
-   res.data.title = "Supported Application Programming Interfaces";
+   res.data.title = "Application Programming Interfaces";
    res.data.body = this.renderSkinAsString("$Api#main");
    res.handlers.site.renderSkin("Site#page");
    return;
