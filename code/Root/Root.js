@@ -22,6 +22,39 @@
 // $URL$
 //
 
+Root.SITEREMOVALGRACEPERIOD = 14; // days
+
+Root.queue = function(job) {
+   var file = java.io.File.createTempFile("job-", String.EMPTY, Root.queue.dir);
+   serialize(job, file);
+   return;
+}
+
+Root.queue.dir = (new java.io.File(app.dir, "../jobs")).getCanonicalFile();
+Root.queue.dir.exists() || Root.queue.dir.mkdirs();
+
+Root.dequeue = function() {
+   var jobs = Root.queue.dir.listFiles();
+   var max = Math.min(jobs.length, 10);
+   for (var file, job, i=0; i<max; i+=1) {
+      file = jobs[i]; 
+      try {
+         job = deserialize(file);
+         app.log("PROCESSING QUEUED JOB " + (i+1) + " OF " + max);
+         switch (job.type) {
+            case "site-removal":
+            var site = Site.getById(job.id);
+            site && site !== root && Site.remove(site);
+            break;
+         }
+      } catch (e) {
+         app.log("Failed to process job " + file + " due to " + e);
+      }
+      file["delete"]();
+   }
+   return;
+}
+
 /**
  * @fileOverview Defines the Root prototype.
  */
@@ -129,7 +162,7 @@ Root.commitEntries = function() {
 Root.purgeReferrers = function() {
    var sql = new Sql;
    var result = sql.execute("delete from log where action = 'main' and " +
-         "created < date_add(now(), interval -1 day)");
+         "created < date_add(now(), interval -2 day)");
    return result;
 }
 
@@ -233,8 +266,19 @@ Root.exportImport = function() {
  * @returns {String}
  */
 Root.prototype.processHref = function(href) {
-   return app.properties.defaulthost + href;
+   return app.properties.defaultHost + href;
 }
+
+
+/**
+ * 
+ * @param {String} name
+ */
+// FIXME: If everything works smoothly we don’t need this anymore
+//Root.prototype.getChildElement = function(name) {
+//   return this.get(java.net.IDN.toASCII(name));
+//}
+
 
 /**
  * 
@@ -247,16 +291,16 @@ Root.prototype.getPermission = function(action) {
    }
    switch (action) {
       case "debug":
-      return true;
-      case "create":
-      case "import":
-      return this.getCreationPermission();
       case "default.hook":
       case "health":
       case "mrtg":
       case "sites":
       case "updates.xml":
-      return this.mode !== Site.CLOSED;
+      return true;
+      case "create":
+      case "import":
+      return this.getCreationPermission();
+      //return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
 }
@@ -297,16 +341,18 @@ Root.prototype.getFormOptions = function(name) {
 }
 
 Root.prototype.error_action = function() {
-   res.status = 500;
-   res.data.title = root.getTitle() + " - Error";
-   res.data.body = root.renderSkinAsString("$Root#error", res);
+   res.message = String.EMPTY;
+   var param = res.error ? res : session.data;
+   res.status = param.status || 500;
+   res.data.title = gettext("{0} {1} Error", root.getTitle(), param.status);
+   res.data.body = root.renderSkinAsString("$Root#error", param);
    res.handlers.site.renderSkin("Site#page");
    return;
 }
 
 Root.prototype.notfound_action = function() {
    res.status = 404;
-   res.data.title = root.getTitle() + " - Error";
+   res.data.title = gettext("{0} {1} Error", root.getTitle(), res.status);
    res.data.body = root.renderSkinAsString("$Root#notfound", req);
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -321,7 +367,7 @@ Root.prototype.create_action = function() {
          site.layout.reset();
          this.add(site);
          site.members.add(new Membership(session.user, Membership.OWNER));
-         root.admin.log(site, "Added site");
+         root.admin.log(root, "Added site " + site.name);
          res.message = gettext("Successfully created your site.");
          res.redirect(site.href());
       } catch (ex) {
@@ -333,7 +379,7 @@ Root.prototype.create_action = function() {
    res.handlers.example = new Site;
    res.handlers.example.name = "foo";
    res.data.action = this.href(req.action);
-   res.data.title = gettext("Create a new site");
+   res.data.title = gettext("Add Site");
    res.data.body = site.renderSkinAsString("$Site#create");
    root.renderSkin("Site#page");
    return;
@@ -350,7 +396,7 @@ Root.prototype.sites_action = function() {
          "$Site#listItem", 25, req.queryParams.page);
    res.data.pager = renderPager(this.cache.sites.list, 
          this.href(req.action), 25, req.queryParams.page);
-   res.data.title = gettext("Public sites of {0}", root.title);
+   res.data.title = gettext("Public Sites");
    res.data.body = this.renderSkinAsString("$Root#sites");
    root.renderSkin("Site#page");
    return;
@@ -443,7 +489,7 @@ Root.prototype.health_action = function() {
    }
    param.callbacks = app.data.callbacks.length;
 
-   res.data.title = "Health of " + root.getTitle();
+   res.data.title = gettext("{0} Health", root.getTitle());
    res.data.body = this.renderSkinAsString("$Root#health", param);
    this.renderSkin("Site#page");
 }

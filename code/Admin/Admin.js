@@ -30,6 +30,13 @@
  * 
  */
 Admin.purgeDatabase = function() {
+   var now = new Date;
+   root.admin.deletedSites.forEach(function() {
+      if (now - this.deleted > Date.ONEDAY * Root.SITEREMOVALGRACEPERIOD) {
+         Root.queue({type: "site-removal", id: this._id});
+         this.deleted = now;
+      }
+   });
    return;
 }
 
@@ -104,7 +111,7 @@ Admin.prototype.setup_action = function() {
       }
    }
 
-   res.data.title = gettext("Setup of {0}", root.title);
+   res.data.title = gettext("{0} Setup", root.getTitle());
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("$Admin#setup");
    root.renderSkin("Site#page");
@@ -140,6 +147,15 @@ Admin.prototype.update = function(data) {
    return;
 }
 
+Admin.prototype.jobs_action = function() {
+   var files = Root.queue.dir.listFiles();
+   for each (var file in files) {
+      var job = deserialize(file);
+      res.debug(job.toSource() + " – " + file);
+   }
+   return;
+}
+
 Admin.prototype.log_action = function() {
    if (req.postParams.search || req.postParams.filter) {
       session.data.admin.filterLog(req.postParams);
@@ -149,7 +165,7 @@ Admin.prototype.log_action = function() {
    res.data.pager = renderPager(session.data.admin.entries, 
          this.href(req.action), 10, req.queryParams.page);
 
-   res.data.title = gettext("Administration log of {0}", root.title);
+   res.data.title = gettext("Administration Log");
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("$Admin#log");
    res.data.body += this.renderSkinAsString("$Admin#main");
@@ -161,14 +177,12 @@ Admin.prototype.sites_action = function() {
    if (req.postParams.id) {
       if (req.postParams.remove === "1") {
          var site = Site.getById(req.postParams.id);
-         try {
-            Site.remove(site);
-            res.message = gettext("The site {0} was removed successfully.",
-                  site.name);
-            res.redirect(this.href(req.action) + "?page=" + req.postParams.page);
-         } catch (err) {
-            res.message = err.toString();
-         }
+         site.mode = Site.DELETED;
+         site.deleted = new Date("1 Jan 1970");
+         this.log(root, "Deleted site " + site.name);
+         res.message = gettext("The site {0} is queued for removal.",
+               site.name);
+         res.redirect(this.href(req.action) + "?page=" + req.postParams.page);
       } else if (req.postParams.save === "1") {
          this.updateSite(req.postParams);
          res.message = gettext("The changes were saved successfully.");
@@ -189,7 +203,7 @@ Admin.prototype.sites_action = function() {
    res.data.pager = renderPager(session.data.admin.sites, 
          this.href(req.action), 10, req.data.page);
 
-   res.data.title = gettext("Site administration of {0}", root.title);
+   res.data.title = gettext("Site Administration");
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("$Admin#sites");
    res.data.body += this.renderSkinAsString("$Admin#main");
@@ -214,7 +228,7 @@ Admin.prototype.users_action = function() {
    res.data.pager = renderPager(session.data.admin.users, 
          this.href(req.action), 10, req.data.page);
 
-   res.data.title = gettext("User administration of {0}", root.title);
+   res.data.title = gettext("User Administration");
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("$Admin#users");
    res.data.body += this.renderSkinAsString("$Admin#main");

@@ -82,6 +82,33 @@ app.data.exports || (app.data.exports = []);
 /** @name app.data.imports */
 app.data.imports || (app.data.imports = []);
 
+
+/**
+ * @name helma.File
+ * @namespace
+ */
+/**
+ * @param {helma.File} target
+ */
+helma.File.prototype.copyDirectory = function(target) {
+   /*
+   // Strange enough, Apache commons is not really faster...
+   var source = new java.io.File(this.toString());
+   target = new java.io.File(target.toString());
+   return Packages.org.apache.commons.io.FileUtils.copyDirectory(source, target);
+   */
+   this.list().forEach(function(name) {
+      var file = new helma.File(this, name);
+      if (file.isDirectory()) {
+         file.copyDirectory(new helma.File(target, name));
+      } else {
+         target.makeDirectory();
+         file.hardCopy(new helma.File(target, name));
+      }
+   });
+   return;
+}
+
 /**
  * @name helma.Mail
  * @namespace
@@ -126,7 +153,7 @@ var LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
 /** @constant */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
-/** */
+/** @function */
 var idle = new Function;
 /** */
 var html = new helma.Html();
@@ -147,14 +174,6 @@ function onStart() {
       app.logger.error("Error in database configuration: no root site found.");
       return;
    }
-   app.addCronJob("nightly", "*", "*", "*", "*", "5", "0");      
-   // FIXME: Does database exist?
-   /*var db = getDBConnection("antville");
-   var rows = db.executeRetrieval("select min(id) as id from site");
-   rows.next();
-   var id = rows.getColumnItem("id");
-   //Packages.helma.main.Server.getServer().stopApplication(app.name);
-   rows.release();*/
    return;
 }
 
@@ -200,8 +219,9 @@ function scheduler() {
    Root.commitRequests();
    Root.invokeCallbacks();
    Root.updateHealth();
-   Root.exportImport();
    helma.Mail.flushQueue();
+   Root.dequeue();
+   Root.exportImport();
    return 5000;
 }
 
@@ -210,7 +230,7 @@ function scheduler() {
  */
 function nightly() {
    Root.purgeReferrers();
-   //Admin.purgeDatabase();
+   Admin.purgeDatabase();
    return;
 }
 
@@ -306,16 +326,24 @@ var skin_macro = function(param, name) {
  */
 function breadcrumbs_macro (param, delimiter) {
    delimiter || (delimiter = param.separator || " : ");
-   var offset = res.handlers.site === root ? 0 : 1;
-   for (var i=offset; i<path.length-1; i+=1) {
-      html.link({href: path[i].href()}, path[i].getTitle());
-      res.write(delimiter);
+   //html.link({href: res.handlers.site.href()}, res.handlers.site.getTitle());
+   var offset = res.handlers.site === root ? 1 : 2;
+   for (var item, title, i=offset; i<path.length; i+=1) {
+      if (item = path[i]) {
+         if (!isNaN(item._id) && item.constructor !== Layout) {
+            continue;
+         }
+         if (i === path.length-1 && req.action === "main") {
+            res.write(item.getTitle());
+         } else {
+            html.link({href: path[i].href()}, item.getTitle());
+         }
+         (i < path.length-1) && res.write(delimiter);
+     }
    }
-   var title = path[i].getTitle();
-   if (req.action !== "main" && path[i].main_action) {
-      html.link({href: path[i].href()}, title);
-   } else {
-      res.write(title);
+   if (req.action !== "main") {
+      res.write(delimiter);
+      res.write(req.action.titleize());
    }
    return;
 }
@@ -462,9 +490,9 @@ function poll_macro(param, id, mode) {
       break;
       default:
       if (poll.status === Poll.CLOSED || mode === "results")
-         poll.renderSkin("$Poll#results");
+         poll.renderSkin("$Poll#results", {});
       else {
-         poll.renderSkin("$Poll#main");
+         poll.renderSkin("$Poll#main", {});
       }
    }
    return;
@@ -901,7 +929,9 @@ function age_filter(value, param) {
 function link_filter(text, param, url) {
    if (text) { 
       url || (url = text);
-      return renderLink(param, url, text);
+      res.push();
+      renderLink(param, url, text);
+      return res.pop();
    }
    return;
 }
