@@ -1,9 +1,7 @@
 <% #main %>
-<div class="pagelink"><% breadcrumbs %></div>
 <% if <% tag.permission edit %> is true then 
-   <% tag.skin $Tag#controls prefix=<p> suffix=</p> %> 
+   <% tag.skin $Tag#controls prefix=<div> suffix="</div><br />" %> 
 %>
-<br />
 
 <div class="pagelink">
    <% list.prevLink text=<% gettext "Previous page" %>
@@ -28,11 +26,11 @@
 </tr>
 
 <% #controls %>
-<button type="button" onclick='var name; 
+... <a href="" onclick='var name; 
       if (name = prompt("<% gettext 'Please enter new name for this tag' suffix=: %>")) {
          location.href="<% tag.href action="rename" %>?name=" + name;
-      }'>Rename</button>
-<button type="button" onclick='var name; 
+      }'>Rename</a> |
+<a href="" onclick='var name; 
       if (confirm("<% gettext 'Are you sure you want to remove the tag {0}?' <% tag.name %> %>")) {
          location.href="<% tag.href action="delete" %>";
-      }'>Delete</button>
+      }'>Delete</a> Tag

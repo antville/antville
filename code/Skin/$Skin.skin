@@ -2,49 +2,53 @@
 <p class="storyTitle"><% response.title %></p>
 <% response.message prefix='<div class="message">' suffix="</div>" %>
 <form method="post" action="<% response.action %>">
+<div class="small">
 <% if <% skin.name %> is "" then 
    <% skin.select prototype prefix=<% gettext Prototype suffix=": " %>
    suffix=<% skin.input name prefix=<% gettext Name suffix=": " %> %> %>
 else 
    <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
 %>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td valign="top" nowrap="nowrap">
-   <textarea name="source" cols="50" rows="23" wrap="virtual" 
-   class="formWide"><% skin.content encoding="form" %></textarea>
-   <p>
-      <button type="submit" name="save" value="2">
-         <% gettext "Save and close" %>
-      </button>
-      <button type="submit" name="save" value="1"><% gettext Save %></button>
-      <a class="cancel" href="#"><% gettext Cancel %></a>
-   </p>
-</td>
-</tr>
-</table>
+</div>
+<% skin.textarea source class="formWide" wrap="virtual" %>
+<p>
+   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="submit" name="save" value="2">
+      <strong><% gettext "Save and Return" %></strong>
+   </button>
+   <a href="<% layout.skins.href modified %>"><% gettext Cancel %></a>
+</p>
 </form>
 
 <% #listItem %>
-<li>
-   <% skin.link edit <% skin.name prefix=<% skin.prototype suffix="." %> %> %>
-   <% if <% skin.created %> is null then "" else 
-      <% skin.skin $Skin#status prefix="<div>" suffix="</div>" %>
-   %>
-   <% // skin.summary prefix="<div>" suffix="</div>" %>
-</li>
-
-<% #status %>
-<span class="small">
-   (<% gettext "Modified by {0}" <% skin.creator %> %>
-   <% skin.link compare prefix=" ... " %> 
-   <% skin.link reset prefix=" ... " %>)<br />
-   <strong><% gettext Macro suffix=: %></strong> 
-   &lt;% <% if <% skin.prototype %> is "Global" then 
-      <% skin.name prefix="skin " %> else 
-      <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %>
-   %> %&gt;
-</span>
+<div class="listSeparator"> </div>
+<table cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<% if <% skin.source %> is null then 
+   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+   class="listFlag">c<br />u<br />s<br />t<br />o<br />m</td>
+   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+%>
+<td class="small">
+   <div class="ample"><strong><% gettext Macro suffix=: %></strong> &lt;% 
+   <% if <% skin.prototype %> is Global then 
+   <% skin.name prefix="skin " %> else 
+   <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %> %> %&gt;</div>
+</td>
+<td rowspan="2" width="10" nowrap="nowrap"> </td>
+<td valign="bottom" rowspan="2" align="right" class="small">
+   <% skin.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% skin.link compare prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% skin.link reset prefix='<div class="nowrap">... ' suffix="</div>" %>
+</td>
+</tr>
+<tr valign="top">
+<td>
+   <div class="storyTitle"><% skin.name prefix=<% skin.prototype suffix="." %> %></div>
+   <div class="storyDate"><% skin.creator link %>, <% skin.created short %></div>
+</td>
+</tr>
+</table>
 
 <% #compare %>
 <h3><% response.title %></h3>

@@ -27,10 +27,10 @@ else <% if <% story.mode %> is hidden then
 </td>
 <td rowspan="2" width="10" nowrap="nowrap"> </td>
 <td valign="bottom" rowspan="2" align="right" class="small">
-   <% story.link edit prefix="... " suffix="<br />" %>
-   <% story.link . <% gettext Show %> prefix="... " suffix="<br />" %>
-   <% story.link rotate prefix="... " suffix="<br />" %>
-   <% story.link delete prefix="... " %>
+   <% story.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% story.link . <% gettext Show %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% story.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% story.link delete prefix='<div class="nowrap">... ' suffix="</div>"%>
 </td>
 </tr>
 <tr valign="top">

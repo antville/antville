@@ -27,13 +27,13 @@ alphabetical order." %></p>
 <% response.pager %>
 
 <% #notfound %>
-<p><strong>Sorry!</strong></p>
-<p>The URL <% root.href %><% param.path encoding="all" %> 
-was not found on this server!</p>
+<p class="storyTitle"><% gettext Sorry! %></p>
+<p><% gettext "The path you requested was not found:"  %></p>
+<% param.path encoding="all" prefix=<code>/ suffix=</code> %>
 
 <% #error %>
-<p><strong>Sorry!</strong></p>
-<p>An error occurred while processing your request:</p>
+<p class="storyTitle"><% gettext Sorry! %></p>
+<p><% gettext "An error occurred while processing your request:" %></p>
 <% param.error %>
 
 <% #health %>
@@ -132,25 +132,12 @@ was not found on this server!</p>
          prefix=( suffix=) %></label>
 </div>
 
+<% #stylesheet %>
+/* CSS for protected skins (user interface elements etc.) */
 
 
 
 <% #FIXME %>
-<div style="margin: 200px 0 20px 0;">FIXME:</div>
-
-<div class="boxheader">menu</div>
-<div class="box">
-... <a href="<% root.href %>"><% root.title suffix=" " %>home</a><br />
-<% root.link create "create a new site" prefix="...&nbsp;" %>
-</div>
-
-<div class="boxheader">resources</div>
-<div class="box">
-... <a href="http://project.antville.org/">project site</a><br />
-... <a href="http://macros.antville.org/">macro docs</a><br />
-... <a href="http://help.antville.org/">help</a>
-</div>
-
 <div class="boxline"> </div>
 <div class="box">
 <% root.sitecounter no="no public sites" one="one public site" more=" public sites"%>... 

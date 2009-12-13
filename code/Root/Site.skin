@@ -2,3 +2,33 @@
 <% root.skin Root#welcome %>
 <% // Render the list of updated sites %>
 <% root.skin $Root#main %>
+
+<% #navigation %>
+<div class="navigation">
+<div><% site.link . <% gettext Home %> prefix="... " %></div>
+<div><% site.tags.link prefix="... " %></div>
+<div><% site.galleries.link prefix="... " %></div>
+</div>
+<p class="navigation">
+<div><% site.link health prefix="... " %></div>
+<div><% site.api.link . Interfaces prefix="... " %></div>
+<div><% link http://code.google.com/p/antville Development prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% site.stories.link create <% gettext "Add story" %> prefix="... " %></div>
+<div><% site.stories.link prefix="... " %></div>
+<div><% site.images.link prefix="... " %></div>
+<div><% site.files.link prefix="... " %></div>
+<div><% site.polls.link prefix="... " %></div>
+<div><% site.members.link prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
+<div><% site.layout.link . <% gettext Layout %> prefix="... " %></div>
+<div><% site.link referrers prefix="... " %></div>
+<div><% site.stories.link top <% gettext "Top stories" %> prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% root.title prefix="... " | root.link %></div>
+</p>
+

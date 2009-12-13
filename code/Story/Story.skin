@@ -11,6 +11,7 @@
 <p><% story.referrers %></p>
 
 <% #edit %>
+<p class="storyTitle"><% response.title %></p>
 <% story.skin $Story#restore %>
 <form method="post" action="<% response.action %>">
 <p>
@@ -22,9 +23,12 @@
    <div class="backup"><% story.textarea text cols="30" rows="15" 
    class="formText" %></div>
 </p>
+<p>
+   <div class="small"><% gettext "Tags" suffix=: %></div>
+   <div><% story.input tags class=formText %></div>
+</p>
 <p><fieldset>
-   <legend class="small"><% gettext Options %></legend>
-   <p><% gettext Tags suffix=: %> <% story.input tags %></p> 
+   <legend class="small"><% gettext Settings %></legend>
    <p><% gettext "The story is {0} and {1}" <% story.select status %>
    <% story.select mode %> %></p>
    <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
@@ -87,7 +91,7 @@
 <div class="historyItem">
    <% this.summary %>
    <div class="small">
-      by <% this.creator %> (<% this.modified short %>)
+      <% this.creator %>, <% this.modified short %>
    </div>
 </div>
 

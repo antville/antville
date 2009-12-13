@@ -1,8 +1,10 @@
 <% #edit %>
-<p><% gettext 'To modify the membership, simply choose the desired role from the 
-drop-down menu and click the "save" button.' %>
-<% gettext 'An e-mail will be sent to the member informing about the membership 
-change.' %></p>
+<p class="storyTitle"><% response.title %></p>
+<p class="small">
+   <% gettext 'To modify a membership select the desired role from the 
+         drop-down menu and click the “Save” button.' %>
+   <% gettext 'An e-mail will be sent to notify the user of the update.' %>
+</p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
@@ -17,7 +19,7 @@ change.' %></p>
 <td nowrap="nowrap"> </td>
 <td nowrap="nowrap"><br />
 <button type="submit" name="save" value="1">
-   <strong><% gettext Save %></strong>
+   <% gettext Save %>
 </button>
 <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
@@ -36,16 +38,16 @@ change.' %></p>
 </tr>
 <tr valign="top">
 <td>
-   <div class="storytitle"><% membership.name %></div>
+   <div class="storyTitle"><% membership.name %></div>
    <div class="ample"><span class="small"><% membership.created short
    prefix=<% gettext "Member since" suffix=" " %>  %></span></div>
    <div><% membership.creator.url | link %></div>
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
-   <% membership.link edit prefix="... " suffix="<br />" %>
-   <% membership.link contact prefix="... " suffix="<br />" %>
-   <% membership.link delete <% gettext Remove %> prefix="... " %>
+   <% membership.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link contact prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link delete <% gettext Remove %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>
@@ -61,26 +63,27 @@ change.' %></p>
 </tr>
 <tr valign="top">
 <td>
-   <div class="storytitle"><% site.title default=<% gettext Untitled 
+   <div class="storyTitle"><% site.title default=<% gettext Untitled 
    prefix="<em>[" suffix="]</em>" %> %></div>
    <div class="small"><% site.modified short prefix=<% gettext 
    "Last updated on" suffix=" " %> %></div>
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
-   <% site.link . <% gettext View %> prefix="... " %><!--
---><% site.link unsubscribe prefix="<br />... " %>
+   <% site.link . <% gettext View %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% site.link unsubscribe prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>
 
 <% #contact %>
-<p><% gettext 'Please enter your message to the user {0} below.' 
-<% membership.name %> %> 
-<% gettext 'To prevent abuse the sender address and the subject of the e-mail 
-are set to predefined values.' %>
-<% gettext 'A generic disclaimer will be automatically appended to your 
-message.' %></p>
+<p class="storyTitle"><% response.title %></p>
+<p class="small">
+   <% gettext 'Please enter your message to the user below.' %> 
+   <% gettext 'To prevent abuse the sender address and the subject of the e-mail 
+         are set to predefined values.' %>
+   <% gettext 'A generic disclaimer will be automatically appended to your message.' %>
+</p>
 <form method="post" action="<% response.action %>">
 <p>
 <span class="small">Message:</span><br />

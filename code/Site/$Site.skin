@@ -14,14 +14,18 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 </tr>
 
 <% #create %>
-<% gettext "To create a new site you need to fill out the form below." %>
-<p><% gettext 'The name will be part of the URL of your site. E.g. if you 
-enter “{0}” as the name, your site will be reachable via the url {1}'
-<% example.name %> <% example.href prefix=<code> suffix=</code> %> %></p>
-<p><% gettext "Please note that you cannot change the name after the site was 
-created." %></p>
-<p><% gettext "The title will appear in the header of every page of your site. 
-You can change it anytime you want." %></p>
+<p class="storyTitle"><% response.title %></p>
+<div>
+   <% gettext "To create a new site you need to fill out the form below." %>
+</div>
+<div class="small">
+   <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
+   enter “{0}” as the name your site will be reachable via this url: {1}'
+   <% example.name %> <% example.href prefix="<br /><code>" suffix=</code> %> %></p>
+   <p><% gettext "Please note that you cannot change the name after the site was 
+   created." %> <% gettext "The title will appear in the header of every page 
+   of your site. You can change it anytime you want." %></p>
+</div>
 <p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="3">
@@ -64,6 +68,8 @@ REGEDIT4
 "contexts"=hex:31
 
 <% #referrers %>
+<p class="storyTitle"><% response.title %></p>
+<br />
 <form action="<% response.action %>" method="get">
 <input type="text" name="filter" value="<% request.filter encoding="form" %>" 
 size="30" /> 
@@ -73,7 +79,7 @@ size="30" />
 <div class="small">
    <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" 
    <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
-   <label for="includeSpam">include referrer spam</label>
+   <label for="includeSpam">Include Referrer Spam</label>
 </div>
 <br />
 <table border="0" cellspacing="0" cellpadding="2">
@@ -146,6 +152,10 @@ using client-side JavaScript code. Thus, you should enable the option to
 execute JavaScript code in your browser. Otherwise you will only see this 
 information." %>
 
+<% #deleted %>
+<% gettext "This site is going to be deleted completely and irreversibly on {0}" 
+      <% site.deleted %> %>.
+
 <% #export %>
 <p class="title">Export Site Data</p><br />
 <% param.fileUrl prefix='<p><a href="' suffix=<% param.fileDate 
@@ -156,11 +166,13 @@ information." %>
 </form>
 
 <% #edit %>
+<p class="storyTitle"><% response.title %></p>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td colspan="2">
-   <strong><a name="general"><% gettext General %></a></strong>
+   <a id="general" name="general"></a>
+   <strong><% gettext General %></strong>
 </td>
 </tr>
 <tr>
@@ -195,15 +207,15 @@ information." %>
 <td><% site.select locale %></td>
 </tr>
 <tr>
-<td class="small"><% gettext "Time zone" suffix=: %></td>
+<td class="small"><% gettext "Time Zone" suffix=: %></td>
 <td><% site.select timeZone %></td>
 </tr>
 <tr>
-<td class="small"><% gettext "Long date format" suffix=: %></td>
+<td class="small"><% gettext "Long Date Format" suffix=: %></td>
 <td><% site.select longDateFormat %></td>
 </tr>
 <tr>
-<td class="small"><% gettext "Short date format" suffix=: %></td>
+<td class="small"><% gettext "Short Date Format" suffix=: %></td>
 <td><% site.select shortDateFormat %></td>
 </tr>
 <tr>
@@ -212,19 +224,21 @@ information." %>
 </td>
 </tr>
 <tr>
-<td class="small" valign="top"><% gettext "Web hook" suffix=: %></td>
+<td class="small" valign="top"><% gettext "Web Hook" suffix=: %></td>
 <td><% site.input callbackUrl %><br />
 <% site.checkbox callbackMode %> 
 <label for="callbackMode"><% gettext enabled %><label></td>
 </tr>
 <tr>
-<td colspan="2"><div class="listSeparator">&nbsp;</div>
-<strong><a name="spamfilter">Referrer spam filter</a></strong></td>
+<td colspan="2"><div class="listSeparator"> </div>
+<a id="spamfilter" name="spamfilter"></a>
+<strong><% gettext "Referrer Spam Filter" %></strong>
+</td>
 </tr>
 <tr>
-<td class="small" valign="top">Enter one 
-<a href="http://en.wikipedia.org/wiki/Regular_expression">filter pattern</a> 
-per line to be applied on every URL in the referrer and backlink lists.</td>
+<td class="small" valign="top"><% gettext "Enter one filter {0}pattern{1} per 
+line to be applied on every URL in the referrer and backlink lists." 
+'<a href="http://en.wikipedia.org/wiki/Regular_expression">' </a> %></td>
 <td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
 </tr>
 <tr>

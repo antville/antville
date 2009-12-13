@@ -1,12 +1,11 @@
 <% #main %>
-<p><% gettext "To insert a file in a story or comment just copy and paste its 
-code." %></p>
+<p class="storyTitle"><% response.title %></p>
 <div class="ample">
-   <% files.link create <% gettext "Add file" %> prefix="... " suffix="" %>
+   <% files.link create <% gettext "Add File" %> prefix="... " suffix="" %>
 </div>
 <% gettext Show prefix="... " %>
-<% files.link . <% gettext "member files" %> %>
-<% files.link all <% gettext "all files" %> prefix=" | " %>
+<% files.link . <% gettext "Member Files" %> %>
+<% files.link all <% gettext "All Files" %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

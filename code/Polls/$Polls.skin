@@ -1,13 +1,12 @@
 <% #main %>
-<p><% gettext "To insert a poll in a story or comment just copy and paste its 
-code." %></p>
+<p class="storyTitle"><% response.title %></p>
 <div class="ample">
-   <% polls.link create <% gettext "Add poll" %> prefix="... " %>
+   <% polls.link create <% gettext "Add Poll" %> prefix="... " %>
 </div>
 <% gettext Show prefix="... " %>
-<% polls.link . "member polls" %>
-<% polls.link open "open polls" prefix=" | " %>
-<% polls.link all "all polls" prefix=" | " %>
+<% polls.link . "Member Polls" %>
+<% polls.link open "Open Polls" prefix=" | " %>
+<% polls.link all "All Polls" prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

@@ -7,7 +7,7 @@ $(function() {
    };
 });
 </script>
-<p class="storyTitle"><% response.title %></p><br />
+<p class="storyTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <table border="0" width="400" cellspacing="0" cellpadding="3">
 <tr>
@@ -57,9 +57,9 @@ $(function() {
    <% file.created short %></div>
 </td>
 <td class="small" align="right" valign="top" rowspan="2">
-   <% file.link edit prefix=" ... " suffix="<br />" %>
-   <% file.link delete prefix="... " suffix="<br />" %>
-   <% file.link . <% gettext Download %> prefix=" ... " suffix="<br />" %>
+   <% file.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% file.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% file.link . <% gettext Download %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 <tr>

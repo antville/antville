@@ -1,6 +1,5 @@
 <% #main %>
-<div class="pagelink"><% breadcrumbs %></div><br />
-
+<p class="storyTitle"><% response.title %></p>
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
 <% tags.list prefix="<ul>" suffix="</ul> %>
@@ -11,8 +10,6 @@
 <th><% param.title %></th>
 
 <% #admin %>
-<div class="pagelink"><% breadcrumbs %> : <% gettext Admin %></div><br />
-
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
 <table>

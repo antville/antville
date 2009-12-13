@@ -22,7 +22,7 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 %></p>
 
 <% #sites %>
-<div class="pageTitle"><% response.title %></div>
+<p class="pageTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
@@ -125,7 +125,7 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 </form>
 
 <% #users %>
-<div class="pageTitle"><% response.title %></div>
+<p class="pageTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
@@ -202,7 +202,7 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 </form>
 
 <% #log %>
-<div class="pageTitle"><% response.title %></div>
+<p class="pageTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
@@ -250,7 +250,7 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 </table>
 
 <% #setup %>
-<div class="pageTitle"><% response.title %></div>
+<p class="pageTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>

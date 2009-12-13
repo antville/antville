@@ -1,9 +1,10 @@
 <% #main %>
+<p class="storyTitle"><% response.title %></p>
 <div class="ample">
-   <% members.link add <% gettext "Add member" %> prefix="... " %>
+   <% members.link add <% gettext "Add Member" %> prefix="... " %>
 </div>
 <% gettext Show prefix="... " %>
-<% members.link . all %>
+<% members.link . All %>
 <% members.link owners prefix="| " %>
 <% members.link managers prefix="| " %> 
 <% members.link contributors prefix="| " %>
@@ -47,7 +48,7 @@ value="<% request.name encoding="form" %>" />
 </td>
 <td rowspan="4"> </td>
 <td class="small">
-<% members.link register <% gettext "Not registered yet" %> %>
+<% members.link register <% gettext "Not registered yet?" %> %>
 </td>
 </tr>
 <tr>
@@ -64,7 +65,7 @@ value="<% request.name encoding="form" %>" />
 <td colspan="2" class="small">
 <input type="checkbox" id="remember" name="remember" tabindex="3" 
 <% if <% request.remember %> is "on" then 'checked="checked"' %> />
-<label for="remember"><% gettext "Remember me" %></label>
+<label for="remember"><% gettext "Remember Login" %></label>
 </td>
 </tr>
 <tr>
@@ -153,7 +154,7 @@ value="<% request.name encoding="form" %>" /></div>
 value="<% request.email encoding="form" %>"/></div>
 <br />
 <button type="submit" id="submit" name="reset" value="1" 
-tabindex="4"><% gettext "Reset password" %></button>
+tabindex="4"><% gettext "Send Request" %></button>
 <a href="" class="cancel"><% gettext Cancel %></a>
 </form>
 
@@ -178,27 +179,23 @@ tabindex="4"><% gettext Save %></button>
 <div>Enter a search term to display a list of matching users.</div>
 <div class="small">You can use the asterisk * as wildcard.</div><br />
 <form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td>
-   <input type="text" name="term" id="term" 
-   value="<% request.term encoding="form" %>" />
-</td>
-<td> 
-   <button type="submit" name="search" value="1"><% gettext Search %></button>
-   <a href="<% this.href %>"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+<input type="text" name="term" id="term" 
+value="<% request.term encoding="form" %>" />
+<button type="submit" name="search" value="1"><% gettext Search %></button>
+<a href="<% this.href %>"><% gettext Cancel %></a>
 </form>
 <% response.result %>
 
 <% #results %>
+<br />
 <form method="post" action="<% response.action %>">
-<% param.result prefix="<br />" %>
+<p class="small">
+   <% gettext "Select a user from the list below and click the “Add Member” button." %>
+</p>
+<% param.result %>
 <br />
 <button type="submit" id="add" name="add" value="1">
-   <% gettext "Add to members" %>
+   <% gettext "Add Member" %>
 </button>
 </form>
 

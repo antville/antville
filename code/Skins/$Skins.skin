@@ -9,8 +9,18 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" src="<% site.href main.js %>"></script>
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% root.href main.css %>" />
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
 <style type="text/css">
+body {
+   width: auto;
+   margin: 10px;
+   padding: 0;
+   border: none;
+}
+.formWide {
+   width: 100%;
+   height: 500px;
+}
 /* classes for skin diff */
 .diff td {
    padding:0px 5px;
@@ -21,41 +31,75 @@
    padding:2px 0px;
 }
 .diff .removed {
-   border-top: 1px solid <% values "base font color" %>;
+   border-top: 1px solid black;
    background-color: #ff3333;
 }
 .diff .added {
-   border-top: 1px solid <% values "base font color" %>;
+   border-top: 1px solid black;
    background-color: #33dd33;
 }
 .diff .line {
-   border-top: 1px solid <% values "base font color" %>;
+   border-top: 1px solid black;
 }
 .diff .num {
-   border-top: 1px solid <% values "base font color" %>;
+   border-top: 1px solid black;
    text-align:right;
 }
 .diff .status {
    padding: 0px 5px;
-   border-top: 1px solid <% values "base font color" %>;
+   border-top: 1px solid black;
 }
 </style>
 </head>
-
 <body>
-
-<table class="main" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"> </td>
-<td valign="top"><% response.body %></td>
-<td width="20"> </td>
-</tr>
-</table>
-
+<% response.body %>
 </body>
 </html>
 
+<% #header %>
+<div class="pagelink"><% breadcrumbs %></div><br />
+<p class="storyTitle"><% response.title %></p>
+<div class="ample">
+   <% skins.link create <% gettext "Add Skin" %> prefix="... " %>
+</div>
+<div>
+   <% gettext Show prefix="... " %>
+   <% skins.link . <% gettext "Basic Skins" %> %>
+   <% skins.link advanced <% gettext "All Skins" %> prefix=" | " %>
+   <% skins.link modified <% gettext "Modified Skins" %> prefix=" | " %> 
+</div>
+
 <% #main %>
+<% skins.skin $Skins#header %>
+<br />
+<div class="ample">
+   <% skins.link Site/page/edit "Site Page" %>
+   <div class="small"><% gettext "This skin defines the basic structure of your  
+   site. Modifying it will affect the general appearance of your site." %></div>
+</div>
+<div class="ample">
+   <% skins.link Site/navigation/edit "Navigation" %>
+   <div class="small"><% gettext "This skin is used to display the navigation 
+   links on the page." %></div>
+</div>
+<div class="ample">
+   <% skins.link Site/main/edit Frontpage %>
+   <div class="small"><% gettext "This skin is used to render the front page of 
+   your site." %></div>
+</div>
+<div class="ample">
+   <% skins.link Site/stylesheet/edit "CSS Stylesheet" %>
+   <div class="small"><% gettext "This skin contains the Cascaded Stylesheet 
+   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
+   will affect the general appearance of your site." %></div>
+</div>
+<div class="ample">
+   <% skins.link Site/javascript/edit JavaScript %>
+   <div class="small"><% gettext "This skin contains additional JavaScript code  
+   that will be included in every page." %></div>
+</div>
+
+<% #advanced %>
 <script type="text/javascript">
 $(function() {
    $("ul ul").hide();
@@ -70,45 +114,7 @@ $(function() {
    });
 });
 </script>
-<p><% breadcrumbs %></p>
-
-<div class="ample">
-   <% skins.link create <% gettext "Add custom skin" %> prefix="... " %>
-</div>
-<div>
-   <% gettext Show prefix="... " %>
-   <% skins.link . <% gettext "basic skins" %> %>
-   <% skins.link advanced <% gettext "all skins" %> prefix=" | " %>
-   <% skins.link modified <% gettext "modified skins" %> prefix=" | " %> 
-</div>
+<% skins.skin $Skins#header %>
 <ul class="skinmgrTree">
 <% response.list %>
 </ul>
-
-<% #basic %>
-<li>
-   <% skins.link Site/page/edit "Site Page" %>
-   <div class="small"><% gettext "This skin defines the basic structure of your  
-   site. Modifying it will affect the general appearance of your site." %></div>
-</li>
-<li>
-   <% skins.link Site/navigation/edit "Navigation" %>
-   <div class="small"><% gettext "This skin is used to display the navigation 
-   links on the page." %></div>
-</li>
-<li>
-   <% skins.link Site/main/edit Frontpage %>
-   <div class="small"><% gettext "This skin is used to render the front page of 
-   your site." %></div>
-</li>
-<li>
-   <% skins.link Site/stylesheet/edit "CSS Stylesheet" %>
-   <div class="small"><% gettext "This skin contains the Cascaded Stylesheet 
-   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
-   will affect the general appearance of your site." %></div>
-</li>
-<li>
-   <% skins.link Site/javascript/edit JavaScript %>
-   <div class="small"><% gettext "This skin contains additional JavaScript code  
-   that will be included in every page." %></div>
-</li>

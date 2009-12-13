@@ -20,8 +20,7 @@ modify the appearance of your site according to your needs."
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
-<br />
-<table border="0" cellpadding="0" cellspacing="0">
+<table border="0" cellpadding="1" cellspacing="0">
 <colgroup>
    <col width="150">
    <col width="*">
@@ -30,13 +29,14 @@ modify the appearance of your site according to your needs."
 </table>
 
 <% #subscriptions %>
+<p class="storyTitle"><% response.title %></p>
 <div class="ample">
 <% gettext Show prefix="...  " %>
-<% members.link updated "updated sites" %>
+<% members.link updated "Updated Sites" %>
 <% members.link privileges prefix="| " %> 
 <% members.link subscriptions prefix="| " %>
 </div>
-<% response.list %>
+<p><% response.list %></p>
 
 <% #edit %>
 <script type="text/javascript">
@@ -65,26 +65,27 @@ $(function() {
    });
 });
 </script>
+<p class="storyTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <input type="hidden" name="digest" id="digest" />
 <input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small" nowrap="nowrap"><% gettext "Current password" suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext "Current Password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="password" id="password" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap"><% gettext "New password" suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext "New Password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="newPassword" 
 id="newPassword" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap"><% gettext "Confirm password" suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext "Confirm Password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
 id="newPasswordConfirm" /></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap"><% gettext e-mail suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext E-mail suffix=: %></td>
 <td><% user.input email %></td>
 </tr>
 <tr>

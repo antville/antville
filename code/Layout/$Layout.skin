@@ -16,20 +16,18 @@ $(function() {
 });
 </script>
 
-<% breadcrumbs %>
-<div class="ample"></div>
-
-<p class="storyTitle"><br />
-<% gettext "Layout of site {0}" <% site.title %> %></p>
-
+<p class="storyTitle"><% response.title %></p>
 <p><% gettext "Show" prefix="... "%> 
-<% layout.link images <% gettext "layout images" %> %>
-<% layout.link skins <% gettext "layout skins" %> prefix=" | " %></p>
+<% layout.link images <% gettext "Layout Images" %> %>
+<% layout.link skins <% gettext "Layout Skins" %> prefix=" | " %></p>
 
-<p><% layout.link import prefix="... " %>
-<% layout.link export prefix=" | " %>
-<% layout.link reset prefix=" | " suffix=" layout" %></p>
+<div>
+   <% layout.link import prefix="... " %>
+   <% layout.link export prefix=" | " %>
+   <% layout.link reset prefix=" | " suffix=" Layout" %>
+</div>
 
+<br/>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <% layout.values %>
@@ -38,20 +36,23 @@ $(function() {
 <td><input type="text" name="newValue" id="newValue" /></td>
 </tr>
 <tr>
-<td class="small"><a href="" id="addValueLink"><% gettext "Add value" %></a></td>
+   <td />
 <td>
-   <br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
+   <div class="small">
+      <a href="" id="addValueLink"><% gettext "Add value" %></a>
+   </div>
+   <p><br />
+      <button type="submit" name="save" value="1"><% gettext Save %></button>
+      <a href="" class="cancel"><% gettext Cancel %></a>
+   </p>
 </td>
 </tr>
 </table>
 </form>
 
 <% #import %>
-<p class="storyTitle">Import Layout</p>
-<form method="post" action="<% response.action %>" 
-enctype="multipart/form-data">
+<p class="storyTitle"><% response.title %></p>
+<form method="post" action="<% response.action %>" enctype="multipart/form-data">
 <% layout.upload upload %>
 <br />
 <button type="submit" name="submit" value="1"><% gettext Import %></button>
@@ -61,6 +62,5 @@ enctype="multipart/form-data">
 <% #value %>
 <tr>
 <td class="small"><% param.key %>:</td>
-<td><input type="text" name="value_<% param.key %>" 
-value="<% param.value %>" /></td>
+<td><input type="text" name="value_<% param.key %>" value="<% param.value %>" /></td>
 </tr>

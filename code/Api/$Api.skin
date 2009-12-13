@@ -1,41 +1,46 @@
 <% #main %>
 <p class="storyTitle"><% response.title %></p>
-Antville supports the following application programming interfaces:
-<ul>
-   <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger API 1.0</a></li>
-   <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a></li>
-   <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a></li>
-</ul>
-The URL endpoint for each of these APIs is located at <% api.href | link %>.</p>
+   <% gettext "Antville supports some popular application programming 
+         interfaces:" %>
+   <ul>
+      <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger API 1.0</a></li>
+      <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a></li>
+      <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a></li>
+   </ul>
+   <div><% gettext "The URL endpoint for each of these APIs is located at" %></div>
+   <div><% api.href | link %></div>
+</p>
 
 <p><br /><strong>Callbacks</strong></p>
-<p>Each Antville site provides an option in the preferences form to define a 
-callback URL that will be invoked each time the site content has changed. 
+<p><% gettext "Each Antville site provides an option in the preferences to 
+define a callback URL that will be invoked each time the site content has changed. 
 This way users can define custom handlers for different site events with their 
 own code running behind this URL – on a server and in a programming language 
-of their choice.</p>
+of their choice." %></p>
 
-<p>The callback URL will be invoked as an HTTP POST request with the following
-parameters:
+<p><% gettext "The callback URL will be invoked as an HTTP POST request with 
+the following parameters:" %>
 <ul>
-   <li><code>type</code> – the resource type (a string like "Story" or "Comment")</li>
-   <li><code>id</code> – the identifier of the resource as number</li>
-   <li><code>url</code> – the URL of the resource as string</li>
-   <li><code>date</code> – the event date as Unix timestamp</li>
-   <li><code>user</code> – the name of the user who triggered the event</li>
-   <li><code>site</code> – the title or name of the site</li>
-   <li><code>origin</code> – the URL of the site as string</li>
+   <li><code>type</code> – <% gettext 'Resource type (e.g. "Story" or "Comment")' %></li>
+   <li><code>id</code> – <% gettext "Numeric identifier of the resource" %></li>
+   <li><code>url</code> – <% gettext "URL string of the resource" %></li>
+   <li><code>date</code> – <% gettext "Date string in Unix timestamp format" %></li>
+   <li><code>user</code> – <% gettext "Name of the user who triggered the event" %></li>
+   <li><code>site</code> – <% gettext "Title or name of the site" %></li>
+   <li><code>origin</code> – <% gettext "URL string of the site" %></li>
 </ul>
 </p>
 
-<p>Antville itself provides a default callback URL invoking the basic ping 
-method of the weblogs.com API: <% api.href callback | link %>.</p>
+<p><% gettext "Antville itself provides a default callback URL invoking the basic 
+ping method of the weblogs.com API:" %>
+<div><% api.href callback | link %></div>
+</p>
 
 <% #callback %>
 <p class="storyTitle"><% response.title %></p>
-This callback URL invokes the ping method of the 
-<a href="http://www.weblogs.com/api.html">weblogs.com API</a>. The essential
-ECMAScript code can be seen below.
-<pre style="overflow: auto; width: 450px; border: 1px solid #cccccc;">
+<% gettext "This callback URL invokes the ping method of the {0}." 
+'<a href="http://www.weblogs.com/api.html">weblogs.com API</a>' %> 
+<% gettext "The essential ECMAScript code is shown below." %>
+<pre style="overflow: auto; width: 420px; border: 1px solid #cccccc;">
    <code><% param.code %></code>
 </pre>

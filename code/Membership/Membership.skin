@@ -1,7 +1,7 @@
 <% #status %>
 <% gettext "Logged in as {0}" <% membership.name | membership.link %> %><br />
 <% membership.role prefix="(" suffix=")<br />" %>
-<% site.members.link edit <% gettext "Edit your profile" %> prefix="... " 
+<% site.members.link edit <% gettext "Edit User Profile" %> prefix="... " 
 suffix="<br />" %>
 <% site.link subscribe prefix="... " suffix="<br />" %>
 <% site.members.link updated <% gettext Subscriptions %> prefix="... " 

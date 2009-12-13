@@ -17,7 +17,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <div><% site.galleries.link prefix="... " %></div>
 </div>
 <p class="navigation">
-<div><% site.stories.link create <% gettext "Add story" %> prefix="... " %></div>
+<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
 <div><% site.stories.link prefix="... " %></div>
 <div><% site.images.link prefix="... " %></div>
 <div><% site.files.link prefix="... " %></div>
@@ -26,21 +26,20 @@ prefix="Last update: " default="None so far" %>)</span></li>
 </p>
 <p class="navigation">
 <div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
-<div><% layout.link . <% gettext Layout %> prefix="... " %></div>
-<div><% layout.skins.link prefix="... " %></div>
+<div><% site.layout.link . <% gettext Layout %> prefix="... " %></div>
 <div><% site.link referrers prefix="... " %></div>
-<div><% site.stories.link top <% gettext "Top stories" %> prefix="... " %></div>
+<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
 </p>
 <p class="navigation">
 <div><% root.title prefix="... " | root.link %></div>
 </p>
 
 <% #search %>
-<form method="post" action="<% site.href search %>">
-   <input type="text" name="q" class="searchbox" 
+<form class="nowrap" method="post" action="<% site.href search %>">
+   <input type="text" size="15" name="q" class="searchbox" 
    value="<% request.q encoding="form" %>" />
    <button type="submit" name="search" value="1" 
-   class="searchbox">search</button>
+   class="searchbox">Search</button>
 </form>
 
 <% #robots %>
@@ -64,14 +63,14 @@ Disallow: /stories/top
 <link rel="alternate" type="application/rss+xml" title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
 <link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
 <link rel="alternate" type="application/rss+xml" title="Site updates of <% root.title %>" href="<% root.href updates.xml %>" />
-<!-- link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="Antville Search" -->
+<% // link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="Antville Search" %>
 </head>
 <body>
 
 <table class="main" cellspacing="0" cellpadding="0">
 <tr>
 <td class="header">
-   <% site.title | site.link title=<% site.tagline %> %>
+   <div><% site.title | site.link title=<% site.tagline %> %></div>
 </td>
 </tr>
 </table>
@@ -104,7 +103,7 @@ Disallow: /stories/top
    <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">' 
    suffix='</div><div class="box">' %> suffix="</div>" %>
    
-   <div class="boxheader"><% gettext "Recent updates" %></div>
+   <div class="boxheader"><% gettext "Updates" %></div>
    <div class="box"><% list postings skin=Story#history %></div>
    
    <div class="boxline"></div><br />
@@ -154,13 +153,29 @@ function openPopup(img, width, height) {
 <% value "small font color" #959595 %>
 
 <% #stylesheet %>
+body {
+   background-color: <% value "background color" %>;
+   font-family: <% value "base font" %>;
+   font-size: <% value "base font size" %>;
+   color: <% value "base font color" %>;
+}
+
 table.main {
    width: 700px;
 }
 
+td {
+   font-size: <% value "base font size" %>;
+   line-height: 1.2em;
+}
+
 td.header {
+   max-width: 700px;
    height: 53px;
    padding-left: 40px;
+   background-image: url(<% image /webloghead.gif url %>);
+   background-repeat: no-repeat;
+   font-size: 25px;
    font-weight: bold;
 }
 
@@ -175,24 +190,6 @@ td.right {
    padding: 0px 0px 10px 0px; 
    vertical-align: top; 
    border-left: 1px solid #dddddd;
-}
-
-body {
-   background-color: <% value "background color" %>;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   color: <% value "base font color" %>;
-}
-
-td {
-   font-size: <% value "base font size" %>;
-   line-height: 1.2em;
-}
-
-td.header {
-   background-image: url(<% image /webloghead.gif url %>);
-   font-size: 25px;
-   font-weight: bold;
 }
 
 div.boxheader {
@@ -443,6 +440,10 @@ ul.skinmgrTree li div {
    color:<% value "base font color" %>;
 }
 
+.nowrap {
+   white-space: nowrap;
+}
+
 .membergroup {
    font-weight:bold;
    font-size:<% value "big font size" %>;
@@ -455,6 +456,7 @@ ul.skinmgrTree li div {
 }
 
 .calendar {
+   width: 100%;
    text-align: center;
    color: <% value "small font color" %>;
    font-family: <% value "small font" %>;
@@ -509,6 +511,11 @@ ul.skinmgrTree li div {
 
 .regular {
    display: none;
+}
+
+.deleted {
+   color: #cc0000;
+   background-color: #ffcc00;
 }
 
 .blocked {
