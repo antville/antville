@@ -169,7 +169,7 @@ CREATE TABLE `site` (
   `layout_id` int(10) unsigned default NULL,
   `metadata` mediumtext,
   `status` enum('blocked','regular','trusted') default 'regular',
-  `mode` enum('closed','restricted','public','open') default 'closed',
+  `mode` enum('deleted','closed','restricted','public','open') default 'closed',
   `created` datetime default NULL,
   `creator_id` int(10) unsigned default NULL,
   `modified` datetime default NULL,
