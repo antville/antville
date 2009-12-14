@@ -440,10 +440,6 @@ ul.skinmgrTree li div {
    color:<% value "base font color" %>;
 }
 
-.nowrap {
-   white-space: nowrap;
-}
-
 .membergroup {
    font-weight:bold;
    font-size:<% value "big font size" %>;

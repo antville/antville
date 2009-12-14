@@ -134,8 +134,9 @@ alphabetical order." %></p>
 
 <% #stylesheet %>
 /* CSS for protected skins (user interface elements etc.) */
-
-
+.nowrap {
+   white-space: nowrap;
+}
 
 <% #FIXME %>
 <div class="boxline"> </div>
