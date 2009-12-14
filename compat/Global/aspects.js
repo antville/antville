@@ -103,7 +103,7 @@ helma.aspects.addAround(global, "image_macro", function(args, func) {
    var url = args[3];
    url && res.push();
    func.apply(global, args);
-   url && link_filter(res.pop(), {}, url);
+   url && res.write(link_filter(res.pop(), {}, url));
    return;
 });
 
