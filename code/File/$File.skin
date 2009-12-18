@@ -44,9 +44,8 @@ $(function() {
 <tr>
 <td colspan="2" class="small">
    <strong><% gettext Macro suffix=: %></strong> <% file.macro %>
-   <div class="ample"><strong><% gettext Details suffix=: %> 
-   </strong><% file.contentLength %>
-   <% file.contentType prefix=" " %><% ngettext "{0} download" "{0} downloads"
+   <div class="ample"><strong><% gettext Details suffix=: %></strong>
+   <% file.contentLength %><% file.contentType prefix=" " %><% ngettext "{0} download" "{0} downloads"
    <% file.requests %> prefix=", " %></div>
 </td>
 </tr>
