@@ -39,7 +39,7 @@ Api.metaWeblog._getStruct = function(story) {
       userid: story.creator.name,
       postid: story._id,
       dateCreated: story.created,
-      title: story.title,
+      title: story.getTitle(),
       description: story.text,
       categories: story.getTags(),
       flNotOnHomePage: story.mode === Story.HIDDEN ? true : false,
@@ -161,7 +161,8 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
       text: content.description,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: content.flNotOnHomePage ? Story.HIDDEN : Story.FEATURED,
-      commentMode: content.discussions ? Story.OPEN : Story.CLOSED,
+      commentMode: content.discussions || content.mt_allow_comments ? 
+            Story.OPEN : Story.CLOSED,
       tags: content.categories
    });
    return true;
@@ -214,7 +215,7 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
 
    var result = {};
    var data = {};
-   if (media.type.toLowerCase().startsWith("image/")) {
+   if (media.type && media.type.toLowerCase().startsWith("image/")) {
       if (!site.images.getPermission("create")) {
          throw Error("Permission denied for user " + user.name + 
                " to add a media object to site " + site.name);
