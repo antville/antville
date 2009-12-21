@@ -1,0 +1,572 @@
+<% #main %>
+<% site.stories %>
+
+<% #preview %>
+<li><% site.title | site.link %> <span class="small">(<% site.modified short 
+prefix="Last update: " default="None so far" %>)</span></li>
+
+<% #welcome %>
+<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
+<p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
+<% site.created long %> %></p>
+
+<% #navigation %>
+<div class="navigation">
+<div><% site.link . <% gettext Home %> prefix="... " %></div>
+<div><% site.tags.link prefix="... " %></div>
+<div><% site.galleries.link prefix="... " %></div>
+</div>
+<p class="navigation">
+<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
+<div><% site.stories.link prefix="... " %></div>
+<div><% site.images.link prefix="... " %></div>
+<div><% site.files.link prefix="... " %></div>
+<div><% site.polls.link prefix="... " %></div>
+<div><% site.members.link prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
+<div><% site.layout.link . <% gettext Layout %> prefix="... " %></div>
+<div><% site.link referrers prefix="... " %></div>
+<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
+</p>
+<p class="navigation">
+<div><% root.title prefix="... " | root.link %></div>
+</p>
+
+<% #search %>
+<form class="nowrap" method="post" action="<% site.href search %>">
+   <input type="text" size="15" name="q" class="searchbox" 
+   value="<% request.q encoding="form" %>" />
+   <button type="submit" name="search" value="1" 
+   class="searchbox">Search</button>
+</form>
+
+<% #robots %>
+User-agent: *
+Disallow: /referrers
+Disallow: /stories/top
+
+<% #page %>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+<title><% response.title %></title>
+<meta http-equiv="Content-Type" content="text/html" />
+<meta name="MSSmartTagsPreventParsing" content="TRUE" />
+<script type="text/javascript" src="<% site.href main.js %>"></script>
+<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+<link rel="alternate" type="application/rss+xml" title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
+<link rel="alternate" type="application/rss+xml" title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
+<link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
+<link rel="alternate" type="application/rss+xml" title="Site updates of <% root.title %>" href="<% root.href updates.xml %>" />
+<% // link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="Antville Search" %>
+</head>
+<body>
+
+<table class="main" cellspacing="0" cellpadding="0">
+<tr>
+<td class="header">
+   <div><% site.title | site.link title=<% site.tagline %> %></div>
+</td>
+</tr>
+</table>
+
+<table class="main">
+<tr>
+<td class="center">
+   <% response.message prefix='<div class="message">' suffix='</div><br />' %>
+   <% response.body %>
+</td>
+<td class="right">
+   <div class="box">
+   <% site.age prefix="Online for " suffix=" days<br />" %>
+   <% site.modified short prefix="Last modified: " %>
+   </div>
+   
+   <div class="boxheader"><% gettext Status %></div>
+   <div class="box"><% membership.status %></div>
+   
+   <% root.admin.skin $Admin#navigation %>
+   
+   <div class="boxheader"><% gettext Menu %></div>
+   <div class="box">
+   <% site.skin Site#navigation %>
+   </div>
+   
+   <div class="boxheader"><% gettext Search %></div>
+   <div class="box"><% site.skin Site#search %></div>
+   
+   <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">' 
+   suffix='</div><div class="box">' %> suffix="</div>" %>
+   
+   <div class="boxheader"><% gettext "Updates" %></div>
+   <div class="box"><% list postings skin=Story#history %></div>
+   
+   <div class="boxline"></div><br />
+   <div class="box"><% image /rss.png | site.link rss.xml %><br />
+   <br />
+   <% image /smallchaos.gif | link http://antville.org %><br />
+   <% image /helma.png | link http://helma.org %></div>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+
+<% #javascript %>
+var imgWindow = "";
+
+function openPopup(img, width, height) {
+   if (img && width && height) {
+      width = Math.min(width + 36, 640);
+      height = Math.min(height + 30, 480);
+      if (imgWindow.location && !imgWindow.closed)
+         imgWindow.close();
+      imgWindow = window.open(img, "imgWindow" + width + height, 
+      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + 
+      width + ",height=" + height);
+      // imgWindow.focus();
+   }
+}
+
+<% #values %>
+<% value "background color" #ffffff %>
+<% value "link color" #ff4040 %>
+<% value "active link color" #ff4040 %>
+<% value "visited link color" #ff4040 %>
+
+<% value "big font" "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "big font size" 15px %>
+<% value "big font color" #d50000 %>
+
+<% value "base font" "Verdana, Helvetica, Arial, sans-serif" %>
+<% value "base font size" 13px %>
+<% value "base font color" #000000 %>
+
+<% value "small font" "Verdana, Arial, Helvetica, sans-serif" %>
+<% value "small font size" 11px %>
+<% value "small font color" #959595 %>
+
+<% #stylesheet %>
+body {
+   background-color: <% value "background color" %>;
+   font-family: <% value "base font" %>;
+   font-size: <% value "base font size" %>;
+   color: <% value "base font color" %>;
+}
+
+table.main {
+   width: 700px;
+}
+
+td {
+   font-size: <% value "base font size" %>;
+   line-height: 1.2em;
+}
+
+td.header {
+   max-width: 700px;
+   height: 53px;
+   padding-left: 40px;
+   background-image: url(<% image /webloghead.gif url %>);
+   background-repeat: no-repeat;
+   font-size: 25px;
+   font-weight: bold;
+}
+
+td.center { 
+   width: 70%; 
+   padding: 25px 20px 10px 40px; 
+   vertical-align: top; 
+}
+
+td.right { 
+   width: 30%; 
+   padding: 0px 0px 10px 0px; 
+   vertical-align: top; 
+   border-left: 1px solid #dddddd;
+}
+
+div.boxheader {
+   color: <% value "small font color" %>;
+   overflow: hidden;
+   font-size: 10px;
+   padding-left: 6px;
+   border-top: 1px solid #dddddd;
+}
+
+div.boxline {
+   height:1px;
+   overflow:hidden;
+   border-bottom: 1px solid #dddddd;
+}
+
+div.box {
+   font-size: <% value "small font size" %>;
+   font-family: <% value "small font" %>;
+   color: <% value "small font color" %>;
+   line-height: 1.4em;
+   text-align: right;
+   padding: 0em 0em 0.4em 0.4em;
+   margin: 0em 0em 0.2em 0em;
+}
+
+div.ample { margin-bottom: 5px; }
+
+small, .small {
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;
+   color: <% value "small font color" %>;
+}
+
+/* this is for mozilla to right-align tables in boxes */
+div.box table {
+   margin-left: auto; 
+   margin-right: 0px; 
+}
+
+fieldset {
+   width: 360px;
+   padding-left: 8px;
+   padding-top: 0px;
+   margin-top: 6px;
+   margin-bottom: 6px;
+}
+
+p {
+   margin-top: 6px;
+   margin-bottom: 10px;
+}
+
+form { margin: 0px; }
+
+a {text-decoration: none;}
+a:link {color: <% value "link color" %>;}
+a:visited {color: <% value "visited link color" %>;}
+a:active {color: <% value "active link color" %>;}
+a:hover {text-decoration: underline;}
+
+.message {
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;
+   font-weight: bold;
+   padding: 1px;
+   margin-top: 6px;
+   margin-bottom: 6px;
+   color: <% value "big font color" %>;
+}
+
+.message input {
+   font-size:9px;
+   padding:0px;
+   margin:0px;
+}
+
+.historyItem {
+   color: <% value "base font color" %>;
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;
+   padding-bottom: 0.3em;
+   width: 202px;
+   overflow: hidden; 
+}
+
+.dayHeader {
+   font-family: <% value "small font size" %>;
+   font-size: <% value "small font size" %>;
+   color: <% value "small font color" %>;
+   font-weight: bold;
+   margin-bottom: 20px;
+   margin-top: 10px;
+   text-align: left;
+}
+
+.storyDate {
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;
+   color: <% value "small font color" %>;
+   margin-bottom: 6px;
+}
+
+.storyTitle {
+   font-family: <% value "big font" %>;
+   font-size: <% value "big font size" %>;
+   color: <% value "big font color" %>;
+   font-weight: bold;
+}
+
+.listSeparator {
+   width: 50px;
+   height: 1em;
+   border-bottom: 2px dotted #dddddd;
+   margin-top: 10px;
+   margin-bottom: 4px;
+}
+
+.title {
+   font-family: <% value "big font" %>;
+   font-size: <% value "big font size" %>;
+   color: <% value "base font color" %>;
+   font-weight: bold;
+   margin-bottom: 2px;
+}
+
+.reply { padding-left: 40px; }
+
+.formTitle {
+   width: 380px;
+   font-family: <% value "base font size" %>;
+   font-size: <% value "big font size" %>;
+   font-weight: bold;
+   border: 1px solid <% value "base font color" %>;
+}
+
+.formText {
+   width: 380px;
+   font-family: <% value "base font size" %>;
+   font-size: <% value "base font size" %>;
+   font-weight: normal;
+   border: 1px solid <% value "base font color" %>;
+}
+
+.formWide {
+   width: 660px;
+   font-family: <% value "base font size" %>;
+   font-size: <% value "base font size" %>;
+   font-weight: normal;
+}
+
+.listFlag {
+   background-color: #cccccc;
+   padding: 1px;
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;
+   color: <% value "base font color" %>;
+}
+
+.pollResultsBar {
+   height: 5px;
+   overflow: hidden;
+   float:left;
+   margin-top: 7px;
+   margin-right: 10px;
+   background-color: <% value "link color" %>;
+   font-size: 0px;
+}
+
+.searchbox {
+   font-size: 11px;
+   margin-top: 3px;
+}
+
+.colorpickerWidget {
+   border: 1px solid #cccccc;
+}
+
+.pagelinkTop {
+   margin-bottom: 18px;
+   padding-bottom:3px;
+   border-bottom:1px solid #dddddd;
+}
+
+.pagelinkBottom {
+   margin-top: 18px;
+   padding-top:3px;
+   border-top:1px solid #dddddd;
+   text-align:right;
+}
+
+div.pageNav {
+   margin-top: 10px;
+   margin-bottom: 0px;
+   font-size: 11px;
+}
+
+div.pageNavSummary {
+   padding: 1px 5px;
+   background-color: #efefef;
+   border-bottom: 1px solid #cccccc;
+   text-align: left;
+}
+
+div.pageNavBar {
+   padding-top: 1px;
+   text-align: right;
+}
+span.pageNavItem {
+   padding-left: 2px;
+   padding-right: 2px;
+}
+
+span.pageNavSelItem {
+   padding-left: 2px;
+   padding-right: 2px;
+   font-weight: bold;
+}
+
+ul { list-style: url(<% image /bullet.gif url %>) circle; } 
+
+ul.skinmgrTree {
+   padding-left:15px;
+   margin:20px 0px;
+}
+
+ul.skinmgrTree ul {
+   padding-left:30px;
+   margin:0px;
+}
+ul.skinmgrTree li {
+   list-style:none;
+   margin:7px 0px;
+   padding:0px;
+}
+
+ul.skinmgrTree li.skinset {
+   list-style:square;
+   padding-left:0px;
+}
+ul.skinmgrTree a.selected {
+   font-weight:bold;
+}
+
+ul.skinmgrTree li div {
+   font-family:<% value "base font size" %>;
+   font-size:<% value "small font size" %>;
+   color:<% value "base font color" %>;
+}
+
+.nowrap {
+   white-space: nowrap;
+}
+
+.membergroup {
+   font-weight:bold;
+   font-size:<% value "big font size" %>;
+   margin:10px 0px;
+}
+
+.member {
+   margin-left:20px;
+   margin-bottom:5px;
+}
+
+.calendar {
+   width: 100%;
+   text-align: center;
+   color: <% value "small font color" %>;
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;
+}
+
+.calendar tbody td, .calendar tfoot td {
+   font-size: <% value "small font size" %>;
+}
+
+.calendar tbody th {
+   font-weight: normal;
+}
+
+.calendar .day {
+   width: 14.27%;
+   text-align: center;
+}
+
+.calendar .left {
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.calendar .right {
+   border: 0;
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.calendar .selected {
+   border: 1px solid <% value "link color" %>;
+}
+
+/* Admin styles */
+
+.pageTitle {
+   font-family:<% value "big font" %>;
+   font-size:<% value "big font size" %>;
+   font-weight:bold;
+   color:<% value "big font color" %>;
+   padding-bottom:10pt;
+}
+
+.label {
+   font-family: <% value "small font" %>;
+   font-size: 7pt;
+   padding: 2px;
+   color: #ffffff;
+   text-transform: uppercase;
+}
+
+.regular {
+   display: none;
+}
+
+.deleted {
+   color: #cc0000;
+   background-color: #ffcc00;
+}
+
+.blocked {
+   background-color: #000000;
+}
+
+.trusted, .User {
+   background-color: #0000cc;
+}
+
+.closed {
+   background-color: #cc0000;
+}
+
+.open {
+   color: black;
+   background-color: yellow;
+}
+
+.restricted {
+   background-color: #ffcc00;
+}
+
+.public, .Site {
+   background-color: #006600;
+}
+
+.Root, .privileged {
+   background-color: #ffcc00;
+}
+
+.flagLight {
+   font-family:<% value "small font" %>;
+   font-size:7pt;
+   padding:2px;
+   color:#333333;
+}
+
+.sysmgrListitem {
+   margin-top:15px;
+   border-top:1px solid #dddddd;
+}
+
+div.skin {
+   /*margin: 1px;
+   border: 1px solid gray;*/
+}
+
+div.skin div.title {
+   display: none;
+   padding: 2px;
+   color: gray;
+   font: normal 8px verdana, sans-serif;
+}

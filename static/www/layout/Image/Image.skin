@@ -1,0 +1,22 @@
+<% #main %>
+<div class="storyTitle">
+   <% image.name %>
+</div>
+<div class="storyDate">
+   <% image.creator as="link" %>
+   <% image.created format="short" prefix=" on " %>
+</div>
+<div>
+   <% image.render | link <% image.url %> %>
+</div>
+<p class="small">
+   <% image.link edit prefix="... " %>
+   <% image.link delete prefix=" ... " %>
+</p>
+<p class="small">
+   <% gettext 'To insert this image into a story or comment of this site  
+copy and paste the following code:' %> <code><% image.macro %></code>
+</p>
+
+<% #preview %>
+<p><% image.render | image.link %></p>
