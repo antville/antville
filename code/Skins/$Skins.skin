@@ -103,7 +103,7 @@ body {
 <script type="text/javascript">
 $(function() {
    $("ul ul").hide();
-   $("ul li a[@href=#]").toggle(function() {
+   $("ul li a[href=#]").toggle(function() {
       $(this).css("color", "<% value 'base font color' %>");
       $(this).next("ul").show();
       return false;

@@ -31,7 +31,8 @@
  * @param {String} group
  * @param {String} name
  * @returns {Skin}
- */Skin.getByName = function(group, name) {
+ */
+Skin.getByName = function(group, name) {
    var skinSet = (res.handlers.layout || path.layout).skins.get(group);
    if (skinSet) {
       var skin = skinSet.get(name);
@@ -311,7 +312,7 @@ Skin.prototype.setSource = function(source) {
    }
    source = res.pop();
 
-   var file = this.getStaticFile(res.skinpath[0], skin);   
+   var file = this.getStaticFile();   
    if (!file.exists()) {
       file.getParentFile().mkdirs();
       file.createNewFile();
@@ -330,11 +331,10 @@ Skin.prototype.setSource = function(source) {
 
 /**
  * 
- * @param {String} fpath
  * @returns {java.io.File}
  */
-Skin.prototype.getStaticFile = function(fpath) {
-   return new java.io.File(fpath, this.prototype + "/" + 
+Skin.prototype.getStaticFile = function() {
+   return new java.io.File(res.skinpath[0], this.prototype + "/" + 
          this.prototype + ".skin");
 }
 

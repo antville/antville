@@ -195,7 +195,7 @@ Layout.prototype.update = function(data) {
    res.write("\n");
    skin.setSource(res.pop());
    this.description = data.description;
-   this.mode= data.mode;
+   this.mode = data.mode;
    this.touch();
    return;
 }
@@ -267,6 +267,7 @@ Layout.prototype.import_action = function() {
          data.images.forEach(function() {
             self.images.add(new Image(this));
          });
+         this.touch();
       } catch (ex) {
          res.message = ex;
          app.log(ex);
@@ -343,6 +344,7 @@ Layout.prototype.reset = function() {
          file.close();
       }
    }
+   this.touch();
    return;
 }
 

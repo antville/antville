@@ -363,12 +363,11 @@ Site.prototype.update = function(data) {
 }
 
 Site.prototype.main_css_action = function() {
-   res.dependsOn(this.modified);
-   res.dependsOn(Skin("Site", "values").getSource());
-   res.dependsOn(Skin("Site", "stylesheet").getSource());
-   res.dependsOn(Skin("$Root", "stylesheet").getSource());
-   res.digest();
    res.contentType = "text/css";
+   res.dependsOn("1.2");
+   res.dependsOn(this.layout.modified);
+   res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
+   res.digest();
    root.renderSkin("$Root#stylesheet");
    this.renderSkin("Site#stylesheet");
    return;
@@ -376,17 +375,18 @@ Site.prototype.main_css_action = function() {
 
 Site.prototype.main_js_action = function() {
    res.contentType = "text/javascript";
-   for each (script in ["jquery-1.2.3.min.js", "antville-1.2.js"]) {
-      this.renderSkin("$Site#include", {href: root.getStaticUrl(script)});
-   }
+   res.dependsOn("1.2");
+   res.digest();
+   this.renderSkin("$Site#include", 
+         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"});
+   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.2.js")});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;
 }
 
 Site.prototype.user_js_action = function() {
    res.contentType = "text/javascript";
-   res.dependsOn(this.modified);
-   res.dependsOn(Skin("Site", "javascript").getSource());
+   res.dependsOn((new Skin("Site", "javascript")).getStaticFile().lastModified());
    res.digest();
    this.renderSkin("Site#javascript");
    return;  
