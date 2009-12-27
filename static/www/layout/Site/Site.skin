@@ -134,6 +134,12 @@ function openPopup(img, width, height) {
    }
 }
 
+$(function() {
+   var img = $('<img src="<% image /big.gif url %>" border="0" />');
+   img.css({position: "relative", left: "-52px"});
+   $("td.header a").html(img);
+});
+
 <% #values %>
 <% value "background color" #ffffff %>
 <% value "link color" #ff4040 %>
@@ -438,10 +444,6 @@ ul.skinmgrTree li div {
    font-family:<% value "base font size" %>;
    font-size:<% value "small font size" %>;
    color:<% value "base font color" %>;
-}
-
-.nowrap {
-   white-space: nowrap;
 }
 
 .membergroup {
