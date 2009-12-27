@@ -193,7 +193,7 @@ Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
    
    if (!data.title && !data.text) {
-      throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
+      throw Error(gettext("Please enter at least something into the “title” or “text” field."));
    }
    if (data.created) {
       try {

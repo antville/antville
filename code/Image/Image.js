@@ -511,7 +511,7 @@ Image.prototype.removeFiles = function() {
       }
    } catch (ex) {
       app.log(ex);
-      throw Error(gettext("Could not remove the image's files from disk."));
+      throw Error(gettext("Could not remove the image file from disk."));
    }
    return;
 }

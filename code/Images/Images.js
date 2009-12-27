@@ -95,7 +95,7 @@ Images.prototype.create_action = function() {
          image.update(req.postParams);
          this.add(image);
          image.notify(req.action);
-         res.message = gettext('The uploaded image was saved successfully.');
+         res.message = gettext('The image was successfully added.');
          res.redirect(image.href());
       } catch (ex) {
          res.message = ex.toString();

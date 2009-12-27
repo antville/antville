@@ -146,7 +146,7 @@ Comment.prototype.edit_action = function() {
  */
 Comment.prototype.update = function(data) {
    if (!data.title && !data.text) {
-      throw Error(gettext("Please enter at least something into the 'title' or 'text' field."));
+      throw Error(gettext("Please enter at least something into the “title” or “text” field."));
    }
    // Get difference to current content before applying changes
    var delta = this.getDelta(data);

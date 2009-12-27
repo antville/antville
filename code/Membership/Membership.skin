@@ -9,4 +9,4 @@ suffix="<br />" %>
 <% site.members.link logout prefix="... " %>
 
 <% #login %>
-<% gettext "You're not logged in" %> <% site.members.link login prefix="... " %>
+<% gettext "You are not logged in" %> <% site.members.link login prefix="... " %>

@@ -103,7 +103,7 @@
 <% #notify_contact %>
 <% request.text %>
 
-<% gettext 'This message was sent to you by the user {0} of the site "{1}" [1]' 
+<% gettext 'This message was sent to you by the user {0} of the site {1} [1]' 
 <% sender.name %> <% site.title %> %>
 
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
@@ -133,7 +133,7 @@ the following link: {0}' <% members.href edit %> %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext 'The user {0} has added your account to the list of members of \
-the site "{1}" [1].' <% sender.name %> <% site.title %> %>
+the site {1} [1].' <% sender.name %> <% site.title %> %>
 
 <% gettext "Have fun!" %>
 <% gettext "The Management" %>
@@ -145,7 +145,7 @@ the site "{1}" [1].' <% sender.name %> <% site.title %> %>
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The user {0} has modified your membership of the site "{1}" [1]. 
+<% gettext 'The user {0} has modified your membership of the site {1} [1]. 
 You are now {2} of the site.' <% sender.name %> <% site.title %> 
 <% gettext <% membership.role %> %> %>
 
@@ -159,7 +159,7 @@ You are now {2} of the site.' <% sender.name %> <% site.title %>
 <% #notify_add %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The user {0} has added you as {1} to the site "{2}" [1].' 
+<% gettext 'The user {0} has added you as {1} to the site {2} [1].' 
 <% sender.name %> <% gettext <% membership.role %> %> <% site.title %>  %>
 
 <% gettext "Best regards." %>
@@ -173,7 +173,7 @@ You are now {2} of the site.' <% sender.name %> <% site.title %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext 'We are sorry to inform you that the user {0} has cancelled your 
-membership of the site "{1}" [1].' <% sender.name %> <% site.title %> %>
+membership of the site {1} [1].' <% sender.name %> <% site.title %> %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>

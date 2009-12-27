@@ -63,7 +63,7 @@ Files.prototype.create_action = function() {
          file.update(req.postParams);
          this.add(file);
          file.notify(req.action);
-         res.message = gettext('The file was added successfully. Its name is "{0}"', file.name);
+         res.message = gettext('The file was successfully added.');
          res.redirect(this.href());
       } catch (ex) {
          res.message = ex;

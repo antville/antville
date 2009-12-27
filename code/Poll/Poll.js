@@ -204,7 +204,7 @@ Poll.prototype.update = function(data) {
 }
 
 Poll.prototype.result_action = function() {
-   res.data.title = gettext('Poll Results: "{0}"', this.question);
+   res.data.title = gettext('Poll Results: {0}', this.question);
    res.data.body = this.renderSkinAsString("$Poll#results", {header: true});
    this.site.renderSkin("Site#page");
    return;

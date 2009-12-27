@@ -123,7 +123,7 @@ User.prototype.update = function(data) {
          if (!data.newPassword || !data.newPasswordConfirm) {
             throw Error(gettext("Please specify a new password."));
          } else if (data.newPassword !== data.newPasswordConfirm) {
-            throw Error(gettext("Unfortunately, your passwords didn't match. Please repeat your input."));
+            throw Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
          }
          data.hash = (data.newPassword + session.data.token).md5();
       }
@@ -249,7 +249,7 @@ User.register = function(data) {
       if (!data.password || !data.passwordConfirm) {
          throw new Error(gettext("Could not verify your password. Please repeat your input."))
       } else if (data.password !== data.passwordConfirm) {
-         throw new Error(gettext("Unfortunately, your passwords didn't match. Please repeat your input."));
+         throw new Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
       }
       data.hash = (data.password + session.data.token).md5();
    }
@@ -290,7 +290,7 @@ User.autoLogin = function() {
    }
    session.login(user);
    user.touch();
-   res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+   res.message = gettext('Welcome to {0}, {1}. Have fun!',
          res.handlers.site.title, user.name);
    return;
 }

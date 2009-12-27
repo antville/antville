@@ -927,7 +927,7 @@ function age_filter(value, param) {
  * @see renderLink
  */
 function link_filter(text, param, url) {
-   if (text) { 
+   if (text) {
       url || (url = text);
       res.push();
       renderLink(param, url, text);
