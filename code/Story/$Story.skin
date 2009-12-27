@@ -106,40 +106,33 @@ for (var i in referrers) {
 
 <% #restore %>
 <script type="text/javascript">
-<!--
 $(function() {
+   var url = "<% site.href backup.js %>";
+   var input = $(".backup :input");
+
    if (!"<% session.backup %>") {
       $("#restore").hide();
    } else {
       $("#restore").click(function() {
-         $("#title").val(decodeURIComponent("<% session.backup.title %>"));
-         $("#text").val(decodeURIComponent("<% session.backup.text %>"));
          $(this).hide();
-         return;
+         var data = $.get(url, null, function(data) {
+            $.each(data, function(key, item) {
+               $("#" + key).val(item);
+            });
+         }, "json");
       });
    }
    
-   var currentTitle, currentText;
-   $(".backup > :input").blur(function() {
+   input.blur(function() {
       $("#restore").hide();
-      var title = $.trim($("#title").val());
-      var text = $.trim($("#text").val());
-      if ((title || text) && (currentTitle || currentText) && 
-            (currentTitle !== title || currentText !== text)) {
-         $.ajax({
-            async: true,
-            type: "POST",
-            url: '<% site.href backup.js %>',
-            data: {title: encodeURIComponent(title),
-                  text: encodeURIComponent(text)},
-            dataType: "json"
-         });
-      }
-      currentTitle = title;
-      currentText = text
+      var data = {};
+      input.each(function() {
+         var ref = $(this);
+         data[ref.attr("id")] = $.trim(ref.val());
+      });
+      $.post(url, data);
       return;;
    });
    return;
 });
-//-->
 </script>

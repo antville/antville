@@ -394,10 +394,14 @@ Site.prototype.user_js_action = function() {
 
 Site.prototype.backup_js_action = function() {
    if (req.isPost()) {
-      session.data.backup = {};
+      var data = session.data.backup = {};
       for (var key in req.postParams) {
-         session.data.backup[key] = req.postParams[key];
+         data[key] = req.postParams[key];
       }
+   } else {
+      res.contentType = "text/javascript";
+      res.write(session.data.backup.toSource());
+      session.data.backup = null;
    }
    return;
 }

@@ -25,7 +25,7 @@
 </p>
 <p>
    <div class="small"><% gettext "Tags" suffix=: %></div>
-   <div><% story.input tags class=formText %></div>
+   <div class="backup"><% story.input tags class=formText %></div>
 </p>
 <p><fieldset>
    <legend class="small"><% gettext Settings %></legend>

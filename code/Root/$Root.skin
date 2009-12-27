@@ -138,6 +138,10 @@ alphabetical order." %></p>
    white-space: nowrap;
 }
 
+.activation {
+   display: none;
+}
+
 <% #FIXME %>
 <div class="boxline"> </div>
 <div class="box">

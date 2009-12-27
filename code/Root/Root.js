@@ -86,19 +86,6 @@ this.handleMetadata("phaseOutGracePeriod");
 
 /**
  * 
- * @param {Story} ref
- */
-Root.restore = function(ref) {
-   var backup;
-   if (backup = session.data.backup) {
-      ref.title = decodeURIComponent(backup.title);
-      ref.text = decodeURIComponent(backup.text);
-   }
-   return ref; 
-}
-
-/**
- * 
  */
 Root.commitRequests = function() {
    var requests = app.data.requests;
