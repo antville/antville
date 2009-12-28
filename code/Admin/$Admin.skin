@@ -50,7 +50,7 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 </form>
 
 <% #Site %>
-<a name="<% item.id %>" id="<% item.id %>"></name>
+<a name="<% item.id %>" id="<% item.id %>"></a>
 <table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="2">
