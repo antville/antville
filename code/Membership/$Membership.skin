@@ -46,8 +46,10 @@
 <td width="10"> </td>
 <td align="right" class="small">
    <% membership.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link contact prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link delete <% gettext Remove %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link contact <% gettext Contact %> 
+         prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link delete <% gettext Remove %> 
+         prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>
@@ -95,6 +97,17 @@
    <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
+
+<% #content %>
+<p class="storyTitle"><% response.title %></p>
+<% response.pager %>
+<% response.list %>
+<% response.pager %>
+
+<% #delete %>
+<input type="checkbox" id="mode" name="mode" value="exhaustive" />
+<label for="mode"><% gettext "Erase contributions to the site " %></label>
+<br /><br />
 
 <% 
 ////////////////////// Notification skins 

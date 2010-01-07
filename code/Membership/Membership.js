@@ -65,6 +65,12 @@ Membership.remove = function(membership, force) {
       if (!force && !membership.getPermission("delete") && !User.require(User.PRIVILEGED)) {
          throw Error(gettext("Sorry, an owner of a site cannot be removed."));
       }
+      if (req.postParams.mode === "exhaustive") {
+         HopObject.remove(membership.content);
+         HopObject.remove(membership.images);
+         HopObject.remove(membership.files);
+         HopObject.remove(membership.polls);
+      }
       var recipient = membership.creator.email;
       membership.remove();
       if (req.action === "delete") {
@@ -201,6 +207,16 @@ Membership.prototype.contact_action = function() {
    return;
 }
 
+Membership.prototype.content_action = function() {
+   res.data.list = renderList(this.content, "$Story#listItem", 
+         10, req.queryParams.page);
+   res.data.pager = renderPager(this.content, 
+         this.href(), 10, req.queryParams.page);
+   res.data.title = gettext("Content of User: {0}", this.name);
+   res.data.body = this.renderSkinAsString("$Membership#content");
+   this.site.renderSkin("Site#page");
+}
+
 /**
  * 
  * @param {String} name
@@ -289,5 +305,6 @@ Membership.prototype.valueOf = Membership.prototype.toString;
  * @returns {String}
  */
 Membership.prototype.toString = function() {
-   return "the membership of user " + this.name + " in site " + this.site.name;
+   return gettext("the membership of user {0} in site {1}", 
+         this.name, this.site.name);
 }
