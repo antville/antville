@@ -33,6 +33,11 @@ var Sql = function() {
    var db = getDBConnection("antville");
    var query;
 
+   var log = new function() {
+      var fname = getProperty("sqlLog", "helma." + app.getName() + ".sql");
+      return Packages.org.apache.commons.logging.LogFactory.getLog(fname);
+   }
+
    var SqlData = function(result) {
       var columns = [];
       this.values = {};
@@ -41,7 +46,7 @@ var Sql = function() {
          columns.push(result.getColumnName(i));
       }
    
-      this.update = function() {
+      this.next = function() {
          for each (var key in columns) {
             this.values[key] = result.getColumnItem(key);
          }
@@ -100,6 +105,7 @@ var Sql = function() {
     */
    this.execute = function(sql) {
       sql = resolve(arguments);
+      log.info(sql);
       var error;
       var result = db.executeCommand(sql);
       if (error = db.getLastError()) {
@@ -112,7 +118,7 @@ var Sql = function() {
     * @returns {String}
     */
    this.retrieve = function() {
-      return query = resolve(arguments);
+      return log.info(query = resolve(arguments));
    }
    
    /**
@@ -124,7 +130,7 @@ var Sql = function() {
       if (rows && rows.next()) {
          do {
             var sql = new SqlData(rows);
-            sql.update();
+            sql.next();
             callback.call(sql.values, rows);
          } while (record = rows.next());
          rows.release();
