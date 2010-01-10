@@ -43,7 +43,7 @@ fi
 export BUILD_HOME
 
 if [ -z "$HELMA_HOME" ] ; then
-    HELMA_HOME=$BUILD_HOME/../../../
+    HELMA_HOME=$BUILD_HOME/../../..
 fi
 
 while [ $# -ne 0  ]
@@ -52,6 +52,9 @@ do
     shift
 done
 
-${ANT_HOME}/bin/ant -Dhelma.dir="${HELMA_HOME}" -Dbuild.dir="${BUILD_HOME}" -Dbase.dir="${PWD}" -lib "${BUILD_HOME}/lib:${HELMA_HOME}/lib" -propertyfile "${BUILD_HOME}/build.properties" -file "${BUILD_HOME}/build.xml" ${ANT_CMD_LINE_ARGS}
+${ANT_HOME}/bin/ant -Dhelma.dir="${HELMA_HOME}" -Dbuild.dir="${BUILD_HOME}" \
+      -Dbase.dir="${PWD}" -lib "${BUILD_HOME}/lib:${HELMA_HOME}/lib" \
+      -propertyfile "${BUILD_HOME}/build.properties" \
+      -file "${BUILD_HOME}/build.xml" ${ANT_CMD_LINE_ARGS}
 
 exit

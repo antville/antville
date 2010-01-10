@@ -41,7 +41,7 @@
 		<property name="docs.infiles" location="${home.dir}/code" />
 		<property name="docs.outfiles" location="${home.dir}/docs" />
 
-		<property name="i18n.scan" location="code" />
+		<property name="i18n.scan" value="code compat" />
 		<property name="i18n.destination" location="${home.dir}/i18n" />
 		<property name="i18n.poDirectory" location="${i18n.destination}" />
 		<property name="i18n.template" location="${i18n.destination}/antville.pot" />
@@ -143,10 +143,11 @@
 	</target>
 
 	<target name="pot" depends="init">
-		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
+		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" 
+				classname="helma.main.launcher.Commandline" fork="true">
 			<arg value="antville.xgettext" />
 			<arg value="${extra.dir}/MessageParser.js" />
-			<arg line="${i18n.scan}" />
+			<arg value="${i18n.scan}" />
 			<arg value="${i18n.template}" />
 		</java>
 	</target>

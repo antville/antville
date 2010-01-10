@@ -334,6 +334,7 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
    }
 
    var processMacros = function(macros) {
+      var re = /(\s*)(?:\r|\n)\s*/g;
       var id, pluralId, name, param, key, msg;
       for each (var macro in macros) {
          id = pluralId = null;
@@ -348,7 +349,8 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
                id = param.get("message");
                pluralId = param.get("plural");
             }
-         } else if (param = macro.getPositionalParams()) {
+         } 
+         if (param = macro.getPositionalParams()) {
             checkNestedMacros(param.iterator());
             if (name === "gettext") {
                id = param.get(0);
@@ -362,6 +364,8 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
                continue;
             }
             // create new Message instance or update the existing one
+            id = id.replace(re, " ");
+            pluralId && (pluralId = pluralId.replace(re, " "));
             key = Message.getKey(id);
             if (!(msg = self.messages[key])) {
                self.messages[key] = msg = new Message(id, pluralId, file.getCanonicalPath());
@@ -438,7 +442,7 @@ MessageParser.prototype.writeToFile = function(file) {
  * Main script body
  */
 var toParse = [];
-var arg, outFile, file, fileEncoding, skinParser;
+var arg, outFile, file, fileEncoding;
 
 for (var i=0;i<arguments.length;i++) {
    arg = arguments[i];
@@ -446,8 +450,6 @@ for (var i=0;i<arguments.length;i++) {
       outFile = new java.io.File(arguments[i += 1]);
    } else if (arg.indexOf("-e") === 0 && i < arguments.length -1) {
       fileEncoding = arguments[i += 1];
-   } else if (arg.indexOf("-p") === 0 && i < arguments.length -1) {
-      skinParser = arguments[i += 1];
    } else {
       // add argument to list of files and directories to parse
       toParse.push(new java.io.File(arg));
