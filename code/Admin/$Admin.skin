@@ -45,7 +45,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 </form>
 
 <% #LogEntry %>
-<table border="0" class="listitemSeparator" cellspacing="0" cellpadding="0" width="100%">
+<table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td>
    <span class="label <% item.context_type %>"><% item.context_type %></span>
