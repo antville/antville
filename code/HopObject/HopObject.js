@@ -39,6 +39,8 @@ HopObject.remove = function(options) {
       item = this.get(0);
       if (item.constructor.remove) {
          item.constructor.remove.call(item, options);
+      } else if (!options) {
+         item.remove();
       } else {
          throw Error("Missing static " + item.constructor.name + 
                ".remove() method");

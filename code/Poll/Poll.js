@@ -39,9 +39,7 @@ Poll.getStatus = defineConstants(Poll, "closed", "open");
  */
 Poll.remove = function() {
    if (this.constructor === Poll) {
-      while (this.size() > 0) {
-         Choice.remove.call(this.get(0));
-      }
+      HopObject.remove.call(this);
       this.remove();
    }
    return;

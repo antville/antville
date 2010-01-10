@@ -31,9 +31,7 @@
  */
 Choice.remove = function() {
    if (this.constructor === Choice) {
-      while (this.size() > 0) {
-         this.get(0).remove();
-      }
+      HopObject.remove.call(this);
       this.remove();
    }
    return;
