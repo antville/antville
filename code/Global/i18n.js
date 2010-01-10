@@ -42,8 +42,10 @@ markgettext("Contributors");
 markgettext("Delete");
 markgettext("Deleted");
 markgettext("Descending");
+markgettext("Disabled");
 
 markgettext("Edit");
+markgettext("Enabled");
 markgettext("Export");
 
 markgettext("Featured");

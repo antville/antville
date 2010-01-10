@@ -39,88 +39,90 @@ alphabetical order." %></p>
 <% #health %>
 <p class="storyTitle"><% response.title %></p>
 <% site.skin Root#status %>
-<p><strong>System status:</strong></p>
+<br />
+<p><strong><% gettext Details %></strong></p>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <colgroup>
    <col width="60%" />
    <col width="*" />
 </colgroup>
 <tr>
-   <td>Uptime</td>
-   <td><% param.uptime suffix=" d" %></td>
+   <td><% gettext Uptime %></td>
+   <td><% ngettext '{0} Day' '{0} Days' <% param.uptime %> %></td>
 </tr>
 <tr>
-   <td>Active threads</td>
+   <td><% gettext 'Active Threads' %></td>
    <td><% param.activeThreads %></td>
 </tr>
 <tr>
-   <td>Free threads</td>
+   <td><% gettext 'Free Threads' %></td>
    <td><% param.freeThreads %></td>
 </tr>
 <tr>
-   <td>Number of requests (last 5 min)</td>
+   <td><% gettext 'Number of Requests (last 5 min)' %></td>
    <td><% param.requestsPerUnit default=n.a. %></td>
 </tr>
 <tr>
-   <td>Total requests</td>
+   <td><% gettext 'Total Requests' %></td>
    <td><% param.requestCount %></td>
 </tr>
 <tr>
-   <td>Number of errors (last 5 min)</td>
+   <td><% gettext 'Number of Errors (last 5 min) %></td>
    <td><% param.errorsPerUnit default=n.a. %></td>
 </tr>
 <tr>
-   <td>Total errors</td>
+   <td><% gettext 'Total Errors' %></td>
    <td><% param.errorCount %></td>
 </tr>
 <tr>
-   <td>Total XML-RPC requests</td>
+   <td><% gettext 'Total Xml-Rpc Requests' %></td>
    <td><% param.xmlrpcCount %></td>
 </tr>
 <tr>
-   <td>Cached objects</td>
-   <td><% param.cacheusage %> of <% param.cacheSize %></td>
+   <td><% gettext 'Cached Objects' %></td>
+   <td><% gettext '{0} of {1}' <% param.cacheusage %> <% param.cacheSize %> %></td>
 </tr>
 <tr>
-   <td>Number of sessions</td>
+   <td><% gettext 'Number of Sessions' %></td>
    <td><% param.sessions %></td>
 </tr>
 <tr>
-   <td>Free memory</td>
+   <td><% gettext 'Free Memory' %></td>
    <td><% param.freeMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td>Used memory</td>
+   <td><% gettext 'Used Memory' %></td>
    <td><% param.usedMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td>Total memory</td>
+   <td><% gettext 'Total Memory' %></td>
    <td><% param.totalMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td>Queued log entries</td>
+   <td><% gettext 'Queued Log Entries' %></td>
    <td><% param.entries %></td>
 </tr>
 <tr>
-   <td>Queued requests</td>
+   <td><% gettext 'Queued Requests' %></td>
    <td><% param.requests %></td>
 </tr>
 <tr>
-   <td>Queued mails</td>
+   <td><% gettext 'Queued Mails' %></td>
    <td><% param.mails %></td>
 </tr>
 <tr>
-   <td>Queued callbacks</td>
+   <td><% gettext 'Queued Callbacks' %></td>
    <td><% param.callbacks %></td>
 </tr>
 </table>
 
 <% #import %>
-<div class="title">Import site data</div>
+<div class="title"><% gettext 'Import Site Data' %></div>
 <form method="post">
 <% param.list %>
-<div>Site name: <input type="text" name="name" value="<% request.name %>" /></div>
-<button type="submit" name="submit" value="import">Import</button>
+<div><% gettext 'Site Name' %>: 
+<input type="text" name="name" value="<% request.name %>" /></div>
+<button type="submit" name="submit" value="import"><% gettext Import %></button>
 </form>
 
 <% #importItem %>

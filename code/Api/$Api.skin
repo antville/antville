@@ -3,15 +3,15 @@
    <% gettext "Antville supports some popular application programming 
          interfaces:" %>
    <ul>
-      <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger API 1.0</a></li>
-      <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a></li>
-      <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType API</a></li>
+      <li><a href="http://www.blogger.com/developers/api/1_docs/">Blogger Api 1.0</a></li>
+      <li><a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog Api</a></li>
+      <li><a href="http://www.sixapart.com/developers/xmlrpc/movable_type_api">MovableType Api</a></li>
    </ul>
    <div><% gettext "The URL endpoint for each of these APIs is located at" %></div>
    <div><% api.href | link %></div>
 </p>
 
-<p><br /><strong>Callbacks</strong></p>
+<p><br /><strong><% gettext 'Callback Url' %></strong></p>
 <p><% gettext "Each Antville site provides an option in the preferences to 
 define a callback URL that will be invoked each time the site content has changed. 
 This way users can define custom handlers for different site events with their 

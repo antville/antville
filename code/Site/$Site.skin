@@ -228,7 +228,7 @@ information." %>
 </td>
 </tr>
 <tr>
-<td class="small" valign="top"><% gettext "Web Hook" suffix=: %></td>
+<td class="small" valign="top"><% gettext "Callback Url" suffix=: %></td>
 <td><% site.input callbackUrl %><br />
 <% site.checkbox callbackMode %> 
 <label for="callbackMode"><% gettext enabled %><label></td>
