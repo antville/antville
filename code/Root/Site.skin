@@ -10,12 +10,13 @@
 <div><% site.galleries.link prefix="... " %></div>
 </div>
 <p class="navigation">
-<div><% site.link health prefix="... " %></div>
-<div><% site.api.link . Interfaces prefix="... " %></div>
-<div><% link http://code.google.com/p/antville Development prefix="... " %></div>
+<div><% site.link health <% gettext Health %> prefix="... " %></div>
+<div><% site.api.link . <% gettext Interfaces %> prefix="... " %></div>
+<div><% link http://code.google.com/p/antville <% gettext Development %> 
+      prefix="... " %></div>
 </p>
 <p class="navigation">
-<div><% site.stories.link create <% gettext "Add story" %> prefix="... " %></div>
+<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
 <div><% site.stories.link prefix="... " %></div>
 <div><% site.images.link prefix="... " %></div>
 <div><% site.files.link prefix="... " %></div>

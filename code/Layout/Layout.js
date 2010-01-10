@@ -48,15 +48,14 @@ Layout.VALUES = [
  * @param {Layout} layout
  * @param {Boolean} includeSelf
  */
-Layout.remove = function(layout, includeSelf) {
-   layout || (layout = this);
-   if (layout.constructor === Layout) {
-      Skins.remove.call(layout.skins);
-      Images.remove.call(layout.images);
-      layout.getFile().removeDirectory();
+Layout.remove = function(options) {
+   if (this.constructor === Layout) {
+      HopObject.remove.call(this.skins);
+      HopObject.remove.call(this.images);
+      this.getFile().removeDirectory();
+      // The “force” flag is set e.g. when a whole site is removed
+      options && options.force && this.remove();
    }
-   // The “includeSelf” flag is set e.g. when a whole site is removed
-   includeSelf && layout.remove();
    return;
 }
 

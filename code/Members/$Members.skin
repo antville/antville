@@ -3,8 +3,7 @@
 <div class="ample">
    <% members.link add <% gettext "Add Member" %> prefix="... " %>
 </div>
-<% gettext Show prefix="... " %>
-<% members.link . All %>
+... <% members.link . <% gettext All %> %>
 <% members.link owners prefix="| " %>
 <% members.link managers prefix="| " %> 
 <% members.link contributors prefix="| " %>
@@ -17,7 +16,7 @@
 <p class="storyTitle"><% response.title %></p>
 <script type="text/javascript">
 $(function() {
-   $("#submit").click(function() {
+   $("form#login").submit(function() {
       var name = $("#name").val();
       $.ajax({
          async: false,
@@ -41,39 +40,38 @@ $(function() {
 <input type="hidden" name="digest" id="digest" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
+<td class="small"><% gettext "Activation Code" suffix=":" %></td>
+<td><input type="text" name="activation" id="activation" 
+      value="<% request.activation encoding="form" %>" /></td>
+<td colspan="2"></td>
+</tr>
+<tr>
 <td class="small"><% gettext "Username" suffix=":" %></td>
-<td>
-<input type="text" name="name" id="name" size="15" tabindex="1" 
-value="<% request.name encoding="form" %>" />
-</td>
+<td><input type="text" name="name" id="name" tabindex="1" 
+      value="<% request.name encoding="form" %>" /></td>
 <td rowspan="4"> </td>
-<td class="small">
-<% members.link register <% gettext "Not registered yet?" %> %>
-</td>
+<td class="small"><% members.link register <% gettext 
+      "Not registered yet\?" %> %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Password suffix=: %></td>
-<td>
-<input type="password" name="password" id="password" size="15" tabindex="2" />
-</td>
-<td class="small">
-<% members.link reset <% gettext "Password forgotten?" %> %>
-</td>
+<td><input type="password" name="password" id="password" tabindex="2" /></td>
+<td class="small"><% members.link reset <% gettext 
+      "Password forgotten\?" %> %></td>
 </tr>
 <tr>
 <td> </td>
-<td colspan="2" class="small">
-<input type="checkbox" id="remember" name="remember" tabindex="3" 
-<% if <% request.remember %> is "on" then 'checked="checked"' %> />
-<label for="remember"><% gettext "Remember Login" %></label>
-</td>
+<td colspan="2" class="small"><input type="checkbox" id="remember" 
+      name="remember" tabindex="3" <% if <% request.remember %> is "on" then 
+      'checked="checked"' %> />
+   <label for="remember"><% gettext "Remember Login" %></label></td>
 </tr>
 <tr>
 <td> </td>
 <td colspan="2"><br />
-<button type="submit" id="submit" name="login" value="1" 
-tabindex="4"><% gettext Login %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
+   <button type="submit" id="submit" name="login" value="1" 
+         tabindex="4"><% gettext Login %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -83,7 +81,7 @@ tabindex="4"><% gettext Login %></button>
 <p class="storyTitle"><% response.title %></p>
 <script type="text/javascript">
 $(function() {
-   $("#submit").click(function() {
+   $("form#register").submit(function() {
       var token = "<% session.token %>";
       var password = $("#password").val();
       var passwordConfirm = $("#passwordConfirm").val();
@@ -92,8 +90,8 @@ $(function() {
       if (!password || !passwordConfirm) {
          return true;
       } else if (password !== passwordConfirm) {
-         $("#password1").val(0);
-         $("#password2").val(1);
+         $("#password").val(0);
+         $("#passwordConfirm").val(1);
          return true;
       }
       var hash = $.md5(password + token);
@@ -102,40 +100,38 @@ $(function() {
    });
 });
 </script>
-<form method="post" action="<% response.action %>">
+<form id="register" method="post" action="<% response.action %>">
 <input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small"><% gettext Username suffix=: %></td>
-<td>
-<input type="text" name="name" value="<% request.name encoding="form" %>" />
-</td>
+<td class="small"><% gettext "Activation Code" suffix=":" %></td>
+<td><input type="text" name="activation" id="activation" 
+      value="<% request.activation encoding="form" %>" /></td>
 </tr>
 <tr>
-<td class="small" valign="top"><% gettext e-mail suffix=: %></td>
-<td>
-<input type="text" name="email" value="<% request.email encoding="form" %>" />
-</td>
+<td class="small"><% gettext Username suffix=: %></td>
+<td><input type="text" name="name" 
+      value="<% request.name encoding="form" %>" /></td>
+</tr>
+<tr>
+<td class="small"><% gettext e-mail suffix=: %></td>
+<td><input type="text" name="email" 
+      value="<% request.email encoding="form" %>" /></td>
 </tr>
 <tr>
 <td class="small"><% gettext Password suffix=: %></td>
-<td>
-<input type="password" name="password" id="password" />
-</td>
+<td><input type="password" name="password" id="password" /></td>
 </tr>
 <tr>
-<td class="small"><% gettext "Confirm password" suffix=: %></td>
-<td>
-<input type="password" name="passwordConfirm" id="passwordConfirm" />
-</td>
+<td class="small"><% gettext "Confirm Password" suffix=: %></td>
+<td><input type="password" name="passwordConfirm" id="passwordConfirm" /></td>
 </tr>
 <tr>
 <td></td>
 <td><br />
 <button type="submit" id="submit" name="register" 
 value="register"><% gettext Register %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
-</td>
+<a href="" class="cancel"><% gettext Cancel %></a></td>
 </tr>
 </table>
 </form>
@@ -176,8 +172,9 @@ tabindex="4"><% gettext Save %></button>
 
 <% #add %>
 <p class="storyTitle"><% response.title %></p>
-<div>Enter a search term to display a list of matching users.</div>
-<div class="small">You can use the asterisk * as wildcard.</div><br />
+<div><% gettext 'Enter a search term to display a list of matching users.' %></div>
+<div class="small"><% gettext 'You can use the asterisk * as wildcard.' %></div>
+<br />
 <form method="post" action="<% response.action %>">
 <input type="text" name="term" id="term" 
 value="<% request.term encoding="form" %>" />

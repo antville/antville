@@ -39,7 +39,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
    <input type="text" size="15" name="q" class="searchbox" 
    value="<% request.q encoding="form" %>" />
    <button type="submit" name="search" value="1" 
-   class="searchbox">Search</button>
+   class="searchbox"><% gettext Find %></button>
 </form>
 
 <% #robots %>
@@ -82,17 +82,16 @@ Disallow: /stories/top
    <% response.body %>
 </td>
 <td class="right">
-   <div class="box">
-   <% site.age prefix="Online for " suffix=" days<br />" %>
-   <% site.modified short prefix="Last modified: " %>
-   </div>
+   <div class="box"><% gettext "Online for" %>
+   <% ngettext "{0} day" "{0} days" <% site.age %> %><br />
+   <% site.modified short prefix=<% gettext "Last modified:" suffix=' <div class="nowrap">' %> suffix=</div> %></div>
    
    <div class="boxheader"><% gettext Status %></div>
    <div class="box"><% membership.status %></div>
    
    <% root.admin.skin $Admin#navigation %>
    
-   <div class="boxheader"><% gettext Menu %></div>
+   <div class="boxheader"><% gettext "Main Menu" %></div>
    <div class="box">
    <% site.skin Site#navigation %>
    </div>
@@ -341,14 +340,6 @@ a:hover {text-decoration: underline;}
    font-weight: normal;
 }
 
-.listFlag {
-   background-color: #cccccc;
-   padding: 1px;
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "base font color" %>;
-}
-
 .pollResultsBar {
    height: 5px;
    overflow: hidden;
@@ -409,37 +400,6 @@ span.pageNavSelItem {
    font-weight: bold;
 }
 
-ul { list-style: url(<% image /bullet.gif url %>) circle; } 
-
-ul.skinmgrTree {
-   padding-left:15px;
-   margin:20px 0px;
-}
-
-ul.skinmgrTree ul {
-   padding-left:30px;
-   margin:0px;
-}
-ul.skinmgrTree li {
-   list-style:none;
-   margin:7px 0px;
-   padding:0px;
-}
-
-ul.skinmgrTree li.skinset {
-   list-style:square;
-   padding-left:0px;
-}
-ul.skinmgrTree a.selected {
-   font-weight:bold;
-}
-
-ul.skinmgrTree li div {
-   font-family:<% value "base font size" %>;
-   font-size:<% value "small font size" %>;
-   color:<% value "base font color" %>;
-}
-
 .membergroup {
    font-weight:bold;
    font-size:<% value "big font size" %>;
@@ -485,84 +445,4 @@ ul.skinmgrTree li div {
 
 .calendar .selected {
    border: 1px solid <% value "link color" %>;
-}
-
-/* Admin styles */
-
-.pageTitle {
-   font-family:<% value "big font" %>;
-   font-size:<% value "big font size" %>;
-   font-weight:bold;
-   color:<% value "big font color" %>;
-   padding-bottom:10pt;
-}
-
-.label {
-   font-family: <% value "small font" %>;
-   font-size: 7pt;
-   padding: 2px;
-   color: #ffffff;
-   text-transform: uppercase;
-}
-
-.regular {
-   display: none;
-}
-
-.deleted {
-   color: #cc0000;
-   background-color: #ffcc00;
-}
-
-.blocked {
-   background-color: #000000;
-}
-
-.trusted, .User {
-   background-color: #0000cc;
-}
-
-.closed {
-   background-color: #cc0000;
-}
-
-.open {
-   color: black;
-   background-color: yellow;
-}
-
-.restricted {
-   background-color: #ffcc00;
-}
-
-.public, .Site {
-   background-color: #006600;
-}
-
-.Root, .privileged {
-   background-color: #ffcc00;
-}
-
-.flagLight {
-   font-family:<% value "small font" %>;
-   font-size:7pt;
-   padding:2px;
-   color:#333333;
-}
-
-.sysmgrListitem {
-   margin-top:15px;
-   border-top:1px solid #dddddd;
-}
-
-div.skin {
-   /*margin: 1px;
-   border: 1px solid gray;*/
-}
-
-div.skin div.title {
-   display: none;
-   padding: 2px;
-   color: gray;
-   font: normal 8px verdana, sans-serif;
 }

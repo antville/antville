@@ -4,9 +4,9 @@
 <div class="ample">
    <% images.link create <% gettext "Add Image" %> prefix="... " %>
 </div>
-<% gettext Show prefix="... " %>
-<% images.link . <% gettext "Member Images" %> %>
-<% images.link all <% gettext "All Images" %> prefix=" | " %>
+...
+<% images.link all %>
+<% images.link . <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>

@@ -38,13 +38,12 @@ Poll.getStatus = defineConstants(Poll, "closed", "open");
  * 
  */
 Poll.remove = function() {
-   if (this.constructor !== Poll) {
-      return;
+   if (this.constructor === Poll) {
+      while (this.size() > 0) {
+         Choice.remove.call(this.get(0));
+      }
+      this.remove();
    }
-   while (this.size() > 0) {
-      Choice.remove.call(this.get(0));
-   }
-   this.remove();
    return;
 }
 
@@ -238,9 +237,9 @@ Poll.prototype.link_macro = function(param, action, text) {
       break;
       case "rotate":
       if (this.status === Poll.OPEN) {
-         text = gettext("Close");
+         text = gettext("Stop");
       } else {
-         text = this.closed ? gettext("Re-open") : gettext("Open");  
+         text = this.closed ? gettext("Re-run") : gettext("Run");  
       }
       break;
   }

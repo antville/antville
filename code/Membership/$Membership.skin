@@ -12,7 +12,7 @@
 <td nowrap="nowrap"><% membership.name %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap"><% gettext Role suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext Status suffix=: %></td>
 <td nowrap="nowrap"><% membership.select role %></td>
 </tr>
 <tr>
@@ -33,7 +33,7 @@
 <tr>
 <td colspan="3" class="small">
    <div class="ample"><strong><% gettext Status suffix=: %></strong> 
-   <% membership.role %></div>
+   <% gettext <% membership.role %> %></div>
 </td>
 </tr>
 <tr valign="top">
@@ -46,10 +46,8 @@
 <td width="10"> </td>
 <td align="right" class="small">
    <% membership.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link contact <% gettext Contact %> 
-         prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link delete <% gettext Remove %> 
-         prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link contact prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>
@@ -88,12 +86,12 @@
 </p>
 <form method="post" action="<% response.action %>">
 <p>
-<span class="small">Message:</span><br />
+<span class="small"><% gettext Message suffix=: %></span><br />
 <textarea cols="31" rows="10" class="formText" wrap="virtual" 
       name="text"><% request.text encoding="form" %></textarea>
 </p>
 <p>
-   <button type="submit" name="send" value="1">Send</button>
+   <button type="submit" name="send" value="1"><% gettext Send %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
@@ -103,11 +101,6 @@
 <% response.pager %>
 <% response.list %>
 <% response.pager %>
-
-<% #delete %>
-<input type="checkbox" id="mode" name="mode" value="exhaustive" />
-<label for="mode"><% gettext "Erase contributions to the site " %></label>
-<br /><br />
 
 <% 
 ////////////////////// Notification skins 

@@ -1,0 +1,29 @@
+<% #delete %>
+<script type="text/javascript">
+$(function() {
+   $("#confirmation").hide();
+   $("#confirm").click(function() {
+      $("button").attr("disabled", !$(this).attr("checked"));
+   });
+   $("#mode").click(function() {
+      if ($(this).attr("checked")) {
+         $("#confirm").attr("checked", false);
+         $("#confirmation").show();
+         $("button").attr("disabled", true);
+      } else {
+         $("#confirmation").hide();
+         $("button").attr("disabled", false);
+      }
+   });
+});
+</script>
+<div>
+   <input type="checkbox" id="mode" name="mode" value="user" />
+   <label for="mode"><% gettext "Erase all comments of this user" %></label>
+</div>
+<div id="confirmation">
+   <input type="checkbox" id="confirm" name="confirm" value="1" />
+   <label for="confirm"><% gettext "Yes, really erase all the user’s 
+         comments to the site" %></label>
+</div>
+<br />

@@ -4,9 +4,9 @@
 <% response.pager %>
 
 <% #navigation %>
-<div class="boxheader"><% gettext Admin %></div>
+<div class="boxheader"><% gettext Administration %></div>
 <div class="box">
-<% admin.link . Log prefix="... " suffix="<br />" %>
+<% admin.link . <% gettext Log %> prefix="... " suffix="<br />" %>
 <% admin.link sites prefix="... " suffix="<br />" %>
 <% admin.link users prefix="... " suffix="<br />" %>
 <% admin.link setup prefix="... " suffix="<br />" %>
@@ -14,36 +14,77 @@
 
 <% #welcome %>
 <p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator 
-of this Antville installation you also have access to the {0}, the {1},  
-the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
-      <% root.admin.link sites <% gettext "site administration" %> %>
-      <% root.admin.link users <% gettext "user administration" %> %> 
+of this Antville installation you are entitled to administer {0} and {1}, view 
+the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link users %> 
+      <% root.admin.link log <% gettext "admin log" %> %>
       <% root.admin.link setup <% gettext "system setup" %> %>
 %></p>
+
+<% #log %>
+<p class="pageTitle"><% response.title %></p>
+<form method="post" action="<% response.action %>">
+<table cellspacing="0" cellpadding="2">
+<tr>
+<td class="small"><% gettext Type suffix=: %></td>
+<td>
+   <% admin.dropdown name="filter" 
+   values="Any,Root,Site,User" %>
+</td>
+</tr>
+<tr>
+<td class="small"><% gettext Sort suffix=: %></td>
+<td><% admin.dropdown name="dir" values="Descending,Ascending" %></td>
+</tr>
+<tr>
+<td class="small"><% gettext Search suffix=: %></td>
+<td><input id="query" name="query" value="<% request.query %>" />
+      <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
+      <button type="submit" name="search" value="1"><% gettext Update %></button></td> 
+</tr>
+</table>
+</form>
+
+<% #LogEntry %>
+<table border="0" class="listitemSeparator" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td>
+   <span class="label <% item.context_type %>"><% item.context_type %></span>
+</td>
+<td> </td>
+</tr>
+<tr>
+<td width="100%">
+   <% item.context.name prefix="<strong>" suffix="</strong><br />" %>
+   <% item.action %><br />
+   <small><% gettext "{0} on {1}" <% item.creator %> <% item.created short %> %></small>
+</td>
+<td class="small" valign="top" align="right"></td>
+</tr>
+</table>
 
 <% #sites %>
 <p class="pageTitle"><% response.title %></p>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
-<td>... Show</td>
+<td class="small"><% gettext Type suffix=: %></td>
 <td>
    <% admin.dropdown name="filter" 
-   values="all sites,public sites,private sites,blocked sites,trusted sites" %>
+   values="Any,Blocked,Trusted,is_Open,Restricted,Public,Closed,Deleted" %>
 </td>
 </tr>
 <tr>
-<td>... Sort by</td>
+<td class="small"><% gettext Sort suffix=: %></td>
 <td>
-   <% admin.dropdown name="order" values="last update,creation date,name" %>
-   <% admin.dropdown name="dir" values="descending,ascending" %>
+   <% admin.dropdown name="order" values="Last Update,Creation Date,Name" %>
+   <% admin.dropdown name="dir" values="Descending,Ascending" %>
 </td>
 </tr>
 <tr>
-<td>... Search</td>
-<td>
-   <input name="query" value="<% request.query encoding="form" %>" />
-   <button input type="submit" name="search" value="1">Update</button>
+<td class="small"><% gettext Search suffix=: %></td>
+<td><input id="query" name="query" value="<% request.query encoding="form" %>" />
+      <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
+      <button type="submit" name="search" value="1"><% gettext Update %></button></td> 
 </td>
 </tr>
 </table>
@@ -51,28 +92,27 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 
 <% #Site %>
 <a name="<% item.id %>" id="<% item.id %>"></a>
-<table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
+<table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="2">
-   <span class="label <% item.status %>"><% item.status %></span>
-   <span class="label <% item.mode %>"><% item.mode %></span>
+   <span class="label <% item.status %>"><% gettext <% item.status %> %></span><!--
+   --><span class="label <% item.mode %>"><% gettext <% item.mode %> %></span>
 </td>
 </tr>
 <tr>
 <td width="100%" valign="top">
    <div><strong><% item.title | item.link %></strong></div>
-   <div><%// item.tagline suffix="<br />" %>
-   <a href="<% item.href %>"><% item.href %></a>
-   </div>
-   <div class="small">Created by <% item.creator as="link" %> on 
-   <% item.created | format short %><br />
-   Last update: <% item.modified default="no updates so far" | format short %><br />
+   <div><a href="<% item.href %>"><% item.href %></a></div>
+   <div class="small"><% gettext "Created by {0} on {1}" <% item.creator as="link" %> 
+   <% item.created short %> %><br />
+   <% gettext "Last updated on" %> <% item.modified short %><br />
    <!-- Disk usage: FIXME <%// item.diskusage %> -->
    </div>
 </td>
 <td class="small" valign="top" align="right">
-   <% admin.link edit <% item.id %> prefix="...&nbsp;" %><br />
-   <% admin.link delete <% item.id %> prefix="...&nbsp;" %>
+   <% admin.link edit <% item.id %> prefix='... ' %>
+   <% if <% item.mode %> is deleted then "" else 
+         <% admin.link delete <% item.id %> prefix="... " %> %>
 </td>
 </tr>
 </table>
@@ -81,19 +121,22 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 <form method="post" action="<% response.action %>#<% site.id %>">
 <input type="hidden" name="id" value="<% request.id %>" />
 <input type="hidden" name="page" value="<% request.page default="0" %>" />
-
 <table cellspacing="0" cellpadding="0" width="100%">
+<colgroup>
+   <col width="*" />
+   <col width="150" />
+</colgroup>
 <tr>
 <td valign="top" class="small">
-   <% admin.count <% item.stories.self %> suffix=" stories<br />" %>
-   <% admin.count <% item.stories.comments %> suffix=" comments<br />" %>
-   <% admin.count <% item.images %> suffix=" images<br />" %>
-   <% admin.count <% item.files %> suffix=" files<br />" %>
+   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.stories.self %> %> suffix="<br />" %>
+   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.stories.comments %> %> suffix="<br />" %>
+   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.images %> %> suffix="<br />" %>
+   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.files %> %> suffix="<br />" %>
 </td>
-<td class="small" align="right">status:
-   <% item.select status %>
-   <button type="submit" id="save" name="save" value="1">Save</button>
-   <a href="" class="cancel">Cancel</a>
+<td class="small" align="left">
+   <div style="padding-bottom: 3px;"><% item.select status %></div>
+   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
@@ -103,25 +146,19 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 <form method="post" action="<% response.action %>">
 <input type="hidden" name="id" value="<% request.id %>" />
 <input type="hidden" name="page" value="<% request.page %>" />
-
-<table style="background-color: #ffcc00;" cellspacing="0" cellpadding="3" width="100%">
-<tr>
-<td valign="top">
-   <p><strong>Warning!</strong></p>
-   <p>You're about to delete the above site. Please mind that this is an
-   irreversible process, and any asset of this site will be deleted. Just to 
-   remind you: <% item.name %> currently contains 
-   <strong><% admin.count <% item.stories.self %> suffix=" stories" %></strong> with 
-   <strong><% admin.count <% item.stories.comments %> suffix=" comments" %> </strong>, 
-   <strong><% admin.count <% item.images %> suffix=" images" %> </strong> and 
-   <strong><% admin.count <% item.files %> suffix=" files" %></strong>. 
-   Also all the subscriptions to this site will be removed.</p>
-   <p><strong>Are you sure you want to delete this site?</strong></p>
-   <p><button type="submit" name="remove" value="1">yes</button>
-   <button type="submit" name="cancel" value="1"> no </button></p>
-</td>
-</tr>
-</table>
+<div class="adminHighlight">
+<p><strong><% gettext Caution! %></strong></p>
+<p><% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.' 
+      <% ngettext '{0} story' '{0} stories' <% admin.count <% item.stories.self %> %> %>
+      <% ngettext '{0} comment' '{0} comments' <% admin.count <% item.stories.comments %> %> %>
+      <% ngettext '{0} image' '{0} images' <% admin.count <% item.images %> %> %>
+      <% ngettext '{0} file' '{0} files' <% admin.count <% item.files %> %> %> 
+      <% ngettext '{0} member' '{0} members' <% admin.count <% item.members %> %> %> %></p>
+<p><strong><% gettext 'All of this will be deleted irreversibly.' %></strong></p>
+<p><% gettext 'Are you sure you want to proceed?' %></p>
+</div>
+<p><button type="submit" name="remove" value="1"><% gettext 'Proceed' %></button>
+<a href="" class="cancel"><% gettext 'Cancel' %></button></p>
 </form>
 
 <% #users %>
@@ -129,35 +166,34 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 <form method="post" action="<% response.action %>">
 <table cellspacing="0" cellpadding="2">
 <tr>
-<td>... Show</td>
+<td class="small"><% gettext Type suffix=: %></td>
 <td>
    <% admin.dropdown name="filter" 
-   values="all users,blocked users,trusted users,privileged users" %>
+   values="All,Blocked,Trusted,Privileged" %>
 </td>
 </tr>
 <tr>
-<td>... Sort by</td>
+<td class="small"><% gettext Sort suffix=: %></td>
 <td>
-   <% admin.dropdown name="order" values="last visit,registration,username" %>
-   <% admin.dropdown name="dir" values="descending,ascending" %>
+   <% admin.dropdown name="order" values="Login,Registration,Username" %>
+   <% admin.dropdown name="dir" values="Descending,Ascending" %>
 </td>
 </tr>
 <tr>
-<td>... Search</td>
-<td>
-   <input name="query" value="<% request.query %>" />
-   <button input type="submit" name="search" value="1">Update</button>
-</td>
+<td class="small"><% gettext Search suffix=: %></td>
+<td><input name="query" value="<% request.query %>" />
+      <button type="reset"><% gettext Reset %></button>
+      <button type="submit" name="search" value="1"><% gettext Update %></button></td>
 </tr>
 </table>
 </form>
 
 <% #User %>
 <a name="<% item.id %>" id="<% item.id %>"></a>
-<table class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
+<table class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="2">
-   <span class="label <% item.status %>"><% item.status %></span>
+   <span class="label <% item.status %>"><% gettext <% item.status %> %></span>
 </td>
 </tr>
 <tr>
@@ -166,8 +202,8 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
    <div><% item.email suffix="<br />" %>
    <a href="<% item.url %>"><% item.url %></a></div>
    <div class="small">
-      Registered: <% item.created | format "yyyy-MM-dd HH:mm" %><br />
-      Last visit: <% item.modified | format "yyyy-MM-dd HH:mm" %>
+      <% gettext Registered %>: <% item.created short %><br />
+      <% gettext "Last Login" %>: <% item.modified short %>
    </div>
 </td>
 <td class="small" valign="top" align="right">
@@ -181,73 +217,29 @@ the {2} and the {3}.' <% root.admin.link log <% gettext "system log" %> %>
 <input type="hidden" name="id" value="<% request.id %>" />
 <input type="hidden" name="page" value="<% request.page %>" />
 <table cellspacing="0" cellpadding="0" width="100%">
+<colgroup>
+   <col width="*" />
+   <col width="150" />
+</colgroup>
 <tr>
 <td class="small" valign="top">
-   <% admin.count <% item.stories %> suffix=" stories" %><!--
-   --><% admin.items <% item.stories %> prefix=": " %><br />
-   <% admin.count <% item.comments %> suffix=" comments" %><!--
-   --><% admin.items <% item.comments %> prefix=": " %><br />
-   <% admin.count <% item.images %> suffix=" images" %><!--
-   --><% admin.items <% item.images %> prefix=": " %><br />
-   <% admin.count <% item.files %> suffix=" files" %><!--
-   --><% admin.items <% item.files %> prefix=": " %><br />
+   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.stories %> %> %>:
+   <% admin.items <% item.stories %> %><br />
+   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.comments %> %> %>:
+   <% admin.items <% item.comments %> %><br />
+   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.images %> %> %>:
+   <% admin.items <% item.images %> %><br />
+   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.files %> %> %>:
+   <% admin.items <% item.files %> %><br />
 </td>
-<td class="small" align="right">
-   Status: <% item.select status %>
-   <button type="submit" id="save" name="save" value="1">Save</button>
-   <a href="" class="cancel">Cancel</button>
-</td>
-</tr>
-</table>
-</form>
-
-<% #log %>
-<p class="pageTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<table cellspacing="0" cellpadding="2">
-<tr>
-<td>... show</td>
-<td>
-   <% admin.dropdown name="filter" 
-   values="all entries,site entries,user entries,root entries" %>
-</td>
-</tr>
-<tr>
-<td>... order</td>
-<td><% admin.dropdown name="dir" values="descending,ascending" %></td>
-</tr>
-<tr>
-<td>... search</td>
-<td><input name="query" value="<% request.query %>" /></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <button type="submit" name="search" value="1">show entries</button>
+<td class="small" align="left">
+   <div style="padding-bottom: 3px;"><% item.select status %></div>
+   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></button>
 </td>
 </tr>
 </table>
 </form>
-
-<% #LogEntry %>
-<table border="0" class="sysmgrListitem" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td>
-   <span class="label <% item.context_type %>"><% item.context_type %></span>
-</td>
-<td class="small" align="right" nowrap="nowrap">
-   <% item.created | format "yyyy-MM-dd HH:mm" %>
-</td>
-</tr>
-<tr>
-<td width="100%">
-   <% item.context.name prefix="<strong>" suffix="</strong><br />" %>
-   Action: <% item.action %><br />
-   User: <% item.creator %>
-</td>
-<td class="small" valign="top" align="right"></td>
-</tr>
-</table>
 
 <% #setup %>
 <p class="pageTitle"><% response.title %></p>

@@ -3,10 +3,10 @@
 <div class="ample">
    <% stories.link create <% gettext "Add Story" %> prefix="... " %>
 </div>
-<% gettext Show prefix="... " %>
-<% stories.link . <% gettext "Member Stories" %> %>
-<% stories.link closed <% gettext "Closed Stories" %> prefix=" | " %>
-<% stories.link all <% gettext "All Stories" %> prefix=" | " %>
+... 
+<% stories.link all %>
+<% stories.link closed prefix=" | " %>
+<% stories.link . <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

@@ -58,25 +58,21 @@ Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor",
 /**
  * 
  * @param {Membership} membership
- * @param {Boolean} force Overrides permission check to prevent removal of owners
+ * @param {Object} options
  */
-Membership.remove = function(membership, force) {
-   if (membership && membership.constructor === Membership) {
-      if (!force && !membership.getPermission("delete") && !User.require(User.PRIVILEGED)) {
-         throw Error(gettext("Sorry, an owner of a site cannot be removed."));
-      }
-      if (req.postParams.mode === "exhaustive") {
-         HopObject.remove(membership.content);
-         HopObject.remove(membership.images);
-         HopObject.remove(membership.files);
-         HopObject.remove(membership.polls);
-      }
-      var recipient = membership.creator.email;
-      membership.remove();
-      if (req.action === "delete") {
-         membership.notify(req.action, recipient,  
-               gettext("Notification of membership cancellation"));
-      }
+Membership.remove = function(options) {
+   if (this.constructor !== Membership) {
+      return;
+   }
+   if (!options.force && !this.getPermission("delete") && 
+         !User.require(User.PRIVILEGED)) {
+      throw Error(gettext("Sorry, an owner of a site cannot be removed."));
+   }
+   var recipient = this.creator.email;
+   this.remove();
+   if (!options.force) {
+      this.notify(req.action, recipient,  
+            gettext("Notification of membership cancellation"));
    }
    return;
 }
@@ -235,7 +231,7 @@ Membership.prototype.getMacroHandler = function(name) {
  * @throws {Error}
  */
 Membership.prototype.email_macro = function(param) {
-   throw Error("Due to privacy reasons the display of e-mail addresses is disabled.")
+   throw Error(gettext("Due to privacy reasons the display of e-mail addresses is disabled."));
 }
 
 /**

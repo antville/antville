@@ -49,9 +49,11 @@ Image.KEYS = ["name", "created", "modified", "origin", "description",
  * 
  */
 Image.remove = function() {
-   this.removeFiles();
-   this.setTags(null);
-   this.remove();
+   if (this.constructor === Image) {
+      this.removeFiles();
+      this.setTags(null);
+      this.remove();
+   }
    return;
 }
 
@@ -493,7 +495,7 @@ Image.prototype.writeFiles = function(data, thumbnail) {
          }
       } catch (ex) {
          app.log(ex);
-         throw Error(gettext("Could not save the image’s files on disk."));         
+         throw Error(gettext("Could not save the image file on disk."));         
       }
    }
    return;

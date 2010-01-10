@@ -24,6 +24,22 @@
 
 Root.SITEREMOVALGRACEPERIOD = 14; // days
 
+Root.updateDomains = function() {
+   res.push();
+   for (var key in app.properties) {
+      if (key.startsWith("domain.")) {
+         res.writeln(getProperty(key) + "\t\t" + key.substr(7));
+      }
+   }
+   var map = res.pop();
+   var file = new java.io.File(app.dir, "domains.map");
+   var out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+         new java.io.FileOutputStream(file), "UTF-8"));
+   out.write(map);
+   out.close();
+   return;
+}
+
 Root.queue = function(job) {
    var file = java.io.File.createTempFile("job-", String.EMPTY, Root.queue.dir);
    serialize(job, file);
@@ -44,7 +60,7 @@ Root.dequeue = function() {
          switch (job.type) {
             case "site-removal":
             var site = Site.getById(job.id);
-            site && site !== root && Site.remove(site);
+            site && site !== root && Site.remove.call(site);
             break;
          }
       } catch (e) {
@@ -249,26 +265,6 @@ Root.exportImport = function() {
 
 /**
  * 
- * @param {String} href
- * @returns {String}
- */
-Root.prototype.processHref = function(href) {
-   return app.properties.defaultHost + href;
-}
-
-
-/**
- * 
- * @param {String} name
- */
-// FIXME: If everything works smoothly we don’t need this anymore
-//Root.prototype.getChildElement = function(name) {
-//   return this.get(java.net.IDN.toASCII(name));
-//}
-
-
-/**
- * 
  * @param {String} action
  * @returns {Boolean}
  */
@@ -293,9 +289,10 @@ Root.prototype.getPermission = function(action) {
 }
 
 Root.prototype.main_action = function() {
-   // FIXME: Should this better go into HopObject.onRequest?
    if (this.users.size() < 1) {
       root.title = "Antville";
+      root.locale = java.util.Locale.getDefault().getLanguage();
+      root.timeZone = java.util.TimeZone.getDefault().getID();
       res.redirect(this.members.href("register"));
    } else if (session.user && this.members.owners.size() < 1) {
       this.creator = this.modifier = this.layout.creator = 
@@ -639,9 +636,17 @@ Root.prototype.xgettext = function(script, scanDirs, potFile) {
    var temp = {print: global.print, readFile: global.readFile};
    global.print = function(str) {app.log(str);}
    global.readFile = function(fpath, encoding) {
-      return (new helma.File(fpath)).readAll({charset: encoding || "UTF-8"});
+      res.push();
+      var file = new helma.File(fpath);
+      file.open({charset: encoding || "UTF-8"});
+      var str;
+      while ((str = file.readln()) !== null) {
+         res.writeln(str);
+      }
+      file.close();
+      return res.pop();
    }
-   var args = ["-o", potFile, "-p", "internal"];
+   var args = ["-o", potFile, "-e", "utf-8"];
    for each (var dir in scanDirs.split(" ")) {
       args.push(app.dir + "/../" + dir);
    }

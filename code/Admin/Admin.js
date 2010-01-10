@@ -70,6 +70,7 @@ Admin.prototype.getPermission = function(action) {
       if (req.queryParams.id === session.user._id) {
          return false;
       }
+      break;
    }
    return User.require(User.PRIVILEGED);
 }
@@ -177,8 +178,9 @@ Admin.prototype.sites_action = function() {
    if (req.postParams.id) {
       if (req.postParams.remove === "1") {
          var site = Site.getById(req.postParams.id);
+         site.deleted = new Date;
+         site.status = Site.BLOCKED;
          site.mode = Site.DELETED;
-         site.deleted = new Date("1 Jan 1970");
          this.log(root, "Deleted site " + site.name);
          res.message = gettext("The site {0} is queued for removal.",
                site.name);
@@ -247,11 +249,11 @@ Admin.prototype.filterLog = function(data) {
       sql += "where context_type = '";
       switch (data.filter) {
          case "1":
-         sql += "Site"; break;
-         case "2":
-         sql += "User"; break;
-         case "3":
          sql += "Root"; break;
+         case "2":
+         sql += "Site"; break;
+         case "3":
+         sql += "User"; break;
       }
       sql += "' and ";
    } else {
@@ -283,13 +285,19 @@ Admin.prototype.filterSites = function(data) {
    var sql;
    switch (data.filter) {
       case "1":
-      sql = "where mode = 'public' "; break;
-      case "2":
-      sql = "where mode = 'private' "; break;
-      case "3":
       sql = "where status = 'blocked' "; break;
-      case "4":
+      case "2":
       sql = "where status = 'trusted' "; break;
+      case "3":
+      sql = "where mode = 'open' "; break;
+      case "4":
+      sql = "where mode = 'restricted' "; break;
+      case "5":
+      sql = "where mode = 'public' "; break;
+      case "6":
+      sql = "where mode = 'closed' "; break;
+      case "7":
+      sql = "where mode = 'deleted' "; break;
       case "0":
       default:
       sql = "where true ";
@@ -435,8 +443,8 @@ Admin.prototype.log = function(context, action) {
  */
 Admin.prototype.link_macro = function(param, action, id, text) {
    switch (action) {
-      case "edit":
       case "delete":
+      case "edit":
       if (req.action === "users" && (id === session.user._id)) {
          return;
       }
@@ -515,7 +523,12 @@ Admin.prototype.dropdown_macro = function(param) {
    if (!param.name || !param.values) {
       return;
    }
-   var options = param.values.split(",");
+   var options = param.values.split(",").map(function(item, index) {
+      return {
+         value: index,
+         display: gettext(item)
+      }
+   });
    var selectedIndex = req.postParams[param.name];
    html.dropDown({name: param.name}, options, selectedIndex);
    return;

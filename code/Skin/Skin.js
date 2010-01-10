@@ -47,12 +47,11 @@ Skin.getByName = function(group, name) {
  * 
  * @param {Skin} skin
  */
-Skin.remove = function(skin) {
-   skin || (skin = this);
-   if (skin.constructor === Skin) {
-      skin.setSource(skin.source);
-      skin.source = null;
-      skin.remove();
+Skin.remove = function() {
+   if (this.constructor === Skin) {
+      this.setSource(this.source);
+      this.source = null;
+      this.remove();
    }
    return;
 }
@@ -174,8 +173,9 @@ Skin.prototype.update = function(data) {
    if (this.prototype === "Site" && this.name === "page") {
       var macro = "response.body";
       if (!createSkin(data.source).containsMacro(macro)) {
+         var macro = ["<code><%", macro, "%></code>"].join(String.EMPTY);
          throw Error(gettext("The {0} macro is missing. It is essential for accessing the site and must be present in this skin.", 
-               ["<code><% ", macro, " %></code>"].join(String.EMPTY)));
+               macro));
          //data.source = ["<% // ", gettext("The following macro was automatically added to prevent the site from becoming inacessible."), 
          //      " %>\n<% ", macro, " %>\n\n", data.source].join(String.EMPTY);
       }
@@ -189,7 +189,7 @@ Skin.prototype.reset_action = function() {
    if (req.postParams.proceed) {
       try {
          var str = this.toString();
-         Skin.remove(this);
+         Skin.remove.call(this);
          res.message = gettext("{0} was successfully reset.", str);
          res.redirect(res.handlers.layout.skins.href("modified"));
       } catch(ex) {

@@ -30,13 +30,12 @@
  * 
  */
 Choice.remove = function() {
-   if (this.constructor !== Choice) {
-      return;
+   if (this.constructor === Choice) {
+      while (this.size() > 0) {
+         this.get(0).remove();
+      }
+      this.remove();
    }
-   while (this.size() > 0) {
-      this.get(0).remove();
-   }
-   this.remove();
    return;
 }
 

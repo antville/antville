@@ -3,10 +3,10 @@
 <div class="ample">
    <% polls.link create <% gettext "Add Poll" %> prefix="... " %>
 </div>
-<% gettext Show prefix="... " %>
-<% polls.link . "Member Polls" %>
-<% polls.link open "Open Polls" prefix=" | " %>
-<% polls.link all "All Polls" prefix=" | " %>
+... 
+<% polls.link all %>
+<% polls.link running prefix=" | " %>
+<% polls.link . <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

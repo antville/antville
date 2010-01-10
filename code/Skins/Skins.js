@@ -27,20 +27,6 @@
  */
 
 /**
- * 
- * @param {Skins} skins
- */
-Skins.remove = function(skins) {
-   skins || (skins = this);
-   if (skins.constructor === Skins) {
-      while (skins.size() > 0) {
-         HopObject.remove(skins.get(0));
-      }
-   }
-   return;
-}
-
-/**
  * @name Skins
  * @constructor
  * @param {String} name
@@ -105,7 +91,7 @@ Skins.prototype.create_action = function() {
    if (req.postParams.save) {
       try {
          if (!req.postParams.prototype || !req.postParams.name) {
-            throw Error("Please choose a prototype and enter a skin name");
+            throw Error(gettext("Please choose a prototype and enter a skin name"));
          }
          skin.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
@@ -143,13 +129,13 @@ Skins.prototype.modified_action = function() {
    return;
 }
 
-Skins.prototype.advanced_action = function() {
+Skins.prototype.all_action = function() {
    if (this.parent) {
       res.redirect(res.handlers.layout.skins.href(req.action));
    }
    res.data.list = this.getOutline();
    res.data.title = gettext("All Skins");
-   res.data.body = this.renderSkinAsString("$Skins#advanced");
+   res.data.body = this.renderSkinAsString("$Skins#all");
    res.handlers.site.renderSkin("Site#page");
    return;
 }

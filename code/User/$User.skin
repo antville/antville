@@ -9,14 +9,16 @@ else
 %></p>
 <p><% gettext "The easiest way to customize your site is to change its {0}. 
 You can change the language and time zone or the main title of your site, open 
-or close it and much more." <% site.link edit preferences %> %></p>
+or close it and much more." <% site.link edit <% gettext preferences %> %> %></p>
 <p><% gettext "Of course, you can now also start to create {0}, upload some 
 {1} or {2}, create your first {3} or get a glimpse of Antville’s wonderful 
 customization possibilities by having a look at the {4} section where you can 
 modify the appearance of your site according to your needs." 
-<% site.stories.link create stories %> <% site.images.link create images %> 
-<% site.files.link create files %> <% site.polls.link create poll %>
-<% layout.link . layout %> %></p>
+<% site.stories.link create <% gettext stories %> %> 
+<% site.images.link create <% gettext images %> %> 
+<% site.files.link create <% gettext files %> %> 
+<% site.polls.link create <% gettext poll %> %>
+<% layout.link . <% gettext layout %> %> %></p>
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
@@ -30,9 +32,8 @@ modify the appearance of your site according to your needs."
 
 <% #subscriptions %>
 <p class="storyTitle"><% response.title %></p>
-<div class="ample">
-<% gettext Show prefix="...  " %>
-<% members.link updated "Updated Sites" %>
+<div class="ample">...
+<% members.link updated <% gettext "Updated Sites" %> %>
 <% members.link privileges prefix="| " %> 
 <% members.link subscriptions prefix="| " %>
 </div>

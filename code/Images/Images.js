@@ -197,13 +197,3 @@ Images.prototype.mergeImages = function() {
 Images.prototype.getTags = function(group) {
    return this._parent.getTags("galleries", group);
 }
-
-/**
- * 
- */
-Images.remove = function() {
-   if (this.constructor === Images) {
-      HopObject.remove(this);
-   }
-   return;
-}

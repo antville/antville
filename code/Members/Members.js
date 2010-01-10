@@ -88,15 +88,19 @@ Members.prototype.main_action = function() {
 }
 
 Members.prototype.register_action = function() {
-   if (req.postParams.register) {      
+   if (req.postParams.register) {
+      if (req.postParams.activation) {
+         app.log("Detected form submit with completed honeypot field: " + req.data);
+         res.redirect(root.href());
+      }
       try {
          var title = res.handlers.site.title;
          var user = User.register(req.postParams);
          var membership = new Membership(user, Membership.SUBSCRIBER);
          this.add(membership);
          membership.notify(req.action, user.email, 
-               gettext('Welcome to "{0}"!', title));
-         res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+               gettext('Welcome to {0}!', title));
+         res.message = gettext('Welcome to “{0}”, {1}. Have fun!',
                title, user.name);
          res.redirect(User.getLocation() || this._parent.href());
       } catch (ex) {
@@ -172,9 +176,13 @@ Members.prototype.reset_action = function() {
 
 Members.prototype.login_action = function() {
    if (req.postParams.login) {
+      if (req.postParams.activation) {
+         app.log("Detected form submit with completed honeypot field: " + req.data);
+         res.redirect(root.href());
+      }
       try {
          var user = User.login(req.postParams);
-         res.message = gettext('Welcome to "{0}", {1}. Have fun!',
+         res.message = gettext('Welcome to {0}, {1}. Have fun!',
                res.handlers.site.getTitle(), user.name);
          res.redirect(User.getLocation() || this._parent.href());
       } catch (ex) {

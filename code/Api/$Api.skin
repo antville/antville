@@ -21,7 +21,7 @@ of their choice." %></p>
 <p><% gettext "The callback URL will be invoked as an HTTP POST request with 
 the following parameters:" %>
 <ul>
-   <li><code>type</code> – <% gettext 'Resource type (e.g. "Story" or "Comment")' %></li>
+   <li><code>type</code> – <% gettext 'Resource type (e.g. Story or Comment)' %></li>
    <li><code>id</code> – <% gettext "Numeric identifier of the resource" %></li>
    <li><code>url</code> – <% gettext "URL string of the resource" %></li>
    <li><code>date</code> – <% gettext "Date string in Unix timestamp format" %></li>

@@ -35,6 +35,11 @@ $(function() {
    </div>
 </div>
 
+<% #listItemFlag %>
+<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+      class="listItemFlag"><% param.text %></td>
+<td rowspan="2" width="5" nowrap="nowrap"></td>
+
 <% #disclaimer %>
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
 

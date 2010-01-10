@@ -57,13 +57,14 @@ Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getModes = defineConstants(Site, "deleted", "closed", "restricted", "public", "open");
+Site.getModes = defineConstants(Site, "deleted", "closed", "restricted", 
+      "public", "open");
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getPageModes = defineConstants(Site, "stories"); //, "days");
+Site.getPageModes = defineConstants(Site, "stories" /* , "days" */);
 /**
  * @function
  * @returns {String[]}
@@ -94,16 +95,18 @@ Site.getCallbackModes = defineConstants(Site, "disabled", "enabled");
  * 
  * @param {Site} site
  */
-Site.remove = function(site) {
-   HopObject.remove(site.stories);
-   HopObject.remove(site.images);
-   HopObject.remove(site.files);
-   HopObject.remove(site.polls);
-   HopObject.remove(site.entries);
-   HopObject.remove(site.members, true);
-   site.layout && Layout.remove.call(site.layout, true);
-   site.getStaticFile().removeDirectory();
-   site.remove();
+Site.remove = function() {
+   if (this.constructor === Site) {
+      HopObject.remove.call(this.stories);
+      HopObject.remove.call(this.images);
+      HopObject.remove.call(this.files);
+      HopObject.remove.call(this.polls);
+      HopObject.remove.call(this.entries);
+      HopObject.remove.call(this.members, {force: true});
+      Layout.remove.call(this.layout, {force: true});
+      this.getStaticFile().removeDirectory();
+      this.remove();
+   }
    return;
 }
 
@@ -163,7 +166,6 @@ Site.require = function(mode) {
  */
 Site.prototype.constructor = function(name, title) {
    var now = new Date;
-   var locale = root.getLocale();
    var user = session.user || new HopObject;
 
    this.map({
@@ -182,7 +184,7 @@ Site.prototype.constructor = function(name, title) {
       notificationMode: Site.DISABLED,
       pageMode: Site.DAYS,
       pageSize: 3,
-      locale: locale.toString(),
+      locale: root.getLocale().toString(),
       timeZone: root.getTimeZone().getID(),
       longDateFormat: LONGDATEFORMAT,
       shortDateFormat: SHORTDATEFORMAT
@@ -289,23 +291,23 @@ Site.prototype.getFormOptions = function(name) {
       case "commentMode":
       return Site.getCommentModes();
       case "locale":
-      return getLocales();
+      return getLocales(this.getLocale());
       case "layout":
       return this.getLayouts();
       case "longDateFormat":
-      return getDateFormats("long");
+      return getDateFormats("long", this.getLocale());
       case "mode":
       return Site.getModes();
       case "notificationMode":
-      return Site.getNotificationModes();
+      return Site.getNotificationModes(); 
       case "pageMode":
       return Site.getPageModes();
       case "status":
       return Site.getStatus();
       case "shortDateFormat":
-      return getDateFormats("short");
+      return getDateFormats("short", this.getLocale());
       case "timeZone":
-      return getTimeZones();
+      return getTimeZones(this.getLocale());
       case "callbackMode":
       return Site.getCallbackModes();
       default:
@@ -544,6 +546,7 @@ Site.prototype.rss_xsl_action = function() {
 Site.prototype.referrers_action = function() {
    if (req.data.permanent && this.getPermission("edit"))  {
       var urls = req.data.permanent_array;
+      res.push();
       res.write(this.metadata.get("spamfilter"));
       for (var i in urls) {
          res.write("\n");
@@ -729,9 +732,8 @@ Site.prototype.age_macro = function(param) {
  * 
  */
 Site.prototype.deleted_macro = function() {
-   res.write(new Date(this.deleted.getTime() + Date.ONEDAY * Root.SITEREMOVALGRACEPERIOD) 
-         .format("EEEEE, d. MMMMM yyyy"));
-   return;
+   return new Date(this.deleted.getTime() + Date.ONEDAY * 
+         Root.SITEREMOVALGRACEPERIOD);
 }
 
 /**
@@ -751,6 +753,24 @@ Site.prototype.referrers_macro = function() {
          self.renderSkin("$Site#referrer", this);
       }
    });
+   return;
+}
+
+// FIXME: refactor!
+Site.prototype.spamfilter_macro = function(param) {
+   var str = this.metadata.get("spamfilter");
+   if (!str) {
+      return;
+   }
+   var items = str.replace(/\r/g, "").split("\n");
+   for (var i in items) {
+      res.write('"');
+      res.write(items[i]);
+      res.write('"');
+      if (i < items.length-1) {
+         res.write(",");
+      }
+   }
    return;
 }
 
@@ -793,9 +813,11 @@ Site.prototype.getTimeZone = function() {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-   var vhost = getProperty("vhost." + this.name, 
-         app.properties.defaultHost + "/" + this.name);
-   return vhost + href;
+   var domain = getProperty("domain." + this.name);
+   if (domain) {
+      return req.servletRequest.scheme + "://" + domain + href;
+   }
+   return href;
 }
 
 /**

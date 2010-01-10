@@ -1,9 +1,9 @@
 <% #main %>
-<p><% gettext 'Antville is an open source project aimed to the development of a
+<p><% gettext 'Antville is an open source project aimed to the development of a 
 simple site hosting system with many advanced 
 <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
 <p><% gettext 'One Antville installation can easily host up to several thousands of {0}.'
-<% site.link sites <% gettext sites %> %> %></p>
+<% site.link sites %> %></p>
 <p><% site.link create <% gettext "Create a site. It only takes a few clicks." %> %></p>
 <p>
 <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br />
@@ -134,12 +134,143 @@ alphabetical order." %></p>
 
 <% #stylesheet %>
 /* CSS for protected skins (user interface elements etc.) */
+
+ul { list-style: url(<% image /bullet.gif url %>) circle; } 
+
+ul.skinmgrTree {
+   padding-left:15px;
+   margin:20px 0px;
+}
+
+ul.skinmgrTree ul {
+   padding-left:30px;
+   margin:0px;
+}
+
+ul.skinmgrTree li {
+   list-style:none;
+   margin:7px 0px;
+   padding:0px;
+}
+
+ul.skinmgrTree li.skinset {
+   list-style:square;
+   padding-left:0px;
+}
+
+ul.skinmgrTree a.selected {
+   font-weight:bold;
+}
+
+ul.skinmgrTree li div {
+   font-family:<% value "base font size" %>;
+   font-size:<% value "small font size" %>;
+   color:<% value "base font color" %>;
+}
+
+div.skin {
+   /*margin: 1px;
+   border: 1px solid gray;*/
+}
+
+div.skin div.title {
+   display: none;
+   padding: 2px;
+   color: gray;
+   font: normal 8px verdana, sans-serif;
+}
+
+#timeZone {
+   width: 200px;
+}
+
 .nowrap {
    white-space: nowrap;
 }
 
 .activation {
    display: none;
+}
+
+.translated {
+   font-weight: bold;
+}
+
+.pageTitle {
+   font-family:<% value "big font" %>;
+   font-size:<% value "big font size" %>;
+   font-weight:bold;
+   color:<% value "big font color" %>;
+   padding-bottom:10pt;
+}
+
+.listItemSeparator {
+   margin-top:15px;
+   border-top:1px solid #dddddd;
+}
+
+.listItemFlag {
+   padding: 1px;
+   color: white;
+   background-color: #cccccc;
+   border: 1px solid white;
+   font: 11px monospace;
+   line-height: 10px;
+}
+
+.label {
+   margin-left: 1px;
+   padding: 2px 3px;
+   color: white;
+   font-family: sans-serif;
+   font-size: 0.8em;
+   letter-spacing: 1px;
+   text-transform: uppercase;
+}
+
+.adminHighlight {
+   margin-top: 5px;
+   padding: 1px 10px;
+   background-color: yellow;
+   border: 1px solid <% value 'link color' %>;
+}
+
+.Root, .blocked {
+   background-color: black;
+}
+
+.Site, .public, .privileged  {
+   background-color: #006600;
+}
+
+.User, .trusted {
+   background-color: #0000cc;
+}
+
+.regular {
+   display: none;
+}
+
+.open {
+   padding: 1px 2px;
+   color: #0000cc;
+   border: 1px solid #0000cc;
+}
+
+.restricted {
+   padding: 1px 2px;
+   color: #006600;
+   border: 1px solid #006600;
+}
+
+.closed {
+   background-color: #cc0000;
+}
+
+.deleted {
+   padding: 1px 2px;
+   color: #cc0000;
+   border: 1px solid #cc0000;
 }
 
 <% #FIXME %>

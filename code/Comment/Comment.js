@@ -36,17 +36,26 @@ Comment.getStatus = defineConstants(Comment, "closed",
 /**
  * @returns {String}
  */
-Comment.remove = function() {
+Comment.remove = function(options) {
    if (this.constructor !== Comment) {
       return;
    }
-   while (this.size() > 0) {
-      Comment.remove.call(this.get(0));
+   if (options && options.mode === "user" && options.confirm === "1") {
+      var sql = new Sql;
+      sql.retrieve("select id from content where site_id = $0 and creator_id = $1 \
+            and prototype = 'Comment'", this.site._id, this.creator._id);
+      sql.traverse(function() {
+         Comment.remove.call(Comment.getById(this.id));
+      });
+   } else {
+      while (this.size() > 0) {
+         Comment.remove.call(this.get(0));
+      }
+      // Explicitely remove comment from aggressively cached collections:
+      (this.parent || this).removeChild(this);
+      this.story.comments.removeChild(this);
+      this.remove();
    }
-   // Force removal from aggressively cached collections:
-   (this.parent || this).removeChild(this);
-   this.story.comments.removeChild(this);
-   this.remove();
    return this.parent.href();
 }
 

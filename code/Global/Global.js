@@ -186,17 +186,16 @@ function defineConstants(ctor /*, arguments */) {
    var constants = [], name;
    for (var i=1; i<arguments.length; i+=1) {
       name = arguments[i].toUpperCase().replace(/\s/g, "");
-      if (ctor[name]) {
-         //app.logger.warn("Constant already defined: " + ctor.name + "." + name);
-      }
       ctor[name] = arguments[i];
-      constants.push({
-         value: arguments[i],
-         display: arguments[i]
-      });
+      constants.push(arguments[i]);
    }
    return function() {
-      return constants;
+      return constants.map(function(item) {
+         return {
+            value: item,
+            display: gettext(item.capitalize())
+         }
+      });
    };
 }
 
@@ -217,11 +216,12 @@ function disableMacro(ctor, name) {
 function scheduler() {
    Root.commitEntries();
    Root.commitRequests();
-   Root.invokeCallbacks();
-   Root.updateHealth();
    helma.Mail.flushQueue();
+   Root.invokeCallbacks();
    Root.dequeue();
    Root.exportImport();
+   Root.updateDomains();
+   Root.updateHealth();
    return 5000;
 }
 
@@ -266,7 +266,8 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
  * @param {String} text
  */
 function gettext_macro(param, text /*, value1, value2, ...*/) {
-   var args = [text];
+   var re = /(\s*)(?:\r|\n)\s*/g;
+   var args = [text.replace(re, "$1")];
    for (var i=2; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
@@ -280,7 +281,8 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
  * @param {String} plural
  */
 function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
-   var args = [singular, plural];
+   var re = /(\s*)(?:\r|\n)\s*/g;
+   var args = [singular.replace(re, "$1"), plural.replace(re, "$1")];
    for (var i=3; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
@@ -659,6 +661,19 @@ function randomize_macro(param, id) {
 
 /**
  * 
+ */
+function listItemFlag_macro(param, str) {
+   res.push();
+   for (var i=0; i<str.length; i+=1) {
+      res.write(str.charAt(i));
+      res.write("<br />");
+   }
+   renderSkin("$Global#listItemFlag", {text: res.pop()});
+   return;
+}
+
+/**
+ * 
  * @param {Object} param
  * @param {String} url
  * @param {String} text
@@ -812,7 +827,7 @@ function sendMail(sender, recipient, subject, body) {
  * @returns {java.util.Locale} The corresponding locale object
  */
 function getLocale(language) {
-   return java.util.Locale[(language || "english").toUpperCase()];
+   return new java.util.Locale(language || "english");
 }
 
 /**
@@ -826,10 +841,13 @@ function getLocales(language) {
    var locales = java.util.Locale.getAvailableLocales();
    for (var i in locales) {
       locale = locales[i].toString();
+      if (!locale.toString().contains("_")) {
       result.push({
          value: locale,
          display: locales[i].getDisplayName(displayLocale),
+         "class": jala.i18n.getCatalog(jala.i18n.getLocale(locale)) ? "translated" : ""
       });
+      }
    }
    result.sort(new String.Sorter("display"));
    return result;
@@ -844,24 +862,39 @@ function getTimeZones(language) {
    var result = [], timeZone, offset;
    var locale = getLocale(language); 
    var zones = java.util.TimeZone.getAvailableIDs();
+   var now = new Date;
+   var previousZone;
    for each (var zone in zones) {
       timeZone = java.util.TimeZone.getTimeZone(zone);
-      offset = timeZone.getRawOffset();
-      /*res.debug("zone id: " +  zone)
-      res.debug("offset: " + timeZone.getRawOffset())
-      res.debug("dst savings: " + timeZone.getDSTSavings())
-      res.debug("old code: " + formatter.format(offset / Date.ONEHOUR))
-      res.debug("new code: " + (offset / Date.ONEHOUR).format("+00;-00") + ":" + 
-            (Math.abs(offset % Date.ONEHOUR) / Date.ONEMINUTE).format("00"))*/
-      result.push({
-         value: zone,
-         display: zone + " (UTC" + (offset / Date.ONEHOUR).format("+00;-00") + 
-               ":" + (Math.abs(offset % Date.ONEHOUR) / 
-               Date.ONEMINUTE).format("00") + ")"
-      });
+      if (!previousZone || !timeZone.hasSameRules(previousZone)) {
+         offset = timeZone.getRawOffset();
+         result.push({
+            value: zone,
+            display: /* timeZone.getDisplayName(timeZone.inDaylightTime(now), 
+                  java.util.TimeZone.LONG, locale) */ " (UTC" + (offset / 
+                  Date.ONEHOUR).format("+00;-00") + ":" + (Math.abs(offset % 
+                  Date.ONEHOUR) / Date.ONEMINUTE).format("00") + ")"
+         });
+     }
+     previousZone = timeZone.clone();
    }
-   result.sort(new String.Sorter("display"));
-   return result;   
+   result.sort(new String.Sorter("value"));
+   return result;
+   
+   var group;
+   result.forEach(function(zone) {
+      var parts = zone.value.split("/");
+      if (parts.length > 1) {
+         if (parts[0] !== group) {
+            group = parts[0];
+            zone.group = group;
+         }
+         zone.display = parts.splice(1).join(String.EMPTY) + zone.display;
+      } else {
+         zone.display = zone.value + zone.display;
+      }
+   });
+   return result;
 }
 
 /**

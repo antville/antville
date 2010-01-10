@@ -47,7 +47,7 @@ Polls.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "create":
-      case "open":
+      case "running":
       return Site.require(Site.OPEN) && session.user ||
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
@@ -91,12 +91,12 @@ Polls.prototype.create_action = function() {
    return;
 }
 
-Polls.prototype.open_action = function() {
-   res.data.list = renderList(this.open, 
+Polls.prototype.running_action = function() {
+   res.data.list = renderList(this.running, 
          "$Poll#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.open, 
+   res.data.pager = renderPager(this.running, 
          this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("Open Polls");
+   res.data.title = gettext("Running Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");
    this._parent.renderSkin("Site#page");
    return;

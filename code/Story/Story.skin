@@ -4,7 +4,6 @@
 <p class="small">
    <% story.link comment#form prefix="... " %>
    <% story.link edit prefix=" ... " %>
-   <% story.link online prefix=" ... " %>
 </p>
 <a name="comments" id="comments"></a>
 <p><% story.comments %></p>
@@ -28,7 +27,7 @@
    <div class="backup"><% story.input tags class=formText %></div>
 </p>
 <p><fieldset>
-   <legend class="small"><% gettext Settings %></legend>
+   <legend class="small"><% gettext Options %></legend>
    <p><% gettext "The story is {0} and {1}" <% story.select status %>
    <% story.select mode %> %></p>
    <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
@@ -50,14 +49,14 @@
 </form>
 
 <% #date %>
-<div class="dayHeader"><% story.created format="EEEE, d. MMMM yyyy" %></div>
+<div class="dayHeader"><% story.created "EEEE, d. MMMM yyyy" %></div>
 
 <% #content %>
 <div class="storyTitle">
    <% story.title %>
 </div>
 <div class="storyDate">
-   <% story.creator link %>
+   <% story.creator link suffix=, %>
    <% story.created HH:mm suffix="h" %>
 </div>
 <div><% story.text | story.format %></div>
@@ -65,7 +64,7 @@
 <% #preview %>
 <% story.skin Story#content %>
 <p class="small">
-   <% story.link . Link prefix="... " %>
+   <% story.link . <% gettext Link %> prefix="... " %>
    <% story.comments link prefix="(" suffix=")" %>
    <% story.link comment#form prefix=" ... " %>
    <% story.link edit prefix=" ... " %>
@@ -76,7 +75,7 @@
 <% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
 <% story.text | clip %>
 <span class="small">
-   <% story.link . <% gettext "Read more" prefix=[ suffix=] %> %>
+   <% story.link . <% gettext "Read more" %> prefix=[ suffix=] %>
    <% story.link edit <% gettext Edit %> prefix=" ... " %>
 </span><br />
 

@@ -12,21 +12,17 @@
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <% if <% story.status %> is closed then 
-   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
-   class="listFlag">c<br />l<br />o<br />s<br />e<br />d</td>
-   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+   <% listItemFlag <% gettext closed %> %>
 else <% if <% story.mode %> is hidden then 
-   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
-   class="listFlag">h<br />i<br />d<br />d<br />e<br />n</td>
-   <td rowspan="2" width="5" nowrap="nowrap"></td>' %>
+   <% listItemFlag <% gettext hidden %> %> %>
 %>
 <td class="small">
    <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
    <div class="ample"><strong><% gettext Status suffix=: %></strong>
-   <% story.status %><% story.tags link prefix=" in " %><% story.comments link prefix="; " %></div>
+   <% gettext <% story.status %> %><% story.tags link prefix=" in " %><% story.comments link prefix="; " %></div>
 </td>
 <td rowspan="2" width="10" nowrap="nowrap"> </td>
-<td valign="bottom" rowspan="2" align="right" class="small">
+<td rowspan="2" align="right" class="small">
    <% story.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% story.link . <% gettext Show %> prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% story.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
@@ -84,7 +80,7 @@ for (var i in referrers) {
       document.writeln('<tr>');
       document.writeln('<td align="right" class="small">&nbsp;</td>');
       document.writeln('<td rowspan="999" class="small">&nbsp;&nbsp;</td>');
-      document.writeln('<td class="small"><strong>Backlinks</strong></td>');
+      document.writeln('<td class="small"><strong><% gettext Backlinks %></strong></td>');
       document.writeln('</tr>');
    }
    document.writeln('<tr>');

@@ -62,44 +62,43 @@ body {
 <div class="ample">
    <% skins.link create <% gettext "Add Skin" %> prefix="... " %>
 </div>
-<div>
-   <% gettext Show prefix="... " %>
-   <% skins.link . <% gettext "Basic Skins" %> %>
-   <% skins.link advanced <% gettext "All Skins" %> prefix=" | " %>
-   <% skins.link modified <% gettext "Modified Skins" %> prefix=" | " %> 
+<div>...
+   <% skins.link all %>
+   <% skins.link . <% gettext Basic %> prefix=" | " %>
+   <% skins.link modified prefix=" | " %> 
 </div>
 
 <% #main %>
 <% skins.skin $Skins#header %>
 <br />
 <div class="ample">
-   <% skins.link Site/page/edit "Site Page" %>
-   <div class="small"><% gettext "This skin defines the basic structure of your  
+   <% skins.link Site/page/edit <% gettext "Site Page" %> %>
+   <div class="small"><% gettext "This skin defines the basic structure of your 
    site. Modifying it will affect the general appearance of your site." %></div>
 </div>
 <div class="ample">
-   <% skins.link Site/navigation/edit "Navigation" %>
+   <% skins.link Site/navigation/edit <% gettext Navigation %> %>
    <div class="small"><% gettext "This skin is used to display the navigation 
    links on the page." %></div>
 </div>
 <div class="ample">
-   <% skins.link Site/main/edit Frontpage %>
+   <% skins.link Site/main/edit <% gettext Frontpage %> %>
    <div class="small"><% gettext "This skin is used to render the front page of 
    your site." %></div>
 </div>
 <div class="ample">
-   <% skins.link Site/stylesheet/edit "CSS Stylesheet" %>
+   <% skins.link Site/stylesheet/edit <% gettext "CSS Stylesheet" %> %>
    <div class="small"><% gettext "This skin contains the Cascaded Stylesheet 
    (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
    will affect the general appearance of your site." %></div>
 </div>
 <div class="ample">
-   <% skins.link Site/javascript/edit JavaScript %>
-   <div class="small"><% gettext "This skin contains additional JavaScript code  
+   <% skins.link Site/javascript/edit <% gettext JavaScript %> %>
+   <div class="small"><% gettext "This skin contains additional JavaScript code 
    that will be included in every page." %></div>
 </div>
 
-<% #advanced %>
+<% #all %>
 <script type="text/javascript">
 $(function() {
    $("ul ul").hide();

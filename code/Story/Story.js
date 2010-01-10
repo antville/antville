@@ -50,14 +50,11 @@ Story.getCommentModes = defineConstants(Story, "closed",
  * 
  */
 Story.remove = function() {
-   if (this.constructor !== Story) {
-      return;
+   if (this.constructor === Story) {
+      HopObject.remove.call(this.comments);
+      this.setTags(null);
+      this.remove();
    }
-   while (this.comments.size() > 0) {
-      Comment.remove.call(this.comments.get(0));
-   }
-   this.setTags(null);
-   this.remove();
    return;
 }
 
@@ -179,7 +176,7 @@ Story.prototype.edit_action = function() {
    }
    
    res.data.action = this.href(req.action);
-   res.data.title = gettext('Edit story: {0}', this.getTitle(5));
+   res.data.title = gettext('Edit Story: {0}', this.getTitle(5));
    res.data.body = this.renderSkinAsString("Story#edit");
    this.site.renderSkin("Site#page");
    return;

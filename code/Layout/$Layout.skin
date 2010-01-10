@@ -17,17 +17,15 @@ $(function() {
 </script>
 
 <p class="storyTitle"><% response.title %></p>
-<p><% gettext "Show" prefix="... "%> 
-<% layout.link images <% gettext "Layout Images" %> %>
-<% layout.link skins <% gettext "Layout Skins" %> prefix=" | " %></p>
-
-<div>
+<div class="ample">
    <% layout.link import prefix="... " %>
    <% layout.link export prefix=" | " %>
-   <% layout.link reset prefix=" | " suffix=" Layout" %>
+   <% layout.link reset prefix=" | " %>
 </div>
-
-<br/>
+... 
+<% layout.link images %>
+<% layout.link skins prefix=" | " %>
+<br /><br />
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
 <% layout.values %>
@@ -39,7 +37,7 @@ $(function() {
    <td />
 <td>
    <div class="small">
-      <a href="" id="addValueLink"><% gettext "Add value" %></a>
+      <a href="" id="addValueLink"><% gettext "Add Value" %></a>
    </div>
    <p><br />
       <button type="submit" name="save" value="1"><% gettext Save %></button>

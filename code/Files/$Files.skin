@@ -3,9 +3,9 @@
 <div class="ample">
    <% files.link create <% gettext "Add File" %> prefix="... " suffix="" %>
 </div>
-<% gettext Show prefix="... " %>
-<% files.link . <% gettext "Member Files" %> %>
-<% files.link all <% gettext "All Files" %> prefix=" | " %>
+... 
+<% files.link all %>
+<% files.link . <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

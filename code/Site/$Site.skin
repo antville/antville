@@ -1,5 +1,5 @@
 <% #href %>
-http://<% site.name %>.antville.org<% param.path %>
+<% param.path %>
 
 <% #include %>
 document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +  
@@ -72,22 +72,22 @@ REGEDIT4
 <br />
 <form action="<% response.action %>" method="get">
 <input type="text" name="filter" value="<% request.filter encoding="form" %>" 
-size="30" /> 
-<input type="submit" name="submit" value="Filter" /> 
-<input type="button" onclick="document.location='<% site.href 
-      action="referrers" %>';" value="Reset" />
+      size="30" /> 
+<button type="submit" name="submit" value="1"><% gettext Filter %></button> 
+<button onclick="document.location='<% site.href referrers %>'; return false;">
+      <% gettext Reset %></button>
 <div class="small">
    <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" 
    <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
-   <label for="includeSpam">Include Referrer Spam</label>
+   <label for="includeSpam"><% gettext 'Include Referrer Spam' %></label>
 </div>
 <br />
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
-<td align="right" class="small">Visits</td>
+<td align="right" class="small"><% gettext Hits %></td>
 <td width="10" nowrap="nowrap" rowspan="999"> </td>
 <td></td>
-<td class="small">Referrer</td>
+<td class="small"><% gettext Referrer %></td>
 </tr>
 <script type="text/javascript">
 var referrers = [];
@@ -153,8 +153,8 @@ execute JavaScript code in your browser. Otherwise you will only see this
 information." %>
 
 <% #deleted %>
-<% gettext "This site is going to be deleted completely and irreversibly on {0}" 
-      <% site.deleted %> %>.
+<% gettext "This site is going to be deleted completely and irreversibly after {0}." 
+      <% site.deleted | format long %> %>
 
 <% #export %>
 <p class="title">Export Site Data</p><br />
@@ -169,6 +169,10 @@ information." %>
 <p class="storyTitle"><% response.title %></p>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
+<colgroup>
+   <col width="150" />
+   <col width="*" />
+</colgroup>
 <tr>
 <td colspan="2">
    <a id="general" name="general"></a>
@@ -190,7 +194,7 @@ information." %>
 <tr>
 <td class="small"><% gettext Paging suffix=: %></td>
 <td><% site.input pageSize size="5" maxlength="2" %>
-<% site.select pageMode %> per page</td>
+<% site.select pageMode %> <% gettext "per page" %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Comments suffix=: %></td>

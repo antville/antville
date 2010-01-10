@@ -40,7 +40,7 @@
       %>
    %>
 </div>
-<% poll.link . <% gettext "Add your vote %> prefix=<p> suffix=</p> %>
+<% poll.link . <% gettext "Add Your Vote %> prefix=<p> suffix=</p> %>
 <% poll.skin #footer %>
 
 <% #listItem %>
@@ -49,10 +49,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <% if <% poll.status %> is closed then 
-   '<td rowspan="2" width="10" align="center" valign="top" class="listFlag">
-      c<br />l<br />o<br />s<br />e<br />d
-    </td>
-    <td rowspan="2" width="5"></td>'
+   <% listItemFlag <% gettext closed %> %>
 %>
 <td colspan="3" class="small">
    <strong><% gettext Macro suffix=: %></strong> <% poll.macro %>
@@ -69,7 +66,7 @@
 <td width="10" nowrap="nowrap"> </td>
 <td align="right" class="small">
    <% poll.link . <% gettext Vote %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link results text="results" prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% poll.link results prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% poll.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% poll.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% poll.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
@@ -102,8 +99,8 @@ $(function() {
    <a href="" id="add"><% gettext "Add Choice" %></a>
 </div>
 <p class="small">
-   <% poll.creator link prefix='Created by ' suffix=' on ' %>
-   <% poll.created short %>
+   <% if <% poll.created %> then <% gettext "Created by {0} on {1}" 
+         <% poll.creator %> <% poll.created short %> %> %>
    <% if <% poll.created %> is <% poll.modified %> then "" else 
       <% gettext "Last modified by {0} on {1}" <% poll.modifier link %> 
       <% poll.modified short %> prefix="<br />" %>
@@ -115,7 +112,7 @@ $(function() {
       <% gettext Save %>
    </button>
    <% if <% poll.status %> is open then "" else 
-         <% gettext "Save and Open" prefix='<button type="submit" 
+         <% gettext "Save and Run" prefix='<button type="submit" 
                name="save" value="open"><strong>' suffix=</strong></button> %>
    %>
    <a href="" class="cancel"><% gettext Cancel %></a>

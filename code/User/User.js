@@ -239,7 +239,7 @@ User.register = function(data) {
 
    // check if email-address is valid
    if (!data.email) {
-      throw new Error(gettext("Please enter your e-mail address."));
+      throw Error(gettext("Please enter your e-mail address."));
    }
    validateEmail(data.email);
 
@@ -247,15 +247,15 @@ User.register = function(data) {
    if (!data.hash) {
       // Check if passwords match
       if (!data.password || !data.passwordConfirm) {
-         throw new Error(gettext("Could not verify your password. Please repeat your input."))
+         throw Error(gettext("Could not verify your password. Please repeat your input."))
       } else if (data.password !== data.passwordConfirm) {
-         throw new Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
+         throw Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
       }
       data.hash = (data.password + session.data.token).md5();
    }
 
    if (User.getByName(data.name)) {
-      throw new Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
+      throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
    var user = new User(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now

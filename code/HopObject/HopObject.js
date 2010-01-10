@@ -30,16 +30,18 @@
 /**
  * 
  * @param {HopObject} collection
- * @param {Boolean} force Set to true to force removal preventing any conditional checks
+ * @param {Object} options Optional flags, e.g. to force or prevent any  
+ * conditional checks of individual prototype’s remove() methods
  */
-HopObject.remove = function(collection, force) {
+HopObject.remove = function(options) {
    var item;
-   while (collection.size() > 0) {
-      item = collection.get(0);
+   while (this.size() > 0) {
+      item = this.get(0);
       if (item.constructor.remove) {
-         item.constructor.remove.call(item, item, force);
+         item.constructor.remove.call(item, options);
       } else {
-         throw Error("Missing static " + item.constructor.name + ".remove() method");
+         throw Error("Missing static " + item.constructor.name + 
+               ".remove() method");
       }
    }
    return;
@@ -100,21 +102,21 @@ HopObject.prototype.onRequest = function() {
    res.handlers.membership = User.getMembership();
    
    if (User.getCurrentStatus() === User.BLOCKED) {
-      User.logout();
       session.data.status = 403;
-      session.data.error =  gettext("Your account has been blocked.") + String.SPACE + 
+      session.data.error = gettext("Your account has been blocked.") + String.SPACE + 
             gettext("Please contact an administrator for further information.");
+      User.logout();
       res.redirect(root.href("error"));
    }
    
    if (res.handlers.site.status === Site.BLOCKED && 
          !User.require(User.PRIVILEGED)) {
       session.data.status = 403;
-      session.data.error =  gettext("The site you requested has been blocked.") +
+      session.data.error = gettext("The site you requested has been blocked.") +
             String.SPACE + gettext("Please contact an administrator for further information.");
       res.redirect(root.href("error"));
    }
-
+   
    if (!this.getPermission(req.action)) {
       if (!session.user) {
          User.setLocation(root.href() + req.path);
@@ -150,7 +152,8 @@ HopObject.prototype.delete_action = function() {
       try {
          var str = this.toString();
          var parent = this._parent;
-         var url = this.constructor.remove.call(this, this) || parent.href();
+         var url = this.constructor.remove.call(this, req.postParams) || 
+               parent.href();
          res.message = gettext("{0} was successfully deleted.", str);
          res.redirect(User.getLocation() || url);
       } catch(ex) {
@@ -489,8 +492,11 @@ HopObject.prototype.link_macro = function(param, url, text) {
    url || (url = ".");
    var action = url.split(/#|\?/)[0];
    if (this.getPermission(action)) {
-      text || (text = (action === "." ? this._id : action).capitalize());
-      renderLink.call(global, param, url, gettext(text), this);
+      if (!text) {
+         action === "." && (action = this._id);
+         text = gettext(action.capitalize());
+      }
+      renderLink.call(global, param, url, text, this);
    }
    return;
 }
@@ -564,7 +570,7 @@ HopObject.prototype.modifier_macro = function(param, mode) {
  * @returns {String}
  */
 HopObject.prototype.getTitle = function() {
-   return this.title || this.__name__.capitalize();
+   return this.title || gettext(this.__name__.capitalize());
 }
 
 /**

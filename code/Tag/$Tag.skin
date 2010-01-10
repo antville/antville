@@ -29,8 +29,8 @@
 ... <a href="" onclick='var name; 
       if (name = prompt("<% gettext 'Please enter new name for this tag' suffix=: %>")) {
          location.href="<% tag.href action="rename" %>?name=" + name;
-      }'>Rename</a> |
+      }'><% gettext "Rename Tag" %></a> |
 <a href="" onclick='var name; 
       if (confirm("<% gettext 'Are you sure you want to remove the tag {0}?' <% tag.name %> %>")) {
          location.href="<% tag.href action="delete" %>";
-      }'>Delete</a> Tag
+      }'><% gettext "Delete Tag" %></a>

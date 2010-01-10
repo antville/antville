@@ -44,8 +44,8 @@ $(function() {
 <tr>
 <td colspan="2" class="small">
    <strong><% gettext Macro suffix=: %></strong> <% file.macro %>
-   <div class="ample"><strong><% gettext Details suffix=: %></strong>
-   <% file.contentLength %><% file.contentType prefix=" " %><% ngettext "{0} download" "{0} downloads"
+   <div class="ample"><strong><% gettext Properties suffix=: %></strong>
+   <% file.contentLength %><% file.contentType prefix=" " %><% ngettext "{0} hit" "{0} hits"
    <% file.requests %> prefix=", " %></div>
 </td>
 </tr>
@@ -58,7 +58,8 @@ $(function() {
 <td class="small" align="right" valign="top" rowspan="2">
    <% file.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% file.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% file.link . <% gettext Download %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% file.link . <% gettext Download %> prefix='<div class="nowrap">... ' 
+         suffix="</div>" %>
 </td>
 </tr>
 <tr>
