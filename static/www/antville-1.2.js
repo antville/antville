@@ -3,6 +3,31 @@ $(function() {
       history.back();
       return false;
    });
+   
+   $("form #activation").closest("tr").addClass("activation");
+   
+   var group, groups = [];
+   $("form #timeZone option").each(function(index, item) {
+      var zone = $(item);
+      var parts = zone.val().split("/");
+      if (parts.length > 1) {
+         if (parts[0].indexOf("Etc") === 0 || 
+               parts[0].indexOf("SystemV") === 0) {
+            zone.remove();
+            return;
+         }
+         group !== parts[0] && groups.push(group = parts[0]);
+         zone.addClass("group-" + group);
+         zone.text(parts.splice(1).join(", ").replace(/_/g, " "));
+      } else {
+         zone.remove();
+      }
+   });
+   var optgroup = $("<optgroup>");
+   $.each(groups, function(index, item) {
+      $("form #timeZone option.group-" + 
+         item).wrapAll(optgroup.clone().attr("label", item));
+   });
 });
 
 /**
