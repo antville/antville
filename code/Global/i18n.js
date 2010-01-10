@@ -68,7 +68,6 @@ markgettext("Managers");
 markgettext("Members");
 
 markgettext("Open");
-markgettext("is_Open");
 markgettext("Owner");
 markgettext("Owners");
 
