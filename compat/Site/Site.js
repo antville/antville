@@ -332,21 +332,3 @@ Site.prototype.monthlist_macro = function(param) {
    }
    return;
 }
-
-// FIXME: refactor!
-Site.prototype.spamfilter_macro = function(param) {
-   var str = this.metadata.get("spamfilter");
-   if (!str) {
-      return;
-   }
-   var items = str.replace(/\r/g, "").split("\n");
-   for (var i in items) {
-      res.write('"');
-      res.write(items[i]);
-      res.write('"');
-      if (i < items.length-1) {
-         res.write(",");
-      }
-   }
-   return;
-}
