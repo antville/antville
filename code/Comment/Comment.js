@@ -32,7 +32,6 @@
 Comment.getStatus = defineConstants(Comment, "closed", 
       "pending", "readonly", "public");
 
-
 /**
  * @returns {String}
  */
@@ -178,4 +177,16 @@ Comment.prototype.update = function(data) {
    this.clearCache();
    this.modifier = session.user;
    return;
+}
+
+/**
+ * 
+ * @param {String} name
+ * @returns {HopObject} 
+ */
+Comment.prototype.getMacroHandler = function(name) {
+   if (name === "related") {
+      return this.creator.comments;
+   }
+   return null;
 }

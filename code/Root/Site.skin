@@ -27,7 +27,7 @@
 <div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
 <div><% site.layout.link . <% gettext Layout %> prefix="... " %></div>
 <div><% site.link referrers prefix="... " %></div>
-<div><% site.stories.link top <% gettext "Top stories" %> prefix="... " %></div>
+<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
 </p>
 <p class="navigation">
 <div><% root.title prefix="... " | root.link %></div>

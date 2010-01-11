@@ -19,11 +19,13 @@ $(function() {
 </script>
 <div>
    <input type="checkbox" id="mode" name="mode" value="user" />
-   <label for="mode"><% gettext "Erase all comments of this user" %></label>
+   <label for="mode"><% gettext "Erase all comments of user {0}" 
+         <% comment.creator %> %></label>
 </div>
 <div id="confirmation">
    <input type="checkbox" id="confirm" name="confirm" value="1" />
-   <label for="confirm"><% gettext "Yes, really erase all the user’s 
-         comments to the site" %></label>
+   <label for="confirm"><% gettext "Yes, really erase {0}"
+         <% ngettext "{0} comment" "{0} comments" 
+         <% comment.related.size %> %> %></label>
 </div>
 <br />
