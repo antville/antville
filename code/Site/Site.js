@@ -775,6 +775,7 @@ Site.prototype.spamfilter_macro = function() {
 Site.prototype.diskspace_macro = function() {
    var usage = this.getDiskSpace();
    res.write(usage > 0 ? formatNumber(usage, "#,###.#") : 0);
+   res.write(" MB " + (root.quota ? gettext("free") : gettext("used")));
    return;
 }
 
@@ -818,8 +819,9 @@ Site.prototype.getTimeZone = function() {
 Site.prototype.getDiskSpace = function() {
    var utils = Packages.org.apache.commons.io.FileUtils;
    var dir = new java.io.File(this.getStaticFile());
-   return root.quota ? root.quota - utils.sizeOfDirectory(dir) / 1024 / 1024 :
-         Infinity;
+   var size = utils.sizeOfDirectory(dir);
+   var MB = 1024 * 1024;
+   return (root.quota ? root.quota * MB - size : size) / MB;
 }
 
 /**

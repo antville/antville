@@ -233,11 +233,10 @@ information." %>
 <% site.checkbox callbackMode %> 
 <label for="callbackMode"><% gettext enabled %><label></td>
 </tr>
-<% if <% root.quota %> is null then '' else 
-      <% gettext "Disk Space" prefix='<tr><td class="small">' 
-      suffix=<% gettext "{0} MB free" <% site.diskspace %> 
-      prefix=:</td><td> suffix=</td></tr> %> %> 
-%>
+<tr>
+   <td class="small"><% gettext "Disk Space" %>:</td>
+   <td><% site.diskspace %></td>
+</tr>
 <tr>
 <td colspan="2"><div class="listSeparator"> </div>
 <a id="spamfilter" name="spamfilter"></a>
