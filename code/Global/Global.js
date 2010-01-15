@@ -822,7 +822,7 @@ function sendMail(recipient, subject, body) {
    }
    mail.setSubject(subject);
    mail.setText(body);
-   mail.addText(renderSkinAsString("$Global#disclaimer"));
+   mail.addText("\n\n" + renderSkinAsString("$Global#mailFooter"));
    mail.queue();
    return mail.status;
 }

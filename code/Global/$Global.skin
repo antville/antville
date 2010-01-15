@@ -40,7 +40,7 @@ $(function() {
       class="listItemFlag"><% param.text %></td>
 <td rowspan="2" width="5" nowrap="nowrap"></td>
 
-<% #disclaimer %>
+<% #mailFooter %>
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
 
 <% gettext 'This message was automatically sent to you because you are listed as 
