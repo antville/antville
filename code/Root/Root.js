@@ -397,8 +397,8 @@ Root.prototype.getCreationPermission = function() {
          delta = root.probationPeriod - Math.floor((now - 
                user.created) / Date.ONEDAY);
          if (delta > 0) {
-            session.data.error = gettext("You have to wait {0} days before you \
-                  you are allowed to create a new site.", delta);
+            session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.", 
+                  ngettext("{0} day", "{0} days", delta));
             return false;
          }
       } 
@@ -406,8 +406,8 @@ Root.prototype.getCreationPermission = function() {
          delta = root.creationDelay - Math.floor((now - 
                user.sites.get(0).created) / Date.ONEDAY);
          if (delta > 0) {
-            session.data.error = gettext("You need to wait {0} days before you \
-                  are allowed to create a new site.", root.creationDelay - days);
+            session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.", 
+                  ngettext("{0} day", "{0} days", root.creationDelay - days));
             return false;
          }
       }

@@ -275,7 +275,7 @@ $(function() {
 </td>
 </tr>
 <tr>
-<td class="small"><% gettext "Per-Site Quota" %>:</td>
+<td class="small"><% gettext "Disk Quota" %>:</td>
 <td>
    <% root.input quota %> MB
 </td>
