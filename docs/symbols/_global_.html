@@ -214,6 +214,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/Files.html">Files</a></li>
 	
+	<li><a href="../symbols/helma.File.html">helma.File</a></li>
+	
 	<li><a href="../symbols/helma.Mail.html">helma.Mail</a></li>
 	
 	<li><a href="../symbols/HopObject.html">HopObject</a></li>
@@ -308,16 +310,6 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">
 								<b><a href="../symbols/_global_.html#html">html</a></b>
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/_global_.html#idle">idle</a></b>
 								</div>
 								<div class="description"></div>
 							</td>
@@ -540,6 +532,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#idle">idle</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#if_macro">if_macro</a></b>(param, firstValue, _is_, secondValue, _then_, firstResult, _else_, secondResult)
 								</div>
 								<div class="description">Renders a string depending on the comparison of two values.</div>
@@ -587,6 +588,15 @@ Mozilla developers will have mercy.</div>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#list_macro">list_macro</a></b>(param, id, limit)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#listItemFlag_macro">listItemFlag_macro</a></b>(param, str)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -703,7 +713,7 @@ Mozilla developers will have mercy.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#sendMail">sendMail</a></b>(sender, recipient, subject, body)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#sendMail">sendMail</a></b>(recipient, subject, body)
 								</div>
 								<div class="description">General mail sending function.</div>
 							</td>
@@ -795,31 +805,6 @@ Mozilla developers will have mercy.</div>
 					
 					
 					<b>html</b>
-					
-					</div>
-					<div class="description">
-						
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="idle"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>idle</b>
 					
 					</div>
 					<div class="description">
@@ -1794,6 +1779,34 @@ otherwise</dd>
 
 					<hr />
 				
+					<a name="idle"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>idle</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="if_macro"> </a>
 					<div class="fixedFont">
 					
@@ -2132,6 +2145,51 @@ Mozilla developers will have mercy.
 							
 								<dt>
 									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>limit</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="listItemFlag_macro"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>listItemFlag_macro</b>(param, str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>param</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>str</b>
 									
 								</dt>
 								<dd></dd>
@@ -2726,7 +2784,7 @@ called again.</dd>
 					<div class="fixedFont">
 					
 					<span class="light">{Number}</span>
-					<b>sendMail</b>(sender, recipient, subject, body)
+					<b>sendMail</b>(recipient, subject, body)
 					
 					</div>
 					<div class="description">
@@ -2743,12 +2801,6 @@ called again.</dd>
 						
 							<dl class="detailList">
 							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>sender</b>
-									
-								</dt>
-								<dd>The sender's e-mail address</dd>
 							
 								<dt>
 									<span class="light fixedFont">{Object}</span> <b>recipient</b>
@@ -3136,7 +3188,7 @@ called again.</dd>
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Mon Nov 02 2009 15:35:30 GMT+0100 (CET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Sat Jan 16 2010 00:41:40 GMT+0100 (CET)
 		</div>
 	</body>
 </html>
