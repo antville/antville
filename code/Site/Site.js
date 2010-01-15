@@ -36,8 +36,7 @@ this.handleMetadata("deleted");
 this.handleMetadata("locale");
 this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
-this.handleMetadata("notifiedOfBlocking");
-this.handleMetadata("notifiedOfDeletion");
+this.handleMetadata("notified");
 this.handleMetadata("pageSize");
 this.handleMetadata("pageMode");
 this.handleMetadata("shortDateFormat");
@@ -153,6 +152,8 @@ Site.require = function(mode) {
  * @property {Date} modified The date and time when a site was last modified
  * @property {User} modifier A reference to a user who modified a site
  * @property {String} notificationMode The way notifications are sent from a site
+ * @property {Date} notified The date and time of the last notification sent to 
+ * the owners of a site
  * @property {String} pageMode The way stories of a site are displayed
  * @property {Number} pageSize The amount of stories to be displayed simultaneously
  * @property {Polls} polls
@@ -244,7 +245,8 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
-   res.data.body = this.renderSkinAsString(this.deleted ? "$Site#deleted" : "Site#main");
+   res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ? 
+         "$Site#deleted" : "Site#main");
    res.data.title = this.getTitle();
    this.renderSkin("Site#page");
    this.log();
@@ -260,15 +262,6 @@ Site.prototype.edit_action = function() {
       } catch (ex) {
          res.message = ex;
          app.log(ex);
-         /*writeln("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-         var e = new Packages.org.mozilla.javascript.EvaluatorException(ex);
-         e.fillInStackTrace();
-         res.debug(e.getScriptStackTrace());
-         res.debug(e.printStackTrace(java.lang.System.out));
-         var trace = e.getStackTrace();
-         writeln(trace.toString());
-         for (var i in ex)
-         app.log(i + ": " + ex[i]);*/
       }
    }
 
@@ -733,7 +726,7 @@ Site.prototype.age_macro = function(param) {
  */
 Site.prototype.deleted_macro = function() {
    return new Date(this.deleted.getTime() + Date.ONEDAY * 
-         Root.SITEREMOVALGRACEPERIOD);
+         Admin.SITEREMOVALGRACEPERIOD);
 }
 
 /**
@@ -756,8 +749,10 @@ Site.prototype.referrers_macro = function() {
    return;
 }
 
-// FIXME: refactor!
-Site.prototype.spamfilter_macro = function(param) {
+/**
+ * 
+ */
+Site.prototype.spamfilter_macro = function() {
    var str = this.metadata.get("spamfilter");
    if (!str) {
       return;
@@ -771,6 +766,15 @@ Site.prototype.spamfilter_macro = function(param) {
          res.write(",");
       }
    }
+   return;
+}
+
+/**
+ * 
+ */
+Site.prototype.diskspace_macro = function() {
+   var usage = this.getDiskSpace();
+   res.write(usage > 0 ? formatNumber(usage, "#,###.#") : 0);
    return;
 }
 
@@ -806,6 +810,16 @@ Site.prototype.getTimeZone = function() {
    }
    this.cache.timezone = timeZone;
    return timeZone;
+}
+
+/**
+ * @returns {float} 
+ */
+Site.prototype.getDiskSpace = function() {
+   var utils = Packages.org.apache.commons.io.FileUtils;
+   var dir = new java.io.File(this.getStaticFile());
+   return root.quota ? root.quota - utils.sizeOfDirectory(dir) / 1024 / 1024 :
+         Infinity;
 }
 
 /**

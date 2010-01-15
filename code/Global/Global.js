@@ -214,14 +214,14 @@ function disableMacro(ctor, name) {
  * called again. 
  */
 function scheduler() {
-   Root.commitEntries();
-   Root.commitRequests();
    helma.Mail.flushQueue();
-   Root.invokeCallbacks();
-   Root.dequeue();
-   Root.exportImport();
-   Root.updateDomains();
-   Root.updateHealth();
+   Admin.commitEntries();
+   Admin.commitRequests();
+   Admin.invokeCallbacks();
+   Admin.dequeue();
+   Admin.exportImport();
+   //Admin.updateDomains();
+   Admin.updateHealth();
    return 5000;
 }
 
@@ -229,8 +229,8 @@ function scheduler() {
  * 
  */
 function nightly() {
-   Root.purgeReferrers();
-   Admin.purgeDatabase();
+   Admin.purgeReferrers();
+   Admin.purgeSites();
    return;
 }
 
@@ -266,6 +266,9 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
  * @param {String} text
  */
 function gettext_macro(param, text /*, value1, value2, ...*/) {
+   if (!text) {
+      return;
+   }
    var re = /(\s*)(?:\r|\n)\s*/g;
    var args = [text.replace(re, "$1")];
    for (var i=2; i<arguments.length; i+=1) {
@@ -281,6 +284,9 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
  * @param {String} plural
  */
 function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
+   if (!singular || !plural) {
+      return;
+   }
    var re = /(\s*)(?:\r|\n)\s*/g;
    var args = [singular.replace(re, "$1"), plural.replace(re, "$1")];
    for (var i=3; i<arguments.length; i+=1) {
@@ -795,18 +801,18 @@ function injectXslDeclaration(xml) {
 
 /**
  * General mail sending function. Mails will be queued in app.data.mails.
- * @param {String} sender The sender's e-mail address
  * @param {Object} recipient The recipient's email addresses
  * @param {String} subject The e-mail's subject
  * @param {String} body The body text of the e-mail
  * @returns {Number} The status code of the underlying helma.Mail instance
  */
-function sendMail(sender, recipient, subject, body) {
+function sendMail(recipient, subject, body) {
    if (!recipient || !body) {
       throw Error("Insufficient arguments in method sendMail()");
    }
-   var mail = new helma.Mail(getProperty("smtp", "localhost"), getProperty("smtp.port", "25"));
-   mail.setFrom("noreply@antville.org");
+   var mail = new helma.Mail(getProperty("smtp", "localhost"), 
+         getProperty("smtp.port", "25"));
+   mail.setFrom(root.replyTo);
    if (recipient instanceof Array) {
       for (var i in recipient) {
          mail.addBCC(recipient[i]);

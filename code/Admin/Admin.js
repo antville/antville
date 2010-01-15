@@ -26,17 +26,295 @@
  * @fileOverview Defines the Admin prototype.
  */
 
+Admin.SITEREMOVALGRACEPERIOD = 14; // days
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Admin.getNotificationScopes = defineConstants(Admin, "none", "trusted", "regular");
+
+/**
+ * @function
+ * @return {String[]}
+ * @see defineConstants
+ */
+Admin.getPhaseOutModes = defineConstants(Admin, "disabled", "restricted", "abandoned", "both");
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+Admin.getCreationScopes = defineConstants(Admin, "privileged", "trusted", "regular");
+
+/**
+ * 
+ * @param {Object} job
+ */
+Admin.queue = function(job) {
+   var file = java.io.File.createTempFile("job-", String.EMPTY, Admin.queue.dir);
+   serialize(job, file);
+   return;
+}
+
 /**
  * 
  */
-Admin.purgeDatabase = function() {
+Admin.queue.dir = (new java.io.File(app.dir, "../jobs")).getCanonicalFile();
+Admin.queue.dir.exists() || Admin.queue.dir.mkdirs();
+
+/**
+ * 
+ */
+Admin.dequeue = function() {
+   var jobs = Admin.queue.dir.listFiles();
+   var max = Math.min(jobs.length, 10);
+   for (var file, job, i=0; i<max; i+=1) {
+      file = jobs[i]; 
+      try {
+         job = deserialize(file);
+         app.log("PROCESSING QUEUED JOB " + (i+1) + " OF " + max);
+         switch (job.type) {
+            case "site-removal":
+            var site = Site.getById(job.id);
+            site && site !== root && Site.remove.call(site);
+            break;
+         }
+      } catch (e) {
+         app.log("Failed to process job " + file + " due to " + e);
+      }
+      file["delete"]();
+   }
+   return;
+}
+
+/**
+ * 
+ */
+Admin.purgeSites = function() {
    var now = new Date;
+
    root.admin.deletedSites.forEach(function() {
-      if (now - this.deleted > Date.ONEDAY * Root.SITEREMOVALGRACEPERIOD) {
-         Root.queue({type: "site-removal", id: this._id});
-         this.deleted = now;
+      if (now - this.deleted > Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD) {
+         Admin.queue({type: "site-removal", id: this._id});
+         this.deleted = now; // Prevents redundant deletion jobs
       }
    });
+   
+   var notificationPeriod = root.phaseOutNotificationPeriod * Date.ONEDAY;
+   var gracePeriod = root.phaseOutGracePeriod * Date.ONEDAY;
+
+   var phaseOutAbandonedSites = function() {
+      root.forEach(function() {
+         if (this.status === Site.TRUSTED) {
+            return;
+         }
+         if (age - notificationPeriod > 0) {
+            if (!this.notified || now - this.notified > notificationPeriod) {
+               var site = this;
+               this.members.owners.forEach(function() {
+                  sendMail(this.creator.email,
+                        gettext("Notification of changes at site {0}", site.title),
+                        site.renderSkinAsString("$Site#notify_deletion"));
+               });
+               this.notified = now;
+            }
+            if (age - notificationPeriod - gracePeriod > 0) {
+               this.mode = Site.DELETED;
+               this.deleted = now;
+            }
+         }
+      });
+      return;
+   }
+   
+   var phaseOutPrivateSites = function() {
+      root.admin.restrictedSites.forEach(function() {
+         if (this.status === Site.TRUSTED) {
+            return;
+         }
+         var age = now - (this.restricted || this.created);
+         if (age - notificationPeriod > 0) {
+            if (!this.notified || now - this.notified > notificationPeriod) {
+               var site = this;
+               this.members.owners.forEach(function() {
+                  sendMail(this.creator.email,
+                        gettext("Notification of changes at site {0}", site.title),
+                        site.renderSkinAsString("$Site#notify_blocking"));
+               });
+               this.notified = now;
+            }
+            if (age - notificationPeriod - gracePeriod > 0) {
+               this.status = Site.BLOCKED;
+            }
+         }
+      });
+      return;
+   }
+   
+   switch (root.phaseOutMode) {
+      case Admin.ABANDONED:
+      return phaseOutAbandonedSites();
+      case Admin.RESTRICTED:
+      return phaseOutPrivateSites();
+      case Admin.BOTH:
+      phaseOutAbandonedSites();
+      return phaseOutPrivateSites();
+   }
+   return;
+}
+
+/**
+ * 
+ */
+Admin.purgeReferrers = function() {
+   var sql = new Sql;
+   var result = sql.execute("delete from log where action = 'main' and " +
+         "created < date_add(now(), interval -2 day)");
+   return result;
+}
+
+/**
+ * 
+ */
+Admin.commitRequests = function() {
+   var requests = app.data.requests;
+   app.data.requests = {};
+   for each (var item in requests) {
+      switch (item.type) {
+         case Story:
+         var story = Story.getById(item.id);
+         story && (story.requests = item.requests);
+         break;
+      }
+   }
+   res.commit();
+   return;
+}
+
+/**
+ * 
+ */
+Admin.commitEntries = function() {
+   var entries = app.data.entries;   
+   app.data.entries = [];
+   var history = [];
+
+   for each (var item in entries) {
+      var referrer = helma.Http.evalUrl(item.referrer);
+      if (!referrer) {
+         continue;
+      }
+
+      // Only log unique combinations of context, ip and referrer
+      referrer = String(referrer);
+      var key = item.context_type + "#" + item.context_id + ":" + 
+            item.ip + ":" + referrer;
+      if (history.indexOf(key) > -1) {
+         continue;
+      }
+      history.push(key);
+
+      // Exclude requests coming from the same site
+      if (item.site) {
+         var href = item.site.href().toLowerCase();
+         if (referrer.toLowerCase().contains(href.substr(0, href.length-1))) {
+            continue;
+         }
+      }
+      item.persist();
+   }
+
+   res.commit();
+   return;
+}
+
+/**
+ * 
+ */
+Admin.invokeCallbacks = function() {
+   var http = helma.Http();
+   http.setTimeout(200);
+   http.setReadTimeout(300);
+   http.setMethod("POST");
+
+   var ref, site, item;
+   while (ref = app.data.callbacks.pop()) {
+      site = Site.getById(ref.site);
+      item = ref.handler && ref.handler.getById(ref.id);
+      if (!site || !item) {
+         continue;
+      }
+      app.log("Invoking callback URL " + site.callbackUrl + " for " + item);
+      try {
+         http.setContent({
+            type: item.constructor.name,
+            id: item.name || item._id,
+            url: item.href(),
+            date: item.modified.valueOf(),
+            user: item.modifier.name,
+            site: site.title || site.name,
+            origin: site.href()
+         });
+         http.getUrl(site.callbackUrl);
+      } catch (ex) {
+         app.debug("Invoking callback URL " + site.callbackUrl + " failed: " + ex);
+      }
+   }
+   return;
+}
+
+/**
+ * 
+ */
+Admin.updateHealth = function() {
+   var health = Admin.health || {};
+   if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
+      health.modified = new Date;
+      health.requestsPerUnit = app.requestCount - 
+            (health.currentRequestCount || 0);
+      health.currentRequestCount = app.requestCount;
+      health.errorsPerUnit = app.errorCount - (health.currentErrorCount || 0);
+      health.currentErrorCount = app.errorCount;
+      Admin.health = health;
+   }
+   return;
+}
+
+/**
+ * 
+ */
+Admin.exportImport = function() {
+   if (app.data.exportImportIsRunning) {
+      return;
+   }
+   app.invokeAsync(this, function() {
+      app.data.exportImportIsRunning = true;
+      Exporter.run();
+      Importer.run();
+      app.data.exportImportIsRunning = false;
+   }, [], -1);
+   return;
+}
+
+/**
+ * 
+ */
+Admin.updateDomains = function() {
+   res.push();
+   for (var key in app.properties) {
+      if (key.startsWith("domain.")) {
+         res.writeln(getProperty(key) + "\t\t" + key.substr(7));
+      }
+   }
+   var map = res.pop();
+   var file = new java.io.File(app.dir, "domains.map");
+   var out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+         new java.io.FileOutputStream(file), "UTF-8"));
+   out.write(map);
+   out.close();
    return;
 }
 
@@ -100,6 +378,8 @@ Admin.prototype.main_action = function() {
 }
 
 Admin.prototype.setup_action = function() {
+   //Site.remove.call(Site.getByName("deleteme"));
+   
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
@@ -112,7 +392,7 @@ Admin.prototype.setup_action = function() {
       }
    }
 
-   res.data.title = gettext("{0} Setup", root.getTitle());
+   res.data.title = gettext("Setup");
    res.data.action = this.href(req.action);
    res.data.body = this.renderSkinAsString("$Admin#setup");
    root.renderSkin("Site#page");
@@ -125,31 +405,22 @@ Admin.prototype.setup_action = function() {
  */
 Admin.prototype.update = function(data) {
    root.map({
-      email: data.email,
-      notificationScope: data.notificationScope,
-      quota: data.quota,
       creationScope: data.creationScope,
       creationDelay: data.creationDelay,
-      qualifyingPeriod: data.qualifyingPerido,
-      qualifyingDate: data.qualifyingDate,
-      autoCleanupEnabled: data.autoCleanupEnabled,
-      autoCleanupStartTime: data.autoCleanupStartTime,
-      phaseOutPrivateSites: data.phaseOutPrivateSites,
-      phaseOutInactiveSites: data.phaseOutInactiveSites,
+      replyTo: data.replyTo,
+      notificationScope: data.notificationScope,
+      phaseOutGracePeriod: data.phaseOutGracePeriod,
+      phaseOutMode: data.phaseOutMode,
       phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
-      phaseOutGracePeriod: data.phaseOutGracePeriod
+      probationPeriod: data.probationPeriod,
+      quota: data.quota
    });
    this.log(root, "Updated setup");
-   
-   // FIXME:
-   //for (var i in app.modules) {
-   //   this.applyModuleMethod(app.modules[i], "evalSystemSetup", data);
-   //}
    return;
 }
 
 Admin.prototype.jobs_action = function() {
-   var files = Root.queue.dir.listFiles();
+   var files = Admin.queue.dir.listFiles();
    for each (var file in files) {
       var job = deserialize(file);
       res.debug(job.toSource() + " – " + file);
@@ -532,211 +803,4 @@ Admin.prototype.dropdown_macro = function(param) {
    var selectedIndex = req.postParams[param.name];
    html.dropDown({name: param.name}, options, selectedIndex);
    return;
-}
-
-/**
- * 
- * @param {Object} param
- */
-Admin.prototype.moduleSetup_macro = function(param) {
-   for (var i in app.modules) {
-      this.applyModuleMethod(app.modules[i], "renderSetup", param);
-   }
-   return;
-}
-
-/**
- * FIXME!
- */
-Admin.prototype.autoCleanUp = function() {
-   return;
-   
-   if (root.sys_enableAutoCleanup) {
-      var startAtHour = root.sys_startAtHour;
-      var nextCleanup = new Date();
-      nextCleanup.setDate(nextCleanup.getDate() + 1);
-      nextCleanup.setHours((!isNaN(startAtHour) ? startAtHour : 0), 0, 0, 0);
-      // check if it's time to run autocleanup
-      if (!app.data.nextCleanup) {
-         app.data.nextCleanup = nextCleanup;
-         this.add (new SysLog("system", null, "next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"), null));
-      } else if (new Date() >= app.data.nextCleanup) {
-         log("system", null, "starting automatic cleanup ...", null);
-         app.data.nextCleanup = nextCleanup;
-         // now start the auto-cleanup-functions
-         this.cleanupAccesslog();
-         this.blockPrivateSites();
-         // this.deleteInactiveSites();
-         this.add (new SysLog("system", null, "next cleanup scheduled for " + app.data.nextCleanup.format("EEEE, dd.MM.yyyy HH:mm"), null));
-      }
-   }
-}
-
-/**
- * FIXME!
- */
-Admin.prototype.blockPrivateSites = function() {
-   return;
-   
-   var enable = root.sys_blockPrivateSites;
-   var blockWarningAfter = root.sys_blockWarningAfter;
-   var blockAfterWarning = root.sys_blockAfterWarning;
-   if (!enable) {
-      // blocking of private sites is disabled
-      return;
-   } else if (!blockWarningAfter || !blockAfterWarning) {
-      // something is fishy with blocking properties
-      log("system", null, "blocking of private sites cancelled", null);
-      return;
-   }
-   var size = this.privateSites.size();
-   log("system", null, "checking " + size + " private site(s) ...", null);
-
-   // get thresholds in millis
-   warnThreshold = blockWarningAfter*1000*60*60*24;
-   blockThreshold = blockAfterWarning*1000*60*60*24;
-
-   for (var i=0;i<size;i++) {
-      var site = this.privateSites.get(i);
-      // if site is trusted, we do nothing
-      if (site.trusted)
-         continue;
-
-      var privateFor = new Date() - site.lastoffline;
-      var timeSinceWarning = new Date() - site.lastblockwarn;
-      if (privateFor >= warnThreshold) {
-         // check if site-admins have been warned already
-         var alreadyWarned = false;
-         if (site.lastblockwarn > site.lastoffline)
-            alreadyWarned = true;
-         // check whether warn admins or block site
-         if (!alreadyWarned) {
-            // admins of site haven't been warned about upcoming block, so do it now
-            var warning = new Mail;
-            var recipient = site.email ? site.email : site.creator.email;
-            warning.addTo(recipient);
-            warning.setFrom(root.sys_email);
-            warning.setSubject(gettext("Warning! Your site {0} soon will be blocked!", site.title));
-            var sp = new Object();
-            sp.site = site.alias;
-            sp.url = site.href();
-            sp.privatetime = blockWarningAfter;
-            sp.daysleft = blockAfterWarning;
-            sp.contact = root.sys_email;
-            warning.addText(this.renderSkinAsString("blockwarnmail", sp));
-            warning.send();
-            log("site", site.alias, "site is private for more than " + 
-                  blockWarningAfter + " days, sent warning to " + recipient, null);
-            site.lastblockwarn = new Date();
-         } else if (timeSinceWarning >= blockThreshold) {
-            // site is offline for too long, so block it
-            site.blocked = 1;
-            log("site", site.alias, "blocked site", null);
-         }
-      } else
-         break;
-   }   
-   log("system", null, "finished checking for private sites", null);
-   return true;
-}
-
-/**
- * FIXME!
- */
-Admin.prototype.deleteInactiveSites = function() {
-   return;
-
-   var enable = root.sys_deleteInactiveSites;
-   var delWarningAfter = root.sys_deleteWarningAfter;
-   var delAfterWarning = root.sys_deleteAfterWarning;
-   if (!enable) {
-      // blocking of private sites is disabled
-      return;
-   } else if (!delWarningAfter || !delAfterWarning) {
-      // something is fishy with properties
-      log("system", null, "cleanup of sites cancelled", null);
-      return;
-   }
-   var size = root.size();
-   log("system", null, "checking " + size + " sites for inactivity ...", null);
-
-   // get thresholds in millis
-   warnThreshold = delWarningAfter*1000*60*60*24;
-   delThreshold = delAfterWarning*1000*60*60*24;
-
-   for (var i=size;i>0;i--) {
-      var site = root.get(i-1);
-      // if site is trusted, we do nothing
-      if (site.trusted)
-         continue;
-
-      var idleFor = new Date() - site.modified;
-      var timeSinceWarning = new Date() - site.lastdelwarn;
-      if (idleFor >= warnThreshold) {
-         // check if site-admins have been warned already
-         var alreadyWarned = false;
-         if (site.lastdelwarn > site.modified)
-            alreadyWarned = true;
-         // check whether warn admins or block site
-         if (!alreadyWarned) {
-            // admins of site haven't been warned about upcoming block, so do it now
-            var warning = new Mail();
-            var recipient = site.email ? site.email : site.creator.email;
-            warning.addTo(recipient);
-            warning.setFrom(root.sys_email);
-            warning.setSubject(gettext("Warning! Your site {0} soon will be deleted!", site.title));
-            var sp = new Object();
-            sp.site = site.alias;
-            sp.url = site.href();
-            sp.inactivity = delWarningAfter;
-            sp.daysleft = delAfterWarning;
-            sp.contact = root.sys_email;
-            warning.addText(this.renderSkinAsString("deletewarnmail", sp));
-            warning.send();
-            log("site", site.alias, "site was inactive for more than " + 
-                  delWarningAfter + " days, sent warning to " + recipient, null);
-            site.lastdelwarn = new Date();
-         } else if (timeSinceWarning >= blockThreshold) {
-            // site is inactive for too long, so delete it
-            root.deleteSite(site);
-         }
-      } else
-         break;
-   }   
-   log("system", null, "finished checking for inactive sites", null);
-   return true;
-}
-
-/**
- * FIXME!
- */
-Admin.prototype.cleanupAccesslog = function() {
-   return;
-   
-	var dbConn = getDBConnection("antville");
-	var dbError = dbConn.getLastError();
-	if (dbError) {
-      log("system", null, "failed to clean up accesslog-table!", null);
-      return;
-   }
-   var threshold = new Date();
-   threshold.setDate(threshold.getDate() -2);
-	var query = "delete from AV_ACCESSLOG where ACCESSLOG_F_TEXT is null and ACCESSLOG_DATE < '" + threshold.format("yyyy-MM-dd HH:mm:ss") + "'";
-   var delRows = dbConn.executeCommand(query);
-   if (delRows) {
-      log("system", null, "removed " + delRows + 
-            " records from accesslog-table", null);
-   }
-   return;
-}
-
-/**
- * @returns {String[]} List of 24 formatted hour strings
- */
-Admin.getHours = function() {
-   var hours = [];
-   for (var i=0; i<24; i+=1) {
-      hours.push(String(i).pad("0", 2, String.LEFT) + ":00");
-   }
-   return hours;
 }

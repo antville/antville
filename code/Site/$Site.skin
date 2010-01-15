@@ -233,6 +233,11 @@ information." %>
 <% site.checkbox callbackMode %> 
 <label for="callbackMode"><% gettext enabled %><label></td>
 </tr>
+<% if <% root.quota %> is null then '' else 
+      <% gettext "Disk Space" prefix='<tr><td class="small">' 
+      suffix=<% gettext "{0} MB free" <% site.diskspace %> 
+      prefix=:</td><td> suffix=</td></tr> %> %> 
+%>
 <tr>
 <td colspan="2"><div class="listSeparator"> </div>
 <a id="spamfilter" name="spamfilter"></a>
@@ -253,3 +258,29 @@ line to be applied on every URL in the referrer and backlink lists."
 </tr>
 </table>
 </form>
+
+<% #notify_blocking %>
+<% gettext 'Hello {0}.' <% membership.name %> %>
+
+<% gettext 'This message wants to inform you that in {0} the site {1} will be 
+      blocked because it is being restricted for too long.' <% ngettext 
+      '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> <% site.name %> %>
+
+<% gettext "Best regards." %>
+<% gettext "The Management" %>
+
+--
+[1] <% this.href %> 
+
+<% #notify_deletion %>
+<% gettext 'Hello {0}.' <% membership.name %> %>
+
+<% gettext 'This message wants to inform you that in {0} the site {1} will be 
+      deleted because it has been considered as abandoned.' <% ngettext 
+      '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> <% site.name %> %>
+
+<% gettext "Best regards." %>
+<% gettext "The Management" %>
+
+--
+[1] <% this.href %> 

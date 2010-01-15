@@ -119,6 +119,9 @@ HopObject.prototype.onRequest = function() {
       res.redirect(root.href("error"));
    }
    
+   res.handlers.layout = res.handlers.site.layout || new Layout;
+   res.skinpath = res.handlers.layout.getSkinPath();
+
    if (!this.getPermission(req.action)) {
       if (!session.user) {
          User.setLocation(root.href() + req.path);
@@ -131,11 +134,9 @@ HopObject.prototype.onRequest = function() {
       res.data.body = root.renderSkinAsString("$Root#error", {error: 
             gettext("You are not allowed to access this part of the site.")});
       res.handlers.site.renderSkin("Site#page");
+      session.data.error = null;
       res.stop();
    }
-   
-   res.handlers.layout = res.handlers.site.layout || new Layout;
-   res.skinpath = res.handlers.layout.getSkinPath();
 
    res.meta.values = {};
    res.handlers.site.renderSkinAsString("Site#values");
@@ -197,24 +198,64 @@ HopObject.prototype.log = function() {
  * @param {String} action
  */
 HopObject.prototype.notify = function(action) {
+   var self = this;
    var site = res.handlers.site;
-   if (site.notificationMode === Site.NOBODY) {
+   
+   var getPermission = function(scope, mode, status) {
+      if (scope === Admin.NONE || mode === Site.NOBODY || 
+            status === Site.BLOCKED) {
+         return false;
+      }
+      var scopes = [Admin.REGULAR, Admin.TRUSTED];
+      if (scopes.indexOf(status) < scopes.indexOf(scope)) {
+         return false;
+      }
+      if (!Membership.require(mode)) {
+         return false;
+      }
+      return true;
+   }
+   
+   // Helper method for debugging
+   var renderMatrix = function() {
+      var buf = ['<table border=1 cellspacing=0>'];
+      for each (var scope in Admin.getNotificationScopes()) {
+         for each (var mode in Site.getNotificationModes()) {
+            for each (var status in Site.getStatus()) {
+               var perm = getPermission(scope.value, mode.value, status.value);
+               buf.push('<tr style="');
+               perm && buf.push('color: blue;');
+               if (scope.value === root.notificationScope && mode.value === 
+                     site.notificationMode && status.value === site.status) {
+                  buf.push(' background-color: yellow;');
+               }
+               buf.push('">');
+               buf.push('<td>', scope.value, '</td>');
+               buf.push('<td>', status.value, '</td>');
+               buf.push('<td>', mode.value, '</td>');
+               buf.push('<td>', perm, '</td>');
+               buf.push('</tr>');
+            }
+         }
+      }
+      buf.push('</table>');
+      res.write(buf.join(""));
       return;
    }
+
    switch (action) {
       case "comment":
       action = "create"; break;
    }
-   var membership;
+
    var currentMembership = res.handlers.membership;
-   for (var i=0; i<site.members.size(); i+=1) {
-      res.handlers.membership = membership = site.members.get(i);
-      if (membership.require(site.notificationMode)) {
-         sendMail(root.email, membership.creator.email,
-               gettext("Notification of changes at site {0}", site.title),
-               this.renderSkinAsString("$HopObject#notify_" + action));
+   site.members.forEach(function() {
+      var membership = res.handlers.membership = this;
+      if (getPermission(root.notificationScope, site.notificationMode, site.status)) {
+         sendMail(membership.creator.email, gettext("Notification of changes at site {0}", 
+               site.title), self.renderSkinAsString("$HopObject#notify_" + action));
       }
-   }
+   });
    res.handlers.membership = currentMembership;
    return;
 }
@@ -579,7 +620,7 @@ HopObject.prototype.getTitle = function() {
  * @returns {String}
  */
 HopObject.prototype.toString = function() {
-   return this.constructor.name + " #" + this._id;
+   return gettext(this.constructor.name) + " #" + this._id;
 }
 
 /**

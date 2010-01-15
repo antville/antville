@@ -82,11 +82,13 @@ markgettext("Registration");
 markgettext("Regular");
 markgettext("Reset");
 markgettext("Restricted");
+markgettext("Root");
 markgettext("Running");
 
 markgettext("Setup");
 markgettext("Shared");
 markgettext("Show");
+markgettext("Site");
 markgettext("Sites");
 markgettext("sites");
 markgettext("Skins");

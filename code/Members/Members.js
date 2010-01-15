@@ -128,9 +128,8 @@ Members.prototype.reset_action = function() {
          }
          var token = User.getSalt();
          user.metadata.set("resetToken", token);
-         sendMail(root.email, user.email, 
-               gettext("Confirmation for password reset at {0}", this._parent.title), 
-               user.renderSkinAsString("$User#reset", {
+         sendMail(user.email, gettext("Confirmation for password reset at {0}", 
+               this._parent.title), user.renderSkinAsString("$User#reset", {
                   href: this.href("reset"),
                   token: token
                }));

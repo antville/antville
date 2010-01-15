@@ -38,13 +38,6 @@ User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
  */
 User.getStatus = defineConstants(User, "blocked", 
       "regular", "trusted", "privileged");
-/**
- * @function
- * @returns {String[]}
- * @see defineConstants
- */
-User.getScopes = defineConstants(User, "regular users", 
-      "trusted users", "privileged users");
 
 this.handleMetadata("hash");
 this.handleMetadata("salt");

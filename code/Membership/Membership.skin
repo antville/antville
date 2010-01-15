@@ -1,7 +1,7 @@
 <% #status %>
 <span class="nowrap"><% gettext "Logged in as {0}" 
    <% membership.name | membership.link %> %></span>
-<% gettext <% membership.role %> prefix='<div>(' suffix=')</div>' %>
+<div><% gettext <% membership.role %> prefix='(' suffix=')' %></div>
 <% site.members.link edit <% gettext "Edit User Profile" %> prefix="... " 
 suffix="<br />" %>
 <% site.link subscribe prefix="... " suffix="<br />" %>
@@ -10,4 +10,5 @@ suffix="<br />" %>
 <% site.members.link logout prefix="... " %>
 
 <% #login %>
-<% gettext "You are not logged in" %> <% site.members.link login prefix="... " %>
+<div><% gettext "You are not logged in" %></div>
+<div><% site.members.link login prefix="... " %></div>

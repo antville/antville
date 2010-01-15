@@ -285,8 +285,7 @@ Membership.prototype.notify = function(action, recipient, subject) {
       case "edit":
       case "register":
       res.handlers.sender = User.getMembership();
-      sendMail(root.email, recipient, subject,
-            this.renderSkinAsString("$Membership#notify_" + action));
+      sendMail(recipient, subject, this.renderSkinAsString("$Membership#notify_" + action));
    }
    return;
 }
@@ -301,6 +300,5 @@ Membership.prototype.valueOf = Membership.prototype.toString;
  * @returns {String}
  */
 Membership.prototype.toString = function() {
-   return gettext("the membership of user {0} in site {1}", 
-         this.name, this.site.name);
+   return gettext("{0} membership of user {1}", this.role || "Transient", this.name);
 }

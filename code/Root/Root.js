@@ -22,55 +22,6 @@
 // $URL$
 //
 
-Root.SITEREMOVALGRACEPERIOD = 14; // days
-
-Root.updateDomains = function() {
-   res.push();
-   for (var key in app.properties) {
-      if (key.startsWith("domain.")) {
-         res.writeln(getProperty(key) + "\t\t" + key.substr(7));
-      }
-   }
-   var map = res.pop();
-   var file = new java.io.File(app.dir, "domains.map");
-   var out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
-         new java.io.FileOutputStream(file), "UTF-8"));
-   out.write(map);
-   out.close();
-   return;
-}
-
-Root.queue = function(job) {
-   var file = java.io.File.createTempFile("job-", String.EMPTY, Root.queue.dir);
-   serialize(job, file);
-   return;
-}
-
-Root.queue.dir = (new java.io.File(app.dir, "../jobs")).getCanonicalFile();
-Root.queue.dir.exists() || Root.queue.dir.mkdirs();
-
-Root.dequeue = function() {
-   var jobs = Root.queue.dir.listFiles();
-   var max = Math.min(jobs.length, 10);
-   for (var file, job, i=0; i<max; i+=1) {
-      file = jobs[i]; 
-      try {
-         job = deserialize(file);
-         app.log("PROCESSING QUEUED JOB " + (i+1) + " OF " + max);
-         switch (job.type) {
-            case "site-removal":
-            var site = Site.getById(job.id);
-            site && site !== root && Site.remove.call(site);
-            break;
-         }
-      } catch (e) {
-         app.log("Failed to process job " + file + " due to " + e);
-      }
-      file["delete"]();
-   }
-   return;
-}
-
 /**
  * @fileOverview Defines the Root prototype.
  */
@@ -78,164 +29,15 @@ Root.dequeue = function() {
 /** @constant */
 Root.VERSION = "1.2-beta";
 
-/**
- * @function
- * @returns {String[]}
- * @see defineConstants
- */
-Root.getScopes = defineConstants(Root, markgettext("any site"), 
-      markgettext("public sites"), markgettext("trusted sites"), 
-      markgettext("no site"));
-
-this.handleMetadata("notificationScope");
-this.handleMetadata("quota");
-this.handleMetadata("creationScope");
 this.handleMetadata("creationDelay");
-this.handleMetadata("qualifyingPeriod");
-this.handleMetadata("qualifyingDate");
-this.handleMetadata("autoCleanupEnabled");
-this.handleMetadata("autoCleanupStartTime");
-this.handleMetadata("phaseOutPrivateSites");
-this.handleMetadata("phaseOutInactiveSites");
-this.handleMetadata("phaseOutNotificationPeriod");
+this.handleMetadata("creationScope");
+this.handleMetadata("notificationScope");
 this.handleMetadata("phaseOutGracePeriod");
-
-/**
- * 
- */
-Root.commitRequests = function() {
-   var requests = app.data.requests;
-   app.data.requests = {};
-   for each (var item in requests) {
-      switch (item.type) {
-         case Story:
-         var story = Story.getById(item.id);
-         story && (story.requests = item.requests);
-         break;
-      }
-   }
-   res.commit();
-   return;
-}
-
-/**
- * 
- */
-Root.commitEntries = function() {
-   var entries = app.data.entries;   
-   if (entries.length < 1) {
-      return;
-   }
-   
-   app.data.entries = [];
-   var history = [];
-
-   for each (var item in entries) {
-      var referrer = helma.Http.evalUrl(item.referrer);
-      if (!referrer) {
-         continue;
-      }
-
-      // Only log unique combinations of context, ip and referrer
-      referrer = String(referrer);
-      var key = item.context_type + "#" + item.context_id + ":" + 
-            item.ip + ":" + referrer;
-      if (history.indexOf(key) > -1) {
-         continue;
-      }
-      history.push(key);
-
-      // Exclude requests coming from the same site
-      if (item.site) {
-         var href = item.site.href().toLowerCase();
-         if (referrer.toLowerCase().contains(href.substr(0, href.length-1))) {
-            continue;
-         }
-      }
-      item.persist();
-   }
-
-   res.commit();
-   return;
-}
-
-/**
- * 
- */
-Root.purgeReferrers = function() {
-   var sql = new Sql;
-   var result = sql.execute("delete from log where action = 'main' and " +
-         "created < date_add(now(), interval -2 day)");
-   return result;
-}
-
-/**
- * 
- */
-Root.invokeCallbacks = function() {
-   var http = helma.Http();
-   http.setTimeout(200);
-   http.setReadTimeout(300);
-   http.setMethod("POST");
-
-   var ref, site, item;
-   while (ref = app.data.callbacks.pop()) {
-      site = Site.getById(ref.site);
-      item = ref.handler && ref.handler.getById(ref.id);
-      if (!site || !item) {
-         continue;
-      }
-      app.log("Invoking callback URL " + site.callbackUrl + " for " + item);
-      try {
-         http.setContent({
-            type: item.constructor.name,
-            id: item.name || item._id,
-            url: item.href(),
-            date: item.modified.valueOf(),
-            user: item.modifier.name,
-            site: site.title || site.name,
-            origin: site.href()
-         });
-         http.getUrl(site.callbackUrl);
-      } catch (ex) {
-         app.debug("Invoking callback URL " + site.callbackUrl + " failed: " + ex);
-      }
-   }
-   return;
-}
-
-/**
- * 
- */
-Root.updateHealth = function() {
-   var health = Root.health || {};
-   if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
-      health.modified = new Date;
-      health.requestsPerUnit = app.requestCount - 
-            (health.currentRequestCount || 0);
-      health.currentRequestCount = app.requestCount;
-      health.errorsPerUnit = app.errorCount - (health.currentErrorCount || 0);
-      health.currentErrorCount = app.errorCount;
-      Root.health = health;
-   }
-   return;
-}
-
-/**
- * 
- */
-Root.exportImport = function() {
-   if (app.data.exportImportIsRunning) {
-      return;
-   }
-   app.invokeAsync(this, function() {
-      app.data.exportImportIsRunning = true;
-      Exporter.run();
-      Importer.run();
-      app.data.exportImportIsRunning = false;
-   }, [], -1);
-   return;
-}
+this.handleMetadata("phaseOutNotificationPeriod");
+this.handleMetadata("phaseOutMode");
+this.handleMetadata("probationPeriod");
+this.handleMetadata("quota");
+this.handleMetadata("replyTo");
 
 /**
  * Antville’s root object is an extent of the Site prototype.
@@ -245,18 +47,15 @@ Root.exportImport = function() {
  * @property {Admin} admin
  * @property {User[]} admins
  * @property {Api} api
- * @property {String} autoCleanupEnabled
- * @property {String} autoCleanupStartTime
  * @property {String} creationDelay
  * @property {String} creationScope
  * @property {String} notificationScope
  * @property {String} phaseOutGracePeriod
- * @property {String} phaseOutInactiveSites
+ * @property {String} phaseOutMode
  * @property {String} phaseOutNotificationPeriod
- * @property {String} phaseOutPrivateSites
- * @property {String} qualifyingDate
- * @property {String} qualifyingPeriod
+ * @property {String} probationPeriod
  * @property {String} quote
+ * @property {String} replyTo
  * @property {Site[]} sites
  * @property {Site[]} updates
  * @property {User[]} users
@@ -283,7 +82,6 @@ Root.prototype.getPermission = function(action) {
       case "create":
       case "import":
       return this.getCreationPermission();
-      //return this.mode !== Site.CLOSED;
    }
    return Site.prototype.getPermission.apply(this, arguments);
 }
@@ -303,25 +101,6 @@ Root.prototype.main_action = function() {
       res.handlers.membership.role = Membership.OWNER;
    }
    return Site.prototype.main_action.apply(this);
-}
-
-/**
- * 
- * @param {String} name
- * @returns {Object}
- * @see Site#getFormOptions
- */
-Root.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "notificationScope":
-      return Root.getScopes();
-      case "creationScope":
-      return User.getScopes();
-      case "autoCleanupStartTime":
-      return Admin.getHours();
-      return;
-   }
-   return Site.prototype.getFormOptions.apply(this, arguments);
 }
 
 Root.prototype.error_action = function() {
@@ -460,9 +239,9 @@ Root.prototype.health_action = function() {
       param[key] = formatNumber(app[key]);
    }
 
-   if (Root.health) {
-      param.requestsPerUnit = formatNumber(Root.health.requestsPerUnit);
-      param.errorsPerUnit = formatNumber(Root.health.errorsPerUnit);
+   if (Admin.health) {
+      param.requestsPerUnit = formatNumber(Admin.health.requestsPerUnit);
+      param.errorsPerUnit = formatNumber(Admin.health.errorsPerUnit);
    }
    
    param.entries = app.data.entries.length;
@@ -578,6 +357,24 @@ Root.prototype.getMacroHandler = function(name) {
 }
 
 /**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ * @see Site#getFormOptions
+ */
+Root.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "creationScope":
+      return Admin.getCreationScopes();
+      case "notificationScope":
+      return Admin.getNotificationScopes();
+      case "phaseOutMode":
+      return Admin.getPhaseOutModes();
+   }
+   return Site.prototype.getFormOptions.apply(root, arguments);
+}
+
+/**
  * @returns {Boolean}
  */
 Root.prototype.getCreationPermission = function() {
@@ -587,37 +384,30 @@ Root.prototype.getCreationPermission = function() {
    } if (User.require(User.PRIVILEGED)) {
       return true;
    }
-
+   
    switch (root.creationScope) {
-      case User.PRIVILEGEDUSERS:
+      case User.PRIVILEGED:
       return false;
-      case User.TRUSTEDUSERS:
+      case User.TRUSTED:
       return User.require(User.TRUSTED);
       default:
-      case User.ALLUSERS:
-      if (root.qualifyingPeriod) {
-         var days = Math.floor((new Date - user.created) / Date.ONEDAY);
-         if (days < root.qualifyingPeriod) {
-            //throw Error(gettext("Sorry, you have to be a member for at " +
-            //      "least {0} days to create a new site.", 
-            //      formatDate(root.qualifyingPeriod));
+      case User.REGULAR:
+      var now = new Date, delta;
+      if (root.probationPeriod) {
+         delta = root.probationPeriod - Math.floor((now - 
+               user.created) / Date.ONEDAY);
+         if (delta > 0) {
+            session.data.error = gettext("You have to wait {0} days before you \
+                  you are allowed to create a new site.", delta);
             return false;
          }
-      } else if (root.qualifyingDate) {
-         if (user.created > root.qualifyingDate) {
-            //throw Error(gettext("Sorry, only members who have registered " +
-            //      "before {0} are allowed to create a new site.", 
-            //      formatDate(root.qualifyingDate));
-            return false;
-         }
-      }
-      if (user.sites.count() > 0) {
-         var days = Math.floor((new Date - user.sites.get(0).created) /
-               Date.ONEDAY);
-         if (days < root.creationDelay) {
-            //throw Error(gettext("Sorry, you still have to wait {0} days " +
-            //      "before you can create another site.", 
-            //      root.creationDelay - days));
+      } 
+      if (root.creationDelay && user.sites.count() > 0) {
+         delta = root.creationDelay - Math.floor((now - 
+               user.sites.get(0).created) / Date.ONEDAY);
+         if (delta > 0) {
+            session.data.error = gettext("You need to wait {0} days before you \
+                  are allowed to create a new site.", root.creationDelay - days);
             return false;
          }
       }

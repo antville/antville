@@ -223,7 +223,7 @@ Story.prototype.update = function(data) {
          site.modified = this.modified;
       }
       site.callback(this);
-      // FIXME: Where did this.notify(req.action) go?
+      // Notification is sent in Stories.create_action()
    }
    
    this.clearCache();

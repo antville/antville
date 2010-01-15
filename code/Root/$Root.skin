@@ -34,84 +34,84 @@ alphabetical order." %></p>
 <% #error %>
 <p class="storyTitle"><% gettext Sorry! %></p>
 <p><% gettext "An error occurred while processing your request:" %></p>
-<% param.error %>
+<% session.error default=<% param.error %> %>
 
 <% #health %>
 <p class="storyTitle"><% response.title %></p>
 <% site.skin Root#status %>
-<br />
+<br /><br />
 <p><strong><% gettext Details %></strong></p>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <colgroup>
-   <col width="60%" />
+   <col width="40%" />
    <col width="*" />
 </colgroup>
 <tr>
-   <td><% gettext Uptime %></td>
+   <td class="small"><% gettext Uptime %>:</td>
    <td><% ngettext '{0} Day' '{0} Days' <% param.uptime %> %></td>
 </tr>
 <tr>
-   <td><% gettext 'Active Threads' %></td>
+   <td class="small"><% gettext 'Active Threads' %>:</td>
    <td><% param.activeThreads %></td>
 </tr>
 <tr>
-   <td><% gettext 'Free Threads' %></td>
+   <td class="small"><% gettext 'Free Threads' %>:</td>
    <td><% param.freeThreads %></td>
 </tr>
 <tr>
-   <td><% gettext 'Number of Requests (last 5 min)' %></td>
+   <td class="small"><% gettext 'Number of Requests (last 5 min)' %>:</td>
    <td><% param.requestsPerUnit default=n.a. %></td>
 </tr>
 <tr>
-   <td><% gettext 'Total Requests' %></td>
+   <td class="small"><% gettext 'Total Requests' %>:</td>
    <td><% param.requestCount %></td>
 </tr>
 <tr>
-   <td><% gettext 'Number of Errors (last 5 min) %></td>
+   <td class="small"><% gettext 'Number of Errors (last 5 min) %>:</td>
    <td><% param.errorsPerUnit default=n.a. %></td>
 </tr>
 <tr>
-   <td><% gettext 'Total Errors' %></td>
+   <td class="small"><% gettext 'Total Errors' %>:</td>
    <td><% param.errorCount %></td>
 </tr>
 <tr>
-   <td><% gettext 'Total Xml-Rpc Requests' %></td>
+   <td class="small"><% gettext 'Total Xml-Rpc Requests' %>:</td>
    <td><% param.xmlrpcCount %></td>
 </tr>
 <tr>
-   <td><% gettext 'Cached Objects' %></td>
+   <td class="small"><% gettext 'Cached Objects' %>:</td>
    <td><% gettext '{0} of {1}' <% param.cacheusage %> <% param.cacheSize %> %></td>
 </tr>
 <tr>
-   <td><% gettext 'Number of Sessions' %></td>
+   <td class="small"><% gettext 'Number of Sessions' %>:</td>
    <td><% param.sessions %></td>
 </tr>
 <tr>
-   <td><% gettext 'Free Memory' %></td>
+   <td class="small"><% gettext 'Free Memory' %>:</td>
    <td><% param.freeMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td><% gettext 'Used Memory' %></td>
+   <td class="small"><% gettext 'Used Memory' %>:</td>
    <td><% param.usedMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td><% gettext 'Total Memory' %></td>
+   <td class="small"><% gettext 'Total Memory' %>:</td>
    <td><% param.totalMemory suffix=" MB" %></td>
 </tr>
 <tr>
-   <td><% gettext 'Queued Log Entries' %></td>
+   <td class="small"><% gettext 'Queued Log Entries' %>:</td>
    <td><% param.entries %></td>
 </tr>
 <tr>
-   <td><% gettext 'Queued Requests' %></td>
+   <td class="small"><% gettext 'Queued Requests' %>:</td>
    <td><% param.requests %></td>
 </tr>
 <tr>
-   <td><% gettext 'Queued Mails' %></td>
+   <td class="small"><% gettext 'Queued Mails' %>:</td>
    <td><% param.mails %></td>
 </tr>
 <tr>
-   <td><% gettext 'Queued Callbacks' %></td>
+   <td class="small"><% gettext 'Queued Callbacks' %>:</td>
    <td><% param.callbacks %></td>
 </tr>
 </table>

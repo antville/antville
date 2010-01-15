@@ -18,7 +18,7 @@ proceed.' %></p>
 <% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that on {0} user {1} published a
+<% gettext 'This message wants to inform you that on {0} user {1} published a 
 new {2} [1].' <% this.modified short %> <% this.modifier %> 
 <% this.kind %> %>
 
