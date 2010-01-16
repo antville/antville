@@ -38,6 +38,7 @@ markgettext("Compare");
 markgettext("Contact");
 markgettext("Contributor");
 markgettext("Contributors");
+markgettext("Creation Date");
 
 markgettext("Delete");
 markgettext("Deleted");
@@ -59,8 +60,10 @@ markgettext("Hide");
 markgettext("Images");
 markgettext("Import");
 
+markgettext("Last Update");
 markgettext("Logout");
 
+markgettext("Name");
 markgettext("Nobody");
 
 markgettext("Manager");
@@ -90,12 +93,10 @@ markgettext("Shared");
 markgettext("Show");
 markgettext("Site");
 markgettext("Sites");
-markgettext("sites");
 markgettext("Skins");
 markgettext("Stories");
 markgettext("Subscriber");
 markgettext("Subscribers");
-markgettext("system log");
 
 markgettext("Tags");
 markgettext("Trusted");
