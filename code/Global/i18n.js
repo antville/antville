@@ -26,10 +26,12 @@
  * @fileOverview Contains markgettext() calls to complete i18n
  */
 
+markgettext("Abandoned");
 markgettext("Any");
 markgettext("Ascending");
 
 markgettext("Blocked");
+markgettext("Both");
 
 markgettext("Close");
 markgettext("Closed");
@@ -65,6 +67,7 @@ markgettext("Logout");
 
 markgettext("Name");
 markgettext("Nobody");
+markgettext("None");
 
 markgettext("Manager");
 markgettext("Managers");

@@ -111,43 +111,47 @@ Admin.purgeSites = function() {
          if (this.status === Site.TRUSTED) {
             return;
          }
+         var age = now - (this.stories.size() > 0 ? 
+               this.stories.get(0).modified : this.created);
          if (age - notificationPeriod > 0) {
-            if (!this.notified || now - this.notified > notificationPeriod) {
-               var site = this;
+            if (!this.notified) {
+               var site = res.handlers.site = this;
                this.members.owners.forEach(function() {
+                  res.handlers.membership = this;
                   sendMail(this.creator.email,
                         gettext("Notification of changes at site {0}", site.title),
                         site.renderSkinAsString("$Site#notify_deletion"));
                });
                this.notified = now;
-            }
-            if (age - notificationPeriod - gracePeriod > 0) {
+            } else if (now - this.notified > gracePeriod) {
                this.mode = Site.DELETED;
                this.deleted = now;
+               this.notified = null;
             }
          }
       });
       return;
    }
    
-   var phaseOutPrivateSites = function() {
+   var phaseOutRestrictedSites = function() {
       root.admin.restrictedSites.forEach(function() {
          if (this.status === Site.TRUSTED) {
             return;
          }
-         var age = now - (this.restricted || this.created);
+         var age = now - this.created;
          if (age - notificationPeriod > 0) {
-            if (!this.notified || now - this.notified > notificationPeriod) {
-               var site = this;
+            if (!this.notified) {
+               var site = res.handlers.site = this;
                this.members.owners.forEach(function() {
+                  res.handlers.membership = this;
                   sendMail(this.creator.email,
                         gettext("Notification of changes at site {0}", site.title),
                         site.renderSkinAsString("$Site#notify_blocking"));
                });
                this.notified = now;
-            }
-            if (age - notificationPeriod - gracePeriod > 0) {
+            } else if (now - this.notified > gracePeriod) {
                this.status = Site.BLOCKED;
+               this.notified = null;
             }
          }
       });
@@ -158,10 +162,10 @@ Admin.purgeSites = function() {
       case Admin.ABANDONED:
       return phaseOutAbandonedSites();
       case Admin.RESTRICTED:
-      return phaseOutPrivateSites();
+      return phaseOutRestrictedSites();
       case Admin.BOTH:
       phaseOutAbandonedSites();
-      return phaseOutPrivateSites();
+      return phaseOutRestrictedSites();
    }
    return;
 }

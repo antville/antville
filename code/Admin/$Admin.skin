@@ -70,7 +70,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <td class="small"><% gettext Type suffix=: %></td>
 <td>
    <% admin.dropdown name="filter" 
-   values="Any,Blocked,Trusted,is_Open,Restricted,Public,Closed,Deleted" %>
+   values="Any,Blocked,Trusted,Open,Restricted,Public,Closed,Deleted" %>
 </td>
 </tr>
 <tr>

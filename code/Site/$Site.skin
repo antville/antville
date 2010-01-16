@@ -21,7 +21,7 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <div class="small">
    <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
    enter “{0}” as the name your site will be reachable via this url: {1}'
-   <% example.name %> <% example.href prefix="<br /><code>" suffix=</code> %> %></p>
+   <% example.name %> <% example.href prefix="<p><code>" suffix=</code></p> %> %></p>
    <p><% gettext "Please note that you cannot change the name after the site was 
    created." %> <% gettext "The title will appear in the header of every page 
    of your site. You can change it anytime you want." %></p>

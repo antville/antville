@@ -143,7 +143,7 @@ helma.Mail.flushQueue = function() {
 }
 
 jala.i18n.setLocaleGetter(function() {
-   return res.handlers.site.getLocale();
+   return (res.handlers.site || root).getLocale();
 });
 
 /** @constant */
@@ -229,8 +229,14 @@ function scheduler() {
  * 
  */
 function nightly() {
+   var now = new Date;
+   if (now - (global.nightly.lastRun || -Infinity) < Date.ONEMINUTE) {
+      return; // Avoid running twice when main scheduler runs more than once per minute
+   }
+   app.log("***** Running nightly scripts *****");
    Admin.purgeReferrers();
    Admin.purgeSites();
+   global.nightly.lastRun = now;
    return;
 }
 

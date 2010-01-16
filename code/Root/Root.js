@@ -407,7 +407,7 @@ Root.prototype.getCreationPermission = function() {
                user.sites.get(0).created) / Date.ONEDAY);
          if (delta > 0) {
             session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.", 
-                  ngettext("{0} day", "{0} days", root.creationDelay - days));
+                  ngettext("{0} day", "{0} days", delta));
             return false;
          }
       }
