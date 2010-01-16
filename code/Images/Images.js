@@ -87,7 +87,7 @@ Images.prototype.main_action = function() {
 }
 
 Images.prototype.create_action = function() {
-   if (this._parent.status !== Site.TRUSTED && this._parent.getDiskSpace() < 0) {
+   if (this._parent.getDiskSpace() < 0) {
       res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
       res.redirect(this.href());
    }
