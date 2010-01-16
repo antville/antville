@@ -88,15 +88,16 @@ Root.prototype.getPermission = function(action) {
 
 Root.prototype.main_action = function() {
    if (this.users.size() < 1) {
-      root.title = "Antville";
-      root.locale = java.util.Locale.getDefault().getLanguage();
-      root.timeZone = java.util.TimeZone.getDefault().getID();
+      this.title = "Antville";
+      this.locale = java.util.Locale.getDefault().getLanguage();
+      this.timeZone = java.util.TimeZone.getDefault().getID();
+      this.layout.reset();
       res.redirect(this.members.href("register"));
    } else if (session.user && this.members.owners.size() < 1) {
       this.creator = this.modifier = this.layout.creator = 
             this.layout.modifier = session.user;
-      this.created = this.modified = 
-            this.layout.created = this.layout.modified = new Date;
+      this.created = this.modified = this.layout.created = 
+            this.layout.modified = new Date;
       session.user.role = User.PRIVILEGED;
       res.handlers.membership.role = Membership.OWNER;
    }
