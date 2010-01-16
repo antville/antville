@@ -14,8 +14,8 @@
 // distributed under the License is distributed on an ``AS IS'' BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License.
 //
+// limitations under the License.
 // $Revision:3339 $
 // $LastChangedBy:piefke3000 $
 // $LastChangedDate:2007-09-25 00:00:46 +0200 (Tue, 25 Sep 2007) $
@@ -56,7 +56,7 @@ Files.prototype.getPermission = function(action) {
 }
 
 Files.prototype.create_action = function() {
-   if (this._parent.getDiskSpace() < 0) {
+   if (this._parent.status !== Site.TRUSTED && this._parent.getDiskSpace() < 0) {
       res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
       res.redirect(this.href());
    }
