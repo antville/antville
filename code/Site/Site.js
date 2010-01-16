@@ -773,7 +773,7 @@ Site.prototype.spamfilter_macro = function() {
  * 
  */
 Site.prototype.diskspace_macro = function() {
-   var quota = root.quota && this.status !== Site.TRUSTED ? root.quota : null;
+   var quota = this.getQuota();
    var usage = this.getDiskSpace(quota);
    res.write(usage > 0 ? formatNumber(usage, "#,###.#") : 0);
    res.write(" MB " + (quota ? gettext("free") : gettext("used")));
@@ -815,15 +815,22 @@ Site.prototype.getTimeZone = function() {
 }
 
 /**
+ * @returns {Number}
+ */
+Site.prototype.getQuota = function() {
+   return this.status !== Site.TRUSTED ? root.quota : null;
+}
+
+/**
  * @param {Number} quota 
  * @returns {float} 
  */
 Site.prototype.getDiskSpace = function(quota) {
-   var utils = Packages.org.apache.commons.io.FileUtils;
+   quota || (quota = this.getQuota());
    var dir = new java.io.File(this.getStaticFile());
-   var size = utils.sizeOfDirectory(dir);
-   var MB = 1024 * 1024;
-   return (quota ? quota * MB - size : size) / MB;
+   var size = Packages.org.apache.commons.io.FileUtils.sizeOfDirectory(dir);
+   var factor = 1024 * 1024; // MB
+   return (quota ? quota * factor - size : size) / factor;
 }
 
 /**
