@@ -13,3 +13,4 @@ static/www/*.html
 static/www/*.zip
 static/www/files
 static/www/images
+static/www/layout
