@@ -1,8 +1,0 @@
-javascript:posturl='http://help.antville.org/stories/create';str='';if(top.frames.length==0)str=document.selection?document.selection.createRange().text:document.getSelection();void(location.href=posturl+'?content_text='+escape('<a href=\"'+location.href+'\">'+document.title+'</a>: '+str));
-
-javascript:posturl='http://help.antville.org/stories/create';str='';if(top.frames.length==0)str=document.selection?document.selection.createRange().text:document.getSelection();void(pmentry=window.open(posturl+'?content_text='+escape('<a href=\"'+location.href+'\">'+document.title+'</a>: '+str),'antville','width=775,height=600,toolbar=0,status=1,location=0,scrollbars=1,menubar=0,resizable=1'));
-
-
-javascript:posturl='http://help.antville.org/stories/create';str='';if(top.frames.length==0)str=document.selection?document.selection.createRange().text:document.getSelection();void(location.href=posturl+'?content_text='+escape(str+' [via <a href=\"'+window.location.href+'\">'+document.title+'</a>]'));
-
-javascript:posturl='http://help.antville.org/stories/create';str='';if(top.frames.length==0)str=document.selection?document.selection.createRange().text:document.getSelection();void(pmentry=window.open(posturl+'?content_text='+escape(str+' [via <a href=\"'+window.location.href+'\">'+document.title+'</a>]'),'antville','width=775,height=600,toolbar=0,status=1,location=0,scrollbars=1,menubar=0,resizable=1'));
