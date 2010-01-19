@@ -145,25 +145,6 @@ jala.i18n.setLocaleGetter(function() {
 });
 
 /** @constant */
-Sql.COMMENTS = "select id from content where site_id = $0 and creator_id = $1 \
-      and prototype = 'Comment'";
-
-/** @constant */
-Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
-      "created < date_add(now(), interval -2 day)";
-
-/** @constant */
-Sql.REFERRERS = "select referrer, count(*) as requests from " +
-      "log where context_type = '$0' and context_id = $1 and action = " +
-      "'main' and created > date_add(now(), interval -1 day) group " +
-      "by referrer order by requests desc, referrer asc"; 
-
-/** @constant */
-Sql.SEARCH = "select id from content where site_id = $0 and " +
-      "prototype = $1 and status <> $2 and (metadata like $3 or " +
-      "metadata like $4) order by created desc limit $5";
-         
-/** @constant */
 var SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
 
 /** @constant */
