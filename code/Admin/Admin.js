@@ -175,8 +175,7 @@ Admin.purgeSites = function() {
  */
 Admin.purgeReferrers = function() {
    var sql = new Sql;
-   var result = sql.execute("delete from log where action = 'main' and " +
-         "created < date_add(now(), interval -2 day)");
+   var result = sql.execute(Sql.PURGEREFERRERS);
    return result;
 }
 
@@ -419,7 +418,6 @@ Admin.prototype.update = function(data) {
       probationPeriod: data.probationPeriod,
       quota: data.quota
    });
-   this.log(root, "Updated setup");
    return;
 }
 

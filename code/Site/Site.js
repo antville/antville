@@ -567,11 +567,8 @@ Site.prototype.search_action = function() {
       search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
       var title = '%title:"%' + search + '%"%';
       var text = '%text:"%' + search + '%"%';
-      var sql = new Sql();
-      sql.retrieve("select id from content where site_id = $0 and " +
-            "prototype = $1 and status <> $2 and (metadata like $3 or " +
-            "metadata like $4) order by created desc limit $5", 
-            this._id, "Story", Story.CLOSED, text, title, 25);
+      var sql = new Sql;
+      sql.retrieve(Sql.SEARCH, this._id, "Story", Story.CLOSED, text, title, 25);
       res.push();
       var counter = 0;
       sql.traverse(function() {
@@ -734,11 +731,8 @@ Site.prototype.deleted_macro = function() {
  */
 Site.prototype.referrers_macro = function() {
    var self = this;
-   var sql = new Sql();
-   sql.retrieve("select referrer, count(*) as requests from " +
-         "log where context_type = 'Site' and context_id = $0 and action = " +
-         "'main' and created > date_add(now(), interval -1 day) group " +
-         "by referrer order by requests desc, referrer asc", this._id);
+   var sql = new Sql;
+   sql.retrieve(Sql.REFERRERS, "Site", this._id);
    sql.traverse(function() {
       if (this.requests && this.referrer) {
          this.text = encode(this.referrer.head(50));

@@ -41,8 +41,7 @@ Comment.remove = function(options) {
    }
    if (options && options.mode === "user" && options.confirm === "1") {
       var sql = new Sql;
-      sql.retrieve("select id from content where site_id = $0 and creator_id = $1 \
-            and prototype = 'Comment'", this.site._id, this.creator._id);
+      sql.retrieve(Sql.COMMENTS, this.site._id, this.creator._id);
       sql.traverse(function() {
          Comment.remove.call(Comment.getById(this.id));
       });

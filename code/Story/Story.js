@@ -524,11 +524,8 @@ Story.prototype.referrers_macro = function(param, limit) {
    }
 
    var self = this;
-   var sql = new Sql();
-   sql.retrieve("select referrer, count(*) as requests from " +
-         "log where context_type = 'Story' and context_id = $0 and action = " +
-         "'main' and created > date_add(now(), interval -1 day) group " +
-         "by referrer order by requests desc, referrer asc", this._id);
+   var sql = new Sql;
+   sql.retrieve(Sql.REFERRERS, "Story", this._id);
 
    res.push();
    var n = 0;
