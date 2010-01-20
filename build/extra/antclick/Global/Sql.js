@@ -22,9 +22,12 @@
 // $URL$
 //
 
-Admin.purgeReferrers = function() {
-   var sql = new Sql;
-   var result = sql.execute("delete from log where action = 'main' and " +
-         "created < dateadd('day', -2, current_date())");
-   return result;
-}
+/** @constant */
+Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
+      "created < dateadd('day', -2, current_date())";
+
+/** @constant */
+Sql.REFERRERS = "select referrer, count(*) as requests from " +
+      "log where context_type = '$0' and context_id = $1 and action = " +
+      "'main' and created > dateadd('day', -2, current_date()) group " +
+      "by referrer order by requests desc, referrer asc"; 

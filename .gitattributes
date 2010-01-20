@@ -2,7 +2,7 @@
 build/build.properties svneol=native#text/plain
 build/extra/MessageParser.js svneol=native#text/plain
 build/extra/antclick/Archive/Archive.properties svneol=native#text/plain
-build/extra/antclick/Global/Admin.js svneol=native#text/plain
+build/extra/antclick/Global/Sql.js svneol=native#text/plain
 build/extra/antville.h2.db -text
 build/extra/h2.jar -text svneol=unset#application/x-compressed
 build/extra/helma.jar -text
