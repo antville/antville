@@ -106,7 +106,7 @@
 		<copy todir="${work.dir}/db">
 			<fileset dir="${extra.dir}" includes="antville.h2.db" />
 		</copy>
-		<move file="${work.dir}/license.txt" todir="${work.dir}/licenses/helma.txt" />
+		<move file="${work.dir}/license.txt" tofile="${work.dir}/licenses/helma.txt" />
 		<move todir="${work.dir}/licenses">
 			<fileset dir="${antville.dir}/legal" includes="**" />
 		</move>
@@ -118,7 +118,7 @@
 			<fileset dir="${modules.dir}/helma" includes="*.jar Search.js Ssh.js Chart.js" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${modules.dir}/jala" includes="lib/** tests/** docs/** util/**" />
+			<fileset dir="${modules.dir}/jala" includes="lib/** test/** docs/** util/**" />
 		</delete>
 		<delete includeemptydirs="true">
 			<fileset dir="${antville.dir}" includes="build/** compat/** db/** docs/** extra/**" />
