@@ -117,7 +117,7 @@ code/Choice/$Choice.skin -text
 code/Poll/$Poll.skin -text
 code/TagHub/$TagHub.skin -text
 compat/Layout/Layout.convert.js svneol=native#text/plain
-db/h2-db.properties svneol=native#text/plain
+db/postgre.properties svneol=native#text/plain
 docs/files.html svneol=native#text/html
 docs/index.html svneol=native#text/html
 docs/symbols/Admin.html svneol=native#text/html
