@@ -170,21 +170,13 @@ Archive.prototype.stories_macro = function() {
       return;
    }
 
-   res.push();
-   res.write("select id from content ");
-   res.write(this.getFilter());
-   res.write(" limit " + pageSize);
-   res.write(" offset " + (page - 1) * pageSize);
-   var sql = res.pop();
-
-   var db = getDBConnection("antville");
-   rows = db.executeRetrieval(sql);
-   var story, storyDay, day;
-   while (rows.next()) {
-      story = Story.getById(rows.getColumnItem("id"));
+   var sql = new Sql;
+   sql.retrieve(Sql.ARCHIVE, res.handlers.site._id, this.getFilter(), 
+         Sql.ARCHIVEORDER, pageSize, (page - 1) * pageSize);
+   sql.traverse(function() {
+      var story = Story.getById(this.id);
       renderStory(story);
-   }
-   rows.release();
+   });
    return;
 }
 
@@ -197,14 +189,18 @@ Archive.prototype.getSize = function() {
    if (!archive.parent) {
       return res.handlers.site.stories.featured.size();
    }
-   var db = getDBConnection("antville");
-   var sql = "select count(*) as max from content " + this.getFilter();
-   var rows = db.executeRetrieval(sql);
-   rows.next();
-   return rows.getColumnItem("max");
+   var size;
+   var sql = new Sql;
+   sql.retrieve(Sql.ARCHIVESIZE, res.handlers.site._id, this.getFilter());
+   sql.traverse(function() {
+      size = this.count;
+      return;
+   });
+   return size;
 }
 
 /**
+ * @param {boolean} 
  * @returns {String}
  */
 Archive.prototype.getFilter = function() {
@@ -212,14 +208,11 @@ Archive.prototype.getFilter = function() {
    var archive = this;
    do {
       if (archive.type === Archive.COLLECTION) {
-         buffer.push(Number(archive.name));
+         buffer.unshift(Number(archive.name));
       }
    } while (archive = archive.parent);
    
-   if (buffer.length > 0) {
-      buffer.reverse();
-      //buffer[1] && (buffer[1] += 1);
-   } else {
+   if (buffer.length < 0) {
       var now = new Date;
       buffer.push(now.getDate());
       buffer.push(now.getMonth() + 1);
@@ -227,19 +220,12 @@ Archive.prototype.getFilter = function() {
    }
     
    res.push();
-   var site = res.handlers.site;
-   res.write("where site_id = ");
-   res.write(site._id);
-   res.write(" and prototype = 'Story' and status <> 'closed'");
-
+   var sql = new Sql;
    var keys = ["year", "month", "day"];
    for (var i in buffer) {
-      res.write(" and ");
-      res.write(keys[i]);
-      res.write("(created) = ");
-      res.write(buffer[i]);
+      sql.retrieve(Sql.ARCHIVEPART, keys[i], buffer[i]);
+      res.write(sql);
    }
-   res.write(" order by created desc");
    return res.pop();
 }
 

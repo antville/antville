@@ -89,6 +89,7 @@ Root.prototype.getPermission = function(action) {
 Root.prototype.main_action = function() {
    if (this.users.size() < 1) {
       this.title = "Antville";
+      this.replyTo = "root@localhost";
       this.locale = java.util.Locale.getDefault().getLanguage();
       this.timeZone = java.util.TimeZone.getDefault().getID();
       this.layout.reset();
@@ -317,23 +318,23 @@ Root.prototype.mrtg_action = function() {
       res.writeln(root.users.size());
       break;
       case "postings":
-      var db = getDBConnection("antville");
-      var postings = db.executeRetrieval("select count(*) as count from content");
-      postings.next();
       res.writeln(0);
-      res.writeln(postings.getColumnItem("count"));
-      postings.release();
+      var sql = new Sql;
+      sql.retrieve(Sql.COUNT, "content");
+      sql.traverse(function() {
+         res.writeln(this.count);
+      });
       break;
       case "uploads":
-      var db = getDBConnection("antville");
-      var files = db.executeRetrieval("select count(*) as count from file");
-      var images = db.executeRetrieval("select count(*) as count from image");
-      files.next();
-      images.next()
-      res.writeln(files.getColumnItem("count"));
-      res.writeln(images.getColumnItem("count"));
-      files.release();
-      images.release();
+      var sql = new Sql;
+      sql.retrieve(Sql.COUNT, "file");
+      sql.traverse(function() {
+         res.writeln(this.count);
+      });
+      sql.retrieve(Sql.COUNT, "image");
+      sql.traverse(function() {
+         res.writeln(this.count);
+      });
       break;
    }
    res.writeln(app.upSince);

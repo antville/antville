@@ -60,7 +60,7 @@ var Sql = function() {
       if (str === null) {
          return str;
       }
-      return "'" + str.replace(/\\/g, "\\\\").replace(/'/g, "\\'") + "'";
+      return str.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
    }
 
    var value = function(obj) {
@@ -149,12 +149,11 @@ var Sql = function() {
 }
 
 /** @constant */
-Sql.COMMENTS = "select id from content where site_id = $0 and creator_id = $1 \
-      and prototype = 'Comment'";
+Sql.COUNT = "select count(*) as count from $0";
 
 /** @constant */
-Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
-      "created < date_add(now(), interval -2 day)";
+Sql.COMMENTS = "select id from content where site_id = $0 and creator_id = $1 \
+      and prototype = 'Comment'";
 
 /** @constant */
 Sql.REFERRERS = "select referrer, count(*) as requests from " +
@@ -163,6 +162,28 @@ Sql.REFERRERS = "select referrer, count(*) as requests from " +
       "by referrer order by requests desc, referrer asc"; 
 
 /** @constant */
+Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
+      "created < date_add(now(), interval -2 day)";
+
+/** @constant */
 Sql.SEARCH = "select id from content where site_id = $0 and " +
       "prototype = $1 and status <> $2 and (metadata like $3 or " +
       "metadata like $4) order by created desc limit $5";
+
+/** @constant */
+Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
+      "order by name asc limit $2";
+
+/** @constant */
+Sql.ARCHIVE = "select id from content where site_id = $0 and " +
+      "prototype = 'Story' and status <> 'closed' $1 $2 limit $3 offset $4";
+
+/** @constant */
+Sql.ARCHIVESIZE = "select count(*) as count from content where site_id = $0 " +
+      "and prototype = 'Story' and status <> 'closed' $1";
+
+/** @constant */
+Sql.ARCHIVEPART = " and extract($0 from created) = $1";
+
+/** @constant */
+Sql.ARCHIVEORDER = "order by created desc";

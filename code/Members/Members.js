@@ -362,27 +362,23 @@ Members.prototype.add_action = function() {
  * @returns {Object}
  */
 Members.prototype.search = function(searchString) {
-   var mode = "= '";
+   var self = this;
+   var mode = "=";
    if (searchString.contains("*")) {
       searchString = searchString.replace(/\*/g, "%");
-      mode = "like '";
+      mode = "like";
    }
-   var dbConn = getDBConnection("antville");
-   var query = "select name from user where name " + mode + searchString + 
-         "' order by name asc";
-   var rows = dbConn.executeRetrieval(query);
+   var sql = new Sql;
+   sql.retrieve(Sql.MEMBERSEARCH, mode, searchString, 100);
    var counter = 0, name;
    res.push();
-   while (rows.next() && counter < 100) {
-      name = rows.getColumnItem("name");
-      // Continue if the user is already a member
-      if (this.get(name)) {
-         continue;
-      };
-      this.renderSkin("$Members#result", {name :name});
-      counter += 1;
-   }
-   rows.release();
+   sql.traverse(function() {
+      // Check if the user is not already a member
+      if (!self.get(this.name)) {
+         self.renderSkin("$Members#result", {name: this.name});
+         counter += 1;
+      }
+   });
    return {
       result: res.pop(),
       length: counter
