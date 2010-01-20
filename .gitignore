@@ -1,4 +1,6 @@
+build/dist
 build/extra/antville.trace.db
+build/work
 code/Global/ParssClientLibrary.js
 code/_*
 /dev
