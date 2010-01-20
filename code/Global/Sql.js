@@ -43,7 +43,7 @@ var Sql = function() {
       this.values = {};
       
       for (var i=1; i<=result.getColumnCount(); i+=1) {
-         columns.push(result.getColumnName(i));
+         columns.push(result.getColumnName(i).toLowerCase());
       }
    
       this.next = function() {
