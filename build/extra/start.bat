@@ -42,7 +42,7 @@ rem set CONFIGFILE=./etc/jetty.xml
 rem set HOP_HOME="c:\program files\helma"
 rem set JAVA_HOME="c:\program files\java"
 
-set JAVA_OPTIONS="-server -Xmx256m -Djava.awt.headless=true -Dfile.encoding=utf-8"
+set JAVA_OPTIONS=-Djava.awt.headless=true -Dfile.encoding=utf-8
 
 set INSTALL_DIR=%~d0%~p0
 
@@ -58,10 +58,10 @@ if "%HOP_HOME%"=="" (
 )
 cd %HOP_HOME%
 
-if not "%CONFIG_FILE%"="" (
-	echo Using configuration file %CONFIG_FILE%
-	set OPTION=%OPTIONS% -c %CONFIG_FILE%
-	goto java
+if not "%CONFIG_FILE%"=="" (
+   echo Using configuration file %CONFIG_FILE%
+   set OPTION=%OPTIONS% -c %CONFIG_FILE%
+   goto java
 )
 if not "%HTTP_PORT%"=="" (
    echo Starting HTTP server on port %HTTP_PORT%

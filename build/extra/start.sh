@@ -33,7 +33,7 @@ HTTP_PORT=8080
 #JAVA_HOME=/usr/lib/java
 #HOP_HOME=/usr/local/helma
 
-JAVA_OPTIONS="-server -Xmx256m -Djava.awt.headless=true -Dfile.encoding=utf-8"
+JAVA_OPTIONS="-Djava.awt.headless=true -Dfile.encoding=utf-8"
 
 if [ "$JAVA_HOME" ]; then
    JAVACMD="$JAVA_HOME/bin/java"
