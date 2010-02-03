@@ -62,9 +62,9 @@
 		<exec dir="${apps.dir}" executable="svn">
 			<arg line="export ${antville.src} antville" />
 		</exec>
-		<move todir="${antville.dir}/extra/postgre">
+		<copy todir="${antville.dir}/extra/postgre">
 			<fileset dir="${build.dir}/extra/antclick" excludes="db.properties" />
-		</move>
+		</copy>
 		<delete includeemptydirs="true">
 			<fileset dir="${antville.dir}" includes="build.xml build/** docs/**" />
 		</delete>
@@ -118,6 +118,7 @@
 		<move file="${work.dir}/license.txt" tofile="${work.dir}/licenses/helma.txt" />
 		<move todir="${work.dir}/licenses">
 			<fileset dir="${antville.dir}/legal" includes="**" />
+			<fileset dir="${extra.dir}" includes="h2.txt" />
 		</move>
 
 		<delete includeemptydirs="true">

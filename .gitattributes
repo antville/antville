@@ -4,6 +4,7 @@ build/extra/antclick/Archive/Archive.properties svneol=native#text/plain
 build/extra/antclick/Global/Sql.js svneol=native#text/plain
 build/extra/antville.h2.db -text
 build/extra/h2.jar -text svneol=unset#application/x-compressed
+build/extra/h2.txt svneol=native#text/plain
 build/extra/helma.jar -text
 build/extra/jsdoc-toolkit/README.txt svneol=native#text/plain
 build/extra/jsdoc-toolkit/app/frame.js svneol=native#text/plain
@@ -203,7 +204,6 @@ extra/updater/patch-20080913.js -text
 i18n/antville.pot -text
 i18n/de.po -text
 i18n/en.po -text
-legal/h2.txt svneol=native#text/plain
 legal/jdom.txt svneol=native#text/plain
 legal/rome.txt svneol=native#text/plain
 lib/itunes-0.4.jar -text svneol=unset#application/x-compressed
