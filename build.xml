@@ -62,6 +62,9 @@
 		<exec dir="${apps.dir}" executable="svn">
 			<arg line="export ${antville.src} antville" />
 		</exec>
+      <move todir="${antville.dir}/extra/postgre">
+         <fileset dir="${build.dir}/extra/antclick" excludes="db.properties" />
+      </move>
 		<delete includeemptydirs="true">
 			<fileset dir="${antville.dir}" includes="build.xml build/** docs/**" />
 		</delete>
