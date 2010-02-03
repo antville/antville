@@ -30,9 +30,9 @@
 		<property name="apps.src" value="http://dev.helma.org/svn/apps" />
 
 		<property name="build.dir" location="${basedir}/build" />
-	   <property file="${build.dir}/build.properties" />
+		<property file="${build.dir}/build.properties" />
 
-      <property name="helma.dir" location="${basedir}/../.." />
+		<property name="helma.dir" location="${basedir}/../.." />
 		<property name="extra.dir" location="${build.dir}/extra" />
 		<property name="dist.dir" location="${build.dir}/dist" />
 		<property name="work.dir" location="${build.dir}/work" />
@@ -63,11 +63,11 @@
 			<arg line="export ${antville.src} antville" />
 		</exec>
 		<delete includeemptydirs="true">
-			<fileset dir="${antville.dir}" includes="build/** docs/**" />
+			<fileset dir="${antville.dir}" includes="build.xml build/** docs/**" />
 		</delete>
 	</target>
 
-   <target name="ville" depends="antville"/>
+	<target name="ville" depends="antville" />
 	<target name="antville" depends="export">
 		<antcall target="make-tar">
 			<param name="filename" value="${package.name}" />
@@ -79,7 +79,7 @@
 		</antcall>
 	</target>
 
-   <target name="click" depends="antclick"/>
+	<target name="click" depends="antclick" />
 	<target name="antclick" depends="export">
 		<exec dir="${work.dir}" executable="svn">
 			<arg line="export ${helma.src}/lib" />
@@ -117,17 +117,17 @@
 			<fileset dir="${antville.dir}/legal" includes="**" />
 		</move>
 
-		<delete>
+		<delete includeemptydirs="true">
 			<fileset dir="${modules.dir}" includes="test/**" />
 		</delete>
 		<delete>
 			<fileset dir="${modules.dir}/helma" includes="*.jar Search.js Ssh.js Chart.js" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${modules.dir}/jala" includes="lib/** test/** docs/** util/**" />
+			<fileset dir="${modules.dir}/jala" includes="build.properties docs/** lib/** tests/** util/**" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${antville.dir}" includes="build.xml build/** compat/** db/** docs/** extra/**" />
+			<fileset dir="${antville.dir}" includes="compat/** db/** docs/** extra/**" />
 		</delete>
 		<delete dir="${antville.dir}/legal" />
 
@@ -149,9 +149,8 @@
 	</target>
 
 	<target name="pot" depends="init">
-	   <echo message="${helma.dir}"/>
-		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" 
-				classname="helma.main.launcher.Commandline" fork="true">
+		<echo message="${helma.dir}" />
+		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
 			<arg value="antville.xgettext" />
 			<arg value="${extra.dir}/MessageParser.js" />
 			<arg value="${i18n.scan}" />
@@ -160,8 +159,7 @@
 	</target>
 
 	<target name="messages" depends="init">
-		<java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino.jar" 
-		      classname="org.mozilla.javascript.tools.shell.Main">
+		<java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino.jar" classname="org.mozilla.javascript.tools.shell.Main">
 			<arg value="${hopkit.dir}/scripts/PoParser.js" />
 			<arg value="${i18n.poDirectory}" />
 			<arg value="${i18n.destination}" />
