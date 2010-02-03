@@ -60,7 +60,7 @@
 	<target name="export" depends="init">
 		<mkdir dir="${apps.dir}" />
 		<exec dir="${apps.dir}" executable="svn">
-			<arg line="export ${antville.src} antville" />
+			<arg line="export --ignore-externals ${antville.src} antville" />
 		</exec>
 		<copy todir="${antville.dir}/extra/postgre">
 			<fileset dir="${build.dir}/extra/antclick" excludes="db.properties" />
