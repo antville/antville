@@ -1,14 +1,12 @@
+/.*
+build/build.properties
 build/dist
 build/extra/antville.trace.db
 build/work
 code/Global/ParssClientLibrary.js
 code/_*
-/dev
 extra/WEB-INF/lib/urlrewrite-2.6.0.jar.disabled
 extra/WEB-INF/lib/urlrewrite-3.1.0-patched.jar.disabled
-/feedmgr
-/feedsubscr
-/feedviewer
 /jobs
 /local
 static/*
@@ -17,3 +15,4 @@ static/www/*.zip
 static/www/files
 static/www/images
 static/www/layout
+/•*
