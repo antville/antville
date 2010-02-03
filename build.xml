@@ -13,6 +13,7 @@
 		<echo message="   docs       Generate the API documentation" />
 		<echo message="   pot        Extract gettext call strings into POT file" />
 		<echo message="   messages   Generate JavaScript message files" />
+		<echo message="   clean      Clean up build directory" />
 		<echo message="   usage      Show these build instructions (default)" />
 	</target>
 
@@ -28,7 +29,10 @@
 		<property name="helma.src" value="http://dev.helma.org/svn/helma/helma/trunk" />
 		<property name="apps.src" value="http://dev.helma.org/svn/apps" />
 
-		<property name="home.dir" location="${build.dir}/.." />
+		<property name="build.dir" location="${basedir}/build" />
+	   <property file="${build.dir}/build.properties" />
+
+      <property name="helma.dir" location="${basedir}/../.." />
 		<property name="extra.dir" location="${build.dir}/extra" />
 		<property name="dist.dir" location="${build.dir}/dist" />
 		<property name="work.dir" location="${build.dir}/work" />
@@ -38,11 +42,11 @@
 		<property name="hopkit.dir" location="${helma.dir}/modules/jala/util/HopKit" />
 
 		<property name="docs.title" value="Antville&amp;#32;${version}&amp;#32;API&amp;#32;Reference" />
-		<property name="docs.infiles" location="${home.dir}/code" />
-		<property name="docs.outfiles" location="${home.dir}/docs" />
+		<property name="docs.infiles" location="${basedir}/code" />
+		<property name="docs.outfiles" location="${basedir}/docs" />
 
 		<property name="i18n.scan" value="code compat" />
-		<property name="i18n.destination" location="${home.dir}/i18n" />
+		<property name="i18n.destination" location="${basedir}/i18n" />
 		<property name="i18n.poDirectory" location="${i18n.destination}" />
 		<property name="i18n.template" location="${i18n.destination}/antville.pot" />
 		<property name="i18n.namespace" value="" />
@@ -63,6 +67,7 @@
 		</delete>
 	</target>
 
+   <target name="ville" depends="antville"/>
 	<target name="antville" depends="export">
 		<antcall target="make-tar">
 			<param name="filename" value="${package.name}" />
@@ -74,6 +79,7 @@
 		</antcall>
 	</target>
 
+   <target name="click" depends="antclick"/>
 	<target name="antclick" depends="export">
 		<exec dir="${work.dir}" executable="svn">
 			<arg line="export ${helma.src}/lib" />
@@ -103,7 +109,7 @@
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib" />
 		<copy file="${extra.dir}/h2.jar" todir="${work.dir}/lib/ext" />
-		<copy todir="${work.dir}/db">
+		<copy todir="${build.dir}/work/db">
 			<fileset dir="${extra.dir}" includes="antville.h2.db" />
 		</copy>
 		<move file="${work.dir}/license.txt" tofile="${work.dir}/licenses/helma.txt" />
@@ -121,7 +127,7 @@
 			<fileset dir="${modules.dir}/jala" includes="lib/** test/** docs/** util/**" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${antville.dir}" includes="build/** compat/** db/** docs/** extra/**" />
+			<fileset dir="${antville.dir}" includes="build.xml build/** compat/** db/** docs/** extra/**" />
 		</delete>
 		<delete dir="${antville.dir}/legal" />
 
@@ -143,6 +149,7 @@
 	</target>
 
 	<target name="pot" depends="init">
+	   <echo message="${helma.dir}"/>
 		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" 
 				classname="helma.main.launcher.Commandline" fork="true">
 			<arg value="antville.xgettext" />
@@ -153,7 +160,8 @@
 	</target>
 
 	<target name="messages" depends="init">
-		<java classname="org.mozilla.javascript.tools.shell.Main">
+		<java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino.jar" 
+		      classname="org.mozilla.javascript.tools.shell.Main">
 			<arg value="${hopkit.dir}/scripts/PoParser.js" />
 			<arg value="${i18n.poDirectory}" />
 			<arg value="${i18n.destination}" />
