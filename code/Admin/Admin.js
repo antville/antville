@@ -806,3 +806,15 @@ Admin.prototype.dropdown_macro = function(param) {
    html.dropDown({name: param.name}, options, selectedIndex);
    return;
 }
+
+/**
+ * Work-around for displaying object properties which are not accessible via
+ * their generic macro due to it being disabled. Currently used to display user 
+ * e-mail addresses in Admin skins. User.email_macro() is disabled by default.
+ * @param {Object} param
+ * @param {Object} object The target object
+ * @param {Object} property The desired property name
+ */
+Admin.prototype.unlock_macro = function(param, object, property) {
+   return object ? object[property] : null;
+}

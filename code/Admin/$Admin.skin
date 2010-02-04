@@ -199,7 +199,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <tr>
 <td valign="top">
    <div><strong><% item.name %></strong></div>
-   <div><% item.email suffix="<br />" %>
+   <div><% admin.unlock <% item.self %> email suffix="<br />" %>
    <a href="<% item.url %>"><% item.url %></a></div>
    <div class="small">
       <% gettext Registered %>: <% item.created short %><br />
