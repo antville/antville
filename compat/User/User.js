@@ -22,6 +22,8 @@
 // $URL$
 //
 
+disableMacro(User, "password");
+
 User.prototype.__defineGetter__("blocked", function() {
    return this.status === User.BLOCKED;
 });

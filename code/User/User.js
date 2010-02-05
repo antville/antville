@@ -43,8 +43,8 @@ this.handleMetadata("hash");
 this.handleMetadata("salt");
 this.handleMetadata("url");
 
-disableMacro(User, "password");
 disableMacro(User, "hash");
+disableMacro(User, "salt");
 
 /**
  * A User object represents a login to Antville.
