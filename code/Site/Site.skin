@@ -82,9 +82,10 @@ Disallow: /stories/top
    <% response.body %>
 </td>
 <td class="right">
-   <div class="box"><% gettext "Online for" %>
-   <% ngettext "{0} day" "{0} days" <% site.age %> %><br />
-   <% site.modified short prefix=<% gettext "Last modified:" suffix=' <div class="nowrap">' %> suffix=</div> %></div>
+   <div class="box"><% ngettext "Online for {0} day" 
+         "Online for {0} days" <% site.age %> %><br />
+   <% site.modified short prefix=<% gettext "Last modified:" 
+         suffix=' <div class="nowrap">' %> suffix=</div> %></div>
    
    <div class="boxheader"><% gettext Status %></div>
    <div class="box"><% membership.status %></div>
