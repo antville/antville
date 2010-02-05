@@ -387,27 +387,46 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
 }
 
 /**
+ * FIXME: Patched with adequate header data
  * Prints a standard Header of a .po file
  * FIXME: why the hell is Plural-Forms ignored in poEdit?
  * @see http://drupal.org/node/17564
  */
 MessageParser.prototype.getPotString = function() {
    var buf = new java.lang.StringBuffer();
-   buf.append('# SOME DESCRIPTIVE TITLE.\n');
-   buf.append('# Copyright (C) YEAR THE PACKAGE\'S COPYRIGHT HOLDER\n');
-   buf.append('# This file is distributed under the same license as the PACKAGE package.\n');
-   buf.append('# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n');
-   buf.append('#\n');
+   buf.append('##\n');
+   buf.append('## The Antville Project\n');
+   buf.append('## http://code.google.com/p/antville\n');
+   buf.append('##\n');
+   buf.append('## Copyright 2001-2007 by The Antville People\n');
+   buf.append('##\n');
+   buf.append("## Licensed under the Apache License, Version 2.0 (the ``License''\n");
+   buf.append('## you may not use this file except in compliance with the License.\n');
+   buf.append('## You may obtain a copy of the License at\n');
+   buf.append('##\n');
+   buf.append('##    http://www.apache.org/licenses/LICENSE-2.0\n');
+   buf.append('##\n');
+   buf.append('## Unless required by applicable law or agreed to in writing, software\n');
+   buf.append("## distributed under the License is distributed on an ``AS IS'' BASIS,\n");
+   buf.append('## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n');
+   buf.append('## See the License for the specific language governing permissions and\n');
+   buf.append('## limitations under the License.\n');
+   buf.append('##\n');
+   buf.append('## $Revision$\n');
+   buf.append('## $LastChangedBy$\n');
+   buf.append('## $LastChangedDate$\n');
+   buf.append('## $URL$\n');
+   buf.append('##\n\n');
    buf.append('#, fuzzy\n');
    buf.append('msgid ""\n');
    buf.append('msgstr ""\n');
-   buf.append('"Project-Id-Version: PACKAGE VERSION\\n"\n');
-   buf.append('"Report-Msgid-Bugs-To: \\n"\n');
+   buf.append('"Project-Id-Version: Antville-' + Root.VERSION + '\\n"\n');
+   buf.append('"Report-Msgid-Bugs-To: mail@antville.org\\n"\n');
    var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mmZ");
    buf.append('"POT-Creation-Date: ' + sdf.format(new java.util.Date()) + '\\n"\n');
-   buf.append('"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n"\n');
-   buf.append('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"\n');
-   buf.append('"Language-Team: LANGUAGE <LL@li.org>\\n"\n');
+   buf.append('"PO-Revision-Date: ' + sdf.format(new java.util.Date()) + '\\n"\n');
+   //buf.append('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"\n');
+   buf.append('"Language-Team: The Antville People <mail@antville.org>\\n"\n');
    buf.append('"MIME-Version: 1.0\\n"\n');
    buf.append('"Content-Type: text/plain; charset=utf-8\\n"\n');
    buf.append('"Content-Transfer-Encoding: 8bit\\n"\n');
