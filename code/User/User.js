@@ -26,178 +26,18 @@
  * @fileOverview Defines the User prototype.
  */
 
-/** @constant */
-User.COOKIE = getProperty("userCookie", "antvilleUser");
-/** @constant */
-User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
-
-/**
- * @function
- * @returns {String[]}
- * @see defineConstants
- */
-User.getStatus = defineConstants(User, "blocked", 
-      "regular", "trusted", "privileged");
+disableMacro(User, "hash");
+disableMacro(User, "salt");
 
 this.handleMetadata("hash");
 this.handleMetadata("salt");
 this.handleMetadata("url");
 
-disableMacro(User, "hash");
-disableMacro(User, "salt");
+/** @constant */
+User.COOKIE = getProperty("userCookie", "antvilleUser");
 
-/**
- * A User object represents a login to Antville.
- * @name User
- * @constructor
- * @param {Object} data
- * @extends HopObject
- * @property {Membership[]} _children
- * @property {Date} created
- * @property {Comment[]} comments
- * @property {String} email
- * @property {File[]} files
- * @property {String} hash
- * @property {Image[]} images
- * @property {Membership[]} memberships
- * @property {Metadata} metadata
- * @property {Date} modified
- * @property {String} name 
- * @property {String} salt
- * @property {Site[]} sites
- * @property {Membership[]} subscriptions
- * @property {String} status
- * @property {Story[]} stories
- * @extends HopObject
- */
-User.prototype.constructor = function(data) {
-   var now = new Date;
-   this.map({
-      name: data.name,
-      hash: data.hash,
-      salt: session.data.token,
-      email: data.email,
-      status: User.REGULAR,
-      created: now,
-      modified: now
-   });
-   return this;
-}
-
-/**
- * 
- */
-User.prototype.onLogout = function() { /* ... */ }
-
-/**
- * 
- * @param {String} action
- * @returns {Boolean}
- */
-User.prototype.getPermission = function(action) {
-   return User.require(User.PRIVILEGED);
-}
-
-/**
- * 
- * @param {Object} data
- */
-User.prototype.update = function(data) {
-   if (!data.digest && data.password) {
-      data.digest = ((data.password + this.salt).md5() + 
-            session.data.token).md5();
-   }
-   if (data.digest) {
-      if (data.digest !== this.getDigest(session.data.token)) {
-         throw Error(gettext("Oops, your old password is incorrect. Please re-enter it."));
-      }
-      if (!data.hash) {
-         if (!data.newPassword || !data.newPasswordConfirm) {
-            throw Error(gettext("Please specify a new password."));
-         } else if (data.newPassword !== data.newPasswordConfirm) {
-            throw Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
-         }
-         data.hash = (data.newPassword + session.data.token).md5();
-      }
-      this.map({
-         hash: data.hash,
-         salt: session.data.token         
-      });
-   }
-   if (!(this.email = validateEmail(data.email))) {
-      throw Error(gettext("Please enter a valid e-mail address"));
-   }
-   
-	if(data.url != "") {
-      if (!(this.url = validateUrl(data.url))) {
-        throw Error(gettext("Please enter a valid URL"));
-      }
-   }
-   return this;
-}
-
-/**
- * 
- */
-User.prototype.touch = function() {
-   this.modified = new Date;
-   return;
-}
-
-/**
- * 
- * @param {String} token
- * @returns {String}
- */
-User.prototype.getDigest = function(token) {
-   token || (token = String.EMPTY);
-   return (this.hash + token).md5();
-}
-
-/**
- * 
- * @param {String} name
- * @returns {Object}
- */
-User.prototype.getFormOptions = function(name) {
-   switch (name) {
-      case "status":
-      return User.getStatus();
-   }
-}
-
-/**
- * Enable <% user.email %> macro for privileged users only
- */
-User.prototype.email_macro = function() {
-   if (User.require(User.PRIVILEGED)) {
-      res.write(this.email);
-   }
-   return;
-}
-
-/**
- * 
- * @param {Object} param
- * @param {String} type
- */
-User.prototype.list_macro = function(param, type) {
-   switch (type) {
-      case "sites":
-      var memberships = session.user.list();
-      memberships.sort(function(a, b) {
-         return b.site.modified - a.site.modified;
-      });
-      memberships.forEach(function(membership) {
-         var site;
-         if (site = membership.get("site")) {
-            site.renderSkin("$Site#listItem");
-         }
-         return;
-      });
-   }
-   return;
-}
+/** @constant */
+User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
 
 /**
  * 
@@ -207,6 +47,14 @@ User.prototype.list_macro = function(param, type) {
 User.getByName = function(name) {
    return root.users.get(name);
 }
+
+/**
+ * @function
+ * @returns {String[]}
+ * @see defineConstants
+ */
+User.getStatus = defineConstants(User, "blocked", 
+      "regular", "trusted", "privileged");
 
 /**
  * @returns {String}
@@ -392,4 +240,157 @@ User.getLocation = function() {
    delete session.data.location;
    //app.debug("Popped location " + url);
    return url;
+}
+
+/**
+ * A User object represents a login to Antville.
+ * @name User
+ * @constructor
+ * @param {Object} data
+ * @extends HopObject
+ * @property {Membership[]} _children
+ * @property {Date} created
+ * @property {Comment[]} comments
+ * @property {String} email
+ * @property {File[]} files
+ * @property {String} hash
+ * @property {Image[]} images
+ * @property {Membership[]} memberships
+ * @property {Metadata} metadata
+ * @property {Date} modified
+ * @property {String} name 
+ * @property {String} salt
+ * @property {Site[]} sites
+ * @property {Membership[]} subscriptions
+ * @property {String} status
+ * @property {Story[]} stories
+ * @extends HopObject
+ */
+User.prototype.constructor = function(data) {
+   var now = new Date;
+   this.map({
+      name: data.name,
+      hash: data.hash,
+      salt: session.data.token,
+      email: data.email,
+      status: User.REGULAR,
+      created: now,
+      modified: now
+   });
+   return this;
+}
+
+/**
+ * 
+ */
+User.prototype.onLogout = function() { /* ... */ }
+
+/**
+ * 
+ * @param {String} action
+ * @returns {Boolean}
+ */
+User.prototype.getPermission = function(action) {
+   return User.require(User.PRIVILEGED);
+}
+
+/**
+ * 
+ * @param {Object} data
+ */
+User.prototype.update = function(data) {
+   if (!data.digest && data.password) {
+      data.digest = ((data.password + this.salt).md5() + 
+            session.data.token).md5();
+   }
+   if (data.digest) {
+      if (data.digest !== this.getDigest(session.data.token)) {
+         throw Error(gettext("Oops, your old password is incorrect. Please re-enter it."));
+      }
+      if (!data.hash) {
+         if (!data.newPassword || !data.newPasswordConfirm) {
+            throw Error(gettext("Please specify a new password."));
+         } else if (data.newPassword !== data.newPasswordConfirm) {
+            throw Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
+         }
+         data.hash = (data.newPassword + session.data.token).md5();
+      }
+      this.map({
+         hash: data.hash,
+         salt: session.data.token         
+      });
+   }
+   if (!(this.email = validateEmail(data.email))) {
+      throw Error(gettext("Please enter a valid e-mail address"));
+   }
+   
+   if(data.url != "") {
+      if (!(this.url = validateUrl(data.url))) {
+        throw Error(gettext("Please enter a valid URL"));
+      }
+   }
+   return this;
+}
+
+/**
+ * 
+ */
+User.prototype.touch = function() {
+   this.modified = new Date;
+   return;
+}
+
+/**
+ * 
+ * @param {String} token
+ * @returns {String}
+ */
+User.prototype.getDigest = function(token) {
+   token || (token = String.EMPTY);
+   return (this.hash + token).md5();
+}
+
+/**
+ * 
+ * @param {String} name
+ * @returns {Object}
+ */
+User.prototype.getFormOptions = function(name) {
+   switch (name) {
+      case "status":
+      return User.getStatus();
+   }
+}
+
+/**
+ * Enable <% user.email %> macro for privileged users only
+ */
+User.prototype.email_macro = function() {
+   if (User.require(User.PRIVILEGED)) {
+      res.write(this.email);
+   }
+   return;
+}
+
+/**
+ * 
+ * @param {Object} param
+ * @param {String} type
+ */
+User.prototype.list_macro = function(param, type) {
+   switch (type) {
+      case "sites":
+      var memberships = session.user.list();
+      memberships.sort(function(a, b) {
+         return b.site.modified - a.site.modified;
+      });
+      memberships.forEach(function(membership) {
+         var site;
+         if (site = membership.get("site")) {
+            site.renderSkin("$Site#listItem");
+         }
+         return;
+      });
+   }
+   return;
 }
