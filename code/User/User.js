@@ -45,7 +45,6 @@ this.handleMetadata("url");
 
 disableMacro(User, "password");
 disableMacro(User, "hash");
-disableMacro(User, "email");
 
 /**
  * A User object represents a login to Antville.
@@ -165,6 +164,16 @@ User.prototype.getFormOptions = function(name) {
       case "status":
       return User.getStatus();
    }
+}
+
+/**
+ * Enable <% user.email %> macro for privileged users only
+ */
+User.prototype.email_macro = function() {
+   if (User.require(User.PRIVILEGED)) {
+      res.write(this.email);
+   }
+   return;
 }
 
 /**
