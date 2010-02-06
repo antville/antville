@@ -94,7 +94,7 @@ Skins.prototype.create_action = function() {
          var name = stripTags(req.postParams.name);
          if (!prototype || !req.postParams.name) {
             throw Error(gettext("Please choose a prototype and enter a skin name"));
-         } else if (name !== req.postParams.name || /[\/+\\]/.test(name)) { // RegExp as used by Jala’s HopObject.getAccessName()
+         } else if (name !== req.postParams.name || NAMEPATTERN.test(name)) {
             throw Error(gettext("Please avoid characters like slashes or HTML code in the name field."));
          } else if (Skin.getByName(prototype, name)) {
             throw Error("Sorry, there is already a skin with that name. Please enter a different one.");

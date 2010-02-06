@@ -153,6 +153,10 @@ var LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
 /** @constant */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
+// RegExp according to Jala’s HopObject.getAccessName()
+/** @constant */
+var NAMEPATTERN = /[\/+\\]/;
+
 /** @function */
 var idle = new Function;
 

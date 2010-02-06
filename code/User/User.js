@@ -78,7 +78,7 @@ User.register = function(data) {
       throw Error(gettext("Please enter a username."));
    } else if (data.name.length > 30) {
       throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
-   } else if (data.name !== name || /[\/+\\]/.test(name)) { // RegExp as used by Jala’s HopObject.getAccessName()
+   } else if (data.name !== name || NAMEPATTERN.test(name)) {
       throw Error(gettext("Please avoid characters like slashes or HTML code in the name field."));
    } else if (name !== root.users.getAccessName(name)) {
       throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
