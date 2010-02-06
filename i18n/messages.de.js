@@ -242,7 +242,7 @@ global.messages.de = {
    "Password forgotten?": "Kennwort vergessen?",
    "Personal URL": "Internet-Adresse",
    "Phase-Out": "Site-Einstellung",
-   "Please avoid characters like slashes or HTML code in the name field.": "Bitte vermeiden Sie Schrägstriche oder HTML-Code im Feld für den Namen.",
+   "Please avoid special characters or HTML code in the name field.": "Bitte vermeiden Sie Sonderzeichen oder HTML-Code im Feld für den Namen.",
    "Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly.": "Bitte seien Sie sich bewusst, dass diese Aktion nicht rückgängig gemacht werden kann. Wenn Sie also auf »Fortfahren« klicken, werden die Änderungen unwiderruflich durchgeführt.",
    "Please choose a ZIP file to import": "Bitte wählen Sie ein ZIP-Archiv für den Import",
    "Please choose a prototype and enter a skin name": "Bitte wählen Sie einen Prototypen und einen Namen für diesen Skin.",

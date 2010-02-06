@@ -27,15 +27,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2010-02-06 22:34+0100\n"
-"PO-Revision-Date: 2010-02-06 22:34+0100\n"
+"POT-Creation-Date: 2010-02-06 23:29+0100\n"
+"PO-Revision-Date: 2010-02-06 23:29+0100\n"
 "Language-Team: The Antville People <mail@antville.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1018
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1022
 #, java-format
 msgid "({0} character)"
 msgid_plural "({0} characters)"
@@ -341,7 +341,7 @@ msgstr ""
 msgid "Compare"
 msgstr ""
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:247
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:246
 msgid "Compare Skin"
 msgstr ""
 
@@ -356,7 +356,7 @@ msgid "Confirm Password"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:217
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:201
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:200
 msgid "Confirm Reset"
 msgstr ""
 
@@ -568,7 +568,7 @@ msgstr ""
 msgid "Edit Poll: {0}"
 msgstr ""
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:156
 #, java-format
 msgid "Edit Skin: {0}.{1}"
 msgstr ""
@@ -950,7 +950,7 @@ msgstr ""
 msgid "Next page"
 msgstr ""
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:212
 msgid "No differences were found"
 msgstr ""
 
@@ -1092,7 +1092,7 @@ msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:98
 #: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:82
-msgid "Please avoid characters like slashes or HTML code in the name field."
+msgid "Please avoid special characters or HTML code in the name field."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
@@ -1698,7 +1698,7 @@ msgstr ""
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:213
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:149
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:260
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:144
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:104
 msgid "The changes were saved successfully."
 msgstr ""
@@ -1793,7 +1793,7 @@ msgstr ""
 msgid "The user {0} has modified your membership of the site {1} [1]. You are now {2} of the site."
 msgstr ""
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:175
 #, java-format
 msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
 msgstr ""
@@ -2162,7 +2162,7 @@ msgstr ""
 msgid "You are about to reset the layout of site {0}."
 msgstr ""
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:377
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:376
 #, java-format
 msgid "You are about to reset the skin {0}.{1}."
 msgstr ""
@@ -2570,7 +2570,7 @@ msgstr[1] ""
 msgid "{0} was successfully deleted."
 msgstr ""
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:192
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:191
 #, java-format
 msgid "{0} was successfully reset."
 msgstr ""

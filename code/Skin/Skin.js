@@ -105,8 +105,7 @@ Skin.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      res.status = 403;
-      return false;
+      return true;
    }
    return res.handlers.skins.getPermission("main");
 }
@@ -207,7 +206,7 @@ Skin.prototype.reset_action = function() {
 }
 
 Skin.prototype.compare_action = function() {
-   var originalSkin = this.source || "";
+   var originalSkin = this.source || String.EMPTY;
    var diff = originalSkin.diff(this.getSource());
    if (!diff) {
       res.data.status = gettext("No differences were found");

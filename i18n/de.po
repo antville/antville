@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2010-02-06 22:34+0100\n"
-"PO-Revision-Date: 2010-02-06 22:43+0100\n"
+"POT-Creation-Date: 2010-02-06 23:29+0100\n"
+"PO-Revision-Date: 2010-02-06 23:30+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1018
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1022
 #, java-format
 msgid "({0} character)"
 msgid_plural "({0} characters)"
@@ -340,7 +340,7 @@ msgstr "Kommentare zur Story sind {0}"
 msgid "Compare"
 msgstr "Vergleichen"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:247
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:246
 msgid "Compare Skin"
 msgstr "Skin vergleichen"
 
@@ -355,7 +355,7 @@ msgid "Confirm Password"
 msgstr "Kennwort bestätigen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:217
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:201
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:200
 msgid "Confirm Reset"
 msgstr "Zurücksetzen bestätigen"
 
@@ -567,7 +567,7 @@ msgstr "Mitgliedschaft bearbeiten: {0}"
 msgid "Edit Poll: {0}"
 msgstr "Umfrage bearbeiten: {0}"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:156
 #, java-format
 msgid "Edit Skin: {0}.{1}"
 msgstr "Skin bearbeiten: {0}.{1}"
@@ -949,7 +949,7 @@ msgstr "Neues Kennwort"
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:212
 msgid "No differences were found"
 msgstr "Es wurden keine Unterschiede festgestellt"
 
@@ -1091,8 +1091,8 @@ msgstr "Site-Einstellung"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:98
 #: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:82
-msgid "Please avoid characters like slashes or HTML code in the name field."
-msgstr "Bitte vermeiden Sie Schrägstriche oder HTML-Code im Feld für den Namen."
+msgid "Please avoid special characters or HTML code in the name field."
+msgstr "Bitte vermeiden Sie Sonderzeichen oder HTML-Code im Feld für den Namen."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
 msgid "Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly."
@@ -1697,7 +1697,7 @@ msgstr "Die Rückruf-Adresse wird mit folgenden Parametern durch die »Http Post
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:213
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:149
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:260
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:144
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:104
 msgid "The changes were saved successfully."
 msgstr "Die Änderungen wurden erfolgreich gespeichert."
@@ -1792,7 +1792,7 @@ msgstr "Benutzer {0} hat Sie als {1} zum Site {2} hinzugefügt [1]."
 msgid "The user {0} has modified your membership of the site {1} [1]. You are now {2} of the site."
 msgstr "Benutzer {0} hat Ihre Mitgliedschaft beim Site {1} geändert [1]. Sie sind ab sofort {2} des Site."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:175
 #, java-format
 msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
 msgstr "Das {0}-Makro fehlt. Es ist erforderlich, um auf den Site zuzugreifen und muss in diesem Skin enthalten sein."
@@ -2161,7 +2161,7 @@ msgstr "Sie sind im Begriff, den kompletten Site zu löschen, welcher zur Zeit {
 msgid "You are about to reset the layout of site {0}."
 msgstr "Sie sind im Begriff, die Gestaltung von Site {0} zurückzusetzen."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:377
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:376
 #, java-format
 msgid "You are about to reset the skin {0}.{1}."
 msgstr "Sie sind im Begriff, den Skin {0}.{1} zurückzusetzen."
@@ -2569,7 +2569,7 @@ msgstr[1] "{0} Stimmen"
 msgid "{0} was successfully deleted."
 msgstr "{0} wurde erfolgreich gelöscht."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:192
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:191
 #, java-format
 msgid "{0} was successfully reset."
 msgstr "{0} wurde erfolgreich zurückgesetzt."

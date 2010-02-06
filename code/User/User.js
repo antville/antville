@@ -79,7 +79,7 @@ User.register = function(data) {
    } else if (data.name.length > 30) {
       throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
    } else if (data.name !== name || NAMEPATTERN.test(name)) {
-      throw Error(gettext("Please avoid characters like slashes or HTML code in the name field."));
+      throw Error(gettext("Please avoid special characters or HTML code in the name field."));
    } else if (name !== root.users.getAccessName(name)) {
       throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }

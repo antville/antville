@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2010-02-06 22:34+0100\n"
-"PO-Revision-Date: 2010-02-06 22:44+0100\n"
+"POT-Creation-Date: 2010-02-06 23:29+0100\n"
+"PO-Revision-Date: 2010-02-06 23:30+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1018
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1022
 #, java-format
 msgid "({0} character)"
 msgid_plural "({0} characters)"
@@ -340,7 +340,7 @@ msgstr "Comments of the story are {0}"
 msgid "Compare"
 msgstr "Compare"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:247
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:246
 msgid "Compare Skin"
 msgstr "Compare Skin"
 
@@ -355,7 +355,7 @@ msgid "Confirm Password"
 msgstr "Confirm Password"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:217
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:201
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:200
 msgid "Confirm Reset"
 msgstr "Confirm Reset"
 
@@ -567,7 +567,7 @@ msgstr "Edit Membership: {0}"
 msgid "Edit Poll: {0}"
 msgstr "Edit Poll: {0}"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:156
 #, java-format
 msgid "Edit Skin: {0}.{1}"
 msgstr "Edit Skin: {0}.{1}"
@@ -949,7 +949,7 @@ msgstr "New Password"
 msgid "Next page"
 msgstr "Next page"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:212
 msgid "No differences were found"
 msgstr "No differences were found"
 
@@ -1091,8 +1091,8 @@ msgstr "Phase-Out"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:98
 #: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:82
-msgid "Please avoid characters like slashes or HTML code in the name field."
-msgstr "Please avoid characters like slashes or HTML code in the name field."
+msgid "Please avoid special characters or HTML code in the name field."
+msgstr "Please avoid special characters or HTML code in the name field."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
 msgid "Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly."
@@ -1697,7 +1697,7 @@ msgstr "The callback URL will be invoked as an HTTP POST request with the follow
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:213
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:149
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:260
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:144
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:104
 msgid "The changes were saved successfully."
 msgstr "The changes were saved successfully."
@@ -1792,7 +1792,7 @@ msgstr "The user {0} has added you as {1} to the site {2} [1]."
 msgid "The user {0} has modified your membership of the site {1} [1]. You are now {2} of the site."
 msgstr "The user {0} has modified your membership of the site {1} [1]. You are now {2} of the site."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:175
 #, java-format
 msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
 msgstr "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
@@ -2161,7 +2161,7 @@ msgstr "You are about to delete the whole site which currently contains {0}, {1}
 msgid "You are about to reset the layout of site {0}."
 msgstr "You are about to reset the layout of site {0}."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:377
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:376
 #, java-format
 msgid "You are about to reset the skin {0}.{1}."
 msgstr "You are about to reset the skin {0}.{1}."
@@ -2569,7 +2569,7 @@ msgstr[1] "{0} votes"
 msgid "{0} was successfully deleted."
 msgstr "{0} was successfully deleted."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:192
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:191
 #, java-format
 msgid "{0} was successfully reset."
 msgstr "{0} was successfully reset."

@@ -242,7 +242,7 @@ global.messages.en = {
    "Password forgotten?": "Password forgotten?",
    "Personal URL": "Personal URL",
    "Phase-Out": "Phase-Out",
-   "Please avoid characters like slashes or HTML code in the name field.": "Please avoid characters like slashes or HTML code in the name field.",
+   "Please avoid special characters or HTML code in the name field.": "Please avoid special characters or HTML code in the name field.",
    "Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly.": "Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly.",
    "Please choose a ZIP file to import": "Please choose a ZIP file to import",
    "Please choose a prototype and enter a skin name": "Please choose a prototype and enter a skin name",
