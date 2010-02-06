@@ -73,17 +73,14 @@ User.getSalt = function() {
  * @returns {User}
  */
 User.register = function(data) {
-   // check if username is existing and is clean
-   // can't use isClean() here because we accept
-   // special characters like . - and space
-   var invalidChar = new RegExp("[^a-zA-Z0-9\\.\\-_ ]");
+   var name = stripTags(data.name);
    if (!data.name) {
       throw Error(gettext("Please enter a username."));
    } else if (data.name.length > 30) {
       throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
-   } else if (invalidChar.exec(data.name)) {
-      throw Error(gettext("Please enter alphanumeric characters only in the username field."));
-   } else if (this[data.name] || this[data.name + "_action"]) {
+   } else if (data.name !== name || /[\/+\\]/.test(name)) { // RegExp as used by Jala’s HopObject.getAccessName()
+      throw Error(gettext("Please avoid characters like slashes or HTML code in the name field."));
+   } else if (name !== root.users.getAccessName(name)) {
       throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
 

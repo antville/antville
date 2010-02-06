@@ -25,7 +25,6 @@
  * @fileOverview Defines the Skin prototype
  */
 
-
 /**
  * 
  * @param {String} group
@@ -268,6 +267,7 @@ Skin.prototype.getFormValue = function(name) {
       case "source":
       return req.data.source || this.getSource();
    }
+   return HopObject.prototype.getFormValue.apply(this, arguments);
 }
 
 /**

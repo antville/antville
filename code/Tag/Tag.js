@@ -35,6 +35,11 @@ Tag.MOUNTPOINTS = {
 }
 
 /**
+ * @constant
+ */
+Tag.DELIMITER = ", ";
+
+/**
  * @name Tag
  * @constructor
  * @param {String} name

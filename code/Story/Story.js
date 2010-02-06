@@ -292,7 +292,7 @@ Story.prototype.getFormValue = function(name) {
       case "status":
       return this.status || Story.PUBLIC;
       case "tags":
-      return this.getTags();
+      return this.getTags().join(Tag.DELIMITER);
    }
    return this[name];
 }
@@ -494,15 +494,15 @@ Story.prototype.comments_macro = function(param, mode) {
  */
 Story.prototype.tags_macro = function(param, mode) {
    if (mode === "link") {
-      var links = [];
+      var tags = [];
       this.tags.list().forEach(function(item) {
          res.push();
          if (item.tag) {
             renderLink(param, item.tag.href(), item.tag.name);
-            links.push(res.pop());
+            tags.push(res.pop());
          }
       });
-      return res.write(links.join(", "));
+      return res.write(tags.join(Tag.DELIMITER));
    }
    return res.write(this.getFormValue("tags"));
 }

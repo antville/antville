@@ -27,9 +27,7 @@ else
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <% if <% skin.source %> is null then 
-   '<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
-   class="listFlag">c<br />u<br />s<br />t<br />o<br />m</td>
-   <td rowspan="2" width="5" nowrap="nowrap"></td>' 
+   <% listItemFlag <% gettext custom %> %>
 %>
 <td class="small">
    <div class="ample"><strong><% gettext Macro suffix=: %></strong> &lt;% 

@@ -87,12 +87,19 @@ Skins.prototype.main_action = function() {
 }
 
 Skins.prototype.create_action = function() {
-   var skin = this.getSkin(req.postParams.prototype, req.postParams.name);
+   var skin = new Skin; 
    if (req.postParams.save) {
       try {
-         if (!req.postParams.prototype || !req.postParams.name) {
+         var prototype = req.postParams.prototype;
+         var name = stripTags(req.postParams.name);
+         if (!prototype || !req.postParams.name) {
             throw Error(gettext("Please choose a prototype and enter a skin name"));
+         } else if (name !== req.postParams.name || /[\/+\\]/.test(name)) { // RegExp as used by Jala’s HopObject.getAccessName()
+            throw Error(gettext("Please avoid characters like slashes or HTML code in the name field."));
+         } else if (Skin.getByName(prototype, name)) {
+            throw Error("Sorry, there is already a skin with that name. Please enter a different one.");
          }
+         skin = this.getSkin(prototype, name);
          skin.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          if (req.postParams.save == 1) {
@@ -105,12 +112,7 @@ Skins.prototype.create_action = function() {
          app.log(ex);
       }
    }
-   if (skin.getSource()) {
-      res.redirect(skin.href("edit")); // FIXME: Needs testing
-      //res.data.title = gettext("Edit skin: {0}.{1}", skin.prototype, skin.name);
-   } else {
-      res.data.title = gettext('Add Skin');
-   }
+   res.data.title = gettext('Add Skin');
    res.data.action = this.href(req.action);
    res.data.body = skin.renderSkinAsString("$Skin#edit");
    this.renderSkin("$Skins#page");
