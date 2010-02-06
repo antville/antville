@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2010-02-06 15:59+0100\n"
-"PO-Revision-Date: 2010-02-06 15:59+0100\n"
+"POT-Creation-Date: 2010-02-06 22:34+0100\n"
+"PO-Revision-Date: 2010-02-06 22:43+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -104,7 +104,7 @@ msgid "Add Site"
 msgstr "Site hinzufügen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:63
-#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:115
 msgid "Add Skin"
 msgstr "Skin hinzufügen"
 
@@ -147,7 +147,7 @@ msgstr "Alle Bilder"
 msgid "All Polls"
 msgstr "Alle Umfragen"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:137
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:139
 msgid "All Skins"
 msgstr "Alle Skins"
 
@@ -340,7 +340,7 @@ msgstr "Kommentare zur Story sind {0}"
 msgid "Compare"
 msgstr "Vergleichen"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:248
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:247
 msgid "Compare Skin"
 msgstr "Skin vergleichen"
 
@@ -355,7 +355,7 @@ msgid "Confirm Password"
 msgstr "Kennwort bestätigen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:217
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:202
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:201
 msgid "Confirm Reset"
 msgstr "Zurücksetzen bestätigen"
 
@@ -428,7 +428,7 @@ msgstr "Die Bildgröße konnte nicht angepasst werden."
 msgid "Could not save the image file on disk."
 msgstr "Die Bild-Datei konnte nicht auf die Festplatte geschrieben werden."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:100
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:97
 msgid "Could not verify your password. Please repeat your input."
 msgstr "Ihr Kennwort konnte nicht überprüft werden. Bitte wiederholen Sie Ihre Eingabe."
 
@@ -545,7 +545,7 @@ msgstr "Jede Antville-Site bietet in den Site-Einstellungen die Möglichkeit, ei
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:142
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:141
 msgid "Edit Comment"
 msgstr "Kommentar bearbeiten"
 
@@ -567,7 +567,7 @@ msgstr "Mitgliedschaft bearbeiten: {0}"
 msgid "Edit Poll: {0}"
 msgstr "Umfrage bearbeiten: {0}"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:158
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:157
 #, java-format
 msgid "Edit Skin: {0}.{1}"
 msgstr "Skin bearbeiten: {0}.{1}"
@@ -851,7 +851,7 @@ msgstr "Langes Datumsformat"
 #: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:46
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:79
 #: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:55
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:33
 #: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:20
 msgid "Macro"
 msgstr "Makro"
@@ -918,8 +918,8 @@ msgstr "Modus"
 msgid "Modified"
 msgstr "Geänderte"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:121
-#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:144
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:123
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:146
 msgid "Modified Skins"
 msgstr "Geänderte Skins"
 
@@ -949,7 +949,7 @@ msgstr "Neues Kennwort"
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:214
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:213
 msgid "No differences were found"
 msgstr "Es wurden keine Unterschiede festgestellt"
 
@@ -1042,7 +1042,7 @@ msgid_plural "Online for {0} days"
 msgstr[0] "Online seit {0} Tag"
 msgstr[1] "Online seit {0} Tagen"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:308
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:305
 msgid "Oops, your old password is incorrect. Please re-enter it."
 msgstr "Hoppla, Ihr altes Kennwort ist falsch. Bitte geben Sie es nochmals ein."
 
@@ -1089,6 +1089,11 @@ msgstr "Internet-Adresse"
 msgid "Phase-Out"
 msgstr "Site-Einstellung"
 
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:98
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:82
+msgid "Please avoid characters like slashes or HTML code in the name field."
+msgstr "Bitte vermeiden Sie Schrägstriche oder HTML-Code im Feld für den Namen."
+
 #: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
 msgid "Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly."
 msgstr "Bitte seien Sie sich bewusst, dass diese Aktion nicht rückgängig gemacht werden kann. Wenn Sie also auf »Fortfahren« klicken, werden die Änderungen unwiderruflich durchgeführt."
@@ -1097,7 +1102,7 @@ msgstr "Bitte seien Sie sich bewusst, dass diese Aktion nicht rückgängig gemac
 msgid "Please choose a ZIP file to import"
 msgstr "Bitte wählen Sie ein ZIP-Archiv für den Import"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:94
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:96
 msgid "Please choose a prototype and enter a skin name"
 msgstr "Bitte wählen Sie einen Prototypen und einen Namen für diesen Skin."
 
@@ -1134,23 +1139,19 @@ msgstr "Bitte geben Sie eine Suchanfrage in das Suchformular ein."
 msgid "Please enter a user name and e-mail address."
 msgstr "Bitte geben Sie einen Benutzernamen und eine E-Mail-Adresse ein."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:81
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:78
 msgid "Please enter a username."
 msgstr "Bitte geben Sie einen Benutzernamen ein."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:329
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:326
 msgid "Please enter a valid URL"
 msgstr "Bitte geben Sie eine gültige Internet-Adresse ein."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:324
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:321
 msgid "Please enter a valid e-mail address"
 msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:85
-msgid "Please enter alphanumeric characters only in the username field."
-msgstr "Bitte geben Sie nur alphanumerische Zeichen in das Feld für den Benutzernamen ein."
-
-#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:154
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:153
 #: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:193
 msgid "Please enter at least something into the “title” or “text” field."
 msgstr "Bitte geben Sie zumindest etwas in eines der beiden Felder »Titel« oder »Text« ein."
@@ -1167,7 +1168,7 @@ msgstr "Bitte geben Sie einen Nachrichtentext ein."
 msgid "Please enter the name of the new value:"
 msgstr "Bitte geben Sie den Namen des neuen Werts ein:"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:92
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:89
 msgid "Please enter your e-mail address."
 msgstr "Bitte geben Sie Ihre E-Mail-Adresse ein."
 
@@ -1192,7 +1193,7 @@ msgstr "Bitte melden Sie sich an, um zu kommentieren"
 msgid "Please note that you cannot change the name after the site was created."
 msgstr "Bitte beachten Sie, dass Sie den Namen nicht mehr ändern können, nachdem der Site erstellt wurde."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:312
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:309
 msgid "Please specify a new password."
 msgstr "Bitte geben Sie ein neues Kennwort ein."
 
@@ -1524,12 +1525,12 @@ msgstr "Bedaure!"
 msgid "Sorry, an owner of a site cannot be removed."
 msgstr "Bedaure, ein Eigentümer einer Site kann nicht gelöscht werden."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:87
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:108
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:84
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:105
 msgid "Sorry, the user name you entered already exists. Please enter a different one."
 msgstr "Bedauer, der von Ihnen eingegebene Benutzername ist bereits vorhanden. Bitte geben Sie einen anderslautenden ein."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:83
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:80
 msgid "Sorry, the username you entered is too long. Please choose a shorter one."
 msgstr "Bedaure, der von Ihnen eingegebene Benutzername ist zu lang. Bitte geben Sie einen kürzeren ein."
 
@@ -1639,7 +1640,7 @@ msgstr "Die Konfiguration wurde erfolgreich aktualisiert."
 msgid "System is up and running."
 msgstr "System ist betriebsbereit."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:84
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:89
 #, java-format
 msgid "Tag: {0}"
 msgstr "Stichwort: {0}"
@@ -1696,8 +1697,8 @@ msgstr "Die Rückruf-Adresse wird mit folgenden Parametern durch die »Http Post
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:213
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:149
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:260
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:146
-#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:97
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:104
 msgid "The changes were saved successfully."
 msgstr "Die Änderungen wurden erfolgreich gespeichert."
 
@@ -1709,7 +1710,7 @@ msgstr "Der gewählte Name ist zu lang. Bitte geben Sie einen kürzeren ein."
 msgid "The comment was successfully created."
 msgstr "Der Kommentar wurde erfolgreich erstellt."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:132
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:131
 msgid "The comment was successfully updated."
 msgstr "Der Kommentar wurde erfolgreich aktualisiert."
 
@@ -1791,7 +1792,7 @@ msgstr "Benutzer {0} hat Sie als {1} zum Site {2} hinzugefügt [1]."
 msgid "The user {0} has modified your membership of the site {1} [1]. You are now {2} of the site."
 msgstr "Benutzer {0} hat Ihre Mitgliedschaft beim Site {1} geändert [1]. Sie sind ab sofort {2} des Site."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:177
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:176
 #, java-format
 msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
 msgstr "Das {0}-Makro fehlt. Es ist erforderlich, um auf den Site zuzugreifen und muss in diesem Skin enthalten sein."
@@ -1995,13 +1996,13 @@ msgstr "Internet-Adresse der Ressource"
 msgid "URL string of the site"
 msgstr "Internet-Adresse des Site"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:156
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:166
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:153
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:163
 msgid "Unfortunately, your login failed. Maybe a typo?"
 msgstr "Leider ist Ihre Anmeldung fehlgeschlagen. Haben Sie sich vielleicht vertippt?"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:102
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:314
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:99
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:311
 msgid "Unfortunately, your passwords did not match. Please repeat your input."
 msgstr "Leider passen die beiden Kennwörter nicht zusammen. Bitte wiederholen Sie die Eingabe."
 
@@ -2093,7 +2094,7 @@ msgid "Welcome to {0}, {1}!"
 msgstr "Willkommen bei {0}, {1}!"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:184
-#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:143
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:140
 #, java-format
 msgid "Welcome to {0}, {1}. Have fun!"
 msgstr "Willkommen bei {0}, {1}. Viel Spaß!"
@@ -2120,7 +2121,7 @@ msgstr[1] "Ja, {0} Kommentare sollen wirklich gelöscht werden"
 msgid "You (or someone pretending to be you) requested to reset the password of your account for the site {0} [1]."
 msgstr "Sie (oder jemand, der sich als Sie ausgibt) hat beantragt, das Passwort Ihres Benutzerkontos für den Site {0} zurückzusetzen [1]."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:196
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:195
 #, java-format
 msgid "You are about to delete a comment by user {0}."
 msgstr "Sie sind im Begriff, einen Kommentar von Benutzer {0} zu löschen."
@@ -2155,7 +2156,7 @@ msgstr "Sie sind im Begriff, die Mitgliedschaft des Benutzers {0} zu löschen."
 msgid "You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}."
 msgstr "Sie sind im Begriff, den kompletten Site zu löschen, welcher zur Zeit {0}, {1}, {2}, {3} und {4} umfasst."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:466
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:459
 #, java-format
 msgid "You are about to reset the layout of site {0}."
 msgstr "Sie sind im Begriff, die Gestaltung von Site {0} zurückzusetzen."
@@ -2241,6 +2242,10 @@ msgstr "Redakteure"
 #: /Users/tobi/Projects/helma/apps/antville/compat/Story/Story.js:276
 msgid "contributors"
 msgstr "Autoren"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:30
+msgid "custom"
+msgstr "extra"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:298
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:304
@@ -2564,7 +2569,7 @@ msgstr[1] "{0} Stimmen"
 msgid "{0} was successfully deleted."
 msgstr "{0} wurde erfolgreich gelöscht."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:193
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:192
 #, java-format
 msgid "{0} was successfully reset."
 msgstr "{0} wurde erfolgreich zurückgesetzt."
