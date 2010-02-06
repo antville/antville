@@ -221,7 +221,7 @@ div.skin div.title {
 }
 
 .label {
-   margin-left: 1px;
+   margin-right: 1px;
    padding: 2px 3px;
    color: white;
    font-family: sans-serif;
