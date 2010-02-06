@@ -565,16 +565,16 @@ Site.prototype.search_action = function() {
       // Prepare search string for metadata: Get source and remove 
       // '(new String("..."))' wrapper; finally, double all backslashes
       search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
-      var title = '%title:"%' + search + '%"%';
-      var text = '%text:"%' + search + '%"%';
-      var sql = new Sql;
-      sql.retrieve(Sql.SEARCH, this._id, "Story", Story.CLOSED, text, title, 25);
+      var sql = new Sql({quote: false});
+      sql.retrieve(Sql.SEARCH, this._id, search, 50);
       res.push();
       var counter = 0;
       sql.traverse(function() {
-         var story = Story.getById(this.id);
-         story.renderSkin("Story#result");
-         counter += 1;
+         var content = Story.getById(this.id);
+         if (!content.story || content.story.status !== Story.CLOSED) {
+            content.renderSkin("Story#result");
+            counter += 1;
+         }
       });
       res.message = ngettext("Found {0} result.", 
             "Found {0} results.", counter);

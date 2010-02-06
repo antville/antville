@@ -29,7 +29,8 @@
 /**
  * @constructor
  */
-var Sql = function() {
+var Sql = function(options) {
+   options || (options = {});
    var db = getDBConnection("antville");
    var query;
 
@@ -57,7 +58,7 @@ var Sql = function() {
    }
 
    var quote = function(str) {
-      if (str === null) {
+      if (!options.quote || str === null) {
          return str;
       }
       return str.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
@@ -163,8 +164,10 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
 
 /** @constant */
 Sql.SEARCH = "select id from content where site_id = $0 and " +
-      "prototype = $1 and status <> $2 and (metadata like $3 or " +
-      "metadata like $4) order by created desc limit $5";
+      "prototype in ('Story', 'Comment') and status <> 'closed' and " +
+      "(metadata regexp 'title:\"[^\"]*$1[^\"]*\"' or " +
+      "metadata regexp 'text:\"[^\"]*$1[^\"]*\"') " +
+      "order by created desc limit $2";
 
 /** @constant */
 Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
