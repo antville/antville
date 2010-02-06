@@ -226,38 +226,6 @@ Membership.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * @deprecated
- * @param {Object} param
- * @throws {Error}
- */
-Membership.prototype.email_macro = function(param) {
-   throw Error(gettext("Due to privacy reasons the display of e-mail addresses is disabled."));
-}
-
-/**
- * 
- */
-Membership.prototype.status_macro = function() {
-   this.renderSkin(session.user ? "Membership#status" : "Membership#login");
-   return;
-}
-
-/**
- * 
- * @param {Object} value
- * @param {Object} param
- * @returns {String}
- * @see HopObject#link_filter
- */
-Membership.prototype.link_filter = function(value, param) {
-   if (!session.user || !session.user.url) {
-      return value;
-   }
-   return HopObject.prototype.link_filter.call(this, value, 
-         param, session.user.url); // || this.href());
-}
-
-/**
  * 
  * @param {String} role
  * @returns {Boolean}
@@ -291,14 +259,54 @@ Membership.prototype.notify = function(action, recipient, subject) {
 }
 
 /**
+ * @returns {String}
+ */
+Membership.prototype.getConfirmText = function() {
+   return gettext("You are about to delete the membership of user {0}.", 
+         this.creator.name);
+}
+
+/**
+ * @returns {String}
+ */
+Membership.prototype.toString = function() {
+   return (this.role || "Transient") + " membership of user " + this.name;
+}
+
+/**
  * @function
  * @see #toString
  */
 Membership.prototype.valueOf = Membership.prototype.toString;
 
 /**
- * @returns {String}
+ * @deprecated
+ * @param {Object} param
+ * @throws {Error}
  */
-Membership.prototype.toString = function() {
-   return gettext("{0} membership of user {1}", this.role || "Transient", this.name);
+Membership.prototype.email_macro = function(param) {
+   throw Error(gettext("Due to privacy reasons the display of e-mail addresses is disabled."));
+}
+
+/**
+ * 
+ */
+Membership.prototype.status_macro = function() {
+   this.renderSkin(session.user ? "Membership#status" : "Membership#login");
+   return;
+}
+
+/**
+ * 
+ * @param {Object} value
+ * @param {Object} param
+ * @returns {String}
+ * @see HopObject#link_filter
+ */
+Membership.prototype.link_filter = function(value, param) {
+   if (!session.user || !session.user.url) {
+      return value;
+   }
+   return HopObject.prototype.link_filter.call(this, value, 
+         param, session.user.url); // || this.href());
 }

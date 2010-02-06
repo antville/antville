@@ -201,7 +201,7 @@ Skin.prototype.reset_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Confirm Reset");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
-      text: gettext('You are about to reset {0}.', this)
+      text: this.getConfirmText()
    });
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -368,6 +368,14 @@ Skin.prototype.equals = function(source) {
       return str.replace(re, String.EMPTY);
    }
    return normalize(source) === normalize(this.getSource());
+}
+
+/**
+ * @returns {String}
+ */
+Skin.prototype.getConfirmText = function() {
+   return gettext("You are about to reset the skin {0}.{1}.", 
+         this.prototype, this.name);
 }
 
 /**

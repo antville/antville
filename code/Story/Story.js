@@ -654,3 +654,11 @@ Story.prototype.url_filter = function(value, param, mode) {
       return res.pop();
    });
 }
+
+/**
+ * @returns {String}
+ */
+Story.prototype.getConfirmText = function() {
+   return gettext("You are about to delete a story by user {0}.", 
+         this.creator.name);
+}

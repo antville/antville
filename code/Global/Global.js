@@ -358,7 +358,7 @@ function breadcrumbs_macro (param, delimiter) {
    }
    if (req.action !== "main") {
       res.write(delimiter);
-      res.write(req.action.titleize());
+      res.write(gettext(req.action.titleize()));
    }
    return;
 }

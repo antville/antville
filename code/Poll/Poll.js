@@ -219,6 +219,14 @@ Poll.prototype.rotate_action = function() {
 }
 
 /**
+ * @returns {String}
+ */
+Poll.prototype.getConfirmText = function() {
+   return gettext("You are about to delete a poll by user {0}.", 
+         this.creator.name);
+}
+
+/**
  * 
  * @param {Object} param
  * @param {String} action

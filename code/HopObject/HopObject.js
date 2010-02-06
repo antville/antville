@@ -168,7 +168,7 @@ HopObject.prototype.delete_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Confirm Deletion");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
-      text: gettext('You are about to delete {0}.', this)
+      text: this.getConfirmText()
    });
    res.handlers.site.renderSkin("Site#page");
    return;
@@ -620,7 +620,7 @@ HopObject.prototype.getTitle = function() {
  * @returns {String}
  */
 HopObject.prototype.toString = function() {
-   return gettext(this.constructor.name) + " #" + this._id;
+   return this.constructor.name + " #" + this._id;
 }
 
 /**

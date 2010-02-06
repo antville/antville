@@ -517,3 +517,10 @@ Image.prototype.removeFiles = function() {
    }
    return;
 }
+
+/**
+ * @returns {String}
+ */
+Image.prototype.getConfirmText = function() {
+   return gettext("You are about to delete the image {0}.", this.name);
+}

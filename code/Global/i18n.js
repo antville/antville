@@ -35,7 +35,6 @@ markgettext("Both");
 
 markgettext("Close");
 markgettext("Closed");
-markgettext("Comment");
 markgettext("Compare");
 markgettext("Contact");
 markgettext("Contributor");
@@ -72,6 +71,7 @@ markgettext("None");
 markgettext("Manager");
 markgettext("Managers");
 markgettext("Members");
+markgettext("Modified");
 
 markgettext("Open");
 markgettext("Owner");
@@ -94,7 +94,6 @@ markgettext("Running");
 markgettext("Setup");
 markgettext("Shared");
 markgettext("Show");
-markgettext("Site");
 markgettext("Sites");
 markgettext("Skins");
 markgettext("Stories");

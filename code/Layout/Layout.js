@@ -216,7 +216,7 @@ Layout.prototype.reset_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Confirm Reset");
    res.data.body = this.renderSkinAsString("$HopObject#confirm", {
-      text: gettext('You are about to reset {0}.', this)
+      text: this.getConfirmText()
    });
    res.handlers.site.renderSkin("Site#page");
 }
@@ -280,13 +280,6 @@ Layout.prototype.import_action = function() {
    res.data.body = this.renderSkinAsString("$Layout#import");
    res.handlers.site.renderSkin("Site#page");
    return;
-}
-
-/**
- * @returns {String}
- */
-Layout.prototype.getTitle = function() {
-   return "Layout";
 }
 
 /**
@@ -457,4 +450,12 @@ Layout.prototype.values_macro = function() {
       });
    }
    return;
+}
+
+/**
+ * @returns {String}
+ */
+Layout.prototype.getConfirmText = function() {
+   return gettext("You are about to reset the layout of site {0}.", 
+         this.site.name);
 }

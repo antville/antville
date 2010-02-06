@@ -189,6 +189,5 @@ Tag.prototype.getTitle = function() {
  * @returns {String}
  */
 Tag.prototype.toString = function() {
-   return "[" + this.type + " tag ``" + this.name + "'' of Site ``" + 
-       this.site.alias + "'']";
+   return this.type + " tag " + this.name + " of Site " + this.site.alias;
 }

@@ -40,11 +40,8 @@ Comment.remove = function(options) {
       return;
    }
    if (options && options.mode === "user" && options.confirm === "1") {
-      var sql = new Sql;
-      sql.retrieve(Sql.COMMENTS, this.site._id, this.creator._id);
-      sql.traverse(function() {
-         Comment.remove.call(Comment.getById(this.id));
-      });
+      var membership = Membership.getByName(this.creator.name, this.site);
+      HopObject.remove.call(membership.comments);
    } else {
       while (this.size() > 0) {
          Comment.remove.call(this.get(0));
@@ -185,7 +182,16 @@ Comment.prototype.update = function(data) {
  */
 Comment.prototype.getMacroHandler = function(name) {
    if (name === "related") {
-      return this.creator.comments;
+      var membership = Membership.getByName(this.creator.name, this.site) 
+      return membership.comments;
    }
    return null;
+}
+
+/**
+ * @returns {String}
+ */
+Comment.prototype.getConfirmText = function() {
+   return gettext("You are about to delete a comment by user {0}.", 
+         this.creator.name);
 }

@@ -239,3 +239,10 @@ File.prototype.getUrl = function() {
    var site = this.site || res.handlers.site;
    return site.getStaticUrl("files/" + this.fileName);
 }
+
+/**
+ * @returns {String}
+ */
+File.prototype.getConfirmText = function() {
+   return gettext("You are about to delete the file {0}.", this.name);
+}

@@ -152,10 +152,6 @@ var Sql = function() {
 Sql.COUNT = "select count(*) as count from $0";
 
 /** @constant */
-Sql.COMMENTS = "select id from content where site_id = $0 and creator_id = $1 \
-      and prototype = 'Comment'";
-
-/** @constant */
 Sql.REFERRERS = "select referrer, count(*) as requests from " +
       "log where context_type = '$0' and context_id = $1 and action = " +
       "'main' and created > date_add(now(), interval -1 day) group " +

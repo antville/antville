@@ -24,8 +24,7 @@ $(function() {
 </div>
 <div id="confirmation">
    <input type="checkbox" id="confirm" name="confirm" value="1" />
-   <label for="confirm"><% gettext "Yes, really erase {0}"
-         <% ngettext "{0} comment" "{0} comments" 
-         <% comment.related.size %> %> %></label>
+   <label for="confirm"><% ngettext "Yes, really erase {0} comment"
+         "Yes, really erase {0} comments" <% comment.related.size %> %></label>
 </div>
 <br />

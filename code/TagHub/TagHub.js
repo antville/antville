@@ -73,6 +73,5 @@ TagHub.prototype.getMacroHandler = function(name) {
  * @return {String}
  */
 TagHub.prototype.toString = function() {
-   return "[Tag ``" + this.tag.name + "'' of " + this.tagged_type + " " + 
-         this.tagged_id + "]";
+   return "Tag " + this.tag.name + " of " + this.tagged.toString();
 }
