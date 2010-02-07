@@ -569,7 +569,7 @@ Site.prototype.search_action = function() {
       // '(new String("..."))' wrapper; finally, double all backslashes
       search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
       var sql = new Sql({quote: false});
-      sql.retrieve(Sql.SEARCH, this._id, search.toLowerCase(), 50);
+      sql.retrieve(Sql.SEARCH, this._id, search, 50);
       res.push();
       var counter = 0;
       sql.traverse(function() {

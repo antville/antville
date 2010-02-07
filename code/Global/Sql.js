@@ -165,7 +165,8 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
 /** @constant */
 Sql.SEARCH = "select id from content where site_id = $0 and " +
       "prototype in ('Story', 'Comment') and status <> 'closed' and " +
-      "(metadata like '%title:\"%$1%\"%' or metadata like '%text:\"%$1%\"%') " +
+      "(lower(metadata) like lower('%title:\"%$1%\"%') or " +
+      "lower(metadata) like lower('%text:\"%$1%\"%')) " +
       "order by created desc limit $2";
 
 /** @constant */
