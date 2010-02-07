@@ -82,6 +82,8 @@ Membership.remove = function(options) {
  * @constructor
  * @param {Object} user
  * @param {Object} role
+ * @property {Comment[]} comments
+ * @property {Story[]} content
  * @property {Date} created
  * @property {User} creator
  * @property {File[]} files
