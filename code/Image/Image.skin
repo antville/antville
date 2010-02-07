@@ -14,8 +14,8 @@
    <% image.link delete prefix=" ... " %>
 </p>
 <p class="small">
-   <% gettext 'To insert this image into a story or comment of this site  
-copy and paste the following code:' %> <code><% image.macro %></code>
+   <% gettext 'To insert this image into a story or comment of this site 
+         copy and paste the following code:' %> <code><% image.macro %></code>
 </p>
 
 <% #preview %>
