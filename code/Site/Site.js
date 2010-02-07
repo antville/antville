@@ -314,16 +314,19 @@ Site.prototype.getFormOptions = function(name) {
  */
 Site.prototype.update = function(data) {
    if (this.isTransient()) {
+      var name = stripTags(data.name);
       if (!data.name) {
          throw Error(gettext("Please enter a name for your new site."));
       } else if (data.name.length > 30) {
          throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
-      } else if (/(\/|\\)/.test(data.name)) {
-         throw Error(gettext("A site name may not contain any (back)slashes."));
+      } else if (name !== data.name || NAMEPATTERN.test(data.name)) {
+         throw Error(gettext("Please avoid special characters or HTML code in the name field."));
       } else if (data.name !== root.getAccessName(data.name)) {
          throw Error(gettext("There already is a site with this name."));
       }
       this.layout = new Layout(this);
+      // FIXME: 1. Check for IDN class is needed; 
+      //        2. toASCII() should be called somewhere else
       this.name = java.net.IDN.toASCII(data.name);
       this.title = data.title || data.name;
       return;
