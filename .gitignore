@@ -1,7 +1,8 @@
 /.*
 build/build.properties
 build/dist
-build/extra/antville.trace.db
+build/extra/*.lock.db
+build/extra/*.trace.db
 build/work
 code/Global/ParssClientLibrary.js
 code/_*
