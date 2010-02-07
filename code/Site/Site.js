@@ -258,6 +258,7 @@ Site.prototype.edit_action = function() {
       try {
          this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
+         res.debug(this.href(req.action));
          res.redirect(this.href(req.action));
       } catch (ex) {
          res.message = ex;
@@ -325,10 +326,10 @@ Site.prototype.update = function(data) {
          throw Error(gettext("There already is a site with this name."));
       }
       this.layout = new Layout(this);
-      // FIXME: 1. Check for IDN class is needed; 
+      // FIXME: 1. Check if IDN class is available (Java 6!) 
       //        2. toASCII() should be called somewhere else
-      this.name = java.net.IDN.toASCII(data.name);
-      this.title = data.title || data.name;
+      this.name = java.net.IDN.toASCII(name);
+      this.title = data.title || name;
       return;
    }
    
