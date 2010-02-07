@@ -319,9 +319,9 @@ Site.prototype.update = function(data) {
          throw Error(gettext("Please enter a name for your new site."));
       } else if (data.name.length > 30) {
          throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
-      } else if (name !== data.name || NAMEPATTERN.test(data.name)) {
+      } else if (name !== data.name || /\s/.test(data.name) || NAMEPATTERN.test(data.name)) {
          throw Error(gettext("Please avoid special characters or HTML code in the name field."));
-      } else if (data.name !== root.getAccessName(data.name)) {
+      } else if (name !== root.getAccessName(name)) {
          throw Error(gettext("There already is a site with this name."));
       }
       this.layout = new Layout(this);
