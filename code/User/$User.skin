@@ -1,11 +1,12 @@
 <% #welcome %>
-<p><% gettext "{0} is currently {1}." <% site.title %> <% site.mode %> %>
+<p><% gettext "{0} is currently {1}." <% site.title %> 
+      <% gettext <% site.mode | titleize %> %> %>
 <% if <% site.mode %> is closed then 
    <% gettext "This means that only you and other {0} of this site have access 
    to it. You can safely start to customize it or to fill it with all the 
-   content you have in mind." <% site.members.link owners %> %> 
-else
-   <% gettext "Thus, it’s publicly accessible for every visitor." %>
+   content you have in mind." <% site.members.link owners %> %>
+else <% if <% site.mode %> is restricted then "" else 
+   <% gettext "Thus, it’s publicly accessible for every visitor." %> %>
 %></p>
 <p><% gettext "The easiest way to customize your site is to change its {0}. 
 You can change the language and time zone or the main title of your site, open 
