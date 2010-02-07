@@ -587,11 +587,11 @@ Admin.prototype.filterSites = function(data) {
    }
    switch (data.order) {
       case "1":
-      sql += "group by created, site.id order by created "; break;
+      sql += "group by created, id order by created "; break;
       case "2":
-      sql += "group by name, site.id order by name "; break;
+      sql += "group by name, id order by name "; break;
       default:
-      sql += "group by modified, site.id order by modified "; break;
+      sql += "group by modified, id order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
    this.sites.subnodeRelation = sql;
@@ -631,12 +631,12 @@ Admin.prototype.filterUsers = function(data) {
    }
    switch (data.order) {
       case "1":
-      sql += "group by created, account.id order by created "; break;
+      sql += "group by created, id order by created "; break;
       case "2":
-      sql += "group by created, account.id order by name "; break;
+      sql += "group by created, id order by name "; break;
       case "0":
       default:
-      sql += "group by modified, account.id order by modified "; break;
+      sql += "group by modified, id order by modified "; break;
    }
    (data.dir == 1) || (sql += "desc");
    this.users.subnodeRelation = sql;
