@@ -569,12 +569,13 @@ Site.prototype.search_action = function() {
       // '(new String("..."))' wrapper; finally, double all backslashes
       search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
       var sql = new Sql({quote: false});
-      sql.retrieve(Sql.SEARCH, this._id, search, 50);
+      sql.retrieve(Sql.SEARCH, this._id, search.toLowerCase(), 50);
       res.push();
       var counter = 0;
       sql.traverse(function() {
          var content = Story.getById(this.id);
-         if (!content.story || content.story.status !== Story.CLOSED) {
+         if (!content.story || (content.story.status !== Story.CLOSED && 
+               content.story.commentMode !== Story.CLOSED)) {
             content.renderSkin("Story#result");
             counter += 1;
          }
