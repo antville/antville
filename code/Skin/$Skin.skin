@@ -56,11 +56,11 @@ else
 <table class="diff" cellspacing="0" cellpadding="0">
 <tr>
 <td class="removed">&nbsp;</td>
-<td colspan="2">Lines removed from original skin</td>
+<td colspan="2"><% gettext 'Lines removed from original skin' %></td>
 </tr>
 <tr>
 <td class="added">&nbsp;</td>
-<td colspan="2">Lines added to modified skin</td>
+<td colspan="2"><% gettext 'Lines added to modified skin' %></td>
 </tr>
 <tr>
 <td colspan="3"><% response.status prefix="<br />" default="&nbsp;" %></td>
