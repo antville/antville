@@ -258,7 +258,6 @@ Site.prototype.edit_action = function() {
       try {
          this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
-         res.debug(this.href(req.action));
          res.redirect(this.href(req.action));
       } catch (ex) {
          res.message = ex;
