@@ -415,7 +415,6 @@ MessageParser.prototype.getPotString = function() {
    buf.append('## $Revision$\n');
    buf.append('## $LastChangedBy$\n');
    buf.append('## $LastChangedDate$\n');
-   buf.append('## $URL$\n');
    buf.append('##\n\n');
    buf.append('#, fuzzy\n');
    buf.append('msgid ""\n');
