@@ -177,8 +177,6 @@ Image.prototype.edit_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
-        // FIXME: To be removed if work-around for Helma bug #607 passes
-         //this.setTags(req.postParams.tags || req.postParams.tag_array);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this.href());
       } catch (ex) {
