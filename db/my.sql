@@ -31,10 +31,24 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON antville.* TO antville@localhost IDENTIFIED
 SET FOREIGN_KEY_CHECKS = 0;
 
 
+CREATE TABLE `account` (
+  `id` int(10) unsigned NOT NULL default '0',
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
+  `metadata` mediumtext,
+  `email` varchar(255) character set utf8 collate utf8_general_ci default NULL,
+  `status` enum('blocked','regular','trusted','privileged') default 'regular',
+  `visited` datetime default NULL,
+  `created` datetime default NULL,
+  `modified` datetime default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `name` (`name`(20))
+) ENGINE=InnoDB;
+
+
 CREATE TABLE `choice` (
   `id` int(10) unsigned NOT NULL default '0',
   `poll_id` int(10) unsigned default NULL,
-  `title` varchar(255) default NULL,
+  `title` text character set utf8 collate utf8_general_ci default NULL,
   `created` datetime default NULL,
   `modified` datetime default NULL,
   PRIMARY KEY  (`id`),
@@ -45,7 +59,7 @@ CREATE TABLE `choice` (
 CREATE TABLE `content` (
   `id` int(10) unsigned NOT NULL default '0',
   `prototype` enum('Story','Comment') default 'Story',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `site_id` int(10) unsigned default NULL,
   `story_id` int(10) unsigned default NULL,
   `parent_id` int(10) unsigned default NULL,
@@ -71,7 +85,7 @@ CREATE TABLE `content` (
 CREATE TABLE `file` (
   `id` int(10) unsigned NOT NULL default '0',
   `prototype` enum('File') default 'File',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `site_id` int(10) unsigned default NULL,
   `parent_id` int(10) unsigned default NULL,
   `parent_type` enum('Site') default 'Site',
@@ -90,7 +104,7 @@ CREATE TABLE `file` (
 
 CREATE TABLE `image` (
   `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `prototype` enum('Image') default 'Image',
   `parent_id` int(10) unsigned default NULL,
   `parent_type` enum('Site','Layout') default NULL,
@@ -123,8 +137,8 @@ CREATE TABLE `log` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `context_id` int(10) unsigned default NULL,
   `context_type` enum('Root','User','Site','Story') default NULL,
-  `referrer` mediumtext,
-  `action` varchar(255) default NULL,
+  `referrer` text,
+  `action` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `created` datetime default NULL,
   `creator_id` int(10) unsigned default NULL,
   PRIMARY KEY  (`id`)
@@ -133,7 +147,7 @@ CREATE TABLE `log` (
 
 CREATE TABLE `membership` (
   `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `site_id` int(10) unsigned default NULL,
   `role` enum('Subscriber','Contributor','Manager','Owner') default 'Subscriber',
   `created` datetime default NULL,
@@ -150,7 +164,7 @@ CREATE TABLE `membership` (
 CREATE TABLE `poll` (
   `id` int(10) unsigned NOT NULL default '0',
   `site_id` int(10) unsigned default NULL,
-  `question` text,
+  `question` text character set utf8 collate utf8_general_ci default NULL,
   `status` enum('closed','readonly','open') default NULL,
   `closed` datetime default NULL,
   `created` datetime default NULL,
@@ -165,7 +179,7 @@ CREATE TABLE `poll` (
 
 CREATE TABLE `site` (
   `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `layout_id` int(10) unsigned default NULL,
   `metadata` mediumtext,
   `status` enum('blocked','regular','trusted') default 'regular',
@@ -182,7 +196,7 @@ CREATE TABLE `site` (
 
 CREATE TABLE `skin` (
   `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `prototype` varchar(30) default NULL,
   `source` mediumtext default NULL,
   `layout_id` int(10) unsigned default NULL,
@@ -197,7 +211,7 @@ CREATE TABLE `skin` (
 
 CREATE TABLE `tag` (
   `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) default NULL,
+  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `site_id` int(10) unsigned default NULL,
   `type` enum('Story','Image') default NULL,
   PRIMARY KEY  (`id`),
@@ -216,25 +230,11 @@ CREATE TABLE `tag_hub` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE `account` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) default NULL,
-  `metadata` mediumtext,
-  `email` varchar(255) default NULL,
-  `status` enum('blocked','regular','trusted','privileged') default 'regular',
-  `visited` datetime default NULL,
-  `created` datetime default NULL,
-  `modified` datetime default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `name` (`name`(20))
-) ENGINE=InnoDB;
-
-
 CREATE TABLE `vote` (
   `id` int(10) unsigned NOT NULL default '0',
   `poll_id` int(10) unsigned default NULL,
   `choice_id` int(10) unsigned default NULL,
-  `creator_name` varchar(255) default NULL,
+  `creator_name` varchar(255) character set utf8 collate utf8_general_ci default NULL default NULL,
   `created` datetime default NULL,
   `creator_id` int(10) unsigned default NULL,
   `modified` datetime default NULL,
