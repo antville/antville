@@ -484,9 +484,6 @@ Site.prototype.getXml = function(collection) {
       entry.setAuthor(item.creator.name);
       entry.setPublishedDate(item.created);
       if (item.text) {
-         // FIXME: Work-around for "story" handlers in comment skins
-         // (Obsolete as soon as "story" handlers are replaced with "this")
-         //res.handlers.story = item;
          description = new rome.SyndContentImpl();
          //description.setType("text/plain");
          // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters 
@@ -838,7 +835,10 @@ Site.prototype.getDiskSpace = function(quota) {
 Site.prototype.processHref = function(href) {
    var domain = getProperty("domain." + this.name);
    if (domain) {
-      return req.servletRequest.scheme + "://" + domain + href;
+      href = [req.servletRequest.scheme, "://", domain, href].join(String.EMPTY);
+   } else if (domain = getProperty("domain.www")) {
+      href = [req.servletRequest.scheme, "://", domain, 
+            "/", this.name, href].join(String.EMPTY);
    }
    return href;
 }
