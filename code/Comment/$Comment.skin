@@ -1,4 +1,8 @@
 <% #delete %>
+<% if <% comment.creator %> is <% membership.user.name %> then ''  
+      else <% comment.skin #deleteOptions %> %>
+
+<% #deleteOptions %>
 <script type="text/javascript">
 $(function() {
    $("#confirmation").hide();
