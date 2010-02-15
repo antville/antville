@@ -222,9 +222,10 @@ Membership.prototype.content_action = function() {
  */
 Membership.prototype.getMacroHandler = function(name) {
    switch (name) {
-      case "creator":
+      case "user":
       return this.creator;
    }
+   return null;
 }
 
 /**

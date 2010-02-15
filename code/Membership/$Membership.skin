@@ -41,7 +41,7 @@
    <div class="storyTitle"><% membership.name %></div>
    <div class="ample"><span class="small"><% membership.created short
    prefix=<% gettext "Member since" suffix=" " %>  %></span></div>
-   <div><% membership.creator.url | link %></div>
+   <div><% membership.user.url | link %></div>
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
