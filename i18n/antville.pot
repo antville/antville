@@ -169,7 +169,7 @@ msgid "An error occurred while processing your request:"
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:2
-msgid "Antville is an open source project aimed to the development of a simple site hosting system with many advanced <a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>."
+msgid "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>."
 msgstr ""
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:34
