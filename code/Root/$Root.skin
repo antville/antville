@@ -1,5 +1,5 @@
 <% #main %>
-<p><% gettext 'Antville is an open source project aimed to the development of a 
+<p><% gettext 'Antville is an open source project aimed at the development of a 
 simple site hosting system with many advanced 
 <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
 <p><% gettext 'One Antville installation can easily host up to several thousands of {0}.'

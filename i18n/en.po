@@ -32,7 +32,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
+"Last-Translator: Christoph Leuthner <leuthner@gmail.com>\n"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1022
 #, java-format
