@@ -78,7 +78,7 @@ $(function() {
 <td colspan="2" class="small">
    <strong><% gettext Macro suffix=: %></strong> <% image.macro %>
    <div class="ample"><strong><% gettext Properties suffix=: %></strong>
-   <% image.contentType %>, <% image.width %>&times;<% image.height %> 
+   <% image.contentType %>, <% image.contentLength %>, <% image.width %>&times;<% image.height %> 
    <% gettext pixels %></div>
 </td>
 </tr>
