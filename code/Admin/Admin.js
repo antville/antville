@@ -781,7 +781,7 @@ Admin.prototype.items_macro = function(param, object, name) {
    if (!object || !object.size) {
       return;
    }
-   var max = Math.min(object.size(), parseInt(param.limit) || 5);
+   var max = Math.min(object.size(), parseInt(param.limit) || 10);
    for (var i=0; i<max; i+=1) {
       html.link({href: object.get(i).href()}, "#" + (object.size()-i) + " ");
    }
