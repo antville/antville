@@ -203,7 +203,11 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
    <a href="<% item.url %>"><% item.url %></a></div>
    <div class="small">
       <% gettext Registered %>: <% item.created short %><br />
-      <% gettext "Last Login" %>: <% item.modified short %>
+      <% gettext "Last Login" %>: <% item.modified short %><br />
+      <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.stories %> %> %>:
+      <% admin.items <% item.stories %> %><br />
+      <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.comments %> %> %>:
+      <% admin.items <% item.comments %> %><br />
    </div>
 </td>
 <td class="small" valign="top" align="right">
@@ -223,10 +227,6 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 </colgroup>
 <tr>
 <td class="small" valign="top">
-   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.stories %> %> %>:
-   <% admin.items <% item.stories %> %><br />
-   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.comments %> %> %>:
-   <% admin.items <% item.comments %> %><br />
    <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.images %> %> %>:
    <% admin.items <% item.images %> %><br />
    <% ngettext "{0} File" "{0} Files" <% admin.count <% item.files %> %> %>:
