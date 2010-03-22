@@ -10,7 +10,7 @@ that there are still bugs hidden somewhere in this application.
 If you found one please report it at http://project.antville.org.
 
 Antville can be used for production purposes, but please bear in mind that the
-creators of Antville and Helma do not take any warranty (whichever kind).
+creators of Antville and Helma do not take any warranty, whichever kind.
 
 
 ===================
@@ -45,8 +45,8 @@ For documentation and further information regarding Antville please refer to:
 Feel free to ask any question regarding the application at
 http://help.antville.org
 
-For further information about Helma http://helma.org generally is a good
-place. There is also a mailing-list about Helma-related stuff available at
+For further information about Helma, http://helma.org generally is a good
+place. There is also a mailing list about Helma-related stuff available at
 http://groups.google.com/group/helma.
 
 
@@ -58,7 +58,7 @@ If you found a bug please report it at http://project.antville.org.
 
 Please post feature requests or proposals to http://project.antville.org.
 
-Since Antville is open-source, you are definitly encouraged to modify the
+Since Antville is open-source, you are definitely encouraged to modify the
 application, but please keep us informed on what you do/did – either by
 posting at http://help.antville.org or by sending a mail to
 mail@antville.org.
@@ -72,10 +72,10 @@ development of Antville, there will also be other ways to participate.
 ABOUT ANTVILLE
 ==============
 
-Antville is an open source project aimed to the development of an 
-“easy to maintain and use” weblog hosting system. It can easily host 
-up to several hundred or thousand weblogs (the number of weblogs is 
-more limited by the site owner’s choice and server power than software 
+Antville is an open source project aimed at the development of a high 
+performance, feature rich weblog hosting software. It can easily host 
+up to several thousands of sites (the number of weblogs is rather
+limited by the installation owner’s choice and server power than by software 
 limitations).
 
 Antville is entirely written in JavaScript (ECMAScript, to be precise)
