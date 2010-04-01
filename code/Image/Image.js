@@ -293,6 +293,7 @@ Image.prototype.update = function(data) {
       this.fileName = fileName;
       thumbnail && (this.thumbnailName = this.name + "_small" + extension);
       this.writeFiles(image.resized || mime, thumbnail && thumbnail.resized);
+      image.resized && (this.contentLength = this.getFile().getLength());
    }
 
    if (this.parent_type !== "Layout") {
