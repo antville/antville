@@ -550,9 +550,11 @@ function list_macro(param, id, limit) {
 
       switch (type) {
          case "comments":
-         var comments = site.stories.comments;
-         collection = comments.list().filter(filter).filter(commentFilter);
-         skin = "Story#preview";
+         if (site.commentMode !== Site.DISABLED) {
+            var comments = site.stories.comments;
+            collection = comments.list().filter(filter);
+            skin = "Story#preview";
+         }
          break;
          
          case "featured":
