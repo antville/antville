@@ -216,6 +216,22 @@ Comment.prototype.text_macro = function() {
    return;
 }
 
+/**
+ * 
+ */
+Comment.prototype.title_macro = function() {
+   if (this.status !== Comment.DELETED) {
+      res.write(this.title);
+   }
+   return;
+}
+
+/**
+ * 
+ * @param {Object} param
+ * @param {Object} action
+ * @param {Object} text
+ */
 Comment.prototype.link_macro = function(param, action, text) {
    switch (action) {
       case "rotate":
