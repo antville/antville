@@ -741,21 +741,11 @@ Admin.prototype.link_macro = function(param, action, id, text) {
  * 
  * @param {Object} param
  * @param {HopObject} object
- * @param {String} name
  */
-Admin.prototype.count_macro = function(param, object, name) {
-   if (!object || !object.size) {
-      return;
+Admin.prototype.count_macro = function(param, object) {
+   if (object && object.size) {
+      res.write(object.size());
    }
-   switch (name) {
-      case "comments":
-      if (object.constructor === Site) {
-         res.write("FIXME: takes very long... :(");
-         //res.write(object.stories.comments.size());
-      }
-      return;
-   }
-   res.write(object.size());
    return;
 }
 

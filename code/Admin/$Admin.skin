@@ -128,10 +128,11 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 </colgroup>
 <tr>
 <td valign="top" class="small">
-   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.stories.self %> %> suffix="<br />" %>
-   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.stories.comments %> %> suffix="<br />" %>
-   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.images %> %> suffix="<br />" %>
-   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.files %> %> suffix="<br />" %>
+   <% item.stories.self $comments %>
+   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.self stories %> %> suffix="<br />" %>
+   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.self comments %> %> suffix="<br />" %>
+   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.self images %> %> suffix="<br />" %>
+   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.self files %> %> suffix="<br />" %>
 </td>
 <td class="small" align="left">
    <div style="padding-bottom: 3px;"><% item.select status %></div>
@@ -149,11 +150,11 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <div class="adminHighlight">
 <p><strong><% gettext Caution! %></strong></p>
 <p><% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.' 
-      <% ngettext '{0} story' '{0} stories' <% admin.count <% item.stories.self %> %> %>
-      <% ngettext '{0} comment' '{0} comments' <% admin.count <% item.stories.comments %> %> %>
-      <% ngettext '{0} image' '{0} images' <% admin.count <% item.images %> %> %>
-      <% ngettext '{0} file' '{0} files' <% admin.count <% item.files %> %> %> 
-      <% ngettext '{0} member' '{0} members' <% admin.count <% item.members %> %> %> %></p>
+      <% ngettext '{0} story' '{0} stories' <% admin.count <% item.self stories %> %> %>
+      <% ngettext '{0} comment' '{0} comments' <% admin.count <% item.self comments %> %> %>
+      <% ngettext '{0} image' '{0} images' <% admin.count <% item.self images %> %> %>
+      <% ngettext '{0} file' '{0} files' <% admin.count <% item.self files %> %> %> 
+      <% ngettext '{0} member' '{0} members' <% admin.count <% item.self members %> %> %> %></p>
 <p><strong><% gettext 'All of this will be deleted irreversibly.' %></strong></p>
 <p><% gettext 'Are you sure you want to proceed?' %></p>
 </div>
@@ -175,7 +176,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <tr>
 <td class="small"><% gettext Sort suffix=: %></td>
 <td>
-   <% admin.dropdown name="order" values="Login,Registration,Username" %>
+   <% admin.dropdown name="order" values="Registration,Login,Username" %>
    <% admin.dropdown name="dir" values="Descending,Ascending" %>
 </td>
 </tr>
@@ -204,10 +205,6 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
    <div class="small">
       <% gettext Registered %>: <% item.created short %><br />
       <% gettext "Last Login" %>: <% item.modified short %><br />
-      <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.stories %> %> %>:
-      <% admin.items <% item.stories %> %><br />
-      <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.comments %> %> %>:
-      <% admin.items <% item.comments %> %><br />
    </div>
 </td>
 <td class="small" valign="top" align="right">
@@ -227,9 +224,13 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 </colgroup>
 <tr>
 <td class="small" valign="top">
-   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.images %> %> %>:
+   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.self stories %> %> %>:
+   <% admin.items <% item.stories %> %><br />
+   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.self comments %> %> %>:
+   <% admin.items <% item.comments %> %><br />
+   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.self images %> %> %>:
    <% admin.items <% item.images %> %><br />
-   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.files %> %> %>:
+   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.self files %> %> %>:
    <% admin.items <% item.files %> %><br />
 </td>
 <td class="small" align="left">

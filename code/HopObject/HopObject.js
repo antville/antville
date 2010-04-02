@@ -513,9 +513,11 @@ HopObject.prototype.getFormOptions = function() {
 
 /**
  * @returns {HopObject}
+ * @param {Object} param
+ * @param {String} property
  */
-HopObject.prototype.self_macro = function() {
-   return this;
+HopObject.prototype.self_macro = function(param, property) {
+   return property ? this[property] : this;
 }
 
 /**
