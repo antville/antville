@@ -29,8 +29,8 @@
 /**
  * @see defineConstants
  */
-Comment.getStatus = defineConstants(Comment, "closed", 
-      "pending", "readonly", "public");
+Comment.getStatus = defineConstants(Comment, "deleted", "pending", 
+      "readonly", "public");
 
 /**
  * @returns {String}
@@ -87,16 +87,20 @@ Comment.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "comment":
-      // FIXME: temporary fix for lost stories due to shrunk database
-      if (!this.story) {
-         return false;
-      }
       return this.site.commentMode === Site.ENABLED &&
             this.story.getPermission(action) && 
-            this.status !== Comment.CLOSED &&
             this.status !== Comment.PENDING;
       case "delete":
+      return this.story.getPermission.call(this, "delete");
       case "edit":
+      case "rotate":
+      if (this.status === Comment.DELETED) {
+         if (this.creator !== this.modifier) {
+            return User.require(User.PRIVILEGED);
+         } else {
+            return session.user === this.creator;
+         }
+      }
       return this.story.getPermission.call(this, "delete");
    }
    return false;
@@ -159,7 +163,7 @@ Comment.prototype.update = function(data) {
    this.setMetadata(data);
 
    if (this.story.commentMode === Story.MODERATED) {
-      this.mode = Comment.PENDING;
+      this.status = Comment.PENDING;
    } else if (delta > 50) {
       this.modified = new Date;
       if (this.story.status !== Story.CLOSED) { 
@@ -176,6 +180,14 @@ Comment.prototype.update = function(data) {
 }
 
 /**
+ * @returns {String}
+ */
+Comment.prototype.getConfirmText = function() {
+   return gettext("You are about to delete a comment by user {0}.", 
+         this.creator.name);
+}
+
+/**
  * 
  * @param {String} name
  * @returns {HopObject} 
@@ -189,9 +201,36 @@ Comment.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * @returns {String}
+ * 
  */
-Comment.prototype.getConfirmText = function() {
-   return gettext("You are about to delete a comment by user {0}.", 
-         this.creator.name);
+Comment.prototype.text_macro = function() {
+   if (this.status === Comment.DELETED) {
+      res.write("<em>");
+      res.write(this.modifier === this.creator ? 
+            gettext("This comment was removed by the author.") : 
+            gettext("This comment was removed."));
+      res.writeln("</em>");
+   } else {
+      res.write(this.text);
+   }
+   return;
+}
+
+Comment.prototype.link_macro = function(param, action, text) {
+   switch (action) {
+      case "rotate":
+      if (this.status === Comment.DELETED) {
+         text = gettext("Show");
+      } else {
+         text = gettext("Hide");
+      }
+   }
+   return HopObject.prototype.link_macro.call(this, param, action, text);
+}
+
+Comment.prototype.rotate_action = function() {
+   this.status = this.status === Comment.DELETED ? 
+         Comment.PUBLIC : Comment.DELETED;
+   this.touch();
+   return res.redirect(this.href());
 }
