@@ -381,8 +381,6 @@ Admin.prototype.main_action = function() {
 }
 
 Admin.prototype.setup_action = function() {
-   //Site.remove.call(Site.getByName("deleteme"));
-   
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
@@ -630,13 +628,13 @@ Admin.prototype.filterUsers = function(data) {
       }
    }
    switch (data.order) {
-      case "1":
-      sql += "group by created, id order by created "; break;
-      case "2":
-      sql += "group by created, id order by name "; break;
       case "0":
       default:
+      sql += "group by created, id order by created "; break;
+      case "1":
       sql += "group by modified, id order by modified "; break;
+      case "2":
+      sql += "group by name, id order by name "; break;
    }
    (data.dir == 1) || (sql += "desc");
    this.users.subnodeRelation = sql;
