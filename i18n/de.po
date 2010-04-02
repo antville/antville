@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2010-04-01 10:10+0200\n"
 "PO-Revision-Date: 2010-04-01 10:12+0100\n"
-"Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
+"Last-Translator: Christoph Leuthner <leuthner@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +169,7 @@ msgstr "Antville ist ein quelloffenes Projekt zum einfachen Veröffentlichen von
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:34
 msgid "Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API:"
-msgstr "Antville selbst bietet eine vorbereitete Rückruf-Adresse, welche die  Ping-Methode der Website weblogs.com aufruft."
+msgstr "Antville selbst bietet eine vorbereitete Callback-URL, welche die Ping-Methode der Website weblogs.com aufruft."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:3
 msgid "Antville supports some popular application programming interfaces:"
@@ -466,7 +466,7 @@ msgstr "Datum im Unix-Format"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/Api.js:130
 msgid "Default Callback Url"
-msgstr "Vorbereitete Callback-URL"
+msgstr "Standardmäßige Callback-URL"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:44
 #: /Users/tobi/Projects/helma/apps/antville/compat/Story/Story.js:327
@@ -615,7 +615,7 @@ msgstr "Datei"
 #: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:164
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:236
 msgid "File size is exceeding the upload limit."
-msgstr "Die Dateigröße überschretet die Upload-Grenze."
+msgstr "Die Dateigröße überschreitet die Upload-Grenze."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:54
 msgid "Files"
@@ -1061,7 +1061,7 @@ msgstr "Optionen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:77
 msgid "Owner"
-msgstr "Inhaber"
+msgstr "Besitzer"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:78
 msgid "Owners"
@@ -1294,7 +1294,7 @@ msgstr "Gereihte Anfragen"
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:278
 #, java-format
 msgid "Queued import of {0} into site »{1}«"
-msgstr "Import von {0} in Site {1} wird durchgeführt"
+msgstr "Import von {0} nach Site {1} wird durchgeführt"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:248
 msgid "Re-run"
@@ -1437,7 +1437,7 @@ msgstr "Suchergebnis"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:190
 msgid "Select a user from the list below and click the “Add Member” button."
-msgstr "Wählen Sie einen Benutzer aus der Liste unten und klicken Sie auf »Mitglied hinzufügen«"
+msgstr "Wählen Sie einen Benutzer aus folgender Liste und klicken Sie auf »Mitglied hinzufügen«"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:94
 msgid "Send"
@@ -1695,7 +1695,7 @@ msgstr "Die Internet-Adresse für jede dieser APIs lautet"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:21
 msgid "The callback URL will be invoked as an HTTP POST request with the following parameters:"
-msgstr "Die Rückruf-Adresse wird mit folgenden Parametern durch die »HTTP Post«-Methode aufgerufen:"
+msgstr "Die Callback-URL wird mit folgenden Parametern durch die »HTTP Post«-Methode aufgerufen:"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:463
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:494
@@ -1824,11 +1824,11 @@ msgstr "Diese Callback-URL ruft die Ping-Methode der {0} auf."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:210
 msgid "This comment was removed by the author."
-msgstr ""
+msgstr "Dieser Kommentar wurde vom Autor gelöscht."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:211
 msgid "This comment was removed."
-msgstr ""
+msgstr "Dieser Kommentar wurde gelöscht."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:21
 msgid "This is the directory of public sites hosted here, in alphabetical order."
@@ -2046,7 +2046,7 @@ msgstr "Betriebszeit"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:94
 msgid "Used Memory"
-msgstr "Benutzer Speicher"
+msgstr "Benutzter Speicher"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:11
 msgid "User"
