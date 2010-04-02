@@ -1175,8 +1175,8 @@ msgid "Please enter the name of the new value:"
 msgstr "Bitte geben Sie den Namen des neuen Werts ein:"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:89
-msgid "Please enter your e-mail address."
-msgstr "Bitte geben Sie Ihre E-Mail-Adresse ein."
+msgid "Please enter a valid e-mail address."
+msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:82
 msgid "Please enter your message to the user below."
