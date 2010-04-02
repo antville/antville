@@ -84,11 +84,9 @@ User.register = function(data) {
       throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
 
-   // check if email-address is valid
-   if (!data.email) {
-      throw Error(gettext("Please enter your e-mail address."));
+   if (!validateEmail(data.email)) {
+      throw Error(gettext("Please enter a valid e-mail address"));
    }
-   validateEmail(data.email);
 
    // Create hash from password for JavaScript-disabled browsers
    if (!data.hash) {
@@ -319,12 +317,9 @@ User.prototype.update = function(data) {
    }
    if (!(this.email = validateEmail(data.email))) {
       throw Error(gettext("Please enter a valid e-mail address"));
-   }
-   
-   if(data.url != "") {
-      if (!(this.url = validateUrl(data.url))) {
-        throw Error(gettext("Please enter a valid URL"));
-      }
+   }   
+   if (data.url && !(this.url = validateUrl(data.url))) {
+      throw Error(gettext("Please enter a valid URL"));
    }
    return this;
 }
