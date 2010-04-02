@@ -169,7 +169,7 @@ msgstr "Antville ist ein quelloffenes Projekt zum einfachen Veröffentlichen von
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:34
 msgid "Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API:"
-msgstr "Antville selbst bietet eine vorbereitete Callback-URL, welche die Ping-Methode der Website weblogs.com aufruft."
+msgstr "Antville selbst bietet eine standardmäßige Callback-URL, welche die Ping-Methode der Website weblogs.com aufruft."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:3
 msgid "Antville supports some popular application programming interfaces:"
@@ -818,8 +818,8 @@ msgid "Layout Images"
 msgstr "Layout-Bilder"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:63
-msgid "Lines added to modified skin"
-msgstr "Zum geänderten Skin hinzugefügte Zeilen"
+msgid "Lines added to original skin"
+msgstr "Zum ursprünglichen Skin hinzugefügte Zeilen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:59
 msgid "Lines removed from original skin"

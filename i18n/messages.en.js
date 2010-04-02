@@ -180,7 +180,7 @@ global.messages.en = {
    "Last updated on": "Last updated on",
    "Layout": "Layout",
    "Layout Images": "Layout Images",
-   "Lines added to modified skin": "Lines added to modified skin",
+   "Lines added to original skin": "Lines added to original skin",
    "Lines removed from original skin": "Lines removed from original skin",
    "Link": "Link",
    "Log": "Log",

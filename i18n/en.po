@@ -818,8 +818,8 @@ msgid "Layout Images"
 msgstr "Layout Images"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:63
-msgid "Lines added to modified skin"
-msgstr "Lines added to modified skin"
+msgid "Lines added to original skin"
+msgstr "Lines added to original skin"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:59
 msgid "Lines removed from original skin"

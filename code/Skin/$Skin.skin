@@ -60,7 +60,7 @@ else
 </tr>
 <tr>
 <td class="added">&nbsp;</td>
-<td colspan="2"><% gettext 'Lines added to modified skin' %></td>
+<td colspan="2"><% gettext 'Lines added to original skin' %></td>
 </tr>
 <tr>
 <td colspan="3"><% response.status prefix="<br />" default="&nbsp;" %></td>
