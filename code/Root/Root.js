@@ -80,8 +80,9 @@ Root.prototype.getPermission = function(action) {
       case "updates.xml":
       return true;
       case "create":
-      case "import":
       return this.getCreationPermission();
+      case "import":
+      return User.require(User.PRIVILEGED);
    }
    return Site.prototype.getPermission.apply(this, arguments);
 }
@@ -300,10 +301,14 @@ Root.prototype.import_action = function() {
 
 Root.prototype.mrtg_action = function() {
    res.contentType = "text/plain";
-   switch (req.queryParams.target) {
+   var target = req.queryParams.target; 
+   if (!target) {
+      return;
+   }
+   switch (target) {
       case "cache":
       res.writeln(0);
-      res.writeln(app.cacheusage * 100 / getProperty("cacheSize"));
+      res.writeln(app.cacheusage * 100 / getProperty("cacheSize", 100));
       break;
       case "threads":
       res.writeln(0);
@@ -338,7 +343,7 @@ Root.prototype.mrtg_action = function() {
       break;
    }
    res.writeln(app.upSince);
-   res.writeln("mrtg." + req.queryParams.target + " of Antville version " + Root.VERSION);
+   res.writeln("mrtg." + target + " of Antville version " + Root.VERSION);
    return;
 } 
 
