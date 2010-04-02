@@ -63,5 +63,6 @@
       <% comment.link . <% gettext Link %> prefix="... " %>
       <% comment.link edit prefix="... " %>
       <% comment.link delete prefix="... " %>
+      <% comment.link rotate prefix="... " %>
    </p>
 </div>
