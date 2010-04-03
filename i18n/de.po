@@ -591,8 +591,8 @@ msgid "Enter one filter {0}pattern{1} per line to be applied on every URL in the
 msgstr "Geben Sie ein {0}Filter-Pattern{1} pro Zeile ein, das für jede Adresse in den Rückverweis-Listen angewendet werden soll."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:141
-msgid "Enter your user name and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
-msgstr "Bitte geben Sie den Namen und die E-Mail-Adresse an, die Sie bei der Registrierung verwendet haben. Ihnen wird dann eine Bestätigungs-Nachricht mit weiterer Anleitung zugestellt."
+msgid "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
+msgstr "Bitte geben Sie den Benutzernamen und die E-Mail-Adresse an, die Sie bei der Registrierung verwendet haben. Ihnen wird dann eine Nachricht mit weiteren Anleitungen zugestellt."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Comment/$Comment.skin:26
 #, java-format

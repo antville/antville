@@ -130,7 +130,7 @@ global.messages.en = {
    "Enabled": "Enabled",
    "Enter a search term to display a list of matching users.": "Enter a search term to display a list of matching users.",
    "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists.": "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists.",
-   "Enter your user name and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions.": "Enter your user name and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions.",
+   "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions.": "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions.",
    "Erase all comments of user {0}": "Erase all comments of user {0}",
    "Export": "Export",
    "Featured": "Featured",

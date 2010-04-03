@@ -591,8 +591,8 @@ msgid "Enter one filter {0}pattern{1} per line to be applied on every URL in the
 msgstr "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:141
-msgid "Enter your user name and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
-msgstr "Enter your user name and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
+msgid "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
+msgstr "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Comment/$Comment.skin:26
 #, java-format

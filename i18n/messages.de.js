@@ -130,7 +130,7 @@ global.messages.de = {
    "Enabled": "Aktiv",
    "Enter a search term to display a list of matching users.": "Bitte geben Sie einen Suchbegriff ein, um eine Liste passender Benutzer anzuzeigen.",
    "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists.": "Geben Sie ein {0}Filter-Pattern{1} pro Zeile ein, das für jede Adresse in den Rückverweis-Listen angewendet werden soll.",
-   "Enter your user name and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions.": "Bitte geben Sie den Namen und die E-Mail-Adresse an, die Sie bei der Registrierung verwendet haben. Ihnen wird dann eine Bestätigungs-Nachricht mit weiterer Anleitung zugestellt.",
+   "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions.": "Bitte geben Sie den Benutzernamen und die E-Mail-Adresse an, die Sie bei der Registrierung verwendet haben. Ihnen wird dann eine Nachricht mit weiteren Anleitungen zugestellt.",
    "Erase all comments of user {0}": "Alle Kommentare von Benutzer {0} löschen",
    "Export": "Exportieren",
    "Featured": "Hervorgehoben",
