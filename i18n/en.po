@@ -1951,12 +1951,12 @@ msgid "To modify a membership select the desired role from the drop-down menu an
 msgstr "To modify a membership select the desired role from the drop-down menu and click the “Save” button."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:83
-msgid "To prevent abuse the sender address and the subject of the e-mail are set to predefined values."
-msgstr "To prevent abuse the sender address and the subject of the e-mail are set to predefined values."
+msgid "To prevent abuse, the sender address and the subject of the e-mail are set to predefined values."
+msgstr "To prevent abuse, the sender address and the subject of the e-mail are set to predefined values."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:150
-msgid "To prevent spam abuse referrers and backlinks are displayed using client-side JavaScript code. Thus, you should enable the option to execute JavaScript code in your browser. Otherwise you will only see this information."
-msgstr "To prevent spam abuse referrers and backlinks are displayed using client-side JavaScript code. Thus, you should enable the option to execute JavaScript code in your browser. Otherwise you will only see this information."
+msgid "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to be set to permit the execution of JavaScript."
+msgstr "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to be set to permit the execution of JavaScript."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:325
 #, java-format

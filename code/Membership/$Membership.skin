@@ -80,7 +80,7 @@
 <p class="storyTitle"><% response.title %></p>
 <p class="small">
    <% gettext 'Please enter your message to the user below.' %> 
-   <% gettext 'To prevent abuse the sender address and the subject of the e-mail 
+   <% gettext 'To prevent abuse, the sender address and the subject of the e-mail 
          are set to predefined values.' %>
    <% gettext 'A generic disclaimer will be automatically appended to your message.' %>
 </p>
