@@ -1031,7 +1031,7 @@ msgstr "Selbstverständlich können Sie nun auch anfangen, {0} zu erstellen, ein
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:5
 #, java-format
 msgid "One Antville installation can easily host up to several thousands of {0}."
-msgstr "Auf einer Antville-Installation können ohne weiteres mehrere Tausend {0} veröffentlicht werden."
+msgstr "Auf einer Antville-Installation können ohne weiteres mehrere tausend {0} veröffentlicht werden."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:328
 #, java-format
@@ -1657,10 +1657,13 @@ msgid "Tagline"
 msgstr "Motto"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:103
-#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:35
-#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:26
 msgid "Tags"
 msgstr "Stichworte"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:26
+msgid "Tags (separated by commas):"
+msgstr "Stichworte (durch Komma getrennt):"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/_Manager/Manager.js:10
 #, java-format

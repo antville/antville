@@ -32,7 +32,7 @@ $(function() {
 <td><% image.textarea description %></td>
 </tr>
 <tr class="tags">
-<td class="small" valign="top"><% gettext Tags suffix=: %></td>
+<td class="small" valign="top"><% gettext "Tags (separated by commas):" %></td>
 <td><% image.input tags %></td>
 </tr>
 <tr class="resize">

@@ -370,6 +370,7 @@ global.messages.en = {
    "Tag: {0}": "Tag: {0}",
    "Tagline": "Tagline",
    "Tags": "Tags",
+   "Tags (separated by commas):": "Tags (separated by commas):",
    "Tags of site {0}": "Tags of site {0}",
    "Text": "Text",
    "Thanks, your vote was registered. You can change your mind until the poll is closed.": "Thanks, your vote was registered. You can change your mind until the poll is closed.",

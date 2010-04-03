@@ -23,7 +23,7 @@
    class="formText" %></div>
 </p>
 <p>
-   <div class="small"><% gettext "Tags" suffix=: %></div>
+   <div class="small"><% gettext "Tags (separated by commas):" %></div>
    <div class="backup"><% story.input tags class=formText %></div>
 </p>
 <p><fieldset>

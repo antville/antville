@@ -1657,10 +1657,13 @@ msgid "Tagline"
 msgstr "Tagline"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Global/i18n.js:103
-#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:35
-#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:26
 msgid "Tags"
 msgstr "Tags"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:26
+msgid "Tags (separated by commas):"
+msgstr "Tags (separated by commas):"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/_Manager/Manager.js:10
 #, java-format

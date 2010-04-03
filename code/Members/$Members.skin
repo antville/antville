@@ -138,7 +138,7 @@ value="register"><% gettext Register %></button>
 
 <% #reset %>
 <p class="storyTitle"><% response.title %></p>
-<p class="small"><% gettext "Enter your username and the e-mail address you
+<p class="small"><% gettext "Enter your username and the e-mail address you 
 have used when you registered. You will then receive a confirmation e-mail 
 containing further instructions." %></p> 
 <form id="login" method="post" action="<% response.action %>">
