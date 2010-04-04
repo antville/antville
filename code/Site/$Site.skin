@@ -191,7 +191,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <tr>
 <td class="small"><% gettext Paging suffix=: %></td>
 <td><% site.input pageSize size="5" maxlength="2" %>
-<% site.select pageMode %> <% gettext "per page" %></td>
+<!--<% site.select pageMode %>--><% gettext "Stories" %> <% gettext "per page" %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Comments suffix=: %></td>
