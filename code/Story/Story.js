@@ -476,7 +476,7 @@ Story.prototype.comments_macro = function(param, mode) {
                html.link({href: this.href() + "#comments"}, text);
       }
    } else {
-      this.comments.prefetchChildren();
+      this.prefetchChildren();
       this.forEach(function() {
          html.openTag("a", {name: this._id});
          html.closeTag("a");
