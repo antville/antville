@@ -194,7 +194,10 @@ Comment.prototype.getConfirmText = function() {
  */
 Comment.prototype.getMacroHandler = function(name) {
    if (name === "related") {
-      var membership = Membership.getByName(this.creator.name, this.site) 
+      var membership = Membership.getByName(this.creator.name, this.site);
+      if (!membership) {
+         return {}; // Work-around for issue 88
+      }
       return membership.comments;
    }
    return null;

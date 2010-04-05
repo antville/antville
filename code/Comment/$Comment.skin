@@ -1,6 +1,7 @@
 <% #delete %>
 <% if <% comment.creator %> is <% membership.user.name %> then ''  
-      else <% comment.skin #deleteOptions %> %>
+      else <% if <% comment.related.size %> is null then '' 
+      else <% comment.skin #deleteOptions %> %> %>
 
 <% #deleteOptions %>
 <script type="text/javascript">
