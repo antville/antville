@@ -201,6 +201,7 @@ extra/apps.properties svneol=native#text/plain
 extra/jetty.xml svneol=native#text/plain
 extra/mrtg.cfg -text
 extra/updater/patch-20080913.js -text
+extra/updater/patch-20100401.js svneol=native#text/plain
 i18n/antville.pot -text
 i18n/de.po -text
 i18n/en.po -text
