@@ -88,8 +88,8 @@ body {
 </div>
 <div class="ample">
    <% skins.link Site/stylesheet/edit <% gettext "CSS Stylesheet" %> %>
-   <div class="small"><% gettext "This skin contains the Cascaded Stylesheet 
-   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin 
+   <div class="small"><% gettext "This skin contains the Cascading Stylesheet 
+   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin 
    will affect the general appearance of your site." %></div>
 </div>
 <div class="ample">

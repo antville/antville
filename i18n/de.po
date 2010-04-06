@@ -1891,7 +1891,7 @@ msgid "This skin contains additional JavaScript code that will be included in ev
 msgstr "Dieser Skin enthält zusätzlichen JavaScript code, der in jeder Seite eingebettet wird."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:91
-msgid "This skin contains the Cascaded Stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifiying this skin will affect the general appearance of your site."
+msgid "This skin contains the Cascading Stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin will affect the general appearance of your site."
 msgstr "Dieser Skin enthält Stylesheet-Definitionen, z.B. für Schriftarten und -größen oder Farben. Änderungen an diesem Skin beeinflussen das allgemeine Erscheinungsbild Ihres Site."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:76
@@ -1907,7 +1907,7 @@ msgid "This skin is used to render the front page of your site."
 msgstr "Dieser Skin wird verwendet, um die Startseite Ihres Site auszugeben."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:254
-msgid "This seems not to be a (valid) JPG, PNG or GIF image file."
+msgid "This does not seem to be a (valid) JPG, PNG or GIF image file."
 msgstr "Das scheint keine (korrekte) JPG, PNG oder GIF-Bilddatei zu sein."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:398

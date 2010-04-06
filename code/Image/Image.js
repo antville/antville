@@ -251,7 +251,7 @@ Image.prototype.update = function(data) {
 
       var extension = Image.getFileExtension(mime.contentType);
       if (!extension) {
-         throw Error(gettext("This seems not to be a (valid) JPG, PNG or GIF image file."));
+         throw Error(gettext("This does not seem to be a (valid) JPG, PNG or GIF image file."));
       }
       
       this.origin = data.file_origin;
