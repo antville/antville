@@ -180,7 +180,7 @@ Site.prototype.constructor = function(name, title) {
       mode: Site.CLOSED,
       tagline: String.EMPTY,
       callbackEnabled: false,
-      commentMode: Site.OPEN,
+      commentMode: Site.ENABLED,
       archiveMode: Site.PUBLIC,
       notificationMode: Site.DISABLED,
       pageMode: Site.DAYS,
