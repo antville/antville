@@ -422,7 +422,7 @@ global.messages.de = {
    "This skin defines the basic structure of your site. Modifying it will affect the general appearance of your site.": "Dieser Skin bestimmt die grundlegende Struktur Ihres Site. Änderungen an diesem Skin beeinflussen das allgemeine Erscheinungsbild Ihres Site.",
    "This skin is used to display the navigation links on the page.": "Dieser Skin wird verwendet, um die Navigations-Links auf jeder Seite anzuzeigen.",
    "This skin is used to render the front page of your site.": "Dieser Skin wird verwendet, um die Startseite Ihres Site auszugeben.",
-   "This type of file cannot be uploaded as image.": "Dieser Dateityp kann nicht als Bild hochgeladen werden.",
+   "This seems not to be a (valid) JPG, PNG or GIF image file.": "Das scheint keine (korrekte) JPG, PNG oder GIF-Bilddatei zu sein.",
    "This user is already a member of this site.": "Dieser Benutzer ist bereits Mitglied des Site.",
    "Thus, it’s publicly accessible for every visitor.": "Daher ist er für jeden Besucher öffentlich zugänglich.",
    "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.": "Daher werden Sie benachrichtigt, wenn der Site – wie in den Site-Einstellungen angegeben – geändert wird.",

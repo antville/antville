@@ -1907,8 +1907,8 @@ msgid "This skin is used to render the front page of your site."
 msgstr "Dieser Skin wird verwendet, um die Startseite Ihres Site auszugeben."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:254
-msgid "This type of file cannot be uploaded as image."
-msgstr "Dieser Dateityp kann nicht als Bild hochgeladen werden."
+msgid "This seems not to be a (valid) JPG, PNG or GIF image file."
+msgstr "Das scheint keine (korrekte) JPG, PNG oder GIF-Bilddatei zu sein."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:398
 msgid "This user is already a member of this site."

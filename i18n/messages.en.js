@@ -422,7 +422,7 @@ global.messages.en = {
    "This skin defines the basic structure of your site. Modifying it will affect the general appearance of your site.": "This skin defines the basic structure of your site. Modifying it will affect the general appearance of your site.",
    "This skin is used to display the navigation links on the page.": "This skin is used to display the navigation links on the page.",
    "This skin is used to render the front page of your site.": "This skin is used to render the front page of your site.",
-   "This type of file cannot be uploaded as image.": "This type of file cannot be uploaded as image.",
+   "This seems not to be a (valid) JPG, PNG or GIF image file.": "This seems not to be a (valid) JPG, PNG or GIF image file.",
    "This user is already a member of this site.": "This user is already a member of this site.",
    "Thus, it’s publicly accessible for every visitor.": "Thus, it’s publicly accessible for every visitor.",
    "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.": "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.",
