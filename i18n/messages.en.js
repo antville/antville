@@ -105,6 +105,7 @@ global.messages.en = {
    "Delete": "Delete",
    "Delete Tag": "Delete Tag",
    "Deleted": "Deleted",
+   "<b>Deleted:</b> the site will automatically and irreversibly be deleted after 14 days.<br /><b>Closed:</b> only “Owners“ can access the site.<br /><b>Restricted:</b> the site can be accessed by “Owners”, “Managers” and “Contributors”.<br /><b>Public:</b> everyone can read the site – <i>recommended for most users.</i><br /><b>Open:</b> every registered user can write stories, upload images und files, open polls.": "<b>Deleted:</b> the site will automatically and irreversibly be deleted after 14 days.<br /><b>Closed:</b> only “Owners“ can access the site.<br /><b>Restricted:</b> the site can be accessed by “Owners”, “Managers” and “Contributors”.<br /><b>Public:</b> everyone can read the site – <i>recommended for most users.</i><br /><b>Open:</b> every registered user can write stories, upload images und files, open polls.",
    "Descending": "Descending",
    "Description": "Description",
    "Details": "Details",

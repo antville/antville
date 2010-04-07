@@ -105,6 +105,7 @@ global.messages.de = {
    "Delete": "Löschen",
    "Delete Tag": "Stichwort löschen",
    "Deleted": "Gelöscht",
+   "<b>Deleted:</b> the site will automatically and irreversibly be deleted after 14 days.<br /><b>Closed:</b> only “Owners“ can access the site.<br /><b>Restricted:</b> the site can be accessed by “Owners”, “Managers” and “Contributors”.<br /><b>Public:</b> everyone can read the site – <i>recommended for most users.</i><br /><b>Open:</b> every registered user can write stories, upload images und files, open polls.": "<b>Gelöscht:</b> der Site wird nach 14 Tagen automatisch und irreversibel gelöscht.<br /><b>Geschlossen:</b> nur »Besitzer« können auf den Site zugreifen.<br /><b>Eingeschränkt:</b> »Besitzer«, »Redakteure« und »Autoren« haben Zugang.<br /><b>Öffentlich:</b> jeder kann hier lesen – <i>die übliche Einstellung.</i><br /><b>Offen:</b> jeder registrierte Benutzer kann Beiträge schreiben, Bilder und Dateien hochladen sowie Umfragen starten.",
    "Descending": "Absteigend",
    "Description": "Beschreibung",
    "Details": "Einzelheiten",
