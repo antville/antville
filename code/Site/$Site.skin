@@ -225,7 +225,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </td>
 </tr>
 <tr>
-<td class="small" valign="top"><% gettext "Callback Url" suffix=: %></td>
+<td class="small" valign="top"><% gettext "Callback URL" suffix=: %></td>
 <td><% site.input callbackUrl %><br />
 <% site.checkbox callbackMode %> 
 <label for="callbackMode"><% gettext enabled %><label></td>

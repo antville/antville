@@ -60,7 +60,7 @@ global.messages.en = {
    "CSS Stylesheet": "CSS Stylesheet",
    "Cached Objects": "Cached Objects",
    "Calendar": "Calendar",
-   "Callback Url": "Callback Url",
+   "Callback URL": "Callback URL",
    "Cancel": "Cancel",
    "Cannot parse timestamp {0} as a date.": "Cannot parse timestamp {0} as a date.",
    "Caution!": "Caution!",

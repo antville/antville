@@ -11,7 +11,7 @@
    <div><% api.href | link %></div>
 </p>
 
-<p><br /><strong><% gettext 'Callback Url' %></strong></p>
+<p><br /><strong><% gettext 'Callback URL' %></strong></p>
 <p><% gettext "Each Antville site provides an option in the preferences to 
 define a callback URL that will be invoked each time the site content has changed. 
 This way users can define custom handlers for different site events with their 

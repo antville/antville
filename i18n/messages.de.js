@@ -60,7 +60,7 @@ global.messages.de = {
    "CSS Stylesheet": "CSS-Stilvorlagen",
    "Cached Objects": "Gepufferte Objekte",
    "Calendar": "Kalender",
-   "Callback Url": "Callback-URL",
+   "Callback URL": "Callback-URL",
    "Cancel": "Abbrechen",
    "Cannot parse timestamp {0} as a date.": "Der Zeitstempel {0} kann nicht in ein Datum überführt werden.",
    "Caution!": "Vorsicht!",

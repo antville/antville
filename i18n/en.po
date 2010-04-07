@@ -262,8 +262,8 @@ msgstr "Calendar"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:14
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:231
-msgid "Callback Url"
-msgstr "Callback Url"
+msgid "Callback URL"
+msgstr "Callback URL"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:243
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:162
