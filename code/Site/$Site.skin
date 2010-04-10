@@ -13,42 +13,6 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
 </tr>
 
-<% #create %>
-<p class="storyTitle"><% response.title %></p>
-<div>
-   <% gettext "To create a new site you need to fill out the form below." %>
-</div>
-<div class="small">
-   <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
-   enter “{0}” as the name your site will be reachable via this url: {1}'
-   <% example.name %> <% example.href prefix="<p><code>" suffix=</code></p> %> %></p>
-   <p><% gettext "Please note that you cannot change the name after the site was 
-   created." %> <% gettext "The title will appear in the header of every page 
-   of your site. You can change it anytime you want." %></p>
-</div>
-<p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext Name suffix=: %></td>
-<td><% site.input name %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Title suffix=: %></td>
-<td><% site.input title %></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <br />
-   <button type="submit" name="create" value="1"><% gettext Create %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
-</p>
-
 <% #menuExt %>
 <script type="text/javascript" defer="defer">
 <!--
@@ -154,13 +118,35 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
       <% site.deleted | format long %> %>
 
 <% #export %>
-<p class="title">Export Site Data</p><br />
-<% param.fileUrl prefix='<p><a href="' suffix=<% param.fileDate 
-      prefix='">Download ZIP file</a> <small>(as of ' 
-      suffix=')</small></p><br />' | format short %> %>
-<form action="" method="post">
-<button type="submit" name="submit" value="export">Start</button>
-</form>
+<p class="storyTitle"><% gettext "Export Site Data" %></p>
+<div class="ample">
+   <% param.fileUrl prefix='<p><a href="' suffix=<% gettext "Download ZIP file" 
+         prefix='">' suffix=<% gettext "as of {0}" <% param.fileDate | format short %> 
+         prefix="</a> <small>" suffix=</small></p> %> %> %> 
+   <form action="" method="post">
+   <button type="submit" name="submit" value="export"><% gettext Start %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
+   </form>
+</div>
+
+<% #import %>
+<p class="storyTitle"><% gettext 'Import Site Data' %></p>
+<div class="ample">
+   <form method="post">
+   <p><% param.list %></p>
+   <button type="submit" name="submit" value="import"><% gettext Import %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
+   </form>
+</div>
+
+<% #importItem %>
+<div>
+   <input type="radio" id="<% param.file %>" name="file" 
+         value="<% param.file %>" <% if <% request.file %> is 
+         <% param.file %> then 'checked="checked"' %> />
+   <label for="<% param.file %>"><% param.file %> <% param.status 
+         prefix=( suffix=) %></label>
+</div>
 
 <% #edit %>
 <p class="storyTitle"><% response.title %></p>
@@ -177,10 +163,8 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </td>
 </tr>
 <tr>
-<td class="small" <!--valign="top">--><% gettext Mode suffix=: %></td>
-<td><% site.select mode %><br />
-<!--<% gettext "<b>Deleted:</b> the site will automatically and irreversibly be deleted after 14 days.<br /><b>Closed:</b> only “Owners“ can access the site.<br /><b>Restricted:</b> the site can be accessed by “Owners”, “Managers” and “Contributors”.<br /><b>Public:</b> everyone can read the site – <i>recommended for most users.</i><br /><b>Open:</b> every registered user can write stories, upload images und files, open polls." %>-->
-</td>
+<td class="small"><% gettext Mode suffix=: %></td>
+<td><% site.select mode %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Title suffix=: %></td>
@@ -193,7 +177,8 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <tr>
 <td class="small"><% gettext Paging suffix=: %></td>
 <td><% site.input pageSize size="5" maxlength="2" %>
-<!--<% site.select pageMode %>--><% gettext "Stories" %> <% gettext "per page" %></td>
+<% // site.select pageMode %>
+<% gettext "Stories" %> <% gettext "per page" %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Comments suffix=: %></td>

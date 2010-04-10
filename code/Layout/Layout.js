@@ -50,6 +50,14 @@ Layout.VALUES = [
  */
 Layout.remove = function(options) {
    if (this.constructor === Layout) {
+      // Backup current layout in temporary directory if possible
+      var dir = this.getFile();
+      if (res.skinpath && res.skinpath[0].equals(dir) && 
+               dir.exists() && dir.list().length > 0) {
+         var zip = this.getArchive(res.skinpath);
+         var file = java.io.File.createTempFile(this.site.name + "-layout-", ".zip");
+         zip.save(file);
+      }
       HopObject.remove.call(this.skins);
       HopObject.remove.call(this.images);
       this.getFile().removeDirectory();
@@ -202,7 +210,6 @@ Layout.prototype.update = function(data) {
 Layout.prototype.reset_action = function() {
    if (req.data.proceed) {
       try {
-         var site = this.site;
          Layout.remove.call(this);
          this.reset();
          res.message = gettext("The layout was successfully reset.");
@@ -222,8 +229,8 @@ Layout.prototype.reset_action = function() {
 }
 
 Layout.prototype.export_action = function() {
-   var zip = this.getArchive(res.skinpath);
    res.contentType = "application/zip";
+   var zip = this.getArchive(res.skinpath);
    res.setHeader("Content-Disposition", 
          "attachment; filename=" + this.site.name + "-layout.zip");
    res.writeBinary(zip.getData());
@@ -249,14 +256,6 @@ Layout.prototype.import_action = function() {
          if (!data.version || data.version !== Root.VERSION) {
             throw Error(gettext("Sorry, this layout is not compatible with Antville."));
          }
-         dir = this.getFile();
-         // Archive current layout if possible
-         if (res.skinpath && res.skinpath[0].equals(dir) && 
-                  dir.exists() && dir.list().length > 0) {
-            var timestamp = (new Date).format("yyyyMMdd-HHmmss");
-            var zip = this.getArchive(res.skinpath);
-            zip.save(this.site.getStaticFile("layout-" + timestamp + ".zip"));
-         }
          // Remove current layout and replace it with imported one
          Layout.remove.call(this);
          temp.renameTo(this.getFile());
@@ -267,6 +266,7 @@ Layout.prototype.import_action = function() {
             self.images.add(new Image(this));
          });
          this.touch();
+         res.message = gettext("The layout was successfully imported.");
       } catch (ex) {
          res.message = ex;
          app.log(ex);

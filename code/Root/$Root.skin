@@ -17,6 +17,42 @@ simple site hosting system with many advanced
 <% root.loop updates skin=$Site#listItem limit=25 %>
 </table>
 
+<% #create %>
+<p class="storyTitle"><% response.title %></p>
+<div>
+   <% gettext "To create a new site you need to fill out the form below." %>
+</div>
+<div class="small">
+   <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
+   enter “{0}” as the name your site will be reachable via this url: {1}'
+   <% example.name %> <% example.href prefix="<p><code>" suffix=</code></p> %> %></p>
+   <p><% gettext "Please note that you cannot change the name after the site was 
+   created." %> <% gettext "The title will appear in the header of every page 
+   of your site. You can change it anytime you want." %></p>
+</div>
+<p>
+<form method="post" action="<% response.action %>">
+<table border="0" cellspacing="0" cellpadding="3">
+<tr>
+<td class="small"><% gettext Name suffix=: %></td>
+<td><% newSite.input name %></td>
+</tr>
+<tr>
+<td class="small"><% gettext Title suffix=: %></td>
+<td><% newSite.input title %></td>
+</tr>
+<tr>
+<td></td>
+<td>
+   <br />
+   <button type="submit" name="create" value="1"><% gettext Create %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
+</td>
+</tr>
+</table>
+</form>
+</p>
+
 <% #sites %>
 <p><% gettext "This is the directory of public sites hosted here, in 
 alphabetical order." %></p>
@@ -115,24 +151,6 @@ alphabetical order." %></p>
    <td><% param.callbacks %></td>
 </tr>
 </table>
-
-<% #import %>
-<div class="title"><% gettext 'Import Site Data' %></div>
-<form method="post">
-<% param.list %>
-<div><% gettext 'Site Name' %>: 
-<input type="text" name="name" value="<% request.name %>" /></div>
-<button type="submit" name="submit" value="import"><% gettext Import %></button>
-</form>
-
-<% #importItem %>
-<div>
-   <input type="radio" id="<% param.file %>" name="file" 
-         value="<% param.file %>" <% if <% request.file %> is 
-         <% param.file %> then 'checked="checked"' %> />
-   <label for="<% param.file %>"><% param.file %> <% param.status 
-         prefix=( suffix=) %></label>
-</div>
 
 <% #stylesheet %>
 /* CSS for protected skins (user interface elements etc.) */

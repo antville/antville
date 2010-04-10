@@ -33,6 +33,9 @@ this.handleMetadata("closed");
 this.handleMetadata("commentMode");
 this.handleMetadata("configured");
 this.handleMetadata("deleted");
+this.handleMetadata("export_id");
+this.handleMetadata("import_id");
+this.handleMetadata("job");
 this.handleMetadata("locale");
 this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
@@ -95,16 +98,25 @@ Site.getCallbackModes = defineConstants(Site, "disabled", "enabled");
  * @param {Site} site
  */
 Site.remove = function() {
-   if (this.constructor === Site) {
+   if (this.constructor === Site || this === root) {
       HopObject.remove.call(this.stories);
       HopObject.remove.call(this.images);
       HopObject.remove.call(this.files);
       HopObject.remove.call(this.polls);
       HopObject.remove.call(this.entries);
       HopObject.remove.call(this.members, {force: true});
-      Layout.remove.call(this.layout, {force: true});
-      this.getStaticFile().removeDirectory();
-      this.remove();
+      // The root site needs some special treatment (it will not be removed)
+      if (this === root) {
+         this.members.add(new Membership(root.users.get(0), Membership.OWNER));
+         Layout.remove.call(this.layout);
+         this.layout.reset();
+         this.getStaticFile("images").removeDirectory();
+         this.getStaticFile("files").removeDirectory();
+      } else {
+         Layout.remove.call(this.layout, {force: true});
+         this.getStaticFile().removeDirectory();
+         this.remove();
+      }
    }
    return;
 }
@@ -140,9 +152,13 @@ Site.require = function(mode) {
  * @property {String} commentMode The way comments of a site are displayed
  * @property {Date} created The date and time of site creation
  * @property {User} creator A reference to a user who created a site
- * @property {Tags} galleries
+ * @property {Date} deleted 
+ * @property {String} export_id
  * @property {Files} files
+ * @property {Tags} galleries
  * @property {Images} images
+ * @property {String} import_id
+ * @property {String} job
  * @property {Layout} layout
  * @property {String} locale The place and language settings of a site
  * @property {String} longDateFormat The long date format string
@@ -240,6 +256,9 @@ Site.prototype.getPermission = function(action) {
          var membership = Membership.getByName(session.user.name);
          return membership && !membership.require(Membership.OWNER);
       }
+
+      case "import":
+      return User.require(User.PRIVILEGED);
    }
    return false;
 }
@@ -362,7 +381,7 @@ Site.prototype.update = function(data) {
 
 Site.prototype.main_css_action = function() {
    res.contentType = "text/css";
-   res.dependsOn("1.2");
+   res.dependsOn(Root.VERSION);
    res.dependsOn(this.layout.modified);
    res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
    res.digest();
@@ -373,7 +392,7 @@ Site.prototype.main_css_action = function() {
 
 Site.prototype.main_js_action = function() {
    res.contentType = "text/javascript";
-   res.dependsOn("1.2");
+   res.dependsOn(Root.VERSION);
    res.digest();
    this.renderSkin("$Site#include", 
          {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"});
@@ -624,23 +643,74 @@ Site.prototype.unsubscribe_action = function() {
 }
 
 Site.prototype.export_action = function() {
-   var fname = this.name + "-export.zip";
-   var zip = new helma.File(this.getStaticFile(fname));
    if (req.postParams.submit === "export") {
-      if (Exporter.add(this)) {
-         res.message = "Site is queued for export";
-         zip.remove();
-      } else {
-         res.message = "Site is already being exported";
+      try {
+         if (!this.job) {
+            this.job = Admin.queue(this, "export");
+            res.message = gettext("Site is queued for export.");
+         } else {
+            var job = new Admin.Job(this.job);
+            if (job.method === "export") {
+               throw Error(gettext("Site is already being exported."));
+            } else if (job.method) {
+               throw Error(gettext("There is already another job queued for this site: {0}", job.method));
+            }
+         }
+      } catch (ex) {
+         res.message = ex.toString();
+         app.log(res.message);
       }
       res.redirect(this.href(req.action));
    }
-   var param = {
-      fileName: zip.getName(),
-      fileUrl: zip.exists() ? this.getStaticUrl(zip.getName()) : null,
-      fileDate: new Date(zip.lastModified())
+
+   var param = {}, file;
+   if (this.export_id && (file = File.getById(this.export_id))) {
+      param.fileName = file.fileName;
+      param.fileUrl = file.href();
+      param.fileDate = file.created;
    }
    res.data.body = this.renderSkinAsString("$Site#export", param);
+   this.renderSkin("Site#page");
+   return;
+}
+
+Site.prototype.import_action = function() {
+   var data = req.postParams;
+   if (data.submit === "import") {
+      try {
+         if (!data.file) {
+            throw Error(gettext("Please choose a ZIP file to import."));
+         }
+         if (!this.job) {
+            this.job = Admin.queue(this, "import");
+            res.message = gettext("Site is queued for import.");
+         } else {
+            this.import_id = data.file;
+            var job = new Admin.Job(this.job);
+            if (job.method === "import") {
+               res.message = gettext("Site is already being imported.");
+            } else if (job.method) {
+               res.message = gettext("There is already another job queued for this site: {0}", job.method);
+            }
+         }
+         res.redirect(this.href(req.action));
+      } catch (ex) {
+         res.message = ex.toString();
+         app.log(res.message);
+      }
+   }
+
+   res.push();
+   for each (var fname in this.getStaticFile().list()) {
+      let file = this.getStaticFile(fname);
+      if (file.toString().endsWith(".zip")) {
+         this.renderSkin("$Site#importItem", {
+            file: file.getName(),
+            status: Importer.getStatus(file)
+         });
+      }
+   }
+   res.data.body = this.renderSkinAsString("$Site#import", {list: res.pop()});
    this.renderSkin("Site#page");
    return;
 }

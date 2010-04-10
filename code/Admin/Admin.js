@@ -29,6 +29,58 @@
 Admin.SITEREMOVALGRACEPERIOD = 14; // days
 
 /**
+ * 
+ * @param {HopObject} target
+ * @param {String} method
+ * @constructor
+ */
+Admin.Job = function(target, method, user) {
+   var file;
+   user || (user = session.user);
+
+   this.__defineGetter__("target", function() {
+      return target;
+   });
+
+   this.__defineGetter__("method", function() {
+      return method;
+   });
+   
+   this.__defineGetter__("user", function() {
+      return user;
+   });
+   
+   this.__defineGetter__("name", function() {
+      return file.getName();
+   });
+   
+   this.remove = function() {
+      return file["delete"]();
+   }
+
+   if (target && method && user) { 
+      file = new java.io.File.createTempFile("job-", String.EMPTY, Admin.queue.dir); 
+      serialize({type: target._prototype, id: target._id, method: method, user: user._id}, file);
+   } else if (target) {
+      file = new java.io.File(Admin.queue.dir, target);
+      if (file.exists()) {
+         var data = deserialize(file);
+         target = global[data.type].getById(data.id);
+         method = data.method;
+         user = User.getById(data.user);
+      }
+   } else {
+      throw Error("Unsufficient arguments");
+   }
+
+   this.toString = function() {
+      return ["[Job: ", method, " ", target, " by ", user, "]"].join(String.EMPTY); 
+   }
+
+   return this;
+}
+
+/**
  * @function
  * @returns {String[]}
  * @see defineConstants
@@ -51,12 +103,13 @@ Admin.getCreationScopes = defineConstants(Admin, "privileged", "trusted", "regul
 
 /**
  * 
- * @param {Object} job
+ * @param {HopObject} target
+ * @param {String} method
+ * @returns {String}
  */
-Admin.queue = function(job) {
-   var file = java.io.File.createTempFile("job-", String.EMPTY, Admin.queue.dir);
-   serialize(job, file);
-   return;
+Admin.queue = function(target, method) {
+   var job = new Admin.Job(target, method);
+   return job.name;
 }
 
 /**
@@ -69,23 +122,30 @@ Admin.queue.dir.exists() || Admin.queue.dir.mkdirs();
  * 
  */
 Admin.dequeue = function() {
-   var jobs = Admin.queue.dir.listFiles();
+   var jobs = Admin.queue.dir.list();
    var max = Math.min(jobs.length, 10);
-   for (var file, job, i=0; i<max; i+=1) {
-      file = jobs[i]; 
-      try {
-         job = deserialize(file);
-         app.log("PROCESSING QUEUED JOB " + (i+1) + " OF " + max);
-         switch (job.type) {
-            case "site-removal":
-            var site = Site.getById(job.id);
-            site && site !== root && Site.remove.call(site);
-            break;
+   for (let i=0; i<max; i+=1) {
+      let job = new Admin.Job(jobs[i]);
+      if (job.target) {
+         try {
+            app.log("PROCESSING QUEUED JOB " + (i+1) + " OF " + max);
+            switch (job.method) {
+               case "remove":
+               Site.remove.call(job.target);
+               break;
+               case "import":
+               Importer.run(job.target, job.user);
+               break;
+               case "export":
+               Exporter.run(job.target, job.user);
+               break;
+            }
+         } catch (ex) {
+            res.debug(job + ": " + ex);
+            app.log("Failed to process job " + job + " due to " + ex);
          }
-      } catch (e) {
-         app.log("Failed to process job " + file + " due to " + e);
       }
-      file["delete"]();
+      job.remove();
    }
    return;
 }
@@ -98,7 +158,12 @@ Admin.purgeSites = function() {
 
    root.admin.deletedSites.forEach(function() {
       if (now - this.deleted > Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD) {
-         Admin.queue({type: "site-removal", id: this._id});
+         let job;
+         if (this.job && (job = new Admin.Job(this.job))) {
+            job.remove();
+         }
+         job = Admin.queue(this, "remove", User.getById(1));
+         this.job = job.name;
          this.deleted = now; // Prevents redundant deletion jobs
       }
    });
@@ -283,22 +348,6 @@ Admin.updateHealth = function() {
       health.currentErrorCount = app.errorCount;
       Admin.health = health;
    }
-   return;
-}
-
-/**
- * 
- */
-Admin.exportImport = function() {
-   if (app.data.exportImportIsRunning) {
-      return;
-   }
-   app.invokeAsync(this, function() {
-      app.data.exportImportIsRunning = true;
-      Exporter.run();
-      Importer.run();
-      app.data.exportImportIsRunning = false;
-   }, [], -1);
    return;
 }
 

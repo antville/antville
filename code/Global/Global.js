@@ -64,10 +64,6 @@ app.data.mails || (app.data.mails = []);
 app.data.requests || (app.data.requests = {});
 /** @name app.data.callbacks */
 app.data.callbacks || (app.data.callbacks = []);
-/** @name app.data.exports */
-app.data.exports || (app.data.exports = []);
-/** @name app.data.imports */
-app.data.imports || (app.data.imports = []);
 
 /**
  * @name helma.File
@@ -211,8 +207,6 @@ function scheduler() {
    Admin.commitEntries();
    Admin.commitRequests();
    Admin.invokeCallbacks();
-   Admin.dequeue();
-   Admin.exportImport();
    //Admin.updateDomains();
    Admin.updateHealth();
    return 5000;
@@ -229,6 +223,7 @@ function nightly() {
    app.log("***** Running nightly scripts *****");
    Admin.purgeReferrers();
    Admin.purgeSites();
+   Admin.dequeue();
    global.nightly.lastRun = now;
    return;
 }
