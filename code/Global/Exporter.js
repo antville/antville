@@ -29,82 +29,67 @@
 var Exporter = {}
 
 Exporter.run = function(site, user) {
-   var exportXml = function(object, fname) {
-      var result = new HopObject;
-      for (var key in object) {
-         result.version = Root.VERSION;
-         result.origin = object.href();
-         result.origin_id = object._id;
-         var value = object[key];
-         if (!value || (value._id && value.constructor !== User)) {
-            continue;
-         }
-         if (value.constructor === User) {
-            result[key] = value.name;
-         } else {
-            result[key] = value;
-         }
-      }
-      Xml.write(result, new java.io.File(dir, fname || object._id + ".xml"));
-      return;
-   }
-   
+   var rssUrl = site.href("rss.xml");
    var baseDir = site.getStaticFile();
-   var dir = exportDir = new helma.File(baseDir, "export.temp");
+   var member = site.members.get(user.name);
 
-   var log = new helma.File(exportDir, "error.log");
-   log.open();
-
-   exportDir.makeDirectory();
-   exportXml(site, "site.xml");
-
-   var zip = new helma.Zip();
-
-   dir = new java.io.File(exportDir, "stories");
-   dir.mkdirs();
-   site.stories.forEach(function() {
-      exportXml(this);
-   });
-
-   dir = new java.io.File(exportDir, "files");
-   dir.mkdirs();
-   site.files.forEach(function() {
-      exportXml(this);
-      try {
-         zip.add(this.getFile(), "files");
-      } catch (ex) {
-         log.writeln(ex);
-      }
-   });
+   var output = new helma.File(baseDir, "export.xml");
+   output.remove();
+   output.open();
    
-   dir = new java.io.File(exportDir, "images");
-   dir.mkdirs();
-   site.images.forEach(function() {
-      exportXml(this);
-      try {
-         zip.add(this.getFile(), "images");
-         zip.add(this.getThumbnailFile(), "images");
-      } catch (ex) {
-         log.writeln(ex);
-      }
+   var add = function(s) {
+      return output.write(s);
+   }
+
+   add('<?xml version="1.0" encoding="UTF-8"?>');
+   add('<?xml-stylesheet href="http://www.blogger.com/styles/atom.css" type="text/css"?>');
+   add('<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:thr="http://purl.org/syndication/thread/1.0">');
+   add('<id>tag:blogger.com,1999:blog-' + site._id + '.archive</id>');
+   add('<updated>' + site.modified.format(Date.ISOFORMAT) + '</updated>');
+   add('<title type="text">' + encodeXml(site.title) + '</title>');
+   add('<link rel="http://schemas.google.com/g/2005#feed" type="application/rss+xml" href="' + rssUrl + '"/>');
+   add('<link rel="self" type="application/rss+xml" href="' + rssUrl + '"/>');
+   add('<link rel="http://schemas.google.com/g/2005#post" type="application/rss+xml" href="' + rssUrl + '"/>');
+   add('<link rel="alternate" type="text/html" href="' + site.href() + '"/>');
+   add('<author>');
+   add('<name>' + site.creator.name + '</name>');
+   add('<email>' + site.creator.email + '</email>');
+   add('</author>');
+   // Currently, blogger.com does not accept other generators
+   //add('<generator version="' + Root.VERSION + '" uri="' + root.href() + '">Antville</generator>');
+   add('<generator version="7.00" uri="http://www.blogger.com">Blogger</generator>');
+   member.stories.forEach(function() {
+      add('<entry>');
+      add('<id>tag:blogger.com,1999:blog-' + site._id + '.post-' + this._id + '</id>');
+      add('<published>' + this.created.format(Date.ISOFORMAT) + '</published>');
+      add('<updated>' + this.modified.format(Date.ISOFORMAT) + '</updated>');
+      add('<title type="text">' + (this.title ? encodeXml(this.title.stripTags()) : '') + '</title>');
+      add('<content type="html">' + encodeXml(this.format_filter(this.text, {})) + '</content>');
+      add('<link rel="alternate" type="text/html" href="' + this.href() + '"></link>');
+      add('<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/blogger/2008/kind#post"/>');
+      add('<author>');
+      add('<name>' + this.creator.name + '</name>');
+      this.creator.url && add('<uri>' + this.creator.url + '</uri>');
+      add('<email>' + this.creator.email + '</email>');
+      add('</author>');
+      add('</entry>');
    });
+   add('</feed>');
+   
+   output.close();
 
-   log.close();
-
-   var file = java.io.File.createTempFile("antville-site-export-", ".zip");
-   zip.add(exportDir);
-   zip.save(file);
-
-   // FIXME: Adding a local file should be a little bit simpler 
-   var download = new File();
+   // Provide the exported data as downloadable file
+   // FIXME: Adding a file to a site could be a little bit simpler :/
+   var download = new File;
    download.site = site;
    download.update({file: {contentLength: 0}, file_origin: "file://" + 
-         file.getCanonicalPath(), name: site.name + "-export"});
+         output.getPath(), name: site.name + "-export"});
    site.files.add(download);
    download.creator = user;
+   output.remove();
 
+   // Reset the site’s export status
    site.job = null;
    site.export_id = download._id;
-   exportDir.removeDirectory();
    return;
 }
