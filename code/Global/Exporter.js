@@ -29,6 +29,11 @@
 var Exporter = {}
 
 Exporter.run = function(site, user) {
+   var download;
+   if (site.export_id && (download = File.getById(site.export_id))) {
+      File.remove.call(download);
+   }
+
    var rssUrl = site.href("rss.xml");
    var baseDir = site.getStaticFile();
    var member = site.members.get(user.name);
