@@ -29,114 +29,39 @@
 var Importer = {}
 
 Importer.run = function(site, user) {
-   site.job = null;
-   return;
-
-   var file = site.import_id;
-
-   var baseDir = site.getStaticFile();
-   var importDir = new java.io.File(baseDir, "import.temp");
-   var zip = new helma.Zip(file);
-   zip.extractAll(importDir);
-
-   var object = Xml.read(new java.io.File(importDir, "site.xml"));
-   for (var key in object) {
-      switch (key) {
-         case "name":
-         case "origin":
-         case "origin_id":
-         case "version":
-         break;
-         case "creator":
-         case "modifier":
-         site[key] = user;
-         break;
-         default:
-         res.debug("Settting " + key + " to " + object[key]);
-         site[key] = object[key];
-         res.debug("New value: " + site[key])
-      }
-   }
-   site.creator = user;
-   site.modifier = user;
-   
-   // Commit is necessary or the mode is set incorrectly (which is strange)
-   // Invalidate is necessary to immediately apply metadata values
-   res.commit();
-   site.invalidate();
-   
-   var importCollection = function(name) {
-      switch (name) {
-         case "files":
-         var parent = "site";
-         var Prototype = File;
-         break;
-         case "images":
-         var parent = "parent";
-         var Prototype = Image;
-         break;
-         case "stories":
-         var parent = "site";
-         var Prototype = Story;
-         break;
-         default:
-         throw Error("Invalid collection name");
-      }
-      
-      var index = 1;
-      var dir = new java.io.File(importDir, name);
-      var list = dir.listFiles();
-      for each (var file in list) {
-         item.status = "importing " + name + ": " + index++ + " of " + list.length;
-         if (file.toString().endsWith(".xml")) {
-            var object = Xml.read(file);
-            object[parent] = site;
-            object.creator = object.modifier = user;
-            var target = new Prototype;
-            for (var key in object) {
-               target[key] = object[key];
+   try {
+      var file = File.getById(site.import_id);
+      if (file) {
+         file = new java.io.File(file.getFile());
+         var reader = new rome.XmlReader(file);
+         var input = new rome.SyndFeedInput(true);
+         var feed = input.build(reader);
+         Api.constrain(site, user);
+         for (var i=0; i<feed.entries.size(); i+=1) {
+            var entry = feed.entries.get(i);
+            var category = entry.categories.get(0);
+            if (category.name !== "http://schemas.google.com/blogger/2008/kind#post") {
+               continue;
             }
-            site[name].add(target);
-            file["delete"]();
+            var story = new Story;
+            story.site = site;
+            story.creator = user;
+            story.update({
+               title: entry.title,
+               text: entry.description || entry.contents.get(0).value,
+               created: entry.publishedDate.format(SHORTDATEFORMAT),
+               status: Story.CLOSED,
+               mode: Story.FEATURED
+            });
+            site.stories.add(story);
          }
       }
-      return;
+   } catch (ex) {
+      app.log(ex);
    }
-   
-   importCollection("stories");
-   importCollection("files");
-   importCollection("images");
-   
-   // Move files directory to final destination
-   dest = site.getStaticFile("files");
-   dest.removeDirectory();
-   (new helma.File(importDir, "files")).renameTo(dest);
 
-   // Move images directory to final destination
-   var dest = site.getStaticFile("images");
-   dest.removeDirectory();
-   (new helma.File(importDir, "images")).renameTo(dest);
-
-   site.getStaticFile("import.temp").removeDirectory();
-
+   // Reset the site’s export status
+   site.job = null;
+   site.import_id = null;
    return;
-}
-
-Importer.add = function(file, site, user) {
-   if (!app.data.imports[file]) {
-      var item = {
-         file: file,
-         site: site._id,
-         user: user._id,
-         status: "queued"
-      }
-      app.data.imports.push(item);
-      return app.data.imports[file] = item; 
-   }
-   return false;
-}
-
-Importer.getStatus = function(file) {
-   var item = app.data.imports[file];
-   return item ? item.status : null;
 }

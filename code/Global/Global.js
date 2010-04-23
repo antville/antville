@@ -149,8 +149,8 @@ var html = new helma.Html();
 
 /** */
 var rome = new JavaImporter(
+   Packages.com.sun.syndication.io,
    Packages.com.sun.syndication.feed.synd,
-   Packages.com.sun.syndication.io.SyndFeedOutput,
    Packages.com.sun.syndication.feed.module.itunes,
    Packages.com.sun.syndication.feed.module.itunes.types
 );

@@ -663,13 +663,8 @@ Site.prototype.export_action = function() {
       res.redirect(this.href(req.action));
    }
 
-   var param = {}, file;
-   if (this.export_id && (file = File.getById(this.export_id))) {
-      param.fileName = file.fileName;
-      param.fileUrl = file.href();
-      param.fileDate = file.created;
-   }
-   res.data.body = this.renderSkinAsString("$Site#export", param);
+   res.handlers.file = File.getById(this.export_id) || {};
+   res.data.body = this.renderSkinAsString("$Site#export");
    this.renderSkin("Site#page");
    return;
 }
@@ -681,18 +676,29 @@ Site.prototype.import_action = function() {
          if (!data.file) {
             throw Error(gettext("Please choose a ZIP file to import."));
          }
-         if (!this.job) {
-            this.job = Admin.queue(this, "import");
-            res.message = gettext("Site is queued for import.");
-         } else {
-            this.import_id = data.file;
+         var file;
+         if (this.import_id && (file = File.getById(this.import_id))) {
+            File.remove.call(file);
+         }
+         data.file_origin = data.file.name;
+         file = new File;
+         file.site = this;
+         file.update(data);
+         this.files.add(file);
+         file.creator = session.user;
+         if (this.job) {
             var job = new Admin.Job(this.job);
             if (job.method === "import") {
-               res.message = gettext("Site is already being imported.");
+               job.remove();
+               this.job = null;
             } else if (job.method) {
-               res.message = gettext("There is already another job queued for this site: {0}", job.method);
+               throw Error(gettext("There is already another job queued for this site: {0}", 
+                     job.method));
             }
          }
+         this.job = Admin.queue(this, "import");
+         this.import_id = file._id;
+         res.message = gettext("Site is queued for import.");
          res.redirect(this.href(req.action));
       } catch (ex) {
          res.message = ex.toString();
@@ -700,17 +706,8 @@ Site.prototype.import_action = function() {
       }
    }
 
-   res.push();
-   for each (var fname in this.getStaticFile().list()) {
-      let file = this.getStaticFile(fname);
-      if (file.toString().endsWith(".zip")) {
-         this.renderSkin("$Site#importItem", {
-            file: file.getName(),
-            status: Importer.getStatus(file)
-         });
-      }
-   }
-   res.data.body = this.renderSkinAsString("$Site#import", {list: res.pop()});
+   res.handlers.file = File.getById(this.import_id) || {};
+   res.data.body = this.renderSkinAsString("$Site#import");
    this.renderSkin("Site#page");
    return;
 }

@@ -120,11 +120,11 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #export %>
 <p class="storyTitle"><% gettext "Export Site Data" %></p>
 <div class="ample">
-   <% param.fileUrl prefix='<p><a href="' suffix=<% gettext "Download ZIP file" 
-         prefix='">' suffix=<% gettext "as of {0}" <% param.fileDate | format short %> 
-         prefix="</a> <small>" suffix=</small></p> %> %> %> 
+   <p><% if <% file.self %> is null then '' else <% gettext "Download file {0}." 
+         <% file.skin File#main %> '<small>' 
+         <% file.created | format short %> '</small>' %> %></p>
    <form action="" method="post">
-   <button type="submit" name="submit" value="export"><% gettext Start %></button>
+   <button type="submit" name="submit" value="export"><% gettext Export %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
    </form>
 </div>
@@ -132,20 +132,14 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #import %>
 <p class="storyTitle"><% gettext 'Import Site Data' %></p>
 <div class="ample">
-   <form method="post">
-   <p><% param.list %></p>
+   <p><% if <% file.self %> is null then '' else <% gettext "Queued file {0} for import." 
+         <% file.skin File#main %> '</a>' '<small>' 
+         <% file.created | format short %> '</small>' %> %></p> 
+   <form method="post" enctype="multipart/form-data">
+   <p><input type="file" name="file" /></p><br />
    <button type="submit" name="submit" value="import"><% gettext Import %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
    </form>
-</div>
-
-<% #importItem %>
-<div>
-   <input type="radio" id="<% param.file %>" name="file" 
-         value="<% param.file %>" <% if <% request.file %> is 
-         <% param.file %> then 'checked="checked"' %> />
-   <label for="<% param.file %>"><% param.file %> <% param.status 
-         prefix=( suffix=) %></label>
 </div>
 
 <% #edit %>
