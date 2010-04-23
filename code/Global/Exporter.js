@@ -42,11 +42,11 @@ Exporter.run = function(site, user) {
       var xml = new helma.File(baseDir, "export.xml");
       xml.remove();
       xml.open();
-      
+
       var add = function(s) {
          return xml.write(s);
       }
-   
+
       add('<?xml version="1.0" encoding="UTF-8"?>');
       add('<?xml-stylesheet href="http://www.blogger.com/styles/atom.css" type="text/css"?>');
       add('<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:thr="http://purl.org/syndication/thread/1.0">');
@@ -81,7 +81,8 @@ Exporter.run = function(site, user) {
          add('</entry>');
       });
       add('</feed>');
-      
+
+      xml.close();
       // Provide the exported data as downloadable file
       // FIXME: Adding a file to a site could be a little bit simpler :/
       file = new File;
