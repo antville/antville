@@ -91,6 +91,7 @@ Exporter.run = function(site, user) {
             xml.getPath(), name: site.name + "-export"});
       site.files.add(file);
       file.creator = user;
+      site.export_id = file._id;
    } catch (ex) {
       app.log(ex);
    } finally {
@@ -100,6 +101,5 @@ Exporter.run = function(site, user) {
 
    // Reset the site’s export status
    site.job = null;
-   site.export_id = file._id;
    return;
 }
