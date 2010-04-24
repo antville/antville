@@ -278,7 +278,7 @@ Admin.commitEntries = function() {
 
       // Only log unique combinations of context, ip and referrer
       referrer = String(referrer);
-      var key = item.context_type + "#" + item.context_id + ":" + 
+      var key = item.context._prototype + "-" + item.context._id + ":" + 
             item.ip + ":" + referrer;
       if (history.indexOf(key) > -1) {
          continue;
