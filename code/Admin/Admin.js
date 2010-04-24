@@ -288,7 +288,8 @@ Admin.commitEntries = function() {
       // Exclude requests coming from the same site
       if (item.site) {
          var href = item.site.href().toLowerCase();
-         if (referrer.toLowerCase().contains(href.substr(0, href.length-1))) {
+         if (href.startsWith("http") && 
+               referrer.toLowerCase().contains(href.substr(0, href.length-1))) {
             continue;
          }
       }
