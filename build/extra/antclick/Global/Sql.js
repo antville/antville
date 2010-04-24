@@ -22,6 +22,10 @@
 // $URL$
 //
 
+/**
+ * @fileOverview  Overwrites some SQL queries for H2 database compatibility.
+ */
+
 /** @constant */
 Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
       "created < dateadd('day', -2, current_date())";
