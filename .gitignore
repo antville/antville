@@ -6,8 +6,6 @@ build/extra/*.trace.db
 build/work
 code/Global/ParssClientLibrary.js
 code/_*
-extra/WEB-INF/lib/urlrewrite-2.6.0.jar.disabled
-extra/WEB-INF/lib/urlrewrite-3.1.0-patched.jar.disabled
 /jobs
 /local
 static/*

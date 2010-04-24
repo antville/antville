@@ -196,14 +196,10 @@ docs/symbols/src/_Users_tobi_Projects_helma_apps_antville_code_User_User.js.html
 docs/symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Vote_Vote.js.html svneol=native#text/html
 docs/symbols/src/_Users_tobi_Projects_helma_apps_antville_code__Collection_Collection.js.html svneol=native#text/html
 docs/symbols/src/_Users_tobi_Projects_helma_apps_antville_code__Manager_Manager.js.html svneol=native#text/html
-extra/WEB-INF/lib/urlrewrite-3.2.0.jar -text svneol=unset#application/x-compressed
 extra/apps.properties svneol=native#text/plain
-extra/jetty.keystore -text
-extra/jetty.xml svneol=native#text/plain
 extra/mrtg.cfg -text
 extra/updater/patch-20080913.js -text
 extra/updater/patch-20100401.js svneol=native#text/plain
-extra/webdefault.xml svneol=native#text/plain
 i18n/antville.pot -text
 i18n/de.po -text
 i18n/en.po -text
