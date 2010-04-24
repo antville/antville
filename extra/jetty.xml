@@ -2,330 +2,152 @@
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN"
  "http://jetty.mortbay.org/configure.dtd">
 
-<Configure class="org.mortbay.jetty.Server">
-   <Set name="anonymous">
-      false
+<Configure id="Server" class="org.mortbay.jetty.Server">
+   <Set name="ThreadPool">
+      <New class="org.mortbay.thread.QueuedThreadPool">
+         <Set name="minThreads">
+            10
+         </Set>
+         <Set name="maxThreads">
+            200
+         </Set>
+         <Set name="lowThreads">
+            20
+         </Set>
+         <Set name="SpawnOrShrinkAt">
+            2
+         </Set>
+      </New>
    </Set>
    
-   <Set name="requestsPerGC">
-      1
-   </Set>
+   <Call name="addConnector">
+      <Arg>
+         <New class="org.mortbay.jetty.nio.SelectChannelConnector">
+            <Set name="host">
+               <SystemProperty name="jetty.host"/>
+            </Set>
+            <Set name="port">
+               <SystemProperty name="jetty.port" default="8080"/>
+            </Set>
+            <Set name="maxIdleTime">
+               300000
+            </Set>
+            <Set name="Acceptors">
+               2
+            </Set>
+            <Set name="statsOn">
+               false
+            </Set>
+            <Set name="confidentialPort">
+               8443
+            </Set>
+            <Set name="lowResourcesConnections">
+               20000
+            </Set>
+            <Set name="lowResourcesMaxIdleTime">
+               5000
+            </Set>
+         </New>
+      </Arg>
+   </Call>
    
-   <Set name="resolveRemoteHost">
-      true
-   </Set>
-   
-   <Set name="requestLog">
-      <New class="org.mortbay.http.NCSARequestLog">
-         <Set name="filename">
-            <SystemProperty name="jetty.home" default="."/>/log/jetty-yyyy_mm_dd.log
-         </Set>
-         <Set name="retainDays">
-            90
-         </Set>
-         <Set name="append">
-            true
-         </Set>
-         <Set name="extended">
-            true
-         </Set>
-         <Set name="LogTimeZone">
-            GMT
-         </Set>
-         <Set name="ignorePaths">
-            <Array type="java.lang.String">
+   <Set name="handler">
+      <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
+         <Set name="handlers">
+            <Array type="org.mortbay.jetty.Handler">
                <Item>
-                  *.gif
+                  <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection"/>
                </Item>
                <Item>
-                  *.jpg
+                  <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
                </Item>
                <Item>
-                  *.jpeg
+                  <New id="RequestLog" class="org.mortbay.jetty.handler.RequestLogHandler"/>
                </Item>
                <Item>
-                  *.png
+                  <New id="ResourceHandler" class="org.mortbay.jetty.handler.ResourceHandler">
+                     <Set name="resourceBase">
+                        /helma/static
+                     </Set>
+                  </New>
                </Item>
             </Array>
          </Set>
       </New>
    </Set>
    
-   <Call name="addListener">
-      <Arg>
-         <New class="org.mortbay.http.SocketListener">
-            <Set name="Port">
-               <SystemProperty name="jetty.port" default="80"/>
+   <Ref id="RequestLog">
+      <Set name="requestLog">
+         <New id="RequestLogImpl" class="org.mortbay.jetty.NCSARequestLog">
+            <Set name="filename">
+               <SystemProperty name="jetty.logs" default="./log"/>/jetty-yyyy_mm_dd.log
             </Set>
-            <Set name="ConfidentialPort">
-               443
+            <Set name="filenameDateFormat">
+               yyyy_MM_dd
             </Set>
-            <Set name="IntegralPort">
-               443
+            <Set name="retainDays">
+               90
             </Set>
-            <Set name="MinThreads">
-               5
+            <Set name="append">
+               true
             </Set>
-            <Set name="MaxThreads">
-               255
+            <Set name="extended">
+               true
             </Set>
-            <Set name="MaxIdleTimeMs">
-               30000
+            <Set name="logCookies">
+               false
             </Set>
-            <Set name="LowResourcePersistTimeMs">
-               5000
+            <Set name="LogTimeZone">
+               GMT
             </Set>
-            <Set name="PoolName">
-               Listener
-            </Set>
-         </New>
-      </Arg>
-   </Call>
-   
-   <Call name="addListener">
-      <Arg>
-         <New class="org.mortbay.http.SslListener">
-            <Set name="Port">
-               443
-            </Set>
-            <Set name="MinThreads">
-               5
-            </Set>
-            <Set name="MaxThreads">
-               100
-            </Set>
-            <Set name="MaxIdleTimeMs">
-               30000
-            </Set>
-            <Set name="LowResourcePersistTimeMs">
-               2000
-            </Set>
-            <Set name="Keystore">
-               <SystemProperty name="jetty.home" default="."/>/etc/jetty.keystore
-            </Set>
-            <Set name="Password">
-               123456
-            </Set>
-            <Set name="KeyPassword">
-               123456
-            </Set>
-            <Set name="PoolName">
-               Listener
-            </Set>
-            <Set name="HttpHandler">
-               <New class="org.mortbay.http.handler.MsieSslHandler">
-                  <Set name="UserAgentSubString">
-                     MSIE 5
-                  </Set>
-               </New>
-            </Set>
-         </New>
-      </Arg>
-   </Call>
-   
-   <Call name="addListener">
-      <Arg>
-         <New class="org.mortbay.http.ajp.AJP13Listener">
-            <Set name="Port">
-               <SystemProperty name="jetty.ajp.port" default="8009"/>
-            </Set>
-            <Set name="RemoteServers">
+            <Set name="ignorePaths">
                <Array type="java.lang.String">
                   <Item>
-                     127.0.0.1
+                     *.gif
+                  </Item>
+                  <Item>
+                     *.jpg
+                  </Item>
+                  <Item>
+                     *.jpeg
+                  </Item>
+                  <Item>
+                     *.png
                   </Item>
                </Array>
             </Set>
-            <Set name="MinThreads">
-               5
-            </Set>
-            <Set name="MaxThreads">
-               20
-            </Set>
-            <Set name="MaxIdleTimeMs">
-               0
-            </Set>
-            <Set name="confidentialPort">
-               443
-            </Set>
-            <Set name="PoolName">
-               Listener
-            </Set>
          </New>
-      </Arg>
-   </Call>
+      </Set>
+   </Ref>
    
-   <Call name="addContext">
-      <Arg>
-         /helma/static
-      </Arg>
-      <Set name="resourceBase">
-         ./static
-      </Set>
-      <Set name="welcomeFiles">
-         <Array type="java.lang.String">
-            <!-- <Item>index.html</Item> -->
-         </Array>
-      </Set>
-      <Call name="addHandler">
-         <Arg>
-            <New class="org.mortbay.http.handler.ResourceHandler">
-               <Set name="dirAllowed">
-                  true
+   <Set name="UserRealms">
+      <Array type="org.mortbay.jetty.security.UserRealm">
+         <Item>
+            <New class="org.mortbay.jetty.security.HashUserRealm">
+               <Set name="name">
+                  Admin Realm
                </Set>
-               <Set name="allowedMethods">
-                  <Array type="java.lang.String">
-                     <Item>
-                        HEAD
-                     </Item>
-                     <Item>
-                        GET
-                     </Item>
-                  </Array>
+               <Set name="config">
+                  <SystemProperty name="jetty.home" default="."/>/etc/realm.properties
                </Set>
-               <Set name="acceptRanges">
-                  true
+               <Set name="refreshInterval">
+                  0
                </Set>
             </New>
-         </Arg>
-      </Call>
-   </Call>
+         </Item>
+      </Array>
+   </Set>
    
-   <Call name="addRealm">
-      <Arg>
-         <New class="org.mortbay.http.HashUserRealm">
-            <Arg>
-               Admin Realm
-            </Arg>
-            <Put name="admin">
-               admin
-            </Put>
-            <Call name="addUserToRole">
-               <Arg>
-                  admin
-               </Arg>
-               <Arg>
-                  server-administrator
-               </Arg>
-            </Call>
-         </New>
-      </Arg>
-   </Call>
-   
-   <Call name="addContext">
-      <Arg>
-         /admin
-      </Arg>
-      
-      <Set name="realmName">
-         Admin Realm
-      </Set>
-      
-      <Set name="authenticator">
-         <New class="org.mortbay.http.BasicAuthenticator"/>
-      </Set>
-      
-      <Call name="addHandler">
-         <Arg>
-            <New class="org.mortbay.http.handler.SecurityHandler"/>
-         </Arg>
-      </Call>
-      
-      <Call name="addSecurityConstraint">
-         <Arg>
-            /
-         </Arg>
-         <Arg>
-            <New class="org.mortbay.http.SecurityConstraint">
-               <Arg>
-                  Admin
-               </Arg>
-               <Arg>
-                  server-administrator
-               </Arg>
-            </New>
-         </Arg>
-      </Call>
-      
-      <Call name="addServlet">
-         <Arg>
-            Admin
-         </Arg>
-         <Arg>
-            /servers
-         </Arg>
-         <Arg>
-            org.mortbay.servlet.AdminServlet
-         </Arg>
-      </Call>
-      
-      <Call name="addServlet">
-         <Arg>
-            Dump
-         </Arg>
-         <Arg>
-            /dump/*
-         </Arg>
-         <Arg>
-            org.mortbay.servlet.Dump
-         </Arg>
-      </Call>
-      
-      <Call name="setAttribute">
-         <Arg>
-            org.mortbay.http.HttpServer
-         </Arg>
-         <Arg>
-            <Call name="getHttpServer"/>
-         </Arg>
-      </Call>
-   </Call>
-   
-   <Call name="addWebApplication">
-      <Arg>
-         /helma/antville
-      </Arg>
-      <Arg>
-         ./apps/antville
-      </Arg>
-      <Set name="defaultsDescriptor">
-         ./etc/webdefault.xml
-      </Set>
-   </Call>
-   
-   <Call name="addContext">
-      <Arg>
-         /helma/static/antville
-      </Arg>
-      <Set name="resourceBase">
-         ./apps/antville/static
-      </Set>
-      <Set name="welcomeFiles">
-         <Array type="java.lang.String">
-            <!-- <Item>index.html</Item> -->
-         </Array>
-      </Set>
-      <Call name="addHandler">
-         <Arg>
-            <New class="org.mortbay.http.handler.ResourceHandler">
-               <Set name="dirAllowed">
-                  true
-               </Set>
-               <Set name="allowedMethods">
-                  <Array type="java.lang.String">
-                     <Item>
-                        HEAD
-                     </Item>
-                     <Item>
-                        GET
-                     </Item>
-                  </Array>
-               </Set>
-               <Set name="acceptRanges">
-                  true
-               </Set>
-            </New>
-         </Arg>
-      </Call>
-   </Call>
+   <Set name="stopAtShutdown">
+      true
+   </Set>
+   <Set name="sendServerVersion">
+      true
+   </Set>
+   <Set name="sendDateHeader">
+      true
+   </Set>
+   <Set name="gracefulShutdown">
+      1000
+   </Set>
 </Configure>

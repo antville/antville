@@ -13,7 +13,7 @@
       Context for Antville via helma.servlet.StandaloneServletClient
    </description>
    
-   <filter>
+   <!--filter>
       <filter-name>
          UrlRewriteFilter
       </filter-name>
@@ -25,7 +25,7 @@
             confPath
          </param-name>
          <param-value>
-            /WEB-INF/rewrite.xml
+            rewrite.xml
          </param-value>
       </init-param>
       <init-param>
@@ -85,7 +85,7 @@
       <url-pattern>
          /*
       </url-pattern>
-   </filter-mapping>
+   </filter-mapping -->
    
    <servlet>
       <servlet-name>
@@ -124,14 +124,6 @@
          </param-name>
          <param-value>
             ./apps/antville/code
-         </param-value>
-      </init-param>
-      <init-param>
-         <param-name>
-            repository.9
-         </param-name>
-         <param-value>
-            ./apps/antville/dev
          </param-value>
       </init-param>
       <!-- init-param>
