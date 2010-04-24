@@ -643,17 +643,18 @@ Site.prototype.unsubscribe_action = function() {
 }
 
 Site.prototype.export_action = function() {
-   if (req.postParams.submit === "export") {
+   var job = this.job && new Admin.Job(this.job);
+
+   var data = req.postParams;
+   if (data.submit === "start") {
       try {
-         if (!this.job) {
+         if (!job) {
             this.job = Admin.queue(this, "export");
-            res.message = gettext("Site is queued for export.");
+            res.message = gettext("Site is scheduled for export.");
          } else {
-            var job = new Admin.Job(this.job);
-            if (job.method === "export") {
-               throw Error(gettext("Site is already being exported."));
-            } else if (job.method) {
-               throw Error(gettext("There is already another job queued for this site: {0}", job.method));
+            if (job.method !== "export") {
+               throw Error(gettext("There is already another job queued for this site: {0}", 
+                     job.method));
             }
          }
       } catch (ex) {
@@ -661,33 +662,31 @@ Site.prototype.export_action = function() {
          app.log(res.message);
       }
       res.redirect(this.href(req.action));
+   } else if (data.submit === "stop") {
+      job && job.remove();
+      this.job = null;
+      res.redirect(this.href(req.action));
    }
 
+   var param = {
+      status: (job && job.method === "export") ? 
+            gettext("The site is scheduled for export. Exported site data will be available for download from here within 24 hours.") :
+            null
+   }
    res.handlers.file = File.getById(this.export_id) || {};
-   res.data.body = this.renderSkinAsString("$Site#export");
+   res.data.body = this.renderSkinAsString("$Site#export", param);
    this.renderSkin("Site#page");
    return;
 }
 
 Site.prototype.import_action = function() {
+   var job = this.job && new Admin.Job(this.job);
+   var file = this.import_id && File.getById(this.import_id);
+
    var data = req.postParams;
-   if (data.submit === "import") {
+   if (data.submit === "start") {
       try {
-         if (!data.file) {
-            throw Error(gettext("Please choose a ZIP file to import."));
-         }
-         var file;
-         if (this.import_id && (file = File.getById(this.import_id))) {
-            File.remove.call(file);
-         }
-         data.file_origin = data.file.name;
-         file = new File;
-         file.site = this;
-         file.update(data);
-         this.files.add(file);
-         file.creator = session.user;
-         if (this.job) {
-            var job = new Admin.Job(this.job);
+         if (job) {
             if (job.method === "import") {
                job.remove();
                this.job = null;
@@ -696,14 +695,27 @@ Site.prototype.import_action = function() {
                      job.method));
             }
          }
+         file && File.remove.call(file);
+         data.file_origin = data.file.name;
+         file = new File;
+         file.site = this;
+         file.update(data);
+         this.files.add(file);
+         file.creator = session.user;
          this.job = Admin.queue(this, "import");
          this.import_id = file._id;
-         res.message = gettext("Site is queued for import.");
+         res.message = gettext("Site is scheduled for import.");
          res.redirect(this.href(req.action));
       } catch (ex) {
          res.message = ex.toString();
          app.log(res.message);
       }
+   } else if (data.submit === "stop") {
+      file && File.remove.call(file);
+      job && job.remove();
+      this.job = null;
+      this.import_id = null;
+      res.redirect(this.href(req.action));
    }
 
    res.handlers.file = File.getById(this.import_id) || {};

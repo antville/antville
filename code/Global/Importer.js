@@ -30,9 +30,9 @@ var Importer = {}
 
 Importer.run = function(site, user) {
    try {
-      var file = File.getById(site.import_id);
-      if (file) {
-         file = new java.io.File(file.getFile());
+      var xml = File.getById(site.import_id);
+      if (xml) {
+         var file = new java.io.File(xml.getFile());
          var reader = new rome.XmlReader(file);
          var input = new rome.SyndFeedInput(true);
          var feed = input.build(reader);
@@ -55,6 +55,7 @@ Importer.run = function(site, user) {
             });
             site.stories.add(story);
          }
+         File.remove.call(xml);
       }
    } catch (ex) {
       app.log(ex);

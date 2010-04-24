@@ -120,11 +120,13 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #export %>
 <p class="storyTitle"><% gettext "Export Site Data" %></p>
 <div class="ample">
-   <p><% if <% file.self %> is null then '' else <% gettext "Download file {0}." 
+   <p><% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download file {0}." 
          <% file.skin File#main %> '<small>' 
-         <% file.created | format short %> '</small>' %> %></p>
+         <% file.created | format short %> '</small>' %> %> else <% param.status %> %></p>
    <form action="" method="post">
-   <button type="submit" name="submit" value="export"><% gettext Export %></button>
+   <button type="submit" name="submit" value="<% if <% param.status %> is null then start else stop %>">
+      <% if <% param.status %> is null then <% gettext Start %> else <% gettext Stop %> %>
+   </button>
    <a href="" class="cancel"><% gettext Cancel %></a>
    </form>
 </div>
@@ -132,12 +134,14 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #import %>
 <p class="storyTitle"><% gettext 'Import Site Data' %></p>
 <div class="ample">
-   <p><% if <% file.self %> is null then '' else <% gettext "Queued file {0} for import." 
+   <p><% if <% file.self %> is null then '' else <% gettext "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours." 
          <% file.skin File#main %> '</a>' '<small>' 
          <% file.created | format short %> '</small>' %> %></p> 
    <form method="post" enctype="multipart/form-data">
-   <p><input type="file" name="file" /></p><br />
-   <button type="submit" name="submit" value="import"><% gettext Import %></button>
+   <% if <% file.self %> is null then '<p><input type="file" name="file" /></p><br />' %>
+   <button type="submit" name="submit" value="<% if <% file.self %> is null then start else stop %>">
+      <% if <% file.self %> is null then <% gettext Start %> else <% gettext Stop %> %>
+   </button>
    <a href="" class="cancel"><% gettext Cancel %></a>
    </form>
 </div>
