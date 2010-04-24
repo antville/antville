@@ -155,12 +155,12 @@ Sql.COUNT = "select count(*) as count from $0";
 /** @constant */
 Sql.REFERRERS = "select referrer, count(*) as requests from " +
       "log where context_type = '$0' and context_id = $1 and action = " +
-      "'main' and created > date_add(now(), interval -1 day) group " +
+      "'main' and created > now() - interval '2 days' group " +
       "by referrer order by requests desc, referrer asc"; 
 
 /** @constant */
 Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
-      "created < date_add(now(), interval -2 day)";
+      "created < now() - interval '2 days'";
 
 /** @constant */
 Sql.SEARCH = "select id from content where site_id = $0 and " +
