@@ -138,7 +138,8 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
          <% file.skin File#main %> '</a>' '<small>' 
          <% file.created | format short %> '</small>' %> %></p> 
    <form method="post" enctype="multipart/form-data">
-   <% if <% file.self %> is null then '<p><input type="file" name="file" /></p><br />' %>
+      
+   <% if <% file.self %> is null then <% site.upload file prefix=<p> suffix=</p> %> %>
    <button type="submit" name="submit" value="<% if <% file.self %> is null then start else stop %>">
       <% if <% file.self %> is null then <% gettext Start %> else <% gettext Stop %> %>
    </button>
