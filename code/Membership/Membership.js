@@ -125,9 +125,9 @@ Membership.prototype.getPermission = function(action) {
       case "contact":
       return true;
       case "edit":
-      return this.creator !== session.user;
       case "delete":
-      return this.role !== Membership.OWNER;
+      return res.handlers.site.members.getPermission("main") && 
+            this.creator !== session.user;
    }
    return false;
 }
