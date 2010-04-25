@@ -358,7 +358,7 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
          args = macro.getPositionalParams();
          if (args) {
             checkNestedMacros(args.iterator());
-            if (name === "gettext") {
+            if (name === "gettext" || name === "markgettext") {
                id = cgettext.getKey(args.get(0), param && param.get("context"));
             } else if (name === "ngettext") {
                id = args.get(0);
@@ -400,28 +400,28 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
  */
 MessageParser.prototype.getPotString = function() {
    var buf = new java.lang.StringBuffer();
-   buf.append('##\n');
-   buf.append('## The Antville Project\n');
-   buf.append('## http://code.google.com/p/antville\n');
-   buf.append('##\n');
-   buf.append('## Copyright 2001-2007 by The Antville People\n');
-   buf.append('##\n');
-   buf.append("## Licensed under the Apache License, Version 2.0 (the ``License''\n");
-   buf.append('## you may not use this file except in compliance with the License.\n');
-   buf.append('## You may obtain a copy of the License at\n');
-   buf.append('##\n');
-   buf.append('##    http://www.apache.org/licenses/LICENSE-2.0\n');
-   buf.append('##\n');
-   buf.append('## Unless required by applicable law or agreed to in writing, software\n');
-   buf.append("## distributed under the License is distributed on an ``AS IS'' BASIS,\n");
-   buf.append('## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n');
-   buf.append('## See the License for the specific language governing permissions and\n');
-   buf.append('## limitations under the License.\n');
-   buf.append('##\n');
-   buf.append('## $Revision$\n');
-   buf.append('## $LastChangedBy$\n');
-   buf.append('## $LastChangedDate$\n');
-   buf.append('##\n\n');
+   buf.append('#\n');
+   buf.append('# The Antville Project\n');
+   buf.append('# http://code.google.com/p/antville\n');
+   buf.append('#\n');
+   buf.append('# Copyright 2001-2007 by The Antville People\n');
+   buf.append('#\n');
+   buf.append("# Licensed under the Apache License, Version 2.0 (the ``License''\n");
+   buf.append('# you may not use this file except in compliance with the License.\n');
+   buf.append('# You may obtain a copy of the License at\n');
+   buf.append('#\n');
+   buf.append('#    http://www.apache.org/licenses/LICENSE-2.0\n');
+   buf.append('#\n');
+   buf.append('# Unless required by applicable law or agreed to in writing, software\n');
+   buf.append("# distributed under the License is distributed on an ``AS IS'' BASIS,\n");
+   buf.append('# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n');
+   buf.append('# See the License for the specific language governing permissions and\n');
+   buf.append('# limitations under the License.\n');
+   buf.append('#\n');
+   buf.append('# $Revision$\n');
+   buf.append('# $LastChangedBy$\n');
+   buf.append('# $LastChangedDate$\n');
+   buf.append('#\n');
    buf.append('#, fuzzy\n');
    buf.append('msgid ""\n');
    buf.append('msgstr ""\n');
