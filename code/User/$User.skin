@@ -74,25 +74,24 @@ $(function() {
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small" nowrap="nowrap"><% gettext "Current Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="password" id="password" /></td>
+<td nowrap="nowrap"><input type="password" name="password" id="password" size="20" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap"><% gettext "New Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPassword" 
-id="newPassword" /></td>
+<td nowrap="nowrap"><input type="password" name="newPassword" id="newPassword" size="20" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap"><% gettext "Confirm Password" suffix=: %></td>
 <td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
-id="newPasswordConfirm" /></td>
+      id="newPasswordConfirm" size="20" /></td>
 </tr>
 <tr>
 <td class="small" nowrap="nowrap"><% gettext E-mail suffix=: %></td>
-<td><% user.input email %></td>
+<td><% user.input email size=30 %></td>
 </tr>
 <tr>
 <td class="small" valign="top" nowrap="nowrap"><% gettext "Personal URL" suffix=: %></td>
-<td><% user.input url %><br />
+<td><% user.input url size=30 %><br />
 <span class="small"><% gettext "If you enter a URL here your user name will 
 appear as link next to your posted items." %></span></td>
 </tr>

@@ -47,7 +47,7 @@ $(function() {
 </tr>
 <tr>
 <td class="small"><% gettext "Username" suffix=":" %></td>
-<td><input type="text" name="name" id="name" tabindex="1" 
+<td><input type="text" name="name" id="name" tabindex="1" size="20" 
       value="<% request.name encoding="form" %>" /></td>
 <td rowspan="4"> </td>
 <td class="small"><% members.link register <% gettext 
@@ -55,7 +55,7 @@ $(function() {
 </tr>
 <tr>
 <td class="small"><% gettext Password suffix=: %></td>
-<td><input type="password" name="password" id="password" tabindex="2" /></td>
+<td><input type="password" name="password" id="password" tabindex="2" size="20"/></td>
 <td class="small"><% members.link reset <% gettext 
       "Password forgotten\?" %> %></td>
 </tr>
@@ -110,21 +110,21 @@ $(function() {
 </tr>
 <tr>
 <td class="small"><% gettext Username suffix=: %></td>
-<td><input type="text" name="name" 
+<td><input type="text" name="name" size="30"
       value="<% request.name encoding="form" %>" /></td>
 </tr>
 <tr>
 <td class="small"><% gettext e-mail suffix=: %></td>
-<td><input type="text" name="email" 
+<td><input type="text" name="email" size="30"
       value="<% request.email encoding="form" %>" /></td>
 </tr>
 <tr>
 <td class="small"><% gettext Password suffix=: %></td>
-<td><input type="password" name="password" id="password" /></td>
+<td><input type="password" name="password" id="password" size="30" /></td>
 </tr>
 <tr>
 <td class="small"><% gettext "Confirm Password" suffix=: %></td>
-<td><input type="password" name="passwordConfirm" id="passwordConfirm" /></td>
+<td><input type="password" name="passwordConfirm" id="passwordConfirm" size="30"/></td>
 </tr>
 <tr>
 <td></td>
@@ -143,10 +143,10 @@ have used when you registered. You will then receive a confirmation e-mail
 containing further instructions." %></p> 
 <form id="login" method="post" action="<% response.action %>">
 <div class="small"><% gettext Username suffix=: %></div>
-<div><input type="text" name="name" id="name" size="15" tabindex="1" 
+<div><input type="text" name="name" id="name" size="30" tabindex="1" 
 value="<% request.name encoding="form" %>" /></div>
 <div class="small"><% gettext e-mail suffix=: %></div>
-<div><input type="text" name="email" id="email" size="15" tabindex="2" 
+<div><input type="text" name="email" id="email" size="30" tabindex="2" 
 value="<% request.email encoding="form" %>"/></div>
 <br />
 <button type="submit" id="submit" name="reset" value="1" 
