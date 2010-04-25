@@ -29,10 +29,11 @@
 /**
  * 
  * @param {String} name
+ * @param {Site} site
  * @returns {Membership}
  */
-Membership.getByName = function(name) {
-   return res.handlers.site.members.get(name);
+Membership.getByName = function(name, site) {
+   return (site || res.handlers.site).members.get(name);
 }
 
 /**
