@@ -12,7 +12,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #navigation %>
 <div class="navigation">
-<div><% site.link % gettext Home %> prefix="... " %></div>
+<div><% site.link main <% gettext Home %> prefix="... " %></div>
 <div><% site.tags.link main <% gettext Tags %> prefix="... " %></div>
 <div><% site.galleries.link main <% gettext Galleries %> prefix="... " %></div>
 </div>
