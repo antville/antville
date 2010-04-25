@@ -12,7 +12,7 @@
 <td nowrap="nowrap"><% membership.name %></td>
 </tr>
 <tr>
-<td class="small" nowrap="nowrap"><% gettext Status suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext Role suffix=: %></td>
 <td nowrap="nowrap"><% membership.select role %></td>
 </tr>
 <tr>
@@ -32,7 +32,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Status suffix=: %></strong> 
+   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
    <% membership.role %></div>
 </td>
 </tr>
@@ -57,7 +57,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Status suffix=: %></strong> 
+   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
    <% membership.role %></div>
 </td>
 </tr>

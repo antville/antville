@@ -74,8 +74,6 @@ Layout.remove = function(options) {
  */
 Layout.getModes = defineConstants(Layout, "default", "shared");
 
-this.handleMetadata("title");
-this.handleMetadata("description");
 this.handleMetadata("origin");
 this.handleMetadata("originator");
 this.handleMetadata("originated");
@@ -86,7 +84,6 @@ this.handleMetadata("originated");
  * @param {Site} site
  * @property {Date} created
  * @property {User} creator
- * @property {String} description
  * @property {Images} images
  * @property {Metadata} metadata
  * @property {String} mode
@@ -97,7 +94,6 @@ this.handleMetadata("originated");
  * @property {Date} originated
  * @property {Site} site
  * @property {Skins} skins
- * @property {String} title
  * @extends HopObject
  */
 Layout.prototype.constructor = function(site) {
@@ -149,8 +145,7 @@ Layout.prototype.main_action = function() {
    if (req.postParams.save) {
       try {
          this.update(req.postParams);
-         res.message = gettext("Successfully updated the layout {0}.", 
-               this.title);
+         res.message = gettext("Successfully updated the layout.");
          res.redirect(this.href());
       } catch (ex) {
          res.message = ex;
@@ -312,6 +307,9 @@ Layout.prototype.getFile = function(name) {
    return this.site.getStaticFile("layout/" + name);
 }
 
+/**
+ * @returns {String[]}
+ */
 Layout.prototype.getSkinPath = function() {
    if (!this.site) {
       return null;
@@ -385,6 +383,14 @@ Layout.prototype.getArchive = function(skinPath) {
    return zip;
 }
 
+
+/**
+ * @returns {String}
+ */
+Layout.prototype.getConfirmText = function() {
+   return gettext("You are about to reset the layout of site {0}.", 
+         this.site.name);
+}
 /**
  * 
  * @param {String} name
@@ -450,12 +456,4 @@ Layout.prototype.values_macro = function() {
       });
    }
    return;
-}
-
-/**
- * @returns {String}
- */
-Layout.prototype.getConfirmText = function() {
-   return gettext("You are about to reset the layout of site {0}.", 
-         this.site.name);
 }

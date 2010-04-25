@@ -28,12 +28,12 @@ $(function() {
 </td>
 </tr>
 <tr>
-<td class="small" valign="top"><% gettext Description suffix=: %></td>
-<td><% image.textarea description %></td>
+<td class="small" valign="baseline"><% gettext Description suffix=: %></td>
+<td><% image.textarea description cols=40 %></td>
 </tr>
 <tr class="tags">
-<td class="small" valign="top"><% gettext "Tags (separated by commas):" %></td>
-<td><% image.input tags %></td>
+<td class="small"><% gettext Tags suffix=: %></td>
+<td><% image.input tags size=55 %></td>
 </tr>
 <tr class="resize">
 <td></td>
@@ -42,11 +42,11 @@ $(function() {
 </td>
 </tr>
 <tr class="resize">
-<td class="small"><% gettext "Max. width" suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext "Max. width" suffix=: %></td>
 <td><% image.input maxWidth value="400" %> pixel</td>
 </tr>
 <tr class="resize">
-<td class="small"><% gettext "Max. height" suffix=: %></td>
+<td class="small" nowrap="nowrap"><% gettext "Max. height" suffix=: %></td>
 <td><% image.input maxHeight value="400" %> pixel</td>
 </tr>
 <tr class="resize">

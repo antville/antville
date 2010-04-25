@@ -3,7 +3,7 @@
 $(function() {
    $("#addValueFields").hide();
    $("#addValueLink").click(function() {
-      var name = prompt('<% gettext "Please enter the name of the new value:" %>');
+      var name = prompt('<% gettext "Please enter the name of the new variable:" %>');
       if (name) {
          var key = "value_" + name;
          var emptyFields = $("#addValueFields").clone();
@@ -31,10 +31,10 @@ $(function() {
 <% layout.values %>
 <tr id="addValueFields">
 <td id="newKey" class="small"></td>
-<td><input type="text" name="newValue" id="newValue" /></td>
+<td><input type="text" name="newValue" id="newValue" size="40" /></td>
 </tr>
 <tr>
-   <td />
+   <td></td>
 <td>
    <div class="small">
       <a href="" id="addValueLink"><% gettext "Add variable" %></a>
@@ -60,5 +60,6 @@ $(function() {
 <% #value %>
 <tr>
 <td class="small"><% param.key %>:</td>
-<td><input type="text" name="value_<% param.key %>" value="<% param.value %>" /></td>
+<td><input type="text" name="value_<% param.key %>" 
+      value="<% param.value %>" size="40" /></td>
 </tr>

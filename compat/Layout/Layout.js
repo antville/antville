@@ -36,6 +36,10 @@ Layout.prototype.__defineSetter__("shareable", function(value) {
    return;
 });
 
+Layout.prototype.getTitle = function() {
+   return gettext("Layout");
+}
+
 Layout.prototype.title_macro = function(param) {
    if (param.as === "editor") {
       this.input_macro(param, "title");

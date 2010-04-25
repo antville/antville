@@ -24,7 +24,7 @@ $(function() {
 </tr>
 <tr>
 <td class="small" valign="top"><% gettext Description suffix=: %></td>
-<td><% file.textarea description %></td>
+<td><% file.textarea description cols=40 %></td>
 </tr>
 <tr>
 <td class="small" valign="top"> </td>
