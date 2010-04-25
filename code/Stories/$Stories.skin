@@ -4,9 +4,9 @@
    <% stories.link create <% gettext "Add Story" %> prefix="... " %>
 </div>
 ... 
-<% stories.link all <% gettext All %> %>
+<% stories.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% stories.link closed <% gettext Closed %> prefix=" | " %>
-<% stories.link main <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
+<% stories.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

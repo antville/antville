@@ -4,8 +4,8 @@
    <% files.link create <% gettext "Add File" %> prefix="... " suffix="" %>
 </div>
 ... 
-<% files.link all <% gettext All %> %>
-<% files.link main <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
+<% files.link main <% gettext "By {0}" <% membership.name %> %> %>
+<% files.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

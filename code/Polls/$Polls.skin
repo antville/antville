@@ -4,9 +4,9 @@
    <% polls.link create <% gettext "Add Poll" %> prefix="... " %>
 </div>
 ... 
-<% polls.link all <% gettext All %> %>
+<% polls.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% polls.link running <% gettext Running %> prefix=" | " %>
-<% polls.link main <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
+<% polls.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

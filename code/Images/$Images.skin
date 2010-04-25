@@ -5,8 +5,8 @@
    <% images.link create <% gettext "Add Image" %> prefix="... " %>
 </div>
 ...
-<% images.link all <% gettext All %> %>
-<% images.link main <% gettext "By {0}" <% membership.name %> %> prefix=" | " %>
+<% images.link main <% gettext "By {0}" <% membership.name %> %> %>
+<% images.link all <% gettext All %> prefix=" | " %>
 
 <% response.pager %>
 <% response.list %>
