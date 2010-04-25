@@ -279,7 +279,7 @@ Members.prototype.subscribers_action = function() {
 }
 
 Members.prototype.updated_action = function() {
-   res.data.title = gettext("Subscriptions");
+   res.data.title = gettext("Updates");
    res.data.list = session.user.renderSkinAsString("$User#sites");
    res.data.body = session.user.renderSkinAsString("$User#subscriptions");
    res.handlers.site.renderSkin("Site#page");
@@ -288,7 +288,7 @@ Members.prototype.updated_action = function() {
 
 Members.prototype.privileges_action = function() {
    var site = res.handlers.site;
-   res.data.title = gettext("Subscriptions");
+   res.data.title = gettext("Privileges");
    res.data.list = renderList(session.user.memberships, function(item) {
       res.handlers.subscription = item.site;
       item.renderSkin("$Membership#subscription");

@@ -36,7 +36,7 @@ modify the appearance of your site according to your needs."
 <div class="ample">...
 <% members.link updated <% gettext "Updates" %> %>
 <% members.link privileges <% gettext Privileges %> prefix="| " %> 
-<% members.link subscriptions <% gettext Generic %> prefix="| " %>
+<% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
 </div>
 <p><% response.list %></p>
 
