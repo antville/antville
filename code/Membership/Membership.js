@@ -52,8 +52,8 @@ Membership.require = function(role) {
  * @returns {String[]}
  * @see defineConstants
  */
-Membership.getRoles = defineConstants(Membership, "Subscriber", "Contributor", 
-      "Manager", "Owner");
+Membership.getRoles = defineConstants(Membership, markgettext("Subscriber"), 
+      markgettext("Contributor"), markgettext("Manager"), markgettext("Owner"));
 
 /**
  * 
@@ -296,6 +296,14 @@ Membership.prototype.email_macro = function(param) {
  */
 Membership.prototype.status_macro = function() {
    this.renderSkin(session.user ? "Membership#status" : "Membership#login");
+   return;
+}
+
+/**
+ * 
+ */
+Membership.prototype.role_macro = function() {
+   res.write(gettext(this.role.capitalize()));
    return;
 }
 

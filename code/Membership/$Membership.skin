@@ -33,7 +33,7 @@
 <tr>
 <td colspan="3" class="small">
    <div class="ample"><strong><% gettext Status suffix=: %></strong> 
-   <% gettext <% membership.role %> %></div>
+   <% membership.role %></div>
 </td>
 </tr>
 <tr valign="top">
@@ -45,9 +45,9 @@
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
-   <% membership.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link contact prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link contact <% gettext Contact %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% membership.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>
@@ -70,8 +70,8 @@
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
-   <% site.link . <% gettext View %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% site.link unsubscribe prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% site.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% site.link unsubscribe <% gettext Unsubscribe %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>
@@ -153,7 +153,7 @@ the site {1} [1].' <% sender.name %> <% site.title %> %>
 
 <% gettext 'The user {0} has modified your membership of the site {1} [1]. 
 You are now {2} of the site.' <% sender.name %> <% site.title %> 
-<% gettext <% membership.role %> %> %>
+<% membership.role %> %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
@@ -166,7 +166,7 @@ You are now {2} of the site.' <% sender.name %> <% site.title %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
 <% gettext 'The user {0} has added you as {1} to the site {2} [1].' 
-<% sender.name %> <% gettext <% membership.role %> %> <% site.title %>  %>
+<% sender.name %> <% membership.role %> <% site.title %>  %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>

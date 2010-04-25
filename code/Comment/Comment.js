@@ -29,8 +29,8 @@
 /**
  * @see defineConstants
  */
-Comment.getStatus = defineConstants(Comment, "deleted", "pending", 
-      "readonly", "public");
+Comment.getStatus = defineConstants(Comment, markgettext("deleted"), 
+      markgettext("pending"), markgettext("readonly"), markgettext("public"));
 
 /**
  * @returns {String}

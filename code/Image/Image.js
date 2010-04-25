@@ -141,11 +141,6 @@ Image.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED) &&
             this.parent_type !== "Layout" ||
             this.parent === path.layout;
-      case "replace":
-      return defaultGrant && (User.require(User.PRIVILEGED) ||
-            Membership.require(Membership.MANAGER)) &&
-            (this.parent_type === "Layout" && 
-            this.parent !== path.layout);
    }
    return false;
 }

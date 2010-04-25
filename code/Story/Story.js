@@ -31,20 +31,23 @@
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getStatus = defineConstants(Story, "closed", "public", "shared", "open");
+Story.getStatus = defineConstants(Story, markgettext("closed"), 
+      markgettext("public"), markgettext("shared"), markgettext("open"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getModes = defineConstants(Story, "hidden", "featured");
+Story.getModes = defineConstants(Story, markgettext("hidden"), 
+      markgettext("featured"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getCommentModes = defineConstants(Story, "closed", 
-      /*"readonly", "moderated",*/ "open");
+Story.getCommentModes = defineConstants(Story, markgettext("closed"), 
+      /* markgettext("readonly"), markgettext("moderated"), */ 
+      markgettext("open"));
 
 /**
  * 

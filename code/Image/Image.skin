@@ -3,15 +3,14 @@
    <% image.name %>
 </div>
 <div class="storyDate">
-   <% image.creator as="link" %>
-   <% image.created format="short" prefix=" on " %>
+   <% gettext "{0} on {1}" <% image.creator link %> <% image.created short %> %>
 </div>
 <div>
    <% image.render | link <% image.url %> %>
 </div>
 <p class="small">
-   <% image.link edit prefix="... " %>
-   <% image.link delete prefix=" ... " %>
+   <% image.link edit <% gettext Edit %> prefix="... " %>
+   <% image.link delete <% gettext Delete %> prefix=" ... " %>
 </p>
 <p class="small">
    <% gettext 'To insert this image into a story or comment of this site 

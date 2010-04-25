@@ -6,10 +6,10 @@
 <% #navigation %>
 <div class="boxheader"><% gettext Administration %></div>
 <div class="box">
-<% admin.link . <% gettext Log %> prefix="... " suffix="<br />" %>
-<% admin.link sites prefix="... " suffix="<br />" %>
-<% admin.link users prefix="... " suffix="<br />" %>
-<% admin.link setup prefix="... " suffix="<br />" %>
+<% admin.link main <% gettext Log %> prefix="... " suffix="<br />" %>
+<% admin.link sites <% gettext Sites %> prefix="... " suffix="<br />" %>
+<% admin.link users <% gettext Users %> prefix="... " suffix="<br />" %>
+<% admin.link setup <% gettext Setup %> prefix="... " suffix="<br />" %>
 </div>
 
 <% #welcome %>
@@ -27,13 +27,14 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <tr>
 <td class="small"><% gettext Type suffix=: %></td>
 <td>
-   <% admin.dropdown name="filter" 
-   values="Any,Root,Site,User" %>
+   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %> 
+         <% markgettext Site %> <% markgettext User %> %>
 </td>
 </tr>
 <tr>
 <td class="small"><% gettext Sort suffix=: %></td>
-<td><% admin.dropdown name="dir" values="Descending,Ascending" %></td>
+<td><% admin.dropdown name="dir" <% markgettext Descending %> 
+      <% markgettext Ascending %> %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Search suffix=: %></td>
@@ -69,15 +70,18 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <tr>
 <td class="small"><% gettext Type suffix=: %></td>
 <td>
-   <% admin.dropdown name="filter" 
-   values="Any,Blocked,Trusted,Open,Restricted,Public,Closed,Deleted" %>
+   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %> 
+         <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %>
+         <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
 </td>
 </tr>
 <tr>
 <td class="small"><% gettext Sort suffix=: %></td>
 <td>
-   <% admin.dropdown name="order" values="Last Update,Creation Date,Name" %>
-   <% admin.dropdown name="dir" values="Descending,Ascending" %>
+   <% admin.dropdown name="order" <% markgettext "Last Update" %>
+         <% markgettext "Creation Date" %> <% markgettext Name %> %>
+   <% admin.dropdown name="dir" <% markgettext Descending %> 
+         <% markgettext Ascending %> %>
 </td>
 </tr>
 <tr>
@@ -105,9 +109,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
    <div><a href="<% item.href %>"><% item.href %></a></div>
    <div class="small"><% gettext "Created by {0} on {1}" <% item.creator as="link" %> 
    <% item.created short %> %><br />
-   <% gettext "Last updated on" %> <% item.modified short %><br />
-   <!-- Disk usage: FIXME <%// item.diskusage %> -->
-   </div>
+   <% gettext "Last updated on" %> <% item.modified short %></div>
 </td>
 <td class="small" valign="top" align="right">
    <% admin.link edit <% item.id %> prefix='... ' %>
@@ -128,7 +130,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 </colgroup>
 <tr>
 <td valign="top" class="small">
-   <% item.stories.self $comments %>
+   <% gettext "Disk Space" %>: <% item.diskspace %><br />
    <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.self stories %> %> suffix="<br />" %>
    <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.self comments %> %> suffix="<br />" %>
    <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.self images %> %> suffix="<br />" %>
@@ -169,15 +171,17 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
 <tr>
 <td class="small"><% gettext Type suffix=: %></td>
 <td>
-   <% admin.dropdown name="filter" 
-   values="All,Blocked,Trusted,Privileged" %>
+   <% admin.dropdown name="filter" <% markgettext All %> <% markgettext Blocked %>
+         <% markgettext Trusted %> <% markgettext Privileged %> %>
 </td>
 </tr>
 <tr>
 <td class="small"><% gettext Sort suffix=: %></td>
 <td>
-   <% admin.dropdown name="order" values="Registration,Login,Username" %>
-   <% admin.dropdown name="dir" values="Descending,Ascending" %>
+   <% admin.dropdown name="order" <% markgettext Registration %>
+         <% markgettext Login %> <% markgettext Username %> %>
+   <% admin.dropdown name="dir" <% markgettext Descending %> 
+         <% markgettext Ascending %> %>
 </td>
 </tr>
 <tr>

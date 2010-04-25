@@ -32,7 +32,7 @@
  * @returns {String[]}
  * @see defineConstants
  */
-Poll.getStatus = defineConstants(Poll, "closed", "open");
+Poll.getStatus = defineConstants(Poll, markgettext("closed"), markgettext("open"));
 
 /**
  * 

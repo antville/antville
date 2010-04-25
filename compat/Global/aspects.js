@@ -137,7 +137,15 @@ HopObject.prototype.onCodeUpdate = function() {
       var param = args[0];
       var to = param.to;
       delete param.to;
-      return [param, args[1] || to, args[2] || param.text];
+      // Compatibility for more recent link macros, doing a lot of i18n witchcraft
+      var url = args[1] || ".";
+      var text = args[2];
+      var action = url.split(/#|\?/)[0];
+      if (!text) {
+         action === "." && (action = obj._id);
+         text = gettext(action.capitalize());
+      }
+      return [param, to || url, param.text || text];
    });
 }
 

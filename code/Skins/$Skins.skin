@@ -63,9 +63,9 @@ body {
    <% skins.link create <% gettext "Add Skin" %> prefix="... " %>
 </div>
 <div>...
-   <% skins.link all %>
-   <% skins.link . <% gettext Basic %> prefix=" | " %>
-   <% skins.link modified prefix=" | " %> 
+   <% skins.link all <% gettext All %> %>
+   <% skins.link main <% gettext Basic %> prefix=" | " %>
+   <% skins.link modified <% gettext Modified %> prefix=" | " %> 
 </div>
 
 <% #main %>

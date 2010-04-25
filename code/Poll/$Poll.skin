@@ -1,12 +1,12 @@
 <% #header %>
 <div class="storyTitle"><% poll.question %></div>
-<div class="small"><% poll.creator %>, <% poll.created %></div>
+<div class="small"><% gettext "{0} on {1}" <% poll.creator %> <% poll.created %> %></div>
 
 <% #footer %>
 <p class="small">
-   <% poll.link edit prefix="... " %>
+   <% poll.link edit <% gettext Edit %> prefix="... " %>
    <% poll.link rotate prefix="... " %>
-   <% poll.link delete prefix="... " %>
+   <% poll.link delete <% gettext Delete %> prefix="... " %>
 </p>
 
 <% #main %>
@@ -30,7 +30,7 @@
 <% if <% param.header %> is true then <% poll.skin #header %> else 
       <% poll.question prefix=<strong> suffix="</strong> %> %>
 <% poll.loop skin="$Choice#result" %>
-<div class="small"><br />
+<div class="small">
    <% gettext Total suffix=: %> 
    <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
    <% if <% poll.status %> is open then "" else
@@ -40,7 +40,9 @@
       %>
    %>
 </div>
-<% poll.link . <% gettext "Add Your Vote %> prefix=<p> suffix=</p> %>
+<% if <% poll.status %> is open then
+   <% poll.link main <% gettext "Add Your Vote %> prefix=<p> suffix=</p> %>
+%>
 <% poll.skin #footer %>
 
 <% #listItem %>
@@ -65,11 +67,11 @@
 </td>
 <td width="10" nowrap="nowrap"> </td>
 <td align="right" class="small">
-   <% poll.link . <% gettext Vote %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link results prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% poll.link main <% gettext Vote %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% poll.link results <% gettext Results %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% poll.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% poll.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% poll.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 </table>

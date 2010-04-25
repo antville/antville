@@ -2,14 +2,14 @@
 <div class="listSeparator"></div>
 <% comment.skin Comment#content %>
 <p class="small">
-   <% comment.link . <% gettext Link %> prefix="... " %> 
-   <% comment.link edit prefix="... " %>
-   <% comment.link delete prefix="... " %>
+   <% comment.link main <% gettext Link %> prefix="... " %> 
+   <% comment.link edit <% gettext Edit %> prefix="... " %>
+   <% comment.link delete <% gettext Delete %> prefix="... " %>
    <% comment.link rotate prefix="... " %>
 </p>
 <% comment.comments %>
 <div class="reply small">
-   <% comment.link comment#form prefix="<br />... " %>
+   <% comment.link comment#form <% gettext Comment context=verb %> prefix="<br />... " %>
 </div>
 
 <% #edit %>
@@ -60,9 +60,9 @@
    <div class="listSeparator"></div>
    <% comment.skin Comment#content %>
    <p class="small">
-      <% comment.link . <% gettext Link %> prefix="... " %>
-      <% comment.link edit prefix="... " %>
-      <% comment.link delete prefix="... " %>
+      <% comment.link main <% gettext Link %> prefix="... " %>
+      <% comment.link edit <% gettext Edit %> prefix="... " %>
+      <% comment.link delete <% gettext Delete %> prefix="... " %>
       <% comment.link rotate prefix="... " %>
    </p>
 </div>

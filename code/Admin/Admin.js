@@ -85,21 +85,25 @@ Admin.Job = function(target, method, user) {
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getNotificationScopes = defineConstants(Admin, "none", "trusted", "regular");
+Admin.getNotificationScopes = defineConstants(Admin, markgettext("None"), 
+      markgettext("Trusted"), markgettext("Regular"));
 
 /**
  * @function
  * @return {String[]}
  * @see defineConstants
  */
-Admin.getPhaseOutModes = defineConstants(Admin, "disabled", "restricted", "abandoned", "both");
+Admin.getPhaseOutModes = defineConstants(Admin, markgettext("Disabled"), 
+      markgettext("Restricted"), markgettext("Abandoned"), 
+      markgettext("Both"));
 
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getCreationScopes = defineConstants(Admin, "privileged", "trusted", "regular");
+Admin.getCreationScopes = defineConstants(Admin, markgettext("Privileged"), 
+      markgettext("Trusted"), markgettext("Regular"));
 
 /**
  * 
@@ -830,11 +834,12 @@ Admin.prototype.items_macro = function(param, object, name) {
  * 
  * @param {Object} param
  */
-Admin.prototype.dropdown_macro = function(param) {
-   if (!param.name || !param.values) {
+Admin.prototype.dropdown_macro = function(param /*, value1, value2, ... */) {
+   if (!param.name || arguments.length < 2) {
       return;
    }
-   var options = param.values.split(",").map(function(item, index) {
+   var values = Array.prototype.slice.call(arguments, 1);
+   var options = values.map(function(item, index) {
       return {
          value: index,
          display: gettext(item)

@@ -24,14 +24,13 @@
 
 /**
  * @fileOverview Contains redefined or additional methods for 
- * internationalization and localization as well as markgettext() calls to 
- * complete i18n.
+ * internationalization and localization.
  */
 
 /**
  * This method is useful for disambiguation of messages (single words most of
  * the time) that have different meanings depending on the context.
- * Example: cgettext("comment", "verb") vs cgettext("comment", "noun")
+ * Example: comment (the verb "to comment" vs the noun "a comment")
  * @param {Object} key The message ID
  * @param {Object} context The context of the message
  * @returns String
@@ -94,81 +93,13 @@ function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
    return ngettext.apply(this, args);
 }
 
-markgettext("Abandoned");
-markgettext("Any");
-markgettext("Ascending");
-
-markgettext("Blocked");
-markgettext("Both");
-
-markgettext("Close");
-markgettext("Closed");
-markgettext("Compare");
-markgettext("Contact");
-markgettext("Contributor");
-markgettext("Contributors");
-markgettext("Creation Date");
-
-markgettext("Delete");
-markgettext("Deleted");
-markgettext("Descending");
-markgettext("Disabled");
-
-markgettext("Edit");
-markgettext("Enabled");
-markgettext("Export");
-
-markgettext("Featured");
-markgettext("Files");
-
-markgettext("Galleries");
-
-markgettext("Hidden");
-markgettext("Hide");
-
-markgettext("Images");
-markgettext("Import");
-
-markgettext("Last Update");
-markgettext("Logout");
-
-markgettext("Name");
-markgettext("Nobody");
-markgettext("None");
-
-markgettext("Manager");
-markgettext("Managers");
-markgettext("Members");
-markgettext("Modified");
-
-markgettext("Open");
-markgettext("Owner");
-markgettext("Owners");
-
-markgettext("Polls");
-markgettext("Privileged");
-markgettext("Public");
-markgettext("public");
-markgettext("Publish");
-
-markgettext("Referrers");
-markgettext("Registration");
-markgettext("Regular");
-markgettext("Reset");
-markgettext("Restricted");
-markgettext("Root");
-markgettext("Running");
-
-markgettext("Setup");
-markgettext("Shared");
-markgettext("Show");
-markgettext("Sites");
-markgettext("Skins");
-markgettext("Stories");
-markgettext("Subscriber");
-markgettext("Subscribers");
-
-markgettext("Tags");
-markgettext("Trusted");
-
-markgettext("Users");
+/**
+ * 
+ * @param {Object} param
+ * @param {Object} singular
+ * @param {Object} plural
+ * @see jala.i18n#markgettext
+ */
+function markgettext_macro(param, singular, plural) {
+   return markgettext.call(this, singular, plural);
+}

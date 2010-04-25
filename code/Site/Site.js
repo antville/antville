@@ -46,52 +46,59 @@ this.handleMetadata("shortDateFormat");
 this.handleMetadata("spamfilter");
 this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
-this.handleMetadata("title"),
+this.handleMetadata("title");
 
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getStatus = defineConstants(Site, "blocked", "regular", "trusted");
+Site.getStatus = defineConstants(Site, markgettext("Blocked"), 
+      markgettext("Regular"), markgettext("Trusted"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getModes = defineConstants(Site, "deleted", "closed", "restricted", 
-      "public", "open");
+Site.getModes = defineConstants(Site, markgettext("Deleted"), 
+      markgettext("Closed"), markgettext("Restricted"), 
+      markgettext("Public"), markgettext("Open"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getPageModes = defineConstants(Site, "stories" /* , "days" */);
+Site.getPageModes = defineConstants(Site, markgettext("days") /* , 
+      markgettext("stories") */ );
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getCommentModes = defineConstants(Site, "disabled", "enabled");
+Site.getCommentModes = defineConstants(Site, markgettext("disabled"), 
+      markgettext("enabled"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getArchiveModes = defineConstants(Site, "closed", "public");
+Site.getArchiveModes = defineConstants(Site, markgettext("closed"), 
+      markgettext("public"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getNotificationModes = defineConstants(Site, "Nobody", 
-      "Owner", "Manager", "Contributor", "Subscriber" );
+Site.getNotificationModes = defineConstants(Site, markgettext("Nobody"), 
+      markgettext("Owner"), markgettext("Manager"), markgettext("Contributor"), 
+      markgettext("Subscriber"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getCallbackModes = defineConstants(Site, "disabled", "enabled");
+Site.getCallbackModes = defineConstants(Site, markgettext("disabled"), 
+      markgettext("enabled"));
 
 /**
  * 

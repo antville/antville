@@ -534,14 +534,13 @@ HopObject.prototype.type_macro = function() {
  * @param {String} text
  */
 HopObject.prototype.link_macro = function(param, url, text) {
-   url || (url = ".");
-   var action = url.split(/#|\?/)[0];
-   if (this.getPermission(action)) {
-      if (!text) {
-         action === "." && (action = this._id);
-         text = gettext(action.capitalize());
+   if (url && text) {
+      var action = url.split(/#|\?/)[0];
+      if (this.getPermission(action)) {
+         renderLink.call(global, param, url, text, this);
       }
-      renderLink.call(global, param, url, text, this);
+   } else {
+      res.write("[Insufficient link parameters]");
    }
    return;
 }

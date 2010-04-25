@@ -12,22 +12,22 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #navigation %>
 <div class="navigation">
-<div><% site.link . <% gettext Home %> prefix="... " %></div>
-<div><% site.tags.link prefix="... " %></div>
-<div><% site.galleries.link prefix="... " %></div>
+<div><% site.link % gettext Home %> prefix="... " %></div>
+<div><% site.tags.link main <% gettext Tags %> prefix="... " %></div>
+<div><% site.galleries.link main <% gettext Galleries %> prefix="... " %></div>
 </div>
 <p class="navigation">
 <div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
-<div><% site.stories.link prefix="... " %></div>
-<div><% site.images.link prefix="... " %></div>
-<div><% site.files.link prefix="... " %></div>
-<div><% site.polls.link prefix="... " %></div>
-<div><% site.members.link prefix="... " %></div>
+<div><% site.stories.link main <% gettext Stories %> prefix="... " %></div>
+<div><% site.images.link main <% gettext Images %> prefix="... " %></div>
+<div><% site.files.link main <% gettext Files %> prefix="... " %></div>
+<div><% site.polls.link main <% gettext Polls %>prefix="... " %></div>
+<div><% site.members.link main <% gettext Members %> prefix="... " %></div>
 </p>
 <p class="navigation">
 <div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
-<div><% site.layout.link . <% gettext Layout %> prefix="... " %></div>
-<div><% site.link referrers prefix="... " %></div>
+<div><% site.layout.link main <% gettext Layout %> prefix="... " %></div>
+<div><% site.link referrers <% gettext Referrers %> prefix="... " %></div>
 <div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
 </p>
 <p class="navigation">

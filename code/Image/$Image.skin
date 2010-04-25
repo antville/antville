@@ -85,13 +85,12 @@ $(function() {
 <tr>
 <td>
    <div class="storyTitle"><% image.name %></div>
-   <div class="storyDate"><% image.creator as="link" %>
-   <% image.created short prefix=<% gettext on prefix=" " suffix=" " %> %></div>
+   <div class="storyDate"><% gettext "{0} on {1}" <% image.creator link %> 
+         <% image.created short %> %></div>
 </td>
 <td align="right" class="small" valign="top">
-   <% image.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% image.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% image.link replace prefix='<div class="nowrap">... ' suffix="</div>" %> 
+   <% image.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% image.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 <tr>

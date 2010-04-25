@@ -19,7 +19,7 @@ modify the appearance of your site according to your needs."
 <% site.images.link create <% gettext images %> %> 
 <% site.files.link create <% gettext files %> %> 
 <% site.polls.link create <% gettext poll %> %>
-<% layout.link . <% gettext layout %> %> %></p>
+<% layout.link main <% gettext layout %> %> %></p>
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
@@ -35,8 +35,8 @@ modify the appearance of your site according to your needs."
 <p class="storyTitle"><% response.title %></p>
 <div class="ample">...
 <% members.link updated <% gettext "Updated Sites" %> %>
-<% members.link privileges prefix="| " %> 
-<% members.link subscriptions prefix="| " %>
+<% members.link privileges <% gettext Privileges %> prefix="| " %> 
+<% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
 </div>
 <p><% response.list %></p>
 

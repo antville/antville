@@ -52,14 +52,13 @@ $(function() {
 <tr>
 <td>
    <div class="storyTitle"><% file.name %></div>
-   <div class="storyDate"><% file.creator as="link" %> on 
-   <% file.created short %></div>
+   <div class="storyDate"><% gettext "{0} on {1}" <% file.creator link %> 
+         <% file.created short %> %></div>
 </td>
 <td class="small" align="right" valign="top" rowspan="2">
-   <% file.link edit prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% file.link delete prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% file.link . <% gettext Download %> prefix='<div class="nowrap">... ' 
-         suffix="</div>" %>
+   <% file.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% file.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% file.link main <% gettext Download %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 <tr>

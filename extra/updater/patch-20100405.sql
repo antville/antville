@@ -26,3 +26,9 @@
 ALTER TABLE `antville`.`content` CHANGE COLUMN `status` `status` 
    enum('deleted','closed','pending','readonly','public','shared','open')
    CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT 'closed';
+
+## Convert membership roles to lowercase
+update membership set role = 'subscriber' where role = 'Subscriber';
+update membership set role = 'contributor' where role = 'Contributor';
+update membership set role = 'manager' where role = 'Manager';
+update membership set role = 'owner' where role = 'Owner';

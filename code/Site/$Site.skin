@@ -166,17 +166,17 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </tr>
 <tr>
 <td class="small"><% gettext Title suffix=: %></td>
-<td><% site.input title %></td>
+<td><% site.input title size=40 %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Tagline suffix=: %></td>
-<td><% site.input tagline %></td>
+<td><% site.input tagline size=40 %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Paging suffix=: %></td>
 <td><% site.input pageSize size="5" maxlength="2" %>
-<% // site.select pageMode %>
-<% gettext "Stories" %> <% gettext "per page" %></td>
+<% gettext "{0} per page" <% gettext "days" %> %></td>
+                          <% // site.select pageMode %>
 </tr>
 <tr>
 <td class="small"><% gettext Comments suffix=: %></td>
@@ -211,7 +211,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </tr>
 <tr>
 <td class="small" valign="top"><% gettext "Callback URL" suffix=: %></td>
-<td><% site.input callbackUrl %><br />
+<td><% site.input callbackUrl size=40 %><br />
 <% site.checkbox callbackMode %> 
 <label for="callbackMode"><% gettext enabled %><label></td>
 </tr>

@@ -3,11 +3,11 @@
 <div class="ample">
    <% members.link add <% gettext "Add Member" %> prefix="... " %>
 </div>
-... <% members.link . <% gettext All %> %>
-<% members.link owners prefix="| " %>
-<% members.link managers prefix="| " %> 
-<% members.link contributors prefix="| " %>
-<% members.link subscribers prefix="| " %>
+... <% members.link main <% gettext All %> %>
+<% members.link owners <% gettext Owners %> prefix="| " %>
+<% members.link managers <% gettext Managers %> prefix="| " %> 
+<% members.link contributors <% gettext Contributors %> prefix="| " %>
+<% members.link subscribers <% gettext Subscribers %> prefix="| " %>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

@@ -175,14 +175,14 @@ function defineConstants(ctor /*, arguments */) {
    var constants = [], name;
    for (var i=1; i<arguments.length; i+=1) {
       name = arguments[i].toUpperCase().replace(/\s/g, "");
-      ctor[name] = arguments[i];
+      ctor[name] = arguments[i].toLowerCase();
       constants.push(arguments[i]);
    }
    return function() {
       return constants.map(function(item) {
          return {
-            value: item,
-            display: gettext(item.capitalize())
+            value: item.toLowerCase(),
+            display: gettext(item)
          }
       });
    };

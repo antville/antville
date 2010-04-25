@@ -53,8 +53,9 @@ User.getByName = function(name) {
  * @returns {String[]}
  * @see defineConstants
  */
-User.getStatus = defineConstants(User, "blocked", 
-      "regular", "trusted", "privileged");
+User.getStatus = defineConstants(User, markgettext("Blocked"), 
+      markgettext("Regular"), markgettext("Trusted"), 
+      markgettext("Privileged"));
 
 /**
  * @returns {String}
