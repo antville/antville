@@ -290,8 +290,8 @@ Members.prototype.privileges_action = function() {
    var site = res.handlers.site;
    res.data.title = gettext("Privileges");
    res.data.list = renderList(session.user.memberships, function(item) {
-      res.handlers.site = item.site;
-      item.renderSkin("$Membership#site");
+      res.handlers.subscription = item.site;
+      item.renderSkin("$Membership#subscription");
       return;
    });
    res.handlers.site = site;
@@ -304,8 +304,8 @@ Members.prototype.subscriptions_action = function() {
    var site = res.handlers.site;
    res.data.title = gettext("Subscriptions");
    res.data.list = renderList(session.user.subscriptions, function(item) {
-      res.handlers.site = item.site;
-      item.renderSkin("$Membership#site");
+      res.handlers.subscription = item.site;
+      item.renderSkin("$Membership#subscription");
       return;
    });
    res.handlers.site = site;
