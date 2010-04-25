@@ -257,41 +257,6 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
 /**
  * 
  * @param {Object} param
- * @param {String} text
- */
-function gettext_macro(param, text /*, value1, value2, ...*/) {
-   if (!text) {
-      return;
-   }
-   var re = /(\s*)(?:\r|\n)\s*/g;
-   var args = [text.replace(re, "$1")];
-   for (var i=2; i<arguments.length; i+=1) {
-      args.push(arguments[i]);
-   }
-   return gettext.apply(this, args);
-}
-
-/**
- * 
- * @param {Object} param
- * @param {String} singular
- * @param {String} plural
- */
-function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
-   if (!singular || !plural) {
-      return;
-   }
-   var re = /(\s*)(?:\r|\n)\s*/g;
-   var args = [singular.replace(re, "$1"), plural.replace(re, "$1")];
-   for (var i=3; i<arguments.length; i+=1) {
-      args.push(arguments[i]);
-   }
-   return ngettext.apply(this, args);
-}
-
-/**
- * 
- * @param {Object} param
  * @param {String} format
  * @returns {String} The formatted current date string
  * @see formatDate

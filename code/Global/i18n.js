@@ -23,8 +23,76 @@
 //
 
 /**
- * @fileOverview Contains markgettext() calls to complete i18n
+ * @fileOverview Contains redefined or additional methods for 
+ * internationalization and localization as well as markgettext() calls to 
+ * complete i18n.
  */
+
+/**
+ * This method is useful for disambiguation of messages (single words most of
+ * the time) that have different meanings depending on the context.
+ * Example: cgettext("comment", "verb") vs cgettext("comment", "noun")
+ * @param {Object} key The message ID
+ * @param {Object} context The context of the message
+ * @returns String
+ */
+function cgettext(key, context) {
+   var msgId = cgettext.getKey(key, context);
+   var text = jala.i18n.translate(msgId);
+   return text === msgId ? key : text;
+}
+
+/**
+ * Helper method to define the message ID depending on the context.
+ * @param {Object} key
+ * @param {Object} context
+ * @returns String
+ */
+cgettext.getKey = function(key, context) {
+   return context ? key + " // " + context : key;
+}
+
+/**
+ * 
+ * @param {Object} param
+ * @param {String} text
+ * @returns String
+ * @see jala.i18n.gettext
+ */
+function gettext_macro(param, text /*, value1, value2, ...*/) {
+   if (!text) {
+      return;
+   }
+   var re = /(\s*)(?:\r|\n)\s*/g;
+   var args = [text.replace(re, "$1")];
+   for (var i=2; i<arguments.length; i+=1) {
+      args.push(arguments[i]);
+   }
+   if (param.context) {
+      return cgettext.call(this, args[0], param.context);
+   }
+   return gettext.apply(this, args);
+}
+
+/**
+ * 
+ * @param {Object} param
+ * @param {String} singular
+ * @param {String} plural
+ * @returns String
+ * @see jala.i18n#ngettext
+ */
+function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
+   if (!singular || !plural) {
+      return;
+   }
+   var re = /(\s*)(?:\r|\n)\s*/g;
+   var args = [singular.replace(re, "$1"), plural.replace(re, "$1")];
+   for (var i=3; i<arguments.length; i+=1) {
+      args.push(arguments[i]);
+   }
+   return ngettext.apply(this, args);
+}
 
 markgettext("Abandoned");
 markgettext("Any");

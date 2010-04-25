@@ -153,7 +153,8 @@ MessageParser.FUNCTION_NAMES = {
    "_": true,
    "gettext": true,
    "ngettext": true,
-   "markgettext": true
+   "markgettext": true,
+   "cgettext": true
 };
 
 /**
@@ -287,6 +288,10 @@ MessageParser.prototype.parseFunctionFile = function(file, encoding) {
       for (var i=0;i<messages.length;i++) {
          msgParam = messages[i];
          if (msgParam.args && msgParam.args.length > 0) {
+            if (msgParam.name === "cgettext" || msgParam.name === "markgettext") {
+               msgParam.args[0] = cgettext.getKey(msgParam.args[0], msgParam.args[1]);
+               delete msgParam.args[1];
+            } 
             key = Message.getKey(msgParam.args[0]);
             if (!(msg = this.messages[key])) {
                this.messages[key] = msg = new Message(msgParam.args[0], msgParam.args[1]);
@@ -335,7 +340,7 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
 
    var processMacros = function(macros) {
       var re = /(\s*)(?:\r|\n)\s*/g;
-      var id, pluralId, name, param, key, msg;
+      var id, pluralId, name, args, param, key, msg;
       for each (var macro in macros) {
          id = pluralId = null;
          name = macro.getName();
@@ -349,14 +354,15 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
                id = param.get("message");
                pluralId = param.get("plural");
             }
-         } 
-         if (param = macro.getPositionalParams()) {
-            checkNestedMacros(param.iterator());
+         }
+         args = macro.getPositionalParams();
+         if (args) {
+            checkNestedMacros(args.iterator());
             if (name === "gettext") {
-               id = param.get(0);
+               id = cgettext.getKey(args.get(0), param && param.get("context"));
             } else if (name === "ngettext") {
-               id = param.get(0);
-               pluralId = param.get(1);
+               id = args.get(0);
+               pluralId = args.get(1);
             }
          }
          if (id != null) {
