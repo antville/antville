@@ -149,7 +149,7 @@ CREATE TABLE `membership` (
   `id` int(10) unsigned NOT NULL default '0',
   `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
   `site_id` int(10) unsigned default NULL,
-  `role` enum('Subscriber','Contributor','Manager','Owner') default 'Subscriber',
+  `role` enum('subscriber','contributor','manager','owner') default 'subscriber',
   `created` datetime default NULL,
   `creator_id` int(10) unsigned default NULL,
   `modified` datetime default NULL,
