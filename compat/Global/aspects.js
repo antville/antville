@@ -149,9 +149,6 @@ HopObject.prototype.onCodeUpdate = function() {
    });
 }
 
-// Call onCodeUpdate() to be sure that aspects apply
-//HopObject.prototype.onCodeUpdate();
-
 Archive.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
 }

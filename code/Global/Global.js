@@ -163,6 +163,8 @@ function onStart() {
       app.logger.error("Error in database configuration: no root site found.");
       return;
    }
+   // This is necessary once to be sure that aspect-oriented code will be applied
+   HopObject.prototype.onCodeUpdate();
    return;
 }
 
