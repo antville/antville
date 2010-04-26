@@ -45,7 +45,8 @@ else
 <tr valign="top">
 <td>
    <div class="storyTitle"><% skin.name prefix=<% skin.prototype suffix="." %> %></div>
-   <div class="storyDate"><% skin.creator link %>, <% skin.created short %></div>
+   <div class="storyDate"><% gettext "{0} on {1}" <% skin.creator link %> 
+         <% skin.created short %> %></div>
 </td>
 </tr>
 </table>

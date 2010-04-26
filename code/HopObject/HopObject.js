@@ -150,14 +150,21 @@ HopObject.prototype.getPermission = function() {
    return true;
 }
 
+// Marking some prototype names used in res.message of HopObject.delete_action()
+markgettext("Comment");
+markgettext("File");
+markgettext("Image");
+markgettext("Membership");
+markgettext("Poll");
+markgettext("Story");
+
 HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       try {
-         var str = this.toString();
          var parent = this._parent;
          var url = this.constructor.remove.call(this, req.postParams) || 
                parent.href();
-         res.message = gettext("{0} was successfully deleted.", str);
+         res.message = gettext("{0} was successfully deleted.", gettext(this._prototype));
          res.redirect(User.getLocation() || url);
       } catch(ex) {
          res.message = ex;

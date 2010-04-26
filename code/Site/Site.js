@@ -630,7 +630,7 @@ Site.prototype.subscribe_action = function() {
 Site.prototype.unsubscribe_action = function() {
    if (req.postParams.proceed) {
       try {
-         Membership.remove(Membership.getByName(session.user.name));
+         Membership.remove.call(Membership.getByName(session.user.name));
          res.message = gettext("Successfully unsubscribed from site {0}.",
                this.title);
          res.redirect(User.getLocation() || this.href());

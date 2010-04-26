@@ -62,11 +62,11 @@ Membership.getRoles = defineConstants(Membership, markgettext("Subscriber"),
  * @param {Object} options
  */
 Membership.remove = function(options) {
+   options || (options = {});
    if (this.constructor !== Membership) {
       return;
    }
-   if (!options.force && !this.getPermission("delete") && 
-         !User.require(User.PRIVILEGED)) {
+   if (!options.force && !this.getPermission("delete")) {
       throw Error(gettext("Sorry, an owner of a site cannot be removed."));
    }
    var recipient = this.creator.email;
@@ -126,8 +126,8 @@ Membership.prototype.getPermission = function(action) {
       return true;
       case "edit":
       case "delete":
-      return res.handlers.site.members.getPermission("main") && 
-            this.creator !== session.user;
+      return User.require(User.PRIVILEGED) || 
+            this.role !== Membership.OWNER || this.creator !== session.user;
    }
    return false;
 }
@@ -304,7 +304,7 @@ Membership.prototype.status_macro = function() {
  * 
  */
 Membership.prototype.role_macro = function() {
-   res.write(gettext(this.role.capitalize()));
+   this.role && res.write(gettext(this.role.capitalize()));
    return;
 }
 

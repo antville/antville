@@ -78,8 +78,8 @@ $(function() {
 <td colspan="2" class="small">
    <strong><% gettext Macro suffix=: %></strong> <% image.macro %>
    <div class="ample"><strong><% gettext Properties suffix=: %></strong>
-   <% image.contentType %>, <% image.contentLength %>, <% image.width %>&times;<% image.height %> 
-   <% gettext pixels %></div>
+   <% image.contentType %>, <% image.contentLength %>, 
+   <% image.width %>&times;<% image.height %> <% gettext pixels %></div>
 </td>
 </tr>
 <tr>
@@ -90,6 +90,7 @@ $(function() {
 </td>
 <td align="right" class="small" valign="top">
    <% image.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% image.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% image.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>

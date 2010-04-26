@@ -207,7 +207,7 @@ Layout.prototype.reset_action = function() {
       try {
          Layout.remove.call(this);
          this.reset();
-         res.message = gettext("The layout was successfully reset.");
+         res.message = gettext("{0} was successfully reset.", gettext("Layout"));
          res.redirect(this.href());
       } catch(ex) {
          res.message = ex;

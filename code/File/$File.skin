@@ -57,8 +57,8 @@ $(function() {
 </td>
 <td class="small" align="right" valign="top" rowspan="2">
    <% file.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% file.link main <% gettext Download context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
    <% file.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% file.link main <% gettext Download %> prefix='<div class="nowrap">... ' suffix="</div>" %>
 </td>
 </tr>
 <tr>

@@ -186,9 +186,8 @@ Skin.prototype.update = function(data) {
 Skin.prototype.reset_action = function() {
    if (req.postParams.proceed) {
       try {
-         var str = this.toString();
          Skin.remove.call(this);
-         res.message = gettext("{0} was successfully reset.", str);
+         res.message = gettext("{0} was successfully reset.", gettext("Skin"));
          res.redirect(res.handlers.layout.skins.href("modified"));
       } catch(ex) {
          res.message = ex;
