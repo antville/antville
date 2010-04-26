@@ -228,7 +228,7 @@ global.messages.de = {
    "Number of public sites": "Anzahl öffentlicher Websites",
    "Numeric identifier of the resource": "Numerischer Schlüssel der Ressource",
    "Of course, you can now also start to create <a href=\"{0}\">stories</a>, upload some <a href=\"{1}\">images</a> or <a href=\"{2}\">files</a>, create your first <a href=\"{3}\">poll</a> or get a glimpse of Antville’s wonderful customization possibilities by having a look at the <a href=\"{4}\">layout section</a> where you can modify the appearance of your site according to your needs.": "Selbstverständlich können Sie nun auch anfangen, <a href=\"{0}\">Beträge</a> zu erstellen, <a href=\"{1}\">Bilder</a> oder <a href=\"{2}\">Dateien</a> hochzuladen, Ihre erste <a href=\"{3}\">Umfrage</a> zu starten oder einen Blick auf Antvilles wunderbare Anpassungsmöglichkeiten zu werfen, indem Sie sich den <a href=\"{4}\">Layout-Bereich</a> anschauen, wo Sie das Erscheinungsbild Ihrer Website nach Ihren Wünschen ändern können.",
-   "One Antville installation can easily host up to several thousands of {0}.": "Auf einer Antville-Installation können ohne weiteres mehrere tausend {0} veröffentlicht werden.",
+   "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>.": "Auf einer Antville-Installation können ohne weiteres mehrere tausend <a href=\"{0}\">Websites</a> veröffentlicht werden.",
    "One user found.": "Ein Benutzer gefunden.",
    "{0} users found.": "{0} Benutzer gefunden.",
    "Online for {0} day": "Online seit {0} Tag",

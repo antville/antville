@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2010-04-26 13:03+0200\n"
-"PO-Revision-Date: 2010-04-26 13:03+0100\n"
+"POT-Creation-Date: 2010-04-26 13:16+0200\n"
+"PO-Revision-Date: 2010-04-26 13:17+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1082,8 +1082,8 @@ msgstr "Of course, you can now also start to create <a href=\"{0}\">stories</a>,
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:5
 #, java-format
-msgid "One Antville installation can easily host up to several thousands of {0}."
-msgstr "One Antville installation can easily host up to several thousands of {0}."
+msgid "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>."
+msgstr "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:328
 #, java-format

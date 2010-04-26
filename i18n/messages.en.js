@@ -228,7 +228,7 @@ global.messages.en = {
    "Number of public sites": "Number of public sites",
    "Numeric identifier of the resource": "Numeric identifier of the resource",
    "Of course, you can now also start to create <a href=\"{0}\">stories</a>, upload some <a href=\"{1}\">images</a> or <a href=\"{2}\">files</a>, create your first <a href=\"{3}\">poll</a> or get a glimpse of Antville’s wonderful customization possibilities by having a look at the <a href=\"{4}\">layout section</a> where you can modify the appearance of your site according to your needs.": "Of course, you can now also start to create <a href=\"{0}\">stories</a>, upload some <a href=\"{1}\">images</a> or <a href=\"{2}\">files</a>, create your first <a href=\"{3}\">poll</a> or get a glimpse of Antville’s wonderful customization possibilities by having a look at the <a href=\"{4}\">layout section</a> where you can modify the appearance of your site according to your needs.",
-   "One Antville installation can easily host up to several thousands of {0}.": "One Antville installation can easily host up to several thousands of {0}.",
+   "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>.": "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>.",
    "One user found.": "One user found.",
    "{0} users found.": "{0} users found.",
    "Online for {0} day": "Online for {0} day",
