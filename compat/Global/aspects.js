@@ -145,12 +145,12 @@ HopObject.prototype.onCodeUpdate = function() {
          action === "." && (action = obj._id);
          text = gettext(action.capitalize());
       }
-      return [param, to || url, param.text || text];
+      return [param, to || url, param.text || text, args[3]];
    });
 }
 
 // Call onCodeUpdate() to be sure that aspects apply
-HopObject.prototype.onCodeUpdate();
+//HopObject.prototype.onCodeUpdate();
 
 Archive.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "main_action", aspects.fixPager);

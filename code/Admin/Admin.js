@@ -766,25 +766,26 @@ Admin.prototype.log = function(context, action) {
  * @param {Number} id
  * @param {String} text
  */
-Admin.prototype.link_macro = function(param, action, id, text) {
+Admin.prototype.link_macro = function(param, action, text, id) {
    switch (action) {
+      case "main":
+      action = ".";
       case "delete":
       case "edit":
-      if (req.action === "users" && (id === session.user._id)) {
-         return;
+      if (id) {
+         if (req.action === "users" && (id === session.user._id)) {
+            return;
+         }
+         if (req.action === "sites" && (id === root._id)) {
+            return;
+         }
+         action = req.action + "?action=" + action + "&id=" + id;
+         if (req.queryParams.page) {
+            action += "&page=" + req.queryParams.page;
+         }
+         action += "#" + id;
       }
-      if (req.action === "sites" && (id === root._id)) {
-         return;
-      }
-      text = gettext(action.capitalize());
-      action = req.action + "?action=" + action + "&id=" + id;
-      if (req.queryParams.page) {
-         action += "&page=" + req.queryParams.page;
-      }
-      action += "#" + id;
       break;
-      default:
-      text = id;
    }
    return HopObject.prototype.link_macro.call(this, param, action, text);
 }

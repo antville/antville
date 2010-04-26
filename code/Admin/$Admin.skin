@@ -14,10 +14,10 @@
 
 <% #welcome %>
 <p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator 
-of this Antville installation you are entitled to administer {0} and {1}, view 
-the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link users %> 
-      <% root.admin.link log <% gettext "admin log" %> %>
-      <% root.admin.link setup <% gettext "system setup" %> %>
+of this Antville installation you are entitled to administer <a href="{0}">sites</a> 
+      and <a href="{1}">users</a>, view the <a href="{2}">administration log</a> 
+      and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %> 
+      <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %>
 %></p>
 
 <% #log %>
@@ -112,9 +112,10 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
    <% gettext "Last updated on" %> <% item.modified short %></div>
 </td>
 <td class="small" valign="top" align="right">
-   <% admin.link edit <% item.id %> prefix='... ' %>
+   <% admin.link edit <% gettext Edit %> <% item.id %> prefix='... ' %>
    <% if <% item.mode %> is deleted then "" else 
-         <% admin.link delete <% item.id %> prefix="... " %> %>
+      <% admin.link delete <% gettext Delete %> <% item.id %> prefix="... " %> 
+   %>
 </td>
 </tr>
 </table>
@@ -212,7 +213,7 @@ the {2} and configure the {3}.' <% root.admin.link sites %> <% root.admin.link u
    </div>
 </td>
 <td class="small" valign="top" align="right">
-   <% admin.link edit <% item.id %> prefix="... " %>
+   <% admin.link edit <% gettext Edit %> <% item.id %> prefix="... " %>
 </td>
 </tr>
 </table>
