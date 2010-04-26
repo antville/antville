@@ -125,7 +125,7 @@ global.messages.de = {
    "Edit Membership: {0}": "Mitgliedschaft bearbeiten: {0}",
    "Edit Poll: {0}": "Umfrage bearbeiten: {0}",
    "Edit Skin: {0}.{1}": "Skin bearbeiten: {0}.{1}",
-   "Edit Story: {0}": "Beitrag bearbeiten: {0}",
+   "Edit Story": "Beitrag bearbeiten",
    "Edit User Profile": "Benutzerprofil bearbeiten",
    "Enter a search term to display a list of matching users.": "Bitte geben Sie einen Suchbegriff ein, um eine Liste passender Benutzer anzuzeigen.",
    "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists.": "Geben Sie ein {0}Filter-Pattern{1} pro Zeile ein, das für jede Adresse in den Rückverweis-Listen angewendet werden soll.",

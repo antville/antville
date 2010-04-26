@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2010-04-26 13:16+0200\n"
-"PO-Revision-Date: 2010-04-26 13:17+0100\n"
+"POT-Creation-Date: 2010-04-26 13:41+0200\n"
+"PO-Revision-Date: 2010-04-26 13:41+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:972
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:974
 #, java-format
 msgid "({0} character)"
 msgid_plural "({0} characters)"
@@ -609,9 +609,8 @@ msgid "Edit Skin: {0}.{1}"
 msgstr "Edit Skin: {0}.{1}"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:182
-#, java-format
-msgid "Edit Story: {0}"
-msgstr "Edit Story: {0}"
+msgid "Edit Story"
+msgstr "Edit Story"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:5
 msgid "Edit User Profile"

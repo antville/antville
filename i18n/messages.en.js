@@ -125,7 +125,7 @@ global.messages.en = {
    "Edit Membership: {0}": "Edit Membership: {0}",
    "Edit Poll: {0}": "Edit Poll: {0}",
    "Edit Skin: {0}.{1}": "Edit Skin: {0}.{1}",
-   "Edit Story: {0}": "Edit Story: {0}",
+   "Edit Story": "Edit Story",
    "Edit User Profile": "Edit User Profile",
    "Enter a search term to display a list of matching users.": "Enter a search term to display a list of matching users.",
    "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists.": "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists.",
