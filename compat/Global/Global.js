@@ -26,7 +26,7 @@ app.addRepository("modules/helma/Color.js");
 
 var disableAction = function(msg) {
    res.data.title = msg + " :(";
-   res.data.body = gettext(msg) + ". " + gettext("Sorry.");
+   res.data.body = msg + ". " + "Sorry.";
    this.renderSkin("Site#page");
    return;
 }

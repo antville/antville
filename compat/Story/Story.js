@@ -41,7 +41,7 @@ Story.prototype.commentform_macro = function(param) {
       (new Comment(this)).renderSkin("Comment#edit");
    } else {
       html.link({href: this.site.members.href("login")},
-            param.text || gettext("Please login to add a comment"));
+            param.text || "Please login to add a comment");
    }
    return;
 }
@@ -164,11 +164,11 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
 Story.prototype.location_macro = function(param) {
    switch (this.mode) {
       case Story.FEATURED:
-      res.write(gettext("site")); break;
+      res.write("site"); break;
       
       default:
       if (this.tags.size() > 0) {
-         html.link({href: this.tags.get(0).tag.href()}, gettext("topic"));
+         html.link({href: this.tags.get(0).tag.href()}, "topic");
       }
    }
    return;
@@ -264,8 +264,7 @@ Story.prototype.discussions_macro = function(param) {
       param.value = "1";
       html.checkBox(param);
    } else {
-      res.write(this.commentMode === Story.OPEN ? 
-            gettext("yes") : gettext("no"));
+      res.write(this.commentMode === Story.OPEN ? "yes" : "no");
    }
    return;
 }
@@ -273,8 +272,7 @@ Story.prototype.discussions_macro = function(param) {
 Story.prototype.editableby_macro = function(param) {
    if (param.as == "editor" && (session.user == this.creator || !this.creator)) {
       var options = [Story.PUBLIC, Story.SHARED, Story.OPEN];
-      var labels = [gettext("content managers"), gettext("contributors"), 
-            gettext("subscribers")];
+      var labels = ["content managers", "contributors", "subscribers"];
       delete param.as;
       if (req.data.publish || req.data.save) {
          var selValue = req.data.status || null;
@@ -291,14 +289,13 @@ Story.prototype.editableby_macro = function(param) {
    } else {
       switch (this.status) {
          case Story.PUBLIC:
-         res.write(gettext("Content managers of {0}", path.site.title));
+         res.write("Content managers of " + path.site.title);
          break;
          case Story.SHARED:
-         res.write(gettext("Contributors to {0}", path.site.title));
+         res.write("Contributors to " + path.site.title);
          break;
          case Story.OPEN:
-         res.write(gettext("Subscribers of and contributors to {0}", 
-               path.site.title));
+         res.write("Subscribers of and contributors to " + path.site.title);
          break;
       }
    }
@@ -312,7 +309,7 @@ Story.prototype.editlink_macro = function(param) {
       delete param.image;
       image && image.render_macro(param);
    } else {
-      res.write(param.text || gettext("Edit"));
+      res.write(param.text || "edit");
    }   
    return this.link_macro(param, "edit", res.pop());
 }
@@ -324,7 +321,7 @@ Story.prototype.deletelink_macro = function(param) {
       delete param.image;
       image && image.render_macro(param);
    } else {
-      res.write(param.text || gettext("Delete"));
+      res.write(param.text || "delete");
    }   
    return this.link_macro(param, "delete", res.pop());
 }
@@ -336,7 +333,7 @@ Story.prototype.viewlink_macro = function(param) {
       delete param.image;
       image && image.render_macro(param);
    } else {
-      res.write(param.text || gettext("View"));
+      res.write(param.text || "view");
    }   
    return this.link_macro(param, ".", res.pop());
 }
@@ -356,9 +353,9 @@ Story.prototype.onlinelink_macro = function(param) {
 
 Story.prototype.online_macro = function(param) {
    if (this.satus === Story.CLOSED) {
-      res.write(param.no || gettext("offline"));
+      res.write(param.no || "offline");
    } else if (this.status === Story.PUBLIC || this.status === Story.HIDDEN) {
-      res.write(param.yes || gettext("online"));
+      res.write(param.yes || "online");
    } return;
 }
 
@@ -398,11 +395,11 @@ Story.prototype.commentcounter_macro = function(param) {
       html.openTag("a", {href: this.href() + "#comments"});
    }
    if (commentCnt < 1) {
-      res.write(param.no || gettext("no comments"));
+      res.write(param.no || "no comments");
    } else if (commentCnt < 2) {
-      res.write(param.one || gettext("one comment"));
+      res.write(param.one || "one comment");
    } else {
-      res.write(commentCnt + (param.more || " " + gettext("comments")));
+      res.write(commentCnt + (param.more || " " + "comments"));
    }
    if (linkflag) {
       html.closeTag("a");

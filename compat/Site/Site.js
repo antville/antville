@@ -201,9 +201,9 @@ Site.prototype.online_macro = function(param) {
       //res.debug(param.name + ": " + param.value + "/" + param.selectedValue);
       return html.checkBox(param);
    } else if (online) {
-      res.write(param.yes || gettext("yes"));
+      res.write(param.yes || "yes");
    } else { 
-      res.write(param.no || gettext("no"));
+      res.write(param.no || "no");
    }
    return;
 }
@@ -219,7 +219,7 @@ Site.prototype.usermaycontrib_macro = function(param) {
       }
       return html.checkBox(param);
    } else {
-      res.write(this.mode === Site.OPEN ? gettext("yes") : gettext("no"));
+      res.write(this.mode === Site.OPEN ? "yes" : "no");
    }
    return;
 }
@@ -228,8 +228,7 @@ Site.prototype.hasdiscussions_macro = function(param) {
    if (param.as === "editor") {
       this.checkbox_macro(param, "commentMode");
    } else {
-      res.write(this.commentsMode === Comment.ONLINE ? 
-            gettext("yes") : gettext("no"));
+      res.write(this.commentsMode === Comment.ONLINE ? "yes" : "no");
    }
    return;
 }
@@ -238,8 +237,7 @@ Site.prototype.showarchive_macro = function(param) {
    if (param.as === "editor") {
       this.checkbox_macro(param, "archiveMode");
    } else {
-      res.write(this.archiveMode === Site.PUBLIC ? 
-            gettext("yes") : gettext("no"));
+      res.write(this.archiveMode === Site.PUBLIC ? "yes" : "no");
    }
    return;
 }
@@ -248,8 +246,7 @@ Site.prototype.enableping_macro = function(param) {
    if (param.as === "editor") {
       this.checkbox_macro(param, "callbackMode");
    } else {
-      res.write(this.callbackMode === Site.ENABLED ? 
-            gettext("yes") : gettext("no"));
+      res.write(this.callbackMode === Site.ENABLED ? "yes" : "no");
    }
    return;
 }

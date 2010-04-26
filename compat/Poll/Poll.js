@@ -44,11 +44,11 @@ Poll.prototype.choices_macro = function(param) {
 Poll.prototype.total_macro = function(param) {
    var n = this.votes.size();
    if (n == 0) {
-      n += " " + (param.no || gettext("votes"));
+      n += " " + (param.no || "votes");
    } else if (n == 1) {
-      n += " " + (param.one || gettext("vote"));
+      n += " " + (param.one || "vote");
    } else {
-      n += " " + (param.more || gettext("votes"));
+      n += " " + (param.more || "votes");
    }
    return n;
 }
@@ -79,11 +79,11 @@ Poll.prototype.results_macro = function(param2) {
          param.width = Math.round(param.percent * 2.5);
          param.graph = c.renderSkinAsString("graph", param);
          if (param.count == 1)
-            param.text = " " + (param2.one || gettext("vote"));
+            param.text = " " + (param2.one || "vote");
          else
-            param.text = " " + (param2.more || gettext("votes"));
+            param.text = " " + (param2.more || "votes");
       } else
-         param.text = " " + (param2.no || gettext("votes"));
+         param.text = " " + (param2.no || "votes");
       c.renderSkin("$Choice#result", param);
    }
    return;
@@ -98,7 +98,7 @@ Poll.prototype.deletelink_macro = function(param) {
 }
 
 Poll.prototype.viewlink_macro = function(param) {
-   return this.link_macro(param, ".", gettext("View"));
+   return this.link_macro(param, ".", "view");
 }
 
 Poll.prototype.closelink_macro = function(param) {

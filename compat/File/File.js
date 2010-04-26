@@ -51,7 +51,7 @@ File.prototype.filesize_macro = function(param) {
 }
 
 File.prototype.editlink_macro = function(param) {
-   return this.link_macro(param, "edit", param.text || gettext("edit"));
+   return this.link_macro(param, "edit", param.text || "edit");
 }
 
 File.prototype.deletelink_macro = function(param) {
@@ -60,14 +60,14 @@ File.prototype.deletelink_macro = function(param) {
    if (param.image && (image = this.site.images.get(param.image))) {
       image.render_macro(param);
    } else {
-      res.write(param.text || gettext("delete"));
+      res.write(param.text || "delete");
    }
    return this.link_macro(param, "delete", res.pop());
 }
 
 File.prototype.viewlink_macro = function(param) {
    param.title = encodeForm(this.description);
-   return this.link_macro(param, ".", param.text || gettext("view"))
+   return this.link_macro(param, ".", param.text || "view")
 }
 
 File.prototype.mimetype_macro = function(param) {
@@ -88,12 +88,12 @@ File.prototype.filetype_macro = function(param) {
 
 File.prototype.clicks_macro = function(param) {
    if (!this.requests) {
-      res.write(param.no || gettext("no downloads"));
+      res.write(param.no || "no downloads");
    } else if (this.requests < 2) {
-      res.write(param.one || gettext("one download"));
+      res.write(param.one || "one download");
    } else {
       res.write(param.more ? this.requests + " " + param.more : 
-            gettext("{0} downloads", this.requests));
+            this.requests + " downloads");
    }
    return;
 }

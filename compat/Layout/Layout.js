@@ -81,20 +81,20 @@ Layout.prototype.shareable_macro = function(param) {
          delete inputParam.checked;
       Html.checkBox(inputParam);
    } else if (this.shareable)
-      res.write(param.yes || gettext("yes"));
+      res.write(param.yes || "yes");
    else
-      res.write(param.no  || gettext("no"));
+      res.write(param.no  || "no");
    return;
 }
 
 Layout.prototype.testdrivelink_macro = function(param) {
-   return this.link_macro(param, "test", param.text || gettext("test"));
+   return this.link_macro(param, "test", param.text || "test");
 }
 
 Layout.prototype.deletelink_macro = function(param) {
-   return this.link_macro(param, "delete", param.text || gettext("delete"));
+   return this.link_macro(param, "delete", param.text || "delete");
 }
 
 Layout.prototype.activatelink_macro = function(param) {
-   return this.link_macro(param, "activate", param.text || gettext("activate"));
+   return this.link_macro(param, "activate", param.text || "activate");
 }
