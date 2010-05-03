@@ -43,7 +43,7 @@ REGEDIT4
 <div class="small">
    <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" 
    <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
-   <label for="includeSpam"><% gettext 'Include Referrer Spam' %></label>
+   <label for="includeSpam"><% gettext 'Display the referrers unfiltered' %></label>
 </div>
 <br />
 <table border="0" cellspacing="0" cellpadding="2">

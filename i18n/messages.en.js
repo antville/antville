@@ -167,7 +167,7 @@ global.messages.en = {
    "Import": "Import",
    "Import Layout": "Import Layout",
    "Import Site Data": "Import Site Data",
-   "Include Referrer Spam": "Include Referrer Spam",
+   "Display the referrers unfiltered": "Display the referrers unfiltered",
    "Interfaces": "Interfaces",
    "Interval": "Interval",
    "JavaScript": "JavaScript",

@@ -167,7 +167,7 @@ global.messages.de = {
    "Import": "Importieren",
    "Import Layout": "Layout importieren",
    "Import Site Data": "Site-Daten importieren",
-   "Include Referrer Spam": "Rückverweise ungefiltert anzeigen",
+   "Display the referrers unfiltered": "Rückverweise ungefiltert anzeigen",
    "Interfaces": "Schnittstellen",
    "Interval": "Pause",
    "JavaScript": "JavaScript",
