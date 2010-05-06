@@ -119,7 +119,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #export %>
 <p class="storyTitle"><% gettext "Export Site Data" %></p>
 <div class="ample">
-   <p><% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download file {0}." 
+   <p><% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download the file {0} or klick “Start” to create a new one." 
          <% file.skin File#main %> '<small>' 
          <% file.created | format short %> '</small>' %> %> else <% param.status %> %></p>
    <form action="" method="post">

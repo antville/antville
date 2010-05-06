@@ -545,8 +545,8 @@ msgstr "Herunterladen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:123
 #, java-format
-msgid "Download file {0}."
-msgstr "Download der Datei {0}."
+msgid "Download the file {0} or klick “Start” to create a new one."
+msgstr "Laden Sie die Datei {0} herunter oder klicken Sie »Start«, um eine neue zu erstellen."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:292
 msgid "Due to privacy reasons the display of e-mail addresses is disabled."
@@ -698,7 +698,7 @@ msgstr "Allgemein"
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:201
 #, java-format
 msgid "Good bye, {0}! Looking forward to seeing you again!"
-msgstr "Auf Wiedersehen, {0}! Schauen Sie bald wieder vorbei! "
+msgstr "Auf Wiedersehen, {0}! Schauen Sie bald wieder vorbei!"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:332
 msgid "Grace Period"
@@ -1839,8 +1839,8 @@ msgid "The site is currently {0}."
 msgstr "Die Website ist derzeit {0}."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:680
-msgid "The site is scheduled for export. Exported site data will be available for download from here within 24 hours."
-msgstr "Die Website ist für den Export eingeplant. Die exportierten Daten stehen innerhalb von 24 Stunden hier als Download zur Verfügung."
+msgid "A Blogger export file (.xml) will be created and available for download from here within 24 hours."
+msgstr "Eine Blogger Export-Datei (.xml) wird erstellt und hier nach spätestens 24 Stunden downloadbar sein."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:137
 #, java-format

@@ -677,7 +677,7 @@ Site.prototype.export_action = function() {
 
    var param = {
       status: (job && job.method === "export") ? 
-            gettext("The site is scheduled for export. Exported site data will be available for download from here within 24 hours.") :
+            gettext("A Blogger export file (.xml) will be created and available for download from here within 24 hours.") :
             null
    }
    res.handlers.file = File.getById(this.export_id) || {};

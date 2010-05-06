@@ -545,8 +545,8 @@ msgstr "Download"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:123
 #, java-format
-msgid "Download file {0}."
-msgstr "Download file {0}."
+msgid "Download the file {0} or klick “Start” to create a new one."
+msgstr "Download the file {0} or klick “Start” to create a new one."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:292
 msgid "Due to privacy reasons the display of e-mail addresses is disabled."
@@ -1839,8 +1839,8 @@ msgid "The site is currently {0}."
 msgstr "The site is currently {0}."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:680
-msgid "The site is scheduled for export. Exported site data will be available for download from here within 24 hours."
-msgstr "The site is scheduled for export. Exported site data will be available for download from here within 24 hours."
+msgid "A Blogger export file (.xml) will be created and available for download from here within 24 hours."
+msgstr "A Blogger export file (.xml) will be created and available for download from here within 24 hours."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:137
 #, java-format
