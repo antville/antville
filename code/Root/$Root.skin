@@ -296,6 +296,6 @@ div.skin div.title {
 <% #FIXME %>
 <div class="boxline"> </div>
 <div class="box">
-<% root.sitecounter no="no public sites" one="one public site" more=" public sites"%>... 
-<% root.link sites list %>
+<% root.link sites <% ngettext "{0} public site" "{0} public sites" 
+      <% root.sites.size %> %> %>
 </div>
