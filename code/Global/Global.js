@@ -164,7 +164,7 @@ function onStart() {
       return;
    }
    // This is necessary once to be sure that aspect-oriented code will be applied
-   HopObject.prototype.onCodeUpdate();
+   HopObject.prototype.onCodeUpdate && HopObject.prototype.onCodeUpdate();
    return;
 }
 
