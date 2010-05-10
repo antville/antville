@@ -14,6 +14,7 @@
 		<echo message="   pot        Extract gettext call strings into POT file" />
 		<echo message="   messages   Generate JavaScript message files" />
 		<echo message="   clean      Clean up build directory" />
+		<echo message="   patch      Apply patch file to Antville installation" />
 		<echo message="   usage      Show these build instructions (default)" />
 	</target>
 
@@ -62,9 +63,6 @@
 		<exec dir="${apps.dir}" executable="svn">
 			<arg line="export --ignore-externals ${antville.src} antville" />
 		</exec>
-		<copy todir="${antville.dir}/extra/postgre">
-			<fileset dir="${build.dir}/extra/antclick" excludes="db.properties" />
-		</copy>
 		<delete includeemptydirs="true">
 			<fileset dir="${antville.dir}" includes="build.xml build/** docs/**" />
 		</delete>
@@ -112,14 +110,14 @@
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib" />
 		<copy file="${extra.dir}/h2.jar" todir="${work.dir}/lib/ext" />
-      <copy file="${extra.dir}/h2.txt" todir="${work.dir}/licenses" />
+		<copy file="${extra.dir}/h2.txt" todir="${work.dir}/licenses" />
 		<copy todir="${build.dir}/work/db">
 			<fileset dir="${extra.dir}" includes="antville.h2.db" />
 		</copy>
 		<move file="${work.dir}/license.txt" tofile="${work.dir}/licenses/helma.txt" />
 		<move todir="${work.dir}/licenses">
 			<fileset dir="${antville.dir}/legal" includes="**" />
-      </move>
+		</move>
 
 		<delete includeemptydirs="true">
 			<fileset dir="${modules.dir}" includes="test/**" />
@@ -155,7 +153,8 @@
 	<target name="pot" depends="init">
 		<echo message="${helma.dir}" />
 		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
-			<arg value="antville.xgettext" />
+			<!-- Root.extractMessages is currently located in Global/i18n.js -->
+			<arg value="antville.extractMessages" />
 			<arg value="${extra.dir}/MessageParser.js" />
 			<arg value="${i18n.scan}" />
 			<arg value="${i18n.template}" />
@@ -200,6 +199,21 @@
 	<target name="clean" depends="init">
 		<delete dir="${work.dir}" />
 		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="patch" depends="init">
+		<input message="Please enter the patch ID: " addproperty="patch.id" />
+		<loadfile property="patch" srcFile="${basedir}/extra/updater/patch-${patch.id}.js" />
+		<echo message="${patch}" />
+		<input message="Apply the displayed patch? " validargs="y,n" addproperty="patch.confirm" />
+		<condition property="patch.abort">
+			<equals arg1="${patch.confirm}" arg2="n" casesensitive="false" trim="true" />
+		</condition>
+		<fail if="patch.abort">Build aborted by user.</fail>
+		<java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline" fork="true">
+			<arg value="antville.patch" />
+			<arg value="${patch}" />
+		</java>
 	</target>
 
 </project>

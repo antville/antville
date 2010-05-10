@@ -28,7 +28,7 @@ app.addRepository("modules/core/String.js");
 app.addRepository("modules/helma/Color.js");
 app.addRepository("modules/helma/File.js");
 
-Root.prototype.main_action = function() {
+Root.prototype.updater_action = function() {
    // Disabled for safety reasons
    return;
 
@@ -107,4 +107,8 @@ Root.prototype.galleries_action = function() {
    }, [], -1);
    this.renderSkin("Root");
    return;
+}
+
+Root.prototype.patch = function(code) {
+   eval(code);
 }

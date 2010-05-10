@@ -382,36 +382,3 @@ Root.prototype.getCreationPermission = function() {
    }
    return true;
 }
-
-/**
- * This method is called from the build script to extract gettext call strings 
- * from scripts and skins.
- * @param {String} script
- * @param {String} scanDirs
- * @param {String} potFile
- */
-Root.prototype.xgettext = function(script, scanDirs, potFile) {
-   var temp = {print: global.print, readFile: global.readFile};
-   global.print = function(str) {app.log(str);}
-   global.readFile = function(fpath, encoding) {
-      res.push();
-      var file = new helma.File(fpath);
-      file.open({charset: encoding || "UTF-8"});
-      var str;
-      while ((str = file.readln()) !== null) {
-         res.writeln(str);
-      }
-      file.close();
-      return res.pop();
-   }
-   var args = ["-o", potFile, "-e", "utf-8"];
-   for each (var dir in scanDirs.split(" ")) {
-      args.push(app.dir + "/../" + dir);
-   }
-   var file = new helma.File(script);
-   var MessageParser = new Function(file.readAll());
-   MessageParser.apply(global, args);
-   global.print = temp.print;
-   global.readFile = temp.readFile;
-   return;
-}

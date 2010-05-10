@@ -170,6 +170,11 @@ function onStart() {
 
 /**
  * 
+ */
+function onStop() { /* Currently empty, just to avoid annoying log message */ }
+
+/**
+ * 
  * @param {HopObject} ctor
  * @returns {Function} 
  */
