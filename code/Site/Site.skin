@@ -59,6 +59,8 @@ Disallow: /stories/top
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 <script type="text/javascript" src="<% site.href main.js %>"></script>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+<link rel="shortcut icon" type="image/x-icon" href="<% image /ant-icon.png url %>" /> 
+<link rel="icon" type="image/x-icon" href="<% image /ant-icon.png url %>" />
 <link rel="alternate" type="application/rss+xml" title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
 <link rel="alternate" type="application/rss+xml" title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
 <link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
