@@ -26,6 +26,9 @@
  * @fileOverview Defines the Membership prototype
  */
 
+markgettext("Membership");
+markgettext("membership");
+
 /**
  * 
  * @param {String} name
@@ -73,7 +76,7 @@ Membership.remove = function(options) {
    this.remove();
    if (!options.force) {
       this.notify(req.action, recipient,  
-            gettext("Notification of membership cancellation"));
+            gettext("[{0}] Notification of membership cancellation", root.title));
    }
    return;
 }
@@ -177,7 +180,7 @@ Membership.prototype.update = function(data) {
       this.role = data.role || Membership.SUBSCRIBER;
       this.touch();
       this.notify(req.action, this.creator.email, 
-            gettext("Notification of membership change"));
+            gettext("[{0}] Notification of membership change", root.title));
    }
    return;
 }
@@ -188,11 +191,12 @@ Membership.prototype.contact_action = function() {
          if (!req.postParams.text) {
             throw Error(gettext("Please enter the message text."));
          }
-         this.notify(req.action, this.creator.email, 
-               gettext('Message from user {0} of {1}', 
-               session.user.name, root.title));
+         this.notify(req.action, this.creator.email, session.user ?
+               gettext('[{0}] Message from user {1}', root.title, session.user.name) :
+               gettext('[{0}] Message from anonymous user', root.title));
          res.message = gettext("Your message was sent successfully.");
-         res.redirect(this._parent.href());
+         res.redirect(this._parent.getPermission() ? 
+               this._parent.href() : this.site.href());
       } catch(ex) {
          res.message = ex;
          app.log(ex);
@@ -257,7 +261,9 @@ Membership.prototype.notify = function(action, recipient, subject) {
       case "edit":
       case "register":
       res.handlers.sender = User.getMembership();
-      sendMail(recipient, subject, this.renderSkinAsString("$Membership#notify_" + action));
+      sendMail(recipient, subject, this.renderSkinAsString("$Membership#notify_" + action),
+            {footer: action !== "contact"});
+      break;
    }
    return;
 }

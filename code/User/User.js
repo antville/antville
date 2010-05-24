@@ -26,6 +26,9 @@
  * @fileOverview Defines the User prototype.
  */
 
+markgettext("User");
+markgettext("user");
+
 disableMacro(User, "hash");
 disableMacro(User, "salt");
 

@@ -259,8 +259,8 @@ HopObject.prototype.notify = function(action) {
    site.members.forEach(function() {
       var membership = res.handlers.membership = this;
       if (getPermission(root.notificationScope, site.notificationMode, site.status)) {
-         sendMail(membership.creator.email, gettext("Notification of changes at site {0}", 
-               site.title), self.renderSkinAsString("$HopObject#notify_" + action));
+         sendMail(membership.creator.email, gettext("[{0}] Notification of site changes", 
+               root.title), self.renderSkinAsString("$HopObject#notify_" + action));
       }
    });
    res.handlers.membership = currentMembership;

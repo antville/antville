@@ -26,6 +26,9 @@
  * @fileOverview Defines the Stories prototype
  */
 
+markgettext("Stories");
+markgettext("stories");
+
 /**
  * @name Stories
  * @constructor

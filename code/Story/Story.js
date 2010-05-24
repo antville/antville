@@ -26,6 +26,9 @@
  * @fileOverview Defindes the Story prototype.
  */
 
+markgettext("Story");
+markgettext("story");
+
 /**
  * @function
  * @returns {String[]}

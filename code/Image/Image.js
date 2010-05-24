@@ -26,6 +26,9 @@
  * @fileOverview Defines the Image prototype.
  */
 
+markgettext("Image");
+markgettext("image");
+
 this.handleMetadata("contentLength");
 this.handleMetadata("contentType");
 this.handleMetadata("description");

@@ -188,8 +188,8 @@ Admin.purgeSites = function() {
                this.members.owners.forEach(function() {
                   res.handlers.membership = this;
                   sendMail(this.creator.email,
-                        gettext("Notification of changes at site {0}", site.title),
-                        site.renderSkinAsString("$Site#notify_deletion"));
+                        gettext("[{0}] Warning: Site will be deleted"),
+                        site.renderSkinAsString("$Site#notify_delete"));
                });
                this.notified = now;
             } else if (now - this.notified > gracePeriod) {
@@ -214,8 +214,8 @@ Admin.purgeSites = function() {
                this.members.owners.forEach(function() {
                   res.handlers.membership = this;
                   sendMail(this.creator.email,
-                        gettext("Notification of changes at site {0}", site.title),
-                        site.renderSkinAsString("$Site#notify_blocking"));
+                        gettext("[{0}] Warning: Site will be blocked"),
+                        site.renderSkinAsString("$Site#notify_block"));
                });
                this.notified = now;
             } else if (now - this.notified > gracePeriod) {

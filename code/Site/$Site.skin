@@ -240,28 +240,22 @@ line to be applied on every URL in the referrer and backlink lists."
 </table>
 </form>
 
-<% #notify_blocking %>
+<% #notify_block %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that in {0} the site {1} will be 
-      blocked because it is being restricted for too long.' <% ngettext 
-      '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> <% site.name %> %>
+<% gettext 'The site {0} at {1} will be blocked in {2} because it is being 
+      restricted for too long.' <% site.title %> <%site.href %> 
+      <% ngettext '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
 
---
-[1] <% this.href %> 
-
-<% #notify_deletion %>
+<% #notify_delete %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that in {0} the site {1} will be 
-      deleted because it has been considered as abandoned.' <% ngettext 
-      '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> <% site.name %> %>
+<% gettext 'The site {0} at {1} will be deleted in {2} because it has been 
+      considered as abandoned.' <% site.title %> <% site.href %> 
+      <% ngettext '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
-
---
-[1] <% this.href %> 

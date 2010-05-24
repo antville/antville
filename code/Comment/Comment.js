@@ -26,6 +26,9 @@
  * @fileOverview Defines the Comment prototype.
  */
 
+markgettext("Comment");
+markgettext("comment");
+
 /**
  * @see defineConstants
  */

@@ -26,6 +26,9 @@
  * @fileOverview Defines the Choice prototype.
  */
 
+markgettext("Choice");
+markgettext("choice");
+
 /**
  * 
  */

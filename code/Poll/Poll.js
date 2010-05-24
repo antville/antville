@@ -26,6 +26,9 @@
  * @fileOverview Defines the Poll prototype
  */
 
+markgettext("Poll");
+markgettext("poll");
+
 /**
  * @function
  * @param {String} ctor

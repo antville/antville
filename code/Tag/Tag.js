@@ -26,6 +26,9 @@
  * @fileOverview Defines the Tag prototype.
  */
 
+markgettext("Tag");
+markgettext("tag");
+
 /**
  * @constant
  */

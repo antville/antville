@@ -26,6 +26,9 @@
  * @fileOverview Defines the Comment prototype.
  */
 
+markgettext("File");
+markgettext("file");
+
 this.handleMetadata("url");
 this.handleMetadata("description");
 this.handleMetadata("contentType");

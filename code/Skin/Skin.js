@@ -25,6 +25,9 @@
  * @fileOverview Defines the Skin prototype
  */
 
+markgettext("Skin");
+markgettext("skin");
+
 /**
  * 
  * @param {String} group

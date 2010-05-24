@@ -103,14 +103,11 @@ appear as link next to your posted items." %></span></td>
 </table>
 </form>
 
-<% 
-////////////////////// Notification skins 
-%>
-
-<% #reset %>
+<% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>
 
-<% gettext "You (or someone pretending to be you) requested to reset the password of your account for the site {0} [1]." <% site.title %> %>
+<% gettext "You (or someone pretending to be you) requested to reset your 
+      account password for the site {0} at {1}." <% site.title %> <% site.href %> %>
 
 <% gettext "To confirm the request please click the link below." %>
 <% gettext "You will then be asked to change your password." %>
@@ -119,6 +116,4 @@ appear as link next to your posted items." %></span></td>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
-
---
-[1] <% site.href %>
+<% // This comment simply adds a linebreak to format the message nicely %>

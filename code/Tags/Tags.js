@@ -26,6 +26,9 @@
  * @fileOverview Defines the Tags prototype.
  */
 
+markgettext("Tags");
+markgettext("tags");
+
 /** @constant */
 Tags.ALL = "all";
 /** @constant */

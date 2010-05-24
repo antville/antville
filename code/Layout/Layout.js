@@ -26,6 +26,9 @@
  * @fileOverview Defines the Layout prototype
  */
 
+markgettext("Layout");
+markgettext("layout");
+
 /** @constant */
 Layout.VALUES = [
    "background color",

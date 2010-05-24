@@ -26,6 +26,9 @@
  * @fileOverview Defines the LogEntry prototype.
  */
 
+markgettext("Log Entry");
+markgettext("log entry");
+
 /**
  * @name LogEntry
  * @constructor

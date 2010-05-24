@@ -26,6 +26,9 @@
  * @fileOverview Defines the Images prototype
  */
 
+markgettext("Images");
+markgettext("images");
+
 /**
  * @name Images
  * @constructor

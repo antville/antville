@@ -26,6 +26,9 @@
  * @fileOverview Defines the Skins prototype.
  */
 
+markgettext("Skins");
+markgettext("skins");
+
 /**
  * @name Skins
  * @constructor

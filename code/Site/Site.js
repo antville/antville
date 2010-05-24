@@ -26,6 +26,9 @@
  * @fileOverview Defines the Site prototype.
  */
 
+markgettext("Site");
+markgettext("site");
+
 this.handleMetadata("archiveMode");
 this.handleMetadata("callbackMode");
 this.handleMetadata("callbackUrl");

@@ -774,7 +774,8 @@ function injectXslDeclaration(xml) {
  * @param {String} body The body text of the e-mail
  * @returns {Number} The status code of the underlying helma.Mail instance
  */
-function sendMail(recipient, subject, body) {
+function sendMail(recipient, subject, body, options) {
+   options || (options = {});
    if (!recipient || !body) {
       throw Error("Insufficient arguments in method sendMail()");
    }
@@ -790,7 +791,9 @@ function sendMail(recipient, subject, body) {
    }
    mail.setSubject(subject);
    mail.setText(body);
-   mail.addText("\n\n" + renderSkinAsString("$Global#mailFooter"));
+   if (options.footer !== false) { // It is the exception to have no footer
+      mail.addText(renderSkinAsString("$Global#mailFooter"));
+   }
    mail.queue();
    return mail.status;
 }

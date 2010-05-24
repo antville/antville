@@ -26,6 +26,9 @@
  * @fileOverview Defines the Members prototype.
  */
 
+markgettext("Members");
+markgettext("members");
+
 /**
  * @name Members
  * @constructor
@@ -99,7 +102,7 @@ Members.prototype.register_action = function() {
          var membership = new Membership(user, Membership.SUBSCRIBER);
          this.add(membership);
          membership.notify(req.action, user.email, 
-               gettext('Welcome to {0}!', title));
+               gettext('[{0}] Welcome to {1}!', root.title, title));
          res.message = gettext('Welcome to “{0}”, {1}. Have fun!',
                title, user.name);
          res.redirect(User.getLocation() || this._parent.href());
@@ -128,8 +131,8 @@ Members.prototype.reset_action = function() {
          }
          var token = User.getSalt();
          user.metadata.set("resetToken", token);
-         sendMail(user.email, gettext("Confirmation for password reset at {0}", 
-               this._parent.title), user.renderSkinAsString("$User#reset", {
+         sendMail(user.email, gettext("[{0}] Password reset confirmation", 
+               root.title), user.renderSkinAsString("$User#notify_reset", {
                   href: this.href("reset"),
                   token: token
                }));
@@ -339,7 +342,7 @@ Members.prototype.add_action = function() {
          res.handlers.sender = User.getMembership();
          var membership = this.addMembership(req.postParams);
          membership.notify(req.action, membership.creator.email,  
-               gettext('Notification of membership change', root.title));
+               gettext('[{0}] Notification of membership change', root.title));
          res.message = gettext("Successfully added {0} to the list of members.", 
                req.postParams.name);
          res.redirect(membership.href("edit"));

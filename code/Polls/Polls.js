@@ -26,6 +26,9 @@
  * @fileOverview Defines the Polls prototype
  */
 
+markgettext("Polls");
+markgettext("polls");
+
 /**
  * @name Polls
  * @constructor

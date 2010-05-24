@@ -26,6 +26,9 @@
  * @fileOverview Defines the Vote prototype.
  */
 
+markgettext("Vote");
+markgettext("vote");
+
 /**
  * @name Vote
  * @constructor

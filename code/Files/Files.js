@@ -26,6 +26,9 @@
  * @fileOverview Defines the Comment prototype.
  */
 
+markgettext("Files");
+markgettext("files");
+
 /**
  * @name Files
  * @constructor
