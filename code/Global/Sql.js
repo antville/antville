@@ -107,6 +107,9 @@ var Sql = function(options) {
    this.execute = function(sql) {
       sql = resolve(arguments);
       log.info(sql);
+      if (options.test) {
+         return app.log(sql);
+      }
       var error;
       var result = db.executeCommand(sql);
       if (error = db.getLastError()) {
@@ -132,7 +135,9 @@ var Sql = function(options) {
          do {
             var sql = new SqlData(rows);
             sql.next();
-            callback.call(sql.values, rows);
+            if (!options.test) {
+               callback.call(sql.values, rows);
+            }
          } while (record = rows.next());
          rows.release();
       }
