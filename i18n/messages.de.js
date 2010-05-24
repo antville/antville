@@ -402,7 +402,7 @@ global.messages.de = {
    "The story was successfully updated.": "Der Beitrag wurde erfolgreich aktualisiert.",
    "The title will appear in the header of every page of your site. You can change it anytime you want.": "Der Titel erscheint im Kopf jeder Seite. Sie können den Titel jederzeit ändern.",
    "The user {0} has added your account to the list of members of the site {1} at {2}.": "Benutzer {0} hat Ihr Konto zur Mitgliederliste der Website {1} unter {2} hinzugefügt.",
-   "The user {0} has modified your membership of the site {1} at {2}.": "Benutzer {0} hat Ihre Mitgliedschaft bei der Website {1} unter {2}geändert.",
+   "The user {0} has modified your membership of the site {1} at {2}.": "Benutzer {0} hat Ihre Mitgliedschaft bei der Website {1} unter {2} geändert.",
    "The {0} macro is missing. It is essential for accessing the site and must be present in this skin.": "Das {0}-Makro fehlt. Es ist erforderlich, um die Website korrekt darzustellen und muss in diesem Skin enthalten sein.",
    "There already is a site with this name.": "Es gibt bereits eine Website mit diesem Namen.",
    "There is already another job queued for this site: {0}": "Ein anderer Prozess ist für diese Website bereits gereiht: {0}",

@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2010-05-24 15:18+0200\n"
-"PO-Revision-Date: 2010-05-24 15:19+0100\n"
+"PO-Revision-Date: 2010-05-24 15:44+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1896,7 +1896,7 @@ msgstr "Benutzer {0} hat Ihr Konto zur Mitgliederliste der Website {1} unter {2}
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:146
 #, java-format
 msgid "The user {0} has modified your membership of the site {1} at {2}."
-msgstr "Benutzer {0} hat Ihre Mitgliedschaft bei der Website {1} unter {2}geändert."
+msgstr "Benutzer {0} hat Ihre Mitgliedschaft bei der Website {1} unter {2} geändert."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:178
 #, java-format
