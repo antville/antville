@@ -3,7 +3,7 @@ build/extra/MessageParser.js svneol=native#text/plain
 build/extra/antclick/Archive/Archive.properties svneol=native#text/plain
 build/extra/antclick/Global/Sql.js svneol=native#text/plain
 build/extra/antville.h2.db -text
-build/extra/h2.jar -text svneol=unset#application/x-compressed
+build/extra/h2-1.2.136.jar -text svneol=unset#application/x-compressed
 build/extra/h2.txt svneol=native#text/plain
 build/extra/helma.jar -text
 build/extra/jsdoc-toolkit/README.txt svneol=native#text/plain

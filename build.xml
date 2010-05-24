@@ -109,7 +109,7 @@
 			<fileset dir="${extra.dir}" includes="antclick/**" />
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib" />
-		<copy file="${extra.dir}/h2.jar" todir="${work.dir}/lib/ext" />
+		<copy file="${extra.dir}/h2-1.2.136.jar" todir="${work.dir}/lib/ext" />
 		<copy file="${extra.dir}/h2.txt" todir="${work.dir}/licenses" />
 		<copy todir="${build.dir}/work/db">
 			<fileset dir="${extra.dir}" includes="antville.h2.db" />
