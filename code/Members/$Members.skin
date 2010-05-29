@@ -1,9 +1,9 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <div class="ample">
-   <% members.link add <% gettext "Add Member" %> prefix="... " %>
+   <% members.link add <% gettext "Add Member" %> %>
 </div>
-... <% members.link main <% gettext All %> %>
+<% members.link main <% gettext All %> %>
 <% members.link owners <% gettext Owners %> prefix="| " %>
 <% members.link managers <% gettext Managers %> prefix="| " %> 
 <% members.link contributors <% gettext Contributors %> prefix="| " %>
@@ -13,9 +13,10 @@
 <% response.pager %>
 
 <% #login %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <script type="text/javascript">
 $(function() {
+   $(".row.activation").css("display", "none");
    $("form#login").submit(function() {
       var name = $("#name").val();
       $.ajax({
@@ -38,49 +39,41 @@ $(function() {
 </script>
 <form id="login" method="post" action="<% response.action %>">
 <input type="hidden" name="digest" id="digest" />
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext "Activation Code" suffix=":" %></td>
-<td><input type="text" name="activation" id="activation" 
-      value="<% request.activation encoding="form" %>" /></td>
-<td colspan="2"></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Username" suffix=":" %></td>
-<td><input type="text" name="name" id="name" tabindex="1" size="20" 
-      value="<% request.name encoding="form" %>" /></td>
-<td rowspan="4"> </td>
-<td class="small"><% members.link register <% gettext 
-      "Not registered yet\?" %> %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Password suffix=: %></td>
-<td><input type="password" name="password" id="password" tabindex="2" size="20"/></td>
-<td class="small"><% members.link reset <% gettext 
-      "Password forgotten\?" %> %></td>
-</tr>
-<tr>
-<td> </td>
-<td colspan="2" class="small"><input type="checkbox" id="remember" 
-      name="remember" tabindex="3" <% if <% request.remember %> is "on" then 
-      'checked="checked"' %> />
-   <label for="remember"><% gettext "Remember Login" %></label></td>
-</tr>
-<tr>
-<td> </td>
-<td colspan="2"><br />
-   <button type="submit" id="submit" name="login" value="1" 
-         tabindex="4"><% gettext Login %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+<div class="form">
+    <div class="row activation">
+        <label for="activation"><% gettext "Activation Code" suffix=":" %></label>
+        <input type="text" name="activation" id="activation" value="<% request.activation encoding="form" %>" />
+    </div>
+
+    <div class="row">
+        <label for="name"><% gettext "Username" suffix=":" %></label>
+        <input type="text" name="name" id="name" tabindex="1" size="20" value="<% request.name encoding="form" %>" />
+        <small><% members.link register <% gettext "Not registered yet\?" %> %></small>
+    </div>
+
+    <div class="row">
+        <label for="password"><% gettext Password suffix=":" %></label>
+        <input type="password" name="password" id="password" tabindex="2" size="20"/>
+        <small><% members.link reset <% gettext "Password forgotten\?" %> %></small>
+    </div>
+
+    <div class="row">
+        <input type="checkbox" id="remember" name="remember" tabindex="3" <% if <% request.remember %> is "on" then 'checked="checked"' %> />
+        <label for="remember"><% gettext "Remember Login" %></label>
+    </div>
+
+    <div class="row">
+        <button type="submit" id="submit" name="login" value="1" tabindex="4"><% gettext Login %></button>
+        <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small> 
+    </div>
+</div>
 </form>
 
 <% #register %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <script type="text/javascript">
 $(function() {
+   $(".row.activation").css("display", "none");
    $("form#register").submit(function() {
       var token = "<% session.token %>";
       var password = $("#password").val();
@@ -102,106 +95,111 @@ $(function() {
 </script>
 <form id="register" method="post" action="<% response.action %>">
 <input type="hidden" name="hash" id="hash" />
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext "Activation Code" suffix=":" %></td>
-<td><input type="text" name="activation" id="activation" 
-      value="<% request.activation encoding="form" %>" /></td>
-</tr>
-<tr>
-<td class="small"><% gettext Username suffix=: %></td>
-<td><input type="text" name="name" size="30"
-      value="<% request.name encoding="form" %>" /></td>
-</tr>
-<tr>
-<td class="small"><% gettext e-mail suffix=: %></td>
-<td><input type="text" name="email" size="30"
-      value="<% request.email encoding="form" %>" /></td>
-</tr>
-<tr>
-<td class="small"><% gettext Password suffix=: %></td>
-<td><input type="password" name="password" id="password" size="30" /></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Confirm Password" suffix=: %></td>
-<td><input type="password" name="passwordConfirm" id="passwordConfirm" size="30"/></td>
-</tr>
-<tr>
-<td></td>
-<td><br />
-<button type="submit" id="submit" name="register" 
-value="register"><% gettext Register %></button>
-<a href="" class="cancel"><% gettext Cancel %></a></td>
-</tr>
-</table>
+
+<div class="form">
+    <div class="row activation">
+        <label for="activation"><% gettext "Activation Code" suffix=":" %></label>
+        <input type="text" name="activation" id="activation" value="<% request.activation encoding="form" %>" />
+    </div>
+
+    <div class="row">
+        <label for="name"><% gettext "Username" suffix=":" %></label>
+        <input type="text" name="name" id="name" size="30" value="<% request.name encoding="form" %>" />
+    </div>
+
+    <div class="row">
+        <label for="email"><% gettext "E-mail" suffix=":" %></label>
+        <input type="text" name="email" size="30" value="<% request.email encoding="form" %>" />
+    </div>
+
+    <div class="row">
+        <label for="password"><% gettext Password suffix=":" %></label>
+        <input type="password" name="password" id="password" size="30"/>
+    </div>
+
+    <div class="row">
+        <label for="passwordConfirm"><% gettext "Confirm password" suffix=":" %></label>
+        <input type="password" name="passwordConfirm" id="passwordConfirm" size="30"/>
+    </div>
+
+    <div class="row">
+        <button type="submit" id="submit" name="register" value="1"><% gettext Register %></button>
+        <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
+    </div>
+</div>
 </form>
 
 <% #reset %>
-<p class="storyTitle"><% response.title %></p>
-<p class="small"><% gettext "Enter your username and the e-mail address you 
-have used when you registered. You will then receive a confirmation e-mail 
-containing further instructions." %></p> 
+<h1 class="storyTitle"><% response.title %></h1>
+<p><% gettext "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions." %></p> 
+
 <form id="login" method="post" action="<% response.action %>">
-<div class="small"><% gettext Username suffix=: %></div>
-<div><input type="text" name="name" id="name" size="30" tabindex="1" 
-value="<% request.name encoding="form" %>" /></div>
-<div class="small"><% gettext e-mail suffix=: %></div>
-<div><input type="text" name="email" id="email" size="30" tabindex="2" 
-value="<% request.email encoding="form" %>"/></div>
-<br />
-<button type="submit" id="submit" name="reset" value="1" 
-tabindex="4"><% gettext "Send Request" %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
+<div class="form">
+    <div class="row">
+        <label for="name"><% gettext Username suffix=: %></label>
+        <input type="text" name="name" id="name" size="30" value="<% request.name encoding="form" %>" />
+    </div>
+
+    <div class="row">
+        <label for="email"><% gettext "E-mail" suffix=: %></label>
+        <input type="text" name="email" id="email" size="30" value="<% request.email encoding="form" %>"/>
+    </div>
+
+    <div class="row">
+        <button type="submit" id="submit" name="reset" value="1"><% gettext "Request password" %></button>
+        <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
+    </div>
+</div>
 </form>
 
 <% #password %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <form id="login" method="post" action="<% response.action %>">
-<div class="small"><% gettext Password suffix=: %></div>
-<div><input type="password" name="password" id="password" size="15" tabindex="1" /></div>
-<div class="small"><% gettext "Confirm Password" suffix=: %></div>
-<div><input type="password" name="passwordConfirm" id="passwordConfirm" 
-size="15" tabindex="2" /></div>
-<input type="hidden" name="user" id="user" value="<% request.user %>" />
-<input type="hidden" name="token" id="token" value="<% request.token %>" />
-<br />
-<button type="submit" id="submit" name="save" value="1" 
-tabindex="4"><% gettext Save %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
+<div class="form">
+    <div class="row">
+        <label for="password"><% gettext "Password" suffix=":" %></label>
+        <input type="password" name="password" id="password" size="20" />
+    </div>
+
+    <div class="row">
+        <label for="passwordConfirm"><% gettext "Confirm Password" suffix=":" %></label>
+        <input type="password" name="passwordConfirm" id="passwordConfirm" size="20" />
+    </div>
+
+    <input type="hidden" name="user" id="user" value="<% request.user %>" />
+    <input type="hidden" name="token" id="token" value="<% request.token %>" />
+
+    <div class="row">
+        <button type="submit" id="save" name="save" value="1"><% gettext "Save" %></button>
+        <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
+    </div>
+</div>
 </form>
 
 <% #add %>
-<p class="storyTitle"><% response.title %></p>
-<div><% gettext 'Enter a search term to display a list of matching users.' %></div>
-<div class="small"><% gettext 'You can use the asterisk * as wildcard.' %></div>
-<br />
+<h1 class="storyTitle"><% response.title %></h1>
+<p><% gettext 'Enter a search term to display a list of matching users.' %></p>
+<p><small><% gettext 'You can use the asterisk * as wildcard.' %></small></p>
+
 <form method="post" action="<% response.action %>">
-<input type="text" name="term" id="term" 
-value="<% request.term encoding="form" %>" />
+<label for="term" class="hidden"><% gettext "Search term" suffix=":" %></label>
+<input type="text" name="term" id="term" value="<% request.term encoding="form" %>" />
 <button type="submit" name="search" value="1"><% gettext Search %></button>
-<a href="<% this.href %>"><% gettext Cancel %></a>
+<small><a href="<% this.href %>" class="cancel"><% gettext Cancel %></a></small>
 </form>
 <% response.result %>
 
 <% #results %>
-<br />
 <form method="post" action="<% response.action %>">
-<p class="small">
-   <% gettext "Select a user from the list below and click the “Add Member” button." %>
-</p>
+<p><small><% gettext "Select a user from the list below and click the “Add Member” button." %></small></p>
+
 <% param.result %>
-<br />
-<button type="submit" id="add" name="add" value="1">
-   <% gettext "Add Member" %>
-</button>
+
+<button type="submit" id="add" name="add" value="1"><% gettext "Add Member" %></button>
 </form>
 
 <% #result %>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td valign="top">
-   <input type="radio" name="name" id="<% param.name %>" value="<% param.name %>" />
-</td>
-<td><label for="<% param.name %>"><% param.name %></label></td>
-</tr>
-</table>
+<p>
+    <input type="radio" name="name" id="<% param.name %>" value="<% param.name %>" />
+    <label for="<% param.name %>"><% param.name %></label>
+</p>

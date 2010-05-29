@@ -1,56 +1,45 @@
 <% #edit %>
-<p class="storyTitle"><% response.title %></p>
-<p class="small">
+<h1 class="storyTitle"><% response.title %></h1>
+<p>
    <% gettext 'To modify a membership select the desired role from the 
          drop-down menu and click the “Save” button.' %>
    <% gettext 'An e-mail will be sent to notify the user of the update.' %>
 </p>
 <form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small" nowrap="nowrap"><% gettext User suffix=: %></td>
-<td nowrap="nowrap"><% membership.name %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext Role suffix=: %></td>
-<td nowrap="nowrap"><% membership.select role %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"> </td>
-<td nowrap="nowrap"><br />
-<button type="submit" name="save" value="1">
-   <% gettext Save %>
-</button>
-<a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+<div class="form">
+   <div class="row">
+      <span class="col w100"><% gettext "User" suffix=":" %></span>
+      <% membership.name %>
+   </div>
+
+   <div class="row">
+      <span class="col w100"><% gettext "Role" suffix=":" %></span>
+      <% membership.select role %>
+   </div>
+
+   <div class="row">
+       <button type="submit" id="submit" name="save" value="1"><% gettext "Save" %></button>
+       <small><a href="." class="cancel"><% gettext Cancel %></a></small>
+   </div>
+</div>
 </form>
 
 <% #member %>
-<div class="listSeparator"> </div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
-   <% membership.role %></div>
-</td>
-</tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% membership.name %></div>
-   <div class="ample"><span class="small"><% membership.created short
-   prefix=<% gettext "Member since" suffix=" " %>  %></span></div>
-   <div><% membership.user.url | link %></div>
-</td>
-<td width="10"> </td>
-<td align="right" class="small">
-   <% membership.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link contact <% gettext Contact %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-</table>
+<hr class="listSeparator" />
+<div class="listNavigationItem">
+   <div class="details">
+      <h2><% membership.name %></h2>
+      <p><em><% membership.role %></em></p>
+      <p><% membership.created short prefix=<% gettext "Member since" suffix=" " %>  %></p>
+      <p><% membership.user.url | link %></p>
+   </div>
+
+   <ul>
+   <% membership.link edit <% gettext Edit %> prefix='<li>' suffix="</li>" %>
+   <% membership.link contact <% gettext Contact %> prefix='<li>' suffix="</li>" %>
+   <% membership.link delete <% gettext Delete %> prefix='<li>' suffix="</li>" %>
+   </ul>
+</div>
 
 <% #subscription %>
 <div class="listSeparator"> </div>
@@ -70,8 +59,8 @@
 </td>
 <td width="10"> </td>
 <td align="right" class="small">
-   <% subscription.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% subscription.link unsubscribe <% gettext Unsubscribe %> prefix='<div class="nowrap">... ' suffix="</div>" %>
+   <% subscription.link main <% gettext View context=verb %> prefix='<div class="nowrap">' suffix="</div>" %>
+   <% subscription.link unsubscribe <% gettext Unsubscribe %> prefix='<div class="nowrap">' suffix="</div>" %>
 </td>
 </tr>
 </table>

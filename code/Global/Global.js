@@ -743,7 +743,14 @@ function formatDate(date, pattern) {
       format = global[pattern.toUpperCase() + "DATEFORMAT"] || pattern;
    }
    try {
-      return date.format(format, site.getLocale(), site.getTimeZone());
+      if (format !== "iso8601w3c") {
+         return date.format(format, site.getLocale(), site.getTimeZone());
+      }
+
+      var str = date.format("yyyy-MM-dd'T'HH:mm:ssZ", site.getLocale(), site.getTimeZone());
+       if (str.length == 24) {
+           return [str.substring(0, 19), str.substring(19,22), ":", str.substring(22)].join('');
+       }
    } catch (ex) {
       return "[Macro error: Invalid date format]";
    }

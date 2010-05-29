@@ -786,7 +786,7 @@ Site.prototype.stories_macro = function() {
 Site.prototype.calendar_macro = function(param) {
    if (this.archiveMode !== Site.PUBLIC) {
       return;
-   }
+   } 
    var calendar = new jala.Date.Calendar(this.archive);
    //calendar.setAccessNameFormat("yyyy/MM/dd");
    calendar.setHrefFormat("/yyyy/MM/dd/");

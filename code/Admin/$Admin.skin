@@ -6,10 +6,10 @@
 <% #navigation %>
 <div class="boxheader"><% gettext Administration %></div>
 <div class="box">
-<% admin.link main <% gettext Log %> prefix="... " suffix="<br />" %>
-<% admin.link sites <% gettext Sites %> prefix="... " suffix="<br />" %>
-<% admin.link users <% gettext Users %> prefix="... " suffix="<br />" %>
-<% admin.link setup <% gettext Setup %> prefix="... " suffix="<br />" %>
+<% admin.link main <% gettext Log %> suffix="<br />" %>
+<% admin.link sites <% gettext Sites %> suffix="<br />" %>
+<% admin.link users <% gettext Users %> suffix="<br />" %>
+<% admin.link setup <% gettext Setup %> suffix="<br />" %>
 </div>
 
 <% #welcome %>
@@ -213,7 +213,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
    </div>
 </td>
 <td class="small" valign="top" align="right">
-   <% admin.link edit <% gettext Edit %> <% item.id %> prefix="... " %>
+   <% admin.link edit <% gettext Edit %> <% item.id %> %>
 </td>
 </tr>
 </table>

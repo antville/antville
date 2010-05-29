@@ -1,13 +1,15 @@
 <% #main %>
+<article>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 <p class="small">
-   <% story.link comment#form <% gettext Comment context=verb %> prefix="... " %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
+   <% story.link comment#form <% gettext Comment context=verb %> %>
+   <% story.link edit <% gettext Edit %> %>
 </p>
 <a name="comments" id="comments"></a>
 <p><% story.comments %></p>
 <p><% story.referrers %></p>
+</article>
 
 <% #edit %>
 <p class="storyTitle"><% response.title %></p>
@@ -49,25 +51,22 @@
 </form>
 
 <% #date %>
-<div class="dayHeader"><% story.created "EEEE, d. MMMM yyyy" %></div>
-
-<% #content %>
-<div class="storyTitle">
-   <% story.title %>
-</div>
 <div class="storyDate">
    <% story.creator link suffix=, %>
-   <% story.created HH:mm suffix="h" %>
+   <time datetime="<% story.created "iso8601w3c"  %>"><% story.created "EEEE, d. MMMM yyyy HH:mm" %></time>
 </div>
+
+<% #content %>
+<h1><% story.title %></h1>
 <div><% story.text | story.format %></div>
 
 <% #preview %>
 <% story.skin Story#content %>
 <p class="small">
-   <% story.link main <% gettext Link %> prefix="... " %>
+   <% story.link main <% gettext Link %> %>
    <% story.comments link prefix="(" suffix=")" %>
-   <% story.link comment#form <% gettext Comment context=verb %> prefix=" ... " %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
+   <% story.link comment#form <% gettext Comment context=verb %> %>
+   <% story.link edit <% gettext Edit %> %>
 </p>
 <br />
 
@@ -76,7 +75,7 @@
 <% story.text | clip %>
 <span class="small">
    <% story.link main <% gettext "Read more" %> prefix=[ suffix=] %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
+   <% story.link edit <% gettext Edit %> %>
 </span><br />
 
 <% #comment %>

@@ -5,31 +5,31 @@
 
 <% #navigation %>
 <div class="navigation">
-<div><% site.link main <% gettext Home %> prefix="... " %></div>
-<div><% site.tags.link main <% gettext Tags %> prefix="... " %></div>
-<div><% site.galleries.link main <% gettext Galleries %> prefix="... " %></div>
+<div><% site.link main <% gettext Home %> %></div>
+<div><% site.tags.link main <% gettext Tags %> %></div>
+<div><% site.galleries.link main <% gettext Galleries %> %></div>
 </div>
 <p class="navigation">
-<div><% site.link health <% gettext Health %> prefix="... " %></div>
-<div><% site.api.link main <% gettext Interfaces %> prefix="... " %></div>
+<div><% site.link health <% gettext Health %> %></div>
+<div><% site.api.link main <% gettext Interfaces %> %></div>
 <div><% link http://code.google.com/p/antville <% gettext Development %> 
-      prefix="... " %></div>
+      %></div>
 </p>
 <p class="navigation">
-<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
-<div><% site.stories.link main <% gettext Stories %> prefix="... " %></div>
-<div><% site.images.link main <% gettext Images %> prefix="... " %></div>
-<div><% site.files.link main <% gettext Files %> prefix="... " %></div>
-<div><% site.polls.link main <% gettext Polls %> prefix="... " %></div>
-<div><% site.members.link main <% gettext Members %> prefix="... " %></div>
+<div><% site.stories.link create <% gettext "Add Story" %> %></div>
+<div><% site.stories.link main <% gettext Stories %> %></div>
+<div><% site.images.link main <% gettext Images %> %></div>
+<div><% site.files.link main <% gettext Files %> %></div>
+<div><% site.polls.link main <% gettext Polls %> %></div>
+<div><% site.members.link main <% gettext Members %> %></div>
 </p>
 <p class="navigation">
-<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
-<div><% site.layout.link main <% gettext Layout %> prefix="... " %></div>
-<div><% site.link referrers <% gettext Referrers %> prefix="... " %></div>
-<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
+<div><% site.link edit <% gettext Preferences %> %></div>
+<div><% site.layout.link main <% gettext Layout %> %></div>
+<div><% site.link referrers <% gettext Referrers %> %></div>
+<div><% site.stories.link top <% gettext "Top Stories" %> %></div>
 </p>
 <p class="navigation">
-<div><% root.title prefix="... " | root.link %></div>
+<div><% root.title | root.link %></div>
 </p>
 

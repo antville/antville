@@ -21,21 +21,17 @@ else <% if <% site.mode %> is restricted then "" else
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
-<table border="0" cellpadding="1" cellspacing="0">
-<colgroup>
-   <col width="150">
-   <col width="*">
-</colgroup>
-<% user.list sites %>
-</table>
+<div class="form">
+    <% user.list sites %>
+</div>
 
 <% #subscriptions %>
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">...
-<% members.link updated <% gettext "Updates" %> %>
-<% members.link privileges <% gettext Privileges %> prefix="| " %> 
-<% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
-</div>
+<h1 class="storyTitle"><% response.title %></h1>
+<nav class="ample">
+    <% members.link updated <% gettext "Updates" %> %>
+    <% members.link privileges <% gettext Privileges %> prefix="| " %>
+    <% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
+</nav>
 <p><% response.list %></p>
 
 <% #edit %>
@@ -65,42 +61,43 @@ $(function() {
    });
 });
 </script>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <form method="post" action="<% response.action %>">
 <input type="hidden" name="digest" id="digest" />
 <input type="hidden" name="hash" id="hash" />
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "Current Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="password" id="password" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "New Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPassword" id="newPassword" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "Confirm Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
-      id="newPasswordConfirm" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext E-mail suffix=: %></td>
-<td><% user.input email size=30 %></td>
-</tr>
-<tr>
-<td class="small" valign="top" nowrap="nowrap"><% gettext "Personal URL" suffix=: %></td>
-<td><% user.input url size=30 %><br />
-<span class="small"><% gettext "If you enter a URL here your user name will 
-appear as link next to your posted items." %></span></td>
-</tr>
-<tr>
-<td nowrap="nowrap"> </td>
-<td><br />
-<button type="submit" id="submit" name="save" value="1"><% gettext Save %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+
+<div class="form">
+   <div class="row">
+      <label for="password" class="w200"><% gettext "Current Password" suffix=":" %></label>
+      <input type="password" name="password" id="password" size="20" />
+   </div>
+
+   <div class="row">
+      <label for="newPassword" class="w200"><% gettext "New Password" suffix=":" %></label>
+      <input type="password" name="newPassword" id="newPassword" size="20" />
+   </div>
+
+   <div class="row">
+      <label for="newPasswordConfirm" class="w200"><% gettext "Confirm Password" suffix=":" %></label>
+      <input type="password" name="newPasswordConfirm" id="newPasswordConfirm" size="20" />
+   </div>
+
+   <div class="row">
+      <label for="email" class="w200"><% gettext E-mail suffix=":" %></label>
+      <% user.input email size=30 %>
+   </div>
+
+   <div class="row">
+      <label for="url" class="w200"><% gettext "Personal URL" suffix=":" %></label>
+      <% user.input url size=30 %><br />
+      <small><% gettext "If you enter a URL here your user name will appear as link next to your posted items." %></small>
+   </div>
+
+   <div class="row">
+      <button type="submit" id="save" name="save" value="1"><% gettext "Save" %></button>
+      <small><a href="<% this.href %>" class="cancel"><% gettext Cancel %></a></small>
+   </div>
+</div>
 </form>
 
 <% 

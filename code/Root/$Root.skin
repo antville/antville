@@ -155,8 +155,67 @@ alphabetical order." %></p>
 <% #stylesheet %>
 /* CSS for protected skins (user interface elements etc.) */
 
-ul { list-style: url(<% image /bullet.gif url %>) circle; } 
 
+.form .row {
+    margin: 10px 0px;
+}
+
+.form .row label:first-child {
+    width: 160px;
+    display: inline-block;
+}
+
+.form .row .col {
+    display: inline-block;
+}
+
+/** Needed for basic form layout **/
+.w100 {
+   width: 100px;
+}
+
+.w140 {
+   width: 140px;
+}
+
+.w200 {
+   width: 200px;
+}
+
+hr.listSeparator {
+   color: #fff;
+   background-color: #cecece;
+   height: 1px;
+   border: none;
+   margin: 10px 0px;
+}
+
+.listNavigationItem h2 {
+   font-size: 18px;
+}
+
+.listNavigationItem .details {
+   display: inline-block;
+   width: 500px;
+}
+
+.listNavigationItem h2,
+.listNavigationItem p,
+.listNavigationItem ul {
+   margin: 0px;
+}
+
+.listNavigationItem em {
+   font-style: italic;
+}
+
+.listNavigationItem ul {
+   display: inline-block;
+   list-style: none;
+}        
+
+
+/***********************************************************
 ul.skinmgrTree {
    padding-left:15px;
    margin:20px 0px;
@@ -292,6 +351,7 @@ div.skin div.title {
    color: #cc0000;
    border: 1px solid #cc0000;
 }
+*/
 
 <% #FIXME %>
 <div class="boxline"> </div>

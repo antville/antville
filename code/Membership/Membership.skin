@@ -2,13 +2,12 @@
 <span class="nowrap"><% gettext "Logged in as {0}" 
    <% membership.name | membership.link %> %></span>
 <div><% gettext <% membership.role | capitalize %> prefix='(' suffix=')' %></div>
-<% site.members.link edit <% gettext "Edit User Profile" %> prefix="... " 
+<% site.members.link edit <% gettext "Edit User Profile" %> suffix="<br />" %>
+<% site.link subscribe <% gettext Subscribe context=verb %> suffix="<br />" %>
+<% site.members.link updated <% gettext Subscriptions %> 
 suffix="<br />" %>
-<% site.link subscribe <% gettext Subscribe context=verb %> prefix="... " suffix="<br />" %>
-<% site.members.link updated <% gettext Subscriptions %> prefix="... " 
-suffix="<br />" %>
-<% site.members.link logout <% gettext Logout context=verb %> prefix="... " %>
+<% site.members.link logout <% gettext Logout context=verb %> %>
 
 <% #login %>
 <div><% gettext "You are not logged in" %></div>
-<div><% site.members.link login <% gettext Login context=verb %> prefix="... " %></div>
+<div><% site.members.link login <% gettext Login context=verb %> %></div>

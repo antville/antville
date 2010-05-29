@@ -6,12 +6,10 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
       'src="<% param.href %>"></' + 'scr' + 'ipt>');
 
 <% #listItem %>
-<tr>
-<td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
-   <% site.modified short %>
-</td>
-<td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
-</tr>
+<div class="row">
+    <time datetime="<% site.modified iso8601w3c %>" class="col w140"><% site.modified short %></time>
+    <% site.title | site.link %>
+</div>
 
 <% #menuExt %>
 <script type="text/javascript" defer="defer">
