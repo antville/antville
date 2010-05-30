@@ -13,6 +13,17 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
 </tr>
 
+<% #opensearchdescription %>
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <ShortName><% site.title %></ShortName>
+   <Description>Search the site <% site.href %></Description>
+   <Tags>antville search</Tags>
+   <Image height="16" width="16" type="image/vnd.microsoft.icon"><% image /ant-icon.png url %></Image>
+   <Url type="text/html" template="<% site.href search %>?q={searchTerms}" />
+   <Query role="example" searchTerms="cat" />
+</OpenSearchDescription>
+
 <% #menuExt %>
 <script type="text/javascript" defer="defer">
 <!--

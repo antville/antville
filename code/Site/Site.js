@@ -458,16 +458,8 @@ Site.prototype.comments_xml_action = function() {
 }
 
 Site.prototype.search_xml_action = function() {
-   return; // FIXME
    res.contentType = "application/opensearchdescription+xml";
-   res.write(<OpenSearchDescription xmlns="http://antville.org/">
-      	<ShortName>Antville Search</ShortName>
-      	<Description>Search on Antville</Description>
-      	<Tags>antville search</Tags>
-      	<Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.youtube.com/favicon.ico</Image>
-      	<Url type="text/html" template="http://antville.org/search?q={searchTerms}" />
-      	<Query role="example" searchTerms="cat" />
-         </OpenSearchDescription>);
+   this.renderSkin("$Site#opensearchdescription");
    return;   
 }
 
