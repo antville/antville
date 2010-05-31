@@ -126,7 +126,7 @@
 			<fileset dir="${modules.dir}/jala" includes="build.properties docs/** lib/** tests/** util/**" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${antville.dir}" includes="compat/** db/** docs/** extra/**" />
+			<fileset dir="${antville.dir}" includes="compat/** db/** docs/** extra/**" excludes="db/h2.compat/**" />
 		</delete>
 		<delete dir="${antville.dir}/legal" />
 
