@@ -27,7 +27,7 @@
  */
 
 /** @constant */
-Root.VERSION = "1.2-beta";
+Root.VERSION = "1.2";
 
 this.handleMetadata("creationDelay");
 this.handleMetadata("creationScope");
