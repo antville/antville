@@ -106,7 +106,7 @@
 					server.properties launcher.jar" />
 		</copy>
 		<copy todir="${antville.dir}">
-			<fileset dir="${extra.dir}" includes="antclick/**" />
+			<fileset dir="${db.dir}" includes="h2.compat/**" />
 		</copy>
 		<copy file="${extra.dir}/helma.jar" todir="${work.dir}/lib" />
 		<copy file="${extra.dir}/h2-1.2.136.jar" todir="${work.dir}/lib/ext" />
