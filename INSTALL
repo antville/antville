@@ -14,7 +14,7 @@ guide the drivers could be downloaded via the following URLs:
  * http://jdbc.postgresql.org/download.html
  * http://dev.mysql.com/downloads/connector/j/
  
-Of course you also can use a packet manager like aptitude or MacPorts if the 
+Of course you can also use a packet manager like aptitude or MacPorts if the 
 JDBC driver is available from there. However, you then need to create a symbolic 
 link to the driver from within Helma’s “lib/ext” directory.
 
@@ -31,7 +31,7 @@ databases (my.sql).
 NOTE: Antville is preconfigured for PostgreSQL out of the box but it is easy 
 to modify the configuration to be compatible with MySQL.
 
-Each of these SQL scripts create the tables, indexes and initial records and 
+Each of these SQL scripts creates the tables, indexes and initial records and 
 also the account used by the application to communicate with the database. 
 
 The default password of this account is “antville”, so you should change it if
@@ -67,8 +67,9 @@ Now start up Helma and point your browser to
 
 (assuming that Helma is running on the same machine and uses port 8080).
 
-You should see Antville’s start page where then can register a first user 
-account to gain system administration rights to your Antville installation.
+You should see Antville’s start page where you can create a first user account
+that automatically has system administration rights to your Antville 
+installation.
 
 Have fun!
 
