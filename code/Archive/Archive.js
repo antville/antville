@@ -148,16 +148,6 @@ Archive.prototype.stories_macro = function() {
    var page = this.getPage();
    var pageSize = this.getPageSize();
   
-   var renderStory = function(story) {
-      storyDay = story.created.getDate();
-      if (day !== storyDay) {
-         story.renderSkin("Story#date");
-         day = storyDay;
-      }
-      story.renderSkin("Story#preview");
-      return;
-   }
-
    // FIXME: This is a little bit inconsistent and thus needs special care
    var archive = this.type === Archive.PAGER ? this.parent : this;
    if (!archive.parent) {
@@ -165,7 +155,7 @@ Archive.prototype.stories_macro = function() {
       var offset = (page - 1) * pageSize;
       var stories = site.stories.featured.list(offset, pageSize);
       for each (var story in stories) {
-         renderStory(story);
+         story.renderSkin("Story#preview");
       };
       return;
    }

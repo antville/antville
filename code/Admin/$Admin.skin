@@ -4,13 +4,13 @@
 <% response.pager %>
 
 <% #navigation %>
-<div class="boxheader"><% gettext Administration %></div>
-<div class="box">
-<% admin.link main <% gettext Log %> suffix="<br />" %>
-<% admin.link sites <% gettext Sites %> suffix="<br />" %>
-<% admin.link users <% gettext Users %> suffix="<br />" %>
-<% admin.link setup <% gettext Setup %> suffix="<br />" %>
-</div>
+<h2><% gettext Administration %></h2>
+<ul>
+   <li><% admin.link main <% gettext Log %> %></li>
+   <li><% admin.link sites <% gettext Sites %> %></li>
+   <li><% admin.link users <% gettext Users %> %></li>
+   <li><% admin.link setup <% gettext Setup %> %></li>
+</ul>
 
 <% #welcome %>
 <p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator 

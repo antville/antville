@@ -42,51 +42,45 @@
 </div>
 
 <% #subscription %>
-<div class="listSeparator"> </div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
-   <% membership.role %></div>
-</td>
-</tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% subscription.title default=<% gettext Untitled 
-   prefix="<em>[" suffix="]</em>" %> %></div>
-   <div class="small"><% subscription.modified short prefix=<% gettext 
-   "Last updated on" suffix=" " %> %></div>
-</td>
-<td width="10"> </td>
-<td align="right" class="small">
-   <% subscription.link main <% gettext View context=verb %> prefix='<div class="nowrap">' suffix="</div>" %>
-   <% subscription.link unsubscribe <% gettext Unsubscribe %> prefix='<div class="nowrap">' suffix="</div>" %>
-</td>
-</tr>
-</table>
+<hr class="listSeparator" />
+<div class="listNavigationItem">
+   <div class="details">
+      <h2><% subscription.title default=<% gettext Untitled prefix="<em>[" suffix="]</em>" %> %></h2>
+      <p><em><% gettext Role suffix=: %> <% membership.role %></em></p>
+      <p><% subscription.modified short prefix=<% gettext "Last updated on" suffix=" " %> %></p>
+   </div>
+
+   <ul>
+   <% subscription.link main <% gettext View context=verb %>  prefix='<li>' suffix="</li>" %>
+   <% subscription.link unsubscribe <% gettext Unsubscribe %> prefix='<li>' suffix="</li>" %>
+   </ul>
+</div>
 
 <% #contact %>
-<p class="storyTitle"><% response.title %></p>
-<p class="small">
+<h1 class="storyTitle"><% response.title %></h1>
+<p>
    <% gettext 'Please enter your message to the user below.' %> 
    <% gettext 'To prevent abuse, the sender address and the subject of the e-mail 
          are set to predefined values.' %>
    <% gettext 'A generic disclaimer will be automatically appended to your message.' %>
 </p>
 <form method="post" action="<% response.action %>">
-<p>
-<span class="small"><% gettext Message suffix=: %></span><br />
-<textarea cols="31" rows="10" class="formText" wrap="virtual" 
-      name="text"><% request.text encoding="form" %></textarea>
-</p>
-<p>
-   <button type="submit" name="send" value="1"><% gettext Send %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</p>
+
+<div class="form">
+   <div class="row">
+      <label for="formText"><% gettext "Message" suffix=":" %></label><br/>
+      <textarea rows="10" cols="50" class="formText" name="text"><% request.text encoding="form" %></textarea>
+   </div>
+
+   <div class="row">
+      <button type="submit" id="send" name="send" value="1"><% gettext "Send" %></button>
+      <a href="." class="cancel"><% gettext Cancel %></a>
+   </div>
+</div>
 </form>
 
 <% #content %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <% response.pager %>
 <% response.list %>
 <% response.pager %>

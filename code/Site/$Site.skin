@@ -11,39 +11,24 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
     <% site.title | site.link %>
 </div>
 
-<% #menuExt %>
-<script type="text/javascript" defer="defer">
-<!--
-var win = external.menuArguments;
-var url = "<% site.url %>stories/create?content_text=";
-var link = escape('<a href="' + win.location.href + '">' + 
-   win.document.title + "</a>: ");
-var text = escape(win.document.selection.createRange().text);
-win.location.href = url + link + text;
-//-->
-</script>
-
-<% #menuExtRegistry %>
-REGEDIT4
-[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
-@="<% site.url %>menuext"
-"contexts"=hex:31
-
 <% #referrers %>
-<p class="storyTitle"><% response.title %></p>
-<br />
+<h1 class="storyTitle"><% response.title %></h1>
+
 <form action="<% response.action %>" method="get">
-<input type="text" name="filter" value="<% request.filter encoding="form" %>" 
-      size="30" /> 
-<button type="submit" name="submit" value="1"><% gettext Filter %></button> 
-<button onclick="document.location='<% site.href referrers %>'; return false;">
-      <% gettext Reset %></button>
-<div class="small">
-   <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" 
-   <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
-   <label for="includeSpam"><% gettext 'Include Referrer Spam' %></label>
+<div class="form">
+   <div class="row">
+      <input type="text" name="filter" value="<% request.filter encoding="form" %>" size="30" />
+      <button type="submit" name="submit" value="1"><% gettext Filter %></button>
+   </div>
+
+   <div class="row">
+      <input type="checkbox" id="includeSpam" name="includeSpam" value="checked"
+      <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
+      <label for="includeSpam"><% gettext 'Include Referrer Spam' %></label>
+   </div>
 </div>
-<br />
+
+
 <table border="0" cellspacing="0" cellpadding="2">
 <tr>
 <td align="right" class="small"><% gettext Hits %></td>

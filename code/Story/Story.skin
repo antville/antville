@@ -12,42 +12,47 @@
 </article>
 
 <% #edit %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <% story.skin $Story#restore %>
 <form method="post" action="<% response.action %>">
-<p>
-   <div class="small"><% gettext Title suffix=: %></div>
-   <div class="backup"><% story.input title class="formTitle" %></div>
-</p>
-<p>
-   <div class="small"><% gettext Text suffix=: %></div>
-   <div class="backup"><% story.textarea text cols="30" rows="15" 
-   class="formText" %></div>
-</p>
-<p>
-   <div class="small"><% gettext "Tags (separated by commas):" %></div>
-   <div class="backup"><% story.input tags class=formText %></div>
-</p>
-<p><fieldset>
-   <legend class="small"><% gettext Options %></legend>
-   <p><% gettext "The story is {0} and {1}" <% story.select status %>
-   <% story.select mode %> %></p>
-   <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
-</fieldset></p>
-<p class="small">
-   <% if <% story.creator %> is null then "" else 
-      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %> 
+<div class="form">
+
+   <div class="row topLabel">
+      <label for="title"><% gettext "Title" suffix=":" %></label>
+      <% story.input title class="w400" %>
+   </div>
+
+   <div class="row topLabel">
+      <label for="text"><% gettext "Text" suffix=":" %></label>
+      <% story.textarea "text" rows="18" class="w560" %>
+   </div>
+
+   <div class="row topLabel">
+      <label for="tags"><% gettext "Tags (separated by commas)" suffix=":" %></label>
+      <% story.input "tags" class="w400" %>
+   </div>
+
+   <fieldset class="w560">
+      <legend><% gettext Options %></legend>
+      <p><% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %></p>
+      <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
+   </fieldset>
+
+
+   <% if <% story.creator %> is null then "" else
+      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> prefix="<p>" suffix="</p>" %>
    %>
-   <% if <% story.created %> is <% story.modified %> then "" else 
+   <% if <% story.created %> is <% story.modified %> then "" else
       <% gettext "Last modified by {0} on {1}" <% story.modifier %>
-      <% story.modified %> prefix="<br />" %>
+      <% story.modified %> prefix="<p>" suffix="</p>" %>
    %>
-</p>
-<p>
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <button type="button" id="restore" value="1"><% gettext Restore %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</p>
+
+   <div class="row">
+        <button type="submit" name="save" value="1"><% gettext Save %></button>
+        <button type="button" id="restore" value="1"><% gettext Restore %></button>
+    </div>
+      
+</div>
 </form>
 
 <% #date %>
@@ -61,22 +66,26 @@
 <div><% story.text | story.format %></div>
 
 <% #preview %>
-<% story.skin Story#content %>
-<p class="small">
-   <% story.link main <% gettext Link %> %>
-   <% story.comments link prefix="(" suffix=")" %>
-   <% story.link comment#form <% gettext Comment context=verb %> %>
-   <% story.link edit <% gettext Edit %> %>
-</p>
-<br />
+<article>
+   <% story.skin Story#date %>
+   <% story.skin Story#content %>
+   <p>
+      <% story.link main <% gettext Link %> %>
+      <% story.comments link prefix="(" suffix=")" %>
+      <% story.link comment#form <% gettext Comment context=verb %> %>
+      <% story.link edit <% gettext Edit %> %>
+   </p>
+</article>
 
 <% #embed %>
-<% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
+<% story.title prefix='<h1 class="storyTitle">'suffix="</h1>" %>
 <% story.text | clip %>
-<span class="small">
-   <% story.link main <% gettext "Read more" %> prefix=[ suffix=] %>
-   <% story.link edit <% gettext Edit %> %>
-</span><br />
+<p>
+   <small>
+      <% story.link main <% gettext "Read more" %> prefix=[ suffix=] %>
+      <% story.link edit <% gettext Edit %> %>
+   </small>
+</p>
 
 <% #comment %>
 <% story.skin Story#date %>
@@ -87,12 +96,12 @@
 
 <% #history %>
 <div class="historyItem">
-   <% this.summary %>
-   <div class="small">
-      <% this.creator %>, <% this.modified short %>
-   </div>
+   <% this.summary prefix="<h3>" suffix="</h3>" %>
+   <small><% this.creator %>, <% this.modified short %></small>
 </div>
 
 <% #result %>
-<br /><% this.summary %>
-<div class="small">by <% this.creator %> (<% this.modified short %>)</div>
+<div class="storyResult">
+   <h3><% this.summary %></h3>
+   <small>by <% this.creator %> (<% this.modified short %>)</small>
+</div>

@@ -165,6 +165,11 @@ alphabetical order." %></p>
     display: inline-block;
 }
 
+.form .row.topLabel label:first-child {
+    display: block;
+    width: 100%;
+}
+
 .form .row .col {
     display: inline-block;
 }
@@ -180,6 +185,18 @@ alphabetical order." %></p>
 
 .w200 {
    width: 200px;
+}
+
+.w400 {
+   width: 400px;
+}
+
+.w560 {
+   width: 560px;
+}
+
+fieldset.w560 {
+   width: 538px;
 }
 
 hr.listSeparator {
@@ -245,11 +262,6 @@ ul.skinmgrTree li div {
    font-family:<% value "base font size" %>;
    font-size:<% value "small font size" %>;
    color:<% value "base font color" %>;
-}
-
-div.skin {
-   /*margin: 1px;
-   border: 1px solid gray;*/
 }
 
 div.skin div.title {

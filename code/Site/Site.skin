@@ -2,44 +2,44 @@
 <% site.stories %>
 
 <% #preview %>
-<li><% site.title | site.link %> <span class="small">(<% site.modified short 
-prefix="Last update: " default="None so far" %>)</span></li>
+<li><% site.title | site.link %> <small>(<% site.modified short
+prefix="Last update: " default="None so far" %>)</small></li>
 
 <% #welcome %>
-<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
+<h1 class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></h1>
 <p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
 <% site.created long %> %></p>
 
 <% #navigation %>
-<div class="navigation">
-<div><% site.link main <% gettext Home %> %></div>
-<div><% site.tags.link main <% gettext Tags %> %></div>
-<div><% site.galleries.link main <% gettext Galleries %> %></div>
-</div>
-<p class="navigation">
-<div><% site.stories.link create <% gettext "Add Story" %> %></div>
-<div><% site.stories.link main <% gettext Stories %> %></div>
-<div><% site.images.link main <% gettext Images %> %></div>
-<div><% site.files.link main <% gettext Files %> %></div>
-<div><% site.polls.link main <% gettext Polls %> %></div>
-<div><% site.members.link main <% gettext Members %> %></div>
-</p>
-<p class="navigation">
-<div><% site.link edit <% gettext Preferences %> %></div>
-<div><% site.layout.link main <% gettext Layout %> %></div>
-<div><% site.link referrers <% gettext Referrers %> %></div>
-<div><% site.stories.link top <% gettext "Top Stories" %> %></div>
-</p>
-<p class="navigation">
-<div><% root.title  | root.link %></div>
-</p>
+<ul class="navigation">
+   <% site.link main <% gettext Home %> prefix="<li>" suffix="</li>" %>
+   <% site.tags.link main <% gettext Tags %> prefix="<li>" suffix="</li>" %>
+   <% site.galleries.link main <% gettext Galleries %> prefix="<li>" suffix="</li>" %>
+</ul>
+
+<ul class="navigation">
+   <% site.stories.link create <% gettext "Add Story" %> prefix="<li>" suffix="</li>" %>
+   <% site.stories.link main <% gettext Stories %> prefix="<li>" suffix="</li>" %>
+   <% site.images.link main <% gettext Images %> prefix="<li>" suffix="</li>" %>
+   <% site.files.link main <% gettext Files %> prefix="<li>" suffix="</li>" %>
+   <% site.polls.link main <% gettext Polls %> prefix="<li>" suffix="</li>" %>
+   <% site.members.link main <% gettext Members %> prefix="<li>" suffix="</li>" %>
+</ul>
+        
+<ul class="navigation">
+   <% site.link edit <% gettext Preferences %> prefix="<li>" suffix="</li>" %>
+   <% site.layout.link main <% gettext Layout %> prefix="<li>" suffix="</li>" %>
+   <% site.link referrers <% gettext Referrers %> prefix="<li>" suffix="</li>" %>
+   <% site.stories.link top <% gettext "Top Stories" %> prefix="<li>" suffix="</li>" %>
+</ul>
+
+<p><% root.title | root.link %></p>
 
 <% #search %>
-<form class="nowrap" method="post" action="<% site.href search %>">
-   <input type="text" size="15" name="q" class="searchbox" 
-   value="<% request.q encoding="form" %>" />
-   <button type="submit" name="search" value="1" 
-   class="searchbox"><% gettext Find %></button>
+<form method="post" action="<% site.href search %>">
+   <label for="q" class="hidden"><% gettext "Search term" suffix=":" %></label>
+   <input type="text" size="15" name="q" class="searchbox" value="<% request.q encoding="form" %>" />
+   <button type="submit" name="search" value="1" class="searchbox"><% gettext Find %></button>
 </form>
 
 <% #robots %>
@@ -77,35 +77,34 @@ Disallow: /stories/top
 </section>
 
 <nav>
-<div class="box"><% ngettext "Online for {0} day"
-      "Online for {0} days" <% site.age %> %><br />
-<% site.modified short prefix=<% gettext "Last modified:"
-      suffix=' <div class="nowrap">' %> suffix=</div> %></div>
+<h1 class="hidden"><% gettext "Navigation" %></h1>
+<p><% ngettext "Online for {0} day" "Online for {0} days" <% site.age %> %></p>
+<p><time datetime="<% site.modified iso8601w3c %>"><% site.modified short prefix=<% gettext "Last modified:" suffix="<br>" %> %></time></p>
 
-<div class="boxheader"><% gettext Status %></div>
-<div class="box"><% membership.status %></div>
+<h2><% gettext Status %></h2>
+<% membership.status %>
 
 <% root.admin.skin $Admin#navigation %>
 
-<div class="boxheader"><% gettext "Main Menu" %></div>
-<div class="box">
+<h2><% gettext "Main Menu" %></h2>
 <% site.skin Site#navigation %>
-</div>
 
-<div class="boxheader"><% gettext Search %></div>
-<div class="box"><% site.skin Site#search %></div>
+<h2><% gettext Search %></h2>
+<% site.skin Site#search %>
 
-<% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">'
-suffix='</div><div class="box">' %> suffix="</div>" %>
+<% site.calendar prefix=<% gettext Calendar prefix='<h2>'
+suffix='</h2><div class="calendarBox">' %> suffix="</div>" %>
 
-<div class="boxheader"><% gettext "Updates" %></div>
-<div class="box"><% list postings skin=Story#history %></div>
+<h2><% gettext "Updates" %></h2>
+<% list postings skin=Story#history %>
 
-<div class="boxline"></div><br />
-<div class="box"><% image /rss.png | site.link rss.xml %><br />
-<br />
-<% image /smallchaos.gif | link http://antville.org %><br />
-<% image /helma.png | link http://helma.org %></div>
+<hr>
+
+<ul>
+   <li><% image /rss.png | site.link rss.xml %></li>
+   <li><% image /smallchaos.gif | link http://antville.org %></li>
+   <li><% image /helma.png | link http://helma.org %></li>
+</ul>
 </nav>
 </div>
 </body>
