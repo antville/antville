@@ -35,6 +35,7 @@ app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
 app.addRepository("modules/core/Filters.js");
 
+app.addRepository("modules/helma/File");
 app.addRepository("modules/helma/Image.js");
 app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Http.js");
@@ -46,9 +47,12 @@ app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
-app.addRepository(app.dir + "/../i18n/messages.en.js");
-app.addRepository(app.dir + "/../i18n/messages.de.js");
-app.addRepository("modules/jala/code/I18n.js"); // Pls. test before moving around!
+var dir = new helma.File(app.dir, "../i18n");
+for each (let fname in dir.list()) {
+   fname.endsWith(".js") && app.addRepository(app.dir + "/../i18n/" + fname);
+}
+// I18n.js needs to be added *after* the message files or the translations get lost
+app.addRepository("modules/jala/code/I18n.js");
 
 // FIXME: Be careful with property names of app.data;
 // they inherit all properties from HopObject!
