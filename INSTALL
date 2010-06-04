@@ -2,11 +2,11 @@ Antville needs Helma Object Publisher to be installed on the desired machine.
 If not already done so please download Helma via http://helma.org/download and
 follow the installation instruction at http://helma.org/download/installation.
 
-Furthermore, Antville needs a DBMS to be installed as well. Currently supported 
-products are PostgreSQL and MySQL. If not already done so please install the 
-desired software before you continue.
+Furthermore, Antville needs an SQL database to be installed as well. Currently
+supported products are PostgreSQL and MySQL. If not already done so please 
+install the desired database before you continue.
 
-For connecting Antville to the DBMS the corresponding JDBC driver is also
+For connecting Antville to the database the corresponding JDBC driver is also
 necessary. If not already done so please copy the driver to the directory 
 “lib/ext” of Helma’s installation directory. As of writing this installation 
 guide the drivers could be downloaded via the following URLs:
@@ -28,8 +28,8 @@ creating the database needed by the application. Change to that directory.
 Antville currently comes with scripts for PostgreSQL (postgre.sql) and for MySQL 
 databases (my.sql). 
 
-NOTE: Antville is preconfigured for PostgreSQL out of the box but it is easy to 
-modify the configuration to be compatible with MySQL.
+NOTE: Antville is preconfigured for PostgreSQL out of the box but it is easy 
+to modify the configuration to be compatible with MySQL.
 
 Each of these SQL scripts creates the tables, indexes and initial records and 
 also the account used by the application to communicate with the database. 
@@ -40,11 +40,11 @@ down to the “create user” (for PostgreSQL) or “grant user” (for MySQL)
 statement. Search for “password” (PostgreSQL) or “identified by” (MySQL) and 
 change the trailing value in quotes to the password of your choice.
 
-Please refer to the documentation of your DBMS on how to run the appropriate 
-script. Afterwards you will have to tell Antville how it can access your 
-database. This is done in a configuration file named “db.properties” which is 
-located in the “code” directory, or – if you are going for MySQL – in the 
-“db/my.compat” directory.
+Please refer to the documentation of your database on how to run the
+appropriate script. Afterwards you will have to tell Antville how it can
+access your database. This is done in a configuration file named
+“db.properties” which is located in the “code” directory, or – if you are going
+for MySQL – in the “db/my.compat” directory.
 
 Open the desired file and ensure that the line beginning with “antville.url” 
 points to the server that runs the database. By default, this is the local 
@@ -78,7 +78,7 @@ Have fun!
 TL;DR
 
 1. Install Helma if not already done so
-2. Install PostgreSQL or MySQL if not already done so
+2. Install PostgreSQL or MySQL database if not already done so
 3. Install corresponding JDBC driver in helma/lib/ext
 4. Unpack Antville distribution file
 5. Move antville directory into helma/app directory
