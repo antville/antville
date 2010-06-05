@@ -23,7 +23,7 @@
 //
 
 /**
- * @fileOverviev
+ * @fileOverview
  */
 
 var Exporter = {}
