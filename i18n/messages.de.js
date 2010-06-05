@@ -8,7 +8,7 @@ if (!global.messages) {
 /**
  * Messages for locale "de"
  */
-global.messages.de = {
+global.messages['de'] = {
    "({0} character)": "({0} Zeichen)",
    "({0} characters)": "({0} Zeichen)",
    "A Blogger export file (.xml) will be created and available for download from here within 24 hours.": "Eine Blogger Export-Datei (.xml) wird erstellt und hier nach spätestens 24 Stunden downloadbar sein.",
@@ -455,6 +455,7 @@ global.messages.de = {
    "Untitled": "Unbenannt",
    "Update": "Aktualisieren",
    "Updates": "Letzte Änderungen",
+   "Upload a zipped layout archive created with Antville 1.1 to convert it to an archive working with Antville 1.2.": "Laden Sie ein mit Antville 1.1 erstelltes Layout-Archiv (ZIP-Datei) hoch, um es in ein mit Antville 1.2 kompatibles Archiv umzuwandeln.",
    "Uptime": "Betriebszeit",
    "Used Memory": "Benutzter Speicher",
    "User": "Benutzer",
