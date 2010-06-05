@@ -32,6 +32,7 @@ Admin.SITEREMOVALGRACEPERIOD = 14; // days
  * 
  * @param {HopObject} target
  * @param {String} method
+ * @param {User} user
  * @constructor
  */
 Admin.Job = function(target, method, user) {
@@ -376,12 +377,16 @@ Admin.updateDomains = function() {
 }
 
 /**
+ * The Admin prototype is mounted at root and provides actions needed
+ * for system administration. A user needs the User.PRIVILEGED permission
+ * to gain access or modify settings.
  * @name Admin
  * @constructor
- * @property {LogEntry[]} entries
- * @property {Sites[]} privateSites
- * @property {Sites[]} sites
- * @property {Users[]} users
+ * @property {Sites[]} deletedSites Contains sites scheduled for deletion
+ * @property {LogEntry[]} entries Contains administrative log entries only
+ * @property {Sites[]} restrictedSites Contains sites which are restricted but not blocked
+ * @property {Sites[]} sites Contains all available sites
+ * @property {Users[]} users Contains all available users
  * @extends HopObject
  */
 Admin.prototype.constructor = function() {
