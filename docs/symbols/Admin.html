@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>Admin - Antville&#32;1.2-beta&#32;API&#32;Reference</title>
+		<title>JsDoc Reference - Admin</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -176,9 +176,8 @@ ul.inheritsList
 	<body>
 <!-- ============================== header ================================= -->	
 		<!-- begin static/header.html -->
-	   <div><strong>Antville&#32;1.2-beta&#32;API&#32;Reference</strong></div>
-		<!--div id="header">
-</div-->
+		<div id="header">
+</div>
 		<!-- end static/header.html -->
 
 <!-- ============================== classes index ============================ -->
@@ -193,6 +192,8 @@ ul.inheritsList
 	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
 	
 	<li><a href="../symbols/Admin.html">Admin</a></li>
+	
+	<li><a href="../symbols/Admin.Job.html">Admin.Job</a></li>
 	
 	<li><a href="../symbols/Api.html">Api</a></li>
 	
@@ -254,8 +255,6 @@ ul.inheritsList
 	
 	<li><a href="../symbols/Story.html">Story</a></li>
 	
-	<li><a href="../symbols/String.html">String</a></li>
-	
 	<li><a href="../symbols/Tag.html">Tag</a></li>
 	
 	<li><a href="../symbols/TagHub.html">TagHub</a></li>
@@ -309,7 +308,8 @@ ul.inheritsList
 							<div class="fixedFont">
 								<b><a href="../symbols/Admin.html#constructor">Admin</a></b>()
 							</div>
-							<div class="description"></div>
+							<div class="description">The Admin prototype is mounted at root and provides actions needed
+for system administration.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -331,42 +331,52 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								Admin.<b><a href="../symbols/Admin.html#.entries">entries</a></b>
+								<b><a href="../symbols/Admin.html#deletedSites">deletedSites</a></b>
 								</div>
-								<div class="description"></div>
+								<div class="description">Contains sites scheduled for deletion</div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								Admin.<b><a href="../symbols/Admin.html#.privateSites">privateSites</a></b>
+								<b><a href="../symbols/Admin.html#entries">entries</a></b>
 								</div>
-								<div class="description"></div>
+								<div class="description">Contains administrative log entries only</div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								Admin.<b><a href="../symbols/Admin.html#.sites">sites</a></b>
+								<b><a href="../symbols/Admin.html#restrictedSites">restrictedSites</a></b>
 								</div>
-								<div class="description"></div>
+								<div class="description">Contains sites which are restricted but not blocked</div>
 							</td>
 						</tr>
 					
 						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								Admin.<b><a href="../symbols/Admin.html#.users">users</a></b>
+								<b><a href="../symbols/Admin.html#sites">sites</a></b>
 								</div>
-								<div class="description"></div>
+								<div class="description">Contains all available sites</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/Admin.html#users">users</a></b>
+								</div>
+								<div class="description">Contains all available users</div>
 							</td>
 						</tr>
 					
@@ -416,7 +426,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/Admin.html#count_macro">count_macro</a></b>(param, object, name)
+								<div class="fixedFont"><b><a href="../symbols/Admin.html#count_macro">count_macro</a></b>(param, object)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -435,15 +445,6 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/Admin.html#dropdown_macro">dropdown_macro</a></b>(param)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">Admin.<b><a href="../symbols/Admin.html#.exportImport">exportImport</a></b>()
 								</div>
 								<div class="description"></div>
 							</td>
@@ -587,7 +588,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">Admin.<b><a href="../symbols/Admin.html#.queue">queue</a></b>(job)
+								<div class="fixedFont">Admin.<b><a href="../symbols/Admin.html#.queue">queue</a></b>(target, method)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -681,7 +682,9 @@ ul.inheritsList
 				</div>
 				
 				<div class="description">
-					
+					The Admin prototype is mounted at root and provides actions needed
+for system administration. A user needs the User.PRIVILEGED permission
+to gain access or modify settings.
 					
 				</div>
 				
@@ -705,15 +708,37 @@ ul.inheritsList
 					Field Detail
 				</div>
 				
-					<a name=".entries"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="deletedSites"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Sites[]}</span>
+					<b>deletedSites</b>
+					
+					</div>
+					<div class="description">
+						Contains sites scheduled for deletion
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="entries"> </a>
+					<div class="fixedFont">
 					
 					<span class="light">{<a href="../symbols/LogEntry.html">LogEntry</a>[]}</span>
-					<span class="light">Admin.</span><b>entries</b>
+					<b>entries</b>
 					
 					</div>
 					<div class="description">
-						
+						Contains administrative log entries only
 						
 						
 					</div>
@@ -727,15 +752,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name=".privateSites"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="restrictedSites"> </a>
+					<div class="fixedFont">
 					
 					<span class="light">{Sites[]}</span>
-					<span class="light">Admin.</span><b>privateSites</b>
+					<b>restrictedSites</b>
 					
 					</div>
 					<div class="description">
-						
+						Contains sites which are restricted but not blocked
 						
 						
 					</div>
@@ -749,15 +774,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name=".sites"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="sites"> </a>
+					<div class="fixedFont">
 					
 					<span class="light">{Sites[]}</span>
-					<span class="light">Admin.</span><b>sites</b>
+					<b>sites</b>
 					
 					</div>
 					<div class="description">
-						
+						Contains all available sites
 						
 						
 					</div>
@@ -771,15 +796,15 @@ ul.inheritsList
 
 					<hr />
 				
-					<a name=".users"> </a>
-					<div class="fixedFont">&lt;static&gt; 
+					<a name="users"> </a>
+					<div class="fixedFont">
 					
 					<span class="light">{Users[]}</span>
-					<span class="light">Admin.</span><b>users</b>
+					<b>users</b>
 					
 					</div>
 					<div class="description">
-						
+						Contains all available users
 						
 						
 					</div>
@@ -855,7 +880,7 @@ ul.inheritsList
 					<div class="fixedFont">
 					
 					
-					<b>count_macro</b>(param, object, name)
+					<b>count_macro</b>(param, object)
 					
 					</div>
 					<div class="description">
@@ -878,12 +903,6 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>}</span> <b>object</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>name</b>
 									
 								</dt>
 								<dd></dd>
@@ -950,31 +969,6 @@ ul.inheritsList
 								<dd></dd>
 							
 							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".exportImport"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">Admin.</span><b>exportImport</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
 						
 						
 						
@@ -1096,7 +1090,7 @@ ul.inheritsList
 					<a name=".getCreationScopes"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{<a href="../symbols/String.html">String</a>[]}</span>
+					<span class="light">{String[]}</span>
 					<span class="light">Admin.</span><b>getCreationScopes</b>()
 					
 					</div>
@@ -1116,7 +1110,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{<a href="../symbols/String.html">String</a>[]}</span> </dd>
+								<dd><span class="light fixedFont">{String[]}</span> </dd>
 							
 							</dl>
 						
@@ -1135,7 +1129,7 @@ ul.inheritsList
 					<a name=".getNotificationScopes"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{<a href="../symbols/String.html">String</a>[]}</span>
+					<span class="light">{String[]}</span>
 					<span class="light">Admin.</span><b>getNotificationScopes</b>()
 					
 					</div>
@@ -1155,7 +1149,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{<a href="../symbols/String.html">String</a>[]}</span> </dd>
+								<dd><span class="light fixedFont">{String[]}</span> </dd>
 							
 							</dl>
 						
@@ -1217,7 +1211,7 @@ ul.inheritsList
 					<a name=".getPhaseOutModes"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{<a href="../symbols/String.html">String</a>[]}</span>
+					<span class="light">{String[]}</span>
 					<span class="light">Admin.</span><b>getPhaseOutModes</b>()
 					
 					</div>
@@ -1237,7 +1231,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{<a href="../symbols/String.html">String</a>[]}</span> </dd>
+								<dd><span class="light fixedFont">{String[]}</span> </dd>
 							
 							</dl>
 						
@@ -1310,7 +1304,7 @@ ul.inheritsList
 								<dd></dd>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>name</b>
+									<span class="light fixedFont">{String}</span> <b>name</b>
 									
 								</dt>
 								<dd></dd>
@@ -1352,7 +1346,7 @@ ul.inheritsList
 								<dd></dd>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>action</b>
+									<span class="light fixedFont">{String}</span> <b>action</b>
 									
 								</dt>
 								<dd></dd>
@@ -1364,7 +1358,7 @@ ul.inheritsList
 								<dd></dd>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>text</b>
+									<span class="light fixedFont">{String}</span> <b>text</b>
 									
 								</dt>
 								<dd></dd>
@@ -1406,7 +1400,7 @@ ul.inheritsList
 								<dd></dd>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>action</b>
+									<span class="light fixedFont">{String}</span> <b>action</b>
 									
 								</dt>
 								<dd></dd>
@@ -1467,7 +1461,7 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>name</b>
+									<span class="light fixedFont">{String}</span> <b>name</b>
 									
 								</dt>
 								<dd></dd>
@@ -1536,8 +1530,8 @@ ul.inheritsList
 					<a name=".queue"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					
-					<span class="light">Admin.</span><b>queue</b>(job)
+					<span class="light">{String}</span>
+					<span class="light">Admin.</span><b>queue</b>(target, method)
 					
 					</div>
 					<div class="description">
@@ -1553,7 +1547,13 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{Object}</span> <b>job</b>
+									<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>}</span> <b>target</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>method</b>
 									
 								</dt>
 								<dd></dd>
@@ -1563,6 +1563,13 @@ ul.inheritsList
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
 						
 						
 						
@@ -1631,7 +1638,7 @@ ul.inheritsList
 								<dd></dd>
 							
 								<dt>
-									<span class="light fixedFont">{<a href="../symbols/String.html">String</a>}</span> <b>name</b>
+									<span class="light fixedFont">{String}</span> <b>name</b>
 									
 								</dt>
 								<dd></dd>
@@ -1817,7 +1824,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Sat Jan 16 2010 00:41:40 GMT+0100 (CET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.3-beta on Sat Jun 05 2010 17:47:54 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>
