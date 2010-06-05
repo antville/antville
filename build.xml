@@ -160,7 +160,7 @@
 
 	<target name="messages" depends="init">
 		<java dir="${helma.dir}" classpath="${helma.dir}/lib/rhino.jar" classname="org.mozilla.javascript.tools.shell.Main">
-			<arg value="${hopkit.dir}/scripts/PoParser.js" />
+			<arg value="${extra.dir}/PoParser.js" />
 			<arg value="${i18n.poDirectory}" />
 			<arg value="${i18n.destination}" />
 			<arg value="${i18n.namespace}" />
