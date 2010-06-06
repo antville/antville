@@ -39,6 +39,7 @@
 </p>
 <p>
    <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="button" id="restore" value="1"><% gettext Restore %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
