@@ -134,7 +134,8 @@ Layout.convert = function(fpath) {
          } else if (name === "statusloggedout") {
             name = "login";
          } else if (proto === "MemberMgr") {
-            return;
+            // FIXME: This return causes errors on Ubuntu?!?
+            //return;
          }
          break;
          
