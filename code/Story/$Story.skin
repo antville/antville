@@ -55,7 +55,7 @@ var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
 var searchFilter = new Antville.Filter(query.filter);
 var searchEngineFilters = [
    new Antville.Filter("http:\/\/.*google.*\?", "q"),
-   new Antville.Filter("http:\/\/.*search\.msn.*\?", "q"),
+   new Antville.Filter("http:\/\/.*bing.*\?", "q"),
    new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
    new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
 ];
