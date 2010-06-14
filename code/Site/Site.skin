@@ -43,9 +43,11 @@ prefix="Last update: " default="None so far" %>)</span></li>
 </form>
 
 <% #robots %>
-User-agent: *
-Disallow: /referrers
-Disallow: /stories/top
+## See http://www.robotstxt.org for more information
+#User-agent: *
+#Disallow: /
+#User-agent: BadBot
+#Disallow: /foo
 
 <% #page %>
 <?xml version="1.0" encoding="UTF-8"?>
