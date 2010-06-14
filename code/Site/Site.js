@@ -726,7 +726,7 @@ Site.prototype.import_action = function() {
    return;
 }
 
-Site.prototype.robots_txt_ction = function() {
+Site.prototype.robots_txt_action = function() {
    res.contentType = "text/plain";
    this.renderSkin("Site#robots");
    return;
