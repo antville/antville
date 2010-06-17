@@ -63,7 +63,7 @@ symbol “#”.
 
 Now start up Helma and point your browser to
 
-   http://localhost:8080/antville
+   http://localhost:8080
 
 (assuming that Helma is running on the same machine and uses port 8080).
 
