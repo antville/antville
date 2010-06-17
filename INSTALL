@@ -15,8 +15,8 @@ guide the drivers could be downloaded via the following URLs:
  * http://dev.mysql.com/downloads/connector/j/
  
 Of course you can also use a packet manager like aptitude or MacPorts if the 
-JDBC driver is available from there. However, you then need to create a symbolic 
-link to the driver from within Helma’s “lib/ext” directory.
+JDBC driver is available from there. However, you then need to create a 
+symbolic link to the driver from within Helma’s “lib/ext” directory.
 
 Now unpack the Antville distribution package. Move the resulting directory 
 “antville” into the directory “apps” of your Helma installation.
@@ -25,8 +25,8 @@ Inside the directory “antville” you will find a directory called “db”. T
 directory contains all database-related files, ie. several SQL scripts for
 creating the database needed by the application. Change to that directory.
 
-Antville currently comes with scripts for PostgreSQL (postgre.sql) and for MySQL 
-databases (my.sql). 
+Antville currently comes with scripts for PostgreSQL (postgre.sql) and for 
+MySQL databases (my.sql). 
 
 NOTE: Antville is preconfigured for PostgreSQL out of the box but it is easy 
 to modify the configuration to be compatible with MySQL.
