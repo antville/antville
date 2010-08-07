@@ -63,6 +63,11 @@ Disallow: /stories/top
 <!-- Beta, just a try -->
 <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+
+<!--[if IE]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
 </head>
 <body>
 

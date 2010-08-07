@@ -338,10 +338,10 @@ Image.prototype.thumbnail_macro = function(param) {
    }
    param.src = this.getUrl(this.getThumbnailFile().getName());
    param.title || (param.title = encode(this.description));
-   param.alt = encode(param.alt || param.title);
+   param.alt = encode(param.alt);
    param.width = this.thumbnailWidth || String.EMPTY;
    param.height = this.thumbnailHeight || String.EMPTY;
-   param.border = (param.border = 0);
+   param.border || (param.border = 0);
    html.tag("img", param);
    return;
 }

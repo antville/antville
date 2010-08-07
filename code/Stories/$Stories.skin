@@ -1,29 +1,27 @@
 <% #main %>
 <p class="storyTitle"><% response.title %></p>
 <div class="ample">
-   <% stories.link create <% gettext "Add Story" %> prefix="... " %>
+   <% stories.link create <% gettext "Add Story" %> %>
 </div>
-... 
+<div class="ample">        
 <% stories.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% stories.link closed <% gettext Closed %> prefix=" | " %>
 <% stories.link all <% gettext All %> prefix=" | " %>
+</div>
+
 <% response.pager %>
 <% response.list %>
 <% response.pager %>
 
 <% #top %>
-<p class="storyTitle"><% response.title %></p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<h1 class="storyTitle"><% response.title %></h1>
+<table class="scoreboard">
 <tr>
-<td></td>
-<td rowspan="999"> </td>
-<td align="right" class="small"><% gettext Count %></td>
-<td rowspan="999"> </td>
-<td class="small"><% gettext Date %></td>
-<td rowspan="999"> </td>
-<td class="small"><% gettext Story %></td>
-<td rowspan="999"> </td>
-<td class="small"><% gettext Author %></td>
+<th scope="col"><% gettext Count %></td>
+<th scope="col"><% gettext Requests %></td>
+<th scope="col"><% gettext Date %></td>
+<th scope="col"><% gettext Story %></td>
+<th scope="col"><% gettext Author %></td>
 </tr>
 <% stories.list top %>
 </table>

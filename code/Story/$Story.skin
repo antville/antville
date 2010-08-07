@@ -1,44 +1,31 @@
 <% #top %>
 <tr>
-<td align="right" valign="baseline" class="small"><% param.position %></td>
-<td align="right" valign="baseline"><% story.requests %></td>
-<td valign="baseline"><% story.created "yyyy-MM-dd" %></td>
-<td valign="baseline"><% story.title | default <% story.text | clip 5 %> | story.link  %></td>
-<td valign="baseline"><% story.creator %></td>
+<td><% param.position %></td>
+<td><% story.requests %></td>
+<td><% story.created "yyyy-MM-dd" %></td>
+<td><% story.title | default <% story.text | clip 5 %> | story.link  %></td>
+<td><% story.creator %></td>
 </tr>
 
 <% #listItem %>
-<div class="listSeparator"> </div>
-<table cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<% if <% story.status %> is closed then 
-   <% listItemFlag <% gettext closed %> %>
-else <% if <% story.mode %> is hidden then 
-   <% listItemFlag <% gettext hidden %> %> %>
-%>
-<td class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
-   <div class="ample"><strong><% gettext Status suffix=: %></strong>
-   <% gettext <% story.status %> %><% story.tags link prefix=<% gettext in 
-         context=preposition prefix=" " suffix=" " %> %><% story.comments link prefix="; " %></div>
-</td>
-<td rowspan="2" width="10" nowrap="nowrap"> </td>
-<td rowspan="2" align="right" class="small">
-   <% story.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% story.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% story.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% story.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>"%>
-</td>
-</tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% story.title %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% story.creator link %>
-   <% story.created short %> %></div>
-   <% story.text | clip %>
-</td>
-</tr>
-</table>
+<hr class="listSeparator" />
+<div class="listNavigationItem">
+   <div class="details">
+      <h2><% story.title %></h2>
+      <p><% gettext Macro suffix=':' %> <% story.macro %></p>
+      <p><em><% gettext "{0} on {1}" <% story.creator link %> <% story.created short %> %></em></p>
+      <p><% gettext Status suffix=':' %> <% gettext <% story.status %> %></p>
+      <p><% story.text | clip 10 %></p>
+      <p><% story.tags link prefix=<% gettext 'Tags' suffix=': ' %> suffix="; "%><% story.comments link %></p>
+   </div>
+
+   <ul>
+   <% story.link edit <% gettext 'Edit' %> prefix='<li>' suffix="</li>" %>
+   <% story.link main <% gettext 'View' context=verb %> prefix='<li>' suffix="</li>" %>
+   <% story.link rotate <% gettext 'Hide' %> prefix='<li>' suffix="</li>" %>
+   <% story.link delete <% gettext 'Delete' %> prefix='<li>' suffix="</li>" %>
+   </ul>
+</div>
 
 <% #referrer %>
 referrers.push(new Antville.Referrer("<% param.referrer %>", 

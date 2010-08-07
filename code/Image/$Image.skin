@@ -72,31 +72,20 @@ $(function() {
 </form>
 
 <% #listItem %>
-<div class="listSeparator"> </div>
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td colspan="2" class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% image.macro %>
-   <div class="ample"><strong><% gettext Properties suffix=: %></strong>
-   <% image.contentType %>, <% image.contentLength %>, 
-   <% image.width %>&times;<% image.height %> <% gettext pixels %></div>
-</td>
-</tr>
-<tr>
-<td>
-   <div class="storyTitle"><% image.name %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% image.creator link %> 
-         <% image.created short %> %></div>
-</td>
-<td align="right" class="small" valign="top">
-   <% image.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% image.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% image.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-   <% image.thumbnail vspace="5" | image.link %>
-</td>
-</tr>
-</table>
+<hr class="listSeparator" />
+<div class="listNavigationItem">
+   <div class="details">
+      <h2><% image.name %></h2>
+      <p><% gettext Macro suffix=':' %> <% image.macro %></p>
+      <p><em><% gettext "{0} on {1}" <% image.creator link %> <% image.created short %> %></em></p>
+      <p><% gettext Properties suffix=':' %>
+         <% image.contentType %>, <% image.contentLength %>, <% image.width %>&times;<% image.height %> <% gettext pixels %></p>
+      <p><% image.thumbnail | image.link %></p>
+   </div>
+
+   <ul>
+   <% image.link edit <% gettext 'Edit' %> prefix='<li>' suffix="</li>" %>
+   <% image.link main <% gettext 'View' context=verb %> prefix='<li>' suffix="</li>" %>
+   <% image.link delete <% gettext 'Delete' %> prefix='<li>' suffix="</li>" %>
+   </ul>
+</div>

@@ -153,8 +153,10 @@ alphabetical order." %></p>
 </table>
 
 <% #stylesheet %>
+/* Enable HTML5 in non-HTML5 browsers */
+header, nav, article, footer, section {display:block; margin: 0;}
+        
 /* CSS for protected skins (user interface elements etc.) */
-
 
 .form .row {
     margin: 10px 0px;
@@ -227,10 +229,64 @@ hr.listSeparator {
 }
 
 .listNavigationItem ul {
-   display: inline-block;
    list-style: none;
-}        
+   float: right;
+   margin-right: 10px;
+}
 
+.listNavigationItem li {
+   margin: 3px 0;
+}
+
+
+/** Table Styles */
+.scoreboard {
+   border-collapse: collapse;
+}
+
+.scoreboard th {
+   padding: 5px;
+   border: thin solid #ccc;
+}
+
+.scoreboard td {
+   border: 1px solid #ccc;
+   border-top: 0;
+   border-bottom: 0;
+}
+
+.scoreboard tr:last-child td {
+   border-bottom: 1px solid #ccc;
+   padding-bottom: 5px;
+}
+
+.scoreboard td {
+   vertical-align: top;
+   padding: 4px;
+}
+
+.scoreboard tr th:nth-child(1),
+.scoreboard tr td:nth-child(1){
+   width: 55px;
+   text-align: center;
+}
+
+.scoreboard tr th:nth-child(2),
+.scoreboard tr td:nth-child(2){
+   width: 90px;
+   text-align: center;
+}
+
+.scoreboard tr th:nth-child(3),
+.scoreboard tr td:nth-child(3){
+   width: 95px;
+   text-align: center;
+}
+
+.scoreboard tr th:nth-child(5),
+.scoreboard tr td:nth-child(5){
+   text-align: center;
+}
 
 /***********************************************************
 ul.skinmgrTree {
