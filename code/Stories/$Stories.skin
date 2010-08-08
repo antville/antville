@@ -1,5 +1,5 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <div class="ample">
    <% stories.link create <% gettext "Add Story" %> %>
 </div>

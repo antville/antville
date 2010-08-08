@@ -1,9 +1,9 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <div class="ample">
-   <% polls.link create <% gettext "Add Poll" %> prefix="... " %>
+   <% polls.link create <% gettext "Add Poll" %> %>
 </div>
-... 
+
 <% polls.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% polls.link running <% gettext Running %> prefix=" | " %>
 <% polls.link all <% gettext All %> prefix=" | " %>

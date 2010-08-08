@@ -1,9 +1,9 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 <div class="ample">
-   <% files.link create <% gettext "Add File" %> prefix="... " suffix="" %>
+   <% files.link create <% gettext "Add File" %> %>
 </div>
-... 
+ 
 <% files.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% files.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>

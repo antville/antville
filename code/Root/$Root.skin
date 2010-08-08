@@ -157,6 +157,56 @@ alphabetical order." %></p>
 header, nav, article, footer, section {display:block; margin: 0;}
         
 /* CSS for protected skins (user interface elements etc.) */
+/* Edit choice */
+.choice input[type='text'] {
+   margin-left: 10px;
+   width: 180px;
+}
+
+.resultBar {
+   margin: 20px 0;        
+}
+
+.resultBar p {
+   margin: 0;
+}
+
+.pollResultsBar.votes0 {
+   background: rgb(80, 20, 10);
+   background-color: rgba(80, 20, 10, 0.5);
+}
+
+.pollResultsBar {
+   margin-bottom: 5px;
+   height: 15px;
+   background: rgb(37,135,63); /* Fallback for older browsers */
+   background: -webkit-gradient(
+                   linear,
+                   left bottom,
+                   left top,
+                   color-stop(0.32, rgb(37,135,63)),
+                   color-stop(0.68, rgb(89,194,143)),
+                   color-stop(0.84, rgb(65,206,138))
+               );
+   background: -moz-linear-gradient(
+                   center bottom,
+                   rgb(37,135,63) 32%,
+                   rgb(89,194,143) 68%,
+                   rgb(65,206,138) 84%
+               );
+   -webkit-border-top-left-radius: 0px;
+   -webkit-border-top-right-radius: 5px;
+   -webkit-border-bottom-right-radius: 5px;
+   -webkit-border-bottom-left-radius: 0px;
+   -moz-border-radius-topleft: 0px;
+   -moz-border-radius-topright: 5px;
+   -moz-border-radius-bottomright: 5px;
+   -moz-border-radius-bottomleft: 0px;
+   border-top-left-radius: 0px;
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+   border-bottom-left-radius: 0px;
+}
 
 .form .row {
     margin: 10px 0px;
@@ -187,6 +237,10 @@ header, nav, article, footer, section {display:block; margin: 0;}
 
 .w200 {
    width: 200px;
+}
+
+.w300 {
+   width: 300px;
 }
 
 .w400 {

@@ -1,32 +1,24 @@
 <% #main %>
-<tr>
-<td valign="top" width="5%">
-   <input type="radio" id="<% choice.id %>" name="choice" 
+<div class="choice">        
+   <input type="radio" id="<% choice.id %>" name="choice"
    value="<% choice.id %>" <% if <% choice.selected %> is true then
       'checked="checked"'
    %> />
-</td>
-<td><label for="<% choice.id %>"><% choice.title %></label></td>
-</tr>
-
-<% #edit %>
-<div class="choice" style="margin-top: 5px;">
-   <span class="small"><% gettext Choice %> #<% param.index %>:</span>
-   <div>
-      <input type="text" name="title" class="formText" 
-            value="<% choice.title %>" />
-   </div>
+   <label for="<% choice.id %>"><% choice.title %></label>
 </div>
 
-<% #result %>
-<p>
-   <div style="width: <% choice.votes 300 default="1" %>px;" 
-   class="pollResultsBar"></div>
-   <span class="small"><% choice.votes % | format #.#% %> 
-   <% ngettext "{0} vote" "{0} votes" <% choice.votes %> 
-   prefix="(" suffix=")" %></span><br />
-   <% choice.title %>
+<% #edit %>
+<p class="choice w300">
+   <% gettext Choice %> #<% param.index %>:
+   <input type="text" name="title" class="formText" value="<% choice.title %>" />
 </p>
 
+<% #result %>
+<div class="resultBar">
+   <div style="width: <% choice.votes 300 default="7" %>px;" class="pollResultsBar <% choice.votes 100 default='0' prefix='votes' %>"></div>
+   <p><% choice.votes % | format #.#% %> <% ngettext "{0} vote" "{0} votes" <% choice.votes %> prefix="(" suffix=")" %></p>
+   <p><strong><% choice.title %></strong></p>
+</div>
+
 <% #graph %>
-<div style="width:<% param.width %>px;" class="pollResultsBar">&nbsp;</div>
+<div style="width: <% choice.votes 300 default="7" %>px;" class="pollResultsBar <% choice.votes 100 default='0' prefix='votes' %>"></div>
