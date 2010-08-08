@@ -1,5 +1,4 @@
 <% #header %>
-<section>
 <h2 class="storyTitle"><% poll.question %></h2>
 <p><small><% gettext "{0} on {1}" <% poll.creator %> <% poll.created %> %></small></p>
 
@@ -9,7 +8,6 @@
    <% poll.link rotate prefix=" | " %>
    <% poll.link delete <% gettext Delete %> prefix=" | " %>
 </p>
-</section>
 
 <% #main %>
 <% if <% param.header %> is true then <% poll.skin #header %> else
@@ -36,7 +34,7 @@
    <% if <% poll.status %> is open then "" else
       <% if <% poll.closed %> is null then "" else  
          <% gettext "This poll was closed by {0} on {1}"
-         <% poll.modifier %> <% poll.closed short %> prefix="<br />" %> 
+         <% poll.modifier %> <% poll.closed short %> prefix="<p>" suffix="</p>" %> 
       %>
    %>
 </p>
