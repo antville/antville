@@ -1,14 +1,16 @@
 <% #confirm %>
 <form action="<% response.action %>" method="post">
-<p class="storyTitle"><% gettext Warning! %></p>
+<h1 class="storyTitle"><% gettext Warning! %></h1>
 <p><% param.text %></p>
 <p><% gettext 'Please be aware of the fact that there is no “undo”, so if you 
 click “Proceed” below the changes will be applied irreversibly.' %></p>
 <p><% gettext 'Click “Cancel” now if you are not really sure you want to 
 proceed.' %></p>
 <% this.skin <% this.type prefix=$ suffix=#delete %> %>
-<p><button type="submit" name="proceed" value="1"><% gettext Proceed %></button>
-<a href="" class="cancel"><strong><% gettext Cancel %></strong></a></p>
+<p>
+   <button type="submit" name="proceed" value="1"><% gettext Proceed %></button>
+   <a href="./" class="cancel"><% gettext Cancel %></a>
+</p>
 </form>
 
 <% 
