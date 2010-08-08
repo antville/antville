@@ -1,23 +1,23 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 
 <div class="ample">
-   <% images.link create <% gettext "Add Image" %> prefix="... " %>
+   <% images.link create <% gettext "Add Image" %> %>
 </div>
-...
+<div>
 <% images.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% images.link all <% gettext All %> prefix=" | " %>
+</div>
 
 <% response.pager %>
 <% response.list %>
 <% response.pager %>
 
 <% #layout %>
-<div class="pagelink"><% breadcrumbs %></div><br />
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
 
 <div class="ample">
-   <% images.link create <% gettext "Add Layout Image" %> prefix="... " %>
+   <% images.link create <% gettext "Add Layout Image" %> %>
 </div>
 
 <% response.pager %>

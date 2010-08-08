@@ -116,7 +116,11 @@ suffix='</h2><div class="calendarBox">' %> suffix="</div>" %>
 </html>
 
 <% #javascript %>
-
+$(document).ready(function() {
+   $("input.macroCode").focus(function() {
+        this.select();
+   });
+});
 
 <% #values %>
 <%// FIXME - do we need that? (PN) %>

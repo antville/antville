@@ -1,21 +1,24 @@
 <% #main %>
-<div class="storyTitle">
-   <% image.name %>
-</div>
-<div class="storyDate">
-   <% gettext "{0} on {1}" <% image.creator link %> <% image.created short %> %>
-</div>
+<h1 class="storyTitle"><% image.name %></h1>
+<p>
+   <em><% gettext "{0} on {1}" <% image.creator link %> <% image.created short %> %></em>
+</p>
+
+<p>
+   <div><% gettext 'To insert this image into a story or comment of this site copy and paste the following code:' %></div>
+   <div>
+      <input type="text" class="macroCode" value="<% image.macro %>" />
+   </div>
+</p>
+
+<p>
+   <% image.link edit <% gettext Edit %> %>
+   <% image.link delete <% gettext Delete %> %>
+</p>
+
 <div>
    <% image.render | link <% image.url %> %>
 </div>
-<p class="small">
-   <% image.link edit <% gettext Edit %> prefix="... " %>
-   <% image.link delete <% gettext Delete %> prefix=" ... " %>
-</p>
-<p class="small">
-   <% gettext 'To insert this image into a story or comment of this site 
-         copy and paste the following code:' %> <code><% image.macro %></code>
-</p>
 
 <% #preview %>
 <p><% image.render | image.link %></p>

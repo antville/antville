@@ -158,6 +158,14 @@ header, nav, article, footer, section {display:block; margin: 0;}
         
 /* CSS for protected skins (user interface elements etc.) */
 /* Edit choice */
+input.macroCode {
+   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+   min-width: 200px;
+   font-size: 0.8em;
+   text-align: center;
+   padding: 3px 2px;
+}
+
 .choice input[type='text'] {
    margin-left: 10px;
    width: 180px;
