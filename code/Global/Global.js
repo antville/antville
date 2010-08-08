@@ -711,7 +711,7 @@ function validateUrl(str) {
  */
 function quote(str) {
    if (/[\W\D]/.test(str)) {
-      str = '"' + str + '"';
+      str = '&quot;' + str + '&quot;';
    }
    return str;
 }
