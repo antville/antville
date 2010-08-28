@@ -233,7 +233,6 @@ Site.prototype.getPermission = function(action) {
       case "error":
       case "notfound":
       case "robots.txt":
-      case "search":
       case "search.xml":
       case "user.js":
       return true;
@@ -243,6 +242,7 @@ Site.prototype.getPermission = function(action) {
       case "comments.xml":
       case "rss.xml":
       case "rss.xsl":
+      case "search":
       case "stories.xml":
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
