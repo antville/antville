@@ -1,14 +1,10 @@
 <% #main %>
 <article>
-<% story.skin Story#date %>
-<% story.skin Story#content %>
-<p class="small">
-   <% story.link comment#form <% gettext Comment context=verb %> %>
-   <% story.link edit <% gettext Edit %> %>
-</p>
-<a name="comments" id="comments"></a>
-<p><% story.comments %></p>
-<p><% story.referrers %></p>
+    <% story.skin Story#content %>
+    <footer>
+        <% story.skin Story#actions %>
+        <% story.skin Story#comments %>
+    </footer>
 </article>
 
 <% #edit %>
@@ -36,46 +32,53 @@
       <legend><% gettext Options %></legend>
       <p><% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %></p>
       <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
+      <p>
+         <% if <% story.creator %> is null then "" else
+            <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> prefix="<p>" suffix="</p>" %>
+         %>
+         <% if <% story.created %> is <% story.modified %> then "" else
+            <% gettext "Last modified by {0} on {1}" <% story.modifier %>
+            <% story.modified %> prefix="<p>" suffix="</p>" %>
+         %>
+      </p>
    </fieldset>
 
 
-   <% if <% story.creator %> is null then "" else
-      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> prefix="<p>" suffix="</p>" %>
-   %>
-   <% if <% story.created %> is <% story.modified %> then "" else
-      <% gettext "Last modified by {0} on {1}" <% story.modifier %>
-      <% story.modified %> prefix="<p>" suffix="</p>" %>
-   %>
-
    <div class="row">
-        <button type="submit" name="save" value="1"><% gettext Save %></button>
+        <button type="submit" class="normal" name="save" value="1"><% gettext Save %></button>
         <button type="button" id="restore" value="1"><% gettext Restore %></button>
     </div>
       
 </div>
 </form>
 
-<% #date %>
+<% #content %>
+<h1><a href="<% story.href %>"><% story.title %></a></h1>
+
 <div class="storyDate">
    <% story.creator link suffix=, %>
    <time datetime="<% story.created "iso8601w3c"  %>"><% story.created "EEEE, d. MMMM yyyy HH:mm" %></time>
 </div>
 
-<% #content %>
-<h1><% story.title %></h1>
-<div><% story.text | story.format %></div>
+<div class="storyText"><% story.text | story.format %></div>
 
 <% #preview %>
 <article>
-   <% story.skin Story#date %>
    <% story.skin Story#content %>
-   <p>
-      <% story.link main <% gettext Link %> %>
-      <% story.comments link prefix="(" suffix=")" %>
-      <% story.link comment#form <% gettext Comment context=verb %> %>
-      <% story.link edit <% gettext Edit %> %>
-   </p>
+   <footer>
+      <% story.skin Story#actions %>
+   </footer>
 </article>
+
+<% #actions %>
+<p class="small">
+    <% story.link comment#form <% gettext Comment context=verb %>  prefix="<span class='action'>" suffix="</span>" %>
+    <% story.link edit <% gettext Edit %> prefix="<span class='action'>" suffix="</span>" %>
+</p>
+
+<% #comments %>
+<% story.comments prefix="<p>" suffix="</p>" %>
+<% story.referrers prefix="<p>" suffix="</p>" %>
 
 <% #embed %>
 <% story.title prefix='<h1 class="storyTitle">'suffix="</h1>" %>
@@ -88,7 +91,6 @@
 </p>
 
 <% #comment %>
-<% story.skin Story#date %>
 <% story.skin Story#content %>
 
 <% #rss %>

@@ -18,7 +18,7 @@
    </div>
 
    <div class="row">
-       <button type="submit" id="submit" name="save" value="1"><% gettext "Save" %></button>
+       <button type="submit" class="normal small" id="submit" name="save" value="1"><% gettext "Save" %></button>
        <small><a href="." class="cancel"><% gettext Cancel %></a></small>
    </div>
 </div>
@@ -73,7 +73,7 @@
    </div>
 
    <div class="row">
-      <button type="submit" id="send" name="send" value="1"><% gettext "Send" %></button>
+      <button type="submit" class="normal small"  id="send" name="send" value="1"><% gettext "Send" %></button>
       <a href="." class="cancel"><% gettext Cancel %></a>
    </div>
 </div>

@@ -575,7 +575,7 @@ Story.prototype.format_filter = function(value, param, mode) {
          break;
          
          default:
-         value = this.macro_filter(format(value), param);
+         value = this.macro_filter(formatParagraphs(value), param);
          return this.url_filter(value, param);
       }
    }

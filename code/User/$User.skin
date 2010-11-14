@@ -94,7 +94,7 @@ $(function() {
    </div>
 
    <div class="row">
-      <button type="submit" id="save" name="save" value="1"><% gettext "Save" %></button>
+      <button type="submit" class="normal small" id="save" name="save" value="1"><% gettext "Save" %></button>
       <small><a href="<% this.href %>" class="cancel"><% gettext Cancel %></a></small>
    </div>
 </div>

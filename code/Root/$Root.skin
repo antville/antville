@@ -45,7 +45,7 @@ simple site hosting system with many advanced
 <td></td>
 <td>
    <br />
-   <button type="submit" name="create" value="1"><% gettext Create %></button>
+   <button type="submit" class="normal small" name="create" value="1"><% gettext Create %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>
@@ -166,6 +166,12 @@ input.macroCode {
    padding: 3px 2px;
 }
 
+.storyTitle {
+   font-size: 24px;
+   font-weight: bold;
+   margin-bottom: 12px;
+}
+
 .choice input[type='text'] {
    margin-left: 10px;
    width: 180px;
@@ -177,6 +183,25 @@ input.macroCode {
 
 .resultBar p {
    margin: 0;
+}
+
+h2.voteTitle {
+   font-size: 16px;
+   font-weight: bold;
+}
+
+form.voteForm p {
+   margin-top: 6px;
+   font-size: 15px;
+}
+
+form.voteForm .choice {
+   margin: 2px 0;
+   font-size: 15px;
+}
+
+button.vote.normal {
+   margin-right: 10px;
 }
 
 .pollResultsBar.votes0 {
@@ -217,21 +242,40 @@ input.macroCode {
 }
 
 .form .row {
-    margin: 10px 0px;
+    margin: 12px 0px;
 }
 
 .form .row label:first-child {
     width: 160px;
     display: inline-block;
+    margin-bottom: 3px;
 }
 
 .form .row.topLabel label:first-child {
     display: block;
     width: 100%;
+    margin-bottom: 2px;
 }
 
 .form .row .col {
     display: inline-block;
+}
+
+form fieldset {
+   border: 1px solid #ccc;
+   padding: 8px;
+   font-size: 13px;
+}
+
+form fieldset legend {
+   padding: 2px 5px 2px 5px;
+   margin-left: 10px;
+   font-size: 12px;
+   color: #8c8c8c;
+}
+
+form p {
+   margin: 10px 0; 
 }
 
 /** Needed for basic form layout **/
@@ -272,7 +316,12 @@ hr.listSeparator {
 }
 
 .listNavigationItem h2 {
-   font-size: 18px;
+   font-size: 15px;
+   margin-bottom: 2px;
+}
+
+.listNavigationItem p {
+   font-size: 13px;
 }
 
 .listNavigationItem .details {
@@ -280,10 +329,9 @@ hr.listSeparator {
    width: 500px;
 }
 
-.listNavigationItem h2,
 .listNavigationItem p,
 .listNavigationItem ul {
-   margin: 0px;
+   margin: 0 0 2px 0;
 }
 
 .listNavigationItem em {
@@ -298,8 +346,12 @@ hr.listSeparator {
 
 .listNavigationItem li {
    margin: 3px 0;
+   font-size: 13px;
 }
 
+.listNavigationItem p.imageThumbnail {
+   margin-top: 8px;
+}
 
 /** Table Styles */
 .scoreboard {
@@ -349,6 +401,86 @@ hr.listSeparator {
 .scoreboard tr td:nth-child(5){
    text-align: center;
 }
+
+/**********************************************************
+ * BUTTONS WITH CSS3
+ *********************************************************/
+
+/* pale blue (inspired by okcupid.com)
+*******************************************************************************/
+button.controls {
+   background: #e7eef5;
+   border: 1px solid #becfe3;
+   border-radius: 16px;
+   -moz-border-radius: 16px;
+   -webkit-border-radius: 16px;
+   box-shadow: inset 0 1px 0 0 #fff;
+   -moz-box-shadow: inset 0 1px 0 0 #fff;
+   -webkit-box-shadow: inset 0 1px 0 0 #fff;
+   color: #2a65a6;
+   font-family: "lucida grande", sans-serif;
+   font-size: 12px;
+   font-weight: normal;
+   line-height: 1;
+   padding: 4px 15px;
+   text-align: center;
+}
+
+button.controls:hover {
+   color: #6f8cc0;
+}
+
+button.controls:active {
+   border: 1px solid #8c98a7;
+   color: #6f8cc0;
+}
+
+button.controls a {
+   text-decoration: none;
+}
+
+/**** https://github.com/ubuwaits/css3-buttons ****/
+button.normal {
+  background: #eee;
+  background: -moz-linear-gradient(0% 100% 90deg, #bfbfbf, #eee);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#bfbfbf));
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  box-shadow: inset 0 0 5px #f5f5f5;
+  -moz-box-shadow: inset 0 0 5px #f5f5f5;
+  -webkit-box-shadow: inset 0 0 5px #f5f5f5;
+  color: #333;
+  font-family: "lucida grande", sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  padding: 8px 26px;
+  text-align: center;
+  text-shadow: 0 1px 0px #eee;
+}
+
+button.normal:hover {
+  cursor: pointer;
+  background: #dfdfdf;
+  background: -moz-linear-gradient(0% 100% 90deg, #aaa, #dfdfdf);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#dfdfdf), to(#aaa));
+  box-shadow: inset 0 0 5px #e5e5e5;
+  -moz-box-shadow: inset 0 0 5px #e5e5e5;
+  -webkit-box-shadow: inset 0 0 5px #e5e5e5;
+}
+
+button.normal:active {
+  background: #bfbfbf;
+  background: -moz-linear-gradient(0% 100% 90deg, #eee, #bfbfbf);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bfbfbf), to(#eee));
+}
+
+button.normal.small {
+   padding: 5px 10px
+}
+
 
 /***********************************************************
 ul.skinmgrTree {

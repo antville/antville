@@ -1,74 +1,87 @@
-<% #edit %>
-<script type="text/javascript">
-$(function() {
-   if ("<% image.fileName %>") {
-      $(".name").hide();
-   } else {
-      $("#image").hide();
-   }
-   if ("<% image.parent_type %>" === "Layout") {
-      $(".tags").hide();
-   }
-});
-</script>
+<% #add %>
+<h1 class="storyTitle"><% response.title %></h1>
+<form class="form" method="post" action="<% response.action %>" enctype="multipart/form-data">
+   <div class="row topLabel"> 
+      <label for="file"><% gettext "File" suffix=: %></label> 
+      <% image.upload file %>
+   </div>
 
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>" enctype="multipart/form-data">
-<table border="0" width="400" cellspacing="0" cellpadding="3" style="clear: both;">
-<tr>
-<td class="small"><% gettext "File" suffix=: %></td>
-<td><% image.upload file %></td>
-</tr>
-<tr class="name">
-<td valign="top" class="small"><% gettext Name suffix=: %></td>
-<td>
-   <% image.input name %><br />
-   <span class="small"><% gettext "If you do not specify a name Antville will 
-   create one based on the name of the local or remote file, resp." %></span>
-</td>
-</tr>
-<tr>
-<td class="small" valign="baseline"><% gettext Description suffix=: %></td>
-<td><% image.textarea description cols=40 %></td>
-</tr>
-<tr class="tags">
-<td class="small"><% gettext Tags suffix=: %></td>
-<td><% image.input tags size=55 %></td>
-</tr>
-<tr class="resize">
-<td></td>
-<td>
-   <span class="small"></small>
-</td>
-</tr>
-<tr class="resize">
-<td class="small" nowrap="nowrap"><% gettext "Max. width" suffix=: %></td>
-<td><% image.input maxWidth value="400" %> pixel</td>
-</tr>
-<tr class="resize">
-<td class="small" nowrap="nowrap"><% gettext "Max. height" suffix=: %></td>
-<td><% image.input maxHeight value="400" %> pixel</td>
-</tr>
-<tr class="resize">
-<td class="small"> </td>
-<td class="small">
+   <div class="row topLabel"> 
+      <label for="name"><% gettext "Name" suffix=: %></label> 
+      <% image.input name %><br/>
+      
+      <small><% gettext "If you do not specify a name Antville will 
+      create one based on the name of the local or remote file, resp." %></small>
+   </div>
+
+
+   <div class="row topLabel"> 
+      <label for="description"><% gettext Description suffix=: %></label> 
+      <% image.textarea description cols=40 %>
+   </div>
+
+   <div class="row topLabel"> 
+      <label for="tags"><% gettext Tags suffix=: %></label> 
+      <% image.input tags size=55 %>
+   </div>
+
+   <div class="row topLabel"> 
+      <label for="maxWidth"><% gettext "Max. width" suffix=: %></label>
+      <% image.input maxWidth value="400" %>
+   </div>
+   
+   <div class="row topLabel">
+      <label for="maxHeight"><% gettext "Max. height" suffix=: %></label>
+      <% image.input maxHeight value="400" %>
+   </div>
+   
+   <p><small>
    <% gettext "If you want to resize the image please specify your desired 
    maximum width and/or maximum height in pixels. If you specify both the image 
    will be resized to match both criterias, but the image ratio will be 
-   preserved." %><br /><br />
+   preserved." %><br />
    <% gettext "If the width or height of your image exceeds 100 pixels Antville 
    automatically creates a thumbnail of it, too." %>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"> </td>
-<td>
-   <br />
-   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+   </small></p>
+
+   <div class="row topLabel">
+      <button type="submit" class="normal small" id="save" name="save" value="1"><% gettext Save %></button>
+      <a href="" class="cancel"><% gettext Cancel %></a>
+   </div>
+
+</form>
+
+<% #edit %>
+<h1 class="storyTitle"><% response.title %></h1>
+<form class="form" method="post" action="<% response.action %>" enctype="multipart/form-data">
+   <div class="row topLabel"> 
+      <label for="name"><% gettext "Name" suffix=: %></label> 
+      <% image.input name %><br/>
+      
+      <small><% gettext "If you do not specify a name Antville will 
+      create one based on the name of the local or remote file, resp." %></small>
+   </div>
+
+   <div class="row topLabel"> 
+      <label for="description"><% gettext Description suffix=: %></label> 
+      <% image.textarea description cols=40 %>
+   </div>
+
+   <div class="row topLabel"> 
+      <label for="tags"><% gettext Tags suffix=: %></label> 
+      <% image.input tags size=55 %>
+   </div>
+   
+   <div class="row">
+      <p class="imageThumbnail"><% image.thumbnail | image.link %></p>
+   </div>
+
+   <div class="row topLabel">
+      <button type="submit" class="normal small" id="save" name="save" value="1"><% gettext Save %></button>
+      <a href="delete" class="delete"><% gettext Delete %></a>
+      <a href="" class="cancel"><% gettext Cancel %></a>
+   </div>
+
 </form>
 
 <% #listItem %>
@@ -80,7 +93,7 @@ $(function() {
       <p><em><% gettext "{0} on {1}" <% image.creator link %> <% image.created short %> %></em></p>
       <p><% gettext Properties suffix=':' %>
          <% image.contentType %>, <% image.contentLength %>, <% image.width %>&times;<% image.height %> <% gettext pixels %></p>
-      <p><% image.thumbnail | image.link %></p>
+      <p class="imageThumbnail"><% image.thumbnail | image.link %></p>
    </div>
 
    <ul>

@@ -1,25 +1,27 @@
 <% #header %>
-<h2 class="storyTitle"><% poll.question %></h2>
+<h2 class="voteTitle"><% poll.question %></h2>
 <p><small><% gettext "{0} on {1}" <% poll.creator %> <% poll.created %> %></small></p>
 
 <% #footer %>
 <p>
-   <% poll.link edit <% gettext Edit %> %>
-   <% poll.link rotate prefix=" | " %>
-   <% poll.link delete <% gettext Delete %> prefix=" | " %>
+   <% poll.link edit <% gettext Edit %> prefix='<button class="controls">' suffix='</button>' %>
+   <% poll.link rotate prefix='<button class="controls">' suffix='</button>' %>
+   <% poll.link delete <% gettext Delete %> prefix='<button class="controls">' suffix='</button>' %>
 </p>
 
 <% #main %>
+<section>
 <% if <% param.header %> is true then <% poll.skin #header %> else
-      <% poll.question prefix='<h2 class="storyTitle">' suffix="</h2> %> %>
-<form method="post" action="<% poll.href %>">
+      <% poll.question prefix='<h2 class="voteTitle">' suffix="</h2> %> %>
+<form class="voteForm" method="post" action="<% poll.href %>">
 
 <% poll.loop skin="$Choice#main" %>
 
 <p>
-   <button type="submit" name="vote" value="1"><% gettext Vote %></button>
+   <button type="submit" class="vote normal small" name="vote" value="1"><% gettext Vote %></button>
    <% poll.link result <% gettext "Results" %> %>
 </p>
+</section>
 
 </form>
 <% poll.skin #footer %>
@@ -81,11 +83,11 @@ $(function() {
 </script>
 
 <h1 class="storyTitle"><% response.title %></h1>
-<form method="post" action="<% response.action %>">
-<p>
-   <% gettext Question suffix=':' %><br/>
+<form class="form" method="post" action="<% response.action %>">
+<div class="row">
+   <label for="question"><% gettext Question suffix=':' %><label>
    <% poll.input question class="w300" %>
-</p>
+</div>
 <% poll.input choices %>
 <p>
    <a href="#/" id="add" role="button"><% gettext "Add Choice" %></a>
@@ -98,13 +100,13 @@ $(function() {
       <% poll.modified short %> prefix="<br />" %>
    %>
 </p>
-<div>
-   <button type="submit" name="save" value="<% poll.status default=closed %>">
+<div style="margin-top: 10px;">
+   <button type="submit" class="normal small"  name="save" value="<% poll.status default=closed %>">
       <% gettext Save %>
    </button>
    <% if <% poll.status %> is open then "" else 
          <% gettext "Save and Run" prefix='<button type="submit" 
-               name="save" value="open"><strong>' suffix=</strong></button> %>
+               class="normal small" name="save" value="open"><strong>' suffix=</strong></button> %>
    %>
    <a href="./" class="cancel"><% gettext Cancel %></a>
 </div>

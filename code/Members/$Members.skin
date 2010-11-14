@@ -63,7 +63,7 @@ $(function() {
     </div>
 
     <div class="row">
-        <button type="submit" id="submit" name="login" value="1" tabindex="4"><% gettext Login %></button>
+        <button type="submit" class="normal small" id="submit" name="login" value="1" tabindex="4"><% gettext Login %></button>
         <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small> 
     </div>
 </div>
@@ -123,7 +123,7 @@ $(function() {
     </div>
 
     <div class="row">
-        <button type="submit" id="submit" name="register" value="1"><% gettext Register %></button>
+        <button type="submit" class="normal small"  id="submit" name="register" value="1"><% gettext Register %></button>
         <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
     </div>
 </div>
@@ -146,7 +146,7 @@ $(function() {
     </div>
 
     <div class="row">
-        <button type="submit" id="submit" name="reset" value="1"><% gettext "Request password" %></button>
+        <button type="submit" class="normal small" id="submit" name="reset" value="1"><% gettext "Request password" %></button>
         <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
     </div>
 </div>
@@ -170,7 +170,7 @@ $(function() {
     <input type="hidden" name="token" id="token" value="<% request.token %>" />
 
     <div class="row">
-        <button type="submit" id="save" name="save" value="1"><% gettext "Save" %></button>
+        <button type="submit" class="normal small"  id="save" name="save" value="1"><% gettext "Save" %></button>
         <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
     </div>
 </div>
@@ -184,7 +184,7 @@ $(function() {
 <form method="post" action="<% response.action %>">
 <label for="term" class="hidden"><% gettext "Search term" suffix=":" %></label>
 <input type="text" name="term" id="term" value="<% request.term encoding="form" %>" />
-<button type="submit" name="search" value="1"><% gettext Search %></button>
+<button type="submit" class="normal small" name="search" value="1"><% gettext Search %></button>
 <small><a href="<% this.href %>" class="cancel"><% gettext Cancel %></a></small>
 </form>
 <% response.result %>
@@ -195,7 +195,7 @@ $(function() {
 
 <% param.result %>
 
-<button type="submit" id="add" name="add" value="1"><% gettext "Add Member" %></button>
+<button type="submit" class="normal small" id="add" name="add" value="1"><% gettext "Add Member" %></button>
 </form>
 
 <% #result %>

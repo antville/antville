@@ -38,8 +38,8 @@
    %>
 </p>
 <p>
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <button type="button" id="restore" value="1"><% gettext Restore %></button>
+   <button type="submit" class="normal small" name="save" value="1"><% gettext Save %></button>
+   <button type="button" class="normal small" id="restore" value="1"><% gettext Restore %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>

@@ -110,7 +110,7 @@ Images.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Image");
-   res.data.body = image.renderSkinAsString("$Image#edit");
+   res.data.body = image.renderSkinAsString("$Image#add");
    res.handlers.site.renderSkin("Site#page");
    return;
 }

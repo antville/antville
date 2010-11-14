@@ -10,30 +10,7 @@
 <span class="<% param.class %>"><% param.text %></span>
 
 <% #upload %>
-<script type="text/javascript">
-$(function() {
-   if ($.browser.safari) {
-      $(".upload #<% param.name %>").css("visibility", "hidden");
-   } else {
-      $(".upload #<% param.name %>_control").hide();
-   }
-});
-</script>
-
-<div class="upload" style="position: relative;">
-   <input type="file" id="<% param.name %>" name="<% param.name %>" 
-         onchange='$("#<% param.name %>_origin").val($(this).val());' 
-         style="position: relative; z-index: 1;" />
-   <div class="text" style="position: absolute; z-index: 2; top: 0; left: 0;">
-      <input type="text" name="<% param.name %>_origin" 
-            id="<% param.name %>_origin" value="<% param.value %>" 
-            onblur='$("#<% param.name %>").val("");' />
-      <button id="<% param.name %>_control" name="<% param.name %>_control" 
-            type="button" onclick='$("#<% param.name %>").click();'>
-         <% gettext "Browse..." %>
-      </button>
-   </div>
-</div>
+<input type="file" name="<% param.name %>_origin" id="<% param.name %>_origin" value="<% param.value %>" />
 
 <% #listItemFlag %>
 <td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 

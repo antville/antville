@@ -26,7 +26,8 @@
 </tr>
 
 <% #controls %>
-... <a href="" onclick='var name; 
+... 
+<a href="" onclick='var name; 
       if (name = prompt("<% gettext 'Please enter new name for this tag' suffix=: %>")) {
          location.href="<% tag.href action="rename" %>?name=" + name;
       }'><% gettext "Rename Tag" %></a> |

@@ -1,40 +1,27 @@
 <% #edit %>
-<script type="text/javascript">
-$(function() {
-   if ("<% file.created %>") {
-      $(".name").hide();
-      $(".resize").hide();  
-   };
-});
-</script>
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>" enctype="multipart/form-data">
-<table border="0" width="400" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext "File" suffix=: %></td>
-<td><% file.upload file %></td>
-</tr>
-<tr class="name">
-<td valign="top" class="small"><% gettext Name suffix=: %></td>
-<td>
-   <% file.input name %><br />
-   <span class="small"><% gettext "If you do not specify a name Antville will 
-   create one based on the name of the local or remote file, resp." %></span>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"><% gettext Description suffix=: %></td>
-<td><% file.textarea description cols=40 %></td>
-</tr>
-<tr>
-<td class="small" valign="top"> </td>
-<td>
-   <br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
+<h1 class="storyTitle"><% response.title %></h1>
+<form class="form" method="post" action="<% response.action %>" enctype="multipart/form-data">
+
+   <div class="row topLabel"> 
+      <label for="file_origin"><% gettext "File" suffix=: %></label> 
+      <% file.upload file %>
+   </div>
+
+   <div class="row topLabel"> 
+      <label for="name"><% gettext Name suffix=: %></label> 
+      <% file.input name %><br />
+      <small><% gettext "If you do not specify a name Antville will 
+      create one based on the name of the local file." %></small>
+   </div>
+   
+   <div class="row topLabel"> 
+      <label for="description"><% gettext Description suffix=: %></label> 
+      <% file.textarea description cols=40 %>
+   </div>
+
+   
+   <button type="submit" class="normal small" name="save" value="1"><% gettext Save %></button>
    <a href="" class="cancel"><% gettext Cancel %></button>
-</td>
-</tr>
-</table>
 </form>
 
 

@@ -8,7 +8,7 @@ click “Proceed” below the changes will be applied irreversibly.' %></p>
 proceed.' %></p>
 <% this.skin <% this.type prefix=$ suffix=#delete %> %>
 <p>
-   <button type="submit" name="proceed" value="1"><% gettext Proceed %></button>
+   <button type="submit" class="normal small" name="proceed" value="1"><% gettext Proceed %></button>
    <a href="./" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>

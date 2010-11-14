@@ -12,10 +12,10 @@ else
 </div>
 <% skin.textarea source class="formWide" wrap="virtual" %>
 <p>
-   <button type="submit" name="save" value="1">
+   <button type="submit" class="normal small" name="save" value="1">
       <% gettext "Save and Edit" %>
    </button>
-   <button type="submit" name="save" value="2">
+   <button type="submit" class="normal small" name="save" value="2">
       <strong><% gettext "Save" %></strong>
    </button>
    <a href="<% layout.skins.href modified %>"><% gettext Cancel %></a>

@@ -39,7 +39,7 @@ prefix="Last update: " default="None so far" %>)</small></li>
 <form method="post" action="<% site.href search %>">
    <label for="q" class="hidden"><% gettext "Search term" suffix=":" %></label>
    <input type="text" size="15" name="q" class="searchbox" value="<% request.q encoding="form" %>" />
-   <button type="submit" name="search" value="1" class="searchbox"><% gettext Find %></button>
+   <button type="submit" class="normal small" name="search" value="1" class="searchbox"><% gettext Find %></button>
 </form>
 
 <% #robots %>
@@ -62,6 +62,7 @@ Disallow: /stories/top
 
 <!-- Beta, just a try -->
 <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Neuton&subset=latin' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
 
 <!--[if IE]>
@@ -75,7 +76,7 @@ Disallow: /stories/top
 <h1><% site.title | site.link title=<% site.tagline %> %></h1>
 </header>
 
-<div id="main">
+<div class="wrapper">
 <section>
    <% response.message prefix='<div class="message">' suffix='</div><br />' %>
    <% response.body %>
@@ -103,14 +104,14 @@ suffix='</h2><div class="calendarBox">' %> suffix="</div>" %>
 <h2><% gettext "Updates" %></h2>
 <% list postings skin=Story#history %>
 
-<hr>
+<hr class="madeSeparator" />
 
 <ul>
-   <li><% image /rss.png | site.link rss.xml %></li>
    <li><% image /smallchaos.gif | link http://antville.org %></li>
    <li><% image /helma.png | link http://helma.org %></li>
 </ul>
 </nav>
+<div class="clearer"></div>
 </div>
 </body>
 </html>
@@ -142,6 +143,134 @@ $(document).ready(function() {
 <% value "small font color" #959595 %>
 
 <% #stylesheet %>
+/** YUI 3 reset.css **/
+s/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 3.0.0
+build: 1549
+*/
+/*
+   TODO will need to remove settings on HTML since we can't namespace it.
+   TODO with the prefix, should I group by selector or property for weight savings?
+*/
+html{
+   color:#000;
+   background:#FFF;
+}
+/*
+   TODO remove settings on BODY since we can't namespace it.
+*/
+/*
+   TODO test putting a class on HEAD.
+      - Fails on FF. 
+*/
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+   margin:0;
+   padding:0;
+}
+table {
+   border-collapse:collapse;
+   border-spacing:0;
+}
+fieldset,
+img {
+   border:0;
+}
+/*
+   TODO think about hanlding inheritence differently, maybe letting IE6 fail a bit...
+*/
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+   font-style:normal;
+   font-weight:normal;
+}
+/*
+   TODO Figure out where this list-style rule is best set. Hedger has a request to investigate.
+*/
+li {
+   list-style:none;
+}
+
+caption,
+th {
+   text-align:left;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+   font-size:100%;
+   font-weight:normal;
+}
+q:before,
+q:after {
+   content:'';
+}
+abbr,
+acronym {
+   border:0;
+   font-variant:normal;
+}
+/* to preserve line-height and selector appearance */
+sup {
+   vertical-align:text-top;
+}
+sub {
+   vertical-align:text-bottom;
+}
+input,
+textarea,
+select {
+   font-family:inherit;
+   font-size:inherit;
+   font-weight:inherit;
+}
+/*to enable resizing for IE*/
+input,
+textarea,
+select {
+   *font-size:100%;
+}
+/*because legend doesn't inherit in IE */
+legend {
+   color:#000;
+}
+
 /** DO NOT REMOVE THE .hidden CLASS! IT'S USED TO IMPROVE THE ACCESSIBILITY **/
 .hidden {
     position: absolute;
@@ -149,20 +278,174 @@ $(document).ready(function() {
     left: -6000px;
 }
 
+.clearer {
+    clear: both;
+}
+
 body {
     font-family: 'Droid Sans', arial, serif;
-    margin: 0px 0px 0px 16px;
-    padding: 0px;
+    margin: 0;
+    padding: 0 0 60px 0;
+    color: #161616;
 }
 
-#main > section {
-    width: 700px;
+.wrapper {
+    width: 982px;
+}
+
+.wrapper > section {
+    width: 675px;
+    float: left;
+    padding: 0 25px 0 30px;
+}
+
+.wrapper > nav {
+    width: 230px;
+    padding: 0px 0px 0px 20px;
     float: left;
 }
 
-#main > nav {
-    float: left;
-    width: 240px;
-    padding: 0px 0px 0px 14px;
+.wrapper section > p {
+   margin: 10px 0;
 }
 
+a {
+    color: #2e4e94;
+}
+
+a:focus,
+a:hover {
+    color: #444;
+    text-decoration: underline;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    -webkit-transition: color 250ms ease-in;
+    -moz-transition: color 250ms ease-in;
+    -o-transition: color 250ms ease-in;
+    transition: color 250ms ease-in;
+}
+
+header a:focus,
+header a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+header a:focus:after,
+header a:hover:after {
+    content: ' ‣';
+}
+
+header {
+    border-bottom: 1px solid #e0e0e2;
+    margin-bottom: 23px;
+    padding: 10px 8px 8px 30px;
+    
+    background: #93cede; /* old browsers */
+    background: -moz-linear-gradient(top, #93cede 0%, #75bdd1 41%, #49a5bf 100%); /* firefox */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#93cede), color-stop(41%,#75bdd1), color-stop(100%,#49a5bf)); /* webkit */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93cede', endColorstr='#49a5bf',GradientType=0 ); /* ie */
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+article {
+    border-bottom: 1px solid #e0e0e2;
+    padding-bottom: 26px;
+    margin-bottom: 22px;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+article .storyDate {
+    font-size: 13px;
+    margin: 0 0 8px 0;
+}
+
+article h1 {
+    font-size: 22px;
+    margin: 0 0 2px 0;
+}
+
+article h1 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+article h1 a:focus,
+article h1 a:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+article h1 a:focus:after,
+article h1 a:hover:after {
+    content: ' ‣';
+}
+
+article .storyText {
+    padding-right: 15px;
+}
+
+article .storyText p {
+    margin-bottom: 10px;
+}
+
+article footer {
+    margin-top: -4px;
+}
+
+article footer .action {
+    margin-right: 10px;
+}
+
+nav {
+    font-size: 13px;
+    border-left: 1px solid #e0e0e2;
+}
+
+nav h2 {
+    font-size: 15px;
+    font-family: 'Neuton', arial, helvetica, serif; 
+    margin: 12px 0 0 0;
+    font-weight: bold;
+}
+
+nav .historyItem {
+    margin-bottom: 6px;
+}
+
+nav li {
+    margin: 0 0 3px 0;
+}
+
+nav .madeSeparator {
+    border: none;
+    height: none;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    margin-top: 30px;
+}
+
+nav .calendar th {
+   text-align: center;
+   font-weight: bold;
+   height: 20px;
+}
+
+nav .calendar .day {
+   width: 32px;
+   height: 20px;
+}
+
+/**** List Styles ****/
+article ul li {
+   list-style-type: disc;
+}

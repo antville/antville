@@ -132,23 +132,12 @@ File.prototype.edit_action = function() {
 File.prototype.getFormValue = function(name) {
    var self = this;
    
-   var getOrigin = function(str) {
-      var origin = req.postParams.file_origin || self.origin;
-      if (origin && origin.contains("://")) {
-         return origin;
-      }
-      return null;
-   }
-   
    if (req.isPost()) {
-      if (name === "file") {
-         return getOrigin();
-      }
       return req.postParams[name];
    }
    switch (name) {
       case "file":
-      return getOrigin();
+      return req.postParams.file_origin;
    }
    return this[name];
 }
@@ -169,7 +158,7 @@ File.prototype.update = function(data) {
          throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
       }
    } else if (data.file_origin !== this.origin) {
-      var mime = data.file;
+      var mime = data.file_origin;
       if (mime.contentLength < 1) {
          mime = getURL(data.file_origin);
          if (!mime) {

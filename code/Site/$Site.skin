@@ -18,7 +18,7 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <div class="form">
    <div class="row">
       <input type="text" name="filter" value="<% request.filter encoding="form" %>" size="30" />
-      <button type="submit" name="submit" value="1"><% gettext Filter %></button>
+      <button type="submit" class="normal small"  name="submit" value="1"><% gettext Filter %></button>
    </div>
 
    <div class="row">
@@ -107,7 +107,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
          <% file.skin File#main %> '<small>' 
          <% file.created | format short %> '</small>' %> %> else <% param.status %> %></p>
    <form action="" method="post">
-   <button type="submit" name="submit" value="<% if <% param.status %> is null then start else stop %>">
+   <button type="submit" class="normal small" name="submit" value="<% if <% param.status %> is null then start else stop %>">
       <% if <% param.status %> is null then <% gettext Start %> else <% gettext Stop %> %>
    </button>
    <a href="" class="cancel"><% gettext Cancel %></a>
@@ -123,7 +123,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
    <form method="post" enctype="multipart/form-data">
       
    <% if <% file.self %> is null then <% site.upload file prefix=<p> suffix=</p> %> %>
-   <button type="submit" name="submit" value="<% if <% file.self %> is null then start else stop %>">
+   <button type="submit" class="normal small" name="submit" value="<% if <% file.self %> is null then start else stop %>">
       <% if <% file.self %> is null then <% gettext Start %> else <% gettext Stop %> %>
    </button>
    <a href="" class="cancel"><% gettext Cancel %></a>
@@ -218,7 +218,7 @@ line to be applied on every URL in the referrer and backlink lists."
 <tr>
 <td></td>
 <td><br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
+   <button type="submit" class="normal small" name="save" value="1"><% gettext Save %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </tr>
 </table>
