@@ -7,7 +7,7 @@ $(function() {
       if (name) {
          var key = "value_" + name;
          var emptyFields = $("#addValueFields").clone();
-         $("#newKey").html(name + ":").attr("id", null);
+         $("#newKey").html(name + ":").attr({"id": null, "for": key});
          $("#newValue").attr("name", key).attr("id", key);
          $("#addValueFields").show().after(emptyFields).attr("id", null);
       }
@@ -16,36 +16,33 @@ $(function() {
 });
 </script>
 
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">
-   <% layout.link import <% gettext Import %> prefix="... " %>
+<h1 class="storyTitle"><% response.title %></h1>
+
+<div class="ample">        
+   <% layout.link import <% gettext Import %> %>
    <% layout.link export <% gettext Export %> prefix=" | " %>
    <% layout.link reset <% gettext Reset %> prefix=" | " %>
+   <% layout.link images <% gettext Images %> prefix=" | " %>
+   <% layout.link skins <% gettext Skins %> prefix=" | " %>
 </div>
-... 
-<% layout.link images <% gettext Images %> %>
-<% layout.link skins <% gettext Skins %> prefix=" | " %>
-<br /><br />
-<form id="prefs" method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="2">
+
+<form id="prefs" class="form" method="post" action="<% response.action %>">
+
 <% layout.values %>
-<tr id="addValueFields">
-<td id="newKey" class="small"></td>
-<td><input type="text" name="newValue" id="newValue" size="40" /></td>
-</tr>
-<tr>
-   <td></td>
-<td>
-   <div class="small">
+
+<div class="row" id="addValueFields">
+   <label id="newKey" for="" class="col w150"><% param.key %>:</label>
+   <input type="text" name="newValue" id="newValue" class="w300" />
+</div>
+
+<div class="row">
       <a href="" id="addValueLink"><% gettext "Add variable" %></a>
-   </div>
-   <p><br />
-      <button type="submit" class="normal small"  name="save" value="1"><% gettext Save %></button>
-      <a href="" class="cancel"><% gettext Cancel %></a>
-   </p>
-</td>
-</tr>
-</table>
+</div>
+
+<div class="row">
+   <button type="submit" class="normal small"  name="save" value="1"><% gettext Save %></button>
+   <a href="" class="cancel"><% gettext Cancel %></a>
+</div>
 </form>
 
 <% #import %>
@@ -58,8 +55,7 @@ $(function() {
 </form>
 
 <% #value %>
-<tr>
-<td class="small"><% param.key %>:</td>
-<td><input type="text" name="value_<% param.key %>" 
-      value="<% param.value %>" size="40" /></td>
-</tr>
+<div class="row">
+   <label for="value_<% param.key %>" class="col w150"><% param.key %>:</label>
+   <input type="text" name="value_<% param.key %>" value="<% param.value %>" class="w300" />
+</div>

@@ -13,7 +13,7 @@
    </div>
 
    <div class="row">
-      <span class="col w100"><% gettext "Role" suffix=":" %></span>
+      <label for="role" class="col w100"><% gettext "Role" suffix=":" %></label>
       <% membership.select role %>
    </div>
 

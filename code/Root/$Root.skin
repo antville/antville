@@ -241,12 +241,20 @@ button.vote.normal {
    border-bottom-left-radius: 0px;
 }
 
+.ample + .form {
+   margin-top: 18px;
+}
+
+.form h2 {
+   font-weight: bold;
+   font-size: 18px;
+}
+
 .form .row {
     margin: 12px 0px;
 }
 
-.form .row label:first-child {
-    width: 160px;
+.form .row label {
     display: inline-block;
     margin-bottom: 3px;
 }
@@ -259,6 +267,7 @@ button.vote.normal {
 
 .form .row .col {
     display: inline-block;
+    vertical-align: top;
 }
 
 form fieldset {
@@ -285,6 +294,10 @@ form p {
 
 .w140 {
    width: 140px;
+}
+
+.w150 {
+   width: 150px;
 }
 
 .w200 {
@@ -437,6 +450,11 @@ button.controls:active {
 
 button.controls a {
    text-decoration: none;
+}
+
+.tagList li {
+   list-style: disc;
+   margin-left: 20px;
 }
 
 /**** https://github.com/ubuwaits/css3-buttons ****/

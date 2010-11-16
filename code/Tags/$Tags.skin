@@ -1,10 +1,13 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.list prefix="<ul>" suffix="</ul> %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
+<h1 class="storyTitle"><% response.title %></h1>
+
+<div class="tagList">
+   <% tags.alphabet prefix='<div>' suffix='</div>' %>
+   <% tags.pager prefix='<div>' suffix='</div>' %>
+   <% tags.list prefix="<ul>" suffix="</ul> %>
+   <% tags.pager prefix='<div>' suffix='</div>' %>
+   <% tags.alphabet prefix='<div>' suffix='</div>' %>
+</div>
 
 <% #header %>
 <th><% param.title %></th>
