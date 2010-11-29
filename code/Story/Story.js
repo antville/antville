@@ -481,8 +481,6 @@ Story.prototype.comments_macro = function(param, mode) {
    } else {
       this.prefetchChildren();
       this.forEach(function() {
-         html.openTag("a", {name: this._id});
-         html.closeTag("a");
          this.renderSkin(this.parent.constructor === Story ? 
                "Comment#main" : "Comment#reply");
       });

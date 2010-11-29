@@ -1,34 +1,38 @@
 <% #main %>
-<div class="listSeparator"></div>
 <% comment.skin Comment#content %>
-<p class="small">
-   <% comment.link main <% gettext Link %> prefix="... " %> 
-   <% comment.link edit <% gettext Edit %> prefix="... " %>
-   <% comment.link delete <% gettext Delete %> prefix="... " %>
-   <% comment.link rotate prefix="... " %>
-</p>
-<% comment.comments %>
-<div class="reply small">
-   <% comment.link comment#form <% gettext Comment context=verb %> prefix="<br />... " %>
+
+<div class="row">
+   <button class="controls"><% comment.link comment#form <% gettext "Reply" %> %></button>
+   <button class="controls"><% comment.link main <% gettext Link %> %></button>
+   <button class="controls"><% comment.link edit <% gettext Edit %> %></button>
+   <button class="controls"><% comment.link delete <% gettext Delete %> %></button>
+   <button class="controls"><% comment.link rotate %></button>
+</div>
+
+<div class="replies">
+   <% comment.comments %>
 </div>
 
 <% #edit %>
+<article>
 <% comment.skin $Story#restore %>
 <% if <% comment.creator %> is null then 
    <% parent.skin <% parent.type suffix=#comment %> %>
 %>
-<a name="form" id="form"></a>
-<br />
-<form method="post" action="<% response.action %>">
-<p class="backup">
-   <span class="small"><% gettext Title suffix=: %></span><br />
-   <% comment.input title class="formTitle" %>
-</p>
-<p class="backup">
-   <span class="small"><% gettext Text suffix=: %></span><br />
-   <% comment.textarea text cols="31" rows="10" class="formText" %>
-</p>
-<p class="small">
+
+<form method="post" id="form" action="<% response.action %>" class="form">
+
+<div class="row topLabel"> 
+   <label for="title">Title:</label>
+   <% comment.input title class="w450" type="text" size="20" value="" %> 
+</div>
+
+<div class="row topLabel"> 
+   <label for="text"><% gettext Text suffix=: %></label>
+   <% comment.textarea text class="w450" rows="12" value="" %> 
+</div>
+
+<div class="row"> 
    <% if <% comment.creator %> is null then "" else 
       <% gettext "Created by {0} on {1}" <% comment.creator %> <% comment.created %> %> 
    %>
@@ -36,33 +40,39 @@
       <% gettext "Last modified by {0} on {1}" <% comment.modifier %>
       <% comment.modified %> prefix="<br />" %>
    %>
-</p>
-<p>
+</div>
+
+<div class="row">
    <button type="submit" class="normal small" name="save" value="1"><% gettext Save %></button>
    <button type="button" class="normal small" id="restore" value="1"><% gettext Restore %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
-</p>
+</div>
 </form>
 
-<% #content %>
-<div class="storyDate">
-   <% comment.creator link %>, <% comment.created short %>
-</div>
-<div class="title"><% comment.title %></div>
-<div><% comment.text | comment.format %></div>
+</article>
 
-<% #comment %>
-<% comment.skin Comment#content %>
-<% comment.comments %>
+<% #content %>
+<section class="commentWrapper" id="<% this.id %>">
+    <div class="commentDate">
+       <% comment.creator link %>,
+       <time datetime="<% comment.created "iso8601w3c"  %>"><% comment.created short %></time>
+    </div>
+    <h3 class="commentTitle"><% comment.title %></h3>
+    <div><% comment.text | comment.format %></div>
+
+    <% #comment %>
+    <% comment.skin Comment#content %>
+    <% comment.comments %>
+</section>
 
 <% #reply %>
 <div class="reply">
-   <div class="listSeparator"></div>
    <% comment.skin Comment#content %>
-   <p class="small">
-      <% comment.link main <% gettext Link %> prefix="... " %>
-      <% comment.link edit <% gettext Edit %> prefix="... " %>
-      <% comment.link delete <% gettext Delete %> prefix="... " %>
-      <% comment.link rotate prefix="... " %>
-   </p>
+   
+   <div class="row">
+      <button class="controls"><% comment.link main <% gettext Link %> %></button>
+      <button class="controls"><% comment.link edit <% gettext Edit %> %></button>
+      <button class="controls"><% comment.link delete <% gettext Delete %> %></button>
+      <button class="controls"><% comment.link rotate %></button>
+   </div>
 </div>

@@ -238,11 +238,12 @@ Comment.prototype.title_macro = function() {
 Comment.prototype.link_macro = function(param, action, text) {
    switch (action) {
       case "rotate":
-      if (this.status === Comment.DELETED) {
-         text = gettext("Show");
-      } else {
-         text = gettext("Hide");
-      }
+          if (this.status === Comment.DELETED) {
+             text = gettext("Show");
+          } else {
+             text = gettext("Hide");
+          }
+          break;
    }
    return HopObject.prototype.link_macro.call(this, param, action, text);
 }

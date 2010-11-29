@@ -312,6 +312,10 @@ form p {
    width: 400px;
 }
 
+.w450 {
+   width: 400px;
+}
+
 .w560 {
    width: 560px;
 }
@@ -424,9 +428,9 @@ hr.listSeparator {
 button.controls {
    background: #e7eef5;
    border: 1px solid #becfe3;
-   border-radius: 16px;
-   -moz-border-radius: 16px;
-   -webkit-border-radius: 16px;
+   border-radius: 4x;
+   -moz-border-radius: 4px;
+   -webkit-border-radius: 4px;
    box-shadow: inset 0 1px 0 0 #fff;
    -moz-box-shadow: inset 0 1px 0 0 #fff;
    -webkit-box-shadow: inset 0 1px 0 0 #fff;
@@ -441,6 +445,7 @@ button.controls {
 
 button.controls:hover {
    color: #6f8cc0;
+   background: #EEF5FC;
 }
 
 button.controls:active {

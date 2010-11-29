@@ -405,6 +405,39 @@ article footer .action {
     margin-right: 10px;
 }
 
+article .replies {
+    padding: 0px 10px;
+    margin-left: 40px;
+}
+
+article .commentWrapper {
+    margin: 20px 0 0 0;
+}
+
+article .commentWrapper .row {
+    margin-top: 5px;
+}
+
+article .replies .commentWrapper {
+    margin-top: 14px;
+}
+
+article .commentWrapper h3 {
+    font-weight: bold;
+}
+
+article .commentDate {
+    font-size: 12px;
+}
+
+hr.storySpacer {
+    color: #fff;
+    background-color: #E0E0E2;
+    border: none;
+    height: 1px;
+    margin: 27px 0;
+}
+
 nav {
     font-size: 13px;
     border-left: 1px solid #e0e0e2;
@@ -443,6 +476,13 @@ nav .calendar th {
 nav .calendar .day {
    width: 32px;
    height: 20px;
+}
+
+nav .searchbox {
+   padding: 2px;
+   font-size: 15px;
+   font-family: 'Droid Sans', arial, serif;
+   border: 1px solid #CCCCCC;
 }
 
 /**** List Styles ****/

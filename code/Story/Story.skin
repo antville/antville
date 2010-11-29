@@ -46,7 +46,7 @@
 
    <div class="row">
         <button type="submit" class="normal" name="save" value="1"><% gettext Save %></button>
-        <button type="button" id="restore" value="1"><% gettext Restore %></button>
+        <button type="button" class="normal" id="restore" value="1"><% gettext Restore %></button>
     </div>
       
 </div>
@@ -77,7 +77,7 @@
 </p>
 
 <% #comments %>
-<% story.comments prefix="<p>" suffix="</p>" %>
+<% story.comments %>
 <% story.referrers prefix="<p>" suffix="</p>" %>
 
 <% #embed %>
@@ -92,6 +92,7 @@
 
 <% #comment %>
 <% story.skin Story#content %>
+<hr class="storySpacer" />
 
 <% #rss %>
 <% this.text | this.format %>

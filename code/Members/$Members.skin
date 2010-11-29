@@ -46,13 +46,13 @@ $(function() {
     </div>
 
     <div class="row">
-        <label for="name"><% gettext "Username" suffix=":" %></label>
+        <label class="w100" for="name"><% gettext "Username" suffix=":" %></label>
         <input type="text" name="name" id="name" tabindex="1" size="20" value="<% request.name encoding="form" %>" />
         <small><% members.link register <% gettext "Not registered yet\?" %> %></small>
     </div>
 
     <div class="row">
-        <label for="password"><% gettext Password suffix=":" %></label>
+        <label class="w100" for="password"><% gettext Password suffix=":" %></label>
         <input type="password" name="password" id="password" tabindex="2" size="20"/>
         <small><% members.link reset <% gettext "Password forgotten\?" %> %></small>
     </div>
