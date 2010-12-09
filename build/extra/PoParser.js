@@ -229,7 +229,7 @@ PoParser.prototype.writeToFile = function(output) {
    buf.append(' * Messages for locale "' + this.localeKey + '"\n');
    buf.append(' */\n');
    var fname = objPath + "." + this.localeKey + ".js";
-   objPath += "xxx['" + this.localeKey + "']";
+   objPath += "['" + this.localeKey + "']";
    buf.append('global.' + objPath + ' = {\n');
    // write messages
    for (var i=0;i<this.messages.length; i++) {
