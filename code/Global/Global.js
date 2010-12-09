@@ -817,16 +817,16 @@ function getLocale(language) {
  * @returns {Object[]} A sorted array containing the corresponding locales
  */
 function getLocales(language) {
-   var result = [], locale;
-   var displayLocale = getLocale(language);
+   var result = [], locale, localeString;
    var locales = java.util.Locale.getAvailableLocales();
    for (var i in locales) {
-      locale = locales[i].toString();
-      if (!locale.toString().contains("_")) {
+      locale = locales[i];
+      localeString = locale.toString();
+      if (!localeString.contains("_")) {
       result.push({
-         value: locale,
-         display: locales[i].getDisplayName(displayLocale),
-         "class": jala.i18n.getCatalog(jala.i18n.getLocale(locale)) ? "translated" : ""
+         value: localeString,
+         display: locale.getDisplayName(locale),
+         "class": jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? "translated" : ""
       });
       }
    }
