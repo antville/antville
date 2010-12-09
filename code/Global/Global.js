@@ -851,8 +851,8 @@ function getTimeZones(language) {
          offset = timeZone.getRawOffset();
          result.push({
             value: zone,
-            display: /* timeZone.getDisplayName(timeZone.inDaylightTime(now), 
-                  java.util.TimeZone.LONG, locale) */ " (UTC" + (offset / 
+            display: timeZone.getDisplayName(timeZone.inDaylightTime(now),
+                  java.util.TimeZone.LONG, locale) + " (UTC" + (offset /
                   Date.ONEHOUR).format("+00;-00") + ":" + (Math.abs(offset % 
                   Date.ONEHOUR) / Date.ONEMINUTE).format("00") + ")"
          });

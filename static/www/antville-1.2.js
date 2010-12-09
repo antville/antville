@@ -11,7 +11,7 @@ $(function() {
       var zone = $(item);
       var parts = zone.val().split("/");
       if (parts.length > 1) {
-         if (parts[0].indexOf("Etc") === 0 || 
+         if (/* parts[0].indexOf("Etc") === 0 || */
                parts[0].indexOf("SystemV") === 0) {
             zone.remove();
             return;
