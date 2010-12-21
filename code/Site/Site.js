@@ -259,6 +259,7 @@ Site.prototype.getPermission = function(action) {
 
       case "subscribe":
       return Site.require(Site.PUBLIC) &&
+            User.require(User.REGULAR) &&
             !Membership.require(Membership.SUBSCRIBER);
 
       case "unsubscribe":
