@@ -64,7 +64,7 @@ User.getStatus = defineConstants(User, markgettext("Blocked"),
  * @returns {String}
  */
 User.getSalt = function() {
-   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
+   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);
    var random = java.security.SecureRandom.getInstance("SHA1PRNG");
    random.nextBytes(salt);
    return Packages.sun.misc.BASE64Encoder().encode(salt);
