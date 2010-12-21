@@ -10,7 +10,7 @@
 </p>
 
 <% #main %>
-<% if <% param.header %> is true then <% poll.skin #header suffix=<br /> %> else 
+<% if <% param.header %> is true then <% poll.skin #header suffix="<br />" %> else 
       <% poll.question prefix='<div class="pollTitle">' suffix="</div> %> %>
 <form method="post" action="<% poll.href %>">
 <table border="0" cellspacing="2" cellpadding="2">
