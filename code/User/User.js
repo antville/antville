@@ -242,6 +242,22 @@ User.getLocation = function() {
 }
 
 /**
+ * Rename a user account.
+ * @param {String} currentName The current name of the user account.
+ * @param {String} newName The desired name of the user account.
+ */
+User.rename = function(currentName, newName) {
+   var user = User.getByName(currentName);
+   if (user) {
+      user.forEach(function() {
+         this.name = newName;
+      });
+      user.name = newName;
+   }
+   return;
+}
+
+/**
  * A User object represents a login to Antville.
  * @name User
  * @constructor
