@@ -68,22 +68,22 @@ jQuery.md5 = function (string) {
 	function FF(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function GG(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function HH(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function II(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function ConvertToWordArray(string) {
 		var lWordCount;
@@ -106,7 +106,7 @@ jQuery.md5 = function (string) {
 		lWordArray[lNumberOfWords-2] = lMessageLength<<3;
 		lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
 		return lWordArray;
-	};
+	}
 
 	function WordToHex(lValue) {
 		var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
@@ -116,7 +116,7 @@ jQuery.md5 = function (string) {
 			WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length-2,2);
 		}
 		return WordToHexValue;
-	};
+	}
 
 	function Utf8Encode(string) {
 		string = string.replace(/\r\n/g,"\n");
@@ -142,7 +142,7 @@ jQuery.md5 = function (string) {
 		}
 
 		return utftext;
-	};
+	}
 
 	var x=Array();
 	var k,AA,BB,CC,DD,a,b,c,d;
@@ -230,7 +230,7 @@ jQuery.md5 = function (string) {
 	}
 	var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
 	return temp.toLowerCase();
-};
+}
 
 Antville = {};
 Antville.prefix = "Antville_";
@@ -243,11 +243,11 @@ Antville.encode = function(str) {
       str = str.replace(re, "&#" + c.charCodeAt() + ";");
    }
    return str;
-};
+}
 
 Antville.decode = function(str) {
    return str.replace(/&amp;/g, "&");
-};
+}
 
 Antville.Referrer = function(url, text, count) {
    this.url = url;
@@ -263,7 +263,7 @@ Antville.Referrer = function(url, text, count) {
       return this.text;
    }
    return this;
-};
+}
 
 Antville.Query = function(str) {
    if (str == undefined)
@@ -285,7 +285,7 @@ Antville.Query = function(str) {
       }
    }
    return this;
-};
+}
 
 Antville.Filter = function(def, key) {
    this.key = key;
@@ -307,20 +307,4 @@ Antville.Filter = function(def, key) {
       return false;
    }
    return this;
-};
-
-var app = {
-   clearCache: function() {
-      $.ajax({
-         async: true,
-         type: "POST",
-         url: '/helma/antville/debug',
-         data: "action=clearCache",
-         cache: false,
-         error: function() { /* ... */ },
-         success: function(str) {
-            console.log(str);
-         }
-      });
-   }
 }
