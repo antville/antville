@@ -57,6 +57,7 @@ Api.getUser = function(name, password) {
    } else if (user.status === User.BLOCKED) {
       throw Error("The user account " + name + " is currently blocked");
    }
+   session.login(user);
    return user;
 }
 
