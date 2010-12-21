@@ -268,7 +268,7 @@ Layout.prototype.import_action = function() {
       } catch (ex) {
          res.message = ex;
          app.log(ex);
-         temp.removeDirectory();
+         temp && temp.removeDirectory();
          res.redirect(this.href(req.action));
       }
       res.redirect(this.href());
