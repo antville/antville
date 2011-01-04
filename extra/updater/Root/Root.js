@@ -57,7 +57,7 @@ Root.prototype.updater_action = function() {
       }
       return;
    }, [], -1);
-   this.renderSkin("Root");
+   this.renderSkin("~Root");
    return;
 }
 
@@ -83,7 +83,7 @@ Root.prototype.nonames_action = function() {
       });
       status("finished");
    }, [], -1);
-   this.renderSkin("Root");
+   this.renderSkin("~Root");
    return;
 }
 
@@ -105,7 +105,7 @@ Root.prototype.galleries_action = function() {
       });
       status("finished");
    }, [], -1);
-   this.renderSkin("Root");
+   this.renderSkin("~Root");
    return;
 }
 
