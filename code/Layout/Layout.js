@@ -229,7 +229,7 @@ Layout.prototype.reset_action = function() {
 Layout.prototype.export_action = function() {
    res.contentType = "application/zip";
    var zip = this.getArchive(res.skinpath);
-   res.setHeader("Content-Disposition", 
+   res.setHeader("Content-Disposition",
          "attachment; filename=" + this.site.name + "-layout.zip");
    res.writeBinary(zip.getData());
    return;
@@ -326,17 +326,26 @@ Layout.prototype.getSkinPath = function() {
  */
 Layout.prototype.reset = function() {
    var skinFiles = app.getSkinfilesInPath([app.dir]);
-   var content, file;
+   var content, dir, file;
    for (var name in skinFiles) {
       if (content = skinFiles[name][name]) {
-         var dir = this.getFile(name);
-         var file = new helma.File(dir, name + ".skin");
+         dir = this.getFile(name);
+         file = new helma.File(dir, name + ".skin");
          dir.makeDirectory();
          file.open();
          file.write(content);
          file.close();
       }
    }
+
+   // FIXME: Reset the Site skin of root separately
+   content = skinFiles.Root.Site;
+   file = new helma.File(this.getFile("Root"), "Site.skin");
+   dir.makeDirectory();
+   file.open();
+   file.write(content);
+   file.close()
+
    this.touch();
    return;
 }
@@ -357,6 +366,10 @@ Layout.prototype.getArchive = function(skinPath) {
          }
       }
    }
+
+   // FIXME: Add the Site skin of root separately
+   file = new helma.File(this.getFile("Root"), "Site.skin");
+   file.exists() && zip.add(file, "Root");
 
    var data = new HopObject;
    data.images = new HopObject;
