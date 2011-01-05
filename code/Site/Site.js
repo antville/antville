@@ -915,12 +915,11 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-   var scheme = req.servletRequest ? req.servletRequest.scheme : "http";
-   var domain = getProperty("domain." + this.name);
-   if (domain) {
-      href = [scheme, "://", domain, href].join(String.EMPTY);
-   } else if (domain = getProperty("domain.www")) {
-      href = [scheme, "://", domain, "/", this.name, href].join(String.EMPTY);
+   var domain, scheme = req.servletRequest ? req.servletRequest.scheme : "http";
+   if (domain = getProperty("domain." + this.name)) {
+      return [scheme, "://", domain, href].join(String.EMPTY);
+   } else if (domain = getProperty("domain.*")) {
+      return [scheme, "://", this.name, ".", domain, href].join(String.EMPTY);
    }
    return href;
 }
