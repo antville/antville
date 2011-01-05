@@ -218,7 +218,7 @@ function scheduler() {
    Admin.commitEntries();
    Admin.commitRequests();
    Admin.invokeCallbacks();
-   //Admin.updateDomains();
+   Admin.updateDomains();
    Admin.updateHealth();
    return 5000;
 }
