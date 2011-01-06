@@ -363,7 +363,7 @@ Admin.updateHealth = function() {
 Admin.updateDomains = function() {
    res.push();
    for (var key in app.properties) {
-      if (key.startsWith("domain.")) {
+      if (key.startsWith("domain.") && !key.endsWith("*")) {
          res.writeln(getProperty(key) + "\t\t" + key.substr(7));
       }
    }
