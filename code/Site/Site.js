@@ -915,6 +915,10 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
+   if (["localhost", "127.0.0.1"].indexOf(req.data.http_host) > -1) {
+      var site = app.properties.hrefRootPrototype ? this.name : String.EMPTY;
+      return [app.appsProperties.mountPoint, "/", site, href].join(String.EMPTY);
+   }
    var domain, scheme = req.servletRequest ? req.servletRequest.scheme : "http";
    if (domain = getProperty("domain." + this.name)) {
       return [scheme, "://", domain, href].join(String.EMPTY);
