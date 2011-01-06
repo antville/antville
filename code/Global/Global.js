@@ -785,7 +785,7 @@ function sendMail(recipient, subject, body, options) {
    }
    var mail = new helma.Mail(getProperty("smtp", "localhost"), 
          getProperty("smtp.port", "25"));
-   mail.setFrom(root.replyTo);
+   mail.setFrom(root.replyTo || "root@localhost");
    if (recipient instanceof Array) {
       for (var i in recipient) {
          mail.addBCC(recipient[i]);
