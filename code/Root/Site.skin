@@ -1,7 +1,21 @@
 <% #main %>
-<% root.skin Root#welcome %>
-<% // Render the list of updated sites %>
-<% root.skin $Root#main %>
+<p><% gettext 'Antville is an open source project aimed at the development of a 
+simple site hosting system with many advanced 
+<a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
+<p><% gettext 'One Antville installation can easily host up to several thousands 
+      of <a href="{0}">sites</a>.' <% site.href sites %> %></p>
+<p><% site.link create <% gettext "Create a site. It only takes a few clicks." %> %></p>
+<p>
+<% gettext "Total sites hosted here" suffix=: %> <% root.size %><br />
+<% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+</p>
+<table border="0" cellpadding="1" cellspacing="0">
+<colgroup>
+   <col width="150" />
+   <col width="*" />
+</colgroup>
+<% list updates 25 skin=$Site#listItem %>
+</table>
 
 <% #navigation %>
 <div class="navigation">
