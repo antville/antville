@@ -27,7 +27,7 @@
  */
 
 /** @constant */
-Root.VERSION = "1.2";
+Root.VERSION = "1.2.1";
 
 this.handleMetadata("creationDelay");
 this.handleMetadata("creationScope");
