@@ -1202,3 +1202,24 @@ var wait = function(millis) {
    }
    return;
 }
+
+/**
+ *
+ * @param {Object} param
+ * @param {String} type
+ */
+function version_macro(param, type) {
+   var version = Root.VERSION.split("-");
+   var number = version[0];
+   switch (type) {
+      case "major":
+      res.write(number.split(".")[0]);
+      break;
+      case "minor":
+      res.write(number);
+      break;
+      default:
+      res.write(Root.VERSION);
+   }
+   return;
+}

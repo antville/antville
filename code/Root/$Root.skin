@@ -150,6 +150,10 @@ alphabetical order." %></p>
    <td class="small"><% gettext 'Queued Callbacks' %>:</td>
    <td><% param.callbacks %></td>
 </tr>
+<tr>
+   <td class="small"><% gettext Version %>:</td>
+   <td><% version %></td>
+</tr>
 </table>
 
 <% #stylesheet %>
