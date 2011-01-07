@@ -169,16 +169,9 @@ Skins.prototype.getSkin = function(group, name) {
 
 /**
  * 
- * @param {String} type
  * @returns {String}
  */
-Skins.prototype.getOutline = function(type) {
-   var key = "outline:" + type;
-   var outline = this.cache[key];
-   if (outline) {
-      return outline;
-   }
-
+Skins.prototype.getOutline = function() {
    var skinfiles, prototype, skin, subskins, names, skins = [];
    var options = Skin.getPrototypeOptions();
 
@@ -216,5 +209,5 @@ Skins.prototype.getOutline = function(type) {
          html.closeTag("li");
       }
    }
-   return this.cache[key] = res.pop();
+   return res.pop();
 }
