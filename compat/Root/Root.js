@@ -22,7 +22,7 @@
 // $URL$
 //
 
-Root.VERSION = "1.2-compatible";
+Root.VERSION += "-compatible";
 
 Root.prototype.rss_action = function() {
    return res.redirect(root.href("rss.xml"));
