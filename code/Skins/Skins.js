@@ -179,22 +179,17 @@ Skins.prototype.getOutline = function(type) {
       return outline;
    }
 
-   var prototype, skin, subskins, names, skins = [];
+   var skinfiles, prototype, skin, subskins, names, skins = [];
    var options = Skin.getPrototypeOptions();
 
    for each (var option in options) {
-      prototype = option.value;
       names = [];
-      for (var name in app.skinfiles[prototype]) {
-         if (name === prototype && type !== "custom") {
-            skin = createSkin(app.skinfiles[prototype][name]);
-            subskins = skin.getSubskinNames();
-            for each (var subskin in subskins) {
-               names.push(subskin);
-            }
-         } else if (name !== prototype && type === "custom") {
-            names.push(name);
-         }
+      prototype = option.value;
+      skinfiles = app.getSkinfilesInPath(res.skinpath);
+      skin = createSkin(skinfiles[prototype][prototype]);
+      subskins = skin.getSubskinNames();
+      for each (var subskin in subskins) {
+         names.push(subskin);
       }
       names.sort();
       skins.push([prototype, names]);
