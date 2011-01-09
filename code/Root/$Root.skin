@@ -9,49 +9,40 @@ simple site hosting system with many advanced
 <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br />
 <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
 </p>
-<table border="0" cellpadding="1" cellspacing="0">
-<colgroup>
-   <col width="150" />
-   <col width="*" />
-</colgroup>
-<% root.loop updates skin=$Site#listItem limit=25 %>
-</table>
+
+<div class="updatedSites">
+    <h2>Updated Sites</h2>
+    <% root.loop updates skin=$Site#listItem limit=25 %>
+</div>
 
 <% #create %>
-<p class="storyTitle"><% response.title %></p>
-<div>
-   <% gettext "To create a new site you need to fill out the form below." %>
+<h1 class="storyTitle"><% response.title %></h1>
+
+<p><% gettext "To create a new site you need to fill out the form below." %></p>
+
+<p><% gettext 'The name will be part of the URL of your site. E.g. if you 
+enter “{0}” as the name your site will be reachable via this url: {1}'
+<% example.name %> <% example.href prefix="<code>" suffix=</code> %> %></p>
+   
+<p><% gettext "Please note that you cannot change the name after the site was 
+created." %> <% gettext "The title will appear in the header of every page 
+of your site. You can change it anytime you want." %></p>
+
+<form method="post" class="form" action="<% response.action %>">
+
+<div class="row">
+    <label for="name" class="col" style="width: 70px;"><% gettext Name suffix=":" %></label>
+    <% newSite.input name %>
 </div>
-<div class="small">
-   <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
-   enter “{0}” as the name your site will be reachable via this url: {1}'
-   <% example.name %> <% example.href prefix="<p><code>" suffix=</code></p> %> %></p>
-   <p><% gettext "Please note that you cannot change the name after the site was 
-   created." %> <% gettext "The title will appear in the header of every page 
-   of your site. You can change it anytime you want." %></p>
+
+<div class="row">
+    <label for="title" class="col" style="width: 70px;"><% gettext Title suffix=":" %></label>
+    <% newSite.input title %>
 </div>
-<p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext Name suffix=: %></td>
-<td><% newSite.input name %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Title suffix=: %></td>
-<td><% newSite.input title %></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <br />
-   <button type="submit" class="normal small" name="create" value="1"><% gettext Create %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+
+<button type="submit" class="normal" name="create" value="1"><% gettext Create %></button>
+
 </form>
-</p>
 
 <% #sites %>
 <p><% gettext "This is the directory of public sites hosted here, in 
@@ -73,84 +64,100 @@ alphabetical order." %></p>
 <% session.error default=<% param.error %> %>
 
 <% #health %>
-<p class="storyTitle"><% response.title %></p>
+<h1 class="storyTitle"><% response.title %></h1>
+
 <% site.skin Root#status %>
-<br /><br />
-<p><strong><% gettext Details %></strong></p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-<colgroup>
-   <col width="40%" />
-   <col width="*" />
-</colgroup>
-<tr>
-   <td class="small"><% gettext Uptime %>:</td>
-   <td><% ngettext '{0} Day' '{0} Days' <% param.uptime %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Active Threads' %>:</td>
-   <td><% param.activeThreads %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Free Threads' %>:</td>
-   <td><% param.freeThreads %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Number of Requests (last 5 min)' %>:</td>
-   <td><% param.requestsPerUnit default=n.a. %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Requests' %>:</td>
-   <td><% param.requestCount %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Number of Errors (last 5 min) %>:</td>
-   <td><% param.errorsPerUnit default=n.a. %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Errors' %>:</td>
-   <td><% param.errorCount %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Xml-Rpc Requests' %>:</td>
-   <td><% param.xmlrpcCount %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Cached Objects' %>:</td>
-   <td><% gettext '{0} of {1}' <% param.cacheusage %> <% param.cacheSize %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Number of Sessions' %>:</td>
-   <td><% param.sessions %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Free Memory' %>:</td>
-   <td><% param.freeMemory suffix=" MB" %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Used Memory' %>:</td>
-   <td><% param.usedMemory suffix=" MB" %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Memory' %>:</td>
-   <td><% param.totalMemory suffix=" MB" %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Queued Log Entries' %>:</td>
-   <td><% param.entries %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Queued Requests' %>:</td>
-   <td><% param.requests %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Queued Mails' %>:</td>
-   <td><% param.mails %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Queued Callbacks' %>:</td>
-   <td><% param.callbacks %></td>
-</tr>
-</table>
+
+<h2><% gettext Details %></h2>
+
+<div class="form">
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext Uptime suffix=":" %></span>
+        <% ngettext '{0} Day' '{0} Days' <% param.uptime %> %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Active Threads' suffix=":" %></span>
+        <% param.activeThreads %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Free Threads' suffix=":" %></span>
+        <% param.freeThreads %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Number of Requests (last 5 min)' suffix=":" %></span>
+        <% param.requestsPerUnit default=n.a. %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Total Requests' suffix=":" %></span>
+        <% param.requestCount %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Number of Errors (last 5 min)' suffix=":" %></span>
+        <% param.errorsPerUnit default=n.a. %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Total Errors' suffix=":" %></span>
+        <% param.errorCount %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Total Xml-Rpc Requests' suffix=":" %></span>
+        <% param.xmlrpcCount %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Cached Objects' suffix=":" %></span>
+        <% gettext '{0} of {1}' <% param.cacheusage %> <% param.cacheSize %> %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Number of Sessions' suffix=":" %></span>
+        <% param.sessions %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Free Memory' suffix=":" %></span>
+        <% param.freeMemory suffix=" MB" %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Used Memory' suffix=":" %></span>
+        <% param.usedMemory suffix=" MB" %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Total Memory' suffix=":" %></span>
+        <% param.totalMemory suffix=" MB" %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Queued Log Entries' suffix=":" %></span>
+        <% param.entries %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Queued Requests' suffix=":" %></span>
+        <% param.requests %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Queued Mails' suffix=":" %></span>
+        <% param.mails %>
+    </div>
+
+    <div class="row">
+        <span class="col" style="width: 300px;"><% gettext 'Queued Callbacks' suffix=":" %></span>
+        <% param.callbacks %>
+    </div>
+
+</div>
 
 <% #stylesheet %>
 /* Enable HTML5 in non-HTML5 browsers */
@@ -504,6 +511,25 @@ button.normal.small {
    padding: 5px 10px
 }
 
+
+/* Updated sites liste (frontpage) */
+.updatedSites {
+    margin-top: 18px;
+}
+
+.updatedSites h2 {
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.updatedSites .row {
+    margin: 0 0 3px 0;
+}
+
+.updatedSites .row time {
+    color: #777;
+    margin-right: 10px;
+}
 
 /***********************************************************
 ul.skinmgrTree {

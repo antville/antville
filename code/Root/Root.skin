@@ -1,2 +1,2 @@
 <% #status %>
-<% gettext 'System is up and running.' %>
+<p><% gettext 'System is up and running.' %></p>
