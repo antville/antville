@@ -27,9 +27,11 @@
 root.forEach(function() {
    var site = this;
    var locale = site.locale;
+   // Update locales to new format
    if (locale.contains("_")) {
       site.locale = locale.substr(0, locale.lastIndexOf("_"));
    }
+   // Update time zones to new format
    var timeZone = site.timeZone;
    switch (timeZone) {
       case "CET":

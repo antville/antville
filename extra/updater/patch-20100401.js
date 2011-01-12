@@ -25,6 +25,8 @@
 // Apply with enabled updater repository via ant patch -Dpatch.id=20100401
 
 var sql = new Sql;
+
+// Correct Image.contentLength property for some images
 sql.retrieve("select id from image");
 sql.traverse(function() {
    var image = Image.getById(this.id);

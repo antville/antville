@@ -28,6 +28,10 @@ var sql = new Sql;
 var template;
 
 // Remove MySQL-specific constraints (enum types)
+// The database user needs “alter” permission for this patch:
+// mysql -e "grant all on antville.* to 'antville'@'localhost'"
+// Afterwards user permissions should be restored:
+// mysql -e "grant select, insert, update, delete on antville.* to 'antville'@'localhost'"
 if (app.getDbSource("antville").isMySQL()) {
    template = "alter table $0 modify column $1 varchar(20) default null";
    sql.execute(template, "account", "status");
