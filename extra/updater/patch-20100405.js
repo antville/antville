@@ -60,3 +60,10 @@ sql.execute(template, "subscriber", "Subscriber");
 sql.execute(template, 'contributor', 'Contributor');
 sql.execute(template, 'manager', 'Manager');
 sql.execute(template, 'owner', 'Owner');
+
+// Convert notification modes to lowercase
+root.forEach(function() {
+   if (this.notificationMode !== null) {
+      this.notificationMode = this.notificationMode.toLowerCase()
+   }
+});
