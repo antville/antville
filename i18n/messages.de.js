@@ -145,7 +145,7 @@ global.messages['de'] = {
    "Free Memory": "Freier Speicher",
    "Free Threads": "Freie Prozesse",
    "Frontpage": "Hauptseite",
-   "Galleries": "Gallerien",
+   "Galleries": "Galerien",
    "General": "Allgemein",
    "Good bye, {0}! Looking forward to seeing you again!": "Auf Wiedersehen, {0}! Schauen Sie bald wieder vorbei!",
    "Grace Period": "Gnadenfrist",

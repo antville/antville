@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: Antville-1.2-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
 "POT-Creation-Date: 2010-06-05 09:16+0200\n"
-"PO-Revision-Date: 2010-06-05 09:19+0100\n"
+"PO-Revision-Date: 2011-01-06 18:15+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -700,7 +700,7 @@ msgstr "Hauptseite"
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:10
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:17
 msgid "Galleries"
-msgstr "Gallerien"
+msgstr "Galerien"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:269
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:171
@@ -1703,7 +1703,7 @@ msgstr "Website {0} wurde erfolgreich abonniert."
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:629
 #, java-format
 msgid "Successfully unsubscribed from site {0}."
-msgstr "Das Abonnement von Website {0} wurde erfolgreich storniert."
+msgstr "Das Abonnement der Website {0} wurde erfolgreich storniert."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:151
 msgid "Successfully updated the layout."
