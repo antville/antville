@@ -281,7 +281,7 @@ a:hover {text-decoration: underline;}
 }
 
 .dayHeader {
-   font-family: <% value "small font size" %>;
+   font-family: <% value "small font" %>;
    font-size: <% value "small font size" %>;
    color: <% value "small font color" %>;
    font-weight: bold;
