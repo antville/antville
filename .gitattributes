@@ -272,3 +272,4 @@ static/www/smalltrans.gif -text svneol=unset#image/gif
 static/www/status.gif -text svneol=unset#image/gif
 static/www/webloghead.gif -text svneol=unset#image/gif
 static/www/xmlbutton.gif -text svneol=unset#image/gif
+/test -text
