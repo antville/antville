@@ -193,10 +193,6 @@ div.skin div.title {
    white-space: nowrap;
 }
 
-.activation {
-   display: none;
-}
-
 .translated {
    font-weight: bold;
 }

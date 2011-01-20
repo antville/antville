@@ -40,12 +40,6 @@ $(function() {
 <input type="hidden" name="digest" id="digest" />
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
-<td class="small"><% gettext "Activation Code" suffix=":" %></td>
-<td><input type="text" name="activation" id="activation" 
-      value="<% request.activation encoding="form" %>" /></td>
-<td colspan="2"></td>
-</tr>
-<tr>
 <td class="small"><% gettext "Username" suffix=":" %></td>
 <td><input type="text" name="name" id="name" tabindex="1" size="20" 
       value="<% request.name encoding="form" %>" /></td>
@@ -103,11 +97,6 @@ $(function() {
 <form id="register" method="post" action="<% response.action %>">
 <input type="hidden" name="hash" id="hash" />
 <table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext "Activation Code" suffix=":" %></td>
-<td><input type="text" name="activation" id="activation" 
-      value="<% request.activation encoding="form" %>" /></td>
-</tr>
 <tr>
 <td class="small"><% gettext Username suffix=: %></td>
 <td><input type="text" name="name" size="30"
