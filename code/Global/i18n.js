@@ -97,12 +97,6 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
    }
    var re = gettext_macro.REGEX;
    var args = [text.replace(re, String.SPACE)];
-   if (args[0].contains("easiest")) {
-      res.debug(text.toSource());
-      res.debug(text.contains("\r"))
-      res.debug(args[0].toSource())
-      res.debug(args[0].contains("\r"))
-   }
    for (var i=2; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
