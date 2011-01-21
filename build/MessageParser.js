@@ -339,7 +339,7 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
    }
 
    var processMacros = function(macros) {
-      var re = /(\s*)(?:\r|\n)\s*/g;
+      var re = gettext_macro.REGEX;
       var id, pluralId, name, args, param, key, msg;
       for each (var macro in macros) {
          id = pluralId = null;
@@ -350,7 +350,7 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
             if (name === MessageParser.MACRO_NAME) {
                id = param.get("text");
                pluralId = param.get("plural");
-            } else if (param.containsKey("message") === MessageParser.ATTRBUTE_NAME) {
+            } else if (param.containsKey("message") === MessageParser.ATTRIBUTE_NAME) {
                id = param.get("message");
                pluralId = param.get("plural");
             }
@@ -370,8 +370,8 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
                continue;
             }
             // create new Message instance or update the existing one
-            id = id.replace(re, " ");
-            pluralId && (pluralId = pluralId.replace(re, " "));
+            id = id.replace(re, String.SPACE);
+            pluralId && (pluralId = pluralId.replace(re, String.SPACE));
             key = Message.getKey(id);
             if (!(msg = self.messages[key])) {
                self.messages[key] = msg = new Message(id, pluralId, file.getCanonicalPath());
@@ -399,12 +399,13 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
  * @see http://drupal.org/node/17564
  */
 MessageParser.prototype.getPotString = function() {
+   var date = new Date;
    var buf = new java.lang.StringBuffer();
    buf.append('#\n');
    buf.append('# The Antville Project\n');
    buf.append('# http://code.google.com/p/antville\n');
    buf.append('#\n');
-   buf.append('# Copyright 2001-2007 by The Antville People\n');
+   buf.append('# Copyright 2001-' + date.getFullYear() + ' by The Antville People\n');
    buf.append('#\n');
    buf.append("# Licensed under the Apache License, Version 2.0 (the ``License''\n");
    buf.append('# you may not use this file except in compliance with the License.\n');

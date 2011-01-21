@@ -95,8 +95,14 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
    if (!text) {
       return;
    }
-   var re = /(\s*)(?:\r|\n)\s*/g;
-   var args = [text.replace(re, "$1")];
+   var re = gettext_macro.REGEX;
+   var args = [text.replace(re, String.SPACE)];
+   if (args[0].contains("easiest")) {
+      res.debug(text.toSource());
+      res.debug(text.contains("\r"))
+      res.debug(args[0].toSource())
+      res.debug(args[0].contains("\r"))
+   }
    for (var i=2; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
@@ -105,6 +111,12 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
    }
    return gettext.apply(this, args);
 }
+
+/**
+ * The regular expression used to reduce multiple whitespace characters.
+ * @constant
+ */
+gettext_macro.REGEX = /\s+/g;
 
 /**
  * 
@@ -118,8 +130,8 @@ function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
    if (!singular || !plural) {
       return;
    }
-   var re = /(\s*)(?:\r|\n)\s*/g;
-   var args = [singular.replace(re, "$1"), plural.replace(re, "$1")];
+   var re = gettext_macro.REGEX;
+   var args = [singular.replace(re, String.SPACE), plural.replace(re, String.SPACE)];
    for (var i=3; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
