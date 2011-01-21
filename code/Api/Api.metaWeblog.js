@@ -23,7 +23,7 @@
 //
 
 /**
- * @fileOverview Methods that implement Blogger's XML-RPC API.
+ * @fileOverview Methods that implement the MetaWeblog XML-RPC API.
  * See http://www.xmlrpc.com/metaWeblogApi for further details.
  */
 
