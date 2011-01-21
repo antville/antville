@@ -220,7 +220,7 @@ function scheduler() {
    Admin.invokeCallbacks();
    Admin.updateDomains();
    Admin.updateHealth();
-   return 5000;
+   return app.properties.schedulerInterval;
 }
 
 /**
