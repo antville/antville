@@ -4,8 +4,6 @@ $(function() {
       return false;
    });
    
-   $("form #activation").closest("tr").addClass("activation");
-   
    var group, groups = [];
    $("form #timeZone option").each(function(index, item) {
       var zone = $(item);
@@ -25,8 +23,7 @@ $(function() {
    });
    var optgroup = $("<optgroup>");
    $.each(groups, function(index, item) {
-      $("form #timeZone option.group-" + 
-         item).wrapAll(optgroup.clone().attr("label", item));
+      $("form #timeZone option.group-" + item).wrapAll(optgroup.clone().attr("label", item));
    });
 });
 
