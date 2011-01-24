@@ -133,12 +133,6 @@ jala.i18n.setLocaleGetter(function() {
 });
 
 /** @constant */
-var SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
-
-/** @constant */
-var LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
-
-/** @constant */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
 // RegExp according to Jala’s HopObject.getAccessName()
