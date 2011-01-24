@@ -738,25 +738,39 @@ function formatNumber(number, pattern) {
 /**
  * 
  * @param {Date} date
- * @param {pattern} pattern
+ * @param {format} format
  * @returns {String} The formatted date string
  */
-function formatDate(date, pattern) {
+function formatDate(date, format) {
    if (!date) {
       return null;
    }
-   pattern || (pattern = "short");
-   var site = res.handlers.site;
-   var format = site.metadata.get(pattern.toLowerCase() + "DateFormat");
-   if (!format) {
-      format = global[pattern.toUpperCase() + "DATEFORMAT"] || pattern;
+   var pattern, site = res.handlers.site;
+   var locale = site.getLocale();
+   var type = java.text.DateFormat.FULL;
+   switch (format) {
+      case null:
+      pattern = java.text.DateFormat.getDateTimeInstance(type, type, locale).toPattern();
+      break;
+      case "date":
+      pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern();
+      break;
+      case "time":
+      pattern = java.text.DateFormat.getTimeInstance(type, locale).toPattern();
+      break;
+      case "short":
+      case "long":
+      pattern = site[format.toLowerCase() + "DateFormat"];
+      break;
+      default:
+      pattern = format;
    }
    try {
-      return date.format(format, site.getLocale(), site.getTimeZone());
+      return date.format(pattern, site.getLocale(), site.getTimeZone());
    } catch (ex) {
-      return "[Macro error: Invalid date format]";
+      return "[Invalid date format]";
    }
-   return;
+   return String.EMPTY;
 }
 
 /**
@@ -823,11 +837,11 @@ function getLocales(language) {
       locale = locales[i];
       localeString = locale.toString();
       if (!localeString.contains("_")) {
-      result.push({
-         value: localeString,
-         display: locale.getDisplayName(locale),
-         "class": jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? "translated" : ""
-      });
+         result.push({
+            value: localeString,
+            display: locale.getDisplayName(locale),
+            "class": jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? "translated" : ""
+         });
       }
    }
    result.sort(new String.Sorter("display"));
@@ -841,7 +855,7 @@ function getLocales(language) {
  */
 function getTimeZones(language) {
    var result = [], timeZone, offset;
-   var locale = getLocale(language); 
+   var locale = getLocale(language);
    var zones = java.util.TimeZone.getAvailableIDs();
    var now = new Date;
    var previousZone;
@@ -881,29 +895,31 @@ function getTimeZones(language) {
 /**
  * 
  * @param {String} type
- * @param {String} language
+ * @param {java.util.Locale} locale
  * @returns {Array[]} An array containing the corresponding date formats
  */
-function getDateFormats(type, language) {
-   var patterns;
-   if (type === "short") {
-      patterns = [SHORTDATEFORMAT, "yyyy/MM/dd HH:mm", 
-            "yyyy.MM.dd, HH:mm", "d. MMMM, HH:mm", "MMMM d, HH:mm", 
-            "d. MMM, HH:mm", "MMM d, HH:mm", "EEE, d. MMM, HH:mm", 
-            "EEE MMM d, HH:mm", "EEE, HH:mm", "EE, HH:mm", "HH:mm"];
-   } else if (type === "long") {
-      patterns = [LONGDATEFORMAT, "EEEE, MMMM dd, yyyy, HH:mm", 
-            "EE, d. MMM. yyyy, HH:mm", "EE MMM dd, yyyy, HH:mm", 
-            "EE yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm", "d. MMMM yyyy, HH:mm", 
-            "MMMM d, yyyy, HH:mm", "d. MMM yyyy, HH:mm", "MMM d, yyyy, HH:mm"];
+function getDateFormats(type, locale, timeZone) {
+   type || (type = "short");
+   locale || (locale = java.util.Locale.getDefault());
+   timeZone || (timeZone = java.util.TimeZone.getDefault());
+   var types = [type];
+   types.push(type === "long" ? "full" : "medium");
+   var now = new Date, result = [], patterns = {};
+   for each (let dateType in types) {
+      let dateFormat = java.text.DateFormat[dateType.toUpperCase()];
+      for each (let timeType in ["short", "medium", "long", "full"]) {
+         let timeFormat = java.text.DateFormat[timeType.toUpperCase()];
+         let sdf = java.text.DateFormat.getDateTimeInstance(dateFormat, timeFormat, locale);
+         let pattern = sdf.toPattern();
+         if (patterns[pattern]) {
+            continue;
+         }
+         patterns[pattern] = true;
+         sdf.setTimeZone(timeZone);
+         result.push([encodeForm(pattern), sdf.format(now)]);
+      }
    }
-   var result = [], sdf;
-   var locale = getLocale(language);
-   var now = new Date;
-   for each (var pattern in patterns) {
-      sdf = new java.text.SimpleDateFormat(pattern, locale);
-      result.push([encodeForm(pattern), sdf.format(now)]);
-   }
+   result.push([encodeForm(Date.ISOFORMAT), now.format(Date.ISOFORMAT, locale, timeZone)]);
    return result;
 }
 

@@ -213,8 +213,8 @@ Site.prototype.constructor = function(name, title) {
       pageSize: 3,
       locale: root.getLocale().toString(),
       timeZone: root.getTimeZone().getID(),
-      longDateFormat: LONGDATEFORMAT,
-      shortDateFormat: SHORTDATEFORMAT
+      longDateFormat: root.longDateFormat,
+      shortDateFormat: root.shortDateFormat
    });
 
    return this;
@@ -318,7 +318,7 @@ Site.prototype.getFormOptions = function(name) {
       case "layout":
       return this.getLayouts();
       case "longDateFormat":
-      return getDateFormats("long", this.getLocale());
+      return getDateFormats("long", this.getLocale(), this.getTimeZone());
       case "mode":
       return Site.getModes();
       case "notificationMode":
@@ -328,7 +328,7 @@ Site.prototype.getFormOptions = function(name) {
       case "status":
       return Site.getStatus();
       case "shortDateFormat":
-      return getDateFormats("short", this.getLocale());
+      return getDateFormats("short", this.getLocale(), this.getTimeZone());
       case "timeZone":
       return getTimeZones(this.getLocale());
       case "callbackMode":
@@ -406,7 +406,7 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(Root.VERSION);
    res.digest();
    this.renderSkin("$Site#include", 
-         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"});
+         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"});
    this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.2.js")});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;

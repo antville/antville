@@ -49,7 +49,7 @@
 </form>
 
 <% #date %>
-<div class="dayHeader"><% story.created "EEEE, d. MMMM yyyy" %></div>
+<div class="dayHeader"><% story.created date %></div>
 
 <% #content %>
 <div class="storyTitle">
@@ -57,7 +57,7 @@
 </div>
 <div class="storyDate">
    <% story.creator link suffix=, %>
-   <% story.created HH:mm suffix="h" %>
+   <% story.created time %>
 </div>
 <div><% story.text | story.format %></div>
 
