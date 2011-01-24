@@ -252,7 +252,7 @@ Layout.prototype.import_action = function() {
          (new helma.Zip(zip)).extractAll(temp);
          zip.remove();
          var data = Xml.read(new helma.File(temp, "data.xml"));
-         if (!data.version || data.version !== Root.VERSION) {
+         if (!data.version) {
             throw Error(gettext("Sorry, this layout is not compatible with Antville."));
          }
          // Remove current layout and replace it with imported one
