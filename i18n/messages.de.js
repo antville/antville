@@ -69,7 +69,7 @@ global.messages['de'] = {
    "Close": "Schließen",
    "Closed": "Geschlossen",
    "Closed Stories": "Geschlossene Beiträge",
-   "Comment": "Kommentieren",
+   "Comment": "Kommentar",
    "Comment // verb": "Kommentieren",
    "Comments": "Kommentare",
    "Comments of the story are {0}": "Kommentare zum Beitrag sind {0}",

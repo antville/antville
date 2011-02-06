@@ -341,7 +341,7 @@ msgstr "Geschlossene Beiträge"
 #: /opt/helma/apps/antville/code/Comment/Comment.js:29
 #: /opt/helma/apps/antville/code/HopObject/HopObject.js:154
 msgid "Comment"
-msgstr "Kommentieren"
+msgstr "Kommentar"
 
 #: /opt/helma/apps/antville/code/Comment/Comment.skin:12
 #: /opt/helma/apps/antville/code/Story/Story.skin:69
