@@ -392,7 +392,7 @@ Site.prototype.update = function(data) {
 
 Site.prototype.main_css_action = function() {
    res.contentType = "text/css";
-   res.dependsOn(Root.VERSION);
+   res.dependsOn(String(Root.VERSION));
    res.dependsOn(this.layout.modified);
    res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
    res.digest();
@@ -403,7 +403,7 @@ Site.prototype.main_css_action = function() {
 
 Site.prototype.main_js_action = function() {
    res.contentType = "text/javascript";
-   res.dependsOn(Root.VERSION);
+   res.dependsOn(String(Root.VERSION);
    res.digest();
    this.renderSkin("$Site#include", 
          {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"});

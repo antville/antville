@@ -27,7 +27,30 @@
  */
 
 /** @constant */
-Root.VERSION = "1.2.1";
+Root.VERSION = new function() {
+   // A valid version string is e.g. "1.2.3alpha.4711".
+   // Repositories could add something like "-compatible" to it,
+   // FIXME: This should be refactored for modular extension.
+   var versionString = "@version@.@revision@";
+   var re = /^(\d+)\.(\d+)(?:\.(\d+))?(.+)?\.(\d+)(?:-(.*))?$/;
+   var parts = re.exec(versionString);
+   if (parts) {
+      var result = {
+         parts: parts,
+         toString: function() {return parts[0]},
+         major: parseInt(parts[1]),
+         revision: parseInt(parts[5]),
+         date: new Date("@buildDate@")
+      };
+      result.minor = result.major + parseInt(parts[2] || 0) / 10;
+      result.bugfix = result.minor + "." + (parts[3] || 0);
+      result.development = parts[4] || "final";
+      result["default"] = result[parts[3] ? "bugfix" : "minor"] + result.development +
+            (parts[6] ? "-" + parts[6] : String.EMPTY);
+      return result;
+   }
+   return versionString;
+}
 
 this.handleMetadata("creationDelay");
 this.handleMetadata("creationScope");
@@ -75,6 +98,8 @@ Root.prototype.getPermission = function(action) {
       case "debug":
       case "default.hook":
       case "health":
+      case "jala.test":
+      case "jala.test.css":
       case "mrtg":
       case "sites":
       case "updates.xml":
