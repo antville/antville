@@ -126,7 +126,7 @@ Members.prototype.reset_action = function() {
             throw Error(gettext("User name and e-mail address do not match."))
          }
          var token = User.getSalt();
-         user.metadata.set("resetToken", token);
+         user.setMetadata("resetToken", token);
          sendMail(user.email, gettext("[{0}] Password reset confirmation", 
                root.title), user.renderSkinAsString("$User#notify_reset", {
                   href: this.href("reset"),
@@ -140,7 +140,7 @@ Members.prototype.reset_action = function() {
    } else if (req.data.user && req.data.token) {
       var user = User.getById(req.data.user);
       if (user) {
-         var token = user.metadata.get("resetToken");
+         var token = user.getMetadata("resetToken");
          if (token) {
             session.login(user);
             if (req.postParams.save) {
@@ -151,7 +151,7 @@ Members.prototype.reset_action = function() {
                   res.message = gettext("The passwords do not match.");
                } else {
                   user.hash = (password + user.salt).md5();
-                  user.metadata.remove("resetToken");
+                  user.setMetadata("resetToken", null);
                   res.message = gettext("Your password was changed.");
                   res.redirect(this._parent.href());
                }
