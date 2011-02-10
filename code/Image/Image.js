@@ -273,10 +273,8 @@ Image.prototype.update = function(data) {
          this.thumbnailHeight = thumbnail.height; 
       } else if (this.isPersistent()) {
          this.getThumbnailFile().remove();
-         // NOTE: delete won't work here due to getter/setter methods
-         this.metadata.remove("thumbnailName");
-         this.metadata.remove("thumbnailWidth");
-         this.metadata.remove("thumbnailHeight");
+         // NOTE: delete operator won't work here due to getter/setter methods
+         this.deleteMetadata("thumbnailName", "thumbnailWidth", "thumbnailHeight");
       }
 
       // Make the image persistent before proceeding with writing files and 

@@ -58,6 +58,7 @@ Story.getCommentModes = defineConstants(Story, markgettext("closed"),
 Story.remove = function() {
    if (this.constructor === Story) {
       HopObject.remove.call(this.comments);
+      this.deleteMetadata();
       this.setTags(null);
       this.remove();
    }
@@ -200,8 +201,7 @@ Story.prototype.update = function(data) {
    }
    if (data.created) {
       try {
-         this.created = data.created.toDate(SHORTDATEFORMAT, 
-               site.getTimeZone());
+         this.created = data.created.toDate(SHORTDATEFORMAT, site.getTimeZone());
       } catch (ex) {
          throw Error(gettext("Cannot parse timestamp {0} as a date.", data.created));
          app.log(ex);
@@ -300,7 +300,7 @@ Story.prototype.getFormValue = function(name) {
       case "tags":
       return this.getTags().join(Tag.DELIMITER);
    }
-   return this[name];
+   return this[name] || this.getMetadata(name);
 }
 
 /**
@@ -324,17 +324,22 @@ Story.prototype.getFormOptions = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
-Story.prototype.setMetadata = function(data) {
-   var name;
-   for (var key in data) {
-      if (this.isMetadata(key)) {
-         this.metadata.set(key, data[key]);
+Story.prototype.setMetadata = function(data, key) {
+   var metadata;
+   if (data && typeof data === "object") {
+      metadata = {};
+      for (var key in data) {
+         if (this.isMetadata(key)) {
+            metadata[key] = data[key];
+         }
       }
+   } else {
+      metadata = data;
    }
-   return;
+   return HopObject.prototype.setMetadata.call(this, metadata, key);
 }
 
 /**
@@ -387,7 +392,7 @@ Story.prototype.getDelta = function(data) {
    delta += deltify(data.text, this.text);
    for (var key in data) {
       if (this.isMetadata(key)) {
-         delta += deltify(data[key], this.metadata.get(key))
+         delta += deltify(data[key], this.getMetadata(key))
       }
    }
    // In-between updates (1 hour) get zero delta
@@ -402,7 +407,7 @@ Story.prototype.getDelta = function(data) {
  */
 Story.prototype.getMacroHandler = function(name) {
    if (name === "metadata") {
-      return this.metadata;
+      return this.getMetadata();
    }
    return null;
 }
@@ -438,7 +443,7 @@ Story.prototype.summary_macro = function(param) {
       res.push();
       var content;
       for (var i=1; i<arguments.length; i+=1) {
-         if (content = this.metadata.get("metadata_" + arguments[i])) {
+         if (content = this.getMetadata(arguments[i])) {
             res.write(content);
             res.write(String.SPACE);
          }

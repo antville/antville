@@ -52,6 +52,7 @@ Comment.remove = function(options) {
       // Explicitely remove comment from aggressively cached collections:
       (this.parent || this).removeChild(this);
       this.story.comments.removeChild(this);
+      this.deleteMetadata();
       this.remove();
    }
    return this.parent.href();

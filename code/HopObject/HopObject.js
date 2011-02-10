@@ -644,24 +644,3 @@ HopObject.prototype.link_filter = function(text, param, action) {
    renderLink(param, action, text, this);
    return res.pop();
 }
-
-/**
- * 
- * @param {String} name
- */
-HopObject.prototype.handleMetadata = function(name) {
-   this.__defineGetter__(name, function() {
-      return this.metadata.get(name);
-   });
-   this.__defineSetter__(name, function(value) {
-      return this.metadata.set(name, value);
-   });
-   this[name + "_macro"] = function(param) {
-      var value;
-      if (value = this[name]) {
-         res.write(value);
-      }
-      return;
-   };
-   return;
-}
