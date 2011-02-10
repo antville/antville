@@ -66,7 +66,6 @@ var aspects = {
          req.postParams.commentMode = (req.postParams.discussions ? 
                Story.OPEN : Story.CLOSED);
       }
-      //aspects.setTextAndTitle(args, func, story);
       return args;
    },
    
@@ -81,19 +80,6 @@ var aspects = {
       res.push();
       archive.link_macro({}, "next", gettext("Next page"));
       res.data.nextpage = res.pop();
-      return args;
-   },
-   
-   // Obsolete?
-   setTextAndTitle: function(args) {
-      if (req.postParams.metadata_title && !req.postParams.title) {
-         req.postParams.title = req.postParams.metadata_title;
-         delete req.postParams.metadata_title;
-      }
-      if (req.postParams.metadata_text && !req.postParams.text) {
-         req.postParams.text = req.postParams.metadata_text;
-         delete req.postParams.metadata_text;
-      }
       return args;
    }
 }
@@ -152,11 +138,6 @@ HopObject.prototype.onCodeUpdate = function() {
 Archive.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
 }
-
-/* Comment.prototype.onCodeUpdate = function() {
-   helma.aspects.addBefore(this, "update", aspects.setTextAndTitle);
-   return;
-} */
 
 Image.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "update", aspects.setTopics);

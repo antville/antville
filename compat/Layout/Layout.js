@@ -76,6 +76,7 @@ Layout.prototype.parent_macro = function(param) {
 
 Layout.prototype.shareable_macro = function(param) {
    if (param.as == "editor" && !this.site) {
+      // FIXME: HopObject.createCheckBoxParam() is obsolete
       var inputParam = this.createCheckBoxParam("shareable", param);
       if (req.data.save && !req.data.shareable)
          delete inputParam.checked;

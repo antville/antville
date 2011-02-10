@@ -282,6 +282,7 @@ Site.prototype.membercounter_macro = function(param) {
 
 Site.prototype.preferences_macro = function(param) {
    if (param.as === "editor") {
+      // FIXME: Site.metadata is now a collection!
       var inputParam = this.metadata.createInputParam(param.name, param);
       delete inputParam.part;
       if (param.cols || param.rows) {
@@ -290,7 +291,7 @@ Site.prototype.preferences_macro = function(param) {
          html.input(inputParam);
       }
    } else {
-      res.write(this.metadata.get(param.name));
+      res.write(this.getMetadata(param.name));
    } return;
 }
 

@@ -50,14 +50,14 @@ Story.prototype.content_macro = function(param) {
    switch (param.as) {
       case "editor":
       if (param.cols || param.rows) {
-         this.metadata.textarea_macro(param, param.part);
+         this.textarea_macro(param, param.part);
       } else {
-         this.metadata.input_macro(param, param.part);
+         this.input_macro(param, param.part);
       }
       break;
       
       case "image":
-      var part = this.metadata.get(param.part);
+      var part = this.getMetadata(param.part);
       part && res.write(this.format_filter(part, param, "image"));
       break;
       
@@ -79,58 +79,8 @@ Story.prototype.content_macro = function(param) {
    return;
 }
 
-// FIXME: To be removed when content handling works after update
-/* Story.prototype.content_macro = function(param) {
-   switch (param.as) {
-      case "editor":
-      var inputParam = this.metadata.createInputParam(param.part, param);
-      delete inputParam.part;
-      if (param.cols || param.rows) {
-         html.textArea(inputParam);
-      } else {
-         html.input(inputParam);
-      }
-      break;
-
-      case "image":
-      var part = this.metadata.get(param.part);
-      if (part && this.site.images.get(part)) {
-         delete param.part;
-         renderImage(this.site.images.get(part), param);
-      }
-      break;
-
-      default :
-      if (param.clipping == null)
-         param.clipping = "...";
-      var part = this.getRenderedContentPart(param.part, param.as);
-      if (!part && param.fallback)
-         part = this.getRenderedContentPart(param.fallback, param.as);
-      if (param.as == "link") {
-         if (this._prototype != "Comment")
-            html.openLink({href: this.href()});
-         else
-            html.openLink({href: this.story.href() + "#" + this._id});
-         part = part ? part.stripTags() : param.clipping;
-      }
-      if (!param.limit)
-         res.write(part);
-      else {
-         var stripped = part.stripTags();
-         var clipped = stripped.clip(param.limit, param.clipping, param.delimiter);
-         if (stripped == clipped)
-            res.write(part);
-         else
-            res.write(clipped);
-      }
-      if (param.as == "link")
-         html.closeLink();
-   }
-   return;
-}; */
-
 Story.prototype.getRenderedContentPart = function(name, mode) {
-   var part = this.metadata.get(name);
+   var part = this.getMetadata(name);
    if (!part) {
       return "";
    }
