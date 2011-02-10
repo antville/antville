@@ -406,7 +406,7 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(Root.VERSION);
    res.digest();
    this.renderSkin("$Site#include", 
-         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"});
+         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"});
    this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.2.js")});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;
@@ -562,12 +562,12 @@ Site.prototype.referrers_action = function() {
    if (req.data.permanent && this.getPermission("edit"))  {
       var urls = req.data.permanent_array;
       res.push();
-      res.write(this.metadata.get("spamfilter"));
+      res.write(this.getMetadata("spamfilter"));
       for (var i in urls) {
          res.write("\n");
          res.write(urls[i].replace(/\?/g, "\\\\?"));
       }
-      this.metadata.set("spamfilter", res.pop());
+      this.setMetadata("spamfilter", res.pop());
       res.redirect(this.href(req.action));
       return;
    }
@@ -830,7 +830,7 @@ Site.prototype.referrers_macro = function() {
  * 
  */
 Site.prototype.spamfilter_macro = function() {
-   var str = this.metadata.get("spamfilter");
+   var str = this.getMetadata("spamfilter");
    if (!str) {
       return;
    }
