@@ -157,6 +157,22 @@ create table membership (
   key name (name(20))
 );
 
+#!helma <% #metadata %>
+
+create table metadata (
+  id int(10) unsigned not null default '0',
+  parent_id int(10) unsigned,
+  parent_type varchar(20),
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  value text character set utf8 collate utf8_general_ci,
+  type varchar(255),
+  primary key (id),
+  key name (name),
+  key value (value)
+);
+
+#!helma <% #end_of_metadata %>
+
 create table poll (
   id int(10) unsigned not null default '0',
   site_id int(10) unsigned,

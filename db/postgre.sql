@@ -176,6 +176,22 @@ create index membership_site_idx on antville.membership (site_id);
 create index membership_role_idx on antville.membership (role);
 create index membership_creator_idx on antville.membership (creator_id);
 
+#!helma <% #metadata %>
+
+create table antville.metadata (
+  id int4 primary key,
+  parent_id int4,
+  parent_type varchar,
+  name varchar(255),
+  value text,
+  type varchar(255)
+);
+
+create index metadata_name_idx on metadata (name);
+create index metadata_value_idx on metadata (value);
+
+#!helma <% #end_of_metadata %>
+
 create table antville.poll (
   id int4 primary key,
   site_id int4,
