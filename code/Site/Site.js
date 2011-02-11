@@ -403,7 +403,7 @@ Site.prototype.main_css_action = function() {
 
 Site.prototype.main_js_action = function() {
    res.contentType = "text/javascript";
-   res.dependsOn(String(Root.VERSION);
+   res.dependsOn(String(Root.VERSION));
    res.digest();
    this.renderSkin("$Site#include", 
          {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"});
