@@ -51,7 +51,7 @@ Members.prototype.getPermission = function(action) {
       case "logout":
       case "register":
       case "reset":
-      case "salt.js":
+      case "salt.txt":
       return true;
    }
       
@@ -76,7 +76,8 @@ Members.prototype.getPermission = function(action) {
       return Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
    }
-   return false;
+
+   return Feature.invoke("getPermission", arguments) || false;
 }
 
 Members.prototype.main_action = function() {
@@ -220,11 +221,11 @@ Members.prototype.edit_action = function() {
    return;
 }
 
-Members.prototype.salt_js_action = function() {
-   res.contentType = "text/javascript";
+Members.prototype.salt_txt_action = function() {
+   res.contentType = "text/plain";
    var user;
    if (user = User.getByName(req.queryParams.user)) {
-      res.write((user.salt || String.EMPTY).toSource());
+      res.write(user.salt || String.EMPTY);
    }
    return;
 }

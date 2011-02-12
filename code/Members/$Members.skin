@@ -20,16 +20,16 @@ $(function() {
       var name = $("#name").val();
       $.ajax({
          async: false,
-         url: '<% members.href salt.js %>',
+         url: '<% members.href salt.txt %>',
          data: "user=" + encodeURIComponent(name),
-         dataType: "json",
+         dataType: "text",
          cache: false,
          error: function() { /* ... */ },
-         success: function(salt) {
+         success: function(data, status, xhr) {
             var password = $("#password").val();
             var token = "<% session.token %>";
             $("input:password").val("");
-            $("#digest").val($.md5($.md5(password + salt) + token));
+            $("#digest").val($.md5($.md5(password + data) + token));
          }
       });
       return true;
@@ -55,16 +55,20 @@ $(function() {
 </tr>
 <tr>
 <td> </td>
-<td colspan="2" class="small"><input type="checkbox" id="remember" 
+<td colspan="4" class="small"><input type="checkbox" id="remember"
       name="remember" tabindex="3" <% if <% request.remember %> is "on" then 
       'checked="checked"' %> />
    <label for="remember"><% gettext "Remember Login" %></label></td>
 </tr>
 <tr>
 <td> </td>
-<td colspan="2"><br />
-   <button type="submit" id="submit" name="login" value="1" 
-         tabindex="4"><% gettext Login %></button>
+<td colspan="4"><% skin connect#facebook %></td>
+</tr>
+<tr>
+<td> </td>
+<td colspan="4"><br />
+   <button type="submit" id="submit" name="login" value="1"
+         tabindex="4"><% gettext Login context=verb %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>
 </td>
 </tr>

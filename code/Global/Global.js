@@ -32,8 +32,9 @@ app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
 
 app.addRepository("modules/core/Global.js");
 app.addRepository("modules/core/HopObject.js");
-app.addRepository("modules/core/Number.js");
 app.addRepository("modules/core/Filters.js");
+app.addRepository("modules/core/JSON");
+app.addRepository("modules/core/Number.js");
 
 app.addRepository("modules/helma/File");
 app.addRepository("modules/helma/Image.js");
@@ -60,14 +61,16 @@ app.addRepository("modules/jala/code/I18n.js");
  * @name app.data 
  * @namespace
  */
+/** @name app.data.callbacks */
+app.data.callbacks || (app.data.callbacks = []);
 /** @name app.data.entries */
 app.data.entries || (app.data.entries = []);
+/** @name app.data.features */
+app.data.features || (app.data.features = []);
 /** @name app.data.mails */
 app.data.mails || (app.data.mails = []);
 /** @name app.data.requests */
 app.data.requests || (app.data.requests = {});
-/** @name app.data.callbacks */
-app.data.callbacks || (app.data.callbacks = []);
 
 /**
  * @name helma.File
@@ -732,16 +735,17 @@ function formatNumber(number, pattern) {
 /**
  * 
  * @param {Date} date
- * @param {format} format
+ * @param {String} format
+ * @param {String} type  
  * @returns {String} The formatted date string
  */
-function formatDate(date, format) {
+function formatDate(date, format, type) {
    if (!date) {
       return null;
    }
    var pattern, site = res.handlers.site;
    var locale = site.getLocale();
-   var type = java.text.DateFormat.FULL;
+   var type = java.text.DateFormat[type ? type.toUpperCase() : "FULL"];
    switch (format) {
       case null:
       pattern = java.text.DateFormat.getDateTimeInstance(type, type, locale).toPattern();
@@ -965,15 +969,16 @@ function link_filter(text, param, url) {
  * @param {Object} string
  * @param {Object} param
  * @param {String} pattern
+ * @param {String} type
  * @returns {String} The formatted string
  */
-function format_filter(value, param, pattern) {
+function format_filter(value, param, pattern, type) {
    if (!value && value !== 0) {
       return;
    }
    var f = global["format" + value.constructor.name];
    if (f && f.constructor === Function) {
-      return f(value, pattern || param.pattern);
+      return f(value, pattern || param.pattern, type);
    }
    return value;
 }
@@ -1219,17 +1224,7 @@ var wait = function(millis) {
  * @param {String} type
  */
 function version_macro(param, type) {
-   var version = Root.VERSION.split("-");
-   var number = version[0];
-   switch (type) {
-      case "major":
-      res.write(number.split(".")[0]);
-      break;
-      case "minor":
-      res.write(number);
-      break;
-      default:
-      res.write(Root.VERSION);
-   }
-   return;
+   var version = Root.VERSION;
+   var result = version[type || "default"];
+   return result || version;
 }
