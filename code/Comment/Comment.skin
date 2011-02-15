@@ -5,7 +5,6 @@
    <% comment.link main <% gettext Link %> prefix="... " %> 
    <% comment.link edit <% gettext Edit %> prefix="... " %>
    <% comment.link delete <% gettext Delete %> prefix="... " %>
-   <% comment.link rotate prefix="... " %>
 </p>
 <% comment.comments %>
 <div class="reply small">
@@ -46,7 +45,8 @@
 
 <% #content %>
 <div class="storyDate">
-   <% comment.creator link %>, <% comment.created short %>
+   <% comment.creator link suffix=", " %>
+   <% comment.created short %>
 </div>
 <div class="title"><% comment.title %></div>
 <div><% comment.text | comment.format %></div>

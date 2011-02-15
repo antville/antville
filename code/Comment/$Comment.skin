@@ -1,5 +1,5 @@
 <% #delete %>
-<% if <% comment.creator %> is <% membership.user.name %> then ''  
+<% if <% comment.creator %> is <% membership.user.name %> then ''
       else <% if <% comment.related.size %> is null then '' 
       else <% comment.skin #deleteOptions %> %> %>
 
