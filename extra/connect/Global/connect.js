@@ -48,26 +48,44 @@ Members.prototype.connect_action = function() {
 }
 
 connect.facebook = function(req) {
-   var token = req.data.access_token;
+   var url = path.href(req.action) + "?type=facebook";
+   var loginUrl = res.handlers.members.href("login");
 
-   if (!token) {
-      // FIXME: Replace app id with getProperty() call
-      var cookie = req.cookies["fbs_160722163980484"];
-      if (cookie) {
-         var parts = cookie.split("&");
-         for each (let part in parts) {
-            let pair = part.split("=");
-            if (pair[0] === "access_token") {
-               token = pair[1];
-               break;
-            }
-         }
-      }
+   var appId = 160722163980484;
+   var secret = getProperty("connect.facebook.secret");
+
+   if (!secret) {
+      res.message = gettext("Could not connect with Facebook. ({0})", 1);
+      res.redirect(loginUrl);
    }
 
-   if (token) {
-      //var user = User.login(token);
-      var response = getURL("https://graph.facebook.com/me?access_token=" + token);
+   if (req.isPost()) {
+      try {
+         var user = User.login(req.postParams);
+      } catch (ex) {
+         // If login fails just continue and try to authenticate with Facebook
+      }
+      res.redirect("https://www.facebook.com/dialog/oauth?client_id=" + appId +
+            "&scope=email&redirect_uri=" + url);
+      return;
+   }
+
+   var code = req.data.code;
+
+   if (code) {
+      var response = getURL("https://graph.facebook.com/oauth/access_token?client_id=" + appId +
+            "&redirect_uri=" + url + "&client_secret=" + secret + "&code=" + code);
+
+      if (!response || !response.text) {
+         res.message = gettext("Could not connect with Facebook. ({0})", 2);
+         session.logout();
+         res.redirect(loginUrl);
+         return;
+      }
+
+      var token = response.text;
+      response = getURL("https://graph.facebook.com/me?" + token);
+
       if (response && response.text) {
          var data = response.text.parseJSON();
          var connection = root.connections.get(data.id);
@@ -91,7 +109,28 @@ connect.facebook = function(req) {
          }
          res.handlers.membership = User.getMembership();
       }
+      res.redirect(User.getLocation() || res.handlers.site.href());
    }
-   res.write(User.getLocation() || res.handlers.site.href());
+
+   if (req.data.error) {
+      res.message = gettext("Could not connect with Facebook. ({0})", 3);
+   }
+   session.logout()
+   res.redirect(loginUrl);
    return;
 }
+
+// FIXME: Maybe useful for future autoLogin via cookie?
+/*if (!token) {
+   var cookie = req.cookies["fbs_" + appId];
+   if (cookie) {
+      var parts = cookie.split("&");
+      for each (let part in parts) {
+         let pair = part.split("=");
+         if (pair[0] === "access_token") {
+            token = pair[1];
+            break;
+         }
+      }
+   }
+}*/

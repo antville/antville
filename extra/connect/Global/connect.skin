@@ -1,12 +1,23 @@
 <% #facebook %>
-<input type="checkbox" id="facebook_connect" tabindex="3" />
-   <label class="fb_button fb_button_medium" for="facebook_connect">
-      <span class="fb_button_text"><% gettext "Connect with Facebook" %></span>
-   </label>
+<% if <% property "connect.facebook.secret" %> is null then '' else <% skin connect#facebook-button %> %>
+
+<% #facebook-button %>
+<input type="hidden" name="type" value="facebook"/>
+<button id="facebook_connect" style="border: none; padding: 0;" type="submit" name="login" value="1">
+   <div class="fb_button fb_button_medium">
+      <span class="fb_button_text"><% gettext "Login with Facebook" %></span>
+   </div>
+</button>
 <span id="fb-root"></span>
 
 <script type="text/javascript">
 $(function() {
+   $("#facebook_connect").click(function() {
+      $("form#login").attr("action", "<% site.members.href connect %>");
+      $("form#submit").click();
+   });
+return;
+   
    // The Facebook application identifier
    var appID = 160722163980484;
 
