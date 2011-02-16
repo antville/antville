@@ -2,7 +2,7 @@
 ## The Antville Project
 ## http://code.google.com/p/antville
 ##
-## Copyright 2001-2007 by The Antville People
+## Copyright 2001-2011 by The Antville People
 ##
 ## Licensed under the Apache License, Version 2.0 (the ``License'');
 ## you may not use this file except in compliance with the License.
@@ -167,7 +167,7 @@ create table metadata (
   value text character set utf8 collate utf8_general_ci,
   type varchar(255),
   primary key (id),
-  key name (name),
+  key key_idx (parent_id, parent_type, name),
   key value (value)
 );
 

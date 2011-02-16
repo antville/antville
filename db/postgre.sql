@@ -2,7 +2,7 @@
 -- The Antville Project
 -- http://code.google.com/p/antville
 --
--- Copyright 2001-2007 by The Antville People
+-- Copyright 2001-2011 by The Antville People
 --
 -- Licensed under the Apache License, Version 2.0 (the License'');
 -- you may not use this file except in compliance with the License.
@@ -187,7 +187,7 @@ create table antville.metadata (
   type varchar(255)
 );
 
-create index metadata_name_idx on metadata (name);
+create index metadata_key_idx on metadata (parent_type, parent_id, name);
 create index metadata_value_idx on metadata (value);
 
 #!helma <% #end_of_metadata %>
