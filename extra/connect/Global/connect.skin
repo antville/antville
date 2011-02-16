@@ -12,123 +12,14 @@
 
 <script type="text/javascript">
 $(function() {
-   $("#facebook_connect").click(function() {
-      $("form#login").attr("action", "<% site.members.href connect %>");
-      $("button#submit").click();
-   });
-return;
-
-   // The Facebook application identifier
-   var appID = 160722163980484;
-
-   // Overload the submit event handler of the login form
-   $("form#login").submit(function() {
-      if ($("#facebook_connect").attr("checked")) {
-         // Try to login with input data to automatically connect Antville and Facebook accounts
-         $.ajax({
-            type: "POST",
-            async: false,
-            url: "<% site.members.href login %>",
-            data: {
-               login: 1,
-               name: $("#name").val(),
-               digest: $("#digest").val(),
-               remember: $("#remember").val()
-            },
-            complete: function(data, status, xhr) {
-               // Call Facebook’s login window
-               location.href = "https://www.facebook.com/dialog/oauth?client_id=" + appID +
-                     "&scope=email&redirect_uri=<% members.href login %>&response_type=token";
-            }
-         });
-         return false;
-      }
-      return true;
-   });
-
-   // When returning from Facebook’s login window there should be a hash in the URL
-   if (location.hash.length > 0) {
-      var query = location.hash.substr(1) + "&type=facebook";
-      // Call the Members.connect_action() method to finalize login
-      $.ajax({
-         type: "POST",
-         async: false,
-         url: "<% site.members.href connect %>?" + query,
-         success: function(data, status, xhr) {
-            // If login succeeded data should contain the URL to redirect to
-            data ? (location.href = data) : console.log("Login failed :/");
-            return;
-         }
-      });
-   }
-   return;
-})
-
-(function() {
    var script = $('<script>');
    script.attr({async: true, type: 'text/javascript',
          src: document.location.protocol + '//connect.facebook.net/en_GB/all.js'});
    $("#fb-root").append(script);
-}());
-</script>
 
-<% #facebook-automatic %>
-<p><fb:login-button perms="email" autologoutlink="true">Login with Facebook</fb:login-button></p>
-<!--p><fb:like></fb:like></p-->
-<div id="fb-root"></div>
-
-<script type="text/javascript">
-function handleResponse(response) {
-   return;
-   var session = response.session;
-   if (!session) {
-      return;
-   }
-   var token = session.access_token;
-   $.ajax({
-      type: "POST",
-      async: false,
-      url: "<% site.members.href connect %>?access_token=" + encodeURIComponent(token),
-      success: function(data, status, xhr) {
-         console.log(status, " - ", data);
-         data && (location.href = data);
-         return;
-      }
+   $("#facebook_connect").click(function() {
+      $("form#login").attr("action", "<% site.members.href connect %>");
+      $("button#submit").click();
    });
-   return;
-}
-
-window.fbAsyncInit = function() {
-   FB.init({appId: '160722163980484', status: true, cookie: true, xfbml: true});
-
-   FB.Event.subscribe("auth.login", function(response) {
-      handleResponse(response);
-   });
-
-   FB.Event.subscribe("auth.logout", function(response) {
-      return location.href = "<% site.members.href logout %>";
-   });
-
-   FB.getLoginStatus(function(response) {
-      handleResponse(response);
-
-      /*
-      var graphUrl = "https://graph.facebook.com/me?access_token=" + token + "&callback=registerUser";
-      //use JSON-P to call the graph
-      var script = $("<script/>");
-      script.attr("src", graphUrl);
-      $("body").append(script);
-      */
-
-      return;
-   });
-};
-
-(function() {
-   var e = document.createElement('script');
-   e.type = 'text/javascript';
-   e.src = document.location.protocol + '//connect.facebook.net/en_GB/all.js';
-   e.async = true;
-   document.getElementById('fb-root').appendChild(e);
-}());
+})
 </script>
