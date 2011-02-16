@@ -1,9 +1,33 @@
+<%--~
+  ~ The Antville Project
+  ~ http://code.google.com/p/antville
+  ~
+  ~ Copyright 2001-2011 by The Antville People
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the ``License'');
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an ``AS IS'' BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ $Revision$
+  ~ $LastChangedBy$
+  ~ $LastChangedDate$
+  ~ $URL$
+  ~--%>
+
 <% #facebook %>
 <% if <% property "connect.facebook.secret" %> is null then '' else <% skin connect#facebook-button %> %>
 
 <% #facebook-button %>
 <input type="hidden" name="type" value="facebook"/>
-<button id="facebook_connect" style="border: none; padding: 0;" type="submit" name="login" value="1">
+<button id="facebook_connect" style="border: none; padding: 0;" type="button" name="login" value="1" tabindex="3">
    <div class="fb_button fb_button_medium">
       <span class="fb_button_text"><% gettext "Login with Facebook" %></span>
    </div>
@@ -14,7 +38,7 @@
 $(function() {
    $("#facebook_connect").click(function() {
       $("form#login").attr("action", "<% site.members.href connect %>");
-      $("form#submit").click();
+      $("button#submit").click();
    });
 return;
    
