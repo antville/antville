@@ -1,25 +1,41 @@
 <% #facebook %>
-<% if <% property "connect.facebook.secret" %> is null then '' else <% skin connect#facebook-button %> %>
-
-<% #facebook-button %>
-<input type="hidden" name="type" value="facebook"/>
-<button id="facebook_connect" style="border: none; padding: 0;" type="button" name="login" value="1" tabindex="3">
-   <div class="fb_button fb_button_medium">
-      <span class="fb_button_text"><% gettext "Login with Facebook" %></span>
-   </div>
-</button>
-<span id="fb-root"></span>
+<img src="<% property staticUrl %>www/facebook.png" width=15 height=15/>
+<a href="" id="facebook_connect">Login with Facebook</a>
 
 <script type="text/javascript">
 $(function() {
-   var script = $('<script>');
-   script.attr({async: true, type: 'text/javascript',
-         src: document.location.protocol + '//connect.facebook.net/en_GB/all.js'});
-   $("#fb-root").append(script);
-
    $("#facebook_connect").click(function() {
-      $("form#login").attr("action", "<% site.members.href connect %>");
+      $("form#login").attr("action", "<% site.members.href connect %>?type=facebook");
       $("button#submit").click();
+      return false;
+   });
+})
+</script>
+
+<% #twitter %>
+<img src="<% property staticUrl %>www/twitter.png" width=15 height=15 />
+<a href="" id="twitter_connect">Login with Twitter</a>
+
+<script type="text/javascript">
+$(function() {
+   $("#twitter_connect").click(function() {
+      $("form#login").attr("action", "<% site.members.href connect %>?type=twitter");
+      $("button#submit").click();
+      return false;
+   });
+})
+</script>
+
+<% #google %>
+<img src="<% property staticUrl %>www/google.png" width=15 height=15/>
+<a href="" id="google_connect">Login with Google</a>
+
+<script type="text/javascript">
+$(function() {
+   $("#google_connect").click(function() {
+      $("form#login").attr("action", "<% site.members.href connect %>?type=google");
+      $("button#submit").click();
+      return false;
    });
 })
 </script>
