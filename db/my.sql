@@ -167,7 +167,8 @@ create table metadata (
   value mediumtext character set utf8 collate utf8_general_ci,
   type varchar(255),
   primary key (id),
-  key key_idx (parent_id, parent_type, name),
+  key parent (parent_type, parent_id),
+  key name (name),
   key value (value(255))
 );
 
