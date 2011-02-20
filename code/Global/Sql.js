@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Sql prototype, a utility for relational queries
@@ -168,11 +169,10 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
       "created < now() - interval '2 days'";
 
 /** @constant */
-Sql.SEARCH = "select id from content where site_id = $0 and " +
-      "prototype in ('Story', 'Comment') and status <> 'closed' and " +
-      "(lower(metadata) like lower('%title:\"%$1%\"%') or " +
-      "lower(metadata) like lower('%text:\"%$1%\"%')) " +
-      "order by created desc limit $2";
+Sql.SEARCH = "select content.id, metadata.value from content, site, metadata where site.id = $0 and " +
+      "site.id = content.site_id and content.status in ('public', 'shared', 'open') and " +
+      "content.id = metadata.parent_id and (metadata.name = 'title' or metadata.name = 'text') and " +
+      "lower(metadata.value) like lower('%$1%') order by content.created desc limit $2";
 
 /** @constant */
 Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +

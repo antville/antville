@@ -580,16 +580,14 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
-   var search;
-   if (!(search = req.data.q) || !stripTags(search)) {
+   var term = req.data.q && stripTags(decodeURIComponent(String(req.data.q)));
+   if (!term) {
       res.message = gettext("Please enter a query in the search form.");
       res.data.body = this.renderSkinAsString("Site#search");
    } else {
-      // Prepare search string for metadata: Get source and remove 
-      // '(new String("..."))' wrapper; finally, double all backslashes
-      search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
+      term = term.replace(/'"/g, String.EMPTY);
       var sql = new Sql({quote: false});
-      sql.retrieve(Sql.SEARCH, this._id, search, 50);
+      sql.retrieve(Sql.SEARCH, this._id, term, 50);
       res.push();
       var counter = 0;
       sql.traverse(function() {
@@ -600,8 +598,7 @@ Site.prototype.search_action = function() {
             counter += 1;
          }
       });
-      res.message = ngettext("Found {0} result.", 
-            "Found {0} results.", counter);
+      res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
       res.data.body = res.pop();
    }
    
