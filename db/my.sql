@@ -164,11 +164,11 @@ create table metadata (
   parent_id int(10) unsigned,
   parent_type varchar(20),
   name varchar(255) character set utf8 collate utf8_general_ci,
-  value text character set utf8 collate utf8_general_ci,
+  value mediumtext character set utf8 collate utf8_general_ci,
   type varchar(255),
   primary key (id),
   key key_idx (parent_id, parent_type, name),
-  key value (value)
+  key value (value(255))
 );
 
 #!helma <% #end_of_metadata %>

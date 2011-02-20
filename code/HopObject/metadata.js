@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2011 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines metadata extensions of Helma’s built-in
@@ -76,25 +77,7 @@ HopObject.prototype.getMetadata = function(name) {
       return null;
    }
 
-   var Constructor = global[meta.type];
-   switch (Constructor) {
-      case null:
-      case undefined:
-      return null;
-
-      case Boolean:
-      return eval(meta.value).valueOf();
-
-      case Date:
-      return new Date(meta.value);
-
-      case Number:
-      case String:
-      return (new Constructor(meta.value)).valueOf();
-
-      default:
-      return eval(meta.value);
-   }
+   return meta.getValue();
 }
 
 /**
@@ -118,35 +101,16 @@ HopObject.prototype.setMetadata = function(name, value) {
       return;
    }
 
-   var meta = this.metadata.get(name);
+   var metadata = this.metadata.get(name);
 
-   if (value === null || value === undefined) {
-      return meta && meta.remove();
-   }
-
-   if (!meta) {
-      meta = new Metadata;
-      meta.name = name;
-      meta.parent = this;
-      // meta.persist() is not enough; existing name will become redundant!
-      this.metadata.add(meta);
-   }
-
-   meta.type = value.constructor.name;
-   switch (value.constructor) {
-      case Boolean:
-      case String:
-      case Number:
-      meta.value = String(value);
-      break;
-
-      case Date:
-      meta.value = Number(value);
-      break;
-
-      default:
-      meta.value = value.toSource();
-      break;
+   if (metadata) {
+      metadata.setValue(value);
+   } else {
+      metadata = new Metadata(this, name, value);
+      if (metadata.value !== null) {
+         // metadata.persist() is not enough or there will be redundant records!
+         this.metadata.add(metadata);
+      }
    }
    return;
 }
@@ -167,8 +131,8 @@ HopObject.prototype.deleteMetadata = function(name) {
    }
 
    Array.prototype.forEach.call(arguments, function(name) {
-      var meta = self.metadata.get(name);
-      meta && meta.remove();
+      var metadata = self.metadata.get(name);
+      metadata && metadata.remove();
       return;
    });
    return;
