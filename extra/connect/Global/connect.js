@@ -1,7 +1,10 @@
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2011 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -25,10 +28,10 @@
  */
 
 // FIXME: Remove ASAP (testing only)
-Feature.remove();
+//Feature.remove();
 
 // FIXME: Connecting with Twitter and Google currently does not return an e-mail address.
-// Instead, noreplay@antville.org is used � which is very poor and should be fixed ASAP.
+// Instead, noreplay@antville.org is used � which is very poor and should be fixed ASAP.
 
 app.addRepository(app.dir + "/../lib/scribe-1.1.0.jar");
 
@@ -241,141 +244,3 @@ connect.facebook = function(req) {
 
    return;
 }
-
-/*connect.twitter = function(req) {
-   var appId = "gfxWDsNEM2A7ldPWaA7A";
-   var secret = getProperty("connect.twitter.secret");
-   if (!secret) {
-      res.message = gettext("Could not connect with Twitter. ({0})", -1);
-      res.redirect(connect.getLoginUrl());
-   }
-
-   if (req.isPost()) {
-      try {
-         User.login(req.postParams);
-      } catch (ex) { }
-   }
-
-   var scribe = Packages.org.scribe;
-   var oauth = new scribe.builder.ServiceBuilder()
-         .provider(scribe.builder.api.TwitterApi)
-         .apiKey(appId)
-         .apiSecret(secret)
-         .callback(path.href(req.action) + "?type=twitter")
-         .build();
-
-   var verifier = req.data.oauth_verifier;
-   if (!verifier) {
-      // As Twitter will redirect back to this URL the request token needs to be stored in the session
-      session.data.requestToken = oauth.getRequestToken();
-      var token = session.data.requestToken.getToken();
-      res.redirect("https://twitter.com/oauth/authorize?oauth_token=" + token);
-   }
-
-   var accessToken = oauth.getAccessToken(session.data.requestToken,
-         new scribe.model.Verifier(verifier));
-   var request = new scribe.model.OAuthRequest(scribe.model.Verb.GET,
-         "https://api.twitter.com/1/account/verify_credentials.json");
-   oauth.signRequest(accessToken, request);
-   var response = request.send();
-
-   var data = JSON.parse(response.getBody());
-   var user = connect.getUser("twitter", data.id_str);
-   if (!user) {
-      if (!session.user) {
-         var name = root.users.getAccessName(data.screen_name);
-         user = User.register({
-            name: name,
-            hash: session.data.requestToken.getToken(),
-            email: data.email || "noreply@antville.org",
-            url: data.url
-         });
-         session.login(user);
-      } else {
-         user = session.user;
-      }
-      user.setMetadata("twitter_id", data.id_str);
-   } else if (user !== session.user) {
-      session.login(user);
-   }
-
-   return true;
-}
-
-connect.google = function(req) {
-   var appId = "anonymous";
-   var secret = getProperty("connect.google.secret");
-   if (!secret) {
-      res.message = gettext("Could not connect with Google. ({0})", -1);
-      res.redirect(connect.getLoginUrl());
-   }
-
-   if (req.isPost()) {
-      try {
-         User.login(req.postParams);
-      } catch (ex) { }
-   }
-
-   var scribe = Packages.org.scribe;
-   var oauth = new scribe.builder.ServiceBuilder()
-         .provider(scribe.builder.api.GoogleApi)
-         .apiKey(appId)
-         .apiSecret(secret)
-         .callback(path.href(req.action) + "?type=google")
-         .scope("http://www-opensocial.googleusercontent.com/api/people/")
-         .build();
-
-   var verifier = req.data.oauth_verifier;
-   if (!verifier) {
-      // As Google will redirect back to this URL the request token needs to be stored in the session
-      session.data.requestToken = oauth.getRequestToken();
-      var token = session.data.requestToken.getToken();
-      res.redirect("https://www.google.com/accounts/OAuthAuthorizeToken?oauth_token=" + token);
-   }
-
-   var accessToken = oauth.getAccessToken(session.data.requestToken,
-         new scribe.model.Verifier(verifier));
-
-   var request = new scribe.model.OAuthRequest(scribe.model.Verb.GET,
-         "http://www-opensocial.googleusercontent.com/api/people/@me/@self");
-   oauth.signRequest(accessToken, request);
-   request.addHeader("GData-Version", "3.0");
-   var response = request.send();
-
-   var data = JSON.parse(response.getBody()).entry;
-   var user = connect.getUser("google", data.id);
-   if (!user) {
-      if (!session.user) {
-         var name = root.users.getAccessName(data.displayName);
-         user = User.register({
-            name: name,
-            hash: session.data.requestToken.getToken(),
-            email: data.email || "noreply@antville.org",
-            url: data.profileUrl
-         });
-         session.login(user);
-      } else {
-         user = session.user;
-      }
-      user.setMetadata("google_id", data.id);
-   } else if (user !== session.user) {
-      session.login(user);
-   }
-
-   return true;
-} */
-
-// FIXME: Maybe useful for future autoLogin via cookie?
-/*if (!token) {
-   var cookie = req.cookies["fbs_" + appId];
-   if (cookie) {
-      var parts = cookie.split("&");
-      for each (let part in parts) {
-         let pair = part.split("=");
-         if (pair[0] === "access_token") {
-            token = pair[1];
-            break;
-         }
-      }
-   }
-}*/
