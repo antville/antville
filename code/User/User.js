@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the User prototype.
@@ -29,18 +30,35 @@
 markgettext("User");
 markgettext("user");
 
-disableMacro(User, "hash");
-disableMacro(User, "salt");
-
 this.handleMetadata("hash");
 this.handleMetadata("salt");
 this.handleMetadata("url");
+
+disableMacro(User, "hash");
+disableMacro(User, "salt");
 
 /** @constant */
 User.COOKIE = getProperty("userCookie", "antvilleUser");
 
 /** @constant */
 User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
+
+/**
+ * FIXME: Still needs a solution whether and how to remove a user’s sites
+ */
+User.remove = function() {
+   return; // FIXME: Disabled until thoroughly tested
+   if (this.constructor === User) {
+      HopObject.remove.call(this.comments);
+      HopObject.remove.call(this.files);
+      HopObject.remove.call(this.images);
+      HopObject.remove.call(this.metadata);
+      //HopObject.remove.call(this.sites);
+      HopObject.remove.call(this.stories);
+      this.remove();
+   }
+   return;
+}
 
 /**
  * 
@@ -92,6 +110,10 @@ User.register = function(data) {
       throw Error(gettext("Please enter a valid e-mail address"));
    }
 
+   if (User.isBlacklisted(data)) {
+      throw Error("Sequere pecuniam ad meliora.");
+   }
+
    // Create hash from password for JavaScript-disabled browsers
    if (!data.hash) {
       // Check if passwords match
@@ -118,6 +140,42 @@ User.register = function(data) {
 
 /**
  * 
+ * @param {Object} data
+ * @returns {Boolean}
+ */
+User.isBlacklisted = function(data) {
+   var url;
+   var name = encodeURIComponent(data.name);
+   var email = encodeURIComponent(data.email);
+   var ip = encodeURIComponent(data.http_remotehost);
+
+   var key = getProperty("botscout.apikey");
+   if (key) {
+      url = ["http://botscout.com/test/?multi", "&key=", key, "&mail=", email, "&ip=", ip];
+      mime = getURL(url.join(String.EMPTY));
+      if (mime && mime.text && mime.text.startsWith("Y")) {
+         return true;
+      }
+   }
+   //return false;
+
+   // We only get here if botscout.com does not already blacklist the ip or email address
+   url = ["http://www.stopforumspam.com/api?f=json", "&email=", email];
+   if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) {
+      url.push("&ip=", ip);
+   }
+   mime = getURL(url.join(String.EMPTY));
+   if (mime && mime.text) {
+      var result = JSON.parse(mime.text);
+      if (result.success) {
+         return !!(result.email.appears || (result.ip && result.ip.appears));
+      }
+   }
+   return false;
+}
+
+/**
+ * 
  */
 User.autoLogin = function() {
    if (session.user) {
@@ -133,7 +191,7 @@ User.autoLogin = function() {
       return;
    }
    var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"),
-         "", "\\.");
+         String.EMPTY, "\\.");
    if ((user.hash + ip).md5() !== hash) {
       return;
    }
@@ -249,12 +307,13 @@ User.getLocation = function() {
 User.rename = function(currentName, newName) {
    var user = User.getByName(currentName);
    if (user) {
-      user.forEach(function() {
-         this.name = newName;
-      });
-      user.name = newName;
+      if (user.name === newName) {
+         return newName;
+      }
+      user.name = root.users.getAccessName(newName);
+      return user.name;
    }
-   return;
+   return currentName;
 }
 
 /**
@@ -279,18 +338,21 @@ User.rename = function(currentName, newName) {
  * @property {Membership[]} subscriptions
  * @property {String} status
  * @property {Story[]} stories
+ * @property {String} url 
  * @extends HopObject
  */
 User.prototype.constructor = function(data) {
    var now = new Date;
+   // FIXME: Refactor to be able to call constructor w/o arguments; use User.update() instead
    this.map({
-      name: data.name,
-      hash: data.hash,
-      salt: session.data.token,
-      email: data.email,
-      status: User.REGULAR,
       created: now,
-      modified: now
+      email: data.email,
+      hash: data.hash,
+      modified: now,
+      name: data.name,
+      salt: session.data.token,
+      status: User.REGULAR,
+      url: data.url
    });
    return this;
 }
@@ -298,7 +360,10 @@ User.prototype.constructor = function(data) {
 /**
  * 
  */
-User.prototype.onLogout = function() { /* ... */ }
+User.prototype.onLogout = function() {
+   res.setCookie("fbs_160722163980484", String.EMPTY, -1, "/", ".antville.org");
+   return;
+}
 
 /**
  * 
@@ -341,6 +406,7 @@ User.prototype.update = function(data) {
    if (data.url && !(this.url = validateUrl(data.url))) {
       throw Error(gettext("Please enter a valid URL"));
    }
+   this.touch();
    return this;
 }
 
