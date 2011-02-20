@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2011 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,13 +22,14 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 // Apply with enabled updater repository via ant patch -Dpatch.id=20110209
 
 if (!String(Root.VERSION).startsWith("1.2")) {
    throw Error("This patch needs to be applied to version 1.2 of the Antville codebase.");
 }
+
+app.addRepository("modules/helma/Database.js");
 
 var sql = new Sql;
 var db = new helma.Database("antville");
