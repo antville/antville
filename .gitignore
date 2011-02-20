@@ -6,6 +6,7 @@ build/extra/*.trace.db
 build/work
 code/Global/ParssClientLibrary.js
 code/_*
+code/domains.map
 /jobs
 /local
 static/*
