@@ -31,7 +31,7 @@
 //Feature.remove();
 
 // FIXME: Connecting with Twitter and Google currently does not return an e-mail address.
-// Instead, noreplay@antville.org is used � which is very poor and should be fixed ASAP.
+// Instead, noreplay@antville.org is used – which is very poor and should be fixed ASAP.
 
 app.addRepository(app.dir + "/../lib/scribe-1.1.0.jar");
 
@@ -199,7 +199,7 @@ connect.facebook = function(req) {
       } catch (ex) { }
    }
 
-   var url = path.href(req.action) + "?type=facebook";
+   var url = res.handlers.members.href(req.action) + "?type=facebook";
 
    var code = req.data.code;
    if (!code) {
