@@ -44,14 +44,14 @@ $(function() {
 <td><input type="text" name="name" id="name" tabindex="1" size="20" 
       value="<% request.name encoding="form" %>" /></td>
 <td rowspan="4"> </td>
-<td class="small"><% members.link register <% gettext 
-      "Not registered yet\?" %> %></td>
+<td class="small"><% members.link register <% gettext
+      "Not registered yet\?" %> tabindex="6" %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Password suffix=: %></td>
 <td><input type="password" name="password" id="password" tabindex="2" size="20"/></td>
-<td class="small"><% members.link reset <% gettext 
-      "Password forgotten\?" %> %></td>
+<td class="small"><% members.link reset <% gettext
+      "Password forgotten\?" %> tabindex="7" %></td>
 </tr>
 <tr>
 <td> </td>
@@ -62,14 +62,10 @@ $(function() {
 </tr>
 <tr>
 <td> </td>
-<td colspan="4"><% skin connect#facebook %></td>
-</tr>
-<tr>
-<td> </td>
 <td colspan="4"><br />
    <button type="submit" id="submit" name="login" value="1"
          tabindex="4"><% gettext Login context=verb %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
+   <a href="" class="cancel" tabindex="5"><% gettext Cancel %></a>
 </td>
 </tr>
 </table>
