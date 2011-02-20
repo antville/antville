@@ -179,12 +179,12 @@ Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
       "order by name asc limit $2";
 
 /** @constant */
-Sql.ARCHIVE = "select id from content where site_id = $0 and " +
-      "prototype = 'Story' and status <> 'closed' $1 $2 limit $3 offset $4";
+Sql.ARCHIVE = "select id from content where site_id = $0 and prototype = 'Story' and " +
+      "status in ('public', 'shared', 'open') $1 $2 limit $3 offset $4";
 
 /** @constant */
 Sql.ARCHIVESIZE = "select count(*) as count from content where site_id = $0 " +
-      "and prototype = 'Story' and status <> 'closed' $1";
+      "and prototype = 'Story' and status in ('public', 'shared', 'open') $1";
 
 /** @constant */
 Sql.ARCHIVEPART = " and extract($0 from created) = $1";
