@@ -188,7 +188,7 @@ create table antville.metadata (
 );
 
 create index metadata_key_idx on metadata (parent_type, parent_id, name);
-create index metadata_value_idx on metadata (value);
+create index metadata_value_idx on metadata using hash (value);
 
 #!helma <% #end_of_metadata %>
 
