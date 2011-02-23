@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,11 +18,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision:3341 $
-// $LastChangedBy:piefke3000 $
-// $LastChangedDate:2007-09-27 00:22:37 +0200 (Thu, 27 Sep 2007) $
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Stories prototype

@@ -16,9 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# $Revision: 4092 $
-# $LastChangedBy: interface@p3k.org $
-# $LastChangedDate: 2010-04-25 20:47:29 +0200 (Sun, 25 Apr 2010) $
+# $Revision$
+# $LastChangedBy$
+# $LastChangedDate$
 #
 #, fuzzy
 msgid ""

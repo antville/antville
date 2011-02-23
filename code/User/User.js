@@ -1,9 +1,9 @@
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2007-2011 by Tobi Schäfer.
+// Copyright 2007-2011 by Tobi Sch√§fer.
 //
-// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Copyright 2001‚Äì2007 Robert Gaggl, Hannes Walln√∂fer, Tobi Sch√§fer,
 // Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
@@ -44,7 +44,7 @@ User.COOKIE = getProperty("userCookie", "antvilleUser");
 User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
 
 /**
- * FIXME: Still needs a solution whether and how to remove a user’s sites
+ * FIXME: Still needs a solution whether and how to remove a user‚Äôs sites
  */
 User.remove = function() {
    return; // FIXME: Disabled until thoroughly tested

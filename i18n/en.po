@@ -16,10 +16,10 @@
 # # See the License for the specific language governing permissions and
 # # limitations under the License.
 # #
-# # $Revision: 3984 $
-# # $LastChangedBy: interface@p3k.org $
-# # $LastChangedDate: 2010-02-05 19:20:55 +0100 (Fri, 05 Feb 2010) $
-# # $URL: https://antville.googlecode.com/svn/trunk/build/extra/MessageParser.js $
+# # $Revision$
+# # $LastChangedBy$
+# # $LastChangedDate$
+# # $URL$
 # #
 msgid ""
 msgstr ""
