@@ -1,10 +1,7 @@
-// The Antville Project
-// http://code.google.com/p/antville
 //
-// Copyright 2007-2011 by Tobi Schäfer.
+// Jala Project [http://opensvn.csie.org/traccgi/jala]
 //
-// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
-// Matthias & Michael Platzer, Christoph Lincke.
+// Copyright 2004 ORF Online und Teletext GmbH
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -19,9 +16,10 @@
 // limitations under the License.
 //
 // $Revision$
-// $Author$
-// $Date$
-// $URL$
+// $LastChangedBy$
+// $LastChangedDate$
+// $HeadURL$
+//
 
 
 /**
