@@ -225,9 +225,8 @@ User.login = function(data) {
    if (data.remember) {
       // Set long running cookies for automatic login
       res.setCookie(User.COOKIE, user.name, 365);
-      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
-            "", "\\.");
-      res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);   
+      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), String.EMPTY, "\\.");
+      res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);
    }
    user.touch();
    session.login(user);
@@ -360,10 +359,7 @@ User.prototype.constructor = function(data) {
 /**
  * 
  */
-User.prototype.onLogout = function() {
-   res.setCookie("fbs_160722163980484", String.EMPTY, -1, "/", ".antville.org");
-   return;
-}
+User.prototype.onLogout = function() { /* ... */ }
 
 /**
  * 
