@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,11 +18,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision:3338 $
-// $LastChangedBy:piefke3000 $
-// $LastChangedDate:2007-09-22 23:48:33 +0200 (Sat, 22 Sep 2007) $
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Images prototype
@@ -53,7 +54,7 @@ Images.prototype.getPermission = function(action) {
       case "main":
       case "create":
       // FIXME: case "tags":
-      return Site.require(Site.OPEN) && session.user || 
+      return Site.require(Site.OPEN) && session.user ||
             Membership.require(Membership.CONTRIBUTOR) ||
             User.require(User.PRIVILEGED);
       case "all":
@@ -135,14 +136,14 @@ Images.prototype.all_action = function() {
  */
 Images.Default = new function() {
    var Image = function(name, description) {
-      var fpath = app.properties.staticPath + "www/" + name;
-      var image = new helma.Image(fpath);
+      var dir = new helma.File(app.appsProperties['static'], "www");
+      var image = new helma.Image(new helma.File(dir, name));
       this.name = name;
       this.description = description;
       this.width = image.width;
       this.height = image.height;
       this.getUrl = function() {
-         return app.properties.staticUrl + "www/" + name;
+         return root.processHref(app.appsProperties.staticMountpoint + "/www/" + name);
       }
       this.render_macro = global.Image.prototype.render_macro;
       this.thumbnail_macro = global.Image.prototype.thumbnail_macro;

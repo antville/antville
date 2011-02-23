@@ -965,12 +965,9 @@ Site.prototype.getTags = function(type, group) {
  * @returns {helma.File}
  */
 Site.prototype.getStaticFile = function(tail) {
-   res.push();
-   res.write(app.properties.staticPath);
-   res.write(this.name);
-   res.write("/");
-   tail && res.write(tail);
-   return new helma.File(res.pop());
+   var fpath = this.name;
+   tail && (fpath += "/" + tail);
+   return new helma.File(app.appsProperties['static'], fpath);
 }
 
 /**
@@ -980,11 +977,13 @@ Site.prototype.getStaticFile = function(tail) {
  */
 Site.prototype.getStaticUrl = function(tail) {
    res.push();
-   res.write(app.properties.staticUrl);
+   res.write(app.appsProperties.staticMountpoint);
+   res.write("/");
    res.write(this.name);
    res.write("/");
    tail && res.write(tail);
-   return encodeURI(res.pop());
+   // FIXME: Why encodeURI() here?
+   return encodeURI(this.processHref(res.pop()));
 }
 
 /**
