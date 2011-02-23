@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 // Apply with enabled updater repository via ant patch -Dpatch.id=20100405
 
@@ -28,7 +29,7 @@ var sql = new Sql;
 var template;
 
 // Remove MySQL-specific constraints (enum types)
-// The database user needs �alter� permission for this patch:
+// The database user needs “alter” permission for this patch:
 // mysql -e "grant all on antville.* to 'antville'@'localhost'"
 // Afterwards user permissions should be restored:
 // mysql -e "grant select, insert, update, delete on antville.* to 'antville'@'localhost'"

@@ -1,9 +1,9 @@
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2007-2011 by Tobi Schäfer.
+// Copyright 2007-2011 by Tobi Sch√§fer.
 //
-// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Copyright 2001‚Äì2007 Robert Gaggl, Hannes Walln√∂fer, Tobi Sch√§fer,
 // Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
