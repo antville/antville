@@ -409,6 +409,11 @@ Root.prototype.getCreationPermission = function() {
    return true;
 }
 
+/**
+ * 
+ * @param {Object} param
+ * @param {String} name
+ */
 Root.prototype.static_macro = function(param, name) {
    return this.getStaticUrl(name);
 }
