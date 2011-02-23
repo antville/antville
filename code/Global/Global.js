@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines global variables and functions.
@@ -685,7 +686,7 @@ function renderLink(param, url, text, handler) {
  */
 function validateEmail(str) {
 	if (str) {
-      if (str.isEmail(str)) {
+      if (str.isEmail()) {
          return str;
       }
    }
@@ -699,9 +700,9 @@ function validateEmail(str) {
  */
 function validateUrl(str) {
    if (str) {
-      if (str.isUrl(str)) {
-         return String(str);
-      } else if (str.contains("@")) {
+      if (str.isUrl()) {
+         return str;
+      } else if (str.isEmail()) {
          return "mailto:" + str;
       } else {
          return null;
