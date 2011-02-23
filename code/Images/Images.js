@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -91,6 +91,12 @@ Images.prototype.main_action = function() {
 }
 
 Images.prototype.create_action = function() {
+   if (req.data.helma_upload_error) {
+      res.message = gettext("Sorry, the file exceeds the maximum upload limit of {0} kB.",
+            formatNumber(app.appsProperties.uploadLimit));
+      res.redirect(this.href(req.action));
+   }
+
    if (res.handlers.site.getDiskSpace() < 0) {
       res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
       res.redirect(this.href());
