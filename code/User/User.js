@@ -95,17 +95,20 @@ User.getSalt = function() {
  * @returns {User}
  */
 User.register = function(data) {
-   var name = stripTags(data.name);
    if (!data.name) {
       throw Error(gettext("Please enter a username."));
-   } else if (data.name.length > 30) {
+   }
+
+   data.name = data.name.trim();
+   if (data.name.length > 30) {
       throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
-   } else if (data.name !== name || NAMEPATTERN.test(name)) {
+   } else if (data.name !== stripTags(data.name) || NAMEPATTERN.test(data.name)) {
       throw Error(gettext("Please avoid special characters or HTML code in the name field."));
-   } else if (name !== root.users.getAccessName(name)) {
+   } else if (data.name !== root.users.getAccessName(data.name)) {
       throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
 
+   data.email && (data.email = data.email.trim());
    if (!validateEmail(data.email)) {
       throw Error(gettext("Please enter a valid e-mail address"));
    }
@@ -125,9 +128,6 @@ User.register = function(data) {
       data.hash = (data.password + session.data.token).md5();
    }
 
-   if (User.getByName(data.name)) {
-      throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
-   }
    var user = new User(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
    if (root.admins.size() < 1) {
@@ -152,9 +152,14 @@ User.isBlacklisted = function(data) {
    var key = getProperty("botscout.apikey");
    if (key) {
       url = ["http://botscout.com/test/?multi", "&key=", key, "&mail=", email, "&ip=", ip];
-      mime = getURL(url.join(String.EMPTY));
-      if (mime && mime.text && mime.text.startsWith("Y")) {
-         return true;
+      try {
+         mime = getURL(url.join(String.EMPTY));
+         if (mime && mime.text && mime.text.startsWith("Y")) {
+            return true;
+         }
+      } catch (ex) {
+         app.log("Exception while trying to check blacklist URL " + url);
+         app.log(ex);
       }
    }
    //return false;
@@ -164,7 +169,12 @@ User.isBlacklisted = function(data) {
    if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) {
       url.push("&ip=", ip);
    }
-   mime = getURL(url.join(String.EMPTY));
+   try {
+      mime = getURL(url.join(String.EMPTY));
+   } catch (ex) {
+      app.log("Exception while trying to check blacklist URL " + url);
+      app.log(ex);
+   }
    if (mime && mime.text) {
       var result = JSON.parse(mime.text);
       if (result.success) {
