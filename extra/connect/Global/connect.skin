@@ -1,5 +1,5 @@
 <% #facebook %>
-<img src="<% property staticUrl %>www/facebook.png" width=15 height=15/>
+<img src="<% root.static facebook.png %>" width=15 height=15/>
 <a href="" id="facebook_connect">Login with Facebook</a>
 
 <script type="text/javascript">
@@ -13,7 +13,7 @@ $(function() {
 </script>
 
 <% #twitter %>
-<img src="<% property staticUrl %>www/twitter.png" width=15 height=15 />
+<img src="<% root.static twitter.png %>" width=15 height=15 />
 <a href="" id="twitter_connect">Login with Twitter</a>
 
 <script type="text/javascript">
@@ -27,7 +27,7 @@ $(function() {
 </script>
 
 <% #google %>
-<img src="<% property staticUrl %>www/google.png" width=15 height=15/>
+<img src="<% root.static google.png %>" width=15 height=15/>
 <a href="" id="google_connect">Login with Google</a>
 
 <script type="text/javascript">
