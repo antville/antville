@@ -1,7 +1,10 @@
+// The Antville Project
+// http://code.google.com/p/antville
 //
-// Jala Project [http://opensvn.csie.org/traccgi/jala]
+// Copyright 2007-2011 by Tobi Schäfer.
 //
-// Copyright 2004 ORF Online und Teletext GmbH
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,10 +19,9 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $HeadURL$
-//
+// $Author$
+// $Date$
+// $URL$
 
 
 /**
@@ -420,8 +422,9 @@ MessageParser.prototype.getPotString = function() {
    buf.append('# limitations under the License.\n');
    buf.append('#\n');
    buf.append('# $Revision$\n');
-   buf.append('# $LastChangedBy$\n');
-   buf.append('# $LastChangedDate$\n');
+   buf.append('# $Author$\n');
+   buf.append('# $Date$\n');
+   buf.append('# $URL$\n');
    buf.append('#\n');
    buf.append('#, fuzzy\n');
    buf.append('msgid ""\n');
