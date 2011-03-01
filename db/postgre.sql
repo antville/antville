@@ -176,7 +176,7 @@ create index membership_site_idx on antville.membership (site_id);
 create index membership_role_idx on antville.membership (role);
 create index membership_creator_idx on antville.membership (creator_id);
 
-#!helma <% #metadata %>
+--!helma <% #metadata %>
 
 create table antville.metadata (
   id int4 primary key,
@@ -191,7 +191,7 @@ create index metadata_parent_idx on metadata (parent_type, parent_id);
 create index metadata_name_idx on metadata (name);
 create index metadata_value_idx on metadata using hash (value);
 
-#!helma <% #end_of_metadata %>
+--!helma <% #end_of_metadata %>
 
 create table antville.poll (
   id int4 primary key,
@@ -281,9 +281,9 @@ insert into antville.layout (id, site_id, mode) values ('1', '1', 'default');
 insert into antville.site (id, name, layout_id, status, mode) 
 	values ('1', 'www', '1', 'trusted', 'public');
 
-grant select, insert, update, delete on antville.choice, antville.content, 
+grant select, insert, update, delete on antville.choice, antville.content,
 	antville.file, antville.image, antville.layout, antville.log, 
-	antville.membership, antville.poll, antville.site, antville.skin, 
+	antville.metadata, antville.membership, antville.poll, antville.site, antville.skin,
 	antville.tag, antville.tag_hub, antville.account, antville.vote to antville;
 
 -- This returns an error in H2 database

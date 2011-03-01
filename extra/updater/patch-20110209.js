@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 // Apply with enabled updater repository via ant patch -Dpatch.id=20110209
@@ -35,5 +35,5 @@ var sql = new Sql;
 var db = new helma.Database("antville");
 var fpath = "../db/" + (db.isMySql() ? "my.sql" : "postgre.sql");
 var file = new helma.File(app.dir, fpath);
-var skin = createSkin(file.readAll().replace(/#!helma/g, "")).getSubskin("metadata");
+var skin = createSkin(file.readAll().replace(/(?:--|#)!helma/g, "")).getSubskin("metadata");
 sql.execute(renderSkinAsString(skin));
