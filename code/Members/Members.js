@@ -142,7 +142,7 @@ Members.prototype.reset_action = function() {
       var user = User.getById(req.data.user);
       if (user) {
          var token = user.getMetadata("resetToken");
-         if (token) {
+         if (token && token === req.data.token) {
             session.login(user);
             if (req.postParams.save) {
                var password = req.postParams.password;
