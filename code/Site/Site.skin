@@ -88,8 +88,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <td class="right">
    <div class="box"><% ngettext "Online for {0} day" 
          "Online for {0} days" <% site.age %> %><br />
-   <% site.modified short prefix=<% gettext "Last modified:" 
-         suffix=' <div class="nowrap">' %> suffix=</div> %></div>
+   <% gettext "Last modified: {0}" <% site.modified short %> %></div>
    
    <div class="boxheader"><% gettext Status %></div>
    <div class="box"><% membership.status %></div>
