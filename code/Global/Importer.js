@@ -50,9 +50,7 @@ Importer.run = function(site, user) {
                created: entry.publishedDate.format(SHORTDATEFORMAT),
                status: Story.CLOSED,
                mode: Story.FEATURED
-            });
-            story.site = site;
-            story.creator = user;
+            }, site, user);
          }
          File.remove.call(xml);
       }

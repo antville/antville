@@ -186,15 +186,13 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
 
    var parts = Api.blogger._getContentParts(content);
 
-   var story = Story.add(site, {
+   var story = Story.add({
       title: parts.title,
       text: parts.text,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: Story.FEATURED
-   });
+   }, site, user);
 
-   story.site = site;
-   story.creator = user;
    return story._id;
 }
 

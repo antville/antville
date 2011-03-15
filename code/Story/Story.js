@@ -35,14 +35,19 @@ this.handleMetadata("text");
 
 /**
  * @function
- * @param {Story[]} parent
- * @param {Object} data 
+ * @param {Object} data
+ * @param {Site} site
+ * @param {User} user
  * @returns {Story}
  */
-Story.add = function(parent, data) {
+Story.add = function(data, site, user) {
+   site || (site = res.handlers.site);
+   user || (user = session.user);
    var story = new Story;
+   story.site = site;
+   story.creator = story.modifier = user;
    story.update(data);
-   parent.add(story);
+   site.stories.add(story);
    return story;
 }
 
@@ -112,7 +117,6 @@ Story.prototype.constructor = function() {
    this.status = Story.PUBLIC;
    this.mode = Story.FEATURED;
    this.commentMode = Story.OPEN;
-   this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
 }
