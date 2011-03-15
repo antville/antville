@@ -102,13 +102,9 @@ Images.prototype.create_action = function() {
       res.redirect(this.href());
    }
 
-   var image = new Image;
-   image.parent = this._parent;
-   
    if (req.postParams.save) {
       try {
-         image.update(req.postParams);
-         this.add(image);
+         var image = Image.add(req.postParams, this._parent);
          image.notify(req.action);
          res.message = gettext('The image was successfully added.');
          res.redirect(image.href());
@@ -120,7 +116,7 @@ Images.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Image");
-   res.data.body = image.renderSkinAsString("$Image#edit");
+   res.data.body = (new Image).renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;
 }

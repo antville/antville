@@ -71,12 +71,9 @@ Files.prototype.create_action = function() {
       res.redirect(this.href());
    }
 
-   var file = new File;
-   file.site = res.handlers.site;
    if (req.postParams.save) {
       try {
-         file.update(req.postParams);
-         this.add(file);
+         var file = File.add(req.postParams);
          file.notify(req.action);
          res.message = gettext('The file was successfully added.');
          res.redirect(this.href());
@@ -88,7 +85,7 @@ Files.prototype.create_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add File");
-   res.data.body = file.renderSkinAsString("$File#edit");
+   res.data.body = (new File).renderSkinAsString("$File#edit");
    this._parent.renderSkin("Site#page");
    return;
 }

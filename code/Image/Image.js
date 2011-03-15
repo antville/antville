@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -48,6 +48,23 @@ Image.THUMBNAILWIDTH = 100;
 Image.KEYS = ["name", "created", "modified", "origin", "description", 
       "contentType", "contentLength", "width", "height", "thumbnailName", 
       "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
+
+/**
+ * @param {Object} data
+ * @param {Site|Layout} parent
+ * @param {User} user
+ * @returns {Image}
+ */
+Image.add = function(data, parent, user) {
+   parent || (parent = res.handlers.site);
+   user || (user = session.user);
+   var image = new Image;
+   image.parent = parent;
+   image.update(data);
+   image.creator = image.modifier = user;
+   parent.images.add(image);
+   return image;
+}
 
 /**
  * 

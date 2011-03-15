@@ -123,17 +123,15 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
             " to add a post to site " + site.name);
    }
 
-   var story = Story.add(site.stories, {
+   var story = Story.add({
       title: content.title,
       text: content.description,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: content.flNotOnHomePage ? Story.HIDDEN : Story.FEATURED,
       commentMode: content.discussions === 0 ? Story.CLOSED : Story.OPEN,
       tags: content.categories
-   });
+   }, site, user);
 
-   story.site = site;
-   story.creator = user;
    story.setMetadata('postSource', content.postSource);
    return story._id;
 }
@@ -227,13 +225,8 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
       data.file = new Packages.helma.util.MimePart(media.name, 
             media.bits, media.type);
       data.file_origin = media.name;
-      data.description = media.description;   
-      var image = new Image;
-      image.site = site;
-      image.creator = user;
-      image.update(data);
-      site.images.add(image);
-      result.url = image.getUrl();
+      data.description = media.description;
+      result.url = Image.add(data, site, user).getUrl();
    } else {
       if (!site.files.getPermission("create")) {
          throw Error("Permission denied for user " + user.name + 
@@ -243,12 +236,7 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
             media.bits, media.type);
       data.file_origin = media.name;
       data.description = media.description;
-      var file = new File;
-      file.site = site;
-      file.creator = file.modifier = user;
-      file.update(data);
-      site.files.add(file);
-      result.url = file.getUrl();
+      result.url = File.add(data, site, user).file.getUrl();
    }
    
    return result;

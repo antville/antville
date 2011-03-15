@@ -45,8 +45,8 @@ Story.add = function(data, site, user) {
    user || (user = session.user);
    var story = new Story;
    story.site = site;
-   story.creator = story.modifier = user;
    story.update(data);
+   story.creator = story.modifier = user;
    site.stories.add(story);
    return story;
 }

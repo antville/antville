@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -35,6 +35,23 @@ this.handleMetadata("description");
 this.handleMetadata("contentType");
 this.handleMetadata("contentLength");
 this.handleMetadata("fileName");
+
+/**
+ * @param {Object} data
+ * @param {Site} site
+ * @param {User} user
+ * @returns {File}
+ */
+File.add = function(data, site, user) {
+   site || (site = res.handlers.site);
+   user || (user = session.user);
+   var file = new File;
+   file.site = site;
+   file.update(data);
+   file.creator = file.modifier = user;
+   site.files.add(file);
+   return file;
+}
 
 /**
  * 
