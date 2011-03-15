@@ -236,7 +236,7 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
             media.bits, media.type);
       data.file_origin = media.name;
       data.description = media.description;
-      result.url = File.add(data, site, user).file.getUrl();
+      result.url = File.add(data, site, user).getUrl();
    }
    
    return result;
