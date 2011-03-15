@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -44,17 +44,15 @@ Importer.run = function(site, user) {
             if (category.name !== "http://schemas.google.com/blogger/2008/kind#post") {
                continue;
             }
-            var story = new Story;
-            story.site = site;
-            story.creator = user;
-            story.update({
+            var story = Story.add({
                title: entry.title,
                text: entry.description || entry.contents.get(0).value,
                created: entry.publishedDate.format(SHORTDATEFORMAT),
                status: Story.CLOSED,
                mode: Story.FEATURED
             });
-            site.stories.add(story);
+            story.site = site;
+            story.creator = user;
          }
          File.remove.call(xml);
       }
