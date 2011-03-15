@@ -19,13 +19,13 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
  * @fileOverview Methods that implement Blogger's XML-RPC API.
- * See http://www.blogger.com/developers/api/1_docs/ for further details.
+ * See http://goo.gl/u8lZZ for further details.
  * The blogger.getTemplate and blogger.setTemplate methods are not supported
  */
 
@@ -185,16 +185,16 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    }
 
    var parts = Api.blogger._getContentParts(content);
-   var story = new Story;
-   story.site = site;
-   story.creator = user;
-   story.update({
+
+   var story = Story.add(site, {
       title: parts.title,
       text: parts.text,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: Story.FEATURED
    });
-   site.stories.add(story);
+
+   story.site = site;
+   story.creator = user;
    return story._id;
 }
 

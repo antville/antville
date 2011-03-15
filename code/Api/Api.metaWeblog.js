@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,10 +19,9 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Methods that implement the MetaWeblog XML-RPC API.
@@ -50,7 +51,8 @@ Api.metaWeblog._getStruct = function(story) {
       mt_allow_comments: story.commentMode === Story.OPEN ? 1 : 0,
       mt_allow_pings: 0,
       mt_convert_breaks: null,
-      mt_keywords: null
+      mt_keywords: null,
+      postSource: story.getMetadata('postSource')
    }
 }
 
@@ -120,11 +122,8 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
       throw Error("Permission denied for user " + user.name + 
             " to add a post to site " + site.name);
    }
-   
-   var story = new Story;
-   story.site = site;
-   story.creator = user;
-   story.update({
+
+   var story = Story.add(site.stories, {
       title: content.title,
       text: content.description,
       status: publish ? Story.PUBLIC : Story.CLOSED,
@@ -132,7 +131,10 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
       commentMode: content.discussions === 0 ? Story.CLOSED : Story.OPEN,
       tags: content.categories
    });
-   site.stories.add(story);
+
+   story.site = site;
+   story.creator = user;
+   story.setMetadata('postSource', content.postSource);
    return story._id;
 }
 
@@ -165,6 +167,8 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
             Story.OPEN : Story.CLOSED,
       tags: content.categories
    });
+
+   story.setMetadata('postSource', content.postSource);
    return true;
 }
 

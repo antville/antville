@@ -19,16 +19,45 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
- * @fileOverview Defindes the Story prototype.
+ * @fileOverview Defines the Story prototype.
  */
 
 markgettext("Story");
 markgettext("story");
+
+this.handleMetadata("title");
+this.handleMetadata("text");
+
+/**
+ * @function
+ * @param {Story[]} parent
+ * @param {Object} data 
+ * @returns {Story}
+ */
+Story.add = function(parent, data) {
+   var story = new Story;
+   story.update(data);
+   parent.add(story);
+   return story;
+}
+
+/**
+ * @function
+ */
+Story.remove = function() {
+   if (this.constructor === Story) {
+      HopObject.remove.call(this.comments);
+      this.deleteMetadata();
+      this.setTags(null);
+      this.remove();
+   }
+   return;
+}
 
 /**
  * @function
@@ -52,22 +81,6 @@ Story.getModes = defineConstants(Story, markgettext("hidden"),
 Story.getCommentModes = defineConstants(Story, markgettext("closed"), 
       /* markgettext("readonly"), markgettext("moderated"), */ 
       markgettext("open"));
-
-/**
- * 
- */
-Story.remove = function() {
-   if (this.constructor === Story) {
-      HopObject.remove.call(this.comments);
-      this.deleteMetadata();
-      this.setTags(null);
-      this.remove();
-   }
-   return;
-}
-
-this.handleMetadata("title");
-this.handleMetadata("text");
 
 /**
  * @name Story

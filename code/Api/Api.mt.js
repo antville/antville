@@ -19,13 +19,13 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
  * @fileOverview Methods that implement Movable Type's XML-RPC API.
- * See http://www.sixapart.com/developers/xmlrpc/movable_type_api for details.
+ * See http://www.sixapart.com/pronet/breese/xmlrpc/movable_type_api/ for details.
  */
 
 /** @namespace */
@@ -122,7 +122,7 @@ Api.mt.getPostCategories = function(id, name, password) {
    return result;
 }
 
-// FIXME: What kind of stupid API is this?
+// FIXME: How do I post a new story?
 /**
  * 
  * @param {Number} id

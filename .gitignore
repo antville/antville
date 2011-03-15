@@ -1,4 +1,6 @@
 /.*
+/antville.eml
+/antville.iml
 build/build.properties
 build/dist
 build/extra/*.lock.db

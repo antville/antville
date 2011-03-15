@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -85,11 +85,9 @@ Stories.prototype.main_action = function() {
 }
 
 Stories.prototype.create_action = function() {
-   var story = new Story;
    if (req.postParams.save) {
       try {
-         story.update(req.postParams);
-         this.add(story);
+         story = Story.add(this, req.postParams);
          story.notify(req.action);
          delete session.data.backup;
          res.message = gettext("The story was successfully created.");
@@ -102,7 +100,7 @@ Stories.prototype.create_action = function() {
    
    res.data.title = gettext("Add Story");
    res.data.action = this.href(req.action);
-   res.data.body = story.renderSkinAsString("Story#edit");
+   res.data.body = (new Story).renderSkinAsString("Story#edit");
    this._parent.renderSkin("Site#page");
    return;
 }

@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 app.addRepository("modules/helma/Aspects.js");
@@ -209,11 +209,11 @@ Site.prototype.onCodeUpdate = function() {
 }
 
 Story.prototype.onCodeUpdate = function() {
-   helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);   
+   helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
 Stories.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "create_action", 
+   return helma.aspects.addBefore(this, "create_action",
          aspects.fixStoryEditorParams);
 }
