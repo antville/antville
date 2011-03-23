@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,11 +18,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision:3329 $
-// $LastChangedBy:piefke3000 $
-// $LastChangedDate:2007-09-14 15:18:09 +0200 (Fri, 14 Sep 2007) $
+// $Revision$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Members prototype.
@@ -112,7 +113,7 @@ Members.prototype.register_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Register");
    res.data.body = this.renderSkinAsString("$Members#register");
-   this._parent.renderSkin("Site#page");
+   root.renderSkin("Site#page");
    return;
 }
 
@@ -128,8 +129,8 @@ Members.prototype.reset_action = function() {
          }
          var token = User.getSalt();
          user.setMetadata("resetToken", token);
-         sendMail(user.email, gettext("[{0}] Password reset confirmation", 
-               root.title), user.renderSkinAsString("$User#notify_reset", {
+         sendMail(user.email, gettext("[{0}] Password reset confirmation", root.title),
+               user.renderSkinAsString("$User#notify_reset", {
                   href: this.href("reset"),
                   token: token
                }));
@@ -169,7 +170,7 @@ Members.prototype.reset_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Request Password Reset");
    res.data.body = this.renderSkinAsString("$Members#reset");
-   this._parent.renderSkin("Site#page");
+   root.renderSkin("Site#page");
    return;
 }
 
@@ -188,7 +189,7 @@ Members.prototype.login_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Login");
    res.data.body = this.renderSkinAsString("$Members#login");
-   this._parent.renderSkin("Site#page");
+   root.renderSkin("Site#page");
    return;
 }
 
@@ -217,7 +218,7 @@ Members.prototype.edit_action = function() {
    session.data.salt = session.user.salt; // FIXME
    res.data.title = gettext("User Profile");
    res.data.body = session.user.renderSkinAsString("$User#edit");
-   this._parent.renderSkin("Site#page");
+   root.renderSkin("Site#page");
    return;
 }
 

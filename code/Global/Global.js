@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -72,6 +72,8 @@ app.data.features || (app.data.features = []);
 app.data.mails || (app.data.mails = []);
 /** @name app.data.requests */
 app.data.requests || (app.data.requests = {});
+/** @name app.data.extras */
+app.data.extras || (app.data.extras = {});
 
 /**
  * @name helma.File
@@ -282,8 +284,6 @@ function link_macro() {
    return renderLink.apply(this, arguments);
 }
 
-// FIXME: The definition with "var" is necessary; otherwise the skin_macro()
-// method won't be overwritten reliably. (Looks like a Helma bug.)
 /**
  * 
  * @param {Object} param
@@ -291,6 +291,8 @@ function link_macro() {
  * @returns {String} The rendered skin
  * @see HopObject#skin_macro
  */
+// FIXME: The definition with "var" is necessary; otherwise the skin_macro()
+// method won't be overwritten reliably. (Looks like a Helma bug.)
 var skin_macro = function(param, name) {
   return HopObject.prototype.skin_macro.apply(this, arguments);
 }
@@ -322,6 +324,15 @@ function breadcrumbs_macro (param, delimiter) {
       res.write(gettext(req.action.titleize()));
    }
    return;
+}
+
+/**
+ * Helper macro for checking if a user session is authenticated (logged in).
+ * Returns true if user is logged in, false otherwise.
+ * @returns Boolean
+ */
+function user_macro() {
+   return !!session.user;
 }
 
 /**
@@ -1215,6 +1226,21 @@ var wait = function(millis) {
    var now = new Date;
    while (new Date - now < millis) {
       void null;
+   }
+   return;
+}
+
+/**
+ *
+ * @param {String} name
+ * @param {Object} extra
+ */
+var registerExtra = function(name, extra) {
+   app.data.extras[name] = extra;
+   if (extra._macro) {
+      app.data.extras[name + "_macro"] = function() {
+         return extra._macro.apply(this, arguments);
+      }
    }
    return;
 }

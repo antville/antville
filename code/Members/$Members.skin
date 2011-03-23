@@ -62,6 +62,14 @@ $(function() {
 </tr>
 <tr>
 <td> </td>
+<td colspan="4">
+   <% skin connect#facebook %><br />
+   <% skin connect#google %><br />
+   <% skin connect#twitter %><br />
+</td>
+</tr>
+<tr>
+<td> </td>
 <td colspan="4"><br />
    <button type="submit" id="submit" name="login" value="1"
          tabindex="4"><% gettext Login context=verb %></button>

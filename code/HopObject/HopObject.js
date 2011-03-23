@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -141,6 +141,8 @@ HopObject.prototype.onRequest = function() {
 
    res.meta.values = {};
    res.handlers.site.renderSkinAsString("Site#values");
+
+   res.handlers.extra = app.data.extras;
    return;
 }
 

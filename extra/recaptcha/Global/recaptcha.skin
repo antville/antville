@@ -1,0 +1,14 @@
+<script type="text/javascript">
+var RecaptchaOptions = {
+   theme: 'default',
+   lang: '<% site.locale %>'
+};
+</script>
+<script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=<% param.id %>">
+</script>
+<noscript>
+  <iframe src="http://www.google.com/recaptcha/api/noscript?k=<% param.id %>"
+      height="300" width="500" frameborder="0"></iframe><br>
+  <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+  <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+</noscript>
