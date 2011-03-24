@@ -27,7 +27,7 @@
  * @fileoverview Defines the Antville Connect Feature.
  */
 
-app.addRepository(app.dir + "/../lib/scribe-1.1.0.jar");
+app.addRepository(app.dir + "/../extra/connect/scribe-1.1.0.jar");
 
 // FIXME: Connecting with Twitter and Google currently does not return an e-mail address.
 // Instead, noreplay@antville.org is used – which is very poor and should be fixed ASAP.

@@ -199,6 +199,7 @@ docs/symbols/src/_opt_helma_apps_antville_code_Tags_Tags.js.html svneol=native#t
 docs/symbols/src/_opt_helma_apps_antville_code_User_User.js.html svneol=native#text/html
 docs/symbols/src/_opt_helma_apps_antville_code_Vote_Vote.js.html svneol=native#text/html
 extra/apps.properties svneol=native#text/plain
+extra/connect/scribe-1.1.0.jar -text svneol=unset#application/x-compressed
 extra/mrtg.cfg -text
 extra/updater/patch-20080913.js -text
 extra/updater/patch-20100401.js svneol=native#text/plain
@@ -252,7 +253,6 @@ lib/itunes-0.4.jar -text svneol=unset#application/x-compressed
 lib/jdom.jar -text svneol=unset#application/x-compressed
 lib/opml-0.1.jar -text svneol=unset#application/x-compressed
 lib/rome-1.0.jar -text svneol=unset#application/x-compressed
-lib/scribe-1.1.0.jar -text svneol=unset#application/x-compressed
 static/www/ant-icon.png -text svneol=unset#image/png
 static/www/ant.png -text svneol=unset#image/png
 static/www/big.gif -text svneol=unset#image/gif
