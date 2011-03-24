@@ -60,14 +60,7 @@ $(function() {
       'checked="checked"' %> />
    <label for="remember"><% gettext "Remember Login" %></label></td>
 </tr>
-<tr>
-<td> </td>
-<td colspan="4">
-   <% skin connect#facebook %><br />
-   <% skin connect#google %><br />
-   <% skin connect#twitter %><br />
-</td>
-</tr>
+<% feature connect prefix='<tr><td> </td><td colspan="4">' suffix='</td></tr>' %>
 <tr>
 <td> </td>
 <td colspan="4"><br />

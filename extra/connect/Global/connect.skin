@@ -1,3 +1,7 @@
+<% skin connect#facebook %><br />
+<% skin connect#google %><br />
+<% skin connect#twitter %><br />
+
 <% #facebook %>
 <img src="<% root.static facebook.png %>" width=15 height=15/>
 <a href="" id="facebook_connect">Login with Facebook</a>

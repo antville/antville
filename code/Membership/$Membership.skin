@@ -90,7 +90,7 @@
 <textarea cols="31" rows="10" class="formText" wrap="virtual" 
       name="text"><% request.text encoding="form" %></textarea>
 </p>
-<% extra.recaptcha %>
+<% feature recaptcha %>
 <p>
    <button type="submit" name="send" value="1"><% gettext Send %></button>
    <a href="" class="cancel"><% gettext Cancel %></a>

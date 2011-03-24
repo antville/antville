@@ -192,9 +192,9 @@ Membership.prototype.contact_action = function() {
          if (!req.postParams.text) {
             throw Error(gettext("Please enter the message text."));
          }
-         if (app.data.extras.recaptcha && !session.user) {
-            app.data.extras.recaptcha.verify(req.postParams);
-         }
+         Feature.invoke("recaptcha", function() {
+            return this.verify(req.postParams);
+         });
          this.notify(req.action, this.creator.email, session.user ?
                gettext('[{0}] Message from user {1}', root.title, session.user.name) :
                gettext('[{0}] Message from anonymous user', root.title));

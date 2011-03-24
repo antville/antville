@@ -19,67 +19,153 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
-var Feature = function(name, id, description) {
-   if (!name || !id) {
+/**
+ * @fileoverview Defines the Feature prototype.
+ */
+
+/**
+ * 
+ * @param {Object} param
+ * @param {String} id
+ */
+global.feature_macro = function(param, id) {
+   var feature = Feature.get(id);
+   feature && feature.main && feature.main.constructor === Function && feature.main();
+   return;
+}
+
+/**
+ *
+ * @param {String} id
+ * @param {String} url
+ * @param {Object} feature
+ */
+var Feature = function(id, url, feature) {
+   var self = this;
+
+   this.__defineGetter__("id", function() {return id});
+
+   for (let i in feature) {
+      this[i] = feature[i];
+   }
+
+   this.toString = function() {
+      return "[Feature: " + html.linkAsString({href: url}, id) + "]";
+   }
+
+   return this;
+}
+
+/**
+ *
+ * @param {String} id
+ * @param {String} url
+ * @param {Object} feature
+ * @returns {Feature}
+ */
+Feature.add = function(id, url, feature) {
+   if (!id || !url) {
       throw Error("Insufficient arguments");
    }
-   var feature;
-   if (feature = Feature.get(id)) {
-      app.log("Already registered a feature with ID " + id);
-      return feature;
+
+   var existingFeature = Feature.get(id);
+   if (existingFeature) {
+      app.log("Warning! Overwriting already present feature with ID " + id);
+      Feature.remove(existingFeature);
    }
-   this.id = id;
-   this.name = name;
-   this.description = description;
-   Feature.add(this);
+
+   Feature.list().push(new Feature(id, url, feature));
    return this;
 }
 
-Feature.add = function(feature) {
-   app.data.features.push(feature);
-   return this;
-}
-
+/**
+ *
+ * @param {Feature} feature
+ * @returns {Number}
+ */
 Feature.remove = function(feature) {
-   if (feature) {
-      var index = app.data.features.indexOf(feature);
-      (index > -1) && app.data.features.splice(index, 1);
-   } else {
-      app.data.features.length = 0;
+   var features = Feature.list();
+   if (feature === "*") {
+      features.length = 0;
+   } else if (feature) {
+      var index = features.indexOf(feature);
+      (index > -1) && features.splice(index, 1);
    }
-   return null;
+   return features.length;
 }
 
+/**
+ *
+ */
+Feature.list = function() {
+   return app.data.features;
+}
+
+/**
+ *
+ * @param {String} id
+ * @returns {Feature}
+ */
 Feature.get = function(id) {
-   for each (let feature in app.data.features) {
+   for each (let feature in Feature.list()) {
       if (feature.id === id) {
          return feature;
       }
    }
-   return null;
+   return;
 }
 
-Feature.invoke = function(methodNameOrFunction, args) {
-   var func, result = null;
-   for each (let feature in app.data.features) {
-      if (methodNameOrFunction.constructor === Function) {
-         result = methodNameOrFunction.apply(feature, args);
-      } else if (func = feature[methodNameOrFunction]) {
-         result = func.apply(feature, args);
+/**
+ * 
+ * @param {String} id
+ * @param {Function} callback
+ * @returns {Object}
+ */
+Feature.invoke = function(id, callback) {
+   id || (id = "*");
+   if (callback) {
+      var feature, method, result;
+      var args = Array.prototype.slice.call(arguments, 2);
+      if (id === "*") {
+         for each (feature in Feature.list()) {
+            method = feature[String(callback)];
+            if (method && method.constructor === Function) {
+               result = method.apply(feature, args);
+            }
+         }
+      } else {
+         feature = Feature.get(id);
+         if (feature) {
+            if (callback.constructor === Function) {
+               result = callback.apply(feature, args);
+            } else {
+               method = feature[callback];
+               if (method && method.constructor === Function) {
+                  result = method.apply(feature, args);
+               }
+            }
+         }
       }
    }
    return result;
 }
 
-Feature.prototype.handle = function(methodName, func) {
-   this[methodName] = func;
-   return this;
-}
-
-Feature.prototype.toString = function() {
-   return html.linkAsString({href: this.id}, "Feature: " + this.name);
+/**
+ *
+ * @param {HopObject} prototype
+ * @param {String} action
+ * @returns {Boolean}
+ */
+Feature.getPermission = function(prototype, action) {
+   for each (let feature in Feature.list()) {
+      let method = feature._getPermission;
+      if (method && method.constructor === Function && method(prototype, action)) {
+         return true;
+      }
+   }
+   return false;
 }

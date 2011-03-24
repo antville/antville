@@ -78,7 +78,7 @@ Members.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
    }
 
-   return Feature.invoke("getPermission", arguments) || false;
+   return Feature.getPermission(this.constructor, action);
 }
 
 Members.prototype.main_action = function() {

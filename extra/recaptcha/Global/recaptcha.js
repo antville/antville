@@ -28,11 +28,11 @@
  * @see http://www.google.com/recaptcha
  */
 
-registerExtra("recaptcha", new function() {
+Feature.add("recaptcha", "http://code.google.com/p/antville/wiki/recaptcha", new function() {
    var key = getProperty("recaptcha.key");
 
    return {
-      _macro: function() {
+      main: function() {
          if (key && !session.user) {
             renderSkin("recaptcha", {id: getProperty("recaptcha.id")});
          }

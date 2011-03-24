@@ -72,8 +72,6 @@ app.data.features || (app.data.features = []);
 app.data.mails || (app.data.mails = []);
 /** @name app.data.requests */
 app.data.requests || (app.data.requests = {});
-/** @name app.data.extras */
-app.data.extras || (app.data.extras = {});
 
 /**
  * @name helma.File
@@ -1226,21 +1224,6 @@ var wait = function(millis) {
    var now = new Date;
    while (new Date - now < millis) {
       void null;
-   }
-   return;
-}
-
-/**
- *
- * @param {String} name
- * @param {Object} extra
- */
-var registerExtra = function(name, extra) {
-   app.data.extras[name] = extra;
-   if (extra._macro) {
-      app.data.extras[name + "_macro"] = function() {
-         return extra._macro.apply(this, arguments);
-      }
    }
    return;
 }
