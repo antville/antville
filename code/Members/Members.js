@@ -113,7 +113,7 @@ Members.prototype.register_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Register");
    res.data.body = this.renderSkinAsString("$Members#register");
-   root.renderSkin("Site#page");
+   this._parent.renderSkin("Site#page");
    return;
 }
 
@@ -170,7 +170,7 @@ Members.prototype.reset_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Request Password Reset");
    res.data.body = this.renderSkinAsString("$Members#reset");
-   root.renderSkin("Site#page");
+   this._parent.renderSkin("Site#page");
    return;
 }
 
@@ -189,7 +189,7 @@ Members.prototype.login_action = function() {
    res.data.action = this.href(req.action);
    res.data.title = gettext("Login");
    res.data.body = this.renderSkinAsString("$Members#login");
-   root.renderSkin("Site#page");
+   this._parent.renderSkin("Site#page");
    return;
 }
 
@@ -218,7 +218,7 @@ Members.prototype.edit_action = function() {
    session.data.salt = session.user.salt; // FIXME
    res.data.title = gettext("User Profile");
    res.data.body = session.user.renderSkinAsString("$User#edit");
-   root.renderSkin("Site#page");
+   this._parent.renderSkin("Site#page");
    return;
 }
 
