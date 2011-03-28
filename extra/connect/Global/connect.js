@@ -131,11 +131,13 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
          break;
       }
 
+      var url = res.handlers.members.href(req.action) + "?type=" + type;
+
       var service = new scribe.builder.ServiceBuilder()
             .provider(provider)
             .apiKey(appId)
             .apiSecret(secret)
-            .callback(path.href(req.action) + "?type=" + type);
+            .callback(url);
 
       if (scope) {
          service.scope(scope);
