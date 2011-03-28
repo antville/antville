@@ -62,7 +62,9 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
    },
 
    main: function() {
-      renderSkin("connect");
+      getProperty("connect.facebook.id") && renderSkin("connect#facebook");
+      getProperty("connect.google.id") && renderSkin("connect#google");
+      getProperty("connect.twitter.id") && renderSkin("connect#twitter");
    },
 
    getUserByConnection: function(type, id) {
