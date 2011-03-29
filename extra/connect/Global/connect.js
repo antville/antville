@@ -55,8 +55,8 @@ Members.prototype.connect_action = function() {
 }
 
 Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
-   _getPermission: function(prototype, action) {
-      if (prototype === Members && action === "connect") {
+   _getPermission: function(action) {
+      if (this.constructor === Members && action === "connect") {
         return true;
       }
    },

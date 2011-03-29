@@ -156,14 +156,13 @@ Feature.invoke = function(id, callback) {
 
 /**
  *
- * @param {HopObject} prototype
  * @param {String} action
  * @returns {Boolean}
  */
-Feature.getPermission = function(prototype, action) {
+Feature.getPermission = function(action) {
    for each (let feature in Feature.list()) {
       let method = feature._getPermission;
-      if (method && method.constructor === Function && method(prototype, action)) {
+      if (method && method.constructor === Function && method.call(this, action)) {
          return true;
       }
    }
