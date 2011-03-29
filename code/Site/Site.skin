@@ -67,6 +67,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
 <link rel="alternate" type="application/rss+xml" title="Sites of <% root.title %>" href="<% root.href updates.xml %>" />
 <link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="<% site.title %>" />
+<script type="text/javascript" src="<% site.href main.js %>"></script>
 </head>
 <body>
 
@@ -91,7 +92,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
    
    <div class="boxheader"><% gettext Status %></div>
    <div class="box"><% membership.status %></div>
-   
+
    <% root.admin.skin $Admin#navigation %>
    
    <div class="boxheader"><% gettext "Main Menu" %></div>
@@ -116,8 +117,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
 </td>
 </tr>
 </table>
-
-<script type="text/javascript" src="<% site.href main.js %>"></script>
 
 </body>
 </html>
