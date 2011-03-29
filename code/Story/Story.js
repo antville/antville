@@ -57,8 +57,8 @@ Story.add = function(data, site, user) {
 Story.remove = function() {
    if (this.constructor === Story) {
       HopObject.remove.call(this.comments);
-      this.deleteMetadata();
       this.setTags(null);
+      this.deleteMetadata();
       this.remove();
    }
    return;

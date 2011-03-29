@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -67,7 +67,10 @@ Layout.remove = function(options) {
       HopObject.remove.call(this.images);
       this.getFile().removeDirectory();
       // The “force” flag is set e.g. when a whole site is removed
-      options && options.force && this.remove();
+      if (options && options.force) {
+         this.deleteMetadata();
+         this.remove();
+      }
    }
    return;
 }

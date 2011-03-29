@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -52,9 +52,9 @@ User.remove = function() {
       HopObject.remove.call(this.comments);
       HopObject.remove.call(this.files);
       HopObject.remove.call(this.images);
-      HopObject.remove.call(this.metadata);
       //HopObject.remove.call(this.sites);
       HopObject.remove.call(this.stories);
+      this.deleteMetadata();
       this.remove();
    }
    return;

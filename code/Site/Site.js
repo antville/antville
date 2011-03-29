@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /**
@@ -126,6 +126,7 @@ Site.remove = function() {
       } else {
          Layout.remove.call(this.layout, {force: true});
          this.getStaticFile().removeDirectory();
+         this.deleteMetadata();
          this.remove();
       }
    }
@@ -272,7 +273,8 @@ Site.prototype.getPermission = function(action) {
       case "import":
       return User.require(User.PRIVILEGED);
    }
-   return false;
+
+   return Feature.getPermission.apply(this, arguments);
 }
 
 Site.prototype.main_action = function() {
@@ -913,9 +915,10 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
+   // FIXME: This still does not work reliably with the various configuration options...
    if (["localhost", "127.0.0.1"].indexOf(req.data.http_host) > -1) {
-      var site = app.properties.hrefRootPrototype ? this.name : String.EMPTY;
-      return [app.appsProperties.mountPoint, "/", site, href].join(String.EMPTY);
+      var site = app.properties.hrefRootPrototype ? "/" + this.name : String.EMPTY;
+      return [app.appsProperties.mountPoint, site, href].join(String.EMPTY);
    }
    var domain, scheme = req.servletRequest ? req.servletRequest.scheme : "http";
    if (domain = getProperty("domain." + this.name)) {
@@ -976,14 +979,17 @@ Site.prototype.getStaticFile = function(tail) {
  * @returns {String}
  */
 Site.prototype.getStaticUrl = function(tail) {
+   // FIXME: This still does not work reliably with the various configuration options...
+   // Also see Images.Default.getStaticUrl() method
    res.push();
    res.write(app.appsProperties.staticMountpoint);
    res.write("/");
    res.write(this.name);
    res.write("/");
    tail && res.write(tail);
+   var url = res.pop();
    // FIXME: Why encodeURI() here?
-   return encodeURI(this.processHref(res.pop()));
+   return encodeURI(url);
 }
 
 /**

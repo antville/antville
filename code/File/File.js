@@ -59,6 +59,7 @@ File.add = function(data, site, user) {
 File.remove = function() {
    if (this.constructor === File) {
       this.getFile().remove();
+      this.deleteMetadata();
       this.remove();
    }
    return;

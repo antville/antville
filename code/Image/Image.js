@@ -73,6 +73,7 @@ Image.remove = function() {
    if (this.constructor === Image) {
       this.removeFiles();
       this.setTags(null);
+      this.deleteMetadata();
       this.remove();
    }
    return;
