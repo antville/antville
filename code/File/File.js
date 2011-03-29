@@ -77,6 +77,31 @@ File.getName = function(name) {
 }
 
 /**
+ *
+ * @param {String } url
+ */
+File.redirectOnUploadError = function(url) {
+   if (req.data.helma_upload_error) {
+      res.message = gettext("Sorry, the file exceeds the maximum upload limit of {0} kB.",
+            formatNumber(app.appsProperties.uploadLimit));
+      res.redirect(url);
+   }
+   return;
+}
+
+/**
+ *
+ * @param {String} url
+ */
+File.redirectOnExceededQuota = function(url) {
+   if (res.handlers.site.getDiskSpace() < 0) {
+      res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
+      res.redirect(url);
+   }
+   return;
+}
+
+/**
  * @name File
  * @constructor
  * @property {Date} created
@@ -128,8 +153,11 @@ File.prototype.main_action = function() {
 }
 
 File.prototype.edit_action = function() {
+   File.redirectOnUploadError(this.href(req.action));
+
    if (req.postParams.save) {
       try {
+         File.redirectOnExceededQuota(this.href(req.action));
          this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this._parent.href());

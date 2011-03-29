@@ -91,16 +91,8 @@ Images.prototype.main_action = function() {
 }
 
 Images.prototype.create_action = function() {
-   if (req.data.helma_upload_error) {
-      res.message = gettext("Sorry, the file exceeds the maximum upload limit of {0} kB.",
-            formatNumber(app.appsProperties.uploadLimit));
-      res.redirect(this.href(req.action));
-   }
-
-   if (res.handlers.site.getDiskSpace() < 0) {
-      res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
-      res.redirect(this.href());
-   }
+   File.redirectOnUploadError(this.href(req.action));
+   File.redirectOnExceededQuota(this.href());
 
    if (req.postParams.save) {
       try {
@@ -109,6 +101,7 @@ Images.prototype.create_action = function() {
          res.message = gettext('The image was successfully added.');
          res.redirect(image.href());
       } catch (ex) {
+         res.status = 400;
          res.message = ex.toString();
          app.log(ex);
       }
@@ -145,7 +138,7 @@ Images.Default = new function() {
       this.width = image.width;
       this.height = image.height;
       this.getUrl = function() {
-         return root.processHref(app.appsProperties.staticMountpoint + "/www/" + name);
+         return app.appsProperties.staticMountpoint + "/www/" + name;
       }
       this.render_macro = global.Image.prototype.render_macro;
       this.thumbnail_macro = global.Image.prototype.thumbnail_macro;

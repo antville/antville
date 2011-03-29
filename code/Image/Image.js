@@ -84,6 +84,12 @@ Image.remove = function() {
  * @returns {String}
  */
 Image.getFileExtension = function(type) {
+   type = String(type);
+   // Sometimes type is like "image/jpeg;charset=ISO-8859-1"
+   var index = type.lastIndexOf(";");
+   if (index > -1) {
+      type = type.substr(0, index);
+   }
    switch (type) {
       //case "image/x-icon":
       //return ".ico";
@@ -190,8 +196,11 @@ Image.prototype.main_action = function() {
 }
 
 Image.prototype.edit_action = function() {
+   File.redirectOnUploadError(this.href(req.action));
+
    if (req.postParams.save) {
       try {
+         File.redirectOnExceededQuota(this.href(req.action));
          this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this.href());
@@ -200,6 +209,7 @@ Image.prototype.edit_action = function() {
          app.log(ex);
       }
    }
+
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit Image");
    res.data.body = this.renderSkinAsString("$Image#edit");
@@ -246,20 +256,17 @@ Image.prototype.getFormValue = function(name) {
  * @param {Object} data
  */
 Image.prototype.update = function(data) {
-   if (data.uploadError) {
-      app.log(data.uploadError);
-      // Looks like the file uploaded has exceeded the upload limit ...
-      throw Error(gettext("File size is exceeding the upload limit."));
-   }
-   
-   if (!data.file_origin) {
+   var origin = data.file_origin;
+
+   if (!origin) {
       if (this.isTransient()) { 
          throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
       }
-   } else if (data.file_origin !== this.origin) {
+   } else if (origin !== this.origin) {
       var mime = data.file;
-      if (mime.contentLength < 1) {
-         mime = getURL(data.file_origin);
+      // Check if mime is not null to allow post requests with no file upload at all
+      if (!mime || mime.contentLength < 1) {
+         mime = getURL(origin);
          if (!mime) {
             throw Error(gettext("Could not fetch the image from the given URL."));
          }
@@ -270,7 +277,7 @@ Image.prototype.update = function(data) {
          throw Error(gettext("This does not seem to be a (valid) JPG, PNG or GIF image file."));
       }
       
-      this.origin = data.file_origin;
+      this.origin = origin;
       var mimeName = mime.normalizeFilename(mime.name);
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
