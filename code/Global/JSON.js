@@ -19,8 +19,8 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
 
 /*
@@ -558,3 +558,8 @@ if (!JSON) {
 // (These lines are not included in the original code by Crockford.)
 Object.prototype.dontEnum("toJSONString");
 Object.prototype.dontEnum("parseJSON");
+
+// Create a JSONP-compatible response from the callback name and the desired data
+JSON.pad = function(callback, data) {
+   return callback + "(" + JSON.stringify(data) + ")";
+}
