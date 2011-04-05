@@ -94,10 +94,11 @@ Images.prototype.create_action = function() {
    File.redirectOnUploadError(this.href(req.action));
    File.redirectOnExceededQuota(this.href());
 
-   if (req.postParams.save) {
+   if (req.data.save) {
       try {
-         var image = Image.add(req.postParams, this._parent);
+         var image = Image.add(req.data, this._parent);
          image.notify(req.action);
+         JSON.sendPaddedResponse(image._id);
          res.message = gettext('The image was successfully added.');
          res.redirect(image.href());
       } catch (ex) {

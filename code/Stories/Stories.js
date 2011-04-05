@@ -85,10 +85,11 @@ Stories.prototype.main_action = function() {
 }
 
 Stories.prototype.create_action = function() {
-   if (req.postParams.save) {
+   if (req.data.save) {
       try {
-         story = Story.add(req.postParams);
+         story = Story.add(req.data);
          story.notify(req.action);
+         JSON.sendPaddedResponse(story._id);
          delete session.data.backup;
          res.message = gettext("The story was successfully created.");
          res.redirect(story.href());
