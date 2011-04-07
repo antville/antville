@@ -47,7 +47,7 @@ Importer.run = function(site, user) {
             var story = Story.add({
                title: entry.title,
                text: entry.description || entry.contents.get(0).value,
-               created: entry.publishedDate.format(SHORTDATEFORMAT),
+               created: entry.publishedDate.format("yyyy-MM-dd HH:mm"),
                status: Story.CLOSED,
                mode: Story.FEATURED
             }, site, user);

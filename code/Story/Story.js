@@ -219,7 +219,7 @@ Story.prototype.update = function(data) {
    }
    if (data.created) {
       try {
-         this.created = data.created.toDate(SHORTDATEFORMAT, site.getTimeZone());
+         this.created = data.created.toDate("yyyy-MM-dd HH:mm", site.getTimeZone());
       } catch (ex) {
          throw Error(gettext("Cannot parse timestamp {0} as a date.", data.created));
          app.log(ex);
