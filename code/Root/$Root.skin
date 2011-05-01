@@ -185,11 +185,12 @@ input.macroCode {
 }
 
 .resultBar {
-   margin: 20px 0;        
+   margin: 13px 0;        
 }
 
 .resultBar p {
    margin: 0;
+   font-size: 13px;
 }
 
 h2.voteTitle {
@@ -366,6 +367,7 @@ hr.listSeparator {
    list-style: none;
    float: right;
    margin-right: 10px;
+   text-align: right;
 }
 
 .listNavigationItem li {

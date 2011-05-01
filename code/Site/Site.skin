@@ -38,8 +38,8 @@ prefix="Last update: " default="None so far" %>)</small></li>
 <% #search %>
 <form method="post" action="<% site.href search %>">
    <label for="q" class="hidden"><% gettext "Search term" suffix=":" %></label>
-   <input type="text" size="15" name="q" class="searchbox" value="<% request.q encoding="form" %>" />
-   <button type="submit" class="normal small" name="search" value="1" class="searchbox"><% gettext Find %></button>
+   <input type="text" size="15" id="q" name="q" class="searchbox" value="<% request.q encoding="form" %>" />
+   <button type="submit" class="normal small" name="search" value="1"><% gettext Find %></button>
 </form>
 
 <% #robots %>
@@ -62,7 +62,7 @@ Disallow: /stories/top
 
 <!-- Beta, just a try -->
 <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Neuton&subset=latin' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
 
 <!--[if IE]>
@@ -78,8 +78,8 @@ Disallow: /stories/top
 
 <div class="wrapper">
 <section>
-   <% response.message prefix='<div class="message">' suffix='</div><br />' %>
-   <% response.body %>
+    <% response.message prefix='<div class="message">' suffix='</div>' %>
+    <% response.body %>
 </section>
 
 <nav>
@@ -111,8 +111,10 @@ suffix='</h2><div class="calendarBox">' %> suffix="</div>" %>
    <li><% image /helma.png | link http://helma.org %></li>
 </ul>
 </nav>
+
 <div class="clearer"></div>
 </div>
+
 </body>
 </html>
 
@@ -358,6 +360,10 @@ header h1 {
     font-size: 2em;
 }
 
+.pagelinkTop {
+    margin-bottom: 20px;
+}
+
 article {
     border-bottom: 1px solid #e0e0e2;
     padding-bottom: 26px;
@@ -368,11 +374,13 @@ article {
 
 article .storyDate {
     font-size: 13px;
-    margin: 0 0 8px 0;
+    color: #444;
+    margin: 0 0 5px 0;
 }
 
 article h1 {
     font-size: 22px;
+    line-height: 28px;
     margin: 0 0 2px 0;
 }
 
@@ -398,7 +406,7 @@ article .storyText {
 }
 
 article .storyText p {
-    margin-bottom: 10px;
+    margin-bottom: 18px;
 }
 
 article footer {
@@ -455,7 +463,12 @@ nav h2 {
 }
 
 nav .historyItem {
-    margin-bottom: 6px;
+    margin-bottom: 9px;
+}
+
+nav .historyItem h3 {
+    font-weight: normal;
+    margin-bottom: -2px;
 }
 
 nav li {
@@ -492,4 +505,21 @@ nav .searchbox {
 /**** List Styles ****/
 article ul li {
    list-style-type: disc;
+}
+
+
+/** Story Editor **/
+.storyEditor input,
+.storyEditor textarea {
+    border: 1px solid #ccc;
+    padding: 5px 7px;
+}
+
+.storyEditor #title {
+    width: 95%;
+}
+
+.storyEditor textarea {
+    width: 95%;
+    resize: none; /* Prevents resize icon for the textarea */
 }

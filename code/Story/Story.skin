@@ -11,7 +11,7 @@
 <h1 class="storyTitle"><% response.title %></h1>
 <% story.skin $Story#restore %>
 <form method="post" action="<% response.action %>">
-<div class="form">
+<div class="form storyEditor" id="av-storyEditor">
 
    <div class="row topLabel">
       <label for="title"><% gettext "Title" suffix=":" %></label>

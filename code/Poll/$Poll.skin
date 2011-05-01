@@ -3,14 +3,13 @@
 <p><small><% gettext "{0} on {1}" <% poll.creator %> <% poll.created %> %></small></p>
 
 <% #footer %>
-<p>
-   <% poll.link edit <% gettext Edit %> prefix='<button class="controls">' suffix='</button>' %>
-   <% poll.link rotate prefix='<button class="controls">' suffix='</button>' %>
-   <% poll.link delete <% gettext Delete %> prefix='<button class="controls">' suffix='</button>' %>
-</p>
+<div>
+   <% poll.link edit <% gettext Edit %> class="controls" %>
+   <% poll.link rotate %>
+   <% poll.link delete <% gettext Delete %> %>
+</div>
 
 <% #main %>
-<section>
 <% if <% param.header %> is true then <% poll.skin #header %> else
       <% poll.question prefix='<h2 class="voteTitle">' suffix="</h2> %> %>
 <form class="voteForm" method="post" action="<% poll.href %>">
@@ -21,7 +20,6 @@
    <button type="submit" class="vote normal small" name="vote" value="1"><% gettext Vote %></button>
    <% poll.link result <% gettext "Results" %> %>
 </p>
-</section>
 
 </form>
 <% poll.skin #footer %>
@@ -41,7 +39,7 @@
    %>
 </p>
 <% if <% poll.status %> is open then
-   <% poll.link main <% gettext "Add Your Vote %> prefix=<p> suffix=</p> %>
+   <% poll.link main <% gettext "Add Your Vote %> prefix="<p>" suffix="</p>" %>
 %>
 <% poll.skin #footer %>
 

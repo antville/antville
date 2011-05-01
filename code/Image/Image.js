@@ -345,7 +345,6 @@ Image.prototype.render_macro = function(param) {
    param.alt = encode(param.alt || param.title);
    param.width || (param.width = this.width);
    param.height || (param.height = this.height);
-   param.border || (param.border = 0);
    html.tag("img", param);
    return;
 }

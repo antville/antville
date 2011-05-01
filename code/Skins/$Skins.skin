@@ -57,7 +57,7 @@ body {
 </html>
 
 <% #header %>
-<div class="pagelink"><% breadcrumbs %></div><br />
+<div class="pagelink"><% breadcrumbs %></div>
 <p class="storyTitle"><% response.title %></p>
 <div class="ample">
    <% skins.link create <% gettext "Add Skin" %> prefix="... " %>

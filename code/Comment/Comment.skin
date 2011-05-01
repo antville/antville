@@ -2,11 +2,11 @@
 <% comment.skin Comment#content %>
 
 <div class="row">
-   <button class="controls"><% comment.link comment#form <% gettext "Reply" %> %></button>
-   <button class="controls"><% comment.link main <% gettext Link %> %></button>
-   <button class="controls"><% comment.link edit <% gettext Edit %> %></button>
-   <button class="controls"><% comment.link delete <% gettext Delete %> %></button>
-   <button class="controls"><% comment.link rotate %></button>
+   <% comment.link comment#form <% gettext "Reply" %> %>
+   <% comment.link main <% gettext Link %> %>
+   <% comment.link edit <% gettext Edit %> %>
+   <% comment.link delete <% gettext Delete %> %>
+   <% comment.link rotate %>
 </div>
 
 <div class="replies">
@@ -70,9 +70,9 @@
    <% comment.skin Comment#content %>
    
    <div class="row">
-      <button class="controls"><% comment.link main <% gettext Link %> %></button>
-      <button class="controls"><% comment.link edit <% gettext Edit %> %></button>
-      <button class="controls"><% comment.link delete <% gettext Delete %> %></button>
-      <button class="controls"><% comment.link rotate %></button>
+      <% comment.link main <% gettext Link %> %>
+      <% comment.link edit <% gettext Edit %> %>
+      <% comment.link delete <% gettext Delete %> %>
+      <% comment.link rotate %>
    </div>
 </div>

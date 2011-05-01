@@ -131,6 +131,7 @@ Images.prototype.all_action = function() {
  * @field
  */
 Images.Default = new function() {
+   return; // Fix - something wrong with my file permissions (PN)
    var Image = function(name, description) {
       var fpath = app.properties.staticPath + "www/" + name;
       var image = new helma.Image(fpath);
