@@ -102,6 +102,7 @@ Images.prototype.create_action = function() {
          res.message = gettext('The image was successfully added.');
          res.redirect(image.href());
       } catch (ex) {
+         JSON.sendPaddedResponse(null);
          res.status = 400;
          res.message = ex.toString();
          app.log(ex);

@@ -94,6 +94,7 @@ Stories.prototype.create_action = function() {
          res.message = gettext("The story was successfully created.");
          res.redirect(story.href());
       } catch (ex) {
+         JSON.sendPaddedResponse(null);
          res.status = 400;
          res.message = ex;
          app.log(ex);
