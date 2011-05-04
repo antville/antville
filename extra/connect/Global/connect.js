@@ -50,6 +50,7 @@ Members.prototype.connect_action = function() {
       res.message = String(ex);
       res.redirect(res.handlers.members.href("login"));
    }
+   JSON.sendPaddedResponse(this._parent.stories.getPermission("create"));
    res.redirect(User.getLocation() || res.handlers.site.href());
    return;
 }
