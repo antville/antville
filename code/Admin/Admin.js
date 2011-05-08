@@ -71,7 +71,7 @@ Admin.Job = function(target, method, user) {
          user = User.getById(data.user);
       }
    } else {
-      throw Error("Unsufficient arguments");
+      throw Error("Insufficient arguments");
    }
 
    this.toString = function() {
@@ -107,13 +107,15 @@ Admin.getCreationScopes = defineConstants(Admin, markgettext("Privileged"),
       markgettext("Trusted"), markgettext("Regular"));
 
 /**
- * 
+ * Convenience method for easily queueing jobs.
  * @param {HopObject} target
  * @param {String} method
+ * @param {User} user 
  * @returns {String}
+ * @see Admin.Job
  */
-Admin.queue = function(target, method) {
-   var job = new Admin.Job(target, method);
+Admin.queue = function(target, method, user) {
+   var job = new Admin.Job(target, method, user || session.user);
    return job.name;
 }
 
@@ -146,8 +148,8 @@ Admin.dequeue = function() {
                break;
             }
          } catch (ex) {
-            res.debug(job + ": " + ex);
             app.log("Failed to process job " + job + " due to " + ex);
+            app.debug(ex.rhinoException);
          }
       }
       job.remove();
@@ -167,7 +169,7 @@ Admin.purgeSites = function() {
          if (this.job && (job = new Admin.Job(this.job))) {
             job.remove();
          }
-         job = Admin.queue(this, "remove", User.getById(1));
+         job = new Admin.Job(this, "remove", User.getById(1));
          this.job = job.name;
          this.deleted = now; // Prevents redundant deletion jobs
       }
