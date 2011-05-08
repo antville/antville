@@ -402,8 +402,9 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(Root.VERSION);
    res.digest();
    this.renderSkin("$Site#include", 
-         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"});
+         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"});
    this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.2.js")});
+   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.4-jquery.plugins.js")});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;
 }
