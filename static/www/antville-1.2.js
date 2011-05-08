@@ -319,7 +319,7 @@ var app = {
          cache: false,
          error: function() { /* ... */ },
          success: function(str) {
-            console.log(str);
+            //console.log(str);
          }
       });
    }

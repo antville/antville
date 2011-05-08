@@ -211,6 +211,7 @@ lib/opml-0.1.jar -text svneol=unset#application/x-compressed
 lib/rome-1.0.jar -text svneol=unset#application/x-compressed
 static/www/ant-icon.png -text svneol=unset#image/png
 static/www/ant.png -text svneol=unset#image/png
+static/www/antville-1.4-jquery.plugins.js -text
 static/www/big.gif -text svneol=unset#image/gif
 static/www/bullet.gif -text svneol=unset#image/gif
 static/www/dot.gif -text svneol=unset#image/gif
