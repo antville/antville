@@ -204,7 +204,7 @@ Root.prototype.updates_xml_action = function() {
    feed.setFeedType("rss_2.0");
    feed.setLink(root.href());
    feed.setTitle("Recently updated sites at " + root.title);
-   feed.setDescription(root.tagline);
+   feed.setDescription(root.tagline || String.EMPTY);
    feed.setLanguage(root.locale.replace("_", "-"));
    feed.setPublishedDate(now);
    var entries = new java.util.ArrayList();
