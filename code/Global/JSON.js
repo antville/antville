@@ -1,39 +1,13 @@
-// The Antville Project
-// http://code.google.com/p/antville
-//
-// Copyright 2007-2011 by Tobi Schäfer.
-//
-// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
-// Matthias & Michael Platzer, Christoph Lincke.
-//
-// Licensed under the Apache License, Version 2.0 (the ``License'');
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an ``AS IS'' BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// $Revision$
-// $Author$
-// $Date$
-// $URL$
-
 /*
-    json.js
-    2011-01-18
+    http://www.JSON.org/json2.js
+    2011-02-23
 
-    Public Domain
+    Public Domain.
 
-    No warranty expressed or implied. Use at your own risk.
-
-    This file has been superceded by http://www.JSON.org/json2.js
+    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 
     See http://www.JSON.org/js.html
+
 
     This code should be minified before deployment.
     See http://javascript.crockford.com/jsmin.html
@@ -41,42 +15,6 @@
     USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
     NOT CONTROL.
 
-    This file adds these methods to JavaScript:
-
-        object.toJSONString(whitelist)
-            This method produce a JSON text from a JavaScript value.
-            It must not contain any cyclical references. Illegal values
-            will be excluded.
-
-            The default conversion for dates is to an ISO string. You can
-            add a toJSONString method to any date object to get a different
-            representation.
-
-            The object and array methods can take an optional whitelist
-            argument. A whitelist is an array of strings. If it is provided,
-            keys in objects not found in the whitelist are excluded.
-
-        string.parseJSON(filter)
-            This method parses a JSON text to produce an object or
-            array. It can throw a SyntaxError exception.
-
-            The optional filter parameter is a function which can filter and
-            transform the results. It receives each of the keys and values, and
-            its return value is used instead of the original value. If it
-            returns what it received, then structure is not modified. If it
-            returns undefined then the member is deleted.
-
-            Example:
-
-            // Parse the text. If a key contains the string 'date' then
-            // convert the value to a date.
-
-            myData = text.parseJSON(function (key, value) {
-                return key.indexOf('date') >= 0 ? new Date(value) : value;
-            });
-
-    This file will break programs with improper for..in loops. See
-    http://yuiblog.com/blog/2006/09/26/for-in-intrigue/
 
     This file creates a global JSON object containing two methods: stringify
     and parse.
@@ -103,7 +41,7 @@
             value represented by the name/value pair that should be serialized,
             or undefined if nothing should be serialized. The toJSON method
             will be passed the key associated with the value, and this will be
-            bound to the object holding the key.
+            bound to the value
 
             For example, this would serialize Dates as ISO strings.
 
@@ -208,13 +146,13 @@
     redistribute.
 */
 
-/*jslint evil: true, regexp: false */
+/*jslint evil: true, strict: false, regexp: false */
 
 /*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
     call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
     getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
-    lastIndex, length, parse, parseJSON, prototype, push, replace, slice,
-    stringify, test, toJSON, toJSONString, toString, valueOf
+    lastIndex, length, parse, prototype, push, replace, slice, stringify,
+    test, toJSON, toString, valueOf
 */
 
 
@@ -377,8 +315,8 @@ if (!JSON) {
             if (rep && typeof rep === 'object') {
                 length = rep.length;
                 for (i = 0; i < length; i += 1) {
-                    k = rep[i];
-                    if (typeof k === 'string') {
+                    if (typeof rep[i] === 'string') {
+                        k = rep[i];
                         v = str(k, value);
                         if (v) {
                             partial.push(quote(k) + (gap ? ': ' : ':') + v);
@@ -390,7 +328,7 @@ if (!JSON) {
 // Otherwise, iterate through all of the keys in the object.
 
                 for (k in value) {
-                    if (Object.hasOwnProperty.call(value, k)) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
                         v = str(k, value);
                         if (v) {
                             partial.push(quote(k) + (gap ? ': ' : ':') + v);
@@ -475,7 +413,7 @@ if (!JSON) {
                 var k, v, value = holder[key];
                 if (value && typeof value === 'object') {
                     for (k in value) {
-                        if (Object.hasOwnProperty.call(value, k)) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
                             v = walk(value, k);
                             if (v !== undefined) {
                                 value[k] = v;
@@ -539,20 +477,8 @@ if (!JSON) {
             throw new SyntaxError('JSON.parse');
         };
     }
-
-// Augment the basic prototypes if they have not already been augmented.
-// These forms are obsolete. It is recommended that JSON.stringify and
-// JSON.parse be used instead.
-
-    if (!Object.prototype.toJSONString) {
-        Object.prototype.toJSONString = function (filter) {
-            return JSON.stringify(this, filter);
-        };
-        Object.prototype.parseJSON = function (filter) {
-            return JSON.parse(this, filter);
-        };
-    }
 }());
+
 
 // Do not enumerate the new JSON methods.
 // (These lines are not included in the original code by Crockford.)
