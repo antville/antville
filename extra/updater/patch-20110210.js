@@ -64,7 +64,7 @@ function convertMetadata(prototype, table) {
       });
       res.commit();
       start = end;
-      app.log(java.lang.String.format("Processed %.0f of %.0f %s objects", start, max, prototype));
+      app.log(java.lang.String.format("Processed %.0f of %.0f %s objects", start, max, prototype.name));
    }
 
    return;
