@@ -15,20 +15,28 @@
 
    <div class="row topLabel">
       <label for="title"><% gettext "Title" suffix=":" %></label>
-      <% story.input title class="w400" %>
+      <% story.input title cols="70" %>
    </div>
 
    <div class="row topLabel">
       <label for="text"><% gettext "Text" suffix=":" %></label>
-      <% story.textarea "text" rows="18" class="w560" %>
+      <% story.textarea "text" rows="10" %>
+      <script>
+      $(document).ready(function() {
+          $("textarea#text").growfield({
+          	min: 170,
+          	animate: 100
+          });
+      });
+      </script>
    </div>
 
    <div class="row topLabel">
       <label for="tags"><% gettext "Tags (separated by commas)" suffix=":" %></label>
-      <% story.input "tags" class="w400" %>
+      <% story.input "tags" style="width: 560px;" %>
    </div>
 
-   <fieldset class="w560">
+   <fieldset style="width: 560px;">
       <legend><% gettext Options %></legend>
       <p><% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %></p>
       <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>

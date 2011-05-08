@@ -512,7 +512,7 @@ article ul li {
 .storyEditor input,
 .storyEditor textarea {
     border: 1px solid #ccc;
-    padding: 5px 7px;
+    padding: 6px;
 }
 
 .storyEditor #title {
