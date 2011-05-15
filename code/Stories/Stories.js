@@ -87,7 +87,7 @@ Stories.prototype.main_action = function() {
 Stories.prototype.create_action = function() {
    if (req.data.save) {
       try {
-         story = Story.add(req.data);
+         story = Story.add(req.params);
          story.notify(req.action);
          JSON.sendPaddedResponse(story._id);
          delete session.data.backup;

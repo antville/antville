@@ -48,30 +48,37 @@ Story.prototype.commentform_macro = function(param) {
 }
 
 Story.prototype.content_macro = function(param) {
-   switch (param.as) {
+   // Clone param and remove non-HTML attributes from param:
+   var options = Object.clone.call(param, {});
+   var noAttr = 'as clipping delimiter fallback limit part';
+   for each (let key in noAttr.split(String.SPACE)) {
+      delete param[key];
+   }
+
+   switch (options.as) {
       case "editor":
       if (param.cols || param.rows) {
-         this.textarea_macro(param, param.part);
+         this.textarea_macro(param, options.part);
       } else {
-         this.input_macro(param, param.part);
+         this.input_macro(param, options.part);
       }
       break;
       
       case "image":
-      var part = this.getMetadata(param.part);
+      var part = this.getMetadata(options.part);
       part && res.write(this.format_filter(part, param, "image"));
       break;
       
       default:
-      var part = this.getRenderedContentPart(param.part, param.as);
-      if (!part && param.fallback) {
-         part = this.getRenderedContentPart(param.fallback, param.as);
+      var part = this.getRenderedContentPart(options.part, options.as);
+      if (!part && options.fallback) {
+         part = this.getRenderedContentPart(options.fallback, options.as);
       }
       if (part && param.limit) {
-         part = part.stripTags().head(param.limit, 
-               param.clipping, param.delimiter || String.SPACE);
+         part = part.stripTags().head(options.limit, 
+               options.clipping, options.delimiter || String.SPACE);
       }
-      if (param.as === "link") {
+      if (options.as === "link") {
          res.write(this.link_filter(part || "...", param));
       } else {
          res.write(part);

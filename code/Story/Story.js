@@ -233,7 +233,7 @@ Story.prototype.update = function(data) {
    this.status = data.status || Story.PUBLIC;
    this.mode = data.mode || Story.FEATURED;
    this.commentMode = data.commentMode || Story.OPEN;
-   this.setMetadata(data);
+   this.setCustomContent(data);
 
    // FIXME: To be removed resp. moved to Stories.create_action and 
    // Story.edit_action if work-around for Helma bug #607 fails
@@ -345,27 +345,22 @@ Story.prototype.getFormOptions = function(name) {
  *
  * @param {Object} data
  */
-Story.prototype.setMetadata = function(data, key) {
-   var metadata;
-   if (data && typeof data === "object") {
-      metadata = {};
-      for (var key in data) {
-         if (this.isMetadata(key)) {
-            metadata[key] = data[key];
-         }
+Story.prototype.setCustomContent = function(data) {
+   var metadata = {};
+   for (var key in data) {
+      if (this.isCustomContent(key)) {
+         metadata[key] = data[key];
       }
-   } else {
-      metadata = data;
    }
-   return HopObject.prototype.setMetadata.call(this, metadata, key);
+   return HopObject.prototype.setMetadata.call(this, metadata);
 }
 
 /**
  * 
  * @param {String} name
  */
-Story.prototype.isMetadata = function(name) {
-   return this[name] === undefined && name !== "save";
+Story.prototype.isCustomContent = function(key) {
+   return this[key] === undefined && key !== 'save';
 }
 
 /**
@@ -409,7 +404,7 @@ Story.prototype.getDelta = function(data) {
    delta += deltify(data.title, this.title);
    delta += deltify(data.text, this.text);
    for (var key in data) {
-      if (this.isMetadata(key)) {
+      if (this.isCustomContent(key)) {
          delta += deltify(data[key], this.getMetadata(key))
       }
    }

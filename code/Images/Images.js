@@ -96,7 +96,7 @@ Images.prototype.create_action = function() {
 
    if (req.data.save) {
       try {
-         var image = Image.add(req.data, this._parent);
+         var image = Image.add(req.params, this._parent);
          image.notify(req.action);
          JSON.sendPaddedResponse(image._id);
          res.message = gettext('The image was successfully added.');
