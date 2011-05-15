@@ -67,6 +67,10 @@ var aspects = {
          req.postParams.commentMode = (req.postParams.discussions ? 
                Story.OPEN : Story.CLOSED);
       }
+      req.postParams.addToFront = null;
+      req.postParams.discussions = null;
+      req.postParams.editableby = null;
+      req.postParams.publish = null;      
       return args;
    },
    
