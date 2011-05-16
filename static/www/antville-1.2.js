@@ -1,29 +1,29 @@
 $(function() {
-   $("a.cancel").click(function() {
+   $("a.cancel").click(function(event) {
+      event.preventDefault();
       history.back();
-      return false;
    });
-   
-   var group, groups = [];
-   $("form #timeZone option").each(function(index, item) {
-      var zone = $(item);
-      var parts = zone.val().split("/");
-      if (parts.length > 1) {
-         if (/* parts[0].indexOf("Etc") === 0 || */
-               parts[0].indexOf("SystemV") === 0) {
-            zone.remove();
-            return;
-         }
-         group !== parts[0] && groups.push(group = parts[0]);
-         zone.addClass("group-" + group);
-         zone.text(parts.splice(1).join(", ").replace(/_/g, " "));
-      } else {
-         zone.remove();
+
+   // Group related <option> elements by inserting additional <optgroup> elements:
+   var groups = [],
+         element = $("form#prefs #timeZone");
+   element.find("option").each(function(index, item) {
+      var zone = $(item),
+            parts = zone.html().split("/"), // E.g. Europe/Vienna
+            group = parts[0];
+
+      if ($.inArray(group, groups) < 0) {
+         groups.push(group);
       }
    });
-   var optgroup = $("<optgroup>");
-   $.each(groups, function(index, item) {
-      $("form #timeZone option.group-" + item).wrapAll(optgroup.clone().attr("label", item));
+   groups.sort();
+   $.each(groups, function(index, group) {
+      var key = group + "/"; // E.g. Europe/
+      element.find("option:contains(" + key + ")")
+            .wrapAll($("<optgroup>").attr("label", group))
+            .each(function(index, item) {
+               $(item).html($(item).html().replace(key, ""));
+            });
    });
 });
 
