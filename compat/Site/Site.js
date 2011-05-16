@@ -55,19 +55,6 @@ Site.prototype.__defineGetter__("discussions", function() {
    return this.commentsMode === Comment.ONLINE;
 });
 
-Site.renderDateFormat = function(type, site, param) {
-   //param.size = 1;
-   var key = type + "DateFormat";
-   if (param.as === "chooser") {
-      site.select_macro(param, key);
-   } else if (param.as === "editor") {
-      site.input_macro(param, key);
-   } else {
-      res.write(site[key]);
-   }
-   return;   
-}
-
 // FIXME: obsolete?
 Site.prototype.renderStoryList = function(day) {
    res.push();
@@ -250,14 +237,6 @@ Site.prototype.enableping_macro = function(param) {
       res.write(this.callbackMode === Site.ENABLED ? "yes" : "no");
    }
    return;
-}
-
-Site.prototype.longdateformat_macro = function(param) {
-   return Site.renderDateFormat("long", this, param);
-}
-
-Site.prototype.shortdateformat_macro = function(param) {
-   return Site.renderDateFormat("short", this, param);
 }
 
 Site.prototype.localechooser_macro = function(param) {

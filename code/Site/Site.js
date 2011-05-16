@@ -41,12 +41,10 @@ this.handleMetadata("export_id");
 this.handleMetadata("import_id");
 this.handleMetadata("job");
 this.handleMetadata("locale");
-this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
 this.handleMetadata("notified");
 this.handleMetadata("pageSize");
 this.handleMetadata("pageMode");
-this.handleMetadata("shortDateFormat");
 this.handleMetadata("spamfilter");
 this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
@@ -173,7 +171,6 @@ Site.require = function(mode) {
  * @property {String} job
  * @property {Layout} layout
  * @property {String} locale The place and language settings of a site
- * @property {String} longDateFormat The long date format string
  * @property {Members} members
  * @property {Metadata} metadata
  * @property {String} mode The access level of a site
@@ -185,7 +182,6 @@ Site.require = function(mode) {
  * @property {String} pageMode The way stories of a site are displayed
  * @property {Number} pageSize The amount of stories to be displayed simultaneously
  * @property {Polls} polls
- * @property {String} shortDateFormat The short date format string
  * @property {String} status The trust level of a site
  * @property {Stories} stories
  * @property {String} tagline An arbitrary text describing a site
@@ -214,9 +210,7 @@ Site.prototype.constructor = function(name, title) {
       pageMode: Site.DAYS,
       pageSize: 3,
       locale: root.getLocale().toString(),
-      timeZone: root.getTimeZone().getID(),
-      longDateFormat: root.longDateFormat,
-      shortDateFormat: root.shortDateFormat
+      timeZone: root.getTimeZone().getID()
    });
 
    return this;
@@ -320,8 +314,6 @@ Site.prototype.getFormOptions = function(name) {
       return getLocales(this.getLocale());
       case "layout":
       return this.getLayouts();
-      case "longDateFormat":
-      return getDateFormats("long", this.getLocale(), this.getTimeZone());
       case "mode":
       return Site.getModes();
       case "notificationMode":
@@ -330,8 +322,6 @@ Site.prototype.getFormOptions = function(name) {
       return Site.getPageModes();
       case "status":
       return Site.getStatus();
-      case "shortDateFormat":
-      return getDateFormats("short", this.getLocale(), this.getTimeZone());
       case "timeZone":
       return getTimeZones(this.getLocale());
       case "callbackMode":
@@ -381,8 +371,6 @@ Site.prototype.update = function(data) {
       archiveMode: data.archiveMode || Site.CLOSED,
       notificationMode: data.notificationMode || Site.DISABLED,
       timeZone: data.timeZone,
-      longDateFormat: data.longDateFormat,
-      shortDateFormat: data.shortDateFormat,
       locale: data.locale,
       spamfilter: data.spamfilter
    });

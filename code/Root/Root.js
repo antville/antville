@@ -118,10 +118,6 @@ Root.prototype.main_action = function() {
       this.replyTo = "root@localhost";
       this.locale = java.util.Locale.getDefault().getLanguage();
       this.timeZone = java.util.TimeZone.getDefault().getID();
-      this.longDateFormat = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM,
-            java.text.DateFormat.SHORT, java.util.Locale.getDefault()).toPattern();
-      this.shortDateFormat = java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.SHORT,
-            java.text.DateFormat.SHORT, java.util.Locale.getDefault()).toPattern();
       this.layout.reset();
       res.redirect(this.members.href("register"));
    } else if (session.user && this.members.owners.size() < 1) {

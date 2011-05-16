@@ -190,7 +190,7 @@ div.skin div.title {
    font: normal 8px verdana, sans-serif;
 }
 
-#timeZone {
+#prefs select {
    width: 200px;
 }
 

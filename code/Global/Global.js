@@ -760,7 +760,7 @@ function formatDate(date, format) {
    switch (format) {
       case null:
       case undefined:
-      format = "full"; // Warning! Passing through to next case block!
+      format = "full"; // Caution! Passing through to next case block!
       case "short":
       case "medium":
       case "long":
@@ -783,40 +783,12 @@ function formatDate(date, format) {
       pattern = format;
    }
 
-   /*var [dateFormat, timeFormat] = site.longDateFormat.split(",");
-
-   switch (format) {
-      case null:
-      pattern = site.longDateFormat;
-      break;
-
-      case "date":
-      var type = java.text.DateFormat[dateFormat.toUpperCase()];
-      pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern();
-      break;
-
-      case "time":
-      var type = java.text.DateFormat[timeFormat.toUpperCase()];
-      pattern = java.text.DateFormat.getTimeInstance(type, locale).toPattern();
-      break;
-      
-      case "short":
-      case "medium":
-      case "long":
-      case "full":
-      var type = java.text.DateFormat[format.toUpperCase()];
-      pattern = java.text.DateFormat.getDateTimeInstance(type, type, locale).toPattern();
-      break;
-
-      default:
-      pattern = format;
-   }*/
-
    try {
       return date.format(pattern, locale, site.getTimeZone());
    } catch (ex) {
       return "[Invalid date format]";
    }
+
    return String.EMPTY;
 }
 
@@ -933,115 +905,6 @@ function getTimeZones(language) {
    }
 
    return result.sort(new String.Sorter("display"));
-}
-
-/**
- * 
- * @param {String} type
- * @param {java.util.Locale} locale
- * @returns {Array[]} An array containing the corresponding date formats
- */
-function getDateFormats(type, locale, timeZone) {
-   type || (type = "short");
-   locale || (locale = java.util.Locale.getDefault());
-   timeZone || (timeZone = java.util.TimeZone.getDefault());
-
-   var now = new Date, result = [], patterns = {};
-   var types = ["short", "medium", "long", "full"];
-
-   switch (type) {
-      case 'long':
-      for each (let dateFormat in types) {
-         let datePattern = java.text.DateFormat[dateFormat.toUpperCase()];
-         for each (let timeFormat in types) {
-            let timePattern = java.text.DateFormat[timeFormat.toUpperCase()];
-            let sdf = java.text.DateFormat.getDateTimeInstance(datePattern, timePattern, locale);
-            let pattern = sdf.toPattern();
-            //res.debug(sdf.getDateTimeInstance().toPattern());
-            //res.debug('pattern: ' + pattern)
-            if (patterns[pattern]) {
-               //continue;
-            }
-            patterns[pattern] = true;
-            sdf.setTimeZone(timeZone);
-            let format = [dateFormat, timeFormat].join();
-            result.push([format, sdf.format(now)]);
-         }
-      }
-      return result;
-
-      case 'long-old':
-      for each (let timeType in types) {
-         let pattern = java.text.DateFormat[timeType.toUpperCase()];
-         let sdf = java.text.DateFormat.getDateInstance(pattern, locale);
-         pattern = sdf.toPattern();
-         //res.debug(sdf.getDateTimeInstance().toPattern());
-         //res.debug('pattern: ' + pattern)
-         if (patterns[pattern]) {
-            continue;
-         }
-         patterns[pattern] = true;
-         sdf.setTimeZone(timeZone);
-         result.push([encodeForm(pattern), sdf.format(now)]);
-      }
-      return result;
-
-      case 'short':
-      return result;
-      for each (let timeType in types) {
-         let pattern = java.text.DateFormat[timeType.toUpperCase()];
-         let sdf = java.text.DateFormat.getTimeInstance(pattern, locale);
-         pattern = sdf.toPattern();
-         //res.debug(sdf.getDateTimeInstance().toPattern());
-         //res.debug('pattern: ' + pattern)
-         if (patterns[pattern]) {
-            continue;
-         }
-         patterns[pattern] = true;
-         sdf.setTimeZone(timeZone);
-         result.push([encodeForm(pattern), sdf.format(now)]);
-      }
-      return result;
-
-      default:
-      for each (let dateType in types) {
-         let datePattern = java.text.DateFormat[dateType.toUpperCase()];
-         for each (let timeType in types) {
-            let timePattern = java.text.DateFormat[timeType.toUpperCase()];
-            let sdf = java.text.DateFormat.getDateTimeInstance(datePattern, timePattern, locale);
-            let pattern = sdf.toPattern();
-            //res.debug(sdf.getDateTimeInstance().toPattern());
-            //res.debug('pattern: ' + pattern)
-            if (patterns[pattern]) {
-               continue;
-            }
-            patterns[pattern] = true;
-            sdf.setTimeZone(timeZone);
-            result.push([encodeForm(pattern), sdf.format(now)]);
-         }
-      }
-   }
-   return result;
-   
-   var types = [type];
-   types.push(type === "long" ? "full" : "medium");
-   var now = new Date, result = [], patterns = {};
-   for each (let dateType in types) {
-      let dateFormat = java.text.DateFormat[dateType.toUpperCase()];
-      for each (let timeType in ["short", "medium", "long", "full"]) {
-         let timeFormat = java.text.DateFormat[timeType.toUpperCase()];
-         let sdf = java.text.DateFormat.getDateTimeInstance(dateFormat, timeFormat, locale);
-         let pattern = sdf.toPattern();
-         if (patterns[pattern]) {
-            continue;
-         }
-         patterns[pattern] = true;
-         sdf.setTimeZone(timeZone);
-         result.push([encodeForm(pattern), sdf.format(now)]);
-      }
-   }
-   result.push([encodeForm(Date.ISOFORMAT), now.format(Date.ISOFORMAT, locale, timeZone)]);
-   return result;
 }
 
 /**

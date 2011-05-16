@@ -208,10 +208,6 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <td><% site.select timeZone %></td>
 </tr>
 <tr>
-<td class="small"><% gettext "Date Format" suffix=: %></td>
-<td><% site.select longDateFormat %></td>
-</tr>
-<tr>
 <td class="small"><% gettext Notifications suffix=: %></td>
 <td><% site.select notificationMode %></td>
 </td>
