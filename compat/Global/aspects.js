@@ -27,13 +27,14 @@ app.addRepository("modules/helma/Aspects.js");
 
 var aspects = {
    setTopics: function(args, func, obj) {
-      var param = args[0];
-      //res.debug("aspects before: "+param.tags.toSource());
+      // We must clone the request parameters because only req.data is mutable.
+      // (See req.params, req.postParams etc.)
+      var param = Object.prototype.clone.call(args[0], {});
       var topic = param.topic || param.addToTopic;
       if (!param.tags && topic) {
          param.tags = [topic];
       }
-      //res.debug("aspects after: " +param.tags.toSource());
+      args[0] = param;
       return args;
    },
    
@@ -50,7 +51,7 @@ var aspects = {
    },
    
    fixStoryEditorParams: function(args, func, story) {
-      // FIXME: IE sends the button text instead of the value; thus, we
+      // IE6 sends the button text instead of the value; thus, we
       // need to check for the "editableby" property as well :/
       if (req.isPost() && req.postParams.save != 1 && req.postParams.editableby) {
          if (req.postParams.publish) {
