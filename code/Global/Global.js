@@ -795,11 +795,9 @@ function formatDate(date, format) {
       } else if (diff < Date.ONEHOUR) {
          text = ngettext("{0} minute ago", "{0} minutes ago",
                parseInt(diff / Date.ONEMINUTE, 10));
-      } else if (diff < 6 * Date.ONEHOUR) {
+      } else if (diff < Date.ONEDAY) {
          text = ngettext("{0} hour ago", "{0} hours ago",
                parseInt(diff / Date.ONEHOUR, 10));
-      } else if (diff < Date.ONEDAY) {
-         text = formatDate(date, "time");
       } else if (diff < 2 * Date.ONEDAY) {
          text = gettext("Yesterday");
       } else {
