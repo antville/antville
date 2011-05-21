@@ -2,7 +2,7 @@
 <script type="text/javascript">
 document.writeln('<div class="antville-feature connect">');
 document.writeln('<img src="<% root.static facebook.png %>" width=15 height=15/>');
-document.writeln('<a href="" id="facebook_connect">Login with Facebook</a>');
+document.writeln('<a href="" id="facebook_connect"><% gettext "Login with {0}" Facebook %></a>');
 document.writeln('</div>');
 $(function() {
    $("#facebook_connect").click(function() {
@@ -17,7 +17,7 @@ $(function() {
 <script type="text/javascript">
 document.writeln('<div class="antville-feature connect">');
 document.writeln('<img src="<% root.static twitter.png %>" width=15 height=15 />');
-document.writeln('<a href="" id="twitter_connect">Login with Twitter</a>');
+document.writeln('<a href="" id="twitter_connect"><% gettext "Login with {0}" Twitter %></a>');
 document.writeln('</div>');
 $(function() {
    $("#twitter_connect").click(function() {
@@ -32,7 +32,7 @@ $(function() {
 <script type="text/javascript">
 document.writeln('<div class="antville-feature connect">');
 document.writeln('<img src="<% root.static google.png %>" width=15 height=15/>');
-document.writeln('<a href="" id="google_connect">Login with Google</a>');
+document.writeln('<a href="" id="google_connect"><% gettext "Login with {0}" Google %></a>');
 document.writeln('</div>');
 $(function() {
    $("#google_connect").click(function() {
