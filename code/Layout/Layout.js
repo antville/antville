@@ -392,7 +392,7 @@ Layout.prototype.getArchive = function(skinPath) {
       }
    });
       
-   data.version = Root.VERSION;
+   data.version = Root.VERSION.toString();
    data.origin = this.origin || this.site.href();
    data.originator = this.originator || session.user.name;
    data.originated = this.originated || new Date;

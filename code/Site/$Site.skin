@@ -7,8 +7,8 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 
 <% #listItem %>
 <tr>
-<td class="small" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
-   <% site.modified short %>
+<td class="small" title="<% site.modified %>" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
+   <% site.modified text %>
 </td>
 <td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
 </tr>

@@ -90,7 +90,7 @@
 <div class="historyItem">
    <% this.summary %>
    <div class="small">
-      <% this.creator %>, <% this.modified short %>
+      <% this.creator %>, <span title="<% this.modified %>"><% this.modified text %></span>
    </div>
 </div>
 
