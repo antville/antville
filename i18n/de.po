@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2.1-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2011-05-21 12:04+0200\n"
-"PO-Revision-Date: 2011-05-21 12:14+0100\n"
+"POT-Creation-Date: 2011-05-21 13:02+0200\n"
+"PO-Revision-Date: 2011-05-21 13:03+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -390,6 +390,12 @@ msgstr "Zurücksetzen bestätigen"
 msgid "Confirm Unsubscribe"
 msgstr "Stornierung bestätigen"
 
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:90
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:161
+#, java-format
+msgid "Connecting with {0} failed. {1} Please try again."
+msgstr "Die Verbindung mit {0} ist fehlgeschlagen. {1} Bitte versuchen Sie es erneut."
+
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:49
 msgid "Contact"
 msgstr "Kontakt"
@@ -420,6 +426,13 @@ msgstr "Umwandeln"
 #: /Users/tobi/Projects/helma/apps/antville/compat/Layout/Layout.convert.js:50
 msgid "Convert Layout"
 msgstr "Layout umwandeln"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:199
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:221
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:228
+#, java-format
+msgid "Could not connect with Facebook. ({0})"
+msgstr "Die Verbindung mit Facebook ist fehlgeschlagen. ({0})"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:226
 msgid "Could not fetch the file from the given URL."
@@ -900,6 +913,13 @@ msgstr "Anmeldung"
 msgid "Login // verb"
 msgstr "Anmelden"
 
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:20
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:5
+#, java-format
+msgid "Login with {0}"
+msgstr "Anmeldung mit {0}"
+
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:10
 msgid "Logout // verb"
 msgstr "Abmelden"
@@ -1203,6 +1223,10 @@ msgstr "Bitte geben Sie zumindest etwas in eines der beiden Felder »Titel« ode
 #: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:30
 msgid "Please enter new name for this tag"
 msgstr "Bitte geben Sie einen neuen Namen für dieses Stichwort an."
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/recaptcha/Global/recaptcha.js:55
+msgid "Please enter the correct words in the CAPTCHA box."
+msgstr "Bitte geben Sie die angezeigten Worte in das CAPTCHA-Feld ein."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:193
 msgid "Please enter the message text."
@@ -1576,6 +1600,10 @@ msgstr "Skin"
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:30
 msgid "Skins"
 msgstr "Skins"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:162
+msgid "Something went wrong."
+msgstr "Irgendwas ist schiefgelaufen."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:52
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:47
@@ -2315,6 +2343,10 @@ msgstr "Über folgenden Link können Sie jederzeit Ihr Benutzerprofil bearbeiten
 msgid "You can use the asterisk * as wildcard."
 msgstr "Sie können den Asterisk * als Platzhalter verwenden."
 
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:91
+msgid "You denied the request."
+msgstr "Sie haben die Anfrage abgelehnt."
+
 #: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:143
 msgid "You did not vote, yet. You can vote until the poll is closed."
 msgstr "Sie haben noch nicht abgestimmt. Sie können abstimmen, bis die Umfrage beendet ist."
@@ -2745,6 +2777,12 @@ msgstr "{0} wurde erfolgreich zurückgesetzt."
 #, java-format
 msgid "{0} {1} Error"
 msgstr "{0} {1} Fehler"
+
+#~ msgid "Login with Facebook"
+#~ msgstr "Anmeldung mit Facebook"
+
+#~ msgid "Login with Twitter"
+#~ msgstr "Anmeldung mit Twitter"
 
 #~ msgid "Due to privacy reasons the display of e-mail addresses is disabled."
 #~ msgstr "Aus Datenschutzgründen werden E-Mail-Adressen nicht angezeigt."

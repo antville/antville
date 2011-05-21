@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2.1-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2011-05-21 12:04+0200\n"
-"PO-Revision-Date: 2011-05-21 12:06+0100\n"
+"POT-Creation-Date: 2011-05-21 13:02+0200\n"
+"PO-Revision-Date: 2011-05-21 13:03+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -390,6 +390,12 @@ msgstr "Confirm Reset"
 msgid "Confirm Unsubscribe"
 msgstr "Confirm Unsubscribe"
 
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:90
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:161
+#, java-format
+msgid "Connecting with {0} failed. {1} Please try again."
+msgstr "Connecting with {0} failed. {1} Please try again."
+
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:49
 msgid "Contact"
 msgstr "Contact"
@@ -420,6 +426,13 @@ msgstr "Convert"
 #: /Users/tobi/Projects/helma/apps/antville/compat/Layout/Layout.convert.js:50
 msgid "Convert Layout"
 msgstr "Convert Layout"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:199
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:221
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:228
+#, java-format
+msgid "Could not connect with Facebook. ({0})"
+msgstr "Could not connect with Facebook. ({0})"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:226
 msgid "Could not fetch the file from the given URL."
@@ -900,6 +913,13 @@ msgstr "Login"
 msgid "Login // verb"
 msgstr "Login"
 
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:20
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:5
+#, java-format
+msgid "Login with {0}"
+msgstr "Login with {0}"
+
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:10
 msgid "Logout // verb"
 msgstr "Logout"
@@ -1203,6 +1223,10 @@ msgstr "Please enter at least something into the “title” or “text” field
 #: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:30
 msgid "Please enter new name for this tag"
 msgstr "Please enter new name for this tag"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/recaptcha/Global/recaptcha.js:55
+msgid "Please enter the correct words in the CAPTCHA box."
+msgstr "Please enter the correct words in the CAPTCHA box."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:193
 msgid "Please enter the message text."
@@ -1576,6 +1600,10 @@ msgstr "Skin"
 #: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:30
 msgid "Skins"
 msgstr "Skins"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:162
+msgid "Something went wrong."
+msgstr "Something went wrong."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:52
 #: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:47
@@ -2314,6 +2342,10 @@ msgstr "You can edit your account profile and change its password any time via t
 #: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:166
 msgid "You can use the asterisk * as wildcard."
 msgstr "You can use the asterisk * as wildcard."
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:91
+msgid "You denied the request."
+msgstr "You denied the request."
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:143
 msgid "You did not vote, yet. You can vote until the poll is closed."
