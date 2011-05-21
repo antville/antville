@@ -54,7 +54,7 @@
 
       <property name="name" value="antville"/>
       <property name="year" value="1998-${year}"/>
-      <property name="version" value="1.3a"/>
+      <property name="version" value="1.3b"/>
       <property name="package.name" value="${name}-${version}"/>
 
       <property name="antville.src" value="http://antville.googlecode.com/svn/trunk"/>
@@ -66,7 +66,7 @@
       <property name="build.dir" location="${basedir}/build"/>
       <property file="${build.dir}/build.properties"/>
 
-      <property name="helma.dir" location="${basedir}/../.."/>
+      <property name="helma.dir" location="/opt/helma"/>
       <property name="extra.dir" location="${build.dir}/extra"/>
       <property name="dist.dir" location="${build.dir}/dist"/>
       <property name="work.dir" location="${build.dir}/work"/>
@@ -80,7 +80,7 @@
       <property name="docs.infiles" location="${basedir}/code"/>
       <property name="docs.outfiles" location="${basedir}/docs"/>
 
-      <property name="i18n.scan" value="code compat"/>
+      <property name="i18n.scan" value="code compat extra"/>
       <property name="i18n.destination" location="${basedir}/i18n"/>
       <property name="i18n.poDirectory" location="${i18n.destination}"/>
       <property name="i18n.template" location="${i18n.destination}/antville.pot"/>
