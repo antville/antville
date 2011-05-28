@@ -97,7 +97,7 @@ Metadata.prototype.getValue = function() {
       return eval(this.value).valueOf();
 
       case Date:
-      return new Date(parseFloat(this.value));
+      return new Date(Number(this.value));
 
       case Number:
       case String:
