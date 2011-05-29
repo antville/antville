@@ -199,7 +199,6 @@
    </target>
 
    <target name="pot" depends="init">
-      <echo message="${helma.dir}"/>
       <java dir="${helma.dir}" classpath="${helma.dir}/launcher.jar" classname="helma.main.launcher.Commandline"
             fork="true">
          <!-- Root.extractMessages is currently located in Global/i18n.js -->
