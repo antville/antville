@@ -357,7 +357,7 @@ global.messages['de'] = {
    "Stop": "Beenden",
    "Stories": "Beiträge",
    "Story": "Beitrag",
-   "Story Archive": "Beitrags-Archiv",
+   "Story Archive of {0}": "Beitrags-Archiv vom {0}",
    "Subscribe // verb": "Abonnieren",
    "Subscriber": "Abonnent",
    "Subscribers": "Abonnenten",

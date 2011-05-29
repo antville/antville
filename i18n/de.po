@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2.1-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2011-05-21 13:02+0200\n"
-"PO-Revision-Date: 2011-05-21 13:03+0100\n"
+"POT-Creation-Date: 2011-05-29 12:46+0200\n"
+"PO-Revision-Date: 2011-05-29 12:48+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1016
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:1014
 #, java-format
 msgid "({0} character)"
 msgid_plural "({0} characters)"
@@ -390,8 +390,8 @@ msgstr "Zurücksetzen bestätigen"
 msgid "Confirm Unsubscribe"
 msgstr "Stornierung bestätigen"
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:90
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:161
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:93
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:164
 #, java-format
 msgid "Connecting with {0} failed. {1} Please try again."
 msgstr "Die Verbindung mit {0} ist fehlgeschlagen. {1} Bitte versuchen Sie es erneut."
@@ -427,9 +427,9 @@ msgstr "Umwandeln"
 msgid "Convert Layout"
 msgstr "Layout umwandeln"
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:199
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:221
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:228
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:202
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:224
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:231
 #, java-format
 msgid "Could not connect with Facebook. ({0})"
 msgstr "Die Verbindung mit Facebook ist fehlgeschlagen. ({0})"
@@ -1601,7 +1601,7 @@ msgstr "Skin"
 msgid "Skins"
 msgstr "Skins"
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:162
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:165
 msgid "Something went wrong."
 msgstr "Irgendwas ist schiefgelaufen."
 
@@ -1682,9 +1682,10 @@ msgstr "Beiträge"
 msgid "Story"
 msgstr "Beitrag"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:89
-msgid "Story Archive"
-msgstr "Beitrags-Archiv"
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:92
+#, java-format
+msgid "Story Archive of {0}"
+msgstr "Beitrags-Archiv vom {0}"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:7
 msgid "Subscribe // verb"
@@ -2257,7 +2258,7 @@ msgid_plural "Yes, really erase {0} comments"
 msgstr[0] "Ja, {0} Kommentar soll wirklich gelöscht werden"
 msgstr[1] "Ja, {0} Kommentare sollen wirklich gelöscht werden"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:804
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:802
 msgid "Yesterday"
 msgstr "Gestern"
 
@@ -2343,7 +2344,7 @@ msgstr "Über folgenden Link können Sie jederzeit Ihr Benutzerprofil bearbeiten
 msgid "You can use the asterisk * as wildcard."
 msgstr "Sie können den Asterisk * als Platzhalter verwenden."
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:91
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:94
 msgid "You denied the request."
 msgstr "Sie haben die Anfrage abgelehnt."
 
@@ -2668,7 +2669,7 @@ msgid_plural "{0} days"
 msgstr[0] "{0} Tag"
 msgstr[1] "{0} Tage"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:806
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:804
 #, java-format
 msgid "{0} day ago"
 msgid_plural "{0} days ago"

@@ -357,7 +357,7 @@ global.messages['en'] = {
    "Stop": "Stop",
    "Stories": "Stories",
    "Story": "Story",
-   "Story Archive": "Story Archive",
+   "Story Archive of {0}": "Story Archive of {0}",
    "Subscribe // verb": "Subscribe",
    "Subscriber": "Subscriber",
    "Subscribers": "Subscribers",
