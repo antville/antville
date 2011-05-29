@@ -158,6 +158,10 @@ Site.prototype.navigation_macro = function(param) {
    return;
 }
 
+Site.prototype.image_macro = function() {
+   return global.image_macro.apply(global, arguments);
+}
+
 Site.prototype.xmlbutton_macro = function(param) {
    param.linkto = this.href("rss.xml");
    image_macro(param, "/xmlbutton.gif");

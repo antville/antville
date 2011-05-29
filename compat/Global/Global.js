@@ -210,6 +210,8 @@ function imageoftheday_macro(param) {
    return image_macro(param);
 }
 
+function support_macro() { /* ... */ }
+
 function renderColorAsString(c) {
    return c && c.isHexColor() ? "#" + c : c;
 }
