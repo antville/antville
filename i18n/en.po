@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2.1-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2011-05-29 12:46+0200\n"
-"PO-Revision-Date: 2011-05-29 12:48+0100\n"
+"POT-Creation-Date: 2011-05-29 15:57+0200\n"
+"PO-Revision-Date: 2011-05-29 15:58+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1133,6 +1133,11 @@ msgstr "Owners"
 msgid "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE."
 msgstr "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE."
 
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:105
+#, java-format
+msgid "Page {0} of {1}"
+msgstr "Page {0} of {1}"
+
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:187
 msgid "Paging"
 msgstr "Paging"
@@ -1682,10 +1687,10 @@ msgstr "Stories"
 msgid "Story"
 msgstr "Story"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:92
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:107
 #, java-format
-msgid "Story Archive of {0}"
-msgstr "Story Archive of {0}"
+msgid "Story Archive {0} ({1})"
+msgstr "Story Archive {0} ({1})"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:7
 msgid "Subscribe // verb"
