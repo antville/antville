@@ -86,7 +86,25 @@ Archive.prototype.getPermission = function(action) {
 }
 
 Archive.prototype.main_action = function() {
-   res.data.title = gettext("Story Archive");
+   var date = this.getDate();
+   var dateString = String.EMPTY;
+   switch (path.length - (this.type === Archive.PAGER ? 4 : 3)) {
+      case 1:
+      dateString = formatDate(date, "yyyy");
+      break;
+      case 2:
+      dateString = formatDate(date, "MMM yyyy");
+      break;
+      case 3:
+      var type = java.text.DateFormat.LONG;
+      var locale = res.handlers.site.getLocale();
+      var pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern()
+      dateString = formatDate(date, pattern);
+      break;
+   }
+   var page = gettext("Page {0} of {1}", this.getPage(), 
+            Math.ceil(this.getSize() / this.getPageSize()));
+   res.data.title = gettext("Story Archive {0} ({1})", dateString, page);
    res.data.body = this.renderSkinAsString("Archive#main");
    res.handlers.site.renderSkin("Site#page");
    res.handlers.site.log();
