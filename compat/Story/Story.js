@@ -74,7 +74,7 @@ Story.prototype.content_macro = function(param) {
       if (!part && options.fallback) {
          part = this.getRenderedContentPart(options.fallback, options.as);
       }
-      if (part && param.limit) {
+      if (options.limit) {
          part = part.stripTags().head(options.limit, 
                options.clipping, options.delimiter || String.SPACE);
       }
