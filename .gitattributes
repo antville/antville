@@ -199,7 +199,7 @@ docs/symbols/src/_opt_helma_apps_antville_code_Tags_Tags.js.html svneol=native#t
 docs/symbols/src/_opt_helma_apps_antville_code_User_User.js.html svneol=native#text/html
 docs/symbols/src/_opt_helma_apps_antville_code_Vote_Vote.js.html svneol=native#text/html
 extra/apps.properties svneol=native#text/plain
-extra/connect/scribe-1.1.0.jar -text svneol=unset#application/x-compressed
+extra/connect/scribe-1.2.0.jar -text svneol=unset#application/x-compressed
 extra/mrtg.cfg -text
 extra/updater/patch-20080913.js -text
 extra/updater/patch-20100401.js svneol=native#text/plain

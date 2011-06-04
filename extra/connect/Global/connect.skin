@@ -42,3 +42,36 @@ $(function() {
    });
 })
 </script>
+
+<% #facebook_profile %>
+<div class="antville-feature connect">
+<img src="<% root.static facebook.png %>" width=15 height=15/>
+<% if <% membership.user.metadata facebook_id %> is null then 
+   <% members.link "connect?type=facebook" <% gettext "Connect with {0}" Facebook %> %>
+else 
+   <% members.link <% membership.user.id prefix="disconnect?type=facebook&id=" %> 
+         <% gettext "Disconnect from {0}" Facebook %> suffix=<br> %>
+%>
+</div>
+
+<% #twitter_profile %>
+<div class="antville-feature connect">
+<img src="<% root.static twitter.png %>" width=15 height=15/>
+<% if <% membership.user.metadata twitter_id %> is null then
+   <% members.link "connect?type=twitter" <% gettext "Connect with {0}" Twitter %> %>
+else 
+   <% members.link <% membership.user.id prefix="disconnect?type=twitter&id=" %> 
+         <% gettext "Disconnect from {0}" Twitter %> suffix=<br> %>
+%>
+</div>
+
+<% #google_profile %>
+<div class="antville-feature connect">
+<img src="<% root.static google.png %>" width=15 height=15/>
+<% if <% membership.user.metadata google_id %> is null then
+   <% members.link "connect?type=google" <% gettext "Connect with {0}" Google %> %>
+else 
+   <% members.link <% membership.user.id prefix="disconnect?type=google&id=" %> 
+         <% gettext "Disconnect from {0}" Google %> suffix=<br> %>
+%>
+</div>

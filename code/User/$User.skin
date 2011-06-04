@@ -94,6 +94,12 @@ $(function() {
 appear as link next to your posted items." %></span></td>
 </tr>
 <tr>
+<td class="small" nowrap="nowrap" valign="baseline"><% gettext Connections suffix=: %></td>
+<td>
+<% feature connect context=profile %>
+</td>
+</tr>
+<tr>
 <td nowrap="nowrap"> </td>
 <td><br />
 <button type="submit" id="submit" name="save" value="1"><% gettext Save %></button>

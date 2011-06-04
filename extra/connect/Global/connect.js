@@ -27,7 +27,7 @@
  * @fileoverview Defines the Antville Connect Feature.
  */
 
-app.addRepository(app.dir + "/../extra/connect/scribe-1.1.0.jar");
+app.addRepository(app.dir + "/../extra/connect/scribe-1.2.0.jar");
 
 // FIXME: Connecting with Twitter and Google currently does not return an e-mail address.
 // Instead, noreplay@antville.org is used – which is very poor and should be fixed ASAP.
@@ -44,9 +44,12 @@ Members.prototype.connect_action = function() {
          case "twitter":
          connect.scribe(req.data.type);
          break;
+         case "google-dev":
+         connect.google(req);
+         break;
       }
    } catch (ex) {
-      session.logout()
+      session.logout();
       res.message = String(ex);
       res.redirect(res.handlers.members.href("login"));
    }
@@ -55,17 +58,35 @@ Members.prototype.connect_action = function() {
    return;
 }
 
+Members.prototype.disconnect_action = function() {
+   switch (req.data.type) {
+      case "facebook":
+      case "google":
+      case "twitter":
+      res.handlers.membership.user.deleteMetadata(req.data.type + "_id");
+      break;
+   }
+   res.redirect(req.data.http_referer);
+   return;
+}
+
 Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
    _getPermission: function(action) {
-      if (this.constructor === Members && action === "connect") {
-        return true;
+      if (this.constructor === Members) {
+         switch (action) {
+            case "connect":
+            return true;
+            case "disconnect":
+            return User.require(User.REGULAR);
+         }
       }
    },
 
-   main: function() {
-      getProperty("connect.facebook.id") && renderSkin("connect#facebook");
-      getProperty("connect.google.id") && renderSkin("connect#google");
-      getProperty("connect.twitter.id") && renderSkin("connect#twitter");
+   main: function(options) {
+      var suffix = options.context ? "_" + options.context : "";
+      getProperty("connect.facebook.id") && renderSkin("connect#facebook" + suffix);
+      getProperty("connect.google.id") && renderSkin("connect#google" + suffix);
+      getProperty("connect.twitter.id") && renderSkin("connect#twitter" + suffix);
    },
 
    getUserByConnection: function(type, id) {
@@ -145,7 +166,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
       }
 
       var oauth = service.build();
-
+      
       var verifier = req.data.oauth_verifier;
       if (!verifier) {
          // Because the service provider will redirect back to this URL the
@@ -249,5 +270,34 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
       }
 
       return;
+   },
+   
+   google: function(req) {
+      var url = encodeURIComponent("http://macke.antville.org/helma/antville/members/connect?type=google2");
+      if (req.data.code) {
+         var http = new helma.Http();
+         http.setMethod("POST");
+         http.setContent("code=" + encodeURIComponent(req.data.code) + 
+               "&client_id=1098119775742.apps.googleusercontent.com&client_secret=ZfK_TVq6ruwoN_upS7x1CScV&" + 
+               "redirect_uri=" + url + "&grant_type=authorization_code");
+         var response = http.getUrl("https://accounts.google.com/o/oauth2/token");
+         var data = JSON.parse(response.content);
+         res.debug(data.toSource());
+         var mime = getURL("https://www.google.com/m8/feeds/contacts/default/full?oauth_token=" + 
+               encodeURIComponent(data.access_token));
+         var xml = Packages.org.apache.commons.io.IOUtils.toString(mime.inputStream);
+         var data = Xml.getFromString(xml);
+         res.debug(data.toSource());
+         res.debug(xml);
+         res.abort()
+      } else if (req.data.error) {
+
+      } else {
+         res.redirect("https://accounts.google.com/o/oauth2/auth?" + 
+               "client_id=1098119775742.apps.googleusercontent.com&" + 
+               "redirect_uri=" + url + "&" +
+               "scope=https://www.google.com/m8/feeds/&" +
+               "response_type=code");
+      }      
    }
 });

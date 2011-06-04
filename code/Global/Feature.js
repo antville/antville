@@ -33,8 +33,10 @@
  * @param {String} id
  */
 global.feature_macro = function(param, id) {
-   var feature = Feature.get(id);
-   feature && feature.main && feature.main.constructor === Function && feature.main();
+   var func, feature = Feature.get(id);
+   if (feature && (func = feature.main)) {
+      func.constructor === Function && func(param);
+   }
    return;
 }
 

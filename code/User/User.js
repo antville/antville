@@ -406,12 +406,14 @@ User.prototype.update = function(data) {
          salt: session.data.token         
       });
    }
-   if (!(this.email = validateEmail(data.email))) {
+   if (!(data.email = validateEmail(data.email))) {
       throw Error(gettext("Please enter a valid e-mail address"));
-   }   
-   if (data.url && !(this.url = validateUrl(data.url))) {
+   }
+   if (data.url && !(data.url = validateUrl(data.url))) {
       throw Error(gettext("Please enter a valid URL"));
    }
+   this.email = data.email;
+   this.url = data.url;
    this.touch();
    return this;
 }
