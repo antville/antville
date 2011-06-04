@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Antville-1.2.1-compatible\n"
 "Report-Msgid-Bugs-To: mail@antville.org\n"
-"POT-Creation-Date: 2011-05-29 15:57+0200\n"
-"PO-Revision-Date: 2011-05-29 15:58+0100\n"
+"POT-Creation-Date: 2011-06-04 19:59+0200\n"
+"PO-Revision-Date: 2011-06-04 20:03+0100\n"
 "Last-Translator: Tobi Schäfer <interface@p3k.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -232,7 +232,7 @@ msgstr "Grundlegende Skins"
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:124
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:253
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:263
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:117
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:123
 msgid "Best regards."
 msgstr "Beste Grüße."
 
@@ -304,7 +304,7 @@ msgstr "Callback-URL"
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:156
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:21
 #: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:47
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:100
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:106
 #: /Users/tobi/Projects/helma/apps/antville/compat/Layout/$Layout.skin:13
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -390,11 +390,22 @@ msgstr "Zurücksetzen bestätigen"
 msgid "Confirm Unsubscribe"
 msgstr "Stornierung bestätigen"
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:93
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:164
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:72
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:50
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:61
+#, java-format
+msgid "Connect with {0}"
+msgstr "Mit {0} verbinden"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:111
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:182
 #, java-format
 msgid "Connecting with {0} failed. {1} Please try again."
 msgstr "Die Verbindung mit {0} ist fehlgeschlagen. {1} Bitte versuchen Sie es erneut."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:97
+msgid "Connections"
+msgstr "Verbindungen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:49
 msgid "Contact"
@@ -427,9 +438,9 @@ msgstr "Umwandeln"
 msgid "Convert Layout"
 msgstr "Layout umwandeln"
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:202
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:224
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:231
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:220
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:242
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:249
 #, java-format
 msgid "Could not connect with Facebook. ({0})"
 msgstr "Die Verbindung mit Facebook ist fehlgeschlagen. ({0})"
@@ -542,6 +553,13 @@ msgstr "Entwicklung"
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:97
 msgid "Disabled"
 msgstr "Deaktiviert"
+
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:53
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.skin:64
+#, java-format
+msgid "Disconnect from {0}"
+msgstr "Verbindung mit {0} trennen"
 
 #: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:284
 msgid "Disk Quota"
@@ -743,7 +761,7 @@ msgstr "Statusmonitor"
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:167
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:247
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:257
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:107
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:113
 #, java-format
 msgid "Hello {0}."
 msgstr "Hallo {0}."
@@ -1493,7 +1511,7 @@ msgstr "Laufende Umfragen"
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:240
 #: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:19
 #: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:45
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:99
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:105
 msgid "Save"
 msgstr "Speichern"
 
@@ -1606,7 +1624,7 @@ msgstr "Skin"
 msgid "Skins"
 msgstr "Skins"
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:165
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:183
 msgid "Something went wrong."
 msgstr "Irgendwas ist schiefgelaufen."
 
@@ -1784,7 +1802,7 @@ msgstr "Danke, Ihre Stimme wurde gezählt. Bis die Umfrage beendet ist, können 
 #: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:125
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:254
 #: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:264
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:118
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:124
 msgid "The Management"
 msgstr "Die Direktion"
 
@@ -2044,7 +2062,7 @@ msgstr "Titel"
 msgid "Title or name of the site"
 msgstr "Titel oder Name der Website"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:112
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:118
 msgid "To confirm the request please click the link below."
 msgstr "Bitte klicken Sie den folgenden Link, um die Anfrage zu bestätigen."
 
@@ -2267,7 +2285,7 @@ msgstr[1] "Ja, {0} Kommentare sollen wirklich gelöscht werden"
 msgid "Yesterday"
 msgstr "Gestern"
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:109
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:115
 #, java-format
 msgid "You (or someone pretending to be you) requested to reset your account password for the site {0} at {1}."
 msgstr "Sie (oder jemand, der sich für Sie ausgibt) hat beantragt, Ihr Kennwort für die Website {0} unter {1} zurückzusetzen."
@@ -2349,7 +2367,7 @@ msgstr "Über folgenden Link können Sie jederzeit Ihr Benutzerprofil bearbeiten
 msgid "You can use the asterisk * as wildcard."
 msgstr "Sie können den Asterisk * als Platzhalter verwenden."
 
-#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:94
+#: /Users/tobi/Projects/helma/apps/antville/extra/connect/Global/connect.js:112
 msgid "You denied the request."
 msgstr "Sie haben die Anfrage abgelehnt."
 
@@ -2363,7 +2381,7 @@ msgstr "Sie haben noch nicht abgestimmt. Sie können abstimmen, bis die Umfrage 
 msgid "You need to wait {0} before you are allowed to create a new site."
 msgstr "Sie müssen {0} warten, bevor Sie eine neue Website erstellen dürfen."
 
-#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:113
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:119
 msgid "You will then be asked to change your password."
 msgstr "Sie werden dann gebeten, Ihr Kennwort zu ändern."
 
