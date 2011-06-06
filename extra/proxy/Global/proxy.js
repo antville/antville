@@ -50,7 +50,7 @@ Root.prototype.proxy_action = function() {
    return;
 }
 
-Feature.add("proxy", "http://code.google.com/p/antville/wiki/proxy", {
+Feature.add("proxy", "http://code.google.com/p/antville/wiki/ProxyFeature", {
    _getPermission: function(action) {
       if (this._prototype in {Root: 1} &&
             action === "proxy" && User.require(User.TRUSTED)) {

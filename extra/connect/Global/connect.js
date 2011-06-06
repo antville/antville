@@ -70,7 +70,7 @@ Members.prototype.disconnect_action = function() {
    return;
 }
 
-Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
+Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", {
    _getPermission: function(action) {
       if (this.constructor === Members) {
          switch (action) {

@@ -28,7 +28,7 @@
  * @see http://www.google.com/recaptcha
  */
 
-Feature.add("recaptcha", "http://code.google.com/p/antville/wiki/recaptcha", new function() {
+Feature.add("recaptcha", "http://code.google.com/p/antville/wiki/RecaptchaFeature", new function() {
    var key = getProperty("recaptcha.key");
 
    return {
