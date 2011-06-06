@@ -172,7 +172,7 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
 Sql.SEARCH = "select content.id, metadata.value from content, site, metadata where site.id = $0 and " +
       "site.id = content.site_id and content.status in ('public', 'shared', 'open') and " +
       "content.id = metadata.parent_id and metadata.name in ('title', 'text') and " +
-      "lower(metadata.value) like lower('%$1%') order by content.created desc limit $2";
+      "lower(metadata.value) like lower('%$1%') group by content.id order by content.created desc limit $2";
 
 /** @constant */
 Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
