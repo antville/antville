@@ -202,7 +202,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
             user = User.register({
                name: name,
                hash: session.data.requestToken.getToken(),
-               email: data.email || "noreply@antville.org",
+               email: data.email || root.replyTo,
                url: data.url
             });
             session.login(user);
