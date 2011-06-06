@@ -83,6 +83,10 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/connect", {
    },
 
    main: function(options) {
+      var defaultDomain = getProperty("domain.*");
+      if (defaultDomain && defaultDomain !== req.data.http_host) {
+         return;
+      }
       var suffix = options.context ? "_" + options.context : "";
       getProperty("connect.facebook.id") && renderSkin("connect#facebook" + suffix);
       getProperty("connect.google.id") && renderSkin("connect#google" + suffix);
