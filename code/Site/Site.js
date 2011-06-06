@@ -575,7 +575,7 @@ Site.prototype.search_action = function() {
       res.message = gettext("Please enter a query in the search form.");
       res.data.body = this.renderSkinAsString("Site#search");
    } else {
-      term = term.replace(/'"/g, String.EMPTY);
+      term = term.replace(/(?:\x22|\x27)/g, String.EMPTY); // Remove single and double ticks (aka false quotes)
       var sql = new Sql({quote: false});
       sql.retrieve(Sql.SEARCH, this._id, term, 50);
       res.push();
@@ -903,7 +903,6 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-   // FIXME: This still does not work reliably with the various configuration options...
    if (["localhost", "127.0.0.1"].indexOf(req.data.http_host) > -1) {
       var site = app.properties.hrefRootPrototype ? "/" + this.name : String.EMPTY;
       return [app.appsProperties.mountPoint, site, href].join(String.EMPTY);
