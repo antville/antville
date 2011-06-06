@@ -61,7 +61,8 @@ var aspects = {
             req.postParams.save = 1;
             req.postParams.status = Story.CLOSED;
          } else if (req.postParams.editableby) {
-            req.postParams.status = req.postParams.editableby
+            var status = [Story.PUBLIC, Story.SHARED, Story.OPEN];
+            req.postParams.status = status[req.postParams.editableby] || req.postParams.editableBy;
          }
          req.postParams.mode = (req.postParams.addToFront ? 
                Story.FEATURED : Story.HIDDEN);
