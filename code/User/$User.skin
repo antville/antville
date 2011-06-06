@@ -96,7 +96,7 @@ appear as link next to your posted items." %></span></td>
 <tr>
 <td class="small" nowrap="nowrap" valign="baseline"><% gettext Connections suffix=: %></td>
 <td>
-<% feature connect context=profile %>
+<% feature connect context=profile default=— %>
 </td>
 </tr>
 <tr>
