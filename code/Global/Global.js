@@ -218,6 +218,7 @@ function scheduler() {
    Admin.invokeCallbacks();
    Admin.updateDomains();
    Admin.updateHealth();
+   Admin.purgeSites();
    return app.properties.schedulerInterval;
 }
 
@@ -231,7 +232,6 @@ function nightly() {
    }
    app.log("***** Running nightly scripts *****");
    Admin.purgeReferrers();
-   Admin.purgeSites();
    Admin.dequeue();
    global.nightly.lastRun = now;
    return;

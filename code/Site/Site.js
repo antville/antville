@@ -357,6 +357,10 @@ Site.prototype.update = function(data) {
    
    if (this.mode !== Site.DELETED && data.mode === Site.DELETED) {
       this.deleted = new Date;
+   } else if (this.job && this.mode === Site.DELETED && data.mode !== Site.DELETED) {
+      var job = new Admin.Job(this.job);
+      job.remove();
+      this.job = null;
    }
 
    this.map({

@@ -165,13 +165,11 @@ Admin.purgeSites = function() {
 
    root.admin.deletedSites.forEach(function() {
       if (now - this.deleted > Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD) {
-         let job;
-         if (this.job && (job = new Admin.Job(this.job))) {
-            job.remove();
+         if (this.job) {
+            return; // Site is already scheduled for deletion
          }
-         job = new Admin.Job(this, "remove", User.getById(1));
+         let job = new Admin.Job(this, "remove", User.getById(1));
          this.job = job.name;
-         this.deleted = now; // Prevents redundant deletion jobs
       }
    });
    
