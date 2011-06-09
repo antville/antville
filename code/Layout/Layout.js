@@ -294,6 +294,7 @@ Layout.prototype.import_action = function() {
 Layout.prototype.getImage = function(name, fallback) {
    var layout = this;
    while (layout) {
+      layout.images.prefetchChildren();
       if (layout.images.get(name)) {
          return layout.images.get(name);
       }
