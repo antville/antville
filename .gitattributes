@@ -1,7 +1,7 @@
 * text=auto !eol
 build/MessageParser.js svneol=native#text/plain
 build/PoParser.js svneol=native#text/plain
-build/ant-googlecode-0.0.2.jar -text svneol=unset#application/x-compressed
+build/ant-googlecode-0.0.3.jar -text svneol=unset#application/x-compressed
 build/extra/antville.h2.db -text
 build/extra/h2-1.2.136.jar -text svneol=unset#application/x-compressed
 build/extra/h2-1.3.155.jar -text svneol=unset#application/x-compressed

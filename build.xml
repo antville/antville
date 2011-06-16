@@ -193,7 +193,7 @@
 
    <target name="docs" depends="init">
       <exec dir="${build.dir}/jsdoc/toolkit" executable="${build.dir}/jsdoc/jsrunwrapper.sh">
-         <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../jsdoc/templates
+         <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../templates
 				-d=${docs.outfiles} ${docs.infiles}'/>
       </exec>
    </target>
@@ -271,10 +271,18 @@
          <param name="labels" value="Type-Package, OpSys-Windows, Featured"/>
       </antcall>
    </target>
+   
+   <target name="test-upload" depends="init">
+      <antcall target="upload">
+         <param name="file" value="/Users/tobi/Desktop/test.txt"/>
+         <param name="summary" value="Test pls ignore"/>
+         <param name="labels" value="Deprecated"/>
+      </antcall>
+   </target>
 
    <target name="upload" depends="file-exists" if="file.exists">
       <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
-               classpath="${build.dir}/ant-googlecode-0.0.2.jar" name="gcupload"/>
+               classpath="${build.dir}/ant-googlecode-0.0.3.jar" name="gcupload"/>
       <gcupload username="${google.username}" password="${google.password}" projectname="antville" filename="${file}"
                 targetfilename="${file}" summary="${summary}" labels="${labels}"/>
    </target>
