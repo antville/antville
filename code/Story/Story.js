@@ -582,7 +582,7 @@ Story.prototype.format_filter = function(value, param, mode) {
          return this.url_filter(stripTags(value), param, mode);
          
          case "quotes":
-         return stripTags(value).replace(/(\"|\')/g, function(str, quotes) {
+         return stripTags(value).replace(/(?:\x22|\x27)/g, function(str, quotes) {
             return "&#" + quotes.charCodeAt(0) + ";";
          });
          
