@@ -192,8 +192,8 @@
    </target>
 
    <target name="docs" depends="init">
-      <exec dir="${build.dir}/jsdoc-toolkit" executable="${build.dir}/jsdoc-toolkit/jsrun.sh">
-         <arg line='-D="title:${docs.title}" -q -r=2 -p -t=templates/jsdoc
+      <exec dir="${build.dir}/jsdoc/toolkit" executable="${build.dir}/jsdoc/jsrunwrapper.sh">
+         <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../jsdoc/templates
 				-d=${docs.outfiles} ${docs.infiles}'/>
       </exec>
    </target>
