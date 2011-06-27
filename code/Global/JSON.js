@@ -1,3 +1,7 @@
+/**
+ * @fileOverview Douglas Crockford’s JSON parser and serializer.
+ */
+
 /*
     http://www.JSON.org/json2.js
     2011-02-23

@@ -24,7 +24,7 @@
 // $URL$
 
 /**
- * @fileOverview Defines metadata extensions of Helma�s built-in
+ * @fileOverview Defines metadata extensions of Helma’s built-in
  * HopObject prototype.
  */
 

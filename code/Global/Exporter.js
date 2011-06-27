@@ -24,7 +24,7 @@
 // $URL$
 
 /**
- * @fileOverview
+ * @fileOverview Defines the Exporter prototype.
  */
 
 var Exporter = {}
