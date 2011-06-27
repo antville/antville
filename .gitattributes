@@ -35,6 +35,12 @@ code/TagHub/$TagHub.skin -text
 compat/Layout/Layout.convert.js svneol=native#text/plain
 db/h2.compat/Archive/Archive.properties svneol=native#text/plain
 db/h2.compat/Global/Sql.js svneol=native#text/plain
+docs/css/fonts/mplus-1m-bold-webfont.eot -text
+docs/css/fonts/mplus-1m-bold-webfont.ttf -text
+docs/css/fonts/mplus-1m-bold-webfont.woff -text
+docs/css/fonts/mplus-1m-regular-webfont.eot -text
+docs/css/fonts/mplus-1m-regular-webfont.ttf -text
+docs/css/fonts/mplus-1m-regular-webfont.woff -text
 docs/files.html svneol=native#text/html
 docs/index.html svneol=native#text/html
 docs/symbols/Admin.Job.html svneol=native#text/html
