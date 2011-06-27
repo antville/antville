@@ -176,7 +176,7 @@ ul.inheritsList
 	<body>
 <!-- ============================== header ================================= -->	
 		<!-- begin static/header.html -->
-      <div><strong>Antville&#32;1.2.1&#32;API&#32;Reference</strong></div>
+      <div><strong>Antville&#32;1.3&#32;API&#32;Reference</strong></div>
 		<!--div id="header">
 </div-->
 		<!-- end static/header.html -->
@@ -235,8 +235,6 @@ ul.inheritsList
 	<li><a href="../symbols/Members.html">Members</a></li>
 	
 	<li><a href="../symbols/Membership.html">Membership</a></li>
-	
-	<li><a href="../symbols/Metadata.html">Metadata</a></li>
 	
 	<li><a href="../symbols/Poll.html">Poll</a></li>
 	
@@ -319,16 +317,6 @@ ul.inheritsList
 							<td class="attributes">&lt;constant&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">
-								<b><a href="../symbols/_global_.html#LONGDATEFORMAT">LONGDATEFORMAT</a></b>
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;constant&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
 								<b><a href="../symbols/_global_.html#NAMEPATTERN">NAMEPATTERN</a></b>
 								</div>
 								<div class="description"></div>
@@ -340,16 +328,6 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">
 								<b><a href="../symbols/_global_.html#rome">rome</a></b>
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;constant&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								<b><a href="../symbols/_global_.html#SHORTDATEFORMAT">SHORTDATEFORMAT</a></b>
 								</div>
 								<div class="description"></div>
 							</td>
@@ -462,6 +440,15 @@ the time) that have different meanings depending on the context.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#Feature">Feature</a></b>(id, url, feature)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#file_macro">file_macro</a></b>(param, id, mode)
 								</div>
 								<div class="description"></div>
@@ -480,7 +467,7 @@ the time) that have different meanings depending on the context.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#format_filter">format_filter</a></b>(string, param, pattern)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#format_filter">format_filter</a></b>(string, param, pattern, type)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -489,7 +476,7 @@ the time) that have different meanings depending on the context.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#formatDate">formatDate</a></b>(date, pattern)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#formatDate">formatDate</a></b>(date, format)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -499,15 +486,6 @@ the time) that have different meanings depending on the context.</div>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#formatNumber">formatNumber</a></b>(number, pattern)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#getDateFormats">getDateFormats</a></b>(type, language)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -545,7 +523,11 @@ the time) that have different meanings depending on the context.</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#getTimeZones">getTimeZones</a></b>(language)
 								</div>
-								<div class="description"></div>
+								<div class="description">This method returns an array of structs providing two properties each:
+<code>value</code> – a unique time zone ID
+<code>display</code> – a (more) user-friendly string
+Although Java is great in providing all time zones one can imagine, this
+vast amount of choices fails to support easy time zone selection.</div>
 							</td>
 						</tr>
 					
@@ -787,6 +769,15 @@ Mozilla developers will have mercy.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#user_macro">user_macro</a></b>()
+								</div>
+								<div class="description">Helper macro for checking if a user session is authenticated (logged in).</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#validateEmail">validateEmail</a></b>(str)
 								</div>
 								<div class="description"></div>
@@ -858,32 +849,7 @@ Mozilla developers will have mercy.</div>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="LONGDATEFORMAT"> </a>
-					<div class="fixedFont">&lt;constant&gt; 
-					
-					
-					<b>LONGDATEFORMAT</b>
-					
-					</div>
-					<div class="description">
-						
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -908,7 +874,7 @@ Mozilla developers will have mercy.</div>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -933,32 +899,7 @@ Mozilla developers will have mercy.</div>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name="SHORTDATEFORMAT"> </a>
-					<div class="fixedFont">&lt;constant&gt; 
-					
-					
-					<b>SHORTDATEFORMAT</b>
-					
-					</div>
-					<div class="description">
-						
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -983,7 +924,7 @@ Mozilla developers will have mercy.</div>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1016,7 +957,7 @@ Mozilla developers will have mercy.</div>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1068,7 +1009,7 @@ Mozilla developers will have mercy.</div>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1115,7 +1056,7 @@ the time) that have different meanings depending on the context.
 Example: comment (the verb "to comment" vs the noun "a comment")
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
 						
 						
 					</div>
@@ -1167,7 +1108,7 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1237,7 +1178,7 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1265,7 +1206,7 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1324,7 +1265,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1370,7 +1311,7 @@ otherwise</dd>
 						Disable a macro with the idle function
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1411,6 +1352,57 @@ otherwise</dd>
 
 					<hr />
 				
+					<a name="Feature"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>Feature</b>(id, url, feature)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Feature.js.html">Feature.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>id</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>url</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>feature</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="file_macro"> </a>
 					<div class="fixedFont">
 					
@@ -1422,7 +1414,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1473,7 +1465,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1512,14 +1504,14 @@ otherwise</dd>
 					<div class="fixedFont">
 					
 					<span class="light">{String}</span>
-					<b>format_filter</b>(string, param, pattern)
+					<b>format_filter</b>(string, param, pattern, type)
 					
 					</div>
 					<div class="description">
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1548,6 +1540,12 @@ otherwise</dd>
 								</dt>
 								<dd></dd>
 							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>type</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -1570,14 +1568,14 @@ otherwise</dd>
 					<div class="fixedFont">
 					
 					<span class="light">{String}</span>
-					<b>formatDate</b>(date, pattern)
+					<b>formatDate</b>(date, format)
 					
 					</div>
 					<div class="description">
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1595,7 +1593,7 @@ otherwise</dd>
 								<dd></dd>
 							
 								<dt>
-									<span class="light fixedFont">{pattern}</span> <b>pattern</b>
+									<span class="light fixedFont">{String}</span> <b>format</b>
 									
 								</dt>
 								<dd></dd>
@@ -1629,7 +1627,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1670,58 +1668,6 @@ otherwise</dd>
 
 					<hr />
 				
-					<a name="getDateFormats"> </a>
-					<div class="fixedFont">
-					
-					<span class="light">{Array[]}</span>
-					<b>getDateFormats</b>(type, language)
-					
-					</div>
-					<div class="description">
-						
-						
-							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>type</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>language</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Array[]}</span> An array containing the corresponding date formats</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
 					<a name="getLocale"> </a>
 					<div class="fixedFont">
 					
@@ -1733,7 +1679,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1779,7 +1725,7 @@ otherwise</dd>
 						Creates an array of all available Java locales sorted by their names.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1825,7 +1771,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
 						
 						
 					</div>
@@ -1881,10 +1827,18 @@ otherwise</dd>
 					
 					</div>
 					<div class="description">
-						
+						This method returns an array of structs providing two properties each:
+<code>value</code> – a unique time zone ID
+<code>display</code> – a (more) user-friendly string
+Although Java is great in providing all time zones one can imagine, this
+vast amount of choices fails to support easy time zone selection.
+Furthermore, the L10n features of the java.util.TimeZone class are insufficient
+as they do only translate the generic string returned by the getDisplayName()
+method (e.g. Central European Time), not the more usable time zone IDs 
+(e.g. Europe/Vienna). Thus, time zone selection in Antville is rather limited.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1930,7 +1884,7 @@ otherwise</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -1965,7 +1919,7 @@ a simple implementation of an if-then-else statement by using Helma macros
 only.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2055,7 +2009,7 @@ returned if the first value does not equal the second one</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2107,7 +2061,7 @@ returned if the first value does not equal the second one</dd>
 Mozilla developers will have mercy.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2153,7 +2107,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2218,7 +2172,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2260,7 +2214,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2311,7 +2265,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2356,7 +2310,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
 						
 						
 					</div>
@@ -2414,7 +2368,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
 						
 						
 					</div>
@@ -2479,7 +2433,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2507,7 +2461,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2566,7 +2520,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2594,7 +2548,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2622,7 +2576,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2668,7 +2622,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2719,7 +2673,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2765,7 +2719,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2810,7 +2764,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2867,7 +2821,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2931,7 +2885,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -2995,7 +2949,7 @@ Mozilla developers will have mercy.
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3031,7 +2985,7 @@ called again.</dd>
 						General mail sending function. Mails will be queued in app.data.mails.
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3095,7 +3049,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3141,7 +3095,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3200,7 +3154,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3240,6 +3194,42 @@ called again.</dd>
 
 					<hr />
 				
+					<a name="user_macro"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>user_macro</b>()
+					
+					</div>
+					<div class="description">
+						Helper macro for checking if a user session is authenticated (logged in).
+Returns true if user is logged in, false otherwise.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>Boolean</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="validateEmail"> </a>
 					<div class="fixedFont">
 					
@@ -3251,7 +3241,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3297,7 +3287,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3343,7 +3333,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3394,7 +3384,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3439,7 +3429,7 @@ called again.</dd>
 						
 						
 							<br />
-							<i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
 						
 						
 					</div>
@@ -3479,7 +3469,7 @@ called again.</dd>
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.3-beta on Fri Jan 21 2011 21:44:01 GMT+0100 (CET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Jun 27 2011 21:09:44 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>

@@ -176,7 +176,7 @@ ul.inheritsList
 	<body>
 <!-- ============================== header ================================= -->	
 		<!-- begin static/header.html -->
-      <div><strong>Antville&#32;1.2.1&#32;API&#32;Reference</strong></div>
+      <div><strong>Antville&#32;1.3&#32;API&#32;Reference</strong></div>
 		<!--div id="header">
 </div-->
 		<!-- end static/header.html -->
@@ -236,8 +236,6 @@ ul.inheritsList
 	
 	<li><a href="../symbols/Membership.html">Membership</a></li>
 	
-	<li><a href="../symbols/Metadata.html">Metadata</a></li>
-	
 	<li><a href="../symbols/Poll.html">Poll</a></li>
 	
 	<li><a href="../symbols/Polls.html">Polls</a></li>
@@ -286,7 +284,7 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_HopObject_HopObject.js.html">HopObject.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_HopObject_HopObject.js.html">HopObject.js</a>.
 				
 			</p>
 
@@ -370,6 +368,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/HopObject.html#deleteMetadata">deleteMetadata</a></b>(name)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/HopObject.html#getFormOptions">getFormOptions</a></b>()
 								</div>
 								<div class="description"></div>
@@ -389,6 +396,15 @@ ul.inheritsList
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">HopObject.<b><a href="../symbols/HopObject.html#.getFromPath">getFromPath</a></b>(name, collection)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/HopObject.html#getMetadata">getMetadata</a></b>(name)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -426,7 +442,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/HopObject.html#handleMetadata">handleMetadata</a></b>(name)
 								</div>
-								<div class="description"></div>
+								<div class="description">// * @param {String} name</div>
 							</td>
 						</tr>
 					
@@ -488,6 +504,15 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/HopObject.html#map">map</a></b>(values)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/HopObject.html#metadata_macro">metadata_macro</a></b>(param, name)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -569,6 +594,15 @@ ul.inheritsList
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/HopObject.html#self_macro">self_macro</a></b>(param, property)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/HopObject.html#setMetadata">setMetadata</a></b>(name, value)
 								</div>
 								<div class="description"></div>
 							</td>
@@ -847,6 +881,45 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="deleteMetadata"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>deleteMetadata</b>(name)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_HopObject_metadata.js.html">metadata.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="getFormOptions"> </a>
 					<div class="fixedFont">
 					
@@ -964,6 +1037,52 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name="getMetadata"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Object}</span>
+					<b>getMetadata</b>(name)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_HopObject_metadata.js.html">metadata.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="getPermission"> </a>
 					<div class="fixedFont">
 					
@@ -1068,7 +1187,10 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
+						// * @param {String} name
 						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_HopObject_metadata.js.html">metadata.js</a>.
 						
 						
 					</div>
@@ -1080,7 +1202,7 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{String}</span> <b>name</b>
+									<b>name</b>
 									
 								</dt>
 								<dd></dd>
@@ -1354,6 +1476,51 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{Object}</span> <b>values</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="metadata_macro"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>metadata_macro</b>(param, name)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_HopObject_metadata.js.html">metadata.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>param</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
 									
 								</dt>
 								<dd></dd>
@@ -1726,6 +1893,51 @@ conditional checks of individual prototype’s remove() methods</dd>
 
 					<hr />
 				
+					<a name="setMetadata"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setMetadata</b>(name, value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_HopObject_metadata.js.html">metadata.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="setTags"> </a>
 					<div class="fixedFont">
 					
@@ -1989,7 +2201,7 @@ conditional checks of individual prototype’s remove() methods</dd>
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.3-beta on Fri Jan 21 2011 21:44:03 GMT+0100 (CET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Jun 27 2011 21:09:45 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>

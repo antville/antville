@@ -176,7 +176,7 @@ ul.inheritsList
 	<body>
 <!-- ============================== header ================================= -->	
 		<!-- begin static/header.html -->
-      <div><strong>Antville&#32;1.2.1&#32;API&#32;Reference</strong></div>
+      <div><strong>Antville&#32;1.3&#32;API&#32;Reference</strong></div>
 		<!--div id="header">
 </div-->
 		<!-- end static/header.html -->
@@ -236,8 +236,6 @@ ul.inheritsList
 	
 	<li><a href="../symbols/Membership.html">Membership</a></li>
 	
-	<li><a href="../symbols/Metadata.html">Metadata</a></li>
-	
 	<li><a href="../symbols/Poll.html">Poll</a></li>
 	
 	<li><a href="../symbols/Polls.html">Polls</a></li>
@@ -288,7 +286,7 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_opt_helma_apps_antville_code_Membership_Membership.js.html">Membership.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Membership_Membership.js.html">Membership.js</a>.
 				
 			</p>
 
@@ -486,15 +484,6 @@ ul.inheritsList
 					<tbody>
 					
 						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/Membership.html#email_macro">email_macro</a></b>(param)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">Membership.<b><a href="../symbols/Membership.html#.getByName">getByName</a></b>(name, site)
@@ -644,7 +633,7 @@ ul.inheritsList
 				
 				
 				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/HopObject.html">HopObject</a>: </dt><dd><a href="../symbols/HopObject.html#addTag">addTag</a>, <a href="../symbols/HopObject.html#checkbox_macro">checkbox_macro</a>, <a href="../symbols/HopObject.html#created_macro">created_macro</a>, <a href="../symbols/HopObject.html#creator_macro">creator_macro</a>, <a href="../symbols/HopObject.html#getFormValue">getFormValue</a>, <a href="../symbols/HopObject.html#getTags">getTags</a>, <a href="../symbols/HopObject.html#getTitle">getTitle</a>, <a href="../symbols/HopObject.html#handleMetadata">handleMetadata</a>, <a href="../symbols/HopObject.html#input_macro">input_macro</a>, <a href="../symbols/HopObject.html#kind_macro">kind_macro</a>, <a href="../symbols/HopObject.html#link_macro">link_macro</a>, <a href="../symbols/HopObject.html#log">log</a>, <a href="../symbols/HopObject.html#macro_macro">macro_macro</a>, <a href="../symbols/HopObject.html#map">map</a>, <a href="../symbols/HopObject.html#modified_macro">modified_macro</a>, <a href="../symbols/HopObject.html#modifier_macro">modifier_macro</a>, <a href="../symbols/HopObject.html#onRequest">onRequest</a>, <a href="../symbols/HopObject.html#radiobutton_macro">radiobutton_macro</a>, <a href="../symbols/HopObject.html#removeTag">removeTag</a>, <a href="../symbols/HopObject.html#select_macro">select_macro</a>, <a href="../symbols/HopObject.html#self_macro">self_macro</a>, <a href="../symbols/HopObject.html#setTags">setTags</a>, <a href="../symbols/HopObject.html#skin_macro">skin_macro</a>, <a href="../symbols/HopObject.html#textarea_macro">textarea_macro</a>, <a href="../symbols/HopObject.html#touch">touch</a>, <a href="../symbols/HopObject.html#type_macro">type_macro</a>, <a href="../symbols/HopObject.html#upload_macro">upload_macro</a></dd>
+				<dt>Methods borrowed from class <a href="../symbols/HopObject.html">HopObject</a>: </dt><dd><a href="../symbols/HopObject.html#addTag">addTag</a>, <a href="../symbols/HopObject.html#checkbox_macro">checkbox_macro</a>, <a href="../symbols/HopObject.html#created_macro">created_macro</a>, <a href="../symbols/HopObject.html#creator_macro">creator_macro</a>, <a href="../symbols/HopObject.html#deleteMetadata">deleteMetadata</a>, <a href="../symbols/HopObject.html#getFormValue">getFormValue</a>, <a href="../symbols/HopObject.html#getMetadata">getMetadata</a>, <a href="../symbols/HopObject.html#getTags">getTags</a>, <a href="../symbols/HopObject.html#getTitle">getTitle</a>, <a href="../symbols/HopObject.html#handleMetadata">handleMetadata</a>, <a href="../symbols/HopObject.html#input_macro">input_macro</a>, <a href="../symbols/HopObject.html#kind_macro">kind_macro</a>, <a href="../symbols/HopObject.html#link_macro">link_macro</a>, <a href="../symbols/HopObject.html#log">log</a>, <a href="../symbols/HopObject.html#macro_macro">macro_macro</a>, <a href="../symbols/HopObject.html#map">map</a>, <a href="../symbols/HopObject.html#metadata_macro">metadata_macro</a>, <a href="../symbols/HopObject.html#modified_macro">modified_macro</a>, <a href="../symbols/HopObject.html#modifier_macro">modifier_macro</a>, <a href="../symbols/HopObject.html#onRequest">onRequest</a>, <a href="../symbols/HopObject.html#radiobutton_macro">radiobutton_macro</a>, <a href="../symbols/HopObject.html#removeTag">removeTag</a>, <a href="../symbols/HopObject.html#select_macro">select_macro</a>, <a href="../symbols/HopObject.html#self_macro">self_macro</a>, <a href="../symbols/HopObject.html#setMetadata">setMetadata</a>, <a href="../symbols/HopObject.html#setTags">setTags</a>, <a href="../symbols/HopObject.html#skin_macro">skin_macro</a>, <a href="../symbols/HopObject.html#textarea_macro">textarea_macro</a>, <a href="../symbols/HopObject.html#touch">touch</a>, <a href="../symbols/HopObject.html#type_macro">type_macro</a>, <a href="../symbols/HopObject.html#upload_macro">upload_macro</a></dd>
 				</dl>
 				
 			
@@ -997,52 +986,6 @@ ul.inheritsList
 				<div class="sectionTitle">
 					Method Detail
 				</div>
-				
-					<a name="email_macro"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>email_macro</b>(param)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>param</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Throws:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Error}</span>  <b></b>
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-
-					<hr />
 				
 					<a name=".getByName"> </a>
 					<div class="fixedFont">&lt;static&gt; 
@@ -1687,7 +1630,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.3-beta on Fri Jan 21 2011 21:44:05 GMT+0100 (CET)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Jun 27 2011 21:09:46 GMT+0200 (CEST)
 		</div>
 	</body>
 </html>
