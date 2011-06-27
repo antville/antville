@@ -30,7 +30,7 @@
 
 /**
  *
-// * @param {String} name
+ * @param {String} name
  */
 HopObject.prototype.handleMetadata = function(name) {
    this.__defineGetter__(name, function() {
