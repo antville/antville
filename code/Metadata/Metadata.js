@@ -69,6 +69,14 @@ Metadata.normalize = function(value) {
    return [value, Constructor.name];
 }
 
+/**
+ * @name Metadata
+ * @constructor
+ * @property {HopObject} parent
+ * @property {String} name
+ * @property {Object} value
+ * @property {String} type
+ */
 Metadata.prototype.constructor = function(parent, name, value) {
    if (parent && name && value) {
       this.parent = parent;
