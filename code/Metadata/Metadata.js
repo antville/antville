@@ -31,7 +31,7 @@
  * Get an object representing the type properties settings suitable for 
  * defining prototypes with the definePrototype() method.
  * @returns {Object} The type properties settings as object.
- * @see {@link http://helma.org/wiki/Defining+HopObject+mappings+programmatically}
+ * @see <a href="http://helma.org/wiki/Defining+HopObject+mappings+programmatically">Helma documentation</a>
  */
 Metadata.getTypeProperties = function() {
    return {
