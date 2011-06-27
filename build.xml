@@ -193,7 +193,7 @@
 
    <target name="docs" depends="init">
       <exec dir="${build.dir}/jsdoc/toolkit" executable="${build.dir}/jsdoc/jsrunwrapper.sh">
-         <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../templates
+         <arg line='-D="title:${docs.title}" -q -r=2 -p -t=../templates/codeview
 				-d=${docs.outfiles} ${docs.infiles}'/>
       </exec>
    </target>
