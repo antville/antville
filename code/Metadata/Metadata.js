@@ -28,8 +28,10 @@
  */
 
 /**
- * FIXME: This could be useful when defining prototypes with the definePrototype() method.
- * @see http://helma.org/wiki/Defining+HopObject+mappings+programmatically/
+ * Get an object representing the type properties settings suitable for 
+ * defining prototypes with the definePrototype() method.
+ * @returns {Object} The type properties settings as object.
+ * @see {@link http://helma.org/wiki/Defining+HopObject+mappings+programmatically}
  */
 Metadata.getTypeProperties = function() {
    return {
@@ -42,6 +44,15 @@ Metadata.getTypeProperties = function() {
    }
 }
 
+/**
+ * Prepare a value for writing it to the metadata database table.
+ * The type of each metadata is stored along with its value.
+ * The normalize() method determines the type and possibly modifies 
+ * the value accordingly.
+ * @param {Object} value
+ * @returns {Array} Compound value consisting of two elements, 
+ * the (normalized) metadata value and its type.
+ */
 Metadata.normalize = function(value) {
    if (value === null || value === undefined) {
       return [null, null];
@@ -72,10 +83,15 @@ Metadata.normalize = function(value) {
 /**
  * @name Metadata
  * @constructor
- * @property {HopObject} parent
- * @property {String} name
- * @property {Object} value
- * @property {String} type
+ * @description The Metadata prototype provides means to store one metadata key-value
+ * pair per record in the metadata database table. Each record is assigned to a
+ * parent HopObject which is fitted with convenient methods to easily retrieve 
+ * and modify the attached metadata objects.
+ * @see HopObject#handleMetadata
+ * @property {HopObject} parent The HopObject the metadata belongs to.
+ * @property {String} name The name (key) of the metadata object.
+ * @property {Object} value The value of the metadata object.
+ * @property {String} type The type of the metadata object.
  */
 Metadata.prototype.constructor = function(parent, name, value) {
    if (parent && name && value) {
@@ -86,6 +102,11 @@ Metadata.prototype.constructor = function(parent, name, value) {
    return this;
 }
 
+/**
+ * Set the value of a metadata object. If the value equals null
+ * the metadata object will be removed.
+ * @param {Object} value The desired metadata value.
+ */
 Metadata.prototype.setValue = function(value) {
    [this.value, this.type] = Metadata.normalize(value);
    if (this.value === null) {
@@ -94,6 +115,10 @@ Metadata.prototype.setValue = function(value) {
    return;
 }
 
+/**
+ * Get the value of a metadata object.
+ * @returns {Object} The value of the metadata object.
+ */
 Metadata.prototype.getValue = function() {
    var Constructor = global[this.type];
    switch (Constructor) {
@@ -117,16 +142,17 @@ Metadata.prototype.getValue = function() {
 }
 
 /**
- * 
+ * Get a textual representation of the metadata object.
+ * @returns {String} A textual representation of the metadata object. 
  */
 Metadata.prototype.toString = function() {
    return "Metadata of " + this.parent + " (" + this.name + " = " + this.value + ")";
 }
 
 /**
- *
- * @param {String} name
- * @returns {HopObject}
+ * Handle macros which are not defined elsewhere.
+ * @param {String} name The name of the macro.
+ * @returns {Object} The resulting value.
  */
 // FIXME: Is this obsolete?
 Metadata.prototype.onUnhandledMacro = function(name) {
