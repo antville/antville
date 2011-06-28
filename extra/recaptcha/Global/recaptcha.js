@@ -40,6 +40,9 @@ Feature.add("recaptcha", "http://code.google.com/p/antville/wiki/RecaptchaFeatur
       },
 
       verify: function(data) {
+         if (session.user) {
+            return;
+         }
          var http = new helma.Http;
          http.setTimeout(200);
          http.setReadTimeout(300);
