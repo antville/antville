@@ -44,7 +44,7 @@ Root.VERSION = (function(versionString, buildDate) {
       };
       result.minor = result.major + parseInt(parts[2] || 0) / 10;
       result.bugfix = result.minor + "." + (parts[3] || 0);
-      result.development = parts[4] || "final";
+      result.development = parts[4] || "";
       result["default"] = result[parts[3] ? "bugfix" : "minor"] + result.development +
             (parts[6] ? "-" + parts[6] : String.EMPTY);
       return result;
