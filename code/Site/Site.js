@@ -337,20 +337,21 @@ Site.prototype.getFormOptions = function(name) {
  */
 Site.prototype.update = function(data) {
    if (this.isTransient()) {
-      var name = stripTags(data.name);
+      var name = stripTags(decodeURIComponent(data.name));
       if (!data.name) {
          throw Error(gettext("Please enter a name for your new site."));
       } else if (data.name.length > 30) {
          throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
-      } else if (name !== data.name || /\s/.test(data.name) || NAMEPATTERN.test(data.name)) {
+      } else if (name !== data.name || /[^\u00a0-\uffff\w\-]/.test(data.name)) {
+         // We check if name can be used in vhost environment by allowing all Unicode characters
+         // but only ASCII letters A—z, digits 0—9, the underscore “_” and the hyphen “-”.
          throw Error(gettext("Please avoid special characters or HTML code in the name field."));
       } else if (name !== root.getAccessName(name)) {
          throw Error(gettext("There already is a site with this name."));
       }
       this.layout = new Layout(this);
-      // FIXME: 1. Check if IDN class is available (Java 6!) 
-      //        2. toASCII() should be called somewhere else
-      this.name = java.net.IDN.toASCII(name);
+      this.name = java.net.IDN.toASCII.constructor === Function ?
+            java.net.IDN.toASCII(name, java.net.IDN.ALLOW_UNASSIGNED) : name;
       this.title = data.title || name;
       return;
    }
