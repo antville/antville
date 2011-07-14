@@ -85,7 +85,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
    main: function(options) {
       var defaultDomain = getProperty("domain.*");
       var domain = getProperty("domain." + res.handlers.site.name);   
-      if (defaultDomain && domain && !defaultDomain.endsWith(domain)) {
+      if (defaultDomain && domain && !domain.endsWith(defaultDomain)) {
          return;
       }
       var suffix = options.context ? "_" + options.context : "";
