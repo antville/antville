@@ -115,8 +115,67 @@ $(function() {
          data[ref.attr("id")] = $.trim(ref.val());
       });
       $.post(url, data);
-      return;;
+      return;
    });
    return;
 });
 </script>
+
+<% #inEditorUpload %>
+<div id="av-inEditorUpload" class="inEditorUpload" style="display: none;">
+    <button class="normal small av-slideOutLabel"><% gettext "Insert image" %></button>
+    <div class="av-slideOutContent">
+        
+        <div id="av-inEditorSelector"
+            data-state="upload"
+            data-i18n-upload="<% gettext "Upload new image" %>"
+            data-i18n-chooser="<% gettext "Choose existing image" %>"
+            data-ajaxbaseurl="<% site.href %>"
+        >
+            <h2></h2>
+            <span class="separator"><% gettext "or" %></span>
+            <button class="normal small"></button>
+        </div>
+        
+        <!-- Image upload -->
+        <div id="av-imageUploadPane">
+            <div class="row topLabel"> 
+              <label for="file"><% gettext "File" suffix=: %></label> 
+              <% story.upload file %>
+            </div>
+
+            <div class="row topLabel"> 
+              <label for="name"><% gettext "Name" suffix=: %></label> 
+              <% story.input name id="name" style="width: 300px;" %><br/>
+  
+              <small><% gettext "If you do not specify a name Antville will 
+              create one based on the name of the local or remote file, resp." %></small>
+            </div>
+
+            <div class="row topLabel"> 
+              <label for="description"><% gettext Description suffix=: %></label> 
+              <% story.textarea description style="width: 300px;" %>
+            </div>
+
+            <div class="row topLabel"> 
+              <label for="tags"><% gettext Tags suffix=: %></label> 
+              <% story.input tags style="width: 300px;" %>
+            </div>
+
+            <div class="row"> 
+              <label for="maxWidth"><% gettext "Max. width and height" suffix=: %></label>
+              <% story.input maxWidth maxlength="4" size="4" style="text-align: center;" %> x <% story.input maxHeight maxlength="4" size="4" style="text-align: center;" %> pixels
+            </div>
+
+            <div class="row topLabel">
+              <button class="normal small" id="av-ieu-save" name="av-ieu-save" value="1"><% gettext Upload %></button>
+            </div>
+        </div>
+        
+        <!-- Image chooser -->
+        <div id="av-imageChooserPane">
+            <% gettext 'Your last images' suffix=':' %>
+            <div id="av-imageChooserContent"></div>
+        </div>
+    </div>
+</div>

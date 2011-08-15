@@ -49,6 +49,8 @@ Images.prototype.getPermission = function(action) {
       case ".":
       case "main":
       case "create":
+      case "inlineUpload":
+      case "lastImages":
       // FIXME: case "tags":
       return Site.require(Site.OPEN) && session.user || 
             Membership.require(Membership.CONTRIBUTOR) ||
@@ -202,4 +204,50 @@ Images.prototype.mergeImages = function() {
  */
 Images.prototype.getTags = function(group) {
    return this._parent.getTags("galleries", group);
+}
+
+Images.prototype.inlineUpload_action = function() {
+   res.contentType = "application/json";
+   
+   if (req.isPost()) {
+      if (res.handlers.site.getDiskSpace() < 0) {
+         // FIXME
+         return;
+      }
+
+      var image = new Image;
+      image.parent = this._parent;
+      
+      try {
+         image.update(req.postParams);
+         this.add(image);
+         image.notify(req.action);
+         
+         res.write({
+            "success": gettext('The image was successfully added.'),
+            "image": {
+               "name": image.name,
+               "description": image.description,
+               "fileName": image.fileName,
+               "width": image.width,
+               "height": image.height,
+               "thumbnailName": image.thumbnailName,
+               "thumbnailWidth": image.thumbnailWidth,
+               "thumbnailHeight": image.thumbnailHeight
+            }
+         }.toJSON());
+         
+      } catch (ex) {
+         app.log(ex);
+         res.status = 403;
+         res.write(ex.toString());
+      }
+   }
+   
+   return;
+}
+
+Images.prototype.lastImages_action = function() {
+   res.write(renderList(this, "$Image#listItem", 10, 0));
+   return;
 }

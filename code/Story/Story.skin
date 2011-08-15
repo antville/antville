@@ -10,7 +10,7 @@
 <% #edit %>
 <h1 class="storyTitle"><% response.title %></h1>
 <% story.skin $Story#restore %>
-<form method="post" action="<% response.action %>">
+<form method="post" action="<% response.action %>" id="storyEditor" name="storyEditor">
 <div class="form storyEditor" id="av-storyEditor">
 
    <div class="row topLabel">
@@ -20,13 +20,68 @@
 
    <div class="row topLabel">
       <label for="text"><% gettext "Text" suffix=":" %></label>
-      <% story.textarea "text" rows="10" %>
+      <% story.textarea "text" cols="70" %>
+      <p class="readingTime"><% gettext "Reading Time" suffix=":" %> <span id="av-readingTime">0:00</span> min</p>
+      
+      <% story.skin $Story#inEditorUpload %>
+      
       <script>
       $(document).ready(function() {
-          $("textarea#text").growfield({
-          	min: 170,
-          	animate: 100
+          $("#text").autoResize().keydown();
+          $("#text").bind("keydown.readingtime", function(event) {
+              var time = Antville.readingTime($(this));
+              var mins = Math.floor(time / 60);
+              var secs = Math.floor(time % 60);
+              $("#av-readingTime").html(mins + ":" + (secs < 10 ? "0" + secs : secs));
           });
+          
+          // Initialize in-editor file upload, if FormData available
+          if (window.FormData) {
+              $("#av-inEditorUpload").css("display", "block");
+              
+              // HTML5 FormData upload
+              $("#av-ieu-save").bind("click", function(event) {
+                  event.preventDefault();
+                  
+                  // https://developer.mozilla.org/En/Using_XMLHttpRequest#Using_FormData_objects
+                  var fd = new FormData();
+                  fd.append("file_origin", document.getElementById("file_origin").files[0]);
+                  fd.append("name", document.getElementById("name").value);
+                  fd.append("description", document.getElementById("description").value);
+                  fd.append("tags", document.getElementById("tags").value);
+                  fd.append("maxWidth", document.getElementById("maxWidth").value);
+                  fd.append("maxHeight", document.getElementById("maxHeight").value);
+                  
+                  $("#av-inEditorUpload :input").val("");
+                  
+                  $.ajax({
+                    url: $("#av-inEditorSelector").data("ajaxbaseurl") + "images/inlineUpload",
+                    type: "POST",
+                    data: fd,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,   // tell jQuery not to set contentType
+                    success: function (msgObj) {
+                        // '<' + ... prevents Helma's skin parsing!
+                        var macroCode = '<' + '% image "' + msgObj.image.name + '" %>';
+                        window.alert(msgObj.success);
+                        var selection = $("#text").getSelection();
+                        if (selection && selection.start >= 0) {
+                            $("#text").val($("#text").val().substr(0, selection.start) +
+                                macroCode + $("#text").val().substr(selection.start));
+                        }
+                    },
+                    error: function (msgObj) {
+                        if (msgObj.status == 413) {
+                            window.alert("<% gettext "File size is exceeding the upload limit." %>");
+                        } else {
+                            window.alert(msgObj.responseText);
+                        }
+                    }
+                  });
+              });
+          } else {
+              // fallback?
+          }
       });
       </script>
    </div>

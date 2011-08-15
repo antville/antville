@@ -267,7 +267,7 @@ button.vote.normal {
     margin-bottom: 3px;
 }
 
-.form .row.topLabel label:first-child {
+.form .row.topLabel > label:first-child {
     display: block;
     width: 100%;
     margin-bottom: 2px;

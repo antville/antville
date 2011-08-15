@@ -1,305 +1,215 @@
 /*
- * jQuery Growfield Library 2
- *
- * http://code.google.com/p/jquery-dynamic/
- * licensed under the MIT license
- *
- * autor: john kuindji
+ * jQuery autoResize (textarea auto-resizer)
+ * @copyright James Padolsey http://james.padolsey.com
+ * @version 1.04
  */
 
-(function($) {
+(function(a){a.fn.autoResize=function(j){var b=a.extend({onResize:function(){},animate:true,animateDuration:150,animateCallback:function(){},extraSpace:20,limit:1000},j);this.filter('textarea').each(function(){var c=a(this).css({resize:'none','overflow-y':'hidden'}),k=c.height(),f=(function(){var l=['height','width','lineHeight','textDecoration','letterSpacing'],h={};a.each(l,function(d,e){h[e]=c.css(e)});return c.clone().removeAttr('id').removeAttr('name').css({position:'absolute',top:0,left:-9999}).css(h).attr('tabIndex','-1').insertBefore(c)})(),i=null,g=function(){f.height(0).val(a(this).val()).scrollTop(10000);var d=Math.max(f.scrollTop(),k)+b.extraSpace,e=a(this).add(f);if(i===d){return}i=d;if(d>=b.limit){a(this).css('overflow-y','');return}b.onResize.call(this);b.animate&&c.css('display')==='block'?e.stop().animate({height:d},b.animateDuration,b.animateCallback):e.height(d)};c.unbind('.dynSiz').bind('keyup.dynSiz',g).bind('keydown.dynSiz',g).bind('change.dynSiz',g)});return this}})(jQuery);
 
-if ($.support == undefined) $.support = {boxModel: $.boxModel};
-var windowLoaded = false;
-$(window).one('load', function(){ windowLoaded=true; });
+/*
+ * jQuery plugin: fieldSelection - v0.1.0 - last change: 2006-12-16
+ * (c) 2006 Alex Brem <alex@0xab.cd> - http://blog.0xab.cd
+ */
+(function(){var c={getSelection:function(){var e=this.jquery?this[0]:this;return(('selectionStart'in e&&function(){var l=e.selectionEnd-e.selectionStart;return{start:e.selectionStart,end:e.selectionEnd,length:l,text:e.value.substr(e.selectionStart,l)}})||(document.selection&&function(){e.focus();var r=document.selection.createRange();if(r==null){return{start:0,end:e.value.length,length:0}}var a=e.createTextRange();var b=a.duplicate();a.moveToBookmark(r.getBookmark());b.setEndPoint('EndToStart',a);return{start:b.text.length,end:b.text.length+r.text.length,length:r.text.length,text:r.text}})||function(){return{start:0,end:e.value.length,length:0}})()},replaceSelection:function(){var e=this.jquery?this[0]:this;var a=arguments[0]||'';return(('selectionStart'in e&&function(){e.value=e.value.substr(0,e.selectionStart)+a+e.value.substr(e.selectionEnd,e.value.length);return this})||(document.selection&&function(){e.focus();document.selection.createRange().text=a;return this})||function(){e.value+=a;return this})()}};jQuery.each(c,function(i){jQuery.fn[i]=this})})();
 
-// we need to adapt jquery animations for textareas.
-// by default, it changes display to 'block' if we're trying to
-// change width or height. We have to prevent this.
-$.fx.prototype.originalUpdate = $.fx.prototype.update;
-$.fx.prototype.update = false;
-$.fx.prototype.update = function () {
-    if (!this.options.inline) return this.originalUpdate.call(this);
-    if ( this.options.step )
-        this.options.step.call( this.elem, this.now, this );
-        (jQuery.fx.step[this.prop] || jQuery.fx.step._default)( this );
+/**
+ * MD5 (Message-Digest Algorithm)
+ * http://www.webtoolkit.info/
+ */
+jQuery.md5 = function (string) {
+	function RotateLeft(lValue, iShiftBits) {
+		return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
+	}
+
+	function AddUnsigned(lX,lY) {
+		var lX4,lY4,lX8,lY8,lResult;
+		lX8 = (lX & 0x80000000);
+		lY8 = (lY & 0x80000000);
+		lX4 = (lX & 0x40000000);
+		lY4 = (lY & 0x40000000);
+		lResult = (lX & 0x3FFFFFFF)+(lY & 0x3FFFFFFF);
+		if (lX4 & lY4) {
+			return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
+		}
+		if (lX4 | lY4) {
+			if (lResult & 0x40000000) {
+				return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
+			} else {
+				return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
+			}
+		} else {
+			return (lResult ^ lX8 ^ lY8);
+		}
+ 	}
+
+ 	function F(x,y,z) { return (x & y) | ((~x) & z); }
+ 	function G(x,y,z) { return (x & z) | (y & (~z)); }
+ 	function H(x,y,z) { return (x ^ y ^ z); }
+	function I(x,y,z) { return (y ^ (x | (~z))); }
+
+	function FF(a,b,c,d,x,s,ac) {
+		a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
+		return AddUnsigned(RotateLeft(a, s), b);
+	};
+
+	function GG(a,b,c,d,x,s,ac) {
+		a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
+		return AddUnsigned(RotateLeft(a, s), b);
+	};
+
+	function HH(a,b,c,d,x,s,ac) {
+		a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
+		return AddUnsigned(RotateLeft(a, s), b);
+	};
+
+	function II(a,b,c,d,x,s,ac) {
+		a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
+		return AddUnsigned(RotateLeft(a, s), b);
+	};
+
+	function ConvertToWordArray(string) {
+		var lWordCount;
+		var lMessageLength = string.length;
+		var lNumberOfWords_temp1=lMessageLength + 8;
+		var lNumberOfWords_temp2=(lNumberOfWords_temp1-(lNumberOfWords_temp1 % 64))/64;
+		var lNumberOfWords = (lNumberOfWords_temp2+1)*16;
+		var lWordArray=Array(lNumberOfWords-1);
+		var lBytePosition = 0;
+		var lByteCount = 0;
+		while ( lByteCount < lMessageLength ) {
+			lWordCount = (lByteCount-(lByteCount % 4))/4;
+			lBytePosition = (lByteCount % 4)*8;
+			lWordArray[lWordCount] = (lWordArray[lWordCount] | (string.charCodeAt(lByteCount)<<lBytePosition));
+			lByteCount++;
+		}
+		lWordCount = (lByteCount-(lByteCount % 4))/4;
+		lBytePosition = (lByteCount % 4)*8;
+		lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80<<lBytePosition);
+		lWordArray[lNumberOfWords-2] = lMessageLength<<3;
+		lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
+		return lWordArray;
+	};
+
+	function WordToHex(lValue) {
+		var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
+		for (lCount = 0;lCount<=3;lCount++) {
+			lByte = (lValue>>>(lCount*8)) & 255;
+			WordToHexValue_temp = "0" + lByte.toString(16);
+			WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length-2,2);
+		}
+		return WordToHexValue;
+	};
+
+	function Utf8Encode(string) {
+		string = string.replace(/\r\n/g,"\n");
+		var utftext = "";
+
+		for (var n = 0; n < string.length; n++) {
+
+			var c = string.charCodeAt(n);
+
+			if (c < 128) {
+				utftext += String.fromCharCode(c);
+			}
+			else if((c > 127) && (c < 2048)) {
+				utftext += String.fromCharCode((c >> 6) | 192);
+				utftext += String.fromCharCode((c & 63) | 128);
+			}
+			else {
+				utftext += String.fromCharCode((c >> 12) | 224);
+				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+				utftext += String.fromCharCode((c & 63) | 128);
+			}
+
+		}
+
+		return utftext;
+	};
+
+	var x=Array();
+	var k,AA,BB,CC,DD,a,b,c,d;
+	var S11=7, S12=12, S13=17, S14=22;
+	var S21=5, S22=9 , S23=14, S24=20;
+	var S31=4, S32=11, S33=16, S34=23;
+	var S41=6, S42=10, S43=15, S44=21;
+
+	string = Utf8Encode(string);
+
+	x = ConvertToWordArray(string);
+
+	a = 0x67452301; b = 0xEFCDAB89; c = 0x98BADCFE; d = 0x10325476;
+
+	for (k=0;k<x.length;k+=16) {
+		AA=a; BB=b; CC=c; DD=d;
+		a=FF(a,b,c,d,x[k+0], S11,0xD76AA478);
+		d=FF(d,a,b,c,x[k+1], S12,0xE8C7B756);
+		c=FF(c,d,a,b,x[k+2], S13,0x242070DB);
+		b=FF(b,c,d,a,x[k+3], S14,0xC1BDCEEE);
+		a=FF(a,b,c,d,x[k+4], S11,0xF57C0FAF);
+		d=FF(d,a,b,c,x[k+5], S12,0x4787C62A);
+		c=FF(c,d,a,b,x[k+6], S13,0xA8304613);
+		b=FF(b,c,d,a,x[k+7], S14,0xFD469501);
+		a=FF(a,b,c,d,x[k+8], S11,0x698098D8);
+		d=FF(d,a,b,c,x[k+9], S12,0x8B44F7AF);
+		c=FF(c,d,a,b,x[k+10],S13,0xFFFF5BB1);
+		b=FF(b,c,d,a,x[k+11],S14,0x895CD7BE);
+		a=FF(a,b,c,d,x[k+12],S11,0x6B901122);
+		d=FF(d,a,b,c,x[k+13],S12,0xFD987193);
+		c=FF(c,d,a,b,x[k+14],S13,0xA679438E);
+		b=FF(b,c,d,a,x[k+15],S14,0x49B40821);
+		a=GG(a,b,c,d,x[k+1], S21,0xF61E2562);
+		d=GG(d,a,b,c,x[k+6], S22,0xC040B340);
+		c=GG(c,d,a,b,x[k+11],S23,0x265E5A51);
+		b=GG(b,c,d,a,x[k+0], S24,0xE9B6C7AA);
+		a=GG(a,b,c,d,x[k+5], S21,0xD62F105D);
+		d=GG(d,a,b,c,x[k+10],S22,0x2441453);
+		c=GG(c,d,a,b,x[k+15],S23,0xD8A1E681);
+		b=GG(b,c,d,a,x[k+4], S24,0xE7D3FBC8);
+		a=GG(a,b,c,d,x[k+9], S21,0x21E1CDE6);
+		d=GG(d,a,b,c,x[k+14],S22,0xC33707D6);
+		c=GG(c,d,a,b,x[k+3], S23,0xF4D50D87);
+		b=GG(b,c,d,a,x[k+8], S24,0x455A14ED);
+		a=GG(a,b,c,d,x[k+13],S21,0xA9E3E905);
+		d=GG(d,a,b,c,x[k+2], S22,0xFCEFA3F8);
+		c=GG(c,d,a,b,x[k+7], S23,0x676F02D9);
+		b=GG(b,c,d,a,x[k+12],S24,0x8D2A4C8A);
+		a=HH(a,b,c,d,x[k+5], S31,0xFFFA3942);
+		d=HH(d,a,b,c,x[k+8], S32,0x8771F681);
+		c=HH(c,d,a,b,x[k+11],S33,0x6D9D6122);
+		b=HH(b,c,d,a,x[k+14],S34,0xFDE5380C);
+		a=HH(a,b,c,d,x[k+1], S31,0xA4BEEA44);
+		d=HH(d,a,b,c,x[k+4], S32,0x4BDECFA9);
+		c=HH(c,d,a,b,x[k+7], S33,0xF6BB4B60);
+		b=HH(b,c,d,a,x[k+10],S34,0xBEBFBC70);
+		a=HH(a,b,c,d,x[k+13],S31,0x289B7EC6);
+		d=HH(d,a,b,c,x[k+0], S32,0xEAA127FA);
+		c=HH(c,d,a,b,x[k+3], S33,0xD4EF3085);
+		b=HH(b,c,d,a,x[k+6], S34,0x4881D05);
+		a=HH(a,b,c,d,x[k+9], S31,0xD9D4D039);
+		d=HH(d,a,b,c,x[k+12],S32,0xE6DB99E5);
+		c=HH(c,d,a,b,x[k+15],S33,0x1FA27CF8);
+		b=HH(b,c,d,a,x[k+2], S34,0xC4AC5665);
+		a=II(a,b,c,d,x[k+0], S41,0xF4292244);
+		d=II(d,a,b,c,x[k+7], S42,0x432AFF97);
+		c=II(c,d,a,b,x[k+14],S43,0xAB9423A7);
+		b=II(b,c,d,a,x[k+5], S44,0xFC93A039);
+		a=II(a,b,c,d,x[k+12],S41,0x655B59C3);
+		d=II(d,a,b,c,x[k+3], S42,0x8F0CCC92);
+		c=II(c,d,a,b,x[k+10],S43,0xFFEFF47D);
+		b=II(b,c,d,a,x[k+1], S44,0x85845DD1);
+		a=II(a,b,c,d,x[k+8], S41,0x6FA87E4F);
+		d=II(d,a,b,c,x[k+15],S42,0xFE2CE6E0);
+		c=II(c,d,a,b,x[k+6], S43,0xA3014314);
+		b=II(b,c,d,a,x[k+13],S44,0x4E0811A1);
+		a=II(a,b,c,d,x[k+4], S41,0xF7537E82);
+		d=II(d,a,b,c,x[k+11],S42,0xBD3AF235);
+		c=II(c,d,a,b,x[k+2], S43,0x2AD7D2BB);
+		b=II(b,c,d,a,x[k+9], S44,0xEB86D391);
+		a=AddUnsigned(a,AA);
+		b=AddUnsigned(b,BB);
+		c=AddUnsigned(c,CC);
+		d=AddUnsigned(d,DD);
+	}
+	var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
+	return temp.toLowerCase();
 };
-
-var growfield = function(dom) {
-    this.dom = dom;
-    this.o = $(dom);
-
-    this.opt = {
-        auto: true, animate: 100, easing: null,
-        min: false, max: false, restore: false,
-        step: false
-    };
-
-    this.enabled = this.dummy = this.busy =
-    this.initial = this.sizeRelated = this.prevH = this.firstH = false;
-};
-
-growfield.prototype = {
-
-    toggle: function(mode) {
-        if ((mode=='disable' || mode===false)&&this.enabled) return this.setEvents('off');
-        if ((mode=='enable' || mode===true)&&!this.enabled) return this.setEvents('on');
-        return this;
-    },
-
-    setEvents: function(mode) {
-        var o = this.o, opt = this.opt, th = this, initial = false;
-
-        if (mode=='on' && !this.enabled) {
-            var windowLoad = o.height() == 0 ? true : false;
-
-            if (!windowLoad || windowLoaded) $(function() { th.prepareSizeRelated(); });
-            else $(window).one('load', function() {th.prepareSizeRelated(); });
-
-            if (opt.auto) { // auto mode, textarea grows as you type
-
-                o.bind('keyup.growfield', function(e) { th.keyUp(e); return true; });
-                o.bind('focus.growfield', function(e) { th.focus(e); return true; });
-                o.bind('blur.growfield', function(e) { th.blur(e); return true; });
-                initial = {
-                    overflow: o.css('overflow'),
-                    cssResize: o.css('resize')
-                };
-                if ($.browser.safari) o.css('resize', 'none');
-                this.initial = initial;
-                o.css({overflow: 'hidden'});
-
-                // all styles must be loaded before prepare elements
-                if (!windowLoad || windowLoaded) $(function() {
-                    th.createDummy(); });
-                else $(window).one('load', function() { th.createDummy(); });
-
-            } else { // manual mode, textarea grows as you type ctrl + up|down
-                o.bind('keydown.growfield', function(e) { th.manualKeyUp(e); return true; });
-                o.css('overflow-y', 'auto');
-                if (!windowLoad || windowLoaded) $(function() { th.update(o.height());});
-                else $(window).one('load', function() { th.update(o.height()); });
-            }
-            o.addClass('growfield');
-            this.enabled = true;
-        }
-        else if (mode=='off' && this.enabled) {
-            if (this.dummy) {
-                this.dummy.remove();
-                this.dummy = false;
-            }
-            o.unbind('.growfield').css('overflow', this.initial.overflow);
-            if ($.browser.safari) o.css('resize', this.initial.cssResize);
-            this.enabled = false;
-        }
-        return this;
-    },
-
-    setOptions: function(options) {
-        var opt = this.opt, o = this.o;
-        $.extend(opt, options);
-        if (!$.easing) opt.easing = null;
-    },
-
-    update: function(h, animate) {
-        var sr = this.sizeRelated, val = this.o.val(), opt = this.opt, dom = this.dom, o = this.o,
-              th = this, prev = this.prevH;
-        var noHidden = !opt.auto, noFocus = opt.auto;
-
-        h = this.convertHeight(Math.round(h), 'inner');
-        // get the right height according to min and max value
-        h = opt.min > h ? opt.min :
-              opt.max && h > opt.max ? opt.max :
-              opt.auto && !val ? opt.min : h;
-
-        if (opt.max && opt.auto) {
-            if (prev != opt.max && h == opt.max) { // now we reached maximum height
-                o.css('overflow-y', 'scroll');
-                if (!opt.animate) o.focus(); // browsers do loose cursor after changing overflow :(
-                noHidden = true;
-                noFocus = false;
-            }
-            if (prev == opt.max && h < opt.max) {
-                o.css('overflow-y', 'hidden');
-                if (!opt.animate) o.focus();
-                noFocus = false;
-            }
-        }
-
-        if (h == prev) return true;
-        this.prevH = h;
-
-        if (animate) {
-            th.busy = true;
-            o.animate({height: h}, {
-                duration: opt.animate,
-                easing: opt.easing,
-                overflow: null,
-                inline: true, // this option isn't jquery's. I added it by myself, see above
-                complete: function(){
-                    // safari/chrome fix
-                    // somehow textarea turns to overflow:scroll after animation
-                    // i counldn't find it in jquery fx :(, so it looks like some bug
-                    if (!noHidden) o.css('overflow', 'hidden');
-                    // but if we still need to change overflow (due to opt.max option)
-                    // we have to invoke focus() event, otherwise browser will loose cursor
-                    if (!noFocus) o.focus();
-                    th.busy = false;
-                },
-                queue: false
-            });
-        } else dom.style.height = h+'px';
-    },
-
-    manualKeyUp: function(e) {
-        if (!e.ctrlKey) return;
-        if (e.keyCode != 38 && e.keyCode != 40) return;
-        this.update(
-            this.o.outerHeight() + (this.opt.step*( e.keyCode==38? -1: 1)),
-            this.opt.animate
-        );
-    },
-
-    keyUp: function(e) {
-        if (this.busy) return true;
-        if ($.inArray(e.keyCode, [37,38,39,40]) != -1) return true;
-        this.update(this.getDummyHeight(), this.opt.animate);
-    },
-
-    focus: function(e) {
-        if (this.busy) return true;
-        if (this.opt.restore) this.update(this.getDummyHeight(), this.opt.animate);
-    },
-
-    blur: function(e) {
-        if (this.busy) return true;
-        if (this.opt.restore) this.update(0, false);
-    },
-
-    getDummyHeight: function() {
-        var val = this.o.val(), h = 0, sr = this.sizeRelated, add = "\n111\n111";
-
-        // Safari has some defect with double new line symbol at the end
-        // It inserts additional new line even if you have only one
-        // But that't not the point :)
-        // Another question is how much pixels to keep at the bottom of textarea.
-        // We'll kill many rabbits at the same time by adding two new lines at the end
-        if ($.browser.safari) val = val.substring(0, val.length-1); // safari has an additional new line ;(
-
-        if (!sr.lh || !sr.fs) val += add;
-
-        this.dummy.val(val);
-
-        // IE requires to change height value in order to recalculate scrollHeight.
-        // otherwise it stops recalculating scrollHeight after some magical number of pixels
-        if ($.browser.msie) this.dummy[0].style.height = this.dummy[0].scrollHeight+'px';
-
-        h = this.dummy[0].scrollHeight;
-        if (sr.lh && sr.fs) h += sr.lh > sr.fs ? sr.lh+sr.fs :  sr.fs * 2;
-
-        // now we have to minimize dummy back, or we'll get wrong scrollHeight next time
-        if ($.browser.msie) this.dummy[0].style.height = '20px'; // random number
-
-        return h;
-    },
-
-    createDummy: function() {
-        var o = this.o, val = this.o.val();
-        // we need dummy to calculate scrollHeight
-        // (there are some tricks that can't be applied to the textarea itself, otherwise user will see it)
-        // Also, dummy must be a textarea too, and must be placed at the same position in DOM
-        // in order to keep all the inherited styles
-        var dummy = o.clone().addClass('growfieldDummy').attr('name', '').attr('tabindex', -9999)
-                               .css({position: 'absolute', left: -9999, top: 0, height: '20px', resize: 'none'})
-                               .insertBefore(o).show();
-
-        // if there is no initial value, we have to add some text, otherwise textarea will jitter
-        // at the first keydown
-        if (!val) dummy.val('dummy text');
-        this.dummy = dummy;
-        // lets set the initial height
-        this.update(!jQuery.trim(val) ? 0 : this.getDummyHeight(), false);
-    },
-
-    convertHeight: function(h, to) {
-        var sr = this.sizeRelated, mod = (to=='inner' ? -1 : 1), bm = $.support.boxModel;
-        // what we get here in 'h' is scrollHeight value.
-        // so we need to subtract paddings not because of boxModel,
-        // but only if browser includes them to the scroll height (which is not defined by box model)
-        return h
-            + (bm ? sr.bt : 0) * mod
-            + (bm ? sr.bb : 0) * mod
-            + (bm ? sr.pt : 0) * mod
-            + (bm ? sr.pb : 0) * mod;
-    },
-
-    prepareSizeRelated: function() {
-        var o = this.o, opt = this.opt;
-
-        if (!opt.min) {
-            opt.min = parseInt(o.css('min-height'), 10) || this.firstH || parseInt(o.height(), 10) || 20;
-            if (opt.min <= 0) opt.min = 20; // opera fix
-            if (!this.firstH) this.firstH = opt.min;
-        }
-        if (!opt.max) {
-            opt.max = parseInt(o.css('max-height'), 10) || false;
-            if (opt.max <= 0) opt.max = false; // opera fix
-        }
-        if (!opt.step) opt.step = parseInt(o.css('line-height'), 10) || parseInt(o.css('font-size'), 10) || 20;
-
-        var sr = {
-            pt: parseInt(o.css('paddingTop'), 10)||0,
-            pb: parseInt(o.css('paddingBottom'), 10)||0,
-            bt: parseInt(o.css('borderTopWidth'), 10)||0,
-            bb: parseInt(o.css('borderBottomWidth'), 10)||0,
-            lh: parseInt(o.css('lineHeight'), 10) || false,
-            fs: parseInt(o.css('fontSize'), 10) || false
-        };
-
-        this.sizeRelated = sr;
-    }
-};
-
-$.fn.growfield = function(options) {
-    if ('destroy'==options) return this.each(function() {
-        var gf = $(this).data('growfield');
-        if (gf == undefined) return true;
-        gf.toggle(false);
-        $(this).removeData('growfield');
-        return true;
-    });
-    if ('restart'==options) return this.each(function(){
-        var gf = $(this).data('growfield');
-        if (gf == undefined) return true;
-        gf.toggle(false).toggle(true);
-    });
-    var tp = typeof options;
-    return this.each(function() {
-        if (!/textarea/i.test(this.tagName)||$(this).hasClass('growfieldDummy')) return true;
-        var initial = false, o = $(this), gf = o.data('growfield');
-        if (gf == undefined) {
-            initial = true;
-            o.data('growfield', new growfield(this));
-            gf = o.data('growfield');
-        }
-        if (initial) {
-            var opt = $.extend({}, $.fn.growfield.defaults, options);
-            gf.setOptions(opt);
-        }
-        if (!initial && (!options || tp == 'object')) gf.setOptions(options);
-        if (tp == 'string') {
-            if (options.indexOf('!')==0 && $.fn.growfield.presets[options.substr(1)]) o.unbind('.'+i+'.'+options.substr(1));
-            else if ($.fn.growfield.presets[options]) {
-                var pOpt = $.fn.growfield.presets[options];
-                gf.setOptions(pOpt, options);
-            }
-        }
-        if (initial && !opt.skipEnable) gf.toggle(true);
-        if (!initial && (tp == 'boolean' || options=='enable' || options == 'disable')) gf.toggle(options);
-    });
-};
-
-$.fn.growfield.defaults = {};
-$.fn.growfield.presets = {};
-
-})(jQuery);

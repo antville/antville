@@ -523,3 +523,52 @@ article ul li {
     width: 95%;
     resize: none; /* Prevents resize icon for the textarea */
 }
+
+.storyEditor .readingTime {
+    font-size: 10px;
+    text-align: right;
+    width: 95%;
+    padding-left: 14px;
+    color: #909090;
+    margin-top: 4px;
+}
+
+.inEditorUpload {
+    font-size: 13px;
+}
+
+.inEditorUpload .row {
+    margin: 6px 0;
+}
+
+.inEditorUpload input,
+.inEditorUpload textarea {
+    padding: 2px;
+}
+
+.inEditorUpload .av-slideOutContent {
+    padding: 14px;
+    width: 92.8%;
+    border: 1px solid #CCCCCC;
+    background: #fafafa;
+    
+    -webkit-box-shadow: inset 0px 0px 3px 0px #dfdfdf;
+    -moz-box-shadow: inset 0px 0px 3px 0px #dfdfdf;
+    box-shadow: inset 0px 0px 3px 0px #dfdfdf;
+}
+
+.inEditorUpload #av-inEditorSelector {
+    margin-top: 2px;
+    overflow: auto; /* to gain height */
+}
+
+.inEditorUpload #av-inEditorSelector h2,
+.inEditorUpload #av-inEditorSelector button,
+.inEditorUpload #av-inEditorSelector .separator {
+    float: left;
+}
+
+.inEditorUpload .separator {
+    margin: 5px 25px;
+    color: #999;
+}

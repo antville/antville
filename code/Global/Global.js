@@ -34,6 +34,7 @@ app.addRepository("modules/core/Global.js");
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Number.js");
 app.addRepository("modules/core/Filters.js");
+app.addRepository("modules/core/JSON.js");
 
 app.addRepository("modules/helma/Image.js");
 app.addRepository("modules/helma/Html.js");
