@@ -27,13 +27,16 @@
       
       <script>
       $(document).ready(function() {
-          $("#text").autoResize().keydown();
+          // Calculates the reading time for the current editor
           $("#text").bind("keydown.readingtime", function(event) {
               var time = Antville.readingTime($(this));
               var mins = Math.floor(time / 60);
               var secs = Math.floor(time % 60);
               $("#av-readingTime").html(mins + ":" + (secs < 10 ? "0" + secs : secs));
           });
+          
+          // Resize the textarea and update the reading time
+          $("#text").autoResize().keydown();
           
           // Initialize in-editor file upload, if FormData available
           if (window.FormData) {
