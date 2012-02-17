@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,50 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
- * @fileOverview Defindes the Story prototype.
+ * @fileOverview Defines the Story prototype.
  */
+
+markgettext("Story");
+markgettext("story");
+
+this.handleMetadata("title");
+this.handleMetadata("text");
+
+/**
+ * @function
+ * @param {Object} data
+ * @param {Site} site
+ * @param {User} user
+ * @returns {Story}
+ */
+Story.add = function(data, site, user) {
+   site || (site = res.handlers.site);
+   user || (user = session.user);
+   var story = new Story;
+   story.site = site;
+   story.update(data);
+   story.creator = story.modifier = user;
+   site.stories.add(story);
+   return story;
+}
+
+/**
+ * @function
+ */
+Story.remove = function() {
+   if (this.constructor === Story) {
+      HopObject.remove.call(this.comments);
+      this.setTags(null);
+      this.deleteMetadata();
+      this.remove();
+   }
+   return;
+}
 
 /**
  * @function
@@ -48,21 +86,6 @@ Story.getModes = defineConstants(Story, markgettext("hidden"),
 Story.getCommentModes = defineConstants(Story, markgettext("closed"), 
       /* markgettext("readonly"), markgettext("moderated"), */ 
       markgettext("open"));
-
-/**
- * 
- */
-Story.remove = function() {
-   if (this.constructor === Story) {
-      HopObject.remove.call(this.comments);
-      this.setTags(null);
-      this.remove();
-   }
-   return;
-}
-
-this.handleMetadata("title");
-this.handleMetadata("text");
 
 /**
  * @name Story
@@ -94,7 +117,6 @@ Story.prototype.constructor = function() {
    this.status = Story.PUBLIC;
    this.mode = Story.FEATURED;
    this.commentMode = Story.OPEN;
-   this.creator = this.modifier = session.user;
    this.created = this.modified = new Date;
    return this;
 }
@@ -197,8 +219,7 @@ Story.prototype.update = function(data) {
    }
    if (data.created) {
       try {
-         this.created = data.created.toDate(SHORTDATEFORMAT, 
-               site.getTimeZone());
+         this.created = data.created.toDate("yyyy-MM-dd HH:mm", site.getTimeZone());
       } catch (ex) {
          throw Error(gettext("Cannot parse timestamp {0} as a date.", data.created));
          app.log(ex);
@@ -212,7 +233,7 @@ Story.prototype.update = function(data) {
    this.status = data.status || Story.PUBLIC;
    this.mode = data.mode || Story.FEATURED;
    this.commentMode = data.commentMode || Story.OPEN;
-   this.setMetadata(data);
+   this.setCustomContent(data);
 
    // FIXME: To be removed resp. moved to Stories.create_action and 
    // Story.edit_action if work-around for Helma bug #607 fails
@@ -297,7 +318,7 @@ Story.prototype.getFormValue = function(name) {
       case "tags":
       return this.getTags().join(Tag.DELIMITER);
    }
-   return this[name];
+   return this[name] || this.getMetadata(name);
 }
 
 /**
@@ -321,25 +342,25 @@ Story.prototype.getFormOptions = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
-Story.prototype.setMetadata = function(data) {
-   var name;
+Story.prototype.setCustomContent = function(data) {
+   var metadata = {};
    for (var key in data) {
-      if (this.isMetadata(key)) {
-         this.metadata.set(key, data[key]);
+      if (this.isCustomContent(key)) {
+         metadata[key] = data[key];
       }
    }
-   return;
+   return HopObject.prototype.setMetadata.call(this, metadata);
 }
 
 /**
  * 
  * @param {String} name
  */
-Story.prototype.isMetadata = function(name) {
-   return this[name] === undefined && name !== "save";
+Story.prototype.isCustomContent = function(key) {
+   return this[key] === undefined && key !== 'save';
 }
 
 /**
@@ -383,8 +404,8 @@ Story.prototype.getDelta = function(data) {
    delta += deltify(data.title, this.title);
    delta += deltify(data.text, this.text);
    for (var key in data) {
-      if (this.isMetadata(key)) {
-         delta += deltify(data[key], this.metadata.get(key))
+      if (this.isCustomContent(key)) {
+         delta += deltify(data[key], this.getMetadata(key))
       }
    }
    // In-between updates (1 hour) get zero delta
@@ -399,7 +420,7 @@ Story.prototype.getDelta = function(data) {
  */
 Story.prototype.getMacroHandler = function(name) {
    if (name === "metadata") {
-      return this.metadata;
+      return this.getMetadata();
    }
    return null;
 }
@@ -435,7 +456,7 @@ Story.prototype.summary_macro = function(param) {
       res.push();
       var content;
       for (var i=1; i<arguments.length; i+=1) {
-         if (content = this.metadata.get("metadata_" + arguments[i])) {
+         if (content = this.getMetadata(arguments[i])) {
             res.write(content);
             res.write(String.SPACE);
          }
@@ -481,6 +502,8 @@ Story.prototype.comments_macro = function(param, mode) {
    } else {
       this.prefetchChildren();
       this.forEach(function() {
+         html.openTag("a", {name: this._id});
+         html.closeTag("a");
          this.renderSkin(this.parent.constructor === Story ? 
                "Comment#main" : "Comment#reply");
       });
@@ -559,8 +582,8 @@ Story.prototype.format_filter = function(value, param, mode) {
          return this.url_filter(stripTags(value), param, mode);
          
          case "quotes":
-         return stripTags(value).replace(/(\"|\')/g, function(str, quotes) {
-            return "&#" + quotes.charCodeAt(0) + ";";
+         return stripTags(value).replace(/(?:\x22|\x27)/g, function(quote) {
+            return "&#" + quote.charCodeAt(0) + ";";
          });
          
          case "image":
@@ -573,7 +596,7 @@ Story.prototype.format_filter = function(value, param, mode) {
          break;
          
          default:
-         value = this.macro_filter(formatParagraphs(value), param);
+         value = this.macro_filter(format(value), param);
          return this.url_filter(value, param);
       }
    }

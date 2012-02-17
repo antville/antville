@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2010 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,13 +19,12 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
- * @fileOverviev
+ * @fileOverview Defines the Importer prototype.
  */
 
 var Importer = {}
@@ -43,17 +44,13 @@ Importer.run = function(site, user) {
             if (category.name !== "http://schemas.google.com/blogger/2008/kind#post") {
                continue;
             }
-            var story = new Story;
-            story.site = site;
-            story.creator = user;
-            story.update({
+            var story = Story.add({
                title: entry.title,
                text: entry.description || entry.contents.get(0).value,
-               created: entry.publishedDate.format(SHORTDATEFORMAT),
+               created: entry.publishedDate.format("yyyy-MM-dd HH:mm"),
                status: Story.CLOSED,
                mode: Story.FEATURED
-            });
-            site.stories.add(story);
+            }, site, user);
          }
          File.remove.call(xml);
       }

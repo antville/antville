@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,11 +22,13 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Comment prototype.
  */
+
+markgettext("Comment");
+markgettext("comment");
 
 /**
  * @see defineConstants
@@ -39,16 +43,29 @@ Comment.remove = function(options) {
    if (this.constructor !== Comment) {
       return;
    }
+   // Remove all comments of this comment’s creator if corresponding option is set
    if (options && options.mode === "user" && options.confirm === "1") {
       var membership = Membership.getByName(this.creator.name, this.site);
-      HopObject.remove.call(membership.comments);
+      // Not using HopObject.remove() because it will comepletely remove all comments
+      membership.comments.forEach(function() {
+         Comment.remove.call(this);
+      })
    } else {
+      // Mark comment as deleted if not already done so or if there are child comments
+      if (this.size() > 0 && this.status !== Comment.DELETED) {
+         this.status = Comment.DELETED;
+         this.deleteMetadata();
+         this.touch();
+         return this.href();
+      }
+      // Completely remove comment and its children otherwise
       while (this.size() > 0) {
          Comment.remove.call(this.get(0));
       }
       // Explicitely remove comment from aggressively cached collections:
       (this.parent || this).removeChild(this);
       this.story.comments.removeChild(this);
+      this.deleteMetadata();
       this.remove();
    }
    return this.parent.href();
@@ -86,6 +103,10 @@ Comment.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
+      if (this.status === Comment.DELETED) {
+         return false;
+      }
+      // Break statement missing here by purpose!
       case "comment":
       return this.site.commentMode === Site.ENABLED &&
             this.story.getPermission(action) && 
@@ -93,15 +114,8 @@ Comment.prototype.getPermission = function(action) {
       case "delete":
       return this.story.getPermission.call(this, "delete");
       case "edit":
-      case "rotate":
-      if (this.status === Comment.DELETED) {
-         if (this.creator !== this.modifier) {
-            return User.require(User.PRIVILEGED);
-         } else {
-            return session.user === this.creator;
-         }
-      }
-      return this.story.getPermission.call(this, "delete");
+      return this.status !== Comment.DELETED &&
+            this.story.getPermission.call(this, "delete");
    }
    return false;
 }
@@ -183,6 +197,11 @@ Comment.prototype.update = function(data) {
  * @returns {String}
  */
 Comment.prototype.getConfirmText = function() {
+   var size = this.size() + 1;
+   if (this.status === Comment.DELETED && size > 1) {
+      return gettext("You are about to delete a comment thread consisting of {0} postings.",
+            size);
+   }
    return gettext("You are about to delete a comment by user {0}.", 
          this.creator.name);
 }
@@ -195,7 +214,7 @@ Comment.prototype.getConfirmText = function() {
 Comment.prototype.getMacroHandler = function(name) {
    if (name === "related") {
       var membership = Membership.getByName(this.creator.name, this.site);
-      if (!membership) {
+      if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
          return {}; // Work-around for issue 88
       }
       return membership.comments;
@@ -220,13 +239,19 @@ Comment.prototype.text_macro = function() {
 }
 
 /**
+ *
+ */
+Comment.prototype.creator_macro = function() {
+   return this.status === Comment.DELETED ? null :
+         HopObject.prototype.creator_macro.apply(this, arguments);
+}
+
+/**
  * 
  */
-Comment.prototype.title_macro = function() {
-   if (this.status !== Comment.DELETED) {
-      res.write(this.title);
-   }
-   return;
+Comment.prototype.modifier_macro = function() {
+   return this.status === Comment.DELETED ? null :
+         HopObject.prototype.modifier_macro.apply(this, arguments);
 }
 
 /**
@@ -236,21 +261,5 @@ Comment.prototype.title_macro = function() {
  * @param {Object} text
  */
 Comment.prototype.link_macro = function(param, action, text) {
-   switch (action) {
-      case "rotate":
-          if (this.status === Comment.DELETED) {
-             text = gettext("Show");
-          } else {
-             text = gettext("Hide");
-          }
-          break;
-   }
    return HopObject.prototype.link_macro.call(this, param, action, text);
-}
-
-Comment.prototype.rotate_action = function() {
-   this.status = this.status === Comment.DELETED ? 
-         Comment.PUBLIC : Comment.DELETED;
-   this.touch();
-   return res.redirect(this.href());
 }

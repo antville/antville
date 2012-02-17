@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -14,17 +16,19 @@
 // distributed under the License is distributed on an ``AS IS'' BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-//
 // limitations under the License.
-// $Revision:3339 $
-// $LastChangedBy:piefke3000 $
-// $LastChangedDate:2007-09-25 00:00:46 +0200 (Tue, 25 Sep 2007) $
-// $URL$
 //
+// $Revision$
+// $Author$
+// $Date$
+// $URL$
 
 /**
  * @fileOverview Defines the Comment prototype.
  */
+
+markgettext("Files");
+markgettext("files");
 
 /**
  * @name Files
@@ -56,17 +60,12 @@ Files.prototype.getPermission = function(action) {
 }
 
 Files.prototype.create_action = function() {
-   if (this._parent.getDiskSpace() < 0) {
-      res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
-      res.redirect(this.href());
-   }
+   File.redirectOnUploadError(this.href(req.action));
+   File.redirectOnExceededQuota(this.href());
 
-   var file = new File;
-   file.site = res.handlers.site;
    if (req.postParams.save) {
       try {
-         file.update(req.postParams);
-         this.add(file);
+         var file = File.add(req.postParams);
          file.notify(req.action);
          res.message = gettext('The file was successfully added.');
          res.redirect(this.href());
@@ -78,7 +77,7 @@ Files.prototype.create_action = function() {
    
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add File");
-   res.data.body = file.renderSkinAsString("$File#edit");
+   res.data.body = (new File).renderSkinAsString("$File#edit");
    this._parent.renderSkin("Site#page");
    return;
 }

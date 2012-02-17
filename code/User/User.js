@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,27 +19,46 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the User prototype.
  */
 
-disableMacro(User, "hash");
-disableMacro(User, "salt");
+markgettext("User");
+markgettext("user");
 
 this.handleMetadata("hash");
 this.handleMetadata("salt");
 this.handleMetadata("url");
+
+disableMacro(User, "hash");
+disableMacro(User, "salt");
 
 /** @constant */
 User.COOKIE = getProperty("userCookie", "antvilleUser");
 
 /** @constant */
 User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
+
+/**
+ * FIXME: Still needs a solution whether and how to remove a user’s sites
+ */
+User.remove = function() {
+   return; // FIXME: Disabled until thoroughly tested
+   if (this.constructor === User) {
+      HopObject.remove.call(this.comments);
+      HopObject.remove.call(this.files);
+      HopObject.remove.call(this.images);
+      //HopObject.remove.call(this.sites);
+      HopObject.remove.call(this.stories);
+      this.deleteMetadata();
+      this.remove();
+   }
+   return;
+}
 
 /**
  * 
@@ -61,7 +82,7 @@ User.getStatus = defineConstants(User, markgettext("Blocked"),
  * @returns {String}
  */
 User.getSalt = function() {
-   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);;
+   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);
    var random = java.security.SecureRandom.getInstance("SHA1PRNG");
    random.nextBytes(salt);
    return Packages.sun.misc.BASE64Encoder().encode(salt);
@@ -74,19 +95,26 @@ User.getSalt = function() {
  * @returns {User}
  */
 User.register = function(data) {
-   var name = stripTags(data.name);
    if (!data.name) {
       throw Error(gettext("Please enter a username."));
-   } else if (data.name.length > 30) {
+   }
+
+   data.name = data.name.trim();
+   if (data.name.length > 30) {
       throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
-   } else if (data.name !== name || NAMEPATTERN.test(name)) {
+   } else if (data.name !== stripTags(data.name) || NAMEPATTERN.test(data.name)) {
       throw Error(gettext("Please avoid special characters or HTML code in the name field."));
-   } else if (name !== root.users.getAccessName(name)) {
+   } else if (data.name !== root.users.getAccessName(data.name)) {
       throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
    }
 
+   data.email && (data.email = data.email.trim());
    if (!validateEmail(data.email)) {
       throw Error(gettext("Please enter a valid e-mail address"));
+   }
+
+   if (User.isBlacklisted(data)) {
+      throw Error("Sequere pecuniam ad meliora.");
    }
 
    // Create hash from password for JavaScript-disabled browsers
@@ -100,9 +128,6 @@ User.register = function(data) {
       data.hash = (data.password + session.data.token).md5();
    }
 
-   if (User.getByName(data.name)) {
-      throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
-   }
    var user = new User(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
    if (root.admins.size() < 1) {
@@ -111,6 +136,52 @@ User.register = function(data) {
    root.users.add(user);
    session.login(user);
    return user;
+}
+
+/**
+ * 
+ * @param {Object} data
+ * @returns {Boolean}
+ */
+User.isBlacklisted = function(data) {
+   var url;
+   var name = encodeURIComponent(data.name);
+   var email = encodeURIComponent(data.email);
+   var ip = encodeURIComponent(data.http_remotehost);
+
+   var key = getProperty("botscout.apikey");
+   if (key) {
+      url = ["http://botscout.com/test/?multi", "&key=", key, "&mail=", email, "&ip=", ip];
+      try {
+         mime = getURL(url.join(String.EMPTY));
+         if (mime && mime.text && mime.text.startsWith("Y")) {
+            return true;
+         }
+      } catch (ex) {
+         app.log("Exception while trying to check blacklist URL " + url);
+         app.log(ex);
+      }
+   }
+   //return false;
+
+   // We only get here if botscout.com does not already blacklist the ip or email address
+   url = ["http://www.stopforumspam.com/api?f=json", "&email=", email];
+   if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) {
+      url.push("&ip=", ip);
+   }
+   try {
+      mime = getURL(url.join(String.EMPTY));
+   } catch (ex) {
+      app.log("Exception while trying to check blacklist URL " + url);
+      app.log(ex);
+   }
+   if (mime && mime.text) {
+      var result = JSON.parse(mime.text);
+      if (result.success) {
+         return !!(result.email.appears || (result.ip && result.ip.appears));
+      }
+   }
+   return false;
 }
 
 /**
@@ -130,7 +201,7 @@ User.autoLogin = function() {
       return;
    }
    var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"),
-         "", "\\.");
+         String.EMPTY, "\\.");
    if ((user.hash + ip).md5() !== hash) {
       return;
    }
@@ -158,15 +229,14 @@ User.login = function(data) {
       digest = ((data.password + user.salt).md5() + session.data.token).md5();
    }
    // Check if login is correct
-   /*if (digest !== user.getDigest(session.data.token)) {
+   if (digest !== user.getDigest(session.data.token)) {
       throw Error(gettext("Unfortunately, your login failed. Maybe a typo?"))
-   }*/
+   }
    if (data.remember) {
       // Set long running cookies for automatic login
       res.setCookie(User.COOKIE, user.name, 365);
-      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), 
-            "", "\\.");
-      res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);   
+      var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), String.EMPTY, "\\.");
+      res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);
    }
    user.touch();
    session.login(user);
@@ -239,6 +309,23 @@ User.getLocation = function() {
 }
 
 /**
+ * Rename a user account.
+ * @param {String} currentName The current name of the user account.
+ * @param {String} newName The desired name of the user account.
+ */
+User.rename = function(currentName, newName) {
+   var user = User.getByName(currentName);
+   if (user) {
+      if (user.name === newName) {
+         return newName;
+      }
+      user.name = root.users.getAccessName(newName);
+      return user.name;
+   }
+   return currentName;
+}
+
+/**
  * A User object represents a login to Antville.
  * @name User
  * @constructor
@@ -260,18 +347,21 @@ User.getLocation = function() {
  * @property {Membership[]} subscriptions
  * @property {String} status
  * @property {Story[]} stories
+ * @property {String} url 
  * @extends HopObject
  */
 User.prototype.constructor = function(data) {
    var now = new Date;
+   // FIXME: Refactor to be able to call constructor w/o arguments; use User.update() instead
    this.map({
-      name: data.name,
-      hash: data.hash,
-      salt: session.data.token,
-      email: data.email,
-      status: User.REGULAR,
       created: now,
-      modified: now
+      email: data.email,
+      hash: data.hash,
+      modified: now,
+      name: data.name,
+      salt: session.data.token,
+      status: User.REGULAR,
+      url: data.url
    });
    return this;
 }
@@ -316,12 +406,15 @@ User.prototype.update = function(data) {
          salt: session.data.token         
       });
    }
-   if (!(this.email = validateEmail(data.email))) {
+   if (!(data.email = validateEmail(data.email))) {
       throw Error(gettext("Please enter a valid e-mail address"));
-   }   
-   if (data.url && !(this.url = validateUrl(data.url))) {
+   }
+   if (data.url && !(data.url = validateUrl(data.url))) {
       throw Error(gettext("Please enter a valid URL"));
    }
+   this.email = data.email;
+   this.url = data.url;
+   this.touch();
    return this;
 }
 

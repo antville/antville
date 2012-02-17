@@ -25,6 +25,9 @@
  * @fileOverview Defines the Skin prototype
  */
 
+markgettext("Skin");
+markgettext("skin");
+
 /**
  * 
  * @param {String} group
@@ -272,25 +275,29 @@ Skin.prototype.getFormValue = function(name) {
  * @returns {String}
  */
 Skin.prototype.getSource = function() {
-   var skinSet = app.getSkinfilesInPath(res.skinpath)[this.prototype];
-   if (skinSet) {
-      var mainSkin = skinSet[this.prototype];
-      if (mainSkin) {
-         var skin = createSkin(mainSkin).getSubskin(this.name);
-         if (skin) {
-            return skin.getSource();
-         }
+   var skin;
+   // FIXME: Maintain skin inheritance by checking if we target the Site skin of root
+   if (res.handlers.site === root && this.prototype === "Site") {
+      skin = this.getSubskin("Root");
+      if (skin) {
+         return skin.getSource();
       }
    }
-   return null; //String.EMPTY;
+   skin = this.getSubskin();
+   if (skin) {
+      return skin.getSource();
+   }
+   return null;
 }
 
 /**
- * 
+ *
  * @param {String} source
  */
 Skin.prototype.setSource = function(source) {
-   var skin = this.getMainSkin();
+   // FIXME: Maintain skin inheritance by checking if we target the Site skin of root
+   var prototype = (res.handlers.site === root && this.prototype === "Site") ? "Root" : this.prototype;
+   var skin = this.getMainSkin(prototype);
    if (!skin) {
       return;
    }
@@ -332,17 +339,36 @@ Skin.prototype.setSource = function(source) {
  * @returns {java.io.File}
  */
 Skin.prototype.getStaticFile = function() {
-   return new java.io.File(res.skinpath[0], this.prototype + "/" + 
-         this.prototype + ".skin");
+   // FIXME: Maintain skin inheritance by checking if we target the Site skin of root
+   var prototype = (res.handlers.site === root && this.prototype === "Site") ? "Root" : this.prototype;
+   return new java.io.File(res.skinpath[0], prototype + "/" + this.prototype + ".skin");
 }
 
 /**
+ * @param {String} prototype 
  * @returns {Skin}
  */
-Skin.prototype.getMainSkin = function() {
-   var skinSet = app.getSkinfilesInPath(res.skinpath)[this.prototype];
-   if (skinSet && skinSet[this.prototype]) {
-      return createSkin(skinSet[this.prototype]);
+Skin.prototype.getMainSkin = function(prototype) {
+   var source, skinSet = app.getSkinfilesInPath(res.skinpath)[prototype || this.prototype];
+   if (skinSet) {
+      source = skinSet[this.prototype];
+      if (source !== null) {
+         return createSkin(source);
+      }
+   }
+   return null;
+}
+
+/**
+ *
+ * @param prototype
+ * @param name
+ * @returns {Skin}
+ */
+Skin.prototype.getSubskin = function(prototype, name) {
+   var mainSkin = this.getMainSkin(prototype);
+   if (mainSkin) {
+      return mainSkin.getSubskin(name || this.name);
    }
    return null;
 }

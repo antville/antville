@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Sch\u00e4fer.
+//
+// Copyright 2001\u20132007 Robert Gaggl, Hannes Walln\u00f6fer, Tobi Sch\u00e4fer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,13 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Methods that implement Movable Type's XML-RPC API.
- * See http://www.sixapart.com/developers/xmlrpc/movable_type_api for details.
+ * See http://www.sixapart.com/pronet/breese/xmlrpc/movable_type_api/ for details.
  */
 
 /** @namespace */
@@ -121,7 +122,7 @@ Api.mt.getPostCategories = function(id, name, password) {
    return result;
 }
 
-// FIXME: What kind of stupid API is this?
+// FIXME: How do I post a new story?
 /**
  * 
  * @param {Number} id

@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Sch\u00e4fer.
+//
+// Copyright 2001\u20132007 Robert Gaggl, Hannes Walln\u00f6fer, Tobi Sch\u00e4fer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,13 +19,12 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
- * @fileOverview Methods that implement Blogger's XML-RPC API.
+ * @fileOverview Methods that implement the MetaWeblog XML-RPC API.
  * See http://www.xmlrpc.com/metaWeblogApi for further details.
  */
 
@@ -50,7 +51,8 @@ Api.metaWeblog._getStruct = function(story) {
       mt_allow_comments: story.commentMode === Story.OPEN ? 1 : 0,
       mt_allow_pings: 0,
       mt_convert_breaks: null,
-      mt_keywords: null
+      mt_keywords: null,
+      postSource: story.getMetadata('postSource')
    }
 }
 
@@ -120,19 +122,17 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
       throw Error("Permission denied for user " + user.name + 
             " to add a post to site " + site.name);
    }
-   
-   var story = new Story;
-   story.site = site;
-   story.creator = user;
-   story.update({
+
+   var story = Story.add({
       title: content.title,
       text: content.description,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: content.flNotOnHomePage ? Story.HIDDEN : Story.FEATURED,
       commentMode: content.discussions === 0 ? Story.CLOSED : Story.OPEN,
       tags: content.categories
-   });
-   site.stories.add(story);
+   }, site, user);
+
+   story.setMetadata('postSource', content.postSource);
    return story._id;
 }
 
@@ -165,6 +165,8 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
             Story.OPEN : Story.CLOSED,
       tags: content.categories
    });
+
+   story.setMetadata('postSource', content.postSource);
    return true;
 }
 
@@ -223,13 +225,14 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
       data.file = new Packages.helma.util.MimePart(media.name, 
             media.bits, media.type);
       data.file_origin = media.name;
-      data.description = media.description;   
-      var image = new Image;
-      image.site = site;
-      image.creator = user;
-      image.update(data);
-      site.images.add(image);
-      result.url = image.getUrl();
+      data.description = media.description;
+      if (media.maxWidth) {
+          data.maxWidth = media.maxWidth;
+      }
+      if (media.maxHeight) {
+          data.maxHeight = media.maxHeight;
+      }
+      result.url = Image.add(data, site, user).getUrl();
    } else {
       if (!site.files.getPermission("create")) {
          throw Error("Permission denied for user " + user.name + 
@@ -239,12 +242,7 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
             media.bits, media.type);
       data.file_origin = media.name;
       data.description = media.description;
-      var file = new File;
-      file.site = site;
-      file.creator = file.modifier = user;
-      file.update(data);
-      site.files.add(file);
-      result.url = file.getUrl();
+      result.url = File.add(data, site, user).getUrl();
    }
    
    return result;

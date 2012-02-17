@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,10 +19,9 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the extensions of Helma’s built-in 
@@ -259,8 +260,8 @@ HopObject.prototype.notify = function(action) {
    site.members.forEach(function() {
       var membership = res.handlers.membership = this;
       if (getPermission(root.notificationScope, site.notificationMode, site.status)) {
-         sendMail(membership.creator.email, gettext("Notification of changes at site {0}", 
-               site.title), self.renderSkinAsString("$HopObject#notify_" + action));
+         sendMail(membership.creator.email, gettext("[{0}] Notification of site changes", 
+               root.title), self.renderSkinAsString("$HopObject#notify_" + action));
       }
    });
    res.handlers.membership = currentMembership;
@@ -643,25 +644,4 @@ HopObject.prototype.link_filter = function(text, param, action) {
    res.push();
    renderLink(param, action, text, this);
    return res.pop();
-}
-
-/**
- * 
- * @param {String} name
- */
-HopObject.prototype.handleMetadata = function(name) {
-   this.__defineGetter__(name, function() {
-      return this.metadata.get(name);
-   });
-   this.__defineSetter__(name, function(value) {
-      return this.metadata.set(name, value);
-   });
-   this[name + "_macro"] = function(param) {
-      var value;
-      if (value = this[name]) {
-         res.write(value);
-      }
-      return;
-   };
-   return;
 }

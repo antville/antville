@@ -2,7 +2,10 @@
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Sch\u00e4fer.
+//
+// Copyright 2001\u20132007 Robert Gaggl, Hannes Walln\u00f6fer, Tobi Sch\u00e4fer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,15 +19,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision: 3539 $
-// $LastChangedBy: piefke3000 $
-// $LastChangedDate: 2008-05-05 02:35:28 +0200 (Mon, 05 May 2008) $
-// $URL: https://antville.googlecode.com/svn/trunk/code/Api/Api.blogger.js $
-//
+// $Revision$
+// $Author$
+// $Date$
+// $URL$
 
 /**
  * @fileOverview Methods that implement Blogger's XML-RPC API.
- * See http://www.blogger.com/developers/api/1_docs/ for further details.
+ * See http://goo.gl/u8lZZ for further details.
  * The blogger.getTemplate and blogger.setTemplate methods are not supported
  */
 
@@ -184,16 +186,14 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    }
 
    var parts = Api.blogger._getContentParts(content);
-   var story = new Story;
-   story.site = site;
-   story.creator = user;
-   story.update({
+
+   var story = Story.add({
       title: parts.title,
       text: parts.text,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: Story.FEATURED
-   });
-   site.stories.add(story);
+   }, site, user);
+
    return story._id;
 }
 

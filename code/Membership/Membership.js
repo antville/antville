@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,16 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Membership prototype
  */
+
+markgettext("Membership");
+markgettext("membership");
 
 /**
  * 
@@ -73,7 +77,7 @@ Membership.remove = function(options) {
    this.remove();
    if (!options.force) {
       this.notify(req.action, recipient,  
-            gettext("Notification of membership cancellation"));
+            gettext("[{0}] Notification of membership cancellation", root.title));
    }
    return;
 }
@@ -177,7 +181,7 @@ Membership.prototype.update = function(data) {
       this.role = data.role || Membership.SUBSCRIBER;
       this.touch();
       this.notify(req.action, this.creator.email, 
-            gettext("Notification of membership change"));
+            gettext("[{0}] Notification of membership change", root.title));
    }
    return;
 }
@@ -188,11 +192,15 @@ Membership.prototype.contact_action = function() {
          if (!req.postParams.text) {
             throw Error(gettext("Please enter the message text."));
          }
-         this.notify(req.action, this.creator.email, 
-               gettext('Message from user {0} of {1}', 
-               session.user.name, root.title));
+         Feature.invoke("recaptcha", function() {
+            return this.verify(req.postParams);
+         });
+         this.notify(req.action, this.creator.email, session.user ?
+               gettext('[{0}] Message from user {1}', root.title, session.user.name) :
+               gettext('[{0}] Message from anonymous user', root.title));
          res.message = gettext("Your message was sent successfully.");
-         res.redirect(this._parent.href());
+         res.redirect(this._parent.getPermission() ? 
+               this._parent.href() : this.site.href());
       } catch(ex) {
          res.message = ex;
          app.log(ex);
@@ -257,7 +265,9 @@ Membership.prototype.notify = function(action, recipient, subject) {
       case "edit":
       case "register":
       res.handlers.sender = User.getMembership();
-      sendMail(recipient, subject, this.renderSkinAsString("$Membership#notify_" + action));
+      sendMail(recipient, subject, this.renderSkinAsString("$Membership#notify_" + action),
+            {footer: action !== "contact"});
+      break;
    }
    return;
 }
@@ -282,15 +292,6 @@ Membership.prototype.toString = function() {
  * @see #toString
  */
 Membership.prototype.valueOf = Membership.prototype.toString;
-
-/**
- * @deprecated
- * @param {Object} param
- * @throws {Error}
- */
-Membership.prototype.email_macro = function(param) {
-   throw Error(gettext("Due to privacy reasons the display of e-mail addresses is disabled."));
-}
 
 /**
  * 

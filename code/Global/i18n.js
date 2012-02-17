@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,12 +22,44 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Contains redefined or additional methods for 
  * internationalization and localization.
  */
+
+/**
+ * This method is called from the build script to extract gettext call strings 
+ * from scripts and skins.
+ * @param {String} script
+ * @param {String} scanDirs
+ * @param {String} potFile
+ */
+Root.prototype.extractMessages = function(script, scanDirs, potFile) {
+   var temp = {print: global.print, readFile: global.readFile};
+   global.print = function(str) {app.log(str);}
+   global.readFile = function(fpath, encoding) {
+      res.push();
+      var file = new helma.File(fpath);
+      file.open({charset: encoding || "UTF-8"});
+      var str;
+      while ((str = file.readln()) !== null) {
+         res.writeln(str);
+      }
+      file.close();
+      return res.pop();
+   }
+   var args = ["-o", potFile, "-e", "utf-8"];
+   for each (var dir in scanDirs.split(" ")) {
+      args.push(app.dir + "/../" + dir);
+   }
+   var file = new helma.File(script);
+   var MessageParser = new Function(file.readAll());
+   MessageParser.apply(global, args);
+   global.print = temp.print;
+   global.readFile = temp.readFile;
+   return;
+}
 
 /**
  * This method is useful for disambiguation of messages (single words most of
@@ -62,8 +96,8 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
    if (!text) {
       return;
    }
-   var re = /(\s*)(?:\r|\n)\s*/g;
-   var args = [text.replace(re, "$1")];
+   var re = gettext_macro.REGEX;
+   var args = [text.replace(re, String.SPACE)];
    for (var i=2; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
@@ -72,6 +106,12 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
    }
    return gettext.apply(this, args);
 }
+
+/**
+ * The regular expression used to reduce multiple whitespace characters.
+ * @constant
+ */
+gettext_macro.REGEX = /\s+/g;
 
 /**
  * 
@@ -85,8 +125,8 @@ function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
    if (!singular || !plural) {
       return;
    }
-   var re = /(\s*)(?:\r|\n)\s*/g;
-   var args = [singular.replace(re, "$1"), plural.replace(re, "$1")];
+   var re = gettext_macro.REGEX;
+   var args = [singular.replace(re, String.SPACE), plural.replace(re, String.SPACE)];
    for (var i=3; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }

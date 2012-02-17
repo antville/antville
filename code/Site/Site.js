@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,16 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Site prototype.
  */
+
+markgettext("Site");
+markgettext("site");
 
 this.handleMetadata("archiveMode");
 this.handleMetadata("callbackMode");
@@ -37,12 +41,10 @@ this.handleMetadata("export_id");
 this.handleMetadata("import_id");
 this.handleMetadata("job");
 this.handleMetadata("locale");
-this.handleMetadata("longDateFormat");
 this.handleMetadata("notificationMode");
 this.handleMetadata("notified");
 this.handleMetadata("pageSize");
 this.handleMetadata("pageMode");
-this.handleMetadata("shortDateFormat");
 this.handleMetadata("spamfilter");
 this.handleMetadata("tagline");
 this.handleMetadata("timeZone");
@@ -122,6 +124,7 @@ Site.remove = function() {
       } else {
          Layout.remove.call(this.layout, {force: true});
          this.getStaticFile().removeDirectory();
+         this.deleteMetadata();
          this.remove();
       }
    }
@@ -168,7 +171,6 @@ Site.require = function(mode) {
  * @property {String} job
  * @property {Layout} layout
  * @property {String} locale The place and language settings of a site
- * @property {String} longDateFormat The long date format string
  * @property {Members} members
  * @property {Metadata} metadata
  * @property {String} mode The access level of a site
@@ -180,7 +182,6 @@ Site.require = function(mode) {
  * @property {String} pageMode The way stories of a site are displayed
  * @property {Number} pageSize The amount of stories to be displayed simultaneously
  * @property {Polls} polls
- * @property {String} shortDateFormat The short date format string
  * @property {String} status The trust level of a site
  * @property {Stories} stories
  * @property {String} tagline An arbitrary text describing a site
@@ -209,9 +210,7 @@ Site.prototype.constructor = function(name, title) {
       pageMode: Site.DAYS,
       pageSize: 3,
       locale: root.getLocale().toString(),
-      timeZone: root.getTimeZone().getID(),
-      longDateFormat: LONGDATEFORMAT,
-      shortDateFormat: SHORTDATEFORMAT
+      timeZone: root.getTimeZone().getID()
    });
 
    return this;
@@ -230,7 +229,6 @@ Site.prototype.getPermission = function(action) {
       case "error":
       case "notfound":
       case "robots.txt":
-      case "search":
       case "search.xml":
       case "user.js":
       return true;
@@ -240,6 +238,7 @@ Site.prototype.getPermission = function(action) {
       case "comments.xml":
       case "rss.xml":
       case "rss.xsl":
+      case "search":
       case "stories.xml":
       return Site.require(Site.PUBLIC) ||
             (Site.require(Site.RESTRICTED) && 
@@ -256,6 +255,7 @@ Site.prototype.getPermission = function(action) {
 
       case "subscribe":
       return Site.require(Site.PUBLIC) &&
+            User.require(User.REGULAR) &&
             !Membership.require(Membership.SUBSCRIBER);
 
       case "unsubscribe":
@@ -267,7 +267,8 @@ Site.prototype.getPermission = function(action) {
       case "import":
       return User.require(User.PRIVILEGED);
    }
-   return false;
+
+   return Feature.getPermission.apply(this, arguments);
 }
 
 Site.prototype.main_action = function() {
@@ -313,8 +314,6 @@ Site.prototype.getFormOptions = function(name) {
       return getLocales(this.getLocale());
       case "layout":
       return this.getLayouts();
-      case "longDateFormat":
-      return getDateFormats("long", this.getLocale());
       case "mode":
       return Site.getModes();
       case "notificationMode":
@@ -323,8 +322,6 @@ Site.prototype.getFormOptions = function(name) {
       return Site.getPageModes();
       case "status":
       return Site.getStatus();
-      case "shortDateFormat":
-      return getDateFormats("short", this.getLocale());
       case "timeZone":
       return getTimeZones(this.getLocale());
       case "callbackMode":
@@ -360,6 +357,10 @@ Site.prototype.update = function(data) {
    
    if (this.mode !== Site.DELETED && data.mode === Site.DELETED) {
       this.deleted = new Date;
+   } else if (this.job && this.mode === Site.DELETED && data.mode !== Site.DELETED) {
+      var job = new Admin.Job(this.job);
+      job.remove();
+      this.job = null;
    }
 
    this.map({
@@ -374,8 +375,6 @@ Site.prototype.update = function(data) {
       archiveMode: data.archiveMode || Site.CLOSED,
       notificationMode: data.notificationMode || Site.DISABLED,
       timeZone: data.timeZone,
-      longDateFormat: data.longDateFormat,
-      shortDateFormat: data.shortDateFormat,
       locale: data.locale,
       spamfilter: data.spamfilter
    });
@@ -388,7 +387,7 @@ Site.prototype.update = function(data) {
 
 Site.prototype.main_css_action = function() {
    res.contentType = "text/css";
-   res.dependsOn(Root.VERSION);
+   res.dependsOn(String(Root.VERSION));
    res.dependsOn(this.layout.modified);
    res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
    res.digest();
@@ -399,12 +398,11 @@ Site.prototype.main_css_action = function() {
 
 Site.prototype.main_js_action = function() {
    res.contentType = "text/javascript";
-   res.dependsOn(Root.VERSION);
+   res.dependsOn(String(Root.VERSION));
    res.digest();
    this.renderSkin("$Site#include", 
-         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"});
-   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.2.js")});
-   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville-1.4-jquery.plugins.js")});
+         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"});
+   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville.js?v=1.3")});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;
 }
@@ -425,7 +423,7 @@ Site.prototype.backup_js_action = function() {
       }
    } else {
       res.contentType = "text/javascript";
-      res.write(session.data.backup.toSource());
+      res.write((session.data.backup || {}).toSource());
       session.data.backup = null;
    }
    return;
@@ -456,16 +454,8 @@ Site.prototype.comments_xml_action = function() {
 }
 
 Site.prototype.search_xml_action = function() {
-   return; // FIXME
    res.contentType = "application/opensearchdescription+xml";
-   res.write(<OpenSearchDescription xmlns="http://antville.org/">
-      	<ShortName>Antville Search</ShortName>
-      	<Description>Search on Antville</Description>
-      	<Tags>antville search</Tags>
-      	<Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.youtube.com/favicon.ico</Image>
-      	<Url type="text/html" template="http://antville.org/search?q={searchTerms}" />
-      	<Query role="example" searchTerms="cat" />
-         </OpenSearchDescription>);
+   this.renderSkin("$Site#opensearchdescription");
    return;   
 }
 
@@ -506,7 +496,7 @@ Site.prototype.getXml = function(collection) {
          collection : collection.list(0, 25);
    for each (var item in list) {
       entry = new rome.SyndEntryImpl();
-      item.title && entry.setTitle(item.title);
+      entry.setTitle(item.title || formatDate(item.created, "date"));
       entry.setLink(item.href());
       entry.setAuthor(item.creator.name);
       entry.setPublishedDate(item.created);
@@ -567,12 +557,12 @@ Site.prototype.referrers_action = function() {
    if (req.data.permanent && this.getPermission("edit"))  {
       var urls = req.data.permanent_array;
       res.push();
-      res.write(this.metadata.get("spamfilter"));
+      res.write(this.getMetadata("spamfilter"));
       for (var i in urls) {
          res.write("\n");
          res.write(urls[i].replace(/\?/g, "\\\\?"));
       }
-      this.metadata.set("spamfilter", res.pop());
+      this.setMetadata("spamfilter", res.pop());
       res.redirect(this.href(req.action));
       return;
    }
@@ -584,16 +574,14 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
-   var search;
-   if (!(search = req.data.q) || !stripTags(search)) {
+   var term = req.data.q && stripTags(decodeURIComponent(String(req.data.q)));
+   if (!term) {
       res.message = gettext("Please enter a query in the search form.");
       res.data.body = this.renderSkinAsString("Site#search");
    } else {
-      // Prepare search string for metadata: Get source and remove 
-      // '(new String("..."))' wrapper; finally, double all backslashes
-      search = String(search).toSource().slice(13, -3).replace(/(\\)/g, "$1$1");
+      term = term.replace(/(?:\x22|\x27)/g, String.EMPTY); // Remove single and double ticks (aka false quotes)
       var sql = new Sql({quote: false});
-      sql.retrieve(Sql.SEARCH, this._id, search, 50);
+      sql.retrieve(Sql.SEARCH, this._id, term, 50);
       res.push();
       var counter = 0;
       sql.traverse(function() {
@@ -604,8 +592,7 @@ Site.prototype.search_action = function() {
             counter += 1;
          }
       });
-      res.message = ngettext("Found {0} result.", 
-            "Found {0} results.", counter);
+      res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
       res.data.body = res.pop();
    }
    
@@ -678,7 +665,7 @@ Site.prototype.export_action = function() {
 
    var param = {
       status: (job && job.method === "export") ? 
-            gettext("The site is scheduled for export. Exported site data will be available for download from here within 24 hours.") :
+            gettext("A Blogger export file (.xml) will be created and available for download from here within 24 hours.") :
             null
    }
    res.handlers.file = File.getById(this.export_id) || {};
@@ -732,7 +719,7 @@ Site.prototype.import_action = function() {
    return;
 }
 
-Site.prototype.robots_txt_ction = function() {
+Site.prototype.robots_txt_action = function() {
    res.contentType = "text/plain";
    this.renderSkin("Site#robots");
    return;
@@ -787,7 +774,7 @@ Site.prototype.stories_macro = function() {
 Site.prototype.calendar_macro = function(param) {
    if (this.archiveMode !== Site.PUBLIC) {
       return;
-   } 
+   }
    var calendar = new jala.Date.Calendar(this.archive);
    //calendar.setAccessNameFormat("yyyy/MM/dd");
    calendar.setHrefFormat("/yyyy/MM/dd/");
@@ -835,7 +822,7 @@ Site.prototype.referrers_macro = function() {
  * 
  */
 Site.prototype.spamfilter_macro = function() {
-   var str = this.metadata.get("spamfilter");
+   var str = this.getMetadata("spamfilter");
    if (!str) {
       return;
    }
@@ -920,12 +907,15 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-   var scheme = req.servletRequest ? req.servletRequest.scheme : "http";
-   var domain = getProperty("domain." + this.name);
-   if (domain) {
-      href = [scheme, "://", domain, href].join(String.EMPTY);
-   } else if (domain = getProperty("domain.www")) {
-      href = [scheme, "://", domain, "/", this.name, href].join(String.EMPTY);
+   if (["localhost", "127.0.0.1"].indexOf(req.data.http_host) > -1) {
+      var site = app.properties.hrefRootPrototype ? "/" + this.name : String.EMPTY;
+      return [app.appsProperties.mountPoint, site, href].join(String.EMPTY);
+   }
+   var domain, scheme = req.servletRequest ? req.servletRequest.scheme : "http";
+   if (domain = getProperty("domain." + this.name)) {
+      return [scheme, "://", domain, href].join(String.EMPTY);
+   } else if (domain = getProperty("domain.*")) {
+      return [scheme, "://", this.name, ".", domain, href].join(String.EMPTY);
    }
    return href;
 }
@@ -969,12 +959,9 @@ Site.prototype.getTags = function(type, group) {
  * @returns {helma.File}
  */
 Site.prototype.getStaticFile = function(tail) {
-   res.push();
-   res.write(app.properties.staticPath);
-   res.write(this.name);
-   res.write("/");
-   tail && res.write(tail);
-   return new helma.File(res.pop());
+   var fpath = this.name;
+   tail && (fpath += "/" + tail);
+   return new helma.File(app.appsProperties['static'], fpath);
 }
 
 /**
@@ -983,12 +970,17 @@ Site.prototype.getStaticFile = function(tail) {
  * @returns {String}
  */
 Site.prototype.getStaticUrl = function(tail) {
+   // FIXME: This still does not work reliably with the various configuration options...
+   // Also see Images.Default.getStaticUrl() method
    res.push();
-   res.write(app.properties.staticUrl);
+   res.write(app.appsProperties.staticMountpoint);
+   res.write("/");
    res.write(this.name);
    res.write("/");
    tail && res.write(tail);
-   return encodeURI(res.pop());
+   var url = res.pop();
+   // FIXME: Why encodeURI() here?
+   return encodeURI(url);
 }
 
 /**

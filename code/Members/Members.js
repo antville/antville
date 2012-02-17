@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,15 +18,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision:3329 $
-// $LastChangedBy:piefke3000 $
-// $LastChangedDate:2007-09-14 15:18:09 +0200 (Fri, 14 Sep 2007) $
+// $Revision$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Members prototype.
  */
+
+markgettext("Members");
+markgettext("members");
 
 /**
  * @name Members
@@ -48,7 +52,7 @@ Members.prototype.getPermission = function(action) {
       case "logout":
       case "register":
       case "reset":
-      case "salt.js":
+      case "salt.txt":
       return true;
    }
       
@@ -73,7 +77,8 @@ Members.prototype.getPermission = function(action) {
       return Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
    }
-   return false;
+
+   return Feature.getPermission.apply(this, arguments);
 }
 
 Members.prototype.main_action = function() {
@@ -89,17 +94,13 @@ Members.prototype.main_action = function() {
 
 Members.prototype.register_action = function() {
    if (req.postParams.register) {
-      if (req.postParams.activation) {
-         app.log("Detected form submit with completed honeypot field: " + req.data);
-         res.redirect(root.href());
-      }
       try {
          var title = res.handlers.site.title;
          var user = User.register(req.postParams);
          var membership = new Membership(user, Membership.SUBSCRIBER);
          this.add(membership);
          membership.notify(req.action, user.email, 
-               gettext('Welcome to {0}!', title));
+               gettext('[{0}] Welcome to {1}!', root.title, title));
          res.message = gettext('Welcome to “{0}”, {1}. Have fun!',
                title, user.name);
          res.redirect(User.getLocation() || this._parent.href());
@@ -127,9 +128,9 @@ Members.prototype.reset_action = function() {
             throw Error(gettext("User name and e-mail address do not match."))
          }
          var token = User.getSalt();
-         user.metadata.set("resetToken", token);
-         sendMail(user.email, gettext("Confirmation for password reset at {0}", 
-               this._parent.title), user.renderSkinAsString("$User#reset", {
+         user.setMetadata("resetToken", token);
+         sendMail(user.email, gettext("[{0}] Password reset confirmation", root.title),
+               user.renderSkinAsString("$User#notify_reset", {
                   href: this.href("reset"),
                   token: token
                }));
@@ -141,8 +142,8 @@ Members.prototype.reset_action = function() {
    } else if (req.data.user && req.data.token) {
       var user = User.getById(req.data.user);
       if (user) {
-         var token = user.metadata.get("resetToken");
-         if (token) {
+         var token = user.getMetadata("resetToken");
+         if (token && token === req.data.token) {
             session.login(user);
             if (req.postParams.save) {
                var password = req.postParams.password;
@@ -152,7 +153,7 @@ Members.prototype.reset_action = function() {
                   res.message = gettext("The passwords do not match.");
                } else {
                   user.hash = (password + user.salt).md5();
-                  user.metadata.remove("resetToken");
+                  user.setMetadata("resetToken", null);
                   res.message = gettext("Your password was changed.");
                   res.redirect(this._parent.href());
                }
@@ -175,10 +176,6 @@ Members.prototype.reset_action = function() {
 
 Members.prototype.login_action = function() {
    if (req.postParams.login) {
-      if (req.postParams.activation) {
-         app.log("Detected form submit with completed honeypot field: " + req.data);
-         res.redirect(root.href());
-      }
       try {
          var user = User.login(req.postParams);
          res.message = gettext('Welcome to {0}, {1}. Have fun!',
@@ -225,11 +222,11 @@ Members.prototype.edit_action = function() {
    return;
 }
 
-Members.prototype.salt_js_action = function() {
-   res.contentType = "text/javascript";
+Members.prototype.salt_txt_action = function() {
+   res.contentType = "text/plain";
    var user;
    if (user = User.getByName(req.queryParams.user)) {
-      res.write((user.salt || String.EMPTY).toSource());
+      res.write(user.salt || String.EMPTY);
    }
    return;
 }
@@ -336,10 +333,9 @@ Members.prototype.add_action = function() {
       }
    } else if (req.postParams.add) {
       try {
-         res.handlers.sender = User.getMembership();
          var membership = this.addMembership(req.postParams);
          membership.notify(req.action, membership.creator.email,  
-               gettext('Notification of membership change', root.title));
+               gettext('[{0}] Notification of membership change', root.title));
          res.message = gettext("Successfully added {0} to the list of members.", 
                req.postParams.name);
          res.redirect(membership.href("edit"));
@@ -400,66 +396,4 @@ Members.prototype.addMembership = function(data) {
    var membership = new Membership(user, Membership.SUBSCRIBER);
    this.add(membership);
    return membership;
-}
-
-Members.prototype.modSorua_action = function() {
-   if (!app.data.modSorua) app.data.modSorua = new Array();
-   var returnUrl = req.data["sorua-return-url"];
-   var failUrl   = req.data["sorua-fail-url"];
-   var userID    = req.data["sorua-user"];
-   var action    = req.data["sorua-action"];
-   if (action == "authenticate") {    // authenticate-action
-      if (session.user && (userID == null || userID == "" || session.user.name == userID)) {
-         // store returnUrl + timestamp + userID
-         app.data.modSorua[returnUrl] = {time: new Date(), userID: session.user.name}; 
-         res.redirect(returnUrl);
-      } else if (failUrl) {
-         res.redirect(failUrl);
-      } else {
-         session.data.modSorua = {returnUrl: returnUrl,
-                                 userID: userID};
-         res.redirect(this.href("modSoruaLoginForm"));
-      }
-
-   } else if (action == "verify") {
-      // first remove outdated entries
-      var now = new Date();
-      var arr = new Array();
-      for (var i in app.data.modSorua) {
-         if (app.data.modSorua[i] && app.data.modSorua[i].time &&
-            now.valueOf() - app.data.modSorua[i].time.valueOf() < 1000 * 60)
-            arr[i] = app.data.modSorua[i];
-      }
-      app.data.modSorua = arr;
-      // now check whether returnUrl has been used recently
-      if (app.data.modSorua[returnUrl]) {
-         res.status = 200;
-         res.write("user:" + app.data.modSorua[returnUrl].userID);
-         return;
-      } else {
-         res.status = 403;
-         return;
-      }
-
-   } else { // handle wrong call of AuthURI
-     res.redirect(root.href("main"));
-
-   }   
-}
-
-Members.prototype.modSoruaLoginForm_action = function() {
-   if (!session.data.modSorua || !session.data.modSorua.returnUrl) 
-      res.redirect(root.href()); // should not happen anyways
-   if (req.data.login) {
-      try {
-         res.message = this.evalLogin(req.data.name, req.data.password);
-         var returnUrl = session.data.modSorua.returnUrl;
-         app.data.modSorua[returnUrl] = {time: new Date(), userID: req.data.name};
-         res.redirect(returnUrl);
-      } catch (err) {
-         res.message = err.toString();
-      }      
-   }
-   res.data.action = this.href("modSoruaLoginForm");
-   this.renderSkin("modSorua");
 }

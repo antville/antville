@@ -1,3 +1,32 @@
+$(function() {
+   $("a.cancel").click(function(event) {
+      event.preventDefault();
+      history.back();
+   });
+
+   // Group related <option> elements by inserting additional <optgroup> elements:
+   var groups = [],
+         element = $("form#prefs #timeZone");
+   element.find("option").each(function(index, item) {
+      var zone = $(item),
+            parts = zone.html().split("/"), // E.g. Europe/Vienna
+            group = parts[0];
+
+      if ($.inArray(group, groups) < 0) {
+         groups.push(group);
+      }
+   });
+   groups.sort();
+   $.each(groups, function(index, group) {
+      var key = group + "/"; // E.g. Europe/
+      element.find("option:contains(" + key + ")")
+            .wrapAll($("<optgroup>").attr("label", group))
+            .each(function(index, item) {
+               $(item).html($(item).html().replace(key, ""));
+            });
+   });
+});
+
 /*
  * jQuery autoResize (textarea auto-resizer)
  * @copyright James Padolsey http://james.padolsey.com
@@ -11,6 +40,7 @@
  * (c) 2006 Alex Brem <alex@0xab.cd> - http://blog.0xab.cd
  */
 (function(){var c={getSelection:function(){var e=this.jquery?this[0]:this;return(('selectionStart'in e&&function(){var l=e.selectionEnd-e.selectionStart;return{start:e.selectionStart,end:e.selectionEnd,length:l,text:e.value.substr(e.selectionStart,l)}})||(document.selection&&function(){e.focus();var r=document.selection.createRange();if(r==null){return{start:0,end:e.value.length,length:0}}var a=e.createTextRange();var b=a.duplicate();a.moveToBookmark(r.getBookmark());b.setEndPoint('EndToStart',a);return{start:b.text.length,end:b.text.length+r.text.length,length:r.text.length,text:r.text}})||function(){return{start:0,end:e.value.length,length:0}})()},replaceSelection:function(){var e=this.jquery?this[0]:this;var a=arguments[0]||'';return(('selectionStart'in e&&function(){e.value=e.value.substr(0,e.selectionStart)+a+e.value.substr(e.selectionEnd,e.value.length);return this})||(document.selection&&function(){e.focus();document.selection.createRange().text=a;return this})||function(){e.value+=a;return this})()}};jQuery.each(c,function(i){jQuery.fn[i]=this})})();
+
 
 /**
  * MD5 (Message-Digest Algorithm)
@@ -50,22 +80,22 @@ jQuery.md5 = function (string) {
 	function FF(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function GG(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function HH(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function II(a,b,c,d,x,s,ac) {
 		a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
 		return AddUnsigned(RotateLeft(a, s), b);
-	};
+	}
 
 	function ConvertToWordArray(string) {
 		var lWordCount;
@@ -88,7 +118,7 @@ jQuery.md5 = function (string) {
 		lWordArray[lNumberOfWords-2] = lMessageLength<<3;
 		lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
 		return lWordArray;
-	};
+	}
 
 	function WordToHex(lValue) {
 		var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
@@ -98,7 +128,7 @@ jQuery.md5 = function (string) {
 			WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length-2,2);
 		}
 		return WordToHexValue;
-	};
+	}
 
 	function Utf8Encode(string) {
 		string = string.replace(/\r\n/g,"\n");
@@ -124,7 +154,7 @@ jQuery.md5 = function (string) {
 		}
 
 		return utftext;
-	};
+	}
 
 	var x=Array();
 	var k,AA,BB,CC,DD,a,b,c,d;
@@ -212,4 +242,202 @@ jQuery.md5 = function (string) {
 	}
 	var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
 	return temp.toLowerCase();
+}
+
+$(document).ready(function() {
+   $("a.cancel").click(function() {
+      history.back();
+      return false;
+   });
+   
+   $("form #activation").closest("tr").addClass("activation");
+   
+   var group, groups = [];
+   $("form #timeZone option").each(function(index, item) {
+      var zone = $(item);
+      var parts = zone.val().split("/");
+      if (parts.length > 1) {
+         if (parts[0].indexOf("Etc") === 0 || 
+               parts[0].indexOf("SystemV") === 0) {
+            zone.remove();
+            return;
+         }
+         group !== parts[0] && groups.push(group = parts[0]);
+         zone.addClass("group-" + group);
+         zone.text(parts.splice(1).join(", ").replace(/_/g, " "));
+      } else {
+         zone.remove();
+      }
+   });
+   var optgroup = $("<optgroup>");
+   $.each(groups, function(index, item) {
+      $("form #timeZone option.group-" + 
+         item).wrapAll(optgroup.clone().attr("label", item));
+   });
+   
+   if ($(".inEditorUpload").length > 0) {
+      $("#av-imageUploadPane input").bind("keypress", function(event) {
+         return event.keyCode !== 13;
+      })
+      
+      //$(".av-slideOutContent, #av-imageChooserPane, #av-imageUploadPane").hide();
+      $(".av-slideOutContent, #av-imageChooserPane").hide();
+      $(".av-slideOutLabel").bind("click.av-slideOut", function(event) {
+         event.preventDefault();
+         var $slideContent = $(this).siblings(".av-slideOutContent");
+         if ($slideContent.is(":visible")) {
+            $slideContent.slideUp(250, function() {
+               $(".av-slideOutLabel").show();
+            });
+         } else {
+            $(".av-slideOutLabel").hide();
+            $slideContent.slideDown(250);
+         }
+      });
+
+      // Initialize the labels
+      $("#av-inEditorSelector h2").text($("#av-inEditorSelector").data("i18n-upload"));
+      $("#av-inEditorSelector button").text($("#av-inEditorSelector").data("i18n-chooser"));
+
+      $("#av-inEditorSelector button").bind("click", function(event) {
+         event.preventDefault();
+         var inEditorState = $("#av-inEditorSelector").data("state");
+
+         if (inEditorState === "upload") {
+            $("#av-imageChooserContent").load($("#av-inEditorSelector").data("ajaxbaseurl") + "images/lastImages")
+            $("#av-imageChooserContent").html()
+            $("#av-imageUploadPane").hide();
+            $("#av-imageChooserPane").show();
+            $("#av-inEditorSelector").data("state", "chooser");
+
+            $("#av-inEditorSelector h2").text($("#av-inEditorSelector").data("i18n-chooser"));
+            $("#av-inEditorSelector button").text($("#av-inEditorSelector").data("i18n-upload"));
+         } else {
+            $("#av-imageUploadPane").show();
+            $("#av-imageChooserPane").hide();
+            $("#av-inEditorSelector").data("state", "upload");
+
+            $("#av-inEditorSelector h2").text($("#av-inEditorSelector").data("i18n-upload"));
+            $("#av-inEditorSelector button").text($("#av-inEditorSelector").data("i18n-chooser"));
+         }
+
+      });
+
+      /*$("#av-activateImageUploadPane").bind("click", function(event) {
+         event.preventDefault();
+         $("#av-imageUploadPane").show();
+         $("#av-imageChooserPane").hide();
+      });*/
+
+      /**
+       * Disables the inline editor upload fields. They won't be part
+       * of the submitted form's POST request.
+       */
+      $("#storyEditor").bind("submit", function(event) {
+         $("#av-imageUploadPane input, #av-imageUploadPane textarea").prop("disabled", true);
+         return true;
+      });
+   }
+   
+});
+
+Antville = {};
+Antville.prefix = "Antville_";
+
+/**
+ * Returns the reading time for the given textarea DOM element.
+ */ 
+Antville.readingTime = function($textarea) {
+   var wordCount = $textarea.val().split(/\s+/i).length;
+   return (wordCount / 240) * 60;
 };
+
+Antville.encode = function(str) {
+   var chars = ["&", "<", ">", '"'];
+   for (var i in chars) {
+      var c = chars[i];
+      var re = new RegExp(c, "g");
+      str = str.replace(re, "&#" + c.charCodeAt() + ";");
+   }
+   return str;
+};
+
+Antville.decode = function(str) {
+   return str.replace(/&amp;/g, "&");
+};
+
+Antville.Referrer = function(url, text, count) {
+   this.url = url;
+   this.text = text;
+   this.count = count;
+   this.compose = function(key, prefix) {
+      var query = new Antville.Query(this.url);
+      if (query[key]) {
+         if (prefix == null)
+            prefix = "";
+         return prefix + Antville.encode(query[key]);
+      }
+      return this.text;
+   }
+   return this;
+};
+
+Antville.Query = function(str) {
+   if (str == undefined)
+      var str = location.search.substring(1);
+   else if (str.indexOf("?") > -1)
+      var str = str.split("?")[1];
+   if (str == "")
+      return this;
+   var parts = Antville.decode(decodeURIComponent(str)).split("&");
+   for (var i in parts) {
+      var pair = parts[i].split("=");
+      var key = pair[0];
+      if (key) {
+         key = key.replace(/\+/g, " ");
+         var value = pair[1];
+         if (value)
+            value = value.replace(/\+/g, " ");
+         this[key] = value;
+      }
+   }
+   return this;
+};
+
+Antville.Filter = function(def, key) {
+   this.key = key;
+   if (def == null)
+      this.items = [];
+   else if (def instanceof Array)
+      this.items = def;
+   else
+      this.items = def.replace(/\r/g, "\n").split("\n");
+   this.test = function(str) {
+      if (!str)
+         return false;
+      str = str.replace(/&amp;/g, "&");
+      for (var n in this.items) {
+         var re = new RegExp(this.items[n], "i");
+         if (re.test(str))
+            return true;
+      }
+      return false;
+   }
+   return this;
+};
+
+var app = {
+   clearCache: function() {
+      $.ajax({
+         async: true,
+         type: "POST",
+         url: '/helma/antville/debug',
+         data: "action=clearCache",
+         cache: false,
+         error: function() { /* ... */ },
+         success: function(str) {
+            //console.log(str);
+         }
+      });
+   }
+}

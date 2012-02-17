@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -16,15 +18,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// $Revision:3337 $
-// $LastChangedBy:piefke3000 $
-// $LastChangedDate:2007-09-21 15:54:30 +0200 (Fri, 21 Sep 2007) $
+// $Revision$
+// $LastChangedBy$
+// $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Skins prototype.
  */
+
+markgettext("Skins");
+markgettext("skins");
 
 /**
  * @name Skins
@@ -166,32 +170,20 @@ Skins.prototype.getSkin = function(group, name) {
 
 /**
  * 
- * @param {String} type
  * @returns {String}
  */
-Skins.prototype.getOutline = function(type) {
-   var key = "outline:" + type;
-   var outline = this.cache[key];
-   if (outline) {
-      return outline;
-   }
-
-   var prototype, skin, subskins, names, skins = [];
+Skins.prototype.getOutline = function() {
+   var skinfiles, prototype, skin, subskins, names, skins = [];
    var options = Skin.getPrototypeOptions();
 
    for each (var option in options) {
-      prototype = option.value;
       names = [];
-      for (var name in app.skinfiles[prototype]) {
-         if (name === prototype && type !== "custom") {
-            skin = createSkin(app.skinfiles[prototype][name]);
-            subskins = skin.getSubskinNames();
-            for each (var subskin in subskins) {
-               names.push(subskin);
-            }
-         } else if (name !== prototype && type === "custom") {
-            names.push(name);
-         }
+      prototype = option.value;
+      skinfiles = app.getSkinfilesInPath(res.skinpath);
+      skin = createSkin(skinfiles[prototype][prototype]);
+      subskins = skin.getSubskinNames();
+      for each (var subskin in subskins) {
+         names.push(subskin);
       }
       names.sort();
       skins.push([prototype, names]);
@@ -218,5 +210,5 @@ Skins.prototype.getOutline = function(type) {
          html.closeTag("li");
       }
    }
-   return this.cache[key] = res.pop();
+   return res.pop();
 }

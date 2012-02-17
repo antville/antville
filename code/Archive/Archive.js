@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Sch\u00e4fer.
+//
+// Copyright 2001\u20132007 Robert Gaggl, Hannes Walln\u00f6fer, Tobi Sch\u00e4fer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,10 +19,9 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Archive prototype.
@@ -85,7 +86,25 @@ Archive.prototype.getPermission = function(action) {
 }
 
 Archive.prototype.main_action = function() {
-   res.data.title = gettext("Story Archive");
+   var date = this.getDate();
+   var dateString = String.EMPTY;
+   switch (path.length - (this.type === Archive.PAGER ? 4 : 3)) {
+      case 1:
+      dateString = formatDate(date, "yyyy");
+      break;
+      case 2:
+      dateString = formatDate(date, "MMM yyyy");
+      break;
+      case 3:
+      var type = java.text.DateFormat.LONG;
+      var locale = res.handlers.site.getLocale();
+      var pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern()
+      dateString = formatDate(date, pattern);
+      break;
+   }
+   var page = gettext("Page {0} of {1}", this.getPage(), 
+            Math.ceil(this.getSize() / this.getPageSize()));
+   res.data.title = gettext("Story Archive {0} ({1})", dateString, page);
    res.data.body = this.renderSkinAsString("Archive#main");
    res.handlers.site.renderSkin("Site#page");
    res.handlers.site.log();
@@ -148,6 +167,16 @@ Archive.prototype.stories_macro = function() {
    var page = this.getPage();
    var pageSize = this.getPageSize();
   
+   var renderStory = function(story) {
+      storyDay = story.created.getDate();
+      if (day !== storyDay) {
+         story.renderSkin("Story#date");
+         day = storyDay;
+      }
+      story.renderSkin("Story#preview");
+      return;
+   }
+
    // FIXME: This is a little bit inconsistent and thus needs special care
    var archive = this.type === Archive.PAGER ? this.parent : this;
    if (!archive.parent) {
@@ -155,7 +184,7 @@ Archive.prototype.stories_macro = function() {
       var offset = (page - 1) * pageSize;
       var stories = site.stories.featured.list(offset, pageSize);
       for each (var story in stories) {
-         story.renderSkin("Story#preview");
+         renderStory(story);
       };
       return;
    }

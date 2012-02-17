@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Sql prototype, a utility for relational queries
@@ -107,6 +108,9 @@ var Sql = function(options) {
    this.execute = function(sql) {
       sql = resolve(arguments);
       log.info(sql);
+      if (options.test) {
+         return app.log(sql);
+      }
       var error;
       var result = db.executeCommand(sql);
       if (error = db.getLastError()) {
@@ -132,7 +136,9 @@ var Sql = function(options) {
          do {
             var sql = new SqlData(rows);
             sql.next();
-            callback.call(sql.values, rows);
+            if (!options.test) {
+               callback.call(sql.values, rows);
+            }
          } while (record = rows.next());
          rows.release();
       }
@@ -163,23 +169,23 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
       "created < now() - interval '2 days'";
 
 /** @constant */
-Sql.SEARCH = "select id from content where site_id = $0 and " +
-      "prototype in ('Story', 'Comment') and status <> 'closed' and " +
-      "(lower(metadata) like lower('%title:\"%$1%\"%') or " +
-      "lower(metadata) like lower('%text:\"%$1%\"%')) " +
-      "order by created desc limit $2";
+Sql.SEARCH = "select content.id from content, site, metadata where site.id = $0 and " +
+      "site.id = content.site_id and content.status in ('public', 'shared', 'open') and " +
+      "content.id = metadata.parent_id and metadata.name in ('title', 'text') and " +
+      "lower(metadata.value) like lower('%$1%') group by content.id, content.created " +
+      "order by content.created desc limit $2";
 
 /** @constant */
 Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
       "order by name asc limit $2";
 
 /** @constant */
-Sql.ARCHIVE = "select id from content where site_id = $0 and " +
-      "prototype = 'Story' and status <> 'closed' $1 $2 limit $3 offset $4";
+Sql.ARCHIVE = "select id from content where site_id = $0 and prototype = 'Story' and " +
+      "status in ('public', 'shared', 'open') $1 $2 limit $3 offset $4";
 
 /** @constant */
 Sql.ARCHIVESIZE = "select count(*) as count from content where site_id = $0 " +
-      "and prototype = 'Story' and status <> 'closed' $1";
+      "and prototype = 'Story' and status in ('public', 'shared', 'open') $1";
 
 /** @constant */
 Sql.ARCHIVEPART = " and extract($0 from created) = $1";

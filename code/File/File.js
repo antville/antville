@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,16 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Comment prototype.
  */
+
+markgettext("File");
+markgettext("file");
 
 this.handleMetadata("url");
 this.handleMetadata("description");
@@ -33,11 +37,29 @@ this.handleMetadata("contentLength");
 this.handleMetadata("fileName");
 
 /**
+ * @param {Object} data
+ * @param {Site} site
+ * @param {User} user
+ * @returns {File}
+ */
+File.add = function(data, site, user) {
+   site || (site = res.handlers.site);
+   user || (user = session.user);
+   var file = new File;
+   file.site = site;
+   file.update(data);
+   file.creator = file.modifier = user;
+   site.files.add(file);
+   return file;
+}
+
+/**
  * 
  */
 File.remove = function() {
    if (this.constructor === File) {
       this.getFile().remove();
+      this.deleteMetadata();
       this.remove();
    }
    return;
@@ -53,6 +75,31 @@ File.getName = function(name) {
       return String(name).trim().replace(/[\/\\:;?+\[\]{}|#"`<>^]/g, String.EMPTY);
    }
    return null;
+}
+
+/**
+ *
+ * @param {String } url
+ */
+File.redirectOnUploadError = function(url) {
+   if (req.data.helma_upload_error) {
+      res.message = gettext("Sorry, the file exceeds the maximum upload limit of {0} kB.",
+            formatNumber(app.appsProperties.uploadLimit));
+      res.redirect(url);
+   }
+   return;
+}
+
+/**
+ *
+ * @param {String} url
+ */
+File.redirectOnExceededQuota = function(url) {
+   if (res.handlers.site.getDiskSpace() < 0) {
+      res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
+      res.redirect(url);
+   }
+   return;
 }
 
 /**
@@ -107,8 +154,11 @@ File.prototype.main_action = function() {
 }
 
 File.prototype.edit_action = function() {
+   File.redirectOnUploadError(this.href(req.action));
+
    if (req.postParams.save) {
       try {
+         File.redirectOnExceededQuota(this.href(req.action));
          this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this._parent.href());
@@ -132,12 +182,23 @@ File.prototype.edit_action = function() {
 File.prototype.getFormValue = function(name) {
    var self = this;
    
+   var getOrigin = function(str) {
+      var origin = req.postParams.file_origin || self.origin;
+      if (origin && origin.contains("://")) {
+         return origin;
+      }
+      return null;
+   }
+   
    if (req.isPost()) {
+      if (name === "file") {
+         return getOrigin();
+      }
       return req.postParams[name];
    }
    switch (name) {
       case "file":
-      return req.postParams.file_origin;
+      return getOrigin();
    }
    return this[name];
 }
@@ -158,7 +219,7 @@ File.prototype.update = function(data) {
          throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
       }
    } else if (data.file_origin !== this.origin) {
-      var mime = data.file_origin;
+      var mime = data.file;
       if (mime.contentLength < 1) {
          mime = getURL(data.file_origin);
          if (!mime) {

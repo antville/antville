@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,17 +19,38 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Root prototype.
  */
 
 /** @constant */
-Root.VERSION = "1.2-beta";
+Root.VERSION = (function(versionString, buildDate) {
+   // A valid version string is e.g. "1.2.3alpha.4711".
+   // Repositories could add something like "-compatible" to it,
+   // FIXME: This should be refactored for modular extension.
+   var re = /^(\d+)\.(\d+)(?:\.(\d+))?(.+)?\.(\d+)(?:-(.*))?$/;
+   var parts = re.exec(versionString);
+   if (parts) {
+      var result = {
+         parts: parts,
+         toString: function() {return parts[0]},
+         major: parseInt(parts[1]),
+         revision: parseInt(parts[5]),
+         date: new Date(buildDate)
+      };
+      result.minor = result.major + parseInt(parts[2] || 0) / 10;
+      result.bugfix = result.minor + "." + (parts[3] || 0);
+      result.development = parts[4] || "final";
+      result["default"] = result[parts[3] ? "bugfix" : "minor"] + result.development +
+            (parts[6] ? "-" + parts[6] : String.EMPTY);
+      return result;
+   }
+   return versionString;
+})("@version@.@revision@", "@buildDate@");
 
 this.handleMetadata("creationDelay");
 this.handleMetadata("creationScope");
@@ -75,6 +98,8 @@ Root.prototype.getPermission = function(action) {
       case "debug":
       case "default.hook":
       case "health":
+      case "jala.test":
+      case "jala.test.css":
       case "mrtg":
       case "sites":
       case "updates.xml":
@@ -174,7 +199,7 @@ Root.prototype.updates_xml_action = function() {
    feed.setFeedType("rss_2.0");
    feed.setLink(root.href());
    feed.setTitle("Recently updated sites at " + root.title);
-   feed.setDescription(root.tagline);
+   feed.setDescription(root.tagline || String.EMPTY);
    feed.setLanguage(root.locale.replace("_", "-"));
    feed.setPublishedDate(now);
    var entries = new java.util.ArrayList();
@@ -384,34 +409,10 @@ Root.prototype.getCreationPermission = function() {
 }
 
 /**
- * This method is called from the build script to extract gettext call strings 
- * from scripts and skins.
- * @param {String} script
- * @param {String} scanDirs
- * @param {String} potFile
+ * 
+ * @param {Object} param
+ * @param {String} name
  */
-Root.prototype.xgettext = function(script, scanDirs, potFile) {
-   var temp = {print: global.print, readFile: global.readFile};
-   global.print = function(str) {app.log(str);}
-   global.readFile = function(fpath, encoding) {
-      res.push();
-      var file = new helma.File(fpath);
-      file.open({charset: encoding || "UTF-8"});
-      var str;
-      while ((str = file.readln()) !== null) {
-         res.writeln(str);
-      }
-      file.close();
-      return res.pop();
-   }
-   var args = ["-o", potFile, "-e", "utf-8"];
-   for each (var dir in scanDirs.split(" ")) {
-      args.push(app.dir + "/../" + dir);
-   }
-   var file = new helma.File(script);
-   var MessageParser = new Function(file.readAll());
-   MessageParser.apply(global, args);
-   global.print = temp.print;
-   global.readFile = temp.readFile;
-   return;
+Root.prototype.static_macro = function(param, name) {
+   return this.getStaticUrl(name);
 }

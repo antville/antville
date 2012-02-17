@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,11 +22,13 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Poll prototype
  */
+
+markgettext("Poll");
+markgettext("poll");
 
 /**
  * @function
@@ -84,8 +88,7 @@ Poll.prototype.getPermission = function(action) {
       case "result":
       return true;
       case "edit":
-      return this.status === Poll.CLOSED ||
-            Membership.require(Membership.OWNER) ||
+      return Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
       case "rotate":
       case "delete":
@@ -179,19 +182,28 @@ Poll.prototype.update = function(data) {
          choices.push(title);
       }
    }
-   data.title_array = choices;
    if (choices.length < 2 || !data.question) {
       throw Error(gettext("Please fill out the whole form to create a valid poll."));
    }
-   while (this.size() > 0) {
-      Choice.remove.call(this.get(0));
+   var size = this.size();
+   // Update or remove choices
+   for (var i=size-1; i>-1; i-=1) {
+      var choice = this.get(i);
+      var title = choices[i];
+      if (title) {
+         choice.title = title;
+         choice.touch();
+      } else {
+         Choice.remove.call(choice);
+      }
    }
-   for (var i=0; i<choices.length; i+=1) {
+   // Add new choices
+   for (var i=size; i<choices.length; i+=1) {
       this.add(new Choice(choices[i]));
    }
    if (data.save !== Poll.CLOSED) {
       delete this.closed;
-   } else if (this.status) {
+   } else if (this.status === Poll.OPEN) {
       this.closed = new Date;
    }
    this.status = data.save;
@@ -215,7 +227,7 @@ Poll.prototype.rotate_action = function() {
       this.closed = new Date;
    }
    this.touch();
-   return res.redirect(req.data.http_referer);
+   return res.redirect(this.href());
 }
 
 /**

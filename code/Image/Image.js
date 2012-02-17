@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,16 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Image prototype.
  */
+
+markgettext("Image");
+markgettext("image");
 
 this.handleMetadata("contentLength");
 this.handleMetadata("contentType");
@@ -46,12 +50,30 @@ Image.KEYS = ["name", "created", "modified", "origin", "description",
       "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
 
 /**
+ * @param {Object} data
+ * @param {Site|Layout} parent
+ * @param {User} user
+ * @returns {Image}
+ */
+Image.add = function(data, parent, user) {
+   parent || (parent = res.handlers.site);
+   user || (user = session.user);
+   var image = new Image;
+   image.parent = parent;
+   image.update(data);
+   image.creator = image.modifier = user;
+   parent.images.add(image);
+   return image;
+}
+
+/**
  * 
  */
 Image.remove = function() {
    if (this.constructor === Image) {
       this.removeFiles();
       this.setTags(null);
+      this.deleteMetadata();
       this.remove();
    }
    return;
@@ -63,6 +85,12 @@ Image.remove = function() {
  * @returns {String}
  */
 Image.getFileExtension = function(type) {
+   type = String(type);
+   // Sometimes type is like "image/jpeg;charset=ISO-8859-1"
+   var index = type.lastIndexOf(";");
+   if (index > -1) {
+      type = type.substr(0, index);
+   }
    switch (type) {
       //case "image/x-icon":
       //return ".ico";
@@ -169,8 +197,11 @@ Image.prototype.main_action = function() {
 }
 
 Image.prototype.edit_action = function() {
+   File.redirectOnUploadError(this.href(req.action));
+
    if (req.postParams.save) {
       try {
+         File.redirectOnExceededQuota(this.href(req.action));
          this.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          res.redirect(this.href());
@@ -179,6 +210,7 @@ Image.prototype.edit_action = function() {
          app.log(ex);
       }
    }
+
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit Image");
    res.data.body = this.renderSkinAsString("$Image#edit");
@@ -194,12 +226,23 @@ Image.prototype.edit_action = function() {
 Image.prototype.getFormValue = function(name) {
    var self = this;
    
+   var getOrigin = function(str) {
+      var origin = req.postParams.file_origin || self.origin;
+      if (origin && origin.contains("://")) {
+         return origin;
+      }
+      return null;
+   }
+   
    if (req.isPost()) {
+      if (name === "file") {
+         return getOrigin();
+      }
       return req.postParams[name];
    }
    switch (name) {
       case "file":
-      return req.postParams.file_origin;
+      return getOrigin();
       case "maxWidth":
       case "maxHeight":
       return this[name] || 400;
@@ -214,20 +257,17 @@ Image.prototype.getFormValue = function(name) {
  * @param {Object} data
  */
 Image.prototype.update = function(data) {
-   if (data.uploadError) {
-      app.log(data.uploadError);
-      // Looks like the file uploaded has exceeded the upload limit ...
-      throw Error(gettext("File size is exceeding the upload limit."));
-   }
-   
-   if (!data.file_origin) {
+   var origin = data.file_origin;
+
+   if (!origin) {
       if (this.isTransient()) { 
          throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
       }
-   } else if (data.file_origin !== this.origin) {
-      var mime = data.file_origin;
-      if (mime.contentLength < 1) {
-         mime = getURL(data.file_origin);
+   } else if (origin !== this.origin) {
+      var mime = data.file;
+      // Check if mime is not null to allow post requests with no file upload at all
+      if (!mime || mime.contentLength < 1) {
+         mime = getURL(origin);
          if (!mime) {
             throw Error(gettext("Could not fetch the image from the given URL."));
          }
@@ -238,7 +278,7 @@ Image.prototype.update = function(data) {
          throw Error(gettext("This does not seem to be a (valid) JPG, PNG or GIF image file."));
       }
       
-      this.origin = data.file_origin;
+      this.origin = origin;
       var mimeName = mime.normalizeFilename(mime.name);
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
@@ -259,10 +299,8 @@ Image.prototype.update = function(data) {
          this.thumbnailHeight = thumbnail.height; 
       } else if (this.isPersistent()) {
          this.getThumbnailFile().remove();
-         // NOTE: delete won't work here due to getter/setter methods
-         this.metadata.remove("thumbnailName");
-         this.metadata.remove("thumbnailWidth");
-         this.metadata.remove("thumbnailHeight");
+         // NOTE: delete operator won't work here due to getter/setter methods
+         this.deleteMetadata("thumbnailName", "thumbnailWidth", "thumbnailHeight");
       }
 
       // Make the image persistent before proceeding with writing files and 
@@ -330,7 +368,7 @@ Image.prototype.thumbnail_macro = function(param) {
    param.alt = encode(param.alt);
    param.width = this.thumbnailWidth || String.EMPTY;
    param.height = this.thumbnailHeight || String.EMPTY;
-   param.border || (param.border = 0);
+   param.border = (param.border = 0);
    html.tag("img", param);
    return;
 }
@@ -345,6 +383,7 @@ Image.prototype.render_macro = function(param) {
    param.alt = encode(param.alt || param.title);
    param.width || (param.width = this.width);
    param.height || (param.height = this.height);
+   param.border || (param.border = 0);
    html.tag("img", param);
    return;
 }

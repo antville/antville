@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,10 +19,9 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines global variables and functions.
@@ -32,10 +33,11 @@ app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
 
 app.addRepository("modules/core/Global.js");
 app.addRepository("modules/core/HopObject.js");
-app.addRepository("modules/core/Number.js");
 app.addRepository("modules/core/Filters.js");
-app.addRepository("modules/core/JSON.js");
+app.addRepository("modules/core/JSON");
+app.addRepository("modules/core/Number.js");
 
+app.addRepository("modules/helma/File");
 app.addRepository("modules/helma/Image.js");
 app.addRepository("modules/helma/Html.js");
 app.addRepository("modules/helma/Http.js");
@@ -47,9 +49,12 @@ app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
-app.addRepository(app.dir + "/../i18n/messages.en.js");
-app.addRepository(app.dir + "/../i18n/messages.de.js");
-app.addRepository("modules/jala/code/I18n.js"); // Pls. test before moving around!
+var dir = new helma.File(app.dir, "../i18n");
+for each (let fname in dir.list()) {
+   fname.endsWith(".js") && app.addRepository(app.dir + "/../i18n/" + fname);
+}
+// I18n.js needs to be added *after* the message files or the translations get lost
+app.addRepository("modules/jala/code/I18n.js");
 
 // FIXME: Be careful with property names of app.data;
 // they inherit all properties from HopObject!
@@ -57,14 +62,16 @@ app.addRepository("modules/jala/code/I18n.js"); // Pls. test before moving aroun
  * @name app.data 
  * @namespace
  */
+/** @name app.data.callbacks */
+app.data.callbacks || (app.data.callbacks = []);
 /** @name app.data.entries */
 app.data.entries || (app.data.entries = []);
+/** @name app.data.features */
+app.data.features || (app.data.features = []);
 /** @name app.data.mails */
 app.data.mails || (app.data.mails = []);
 /** @name app.data.requests */
 app.data.requests || (app.data.requests = {});
-/** @name app.data.callbacks */
-app.data.callbacks || (app.data.callbacks = []);
 
 /**
  * @name helma.File
@@ -130,12 +137,6 @@ jala.i18n.setLocaleGetter(function() {
 });
 
 /** @constant */
-var SHORTDATEFORMAT = "yyyy-MM-dd HH:mm";
-
-/** @constant */
-var LONGDATEFORMAT = "EEEE, d. MMMM yyyy, HH:mm";
-
-/** @constant */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
 // RegExp according to Jala’s HopObject.getAccessName()
@@ -165,9 +166,14 @@ function onStart() {
       return;
    }
    // This is necessary once to be sure that aspect-oriented code will be applied
-   HopObject.prototype.onCodeUpdate();
+   HopObject.prototype.onCodeUpdate && HopObject.prototype.onCodeUpdate();
    return;
 }
+
+/**
+ * 
+ */
+function onStop() { /* Currently empty, just to avoid annoying log message */ }
 
 /**
  * 
@@ -210,9 +216,10 @@ function scheduler() {
    Admin.commitEntries();
    Admin.commitRequests();
    Admin.invokeCallbacks();
-   //Admin.updateDomains();
+   Admin.updateDomains();
    Admin.updateHealth();
-   return 5000;
+   Admin.purgeSites();
+   return app.properties.schedulerInterval;
 }
 
 /**
@@ -225,7 +232,6 @@ function nightly() {
    }
    app.log("***** Running nightly scripts *****");
    Admin.purgeReferrers();
-   Admin.purgeSites();
    Admin.dequeue();
    global.nightly.lastRun = now;
    return;
@@ -276,8 +282,6 @@ function link_macro() {
    return renderLink.apply(this, arguments);
 }
 
-// FIXME: The definition with "var" is necessary; otherwise the skin_macro()
-// method won't be overwritten reliably. (Looks like a Helma bug.)
 /**
  * 
  * @param {Object} param
@@ -285,6 +289,8 @@ function link_macro() {
  * @returns {String} The rendered skin
  * @see HopObject#skin_macro
  */
+// FIXME: The definition with "var" is necessary; otherwise the skin_macro()
+// method won't be overwritten reliably. (Looks like a Helma bug.)
 var skin_macro = function(param, name) {
   return HopObject.prototype.skin_macro.apply(this, arguments);
 }
@@ -316,6 +322,15 @@ function breadcrumbs_macro (param, delimiter) {
       res.write(gettext(req.action.titleize()));
    }
    return;
+}
+
+/**
+ * Helper macro for checking if a user session is authenticated (logged in).
+ * Returns true if user is logged in, false otherwise.
+ * @returns Boolean
+ */
+function user_macro() {
+   return !!session.user;
 }
 
 /**
@@ -680,7 +695,7 @@ function renderLink(param, url, text, handler) {
  */
 function validateEmail(str) {
 	if (str) {
-      if (str.isEmail(str)) {
+      if (str.isEmail()) {
          return str;
       }
    }
@@ -694,9 +709,9 @@ function validateEmail(str) {
  */
 function validateUrl(str) {
    if (str) {
-      if (str.isUrl(str)) {
-         return String(str);
-      } else if (str.contains("@")) {
+      if (str.isUrl()) {
+         return str;
+      } else if (str.isEmail()) {
          return "mailto:" + str;
       } else {
          return null;
@@ -712,7 +727,7 @@ function validateUrl(str) {
  */
 function quote(str) {
    if (/[\W\D]/.test(str)) {
-      str = '&quot;' + str + '&quot;';
+      str = '"' + str + '"';
    }
    return str;
 }
@@ -730,32 +745,78 @@ function formatNumber(number, pattern) {
 /**
  * 
  * @param {Date} date
- * @param {pattern} pattern
+ * @param {String} format
  * @returns {String} The formatted date string
  */
-function formatDate(date, pattern) {
+function formatDate(date, format) {
    if (!date) {
       return null;
    }
-   pattern || (pattern = "short");
-   var site = res.handlers.site;
-   var format = site.metadata.get(pattern.toLowerCase() + "DateFormat");
-   if (!format) {
-      format = global[pattern.toUpperCase() + "DATEFORMAT"] || pattern;
-   }
-   try {
-      if (format !== "iso8601w3c") {
-         return date.format(format, site.getLocale(), site.getTimeZone());
-      }
+   
+   var pattern, 
+         site = res.handlers.site,
+         locale = site.getLocale();
 
-      var str = date.format("yyyy-MM-dd'T'HH:mm:ssZ", site.getLocale(), site.getTimeZone());
-       if (str.length == 24) {
-           return [str.substring(0, 19), str.substring(19,22), ":", str.substring(22)].join('');
-       }
-   } catch (ex) {
-      return "[Macro error: Invalid date format]";
+   switch (format) {
+      case null:
+      case undefined:
+      format = "full"; // Caution! Passing through to next case block!
+      case "short":
+      case "medium":
+      case "long":
+      case "full":
+      var type = java.text.DateFormat[format.toUpperCase()];
+      pattern = java.text.DateFormat.getDateTimeInstance(type, type, locale).toPattern();
+      break;
+      
+      case "date":
+      var type = java.text.DateFormat.FULL
+      pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern();
+      break;
+
+      case "time":
+      var type = java.text.DateFormat.SHORT;
+      pattern = java.text.DateFormat.getTimeInstance(type, locale).toPattern();
+      break;
+      
+      case "iso":
+      pattern = Date.ISOFORMAT;
+      break;
+      
+      case "text":
+      var text,
+            now = new Date,
+            diff = now - date;
+      if (diff < 0) {
+         // FIXME: Do something similar for future dates
+         text = formatDate(date);
+      } else if (diff < Date.ONEMINUTE) {
+         text = gettext("Right now");
+      } else if (diff < Date.ONEHOUR) {
+         text = ngettext("{0} minute ago", "{0} minutes ago",
+               parseInt(diff / Date.ONEMINUTE, 10));
+      } else if (diff < Date.ONEDAY) {
+         text = ngettext("{0} hour ago", "{0} hours ago",
+               parseInt(diff / Date.ONEHOUR, 10));
+      } else if (diff < 2 * Date.ONEDAY) {
+         text = gettext("Yesterday");
+      } else {
+         text = ngettext("{0} day ago", "{0} days ago",
+               parseInt(diff / Date.ONEDAY, 10));
+      }
+      return text;
+      
+      default:
+      pattern = format;
    }
-   return;
+
+   try {
+      return date.format(pattern, locale, site.getTimeZone());
+   } catch (ex) {
+      return "[Invalid date format]";
+   }
+
+   return String.EMPTY;
 }
 
 /**
@@ -777,13 +838,14 @@ function injectXslDeclaration(xml) {
  * @param {String} body The body text of the e-mail
  * @returns {Number} The status code of the underlying helma.Mail instance
  */
-function sendMail(recipient, subject, body) {
+function sendMail(recipient, subject, body, options) {
+   options || (options = {});
    if (!recipient || !body) {
       throw Error("Insufficient arguments in method sendMail()");
    }
    var mail = new helma.Mail(getProperty("smtp", "localhost"), 
          getProperty("smtp.port", "25"));
-   mail.setFrom(root.replyTo);
+   mail.setFrom(root.replyTo || "root@localhost");
    if (recipient instanceof Array) {
       for (var i in recipient) {
          mail.addBCC(recipient[i]);
@@ -793,7 +855,9 @@ function sendMail(recipient, subject, body) {
    }
    mail.setSubject(subject);
    mail.setText(body);
-   mail.addText("\n\n" + renderSkinAsString("$Global#mailFooter"));
+   if (options.footer !== false) { // It is the exception to have no footer
+      mail.addText(renderSkinAsString("$Global#mailFooter"));
+   }
    mail.queue();
    return mail.status;
 }
@@ -813,17 +877,17 @@ function getLocale(language) {
  * @returns {Object[]} A sorted array containing the corresponding locales
  */
 function getLocales(language) {
-   var result = [], locale;
-   var displayLocale = getLocale(language);
+   var result = [], locale, localeString;
    var locales = java.util.Locale.getAvailableLocales();
    for (var i in locales) {
-      locale = locales[i].toString();
-      if (!locale.toString().contains("_")) {
-      result.push({
-         value: locale,
-         display: locales[i].getDisplayName(displayLocale),
-         "class": jala.i18n.getCatalog(jala.i18n.getLocale(locale)) ? "translated" : ""
-      });
+      locale = locales[i];
+      localeString = locale.toString();
+      if (!localeString.contains("_")) {
+         result.push({
+            value: localeString,
+            display: locale.getDisplayName(locale),
+            "class": jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? "translated" : ""
+         });
       }
    }
    result.sort(new String.Sorter("display"));
@@ -831,76 +895,43 @@ function getLocales(language) {
 }
 
 /**
- * 
+ * This method returns an array of structs providing two properties each:
+ * <code>value</code> – a unique time zone ID
+ * <code>display</code> – a (more) user-friendly string
+ * Although Java is great in providing all time zones one can imagine, this
+ * vast amount of choices fails to support easy time zone selection.
+ * Furthermore, the L10n features of the java.util.TimeZone class are insufficient
+ * as they do only translate the generic string returned by the getDisplayName()
+ * method (e.g. Central European Time), not the more usable time zone IDs 
+ * (e.g. Europe/Vienna). Thus, time zone selection in Antville is rather limited.
  * @param {String} language
  * @returns {Object[]} A sorted array containing the corresponding timezones
  */
 function getTimeZones(language) {
-   var result = [], timeZone, offset;
-   var locale = getLocale(language); 
-   var zones = java.util.TimeZone.getAvailableIDs();
-   var now = new Date;
-   var previousZone;
-   for each (var zone in zones) {
-      timeZone = java.util.TimeZone.getTimeZone(zone);
-      if (!previousZone || !timeZone.hasSameRules(previousZone)) {
-         offset = timeZone.getRawOffset();
-         result.push({
-            value: zone,
-            display: /* timeZone.getDisplayName(timeZone.inDaylightTime(now), 
-                  java.util.TimeZone.LONG, locale) */ " (UTC" + (offset / 
-                  Date.ONEHOUR).format("+00;-00") + ":" + (Math.abs(offset % 
-                  Date.ONEHOUR) / Date.ONEMINUTE).format("00") + ")"
-         });
-     }
-     previousZone = timeZone.clone();
-   }
-   result.sort(new String.Sorter("value"));
-   return result;
-   
-   var group;
-   result.forEach(function(zone) {
-      var parts = zone.value.split("/");
-      if (parts.length > 1) {
-         if (parts[0] !== group) {
-            group = parts[0];
-            zone.group = group;
-         }
-         zone.display = parts.splice(1).join(String.EMPTY) + zone.display;
-      } else {
-         zone.display = zone.value + zone.display;
-      }
-   });
-   return result;
-}
+   var result = [],
+         timeZones = [],
+         locale = getLocale(language),
+         ids = java.util.TimeZone.getAvailableIDs();
 
-/**
- * 
- * @param {String} type
- * @param {String} language
- * @returns {Array[]} An array containing the corresponding date formats
- */
-function getDateFormats(type, language) {
-   var patterns;
-   if (type === "short") {
-      patterns = [SHORTDATEFORMAT, "yyyy/MM/dd HH:mm", 
-            "yyyy.MM.dd, HH:mm", "d. MMMM, HH:mm", "MMMM d, HH:mm", 
-            "d. MMM, HH:mm", "MMM d, HH:mm", "EEE, d. MMM, HH:mm", 
-            "EEE MMM d, HH:mm", "EEE, HH:mm", "EE, HH:mm", "HH:mm"];
-   } else if (type === "long") {
-      patterns = [LONGDATEFORMAT, "EEEE, MMMM dd, yyyy, HH:mm", 
-            "EE, d. MMM. yyyy, HH:mm", "EE MMM dd, yyyy, HH:mm", 
-            "EE yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm", "d. MMMM yyyy, HH:mm", 
-            "MMMM d, yyyy, HH:mm", "d. MMM yyyy, HH:mm", "MMM d, yyyy, HH:mm"];
+   for each (let id in ids) {
+      // Exclude confusing time zones
+      if (id.length < 4 || !id.contains("/") || 
+            id.startsWith("Etc") || id.startsWith("System")) {
+         continue;
+      }
+      let timeZone = java.util.TimeZone.getTimeZone(id);
+      // Exclude more confusing time zones
+      if (timeZone.getDisplayName().startsWith("GMT")) {
+         continue;
+      }
+      result.push({
+         value: timeZone.getID(),
+         display: timeZone.getID().replace(/_/g, String.SPACE)
+      })
+      timeZones.push(timeZone);
    }
-   var result = [], sdf;
-   var locale = getLocale(language);
-   var now = new Date;
-   for each (var pattern in patterns) {
-      sdf = new java.text.SimpleDateFormat(pattern, locale);
-      result.push([encodeForm(pattern), sdf.format(now)]);
-   }
-   return result;
+
+   return result.sort(new String.Sorter("display"));
 }
 
 /**
@@ -951,15 +982,16 @@ function link_filter(text, param, url) {
  * @param {Object} string
  * @param {Object} param
  * @param {String} pattern
+ * @param {String} type
  * @returns {String} The formatted string
  */
-function format_filter(value, param, pattern) {
+function format_filter(value, param, pattern, type) {
    if (!value && value !== 0) {
       return;
    }
    var f = global["format" + value.constructor.name];
    if (f && f.constructor === Function) {
-      return f(value, pattern || param.pattern);
+      return f(value, pattern || param.pattern, type);
    }
    return value;
 }
@@ -1197,4 +1229,15 @@ var wait = function(millis) {
       void null;
    }
    return;
+}
+
+/**
+ *
+ * @param {Object} param
+ * @param {String} type
+ */
+function version_macro(param, type) {
+   var version = Root.VERSION;
+   var result = version[type || "default"];
+   return result || version;
 }

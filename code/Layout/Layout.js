@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,14 +19,16 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 /**
  * @fileOverview Defines the Layout prototype
  */
+
+markgettext("Layout");
+markgettext("layout");
 
 /** @constant */
 Layout.VALUES = [
@@ -52,7 +56,8 @@ Layout.remove = function(options) {
    if (this.constructor === Layout) {
       // Backup current layout in temporary directory if possible
       var dir = this.getFile();
-      if (res.skinpath && res.skinpath[0].equals(dir) && 
+      // FIXME: Evaluate if using res.skinpath is necessary; dir could be fully sufficient.
+      if (res.skinpath && res.skinpath[0] && res.skinpath[0].equals(dir) &&
                dir.exists() && dir.list().length > 0) {
          var zip = this.getArchive(res.skinpath);
          var file = java.io.File.createTempFile(this.site.name + "-layout-", ".zip");
@@ -62,7 +67,10 @@ Layout.remove = function(options) {
       HopObject.remove.call(this.images);
       this.getFile().removeDirectory();
       // The “force” flag is set e.g. when a whole site is removed
-      options && options.force && this.remove();
+      if (options && options.force) {
+         this.deleteMetadata();
+         this.remove();
+      }
    }
    return;
 }
@@ -226,7 +234,7 @@ Layout.prototype.reset_action = function() {
 Layout.prototype.export_action = function() {
    res.contentType = "application/zip";
    var zip = this.getArchive(res.skinpath);
-   res.setHeader("Content-Disposition", 
+   res.setHeader("Content-Disposition",
          "attachment; filename=" + this.site.name + "-layout.zip");
    res.writeBinary(zip.getData());
    return;
@@ -248,7 +256,7 @@ Layout.prototype.import_action = function() {
          (new helma.Zip(zip)).extractAll(temp);
          zip.remove();
          var data = Xml.read(new helma.File(temp, "data.xml"));
-         if (!data.version || data.version !== Root.VERSION) {
+         if (!data.version) {
             throw Error(gettext("Sorry, this layout is not compatible with Antville."));
          }
          // Remove current layout and replace it with imported one
@@ -265,7 +273,7 @@ Layout.prototype.import_action = function() {
       } catch (ex) {
          res.message = ex;
          app.log(ex);
-         temp.removeDirectory();
+         temp && temp.removeDirectory();
          res.redirect(this.href(req.action));
       }
       res.redirect(this.href());
@@ -286,6 +294,7 @@ Layout.prototype.import_action = function() {
 Layout.prototype.getImage = function(name, fallback) {
    var layout = this;
    while (layout) {
+      layout.images.prefetchChildren();
       if (layout.images.get(name)) {
          return layout.images.get(name);
       }
@@ -323,17 +332,26 @@ Layout.prototype.getSkinPath = function() {
  */
 Layout.prototype.reset = function() {
    var skinFiles = app.getSkinfilesInPath([app.dir]);
-   var content, file;
+   var content, dir, file;
    for (var name in skinFiles) {
       if (content = skinFiles[name][name]) {
-         var dir = this.getFile(name);
-         var file = new helma.File(dir, name + ".skin");
+         dir = this.getFile(name);
+         file = new helma.File(dir, name + ".skin");
          dir.makeDirectory();
          file.open();
          file.write(content);
          file.close();
       }
    }
+
+   // FIXME: Reset the Site skin of root separately
+   content = skinFiles.Root.Site;
+   file = new helma.File(this.getFile("Root"), "Site.skin");
+   dir.makeDirectory();
+   file.open();
+   file.write(content);
+   file.close()
+
    this.touch();
    return;
 }
@@ -355,6 +373,10 @@ Layout.prototype.getArchive = function(skinPath) {
       }
    }
 
+   // FIXME: Add the Site skin of root separately
+   file = new helma.File(this.getFile("Root"), "Site.skin");
+   file.exists() && zip.add(file, "Root");
+
    var data = new HopObject;
    data.images = new HopObject;
    this.images.forEach(function() {
@@ -371,7 +393,7 @@ Layout.prototype.getArchive = function(skinPath) {
       }
    });
       
-   data.version = Root.VERSION;
+   data.version = Root.VERSION.toString();
    data.origin = this.origin || this.site.href();
    data.originator = this.originator || session.user.name;
    data.originated = this.originated || new Date;

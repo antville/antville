@@ -1,45 +1,33 @@
 <% #confirm %>
 <form action="<% response.action %>" method="post">
-<h1 class="storyTitle"><% gettext Warning! %></h1>
+<p class="storyTitle"><% gettext Warning! %></p>
 <p><% param.text %></p>
 <p><% gettext 'Please be aware of the fact that there is no “undo”, so if you 
 click “Proceed” below the changes will be applied irreversibly.' %></p>
 <p><% gettext 'Click “Cancel” now if you are not really sure you want to 
 proceed.' %></p>
 <% this.skin <% this.type prefix=$ suffix=#delete %> %>
-<p>
-   <button type="submit" class="normal small" name="proceed" value="1"><% gettext Proceed %></button>
-   <a href="./" class="cancel"><% gettext Cancel %></a>
-</p>
+<p><button type="submit" name="proceed" value="1"><% gettext Proceed %></button>
+<a href="" class="cancel"><strong><% gettext Cancel %></strong></a></p>
 </form>
-
-<% 
-////////////////////// Notification skins 
-%>
 
 <% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that on {0} user {1} published a 
-new {2} [1].' <% this.modified short %> <% this.modifier %> 
-<% this.kind %> %>
+<% gettext 'User {0} has added {1} #{2} to the site {3}:' <% this.modifier %>
+      <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% this.href %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
-
---
-[1] <% this.href %> 
-
 
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'This message wants to inform you that on {0} user {1} modified 
-{2} #{3} [1].' <% this.modified short %> <% this.modifier %> 
-<% this.kind %> <% this.id %> %>
+<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %> 
+      <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% this.href %>
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
-
---
-[1] <% this.href %> 
+<% // This comment simply adds a linebreak to format the message nicely %>

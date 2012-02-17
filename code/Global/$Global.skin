@@ -18,10 +18,12 @@
 <td rowspan="2" width="5" nowrap="nowrap"></td>
 
 <% #mailFooter %>
+--
+
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
 
 <% gettext 'This message was automatically sent to you because you are listed as 
-recipient of notification e-mails of the aforementioned site.' %>
+recipient of notification e-mails of the corresponding site.' %>
 
 <% gettext 'Thus, you will be notified whenever the site has undergone changes 
 as specified in the site preferences.' %>

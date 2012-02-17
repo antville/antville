@@ -32,6 +32,7 @@ Admin.SITEREMOVALGRACEPERIOD = 14; // days
  * 
  * @param {HopObject} target
  * @param {String} method
+ * @param {User} user
  * @constructor
  */
 Admin.Job = function(target, method, user) {
@@ -70,7 +71,7 @@ Admin.Job = function(target, method, user) {
          user = User.getById(data.user);
       }
    } else {
-      throw Error("Unsufficient arguments");
+      throw Error("Insufficient arguments");
    }
 
    this.toString = function() {
@@ -106,13 +107,15 @@ Admin.getCreationScopes = defineConstants(Admin, markgettext("Privileged"),
       markgettext("Trusted"), markgettext("Regular"));
 
 /**
- * 
+ * Convenience method for easily queueing jobs.
  * @param {HopObject} target
  * @param {String} method
+ * @param {User} user 
  * @returns {String}
+ * @see Admin.Job
  */
-Admin.queue = function(target, method) {
-   var job = new Admin.Job(target, method);
+Admin.queue = function(target, method, user) {
+   var job = new Admin.Job(target, method, user || session.user);
    return job.name;
 }
 
@@ -145,8 +148,8 @@ Admin.dequeue = function() {
                break;
             }
          } catch (ex) {
-            res.debug(job + ": " + ex);
             app.log("Failed to process job " + job + " due to " + ex);
+            app.debug(ex.rhinoException);
          }
       }
       job.remove();
@@ -162,13 +165,11 @@ Admin.purgeSites = function() {
 
    root.admin.deletedSites.forEach(function() {
       if (now - this.deleted > Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD) {
-         let job;
-         if (this.job && (job = new Admin.Job(this.job))) {
-            job.remove();
+         if (this.job) {
+            return; // Site is already scheduled for deletion
          }
-         job = Admin.queue(this, "remove", User.getById(1));
+         let job = new Admin.Job(this, "remove", User.getById(1));
          this.job = job.name;
-         this.deleted = now; // Prevents redundant deletion jobs
       }
    });
    
@@ -188,8 +189,8 @@ Admin.purgeSites = function() {
                this.members.owners.forEach(function() {
                   res.handlers.membership = this;
                   sendMail(this.creator.email,
-                        gettext("Notification of changes at site {0}", site.title),
-                        site.renderSkinAsString("$Site#notify_deletion"));
+                        gettext("[{0}] Warning: Site will be deleted"),
+                        site.renderSkinAsString("$Site#notify_delete"));
                });
                this.notified = now;
             } else if (now - this.notified > gracePeriod) {
@@ -214,8 +215,8 @@ Admin.purgeSites = function() {
                this.members.owners.forEach(function() {
                   res.handlers.membership = this;
                   sendMail(this.creator.email,
-                        gettext("Notification of changes at site {0}", site.title),
-                        site.renderSkinAsString("$Site#notify_blocking"));
+                        gettext("[{0}] Warning: Site will be blocked"),
+                        site.renderSkinAsString("$Site#notify_block"));
                });
                this.notified = now;
             } else if (now - this.notified > gracePeriod) {
@@ -362,7 +363,7 @@ Admin.updateHealth = function() {
 Admin.updateDomains = function() {
    res.push();
    for (var key in app.properties) {
-      if (key.startsWith("domain.")) {
+      if (key.startsWith("domain.") && !key.endsWith("*")) {
          res.writeln(getProperty(key) + "\t\t" + key.substr(7));
       }
    }
@@ -376,12 +377,16 @@ Admin.updateDomains = function() {
 }
 
 /**
+ * The Admin prototype is mounted at root and provides actions needed
+ * for system administration. A user needs the User.PRIVILEGED permission
+ * to gain access or modify settings.
  * @name Admin
  * @constructor
- * @property {LogEntry[]} entries
- * @property {Sites[]} privateSites
- * @property {Sites[]} sites
- * @property {Users[]} users
+ * @property {Sites[]} deletedSites Contains sites scheduled for deletion
+ * @property {LogEntry[]} entries Contains administrative log entries only
+ * @property {Sites[]} restrictedSites Contains sites which are restricted but not blocked
+ * @property {Sites[]} sites Contains all available sites
+ * @property {Users[]} users Contains all available users
  * @extends HopObject
  */
 Admin.prototype.constructor = function() {
