@@ -2,24 +2,23 @@
 STATUS
 ======
 
-Antville should be considered pre-release quality code. Although it is heavily
-used by several thousands of users at http://antville.org and several other
-sites (see http://code.google.com/p/antville/wiki/AntvilleSites) chances are
-that there are still bugs hidden somewhere in this application. 
+Antville can be considered stable quality code. It is heavily used by several 
+thousands of users at http://antville.org and several other sites (see 
+http://code.google.com/p/antville/wiki/AntvilleSites). Nevertheless, there 
+still could be bugs hidden somewhere in this application. 
 
-If you found one please report it at http://project.antville.org.
+If you think you found a bug please report it at http://project.antville.org.
 
 Antville can be used for production purposes, but please bear in mind that the
-creators of Antville and Helma do not take any warranty, whichever kind.
-
+creators of Antville do not take any warranty, whichever kind.
 
 ===================
 SYSTEM REQUIREMENTS
 ===================
 
 To run Antville you need Helma Object Publisher (http://helma.org) and a
-relational database in the backend. Antville was tested with MySQL
-(http://mysql.com) and PostgreSQL (http://postgresql.org).
+relational database in the backend. Antville was tested with PostgreSQL 
+(http://postgresql.org) and MySQL (http://mysql.com).
 
 For setting up Helma Object Publisher and the database of your choice please
 refer to the corresponding installation instructions.
@@ -31,6 +30,8 @@ Helma comes with its own embedded webserver (Jetty) so you do not need to
 install one, although you can easily use Apache httpd as front-end webserver,
 too.
 
+Please refer to the INSTALL file for detailed information on how to install
+Antville.
 
 =====================================
 DOCUMENTATION AND FURTHER INFORMATION
@@ -45,10 +46,14 @@ For documentation and further information regarding Antville please refer to:
 Feel free to ask any question regarding the application at
 http://help.antville.org
 
+You should follow Antville on Facebook and Twitter:
+
+ * http://facebook.com/Antville
+ * http://twitter.com/antville_org
+
 For further information about Helma, http://helma.org generally is a good
 place. There is also a mailing list about Helma-related stuff available at
 http://groups.google.com/group/helma.
-
 
 ==================================
 BUG REPORTING AND FEATURE REQUESTS
@@ -60,13 +65,12 @@ Please post feature requests or proposals to http://project.antville.org.
 
 Since Antville is open-source, you are definitely encouraged to modify the
 application, but please keep us informed on what you do/did – either by
-posting at http://help.antville.org or by sending a mail to
+posting at http://help.antville.org or by sending a message to
 mail@antville.org.
 
 For those of you who demonstrated a commitment to collaborative open-source
 development through sustained participation and contributions within the
 development of Antville, there will also be other ways to participate.
-
 
 ==============
 ABOUT ANTVILLE
@@ -83,8 +87,7 @@ and based on Helma Object Publisher, a powerful and fast scriptable
 open source web application server (which itself is written in Java).
 Antville works with a relational database in the backend.
 
-Check out http://project.antville.org/ for more information.
-
+Check out http://project.antville.org for more information.
 
 ============================
 ABOUT HELMA OBJECT PUBLISHER

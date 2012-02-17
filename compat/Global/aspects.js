@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,22 +19,22 @@
 // limitations under the License.
 //
 // $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
+// $Author$
+// $Date$
 // $URL$
-//
 
 app.addRepository("modules/helma/Aspects.js");
 
 var aspects = {
    setTopics: function(args, func, obj) {
-      var param = args[0];
-      //res.debug("aspects before: "+param.tags.toSource());
+      // We must clone the request parameters because only req.data is mutable.
+      // (See req.params, req.postParams etc.)
+      var param = Object.prototype.clone.call(args[0], {});
       var topic = param.topic || param.addToTopic;
       if (!param.tags && topic) {
          param.tags = [topic];
       }
-      //res.debug("aspects after: " +param.tags.toSource());
+      args[0] = param;
       return args;
    },
    
@@ -49,7 +51,7 @@ var aspects = {
    },
    
    fixStoryEditorParams: function(args, func, story) {
-      // FIXME: IE sends the button text instead of the value; thus, we
+      // IE6 sends the button text instead of the value; thus, we
       // need to check for the "editableby" property as well :/
       if (req.isPost() && req.postParams.save != 1 && req.postParams.editableby) {
          if (req.postParams.publish) {
@@ -59,14 +61,18 @@ var aspects = {
             req.postParams.save = 1;
             req.postParams.status = Story.CLOSED;
          } else if (req.postParams.editableby) {
-            req.postParams.status = req.postParams.editableby
+            var status = [Story.PUBLIC, Story.SHARED, Story.OPEN];
+            req.postParams.status = status[req.postParams.editableby] || req.postParams.editableBy;
          }
          req.postParams.mode = (req.postParams.addToFront ? 
                Story.FEATURED : Story.HIDDEN);
          req.postParams.commentMode = (req.postParams.discussions ? 
                Story.OPEN : Story.CLOSED);
       }
-      //aspects.setTextAndTitle(args, func, story);
+      req.postParams.addToFront = null;
+      req.postParams.discussions = null;
+      req.postParams.editableby = null;
+      req.postParams.publish = null;      
       return args;
    },
    
@@ -81,19 +87,6 @@ var aspects = {
       res.push();
       archive.link_macro({}, "next", gettext("Next page"));
       res.data.nextpage = res.pop();
-      return args;
-   },
-   
-   // Obsolete?
-   setTextAndTitle: function(args) {
-      if (req.postParams.metadata_title && !req.postParams.title) {
-         req.postParams.title = req.postParams.metadata_title;
-         delete req.postParams.metadata_title;
-      }
-      if (req.postParams.metadata_text && !req.postParams.text) {
-         req.postParams.text = req.postParams.metadata_text;
-         delete req.postParams.metadata_text;
-      }
       return args;
    }
 }
@@ -134,16 +127,23 @@ HopObject.prototype.onCodeUpdate = function() {
       return [param, args[1] || param.name];
    });
    return helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
+      var url, text;
       var param = args[0];
       var to = param.to;
       delete param.to;
-      // Compatibility for more recent link macros, doing a lot of i18n witchcraft
-      var url = args[1] || ".";
-      var text = args[2];
-      var action = url.split(/#|\?/)[0];
-      if (!text) {
-         action === "." && (action = obj._id);
-         text = gettext(action.capitalize());
+      // Enabling story.link macros with full URL in parameter:
+      if (to && to.contains("://")) {
+         html.link({href: to}, param.text);
+         url = text = ".."; // Ugly hack to prevent HopObject.link in code from being rendered as well
+      } else {
+         // Compatibility for more recent link macros /////???, doing a lot of i18n witchcraft
+         url = args[1] || ".";
+         text = args[2];
+         var action = url.split(/#|\?/)[0];
+         if (!text) {
+            action === "." && (action = obj._id);
+            text = action.capitalize(); //gettext(action.capitalize());
+         }
       }
       return [param, to || url, param.text || text, args[3]];
    });
@@ -152,11 +152,6 @@ HopObject.prototype.onCodeUpdate = function() {
 Archive.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
 }
-
-/* Comment.prototype.onCodeUpdate = function() {
-   helma.aspects.addBefore(this, "update", aspects.setTextAndTitle);
-   return;
-} */
 
 Image.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
@@ -227,11 +222,11 @@ Site.prototype.onCodeUpdate = function() {
 }
 
 Story.prototype.onCodeUpdate = function() {
-   helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);   
+   helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);
    return helma.aspects.addBefore(this, "update", aspects.setTopics);
 }
 
 Stories.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "create_action", 
+   return helma.aspects.addBefore(this, "create_action",
          aspects.fixStoryEditorParams);
 }

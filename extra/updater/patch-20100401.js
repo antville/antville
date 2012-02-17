@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2010 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,22 +22,23 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
-// Needs to be applied from within antville code (does not work inside updater)
+// Apply with enabled updater repository via ant patch -Dpatch.id=20100401
 
-global["patch-20100401"] = function() {
-   var sql = new Sql;
-   sql.retrieve("select id from image");
-   sql.traverse(function() {
-      var image = Image.getById(this.id);
-      try {
-         var contentLength = image.getFile().getLength();
-         if (contentLength && image.contentLength !== contentLength) {
-            res.debug(image._id + "/" + image.name + ": " + 
-                  image.contentLength + "/" + contentLength);
-            image.contentLength = contentLength;
-         }
-      } catch (x) { }
-   });
-}
+var sql = new Sql;
+
+// Correct Image.contentLength property for some images
+sql.retrieve("select id from image");
+sql.traverse(function() {
+   var image = Image.getById(this.id);
+   try {
+      var contentLength = image.getFile().getLength();
+      app.log("Processing " + image + ": " + image.contentLength);
+      if (contentLength && image.contentLength !== contentLength) {
+         app.log("Updating content length to " + contentLength);
+         image.contentLength = contentLength;
+         res.commit();
+      }
+   } catch (x) { }
+});
+app.log("Done.");

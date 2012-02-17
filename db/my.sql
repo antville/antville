@@ -2,7 +2,7 @@
 ## The Antville Project
 ## http://code.google.com/p/antville
 ##
-## Copyright 2001-2007 by The Antville People
+## Copyright 2001-2011 by The Antville People
 ##
 ## Licensed under the Apache License, Version 2.0 (the ``License'');
 ## you may not use this file except in compliance with the License.
@@ -22,232 +22,240 @@
 ## $URL$
 ##
 
-CREATE DATABASE IF NOT EXISTS antville character set latin1 collate latin1_general_ci;
+create database if not exists antville character set latin1 
+      collate latin1_general_ci;
 
-USE antville;
+use antville;
 
-GRANT SELECT,INSERT,UPDATE,DELETE ON antville.* TO antville@localhost IDENTIFIED BY 'antville';
+grant select, insert, update, delete on antville.* to antville@localhost 
+      identified by 'antville';
 
-SET FOREIGN_KEY_CHECKS = 0;
+set foreign_key_checks = 0;
 
+create table account (
+  id int(10) unsigned not null default '0',
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  metadata mediumtext,
+  email varchar(255) character set utf8 collate utf8_general_ci,
+  status varchar(20),
+  created datetime,
+  modified datetime,
+  primary key (id),
+  key name (name(20)),
+  key email (email(20)),
+  key status (status),
+  key created (created),
+  key modified (modified)
+);
 
-CREATE TABLE `account` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `metadata` mediumtext,
-  `email` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `status` enum('blocked','regular','trusted','privileged') default 'regular',
-  `visited` datetime default NULL,
-  `created` datetime default NULL,
-  `modified` datetime default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `name` (`name`(20))
-) ENGINE=InnoDB;
+create table choice (
+  id int(10) unsigned not null default '0',
+  poll_id int(10) unsigned,
+  title text character set utf8 collate utf8_general_ci,
+  created datetime,
+  modified datetime,
+  primary key (id),
+  key poll_id (poll_id)
+);
 
+create table content (
+  id int(10) unsigned not null default '0',
+  prototype varchar(20),
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  site_id int(10) unsigned,
+  story_id int(10) unsigned,
+  parent_id int(10) unsigned,
+  parent_type varchar(20),
+  metadata mediumtext,
+  status varchar(20),
+  mode varchar(20),
+  comment_mode varchar(20),
+  requests int(10) unsigned,
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key story_id (story_id),
+  key parent_id (parent_id),
+  key creator_id (creator_id),
+  key type (site_id,prototype,status,created,modified,id),
+  key modified (site_id,modified,status,prototype,id)
+);
 
-CREATE TABLE `choice` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `poll_id` int(10) unsigned default NULL,
-  `title` text character set utf8 collate utf8_general_ci default NULL,
-  `created` datetime default NULL,
-  `modified` datetime default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `poll_id` (`poll_id`)
-) ENGINE=InnoDB;
+create table file (
+  id int(10) unsigned not null default '0',
+  prototype varchar(20),
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  site_id int(10) unsigned,
+  parent_id int(10) unsigned,
+  parent_type varchar(20),
+  metadata mediumtext,
+  requests int(10) unsigned,
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key site_id (site_id),
+  key name (name(20)),
+  key creator_id (creator_id)
+);
 
+create table image (
+  id int(10) unsigned not null default '0',
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  prototype varchar(20),
+  parent_id int(10) unsigned,
+  parent_type varchar(20),
+  metadata mediumtext,
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key creator_id (creator_id),
+  key type (name,prototype)
+);
 
-CREATE TABLE `content` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `prototype` enum('Story','Comment') default 'Story',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `site_id` int(10) unsigned default NULL,
-  `story_id` int(10) unsigned default NULL,
-  `parent_id` int(10) unsigned default NULL,
-  `parent_type` enum('Story','Comment') default 'Story',
-  `metadata` mediumtext,
-  `status` enum('closed','pending','readonly','public','shared','open') default 'closed',
-  `mode` enum('hidden','featured') default 'featured',
-  `comment_mode` enum('closed','readonly','moderated','open') default 'open',
-  `requests` int(10) unsigned default '0',
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `story_id` (`story_id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `creator_id` (`creator_id`),
-  KEY `type` (`site_id`,`prototype`,`status`,`created`,`modified`,`id`),
-  KEY `all` (`site_id`,`modified`,`status`,`prototype`,`id`)
-) ENGINE=InnoDB;
+create table layout (
+  id int(10) unsigned not null default '0',
+  site_id int(10) unsigned,
+  metadata mediumtext,
+  mode varchar(20),
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key site_id (site_id)
+);
 
+create table log (
+  id int(10) unsigned not null auto_increment,
+  context_id int(10) unsigned,
+  context_type varchar(20),
+  referrer text,
+  action varchar(255) character set utf8 collate utf8_general_ci,
+  created datetime,
+  creator_id int(10) unsigned,
+  primary key  (id)
+);
 
-CREATE TABLE `file` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `prototype` enum('File') default 'File',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `site_id` int(10) unsigned default NULL,
-  `parent_id` int(10) unsigned default NULL,
-  `parent_type` enum('Site') default 'Site',
-  `metadata` mediumtext,
-  `requests` int(10) unsigned default '0',
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`),
-  KEY `name` (`name`(20)),
-  KEY `creator_id` (`creator_id`)
-) ENGINE=InnoDB;
+create table membership (
+  id int(10) unsigned not null default '0',
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  site_id int(10) unsigned,
+  role varchar(20),
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key site_id (site_id),
+  key creator_id (creator_id),
+  key name (name(20))
+);
 
+#!helma <% #metadata %>
 
-CREATE TABLE `image` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `prototype` enum('Image') default 'Image',
-  `parent_id` int(10) unsigned default NULL,
-  `parent_type` enum('Site','Layout') default NULL,
-  `metadata` mediumtext,
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `creator_id` (`creator_id`),
-  KEY `type` (`name`,`prototype`)
-) ENGINE=InnoDB;
+create table metadata (
+  id int(10) unsigned not null default '0',
+  parent_id int(10) unsigned,
+  parent_type varchar(20),
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  value mediumtext character set utf8 collate utf8_general_ci,
+  type varchar(255),
+  primary key (id),
+  key parent (parent_type, parent_id),
+  key name (name),
+  key value (value(255))
+);
 
+#!helma <% #end_of_metadata %>
 
-CREATE TABLE `layout` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `site_id` int(10) unsigned default NULL,
-  `metadata` mediumtext,
-  `mode` enum('default','shared') default NULL,
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`)
-) ENGINE=InnoDB;
+create table poll (
+  id int(10) unsigned not null default '0',
+  site_id int(10) unsigned,
+  question text character set utf8 collate utf8_general_ci,
+  status varchar(20),
+  closed datetime,
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key site_id (site_id),
+  key creator_id (creator_id)
+);
 
+create table site (
+  id int(10) unsigned not null default '0',
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  layout_id int(10) unsigned,
+  metadata mediumtext,
+  status varchar(20),
+  mode varchar(20),
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key name (name(20)),
+  key creator_id (creator_id)
+);
 
-CREATE TABLE `log` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `context_id` int(10) unsigned default NULL,
-  `context_type` enum('Root','User','Site','Story') default NULL,
-  `referrer` text,
-  `action` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB;
+create table skin (
+  id int(10) unsigned not null default '0',
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  prototype varchar(30),
+  source mediumtext,
+  layout_id int(10) unsigned,
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  modifier_id int(10) unsigned,
+  primary key  (id),
+  key type (layout_id,prototype(10),name(10))
+);
 
+create table tag (
+  id int(10) unsigned not null default '0',
+  name varchar(255) character set utf8 collate utf8_general_ci,
+  site_id int(10) unsigned,
+  type varchar(20),
+  primary key  (id),
+  key tags (site_id,type,name)
+);
 
-CREATE TABLE `membership` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `site_id` int(10) unsigned default NULL,
-  `role` enum('subscriber','contributor','manager','owner') default 'subscriber',
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`),
-  KEY `creator_id` (`creator_id`),
-  KEY `name` (`name`(20))
-) ENGINE=InnoDB;
+create table tag_hub (
+  id int(10) unsigned not null default '0',
+  tag_id int(10) unsigned,
+  tagged_id int(10) unsigned,
+  tagged_type varchar(20),
+  user_id int(10) unsigned,
+  primary key  (id),
+  key tagged (tag_id,tagged_type,tagged_id)
+);
 
+create table vote (
+  id int(10) unsigned not null default '0',
+  poll_id int(10) unsigned,
+  choice_id int(10) unsigned,
+  creator_name varchar(255) character set utf8 collate utf8_general_ci,
+  created datetime,
+  creator_id int(10) unsigned,
+  modified datetime,
+  primary key  (id),
+  key poll_id (poll_id),
+  key creator_id (creator_id),
+  key choice_id (choice_id),
+  key creator_name (creator_name(20))
+);
 
-CREATE TABLE `poll` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `site_id` int(10) unsigned default NULL,
-  `question` text character set utf8 collate utf8_general_ci default NULL,
-  `status` enum('closed','readonly','open') default NULL,
-  `closed` datetime default NULL,
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`),
-  KEY `creator_id` (`creator_id`)
-) ENGINE=InnoDB;
+set foreign_key_checks = 1;
 
+insert into layout (id, site_id, mode) values ( '1', '1', 'default');
 
-CREATE TABLE `site` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `layout_id` int(10) unsigned default NULL,
-  `metadata` mediumtext,
-  `status` enum('blocked','regular','trusted') default 'regular',
-  `mode` enum('deleted','closed','restricted','public','open') default 'closed',
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `name` (`name`(20)),
-  KEY `creator_id` (`creator_id`)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE `skin` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `prototype` varchar(30) default NULL,
-  `source` mediumtext default NULL,
-  `layout_id` int(10) unsigned default NULL,
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  `modifier_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `type` (`layout_id`,`prototype`(10),`name`(10))
-) ENGINE=InnoDB;
-
-
-CREATE TABLE `tag` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `name` varchar(255) character set utf8 collate utf8_general_ci default NULL,
-  `site_id` int(10) unsigned default NULL,
-  `type` enum('Story','Image') default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `tags` (`site_id`,`type`,`name`)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE `tag_hub` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `tag_id` int(10) unsigned default NULL,
-  `tagged_id` int(10) unsigned default NULL,
-  `tagged_type` enum('Story','Image') default NULL,
-  `user_id` int(10) unsigned default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `tagged` (`tag_id`,`tagged_type`,`tagged_id`)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE `vote` (
-  `id` int(10) unsigned NOT NULL default '0',
-  `poll_id` int(10) unsigned default NULL,
-  `choice_id` int(10) unsigned default NULL,
-  `creator_name` varchar(255) character set utf8 collate utf8_general_ci default NULL default NULL,
-  `created` datetime default NULL,
-  `creator_id` int(10) unsigned default NULL,
-  `modified` datetime default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `poll_id` (`poll_id`),
-  KEY `creator_id` (`creator_id`),
-  KEY `choice_id` (`choice_id`),
-  KEY `creator_name` (`creator_name`(20))
-) ENGINE=InnoDB;
-
-
-SET FOREIGN_KEY_CHECKS = 1;
-
-insert into `layout` ( `id`, `site_id`, `mode`) values ( '1', '1', 'default');
-
-insert into `site` ( `id`, `name`, `layout_id`, `status`, `mode`) values ( '1', 'www', '1', 'trusted', 'public');
+insert into site (id, name, layout_id, status, mode) 
+      values ('1', 'www', '1', 'trusted', 'public');

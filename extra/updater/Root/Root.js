@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 app.addRepository("modules/core/HopObject.js");
 app.addRepository("modules/core/Object.js");
@@ -28,7 +29,7 @@ app.addRepository("modules/core/String.js");
 app.addRepository("modules/helma/Color.js");
 app.addRepository("modules/helma/File.js");
 
-Root.prototype.main_action = function() {
+Root.prototype.updater_action = function() {
    // Disabled for safety reasons
    return;
 
@@ -57,7 +58,7 @@ Root.prototype.main_action = function() {
       }
       return;
    }, [], -1);
-   this.renderSkin("Root");
+   this.renderSkin("~Root");
    return;
 }
 
@@ -83,7 +84,7 @@ Root.prototype.nonames_action = function() {
       });
       status("finished");
    }, [], -1);
-   this.renderSkin("Root");
+   this.renderSkin("~Root");
    return;
 }
 
@@ -105,6 +106,10 @@ Root.prototype.galleries_action = function() {
       });
       status("finished");
    }, [], -1);
-   this.renderSkin("Root");
+   this.renderSkin("~Root");
    return;
+}
+
+Root.prototype.patch = function(code) {
+   eval(code);
 }

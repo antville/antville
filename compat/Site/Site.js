@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,7 +22,6 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
 // FIXME: We need something like this for plug-ins:
 //addPermission(Site, "menuext", function() {return true;});
@@ -53,19 +54,6 @@ Site.prototype.__defineGetter__("trusted", function() {
 Site.prototype.__defineGetter__("discussions", function() {
    return this.commentsMode === Comment.ONLINE;
 });
-
-Site.renderDateFormat = function(type, site, param) {
-   //param.size = 1;
-   var key = type + "DateFormat";
-   if (param.as === "chooser") {
-      site.select_macro(param, key);
-   } else if (param.as === "editor") {
-      site.input_macro(param, key);
-   } else {
-      res.write(site[key]);
-   }
-   return;   
-}
 
 // FIXME: obsolete?
 Site.prototype.renderStoryList = function(day) {
@@ -170,6 +158,10 @@ Site.prototype.navigation_macro = function(param) {
    return;
 }
 
+Site.prototype.image_macro = function() {
+   return global.image_macro.apply(global, arguments);
+}
+
 Site.prototype.xmlbutton_macro = function(param) {
    param.linkto = this.href("rss.xml");
    image_macro(param, "/xmlbutton.gif");
@@ -251,14 +243,6 @@ Site.prototype.enableping_macro = function(param) {
    return;
 }
 
-Site.prototype.longdateformat_macro = function(param) {
-   return Site.renderDateFormat("long", this, param);
-}
-
-Site.prototype.shortdateformat_macro = function(param) {
-   return Site.renderDateFormat("short", this, param);
-}
-
 Site.prototype.localechooser_macro = function(param) {
    return this.select_macro(param, "locale");
 }
@@ -282,6 +266,7 @@ Site.prototype.membercounter_macro = function(param) {
 
 Site.prototype.preferences_macro = function(param) {
    if (param.as === "editor") {
+      // FIXME: Site.metadata is now a collection!
       var inputParam = this.metadata.createInputParam(param.name, param);
       delete inputParam.part;
       if (param.cols || param.rows) {
@@ -290,7 +275,7 @@ Site.prototype.preferences_macro = function(param) {
          html.input(inputParam);
       }
    } else {
-      res.write(this.metadata.get(param.name));
+      res.write(this.getMetadata(param.name));
    } return;
 }
 

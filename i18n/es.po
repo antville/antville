@@ -1,0 +1,2724 @@
+#
+# The Antville Project
+# http://code.google.com/p/antville
+#
+# Copyright 2001-2007 by The Antville People
+#
+# Licensed under the Apache License, Version 2.0 (the ``License''
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an ``AS IS'' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# $Revision$
+# $LastChangedBy$
+# $LastChangedDate$
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Antville-1.2-beta\n"
+"Report-Msgid-Bugs-To: mail@antville.org\n"
+"POT-Creation-Date: 2010-05-24 15:18+0200\n"
+"PO-Revision-Date: 2010-05-24 15:18+0200\n"
+"Language-Team: The Antville People <mail@antville.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:982
+#, java-format
+msgid "({0} character)"
+msgid_plural "({0} characters)"
+msgstr[0] "({0} caracteres)"
+msgstr[1] "({0} caracteres)"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:683
+msgid "A Blogger export file (.xml) will be created and available for download from here within 24 hours."
+msgstr "Un archivo de exportación de Blogger (. Xml) se creará y se puede descargar desde aquí en 24 horas."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:139
+msgid "A confirmation mail was sent to your e-mail address."
+msgstr "Un correo de confirmación es enviada a su dirección de correo electrónico."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:85
+msgid "A generic disclaimer will be automatically appended to your message."
+msgstr "Un descargo de responsabilidad genérica se añade automáticamente a su mensaje."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:97
+msgid "Abandoned"
+msgstr "Abandonado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:107
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:43
+msgid "Activation Code"
+msgstr "Código de activación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:90
+msgid "Active Threads"
+msgstr "Hilos activos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:101
+msgid "Add Choice"
+msgstr "Añadir Elección"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:278
+msgid "Add Comment"
+msgstr "Añadir comentario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:83
+msgid "Add File"
+msgstr "Agregar archivo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:5
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:115
+msgid "Add Image"
+msgstr "Añadir imagen"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:20
+msgid "Add Layout Image"
+msgstr "Añadir imagen Diseño"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:195
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:356
+msgid "Add Member"
+msgstr "Añadir miembros"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:91
+msgid "Add Poll"
+msgstr "Añadir Encuesta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:148
+msgid "Add Site"
+msgstr "Añadir sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:63
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:118
+msgid "Add Skin"
+msgstr "Añadir la piel"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:19
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:20
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:102
+msgid "Add Story"
+msgstr "Nueva Noticia"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:44
+msgid "Add Your Vote "
+msgstr "Agregue su voto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:40
+msgid "Add variable"
+msgstr "Agregar variable"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:7
+msgid "Administration"
+msgstr "Administración"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:494
+msgid "Administration Log"
+msgstr "Administración Log"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:175
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:6
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:68
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:9
+msgid "All"
+msgstr "Todos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:104
+msgid "All Files"
+msgstr "Todos los archivos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:126
+msgid "All Images"
+msgstr "Todas las imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:112
+msgid "All Polls"
+msgstr "Todas las Encuestas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:142
+msgid "All Skins"
+msgstr "Todas las Pieles"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:124
+msgid "All Stories"
+msgstr "Todas las Historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:161
+msgid "All of this will be deleted irreversibly."
+msgstr "Todo esto se eliminarán de forma irreversible."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:6
+msgid "An e-mail will be sent to notify the user of the update."
+msgstr "Un correo electrónico será enviado para notificar al usuario de la actualización."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:72
+msgid "An error occurred while processing your request:"
+msgstr "Se produjo un error al procesar su solicitud:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:2
+msgid "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>."
+msgstr "<html> Antville es un proyecto de código abierto, dirigido a la elaboración de un sitio simple sistema de hosting con muchos avanzada"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:34
+msgid "Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API:"
+msgstr "Antville sí mismos constituyen una devolución de llamada predeterminada URL invocando el método básico del ping weblogs.com API:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:3
+msgid "Antville supports some popular application programming interfaces:"
+msgstr "Antville soporta algunas interfaces de aplicaciones populares de programación:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:30
+msgid "Any"
+msgstr "Cualquier"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/Api.js:107
+msgid "Application Programming Interfaces"
+msgstr "Interfaces de programación de aplicaciones"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:187
+msgid "Archive"
+msgstr "Archivo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:162
+msgid "Are you sure you want to proceed?"
+msgstr "¿Estás seguro de que desea continuar?"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:34
+#, java-format
+msgid "Are you sure you want to remove the tag {0}?"
+msgstr "¿Está seguro que desea eliminar la etiqueta {0}?"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:84
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:185
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:37
+msgid "Ascending"
+msgstr "Ascendente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:26
+msgid "Author"
+msgstr "Autor"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:84
+msgid "Backlinks"
+msgstr "Vínculos de retroceso"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:66
+msgid "Basic"
+msgstr "Básico"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:86
+msgid "Basic Skins"
+msgstr "Básico Skins"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:162
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:151
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:172
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:123
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:250
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:260
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:117
+msgid "Best regards."
+msgstr "Un cordial saludo."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:175
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:59
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:59
+msgid "Blocked"
+msgstr "Bloqueados"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:98
+msgid "Both"
+msgstr "Ambos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:33
+msgid "Browse..."
+msgstr "Examinar ..."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:7
+#, java-format
+msgid "By {0}"
+msgstr "Por {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:90
+msgid "CSS Stylesheet"
+msgstr "De hojas de estilo CSS"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:118
+msgid "Cached Objects"
+msgstr "Los objetos almacenados en caché"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:103
+msgid "Calendar"
+msgstr "Calendario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:14
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:213
+msgid "Callback URL"
+msgstr "Callback URL"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:244
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:165
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:143
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:341
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:43
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:34
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:11
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:68
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:57
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:44
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:134
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:154
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:182
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:170
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:95
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:120
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:49
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:129
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:238
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:47
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:100
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/$Layout.skin:11
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:206
+#, java-format
+msgid "Cannot parse timestamp {0} as a date."
+msgstr "No se puede analizar timestamp {0} como una fecha."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:154
+msgid "Caution!"
+msgstr "¡Atención!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/$Choice.skin:14
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/Choice.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:85
+msgid "Choice"
+msgstr "Elección"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:7
+msgid "Click ‚ÄúCancel‚Äù now if you are not really sure you want to proceed."
+msgstr "Haga clic en ÄúCancel, Au ahora si no estás realmente seguro de que desea continuar."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:424
+msgid "Close"
+msgstr "Cerrar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:67
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:8
+msgid "Closed"
+msgstr "Cerrado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:114
+msgid "Closed Stories"
+msgstr "Cerrado Historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:154
+msgid "Comment"
+msgstr "Comentario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:69
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:5
+msgid "Comment // verb"
+msgstr "Comentario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:182
+msgid "Comments"
+msgstr "Comentarios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:33
+#, java-format
+msgid "Comments of the story are {0}"
+msgstr "Comentarios de la historia son {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:41
+msgid "Compare"
+msgstr "Comparar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:248
+msgid "Compare Skin"
+msgstr "Comparar la piel"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:176
+msgid "Confirm Deletion"
+msgstr "Confirmar eliminación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:126
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:162
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:82
+msgid "Confirm Password"
+msgstr "Confirmar contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:222
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:202
+msgid "Confirm Reset"
+msgstr "Confirmar Restablecer"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:647
+msgid "Confirm Unsubscribe"
+msgstr "Confirmar Anular"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:49
+msgid "Contact"
+msgstr "Contacto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:207
+#, java-format
+msgid "Contact User: {0}"
+msgstr "Póngase en contacto con el usuario: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:218
+#, java-format
+msgid "Content of User: {0}"
+msgstr "Contenido de usuario: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:96
+msgid "Contributor"
+msgstr "Contribuyente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:9
+msgid "Contributors"
+msgstr "Contribuyentes"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/$Layout.skin:10
+msgid "Convert"
+msgstr "Convertir"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/Layout.convert.js:25
+msgid "Convert Layout"
+msgstr "Convertir Diseño"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:179
+msgid "Could not fetch the file from the given URL."
+msgstr "No se pudo obtener el archivo desde la URL dada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:246
+msgid "Could not fetch the image from the given URL."
+msgstr "No se pudo obtener la imagen de la URL en cuestión."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:513
+msgid "Could not remove the image file from disk."
+msgstr "No se pudo quitar el archivo de imagen de disco."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:469
+msgid "Could not resize the image."
+msgstr "No se puede cambiar el tamaño de la imagen."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:495
+msgid "Could not save the image file on disk."
+msgstr "No se pudo guardar el archivo de imagen en el disco."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:99
+msgid "Could not verify your password. Please repeat your input."
+msgstr "No se pudo verificar la contraseña. Por favor, repita su entrada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:20
+msgid "Count"
+msgstr "Contar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:48
+msgid "Create"
+msgstr "Crear"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:7
+msgid "Create a site. It only takes a few clicks."
+msgstr "Crear un sitio. Sólo toma unos pocos clics."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:110
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:33
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:104
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:37
+#, java-format
+msgid "Created by {0} on {1}"
+msgstr "Creado por {0} de {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:82
+msgid "Creation Date"
+msgstr "Fecha de creación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:74
+msgid "Current Password"
+msgstr "Contraseña actual"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:22
+msgid "Date"
+msgstr "Fecha"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:27
+msgid "Date string in Unix timestamp format"
+msgstr "Fecha de cadena en formato timestamp Unix"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/Api.js:130
+msgid "Default Callback Url"
+msgstr "URL de llamada predeterminado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:117
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:65
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:61
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:94
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:13
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:50
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:30
+msgid "Delete"
+msgstr "Borrar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:36
+msgid "Delete Tag"
+msgstr "Eliminar etiqueta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:66
+msgid "Deleted"
+msgstr "Suprimido"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:83
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:184
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:36
+msgid "Descending"
+msgstr "Descendente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:26
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:31
+msgid "Description"
+msgstr "Descripción"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:79
+msgid "Details"
+msgstr "Detalles"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:15
+msgid "Development"
+msgstr "Desarrollo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:96
+msgid "Disabled"
+msgstr "Discapacitado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:284
+msgid "Disk Quota"
+msgstr "De cuota de disco"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:134
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:219
+msgid "Disk Space"
+msgstr "Espacio en disco"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:46
+msgid "Display the referrers unfiltered"
+msgstr "Mostrar los remitentes sin filtrar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:4
+#, java-format
+msgid "Displaying {0} (of {1})"
+msgstr "Mostrando {0} (de {1})"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:60
+msgid "Download // verb"
+msgstr "Descargar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:122
+#, java-format
+msgid "Download the file {0} or klick ‚ÄúStart‚Äù to create a new one."
+msgstr "Descargue el archivo {0} o Klick, ÄúStart, la Unión Africana para crear uno nuevo."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:298
+msgid "Due to privacy reasons the display of e-mail addresses is disabled."
+msgstr "Debido a razones de privacidad se refiere a la visualización de correo electrónico está deshabilitada."
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Members/Members.js:27
+msgid "Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, anymore."
+msgstr "Debido a razones de seguridad las contraseñas de usuario no se almacenan en la base de datos Antville por más tiempo. Por lo tanto, su contraseña no puede ser enviado a ti, nunca más."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:87
+msgid "E-mail"
+msgstr "E-mail"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:15
+msgid "Each Antville site provides an option in the preferences to define a callback URL that will be invoked each time the site content has changed. This way users can define custom handlers for different site events with their own code running behind this URL ‚Äì on a server and in a programming language of their choice."
+msgstr "Cada sitio Antville proporciona una opción en las preferencias para definir una dirección de devolución de llamada que se invoca cada vez que el contenido del sitio ha cambiado. De esta manera los usuarios pueden definir los controladores personalizados para eventos sitio diferente con su propio código corriendo detrás de esta URL, AI en un servidor y en un lenguaje de programación de su elección."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:216
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:115
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:64
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:6
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:59
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:92
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:48
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:72
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:40
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:27
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:70
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:79
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:6
+msgid "Edit"
+msgstr "Editar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:148
+msgid "Edit Comment"
+msgstr "Editar comentario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:125
+msgid "Edit File"
+msgstr "Editar archivo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:186
+msgid "Edit Image"
+msgstr "Editar una imagen"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:164
+#, java-format
+msgid "Edit Membership: {0}"
+msgstr "Composición Editar: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:168
+#, java-format
+msgid "Edit Poll: {0}"
+msgstr "Encuesta Editar: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:159
+#, java-format
+msgid "Edit Skin: {0}.{1}"
+msgstr "Piel Edición: {0}. {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:185
+msgid "Edit Story"
+msgstr "Editar Historia"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:5
+msgid "Edit User Profile"
+msgstr "Editar perfil de usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:175
+msgid "Enter a search term to display a list of matching users."
+msgstr "Ingrese un término de búsqueda para mostrar una lista de los usuarios se pongan en venta."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:229
+#, java-format
+msgid "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists."
+msgstr "Introduzca un filtro patrón {0} {1} por línea que se aplicarán en todas las URL en la URL de referencia y las listas de vínculo de retroceso."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:141
+msgid "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
+msgstr "Introduzca su nombre de usuario y la dirección de correo electrónico que ha usado cuando se registró. A continuación, recibirá una confirmación por e-mail con instrucciones adicionales."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/$Comment.skin:27
+#, java-format
+msgid "Erase all comments of user {0}"
+msgstr "Borrar todos los comentarios de usuario {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:22
+msgid "Export"
+msgstr "Exportación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:120
+msgid "Export Site Data"
+msgstr "Exportar datos de la web"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:14
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:155
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:19
+msgid "File"
+msgstr "Expediente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:167
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:234
+msgid "File size is exceeding the upload limit."
+msgstr "tamaño del archivo es superior al límite de subida."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:22
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:23
+msgid "Files"
+msgstr "Archivos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:40
+msgid "Filter"
+msgstr "Filtro"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:42
+msgid "Find"
+msgstr "Encontrar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:609
+#, java-format
+msgid "Found {0} result."
+msgid_plural "Found {0} results."
+msgstr[0] "Encontrado {0} resultado."
+msgstr[1] "Encontrado {0} resultados."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:126
+msgid "Free Memory"
+msgstr "Libre de la memoria"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:94
+msgid "Free Threads"
+msgstr "Libre Temas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:85
+msgid "Frontpage"
+msgstr "Inicio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:10
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:17
+msgid "Galleries"
+msgstr "Galerías"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:269
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:160
+msgid "General"
+msgstr "General"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:204
+#, java-format
+msgid "Good bye, {0}! Looking forward to seeing you again!"
+msgstr "Good bye, {0}! Mirando adelante a verle otra vez!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:332
+msgid "Grace Period"
+msgstr "Período de Gracia"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:21
+msgid "Have a lot of fun!"
+msgstr "Tiene un montón de diversión!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:140
+msgid "Have fun!"
+msgstr "Que se diviertan!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:13
+msgid "Health"
+msgstr "Salud"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:15
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:25
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:155
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:144
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:166
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:244
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:254
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:107
+#, java-format
+msgid "Hello {0}."
+msgstr "Hola {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:247
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:422
+msgid "Hide"
+msgstr "Ocultar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:51
+msgid "Hits"
+msgstr "Hits"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:15
+msgid "Home"
+msgstr "Casa"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:118
+msgid "If the user did not include contact information in the message itself, you can send your reply via the user‚Äôs contact form [2]."
+msgstr "Si el usuario no incluyen información de contacto en el propio mensaje, puede enviar su respuesta a través de los usuarios, formulario de contacto oficiales administrativos [2]."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:59
+msgid "If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too."
+msgstr "Si la anchura o la altura de la imagen superior a 100 píxeles Antville crea automáticamente una miniatura de la misma, también."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:26
+msgid "If you do not specify a name Antville will create one based on the name of the local or remote file, resp."
+msgstr "Si no se especifica un nombre Antville creará una base en el nombre del archivo local o remoto, resp."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:93
+msgid "If you enter a URL here your user name will appear as link next to your posted items."
+msgstr "Si introduce una URL aquí tu nombre de usuario aparecerá como un link al lado de sus artículos publicados."
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Members/Members.js:28
+#, java-format
+msgid "If you should really have forgotten your password, you can use the <a href=\"{0}\">password reset</a> option."
+msgstr "Si realmente debería haber olvidado su contraseña, puede utilizar el <a href=\"{0}\">restablecimiento de la contraseña</a> opción."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:54
+msgid "If you think you have received this e-mail in error please contact the maintainer of the site."
+msgstr "Si usted cree que ha recibido este e-mail por error por favor, póngase en contacto con el responsable del sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:55
+msgid "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved."
+msgstr "Si desea cambiar el tamaño de la imagen por favor, especifique su máxima anchura deseada y / o altura máxima en píxeles. Si se especifica tanto la imagen se cambiará de tamaño para que coincida con los criterios, pero la proporción de la imagen se conservarán."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:156
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:29
+msgid "Image"
+msgstr "Imagen"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:168
+#, java-format
+msgid "Image: {0}"
+msgstr "Imagen: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:26
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:22
+msgid "Images"
+msgstr "Imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:56
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:21
+msgid "Import"
+msgstr "Importación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:277
+msgid "Import Layout"
+msgstr "Importar plantilla"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:134
+msgid "Import Site Data"
+msgstr "Importar datos de la web"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:14
+msgid "Interfaces"
+msgstr "Interfaces"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:308
+msgid "Interval"
+msgstr "Intervalo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:96
+msgid "JavaScript"
+msgstr "Javascript"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:192
+msgid "Language"
+msgstr "Idioma"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:212
+msgid "Last Login"
+msgstr "Último inicio de sesión"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:81
+msgid "Last Update"
+msgstr "Ultima actualización de la"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:36
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:107
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:40
+#, java-format
+msgid "Last modified by {0} on {1}"
+msgstr "Última modificación por {0} de {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:87
+msgid "Last modified:"
+msgstr "Última modificación:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:68
+msgid "Last updated on"
+msgstr "Última actualización el"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:158
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:28
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:29
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/Layout.js:40
+#: /Users/tobi/Projects/helma/apps/antville/compat/Site/Site.js:112
+msgid "Layout"
+msgstr "Disposición"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:80
+msgid "Layout Images"
+msgstr "Diseño de Imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:64
+msgid "Lines added to original skin"
+msgstr "Líneas añadido a la piel original"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:60
+msgid "Lines removed from original skin"
+msgstr "Líneas eliminado de la piel original"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:63
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:5
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:67
+msgid "Link"
+msgstr "Enlace"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:9
+msgid "Log"
+msgstr "Log"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/LogEntry/LogEntry.js:29
+msgid "Log Entry"
+msgstr "Entrada de Log"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:2
+#, java-format
+msgid "Logged in as {0}"
+msgstr "Identificados como {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:183
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:196
+msgid "Login"
+msgstr "Login"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:14
+msgid "Login // verb"
+msgstr "Login"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:10
+msgid "Logout // verb"
+msgstr "Desconectarse"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:200
+msgid "Long Date Format"
+msgstr "Formato largo Fecha"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:46
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:79
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:57
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:33
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:20
+msgid "Macro"
+msgstr "Macro"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:95
+msgid "Main Menu"
+msgstr "Menú Principal"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:96
+msgid "Manager"
+msgstr "Gerente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:8
+msgid "Managers"
+msgstr "Gerentes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:49
+msgid "Max. height"
+msgstr "Max. altura"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:45
+msgid "Max. width"
+msgstr "Max. ancho"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:94
+msgid "Member Files"
+msgstr "Miembros Archivos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:74
+msgid "Member Images"
+msgstr "Miembros Imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:69
+msgid "Member Polls"
+msgstr "Miembro Encuestas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:80
+msgid "Member Stories"
+msgstr "Historias de miembros"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:43
+msgid "Member since"
+msgstr "Miembro desde"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:25
+msgid "Members"
+msgstr "Miembros"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:29
+msgid "Membership"
+msgstr "Afiliación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:89
+msgid "Message"
+msgstr "Mensaje"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:322
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:164
+msgid "Mode"
+msgstr "Modo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:67
+msgid "Modified"
+msgstr "Modificado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:126
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:149
+msgid "Modified Skins"
+msgstr "Modificado Skins"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:82
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:18
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:23
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:37
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:8
+msgid "Name"
+msgstr "Nombre"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:28
+msgid "Name of the user who triggered the event"
+msgstr "Nombre del usuario que ha activado el evento"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:80
+msgid "Navigation"
+msgstr "Navegación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:78
+msgid "New Password"
+msgstr "Nueva Contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/compat/Global/aspects.js:82
+msgid "Next page"
+msgstr "Página siguiente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:214
+msgid "No differences were found"
+msgstr "No se encontraron diferencias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:325
+msgid "No user found to add as member."
+msgstr "Ningún usuario encontrado añadir como miembros."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:95
+msgid "Nobody"
+msgstr "Nadie"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:88
+msgid "None"
+msgstr "Ninguno"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:53
+msgid "Not registered yet?"
+msgstr "No está registrado?"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:16
+msgid "Note"
+msgstr "Nota"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:326
+msgid "Notification Period"
+msgstr "Periodo de Notificación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:272
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:208
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:106
+msgid "Number of Errors (last 5 min) "
+msgstr "Número de errores (últimos 5 minutos)"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:98
+msgid "Number of Requests (last 5 min)"
+msgstr "Número de solicitudes (últimos 5 minutos)"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:122
+msgid "Number of Sessions"
+msgstr "Número de sesiones"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:10
+msgid "Number of public sites"
+msgstr "Número de sitios públicos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:25
+msgid "Numeric identifier of the resource"
+msgstr "Numérico identificador del recurso"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:14
+#, java-format
+msgid "Of course, you can now also start to create <a href=\"{0}\">stories</a>, upload some <a href=\"{1}\">images</a> or <a href=\"{2}\">files</a>, create your first <a href=\"{3}\">poll</a> or get a glimpse of Antville‚Äôs wonderful customization possibilities by having a look at the <a href=\"{4}\">layout section</a> where you can modify the appearance of your site according to your needs."
+msgstr "Por supuesto, usted ahora puede empezar a crear <a href=\"{0}\">historias</a> , subir algunas <a href=\"{1}\">imágenes</a> o <a href=\"{2}\">archivos</a> , crear su primera <a href=\"{3}\">encuesta</a> o echar un vistazo a Antville, maravillosas posibilidades de personalización AO, echando un vistazo en la <a href=\"{4}\">sección de diseño</a> donde se puede modificar la apariencia de su sitio de acuerdo a sus necesidades."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:5
+#, java-format
+msgid "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>."
+msgstr "Una instalación Antville puede acoger hasta varios miles de <a href=\"{0}\">sitios</a> ."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:331
+#, java-format
+msgid "One user found."
+msgid_plural "{0} users found."
+msgstr[0] "Un usuario que se encuentra."
+msgstr[1] "{0} usuarios encontrados."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:85
+#, java-format
+msgid "Online for {0} day"
+msgid_plural "Online for {0} days"
+msgstr[0] "En línea para {0} días"
+msgstr[1] "En línea para {0} días"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:307
+msgid "Oops, your old password is incorrect. Please re-enter it."
+msgstr "Vaya, tu contraseña antigua es incorrecta. Por favor, vuelva a introducirla."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:68
+msgid "Open"
+msgstr "Abierto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:30
+msgid "Options"
+msgstr "Opciones"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:96
+msgid "Owner"
+msgstr "Propietario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:7
+msgid "Owners"
+msgstr "Propietarios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:46
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:116
+msgid "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE."
+msgstr "POR FAVOR, no responda a la dirección del remitente de este mensaje."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:176
+msgid "Paging"
+msgstr "Buscapersonas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:122
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:57
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:160
+msgid "Password"
+msgstr "Contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:59
+msgid "Password forgotten?"
+msgstr "Ha olvidado su contraseña?"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:91
+msgid "Personal URL"
+msgstr "Personal URL"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:316
+msgid "Phase-Out"
+msgstr "Calendario de Reducción"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:352
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:101
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:86
+msgid "Please avoid special characters or HTML code in the name field."
+msgstr "Por favor, evite los caracteres especiales o código HTML en el campo de nombre."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
+msgid "Please be aware of the fact that there is no ‚Äúundo‚Äù, so if you click ‚ÄúProceed‚Äù below the changes will be applied irreversibly."
+msgstr "Por favor, tenga en cuenta el hecho de que no existe, Äúundo, AU, por lo que si hace clic en, ÄúProceed, por debajo de la Au cambios se aplicarán de manera irreversible."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:99
+msgid "Please choose a prototype and enter a skin name"
+msgstr "Por favor, elija un prototipo y escriba un nombre de la piel"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:176
+msgid "Please choose a role for this member."
+msgstr "Por favor, elija un papel de este usuario."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:705
+msgid "Please choose a site you want to edit."
+msgstr "Por favor, elija un sitio que desea modificar."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:722
+msgid "Please choose a user you want to edit."
+msgstr "Por favor, elija un usuario que desea editar."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:109
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:118
+msgid "Please contact an administrator for further information."
+msgstr "Por favor, póngase en contacto con un administrador para más información."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:348
+msgid "Please enter a name for your new site."
+msgstr "Por favor, escriba un nombre para su nuevo sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:153
+msgid "Please enter a new password."
+msgstr "Por favor, introduzca una nueva contraseña."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:591
+msgid "Please enter a query in the search form."
+msgstr "Por favor, introduzca su consulta en el buscador."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:126
+msgid "Please enter a user name and e-mail address."
+msgstr "Por favor, introduzca un nombre de usuario y dirección de correo electrónico."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:82
+msgid "Please enter a username."
+msgstr "Por favor, introduzca un nombre de usuario."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:326
+msgid "Please enter a valid URL"
+msgstr "Por favor, introduzca una URL válida"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:92
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:323
+msgid "Please enter a valid e-mail address"
+msgstr "Por favor, introduzca una dirección válida de correo electrónico"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:160
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:199
+msgid "Please enter at least something into the ‚Äútitle‚Äù or ‚Äútext‚Äù field."
+msgstr "Por favor, introduzca al menos algo en el, Äútitle, AU o, Äútext, el campo de la UA."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:30
+msgid "Please enter new name for this tag"
+msgstr "Por favor, introduzca el nuevo nombre para esta etiqueta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:192
+msgid "Please enter the message text."
+msgstr "Por favor introduce el texto del mensaje."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:6
+msgid "Please enter the name of the new variable:"
+msgstr "Por favor, introduzca el nombre de la nueva variable:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:82
+msgid "Please enter your message to the user below."
+msgstr "Por favor ingrese su mensaje al usuario a continuación."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:187
+msgid "Please fill out the whole form to create a valid poll."
+msgstr "Por favor llene todo el formulario para crear una encuesta válida."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:128
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:257
+msgid "Please login first."
+msgstr "Por favor, identifíquese primero."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:29
+msgid "Please note that you cannot change the name after the site was created."
+msgstr "Tenga en cuenta que no puede cambiar el nombre después de que el sitio fue creado."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:311
+msgid "Please specify a new password."
+msgstr "Por favor, especifique una nueva contraseña."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:244
+msgid "Please upload a zipped layout archive"
+msgstr "Por favor, sube un archivo comprimido de diseño"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:158
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:29
+msgid "Poll"
+msgstr "Encuesta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:207
+#, java-format
+msgid "Poll Results: {0}"
+msgstr "Resultados de Encuesta: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:131
+#, java-format
+msgid "Poll: {0}"
+msgstr "Encuesta: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:23
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:24
+msgid "Polls"
+msgstr "Encuestas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:27
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:28
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.skin:3
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/compat/Global/aspects.js:79
+msgid "Previous page"
+msgstr "Página Anterior"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:105
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:61
+msgid "Privileged"
+msgstr "Privilegiado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:294
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:36
+msgid "Privileges"
+msgstr "Privilegios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:302
+msgid "Probation Period"
+msgstr "Período de prueba"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:164
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:10
+msgid "Proceed"
+msgstr "Proceder"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:47
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:80
+msgid "Properties"
+msgstr "Propiedades"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:7
+msgid "Prototype"
+msgstr "Prototipo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:68
+msgid "Public"
+msgstr "Público"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:165
+msgid "Public Sites"
+msgstr "Sitios públicos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:420
+msgid "Publish"
+msgstr "Publicar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:97
+msgid "Question"
+msgstr "Cuestión"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:150
+msgid "Queued Callbacks"
+msgstr "Devoluciones de llamada en cola"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:138
+msgid "Queued Log Entries"
+msgstr "Entradas en cola Registrarse"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:146
+msgid "Queued Mails"
+msgstr "Mensajes en cola"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:142
+msgid "Queued Requests"
+msgstr "Las solicitudes en cola"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:251
+msgid "Re-run"
+msgstr "Vuelva a ejecutar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:78
+msgid "Read more"
+msgstr "Leer más"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Members/Members.js:26
+msgid "Recover your password"
+msgstr "Recupera tu contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:54
+msgid "Referrer"
+msgstr "Referente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:225
+msgid "Referrer Spam Filter"
+msgstr "Referente Filtro Spam"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:30
+msgid "Referrers"
+msgstr "Referido"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:133
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:116
+msgid "Register"
+msgstr "Registro"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:211
+msgid "Registered"
+msgstr "Registrado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:182
+msgid "Registration"
+msgstr "Registro"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:89
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:106
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:60
+msgid "Regular"
+msgstr "Regular"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:67
+msgid "Remember Login"
+msgstr "Recordar la cuenta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:32
+msgid "Rename Tag"
+msgstr "Cambie el nombre del tag"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:278
+msgid "Reply-To"
+msgstr "Responder a"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:173
+msgid "Request Password Reset"
+msgstr "Solicitud para restablecer una contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:90
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:191
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:42
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:23
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:42
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:42
+msgid "Reset"
+msgstr "Reajustar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:163
+msgid "Reset Password"
+msgstr "Perdí mi Contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:24
+msgid "Resource type (e.g. Story or Comment)"
+msgstr "Tipo de recurso (por ejemplo, historia o comentario)"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:42
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:46
+msgid "Restore"
+msgstr "Restaurar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:97
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:67
+msgid "Restricted"
+msgstr "Restringido"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:71
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:22
+msgid "Results"
+msgstr "Resultados"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:15
+msgid "Role"
+msgstr "Papel"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:30
+msgid "Root"
+msgstr "Raíz"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:251
+msgid "Run"
+msgstr "Ejecutar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:8
+msgid "Running"
+msgstr "Funcionamiento"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:102
+msgid "Running Polls"
+msgstr "Ejecución de Encuestas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:243
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:142
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:340
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:41
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:33
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:67
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:43
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:169
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:22
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:114
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:237
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:19
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:45
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:99
+msgid "Save"
+msgstr "Guardar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:16
+msgid "Save and Edit"
+msgstr "Guardar y editar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:117
+msgid "Save and Run"
+msgstr "Guardar y ejecutar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:88
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:189
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:40
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:181
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:100
+msgid "Search"
+msgstr "Búsqueda"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:614
+msgid "Search results"
+msgstr "Resultados de la búsqueda"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:190
+msgid "Select a user from the list below and click the ‚ÄúAdd Member‚Äù button."
+msgstr "Seleccione un usuario de la siguiente lista y haga clic en el, ÄúAdd miembros, botón de la UA."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:94
+msgid "Send"
+msgstr "Enviar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:153
+msgid "Send Request"
+msgstr "Enviar solicitud"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:450
+msgid "Setup"
+msgstr "Disposición"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:204
+msgid "Short Date Format"
+msgstr "Formato de fecha corta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:245
+msgid "Show"
+msgstr "Mostrar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:16
+#, java-format
+msgid "Since you are an administrator of this Antville installation you are entitled to administer <a href=\"{0}\">sites</a> and <a href=\"{1}\">users</a>, view the <a href=\"{2}\">administration log</a> and configure the <a href=\"{3}\">setup</a>."
+msgstr "Puesto que usted es un administrador de esta instalación Antville usted tiene derecho a administrar <a href=\"{0}\">los sitios</a> y <a href=\"{1}\">los usuarios</a> , ver el <a href=\"{2}\">registro de la administración</a> y configuración de la <a href=\"{3}\">instalación</a> ."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:29
+msgid "Site"
+msgstr "Sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:533
+msgid "Site Administration"
+msgstr "Administración de sitios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:263
+msgid "Site Contributors"
+msgstr "Sitio Contribuyentes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:292
+msgid "Site Creation"
+msgstr "Para crear un sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:252
+msgid "Site Managers"
+msgstr "Los administradores del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:83
+msgid "Site Members"
+msgstr "Miembros del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:241
+msgid "Site Owners"
+msgstr "Los propietarios del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:75
+msgid "Site Page"
+msgstr "Page del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:298
+msgid "Site Preferences"
+msgstr "Preferencias del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:582
+msgid "Site Referrers"
+msgstr "Sitio Referido"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:274
+msgid "Site Subscribers"
+msgstr "Suscriptores de la web"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:663
+msgid "Site is scheduled for export."
+msgstr "Sitio está programado para la exportación."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:717
+msgid "Site is scheduled for import."
+msgstr "Sitio está prevista para la importación."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:10
+msgid "Sites"
+msgstr "Sitios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:28
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:193
+msgid "Skin"
+msgstr "Piel"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:27
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:29
+msgid "Skins"
+msgstr "Skins"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:71
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:66
+msgid "Sorry!"
+msgstr "¡Lo sentimos!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:73
+msgid "Sorry, an owner of a site cannot be removed."
+msgstr "Lo sentimos, no un propietario de un terreno no se puede quitar."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:88
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:107
+msgid "Sorry, the user name you entered already exists. Please enter a different one."
+msgstr "Lo sentimos, el nombre de usuario que ha entrado ya existe. Por favor, introduzca otra distinta."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:84
+msgid "Sorry, the username you entered is too long. Please choose a shorter one."
+msgstr "Lo sentimos, el nombre de usuario que ha entrado es demasiado largo. Por favor, elija una más corta."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:63
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:94
+msgid "Sorry, there is no disk space left. Please try to delete some files or images first."
+msgstr "Lo sentimos, no hay espacio en el disco. Por favor, intenta eliminar algunos archivos o imágenes en primer lugar."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:255
+msgid "Sorry, this layout is not compatible with Antville."
+msgstr "Lo sentimos, este diseño no es compatible con Antville."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:178
+msgid "Sorry, you are not allowed to edit your own membership."
+msgstr "Lo sentimos, no se les permite editar sus propios miembros."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:725
+msgid "Sorry, you are not allowed to modify your own account."
+msgstr "Lo sentimos, no se le permite modificar su propia cuenta."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:399
+msgid "Sorry, your input did not match any registered user."
+msgstr "Lo sentimos, tu entrada no ha coincidido con ningún usuario registrado."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:79
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:180
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:35
+msgid "Sort"
+msgstr "Especie"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:127
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:143
+msgid "Start"
+msgstr "Empezar"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:58
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:90
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:21
+msgid "Status"
+msgstr "Estado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:249
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:127
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:143
+msgid "Stop"
+msgstr "Alto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:20
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:29
+msgid "Stories"
+msgstr "Historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:159
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:29
+msgid "Story"
+msgstr "Historia"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:88
+msgid "Story Archive"
+msgstr "Archivo de historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:7
+msgid "Subscribe // verb"
+msgstr "Suscribir"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:59
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:97
+msgid "Subscriber"
+msgstr "Suscriptor"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:10
+msgid "Subscribers"
+msgstr "Suscriptores"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:308
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:37
+msgid "Subscriptions"
+msgstr "Suscripciones"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:346
+#, java-format
+msgid "Successfully added {0} to the list of members."
+msgstr "Ha agregado {0} a la lista de miembros."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:135
+msgid "Successfully created your site."
+msgstr "De crear su sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:623
+#, java-format
+msgid "Successfully subscribed to site {0}."
+msgstr "Suscrito con éxito al sitio {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:637
+#, java-format
+msgid "Successfully unsubscribed from site {0}."
+msgstr "Éxito no suscritas en el sitio {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:151
+msgid "Successfully updated the layout."
+msgstr "Actualizado correctamente el diseño."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:442
+msgid "Successfully updated the setup."
+msgstr "Actualizado correctamente la configuración."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.skin:2
+msgid "System is up and running."
+msgstr "El sistema está en funcionamiento."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:29
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:92
+#, java-format
+msgid "Tag: {0}"
+msgstr "Tag: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:172
+msgid "Tagline"
+msgstr "Lema"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:16
+#: /Users/tobi/Projects/helma/apps/antville/code/Tags/Tags.js:29
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:26
+msgid "Tags (separated by commas):"
+msgstr "Etiquetas (separadas por comas):"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/_Manager/Manager.js:10
+#, java-format
+msgid "Tags of site {0}"
+msgstr "Etiquetas del sitio {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:28
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:21
+msgid "Text"
+msgstr "Texto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:123
+msgid "Thanks, your vote was registered. You can change your mind until the poll is closed."
+msgstr "Gracias, su voto fue registrado. Usted puede cambiar de opinión hasta que la encuesta está cerrada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:22
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:32
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:163
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:152
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:173
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:141
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:124
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:251
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:261
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:118
+msgid "The Management"
+msgstr "La Dirección"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:10
+msgid "The URL endpoint for each of these APIs is located at"
+msgstr "El criterio de valoración URL para cada una de estas API se encuentra en"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:21
+msgid "The callback URL will be invoked as an HTTP POST request with the following parameters:"
+msgstr "La dirección URL de devolución de llamada se invoca como una petición HTTP POST con los siguientes parámetros:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:515
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:546
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:116
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:178
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:216
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:155
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:289
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:147
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:107
+msgid "The changes were saved successfully."
+msgstr "Los cambios se han guardado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:350
+msgid "The chosen name is too long. Please enter a shorter one."
+msgstr "El nombre elegido es demasiado largo. Por favor, introduzca una más corta."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:269
+msgid "The comment was successfully created."
+msgstr "El comentario se ha creado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:138
+msgid "The comment was successfully updated."
+msgstr "El comentario se ha actualizado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:10
+#, java-format
+msgid "The easiest way to customize your site is to change its <a href=\"{0}\">preferences</a>. You can change the language and time zone or the main title of your site, open or close it and much more."
+msgstr "La forma más sencilla de personalizar su sitio es para cambiar su <a href=\"{0}\">preferencia</a> . Usted puede cambiar el idioma y la zona horaria o el título principal de su sitio, abrirla o cerrarla y mucho más."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:43
+msgid "The essential ECMAScript code is shown below."
+msgstr "Lo esencial de código ECMAScript se muestra a continuación."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:74
+msgid "The file was successfully added."
+msgstr "El archivo se ha añadido correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:106
+msgid "The image was successfully added."
+msgstr "La imagen se ha añadido correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:267
+msgid "The layout was successfully imported."
+msgstr "El diseño se ha importado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:26
+#, java-format
+msgid "The name will be part of the URL of your site. E.g. if you enter ‚Äú{0}‚Äù as the name your site will be reachable via this url: {1}"
+msgstr "El nombre será parte de la URL de su sitio. Por ejemplo, si usted entra, Au {0}, la UA como el nombre de su sitio será accesible a través de esta url: {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:155
+msgid "The passwords do not match."
+msgstr "Las contraseñas no coinciden."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:67
+msgid "The path you requested was not found:"
+msgstr "La ruta que has solicitado no se encontró:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:82
+msgid "The poll was created successfully."
+msgstr "La encuesta se ha creado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:160
+msgid "The poll was updated successfully."
+msgstr "La encuesta se ha actualizado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:2
+#, java-format
+msgid "The site is currently {0}."
+msgstr "El sitio está actualmente {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:136
+#, java-format
+msgid "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours."
+msgstr "El sitio está programado para importar el archivo {0}. Los datos importados sitio estará disponible dentro de 24 horas."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:117
+msgid "The site you requested has been blocked."
+msgstr "El sitio que solicita ha sido bloqueada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:246
+#, java-format
+msgid "The site {0} at {1} will be blocked in {2} because it is being restricted for too long."
+msgstr "El sitio {0} a {1} se bloquearán en {2} porque está siendo restringido por mucho tiempo."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:256
+#, java-format
+msgid "The site {0} at {1} will be deleted in {2} because it has been considered as abandoned."
+msgstr "El sitio {0} a {1} se eliminarán en {2}, ya que ha sido considerado como abandonado."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:510
+#, java-format
+msgid "The site {0} is queued for removal."
+msgstr "El sitio {0} se pone en cola para su eliminación."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:31
+#, java-format
+msgid "The story is {0} and {1}"
+msgstr "La historia es {0} y {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:94
+msgid "The story was successfully created."
+msgstr "La historia se ha creado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:176
+msgid "The story was successfully updated."
+msgstr "La historia se ha actualizado correctamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:30
+msgid "The title will appear in the header of every page of your site. You can change it anytime you want."
+msgstr "El título aparecerá en la cabecera de cada página de su sitio. Puede cambiarlo en cualquier momento que desee."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:157
+#, java-format
+msgid "The user {0} has added your account to the list of members of the site {1} at {2}."
+msgstr "El usuario {0} ha añadido a su cuenta a la lista de miembros del sitio {1} a {2}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:146
+#, java-format
+msgid "The user {0} has modified your membership of the site {1} at {2}."
+msgstr "El usuario {0} ha modificado su calidad de miembro del sitio {1} a {2}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:178
+#, java-format
+msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
+msgstr "La macro {0} no se encuentra. Es esencial para el acceso al sitio y debe estar presente en esta piel."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:354
+msgid "There already is a site with this name."
+msgstr "Ya existe un sitio con ese nombre."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:666
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:704
+#, java-format
+msgid "There is already another job queued for this site: {0}"
+msgstr "Ya existe un trabajo en cola para este sitio: {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:172
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:239
+msgid "There was nothing to upload. Please be sure to choose a file."
+msgstr "No había nada que cargar. Por favor, asegúrese de elegir un archivo."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:169
+msgid "This URL is not valid for resetting your password."
+msgstr "Esta URL no es válida para restablecer su contraseña."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:41
+#, java-format
+msgid "This callback URL invokes the ping method of the {0}."
+msgstr "Esta URL de llamada llama al método del ping {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:216
+msgid "This comment was removed by the author."
+msgstr "Este comentario fue eliminado por el autor."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:217
+msgid "This comment was removed."
+msgstr "Este comentario fue eliminado."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:252
+msgid "This does not seem to be a (valid) JPG, PNG or GIF image file."
+msgstr "Esto no parece ser un (válido) JPG, PNG o GIF imagen."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:57
+msgid "This is the directory of public sites hosted here, in alphabetical order."
+msgstr "Este es el directorio de sitios públicos acogido aquí, en orden alfabético."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:4
+#, java-format
+msgid "This means that only you and other {0} of this site have access to it. You can safely start to customize it or to fill it with all the content you have in mind."
+msgstr "Esto significa que sólo usted y otros {0} de este sitio tienen acceso a ella. De forma segura puede empezar a personalizar o llenarlo con todo el contenido que usted tiene en mente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:48
+msgid "This message was automatically sent to you because you are listed as recipient of notification e-mails of the corresponding site."
+msgstr "Este mensaje se enviará automáticamente a usted ya que aparece como destinatario de correos electrónicos de notificación de la página correspondiente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:109
+#, java-format
+msgid "This message was sent to you by an anonymous user of the site {0} [1]."
+msgstr "Este mensaje fue enviado por un usuario anónimo de la página {0} [1]."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:112
+#, java-format
+msgid "This message was sent to you by the user {0} of the site {1} [1]."
+msgstr "Este mensaje le fue enviado por el usuario {0} de la página {1} [1]."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:38
+#, java-format
+msgid "This poll was closed by {0} on {1}"
+msgstr "Esta encuesta fue cerrada por {0} de {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:116
+#, java-format
+msgid "This site is going to be deleted completely and irreversibly after {0}."
+msgstr "Este sitio va a ser eliminado completamente y de forma irreversible después de {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:10
+#, java-format
+msgid "This site was created by {0} on {1}."
+msgstr "Este sitio fue creado por {0} de {1}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:97
+msgid "This skin contains additional JavaScript code that will be included in every page."
+msgstr "Esta piel contiene código JavaScript adicionales que se incluirán en cada página."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:91
+msgid "This skin contains the Cascading Stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin will affect the general appearance of your site."
+msgstr "Esta piel contiene la hoja de estilos en cascada (CSS) definiciones, por ejemplo, fuentes, tamaños de fuente, colores, etc modificación de esta piel se afecten al aspecto general de su sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:76
+msgid "This skin defines the basic structure of your site. Modifying it will affect the general appearance of your site."
+msgstr "Esta piel define la estructura básica de su sitio. Modificación que se afecten al aspecto general de su sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:81
+msgid "This skin is used to display the navigation links on the page."
+msgstr "Esta piel se utiliza para mostrar los enlaces de navegación en la página."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:86
+msgid "This skin is used to render the front page of your site."
+msgstr "Esta piel se utiliza para representar la página principal de su sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:401
+msgid "This user is already a member of this site."
+msgstr "Este usuario ya es miembro de este sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:8
+msgid "Thus, it is publicly accessible for every visitor."
+msgstr "Por lo tanto, es de acceso público para cada visitante."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:51
+msgid "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences."
+msgstr "Por lo tanto, usted será notificado cada vez que el sitio ha sufrido cambios como se especifica en las preferencias del sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:196
+msgid "Time Zone"
+msgstr "Zona horaria"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:41
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:168
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:17
+msgid "Title"
+msgstr "Título"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:29
+msgid "Title or name of the site"
+msgstr "Título o nombre del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:112
+msgid "To confirm the request please click the link below."
+msgstr "Para confirmar la solicitud, por favor haga clic en el enlace de abajo."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:23
+msgid "To create a new site you need to fill out the form below."
+msgstr "Para crear un sitio nuevo es necesario rellenar el siguiente formulario."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:16
+msgid "To insert this image into a story or comment of this site copy and paste the following code:"
+msgstr "Para insertar esta imagen en una historia o comentario de los ejemplares de este sitio y pegue el siguiente código:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:113
+msgid "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to be set to permit the execution of JavaScript."
+msgstr "Para hacer remitentes de spam y vínculos de retroceso inútiles, se muestran usando JavaScript en el cliente. Para verlos, su navegador necesita estar configurado para permitir la ejecución de JavaScript."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:4
+msgid "To modify a membership select the desired role from the drop-down menu and click the ‚ÄúSave‚Äù button."
+msgstr "Para modificar una membresía seleccione la función deseada en el menú desplegable y haga clic en el, ÄúSave, botón de la UA."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:83
+msgid "To prevent abuse, the sender address and the subject of the e-mail are set to predefined values."
+msgstr "Para evitar abusos, la dirección del remitente y el asunto del correo electrónico se fijan a los valores predefinidos."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:328
+#, java-format
+msgid "Too many users found, displaying the first {0} matches only."
+msgstr "Demasiados usuarios encontrados, mostrando los primeros {0} partidos solamente."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:30
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:131
+msgid "Top Stories"
+msgstr "Noticias más importantes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:34
+msgid "Total"
+msgstr "Total"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:110
+msgid "Total Errors"
+msgstr "Total de errores"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:134
+msgid "Total Memory"
+msgstr "Memoria total"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:102
+msgid "Total Requests"
+msgstr "Total solicitudes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:114
+msgid "Total Xml-Rpc Requests"
+msgstr "Número total de peticiones XML-RPC"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:9
+msgid "Total sites hosted here"
+msgstr "Total sitios alojados aquí"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:89
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:106
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:60
+msgid "Trusted"
+msgstr "De confianza"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:71
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:173
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:28
+msgid "Type"
+msgstr "Tipo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:26
+msgid "URL string of the resource"
+msgstr "URL de cadena de los recursos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:30
+msgid "URL string of the site"
+msgstr "La cadena URL del sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:155
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:165
+msgid "Unfortunately, your login failed. Maybe a typo?"
+msgstr "Desafortunadamente, su entrada no. Tal vez un error?"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:101
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:313
+msgid "Unfortunately, your passwords did not match. Please repeat your input."
+msgstr "Desafortunadamente, las contraseñas no coinciden. Por favor, repita su entrada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:74
+msgid "Unsubscribe"
+msgstr "Darse de baja"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:66
+msgid "Untitled"
+msgstr "Sin título"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:91
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:192
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:43
+msgid "Update"
+msgstr "Actualización"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:285
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:106
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:35
+msgid "Updates"
+msgstr "Actualizaciones"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:86
+msgid "Uptime"
+msgstr "Uptime"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:130
+msgid "Used Memory"
+msgstr "Memoria utilizada"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:11
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:29
+msgid "User"
+msgstr "Usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:558
+msgid "User Administration"
+msgstr "Administración del Usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:225
+msgid "User Profile"
+msgstr "Perfil del usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:296
+msgid "User Role"
+msgstr "Rol de usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:130
+msgid "User name and e-mail address do not match."
+msgstr "Nombre de usuario y dirección de correo electrónico no coinciden."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:17
+#, java-format
+msgid "User {0} has added {1} #{2} to the site {3}:"
+msgstr "Usuario {0} ha añadido {1} {2} # en la página de {3}:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:27
+#, java-format
+msgid "User {0} has modified {1} #{2} at the site {3}:"
+msgstr "Usuario {0} ha modificado {1} {2} # en el lugar de {3}:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:183
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:49
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:11
+msgid "Users"
+msgstr "Usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:93
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:28
+msgid "View // verb"
+msgstr "Vista"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:70
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Vote/Vote.js:29
+msgid "Vote"
+msgstr "Votación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:3
+msgid "Warning!"
+msgstr "¡Atención!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:168
+#, java-format
+msgid "We are sorry to inform you that the user {0} has cancelled your membership of the site {1} at {2}."
+msgstr "Lamentamos informarle de que el usuario {0} ha cancelado su membresía del sitio {1} a {2}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:134
+#, java-format
+msgid "Welcome to {0}, {1}!"
+msgstr "Bienvenido a {0}, {1}!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:187
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:142
+#, java-format
+msgid "Welcome to {0}, {1}. Have fun!"
+msgstr "Bienvenido a {0}, {1}. Que se diviertan!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:9
+#, java-format
+msgid "Welcome to {0}."
+msgstr "Bienvenido a {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:106
+#, java-format
+msgid "Welcome to ‚Äú{0}‚Äù, {1}. Have fun!"
+msgstr "Bienvenidos a, Au {0}, AU, {1}. Que se diviertan!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/$Comment.skin:32
+#, java-format
+msgid "Yes, really erase {0} comment"
+msgid_plural "Yes, really erase {0} comments"
+msgstr[0] "Sí, realmente borrar comentarios {0}"
+msgstr[1] "Sí, realmente borrar comentarios {0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:109
+#, java-format
+msgid "You (or someone pretending to be you) requested to reset your account password for the site {0} at {1}."
+msgstr "Usted (o alguien haciéndose pasar por usted) solicitó para restablecer la contraseña de la cuenta para el sitio {0} a {1}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:189
+#, java-format
+msgid "You are about to delete a comment by user {0}."
+msgstr "Estás a punto de borrar un comentario por el usuario {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:228
+#, java-format
+msgid "You are about to delete a poll by user {0}."
+msgstr "Usted está a punto de borrar una encuesta realizada por el usuario {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:668
+#, java-format
+msgid "You are about to delete a story by user {0}."
+msgstr "Usted está a punto de borrar una historia de usuario {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:250
+#, java-format
+msgid "You are about to delete the file {0}."
+msgstr "Usted está a punto de eliminar el archivo {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:522
+#, java-format
+msgid "You are about to delete the image {0}."
+msgstr "Estás a punto de borrar la imagen {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:275
+#, java-format
+msgid "You are about to delete the membership of user {0}."
+msgstr "Usted está a punto de eliminar la composición de usuario {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:155
+#, java-format
+msgid "You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}."
+msgstr "Usted está a punto de eliminar todo el sitio que actualmente contiene {0}, {1}, {2}, {3} y {4}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:394
+#, java-format
+msgid "You are about to reset the layout of site {0}."
+msgstr "Estás a punto de restablecer el diseño de la página {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:378
+#, java-format
+msgid "You are about to reset the skin {0}.{1}."
+msgstr "Estás a punto de restablecer la piel {0}. {1}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:649
+#, java-format
+msgid "You are about to unsubscribe from site {0}."
+msgstr "Estás a punto de darse de baja desde el sitio {0}."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:135
+msgid "You are not allowed to access this part of the site."
+msgstr "No se le permite tener acceso a esta parte del sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:13
+msgid "You are not logged in"
+msgstr "Usted no se ha identificado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:160
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:149
+#, java-format
+msgid "You are now {0} of the site."
+msgstr "Ahora {0} del sitio."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:136
+msgid "You can edit your account profile and change its password any time via the following link:"
+msgstr "Puede editar su perfil de cuenta y cambie su contraseña en cualquier momento a través del siguiente enlace:"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:176
+msgid "You can use the asterisk * as wildcard."
+msgstr "Puede utilizar el asterisco * como comodín."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:143
+msgid "You did not vote, yet. You can vote until the poll is closed."
+msgstr "Usted no ha votado todavía. Puedes votar hasta que la encuesta está cerrada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:368
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:377
+#, java-format
+msgid "You need to wait {0} before you are allowed to create a new site."
+msgstr "Tienes que esperar {0} antes de que se le permite crear un sitio nuevo."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:113
+msgid "You will then be asked to change your password."
+msgstr "A continuación se le pedirá que cambie su contraseña."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:108
+msgid "Your account has been blocked."
+msgstr "Su cuenta ha sido bloqueada."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:197
+msgid "Your message was sent successfully."
+msgstr "Tu mensaje ha sido enviado con éxito."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:159
+msgid "Your password was changed."
+msgstr "Su contraseña se ha cambiado."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:196
+#, java-format
+msgid "[{0}] Message from anonymous user"
+msgstr "[{0}] Mensaje del usuario anónimo"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:195
+#, java-format
+msgid "[{0}] Message from user {1}"
+msgstr "[{0}] Mensaje del usuario {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:79
+#, java-format
+msgid "[{0}] Notification of membership cancellation"
+msgstr "[{0}] Notificación de cancelación de la membresía"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:345
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:183
+#, java-format
+msgid "[{0}] Notification of membership change"
+msgstr "[{0}] Notificación de cambio de pertenencia"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:262
+#, java-format
+msgid "[{0}] Notification of site changes"
+msgstr "[{0}] Notificación de cambios en el sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:134
+#, java-format
+msgid "[{0}] Password reset confirmation"
+msgstr "[{0}] de confirmación de restablecimiento de contraseña"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:217
+#, java-format
+msgid "[{0}] Warning: Site will be blocked"
+msgstr "[{0}] Advertencia: Sitio será bloqueada"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:191
+#, java-format
+msgid "[{0}] Warning: Site will be deleted"
+msgstr "[{0}] Advertencia: se eliminarán de la web"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:105
+#, java-format
+msgid "[{0}] Welcome to {1}!"
+msgstr "[{0}] Bienvenido a {1}!"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/Choice.js:30
+msgid "choice"
+msgstr "elección"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:54
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:38
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:88
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:15
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:37
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:51
+msgid "closed"
+msgstr "cerrado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:30
+msgid "comment"
+msgstr "comentario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:30
+msgid "custom"
+msgstr "costumbre"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:304
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:310
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:328
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:334
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:178
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:74
+msgid "days"
+msgstr "día"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:35
+msgid "deleted"
+msgstr "eliminado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:81
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:103
+msgid "disabled"
+msgstr "discapacitado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:117
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:148
+msgid "e-mail"
+msgstr "e-mail"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:184
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:189
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:216
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:82
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:104
+msgid "enabled"
+msgstr "activado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:45
+msgid "featured"
+msgstr "aparece"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:30
+msgid "file"
+msgstr "expediente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:30
+msgid "files"
+msgstr "archivos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:863
+msgid "free"
+msgstr "libre"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:17
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:44
+msgid "hidden"
+msgstr "oculto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:30
+msgid "image"
+msgstr "imagen"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:30
+msgid "images"
+msgstr "imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:22
+msgid "in // preposition"
+msgstr "en"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:30
+msgid "layout"
+msgstr "disposición"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/LogEntry/LogEntry.js:30
+msgid "log entry"
+msgstr "registro de entrada"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:30
+msgid "members"
+msgstr "miembros"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:30
+msgid "membership"
+msgstr "afiliación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:38
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:38
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:53
+msgid "open"
+msgstr "abierto"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:6
+msgid "owners"
+msgstr "propietarios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:36
+msgid "pending"
+msgstr "pendiente"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:82
+msgid "pixels"
+msgstr "píxeles"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:30
+msgid "poll"
+msgstr "encuesta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:30
+msgid "polls"
+msgstr "encuestas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:36
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:89
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:38
+msgid "public"
+msgstr "público"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:36
+msgid "readonly"
+msgstr "readonly"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:38
+msgid "shared"
+msgstr "compartido"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:30
+msgid "site"
+msgstr "sitio"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:29
+msgid "skin"
+msgstr "piel"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:30
+msgid "skins"
+msgstr "pieles"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:30
+msgid "stories"
+msgstr "historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:30
+msgid "story"
+msgstr "historia"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:30
+msgid "tag"
+msgstr "etiqueta"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tags/Tags.js:30
+msgid "tags"
+msgstr "etiquetas"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:863
+msgid "used"
+msgstr "utilizado"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:30
+msgid "user"
+msgstr "usuario"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Vote/Vote.js:30
+msgid "vote"
+msgstr "votación"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:133
+#, java-format
+msgid "{0} 401 Error"
+msgstr "{0} Error 401"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:234
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:136
+#, java-format
+msgid "{0} Comment"
+msgid_plural "{0} Comments"
+msgstr[0] "{0} Comentario"
+msgstr[1] "{0} Comentarios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:87
+#, java-format
+msgid "{0} Day"
+msgid_plural "{0} Days"
+msgstr[0] "{0} Día"
+msgstr[1] "{0} días"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:238
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:138
+#, java-format
+msgid "{0} File"
+msgid_plural "{0} Files"
+msgstr[0] "{0} Archivo"
+msgstr[1] "{0} Archivos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:258
+#, java-format
+msgid "{0} Health"
+msgstr "{0} de la Salud"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:236
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:137
+#, java-format
+msgid "{0} Image"
+msgid_plural "{0} Images"
+msgstr[0] "{0} de la imagen"
+msgstr[1] "{0} Imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:232
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:135
+#, java-format
+msgid "{0} Story"
+msgid_plural "{0} Stories"
+msgstr[0] "{0} historia"
+msgstr[1] "{0} Historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:477
+#, java-format
+msgid "{0} comment"
+msgid_plural "{0} comments"
+msgstr[0] "{0} comentario"
+msgstr[1] "{0} comentarios"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:369
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:378
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:248
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:258
+#, java-format
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} días"
+msgstr[1] "{0} días"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:159
+#, java-format
+msgid "{0} file"
+msgid_plural "{0} files"
+msgstr[0] "{0} archivo"
+msgstr[1] "{0} archivos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:48
+#, java-format
+msgid "{0} hit"
+msgid_plural "{0} hits"
+msgstr[0] "{0} afectados"
+msgstr[1] "{0} hits"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:158
+#, java-format
+msgid "{0} image"
+msgid_plural "{0} images"
+msgstr[0] "{0} de la imagen"
+msgstr[1] "{0} imágenes"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:160
+#, java-format
+msgid "{0} member"
+msgid_plural "{0} members"
+msgstr[0] "{0} miembro"
+msgstr[1] "{0} miembros"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:119
+#, java-format
+msgid "{0} of {1}"
+msgstr "{0} de {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:60
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:55
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:88
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:6
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:3
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:48
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:36
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} de {1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:178
+#, java-format
+msgid "{0} per page"
+msgstr "{0} por página"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:299
+#, java-format
+msgid "{0} public site"
+msgid_plural "{0} public sites"
+msgstr[0] "{0} sitio público"
+msgstr[1] "{0} sitios públicos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:156
+#, java-format
+msgid "{0} story"
+msgid_plural "{0} stories"
+msgstr[0] "{0} historia"
+msgstr[1] "{0} historias"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/$Choice.skin:26
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:59
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:35
+#, java-format
+msgid "{0} vote"
+msgid_plural "{0} votes"
+msgstr[0] "{0} votación"
+msgstr[1] "{0} votos"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:167
+#, java-format
+msgid "{0} was successfully deleted."
+msgstr "{0} ha sido borrado."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:193
+#, java-format
+msgid "{0} was successfully reset."
+msgstr "{0} se restableció con éxito."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:120
+#, java-format
+msgid "{0} {1} Error"
+msgstr "{0} {1} error"
+

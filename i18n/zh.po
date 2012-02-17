@@ -1,0 +1,2724 @@
+#
+# The Antville Project
+# http://code.google.com/p/antville
+#
+# Copyright 2001-2007 by The Antville People
+#
+# Licensed under the Apache License, Version 2.0 (the ``License''
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an ``AS IS'' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# $Revision$
+# $LastChangedBy$
+# $LastChangedDate$
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Antville-1.2-beta\n"
+"Report-Msgid-Bugs-To: mail@antville.org\n"
+"POT-Creation-Date: 2010-05-24 15:18+0200\n"
+"PO-Revision-Date: 2010-05-24 15:18+0200\n"
+"Language-Team: The Antville People <mail@antville.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/Global.js:982
+#, java-format
+msgid "({0} character)"
+msgid_plural "({0} characters)"
+msgstr[0] "（{0}字符）"
+msgstr[1] "（{0}个字符）"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:683
+msgid "A Blogger export file (.xml) will be created and available for download from here within 24 hours."
+msgstr "一个Blogger导出文件（。XML）的将被创建，从这里可以下载24小时内。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:139
+msgid "A confirmation mail was sent to your e-mail address."
+msgstr "一封确认邮件被发送到您的e - mail地址。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:85
+msgid "A generic disclaimer will be automatically appended to your message."
+msgstr "通用的声明将自动附加到邮件中。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:97
+msgid "Abandoned"
+msgstr "弃"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:107
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:43
+msgid "Activation Code"
+msgstr "激活代码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:90
+msgid "Active Threads"
+msgstr "活跃的主题"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:101
+msgid "Add Choice"
+msgstr "添加选项"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:278
+msgid "Add Comment"
+msgstr "新增评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:83
+msgid "Add File"
+msgstr "添加文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:5
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:115
+msgid "Add Image"
+msgstr "新增图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:20
+msgid "Add Layout Image"
+msgstr "添加图像布局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:195
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:356
+msgid "Add Member"
+msgstr "添加成员"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:91
+msgid "Add Poll"
+msgstr "新增投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:148
+msgid "Add Site"
+msgstr "新增网站"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:63
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:118
+msgid "Add Skin"
+msgstr "添加皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:19
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:20
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:4
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:102
+msgid "Add Story"
+msgstr "新增的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:44
+msgid "Add Your Vote "
+msgstr "添加您的投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:40
+msgid "Add variable"
+msgstr "添加变量"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:7
+msgid "Administration"
+msgstr "管理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:494
+msgid "Administration Log"
+msgstr "日志管理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:175
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:6
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:68
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:9
+msgid "All"
+msgstr "所有"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:104
+msgid "All Files"
+msgstr "所有文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:126
+msgid "All Images"
+msgstr "所有图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:112
+msgid "All Polls"
+msgstr "所有的民意调查"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:142
+msgid "All Skins"
+msgstr "所有皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:124
+msgid "All Stories"
+msgstr "所有的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:161
+msgid "All of this will be deleted irreversibly."
+msgstr "所有这一切都将被删除不可逆转。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:6
+msgid "An e-mail will be sent to notify the user of the update."
+msgstr "一封电子邮件将被发送到通知更新的用户。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:72
+msgid "An error occurred while processing your request:"
+msgstr "错误发生在处理您的请求："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:2
+msgid "Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href=\"http://code.google.com/p/antville/wiki/AntvilleFeatures\">features</a>."
+msgstr "<html> Antville是一个开源项目在一个简单的存取系统，网站发展的许多先进"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:34
+msgid "Antville itself provides a default callback URL invoking the basic ping method of the weblogs.com API:"
+msgstr "Antville本身提供了一个默认的回调网址援引邓小平的weblogs.com基本方法的API："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:3
+msgid "Antville supports some popular application programming interfaces:"
+msgstr "Antville支持一些流行的应用程序编程接口："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:30
+msgid "Any"
+msgstr "任何"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/Api.js:107
+msgid "Application Programming Interfaces"
+msgstr "应用程序编程接口"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:187
+msgid "Archive"
+msgstr "存档"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:162
+msgid "Are you sure you want to proceed?"
+msgstr "你确定要继续吗？"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:34
+#, java-format
+msgid "Are you sure you want to remove the tag {0}?"
+msgstr "你确定要删除标签{0}？"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:84
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:185
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:37
+msgid "Ascending"
+msgstr "升序"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:26
+msgid "Author"
+msgstr "作者"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:84
+msgid "Backlinks"
+msgstr "反向链接"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:66
+msgid "Basic"
+msgstr "基本的"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:86
+msgid "Basic Skins"
+msgstr "基本皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:162
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:151
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:172
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:123
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:250
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:260
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:117
+msgid "Best regards."
+msgstr "最好的问候。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:175
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:59
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:59
+msgid "Blocked"
+msgstr "封锁"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:98
+msgid "Both"
+msgstr "两"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:33
+msgid "Browse..."
+msgstr "浏览..."
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/$Files.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/$Images.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:7
+#, java-format
+msgid "By {0}"
+msgstr "由{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:90
+msgid "CSS Stylesheet"
+msgstr "CSS样式"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:118
+msgid "Cached Objects"
+msgstr "缓存对象"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:103
+msgid "Calendar"
+msgstr "日历"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:14
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:213
+msgid "Callback URL"
+msgstr "回调网址"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:244
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:165
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:143
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:341
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:43
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:34
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:11
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:68
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:57
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:44
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:134
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:154
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:182
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:170
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:95
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:120
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:49
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:129
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:238
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:47
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:100
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/$Layout.skin:11
+msgid "Cancel"
+msgstr "取消"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:206
+#, java-format
+msgid "Cannot parse timestamp {0} as a date."
+msgstr "无法分析时间戳{0}作为一个日期。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:154
+msgid "Caution!"
+msgstr "注意！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/$Choice.skin:14
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/Choice.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:85
+msgid "Choice"
+msgstr "选择"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:7
+msgid "Click ‚ÄúCancel‚Äù now if you are not really sure you want to proceed."
+msgstr "点击，ÄúCancel，非盟现在如果你真的没有确定要继续。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:424
+msgid "Close"
+msgstr "关闭"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:67
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:8
+msgid "Closed"
+msgstr "关闭"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:114
+msgid "Closed Stories"
+msgstr "封闭的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:154
+msgid "Comment"
+msgstr "评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:69
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:5
+msgid "Comment // verb"
+msgstr "评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:182
+msgid "Comments"
+msgstr "评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:33
+#, java-format
+msgid "Comments of the story are {0}"
+msgstr "这个故事的评论是{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:41
+msgid "Compare"
+msgstr "比较"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:248
+msgid "Compare Skin"
+msgstr "皮肤比较"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:176
+msgid "Confirm Deletion"
+msgstr "确认删除"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:126
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:162
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:82
+msgid "Confirm Password"
+msgstr "确认密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:222
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:202
+msgid "Confirm Reset"
+msgstr "确认复位"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:647
+msgid "Confirm Unsubscribe"
+msgstr "确认取消"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:49
+msgid "Contact"
+msgstr "联系"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:207
+#, java-format
+msgid "Contact User: {0}"
+msgstr "联系我们用户：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:218
+#, java-format
+msgid "Content of User: {0}"
+msgstr "对用户内容：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:96
+msgid "Contributor"
+msgstr "投稿"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:9
+msgid "Contributors"
+msgstr "投稿"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/$Layout.skin:10
+msgid "Convert"
+msgstr "兑换"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/Layout.convert.js:25
+msgid "Convert Layout"
+msgstr "转换布局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:179
+msgid "Could not fetch the file from the given URL."
+msgstr "无法取得从给定的URL的文件。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:246
+msgid "Could not fetch the image from the given URL."
+msgstr "无法从给定的网址获取的图像。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:513
+msgid "Could not remove the image file from disk."
+msgstr "无法删除磁盘上的图像文件。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:469
+msgid "Could not resize the image."
+msgstr "无法调整大小的图像。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:495
+msgid "Could not save the image file on disk."
+msgstr "无法储存在磁盘上的图像文件。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:99
+msgid "Could not verify your password. Please repeat your input."
+msgstr "无法确认您的密码。请重复你的投入。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:20
+msgid "Count"
+msgstr "计数"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:48
+msgid "Create"
+msgstr "创建"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:7
+msgid "Create a site. It only takes a few clicks."
+msgstr "创建一个站点。只需要点击几下。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:110
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:33
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:104
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:37
+#, java-format
+msgid "Created by {0} on {1}"
+msgstr "由{0}创建于{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:82
+msgid "Creation Date"
+msgstr "创建日期"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:74
+msgid "Current Password"
+msgstr "当前密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:22
+msgid "Date"
+msgstr "日期"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:27
+msgid "Date string in Unix timestamp format"
+msgstr "日期字符串在Unix时间戳格式"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/Api.js:130
+msgid "Default Callback Url"
+msgstr "默认回调网址"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:117
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:65
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:61
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:94
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:13
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:50
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:30
+msgid "Delete"
+msgstr "删除"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:36
+msgid "Delete Tag"
+msgstr "删除标签"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:66
+msgid "Deleted"
+msgstr "删除"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:83
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:184
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:36
+msgid "Descending"
+msgstr "降序"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:26
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:31
+msgid "Description"
+msgstr "描述"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:79
+msgid "Details"
+msgstr "详情"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:15
+msgid "Development"
+msgstr "发展"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:96
+msgid "Disabled"
+msgstr "残疾人士"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:284
+msgid "Disk Quota"
+msgstr "磁盘配额"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:134
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:219
+msgid "Disk Space"
+msgstr "磁盘空间"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:46
+msgid "Display the referrers unfiltered"
+msgstr "显示引荐过滤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:4
+#, java-format
+msgid "Displaying {0} (of {1})"
+msgstr "显示{0}（{1}）"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:60
+msgid "Download // verb"
+msgstr "下载"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:122
+#, java-format
+msgid "Download the file {0} or klick ‚ÄúStart‚Äù to create a new one."
+msgstr "下载文件{0}或克利克，ÄúStart，非盟创建一个新的。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:298
+msgid "Due to privacy reasons the display of e-mail addresses is disabled."
+msgstr "由于隐私原因，显示电子邮件地址被禁用。"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Members/Members.js:27
+msgid "Due to security reasons user passwords are not stored in the Antville database any longer. Thus, your password cannot be sent to you, anymore."
+msgstr "由于安全原因，用户密码是不存储在数据库中的任何Antville更长。因此，您的密码不能被发送到你了。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:87
+msgid "E-mail"
+msgstr "电子邮件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:15
+msgid "Each Antville site provides an option in the preferences to define a callback URL that will be invoked each time the site content has changed. This way users can define custom handlers for different site events with their own code running behind this URL ‚Äì on a server and in a programming language of their choice."
+msgstr "每个Antville网站提供的喜好选择在定义一个回调的URL将被调用每一个网站的内容已更改时间。这样用户可以定义自己背后的网址，爱在服务器上，并在他们所选择的编程语言运行的代码不同的站点自定义事件处理程序。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:216
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:115
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:64
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:6
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:59
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:92
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:48
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:72
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:40
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:27
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:70
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:79
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:6
+msgid "Edit"
+msgstr "编辑"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:148
+msgid "Edit Comment"
+msgstr "编辑评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:125
+msgid "Edit File"
+msgstr "编辑文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:186
+msgid "Edit Image"
+msgstr "编辑图像"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:164
+#, java-format
+msgid "Edit Membership: {0}"
+msgstr "编辑成员：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:168
+#, java-format
+msgid "Edit Poll: {0}"
+msgstr "编辑民意调查：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:159
+#, java-format
+msgid "Edit Skin: {0}.{1}"
+msgstr "编辑皮肤：{0}。{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:185
+msgid "Edit Story"
+msgstr "编辑的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:5
+msgid "Edit User Profile"
+msgstr "编辑用户资料"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:175
+msgid "Enter a search term to display a list of matching users."
+msgstr "输入搜索词，以显示匹配的用户列表。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:229
+#, java-format
+msgid "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists."
+msgstr "{1}输入每行一个过滤器{0}模式适用于每一个引用和反向链接列表的网址。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:141
+msgid "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions."
+msgstr "输入您的用户名和电子邮件地址已注册时使用。然后，您将收到一封确认电子邮件，其中包含进一步的指示。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/$Comment.skin:27
+#, java-format
+msgid "Erase all comments of user {0}"
+msgstr "擦除全部评论用户{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:22
+msgid "Export"
+msgstr "出口"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:120
+msgid "Export Site Data"
+msgstr "网站数据导出"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:14
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:155
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:19
+msgid "File"
+msgstr "文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:167
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:234
+msgid "File size is exceeding the upload limit."
+msgstr "文件大小超过了上传限制。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:22
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:23
+msgid "Files"
+msgstr "档"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:40
+msgid "Filter"
+msgstr "过滤器"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:42
+msgid "Find"
+msgstr "发现"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:609
+#, java-format
+msgid "Found {0} result."
+msgid_plural "Found {0} results."
+msgstr[0] "结果发现{0}。"
+msgstr[1] "结果发现{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:126
+msgid "Free Memory"
+msgstr "可用内存"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:94
+msgid "Free Threads"
+msgstr "免费主题"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:85
+msgid "Frontpage"
+msgstr "FrontPage中"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:10
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:17
+msgid "Galleries"
+msgstr "画廊"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:269
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:160
+msgid "General"
+msgstr "一般"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:204
+#, java-format
+msgid "Good bye, {0}! Looking forward to seeing you again!"
+msgstr "再见，{0}！期待再见到你！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:332
+msgid "Grace Period"
+msgstr "宽限期"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:21
+msgid "Have a lot of fun!"
+msgstr "有很多乐趣！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:140
+msgid "Have fun!"
+msgstr "玩得开心！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:13
+msgid "Health"
+msgstr "健康"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:15
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:25
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:155
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:144
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:166
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:244
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:254
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:107
+#, java-format
+msgid "Hello {0}."
+msgstr "您好{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:247
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:422
+msgid "Hide"
+msgstr "隐藏"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:51
+msgid "Hits"
+msgstr "点击"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:15
+msgid "Home"
+msgstr "家"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:118
+msgid "If the user did not include contact information in the message itself, you can send your reply via the user‚Äôs contact form [2]."
+msgstr "如果用户不包括联系信息本身的信息，您可以通过用户发送你的答复，星光大道的联系方式[2]。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:59
+msgid "If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too."
+msgstr "如果您的图像的宽度或高度超过100像素Antville自动创建它的一个缩略图，太。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:26
+msgid "If you do not specify a name Antville will create one based on the name of the local or remote file, resp."
+msgstr "如果你不指定一个名称Antville将创建本地或远程文件名，RESP的基础之一。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:93
+msgid "If you enter a URL here your user name will appear as link next to your posted items."
+msgstr "如果你输入一个网址浏览您的用户名称将显示为链接旁边的张贴的项目。"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Members/Members.js:28
+#, java-format
+msgid "If you should really have forgotten your password, you can use the <a href=\"{0}\">password reset</a> option."
+msgstr "如果你真的忘记了密码，您可以使用<a href=\"{0}\">密码重置</a>选项。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:54
+msgid "If you think you have received this e-mail in error please contact the maintainer of the site."
+msgstr "如果你认为你已经收到此电子邮件，请联络该网站的维护者。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:55
+msgid "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved."
+msgstr "如果你想调整图片的大小，请指定您想要的最大宽度和/或最大像素高度。如果你同时指定图像将被重新调整为同时匹配标准，但图像比例将被保留。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:156
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:29
+msgid "Image"
+msgstr "图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:168
+#, java-format
+msgid "Image: {0}"
+msgstr "图像：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:26
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:22
+msgid "Images"
+msgstr "图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:56
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:21
+msgid "Import"
+msgstr "进口"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:277
+msgid "Import Layout"
+msgstr "进口布局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:134
+msgid "Import Site Data"
+msgstr "网站数据导入"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:14
+msgid "Interfaces"
+msgstr "接口"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:308
+msgid "Interval"
+msgstr "间隔"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:96
+msgid "JavaScript"
+msgstr "JavaScript的"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:192
+msgid "Language"
+msgstr "语"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:212
+msgid "Last Login"
+msgstr "上次登入"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:81
+msgid "Last Update"
+msgstr "最后更新"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:36
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:107
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:40
+#, java-format
+msgid "Last modified by {0} on {1}"
+msgstr "最后修改于{0}{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:87
+msgid "Last modified:"
+msgstr "最后更新："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:68
+msgid "Last updated on"
+msgstr "最后更新于"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:158
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:28
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:29
+#: /Users/tobi/Projects/helma/apps/antville/compat/Layout/Layout.js:40
+#: /Users/tobi/Projects/helma/apps/antville/compat/Site/Site.js:112
+msgid "Layout"
+msgstr "布局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:80
+msgid "Layout Images"
+msgstr "布局图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:64
+msgid "Lines added to original skin"
+msgstr "线路添加到原来的皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:60
+msgid "Lines removed from original skin"
+msgstr "线路撤销原有的皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:63
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:5
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:67
+msgid "Link"
+msgstr "链接"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:9
+msgid "Log"
+msgstr "日志"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/LogEntry/LogEntry.js:29
+msgid "Log Entry"
+msgstr "日志条目"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:2
+#, java-format
+msgid "Logged in as {0}"
+msgstr "登录为{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:183
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:196
+msgid "Login"
+msgstr "注册"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:14
+msgid "Login // verb"
+msgstr "注册"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:10
+msgid "Logout // verb"
+msgstr "注销"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:200
+msgid "Long Date Format"
+msgstr "长日期格式"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:46
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:79
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:57
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:33
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:20
+msgid "Macro"
+msgstr "宏"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:95
+msgid "Main Menu"
+msgstr "主菜单"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:96
+msgid "Manager"
+msgstr "经理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:8
+msgid "Managers"
+msgstr "经理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:49
+msgid "Max. height"
+msgstr "马克斯。高度"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:45
+msgid "Max. width"
+msgstr "马克斯。宽度"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:94
+msgid "Member Files"
+msgstr "会员档案"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:74
+msgid "Member Images"
+msgstr "会员照片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:69
+msgid "Member Polls"
+msgstr "会员投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:80
+msgid "Member Stories"
+msgstr "会员的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:43
+msgid "Member since"
+msgstr "会员自"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:25
+msgid "Members"
+msgstr "成员"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:29
+msgid "Membership"
+msgstr "会籍"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:89
+msgid "Message"
+msgstr "信息"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:322
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:164
+msgid "Mode"
+msgstr "模式"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:67
+msgid "Modified"
+msgstr "改性"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:126
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:149
+msgid "Modified Skins"
+msgstr "修饰皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:82
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:18
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:23
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:37
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:8
+msgid "Name"
+msgstr "名称"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:28
+msgid "Name of the user who triggered the event"
+msgstr "谁的用户名称触发事件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:80
+msgid "Navigation"
+msgstr "导航"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:78
+msgid "New Password"
+msgstr "新密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/compat/Global/aspects.js:82
+msgid "Next page"
+msgstr "下一页"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:214
+msgid "No differences were found"
+msgstr "没有差异，"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:325
+msgid "No user found to add as member."
+msgstr "没有用户发现添加为成员。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:95
+msgid "Nobody"
+msgstr "没有人"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:88
+msgid "None"
+msgstr "无"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:53
+msgid "Not registered yet?"
+msgstr "尚未注册？"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:16
+msgid "Note"
+msgstr "注意"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:326
+msgid "Notification Period"
+msgstr "通知期"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:272
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:208
+msgid "Notifications"
+msgstr "通知"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:106
+msgid "Number of Errors (last 5 min) "
+msgstr "错误（最后5分钟数）"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:98
+msgid "Number of Requests (last 5 min)"
+msgstr "的要求（最后5分钟数）"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:122
+msgid "Number of Sessions"
+msgstr "会话数"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:10
+msgid "Number of public sites"
+msgstr "公共场所数量"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:25
+msgid "Numeric identifier of the resource"
+msgstr "数字标识符资源"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:14
+#, java-format
+msgid "Of course, you can now also start to create <a href=\"{0}\">stories</a>, upload some <a href=\"{1}\">images</a> or <a href=\"{2}\">files</a>, create your first <a href=\"{3}\">poll</a> or get a glimpse of Antville‚Äôs wonderful customization possibilities by having a look at the <a href=\"{4}\">layout section</a> where you can modify the appearance of your site according to your needs."
+msgstr "当然，你现在也可以开始创建<a href=\"{0}\">的故事</a> ，上传一些<a href=\"{1}\">图片</a>或<a href=\"{2}\">文件</a> ，创建你的第一个<a href=\"{3}\">调查</a>或获得通过的可能性美妙的定制有看一眼瞥见政务主任Antville， <a href=\"{4}\">布局部分</a> ，您可以修改您的网站外观根据您的需要。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:5
+#, java-format
+msgid "One Antville installation can easily host up to several thousands of <a href=\"{0}\">sites</a>."
+msgstr "可以很容易地安装一个Antville容纳数以千计的几个<a href=\"{0}\">地点</a> 。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:331
+#, java-format
+msgid "One user found."
+msgid_plural "{0} users found."
+msgstr[0] "一位用户发现。"
+msgstr[1] "{0}找到用户。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:85
+#, java-format
+msgid "Online for {0} day"
+msgid_plural "Online for {0} days"
+msgstr[0] "在线{0}天"
+msgstr[1] "在线{0}天"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:307
+msgid "Oops, your old password is incorrect. Please re-enter it."
+msgstr "哎呀，你的旧密码不正确。请重新输入。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:68
+msgid "Open"
+msgstr "开放"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:30
+msgid "Options"
+msgstr "选项"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:96
+msgid "Owner"
+msgstr "业主"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:7
+msgid "Owners"
+msgstr "业主"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:46
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:116
+msgid "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE."
+msgstr "请不要回复此邮件的发件人地址。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:176
+msgid "Paging"
+msgstr "寻呼"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:122
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:57
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:160
+msgid "Password"
+msgstr "密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:59
+msgid "Password forgotten?"
+msgstr "忘记密码？"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:91
+msgid "Personal URL"
+msgstr "个人网址"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:316
+msgid "Phase-Out"
+msgstr "淘汰"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:352
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:101
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:86
+msgid "Please avoid special characters or HTML code in the name field."
+msgstr "请避免在名称字段中的特殊字符或HTML代码。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:5
+msgid "Please be aware of the fact that there is no ‚Äúundo‚Äù, so if you click ‚ÄúProceed‚Äù below the changes will be applied irreversibly."
+msgstr "请一个事实，即有没有意识到，Äúundo，金，所以如果你点击，ÄúProceed，低于金将被应用的变化不可逆转。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:99
+msgid "Please choose a prototype and enter a skin name"
+msgstr "请选择一个原型，然后输入一个名称皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:176
+msgid "Please choose a role for this member."
+msgstr "请选择这个角色了。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:705
+msgid "Please choose a site you want to edit."
+msgstr "请选择您要编辑的网站。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:722
+msgid "Please choose a user you want to edit."
+msgstr "请选择您要编辑的用户。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:109
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:118
+msgid "Please contact an administrator for further information."
+msgstr "进一步资料请联系管理员。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:348
+msgid "Please enter a name for your new site."
+msgstr "请输入您的新网站的名称。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:153
+msgid "Please enter a new password."
+msgstr "请输入新的密码。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:591
+msgid "Please enter a query in the search form."
+msgstr "请输入一个搜索表单查询。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:126
+msgid "Please enter a user name and e-mail address."
+msgstr "请输入用户名和电子邮件地址。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:82
+msgid "Please enter a username."
+msgstr "请输入一个用户名。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:326
+msgid "Please enter a valid URL"
+msgstr "请输入一个有效的URL"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:92
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:323
+msgid "Please enter a valid e-mail address"
+msgstr "请输入一个有效的e - mail地址"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:160
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:199
+msgid "Please enter at least something into the ‚Äútitle‚Äù or ‚Äútext‚Äù field."
+msgstr "请至少输入的东西进入，Äútitle，非盟或Äútext，金场。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:30
+msgid "Please enter new name for this tag"
+msgstr "请输入此标记的新名称"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:192
+msgid "Please enter the message text."
+msgstr "请输入讯息文字。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:6
+msgid "Please enter the name of the new variable:"
+msgstr "请输入新的变量名："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:82
+msgid "Please enter your message to the user below."
+msgstr "请输入您的信息给用户如下。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:187
+msgid "Please fill out the whole form to create a valid poll."
+msgstr "请填写全部表格，以建立有效的调查。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:128
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:257
+msgid "Please login first."
+msgstr "请先登录。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:29
+msgid "Please note that you cannot change the name after the site was created."
+msgstr "请注意，您不能更改名称后，该网站已建立。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:311
+msgid "Please specify a new password."
+msgstr "请指定一个新的密码。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:244
+msgid "Please upload a zipped layout archive"
+msgstr "请上传一个压缩的存档布局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:158
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:29
+msgid "Poll"
+msgstr "投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:207
+#, java-format
+msgid "Poll Results: {0}"
+msgstr "投票表决结果：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:131
+#, java-format
+msgid "Poll: {0}"
+msgstr "民意调查：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:23
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:24
+msgid "Polls"
+msgstr "民意调查"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:27
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:28
+msgid "Preferences"
+msgstr "偏好"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.skin:3
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:7
+#: /Users/tobi/Projects/helma/apps/antville/compat/Global/aspects.js:79
+msgid "Previous page"
+msgstr "前一页"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:105
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:61
+msgid "Privileged"
+msgstr "特权"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:294
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:36
+msgid "Privileges"
+msgstr "特权"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:302
+msgid "Probation Period"
+msgstr "试用期"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:164
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:10
+msgid "Proceed"
+msgstr "继续进行"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:47
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:80
+msgid "Properties"
+msgstr "属性"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:7
+msgid "Prototype"
+msgstr "原型"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:68
+msgid "Public"
+msgstr "公众"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:165
+msgid "Public Sites"
+msgstr "公共场所"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:420
+msgid "Publish"
+msgstr "发布"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:97
+msgid "Question"
+msgstr "问题"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:150
+msgid "Queued Callbacks"
+msgstr "排队回调"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:138
+msgid "Queued Log Entries"
+msgstr "排队日志项"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:146
+msgid "Queued Mails"
+msgstr "排队邮件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:142
+msgid "Queued Requests"
+msgstr "排队的请求"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:251
+msgid "Re-run"
+msgstr "重新运行"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:78
+msgid "Read more"
+msgstr "了解更多"
+
+#: /Users/tobi/Projects/helma/apps/antville/compat/Members/Members.js:26
+msgid "Recover your password"
+msgstr "恢复你的密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:54
+msgid "Referrer"
+msgstr "引荐"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:225
+msgid "Referrer Spam Filter"
+msgstr "引荐垃圾邮件过滤器"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:29
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:30
+msgid "Referrers"
+msgstr "从哪里来"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:133
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:116
+msgid "Register"
+msgstr "注册"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:211
+msgid "Registered"
+msgstr "注册"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:182
+msgid "Registration"
+msgstr "注册"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:89
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:106
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:60
+msgid "Regular"
+msgstr "定期"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:67
+msgid "Remember Login"
+msgstr "记住登录"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/$Tag.skin:32
+msgid "Rename Tag"
+msgstr "重命名标签"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:278
+msgid "Reply-To"
+msgstr "回复到"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:173
+msgid "Request Password Reset"
+msgstr "要求重设密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:90
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:191
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:42
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:23
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:42
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:42
+msgid "Reset"
+msgstr "复位"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:163
+msgid "Reset Password"
+msgstr "重设密码"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:24
+msgid "Resource type (e.g. Story or Comment)"
+msgstr "资源类型（如故事或评论）"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:42
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:46
+msgid "Restore"
+msgstr "恢复"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:97
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:67
+msgid "Restricted"
+msgstr "限制"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:71
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:22
+msgid "Results"
+msgstr "结果"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:60
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:15
+msgid "Role"
+msgstr "角色"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:30
+msgid "Root"
+msgstr "根"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:251
+msgid "Run"
+msgstr "运行"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/$Polls.skin:8
+msgid "Running"
+msgstr "运行"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:102
+msgid "Running Polls"
+msgstr "运行投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:243
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:142
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:340
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:41
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:33
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:67
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:43
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:169
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:22
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:114
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:237
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:19
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:45
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:99
+msgid "Save"
+msgstr "保存"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:16
+msgid "Save and Edit"
+msgstr "保存和编辑"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:117
+msgid "Save and Run"
+msgstr "保存并运行"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:88
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:189
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:40
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:181
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:100
+msgid "Search"
+msgstr "搜索"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:614
+msgid "Search results"
+msgstr "搜索结果"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:190
+msgid "Select a user from the list below and click the ‚ÄúAdd Member‚Äù button."
+msgstr "从下面的选择，并点击列表用户，ÄúAdd会员，非盟按钮。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:94
+msgid "Send"
+msgstr "发送"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:153
+msgid "Send Request"
+msgstr "发送请求"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:12
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:450
+msgid "Setup"
+msgstr "格局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:204
+msgid "Short Date Format"
+msgstr "短日期格式"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:245
+msgid "Show"
+msgstr "显示"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:16
+#, java-format
+msgid "Since you are an administrator of this Antville installation you are entitled to administer <a href=\"{0}\">sites</a> and <a href=\"{1}\">users</a>, view the <a href=\"{2}\">administration log</a> and configure the <a href=\"{3}\">setup</a>."
+msgstr "既然你是一个管理员管理本Antville安装你有权<a href=\"{0}\">网站</a>和<a href=\"{1}\">用户</a> ，查看<a href=\"{2}\">管理日志</a>和配置<a href=\"{3}\">设置</a> 。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:29
+msgid "Site"
+msgstr "现场"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:533
+msgid "Site Administration"
+msgstr "网站管理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:263
+msgid "Site Contributors"
+msgstr "网站投稿"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:292
+msgid "Site Creation"
+msgstr "网站创建"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:252
+msgid "Site Managers"
+msgstr "现场经理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:83
+msgid "Site Members"
+msgstr "网站成员"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:241
+msgid "Site Owners"
+msgstr "网站拥有者"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:75
+msgid "Site Page"
+msgstr "网站页面"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:298
+msgid "Site Preferences"
+msgstr "网站偏好"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:582
+msgid "Site Referrers"
+msgstr "网站从哪里来"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:274
+msgid "Site Subscribers"
+msgstr "网站订阅"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:663
+msgid "Site is scheduled for export."
+msgstr "网站定于出口。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:717
+msgid "Site is scheduled for import."
+msgstr "网站定于进口。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:10
+msgid "Sites"
+msgstr "网站"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:28
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:193
+msgid "Skin"
+msgstr "皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/$Layout.skin:27
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:29
+msgid "Skins"
+msgstr "皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:71
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:66
+msgid "Sorry!"
+msgstr "对不起！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:73
+msgid "Sorry, an owner of a site cannot be removed."
+msgstr "很抱歉，网站的所有者不能被删除。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:88
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:107
+msgid "Sorry, the user name you entered already exists. Please enter a different one."
+msgstr "对不起，您输入的用户名已经存在。请输入一个不同的。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:84
+msgid "Sorry, the username you entered is too long. Please choose a shorter one."
+msgstr "对不起，您输入的用户名太长。请选择一个较短的一个。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:63
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:94
+msgid "Sorry, there is no disk space left. Please try to delete some files or images first."
+msgstr "对不起，没有磁盘剩余空间。请尝试删除一些文件或图像第一次。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:255
+msgid "Sorry, this layout is not compatible with Antville."
+msgstr "对不起，这个布局是不符合Antville兼容。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:178
+msgid "Sorry, you are not allowed to edit your own membership."
+msgstr "对不起，你不能编辑自己的会员资格。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:725
+msgid "Sorry, you are not allowed to modify your own account."
+msgstr "对不起，您不允许修改自己的帐户。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:399
+msgid "Sorry, your input did not match any registered user."
+msgstr "对不起，您的输入不符合任何注册用户。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:79
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:180
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:35
+msgid "Sort"
+msgstr "分类"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:127
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:143
+msgid "Start"
+msgstr "开始"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:58
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:90
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:21
+msgid "Status"
+msgstr "地位"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:249
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:127
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:143
+msgid "Stop"
+msgstr "停止"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:20
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:29
+msgid "Stories"
+msgstr "故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:159
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/$Stories.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:29
+msgid "Story"
+msgstr "故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Archive/Archive.js:88
+msgid "Story Archive"
+msgstr "昔日的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:7
+msgid "Subscribe // verb"
+msgstr "订阅"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:59
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:97
+msgid "Subscriber"
+msgstr "订户"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:10
+msgid "Subscribers"
+msgstr "订阅"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:308
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:8
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:37
+msgid "Subscriptions"
+msgstr "订阅"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:346
+#, java-format
+msgid "Successfully added {0} to the list of members."
+msgstr "成功将{0}的成员名单。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:135
+msgid "Successfully created your site."
+msgstr "成功创建您的网站。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:623
+#, java-format
+msgid "Successfully subscribed to site {0}."
+msgstr "成功认购工地{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:637
+#, java-format
+msgid "Successfully unsubscribed from site {0}."
+msgstr "成功取消订阅网站{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:151
+msgid "Successfully updated the layout."
+msgstr "成功地更新了版面。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:442
+msgid "Successfully updated the setup."
+msgstr "成功地更新了安装程序。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.skin:2
+msgid "System is up and running."
+msgstr "系统启动和运行。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:29
+msgid "Tag"
+msgstr "标签"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:92
+#, java-format
+msgid "Tag: {0}"
+msgstr "标签：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:172
+msgid "Tagline"
+msgstr "标语"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:35
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:9
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:16
+#: /Users/tobi/Projects/helma/apps/antville/code/Tags/Tags.js:29
+msgid "Tags"
+msgstr "标签"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:26
+msgid "Tags (separated by commas):"
+msgstr "标签（用逗号分隔）："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/_Manager/Manager.js:10
+#, java-format
+msgid "Tags of site {0}"
+msgstr "标签的网站{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:28
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:21
+msgid "Text"
+msgstr "文本"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:123
+msgid "Thanks, your vote was registered. You can change your mind until the poll is closed."
+msgstr "谢谢，您的投票登记。您可以更改，直到投票结束您的想法。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:22
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:32
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:163
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:152
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:173
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:141
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:124
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:251
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:261
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:118
+msgid "The Management"
+msgstr "管理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:10
+msgid "The URL endpoint for each of these APIs is located at"
+msgstr "对于这些API的每个URL端点位于"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:21
+msgid "The callback URL will be invoked as an HTTP POST request with the following parameters:"
+msgstr "回调URL将被用来作为一个HTTP POST请求用下列参数："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:515
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:546
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:116
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:178
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:216
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:155
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:289
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:147
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:107
+msgid "The changes were saved successfully."
+msgstr "这些变化已成功保存。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:350
+msgid "The chosen name is too long. Please enter a shorter one."
+msgstr "所选择的名称太长。请输入一个较短的一个。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:269
+msgid "The comment was successfully created."
+msgstr "该评论已成功创建。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:138
+msgid "The comment was successfully updated."
+msgstr "该评论已成功更新。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:10
+#, java-format
+msgid "The easiest way to customize your site is to change its <a href=\"{0}\">preferences</a>. You can change the language and time zone or the main title of your site, open or close it and much more."
+msgstr "最简单的方式来定制您的网站是改变其<a href=\"{0}\">偏好</a> 。您可以更改语言和时区或您网站的主标题，打开或关闭它，等等。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:43
+msgid "The essential ECMAScript code is shown below."
+msgstr "基本的ECMAScript代码如下所示。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:74
+msgid "The file was successfully added."
+msgstr "该文件已成功添加。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:106
+msgid "The image was successfully added."
+msgstr "图像已成功加入。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:267
+msgid "The layout was successfully imported."
+msgstr "布局已成功导入。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:26
+#, java-format
+msgid "The name will be part of the URL of your site. E.g. if you enter ‚Äú{0}‚Äù as the name your site will be reachable via this url: {1}"
+msgstr "该名称将是您网站的网址的一部分。比如，如果你进入，非盟{0}，非盟作为名称您的网站将通过这个网址可以访问：{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:155
+msgid "The passwords do not match."
+msgstr "密码不匹配。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:67
+msgid "The path you requested was not found:"
+msgstr "您请求的路径未找到："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:82
+msgid "The poll was created successfully."
+msgstr "这项民调是创建成功。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:160
+msgid "The poll was updated successfully."
+msgstr "这项民调是成功更新。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:2
+#, java-format
+msgid "The site is currently {0}."
+msgstr "该网站是目前{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:136
+#, java-format
+msgid "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours."
+msgstr "该网站预计于导入文件{0}。导入的网站数据将可在24小时内。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:117
+msgid "The site you requested has been blocked."
+msgstr "该网站你的要求已被封锁。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:246
+#, java-format
+msgid "The site {0} at {1} will be blocked in {2} because it is being restricted for too long."
+msgstr "该网站在{0}{1}将被封锁在{2}，因为它正在太久限制。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:256
+#, java-format
+msgid "The site {0} at {1} will be deleted in {2} because it has been considered as abandoned."
+msgstr "该网站在{0}{1}将被删除，{2}，因为它已被视为放弃。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:510
+#, java-format
+msgid "The site {0} is queued for removal."
+msgstr "该网站{0}是去除排队。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:31
+#, java-format
+msgid "The story is {0} and {1}"
+msgstr "这个故事是{0}和{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:94
+msgid "The story was successfully created."
+msgstr "这个故事已成功创建。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:176
+msgid "The story was successfully updated."
+msgstr "这个故事已成功更新。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:30
+msgid "The title will appear in the header of every page of your site. You can change it anytime you want."
+msgstr "该标题将显示在您网站的每个网页的标题。你可以改变它任何时候你想要的。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:157
+#, java-format
+msgid "The user {0} has added your account to the list of members of the site {1} at {2}."
+msgstr "用户{0}已添加到您的帐户，该网站在{1}{2}的成员名单。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:146
+#, java-format
+msgid "The user {0} has modified your membership of the site {1} at {2}."
+msgstr "用户{0}已修改了您的网站{1}{2}的成员。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:178
+#, java-format
+msgid "The {0} macro is missing. It is essential for accessing the site and must be present in this skin."
+msgstr "{0}宏失踪。重要的是访问该网站，必须在目前这个皮肤。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:354
+msgid "There already is a site with this name."
+msgstr "目前已经是一个具有此名称的网站。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:666
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:704
+#, java-format
+msgid "There is already another job queued for this site: {0}"
+msgstr "已经有这个网站的另一个排队的工作：{0}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:172
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:239
+msgid "There was nothing to upload. Please be sure to choose a file."
+msgstr "有没有上传。请一定要选择一个文件。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:169
+msgid "This URL is not valid for resetting your password."
+msgstr "这个网址是不是有效的重设密码。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:41
+#, java-format
+msgid "This callback URL invokes the ping method of the {0}."
+msgstr "此回调网址援引平方法{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:216
+msgid "This comment was removed by the author."
+msgstr "这一评论被删除的作者。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:217
+msgid "This comment was removed."
+msgstr "这一评论被删除。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:252
+msgid "This does not seem to be a (valid) JPG, PNG or GIF image file."
+msgstr "但这似乎不是一个（有效）的JPG，PNG或GIF图像文件。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:57
+msgid "This is the directory of public sites hosted here, in alphabetical order."
+msgstr "这是公共场所设在这里的目录，按字母顺序排列。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:4
+#, java-format
+msgid "This means that only you and other {0} of this site have access to it. You can safely start to customize it or to fill it with all the content you have in mind."
+msgstr "这就是说，只有你和其他{0}本网站访问它。您可以放心地开始对其进行定制，或填补它与所有的内容你的想法。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:48
+msgid "This message was automatically sent to you because you are listed as recipient of notification e-mails of the corresponding site."
+msgstr "此消息被自动发送到你，因为你是作为上市的通知收件人电子邮件相应的网站。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:109
+#, java-format
+msgid "This message was sent to you by an anonymous user of the site {0} [1]."
+msgstr "此消息发送给您的网站由{0}[1]匿名用户。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:112
+#, java-format
+msgid "This message was sent to you by the user {0} of the site {1} [1]."
+msgstr "此消息被发送由用户{0}到你的网站{1}[1]。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:38
+#, java-format
+msgid "This poll was closed by {0} on {1}"
+msgstr "这个调查是由{0}封闭在{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:116
+#, java-format
+msgid "This site is going to be deleted completely and irreversibly after {0}."
+msgstr "这个网站将被删除后，完全和不可逆转的{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:10
+#, java-format
+msgid "This site was created by {0} on {1}."
+msgstr "这个网站是由{0}在{1}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:97
+msgid "This skin contains additional JavaScript code that will be included in every page."
+msgstr "这种皮肤包含额外的JavaScript代码将在每个页面中。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:91
+msgid "This skin contains the Cascading Stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin will affect the general appearance of your site."
+msgstr "这种皮肤包含级联样式表（CSS）的定义，例如字体，字体大小，颜色等修改此皮肤会影响您网站的总体外观。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:76
+msgid "This skin defines the basic structure of your site. Modifying it will affect the general appearance of your site."
+msgstr "这种皮肤定义您网站的基本结构。修改它会影响你的网站的总体外观。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:81
+msgid "This skin is used to display the navigation links on the page."
+msgstr "这个皮肤是用来显示网页上的导航链接。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/$Skins.skin:86
+msgid "This skin is used to render the front page of your site."
+msgstr "这个皮肤是用来使你的网站的首页。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:401
+msgid "This user is already a member of this site."
+msgstr "这个用户已经是该站点的成员。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:8
+msgid "Thus, it is publicly accessible for every visitor."
+msgstr "因此，它是公开为每一位旅客使用。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Global/$Global.skin:51
+msgid "Thus, you will be notified whenever the site has undergone changes as specified in the site preferences."
+msgstr "因此，每当你将被通知该网站已经历如在指定的地点偏好的变化。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:196
+msgid "Time Zone"
+msgstr "时区"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.skin:24
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:41
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:168
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.skin:17
+msgid "Title"
+msgstr "标题"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:29
+msgid "Title or name of the site"
+msgstr "标题或站点的名称"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:112
+msgid "To confirm the request please click the link below."
+msgstr "要确认请求，请点击以下链接。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:23
+msgid "To create a new site you need to fill out the form below."
+msgstr "要创建一个新的网站，你需要填写下面的表格。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:16
+msgid "To insert this image into a story or comment of this site copy and paste the following code:"
+msgstr "要插入这个图片成一个故事或复制本网站评论和粘贴以下代码："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:113
+msgid "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to be set to permit the execution of JavaScript."
+msgstr "为了使垃圾邮件引荐和反向无用，它们显示使用客户端JavaScript。看到他们，你的浏览器需要被设置为允许JavaScript执行。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:4
+msgid "To modify a membership select the desired role from the drop-down menu and click the ‚ÄúSave‚Äù button."
+msgstr "要修改会员请从下拉菜单并单击，ÄúSave，非盟按钮所需的角色。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:83
+msgid "To prevent abuse, the sender address and the subject of the e-mail are set to predefined values."
+msgstr "为了防止滥用，寄件人地址和电子邮件主题设置为预定义值。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:328
+#, java-format
+msgid "Too many users found, displaying the first {0} matches only."
+msgstr "太多的用户发现，显示第一个{0}只匹配。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Site.skin:30
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:131
+msgid "Top Stories"
+msgstr "热门故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:34
+msgid "Total"
+msgstr "总"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:110
+msgid "Total Errors"
+msgstr "总错误"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:134
+msgid "Total Memory"
+msgstr "总内存"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:102
+msgid "Total Requests"
+msgstr "共有请"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:114
+msgid "Total Xml-Rpc Requests"
+msgstr "共有的XML - RPC请求"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:9
+msgid "Total sites hosted here"
+msgstr "网站总数在这里举行"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:74
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:176
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:89
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:106
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:60
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:60
+msgid "Trusted"
+msgstr "可信"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:71
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:173
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:28
+msgid "Type"
+msgstr "类型"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:26
+msgid "URL string of the resource"
+msgstr "URL字符串的资源"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Api/$Api.skin:30
+msgid "URL string of the site"
+msgstr "该网站的网址字符串"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:155
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:165
+msgid "Unfortunately, your login failed. Maybe a typo?"
+msgstr "不幸的是，您的登录失败。也许一个错字？"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:101
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:313
+msgid "Unfortunately, your passwords did not match. Please repeat your input."
+msgstr "不幸的是，你的密码不匹配。请重复你的投入。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:74
+msgid "Unsubscribe"
+msgstr "取消订阅"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:66
+msgid "Untitled"
+msgstr "无题"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:91
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:192
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:43
+msgid "Update"
+msgstr "更新"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:285
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:106
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:35
+msgid "Updates"
+msgstr "更新"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:86
+msgid "Uptime"
+msgstr "正常运行时间"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:130
+msgid "Used Memory"
+msgstr "使用的内存"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:31
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:11
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:29
+msgid "User"
+msgstr "用户"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:558
+msgid "User Administration"
+msgstr "用户管理"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:225
+msgid "User Profile"
+msgstr "用户配置文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:296
+msgid "User Role"
+msgstr "用户角色"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:130
+msgid "User name and e-mail address do not match."
+msgstr "用户名和电子邮件地址不匹配。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:17
+#, java-format
+msgid "User {0} has added {1} #{2} to the site {3}:"
+msgstr "用户{0}{1}添加了＃{2}到{3}的网站："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:27
+#, java-format
+msgid "User {0} has modified {1} #{2} at the site {3}:"
+msgstr "用户{0}{1}已修改＃{2}在现场{3}："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:183
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:145
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:49
+msgid "Username"
+msgstr "用户名"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:11
+msgid "Users"
+msgstr "用户"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:93
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:73
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:28
+msgid "View // verb"
+msgstr "视图"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:70
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:21
+#: /Users/tobi/Projects/helma/apps/antville/code/Vote/Vote.js:29
+msgid "Vote"
+msgstr "投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/$HopObject.skin:3
+msgid "Warning!"
+msgstr "警告！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:168
+#, java-format
+msgid "We are sorry to inform you that the user {0} has cancelled your membership of the site {1} at {2}."
+msgstr "我们很遗憾地通知你，用户{0}已取消您的网站{1}{2}的成员。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:134
+#, java-format
+msgid "Welcome to {0}, {1}!"
+msgstr "欢迎到{0}，{1}！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:187
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:142
+#, java-format
+msgid "Welcome to {0}, {1}. Have fun!"
+msgstr "欢迎到{0}，{1}。玩得开心！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.skin:9
+#, java-format
+msgid "Welcome to {0}."
+msgstr "欢迎到{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:106
+#, java-format
+msgid "Welcome to ‚Äú{0}‚Äù, {1}. Have fun!"
+msgstr "欢迎光临，金{0}，非盟，{1}。玩得开心！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/$Comment.skin:32
+#, java-format
+msgid "Yes, really erase {0} comment"
+msgid_plural "Yes, really erase {0} comments"
+msgstr[0] "是的，真的擦除{0}发表评论"
+msgstr[1] "是的，真的擦除{0}评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:109
+#, java-format
+msgid "You (or someone pretending to be you) requested to reset your account password for the site {0} at {1}."
+msgstr "你（或某人假装是您）要求重设您的网站帐户密码）（0在{1}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:189
+#, java-format
+msgid "You are about to delete a comment by user {0}."
+msgstr "您将要删除的用户评论{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:228
+#, java-format
+msgid "You are about to delete a poll by user {0}."
+msgstr "您将要删除的用户调查显示{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:668
+#, java-format
+msgid "You are about to delete a story by user {0}."
+msgstr "您将要删除的用户故事{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:250
+#, java-format
+msgid "You are about to delete the file {0}."
+msgstr "您将要删除的文件{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:522
+#, java-format
+msgid "You are about to delete the image {0}."
+msgstr "您将要删除图像{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:275
+#, java-format
+msgid "You are about to delete the membership of user {0}."
+msgstr "您将要删除的用户成员{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:155
+#, java-format
+msgid "You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}."
+msgstr "您将要删除整个网站目前包含{0}，{1}，{2}，{3}和{4}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:394
+#, java-format
+msgid "You are about to reset the layout of site {0}."
+msgstr "您将要重置站点布局{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:378
+#, java-format
+msgid "You are about to reset the skin {0}.{1}."
+msgstr "您将要重置皮肤{0}。{1}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:649
+#, java-format
+msgid "You are about to unsubscribe from site {0}."
+msgstr "您即将从网站）（0退订。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:135
+msgid "You are not allowed to access this part of the site."
+msgstr "您没有允许访问这个网站的一部分。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.skin:13
+msgid "You are not logged in"
+msgstr "您还没有登录"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:160
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:149
+#, java-format
+msgid "You are now {0} of the site."
+msgstr "你现在的网站{0}。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/$Membership.skin:136
+msgid "You can edit your account profile and change its password any time via the following link:"
+msgstr "您可以编辑您的帐户配置文件并更改其密码通过以下链接任何时候："
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:176
+msgid "You can use the asterisk * as wildcard."
+msgstr "你可以使用通配符星号*为。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:143
+msgid "You did not vote, yet. You can vote until the poll is closed."
+msgstr "你没有投票，但。您可以投票，直到投票结束。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:368
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:377
+#, java-format
+msgid "You need to wait {0} before you are allowed to create a new site."
+msgstr "你需要等待{0}，然后再被允许创建一个新的站点。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:113
+msgid "You will then be asked to change your password."
+msgstr "然后，您会被要求更改密码。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:108
+msgid "Your account has been blocked."
+msgstr "您的帐户已被封锁。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:197
+msgid "Your message was sent successfully."
+msgstr "您的留言已发送成功。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:159
+msgid "Your password was changed."
+msgstr "您的密码已更改。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:196
+#, java-format
+msgid "[{0}] Message from anonymous user"
+msgstr "[{0}]从匿名用户信息"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:195
+#, java-format
+msgid "[{0}] Message from user {1}"
+msgstr "[{0}]从用户信息{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:79
+#, java-format
+msgid "[{0}] Notification of membership cancellation"
+msgstr "[{0}]取消会员资格的通知"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:345
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:183
+#, java-format
+msgid "[{0}] Notification of membership change"
+msgstr "[{0}]的成员有所变动的通知"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:262
+#, java-format
+msgid "[{0}] Notification of site changes"
+msgstr "[{0}]网站更改的通知"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:134
+#, java-format
+msgid "[{0}] Password reset confirmation"
+msgstr "[{0}]密码重置确认"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:217
+#, java-format
+msgid "[{0}] Warning: Site will be blocked"
+msgstr "[{0}]警告：网站将被封锁"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/Admin.js:191
+#, java-format
+msgid "[{0}] Warning: Site will be deleted"
+msgstr "[{0}]警告：网站将被删除"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:105
+#, java-format
+msgid "[{0}] Welcome to {1}!"
+msgstr "[{0}]欢迎{1}！"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/Choice.js:30
+msgid "choice"
+msgstr "选择"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:54
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:38
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:88
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:15
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:37
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:51
+msgid "closed"
+msgstr "关闭"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:30
+msgid "comment"
+msgstr "评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:30
+msgid "custom"
+msgstr "习俗"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:304
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:310
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:328
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:334
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:178
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:74
+msgid "days"
+msgstr "天"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:35
+msgid "deleted"
+msgstr "删除"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:81
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:103
+msgid "disabled"
+msgstr "残疾人"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:117
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/$Members.skin:148
+msgid "e-mail"
+msgstr "电子邮件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:184
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:189
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:216
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:82
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:104
+msgid "enabled"
+msgstr "启用"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:45
+msgid "featured"
+msgstr "精选"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/File.js:30
+msgid "file"
+msgstr "文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Files/Files.js:30
+msgid "files"
+msgstr "档"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:863
+msgid "free"
+msgstr "免费"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:17
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:44
+msgid "hidden"
+msgstr "隐蔽"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.js:30
+msgid "image"
+msgstr "图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Images/Images.js:30
+msgid "images"
+msgstr "图像"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:22
+msgid "in // preposition"
+msgstr "在"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:30
+msgid "layout"
+msgstr "布局"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/LogEntry/LogEntry.js:30
+msgid "log entry"
+msgstr "日志条目"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Members/Members.js:30
+msgid "members"
+msgstr "成员"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Membership/Membership.js:30
+msgid "membership"
+msgstr "会籍"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:38
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:38
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:53
+msgid "open"
+msgstr "开放"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/$User.skin:6
+msgid "owners"
+msgstr "业主"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:36
+msgid "pending"
+msgstr "有待"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:82
+msgid "pixels"
+msgstr "像素"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/Poll.js:30
+msgid "poll"
+msgstr "投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Polls/Polls.js:30
+msgid "polls"
+msgstr "调查"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:36
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:89
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:38
+msgid "public"
+msgstr "公众"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Comment/Comment.js:36
+msgid "readonly"
+msgstr "只读"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:38
+msgid "shared"
+msgstr "共享"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:30
+msgid "site"
+msgstr "现场"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:29
+msgid "skin"
+msgstr "皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Skins/Skins.js:30
+msgid "skins"
+msgstr "皮肤"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:75
+#: /Users/tobi/Projects/helma/apps/antville/code/Stories/Stories.js:30
+msgid "stories"
+msgstr "故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:30
+msgid "story"
+msgstr "故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tag/Tag.js:30
+msgid "tag"
+msgstr "标签"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Tags/Tags.js:30
+msgid "tags"
+msgstr "标签"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/Site.js:863
+msgid "used"
+msgstr "使用"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/User/User.js:30
+msgid "user"
+msgstr "用户"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Vote/Vote.js:30
+msgid "vote"
+msgstr "投票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:133
+#, java-format
+msgid "{0} 401 Error"
+msgstr "{0}401错误"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:234
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:136
+#, java-format
+msgid "{0} Comment"
+msgid_plural "{0} Comments"
+msgstr[0] "{0}评论"
+msgstr[1] "{0}评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:87
+#, java-format
+msgid "{0} Day"
+msgid_plural "{0} Days"
+msgstr[0] "{0}日"
+msgstr[1] "{0}天"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:238
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:138
+#, java-format
+msgid "{0} File"
+msgid_plural "{0} Files"
+msgstr[0] "{0}文件"
+msgstr[1] "{0}文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:258
+#, java-format
+msgid "{0} Health"
+msgstr "{0}生"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:236
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:137
+#, java-format
+msgid "{0} Image"
+msgid_plural "{0} Images"
+msgstr[0] "{0}形象"
+msgstr[1] "{0}图片"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:232
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:135
+#, java-format
+msgid "{0} Story"
+msgid_plural "{0} Stories"
+msgstr[0] "{0}的故事"
+msgstr[1] "{0}的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:157
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/Story.js:477
+#, java-format
+msgid "{0} comment"
+msgid_plural "{0} comments"
+msgstr[0] "{0}发表评论"
+msgstr[1] "{0}评论"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:369
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:378
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:248
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:258
+#, java-format
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0}天"
+msgstr[1] "{0}天"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:159
+#, java-format
+msgid "{0} file"
+msgid_plural "{0} files"
+msgstr[0] "{0}文件"
+msgstr[1] "{0}文件"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:48
+#, java-format
+msgid "{0} hit"
+msgid_plural "{0} hits"
+msgstr[0] "{0}击中"
+msgstr[1] "{0}点击"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:158
+#, java-format
+msgid "{0} image"
+msgid_plural "{0} images"
+msgstr[0] "{0}形象"
+msgstr[1] "{0}图像"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:160
+#, java-format
+msgid "{0} member"
+msgid_plural "{0} members"
+msgstr[0] "{0}成员"
+msgstr[1] "{0}个成员"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:119
+#, java-format
+msgid "{0} of {1}"
+msgstr "{0}{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:60
+#: /Users/tobi/Projects/helma/apps/antville/code/File/$File.skin:55
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/$Image.skin:88
+#: /Users/tobi/Projects/helma/apps/antville/code/Image/Image.skin:6
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:3
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/$Skin.skin:48
+#: /Users/tobi/Projects/helma/apps/antville/code/Story/$Story.skin:36
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0}在{1}"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Site/$Site.skin:178
+#, java-format
+msgid "{0} per page"
+msgstr "{0}每页"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/$Root.skin:299
+#, java-format
+msgid "{0} public site"
+msgid_plural "{0} public sites"
+msgstr[0] "{0}公共网站"
+msgstr[1] "{0}公共场所"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Admin/$Admin.skin:156
+#, java-format
+msgid "{0} story"
+msgid_plural "{0} stories"
+msgstr[0] "{0}的故事"
+msgstr[1] "{0}的故事"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Choice/$Choice.skin:26
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:59
+#: /Users/tobi/Projects/helma/apps/antville/code/Poll/$Poll.skin:35
+#, java-format
+msgid "{0} vote"
+msgid_plural "{0} votes"
+msgstr[0] "{0}投票"
+msgstr[1] "{0}票"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/HopObject/HopObject.js:167
+#, java-format
+msgid "{0} was successfully deleted."
+msgstr "{0}已成功删除。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Layout/Layout.js:213
+#: /Users/tobi/Projects/helma/apps/antville/code/Skin/Skin.js:193
+#, java-format
+msgid "{0} was successfully reset."
+msgstr "{0}成功复位。"
+
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:112
+#: /Users/tobi/Projects/helma/apps/antville/code/Root/Root.js:120
+#, java-format
+msgid "{0} {1} Error"
+msgstr "{0}{1}错误"
+

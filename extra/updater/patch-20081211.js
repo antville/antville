@@ -1,8 +1,10 @@
-//
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2001-2007 by The Antville People
+// Copyright 2007-2011 by Tobi Schäfer.
+//
+// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
+// Matthias & Michael Platzer, Christoph Lincke.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -20,29 +22,26 @@
 // $LastChangedBy$
 // $LastChangedDate$
 // $URL$
-//
 
-// Needs to be applied from within antville code (does not work inside updater)
+// Apply with enabled updater repository via ant patch -Dpatch.id=20081211
 
-global["patch-20081211"] = function() {
-   root.forEach(function() {
-      var site = this;
-      if (site.layout) {
-         res.handlers.layout = site.layout;
-         res.skinpath = site.layout.getSkinPath();
-         
-         // Fixing the <% if <% comment.created %> %> macro
-         var skin = site.layout.skins.getSkin("Comment", "edit");
-         var source = skin.getSource();
-         var re = /(<%\s+if\s+<%\s+comment\.creat)ed/g;
-         var newSource = source.replace(re, function() {
-            var replacement = arguments[1] + "or";
-            app.log(arguments[0] + " ==> " + replacement);
-            return replacement;
-         });
-         if (newSource !== source) {
-            skin.setSource(newSource);
-         }
+root.forEach(function() {
+   var site = this;
+   if (site.layout) {
+      res.handlers.layout = site.layout;
+      res.skinpath = site.layout.getSkinPath();
+      
+      // Fixing the <% if <% comment.created %> %> macro
+      var skin = site.layout.skins.getSkin("Comment", "edit");
+      var source = skin.getSource();
+      var re = /(<%\s+if\s+<%\s+comment\.creat)ed(\s+%>\s+is\s+null)/g;
+      var newSource = source.replace(re, function() {
+         var replacement = arguments[1] + "or" + arguments[2];
+         app.log(arguments[0] + " ==> " + replacement);
+         return replacement;
+      });
+      if (newSource !== source) {
+         skin.setSource(newSource);
       }
-   });
-}
+   }
+});
