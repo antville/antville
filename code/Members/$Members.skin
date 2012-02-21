@@ -98,32 +98,32 @@ $(function() {
 
 <div class="form">
     <div class="row activation">
-        <label for="activation"><% gettext "Activation Code" suffix=":" %></label>
+        <label for="activation" style="width: 130px;"><% gettext "Activation Code" suffix=":" %></label>
         <input type="text" name="activation" id="activation" value="<% request.activation encoding="form" %>" />
     </div>
 
     <div class="row">
-        <label for="name"><% gettext "Username" suffix=":" %></label>
+        <label for="name" style="width: 130px;"><% gettext "Username" suffix=":" %></label>
         <input type="text" name="name" id="name" size="30" value="<% request.name encoding="form" %>" />
     </div>
 
     <div class="row">
-        <label for="email"><% gettext "E-mail" suffix=":" %></label>
+        <label for="email" style="width: 130px;"><% gettext "E-mail" suffix=":" %></label>
         <input type="text" name="email" size="30" value="<% request.email encoding="form" %>" />
     </div>
 
     <div class="row">
-        <label for="password"><% gettext Password suffix=":" %></label>
+        <label for="password" style="width: 130px;"><% gettext Password suffix=":" %></label>
         <input type="password" name="password" id="password" size="30"/>
     </div>
 
     <div class="row">
-        <label for="passwordConfirm"><% gettext "Confirm password" suffix=":" %></label>
+        <label for="passwordConfirm" style="width: 130px;"><% gettext "Confirm password" suffix=":" %></label>
         <input type="password" name="passwordConfirm" id="passwordConfirm" size="30"/>
     </div>
 
     <div class="row">
-        <button type="submit" class="normal small"  id="submit" name="register" value="1"><% gettext Register %></button>
+        <button type="submit" class="normal small" id="submit" name="register" value="1"><% gettext Register %></button>
         <small><a href="<% site.href %>" class="cancel"><% gettext Cancel %></a></small>
     </div>
 </div>

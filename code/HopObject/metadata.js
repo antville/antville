@@ -58,7 +58,13 @@ HopObject.prototype.getMetadata = function(name) {
    if (!this.metadata) {
       throw Error("No metadata collection defined for prototype " + this.constructor.name);
    } else {
-      this.metadata.prefetchChildren();
+      // On fresh Antville installations this fails: https://gist.github.com/1878368
+      // If prefetching fails, it's no tragedy.
+      try {
+         this.metadata.prefetchChildren();
+      } catch (err) {
+         app.log(err);
+      }
    }
 
    var self = this;
