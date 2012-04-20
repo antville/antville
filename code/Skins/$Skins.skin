@@ -8,8 +8,8 @@
 <title><% response.title %></title>
 <meta http-equiv="Content-Type" content="text/html" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<script type="text/javascript" src="<% site.href main.js %>"></script>
 <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+<link rel='stylesheet' href='<% root.static codemirror.css %>'>
 <style type="text/css">
 body {
    width: auto;
@@ -19,6 +19,13 @@ body {
 }
 .formWide {
    width: 100%;
+   height: 500px;
+}
+.cm-helma-macro {
+   /* ... */
+}
+.CodeMirror-scroll {
+   border: 1px solid;
    height: 500px;
 }
 /* classes for skin diff */
@@ -52,6 +59,7 @@ body {
 </style>
 </head>
 <body>
+<script type="text/javascript" src="<% site.href main.js %>"></script>
 <% response.body %>
 </body>
 </html>
@@ -101,16 +109,27 @@ body {
 <% #all %>
 <script type="text/javascript">
 $(function() {
+   var recent;
    $("ul ul").hide();
-   $("ul li a[href=#]").toggle(function() {
+   $("ul li a[href^=#]").toggle(function(event) {
+      if (recent) {
+         recent.click();
+      }
+      recent = $(this);
+      event.preventDefault();
       $(this).css("color", "<% value 'base font color' %>");
       $(this).next("ul").show();
-      return false;
-   }, function() {
+      location.hash = $(this).html();
+   }, function(event) {
+      event.preventDefault();
       $(this).css("color", "<% value 'link color' %>");
       $(this).next("ul").hide();
-      return false;
+      location.hash = '';
+      recent = null;
    });
+   if (location.hash) {
+      $('ul li a[href^=' + location.hash + ']').click();
+   }
 });
 </script>
 <% skins.skin $Skins#header %>

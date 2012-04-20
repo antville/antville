@@ -195,7 +195,7 @@ Skins.prototype.getOutline = function() {
       skin = item[1];
       if (skin && skin.length > 0) {
          html.openTag("li");
-         html.openTag("a", {href: "#", name: prototype, id: prototype});
+         html.openTag("a", {href: "#" + prototype});
          res.write(prototype);
          html.closeTag("a");
          html.openTag("ul");

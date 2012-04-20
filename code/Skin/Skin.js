@@ -208,6 +208,49 @@ Skin.prototype.reset_action = function() {
 }
 
 Skin.prototype.compare_action = function() {
+   /*
+   var originalSkin = this.source || String.EMPTY;
+   var dmp = new Packages.name.fraser.neil.plaintext.diff_match_patch();
+   var diffs = dmp.diff_main(originalSkin, this.getSource());
+   dmp.diff_cleanupSemantic(diffs);
+   while (diffs.size() > 0) {
+      let diff = diffs.pop();
+      let text = encode(diff.text);
+      switch (diff.operation) {
+         case Packages.name.fraser.neil.plaintext.diff_match_patch.Operation.INSERT:
+         res.write('<span style="color: green;">' + text + "</span>");
+         break;
+         case Packages.name.fraser.neil.plaintext.diff_match_patch.Operation.DELETE:
+         res.write('<span style="color: red;">' + text + "</span>");
+         break;
+         case Packages.name.fraser.neil.plaintext.diff_match_patch.Operation.EQUAL:
+         res.write(text);
+         break;
+      }
+   }
+   res.write(dmp.diff_prettyHtml(diffs));
+
+   var original = this.source && this.source.split(/\r\n|\r|\n/);
+   var revision = this.getSource().split(/\r\n|\r|\n/);
+   var change = (new Packages.helma.util.Diff(original, revision)).diff();
+   if (!change) {
+      res.data.status = gettext("No differences were found");
+   } else {
+      var left = new java.lang.StringBuffer();
+      var right = new java.lang.StringBuffer();
+      var length = Math.min(original.length, revision.length);
+      for (var i=0; i<length; i+=1) {
+         original[i] && left.append(encode(original[i] + "\n"));
+         revision[i] && right.append(encode(revision[i] + "\n"));
+         if (change.line1 === i) {
+            right.append(encode("\n".repeat(change.deleted)));
+            left.append(encode("\n".repeat(change.inserted)));
+            change = change.link;
+         }
+      }
+      this.renderSkin("$Skin#compare_new", {left: left, right: right});
+   }
+   */
    var originalSkin = this.source || String.EMPTY;
    var diff = originalSkin.diff(this.getSource());
    if (!diff) {

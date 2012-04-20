@@ -18,9 +18,56 @@ else
    <button type="submit" name="save" value="2">
       <strong><% gettext "Save" %></strong>
    </button>
-   <a href="<% layout.skins.href modified %>"><% gettext Cancel %></a>
+   <a href="<% layout.skins.href modified %>" class='cancel'><% gettext Cancel %></a>
 </p>
 </form>
+
+<script type='text/javascript' src='<% root.static codemirror-compressed.js %>'></script>
+
+<!-- Individual includes for testing purposes
+<link rel='stylesheet' href='<% root.static codemirror2/mode/helma/skin.css %>'>
+<script type='text/javascript' src='<% root.static codemirror2/lib/codemirror.js %>'></script>
+<script type='text/javascript' src='<% root.static codemirror2/mode/javascript/javascript.js %>'></script>
+<script type='text/javascript' src='<% root.static codemirror2/mode/css/css.js %>'></script>
+<script type='text/javascript' src='<% root.static codemirror2/mode/xml/xml.js %>'></script>
+<script type='text/javascript' src='<% root.static codemirror2/mode/htmlmixed/htmlmixed.js %>'></script>
+<script type='text/javascript' src='<% root.static codemirror2/mode/helma/skin.js %>'></script>
+-->
+
+<script type='text/javascript'>
+$(function() {
+   var mode;
+   if (location.href.indexOf('stylesheet') > -1) {
+      mode = 'text/css';
+   } else if (location.href.indexOf('javascript') > -1) {
+      mode = 'text/javascript';
+   } else {
+      mode = 'application/x-helma-skin';
+   }
+   var editor = CodeMirror.fromTextArea($('#source').get(0), {
+      lineNumbers: true,
+      matchBrackets: true,
+      mode: mode,
+      indentUnit: 3,
+      indentWithTabs: false,
+      enterMode: 'keep',
+      tabMode: 'shift'
+   });
+});
+</script>
+
+<% #ace_temp %>
+<div id='source' style='position: relative; width: 100%; height: 600px;'><% skin.source encoding='form' %></div>
+<script type='text/javascript' src='<% root.static ace/build/src/ace.js %>'></script>
+<script type='text/javascript' src='<% root.static ace/build/src/mode-skin.js %>'></script>
+<script type='text/javascript'>
+$(function() {
+   var editor = ace.edit('source');
+   var session = editor.getSession()
+   session.setMode('ace/mode/skin');
+   session.setFoldStyle('manual');
+});
+</script>
 
 <% #listItem %>
 <div class="listSeparator"> </div>
@@ -75,3 +122,9 @@ else
 <td class="status"><% param.status %></td>
 <td class="<% param.class %>"><pre>&nbsp;<% param.line %></pre></td>
 </tr>
+
+<% #compare_new %>
+<div style="white-space: none;">
+<div style="width: 50%; overflow: hidden; float: left;"><% param.left %></div>
+<div style=" overflow: hidden;"><% param.right %></div>
+</div>
