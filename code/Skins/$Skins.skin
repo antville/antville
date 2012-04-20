@@ -43,12 +43,12 @@ body {
    border-collapse: collapse;
 }
 .diff td {
+   width: 50%;
    padding: 2px 5px;
    border-bottom: 1px solid #eee;
    vertical-align: top;
 }
 .diff .line {
-   width: 500px;
    overflow: hidden;
 }
 .diff .line-number {
