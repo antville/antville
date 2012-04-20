@@ -89,8 +89,8 @@ $(function() {
 <p class='storyTitle'>
    <% response.title %>
    <span class='small'>
-   ... <% skin.link edit %>
-   ... <% skin.link reset %>
+   ... <% skin.link <% gettext Edit %> %>
+   ... <% skin.link <% gettext Reset %> %>
    ... <a href='' class='cancel'><% gettext Cancel %></a>
    </span>
 </p>
