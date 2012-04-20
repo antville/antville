@@ -208,90 +208,64 @@ Skin.prototype.reset_action = function() {
 }
 
 Skin.prototype.compare_action = function() {
-   /*
-   var originalSkin = this.source || String.EMPTY;
-   var dmp = new Packages.name.fraser.neil.plaintext.diff_match_patch();
-   var diffs = dmp.diff_main(originalSkin, this.getSource());
-   dmp.diff_cleanupSemantic(diffs);
-   while (diffs.size() > 0) {
-      let diff = diffs.pop();
-      let text = encode(diff.text);
-      switch (diff.operation) {
-         case Packages.name.fraser.neil.plaintext.diff_match_patch.Operation.INSERT:
-         res.write('<span style="color: green;">' + text + "</span>");
-         break;
-         case Packages.name.fraser.neil.plaintext.diff_match_patch.Operation.DELETE:
-         res.write('<span style="color: red;">' + text + "</span>");
-         break;
-         case Packages.name.fraser.neil.plaintext.diff_match_patch.Operation.EQUAL:
-         res.write(text);
-         break;
-      }
-   }
-   res.write(dmp.diff_prettyHtml(diffs));
-
-   var original = this.source && this.source.split(/\r\n|\r|\n/);
-   var revision = this.getSource().split(/\r\n|\r|\n/);
-   var change = (new Packages.helma.util.Diff(original, revision)).diff();
-   if (!change) {
-      res.data.status = gettext("No differences were found");
-   } else {
-      var left = new java.lang.StringBuffer();
-      var right = new java.lang.StringBuffer();
-      var length = Math.min(original.length, revision.length);
-      for (var i=0; i<length; i+=1) {
-         original[i] && left.append(encode(original[i] + "\n"));
-         revision[i] && right.append(encode(revision[i] + "\n"));
-         if (change.line1 === i) {
-            right.append(encode("\n".repeat(change.deleted)));
-            left.append(encode("\n".repeat(change.inserted)));
-            change = change.link;
-         }
-      }
-      this.renderSkin("$Skin#compare_new", {left: left, right: right});
-   }
-   */
    var originalSkin = this.source || String.EMPTY;
    var diff = originalSkin.diff(this.getSource());
    if (!diff) {
-      res.data.status = gettext("No differences were found");
+      res.message = gettext("No differences were found.");
    } else {
       res.push();
-      var sp = new Object();
-      for (var i in diff) {
-         var line = diff[i];
-         sp.num = line.num;
+      var param = {}, leftLineNumber = rightLineNumber = 0;
+      for each (let line in diff) {
          if (line.deleted) {
-            sp.status = "DEL";
-            sp["class"] = "removed";
-            for (var j=0;j<line.deleted.length;j++) {
-               sp.num = line.num + j;
-               sp.line = encode(line.deleted[j]);
-               this.renderSkin("$Skin#difference", sp);
+            param.leftStatus = "removed";
+            param.rightStatus = '';
+            for (let i=0; i<line.deleted.length; i++) {
+               leftLineNumber += 1;
+               param.leftLineNumber = leftLineNumber;
+               param.rightLineNumber = '';
+               param.left = encode(line.deleted[i]);
+               param.right = encode(line.value);
+               this.renderSkin("$Skin#difference", param);
             }
          }
          if (line.inserted) {
-            sp.status = "ADD";
-            sp["class"] = "added";
-            for (var j=0;j<line.inserted.length;j++) {
-               sp.num = line.num + j;
-               sp.line = encode(line.inserted[j]);
-               this.renderSkin("$Skin#difference", sp);
+            param.leftStatus = '';
+            param.rightStatus = 'added';
+            for (let i=0; i<line.inserted.length; i++) {
+               rightLineNumber += 1;
+               param.leftLineNumber = '';
+               param.rightLineNumber = rightLineNumber;
+               param.left = encode(line.value);
+               param.right = encode(line.inserted[i]);
+               this.renderSkin("$Skin#difference", param);
             }
          }
-         if (line.value != null) {
-            sp.status = "&nbsp;";
-            sp["class"] = "line";
-            sp.line = encode(line.value);
-            this.renderSkin("$Skin#difference", sp);
+         if (line.value !== null) {
+            leftLineNumber += 1;
+            rightLineNumber += 1;
+            param.leftLineNumber = leftLineNumber;
+            param.rightLineNumber = rightLineNumber;
+            param.leftStatus = param.rightStatus = '';
+            param.left = encode(line.value);
+            param.right = param.left;
+            this.renderSkin("$Skin#difference", param);
          }
       }
       res.data.diff = res.pop();
    }
-   res.data.title = gettext("Compare Skin");
+
+   res.data.title = gettext("Compare Skin: {0}", this.getTitle());
    res.data.body = this.renderSkinAsString("$Skin#compare");
    res.handlers.skins.renderSkin("$Skins#page");
    return;
+}
+
+/**
+ *
+ * @return {String}
+ */
+Skin.prototype.getTitle = function() {
+   return this.prototype + '.' + this.name;
 }
 
 /**

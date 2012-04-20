@@ -25,40 +25,47 @@ body {
    /* ... */
 }
 .CodeMirror-scroll {
-   border: 1px solid;
+   border: 1px solid #eee;
    height: 500px;
 }
+.storyTitle {
+   margin-bottom: 2em;
+}
+.storyTitle .small {
+   margin-left: 3em;
+   font-weight: normal;
+}
 /* classes for skin diff */
+.diff {
+   padding: 0;
+   margin: 0;
+   border: 0;
+   border-collapse: collapse;
+}
 .diff td {
-   padding:0px 5px;
-}
-.diff pre {
-   font-size:12px;
-   margin:0px;
-   padding:2px 0px;
-}
-.diff .removed {
-   border-top: 1px solid black;
-   background-color: #ff3333;
-}
-.diff .added {
-   border-top: 1px solid black;
-   background-color: #33dd33;
+   padding: 2px 5px;
+   border-bottom: 1px solid #eee;
+   vertical-align: top;
 }
 .diff .line {
-   border-top: 1px solid black;
+   width: 500px;
+   overflow: hidden;
 }
-.diff .num {
-   border-top: 1px solid black;
-   text-align:right;
+.diff .line-number {
+   width: 2em;
+   color: #cccccc;
+   text-align: right;
 }
-.diff .status {
-   padding: 0px 5px;
-   border-top: 1px solid black;
+.diff .removed {
+   background-color: #fcc;
+}
+.diff .added {
+   background-color: #cfc;
 }
 </style>
 </head>
 <body>
+<span style='float: right'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
 <script type="text/javascript" src="<% site.href main.js %>"></script>
 <% response.body %>
 </body>

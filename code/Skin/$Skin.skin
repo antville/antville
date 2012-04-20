@@ -2,14 +2,14 @@
 <p class="storyTitle"><% response.title %></p>
 <% response.message prefix='<div class="message">' suffix="</div>" %>
 <form method="post" action="<% response.action %>">
-<div class="small">
+<p class="small">
 <% if <% skin.name %> is "" then 
    <% skin.select prototype prefix=<% gettext Prototype suffix=": " %>
    suffix=<% skin.input name prefix=<% gettext Name suffix=": " %> %> %>
 else 
    <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
 %>
-</div>
+</p>
 <% skin.textarea source class="formWide" wrap="virtual" %>
 <p>
    <button type="submit" name="save" value="1">
@@ -18,7 +18,7 @@ else
    <button type="submit" name="save" value="2">
       <strong><% gettext "Save" %></strong>
    </button>
-   <a href="<% layout.skins.href modified %>" class='cancel'><% gettext Cancel %></a>
+   <a href="" class='cancel'><% gettext Cancel %></a>
 </p>
 </form>
 
@@ -56,19 +56,6 @@ $(function() {
 });
 </script>
 
-<% #ace_temp %>
-<div id='source' style='position: relative; width: 100%; height: 600px;'><% skin.source encoding='form' %></div>
-<script type='text/javascript' src='<% root.static ace/build/src/ace.js %>'></script>
-<script type='text/javascript' src='<% root.static ace/build/src/mode-skin.js %>'></script>
-<script type='text/javascript'>
-$(function() {
-   var editor = ace.edit('source');
-   var session = editor.getSession()
-   session.setMode('ace/mode/skin');
-   session.setFoldStyle('manual');
-});
-</script>
-
 <% #listItem %>
 <div class="listSeparator"> </div>
 <table cellspacing="0" cellpadding="0" width="100%">
@@ -99,32 +86,23 @@ $(function() {
 </table>
 
 <% #compare %>
-<h3><% response.title %></h3>
-
-<table class="diff" cellspacing="0" cellpadding="0">
-<tr>
-<td class="removed">&nbsp;</td>
-<td colspan="2"><% gettext 'Lines removed from original skin' %></td>
-</tr>
-<tr>
-<td class="added">&nbsp;</td>
-<td colspan="2"><% gettext 'Lines added to original skin' %></td>
-</tr>
-<tr>
-<td colspan="3"><% response.status prefix="<br />" default="&nbsp;" %></td>
-</tr>
+<p class='storyTitle'>
+   <% response.title %>
+   <span class='small'>
+   ... <% skin.link edit %>
+   ... <% skin.link reset %>
+   ... <a href='' class='cancel'><% gettext Cancel %></a>
+   </span>
+</p>
+<% response.message prefix='<div class="message">' suffix='</div><br />' %>
+<table class="diff">
 <% response.diff %>
 </table>
 
 <% #difference %>
 <tr>
-<td class="num"><% param.num %></td>
-<td class="status"><% param.status %></td>
-<td class="<% param.class %>"><pre>&nbsp;<% param.line %></pre></td>
+   <td class='line-number'><% param.leftLineNumber %></td>
+   <td class='<% param.leftStatus %>'><div class='line'><% param.left %></div></td>
+   <td class='line-number'><% param.rightLineNumber %></td>
+   <td class='line <% param.rightStatus %>'><div class='line'><% param.right %></div></td>
 </tr>
-
-<% #compare_new %>
-<div style="white-space: none;">
-<div style="width: 50%; overflow: hidden; float: left;"><% param.left %></div>
-<div style=" overflow: hidden;"><% param.right %></div>
-</div>
