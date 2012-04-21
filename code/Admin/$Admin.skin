@@ -100,7 +100,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <tr>
 <td colspan="2">
    <span class="label <% item.status %>"><% gettext <% item.status %> %></span><!--
-   --><span class="label <% item.mode %>"><% gettext <% item.mode | capitalize %> %></span>
+   --><span class="label <% item.mode %>"><% gettext <% item.mode %> %></span>
 </td>
 </tr>
 <tr>
