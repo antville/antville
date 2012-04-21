@@ -49,7 +49,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td>
-   <span class="label <% item.context_type %>"><% gettext <% item.context_type | capitalize %> %></span>
+   <span class="label <% item.context_type %>"><% gettext <% item.context_type %> %></span>
 </td>
 <td> </td>
 </tr>
@@ -99,7 +99,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="2">
-   <span class="label <% item.status %>"><% gettext <% item.status | capitalize %> %></span><!--
+   <span class="label <% item.status %>"><% gettext <% item.status %> %></span><!--
    --><span class="label <% item.mode %>"><% gettext <% item.mode | capitalize %> %></span>
 </td>
 </tr>
@@ -199,7 +199,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <table class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="2">
-   <span class="label <% item.status %>"><% gettext <% item.status | capitalize %> %></span>
+   <span class="label <% item.status %>"><% gettext <% item.status %> %></span>
 </td>
 </tr>
 <tr>
