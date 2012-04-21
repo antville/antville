@@ -267,7 +267,7 @@ Root.prototype.health_action = function() {
       param[key] = formatNumber(app[key]);
    }
    
-   param.errorRatio = formatNumber(app.errorCount / app.requestCount);
+   param.errorRatio = formatNumber(100 * app.errorCount / app.requestCount);
    param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit);
 
    if (Admin.health) {

@@ -64,8 +64,12 @@ alphabetical order." %></p>
    <col width="*" />
 </colgroup>
 <tr>
+   <td class="small"><% gettext 'Sessions' %>:</td>
+   <td><% param.sessions %></td>
+</tr>
+<tr>
    <td class="small"><% gettext Uptime %>:</td>
-   <td><% ngettext '{0} Day' '{0} Days' <% param.uptime %> %></td>
+   <td><% ngettext '{0} day' '{0} days' <% param.uptime %> %></td>
 </tr>
 <tr>
    <td class="small"><% gettext 'Threads' %>:</td>
@@ -73,10 +77,6 @@ alphabetical order." %></p>
       <% gettext '{0} active' <% param.activeThreads %> %>,
       <% gettext '{0} free' <% param.freeThreads %> %>
    </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Sessions' %>:</td>
-   <td><% param.sessions %></td>
 </tr>
 <tr>
    <td class="small"><% gettext 'Requests' %>:</td>
@@ -94,11 +94,14 @@ alphabetical order." %></p>
 </tr>
 <tr>
    <td class="small"><% gettext 'Error Ratio' %>:</td>
-   <td><% gettext '{0} errors/request last 5 min.' <% param.errorRatioPerUnit %> %></td>
+   <td>
+      <% gettext '{0}% total' <% param.errorRatio %> %>,
+      <% gettext '{0}% last 5 min.' <% param.errorRatioPerUnit %> %>
+   </td>
 </tr>
 <tr>
    <td class="small"><% gettext 'Xml-Rpc Count' %>:</td>
-   <td><% param.xmlrpcCount %></td>
+   <td><% ngettext '{0} request' '{0} requests' <% param.xmlrpcCount %> %></td>
 </tr>
 <tr>
    <td class="small"><% gettext 'Cache' %>:</td>
@@ -114,9 +117,9 @@ alphabetical order." %></p>
 <tr>
    <td class="small"><% gettext 'Queue' %>:</td>
    <td>
-      <% gettext '{0} requests' <% param.requests %> %>,
-      <% gettext '{0} mails' <% param.mails %> %>,
-      <% gettext '{0} callbacks' <% param.callbacks %> %>,
+      <% ngettext '{0} request' '{0} requests' <% param.requests %> %>,
+      <% ngettext '{0} mail' '{0} mails' <% param.mails %> %>,
+      <% ngettext '{0} callback' '{0} callbacks' <% param.callbacks %> %>,
    </td>
 </tr>
 <tr>
