@@ -1,10 +1,33 @@
 $(function() {
+
+   // Extend jQuery with selectText() method.
+   $.fn.selectText = function() {
+      var element = this.get(0);
+      if (document.body.createTextRange) { // ms
+         var range = document.body.createTextRange();
+         range.moveToElementText(element);
+         range.select();
+      } else if (window.getSelection) { // moz, opera, webkit
+         var selection = window.getSelection();            
+         var range = document.createRange();
+         range.selectNodeContents(element);
+         selection.removeAllRanges();
+         selection.addRange(range);
+      }
+   }
+      
+   // Go back one step in history when clicking on links with the cancel class.
    $("a.cancel").click(function(event) {
       event.preventDefault();
       history.back();
    });
 
-   // Group related <option> elements by inserting additional <optgroup> elements:
+   // Select the macro code when clicking on elements with the macro-code class.
+   $('.macro-code').click(function(event) {
+      $(this).selectText();
+   });
+
+   // Group related <option> elements by inserting additional <optgroup> elements.
    var groups = [],
          element = $("form#prefs #timeZone");
    element.find("option").each(function(index, item) {
@@ -25,6 +48,7 @@ $(function() {
                $(item).html($(item).html().replace(key, ""));
             });
    });
+
 });
 
 /**

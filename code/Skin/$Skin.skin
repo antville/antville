@@ -64,10 +64,11 @@ $(function() {
    <% listItemFlag <% gettext custom %> %>
 %>
 <td class="small">
-   <div class="ample"><strong><% gettext Macro suffix=: %></strong> &lt;% 
+   <div class="ample"><strong><% gettext Macro suffix=: %></strong> 
+   <span class='macro-code'>&lt;% 
    <% if <% skin.prototype %> is Global then 
    <% skin.name prefix="skin " %> else 
-   <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %> %> %&gt;</div>
+   <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %> %> %&gt;</span></div>
 </td>
 <td rowspan="2" width="10" nowrap="nowrap"> </td>
 <td valign="bottom" rowspan="2" align="right" class="small">
