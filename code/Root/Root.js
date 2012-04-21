@@ -266,6 +266,9 @@ Root.prototype.health_action = function() {
          "errorCount", "xmlrpcCount", "cacheusage"]) {
       param[key] = formatNumber(app[key]);
    }
+   
+   param.errorRatio = formatNumber(app.errorCount / app.requestCount);
+   param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit);
 
    if (Admin.health) {
       param.requestsPerUnit = formatNumber(Admin.health.requestsPerUnit);

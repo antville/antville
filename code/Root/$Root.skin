@@ -60,7 +60,7 @@ alphabetical order." %></p>
 <p><strong><% gettext Details %></strong></p>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 <colgroup>
-   <col width="40%" />
+   <col width="30%" />
    <col width="*" />
 </colgroup>
 <tr>
@@ -68,68 +68,60 @@ alphabetical order." %></p>
    <td><% ngettext '{0} Day' '{0} Days' <% param.uptime %> %></td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Active Threads' %>:</td>
-   <td><% param.activeThreads %></td>
+   <td class="small"><% gettext 'Threads' %>:</td>
+   <td>
+      <% gettext '{0} active' <% param.activeThreads %> %>,
+      <% gettext '{0} free' <% param.freeThreads %> %>
+   </td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Free Threads' %>:</td>
-   <td><% param.freeThreads %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Number of Requests (last 5 min)' %>:</td>
-   <td><% param.requestsPerUnit default=n.a. %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Requests' %>:</td>
-   <td><% param.requestCount %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Number of Errors (last 5 min) %>:</td>
-   <td><% param.errorsPerUnit default=n.a. %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Errors' %>:</td>
-   <td><% param.errorCount %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Total Xml-Rpc Requests' %>:</td>
-   <td><% param.xmlrpcCount %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Cached Objects' %>:</td>
-   <td><% gettext '{0} of {1}' <% param.cacheusage %> <% param.cacheSize %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Number of Sessions' %>:</td>
+   <td class="small"><% gettext 'Sessions' %>:</td>
    <td><% param.sessions %></td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Free Memory' %>:</td>
-   <td><% param.freeMemory suffix=" MB" %></td>
+   <td class="small"><% gettext 'Requests' %>:</td>
+   <td>
+      <% gettext '{0} total' <% param.requestCount %> %>, 
+      <% gettext '{0} last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
+   </td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Used Memory' %>:</td>
-   <td><% param.usedMemory suffix=" MB" %></td>
+   <td class="small"><% gettext 'Errors' %>:</td>
+   <td>
+      <% gettext '{0} total' <% param.errorCount %> %>, 
+      <% gettext '{0} last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
+   </td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Total Memory' %>:</td>
-   <td><% param.totalMemory suffix=" MB" %></td>
+   <td class="small"><% gettext 'Error Ratio' %>:</td>
+   <td><% gettext '{0} errors/request last 5 min.' <% param.errorRatioPerUnit %> %></td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Queued Log Entries' %>:</td>
-   <td><% param.entries %></td>
+   <td class="small"><% gettext 'Xml-Rpc Count' %>:</td>
+   <td><% param.xmlrpcCount %></td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Queued Requests' %>:</td>
-   <td><% param.requests %></td>
+   <td class="small"><% gettext 'Cache' %>:</td>
+   <td><% gettext '{0} of {1} objects' <% param.cacheusage %> <% param.cacheSize %> %></td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Queued Mails' %>:</td>
-   <td><% param.mails %></td>
+   <td class="small"><% gettext 'Memory' %>:</td>
+   <td>
+      <% gettext '{0} MB total'  <% param.totalMemory %> %>, 
+      <% gettext '{0} MB free' <% param.freeMemory %> %>
+   </td>
 </tr>
 <tr>
-   <td class="small"><% gettext 'Queued Callbacks' %>:</td>
-   <td><% param.callbacks %></td>
+   <td class="small"><% gettext 'Queue' %>:</td>
+   <td>
+      <% gettext '{0} requests' <% param.requests %> %>,
+      <% gettext '{0} mails' <% param.mails %> %>,
+      <% gettext '{0} callbacks' <% param.callbacks %> %>,
+   </td>
+</tr>
+<tr>
+   <td></td>
+   <td><% gettext '{0} log entries' <% param.entries %> %></td>
 </tr>
 <tr>
    <td class="small"><% gettext Version %>:</td>
