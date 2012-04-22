@@ -125,13 +125,13 @@
          <arg line="export ${helma.src} helma"/>
       </exec>
       <exec dir="${export.dir}" executable="svn">
-         <arg line="export ${modules.src} modules"/>
+         <arg line="--force export ${modules.src} modules"/>
       </exec>
       <exec dir="${export.dir}" executable="svn">
-         <arg line="export ${jala.src} modules/jala"/>
+         <arg line="--force export ${jala.src} modules/jala"/>
       </exec>
       <exec dir="${export.dir}" executable="svn">
-         <arg line="export ${apps.src} apps"/>
+         <arg line="--force export ${apps.src} apps"/>
       </exec>
 
       <!-- Copy exported files to final destinations -->
