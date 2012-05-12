@@ -91,7 +91,6 @@ Skins.prototype.main_action = function() {
 }
 
 Skins.prototype.create_action = function() {
-   var skin = new Skin; 
    if (req.postParams.save) {
       try {
          var prototype = req.postParams.prototype;
@@ -103,7 +102,7 @@ Skins.prototype.create_action = function() {
          } else if (Skin.getByName(prototype, name)) {
             throw Error("Sorry, there is already a skin with that name. Please enter a different one.");
          }
-         skin = this.getSkin(prototype, name);
+         var skin = this.getSkin(prototype, name);
          skin.update(req.postParams);
          res.message = gettext("The changes were saved successfully.");
          if (req.postParams.save == 1) {
@@ -118,7 +117,7 @@ Skins.prototype.create_action = function() {
    }
    res.data.title = gettext('Add Skin');
    res.data.action = this.href(req.action);
-   res.data.body = skin.renderSkinAsString("$Skin#edit");
+   res.data.body = (new Skin).renderSkinAsString("$Skin#edit");
    this.renderSkin("$Skins#page");
    return;
 }

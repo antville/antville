@@ -31,9 +31,23 @@ markgettext("Vote");
 markgettext("vote");
 
 /**
+ * @param {Choice} choice
+ * @returns {Vote}
+ */
+Vote.add = function(choice, poll) {
+   HopObject.confirmConstructor('Vote');
+   var vote = new Vote;
+   vote.choice = choice;
+   vote.creator = session.user;
+   vote.creator_name = session.user.name;
+   vote.created = vote.modified = new Date;
+   poll.votes.add(vote);
+	return vote;
+}
+
+/**
  * @name Vote
  * @constructor
- * @param {Choice} choice
  * @property {Choice} choice
  * @property {Date} created
  * @property {User} creator
@@ -43,9 +57,6 @@ markgettext("vote");
  * @extends HopObject
  */
 Vote.prototype.constructor = function(choice) {
-   this.choice = choice;
-   this.creator = session.user;
-   this.creator_name = session.user.name;
-   this.created = this.modified = new Date;
+   HopObject.confirmConstructor(this);
    return this;
 }

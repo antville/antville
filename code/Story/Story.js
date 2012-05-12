@@ -41,12 +41,16 @@ this.handleMetadata("text");
  * @returns {Story}
  */
 Story.add = function(data, site, user) {
+   HopObject.confirmConstructor('Story');
    site || (site = res.handlers.site);
    user || (user = session.user);
    var story = new Story;
+   story.name = String.EMPTY;
+   story.requests = 0;
+   story.created = story.modified = new Date;
    story.site = site;
-   story.update(data);
    story.creator = story.modifier = user;
+   story.update(data);
    site.stories.add(story);
    return story;
 }
@@ -112,12 +116,7 @@ Story.getCommentModes = defineConstants(Story, markgettext("closed"),
  * @extends HopObject
  */
 Story.prototype.constructor = function() {
-   this.name = String.EMPTY;
-   this.requests = 0;
-   this.status = Story.PUBLIC;
-   this.mode = Story.FEATURED;
-   this.commentMode = Story.OPEN;
-   this.created = this.modified = new Date;
+   HopObject.confirmConstructor(this);
    return this;
 }
 
@@ -275,13 +274,9 @@ Story.prototype.comment_action = function() {
       res.message = gettext("Please login first.");
       res.redirect(this.site.members.href("login"));
    }
-   var comment = new Comment(this);
    if (req.postParams.save) {
       try {
-         comment.update(req.postParams);
-         this.add(comment);
-         // Force addition to aggressively cached collection
-         (this.story || this).comments.add(comment);
+         var comment = Comment.add(req.postParams, this);
          comment.notify(req.action);
          delete session.data.backup;
          res.message = gettext("The comment was successfully created.");
@@ -294,7 +289,7 @@ Story.prototype.comment_action = function() {
    res.handlers.parent = this;
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Comment");
-   res.data.body = comment.renderSkinAsString("Comment#edit");
+   res.data.body = (new Comment).renderSkinAsString("Comment#edit");
    this.site.renderSkin("Site#page");
    return;
 }

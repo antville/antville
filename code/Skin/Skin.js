@@ -46,6 +46,17 @@ Skin.getByName = function(group, name) {
 }
 
 /**
+ * @param {String} prototype
+ * @param {String} name
+ * @param {Layout} layout
+*/
+Skin.add = function(prototype, name, layout) {
+   var skin = new Skin(prototype, name);
+   layout.skins.add(skin);
+   return skin;
+}
+
+/**
  * 
  * @param {Skin} skin
  */
@@ -92,6 +103,7 @@ Skin.getPrototypeOptions = function() {
  * @extends HopObject
  */
 Skin.prototype.constructor = function(prototype, name) {
+   HopObject.confirmConstructor(this);
    this.prototype = prototype || String.EMPTY;
    this.name = name || String.EMPTY;
    this.creator = this.modifier = session.user;

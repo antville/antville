@@ -44,11 +44,22 @@ Tag.MOUNTPOINTS = {
 Tag.DELIMITER = ", ";
 
 /**
- * @name Tag
- * @constructor
  * @param {String} name
  * @param {Site} site
  * @param {String} type
+ */
+Tag.add = function(name, type, site) {
+   var tag = new Tag;
+   tag.name = name;
+   tag.type = type;
+   tag.site = site;
+   site.$tags.add(tag);
+   return tag;
+}
+
+/**
+ * @name Tag
+ * @constructor
  * @property {TagHub[]} _children
  * @property {Images[]} images
  * @property {String} name
@@ -57,10 +68,8 @@ Tag.DELIMITER = ", ";
  * @property {String} type
  * @extends HopObject
  */
-Tag.prototype.constructor = function(name, site, type) {
-   this.name = name;
-   this.site = site;
-   this.type = type;
+Tag.prototype.constructor = function() {
+   HopObject.confirmConstructor('Tag');
    return this;
 }
 
@@ -118,8 +127,7 @@ Tag.prototype.rename_action = function() {
       var name = this.getAccessName.call(new HopObject, File.getName(req.data.name));
       tag = this.site.getTags(this.type, Tags.ALL).get(name);
       if (!tag) {
-         tag = new Tag(name, this.site, this.type);
-         this.site.$tags.add(tag);
+         tag = Tag.add(name, this.site, this.type);
       }
       if (tag !== this) {
          this.forEach(function() { 

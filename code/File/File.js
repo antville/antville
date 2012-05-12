@@ -47,8 +47,10 @@ File.add = function(data, site, user) {
    user || (user = session.user);
    var file = new File;
    file.site = site;
-   file.update(data);
+   file.requests = 0;
    file.creator = file.modifier = user;
+   file.created = file.modified = new Date;
+   file.update(data);
    site.files.add(file);
    return file;
 }
@@ -119,9 +121,6 @@ File.redirectOnExceededQuota = function(url) {
  * @extends HopObject
  */
 File.prototype.constructor = function() {
-   this.creator = this.modifier = session.user;
-   this.created = this.modified = new Date;
-   this.requests = 0;
    return this;
 }
 

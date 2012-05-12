@@ -74,11 +74,9 @@ Polls.prototype.main_action = function() {
 }
 
 Polls.prototype.create_action = function() {
-   var poll = new Poll;
    if (req.postParams.save) {
       try {
-         poll.update(req.postParams);
-         this.add(poll);
+         var poll = Poll.add(req.postParams, this._parent);
          poll.notify(req.action);
          res.message = gettext("The poll was created successfully.");
          res.redirect(poll.href());
@@ -86,11 +84,11 @@ Polls.prototype.create_action = function() {
          res.message = err.toString();
       }
    } else {
-      req.postParams.title_array = [,,];
+      req.postParams.title_array = [null, null];
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Poll");
-   res.data.body = poll.renderSkinAsString("$Poll#edit");
+   res.data.body = (new Poll).renderSkinAsString("$Poll#edit");
    this._parent.renderSkin("Site#page");
    return;
 }

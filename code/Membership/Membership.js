@@ -60,6 +60,21 @@ Membership.require = function(role) {
 Membership.getRoles = defineConstants(Membership, markgettext("Subscriber"), 
       markgettext("Contributor"), markgettext("Manager"), markgettext("Owner"));
 
+
+/**
+ * @param {User} user
+ * @param {String} role
+ * @param {Site} site
+ */
+Membership.add = function(user, role, site) {
+   HopObject.confirmConstructor('Membership');
+   user || (user = session.user);
+   var membership = new Membership(user, role);
+   membership.created = new Date;
+   membership.touch();
+   site.members.add(membership);
+   return membership;
+}
 /**
  * 
  * @param {Membership} membership
@@ -85,8 +100,8 @@ Membership.remove = function(options) {
 /**
  * @name Membership
  * @constructor
- * @param {Object} user
- * @param {Object} role
+ * @param {User} user
+ * @param {String} role
  * @property {Comment[]} comments
  * @property {Story[]} content
  * @property {Date} created
@@ -103,15 +118,14 @@ Membership.remove = function(options) {
  * @extends HopObject
  */
 Membership.prototype.constructor = function(user, role) {
+   HopObject.confirmConstructor(this);
    user || (user = session.user);
    if (user) {
       this.map({
          creator: user,
          name: user.name,
-         role: role,
-         created: new Date
+         role: role
       });
-      this.touch();
    }
    return this;
 }

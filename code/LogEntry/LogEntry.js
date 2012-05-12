@@ -50,8 +50,7 @@ LogEntry.prototype.constructor = function(context, action) {
    this.referrer = req.data.http_referer;
    this.creator = session.user;
    this.created = new Date;
-   // Won't be stored in database
-   this.ip = req.data.http_remotehost;
+   this.ip = req.data.http_remotehost; // Won't be stored in database
    this.site = res.handlers.site;
    return this;
 }

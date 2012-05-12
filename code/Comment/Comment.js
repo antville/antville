@@ -37,6 +37,30 @@ Comment.getStatus = defineConstants(Comment, markgettext("deleted"),
       markgettext("pending"), markgettext("readonly"), markgettext("public"));
 
 /**
+ * Convenience method for easily adding a new comment to an existing story or comment.
+ * @param {Object} data
+ * @param {Story|Comment} parent The story or comment this comment belongs to.
+ * @returns {Comment}
+ */
+Comment.add = function(data, parent) {
+   HopObject.confirmConstructor('Comment');
+   var story = parent.story || parent;
+   var comment = new Comment;
+   comment.name = String.EMPTY;
+   comment.site = parent.site;
+   comment.story = story;
+   comment.parent = parent;
+   comment.parent_type = parent._prototype; // FIXME: Set correct parent_type (Helma bug?)
+   comment.status = Story.PUBLIC;
+   comment.creator = comment.modifier = session.user;
+   comment.created = comment.modified = new Date;
+   comment.update(data);
+   story.comments.add(comment); // Force addition to aggressively cached collection
+   parent.add(comment);
+   return comment;
+}
+
+/**
  * @returns {String}
  */
 Comment.remove = function(options) {
@@ -74,23 +98,14 @@ Comment.remove = function(options) {
 /**
  * @name Comment
  * @constructor
- * @param {Object} parent
  * @property {Comment[]} _children
  * @property {String} name
  * @property {Story|Comment} parent
  * @property {Story} story
  * @extends Story
  */
-Comment.prototype.constructor = function(parent) {
-   this.name = String.EMPTY;
-   this.site = parent.site;
-   this.story = parent.story || parent;
-   this.parent = parent;
-   // FIXME: Correct parent_type (Helma bug?)
-   this.parent_type = parent._prototype;
-   this.status = Story.PUBLIC;
-   this.creator = this.modifier = session.user;
-   this.created = this.modified = new Date;
+Comment.prototype.constructor = function() {
+   HopObject.confirmConstructor.call(this);
    return this;
 }
 

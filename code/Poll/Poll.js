@@ -39,6 +39,19 @@ markgettext("poll");
 Poll.getStatus = defineConstants(Poll, markgettext("closed"), markgettext("open"));
 
 /**
+ * @param {String} question
+ */
+Poll.add = function(data, site) {
+   HopObject.confirmConstructor('Poll');
+   var poll = new Poll;
+   poll.creator = session.user;
+   poll.created = new Date;
+   poll.update(data);
+   site.polls.add(poll);
+   return poll;
+}
+
+/**
  * 
  */
 Poll.remove = function() {
@@ -65,10 +78,8 @@ Poll.remove = function() {
  * @property {Vote[]} votes
  * @extends HopObject
  */
-Poll.prototype.constructor = function(question) {
-   this.question = question;
-   this.creator = this.modifier = session.user;
-   this.created = this.modified = new Date;
+Poll.prototype.constructor = function() {
+   HopObject.confirmConstructor(this);
    return this;
 }
 
@@ -148,9 +159,9 @@ Poll.prototype.vote = function(data) {
 		vote.choice = choice;
 		vote.modified = new Date;
 	} else {
-		this.votes.add(new Vote(choice));
+	   vote = Vote.add(choice, this);
 	}
-	return;
+	return vote;
 }
 
 Poll.prototype.edit_action = function() {
@@ -199,7 +210,7 @@ Poll.prototype.update = function(data) {
    }
    // Add new choices
    for (var i=size; i<choices.length; i+=1) {
-      this.add(new Choice(choices[i]));
+      Choice.add(choices[i], this);
    }
    if (data.save !== Poll.CLOSED) {
       delete this.closed;
@@ -280,9 +291,6 @@ Poll.prototype.input_macro = function(param, name) {
       };
       var choices;
       if (choices = req.postParams.title_array) {
-         while (choices.length < 2) {
-            choices.push(null);
-         }
          choices.forEach(function(title) {
             return add(new Choice(title));
          });

@@ -103,6 +103,54 @@ Site.getCallbackModes = defineConstants(Site, markgettext("disabled"),
       markgettext("enabled"));
 
 /**
+ * @param {String} name A unique identifier also used in the URL of a site
+ * @param {String} title An arbitrary string branding a site
+ * @param {User} user
+ */
+Site.add = function(data, user) {
+   HopObject.confirmConstructor('Site');
+
+   var now = new Date;
+   var user = user || session.user || {};
+   var site = new Site;
+
+   if (!data.name) {
+      throw Error(gettext("Please enter a name for your new site."));
+   }
+
+   if (data.name.length > 30) {
+      throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
+   }
+   
+   var name = stripTags(decodeURIComponent(data.name));
+   if (name !== data.name || /[^\u00a0-\uffff\w\-]/.test(data.name)) {
+      // We check if name can be used in vhost environment by allowing all Unicode characters
+      // but only ASCII letters A—z, digits 0—9, the underscore “_” and the hyphen “-”.
+      throw Error(gettext("Please avoid special characters or HTML code in the name field."));
+   } else if (name !== root.getAccessName(name)) {
+      throw Error(gettext("There already is a site with this name."));
+   }
+
+   site.name = java.net.IDN.toASCII.constructor === Function ?
+         java.net.IDN.toASCII(name, java.net.IDN.ALLOW_UNASSIGNED) : name;
+   site.title = data.title || name;
+
+   site.map({
+      created: now,
+      creator: user,
+      modified: now,
+      modifier: user,
+      status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
+      mode: Site.CLOSED
+   });
+
+   site.update(data);
+   Layout.add(site);
+   root.add(site);
+   return site;
+}
+
+/**
  * 
  * @param {Site} site
  */
@@ -116,7 +164,7 @@ Site.remove = function() {
       HopObject.remove.call(this.members, {force: true});
       // The root site needs some special treatment (it will not be removed)
       if (this === root) {
-         this.members.add(new Membership(root.users.get(0), Membership.OWNER));
+         Membership.add(root.users.get(0), Membership.OWNER, this);
          Layout.remove.call(this.layout);
          this.layout.reset();
          this.getStaticFile("images").removeDirectory();
@@ -154,8 +202,6 @@ Site.require = function(mode) {
  * A Site object is the basic container of Antville.
  * @name Site
  * @constructor
- * @param {String} name A unique identifier also used in the URL of a site
- * @param {String} title An arbitrary string branding a site
  * @property {Tag[]} $tags
  * @property {Archive} archive
  * @property {String} archiveMode The way the archive of a site is displayed
@@ -189,30 +235,8 @@ Site.require = function(mode) {
  * @property {String} timeZone The time and date settings of a site
  * @extends HopObject
  */
-Site.prototype.constructor = function(name, title) {
-   var now = new Date;
-   var user = session.user || new HopObject;
-
-   this.map({
-      name: name,
-      title: title || name,
-      created: now,
-      creator: user,
-      modified: now,
-      modifier: user,
-      status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
-      mode: Site.CLOSED,
-      tagline: String.EMPTY,
-      callbackEnabled: false,
-      commentMode: Site.ENABLED,
-      archiveMode: Site.PUBLIC,
-      notificationMode: Site.DISABLED,
-      pageMode: Site.DAYS,
-      pageSize: 3,
-      locale: root.getLocale().toString(),
-      timeZone: root.getTimeZone().getID()
-   });
-
+Site.prototype.constructor = function() {
+   HopObject.confirmConstructor(this);
    return this;
 }
 
@@ -336,26 +360,6 @@ Site.prototype.getFormOptions = function(name) {
  * @param {Object} data
  */
 Site.prototype.update = function(data) {
-   if (this.isTransient()) {
-      var name = stripTags(decodeURIComponent(data.name));
-      if (!data.name) {
-         throw Error(gettext("Please enter a name for your new site."));
-      } else if (data.name.length > 30) {
-         throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
-      } else if (name !== data.name || /[^\u00a0-\uffff\w\-]/.test(data.name)) {
-         // We check if name can be used in vhost environment by allowing all Unicode characters
-         // but only ASCII letters A—z, digits 0—9, the underscore “_” and the hyphen “-”.
-         throw Error(gettext("Please avoid special characters or HTML code in the name field."));
-      } else if (name !== root.getAccessName(name)) {
-         throw Error(gettext("There already is a site with this name."));
-      }
-      this.layout = new Layout(this);
-      this.name = java.net.IDN.toASCII.constructor === Function ?
-            java.net.IDN.toASCII(name, java.net.IDN.ALLOW_UNASSIGNED) : name;
-      this.title = data.title || name;
-      return;
-   }
-   
    if (this.mode !== Site.DELETED && data.mode === Site.DELETED) {
       this.deleted = new Date;
    } else if (this.job && this.mode === Site.DELETED && data.mode !== Site.DELETED) {
@@ -366,18 +370,18 @@ Site.prototype.update = function(data) {
 
    this.map({
       title: stripTags(data.title) || this.name,
-      tagline: data.tagline,
+      tagline: data.tagline || '',
       mode: data.mode || Site.PRIVATE,
-      callbackUrl: data.callbackUrl,
+      callbackUrl: data.callbackUrl || '',
       callbackMode: data.callbackMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
-      pageSize: parseInt(data.pageSize, 10) || this.pageSize || 3,
-      commentMode: data.commentMode || Site.DISABLED,
-      archiveMode: data.archiveMode || Site.CLOSED,
+      pageSize: parseInt(data.pageSize, 10) || 3,
+      commentMode: data.commentMode || Site.ENABLED,
+      archiveMode: data.archiveMode || Site.PUBLIC,
       notificationMode: data.notificationMode || Site.DISABLED,
-      timeZone: data.timeZone,
-      locale: data.locale,
-      spamfilter: data.spamfilter
+      timeZone: data.timeZone || root.getTimeZone().getID(),
+      locale: data.locale || root.getLocale().toString(),
+      spamfilter: data.spamfilter || ''
    });
 
    this.configured = new Date;
@@ -604,8 +608,7 @@ Site.prototype.search_action = function() {
 
 Site.prototype.subscribe_action = function() {
    try {
-      var membership = new Membership(session.user, Membership.SUBSCRIBER);
-      this.members.add(membership);
+      Membership.add(session.user, Membership.SUBSCRIBER, this);
       res.message = gettext('Successfully subscribed to site {0}.', 
             this.title);
    } catch (ex) {

@@ -33,6 +33,17 @@ markgettext("choice");
 /**
  * 
  */
+Choice.add = function(title, poll) {
+   HopObject.confirmConstructor('Choice');
+   var choice = new Choice(title);
+   choice.created = choice.modified = new Date;
+   poll.add(choice);
+   return choice;
+}
+ 
+/**
+ * 
+ */
 Choice.remove = function() {
    if (this.constructor === Choice) {
       HopObject.remove.call(this);
@@ -44,7 +55,7 @@ Choice.remove = function() {
 /**
  * @name Choice
  * @constructor
- * @param {Object} title
+ * @param {String} title
  * @property {Vote[]} _children
  * @property {Date} created
  * @property {Date} modified
@@ -53,8 +64,8 @@ Choice.remove = function() {
  * @extends HopObject
  */
 Choice.prototype.constructor = function(title) {
+   HopObject.confirmConstructor.call(this);
    this.title = title;
-   this.created = this.modified = new Date;
    return this;
 }
 

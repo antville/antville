@@ -48,6 +48,24 @@ Layout.VALUES = [
 ];
 
 /**
+ * @param {Site} site
+ * @param {User} user
+ * @returns {Layout}
+ */
+Layout.add = function(site, user) {
+   HopObject.confirmConstructor('Layout');
+   var layout = new Layout;
+   layout.site = site;
+   layout.creator = user || session.user;
+   layout.created = new Date;
+   layout.mode = Layout.DEFAULT;
+   layout.reset();
+   layout.touch();
+   site.layout = layout;
+   return layout
+}
+
+/**
  * 
  * @param {Layout} layout
  * @param {Boolean} includeSelf
@@ -89,7 +107,6 @@ this.handleMetadata("originated");
 /**
  * @name Layout
  * @constructor
- * @param {Site} site
  * @property {Date} created
  * @property {User} creator
  * @property {Images} images
@@ -104,12 +121,8 @@ this.handleMetadata("originated");
  * @property {Skins} skins
  * @extends HopObject
  */
-Layout.prototype.constructor = function(site) {
-   this.site = site;
-   this.creator = session.user;
-   this.created = new Date;
-   this.mode = Layout.DEFAULT;
-   this.touch();
+Layout.prototype.constructor = function() {
+   HopObject.confirmConstructor.call(this);
    return this;
 }
 
@@ -187,8 +200,7 @@ Layout.prototype.getFormOptions = function(name) {
 Layout.prototype.update = function(data) {
    var skin = this.skins.getSkin("Site", "values");
    if (!skin) {
-      skin = new Skin("Site", "values");
-      this.skins.add(skin);
+      Skin.add("Site", "values", this);
    }
    res.push();
    for (var key in data) {
@@ -266,7 +278,7 @@ Layout.prototype.import_action = function() {
          this.originator = data.originator;
          this.originated = data.originated;
          data.images.forEach(function() {
-            self.images.add(new Image(this));
+            Image.add(this);
          });
          this.touch();
          res.message = gettext("The layout was successfully imported.");

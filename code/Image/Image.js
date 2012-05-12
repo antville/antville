@@ -56,12 +56,19 @@ Image.KEYS = ["name", "created", "modified", "origin", "description",
  * @returns {Image}
  */
 Image.add = function(data, parent, user) {
+   HopObject.confirmConstructor('Image');
    parent || (parent = res.handlers.site);
    user || (user = session.user);
    var image = new Image;
+   if (data) {
+      for each (var key in Image.KEYS) {
+         image[key] = data[key];
+      }
+   }
    image.parent = parent;
-   image.update(data);
+   image.created = image.modified = new Date;
    image.creator = image.modifier = user;
+   image.update(data);
    parent.images.add(image);
    return image;
 }
@@ -134,17 +141,7 @@ Image.getFileExtension = function(type) {
  * @extends HopObject
  */
 Image.prototype.constructor = function(data) {
-   // Images.Default is using the constructor on code compilation
-   if (typeof session !== "undefined") {
-      this.creator = session.user;
-      this.touch();
-   }
-   if (data) {
-      for each (var key in Image.KEYS) {
-         this[key] = data[key];
-      }
-   }
-   this.created = new Date;
+   HopObject.confirmConstructor.call(this);
    return this;
 }
 
@@ -422,10 +419,6 @@ Image.prototype.getUrl = function(name) {
    }
    var site = this.parent || res.handlers.site;
    return site.getStaticUrl("images/" + name);
-   // FIXME: testing free proxy for images
-   /* var result = "http://www.freeproxy.ca/index.php?url=" + 
-   encodeURIComponent(res.pop().rot13()) + "&flags=11111";
-   return result; */
 }
 
 /**
@@ -433,7 +426,6 @@ Image.prototype.getUrl = function(name) {
  */
 Image.prototype.getThumbnailFile = function() {
    return this.getFile(this.thumbnailName);
-   // || this.fileName.replace(/(\.[^.]+)?$/, "_small$1"));
 }
 
 /**

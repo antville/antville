@@ -28,11 +28,29 @@
  */
 
 /**
- * @name TagHub
- * @constructor
  * @param {String} name
  * @param {Story|Image} tagged
  * @param {User} user
+ * @returns {TagHub}
+ */
+TagHub.add = function(name, tagged, user) {
+   HopObject.confirmConstructor(this);
+   var hub = new TagHub;
+   var site = tagged.site || res.handlers.site;
+   var tag = site.getTags(tagged._prototype, Tags.ALL).get(name);
+   if (!tag) {
+      tag = Tag.add(name, tagged._prototype, site);
+   }
+   hub.tag = tag;
+   hub.tagged = tagged;
+   hub.user = user;
+   tagged.tags.add(hub);
+   return hub;   
+}
+
+/**
+ * @name TagHub
+ * @constructor
  * @property {Tag} tag
  * @property {Number} tag_id
  * @property {Story|Image} tagged
@@ -41,17 +59,8 @@
  * @property {User} user
  * @extends HopObject
  */
-TagHub.prototype.constructor = function(name, tagged, user) {
-   var site = tagged.site || res.handlers.site;
-   var tag = site.getTags(tagged._prototype, Tags.ALL).get(name);
-   if (!tag) {
-      tag = new Tag(name, site, tagged._prototype);
-      site.$tags.add(tag);
-      //res.commit();
-   }
-   this.tag = tag;
-   this.tagged = tagged;
-   this.user = user;
+TagHub.prototype.constructor = function() {
+   HopObject.confirmConstructor('TagHub');
    return this;
 }
 

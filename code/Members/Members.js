@@ -97,8 +97,7 @@ Members.prototype.register_action = function() {
       try {
          var title = res.handlers.site.title;
          var user = User.register(req.postParams);
-         var membership = new Membership(user, Membership.SUBSCRIBER);
-         this.add(membership);
+         var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
          membership.notify(req.action, user.email, 
                gettext('[{0}] Welcome to {1}!', root.title, title));
          res.message = gettext('Welcome to “{0}”, {1}. Have fun!',
@@ -393,7 +392,6 @@ Members.prototype.addMembership = function(data) {
    } else if (this.get(data.name)) {
       throw Error(gettext("This user is already a member of this site."));
    }
-   var membership = new Membership(user, Membership.SUBSCRIBER);
-   this.add(membership);
+   var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
    return membership;
 }

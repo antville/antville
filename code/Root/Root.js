@@ -151,11 +151,8 @@ Root.prototype.notfound_action = function() {
 Root.prototype.create_action = function() {
    if (req.postParams.create) {
       try {
-         var site = new Site;
-         site.update(req.postParams);
-         site.layout.reset();
-         this.add(site);
-         site.members.add(new Membership(session.user, Membership.OWNER));
+         var site = Site.add(req.postParams);
+         Membership.add(session.user, Membership.OWNER, site);
          root.admin.log(root, "Added site " + site.name);
          res.message = gettext("Successfully created your site.");
          res.redirect(site.href());

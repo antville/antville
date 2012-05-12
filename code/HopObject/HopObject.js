@@ -73,6 +73,27 @@ HopObject.getFromPath = function(name, collection) {
 }
 
 /**
+ * Debugging method to detect direct constructor calls which 
+ * should be replaced with static add() method.
+ */
+HopObject.confirmConstructor = function(name) {
+   var KEY = '__confirmedConstructors__', meta;
+   if (!res.meta[KEY]) {
+      confirmed = res.meta[KEY] = {};
+   }
+   if (name && typeof name === 'string') {
+      confirmed[name] = true;
+   } else {
+      name = (name || this).constructor.name;
+      if (!confirmed[name]) {
+         app.logger.warn('Calling unconfirmed constructor for ' + 
+               this.constructor.name + ' prototype – please check!');
+      }
+   }
+   return;
+}
+
+/**
  * Helma’s built-in HopObject with Antville’s extensions.
  * @name HopObject
  * @constructor
@@ -335,7 +356,7 @@ HopObject.prototype.setTags = function(tags) {
  * @param {String} name
  */
 HopObject.prototype.addTag = function(name) {
-   this.tags.add(new TagHub(name, this, session.user));
+   TagHub.add(name, this, session.user);
    return;
 }
 
