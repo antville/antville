@@ -41,7 +41,7 @@ this.handleMetadata("text");
  * @returns {Story}
  */
 Story.add = function(data, site, user) {
-   HopObject.confirmConstructor('Story');
+   HopObject.confirmConstructor(Story);
    site || (site = res.handlers.site);
    user || (user = session.user);
    var story = new Story;
@@ -289,6 +289,7 @@ Story.prototype.comment_action = function() {
    res.handlers.parent = this;
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Comment");
+   HopObject.confirmConstructor(Comment);
    res.data.body = (new Comment).renderSkinAsString("Comment#edit");
    this.site.renderSkin("Site#page");
    return;

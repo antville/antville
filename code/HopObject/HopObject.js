@@ -76,18 +76,19 @@ HopObject.getFromPath = function(name, collection) {
  * Debugging method to detect direct constructor calls which 
  * should be replaced with static add() method.
  */
-HopObject.confirmConstructor = function(name) {
-   var KEY = '__confirmedConstructors__', meta;
+HopObject.confirmConstructor = function(ref) {
+   var KEY = '__confirmedConstructors__';
    if (!res.meta[KEY]) {
-      confirmed = res.meta[KEY] = {};
+      res.meta[KEY] = {};
    }
-   if (name && typeof name === 'string') {
-      confirmed[name] = true;
+   var confirmed = res.meta[KEY];
+   if (typeof ref === 'function') {
+      confirmed[ref.name] = true;
    } else {
-      name = (name || this).constructor.name;
-      if (!confirmed[name]) {
+      ref = (ref || this).constructor.name;
+      if (!confirmed[ref]) {
          app.logger.warn('Calling unconfirmed constructor for ' + 
-               this.constructor.name + ' prototype – please check!');
+               ref + ' prototype – please check!');
       }
    }
    return;
@@ -141,6 +142,7 @@ HopObject.prototype.onRequest = function() {
       res.redirect(root.href("error"));
    }
    
+   HopObject.confirmConstructor(Layout);
    res.handlers.layout = res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
 

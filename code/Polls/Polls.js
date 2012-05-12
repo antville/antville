@@ -88,6 +88,7 @@ Polls.prototype.create_action = function() {
    }
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Poll");
+   HopObject.confirmConstructor(Poll);
    res.data.body = (new Poll).renderSkinAsString("$Poll#edit");
    this._parent.renderSkin("Site#page");
    return;

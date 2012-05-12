@@ -60,7 +60,7 @@ TagHub.add = function(name, tagged, user) {
  * @extends HopObject
  */
 TagHub.prototype.constructor = function() {
-   HopObject.confirmConstructor('TagHub');
+   HopObject.confirmConstructor(TagHub);
    return this;
 }
 

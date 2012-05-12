@@ -42,7 +42,7 @@ Poll.getStatus = defineConstants(Poll, markgettext("closed"), markgettext("open"
  * @param {String} question
  */
 Poll.add = function(data, site) {
-   HopObject.confirmConstructor('Poll');
+   HopObject.confirmConstructor(Poll);
    var poll = new Poll;
    poll.creator = session.user;
    poll.created = new Date;
@@ -291,6 +291,7 @@ Poll.prototype.input_macro = function(param, name) {
       };
       var choices;
       if (choices = req.postParams.title_array) {
+         HopObject.confirmConstructor(Choice);
          choices.forEach(function(title) {
             return add(new Choice(title));
          });

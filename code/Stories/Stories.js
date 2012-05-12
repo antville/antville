@@ -103,6 +103,7 @@ Stories.prototype.create_action = function() {
    
    res.data.title = gettext("Add Story");
    res.data.action = this.href(req.action);
+   HopObject.confirmConstructor(Story);
    res.data.body = (new Story).renderSkinAsString("Story#edit");
    this._parent.renderSkin("Site#page");
    return;

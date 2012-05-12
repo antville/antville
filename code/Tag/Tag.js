@@ -69,7 +69,7 @@ Tag.add = function(name, type, site) {
  * @extends HopObject
  */
 Tag.prototype.constructor = function() {
-   HopObject.confirmConstructor('Tag');
+   HopObject.confirmConstructor(Tag);
    return this;
 }
 

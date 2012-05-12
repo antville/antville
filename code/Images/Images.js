@@ -111,6 +111,7 @@ Images.prototype.create_action = function() {
 
    res.data.action = this.href(req.action);
    res.data.title = gettext("Add Image");
+   HopObject.confirmConstructor(Image);
    res.data.body = (new Image).renderSkinAsString("$Image#edit");
    res.handlers.site.renderSkin("Site#page");
    return;

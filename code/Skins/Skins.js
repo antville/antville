@@ -117,6 +117,7 @@ Skins.prototype.create_action = function() {
    }
    res.data.title = gettext('Add Skin');
    res.data.action = this.href(req.action);
+   HopObject.confirmConstructor(Skin);
    res.data.body = (new Skin).renderSkinAsString("$Skin#edit");
    this.renderSkin("$Skins#page");
    return;

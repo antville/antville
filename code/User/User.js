@@ -370,7 +370,7 @@ User.rename = function(currentName, newName) {
  * @extends HopObject
  */
 User.prototype.constructor = function(data) {
-   HopObject.confirmConstructor('User');
+   HopObject.confirmConstructor(User);
    return this;
 }
 

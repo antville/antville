@@ -39,7 +39,7 @@ Story.prototype.commentform_macro = function(param) {
    if (session.user) {
       res.data.action = this.href("comment");
       res.handlers.parent = this;
-      HopObject.confirmConstructor('Comment');
+      HopObject.confirmConstructor(Comment);
       var comment = new Comment;
       comment.story = this;
       comment.renderSkin("Comment#edit");

@@ -53,7 +53,7 @@ Layout.VALUES = [
  * @returns {Layout}
  */
 Layout.add = function(site, user) {
-   HopObject.confirmConstructor('Layout');
+   HopObject.confirmConstructor(Layout);
    var layout = new Layout;
    layout.site = site;
    layout.creator = user || session.user;

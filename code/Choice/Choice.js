@@ -34,7 +34,7 @@ markgettext("choice");
  * 
  */
 Choice.add = function(title, poll) {
-   HopObject.confirmConstructor('Choice');
+   HopObject.confirmConstructor(Choice);
    var choice = new Choice(title);
    choice.created = choice.modified = new Date;
    poll.add(choice);

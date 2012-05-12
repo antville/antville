@@ -35,7 +35,7 @@ markgettext("vote");
  * @returns {Vote}
  */
 Vote.add = function(choice, poll) {
-   HopObject.confirmConstructor('Vote');
+   HopObject.confirmConstructor(Vote);
    var vote = new Vote;
    vote.choice = choice;
    vote.creator = session.user;

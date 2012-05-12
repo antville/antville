@@ -43,7 +43,7 @@ Comment.getStatus = defineConstants(Comment, markgettext("deleted"),
  * @returns {Comment}
  */
 Comment.add = function(data, parent) {
-   HopObject.confirmConstructor('Comment');
+   HopObject.confirmConstructor(Comment);
    var story = parent.story || parent;
    var comment = new Comment;
    comment.name = String.EMPTY;

@@ -56,7 +56,7 @@ Image.KEYS = ["name", "created", "modified", "origin", "description",
  * @returns {Image}
  */
 Image.add = function(data, parent, user) {
-   HopObject.confirmConstructor('Image');
+   HopObject.confirmConstructor(Image);
    parent || (parent = res.handlers.site);
    user || (user = session.user);
    var image = new Image;

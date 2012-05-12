@@ -108,7 +108,7 @@ Site.getCallbackModes = defineConstants(Site, markgettext("disabled"),
  * @param {User} user
  */
 Site.add = function(data, user) {
-   HopObject.confirmConstructor('Site');
+   HopObject.confirmConstructor(Site);
 
    var now = new Date;
    var user = user || session.user || {};
@@ -394,6 +394,7 @@ Site.prototype.main_css_action = function() {
    res.contentType = "text/css";
    res.dependsOn(String(Root.VERSION));
    res.dependsOn(this.layout.modified);
+   HopObject.confirmConstructor(Skin);
    res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
    res.digest();
    root.renderSkin("$Root#stylesheet");
@@ -414,6 +415,7 @@ Site.prototype.main_js_action = function() {
 
 Site.prototype.user_js_action = function() {
    res.contentType = "text/javascript";
+   HopObject.confirmConstructor(Skin);
    res.dependsOn((new Skin("Site", "javascript")).getStaticFile().lastModified());
    res.digest();
    this.renderSkin("Site#javascript");

@@ -67,7 +67,7 @@ Membership.getRoles = defineConstants(Membership, markgettext("Subscriber"),
  * @param {Site} site
  */
 Membership.add = function(user, role, site) {
-   HopObject.confirmConstructor('Membership');
+   HopObject.confirmConstructor(Membership);
    user || (user = session.user);
    var membership = new Membership(user, role);
    membership.created = new Date;
