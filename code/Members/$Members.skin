@@ -179,7 +179,9 @@ value="<% request.term encoding="form" %>" />
 <p class="small">
    <% gettext "Select a user from the list below and click the “Add Member” button." %>
 </p>
+<table border="0" cellspacing="0" cellpadding="1">
 <% param.result %>
+</table>
 <br />
 <button type="submit" id="add" name="add" value="1">
    <% gettext "Add Member" %>
@@ -187,11 +189,9 @@ value="<% request.term encoding="form" %>" />
 </form>
 
 <% #result %>
-<table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td valign="top">
    <input type="radio" name="name" id="<% param.name %>" value="<% param.name %>" />
 </td>
 <td><label for="<% param.name %>"><% param.name %></label></td>
 </tr>
-</table>
