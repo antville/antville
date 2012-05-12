@@ -39,7 +39,10 @@ Story.prototype.commentform_macro = function(param) {
    if (session.user) {
       res.data.action = this.href("comment");
       res.handlers.parent = this;
-      (new Comment(this)).renderSkin("Comment#edit");
+      HopObject.confirmConstructor('Comment');
+      var comment = new Comment;
+      comment.story = this;
+      comment.renderSkin("Comment#edit");
    } else {
       html.link({href: this.site.members.href("login")},
             param.text || "Please login to add a comment");
