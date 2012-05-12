@@ -305,6 +305,7 @@ User.getMembership = function() {
    if (session.user) {
       membership = Membership.getByName(session.user.name);
    }
+   HopObject.confirmConstructor(Membership);
    return membership || new Membership;
 }
 
