@@ -44,6 +44,27 @@ User.COOKIE = getProperty("userCookie", "antvilleUser");
 User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
 
 /**
+ * @param {Object} data
+ * @returns {User}
+ */
+User.add = function(data) {
+   HopObject.confirmConstructor(this);
+   var user = new User;
+   var now = new Date;
+   user.map({
+      created: now,
+      email: data.email,
+      hash: data.hash,
+      name: data.name,
+      salt: session.data.token,
+      status: User.REGULAR,
+      url: data.url
+   });   
+   root.users.add(user);
+   return user;
+}
+
+/**
  * FIXME: Still needs a solution whether and how to remove a user’s sites
  */
 User.remove = function() {
@@ -128,12 +149,11 @@ User.register = function(data) {
       data.hash = (data.password + session.data.token).md5();
    }
 
-   var user = new User(data);
+   var user = User.add(data);
    // grant trust and sysadmin-rights if there's no sysadmin 'til now
    if (root.admins.size() < 1) {
       user.status = User.PRIVILEGED;
    }
-   root.users.add(user);
    session.login(user);
    return user;
 }
@@ -329,7 +349,6 @@ User.rename = function(currentName, newName) {
  * A User object represents a login to Antville.
  * @name User
  * @constructor
- * @param {Object} data
  * @extends HopObject
  * @property {Membership[]} _children
  * @property {Date} created
@@ -351,18 +370,7 @@ User.rename = function(currentName, newName) {
  * @extends HopObject
  */
 User.prototype.constructor = function(data) {
-   var now = new Date;
-   // FIXME: Refactor to be able to call constructor w/o arguments; use User.update() instead
-   this.map({
-      created: now,
-      email: data.email,
-      hash: data.hash,
-      modified: now,
-      name: data.name,
-      salt: session.data.token,
-      status: User.REGULAR,
-      url: data.url
-   });
+   HopObject.confirmConstructor('User');
    return this;
 }
 
