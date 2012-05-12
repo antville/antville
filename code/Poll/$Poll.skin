@@ -80,14 +80,14 @@
 <script type="text/javascript">
 $(function() {
    var index = $(".choice").length + 1;
-   $("#add").click(function() {
+   $("#add").click(function(event) {
+      event.preventDefault();
       var choice = $(".choice:last").clone();
       choice.find(".small").text('<% gettext Choice %> #' + index + ':');
       choice.find("input").attr("value", "");
       $(".choice:last").after(choice);
       $(".choice:last").find("input").focus();
       index += 1;
-      return false;
    });
 });
 </script>
