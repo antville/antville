@@ -25,8 +25,9 @@ body {
    /* ... */
 }
 .CodeMirror-scroll {
-   border: 1px solid #eee;
    height: 500px;
+   background: #fff;
+   border: 1px solid #eee;
 }
 .storyTitle {
    margin-bottom: 2em;
