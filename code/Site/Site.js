@@ -141,7 +141,9 @@ Site.add = function(data, user) {
       modified: now,
       modifier: user,
       status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
-      mode: Site.CLOSED
+      mode: Site.CLOSED,
+      commentMode: Site.DISABLED,
+      archiveMode: Site.CLOSED
    });
 
    site.update(data);
@@ -376,9 +378,9 @@ Site.prototype.update = function(data) {
       callbackMode: data.callbackMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
       pageSize: parseInt(data.pageSize, 10) || 3,
-      commentMode: data.commentMode || Site.ENABLED,
-      archiveMode: data.archiveMode || Site.PUBLIC,
-      notificationMode: data.notificationMode || Site.DISABLED,
+      commentMode: data.commentMode || Site.DISABLED,
+      archiveMode: data.archiveMode || Site.CLOSED,
+      notificationMode: data.notificationMode || Site.NOBODY,
       timeZone: data.timeZone || root.getTimeZone().getID(),
       locale: data.locale || root.getLocale().toString(),
       spamfilter: data.spamfilter || ''
