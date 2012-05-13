@@ -268,8 +268,9 @@ User.login = function(data) {
  */
 User.logout = function() {
   session.logout();
-  res.setCookie(User.COOKIE, String.EMPTY);
-  res.setCookie(User.HASHCOOKIE, String.EMPTY);
+  res.unsetCookie(User.COOKIE);
+  res.unsetCookie(User.HASHCOOKIE);
+  Layout.sandbox(false);
   User.getLocation();
   return;
 }

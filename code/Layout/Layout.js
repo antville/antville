@@ -93,6 +93,22 @@ Layout.remove = function(options) {
    return;
 }
 
+Layout.sandbox = function(value) {
+   var cookie = User.COOKIE + 'LayoutSandbox';
+   var id = res.handlers.site._id;
+   if (typeof value === 'undefined') {
+      return req.cookies[cookie] === id;
+   } 
+   if (value === true) {
+      res.setCookie(cookie, id);
+      //session.data.layout = new Layout;
+   } else if (value === false) {
+      res.unsetCookie(cookie);
+      //delete session.data.layout;
+   }
+   return value;
+}
+
 /** 
  * @function
  * @returns {String[]}
@@ -140,6 +156,7 @@ Layout.prototype.getPermission = function(action) {
       case "import":
       case "reset":
       case "skins":
+      case "sandbox":
       return res.handlers.site.getPermission("main") &&
             Membership.require(Membership.OWNER) ||
             User.require(User.PRIVILEGED);
@@ -216,6 +233,9 @@ Layout.prototype.update = function(data) {
    }
    res.write("\n");
    skin.setSource(res.pop());
+
+   Layout.sandbox(!!data.sandbox);
+   
    this.description = data.description;
    this.mode = data.mode;
    this.touch();
@@ -294,6 +314,17 @@ Layout.prototype.import_action = function() {
    res.data.title = gettext("Import Layout");
    res.data.body = this.renderSkinAsString("$Layout#import");
    res.handlers.site.renderSkin("Site#page");
+   return;
+}
+
+Layout.prototype.sandbox_action = function() {
+   Layout.sandbox(!Layout.sandbox());
+   res.redirect(req.data.http_referer);
+   return;
+}
+
+Layout.prototype.sandbox_macro = function() {
+   res.write(Layout.sandbox());
    return;
 }
 

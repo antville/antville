@@ -187,10 +187,7 @@ Skin.prototype.update = function(data) {
       var macro = "response.body";
       if (!createSkin(data.source).containsMacro(macro)) {
          var macro = ["<code><%", macro, "%></code>"].join(String.EMPTY);
-         throw Error(gettext("The {0} macro is missing. It is essential for accessing the site and must be present in this skin.", 
-               macro));
-         //data.source = ["<% // ", gettext("The following macro was automatically added to prevent the site from becoming inacessible."), 
-         //      " %>\n<% ", macro, " %>\n\n", data.source].join(String.EMPTY);
+         throw Error(gettext("The {0} macro is missing. It is essential for accessing the site and must be present in this skin.", macro));
       }
    }
    this.setSource(data.source);   
@@ -221,7 +218,7 @@ Skin.prototype.reset_action = function() {
 
 Skin.prototype.compare_action = function() {
    var originalSkin = this.source || String.EMPTY;
-   var diff = originalSkin.diff(this.getSource());
+   var diff = this.getSource().diff(originalSkin);
    if (!diff) {
       res.message = gettext("No differences were found.");
    } else {
@@ -230,7 +227,7 @@ Skin.prototype.compare_action = function() {
       for each (let line in diff) {
          if (line.deleted) {
             param.right = encode(line.value);
-            param.leftStatus = "removed";
+            param.leftStatus = "added";
             param.rightStatus = '';
             for (let i=0; i<line.deleted.length; i++) {
                leftLineNumber += 1;
@@ -244,7 +241,7 @@ Skin.prototype.compare_action = function() {
          if (line.inserted) {
             param.left = encode(line.value);
             param.leftStatus = '';
-            param.rightStatus = 'added';
+            param.rightStatus = 'removed';
             for (let i=0; i<line.inserted.length; i++) {
                rightLineNumber += 1;
                param.leftLineNumber = '';

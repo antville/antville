@@ -1,4 +1,8 @@
 $(function() {
+   
+   if ($.cookie('antvilleUserLayoutSandbox')) {
+      toggleLayoutMode();
+   }
 
    // Extend jQuery with selectText() method.
    $.fn.selectText = function() {
@@ -50,6 +54,43 @@ $(function() {
    });
 
 });
+
+function toggleLayoutMode() {
+   if ($('.skin-control').length > 0) {
+      $('.skin-control').remove();
+      return;
+   }
+   /*$('body').prepend($('<div>').attr('class', 'layout-sandbox')
+         .append($('<div>')
+            .append($('<button>')
+               .html('Exit Sandbox')
+               .click(function() {
+                  location.replace($('a[href$="sandbox"]').attr('href'));
+               }))));*/
+   $('.skin').each(function() {
+      var skinButton = $('<div><a>');
+      skinButton.css({
+         'margin-top': '5px',
+         font: 'bold 9px arial',
+         'line-height': '15px',
+         'letter-spacing': '1px'
+      }).find('a').attr({
+         'class': 'skin-control',
+         href: $(this).data('href'),
+         title: 'Click to edit ' + $(this).data('name') + ' skin'
+      }).css({
+         padding: '2px', 
+         background: '#ccc',
+         color: '#fff', 
+         'text-decoration': 'none'
+      }).mouseover(function() {
+         $(this).parents('.skin').eq(0).css('background-color', '#ccc');
+      }).mouseout(function() {
+         $(this).parents('.skin').eq(0).css('background-color', '');
+      }).html('Edit');
+      $(this).append(skinButton);
+   });
+}
 
 /**
  * MD5 (Message-Digest Algorithm)

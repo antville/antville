@@ -191,6 +191,7 @@ Root.prototype.sites_action = function() {
 }
 
 Root.prototype.updates_xml_action = function() {
+   res.contentType = "text/xml"; 
    var now = new Date;
    var feed = new rome.SyndFeedImpl();   
    feed.setFeedType("rss_2.0");
@@ -219,7 +220,6 @@ Root.prototype.updates_xml_action = function() {
    var output = new rome.SyndFeedOutput();
    //output.output(feed, res.servletResponse.writer); return;
    var xml = output.outputString(feed);
-   res.contentType = "text/xml";
    res.write(xml); //injectXslDeclaration(xml));
    return;
 }

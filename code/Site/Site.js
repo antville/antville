@@ -407,8 +407,9 @@ Site.prototype.main_js_action = function() {
    res.dependsOn(String(Root.VERSION));
    res.digest();
    this.renderSkin("$Site#include", 
-         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"});
-   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville.js?v=1.3")});
+         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"});
+   this.renderSkin("$Site#include", {href: root.getStaticUrl("jquery.cookie.js")});
+   this.renderSkin("$Site#include", {href: root.getStaticUrl("antville.js?v=" + Root.VERSION)});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
    return;
 }
@@ -437,25 +438,25 @@ Site.prototype.backup_js_action = function() {
 }
 
 Site.prototype.rss_xml_action = function() {
+   res.contentType = "text/xml";
    res.dependsOn(this.modified);
    res.digest();
-   res.contentType = "text/xml";
    res.write(this.getXml(this.stories.union));
    return;
 }
 
 Site.prototype.stories_xml_action = function() {
+   res.contentType = "text/xml";
    res.dependsOn(this.modified);
    res.digest();
-   res.contentType = "text/xml";
    res.write(this.getXml(this.stories.recent));
    return;
 }
 
 Site.prototype.comments_xml_action = function() {
+   res.contentType = "text/xml";
    res.dependsOn(this.modified);
    res.digest();
-   res.contentType = "text/xml";
    res.write(this.getXml(this.stories.comments));
    return;
 }
