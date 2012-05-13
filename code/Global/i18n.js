@@ -97,7 +97,7 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
       return;
    }
    var re = gettext_macro.REGEX;
-   var args = [text.replace(re, String.SPACE)];
+   var args = [text.toString().replace(re, String.SPACE)];
    for (var i=2; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
@@ -126,7 +126,7 @@ function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
       return;
    }
    var re = gettext_macro.REGEX;
-   var args = [singular.replace(re, String.SPACE), plural.replace(re, String.SPACE)];
+   var args = [singular.toString().replace(re, String.SPACE), plural.replace(re, String.SPACE)];
    for (var i=3; i<arguments.length; i+=1) {
       args.push(arguments[i]);
    }
