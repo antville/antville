@@ -28,6 +28,7 @@
  * HopObject prototype.
  */
 
+// Overriding the HopObject.renderSkin() methods for displaying skin edit controls.
 (function(ref) {
    // var ref = HopObject.prototype;
 
@@ -179,7 +180,7 @@ HopObject.prototype.onRequest = function() {
    }
    
    HopObject.confirmConstructor(Layout);
-   res.handlers.layout = session.data.layout || res.handlers.site.layout || new Layout;
+   res.handlers.layout = res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
 
    if (!this.getPermission(req.action)) {

@@ -93,18 +93,20 @@ Layout.remove = function(options) {
    return;
 }
 
+/**
+ * @function
+ * @param {Boolean} [value]
+ * @returns {Boolean}
+ */
 Layout.sandbox = function(value) {
    var cookie = User.COOKIE + 'LayoutSandbox';
-   var id = res.handlers.site._id;
    if (typeof value === 'undefined') {
-      return req.cookies[cookie] === id;
+      return req.cookies[cookie] === 'true';
    } 
    if (value === true) {
-      res.setCookie(cookie, id);
-      //session.data.layout = new Layout;
+      res.setCookie(cookie, true);
    } else if (value === false) {
       res.unsetCookie(cookie);
-      //delete session.data.layout;
    }
    return value;
 }
@@ -233,9 +235,7 @@ Layout.prototype.update = function(data) {
    }
    res.write("\n");
    skin.setSource(res.pop());
-
-   Layout.sandbox(!!data.sandbox);
-   
+   Layout.sandbox(!!data.sandbox);   
    this.description = data.description;
    this.mode = data.mode;
    this.touch();
@@ -314,17 +314,6 @@ Layout.prototype.import_action = function() {
    res.data.title = gettext("Import Layout");
    res.data.body = this.renderSkinAsString("$Layout#import");
    res.handlers.site.renderSkin("Site#page");
-   return;
-}
-
-Layout.prototype.sandbox_action = function() {
-   Layout.sandbox(!Layout.sandbox());
-   res.redirect(req.data.http_referer);
-   return;
-}
-
-Layout.prototype.sandbox_macro = function() {
-   res.write(Layout.sandbox());
    return;
 }
 
@@ -522,3 +511,12 @@ Layout.prototype.values_macro = function() {
    }
    return;
 }
+
+/**
+ *
+ */
+Layout.prototype.sandbox_macro = function() {
+   res.write(Layout.sandbox());
+   return;
+}
+

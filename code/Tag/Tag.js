@@ -107,9 +107,9 @@ Tag.prototype.main_action = function() {
 }
 
 Tag.prototype.rss_xml_action = function() {
+   res.contentType = "text/xml";
    res.dependsOn(this.site.modified);
    res.digest();
-   res.contentType = "text/xml";
    var tagHubs = this.getTagged().list(0, this.site.pageSize);
    var stories = [];
    for (var i in tagHubs) {
