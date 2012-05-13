@@ -28,6 +28,42 @@
  * HopObject prototype.
  */
 
+(function(ref) {
+   // var ref = HopObject.prototype;
+
+   if (!ref._renderSkin) {
+      ref._renderSkin = ref.renderSkin;
+      ref._renderSkinAsString = ref._renderSkinAsString;
+   }
+   
+   ref.renderSkin = function(name) {
+      var isEditableSkin = (res.handlers.layout.getPermission('main') &&
+            typeof name === 'string' && !name.startsWith('$') && res.contentType === 'text/html');
+      if (isEditableSkin) {
+         var id = name.replace('#', '-').toLowerCase();
+         var parts = name.split('#');
+         var prototype = parts[0];
+         var skinName = parts[1];
+         var skin = new Skin(prototype, skinName);
+         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
+               name + '" data-href="' + skin.href('edit') + '">');
+      }   var id = name
+      
+      var result = ref._renderSkin.apply(this, arguments);
+      if (isEditableSkin) {
+         res.writeln('</div><!-- End of #skin-' + id + ' -->');
+      }
+      return result;
+   }
+   
+   ref.renderSkinAsString = function() {
+      res.push();
+      this.renderSkin.apply(this, arguments);
+      return res.pop();
+   }
+
+})(HopObject.prototype);
+
 /**
  * 
  * @param {HopObject} collection
@@ -143,7 +179,7 @@ HopObject.prototype.onRequest = function() {
    }
    
    HopObject.confirmConstructor(Layout);
-   res.handlers.layout = res.handlers.site.layout || new Layout;
+   res.handlers.layout = session.data.layout || res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
 
    if (!this.getPermission(req.action)) {
