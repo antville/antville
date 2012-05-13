@@ -22,7 +22,7 @@ body {
    height: 500px;
 }
 .cm-helma-macro {
-   /* ... */
+   color: #000;
 }
 .CodeMirror-scroll {
    height: 500px;
