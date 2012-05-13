@@ -106,11 +106,11 @@ Site.prototype.link_macro = function(param, url, text) {
       case "members":
       case "polls":
       case "stories":
-      handler = this[action];
+      handler = this[action].get(parts[1]);
       if (!handler) {
          return;
       }
-      param.to = parts[1]; break;
+      param.to = parts[2] || "main"; break;
       
       default:
       handler = this;
@@ -143,16 +143,19 @@ Site.prototype.loginstatus_macro = function(param) {
 Site.prototype.navigation_macro = function(param) {
    var group;
    var navigation = {};
-   navigation.contributors = this.renderSkinAsString("Site#contribnavigation");
-   navigation.admins = this.renderSkinAsString("Site#adminnavigation");
+   // HopObject.renderSkinAsString() is overridden and will never return an empty skin
+   // due to the added skin edit controls! Thus, we are using the original methods first,
+   // and the overriden ones later.
+   navigation.contributors = this._renderSkinAsString("Site#contribnavigation");
+   navigation.admins = this._renderSkinAsString("Site#adminnavigation");
    if (!navigation.contributors && !navigation.admins && !res.meta.navigation) {
       res.meta.navigation = true;
       this.renderSkin("Site#navigation");
    } else if ((group = param["for"]) && navigation[group]) {
       if (group === "contributors" && this.stories.getPermission("create")) {
-         res.write(navigation.contributors);
+         this.renderSkinAsString("Site#contribnavigation");
       } else if (group === "admins" && this.getPermission("edit")) {
-         res.write(navigation.admins);
+         this.renderSkinAsString("Site#adminnavigation");
       }
    }
    return;
