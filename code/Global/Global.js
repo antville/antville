@@ -26,7 +26,7 @@
 /**
  * @fileOverview Defines global variables and functions.
  */
-
+ 
 app.addRepository(app.dir + "/../lib/rome-1.0.jar");
 app.addRepository(app.dir + "/../lib/jdom.jar");
 app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
@@ -148,6 +148,9 @@ var idle = new Function;
 
 /** */
 var html = new helma.Html();
+
+/** */
+var lessParser = new less.Parser();
 
 /** */
 var rome = new JavaImporter(

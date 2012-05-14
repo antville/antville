@@ -399,8 +399,25 @@ Site.prototype.main_css_action = function() {
    HopObject.confirmConstructor(Skin);
    res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
    res.digest();
+   res.push();
    root.renderSkin("$Root#stylesheet");
    this.renderSkin("Site#stylesheet");
+   var lessCss = res.pop();
+   try {
+      lessParser.parse(lessCss, function(error, tree) {
+         if (error) {
+            res.writeln('/** ');
+            res.writeln(error.toSource())
+            res.writeln('**/');
+            return;
+         }
+         res.writeln(tree.toCSS());
+      });
+   } catch (ex) {
+      res.writeln('/** ');
+      res.writeln(ex.toSource());
+      res.writeln('**/');
+   }
    return;
 }
 
