@@ -28,44 +28,7 @@
  * HopObject prototype.
  */
 
-// Overriding the HopObject.renderSkin() methods for displaying skin edit controls.
-(function(ref) {
-   // var ref = HopObject.prototype;
-
-    if (!ref._renderSkin) {
-      ref._renderSkin = ref.renderSkin;
-      ref._renderSkinAsString = ref.renderSkinAsString;
-   }
-   
-   ref.renderSkin = function(name) {
-      var isEditableSkin = (res.handlers.layout.getPermission('main') &&
-            typeof name === 'string' && !name.startsWith('$') && res.contentType === 'text/html');
-
-      if (isEditableSkin) {
-         var id = name.replace('#', '-').toLowerCase();
-         var parts = name.split('#');
-         var prototype = parts[0];
-         var skinName = parts[1];
-         var skin = new Skin(prototype, skinName);
-         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
-               name + '" data-href="' + skin.href('edit') + '">');
-      }   var id = name
-      
-      ref._renderSkin.apply(this, arguments);
-
-      if (isEditableSkin) {
-         res.writeln('</div><!-- End of #skin-' + id + ' -->');
-      }
-
-      return;
-   }
-   
-   ref.renderSkinAsString = function() {
-      res.push();
-      ref.renderSkin.apply(this, arguments);
-      return res.pop();
-   }
-})(HopObject.prototype);
+app.addRepository('modules/helma/aspects');
 
 /**
  * 
@@ -140,14 +103,49 @@ HopObject.confirmConstructor = function(ref) {
  */
 
 /**
- * 
- * @param {Object} values
+ *
  */
-HopObject.prototype.map = function(values) {
-   for (var i in values) {
-      this[i] = values[i];
+HopObject.prototype.onCodeUpdate = function() {
+   skinMayDisplayEditLink = function(name) {
+      return req.cookies[User.COOKIE + 'LayoutSandbox'] &&
+         res.handlers.layout.getPermission('main') &&
+         typeof name === 'string' && 
+         !name.startsWith('$') && 
+         res.contentType === 'text/html';
    }
-   return;
+
+   // Overriding the HopObject.renderSkin() methods for displaying skin edit controls.
+   helma.aspects.addAround(this, 'renderSkin', function(args, func, object) {
+      var name = args[0];
+      var id = name.replace('#', '-').toLowerCase();
+
+      if (skinMayDisplayEditLink(name)) {
+         var parts = name.split('#');
+         var prototype = parts[0];
+         var skinName = parts[1];
+         var skin = new Skin(prototype, skinName);
+         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
+               name + '" data-href="' + skin.href('edit') + '">');
+      }
+
+      func.apply(object, args);
+
+      if (skinMayDisplayEditLink(name)) {
+         res.writeln('</div><!-- End of #skin-' + id + ' -->');
+      }
+      
+      helma.aspects.addAround(this, 'renderSkinAsString', function(args, func, object) {
+         var name = args[0];
+         if (skinMayDisplayEditLink(name)) {
+            res.push();
+            object.renderSkin.apply(object, args);
+            return res.pop();
+         }
+         return func.apply(object, args);
+      });
+
+      return;      
+   });
 }
 
 /**
@@ -411,6 +409,17 @@ HopObject.prototype.removeTag = function(tag) {
       parent.remove();
    }
    tag.remove();
+   return;
+}
+
+/**
+ * 
+ * @param {Object} values
+ */
+HopObject.prototype.map = function(values) {
+   for (var i in values) {
+      this[i] = values[i];
+   }
    return;
 }
 

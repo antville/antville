@@ -1,8 +1,6 @@
 $(function() {
    
-   if ($.cookie('antvilleUserLayoutSandbox')) {
-      toggleLayoutMode();
-   }
+   setLayoutMode();
 
    // Extend jQuery with selectText() method.
    $.fn.selectText = function() {
@@ -55,8 +53,8 @@ $(function() {
 
 });
 
-function toggleLayoutMode() {
-   if ($('.skin-control').length > 0) {
+function setLayoutMode(mode) {
+   if (mode === false || $('.skin-control').length < 0) {
       $('.skin-control').remove();
       return;
    }
