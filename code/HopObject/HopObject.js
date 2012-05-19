@@ -28,7 +28,7 @@
  * HopObject prototype.
  */
 
-app.addRepository('modules/helma/aspects');
+app.addRepository('modules/helma/Aspects');
 
 /**
  * 
