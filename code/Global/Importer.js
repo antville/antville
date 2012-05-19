@@ -24,11 +24,20 @@
 // $URL$
 
 /**
- * @fileOverview Defines the Importer prototype.
+ * @fileOverview Defines the Importer namespace.
  */
 
+/**
+ * The Importer namespace provides methods for importing a site.
+ * @namespace
+ */
 var Importer = {}
 
+/**
+ * Imports a site and its content for the specified user.
+ * @param {Site} site The site to import.
+ * @param {User} user The user who will become the creator of the site’s imported content.
+ */
 Importer.run = function(site, user) {
    try {
       var xml = File.getById(site.import_id);

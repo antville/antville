@@ -29,11 +29,10 @@
  */
 
 /**
- * This method is called from the build script to extract gettext call strings 
- * from scripts and skins.
- * @param {String} script
- * @param {String} scanDirs
- * @param {String} potFile
+ * This method is called from the build script to extract gettext call strings from scripts and skins.
+ * @param {String} script The filename of the script containing the MessageParser code.
+ * @param {String} scanDirs The list of directory names to be scanned for i18n.
+ * @param {String} potFile The filename for the output POT file.
  */
 Root.prototype.extractMessages = function(script, scanDirs, potFile) {
    var temp = {print: global.print, readFile: global.readFile};
@@ -62,12 +61,11 @@ Root.prototype.extractMessages = function(script, scanDirs, potFile) {
 }
 
 /**
- * This method is useful for disambiguation of messages (single words most of
- * the time) that have different meanings depending on the context.
- * Example: comment (the verb "to comment" vs the noun "a comment")
- * @param {Object} key The message ID
- * @param {Object} context The context of the message
- * @returns String
+ * This method is useful for disambiguation of messages (single words most of the time) that have different meanings depending on the context. Example: comment – the verb "to comment" vs the noun "a comment".
+ * @param {Object} key The message ID.
+ * @param {Object} context The context of the message.
+ * @example cgettext('comment', 'verb')
+ * @returns {String}
  */
 function cgettext(key, context) {
    var msgId = cgettext.getKey(key, context);
@@ -77,19 +75,20 @@ function cgettext(key, context) {
 
 /**
  * Helper method to define the message ID depending on the context.
- * @param {Object} key
- * @param {Object} context
- * @returns String
+ * @param {Object} key The message ID.
+ * @param {Object} context The context of the message.
+ * @returns {String} The message ID, probably suffixed with '//' plus the context
+ * @example cgettext.getKey('comment', 'verb') ===> 'comment // verb'
  */
 cgettext.getKey = function(key, context) {
    return context ? key + " // " + context : key;
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} text
- * @returns String
+ * Helma macro wrapper for the gettext() method.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} text The text used as message ID.
+ * @returns {String} Either the translated or the original text.
  * @see jala.i18n.gettext
  */
 function gettext_macro(param, text /*, value1, value2, ...*/) {
@@ -114,12 +113,12 @@ function gettext_macro(param, text /*, value1, value2, ...*/) {
 gettext_macro.REGEX = /\s+/g;
 
 /**
- * 
- * @param {Object} param
- * @param {String} singular
- * @param {String} plural
- * @returns String
- * @see jala.i18n#ngettext
+ * Helma macro wrapper for the ngettext() method.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} singular The text used as the singular message ID.
+ * @param {String} plural The text used as the plural message ID.
+ * @returns String Either the translated or the original string.
+ * @see jala.i18n.ngettext
  */
 function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
    if (!singular || !plural) {
@@ -134,11 +133,11 @@ function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
 }
 
 /**
- * 
- * @param {Object} param
- * @param {Object} singular
- * @param {Object} plural
- * @see jala.i18n#markgettext
+ * Helma macro wrapper for the markgettext() method.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {Object} singular The text used as the singular message ID.
+ * @param {Object} plural The text used as the plural message ID.
+ * @see jala.i18n.markgettext
  */
 function markgettext_macro(param, singular, plural) {
    return markgettext.call(this, singular, plural);

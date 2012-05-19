@@ -24,11 +24,21 @@
 // $URL$
 
 /**
- * @fileOverview Defines the Exporter prototype.
+ * @fileOverview Defines the Exporter namespace.
  */
 
+/**
+ * The Exporter namespace provides methods for exporting a site.
+ * @namespace
+ */
 var Exporter = {}
 
+/**
+ * Exports a site with the specified user’s content
+ * The created XML file will be added to the site’s file collection.
+ * @param {Site} site The site to export.
+ * @param {User} user The user whose content will be exported.
+ */
 Exporter.run = function(site, user) {
    try {
       var file;

@@ -1,6 +1,42 @@
 /**
  * @fileOverview Douglas Crockford’s JSON parser and serializer.
  */
+ 
+/**
+ * @name JSON
+ * @namespace
+ */
+ 
+/**
+ * This method produces a JSON text from a JavaScript value.
+ * @name JSON.stringify
+ * @function
+ * @param {Object} value Any JavaScript value, usually an object or array.
+ * @param {Function|String[]} [replacer] An optional parameter that determines how object
+ *             values are stringified for objects. It can be a
+ *             function or an array of strings.
+ * @param {String|Number} [space] An optional parameter that specifies the indentation
+ *           of nested structures. If it is omitted, the text will
+ *           be packed without extra whitespace. If it is a number,
+ *           it will specify the number of spaces to indent at each
+ *           level. If it is a string (such as '\t' or '&nbsp;'),
+ *           it contains the characters used to indent at each level.
+ * @returns {String}
+ */
+
+/**
+ * This method parses a JSON text to produce an object or array.
+ * @name JSON.parse
+ * @function
+ * @param {String} text The JSON text.
+ * @param {Function} reviver A function that can filter and
+ * transform the results. It receives each of the keys and values,
+ * and its return value is used instead of the original value.
+ * If it returns what it received, then the structure is not modified.
+ * If it returns undefined then the member is deleted.
+ * @returns {Object}
+ */
+
 
 /*
     http://www.JSON.org/json2.js
@@ -482,7 +518,6 @@ if (!JSON) {
         };
     }
 }());
-
 
 // Do not enumerate the new JSON methods.
 // (These lines are not included in the original code by Crockford.)

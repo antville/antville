@@ -25,12 +25,13 @@
 
 /**
  * @fileoverview Defines the Feature prototype.
+ * Another trial to implement modular features.
  */
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
+ * Renders the main() method of a feature, if available.
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} id The identifier of the desired feature.
  */
 global.feature_macro = function(param, id) {
    var func, feature = Feature.get(id);
@@ -41,10 +42,11 @@ global.feature_macro = function(param, id) {
 }
 
 /**
- *
- * @param {String} id
- * @param {String} url
- * @param {Object} feature
+ * @constructor
+ * @property {String} id The feature’s unique identifier.
+ * @param {String} id A unique identifier for the feature.
+ * @param {String} url The URL of the website providing further information about the feature.
+ * @param {Object} feature The initial properties of the feature.
  */
 var Feature = function(id, url, feature) {
    var self = this;
@@ -63,10 +65,8 @@ var Feature = function(id, url, feature) {
 }
 
 /**
- *
- * @param {String} id
- * @param {String} url
- * @param {Object} feature
+ * Adds a feature to the registry.
+ * @see Feature
  * @returns {Feature}
  */
 Feature.add = function(id, url, feature) {
@@ -85,9 +85,9 @@ Feature.add = function(id, url, feature) {
 }
 
 /**
- *
- * @param {Feature} feature
- * @returns {Number}
+ * Removes a feature from the registry.
+ * @param {Feature} feature The feature object to be removed.
+ * @returns {Number} The resulting number of features still in the registry.
  */
 Feature.remove = function(feature) {
    var features = Feature.list();
@@ -101,15 +101,16 @@ Feature.remove = function(feature) {
 }
 
 /**
- *
+ * Lists all available features in the registry.
+ * @returns {Feature[]}
  */
 Feature.list = function() {
    return app.data.features;
 }
 
 /**
- *
- * @param {String} id
+ * Retrieves a feature from the registry.
+ * @param {String} id The identifier of the desired feature.
  * @returns {Feature}
  */
 Feature.get = function(id) {
@@ -122,9 +123,9 @@ Feature.get = function(id) {
 }
 
 /**
- * 
- * @param {String} id
- * @param {Function} callback
+ * Invokes a (callback) function for a feauture.
+ * @param {String} id The identifier of the desired feature. '*' can be used to address all available features.
+ * @param {Function|String} callback The callback function or the name of method of the feature.
  * @returns {Object}
  */
 Feature.invoke = function(id, callback) {
@@ -157,8 +158,8 @@ Feature.invoke = function(id, callback) {
 }
 
 /**
- *
- * @param {String} action
+ * Wrapper for the Feature._getPermission method. All registered features will be evaluated.
+ * @param {String} action The desired action to be invoked.
  * @returns {Boolean}
  */
 Feature.getPermission = function(action) {
