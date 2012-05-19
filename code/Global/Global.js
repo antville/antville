@@ -49,35 +49,73 @@ app.addRepository("modules/jala/code/HopObject.js");
 app.addRepository("modules/jala/code/ListRenderer.js");
 app.addRepository("modules/jala/code/Utilities.js");
 
-var dir = new helma.File(app.dir, "../i18n");
-for each (let fname in dir.list()) {
-   fname.endsWith(".js") && app.addRepository(app.dir + "/../i18n/" + fname);
-}
+// Adding i18n message files as repositories
+(function() {
+    var dir = new helma.File(app.dir, "../i18n");
+    for each (let fname in dir.list()) {
+       fname.endsWith(".js") && app.addRepository(app.dir + "/../i18n/" + fname);
+    }
+})();
 // I18n.js needs to be added *after* the message files or the translations get lost
 app.addRepository("modules/jala/code/I18n.js");
 
 // FIXME: Be careful with property names of app.data;
 // they inherit all properties from HopObject!
 /**
- * @name app.data 
+ * Helma’s built-in application-wide in-memory store.
+ * @name app.data
  * @namespace
  */
-/** @name app.data.callbacks */
+/** 
+ * Temporary in-memory store of site callbacks. 
+ * They will be invoked asynchronously by an Admin method.
+ * @see Admin.invokeCallbacks 
+ * @see scheduler
+ * @name app.data.callbacks
+ */
 app.data.callbacks || (app.data.callbacks = []);
-/** @name app.data.entries */
+/** 
+ * Temporary in-memory store of LogEntry instances.
+ * They will be made persistent asynchronously by an Admin method.
+ * @see Admin.commitEntries
+ * @see scheduler
+ * @name app.data.entries
+ * @type Array
+ */
 app.data.entries || (app.data.entries = []);
-/** @name app.data.features */
+/** 
+ * In-memory registry of Feature instances. 
+ * Features are defined in the “extra” dir.
+ * @name app.data.features
+ * @type Array
+ */
 app.data.features || (app.data.features = []);
-/** @name app.data.mails */
+/** 
+ * In-memory e-mail message queue.
+ * They will be sent asynchronously by an Admin method.
+ * @see helma.mail.flushQueue
+ * @see scheduler
+ * @name app.data.mails
+ * @type Array
+ */
 app.data.mails || (app.data.mails = []);
-/** @name app.data.requests */
+/** 
+ * In-memory store of remote requests for counting story hits.
+ * They will be made persistent asynchronously by an Admin method.
+ * @see Admin.commitRequests
+ * @see scheduler
+ * @name app.data.requests 
+ * @type Array
+ */
 app.data.requests || (app.data.requests = {});
 
 /**
+ * The helma.File prototype is defined as a module.
  * @name helma.File
  * @namespace
  */
 /**
+ * Helper method for recursively copying a directory and its files.
  * @param {helma.File} target
  */
 helma.File.prototype.copyDirectory = function(target) {
@@ -100,12 +138,13 @@ helma.File.prototype.copyDirectory = function(target) {
 }
 
 /**
+ * The helma.Mail prototype is defined in a module.
  * @name helma.Mail
  * @namespace
  */
 /**
- * Extend the Mail prototype with a method that simply adds a mail object 
- * to an application-wide array (mail queue).
+ * Add an e-mail message to the mail queue for later sending.
+ * @see app.data.mails
  * @returns {Number} The number of mails waiting in the queue
  */
 helma.Mail.prototype.queue = function() {
@@ -113,7 +152,8 @@ helma.Mail.prototype.queue = function() {
 }
 
 /**
- * 
+ * Try to send and remove every mail instance collected in the mail queue.
+ * @see app.data.mails
  */
 helma.Mail.flushQueue = function() {
    if (app.data.mails.length > 0) {
@@ -132,27 +172,53 @@ helma.Mail.flushQueue = function() {
    return;
 }
 
+/**
+ * The jala.i18n namespace is defined in a module.
+ * @name jala.i18n
+ * @namespace
+ */
 jala.i18n.setLocaleGetter(function() {
    return (res.handlers.site || root).getLocale();
 });
 
-/** @constant */
+/** 
+ * The date format used in SQL queries and commands.
+ * @constant 
+ * @type String
+ */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
-// RegExp according to Jala’s HopObject.getAccessName()
-/** @constant */
+/** 
+ * Regular Expression according to Jala’s HopObject.getAccessName().
+ * @constant 
+ * @type RegExp
+ */
 var NAMEPATTERN = /[\/+\\]/;
 
-/** @function */
+/** 
+ * Shortcut for a function with empty body.
+ * Used e.g. in the disableMacro() method.
+ * @see disableMacro
+ * @function 
+ */
 var idle = new Function;
 
-/** */
+/**
+ * An instance of Helma’s HTML rendering module.
+ * @type helma.Html
+ */
 var html = new helma.Html();
 
-/** */
+/** 
+ * An instance of the LESS parser.
+ * @type less.Parser
+ */
 var lessParser = new less.Parser();
 
-/** */
+/**
+ * A collection of Java classes and namespaces required for parsing and generating RSS.
+ * @type Object
+ */
 var rome = new JavaImporter(
    Packages.com.sun.syndication.io,
    Packages.com.sun.syndication.feed.synd,
@@ -160,8 +226,28 @@ var rome = new JavaImporter(
    Packages.com.sun.syndication.feed.module.itunes.types
 );
 
+/** 
+ * A simple and hackish implementation of the console instance of some browsers.
+ * @namespace
+ */
+var console = {
+    /**
+     * Convenience method for bridging log output from the server to the client.
+     * @methodOf console
+     * @param {String} text This text will be displayed in the browser’s console (if available).
+     */
+    log: function(text) {
+        if (!res.meta.__console__) {
+            res.debug('<style>.helma-debug-line {border: none !important;}</style>');            
+            res.meta.__console__ = true;
+        }
+        var now = formatDate(new Date, Date.ISOFORMAT);
+        res.debug('<script>console.log("[Helma] ' + now + ' ===> ' + text + '")</script>');
+    }
+}
+
 /**
- * 
+ * The startup handler Helma is calling automatically shortly after the application has started.
  */
 function onStart() {
    if (typeof root === "undefined") {
@@ -174,13 +260,13 @@ function onStart() {
 }
 
 /**
- * 
+ * This handler is called by Helma automatically before the application is stopped.
  */
 function onStop() { /* Currently empty, just to avoid annoying log message */ }
 
 /**
- * 
- * @param {HopObject} ctor
+ * Helper method to simultaneously define constants and a corresponding array of localized display names.
+ * @param {HopObject} ctor The desired prototype constructor the constants should be defined for.
  * @returns {Function} 
  */
 function defineConstants(ctor /*, arguments */) {
@@ -201,9 +287,10 @@ function defineConstants(ctor /*, arguments */) {
 }
 
 /**
- * Disable a macro with the idle function
- * @param {HopObject} ctor
- * @param {String} name
+ * Disables a macro with the idle() function.
+ * @see idle
+ * @param {HopObject} ctor The prototype constructor the macro is defined for
+ * @param {String} name The macro’s name
  * @returns {Function}
  */
 function disableMacro(ctor, name) {
@@ -211,8 +298,10 @@ function disableMacro(ctor, name) {
 }
 
 /**
- * @returns {Number} The period in milliseconds the scheduler will be 
- * called again. 
+ * Helma’s built-in main scheduler function.
+ * This method is regularly called by Helma after a defined period of time.
+ * The period is either defined by the return value or by the schedulerInterval property in app.properties.
+ * @returns {Number} The period in milliseconds the scheduler will be called again. 
  */
 function scheduler() {
    helma.Mail.flushQueue();
@@ -226,7 +315,8 @@ function scheduler() {
 }
 
 /**
- * 
+ * The nightly scheduler. 
+ * This method is called according to the cron settings in app.properties.
  */
 function nightly() {
    var now = new Date;
@@ -241,14 +331,11 @@ function nightly() {
 }
 
 /**
- * Renders a string depending on the comparison of two values. If the first 
- * value equals the second value, the first result will be returned; the 
- * second result otherwise.
- * <p>Example: <code>&lt;% if &lt;% macro %&gt; is "value" then "yes!" else "no :(" %&gt;</code>
- * </p>
+ * Renders a string depending on the comparison of two values. 
+ * If the first value equals the second value, the first result will be returned; the second result otherwise.
+ * @example <% if <% macro %> is value then <% yes suffix=! %> else 'no :(' %>;
  * Note that any value or result can be a macro, too. Thus, this can be used as
- * a simple implementation of an if-then-else statement by using Helma macros
- * only. 
+ * a simple implementation of an if-then-else statement by using Helma macros only. 
  * @param {Object} param The default Helma macro parameter object
  * @param {String} firstValue The first value
  * @param {String} _is_ Syntactic sugar; should be "is" for legibility
@@ -267,30 +354,29 @@ function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} format
- * @returns {String} The formatted current date string
+ * Renders the current date and time.
  * @see formatDate
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} [format] A date format string
+ * @returns {String} The formatted current date string
  */
 function now_macro(param, format) {
    return formatDate(new Date, format || param.format);
 }
 
 /**
- * @returns {String} The rendered link element
+ * Renders a link.
  * @see renderLink
+ * @returns {String} The rendered HTML link element
  */
 function link_macro() {
    return renderLink.apply(this, arguments);
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} name
- * @returns {String} The rendered skin
+ * Renders a skin from within a skin.
  * @see HopObject#skin_macro
+ * @returns {String} The rendered skin
  */
 // FIXME: The definition with "var" is necessary; otherwise the skin_macro()
 // method won't be overwritten reliably. (Looks like a Helma bug.)
@@ -299,9 +385,9 @@ var skin_macro = function(param, name) {
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} delimiter
+ * Renders a breadcrumbs navigation from the current HopObject path.
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} [delimiter=' : '] The string visually separating two navigation items
  */
 function breadcrumbs_macro (param, delimiter) {
    delimiter || (delimiter = param.separator || " : ");
@@ -330,17 +416,20 @@ function breadcrumbs_macro (param, delimiter) {
 /**
  * Helper macro for checking if a user session is authenticated (logged in).
  * Returns true if user is logged in, false otherwise.
- * @returns Boolean
+ * @returns {Boolean}
  */
 function user_macro() {
    return !!session.user;
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
- * @param {String} mode
+ * Renders the URL of, a link to or an arbitrary skin of a story.
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} [param.skin='embed'] The name of a story skin
+ * @param {String} id The id or path of the desired story
+ * @param {String} [mode] Either of 'url' or 'link'
+ * @example <% story 1810 skin=preview %> Story #1810 in preview skin
+ * <% story blog/1971 url %> URL of the story of site “blog”
  */
 function story_macro(param, id, mode) {
    var story = HopObject.getFromPath(id, "stories");
@@ -362,10 +451,14 @@ function story_macro(param, id, mode) {
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
- * @param {String} mode
+ * Renders the URL or an arbitrary skin of a file.
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} [param.skin='main'] The name of a file skin
+ * @param {String} id The id or path of the desired file
+ * @param {String} [mode] Currently only possible value is 'url'
+ * @example <% file 1810 url %> URL of file #1810
+ * <% file blog/text.pdf skin=preview %> File in site “blog” using preview skin
+ * <% file /image.raw %> Static file of root site
  */
 function file_macro(param, id, mode) {
    if (!id) {
@@ -400,16 +493,18 @@ function file_macro(param, id, mode) {
    if (mode === "url") {
       res.write(file.getUrl());
    } else {
-      file.renderSkin(param.skin || "File#main");
+      file.renderSkin("File#" + (param.skin || "main"));
    }
    return;
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
- * @param {String} mode
+ * Renders the URL, a thumbnail or an HTML element of an image.
+ * @see Image#thumbnail_macro
+ * @see Image#render_macro
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} id The id or path of the desired image
+ * @param {String} [mode] Either of 'url' or 'thumbnail'
  */
 function image_macro(param, id, mode) {
    if (!id) {
@@ -422,6 +517,7 @@ function image_macro(param, id, mode) {
       image = Images.Default[name] || Images.Default[name + ".gif"];
    } else {
       image = HopObject.getFromPath(id, "images");
+      // FIXME: Could fallback be replaced with CSS background-image?
       if (!image && param.fallback) {
          image = HopObject.getFromPath(param.fallback, "images");
       }
@@ -452,10 +548,10 @@ function image_macro(param, id, mode) {
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
- * @param {String} mode
+ * Renders the URL, a link or the visual representation of a poll.
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} id The id or path of the desired poll
+ * @param {String} mode Either of 'url' or 'link'
  */
 function poll_macro(param, id, mode) {
    if (!id) {
@@ -487,10 +583,20 @@ function poll_macro(param, id, mode) {
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
- * @param {String} limit
+ * The “swiss army knife” list macro. Lists collections of HopObjects.
+ * There is hardly a thing it cannot do… but it’s kind of messy, though.
+ * @param {Object} param The default Helma macro parameter object
+ * @param {String} [param.skin=preview] The name of a skin suitable for the collection 
+ * @param {String} id The identifier of the desired collection 
+ * @param {Number} [limit=25] The maximum amount of items listed
+ * @example <% list sites %>
+ * <% list updates 10 %>
+ * <% list blog/comments %>
+ * <% list featured skin=promotion %>
+ * <% list images %>
+ * <% list postings %>
+ * <% list stories %>
+ * <% list tags %>
  */
 function list_macro(param, id, limit) {
    if (!id) {
@@ -540,12 +646,12 @@ function list_macro(param, id, limit) {
          
          case "featured":
          collection = site.stories.featured.list(0, max);
-         skin = "Story#preview";
+         prototype = "Story#preview";
          break;
          
          case "images":
          collection = site.images.list(0, max);
-         skin = "Image#preview";
+         prototype = "Image#preview";
          break;
          
          case "postings":
@@ -556,7 +662,7 @@ function list_macro(param, id, limit) {
             }
             return true;
          });
-         skin = "Story#preview";
+         prototype = "Story#preview";
          break;
          
          case "stories":
@@ -565,7 +671,7 @@ function list_macro(param, id, limit) {
          collection = stories.list().filter(function(item, index) {
             return item.constructor === Story && filter(item, counter++);
          });
-         skin = "Story#preview";
+         prototype = "Story#preview";
          break;
          
          case "tags":
@@ -576,23 +682,22 @@ function list_macro(param, id, limit) {
          break;
       }
    }
-   param.skin && (skin = param.skin);
    for each (var item in collection) {
-      // FIXME: Work-around for "story" handlers in comment skins
-      // (Obsolete as soon as "story" handlers are replaced with "this")
-      if (item.constructor === Comment) {
-         res.handlers.story = item;
-      }
-      item.renderSkin(skin);
+      item.renderSkin(param.skin || skin);
    }
    return;
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} name
- * @param {String} value
+ * Defines and renders a value.
+ * This works like a variable that can be set in one skin and rendered in another –
+ * which must be rendered later than the one setting the variable.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} name The name of the value.
+ * @param {String} [value] The desired value. 
+ * If no value is given, the current value will be rendered.
+ * @example <% value foo=bar %> Defines res.meta.values.foo = bar
+ * @example <% value foo %> Renders the value of res.meta.value.foo
  */
 function value_macro(param, name, value) {
    if (!name) {
@@ -609,46 +714,91 @@ function value_macro(param, name, value) {
 }
 
 /**
- * 
- * @param {Object} param
- * @param {String} id
+ * Renders either a skin or the URL of a random site, story or image.
+ * The corresponding story and image collections will be retrieved either from res.handlers.site or 
+ * from the prefixed “type” argument (e.g. “mySite/story”).
+ * Furthermore, both collections can be reduced to a specific tag or gallery, resp.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} [param.skin = "preview"] The name of the skin to render in default output mode.
+ * @param {String} [param.tag] Reduce the story collection to stories with the specified tag.
+ * @param {String} [param.gallery] Reduce the image collection to images from the specified gallery.
+ * @param {String} type The type of object to render. Either of “site”, “story” or “image”.
+ * It can be prepended by a site name delimited by a slash: “mySite/image”.
+ * @param {String} [mode] Set the output mode. Currently, only “url” is supported.
+ * @example <% random site skin=preview %> Renders the preview skin of a random site.
+ * <% random story tag=essay url %> Renders the URL of a random story tagged with “essay”.
+ * <% random foo/image gallery=cat %> Renders the default skin of a random image in the gallery “cat“ of the site “foo”.
  */
-function randomize_macro(param, id) {
+function random_macro(param, type, mode) {
    var getRandom = function(n) {
       return Math.floor(Math.random() * n);
    };
 
-   var site;
-   if (id === "sites") {
+   var site = res.handlers.site;
+
+   if (type === "site") {
       site = root.sites.get(getRandom(root.sites.size()));
-      site.renderSkin(param.skin || "Site#preview");
+      mode === 'url' ? res.write(site.href()) : 
+            site.renderSkin(param.skin || "Site#preview");
       return;
    }
 
-   var parts = id.split("/");
+   var parts = type.split("/");
    if (parts.length > 1) {
+      site = root.sites.get(parts[0] || 'www');
       type = parts[1];
-      site = root.sites.get(parts[0]);
    } else {
       type = parts[0];
    }
-   site || (site = res.handlers.site);
+
+   if (!site) {
+      return;
+   }
+
    switch (type) {
+      case "story":
       case "stories":
-      var stories = site.stories["public"];
-      var story = stories.get(getRandom(stories.size()));
-      story && story.renderSkin(param.skin || "Story#preview");
+      var stories = param.tag ? site.stories.tags.get(param.tag) : 
+            site.stories.featured;
+      var story = stories && stories.get(getRandom(stories.size()));
+      if (story) {
+         param.tag && (story = story.tagged);
+         mode === 'url' ? res.write(story.href()) : 
+               story.renderSkin(param.skin || "Story#preview");
+      }
       break;
+
+      case "image":
       case "images":
-      var image = site.images.get(getRandom(site.images.size()));
-      image && image.renderSkin(param.skin || "Image#preview");
+      var images = param.gallery ? site.images.galleries.get(param.gallery) : 
+            site.images;
+      var image = images && images.get(getRandom(images.size()));
+      if (image) {
+         param.gallery && (image = image.tagged);
+         mode === 'url' ? res.write(image.href()) : 
+               image.renderSkin(param.skin || "Image#preview");
+      }
       break;
    }
    return;
 }
 
 /**
- * 
+ * Renders the Antville version string.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} [type = 'default'] The type of version string.
+ * @see Root.VERSION
+ */
+function version_macro(param, type) {
+   var version = Root.VERSION;
+   var result = version[type || "default"];
+   return result || version;
+}
+
+/**
+ * Renders a string vertically in the global listItemFlag skin.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} str The string to be rendered.
  */
 function listItemFlag_macro(param, str) {
    res.push();
@@ -660,12 +810,102 @@ function listItemFlag_macro(param, str) {
    return;
 }
 
+
 /**
- * 
- * @param {Object} param
- * @param {String} url
- * @param {String} text
- * @param {HopObject} handler
+ * A simple Helma macro filter returning one of two possible values depending on which one is truthy.
+ * @param {Object} value The original (desired) value.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {Object} defaultValue The fallback value for use if the original value should be untruthy.
+ * @returns {Object} The value argument if truthy, the defaultValue argument otherwise.
+ */
+function default_filter(value, param, defaultValue) {
+   return value || defaultValue;
+}
+
+/**
+ * Helma macro filter wrapping the {@link Date#getAge} method.
+ * @see Date#getAge
+ * @param {Date} value The original date.
+ * @param {Object} param The default Helma macro parameter object.
+ * @returns {String} The resulting age string of the original date.
+ */
+function age_filter(value, param) {
+   if (!value || value.constructor !== Date) {
+      return value;
+   }
+   return value.getAge()
+}
+
+/**
+ * Helma macro filter wrapping the {@link renderLink} method.
+ * @param {String} text The link text.
+ * @param {String} param The default Helma macro parameter object.
+ * @param {Object} [url = text] The link URL.
+ * @returns {String} The rendered link element
+ * @see renderLink
+ */
+function link_filter(text, param, url) {
+   if (text) {
+      url || (url = text);
+      res.push();
+      renderLink(param, url, text);
+      return res.pop();
+   }
+   return;
+}
+
+/**
+ * Helma macro filter wrapping the global formatting methods.
+ * @see formatNumber
+ * @see formatDate
+ * @param {Object} value The original value.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} pattern A formatting pattern suitable for the formatting method.
+ * @param {String} [type] Deprecated.
+ * @returns {String} The formatted string.
+ */
+function format_filter(value, param, pattern, type) {
+   if (!value && value !== 0) {
+      return;
+   }
+   var f = global["format" + value.constructor.name];
+   if (f && f.constructor === Function) {
+      return f(value, pattern || param.pattern, type);
+   }
+   return value;
+}
+
+/**
+ * Macro filter for clipping output.
+ * @param {String} input The original input.
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {Number} [limit = 20] The maximum amount of text parts to be displayed.
+ * @param {String} [clipping = '...'] The replacement for the clipped portions of the text.
+ * @param {String} [delimiter = '\\s'] The regular expression string used to split the text into parts.
+ * @returns {String} The clipped result.
+ */
+function clip_filter(input, param, limit, clipping, delimiter) {
+   var len = 0;
+   if (input) {
+      len = input.length;
+      input = input.stripTags();
+   }
+   input || (input = ngettext("({0} character)", "({0} characters)", len));
+   limit || (limit = 20);
+   clipping || (clipping = "...");
+   delimiter || (delimiter = "\\s");
+   return String(input || "").head(limit, clipping, delimiter);
+}
+
+/**
+ * Renders an HTML <a> element from a URL or HopObject.
+ * @see helma.Html#link
+ * @see HopObject#link_macro
+ * @param {Object} param The default Helma macro parameter object.
+ * @param {String} [param.title] An optional link title for use in the “title” attribute.
+ * @param {String} url A complete or partial URL string. Optional if “handler” is specified.
+ * @param {String} [text] An optional link text. 
+ * @param {HopObject} handler The HopObject used as base URL. Optional if “url” is specified.
  */
 function renderLink(param, url, text, handler) {
    url || (url = param.url || String.EMPTY);
@@ -692,9 +932,10 @@ function renderLink(param, url, text, handler) {
 }
 
 /**
- * 
- * @param {String} str
- * @returns {String|null} The e-mail string if valid, null otherwise
+ * Validates if a string is suitable for e-mail messaging.
+ * @see String#isEmail
+ * @param {String} str The string to be validated.
+ * @returns {String|null} The e-mail string if valid, null otherwise.
  */
 function validateEmail(str) {
 	if (str) {
@@ -706,9 +947,9 @@ function validateEmail(str) {
 }
 
 /**
- * 
- * @param {String} str
- * @returns {String|null} The URL string if valid, null otherwise
+ * Validates if a string is suitable for requesting a URL.
+ * @param {String} str The string to be validated.
+ * @returns {String|null} The URL string if valid, null otherwise.
  */
 function validateUrl(str) {
    if (str) {
@@ -724,9 +965,9 @@ function validateUrl(str) {
 }
 
 /**
- * 
- * @param {String} str
- * @returns {String} The processed string
+ * Surrounds a string by programmer quotes (").
+ * @param {String} str The original string.
+ * @returns {String} The processed string.
  */
 function quote(str) {
    if (/[\W\D]/.test(str)) {
@@ -736,20 +977,20 @@ function quote(str) {
 }
 
 /**
- * 
- * @param {Number} number
- * @param {String} pattern
- * @returns {String} The formatted number string
+ * Formats a number according to a pattern and the site’s locale setting.
+ * @param {Number} number The original number.
+ * @param {String} pattern The formatting pattern.
+ * @returns {String} The formatted number string.
  */
 function formatNumber(number, pattern) {
    return Number(number).format(pattern, res.handlers.site.getLocale());
 }
 
 /**
- * 
- * @param {Date} date
- * @param {String} format
- * @returns {String} The formatted date string
+ * Formats a date according to a formatting string and the site’s locale and time zone. 
+ * @param {Date} date The original date.
+ * @param {String} [format = "full"] The formatting string. Either a {@link http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html Java SimpleDateFormat pattern} or of “short”, “medium”, “long”, “full”, “date”, “time”, “iso” or “text”.
+ * @returns {String} The formatted date string.
  */
 function formatDate(date, format) {
    if (!date) {
@@ -823,8 +1064,7 @@ function formatDate(date, format) {
 }
 
 /**
- * Injects the XSLT stylesheet declaration into an XML string until  
- * Mozilla developers will have mercy.
+ * Injects the XSLT stylesheet declaration into an XML string until Mozilla developers will have mercy.
  * @param {String} xml An XML string
  * @returns {String} An XML string containing the XSLT stylesheet declaration
  */
@@ -866,9 +1106,9 @@ function sendMail(recipient, subject, body, options) {
 }
 
 /**
- * 
- * @param {String} language
- * @returns {java.util.Locale} The corresponding locale object
+ * Retrieves the locale object from a language string.
+ * @param {String} language The name of the language.
+ * @returns {java.util.Locale} The corresponding locale object.
  */
 function getLocale(language) {
    return new java.util.Locale(language || "english");
@@ -936,120 +1176,16 @@ function getTimeZones(language) {
 
    return result.sort(new String.Sorter("display"));
 }
-
-/**
- * 
- * @param {Object} value
- * @param {Object} param
- * @param {Object} defaultValue
- * @returns {Object} The value argument if truthy, the defaultValue argument
- * otherwise
- */
-function default_filter(value, param, defaultValue) {
-   return value || defaultValue;
-}
-
-/**
- * 
- * @param {Date} value
- * @param {Object} param
- * @returns {String} The age string of a date
- */
-function age_filter(value, param) {
-   if (!value || value.constructor !== Date) {
-      return value;
-   }
-   return value.getAge()
-}
-
-/**
- * 
- * @param {String} text
- * @param {String} param
- * @param {Object} url
- * @returns {String} The rendered link element
- * @see renderLink
- */
-function link_filter(text, param, url) {
-   if (text) {
-      url || (url = text);
-      res.push();
-      renderLink(param, url, text);
-      return res.pop();
-   }
-   return;
-}
-
-/**
- * 
- * @param {Object} string
- * @param {Object} param
- * @param {String} pattern
- * @param {String} type
- * @returns {String} The formatted string
- */
-function format_filter(value, param, pattern, type) {
-   if (!value && value !== 0) {
-      return;
-   }
-   var f = global["format" + value.constructor.name];
-   if (f && f.constructor === Function) {
-      return f(value, pattern || param.pattern, type);
-   }
-   return value;
-}
-
-/**
- * 
- * @param {String} input
- * @param {Object} param
- * @param {Number} limit
- * @param {String} clipping
- * @param {String} delimiter
- * @returns {String} The clipped input
- */
-function clip_filter(input, param, limit, clipping, delimiter) {
-   var len = 0;
-   if (input) {
-      len = input.length;
-      input = input.stripTags();
-   }
-   input || (input = ngettext("({0} character)", "({0} characters)", len));
-   limit || (limit = 20);
-   clipping || (clipping = "...");
-   delimiter || (delimiter = "\\s");
-   return String(input || "").head(limit, clipping, delimiter);
-}
-
 // FIXME:
 /**
- * 
- * @param {String} rss
- * @returns {String} The fixed RSS string
+ * Replaces <img> elements in a string with <a> elements to fix RSS output which is not capable of displaying images.
+ * @param {String} rss The original RSS output.
+ * @returns {String} The transformed RSS output.
  */
 function fixRssText(rss) {
    var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
    rss = rss.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
    return rss;
-}
-
-// FIXME:
-/**
- * 
- */
-function countUsers() {
-   app.data.activeUsers = new Array();
-   var l = app.getActiveUsers();
-   for (var i in l)
-      app.data.activeUsers[app.data.activeUsers.length] = l[i];
-   l = app.getSessions();
-   app.data.sessions = 0;
-   for (var i in l) {
-      if (!l[i].user)
-         app.data.sessions++;
-   }
-   app.data.activeUsers.sort();
-   return;
 }
 
 // FIXME:
@@ -1090,12 +1226,12 @@ function doWikiStuff (src) {
 
 // FIXME: Rewrite with jala.ListRenderer?
 /**
- * 
- * @param {HopObject|Array} collection
- * @param {Function|Skin} funcOrSkin
- * @param {Number} itemsPerPage
- * @param {Number} pageIdx
- * @returns {String} The rendered list
+ * Renders an HTML list from a HopObject collection or an array.
+ * @param {HopObject|Array} collection The original collection of objects.
+ * @param {Function|Skin} funcOrSkin A skin name or a rendering function.
+ * @param {Number} itemsPerPage The amount of rendered items per page.
+ * @param {Number} pageIdx The current page index.
+ * @returns {String} The rendered list.
  */
 function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
    var currIdx = 0, item;
@@ -1123,12 +1259,12 @@ function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
 
 // FIXME: Rewrite using jala.ListRenderer or rename (eg. renderIndex)
 /**
- * 
- * @param {HopObject|Array|Number} collectionOrSize
- * @param {String} url
- * @param {Number} itemsPerPage
- * @param {Number} pageIdx
- * @returns {String} The rendered index
+ * Renders the page navigation for a collection of HopObjects.
+ * @param {HopObject|Array|Number} collectionOrSize A collection or just the size of a collection.
+ * @param {String} url The base URL for rendering links.
+ * @param {Number} itemsPerPage The amount of rendered items per page.
+ * @param {Number} pageIdx The current page index.
+ * @returns {String} The rendered page navigation.
  */
 function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
    // Render a single item for the navigation bar
@@ -1198,9 +1334,9 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
 }
 
 /**
- * 
- * @param {String} plural
- * @returns {String} The english singular form of the input
+ * Transforms an english plural form of a noun into its singular form.
+ * @param {String} plural The noun in plural form.
+ * @returns {String} The english singular form of the original input.
  */
 function singularize(plural) {
    if (plural.endsWith("ies")) {
@@ -1210,9 +1346,9 @@ function singularize(plural) {
 }
 
 /**
- * 
- * @param {String} singular
- * @returns {String} The english plural form of the input
+ * Transforms an english singular form of a noun into its plural form.
+ * @param {String} singular The noun in singular form.
+ * @returns {String} The english plural form of the original input.
  */
 function pluralize(singular) {
    if (singular.endsWith("y")) {
@@ -1222,8 +1358,9 @@ function pluralize(singular) {
 }
 
 /**
- * 
- * @param {Number} millis
+ * Halts the execution of the thread for the specified amount of milliseconds.
+ * Use only for debugging.
+ * @param {Number} millis The amount of milliseconds.
  */
 var wait = function(millis) {
    millis || (millis = Date.ONESECOND);
@@ -1232,15 +1369,4 @@ var wait = function(millis) {
       void null;
    }
    return;
-}
-
-/**
- *
- * @param {Object} param
- * @param {String} type
- */
-function version_macro(param, type) {
-   var version = Root.VERSION;
-   var result = version[type || "default"];
-   return result || version;
 }
