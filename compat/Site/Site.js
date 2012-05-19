@@ -146,8 +146,8 @@ Site.prototype.navigation_macro = function(param) {
    // HopObject.renderSkinAsString() is overridden and will never return an empty skin
    // due to the added skin edit controls! Thus, we are using the original methods first,
    // and the overriden ones later.
-   navigation.contributors = this._renderSkinAsString("Site#contribnavigation");
-   navigation.admins = this._renderSkinAsString("Site#adminnavigation");
+   navigation.contributors = this.renderSkinAsString("Site#contribnavigation");
+   navigation.admins = this.renderSkinAsString("Site#adminnavigation");
    if (!navigation.contributors && !navigation.admins && !res.meta.navigation) {
       res.meta.navigation = true;
       this.renderSkin("Site#navigation");
