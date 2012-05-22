@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8"></meta>
 		<meta name="generator" content="JsDoc Toolkit"></meta>
-		<title>Sql | Antville&#32;1.3&#32;API&#32;Reference</title>
+		<title>Sql | Antville&#32;1.4&#32;API&#32;Reference</title>
 
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
 		<meta name="mobileoptimized" content="0"></meta>
@@ -58,6 +58,12 @@
 				
 					<li><a href="../symbols/Comment.html">Comment</a></li>
 				
+					<li><a href="../symbols/console.html">console</a></li>
+				
+					<li><a href="../symbols/Exporter.html">Exporter</a></li>
+				
+					<li><a href="../symbols/Feature.html">Feature</a></li>
+				
 					<li><a href="../symbols/File.html">File</a></li>
 				
 					<li><a href="../symbols/Files.html">Files</a></li>
@@ -73,6 +79,12 @@
 					<li><a href="../symbols/Images.html">Images</a></li>
 				
 					<li><a href="../symbols/Images.Default.html">Images<span class='break'> </span>.<span class='break'> </span>Default</a></li>
+				
+					<li><a href="../symbols/Importer.html">Importer</a></li>
+				
+					<li><a href="../symbols/jala.i18n.html">jala<span class='break'> </span>.<span class='break'> </span>i18n</a></li>
+				
+					<li><a href="../symbols/JSON.html">JSON</a></li>
 				
 					<li><a href="../symbols/Layout.html">Layout</a></li>
 				
@@ -119,7 +131,7 @@
 		
 		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
-		Generated on: 2011-5-27 22:23
+		Generated on: 2012-4-22 10:17
 	</div>
 </div>
 
@@ -142,7 +154,7 @@
 					
 					
 					
-						<li>Defined in: <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Sql.js.html">Sql.js</a></li>
+						<li>Defined in: <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Sql.js.html">Sql.js</a></li>
 					
 						
 				</ul>
@@ -196,7 +208,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.ARCHIVE">ARCHIVE</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL query for retrieving all story IDs in a site’s archive.</div>
 									</td>
 								</tr>
 							
@@ -206,7 +218,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.ARCHIVEORDER">ARCHIVEORDER</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL part for applying an order to the archive query.</div>
 									</td>
 								</tr>
 							
@@ -216,7 +228,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.ARCHIVEPART">ARCHIVEPART</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL part filtering the archive query.</div>
 									</td>
 								</tr>
 							
@@ -226,7 +238,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.ARCHIVESIZE">ARCHIVESIZE</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL command for retrieving the size of a site’s archive.</div>
 									</td>
 								</tr>
 							
@@ -236,7 +248,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.COUNT">COUNT</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL query for retrieving the amount of records in a table.</div>
 									</td>
 								</tr>
 							
@@ -246,7 +258,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.MEMBERSEARCH">MEMBERSEARCH</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL query for searching members.</div>
 									</td>
 								</tr>
 							
@@ -256,7 +268,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.PURGEREFERRERS">PURGEREFERRERS</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL command for deleting all log entries older than 2 days.</div>
 									</td>
 								</tr>
 							
@@ -266,7 +278,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.REFERRERS">REFERRERS</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL query for retrieving the referrers of a site or a story.</div>
 									</td>
 								</tr>
 							
@@ -276,7 +288,7 @@
 										<div class="fixedFont">
 										Sql.<b><a href="../symbols/Sql.html#.SEARCH">SEARCH</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">SQL query for searching stories and comments.</div>
 									</td>
 								</tr>
 							
@@ -315,7 +327,7 @@
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/Sql.html#execute">execute</a></b>(sql)
 										</div>
-										<div class="description"></div>
+										<div class="description">Executes an SQL command.</div>
 									</td>
 								</tr>
 							
@@ -326,7 +338,7 @@
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/Sql.html#retrieve">retrieve</a></b>()
 										</div>
-										<div class="description"></div>
+										<div class="description">Retrieves an SQL query.</div>
 									</td>
 								</tr>
 							
@@ -348,7 +360,7 @@
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/Sql.html#traverse">traverse</a></b>(callback)
 										</div>
-										<div class="description"></div>
+										<div class="description">Traverses over the results of an SQL query.</div>
 									</td>
 								</tr>
 							
@@ -424,7 +436,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL query for retrieving all story IDs in a site’s archive.
 							
 							
 							
@@ -446,7 +458,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL part for applying an order to the archive query.
 							
 							
 							
@@ -454,6 +466,19 @@
 						
 						
 							
+							<dl class="detailList nomargin">
+							
+								
+								
+								
+									<dt class="heading">See:</dt>
+									
+										<dd><a href="../symbols/Archive.html#stories_macro">Archive#stories_macro</a></dd>
+									
+								
+								
+							</dl>
+						
 						
 						<div class="hr"></div>
 					
@@ -468,7 +493,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL part filtering the archive query.
 							
 							
 							
@@ -476,6 +501,19 @@
 						
 						
 							
+							<dl class="detailList nomargin">
+							
+								
+								
+								
+									<dt class="heading">See:</dt>
+									
+										<dd><a href="../symbols/Archive.html#getFilter">Archive#getFilter</a></dd>
+									
+								
+								
+							</dl>
+						
 						
 						<div class="hr"></div>
 					
@@ -490,7 +528,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL command for retrieving the size of a site’s archive.
 							
 							
 							
@@ -512,7 +550,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL query for retrieving the amount of records in a table.
 							
 							
 							
@@ -534,7 +572,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL query for searching members.
 							
 							
 							
@@ -556,7 +594,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL command for deleting all log entries older than 2 days.
 							
 							
 							
@@ -578,7 +616,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL query for retrieving the referrers of a site or a story.
 							
 							
 							
@@ -600,7 +638,7 @@
 						</div>
 						
 						<div class="description">
-							
+							SQL query for searching stories and comments.
 							
 							
 							
@@ -641,7 +679,7 @@
 								</div>
 								
 								<div class="description">
-									
+									Executes an SQL command.
 									
 									
 									
@@ -658,7 +696,7 @@
 												<span class="light fixedFont">{String}</span> <b>sql</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The SQL command.</dd>
 										
 									</dl>
 								
@@ -675,7 +713,7 @@
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{Object}</span> </dd>
+												<dd><span class="light fixedFont">{Object}</span> The result of the SQL command.</dd>
 											
 										
 										
@@ -702,13 +740,18 @@
 								</div>
 								
 								<div class="description">
-									
+									Retrieves an SQL query.
 									
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code">sql.retrieve('select $1 from $2 order by $1', 'date', 'foo')
+===> 'select date from foo order by date'</pre>
+									
 								
 								
 								
@@ -802,7 +845,7 @@
 								</div>
 								
 								<div class="description">
-									
+									Traverses over the results of an SQL query.
 									
 									
 									
@@ -819,7 +862,7 @@
 												<span class="light fixedFont">{Function}</span> <b>callback</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The callback function executed for each record.</dd>
 										
 									</dl>
 								

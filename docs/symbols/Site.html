@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8"></meta>
 		<meta name="generator" content="JsDoc Toolkit"></meta>
-		<title>Site | Antville&#32;1.3&#32;API&#32;Reference</title>
+		<title>Site | Antville&#32;1.4&#32;API&#32;Reference</title>
 
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
 		<meta name="mobileoptimized" content="0"></meta>
@@ -58,6 +58,12 @@
 				
 					<li><a href="../symbols/Comment.html">Comment</a></li>
 				
+					<li><a href="../symbols/console.html">console</a></li>
+				
+					<li><a href="../symbols/Exporter.html">Exporter</a></li>
+				
+					<li><a href="../symbols/Feature.html">Feature</a></li>
+				
 					<li><a href="../symbols/File.html">File</a></li>
 				
 					<li><a href="../symbols/Files.html">Files</a></li>
@@ -73,6 +79,12 @@
 					<li><a href="../symbols/Images.html">Images</a></li>
 				
 					<li><a href="../symbols/Images.Default.html">Images<span class='break'> </span>.<span class='break'> </span>Default</a></li>
+				
+					<li><a href="../symbols/Importer.html">Importer</a></li>
+				
+					<li><a href="../symbols/jala.i18n.html">jala<span class='break'> </span>.<span class='break'> </span>i18n</a></li>
+				
+					<li><a href="../symbols/JSON.html">JSON</a></li>
 				
 					<li><a href="../symbols/Layout.html">Layout</a></li>
 				
@@ -119,7 +131,7 @@
 		
 		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
-		Generated on: 2011-5-27 22:23
+		Generated on: 2012-4-22 10:17
 	</div>
 </div>
 
@@ -142,7 +154,7 @@
 					
 					
 					
-						<li>Defined in: <a href="../symbols/src/_private_tmp_antville-1.3_code_Site_Site.js.html">Site.js</a></li>
+						<li>Defined in: <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Site_Site.js.html">Site.js</a></li>
 					
 						<li>Extends <span class="fixedFont">
 						<a href="../symbols/HopObject.html">HopObject</a></span></li>
@@ -166,7 +178,7 @@
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription" >
 								<div class="fixedFont">
-									<b><a href="../symbols/Site.html#constructor">Site</a></b>(name, title)
+									<b><a href="../symbols/Site.html#constructor">Site</a></b>()
 								</div>
 								<div class="description">A Site object is the basic container of Antville.</div>
 							</td>
@@ -528,9 +540,9 @@ the owners of a site</div>
 								<tr
 									 class='item0'
 								>
-									<td class="attributes">&nbsp;</td>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#age_macro">age_macro</a></b>(param)
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.add">add</a></b>(name, title, user)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -541,7 +553,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#calendar_macro">calendar_macro</a></b>(param)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#age_macro">age_macro</a></b>(param)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -552,7 +564,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#callback">callback</a></b>(ref)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#calendar_macro">calendar_macro</a></b>(param)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -563,7 +575,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#deleted_macro">deleted_macro</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/Site.html#callback">callback</a></b>(ref)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -574,7 +586,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#diskspace_macro">diskspace_macro</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/Site.html#deleted_macro">deleted_macro</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -585,7 +597,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getAdminHeader">getAdminHeader</a></b>(name)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#diskspace_macro">diskspace_macro</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -594,9 +606,9 @@ the owners of a site</div>
 								<tr
 									 class='item6'
 								>
-									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getArchiveModes">getArchiveModes</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getAdminHeader">getAdminHeader</a></b>(name)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -607,7 +619,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getByName">getByName</a></b>(name)
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getArchiveModes">getArchiveModes</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -618,7 +630,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getCallbackModes">getCallbackModes</a></b>()
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getByName">getByName</a></b>(name)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -629,7 +641,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getCommentModes">getCommentModes</a></b>()
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getCallbackModes">getCallbackModes</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -638,9 +650,9 @@ the owners of a site</div>
 								<tr
 									 class='item10'
 								>
-									<td class="attributes">&nbsp;</td>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getDiskSpace">getDiskSpace</a></b>(quota)
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getCommentModes">getCommentModes</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -651,7 +663,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getFormOptions">getFormOptions</a></b>(name)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getDiskSpace">getDiskSpace</a></b>(quota)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -662,7 +674,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getLocale">getLocale</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getFormOptions">getFormOptions</a></b>(name)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -673,7 +685,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getMacroHandler">getMacroHandler</a></b>(name)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getLocale">getLocale</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -682,9 +694,9 @@ the owners of a site</div>
 								<tr
 									 class='item14'
 								>
-									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getModes">getModes</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getMacroHandler">getMacroHandler</a></b>(name)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -695,7 +707,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getNotificationModes">getNotificationModes</a></b>()
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getModes">getModes</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -706,7 +718,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getPageModes">getPageModes</a></b>()
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getNotificationModes">getNotificationModes</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -715,9 +727,9 @@ the owners of a site</div>
 								<tr
 									 class='item17'
 								>
-									<td class="attributes">&nbsp;</td>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getPermission">getPermission</a></b>(action)
+										<div class="fixedFont">Site.<b><a href="../symbols/Site.html#.getPageModes">getPageModes</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -728,7 +740,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getQuota">getQuota</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getPermission">getPermission</a></b>(action)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -739,7 +751,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getStaticFile">getStaticFile</a></b>(tail)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getQuota">getQuota</a></b>()
 										</div>
 										<div class="description"></div>
 									</td>
@@ -750,7 +762,7 @@ the owners of a site</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/Site.html#getStaticUrl">getStaticUrl</a></b>(tail)
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getStaticFile">getStaticFile</a></b>(tail)
 										</div>
 										<div class="description"></div>
 									</td>
@@ -758,6 +770,17 @@ the owners of a site</div>
 							
 								<tr
 									 class='item21'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/Site.html#getStaticUrl">getStaticUrl</a></b>(tail)
+										</div>
+										<div class="description"></div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item22'
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
@@ -768,7 +791,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item22'
+									 class='item23'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -779,7 +802,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item23'
+									 class='item24'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -790,7 +813,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item24'
+									 class='item25'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -801,7 +824,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item25'
+									 class='item26'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -812,7 +835,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item26'
+									 class='item27'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -823,7 +846,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item27'
+									 class='item28'
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
@@ -834,7 +857,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item28'
+									 class='item29'
 								>
 									<td class="attributes">&lt;static&gt; &nbsp;</td>
 									<td class="nameDescription">
@@ -845,7 +868,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item29'
+									 class='item30'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -856,7 +879,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item30'
+									 class='item31'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -867,7 +890,7 @@ the owners of a site</div>
 								</tr>
 							
 								<tr
-									 class='item31'
+									 class='item32'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -883,7 +906,7 @@ the owners of a site</div>
 			
 				
 					<dl class="inheritsList" id="MethodsListInherited">
-					<dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/HopObject.html">HopObject</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/HopObject.html#addTag">addTag</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#checkbox_macro">checkbox_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#created_macro">created_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#creator_macro">creator_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#deleteMetadata">deleteMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#getFormValue">getFormValue</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#getMetadata">getMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#getTitle">getTitle</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#handleMetadata">handleMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#input_macro">input_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#kind_macro">kind_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#link_filter">link_filter</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#link_macro">link_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#log">log</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#macro_macro">macro_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#map">map</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#metadata_macro">metadata_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#modified_macro">modified_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#modifier_macro">modifier_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#notify">notify</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#onRequest">onRequest</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#radiobutton_macro">radiobutton_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#removeTag">removeTag</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#select_macro">select_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#self_macro">self_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#setMetadata">setMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#setTags">setTags</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#skin_macro">skin_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#textarea_macro">textarea_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#toString">toString</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#touch">touch</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#type_macro">type_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#upload_macro">upload_macro</a></span></dd>
+					<dt>Methods borrowed from class <span class='fixedFont'><a href="../symbols/HopObject.html">HopObject</a></span>: </dt><dd><span class='fixedFont'><a href="../symbols/HopObject.html#addTag">addTag</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#checkbox_macro">checkbox_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#created_macro">created_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#creator_macro">creator_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#deleteMetadata">deleteMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#getFormValue">getFormValue</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#getMetadata">getMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#getTitle">getTitle</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#handleMetadata">handleMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#input_macro">input_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#kind_macro">kind_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#link_filter">link_filter</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#link_macro">link_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#log">log</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#macro_macro">macro_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#map">map</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#metadata_macro">metadata_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#modified_macro">modified_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#modifier_macro">modifier_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#notify">notify</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#onCodeUpdate">onCodeUpdate</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#onRequest">onRequest</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#radiobutton_macro">radiobutton_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#removeTag">removeTag</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#select_macro">select_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#self_macro">self_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#setMetadata">setMetadata</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#setTags">setTags</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#skin_macro">skin_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#textarea_macro">textarea_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#toString">toString</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#touch">touch</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#type_macro">type_macro</a></span></dd> <dd><span class='fixedFont'><a href="../symbols/HopObject.html#upload_macro">upload_macro</a></span></dd>
 					</dl>
 				
 			</div>
@@ -904,7 +927,7 @@ the owners of a site</div>
 					</h2>
 					
 					<div class="fixedFont">
-						<b>Site</b>(name, title)
+						<b>Site</b>()
 					</div>
 					
 					<div class="description">
@@ -914,23 +937,6 @@ the owners of a site</div>
 					
 					
 				
-					
-						<dl class="detailList params">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span>  <b>name</b>
-									
-								</dt>
-								<dd>A unique identifier also used in the URL of a site</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span>  <b>title</b>
-									
-								</dt>
-								<dd>An arbitrary string branding a site</dd>
-							
-						</dl>
 					
 					
 					
@@ -1628,6 +1634,58 @@ the owners of a site
 							<li 
 								 class='item0'
 							>
+								<div class="fixedFont heading" id=".add">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									
+									
+									<span class="light">Site.</span><b>add</b>(name, title, user)
+								</div>
+								
+								<div class="description">
+									
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>name</b>
+												
+											</dt>
+											<dd>A unique identifier also used in the URL of a site</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>title</b>
+												
+											</dt>
+											<dd>An arbitrary string branding a site</dd>
+										
+											<dt>
+												<span class="light fixedFont">{<a href="../symbols/User.html">User</a>}</span> <b>user</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item1'
+							>
 								<div class="fixedFont heading" id="age_macro">
 									<span class='lighter'>
 									
@@ -1666,7 +1724,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item1'
+								 class='item2'
 							>
 								<div class="fixedFont heading" id="calendar_macro">
 									<span class='lighter'>
@@ -1706,7 +1764,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item2'
+								 class='item3'
 							>
 								<div class="fixedFont heading" id="callback">
 									<span class='lighter'>
@@ -1746,7 +1804,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item3'
+								 class='item4'
 							>
 								<div class="fixedFont heading" id="deleted_macro">
 									<span class='lighter'>
@@ -1775,7 +1833,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item4'
+								 class='item5'
 							>
 								<div class="fixedFont heading" id="diskspace_macro">
 									<span class='lighter'>
@@ -1804,7 +1862,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item5'
+								 class='item6'
 							>
 								<div class="fixedFont heading" id="getAdminHeader">
 									<span class='lighter'>
@@ -1865,7 +1923,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item6'
+								 class='item7'
 							>
 								<div class="fixedFont heading" id=".getArchiveModes">
 									<span class='lighter'>
@@ -1920,7 +1978,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item7'
+								 class='item8'
 							>
 								<div class="fixedFont heading" id=".getByName">
 									<span class='lighter'>
@@ -1981,7 +2039,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item8'
+								 class='item9'
 							>
 								<div class="fixedFont heading" id=".getCallbackModes">
 									<span class='lighter'>
@@ -2036,7 +2094,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item9'
+								 class='item10'
 							>
 								<div class="fixedFont heading" id=".getCommentModes">
 									<span class='lighter'>
@@ -2091,7 +2149,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item10'
+								 class='item11'
 							>
 								<div class="fixedFont heading" id="getDiskSpace">
 									<span class='lighter'>
@@ -2152,7 +2210,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item11'
+								 class='item12'
 							>
 								<div class="fixedFont heading" id="getFormOptions">
 									<span class='lighter'>
@@ -2213,7 +2271,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item12'
+								 class='item13'
 							>
 								<div class="fixedFont heading" id="getLocale">
 									<span class='lighter'>
@@ -2263,7 +2321,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item13'
+								 class='item14'
 							>
 								<div class="fixedFont heading" id="getMacroHandler">
 									<span class='lighter'>
@@ -2324,7 +2382,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item14'
+								 class='item15'
 							>
 								<div class="fixedFont heading" id=".getModes">
 									<span class='lighter'>
@@ -2379,7 +2437,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item15'
+								 class='item16'
 							>
 								<div class="fixedFont heading" id=".getNotificationModes">
 									<span class='lighter'>
@@ -2434,7 +2492,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item16'
+								 class='item17'
 							>
 								<div class="fixedFont heading" id=".getPageModes">
 									<span class='lighter'>
@@ -2489,7 +2547,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item17'
+								 class='item18'
 							>
 								<div class="fixedFont heading" id="getPermission">
 									<span class='lighter'>
@@ -2550,7 +2608,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item18'
+								 class='item19'
 							>
 								<div class="fixedFont heading" id="getQuota">
 									<span class='lighter'>
@@ -2600,7 +2658,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item19'
+								 class='item20'
 							>
 								<div class="fixedFont heading" id="getStaticFile">
 									<span class='lighter'>
@@ -2661,7 +2719,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item20'
+								 class='item21'
 							>
 								<div class="fixedFont heading" id="getStaticUrl">
 									<span class='lighter'>
@@ -2722,7 +2780,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item21'
+								 class='item22'
 							>
 								<div class="fixedFont heading" id=".getStatus">
 									<span class='lighter'>
@@ -2777,7 +2835,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item22'
+								 class='item23'
 							>
 								<div class="fixedFont heading" id="getTags">
 									<span class='lighter'>
@@ -2844,7 +2902,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item23'
+								 class='item24'
 							>
 								<div class="fixedFont heading" id="getTimeZone">
 									<span class='lighter'>
@@ -2894,7 +2952,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item24'
+								 class='item25'
 							>
 								<div class="fixedFont heading" id="getXml">
 									<span class='lighter'>
@@ -2934,7 +2992,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item25'
+								 class='item26'
 							>
 								<div class="fixedFont heading" id="processHref">
 									<span class='lighter'>
@@ -2974,7 +3032,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item26'
+								 class='item27'
 							>
 								<div class="fixedFont heading" id="referrers_macro">
 									<span class='lighter'>
@@ -3003,7 +3061,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item27'
+								 class='item28'
 							>
 								<div class="fixedFont heading" id=".remove">
 									<span class='lighter'>
@@ -3043,7 +3101,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item28'
+								 class='item29'
 							>
 								<div class="fixedFont heading" id=".require">
 									<span class='lighter'>
@@ -3104,7 +3162,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item29'
+								 class='item30'
 							>
 								<div class="fixedFont heading" id="spamfilter_macro">
 									<span class='lighter'>
@@ -3133,7 +3191,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item30'
+								 class='item31'
 							>
 								<div class="fixedFont heading" id="stories_macro">
 									<span class='lighter'>
@@ -3162,7 +3220,7 @@ the owners of a site
 							</li>
 						
 							<li 
-								 class='item31'
+								 class='item32'
 							>
 								<div class="fixedFont heading" id="update">
 									<span class='lighter'>

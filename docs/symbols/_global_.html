@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8"></meta>
 		<meta name="generator" content="JsDoc Toolkit"></meta>
-		<title>_global_ | Antville&#32;1.3&#32;API&#32;Reference</title>
+		<title>_global_ | Antville&#32;1.4&#32;API&#32;Reference</title>
 
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
 		<meta name="mobileoptimized" content="0"></meta>
@@ -58,6 +58,12 @@
 				
 					<li><a href="../symbols/Comment.html">Comment</a></li>
 				
+					<li><a href="../symbols/console.html">console</a></li>
+				
+					<li><a href="../symbols/Exporter.html">Exporter</a></li>
+				
+					<li><a href="../symbols/Feature.html">Feature</a></li>
+				
 					<li><a href="../symbols/File.html">File</a></li>
 				
 					<li><a href="../symbols/Files.html">Files</a></li>
@@ -73,6 +79,12 @@
 					<li><a href="../symbols/Images.html">Images</a></li>
 				
 					<li><a href="../symbols/Images.Default.html">Images<span class='break'> </span>.<span class='break'> </span>Default</a></li>
+				
+					<li><a href="../symbols/Importer.html">Importer</a></li>
+				
+					<li><a href="../symbols/jala.i18n.html">jala<span class='break'> </span>.<span class='break'> </span>i18n</a></li>
+				
+					<li><a href="../symbols/JSON.html">JSON</a></li>
 				
 					<li><a href="../symbols/Layout.html">Layout</a></li>
 				
@@ -119,7 +131,7 @@
 		
 		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0<br />
 		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
-		Generated on: 2011-5-27 22:23
+		Generated on: 2012-4-22 10:17
 	</div>
 </div>
 
@@ -164,7 +176,17 @@
 										<div class="fixedFont">
 										<b><a href="../symbols/_global_.html#html">html</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">An instance of Helma’s HTML rendering module.</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/_global_.html#lessParser">lessParser</a></b>
+										</div>
+										<div class="description">An instance of the LESS parser.</div>
 									</td>
 								</tr>
 							
@@ -174,7 +196,7 @@
 										<div class="fixedFont">
 										<b><a href="../symbols/_global_.html#NAMEPATTERN">NAMEPATTERN</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">Regular Expression according to Jala’s HopObject.getAccessName().</div>
 									</td>
 								</tr>
 							
@@ -184,7 +206,7 @@
 										<div class="fixedFont">
 										<b><a href="../symbols/_global_.html#rome">rome</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">A collection of Java classes and namespaces required for parsing and generating RSS.</div>
 									</td>
 								</tr>
 							
@@ -194,7 +216,7 @@
 										<div class="fixedFont">
 										<b><a href="../symbols/_global_.html#SQLDATEFORMAT">SQLDATEFORMAT</a></b>
 										</div>
-										<div class="description"></div>
+										<div class="description">The date format used in SQL queries and commands.</div>
 									</td>
 								</tr>
 							
@@ -233,7 +255,7 @@
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#age_filter">age_filter</a></b>(value, param)
 										</div>
-										<div class="description"></div>
+										<div class="description">Helma macro filter wrapping the Date#getAge method.</div>
 									</td>
 								</tr>
 							
@@ -244,7 +266,7 @@
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#breadcrumbs_macro">breadcrumbs_macro</a></b>(param, delimiter)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders a breadcrumbs navigation from the current HopObject path.</div>
 									</td>
 								</tr>
 							
@@ -255,8 +277,7 @@
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#cgettext">cgettext</a></b>(key, context)
 										</div>
-										<div class="description">This method is useful for disambiguation of messages (single words most of
-the time) that have different meanings depending on the context.</div>
+										<div class="description">This method is useful for disambiguation of messages (single words most of the time) that have different meanings depending on the context.</div>
 									</td>
 								</tr>
 							
@@ -267,7 +288,7 @@ the time) that have different meanings depending on the context.</div>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#clip_filter">clip_filter</a></b>(input, param, limit, clipping, delimiter)
 										</div>
-										<div class="description"></div>
+										<div class="description">Macro filter for clipping output.</div>
 									</td>
 								</tr>
 							
@@ -276,9 +297,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#countUsers">countUsers</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#default_filter">default_filter</a></b>(value, param, defaultValue)
 										</div>
-										<div class="description"></div>
+										<div class="description">A simple Helma macro filter returning one of two possible values depending on which one is truthy.</div>
 									</td>
 								</tr>
 							
@@ -287,9 +308,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#default_filter">default_filter</a></b>(value, param, defaultValue)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#defineConstants">defineConstants</a></b>(ctor)
 										</div>
-										<div class="description"></div>
+										<div class="description">Helper method to simultaneously define constants and a corresponding array of localized display names.</div>
 									</td>
 								</tr>
 							
@@ -298,9 +319,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#defineConstants">defineConstants</a></b>(ctor)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#disableMacro">disableMacro</a></b>(ctor, name)
 										</div>
-										<div class="description"></div>
+										<div class="description">Disables a macro with the idle() function.</div>
 									</td>
 								</tr>
 							
@@ -309,9 +330,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#disableMacro">disableMacro</a></b>(ctor, name)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#file_macro">file_macro</a></b>(param, id, mode)
 										</div>
-										<div class="description">Disable a macro with the idle function</div>
+										<div class="description">Renders the URL or an arbitrary skin of a file.</div>
 									</td>
 								</tr>
 							
@@ -320,9 +341,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#Feature">Feature</a></b>(id, url, feature)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#fixRssText">fixRssText</a></b>(rss)
 										</div>
-										<div class="description"></div>
+										<div class="description">Replaces <img> elements in a string with <a> elements to fix RSS output which is not capable of displaying images.</div>
 									</td>
 								</tr>
 							
@@ -331,9 +352,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#file_macro">file_macro</a></b>(param, id, mode)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#format_filter">format_filter</a></b>(value, param, pattern, type)
 										</div>
-										<div class="description"></div>
+										<div class="description">Helma macro filter wrapping the global formatting methods.</div>
 									</td>
 								</tr>
 							
@@ -342,9 +363,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#fixRssText">fixRssText</a></b>(rss)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#formatDate">formatDate</a></b>(date, format)
 										</div>
-										<div class="description"></div>
+										<div class="description">Formats a date according to a formatting string and the site’s locale and time zone.</div>
 									</td>
 								</tr>
 							
@@ -353,9 +374,9 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#format_filter">format_filter</a></b>(string, param, pattern, type)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#formatNumber">formatNumber</a></b>(number, pattern)
 										</div>
-										<div class="description"></div>
+										<div class="description">Formats a number according to a pattern and the site’s locale setting.</div>
 									</td>
 								</tr>
 							
@@ -364,36 +385,14 @@ the time) that have different meanings depending on the context.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#formatDate">formatDate</a></b>(date, format)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#getLocale">getLocale</a></b>(language)
 										</div>
-										<div class="description"></div>
+										<div class="description">Retrieves the locale object from a language string.</div>
 									</td>
 								</tr>
 							
 								<tr
 									 class='item13'
-								>
-									<td class="attributes">&nbsp;</td>
-									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#formatNumber">formatNumber</a></b>(number, pattern)
-										</div>
-										<div class="description"></div>
-									</td>
-								</tr>
-							
-								<tr
-									 class='item14'
-								>
-									<td class="attributes">&nbsp;</td>
-									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#getLocale">getLocale</a></b>(language)
-										</div>
-										<div class="description"></div>
-									</td>
-								</tr>
-							
-								<tr
-									 class='item15'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -404,18 +403,18 @@ the time) that have different meanings depending on the context.</div>
 								</tr>
 							
 								<tr
-									 class='item16'
+									 class='item14'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#gettext_macro">gettext_macro</a></b>(param, text)
 										</div>
-										<div class="description"></div>
+										<div class="description">Helma macro wrapper for the gettext() method.</div>
 									</td>
 								</tr>
 							
 								<tr
-									 class='item17'
+									 class='item15'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -430,18 +429,18 @@ vast amount of choices fails to support easy time zone selection.</div>
 								</tr>
 							
 								<tr
-									 class='item18'
+									 class='item16'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#idle">idle</a></b>()
 										</div>
-										<div class="description"></div>
+										<div class="description">Shortcut for a function with empty body.</div>
 									</td>
 								</tr>
 							
 								<tr
-									 class='item19'
+									 class='item17'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -452,13 +451,35 @@ vast amount of choices fails to support easy time zone selection.</div>
 								</tr>
 							
 								<tr
-									 class='item20'
+									 class='item18'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#image_macro">image_macro</a></b>(param, id, mode)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders the URL, a thumbnail or an HTML element of an image.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item19'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#injectXslDeclaration">injectXslDeclaration</a></b>(xml)
+										</div>
+										<div class="description">Injects the XSLT stylesheet declaration into an XML string until Mozilla developers will have mercy.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item20'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#link_filter">link_filter</a></b>(text, param, url)
+										</div>
+										<div class="description">Helma macro filter wrapping the <a href="../symbols/_global_.html#renderLink">renderLink</a> method.</div>
 									</td>
 								</tr>
 							
@@ -467,10 +488,9 @@ vast amount of choices fails to support easy time zone selection.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#injectXslDeclaration">injectXslDeclaration</a></b>(xml)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#link_macro">link_macro</a></b>()
 										</div>
-										<div class="description">Injects the XSLT stylesheet declaration into an XML string until  
-Mozilla developers will have mercy.</div>
+										<div class="description">Renders a link.</div>
 									</td>
 								</tr>
 							
@@ -479,9 +499,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#link_filter">link_filter</a></b>(text, param, url)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#list_macro">list_macro</a></b>(param, id, limit)
 										</div>
-										<div class="description"></div>
+										<div class="description">The “swiss army knife” list macro.</div>
 									</td>
 								</tr>
 							
@@ -490,9 +510,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#link_macro">link_macro</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#listItemFlag_macro">listItemFlag_macro</a></b>(param, str)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders a string vertically in the global listItemFlag skin.</div>
 									</td>
 								</tr>
 							
@@ -501,9 +521,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#list_macro">list_macro</a></b>(param, id, limit)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#markgettext_macro">markgettext_macro</a></b>(param, singular, plural)
 										</div>
-										<div class="description"></div>
+										<div class="description">Helma macro wrapper for the markgettext() method.</div>
 									</td>
 								</tr>
 							
@@ -512,9 +532,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#listItemFlag_macro">listItemFlag_macro</a></b>(param, str)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#ngettext_macro">ngettext_macro</a></b>(param, singular, plural)
 										</div>
-										<div class="description"></div>
+										<div class="description">Helma macro wrapper for the ngettext() method.</div>
 									</td>
 								</tr>
 							
@@ -523,9 +543,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#markgettext_macro">markgettext_macro</a></b>(param, singular, plural)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#nightly">nightly</a></b>()
 										</div>
-										<div class="description"></div>
+										<div class="description">The nightly scheduler.</div>
 									</td>
 								</tr>
 							
@@ -534,9 +554,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#ngettext_macro">ngettext_macro</a></b>(param, singular, plural)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#now_macro">now_macro</a></b>(param, format)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders the current date and time.</div>
 									</td>
 								</tr>
 							
@@ -545,9 +565,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#nightly">nightly</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#onStart">onStart</a></b>()
 										</div>
-										<div class="description"></div>
+										<div class="description">The startup handler Helma is calling automatically shortly after the application has started.</div>
 									</td>
 								</tr>
 							
@@ -556,9 +576,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#now_macro">now_macro</a></b>(param, format)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#onStop">onStop</a></b>()
 										</div>
-										<div class="description"></div>
+										<div class="description">This handler is called by Helma automatically before the application is stopped.</div>
 									</td>
 								</tr>
 							
@@ -567,9 +587,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#onStart">onStart</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#pluralize">pluralize</a></b>(singular)
 										</div>
-										<div class="description"></div>
+										<div class="description">Transforms an english singular form of a noun into its plural form.</div>
 									</td>
 								</tr>
 							
@@ -578,9 +598,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#onStop">onStop</a></b>()
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#poll_macro">poll_macro</a></b>(param, id, mode)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders the URL, a link or the visual representation of a poll.</div>
 									</td>
 								</tr>
 							
@@ -589,9 +609,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#pluralize">pluralize</a></b>(singular)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#quote">quote</a></b>(str)
 										</div>
-										<div class="description"></div>
+										<div class="description">Surrounds a string by programmer quotes (").</div>
 									</td>
 								</tr>
 							
@@ -600,9 +620,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#poll_macro">poll_macro</a></b>(param, id, mode)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#random_macro">random_macro</a></b>(param, type, mode)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders either a skin or the URL of a random site, story or image.</div>
 									</td>
 								</tr>
 							
@@ -611,9 +631,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#quote">quote</a></b>(str)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#renderLink">renderLink</a></b>(param, url, text, handler)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders an HTML <a> element from a URL or HopObject.</div>
 									</td>
 								</tr>
 							
@@ -622,9 +642,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#randomize_macro">randomize_macro</a></b>(param, id)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#renderList">renderList</a></b>(collection, funcOrSkin, itemsPerPage, pageIdx)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders an HTML list from a HopObject collection or an array.</div>
 									</td>
 								</tr>
 							
@@ -633,9 +653,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#renderLink">renderLink</a></b>(param, url, text, handler)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#renderPager">renderPager</a></b>(collectionOrSize, url, itemsPerPage, pageIdx)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders the page navigation for a collection of HopObjects.</div>
 									</td>
 								</tr>
 							
@@ -644,36 +664,14 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#renderList">renderList</a></b>(collection, funcOrSkin, itemsPerPage, pageIdx)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#scheduler">scheduler</a></b>()
 										</div>
-										<div class="description"></div>
+										<div class="description">Helma’s built-in main scheduler function.</div>
 									</td>
 								</tr>
 							
 								<tr
 									 class='item38'
-								>
-									<td class="attributes">&nbsp;</td>
-									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#renderPager">renderPager</a></b>(collectionOrSize, url, itemsPerPage, pageIdx)
-										</div>
-										<div class="description"></div>
-									</td>
-								</tr>
-							
-								<tr
-									 class='item39'
-								>
-									<td class="attributes">&nbsp;</td>
-									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#scheduler">scheduler</a></b>()
-										</div>
-										<div class="description"></div>
-									</td>
-								</tr>
-							
-								<tr
-									 class='item40'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -684,40 +682,40 @@ Mozilla developers will have mercy.</div>
 								</tr>
 							
 								<tr
-									 class='item41'
+									 class='item39'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#singularize">singularize</a></b>(plural)
 										</div>
-										<div class="description"></div>
+										<div class="description">Transforms an english plural form of a noun into its singular form.</div>
 									</td>
 								</tr>
 							
 								<tr
-									 class='item42'
+									 class='item40'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#skin_macro">skin_macro</a></b>(param, name)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders a skin from within a skin.</div>
 									</td>
 								</tr>
 							
 								<tr
-									 class='item43'
+									 class='item41'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#story_macro">story_macro</a></b>(param, id, mode)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders the URL of, a link to or an arbitrary skin of a story.</div>
 									</td>
 								</tr>
 							
 								<tr
-									 class='item44'
+									 class='item42'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
@@ -728,13 +726,35 @@ Mozilla developers will have mercy.</div>
 								</tr>
 							
 								<tr
-									 class='item45'
+									 class='item43'
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#validateEmail">validateEmail</a></b>(str)
 										</div>
-										<div class="description"></div>
+										<div class="description">Validates if a string is suitable for e-mail messaging.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item44'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#validateUrl">validateUrl</a></b>(str)
+										</div>
+										<div class="description">Validates if a string is suitable for requesting a URL.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item45'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#value_macro">value_macro</a></b>(param, name, value)
+										</div>
+										<div class="description">Defines and renders a value.</div>
 									</td>
 								</tr>
 							
@@ -743,9 +763,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#validateUrl">validateUrl</a></b>(str)
+										<div class="fixedFont"><b><a href="../symbols/_global_.html#version_macro">version_macro</a></b>(param, type)
 										</div>
-										<div class="description"></div>
+										<div class="description">Renders the Antville version string.</div>
 									</td>
 								</tr>
 							
@@ -754,31 +774,9 @@ Mozilla developers will have mercy.</div>
 								>
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#value_macro">value_macro</a></b>(param, name, value)
-										</div>
-										<div class="description"></div>
-									</td>
-								</tr>
-							
-								<tr
-									 class='item48'
-								>
-									<td class="attributes">&nbsp;</td>
-									<td class="nameDescription">
-										<div class="fixedFont"><b><a href="../symbols/_global_.html#version_macro">version_macro</a></b>(param, type)
-										</div>
-										<div class="description"></div>
-									</td>
-								</tr>
-							
-								<tr
-									 class='item49'
-								>
-									<td class="attributes">&nbsp;</td>
-									<td class="nameDescription">
 										<div class="fixedFont"><b><a href="../symbols/_global_.html#wait">wait</a></b>(millis)
 										</div>
-										<div class="description"></div>
+										<div class="description">Halts the execution of the thread for the specified amount of milliseconds.</div>
 									</td>
 								</tr>
 							
@@ -814,16 +812,41 @@ Mozilla developers will have mercy.</div>
 							
 							</span>
 							
-							
+							<span class="light">{helma.Html}</span>
 							
 							<b>html</b>							
 						</div>
 						
 						<div class="description">
-							
+							An instance of Helma’s HTML rendering module.
 							
 								<br />
-								<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+								<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="lessParser">
+							<span class='lighter'>
+							
+							</span>
+							
+							<span class="light">{less.Parser}</span>
+							
+							<b>lessParser</b>							
+						</div>
+						
+						<div class="description">
+							An instance of the LESS parser.
+							
+								<br />
+								<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 							
 							
 							
@@ -839,16 +862,16 @@ Mozilla developers will have mercy.</div>
 							&lt;constant&gt; 
 							</span>
 							
-							
+							<span class="light">{RegExp}</span>
 							
 							<b>NAMEPATTERN</b>							
 						</div>
 						
 						<div class="description">
-							
+							Regular Expression according to Jala’s HopObject.getAccessName().
 							
 								<br />
-								<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+								<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 							
 							
 							
@@ -864,16 +887,16 @@ Mozilla developers will have mercy.</div>
 							
 							</span>
 							
-							
+							<span class="light">{Object}</span>
 							
 							<b>rome</b>							
 						</div>
 						
 						<div class="description">
-							
+							A collection of Java classes and namespaces required for parsing and generating RSS.
 							
 								<br />
-								<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+								<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 							
 							
 							
@@ -889,16 +912,16 @@ Mozilla developers will have mercy.</div>
 							&lt;constant&gt; 
 							</span>
 							
-							
+							<span class="light">{String}</span>
 							
 							<b>SQLDATEFORMAT</b>							
 						</div>
 						
 						<div class="description">
-							
+							The date format used in SQL queries and commands.
 							
 								<br />
-								<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+								<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 							
 							
 							
@@ -939,11 +962,11 @@ Mozilla developers will have mercy.</div>
 								</div>
 								
 								<div class="description">
-									
+									Helma macro filter wrapping the Date#getAge method.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -959,13 +982,13 @@ Mozilla developers will have mercy.</div>
 												<span class="light fixedFont">{Date}</span> <b>value</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original date.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 									</dl>
 								
@@ -982,12 +1005,17 @@ Mozilla developers will have mercy.</div>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The age string of a date</dd>
+												<dd><span class="light fixedFont">{String}</span> The resulting age string of the original date.</dd>
 											
 										
 										
 										
 										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd>Date#getAge</dd>
+											
 										
 									
 									</dl>
@@ -1009,11 +1037,11 @@ Mozilla developers will have mercy.</div>
 								</div>
 								
 								<div class="description">
-									
+									Renders a breadcrumbs navigation from the current HopObject path.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1029,13 +1057,13 @@ Mozilla developers will have mercy.</div>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>delimiter</b>
-												
+												<i>Optional, Default: ' : '</i>
 											</dt>
-											<dd></dd>
+											<dd>The string visually separating two navigation items</dd>
 										
 									</dl>
 								
@@ -1052,24 +1080,26 @@ Mozilla developers will have mercy.</div>
 									
 									</span>
 									
-									
+									<span class="light">{String}</span>
 									
 									<b>cgettext</b>(key, context)
 								</div>
 								
 								<div class="description">
-									This method is useful for disambiguation of messages (single words most of
-the time) that have different meanings depending on the context.
-Example: comment (the verb "to comment" vs the noun "a comment")
+									This method is useful for disambiguation of messages (single words most of the time) that have different meanings depending on the context. Example: comment – the verb "to comment" vs the noun "a comment".
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code">cgettext('comment', 'verb')</pre>
+									
 								
 								
 								
@@ -1080,13 +1110,13 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 												<span class="light fixedFont">{Object}</span> <b>key</b>
 												
 											</dt>
-											<dd>The message ID</dd>
+											<dd>The message ID.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>context</b>
 												
 											</dt>
-											<dd>The context of the message</dd>
+											<dd>The context of the message.</dd>
 										
 									</dl>
 								
@@ -1103,7 +1133,7 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd>String</dd>
+												<dd><span class="light fixedFont">{String}</span> </dd>
 											
 										
 										
@@ -1130,11 +1160,11 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 								</div>
 								
 								<div class="description">
-									
+									Macro filter for clipping output.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1150,31 +1180,31 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 												<span class="light fixedFont">{String}</span> <b>input</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original input.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Number}</span> <b>limit</b>
-												
+												<i>Optional, Default:  20</i>
 											</dt>
-											<dd></dd>
+											<dd>The maximum amount of text parts to be displayed.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>clipping</b>
-												
+												<i>Optional, Default:  '...'</i>
 											</dt>
-											<dd></dd>
+											<dd>The replacement for the clipped portions of the text.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>delimiter</b>
-												
+												<i>Optional, Default:  '\\s'</i>
 											</dt>
-											<dd></dd>
+											<dd>The regular expression string used to split the text into parts.</dd>
 										
 									</dl>
 								
@@ -1191,7 +1221,7 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The clipped input</dd>
+												<dd><span class="light fixedFont">{String}</span> The clipped result.</dd>
 											
 										
 										
@@ -1207,38 +1237,6 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 							<li 
 								 class='item4'
 							>
-								<div class="fixedFont heading" id="countUsers">
-									<span class='lighter'>
-									
-									</span>
-									
-									
-									
-									<b>countUsers</b>()
-								</div>
-								
-								<div class="description">
-									
-									
-									
-										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
-									
-									
-									
-								</div>
-								
-								
-								
-								
-								
-								
-								<div class="hr"></div>
-							</li>
-						
-							<li 
-								 class='item5'
-							>
 								<div class="fixedFont heading" id="default_filter">
 									<span class='lighter'>
 									
@@ -1250,11 +1248,11 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 								</div>
 								
 								<div class="description">
-									
+									A simple Helma macro filter returning one of two possible values depending on which one is truthy.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1270,19 +1268,19 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 												<span class="light fixedFont">{Object}</span> <b>value</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original (desired) value.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>defaultValue</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The fallback value for use if the original value should be untruthy.</dd>
 										
 									</dl>
 								
@@ -1299,8 +1297,71 @@ Example: comment (the verb "to comment" vs the noun "a comment")
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{Object}</span> The value argument if truthy, the defaultValue argument
-otherwise</dd>
+												<dd><span class="light fixedFont">{Object}</span> The value argument if truthy, the defaultValue argument otherwise.</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item5'
+							>
+								<div class="fixedFont heading" id="defineConstants">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Function}</span>
+									
+									<b>defineConstants</b>(ctor)
+								</div>
+								
+								<div class="description">
+									Helper method to simultaneously define constants and a corresponding array of localized display names.
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>}</span> <b>ctor</b>
+												
+											</dt>
+											<dd>The desired prototype constructor the constants should be defined for.</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Function}</span> </dd>
 											
 										
 										
@@ -1316,70 +1377,6 @@ otherwise</dd>
 							<li 
 								 class='item6'
 							>
-								<div class="fixedFont heading" id="defineConstants">
-									<span class='lighter'>
-									
-									</span>
-									
-									<span class="light">{Function}</span>
-									
-									<b>defineConstants</b>(ctor)
-								</div>
-								
-								<div class="description">
-									
-									
-									
-										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
-									
-									
-									
-								</div>
-								
-								
-								
-								
-									<dl class="detailList params">
-										<dt class="heading">Parameters:</dt>
-										
-											<dt>
-												<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>}</span> <b>ctor</b>
-												
-											</dt>
-											<dd></dd>
-										
-									</dl>
-								
-								
-								
-									<dl class="detailList nomargin">
-									
-										
-										
-										
-										
-										
-										
-										
-											<dt class="heading">Returns:</dt>
-											
-												<dd><span class="light fixedFont">{Function}</span> </dd>
-											
-										
-										
-										
-										
-										
-									
-									</dl>
-								
-								<div class="hr"></div>
-							</li>
-						
-							<li 
-								 class='item7'
-							>
 								<div class="fixedFont heading" id="disableMacro">
 									<span class='lighter'>
 									
@@ -1391,11 +1388,11 @@ otherwise</dd>
 								</div>
 								
 								<div class="description">
-									Disable a macro with the idle function
+									Disables a macro with the idle() function.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1411,13 +1408,13 @@ otherwise</dd>
 												<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>}</span> <b>ctor</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The prototype constructor the macro is defined for</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>name</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The macro’s name</dd>
 										
 									</dl>
 								
@@ -1441,6 +1438,11 @@ otherwise</dd>
 										
 										
 										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/_global_.html#idle">idle</a></dd>
+											
+										
 									
 									</dl>
 								
@@ -1448,62 +1450,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item8'
-							>
-								<div class="fixedFont heading" id="Feature">
-									<span class='lighter'>
-									
-									</span>
-									
-									
-									
-									<b>Feature</b>(id, url, feature)
-								</div>
-								
-								<div class="description">
-									
-									
-									
-										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Feature.js.html">Feature.js</a>.
-									
-									
-									
-								</div>
-								
-								
-								
-								
-									<dl class="detailList params">
-										<dt class="heading">Parameters:</dt>
-										
-											<dt>
-												<span class="light fixedFont">{String}</span> <b>id</b>
-												
-											</dt>
-											<dd></dd>
-										
-											<dt>
-												<span class="light fixedFont">{String}</span> <b>url</b>
-												
-											</dt>
-											<dd></dd>
-										
-											<dt>
-												<span class="light fixedFont">{Object}</span> <b>feature</b>
-												
-											</dt>
-											<dd></dd>
-										
-									</dl>
-								
-								
-								
-								<div class="hr"></div>
-							</li>
-						
-							<li 
-								 class='item9'
+								 class='item7'
 							>
 								<div class="fixedFont heading" id="file_macro">
 									<span class='lighter'>
@@ -1516,16 +1463,22 @@ otherwise</dd>
 								</div>
 								
 								<div class="description">
-									
+									Renders the URL or an arbitrary skin of a file.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code"><% file 1810 url %> URL of file #1810
+<% file blog/text.pdf skin=preview %> File in site “blog” using preview skin
+<% file /image.raw %> Static file of root site</pre>
+									
 								
 								
 								
@@ -1536,19 +1489,25 @@ otherwise</dd>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>param.skin</b>
+												<i>Optional, Default: 'main'</i>
+											</dt>
+											<dd>The name of a file skin</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>id</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The id or path of the desired file</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>mode</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>Currently only possible value is 'url'</dd>
 										
 									</dl>
 								
@@ -1558,7 +1517,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item10'
+								 class='item8'
 							>
 								<div class="fixedFont heading" id="fixRssText">
 									<span class='lighter'>
@@ -1571,11 +1530,11 @@ otherwise</dd>
 								</div>
 								
 								<div class="description">
-									
+									Replaces <img> elements in a string with <a> elements to fix RSS output which is not capable of displaying images.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1591,7 +1550,7 @@ otherwise</dd>
 												<span class="light fixedFont">{String}</span> <b>rss</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original RSS output.</dd>
 										
 									</dl>
 								
@@ -1608,7 +1567,7 @@ otherwise</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The fixed RSS string</dd>
+												<dd><span class="light fixedFont">{String}</span> The transformed RSS output.</dd>
 											
 										
 										
@@ -1622,7 +1581,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item11'
+								 class='item9'
 							>
 								<div class="fixedFont heading" id="format_filter">
 									<span class='lighter'>
@@ -1631,15 +1590,15 @@ otherwise</dd>
 									
 									<span class="light">{String}</span>
 									
-									<b>format_filter</b>(string, param, pattern, type)
+									<b>format_filter</b>(value, param, pattern, type)
 								</div>
 								
 								<div class="description">
-									
+									Helma macro filter wrapping the global formatting methods.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1652,28 +1611,28 @@ otherwise</dd>
 										<dt class="heading">Parameters:</dt>
 										
 											<dt>
-												<span class="light fixedFont">{Object}</span> <b>string</b>
+												<span class="light fixedFont">{Object}</span> <b>value</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original value.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>pattern</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>A formatting pattern suitable for the formatting method.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>type</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>Deprecated.</dd>
 										
 									</dl>
 								
@@ -1690,12 +1649,19 @@ otherwise</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The formatted string</dd>
+												<dd><span class="light fixedFont">{String}</span> The formatted string.</dd>
 											
 										
 										
 										
 										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/_global_.html#formatNumber">formatNumber</a></dd>
+											
+												<dd><a href="../symbols/_global_.html#formatDate">formatDate</a></dd>
+											
 										
 									
 									</dl>
@@ -1704,7 +1670,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item12'
+								 class='item10'
 							>
 								<div class="fixedFont heading" id="formatDate">
 									<span class='lighter'>
@@ -1717,11 +1683,11 @@ otherwise</dd>
 								</div>
 								
 								<div class="description">
-									
+									Formats a date according to a formatting string and the site’s locale and time zone.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1737,13 +1703,13 @@ otherwise</dd>
 												<span class="light fixedFont">{Date}</span> <b>date</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original date.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>format</b>
-												
+												<i>Optional, Default:  "full"</i>
 											</dt>
-											<dd></dd>
+											<dd>The formatting string. Either a Java SimpleDateFormat pattern//docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html or of “short”, “medium”, “long”, “full”, “date”, “time”, “iso” or “text”.</dd>
 										
 									</dl>
 								
@@ -1760,7 +1726,7 @@ otherwise</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The formatted date string</dd>
+												<dd><span class="light fixedFont">{String}</span> The formatted date string.</dd>
 											
 										
 										
@@ -1774,7 +1740,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item13'
+								 class='item11'
 							>
 								<div class="fixedFont heading" id="formatNumber">
 									<span class='lighter'>
@@ -1787,11 +1753,11 @@ otherwise</dd>
 								</div>
 								
 								<div class="description">
-									
+									Formats a number according to a pattern and the site’s locale setting.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1807,13 +1773,13 @@ otherwise</dd>
 												<span class="light fixedFont">{Number}</span> <b>number</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original number.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>pattern</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The formatting pattern.</dd>
 										
 									</dl>
 								
@@ -1830,7 +1796,7 @@ otherwise</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The formatted number string</dd>
+												<dd><span class="light fixedFont">{String}</span> The formatted number string.</dd>
 											
 										
 										
@@ -1844,7 +1810,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item14'
+								 class='item12'
 							>
 								<div class="fixedFont heading" id="getLocale">
 									<span class='lighter'>
@@ -1857,11 +1823,11 @@ otherwise</dd>
 								</div>
 								
 								<div class="description">
-									
+									Retrieves the locale object from a language string.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1877,7 +1843,7 @@ otherwise</dd>
 												<span class="light fixedFont">{String}</span> <b>language</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The name of the language.</dd>
 										
 									</dl>
 								
@@ -1894,7 +1860,7 @@ otherwise</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{java.util.Locale}</span> The corresponding locale object</dd>
+												<dd><span class="light fixedFont">{java.util.Locale}</span> The corresponding locale object.</dd>
 											
 										
 										
@@ -1908,7 +1874,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item15'
+								 class='item13'
 							>
 								<div class="fixedFont heading" id="getLocales">
 									<span class='lighter'>
@@ -1925,7 +1891,7 @@ otherwise</dd>
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -1972,24 +1938,24 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item16'
+								 class='item14'
 							>
 								<div class="fixedFont heading" id="gettext_macro">
 									<span class='lighter'>
 									
 									</span>
 									
-									
+									<span class="light">{String}</span>
 									
 									<b>gettext_macro</b>(param, text)
 								</div>
 								
 								<div class="description">
-									
+									Helma macro wrapper for the gettext() method.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
 									
 									
 									
@@ -2005,13 +1971,13 @@ otherwise</dd>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>text</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The text used as message ID.</dd>
 										
 									</dl>
 								
@@ -2028,7 +1994,7 @@ otherwise</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd>String</dd>
+												<dd><span class="light fixedFont">{String}</span> Either the translated or the original text.</dd>
 											
 										
 										
@@ -2047,7 +2013,7 @@ otherwise</dd>
 							</li>
 						
 							<li 
-								 class='item17'
+								 class='item15'
 							>
 								<div class="fixedFont heading" id="getTimeZones">
 									<span class='lighter'>
@@ -2072,7 +2038,7 @@ method (e.g. Central European Time), not the more usable time zone IDs
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2119,7 +2085,7 @@ method (e.g. Central European Time), not the more usable time zone IDs
 							</li>
 						
 							<li 
-								 class='item18'
+								 class='item16'
 							>
 								<div class="fixedFont heading" id="idle">
 									<span class='lighter'>
@@ -2132,11 +2098,12 @@ method (e.g. Central European Time), not the more usable time zone IDs
 								</div>
 								
 								<div class="description">
-									
+									Shortcut for a function with empty body.
+Used e.g. in the disableMacro() method.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2147,11 +2114,32 @@ method (e.g. Central European Time), not the more usable time zone IDs
 								
 								
 								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/_global_.html#disableMacro">disableMacro</a></dd>
+											
+										
+									
+									</dl>
+								
 								<div class="hr"></div>
 							</li>
 						
 							<li 
-								 class='item19'
+								 class='item17'
 							>
 								<div class="fixedFont heading" id="if_macro">
 									<span class='lighter'>
@@ -2164,23 +2152,23 @@ method (e.g. Central European Time), not the more usable time zone IDs
 								</div>
 								
 								<div class="description">
-									Renders a string depending on the comparison of two values. If the first 
-value equals the second value, the first result will be returned; the 
-second result otherwise.
-<p>Example: <code>&lt;% if &lt;% macro %&gt; is "value" then "yes!" else "no :(" %&gt;</code>
-</p>
-Note that any value or result can be a macro, too. Thus, this can be used as
-a simple implementation of an if-then-else statement by using Helma macros
-only.
+									Renders a string depending on the comparison of two values. 
+If the first value equals the second value, the first result will be returned; the second result otherwise.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code"><% if <% macro %> is value then <% yes suffix=! %> else 'no :(' %>;
+Note that any value or result can be a macro, too. Thus, this can be used as
+a simple implementation of an if-then-else statement by using Helma macros only.</pre>
+									
 								
 								
 								
@@ -2266,7 +2254,7 @@ returned if the first value does not equal the second one</dd>
 							</li>
 						
 							<li 
-								 class='item20'
+								 class='item18'
 							>
 								<div class="fixedFont heading" id="image_macro">
 									<span class='lighter'>
@@ -2279,11 +2267,11 @@ returned if the first value does not equal the second one</dd>
 								</div>
 								
 								<div class="description">
-									
+									Renders the URL, a thumbnail or an HTML element of an image.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2299,29 +2287,52 @@ returned if the first value does not equal the second one</dd>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>id</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The id or path of the desired image</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>mode</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>Either of 'url' or 'thumbnail'</dd>
 										
 									</dl>
 								
 								
 								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/Image.html#thumbnail_macro">Image#thumbnail_macro</a></dd>
+											
+												<dd><a href="../symbols/Image.html#render_macro">Image#render_macro</a></dd>
+											
+										
+									
+									</dl>
+								
 								<div class="hr"></div>
 							</li>
 						
 							<li 
-								 class='item21'
+								 class='item19'
 							>
 								<div class="fixedFont heading" id="injectXslDeclaration">
 									<span class='lighter'>
@@ -2334,12 +2345,11 @@ returned if the first value does not equal the second one</dd>
 								</div>
 								
 								<div class="description">
-									Injects the XSLT stylesheet declaration into an XML string until  
-Mozilla developers will have mercy.
+									Injects the XSLT stylesheet declaration into an XML string until Mozilla developers will have mercy.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2386,7 +2396,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item22'
+								 class='item20'
 							>
 								<div class="fixedFont heading" id="link_filter">
 									<span class='lighter'>
@@ -2399,11 +2409,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Helma macro filter wrapping the <a href="../symbols/_global_.html#renderLink">renderLink</a> method.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2419,19 +2429,19 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{String}</span> <b>text</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The link text.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>url</b>
-												
+												<i>Optional, Default:  text</i>
 											</dt>
-											<dd></dd>
+											<dd>The link URL.</dd>
 										
 									</dl>
 								
@@ -2467,7 +2477,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item23'
+								 class='item21'
 							>
 								<div class="fixedFont heading" id="link_macro">
 									<span class='lighter'>
@@ -2480,11 +2490,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Renders a link.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2506,7 +2516,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The rendered link element</dd>
+												<dd><span class="light fixedFont">{String}</span> The rendered HTML link element</dd>
 											
 										
 										
@@ -2525,7 +2535,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item24'
+								 class='item22'
 							>
 								<div class="fixedFont heading" id="list_macro">
 									<span class='lighter'>
@@ -2538,16 +2548,28 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									The “swiss army knife” list macro. Lists collections of HopObjects.
+There is hardly a thing it cannot do… but it’s kind of messy, though.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code"><% list sites %>
+<% list updates 10 %>
+<% list blog/comments %>
+<% list featured skin=promotion %>
+<% list images %>
+<% list postings %>
+<% list stories %>
+<% list tags %></pre>
+									
 								
 								
 								
@@ -2558,19 +2580,25 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>param.skin</b>
+												<i>Optional, Default: preview</i>
+											</dt>
+											<dd>The name of a skin suitable for the collection</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>id</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The identifier of the desired collection</dd>
 										
 											<dt>
-												<span class="light fixedFont">{String}</span> <b>limit</b>
-												
+												<span class="light fixedFont">{Number}</span> <b>limit</b>
+												<i>Optional, Default: 25</i>
 											</dt>
-											<dd></dd>
+											<dd>The maximum amount of items listed</dd>
 										
 									</dl>
 								
@@ -2580,7 +2608,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item25'
+								 class='item23'
 							>
 								<div class="fixedFont heading" id="listItemFlag_macro">
 									<span class='lighter'>
@@ -2593,60 +2621,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
-									
-									
-										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
-									
-									
-									
-								</div>
-								
-								
-								
-								
-									<dl class="detailList params">
-										<dt class="heading">Parameters:</dt>
-										
-											<dt>
-												<b>param</b>
-												
-											</dt>
-											<dd></dd>
-										
-											<dt>
-												<b>str</b>
-												
-											</dt>
-											<dd></dd>
-										
-									</dl>
-								
-								
-								
-								<div class="hr"></div>
-							</li>
-						
-							<li 
-								 class='item26'
-							>
-								<div class="fixedFont heading" id="markgettext_macro">
-									<span class='lighter'>
-									
-									</span>
-									
-									
-									
-									<b>markgettext_macro</b>(param, singular, plural)
-								</div>
-								
-								<div class="description">
-									
+									Renders a string vertically in the global listItemFlag skin.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2662,19 +2641,68 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>str</b>
+												
+											</dt>
+											<dd>The string to be rendered.</dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item24'
+							>
+								<div class="fixedFont heading" id="markgettext_macro">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>markgettext_macro</b>(param, singular, plural)
+								</div>
+								
+								<div class="description">
+									Helma macro wrapper for the markgettext() method.
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{Object}</span> <b>param</b>
+												
+											</dt>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>singular</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The text used as the singular message ID.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Object}</span> <b>plural</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The text used as the plural message ID.</dd>
 										
 									</dl>
 								
@@ -2695,7 +2723,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">See:</dt>
 											
-												<dd>jala.i18n#markgettext</dd>
+												<dd>jala.i18n.markgettext</dd>
 											
 										
 									
@@ -2705,7 +2733,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item27'
+								 class='item25'
 							>
 								<div class="fixedFont heading" id="ngettext_macro">
 									<span class='lighter'>
@@ -2718,11 +2746,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Helma macro wrapper for the ngettext() method.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_i18n.js.html">i18n.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_i18n.js.html">i18n.js</a>.
 									
 									
 									
@@ -2738,19 +2766,19 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>singular</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The text used as the singular message ID.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>plural</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The text used as the plural message ID.</dd>
 										
 									</dl>
 								
@@ -2767,7 +2795,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd>String</dd>
+												<dd>String Either the translated or the original string.</dd>
 											
 										
 										
@@ -2776,7 +2804,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">See:</dt>
 											
-												<dd>jala.i18n#ngettext</dd>
+												<dd>jala.i18n.ngettext</dd>
 											
 										
 									
@@ -2786,7 +2814,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item28'
+								 class='item26'
 							>
 								<div class="fixedFont heading" id="nightly">
 									<span class='lighter'>
@@ -2799,11 +2827,12 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									The nightly scheduler. 
+This method is called according to the cron settings in app.properties.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2818,7 +2847,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item29'
+								 class='item27'
 							>
 								<div class="fixedFont heading" id="now_macro">
 									<span class='lighter'>
@@ -2831,11 +2860,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Renders the current date and time.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2851,13 +2880,13 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>format</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>A date format string</dd>
 										
 									</dl>
 								
@@ -2893,7 +2922,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item30'
+								 class='item28'
 							>
 								<div class="fixedFont heading" id="onStart">
 									<span class='lighter'>
@@ -2906,11 +2935,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									The startup handler Helma is calling automatically shortly after the application has started.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2925,7 +2954,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item31'
+								 class='item29'
 							>
 								<div class="fixedFont heading" id="onStop">
 									<span class='lighter'>
@@ -2938,11 +2967,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									This handler is called by Helma automatically before the application is stopped.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2957,7 +2986,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item32'
+								 class='item30'
 							>
 								<div class="fixedFont heading" id="pluralize">
 									<span class='lighter'>
@@ -2970,11 +2999,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Transforms an english singular form of a noun into its plural form.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -2990,7 +3019,7 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{String}</span> <b>singular</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The noun in singular form.</dd>
 										
 									</dl>
 								
@@ -3007,7 +3036,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The english plural form of the input</dd>
+												<dd><span class="light fixedFont">{String}</span> The english plural form of the original input.</dd>
 											
 										
 										
@@ -3021,7 +3050,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item33'
+								 class='item31'
 							>
 								<div class="fixedFont heading" id="poll_macro">
 									<span class='lighter'>
@@ -3034,11 +3063,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Renders the URL, a link or the visual representation of a poll.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3054,19 +3083,19 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>id</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The id or path of the desired poll</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>mode</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>Either of 'url' or 'link'</dd>
 										
 									</dl>
 								
@@ -3076,7 +3105,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item34'
+								 class='item32'
 							>
 								<div class="fixedFont heading" id="quote">
 									<span class='lighter'>
@@ -3089,11 +3118,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Surrounds a string by programmer quotes (").
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3109,7 +3138,7 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{String}</span> <b>str</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original string.</dd>
 										
 									</dl>
 								
@@ -3126,7 +3155,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The processed string</dd>
+												<dd><span class="light fixedFont">{String}</span> The processed string.</dd>
 											
 										
 										
@@ -3140,29 +3169,38 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item35'
+								 class='item33'
 							>
-								<div class="fixedFont heading" id="randomize_macro">
+								<div class="fixedFont heading" id="random_macro">
 									<span class='lighter'>
 									
 									</span>
 									
 									
 									
-									<b>randomize_macro</b>(param, id)
+									<b>random_macro</b>(param, type, mode)
 								</div>
 								
 								<div class="description">
-									
+									Renders either a skin or the URL of a random site, story or image.
+The corresponding story and image collections will be retrieved either from res.handlers.site or 
+from the prefixed “type” argument (e.g. “mySite/story”).
+Furthermore, both collections can be reduced to a specific tag or gallery, resp.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code"><% random site skin=preview %> Renders the preview skin of a random site.
+<% random story tag=essay url %> Renders the URL of a random story tagged with “essay”.
+<% random foo/image gallery=cat %> Renders the default skin of a random image in the gallery “cat“ of the site “foo”.</pre>
+									
 								
 								
 								
@@ -3173,13 +3211,38 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
-												<span class="light fixedFont">{String}</span> <b>id</b>
+												<span class="light fixedFont">{String}</span> <b>param.skin</b>
+												<i>Optional, Default:  "preview"</i>
+											</dt>
+											<dd>The name of the skin to render in default output mode.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>param.tag</b>
+												<i>Optional</i>
+											</dt>
+											<dd>Reduce the story collection to stories with the specified tag.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>param.gallery</b>
+												<i>Optional</i>
+											</dt>
+											<dd>Reduce the image collection to images from the specified gallery.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>type</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The type of object to render. Either of “site”, “story” or “image”.
+It can be prepended by a site name delimited by a slash: “mySite/image”.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>mode</b>
+												<i>Optional</i>
+											</dt>
+											<dd>Set the output mode. Currently, only “url” is supported.</dd>
 										
 									</dl>
 								
@@ -3189,7 +3252,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item36'
+								 class='item34'
 							>
 								<div class="fixedFont heading" id="renderLink">
 									<span class='lighter'>
@@ -3202,11 +3265,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Renders an HTML <a> element from a URL or HopObject.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3222,35 +3285,64 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>param.title</b>
+												<i>Optional</i>
+											</dt>
+											<dd>An optional link title for use in the “title” attribute.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>url</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>A complete or partial URL string. Optional if “handler” is specified.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>text</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>An optional link text.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>}</span> <b>handler</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The HopObject used as base URL. Optional if “url” is specified.</dd>
 										
 									</dl>
 								
 								
 								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd>helma.Html#link</dd>
+											
+												<dd><a href="../symbols/HopObject.html#link_macro">HopObject#link_macro</a></dd>
+											
+										
+									
+									</dl>
+								
 								<div class="hr"></div>
 							</li>
 						
 							<li 
-								 class='item37'
+								 class='item35'
 							>
 								<div class="fixedFont heading" id="renderList">
 									<span class='lighter'>
@@ -3263,11 +3355,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Renders an HTML list from a HopObject collection or an array.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3283,25 +3375,25 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>|Array}</span> <b>collection</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The original collection of objects.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Function|<a href="../symbols/Skin.html">Skin</a>}</span> <b>funcOrSkin</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>A skin name or a rendering function.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Number}</span> <b>itemsPerPage</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The amount of rendered items per page.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Number}</span> <b>pageIdx</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The current page index.</dd>
 										
 									</dl>
 								
@@ -3318,7 +3410,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The rendered list</dd>
+												<dd><span class="light fixedFont">{String}</span> The rendered list.</dd>
 											
 										
 										
@@ -3332,7 +3424,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item38'
+								 class='item36'
 							>
 								<div class="fixedFont heading" id="renderPager">
 									<span class='lighter'>
@@ -3345,11 +3437,11 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Renders the page navigation for a collection of HopObjects.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3365,25 +3457,25 @@ Mozilla developers will have mercy.
 												<span class="light fixedFont">{<a href="../symbols/HopObject.html">HopObject</a>|Array|Number}</span> <b>collectionOrSize</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>A collection or just the size of a collection.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>url</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The base URL for rendering links.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Number}</span> <b>itemsPerPage</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The amount of rendered items per page.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{Number}</span> <b>pageIdx</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The current page index.</dd>
 										
 									</dl>
 								
@@ -3400,7 +3492,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The rendered index</dd>
+												<dd><span class="light fixedFont">{String}</span> The rendered page navigation.</dd>
 											
 										
 										
@@ -3414,7 +3506,7 @@ Mozilla developers will have mercy.
 							</li>
 						
 							<li 
-								 class='item39'
+								 class='item37'
 							>
 								<div class="fixedFont heading" id="scheduler">
 									<span class='lighter'>
@@ -3427,11 +3519,13 @@ Mozilla developers will have mercy.
 								</div>
 								
 								<div class="description">
-									
+									Helma’s built-in main scheduler function.
+This method is regularly called by Helma after a defined period of time.
+The period is either defined by the return value or by the schedulerInterval property in app.properties.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3453,8 +3547,7 @@ Mozilla developers will have mercy.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{Number}</span> The period in milliseconds the scheduler will be 
-called again.</dd>
+												<dd><span class="light fixedFont">{Number}</span> The period in milliseconds the scheduler will be called again.</dd>
 											
 										
 										
@@ -3468,7 +3561,7 @@ called again.</dd>
 							</li>
 						
 							<li 
-								 class='item40'
+								 class='item38'
 							>
 								<div class="fixedFont heading" id="sendMail">
 									<span class='lighter'>
@@ -3485,7 +3578,7 @@ called again.</dd>
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3550,7 +3643,7 @@ called again.</dd>
 							</li>
 						
 							<li 
-								 class='item41'
+								 class='item39'
 							>
 								<div class="fixedFont heading" id="singularize">
 									<span class='lighter'>
@@ -3563,11 +3656,11 @@ called again.</dd>
 								</div>
 								
 								<div class="description">
-									
+									Transforms an english plural form of a noun into its singular form.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3583,7 +3676,7 @@ called again.</dd>
 												<span class="light fixedFont">{String}</span> <b>plural</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The noun in plural form.</dd>
 										
 									</dl>
 								
@@ -3600,7 +3693,7 @@ called again.</dd>
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd><span class="light fixedFont">{String}</span> The english singular form of the input</dd>
+												<dd><span class="light fixedFont">{String}</span> The english singular form of the original input.</dd>
 											
 										
 										
@@ -3614,7 +3707,7 @@ called again.</dd>
 							</li>
 						
 							<li 
-								 class='item42'
+								 class='item40'
 							>
 								<div class="fixedFont heading" id="skin_macro">
 									<span class='lighter'>
@@ -3627,11 +3720,11 @@ called again.</dd>
 								</div>
 								
 								<div class="description">
-									
+									Renders a skin from within a skin.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3644,13 +3737,13 @@ called again.</dd>
 										<dt class="heading">Parameters:</dt>
 										
 											<dt>
-												<span class="light fixedFont">{Object}</span> <b>param</b>
+												<b>param</b>
 												
 											</dt>
 											<dd></dd>
 										
 											<dt>
-												<span class="light fixedFont">{String}</span> <b>name</b>
+												<b>name</b>
 												
 											</dt>
 											<dd></dd>
@@ -3689,7 +3782,7 @@ called again.</dd>
 							</li>
 						
 							<li 
-								 class='item43'
+								 class='item41'
 							>
 								<div class="fixedFont heading" id="story_macro">
 									<span class='lighter'>
@@ -3702,16 +3795,21 @@ called again.</dd>
 								</div>
 								
 								<div class="description">
-									
+									Renders the URL of, a link to or an arbitrary skin of a story.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code"><% story 1810 skin=preview %> Story #1810 in preview skin
+<% story blog/1971 url %> URL of the story of site “blog”</pre>
+									
 								
 								
 								
@@ -3722,19 +3820,25 @@ called again.</dd>
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object</dd>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>param.skin</b>
+												<i>Optional, Default: 'embed'</i>
+											</dt>
+											<dd>The name of a story skin</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>id</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The id or path of the desired story</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>mode</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>Either of 'url' or 'link'</dd>
 										
 									</dl>
 								
@@ -3744,14 +3848,14 @@ called again.</dd>
 							</li>
 						
 							<li 
-								 class='item44'
+								 class='item42'
 							>
 								<div class="fixedFont heading" id="user_macro">
 									<span class='lighter'>
 									
 									</span>
 									
-									
+									<span class="light">{Boolean}</span>
 									
 									<b>user_macro</b>()
 								</div>
@@ -3762,7 +3866,7 @@ Returns true if user is logged in, false otherwise.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -3784,7 +3888,140 @@ Returns true if user is logged in, false otherwise.
 										
 											<dt class="heading">Returns:</dt>
 											
-												<dd>Boolean</dd>
+												<dd><span class="light fixedFont">{Boolean}</span> </dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item43'
+							>
+								<div class="fixedFont heading" id="validateEmail">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{String|null}</span>
+									
+									<b>validateEmail</b>(str)
+								</div>
+								
+								<div class="description">
+									Validates if a string is suitable for e-mail messaging.
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>str</b>
+												
+											</dt>
+											<dd>The string to be validated.</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{String|null}</span> The e-mail string if valid, null otherwise.</dd>
+											
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd>String#isEmail</dd>
+											
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item44'
+							>
+								<div class="fixedFont heading" id="validateUrl">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{String|null}</span>
+									
+									<b>validateUrl</b>(str)
+								</div>
+								
+								<div class="description">
+									Validates if a string is suitable for requesting a URL.
+									
+									
+										<br />
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{String}</span> <b>str</b>
+												
+											</dt>
+											<dd>The string to be validated.</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{String|null}</span> The URL string if valid, null otherwise.</dd>
 											
 										
 										
@@ -3800,134 +4037,6 @@ Returns true if user is logged in, false otherwise.
 							<li 
 								 class='item45'
 							>
-								<div class="fixedFont heading" id="validateEmail">
-									<span class='lighter'>
-									
-									</span>
-									
-									<span class="light">{String|null}</span>
-									
-									<b>validateEmail</b>(str)
-								</div>
-								
-								<div class="description">
-									
-									
-									
-										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
-									
-									
-									
-								</div>
-								
-								
-								
-								
-									<dl class="detailList params">
-										<dt class="heading">Parameters:</dt>
-										
-											<dt>
-												<span class="light fixedFont">{String}</span> <b>str</b>
-												
-											</dt>
-											<dd></dd>
-										
-									</dl>
-								
-								
-								
-									<dl class="detailList nomargin">
-									
-										
-										
-										
-										
-										
-										
-										
-											<dt class="heading">Returns:</dt>
-											
-												<dd><span class="light fixedFont">{String|null}</span> The e-mail string if valid, null otherwise</dd>
-											
-										
-										
-										
-										
-										
-									
-									</dl>
-								
-								<div class="hr"></div>
-							</li>
-						
-							<li 
-								 class='item46'
-							>
-								<div class="fixedFont heading" id="validateUrl">
-									<span class='lighter'>
-									
-									</span>
-									
-									<span class="light">{String|null}</span>
-									
-									<b>validateUrl</b>(str)
-								</div>
-								
-								<div class="description">
-									
-									
-									
-										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
-									
-									
-									
-								</div>
-								
-								
-								
-								
-									<dl class="detailList params">
-										<dt class="heading">Parameters:</dt>
-										
-											<dt>
-												<span class="light fixedFont">{String}</span> <b>str</b>
-												
-											</dt>
-											<dd></dd>
-										
-									</dl>
-								
-								
-								
-									<dl class="detailList nomargin">
-									
-										
-										
-										
-										
-										
-										
-										
-											<dt class="heading">Returns:</dt>
-											
-												<dd><span class="light fixedFont">{String|null}</span> The URL string if valid, null otherwise</dd>
-											
-										
-										
-										
-										
-										
-									
-									</dl>
-								
-								<div class="hr"></div>
-							</li>
-						
-							<li 
-								 class='item47'
-							>
 								<div class="fixedFont heading" id="value_macro">
 									<span class='lighter'>
 									
@@ -3939,16 +4048,24 @@ Returns true if user is logged in, false otherwise.
 								</div>
 								
 								<div class="description">
-									
+									Defines and renders a value.
+This works like a variable that can be set in one skin and rendered in another –
+which must be rendered later than the one setting the variable.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
 								</div>
 								
+								
+									
+										<pre class="code"><% value foo=bar %> Defines res.meta.values.foo = bar</pre>
+									
+										<pre class="code"><% value foo %> Renders the value of res.meta.value.foo</pre>
+									
 								
 								
 								
@@ -3959,19 +4076,20 @@ Returns true if user is logged in, false otherwise.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>name</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The name of the value.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>value</b>
-												
+												<i>Optional</i>
 											</dt>
-											<dd></dd>
+											<dd>The desired value. 
+If no value is given, the current value will be rendered.</dd>
 										
 									</dl>
 								
@@ -3981,7 +4099,7 @@ Returns true if user is logged in, false otherwise.
 							</li>
 						
 							<li 
-								 class='item48'
+								 class='item46'
 							>
 								<div class="fixedFont heading" id="version_macro">
 									<span class='lighter'>
@@ -3994,11 +4112,11 @@ Returns true if user is logged in, false otherwise.
 								</div>
 								
 								<div class="description">
-									
+									Renders the Antville version string.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -4014,23 +4132,44 @@ Returns true if user is logged in, false otherwise.
 												<span class="light fixedFont">{Object}</span> <b>param</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The default Helma macro parameter object.</dd>
 										
 											<dt>
 												<span class="light fixedFont">{String}</span> <b>type</b>
-												
+												<i>Optional, Default:  'default'</i>
 											</dt>
-											<dd></dd>
+											<dd>The type of version string.</dd>
 										
 									</dl>
 								
 								
 								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/Root.html#.VERSION">Root.VERSION</a></dd>
+											
+										
+									
+									</dl>
+								
 								<div class="hr"></div>
 							</li>
 						
 							<li 
-								 class='item49'
+								 class='item47'
 							>
 								<div class="fixedFont heading" id="wait">
 									<span class='lighter'>
@@ -4043,11 +4182,12 @@ Returns true if user is logged in, false otherwise.
 								</div>
 								
 								<div class="description">
-									
+									Halts the execution of the thread for the specified amount of milliseconds.
+Use only for debugging.
 									
 									
 										<br />
-										<i>Defined in: </i> <a href="../symbols/src/_private_tmp_antville-1.3_code_Global_Global.js.html">Global.js</a>.
+										<i>Defined in: </i> <a href="../symbols/src/_Users_tobi_Projects_helma_apps_antville_code_Global_Global.js.html">Global.js</a>.
 									
 									
 									
@@ -4063,7 +4203,7 @@ Returns true if user is logged in, false otherwise.
 												<span class="light fixedFont">{Number}</span> <b>millis</b>
 												
 											</dt>
-											<dd></dd>
+											<dd>The amount of milliseconds.</dd>
 										
 									</dl>
 								
