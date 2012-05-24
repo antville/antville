@@ -224,7 +224,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </tr>
 <tr>
    <td class='small'><% gettext 'Bookmarklet' %>:</td>
-   <td><a href="javascript: var site = '<% site.href %>'; window.open('http://<% request.http_host %><% root.static formica.html %>#' + encodeURIComponent(site) + '&' + encodeURIComponent(location.href), '', 'width=630, height=350'); void(0);" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td>
+   <td><a href="javascript: var site = '<% site.href %>'; window.open('<% root.static formica.html %>#' + encodeURIComponent(site) + '&' + encodeURIComponent(location.href), '', 'width=630, height=350'); void(0);" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td>
 </tr>
 <tr>
 <td colspan="2"><div class="listSeparator"> </div>
