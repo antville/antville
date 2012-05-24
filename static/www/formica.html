@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+   <title>Antville’s Formica Bookmarklet</title>
+   <style>
+   body {
+      /*width: 610px;
+      height: 350px;
+      border: 1px solid red;
+      color: #000;*/
+      font-family: sans-serif;
+   }
+   form {
+      margin-bottom: 1em;
+   }
+   input#title, textarea#text {
+      width: 400px;
+      padding: 2px;
+      border: 1px solid #ccc;
+      font-size: 1.2em;
+   }
+   input#title {
+      height: 26px;
+      margin: 0 0 4px 0;
+      font-weight: bold;
+   }
+   textarea#text {
+      height: 160px;
+   }
+   button {
+      margin: 0;
+      font-size: 18px;
+   }
+   img {
+      background: url(http://t2.gstatic.com/images?q=tbn:ANd9GcRayuCjH7MGcnJmYfBEHmIVNl9UFJuhCsawGzGgjI66sgwmgMweIQ&t=1);      
+   }
+   img.harvest {
+      margin: 3px;
+      background-color: #ccc;
+      border: 1px solid #ccc;
+      opacity: 0.33;
+   }
+   img.selected {
+      border-color: black;
+      opacity: 1.0;
+   }
+   @-webkit-keyframes rotate {
+     from {
+       -webkit-transform: rotate(0deg);
+     }
+     to { 
+       -webkit-transform: rotate(360deg);
+     }
+   }
+   img.loading {
+      background: none;
+      margin-top: 50%;
+      -webkit-animation-name:             rotate; 
+      -webkit-animation-duration:         0.5s; 
+      -webkit-animation-iteration-count:  infinite;
+      -webkit-transition-timing-function: linear;
+   }
+   .left {
+      float: left;
+      min-height: 400px;
+   }
+   .info {
+      text-align: center;
+   }
+   .image {
+      width: 200px;
+      min-height: 201px;
+      margin: 0 4px 4px 0;
+      border-bottom: 1px solid #ccc;
+      overflow: visible hidden;
+      text-align: center;
+   }
+   .controls {
+      display: inline-block;
+      float: left;
+      margin-right: 4px;
+   }
+   .controls a {
+      display: inline-block;
+      padding: 4px;
+      border: 1px solid #ccc;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 16px;
+   }
+   .controls a[href='#next'] {
+      transform: scale(-1, 1);
+      -moz-transform: scale(-1, 1);
+      -webkit-transform: scale(-1, 1);
+      filter: progid:DXImageTransform.Microsoft.BasicImage(mirror=1)
+   }
+   .info {
+      line-height: 28px;
+   }
+   </style>
+</head>
+<body>
+
+<div class='left'>
+   <div class='image'>
+      <img src='http://antville.org/static/www/ant.png' class='loading'>
+   </div>
+   <div class='info'></div>
+</div>
+
+<form>
+   <div>
+      <input id='title' type='text' placeholder='Title'>
+   </div>
+   <div>
+      <textarea id='text' placeholder='Description'></textarea>
+   </div>
+   <div>
+      <div class='controls'>
+         <a href='#previous'>⬅</a>
+         <a href='#next'>⬅</a>
+      </div>
+      <button name='button' type='button'>Publish</button>
+      <input type='checkbox' id='image' checked>
+      <label for='image'>Include image</label>
+   </div>
+</form>
+
+<script type='text/javascript' src='http://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+google.load('jquery', '1');
+</script>
+
+<script type='text/javascript'>
+$(function() {
+   //var proxyUri = 'http://p3k-001.appspot.com/roxy';
+   var proxyUri = 'http://macke:8081/roxy';
+   var args, siteUri, sourceUri, images, currentIndex;
+  
+   new function() {
+      var parts = String(location.hash).split('#');
+      args = parts.length > 1 ? parts[1].split('&') : [];
+   }
+   
+   $('.controls a').click(function(event) {
+      event.preventDefault();
+      var image = getNextImage($(this).attr('href') === '#next' ? 1 : -1);
+      displayImage(image);
+   });
+   
+   $('#image').click(function(event) {
+      toggleImage();
+   });
+   
+   $('form button').click(function(event) {
+      event.preventDefault();
+      $(this).attr('disabled', true);
+      var imageUri = $('.left').css('display') === 'none' ? null : images[currentIndex].src;
+      post(sourceUri, imageUri);
+   })
+
+   function main() {
+      if (args.length < 2 || !args[0] || !args[1]) {
+         return;
+      }
+      siteUri = decodeURIComponent(args[0]);
+      sourceUri = decodeURIComponent(args[1]);
+      if (siteUri && sourceUri) {
+         images = [];
+         currentIndex = 0;
+         if (sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
+            addImage(sourceUri);
+            return;
+         }
+         $.getJSON(proxyUri + '?callback=?&url=' + sourceUri, function(data) {
+            var baseHref = getBaseHref(data.content);
+            var match, re = /(?:\(|=|"|')([^\s\(\)'">]+\.(?:gif|jpg|jpeg|png))/gi;
+            while (match = re.exec(data.content)) {
+               addImage(match[1], baseHref);
+            }
+            if (images.length < 1 && !addImage.counter) {
+               toggleImage();
+               $('#image').attr({disabled: true, checked: false});
+            } 
+            /*
+            $(data.content).find('*[style*=background-image]').each(function(index, item) {
+               var re = new RegExp('^url\\((.+)\\)$');
+               var url = baseHref + $(this).css('background-image').replace(re, '$1');
+               if (url !== 'none') {
+                  appendImage(url);
+               }
+            });
+            $(data.content).find('img').each(function(index, img) {
+               var url = baseHref + $(img).attr('src');
+               appendImage(url);
+            });*/
+            //$('body').append('OK');
+         });
+      }
+   }
+
+   function getBaseHref(data) {
+      // jQuery does not return the correct value for $('base').attr('href').
+      // Thus, we directly crunch the base href value from the raw data.
+      var re = new RegExp('<base href=(?:[\'"])?([^>\'"]+)');
+      var match = data.match(re);
+      if (match && match.length > 1) {
+         return match[1];
+      }
+      return sourceUri + '/';
+   }
+
+   function addImage(url, baseUri) {
+      if (!url || images[url]) {
+         return;
+      }
+      images[url] = true;
+      addImage.counter || (addImage.counter = 0);
+      if (url.charAt(0) === '/') {
+         if (url.charAt(1) !== '/') {
+            // url starts with one single slash: prepend root of sourceUri.
+            var index = sourceUri.indexOf('/', sourceUri.indexOf('://') + 3);
+            baseUri = index > -1 ? sourceUri.substring(0, index) : sourceUri;
+            url = baseUri + url;
+         }
+      } else if (url.indexOf('://') < 0) {
+         // url does neither start with a slash, nor contain 
+         // a protocol: prepend sourceUri up to the final slash.
+         baseUri || (baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1));
+         url = baseUri + url;
+      }
+      var image = new Image;
+      image.src = url;
+      addImage.counter += 1;
+      image.onload = function() {
+         if (this.width > 100 || this.height > 100) {
+            images.push(this);
+            displayImage(images[0]);
+         }
+         addImage.counter -= 1;
+      }
+      //addImage.images = images;
+      return;
+   
+      var item = $('<img>');
+      item.attr({src: url}).addClass('harvest').click(function() {
+         var self = this;
+         $('img').each(function() {
+            $(this)[this === self ? 'addClass' : 'removeClass']('selected');
+         });
+      });
+      $('body').append(item);
+   }
+
+   function appendImage(url) {
+      if (!url || images[url]) {
+         return;
+      }
+      images[url] = true;
+      var baseUri = '';
+      if (url.charAt(0) === '/') {
+         if (url.charAt(1) !== '/') {
+            // url starts with one single slash: prepend root of sourceUri.
+            var index = sourceUri.indexOf('/', sourceUri.indexOf('://') + 3);
+            baseUri = index > -1 ? sourceUri.substring(0, index) : sourceUri;
+            url = baseUri + url;
+         }
+      } else if (url.indexOf('://') < 0) {
+         // url does neither start with a slash, nor contain 
+         // a protocol: prepend sourceUri up to the final slash.
+         baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1);
+         url = baseUri + url;
+      }
+      var item = $('<img>');
+      item.attr({src: url}).addClass('harvest').click(function() {
+         var self = this;
+         $('img').each(function() {
+            $(this)[this === self ? 'addClass' : 'removeClass']('selected');
+         });
+      });
+      $('body').append(item);
+   }
+
+   function displayImage(image) {
+      //$(image).load(function() {
+         var MAX_WIDTH = 200;
+         var MAX_HEIGHT = 600;
+         var width = image.width;
+         var height = image.height;
+         var factorH = 1, factorV = 1;
+         if (width > MAX_WIDTH) {
+            factorH = MAX_WIDTH / width;
+         }
+         if (height > MAX_HEIGHT) {
+            factorV = MAX_HEIGHT / height;
+         }
+         if (factorH !== 1 || factorV !== 1) {
+            image.width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
+            image.height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
+         }
+         $('.image').html(image);
+         $('.info').html((currentIndex + 1) + ' of ' + images.length);
+         return;
+
+         var canvas = $('canvas').get(0);
+         var context = canvas.getContext('2d');
+         canvas.width = width;
+         canvas.height = height;
+         context.drawImage(image, 0, 0, width, height);
+      //});
+      return;
+   
+      // Only works with Image object, not in canvas (see below)
+      image.src = url;
+      return;
+   
+      // Browsers throw a security error when we use the original URL
+      //image.src = url;
+      $.getJSON(proxyUri + '?callback=?&url=' + url, function(data) {
+         image.src = 'data:' + data.headers['content-type'] + ';base64,' + data.content;      
+      });
+   }
+
+   function getNextImage(direction) {
+      var index = currentIndex || 0;
+      index += direction || 1;
+      if (index >= images.length) {
+         index = 0;
+      } else if (index < 0) {
+         index = images.length - 1;
+      }
+      var image = images[index];
+      currentIndex = index;
+      return image;
+   }
+
+   function post(url, imageUrl) {
+      var postStory = function(imageName) {
+         var imageMacro = (imageName ? "\n\n<\x25 image '" + 
+               imageName + "' | link '" + url + "' \x25>" : '');
+         $.getJSON(siteUri + '/stories/create?callback=?', {
+            save: 1,
+            title: $('#title').val(),
+            text: $('#text').val() + imageMacro
+         }, function(data, status, xhr) {
+            if (!data) {
+               console.log(this, arguments);
+               return alert('Error!');
+            }
+            if (window.opener) {
+               window.close();
+            } else {
+               location.href = siteUri + '/stories/' + data;
+            }
+         });
+      }
+      if (imageUrl) {
+         var name = 'image-' + Date.now();
+         $.getJSON(siteUri + '/images/create?callback=?', {
+            save: 1,
+            file_origin: imageUrl,
+            name: name,
+            description: 'Source: ' + url.replace(new RegExp('^.+:///?([^/]+).*$'), '$1'),
+            maxWidth: args[2] || ''
+         }, function(data, status, xhr) {
+            if (!data) {
+               console.log(this, arguments);
+               return alert('Error');
+            }
+            postStory(name);
+         });
+      } else {
+         postStory();
+      }
+      return;
+   }
+   
+   function toggleImage() {
+      var width;
+      var left = $('.left');
+      if (left.css('display') === 'none') {
+         left.show();
+         $('.controls').show();
+         width = $('input#title').data('width');
+         $('input#title').css({width: width});
+         $('textarea#text').css({width: width});
+      } else {
+         left.hide();
+         $('.controls').hide();
+         width = 604;
+         $('input#title').data('width', $('input#title').width())
+               .css({width: width});
+         $('textarea#text').css({width: width});
+      }
+   }
+
+   main();
+});
+</script>
+
+</body>
+</html>

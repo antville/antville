@@ -191,6 +191,7 @@ static/www/big.gif -text svneol=unset#image/gif
 static/www/bullet.gif -text svneol=unset#image/gif
 static/www/dot.gif -text svneol=unset#image/gif
 static/www/facebook.png -text svneol=unset#image/png
+static/www/formica.html svneol=native#text/html
 static/www/google.png -text svneol=unset#image/png
 static/www/headbg.gif -text svneol=unset#image/gif
 static/www/helma.png -text svneol=unset#image/png
