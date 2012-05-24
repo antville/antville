@@ -368,7 +368,8 @@ $(function() {
             file_origin: imageUrl,
             name: name,
             description: 'Source: ' + url.replace(new RegExp('^.+:///?([^/]+).*$'), '$1'),
-            maxWidth: args[2] || ''
+            maxWidth: args[2] || '',
+            maxHeight: args[3] || ''
          }, function(data, status, xhr) {
             if (!data) {
                console.log(this, arguments);
