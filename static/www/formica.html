@@ -210,7 +210,11 @@ $(function() {
       if (match && match.length > 1) {
          return match[1];
       }
-      return sourceUri + '/';
+      var index = sourceUri.lastIndexOf('/');
+      if (index !== sourceUri.length - 1) {
+         sourceUri = sourceUri.substring(0, index + 1);
+      }
+      return sourceUri;
    }
 
    function addImage(url, baseUri) {
