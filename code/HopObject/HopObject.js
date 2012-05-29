@@ -103,58 +103,12 @@ HopObject.confirmConstructor = function(ref) {
  */
 
 /**
- *
- */
-HopObject.prototype.onCodeUpdate = function() {
-   skinMayDisplayEditLink = function(name) {
-      return req.cookies[User.COOKIE + 'LayoutSandbox'] &&
-         res.handlers.layout.getPermission('main') &&
-         typeof name === 'string' && 
-         !name.startsWith('$') && 
-         res.contentType === 'text/html';
-   }
-
-   // Overriding the HopObject.renderSkin() methods for displaying skin edit controls.
-   helma.aspects.addAround(this, 'renderSkin', function(args, func, object) {
-      var name = args[0];
-      var id = name.replace('#', '-').toLowerCase();
-
-      if (skinMayDisplayEditLink(name)) {
-         var parts = name.split('#');
-         var prototype = parts[0];
-         var skinName = parts[1];
-         var skin = new Skin(prototype, skinName);
-         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
-               name + '" data-href="' + skin.href('edit') + '">');
-      }
-
-      func.apply(object, args);
-
-      if (skinMayDisplayEditLink(name)) {
-         res.writeln('</div><!-- End of #skin-' + id + ' -->');
-      }
-      
-      helma.aspects.addAround(this, 'renderSkinAsString', function(args, func, object) {
-         var name = args[0];
-         if (skinMayDisplayEditLink(name)) {
-            res.push();
-            object.renderSkin.apply(object, args);
-            return res.pop();
-         }
-         return func.apply(object, args);
-      });
-
-      return;      
-   });
-}
-
-/**
  * 
  */
 HopObject.prototype.onRequest = function() {
    // Checking if we are on the correct host to prevent at least some XSS issues
    if (req.action !== "notfound" && req.action !== "error" && 
-         this.href().startsWith("http://") && 
+         this.href().contains("://") && 
          !this.href().toLowerCase().startsWith(req.servletRequest.scheme + 
          "://" + req.servletRequest.serverName.toLowerCase())) {   
       res.redirect(this.href(req.action === "main" ? String.EMPTY : req.action));
