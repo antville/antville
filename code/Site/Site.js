@@ -425,8 +425,7 @@ Site.prototype.main_js_action = function() {
    res.contentType = "text/javascript";
    res.dependsOn(String(Root.VERSION));
    res.digest();
-   this.renderSkin("$Site#include", 
-         {href:"http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"});
+   this.renderSkin("$Site#include", {href: "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"});
    this.renderSkin("$Site#include", {href: root.getStaticUrl("jquery.cookie.js")});
    this.renderSkin("$Site#include", {href: root.getStaticUrl("antville.js?v=" + Root.VERSION)});
    this.renderSkin("$Site#include", {href: this.href("user.js")});
@@ -821,6 +820,15 @@ Site.prototype.age_macro = function(param) {
 
 /**
  * 
+ * @param {Object} param
+ * @param {String} name
+ */
+Site.prototype.static_macro = function(param, name, mode) {
+   return this.getStaticUrl(name);
+}
+
+/**
+ * 
  */
 Site.prototype.deleted_macro = function() {
    return new Date(this.deleted.getTime() + Date.ONEDAY * 
@@ -996,8 +1004,7 @@ Site.prototype.getStaticFile = function(tail) {
  * @returns {String}
  */
 Site.prototype.getStaticUrl = function(tail) {
-   // FIXME: This still does not work reliably with the various configuration options...
-   // Also see Images.Default.getStaticUrl() method
+   // Also see Images.Default.getUrl() method
    res.push();
    res.write(app.appsProperties.staticMountpoint);
    res.write("/");
@@ -1005,8 +1012,7 @@ Site.prototype.getStaticUrl = function(tail) {
    res.write("/");
    tail && res.write(tail);
    var url = res.pop();
-   // FIXME: Why encodeURI() here?
-   return encodeURI(url);
+   return encodeURI(this.processHref(url));
 }
 
 /**

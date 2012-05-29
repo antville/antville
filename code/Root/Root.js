@@ -63,9 +63,11 @@ this.handleMetadata("quota");
 this.handleMetadata("replyTo");
 
 /**
- * Antville’s root object is an extent of the Site prototype.
+ * Antville’s Root prototype is an extent of the Site prototype.
+ * The singleton instance root is the first created site (“www”).
  * @name Root
  * @constructor
+ * @extends Site
  * @property {Site[]} _children 
  * @property {Admin} admin
  * @property {User[]} admins
@@ -82,11 +84,10 @@ this.handleMetadata("replyTo");
  * @property {Site[]} sites
  * @property {Site[]} updates
  * @property {User[]} users
- * @extends Site
  */
 
 /**
- * 
+ * The permission framework handler for the Root prototype.
  * @param {String} action
  * @returns {Boolean}
  */
@@ -224,10 +225,8 @@ Root.prototype.updates_xml_action = function() {
    return;
 }
 
-/**
- * Sitemap for Google Webmaster Tools
- * (Unfortunately, utterly useless.)
- */
+// Sitemap for Google Webmaster Tools
+// (Unfortunately, utterly useless.)
 Root.prototype.sitemap_xml_action = function() {
    res.contentType = "text/xml";
    res.writeln('<?xml version="1.0" encoding="UTF-8"?>');
@@ -334,7 +333,7 @@ Root.prototype.mrtg_action = function() {
 } 
 
 /**
- * 
+ * Catch some undefined macro handlers, then delegate to the super prototype.
  * @param {String} name
  * @returns {HopObject}
  * @see Site#getMacroHandler
@@ -406,13 +405,4 @@ Root.prototype.getCreationPermission = function() {
       }
    }
    return true;
-}
-
-/**
- * 
- * @param {Object} param
- * @param {String} name
- */
-Root.prototype.static_macro = function(param, name) {
-   return this.getStaticUrl(name);
 }
