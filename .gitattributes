@@ -35,14 +35,21 @@ code/TagHub/$TagHub.skin -text
 compat/Layout/Layout.convert.js svneol=native#text/plain
 db/h2.compat/Archive/Archive.properties svneol=native#text/plain
 db/h2.compat/Global/Sql.js svneol=native#text/plain
-docs/css/fonts/mplus-1m-bold-webfont.eot -text
-docs/css/fonts/mplus-1m-bold-webfont.ttf -text
-docs/css/fonts/mplus-1m-bold-webfont.woff -text
-docs/css/fonts/mplus-1m-regular-webfont.eot -text
-docs/css/fonts/mplus-1m-regular-webfont.ttf -text
-docs/css/fonts/mplus-1m-regular-webfont.woff -text
+docs/css/all.css svneol=native#text/css
+docs/css/fonts/mplus-1m-bold-webfont.eot -text svneol=unset#application/vnd.ms-fontobject
+docs/css/fonts/mplus-1m-bold-webfont.svg -text svneol=native#image/svg%2Bxml
+docs/css/fonts/mplus-1m-bold-webfont.ttf -text svneol=unset#application/x-font-ttf
+docs/css/fonts/mplus-1m-bold-webfont.woff -text svneol=unset#application/x-font-woff
+docs/css/fonts/mplus-1m-regular-webfont.eot -text svneol=unset#application/vnd.ms-fontobject
+docs/css/fonts/mplus-1m-regular-webfont.svg -text svneol=native#image/svg%2Bxml
+docs/css/fonts/mplus-1m-regular-webfont.ttf -text svneol=unset#application/x-font-ttf
+docs/css/fonts/mplus-1m-regular-webfont.woff -text svneol=unset#application/x-font-woff
+docs/css/handheld.css svneol=native#text/css
+docs/css/screen.css svneol=native#text/css
 docs/files.html svneol=native#text/html
 docs/index.html svneol=native#text/html
+docs/javascript/all.js svneol=native#text/javascript
+docs/javascript/html5.js svneol=native#text/javascript
 docs/symbols/Admin.Job.html svneol=native#text/html
 docs/symbols/Admin.html svneol=native#text/html
 docs/symbols/Api.blogger.html svneol=native#text/html
