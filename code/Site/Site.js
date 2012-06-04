@@ -941,17 +941,18 @@ Site.prototype.getDiskSpace = function(quota) {
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-   if (["localhost", "127.0.0.1"].indexOf(req.data.http_host) > -1) {
-      var site = app.properties.hrefRootPrototype ? "/" + this.name : String.EMPTY;
-      return [app.appsProperties.mountPoint, site, href].join(String.EMPTY);
+   var parts, domain, 
+         scheme = '//', //(req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
+         port = req.servletRequest.serverPort;
+   port = (port === 80 ? '' : ':' + port);
+   if (domain = getProperty('domain.' + this.name)) {
+      parts = [scheme, domain, port, href];
+   } else if (domain = getProperty('domain.*')) {
+      parts = [scheme, this.name, '.', domain, port, href];
+   } else {
+      parts = [scheme, req.data.http_host, port, app.appsProperties.mountPoint, href];
    }
-   var domain, scheme = req.servletRequest ? req.servletRequest.scheme : "http";
-   if (domain = getProperty("domain." + this.name)) {
-      return [scheme, "://", domain, href].join(String.EMPTY);
-   } else if (domain = getProperty("domain.*")) {
-      return [scheme, "://", this.name, ".", domain, href].join(String.EMPTY);
-   }
-   return href;
+   return parts.join('');
 }
 
 /**
@@ -1003,16 +1004,15 @@ Site.prototype.getStaticFile = function(tail) {
  * @param {String} tail
  * @returns {String}
  */
-Site.prototype.getStaticUrl = function(tail) {
-   // Also see Images.Default.getUrl() method
-   res.push();
-   res.write(app.appsProperties.staticMountpoint);
-   res.write("/");
-   res.write(this.name);
-   res.write("/");
-   tail && res.write(tail);
-   var url = res.pop();
-   return encodeURI(this.processHref(url));
+Site.prototype.getStaticUrl = function(href) {
+   href || (href = '');
+   var scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://',
+         port = req.servletRequest.serverPort;
+   port = (port === 80 ? '' : ':' + port);
+   var domain = getProperty('domain.' + this.name);
+   domain || (domain = getProperty('domain.*'));
+   domain || (domain = req.data.http_host);
+   return ['//', domain, port, app.appsProperties.staticMountpoint, '/', this.name, '/', href].join('');
 }
 
 /**
