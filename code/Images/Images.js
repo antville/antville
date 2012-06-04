@@ -136,12 +136,15 @@ Images.Default = new function() {
    var Image = function(name, description) {
       var dir = new helma.File(app.appsProperties['static'], "www");
       var image = new helma.Image(new helma.File(dir, name));
-      this.name = name;
+      this.__defineGetter__('parent', function() {return root});
+      this.name = this.fileName = name;
       this.description = description;
       this.width = image.width;
       this.height = image.height;
       this.getUrl = function() {
-         return app.appsProperties.staticMountpoint + "/www/" + name;
+         // Cannot use global.Image.getUrl() here because these images are 
+         // located in the top-level of the static directory.
+         return root.getStaticUrl(name);
       }
       this.render_macro = global.Image.prototype.render_macro;
       this.thumbnail_macro = global.Image.prototype.thumbnail_macro;
@@ -153,6 +156,7 @@ Images.Default = new function() {
       images[name] = new Image(name, description);
       return;
    }
+
    add("ant.png", "Ant");
    add("ant-icon.png", "Tiny Ant");
    add("big.gif", String.EMPTY);
