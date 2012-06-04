@@ -56,18 +56,18 @@ HopObject.prototype.onCodeUpdate = function() {
       if (skinMayDisplayEditLink(name)) {
          res.writeln('</div><!-- End of #skin-' + id + ' -->');
       }
-      
-      helma.aspects.addAround(this, 'renderSkinAsString', function(args, func, object) {
-         var name = args[0];
-         if (skinMayDisplayEditLink(name)) {
-            res.push();
-            object.renderSkin.apply(object, args);
-            return res.pop();
-         }
-         return func.apply(object, args);
-      });
 
       return;      
+   });
+
+   helma.aspects.addAround(this, 'renderSkinAsString', function(args, func, object) {
+      var name = args[0];
+      if (skinMayDisplayEditLink(name)) {
+         res.push();
+         object.renderSkin.apply(object, args);
+         return res.pop();
+      }
+      return func.apply(object, args);
    });
 }
 

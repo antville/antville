@@ -116,37 +116,45 @@ helma.aspects.addBefore(global, "story_macro", function(args, func) {
    return args;
 });
 
-HopObject.prototype.onCodeUpdate = function() {
-   helma.aspects.addAfter(this, "onRequest", function(args, func, obj) {
-      res.handlers.members = res.handlers.site.members;
-      res.handlers.membermgr = res.handlers.site.members;
-      return args;
-   });
-   helma.aspects.addBefore(this, "skin_macro", function(args, func, obj) {
-      param = args[0];
-      return [param, args[1] || param.name];
-   });
-   return helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
-      var url, text;
-      var param = args[0];
-      var to = param.to;
-      delete param.to;
-      // Enabling story.link macros with full URL in parameter:
-      if (to && to.contains("://")) {
-         html.link({href: to}, param.text);
-         url = text = ".."; // Ugly hack to prevent HopObject.link in code from being rendered as well
-      } else {
-         // Compatibility for more recent link macros /////???, doing a lot of i18n witchcraft
-         url = args[1] || ".";
-         text = args[2];
-         var action = url.split(/#|\?/)[0];
-         if (!text) {
-            action === "." && (action = obj._id);
-            text = action.capitalize(); //gettext(action.capitalize());
+new function() {
+   var func;
+   if (HopObject.prototype.onCodeUpdate) {
+      // There are HopObject aspects already in the main code
+      func = HopObject.prototype.onCodeUpdate
+   }
+   HopObject.prototype.onCodeUpdate = function() {
+      func && func.call(this); // Call the aspects in main code
+      helma.aspects.addAfter(this, "onRequest", function(args, func, obj) {
+         res.handlers.members = res.handlers.site.members;
+         res.handlers.membermgr = res.handlers.site.members;
+         return args;
+      });
+      helma.aspects.addBefore(this, "skin_macro", function(args, func, obj) {
+         param = args[0];
+         return [param, args[1] || param.name];
+      });
+      helma.aspects.addBefore(this, "link_macro", function(args, func, obj) {
+         var url, text;
+         var param = args[0];
+         var to = param.to;
+         delete param.to;
+         // Enabling story.link macros with full URL in parameter:
+         if (to && to.contains("://")) {
+            html.link({href: to}, param.text);
+            url = text = ".."; // Ugly hack to prevent HopObject.link in code from being rendered as well
+         } else {
+            // Compatibility for more recent link macros /////???, doing a lot of i18n witchcraft
+            url = args[1] || ".";
+            text = args[2];
+            var action = url.split(/#|\?/)[0];
+            if (!text) {
+               action === "." && (action = obj._id);
+               text = action.capitalize(); //gettext(action.capitalize());
+            }
          }
-      }
-      return [param, to || url, param.text || text, args[3]];
-   });
+         return [param, to || url, param.text || text, args[3]];
+      });
+   }
 }
 
 Archive.prototype.onCodeUpdate = function() {
