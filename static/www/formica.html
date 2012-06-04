@@ -136,13 +136,20 @@ google.load('jquery', '1');
 
 <script type='text/javascript'>
 $(function() {
-   //var proxyUri = 'http://p3k-001.appspot.com/roxy';
-   var proxyUri = 'http://macke:8081/roxy';
+   var proxyUri = 'http://p3k-001.appspot.com/roxy';
+   //proxyUri = 'http://localhost:8081/roxy';
    var args, siteUri, sourceUri, images, currentIndex;
   
    new function() {
-      var parts = String(location.hash).split('#');
-      args = parts.length > 1 ? parts[1].split('&') : [];
+      var search = String(location.search).substr(1);
+      if (search.length > 0) {
+         args = {};
+         var parts = search.split('&');
+         $.each(parts, function(index, item) {
+            parts = item.split('=');
+            args[parts[0]] = decodeURIComponent(parts[1]);
+         });
+      }
    }
    
    $('.controls a').click(function(event) {
@@ -163,12 +170,14 @@ $(function() {
    })
 
    function main() {
-      if (args.length < 2 || !args[0] || !args[1]) {
+      if (!args.s || !args.l) {
          return;
       }
-      siteUri = decodeURIComponent(args[0]);
-      sourceUri = decodeURIComponent(args[1]);
+      siteUri = decodeURIComponent(args.s);
+      sourceUri = decodeURIComponent(args.l);
       if (siteUri && sourceUri) {
+         var text = $.trim(decodeURIComponent(args.c));
+         text && $('#text').val('<a href="' + sourceUri + '">' + text + '</a>');
          images = [];
          currentIndex = 0;
          if (sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
@@ -176,6 +185,9 @@ $(function() {
             return;
          }
          $.getJSON(proxyUri + '?callback=?&url=' + sourceUri, function(data) {
+            if (!data.content) {
+               return;
+            }
             var baseHref = getBaseHref(data.content);
             var match, re = /(?:\(|=|"|')([^\s\(\)'">]+\.(?:gif|jpg|jpeg|png))/gi;
             while (match = re.exec(data.content)) {
@@ -185,19 +197,6 @@ $(function() {
                toggleImage();
                $('#image').attr({disabled: true, checked: false});
             } 
-            /*
-            $(data.content).find('*[style*=background-image]').each(function(index, item) {
-               var re = new RegExp('^url\\((.+)\\)$');
-               var url = baseHref + $(this).css('background-image').replace(re, '$1');
-               if (url !== 'none') {
-                  appendImage(url);
-               }
-            });
-            $(data.content).find('img').each(function(index, img) {
-               var url = baseHref + $(img).attr('src');
-               appendImage(url);
-            });*/
-            //$('body').append('OK');
          });
       }
    }
@@ -246,7 +245,6 @@ $(function() {
          }
          addImage.counter -= 1;
       }
-      //addImage.images = images;
       return;
    
       var item = $('<img>');
@@ -368,8 +366,8 @@ $(function() {
             file_origin: imageUrl,
             name: name,
             description: 'Source: ' + url.replace(new RegExp('^.+:///?([^/]+).*$'), '$1'),
-            maxWidth: args[2] || '',
-            maxHeight: args[3] || ''
+            maxWidth: args.w || '',
+            maxHeight: args.h || ''
          }, function(data, status, xhr) {
             if (!data) {
                console.log(this, arguments);
