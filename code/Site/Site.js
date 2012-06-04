@@ -942,7 +942,7 @@ Site.prototype.getDiskSpace = function(quota) {
  */
 Site.prototype.processHref = function(href) {
    var parts, domain, 
-         scheme = '//', //(req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
+         scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
          port = req.servletRequest.serverPort;
    port = (port === 80 ? '' : ':' + port);
    if (domain = getProperty('domain.' + this.name)) {
