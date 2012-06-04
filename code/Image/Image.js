@@ -409,13 +409,9 @@ Image.prototype.getFile = function(name) {
  */
 Image.prototype.getUrl = function(name) {
    name || (name = this.fileName);
-   //name = encodeURIComponent(name);
    if (this.parent_type === "Layout") {
       var layout = this.parent || res.handlers.layout;
-      res.push();
-      res.write("layout/");
-      res.write(name);
-      return layout.site.getStaticUrl(res.pop());
+      return layout.site.getStaticUrl('layout/' + name);
    }
    var site = this.parent || res.handlers.site;
    return site.getStaticUrl("images/" + name);
