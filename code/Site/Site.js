@@ -943,14 +943,14 @@ Site.prototype.getDiskSpace = function(quota) {
 Site.prototype.processHref = function(href) {
    var parts, domain, 
          scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
-         port = req.servletRequest.serverPort;
-   port = (port === 80 ? '' : ':' + port);
    if (domain = getProperty('domain.' + this.name)) {
       parts = [scheme, domain, port, href];
    } else if (domain = getProperty('domain.*')) {
       parts = [scheme, this.name, '.', domain, port, href];
    } else {
-      parts = [scheme, req.data.http_host, port, app.appsProperties.mountPoint, href];
+      var mountpoint = app.appsProperties.mountpoint;
+      (mountpoint === '/') && (mountpoint = ''); // Prevents double slashes
+      parts = [scheme, req.data.http_host, mountpoint, href];
    }
    return parts.join('');
 }
@@ -1006,13 +1006,11 @@ Site.prototype.getStaticFile = function(tail) {
  */
 Site.prototype.getStaticUrl = function(href) {
    href || (href = '');
-   var scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://',
-         port = req.servletRequest.serverPort;
-   port = (port === 80 ? '' : ':' + port);
-   var domain = getProperty('domain.' + this.name);
-   domain || (domain = getProperty('domain.*'));
-   domain || (domain = req.data.http_host);
-   return ['//', domain, port, app.appsProperties.staticMountpoint, '/', this.name, '/', href].join('');
+   var scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
+   var host = getProperty('domain.' + this.name);
+   host || (host = getProperty('domain.*'));
+   host || (host = req.data.http_host);
+   return ['//', host, app.appsProperties.staticMountpoint, '/', this.name, '/', href].join('');
 }
 
 /**
