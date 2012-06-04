@@ -944,9 +944,9 @@ Site.prototype.processHref = function(href) {
    var parts, domain, 
          scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
    if (domain = getProperty('domain.' + this.name)) {
-      parts = [scheme, domain, port, href];
+      parts = [scheme, domain, href];
    } else if (domain = getProperty('domain.*')) {
-      parts = [scheme, this.name, '.', domain, port, href];
+      parts = [scheme, this.name, '.', domain, href];
    } else {
       var mountpoint = app.appsProperties.mountpoint;
       (mountpoint === '/') && (mountpoint = ''); // Prevents double slashes
