@@ -1010,7 +1010,7 @@ Site.prototype.getStaticUrl = function(href) {
    var host = getProperty('domain.' + this.name);
    host || (host = getProperty('domain.*'));
    host || (host = req.data.http_host);
-   return ['//', host, app.appsProperties.staticMountpoint, '/', this.name, '/', href].join('');
+   return [scheme, host, app.appsProperties.staticMountpoint, '/', this.name, '/', href].join('');
 }
 
 /**
