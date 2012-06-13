@@ -168,7 +168,7 @@ Archive.prototype.stories_macro = function() {
    var pageSize = this.getPageSize();
   
    var renderStory = function(story) {
-      storyDay = story.created.getDate();
+      storyDay = formatDate(story.created, 'yyyy-MM-dd');
       if (day !== storyDay) {
          story.renderSkin("Story#date");
          day = storyDay;
