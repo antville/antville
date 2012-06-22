@@ -33,22 +33,27 @@ HopObject.prototype.onCodeUpdate = function() {
       return req.cookies[User.COOKIE + 'LayoutSandbox'] &&
          res.handlers.layout.getPermission('main') &&
          typeof name === 'string' && 
-         !name.startsWith('$') && 
+         !name.startsWith('$') &&
          res.contentType === 'text/html';
    }
 
    // Overriding the HopObject.renderSkin() methods for displaying skin edit controls.
    helma.aspects.addAround(this, 'renderSkin', function(args, func, object) {
+      res.meta.skins || (res.meta.skins = {});
+
       var name = args[0];
       var id = name.replace('#', '-').toLowerCase();
 
       if (skinMayDisplayEditLink(name)) {
-         var parts = name.split('#');
-         var prototype = parts[0];
-         var skinName = parts[1];
-         var skin = new Skin(prototype, skinName);
-         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
-               name + '" data-href="' + skin.href('edit') + '">');
+         if (!res.meta.skins[name]) {
+            res.meta.skins[name] = true;
+            var parts = name.split('#');
+            var prototype = parts[0];
+            var skinName = parts[1];
+            var skin = new Skin(prototype, skinName);
+            res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
+                  name + '" data-href="' + skin.href('edit') + '">');
+         }
       }
 
       func.apply(object, args);
