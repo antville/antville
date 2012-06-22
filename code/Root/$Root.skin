@@ -291,7 +291,7 @@ div.skin div.title {
 }
 
 .skin-control {
-   margin-top: 5px;
+   margin: 5px 0;
    font: bold 9px arial;
    line-height: 15px;
    letter-spacing: 1px;
