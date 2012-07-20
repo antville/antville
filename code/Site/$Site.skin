@@ -224,7 +224,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </tr>
 <tr>
    <td class='small'><% gettext 'Bookmarklet' %>:</td>
-   <td><a href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% site.static %>../www/formica.html?s=' + encodeURIComponent(siteUrl) + '&l=' + encodeURIComponent(location.href) + '&w=400&h=400&c=' + encodeURIComponent(selection); window.open(url, 'formica', 'width=630, height=350'); void(0);" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td> 
+   <td><a href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% site.static %>../www/formica.html?s=' + encodeURIComponent(siteUrl) + '&l=' + encodeURIComponent(location.href) + '&r=' + encodeURIComponent(document.referrer) + '&w=400&h=400&c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td> 
 </tr>
 <tr>
 <td colspan="2"><div class="listSeparator"> </div>

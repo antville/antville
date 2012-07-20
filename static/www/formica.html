@@ -177,7 +177,9 @@ $(function() {
       sourceUri = decodeURIComponent(args.l);
       if (siteUri && sourceUri) {
          var text = $.trim(decodeURIComponent(args.c));
-         text && $('#text').val('<a href="' + sourceUri + '">' + text + '</a>');
+         text && (text = '<a href="' + sourceUri + '">' + $.trim(text) + '</a>');
+         args.r && (text += ' Via ' + decodeURIComponent(args.r) + '.');
+         $('#text').val(text);
          images = [];
          currentIndex = 0;
          if (sourceUri.match(new RegExp('(?:bmp|gif|jpg|jpeg|png)$', 'i'))) {
