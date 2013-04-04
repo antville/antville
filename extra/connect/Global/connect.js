@@ -27,7 +27,7 @@
  * @fileoverview Defines the Antville Connect Feature.
  */
 
-app.addRepository(app.dir + "/../extra/connect/scribe-1.2.0.jar");
+app.addRepository(app.dir + "/../extra/connect/scribe-1.3.0.jar");
 
 // FIXME: Connecting with Twitter and Google currently does not return an e-mail address.
 // Instead, noreplay@antville.org is used – which is very poor and should be fixed ASAP.
@@ -41,11 +41,10 @@ Members.prototype.connect_action = function() {
          connect.facebook(req);
          break;
          case "google":
+         connect.google(req);
+         break;
          case "twitter":
          connect.scribe(req.data.type);
-         break;
-         case "google-dev":
-         connect.google(req);
          break;
       }
    } catch (ex) {
@@ -63,7 +62,7 @@ Members.prototype.disconnect_action = function() {
       case "facebook":
       case "google":
       case "twitter":
-      res.handlers.membership.user.deleteMetadata(req.data.type + "_id");
+      res.handlers.membership.creator.deleteMetadata(req.data.type + "_id");
       break;
    }
    res.redirect(req.data.http_referer);
@@ -98,9 +97,9 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
       var user;
       var connections = root.connections.get(id);
       if (connections) {
-         connections.list().some(function(metadata, index) {
-            if (metadata.name === type + "_id") {
-               user = metadata.parent;
+         connections.forEach(function(index) {
+            if (this.name === type + "_id") {
+               user = this.parent;
             }
          });
       }
@@ -242,19 +241,22 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
 
       var mime = getURL("https://graph.facebook.com/oauth/access_token?client_id=" + appId +
             "&redirect_uri=" + url + "&client_secret=" + secret + "&code=" + code);
-
       if (!mime || !mime.text) {
          throw Error(gettext("Could not connect with Facebook. ({0})", -3));
       }
 
       var token = mime.text;
       mime = getURL("https://graph.facebook.com/me?" + token);
-
-      if (!mime || !mime.text) {
+      if (!mime) {
          throw Error(gettext("Could not connect with Facebook. ({0})", -4));
       }
 
-      var data = JSON.parse(mime.text);
+      var content = Packages.org.apache.commons.io.IOUtils.toString(mime.inputStream);
+      if (!content) {
+         throw Error(gettext("Could not connect with Facebook. ({0})", -5));
+      }
+
+      var data = JSON.parse(content);
       var user = this.getUserByConnection("facebook", data.id);
       if (!user) {
          if (!session.user) {
@@ -278,31 +280,45 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
    },
    
    google: function(req) {
-      var url = encodeURIComponent("http://macke.antville.org/helma/antville/members/connect?type=google2");
+      var url = root.members.href('connect') + "?type=google";
       if (req.data.code) {
          var http = new helma.Http();
          http.setMethod("POST");
          http.setContent("code=" + encodeURIComponent(req.data.code) + 
-               "&client_id=1098119775742.apps.googleusercontent.com&client_secret=ZfK_TVq6ruwoN_upS7x1CScV&" + 
-               "redirect_uri=" + url + "&grant_type=authorization_code");
+               "&client_id=" + encodeURIComponent(getProperty("connect.google.id")) + 
+               "&client_secret=" + encodeURIComponent(getProperty("connect.google.key")) + 
+               "&redirect_uri=" + encodeURIComponent(url) + "&grant_type=authorization_code");
          var response = http.getUrl("https://accounts.google.com/o/oauth2/token");
          var data = JSON.parse(response.content);
-         res.debug(data.toSource());
-         var mime = getURL("https://www.google.com/m8/feeds/contacts/default/full?oauth_token=" + 
+         var token = data.access_token;
+         var mime = getURL("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + 
                encodeURIComponent(data.access_token));
-         var xml = Packages.org.apache.commons.io.IOUtils.toString(mime.inputStream);
-         var data = Xml.getFromString(xml);
-         res.debug(data.toSource());
-         res.debug(xml);
-         res.abort()
-      } else if (req.data.error) {
-
+         var data = JSON.parse(Packages.org.apache.commons.io.IOUtils.toString(mime.inputStream));
+         var user = this.getUserByConnection("google", data.id);
+         if (!user) {
+            if (!session.user) {
+               var name = root.users.getAccessName(data.name);
+               user = User.register({
+                  name: name,
+                  hash: token,
+                  email: data.email,
+                  url: data.link
+               });
+               session.login(user);
+            } else {
+               user = session.user;
+            }
+            user.setMetadata("google_id", data.id);
+         } else if (user !== session.user) {
+            session.login(user);
+         }
       } else {
          res.redirect("https://accounts.google.com/o/oauth2/auth?" + 
-               "client_id=1098119775742.apps.googleusercontent.com&" + 
-               "redirect_uri=" + url + "&" +
-               "scope=https://www.google.com/m8/feeds/&" +
-               "response_type=code");
+               "client_id=" + encodeURIComponent(getProperty("connect.google.id")) + 
+               "&redirect_uri=" + encodeURIComponent(url) +
+               "&scope=" + encodeURIComponent("https://www.googleapis.com/auth/userinfo.profile") +
+               "+" + encodeURIComponent("https://www.googleapis.com/auth/userinfo.email") +
+               "&response_type=code");
       }      
    }
 });
