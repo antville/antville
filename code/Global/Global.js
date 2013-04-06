@@ -231,19 +231,22 @@ var rome = new JavaImporter(
  * @namespace
  */
 var console = {
-    /**
-     * Convenience method for bridging log output from the server to the client.
-     * @methodOf console
-     * @param {String} text This text will be displayed in the browser’s console (if available).
-     */
-    log: function(text) {
-        if (!res.meta.__console__) {
-            res.debug('<style>.helma-debug-line {border: none !important;}</style>');            
-            res.meta.__console__ = true;
-        }
-        var now = formatDate(new Date, Date.ISOFORMAT);
-        res.debug('<script>console.log("[Helma] ' + now + ' ===> ' + text + '")</script>');
-    }
+   /**
+    * Convenience method for bridging log output from the server to the client.
+    * @methodOf console
+    * @param {String} text This text will be displayed in the browser’s console (if available).
+    */
+   log: function(text /*, text, … */) {
+      if (!res.meta.__console__) {
+         res.debug('<style>.helma-debug-line {border: none !important;}</style>');            
+         res.meta.__console__ = true;
+      }
+      var now = formatDate(new Date, Date.ISOFORMAT);
+      Array.prototype.unshift.call(arguments, '[Helma]', now, '===>');
+      var text = Array.prototype.join.call(arguments, ' ');
+      text = text.replace(/(?:\n|\r)/g, '\\n').replace(/('|")/g, '\\$1');
+      res.debug('<script>console.log("' + text + '")</script>');
+   }
 }
 
 /**
