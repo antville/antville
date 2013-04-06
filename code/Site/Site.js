@@ -142,11 +142,11 @@ Site.add = function(data, user) {
       modifier: user,
       status: user.status === User.PRIVILEGED ? Site.TRUSTED : user.status,
       mode: Site.CLOSED,
-      commentMode: Site.DISABLED,
-      archiveMode: Site.CLOSED
+      commentMode: Site.ENABLED,
+      archiveMode: Site.PUBLIC
    });
 
-   site.update(data);
+   site.update(site);
    Layout.add(site);
    root.add(site);
    return site;
@@ -373,7 +373,7 @@ Site.prototype.update = function(data) {
    this.map({
       title: stripTags(data.title) || this.name,
       tagline: data.tagline || '',
-      mode: data.mode || Site.PRIVATE,
+      mode: data.mode || Site.CLOSED,
       callbackUrl: data.callbackUrl || '',
       callbackMode: data.callbackMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
