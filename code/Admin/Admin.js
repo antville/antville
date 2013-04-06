@@ -508,12 +508,16 @@ Admin.prototype.sites_action = function() {
    if (req.postParams.id) {
       if (req.postParams.remove === "1") {
          var site = Site.getById(req.postParams.id);
-         site.deleted = new Date;
-         site.status = Site.BLOCKED;
-         site.mode = Site.DELETED;
+         if (site.stories.size() < 1) {
+            Site.remove.call(site);
+            res.message = gettext("The site {0} was successfully removed.", site.name);
+         } else {
+            site.deleted = new Date;
+            site.status = Site.BLOCKED;
+            site.mode = Site.DELETED;
+            res.message = gettext("The site {0} is queued for removal.", site.name);
+         }
          this.log(root, "Deleted site " + site.name);
-         res.message = gettext("The site {0} is queued for removal.",
-               site.name);
          res.redirect(this.href(req.action) + "?page=" + req.postParams.page);
       } else if (req.postParams.save === "1") {
          this.updateSite(req.postParams);
