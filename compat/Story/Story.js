@@ -26,6 +26,25 @@
 relocateProperty(Story, "createtime", "created");
 relocateProperty(Story, "modifytime", "modified");
 
+Story.ALLOWED_MACROS = Story.ALLOWED_MACROS.concat([
+   "fakemail",
+   "imageoftheday",
+   "storylist",
+   "thumbnail",
+   
+   "site.image",
+   "site.link",
+   "site.thumbnail",
+
+   "story.image",
+   "story.thumbnail",
+   "story.topic",
+
+   "this.image",
+   "this.thumbnail",
+   "this.topic"
+]);
+
 Story.prototype.backlinks_macro = Story.prototype.referrers_macro;
 
 Story.prototype.allowTextMacros = function(skin) {

@@ -33,6 +33,17 @@ markgettext("story");
 this.handleMetadata("title");
 this.handleMetadata("text");
 
+Story.ALLOWED_MACROS = [
+   "file",
+   "image",
+   "link",
+   "logo",
+   "poll",
+   "spacer",
+   "story.link",
+   "this.link"
+];
+
 /**
  * @function
  * @param {Object} data
@@ -158,7 +169,7 @@ Story.prototype.getPermission = function(action) {
 }
 
 Story.prototype.main_action = function() {
-   res.data.title = this.getTitle(5);
+   res.data.title = this.getTitle(10);
    res.data.body = this.renderSkinAsString("Story#main");
    this.site.renderSkin("Site#page");
    this.site.log();
@@ -600,34 +611,16 @@ Story.prototype.format_filter = function(value, param, mode) {
 }
 
 /**
- * 
- * @param {String|Skin} value
- * @param {Object} param
+ * Enables certain macros for being used in a story or comment – thus, any content object.
+ * @param {String|Skin} value A skin object or a string that is going to be turned into a skin object.
  * @returns {String}
  */
-Story.prototype.macro_filter = function(value, param) {
+Story.prototype.macro_filter = function(value) {
    var skin = value.constructor === String ? createSkin(value) : value;
-   skin.allowMacro("image");
-   skin.allowMacro("this.image");
-   skin.allowMacro("site.image");
-   skin.allowMacro("story.image");
-   skin.allowMacro("thumbnail");
-   skin.allowMacro("this.thumbnail");
-   skin.allowMacro("site.thumbnail");
-   skin.allowMacro("story.thumbnail");
-   skin.allowMacro("link");
-   skin.allowMacro("this.link");
-   skin.allowMacro("site.link");
-   skin.allowMacro("story.link");
-   skin.allowMacro("file");
-   skin.allowMacro("poll");
-   skin.allowMacro("logo");
-   skin.allowMacro("storylist");
-   skin.allowMacro("fakemail");
-   skin.allowMacro("this.topic");
-   skin.allowMacro("story.topic");
-   skin.allowMacro("imageoftheday");
-   skin.allowMacro("spacer");
+
+   Story.ALLOWED_MACROS.forEach(function(value, index) {
+      skin.allowMacro(value);
+   });
 
    var site;
    if (this.site !== res.handlers.site) {
