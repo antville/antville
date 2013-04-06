@@ -112,11 +112,11 @@ $(function() {
    } else {
       $("#restore").click(function() {
          $(this).hide();
-         var data = $.get(url, null, function(data) {
+         $.getJSON(url, function(data) {
             $.each(data, function(key, item) {
                $("#" + key).val(item);
             });
-         }, "json");
+         });
       });
    }
    
