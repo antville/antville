@@ -158,6 +158,14 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </div>
 
 <% #edit %>
+<script>
+$(function() {
+   $('input#callbackMode').on('click', function(event) {
+      $('input#callbackUrl').prop('disabled', !this.checked);
+   });
+   $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
+});
+</script>
 <p class="storyTitle"><% response.title %></p>
 <form id="prefs" method="post" action="<% response.action %>">
 <table border="0" cellspacing="0" cellpadding="2">
