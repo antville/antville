@@ -10,20 +10,10 @@
 <span class="<% param.class %>"><% param.text %></span>
 
 <% #upload %>
-<script type="text/javascript">
-$(function() {
-   if ($.browser.safari) {
-      $(".upload #<% param.name %>").css("visibility", "hidden");
-   } else {
-      $(".upload #<% param.name %>_control").hide();
-   }
-});
-</script>
-
 <div class="upload" style="position: relative;">
    <input type="file" id="<% param.name %>" name="<% param.name %>" 
          onchange='$("#<% param.name %>_origin").val($(this).val());' 
-         style="position: relative; z-index: 1;" />
+         style="position: relative; z-index: 1; visibility: hidden;" />
    <div class="text" style="position: absolute; z-index: 2; top: 0; left: 0;">
       <input type="text" name="<% param.name %>_origin" 
             id="<% param.name %>_origin" value="<% param.value %>" 
