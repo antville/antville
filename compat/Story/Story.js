@@ -29,6 +29,8 @@ relocateProperty(Story, "modifytime", "modified");
 Story.ALLOWED_MACROS = Story.ALLOWED_MACROS.concat([
    "fakemail",
    "imageoftheday",
+   "logo",
+   "spacer",
    "storylist",
    "thumbnail",
    

@@ -37,9 +37,7 @@ Story.ALLOWED_MACROS = [
    "file",
    "image",
    "link",
-   "logo",
    "poll",
-   "spacer",
    "story.link",
    "this.link"
 ];
