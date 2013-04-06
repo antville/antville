@@ -449,7 +449,7 @@ Site.prototype.backup_js_action = function() {
       }
    } else {
       res.contentType = "text/javascript";
-      res.write((session.data.backup || {}).toSource());
+      res.write(JSON.stringify(session.data.backup || {}));
       session.data.backup = null;
    }
    return;
