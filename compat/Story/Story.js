@@ -43,6 +43,7 @@ Story.ALLOWED_MACROS = Story.ALLOWED_MACROS.concat([
    "story.topic",
 
    "this.image",
+   "this.link"
    "this.thumbnail",
    "this.topic"
 ]);
