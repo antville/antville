@@ -374,7 +374,7 @@ Site.prototype.update = function(data) {
       title: stripTags(data.title) || this.name,
       tagline: data.tagline || '',
       mode: data.mode || Site.CLOSED,
-      callbackUrl: data.callbackUrl || '',
+      callbackUrl: data.callbackUrl || this.callbackUrl || '',
       callbackMode: data.callbackMode || Site.DISABLED,
       pageMode: data.pageMode || Site.DAYS,
       pageSize: parseInt(data.pageSize, 10) || 3,
@@ -409,6 +409,7 @@ Site.prototype.main_css_action = function() {
             res.writeln('/** ');
             res.writeln(error.toSource())
             res.writeln('**/');
+            res.writeln(lessCss);
             return;
          }
          res.writeln(tree.toCSS());
@@ -417,6 +418,7 @@ Site.prototype.main_css_action = function() {
       res.writeln('/** ');
       res.writeln(ex.toSource());
       res.writeln('**/');
+      res.writeln(lessCss);
    }
    return;
 }
