@@ -116,11 +116,11 @@ helma.aspects.addBefore(global, "story_macro", function(args, func) {
    return args;
 });
 
-new function() {
+(function() {
    var func;
    if (HopObject.prototype.onCodeUpdate) {
       // There are HopObject aspects already in the main code
-      func = HopObject.prototype.onCodeUpdate
+      func = HopObject.prototype.onCodeUpdate;
    }
    HopObject.prototype.onCodeUpdate = function() {
       func && func.call(this); // Call the aspects in main code
@@ -155,15 +155,29 @@ new function() {
          return [param, to || url, param.text || text, args[3]];
       });
    }
-}
+}());
 
-Archive.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
-}
+(function() {
+   var func;
+   if (Archive.prototype.onCodeUpdate) {
+      func = Archive.prototype.onCodeUpdate;
+   }
+   Archive.prototype.onCodeUpdate = function() {
+      func && func.call(this);
+      return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
+   }
+}());
 
-Image.prototype.onCodeUpdate = function() {
-   return helma.aspects.addBefore(this, "update", aspects.setTopics);
-}
+(function() {
+   var func;
+   if (Image.prototype.onCodeUpdate) {
+      func = Image.prototype.onCodeUpdate;
+   }
+   Image.prototype.onCodeUpdate = function() {
+      func && func.call(this);
+      return helma.aspects.addBefore(this, "update", aspects.setTopics);
+   }
+}());
 
 Images.prototype.onCodeUpdate = function() {
    return helma.aspects.addAround(this, "getPermission", function(args, func, images) {
@@ -212,27 +226,41 @@ Members.prototype.onCodeUpdate = function() {
    });
 }
 
-Site.prototype.onCodeUpdate = function() {
-   helma.aspects.addAround(this, "getPermission", function(args, func, site) {
-      var permission = func.apply(site, args);
-      if (!permission) {
-         switch(args[0]) {
-            case "rss":
-            case "feeds":
-            case "mostread":
-            return true;
+(function() {
+   var func;
+   if (Site.prototype.onCodeUpdate) {
+      func = Site.prototype.onCodeUpdate;
+   }
+   Site.prototype.onCodeUpdate = function() {
+      func && func.call(this);
+      helma.aspects.addAround(this, "getPermission", function(args, func, site) {
+         var permission = func.apply(site, args);
+         if (!permission) {
+            switch(args[0]) {
+               case "rss":
+               case "feeds":
+               case "mostread":
+               return true;
+            }
          }
-      }
-      return permission;
-   });
-   
-   return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
-}
+         return permission;
+      });
+      
+      return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
+   }
+}());
 
-Story.prototype.onCodeUpdate = function() {
-   helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);
-   return helma.aspects.addBefore(this, "update", aspects.setTopics);
-}
+(function() {
+   var func;
+   if (Story.prototype.onCodeUpdate) {
+      func = Story.prototype.onCodeUpdate;
+   }
+   Story.prototype.onCodeUpdate = function() {
+      func && func.call(this);
+      helma.aspects.addBefore(this, "edit_action", aspects.fixStoryEditorParams);
+      return helma.aspects.addBefore(this, "update", aspects.setTopics);
+   }
+}());
 
 Stories.prototype.onCodeUpdate = function() {
    return helma.aspects.addBefore(this, "create_action",
