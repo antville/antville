@@ -211,6 +211,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
          }
          user.setMetadata(type + "_id", data.id);
       } else if (user !== session.user) {
+         user.touch();
          session.login(user);
       }
 
@@ -273,6 +274,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
          }
          user.setMetadata("facebook_id", data.id);
       } else if (user !== session.user) {
+         user.touch();
          session.login(user);
       }
 
@@ -280,7 +282,14 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
    },
    
    google: function(req) {
+      if (req.isPost()) {
+         try {
+            User.login(req.postParams);
+         } catch (ex) { }
+      }
+
       var url = root.members.href('connect') + "?type=google";
+
       if (req.data.code) {
          var http = new helma.Http();
          http.setMethod("POST");
@@ -310,6 +319,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
             }
             user.setMetadata("google_id", data.id);
          } else if (user !== session.user) {
+            user.touch();
             session.login(user);
          }
       } else {
