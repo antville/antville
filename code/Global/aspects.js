@@ -39,7 +39,6 @@ app.addRepository("modules/helma/Aspects.js");
       res.meta.skins || (res.meta.skins = {});
 
       var name = args[0];
-      console.log(name);
       if (name.startsWith('#')) {
          // Fix names using short form (ie. missing prototype)
          name = object.constructor.name + name;
