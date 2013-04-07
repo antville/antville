@@ -192,7 +192,7 @@ Root.prototype.sites_action = function() {
 }
 
 Root.prototype.updates_xml_action = function() {
-   res.contentType = "text/xml"; 
+   res.contentType = "application/rss+xml"; 
    var now = new Date;
    var feed = new rome.SyndFeedImpl();   
    feed.setFeedType("rss_2.0");
@@ -263,9 +263,8 @@ Root.prototype.health_action = function() {
       param[key] = formatNumber(app[key]);
    }
    
-   param.errorRatio = formatNumber(100 * app.errorCount / app.requestCount);
-   param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit);
-
+   param.errorRatio = formatNumber(100 * app.errorCount / app.requestCount || 0);
+   param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit || 0);
    if (Admin.health) {
       param.requestsPerUnit = formatNumber(Admin.health.requestsPerUnit);
       param.errorsPerUnit = formatNumber(Admin.health.errorsPerUnit);
