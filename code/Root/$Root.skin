@@ -299,6 +299,5 @@ div.skin div.title {
 
 .skin-edit-link {
    padding: 2px;
-   color: #fff !important;
    text-decoration: none !important;
 }

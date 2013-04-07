@@ -452,6 +452,11 @@ span.pageNavSelItem {
    border: 1px solid <% value "link color" %>;
 }
 
-.skin.active, .skin-edit-link {
-   background: #ccc;
+.skin.active {
+   background: <% value "background color" %>;
+   opacity: .25;
+}
+
+.skin-edit-link {
+   color: <% value "small font color" %> !important;
 }
