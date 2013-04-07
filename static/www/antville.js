@@ -71,9 +71,9 @@ function setLayoutMode(mode) {
          href: $(this).data('href'),
          title: 'Click to edit ' + $(this).data('name') + ' skin'
       }).mouseover(function() {
-         $(this).parents('.skin').eq(0).css('background-color', '#ccc');
+         $(this).parents('.skin').eq(0).addClass('active');
       }).mouseout(function() {
-         $(this).parents('.skin').eq(0).css('background-color', '');
+         $(this).parents('.skin').eq(0).removeClass('active');
       }).html('Edit');
       $(this).append(skinButton);
    });

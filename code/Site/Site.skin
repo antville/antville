@@ -239,6 +239,7 @@ fieldset {
    padding-top: 0px;
    margin-top: 6px;
    margin-bottom: 6px;
+   border: 1px solid <% value "small font color" %>;
 }
 
 p {
@@ -323,23 +324,23 @@ a:hover {text-decoration: underline;}
 
 .formTitle {
    width: 380px;
-   font-family: <% value "base font size" %>;
+   font-family: <% value "big font" %>;
    font-size: <% value "big font size" %>;
    font-weight: bold;
-   border: 1px solid <% value "base font color" %>;
+   border: 1px solid <% value "small font color" %>;
 }
 
 .formText {
    width: 380px;
-   font-family: <% value "base font size" %>;
+   font-family: <% value "base font" %>;
    font-size: <% value "base font size" %>;
    font-weight: normal;
-   border: 1px solid <% value "base font color" %>;
+   border: 1px solid <% value "small font color" %>;
 }
 
 .formWide {
    width: 660px;
-   font-family: <% value "base font size" %>;
+   font-family: <% value "base font" %>;
    font-size: <% value "base font size" %>;
    font-weight: normal;
 }
@@ -449,4 +450,8 @@ span.pageNavSelItem {
 
 .calendar .selected {
    border: 1px solid <% value "link color" %>;
+}
+
+.skin.active, .skin-edit-link {
+   background: #ccc;
 }

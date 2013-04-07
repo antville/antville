@@ -299,14 +299,6 @@ div.skin div.title {
 
 .skin-edit-link {
    padding: 2px;
-   background: #ccc;
    color: #fff !important;
    text-decoration: none !important;
 }
-
-<% #FIXME %>
-<div class="boxline"> </div>
-<div class="box">
-<% root.link sites <% ngettext "{0} public site" "{0} public sites" 
-      <% root.sites.size %> %> %>
-</div>
