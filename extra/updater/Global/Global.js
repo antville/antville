@@ -243,6 +243,9 @@ var stringf = function(str /*, value1, ..., valueN */) {
          values = values[0];
       }
       str = str.replace(/\$(\w*)/g, function(str, key) {
+         if (typeof values[key] == 'undefined') {
+            return str;
+         } 
          return callback ? callback(values[key]) : values[key];
       });
    }
