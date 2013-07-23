@@ -83,7 +83,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
 
    main: function(options) {
       var defaultDomain = getProperty("domain.*");
-      var domain = getProperty("domain." + res.handlers.site.name);   
+      var domain = getProperty("domain." + res.handlers.site.name);
       if (defaultDomain && domain && !domain.endsWith(defaultDomain)) {
          return;
       }
@@ -145,7 +145,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
 
          case "twitter":
          provider = scribe.builder.api.TwitterApi;
-         requestUrl = "https://api.twitter.com/1/account/verify_credentials.json";
+         requestUrl = "https://api.twitter.com/1.1/account/verify_credentials.json";
          getValues = function(data) {
             return {
                id: data.id_str,
@@ -170,7 +170,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
       }
 
       var oauth = service.build();
-      
+
       var verifier = req.data.oauth_verifier;
       if (!verifier) {
          // Because the service provider will redirect back to this URL the
@@ -280,7 +280,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
 
       return;
    },
-   
+
    google: function(req) {
       if (req.isPost()) {
          try {
@@ -293,14 +293,14 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
       if (req.data.code) {
          var http = new helma.Http();
          http.setMethod("POST");
-         http.setContent("code=" + encodeURIComponent(req.data.code) + 
-               "&client_id=" + encodeURIComponent(getProperty("connect.google.id")) + 
-               "&client_secret=" + encodeURIComponent(getProperty("connect.google.key")) + 
+         http.setContent("code=" + encodeURIComponent(req.data.code) +
+               "&client_id=" + encodeURIComponent(getProperty("connect.google.id")) +
+               "&client_secret=" + encodeURIComponent(getProperty("connect.google.key")) +
                "&redirect_uri=" + encodeURIComponent(url) + "&grant_type=authorization_code");
          var response = http.getUrl("https://accounts.google.com/o/oauth2/token");
          var data = JSON.parse(response.content);
          var token = data.access_token;
-         var mime = getURL("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + 
+         var mime = getURL("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" +
                encodeURIComponent(data.access_token));
          var data = JSON.parse(Packages.org.apache.commons.io.IOUtils.toString(mime.inputStream));
          var user = this.getUserByConnection("google", data.id);
@@ -323,12 +323,12 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
             session.login(user);
          }
       } else {
-         res.redirect("https://accounts.google.com/o/oauth2/auth?" + 
-               "client_id=" + encodeURIComponent(getProperty("connect.google.id")) + 
+         res.redirect("https://accounts.google.com/o/oauth2/auth?" +
+               "client_id=" + encodeURIComponent(getProperty("connect.google.id")) +
                "&redirect_uri=" + encodeURIComponent(url) +
                "&scope=" + encodeURIComponent("https://www.googleapis.com/auth/userinfo.profile") +
                "+" + encodeURIComponent("https://www.googleapis.com/auth/userinfo.email") +
                "&response_type=code");
-      }      
+      }
    }
 });
