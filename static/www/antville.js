@@ -74,7 +74,7 @@ function setLayoutMode(mode) {
          $(this).parents('.skin').eq(0).addClass('active');
       }).mouseout(function() {
          $(this).parents('.skin').eq(0).removeClass('active');
-      }).html('&lt;%&gt;');
+      }).html('Ⓢ');
       $(this).append(skinButton);
    });
 }

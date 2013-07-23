@@ -47,6 +47,7 @@
    <a href="" class="cancel"><% gettext Cancel %></a>
 </p>
 </form>
+<% list macros %>
 
 <% #date %>
 <div class="dayHeader"><% story.created date %></div>

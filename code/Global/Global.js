@@ -26,7 +26,7 @@
 /**
  * @fileOverview Defines global variables and functions.
  */
- 
+
 app.addRepository(app.dir + "/../lib/rome-1.0.jar");
 app.addRepository(app.dir + "/../lib/jdom.jar");
 app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
@@ -66,15 +66,15 @@ app.addRepository("modules/jala/code/I18n.js");
  * @name app.data
  * @namespace
  */
-/** 
- * Temporary in-memory store of site callbacks. 
+/**
+ * Temporary in-memory store of site callbacks.
  * They will be invoked asynchronously by an Admin method.
- * @see Admin.invokeCallbacks 
+ * @see Admin.invokeCallbacks
  * @see scheduler
  * @name app.data.callbacks
  */
 app.data.callbacks || (app.data.callbacks = []);
-/** 
+/**
  * Temporary in-memory store of LogEntry instances.
  * They will be made persistent asynchronously by an Admin method.
  * @see Admin.commitEntries
@@ -83,14 +83,14 @@ app.data.callbacks || (app.data.callbacks = []);
  * @type Array
  */
 app.data.entries || (app.data.entries = []);
-/** 
- * In-memory registry of Feature instances. 
+/**
+ * In-memory registry of Feature instances.
  * Features are defined in the “extra” dir.
  * @name app.data.features
  * @type Array
  */
 app.data.features || (app.data.features = []);
-/** 
+/**
  * In-memory e-mail message queue.
  * They will be sent asynchronously by an Admin method.
  * @see helma.mail.flushQueue
@@ -99,12 +99,12 @@ app.data.features || (app.data.features = []);
  * @type Array
  */
 app.data.mails || (app.data.mails = []);
-/** 
+/**
  * In-memory store of remote requests for counting story hits.
  * They will be made persistent asynchronously by an Admin method.
  * @see Admin.commitRequests
  * @see scheduler
- * @name app.data.requests 
+ * @name app.data.requests
  * @type Array
  */
 app.data.requests || (app.data.requests = {});
@@ -157,7 +157,7 @@ helma.Mail.prototype.queue = function() {
  */
 helma.Mail.flushQueue = function() {
    if (app.data.mails.length > 0) {
-      app.debug("Flushing mail queue, sending " + 
+      app.debug("Flushing mail queue, sending " +
             app.data.mails.length + " messages");
       var mail;
       while (app.data.mails.length > 0) {
@@ -181,25 +181,25 @@ jala.i18n.setLocaleGetter(function() {
    return (res.handlers.site || root).getLocale();
 });
 
-/** 
+/**
  * The date format used in SQL queries and commands.
- * @constant 
+ * @constant
  * @type String
  */
 var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
 
-/** 
+/**
  * Regular Expression according to Jala’s HopObject.getAccessName().
- * @constant 
+ * @constant
  * @type RegExp
  */
 var NAMEPATTERN = /[\/+\\]/;
 
-/** 
+/**
  * Shortcut for a function with empty body.
  * Used e.g. in the disableMacro() method.
  * @see disableMacro
- * @function 
+ * @function
  */
 var idle = new Function;
 
@@ -209,7 +209,7 @@ var idle = new Function;
  */
 var html = new helma.Html();
 
-/** 
+/**
  * An instance of the LESS parser.
  * @type less.Parser
  */
@@ -226,7 +226,7 @@ var rome = new JavaImporter(
    Packages.com.sun.syndication.feed.module.itunes.types
 );
 
-/** 
+/**
  * A simple and hackish implementation of the console instance of some browsers.
  * @namespace
  */
@@ -238,7 +238,7 @@ var console = {
     */
    log: function(text /*, text, … */) {
       if (!res.meta.__console__) {
-         res.debug('<style>.helma-debug-line {border: none !important;}</style>');            
+         res.debug('<style>.helma-debug-line {border: none !important;}</style>');
          res.meta.__console__ = true;
       }
       var now = formatDate(new Date, Date.ISOFORMAT);
@@ -270,7 +270,7 @@ function onStop() { /* Currently empty, just to avoid annoying log message */ }
 /**
  * Helper method to simultaneously define constants and a corresponding array of localized display names.
  * @param {HopObject} ctor The desired prototype constructor the constants should be defined for.
- * @returns {Function} 
+ * @returns {Function}
  */
 function defineConstants(ctor /*, arguments */) {
    var constants = [], name;
@@ -304,7 +304,7 @@ function disableMacro(ctor, name) {
  * Helma’s built-in main scheduler function.
  * This method is regularly called by Helma after a defined period of time.
  * The period is either defined by the return value or by the schedulerInterval property in app.properties.
- * @returns {Number} The period in milliseconds the scheduler will be called again. 
+ * @returns {Number} The period in milliseconds the scheduler will be called again.
  */
 function scheduler() {
    helma.Mail.flushQueue();
@@ -318,7 +318,7 @@ function scheduler() {
 }
 
 /**
- * The nightly scheduler. 
+ * The nightly scheduler.
  * This method is called according to the cron settings in app.properties.
  */
 function nightly() {
@@ -334,24 +334,24 @@ function nightly() {
 }
 
 /**
- * Renders a string depending on the comparison of two values. 
+ * Renders a string depending on the comparison of two values.
  * If the first value equals the second value, the first result will be returned; the second result otherwise.
  * @example <% if <% macro %> is value then <% yes suffix=! %> else 'no :(' %>;
  * Note that any value or result can be a macro, too. Thus, this can be used as
- * a simple implementation of an if-then-else statement by using Helma macros only. 
+ * a simple implementation of an if-then-else statement by using Helma macros only.
  * @param {Object} param The default Helma macro parameter object
  * @param {String} firstValue The first value
  * @param {String} _is_ Syntactic sugar; should be "is" for legibility
  * @param {String} secondValue The second value
  * @param {String} _then_ Syntactic sugar; should be "then" for legibility
- * @param {String} firstResult The first result, ie. the value that will be 
+ * @param {String} firstResult The first result, ie. the value that will be
  * returned if the first value equals the second one
  * @param {String} _else_ Syntactic sugar; should be "else" for legibility
- * @param {String} secondResult The second result, ie. the value that will be 
+ * @param {String} secondResult The second result, ie. the value that will be
  * returned if the first value does not equal the second one
  * @returns {String} The resulting value
  */
-function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult, 
+function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
       _else_, secondResult) {
    return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
 }
@@ -529,7 +529,7 @@ function image_macro(param, id, mode) {
    if (!image) {
       return;
    }
-   
+
    switch (mode) {
       case "url":
       res.write(image.getUrl());
@@ -539,7 +539,7 @@ function image_macro(param, id, mode) {
       var url = image.getUrl();
       html.openTag("a", {href: url});
       // FIXME: Bloody popups belong to compatibility layer
-      (mode === "popup") && (param.onclick = 'javascript:openPopup(\'' + 
+      (mode === "popup") && (param.onclick = 'javascript:openPopup(\'' +
             url + '\', ' + image.width + ', ' + image.height + '); return false;')
       image.thumbnail_macro(param);
       html.closeTag("a");
@@ -589,8 +589,8 @@ function poll_macro(param, id, mode) {
  * The “swiss army knife” list macro. Lists collections of HopObjects.
  * There is hardly a thing it cannot do… but it’s kind of messy, though.
  * @param {Object} param The default Helma macro parameter object
- * @param {String} [param.skin=preview] The name of a skin suitable for the collection 
- * @param {String} id The identifier of the desired collection 
+ * @param {String} [param.skin=preview] The name of a skin suitable for the collection
+ * @param {String} id The identifier of the desired collection
  * @param {Number} [limit=25] The maximum amount of items listed
  * @example <% list sites %>
  * <% list updates 10 %>
@@ -605,7 +605,7 @@ function list_macro(param, id, limit) {
    if (!id) {
       return;
    }
-   
+
    var max = Math.min(limit || 25, 50);
    var collection, skin;
    if (id === "sites") {
@@ -628,9 +628,9 @@ function list_macro(param, id, limit) {
       var filter = function(item, index) {
          return index < max && item.getPermission("main");
       }
-      
+
       var commentFilter = function(item) {
-         if (item.story.status !== Story.CLOSED && 
+         if (item.story.status !== Story.CLOSED &&
                item.site.commentMode !== Site.DISABLED &&
                item.story.commentMode !== Story.CLOSED) {
             return true;
@@ -646,17 +646,21 @@ function list_macro(param, id, limit) {
             skin = "Story#preview";
          }
          break;
-         
+
          case "featured":
          collection = site.stories.featured.list(0, max);
          prototype = "Story#preview";
          break;
-         
+
          case "images":
          collection = site.images.list(0, max);
          prototype = "Image#preview";
          break;
-         
+
+         case "macros":
+         res.handlers.site.stories.renderSkin('$Stories#macros');
+         return;
+
          case "postings":
          content = site.stories.union;
          collection = content.list().filter(filter).filter(function(item) {
@@ -667,7 +671,7 @@ function list_macro(param, id, limit) {
          });
          prototype = "Story#preview";
          break;
-         
+
          case "stories":
          var stories = site.stories.recent;
          var counter = 0;
@@ -676,11 +680,11 @@ function list_macro(param, id, limit) {
          });
          prototype = "Story#preview";
          break;
-         
+
          case "tags":
          return site.tags.list_macro(param, param.skin || "$Tag#preview");
          break;
-         
+
          default:
          break;
       }
@@ -697,7 +701,7 @@ function list_macro(param, id, limit) {
  * which must be rendered later than the one setting the variable.
  * @param {Object} param The default Helma macro parameter object.
  * @param {String} name The name of the value.
- * @param {String} [value] The desired value. 
+ * @param {String} [value] The desired value.
  * If no value is given, the current value will be rendered.
  * @example <% value foo=bar %> Defines res.meta.values.foo = bar
  * @example <% value foo %> Renders the value of res.meta.value.foo
@@ -718,7 +722,7 @@ function value_macro(param, name, value) {
 
 /**
  * Renders either a skin or the URL of a random site, story or image.
- * The corresponding story and image collections will be retrieved either from res.handlers.site or 
+ * The corresponding story and image collections will be retrieved either from res.handlers.site or
  * from the prefixed “type” argument (e.g. “mySite/story”).
  * Furthermore, both collections can be reduced to a specific tag or gallery, resp.
  * @param {Object} param The default Helma macro parameter object.
@@ -741,7 +745,7 @@ function random_macro(param, type, mode) {
 
    if (type === "site") {
       site = root.sites.get(getRandom(root.sites.size()));
-      mode === 'url' ? res.write(site.href()) : 
+      mode === 'url' ? res.write(site.href()) :
             site.renderSkin(param.skin || "Site#preview");
       return;
    }
@@ -761,24 +765,24 @@ function random_macro(param, type, mode) {
    switch (type) {
       case "story":
       case "stories":
-      var stories = param.tag ? site.stories.tags.get(param.tag) : 
+      var stories = param.tag ? site.stories.tags.get(param.tag) :
             site.stories.featured;
       var story = stories && stories.get(getRandom(stories.size()));
       if (story) {
          param.tag && (story = story.tagged);
-         mode === 'url' ? res.write(story.href()) : 
+         mode === 'url' ? res.write(story.href()) :
                story.renderSkin(param.skin || "Story#preview");
       }
       break;
 
       case "image":
       case "images":
-      var images = param.gallery ? site.images.galleries.get(param.gallery) : 
+      var images = param.gallery ? site.images.galleries.get(param.gallery) :
             site.images;
       var image = images && images.get(getRandom(images.size()));
       if (image) {
          param.gallery && (image = image.tagged);
-         mode === 'url' ? res.write(image.href()) : 
+         mode === 'url' ? res.write(image.href()) :
                image.renderSkin(param.skin || "Image#preview");
       }
       break;
@@ -907,7 +911,7 @@ function clip_filter(input, param, limit, clipping, delimiter) {
  * @param {Object} param The default Helma macro parameter object.
  * @param {String} [param.title] An optional link title for use in the “title” attribute.
  * @param {String} url A complete or partial URL string. Optional if “handler” is specified.
- * @param {String} [text] An optional link text. 
+ * @param {String} [text] An optional link text.
  * @param {HopObject} handler The HopObject used as base URL. Optional if “url” is specified.
  */
 function renderLink(param, url, text, handler) {
@@ -990,7 +994,7 @@ function formatNumber(number, pattern) {
 }
 
 /**
- * Formats a date according to a formatting string and the site’s locale and time zone. 
+ * Formats a date according to a formatting string and the site’s locale and time zone.
  * @param {Date} date The original date.
  * @param {String} [format = "full"] The formatting string. Either a {@link http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html Java SimpleDateFormat pattern} or of “short”, “medium”, “long”, “full”, “date”, “time”, “iso” or “text”.
  * @returns {String} The formatted date string.
@@ -999,8 +1003,8 @@ function formatDate(date, format) {
    if (!date) {
       return null;
    }
-   
-   var pattern, 
+
+   var pattern,
          site = res.handlers.site,
          locale = site.getLocale();
 
@@ -1015,7 +1019,7 @@ function formatDate(date, format) {
       var type = java.text.DateFormat[format.toUpperCase()];
       pattern = java.text.DateFormat.getDateTimeInstance(type, type, locale).toPattern();
       break;
-      
+
       case "date":
       var type = java.text.DateFormat.FULL
       pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern();
@@ -1025,11 +1029,11 @@ function formatDate(date, format) {
       var type = java.text.DateFormat.SHORT;
       pattern = java.text.DateFormat.getTimeInstance(type, locale).toPattern();
       break;
-      
+
       case "iso":
       pattern = Date.ISOFORMAT;
       break;
-      
+
       case "text":
       var text,
             now = new Date,
@@ -1052,7 +1056,7 @@ function formatDate(date, format) {
                parseInt(diff / Date.ONEDAY, 10));
       }
       return text;
-      
+
       default:
       pattern = format;
    }
@@ -1089,7 +1093,7 @@ function sendMail(recipient, subject, body, options) {
    if (!recipient || !body) {
       throw Error("Insufficient arguments in method sendMail()");
    }
-   var mail = new helma.Mail(getProperty("smtp", "localhost"), 
+   var mail = new helma.Mail(getProperty("smtp", "localhost"),
          getProperty("smtp.port", "25"));
    mail.setFrom(root.replyTo || "root@localhost");
    if (recipient instanceof Array) {
@@ -1148,7 +1152,7 @@ function getLocales(language) {
  * vast amount of choices fails to support easy time zone selection.
  * Furthermore, the L10n features of the java.util.TimeZone class are insufficient
  * as they do only translate the generic string returned by the getDisplayName()
- * method (e.g. Central European Time), not the more usable time zone IDs 
+ * method (e.g. Central European Time), not the more usable time zone IDs
  * (e.g. Europe/Vienna). Thus, time zone selection in Antville is rather limited.
  * @param {String} language
  * @returns {Object[]} A sorted array containing the corresponding timezones
@@ -1161,7 +1165,7 @@ function getTimeZones(language) {
 
    for each (let id in ids) {
       // Exclude confusing time zones
-      if (id.length < 4 || !id.contains("/") || 
+      if (id.length < 4 || !id.contains("/") ||
             id.startsWith("Etc") || id.startsWith("System")) {
          continue;
       }
@@ -1205,7 +1209,7 @@ function doWikiStuff (src) {
    // do the Wiki link thing, <*asterisk style*>
    var regex = new RegExp ("<[*]([^*]+)[*]>");
    regex.ignoreCase=true;
-   
+
    var text = "";
    var start = 0;
    while (true) {
@@ -1307,7 +1311,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
    if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0) {
       pageIdx = 0;
    }
-   param.display = ((pageIdx * itemsPerPage) + 1) + "-" + 
+   param.display = ((pageIdx * itemsPerPage) + 1) + "-" +
          (Math.min((pageIdx * itemsPerPage) + itemsPerPage, size));
    param.total = size;
 

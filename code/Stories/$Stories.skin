@@ -27,3 +27,15 @@
 </tr>
 <% stories.list top %>
 </table>
+
+<% #macros %>
+<p class="small">
+   <b>Available Macros:</b><br>
+   <code>
+      &lt;% file %&gt;<br>
+      &lt;% image %&gt;<br>
+      &lt;% link %&gt;<br>
+      &lt;% poll %&gt;<br>
+      &lt;% site.link %&gt;
+   </code>
+</p>
