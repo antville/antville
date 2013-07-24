@@ -34,14 +34,14 @@ markgettext("images");
  * @name Images
  * @constructor
  * @property {Image} _children
- * @property {Tag[]} alphabeticalGalleries 
+ * @property {Tag[]} alphabeticalGalleries
  * @property {Tag[]} galleries
  * @property {Tag[]} otherGalleries
  * @extends HopObject
  */
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -74,16 +74,16 @@ Images.prototype.main_action = function() {
       skin = "$Images#main";
       res.data.title = gettext("Member Images");
       break;
-      
+
       case Layout:
       images = res.handlers.layout.images;
       skin = "$Images#layout";
       res.data.title = gettext("Layout Images");
       break;
    }
-   res.data.list = renderList(images, "$Image#listItem", 
+   res.data.list = renderList(images, "$Image#listItem",
          10, req.queryParams.page);
-   res.data.pager = renderPager(images, 
+   res.data.pager = renderPager(images,
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString(skin);
    res.handlers.site.renderSkin("Site#page");
@@ -118,9 +118,9 @@ Images.prototype.create_action = function() {
 }
 
 Images.prototype.all_action = function() {
-   res.data.pager = renderPager(this, this.href(req.action), 
+   res.data.pager = renderPager(this, this.href(req.action),
          10, req.queryParams.page);
-   res.data.list = renderList(this, "$Image#listItem", 
+   res.data.list = renderList(this, "$Image#listItem",
          10, req.queryParams.page);
    res.data.title = gettext("All Images");
    res.data.body = this.renderSkinAsString("$Images#main");
@@ -142,7 +142,7 @@ Images.Default = new function() {
       this.width = image.width;
       this.height = image.height;
       this.getUrl = function() {
-         // Cannot use global.Image.getUrl() here because these images are 
+         // Cannot use global.Image.getUrl() here because these images are
          // located in the top-level of the static directory.
          return root.getStaticUrl(name);
       }
@@ -200,7 +200,7 @@ Images.prototype.mergeImages = function() {
 }
 
 /**
- * 
+ *
  * @param {String} group
  * @returns {Tag[]}
  * @see Site#getTags

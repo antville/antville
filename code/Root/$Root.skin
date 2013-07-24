@@ -4,11 +4,11 @@
    <% gettext "To create a new site you need to fill out the form below." %>
 </div>
 <div class="small">
-   <p><% gettext 'The name will be part of the URL of your site. E.g. if you 
+   <p><% gettext 'The name will be part of the URL of your site. E.g. if you
    enter “{0}” as the name your site will be reachable via this url: {1}'
    <% example.name %> <% example.href prefix="<p><code>" suffix=</code></p> %> %></p>
-   <p><% gettext "Please note that you cannot change the name after the site was 
-   created." %> <% gettext "The title will appear in the header of every page 
+   <p><% gettext "Please note that you cannot change the name after the site was
+   created." %> <% gettext "The title will appear in the header of every page
    of your site. You can change it anytime you want." %></p>
 </div>
 <p>
@@ -35,7 +35,7 @@
 </p>
 
 <% #sites %>
-<p><% gettext "This is the directory of public sites hosted here, in 
+<p><% gettext "This is the directory of public sites hosted here, in
 alphabetical order." %></p>
 <% response.pager %>
 <table border="0" cellspacing="0" cellpadding="1">
@@ -81,14 +81,14 @@ alphabetical order." %></p>
 <tr>
    <td class="small"><% gettext 'Requests' %>:</td>
    <td>
-      <% gettext '{0} total' <% param.requestCount %> %>, 
+      <% gettext '{0} total' <% param.requestCount %> %>,
       <% gettext '{0} last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
    </td>
 </tr>
 <tr>
    <td class="small"><% gettext 'Errors' %>:</td>
    <td>
-      <% gettext '{0} total' <% param.errorCount %> %>, 
+      <% gettext '{0} total' <% param.errorCount %> %>,
       <% gettext '{0} last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
    </td>
 </tr>
@@ -110,7 +110,7 @@ alphabetical order." %></p>
 <tr>
    <td class="small"><% gettext 'Memory' %>:</td>
    <td>
-      <% gettext '{0} MB total'  <% param.totalMemory %> %>, 
+      <% gettext '{0} MB total'  <% param.totalMemory %> %>,
       <% gettext '{0} MB free' <% param.freeMemory %> %>
    </td>
 </tr>
@@ -140,7 +140,7 @@ alphabetical order." %></p>
 <% #stylesheet %>
 /* CSS for protected skins (user interface elements etc.) */
 
-ul { list-style: url(<% image /bullet.gif url %>) circle; } 
+ul { list-style: url(<% image /bullet.gif url %>) circle; }
 
 ul.skinmgrTree {
    padding-left:15px;
@@ -300,4 +300,10 @@ div.skin div.title {
 .skin-edit-link {
    padding: 2px;
    text-decoration: none !important;
+}
+
+.connect img {
+   padding: 2px 0;
+   vertical-align: middle;
+   opacity: .3;
 }
