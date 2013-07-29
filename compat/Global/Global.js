@@ -79,47 +79,45 @@ function link_macro() {
 }
 
 function logo_macro(param, name) {
-   param.linkto = "http://antville.org"; 
-   image_macro.call(global, param, "/" + (name || param.name || "smallchaos"));
-   return;
+   return image_macro.call(global, param, "/" + (name || param.name || "smallchaos"));
 }
 
 function input_macro(param) {
    switch (param.type) {
       case "button":
       break;
-      
+
       case "radio":
       param.selectedValue = req.data[param.name]; break;
-      
+
       default:
-      param.value = param.name && req.data[param.name] ? 
+      param.value = param.name && req.data[param.name] ?
             req.data[param.name] : param.value;
    }
 
    switch (param.type) {
       case "textarea" :
       html.textArea(param); break;
-      
+
       case "checkbox" :
       html.checkBox(param); break;
-      
+
       case "button" :
       // FIXME: this is left for backwards compatibility
       html.submit(param); break;
-      
+
       case "submit" :
       html.submit(param); break;
-      
+
       case "password" :
       html.password(param); break;
-      
+
       case "radio" :
       html.radioButton(param); break;
-      
+
       case "file" :
       html.file(param); break;
-      
+
       default :
       html.input(param);
    }
@@ -179,8 +177,8 @@ function spacer_macro(param) {
 }
 
 function fakemail_macro(param) {
-	var tldList = ["com", "net", "org", "mil", "edu", "de", "biz", "de", "ch", 
-	      "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk", 
+	var tldList = ["com", "net", "org", "mil", "edu", "de", "biz", "de", "ch",
+	      "at", "ru", "de", "tv", "com", "st", "br", "fr", "de", "nl", "dk",
 	      "ar", "jp", "eu", "it", "es", "com", "us", "ca", "pl"];
    var nOfMails = param.number ? (param.number <= 50 ? param.number : 50) : 20;
    for (var i=0;i<nOfMails;i++) {

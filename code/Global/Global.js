@@ -606,8 +606,9 @@ function list_macro(param, id, limit) {
       return;
    }
 
+   var skin, collection;
    var max = Math.min(limit || 25, 50);
-   var collection, skin;
+
    if (id === "sites") {
       collection = root.sites.list(0, max);
       skin = "Site#preview";
@@ -615,7 +616,7 @@ function list_macro(param, id, limit) {
       collection = root.updates.list(0, limit);
       skin = "Site#preview";
    } else {
-      var site;
+      var site, type;
       var parts = id.split("/");
       if (parts.length > 1) {
          type = parts[1];
@@ -649,12 +650,12 @@ function list_macro(param, id, limit) {
 
          case "featured":
          collection = site.stories.featured.list(0, max);
-         prototype = "Story#preview";
+         skin = "Story#preview";
          break;
 
          case "images":
          collection = site.images.list(0, max);
-         prototype = "Image#preview";
+         skin = "Image#preview";
          break;
 
          case "macros":
@@ -662,14 +663,14 @@ function list_macro(param, id, limit) {
          return;
 
          case "postings":
-         content = site.stories.union;
+         var content = site.stories.union;
          collection = content.list().filter(filter).filter(function(item) {
             if (item.constructor === Comment) {
                return commentFilter(item);
             }
             return true;
          });
-         prototype = "Story#preview";
+         skin = "Story#preview";
          break;
 
          case "stories":
@@ -678,7 +679,7 @@ function list_macro(param, id, limit) {
          collection = stories.list().filter(function(item, index) {
             return item.constructor === Story && filter(item, counter++);
          });
-         prototype = "Story#preview";
+         skin = "Story#preview";
          break;
 
          case "tags":
