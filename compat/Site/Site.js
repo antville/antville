@@ -93,7 +93,7 @@ Site.prototype.link_macro = function(param, url, text) {
       case "mostread":
       handler = this.stories;
       param.to = "top"; break;
-      
+
       case "layouts":
       action = ".";
       handler = this.layout;
@@ -106,12 +106,18 @@ Site.prototype.link_macro = function(param, url, text) {
       case "members":
       case "polls":
       case "stories":
-      handler = this[action].get(parts[1]);
-      if (!handler) {
-         return;
+      handler = this[action];
+      if (handler) {
+        var node = handler.get(parts[1]);
+        if (node) {
+          handler = node;
+          param.to = parts[2] || "main";
+        } else {
+          param.to = parts[1] || "main";
+        }
       }
-      param.to = parts[2] || "main"; break;
-      
+      break;
+
       default:
       handler = this;
    }
@@ -146,16 +152,16 @@ Site.prototype.navigation_macro = function(param) {
    // HopObject.renderSkinAsString() is overridden and will never return an empty skin
    // due to the added skin edit controls! Thus, we are using the original methods first,
    // and the overriden ones later.
-   navigation.contributors = this.renderSkinAsString("Site#contribnavigation");
-   navigation.admins = this.renderSkinAsString("Site#adminnavigation");
+   navigation.contributors = this.__renderSkinAsString__("Site#contribnavigation");
+   navigation.admins = this.__renderSkinAsString__("Site#adminnavigation");
    if (!navigation.contributors && !navigation.admins && !res.meta.navigation) {
       res.meta.navigation = true;
       this.renderSkin("Site#navigation");
    } else if ((group = param["for"]) && navigation[group]) {
       if (group === "contributors" && this.stories.getPermission("create")) {
-         this.renderSkinAsString("Site#contribnavigation");
+         this.renderSkin("Site#contribnavigation");
       } else if (group === "admins" && this.getPermission("edit")) {
-         this.renderSkinAsString("Site#adminnavigation");
+         this.renderSkin("Site#adminnavigation");
       }
    }
    return;
@@ -191,13 +197,13 @@ Site.prototype.online_macro = function(param) {
       if (req.isPost()) {
          param.selectedValue = req.postParams.online;
       } else {
-         param.selectedValue = String(online);      
+         param.selectedValue = String(online);
       }
       //res.debug(param.name + ": " + param.value + "/" + param.selectedValue);
       return html.checkBox(param);
    } else if (online) {
       res.write(param.yes || "yes");
-   } else { 
+   } else {
       res.write(param.no || "no");
    }
    return;
@@ -303,12 +309,12 @@ Site.prototype.monthlist_macro = function(param) {
    for (var i=0; i<size; i+=1) {
       var curr = collection.get(i);
       var next = collection.get(i+1);
-      if (!next || next.groupname.substring(0, 6) < 
+      if (!next || next.groupname.substring(0, 6) <
             curr.groupname.substring(0, 6)) {
          res.write(param.itemprefix);
          html.openLink({href: collection.href() + "/" +
                formatDate(curr.groupname.toDate("yyyyMMdd"), "yyyy/MM/dd")});
-         var ts = curr.groupname.substring(0, 6).toDate("yyyyMM", 
+         var ts = curr.groupname.substring(0, 6).toDate("yyyyMM",
                this.getTimeZone());
          res.write(formatDate(ts, param.format || "MMMM yyyy"));
          html.closeLink();
