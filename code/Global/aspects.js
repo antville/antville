@@ -30,7 +30,7 @@ app.addRepository("modules/helma/Aspects.js");
    function skinMayDisplayEditLink(name) {
       return req.cookies[User.COOKIE + 'LayoutSandbox'] &&
          res.handlers.layout.getPermission('main') &&
-         typeof name === 'string' && 
+         typeof name === 'string' &&
          !name.startsWith('$') &&
          res.contentType === 'text/html';
    }
@@ -52,15 +52,15 @@ app.addRepository("modules/helma/Aspects.js");
          var skinName = parts[1];
          var skin = new Skin(prototype, skinName);
          res.writeln('<!-- Begin of #skin-' + id + ' -->');
-         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' + 
+         res.writeln('<div id="skin-' + id + '" class="skin" data-name="' +
                name + '" data-href="' + skin.href('edit') + '">');
          func.apply(object, args);
          res.writeln('</div>\n<!-- End of #skin-' + id + ' -->');
       } else {
-         func.apply(object, args);         
+         func.apply(object, args);
       }
 
-      return;      
+      return;
    }
 
    function renderSkinAsString(args, func, object) {
@@ -77,6 +77,8 @@ app.addRepository("modules/helma/Aspects.js");
    for each (var prototype in prototypes) {
       if (prototype.name in global) {
          global[prototype.name].prototype.onCodeUpdate = function() {
+            this.__renderSkin__ = this.renderSkin;
+            this.__renderSkinAsString__ = this.renderSkinAsString;
             helma.aspects.addAround(this, 'renderSkin', renderSkin);
             helma.aspects.addAround(this, 'renderSkinAsString', renderSkinAsString);
          }
