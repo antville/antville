@@ -132,7 +132,7 @@ alphabetical order." %></p>
 </tr>
 <tr>
    <td class="small"><% gettext Build %>:</td>
-   <td><% link <% version revision prefix=http://antville.googlecode.com/svn/!svn/bc/ %> <% version revision %> %>
+   <td><% link <% version revision prefix=http://antville.googlecode.com/svn/!svn/bc/ suffix=/trunk %> <% version revision %> %>
          (<% version date | format date medium %>)</td>
 </tr>
 </table>
