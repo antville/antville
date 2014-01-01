@@ -6,10 +6,6 @@
    <title>Antville’s Formica Bookmarklet</title>
    <style>
    body {
-      /*width: 610px;
-      height: 350px;
-      border: 1px solid red;
-      color: #000;*/
       font-family: sans-serif;
    }
    form {
@@ -34,7 +30,7 @@
       font-size: 18px;
    }
    img {
-      background: url(http://t2.gstatic.com/images?q=tbn:ANd9GcRayuCjH7MGcnJmYfBEHmIVNl9UFJuhCsawGzGgjI66sgwmgMweIQ&t=1);      
+      background: url('http://t2.gstatic.com/images?q=tbn:ANd9GcRayuCjH7MGcnJmYfBEHmIVNl9UFJuhCsawGzGgjI66sgwmgMweIQ&t=1');
    }
    img.harvest {
       margin: 3px;
@@ -50,16 +46,16 @@
      from {
        -webkit-transform: rotate(0deg);
      }
-     to { 
+     to {
        -webkit-transform: rotate(360deg);
      }
    }
    img.loading {
       background: none;
       margin-top: 50%;
-      -webkit-animation-name:             rotate; 
-      -webkit-animation-duration:         0.5s; 
-      -webkit-animation-iteration-count:  infinite;
+      -webkit-animation-name: rotate;
+      -webkit-animation-duration: 0.5s;
+      -webkit-animation-iteration-count: infinite;
       -webkit-transition-timing-function: linear;
    }
    .left {
@@ -129,19 +125,16 @@
    </div>
 </form>
 
-<script type='text/javascript' src='http://www.google.com/jsapi'></script>
-<script type='text/javascript'>
-google.load('jquery', '1');
-</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
 <script type='text/javascript'>
 $(function() {
-   var proxyUri = 'http://p3k-001.appspot.com/roxy';
+   var proxyUri = '//p3k-001.appspot.com/roxy';
    //proxyUri = 'http://localhost:8081/roxy';
    var args, siteUri, sourceUri, images, currentIndex;
-  
-   new function() {
-      var search = String(location.search).substr(1);
+
+   (function(search) {
+      search = String(search).substr(1);
       if (search.length > 0) {
          args = {};
          var parts = search.split('&');
@@ -150,24 +143,24 @@ $(function() {
             args[parts[0]] = decodeURIComponent(parts[1]);
          });
       }
-   }
-   
+   }(location.search));
+
    $('.controls a').click(function(event) {
       event.preventDefault();
       var image = getNextImage($(this).attr('href') === '#next' ? 1 : -1);
       displayImage(image);
    });
-   
+
    $('#image').click(function(event) {
       toggleImage();
    });
-   
+
    $('form button').click(function(event) {
       event.preventDefault();
       $(this).attr('disabled', true);
       var imageUri = $('.left').css('display') === 'none' ? null : images[currentIndex].src;
       post(sourceUri, imageUri);
-   })
+   });
 
    function main() {
       if (!args.s || !args.l) {
@@ -198,7 +191,7 @@ $(function() {
             if (images.length < 1 && !addImage.counter) {
                toggleImage();
                $('#image').attr({disabled: true, checked: false});
-            } 
+            }
          });
       }
    }
@@ -232,7 +225,7 @@ $(function() {
             url = baseUri + url;
          }
       } else if (url.indexOf('://') < 0) {
-         // url does neither start with a slash, nor contain 
+         // url does neither start with a slash, nor contain
          // a protocol: prepend sourceUri up to the final slash.
          baseUri || (baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1));
          url = baseUri + url;
@@ -248,7 +241,7 @@ $(function() {
          addImage.counter -= 1;
       }
       return;
-   
+
       var item = $('<img>');
       item.attr({src: url}).addClass('harvest').click(function() {
          var self = this;
@@ -273,7 +266,7 @@ $(function() {
             url = baseUri + url;
          }
       } else if (url.indexOf('://') < 0) {
-         // url does neither start with a slash, nor contain 
+         // url does neither start with a slash, nor contain
          // a protocol: prepend sourceUri up to the final slash.
          baseUri = sourceUri.substring(0, sourceUri.lastIndexOf('/') + 1);
          url = baseUri + url;
@@ -289,43 +282,24 @@ $(function() {
    }
 
    function displayImage(image) {
-      //$(image).load(function() {
-         var MAX_WIDTH = 200;
-         var MAX_HEIGHT = 600;
-         var width = image.width;
-         var height = image.height;
-         var factorH = 1, factorV = 1;
-         if (width > MAX_WIDTH) {
-            factorH = MAX_WIDTH / width;
-         }
-         if (height > MAX_HEIGHT) {
-            factorV = MAX_HEIGHT / height;
-         }
-         if (factorH !== 1 || factorV !== 1) {
-            image.width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
-            image.height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
-         }
-         $('.image').html(image);
-         $('.info').html((currentIndex + 1) + ' of ' + images.length);
-         return;
-
-         var canvas = $('canvas').get(0);
-         var context = canvas.getContext('2d');
-         canvas.width = width;
-         canvas.height = height;
-         context.drawImage(image, 0, 0, width, height);
-      //});
-      return;
-   
-      // Only works with Image object, not in canvas (see below)
-      image.src = url;
-      return;
-   
-      // Browsers throw a security error when we use the original URL
-      //image.src = url;
-      $.getJSON(proxyUri + '?callback=?&url=' + url, function(data) {
-         image.src = 'data:' + data.headers['content-type'] + ';base64,' + data.content;      
-      });
+       var MAX_WIDTH = 200;
+       var MAX_HEIGHT = 600;
+       var width = image.width;
+       var height = image.height;
+       var factorH = 1, factorV = 1;
+       if (width > MAX_WIDTH) {
+          factorH = MAX_WIDTH / width;
+       }
+       if (height > MAX_HEIGHT) {
+          factorV = MAX_HEIGHT / height;
+       }
+       if (factorH !== 1 || factorV !== 1) {
+          image.width = Math.ceil(width * (factorH < factorV ? factorH : factorV));
+          image.height = Math.ceil(height * (factorH < factorV ? factorH : factorV));
+       }
+       $('.image').html(image);
+       $('.info').html((currentIndex + 1) + ' of ' + images.length);
+       return;
    }
 
    function getNextImage(direction) {
@@ -343,7 +317,7 @@ $(function() {
 
    function post(url, imageUrl) {
       var postStory = function(imageName) {
-         var imageMacro = (imageName ? "\n\n<\x25 image '" + 
+         var imageMacro = (imageName ? "\n\n<\x25 image '" +
                imageName + "' | link '" + url + "' \x25>" : '');
          $.getJSON(siteUri + '/stories/create?callback=?', {
             save: 1,
@@ -351,8 +325,8 @@ $(function() {
             text: $('#text').val() + imageMacro
          }, function(data, status, xhr) {
             if (!data) {
-               console.log(this, arguments);
-               return alert('Error!');
+               //console.error(this, arguments);
+               return alert('Error: ' + status);
             }
             if (window.opener) {
                window.close();
@@ -372,8 +346,8 @@ $(function() {
             maxHeight: args.h || ''
          }, function(data, status, xhr) {
             if (!data) {
-               console.log(this, arguments);
-               return alert('Error');
+               //console.error(this, arguments);
+               return alert('Error: ' + status);
             }
             postStory(name);
          });
@@ -382,7 +356,7 @@ $(function() {
       }
       return;
    }
-   
+
    function toggleImage() {
       var width;
       var left = $('.left');
