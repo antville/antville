@@ -68,7 +68,7 @@ this.handleMetadata("replyTo");
  * @name Root
  * @constructor
  * @extends Site
- * @property {Site[]} _children 
+ * @property {Site[]} _children
  * @property {Admin} admin
  * @property {User[]} admins
  * @property {Api} api
@@ -92,7 +92,7 @@ this.handleMetadata("replyTo");
  * @returns {Boolean}
  */
 Root.prototype.getPermission = function(action) {
-   if (action.contains("admin")) {
+   if (action && action.contains("admin")) {
       return User.require(User.PRIVILEGED);
    }
    switch (action) {
@@ -121,9 +121,9 @@ Root.prototype.main_action = function() {
       this.layout.reset();
       res.redirect(this.members.href("register"));
    } else if (session.user && this.members.owners.size() < 1) {
-      this.creator = this.modifier = this.layout.creator = 
+      this.creator = this.modifier = this.layout.creator =
             this.layout.modifier = session.user;
-      this.created = this.modified = this.layout.created = 
+      this.created = this.modified = this.layout.created =
             this.layout.modified = new Date;
       session.user.role = User.PRIVILEGED;
       res.handlers.membership.role = Membership.OWNER;
@@ -163,7 +163,7 @@ Root.prototype.create_action = function() {
       }
    }
 
-   // Cannot use res.handlers.site because somehow it is always root 
+   // Cannot use res.handlers.site because somehow it is always root
    res.handlers.newSite = new Site;
    res.handlers.example = new Site;
    res.handlers.example.name = "foo";
@@ -181,9 +181,9 @@ Root.prototype.sites_action = function() {
       sites.sort(new String.Sorter("title"));
       this.cache.sites = {list: sites, modified: now};
    }
-   res.data.list = renderList(this.cache.sites.list, 
+   res.data.list = renderList(this.cache.sites.list,
          "$Site#listItem", 25, req.queryParams.page);
-   res.data.pager = renderPager(this.cache.sites.list, 
+   res.data.pager = renderPager(this.cache.sites.list,
          this.href(req.action), 25, req.queryParams.page);
    res.data.title = gettext("Public Sites");
    res.data.body = this.renderSkinAsString("$Root#sites");
@@ -192,9 +192,9 @@ Root.prototype.sites_action = function() {
 }
 
 Root.prototype.updates_xml_action = function() {
-   res.contentType = "application/rss+xml"; 
+   res.contentType = "application/rss+xml";
    var now = new Date;
-   var feed = new rome.SyndFeedImpl();   
+   var feed = new rome.SyndFeedImpl();
    feed.setFeedType("rss_2.0");
    feed.setLink(root.href());
    feed.setTitle("Recently updated sites at " + root.title);
@@ -203,7 +203,7 @@ Root.prototype.updates_xml_action = function() {
    feed.setPublishedDate(now);
    var entries = new java.util.ArrayList();
    var entry, description;
-   var sites = root.updates.list(0, 25).sort(Number.Sorter("modified", 
+   var sites = root.updates.list(0, 25).sort(Number.Sorter("modified",
          Number.Sorter.DESC));
    for each (var site in sites) {
       entry = new rome.SyndEntryImpl();
@@ -249,7 +249,7 @@ Root.prototype.health_action = function() {
    var freeMemory = jvm.freeMemory()  / 1024 / 1024;
 
    var param = {
-      uptime: formatNumber((new Date - app.upSince.getTime()) / 
+      uptime: formatNumber((new Date - app.upSince.getTime()) /
             Date.ONEDAY, "0.##"),
       freeMemory: formatNumber(freeMemory),
       totalMemory: formatNumber(totalMemory),
@@ -258,18 +258,18 @@ Root.prototype.health_action = function() {
       cacheSize: formatNumber(getProperty("cacheSize"))
    };
 
-   for each (key in ["activeThreads", "freeThreads", "requestCount", 
+   for each (key in ["activeThreads", "freeThreads", "requestCount",
          "errorCount", "xmlrpcCount", "cacheusage"]) {
       param[key] = formatNumber(app[key]);
    }
-   
+
    param.errorRatio = formatNumber(100 * app.errorCount / app.requestCount || 0);
    param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit || 0);
    if (Admin.health) {
       param.requestsPerUnit = formatNumber(Admin.health.requestsPerUnit);
       param.errorsPerUnit = formatNumber(Admin.health.errorsPerUnit);
    }
-   
+
    param.entries = app.data.entries.length;
    param.mails = app.data.mails.length;
    param.requests = 0;
@@ -285,7 +285,7 @@ Root.prototype.health_action = function() {
 
 Root.prototype.mrtg_action = function() {
    res.contentType = "text/plain";
-   var target = req.queryParams.target; 
+   var target = req.queryParams.target;
    if (!target) {
       return;
    }
@@ -329,7 +329,7 @@ Root.prototype.mrtg_action = function() {
    res.writeln(app.upSince);
    res.writeln("mrtg." + target + " of Antville version " + Root.VERSION);
    return;
-} 
+}
 
 /**
  * Catch some undefined macro handlers, then delegate to the super prototype.
@@ -348,7 +348,7 @@ Root.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  * @see Site#getFormOptions
@@ -375,7 +375,7 @@ Root.prototype.getCreationPermission = function() {
    } if (User.require(User.PRIVILEGED)) {
       return true;
    }
-   
+
    switch (root.creationScope) {
       case User.PRIVILEGED:
       return false;
@@ -385,19 +385,19 @@ Root.prototype.getCreationPermission = function() {
       case User.REGULAR:
       var now = new Date, delta;
       if (root.probationPeriod) {
-         delta = root.probationPeriod - Math.floor((now - 
+         delta = root.probationPeriod - Math.floor((now -
                user.created) / Date.ONEDAY);
          if (delta > 0) {
-            session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.", 
+            session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.",
                   ngettext("{0} day", "{0} days", delta));
             return false;
          }
-      } 
+      }
       if (root.creationDelay && user.sites.count() > 0) {
-         delta = root.creationDelay - Math.floor((now - 
+         delta = root.creationDelay - Math.floor((now -
                user.sites.get(0).created) / Date.ONEDAY);
          if (delta > 0) {
-            session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.", 
+            session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.",
                   ngettext("{0} day", "{0} days", delta));
             return false;
          }

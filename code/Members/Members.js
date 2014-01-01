@@ -42,7 +42,7 @@ markgettext("members");
  */
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -55,18 +55,16 @@ Members.prototype.getPermission = function(action) {
       case "salt.txt":
       return true;
    }
-      
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
+
+   var sitePermission = this._parent.getPermission("main");
 
    switch (action) {
       case "edit":
       case "privileges":
       case "subscriptions":
       case "updated":
-      return !!session.user;
-      
+      return sitePermission && !!session.user;
+
       case ".":
       case "main":
       case "add":
@@ -74,8 +72,8 @@ Members.prototype.getPermission = function(action) {
       case "managers":
       case "contributors":
       case "subscribers":
-      return Membership.require(Membership.OWNER) ||
-            User.require(User.PRIVILEGED);
+      return sitePermission && (Membership.require(Membership.OWNER) ||
+            User.require(User.PRIVILEGED));
    }
 
    return Feature.getPermission.apply(this, arguments);
@@ -83,9 +81,9 @@ Members.prototype.getPermission = function(action) {
 
 Members.prototype.main_action = function() {
    res.data.title = gettext("Site Members");
-   res.data.list = renderList(this, "$Membership#member", 
+   res.data.list = renderList(this, "$Membership#member",
          10, req.queryParams.page);
-   res.data.pager = renderPager(this, this.href(req.action), 
+   res.data.pager = renderPager(this, this.href(req.action),
          10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
@@ -98,7 +96,7 @@ Members.prototype.register_action = function() {
          var title = res.handlers.site.title;
          var user = User.register(req.postParams);
          var membership = Membership.add(user, Membership.SUBSCRIBER, this._parent);
-         membership.notify(req.action, user.email, 
+         membership.notify(req.action, user.email,
                gettext('[{0}] Welcome to {1}!', root.title, title));
          res.message = gettext('Welcome to “{0}”, {1}. Have fun!',
                title, user.name);
@@ -194,7 +192,7 @@ Members.prototype.login_action = function() {
 
 Members.prototype.logout_action = function() {
    if (session.user) {
-      res.message = gettext("Good bye, {0}! Looking forward to seeing you again!", 
+      res.message = gettext("Good bye, {0}! Looking forward to seeing you again!",
             session.user.name);
       User.logout();
    }
@@ -232,9 +230,9 @@ Members.prototype.salt_txt_action = function() {
 
 Members.prototype.owners_action = function() {
    res.data.title = gettext("Site Owners");
-   res.data.list = renderList(this.owners, 
+   res.data.list = renderList(this.owners,
          "$Membership#member", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.owners, 
+   res.data.pager = renderPager(this.owners,
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
@@ -243,9 +241,9 @@ Members.prototype.owners_action = function() {
 
 Members.prototype.managers_action = function() {
    res.data.title = gettext("Site Managers");
-   res.data.list = renderList(this.managers, 
-         "$Membership#member", 10, req.queryParams.page); 
-   res.data.pager = renderPager(this.managers, 
+   res.data.list = renderList(this.managers,
+         "$Membership#member", 10, req.queryParams.page);
+   res.data.pager = renderPager(this.managers,
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
@@ -254,9 +252,9 @@ Members.prototype.managers_action = function() {
 
 Members.prototype.contributors_action = function() {
    res.data.title = gettext("Site Contributors");
-   res.data.list = renderList(this.contributors, 
+   res.data.list = renderList(this.contributors,
          "$Membership#member", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.contributors, 
+   res.data.pager = renderPager(this.contributors,
          this.href(req.action), 10, req.data.page);
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
@@ -265,9 +263,9 @@ Members.prototype.contributors_action = function() {
 
 Members.prototype.subscribers_action = function() {
    res.data.title = gettext("Site Subscribers");
-   res.data.list = renderList(this.subscribers, 
+   res.data.list = renderList(this.subscribers,
          "$Membership#member", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.subscribers, 
+   res.data.pager = renderPager(this.subscribers,
          this.href(req.action), 10, req.queryParams.page);
    res.data.body = this.renderSkinAsString("$Members#main");
    res.handlers.site.renderSkin("Site#page");
@@ -318,10 +316,10 @@ Members.prototype.add_action = function() {
             res.message = gettext("No user found to add as member.");
          } else {
             if (result.length >= 100) {
-               res.message = gettext("Too many users found, displaying the first {0} matches only.", 
+               res.message = gettext("Too many users found, displaying the first {0} matches only.",
                      result.length);
             } else {
-               res.message = ngettext("One user found.", "{0} users found.", 
+               res.message = ngettext("One user found.", "{0} users found.",
                       result.length);
             }
             res.data.result = this.renderSkinAsString("$Members#results", result);
@@ -333,9 +331,9 @@ Members.prototype.add_action = function() {
    } else if (req.postParams.add) {
       try {
          var membership = this.addMembership(req.postParams);
-         membership.notify(req.action, membership.creator.email,  
+         membership.notify(req.action, membership.creator.email,
                gettext('[{0}] Notification of membership change', root.title));
-         res.message = gettext("Successfully added {0} to the list of members.", 
+         res.message = gettext("Successfully added {0} to the list of members.",
                req.postParams.name);
          res.redirect(membership.href("edit"));
       } catch (ex) {
@@ -352,7 +350,7 @@ Members.prototype.add_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} searchString
  * @returns {Object}
  */
@@ -381,7 +379,7 @@ Members.prototype.search = function(searchString) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  * @returns {Membership}
  */
