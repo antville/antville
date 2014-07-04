@@ -50,13 +50,13 @@ Importer.run = function(site, user) {
       for (var i=0; i<feed.entries.size(); i+=1) {
         var entry = feed.entries.get(i);
         var category = entry.categories.get(0);
-        if (category.name !== "http://schemas.google.com/blogger/2008/kind#post") {
+        if (category.name !== 'http://schemas.google.com/blogger/2008/kind#post') {
           continue;
         }
         var story = Story.add({
           title: entry.title,
           text: entry.description || entry.contents.get(0).value,
-          created: entry.publishedDate.format("yyyy-MM-dd HH:mm"),
+          created: entry.publishedDate.format('yyyy-MM-dd HH:mm'),
           status: Story.CLOSED,
           mode: Story.FEATURED
         }, site, user);

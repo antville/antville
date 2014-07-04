@@ -39,7 +39,7 @@ HopObject.prototype.handleMetadata = function(name) {
   this.__defineSetter__(name, function(value) {
     return this.setMetadata(name, value);
   });
-  this[name + "_macro"] = function(param) {
+  this[name + '_macro'] = function(param) {
     var value;
     if (value = this[name]) {
       res.write(value);
@@ -56,7 +56,7 @@ HopObject.prototype.handleMetadata = function(name) {
  */
 HopObject.prototype.getMetadata = function(name) {
   if (!this.metadata) {
-    throw Error("No metadata collection defined for prototype " + this.constructor.name);
+    throw Error('No metadata collection defined for prototype ' + this.constructor.name);
   } else {
     this.metadata.prefetchChildren();
   }
@@ -89,14 +89,14 @@ HopObject.prototype.getMetadata = function(name) {
  */
 HopObject.prototype.setMetadata = function(name, value) {
   if (!this.metadata) {
-    throw Error("No metadata collection defined for prototype " + this.constructor.name);
+    throw Error('No metadata collection defined for prototype ' + this.constructor.name);
   }
 
   if (!name) {
-    throw Error("Insufficient arguments");
+    throw Error('Insufficient arguments');
   }
 
-  if (typeof name === "object") {
+  if (typeof name === 'object') {
     for (var i in name) {
       this.setMetadata(i, name[i]);
     }
@@ -123,7 +123,7 @@ HopObject.prototype.setMetadata = function(name, value) {
  */
 HopObject.prototype.deleteMetadata = function(name) {
   if (!this.metadata) {
-    throw Error("No metadata collection defined for prototype " + this.constructor.name);
+    throw Error('No metadata collection defined for prototype ' + this.constructor.name);
   }
 
   var self = this;

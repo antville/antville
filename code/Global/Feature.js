@@ -51,14 +51,14 @@ global.feature_macro = function(param, id) {
 var Feature = function(id, url, feature) {
   var self = this;
 
-  this.__defineGetter__("id", function() {return id});
+  this.__defineGetter__('id', function() {return id});
 
   for (let i in feature) {
     this[i] = feature[i];
   }
 
   this.toString = function() {
-    return "[Feature: " + html.linkAsString({href: url}, id) + "]";
+    return '[Feature: ' + html.linkAsString({href: url}, id) + ']';
   }
 
   return this;
@@ -71,12 +71,12 @@ var Feature = function(id, url, feature) {
  */
 Feature.add = function(id, url, feature) {
   if (!id || !url) {
-    throw Error("Insufficient arguments");
+    throw Error('Insufficient arguments');
   }
 
   var existingFeature = Feature.get(id);
   if (existingFeature) {
-    app.log("Warning! Overwriting already present feature with ID " + id);
+    app.log('Warning! Overwriting already present feature with ID ' + id);
     Feature.remove(existingFeature);
   }
 
@@ -91,7 +91,7 @@ Feature.add = function(id, url, feature) {
  */
 Feature.remove = function(feature) {
   var features = Feature.list();
-  if (feature === "*") {
+  if (feature === '*') {
     features.length = 0;
   } else if (feature) {
     var index = features.indexOf(feature);
@@ -129,11 +129,11 @@ Feature.get = function(id) {
  * @returns {Object}
  */
 Feature.invoke = function(id, callback) {
-  id || (id = "*");
+  id || (id = '*');
   if (callback) {
     var feature, method, result;
     var args = Array.prototype.slice.call(arguments, 2);
-    if (id === "*") {
+    if (id === '*') {
       for each (feature in Feature.list()) {
         method = feature[String(callback)];
         if (method && method.constructor === Function) {

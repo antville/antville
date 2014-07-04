@@ -127,17 +127,17 @@
         Example:
 
         text = JSON.stringify(['e', {pluribus: 'unum'}]);
-        // text is '["e",{"pluribus":"unum"}]'
+        // text is '['e',{'pluribus':'unum'}]'
 
 
         text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');
-        // text is '[\n\t"e",\n\t{\n\t\t"pluribus": "unum"\n\t}\n]'
+        // text is '[\n\t'e',\n\t{\n\t\t'pluribus': 'unum'\n\t}\n]'
 
         text = JSON.stringify([new Date()], function (key, value) {
            return this[key] instanceof Date ?
               'Date(' + this[key] + ')' : value;
         });
-        // text is '["Date(---current time---)"]'
+        // text is '['Date(---current time---)']'
 
 
       JSON.parse(text, reviver)
@@ -168,7 +168,7 @@
            return value;
         });
 
-        myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
+        myData = JSON.parse('['Date(09/09/2001)']', function (key, value) {
            var d;
            if (typeof value === 'string' &&
                 value.slice(0, 5) === 'Date(' &&
@@ -188,7 +188,7 @@
 
 /*jslint evil: true, strict: false, regexp: false */
 
-/*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
+/*members '', '\b', '\t', '\n', '\f', '\r', '\'', JSON, '\\", apply,
    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,
    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,
    lastIndex, length, parse, prototype, push, replace, slice, stringify,
@@ -205,7 +205,7 @@ if (!JSON) {
 }
 
 (function () {
-   "use strict";
+   'use strict';
 
    function f(n) {
       // Format integers to have at least two digits.
@@ -495,7 +495,7 @@ if (!JSON) {
 
         if (/^[\],:{}\s]*$/
               .test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@')
-                .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+                .replace(/'[^'\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
                 .replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
 // In the third stage we use the eval function to compile the text into a
@@ -521,8 +521,8 @@ if (!JSON) {
 
 // Do not enumerate the new JSON methods.
 // (These lines are not included in the original code by Crockford.)
-Object.prototype.dontEnum("toJSONString");
-Object.prototype.dontEnum("parseJSON");
+Object.prototype.dontEnum('toJSONString');
+Object.prototype.dontEnum('parseJSON');
 
 /**
  * Create a JSONP-compatible response from the callback name and the desired data.
@@ -533,7 +533,7 @@ JSON.pad = function(data, callback) {
   if (!callback) {
     return;
   }
-  return callback + "(" + JSON.stringify(data) + ")";
+  return callback + '(' + JSON.stringify(data) + ')';
 }
 
 /**
@@ -544,9 +544,9 @@ JSON.pad = function(data, callback) {
  * @param {Boolean} resume Switch to define whether further processing should be continued or not
  */
 JSON.sendPaddedResponse = function(data, key, resume) {
-  var callback = req.data[key || "callback"];
+  var callback = req.data[key || 'callback'];
   if (callback) {
-    res.contentType = "text/javascript";
+    res.contentType = 'text/javascript';
     res.write(JSON.pad(data, callback));
     resume || res.stop();
   }

@@ -27,80 +27,80 @@
  * @fileOverview Defines the Site prototype.
  */
 
-markgettext("Site");
-markgettext("site");
+markgettext('Site');
+markgettext('site');
 
-this.handleMetadata("archiveMode");
-this.handleMetadata("callbackMode");
-this.handleMetadata("callbackUrl");
-this.handleMetadata("closed");
-this.handleMetadata("commentMode");
-this.handleMetadata("configured");
-this.handleMetadata("deleted");
-this.handleMetadata("export_id");
-this.handleMetadata("import_id");
-this.handleMetadata("job");
-this.handleMetadata("locale");
-this.handleMetadata("notificationMode");
-this.handleMetadata("notified");
-this.handleMetadata("pageSize");
-this.handleMetadata("pageMode");
-this.handleMetadata("spamfilter");
-this.handleMetadata("tagline");
-this.handleMetadata("timeZone");
-this.handleMetadata("title");
+this.handleMetadata('archiveMode');
+this.handleMetadata('callbackMode');
+this.handleMetadata('callbackUrl');
+this.handleMetadata('closed');
+this.handleMetadata('commentMode');
+this.handleMetadata('configured');
+this.handleMetadata('deleted');
+this.handleMetadata('export_id');
+this.handleMetadata('import_id');
+this.handleMetadata('job');
+this.handleMetadata('locale');
+this.handleMetadata('notificationMode');
+this.handleMetadata('notified');
+this.handleMetadata('pageSize');
+this.handleMetadata('pageMode');
+this.handleMetadata('spamfilter');
+this.handleMetadata('tagline');
+this.handleMetadata('timeZone');
+this.handleMetadata('title');
 
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getStatus = defineConstants(Site, markgettext("Blocked"),
-    markgettext("Regular"), markgettext("Trusted"));
+Site.getStatus = defineConstants(Site, markgettext('Blocked'),
+    markgettext('Regular'), markgettext('Trusted'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getModes = defineConstants(Site, markgettext("Deleted"),
-    markgettext("Closed"), markgettext("Restricted"),
-    markgettext("Public"), markgettext("Open"));
+Site.getModes = defineConstants(Site, markgettext('Deleted'),
+    markgettext('Closed'), markgettext('Restricted'),
+    markgettext('Public'), markgettext('Open'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getPageModes = defineConstants(Site, markgettext("days") /* ,
-    markgettext("stories") */ );
+Site.getPageModes = defineConstants(Site, markgettext('days') /* ,
+    markgettext('stories') */ );
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getCommentModes = defineConstants(Site, markgettext("disabled"),
-    markgettext("enabled"));
+Site.getCommentModes = defineConstants(Site, markgettext('disabled'),
+    markgettext('enabled'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getArchiveModes = defineConstants(Site, markgettext("closed"),
-    markgettext("public"));
+Site.getArchiveModes = defineConstants(Site, markgettext('closed'),
+    markgettext('public'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getNotificationModes = defineConstants(Site, markgettext("Nobody"),
-    markgettext("Owner"), markgettext("Manager"), markgettext("Contributor"),
-    markgettext("Subscriber"));
+Site.getNotificationModes = defineConstants(Site, markgettext('Nobody'),
+    markgettext('Owner'), markgettext('Manager'), markgettext('Contributor'),
+    markgettext('Subscriber'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getCallbackModes = defineConstants(Site, markgettext("disabled"),
-    markgettext("enabled"));
+Site.getCallbackModes = defineConstants(Site, markgettext('disabled'),
+    markgettext('enabled'));
 
 /**
  * @param {String} name A unique identifier also used in the URL of a site
@@ -115,20 +115,20 @@ Site.add = function(data, user) {
   var site = new Site;
 
   if (!data.name) {
-    throw Error(gettext("Please enter a name for your new site."));
+    throw Error(gettext('Please enter a name for your new site.'));
   }
 
   if (data.name.length > 30) {
-    throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
+    throw Error(gettext('The chosen name is too long. Please enter a shorter one.'));
   }
 
   var name = stripTags(decodeURIComponent(data.name));
   if (name !== data.name || /[^\u00a0-\uffff\w\-]/.test(data.name)) {
     // We check if name can be used in vhost environment by allowing all Unicode characters
     // but only ASCII letters A—z, digits 0—9, the underscore “_” and the hyphen “-”.
-    throw Error(gettext("Please avoid special characters or HTML code in the name field."));
+    throw Error(gettext('Please avoid special characters or HTML code in the name field.'));
   } else if (name !== root.getAccessName(name)) {
-    throw Error(gettext("There already is a site with this name."));
+    throw Error(gettext('There already is a site with this name.'));
   }
 
   site.name = java.net.IDN.toASCII.constructor === Function ?
@@ -169,8 +169,8 @@ Site.remove = function() {
       Membership.add(root.users.get(0), Membership.OWNER, this);
       Layout.remove.call(this.layout);
       this.layout.reset();
-      this.getStaticFile("images").removeDirectory();
-      this.getStaticFile("files").removeDirectory();
+      this.getStaticFile('images').removeDirectory();
+      this.getStaticFile('files').removeDirectory();
     } else {
       Layout.remove.call(this.layout, {force: true});
       this.getStaticFile().removeDirectory();
@@ -249,23 +249,23 @@ Site.prototype.constructor = function() {
  */
 Site.prototype.getPermission = function(action) {
   switch (action) {
-    case "backup.js":
-    case "main.js":
-    case "main.css":
-    case "error":
-    case "notfound":
-    case "robots.txt":
-    case "search.xml":
-    case "user.js":
+    case 'backup.js':
+    case 'main.js':
+    case 'main.css':
+    case 'error':
+    case 'notfound':
+    case 'robots.txt':
+    case 'search.xml':
+    case 'user.js':
     return true;
 
-    case ".":
-    case "main":
-    case "comments.xml":
-    case "rss.xml":
-    case "rss.xsl":
-    case "search":
-    case "stories.xml":
+    case '.':
+    case 'main':
+    case 'comments.xml':
+    case 'rss.xml':
+    case 'rss.xsl':
+    case 'search':
+    case 'stories.xml':
     return Site.require(Site.PUBLIC) ||
         (Site.require(Site.RESTRICTED) &&
         Membership.require(Membership.CONTRIBUTOR)) ||
@@ -273,24 +273,24 @@ Site.prototype.getPermission = function(action) {
         Membership.require(Membership.OWNER)) ||
         User.require(User.PRIVILEGED);
 
-    case "edit":
-    case "export":
-    case "referrers":
+    case 'edit':
+    case 'export':
+    case 'referrers':
     return Membership.require(Membership.OWNER) ||
         User.require(User.PRIVILEGED);
 
-    case "subscribe":
+    case 'subscribe':
     return Site.require(Site.PUBLIC) &&
         User.require(User.REGULAR) &&
         !Membership.require(Membership.SUBSCRIBER);
 
-    case "unsubscribe":
+    case 'unsubscribe':
     if (User.require(User.REGULAR)) {
       var membership = Membership.getByName(session.user.name, this);
       return membership && !membership.require(Membership.OWNER);
     }
 
-    case "import":
+    case 'import':
     return User.require(User.PRIVILEGED);
   }
 
@@ -299,9 +299,9 @@ Site.prototype.getPermission = function(action) {
 
 Site.prototype.main_action = function() {
   res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ?
-      "$Site#deleted" : "Site#main");
+      '$Site#deleted' : 'Site#main');
   res.data.title = this.getTitle();
-  this.renderSkin("Site#page");
+  this.renderSkin('Site#page');
   this.log();
   return;
 }
@@ -310,7 +310,7 @@ Site.prototype.edit_action = function() {
   if (req.postParams.save) {
     try {
       this.update(req.postParams);
-      res.message = gettext("The changes were saved successfully.");
+      res.message = gettext('The changes were saved successfully.');
       res.redirect(this.href(req.action));
     } catch (ex) {
       res.message = ex;
@@ -319,9 +319,9 @@ Site.prototype.edit_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Site Preferences");
-  res.data.body = this.renderSkinAsString("$Site#edit");
-  this.renderSkin("Site#page");
+  res.data.title = gettext('Site Preferences');
+  res.data.body = this.renderSkinAsString('$Site#edit');
+  this.renderSkin('Site#page');
   return;
 }
 
@@ -332,25 +332,25 @@ Site.prototype.edit_action = function() {
  */
 Site.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "archiveMode":
+    case 'archiveMode':
     return Site.getArchiveModes();
-    case "commentMode":
+    case 'commentMode':
     return Site.getCommentModes();
-    case "locale":
+    case 'locale':
     return getLocales(this.getLocale());
-    case "layout":
+    case 'layout':
     return this.getLayouts();
-    case "mode":
+    case 'mode':
     return Site.getModes();
-    case "notificationMode":
+    case 'notificationMode':
     return Site.getNotificationModes();
-    case "pageMode":
+    case 'pageMode':
     return Site.getPageModes();
-    case "status":
+    case 'status':
     return Site.getStatus();
-    case "timeZone":
+    case 'timeZone':
     return getTimeZones(this.getLocale());
-    case "callbackMode":
+    case 'callbackMode':
     return Site.getCallbackModes();
     default:
     return HopObject.prototype.getFormOptions.apply(this, arguments);
@@ -393,15 +393,15 @@ Site.prototype.update = function(data) {
 }
 
 Site.prototype.main_css_action = function() {
-  res.contentType = "text/css";
+  res.contentType = 'text/css';
   res.dependsOn(String(Root.VERSION));
   res.dependsOn(this.layout.modified);
   HopObject.confirmConstructor(Skin);
-  res.dependsOn((new Skin("Site", "stylesheet")).getStaticFile().lastModified());
+  res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
   res.push();
-  root.renderSkin("$Root#stylesheet");
-  this.renderSkin("Site#stylesheet");
+  root.renderSkin('$Root#stylesheet');
+  this.renderSkin('Site#stylesheet');
   var lessCss = res.pop();
   try {
     lessParser.parse(lessCss, function(error, tree) {
@@ -424,22 +424,22 @@ Site.prototype.main_css_action = function() {
 }
 
 Site.prototype.main_js_action = function() {
-  res.contentType = "text/javascript";
+  res.contentType = 'text/javascript';
   res.dependsOn(String(Root.VERSION));
   res.digest();
-  this.renderSkin("$Site#include", {href: "//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"});
-  this.renderSkin("$Site#include", {href: root.getStaticUrl("jquery.cookie.js")});
-  this.renderSkin("$Site#include", {href: root.getStaticUrl("antville.js?v=" + Root.VERSION)});
-  this.renderSkin("$Site#include", {href: this.href("user.js")});
+  this.renderSkin('$Site#include', {href: '//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js'});
+  this.renderSkin('$Site#include', {href: root.getStaticUrl('jquery.cookie.js')});
+  this.renderSkin('$Site#include', {href: root.getStaticUrl('antville.js?v=' + Root.VERSION)});
+  this.renderSkin('$Site#include', {href: this.href('user.js')});
   return;
 }
 
 Site.prototype.user_js_action = function() {
-  res.contentType = "text/javascript";
+  res.contentType = 'text/javascript';
   HopObject.confirmConstructor(Skin);
-  res.dependsOn((new Skin("Site", "javascript")).getStaticFile().lastModified());
+  res.dependsOn((new Skin('Site', 'javascript')).getStaticFile().lastModified());
   res.digest();
-  this.renderSkin("Site#javascript");
+  this.renderSkin('Site#javascript');
   return;
 }
 
@@ -450,7 +450,7 @@ Site.prototype.backup_js_action = function() {
       data[key] = req.postParams[key];
     }
   } else {
-    res.contentType = "text/javascript";
+    res.contentType = 'text/javascript';
     res.write(JSON.stringify(session.data.backup || {}));
     session.data.backup = null;
   }
@@ -458,7 +458,7 @@ Site.prototype.backup_js_action = function() {
 }
 
 Site.prototype.rss_xml_action = function() {
-  res.contentType = "application/rss+xml";
+  res.contentType = 'application/rss+xml';
   res.dependsOn(this.modified);
   res.digest();
   res.write(this.getXml(this.stories.union));
@@ -466,7 +466,7 @@ Site.prototype.rss_xml_action = function() {
 }
 
 Site.prototype.stories_xml_action = function() {
-  res.contentType = "application/rss+xml";
+  res.contentType = 'application/rss+xml';
   res.dependsOn(this.modified);
   res.digest();
   res.write(this.getXml(this.stories.recent));
@@ -474,7 +474,7 @@ Site.prototype.stories_xml_action = function() {
 }
 
 Site.prototype.comments_xml_action = function() {
-  res.contentType = "application/rss+xml";
+  res.contentType = 'application/rss+xml';
   res.dependsOn(this.modified);
   res.digest();
   res.write(this.getXml(this.stories.comments));
@@ -482,8 +482,8 @@ Site.prototype.comments_xml_action = function() {
 }
 
 Site.prototype.search_xml_action = function() {
-  res.contentType = "application/opensearchdescription+xml";
-  this.renderSkin("$Site#opensearchdescription");
+  res.contentType = 'application/opensearchdescription+xml';
+  this.renderSkin('$Site#opensearchdescription');
   return;
 }
 
@@ -495,11 +495,11 @@ Site.prototype.getXml = function(collection) {
   collection || (collection = this.stories.recent);
   var now = new Date;
   var feed = new rome.SyndFeedImpl();
-  feed.setFeedType("rss_2.0");
+  feed.setFeedType('rss_2.0');
   feed.setLink(this.href());
   feed.setTitle(this.title);
   feed.setDescription(this.tagline || String.EMPTY);
-  feed.setLanguage(this.locale.replace("_", "-"));
+  feed.setLanguage(this.locale.replace('_', '-'));
   feed.setPublishedDate(now);
 
   /*
@@ -507,12 +507,12 @@ Site.prototype.getXml = function(collection) {
   var feedModules = new java.util.ArrayList();
   feedModules.add(feedInfo);
   feed.setModules(feedModules);
-  //feedInfo.setImage(new java.net.URL(this.getProperty("imageUrl")));
+  //feedInfo.setImage(new java.net.URL(this.getProperty('imageUrl')));
   feedInfo.setSubtitle(this.tagline);
   feedInfo.setSummary(this.description);
   feedInfo.setAuthor(this.creator.name);
   feedInfo.setOwnerName(this.creator.name);
-  //feedInfo.setOwnerEmailAddress(this.getProperty("email"));
+  //feedInfo.setOwnerEmailAddress(this.getProperty('email'));
   */
 
   var entry, entryInfo, entryModules;
@@ -524,16 +524,16 @@ Site.prototype.getXml = function(collection) {
       collection : collection.list(0, 25);
   for each (var item in list) {
     entry = new rome.SyndEntryImpl();
-    entry.setTitle(item.title || formatDate(item.created, "date"));
+    entry.setTitle(item.title || formatDate(item.created, 'date'));
     entry.setLink(item.href());
     entry.setAuthor(item.creator.name);
     entry.setPublishedDate(item.created);
     if (item.text) {
       description = new rome.SyndContentImpl();
-      //description.setType("text/plain");
+      //description.setType('text/plain');
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
-      description.setValue(item.renderSkinAsString("Story#rss").replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
-        return "&#" + c.charCodeAt(0) + ";";
+      description.setValue(item.renderSkinAsString('Story#rss').replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
+        return '&#' + c.charCodeAt(0) + ';';
       }));
       entry.setDescription(description);
     }
@@ -546,20 +546,20 @@ Site.prototype.getXml = function(collection) {
     entry.setModules(entryModules);
 
     enclosure = new rome.SyndEnclosureImpl();
-    enclosure.setUrl(episode.getProperty("fileUrl"));
-    enclosure.setType(episode.getProperty("contentType"));
-    enclosure.setLength(episode.getProperty("filesize") || 0);
+    enclosure.setUrl(episode.getProperty('fileUrl'));
+    enclosure.setType(episode.getProperty('contentType'));
+    enclosure.setLength(episode.getProperty('filesize') || 0);
     enclosures = new java.util.ArrayList();
     enclosures.add(enclosure);
     entry.setEnclosures(enclosures);
 
     entryInfo.setAuthor(entry.getAuthor());
     entryInfo.setBlock(false);
-    entryInfo.setDuration(new rome.Duration(episode.getProperty("length") || 0));
+    entryInfo.setDuration(new rome.Duration(episode.getProperty('length') || 0));
     entryInfo.setExplicit(false);
-    entryInfo.setKeywords(episode.getProperty("keywords"));
-    entryInfo.setSubtitle(episode.getProperty("subtitle"));
-    entryInfo.setSummary(episode.getProperty("description"));
+    entryInfo.setKeywords(episode.getProperty('keywords'));
+    entryInfo.setSubtitle(episode.getProperty('subtitle'));
+    entryInfo.setSummary(episode.getProperty('description'));
     */
   }
   feed.setEntries(entries);
@@ -568,44 +568,44 @@ Site.prototype.getXml = function(collection) {
   //output.output(feed, res.servletResponse.writer); return;
   var xml = output.outputString(feed);
   // FIXME: Ugly hack for adding PubSubHubbub and rssCloud elements to XML
-  xml = xml.replace("<rss", '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
-  xml = xml.replace("<channel>", '<channel>\n   <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
-  xml = xml.replace("<channel>", '<channel>\n   <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>');
+  xml = xml.replace('<rss', '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
+  xml = xml.replace('<channel>', '<channel>\n   <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
+  xml = xml.replace('<channel>', '<channel>\n   <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>');
   return xml; //injectXslDeclaration(xml);
 }
 
 Site.prototype.rss_xsl_action = function() {
-  res.charset = "UTF-8";
-  res.contentType = "text/xml";
-  renderSkin("Global#xslStylesheet");
+  res.charset = 'UTF-8';
+  res.contentType = 'text/xml';
+  renderSkin('Global#xslStylesheet');
   return;
 }
 
 Site.prototype.referrers_action = function() {
-  if (req.data.permanent && this.getPermission("edit"))  {
+  if (req.data.permanent && this.getPermission('edit'))  {
     var urls = req.data.permanent_array;
     res.push();
-    res.write(this.getMetadata("spamfilter"));
+    res.write(this.getMetadata('spamfilter'));
     for (var i in urls) {
-      res.write("\n");
-      res.write(urls[i].replace(/\?/g, "\\\\?"));
+      res.write('\n');
+      res.write(urls[i].replace(/\?/g, '\\\\?'));
     }
-    this.setMetadata("spamfilter", res.pop());
+    this.setMetadata('spamfilter', res.pop());
     res.redirect(this.href(req.action));
     return;
   }
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Site Referrers");
-  res.data.body = this.renderSkinAsString("$Site#referrers");
-  this.renderSkin("Site#page");
+  res.data.title = gettext('Site Referrers');
+  res.data.body = this.renderSkinAsString('$Site#referrers');
+  this.renderSkin('Site#page');
   return;
 }
 
 Site.prototype.search_action = function() {
   var term = req.data.q && stripTags(decodeURIComponent(String(req.data.q)));
   if (!term) {
-    res.message = gettext("Please enter a query in the search form.");
-    res.data.body = this.renderSkinAsString("Site#search");
+    res.message = gettext('Please enter a query in the search form.');
+    res.data.body = this.renderSkinAsString('Site#search');
   } else {
     term = term.replace(/(?:\x22|\x27)/g, String.EMPTY); // Remove single and double ticks (aka false quotes)
     var sql = new Sql({quote: false});
@@ -616,16 +616,16 @@ Site.prototype.search_action = function() {
       var content = Story.getById(this.id);
       if (!content.story || (content.story.status !== Story.CLOSED &&
           content.story.commentMode !== Story.CLOSED)) {
-        content.renderSkin("Story#result");
+        content.renderSkin('Story#result');
         counter += 1;
       }
     });
-    res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
+    res.message = ngettext('Found {0} result.', 'Found {0} results.', counter);
     res.data.body = res.pop();
   }
 
   res.data.title = gettext('Search results');
-  this.renderSkin("Site#page");
+  this.renderSkin('Site#page');
   return;
 }
 
@@ -646,7 +646,7 @@ Site.prototype.unsubscribe_action = function() {
   if (req.postParams.proceed) {
     try {
       Membership.remove.call(Membership.getByName(session.user.name));
-      res.message = gettext("Successfully unsubscribed from site {0}.",
+      res.message = gettext('Successfully unsubscribed from site {0}.',
           this.title);
       res.redirect(User.getLocation() || this.href());
     } catch (ex) {
@@ -656,11 +656,11 @@ Site.prototype.unsubscribe_action = function() {
   }
 
   User.setLocation();
-  res.data.title = gettext("Confirm Unsubscribe");
-  res.data.body = this.renderSkinAsString("$HopObject#confirm", {
+  res.data.title = gettext('Confirm Unsubscribe');
+  res.data.body = this.renderSkinAsString('$HopObject#confirm', {
     text: gettext('You are about to unsubscribe from site {0}.', this.title)
   });
-  this.renderSkin("Site#page");
+  this.renderSkin('Site#page');
   return;
 }
 
@@ -668,14 +668,14 @@ Site.prototype.export_action = function() {
   var job = this.job && new Admin.Job(this.job);
 
   var data = req.postParams;
-  if (data.submit === "start") {
+  if (data.submit === 'start') {
     try {
       if (!job) {
-        this.job = Admin.queue(this, "export");
-        res.message = gettext("Site is scheduled for export.");
+        this.job = Admin.queue(this, 'export');
+        res.message = gettext('Site is scheduled for export.');
       } else {
-        if (job.method !== "export") {
-          throw Error(gettext("There is already another job queued for this site: {0}",
+        if (job.method !== 'export') {
+          throw Error(gettext('There is already another job queued for this site: {0}',
               job.method));
         }
       }
@@ -684,20 +684,20 @@ Site.prototype.export_action = function() {
       app.log(res.message);
     }
     res.redirect(this.href(req.action));
-  } else if (data.submit === "stop") {
+  } else if (data.submit === 'stop') {
     job && job.remove();
     this.job = null;
     res.redirect(this.href(req.action));
   }
 
   var param = {
-    status: (job && job.method === "export") ?
-        gettext("A Blogger export file (.xml) will be created and available for download from here within 24 hours.") :
+    status: (job && job.method === 'export') ?
+        gettext('A Blogger export file (.xml) will be created and available for download from here within 24 hours.') :
         null
   }
   res.handlers.file = File.getById(this.export_id) || {};
-  res.data.body = this.renderSkinAsString("$Site#export", param);
-  this.renderSkin("Site#page");
+  res.data.body = this.renderSkinAsString('$Site#export', param);
+  this.renderSkin('Site#page');
   return;
 }
 
@@ -706,14 +706,14 @@ Site.prototype.import_action = function() {
   var file = this.import_id && File.getById(this.import_id);
 
   var data = req.postParams;
-  if (data.submit === "start") {
+  if (data.submit === 'start') {
     try {
       if (job) {
-        if (job.method === "import") {
+        if (job.method === 'import') {
           job.remove();
           this.job = null;
         } else if (job.method) {
-          throw Error(gettext("There is already another job queued for this site: {0}",
+          throw Error(gettext('There is already another job queued for this site: {0}',
               job.method));
         }
       }
@@ -724,15 +724,15 @@ Site.prototype.import_action = function() {
       file.update(data);
       this.files.add(file);
       file.creator = session.user;
-      this.job = Admin.queue(this, "import");
+      this.job = Admin.queue(this, 'import');
       this.import_id = file._id;
-      res.message = gettext("Site is scheduled for import.");
+      res.message = gettext('Site is scheduled for import.');
       res.redirect(this.href(req.action));
     } catch (ex) {
       res.message = ex.toString();
       app.log(res.message);
     }
-  } else if (data.submit === "stop") {
+  } else if (data.submit === 'stop') {
     file && File.remove.call(file);
     job && job.remove();
     this.job = null;
@@ -741,14 +741,14 @@ Site.prototype.import_action = function() {
   }
 
   res.handlers.file = File.getById(this.import_id) || {};
-  res.data.body = this.renderSkinAsString("$Site#import");
-  this.renderSkin("Site#page");
+  res.data.body = this.renderSkinAsString('$Site#import');
+  this.renderSkin('Site#page');
   return;
 }
 
 Site.prototype.robots_txt_action = function() {
-  res.contentType = "text/plain";
-  this.renderSkin("Site#robots");
+  res.contentType = 'text/plain';
+  this.renderSkin('Site#robots');
   return;
 }
 
@@ -759,15 +759,15 @@ Site.prototype.robots_txt_action = function() {
  */
 Site.prototype.getMacroHandler = function(name) {
   switch (name) {
-    case "archive":
-    case "files":
-    case "galleries":
-    case "images":
-    case "layout":
-    case "members":
-    case "polls":
-    case "stories":
-    case "tags":
+    case 'archive':
+    case 'files':
+    case 'galleries':
+    case 'images':
+    case 'layout':
+    case 'members':
+    case 'polls':
+    case 'stories':
+    case 'tags':
     return this[name];
     default:
     return null;
@@ -779,17 +779,17 @@ Site.prototype.getMacroHandler = function(name) {
  */
 Site.prototype.stories_macro = function() {
   if (this.stories.featured.size() < 1) {
-    this.renderSkin("Site#welcome");
+    this.renderSkin('Site#welcome');
     if (session.user) {
       if (session.user === this.creator) {
-        session.user.renderSkin("$User#welcome");
+        session.user.renderSkin('$User#welcome');
       }
       if (this === root && User.require(User.PRIVILEGED)) {
-        this.admin.renderSkin("$Admin#welcome");
+        this.admin.renderSkin('$Admin#welcome');
       }
     }
   } else {
-    this.archive.renderSkin("Archive#main");
+    this.archive.renderSkin('Archive#main');
   }
   return;
 }
@@ -803,8 +803,8 @@ Site.prototype.calendar_macro = function(param) {
     return;
   }
   var calendar = new jala.Date.Calendar(this.archive);
-  //calendar.setAccessNameFormat("yyyy/MM/dd");
-  calendar.setHrefFormat("/yyyy/MM/dd/");
+  //calendar.setAccessNameFormat('yyyy/MM/dd');
+  calendar.setHrefFormat('/yyyy/MM/dd/');
   calendar.setLocale(this.getLocale());
   calendar.setTimeZone(this.getTimeZone());
   calendar.render(this.archive.getDate());
@@ -843,12 +843,12 @@ Site.prototype.deleted_macro = function() {
 Site.prototype.referrers_macro = function() {
   var self = this;
   var sql = new Sql;
-  sql.retrieve(Sql.REFERRERS, "Site", this._id);
+  sql.retrieve(Sql.REFERRERS, 'Site', this._id);
   sql.traverse(function() {
     if (this.requests && this.referrer) {
       this.text = encode(this.referrer.head(50));
       this.referrer = encode(this.referrer);
-      self.renderSkin("$Site#referrer", this);
+      self.renderSkin('$Site#referrer', this);
     }
   });
   return;
@@ -858,17 +858,17 @@ Site.prototype.referrers_macro = function() {
  *
  */
 Site.prototype.spamfilter_macro = function() {
-  var str = this.getMetadata("spamfilter");
+  var str = this.getMetadata('spamfilter');
   if (!str) {
     return;
   }
-  var items = str.replace(/\r/g, "").split("\n");
+  var items = str.replace(/\r/g, '').split('\n');
   for (var i in items) {
     res.write('"');
     res.write(items[i]);
     res.write('"');
     if (i < items.length-1) {
-      res.write(",");
+      res.write(',');
     }
   }
   return;
@@ -880,8 +880,8 @@ Site.prototype.spamfilter_macro = function() {
 Site.prototype.diskspace_macro = function() {
   var quota = this.getQuota();
   var usage = this.getDiskSpace(quota);
-  res.write(usage > 0 ? formatNumber(usage, "#,###.#") : 0);
-  res.write(" MB " + (quota ? gettext("free") : gettext("used")));
+  res.write(usage > 0 ? formatNumber(usage, '#,###.#') : 0);
+  res.write(' MB ' + (quota ? gettext('free') : gettext('used')));
   return;
 }
 
@@ -893,9 +893,9 @@ Site.prototype.getLocale = function() {
   if (locale = this.cache.locale) {
     return locale;
   } else if (this.locale) {
-    var parts = this.locale.split("_");
+    var parts = this.locale.split('_');
     locale = new java.util.Locale(parts[0] || String.EMPTY,
-        parts[1] || String.EMPTY, parts.splice(2).join("_"));
+        parts[1] || String.EMPTY, parts.splice(2).join('_'));
   } else {
     locale = java.util.Locale.getDefault();
   }
@@ -967,15 +967,15 @@ Site.prototype.getTags = function(type, group) {
   var handler;
   type = type.toLowerCase();
   switch (type) {
-    case "story":
-    case "tags":
+    case 'story':
+    case 'tags':
     handler = this.stories;
-    type = "tags";
+    type = 'tags';
     break;
-    case "image":
-    case "galleries":
+    case 'image':
+    case 'galleries':
     handler = this.images;
-    type = "galleries";
+    type = 'galleries';
     break;
   }
   switch (group) {
@@ -985,7 +985,7 @@ Site.prototype.getTags = function(type, group) {
     case Tags.ALPHABETICAL:
     return handler[group + type.titleize()];
     default:
-    return handler["alphabetical" + type.titleize()].get(group);
+    return handler['alphabetical' + type.titleize()].get(group);
   }
   return null;
 }
@@ -997,7 +997,7 @@ Site.prototype.getTags = function(type, group) {
  */
 Site.prototype.getStaticFile = function(tail) {
   var fpath = this.name;
-  tail && (fpath += "/" + tail);
+  tail && (fpath += '/' + tail);
   return new helma.File(app.appsProperties['static'], fpath);
 }
 
@@ -1037,9 +1037,9 @@ Site.prototype.callback = function(ref) {
  */
 Site.prototype.getAdminHeader = function(name) {
   switch (name) {
-    case "tags":
-    case "galleries":
-    return ["#", "Name", "Items"];
+    case 'tags':
+    case 'galleries':
+    return ['#', 'Name', 'Items'];
   }
   return [];
 }

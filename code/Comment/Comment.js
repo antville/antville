@@ -27,14 +27,14 @@
  * @fileOverview Defines the Comment prototype.
  */
 
-markgettext("Comment");
-markgettext("comment");
+markgettext('Comment');
+markgettext('comment');
 
 /**
  * @see defineConstants
  */
-Comment.getStatus = defineConstants(Comment, markgettext("deleted"),
-    markgettext("pending"), markgettext("readonly"), markgettext("public"));
+Comment.getStatus = defineConstants(Comment, markgettext('deleted'),
+    markgettext('pending'), markgettext('readonly'), markgettext('public'));
 
 /**
  * Convenience method for easily adding a new comment to an existing story or comment.
@@ -68,7 +68,7 @@ Comment.remove = function(options) {
     return;
   }
   // Remove all comments of this comment’s creator if corresponding option is set
-  if (options && options.mode === "user" && options.confirm === "1") {
+  if (options && options.mode === 'user' && options.confirm === '1') {
     var membership = Membership.getByName(this.creator.name, this.site);
     // Not using HopObject.remove() because it will comepletely remove all comments
     membership.comments.forEach(function() {
@@ -116,21 +116,21 @@ Comment.prototype.constructor = function() {
  */
 Comment.prototype.getPermission = function(action) {
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     if (this.status === Comment.DELETED) {
       return false;
     }
     // Break statement missing here by purpose!
-    case "comment":
+    case 'comment':
     return this.site.commentMode === Site.ENABLED &&
         this.story.getPermission(action) &&
         this.status !== Comment.PENDING;
-    case "delete":
-    return this.story.getPermission.call(this, "delete");
-    case "edit":
+    case 'delete':
+    return this.story.getPermission.call(this, 'delete');
+    case 'edit':
     return this.status !== Comment.DELETED &&
-        this.story.getPermission.call(this, "delete");
+        this.story.getPermission.call(this, 'delete');
   }
   return false;
 }
@@ -145,13 +145,13 @@ Comment.prototype.href = function(action) {
   switch (action) {
     case null:
     case undefined:
-    case "":
-    case ".":
-    case "main":
-    buffer.push(this.story.href(), "#", this._id);
+    case '':
+    case '.':
+    case 'main':
+    buffer.push(this.story.href(), '#', this._id);
     break;
     default:
-    buffer.push(this.story.comments.href(), this._id, "/", action);
+    buffer.push(this.story.comments.href(), this._id, '/', action);
   }
   return buffer.join(String.EMPTY);
 }
@@ -161,8 +161,8 @@ Comment.prototype.edit_action = function() {
     try {
       this.update(req.postParams);
       delete session.data.backup;
-      res.message = gettext("The comment was successfully updated.");;
-      res.redirect(this.story.href() + "#" + this._id);
+      res.message = gettext('The comment was successfully updated.');;
+      res.redirect(this.story.href() + '#' + this._id);
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -171,9 +171,9 @@ Comment.prototype.edit_action = function() {
 
   res.handlers.parent = this.parent;
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Edit Comment");
-  res.data.body = this.renderSkinAsString("Comment#edit");
-  this.site.renderSkin("Site#page");
+  res.data.title = gettext('Edit Comment');
+  res.data.body = this.renderSkinAsString('Comment#edit');
+  this.site.renderSkin('Site#page');
   return;
 }
 
@@ -183,7 +183,7 @@ Comment.prototype.edit_action = function() {
  */
 Comment.prototype.update = function(data) {
   if (!data.title && !data.text) {
-    throw Error(gettext("Please enter at least something into the “title” or “text” field."));
+    throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
   }
   // Get difference to current content before applying changes
   var delta = this.getDelta(data);
@@ -214,10 +214,10 @@ Comment.prototype.update = function(data) {
 Comment.prototype.getConfirmText = function() {
   var size = this.size() + 1;
   if (this.status === Comment.DELETED && size > 1) {
-    return gettext("You are about to delete a comment thread consisting of {0} postings.",
+    return gettext('You are about to delete a comment thread consisting of {0} postings.',
         size);
   }
-  return gettext("You are about to delete a comment by user {0}.",
+  return gettext('You are about to delete a comment by user {0}.',
       this.creator.name);
 }
 
@@ -227,7 +227,7 @@ Comment.prototype.getConfirmText = function() {
  * @returns {HopObject}
  */
 Comment.prototype.getMacroHandler = function(name) {
-  if (name === "related") {
+  if (name === 'related') {
     var membership = Membership.getByName(this.creator.name, this.site);
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
       return {}; // Work-around for issue 88
@@ -242,11 +242,11 @@ Comment.prototype.getMacroHandler = function(name) {
  */
 Comment.prototype.text_macro = function() {
   if (this.status === Comment.DELETED) {
-    res.write("<em>");
+    res.write('<em>');
     res.write(this.modifier === this.creator ?
-        gettext("This comment was removed by the author.") :
-        gettext("This comment was removed."));
-    res.writeln("</em>");
+        gettext('This comment was removed by the author.') :
+        gettext('This comment was removed.'));
+    res.writeln('</em>');
   } else {
     res.write(this.text);
   }

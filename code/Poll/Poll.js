@@ -27,8 +27,8 @@
  * @fileOverview Defines the Poll prototype
  */
 
-markgettext("Poll");
-markgettext("poll");
+markgettext('Poll');
+markgettext('poll');
 
 /**
  * @function
@@ -36,7 +36,7 @@ markgettext("poll");
  * @returns {String[]}
  * @see defineConstants
  */
-Poll.getStatus = defineConstants(Poll, markgettext("closed"), markgettext("open"));
+Poll.getStatus = defineConstants(Poll, markgettext('closed'), markgettext('open'));
 
 /**
  * @param {String} question
@@ -89,20 +89,20 @@ Poll.prototype.constructor = function() {
  * @returns {Boolean}
  */
 Poll.prototype.getPermission = function(action) {
-  if (!this.site.getPermission("main")) {
+  if (!this.site.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     return !!session.user;
-    case "result":
+    case 'result':
     return true;
-    case "edit":
+    case 'edit':
     return Membership.require(Membership.OWNER) ||
         User.require(User.PRIVILEGED);
-    case "rotate":
-    case "delete":
+    case 'rotate':
+    case 'delete':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
@@ -117,7 +117,7 @@ Poll.prototype.getPermission = function(action) {
  */
 Poll.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "status":
+    case 'status':
     return Poll.getStatus();
   }
   return;
@@ -125,23 +125,23 @@ Poll.prototype.getFormOptions = function(name) {
 
 Poll.prototype.main_action = function() {
   if (this.status !== Poll.OPEN) {
-    res.redirect(this.href("result"));
+    res.redirect(this.href('result'));
     return;
   }
   if (req.postParams.vote) {
     try {
       this.vote(req.postParams);
-      res.message = gettext("Thanks, your vote was registered. You can change your mind until the poll is closed.");
-      res.redirect(this.href("result"));
+      res.message = gettext('Thanks, your vote was registered. You can change your mind until the poll is closed.');
+      res.redirect(this.href('result'));
     } catch (ex) {
       res.message = ex;
       app.log(ex);
     }
   }
   res.data.action = this.href();
-  res.data.title = gettext("Poll: {0}", this.question);
-  res.data.body = this.renderSkinAsString("$Poll#main", {header: true});
-  this.site.renderSkin("Site#page");
+  res.data.title = gettext('Poll: {0}', this.question);
+  res.data.body = this.renderSkinAsString('$Poll#main', {header: true});
+  this.site.renderSkin('Site#page');
   return;
 }
 
@@ -151,7 +151,7 @@ Poll.prototype.main_action = function() {
  */
 Poll.prototype.vote = function(data) {
 	if (!data.choice) {
-	  throw Error(gettext("You did not vote, yet. You can vote until the poll is closed."));
+	  throw Error(gettext('You did not vote, yet. You can vote until the poll is closed.'));
 	}
 	var choice = this.get(data.choice);
 	var vote = session.user && this.votes.get(session.user.name);
@@ -168,7 +168,7 @@ Poll.prototype.edit_action = function() {
   if (req.postParams.save) {
     try {
       this.update(req.postParams);
-      res.message = gettext("The poll was updated successfully.");
+      res.message = gettext('The poll was updated successfully.');
       res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
@@ -176,9 +176,9 @@ Poll.prototype.edit_action = function() {
     }
   }
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Edit Poll: {0}", this.question);
-  res.data.body = this.renderSkinAsString("$Poll#edit");
-  this.site.renderSkin("Site#page");
+  res.data.title = gettext('Edit Poll: {0}', this.question);
+  res.data.body = this.renderSkinAsString('$Poll#edit');
+  this.site.renderSkin('Site#page');
   return;
 }
 
@@ -194,7 +194,7 @@ Poll.prototype.update = function(data) {
     }
   }
   if (choices.length < 2 || !data.question) {
-    throw Error(gettext("Please fill out the whole form to create a valid poll."));
+    throw Error(gettext('Please fill out the whole form to create a valid poll.'));
   }
   var size = this.size();
   // Update or remove choices
@@ -225,8 +225,8 @@ Poll.prototype.update = function(data) {
 
 Poll.prototype.result_action = function() {
   res.data.title = gettext('Poll Results: {0}', this.question);
-  res.data.body = this.renderSkinAsString("$Poll#results", {header: true});
-  this.site.renderSkin("Site#page");
+  res.data.body = this.renderSkinAsString('$Poll#results', {header: true});
+  this.site.renderSkin('Site#page');
   return;
 }
 
@@ -245,7 +245,7 @@ Poll.prototype.rotate_action = function() {
  * @returns {String}
  */
 Poll.prototype.getConfirmText = function() {
-  return gettext("You are about to delete a poll by user {0}.",
+  return gettext('You are about to delete a poll by user {0}.',
       this.creator.name);
 }
 
@@ -258,17 +258,17 @@ Poll.prototype.getConfirmText = function() {
  */
 Poll.prototype.link_macro = function(param, action, text) {
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     if (this.status === Poll.CLOSED) {
       return;
     }
     break;
-    case "rotate":
+    case 'rotate':
     if (this.status === Poll.OPEN) {
-      text = gettext("Stop");
+      text = gettext('Stop');
     } else {
-      text = this.closed ? gettext("Re-run") : gettext("Run");
+      text = this.closed ? gettext('Re-run') : gettext('Run');
     }
     break;
   }
@@ -283,11 +283,11 @@ Poll.prototype.link_macro = function(param, action, text) {
  */
 Poll.prototype.input_macro = function(param, name) {
   switch (name) {
-    case "choices":
+    case 'choices':
     var index = 0;
     var add = function(choice) {
       index += 1;
-      return choice.renderSkin("$Choice#edit", {index: index});
+      return choice.renderSkin('$Choice#edit', {index: index});
     };
     var choices;
     if (choices = req.postParams.title_array) {

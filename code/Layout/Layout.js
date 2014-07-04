@@ -27,24 +27,24 @@
  * @fileOverview Defines the Layout prototype
  */
 
-markgettext("Layout");
-markgettext("layout");
+markgettext('Layout');
+markgettext('layout');
 
 /** @constant */
 Layout.VALUES = [
-  "background color",
-  "link color",
-  "active link color",
-  "visited link color",
-  "big font",
-  "big font size",
-  "big font color",
-  "base font",
-  "base font size",
-  "base font color",
-  "small font",
-  "small font size",
-  "small font color"
+  'background color',
+  'link color',
+  'active link color',
+  'visited link color',
+  'big font',
+  'big font size',
+  'big font color',
+  'base font',
+  'base font size',
+  'base font color',
+  'small font',
+  'small font size',
+  'small font color'
 ];
 
 /**
@@ -78,7 +78,7 @@ Layout.remove = function(options) {
     if (res.skinpath && res.skinpath[0] && res.skinpath[0].equals(dir) &&
           dir.exists() && dir.list().length > 0) {
       var zip = this.getArchive(res.skinpath);
-      var file = java.io.File.createTempFile(this.site.name + "-layout-", ".zip");
+      var file = java.io.File.createTempFile(this.site.name + '-layout-', '.zip');
       zip.save(file);
     }
     HopObject.remove.call(this.skins);
@@ -116,11 +116,11 @@ Layout.sandbox = function(value) {
  * @returns {String[]}
  * @see defineConstants
  */
-Layout.getModes = defineConstants(Layout, "default", "shared");
+Layout.getModes = defineConstants(Layout, 'default', 'shared');
 
-this.handleMetadata("origin");
-this.handleMetadata("originator");
-this.handleMetadata("originated");
+this.handleMetadata('origin');
+this.handleMetadata('originator');
+this.handleMetadata('originated');
 
 /**
  * @name Layout
@@ -151,15 +151,15 @@ Layout.prototype.constructor = function() {
  */
 Layout.prototype.getPermission = function(action) {
   switch (action) {
-    case ".":
-    case "main":
-    case "export":
-    case "images":
-    case "import":
-    case "reset":
-    case "skins":
-    case "sandbox":
-    return res.handlers.site.getPermission("main") &&
+    case '.':
+    case 'main':
+    case 'export':
+    case 'images':
+    case 'import':
+    case 'reset':
+    case 'skins':
+    case 'sandbox':
+    return res.handlers.site.getPermission('main') &&
         Membership.require(Membership.OWNER) ||
         User.require(User.PRIVILEGED);
   }
@@ -167,7 +167,7 @@ Layout.prototype.getPermission = function(action) {
 }
 
 // FIXME: The Layout.href method is overwritten to guarantee that
-// URLs won't contain the layout ID instead of "layout"
+// URLs won't contain the layout ID instead of 'layout'
 /**
  *
  * @param {String} action
@@ -176,7 +176,7 @@ Layout.prototype.getPermission = function(action) {
 Layout.prototype.href = function(action) {
   res.push();
   res.write(res.handlers.site.href());
-  res.write("layout/");
+  res.write('layout/');
   action && res.write(action);
   return res.pop();
 }
@@ -185,16 +185,16 @@ Layout.prototype.main_action = function() {
   if (req.postParams.save) {
     try {
       this.update(req.postParams);
-      res.message = gettext("Successfully updated the layout.");
+      res.message = gettext('Successfully updated the layout.');
       res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);
     }
   }
-  res.data.title = gettext("Layout");
-  res.data.body = this.renderSkinAsString("$Layout#main");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Layout');
+  res.data.body = this.renderSkinAsString('$Layout#main');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -205,9 +205,9 @@ Layout.prototype.main_action = function() {
  */
 Layout.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "mode":
+    case 'mode':
     return Layout.getModes();
-    case "parent":
+    case 'parent':
     return this.getParentOptions();
   }
 }
@@ -217,23 +217,23 @@ Layout.prototype.getFormOptions = function(name) {
  * @param {Object} data
  */
 Layout.prototype.update = function(data) {
-  var skin = this.skins.getSkin("Site", "values");
+  var skin = this.skins.getSkin('Site', 'values');
   if (!skin) {
-    Skin.add("Site", "values", this);
+    Skin.add('Site', 'values', this);
   }
   res.push();
   for (var key in data) {
-    if (key.startsWith("value_")) {
+    if (key.startsWith('value_')) {
       var value = data[key];
       key = key.substr(6);
-      res.write("<% value ");
+      res.write('<% value ');
       res.write(quote(key));
-      res.write(" ");
+      res.write(' ');
       res.write(quote(value));
-      res.write(" %>\n");
+      res.write(' %>\n');
     }
   }
-  res.write("\n");
+  res.write('\n');
   skin.setSource(res.pop());
   Layout.sandbox(!!data.sandbox);
   this.description = data.description;
@@ -247,7 +247,7 @@ Layout.prototype.reset_action = function() {
     try {
       Layout.remove.call(this);
       this.reset();
-      res.message = gettext("{0} was successfully reset.", gettext("Layout"));
+      res.message = gettext('{0} was successfully reset.', gettext('Layout'));
       res.redirect(this.href());
     } catch(ex) {
       res.message = ex;
@@ -256,18 +256,18 @@ Layout.prototype.reset_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Confirm Reset");
-  res.data.body = this.renderSkinAsString("$HopObject#confirm", {
+  res.data.title = gettext('Confirm Reset');
+  res.data.body = this.renderSkinAsString('$HopObject#confirm', {
     text: this.getConfirmText()
   });
-  res.handlers.site.renderSkin("Site#page");
+  res.handlers.site.renderSkin('Site#page');
 }
 
 Layout.prototype.export_action = function() {
-  res.contentType = "application/zip";
+  res.contentType = 'application/zip';
   var zip = this.getArchive(res.skinpath);
-  res.setHeader("Content-Disposition",
-      "attachment; filename=" + this.site.name + "-layout.zip");
+  res.setHeader('Content-Disposition',
+      'attachment; filename=' + this.site.name + '-layout.zip');
   res.writeBinary(zip.getData());
   return;
 }
@@ -278,18 +278,18 @@ Layout.prototype.import_action = function() {
   if (data.submit) {
     try {
       if (!data.upload || data.upload.contentLength === 0) {
-        throw Error(gettext("Please upload a zipped layout archive"));
+        throw Error(gettext('Please upload a zipped layout archive'));
       }
       // Extract zipped layout to temporary directory
       var dir = this.site.getStaticFile();
-      var temp = new helma.File(dir, "import.temp");
+      var temp = new helma.File(dir, 'import.temp');
       var fname = data.upload.writeToFile(dir);
       var zip = new helma.File(dir, fname);
       (new helma.Zip(zip)).extractAll(temp);
       zip.remove();
-      var data = Xml.read(new helma.File(temp, "data.xml"));
+      var data = Xml.read(new helma.File(temp, 'data.xml'));
       if (!data.version) {
-        throw Error(gettext("Sorry, this layout is not compatible with Antville."));
+        throw Error(gettext('Sorry, this layout is not compatible with Antville.'));
       }
       // Remove current layout and replace it with imported one
       Layout.remove.call(this);
@@ -301,7 +301,7 @@ Layout.prototype.import_action = function() {
         Image.add(this);
       });
       this.touch();
-      res.message = gettext("The layout was successfully imported.");
+      res.message = gettext('The layout was successfully imported.');
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -311,9 +311,9 @@ Layout.prototype.import_action = function() {
     res.redirect(this.href());
     return;
   }
-  res.data.title = gettext("Import Layout");
-  res.data.body = this.renderSkinAsString("$Layout#import");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Import Layout');
+  res.data.body = this.renderSkinAsString('$Layout#import');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -345,7 +345,7 @@ Layout.prototype.getImage = function(name, fallback) {
  */
 Layout.prototype.getFile = function(name) {
   name || (name = String.EMPTY);
-  return this.site.getStaticFile("layout/" + name);
+  return this.site.getStaticFile('layout/' + name);
 }
 
 /**
@@ -368,7 +368,7 @@ Layout.prototype.reset = function() {
   for (var name in skinFiles) {
     if (content = skinFiles[name][name]) {
       dir = this.getFile(name);
-      file = new helma.File(dir, name + ".skin");
+      file = new helma.File(dir, name + '.skin');
       dir.makeDirectory();
       file.open();
       file.write(content);
@@ -378,7 +378,7 @@ Layout.prototype.reset = function() {
 
   // FIXME: Reset the Site skin of root separately
   content = skinFiles.Root.Site;
-  file = new helma.File(this.getFile("Root"), "Site.skin");
+  file = new helma.File(this.getFile('Root'), 'Site.skin');
   dir.makeDirectory();
   file.open();
   file.write(content);
@@ -398,7 +398,7 @@ Layout.prototype.getArchive = function(skinPath) {
   var skinFiles = app.getSkinfilesInPath(skinPath);
   for (var name in skinFiles) {
     if (skinFiles[name][name]) {
-      var file = new helma.File(this.getFile(name), name + ".skin");
+      var file = new helma.File(this.getFile(name), name + '.skin');
       if (file.exists()) {
         zip.add(file, name);
       }
@@ -406,8 +406,8 @@ Layout.prototype.getArchive = function(skinPath) {
   }
 
   // FIXME: Add the Site skin of root separately
-  file = new helma.File(this.getFile("Root"), "Site.skin");
-  file.exists() && zip.add(file, "Root");
+  file = new helma.File(this.getFile('Root'), 'Site.skin');
+  file.exists() && zip.add(file, 'Root');
 
   var data = new HopObject;
   data.images = new HopObject;
@@ -432,7 +432,7 @@ Layout.prototype.getArchive = function(skinPath) {
 
   // FIXME: XML encoder is losing all mixed-case properties :(
   var xml = new java.lang.String(Xml.writeToString(data));
-  zip.addData(xml.getBytes("UTF-8"), "data.xml");
+  zip.addData(xml.getBytes('UTF-8'), 'data.xml');
   zip.close();
   return zip;
 }
@@ -442,7 +442,7 @@ Layout.prototype.getArchive = function(skinPath) {
  * @returns {String}
  */
 Layout.prototype.getConfirmText = function() {
-  return gettext("You are about to reset the layout of site {0}.",
+  return gettext('You are about to reset the layout of site {0}.',
       this.site.name);
 }
 /**
@@ -452,7 +452,7 @@ Layout.prototype.getConfirmText = function() {
  */
 Layout.prototype.getMacroHandler = function(name) {
   switch (name) {
-    case "skins":
+    case 'skins':
     return this[name];
 
     default:
@@ -484,9 +484,9 @@ Layout.prototype.image_macro = function(param, name, mode) {
   delete(param.linkto);
 
   switch (mode) {
-    case "url" :
+    case 'url' :
     return res.write(image.getUrl());
-    case "thumbnail" :
+    case 'thumbnail' :
     action || (action = image.getUrl());
     return image.thumbnail_macro(param);
   }
@@ -502,9 +502,9 @@ Layout.prototype.values_macro = function() {
   for (var key in res.meta.values) {
     values.push({key: key, value: res.meta.values[key]});
   }
-  values.sort(new String.Sorter("key"));
+  values.sort(new String.Sorter('key'));
   for each (var pair in values) {
-    this.renderSkin("$Layout#value", {
+    this.renderSkin('$Layout#value', {
       key: pair.key.capitalize(),
       value: pair.value
     });

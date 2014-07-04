@@ -32,11 +32,11 @@
  */
 var Sql = function(options) {
   options || (options = {});
-  var db = getDBConnection("antville");
+  var db = getDBConnection('antville');
   var query;
 
   var log = new function() {
-    var fname = getProperty("sqlLog", "helma." + app.getName() + ".sql");
+    var fname = getProperty('sqlLog', 'helma.' + app.getName() + '.sql');
     return Packages.org.apache.commons.logging.LogFactory.getLog(fname);
   }
 
@@ -62,7 +62,7 @@ var Sql = function(options) {
     if (!options.quote || str === null) {
       return str;
     }
-    return str.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
   }
 
   var value = function(obj) {
@@ -78,7 +78,7 @@ var Sql = function(options) {
       case String:
       return quote(obj);
       case Date:
-      return "from_unixtime(" + (obj.getTime() / 1000) + ")";
+      return 'from_unixtime(' + (obj.getTime() / 1000) + ')';
       case HopObject:
       case Object:
       return quote(obj.toSource());
@@ -90,7 +90,7 @@ var Sql = function(options) {
     var sql = args[0];
     if (args.length > 1) {
       var values = Array.prototype.splice.call(args, 1);
-      if (typeof values[0] === "object") {
+      if (typeof values[0] === 'object') {
         values = values[0];
       }
       sql = sql.replace(/\$(\w*)/g, function() {
@@ -162,16 +162,16 @@ var Sql = function(options) {
  * SQL query for retrieving the amount of records in a table.
  * @constant
  */
-Sql.COUNT = "select count(*) as count from $0";
+Sql.COUNT = 'select count(*) as count from $0';
 
 /**
  * SQL query for retrieving the referrers of a site or a story.
  * @constant
  */
-Sql.REFERRERS = "select referrer, count(*) as requests from " +
+Sql.REFERRERS = 'select referrer, count(*) as requests from ' +
     "log where context_type = '$0' and context_id = $1 and action = " +
     "'main' and created > now() - interval '2 days' group " +
-    "by referrer order by requests desc, referrer asc";
+    'by referrer order by requests desc, referrer asc';
 
 /**
  * SQL command for deleting all log entries older than 2 days.
@@ -184,18 +184,18 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
  * SQL query for searching stories and comments.
  * @constant
  */
-Sql.SEARCH = "select content.id from content, site, metadata where site.id = $0 and " +
+Sql.SEARCH = 'select content.id from content, site, metadata where site.id = $0 and ' +
     "site.id = content.site_id and content.status in ('public', 'shared', 'open') and " +
     "content.id = metadata.parent_id and metadata.name in ('title', 'text') and " +
     "lower(metadata.value) like lower('%$1%') group by content.id, content.created " +
-    "order by content.created desc limit $2";
+    'order by content.created desc limit $2';
 
 /**
  * SQL query for searching members.
  * @constant
  */
 Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
-    "order by name asc limit $2";
+    'order by name asc limit $2';
 
 /**
  * SQL query for retrieving all story IDs in a site’s archive.
@@ -208,7 +208,7 @@ Sql.ARCHIVE = "select id from content where site_id = $0 and prototype = 'Story'
  * SQL command for retrieving the size of a site’s archive.
  * @constant
  */
-Sql.ARCHIVESIZE = "select count(*) as count from content where site_id = $0 " +
+Sql.ARCHIVESIZE = 'select count(*) as count from content where site_id = $0 ' +
     "and prototype = 'Story' and status in ('public', 'shared', 'open') $1";
 
 /**
@@ -216,11 +216,11 @@ Sql.ARCHIVESIZE = "select count(*) as count from content where site_id = $0 " +
  * @see Archive#getFilter
  * @constant
  */
-Sql.ARCHIVEPART = " and extract($0 from created) = $1";
+Sql.ARCHIVEPART = ' and extract($0 from created) = $1';
 
 /**
  * SQL part for applying an order to the archive query.
  * @see Archive#stories_macro
  * @constant
  */
-Sql.ARCHIVEORDER = "order by created desc";
+Sql.ARCHIVEORDER = 'order by created desc';

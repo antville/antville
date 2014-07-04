@@ -45,9 +45,9 @@ Api.mt.getRecentPostTitles = function(id, name, password, limit) {
   var user = Api.getUser(name, password);
 
   Api.constrain(site, user);
-  if (!site.stories.getPermission("main")) {
-    throw Error("Permission denied for user " + user.name +
-        " to get recent post titles from site " + site.name);
+  if (!site.stories.getPermission('main')) {
+    throw Error('Permission denied for user ' + user.name +
+        ' to get recent post titles from site ' + site.name);
   }
 
   var result = [];
@@ -77,13 +77,13 @@ Api.mt.getCategoryList = function(id, name, password) {
   var user = Api.getUser(name, password);
 
   Api.constrain(site, user);
-  if (!site.stories.getPermission("main")) {
-    throw Error("Permission denied for user " + user.name +
-        " to access site " + site.name);
+  if (!site.stories.getPermission('main')) {
+    throw Error('Permission denied for user ' + user.name +
+        ' to access site ' + site.name);
   }
 
   var result = [];
-  var tags = site.getTags("tags", Tags.ALL).list();
+  var tags = site.getTags('tags', Tags.ALL).list();
   for each (var tag in tags) {
     result.push({
       categoryId: tag.name, // FIXME: tag._id,
@@ -106,9 +106,9 @@ Api.mt.getPostCategories = function(id, name, password) {
   var user = Api.getUser(name, password);
 
   Api.constrain(story.site, user);
-  if (!story.getPermission("main")) {
-    throw Error("Permission denied for user " + name +
-        " to access story #" + id);
+  if (!story.getPermission('main')) {
+    throw Error('Permission denied for user ' + name +
+        ' to access story #' + id);
   }
 
   var result = [];
@@ -136,9 +136,9 @@ Api.mt.publishPost = function(id, name, password) {
   var user = Api.getUser(name, password);
 
   Api.constrain(story.site, user);
-  if (!story.getPermission("edit")) {
-    throw Error("Permission denied for user " + name +
-        " to edit story #" + id);
+  if (!story.getPermission('edit')) {
+    throw Error('Permission denied for user ' + name +
+        ' to edit story #' + id);
   }
 
   story.mode = Story.FEATURED;
@@ -163,9 +163,9 @@ Api.mt.setPostCategories = function(id, name, password, categories) {
   var user = Api.getUser(name, password);
 
   Api.constrain(story.site, user);
-  if (!story.getPermission("edit")) {
-    throw Error("Permission denied for user " + name +
-        " to edit story #" + id);
+  if (!story.getPermission('edit')) {
+    throw Error('Permission denied for user ' + name +
+        ' to edit story #' + id);
   }
 
   story.setTags(categories);

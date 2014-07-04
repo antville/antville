@@ -31,16 +31,16 @@
  * Get an object representing the type properties settings suitable for
  * defining prototypes with the definePrototype() method.
  * @returns {Object} The type properties settings as object.
- * @see <a href="http://helma.org/wiki/Defining+HopObject+mappings+programmatically">Helma documentation</a>
+ * @see <a href='http://helma.org/wiki/Defining+HopObject+mappings+programmatically'>Helma documentation</a>
  */
 Metadata.getTypeProperties = function() {
   return {
-    collection: "Metadata",
-    "local.1": "$id",
-    "foreign.1": "parent_id",
-    "local.2": "$prototype",
-    "foreign.2": "parent_type",
-    accessName: "name"
+    collection: 'Metadata',
+    'local.1': '$id',
+    'foreign.1': 'parent_id',
+    'local.2': '$prototype',
+    'foreign.2': 'parent_type',
+    accessName: 'name'
   }
 }
 
@@ -146,7 +146,7 @@ Metadata.prototype.getValue = function() {
  * @returns {String} A textual representation of the metadata object.
  */
 Metadata.prototype.toString = function() {
-  return "Metadata of " + this.parent + " (" + this.name + " = " + this.value + ")";
+  return 'Metadata of ' + this.parent + ' (' + this.name + ' = ' + this.value + ')';
 }
 
 /**

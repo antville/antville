@@ -27,8 +27,8 @@
  * @fileOverview Defines the Choice prototype.
  */
 
-markgettext("Choice");
-markgettext("choice");
+markgettext('Choice');
+markgettext('choice');
 
 /**
  *
@@ -90,7 +90,7 @@ Choice.prototype.selected_macro = function() {
 Choice.prototype.votes_macro = function(param, variant) {
   var votes = 0;
   if (variant) {
-    if (variant.endsWith("%")) {
+    if (variant.endsWith('%')) {
       variant = parseInt(variant) || 1;
       var max = this._parent.votes.size();
       votes = this.size() / max * variant;
@@ -108,8 +108,8 @@ Choice.prototype.votes_macro = function(param, variant) {
   } else {
     votes = this.size();
   }
-  if (!votes && param["default"]) {
-    return param["default"];
+  if (!votes && param['default']) {
+    return param['default'];
   }
   return votes;
 }

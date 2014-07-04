@@ -23,7 +23,7 @@
 // $Date$
 // $URL$
 
-app.addRepository("modules/helma/Aspects.js");
+app.addRepository('modules/helma/Aspects.js');
 
 (function() {
 

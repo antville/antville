@@ -27,8 +27,8 @@
  * @fileOverview Defines the Images prototype
  */
 
-markgettext("Images");
-markgettext("images");
+markgettext('Images');
+markgettext('images');
 
 /**
  * @name Images
@@ -46,18 +46,18 @@ markgettext("images");
  * @returns {Boolean}
  */
 Images.prototype.getPermission = function(action) {
-  if (!this._parent.getPermission("main")) {
+  if (!this._parent.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
-    case "create":
-    // FIXME: case "tags":
+    case '.':
+    case 'main':
+    case 'create':
+    // FIXME: case 'tags':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
         User.require(User.PRIVILEGED);
-    case "all":
+    case 'all':
     return this._parent.constructor !== Layout &&
         (Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED));
@@ -71,22 +71,22 @@ Images.prototype.main_action = function() {
     case Root:
     case Site:
     images = User.getMembership().images;
-    skin = "$Images#main";
-    res.data.title = gettext("Member Images");
+    skin = '$Images#main';
+    res.data.title = gettext('Member Images');
     break;
 
     case Layout:
     images = res.handlers.layout.images;
-    skin = "$Images#layout";
-    res.data.title = gettext("Layout Images");
+    skin = '$Images#layout';
+    res.data.title = gettext('Layout Images');
     break;
   }
-  res.data.list = renderList(images, "$Image#listItem",
+  res.data.list = renderList(images, '$Image#listItem',
       10, req.queryParams.page);
   res.data.pager = renderPager(images,
       this.href(req.action), 10, req.queryParams.page);
   res.data.body = this.renderSkinAsString(skin);
-  res.handlers.site.renderSkin("Site#page");
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -110,21 +110,21 @@ Images.prototype.create_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Add Image");
+  res.data.title = gettext('Add Image');
   HopObject.confirmConstructor(Image);
-  res.data.body = (new Image).renderSkinAsString("$Image#edit");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.body = (new Image).renderSkinAsString('$Image#edit');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Images.prototype.all_action = function() {
   res.data.pager = renderPager(this, this.href(req.action),
       10, req.queryParams.page);
-  res.data.list = renderList(this, "$Image#listItem",
+  res.data.list = renderList(this, '$Image#listItem',
       10, req.queryParams.page);
-  res.data.title = gettext("All Images");
-  res.data.body = this.renderSkinAsString("$Images#main");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('All Images');
+  res.data.body = this.renderSkinAsString('$Images#main');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -134,7 +134,7 @@ Images.prototype.all_action = function() {
  */
 Images.Default = new function() {
   var Image = function(name, description) {
-    var dir = new helma.File(app.appsProperties['static'], "www");
+    var dir = new helma.File(app.appsProperties['static'], 'www');
     var image = new helma.Image(new helma.File(dir, name));
     this.__defineGetter__('parent', function() {return root});
     this.name = this.fileName = name;
@@ -157,27 +157,27 @@ Images.Default = new function() {
     return;
   }
 
-  add("ant.png", "Ant");
-  add("ant-icon.png", "Tiny Ant");
-  add("big.gif", String.EMPTY);
-  add("bullet.gif", "*");
-  add("dot.gif", String.EMPTY);
-  add("headbg.gif", String.EMPTY);
-  add("helma.png", "Helma Object Publisher");
-  add("hop.gif", "Helma Object Publisher");
-  add("manage.gif", "manage");
-  add("marquee.gif", String.EMPTY);
-  add("menu.gif", "menu");
-  add("pixel.gif", String.EMPTY);
-  add("recent.gif", "recent");
-  add("rss.png", "RSS feed");
-  add("smallanim.gif", "Made with Antville");
-  add("smallchaos.gif", "Made with Antville");
-  add("smallstraight.gif", "Made with Antville");
-  add("smalltrans.gif", "Made with Antville");
-  add("status.gif", "status");
-  add("webloghead.gif", "Antville");
-  add("xmlbutton.gif", "XML version of this page");
+  add('ant.png', 'Ant');
+  add('ant-icon.png', 'Tiny Ant');
+  add('big.gif', String.EMPTY);
+  add('bullet.gif', '*');
+  add('dot.gif', String.EMPTY);
+  add('headbg.gif', String.EMPTY);
+  add('helma.png', 'Helma Object Publisher');
+  add('hop.gif', 'Helma Object Publisher');
+  add('manage.gif', 'manage');
+  add('marquee.gif', String.EMPTY);
+  add('menu.gif', 'menu');
+  add('pixel.gif', String.EMPTY);
+  add('recent.gif', 'recent');
+  add('rss.png', 'RSS feed');
+  add('smallanim.gif', 'Made with Antville');
+  add('smallchaos.gif', 'Made with Antville');
+  add('smallstraight.gif', 'Made with Antville');
+  add('smalltrans.gif', 'Made with Antville');
+  add('status.gif', 'status');
+  add('webloghead.gif', 'Antville');
+  add('xmlbutton.gif', 'XML version of this page');
   return images;
 }
 
@@ -196,7 +196,7 @@ Images.prototype.mergeImages = function() {
     });
     layout = layout.parent;
   }
-  return images.sort(Number.Sorter("created", Number.Sorter.DESC));
+  return images.sort(Number.Sorter('created', Number.Sorter.DESC));
 }
 
 /**
@@ -206,5 +206,5 @@ Images.prototype.mergeImages = function() {
  * @see Site#getTags
  */
 Images.prototype.getTags = function(group) {
-  return this._parent.getTags("galleries", group);
+  return this._parent.getTags('galleries', group);
 }

@@ -27,27 +27,27 @@
  * @fileOverview Defines the Image prototype.
  */
 
-markgettext("Image");
-markgettext("image");
+markgettext('Image');
+markgettext('image');
 
-this.handleMetadata("contentLength");
-this.handleMetadata("contentType");
-this.handleMetadata("description");
-this.handleMetadata("fileName");
-this.handleMetadata("height");
-this.handleMetadata("thumbnailHeight");
-this.handleMetadata("thumbnailName");
-this.handleMetadata("thumbnailWidth");
-this.handleMetadata("origin");
-this.handleMetadata("width");
+this.handleMetadata('contentLength');
+this.handleMetadata('contentType');
+this.handleMetadata('description');
+this.handleMetadata('fileName');
+this.handleMetadata('height');
+this.handleMetadata('thumbnailHeight');
+this.handleMetadata('thumbnailName');
+this.handleMetadata('thumbnailWidth');
+this.handleMetadata('origin');
+this.handleMetadata('width');
 
 /** @constant */
 Image.THUMBNAILWIDTH = 100;
 
 /** @constant */
-Image.KEYS = ["name", "created", "modified", "origin", "description",
-    "contentType", "contentLength", "width", "height", "thumbnailName",
-    "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
+Image.KEYS = ['name', 'created', 'modified', 'origin', 'description',
+    'contentType', 'contentLength', 'width', 'height', 'thumbnailName',
+    'thumbnailWidth', 'thumbnailHeight', 'fileName', 'site'];
 
 /**
  * @param {Object} data
@@ -93,22 +93,22 @@ Image.remove = function() {
  */
 Image.getFileExtension = function(type) {
   type = String(type);
-  // Sometimes type is like "image/jpeg;charset=ISO-8859-1"
-  var index = type.lastIndexOf(";");
+  // Sometimes type is like 'image/jpeg;charset=ISO-8859-1'
+  var index = type.lastIndexOf(';');
   if (index > -1) {
     type = type.substr(0, index);
   }
   switch (type) {
-    //case "image/x-icon":
-    //return ".ico";
-    case "image/gif":
-    return ".gif";
-    case "image/jpeg":
-    case "image/pjpeg":
-    return ".jpg";
-    case "image/png":
-    case "image/x-png":
-    return ".png";
+    //case 'image/x-icon':
+    //return '.ico';
+    case 'image/gif':
+    return '.gif';
+    case 'image/jpeg':
+    case 'image/pjpeg':
+    return '.jpg';
+    case 'image/png':
+    case 'image/x-png':
+    return '.png';
   }
   return null;
 }
@@ -151,20 +151,20 @@ Image.prototype.constructor = function(data) {
  * @return {Boolean}
  */
 Image.prototype.getPermission = function(action) {
-  var defaultGrant = this._parent.getPermission("main");
+  var defaultGrant = this._parent.getPermission('main');
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     return true;
-    case "delete":
+    case 'delete':
     return defaultGrant && this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
-    case "edit":
+    case 'edit':
     return defaultGrant && this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED) &&
-        this.parent_type !== "Layout" ||
+        this.parent_type !== 'Layout' ||
         this.parent === path.layout;
   }
   return false;
@@ -176,20 +176,20 @@ Image.prototype.getPermission = function(action) {
  * @returns {String}
  */
 Image.prototype.href = function(action) {
-  if (action !== "replace") {
-    if (this.parent_type === "Layout" && this.parent !== path.layout) {
+  if (action !== 'replace') {
+    if (this.parent_type === 'Layout' && this.parent !== path.layout) {
       return this.getUrl();
     }
   } else {
-    return res.handlers.images.href("create") + "?name=" + this.name;
+    return res.handlers.images.href('create') + '?name=' + this.name;
   }
   return HopObject.prototype.href.apply(this, arguments);
 }
 
 Image.prototype.main_action = function() {
-  res.data.title = gettext("Image: {0}", this.getTitle());
-  res.data.body = this.renderSkinAsString("Image#main");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Image: {0}', this.getTitle());
+  res.data.body = this.renderSkinAsString('Image#main');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -200,7 +200,7 @@ Image.prototype.edit_action = function() {
     try {
       File.redirectOnExceededQuota(this.href(req.action));
       this.update(req.postParams);
-      res.message = gettext("The changes were saved successfully.");
+      res.message = gettext('The changes were saved successfully.');
       res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
@@ -209,9 +209,9 @@ Image.prototype.edit_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Edit Image");
-  res.data.body = this.renderSkinAsString("$Image#edit");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Edit Image');
+  res.data.body = this.renderSkinAsString('$Image#edit');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -225,25 +225,25 @@ Image.prototype.getFormValue = function(name) {
 
   var getOrigin = function(str) {
     var origin = req.postParams.file_origin || self.origin;
-    if (origin && origin.contains("://")) {
+    if (origin && origin.contains('://')) {
       return origin;
     }
     return null;
   }
 
   if (req.isPost()) {
-    if (name === "file") {
+    if (name === 'file') {
       return getOrigin();
     }
     return req.postParams[name];
   }
   switch (name) {
-    case "file":
+    case 'file':
     return getOrigin();
-    case "maxWidth":
-    case "maxHeight":
+    case 'maxWidth':
+    case 'maxHeight':
     return this[name] || 400;
-    case "tags":
+    case 'tags':
     return this.getTags();
   }
   return this[name] || req.queryParams[name];
@@ -258,7 +258,7 @@ Image.prototype.update = function(data) {
 
   if (!origin) {
     if (this.isTransient()) {
-      throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
+      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
     }
   } else if (origin !== this.origin) {
     var mime = data.file;
@@ -266,13 +266,13 @@ Image.prototype.update = function(data) {
     if (!mime || mime.contentLength < 1) {
       mime = getURL(origin);
       if (!mime) {
-        throw Error(gettext("Could not fetch the image from the given URL."));
+        throw Error(gettext('Could not fetch the image from the given URL.'));
       }
     }
 
     var extension = Image.getFileExtension(mime.contentType);
     if (!extension) {
-      throw Error(gettext("This does not seem to be a (valid) JPG, PNG or GIF image file."));
+      throw Error(gettext('This does not seem to be a (valid) JPG, PNG or GIF image file.'));
     }
 
     this.origin = origin;
@@ -281,7 +281,7 @@ Image.prototype.update = function(data) {
     this.contentType = mime.contentType;
 
     if (!this.name) {
-       var name = File.getName(data.name) || mimeName.split(".")[0];
+       var name = File.getName(data.name) || mimeName.split('.')[0];
        this.name = this.parent.images.getAccessName(name);
     }
 
@@ -297,7 +297,7 @@ Image.prototype.update = function(data) {
     } else if (this.isPersistent()) {
       this.getThumbnailFile().remove();
       // NOTE: delete operator won't work here due to getter/setter methods
-      this.deleteMetadata("thumbnailName", "thumbnailWidth", "thumbnailHeight");
+      this.deleteMetadata('thumbnailName', 'thumbnailWidth', 'thumbnailHeight');
     }
 
     // Make the image persistent before proceeding with writing files and
@@ -310,12 +310,12 @@ Image.prototype.update = function(data) {
       this.removeFiles();
     }
     this.fileName = fileName;
-    thumbnail && (this.thumbnailName = this.name + "_small" + extension);
+    thumbnail && (this.thumbnailName = this.name + '_small' + extension);
     this.writeFiles(image.resized || mime, thumbnail && thumbnail.resized);
     image.resized && (this.contentLength = this.getFile().getLength());
   }
 
-  if (this.parent_type !== "Layout") {
+  if (this.parent_type !== 'Layout') {
     this.setTags(data.tags || data.tag_array);
   }
   this.description = data.description;
@@ -327,14 +327,14 @@ Image.prototype.update = function(data) {
  *
  */
 Image.prototype.tags_macro = function() {
-  return res.write(this.getFormValue("tags"));
+  return res.write(this.getFormValue('tags'));
 }
 
 /**
  *
  */
 Image.prototype.contentLength_macro = function() {
-  return res.write((this.contentLength / 1024).format("###,###") + " KB");
+  return res.write((this.contentLength / 1024).format('###,###') + ' KB');
 }
 
 /**
@@ -349,7 +349,7 @@ Image.prototype.url_macro = function() {
  */
 Image.prototype.macro_macro = function() {
   return HopObject.prototype.macro_macro.call(this, null,
-      this.parent.constructor === Layout ? "layout.image" : "image");
+      this.parent.constructor === Layout ? 'layout.image' : 'image');
 }
 
 /**
@@ -366,7 +366,7 @@ Image.prototype.thumbnail_macro = function(param) {
   param.width = this.thumbnailWidth || String.EMPTY;
   param.height = this.thumbnailHeight || String.EMPTY;
   param.border = (param.border = 0);
-  html.tag("img", param);
+  html.tag('img', param);
   return;
 }
 
@@ -381,7 +381,7 @@ Image.prototype.render_macro = function(param) {
   param.width || (param.width = this.width);
   param.height || (param.height = this.height);
   param.border || (param.border = 0);
-  html.tag("img", param);
+  html.tag('img', param);
   return;
 }
 
@@ -393,12 +393,12 @@ Image.prototype.render_macro = function(param) {
  */
 Image.prototype.getFile = function(name) {
   name || (name = this.fileName);
-  if (this.parent_type === "Layout") {
+  if (this.parent_type === 'Layout') {
     var layout = this.parent || res.handlers.layout;
     return layout.getFile(name);
   }
   var site = this.parent || res.handlers.site;
-  return site.getStaticFile("images/" + name);
+  return site.getStaticFile('images/' + name);
 }
 
 /**
@@ -409,12 +409,12 @@ Image.prototype.getFile = function(name) {
  */
 Image.prototype.getUrl = function(name) {
   name || (name = this.fileName);
-  if (this.parent_type === "Layout") {
+  if (this.parent_type === 'Layout') {
     var layout = this.parent || res.handlers.layout;
     return layout.site.getStaticUrl('layout/' + name);
   }
   var site = this.parent || res.handlers.site;
-  return site.getStaticUrl("images/" + name);
+  return site.getStaticUrl('images/' + name);
 }
 
 /**
@@ -470,7 +470,7 @@ Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
       var height = Math.ceil(image.height *
           (factorH < factorV ? factorH : factorV));
       image.resize(width, height);
-      if (mime.contentType.endsWith("gif")) {
+      if (mime.contentType.endsWith('gif')) {
         image.reduceColors(256);
       }
       return {resized: image, width: image.width, height: image.height};
@@ -478,7 +478,7 @@ Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
     return {width: image.width, height: image.height};
   } catch (ex) {
     app.log(ex);
-    throw Error(gettext("Could not resize the image."));
+    throw Error(gettext('Could not resize the image.'));
   }
 }
 
@@ -504,7 +504,7 @@ Image.prototype.writeFiles = function(data, thumbnail) {
       }
     } catch (ex) {
       app.log(ex);
-      throw Error(gettext("Could not save the image file on disk."));
+      throw Error(gettext('Could not save the image file on disk.'));
     }
   }
   return;
@@ -522,7 +522,7 @@ Image.prototype.removeFiles = function() {
     }
   } catch (ex) {
     app.log(ex);
-    throw Error(gettext("Could not remove the image file from disk."));
+    throw Error(gettext('Could not remove the image file from disk.'));
   }
   return;
 }
@@ -531,5 +531,5 @@ Image.prototype.removeFiles = function() {
  * @returns {String}
  */
 Image.prototype.getConfirmText = function() {
-  return gettext("You are about to delete the image {0}.", this.name);
+  return gettext('You are about to delete the image {0}.', this.name);
 }

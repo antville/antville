@@ -34,7 +34,7 @@ var FlexiPath = function(name, parent) {
   this._parent = parent;
   this._patterns = {};
 
-  this.__defineGetter__("patterns", function() {
+  this.__defineGetter__('patterns', function() {
     var ref = this;
     while (ref._parent.constructor === FlexiPath) {
       ref = ref._parent;
@@ -54,11 +54,11 @@ var FlexiPath = function(name, parent) {
       href.unshift(ref._id);
       ref = ref._parent;
     }
-    //href.push("/");
+    //href.push('/');
     if (action) {
       href.push(action);
     }
-    return root.api.href() + href.join("/");
+    return root.api.href() + href.join('/');
   }
 
   this.getChildElement = function(name) {

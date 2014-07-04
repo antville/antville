@@ -27,15 +27,15 @@
  * @fileOverview Defines the Tags prototype.
  */
 
-markgettext("Tags");
-markgettext("tags");
+markgettext('Tags');
+markgettext('tags');
 
 /** @constant */
-Tags.ALL = "all";
+Tags.ALL = 'all';
 /** @constant */
-Tags.OTHER = "other";
+Tags.OTHER = 'other';
 /** @constant */
-Tags.ALPHABETICAL = "alphabetical";
+Tags.ALPHABETICAL = 'alphabetical';
 
 /**
  * @name Tags
@@ -49,7 +49,7 @@ Tags.ALPHABETICAL = "alphabetical";
  * @returns {Boolean}
  */
 Tags.prototype.getPermission = function(action) {
-  return res.handlers.site.getPermission("main");
+  return res.handlers.site.getPermission('main');
 }
 
 Tags.prototype.main_action = function() {
@@ -63,8 +63,8 @@ Tags.prototype.main_action = function() {
     res.redirect(this.href(action));
   }
   res.data.title = this.getTitle();
-  res.data.body = this.renderSkinAsString("$Tags#" + req.action);
-  res.handlers.site.renderSkin("Site#page");
+  res.data.body = this.renderSkinAsString('$Tags#' + req.action);
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -92,7 +92,7 @@ Tags.prototype.alphabet_macro = function() {
 
   var self = this;
   var collection = this.get(Tags.ALPHABETICAL);
-  var prefix = "?group=";
+  var prefix = '?group=';
   var group = this.getGroup();
 
   var add = function(text, id) {
@@ -101,16 +101,16 @@ Tags.prototype.alphabet_macro = function() {
     } else {
       html.link({href: self.href(self.getAction()) + prefix + id}, text);
     }
-    res.write(" ");
+    res.write(' ');
     return;
   };
 
-  add("*", Tags.ALL);
+  add('*', Tags.ALL);
   collection.forEach(function() {
     add(this._id, this._id);
   });
   if (this.get(Tags.OTHER).size() > 0) {
-    add("?", Tags.OTHER);
+    add('?', Tags.OTHER);
   }
   return;
 }
@@ -126,14 +126,14 @@ Tags.prototype.pager_macro = function() {
   if (total < 2) {
     return;
   }
-  var prefix = "?page=";
+  var prefix = '?page=';
   for (var i=1; i<=total; i+=1) {
     if (i == page) {
       res.write(i);
     } else {
       html.link({href: this.href(this.getAction()) + prefix + i}, i);
     }
-    res.write(" ");
+    res.write(' ');
   }
   return;
 }
@@ -145,7 +145,7 @@ Tags.prototype.pager_macro = function() {
 Tags.prototype.header_macro = function(param) {
   var header = this.getHeader();
   for each (var title in header) {
-    this.renderSkin("Tags#header", {title: title});
+    this.renderSkin('Tags#header', {title: title});
   }
   return;
 }
@@ -167,7 +167,7 @@ Tags.prototype.list_macro = function(param, skin) {
     if (item.constructor !== Tag) {
       item = item.get(0);
     }
-    item.renderSkin(skin || "$Tag#listItem", {index: index});
+    item.renderSkin(skin || '$Tag#listItem', {index: index});
     index += 1;
   }
   return;
@@ -186,7 +186,7 @@ Tags.prototype.get = function(group) {
  * @returns {String}
  */
 Tags.prototype.getGroup = function() {
-  return decodeURIComponent(session.data[this.href("group")] || Tags.ALL);
+  return decodeURIComponent(session.data[this.href('group')] || Tags.ALL);
 }
 
 /**
@@ -194,7 +194,7 @@ Tags.prototype.getGroup = function() {
  * @param {String} group
  */
 Tags.prototype.setGroup = function(group) {
-  session.data[this.href("group")] = encodeURIComponent(group);
+  session.data[this.href('group')] = encodeURIComponent(group);
   this.setPage(1);
   return;
 }
@@ -203,7 +203,7 @@ Tags.prototype.setGroup = function(group) {
  * @returns {Number}
  */
 Tags.prototype.getPage = function() {
-  return session.data[this.href("page")] || 1;
+  return session.data[this.href('page')] || 1;
 }
 
 /**
@@ -211,7 +211,7 @@ Tags.prototype.getPage = function() {
  * @param {Number} page
  */
 Tags.prototype.setPage = function(page) {
-  session.data[this.href("page")] = page;
+  session.data[this.href('page')] = page;
   return;
 }
 
@@ -226,7 +226,7 @@ Tags.prototype.getPageSize = function() {
  * @returns {String}
  */
 Tags.prototype.getAction = function() {
-  return (req.action === "main" ? String.EMPTY : req.action);
+  return (req.action === 'main' ? String.EMPTY : req.action);
 }
 
 /**

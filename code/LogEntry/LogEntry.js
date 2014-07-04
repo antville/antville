@@ -27,8 +27,8 @@
  * @fileOverview Defines the LogEntry prototype.
  */
 
-markgettext("Log Entry");
-markgettext("log entry");
+markgettext('Log Entry');
+markgettext('log entry');
 
 /**
  * @name LogEntry
@@ -59,9 +59,9 @@ LogEntry.prototype.constructor = function(context, action) {
  * @returns {String}
  */
 LogEntry.prototype.toString = function() {
-  return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") +
-      " requested " + this.action + " action of " + this.context_type +
-      " #" + this.context_id + " on " + formatDate(this.created) + "]";
+  return '[LogEntry #' + this._id + ': ' + (this.creator || 'anonymous') +
+      ' requested ' + this.action + ' action of ' + this.context_type +
+      ' #' + this.context_id + ' on ' + formatDate(this.created) + ']';
 }
 
 /**
@@ -71,7 +71,7 @@ LogEntry.prototype.toString = function() {
  */
 LogEntry.prototype.getMacroHandler = function(name) {
   switch (name) {
-    case "context":
+    case 'context':
     return this.context || {name: this.context_id};
   }
   return null;
@@ -86,14 +86,14 @@ LogEntry.prototype.label_macro = function(param) {
     return;
   }
   switch (this.context_type) {
-    case "Site" :
-    res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SITE</span>");
+    case 'Site' :
+    res.write('<span class=\'flagDark\' style=\'background-color:#006600;\'>SITE</span>');
     break;
-    case "User" :
-    res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">USER</span>");
+    case 'User' :
+    res.write('<span class=\'flagDark\' style=\'background-color:#009900;\'>USER</span>');
     break;
     default :
-    res.write("<span class=\"flagLight\" style=\"background-color:#FFCC00;\">ROOT</span>");
+    res.write('<span class=\'flagLight\' style=\'background-color:#FFCC00;\'>ROOT</span>');
   }
   return;
 }

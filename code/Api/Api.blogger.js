@@ -40,10 +40,10 @@ Api.blogger._getContentParts = function(content) {
   content && (content = content.trim());
   content || (content = String.EMPTY);
   var result = {};
-  if (!content.startsWith("<title>")) {
+  if (!content.startsWith('<title>')) {
     result.text = content;
   } else {
-    var pos = content.lastIndexOf("</title>");
+    var pos = content.lastIndexOf('</title>');
     if (pos > 0) {
       result.title = content.substring(7, pos);
       result.text = content.substring (pos + 8);
@@ -65,7 +65,7 @@ Api.blogger._getContentParts = function(content) {
 Api.blogger.getUserInfo = function(appKey, name, password) {
   var user = User.getByName(name);
   if (!user) {
-    throw Error("User " + name + " does not exist on this server");
+    throw Error('User ' + name + ' does not exist on this server');
   }
   return {
     userid: name,
@@ -87,7 +87,7 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
   var result = [];
   user.forEach(function() {
     Api.constrain(this.site, user);
-    if (this.site.stories.getPermission("create")) {
+    if (this.site.stories.getPermission('create')) {
       result.push({
         blogid: this.site.name,
         blogName: this.site.title,
@@ -115,9 +115,9 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
   var user = Api.getUser(name, password);
 
   Api.constrain(site, user);
-  if (!site.stories.getPermission("main")) {
-    throw Error("Permission denied for user " + user.name +
-        " to get recent posts of site " + site.name);
+  if (!site.stories.getPermission('main')) {
+    throw Error('Permission denied for user ' + user.name +
+        ' to get recent posts of site ' + site.name);
   }
 
   var result = [];
@@ -128,8 +128,8 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
       postid: story._id,
       userid: story.creator.name,
       dateCreated: story.created,
-      content: story.title ? "<title>" + story.title +
-          "</title>" + story.text : story.text
+      content: story.title ? '<title>' + story.title +
+          '</title>' + story.text : story.text
     });
   }
   return result;
@@ -149,13 +149,13 @@ Api.blogger.getPost = function(appKey, id, name, password) {
   var user = Api.getUser(name, password);
 
   Api.constrain(story.site, user);
-  if (!story.getPermission("main")) {
-    throw Error("Permission denied for user " + name +
-        " to get post #" + id);
+  if (!story.getPermission('main')) {
+    throw Error('Permission denied for user ' + name +
+        ' to get post #' + id);
   }
 
   return {
-    content: story.title ? html.elementAsString("title", story.title) +
+    content: story.title ? html.elementAsString('title', story.title) +
         story.text : story.text,
     userid: story.creator.name,
     postid: story._id,
@@ -179,9 +179,9 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
   var user = Api.getUser(name, password);
 
   Api.constrain(site, user);
-  if (!site.stories.getPermission("create")) {
-    throw Error("Permission denied for user " + user.name +
-        " to add a post to site " + site.name);
+  if (!site.stories.getPermission('create')) {
+    throw Error('Permission denied for user ' + user.name +
+        ' to add a post to site ' + site.name);
   }
 
   var parts = Api.blogger._getContentParts(content);
@@ -212,9 +212,9 @@ Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
   var user = Api.getUser(name, password);
 
   Api.constrain(story.site, user);
-  if (!story.getPermission("edit")) {
-    throw Error("Permission denied for user " + name +
-        " to edit post #" + id);
+  if (!story.getPermission('edit')) {
+    throw Error('Permission denied for user ' + name +
+        ' to edit post #' + id);
   }
 
   var parts = Api.blogger._getContentParts(content);
@@ -242,9 +242,9 @@ Api.blogger.deletePost = function(appKey, id, name, password) {
   var user = Api.getUser(name, password);
 
   Api.constrain(story.site, user);
-  if (!story.getPermission("delete")) {
-    throw Error("Permission denied for user " + name +
-        " to delete story #" + id);
+  if (!story.getPermission('delete')) {
+    throw Error('Permission denied for user ' + name +
+        ' to delete story #' + id);
   }
 
   Story.remove.call(story);

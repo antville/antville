@@ -27,8 +27,8 @@
  * @fileOverview Defines the Archive prototype.
  */
 
-Archive.PAGER = "page";
-Archive.COLLECTION = "collection";
+Archive.PAGER = 'page';
+Archive.COLLECTION = 'collection';
 
 /**
  * @name Archive
@@ -70,16 +70,16 @@ Archive.prototype.getChildElement = function(name) {
  */
 Archive.prototype.getPermission = function(action) {
   var site = res.handlers.site;
-  if (!site.getPermission("main") || site.archiveMode !== Site.PUBLIC) {
+  if (!site.getPermission('main') || site.archiveMode !== Site.PUBLIC) {
     return false;
   }
   switch (action) {
-    case "main":
-    case "page1":
+    case 'main':
+    case 'page1':
     return true;
-    case "previous":
+    case 'previous':
     return this.getPage() > 1
-    case "next":
+    case 'next':
     return this.getPage() < this.getSize() / this.getPageSize();
   }
   return false;
@@ -90,10 +90,10 @@ Archive.prototype.main_action = function() {
   var dateString = String.EMPTY;
   switch (path.length - (this.type === Archive.PAGER ? 4 : 3)) {
     case 1:
-    dateString = formatDate(date, "yyyy");
+    dateString = formatDate(date, 'yyyy');
     break;
     case 2:
-    dateString = formatDate(date, "MMM yyyy");
+    dateString = formatDate(date, 'MMM yyyy');
     break;
     case 3:
     var type = java.text.DateFormat.LONG;
@@ -102,11 +102,11 @@ Archive.prototype.main_action = function() {
     dateString = formatDate(date, pattern);
     break;
   }
-  var page = gettext("Page {0} of {1}", this.getPage(),
+  var page = gettext('Page {0} of {1}', this.getPage(),
         Math.ceil(this.getSize() / this.getPageSize()));
-  res.data.title = gettext("Story Archive {0} ({1})", dateString, page);
-  res.data.body = this.renderSkinAsString("Archive#main");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Story Archive {0} ({1})', dateString, page);
+  res.data.body = this.renderSkinAsString('Archive#main');
+  res.handlers.site.renderSkin('Site#page');
   res.handlers.site.log();
   return;
 }
@@ -127,7 +127,7 @@ Archive.prototype.href = function(action) {
     buffer.push(archive.name);
     archive = archive.parent;
   }
-  buffer.push(res.handlers.site.href("archive"));
+  buffer.push(res.handlers.site.href('archive'));
   buffer.reverse();
   if (action) {
     if (this.type === Archive.PAGER) {
@@ -135,7 +135,7 @@ Archive.prototype.href = function(action) {
     }
     buffer.push(action);
   }
-  return buffer.join("/");
+  return buffer.join('/');
 }
 
 /**
@@ -150,12 +150,12 @@ Archive.prototype.link_macro = function(param, action, text) {
     return;
   }
   switch (action) {
-    case "previous":
+    case 'previous':
     var page = this.getPage() - 1; break;
-    case "next":
+    case 'next':
     var page = this.getPage() + 1; break;
   }
-  var action = "page" + page;
+  var action = 'page' + page;
   return renderLink.call(global, param, action, text, this);
 }
 
@@ -170,10 +170,10 @@ Archive.prototype.stories_macro = function() {
   var renderStory = function(story) {
     storyDay = formatDate(story.created, 'yyyy-MM-dd');
     if (day !== storyDay) {
-      story.renderSkin("Story#date");
+      story.renderSkin('Story#date');
       day = storyDay;
     }
-    story.renderSkin("Story#preview");
+    story.renderSkin('Story#preview');
     return;
   }
 
@@ -240,7 +240,7 @@ Archive.prototype.getFilter = function() {
 
   res.push();
   var sql = new Sql;
-  var keys = ["year", "month", "day"];
+  var keys = ['year', 'month', 'day'];
   for (var i in buffer) {
     sql.retrieve(Sql.ARCHIVEPART, keys[i], buffer[i]);
     res.write(sql);

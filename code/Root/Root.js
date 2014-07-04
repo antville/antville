@@ -29,8 +29,8 @@
 
 /** @constant */
 Root.VERSION = (function(versionString, buildDate) {
-  // A valid version string is e.g. "1.2.3alpha.4711".
-  // Repositories could add something like "-compatible" to it,
+  // A valid version string is e.g. '1.2.3alpha.4711'.
+  // Repositories could add something like '-compatible' to it,
   // FIXME: This should be refactored for modular extension.
   var re = /^(\d+)\.(\d+)(?:\.(\d+))?(.+)?\.(\d+)(?:-(.*))?$/;
   var parts = re.exec(versionString);
@@ -43,24 +43,24 @@ Root.VERSION = (function(versionString, buildDate) {
       date: new Date(buildDate)
     };
     result.minor = result.major + parseInt(parts[2] || 0) / 10;
-    result.bugfix = result.minor + "." + (parts[3] || 0);
-    result.development = parts[4] || "";
-    result["default"] = result[parts[3] ? "bugfix" : "minor"] + result.development +
-        (parts[6] ? "-" + parts[6] : String.EMPTY);
+    result.bugfix = result.minor + '.' + (parts[3] || 0);
+    result.development = parts[4] || '';
+    result['default'] = result[parts[3] ? 'bugfix' : 'minor'] + result.development +
+        (parts[6] ? '-' + parts[6] : String.EMPTY);
     return result;
   }
   return versionString;
-})("@version@.@revision@", "@buildDate@");
+})('@version@.@revision@', '@buildDate@');
 
-this.handleMetadata("creationDelay");
-this.handleMetadata("creationScope");
-this.handleMetadata("notificationScope");
-this.handleMetadata("phaseOutGracePeriod");
-this.handleMetadata("phaseOutNotificationPeriod");
-this.handleMetadata("phaseOutMode");
-this.handleMetadata("probationPeriod");
-this.handleMetadata("quota");
-this.handleMetadata("replyTo");
+this.handleMetadata('creationDelay');
+this.handleMetadata('creationScope');
+this.handleMetadata('notificationScope');
+this.handleMetadata('phaseOutGracePeriod');
+this.handleMetadata('phaseOutNotificationPeriod');
+this.handleMetadata('phaseOutMode');
+this.handleMetadata('probationPeriod');
+this.handleMetadata('quota');
+this.handleMetadata('replyTo');
 
 /**
  * Antville’s Root prototype is an extent of the Site prototype.
@@ -92,20 +92,20 @@ this.handleMetadata("replyTo");
  * @returns {Boolean}
  */
 Root.prototype.getPermission = function(action) {
-  if (action && action.contains("admin")) {
+  if (action && action.contains('admin')) {
     return User.require(User.PRIVILEGED);
   }
   switch (action) {
-    case "debug":
-    case "default.hook":
-    case "health":
-    case "jala.test":
-    case "jala.test.css":
-    case "mrtg":
-    case "sites":
-    case "updates.xml":
+    case 'debug':
+    case 'default.hook':
+    case 'health':
+    case 'jala.test':
+    case 'jala.test.css':
+    case 'mrtg':
+    case 'sites':
+    case 'updates.xml':
     return true;
-    case "create":
+    case 'create':
     return this.getCreationPermission();
   }
   return Site.prototype.getPermission.apply(this, arguments);
@@ -113,13 +113,13 @@ Root.prototype.getPermission = function(action) {
 
 Root.prototype.main_action = function() {
   if (this.users.size() < 1) {
-    this.title = "Antville";
+    this.title = 'Antville';
     this.created = new Date;
-    this.replyTo = "root@localhost";
+    this.replyTo = 'root@localhost';
     this.locale = java.util.Locale.getDefault().getLanguage();
     this.timeZone = java.util.TimeZone.getDefault().getID();
     this.layout.reset();
-    res.redirect(this.members.href("register"));
+    res.redirect(this.members.href('register'));
   } else if (session.user && this.members.owners.size() < 1) {
     this.creator = this.modifier = this.layout.creator =
         this.layout.modifier = session.user;
@@ -135,17 +135,17 @@ Root.prototype.error_action = function() {
   res.message = String.EMPTY;
   var param = res.error ? res : session.data;
   res.status = param.status || 500;
-  res.data.title = gettext("{0} {1} Error", root.getTitle(), param.status);
-  res.data.body = root.renderSkinAsString("$Root#error", param);
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('{0} {1} Error', root.getTitle(), param.status);
+  res.data.body = root.renderSkinAsString('$Root#error', param);
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Root.prototype.notfound_action = function() {
   res.status = 404;
-  res.data.title = gettext("{0} {1} Error", root.getTitle(), res.status);
-  res.data.body = root.renderSkinAsString("$Root#notfound", req);
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('{0} {1} Error', root.getTitle(), res.status);
+  res.data.body = root.renderSkinAsString('$Root#notfound', req);
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -154,8 +154,8 @@ Root.prototype.create_action = function() {
     try {
       var site = Site.add(req.postParams);
       Membership.add(session.user, Membership.OWNER, site);
-      root.admin.log(root, "Added site " + site.name);
-      res.message = gettext("Successfully created your site.");
+      root.admin.log(root, 'Added site ' + site.name);
+      res.message = gettext('Successfully created your site.');
       res.redirect(site.href());
     } catch (ex) {
       res.message = ex;
@@ -166,11 +166,11 @@ Root.prototype.create_action = function() {
   // Cannot use res.handlers.site because somehow it is always root
   res.handlers.newSite = new Site;
   res.handlers.example = new Site;
-  res.handlers.example.name = "foo";
+  res.handlers.example.name = 'foo';
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Add Site");
-  res.data.body = root.renderSkinAsString("$Root#create");
-  root.renderSkin("Site#page");
+  res.data.title = gettext('Add Site');
+  res.data.body = root.renderSkinAsString('$Root#create');
+  root.renderSkin('Site#page');
   return;
 }
 
@@ -178,32 +178,32 @@ Root.prototype.sites_action = function() {
   var now = new Date;
   if (!this.cache.sites || (now - this.cache.sites.modified > Date.ONEHOUR)) {
     var sites = this.sites.list();
-    sites.sort(new String.Sorter("title"));
+    sites.sort(new String.Sorter('title'));
     this.cache.sites = {list: sites, modified: now};
   }
   res.data.list = renderList(this.cache.sites.list,
-      "$Site#listItem", 25, req.queryParams.page);
+      '$Site#listItem', 25, req.queryParams.page);
   res.data.pager = renderPager(this.cache.sites.list,
       this.href(req.action), 25, req.queryParams.page);
-  res.data.title = gettext("Public Sites");
-  res.data.body = this.renderSkinAsString("$Root#sites");
-  root.renderSkin("Site#page");
+  res.data.title = gettext('Public Sites');
+  res.data.body = this.renderSkinAsString('$Root#sites');
+  root.renderSkin('Site#page');
   return;
 }
 
 Root.prototype.updates_xml_action = function() {
-  res.contentType = "application/rss+xml";
+  res.contentType = 'application/rss+xml';
   var now = new Date;
   var feed = new rome.SyndFeedImpl();
-  feed.setFeedType("rss_2.0");
+  feed.setFeedType('rss_2.0');
   feed.setLink(root.href());
-  feed.setTitle("Recently updated sites at " + root.title);
+  feed.setTitle('Recently updated sites at ' + root.title);
   feed.setDescription(root.tagline || String.EMPTY);
-  feed.setLanguage(root.locale.replace("_", "-"));
+  feed.setLanguage(root.locale.replace('_', '-'));
   feed.setPublishedDate(now);
   var entries = new java.util.ArrayList();
   var entry, description;
-  var sites = root.updates.list(0, 25).sort(Number.Sorter("modified",
+  var sites = root.updates.list(0, 25).sort(Number.Sorter('modified',
       Number.Sorter.DESC));
   for each (var site in sites) {
     entry = new rome.SyndEntryImpl();
@@ -212,7 +212,7 @@ Root.prototype.updates_xml_action = function() {
     entry.setAuthor(site.creator.name);
     entry.setPublishedDate(site.modified);
     description = new rome.SyndContentImpl();
-    description.setType("text/plain");
+    description.setType('text/plain');
     description.setValue(site.tagline);
     entry.setDescription(description);
     entries.add(entry);
@@ -228,7 +228,7 @@ Root.prototype.updates_xml_action = function() {
 // Sitemap for Google Webmaster Tools
 // (Unfortunately, utterly useless.)
 Root.prototype.sitemap_xml_action = function() {
-  res.contentType = "text/xml";
+  res.contentType = 'text/xml';
   res.writeln('<?xml version="1.0" encoding="UTF-8"?>');
   res.writeln('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
   this.sites.forEach(function() {
@@ -250,16 +250,16 @@ Root.prototype.health_action = function() {
 
   var param = {
     uptime: formatNumber((new Date - app.upSince.getTime()) /
-        Date.ONEDAY, "0.##"),
+        Date.ONEDAY, '0.##'),
     freeMemory: formatNumber(freeMemory),
     totalMemory: formatNumber(totalMemory),
     usedMemory: formatNumber(totalMemory - freeMemory),
     sessions: formatNumber(app.countSessions()),
-    cacheSize: formatNumber(getProperty("cacheSize"))
+    cacheSize: formatNumber(getProperty('cacheSize'))
   };
 
-  for each (key in ["activeThreads", "freeThreads", "requestCount",
-      "errorCount", "xmlrpcCount", "cacheusage"]) {
+  for each (key in ['activeThreads', 'freeThreads', 'requestCount',
+      'errorCount', 'xmlrpcCount', 'cacheusage']) {
     param[key] = formatNumber(app[key]);
   }
 
@@ -278,56 +278,56 @@ Root.prototype.health_action = function() {
   }
   param.callbacks = app.data.callbacks.length;
 
-  res.data.title = gettext("{0} Health", root.getTitle());
-  res.data.body = this.renderSkinAsString("$Root#health", param);
-  this.renderSkin("Site#page");
+  res.data.title = gettext('{0} Health', root.getTitle());
+  res.data.body = this.renderSkinAsString('$Root#health', param);
+  this.renderSkin('Site#page');
 }
 
 Root.prototype.mrtg_action = function() {
-  res.contentType = "text/plain";
+  res.contentType = 'text/plain';
   var target = req.queryParams.target;
   if (!target) {
     return;
   }
   switch (target) {
-    case "cache":
+    case 'cache':
     res.writeln(0);
-    res.writeln(app.cacheusage * 100 / getProperty("cacheSize", 100));
+    res.writeln(app.cacheusage * 100 / getProperty('cacheSize', 100));
     break;
-    case "threads":
+    case 'threads':
     res.writeln(0);
     res.writeln(app.activeThreads * 100 / app.freeThreads);
     break;
-    case "requests":
+    case 'requests':
     res.writeln(app.errorCount);
     res.writeln(app.requestCount);
     break;
-    case "users":
+    case 'users':
     res.writeln(app.countSessions());
     res.writeln(root.users.size());
     break;
-    case "postings":
+    case 'postings':
     res.writeln(0);
     var sql = new Sql;
-    sql.retrieve(Sql.COUNT, "content");
+    sql.retrieve(Sql.COUNT, 'content');
     sql.traverse(function() {
       res.writeln(this.count);
     });
     break;
-    case "uploads":
+    case 'uploads':
     var sql = new Sql;
-    sql.retrieve(Sql.COUNT, "file");
+    sql.retrieve(Sql.COUNT, 'file');
     sql.traverse(function() {
       res.writeln(this.count);
     });
-    sql.retrieve(Sql.COUNT, "image");
+    sql.retrieve(Sql.COUNT, 'image');
     sql.traverse(function() {
       res.writeln(this.count);
     });
     break;
   }
   res.writeln(app.upSince);
-  res.writeln("mrtg." + target + " of Antville version " + Root.VERSION);
+  res.writeln('mrtg.' + target + ' of Antville version ' + Root.VERSION);
   return;
 }
 
@@ -339,9 +339,9 @@ Root.prototype.mrtg_action = function() {
  */
 Root.prototype.getMacroHandler = function(name) {
   switch (name) {
-    case "admin":
-    case "api":
-    case "sites":
+    case 'admin':
+    case 'api':
+    case 'sites':
     return this[name];
   }
   return Site.prototype.getMacroHandler.apply(this, arguments);
@@ -355,11 +355,11 @@ Root.prototype.getMacroHandler = function(name) {
  */
 Root.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "creationScope":
+    case 'creationScope':
     return Admin.getCreationScopes();
-    case "notificationScope":
+    case 'notificationScope':
     return Admin.getNotificationScopes();
-    case "phaseOutMode":
+    case 'phaseOutMode':
     return Admin.getPhaseOutModes();
   }
   return Site.prototype.getFormOptions.apply(root, arguments);
@@ -388,8 +388,8 @@ Root.prototype.getCreationPermission = function() {
       delta = root.probationPeriod - Math.floor((now -
           user.created) / Date.ONEDAY);
       if (delta > 0) {
-        session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.",
-            ngettext("{0} day", "{0} days", delta));
+        session.data.error = gettext('You need to wait {0} before you are allowed to create a new site.',
+            ngettext('{0} day', '{0} days', delta));
         return false;
       }
     }
@@ -397,8 +397,8 @@ Root.prototype.getCreationPermission = function() {
       delta = root.creationDelay - Math.floor((now -
           user.sites.get(0).created) / Date.ONEDAY);
       if (delta > 0) {
-        session.data.error = gettext("You need to wait {0} before you are allowed to create a new site.",
-            ngettext("{0} day", "{0} days", delta));
+        session.data.error = gettext('You need to wait {0} before you are allowed to create a new site.',
+            ngettext('{0} day', '{0} days', delta));
         return false;
       }
     }

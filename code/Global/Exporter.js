@@ -46,11 +46,11 @@ Exporter.run = function(site, user) {
       File.remove.call(file);
     }
 
-    var rssUrl = site.href("rss.xml");
+    var rssUrl = site.href('rss.xml');
     var baseDir = site.getStaticFile();
     var member = site.members.get(user.name);
 
-    var xml = new helma.File(baseDir, "export.xml");
+    var xml = new helma.File(baseDir, 'export.xml');
     xml.remove();
     xml.open();
 
@@ -98,8 +98,8 @@ Exporter.run = function(site, user) {
     // FIXME: Adding a file to a site could be a little bit simpler :/
     file = new File;
     file.site = site;
-    file.update({file: {contentLength: 0}, file_origin: "file://" +
-        xml.getPath(), name: site.name + "-export"});
+    file.update({file: {contentLength: 0}, file_origin: 'file://' +
+        xml.getPath(), name: site.name + '-export'});
     site.files.add(file);
     file.creator = user;
     site.export_id = file._id;

@@ -27,8 +27,8 @@
  * @fileOverview Defines the Comment prototype.
  */
 
-markgettext("Files");
-markgettext("files");
+markgettext('Files');
+markgettext('files');
 
 /**
  * @name Files
@@ -42,17 +42,17 @@ markgettext("files");
  * @returns {Boolean}
  */
 Files.prototype.getPermission = function(action) {
-  if (!this._parent.getPermission("main")) {
+  if (!this._parent.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
-    case "create":
+    case '.':
+    case 'main':
+    case 'create':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
         User.require(User.PRIVILEGED);
-    case "all":
+    case 'all':
     return Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
   }
@@ -76,30 +76,30 @@ Files.prototype.create_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Add File");
+  res.data.title = gettext('Add File');
   HopObject.confirmConstructor(File);
-  res.data.body = (new File).renderSkinAsString("$File#edit");
-  this._parent.renderSkin("Site#page");
+  res.data.body = (new File).renderSkinAsString('$File#edit');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Files.prototype.main_action = function() {
   var files = User.getMembership().files;
-  res.data.list = renderList(files, "$File#listItem", 10, req.queryParams.page);
+  res.data.list = renderList(files, '$File#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(files, this.href(),
       10, req.queryParams.page);
-  res.data.title = gettext("Member Files");
-  res.data.body = this.renderSkinAsString("$Files#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('Member Files');
+  res.data.body = this.renderSkinAsString('$Files#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Files.prototype.all_action = function() {
-  res.data.list = renderList(this, "$File#listItem", 10, req.queryParams.page);
+  res.data.list = renderList(this, '$File#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(this,
       this.href(req.action), 10, req.queryParams.page);
-  res.data.title = gettext("All Files");
-  res.data.body = this.renderSkinAsString("$Files#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('All Files');
+  res.data.body = this.renderSkinAsString('$Files#main');
+  this._parent.renderSkin('Site#page');
   return;
 }

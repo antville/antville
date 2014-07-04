@@ -27,37 +27,37 @@
  * @fileOverview Defines global variables and functions.
  */
 
-app.addRepository(app.dir + "/../lib/rome-1.0.jar");
-app.addRepository(app.dir + "/../lib/jdom.jar");
-app.addRepository(app.dir + "/../lib/itunes-0.4.jar");
+app.addRepository(app.dir + '/../lib/rome-1.0.jar');
+app.addRepository(app.dir + '/../lib/jdom.jar');
+app.addRepository(app.dir + '/../lib/itunes-0.4.jar');
 
-app.addRepository("modules/core/Global.js");
-app.addRepository("modules/core/HopObject.js");
-app.addRepository("modules/core/Filters.js");
-app.addRepository("modules/core/JSON");
-app.addRepository("modules/core/Number.js");
+app.addRepository('modules/core/Global.js');
+app.addRepository('modules/core/HopObject.js');
+app.addRepository('modules/core/Filters.js');
+app.addRepository('modules/core/JSON');
+app.addRepository('modules/core/Number.js');
 
-app.addRepository("modules/helma/File");
-app.addRepository("modules/helma/Image.js");
-app.addRepository("modules/helma/Html.js");
-app.addRepository("modules/helma/Http.js");
-app.addRepository("modules/helma/Mail.js");
-app.addRepository("modules/helma/Zip.js");
+app.addRepository('modules/helma/File');
+app.addRepository('modules/helma/Image.js');
+app.addRepository('modules/helma/Html.js');
+app.addRepository('modules/helma/Http.js');
+app.addRepository('modules/helma/Mail.js');
+app.addRepository('modules/helma/Zip.js');
 
-app.addRepository("modules/jala/code/Date.js");
-app.addRepository("modules/jala/code/HopObject.js");
-app.addRepository("modules/jala/code/ListRenderer.js");
-app.addRepository("modules/jala/code/Utilities.js");
+app.addRepository('modules/jala/code/Date.js');
+app.addRepository('modules/jala/code/HopObject.js');
+app.addRepository('modules/jala/code/ListRenderer.js');
+app.addRepository('modules/jala/code/Utilities.js');
 
 // Adding i18n message files as repositories
 (function() {
-   var dir = new helma.File(app.dir, "../i18n");
+   var dir = new helma.File(app.dir, '../i18n');
    for each (let fname in dir.list()) {
-     fname.endsWith(".js") && app.addRepository(app.dir + "/../i18n/" + fname);
+     fname.endsWith('.js') && app.addRepository(app.dir + '/../i18n/' + fname);
    }
 })();
 // I18n.js needs to be added *after* the message files or the translations get lost
-app.addRepository("modules/jala/code/I18n.js");
+app.addRepository('modules/jala/code/I18n.js');
 
 // FIXME: Be careful with property names of app.data;
 // they inherit all properties from HopObject!
@@ -157,15 +157,15 @@ helma.Mail.prototype.queue = function() {
  */
 helma.Mail.flushQueue = function() {
   if (app.data.mails.length > 0) {
-    app.debug("Flushing mail queue, sending " +
-        app.data.mails.length + " messages");
+    app.debug('Flushing mail queue, sending ' +
+        app.data.mails.length + ' messages');
     var mail;
     while (app.data.mails.length > 0) {
       mail = app.data.mails.pop();
       mail.send();
       if (mail.status > 0) {
-        app.debug("Error while sending e-mail (status " + mail.status + ")");
-        mail.writeToFile(getProperty("smtp.dir"));
+        app.debug('Error while sending e-mail (status ' + mail.status + ')');
+        mail.writeToFile(getProperty('smtp.dir'));
       }
     }
   }
@@ -186,7 +186,7 @@ jala.i18n.setLocaleGetter(function() {
  * @constant
  * @type String
  */
-var SQLDATEFORMAT = "yyyy-MM-dd HH:mm:ss";
+var SQLDATEFORMAT = 'yyyy-MM-dd HH:mm:ss';
 
 /**
  * Regular Expression according to Jala’s HopObject.getAccessName().
@@ -253,8 +253,8 @@ var console = {
  * The startup handler Helma is calling automatically shortly after the application has started.
  */
 function onStart() {
-  if (typeof root === "undefined") {
-    app.logger.error("Error in database configuration: no root site found.");
+  if (typeof root === 'undefined') {
+    app.logger.error('Error in database configuration: no root site found.');
     return;
   }
   // This is necessary once to be sure that aspect-oriented code will be applied
@@ -275,7 +275,7 @@ function onStop() { /* Currently empty, just to avoid annoying log message */ }
 function defineConstants(ctor /*, arguments */) {
   var constants = [], name;
   for (var i=1; i<arguments.length; i+=1) {
-    name = arguments[i].toUpperCase().replace(/\s/g, "");
+    name = arguments[i].toUpperCase().replace(/\s/g, '');
     ctor[name] = arguments[i].toLowerCase();
     constants.push(arguments[i]);
   }
@@ -297,7 +297,7 @@ function defineConstants(ctor /*, arguments */) {
  * @returns {Function}
  */
 function disableMacro(ctor, name) {
-  return ctor.prototype[name + "_macro"] = idle;
+  return ctor.prototype[name + '_macro'] = idle;
 }
 
 /**
@@ -326,7 +326,7 @@ function nightly() {
   if (now - (global.nightly.lastRun || -Infinity) < Date.ONEMINUTE) {
     return; // Avoid running twice when main scheduler runs more than once per minute
   }
-  app.log("***** Running nightly scripts *****");
+  app.log('***** Running nightly scripts *****');
   Admin.purgeReferrers();
   Admin.dequeue();
   global.nightly.lastRun = now;
@@ -341,19 +341,19 @@ function nightly() {
  * a simple implementation of an if-then-else statement by using Helma macros only.
  * @param {Object} param The default Helma macro parameter object
  * @param {String} firstValue The first value
- * @param {String} _is_ Syntactic sugar; should be "is" for legibility
+ * @param {String} _is_ Syntactic sugar; should be 'is' for legibility
  * @param {String} secondValue The second value
- * @param {String} _then_ Syntactic sugar; should be "then" for legibility
+ * @param {String} _then_ Syntactic sugar; should be 'then' for legibility
  * @param {String} firstResult The first result, ie. the value that will be
  * returned if the first value equals the second one
- * @param {String} _else_ Syntactic sugar; should be "else" for legibility
+ * @param {String} _else_ Syntactic sugar; should be 'else' for legibility
  * @param {String} secondResult The second result, ie. the value that will be
  * returned if the first value does not equal the second one
  * @returns {String} The resulting value
  */
 function if_macro(param, firstValue, _is_, secondValue, _then_, firstResult,
     _else_, secondResult) {
-  return (("" + firstValue) == ("" + secondValue)) ? firstResult : secondResult;
+  return (('' + firstValue) == ('' + secondValue)) ? firstResult : secondResult;
 }
 
 /**
@@ -381,7 +381,7 @@ function link_macro() {
  * @see HopObject#skin_macro
  * @returns {String} The rendered skin
  */
-// FIXME: The definition with "var" is necessary; otherwise the skin_macro()
+// FIXME: The definition with 'var' is necessary; otherwise the skin_macro()
 // method won't be overwritten reliably. (Looks like a Helma bug.)
 var skin_macro = function(param, name) {
   return HopObject.prototype.skin_macro.apply(this, arguments);
@@ -393,7 +393,7 @@ var skin_macro = function(param, name) {
  * @param {String} [delimiter=' : '] The string visually separating two navigation items
  */
 function breadcrumbs_macro (param, delimiter) {
-  delimiter || (delimiter = param.separator || " : ");
+  delimiter || (delimiter = param.separator || ' : ');
   //html.link({href: res.handlers.site.href()}, res.handlers.site.getTitle());
   var offset = res.handlers.site === root ? 1 : 2;
   for (var item, title, i=offset; i<path.length; i+=1) {
@@ -401,7 +401,7 @@ function breadcrumbs_macro (param, delimiter) {
       if (!isNaN(item._id) && item.constructor !== Layout) {
         continue;
       }
-      if (i === path.length-1 && req.action === "main") {
+      if (i === path.length-1 && req.action === 'main') {
         res.write(item.getTitle());
       } else {
         html.link({href: path[i].href()}, item.getTitle());
@@ -409,7 +409,7 @@ function breadcrumbs_macro (param, delimiter) {
       (i < path.length-1) && res.write(delimiter);
     }
   }
-  if (req.action !== "main") {
+  if (req.action !== 'main') {
     res.write(delimiter);
     res.write(gettext(req.action.titleize()));
   }
@@ -435,20 +435,20 @@ function user_macro() {
  * <% story blog/1971 url %> URL of the story of site “blog”
  */
 function story_macro(param, id, mode) {
-  var story = HopObject.getFromPath(id, "stories");
-  if (!story || !story.getPermission("main")) {
+  var story = HopObject.getFromPath(id, 'stories');
+  if (!story || !story.getPermission('main')) {
     return;
   }
 
   switch (mode) {
-    case "url":
+    case 'url':
     res.write(story.href());
     break;
-    case "link":
+    case 'link':
     html.link({href: story.href()}, story.getTitle());
     break;
     default:
-    story.renderSkin("Story#" + (param.skin || "embed"));
+    story.renderSkin('Story#' + (param.skin || 'embed'));
   }
   return;
 }
@@ -469,9 +469,9 @@ function file_macro(param, id, mode) {
   }
 
   var file;
-  if (id.startsWith("/")) {
+  if (id.startsWith('/')) {
     name = id.substring(1);
-    if (mode === "url") {
+    if (mode === 'url') {
       res.write(root.getStaticUrl(name));
     } else {
       file = root.getStaticFile(name);
@@ -484,19 +484,19 @@ function file_macro(param, id, mode) {
         name: name,
         contentLength: res.pop()
       };
-      File.prototype.renderSkin("File#main");
+      File.prototype.renderSkin('File#main');
     }
     return;
   }
 
-  file = HopObject.getFromPath(id, "files");
+  file = HopObject.getFromPath(id, 'files');
   if (!file) {
     return;
   }
-  if (mode === "url") {
+  if (mode === 'url') {
     res.write(file.getUrl());
   } else {
-    file.renderSkin("File#" + (param.skin || "main"));
+    file.renderSkin('File#' + (param.skin || 'main'));
   }
   return;
 }
@@ -515,14 +515,14 @@ function image_macro(param, id, mode) {
   }
 
   var image;
-  if (id.startsWith("/")) {
+  if (id.startsWith('/')) {
     var name = id.substring(1);
-    image = Images.Default[name] || Images.Default[name + ".gif"];
+    image = Images.Default[name] || Images.Default[name + '.gif'];
   } else {
-    image = HopObject.getFromPath(id, "images");
+    image = HopObject.getFromPath(id, 'images');
     // FIXME: Could fallback be replaced with CSS background-image?
     if (!image && param.fallback) {
-      image = HopObject.getFromPath(param.fallback, "images");
+      image = HopObject.getFromPath(param.fallback, 'images');
     }
   }
 
@@ -531,18 +531,18 @@ function image_macro(param, id, mode) {
   }
 
   switch (mode) {
-    case "url":
+    case 'url':
     res.write(image.getUrl());
     break;
-    case "thumbnail":
-    case "popup":
+    case 'thumbnail':
+    case 'popup':
     var url = image.getUrl();
-    html.openTag("a", {href: url});
+    html.openTag('a', {href: url});
     // FIXME: Bloody popups belong to compatibility layer
-    (mode === "popup") && (param.onclick = 'javascript:openPopup(\'' +
+    (mode === 'popup') && (param.onclick = 'javascript:openPopup(\'' +
         url + '\', ' + image.width + ', ' + image.height + '); return false;')
     image.thumbnail_macro(param);
-    html.closeTag("a");
+    html.closeTag('a');
     break;
     default:
     image.render_macro(param);
@@ -561,25 +561,25 @@ function poll_macro(param, id, mode) {
     return;
   }
 
-  var poll = HopObject.getFromPath(id, "polls");
+  var poll = HopObject.getFromPath(id, 'polls');
   if (!poll) {
     return;
   }
 
   switch (mode) {
-    case "url":
+    case 'url':
     res.write(poll.href());
     break;
-    case "link":
+    case 'link':
     html.link({
-      href: poll.href(poll.status === Poll.CLOSED ? "result" : "")
+      href: poll.href(poll.status === Poll.CLOSED ? 'result' : '')
     }, poll.question);
     break;
     default:
-    if (poll.status === Poll.CLOSED || mode === "results")
-      poll.renderSkin("$Poll#results", {});
+    if (poll.status === Poll.CLOSED || mode === 'results')
+      poll.renderSkin('$Poll#results', {});
     else {
-      poll.renderSkin("$Poll#main", {});
+      poll.renderSkin('$Poll#main', {});
     }
   }
   return;
@@ -609,15 +609,15 @@ function list_macro(param, id, limit) {
   var skin, collection;
   var max = Math.min(limit || 25, 50);
 
-  if (id === "sites") {
+  if (id === 'sites') {
     collection = root.sites.list(0, max);
-    skin = "Site#preview";
-  } else if (id === "updates") {
+    skin = 'Site#preview';
+  } else if (id === 'updates') {
     collection = root.updates.list(0, limit);
-    skin = "Site#preview";
+    skin = 'Site#preview';
   } else {
     var site, type;
-    var parts = id.split("/");
+    var parts = id.split('/');
     if (parts.length > 1) {
       type = parts[1];
       site = root.sites.get(parts[0]);
@@ -627,7 +627,7 @@ function list_macro(param, id, limit) {
 
     site || (site = res.handlers.site);
     var filter = function(item, index) {
-      return index < max && item.getPermission("main");
+      return index < max && item.getPermission('main');
     }
 
     var commentFilter = function(item) {
@@ -640,29 +640,29 @@ function list_macro(param, id, limit) {
     }
 
     switch (type) {
-      case "comments":
+      case 'comments':
       if (site.commentMode !== Site.DISABLED) {
         var comments = site.stories.comments;
         collection = comments.list().filter(filter);
-        skin = "Story#preview";
+        skin = 'Story#preview';
       }
       break;
 
-      case "featured":
+      case 'featured':
       collection = site.stories.featured.list(0, max);
-      skin = "Story#preview";
+      skin = 'Story#preview';
       break;
 
-      case "images":
+      case 'images':
       collection = site.images.list(0, max);
-      skin = "Image#preview";
+      skin = 'Image#preview';
       break;
 
-      case "macros":
+      case 'macros':
       res.handlers.site.stories.renderSkin('$Stories#macros');
       return;
 
-      case "postings":
+      case 'postings':
       var content = site.stories.union;
       collection = content.list().filter(filter).filter(function(item) {
         if (item.constructor === Comment) {
@@ -670,20 +670,20 @@ function list_macro(param, id, limit) {
         }
         return true;
       });
-      skin = "Story#preview";
+      skin = 'Story#preview';
       break;
 
-      case "stories":
+      case 'stories':
       var stories = site.stories.recent;
       var counter = 0;
       collection = stories.list().filter(function(item, index) {
         return item.constructor === Story && filter(item, counter++);
       });
-      skin = "Story#preview";
+      skin = 'Story#preview';
       break;
 
-      case "tags":
-      return site.tags.list_macro(param, param.skin || "$Tag#preview");
+      case 'tags':
+      return site.tags.list_macro(param, param.skin || '$Tag#preview');
       break;
 
       default:
@@ -715,7 +715,7 @@ function value_macro(param, name, value) {
   if (!value) {
     res.write(res.meta.values[name]);
   } else {
-    //res.write("/* set " + name + " to " + value + " */");
+    //res.write('/* set ' + name + ' to ' + value + ' */');
     res.meta.values[name] = value;
   }
   return;
@@ -727,7 +727,7 @@ function value_macro(param, name, value) {
  * from the prefixed “type” argument (e.g. “mySite/story”).
  * Furthermore, both collections can be reduced to a specific tag or gallery, resp.
  * @param {Object} param The default Helma macro parameter object.
- * @param {String} [param.skin = "preview"] The name of the skin to render in default output mode.
+ * @param {String} [param.skin = 'preview'] The name of the skin to render in default output mode.
  * @param {String} [param.tag] Reduce the story collection to stories with the specified tag.
  * @param {String} [param.gallery] Reduce the image collection to images from the specified gallery.
  * @param {String} type The type of object to render. Either of “site”, “story” or “image”.
@@ -744,14 +744,14 @@ function random_macro(param, type, mode) {
 
   var site = res.handlers.site;
 
-  if (type === "site") {
+  if (type === 'site') {
     site = root.sites.get(getRandom(root.sites.size()));
     mode === 'url' ? res.write(site.href()) :
-        site.renderSkin(param.skin || "Site#preview");
+        site.renderSkin(param.skin || 'Site#preview');
     return;
   }
 
-  var parts = type.split("/");
+  var parts = type.split('/');
   if (parts.length > 1) {
     site = root.sites.get(parts[0] || 'www');
     type = parts[1];
@@ -764,27 +764,27 @@ function random_macro(param, type, mode) {
   }
 
   switch (type) {
-    case "story":
-    case "stories":
+    case 'story':
+    case 'stories':
     var stories = param.tag ? site.stories.tags.get(param.tag) :
         site.stories.featured;
     var story = stories && stories.get(getRandom(stories.size()));
     if (story) {
       param.tag && (story = story.tagged);
       mode === 'url' ? res.write(story.href()) :
-          story.renderSkin(param.skin || "Story#preview");
+          story.renderSkin(param.skin || 'Story#preview');
     }
     break;
 
-    case "image":
-    case "images":
+    case 'image':
+    case 'images':
     var images = param.gallery ? site.images.galleries.get(param.gallery) :
         site.images;
     var image = images && images.get(getRandom(images.size()));
     if (image) {
       param.gallery && (image = image.tagged);
       mode === 'url' ? res.write(image.href()) :
-          image.renderSkin(param.skin || "Image#preview");
+          image.renderSkin(param.skin || 'Image#preview');
     }
     break;
   }
@@ -799,7 +799,7 @@ function random_macro(param, type, mode) {
  */
 function version_macro(param, type) {
   var version = Root.VERSION;
-  var result = version[type || "default"];
+  var result = version[type || 'default'];
   return result || version;
 }
 
@@ -812,9 +812,9 @@ function listItemFlag_macro(param, str) {
   res.push();
   for (var i=0; i<str.length; i+=1) {
     res.write(str.charAt(i));
-    res.write("<br />");
+    res.write('<br />');
   }
-  renderSkin("$Global#listItemFlag", {text: res.pop()});
+  renderSkin('$Global#listItemFlag', {text: res.pop()});
   return;
 }
 
@@ -876,7 +876,7 @@ function format_filter(value, param, pattern, type) {
   if (!value && value !== 0) {
     return;
   }
-  var f = global["format" + value.constructor.name];
+  var f = global['format' + value.constructor.name];
   if (f && f.constructor === Function) {
     return f(value, pattern || param.pattern, type);
   }
@@ -898,11 +898,11 @@ function clip_filter(input, param, limit, clipping, delimiter) {
     len = input.length;
     input = input.stripTags();
   }
-  input || (input = ngettext("({0} character)", "({0} characters)", len));
+  input || (input = ngettext('({0} character)', '({0} characters)', len));
   limit || (limit = 20);
-  clipping || (clipping = "...");
-  delimiter || (delimiter = "\\s");
-  return String(input || "").head(limit, clipping, delimiter);
+  clipping || (clipping = '...');
+  delimiter || (delimiter = '\\s');
+  return String(input || '').head(limit, clipping, delimiter);
 }
 
 /**
@@ -921,15 +921,15 @@ function renderLink(param, url, text, handler) {
   if (!text || (handler && !handler.href)) {
     return;
   }
-  if (url === "." || url === "main") {
+  if (url === '.' || url === 'main') {
     url = String.EMPTY;
   }
   delete param.url;
   delete param.text;
   param.title || (param.title = String.EMPTY);
-  if (!handler || url.contains(":")) {
+  if (!handler || url.contains(':')) {
     param.href = url;
-  } else if (url.contains("/") || url.contains("?") || url.contains("#")) {
+  } else if (url.contains('/') || url.contains('?') || url.contains('#')) {
     var parts = url.split(/(\/|\?|#)/);
     param.href = handler.href(parts[0]) + parts.splice(1).join(String.EMPTY);
   } else {
@@ -964,7 +964,7 @@ function validateUrl(str) {
     if (str.isUrl()) {
       return str;
     } else if (str.isEmail()) {
-      return "mailto:" + str;
+      return 'mailto:' + str;
     } else {
       return null;
     }
@@ -997,7 +997,7 @@ function formatNumber(number, pattern) {
 /**
  * Formats a date according to a formatting string and the site’s locale and time zone.
  * @param {Date} date The original date.
- * @param {String} [format = "full"] The formatting string. Either a {@link http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html Java SimpleDateFormat pattern} or of “short”, “medium”, “long”, “full”, “date”, “time”, “iso” or “text”.
+ * @param {String} [format = 'full'] The formatting string. Either a {@link http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html Java SimpleDateFormat pattern} or of “short”, “medium”, “long”, “full”, “date”, “time”, “iso” or “text”.
  * @returns {String} The formatted date string.
  */
 function formatDate(date, format) {
@@ -1012,30 +1012,30 @@ function formatDate(date, format) {
   switch (format) {
     case null:
     case undefined:
-    format = "full"; // Caution! Passing through to next case block!
-    case "short":
-    case "medium":
-    case "long":
-    case "full":
+    format = 'full'; // Caution! Passing through to next case block!
+    case 'short':
+    case 'medium':
+    case 'long':
+    case 'full':
     var type = java.text.DateFormat[format.toUpperCase()];
     pattern = java.text.DateFormat.getDateTimeInstance(type, type, locale).toPattern();
     break;
 
-    case "date":
+    case 'date':
     var type = java.text.DateFormat.FULL
     pattern = java.text.DateFormat.getDateInstance(type, locale).toPattern();
     break;
 
-    case "time":
+    case 'time':
     var type = java.text.DateFormat.SHORT;
     pattern = java.text.DateFormat.getTimeInstance(type, locale).toPattern();
     break;
 
-    case "iso":
+    case 'iso':
     pattern = Date.ISOFORMAT;
     break;
 
-    case "text":
+    case 'text':
     var text,
         now = new Date,
         diff = now - date;
@@ -1043,17 +1043,17 @@ function formatDate(date, format) {
       // FIXME: Do something similar for future dates
       text = formatDate(date);
     } else if (diff < Date.ONEMINUTE) {
-      text = gettext("Right now");
+      text = gettext('Right now');
     } else if (diff < Date.ONEHOUR) {
-      text = ngettext("{0} minute ago", "{0} minutes ago",
+      text = ngettext('{0} minute ago', '{0} minutes ago',
           parseInt(diff / Date.ONEMINUTE, 10));
     } else if (diff < Date.ONEDAY) {
-      text = ngettext("{0} hour ago", "{0} hours ago",
+      text = ngettext('{0} hour ago', '{0} hours ago',
           parseInt(diff / Date.ONEHOUR, 10));
     } else if (diff < 2 * Date.ONEDAY) {
-      text = gettext("Yesterday");
+      text = gettext('Yesterday');
     } else {
-      text = ngettext("{0} day ago", "{0} days ago",
+      text = ngettext('{0} day ago', '{0} days ago',
           parseInt(diff / Date.ONEDAY, 10));
     }
     return text;
@@ -1065,7 +1065,7 @@ function formatDate(date, format) {
   try {
     return date.format(pattern, locale, site.getTimeZone());
   } catch (ex) {
-    return "[Invalid date format]";
+    return '[Invalid date format]';
   }
 
   return String.EMPTY;
@@ -1078,8 +1078,8 @@ function formatDate(date, format) {
  */
 function injectXslDeclaration(xml) {
   res.push();
-  renderSkin("Global#xslDeclaration");
-  return xml.replace(/(\?>\r?\n?)/, "$1" + res.pop());
+  renderSkin('Global#xslDeclaration');
+  return xml.replace(/(\?>\r?\n?)/, '$1' + res.pop());
 }
 
 /**
@@ -1092,11 +1092,11 @@ function injectXslDeclaration(xml) {
 function sendMail(recipient, subject, body, options) {
   options || (options = {});
   if (!recipient || !body) {
-    throw Error("Insufficient arguments in method sendMail()");
+    throw Error('Insufficient arguments in method sendMail()');
   }
-  var mail = new helma.Mail(getProperty("smtp", "localhost"),
-      getProperty("smtp.port", "25"));
-  mail.setFrom(root.replyTo || "root@localhost");
+  var mail = new helma.Mail(getProperty('smtp', 'localhost'),
+      getProperty('smtp.port', '25'));
+  mail.setFrom(root.replyTo || 'root@localhost');
   if (recipient instanceof Array) {
     for (var i in recipient) {
       mail.addBCC(recipient[i]);
@@ -1107,7 +1107,7 @@ function sendMail(recipient, subject, body, options) {
   mail.setSubject(subject);
   mail.setText(body);
   if (options.footer !== false) { // It is the exception to have no footer
-    mail.addText(renderSkinAsString("$Global#mailFooter"));
+    mail.addText(renderSkinAsString('$Global#mailFooter'));
   }
   mail.queue();
   return mail.status;
@@ -1119,7 +1119,7 @@ function sendMail(recipient, subject, body, options) {
  * @returns {java.util.Locale} The corresponding locale object.
  */
 function getLocale(language) {
-  return new java.util.Locale(language || "english");
+  return new java.util.Locale(language || 'english');
 }
 
 /**
@@ -1133,15 +1133,15 @@ function getLocales(language) {
   for (var i in locales) {
     locale = locales[i];
     localeString = locale.toString();
-    if (!localeString.contains("_")) {
+    if (!localeString.contains('_')) {
       result.push({
         value: localeString,
         display: locale.getDisplayName(locale),
-        "class": jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? "translated" : ""
+        'class': jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? 'translated' : ''
       });
     }
   }
-  result.sort(new String.Sorter("display"));
+  result.sort(new String.Sorter('display'));
   return result;
 }
 
@@ -1166,13 +1166,13 @@ function getTimeZones(language) {
 
   for each (let id in ids) {
     // Exclude confusing time zones
-    if (id.length < 4 || !id.contains("/") ||
-        id.startsWith("Etc") || id.startsWith("System")) {
+    if (id.length < 4 || !id.contains('/') ||
+        id.startsWith('Etc') || id.startsWith('System')) {
       continue;
     }
     let timeZone = java.util.TimeZone.getTimeZone(id);
     // Exclude more confusing time zones
-    if (timeZone.getDisplayName().startsWith("GMT")) {
+    if (timeZone.getDisplayName().startsWith('GMT')) {
       continue;
     }
     result.push({
@@ -1182,7 +1182,7 @@ function getTimeZones(language) {
     timeZones.push(timeZone);
   }
 
-  return result.sort(new String.Sorter("display"));
+  return result.sort(new String.Sorter('display'));
 }
 // FIXME:
 /**
@@ -1191,8 +1191,8 @@ function getTimeZones(language) {
  * @returns {String} The transformed RSS output.
  */
 function fixRssText(rss) {
-  var re = new RegExp("<img src\\s*=\\s*\"?([^\\s\"]+)?\"?[^>]*?(alt\\s*=\\s*\"?([^\"]+)?\"?[^>]*?)?>", "gi");
-  rss = rss.replace(re, "[<a href=\"$1\" title=\"$3\">Image</a>]");
+  var re = new RegExp('<img src\\s*=\\s*\'?([^\\s\']+)?\'?[^>]*?(alt\\s*=\\s*\'?([^\']+)?\'?[^>]*?)?>', 'gi');
+  rss = rss.replace(re, '[<a href=\'$1\' title=\'$3\'>Image</a>]');
   return rss;
 }
 
@@ -1203,15 +1203,15 @@ function fixRssText(rss) {
  */
 function doWikiStuff (src) {
   // robert, disabled: didn't get the reason for this:
-  // var src= " "+src;
-  if (src == null || !src.contains("<*"))
+  // var src= ' '+src;
+  if (src == null || !src.contains('<*'))
     return src;
 
   // do the Wiki link thing, <*asterisk style*>
-  var regex = new RegExp ("<[*]([^*]+)[*]>");
+  var regex = new RegExp ('<[*]([^*]+)[*]>');
   regex.ignoreCase=true;
 
-  var text = "";
+  var text = '';
   var start = 0;
   while (true) {
     var found = regex.exec (src.substring(start));
@@ -1219,14 +1219,14 @@ function doWikiStuff (src) {
     text += src.substring(start, to);
     if (found == null)
       break;
-    var name = ""+(new java.lang.String (found[1])).trim();
+    var name = ''+(new java.lang.String (found[1])).trim();
     var item = res.handlers.site.topics.get (name);
-    if (item == null && name.lastIndexOf("s") == name.length-1)
+    if (item == null && name.lastIndexOf('s') == name.length-1)
       item = res.handlers.site.topics.get (name.substring(0, name.length-1));
     if (item == null || !item.size())
-      text += format(name)+" <small>[<a href=\""+res.handlers.site.stories.href("create")+"?topic="+escape(name)+"\">define "+format(name)+"</a>]</small>";
+      text += format(name)+' <small>[<a href=\''+res.handlers.site.stories.href('create')+'?topic='+escape(name)+'\'>define '+format(name)+'</a>]</small>';
     else
-      text += "<a href=\""+item.href()+"\">"+name+"</a>";
+      text += '<a href=\''+item.href()+'\'>'+name+'</a>';
     start += found.index + found[1].length+4;
   }
   return text;
@@ -1277,16 +1277,16 @@ function renderList(collection, funcOrSkin, itemsPerPage, pageIdx) {
 function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
   // Render a single item for the navigation bar
   var renderItem = function(text, cssClass, url, page) {
-    var param = {"class": cssClass};
+    var param = {'class': cssClass};
     if (!url) {
       param.text = text;
     } else {
-      if (url.contains("?"))
-        param.text = html.linkAsString({href: url + "&page=" + page}, text);
+      if (url.contains('?'))
+        param.text = html.linkAsString({href: url + '&page=' + page}, text);
       else
-        param.text = html.linkAsString({href: url + "?page=" + page}, text);
+        param.text = html.linkAsString({href: url + '?page=' + page}, text);
     }
-    renderSkin("$Global#pagerItem", param);
+    renderSkin('$Global#pagerItem', param);
     return;
   }
 
@@ -1312,33 +1312,33 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
   if (isNaN(pageIdx) || pageIdx > lastPageIdx || pageIdx < 0) {
     pageIdx = 0;
   }
-  param.display = ((pageIdx * itemsPerPage) + 1) + "-" +
+  param.display = ((pageIdx * itemsPerPage) + 1) + '-' +
       (Math.min((pageIdx * itemsPerPage) + itemsPerPage, size));
   param.total = size;
 
   // Render the navigation-bar
   res.push();
-  (pageIdx > 0) && renderItem("[–]", "pageNavItem", url, pageIdx-1);
+  (pageIdx > 0) && renderItem('[–]', 'pageNavItem', url, pageIdx-1);
   var offset = Math.floor(pageIdx / maxItems) * maxItems;
-  (offset > 0) && renderItem("[..]", "pageNavItem", url, offset-1);
+  (offset > 0) && renderItem('[..]', 'pageNavItem', url, offset-1);
   var currPage = offset;
   var stop = Math.min(currPage + maxItems, lastPageIdx+1);
   while (currPage < stop) {
     if (currPage === pageIdx) {
-      renderItem("[" + (currPage +1) + "]", "pageNavSelItem");
+      renderItem('[' + (currPage +1) + ']', 'pageNavSelItem');
     } else {
-      renderItem("[" + (currPage +1) + "]", "pageNavItem", url, currPage);
+      renderItem('[' + (currPage +1) + ']', 'pageNavItem', url, currPage);
     }
     currPage += 1;
   }
   if (currPage < lastPageIdx) {
-    renderItem("[..]", "pageNavItem", url, offset + maxItems);
+    renderItem('[..]', 'pageNavItem', url, offset + maxItems);
   }
   if (pageIdx < lastPageIdx) {
-    renderItem("[+]", "pageNavItem", url, pageIdx +1);
+    renderItem('[+]', 'pageNavItem', url, pageIdx +1);
   }
   param.pager = res.pop();
-  return renderSkinAsString("$Global#pager", param);
+  return renderSkinAsString('$Global#pager', param);
 }
 
 /**
@@ -1347,8 +1347,8 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
  * @returns {String} The english singular form of the original input.
  */
 function singularize(plural) {
-  if (plural.endsWith("ies")) {
-    return plural.substring(0, plural.length-3) + "y";
+  if (plural.endsWith('ies')) {
+    return plural.substring(0, plural.length-3) + 'y';
   }
   return plural.substring(0, plural.length-1);
 }
@@ -1359,10 +1359,10 @@ function singularize(plural) {
  * @returns {String} The english plural form of the original input.
  */
 function pluralize(singular) {
-  if (singular.endsWith("y")) {
-    return singular.substring(0, singular.length-1) + "ies";
+  if (singular.endsWith('y')) {
+    return singular.substring(0, singular.length-1) + 'ies';
   }
-  return singular + "s";
+  return singular + 's';
 }
 
 /**

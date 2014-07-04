@@ -27,8 +27,8 @@
  * @fileOverview Defines the Vote prototype.
  */
 
-markgettext("Vote");
-markgettext("vote");
+markgettext('Vote');
+markgettext('vote');
 
 /**
  * @param {Choice} choice

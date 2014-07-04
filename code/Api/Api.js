@@ -51,11 +51,11 @@ Api.dispatch = function() {
 Api.getUser = function(name, password) {
   var user = User.getByName(name);
   if (!user) {
-    throw Error("User " + name + " does not exist on this server");
+    throw Error('User ' + name + ' does not exist on this server');
   } else if (user.hash !== String(password + user.salt).md5()) {
-    throw Error("Authentication failed for user " + name);
+    throw Error('Authentication failed for user ' + name);
   } else if (user.status === User.BLOCKED) {
-    throw Error("The user account " + name + " is currently blocked");
+    throw Error('The user account ' + name + ' is currently blocked');
   }
   session.login(user);
   return user;
@@ -70,9 +70,9 @@ Api.getUser = function(name, password) {
 Api.getSite = function(name) {
   var site = Site.getByName(String(name));
   if (!site) {
-    throw Error("Site " + name + " does not exist on this server");
+    throw Error('Site ' + name + ' does not exist on this server');
   } else if (site.status === Site.BLOCKED) {
-    throw Error("The site " + name + " is blocked");
+    throw Error('The site ' + name + ' is blocked');
   }
   return site;
 }
@@ -86,7 +86,7 @@ Api.getSite = function(name) {
 Api.getStory = function(id) {
   var story = Story.getById(id);
   if (!story) {
-    throw Error("Story #" + id + " does not exist on this server");
+    throw Error('Story #' + id + ' does not exist on this server');
   }
   return story;
 }
@@ -105,22 +105,22 @@ Api.prototype.getPermission = function(){
 }
 
 Api.prototype.main_action = function() {
-  res.data.title = gettext("Application Programming Interfaces");
-  res.data.body = this.renderSkinAsString("$Api#main");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Application Programming Interfaces');
+  res.data.body = this.renderSkinAsString('$Api#main');
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Api.prototype.callback_action = function() {
   var ping = function(data) {
-    if (data.type !== "Story" && data.type !== "Comment") {
+    if (data.type !== 'Story' && data.type !== 'Comment') {
       return;
     }
-    var remote = new Remote("http://rpc.weblogs.com/RPC2");
+    var remote = new Remote('http://rpc.weblogs.com/RPC2');
     var call = remote.weblogUpdates.ping(data.site, data.origin);
     if (call.error || call.result.flerror) {
-      app.debug("Error invoking weblogs.com ping() method for " +
-          data.site + ": " + call.error || call.result.message);
+      app.debug('Error invoking weblogs.com ping() method for ' +
+          data.site + ': ' + call.error || call.result.message);
     } else {
       app.debug(call.result);
     }
@@ -128,12 +128,12 @@ Api.prototype.callback_action = function() {
   };
 
   if (req.isGet()) {
-    res.data.title = gettext("Default Callback Url");
-    res.data.body = this.renderSkinAsString("$Api#callback",
+    res.data.title = gettext('Default Callback Url');
+    res.data.body = this.renderSkinAsString('$Api#callback',
         {name: req.action, code: ping.toString()});
-    res.handlers.site.renderSkin("Site#page");
+    res.handlers.site.renderSkin('Site#page');
   } else if (req.isPost()) {
-    app.debug("Invoked default callback with POST params: " + req.postParams);
+    app.debug('Invoked default callback with POST params: ' + req.postParams);
     app.invokeAsync(this, ping, [req.postParams], 1000);
   }
   return;
@@ -148,15 +148,15 @@ Api.prototype.main_action_xmlrpc = function(methodName) {
   if (!methodName) {
     return false;
   }
-  var parts = methodName.split(".");
+  var parts = methodName.split('.');
   var method = parts[1];
-  if (method && !method.startsWith("_")) {
+  if (method && !method.startsWith('_')) {
     var handler = Api[parts[0]];
     if (handler && handler[method]) {
       var args = Array.prototype.splice.call(arguments, 1);
       return handler[method].apply(null, args);
     }
   }
-  throw Error("Method " + methodName + "() is not implemented");
+  throw Error('Method ' + methodName + '() is not implemented');
   return;
 }

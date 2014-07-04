@@ -27,14 +27,14 @@
  * @fileOverview Defines the Comment prototype.
  */
 
-markgettext("File");
-markgettext("file");
+markgettext('File');
+markgettext('file');
 
-this.handleMetadata("url");
-this.handleMetadata("description");
-this.handleMetadata("contentType");
-this.handleMetadata("contentLength");
-this.handleMetadata("fileName");
+this.handleMetadata('url');
+this.handleMetadata('description');
+this.handleMetadata('contentType');
+this.handleMetadata('contentLength');
+this.handleMetadata('fileName');
 
 /**
  * @param {Object} data
@@ -85,7 +85,7 @@ File.getName = function(name) {
  */
 File.redirectOnUploadError = function(url) {
   if (req.data.helma_upload_error) {
-    res.message = gettext("Sorry, the file exceeds the maximum upload limit of {0} kB.",
+    res.message = gettext('Sorry, the file exceeds the maximum upload limit of {0} kB.',
         formatNumber(app.appsProperties.uploadLimit));
     res.redirect(url);
   }
@@ -98,7 +98,7 @@ File.redirectOnUploadError = function(url) {
  */
 File.redirectOnExceededQuota = function(url) {
   if (res.handlers.site.getDiskSpace() < 0) {
-    res.message = gettext("Sorry, there is no disk space left. Please try to delete some files or images first.");
+    res.message = gettext('Sorry, there is no disk space left. Please try to delete some files or images first.');
     res.redirect(url);
   }
   return;
@@ -131,12 +131,12 @@ File.prototype.constructor = function() {
  */
 File.prototype.getPermission = function(action) {
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     return true;
-    case "delete":
-    case "edit":
-    return this._parent.getPermission("main") &&
+    case 'delete':
+    case 'edit':
+    return this._parent.getPermission('main') &&
         this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
@@ -159,7 +159,7 @@ File.prototype.edit_action = function() {
     try {
       File.redirectOnExceededQuota(this.href(req.action));
       this.update(req.postParams);
-      res.message = gettext("The changes were saved successfully.");
+      res.message = gettext('The changes were saved successfully.');
       res.redirect(this._parent.href());
     } catch (ex) {
       res.message = ex;
@@ -168,9 +168,9 @@ File.prototype.edit_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Edit File");
-  res.data.body = this.renderSkinAsString("$File#edit");
-  return this.site.renderSkin("Site#page");
+  res.data.title = gettext('Edit File');
+  res.data.body = this.renderSkinAsString('$File#edit');
+  return this.site.renderSkin('Site#page');
 }
 
 /**
@@ -183,20 +183,20 @@ File.prototype.getFormValue = function(name) {
 
   var getOrigin = function(str) {
     var origin = req.postParams.file_origin || self.origin;
-    if (origin && origin.contains("://")) {
+    if (origin && origin.contains('://')) {
       return origin;
     }
     return null;
   }
 
   if (req.isPost()) {
-    if (name === "file") {
+    if (name === 'file') {
       return getOrigin();
     }
     return req.postParams[name];
   }
   switch (name) {
-    case "file":
+    case 'file':
     return getOrigin();
   }
   return this[name];
@@ -210,19 +210,19 @@ File.prototype.update = function(data) {
   if (data.uploadError) {
     app.log(data.uploadError);
     // Looks like the file uploaded has exceeded the upload limit ...
-    throw Error(gettext("File size is exceeding the upload limit."));
+    throw Error(gettext('File size is exceeding the upload limit.'));
   }
 
   if (!data.file_origin) {
     if (this.isTransient()) {
-      throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
+      throw Error(gettext('There was nothing to upload. Please be sure to choose a file.'));
     }
   } else if (data.file_origin !== this.origin) {
     var mime = data.file;
     if (mime.contentLength < 1) {
       mime = getURL(data.file_origin);
       if (!mime) {
-        throw Error(gettext("Could not fetch the file from the given URL."));
+        throw Error(gettext('Could not fetch the file from the given URL.'));
       }
     }
 
@@ -232,7 +232,7 @@ File.prototype.update = function(data) {
     this.contentType = mime.contentType;
 
     if (!this.name) {
-       var name = File.getName(data.name) || mimeName.split(".")[0];
+       var name = File.getName(data.name) || mimeName.split('.')[0];
        this.name = this.site.files.getAccessName(name);
     }
 
@@ -240,7 +240,7 @@ File.prototype.update = function(data) {
     // it to disk (also see Helma bug #607)
     this.isTransient() && this.persist();
 
-    var extension = mimeName.substr(mimeName.lastIndexOf(".")) || String.EMPTY;
+    var extension = mimeName.substr(mimeName.lastIndexOf('.')) || String.EMPTY;
     var fileName = this.name + extension;
     if (fileName !== this.fileName) {
       // Remove existing file if the file name has changed
@@ -270,7 +270,7 @@ File.prototype.url_macro = function() {
  * @param {Object} param
  */
 File.prototype.contentLength_macro = function(param) {
-  return res.write((this.contentLength / 1024).format("###,###") + " KB");
+  return res.write((this.contentLength / 1024).format('###,###') + ' KB');
 }
 
 /**
@@ -278,7 +278,7 @@ File.prototype.contentLength_macro = function(param) {
  */
 File.prototype.getFile = function() {
   var site = this.site || res.handlers.site;
-  return site.getStaticFile("files/" + this.fileName);
+  return site.getStaticFile('files/' + this.fileName);
 }
 
 /**
@@ -286,12 +286,12 @@ File.prototype.getFile = function() {
  */
 File.prototype.getUrl = function() {
   var site = this.site || res.handlers.site;
-  return site.getStaticUrl("files/" + this.fileName);
+  return site.getStaticUrl('files/' + this.fileName);
 }
 
 /**
  * @returns {String}
  */
 File.prototype.getConfirmText = function() {
-  return gettext("You are about to delete the file {0}.", this.name);
+  return gettext('You are about to delete the file {0}.', this.name);
 }

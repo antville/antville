@@ -27,21 +27,21 @@
  * @fileOverview Defines the User prototype.
  */
 
-markgettext("User");
-markgettext("user");
+markgettext('User');
+markgettext('user');
 
-this.handleMetadata("hash");
-this.handleMetadata("salt");
-this.handleMetadata("url");
+this.handleMetadata('hash');
+this.handleMetadata('salt');
+this.handleMetadata('url');
 
-disableMacro(User, "hash");
-disableMacro(User, "salt");
-
-/** @constant */
-User.COOKIE = getProperty("userCookie", "antvilleUser");
+disableMacro(User, 'hash');
+disableMacro(User, 'salt');
 
 /** @constant */
-User.HASHCOOKIE = getProperty("hashCookie", "antvilleHash");
+User.COOKIE = getProperty('userCookie', 'antvilleUser');
+
+/** @constant */
+User.HASHCOOKIE = getProperty('hashCookie', 'antvilleHash');
 
 /**
  * @param {Object} data
@@ -95,16 +95,16 @@ User.getByName = function(name) {
  * @returns {String[]}
  * @see defineConstants
  */
-User.getStatus = defineConstants(User, markgettext("Blocked"),
-    markgettext("Regular"), markgettext("Trusted"),
-    markgettext("Privileged"));
+User.getStatus = defineConstants(User, markgettext('Blocked'),
+    markgettext('Regular'), markgettext('Trusted'),
+    markgettext('Privileged'));
 
 /**
  * @returns {String}
  */
 User.getSalt = function() {
   var salt = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 8);
-  var random = java.security.SecureRandom.getInstance("SHA1PRNG");
+  var random = java.security.SecureRandom.getInstance('SHA1PRNG');
   random.nextBytes(salt);
   return Packages.sun.misc.BASE64Encoder().encode(salt);
 }
@@ -117,34 +117,34 @@ User.getSalt = function() {
  */
 User.register = function(data) {
   if (!data.name) {
-    throw Error(gettext("Please enter a username."));
+    throw Error(gettext('Please enter a username.'));
   }
 
   data.name = data.name.trim();
   if (data.name.length > 30) {
-    throw Error(gettext("Sorry, the username you entered is too long. Please choose a shorter one."));
+    throw Error(gettext('Sorry, the username you entered is too long. Please choose a shorter one.'));
   } else if (data.name !== stripTags(data.name) || NAMEPATTERN.test(data.name)) {
-    throw Error(gettext("Please avoid special characters or HTML code in the name field."));
+    throw Error(gettext('Please avoid special characters or HTML code in the name field.'));
   } else if (data.name !== root.users.getAccessName(data.name)) {
-    throw Error(gettext("Sorry, the user name you entered already exists. Please enter a different one."));
+    throw Error(gettext('Sorry, the user name you entered already exists. Please enter a different one.'));
   }
 
   data.email && (data.email = data.email.trim());
   if (!validateEmail(data.email)) {
-    throw Error(gettext("Please enter a valid e-mail address"));
+    throw Error(gettext('Please enter a valid e-mail address'));
   }
 
   if (User.isBlacklisted(data)) {
-    throw Error("Sequere pecuniam ad meliora.");
+    throw Error('Sequere pecuniam ad meliora.');
   }
 
   // Create hash from password for JavaScript-disabled browsers
   if (!data.hash) {
     // Check if passwords match
     if (!data.password || !data.passwordConfirm) {
-      throw Error(gettext("Could not verify your password. Please repeat your input."))
+      throw Error(gettext('Could not verify your password. Please repeat your input.'))
     } else if (data.password !== data.passwordConfirm) {
-      throw Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
+      throw Error(gettext('Unfortunately, your passwords did not match. Please repeat your input.'));
     }
     data.hash = (data.password + session.data.token).md5();
   }
@@ -169,30 +169,30 @@ User.isBlacklisted = function(data) {
   var email = encodeURIComponent(data.email);
   var ip = encodeURIComponent(data.http_remotehost);
 
-  var key = getProperty("botscout.apikey");
+  var key = getProperty('botscout.apikey');
   if (key) {
-    url = ["http://botscout.com/test/?multi", "&key=", key, "&mail=", email, "&ip=", ip];
+    url = ['http://botscout.com/test/?multi', '&key=', key, '&mail=', email, '&ip=', ip];
     try {
       mime = getURL(url.join(String.EMPTY));
-      if (mime && mime.text && mime.text.startsWith("Y")) {
+      if (mime && mime.text && mime.text.startsWith('Y')) {
         return true;
       }
     } catch (ex) {
-      app.log("Exception while trying to check blacklist URL " + url);
+      app.log('Exception while trying to check blacklist URL ' + url);
       app.log(ex);
     }
   }
   //return false;
 
   // We only get here if botscout.com does not already blacklist the ip or email address
-  url = ["http://www.stopforumspam.com/api?f=json", "&email=", email];
+  url = ['http://www.stopforumspam.com/api?f=json', '&email=', email];
   if (ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$/)) {
-    url.push("&ip=", ip);
+    url.push('&ip=', ip);
   }
   try {
     mime = getURL(url.join(String.EMPTY));
   } catch (ex) {
-    app.log("Exception while trying to check blacklist URL " + url);
+    app.log('Exception while trying to check blacklist URL ' + url);
     app.log(ex);
   }
   if (mime && mime.text) {
@@ -220,8 +220,8 @@ User.autoLogin = function() {
   if (!user) {
     return;
   }
-  var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"),
-      String.EMPTY, "\\.");
+  var ip = req.data.http_remotehost.clip(getProperty('cookieLevel', '4'),
+      String.EMPTY, '\\.');
   if ((user.hash + ip).md5() !== hash) {
     return;
   }
@@ -240,22 +240,22 @@ User.autoLogin = function() {
 User.login = function(data) {
   var user = User.getByName(data.name);
   if (!user) {
-    throw Error(gettext("Unfortunately, your login failed. Maybe a typo?"));
+    throw Error(gettext('Unfortunately, your login failed. Maybe a typo?'));
   }
   var digest = data.digest;
   // Calculate digest for JavaScript-disabled browsers
   if (!digest) {
-    app.logger.warn("Received clear text password from " + req.data.http_referer);
+    app.logger.warn('Received clear text password from ' + req.data.http_referer);
     digest = ((data.password + user.salt).md5() + session.data.token).md5();
   }
   // Check if login is correct
   if (digest !== user.getDigest(session.data.token)) {
-    throw Error(gettext("Unfortunately, your login failed. Maybe a typo?"))
+    throw Error(gettext('Unfortunately, your login failed. Maybe a typo?'))
   }
   if (data.remember) {
     // Set long running cookies for automatic login
     res.setCookie(User.COOKIE, user.name, 365);
-    var ip = req.data.http_remotehost.clip(getProperty("cookieLevel", "4"), String.EMPTY, "\\.");
+    var ip = req.data.http_remotehost.clip(getProperty('cookieLevel', '4'), String.EMPTY, '\\.');
     res.setCookie(User.HASHCOOKIE, (user.hash + ip).md5(), 365);
   }
   user.touch();
@@ -316,7 +316,7 @@ User.getMembership = function() {
  */
 User.setLocation = function(url) {
   session.data.location = url || req.data.http_referer;
-  //app.debug("Pushed location " + session.data.location);
+  //app.debug('Pushed location ' + session.data.location);
   return;
 }
 
@@ -326,7 +326,7 @@ User.setLocation = function(url) {
 User.getLocation = function() {
   var url = session.data.location;
   delete session.data.location;
-  //app.debug("Popped location " + url);
+  //app.debug('Popped location ' + url);
   return url;
 }
 
@@ -401,13 +401,13 @@ User.prototype.update = function(data) {
   }
   if (data.digest) {
     if (data.digest !== this.getDigest(session.data.token)) {
-      throw Error(gettext("Oops, your old password is incorrect. Please re-enter it."));
+      throw Error(gettext('Oops, your old password is incorrect. Please re-enter it.'));
     }
     if (!data.hash) {
       if (!data.newPassword || !data.newPasswordConfirm) {
-        throw Error(gettext("Please specify a new password."));
+        throw Error(gettext('Please specify a new password.'));
       } else if (data.newPassword !== data.newPasswordConfirm) {
-        throw Error(gettext("Unfortunately, your passwords did not match. Please repeat your input."));
+        throw Error(gettext('Unfortunately, your passwords did not match. Please repeat your input.'));
       }
       data.hash = (data.newPassword + session.data.token).md5();
     }
@@ -417,10 +417,10 @@ User.prototype.update = function(data) {
     });
   }
   if (!(data.email = validateEmail(data.email))) {
-    throw Error(gettext("Please enter a valid e-mail address"));
+    throw Error(gettext('Please enter a valid e-mail address'));
   }
   if (data.url && !(data.url = validateUrl(data.url))) {
-    throw Error(gettext("Please enter a valid URL"));
+    throw Error(gettext('Please enter a valid URL'));
   }
   this.email = data.email;
   this.url = data.url;
@@ -453,7 +453,7 @@ User.prototype.getDigest = function(token) {
  */
 User.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "status":
+    case 'status':
     return User.getStatus();
   }
 }
@@ -475,15 +475,15 @@ User.prototype.email_macro = function() {
  */
 User.prototype.list_macro = function(param, type) {
   switch (type) {
-    case "sites":
+    case 'sites':
     var memberships = session.user.list();
     memberships.sort(function(a, b) {
       return b.site.modified - a.site.modified;
     });
     memberships.forEach(function(membership) {
       var site;
-      if (site = membership.get("site")) {
-        site.renderSkin("$Site#listItem");
+      if (site = membership.get('site')) {
+        site.renderSkin('$Site#listItem');
       }
       return;
     });

@@ -27,21 +27,21 @@
  * @fileOverview Defines the Tag prototype.
  */
 
-markgettext("Tag");
-markgettext("tag");
+markgettext('Tag');
+markgettext('tag');
 
 /**
  * @constant
  */
 Tag.MOUNTPOINTS = {
-  Story: "tags",
-  Image: "galleries"
+  Story: 'tags',
+  Image: 'galleries'
 }
 
 /**
  * @constant
  */
-Tag.DELIMITER = ", ";
+Tag.DELIMITER = ', ';
 
 /**
  * @param {String} name
@@ -79,17 +79,17 @@ Tag.prototype.constructor = function() {
  * @returns {Boolean}
  */
 Tag.prototype.getPermission = function(action) {
-  if (!res.handlers.site.getPermission("main")) {
+  if (!res.handlers.site.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
-    case "rss.xml":
+    case '.':
+    case 'main':
+    case 'rss.xml':
     return true;
-    case "edit":
-    case "delete":
-    case "rename":
+    case 'edit':
+    case 'delete':
+    case 'rename':
     return User.require(User.PRIVILEGED) ||
         Membership.require(Membership.MANAGER);
   }
@@ -99,15 +99,15 @@ Tag.prototype.getPermission = function(action) {
 Tag.prototype.main_action = function() {
   res.handlers.list = new jala.ListRenderer(this.getTagged());
   res.handlers.list.setPageSize(this.site.pageSize);
-  res.data.title = gettext("Tag: {0}", this.name);
-  res.data.body = this.renderSkinAsString("$Tag#main");
-  res.handlers.site.renderSkin("Site#page");
+  res.data.title = gettext('Tag: {0}', this.name);
+  res.data.body = this.renderSkinAsString('$Tag#main');
+  res.handlers.site.renderSkin('Site#page');
   res.handlers.site.log();
   return;
 }
 
 Tag.prototype.rss_xml_action = function() {
-  res.contentType = "text/xml";
+  res.contentType = 'text/xml';
   res.dependsOn(this.site.modified);
   res.digest();
   var tagHubs = this.getTagged().list(0, this.site.pageSize);
@@ -172,7 +172,7 @@ Tag.prototype.href = function(action) {
   res.push();
   res.write(this.site[Tag.MOUNTPOINTS[this.type]].href());
   res.write(encodeURIComponent(this.name));
-  res.write("/");
+  res.write('/');
   if (action) {
     res.write(java.net.URLEncoder.encode(action));
   }
@@ -206,5 +206,5 @@ Tag.prototype.getTitle = function() {
  * @returns {String}
  */
 Tag.prototype.toString = function() {
-  return this.type + " tag " + this.name + " of Site " + this.site.alias;
+  return this.type + ' tag ' + this.name + ' of Site ' + this.site.alias;
 }

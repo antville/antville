@@ -45,8 +45,8 @@ HopObject.remove = function(options) {
     } else if (!options) {
       item.remove();
     } else {
-      throw Error("Missing static " + item.constructor.name +
-          ".remove() method");
+      throw Error('Missing static ' + item.constructor.name +
+          '.remove() method');
     }
   }
   return;
@@ -60,14 +60,14 @@ HopObject.remove = function(options) {
 HopObject.getFromPath = function(name, collection) {
   if (name) {
     var site;
-    if (name.contains("/")) {
-      var parts = name.split("/");
+    if (name.contains('/')) {
+      var parts = name.split('/');
       site = root.get(parts[0]);
       name = parts[1];
     } else {
       site = res.handlers.site;
     }
-    if (site && site.getPermission("main")) {
+    if (site && site.getPermission('main')) {
       return site[collection].get(name);
     }
   }
@@ -107,11 +107,11 @@ HopObject.confirmConstructor = function(ref) {
  */
 HopObject.prototype.onRequest = function() {
   // Checking if we are on the correct host to prevent at least some XSS issues
-  if (req.action !== "notfound" && req.action !== "error" &&
-      this.href().contains("://") &&
+  if (req.action !== 'notfound' && req.action !== 'error' &&
+      this.href().contains('://') &&
       !this.href().toLowerCase().startsWith(req.servletRequest.scheme +
-      "://" + req.servletRequest.serverName.toLowerCase())) {
-    res.redirect(this.href(req.action === "main" ? String.EMPTY : req.action));
+      '://' + req.servletRequest.serverName.toLowerCase())) {
+    res.redirect(this.href(req.action === 'main' ? String.EMPTY : req.action));
   }
 
   User.autoLogin();
@@ -119,18 +119,18 @@ HopObject.prototype.onRequest = function() {
 
   if (User.getCurrentStatus() === User.BLOCKED) {
     session.data.status = 403;
-    session.data.error = gettext("Your account has been blocked.") + String.SPACE +
-        gettext("Please contact an administrator for further information.");
+    session.data.error = gettext('Your account has been blocked.') + String.SPACE +
+        gettext('Please contact an administrator for further information.');
     User.logout();
-    res.redirect(root.href("error"));
+    res.redirect(root.href('error'));
   }
 
   if (res.handlers.site.status === Site.BLOCKED &&
       !User.require(User.PRIVILEGED)) {
     session.data.status = 403;
-    session.data.error = gettext("The site you requested has been blocked.") +
-        String.SPACE + gettext("Please contact an administrator for further information.");
-    res.redirect(root.href("error"));
+    session.data.error = gettext('The site you requested has been blocked.') +
+        String.SPACE + gettext('Please contact an administrator for further information.');
+    res.redirect(root.href('error'));
   }
 
   HopObject.confirmConstructor(Layout);
@@ -140,21 +140,21 @@ HopObject.prototype.onRequest = function() {
   if (!this.getPermission(req.action)) {
     if (!session.user) {
       User.setLocation(root.href() + req.path);
-      res.message = gettext("Please login first.");
-      res.redirect(res.handlers.site.members.href("login"));
+      res.message = gettext('Please login first.');
+      res.redirect(res.handlers.site.members.href('login'));
     }
     User.getLocation();
     res.status = 401;
-    res.data.title = gettext("{0} 401 Error", root.title);
-    res.data.body = root.renderSkinAsString("$Root#error", {error:
-        gettext("You are not allowed to access this part of the site.")});
-    res.handlers.site.renderSkin("Site#page");
+    res.data.title = gettext('{0} 401 Error', root.title);
+    res.data.body = root.renderSkinAsString('$Root#error', {error:
+        gettext('You are not allowed to access this part of the site.')});
+    res.handlers.site.renderSkin('Site#page');
     session.data.error = null;
     res.stop();
   }
 
   res.meta.values = {};
-  res.handlers.site.renderSkinAsString("Site#values");
+  res.handlers.site.renderSkinAsString('Site#values');
   return;
 }
 
@@ -166,12 +166,12 @@ HopObject.prototype.getPermission = function() {
 }
 
 // Marking some prototype names used in res.message of HopObject.delete_action()
-markgettext("Comment");
-markgettext("File");
-markgettext("Image");
-markgettext("Membership");
-markgettext("Poll");
-markgettext("Story");
+markgettext('Comment');
+markgettext('File');
+markgettext('Image');
+markgettext('Membership');
+markgettext('Poll');
+markgettext('Story');
 
 HopObject.prototype.delete_action = function() {
   if (req.postParams.proceed) {
@@ -179,7 +179,7 @@ HopObject.prototype.delete_action = function() {
       var parent = this._parent;
       var url = this.constructor.remove.call(this, req.postParams) ||
           parent.href();
-      res.message = gettext("{0} was successfully deleted.", gettext(this._prototype));
+      res.message = gettext('{0} was successfully deleted.', gettext(this._prototype));
       res.redirect(User.getLocation() || url);
     } catch(ex) {
       res.message = ex;
@@ -188,11 +188,11 @@ HopObject.prototype.delete_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Confirm Deletion");
-  res.data.body = this.renderSkinAsString("$HopObject#confirm", {
+  res.data.title = gettext('Confirm Deletion');
+  res.data.body = this.renderSkinAsString('$HopObject#confirm', {
     text: this.getConfirmText()
   });
-  res.handlers.site.renderSkin("Site#page");
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -210,7 +210,7 @@ HopObject.prototype.touch = function() {
  *
  */
 HopObject.prototype.log = function() {
-  var entry = new LogEntry(this, "main");
+  var entry = new LogEntry(this, 'main');
   app.data.entries.push(entry);
   return;
 }
@@ -261,21 +261,21 @@ HopObject.prototype.notify = function(action) {
       }
     }
     buf.push('</table>');
-    res.write(buf.join(""));
+    res.write(buf.join(''));
     return;
   }
 
   switch (action) {
-    case "comment":
-    action = "create"; break;
+    case 'comment':
+    action = 'create'; break;
   }
 
   var currentMembership = res.handlers.membership;
   site.members.forEach(function() {
     var membership = res.handlers.membership = this;
     if (getPermission(root.notificationScope, site.notificationMode, site.status)) {
-      sendMail(membership.creator.email, gettext("[{0}] Notification of site changes",
-          root.title), self.renderSkinAsString("$HopObject#notify_" + action));
+      sendMail(membership.creator.email, gettext('[{0}] Notification of site changes',
+          root.title), self.renderSkinAsString('$HopObject#notify_' + action));
     }
   });
   res.handlers.membership = currentMembership;
@@ -287,7 +287,7 @@ HopObject.prototype.notify = function(action) {
  */
 HopObject.prototype.getTags = function() {
   var tags = [];
-  if (typeof this.tags === "object") {
+  if (typeof this.tags === 'object') {
     this.tags.list().forEach(function(item) {
       item.tag && tags.push(item.tag.name);
     });
@@ -300,7 +300,7 @@ HopObject.prototype.getTags = function() {
  * @param {Tag[]|String} tags
  */
 HopObject.prototype.setTags = function(tags) {
-  if (typeof this.tags !== "object") {
+  if (typeof this.tags !== 'object') {
     return String.EMPTY;
   }
 
@@ -386,11 +386,11 @@ HopObject.prototype.skin_macro = function(param, name) {
   if (!name) {
     return;
   }
-  if (name.contains("#")) {
+  if (name.contains('#')) {
     this.renderSkin(name);
   } else {
-    var prototype = this._prototype || "Global";
-    this.renderSkin(prototype + "#" + name);
+    var prototype = this._prototype || 'Global';
+    this.renderSkin(prototype + '#' + name);
   }
   return;
 }
@@ -429,7 +429,7 @@ HopObject.prototype.select_macro = function(param, name) {
   param.id = name;
   var options = this.getFormOptions(name);
   if (options.length < 2) {
-    param.disabled = "disabled";
+    param.disabled = 'disabled';
   }
   return html.dropDown(param, options, this.getFormValue(name));
 }
@@ -444,7 +444,7 @@ HopObject.prototype.checkbox_macro = function(param, name) {
   param.id = name;
   var options = this.getFormOptions(name);
   if (options.length < 2) {
-    param.disabled = "disabled";
+    param.disabled = 'disabled';
   }
   param.value = String((options[1] || options[0]).value);
   param.selectedValue = String(this.getFormValue(name));
@@ -452,7 +452,7 @@ HopObject.prototype.checkbox_macro = function(param, name) {
   delete param.label;
   html.checkBox(param);
   if (label) {
-    html.element("label", label, {"for": name});
+    html.element('label', label, {'for': name});
   }
   return;
 }
@@ -467,7 +467,7 @@ HopObject.prototype.radiobutton_macro = function(param, name) {
   param.id = name;
   var options = this.getFormOptions(name);
   if (options.length < 2) {
-    param.disabled = "disabled";
+    param.disabled = 'disabled';
   }
   param.value = String(options[0].value);
   param.selectedValue = String(this.getFormValue(name));
@@ -475,7 +475,7 @@ HopObject.prototype.radiobutton_macro = function(param, name) {
   delete param.label;
   html.radioButton(param);
   if (label) {
-    html.element("label", label, {"for": name});
+    html.element('label', label, {'for': name});
   }
   return;
 }
@@ -489,7 +489,7 @@ HopObject.prototype.upload_macro = function(param, name) {
   param.name = name;
   param.id = name;
   param.value = this.getFormValue(name);
-  renderSkin("$Global#upload", param);
+  renderSkin('$Global#upload', param);
   return;
 }
 
@@ -502,11 +502,11 @@ HopObject.prototype.macro_macro = function(param, handler) {
   var ctor = this.constructor;
   if ([Story, Image, File, Poll].indexOf(ctor) > -1) {
     res.write('<span class="macro-code">');
-    res.encode("<% ");
+    res.encode('<% ');
     res.write(handler || ctor.name.toLowerCase());
     res.write(String.SPACE);
     res.write(quote(this.name || this._id));
-    res.encode(" %>");
+    res.encode(' %>');
     res.write('</span>');
   }
   return;
@@ -543,7 +543,7 @@ HopObject.prototype.getFormValue = function(name) {
  * @returns {Object[]}
  */
 HopObject.prototype.getFormOptions = function() {
-  return [{value: true, display: "enabled"}];
+  return [{value: true, display: 'enabled'}];
 }
 
 /**
@@ -575,7 +575,7 @@ HopObject.prototype.link_macro = function(param, url, text) {
       renderLink.call(global, param, url, text, this);
     }
   } else {
-    res.write("[Insufficient link parameters]");
+    res.write('[Insufficient link parameters]');
   }
   return;
 }
@@ -616,9 +616,9 @@ HopObject.prototype.creator_macro = function(param, mode) {
     return;
   }
   mode || (mode = param.as);
-  if (mode === "link" && this.creator.url) {
+  if (mode === 'link' && this.creator.url) {
     html.link({href: this.creator.url}, this.creator.name);
-  } else if (mode === "url") {
+  } else if (mode === 'url') {
     res.write(this.creator.url);
   } else {
     res.write(this.creator.name);
@@ -635,9 +635,9 @@ HopObject.prototype.modifier_macro = function(param, mode) {
     return;
   }
   mode || (mode = param.as);
-  if (mode === "link" && this.modifier.url) {
+  if (mode === 'link' && this.modifier.url) {
     html.link({href: this.modifier.url}, this.modifier.name);
-  } else if (mode === "url") {
+  } else if (mode === 'url') {
     res.write(this.modifier.url);
   } else {
     res.write(this.modifier.name);
@@ -656,7 +656,7 @@ HopObject.prototype.getTitle = function() {
  * @returns {String}
  */
 HopObject.prototype.toString = function() {
-  return this.constructor.name + " #" + this._id;
+  return this.constructor.name + ' #' + this._id;
 }
 
 /**
@@ -667,7 +667,7 @@ HopObject.prototype.toString = function() {
  * @returns {String}
  */
 HopObject.prototype.link_filter = function(text, param, action) {
-  action || (action = ".");
+  action || (action = '.');
   res.push();
   renderLink(param, action, text, this);
   return res.pop();

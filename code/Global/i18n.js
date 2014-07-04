@@ -40,7 +40,7 @@ Root.prototype.extractMessages = function(script, scanDirs, potFile) {
   global.readFile = function(fpath, encoding) {
     res.push();
     var file = new helma.File(fpath);
-    file.open({charset: encoding || "UTF-8"});
+    file.open({charset: encoding || 'UTF-8'});
     var str;
     while ((str = file.readln()) !== null) {
       res.writeln(str);
@@ -48,9 +48,9 @@ Root.prototype.extractMessages = function(script, scanDirs, potFile) {
     file.close();
     return res.pop();
   }
-  var args = ["-o", potFile, "-e", "utf-8"];
-  for each (var dir in scanDirs.split(" ")) {
-    args.push(app.dir + "/../" + dir);
+  var args = ['-o', potFile, '-e', 'utf-8'];
+  for each (var dir in scanDirs.split(' ')) {
+    args.push(app.dir + '/../' + dir);
   }
   var file = new helma.File(script);
   var MessageParser = new Function(file.readAll());
@@ -61,7 +61,7 @@ Root.prototype.extractMessages = function(script, scanDirs, potFile) {
 }
 
 /**
- * This method is useful for disambiguation of messages (single words most of the time) that have different meanings depending on the context. Example: comment – the verb "to comment" vs the noun "a comment".
+ * This method is useful for disambiguation of messages (single words most of the time) that have different meanings depending on the context. Example: comment – the verb 'to comment' vs the noun 'a comment'.
  * @param {Object} key The message ID.
  * @param {Object} context The context of the message.
  * @example cgettext('comment', 'verb')
@@ -81,7 +81,7 @@ function cgettext(key, context) {
  * @example cgettext.getKey('comment', 'verb') ===> 'comment // verb'
  */
 cgettext.getKey = function(key, context) {
-  return context ? key + " // " + context : key;
+  return context ? key + ' // ' + context : key;
 }
 
 /**

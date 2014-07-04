@@ -27,8 +27,8 @@
  * @fileOverview Defines the Stories prototype
  */
 
-markgettext("Stories");
-markgettext("stories");
+markgettext('Stories');
+markgettext('stories');
 
 /**
  * @name Stories
@@ -52,20 +52,20 @@ markgettext("stories");
  * @returns {Boolean}
  */
 Stories.prototype.getPermission = function(action) {
-  if (!this._parent.getPermission("main")) {
+  if (!this._parent.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
-    case "create":
+    case '.':
+    case 'main':
+    case 'create':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
         User.require(User.PRIVILEGED);
 
-    case "all":
-    case "top":
-    case "closed":
+    case 'all':
+    case 'top':
+    case 'closed':
     return Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
   }
@@ -74,13 +74,13 @@ Stories.prototype.getPermission = function(action) {
 
 Stories.prototype.main_action = function() {
   var stories = User.getMembership().stories;
-  res.data.list = renderList(stories, "$Story#listItem",
+  res.data.list = renderList(stories, '$Story#listItem',
       10, req.queryParams.page);
   res.data.pager = renderPager(stories,
       this.href(), 10, req.queryParams.page);
-  res.data.title = gettext("Member Stories");
-  res.data.body = this.renderSkinAsString("$Stories#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('Member Stories');
+  res.data.body = this.renderSkinAsString('$Stories#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
@@ -91,7 +91,7 @@ Stories.prototype.create_action = function() {
       story.notify(req.action);
       JSON.sendPaddedResponse(story._id);
       delete session.data.backup;
-      res.message = gettext("The story was successfully created.");
+      res.message = gettext('The story was successfully created.');
       res.redirect(story.href());
     } catch (ex) {
       JSON.sendPaddedResponse(null);
@@ -101,39 +101,39 @@ Stories.prototype.create_action = function() {
     }
   }
 
-  res.data.title = gettext("Add Story");
+  res.data.title = gettext('Add Story');
   res.data.action = this.href(req.action);
   HopObject.confirmConstructor(Story);
-  res.data.body = (new Story).renderSkinAsString("Story#edit");
-  this._parent.renderSkin("Site#page");
+  res.data.body = (new Story).renderSkinAsString('Story#edit');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Stories.prototype.closed_action = function() {
   res.data.list = renderList(this.closed,
-      "$Story#listItem", 10, req.queryParams.page);
+      '$Story#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(this.closed,
       this.href(req.action), 10, req.queryParams.page);
-  res.data.title = gettext("Closed Stories");
-  res.data.body = this.renderSkinAsString("$Stories#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('Closed Stories');
+  res.data.body = this.renderSkinAsString('$Stories#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Stories.prototype.all_action = function() {
-  res.data.list = renderList(this, "$Story#listItem", 10, req.queryParams.page);
+  res.data.list = renderList(this, '$Story#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(this,
       this.href(req.action), 10, req.queryParams.page);
-  res.data.title = gettext("All Stories");
-  res.data.body = this.renderSkinAsString("$Stories#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('All Stories');
+  res.data.body = this.renderSkinAsString('$Stories#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Stories.prototype.top_action = function() {
-  res.data.title = gettext("Top Stories");
-  res.data.body = this.renderSkinAsString("$Stories#top");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('Top Stories');
+  res.data.body = this.renderSkinAsString('$Stories#top');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
@@ -144,10 +144,10 @@ Stories.prototype.top_action = function() {
  */
 Stories.prototype.list_macro = function(param, type) {
   switch (type) {
-    case "top":
+    case 'top':
     var counter = 1;
     this.top.forEach(function() {
-      this.renderSkin("$Story#top", {
+      this.renderSkin('$Story#top', {
         position: counter
       });
       counter += 1;
@@ -164,7 +164,7 @@ Stories.prototype.list_macro = function(param, type) {
  * @see Site#getTags
  */
 Stories.prototype.getTags = function(group) {
-  return this._parent.getTags("tags", group);
+  return this._parent.getTags('tags', group);
 }
 
 /**
@@ -173,5 +173,5 @@ Stories.prototype.getTags = function(group) {
  * @returns {String[]}
  */
 Stories.prototype.getAdminHeader = function(name) {
-  return ["#", "Tag", "Items"];
+  return ['#', 'Tag', 'Items'];
 }

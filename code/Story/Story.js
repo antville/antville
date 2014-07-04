@@ -27,18 +27,18 @@
  * @fileOverview Defines the Story prototype.
  */
 
-markgettext("Story");
-markgettext("story");
+markgettext('Story');
+markgettext('story');
 
-this.handleMetadata("title");
-this.handleMetadata("text");
+this.handleMetadata('title');
+this.handleMetadata('text');
 
 Story.ALLOWED_MACROS = [
-  "file",
-  "image",
-  "link",
-  "poll",
-  "story.link"
+  'file',
+  'image',
+  'link',
+  'poll',
+  'story.link'
 ];
 
 /**
@@ -81,23 +81,23 @@ Story.remove = function() {
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getStatus = defineConstants(Story, markgettext("closed"),
-    markgettext("public"), markgettext("shared"), markgettext("open"));
+Story.getStatus = defineConstants(Story, markgettext('closed'),
+    markgettext('public'), markgettext('shared'), markgettext('open'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getModes = defineConstants(Story, markgettext("hidden"),
-    markgettext("featured"));
+Story.getModes = defineConstants(Story, markgettext('hidden'),
+    markgettext('featured'));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getCommentModes = defineConstants(Story, markgettext("closed"),
-    /* markgettext("readonly"), markgettext("moderated"), */
-    markgettext("open"));
+Story.getCommentModes = defineConstants(Story, markgettext('closed'),
+    /* markgettext('readonly'), markgettext('moderated'), */
+    markgettext('open'));
 
 /**
  * @name Story
@@ -134,26 +134,26 @@ Story.prototype.constructor = function() {
  * @returns {Boolean}
  */
 Story.prototype.getPermission = function(action) {
-  if (!this.site.getPermission("main")) {
+  if (!this.site.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     return this.status !== Story.CLOSED ||
         this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
-    case "comment":
+    case 'comment':
     return this.site.commentMode === Site.ENABLED &&
         (this.commentMode === Story.OPEN ||
         this.commentMode === Story.MODERATED);
-    case "delete":
+    case 'delete':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
-    case "edit":
-    case "rotate":
+    case 'edit':
+    case 'rotate':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         (this.status === Story.SHARED &&
@@ -167,8 +167,8 @@ Story.prototype.getPermission = function(action) {
 
 Story.prototype.main_action = function() {
   res.data.title = this.getTitle(10);
-  res.data.body = this.renderSkinAsString("Story#main");
-  this.site.renderSkin("Site#page");
+  res.data.body = this.renderSkinAsString('Story#main');
+  this.site.renderSkin('Site#page');
   this.site.log();
   this.count();
   this.log();
@@ -181,17 +181,17 @@ Story.prototype.main_action = function() {
  * @returns {String}
  */
 Story.prototype.getTitle = function(limit) {
-  var key = this + ":title:" + limit;
+  var key = this + ':title:' + limit;
   if (!res.meta[key]) {
     if (this.title) {
-      res.meta[key] = stripTags(this.title).clip(limit, "...", "\\s");
+      res.meta[key] = stripTags(this.title).clip(limit, '...', '\\s');
     } else if (this.text) {
-      var parts = stripTags(this.text).embody(limit, "...", "\\s");
+      var parts = stripTags(this.text).embody(limit, '...', '\\s');
       res.meta[key] = parts.head;
-      res.meta[this + ":text:" + limit] = parts.tail;
+      res.meta[this + ':text:' + limit] = parts.tail;
     }
   }
-  return String(res.meta[key]) || "...";
+  return String(res.meta[key]) || '...';
 }
 
 Story.prototype.edit_action = function() {
@@ -199,7 +199,7 @@ Story.prototype.edit_action = function() {
     try {
       this.update(req.postParams);
       delete session.data.backup;
-      res.message = gettext("The story was successfully updated.");
+      res.message = gettext('The story was successfully updated.');
       res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
@@ -209,8 +209,8 @@ Story.prototype.edit_action = function() {
 
   res.data.action = this.href(req.action);
   res.data.title = gettext('Edit Story');
-  res.data.body = this.renderSkinAsString("Story#edit");
-  this.site.renderSkin("Site#page");
+  res.data.body = this.renderSkinAsString('Story#edit');
+  this.site.renderSkin('Site#page');
   return;
 }
 
@@ -222,13 +222,13 @@ Story.prototype.update = function(data) {
   var site = this.site || res.handlers.site;
 
   if (!data.title && !data.text) {
-    throw Error(gettext("Please enter at least something into the “title” or “text” field."));
+    throw Error(gettext('Please enter at least something into the “title” or “text” field.'));
   }
   if (data.created) {
     try {
-      this.created = data.created.toDate("yyyy-MM-dd HH:mm", site.getTimeZone());
+      this.created = data.created.toDate('yyyy-MM-dd HH:mm', site.getTimeZone());
     } catch (ex) {
-      throw Error(gettext("Cannot parse timestamp {0} as a date.", data.created));
+      throw Error(gettext('Cannot parse timestamp {0} as a date.', data.created));
       app.log(ex);
     }
   }
@@ -278,16 +278,16 @@ Story.prototype.rotate_action = function() {
 Story.prototype.comment_action = function() {
   // Check if user is logged in since we allow linking here for any user
   if (!User.require(User.REGULAR)) {
-    User.setLocation(this.href(req.action) + "#form");
-    res.message = gettext("Please login first.");
-    res.redirect(this.site.members.href("login"));
+    User.setLocation(this.href(req.action) + '#form');
+    res.message = gettext('Please login first.');
+    res.redirect(this.site.members.href('login'));
   }
   if (req.postParams.save) {
     try {
       var comment = Comment.add(req.postParams, this);
       comment.notify(req.action);
       delete session.data.backup;
-      res.message = gettext("The comment was successfully created.");
+      res.message = gettext('The comment was successfully created.');
       res.redirect(comment.href());
     } catch (ex) {
       res.message = ex;
@@ -296,10 +296,10 @@ Story.prototype.comment_action = function() {
   }
   res.handlers.parent = this;
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Add Comment");
+  res.data.title = gettext('Add Comment');
   HopObject.confirmConstructor(Comment);
-  res.data.body = (new Comment).renderSkinAsString("Comment#edit");
-  this.site.renderSkin("Site#page");
+  res.data.body = (new Comment).renderSkinAsString('Comment#edit');
+  this.site.renderSkin('Site#page');
   return;
 }
 
@@ -313,13 +313,13 @@ Story.prototype.getFormValue = function(name) {
     return req.postParams[name];
   }
   switch (name) {
-    case "commentMode":
+    case 'commentMode':
     return this.commentMode || Story.OPEN;
-    case "mode":
+    case 'mode':
     return this.mode || Story.FEATURED;
-    case "status":
+    case 'status':
     return this.status || Story.PUBLIC;
-    case "tags":
+    case 'tags':
     return this.getTags().join(Tag.DELIMITER);
   }
   return this[name] || this.getMetadata(name);
@@ -332,13 +332,13 @@ Story.prototype.getFormValue = function(name) {
  */
 Story.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "commentMode":
+    case 'commentMode':
     return Story.getCommentModes();
-    case "mode":
+    case 'mode':
     return Story.getModes();
-    case "status":
+    case 'status':
     return Story.getStatus();
-    case "tags":
+    case 'tags':
     // FIXME: This could become a huge select element...
     return [];
   }
@@ -375,7 +375,7 @@ Story.prototype.count = function() {
     return;
   }
   var story;
-  var key = "Story#" + this._id;
+  var key = 'Story#' + this._id;
   if (story = app.data.requests[key]) {
     story.requests += 1;
   } else {
@@ -423,7 +423,7 @@ Story.prototype.getDelta = function(data) {
  * @returns {HopObject}
  */
 Story.prototype.getMacroHandler = function(name) {
-  if (name === "metadata") {
+  if (name === 'metadata') {
     return this.getMetadata();
   }
   return null;
@@ -437,13 +437,13 @@ Story.prototype.getMacroHandler = function(name) {
  */
 Story.prototype.link_macro = function(param, action, text) {
   switch (action) {
-    case "rotate":
+    case 'rotate':
     if (this.status === Story.CLOSED) {
-      text = gettext("Publish");
+      text = gettext('Publish');
     } else if (this.mode === Story.FEATURED) {
-      text = gettext("Hide");
+      text = gettext('Hide');
     } else {
-      text = gettext("Close");
+      text = gettext('Close');
     }
   }
   return HopObject.prototype.link_macro.call(this, param, action, text);
@@ -471,15 +471,15 @@ Story.prototype.summary_macro = function(param) {
     summary = (this.title || String.EMPTY) + String.SPACE +
         (this.text || String.EMPTY);
   }
-  var clipped = stripTags(summary).clip(param.limit, param.clipping, "\\s");
+  var clipped = stripTags(summary).clip(param.limit, param.clipping, '\\s');
   var head = clipped.split(/(\s)/, param.limit * 0.6).join(String.EMPTY);
   var tail = clipped.substring(head.length).trim();
   head = head.trim();
   if (!head && !tail) {
-    head = "...";
+    head = '...';
   }
   html.link({href: this.href()}, head);
-  res.writeln("\n");
+  res.writeln('\n');
   res.write(tail);
   return;
 }
@@ -496,20 +496,20 @@ Story.prototype.comments_macro = function(param, mode) {
     return;
   } else if (mode) {
     var n = this.comments.size() || 0;
-    var text = ngettext("{0} comment", "{0} comments", n);
-    if (mode === "count" || mode === "size") {
+    var text = ngettext('{0} comment', '{0} comments', n);
+    if (mode === 'count' || mode === 'size') {
       res.write(text);
-    } else if (mode === "link") {
+    } else if (mode === 'link') {
       n < 1 ? res.write(text) :
-          html.link({href: this.href() + "#comments"}, text);
+          html.link({href: this.href() + '#comments'}, text);
     }
   } else {
     this.prefetchChildren();
     this.forEach(function() {
-      html.openTag("a", {name: this._id});
-      html.closeTag("a");
+      html.openTag('a', {name: this._id});
+      html.closeTag('a');
       this.renderSkin(this.parent.constructor === Story ?
-          "Comment#main" : "Comment#reply");
+          'Comment#main' : 'Comment#reply');
     });
   }
   return;
@@ -521,7 +521,7 @@ Story.prototype.comments_macro = function(param, mode) {
  * @param {String} mode
  */
 Story.prototype.tags_macro = function(param, mode) {
-  if (mode === "link") {
+  if (mode === 'link') {
     var tags = [];
     this.tags.list().forEach(function(item) {
       res.push();
@@ -532,7 +532,7 @@ Story.prototype.tags_macro = function(param, mode) {
     });
     return res.write(tags.join(Tag.DELIMITER));
   }
-  return res.write(this.getFormValue("tags"));
+  return res.write(this.getFormValue('tags'));
 }
 
 /**
@@ -553,7 +553,7 @@ Story.prototype.referrers_macro = function(param, limit) {
 
   var self = this;
   var sql = new Sql;
-  sql.retrieve(Sql.REFERRERS, "Story", this._id);
+  sql.retrieve(Sql.REFERRERS, 'Story', this._id);
 
   res.push();
   var n = 0;
@@ -561,13 +561,13 @@ Story.prototype.referrers_macro = function(param, limit) {
     if (n < limit && this.requests && this.referrer) {
       this.text = encode(this.referrer.head(50));
       this.referrer = encode(this.referrer);
-      self.renderSkin("$Story#referrer", this);
+      self.renderSkin('$Story#referrer', this);
     }
     n += 1;
   });
   param.referrers = res.pop();
   if (param.referrers) {
-    this.renderSkin("$Story#referrers", param);
+    this.renderSkin('$Story#referrers', param);
   }
   return;
 }
@@ -582,16 +582,16 @@ Story.prototype.referrers_macro = function(param, limit) {
 Story.prototype.format_filter = function(value, param, mode) {
   if (value) {
     switch (mode) {
-      case "plain":
+      case 'plain':
       return this.url_filter(stripTags(value), param, mode);
 
-      case "quotes":
+      case 'quotes':
       return stripTags(value).replace(/(?:\x22|\x27)/g, function(quote) {
-        return "&#" + quote.charCodeAt(0) + ";";
+        return '&#' + quote.charCodeAt(0) + ';';
       });
 
-      case "image":
-      var image = HopObject.getFromPath(value, "images");
+      case 'image':
+      var image = HopObject.getFromPath(value, 'images');
       if (image) {
         res.push();
         image.render_macro(param);
@@ -642,22 +642,22 @@ Story.prototype.url_filter = function(value, param, mode) {
   //var re = /(^|\/>|\s+)([\w+-_]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim;
   var re = /(^|\/>|\s+)([!fhtpsr]+:\/\/[^\s]+?)([\.,;:\)\]\"]?)(?=[\s<]|$)/gim
   return value.replace(re, function(str, head, url, tail) {
-    if (url.startsWith("!")) {
+    if (url.startsWith('!')) {
       return head + url.substring(1) + tail;
     }
     res.push();
     res.write(head);
-    if (mode === "plain") {
+    if (mode === 'plain') {
       res.write(url.clip(param.limit));
     } else {
       var text, location = /:\/\/([^\/]*)/.exec(url)[1];
       text = location;
-      if (mode === "extended") {
-        text = url.replace(/^.+\/([^\/]*)$/, "$1");
+      if (mode === 'extended') {
+        text = url.replace(/^.+\/([^\/]*)$/, '$1');
       }
       html.link({href: url, title: url}, text.clip(param.limit));
-      if (mode === "extended" && text !== location) {
-        res.write(" <small>(" + location + ")</small>");
+      if (mode === 'extended' && text !== location) {
+        res.write(' <small>(' + location + ')</small>');
       }
     }
     res.write(tail);
@@ -669,6 +669,6 @@ Story.prototype.url_filter = function(value, param, mode) {
  * @returns {String}
  */
 Story.prototype.getConfirmText = function() {
-  return gettext("You are about to delete a story by user {0}.",
+  return gettext('You are about to delete a story by user {0}.',
       this.creator.name);
 }

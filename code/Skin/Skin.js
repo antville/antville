@@ -25,8 +25,8 @@
  * @fileOverview Defines the Skin prototype
  */
 
-markgettext("Skin");
-markgettext("skin");
+markgettext('Skin');
+markgettext('skin');
 
 /**
  *
@@ -85,7 +85,7 @@ Skin.getPrototypeOptions = function() {
       prototypes.push({value: name, display: name});
     }
   }
-  return prototypes.sort(new String.Sorter("display"));
+  return prototypes.sort(new String.Sorter('display'));
 }
 
 /**
@@ -118,11 +118,11 @@ Skin.prototype.constructor = function(prototype, name) {
  */
 Skin.prototype.getPermission = function(action) {
   switch (action) {
-    case ".":
-    case "main":
+    case '.':
+    case 'main':
     return true;
   }
-  return res.handlers.skins.getPermission("main");
+  return res.handlers.skins.getPermission('main');
 }
 
 /**
@@ -134,20 +134,20 @@ Skin.prototype.href = function(action) {
   res.push();
   res.write(res.handlers.layout.skins.href());
   res.write(this.prototype);
-  res.write("/");
+  res.write('/');
   res.write(this.name);
-  res.write("/");
+  res.write('/');
   action && (res.write(action));
   return res.pop();
 }
 
 Skin.prototype.main_action = function() {
   if (res.handlers.site === root) {
-    res.contentType = "text/plain";
+    res.contentType = 'text/plain';
     res.write(this.getSource());
     return;
   }
-  res.redirect(this.href("edit"));
+  res.redirect(this.href('edit'));
   return;
 }
 
@@ -156,11 +156,11 @@ Skin.prototype.edit_action = function() {
     try {
       var url = this.href(req.action);
       this.update(req.postParams);
-      res.message = gettext("The changes were saved successfully.");
+      res.message = gettext('The changes were saved successfully.');
       if (req.postParams.save == 1) {
         res.redirect(url);
       } else {
-        res.redirect(res.handlers.layout.skins.href("modified"));
+        res.redirect(res.handlers.layout.skins.href('modified'));
       }
     } catch (ex) {
       res.message = ex;
@@ -169,8 +169,8 @@ Skin.prototype.edit_action = function() {
   }
   res.data.action = this.href(req.action);
   res.data.title = gettext('Edit Skin: {0}.{1}', this.prototype, this.name);
-  res.data.body = this.renderSkinAsString("$Skin#edit");
-  res.handlers.skins.renderSkin("$Skins#page");
+  res.data.body = this.renderSkinAsString('$Skin#edit');
+  res.handlers.skins.renderSkin('$Skins#page');
   return;
 }
 
@@ -183,11 +183,11 @@ Skin.prototype.update = function(data) {
     res.handlers.layout.skins.add(this);
     this.source = this.getSource(); // Copies the skin file source to database
   }
-  if (this.prototype === "Site" && this.name === "page") {
-    var macro = "response.body";
+  if (this.prototype === 'Site' && this.name === 'page') {
+    var macro = 'response.body';
     if (!createSkin(data.source).containsMacro(macro)) {
-      var macro = ["<code><%", macro, "%></code>"].join(String.EMPTY);
-      throw Error(gettext("The {0} macro is missing. It is essential for accessing the site and must be present in this skin.", macro));
+      var macro = ['<code><%', macro, '%></code>'].join(String.EMPTY);
+      throw Error(gettext('The {0} macro is missing. It is essential for accessing the site and must be present in this skin.', macro));
     }
   }
   this.setSource(data.source);
@@ -199,8 +199,8 @@ Skin.prototype.reset_action = function() {
   if (req.postParams.proceed) {
     try {
       Skin.remove.call(this);
-      res.message = gettext("{0} was successfully reset.", gettext("Skin"));
-      res.redirect(res.handlers.layout.skins.href("modified"));
+      res.message = gettext('{0} was successfully reset.', gettext('Skin'));
+      res.redirect(res.handlers.layout.skins.href('modified'));
     } catch(ex) {
       res.message = ex;
       app.log(ex);
@@ -208,11 +208,11 @@ Skin.prototype.reset_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Confirm Reset");
-  res.data.body = this.renderSkinAsString("$HopObject#confirm", {
+  res.data.title = gettext('Confirm Reset');
+  res.data.body = this.renderSkinAsString('$HopObject#confirm', {
     text: this.getConfirmText()
   });
-  res.handlers.site.renderSkin("Site#page");
+  res.handlers.site.renderSkin('Site#page');
   return;
 }
 
@@ -220,14 +220,14 @@ Skin.prototype.compare_action = function() {
   var originalSkin = this.source || String.EMPTY;
   var diff = this.getSource().diff(originalSkin);
   if (!diff) {
-    res.message = gettext("No differences were found.");
+    res.message = gettext('No differences were found.');
   } else {
     res.push();
     var param = {}, leftLineNumber = rightLineNumber = 0;
     for each (let line in diff) {
       if (line.deleted) {
         param.right = encode(line.value);
-        param.leftStatus = "added";
+        param.leftStatus = 'added';
         param.rightStatus = '';
         for (let i=0; i<line.deleted.length; i++) {
           leftLineNumber += 1;
@@ -235,7 +235,7 @@ Skin.prototype.compare_action = function() {
           param.rightLineNumber = '';
           param.left = encode(line.deleted[i]);
           param.right = '';
-          this.renderSkin("$Skin#difference", param);
+          this.renderSkin('$Skin#difference', param);
         }
       }
       if (line.inserted) {
@@ -248,7 +248,7 @@ Skin.prototype.compare_action = function() {
           param.rightLineNumber = rightLineNumber;
           param.left = '';
           param.right = encode(line.inserted[i]);
-          this.renderSkin("$Skin#difference", param);
+          this.renderSkin('$Skin#difference', param);
         }
       }
       if (line.value !== null) {
@@ -259,15 +259,15 @@ Skin.prototype.compare_action = function() {
         param.leftStatus = param.rightStatus = '';
         param.left = encode(line.value);
         param.right = param.left;
-        this.renderSkin("$Skin#difference", param);
+        this.renderSkin('$Skin#difference', param);
       }
     }
     res.data.diff = res.pop();
   }
 
-  res.data.title = gettext("Compare Skin: {0}", this.getTitle());
-  res.data.body = this.renderSkinAsString("$Skin#compare");
-  res.handlers.skins.renderSkin("$Skins#page");
+  res.data.title = gettext('Compare Skin: {0}', this.getTitle());
+  res.data.body = this.renderSkinAsString('$Skin#compare');
+  res.handlers.skins.renderSkin('$Skins#page');
   return;
 }
 
@@ -286,14 +286,14 @@ Skin.prototype.getTitle = function() {
  */
 Skin.prototype.getFormOptions = function(name) {
   switch (name) {
-    case "prototype":
+    case 'prototype':
     return Skin.getPrototypeOptions();
   }
 }
 
 Skin.prototype.getFormValue = function(name) {
   switch (name) {
-    case "source":
+    case 'source':
     return req.data.source || this.getSource();
   }
   return HopObject.prototype.getFormValue.apply(this, arguments);
@@ -305,8 +305,8 @@ Skin.prototype.getFormValue = function(name) {
 Skin.prototype.getSource = function() {
   var skin;
   // FIXME: Maintain skin inheritance by checking if we target the Site skin of root
-  if (res.handlers.site === root && this.prototype === "Site") {
-    skin = this.getSubskin("Root");
+  if (res.handlers.site === root && this.prototype === 'Site') {
+    skin = this.getSubskin('Root');
     if (skin) {
       return skin.getSource();
     }
@@ -324,7 +324,7 @@ Skin.prototype.getSource = function() {
  */
 Skin.prototype.setSource = function(source) {
   // FIXME: Maintain skin inheritance by checking if we target the Site skin of root
-  var prototype = (res.handlers.site === root && this.prototype === "Site") ? "Root" : this.prototype;
+  var prototype = (res.handlers.site === root && this.prototype === 'Site') ? 'Root' : this.prototype;
   var skin = this.getMainSkin(prototype);
   if (!skin) {
     return;
@@ -332,13 +332,13 @@ Skin.prototype.setSource = function(source) {
 
   res.push();
   if (source != null) {
-    res.writeln("<% #" + this.name + " %>");
-    res.writeln(source.trim().replace(/(<%\s*)#/g, "$1// #"));
+    res.writeln('<% #' + this.name + ' %>');
+    res.writeln(source.trim().replace(/(<%\s*)#/g, '$1// #'));
   }
   var subskins = skin.getSubskinNames();
   for (var i in subskins) {
     if (subskins[i] !== this.name) {
-      res.writeln("<% #" + subskins[i] + " %>");
+      res.writeln('<% #' + subskins[i] + ' %>');
       source = skin.getSubskin(subskins[i]).source;
       source && res.writeln(source.trim());
     }
@@ -352,7 +352,7 @@ Skin.prototype.setSource = function(source) {
   }
   var fos = new java.io.FileOutputStream(file);
   var bos = new java.io.BufferedOutputStream(fos);
-  var writer = new java.io.OutputStreamWriter(bos, "UTF-8");
+  var writer = new java.io.OutputStreamWriter(bos, 'UTF-8');
   writer.write(source);
   writer.close();
   bos.close();
@@ -368,8 +368,8 @@ Skin.prototype.setSource = function(source) {
  */
 Skin.prototype.getStaticFile = function() {
   // FIXME: Maintain skin inheritance by checking if we target the Site skin of root
-  var prototype = (res.handlers.site === root && this.prototype === "Site") ? "Root" : this.prototype;
-  return new java.io.File(res.skinpath[0], prototype + "/" + this.prototype + ".skin");
+  var prototype = (res.handlers.site === root && this.prototype === 'Site') ? 'Root' : this.prototype;
+  return new java.io.File(res.skinpath[0], prototype + '/' + this.prototype + '.skin');
 }
 
 /**
@@ -426,7 +426,7 @@ Skin.prototype.equals = function(source) {
  * @returns {String}
  */
 Skin.prototype.getConfirmText = function() {
-  return gettext("You are about to reset the skin {0}.{1}.",
+  return gettext('You are about to reset the skin {0}.{1}.',
       this.prototype, this.name);
 }
 
@@ -434,14 +434,14 @@ Skin.prototype.getConfirmText = function() {
  * @returns {String}
  */
 Skin.prototype.toString = function() {
-  return "Skin #" + this._id + ": " + this.prototype + "." + this.name;
+  return 'Skin #' + this._id + ': ' + this.prototype + '.' + this.name;
 }
 
 /**
  *
  */
 Skin.prototype.status_macro = function() {
-  return this.isTransient() ? "inherited" : "modified";
+  return this.isTransient() ? 'inherited' : 'modified';
 }
 
 /**

@@ -71,9 +71,9 @@ TagHub.prototype.constructor = function() {
  */
 TagHub.prototype.getMacroHandler = function(name) {
   switch (name.toLowerCase()) {
-    case "tagged":
-    case "story":
-    case "image":
+    case 'tagged':
+    case 'story':
+    case 'image':
     return this.tagged;
     break;
   }
@@ -83,5 +83,5 @@ TagHub.prototype.getMacroHandler = function(name) {
  * @return {String}
  */
 TagHub.prototype.toString = function() {
-  return "Tag " + this.tag.name + " of " + this.tagged.toString();
+  return 'Tag ' + this.tag.name + ' of ' + this.tagged.toString();
 }

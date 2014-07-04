@@ -27,8 +27,8 @@
  * @fileOverview Defines the Polls prototype
  */
 
-markgettext("Polls");
-markgettext("polls");
+markgettext('Polls');
+markgettext('polls');
 
 /**
  * @name Polls
@@ -44,18 +44,18 @@ markgettext("polls");
  * @returns {Boolean}
  */
 Polls.prototype.getPermission = function(action) {
-  if (!this._parent.getPermission("main")) {
+  if (!this._parent.getPermission('main')) {
     return false;
   }
   switch (action) {
-    case ".":
-    case "main":
-    case "create":
-    case "running":
+    case '.':
+    case 'main':
+    case 'create':
+    case 'running':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
         User.require(User.PRIVILEGED);
-    case "all":
+    case 'all':
     return Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
   }
@@ -64,12 +64,12 @@ Polls.prototype.getPermission = function(action) {
 
 Polls.prototype.main_action = function() {
   var polls = User.getMembership().polls;
-  res.data.list = renderList(polls, "$Poll#listItem", 10, req.queryParams.page);
+  res.data.list = renderList(polls, '$Poll#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(polls, this.href(req.action),
       10, req.queryParams.page);
-  res.data.title = gettext("Member Polls");
-  res.data.body = this.renderSkinAsString("$Polls#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('Member Polls');
+  res.data.body = this.renderSkinAsString('$Polls#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
@@ -78,7 +78,7 @@ Polls.prototype.create_action = function() {
     try {
       var poll = Poll.add(req.postParams, this._parent);
       poll.notify(req.action);
-      res.message = gettext("The poll was created successfully.");
+      res.message = gettext('The poll was created successfully.');
       res.redirect(poll.href());
     } catch (err) {
       res.message = err.toString();
@@ -87,30 +87,30 @@ Polls.prototype.create_action = function() {
     req.postParams.title_array = [null, null];
   }
   res.data.action = this.href(req.action);
-  res.data.title = gettext("Add Poll");
+  res.data.title = gettext('Add Poll');
   HopObject.confirmConstructor(Poll);
-  res.data.body = (new Poll).renderSkinAsString("$Poll#edit");
-  this._parent.renderSkin("Site#page");
+  res.data.body = (new Poll).renderSkinAsString('$Poll#edit');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Polls.prototype.running_action = function() {
   res.data.list = renderList(this.running,
-      "$Poll#listItem", 10, req.queryParams.page);
+      '$Poll#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(this.running,
       this.href(req.action), 10, req.queryParams.page);
-  res.data.title = gettext("Running Polls");
-  res.data.body = this.renderSkinAsString("$Polls#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('Running Polls');
+  res.data.body = this.renderSkinAsString('$Polls#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
 
 Polls.prototype.all_action = function() {
-  res.data.list = renderList(this, "$Poll#listItem", 10, req.queryParams.page);
+  res.data.list = renderList(this, '$Poll#listItem', 10, req.queryParams.page);
   res.data.pager = renderPager(this,
       this.href(), 10, req.queryParams.page);
-  res.data.title = gettext("All Polls");
-  res.data.body = this.renderSkinAsString("$Polls#main");
-  this._parent.renderSkin("Site#page");
+  res.data.title = gettext('All Polls');
+  res.data.body = this.renderSkinAsString('$Polls#main');
+  this._parent.renderSkin('Site#page');
   return;
 }
