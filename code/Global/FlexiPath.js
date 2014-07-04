@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -28,53 +28,53 @@
  */
 
 var FlexiPath = function(name, parent) {
-   var self = this;
+  var self = this;
 
-   this._id = name;
-   this._parent = parent;
-   this._patterns = {};
+  this._id = name;
+  this._parent = parent;
+  this._patterns = {};
 
-   this.__defineGetter__("patterns", function() {
-      var ref = this;
-      while (ref._parent.constructor === FlexiPath) {
-         ref = ref._parent;
-      }
-      return ref._patterns;
-   });
+  this.__defineGetter__("patterns", function() {
+    var ref = this;
+    while (ref._parent.constructor === FlexiPath) {
+      ref = ref._parent;
+    }
+    return ref._patterns;
+  });
 
-   this.addUrlPattern = function(pattern, callback) {
-      this._patterns[pattern] = callback;
-      return;
-   }
+  this.addUrlPattern = function(pattern, callback) {
+    this._patterns[pattern] = callback;
+    return;
+  }
 
-   this.href = function(action) {
-      var href = [];
-      var ref = this;
-      while (ref._parent === this.constructor) {
-         href.unshift(ref._id);
-         ref = ref._parent;
-      }
-      //href.push("/");
-      if (action) {
-         href.push(action);
-      }
-      return root.api.href() + href.join("/");
-   }
+  this.href = function(action) {
+    var href = [];
+    var ref = this;
+    while (ref._parent === this.constructor) {
+      href.unshift(ref._id);
+      ref = ref._parent;
+    }
+    //href.push("/");
+    if (action) {
+      href.push(action);
+    }
+    return root.api.href() + href.join("/");
+  }
 
-   this.getChildElement = function(name) {
-      return new this.constructor(name, self);
-   }
+  this.getChildElement = function(name) {
+    return new this.constructor(name, self);
+  }
 
-   return this;
+  return this;
 };
 
 FlexiPath.prototype.main_action = function() {
-   for (let pattern in this.patterns) {
-      let match;
-      let re = new RegExp(pattern);
-      if (match = req.path.match(re)) {
-         return this.patterns[pattern].apply(this, match);
-      }
-   }
-   return;
+  for (let pattern in this.patterns) {
+    let match;
+    let re = new RegExp(pattern);
+    if (match = req.path.match(re)) {
+      return this.patterns[pattern].apply(this, match);
+    }
+  }
+  return;
 }

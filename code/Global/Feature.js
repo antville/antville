@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -34,11 +34,11 @@
  * @param {String} id The identifier of the desired feature.
  */
 global.feature_macro = function(param, id) {
-   var func, feature = Feature.get(id);
-   if (feature && (func = feature.main)) {
-      func.constructor === Function && func(param);
-   }
-   return;
+  var func, feature = Feature.get(id);
+  if (feature && (func = feature.main)) {
+    func.constructor === Function && func(param);
+  }
+  return;
 }
 
 /**
@@ -49,19 +49,19 @@ global.feature_macro = function(param, id) {
  * @param {Object} feature The initial properties of the feature.
  */
 var Feature = function(id, url, feature) {
-   var self = this;
+  var self = this;
 
-   this.__defineGetter__("id", function() {return id});
+  this.__defineGetter__("id", function() {return id});
 
-   for (let i in feature) {
-      this[i] = feature[i];
-   }
+  for (let i in feature) {
+    this[i] = feature[i];
+  }
 
-   this.toString = function() {
-      return "[Feature: " + html.linkAsString({href: url}, id) + "]";
-   }
+  this.toString = function() {
+    return "[Feature: " + html.linkAsString({href: url}, id) + "]";
+  }
 
-   return this;
+  return this;
 }
 
 /**
@@ -70,18 +70,18 @@ var Feature = function(id, url, feature) {
  * @returns {Feature}
  */
 Feature.add = function(id, url, feature) {
-   if (!id || !url) {
-      throw Error("Insufficient arguments");
-   }
+  if (!id || !url) {
+    throw Error("Insufficient arguments");
+  }
 
-   var existingFeature = Feature.get(id);
-   if (existingFeature) {
-      app.log("Warning! Overwriting already present feature with ID " + id);
-      Feature.remove(existingFeature);
-   }
+  var existingFeature = Feature.get(id);
+  if (existingFeature) {
+    app.log("Warning! Overwriting already present feature with ID " + id);
+    Feature.remove(existingFeature);
+  }
 
-   Feature.list().push(new Feature(id, url, feature));
-   return this;
+  Feature.list().push(new Feature(id, url, feature));
+  return this;
 }
 
 /**
@@ -90,14 +90,14 @@ Feature.add = function(id, url, feature) {
  * @returns {Number} The resulting number of features still in the registry.
  */
 Feature.remove = function(feature) {
-   var features = Feature.list();
-   if (feature === "*") {
-      features.length = 0;
-   } else if (feature) {
-      var index = features.indexOf(feature);
-      (index > -1) && features.splice(index, 1);
-   }
-   return features.length;
+  var features = Feature.list();
+  if (feature === "*") {
+    features.length = 0;
+  } else if (feature) {
+    var index = features.indexOf(feature);
+    (index > -1) && features.splice(index, 1);
+  }
+  return features.length;
 }
 
 /**
@@ -105,7 +105,7 @@ Feature.remove = function(feature) {
  * @returns {Feature[]}
  */
 Feature.list = function() {
-   return app.data.features;
+  return app.data.features;
 }
 
 /**
@@ -114,12 +114,12 @@ Feature.list = function() {
  * @returns {Feature}
  */
 Feature.get = function(id) {
-   for each (let feature in Feature.list()) {
-      if (feature.id === id) {
-         return feature;
-      }
-   }
-   return;
+  for each (let feature in Feature.list()) {
+    if (feature.id === id) {
+      return feature;
+    }
+  }
+  return;
 }
 
 /**
@@ -129,32 +129,32 @@ Feature.get = function(id) {
  * @returns {Object}
  */
 Feature.invoke = function(id, callback) {
-   id || (id = "*");
-   if (callback) {
-      var feature, method, result;
-      var args = Array.prototype.slice.call(arguments, 2);
-      if (id === "*") {
-         for each (feature in Feature.list()) {
-            method = feature[String(callback)];
-            if (method && method.constructor === Function) {
-               result = method.apply(feature, args);
-            }
-         }
-      } else {
-         feature = Feature.get(id);
-         if (feature) {
-            if (callback.constructor === Function) {
-               result = callback.apply(feature, args);
-            } else {
-               method = feature[callback];
-               if (method && method.constructor === Function) {
-                  result = method.apply(feature, args);
-               }
-            }
-         }
+  id || (id = "*");
+  if (callback) {
+    var feature, method, result;
+    var args = Array.prototype.slice.call(arguments, 2);
+    if (id === "*") {
+      for each (feature in Feature.list()) {
+        method = feature[String(callback)];
+        if (method && method.constructor === Function) {
+          result = method.apply(feature, args);
+        }
       }
-   }
-   return result;
+    } else {
+      feature = Feature.get(id);
+      if (feature) {
+        if (callback.constructor === Function) {
+          result = callback.apply(feature, args);
+        } else {
+          method = feature[callback];
+          if (method && method.constructor === Function) {
+            result = method.apply(feature, args);
+          }
+        }
+      }
+    }
+  }
+  return result;
 }
 
 /**
@@ -163,11 +163,11 @@ Feature.invoke = function(id, callback) {
  * @returns {Boolean}
  */
 Feature.getPermission = function(action) {
-   for each (let feature in Feature.list()) {
-      let method = feature._getPermission;
-      if (method && method.constructor === Function && method.call(this, action)) {
-         return true;
-      }
-   }
-   return false;
+  for each (let feature in Feature.list()) {
+    let method = feature._getPermission;
+    if (method && method.constructor === Function && method.call(this, action)) {
+      return true;
+    }
+  }
+  return false;
 }

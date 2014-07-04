@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -30,8 +30,8 @@ var template;
 
 // Add deleted mode to site table
 sql.execute("alter table antville.site change column mode mode \
-      enum('deleted','closed','restricted','public','open') \
-      character set latin1 collate latin1_general_ci default 'closed'");
+    enum('deleted','closed','restricted','public','open') \
+    character set latin1 collate latin1_general_ci default 'closed'");
 
 // Rename user table to conform to standard SQL / Postgre specification
 sql.execute("alter table antville.user rename to account");

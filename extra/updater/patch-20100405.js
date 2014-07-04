@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -34,25 +34,25 @@ var template;
 // Afterwards user permissions should be restored:
 // mysql -e "grant select, insert, update, delete on antville.* to 'antville'@'localhost'"
 if (app.getDbSource("antville").isMySQL()) {
-   template = "alter table $0 modify column $1 varchar(20) default null";
-   sql.execute(template, "account", "status");
-   sql.execute(template, "content", "comment_mode");
-   sql.execute(template, "content", "mode");
-   sql.execute(template, "content", "parent_type");
-   sql.execute(template, "content", "prototype");
-   sql.execute(template, "content", "status");
-   sql.execute(template, "file", "prototype");
-   sql.execute(template, "file", "parent_type");
-   sql.execute(template, "image", "prototype");
-   sql.execute(template, "image", "parent_type");
-   sql.execute(template, "layout", "mode");
-   sql.execute(template, "log", "context_type");
-   sql.execute(template, "membership", "role");
-   sql.execute(template, "poll", "status");
-   sql.execute(template, "site", "status");
-   sql.execute(template, "site", "mode");
-   sql.execute(template, "tag", "type");
-   sql.execute(template, "tag_hub", "tagged_type");
+  template = "alter table $0 modify column $1 varchar(20) default null";
+  sql.execute(template, "account", "status");
+  sql.execute(template, "content", "comment_mode");
+  sql.execute(template, "content", "mode");
+  sql.execute(template, "content", "parent_type");
+  sql.execute(template, "content", "prototype");
+  sql.execute(template, "content", "status");
+  sql.execute(template, "file", "prototype");
+  sql.execute(template, "file", "parent_type");
+  sql.execute(template, "image", "prototype");
+  sql.execute(template, "image", "parent_type");
+  sql.execute(template, "layout", "mode");
+  sql.execute(template, "log", "context_type");
+  sql.execute(template, "membership", "role");
+  sql.execute(template, "poll", "status");
+  sql.execute(template, "site", "status");
+  sql.execute(template, "site", "mode");
+  sql.execute(template, "tag", "type");
+  sql.execute(template, "tag_hub", "tagged_type");
 }
 
 // Convert membership roles to lowercase
@@ -64,7 +64,7 @@ sql.execute(template, 'owner', 'Owner');
 
 // Convert notification modes to lowercase
 root.forEach(function() {
-   if (this.notificationMode !== null) {
-      this.notificationMode = this.notificationMode.toLowerCase()
-   }
+  if (this.notificationMode !== null) {
+    this.notificationMode = this.notificationMode.toLowerCase()
+  }
 });

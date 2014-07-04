@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -34,18 +34,18 @@
  * @returns {TagHub}
  */
 TagHub.add = function(name, tagged, user) {
-   HopObject.confirmConstructor(this);
-   var hub = new TagHub;
-   var site = tagged.site || res.handlers.site;
-   var tag = site.getTags(tagged._prototype, Tags.ALL).get(name);
-   if (!tag) {
-      tag = Tag.add(name, tagged._prototype, site);
-   }
-   hub.tag = tag;
-   hub.tagged = tagged;
-   hub.user = user;
-   tagged.tags.add(hub);
-   return hub;
+  HopObject.confirmConstructor(this);
+  var hub = new TagHub;
+  var site = tagged.site || res.handlers.site;
+  var tag = site.getTags(tagged._prototype, Tags.ALL).get(name);
+  if (!tag) {
+    tag = Tag.add(name, tagged._prototype, site);
+  }
+  hub.tag = tag;
+  hub.tagged = tagged;
+  hub.user = user;
+  tagged.tags.add(hub);
+  return hub;
 }
 
 /**
@@ -60,8 +60,8 @@ TagHub.add = function(name, tagged, user) {
  * @extends HopObject
  */
 TagHub.prototype.constructor = function() {
-   HopObject.confirmConstructor(TagHub);
-   return this;
+  HopObject.confirmConstructor(TagHub);
+  return this;
 }
 
 /**
@@ -70,18 +70,18 @@ TagHub.prototype.constructor = function() {
  * @returns {HopObject}
  */
 TagHub.prototype.getMacroHandler = function(name) {
-   switch (name.toLowerCase()) {
-      case "tagged":
-      case "story":
-      case "image":
-      return this.tagged;
-      break;
-   }
+  switch (name.toLowerCase()) {
+    case "tagged":
+    case "story":
+    case "image":
+    return this.tagged;
+    break;
+  }
 }
 
 /**
  * @return {String}
  */
 TagHub.prototype.toString = function() {
-   return "Tag " + this.tag.name + " of " + this.tagged.toString();
+  return "Tag " + this.tag.name + " of " + this.tagged.toString();
 }

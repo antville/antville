@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -37,21 +37,21 @@ Api.blogger = {};
  * @param {String} content
  */
 Api.blogger._getContentParts = function(content) {
-   content && (content = content.trim());
-   content || (content = String.EMPTY);
-   var result = {};
-   if (!content.startsWith("<title>")) {
+  content && (content = content.trim());
+  content || (content = String.EMPTY);
+  var result = {};
+  if (!content.startsWith("<title>")) {
+    result.text = content;
+  } else {
+    var pos = content.lastIndexOf("</title>");
+    if (pos > 0) {
+      result.title = content.substring(7, pos);
+      result.text = content.substring (pos + 8);
+    } else {
       result.text = content;
-   } else {
-      var pos = content.lastIndexOf("</title>");
-      if (pos > 0) {
-         result.title = content.substring(7, pos);
-         result.text = content.substring (pos + 8);
-      } else {
-         result.text = content;
-      }
-   }
-   return result;
+    }
+  }
+  return result;
 }
 
 /**
@@ -63,15 +63,15 @@ Api.blogger._getContentParts = function(content) {
  * @returns {Object} Properties: userid, nickname and url
  */
 Api.blogger.getUserInfo = function(appKey, name, password) {
-   var user = User.getByName(name);
-   if (!user) {
-      throw Error("User " + name + " does not exist on this server");
-   }
-   return {
-      userid: name,
-      nickname: name,
-      url: user.url
-   }
+  var user = User.getByName(name);
+  if (!user) {
+    throw Error("User " + name + " does not exist on this server");
+  }
+  return {
+    userid: name,
+    nickname: name,
+    url: user.url
+  }
 }
 
 /**
@@ -83,20 +83,20 @@ Api.blogger.getUserInfo = function(appKey, name, password) {
  * url
  */
 Api.blogger.getUsersBlogs = function(appKey, name, password) {
-   var user = Api.getUser(name, password);
-   var result = [];
-   user.forEach(function() {
-      Api.constrain(this.site, user);
-      if (this.site.stories.getPermission("create")) {
-         result.push({
-            blogid: this.site.name,
-            blogName: this.site.title,
-            url: this.site.href()
-         });
-      }
-      return;
-   });
-   return result;
+  var user = Api.getUser(name, password);
+  var result = [];
+  user.forEach(function() {
+    Api.constrain(this.site, user);
+    if (this.site.stories.getPermission("create")) {
+      result.push({
+        blogid: this.site.name,
+        blogName: this.site.title,
+        url: this.site.href()
+      });
+    }
+    return;
+  });
+  return result;
 }
 
 /**
@@ -111,28 +111,28 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
  * dateCreated and content
  */
 Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
-   var site = Api.getSite(id);
-   var user = Api.getUser(name, password);
+  var site = Api.getSite(id);
+  var user = Api.getUser(name, password);
 
-   Api.constrain(site, user);
-   if (!site.stories.getPermission("main")) {
-      throw Error("Permission denied for user " + user.name +
-            " to get recent posts of site " + site.name);
-   }
+  Api.constrain(site, user);
+  if (!site.stories.getPermission("main")) {
+    throw Error("Permission denied for user " + user.name +
+        " to get recent posts of site " + site.name);
+  }
 
-   var result = [];
-   var stories = res.handlers.membership.stories;
-   var max = Math.min(stories.size(), Number(limit) || Infinity, 20);
-   for each (var story in stories.list(0, max)) {
-      result.push({
-         postid: story._id,
-         userid: story.creator.name,
-         dateCreated: story.created,
-         content: story.title ? "<title>" + story.title +
-               "</title>" + story.text : story.text
-      });
-   }
-   return result;
+  var result = [];
+  var stories = res.handlers.membership.stories;
+  var max = Math.min(stories.size(), Number(limit) || Infinity, 20);
+  for each (var story in stories.list(0, max)) {
+    result.push({
+      postid: story._id,
+      userid: story.creator.name,
+      dateCreated: story.created,
+      content: story.title ? "<title>" + story.title +
+          "</title>" + story.text : story.text
+    });
+  }
+  return result;
 }
 
 /**
@@ -145,22 +145,22 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
  * @returns {Object} Properties: content, userid, postid, dateCreated
  */
 Api.blogger.getPost = function(appKey, id, name, password) {
-   var story = Api.getStory(id);
-   var user = Api.getUser(name, password);
+  var story = Api.getStory(id);
+  var user = Api.getUser(name, password);
 
-   Api.constrain(story.site, user);
-   if (!story.getPermission("main")) {
-      throw Error("Permission denied for user " + name +
-            " to get post #" + id);
-   }
+  Api.constrain(story.site, user);
+  if (!story.getPermission("main")) {
+    throw Error("Permission denied for user " + name +
+        " to get post #" + id);
+  }
 
-   return {
-      content: story.title ? html.elementAsString("title", story.title) +
-            story.text : story.text,
-      userid: story.creator.name,
-      postid: story._id,
-      dateCreated: story.created
-   }
+  return {
+    content: story.title ? html.elementAsString("title", story.title) +
+        story.text : story.text,
+    userid: story.creator.name,
+    postid: story._id,
+    dateCreated: story.created
+  }
 }
 
 /**
@@ -175,25 +175,25 @@ Api.blogger.getPost = function(appKey, id, name, password) {
  * @returns {Number} The ID of the new story
  */
 Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
-   var site = Api.getSite(id);
-   var user = Api.getUser(name, password);
+  var site = Api.getSite(id);
+  var user = Api.getUser(name, password);
 
-   Api.constrain(site, user);
-   if (!site.stories.getPermission("create")) {
-      throw Error("Permission denied for user " + user.name +
-            " to add a post to site " + site.name);
-   }
+  Api.constrain(site, user);
+  if (!site.stories.getPermission("create")) {
+    throw Error("Permission denied for user " + user.name +
+        " to add a post to site " + site.name);
+  }
 
-   var parts = Api.blogger._getContentParts(content);
+  var parts = Api.blogger._getContentParts(content);
 
-   var story = Story.add({
-      title: parts.title,
-      text: parts.text,
-      status: publish ? Story.PUBLIC : Story.CLOSED,
-      mode: Story.FEATURED
-   }, site, user);
+  var story = Story.add({
+    title: parts.title,
+    text: parts.text,
+    status: publish ? Story.PUBLIC : Story.CLOSED,
+    mode: Story.FEATURED
+  }, site, user);
 
-   return story._id;
+  return story._id;
 }
 
 /**
@@ -208,24 +208,24 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
  * @returns {Boolean} Always true
  */
 Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
-   var story = Api.getStory(id);
-   var user = Api.getUser(name, password);
+  var story = Api.getStory(id);
+  var user = Api.getUser(name, password);
 
-   Api.constrain(story.site, user);
-   if (!story.getPermission("edit")) {
-      throw Error("Permission denied for user " + name +
-            " to edit post #" + id);
-   }
+  Api.constrain(story.site, user);
+  if (!story.getPermission("edit")) {
+    throw Error("Permission denied for user " + name +
+        " to edit post #" + id);
+  }
 
-   var parts = Api.blogger._getContentParts(content);
-   story.update({
-      title: parts.title,
-      text: parts.text,
-      status: publish ? Story.PUBLIC : Story.CLOSED,
-      modifier: user,
-      modified: new Date
-   });
-   return true;
+  var parts = Api.blogger._getContentParts(content);
+  story.update({
+    title: parts.title,
+    text: parts.text,
+    status: publish ? Story.PUBLIC : Story.CLOSED,
+    modifier: user,
+    modified: new Date
+  });
+  return true;
 }
 
 /**
@@ -238,15 +238,15 @@ Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
  * @returns {Boolean} Always true
  */
 Api.blogger.deletePost = function(appKey, id, name, password) {
-   var story = Api.getStory(id);
-   var user = Api.getUser(name, password);
+  var story = Api.getStory(id);
+  var user = Api.getUser(name, password);
 
-   Api.constrain(story.site, user);
-   if (!story.getPermission("delete")) {
-      throw Error("Permission denied for user " + name +
-            " to delete story #" + id);
-   }
+  Api.constrain(story.site, user);
+  if (!story.getPermission("delete")) {
+    throw Error("Permission denied for user " + name +
+        " to delete story #" + id);
+  }
 
-   Story.remove.call(story);
-   return true;
+  Story.remove.call(story);
+  return true;
 }

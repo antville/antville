@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -30,15 +30,15 @@ var sql = new Sql;
 // Correct Image.contentLength property for some images
 sql.retrieve("select id from image");
 sql.traverse(function() {
-   var image = Image.getById(this.id);
-   try {
-      var contentLength = image.getFile().getLength();
-      app.log("Processing " + image + ": " + image.contentLength);
-      if (contentLength && image.contentLength !== contentLength) {
-         app.log("Updating content length to " + contentLength);
-         image.contentLength = contentLength;
-         res.commit();
-      }
-   } catch (x) { }
+  var image = Image.getById(this.id);
+  try {
+    var contentLength = image.getFile().getLength();
+    app.log("Processing " + image + ": " + image.contentLength);
+    if (contentLength && image.contentLength !== contentLength) {
+      app.log("Updating content length to " + contentLength);
+      image.contentLength = contentLength;
+      res.commit();
+    }
+  } catch (x) { }
 });
 app.log("Done.");

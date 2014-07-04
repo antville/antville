@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -35,13 +35,13 @@ markgettext("vote");
  * @returns {Vote}
  */
 Vote.add = function(choice, poll) {
-   HopObject.confirmConstructor(Vote);
-   var vote = new Vote;
-   vote.choice = choice;
-   vote.creator = session.user;
-   vote.creator_name = session.user.name;
-   vote.created = vote.modified = new Date;
-   poll.votes.add(vote);
+  HopObject.confirmConstructor(Vote);
+  var vote = new Vote;
+  vote.choice = choice;
+  vote.creator = session.user;
+  vote.creator_name = session.user.name;
+  vote.created = vote.modified = new Date;
+  poll.votes.add(vote);
 	return vote;
 }
 
@@ -57,6 +57,6 @@ Vote.add = function(choice, poll) {
  * @extends HopObject
  */
 Vote.prototype.constructor = function(choice) {
-   HopObject.confirmConstructor(this);
-   return this;
+  HopObject.confirmConstructor(this);
+  return this;
 }

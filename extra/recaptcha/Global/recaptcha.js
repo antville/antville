@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -29,35 +29,35 @@
  */
 
 Feature.add("recaptcha", "http://code.google.com/p/antville/wiki/RecaptchaFeature", new function() {
-   var key = getProperty("recaptcha.key");
+  var key = getProperty("recaptcha.key");
 
-   return {
-      main: function() {
-         if (key && !session.user) {
-            renderSkin("recaptcha", {id: getProperty("recaptcha.id")});
-         }
-         return;
-      },
-
-      verify: function(data) {
-         if (session.user) {
-            return;
-         }
-         var http = new helma.Http;
-         http.setTimeout(200);
-         http.setReadTimeout(300);
-         http.setMethod("POST");
-         http.setContent({
-            privatekey: key,
-            remoteip: req.data.http_remotehost,
-            challenge: data.recaptcha_challenge_field,
-            response: data.recaptcha_response_field
-         });
-         var request = http.getUrl("http://www.google.com/recaptcha/api/verify");
-         if (request.code === 200 && !request.content.startsWith("true")) {
-            throw Error(gettext("Please enter the correct words in the CAPTCHA box."));
-         }
-         return;
+  return {
+    main: function() {
+      if (key && !session.user) {
+        renderSkin("recaptcha", {id: getProperty("recaptcha.id")});
       }
-   }
+      return;
+    },
+
+    verify: function(data) {
+      if (session.user) {
+        return;
+      }
+      var http = new helma.Http;
+      http.setTimeout(200);
+      http.setReadTimeout(300);
+      http.setMethod("POST");
+      http.setContent({
+        privatekey: key,
+        remoteip: req.data.http_remotehost,
+        challenge: data.recaptcha_challenge_field,
+        response: data.recaptcha_response_field
+      });
+      var request = http.getUrl("http://www.google.com/recaptcha/api/verify");
+      if (request.code === 200 && !request.content.startsWith("true")) {
+        throw Error(gettext("Please enter the correct words in the CAPTCHA box."));
+      }
+      return;
+    }
+  }
 });

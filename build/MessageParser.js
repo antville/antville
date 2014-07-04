@@ -7,7 +7,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -39,10 +39,10 @@
  * @constructor
  */
 var Message = function(id, pluralId) {
-   this.id = id && String(id);
-   this.pluralId = pluralId && String(pluralId);
-   this.locations = [];
-   return this;
+  this.id = id && String(id);
+  this.pluralId = pluralId && String(pluralId);
+  this.locations = [];
+  return this;
 };
 
 /**
@@ -54,11 +54,11 @@ var Message = function(id, pluralId) {
  * @type String
  */
 Message.getKey = function(id, pluralId) {
-   if (id && pluralId) {
-      return id + pluralId;
-   } else {
-      return id;
-   }
+  if (id && pluralId) {
+    return id + pluralId;
+  } else {
+    return id;
+  }
 };
 
 /**
@@ -71,28 +71,28 @@ Message.getKey = function(id, pluralId) {
  * @type String
  */
 Message.formatId = function(str, wrap) {
-   var escapeQuotes = function(s) {
-      return s.replace(/(^|[^\\])"/g, '$1\\"');
-   };
+  var escapeQuotes = function(s) {
+    return s.replace(/(^|[^\\])"/g, '$1\\"');
+  };
 
-   var len = 80;
-   var buf = new java.lang.StringBuffer();
-   if (wrap == true && str.length > len) {
-      buf.append('""\n');
-      var offset = 0;
-      while (offset < str.length) {
-         buf.append('"');
-         buf.append(escapeQuotes(str.substring(offset, offset += len)));
-         buf.append('"');
-         buf.append("\n");
-      }
-      return buf.toString();
-   } else {
+  var len = 80;
+  var buf = new java.lang.StringBuffer();
+  if (wrap == true && str.length > len) {
+    buf.append('""\n');
+    var offset = 0;
+    while (offset < str.length) {
       buf.append('"');
-      buf.append(escapeQuotes(str));
-      buf.append('"\n');
-   }
-   return buf.toString();
+      buf.append(escapeQuotes(str.substring(offset, offset += len)));
+      buf.append('"');
+      buf.append("\n");
+    }
+    return buf.toString();
+  } else {
+    buf.append('"');
+    buf.append(escapeQuotes(str));
+    buf.append('"\n');
+  }
+  return buf.toString();
 };
 
 /**
@@ -103,7 +103,7 @@ Message.formatId = function(str, wrap) {
  * was found at
  */
 Message.prototype.addLocation = function(filePath, lineNum) {
-   this.locations.push(filePath + ":" + lineNum);
+  this.locations.push(filePath + ":" + lineNum);
 };
 
 /**
@@ -113,34 +113,34 @@ Message.prototype.addLocation = function(filePath, lineNum) {
  * to write into
  */
 Message.prototype.write = function(buf) {
-   for (var i=0;i<this.locations.length;i++) {
-      buf.append("#: ");
-      buf.append(this.locations[i]);
-      buf.append("\n");
-   }
-   if (this.id.indexOf("{") > -1
-       || (this.pluralId != null && this.pluralId.indexOf("{") > -1)) {
-      buf.append("#, java-format\n");
-   }
-   buf.append('msgid ');
-   buf.append(Message.formatId(this.id));
-   if (this.pluralId != null) {
-      buf.append('msgid_plural ');
-      buf.append(Message.formatId(this.pluralId));
-      buf.append('msgstr[0] ""\nmsgstr[1] ""\n')
-   } else {
-      buf.append('msgstr ""\n')
-   }
-   buf.append("\n");
-   return;
+  for (var i=0;i<this.locations.length;i++) {
+    buf.append("#: ");
+    buf.append(this.locations[i]);
+    buf.append("\n");
+  }
+  if (this.id.indexOf("{") > -1
+     || (this.pluralId != null && this.pluralId.indexOf("{") > -1)) {
+    buf.append("#, java-format\n");
+  }
+  buf.append('msgid ');
+  buf.append(Message.formatId(this.id));
+  if (this.pluralId != null) {
+    buf.append('msgid_plural ');
+    buf.append(Message.formatId(this.pluralId));
+    buf.append('msgstr[0] ""\nmsgstr[1] ""\n')
+  } else {
+    buf.append('msgstr ""\n')
+  }
+  buf.append("\n");
+  return;
 };
 
 /**
  * @constructor
  */
 var MessageParser = function() {
-   this.messages = {};
-   return this;
+  this.messages = {};
+  return this;
 };
 
 /**
@@ -150,11 +150,11 @@ var MessageParser = function() {
  * @type Object
  */
 MessageParser.FUNCTION_NAMES = {
-   "_": true,
-   "gettext": true,
-   "ngettext": true,
-   "markgettext": true,
-   "cgettext": true
+  "_": true,
+  "gettext": true,
+  "ngettext": true,
+  "markgettext": true,
+  "cgettext": true
 };
 
 /**
@@ -198,7 +198,7 @@ MessageParser.REGEX_PARAM = /([\w]*)\s*=\s*["'](.*?)["']\s*(?=\w+=|$)/gm;
  * @type Number
  */
 MessageParser.getLineNum = function(str, idx) {
-   return str.substring(0, idx).split(/.*(?:\r\n|\n\r|\r|\n)/).length;
+  return str.substring(0, idx).split(/.*(?:\r\n|\n\r|\r|\n)/).length;
 };
 
 /**
@@ -209,36 +209,36 @@ MessageParser.getLineNum = function(str, idx) {
  * @param {String} encoding The encoding to use
  */
 MessageParser.prototype.parse = function(file, encoding) {
-   if (file.isDirectory()) {
-      var list = file.list();
-      for (var i=0;i<list.length;i++) {
-         this.parse(new java.io.File(file, list[i]), encoding);
+  if (file.isDirectory()) {
+    var list = file.list();
+    for (var i=0;i<list.length;i++) {
+      this.parse(new java.io.File(file, list[i]), encoding);
+    }
+  } else {
+    var fName, dotIdx;
+    fName = file.getName();
+    if ((dotIdx = fName.lastIndexOf(".")) > -1) {
+      switch (String(fName.substring(dotIdx+1))) {
+        case "skin":
+          print("Parsing skin file " + file.getCanonicalPath() + "...");
+          this.parseSkinFile(file, encoding);
+          break;
+        case "hac":
+        case "js":
+          print("Parsing function file " + file.getCanonicalPath() + "...");
+          this.parseFunctionFile(file, encoding);
+          break;
+        default:
+          break;
       }
-   } else {
-      var fName, dotIdx;
-      fName = file.getName();
-      if ((dotIdx = fName.lastIndexOf(".")) > -1) {
-         switch (String(fName.substring(dotIdx+1))) {
-            case "skin":
-               print("Parsing skin file " + file.getCanonicalPath() + "...");
-               this.parseSkinFile(file, encoding);
-               break;
-            case "hac":
-            case "js":
-               print("Parsing function file " + file.getCanonicalPath() + "...");
-               this.parseFunctionFile(file, encoding);
-               break;
-            default:
-               break;
-         }
-      }
-   }
-   return;
+    }
+  }
+  return;
 };
 
 /** @ignore */
 MessageParser.prototype.toString = function() {
-   return "[Jala Message Parser]";
+  return "[Jala Message Parser]";
 };
 
 /**
@@ -248,65 +248,65 @@ MessageParser.prototype.toString = function() {
  * @param {String} encoding The encoding to use
  */
 MessageParser.prototype.parseFunctionFile = function(file, encoding) {
-   var fis = new java.io.FileInputStream(file);
-   var isr = new java.io.InputStreamReader(fis, encoding || "UTF-8");
-   var reader = new java.io.BufferedReader(isr);
-   var tokenizer = new java.io.StreamTokenizer(reader);
-   var messages = [], stack = [];
-   var c;
-   while ((c = tokenizer.nextToken()) != java.io.StreamTokenizer.TT_EOF) {
-      switch (c) {
-         case java.io.StreamTokenizer.TT_WORD:
-            if (MessageParser.FUNCTION_NAMES[tokenizer.sval] == true) {
-               stack.push({name: tokenizer.sval, lineNr: tokenizer.lineno()});
-            } else if (stack.length > 0) {
-               // it's something else than a string argument inside a gettext method call
-               // so finalize the argument parsing here as we aren't interested in that
-               messages.push(stack.pop());
-            }
-            break;
-         case java.io.StreamTokenizer.TT_NUMBER:
-            break;
-         default:
-            if (stack.length > 0) {
-               if ("\u0028".charCodeAt(0) == c) {
-                  // start of arguments (an opening bracket)
-                  stack[stack.length-1].args = [];
-               } else if ("\u0029".charCodeAt(0) == c) {
-                  // end of arguments (a closing bracket)
-                  messages.push(stack.pop());
-               } else if ("\u0022".charCodeAt(0) == c || "\u0027".charCodeAt(0) == c) {
-                  // a quoted string argument
-                  stack[stack.length-1].args.push(tokenizer.sval);
-               }
-            }
-            break;
+  var fis = new java.io.FileInputStream(file);
+  var isr = new java.io.InputStreamReader(fis, encoding || "UTF-8");
+  var reader = new java.io.BufferedReader(isr);
+  var tokenizer = new java.io.StreamTokenizer(reader);
+  var messages = [], stack = [];
+  var c;
+  while ((c = tokenizer.nextToken()) != java.io.StreamTokenizer.TT_EOF) {
+    switch (c) {
+      case java.io.StreamTokenizer.TT_WORD:
+        if (MessageParser.FUNCTION_NAMES[tokenizer.sval] == true) {
+          stack.push({name: tokenizer.sval, lineNr: tokenizer.lineno()});
+        } else if (stack.length > 0) {
+          // it's something else than a string argument inside a gettext method call
+          // so finalize the argument parsing here as we aren't interested in that
+          messages.push(stack.pop());
+        }
+        break;
+      case java.io.StreamTokenizer.TT_NUMBER:
+        break;
+      default:
+        if (stack.length > 0) {
+          if ("\u0028".charCodeAt(0) == c) {
+            // start of arguments (an opening bracket)
+            stack[stack.length-1].args = [];
+          } else if ("\u0029".charCodeAt(0) == c) {
+            // end of arguments (a closing bracket)
+            messages.push(stack.pop());
+          } else if ("\u0022".charCodeAt(0) == c || "\u0027".charCodeAt(0) == c) {
+            // a quoted string argument
+            stack[stack.length-1].args.push(tokenizer.sval);
+          }
+        }
+        break;
+    }
+  }
+  if (messages.length > 0) {
+    var msgParam, key, msg;
+    for (var i=0;i<messages.length;i++) {
+      msgParam = messages[i];
+      if (msgParam.args && msgParam.args.length > 0) {
+        if (msgParam.name === "cgettext" || msgParam.name === "markgettext") {
+          msgParam.args[0] = cgettext.getKey(msgParam.args[0], msgParam.args[1]);
+          delete msgParam.args[1];
+        }
+        key = Message.getKey(msgParam.args[0]);
+        if (!(msg = this.messages[key])) {
+          this.messages[key] = msg = new Message(msgParam.args[0], msgParam.args[1]);
+        }
+        if (!msg.pluralId && msgParam.args.length > 1) {
+          msg.pluralId = msgParam.args[1];
+        }
+        msg.addLocation(file.getCanonicalPath(), msgParam.lineNr);
       }
-   }
-   if (messages.length > 0) {
-      var msgParam, key, msg;
-      for (var i=0;i<messages.length;i++) {
-         msgParam = messages[i];
-         if (msgParam.args && msgParam.args.length > 0) {
-            if (msgParam.name === "cgettext" || msgParam.name === "markgettext") {
-               msgParam.args[0] = cgettext.getKey(msgParam.args[0], msgParam.args[1]);
-               delete msgParam.args[1];
-            }
-            key = Message.getKey(msgParam.args[0]);
-            if (!(msg = this.messages[key])) {
-               this.messages[key] = msg = new Message(msgParam.args[0], msgParam.args[1]);
-            }
-            if (!msg.pluralId && msgParam.args.length > 1) {
-               msg.pluralId = msgParam.args[1];
-            }
-            msg.addLocation(file.getCanonicalPath(), msgParam.lineNr);
-         }
-      }
-   }
-   fis.close();
-   isr.close();
-   reader.close();
-   return;
+    }
+  }
+  fis.close();
+  isr.close();
+  reader.close();
+  return;
 };
 
 /**
@@ -324,72 +324,72 @@ MessageParser.prototype.parseFunctionFile = function(file, encoding) {
  * @param {String} encoding The encoding to use
  */
 MessageParser.prototype.parseSkinFile = function(file, encoding) {
-   var self = this;
-   var source = readFile(file.getAbsolutePath(), encoding || "UTF-8");
+  var self = this;
+  var source = readFile(file.getAbsolutePath(), encoding || "UTF-8");
 
-   var checkNestedMacros = function(iterator) {
-      var macros = [];
-      while (iterator.hasNext()) {
-         macro = iterator.next();
-         if (macro && macro.constructor !== String) {
-            macros.push(macro);
-         }
+  var checkNestedMacros = function(iterator) {
+    var macros = [];
+    while (iterator.hasNext()) {
+      macro = iterator.next();
+      if (macro && macro.constructor !== String) {
+        macros.push(macro);
       }
-      processMacros(macros);
-   }
+    }
+    processMacros(macros);
+  }
 
-   var processMacros = function(macros) {
-      var re = gettext_macro.REGEX;
-      var id, pluralId, name, args, param, key, msg;
-      for each (var macro in macros) {
-         id = pluralId = null;
-         name = macro.getName();
-         param = macro.getNamedParams();
-         if (param) {
-            checkNestedMacros(param.values().iterator());
-            if (name === MessageParser.MACRO_NAME) {
-               id = param.get("text");
-               pluralId = param.get("plural");
-            } else if (param.containsKey("message") === MessageParser.ATTRIBUTE_NAME) {
-               id = param.get("message");
-               pluralId = param.get("plural");
-            }
-         }
-         args = macro.getPositionalParams();
-         if (args) {
-            checkNestedMacros(args.iterator());
-            if (name === "gettext" || name === "markgettext") {
-               id = cgettext.getKey(args.get(0), param && param.get("context"));
-            } else if (name === "ngettext") {
-               id = args.get(0);
-               pluralId = args.get(1);
-            }
-         }
-         if (id != null) {
-            if (id.constructor !== String) {
-               continue;
-            }
-            // create new Message instance or update the existing one
-            id = id.replace(re, String.SPACE);
-            pluralId && (pluralId = pluralId.replace(re, String.SPACE));
-            key = Message.getKey(id);
-            if (!(msg = self.messages[key])) {
-               self.messages[key] = msg = new Message(id, pluralId, file.getCanonicalPath());
-            }
-            msg.addLocation(file.getCanonicalPath(), MessageParser.getLineNum(source, macro.start));
-         }
+  var processMacros = function(macros) {
+    var re = gettext_macro.REGEX;
+    var id, pluralId, name, args, param, key, msg;
+    for each (var macro in macros) {
+      id = pluralId = null;
+      name = macro.getName();
+      param = macro.getNamedParams();
+      if (param) {
+        checkNestedMacros(param.values().iterator());
+        if (name === MessageParser.MACRO_NAME) {
+          id = param.get("text");
+          pluralId = param.get("plural");
+        } else if (param.containsKey("message") === MessageParser.ATTRIBUTE_NAME) {
+          id = param.get("message");
+          pluralId = param.get("plural");
+        }
       }
-   }
+      args = macro.getPositionalParams();
+      if (args) {
+        checkNestedMacros(args.iterator());
+        if (name === "gettext" || name === "markgettext") {
+          id = cgettext.getKey(args.get(0), param && param.get("context"));
+        } else if (name === "ngettext") {
+          id = args.get(0);
+          pluralId = args.get(1);
+        }
+      }
+      if (id != null) {
+        if (id.constructor !== String) {
+          continue;
+        }
+        // create new Message instance or update the existing one
+        id = id.replace(re, String.SPACE);
+        pluralId && (pluralId = pluralId.replace(re, String.SPACE));
+        key = Message.getKey(id);
+        if (!(msg = self.messages[key])) {
+          self.messages[key] = msg = new Message(id, pluralId, file.getCanonicalPath());
+        }
+        msg.addLocation(file.getCanonicalPath(), MessageParser.getLineNum(source, macro.start));
+      }
+    }
+  }
 
-   var skin = createSkin(source);
-   if (skin.hasMainskin()) {
-      processMacros(skin.getMacros());
-   }
-   for each (var name in skin.getSubskinNames()) {
-      var subskin = skin.getSubskin(name);
-      processMacros(subskin.getMacros());
-   }
-   return;
+  var skin = createSkin(source);
+  if (skin.hasMainskin()) {
+    processMacros(skin.getMacros());
+  }
+  for each (var name in skin.getSubskinNames()) {
+    var subskin = skin.getSubskin(name);
+    processMacros(subskin.getMacros());
+  }
+  return;
 }
 
 /**
@@ -399,58 +399,58 @@ MessageParser.prototype.parseSkinFile = function(file, encoding) {
  * @see http://drupal.org/node/17564
  */
 MessageParser.prototype.getPotString = function() {
-   var date = new Date;
-   var buf = new java.lang.StringBuffer();
-   buf.append('#\n');
-   buf.append('# The Antville Project\n');
-   buf.append('# http://code.google.com/p/antville\n');
-   buf.append('#\n');
-   buf.append('# Copyright 2001-' + date.getFullYear() + ' by The Antville People\n');
-   buf.append('#\n');
-   buf.append("# Licensed under the Apache License, Version 2.0 (the ``License''\n");
-   buf.append('# you may not use this file except in compliance with the License.\n');
-   buf.append('# You may obtain a copy of the License at\n');
-   buf.append('#\n');
-   buf.append('#    http://www.apache.org/licenses/LICENSE-2.0\n');
-   buf.append('#\n');
-   buf.append('# Unless required by applicable law or agreed to in writing, software\n');
-   buf.append("# distributed under the License is distributed on an ``AS IS'' BASIS,\n");
-   buf.append('# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n');
-   buf.append('# See the License for the specific language governing permissions and\n');
-   buf.append('# limitations under the License.\n');
-   buf.append('#\n');
-   buf.append('# $Revision$\n');
-   buf.append('# $Author$\n');
-   buf.append('# $Date$\n');
-   buf.append('# $URL$\n');
-   buf.append('#\n');
-   buf.append('#, fuzzy\n');
-   buf.append('msgid ""\n');
-   buf.append('msgstr ""\n');
-   buf.append('"Project-Id-Version: Antville-' + Root.VERSION + '\\n"\n');
-   buf.append('"Report-Msgid-Bugs-To: mail@antville.org\\n"\n');
-   var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mmZ");
-   buf.append('"POT-Creation-Date: ' + sdf.format(new java.util.Date()) + '\\n"\n');
-   buf.append('"PO-Revision-Date: ' + sdf.format(new java.util.Date()) + '\\n"\n');
-   //buf.append('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"\n');
-   buf.append('"Language-Team: The Antville People <mail@antville.org>\\n"\n');
-   buf.append('"MIME-Version: 1.0\\n"\n');
-   buf.append('"Content-Type: text/plain; charset=utf-8\\n"\n');
-   buf.append('"Content-Transfer-Encoding: 8bit\\n"\n');
-   buf.append('"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n');
-   buf.append('\n');
+  var date = new Date;
+  var buf = new java.lang.StringBuffer();
+  buf.append('#\n');
+  buf.append('# The Antville Project\n');
+  buf.append('# http://code.google.com/p/antville\n');
+  buf.append('#\n');
+  buf.append('# Copyright 2001-' + date.getFullYear() + ' by The Antville People\n');
+  buf.append('#\n');
+  buf.append("# Licensed under the Apache License, Version 2.0 (the ``License''\n");
+  buf.append('# you may not use this file except in compliance with the License.\n');
+  buf.append('# You may obtain a copy of the License at\n');
+  buf.append('#\n');
+  buf.append('#   http://www.apache.org/licenses/LICENSE-2.0\n');
+  buf.append('#\n');
+  buf.append('# Unless required by applicable law or agreed to in writing, software\n');
+  buf.append("# distributed under the License is distributed on an ``AS IS'' BASIS,\n");
+  buf.append('# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n');
+  buf.append('# See the License for the specific language governing permissions and\n');
+  buf.append('# limitations under the License.\n');
+  buf.append('#\n');
+  buf.append('# $Revision$\n');
+  buf.append('# $Author$\n');
+  buf.append('# $Date$\n');
+  buf.append('# $URL$\n');
+  buf.append('#\n');
+  buf.append('#, fuzzy\n');
+  buf.append('msgid ""\n');
+  buf.append('msgstr ""\n');
+  buf.append('"Project-Id-Version: Antville-' + Root.VERSION + '\\n"\n');
+  buf.append('"Report-Msgid-Bugs-To: mail@antville.org\\n"\n');
+  var sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mmZ");
+  buf.append('"POT-Creation-Date: ' + sdf.format(new java.util.Date()) + '\\n"\n');
+  buf.append('"PO-Revision-Date: ' + sdf.format(new java.util.Date()) + '\\n"\n');
+  //buf.append('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"\n');
+  buf.append('"Language-Team: The Antville People <mail@antville.org>\\n"\n');
+  buf.append('"MIME-Version: 1.0\\n"\n');
+  buf.append('"Content-Type: text/plain; charset=utf-8\\n"\n');
+  buf.append('"Content-Transfer-Encoding: 8bit\\n"\n');
+  buf.append('"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n');
+  buf.append('\n');
 
-   // sort all messages by their singular key
-   var keys = [];
-   for (var i in this.messages) {
-      keys[keys.length] = this.messages[i].id;
-   }
-   keys.sort();
-   // add all the messages
-   for (var i=0;i<keys.length;i++) {
-      this.messages[keys[i]].write(buf);
-   }
-   return new java.lang.String(buf);
+  // sort all messages by their singular key
+  var keys = [];
+  for (var i in this.messages) {
+    keys[keys.length] = this.messages[i].id;
+  }
+  keys.sort();
+  // add all the messages
+  for (var i=0;i<keys.length;i++) {
+    this.messages[keys[i]].write(buf);
+  }
+  return new java.lang.String(buf);
 };
 
 /**
@@ -458,10 +458,10 @@ MessageParser.prototype.getPotString = function() {
  * @param {java.io.File} file The file to write to
  */
 MessageParser.prototype.writeToFile = function(file) {
-   var writer = new java.io.FileWriter(file);
-   writer.write(new java.lang.String(this.getPotString().getBytes("UTF-8")));
-   writer.close();
-   return;
+  var writer = new java.io.FileWriter(file);
+  writer.write(new java.lang.String(this.getPotString().getBytes("UTF-8")));
+  writer.close();
+  return;
 };
 
 /**
@@ -471,24 +471,24 @@ var toParse = [];
 var arg, outFile, file, fileEncoding;
 
 for (var i=0;i<arguments.length;i++) {
-   arg = arguments[i];
-   if (arg.indexOf("-o") === 0 && i < arguments.length -1) {
-      outFile = new java.io.File(arguments[i += 1]);
-   } else if (arg.indexOf("-e") === 0 && i < arguments.length -1) {
-      fileEncoding = arguments[i += 1];
-   } else {
-      // add argument to list of files and directories to parse
-      toParse.push(new java.io.File(arg));
-   }
+  arg = arguments[i];
+  if (arg.indexOf("-o") === 0 && i < arguments.length -1) {
+    outFile = new java.io.File(arguments[i += 1]);
+  } else if (arg.indexOf("-e") === 0 && i < arguments.length -1) {
+    fileEncoding = arguments[i += 1];
+  } else {
+    // add argument to list of files and directories to parse
+    toParse.push(new java.io.File(arg));
+  }
 }
 
 // start parsing
 var parser = new MessageParser();
 for (var i=0;i<toParse.length;i++) {
-   parser.parse(toParse[i], fileEncoding);
+  parser.parse(toParse[i], fileEncoding);
 }
 if (outFile != null) {
-   parser.writeToFile(outFile);
+  parser.writeToFile(outFile);
 } else {
-   print(parser.getPotString());
+  print(parser.getPotString());
 }

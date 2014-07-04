@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -37,69 +37,69 @@ markgettext("files");
  */
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
 Files.prototype.getPermission = function(action) {
-   if (!this._parent.getPermission("main")) {
-      return false;
-   }
-   switch (action) {
-      case ".":
-      case "main":
-      case "create":
-      return Site.require(Site.OPEN) && session.user ||
-            Membership.require(Membership.CONTRIBUTOR) ||
-            User.require(User.PRIVILEGED);
-      case "all":
-      return Membership.require(Membership.MANAGER) ||
-            User.require(User.PRIVILEGED);
-   }
-   return false;
+  if (!this._parent.getPermission("main")) {
+    return false;
+  }
+  switch (action) {
+    case ".":
+    case "main":
+    case "create":
+    return Site.require(Site.OPEN) && session.user ||
+        Membership.require(Membership.CONTRIBUTOR) ||
+        User.require(User.PRIVILEGED);
+    case "all":
+    return Membership.require(Membership.MANAGER) ||
+        User.require(User.PRIVILEGED);
+  }
+  return false;
 }
 
 Files.prototype.create_action = function() {
-   File.redirectOnUploadError(this.href(req.action));
-   File.redirectOnExceededQuota(this.href());
+  File.redirectOnUploadError(this.href(req.action));
+  File.redirectOnExceededQuota(this.href());
 
-   if (req.postParams.save) {
-      try {
-         var file = File.add(req.postParams);
-         file.notify(req.action);
-         res.message = gettext('The file was successfully added.');
-         res.redirect(this.href());
-      } catch (ex) {
-         res.message = ex;
-         app.log(ex);
-      }
-   }
-   
-   res.data.action = this.href(req.action);
-   res.data.title = gettext("Add File");
-   HopObject.confirmConstructor(File);
-   res.data.body = (new File).renderSkinAsString("$File#edit");
-   this._parent.renderSkin("Site#page");
-   return;
+  if (req.postParams.save) {
+    try {
+      var file = File.add(req.postParams);
+      file.notify(req.action);
+      res.message = gettext('The file was successfully added.');
+      res.redirect(this.href());
+    } catch (ex) {
+      res.message = ex;
+      app.log(ex);
+    }
+  }
+
+  res.data.action = this.href(req.action);
+  res.data.title = gettext("Add File");
+  HopObject.confirmConstructor(File);
+  res.data.body = (new File).renderSkinAsString("$File#edit");
+  this._parent.renderSkin("Site#page");
+  return;
 }
 
 Files.prototype.main_action = function() {
-   var files = User.getMembership().files;
-   res.data.list = renderList(files, "$File#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(files, this.href(), 
-         10, req.queryParams.page);
-   res.data.title = gettext("Member Files");
-   res.data.body = this.renderSkinAsString("$Files#main");
-   this._parent.renderSkin("Site#page");
-   return;
+  var files = User.getMembership().files;
+  res.data.list = renderList(files, "$File#listItem", 10, req.queryParams.page);
+  res.data.pager = renderPager(files, this.href(),
+      10, req.queryParams.page);
+  res.data.title = gettext("Member Files");
+  res.data.body = this.renderSkinAsString("$Files#main");
+  this._parent.renderSkin("Site#page");
+  return;
 }
 
 Files.prototype.all_action = function() {
-   res.data.list = renderList(this, "$File#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this, 
-         this.href(req.action), 10, req.queryParams.page);
-   res.data.title = gettext("All Files");
-   res.data.body = this.renderSkinAsString("$Files#main");
-   this._parent.renderSkin("Site#page");
-   return;
+  res.data.list = renderList(this, "$File#listItem", 10, req.queryParams.page);
+  res.data.pager = renderPager(this,
+      this.href(req.action), 10, req.queryParams.page);
+  res.data.title = gettext("All Files");
+  res.data.body = this.renderSkinAsString("$Files#main");
+  this._parent.renderSkin("Site#page");
+  return;
 }

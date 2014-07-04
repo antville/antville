@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -24,15 +24,15 @@
 // $URL$
 
 Topics.prototype.main_action = function() {
-   return res.redirect(this.href());
+  return res.redirect(this.href());
 }
 
 Topics.prototype.getChildElement = function(id) {
-   return res.redirect(this.href() + id);
+  return res.redirect(this.href() + id);
 }
 
 Topics.prototype.href = function() {
-   var mountpoint = (this._parent.constructor === Site ||
-         this._parent.constructor === Root ? "tags" : "galleries");
-   return this._parent[mountpoint].href();
+  var mountpoint = (this._parent.constructor === Site ||
+      this._parent.constructor === Root ? "tags" : "galleries");
+  return this._parent[mountpoint].href();
 }

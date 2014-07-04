@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -45,23 +45,23 @@ markgettext("log entry");
  * @extends HopObject
  */
 LogEntry.prototype.constructor = function(context, action) {
-   this.context = context;
-   this.action = action;
-   this.referrer = req.data.http_referer;
-   this.creator = session.user;
-   this.created = new Date;
-   this.ip = req.data.http_remotehost; // Won't be stored in database
-   this.site = res.handlers.site;
-   return this;
+  this.context = context;
+  this.action = action;
+  this.referrer = req.data.http_referer;
+  this.creator = session.user;
+  this.created = new Date;
+  this.ip = req.data.http_remotehost; // Won't be stored in database
+  this.site = res.handlers.site;
+  return this;
 }
 
 /**
  * @returns {String}
  */
 LogEntry.prototype.toString = function() {
-   return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") +
-         " requested " + this.action + " action of " + this.context_type +
-         " #" + this.context_id + " on " + formatDate(this.created) + "]";
+  return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") +
+      " requested " + this.action + " action of " + this.context_type +
+      " #" + this.context_id + " on " + formatDate(this.created) + "]";
 }
 
 /**
@@ -70,11 +70,11 @@ LogEntry.prototype.toString = function() {
  * @returns {HopObject}
  */
 LogEntry.prototype.getMacroHandler = function(name) {
-   switch (name) {
-      case "context":
-      return this.context || {name: this.context_id};
-   }
-   return null;
+  switch (name) {
+    case "context":
+    return this.context || {name: this.context_id};
+  }
+  return null;
 }
 
 /**
@@ -82,18 +82,18 @@ LogEntry.prototype.getMacroHandler = function(name) {
  * @param {Object} param
  */
 LogEntry.prototype.label_macro = function(param) {
-   if (!User.require(User.PRIVILEGED)) {
-      return;
-   }
-   switch (this.context_type) {
-      case "Site" :
-      res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SITE</span>");
-      break;
-      case "User" :
-      res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">USER</span>");
-      break;
-      default :
-      res.write("<span class=\"flagLight\" style=\"background-color:#FFCC00;\">ROOT</span>");
-   }
-   return;
+  if (!User.require(User.PRIVILEGED)) {
+    return;
+  }
+  switch (this.context_type) {
+    case "Site" :
+    res.write("<span class=\"flagDark\" style=\"background-color:#006600;\">SITE</span>");
+    break;
+    case "User" :
+    res.write("<span class=\"flagDark\" style=\"background-color:#009900;\">USER</span>");
+    break;
+    default :
+    res.write("<span class=\"flagLight\" style=\"background-color:#FFCC00;\">ROOT</span>");
+  }
+  return;
 }

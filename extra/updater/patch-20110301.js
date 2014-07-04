@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -28,9 +28,9 @@
 var sql = new Sql();
 var sql2 = new Sql();
 for each (let table in ["file", "image", "tag"]) {
-   sql.retrieve("select * from $0 where name like '%?%';", table);
-   sql.traverse(function() {
-      var name = "-".repeat(this.name.count("?"));
-      sql2.execute("update $0 set name = '$1' where id = $2", table, name, this.id);
-   });
+  sql.retrieve("select * from $0 where name like '%?%';", table);
+  sql.traverse(function() {
+    var name = "-".repeat(this.name.count("?"));
+    sql2.execute("update $0 set name = '$1' where id = $2", table, name, this.id);
+  });
 }

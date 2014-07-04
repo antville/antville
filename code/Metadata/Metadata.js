@@ -10,7 +10,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+//   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an ``AS IS'' BASIS,
@@ -34,14 +34,14 @@
  * @see <a href="http://helma.org/wiki/Defining+HopObject+mappings+programmatically">Helma documentation</a>
  */
 Metadata.getTypeProperties = function() {
-   return {
-      collection: "Metadata",
-      "local.1": "$id",
-      "foreign.1": "parent_id",
-      "local.2": "$prototype",
-      "foreign.2": "parent_type",
-      accessName: "name"
-   }
+  return {
+    collection: "Metadata",
+    "local.1": "$id",
+    "foreign.1": "parent_id",
+    "local.2": "$prototype",
+    "foreign.2": "parent_type",
+    accessName: "name"
+  }
 }
 
 /**
@@ -54,30 +54,30 @@ Metadata.getTypeProperties = function() {
  * the (normalized) metadata value and its type.
  */
 Metadata.normalize = function(value) {
-   if (value === null || value === undefined) {
-      return [null, null];
-   }
+  if (value === null || value === undefined) {
+    return [null, null];
+  }
 
-   if (!value.constructor) {
-      value = String(value);
-   }
+  if (!value.constructor) {
+    value = String(value);
+  }
 
-   var Constructor = value.constructor;
-   switch (Constructor) {
-      case Boolean:
-      case String:
-      case Number:
-      value = String(value);
-      break;
+  var Constructor = value.constructor;
+  switch (Constructor) {
+    case Boolean:
+    case String:
+    case Number:
+    value = String(value);
+    break;
 
-      case Date:
-      value = Number(value);
-      break;
+    case Date:
+    value = Number(value);
+    break;
 
-      default:
-      value = value.toSource();
-   }
-   return [value, Constructor.name];
+    default:
+    value = value.toSource();
+  }
+  return [value, Constructor.name];
 }
 
 /**
@@ -94,12 +94,12 @@ Metadata.normalize = function(value) {
  * @property {String} type The type of the metadata object.
  */
 Metadata.prototype.constructor = function(parent, name, value) {
-   if (parent && name && value) {
-      this.parent = parent;
-      this.name = name;
-      this.setValue(value);
-   }
-   return this;
+  if (parent && name && value) {
+    this.parent = parent;
+    this.name = name;
+    this.setValue(value);
+  }
+  return this;
 }
 
 /**
@@ -108,11 +108,11 @@ Metadata.prototype.constructor = function(parent, name, value) {
  * @param {Object} value The desired metadata value.
  */
 Metadata.prototype.setValue = function(value) {
-   [this.value, this.type] = Metadata.normalize(value);
-   if (this.value === null) {
-      this.remove();
-   }
-   return;
+  [this.value, this.type] = Metadata.normalize(value);
+  if (this.value === null) {
+    this.remove();
+  }
+  return;
 }
 
 /**
@@ -120,25 +120,25 @@ Metadata.prototype.setValue = function(value) {
  * @returns {Object} The value of the metadata object.
  */
 Metadata.prototype.getValue = function() {
-   var Constructor = global[this.type];
-   switch (Constructor) {
-      case null:
-      case undefined:
-      return null;
+  var Constructor = global[this.type];
+  switch (Constructor) {
+    case null:
+    case undefined:
+    return null;
 
-      case Boolean:
-      return eval(this.value).valueOf();
+    case Boolean:
+    return eval(this.value).valueOf();
 
-      case Date:
-      return new Date(Number(this.value));
+    case Date:
+    return new Date(Number(this.value));
 
-      case Number:
-      case String:
-      return (new Constructor(this.value)).valueOf();
+    case Number:
+    case String:
+    return (new Constructor(this.value)).valueOf();
 
-      default:
-      return eval(this.value);
-   }
+    default:
+    return eval(this.value);
+  }
 }
 
 /**
@@ -146,7 +146,7 @@ Metadata.prototype.getValue = function() {
  * @returns {String} A textual representation of the metadata object.
  */
 Metadata.prototype.toString = function() {
-   return "Metadata of " + this.parent + " (" + this.name + " = " + this.value + ")";
+  return "Metadata of " + this.parent + " (" + this.name + " = " + this.value + ")";
 }
 
 /**
@@ -156,5 +156,5 @@ Metadata.prototype.toString = function() {
  */
 // FIXME: Is this obsolete?
 Metadata.prototype.onUnhandledMacro = function(name) {
-   return this.get(name);
+  return this.get(name);
 }
