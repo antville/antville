@@ -19,7 +19,7 @@ $(function() {
   }
 
   // Go back one step in history when clicking on links with the cancel class.
-  $("a.cancel").click(function(event) {
+  $('a.cancel').click(function(event) {
     event.preventDefault();
     history.back();
   });
@@ -31,10 +31,10 @@ $(function() {
 
   // Group related <option> elements by inserting additional <optgroup> elements.
   var groups = [],
-      element = $("form#prefs #timeZone");
-  element.find("option").each(function(index, item) {
+      element = $('form#prefs #timeZone');
+  element.find('option').each(function(index, item) {
     var zone = $(item),
-        parts = zone.html().split("/"), // E.g. Europe/Vienna
+        parts = zone.html().split('/'), // E.g. Europe/Vienna
         group = parts[0];
 
     if ($.inArray(group, groups) < 0) {
@@ -43,11 +43,11 @@ $(function() {
   });
   groups.sort();
   $.each(groups, function(index, group) {
-    var key = group + "/"; // E.g. Europe/
-    element.find("option:contains(" + key + ")")
-        .wrapAll($("<optgroup>").attr("label", group))
+    var key = group + '/'; // E.g. Europe/
+    element.find('option:contains(' + key + ')')
+        .wrapAll($('<optgroup>').attr('label', group))
         .each(function(index, item) {
-          $(item).html($(item).html().replace(key, ""));
+          $(item).html($(item).html().replace(key, ''));
         });
   });
 
@@ -63,7 +63,7 @@ function setLayoutMode(mode) {
         .append($('<button>')
           .html('Exit Sandbox')
           .click(function() {
-            location.replace($('a[href$="sandbox"]').attr('href'));
+            location.replace($('a[href$='sandbox']').attr('href'));
           }))));*/
   $('.skin').each(function() {
     var skinButton = $('<div class="skin-control"><a class="skin-edit-link">');
@@ -158,18 +158,18 @@ jQuery.md5 = function (string) {
 	}
 
 	function WordToHex(lValue) {
-		var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
+		var WordToHexValue='',WordToHexValue_temp='',lByte,lCount;
 		for (lCount = 0;lCount<=3;lCount++) {
 			lByte = (lValue>>>(lCount*8)) & 255;
-			WordToHexValue_temp = "0" + lByte.toString(16);
+			WordToHexValue_temp = '0' + lByte.toString(16);
 			WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length-2,2);
 		}
 		return WordToHexValue;
 	}
 
 	function Utf8Encode(string) {
-		string = string.replace(/\r\n/g,"\n");
-		var utftext = "";
+		string = string.replace(/\r\n/g,'\n');
+		var utftext = '';
 
 		for (var n = 0; n < string.length; n++) {
 
@@ -282,20 +282,20 @@ jQuery.md5 = function (string) {
 }
 
 Antville = {};
-Antville.prefix = "Antville_";
+Antville.prefix = 'Antville_';
 
 Antville.encode = function(str) {
-  var chars = ["&", "<", ">", '"'];
+  var chars = ['&', '<', '>', '\''];
   for (var i in chars) {
     var c = chars[i];
-    var re = new RegExp(c, "g");
-    str = str.replace(re, "&#" + c.charCodeAt() + ";");
+    var re = new RegExp(c, 'g');
+    str = str.replace(re, '&#' + c.charCodeAt() + ';');
   }
   return str;
 }
 
 Antville.decode = function(str) {
-  return str.replace(/&amp;/g, "&");
+  return str.replace(/&amp;/g, '&');
 }
 
 Antville.Referrer = function(url, text, count) {
@@ -306,7 +306,7 @@ Antville.Referrer = function(url, text, count) {
     var query = new Antville.Query(this.url);
     if (query[key]) {
       if (prefix == null)
-        prefix = "";
+        prefix = '';
       return prefix + Antville.encode(query[key]);
     }
     return this.text;
@@ -317,19 +317,19 @@ Antville.Referrer = function(url, text, count) {
 Antville.Query = function(str) {
   if (str == undefined)
     var str = location.search.substring(1);
-  else if (str.indexOf("?") > -1)
-    var str = str.split("?")[1];
-  if (str == "")
+  else if (str.indexOf('?') > -1)
+    var str = str.split('?')[1];
+  if (str == '')
     return this;
-  var parts = Antville.decode(decodeURIComponent(str)).split("&");
+  var parts = Antville.decode(decodeURIComponent(str)).split('&');
   for (var i in parts) {
-    var pair = parts[i].split("=");
+    var pair = parts[i].split('=');
     var key = pair[0];
     if (key) {
-      key = key.replace(/\+/g, " ");
+      key = key.replace(/\+/g, ' ');
       var value = pair[1];
       if (value)
-        value = value.replace(/\+/g, " ");
+        value = value.replace(/\+/g, ' ');
       this[key] = value;
     }
   }
@@ -343,13 +343,13 @@ Antville.Filter = function(def, key) {
   else if (def instanceof Array)
     this.items = def;
   else
-    this.items = def.replace(/\r/g, "\n").split("\n");
+    this.items = def.replace(/\r/g, '\n').split('\n');
   this.test = function(str) {
     if (!str)
       return false;
-    str = str.replace(/&amp;/g, "&");
+    str = str.replace(/&amp;/g, '&');
     for (var n in this.items) {
-      var re = new RegExp(this.items[n], "i");
+      var re = new RegExp(this.items[n], 'i');
       if (re.test(str))
         return true;
     }
