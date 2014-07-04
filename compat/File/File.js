@@ -93,7 +93,7 @@ File.prototype.clicks_macro = function(param) {
    } else if (this.requests < 2) {
       res.write(param.one || "one download");
    } else {
-      res.write(param.more ? this.requests + " " + param.more : 
+      res.write(param.more ? this.requests + " " + param.more :
             this.requests + " downloads");
    }
    return;

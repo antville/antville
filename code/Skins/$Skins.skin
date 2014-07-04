@@ -80,7 +80,7 @@ body {
 </div>
 <div>...
    <% skins.link main <% gettext Basic %> %>
-   <% skins.link modified <% gettext Modified %> prefix=" | " %> 
+   <% skins.link modified <% gettext Modified %> prefix=" | " %>
    <% skins.link all <% gettext All %> prefix=" | " %>
 </div>
 
@@ -89,28 +89,28 @@ body {
 <br />
 <div class="ample">
    <% skins.link Site/page/edit <% gettext "Site Page" %> %>
-   <div class="small"><% gettext "This skin defines the basic structure of your 
+   <div class="small"><% gettext "This skin defines the basic structure of your
    site. Modifying it will affect the general appearance of your site." %></div>
 </div>
 <div class="ample">
    <% skins.link Site/navigation/edit <% gettext Navigation %> %>
-   <div class="small"><% gettext "This skin is used to display the navigation 
+   <div class="small"><% gettext "This skin is used to display the navigation
    links on the page." %></div>
 </div>
 <div class="ample">
    <% skins.link Site/main/edit <% gettext Frontpage %> %>
-   <div class="small"><% gettext "This skin is used to render the front page of 
+   <div class="small"><% gettext "This skin is used to render the front page of
    your site." %></div>
 </div>
 <div class="ample">
    <% skins.link Site/stylesheet/edit <% gettext "CSS Stylesheet" %> %>
-   <div class="small"><% gettext "This skin contains the Cascading Stylesheet 
-   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin 
+   <div class="small"><% gettext "This skin contains the Cascading Stylesheet
+   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin
    will affect the general appearance of your site." %></div>
 </div>
 <div class="ample">
    <% skins.link Site/javascript/edit <% gettext JavaScript %> %>
-   <div class="small"><% gettext "This skin contains additional JavaScript code 
+   <div class="small"><% gettext "This skin contains additional JavaScript code
    that will be included in every page." %></div>
 </div>
 

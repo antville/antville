@@ -62,7 +62,7 @@ Poll.prototype.question_macro = function(param) {
    }
    return;
 }
-   
+
 Poll.prototype.closetime_macro = function(param, format) {
    format || (format = param.format);
    return this.closed_macro(param, format);

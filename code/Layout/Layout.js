@@ -66,7 +66,7 @@ Layout.add = function(site, user) {
 }
 
 /**
- * 
+ *
  * @param {Layout} layout
  * @param {Boolean} includeSelf
  */
@@ -102,7 +102,7 @@ Layout.sandbox = function(value) {
    var cookie = User.COOKIE + 'LayoutSandbox';
    if (typeof value === 'undefined') {
       return req.cookies[cookie] === 'true';
-   } 
+   }
    if (value === true) {
       res.setCookie(cookie, true);
    } else if (value === false) {
@@ -111,7 +111,7 @@ Layout.sandbox = function(value) {
    return value;
 }
 
-/** 
+/**
  * @function
  * @returns {String[]}
  * @see defineConstants
@@ -145,7 +145,7 @@ Layout.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -169,7 +169,7 @@ Layout.prototype.getPermission = function(action) {
 // FIXME: The Layout.href method is overwritten to guarantee that
 // URLs won't contain the layout ID instead of "layout"
 /**
- * 
+ *
  * @param {String} action
  * @returns {String}
  */
@@ -199,7 +199,7 @@ Layout.prototype.main_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
@@ -213,7 +213,7 @@ Layout.prototype.getFormOptions = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Layout.prototype.update = function(data) {
@@ -235,7 +235,7 @@ Layout.prototype.update = function(data) {
    }
    res.write("\n");
    skin.setSource(res.pop());
-   Layout.sandbox(!!data.sandbox);   
+   Layout.sandbox(!!data.sandbox);
    this.description = data.description;
    this.mode = data.mode;
    this.touch();
@@ -318,7 +318,7 @@ Layout.prototype.import_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @param {String} fallback
  * @returns {Image}
@@ -339,7 +339,7 @@ Layout.prototype.getImage = function(name, fallback) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {helma.File}
  */
@@ -360,7 +360,7 @@ Layout.prototype.getSkinPath = function() {
 }
 
 /**
- * 
+ *
  */
 Layout.prototype.reset = function() {
    var skinFiles = app.getSkinfilesInPath([app.dir]);
@@ -389,7 +389,7 @@ Layout.prototype.reset = function() {
 }
 
 /**
- * 
+ *
  * @param {String} skinPath
  * @returns {helma.Zip}
  */
@@ -416,7 +416,7 @@ Layout.prototype.getArchive = function(skinPath) {
       try {
          zip.add(this.getThumbnailFile());
       } catch (ex) {
-         /* Most likely the thumbnail file is identical to the image */ 
+         /* Most likely the thumbnail file is identical to the image */
       }
       var image = new HopObject;
       for each (var key in Image.KEYS) {
@@ -424,12 +424,12 @@ Layout.prototype.getArchive = function(skinPath) {
          data.images.add(image);
       }
    });
-      
+
    data.version = Root.VERSION.toString();
    data.origin = this.origin || this.site.href();
    data.originator = this.originator || session.user.name;
    data.originated = this.originated || new Date;
-   
+
    // FIXME: XML encoder is losing all mixed-case properties :(
    var xml = new java.lang.String(Xml.writeToString(data));
    zip.addData(xml.getBytes("UTF-8"), "data.xml");
@@ -442,11 +442,11 @@ Layout.prototype.getArchive = function(skinPath) {
  * @returns {String}
  */
 Layout.prototype.getConfirmText = function() {
-   return gettext("You are about to reset the layout of site {0}.", 
+   return gettext("You are about to reset the layout of site {0}.",
          this.site.name);
 }
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */
@@ -454,14 +454,14 @@ Layout.prototype.getMacroHandler = function(name) {
    switch (name) {
       case "skins":
       return this[name];
-      
+
       default:
       return null;
    }
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  * @param {String} mode
@@ -495,7 +495,7 @@ Layout.prototype.image_macro = function(param, name, mode) {
 }
 
 /**
- * 
+ *
  */
 Layout.prototype.values_macro = function() {
    var values = [];
@@ -505,7 +505,7 @@ Layout.prototype.values_macro = function() {
    values.sort(new String.Sorter("key"));
    for each (var pair in values) {
       this.renderSkin("$Layout#value", {
-         key: pair.key.capitalize(), 
+         key: pair.key.capitalize(),
          value: pair.value
       });
    }

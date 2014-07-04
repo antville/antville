@@ -23,7 +23,7 @@ $(function() {
 <td valign="top" class="small"><% gettext Name suffix=: %></td>
 <td>
    <% image.input name %><br />
-   <span class="small"><% gettext "If you do not specify a name Antville will 
+   <span class="small"><% gettext "If you do not specify a name Antville will
    create one based on the name of the local or remote file, resp." %></span>
 </td>
 </tr>
@@ -52,11 +52,11 @@ $(function() {
 <tr class="resize">
 <td class="small"> </td>
 <td class="small">
-   <% gettext "If you want to resize the image please specify your desired 
-   maximum width and/or maximum height in pixels. If you specify both the image 
-   will be resized to match both criterias, but the image ratio will be 
+   <% gettext "If you want to resize the image please specify your desired
+   maximum width and/or maximum height in pixels. If you specify both the image
+   will be resized to match both criterias, but the image ratio will be
    preserved." %><br /><br />
-   <% gettext "If the width or height of your image exceeds 100 pixels Antville 
+   <% gettext "If the width or height of your image exceeds 100 pixels Antville
    automatically creates a thumbnail of it, too." %>
 </td>
 </tr>
@@ -78,14 +78,14 @@ $(function() {
 <td colspan="2" class="small">
    <strong><% gettext Macro suffix=: %></strong> <% image.macro %>
    <div class="ample"><strong><% gettext Properties suffix=: %></strong>
-   <% image.contentType %>, <% image.contentLength %>, 
+   <% image.contentType %>, <% image.contentLength %>,
    <% image.width %>&times;<% image.height %> <% gettext pixels %></div>
 </td>
 </tr>
 <tr>
 <td>
    <div class="storyTitle"><% image.name %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% image.creator link %> 
+   <div class="storyDate"><% gettext "{0} on {1}" <% image.creator link %>
          <% image.created short %> %></div>
 </td>
 <td align="right" class="small" valign="top">

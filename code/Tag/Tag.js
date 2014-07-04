@@ -74,7 +74,7 @@ Tag.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -92,7 +92,7 @@ Tag.prototype.getPermission = function(action) {
       case "rename":
       return User.require(User.PRIVILEGED) ||
             Membership.require(Membership.MANAGER);
-   }   
+   }
    return false;
 }
 
@@ -130,7 +130,7 @@ Tag.prototype.rename_action = function() {
          tag = Tag.add(name, this.site, this.type);
       }
       if (tag !== this) {
-         this.forEach(function() { 
+         this.forEach(function() {
             this.tag_id = tag._id;
          });
          this.remove();
@@ -139,7 +139,7 @@ Tag.prototype.rename_action = function() {
    }
    res.redirect(tag.href());
    return;
-   
+
    // FIXME: Actually, the method should work like this but it caused a mess:
    if (req.data.name) {
       var name = this.getAccessName.call(new HopObject, File.getName(req.data.name));
@@ -164,7 +164,7 @@ Tag.prototype.delete_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {String}
  */
@@ -180,7 +180,7 @@ Tag.prototype.href = function(action) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} type
  */

@@ -22,12 +22,12 @@
 ## $URL$
 ##
 
-create database if not exists antville character set latin1 
+create database if not exists antville character set latin1
       collate latin1_general_ci;
 
 use antville;
 
-grant select, insert, update, delete on antville.* to antville@localhost 
+grant select, insert, update, delete on antville.* to antville@localhost
       identified by 'antville';
 
 set foreign_key_checks = 0;
@@ -257,5 +257,5 @@ set foreign_key_checks = 1;
 
 insert into layout (id, site_id, mode) values ( '1', '1', 'default');
 
-insert into site (id, name, layout_id, status, mode) 
+insert into site (id, name, layout_id, status, mode)
       values ('1', 'www', '1', 'trusted', 'public');

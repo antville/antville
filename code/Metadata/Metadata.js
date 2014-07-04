@@ -28,7 +28,7 @@
  */
 
 /**
- * Get an object representing the type properties settings suitable for 
+ * Get an object representing the type properties settings suitable for
  * defining prototypes with the definePrototype() method.
  * @returns {Object} The type properties settings as object.
  * @see <a href="http://helma.org/wiki/Defining+HopObject+mappings+programmatically">Helma documentation</a>
@@ -47,10 +47,10 @@ Metadata.getTypeProperties = function() {
 /**
  * Prepare a value for writing it to the metadata database table.
  * The type of each metadata is stored along with its value.
- * The normalize() method determines the type and possibly modifies 
+ * The normalize() method determines the type and possibly modifies
  * the value accordingly.
  * @param {Object} value
- * @returns {Array} Compound value consisting of two elements, 
+ * @returns {Array} Compound value consisting of two elements,
  * the (normalized) metadata value and its type.
  */
 Metadata.normalize = function(value) {
@@ -85,7 +85,7 @@ Metadata.normalize = function(value) {
  * @constructor
  * @description The Metadata prototype provides means to store one metadata key-value
  * pair per record in the metadata database table. Each record is assigned to a
- * parent HopObject which is fitted with convenient methods to easily retrieve 
+ * parent HopObject which is fitted with convenient methods to easily retrieve
  * and modify the attached metadata objects.
  * @see HopObject#handleMetadata
  * @property {HopObject} parent The HopObject the metadata belongs to.
@@ -143,7 +143,7 @@ Metadata.prototype.getValue = function() {
 
 /**
  * Get a textual representation of the metadata object.
- * @returns {String} A textual representation of the metadata object. 
+ * @returns {String} A textual representation of the metadata object.
  */
 Metadata.prototype.toString = function() {
    return "Metadata of " + this.parent + " (" + this.name + " = " + this.value + ")";

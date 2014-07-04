@@ -41,7 +41,7 @@ Layout.prototype.convert_action = function() {
       zip.close();
       //zip.save(java.io.File.createTempFile(prefix, ".converted.zip"));
       res.contentType = "application/zip";
-      res.setHeader("Content-Disposition", 
+      res.setHeader("Content-Disposition",
             "attachment; filename=" + name.replace(/(\..*)$/, ".converted$1"));
       res.writeBinary(zip.getData());
       return;
@@ -62,7 +62,7 @@ Layout.convert = function(fpath) {
       result.error = proc.exitValue();
       return result;
    }
-   
+
    // Code copied from global convert.js file in updater app
    // ******************************************************
    var styles = {
@@ -117,7 +117,7 @@ Layout.convert = function(fpath) {
             var skin = rename($[2].capitalize(), $[4]);
             if (skin) {
                // THIS LINE DIFFERS FROM THE UPDATER APP!
-               return $[1] + skin.prototype.toLowerCase() + $[3] + 
+               return $[1] + skin.prototype.toLowerCase() + $[3] +
                      skin.prototype + "#" + skin.name;
             }
             return $[0];
@@ -137,7 +137,7 @@ Layout.convert = function(fpath) {
    // End of code copied from updater app
 
    var rename = function(proto, name) {
-      var allowed = ["Comment", "Day", "File", "Global", "Image", 
+      var allowed = ["Comment", "Day", "File", "Global", "Image",
             "MemberMgr", "Membership", "Site", "Story", "Topic"];
       if (allowed.indexOf(proto) < 0) {
          return;
@@ -147,11 +147,11 @@ Layout.convert = function(fpath) {
          case "Comment":
          name === "toplevel" && (name = "main");
          break;
-         
+
          case "Day":
          proto = "Archive";
          break;
-         
+
          case "MemberMgr":
          case "Membership":
          if (name === "statusloggedin") {
@@ -163,7 +163,7 @@ Layout.convert = function(fpath) {
             //return;
          }
          break;
-         
+
          case "Site":
          if (name === "searchbox") {
             name = "search";
@@ -171,7 +171,7 @@ Layout.convert = function(fpath) {
             name = "stylesheet";
          }
          break;
-         
+
          case "Story":
          if (name === "dayheader") {
             name = "date";
@@ -181,18 +181,18 @@ Layout.convert = function(fpath) {
             name = "history";
          }
          break;
-         
+
          case "Topic":
          proto = "Tag";
          break;
       }
-      (proto === "MemberMgr") && (proto = "Membership");      
+      (proto === "MemberMgr") && (proto = "Membership");
       return {
          prototype: proto,
          name: name
       };
    }
-   
+
    var convert2subskins = function(proto, dir) {
       res.push();
       for each (var fname in dir.list()) {
@@ -202,14 +202,14 @@ Layout.convert = function(fpath) {
             res.writeln("<% #" + skin.name + " %>");
             var source = clean(file.readAll());
             if (skin.prototype === "Site" && skin.name === "stylesheet") {
-               source = source.replace(/(\.calHead)/g, 
+               source = source.replace(/(\.calHead)/g,
                      "table.calendar thead, $1");
-               source = source.replace(/(\.calDay)/g, 
+               source = source.replace(/(\.calDay)/g,
                      "table.calendar th, table.calendar tbody td.day, $1");
-               source = source.replace(/(\.calSelDay)/g, 
+               source = source.replace(/(\.calSelDay)/g,
                      "table.calendar tbody td.selected, $1");
-               source = source.replace(/(\.calFoot)/g, 
-                     "table.calendar tfoot td, $1");               
+               source = source.replace(/(\.calFoot)/g,
+                     "table.calendar tfoot td, $1");
             }
             res.writeln(source);
          }
@@ -225,7 +225,7 @@ Layout.convert = function(fpath) {
       target.write(str);
       target.close();
    }
-   
+
    var convertImage = function(image) {
       var result = new HopObject;
       result.name = image.alias;
@@ -240,11 +240,11 @@ Layout.convert = function(fpath) {
       if (image.thumbnail) {
          result.thumbnailName = image.thumbnail.filename + "." + image.fileext;
          result.thumbnailWidth = image.thumbnail.width;
-         result.thumbnailHeight = image.thumbnail.height; 
+         result.thumbnailHeight = image.thumbnail.height;
       }
       return result;
    }
-   
+
    var dir = new helma.File(fpath, "images");
    for each (var fname in dir.list()) {
       var file = new helma.File(dir, fname);
@@ -270,7 +270,7 @@ Layout.convert = function(fpath) {
       }
       return result;
    }
-   
+
    var xml = Xml.read(new helma.File(fpath, "preferences.xml"));
    var file = new helma.File(fpath, "Site");
    file.makeDirectory();
@@ -281,7 +281,7 @@ Layout.convert = function(fpath) {
    res.write(values(xml.preferences));
    file.write(res.pop());
    file.close();
-   
+
    dir = new helma.File(fpath, "skins");
 
    var skin;
@@ -289,7 +289,7 @@ Layout.convert = function(fpath) {
       file = new helma.File(dir, fname);
       skin = convert2subskins(fname, file);
    }
-   
+
    var data = new HopObject;
    data.images = new HopObject;
 
@@ -306,7 +306,7 @@ Layout.convert = function(fpath) {
    data.originated = new Date;
    data.originator = session.user;
    Xml.write(data, new helma.File(fpath, "data.xml"));
-   
+
    (new helma.File(fpath, "preferences.xml")).remove();
    (new helma.File(fpath, "imagedata")).removeDirectory();
    (new helma.File(fpath, "skins")).removeDirectory();

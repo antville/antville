@@ -45,8 +45,8 @@ this.handleMetadata("width");
 Image.THUMBNAILWIDTH = 100;
 
 /** @constant */
-Image.KEYS = ["name", "created", "modified", "origin", "description", 
-      "contentType", "contentLength", "width", "height", "thumbnailName", 
+Image.KEYS = ["name", "created", "modified", "origin", "description",
+      "contentType", "contentLength", "width", "height", "thumbnailName",
       "thumbnailWidth", "thumbnailHeight", "fileName", "site"];
 
 /**
@@ -74,7 +74,7 @@ Image.add = function(data, parent, user) {
 }
 
 /**
- * 
+ *
  */
 Image.remove = function() {
    if (this.constructor === Image) {
@@ -87,7 +87,7 @@ Image.remove = function() {
 }
 
 /**
- * 
+ *
  * @param {String} type
  * @returns {String}
  */
@@ -133,7 +133,7 @@ Image.getFileExtension = function(type) {
  * @property {Number} parent_id
  * @property {String} parent_type
  * @property {String} prototype
- * @property {Tag[]} tags 
+ * @property {Tag[]} tags
  * @property {Number} thumbnailHeight
  * @property {String} thumbnailName
  * @property {Number} thumbnailWidth
@@ -146,7 +146,7 @@ Image.prototype.constructor = function(data) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @return {Boolean}
  */
@@ -157,12 +157,12 @@ Image.prototype.getPermission = function(action) {
       case "main":
       return true;
       case "delete":
-      return defaultGrant && this.creator === session.user || 
+      return defaultGrant && this.creator === session.user ||
             Membership.require(Membership.MANAGER) ||
-            User.require(User.PRIVILEGED);            
+            User.require(User.PRIVILEGED);
       case "edit":
-      return defaultGrant && this.creator === session.user || 
-            Membership.require(Membership.MANAGER) || 
+      return defaultGrant && this.creator === session.user ||
+            Membership.require(Membership.MANAGER) ||
             User.require(User.PRIVILEGED) &&
             this.parent_type !== "Layout" ||
             this.parent === path.layout;
@@ -171,7 +171,7 @@ Image.prototype.getPermission = function(action) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {String}
  */
@@ -216,13 +216,13 @@ Image.prototype.edit_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
 Image.prototype.getFormValue = function(name) {
    var self = this;
-   
+
    var getOrigin = function(str) {
       var origin = req.postParams.file_origin || self.origin;
       if (origin && origin.contains("://")) {
@@ -230,7 +230,7 @@ Image.prototype.getFormValue = function(name) {
       }
       return null;
    }
-   
+
    if (req.isPost()) {
       if (name === "file") {
          return getOrigin();
@@ -250,14 +250,14 @@ Image.prototype.getFormValue = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Image.prototype.update = function(data) {
    var origin = data.file_origin;
 
    if (!origin) {
-      if (this.isTransient()) { 
+      if (this.isTransient()) {
          throw Error(gettext("There was nothing to upload. Please be sure to choose a file."));
       }
    } else if (origin !== this.origin) {
@@ -274,36 +274,36 @@ Image.prototype.update = function(data) {
       if (!extension) {
          throw Error(gettext("This does not seem to be a (valid) JPG, PNG or GIF image file."));
       }
-      
+
       this.origin = origin;
       var mimeName = mime.normalizeFilename(mime.name);
       this.contentLength = mime.contentLength;
       this.contentType = mime.contentType;
-   
+
       if (!this.name) {
           var name = File.getName(data.name) || mimeName.split(".")[0];
           this.name = this.parent.images.getAccessName(name);
       }
 
       var image = this.getConstraint(mime, data.maxWidth, data.maxHeight);
-      this.height = image.height; 
+      this.height = image.height;
       this.width = image.width;
 
       var thumbnail;
       if (image.width > Image.THUMBNAILWIDTH) {
          thumbnail = this.getConstraint(mime, Image.THUMBNAILWIDTH);
-         this.thumbnailWidth = thumbnail.width; 
-         this.thumbnailHeight = thumbnail.height; 
+         this.thumbnailWidth = thumbnail.width;
+         this.thumbnailHeight = thumbnail.height;
       } else if (this.isPersistent()) {
          this.getThumbnailFile().remove();
          // NOTE: delete operator won't work here due to getter/setter methods
          this.deleteMetadata("thumbnailName", "thumbnailWidth", "thumbnailHeight");
       }
 
-      // Make the image persistent before proceeding with writing files and 
+      // Make the image persistent before proceeding with writing files and
       // setting tags (also see Helma bug #607)
       this.isTransient() && this.persist();
-      
+
       var fileName = this.name + extension;
       if (fileName !== this.fileName) {
          // Remove existing image files if the file name has changed
@@ -324,36 +324,36 @@ Image.prototype.update = function(data) {
 }
 
 /**
- * 
+ *
  */
 Image.prototype.tags_macro = function() {
    return res.write(this.getFormValue("tags"));
 }
 
 /**
- * 
+ *
  */
 Image.prototype.contentLength_macro = function() {
    return res.write((this.contentLength / 1024).format("###,###") + " KB");
 }
 
 /**
- * 
+ *
  */
 Image.prototype.url_macro = function() {
    return res.write(this.getUrl());
 }
 
 /**
- * 
+ *
  */
 Image.prototype.macro_macro = function() {
-   return HopObject.prototype.macro_macro.call(this, null,  
+   return HopObject.prototype.macro_macro.call(this, null,
          this.parent.constructor === Layout ? "layout.image" : "image");
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 Image.prototype.thumbnail_macro = function(param) {
@@ -371,7 +371,7 @@ Image.prototype.thumbnail_macro = function(param) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 Image.prototype.render_macro = function(param) {
@@ -386,7 +386,7 @@ Image.prototype.render_macro = function(param) {
 }
 
 /**
- * 
+ *
  * @param {Object} name
  * @returns {helma.File}
  * @see Site#getStaticFile
@@ -402,7 +402,7 @@ Image.prototype.getFile = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} name
  * @returns {String}
  * @see Site#getStaticUrl
@@ -447,7 +447,7 @@ Image.prototype.getJSON = function() {
 }
 
 /**
- * 
+ *
  * @param {helma.util.MimePart} mime
  * @param {Number} maxWidth
  * @param {Number} maxHeight
@@ -465,9 +465,9 @@ Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
          factorV = maxHeight / image.height;
       }
       if (factorH !== 1 || factorV !== 1) {
-         var width = Math.ceil(image.width * 
+         var width = Math.ceil(image.width *
                (factorH < factorV ? factorH : factorV));
-         var height = Math.ceil(image.height * 
+         var height = Math.ceil(image.height *
                (factorH < factorV ? factorH : factorV));
          image.resize(width, height);
          if (mime.contentType.endsWith("gif")) {
@@ -483,7 +483,7 @@ Image.prototype.getConstraint = function(mime, maxWidth, maxHeight) {
 }
 
 /**
- * 
+ *
  * @param {helma.Image|helma.util.MimePart} data
  * @param {Object} thumbnail
  * @throws {Error}
@@ -504,7 +504,7 @@ Image.prototype.writeFiles = function(data, thumbnail) {
          }
       } catch (ex) {
          app.log(ex);
-         throw Error(gettext("Could not save the image file on disk."));         
+         throw Error(gettext("Could not save the image file on disk."));
       }
    }
    return;

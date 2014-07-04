@@ -57,7 +57,7 @@ Api.metaWeblog._getStruct = function(story) {
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -71,7 +71,7 @@ Api.metaWeblog.getRecentPosts = function(id, name, password, limit) {
 
    Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to get recent posts from site " + site.name);
    }
 
@@ -85,7 +85,7 @@ Api.metaWeblog.getRecentPosts = function(id, name, password, limit) {
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -96,15 +96,15 @@ Api.metaWeblog.getPost = function(id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
    Api.constrain(story.site, user);
-   if (!story.getPermission("main")) { 
-      throw Error("Permission denied for user " + name + 
+   if (!story.getPermission("main")) {
+      throw Error("Permission denied for user " + name +
             " to get post #" + id);
    }
    return Api.metaWeblog._getStruct(story);
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -116,10 +116,10 @@ Api.metaWeblog.getPost = function(id, name, password) {
 Api.metaWeblog.newPost = function(id, name, password, content, publish) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
-   
+
    Api.constrain(site, user);
    if (!site.stories.getPermission("create")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to add a post to site " + site.name);
    }
 
@@ -137,7 +137,7 @@ Api.metaWeblog.newPost = function(id, name, password, content, publish) {
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -152,8 +152,8 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
 
    Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
-      throw Error("Permission denied for user " + name + 
-            " to edit post #" + id);         
+      throw Error("Permission denied for user " + name +
+            " to edit post #" + id);
    }
 
    story.update({
@@ -161,7 +161,7 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
       text: content.description,
       status: publish ? Story.PUBLIC : Story.CLOSED,
       mode: content.flNotOnHomePage ? Story.HIDDEN : Story.FEATURED,
-      commentMode: content.discussions || content.mt_allow_comments ? 
+      commentMode: content.discussions || content.mt_allow_comments ?
             Story.OPEN : Story.CLOSED,
       tags: content.categories
    });
@@ -171,7 +171,7 @@ Api.metaWeblog.editPost = function(id, name, password, content, publish) {
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -184,7 +184,7 @@ Api.metaWeblog.getCategories = function(id, name, password) {
 
    Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to get categories from site " + site.name);
    }
 
@@ -201,7 +201,7 @@ Api.metaWeblog.getCategories = function(id, name, password) {
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -219,10 +219,10 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
    var data = {};
    if (media.type && media.type.toLowerCase().startsWith("image/")) {
       if (!site.images.getPermission("create")) {
-         throw Error("Permission denied for user " + user.name + 
+         throw Error("Permission denied for user " + user.name +
                " to add a media object to site " + site.name);
       }
-      data.file = new Packages.helma.util.MimePart(media.name, 
+      data.file = new Packages.helma.util.MimePart(media.name,
             media.bits, media.type);
       data.file_origin = media.name;
       data.description = media.description;
@@ -235,15 +235,15 @@ Api.metaWeblog.newMediaObject = function(id, name, password, media) {
       result.url = Image.add(data, site, user).getUrl();
    } else {
       if (!site.files.getPermission("create")) {
-         throw Error("Permission denied for user " + user.name + 
+         throw Error("Permission denied for user " + user.name +
                " to add a media object to site " + site.name);
       }
-      data.file = new Packages.helma.util.MimePart(media.name, 
+      data.file = new Packages.helma.util.MimePart(media.name,
             media.bits, media.type);
       data.file_origin = media.name;
       data.description = media.description;
       result.url = File.add(data, site, user).getUrl();
    }
-   
+
    return result;
 }

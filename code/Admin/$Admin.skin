@@ -13,10 +13,10 @@
 </div>
 
 <% #welcome %>
-<p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator 
-of this Antville installation you are entitled to administer <a href="{0}">sites</a> 
-      and <a href="{1}">users</a>, view the <a href="{2}">administration log</a> 
-      and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %> 
+<p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator
+of this Antville installation you are entitled to administer <a href="{0}">sites</a>
+      and <a href="{1}">users</a>, view the <a href="{2}">administration log</a>
+      and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %>
       <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %>
 %></p>
 
@@ -27,20 +27,20 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <tr>
 <td class="small"><% gettext Type suffix=: %></td>
 <td>
-   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %> 
+   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %>
          <% markgettext Site %> <% markgettext User %> %>
 </td>
 </tr>
 <tr>
 <td class="small"><% gettext Sort suffix=: %></td>
-<td><% admin.dropdown name="dir" <% markgettext Descending %> 
+<td><% admin.dropdown name="dir" <% markgettext Descending %>
       <% markgettext Ascending %> %></td>
 </tr>
 <tr>
 <td class="small"><% gettext Search suffix=: %></td>
 <td><input id="query" name="query" value="<% request.query %>" />
       <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
-      <button type="submit" name="search" value="1"><% gettext Update %></button></td> 
+      <button type="submit" name="search" value="1"><% gettext Update %></button></td>
 </tr>
 </table>
 </form>
@@ -70,7 +70,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <tr>
 <td class="small"><% gettext Type suffix=: %></td>
 <td>
-   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %> 
+   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %>
          <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %>
          <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
 </td>
@@ -80,7 +80,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <td>
    <% admin.dropdown name="order" <% markgettext "Last Update" %>
          <% markgettext "Creation Date" %> <% markgettext Name %> %>
-   <% admin.dropdown name="dir" <% markgettext Descending %> 
+   <% admin.dropdown name="dir" <% markgettext Descending %>
          <% markgettext Ascending %> %>
 </td>
 </tr>
@@ -88,7 +88,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <td class="small"><% gettext Search suffix=: %></td>
 <td><input id="query" name="query" value="<% request.query encoding="form" %>" />
       <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
-      <button type="submit" name="search" value="1"><% gettext Update %></button></td> 
+      <button type="submit" name="search" value="1"><% gettext Update %></button></td>
 </td>
 </tr>
 </table>
@@ -107,14 +107,14 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <td width="100%" valign="top">
    <div><strong><% item.title | item.link %></strong></div>
    <div><a href="<% item.href %>"><% item.href %></a></div>
-   <div class="small"><% gettext "Created by {0} on {1}" <% item.creator as="link" %> 
+   <div class="small"><% gettext "Created by {0} on {1}" <% item.creator as="link" %>
    <% item.created short %> %><br />
    <% gettext "Last updated on" %> <% item.modified short %></div>
 </td>
 <td class="small" valign="top" align="right">
    <% admin.link edit <% gettext Edit %> <% item.id %> prefix='... ' %>
-   <% if <% item.mode %> is deleted then "" else 
-      <% admin.link delete <% gettext Delete %> <% item.id %> prefix="... " %> 
+   <% if <% item.mode %> is deleted then "" else
+      <% admin.link delete <% gettext Delete %> <% item.id %> prefix="... " %>
    %>
 </td>
 </tr>
@@ -152,11 +152,11 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <input type="hidden" name="page" value="<% request.page %>" />
 <div class="adminHighlight">
 <p><strong><% gettext Caution! %></strong></p>
-<p><% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.' 
+<p><% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.'
       <% ngettext '{0} story' '{0} stories' <% admin.count <% item.self stories %> %> %>
       <% ngettext '{0} comment' '{0} comments' <% admin.count <% item.self comments %> %> %>
       <% ngettext '{0} image' '{0} images' <% admin.count <% item.self images %> %> %>
-      <% ngettext '{0} file' '{0} files' <% admin.count <% item.self files %> %> %> 
+      <% ngettext '{0} file' '{0} files' <% admin.count <% item.self files %> %> %>
       <% ngettext '{0} member' '{0} members' <% admin.count <% item.self members %> %> %> %></p>
 <p><strong><% gettext 'All of this will be deleted irreversibly.' %></strong></p>
 <p><% gettext 'Are you sure you want to proceed?' %></p>
@@ -181,7 +181,7 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 <td>
    <% admin.dropdown name="order" <% markgettext Registration %>
          <% markgettext Login %> <% markgettext Username %> %>
-   <% admin.dropdown name="dir" <% markgettext Descending %> 
+   <% admin.dropdown name="dir" <% markgettext Descending %>
          <% markgettext Ascending %> %>
 </td>
 </tr>

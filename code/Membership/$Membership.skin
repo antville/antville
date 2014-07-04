@@ -1,7 +1,7 @@
 <% #edit %>
 <p class="storyTitle"><% response.title %></p>
 <p class="small">
-   <% gettext 'To modify a membership select the desired role from the 
+   <% gettext 'To modify a membership select the desired role from the
          drop-down menu and click the “Save” button.' %>
    <% gettext 'An e-mail will be sent to notify the user of the update.' %>
 </p>
@@ -32,7 +32,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
+   <div class="ample"><strong><% gettext Role suffix=: %></strong>
    <% membership.role %></div>
 </td>
 </tr>
@@ -57,15 +57,15 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 <td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
+   <div class="ample"><strong><% gettext Role suffix=: %></strong>
    <% membership.role %></div>
 </td>
 </tr>
 <tr valign="top">
 <td>
-   <div class="storyTitle"><% subscription.title default=<% gettext Untitled 
+   <div class="storyTitle"><% subscription.title default=<% gettext Untitled
    prefix="<em>[" suffix="]</em>" %> %></div>
-   <div class="small"><% subscription.modified short prefix=<% gettext 
+   <div class="small"><% subscription.modified short prefix=<% gettext
    "Last updated on" suffix=" " %> %></div>
 </td>
 <td width="10"> </td>
@@ -79,15 +79,15 @@
 <% #contact %>
 <p class="storyTitle"><% response.title %></p>
 <p class="small">
-   <% gettext 'Please enter your message to the user below.' %> 
-   <% gettext 'To prevent abuse, the sender address and the subject of the e-mail 
+   <% gettext 'Please enter your message to the user below.' %>
+   <% gettext 'To prevent abuse, the sender address and the subject of the e-mail
          are set to predefined values.' %>
    <% gettext 'A generic disclaimer will be automatically appended to your message.' %>
 </p>
 <form method="post" action="<% response.action %>">
 <p>
 <span class="small"><% gettext Message suffix=: %></span><br />
-<textarea cols="31" rows="10" class="formText" wrap="virtual" 
+<textarea cols="31" rows="10" class="formText" wrap="virtual"
       name="text"><% request.text encoding="form" %></textarea>
 </p>
 <% feature recaptcha %>
@@ -106,17 +106,17 @@
 <% #notify_contact %>
 <% request.text %>
 
-<% if <% sender.role %> is null then 
+<% if <% sender.role %> is null then
    <% gettext 'This message was sent to you by an anonymous user of the site {0} [1].'
          <% site.title %> %>
-else 
-   <% gettext 'This message was sent to you by the user {0} of the site {1} [1].' 
+else
+   <% gettext 'This message was sent to you by the user {0} of the site {1} [1].'
          <% sender.name %> <% site.title %> %>
 %>
 
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
-<% if <% sender.role  %> is null then '' else 
-   <% gettext 'If the user did not include contact information in the message 
+<% if <% sender.role  %> is null then '' else
+   <% gettext 'If the user did not include contact information in the message
          itself, you can send your reply via the user’s contact form [2].' prefix="
 " suffix="
 " %><% // The ugly linebreaks are necessary to format the message nicely %>
@@ -127,14 +127,14 @@ else
 --
 
 [1] <% site.href %>
-<% if <% sender.role %> is null then '' else 
-   <% sender.href contact prefix='[2] ' %> 
+<% if <% sender.role %> is null then '' else
+   <% sender.href contact prefix='[2] ' %>
 %>
 
 <% #notify_register %>
 <% gettext 'Welcome to {0}, {1}!' <% root.title %> <% membership.name %> %>
 
-<% gettext 'You can edit your account profile and change its password any 
+<% gettext 'You can edit your account profile and change its password any
       time via the following link:' %>
 <% members.href edit %>
 
@@ -144,7 +144,7 @@ else
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The user {0} has modified your membership of the site {1} at {2}.' 
+<% gettext 'The user {0} has modified your membership of the site {1} at {2}.'
       <% sender.name %> <% site.title %> <% site.href %> %>
 
 <% gettext 'You are now {0} of the site.' <% membership.role %> %>
@@ -155,7 +155,7 @@ else
 <% #notify_add %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The user {0} has added your account to the list of members 
+<% gettext 'The user {0} has added your account to the list of members
       of the site {1} at {2}.' <% sender.name %> <% site.title %> <% site.href %> %>
 
 <% gettext 'You are now {0} of the site.' <% membership.role %> %>
@@ -166,8 +166,8 @@ else
 <% #notify_delete %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'We are sorry to inform you that the user {0} has cancelled your 
-      membership of the site {1} at {2}.' <% sender.name %> <% site.title %> 
+<% gettext 'We are sorry to inform you that the user {0} has cancelled your
+      membership of the site {1} at {2}.' <% sender.name %> <% site.title %>
       <% site.href %> %>
 
 <% gettext "Best regards." %>

@@ -3,7 +3,7 @@ CodeMirror.defineMode("helma-skin", function(config, parserConfig) {
   //config settings
   var macroStartRegex = parserConfig.macroStartRegex || /^<%/i,
       macroEndRegex = parserConfig.macroEndRegex || /^%>/i;
-  
+
   //inner modes
   var htmlMixedMode;
   var macroMode = {
@@ -15,7 +15,7 @@ CodeMirror.defineMode("helma-skin", function(config, parserConfig) {
          return 'helma-macro';
       }
    }
-  
+
   //tokenizer when in html mode
   function htmlDispatch(stream, state) {
       if (stream.match(macroStartRegex, false)) {
@@ -42,7 +42,7 @@ CodeMirror.defineMode("helma-skin", function(config, parserConfig) {
   return {
     startState: function() {
       htmlMixedMode = htmlMixedMode || CodeMirror.getMode(config, "htmlmixed");
-      return { 
+      return {
           token :  parserConfig.startOpen ? macroDispatch : htmlDispatch,
           htmlState : htmlMixedMode.startState(),
           macroState : macroMode.startState()
@@ -59,7 +59,7 @@ CodeMirror.defineMode("helma-skin", function(config, parserConfig) {
       else
         return macroMode.indent(state.macroState, textAfter);
     },
-    
+
     copyState: function(state) {
       return {
        token : state.token,
@@ -67,7 +67,7 @@ CodeMirror.defineMode("helma-skin", function(config, parserConfig) {
        macroState : CodeMirror.copyState(macroMode, state.macroState)
        }
     },
-    
+
 
     electricChars: "/{}:"
   }

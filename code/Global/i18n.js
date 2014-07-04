@@ -24,7 +24,7 @@
 // $URL$
 
 /**
- * @fileOverview Contains redefined or additional methods for 
+ * @fileOverview Contains redefined or additional methods for
  * internationalization and localization.
  */
 

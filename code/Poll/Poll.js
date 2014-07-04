@@ -52,7 +52,7 @@ Poll.add = function(data, site) {
 }
 
 /**
- * 
+ *
  */
 Poll.remove = function() {
    if (this.constructor === Poll) {
@@ -84,7 +84,7 @@ Poll.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -103,15 +103,15 @@ Poll.prototype.getPermission = function(action) {
             User.require(User.PRIVILEGED);
       case "rotate":
       case "delete":
-      return this.creator === session.user || 
+      return this.creator === session.user ||
             Membership.require(Membership.MANAGER) ||
-            User.require(User.PRIVILEGED);            
+            User.require(User.PRIVILEGED);
    }
    return false;
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
@@ -146,7 +146,7 @@ Poll.prototype.main_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Poll.prototype.vote = function(data) {
@@ -183,7 +183,7 @@ Poll.prototype.edit_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Poll.prototype.update = function(data) {
@@ -245,12 +245,12 @@ Poll.prototype.rotate_action = function() {
  * @returns {String}
  */
 Poll.prototype.getConfirmText = function() {
-   return gettext("You are about to delete a poll by user {0}.", 
+   return gettext("You are about to delete a poll by user {0}.",
          this.creator.name);
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} action
  * @param {String} text
@@ -268,7 +268,7 @@ Poll.prototype.link_macro = function(param, action, text) {
       if (this.status === Poll.OPEN) {
          text = gettext("Stop");
       } else {
-         text = this.closed ? gettext("Re-run") : gettext("Run");  
+         text = this.closed ? gettext("Re-run") : gettext("Run");
       }
       break;
   }
@@ -276,7 +276,7 @@ Poll.prototype.link_macro = function(param, action, text) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  * @see HopObject#link_macro
@@ -306,14 +306,14 @@ Poll.prototype.input_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  */
 Poll.prototype.votes_macro = function() {
    return this.votes.size();
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} format
  */

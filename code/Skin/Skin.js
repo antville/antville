@@ -29,7 +29,7 @@ markgettext("Skin");
 markgettext("skin");
 
 /**
- * 
+ *
  * @param {String} group
  * @param {String} name
  * @returns {Skin}
@@ -40,7 +40,7 @@ Skin.getByName = function(group, name) {
       var skin = skinSet.get(name);
       if (skin) {
          return skin;
-      } 
+      }
    }
    return null;
 }
@@ -57,7 +57,7 @@ Skin.add = function(prototype, name, layout) {
 }
 
 /**
- * 
+ *
  * @param {Skin} skin
  */
 Skin.remove = function() {
@@ -112,7 +112,7 @@ Skin.prototype.constructor = function(prototype, name) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -126,7 +126,7 @@ Skin.prototype.getPermission = function(action) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {String}
  */
@@ -175,7 +175,7 @@ Skin.prototype.edit_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Skin.prototype.update = function(data) {
@@ -190,7 +190,7 @@ Skin.prototype.update = function(data) {
          throw Error(gettext("The {0} macro is missing. It is essential for accessing the site and must be present in this skin.", macro));
       }
    }
-   this.setSource(data.source);   
+   this.setSource(data.source);
    this.touch();
    return;
 }
@@ -280,7 +280,7 @@ Skin.prototype.getTitle = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @return {Object}
  */
@@ -345,7 +345,7 @@ Skin.prototype.setSource = function(source) {
    }
    source = res.pop();
 
-   var file = this.getStaticFile();   
+   var file = this.getStaticFile();
    if (!file.exists()) {
       file.getParentFile().mkdirs();
       file.createNewFile();
@@ -363,7 +363,7 @@ Skin.prototype.setSource = function(source) {
 }
 
 /**
- * 
+ *
  * @returns {java.io.File}
  */
 Skin.prototype.getStaticFile = function() {
@@ -373,7 +373,7 @@ Skin.prototype.getStaticFile = function() {
 }
 
 /**
- * @param {String} prototype 
+ * @param {String} prototype
  * @returns {Skin}
  */
 Skin.prototype.getMainSkin = function(prototype) {
@@ -402,14 +402,14 @@ Skin.prototype.getSubskin = function(prototype, name) {
 }
 
 /**
- * 
+ *
  */
 Skin.prototype.render = function() {
    return renderSkin(createSkin(this.getSource()));
 }
 
 /**
- * 
+ *
  * @param {String} source
  * @returns {Boolean}
  */
@@ -426,7 +426,7 @@ Skin.prototype.equals = function(source) {
  * @returns {String}
  */
 Skin.prototype.getConfirmText = function() {
-   return gettext("You are about to reset the skin {0}.{1}.", 
+   return gettext("You are about to reset the skin {0}.{1}.",
          this.prototype, this.name);
 }
 
@@ -438,14 +438,14 @@ Skin.prototype.toString = function() {
 }
 
 /**
- * 
+ *
  */
 Skin.prototype.status_macro = function() {
-   return this.isTransient() ? "inherited" : "modified"; 
+   return this.isTransient() ? "inherited" : "modified";
 }
 
 /**
- * 
+ *
  */
 Skin.prototype.content_macro = function() {
    return res.write(this.getSource());

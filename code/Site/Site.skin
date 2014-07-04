@@ -2,12 +2,12 @@
 <% site.stories %>
 
 <% #preview %>
-<li><% site.title | site.link %> <span class="small">(<% site.modified short 
+<li><% site.title | site.link %> <span class="small">(<% site.modified short
 prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #welcome %>
 <p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
-<p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
+<p><% gettext "This site was created by {0} on {1}." <% site.creator link %>
 <% site.created long %> %></p>
 
 <% #navigation %>
@@ -36,9 +36,9 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #search %>
 <form class="nowrap" method="post" action="<% site.href search %>">
-   <input type="text" size="15" name="q" class="searchbox" 
+   <input type="text" size="15" name="q" class="searchbox"
    value="<% request.q encoding="form" %>" />
-   <button type="submit" name="search" value="1" 
+   <button type="submit" name="search" value="1"
    class="searchbox"><% gettext Find %></button>
 </form>
 
@@ -86,29 +86,29 @@ prefix="Last update: " default="None so far" %>)</span></li>
    <% response.body %>
 </td>
 <td class="right">
-   <div class="box"><% ngettext "Online for {0} day" 
+   <div class="box"><% ngettext "Online for {0} day"
          "Online for {0} days" <% site.age %> %><br />
    <% gettext "Last modified: {0}" <% site.modified short %> %></div>
-   
+
    <div class="boxheader"><% gettext Status %></div>
    <div class="box"><% membership.status %></div>
 
    <% root.admin.skin $Admin#navigation %>
-   
+
    <div class="boxheader"><% gettext "Main Menu" %></div>
    <div class="box">
    <% site.skin Site#navigation %>
    </div>
-   
+
    <div class="boxheader"><% gettext Search %></div>
    <div class="box"><% site.skin Site#search %></div>
-   
-   <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">' 
+
+   <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">'
    suffix='</div><div class="box">' %> suffix="</div>" %>
-   
+
    <div class="boxheader"><% gettext "Comments" %></div>
    <div class="box"><% list comments skin=Story#history %></div>
-   
+
    <div class="boxline"></div><br />
    <div class="box"><% image /rss.png | site.link rss.xml %><br />
    <br />
@@ -130,8 +130,8 @@ function openPopup(img, width, height) {
       height = Math.min(height + 30, 480);
       if (imgWindow.location && !imgWindow.closed)
          imgWindow.close();
-      imgWindow = window.open(img, "imgWindow" + width + height, 
-      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + 
+      imgWindow = window.open(img, "imgWindow" + width + height,
+      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" +
       width + ",height=" + height);
       // imgWindow.focus();
    }
@@ -182,16 +182,16 @@ td.header {
    font-weight: bold;
 }
 
-td.center { 
-   width: 70%; 
-   padding: 25px 20px 10px 40px; 
-   vertical-align: top; 
+td.center {
+   width: 70%;
+   padding: 25px 20px 10px 40px;
+   vertical-align: top;
 }
 
-td.right { 
-   width: 30%; 
-   padding: 0px 0px 10px 0px; 
-   vertical-align: top; 
+td.right {
+   width: 30%;
+   padding: 0px 0px 10px 0px;
+   vertical-align: top;
    border-left: 1px solid #dddddd;
 }
 
@@ -229,8 +229,8 @@ small, .small {
 
 /* this is for mozilla to right-align tables in boxes */
 div.box table {
-   margin-left: auto; 
-   margin-right: 0px; 
+   margin-left: auto;
+   margin-right: 0px;
 }
 
 fieldset {
@@ -277,7 +277,7 @@ a:hover {text-decoration: underline;}
    font-size: <% value "small font size" %>;
    padding-bottom: 0.3em;
    width: 202px;
-   overflow: hidden; 
+   overflow: hidden;
 }
 
 .dayHeader {

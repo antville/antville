@@ -3,7 +3,7 @@
 <div class="ample">
    <% polls.link create <% gettext "Add Poll" %> prefix="... " %>
 </div>
-... 
+...
 <% polls.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% polls.link running <% gettext Running %> prefix=" | " %>
 <% polls.link all <% gettext All %> prefix=" | " %>

@@ -30,11 +30,11 @@ root.forEach(function() {
    if (site.layout) {
       res.handlers.layout = site.layout;
       res.skinpath = site.layout.getSkinPath();
-      
+
       // Fixing the corrupted <% site#history" %> macros
       var skin = site.layout.skins.getSkin("Site", "page");
       var source = skin.getSource();
-      
+
       var newSource = source.replace(/<%(\s+site#(history|searchbox)"[^%]*%>)/g, function() {
          var replacement = "<% // " + arguments[1];
          app.log(arguments[0] + " ==> " + replacement);
@@ -45,7 +45,7 @@ root.forEach(function() {
          //if (Math.abs(delta) > 5) res.debug("!!! Delta in " + site + ": " + delta);
          skin.setSource(newSource);
       }
-      
+
       // Fixing the macro handlers in skins shared between Story and Comment
       ["history", "rss", "result"].forEach(function(name) {
          var skin = site.layout.skins.getSkin("Story", name);

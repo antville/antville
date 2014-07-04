@@ -3,7 +3,7 @@
 <div class="ample">
    <% stories.link create <% gettext "Add Story" %> prefix="... " %>
 </div>
-... 
+...
 <% stories.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% stories.link closed <% gettext Closed %> prefix=" | " %>
 <% stories.link all <% gettext All %> prefix=" | " %>

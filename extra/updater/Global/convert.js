@@ -27,7 +27,7 @@ var convert = function(type) {
    if (!type) {
       return;
    }
-   
+
    var func;
    if (func = arguments.callee[type]) {
       try {
@@ -62,7 +62,7 @@ convert.images = function() {
    retrieve("select distinct(IMAGE_TOPIC), IMAGE_F_SITE " +
          "from AV_IMAGE where IMAGE_TOPIC is not null");
    traverse(function() {
-      execute("insert into tag set site_id = $0, name = $1, type = $2", 
+      execute("insert into tag set site_id = $0, name = $1, type = $2",
             this.IMAGE_F_SITE, this.IMAGE_TOPIC.replace(/^[\/\.]*$/, "?"), 'Image');
    });
 
@@ -85,7 +85,7 @@ convert.images = function() {
       };
       this.IMAGE_ALTTEXT && (metadata.description = clean(this.IMAGE_ALTTEXT));
       if (this.thumbnailWidth && this.thumbnailHeight) {
-         metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." + 
+         metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." +
                this.IMAGE_FILEEXT;
          metadata.thumbnailWidth = this.thumbnailWidth;
          metadata.thumbnailHeight = this.thumbnailHeight;
@@ -98,7 +98,7 @@ convert.images = function() {
       this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = null);
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
-      
+
       execute("insert into image values ($IMAGE_ID, $IMAGE_ALIAS, " +
             "$IMAGE_PROTOTYPE, $IMAGE_F_SITE, $IMAGE_F_IMAGE_PARENT, null, " +
             "$metadata, $IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, " +
@@ -106,7 +106,7 @@ convert.images = function() {
 
       if (this.IMAGE_TOPIC) {
          execute("insert into tag_hub set tag_id = $0, tagged_id = $1, " +
-               "tagged_type = 'Image', user_id = $2", this.id, this.IMAGE_ID, 
+               "tagged_type = 'Image', user_id = $2", this.id, this.IMAGE_ID,
                this.IMAGE_F_USER_MODIFIER || this.IMAGE_F_USER_CREATOR);
       }
 
@@ -133,7 +133,7 @@ convert.layoutImages = function() {
          "and IMAGE_F_IMAGE_PARENT is null and LAYOUT_ID = l.LAYOUT_ID " +
          "and SITE_ID = site.SITE_ID) and l.LAYOUT_ID > $min and " +
          "l.LAYOUT_ID <= $max order by l.LAYOUT_ID");
-   
+
    traverse(function() {
       var metadata = {
          fileName: this.IMAGE_FILENAME + "." + this.IMAGE_FILEEXT,
@@ -144,20 +144,20 @@ convert.layoutImages = function() {
       };
       this.IMAGE_ALTTEXT && (metadata.description = clean(this.IMAGE_ALTTEXT));
       if (this.thumbnailWidth && this.thumbnailHeight) {
-         metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." + 
+         metadata.thumbnailName = this.IMAGE_FILENAME + "_small" + "." +
                this.IMAGE_FILEEXT;
          metadata.thumbnailWidth = this.thumbnailWidth;
          metadata.thumbnailHeight = this.thumbnailHeight;
       }
       this.metadata = metadata;
- 
+
       this.SITE_ID || (this.SITE_ID = null);
       this.IMAGE_CREATETIME || (this.IMAGE_CREATETIME = this.SITE_CREATETIME);
-      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR = 
+      this.IMAGE_F_USER_CREATOR || (this.IMAGE_F_USER_CREATOR =
             this.SITE_F_USER_CREATOR || null);
       this.IMAGE_MODIFYTIME || (this.IMAGE_MODIFYTIME = null);
       this.IMAGE_F_USER_MODIFIER || (this.IMAGE_F_USER_MODIFIER = null);
- 
+
       execute("insert into image values ($IMAGE_ID, $IMAGE_ALIAS, " +
             "'LayoutImage', $SITE_ID, $layoutId, 'Layout', $metadata, " +
             "$IMAGE_CREATETIME, $IMAGE_F_USER_CREATOR, $IMAGE_MODIFYTIME, " +
@@ -166,9 +166,9 @@ convert.layoutImages = function() {
       var fpath = antville().properties.staticPath;
       var files = [metadata.fileName, metadata.thumbnailName];
       for each (var fname in files) {
-         var source = new helma.File(fpath + "/layouts/" + 
+         var source = new helma.File(fpath + "/layouts/" +
                this.parentLayout, fname);
-         var layoutDir = new helma.File(fpath + this.SITE_ALIAS + 
+         var layoutDir = new helma.File(fpath + this.SITE_ALIAS +
                "/layouts/", this.layoutName);
          layoutDir.exists() || layoutDir.makeDirectory();
          var dest = new helma.File(layoutDir, fname);
@@ -193,7 +193,7 @@ convert.layouts = function() {
       if (this.LAYOUT_ISIMPORT) {
          // FIXME: metadata.origin = Layout.getById(id).href();
       }
-      execute("update layout set metadata = " + 
+      execute("update layout set metadata = " +
             quote(metadata.toSource()) + " where id = " + this.id);
    });
 }
@@ -216,7 +216,7 @@ convert.sites = function() {
       metadata.closed = this.SITE_LASTOFFLINE;
       metadata.notifiedOfBlocking = this.SITE_LASTBLOCKWARN;
       metadata.notifiedOfDeletion = this.SITE_LASTDELWARN;
-      metadata.callbackMode = this.SITE_ENABLEPING ? 
+      metadata.callbackMode = this.SITE_ENABLEPING ?
             "enabled" : "disabled";
       // FIXME: metadata.webHookUrl = "";
       metadata.locale = metadata.language;
@@ -244,7 +244,7 @@ convert.content = function() {
    retrieve("select distinct(TEXT_TOPIC), TEXT_F_SITE " +
          "from AV_TEXT where TEXT_TOPIC is not null");
    traverse(function() {
-      execute("insert into tag set site_id = $0, name = $1, type = 'Story'", 
+      execute("insert into tag set site_id = $0, name = $1, type = 'Story'",
             this.TEXT_F_SITE, this.TEXT_TOPIC.replace(/^[\/\.]*$/, "?"));
    });
 
@@ -271,7 +271,7 @@ convert.content = function() {
          }
          this.status = "public";
          this.mode = "hidden";
-         this.comment_mode = "open"; 
+         this.comment_mode = "open";
       } else {
          this.TEXT_F_TEXT_STORY = this.TEXT_F_TEXT_PARENT = null;
          this.parent_type = null;
@@ -291,7 +291,7 @@ convert.content = function() {
          }
          this.comment_mode = this.TEXT_HASDISCUSSIONS == 1 ? "open" : "closed";
       }
-      
+
       this.TEXT_F_USER_MODIFIER || (this.TEXT_F_USER_MODIFIER = null);
 
       this.name = this.ALIAS || "";
@@ -300,11 +300,11 @@ convert.content = function() {
             "$TEXT_PROTOTYPE, $TEXT_F_SITE, $TEXT_F_TEXT_STORY, " +
             "$TEXT_F_TEXT_PARENT, $parent_type, $TEXT_READS, $status, " +
             "$mode, $comment_mode, $metadata, $TEXT_CREATETIME, " +
-            "$TEXT_F_USER_CREATOR, $TEXT_MODIFYTIME, $TEXT_F_USER_MODIFIER)", 
+            "$TEXT_F_USER_CREATOR, $TEXT_MODIFYTIME, $TEXT_F_USER_MODIFIER)",
             this);
       if (this.TEXT_TOPIC) {
          execute("insert into tag_hub set tag_id = $0, tagged_id = $1, " +
-               "tagged_type = 'Story', user_id = $2", this.id, this.TEXT_ID, 
+               "tagged_type = 'Story', user_id = $2", this.id, this.TEXT_ID,
                this.TEXT_F_USER_MODIFIER || this.TEXT_F_USER_CREATOR);
       }
       //execute("delete from AV_TEXT where TEXT_ID = " + this.TEXT_ID);
@@ -322,7 +322,7 @@ convert.users = function() {
          salt: this.salt,
          url: this.USER_URL
       }
-      execute("update user set metadata = " + 
+      execute("update user set metadata = " +
             quote(metadata.toSource()) + " where id = " + this.id);
    });
 }
@@ -339,7 +339,7 @@ convert.xml = function(table) {
    retrieve(query("jsonize", table));
    traverse(function() {
       var data = metadata(this.xml);
-      execute("update " + table + " set metadata = " + 
+      execute("update " + table + " set metadata = " +
             quote(data.toSource()) + ", xml = '' where id = " + this.id);
    });
 }
@@ -372,28 +372,28 @@ convert.skins = function() {
          SysLog: "LogEntry",
          Topic: "Tag",
          TopicMgr: "Tags",
-         
+
          Comment: {
             toplevel: "main"
          },
-         
+
          Members: {
             statusloggedin: ["Membership", "status"],
             statusloggedout: ["Membership", "login"]
          },
-         
+
          Site: {
             searchbox: "search",
-            style: "stylesheet" 
+            style: "stylesheet"
          },
-         
+
          Story: {
             dayheader: "date",
             display: "content",
             historyview: "history"
          }
       }
-      
+
       var renamed;
       if (renamed = map[prototype]) {
          if (renamed.constructor === String) {
@@ -415,7 +415,7 @@ convert.skins = function() {
       }
       return [prototype, skin];
    }
-   
+
    var values = function(metadata) {
       if (!metadata) {
          return;
@@ -443,7 +443,7 @@ convert.skins = function() {
          source = source.replace(re, function() {
             var $ = arguments;
             var renamed = rename($[2].capitalize(), $[4]);
-            return $[1] + renamed[0].toLowerCase() + $[3] + 
+            return $[1] + renamed[0].toLowerCase() + $[3] +
                   renamed[0] + "#" + renamed[1];
          });
          // Replacing layout.* macros with corresponding value macros
@@ -457,7 +457,7 @@ convert.skins = function() {
          return source;
       }
    }
-   
+
    var move = function(sourcePath, destPath) {
       var source = new helma.File(sourcePath);
       if (source.exists()) {
@@ -478,7 +478,7 @@ convert.skins = function() {
       if (!skins) {
          return;
       }
-      
+
       for (var prototype in skins) {
          res.push();
          var skinset = skins[prototype];
@@ -521,7 +521,7 @@ convert.skins = function() {
          appSkins[prototype][name] = skin.getSubskin(name).getSource();
       }
    }
-   
+
    var current, fpath, skins;
    retrieve(query("skins"));
    traverse(function() {
@@ -562,27 +562,27 @@ convert.skins = function() {
       }
       if (source !== null && source !== undefined) {
          // FIXME: Ugly hack to change Membership to Members in a few skins
-         if (prototype === "Membership" && 
+         if (prototype === "Membership" &&
                (skinName === "login" || skinName === "status")) {
             source = source.replace(/(<%\s*)this./g, "$1members.");
          }
          // Adding the new calendar CSS classes to the old ones
          if (prototype === "Site" && skinName === "stylesheet") {
-            source = source.replace(/(\.calHead)/g, 
+            source = source.replace(/(\.calHead)/g,
                   "table.calendar thead, $1");
-            source = source.replace(/(\.calDay)/g, 
+            source = source.replace(/(\.calDay)/g,
                   "table.calendar th, table.calendar tbody td.day, $1");
-            source = source.replace(/(\.calSelDay)/g, 
+            source = source.replace(/(\.calSelDay)/g,
                   "table.calendar tbody td.selected, $1");
-            source = source.replace(/(\.calFoot)/g, 
+            source = source.replace(/(\.calFoot)/g,
                   "table.calendar tfoot td, $1");
          }
          ref = (skins[prototype] || (skins[prototype] = {}));
          ref[skinName] = clean(source);
       }
       if (parent !== null && parent !== undefined) {
-         execute("update skin set source = '" + 
-               clean(parent).replace(/'/g, "\\'") + "' where " + 
+         execute("update skin set source = '" +
+               clean(parent).replace(/'/g, "\\'") + "' where " +
                'id = ' + this.id);
       }
    });

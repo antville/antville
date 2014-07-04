@@ -59,7 +59,7 @@ Image.prototype.editlink_macro = function(param) {
       renderImage(this.parent.images.get(param.image), param);
    } else {
       res.write(param.text || "edit");
-   }   
+   }
    return this.link_macro(param, "edit", res.pop());
 }
 
@@ -69,7 +69,7 @@ Image.prototype.deletelink_macro = function(param) {
       renderImage(this.parent.images.get(param.image), param);
    } else {
       res.write(param.text || "delete");
-   }   
+   }
    return this.link_macro(param, "delete", res.pop());
 }
 

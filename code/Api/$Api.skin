@@ -1,6 +1,6 @@
 <% #main %>
 <p class="storyTitle"><% response.title %></p>
-   <% gettext "Antville supports some popular application programming 
+   <% gettext "Antville supports some popular application programming
          interfaces:" %>
    <ul>
       <li><a href="http://web.archive.org/web/20100409165854/http://www.blogger.com/developers/api/1_docs/">Blogger Api 1.0</a></li>
@@ -12,13 +12,13 @@
 </p>
 
 <p><br /><strong><% gettext 'Callback URL' %></strong></p>
-<p><% gettext "Each Antville site provides an option in the preferences to 
-define a callback URL that will be invoked each time the site content has changed. 
-This way users can define custom handlers for different site events with their 
-own code running behind this URL – on a server and in a programming language 
+<p><% gettext "Each Antville site provides an option in the preferences to
+define a callback URL that will be invoked each time the site content has changed.
+This way users can define custom handlers for different site events with their
+own code running behind this URL – on a server and in a programming language
 of their choice." %></p>
 
-<p><% gettext "The callback URL will be invoked as an HTTP POST request with 
+<p><% gettext "The callback URL will be invoked as an HTTP POST request with
 the following parameters:" %>
 <ul>
    <li><code>type</code> – <% gettext 'Resource type (e.g. Story or Comment)' %></li>
@@ -31,15 +31,15 @@ the following parameters:" %>
 </ul>
 </p>
 
-<p><% gettext "Antville itself provides a default callback URL invoking the basic 
+<p><% gettext "Antville itself provides a default callback URL invoking the basic
 ping method of the weblogs.com API:" %>
 <div><% api.href callback | link %></div>
 </p>
 
 <% #callback %>
 <p class="storyTitle"><% response.title %></p>
-<% gettext "This callback URL invokes the ping method of the {0}." 
-'<a href="http://www.weblogs.com/api.html">weblogs.com API</a>' %> 
+<% gettext "This callback URL invokes the ping method of the {0}."
+'<a href="http://www.weblogs.com/api.html">weblogs.com API</a>' %>
 <% gettext "The essential ECMAScript code is shown below." %>
 <pre style="overflow: auto; width: 420px; border: 1px solid #cccccc;">
    <code><% param.code %></code>

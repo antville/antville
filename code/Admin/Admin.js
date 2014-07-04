@@ -29,7 +29,7 @@
 Admin.SITEREMOVALGRACEPERIOD = 14; // days
 
 /**
- * 
+ *
  * @param {HopObject} target
  * @param {String} method
  * @param {User} user
@@ -46,21 +46,21 @@ Admin.Job = function(target, method, user) {
    this.__defineGetter__("method", function() {
       return method;
    });
-   
+
    this.__defineGetter__("user", function() {
       return user;
    });
-   
+
    this.__defineGetter__("name", function() {
       return file.getName();
    });
-   
+
    this.remove = function() {
       return file["delete"]();
    }
 
-   if (target && method && user) { 
-      file = new java.io.File.createTempFile("job-", String.EMPTY, Admin.queue.dir); 
+   if (target && method && user) {
+      file = new java.io.File.createTempFile("job-", String.EMPTY, Admin.queue.dir);
       serialize({type: target._prototype, id: target._id, method: method, user: user._id}, file);
    } else if (target) {
       file = new java.io.File(Admin.queue.dir, target);
@@ -75,7 +75,7 @@ Admin.Job = function(target, method, user) {
    }
 
    this.toString = function() {
-      return ["[Job: ", method, " ", target, " by ", user, "]"].join(String.EMPTY); 
+      return ["[Job: ", method, " ", target, " by ", user, "]"].join(String.EMPTY);
    }
 
    return this;
@@ -86,7 +86,7 @@ Admin.Job = function(target, method, user) {
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getNotificationScopes = defineConstants(Admin, markgettext("None"), 
+Admin.getNotificationScopes = defineConstants(Admin, markgettext("None"),
       markgettext("Trusted"), markgettext("Regular"));
 
 /**
@@ -94,8 +94,8 @@ Admin.getNotificationScopes = defineConstants(Admin, markgettext("None"),
  * @return {String[]}
  * @see defineConstants
  */
-Admin.getPhaseOutModes = defineConstants(Admin, markgettext("Disabled"), 
-      markgettext("Restricted"), markgettext("Abandoned"), 
+Admin.getPhaseOutModes = defineConstants(Admin, markgettext("Disabled"),
+      markgettext("Restricted"), markgettext("Abandoned"),
       markgettext("Both"));
 
 /**
@@ -103,14 +103,14 @@ Admin.getPhaseOutModes = defineConstants(Admin, markgettext("Disabled"),
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getCreationScopes = defineConstants(Admin, markgettext("Privileged"), 
+Admin.getCreationScopes = defineConstants(Admin, markgettext("Privileged"),
       markgettext("Trusted"), markgettext("Regular"));
 
 /**
  * Convenience method for easily queueing jobs.
  * @param {HopObject} target
  * @param {String} method
- * @param {User} user 
+ * @param {User} user
  * @returns {String}
  * @see Admin.Job
  */
@@ -120,13 +120,13 @@ Admin.queue = function(target, method, user) {
 }
 
 /**
- * 
+ *
  */
 Admin.queue.dir = (new java.io.File(app.dir, "../jobs")).getCanonicalFile();
 Admin.queue.dir.exists() || Admin.queue.dir.mkdirs();
 
 /**
- * 
+ *
  */
 Admin.dequeue = function() {
    var jobs = Admin.queue.dir.list();
@@ -158,7 +158,7 @@ Admin.dequeue = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.purgeSites = function() {
    var now = new Date;
@@ -172,7 +172,7 @@ Admin.purgeSites = function() {
          this.job = job.name;
       }
    });
-   
+
    var notificationPeriod = root.phaseOutNotificationPeriod * Date.ONEDAY;
    var gracePeriod = root.phaseOutGracePeriod * Date.ONEDAY;
 
@@ -181,7 +181,7 @@ Admin.purgeSites = function() {
          if (this.status === Site.TRUSTED) {
             return;
          }
-         var age = now - (this.stories.size() > 0 ? 
+         var age = now - (this.stories.size() > 0 ?
                this.stories.get(0).modified : this.created);
          if (age - notificationPeriod > 0) {
             if (!this.notified) {
@@ -202,7 +202,7 @@ Admin.purgeSites = function() {
       });
       return;
    }
-   
+
    var phaseOutRestrictedSites = function() {
       root.admin.restrictedSites.forEach(function() {
          if (this.status === Site.TRUSTED) {
@@ -227,7 +227,7 @@ Admin.purgeSites = function() {
       });
       return;
    }
-   
+
    switch (root.phaseOutMode) {
       case Admin.ABANDONED:
       return phaseOutAbandonedSites();
@@ -241,7 +241,7 @@ Admin.purgeSites = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.purgeReferrers = function() {
    var sql = new Sql;
@@ -250,7 +250,7 @@ Admin.purgeReferrers = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.commitRequests = function() {
    var requests = app.data.requests;
@@ -268,10 +268,10 @@ Admin.commitRequests = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.commitEntries = function() {
-   var entries = app.data.entries;   
+   var entries = app.data.entries;
    app.data.entries = [];
    var history = [];
 
@@ -283,7 +283,7 @@ Admin.commitEntries = function() {
 
       // Only log unique combinations of context, ip and referrer
       referrer = String(referrer);
-      var key = item.context._prototype + "-" + item.context._id + ":" + 
+      var key = item.context._prototype + "-" + item.context._id + ":" +
             item.ip + ":" + referrer;
       if (history.indexOf(key) > -1) {
          continue;
@@ -293,7 +293,7 @@ Admin.commitEntries = function() {
       // Exclude requests coming from the same site
       if (item.site) {
          var href = item.site.href().toLowerCase();
-         if (href.startsWith("http") && 
+         if (href.startsWith("http") &&
                referrer.toLowerCase().contains(href.substr(0, href.length-1))) {
             continue;
          }
@@ -306,7 +306,7 @@ Admin.commitEntries = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.invokeCallbacks = function() {
    var http = helma.Http();
@@ -341,13 +341,13 @@ Admin.invokeCallbacks = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.updateHealth = function() {
    var health = Admin.health || {};
    if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
       health.modified = new Date;
-      health.requestsPerUnit = app.requestCount - 
+      health.requestsPerUnit = app.requestCount -
             (health.currentRequestCount || 0);
       health.currentRequestCount = app.requestCount;
       health.errorsPerUnit = app.errorCount - (health.currentErrorCount || 0);
@@ -358,7 +358,7 @@ Admin.updateHealth = function() {
 }
 
 /**
- * 
+ *
  */
 Admin.updateDomains = function() {
    res.push();
@@ -397,7 +397,7 @@ Admin.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} action
  * @returns {Boolean}
  */
@@ -416,7 +416,7 @@ Admin.prototype.getPermission = function(action) {
 }
 
 /**
- * 
+ *
  */
 Admin.prototype.onRequest = function() {
    HopObject.prototype.onRequest.apply(this);
@@ -427,7 +427,7 @@ Admin.prototype.onRequest = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  */
 Admin.prototype.onUnhandledMacro = function(name) {
@@ -460,7 +460,7 @@ Admin.prototype.setup_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Admin.prototype.update = function(data) {
@@ -491,9 +491,9 @@ Admin.prototype.log_action = function() {
    if (req.postParams.search || req.postParams.filter) {
       session.data.admin.filterLog(req.postParams);
    }
-   res.data.list = renderList(session.data.admin.entries, 
+   res.data.list = renderList(session.data.admin.entries,
          this.renderItem, 10, req.queryParams.page);
-   res.data.pager = renderPager(session.data.admin.entries, 
+   res.data.pager = renderPager(session.data.admin.entries,
          this.href(req.action), 10, req.queryParams.page);
 
    res.data.title = gettext("Administration Log");
@@ -523,20 +523,20 @@ Admin.prototype.sites_action = function() {
          this.updateSite(req.postParams);
          res.message = gettext("The changes were saved successfully.");
       }
-      res.redirect(this.href(req.action) + "?page=" + req.postParams.page + 
+      res.redirect(this.href(req.action) + "?page=" + req.postParams.page +
             "#" + req.postParams.id);
       return;
    }
-   
+
    if (req.postParams.search || req.postParams.filter) {
       session.data.admin.filterSites(req.postParams);
    } else if (req.queryParams.id) {
       res.meta.item = Site.getById(req.queryParams.id);
    }
 
-   res.data.list = renderList(session.data.admin.sites, 
+   res.data.list = renderList(session.data.admin.sites,
          this.renderItem, 10, req.queryParams.page);
-   res.data.pager = renderPager(session.data.admin.sites, 
+   res.data.pager = renderPager(session.data.admin.sites,
          this.href(req.action), 10, req.data.page);
 
    res.data.title = gettext("Site Administration");
@@ -553,15 +553,15 @@ Admin.prototype.users_action = function() {
    } else if (req.postParams.save) {
       this.updateUser(req.postParams);
       res.message = gettext("The changes were saved successfully.");
-      res.redirect(this.href(req.action) + "?page=" + req.postParams.page + 
+      res.redirect(this.href(req.action) + "?page=" + req.postParams.page +
             "#" + req.postParams.id);
    } else if (req.queryParams.id) {
       res.meta.item = User.getById(req.queryParams.id);
    }
 
-   res.data.list = renderList(session.data.admin.users, 
+   res.data.list = renderList(session.data.admin.users,
          this.renderItem, 10, req.data.page);
-   res.data.pager = renderPager(session.data.admin.users, 
+   res.data.pager = renderPager(session.data.admin.users,
          this.href(req.action), 10, req.data.page);
 
    res.data.title = gettext("User Administration");
@@ -573,7 +573,7 @@ Admin.prototype.users_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Admin.prototype.filterLog = function(data) {
@@ -593,7 +593,7 @@ Admin.prototype.filterLog = function(data) {
    } else {
       sql += "where "
    }
-   sql += "action <> 'main' "; 
+   sql += "action <> 'main' ";
    if (data.query) {
       var parts = stripTags(data.query).split(" ");
       var keyword, like;
@@ -604,14 +604,14 @@ Admin.prototype.filterLog = function(data) {
          sql += "action " + like + " '" + keyword + "' ";
       }
    }
-   sql += "order by created "; 
+   sql += "order by created ";
    (data.dir == 1) || (sql += "desc");
    this.entries.subnodeRelation = sql;
    return;
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Admin.prototype.filterSites = function(data) {
@@ -660,7 +660,7 @@ Admin.prototype.filterSites = function(data) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Admin.prototype.filterUsers = function(data) {
@@ -705,7 +705,7 @@ Admin.prototype.filterUsers = function(data) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Admin.prototype.updateSite = function(data) {
@@ -713,7 +713,7 @@ Admin.prototype.updateSite = function(data) {
    if (!site) {
       throw Error(gettext("Please choose a site you want to edit."));
    }
-   if (site.status !== data.status) { 
+   if (site.status !== data.status) {
       var current = site.status;
       site.status = data.status;
       this.log(site, "Changed status from " + current + " to " + site.status);
@@ -722,7 +722,7 @@ Admin.prototype.updateSite = function(data) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Admin.prototype.updateUser = function(data) {
@@ -742,7 +742,7 @@ Admin.prototype.updateUser = function(data) {
 }
 
 /**
- * 
+ *
  * @param {HopObject} item
  */
 Admin.prototype.renderItem = function(item) {
@@ -751,14 +751,14 @@ Admin.prototype.renderItem = function(item) {
    (name === "Root") && (name = "Site");
    Admin.prototype.renderSkin("$Admin#" + name);
    if (item === res.meta.item) {
-      Admin.prototype.renderSkin((req.data.action === "delete" ? 
+      Admin.prototype.renderSkin((req.data.action === "delete" ?
             "$Admin#delete" : "$Admin#edit") + name);
    }
    return;
 }
 
 /**
- * 
+ *
  * @param {HopObject} context
  * @param {String} action
  */
@@ -769,7 +769,7 @@ Admin.prototype.log = function(context, action) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} action
  * @param {Number} id
@@ -800,7 +800,7 @@ Admin.prototype.link_macro = function(param, action, text, id) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {HopObject} object
  */
@@ -812,7 +812,7 @@ Admin.prototype.count_macro = function(param, object) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -824,7 +824,7 @@ Admin.prototype.skin_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {HopObject} object
  * @param {String} name
@@ -841,7 +841,7 @@ Admin.prototype.items_macro = function(param, object, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 Admin.prototype.dropdown_macro = function(param /*, value1, value2, ... */) {

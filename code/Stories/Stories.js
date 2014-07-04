@@ -47,7 +47,7 @@ markgettext("stories");
  */
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -60,8 +60,8 @@ Stories.prototype.getPermission = function(action) {
       case "main":
       case "create":
       return Site.require(Site.OPEN) && session.user ||
-            Membership.require(Membership.CONTRIBUTOR) || 
-            User.require(User.PRIVILEGED); 
+            Membership.require(Membership.CONTRIBUTOR) ||
+            User.require(User.PRIVILEGED);
 
       case "all":
       case "top":
@@ -74,9 +74,9 @@ Stories.prototype.getPermission = function(action) {
 
 Stories.prototype.main_action = function() {
    var stories = User.getMembership().stories;
-   res.data.list = renderList(stories, "$Story#listItem", 
+   res.data.list = renderList(stories, "$Story#listItem",
          10, req.queryParams.page);
-   res.data.pager = renderPager(stories, 
+   res.data.pager = renderPager(stories,
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Member Stories");
    res.data.body = this.renderSkinAsString("$Stories#main");
@@ -100,7 +100,7 @@ Stories.prototype.create_action = function() {
          app.log(ex);
       }
    }
-   
+
    res.data.title = gettext("Add Story");
    res.data.action = this.href(req.action);
    HopObject.confirmConstructor(Story);
@@ -110,9 +110,9 @@ Stories.prototype.create_action = function() {
 }
 
 Stories.prototype.closed_action = function() {
-   res.data.list = renderList(this.closed, 
+   res.data.list = renderList(this.closed,
          "$Story#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.closed, 
+   res.data.pager = renderPager(this.closed,
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Closed Stories");
    res.data.body = this.renderSkinAsString("$Stories#main");
@@ -122,7 +122,7 @@ Stories.prototype.closed_action = function() {
 
 Stories.prototype.all_action = function() {
    res.data.list = renderList(this, "$Story#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this, 
+   res.data.pager = renderPager(this,
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("All Stories");
    res.data.body = this.renderSkinAsString("$Stories#main");
@@ -138,7 +138,7 @@ Stories.prototype.top_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} type
  */
@@ -151,14 +151,14 @@ Stories.prototype.list_macro = function(param, type) {
             position: counter
          });
          counter += 1;
-      }); 
+      });
       break;
    }
    return;
 }
 
 /**
- * 
+ *
  * @param {String} group
  * @returns {Tag[]}
  * @see Site#getTags
@@ -168,7 +168,7 @@ Stories.prototype.getTags = function(group) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {String[]}
  */

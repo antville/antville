@@ -130,14 +130,14 @@ create index site_id on file (site_id);
 create index creator_id on file (creator_id);
 create index name on file (name(20));
 #create index prototype on file (prototype(10));
-create index files on file (parent_id, parent_type, created desc); 
+create index files on file (parent_id, parent_type, created desc);
 #!files
 alter table file drop column FILE_MIMETYPE, drop column FILE_NAME, drop column FILE_SIZE, drop column FILE_DESCRIPTION;
 #alter table file convert to character set utf8 collate utf8_bin;
 unlock tables;
 
 <% #files %>
-select id, FILE_MIMETYPE as type, FILE_SIZE as size, FILE_NAME as fileName, 
+select id, FILE_MIMETYPE as type, FILE_SIZE as size, FILE_NAME as fileName,
 FILE_DESCRIPTION as description from file order by id
 
 <% #AV_IMAGE %>
@@ -157,7 +157,7 @@ update image set prototype = "Image" where prototype = "LayoutImage";
 create index site_id on image (site_id);
 create index creator_id on image (creator_id);
 create index name on image (name(20));
-create index images on image (parent_id, parent_type, created desc); 
+create index images on image (parent_id, parent_type, created desc);
 #alter table image convert to character set utf8 collate utf8_bin;
 #drop table AV_IMAGE;
 unlock tables;
@@ -192,7 +192,7 @@ alter table layout drop column xml, drop column LAYOUT_TITLE, drop column LAYOUT
 unlock tables;
 
 <% #layouts %>
-select id, LAYOUT_TITLE, LAYOUT_DESCRIPTION, LAYOUT_ISIMPORT, 
+select id, LAYOUT_TITLE, LAYOUT_DESCRIPTION, LAYOUT_ISIMPORT,
 metadata from layout
 
 <% #AV_MEMBERSHIP %>
@@ -205,7 +205,7 @@ create index site_id on membership (site_id);
 #create index creator_id on membership(creator_id);
 #create index name on membership (name(20));
 #create index role on membership(role);
-create index roles on membership (name(20), site_id, role); 
+create index roles on membership (name(20), site_id, role);
 create index memberships on membership (creator_id, site_id, role);
 update membership set role = 'Contributor' where MEMBERSHIP_LEVEL = 9361;
 update membership set role = 'Manager' where MEMBERSHIP_LEVEL = 16383;
@@ -257,8 +257,8 @@ alter table site drop column xml, drop column SITE_TITLE, drop column SITE_DISKU
 unlock tables;
 
 <% #sites %>
-select id, metadata, SITE_EMAIL, SITE_LASTUPDATE, SITE_LASTOFFLINE, 
-SITE_LASTBLOCKWARN, SITE_LASTDELWARN, SITE_LASTPING, SITE_ENABLEPING, 
+select id, metadata, SITE_EMAIL, SITE_LASTUPDATE, SITE_LASTOFFLINE,
+SITE_LASTBLOCKWARN, SITE_LASTDELWARN, SITE_LASTPING, SITE_ENABLEPING,
 SITE_TITLE, mode from site
 
 <% #AV_SKIN %>
@@ -297,12 +297,12 @@ alter table skin drop column SKIN_ISCUSTOM, drop column SKIN_SOURCE;
 unlock tables;
 
 <% #skins %>
-select skin.id, skin.prototype, skin.name, skin.SKIN_SOURCE as source, 
-layout.id as layout_id, layout.name as layout_name, layout.metadata as 
-layout_metadata, site.name as site_name, site.layout_id as current_layout, 
-(select SKIN_SOURCE from site p_site, skin p_skin where p_site.id = site.id 
-and p_skin.layout_id = layout.layout_id and p_skin.prototype = skin.prototype 
-and p_skin.name = skin.name) as parent from site left join layout on 
+select skin.id, skin.prototype, skin.name, skin.SKIN_SOURCE as source,
+layout.id as layout_id, layout.name as layout_name, layout.metadata as
+layout_metadata, site.name as site_name, site.layout_id as current_layout,
+(select SKIN_SOURCE from site p_site, skin p_skin where p_site.id = site.id
+and p_skin.layout_id = layout.layout_id and p_skin.prototype = skin.prototype
+and p_skin.name = skin.name) as parent from site left join layout on
 layout.site_id = site.id left join skin on skin.layout_id = layout.id order
 by site_name, layout_name, prototype, name
 

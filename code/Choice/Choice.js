@@ -31,7 +31,7 @@ markgettext("Choice");
 markgettext("choice");
 
 /**
- * 
+ *
  */
 Choice.add = function(title, poll) {
    HopObject.confirmConstructor(Choice);
@@ -40,9 +40,9 @@ Choice.add = function(title, poll) {
    poll.add(choice);
    return choice;
 }
- 
+
 /**
- * 
+ *
  */
 Choice.remove = function() {
    if (this.constructor === Choice) {
@@ -70,7 +70,7 @@ Choice.prototype.constructor = function(title) {
 }
 
 /**
- * 
+ *
  */
 Choice.prototype.selected_macro = function() {
    var votes;
@@ -83,7 +83,7 @@ Choice.prototype.selected_macro = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} variant
  */

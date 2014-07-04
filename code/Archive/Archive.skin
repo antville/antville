@@ -1,6 +1,6 @@
 <% #main %>
 <div class="pagelink">
-   <% archive.link previous <% gettext "Previous page" %> 
+   <% archive.link previous <% gettext "Previous page" %>
          prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
 </div>
 <% archive.stories %>

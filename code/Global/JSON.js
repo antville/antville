@@ -1,12 +1,12 @@
 /**
  * @fileOverview Douglas Crockford’s JSON parser and serializer.
  */
- 
+
 /**
  * @name JSON
  * @namespace
  */
- 
+
 /**
  * This method produces a JSON text from a JavaScript value.
  * @name JSON.stringify

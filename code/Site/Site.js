@@ -55,51 +55,51 @@ this.handleMetadata("title");
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getStatus = defineConstants(Site, markgettext("Blocked"), 
+Site.getStatus = defineConstants(Site, markgettext("Blocked"),
       markgettext("Regular"), markgettext("Trusted"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getModes = defineConstants(Site, markgettext("Deleted"), 
-      markgettext("Closed"), markgettext("Restricted"), 
+Site.getModes = defineConstants(Site, markgettext("Deleted"),
+      markgettext("Closed"), markgettext("Restricted"),
       markgettext("Public"), markgettext("Open"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getPageModes = defineConstants(Site, markgettext("days") /* , 
+Site.getPageModes = defineConstants(Site, markgettext("days") /* ,
       markgettext("stories") */ );
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getCommentModes = defineConstants(Site, markgettext("disabled"), 
+Site.getCommentModes = defineConstants(Site, markgettext("disabled"),
       markgettext("enabled"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getArchiveModes = defineConstants(Site, markgettext("closed"), 
+Site.getArchiveModes = defineConstants(Site, markgettext("closed"),
       markgettext("public"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getNotificationModes = defineConstants(Site, markgettext("Nobody"), 
-      markgettext("Owner"), markgettext("Manager"), markgettext("Contributor"), 
+Site.getNotificationModes = defineConstants(Site, markgettext("Nobody"),
+      markgettext("Owner"), markgettext("Manager"), markgettext("Contributor"),
       markgettext("Subscriber"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Site.getCallbackModes = defineConstants(Site, markgettext("disabled"), 
+Site.getCallbackModes = defineConstants(Site, markgettext("disabled"),
       markgettext("enabled"));
 
 /**
@@ -121,7 +121,7 @@ Site.add = function(data, user) {
    if (data.name.length > 30) {
       throw Error(gettext("The chosen name is too long. Please enter a shorter one."));
    }
-   
+
    var name = stripTags(decodeURIComponent(data.name));
    if (name !== data.name || /[^\u00a0-\uffff\w\-]/.test(data.name)) {
       // We check if name can be used in vhost environment by allowing all Unicode characters
@@ -153,7 +153,7 @@ Site.add = function(data, user) {
 }
 
 /**
- * 
+ *
  * @param {Site} site
  */
 Site.remove = function() {
@@ -182,7 +182,7 @@ Site.remove = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Site}
  */
@@ -191,7 +191,7 @@ Site.getByName = function(name) {
 }
 
 /**
- * 
+ *
  * @param {String} mode
  * @returns {Boolean}
  */
@@ -210,7 +210,7 @@ Site.require = function(mode) {
  * @property {String} commentMode The way comments of a site are displayed
  * @property {Date} created The date and time of site creation
  * @property {User} creator A reference to a user who created a site
- * @property {Date} deleted 
+ * @property {Date} deleted
  * @property {String} export_id
  * @property {Files} files
  * @property {Tags} galleries
@@ -225,7 +225,7 @@ Site.require = function(mode) {
  * @property {Date} modified The date and time when a site was last modified
  * @property {User} modifier A reference to a user who modified a site
  * @property {String} notificationMode The way notifications are sent from a site
- * @property {Date} notified The date and time of the last notification sent to 
+ * @property {Date} notified The date and time of the last notification sent to
  * the owners of a site
  * @property {String} pageMode The way stories of a site are displayed
  * @property {Number} pageSize The amount of stories to be displayed simultaneously
@@ -243,7 +243,7 @@ Site.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -267,7 +267,7 @@ Site.prototype.getPermission = function(action) {
       case "search":
       case "stories.xml":
       return Site.require(Site.PUBLIC) ||
-            (Site.require(Site.RESTRICTED) && 
+            (Site.require(Site.RESTRICTED) &&
             Membership.require(Membership.CONTRIBUTOR)) ||
             ((Site.require(Site.DELETED) || Site.require(Site.CLOSED)) &&
             Membership.require(Membership.OWNER)) ||
@@ -298,7 +298,7 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
-   res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ? 
+   res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ?
          "$Site#deleted" : "Site#main");
    res.data.title = this.getTitle();
    this.renderSkin("Site#page");
@@ -326,7 +326,7 @@ Site.prototype.edit_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
@@ -343,7 +343,7 @@ Site.prototype.getFormOptions = function(name) {
       case "mode":
       return Site.getModes();
       case "notificationMode":
-      return Site.getNotificationModes(); 
+      return Site.getNotificationModes();
       case "pageMode":
       return Site.getPageModes();
       case "status":
@@ -358,7 +358,7 @@ Site.prototype.getFormOptions = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Site.prototype.update = function(data) {
@@ -440,7 +440,7 @@ Site.prototype.user_js_action = function() {
    res.dependsOn((new Skin("Site", "javascript")).getStaticFile().lastModified());
    res.digest();
    this.renderSkin("Site#javascript");
-   return;  
+   return;
 }
 
 Site.prototype.backup_js_action = function() {
@@ -484,17 +484,17 @@ Site.prototype.comments_xml_action = function() {
 Site.prototype.search_xml_action = function() {
    res.contentType = "application/opensearchdescription+xml";
    this.renderSkin("$Site#opensearchdescription");
-   return;   
+   return;
 }
 
 /**
- * 
+ *
  * @param {Story[]} collection
  */
 Site.prototype.getXml = function(collection) {
    collection || (collection = this.stories.recent);
    var now = new Date;
-   var feed = new rome.SyndFeedImpl();   
+   var feed = new rome.SyndFeedImpl();
    feed.setFeedType("rss_2.0");
    feed.setLink(this.href());
    feed.setTitle(this.title);
@@ -520,7 +520,7 @@ Site.prototype.getXml = function(collection) {
    var entries = new java.util.ArrayList();
    var description;
 
-   var list = collection.constructor === Array ? 
+   var list = collection.constructor === Array ?
          collection : collection.list(0, 25);
    for each (var item in list) {
       entry = new rome.SyndEntryImpl();
@@ -531,14 +531,14 @@ Site.prototype.getXml = function(collection) {
       if (item.text) {
          description = new rome.SyndContentImpl();
          //description.setType("text/plain");
-         // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters 
+         // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
          description.setValue(item.renderSkinAsString("Story#rss").replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
             return "&#" + c.charCodeAt(0) + ";";
          }));
          entry.setDescription(description);
       }
       entries.add(entry);
-      
+
       /*
       entryInfo = new rome.EntryInformationImpl();
       entryModules = new java.util.ArrayList();
@@ -563,14 +563,14 @@ Site.prototype.getXml = function(collection) {
       */
    }
    feed.setEntries(entries);
-   
+
    var output = new rome.SyndFeedOutput();
    //output.output(feed, res.servletResponse.writer); return;
    var xml = output.outputString(feed);
    // FIXME: Ugly hack for adding PubSubHubbub and rssCloud elements to XML
    xml = xml.replace("<rss", '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
    xml = xml.replace("<channel>", '<channel>\n    <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
-   xml = xml.replace("<channel>", '<channel>\n    <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>'); 
+   xml = xml.replace("<channel>", '<channel>\n    <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>');
    return xml; //injectXslDeclaration(xml);
 }
 
@@ -614,7 +614,7 @@ Site.prototype.search_action = function() {
       var counter = 0;
       sql.traverse(function() {
          var content = Story.getById(this.id);
-         if (!content.story || (content.story.status !== Story.CLOSED && 
+         if (!content.story || (content.story.status !== Story.CLOSED &&
                content.story.commentMode !== Story.CLOSED)) {
             content.renderSkin("Story#result");
             counter += 1;
@@ -623,7 +623,7 @@ Site.prototype.search_action = function() {
       res.message = ngettext("Found {0} result.", "Found {0} results.", counter);
       res.data.body = res.pop();
    }
-   
+
    res.data.title = gettext('Search results');
    this.renderSkin("Site#page");
    return;
@@ -632,7 +632,7 @@ Site.prototype.search_action = function() {
 Site.prototype.subscribe_action = function() {
    try {
       Membership.add(session.user, Membership.SUBSCRIBER, this);
-      res.message = gettext('Successfully subscribed to site {0}.', 
+      res.message = gettext('Successfully subscribed to site {0}.',
             this.title);
    } catch (ex) {
       app.log(ex);
@@ -675,7 +675,7 @@ Site.prototype.export_action = function() {
             res.message = gettext("Site is scheduled for export.");
          } else {
             if (job.method !== "export") {
-               throw Error(gettext("There is already another job queued for this site: {0}", 
+               throw Error(gettext("There is already another job queued for this site: {0}",
                      job.method));
             }
          }
@@ -691,7 +691,7 @@ Site.prototype.export_action = function() {
    }
 
    var param = {
-      status: (job && job.method === "export") ? 
+      status: (job && job.method === "export") ?
             gettext("A Blogger export file (.xml) will be created and available for download from here within 24 hours.") :
             null
    }
@@ -713,7 +713,7 @@ Site.prototype.import_action = function() {
                job.remove();
                this.job = null;
             } else if (job.method) {
-               throw Error(gettext("There is already another job queued for this site: {0}", 
+               throw Error(gettext("There is already another job queued for this site: {0}",
                      job.method));
             }
          }
@@ -753,7 +753,7 @@ Site.prototype.robots_txt_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */
@@ -775,7 +775,7 @@ Site.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * 
+ *
  */
 Site.prototype.stories_macro = function() {
    if (this.stories.featured.size() < 1) {
@@ -795,7 +795,7 @@ Site.prototype.stories_macro = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 Site.prototype.calendar_macro = function(param) {
@@ -812,7 +812,7 @@ Site.prototype.calendar_macro = function(param) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 Site.prototype.age_macro = function(param) {
@@ -821,7 +821,7 @@ Site.prototype.age_macro = function(param) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -830,15 +830,15 @@ Site.prototype.static_macro = function(param, name, mode) {
 }
 
 /**
- * 
+ *
  */
 Site.prototype.deleted_macro = function() {
-   return new Date(this.deleted.getTime() + Date.ONEDAY * 
+   return new Date(this.deleted.getTime() + Date.ONEDAY *
          Admin.SITEREMOVALGRACEPERIOD);
 }
 
 /**
- * 
+ *
  */
 Site.prototype.referrers_macro = function() {
    var self = this;
@@ -855,7 +855,7 @@ Site.prototype.referrers_macro = function() {
 }
 
 /**
- * 
+ *
  */
 Site.prototype.spamfilter_macro = function() {
    var str = this.getMetadata("spamfilter");
@@ -875,7 +875,7 @@ Site.prototype.spamfilter_macro = function() {
 }
 
 /**
- * 
+ *
  */
 Site.prototype.diskspace_macro = function() {
    var quota = this.getQuota();
@@ -894,7 +894,7 @@ Site.prototype.getLocale = function() {
       return locale;
    } else if (this.locale) {
       var parts = this.locale.split("_");
-      locale = new java.util.Locale(parts[0] || String.EMPTY, 
+      locale = new java.util.Locale(parts[0] || String.EMPTY,
             parts[1] || String.EMPTY, parts.splice(2).join("_"));
    } else {
       locale = java.util.Locale.getDefault();
@@ -927,8 +927,8 @@ Site.prototype.getQuota = function() {
 }
 
 /**
- * @param {Number} quota 
- * @returns {float} 
+ * @param {Number} quota
+ * @returns {float}
  */
 Site.prototype.getDiskSpace = function(quota) {
    quota || (quota = this.getQuota());
@@ -939,11 +939,11 @@ Site.prototype.getDiskSpace = function(quota) {
 }
 
 /**
- * 
+ *
  * @param {String} href
  */
 Site.prototype.processHref = function(href) {
-   var parts, domain, 
+   var parts, domain,
          scheme = (req.servletRequest ? req.servletRequest.scheme : 'http') + '://';
    if (domain = getProperty('domain.' + this.name)) {
       parts = [scheme, domain, href];
@@ -958,7 +958,7 @@ Site.prototype.processHref = function(href) {
 }
 
 /**
- * 
+ *
  * @param {String} type
  * @param {String} group
  * @returns {Tag[]}
@@ -980,7 +980,7 @@ Site.prototype.getTags = function(type, group) {
    }
    switch (group) {
       case Tags.ALL:
-      return handler[type];     
+      return handler[type];
       case Tags.OTHER:
       case Tags.ALPHABETICAL:
       return handler[group + type.titleize()];
@@ -991,7 +991,7 @@ Site.prototype.getTags = function(type, group) {
 }
 
 /**
- * 
+ *
  * @param {String} tail
  * @returns {helma.File}
  */
@@ -1002,7 +1002,7 @@ Site.prototype.getStaticFile = function(tail) {
 }
 
 /**
- * 
+ *
  * @param {String} tail
  * @returns {String}
  */
@@ -1016,7 +1016,7 @@ Site.prototype.getStaticUrl = function(href) {
 }
 
 /**
- * 
+ *
  * @param {Object} ref
  */
 Site.prototype.callback = function(ref) {
@@ -1031,7 +1031,7 @@ Site.prototype.callback = function(ref) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {String[]}
  */

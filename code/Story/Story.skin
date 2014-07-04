@@ -19,7 +19,7 @@
 </p>
 <p>
    <div class="small"><% gettext Text suffix=: %></div>
-   <div class="backup"><% story.textarea text cols="30" rows="15" 
+   <div class="backup"><% story.textarea text cols="30" rows="15"
    class="formText" %></div>
 </p>
 <p>
@@ -33,10 +33,10 @@
    <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
 </fieldset></p>
 <p class="small">
-   <% if <% story.creator %> is null then "" else 
-      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %> 
+   <% if <% story.creator %> is null then "" else
+      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %>
    %>
-   <% if <% story.created %> is <% story.modified %> then "" else 
+   <% if <% story.created %> is <% story.modified %> then "" else
       <% gettext "Last modified by {0} on {1}" <% story.modifier %>
       <% story.modified %> prefix="<br />" %>
    %>

@@ -676,7 +676,7 @@ less.Parser = function Parser(env) {
                 keyword: function () {
                     var k;
 
-                    if (k = $(/^[_A-Za-z-][_A-Za-z0-9-]*/)) { 
+                    if (k = $(/^[_A-Za-z-][_A-Za-z0-9-]*/)) {
                         if (tree.colors.hasOwnProperty(k)) {
                             // detect named color
                             return new(tree.Color)(tree.colors[k].slice(1));
@@ -1256,7 +1256,7 @@ less.Parser = function Parser(env) {
 
             mediaFeatures: function () {
                 var e, features = [];
-                
+
                 do {
                   if (e = $(this.mediaFeature)) {
                       features.push(e);
@@ -1266,7 +1266,7 @@ less.Parser = function Parser(env) {
                       if (! $(',')) { break }
                   }
                 } while (e);
-                
+
                 return features.length > 0 ? features : null;
             },
 
@@ -2286,18 +2286,18 @@ tree.Media.prototype = {
             env.mediaBlocks = [];
             env.mediaPath = [];
         }
-        
+
         var blockIndex = env.mediaBlocks.length;
         env.mediaPath.push(this);
         env.mediaBlocks.push(this);
 
         var media = new(tree.Media)([], []);
         media.features = this.features.eval(env);
-        
+
         env.frames.unshift(this.ruleset);
         media.ruleset = this.ruleset.eval(env);
         env.frames.shift();
-        
+
         env.mediaBlocks[blockIndex] = media;
         env.mediaPath.pop();
 
@@ -2460,7 +2460,7 @@ tree.mixin.Definition.prototype = {
                 i--;
                 continue;
             }
-			
+
             if (name = this.params[i].name) {
                 if (this.params[i].variadic && args) {
                     varargs = [];
@@ -2792,7 +2792,7 @@ tree.Ruleset.prototype = {
                     rules.push(rule.value.toString());
                 }
             }
-        } 
+        }
 
         rulesets = rulesets.join('');
 

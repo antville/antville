@@ -28,7 +28,7 @@ create user antville password 'antville';
 alter user antville admin true;
 
 -- These return errors in H2 database
-create database antville owner antville; 
+create database antville owner antville;
 \connect antville;
 
 create schema antville authorization antville;
@@ -278,11 +278,11 @@ create index vote_poll_idx on antville.vote (poll_id, choice_id);
 
 insert into antville.layout (id, site_id, mode) values ('1', '1', 'default');
 
-insert into antville.site (id, name, layout_id, status, mode) 
+insert into antville.site (id, name, layout_id, status, mode)
 	values ('1', 'www', '1', 'trusted', 'public');
 
 grant select, insert, update, delete on antville.choice, antville.content,
-	antville.file, antville.image, antville.layout, antville.log, 
+	antville.file, antville.image, antville.layout, antville.log,
 	antville.metadata, antville.membership, antville.poll, antville.site, antville.skin,
 	antville.tag, antville.tag_hub, antville.account, antville.vote to antville;
 

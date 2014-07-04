@@ -11,15 +11,15 @@
 <div class="listSeparator"> </div>
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<% if <% story.status %> is closed then 
+<% if <% story.status %> is closed then
    <% listItemFlag <% gettext closed %> %>
-else <% if <% story.mode %> is hidden then 
+else <% if <% story.mode %> is hidden then
    <% listItemFlag <% gettext hidden %> %> %>
 %>
 <td class="small">
    <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
    <div class="ample"><strong><% gettext Status suffix=: %></strong>
-   <% gettext <% story.status %> %><% story.tags link prefix=<% gettext in 
+   <% gettext <% story.status %> %><% story.tags link prefix=<% gettext in
          context=preposition prefix=" " suffix=" " %> %><% story.comments link prefix="; " %></div>
 </td>
 <td rowspan="2" width="10" nowrap="nowrap"> </td>
@@ -41,7 +41,7 @@ else <% if <% story.mode %> is hidden then
 </table>
 
 <% #referrer %>
-referrers.push(new Antville.Referrer("<% param.referrer %>", 
+referrers.push(new Antville.Referrer("<% param.referrer %>",
       "<% param.text %>", <% param.requests %>));
 
 <% #referrers %>
@@ -85,9 +85,9 @@ for (var i in referrers) {
       document.writeln('</tr>');
    }
    document.writeln('<tr>');
-   document.writeln('<td align="right" valign="top" class="small">', 
+   document.writeln('<td align="right" valign="top" class="small">',
          ref.count, '</td>');
-   document.writeln('<td class="small"><a href="', ref.url, '">', 
+   document.writeln('<td class="small"><a href="', ref.url, '">',
          text, '</a></td>');
    document.writeln('</tr>');
 }
@@ -119,7 +119,7 @@ $(function() {
          });
       });
    }
-   
+
    input.blur(function() {
       $("#restore").hide();
       var data = {};

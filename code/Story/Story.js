@@ -81,22 +81,22 @@ Story.remove = function() {
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getStatus = defineConstants(Story, markgettext("closed"), 
+Story.getStatus = defineConstants(Story, markgettext("closed"),
       markgettext("public"), markgettext("shared"), markgettext("open"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getModes = defineConstants(Story, markgettext("hidden"), 
+Story.getModes = defineConstants(Story, markgettext("hidden"),
       markgettext("featured"));
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Story.getCommentModes = defineConstants(Story, markgettext("closed"), 
-      /* markgettext("readonly"), markgettext("moderated"), */ 
+Story.getCommentModes = defineConstants(Story, markgettext("closed"),
+      /* markgettext("readonly"), markgettext("moderated"), */
       markgettext("open"));
 
 /**
@@ -129,7 +129,7 @@ Story.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -140,25 +140,25 @@ Story.prototype.getPermission = function(action) {
    switch (action) {
       case ".":
       case "main":
-      return this.status !== Story.CLOSED || 
-            this.creator === session.user || 
-            Membership.require(Membership.MANAGER) || 
+      return this.status !== Story.CLOSED ||
+            this.creator === session.user ||
+            Membership.require(Membership.MANAGER) ||
             User.require(User.PRIVILEGED);
       case "comment":
       return this.site.commentMode === Site.ENABLED &&
             (this.commentMode === Story.OPEN ||
             this.commentMode === Story.MODERATED);
       case "delete":
-      return this.creator === session.user || 
+      return this.creator === session.user ||
             Membership.require(Membership.MANAGER) ||
-            User.require(User.PRIVILEGED);            
+            User.require(User.PRIVILEGED);
       case "edit":
       case "rotate":
-      return this.creator === session.user || 
-            Membership.require(Membership.MANAGER) || 
+      return this.creator === session.user ||
+            Membership.require(Membership.MANAGER) ||
             (this.status === Story.SHARED &&
-            Membership.require(Membership.CONTRIBUTOR)) || 
-            (this.status === Story.OPEN && 
+            Membership.require(Membership.CONTRIBUTOR)) ||
+            (this.status === Story.OPEN &&
             Membership.require(Membership.SUBSCRIBER)) ||
             User.require(User.PRIVILEGED);
    }
@@ -176,7 +176,7 @@ Story.prototype.main_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Number} limit
  * @returns {String}
  */
@@ -191,7 +191,7 @@ Story.prototype.getTitle = function(limit) {
          res.meta[this + ":text:" + limit] = parts.tail;
       }
    }
-   return String(res.meta[key]) || "..."; 
+   return String(res.meta[key]) || "...";
 }
 
 Story.prototype.edit_action = function() {
@@ -206,7 +206,7 @@ Story.prototype.edit_action = function() {
          app.log(ex);
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = gettext('Edit Story');
    res.data.body = this.renderSkinAsString("Story#edit");
@@ -215,12 +215,12 @@ Story.prototype.edit_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Story.prototype.update = function(data) {
    var site = this.site || res.handlers.site;
-   
+
    if (!data.title && !data.text) {
       throw Error(gettext("Please enter at least something into the “title” or “text” field."));
    }
@@ -232,7 +232,7 @@ Story.prototype.update = function(data) {
          app.log(ex);
       }
    }
-   
+
    // Get difference to current content before applying changes
    var delta = this.getDelta(data);
    this.title = data.title ? data.title.trim() : String.EMPTY;
@@ -242,7 +242,7 @@ Story.prototype.update = function(data) {
    this.commentMode = data.commentMode || Story.OPEN;
    this.setCustomContent(data);
 
-   // FIXME: To be removed resp. moved to Stories.create_action and 
+   // FIXME: To be removed resp. moved to Stories.create_action and
    // Story.edit_action if work-around for Helma bug #607 fails
    // We need persistence for setting the tags
    this.isTransient() && this.persist();
@@ -256,7 +256,7 @@ Story.prototype.update = function(data) {
       site.callback(this);
       // Notification is sent in Stories.create_action()
    }
-   
+
    this.clearCache();
    this.modifier = session.user;
    return;
@@ -304,7 +304,7 @@ Story.prototype.comment_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
@@ -326,7 +326,7 @@ Story.prototype.getFormValue = function(name) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {String[]}
  */
@@ -360,7 +360,7 @@ Story.prototype.setCustomContent = function(data) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  */
 Story.prototype.isCustomContent = function(key) {
@@ -418,7 +418,7 @@ Story.prototype.getDelta = function(data) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */
@@ -430,7 +430,7 @@ Story.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} action
  * @param {String} text
@@ -450,7 +450,7 @@ Story.prototype.link_macro = function(param, action, text) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 Story.prototype.summary_macro = function(param) {
@@ -464,11 +464,11 @@ Story.prototype.summary_macro = function(param) {
             res.write(content);
             res.write(String.SPACE);
          }
-      }      
+      }
       summary = res.pop();
    }
    if (!summary) {
-      summary = (this.title || String.EMPTY) + String.SPACE + 
+      summary = (this.title || String.EMPTY) + String.SPACE +
             (this.text || String.EMPTY);
    }
    var clipped = stripTags(summary).clip(param.limit, param.clipping, "\\s");
@@ -485,13 +485,13 @@ Story.prototype.summary_macro = function(param) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} mode
  */
 Story.prototype.comments_macro = function(param, mode) {
    var story = this.story || this;
-   if (story.site.commentMode === Site.DISABLED || 
+   if (story.site.commentMode === Site.DISABLED ||
          story.commentMode === Site.CLOSED) {
       return;
    } else if (mode) {
@@ -500,7 +500,7 @@ Story.prototype.comments_macro = function(param, mode) {
       if (mode === "count" || mode === "size") {
          res.write(text);
       } else if (mode === "link") {
-         n < 1 ? res.write(text) : 
+         n < 1 ? res.write(text) :
                html.link({href: this.href() + "#comments"}, text);
       }
    } else {
@@ -508,7 +508,7 @@ Story.prototype.comments_macro = function(param, mode) {
       this.forEach(function() {
          html.openTag("a", {name: this._id});
          html.closeTag("a");
-         this.renderSkin(this.parent.constructor === Story ? 
+         this.renderSkin(this.parent.constructor === Story ?
                "Comment#main" : "Comment#reply");
       });
    }
@@ -516,7 +516,7 @@ Story.prototype.comments_macro = function(param, mode) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} mode
  */
@@ -536,12 +536,12 @@ Story.prototype.tags_macro = function(param, mode) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {Number} limit
  */
 Story.prototype.referrers_macro = function(param, limit) {
-   if (!User.require(User.PRIVILEGED) && 
+   if (!User.require(User.PRIVILEGED) &&
          !Membership.require(Membership.OWNER)) {
       return;
    }
@@ -569,11 +569,11 @@ Story.prototype.referrers_macro = function(param, limit) {
    if (param.referrers) {
       this.renderSkin("$Story#referrers", param);
    }
-   return;   
+   return;
 }
 
 /**
- * 
+ *
  * @param {Object} value
  * @param {Object} param
  * @param {String} mode
@@ -584,12 +584,12 @@ Story.prototype.format_filter = function(value, param, mode) {
       switch (mode) {
          case "plain":
          return this.url_filter(stripTags(value), param, mode);
-         
+
          case "quotes":
          return stripTags(value).replace(/(?:\x22|\x27)/g, function(quote) {
             return "&#" + quote.charCodeAt(0) + ";";
          });
-         
+
          case "image":
          var image = HopObject.getFromPath(value, "images");
          if (image) {
@@ -598,7 +598,7 @@ Story.prototype.format_filter = function(value, param, mode) {
             return res.pop();
          }
          break;
-         
+
          default:
          value = this.macro_filter(format(value), param);
          return this.url_filter(value, param);
@@ -630,7 +630,7 @@ Story.prototype.macro_filter = function(value) {
 }
 
 /**
- * 
+ *
  * @param {String} value
  * @param {Object} param
  * @param {String} mode
@@ -669,6 +669,6 @@ Story.prototype.url_filter = function(value, param, mode) {
  * @returns {String}
  */
 Story.prototype.getConfirmText = function() {
-   return gettext("You are about to delete a story by user {0}.", 
+   return gettext("You are about to delete a story by user {0}.",
          this.creator.name);
 }

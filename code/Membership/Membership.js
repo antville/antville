@@ -31,7 +31,7 @@ markgettext("Membership");
 markgettext("membership");
 
 /**
- * 
+ *
  * @param {String} name
  * @param {Site} site
  * @returns {Membership}
@@ -41,7 +41,7 @@ Membership.getByName = function(name, site) {
 }
 
 /**
- * 
+ *
  * @param {String} role
  * @returns {Boolean}
  */
@@ -57,7 +57,7 @@ Membership.require = function(role) {
  * @returns {String[]}
  * @see defineConstants
  */
-Membership.getRoles = defineConstants(Membership, markgettext("Subscriber"), 
+Membership.getRoles = defineConstants(Membership, markgettext("Subscriber"),
       markgettext("Contributor"), markgettext("Manager"), markgettext("Owner"));
 
 
@@ -76,7 +76,7 @@ Membership.add = function(user, role, site) {
    return membership;
 }
 /**
- * 
+ *
  * @param {Membership} membership
  * @param {Object} options
  */
@@ -91,7 +91,7 @@ Membership.remove = function(options) {
    var recipient = this.creator.email;
    this.remove();
    if (!options.force) {
-      this.notify(req.action, recipient,  
+      this.notify(req.action, recipient,
             gettext("[{0}] Notification of membership cancellation", root.title));
    }
    return;
@@ -131,7 +131,7 @@ Membership.prototype.constructor = function(user, role) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @return {Boolean}
  */
@@ -144,14 +144,14 @@ Membership.prototype.getPermission = function(action) {
       return true;
       case "edit":
       case "delete":
-      return User.require(User.PRIVILEGED) || 
+      return User.require(User.PRIVILEGED) ||
             this.role !== Membership.OWNER || this.creator !== session.user;
    }
    return false;
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
@@ -174,7 +174,7 @@ Membership.prototype.edit_action = function() {
          app.log(ex);
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = gettext("Edit Membership: {0}", this.name);
    res.data.body = this.renderSkinAsString("$Membership#edit");
@@ -183,7 +183,7 @@ Membership.prototype.edit_action = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 Membership.prototype.update = function(data) {
@@ -194,7 +194,7 @@ Membership.prototype.update = function(data) {
    } else if (data.role !== this.role) {
       this.role = data.role || Membership.SUBSCRIBER;
       this.touch();
-      this.notify(req.action, this.creator.email, 
+      this.notify(req.action, this.creator.email,
             gettext("[{0}] Notification of membership change", root.title));
    }
    return;
@@ -213,14 +213,14 @@ Membership.prototype.contact_action = function() {
                gettext('[{0}] Message from user {1}', root.title, session.user.name) :
                gettext('[{0}] Message from anonymous user', root.title));
          res.message = gettext("Your message was sent successfully.");
-         res.redirect(this._parent.getPermission() ? 
+         res.redirect(this._parent.getPermission() ?
                this._parent.href() : this.site.href());
       } catch(ex) {
          res.message = ex;
          app.log(ex);
       }
    }
-   
+
    res.data.action = this.href(req.action);
    res.data.title = gettext('Contact User: {0}', this.name);
    res.data.body = this.renderSkinAsString("$Membership#contact");
@@ -229,9 +229,9 @@ Membership.prototype.contact_action = function() {
 }
 
 Membership.prototype.content_action = function() {
-   res.data.list = renderList(this.content, "$Story#listItem", 
+   res.data.list = renderList(this.content, "$Story#listItem",
          10, req.queryParams.page);
-   res.data.pager = renderPager(this.content, 
+   res.data.pager = renderPager(this.content,
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("Content of User: {0}", this.name);
    res.data.body = this.renderSkinAsString("$Membership#content");
@@ -239,7 +239,7 @@ Membership.prototype.content_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */
@@ -252,12 +252,12 @@ Membership.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * 
+ *
  * @param {String} role
  * @returns {Boolean}
  */
 Membership.prototype.require = function(role) {
-   var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, 
+   var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR,
          Membership.MANAGER, Membership.OWNER];
    if (role) {
       return roles.indexOf(this.role) >= roles.indexOf(role);
@@ -266,7 +266,7 @@ Membership.prototype.require = function(role) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @param {String} recipient
  * @param {String} subject
@@ -290,7 +290,7 @@ Membership.prototype.notify = function(action, recipient, subject) {
  * @returns {String}
  */
 Membership.prototype.getConfirmText = function() {
-   return gettext("You are about to delete the membership of user {0}.", 
+   return gettext("You are about to delete the membership of user {0}.",
          this.creator.name);
 }
 
@@ -308,7 +308,7 @@ Membership.prototype.toString = function() {
 Membership.prototype.valueOf = Membership.prototype.toString;
 
 /**
- * 
+ *
  */
 Membership.prototype.status_macro = function() {
    this.renderSkin(session.user ? "Membership#status" : "Membership#login");
@@ -316,7 +316,7 @@ Membership.prototype.status_macro = function() {
 }
 
 /**
- * 
+ *
  */
 Membership.prototype.role_macro = function() {
    this.role && res.write(gettext(this.role.capitalize()));
@@ -324,7 +324,7 @@ Membership.prototype.role_macro = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} value
  * @param {Object} param
  * @returns {String}
@@ -334,6 +334,6 @@ Membership.prototype.link_filter = function(value, param) {
    if (!session.user || !session.user.url) {
       return value;
    }
-   return HopObject.prototype.link_filter.call(this, value, 
+   return HopObject.prototype.link_filter.call(this, value,
          param, session.user.url); // || this.href());
 }

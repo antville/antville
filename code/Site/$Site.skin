@@ -2,7 +2,7 @@
 <% param.path %>
 
 <% #include %>
-document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +  
+document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
       'src="<% param.href %>"></' + 'scr' + 'ipt>');
 
 <% #listItem %>
@@ -10,7 +10,7 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <td class="small" title="<% site.modified %>" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
    <% site.modified text %>
 </td>
-<td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td> 
+<td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td>
 </tr>
 
 <% #opensearchdescription %>
@@ -29,7 +29,7 @@ document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
 <!--
 var win = external.menuArguments;
 var url = "<% site.url %>stories/create?content_text=";
-var link = escape('<a href="' + win.location.href + '">' + 
+var link = escape('<a href="' + win.location.href + '">' +
    win.document.title + "</a>: ");
 var text = escape(win.document.selection.createRange().text);
 win.location.href = url + link + text;
@@ -46,14 +46,14 @@ REGEDIT4
 <p class="storyTitle"><% response.title %></p>
 <br />
 <form action="<% response.action %>" method="get">
-<input type="text" name="filter" value="<% request.filter encoding="form" %>" 
-      size="30" /> 
-<button type="submit" name="submit" value="1"><% gettext Filter %></button> 
+<input type="text" name="filter" value="<% request.filter encoding="form" %>"
+      size="30" />
+<button type="submit" name="submit" value="1"><% gettext Filter %></button>
 <button onclick="document.location='<% site.href referrers %>'; return false;">
       <% gettext Reset %></button>
 <div class="small">
-   <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" 
-   <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> /> 
+   <input type="checkbox" id="includeSpam" name="includeSpam" value="checked"
+   <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> />
    <label for="includeSpam"><% gettext 'Display the referrers unfiltered' %></label>
 </div>
 <br />
@@ -94,13 +94,13 @@ for (var i in referrers) {
    }
    document.writeln('<tr>');
    document.writeln('<td align="right" valign="top">', ref.count, '</td>');
-   document.write('<td valign="top">'); 
+   document.write('<td valign="top">');
    if ("<% membership.role %>" === "Owner") {
-      document.write('<input type="checkbox" name="permanent" value="', 
+      document.write('<input type="checkbox" name="permanent" value="',
             ref.url, '" />');
    }
    document.writeln('</td>');
-   document.writeln('<td><a href="', ref.url, '"', (isSpam ? 
+   document.writeln('<td><a href="', ref.url, '"', (isSpam ?
          ' style="<% value "Small font color" prefix="color: " %>"' : ''),
          '>', text, '</a></td>');
    document.writeln('</tr>');
@@ -117,21 +117,21 @@ for (var i in referrers) {
 </form>
 
 <% #referrer %>
-referrers.push(new Antville.Referrer("<% param.referrer %>", 
+referrers.push(new Antville.Referrer("<% param.referrer %>",
       "<% param.text %>", <% param.requests %>));
 
 <% #noscript %>
 <% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to be set to permit the execution of JavaScript." %>
 
 <% #deleted %>
-<% gettext "This site is going to be deleted completely and irreversibly after {0}." 
+<% gettext "This site is going to be deleted completely and irreversibly after {0}."
       <% site.deleted | format long %> %>
 
 <% #export %>
 <p class="storyTitle"><% gettext "Export Site Data" %></p>
 <div class="ample">
-   <p><% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download the file {0} or klick “Start” to create a new one." 
-         <% file.skin File#main %> '<small>' 
+   <p><% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download the file {0} or klick “Start” to create a new one."
+         <% file.skin File#main %> '<small>'
          <% file.created | format short %> '</small>' %> %> else <% param.status %> %></p>
    <form action="" method="post">
    <button type="submit" name="submit" value="<% if <% param.status %> is null then start else stop %>">
@@ -144,11 +144,11 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 <% #import %>
 <p class="storyTitle"><% gettext 'Import Site Data' %></p>
 <div class="ample">
-   <p><% if <% file.self %> is null then '' else <% gettext "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours." 
-         <% file.skin File#main %> '</a>' '<small>' 
-         <% file.created | format short %> '</small>' %> %></p> 
+   <p><% if <% file.self %> is null then '' else <% gettext "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours."
+         <% file.skin File#main %> '</a>' '<small>'
+         <% file.created | format short %> '</small>' %> %></p>
    <form method="post" enctype="multipart/form-data">
-      
+
    <% if <% file.self %> is null then <% site.upload file prefix=<p> suffix=</p> %> %>
    <button type="submit" name="submit" value="<% if <% file.self %> is null then start else stop %>">
       <% if <% file.self %> is null then <% gettext Start %> else <% gettext Stop %> %>
@@ -223,7 +223,7 @@ $(function() {
 <tr>
 <td class="small" valign="top"><% gettext "Callback URL" suffix=: %></td>
 <td><% site.input callbackUrl size=40 %><br />
-<% site.checkbox callbackMode %> 
+<% site.checkbox callbackMode %>
 <label for="callbackMode"><% gettext enabled %><label></td>
 </tr>
 <tr>
@@ -232,7 +232,7 @@ $(function() {
 </tr>
 <tr>
    <td class='small'><% gettext 'Bookmarklet' %>:</td>
-   <td><a href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% site.static %>../www/formica.html?s=' + encodeURIComponent(siteUrl) + '&l=' + encodeURIComponent(location.href) + '&r=' + encodeURIComponent(document.referrer) + '&w=400&h=400&c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td> 
+   <td><a href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% site.static %>../www/formica.html?s=' + encodeURIComponent(siteUrl) + '&l=' + encodeURIComponent(location.href) + '&r=' + encodeURIComponent(document.referrer) + '&w=400&h=400&c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td>
 </tr>
 <tr>
 <td colspan="2"><div class="listSeparator"> </div>
@@ -241,8 +241,8 @@ $(function() {
 </td>
 </tr>
 <tr>
-<td class="small" valign="top"><% gettext "Enter one filter {0}pattern{1} per 
-line to be applied on every URL in the referrer and backlink lists." 
+<td class="small" valign="top"><% gettext "Enter one filter {0}pattern{1} per
+line to be applied on every URL in the referrer and backlink lists."
 '<a href="http://en.wikipedia.org/wiki/Regular_expression">' </a> %></td>
 <td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
 </tr>
@@ -258,8 +258,8 @@ line to be applied on every URL in the referrer and backlink lists."
 <% #notify_block %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The site {0} at {1} will be blocked in {2} because it is being 
-      restricted for too long.' <% site.title %> <%site.href %> 
+<% gettext 'The site {0} at {1} will be blocked in {2} because it is being
+      restricted for too long.' <% site.title %> <%site.href %>
       <% ngettext '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> %>
 
 <% gettext "Best regards." %>
@@ -268,8 +268,8 @@ line to be applied on every URL in the referrer and backlink lists."
 <% #notify_delete %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The site {0} at {1} will be deleted in {2} because it has been 
-      considered as abandoned.' <% site.title %> <% site.href %> 
+<% gettext 'The site {0} at {1} will be deleted in {2} because it has been
+      considered as abandoned.' <% site.title %> <% site.href %>
       <% ngettext '{0} day' '{0} days' <% root.phaseOutGracePeriod %> %> %>
 
 <% gettext "Best regards." %>

@@ -29,7 +29,7 @@ relocateProperty(Membership, "modifytime", "modified");
 relocateProperty(Membership, "user", "creator");
 
 Membership.prototype.username_macro = function(param) {
-   if (param.linkto && (param.linkto !== "edit" || 
+   if (param.linkto && (param.linkto !== "edit" ||
          this.user !== session.user)) {
       html.link({href: this.href(param.linkto)}, this.name);
    } else {

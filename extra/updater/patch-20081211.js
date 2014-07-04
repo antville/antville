@@ -30,7 +30,7 @@ root.forEach(function() {
    if (site.layout) {
       res.handlers.layout = site.layout;
       res.skinpath = site.layout.getSkinPath();
-      
+
       // Fixing the <% if <% comment.created %> %> macro
       var skin = site.layout.skins.getSkin("Comment", "edit");
       var source = skin.getSource();

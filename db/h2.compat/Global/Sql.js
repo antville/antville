@@ -35,4 +35,4 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
 Sql.REFERRERS = "select referrer, count(*) as requests from " +
       "log where context_type = '$0' and context_id = $1 and action = " +
       "'main' and created > dateadd('day', -2, current_date()) group " +
-      "by referrer order by requests desc, referrer asc"; 
+      "by referrer order by requests desc, referrer asc";

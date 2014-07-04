@@ -32,7 +32,7 @@
 Api.mt = {};
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -46,7 +46,7 @@ Api.mt.getRecentPostTitles = function(id, name, password, limit) {
 
    Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to get recent post titles from site " + site.name);
    }
 
@@ -58,14 +58,14 @@ Api.mt.getRecentPostTitles = function(id, name, password, limit) {
          postid: story._id,
          username: story.creator.name,
          dateCreated: story.created,
-         title: story.getTitle()	
+         title: story.getTitle()
       });
    }
    return result;
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -78,10 +78,10 @@ Api.mt.getCategoryList = function(id, name, password) {
 
    Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to access site " + site.name);
    }
-   
+
    var result = [];
    var tags = site.getTags("tags", Tags.ALL).list();
    for each (var tag in tags) {
@@ -94,7 +94,7 @@ Api.mt.getCategoryList = function(id, name, password) {
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -107,10 +107,10 @@ Api.mt.getPostCategories = function(id, name, password) {
 
    Api.constrain(story.site, user);
    if (!story.getPermission("main")) {
-      throw Error("Permission denied for user " + name + 
+      throw Error("Permission denied for user " + name +
             " to access story #" + id);
    }
-   
+
    var result = [];
    for each (var tag in story.getTags()) {
       result.push({
@@ -124,7 +124,7 @@ Api.mt.getPostCategories = function(id, name, password) {
 
 // FIXME: How do I post a new story?
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -137,16 +137,16 @@ Api.mt.publishPost = function(id, name, password) {
 
    Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
-      throw Error("Permission denied for user " + name + 
+      throw Error("Permission denied for user " + name +
             " to edit story #" + id);
    }
 
    story.mode = Story.FEATURED;
-   return true;   
+   return true;
 }
 
 /**
- * 
+ *
  * @param {Number} id
  * @param {String} name
  * @param {String} password
@@ -164,7 +164,7 @@ Api.mt.setPostCategories = function(id, name, password, categories) {
 
    Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
-      throw Error("Permission denied for user " + name + 
+      throw Error("Permission denied for user " + name +
             " to edit story #" + id);
    }
 
@@ -173,7 +173,7 @@ Api.mt.setPostCategories = function(id, name, password, categories) {
 }
 
 /**
- * 
+ *
  * @returns {Array}
  */
 Api.mt.supportedTextFilters = function() {
@@ -181,7 +181,7 @@ Api.mt.supportedTextFilters = function() {
 }
 
 /**
- * 
+ *
  * @returns {Array}
  */
 Api.mt.getTrackbackPings = function() {
@@ -189,7 +189,7 @@ Api.mt.getTrackbackPings = function() {
 }
 
 /**
- * 
+ *
  * @returns {String[]}
  */
 Api.mt.supportedMethods = function() {

@@ -2,9 +2,9 @@
 <form action="<% response.action %>" method="post">
 <p class="storyTitle"><% gettext Warning! %></p>
 <p><% param.text %></p>
-<p><% gettext 'Please be aware of the fact that there is no “undo”, so if you 
+<p><% gettext 'Please be aware of the fact that there is no “undo”, so if you
 click “Proceed” below the changes will be applied irreversibly.' %></p>
-<p><% gettext 'Click “Cancel” now if you are not really sure you want to 
+<p><% gettext 'Click “Cancel” now if you are not really sure you want to
 proceed.' %></p>
 <% this.skin <% this.type prefix=$ suffix=#delete %> %>
 <p><button type="submit" name="proceed" value="1"><% gettext Proceed %></button>
@@ -24,7 +24,7 @@ proceed.' %></p>
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %> 
+<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %>
       <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
 <% this.href %>
 

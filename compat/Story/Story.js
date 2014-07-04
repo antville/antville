@@ -33,7 +33,7 @@ Story.ALLOWED_MACROS = Story.ALLOWED_MACROS.concat([
    "spacer",
    "storylist",
    "thumbnail",
-   
+
    "site.image",
    "site.link",
    "site.thumbnail",
@@ -88,19 +88,19 @@ Story.prototype.content_macro = function(param) {
          this.input_macro(param, options.part);
       }
       break;
-      
+
       case "image":
       var part = this.getMetadata(options.part);
       part && res.write(this.format_filter(part, param, "image"));
       break;
-      
+
       default:
       var part = this.getRenderedContentPart(options.part, options.as);
       if (!part && options.fallback) {
          part = this.getRenderedContentPart(options.fallback, options.as);
       }
       if (options.limit) {
-         part = part.stripTags().head(options.limit, 
+         part = part.stripTags().head(options.limit,
                options.clipping, options.delimiter || String.SPACE);
       }
       if (options.as === "link") {
@@ -125,13 +125,13 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
          case "plaintext":
          part = this.format_filter(part, {}, "plain");
          break;
-         
+
          case "alttext":
          part = this.format_filter(part, {}, "quotes");
          break;
-         
+
          default:
-         // Enable caching; some macros (eg. poll, storylist) will set this 
+         // Enable caching; some macros (eg. poll, storylist) will set this
          // to false to prevent caching of a contentpart containing them.
          res.meta.cachePart = true;
          part = this.format_filter(part, {});
@@ -140,7 +140,7 @@ Story.prototype.getRenderedContentPart = function(name, mode) {
       if (res.meta.cachePart) {
          this.cache["lastRendered_" + key] = new Date();
       }
-   }   
+   }
    return this.cache[key];
 }
 
@@ -148,7 +148,7 @@ Story.prototype.location_macro = function(param) {
    switch (this.mode) {
       case Story.FEATURED:
       res.write("site"); break;
-      
+
       default:
       if (this.tags.size() > 0) {
          html.link({href: this.tags.get(0).tag.href()}, "topic");
@@ -195,7 +195,7 @@ Story.prototype.topic_macro = function(param) {
 Story.prototype.topicchooser_macro = function(param) {
    var site = this.site || res.handlers.site;
    var currentTopic = this.tags.size() > 0 ? this.tags.get(0).tag : null;
-   var topics = (this.constructor === Story ? site.stories.tags : 
+   var topics = (this.constructor === Story ? site.stories.tags :
          site.images.galleries);
    var options = [], topic;
    for (var i=0; i<topics.size(); i++) {
@@ -263,7 +263,7 @@ Story.prototype.editableby_macro = function(param) {
          var selValue = this.status;
       }
       for (var i=0; i<options.length; i+=1) {
-         html.radioButton({name: "editableby", 
+         html.radioButton({name: "editableby",
                value: options[i], selectedValue: selValue});
          res.write("&nbsp;");
          res.write(labels[i]);
@@ -293,7 +293,7 @@ Story.prototype.editlink_macro = function(param) {
       image && image.render_macro(param);
    } else {
       res.write(param.text || "edit");
-   }   
+   }
    return this.link_macro(param, "edit", res.pop());
 }
 
@@ -305,7 +305,7 @@ Story.prototype.deletelink_macro = function(param) {
       image && image.render_macro(param);
    } else {
       res.write(param.text || "delete");
-   }   
+   }
    return this.link_macro(param, "delete", res.pop());
 }
 
@@ -317,12 +317,12 @@ Story.prototype.viewlink_macro = function(param) {
       image && image.render_macro(param);
    } else {
       res.write(param.text || "view");
-   }   
+   }
    return this.link_macro(param, ".", res.pop());
 }
 
 Story.prototype.commentlink_macro = function(param) {
-   if (this.commentMode === Story.OPEN && 
+   if (this.commentMode === Story.OPEN &&
          this.site.commentMode === Site.ENABLED) {
       html.link({href: this.href(param.to || "comment")},
                 param.text || "comment");
@@ -365,14 +365,14 @@ Story.prototype.createtime_macro = function(param) {
 }
 
 Story.prototype.commentcounter_macro = function(param) {
-   if (this.site.commentMode === Site.DISABLED || 
+   if (this.site.commentMode === Site.DISABLED ||
          this.commentMode === Story.CLOSED ||
          this.commentMode === Story.READONLY) {
       return;
    }
    var commentCnt = this.comments.count();
    param.linkto || (param.linkto = "main");
-   var linkflag = (param.as === "link" && param.as !== "text" || 
+   var linkflag = (param.as === "link" && param.as !== "text" ||
                    !param.as && commentCnt > 0);
    if (linkflag) {
       html.openTag("a", {href: this.href() + "#comments"});

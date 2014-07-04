@@ -59,7 +59,7 @@ User.add = function(data) {
       salt: session.data.token,
       status: User.REGULAR,
       url: data.url
-   });   
+   });
    root.users.add(user);
    return user;
 }
@@ -82,7 +82,7 @@ User.remove = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {User}
  */
@@ -95,8 +95,8 @@ User.getByName = function(name) {
  * @returns {String[]}
  * @see defineConstants
  */
-User.getStatus = defineConstants(User, markgettext("Blocked"), 
-      markgettext("Regular"), markgettext("Trusted"), 
+User.getStatus = defineConstants(User, markgettext("Blocked"),
+      markgettext("Regular"), markgettext("Trusted"),
       markgettext("Privileged"));
 
 /**
@@ -110,7 +110,7 @@ User.getSalt = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  * @throws {Error}
  * @returns {User}
@@ -159,7 +159,7 @@ User.register = function(data) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  * @returns {Boolean}
  */
@@ -205,7 +205,7 @@ User.isBlacklisted = function(data) {
 }
 
 /**
- * 
+ *
  */
 User.autoLogin = function() {
    if (session.user) {
@@ -233,7 +233,7 @@ User.autoLogin = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  * @returns {User}
  */
@@ -264,7 +264,7 @@ User.login = function(data) {
 }
 
 /**
- * 
+ *
  */
 User.logout = function() {
   session.logout();
@@ -276,7 +276,7 @@ User.logout = function() {
 }
 
 /**
- * 
+ *
  * @param {String} requiredStatus
  * @returns {Boolean}
  */
@@ -311,7 +311,7 @@ User.getMembership = function() {
 }
 
 /**
- * 
+ *
  * @param {String} url
  */
 User.setLocation = function(url) {
@@ -362,13 +362,13 @@ User.rename = function(currentName, newName) {
  * @property {Membership[]} memberships
  * @property {Metadata} metadata
  * @property {Date} modified
- * @property {String} name 
+ * @property {String} name
  * @property {String} salt
  * @property {Site[]} sites
  * @property {Membership[]} subscriptions
  * @property {String} status
  * @property {Story[]} stories
- * @property {String} url 
+ * @property {String} url
  * @extends HopObject
  */
 User.prototype.constructor = function(data) {
@@ -377,12 +377,12 @@ User.prototype.constructor = function(data) {
 }
 
 /**
- * 
+ *
  */
 User.prototype.onLogout = function() { /* ... */ }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -391,12 +391,12 @@ User.prototype.getPermission = function(action) {
 }
 
 /**
- * 
+ *
  * @param {Object} data
  */
 User.prototype.update = function(data) {
    if (!data.digest && data.password) {
-      data.digest = ((data.password + this.salt).md5() + 
+      data.digest = ((data.password + this.salt).md5() +
             session.data.token).md5();
    }
    if (data.digest) {
@@ -413,7 +413,7 @@ User.prototype.update = function(data) {
       }
       this.map({
          hash: data.hash,
-         salt: session.data.token         
+         salt: session.data.token
       });
    }
    if (!(data.email = validateEmail(data.email))) {
@@ -429,7 +429,7 @@ User.prototype.update = function(data) {
 }
 
 /**
- * 
+ *
  */
 User.prototype.touch = function() {
    this.modified = new Date;
@@ -437,7 +437,7 @@ User.prototype.touch = function() {
 }
 
 /**
- * 
+ *
  * @param {String} token
  * @returns {String}
  */
@@ -447,7 +447,7 @@ User.prototype.getDigest = function(token) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Object}
  */
@@ -469,7 +469,7 @@ User.prototype.email_macro = function() {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} type
  */

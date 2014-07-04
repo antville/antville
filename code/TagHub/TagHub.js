@@ -45,7 +45,7 @@ TagHub.add = function(name, tagged, user) {
    hub.tagged = tagged;
    hub.user = user;
    tagged.tags.add(hub);
-   return hub;   
+   return hub;
 }
 
 /**
@@ -65,7 +65,7 @@ TagHub.prototype.constructor = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */

@@ -41,7 +41,7 @@ markgettext("log entry");
  * @property {String} context_type
  * @property {Date} created
  * @property {User} creator
- * @property {String} referrer 
+ * @property {String} referrer
  * @extends HopObject
  */
 LogEntry.prototype.constructor = function(context, action) {
@@ -59,13 +59,13 @@ LogEntry.prototype.constructor = function(context, action) {
  * @returns {String}
  */
 LogEntry.prototype.toString = function() {
-   return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") + 
-         " requested " + this.action + " action of " + this.context_type + 
+   return "[LogEntry #" + this._id + ": " + (this.creator || "anonymous") +
+         " requested " + this.action + " action of " + this.context_type +
          " #" + this.context_id + " on " + formatDate(this.created) + "]";
-} 
+}
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */
@@ -78,7 +78,7 @@ LogEntry.prototype.getMacroHandler = function(name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  */
 LogEntry.prototype.label_macro = function(param) {

@@ -23,7 +23,7 @@
 
 
 /**
- * @fileoverview 
+ * @fileoverview
  * MessageParser script that extracts all gettext message macros
  * out of skin files and all calls of gettext functions
  * (that is "gettext", "ngettext" and "_") out of function
@@ -291,7 +291,7 @@ MessageParser.prototype.parseFunctionFile = function(file, encoding) {
             if (msgParam.name === "cgettext" || msgParam.name === "markgettext") {
                msgParam.args[0] = cgettext.getKey(msgParam.args[0], msgParam.args[1]);
                delete msgParam.args[1];
-            } 
+            }
             key = Message.getKey(msgParam.args[0]);
             if (!(msg = this.messages[key])) {
                this.messages[key] = msg = new Message(msgParam.args[0], msgParam.args[1]);

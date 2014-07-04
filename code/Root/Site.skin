@@ -1,8 +1,8 @@
 <% #main %>
-<p><% gettext 'Antville is an open source project aimed at the development of a 
-simple site hosting system with many advanced 
+<p><% gettext 'Antville is an open source project aimed at the development of a
+simple site hosting system with many advanced
 <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
-<p><% gettext 'One Antville installation can easily host up to several thousands 
+<p><% gettext 'One Antville installation can easily host up to several thousands
       of <a href="{0}">sites</a>.' <% site.href sites %> %></p>
 <p><% site.link create <% gettext "Create a site. It only takes a few clicks." %> %></p>
 <p>
@@ -26,7 +26,7 @@ simple site hosting system with many advanced
 <p class="navigation">
 <div><% site.link health <% gettext Health %> prefix="... " %></div>
 <div><% site.api.link main <% gettext Interfaces %> prefix="... " %></div>
-<div><% link http://code.google.com/p/antville <% gettext Development %> 
+<div><% link http://code.google.com/p/antville <% gettext Development %>
       prefix="... " %></div>
 </p>
 <p class="navigation">

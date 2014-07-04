@@ -39,7 +39,7 @@ markgettext("polls");
  */
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -65,7 +65,7 @@ Polls.prototype.getPermission = function(action) {
 Polls.prototype.main_action = function() {
    var polls = User.getMembership().polls;
    res.data.list = renderList(polls, "$Poll#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(polls, this.href(req.action), 
+   res.data.pager = renderPager(polls, this.href(req.action),
          10, req.queryParams.page);
    res.data.title = gettext("Member Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");
@@ -95,9 +95,9 @@ Polls.prototype.create_action = function() {
 }
 
 Polls.prototype.running_action = function() {
-   res.data.list = renderList(this.running, 
+   res.data.list = renderList(this.running,
          "$Poll#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this.running, 
+   res.data.pager = renderPager(this.running,
          this.href(req.action), 10, req.queryParams.page);
    res.data.title = gettext("Running Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");
@@ -107,7 +107,7 @@ Polls.prototype.running_action = function() {
 
 Polls.prototype.all_action = function() {
    res.data.list = renderList(this, "$Poll#listItem", 10, req.queryParams.page);
-   res.data.pager = renderPager(this, 
+   res.data.pager = renderPager(this,
          this.href(), 10, req.queryParams.page);
    res.data.title = gettext("All Polls");
    res.data.body = this.renderSkinAsString("$Polls#main");

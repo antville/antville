@@ -75,7 +75,7 @@ Root.prototype.nonames_action = function() {
             this.name = Date.now() + "-" + this.id;
             var metadata = eval(this.metadata);
             var extension = metadata.contentType.split("/").pop();
-            metadata.fileName = this.name + "." + extension; 
+            metadata.fileName = this.name + "." + extension;
             metadata.thumbnailName = this.name + "_small." + extension;
             this.metadata = metadata;
             execute("update " + table + " set name = $name, metadata = " +

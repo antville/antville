@@ -50,7 +50,7 @@ Archive.prototype.constructor = function(name, type, parent) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {HopObject}
  */
@@ -64,7 +64,7 @@ Archive.prototype.getChildElement = function(name) {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -102,7 +102,7 @@ Archive.prototype.main_action = function() {
       dateString = formatDate(date, pattern);
       break;
    }
-   var page = gettext("Page {0} of {1}", this.getPage(), 
+   var page = gettext("Page {0} of {1}", this.getPage(),
             Math.ceil(this.getSize() / this.getPageSize()));
    res.data.title = gettext("Story Archive {0} ({1})", dateString, page);
    res.data.body = this.renderSkinAsString("Archive#main");
@@ -116,7 +116,7 @@ Archive.prototype.page1_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {String}
  */
@@ -139,7 +139,7 @@ Archive.prototype.href = function(action) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} action
  * @param {String} text
@@ -151,7 +151,7 @@ Archive.prototype.link_macro = function(param, action, text) {
    }
    switch (action) {
       case "previous":
-      var page = this.getPage() - 1; break; 
+      var page = this.getPage() - 1; break;
       case "next":
       var page = this.getPage() + 1; break;
    }
@@ -160,13 +160,13 @@ Archive.prototype.link_macro = function(param, action, text) {
 }
 
 /**
- * 
+ *
  */
 Archive.prototype.stories_macro = function() {
-   var day, storyDay; 
+   var day, storyDay;
    var page = this.getPage();
    var pageSize = this.getPageSize();
-  
+
    var renderStory = function(story) {
       storyDay = formatDate(story.created, 'yyyy-MM-dd');
       if (day !== storyDay) {
@@ -190,7 +190,7 @@ Archive.prototype.stories_macro = function() {
    }
 
    var sql = new Sql;
-   sql.retrieve(Sql.ARCHIVE, res.handlers.site._id, this.getFilter(), 
+   sql.retrieve(Sql.ARCHIVE, res.handlers.site._id, this.getFilter(),
          Sql.ARCHIVEORDER, pageSize, (page - 1) * pageSize);
    sql.traverse(function() {
       var story = Story.getById(this.id);
@@ -219,7 +219,7 @@ Archive.prototype.getSize = function() {
 }
 
 /**
- * @param {boolean} 
+ * @param {boolean}
  * @returns {String}
  */
 Archive.prototype.getFilter = function() {
@@ -230,14 +230,14 @@ Archive.prototype.getFilter = function() {
          buffer.unshift(Number(archive.name));
       }
    } while (archive = archive.parent);
-   
+
    if (buffer.length < 0) {
       var now = new Date;
       buffer.push(now.getDate());
       buffer.push(now.getMonth() + 1);
       buffer.push(now.getFullYear());
    }
-    
+
    res.push();
    var sql = new Sql;
    var keys = ["year", "month", "day"];

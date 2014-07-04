@@ -2,10 +2,10 @@
 STATUS
 ======
 
-Antville can be considered stable quality code. It is heavily used by several 
-thousands of users at http://antville.org and several other sites (see 
-http://code.google.com/p/antville/wiki/AntvilleSites). Nevertheless, there 
-still could be bugs hidden somewhere in this application. 
+Antville can be considered stable quality code. It is heavily used by several
+thousands of users at http://antville.org and several other sites (see
+http://code.google.com/p/antville/wiki/AntvilleSites). Nevertheless, there
+still could be bugs hidden somewhere in this application.
 
 If you think you found a bug please report it at http://project.antville.org.
 
@@ -17,7 +17,7 @@ SYSTEM REQUIREMENTS
 ===================
 
 To run Antville you need Helma Object Publisher (http://helma.org) and a
-relational database in the backend. Antville was tested with PostgreSQL 
+relational database in the backend. Antville was tested with PostgreSQL
 (http://postgresql.org) and MySQL (http://mysql.com).
 
 For setting up Helma Object Publisher and the database of your choice please
@@ -76,10 +76,10 @@ development of Antville, there will also be other ways to participate.
 ABOUT ANTVILLE
 ==============
 
-Antville is an open source project aimed at the development of a high 
-performance, feature rich weblog hosting software. It can easily host 
+Antville is an open source project aimed at the development of a high
+performance, feature rich weblog hosting software. It can easily host
 up to several thousands of sites (the number of weblogs is rather
-limited by the installation owner’s choice and server power than by software 
+limited by the installation owner’s choice and server power than by software
 limitations).
 
 Antville is entirely written in JavaScript (ECMAScript, to be precise)
@@ -95,22 +95,22 @@ ABOUT HELMA OBJECT PUBLISHER
 
 Helma Object Publisher is a web application server.
 
-With Helma Object Publisher (sometimes simply referred to as Helma or 
-Hop) you can define Objects and map them to a relational database 
-table. These so-called HopObjects can be created, modified and deleted 
-using a comfortable object/container model. Hence, no manual fiddling 
+With Helma Object Publisher (sometimes simply referred to as Helma or
+Hop) you can define Objects and map them to a relational database
+table. These so-called HopObjects can be created, modified and deleted
+using a comfortable object/container model. Hence, no manual fiddling
 around with database code is necessary.
 
-HopObjects are extended JavaScript objects which can be scripted using 
-server-side JavaScript. Beyond the common JavaScript features, Helma 
-provides special “skin” and template functionalities which facilitate 
+HopObjects are extended JavaScript objects which can be scripted using
+server-side JavaScript. Beyond the common JavaScript features, Helma
+provides special “skin” and template functionalities which facilitate
 the rendering of objects via a web interface.
 
-Thanks to Helma’s relational database mapping technology, HopObjects 
-create a hierarchical structure, the URL space of a Helma site. The 
-parts between slashes in a Helma URL represent HopObjects (similar to 
-the document tree in static sites). The Helma URL space can be thought 
-of as an analogy to the Document Object Model (DOM) in client-side 
+Thanks to Helma’s relational database mapping technology, HopObjects
+create a hierarchical structure, the URL space of a Helma site. The
+parts between slashes in a Helma URL represent HopObjects (similar to
+the document tree in static sites). The Helma URL space can be thought
+of as an analogy to the Document Object Model (DOM) in client-side
 JavaScript.
 
 Check out http://helma.org for more information.

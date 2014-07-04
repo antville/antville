@@ -24,16 +24,16 @@
 // $URL$
 
 /**
- * @fileOverview Defines the extensions of Helma’s built-in 
+ * @fileOverview Defines the extensions of Helma’s built-in
  * HopObject prototype.
  */
 
 app.addRepository('modules/helma/Aspects');
 
 /**
- * 
+ *
  * @param {HopObject} collection
- * @param {Object} options Optional flags, e.g. to force or prevent any  
+ * @param {Object} options Optional flags, e.g. to force or prevent any
  * conditional checks of individual prototype’s remove() methods
  */
 HopObject.remove = function(options) {
@@ -45,7 +45,7 @@ HopObject.remove = function(options) {
       } else if (!options) {
          item.remove();
       } else {
-         throw Error("Missing static " + item.constructor.name + 
+         throw Error("Missing static " + item.constructor.name +
                ".remove() method");
       }
    }
@@ -53,7 +53,7 @@ HopObject.remove = function(options) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @param {HopObject} collection
  */
@@ -75,7 +75,7 @@ HopObject.getFromPath = function(name, collection) {
 }
 
 /**
- * Debugging method to detect direct constructor calls which 
+ * Debugging method to detect direct constructor calls which
  * should be replaced with static add() method.
  */
 HopObject.confirmConstructor = function(ref) {
@@ -89,7 +89,7 @@ HopObject.confirmConstructor = function(ref) {
    } else {
       ref = (ref || this).constructor.name;
       if (!confirmed[ref]) {
-         app.logger.warn('Calling unconfirmed constructor for ' + 
+         app.logger.warn('Calling unconfirmed constructor for ' +
                ref + ' prototype – please check!');
       }
    }
@@ -103,36 +103,36 @@ HopObject.confirmConstructor = function(ref) {
  */
 
 /**
- * 
+ *
  */
 HopObject.prototype.onRequest = function() {
    // Checking if we are on the correct host to prevent at least some XSS issues
-   if (req.action !== "notfound" && req.action !== "error" && 
-         this.href().contains("://") && 
-         !this.href().toLowerCase().startsWith(req.servletRequest.scheme + 
-         "://" + req.servletRequest.serverName.toLowerCase())) {   
+   if (req.action !== "notfound" && req.action !== "error" &&
+         this.href().contains("://") &&
+         !this.href().toLowerCase().startsWith(req.servletRequest.scheme +
+         "://" + req.servletRequest.serverName.toLowerCase())) {
       res.redirect(this.href(req.action === "main" ? String.EMPTY : req.action));
    }
 
    User.autoLogin();
    res.handlers.membership = User.getMembership();
-   
+
    if (User.getCurrentStatus() === User.BLOCKED) {
       session.data.status = 403;
-      session.data.error = gettext("Your account has been blocked.") + String.SPACE + 
+      session.data.error = gettext("Your account has been blocked.") + String.SPACE +
             gettext("Please contact an administrator for further information.");
       User.logout();
       res.redirect(root.href("error"));
    }
-   
-   if (res.handlers.site.status === Site.BLOCKED && 
+
+   if (res.handlers.site.status === Site.BLOCKED &&
          !User.require(User.PRIVILEGED)) {
       session.data.status = 403;
       session.data.error = gettext("The site you requested has been blocked.") +
             String.SPACE + gettext("Please contact an administrator for further information.");
       res.redirect(root.href("error"));
    }
-   
+
    HopObject.confirmConstructor(Layout);
    res.handlers.layout = res.handlers.site.layout || new Layout;
    res.skinpath = res.handlers.layout.getSkinPath();
@@ -146,7 +146,7 @@ HopObject.prototype.onRequest = function() {
       User.getLocation();
       res.status = 401;
       res.data.title = gettext("{0} 401 Error", root.title);
-      res.data.body = root.renderSkinAsString("$Root#error", {error: 
+      res.data.body = root.renderSkinAsString("$Root#error", {error:
             gettext("You are not allowed to access this part of the site.")});
       res.handlers.site.renderSkin("Site#page");
       session.data.error = null;
@@ -177,7 +177,7 @@ HopObject.prototype.delete_action = function() {
    if (req.postParams.proceed) {
       try {
          var parent = this._parent;
-         var url = this.constructor.remove.call(this, req.postParams) || 
+         var url = this.constructor.remove.call(this, req.postParams) ||
                parent.href();
          res.message = gettext("{0} was successfully deleted.", gettext(this._prototype));
          res.redirect(User.getLocation() || url);
@@ -207,7 +207,7 @@ HopObject.prototype.touch = function() {
 }
 
 /**
- * 
+ *
  */
 HopObject.prototype.log = function() {
    var entry = new LogEntry(this, "main");
@@ -216,15 +216,15 @@ HopObject.prototype.log = function() {
 }
 
 /**
- * 
+ *
  * @param {String} action
  */
 HopObject.prototype.notify = function(action) {
    var self = this;
    var site = res.handlers.site;
-   
+
    var getPermission = function(scope, mode, status) {
-      if (scope === Admin.NONE || mode === Site.NOBODY || 
+      if (scope === Admin.NONE || mode === Site.NOBODY ||
             status === Site.BLOCKED) {
          return false;
       }
@@ -237,7 +237,7 @@ HopObject.prototype.notify = function(action) {
       }
       return true;
    }
-   
+
    // Helper method for debugging
    var renderMatrix = function() {
       var buf = ['<table border=1 cellspacing=0>'];
@@ -247,7 +247,7 @@ HopObject.prototype.notify = function(action) {
                var perm = getPermission(scope.value, mode.value, status.value);
                buf.push('<tr style="');
                perm && buf.push('color: blue;');
-               if (scope.value === root.notificationScope && mode.value === 
+               if (scope.value === root.notificationScope && mode.value ===
                      site.notificationMode && status.value === site.status) {
                   buf.push(' background-color: yellow;');
                }
@@ -274,7 +274,7 @@ HopObject.prototype.notify = function(action) {
    site.members.forEach(function() {
       var membership = res.handlers.membership = this;
       if (getPermission(root.notificationScope, site.notificationMode, site.status)) {
-         sendMail(membership.creator.email, gettext("[{0}] Notification of site changes", 
+         sendMail(membership.creator.email, gettext("[{0}] Notification of site changes",
                root.title), self.renderSkinAsString("$HopObject#notify_" + action));
       }
    });
@@ -296,7 +296,7 @@ HopObject.prototype.getTags = function() {
 }
 
 /**
- * 
+ *
  * @param {Tag[]|String} tags
  */
 HopObject.prototype.setTags = function(tags) {
@@ -309,7 +309,7 @@ HopObject.prototype.setTags = function(tags) {
    } else if (tags.constructor === String) {
       tags = tags.split(/\s*,\s*/);
    }
-   
+
    var diff = {};
    var tag;
    for (var i in tags) {
@@ -326,7 +326,7 @@ HopObject.prototype.setTags = function(tags) {
       }
       diff[this.tag.name] = (tags.indexOf(this.tag.name) < 0) ? this : 0;
    });
-   
+
    for (var tag in diff) {
       switch (diff[tag]) {
          case 0:
@@ -345,7 +345,7 @@ HopObject.prototype.setTags = function(tags) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  */
 HopObject.prototype.addTag = function(name) {
@@ -354,7 +354,7 @@ HopObject.prototype.addTag = function(name) {
 }
 
 /**
- * 
+ *
  * @param {String} tag
  */
 HopObject.prototype.removeTag = function(tag) {
@@ -367,7 +367,7 @@ HopObject.prototype.removeTag = function(tag) {
 }
 
 /**
- * 
+ *
  * @param {Object} values
  */
 HopObject.prototype.map = function(values) {
@@ -378,7 +378,7 @@ HopObject.prototype.map = function(values) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -396,7 +396,7 @@ HopObject.prototype.skin_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -408,7 +408,7 @@ HopObject.prototype.input_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -420,7 +420,7 @@ HopObject.prototype.textarea_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -435,7 +435,7 @@ HopObject.prototype.select_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -458,7 +458,7 @@ HopObject.prototype.checkbox_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -481,7 +481,7 @@ HopObject.prototype.radiobutton_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} name
  */
@@ -494,7 +494,7 @@ HopObject.prototype.upload_macro = function(param, name) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {HopObject} [handler]
  */
@@ -513,7 +513,7 @@ HopObject.prototype.macro_macro = function(param, handler) {
 }
 
 /**
- * 
+ *
  */
 HopObject.prototype.kind_macro = function() {
    var type = this.constructor.name.toLowerCase();
@@ -526,7 +526,7 @@ HopObject.prototype.kind_macro = function() {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Number|String}
  */
@@ -556,14 +556,14 @@ HopObject.prototype.self_macro = function(param, property) {
 }
 
 /**
- * 
+ *
  */
 HopObject.prototype.type_macro = function() {
    return res.write(this.constructor.name);
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} url
  * @param {String} text
@@ -581,7 +581,7 @@ HopObject.prototype.link_macro = function(param, url, text) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} format
  */
@@ -594,7 +594,7 @@ HopObject.prototype.created_macro = function(param, format) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} format
  */
@@ -607,7 +607,7 @@ HopObject.prototype.modified_macro = function(param, format) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} mode
  */
@@ -626,7 +626,7 @@ HopObject.prototype.creator_macro = function(param, mode) {
 }
 
 /**
- * 
+ *
  * @param {Object} param
  * @param {String} mode
  */
@@ -660,7 +660,7 @@ HopObject.prototype.toString = function() {
 }
 
 /**
- * 
+ *
  * @param {String} text
  * @param {Object} param
  * @param {String} action

@@ -51,7 +51,7 @@ var db = function() {
 var ResultWrapper = function(result) {
    var columns = [];
    this.values = {};
-   
+
    for (var i=1; i<=result.getColumnCount(); i+=1) {
       columns.push(result.getColumnName(i));
    }
@@ -62,7 +62,7 @@ var ResultWrapper = function(result) {
       }
       return;
    }
-   
+
    return this;
 }
 
@@ -92,7 +92,7 @@ var init = function() {
    } else {
       status("running");
    }
-  return true; 
+  return true;
 }
 
 var finalize = function() {
@@ -157,8 +157,8 @@ var query = function(type) {
    var param = {};
    for (var i=1; i<arguments.length; i+=1) {
       param["value" + i] = arguments[i];
-   } 
-   return renderSkinAsString("convert#" + type, param).replace(/\n|\r/g, " ");   
+   }
+   return renderSkinAsString("convert#" + type, param).replace(/\n|\r/g, " ");
 }
 
 var clean = function(str) {
@@ -191,7 +191,7 @@ var update = function(tableName) {
       execute(parts[1].substr(index));
    }
    return;
-   
+
 }
 
 var id = function() {

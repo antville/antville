@@ -37,7 +37,7 @@ var aspects = {
       args[0] = param;
       return args;
    },
-   
+
    fixMacroParams: function(args) {
       var param = args[0];
       var id = args[1] || param.name || param.id;
@@ -49,7 +49,7 @@ var aspects = {
       delete(param.linkto);
       return [param, id, mode, url];
    },
-   
+
    fixStoryEditorParams: function(args, func, story) {
       // IE6 sends the button text instead of the value; thus, we
       // need to check for the "editableby" property as well :/
@@ -64,18 +64,18 @@ var aspects = {
             var status = [Story.PUBLIC, Story.SHARED, Story.OPEN];
             req.postParams.status = status[req.postParams.editableby] || req.postParams.editableBy;
          }
-         req.postParams.mode = (req.postParams.addToFront ? 
+         req.postParams.mode = (req.postParams.addToFront ?
                Story.FEATURED : Story.HIDDEN);
-         req.postParams.commentMode = (req.postParams.discussions ? 
+         req.postParams.commentMode = (req.postParams.discussions ?
                Story.OPEN : Story.CLOSED);
       }
       req.postParams.addToFront = null;
       req.postParams.discussions = null;
       req.postParams.editableby = null;
-      req.postParams.publish = null;      
+      req.postParams.publish = null;
       return args;
    },
-   
+
    fixPager: function(args, func, obj) {
       var archive = res.handlers.day = obj.archive || obj;
       res.push();
@@ -245,7 +245,7 @@ Members.prototype.onCodeUpdate = function() {
          }
          return permission;
       });
-      
+
       return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
    }
 }());

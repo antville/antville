@@ -33,7 +33,7 @@
 Api.blogger = {};
 
 /**
- * 
+ *
  * @param {String} content
  */
 Api.blogger._getContentParts = function(content) {
@@ -46,7 +46,7 @@ Api.blogger._getContentParts = function(content) {
       var pos = content.lastIndexOf("</title>");
       if (pos > 0) {
          result.title = content.substring(7, pos);
-         result.text = content.substring (pos + 8); 
+         result.text = content.substring (pos + 8);
       } else {
          result.text = content;
       }
@@ -55,7 +55,7 @@ Api.blogger._getContentParts = function(content) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {String} name
  * @param {String} password
@@ -75,11 +75,11 @@ Api.blogger.getUserInfo = function(appKey, name, password) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {String} name
  * @param {String} password
- * @returns {Object[]} A list of objects with the properties blogid, blogName and 
+ * @returns {Object[]} A list of objects with the properties blogid, blogName and
  * url
  */
 Api.blogger.getUsersBlogs = function(appKey, name, password) {
@@ -100,7 +100,7 @@ Api.blogger.getUsersBlogs = function(appKey, name, password) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {Number} id
  * @param {String} name
@@ -116,7 +116,7 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
 
    Api.constrain(site, user);
    if (!site.stories.getPermission("main")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to get recent posts of site " + site.name);
    }
 
@@ -128,7 +128,7 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
          postid: story._id,
          userid: story.creator.name,
          dateCreated: story.created,
-         content: story.title ? "<title>" + story.title + 
+         content: story.title ? "<title>" + story.title +
                "</title>" + story.text : story.text
       });
    }
@@ -136,7 +136,7 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {Number} id
  * @param {String} name
@@ -147,15 +147,15 @@ Api.blogger.getRecentPosts = function(appKey, id, name, password, limit) {
 Api.blogger.getPost = function(appKey, id, name, password) {
    var story = Api.getStory(id);
    var user = Api.getUser(name, password);
-   
+
    Api.constrain(story.site, user);
    if (!story.getPermission("main")) {
-      throw Error("Permission denied for user " + name + 
+      throw Error("Permission denied for user " + name +
             " to get post #" + id);
    }
 
    return {
-      content: story.title ? html.elementAsString("title", story.title) + 
+      content: story.title ? html.elementAsString("title", story.title) +
             story.text : story.text,
       userid: story.creator.name,
       postid: story._id,
@@ -164,7 +164,7 @@ Api.blogger.getPost = function(appKey, id, name, password) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {Number} id
  * @param {String} name
@@ -177,10 +177,10 @@ Api.blogger.getPost = function(appKey, id, name, password) {
 Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
    var site = Api.getSite(id);
    var user = Api.getUser(name, password);
-   
+
    Api.constrain(site, user);
    if (!site.stories.getPermission("create")) {
-      throw Error("Permission denied for user " + user.name + 
+      throw Error("Permission denied for user " + user.name +
             " to add a post to site " + site.name);
    }
 
@@ -197,7 +197,7 @@ Api.blogger.newPost = function(appKey, id, name, password, content, publish) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {Number} id
  * @param {String} name
@@ -213,7 +213,7 @@ Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
 
    Api.constrain(story.site, user);
    if (!story.getPermission("edit")) {
-      throw Error("Permission denied for user " + name + 
+      throw Error("Permission denied for user " + name +
             " to edit post #" + id);
    }
 
@@ -229,7 +229,7 @@ Api.blogger.editPost = function(appkey, id, name, password, content, publish) {
 }
 
 /**
- * 
+ *
  * @param {String} appKey
  * @param {Number} id
  * @param {String} name
@@ -243,7 +243,7 @@ Api.blogger.deletePost = function(appKey, id, name, password) {
 
    Api.constrain(story.site, user);
    if (!story.getPermission("delete")) {
-      throw Error("Permission denied for user " + name + 
+      throw Error("Permission denied for user " + name +
             " to delete story #" + id);
    }
 

@@ -23,12 +23,12 @@
 
 
 /**
- * @fileoverview 
+ * @fileoverview
  * A parser script that converts GNU Gettext .po files into plain JavaScript objects
  * for use with jala.I18n. To run it either start the build script of HopKit
  * or call it directly using the JavaScript shell of Rhino:
  * <code>java -cp rhino.jar org.mozilla.javascript.tools.shell.Main PoParser.js <input> <output> [namespace]</code>
- * 
+ *
  * The accepted arguments are:
  * <ul>
  * <li><code>input</code>: Either a single .po file or a directory containing multiple files</li>

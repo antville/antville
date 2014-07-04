@@ -43,13 +43,13 @@ markgettext("skins");
  * @extends HopObject
  */
 Skins.prototype.constructor = function(name, parent) {
-  this.name = name; 
+  this.name = name;
   this.parent = parent;
   return this;
 }
 
 /**
- * 
+ *
  * @param {String} action
  * @returns {Boolean}
  */
@@ -58,7 +58,7 @@ Skins.prototype.getPermission = function(action) {
 }
 
 /**
- * 
+ *
  * @param {String} name
  * @returns {Skins|Skin}
  */
@@ -70,7 +70,7 @@ Skins.prototype.getChildElement = function(name) {
          return skin;
       }
       if (global[group] || group === "Global") {
-         return this.getSkin(group, name);         
+         return this.getSkin(group, name);
       }
    }
    return new Skins(name, this);
@@ -159,7 +159,7 @@ Skins.prototype.safe_action = function() {
 }
 
 /**
- * 
+ *
  * @param {String} group
  * @param {String} name
  * @returns {Skin}
@@ -169,7 +169,7 @@ Skins.prototype.getSkin = function(group, name) {
 }
 
 /**
- * 
+ *
  * @returns {String}
  */
 Skins.prototype.getOutline = function() {
@@ -202,7 +202,7 @@ Skins.prototype.getOutline = function() {
          for each (var name in skin) {
             subskin = this.getSkin(prototype, name);
             html.openTag("li");
-            html.link({href: subskin.href("edit")}, 
+            html.link({href: subskin.href("edit")},
                   subskin.prototype + "." + subskin.name);
             html.closeTag("li");
          }

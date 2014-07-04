@@ -43,18 +43,18 @@ var Sql = function(options) {
    var SqlData = function(result) {
       var columns = [];
       this.values = {};
-      
+
       for (var i=1; i<=result.getColumnCount(); i+=1) {
          columns.push(result.getColumnName(i).toLowerCase());
       }
-   
+
       this.next = function() {
          for each (var key in columns) {
             this.values[key] = result.getColumnItem(key);
          }
          return;
       }
-      
+
       return this;
    }
 
@@ -99,7 +99,7 @@ var Sql = function(options) {
       }
       return sql;
    }
-   
+
    /**
     * Executes an SQL command.
     * @param {String} sql The SQL command.
@@ -118,7 +118,7 @@ var Sql = function(options) {
       }
       return result;
    }
-   
+
    /**
     * Retrieves an SQL query.
     * @example sql.retrieve('select $1 from $2 order by $1', 'date', 'foo')
@@ -128,7 +128,7 @@ var Sql = function(options) {
    this.retrieve = function() {
       return log.info(query = resolve(arguments));
    }
-   
+
    /**
     * Traverses over the results of an SQL query.
     * @param {Function} callback The callback function executed for each record.
@@ -147,42 +147,42 @@ var Sql = function(options) {
       }
       return;
    }
-   
+
    /**
     * @return {String}
     */
    this.toString = function() {
       return query;
    }
-   
+
    return this;
 }
 
-/** 
+/**
  * SQL query for retrieving the amount of records in a table.
- * @constant 
+ * @constant
  */
 Sql.COUNT = "select count(*) as count from $0";
 
-/** 
+/**
  * SQL query for retrieving the referrers of a site or a story.
- * @constant 
+ * @constant
  */
 Sql.REFERRERS = "select referrer, count(*) as requests from " +
       "log where context_type = '$0' and context_id = $1 and action = " +
       "'main' and created > now() - interval '2 days' group " +
-      "by referrer order by requests desc, referrer asc"; 
+      "by referrer order by requests desc, referrer asc";
 
-/** 
+/**
  * SQL command for deleting all log entries older than 2 days.
- * @constant 
+ * @constant
  */
 Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
       "created < now() - interval '2 days'";
 
-/** 
+/**
  * SQL query for searching stories and comments.
- * @constant 
+ * @constant
  */
 Sql.SEARCH = "select content.id from content, site, metadata where site.id = $0 and " +
       "site.id = content.site_id and content.status in ('public', 'shared', 'open') and " +
@@ -190,37 +190,37 @@ Sql.SEARCH = "select content.id from content, site, metadata where site.id = $0 
       "lower(metadata.value) like lower('%$1%') group by content.id, content.created " +
       "order by content.created desc limit $2";
 
-/** 
+/**
  * SQL query for searching members.
- * @constant 
+ * @constant
  */
 Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
       "order by name asc limit $2";
 
-/** 
+/**
  * SQL query for retrieving all story IDs in a site’s archive.
- * @constant 
+ * @constant
  */
 Sql.ARCHIVE = "select id from content where site_id = $0 and prototype = 'Story' and " +
       "status in ('public', 'shared', 'open') $1 $2 limit $3 offset $4";
 
-/** 
+/**
  * SQL command for retrieving the size of a site’s archive.
- * @constant 
+ * @constant
  */
 Sql.ARCHIVESIZE = "select count(*) as count from content where site_id = $0 " +
       "and prototype = 'Story' and status in ('public', 'shared', 'open') $1";
 
-/** 
+/**
  * SQL part filtering the archive query.
  * @see Archive#getFilter
- * @constant 
+ * @constant
  */
 Sql.ARCHIVEPART = " and extract($0 from created) = $1";
 
-/** 
+/**
  * SQL part for applying an order to the archive query.
  * @see Archive#stories_macro
- * @constant 
+ * @constant
  */
 Sql.ARCHIVEORDER = "order by created desc";
