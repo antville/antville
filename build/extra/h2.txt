@@ -3,7 +3,7 @@ H2 is dual licensed and available under a modified version of the MPL 1.1 (Mozil
     * You can use H2 for free. You can integrate it into your application (including commercial applications), and you can distribute it.
     * Files containing only your code are not covered by this license (it is 'commercial friendly').
     * Modifications to the H2 source code must be published.
-    * You don't need to provide the source code of H2 if you did not modify anything. 
+    * You don't need to provide the source code of H2 if you did not modify anything.
 
 However, nobody is allowed to rename H2, modify it a little, and sell it as a database engine without telling the customers it is in fact H2. This happened to HSQLDB: a company called 'bungisoft' copied HSQLDB, renamed it to 'RedBase', and tried to sell it, hiding the fact that it was in fact just HSQLDB. It seems 'bungisoft' does not exist any more, but you can use the Wayback Machine and visit old web pages of http://www.bungisoft.com.
 

@@ -1,11 +1,11 @@
 <% #status %>
-<span class="nowrap"><% gettext "Logged in as {0}" 
+<span class="nowrap"><% gettext "Logged in as {0}"
    <% membership.name | membership.link %> %></span>
 <div><% membership.role prefix='(' suffix=')' %></div>
-<% site.members.link edit <% gettext "Edit User Profile" %> prefix="... " 
+<% site.members.link edit <% gettext "Edit User Profile" %> prefix="... "
 suffix="<br />" %>
 <% site.link subscribe <% gettext Subscribe context=verb %> prefix="... " suffix="<br />" %>
-<% site.members.link updated <% gettext Subscriptions %> prefix="... " 
+<% site.members.link updated <% gettext Subscriptions %> prefix="... "
 suffix="<br />" %>
 <% site.members.link logout <% gettext Logout context=verb %> prefix="... " %>
 

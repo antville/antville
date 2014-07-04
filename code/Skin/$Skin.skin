@@ -3,10 +3,10 @@
 <% response.message prefix='<div class="message">' suffix="</div>" %>
 <form method="post" action="<% response.action %>">
 <p class="small">
-<% if <% skin.name %> is "" then 
+<% if <% skin.name %> is "" then
    <% skin.select prototype prefix=<% gettext Prototype suffix=": " %>
    suffix=<% skin.input name prefix=<% gettext Name suffix=": " %> %> %>
-else 
+else
    <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
 %>
 </p>
@@ -60,14 +60,14 @@ $(function() {
 <div class="listSeparator"> </div>
 <table cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<% if <% skin.source %> is null then 
+<% if <% skin.source %> is null then
    <% listItemFlag <% gettext custom %> %>
 %>
 <td class="small">
-   <div class="ample"><strong><% gettext Macro suffix=: %></strong> 
-   <span class='macro-code'>&lt;% 
-   <% if <% skin.prototype %> is Global then 
-   <% skin.name prefix="skin " %> else 
+   <div class="ample"><strong><% gettext Macro suffix=: %></strong>
+   <span class='macro-code'>&lt;%
+   <% if <% skin.prototype %> is Global then
+   <% skin.name prefix="skin " %> else
    <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %> %> %&gt;</span></div>
 </td>
 <td rowspan="2" width="10" nowrap="nowrap"> </td>
@@ -80,7 +80,7 @@ $(function() {
 <tr valign="top">
 <td>
    <div class="storyTitle"><% skin.name prefix=<% skin.prototype suffix="." %> %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% skin.creator link %> 
+   <div class="storyDate"><% gettext "{0} on {1}" <% skin.creator link %>
          <% skin.created short %> %></div>
 </td>
 </tr>

@@ -1,33 +1,33 @@
 /** Called automatically by JsDoc Toolkit. */
 function publish(symbolSet) {
 	publish.conf = {  // trailing slash expected for dirs
-		ext:         ".html",
-		outDir:      JSDOC.opt.d || SYS.pwd+"../out/jsdoc/",
+		ext:      ".html",
+		outDir:    JSDOC.opt.d || SYS.pwd+"../out/jsdoc/",
 		templatesDir: JSDOC.opt.t || SYS.pwd+"../templates/jsdoc/",
-		staticDir:   "static/",
+		staticDir:  "static/",
 		symbolsDir:  "symbols/",
-		srcDir:      "symbols/src/",
-		cssDir:      "css/",
-		fontsDir:    "css/fonts/",
-		jsDir:       "javascript/",
+		srcDir:    "symbols/src/",
+		cssDir:    "css/",
+		fontsDir:   "css/fonts/",
+		jsDir:     "javascript/",
 		templateName: "Codeview",
 		templateVersion: "1.2",
 		templateLink: "http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/"
 	};
-	
+
 	// is source output is suppressed, just display the links to the source file
 	if (JSDOC.opt.s && defined(Link) && Link.prototype._makeSrcLink) {
 		Link.prototype._makeSrcLink = function(srcFilePath) {
 			return "&lt;"+srcFilePath+"&gt;";
 		}
 	}
-	
+
 	// create the folders and subfolders to hold the output
 	IO.mkPath((publish.conf.outDir+publish.conf.cssDir));
 	IO.mkPath((publish.conf.outDir+publish.conf.fontsDir));
 	IO.mkPath((publish.conf.outDir+publish.conf.jsDir));
 	IO.mkPath((publish.conf.outDir+"symbols/src").split("/"));
-	
+
 	// used to allow Link to check the details of things being linked to
 	Link.symbolSet = symbolSet;
 
@@ -39,15 +39,15 @@ function publish(symbolSet) {
 		print("Couldn't create the required templates: "+e);
 		quit();
 	}
-	
+
 	// some utility filters
 	function hasNoParent($) {return ($.memberOf == "")}
 	function isaFile($) {return ($.is("FILE"))}
 	function isaClass($) {return (($.is("CONSTRUCTOR") || $.isNamespace) && ($.alias != "_global_" || !JSDOC.opt.D.noGlobal))}
-	
+
 	// get an array version of the symbolset, useful for filtering
 	var symbols = symbolSet.toArray();
-	
+
 	// create the hilited source code files
 	var files = JSDOC.opt.srcFiles;
  	for (var i = 0, l = files.length; i < l; i++) {
@@ -55,74 +55,74 @@ function publish(symbolSet) {
  		var srcDir = publish.conf.outDir + publish.conf.srcDir;
 		makeSrcFile(file, srcDir);
  	}
- 	
+
  	// get a list of all the classes in the symbolset
  	publish.classes = symbols.filter(isaClass).sort(makeSortby("alias"));
-	
+
 	// create a filemap in which outfiles must be to be named uniquely, ignoring case
 	if (JSDOC.opt.u) {
 		var filemapCounts = {};
 		Link.filemap = {};
 		for (var i = 0, l = publish.classes.length; i < l; i++) {
 			var lcAlias = publish.classes[i].alias.toLowerCase();
-			
+
 			if (!filemapCounts[lcAlias]) filemapCounts[lcAlias] = 1;
 			else filemapCounts[lcAlias]++;
-			
-			Link.filemap[publish.classes[i].alias] = 
+
+			Link.filemap[publish.classes[i].alias] =
 				(filemapCounts[lcAlias] > 1)?
 				lcAlias+"_"+filemapCounts[lcAlias] : lcAlias;
 		}
 	}
-	
+
 	// create each of the class pages
 	for (var i = 0, l = publish.classes.length; i < l; i++) {
 		var symbol = publish.classes[i];
-		
-		symbol.events = symbol.getEvents();   // 1 order matters
+
+		symbol.events = symbol.getEvents();  // 1 order matters
 		symbol.methods = symbol.getMethods(); // 2
-		
+
 		var output = "";
 		output = classTemplate.process(symbol);
-		
+
 		IO.saveFile(publish.conf.outDir+publish.conf.symbolsDir, ((JSDOC.opt.u)? Link.filemap[symbol.alias] : symbol.alias) + publish.conf.ext, output);
 	}
-	
+
 	// create the class index page
 	try {
 		var classesindexTemplate = new JSDOC.JsPlate(publish.conf.templatesDir+"allclasses.tmpl");
 	}
 	catch(e) { print(e.message); quit(); }
-	
+
 	var classesIndex = classesindexTemplate.process(publish.classes);
 	IO.saveFile(publish.conf.outDir, (JSDOC.opt.D.index=="files"?"allclasses":"index")+publish.conf.ext, classesIndex);
 	classesindexTemplate = classesIndex = classes = null;
-	
+
 	// create the file index page
 	try {
 		var fileindexTemplate = new JSDOC.JsPlate(publish.conf.templatesDir+"allfiles.tmpl");
 	}
 	catch(e) { print(e.message); quit(); }
-	
+
 	var documentedFiles = symbols.filter(isaFile); // files that have file-level docs
 	var allFiles = []; // not all files have file-level docs, but we need to list every one
-	
+
 	for (var i = 0; i < files.length; i++) {
 		allFiles.push(new JSDOC.Symbol(files[i], [], "FILE", new JSDOC.DocComment("/** */")));
 	}
-	
+
 	for (var i = 0; i < documentedFiles.length; i++) {
 		var offset = files.indexOf(documentedFiles[i].alias);
 		allFiles[offset] = documentedFiles[i];
 	}
-		
+
 	allFiles = allFiles.sort(makeSortby("name"));
 
 	// output the file index page
 	var filesIndex = fileindexTemplate.process(allFiles);
 	IO.saveFile(publish.conf.outDir, (JSDOC.opt.D.index=="files"?"index":"files")+publish.conf.ext, filesIndex);
 	fileindexTemplate = filesIndex = files = null;
-	
+
 	// copy static files
 	IO.copyFile(publish.conf.templatesDir+"/"+publish.conf.cssDir+"all.css", publish.conf.outDir+"/"+publish.conf.cssDir);
 	IO.copyFile(publish.conf.templatesDir+"/"+publish.conf.cssDir+"screen.css", publish.conf.outDir+"/"+publish.conf.cssDir);
@@ -181,14 +181,14 @@ function include(path) {
 /** Turn a raw source file into a code-hilited page in the docs. */
 function makeSrcFile(path, srcDir, name) {
 	if (JSDOC.opt.s) return;
-	
+
 	if (!name) {
 		name = path.replace(/\.\.?[\\\/]/g, "").replace(/[\\\/]/g, "_");
 		name = name.replace(/\:/g, "_");
 	}
-	
+
 	var src = {path: path, name:name, charset: IO.encoding, hilited: ""};
-	
+
 	if (defined(JSDOC.PluginManager)) {
 		JSDOC.PluginManager.run("onPublishSrc", src);
 	}
@@ -219,18 +219,18 @@ function makeSignature(params) {
 
 /** Find symbol {@link ...} strings in text and turn into html links */
 function resolveLinks(str, from) {
-   str = str.replace(/\{@link ([^}]+)\}/gi,
-     function(match, symbolName) {
+  str = str.replace(/\{@link ([^}]+)\}/gi,
+    function(match, symbolName) {
 	symbolName = symbolName.trim();
 	var index = symbolName.indexOf(' ');
 	if (index > 0) {
-	   var label = symbolName.substring(index + 1);
-	   symbolName = symbolName.substring(0, index);
-	   return new Link().toSymbol(symbolName).withText(label);
+	  var label = symbolName.substring(index + 1);
+	  symbolName = symbolName.substring(0, index);
+	  return new Link().toSymbol(symbolName).withText(label);
 	} else {
-	   return new Link().toSymbol(symbolName);
+	  return new Link().toSymbol(symbolName);
 	}
-     }
-   );
-   return str;
+    }
+  );
+  return str;
 }

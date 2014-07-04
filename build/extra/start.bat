@@ -2,7 +2,7 @@
 :: The Antville Project
 :: http://code.google.com/p/antville
 ::
-:: Copyright 2001-2007 by The Antville People
+:: Copyright 2001–2014 by the Workers of Antville.
 ::
 :: Licensed under the Apache License, Version 2.0 (the ``License'');
 :: you may not use this file except in compliance with the License.
@@ -15,11 +15,6 @@
 :: WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 :: See the License for the specific language governing permissions and
 :: limitations under the License.
-::
-:: $Revision:3333 $
-:: $LastChangedBy:piefke3000 $
-:: $LastChangedDate:2007-09-15 01:25:23 +0200 (Sat, 15 Sep 2007) $
-:: $URL$
 ::
 
 @echo off

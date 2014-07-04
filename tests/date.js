@@ -1,14 +1,14 @@
 var tests = ["example"];
 
 var setup = function() {
-   return;
+  return;
 }
 
 var cleanup = function() {
-   return;
+  return;
 }
 
 var example = function() {
-   assertEqual(1, 1);
-   return;
+  assertEqual(1, 1);
+  return;
 }

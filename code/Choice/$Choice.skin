@@ -1,7 +1,7 @@
 <% #main %>
 <tr>
 <td valign="top" width="5%">
-   <input type="radio" id="<% choice.id %>" name="choice" 
+   <input type="radio" id="<% choice.id %>" name="choice"
    value="<% choice.id %>" <% if <% choice.selected %> is true then
       'checked="checked"'
    %> />
@@ -13,17 +13,17 @@
 <div class="choice" style="margin-top: 5px;">
    <span class="small"><% gettext Choice %> #<% param.index %>:</span>
    <div>
-      <input type="text" name="title" class="formText" 
+      <input type="text" name="title" class="formText"
             value="<% choice.title %>" />
    </div>
 </div>
 
 <% #result %>
 <p>
-   <div style="width: <% choice.votes 300 default="1" %>px;" 
+   <div style="width: <% choice.votes 300 default="1" %>px;"
    class="pollResultsBar"></div>
-   <span class="small"><% choice.votes % | format #.#% %> 
-   <% ngettext "{0} vote" "{0} votes" <% choice.votes %> 
+   <span class="small"><% choice.votes % | format #.#% %>
+   <% ngettext "{0} vote" "{0} votes" <% choice.votes %>
    prefix="(" suffix=")" %></span><br />
    <% choice.title %>
 </p>

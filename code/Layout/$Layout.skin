@@ -22,7 +22,7 @@ $(function() {
    <% layout.link export <% gettext Export %> prefix=" | " %>
    <% layout.link reset <% gettext Reset %> prefix=" | " %>
 </div>
-... 
+...
 <% layout.link images <% gettext Images %> %>
 <% layout.link skins <% gettext Skins %> prefix=" | " %>
 <% //layout.link sandbox <% gettext Sandbox %> prefix=" | " %>
@@ -70,6 +70,6 @@ $(function() {
 <% #value %>
 <tr>
 <td class="small"><% param.key %>:</td>
-<td><input type="text" name="value_<% param.key %>" 
+<td><input type="text" name="value_<% param.key %>"
       value="<% param.value %>" size="40" /></td>
 </tr>

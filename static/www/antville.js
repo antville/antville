@@ -1,82 +1,82 @@
 $(function() {
-   
-   setLayoutMode();
 
-   // Extend jQuery with selectText() method.
-   $.fn.selectText = function() {
-      var element = this.get(0);
-      if (document.body.createTextRange) { // ms
-         var range = document.body.createTextRange();
-         range.moveToElementText(element);
-         range.select();
-      } else if (window.getSelection) { // moz, opera, webkit
-         var selection = window.getSelection();            
-         var range = document.createRange();
-         range.selectNodeContents(element);
-         selection.removeAllRanges();
-         selection.addRange(range);
-      }
-   }
-      
-   // Go back one step in history when clicking on links with the cancel class.
-   $("a.cancel").click(function(event) {
-      event.preventDefault();
-      history.back();
-   });
+  setLayoutMode();
 
-   // Select the macro code when clicking on elements with the macro-code class.
-   $('.macro-code').click(function(event) {
-      $(this).selectText();
-   });
+  // Extend jQuery with selectText() method.
+  $.fn.selectText = function() {
+    var element = this.get(0);
+    if (document.body.createTextRange) { // ms
+      var range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select();
+    } else if (window.getSelection) { // moz, opera, webkit
+      var selection = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(element);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
 
-   // Group related <option> elements by inserting additional <optgroup> elements.
-   var groups = [],
-         element = $("form#prefs #timeZone");
-   element.find("option").each(function(index, item) {
-      var zone = $(item),
-            parts = zone.html().split("/"), // E.g. Europe/Vienna
-            group = parts[0];
+  // Go back one step in history when clicking on links with the cancel class.
+  $("a.cancel").click(function(event) {
+    event.preventDefault();
+    history.back();
+  });
 
-      if ($.inArray(group, groups) < 0) {
-         groups.push(group);
-      }
-   });
-   groups.sort();
-   $.each(groups, function(index, group) {
-      var key = group + "/"; // E.g. Europe/
-      element.find("option:contains(" + key + ")")
-            .wrapAll($("<optgroup>").attr("label", group))
-            .each(function(index, item) {
-               $(item).html($(item).html().replace(key, ""));
-            });
-   });
+  // Select the macro code when clicking on elements with the macro-code class.
+  $('.macro-code').click(function(event) {
+    $(this).selectText();
+  });
+
+  // Group related <option> elements by inserting additional <optgroup> elements.
+  var groups = [],
+      element = $("form#prefs #timeZone");
+  element.find("option").each(function(index, item) {
+    var zone = $(item),
+        parts = zone.html().split("/"), // E.g. Europe/Vienna
+        group = parts[0];
+
+    if ($.inArray(group, groups) < 0) {
+      groups.push(group);
+    }
+  });
+  groups.sort();
+  $.each(groups, function(index, group) {
+    var key = group + "/"; // E.g. Europe/
+    element.find("option:contains(" + key + ")")
+        .wrapAll($("<optgroup>").attr("label", group))
+        .each(function(index, item) {
+          $(item).html($(item).html().replace(key, ""));
+        });
+  });
 
 });
 
 function setLayoutMode(mode) {
-   if (mode === false || $('.skin-control').length < 0) {
-      $('.skin-control').remove();
-      return;
-   }
-   /*$('body').prepend($('<div>').attr('class', 'layout-sandbox')
-         .append($('<div>')
-            .append($('<button>')
-               .html('Exit Sandbox')
-               .click(function() {
-                  location.replace($('a[href$="sandbox"]').attr('href'));
-               }))));*/
-   $('.skin').each(function() {
-      var skinButton = $('<div class="skin-control"><a class="skin-edit-link">');
-      skinButton.find('a').attr({
-         href: $(this).data('href'),
-         title: 'Click to edit ' + $(this).data('name') + ' skin'
-      }).mouseover(function() {
-         $(this).parents('.skin').eq(0).addClass('active');
-      }).mouseout(function() {
-         $(this).parents('.skin').eq(0).removeClass('active');
-      }).html('Ⓢ');
-      $(this).append(skinButton);
-   });
+  if (mode === false || $('.skin-control').length < 0) {
+    $('.skin-control').remove();
+    return;
+  }
+  /*$('body').prepend($('<div>').attr('class', 'layout-sandbox')
+      .append($('<div>')
+        .append($('<button>')
+          .html('Exit Sandbox')
+          .click(function() {
+            location.replace($('a[href$="sandbox"]').attr('href'));
+          }))));*/
+  $('.skin').each(function() {
+    var skinButton = $('<div class="skin-control"><a class="skin-edit-link">');
+    skinButton.find('a').attr({
+      href: $(this).data('href'),
+      title: 'Click to edit ' + $(this).data('name') + ' skin'
+    }).mouseover(function() {
+      $(this).parents('.skin').eq(0).addClass('active');
+    }).mouseout(function() {
+      $(this).parents('.skin').eq(0).removeClass('active');
+    }).html('Ⓢ');
+    $(this).append(skinButton);
+  });
 }
 
 /**
@@ -285,75 +285,75 @@ Antville = {};
 Antville.prefix = "Antville_";
 
 Antville.encode = function(str) {
-   var chars = ["&", "<", ">", '"'];
-   for (var i in chars) {
-      var c = chars[i];
-      var re = new RegExp(c, "g");
-      str = str.replace(re, "&#" + c.charCodeAt() + ";");
-   }
-   return str;
+  var chars = ["&", "<", ">", '"'];
+  for (var i in chars) {
+    var c = chars[i];
+    var re = new RegExp(c, "g");
+    str = str.replace(re, "&#" + c.charCodeAt() + ";");
+  }
+  return str;
 }
 
 Antville.decode = function(str) {
-   return str.replace(/&amp;/g, "&");
+  return str.replace(/&amp;/g, "&");
 }
 
 Antville.Referrer = function(url, text, count) {
-   this.url = url;
-   this.text = text;
-   this.count = count;
-   this.compose = function(key, prefix) {
-      var query = new Antville.Query(this.url);
-      if (query[key]) {
-         if (prefix == null)
-            prefix = "";
-         return prefix + Antville.encode(query[key]);
-      }
-      return this.text;
-   }
-   return this;
+  this.url = url;
+  this.text = text;
+  this.count = count;
+  this.compose = function(key, prefix) {
+    var query = new Antville.Query(this.url);
+    if (query[key]) {
+      if (prefix == null)
+        prefix = "";
+      return prefix + Antville.encode(query[key]);
+    }
+    return this.text;
+  }
+  return this;
 }
 
 Antville.Query = function(str) {
-   if (str == undefined)
-      var str = location.search.substring(1);
-   else if (str.indexOf("?") > -1)
-      var str = str.split("?")[1];
-   if (str == "")
-      return this;
-   var parts = Antville.decode(decodeURIComponent(str)).split("&");
-   for (var i in parts) {
-      var pair = parts[i].split("=");
-      var key = pair[0];
-      if (key) {
-         key = key.replace(/\+/g, " ");
-         var value = pair[1];
-         if (value)
-            value = value.replace(/\+/g, " ");
-         this[key] = value;
-      }
-   }
-   return this;
+  if (str == undefined)
+    var str = location.search.substring(1);
+  else if (str.indexOf("?") > -1)
+    var str = str.split("?")[1];
+  if (str == "")
+    return this;
+  var parts = Antville.decode(decodeURIComponent(str)).split("&");
+  for (var i in parts) {
+    var pair = parts[i].split("=");
+    var key = pair[0];
+    if (key) {
+      key = key.replace(/\+/g, " ");
+      var value = pair[1];
+      if (value)
+        value = value.replace(/\+/g, " ");
+      this[key] = value;
+    }
+  }
+  return this;
 }
 
 Antville.Filter = function(def, key) {
-   this.key = key;
-   if (def == null)
-      this.items = [];
-   else if (def instanceof Array)
-      this.items = def;
-   else
-      this.items = def.replace(/\r/g, "\n").split("\n");
-   this.test = function(str) {
-      if (!str)
-         return false;
-      str = str.replace(/&amp;/g, "&");
-      for (var n in this.items) {
-         var re = new RegExp(this.items[n], "i");
-         if (re.test(str))
-            return true;
-      }
+  this.key = key;
+  if (def == null)
+    this.items = [];
+  else if (def instanceof Array)
+    this.items = def;
+  else
+    this.items = def.replace(/\r/g, "\n").split("\n");
+  this.test = function(str) {
+    if (!str)
       return false;
-   }
-   return this;
+    str = str.replace(/&amp;/g, "&");
+    for (var n in this.items) {
+      var re = new RegExp(this.items[n], "i");
+      if (re.test(str))
+        return true;
+    }
+    return false;
+  }
+  return this;
 }

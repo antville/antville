@@ -1,22 +1,22 @@
 <% #welcome %>
 <p><% gettext "The site is currently {0}." <% gettext <% site.mode %> %> %>
-<% if <% site.mode %> is closed then 
-   <% gettext "This means that only you and other {0} of this site have access 
-   to it. You can safely start to customize it or to fill it with all the 
+<% if <% site.mode %> is closed then
+   <% gettext "This means that only you and other {0} of this site have access
+   to it. You can safely start to customize it or to fill it with all the
    content you have in mind." <% site.members.link owners <% gettext owners %> %> %>
-else <% if <% site.mode %> is restricted then "" else 
+else <% if <% site.mode %> is restricted then "" else
    <% gettext "Thus, it is publicly accessible for every visitor." %> %>
 %></p>
-<p><% gettext 'The easiest way to customize your site is to change its 
-      <a href="{0}">preferences</a>. You can change the language and time zone 
-      or the main title of your site, open or close it and much more.' 
+<p><% gettext 'The easiest way to customize your site is to change its
+      <a href="{0}">preferences</a>. You can change the language and time zone
+      or the main title of your site, open or close it and much more.'
       <% site.href edit %> %></p>
-<p><% gettext 'Of course, you can now also start to create <a href="{0}">stories</a>, 
-      upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create 
-      your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful 
-      customization possibilities by having a look at the <a href="{4}">layout 
-      section</a> where you can modify the appearance of your site according to 
-      your needs.' <% site.stories.href create %> <% site.images.href create %> 
+<p><% gettext 'Of course, you can now also start to create <a href="{0}">stories</a>,
+      upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create
+      your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful
+      customization possibilities by having a look at the <a href="{4}">layout
+      section</a> where you can modify the appearance of your site according to
+      your needs.' <% site.stories.href create %> <% site.images.href create %>
       <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %></p>
 <p><% gettext "Have a lot of fun!" %></p>
 
@@ -33,7 +33,7 @@ else <% if <% site.mode %> is restricted then "" else
 <p class="storyTitle"><% response.title %></p>
 <div class="ample">...
 <% members.link updated <% gettext "Updates" %> %>
-<% members.link privileges <% gettext Privileges %> prefix="| " %> 
+<% members.link privileges <% gettext Privileges %> prefix="| " %>
 <% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
 </div>
 <p><% response.list %></p>
@@ -47,7 +47,7 @@ $(function() {
       var password = $("#password").val();
       if (password) {
          $("#digest").val($.md5($.md5(password + salt) + token));
-      } 
+      }
       var newPassword = $("#newPassword").val();
       var newPasswordConfirm = $("#newPasswordConfirm").val();
       $("input:password").val("");
@@ -80,7 +80,7 @@ $(function() {
 </tr>
 <tr>
 <td class="small" nowrap="nowrap"><% gettext "Confirm Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
+<td nowrap="nowrap"><input type="password" name="newPasswordConfirm"
       id="newPasswordConfirm" size="20" /></td>
 </tr>
 <tr>
@@ -90,7 +90,7 @@ $(function() {
 <tr>
 <td class="small" valign="top" nowrap="nowrap"><% gettext "Personal URL" suffix=: %></td>
 <td><% user.input url size=30 %><br />
-<span class="small"><% gettext "If you enter a URL here your user name will 
+<span class="small"><% gettext "If you enter a URL here your user name will
 appear as link next to your posted items." %></span></td>
 </tr>
 <tr>
@@ -112,7 +112,7 @@ appear as link next to your posted items." %></span></td>
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>
 
-<% gettext "You (or someone pretending to be you) requested to reset your 
+<% gettext "You (or someone pretending to be you) requested to reset your
       account password for the site {0} at {1}." <% site.title %> <% site.href %> %>
 
 <% gettext "To confirm the request please click the link below." %>

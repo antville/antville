@@ -1,10 +1,7 @@
 // The Antville Project
 // http://code.google.com/p/antville
 //
-// Copyright 2007-2011 by Tobi Schäfer.
-//
-// Copyright 2001–2007 Robert Gaggl, Hannes Wallnöfer, Tobi Schäfer,
-// Matthias & Michael Platzer, Christoph Lincke.
+// Copyright 2001–2014 by the Workers of Antville.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -17,11 +14,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $URL$
 
 /**
  * @fileOverview  Overwrites some SQL queries for H2 database compatibility.
@@ -35,4 +27,4 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
 Sql.REFERRERS = "select referrer, count(*) as requests from " +
       "log where context_type = '$0' and context_id = $1 and action = " +
       "'main' and created > dateadd('day', -2, current_date()) group " +
-      "by referrer order by requests desc, referrer asc"; 
+      "by referrer order by requests desc, referrer asc";

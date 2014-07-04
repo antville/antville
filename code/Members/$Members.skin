@@ -5,7 +5,7 @@
 </div>
 ... <% members.link main <% gettext All %> %>
 <% members.link owners <% gettext Owners %> prefix="| " %>
-<% members.link managers <% gettext Managers %> prefix="| " %> 
+<% members.link managers <% gettext Managers %> prefix="| " %>
 <% members.link contributors <% gettext Contributors %> prefix="| " %>
 <% members.link subscribers <% gettext Subscribers %> prefix="| " %>
 <% response.pager %>
@@ -41,7 +41,7 @@ $(function() {
 <table border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td class="small"><% gettext "Username" suffix=":" %></td>
-<td><input type="text" name="name" id="name" tabindex="1" size="20" 
+<td><input type="text" name="name" id="name" tabindex="1" size="20"
       value="<% request.name encoding="form" %>" /></td>
 <td rowspan="4"> </td>
 <td class="small"><% members.link register <% gettext
@@ -56,7 +56,7 @@ $(function() {
 <tr>
 <td> </td>
 <td colspan="4" class="small"><input type="checkbox" id="remember"
-      name="remember" tabindex="3" <% if <% request.remember %> is "on" then 
+      name="remember" tabindex="3" <% if <% request.remember %> is "on" then
       'checked="checked"' %> />
    <label for="remember"><% gettext "Remember Login" %></label></td>
 </tr>
@@ -119,7 +119,7 @@ $(function() {
 <tr>
 <td></td>
 <td><br />
-<button type="submit" id="submit" name="register" 
+<button type="submit" id="submit" name="register"
 value="register"><% gettext Register %></button>
 <a href="" class="cancel"><% gettext Cancel %></a></td>
 </tr>
@@ -128,18 +128,18 @@ value="register"><% gettext Register %></button>
 
 <% #reset %>
 <p class="storyTitle"><% response.title %></p>
-<p class="small"><% gettext "Enter your username and the e-mail address you 
-have used when you registered. You will then receive a confirmation e-mail 
-containing further instructions." %></p> 
+<p class="small"><% gettext "Enter your username and the e-mail address you
+have used when you registered. You will then receive a confirmation e-mail
+containing further instructions." %></p>
 <form id="login" method="post" action="<% response.action %>">
 <div class="small"><% gettext Username suffix=: %></div>
-<div><input type="text" name="name" id="name" size="30" tabindex="1" 
+<div><input type="text" name="name" id="name" size="30" tabindex="1"
 value="<% request.name encoding="form" %>" /></div>
 <div class="small"><% gettext e-mail suffix=: %></div>
-<div><input type="text" name="email" id="email" size="30" tabindex="2" 
+<div><input type="text" name="email" id="email" size="30" tabindex="2"
 value="<% request.email encoding="form" %>"/></div>
 <br />
-<button type="submit" id="submit" name="reset" value="1" 
+<button type="submit" id="submit" name="reset" value="1"
 tabindex="4"><% gettext "Send Request" %></button>
 <a href="" class="cancel"><% gettext Cancel %></a>
 </form>
@@ -150,12 +150,12 @@ tabindex="4"><% gettext "Send Request" %></button>
 <div class="small"><% gettext Password suffix=: %></div>
 <div><input type="password" name="password" id="password" size="15" tabindex="1" /></div>
 <div class="small"><% gettext "Confirm Password" suffix=: %></div>
-<div><input type="password" name="passwordConfirm" id="passwordConfirm" 
+<div><input type="password" name="passwordConfirm" id="passwordConfirm"
 size="15" tabindex="2" /></div>
 <input type="hidden" name="user" id="user" value="<% request.user %>" />
 <input type="hidden" name="token" id="token" value="<% request.token %>" />
 <br />
-<button type="submit" id="submit" name="save" value="1" 
+<button type="submit" id="submit" name="save" value="1"
 tabindex="4"><% gettext Save %></button>
 <a href="" class="cancel"><% gettext Cancel %></a>
 </form>
@@ -166,7 +166,7 @@ tabindex="4"><% gettext Save %></button>
 <div class="small"><% gettext 'You can use the asterisk * as wildcard.' %></div>
 <br />
 <form method="post" action="<% response.action %>">
-<input type="text" name="term" id="term" 
+<input type="text" name="term" id="term"
 value="<% request.term encoding="form" %>" />
 <button type="submit" name="search" value="1"><% gettext Search %></button>
 <a href="<% this.href %>"><% gettext Cancel %></a>
