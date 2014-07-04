@@ -669,6 +669,6 @@ Story.prototype.url_filter = function(value, param, mode) {
  * @returns {String}
  */
 Story.prototype.getConfirmText = function() {
-   return gettext("You are about to delete a story by user {0}.", 
-         this.creator.name);
+   return gettext("You are about to delete a story by user {0}.",
+         this.creator ? this.creator.name : 'null');
 }
