@@ -43,7 +43,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 </form>
 
 <% #robots %>
-## See http://www.robotstxt.org for more information
+# See http://www.robotstxt.org for more information
 #User-agent: *
 #Disallow: /
 #User-agent: BadBot

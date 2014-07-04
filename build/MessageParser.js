@@ -1,7 +1,6 @@
-//
 // Jala Project [http://opensvn.csie.org/traccgi/jala]
 //
-// Copyright 2004 ORF Online und Teletext GmbH
+// Copyright 2004 ORF Online und Teletext GmbH.
 //
 // Licensed under the Apache License, Version 2.0 (the ``License'');
 // you may not use this file except in compliance with the License.
@@ -14,13 +13,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-// $Revision$
-// $LastChangedBy$
-// $LastChangedDate$
-// $HeadURL$
-//
-
 
 /**
  * @fileoverview
@@ -405,7 +397,7 @@ MessageParser.prototype.getPotString = function() {
   buf.append('# The Antville Project\n');
   buf.append('# http://code.google.com/p/antville\n');
   buf.append('#\n');
-  buf.append('# Copyright 2001-' + date.getFullYear() + ' by The Antville People\n');
+  buf.append('# Copyright 2001-' + date.getFullYear() + ' by the Workers of Antville.\n');
   buf.append('#\n');
   buf.append("# Licensed under the Apache License, Version 2.0 (the ``License''\n");
   buf.append('# you may not use this file except in compliance with the License.\n');
@@ -418,12 +410,7 @@ MessageParser.prototype.getPotString = function() {
   buf.append('# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n');
   buf.append('# See the License for the specific language governing permissions and\n');
   buf.append('# limitations under the License.\n');
-  buf.append('#\n');
-  buf.append('# $Revision$\n');
-  buf.append('# $Author$\n');
-  buf.append('# $Date$\n');
-  buf.append('# $URL$\n');
-  buf.append('#\n');
+  buf.append('#\n\n');
   buf.append('#, fuzzy\n');
   buf.append('msgid ""\n');
   buf.append('msgstr ""\n');
