@@ -2,8 +2,13 @@
 <% param.path %>
 
 <% #include %>
-document.writeln('<' + 'scr' + 'ipt type="text/javascript"' +
-      'src="<% param.href %>"></' + 'scr' + 'ipt>');
+document.writeln('<script type="text/javascript" src="<% param.href %>"><\/script>');
+<% // This does not work because the asynchronous loading causes nasty side-effects
+"var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '<% param.href %>';
+document.head.appendChild(script);"
+%>
 
 <% #listItem %>
 <tr>

@@ -22,7 +22,7 @@ else
 </p>
 </form>
 
-<script type='text/javascript' src='<% root.static codemirror-compressed.js %>'></script>
+<script type='text/javascript' src='<% root.static codemirror-custom.min.js %>'></script>
 
 <!-- Individual includes for testing purposes
 <link rel='stylesheet' href='<% root.static codemirror2/mode/helma/skin.css %>'>
