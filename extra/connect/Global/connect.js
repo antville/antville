@@ -136,7 +136,7 @@ Feature.add("connect", "http://code.google.com/p/antville/wiki/ConnectFeature", 
       break;
 
       case "twitter":
-      provider = scribe.builder.api.TwitterApi;
+      provider = scribe.builder.api.TwitterApi.SSL;
       requestUrl = "https://api.twitter.com/1.1/account/verify_credentials.json";
       getValues = function(data) {
         return {
