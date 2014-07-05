@@ -42,7 +42,7 @@ If you think you found a bug [please report it](http://project.antville.org).
 
 A good place for your feature requests or proposals is the [project development site](http://project.antville.org).
 
-Since Antville is open-source, you are definitely encouraged to modify the application, we would be happy to hear from your ideas, suggestions and changes – drop us a message via [mail@antville.org]() or use any of the aforementioned channels.
+Since Antville is open-source, you are definitely encouraged to modify the application, we would be happy to hear from your ideas, suggestions and changes – drop us a message via <mail@antville.org> or use any of the aforementioned channels.
 
 For those of you who demonstrated a commitment to collaborative open-source development through sustained participation and contributions within the development of Antville, there will also be other ways to participate.
 
