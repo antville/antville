@@ -64,10 +64,10 @@ body {
    background-color: #cfc;
 }
 </style>
+<script type="text/javascript" src="<% site.href main.js %>"></script>
 </head>
 <body>
 <span style='float: right'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
-<script type="text/javascript" src="<% site.href main.js %>"></script>
 <% response.body %>
 </body>
 </html>
