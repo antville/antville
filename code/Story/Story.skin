@@ -88,12 +88,16 @@
 <% this.text | this.format %>
 
 <% #history %>
-<div class="historyItem">
-   <% this.summary %>
-   <div class="small">
-      <% this.creator %>, <span title="<% this.modified %>"><% this.modified text %></span>
-   </div>
-</div>
+<li>
+   <a href='<% this.href %>' title='<% this.modified %>'>
+      <% this.summary %>
+      <div>
+         <small>
+            <% this.creator %>, <% this.modified text %>
+         </small>
+      </div>
+   </a>
+</li>
 
 <% #result %>
 <br /><% this.summary %>

@@ -1,14 +1,29 @@
 <% #status %>
-<span class="nowrap"><% gettext "Logged in as {0}"
-   <% membership.name | membership.link %> %></span>
-<div><% membership.role prefix='(' suffix=')' %></div>
-<% site.members.link edit <% gettext "Edit User Profile" %> prefix="... "
-suffix="<br />" %>
-<% site.link subscribe <% gettext Subscribe context=verb %> prefix="... " suffix="<br />" %>
-<% site.members.link updated <% gettext Subscriptions %> prefix="... "
-suffix="<br />" %>
-<% site.members.link logout <% gettext Logout context=verb %> prefix="... " %>
+<small>
+  <% gettext 'Logged in as {0}' <% membership.name | membership.link %> %>
+  <% membership.role prefix=( suffix=) %>
+</small>
+<ul class='uk-nav uk-nav-side'>
+  <li>
+    <% site.members.link edit <% gettext "Edit User Profile" %> %>
+  </li>
+  <li>
+    <% site.link subscribe <% gettext Subscribe context=verb %> %>
+  </li>
+  <li>
+    <% site.members.link updated <% gettext Subscriptions %> %>
+  </li>
+  <li>
+    <% site.members.link logout <% gettext Logout context=verb %> %>
+  </li>
+</ul>
 
 <% #login %>
-<div><% gettext "You are not logged in" %></div>
-<div><% site.members.link login <% gettext Login context=verb %> prefix="... " %></div>
+<small>
+  <% gettext "You are not logged in" %>
+</small>
+<ul class='uk-nav uk-nav-side'>
+  <li>
+    <% site.members.link login <% gettext Login context=verb %> %>
+  </li>
+</ul>
