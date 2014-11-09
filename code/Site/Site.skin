@@ -15,17 +15,17 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
 <li class='uk-nav-divider'></li>
-<li><% site.stories.link create <% gettext "Add Story" %> %></li>
-<li><% site.stories.link main <% gettext Stories %> %></li>
-<li><% site.images.link main <% gettext Images %> %></li>
-<li><% site.files.link main <% gettext Files %> %></li>
-<li><% site.polls.link main <% gettext Polls %> %></li>
-<li><% site.members.link main <% gettext Members %> %></li>
+<% site.stories.link create <% gettext "Add Story" %> prefix=<li> suffix=</li> %>
+<% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
+<% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
+<% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
+<% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
+<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
 <li class='uk-nav-divider'></li>
-<li><% site.link edit <% gettext Preferences %> %></li>
-<li><% site.layout.link main <% gettext Layout %> %></li>
-<li><% site.link referrers <% gettext Referrers %> %></li>
-<li><% site.stories.link top <% gettext "Top Stories" %> %></li>
+<% site.link edit <% gettext Preferences %> prefix=<li> suffix=</li> %>
+<% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
+<% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
+<% site.stories.link top <% gettext "Top Stories" %> prefix=<li> suffix=</li> %>
 <li class='uk-nav-divider'></li>
 <li><% root.title | root.link %></li>
 
@@ -153,6 +153,7 @@ function openPopup(img, width, height) {
 }
 
 $(function () {
+   // Highlight the current navigation menu item
    var counter = 0;
    $('.uk-nav li').each(function (index, element) {
       if (counter > 0) {
@@ -262,7 +263,7 @@ div.box table {
    margin-right: 0px;
 }
 
-table fieldset {
+p + fieldset {
    width: 360px;
    padding-left: 8px;
    padding-top: 0px;
@@ -496,4 +497,8 @@ span.pageNavSelItem {
 
 .uk-nav-divider + .uk-nav-divider {
   display: none;
+}
+
+a.uk-button {
+   //color: white;
 }

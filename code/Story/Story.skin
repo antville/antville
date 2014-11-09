@@ -10,44 +10,64 @@
 <p><% story.referrers %></p>
 
 <% #edit %>
-<p class="storyTitle"><% response.title %></p>
+<h1><% response.title %></h1>
 <% story.skin $Story#restore %>
-<form method="post" action="<% response.action %>">
-<p>
-   <div class="small"><% gettext Title suffix=: %></div>
-   <div class="backup"><% story.input title class="formTitle" %></div>
-</p>
-<p>
-   <div class="small"><% gettext Text suffix=: %></div>
-   <div class="backup"><% story.textarea text cols="30" rows="15"
-   class="formText" %></div>
-</p>
-<p>
-   <div class="small"><% gettext "Tags (separated by commas):" %></div>
-   <div class="backup"><% story.input tags class=formText %></div>
-</p>
-<p><fieldset>
-   <legend class="small"><% gettext Options %></legend>
-   <p><% gettext "The story is {0} and {1}" <% story.select status %>
-   <% story.select mode %> %></p>
-   <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
-</fieldset></p>
-<p class="small">
-   <% if <% story.creator %> is null then "" else
-      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %>
-   %>
-   <% if <% story.created %> is <% story.modified %> then "" else
-      <% gettext "Last modified by {0} on {1}" <% story.modifier %>
-      <% story.modified %> prefix="<br />" %>
-   %>
-</p>
-<p>
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <button type="button" id="restore" value="1"><% gettext Restore %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</p>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='title'>
+         <% gettext Title %>
+      </label>
+      <div class='uk-form-controls'>
+         <% story.input title class=uk-width-1-1 %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='text'>
+         <% gettext Text %>
+      </label>
+      <div class='uk-form-controls'>
+         <% story.textarea rows=15 text class=uk-width-1-1 data-uk-htmleditor='' %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='tags'>
+         <% gettext "Tags" %>
+      </label>
+      <div class='uk-form-controls' title='Separated by commas' data-uk-tooltip>
+         <% story.input tags class=uk-width-1-1 %>
+      </div>
+   </div>
+   <fieldset class=uk-margin-top>
+      <legend><% gettext Options %></legend>
+      <div class='uk-form-row'>
+         <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>
+      </div>
+      <div class='uk-form-row'>
+         <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>
+      </div>
+      <div class='uk-form-row'>
+         <% if <% story.creator %> is null then "" else
+            <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %>
+         %>
+         <% if <% story.created %> is <% story.modified %> then "" else
+            <% gettext "Last modified by {0} on {1}" <% story.modifier %>
+            <% story.modified %> prefix="<br />" %>
+         %>
+      </div>
+   </fieldset>
+   <div class='uk-form-row uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <button class='uk-button' type="button" id="restore" value="1">
+         <% gettext Restore %>
+      </button>
+      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+   </div>
 </form>
-<% list macros %>
+<div class='uk-margin-large-top'>
+   <% list macros %>
+</div>
 
 <% #date %>
 <div class="dayHeader"><% story.created date %></div>

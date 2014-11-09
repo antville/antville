@@ -21,7 +21,7 @@
          <% gettext Username %>
       </label>
       <div class='uk-form-controls'>
-         <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>">
+         <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>" class=uk-form-width-medium>
          <% members.link register <% gettext "Not registered yet\?" %> tabindex="6" %>
       </div>
    </div>
@@ -30,7 +30,7 @@
          <% gettext Password %>
       </label>
       <div class='uk-form-controls'>
-         <input type="password" name="password" id="password" tabindex="2">
+         <input type="password" name="password" id="password" tabindex="2" class=uk-form-width-medium>
          <% members.link reset <% gettext "Password forgotten\?" %> tabindex="7" %>
       </div>
    </div>
@@ -85,7 +85,7 @@ $(function() {
          <% gettext Username %>
       </label>
       <div class='uk-form-controls'>
-         <input type="text" name="name" id="name" value="<% request.name encoding="form" %>">
+         <input type="text" name="name" id="name" value="<% request.name encoding="form" %>" class=uk-form-width-medium>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -93,7 +93,7 @@ $(function() {
          <% gettext e-mail %>
       </label>
       <div class='uk-form-controls'>
-         <input type="text" name="email" id="email" value="<% request.email encoding="form" %>">
+         <input type="text" name="email" id="email" value="<% request.email encoding="form" %>" class=uk-form-width-medium>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -101,7 +101,7 @@ $(function() {
          <% gettext Password %>
       </label>
       <div class='uk-form-controls'>
-         <input type="password" name="password" id="password">
+         <input type="password" name="password" id="password" class=uk-form-width-medium>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -109,7 +109,7 @@ $(function() {
          <% gettext "Confirm Password" %>
       </label>
       <div class='uk-form-controls'>
-         <input type="password" name="passwordConfirm" id="passwordConfirm">
+         <input type="password" name="passwordConfirm" id="passwordConfirm" class=uk-form-width-medium>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -141,8 +141,6 @@ $(function() {
 });
 </script>
 
-
-
 <% #reset %>
 <h1><% response.title %></h1>
 <p>
@@ -153,13 +151,13 @@ $(function() {
       <label class='uk-form-label' for='username'>
          <% gettext Username %>
       </label>
-      <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>">
+      <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>" class=uk-form-width-medium>
    </div>
    <div class='uk-form-row'>
       <label class='uk-form-label' for='email'>
          <% gettext e-mail %>
       </label>
-      <input type="text" name="email" id="email" tabindex="2" value="<% request.email encoding="form" %>"/>
+      <input type="text" name="email" id="email" tabindex="2" value="<% request.email encoding="form" %>" class=uk-form-width-medium>
    </div>
    <div class='uk-form-row'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="reset" value="1" tabindex="4"><% gettext "Send Request" %></button>

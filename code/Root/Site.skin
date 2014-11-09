@@ -1,14 +1,20 @@
 <% #main %>
-<p><% gettext 'Antville is an open source project aimed at the development of a
-simple site hosting system with many advanced
-<a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
-<p><% gettext 'One Antville installation can easily host up to several thousands
-      of <a href="{0}">sites</a>.' <% site.href sites %> %></p>
-<p><% site.link create <% gettext "Create a site. It only takes a few clicks." %> %></p>
 <p>
-<% gettext "Total sites hosted here" suffix=: %> <% root.size %><br />
-<% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+   <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %>
 </p>
+<p>
+   <% gettext 'One Antville installation can easily host up to several thousands of <a href="{0}">sites</a>.' <% site.href sites %> %>
+</p>
+<p>
+   <a class='uk-button uk-button-success' href='<% site.href create %>'>
+      <% gettext "Create a site. It only takes a few clicks." %>
+   </a>
+</p>
+<p class='small'>
+   <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br>
+   <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+</p>
+<h1>Recent Updates</h1>
 <table border="0" cellpadding="1" cellspacing="0">
 <colgroup>
    <col width="150" />
