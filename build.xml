@@ -28,16 +28,17 @@
     <echo message="Antville Build Instructions"/>
     <echo message="==========================="/>
     <echo message="Available targets are:"/>
-    <echo message="  all      Generate the Antville and AntClick packages"/>
-    <echo message="  antville  Generate the Antville packages"/>
+    <echo message="  all       Generate the Antville and AntClick packages"/>
     <echo message="  antclick  Generate the AntClick packages"/>
-    <echo message="  release   Copy packages to the download server"/>
-    <echo message="  docs     Generate the API documentation"/>
-    <echo message="  pot      Extract gettext call strings into POT file"/>
+    <echo message="  antville  Generate the Antville packages"/>
+    <echo message="  clean     Clean up build directory"/>
+    <echo message="  docs      Generate the API documentation"/>
     <echo message="  messages  Generate JavaScript message files"/>
-    <echo message="  clean    Clean up build directory"/>
-    <echo message="  patch    Apply patch file to Antville installation"/>
-    <echo message="  usage    Show these build instructions (default)"/>
+    <echo message="  patch     Apply patch file to Antville installation"/>
+    <echo message="  pot       Extract gettext call strings into POT file"/>
+    <echo message="  release   Copy packages to the download server"/>
+    <echo message="  trail     Creates a new trail"/>
+    <echo message="  usage     Show these build instructions (default)"/>
   </target>
 
   <target name="all" depends="antville, antclick"/>
@@ -70,6 +71,7 @@
     <property name="apps.dir" location="${work.dir}/apps"/>
     <property name="antville.dir" location="${apps.dir}/antville"/>
     <property name="hopkit.dir" location="${helma.dir}/modules/jala/util/HopKit"/>
+    <property name="trails.dir" location="${antville.dir}/trails"/>
 
     <property name="docs.title" value="Antville&amp;#32;${version}&amp;#32;API&amp;#32;Reference"/>
     <property name="docs.infiles" location="${basedir}/code"/>
@@ -296,6 +298,24 @@
       <arg value="antville.patch"/>
       <arg value="${patch}"/>
     </java>
+  </target>
+
+  <target name="trail" depends="init">
+    <input message="Please enter the name of the trail: " addproperty="trail.name"/>
+    <script language="javascript"><![CDATA[
+      name = project.getProperty('trail.name');
+      firstLetter = name.substr(0, 1).toUpperCase();
+      title = firstLetter + name.substr(1);
+      project.setProperty('trail.title', title);
+    ]]></script>
+    <property name="trail.dir" value="trails/${trail.name}/${trail.title}"/>
+    <mkdir dir="${trail.dir}"/>
+    <echo file="${trail.dir}/${trail.title}.properties" append="true">#sites = collection(Site)</echo>
+    <echo file="${trail.dir}/${trail.title}.js" append="true">${trail.title}.prototype.main_action = function () {${line.separator}<!--
+    -->  //res.debug(this.sites.count());${line.separator}<!--
+    -->};${line.separator}</echo>
+    <mkdir dir="${trail.dir}/../Trails"/>
+    <echo file="${trail.dir}/../Trails/Trails.properties" append="true">${trail.name} = mountpoint(${trail.title})${line.separator}</echo>
   </target>
 
   <target name="clean" depends="init">
