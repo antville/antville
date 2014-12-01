@@ -91,7 +91,7 @@ else <% if <% site.mode %> is restricted then "" else
    <div class='uk-form-row uk-margin-top'>
       <fieldset>
          <legend><% gettext Connections %></legend>
-         <% feature connect context=profile default=— %>
+         <% trail Connect context=profile default=— %>
       </fieldset>
    </div>
    <div class='uk-form-row uk-margin-top'>

@@ -43,7 +43,7 @@
    <div class='uk-form-row'>
       <fieldset>
          <legend><% gettext Connections %></legend>
-         <% feature connect prefix='' suffix='' %>
+         <% trail Connect prefix='' suffix='' %>
       </fieldset>
    </div>
    <div class='uk-form-row'>
