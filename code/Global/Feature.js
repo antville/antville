@@ -18,6 +18,7 @@
 /**
  * @fileoverview Defines the Feature prototype.
  * Another trial to implement modular features.
+ * @deprecated
  */
 
 /**

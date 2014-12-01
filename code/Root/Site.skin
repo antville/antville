@@ -1,14 +1,20 @@
 <% #main %>
-<p><% gettext 'Antville is an open source project aimed at the development of a
-simple site hosting system with many advanced
-<a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %></p>
-<p><% gettext 'One Antville installation can easily host up to several thousands
-      of <a href="{0}">sites</a>.' <% site.href sites %> %></p>
-<p><% site.link create <% gettext "Create a site. It only takes a few clicks." %> %></p>
 <p>
-<% gettext "Total sites hosted here" suffix=: %> <% root.size %><br />
-<% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+   <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %>
 </p>
+<p>
+   <% gettext 'One Antville installation can easily host up to several thousands of <a href="{0}">sites</a>.' <% site.href sites %> %>
+</p>
+<p>
+   <a class='uk-button uk-button-success' href='<% site.href create %>'>
+      <% gettext "Create a site. It only takes a few clicks." %>
+   </a>
+</p>
+<p class='small'>
+   <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br>
+   <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
+</p>
+<h1>Recent Updates</h1>
 <table border="0" cellpadding="1" cellspacing="0">
 <colgroup>
    <col width="150" />
@@ -18,32 +24,26 @@ simple site hosting system with many advanced
 </table>
 
 <% #navigation %>
-<div class="navigation">
-<div><% site.link main <% gettext Home %> prefix="... " %></div>
-<div><% site.tags.link main <% gettext Tags %> prefix="... " %></div>
-<div><% site.galleries.link main <% gettext Galleries %> prefix="... " %></div>
-</div>
-<p class="navigation">
-<div><% site.link health <% gettext Health %> prefix="... " %></div>
-<div><% site.api.link main <% gettext Interfaces %> prefix="... " %></div>
-<div><% link http://code.google.com/p/antville <% gettext Development %>
-      prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
-<div><% site.stories.link main <% gettext Stories %> prefix="... " %></div>
-<div><% site.images.link main <% gettext Images %> prefix="... " %></div>
-<div><% site.files.link main <% gettext Files %> prefix="... " %></div>
-<div><% site.polls.link main <% gettext Polls %> prefix="... " %></div>
-<div><% site.members.link main <% gettext Members %> prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
-<div><% site.layout.link main <% gettext Layout %> prefix="... " %></div>
-<div><% site.link referrers <% gettext Referrers %> prefix="... " %></div>
-<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% root.title prefix="... " | root.link %></div>
-</p>
+<li><% site.link main <% gettext Home %> %></li>
+<li><% site.tags.link main <% gettext Tags %> %></li>
+<li><% site.galleries.link main <% gettext Galleries %> %></li>
+<li><% site.link rss.xml text="<i class='uk-icon-rss'></i> RSS" %></li>
+<li class='uk-nav-divider'></li>
+<li><% site.link health <% gettext Health %> %></li>
+<li><% site.api.link main <% gettext Interfaces %> %></li>
+<li><% link http://code.google.com/p/antville <% gettext Development %> %></li>
+<li class='uk-nav-divider'></li>
+<% site.stories.link create <% gettext "Add Story" %> prefix=<li> suffix=</li> %>
+<% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
+<% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
+<% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
+<% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
+<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
+<li class='uk-nav-divider'></li>
+<% site.link edit <% gettext Preferences %> prefix=<li> suffix=</li> %>
+<% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
+<% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
+<% site.stories.link top <% gettext "Top Stories" %> prefix=<li> suffix=</li> %>
+<li class='uk-nav-divider'></li>
+<li><% root.title | root.link %></li>
 

@@ -11,35 +11,30 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <% site.created long %> %></p>
 
 <% #navigation %>
-<div class="navigation">
-<div><% site.link main <% gettext Home %> prefix="... " %></div>
-<div><% site.tags.link main <% gettext Tags %> prefix="... " %></div>
-<div><% site.galleries.link main <% gettext Galleries %> prefix="... " %></div>
-</div>
-<p class="navigation">
-<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
-<div><% site.stories.link main <% gettext Stories %> prefix="... " %></div>
-<div><% site.images.link main <% gettext Images %> prefix="... " %></div>
-<div><% site.files.link main <% gettext Files %> prefix="... " %></div>
-<div><% site.polls.link main <% gettext Polls %>prefix="... " %></div>
-<div><% site.members.link main <% gettext Members %> prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
-<div><% site.layout.link main <% gettext Layout %> prefix="... " %></div>
-<div><% site.link referrers <% gettext Referrers %> prefix="... " %></div>
-<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% root.title prefix="... " | root.link %></div>
-</p>
+<li><% site.link main <% gettext Home %> %></li>
+<li><% site.tags.link main <% gettext Tags %> %></li>
+<li><% site.galleries.link main <% gettext Galleries %> %></li>
+<li class='uk-nav-divider'></li>
+<% site.stories.link create <% gettext "Add Story" %> prefix=<li> suffix=</li> %>
+<% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
+<% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
+<% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
+<% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
+<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
+<li class='uk-nav-divider'></li>
+<% site.link edit <% gettext Preferences %> prefix=<li> suffix=</li> %>
+<% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
+<% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
+<% site.stories.link top <% gettext "Top Stories" %> prefix=<li> suffix=</li> %>
+<li class='uk-nav-divider'></li>
+<li><% root.title | root.link %></li>
 
 <% #search %>
-<form class="nowrap" method="post" action="<% site.href search %>">
-   <input type="text" size="15" name="q" class="searchbox"
-   value="<% request.q encoding="form" %>" />
-   <button type="submit" name="search" value="1"
-   class="searchbox"><% gettext Find %></button>
+<form class='uk-form' method='post' action='<% site.href search %>'>
+   <input type='text' class='uk-form-small uk-form-width-small' name='q' value='<% request.q encoding="form" %>'>
+   <button type='submit' name='search' value='1' class='uk-button uk-button-small'>
+      <% gettext Find %>
+   </button>
 </form>
 
 <% #robots %>
@@ -50,75 +45,95 @@ prefix="Last update: " default="None so far" %>)</span></li>
 #Disallow: /foo
 
 <% #page %>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
-<head>
-<title><% response.title %></title>
-<meta http-equiv="Content-Type" content="text/html" />
-<meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
-<link rel="icon" type="image/x-icon" href="<% image /ant-icon.png url %>" />
-<link rel="shortcut icon" type="image/x-icon" href="<% image /ant-icon.png url %>" />
-<link rel="alternate" type="application/rss+xml" title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
-<link rel="alternate" type="application/rss+xml" title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
-<link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
-<link rel="alternate" type="application/rss+xml" title="Sites of <% root.title %>" href="<% root.href updates.xml %>" />
-<link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="<% site.title %>" />
-<script type="text/javascript" src="<% site.href main.js %>"></script>
-</head>
-<body>
+<html>
+   <head>
+      <meta charset='utf-8'>
+      <meta http-equiv='Content-Type' content='text/html'>
+      <meta name='MSSmartTagsPreventParsing' content='TRUE'>
 
-<table class="main" cellspacing="0" cellpadding="0">
-<tr>
-<td class="header">
-   <div><% site.title | site.link title=<% site.tagline %> %></div>
-</td>
-</tr>
-</table>
+      <title><% response.title %></title>
 
-<table class="main">
-<tr>
-<td class="center">
-   <% response.message prefix='<div class="message">' suffix='</div><br />' %>
-   <% response.body %>
-</td>
-<td class="right">
-   <div class="box"><% ngettext "Online for {0} day"
-         "Online for {0} days" <% site.age %> %><br />
-   <% gettext "Last modified: {0}" <% site.modified short %> %></div>
+      <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
 
-   <div class="boxheader"><% gettext Status %></div>
-   <div class="box"><% membership.status %></div>
+      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
 
-   <% root.admin.skin $Admin#navigation %>
+      <link rel='icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
+      <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
 
-   <div class="boxheader"><% gettext "Main Menu" %></div>
-   <div class="box">
-   <% site.skin Site#navigation %>
-   </div>
+      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.min.css %>'>
+      <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
 
-   <div class="boxheader"><% gettext Search %></div>
-   <div class="box"><% site.skin Site#search %></div>
+      <script type='text/javascript' src='<% site.href main.js %>'></script>
+      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/uikit.min.js %>'></script>
+   </head>
+   <body class='uk-container-center' style='width: 800px;'>
 
-   <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">'
-   suffix='</div><div class="box">' %> suffix="</div>" %>
+      <table class='main' cellspacing='0' cellpadding='0'>
+         <tr>
+            <td class='header'>
+               <div><% site.title | site.link title=<% site.tagline %> %></div>
+            </td>
+         </tr>
+      </table>
 
-   <div class="boxheader"><% gettext "Comments" %></div>
-   <div class="box"><% list comments skin=Story#history %></div>
+      <div class='uk-grid'>
+         <div class='uk-width-7-10'>
+            <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
+            <% response.body %>
+         </div>
 
-   <div class="boxline"></div><br />
-   <div class="box"><% image /rss.png | site.link rss.xml %><br />
-   <br />
-   <% image /smallchaos.gif | link http://antville.org %><br />
-   <% image /helma.png | link http://helma.org %></div>
-</td>
-</tr>
-</table>
+         <div class='uk-width-3-10'>
+            <div class='uk-panel uk-panel-box'>
+               <!--h1 class='uk-panel-title'><% gettext Status %></h1-->
+               <small>
+                  <% ngettext 'Online for {0} day' 'Online for {0} days' <% site.age %> %><br>
+                  <% gettext 'Last modified: {0}' <% site.modified short %> %>
+               </small>
+            </div>
 
-</body>
+            <div class='uk-panel uk-panel-box'>
+               <% membership.status %>
+            </div>
+
+            <% root.admin.skin $Admin#navigation %>
+
+            <div class='uk-panel uk-panel-box'>
+               <h1 class='uk-panel-title'><% gettext 'Main Menu' %></h1>
+               <ul class='uk-nav uk-nav-side'>
+                  <% site.skin Site#navigation %>
+               </ul>
+            </div>
+
+            <div class='uk-panel uk-panel-box'>
+               <h1 class='uk-panel-title'><% gettext Search %></h1>
+               <% site.skin Site#search %>
+            </div>
+
+            <div class='uk-panel uk-panel-box'>
+               <h1 class='uk-panel-title'><% gettext Calendar %></h1>
+               <ul class='uk-nav uk-nav-side'>
+                  <% site.calendar %>
+               </ul>
+            </div>
+
+            <div class='uk-panel uk-panel-box'>
+               <h1 class='uk-panel-title'><% gettext Comments %></h1>
+               <ul class='uk-nav uk-nav-side'>
+                  <% list comments skin=Story#history %>
+               </ul>
+            </div>
+
+            <% image /smallchaos.gif | link http://antville.org %><br>
+            <% image /helma.png | link http://helma.org %></div>
+         </div>
+      </div>
+
+   </body>
 </html>
 
 <% #javascript %>
@@ -136,6 +151,21 @@ function openPopup(img, width, height) {
       // imgWindow.focus();
    }
 }
+
+$(function () {
+   // Highlight the current navigation menu item
+   var counter = 0;
+   $('.uk-nav li').each(function (index, element) {
+      if (counter > 0) {
+         return;
+      }
+      var href = $(element).find('a').attr('href');
+      if (href && location.href.lastIndexOf(href) + href.length === location.href.length) {
+         $(element).addClass('uk-active');
+         counter += 1;
+      }
+   });
+});
 
 <% #values %>
 <% value "background color" #ffffff %>
@@ -233,7 +263,7 @@ div.box table {
    margin-right: 0px;
 }
 
-fieldset {
+p + fieldset {
    width: 360px;
    padding-left: 8px;
    padding-top: 0px;
@@ -249,8 +279,10 @@ p {
 
 form { margin: 0px; }
 
-a {text-decoration: none;}
-a:link {color: <% value "link color" %>;}
+a, a:link {
+  text-decoration: none;
+  color: <% value "link color" %>;
+}
 a:visited {color: <% value "visited link color" %>;}
 a:active {color: <% value "active link color" %>;}
 a:hover {text-decoration: underline;}
@@ -459,4 +491,14 @@ span.pageNavSelItem {
 
 .skin-edit-link {
    color: <% value "small font color" %> !important;
+}
+
+/* NEW 1.5 */
+
+.uk-nav-divider + .uk-nav-divider {
+  display: none;
+}
+
+a.uk-button {
+   //color: white;
 }

@@ -39,6 +39,68 @@ else <% if <% site.mode %> is restricted then "" else
 <p><% response.list %></p>
 
 <% #edit %>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <input type="hidden" name="digest" id="digest">
+   <input type="hidden" name="hash" id="hash">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='email'>
+         <% gettext E-mail %>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.input email class='uk-form-width-medium' %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='url'>
+         <% gettext "Personal URL" %>
+      </label>
+      <div class='uk-form-controls'>
+         <span title='<% gettext "If you enter a URL here your user name will appear as link next to your posted items." %>' data-uk-tooltip="{pos: 'right'}">
+            <% user.input url class='uk-form-width-medium' %>
+         </span>
+      </div>
+   </div>
+   <fieldset class=uk-margin-top>
+      <legend><% gettext Password %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='password'>
+            <% gettext "Current Password" %>
+         </label>
+         <div class='uk-form-controls'>
+            <input type="password" name="password" id="password" class='uk-form-width-medium'>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='newPassword'>
+            <% gettext "New Password" %>
+         </label>
+         <div class='uk-form-controls'>
+            <input type="password" name="newPassword" id="newPassword" class='uk-form-width-medium'>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='confirmPassword'>
+            <% gettext "Confirm Password" %>
+         </label>
+         <div class='uk-form-controls'>
+            <input type="password" name="newPasswordConfirm" id="newPasswordConfirm" class='uk-form-width-medium'>
+         </div>
+      </div>
+   </fieldset>
+   <div class='uk-form-row uk-margin-top'>
+      <fieldset>
+         <legend><% gettext Connections %></legend>
+         <% trail Connect context=profile default=— %>
+      </fieldset>
+   </div>
+   <div class='uk-form-row uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+   </div>
+</form>
 <script type="text/javascript">
 $(function() {
    $("#submit").click(function() {
@@ -65,49 +127,7 @@ $(function() {
    });
 });
 </script>
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<input type="hidden" name="digest" id="digest" />
-<input type="hidden" name="hash" id="hash" />
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "Current Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="password" id="password" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "New Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPassword" id="newPassword" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "Confirm Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPasswordConfirm"
-      id="newPasswordConfirm" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext E-mail suffix=: %></td>
-<td><% user.input email size=30 %></td>
-</tr>
-<tr>
-<td class="small" valign="top" nowrap="nowrap"><% gettext "Personal URL" suffix=: %></td>
-<td><% user.input url size=30 %><br />
-<span class="small"><% gettext "If you enter a URL here your user name will
-appear as link next to your posted items." %></span></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap" valign="baseline"><% gettext Connections suffix=: %></td>
-<td>
-<% feature connect context=profile default=— %>
-</td>
-</tr>
-<tr>
-<td nowrap="nowrap"> </td>
-<td><br />
-<button type="submit" id="submit" name="save" value="1"><% gettext Save %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
+
 
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>

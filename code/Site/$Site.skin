@@ -12,10 +12,12 @@ document.head.appendChild(script);"
 
 <% #listItem %>
 <tr>
-<td class="small" title="<% site.modified %>" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
-   <% site.modified text %>
-</td>
-<td style="vertical-align: baseline; padding-left: 10px;"><% site.title | site.link %></td>
+   <td class="small" title="<% site.modified %>" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
+      <% site.modified text %>
+   </td>
+   <td style="vertical-align: baseline; padding-left: 10px;">
+      <% site.title | site.link %>
+   </td>
 </tr>
 
 <% #opensearchdescription %>
@@ -163,6 +165,141 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
 </div>
 
 <% #edit %>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' id="prefs" method="post" action="<% response.action %>">
+   <fieldset>
+      <legend><% gettext General %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='mode'>
+            <% gettext Mode %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.select mode %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='title'>
+            <% gettext Title %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.input title class='uk-width-1-1' %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='tagline'>
+            <% gettext Tagline %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.input tagline class='uk-width-1-1' %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='pageSize'>
+            <% gettext Paging %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.input pageSize class='uk-form-width-mini' maxlength=2 %>
+            <% gettext "{0} per page" <% gettext "stories" %> %>
+            <% // site.select pageMode %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='commentMode'>
+            <% gettext Comments %>
+         </label>
+         <div class='uk-form-controls'>
+            <label>
+               <% site.checkbox commentMode %>
+               enabled
+            </label>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label'>
+            <% gettext Archive %>
+         </label>
+         <div class='uk-form-controls'>
+            <label>
+               <% site.checkbox archiveMode %>
+               <% gettext enabled %>
+            </label>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='locale'>
+            <% gettext Language %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.select locale %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='timeZone'>
+            <% gettext 'Time Zone' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.select timeZone %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='notificationMode'>
+            <% gettext Notifications %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.select notificationMode %>
+         </div>
+      </div>
+   </fieldset>
+   <fieldset class='uk-margin-large-top'>
+      <legend><% gettext Advanced %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='callbackUrl'>
+            <% gettext 'Callback URL' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.input callbackUrl class='uk-width-1-1' %>
+            <label>
+               <% site.checkbox callbackMode %>
+               <% gettext enabled %>
+            </label>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label'>
+            <% gettext 'Disk Space' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.diskspace %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label'>
+            <% gettext Bookmarklet %>
+         </label>
+         <div class='uk-form-controls'>
+            <a class='uk-button' data-uk-tooltip='{pos: "right"}' href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% site.static %>../www/formica.html?s=' + encodeURIComponent(siteUrl) + '&l=' + encodeURIComponent(location.href) + '&r=' + encodeURIComponent(document.referrer) + '&w=400&h=400&c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a>
+         </div>
+      </div>
+   </fieldset>
+   <a id="spamfilter" name="spamfilter"></a>
+   <fieldset class='uk-margin-large-top'>
+      <legend><% gettext "Referrer Spam Filter" %></legend>
+      <div class='uk-form-row'>
+         <div class='uk-form-controls'>
+            <% site.textarea spamfilter rows=5 class='uk-width-1-1' %>
+            <p class="uk-form-help-block">
+               <% gettext "Enter one filter {0}pattern{1} per line to be applied on every URL in the referrer and backlink lists." '<a href="http://en.wikipedia.org/wiki/Regular_expression">' </a> %>
+            </p>
+         </div>
+      </div>
+   </fieldset>
+   <div class='uk-margin-large-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+   </div>
+</form>
 <script>
 $(function() {
    $('input#callbackMode').on('click', function(event) {
@@ -171,94 +308,7 @@ $(function() {
    $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
 });
 </script>
-<p class="storyTitle"><% response.title %></p>
-<form id="prefs" method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="2">
-<colgroup>
-   <col width="150" />
-   <col width="*" />
-</colgroup>
-<tr>
-<td colspan="2">
-   <a id="general" name="general"></a>
-   <strong><% gettext General %></strong>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Mode suffix=: %></td>
-<td><% site.select mode %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Title suffix=: %></td>
-<td><% site.input title size=40 %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Tagline suffix=: %></td>
-<td><% site.input tagline size=40 %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Paging suffix=: %></td>
-<td><% site.input pageSize size="5" maxlength="2" %>
-<% gettext "{0} per page" <% gettext "stories" %> %></td>
-                          <% // site.select pageMode %>
-</tr>
-<tr>
-<td class="small"><% gettext Comments suffix=: %></td>
-<td><% site.checkbox commentMode %>
-<label for="commentMode"><% gettext enabled %></label></td>
-</tr>
-<tr>
-<td class="small"><% gettext Archive suffix=: %></td>
-<td><% site.checkbox archiveMode %>
-<label for="archiveMode"><% gettext enabled %></label></td>
-</tr>
-<tr>
-<td class="small"><% gettext Language suffix=: %></td>
-<td><% site.select locale %></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Time Zone" suffix=: %></td>
-<td><% site.select timeZone %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Notifications suffix=: %></td>
-<td><% site.select notificationMode %></td>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"><% gettext "Callback URL" suffix=: %></td>
-<td><% site.input callbackUrl size=40 %><br />
-<% site.checkbox callbackMode %>
-<label for="callbackMode"><% gettext enabled %><label></td>
-</tr>
-<tr>
-   <td class="small"><% gettext "Disk Space" %>:</td>
-   <td><% site.diskspace %></td>
-</tr>
-<tr>
-   <td class='small'><% gettext 'Bookmarklet' %>:</td>
-   <td><a href="javascript: var siteUrl = '<% site.href %>'; var selection = (window.getSelection) ? window.getSelection() : document.selection.createRange(); selection = selection.text || selection; selection = selection + ''; var url='<% site.static %>../www/formica.html?s=' + encodeURIComponent(siteUrl) + '&l=' + encodeURIComponent(location.href) + '&r=' + encodeURIComponent(document.referrer) + '&w=400&h=400&c=' + encodeURIComponent(selection || document.title); window.open(url, 'formica', 'width=630, height=350'); void 0;" title="<% gettext 'Drag to Bookmarks Bar' %>"><% gettext "Post to {0}" <% site.title %> %></a></td>
-</tr>
-<tr>
-<td colspan="2"><div class="listSeparator"> </div>
-<a id="spamfilter" name="spamfilter"></a>
-<strong><% gettext "Referrer Spam Filter" %></strong>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"><% gettext "Enter one filter {0}pattern{1} per
-line to be applied on every URL in the referrer and backlink lists."
-'<a href="http://en.wikipedia.org/wiki/Regular_expression">' </a> %></td>
-<td valign="top"><% site.textarea spamfilter cols="30" rows="7" %></td>
-</tr>
-<tr>
-<td></td>
-<td><br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</tr>
-</table>
-</form>
+
 
 <% #notify_block %>
 <% gettext 'Hello {0}.' <% membership.name %> %>

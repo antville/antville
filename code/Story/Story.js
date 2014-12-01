@@ -468,9 +468,9 @@ Story.prototype.summary_macro = function(param) {
   var tail = clipped.substring(head.length).trim();
   head = head.trim();
   if (!head && !tail) {
-    head = '...';
+    head = '…';
   }
-  html.link({href: this.href()}, head);
+  param.link ? html.link({href: this.href()}, head) : res.write(head);
   res.writeln('\n');
   res.write(tail);
   return;

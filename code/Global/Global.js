@@ -82,6 +82,7 @@ app.data.entries || (app.data.entries = []);
  * @type Array
  */
 app.data.features || (app.data.features = []);
+app.data.trails || (app.data.trails = []);
 /**
  * In-memory e-mail message queue.
  * They will be sent asynchronously by an Admin method.
@@ -249,6 +250,8 @@ function onStart() {
     app.logger.error('Error in database configuration: no root site found.');
     return;
   }
+  // Load add-ons aka trails
+  Trails.load(getProperty('trails'));
   // This is necessary once to be sure that aspect-oriented code will be applied
   HopObject.prototype.onCodeUpdate && HopObject.prototype.onCodeUpdate();
   return;
