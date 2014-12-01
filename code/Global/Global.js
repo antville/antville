@@ -223,24 +223,29 @@ var rome = new JavaImporter(
  * A simple and hackish implementation of the console instance of some browsers.
  * @namespace
  */
-var console = {
+var console = function (type) {
   /**
    * Convenience method for bridging log output from the server to the client.
    * @methodOf console
    * @param {String} text This text will be displayed in the browser’s console (if available).
    */
-  log: function(text /*, text, … */) {
-    if (!res.meta.__console__) {
-      res.debug('<style>.helma-debug-line {border: none !important;}</style>');
-      res.meta.__console__ = true;
+  return function(text /*, text, … */) {
+    var now = formatDate(new Date, 'yyyy/MM/dd HH:mm:ss');
+    var argString = Array.prototype.join.call(arguments, String.SPACE);
+    writeln('\u001B[34m[' + now + '] [CONSOLE] ' + argString + '\u001B[0m');
+
+    if (typeof res !== 'undefined') {
+      res.writeln('<script>console.' + type + '("%c%s", "color: #39f", ' +
+          JSON.stringify(argString) + ');</script>');
     }
-    var now = formatDate(new Date, Date.ISOFORMAT);
-    Array.prototype.unshift.call(arguments, '[Helma]', now, '===>');
-    var text = Array.prototype.join.call(arguments, ' ');
-    text = text.replace(/(?:\n|\r)/g, '\\n').replace(/('|")/g, '\\$1');
-    res.debug('<script>console.log("' + text + '")</script>');
   }
-}
+};
+
+console.log = console('log');
+console.debug = console('debug');
+console.info = console('info');
+console.warn = console('warn');
+console.error = console('error');
 
 /**
  * The startup handler Helma is calling automatically shortly after the application has started.
