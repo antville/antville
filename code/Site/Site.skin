@@ -11,18 +11,19 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <% site.created long %> %></p>
 
 <% #navigation %>
-<li><% site.link main <% gettext Home %> %></li>
+<li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
+<li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
-<% site.stories.link create <% gettext "Add Story" %> prefix=<li> suffix=</li> %>
+<% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
 <% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
 <% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
 <% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
 <% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
 <% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
 <li class='uk-nav-divider'></li>
-<% site.link edit <% gettext Preferences %> prefix=<li> suffix=</li> %>
+<% site.link edit <% gettext Preferences prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
 <% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
 <% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
 <% site.stories.link top <% gettext "Top Stories" %> prefix=<li> suffix=</li> %>
@@ -94,48 +95,42 @@ prefix="Last update: " default="None so far" %>)</span></li>
          </div>
 
          <div class='uk-width-3-10'>
-            <div class='uk-panel uk-panel-box'>
-               <small>
-                  <% ngettext 'Online for {0} day' 'Online for {0} days' <% site.age %> %><br>
-                  <% gettext 'Last modified: {0}' <% site.modified short %> %>
-               </small>
-            </div>
-
-            <div class='uk-panel uk-panel-box'>
+            <div style='border-left: 1px solid #ddd;'>
                <% membership.status %>
-            </div>
+               <% //root.admin.skin $Admin#navigation %>
 
-            <% root.admin.skin $Admin#navigation %>
-
-            <div class='uk-panel uk-panel-box'>
                <ul class='uk-nav uk-nav-side'>
+                  <li class='uk-nav-divider'/>
                   <% site.skin Site#navigation %>
+                  <li class='uk-nav-divider'/>
+                  <li style='margin-left: 15px;'>
+                     <% site.skin Site#search %>
+                  </li>
+                  <li class='uk-nav-header'/>
+                  <li style='margin-left: 15px;'>
+                     <% site.calendar %>
+                  </li>
                </ul>
             </div>
 
-            <div class='uk-panel uk-panel-box'>
-               <h1 class='uk-panel-title'><% gettext Search %></h1>
-               <% site.skin Site#search %>
-            </div>
-
-            <div class='uk-panel uk-panel-box'>
-               <h1 class='uk-panel-title'><% gettext Calendar %></h1>
-               <ul class='uk-nav uk-nav-side'>
-                  <% site.calendar %>
-               </ul>
-            </div>
-
-            <div class='uk-panel uk-panel-box'>
+            <div class='uk-panel uk-panel-box uk-margin'>
                <h1 class='uk-panel-title'><% gettext Comments %></h1>
                <ul class='uk-nav uk-nav-side'>
                   <% list comments skin=Story#history %>
                </ul>
             </div>
 
-            <% image /smallchaos.gif | link http://antville.org %><br>
-            <% image /helma.png | link http://helma.org %></div>
          </div>
       </div>
+
+      <footer>
+         <small>
+            <% ngettext 'Online for {0} day' 'Online for {0} days' <% site.age %> %>
+            <% gettext 'Last modified: {0}' <% site.modified short %> %>
+         </small>
+         <% image /smallchaos.gif | link http://antville.org %>
+         <% image /helma.png | link http://helma.org %>
+      </footer>
 
    </body>
 </html>
@@ -515,8 +510,14 @@ span.pageNavSelItem {
 
 /* NEW 1.5 */
 
-.uk-nav-divider + .uk-nav-divider {
+.uk-nav-divider + .uk-nav-divider,
+.uk-nav-header + .uk-nav-header {
   display: none;
+}
+
+.uk-nav-side .uk-nav-divider {
+   margin-top: 15px;
+   border-top: none;
 }
 
 a.uk-button {

@@ -1,11 +1,13 @@
 <% #status %>
-<small>
-  <% gettext 'Logged in as {0}' <% membership.name | membership.link %> %>
-  <% membership.role prefix=( suffix=) %>
-</small>
+<div style='margin-left: 15px;'>
+  <small>
+    <% gettext 'Logged in as {0}' <% membership.name | membership.link %> %>
+    <% membership.role prefix=( suffix=) %>
+  </small>
+</div>
 <ul class='uk-nav uk-nav-side'>
   <li>
-    <% site.members.link edit <% gettext "Edit User Profile" %> %>
+    <% site.members.link edit <% gettext "User Profile" %> %>
   </li>
   <li>
     <% site.link subscribe <% gettext Subscribe context=verb %> %>
@@ -14,16 +16,16 @@
     <% site.members.link updated <% gettext Subscriptions %> %>
   </li>
   <li>
-    <% site.members.link logout <% gettext Logout context=verb %> %>
+    <% site.members.link logout <% gettext Logout context=verb prefix="<i class='uk-icon-sign-out'></i> " %> %>
   </li>
 </ul>
 
 <% #login %>
-<small>
-  <% gettext "You are not logged in" %>
-</small>
+<div style='margin-left: 15px;'>
+  <small><% gettext "You are not logged in" %></small>
+</div>
 <ul class='uk-nav uk-nav-side'>
   <li>
-    <% site.members.link login <% gettext Login context=verb %> %>
+    <% site.members.link login <% gettext Login context=verb prefix="<i class='uk-icon-sign-in'></i> " %> %>
   </li>
 </ul>
