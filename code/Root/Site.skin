@@ -27,7 +27,7 @@
 <li><% site.link main <% gettext Home %> %></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
-<li><% site.link rss.xml text="<i class='uk-icon-rss'></i> RSS" %></li>
+<li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
 <li><% site.link health <% gettext Health %> %></li>
 <li><% site.api.link main <% gettext Interfaces %> %></li>
