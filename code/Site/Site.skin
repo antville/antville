@@ -46,7 +46,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #page %>
 <!DOCTYPE html>
-
 <html>
    <head>
       <meta charset='utf-8'>
@@ -65,7 +64,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <link rel='icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
       <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
 
-      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.min.css %>'>
+      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.almost-flat.css %>'>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
 
       <script type='text/javascript' src='<% site.href main.js %>'></script>
@@ -73,13 +72,20 @@ prefix="Last update: " default="None so far" %>)</span></li>
    </head>
    <body class='uk-container-center' style='width: 800px;'>
 
-      <table class='main' cellspacing='0' cellpadding='0'>
-         <tr>
-            <td class='header'>
-               <div><% site.title | site.link title=<% site.tagline %> %></div>
-            </td>
-         </tr>
-      </table>
+      <header style='margin-top: 5px;'>
+         <div style='position: relative;'>
+            <div style='height: 53px; width: 262px; margin-left: -40px; background: url("<% image /webloghead.gif url %>"); float: left;'>
+            </div>
+            <div style='height: 53px; margin-left: 222px;'>
+               <div style='height: 38px; top: 7px; position: relative; background: url("<% image /dot.gif url %>");'></div>
+            </div>
+         </div>
+         <div style='position: relative; top: -50px;  transform: translateY(50%); overflow: visible; white-space: nowrap; font-size: 25px; font-weight: bold;'>
+            <div>
+               <% site.title | site.link title=<% site.tagline %> %>
+            </div>
+         </div>
+      </header>
 
       <div class='uk-grid'>
          <div class='uk-width-7-10'>
@@ -89,7 +95,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
          <div class='uk-width-3-10'>
             <div class='uk-panel uk-panel-box'>
-               <!--h1 class='uk-panel-title'><% gettext Status %></h1-->
                <small>
                   <% ngettext 'Online for {0} day' 'Online for {0} days' <% site.age %> %><br>
                   <% gettext 'Last modified: {0}' <% site.modified short %> %>
@@ -103,7 +108,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
             <% root.admin.skin $Admin#navigation %>
 
             <div class='uk-panel uk-panel-box'>
-               <h1 class='uk-panel-title'><% gettext 'Main Menu' %></h1>
                <ul class='uk-nav uk-nav-side'>
                   <% site.skin Site#navigation %>
                </ul>
@@ -186,6 +190,22 @@ $(function () {
 <% value "small font color" #959595 %>
 
 <% #stylesheet %>
+.av-header {
+   height: 53px;
+   margin-left: -40px;
+   margin-bottom: 1em;
+   padding-left: 40px;
+   background: url(<% image /webloghead.gif url %>);
+   font-size: 25px;
+
+   div {
+     position: relative;
+     top: 50%;
+     transform: translateY(-50%);
+     font-weight: bold;
+   }
+}
+
 body {
    background-color: <% value "background color" %>;
    font-family: <% value "base font" %>;
