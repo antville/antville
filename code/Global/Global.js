@@ -1278,13 +1278,10 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
   // Render a single item for the navigation bar
   var renderItem = function(text, cssClass, url, page) {
     var param = {'class': cssClass};
-    if (!url) {
-      param.text = text;
-    } else {
-      if (url.contains('?'))
-        param.text = html.linkAsString({href: url + '&page=' + page}, text);
-      else
-        param.text = html.linkAsString({href: url + '?page=' + page}, text);
+    param.text = text;
+    if (url) {
+      url += url.contains('?') ? '&' : '?';
+      param.href = url + 'page=' + page;
     }
     renderSkin('$Global#pagerItem', param);
     return;
@@ -1318,24 +1315,30 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
 
   // Render the navigation-bar
   res.push();
-  (pageIdx > 0) && renderItem('[–]', 'pageNavItem', url, pageIdx-1);
+  if (pageIdx < 1) {
+    param.prevClass = 'uk-disabled';
+  } else {
+    param.prevHref = '?page=' + (pageIdx - 1);
+  }
   var offset = Math.floor(pageIdx / maxItems) * maxItems;
-  (offset > 0) && renderItem('[..]', 'pageNavItem', url, offset-1);
+  (offset > 0) && renderItem('…', 'pageNavItem', url, offset-1);
   var currPage = offset;
   var stop = Math.min(currPage + maxItems, lastPageIdx+1);
   while (currPage < stop) {
     if (currPage === pageIdx) {
-      renderItem('[' + (currPage +1) + ']', 'pageNavSelItem');
+      renderItem(currPage + 1, 'uk-active');
     } else {
-      renderItem('[' + (currPage +1) + ']', 'pageNavItem', url, currPage);
+      renderItem(currPage + 1, 'pageNavItem', url, currPage);
     }
     currPage += 1;
   }
   if (currPage < lastPageIdx) {
-    renderItem('[..]', 'pageNavItem', url, offset + maxItems);
+    renderItem('…', 'pageNavItem', url, offset + maxItems);
   }
-  if (pageIdx < lastPageIdx) {
-    renderItem('[+]', 'pageNavItem', url, pageIdx +1);
+  if (pageIdx >= lastPageIdx) {
+    param.nextClass = 'uk-disabled';
+  } else {
+    param.nextHref = '?page=' + (pageIdx + 1);
   }
   param.pager = res.pop();
   return renderSkinAsString('$Global#pager', param);

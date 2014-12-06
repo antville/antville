@@ -1,13 +1,31 @@
 <% #pager %>
-<div class="pageNav">
-<div class="pageNavSummary">
-   <% gettext "Displaying {0} (of {1})" <% param.display %> <% param.total %> %>
-</div>
-<div class="pageNavBar"><% param.pager %></div>
-</div>
+<% // gettext "Displaying {0} (of {1})" <% param.display %> <% param.total %> %>
+<ul class='uk-pagination uk-pagination-right'>
+   <li class='<% param.prevClass %>'>
+      <% if <% param.prevHref %> is null then
+         "<span><i class='uk-icon-angle-double-left'></i></span>"
+      else
+         <% link <% param.prevHref %> "<i class='uk-icon-angle-double-left'></i>" %>
+      %>
+   </li>
+   <% param.pager %>
+   <li class='<% param.nextClass %>'>
+      <% if <% param.nextHref %> is null then
+         "<span><i class='uk-icon-angle-double-right'></i></span>"
+      else
+         <% link <% param.nextHref %> "<i class='uk-icon-angle-double-right'></i>" %>
+      %>
+   </li>
+</ul>
 
 <% #pagerItem %>
-<span class="<% param.class %>"><% param.text %></span>
+<li class='<% param.class %>'>
+   <% if <% param.href %> is null then
+      <% param.text prefix=<span> suffix=</span> %>
+   else
+      <% link <% param.href %> <% param.text %> %>
+   %>
+</li>
 
 <% #upload %>
 <div class="upload" style="position: relative;">
@@ -35,11 +53,8 @@
 
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
 
-<% gettext 'This message was automatically sent to you because you are listed as
-recipient of notification e-mails of the corresponding site.' %>
+<% gettext 'This message was automatically sent to you because you are listed as recipient of notification e-mails of the corresponding site.' %>
 
-<% gettext 'Thus, you will be notified whenever the site has undergone changes
-as specified in the site preferences.' %>
+<% gettext 'Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.' %>
 
-<% gettext 'If you think you have received this e-mail in error please contact
-the maintainer of the site.' %>
+<% gettext 'If you think you have received this e-mail in error please contact the maintainer of the site.' %>
