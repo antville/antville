@@ -93,14 +93,14 @@ body {
    site. Modifying it will affect the general appearance of your site." %></div>
 </div>
 <div class="ample">
+   <% skins.link Site/main/edit <% gettext 'Start Page' %> %>
+   <div class="small"><% gettext "This skin is used to render the start page of
+   your site." %></div>
+</div>
+<div class="ample">
    <% skins.link Site/navigation/edit <% gettext Navigation %> %>
    <div class="small"><% gettext "This skin is used to display the navigation
    links on the page." %></div>
-</div>
-<div class="ample">
-   <% skins.link Site/main/edit <% gettext Frontpage %> %>
-   <div class="small"><% gettext "This skin is used to render the front page of
-   your site." %></div>
 </div>
 <div class="ample">
    <% skins.link Site/stylesheet/edit <% gettext "CSS Stylesheet" %> %>
