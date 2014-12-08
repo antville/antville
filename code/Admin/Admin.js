@@ -505,9 +505,9 @@ Admin.prototype.sites_action = function() {
   }
 
   res.data.list = renderList(session.data.admin.sites,
-      this.renderItem, 10, req.queryParams.page);
+      this.renderItem, 25, req.queryParams.page);
   res.data.pager = renderPager(session.data.admin.sites,
-      this.href(req.action), 10, req.data.page);
+      this.href(req.action), 25, req.data.page);
 
   res.data.title = gettext('Site Administration');
   res.data.action = this.href(req.action);
