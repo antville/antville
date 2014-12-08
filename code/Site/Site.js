@@ -265,6 +265,9 @@ Site.prototype.getPermission = function(action) {
         Membership.require(Membership.OWNER)) ||
         User.require(User.PRIVILEGED);
 
+    case 'delete':
+    return this !== root && this.getPermission('edit');
+
     case 'edit':
     case 'export':
     case 'referrers':
@@ -317,6 +320,23 @@ Site.prototype.edit_action = function() {
   return;
 }
 
+Site.prototype.delete_action = function () {
+  if (req.postParams.proceed) {
+    if (this.stories.size() < 1) {
+      HopObject.prototype.delete_action.call(this);
+    } else {
+      this.deleted = new Date;
+      this.status = Site.BLOCKED;
+      this.mode = Site.DELETED;
+      res.message = gettext('The site {0} is queued for removal.', this.name);
+    }
+    this.log(root, 'Deleted site ' + this.name);
+    res.redirect(this.href());
+  } else {
+    HopObject.prototype.delete_action.call(this);
+  }
+}
+
 /**
  *
  * @param {String} name
@@ -350,6 +370,14 @@ Site.prototype.getFormOptions = function(name) {
 }
 
 /**
+ * @returns {String}
+ */
+Site.prototype.getConfirmText = function() {
+  return gettext('You are about to delete the site {0}.',
+      this.name);
+};
+
+/**
  *
  * @param {Object} data
  */
@@ -377,6 +405,10 @@ Site.prototype.update = function(data) {
     locale: data.locale || root.getLocale().toString(),
     spamfilter: data.spamfilter || ''
   });
+
+  if (User.require(User.PRIVILEGED)) {
+    this.status = data.status;
+  }
 
   this.configured = new Date;
   this.modifier = session.user;

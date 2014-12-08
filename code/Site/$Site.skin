@@ -187,7 +187,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
       </div>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='tagline'>
-            <% gettext Tagline %>
+            <% gettext Description %>
          </label>
          <div class='uk-form-controls'>
             <% site.input tagline class='uk-width-1-1' %>
@@ -293,6 +293,34 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
          </div>
       </div>
    </fieldset>
+
+   <fieldset class='uk-margin-large-top'>
+      <legend><% gettext Admin %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='status'>
+            <% gettext Status %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.select status %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='status'>
+            <% gettext Information %>
+         </label>
+         <div><% ngettext "{0} Story" "{0} Stories" <% count <% site.self stories %> %> %></div>
+         <div><% ngettext "{0} Comment" "{0} Comments" <% count <% site.self comments %> %> %></div>
+         <div><% ngettext "{0} Image" "{0} Images" <% count <% site.self images %> %> %></div>
+         <div><% ngettext "{0} File" "{0} Files" <% count <% site.self files %> %> %></div>
+      </div>
+      <div class='uk-form-row'>
+         <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
+            <i class='uk-icon-trash'></i>
+            Delete this site
+         </a>
+      </div>
+   </fieldset>
+
    <div class='uk-margin-large-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>

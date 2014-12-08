@@ -15,12 +15,9 @@
 </div>
 
 <% #welcome %>
-<p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator
-of this Antville installation you are entitled to administer <a href="{0}">sites</a>
-      and <a href="{1}">users</a>, view the <a href="{2}">administration log</a>
-      and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %>
-      <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %>
-%></p>
+<p>
+   <em><% gettext Note %></em>: <% gettext 'Since you are an administrator of this Antville installation you are entitled to administer <a href="{0}">sites</a> and <a href="{1}">users</a>, view the <a href="{2}">administration log</a> and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %> <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %> %>
+</p>
 
 <% #log %>
 <p class="pageTitle"><% response.title %></p>
@@ -66,87 +63,68 @@ of this Antville installation you are entitled to administer <a href="{0}">sites
 </table>
 
 <% #sites %>
-<p class="pageTitle"><% response.title %></p>
+<h1><% response.title %></h1>
 <form method="post" action="<% response.action %>">
-<table cellspacing="0" cellpadding="2">
-<tr>
-<td class="small"><% gettext Type suffix=: %></td>
-<td>
-   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %>
-         <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %>
-         <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Sort suffix=: %></td>
-<td>
-   <% admin.dropdown name="order" <% markgettext "Last Update" %>
-         <% markgettext "Creation Date" %> <% markgettext Name %> %>
-   <% admin.dropdown name="dir" <% markgettext Descending %>
-         <% markgettext Ascending %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Search suffix=: %></td>
-<td><input id="query" name="query" value="<% request.query encoding="form" %>" />
-      <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
-      <button type="submit" name="search" value="1"><% gettext Update %></button></td>
-</td>
-</tr>
-</table>
+   <table cellspacing="0" cellpadding="2">
+      <tr>
+         <td class="small"><% gettext Type suffix=: %></td>
+         <td>
+            <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %> <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %> <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
+         </td>
+         </tr>
+      <tr>
+         <td class="small"><% gettext Sort suffix=: %></td>
+         <td>
+            <% admin.dropdown name="order" <% markgettext Modified %> <% markgettext "Created" %> <% markgettext Name %> %> <% admin.dropdown name="dir" <% markgettext Descending %> <% markgettext Ascending %> %>
+         </td>
+      </tr>
+      <tr>
+         <td class="small"><% gettext Search suffix=: %></td>
+         <td>
+            <input id="query" name="query" value="<% request.query encoding="form" %>" />
+            <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
+            <button type="submit" name="search" value="1"><% gettext Update %></button>
+         </td>
+      </td>
+      </tr>
+   </table>
 </form>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td>Name</td>
+         <td>Created</td>
+         <td>Modified</td>
+         <td>Status</td>
+         <td>Mode</td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
 
 <% #Site %>
-<a name="<% item.id %>" id="<% item.id %>"></a>
-<table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="2">
-   <span class="label <% item.status %>"><% gettext <% item.status %> %></span><!--
-   --><span class="label <% item.mode %>"><% gettext <% item.mode %> %></span>
-</td>
+   <td>
+      <a name='<% item.id %>' id='<% item.id %>'></a>
+      <div class='uk-text-bold'><% item.title default='<i>Untitled</i>' | item.link %></div>
+      <div class='uk-text-small'><a href='<% item.href %>'><% item.href %></a></div>
+   </td>
+   <td><% item.created short %></td>
+   <td><% item.modified short %></td>
+   <td><% item.status %></td>
+   <td><% item.mode %></td>
+   <td style='white-space: nowrap;'>
+      <% item.link edit "<i class='uk-icon-pencil'></i>" <% item.id %> %>
+      <% if <% item.mode %> is deleted then '' else
+         <% item.link delete "<i class='uk-icon-trash'></i>" <% item.id %> %>
+      %>
+   </td>
 </tr>
-<tr>
-<td width="100%" valign="top">
-   <div><strong><% item.title | item.link %></strong></div>
-   <div><a href="<% item.href %>"><% item.href %></a></div>
-   <div class="small"><% gettext "Created by {0} on {1}" <% item.creator as="link" %>
-   <% item.created short %> %><br />
-   <% gettext "Last updated on" %> <% item.modified short %></div>
-</td>
-<td class="small" valign="top" align="right">
-   <% admin.link edit <% gettext Edit %> <% item.id %> prefix='... ' %>
-   <% if <% item.mode %> is deleted then "" else
-      <% admin.link delete <% gettext Delete %> <% item.id %> prefix="... " %>
-   %>
-</td>
-</tr>
-</table>
-
-<% #editSite %>
-<form method="post" action="<% response.action %>#<% site.id %>">
-<input type="hidden" name="id" value="<% request.id %>" />
-<input type="hidden" name="page" value="<% request.page default="0" %>" />
-<table cellspacing="0" cellpadding="0" width="100%">
-<colgroup>
-   <col width="*" />
-   <col width="150" />
-</colgroup>
-<tr>
-<td valign="top" class="small">
-   <% gettext "Disk Space" %>: <% item.diskspace %><br />
-   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.self stories %> %> suffix="<br />" %>
-   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.self comments %> %> suffix="<br />" %>
-   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.self images %> %> suffix="<br />" %>
-   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.self files %> %> suffix="<br />" %>
-</td>
-<td class="small" align="left">
-   <div style="padding-bottom: 3px;"><% item.select status %></div>
-   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
 
 <% #deleteSite %>
 <form method="post" action="<% response.action %>">

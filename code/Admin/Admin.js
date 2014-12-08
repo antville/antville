@@ -498,29 +498,6 @@ Admin.prototype.log_action = function() {
 }
 
 Admin.prototype.sites_action = function() {
-  if (req.postParams.id) {
-    if (req.postParams.remove === '1') {
-      var site = Site.getById(req.postParams.id);
-      if (site.stories.size() < 1) {
-        Site.remove.call(site);
-        res.message = gettext('The site {0} was successfully removed.', site.name);
-      } else {
-        site.deleted = new Date;
-        site.status = Site.BLOCKED;
-        site.mode = Site.DELETED;
-        res.message = gettext('The site {0} is queued for removal.', site.name);
-      }
-      this.log(root, 'Deleted site ' + site.name);
-      res.redirect(this.href(req.action) + '?page=' + req.postParams.page);
-    } else if (req.postParams.save === '1') {
-      this.updateSite(req.postParams);
-      res.message = gettext('The changes were saved successfully.');
-    }
-    res.redirect(this.href(req.action) + '?page=' + req.postParams.page +
-        '#' + req.postParams.id);
-    return;
-  }
-
   if (req.postParams.search || req.postParams.filter) {
     session.data.admin.filterSites(req.postParams);
   } else if (req.queryParams.id) {
@@ -535,7 +512,6 @@ Admin.prototype.sites_action = function() {
   res.data.title = gettext('Site Administration');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#sites');
-  res.data.body += this.renderSkinAsString('$Admin#main');
   root.renderSkin('Site#page');
   return;
 }
@@ -768,7 +744,13 @@ Admin.prototype.log = function(context, action) {
  * @param {Number} id
  * @param {String} text
  */
-Admin.prototype.link_macro = function(param, action, text, id) {
+
+Admin.prototype.href_macro = function (param, action, id) {
+  res.write(this.href.apply(this, arguments));
+  return;
+};
+
+Admin.prototype.href = function (action, id) {
   switch (action) {
     case 'main':
     action = '.';
@@ -789,20 +771,8 @@ Admin.prototype.link_macro = function(param, action, text, id) {
     }
     break;
   }
-  return HopObject.prototype.link_macro.call(this, param, action, text);
-}
-
-/**
- *
- * @param {Object} param
- * @param {HopObject} object
- */
-Admin.prototype.count_macro = function(param, object) {
-  if (object && object.size) {
-    res.write(object.size());
-  }
-  return;
-}
+  return root.href('admin') + '/' + action;
+};
 
 /**
  *

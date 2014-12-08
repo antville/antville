@@ -377,6 +377,18 @@ function link_macro() {
 }
 
 /**
+ *
+ * @param {Object} param
+ * @param {HopObject} object
+ */
+function count_macro(param, object) {
+  if (object && object.size && object.size instanceof Function) {
+    res.write(object.size());
+  }
+  return;
+}
+
+/**
  * Renders a skin from within a skin.
  * @see HopObject#skin_macro
  * @returns {String} The rendered skin
