@@ -314,7 +314,7 @@ Site.prototype.edit_action = function() {
   }
 
   res.data.action = this.href(req.action);
-  res.data.title = gettext('Site Preferences');
+  res.data.title = gettext('Settings');
   res.data.body = this.renderSkinAsString('$Site#edit');
   this.renderSkin('Site#page');
   return;
