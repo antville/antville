@@ -2,7 +2,7 @@
 <div class="listSeparator"></div>
 <% comment.skin Comment#content %>
 <p class="small">
-   <% comment.link main <% gettext Link %> prefix="... " %> 
+   <% comment.link main <% gettext Link %> prefix="... " %>
    <% comment.link edit <% gettext Edit %> prefix="... " %>
    <% comment.link delete <% gettext Delete %> prefix="... " %>
 </p>
@@ -13,7 +13,7 @@
 
 <% #edit %>
 <% comment.skin $Story#restore %>
-<% if <% comment.creator %> is null then 
+<% if <% comment.creator %> is null then
    <% parent.skin <% parent.type suffix=#comment %> %>
 %>
 <a name="form" id="form"></a>
@@ -28,10 +28,10 @@
    <% comment.textarea text cols="31" rows="10" class="formText" %>
 </p>
 <p class="small">
-   <% if <% comment.creator %> is null then "" else 
-      <% gettext "Created by {0} on {1}" <% comment.creator %> <% comment.created %> %> 
+   <% if <% comment.creator %> is null then "" else
+      <% gettext "Created by {0} on {1}" <% comment.creator %> <% comment.created %> %>
    %>
-   <% if <% comment.created %> is <% comment.modified %> then "" else 
+   <% if <% comment.created %> is <% comment.modified %> then "" else
       <% gettext "Last modified by {0} on {1}" <% comment.modifier %>
       <% comment.modified %> prefix="<br />" %>
    %>
@@ -63,6 +63,6 @@
       <% comment.link main <% gettext Link %> prefix="... " %>
       <% comment.link edit <% gettext Edit %> prefix="... " %>
       <% comment.link delete <% gettext Delete %> prefix="... " %>
-      <% comment.link rotate prefix="... " %>
+      <% comment.link rotate <% gettext Rotate %> prefix="... " %>
    </p>
 </div>
