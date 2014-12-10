@@ -66,10 +66,13 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
 
       <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.almost-flat.css %>'>
+      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/components/form-password.almost-flat.css %>'>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
 
+      <script type='text/javascript' src='//code.jquery.com/jquery-1.11.0.min.js'></script>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
-      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/uikit.min.js %>'></script>
+      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/uikit.js %>'></script>
+      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/components/form-password.js %>'></script>
    </head>
    <body class='uk-container-center' style='width: 800px;'>
 
@@ -518,8 +521,4 @@ span.pageNavSelItem {
 .uk-nav-side .uk-nav-divider {
    margin-top: 15px;
    border-top: none;
-}
-
-a.uk-button {
-   //color: white;
 }

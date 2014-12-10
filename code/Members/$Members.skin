@@ -22,17 +22,24 @@
       </label>
       <div class='uk-form-controls'>
          <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>" class=uk-form-width-medium>
-         <% members.link register <% gettext "Not registered yet\?" %> tabindex="6" %>
+         <button class='uk-button uk-button-link'>
+            <% members.link register <% gettext "Not registered yet\?" %> tabindex="6" %>
+         </button>
       </div>
    </div>
    <div class='uk-form-row'>
       <label class='uk-form-label' for='password'>
          <% gettext Password %>
       </label>
-      <div class='uk-form-controls'>
+      <div class='uk-form-controls uk-form-password'>
          <input type="password" name="password" id="password" tabindex="2" class=uk-form-width-medium>
-         <% members.link reset <% gettext "Password forgotten\?" %> tabindex="7" %>
+         <a href='' class='uk-form-password-toggle' data-uk-form-password="{
+            lblHide: '<% gettext Hide %>'
+         }"><% gettext Show %></a>
       </div>
+      <button class='uk-button uk-button-link'>
+         <% members.link reset <% gettext 'Password forgotten\?' %> tabindex="7" %>
+      </button>
    </div>
    <div class='uk-form-row'>
       <label class='uk-form-label' for='remember'>
@@ -47,7 +54,8 @@
       </fieldset>
    </div>
    <div class='uk-form-row'>
-      <button class='uk-button uk-button-primary' type="submit" id="submit" name="login" value="1" tabindex=4>
+      <input hidden name='login' value='1'>
+      <button class='uk-button uk-button-primary' type="submit" tabindex=4>
          <% gettext Login context=verb %>
       </button>
       <a href="" class="uk-button uk-button-link cancel" tabindex=5><% gettext Cancel %></a>
@@ -55,7 +63,7 @@
 </form>
 <script type="text/javascript">
 $(function() {
-   $("form#login").submit(function() {
+   $("form#login").on('submit', function (event) {
       var name = $("#name").val();
       $.ajax({
          async: false,
@@ -64,11 +72,11 @@ $(function() {
          dataType: "text",
          cache: false,
          error: function() { /* ... */ },
-         success: function(data, status, xhr) {
+         success: function(salt, status, xhr) {
             var password = $("#password").val();
             var token = "<% session.token %>";
             $("input:password").val("");
-            $("#digest").val($.md5($.md5(password + data) + token));
+            $("#digest").val($.md5($.md5(password + salt) + token));
          }
       });
       return true;

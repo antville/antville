@@ -382,31 +382,23 @@ User.prototype.getPermission = function(action) {
   return User.require(User.PRIVILEGED);
 }
 
+User.prototype.edit_action = function () {
+  res.data.title = 'Account ' + this.name;
+  res.data.body = this.renderSkinAsString('$User#edit');
+  res.handlers.site.renderSkin('Site#page');
+};
+
 /**
  *
  * @param {Object} data
  */
 User.prototype.update = function(data) {
-  if (!data.digest && data.password) {
-    data.digest = ((data.password + this.salt).md5() +
-        session.data.token).md5();
+  if (!data.hash && data.password) {
+    data.hash = (data.password + session.data.token).md5();
   }
-  if (data.digest) {
-    if (data.digest !== this.getDigest(session.data.token)) {
-      throw Error(gettext('Oops, your old password is incorrect. Please re-enter it.'));
-    }
-    if (!data.hash) {
-      if (!data.newPassword || !data.newPasswordConfirm) {
-        throw Error(gettext('Please specify a new password.'));
-      } else if (data.newPassword !== data.newPasswordConfirm) {
-        throw Error(gettext('Unfortunately, your passwords did not match. Please repeat your input.'));
-      }
-      data.hash = (data.newPassword + session.data.token).md5();
-    }
-    this.map({
-      hash: data.hash,
-      salt: session.data.token
-    });
+  if (data.hash) {
+    this.hash = data.hash;
+    this.salt = session.data.token;
   }
   if (!(data.email = validateEmail(data.email))) {
     throw Error(gettext('Please enter a valid e-mail address'));

@@ -1,3 +1,3 @@
-window.$ = require('jquery-browserify');
+//window.$ = require('jquery-browserify');
 
 require('./antville');
