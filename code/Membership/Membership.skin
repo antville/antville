@@ -7,7 +7,7 @@
 </div>
 <ul class='uk-nav uk-nav-side'>
   <li>
-    <% site.members.link edit <% gettext "User Profile" %> %>
+    <% site.members.link edit <% gettext Account %> %>
   </li>
   <li>
     <% site.link subscribe <% gettext Subscribe context=verb %> %>

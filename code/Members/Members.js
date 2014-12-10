@@ -205,7 +205,7 @@ Members.prototype.edit_action = function() {
 
   session.data.token = User.getSalt();
   session.data.salt = session.user.salt; // FIXME
-  res.data.title = gettext('User Profile');
+  res.data.title = gettext('Account');
   res.data.body = session.user.renderSkinAsString('$User#edit');
   this._parent.renderSkin('Site#page');
   return;
