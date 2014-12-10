@@ -429,7 +429,20 @@ Admin.prototype.onUnhandledMacro = function(name) {
 }
 
 Admin.prototype.main_action = function() {
-  return res.redirect(this.href('log'));
+  if (req.postParams.search || req.postParams.filter) {
+    session.data.admin.filterLog(req.postParams);
+  }
+
+  res.data.list = renderList(session.data.admin.entries,
+      this.renderItem, 25, req.queryParams.page);
+  res.data.pager = renderPager(session.data.admin.entries,
+      this.href(req.action), 25, req.queryParams.page);
+
+  res.data.title = gettext('Administration Log');
+  res.data.action = this.href(req.action);
+  res.data.body = this.renderSkinAsString('$Admin#log');
+  root.renderSkin('Site#page');
+  return;
 }
 
 Admin.prototype.setup_action = function() {
@@ -480,28 +493,9 @@ Admin.prototype.jobs_action = function() {
   return;
 }
 
-Admin.prototype.log_action = function() {
-  if (req.postParams.search || req.postParams.filter) {
-    session.data.admin.filterLog(req.postParams);
-  }
-  res.data.list = renderList(session.data.admin.entries,
-      this.renderItem, 10, req.queryParams.page);
-  res.data.pager = renderPager(session.data.admin.entries,
-      this.href(req.action), 10, req.queryParams.page);
-
-  res.data.title = gettext('Administration Log');
-  res.data.action = this.href(req.action);
-  res.data.body = this.renderSkinAsString('$Admin#log');
-  res.data.body += this.renderSkinAsString('$Admin#main');
-  root.renderSkin('Site#page');
-  return;
-}
-
 Admin.prototype.sites_action = function() {
   if (req.postParams.search || req.postParams.filter) {
     session.data.admin.filterSites(req.postParams);
-  } else if (req.queryParams.id) {
-    res.meta.item = Site.getById(req.queryParams.id);
   }
 
   res.data.list = renderList(session.data.admin.sites,
@@ -519,24 +513,16 @@ Admin.prototype.sites_action = function() {
 Admin.prototype.users_action = function() {
   if (req.postParams.search || req.postParams.filter) {
     session.data.admin.filterUsers(req.postParams);
-  } else if (req.postParams.save) {
-    this.updateUser(req.postParams);
-    res.message = gettext('The changes were saved successfully.');
-    res.redirect(this.href(req.action) + '?page=' + req.postParams.page +
-        '#' + req.postParams.id);
-  } else if (req.queryParams.id) {
-    res.meta.item = User.getById(req.queryParams.id);
   }
 
   res.data.list = renderList(session.data.admin.users,
-      this.renderItem, 10, req.data.page);
+      this.renderItem, 25, req.data.page);
   res.data.pager = renderPager(session.data.admin.users,
-      this.href(req.action), 10, req.data.page);
+      this.href(req.action), 25, req.data.page);
 
   res.data.title = gettext('User Administration');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#users');
-  res.data.body += this.renderSkinAsString('$Admin#main');
   root.renderSkin('Site#page');
   return;
 }
@@ -675,54 +661,13 @@ Admin.prototype.filterUsers = function(data) {
 
 /**
  *
- * @param {Object} data
- */
-Admin.prototype.updateSite = function(data) {
-  var site = Site.getById(data.id);
-  if (!site) {
-    throw Error(gettext('Please choose a site you want to edit.'));
-  }
-  if (site.status !== data.status) {
-    var current = site.status;
-    site.status = data.status;
-    this.log(site, 'Changed status from ' + current + ' to ' + site.status);
-  }
-  return;
-}
-
-/**
- *
- * @param {Object} data
- */
-Admin.prototype.updateUser = function(data) {
-  var user = User.getById(data.id);
-  if (!user) {
-    throw Error(gettext('Please choose a user you want to edit.'));
-  }
-  if (user === session.user) {
-    throw Error(gettext('Sorry, you are not allowed to modify your own account.'));
-  }
-  if (data.status !== user.status) {
-    var current = user.status;
-    user.status = data.status;
-    this.log(user, 'Changed status from ' + current + ' to ' + data.status);
-  }
-  return;
-}
-
-/**
- *
  * @param {HopObject} item
  */
 Admin.prototype.renderItem = function(item) {
   res.handlers.item = item;
   var name = item._prototype;
-  (name === 'Root') && (name = 'Site');
-  Admin.prototype.renderSkin('$Admin#' + name);
-  if (item === res.meta.item) {
-    Admin.prototype.renderSkin((req.data.action === 'delete' ?
-        '$Admin#delete' : '$Admin#edit') + name);
-  }
+  if (name === 'Root') name = 'Site';
+  Admin.prototype.renderSkin('$Admin#' + name.toLowerCase());
   return;
 }
 
