@@ -374,7 +374,7 @@ Site.prototype.getFormOptions = function(name) {
  */
 Site.prototype.getConfirmText = function() {
   return gettext('You are about to delete the site {0}.',
-      this.name);
+      this.getTitle());
 };
 
 /**
