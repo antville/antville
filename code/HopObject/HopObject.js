@@ -169,8 +169,7 @@ HopObject.prototype.delete_action = function() {
   if (req.postParams.proceed) {
     try {
       var parent = this._parent;
-      var url = this.constructor.remove.call(this, req.postParams) ||
-          parent.href();
+      var url = this.constructor.remove.call(this, req.postParams) || parent.href();
       res.message = gettext('{0} was successfully deleted.', gettext(this._prototype));
       res.redirect(User.getLocation() || url);
     } catch(ex) {

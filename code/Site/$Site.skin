@@ -293,7 +293,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
          </div>
       </div>
    </fieldset>
-
+   <a name='admin' id='admin'></a>
    <fieldset class='uk-margin-large-top'>
       <legend><% gettext Admin %></legend>
       <div class='uk-form-row'>
@@ -320,7 +320,6 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
          </a>
       </div>
    </fieldset>
-
    <div class='uk-margin-large-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
@@ -337,6 +336,17 @@ $(function() {
 });
 </script>
 
+<% #delete %>
+<div class='uk-alert uk-alert-danger'>
+   <% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.'
+      <% ngettext '{0} story' '{0} stories' <% count <% site.self stories %> %> %>
+      <% ngettext '{0} comment' '{0} comments' <% count <% site.self comments %> %> %>
+      <% ngettext '{0} image' '{0} images' <% count <% site.self images %> %> %>
+      <% ngettext '{0} file' '{0} files' <% count <% site.self files %> %> %>
+      <% ngettext '{0} poll' '{0} polls' <% count <% site.self polls %> %> %> %>
+   <strong><% gettext 'All of this will be deleted irreversibly.' %></strong>
+   <% gettext 'Are you sure you want to proceed?' %>
+</div>
 
 <% #notify_block %>
 <% gettext 'Hello {0}.' <% membership.name %> %>

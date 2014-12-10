@@ -1,6 +1,6 @@
 <% #delete %>
 <% if <% comment.creator %> is <% membership.user.name %> then ''
-      else <% if <% comment.related.size %> is null then '' 
+      else <% if <% comment.related.size %> is null then ''
       else <% comment.skin #deleteOptions %> %> %>
 
 <% #deleteOptions %>
@@ -22,14 +22,13 @@ $(function() {
    });
 });
 </script>
-<div>
+<div class='uk-alert uk-alert-warning'>
    <input type="checkbox" id="mode" name="mode" value="user" />
-   <label for="mode"><% gettext "Erase all comments of user {0}" 
+   <label for="mode"><% gettext "Erase all comments of user {0}"
          <% comment.creator %> %></label>
+   <div id="confirmation">
+      <input type="checkbox" id="confirm" name="confirm" value="1" />
+      <label for="confirm"><% ngettext "Yes, really erase {0} comment"
+            "Yes, really erase {0} comments" <% comment.related.size %> %></label>
+   </div>
 </div>
-<div id="confirmation">
-   <input type="checkbox" id="confirm" name="confirm" value="1" />
-   <label for="confirm"><% ngettext "Yes, really erase {0} comment"
-         "Yes, really erase {0} comments" <% comment.related.size %> %></label>
-</div>
-<br />
