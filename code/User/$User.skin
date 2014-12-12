@@ -102,6 +102,14 @@ else <% if <% site.mode %> is restricted then "" else
          <div><% ngettext "{0} File" "{0} Files" <% count <% user.self files %> %> %></div>
       </div>
       <div class='uk-form-row'>
+         <label class='uk-form-label' for='notes'>
+            <% gettext Notes %>
+         </label>
+         <div class='uk-form-controls'>
+            <% user.textarea notes class='uk-width-1-1' rows=5 %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
          <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
             <i class='uk-icon-trash'></i>
             Delete this account

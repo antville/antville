@@ -23,6 +23,7 @@ markgettext('User');
 markgettext('user');
 
 this.handleMetadata('hash');
+this.handleMetadata('notes');
 this.handleMetadata('salt');
 this.handleMetadata('url');
 
@@ -383,6 +384,17 @@ User.prototype.getPermission = function(action) {
 }
 
 User.prototype.edit_action = function () {
+  if (req.postParams.save) {
+    try {
+      this.update(req.postParams);
+      res.message = gettext('The changes were saved successfully.');
+      res.redirect(this.href(req.action));
+    } catch (err) {
+      res.message = err.toString();
+    }
+  }
+  session.data.token = User.getSalt();
+  session.data.salt = session.user.salt;
   res.data.title = 'Account ' + this.name;
   res.data.body = this.renderSkinAsString('$User#edit');
   res.handlers.site.renderSkin('Site#page');
@@ -405,6 +417,13 @@ User.prototype.update = function(data) {
   }
   if (data.url && !(data.url = validateUrl(data.url))) {
     throw Error(gettext('Please enter a valid URL'));
+  }
+  if (this.getPermission('edit')) {
+    if (this.status === User.PRIVILEGED && data.status !== User.PRIVILEGED && root.admins.count() < 2) {
+      throw Error(gettext('You cannot revoke permissions from the only privileged user.'));
+    }
+    this.status = data.status;
+    this.notes = data.notes;
   }
   this.email = data.email;
   this.url = data.url;
