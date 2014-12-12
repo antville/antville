@@ -122,7 +122,10 @@
    </td>
    <td><% item.created short %></td>
    <td><% item.modified short %></td>
-   <td><% item.status %></td>
+   <td>
+      <span title='<% item.notes %>' data-uk-tooltip="{pos: 'top'}">
+      <% item.status %> <% if <% item.notes %> is null then '' else "<i class='uk-icon-info-circle'></i>" %></span>
+   </td>
    <td><% item.mode %></td>
    <td style='white-space: nowrap;'>
       <% item.link edit#admin "<i class='uk-icon-pencil'></i>" <% item.id %> %>
@@ -189,8 +192,8 @@
    <td><% item.modified short %></td>
    <td>
       <span title='<% item.notes %>' data-uk-tooltip="{pos: 'top'}">
-      <% item.status %> <% if <% item.notes %> is null then '' else "<i class='uk-icon-info-circle'></i>" %></td>
-      </span>
+      <% item.status %> <% if <% item.notes %> is null then '' else "<i class='uk-icon-info-circle'></i>" %></span>
+   </td>
    <td style='white-space: nowrap;'>
       <% item.link edit#admin "<i class='uk-icon-pencil'></i>" %>
       <% item.link delete "<i class='uk-icon-trash'></i>" %>

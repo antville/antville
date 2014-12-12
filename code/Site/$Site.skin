@@ -314,6 +314,14 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
          <div><% ngettext "{0} File" "{0} Files" <% count <% site.self files %> %> %></div>
       </div>
       <div class='uk-form-row'>
+         <label class='uk-form-label' for='notes'>
+            <% gettext Notes %>
+         </label>
+         <div class='uk-form-controls'>
+            <% site.textarea notes class='uk-width-1-1' rows=5 %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
          <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
             <i class='uk-icon-trash'></i>
             Delete this site

@@ -33,6 +33,7 @@ this.handleMetadata('export_id');
 this.handleMetadata('import_id');
 this.handleMetadata('job');
 this.handleMetadata('locale');
+this.handleMetadata('notes');
 this.handleMetadata('notificationMode');
 this.handleMetadata('notified');
 this.handleMetadata('pageSize');
@@ -408,6 +409,7 @@ Site.prototype.update = function(data) {
 
   if (User.require(User.PRIVILEGED)) {
     this.status = data.status;
+    this.notes = data.notes;
   }
 
   this.configured = new Date;
