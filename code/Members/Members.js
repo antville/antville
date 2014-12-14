@@ -197,14 +197,13 @@ Members.prototype.edit_action = function() {
     try {
       session.user.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      res.redirect(this._parent.href());
+      res.redirect(this.href(req.action));
     } catch (err) {
       res.message = err.toString();
     }
   }
-
   session.data.token = User.getSalt();
-  session.data.salt = session.user.salt; // FIXME
+  session.data.salt = session.user.salt;
   res.data.title = gettext('Account');
   res.data.body = session.user.renderSkinAsString('$User#edit');
   this._parent.renderSkin('Site#page');
