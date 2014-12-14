@@ -1057,16 +1057,19 @@ function formatDate(date, format) {
     } else if (diff < Date.ONEMINUTE) {
       text = gettext('Right now');
     } else if (diff < Date.ONEHOUR) {
-      text = ngettext('{0} minute ago', '{0} minutes ago',
-          parseInt(diff / Date.ONEMINUTE, 10));
+      text = ngettext('{0} minute ago', '{0} minutes ago', parseInt(diff / Date.ONEMINUTE, 10));
     } else if (diff < Date.ONEDAY) {
-      text = ngettext('{0} hour ago', '{0} hours ago',
-          parseInt(diff / Date.ONEHOUR, 10));
+      text = ngettext('{0} hour ago', '{0} hours ago', parseInt(diff / Date.ONEHOUR, 10));
     } else if (diff < 2 * Date.ONEDAY) {
       text = gettext('Yesterday');
+    } else if (diff < 7 * Date.ONEDAY) {
+      text = ngettext('{0} day ago', '{0} days ago', parseInt(diff / Date.ONEDAY, 10));
+    } else if (diff < 30 * Date.ONEDAY) {
+      text = ngettext('{0} week ago', '{0} weeks ago', parseInt(diff / 7 / Date.ONEDAY, 10));
+    } else if (diff < 365 * Date.ONEDAY) {
+      text = ngettext('{0} month ago', '{0} months ago', parseInt(diff / 30 / Date.ONEDAY, 10));
     } else {
-      text = ngettext('{0} day ago', '{0} days ago',
-          parseInt(diff / Date.ONEDAY, 10));
+      text = ngettext('{0} year ago', '{0} years ago', parseInt(diff / 365 / Date.ONEDAY, 10));
     }
     return text;
 
