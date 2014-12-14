@@ -1,14 +1,11 @@
 <% #delete %>
-<% if <% comment.creator %> is <% membership.user.name %> then ''
-      else <% if <% comment.related.size %> is null then ''
-      else <% comment.skin #deleteOptions %> %> %>
+<% if <% comment.related.size %> is null then '' else <% comment.skin #deleteOptions %> %>
 
 <% #deleteOptions %>
 <script type="text/javascript">
 $(function() {
    $('#confirmation').hide();
    $('#mode').on('click', function() {
-      console.log(1)
       if ($(this).prop('checked')) {
          $('#confirm').attr('checked', false);
          $('#confirmation').show();

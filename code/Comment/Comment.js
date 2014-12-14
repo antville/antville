@@ -61,7 +61,7 @@ Comment.remove = function(options) {
   }
   // Remove all comments of this comment’s creator if corresponding option is set
   if (options && options.mode === 'user' && options.confirm === '1') {
-    var membership = Membership.getByName(this.creator.name, this.site);
+    var membership = Membership.getByName(this.creator.name, this.site, {virtual: true});
     // Not using HopObject.remove() because it will comepletely remove all comments
     membership.comments.forEach(function() {
       Comment.remove.call(this);
@@ -220,7 +220,7 @@ Comment.prototype.getConfirmText = function() {
  */
 Comment.prototype.getMacroHandler = function(name) {
   if (name === 'related') {
-    var membership = Membership.getByName(this.creator.name, this.site);
+    var membership = Membership.getByName(this.creator.name, this.site, {virtual: true});
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
       return {}; // Work-around for issue 88
     }
