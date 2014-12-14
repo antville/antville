@@ -438,7 +438,7 @@ Admin.prototype.main_action = function() {
   res.data.pager = renderPager(session.data.admin.entries,
       this.href(req.action), 25, req.queryParams.page);
 
-  res.data.title = gettext('Administration Log');
+  res.data.title = gettext('Activity');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#log');
   root.renderSkin('Site#page');
@@ -486,10 +486,12 @@ Admin.prototype.update = function(data) {
 
 Admin.prototype.jobs_action = function() {
   var files = Admin.queue.dir.listFiles();
-  for each (var file in files) {
-    var job = deserialize(file);
-    res.debug(job.toSource() + ' – ' + file);
-  }
+  res.data.list = renderList(files, this.renderItem, 25, req.queryParams.page);
+  res.data.pager = renderPager(files, this.href(req.action),  25, req.data.page);
+  res.data.title = gettext('Jobs');
+  res.data.action = this.href(req.action);
+  res.data.body = this.renderSkinAsString('$Admin#jobs');
+  root.renderSkin('Site#page');
   return;
 }
 
@@ -503,7 +505,7 @@ Admin.prototype.sites_action = function() {
   res.data.pager = renderPager(session.data.admin.sites,
       this.href(req.action), 25, req.data.page);
 
-  res.data.title = gettext('Site Administration');
+  res.data.title = gettext('Sites');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#sites');
   root.renderSkin('Site#page');
@@ -520,7 +522,7 @@ Admin.prototype.users_action = function() {
   res.data.pager = renderPager(session.data.admin.users,
       this.href(req.action), 25, req.data.page);
 
-  res.data.title = gettext('User Administration');
+  res.data.title = gettext('Users');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#users');
   root.renderSkin('Site#page');
@@ -666,7 +668,10 @@ Admin.prototype.filterUsers = function(data) {
 Admin.prototype.renderItem = function(item) {
   res.handlers.item = item;
   var name = item._prototype;
-  if (name === 'Root') name = 'Site';
+  if (item.getClass && item.getClass() === java.io.File) {
+      name = 'Job';
+      res.handlers.item = deserialize(item);
+  } else if (name === 'Root') name = 'Site';
   Admin.prototype.renderSkin('$Admin#' + name.toLowerCase());
   return;
 }
