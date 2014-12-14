@@ -226,7 +226,6 @@ create table tag_hub (
   tag_id int(10) unsigned,
   tagged_id int(10) unsigned,
   tagged_type varchar(20),
-  user_id int(10) unsigned,
   primary key  (id),
   key tagged (tag_id,tagged_type,tagged_id)
 );

@@ -253,8 +253,7 @@ create table antville.tag_hub (
   id int4 primary key,
   tag_id int4,
   tagged_id int4,
-  tagged_type varchar(20),
-  user_id int4
+  tagged_type varchar(20)
 );
 
 create index tagged_idx on antville.tag_hub (tag_id, tagged_id, tagged_type);

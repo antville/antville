@@ -324,7 +324,7 @@ HopObject.prototype.setTags = function(tags) {
       // Do nothing (tag already exists)
       break;
       case 1:
-      // Add tag to story
+      // Add tag
       this.addTag(tag);
       break;
       default:
@@ -340,7 +340,7 @@ HopObject.prototype.setTags = function(tags) {
  * @param {String} name
  */
 HopObject.prototype.addTag = function(name) {
-  TagHub.add(name, this, session.user);
+  TagHub.add(name, this);
   return;
 }
 
