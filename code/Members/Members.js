@@ -72,11 +72,11 @@ Members.prototype.getPermission = function(action) {
 }
 
 Members.prototype.main_action = function() {
-  res.data.title = gettext('Site Members');
+  res.data.title = gettext('Members');
   res.data.list = renderList(this, '$Membership#member',
-      10, req.queryParams.page);
+      25, req.queryParams.page);
   res.data.pager = renderPager(this, this.href(req.action),
-      10, req.queryParams.page);
+      25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -220,44 +220,44 @@ Members.prototype.salt_txt_action = function() {
 }
 
 Members.prototype.owners_action = function() {
-  res.data.title = gettext('Site Owners');
+  res.data.title = gettext('Owners');
   res.data.list = renderList(this.owners,
-      '$Membership#member', 10, req.queryParams.page);
+      '$Membership#member', 25, req.queryParams.page);
   res.data.pager = renderPager(this.owners,
-      this.href(req.action), 10, req.queryParams.page);
+      this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Members.prototype.managers_action = function() {
-  res.data.title = gettext('Site Managers');
+  res.data.title = gettext('Managers');
   res.data.list = renderList(this.managers,
-      '$Membership#member', 10, req.queryParams.page);
+      '$Membership#member', 25, req.queryParams.page);
   res.data.pager = renderPager(this.managers,
-      this.href(req.action), 10, req.queryParams.page);
+      this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Members.prototype.contributors_action = function() {
-  res.data.title = gettext('Site Contributors');
+  res.data.title = gettext('Contributors');
   res.data.list = renderList(this.contributors,
-      '$Membership#member', 10, req.queryParams.page);
+      '$Membership#member', 25, req.queryParams.page);
   res.data.pager = renderPager(this.contributors,
-      this.href(req.action), 10, req.data.page);
+      this.href(req.action), 25, req.data.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Members.prototype.subscribers_action = function() {
-  res.data.title = gettext('Site Subscribers');
+  res.data.title = gettext('Subscribers');
   res.data.list = renderList(this.subscribers,
-      '$Membership#member', 10, req.queryParams.page);
+      '$Membership#member', 25, req.queryParams.page);
   res.data.pager = renderPager(this.subscribers,
-      this.href(req.action), 10, req.queryParams.page);
+      this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -271,20 +271,6 @@ Members.prototype.updated_action = function() {
   return;
 }
 
-Members.prototype.privileges_action = function() {
-  var site = res.handlers.site;
-  res.data.title = gettext('Privileges');
-  res.data.list = renderList(session.user.memberships, function(item) {
-    res.handlers.subscription = item.site;
-    item.renderSkin('$Membership#subscription');
-    return;
-  });
-  res.handlers.site = site;
-  res.data.body = session.user.renderSkinAsString('$User#subscriptions');
-  res.handlers.site.renderSkin('Site#page');
-  return;
-}
-
 Members.prototype.subscriptions_action = function() {
   var site = res.handlers.site;
   res.data.title = gettext('Subscriptions');
@@ -292,12 +278,13 @@ Members.prototype.subscriptions_action = function() {
     res.handlers.subscription = item.site;
     item.renderSkin('$Membership#subscription');
     return;
-  });
+  }, 25, req.queryParams.page);
+  res.data.pager = renderPager(session.user.subscriptions, this.href(req.action), 25, req.queryParams.page);
   res.handlers.site = site;
   res.data.body = session.user.renderSkinAsString('$User#subscriptions');
   res.handlers.site.renderSkin('Site#page');
   return;
-}
+};
 
 Members.prototype.add_action = function() {
   if (req.postParams.term) {
@@ -306,7 +293,7 @@ Members.prototype.add_action = function() {
       if (result.length < 1) {
         res.message = gettext('No user found to add as member.');
       } else {
-        if (result.length >= 100) {
+        if (result.length >= 25) {
           res.message = gettext('Too many users found, displaying the first {0} matches only.',
               result.length);
         } else {
@@ -319,13 +306,12 @@ Members.prototype.add_action = function() {
       res.message = ex;
       app.log(ex);
     }
-  } else if (req.postParams.add) {
+  } else if (req.queryParams.name) {
     try {
-      var membership = this.addMembership(req.postParams);
-      membership.notify(req.action, membership.creator.email,
-          gettext('[{0}] Notification of membership change', root.title));
+      var membership = this.addMembership(req.queryParams);
+      membership.notify(req.action, membership.creator.email, gettext('[{0}] Notification of membership change', root.title));
       res.message = gettext('Successfully added {0} to the list of members.',
-          req.postParams.name);
+          req.queryParams.name);
       res.redirect(membership.href('edit'));
     } catch (ex) {
       res.message = ex;
@@ -353,13 +339,16 @@ Members.prototype.search = function(searchString) {
     mode = 'like';
   }
   var sql = new Sql;
-  sql.retrieve(Sql.MEMBERSEARCH, mode, searchString, 100);
+  sql.retrieve(Sql.MEMBERSEARCH, mode, searchString, 25);
   var counter = 0, name;
   res.push();
   sql.traverse(function() {
     // Check if the user is not already a member
     if (!self.get(this.name)) {
-      self.renderSkin('$Members#result', {name: this.name});
+      self.renderSkin('$Members#result', {
+        name: this.name,
+        created: formatDate(this.created, 'text')
+      });
       counter += 1;
     }
   });

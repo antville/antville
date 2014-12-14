@@ -1,15 +1,27 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1><% response.title %></h1>
 <div class="ample">
-   <% members.link add <% gettext "Add Member" %> prefix="... " %>
+   <% members.link add <% gettext "Add Member" %> %>
 </div>
-... <% members.link main <% gettext All %> %>
-<% members.link owners <% gettext Owners %> prefix="| " %>
-<% members.link managers <% gettext Managers %> prefix="| " %>
+<% members.link . <% gettext All %> %>
+<% members.link subscribers <% gettext Subscribers %> prefix='| ' %>
 <% members.link contributors <% gettext Contributors %> prefix="| " %>
-<% members.link subscribers <% gettext Subscribers %> prefix="| " %>
+<% members.link managers <% gettext Managers %> prefix="| " %>
+<% members.link owners <% gettext Owners %> prefix="| " %>
 <% response.pager %>
-<% response.list %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><% gettext Name %></td>
+         <td><% gettext Role %></td>
+         <td><% gettext Subscribed %></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
 <% response.pager %>
 
 <% #login %>
@@ -185,37 +197,39 @@ tabindex="4"><% gettext Save %></button>
 </form>
 
 <% #add %>
-<p class="storyTitle"><% response.title %></p>
-<div><% gettext 'Enter a search term to display a list of matching users.' %></div>
-<div class="small"><% gettext 'You can use the asterisk * as wildcard.' %></div>
-<br />
-<form method="post" action="<% response.action %>">
-<input type="text" name="term" id="term"
-value="<% request.term encoding="form" %>" />
-<button type="submit" name="search" value="1"><% gettext Search %></button>
-<a href="<% this.href %>"><% gettext Cancel %></a>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method='post' action='<% response.action %>'>
+   <div class='uk-margin-top'>
+      <span data-uk-tooltip="{pos: 'bottom'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'>
+         <input type='text' name='term' id='term' value='<% request.term encoding='form' %>' />
+      </span>
+      <button class='uk-button uk-button-primary' type='submit' id='submit' name='Find' value='1'>
+         <% gettext Find %>
+      </button>
+      <a href='<% members.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+   </div>
+   <% response.result %>
 </form>
-<% response.result %>
 
 <% #results %>
-<br />
-<form method="post" action="<% response.action %>">
-<p class="small">
-   <% gettext "Select a user from the list below and click the “Add Member” button." %>
-</p>
-<table border="0" cellspacing="0" cellpadding="1">
-<% param.result %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><% gettext Name %></td>
+         <td><% gettext Registered %></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% param.result %>
+   </tbody>
 </table>
-<br />
-<button type="submit" id="add" name="add" value="1">
-   <% gettext "Add Member" %>
-</button>
-</form>
 
 <% #result %>
 <tr>
-<td valign="top">
-   <input type="radio" name="name" id="<% param.name %>" value="<% param.name %>" />
-</td>
-<td><label for="<% param.name %>"><% param.name %></label></td>
+   <td class='uk-text-bold'><% param.name %></td>
+   <td><% param.created %></td>
+   <td>
+      <a href='?name=<% param.name encoding=form %>'><i class='uk-icon-plus'></i></a>
+   </td>
 </tr>

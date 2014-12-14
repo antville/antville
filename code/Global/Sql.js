@@ -186,7 +186,7 @@ Sql.SEARCH = 'select content.id from content, site, metadata where site.id = $0 
  * SQL query for searching members.
  * @constant
  */
-Sql.MEMBERSEARCH = "select name from account where name $0 '$1' " +
+Sql.MEMBERSEARCH = "select name, created from account where name $0 '$1' " +
     'order by name asc limit $2';
 
 /**

@@ -30,13 +30,26 @@ else <% if <% site.mode %> is restricted then "" else
 </table>
 
 <% #subscriptions %>
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">...
-<% members.link updated <% gettext "Updates" %> %>
-<% members.link privileges <% gettext Privileges %> prefix="| " %>
-<% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
+<h1><% response.title %></h1>
+<div class="ample">
+   <% members.link updated <% gettext "Updates" %> %>
+   <% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
 </div>
-<p><% response.list %></p>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><% gettext Site %></td>
+         <td><% gettext Role %></td>
+         <td><% gettext 'Last Update' %></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
 
 <% #edit %>
 <h1><% response.title %></h1>
