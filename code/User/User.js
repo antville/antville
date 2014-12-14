@@ -61,16 +61,8 @@ User.add = function(data) {
  * FIXME: Still needs a solution whether and how to remove a user’s sites
  */
 User.remove = function() {
-  return; // FIXME: Disabled until thoroughly tested
-  if (this.constructor === User) {
-    HopObject.remove.call(this.comments);
-    HopObject.remove.call(this.files);
-    HopObject.remove.call(this.images);
-    //HopObject.remove.call(this.sites);
-    HopObject.remove.call(this.stories);
-    this.deleteMetadata();
-    this.remove();
-  }
+  // FIXME: Removing an account is non-trivial as even one single modifier_id could break things if the corresponding account relation simply was removed. Thus, we might need a `deleted` property or similar to flag a removal and then take appropriate measures for related objects.
+  throw Error(gettext('Currently, it is not possible to remove an account. Please accept our humble apologies.'));
   return;
 }
 
@@ -398,6 +390,11 @@ User.prototype.edit_action = function () {
   res.data.title = 'Account ' + this.name;
   res.data.body = this.renderSkinAsString('$User#edit');
   res.handlers.site.renderSkin('Site#page');
+};
+
+User.prototype.getConfirmText = function () {
+  return gettext('You are about to delete the account {0}.',
+      this.getTitle());
 };
 
 /**
