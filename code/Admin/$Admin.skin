@@ -154,11 +154,11 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td>Date</td>
-         <td>Type</td>
-         <td>Name</td>
-         <td>Description</td>
-         <td>User</td>
+         <td><% gettext Date %></td>
+         <td><% gettext Type %></td>
+         <td><% gettext Name %></td>
+         <td><% gettext Description %></td>
+         <td><% gettext User %></td>
       </tr>
    </thead>
    <tbody>
@@ -207,11 +207,11 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td>Name</td>
-         <td>Created</td>
-         <td>Modified</td>
-         <td>Status</td>
-         <td>Mode</td>
+         <td><% gettext Name %></td>
+         <td><% gettext Created %></td>
+         <td><% gettext Modified %></td>
+         <td><% gettext Status %></td>
+         <td><% gettext Mode %></td>
          <td></td>
       </tr>
    </thead>
@@ -274,10 +274,10 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td>Name</td>
-         <td>Registered</td>
-         <td>Last Login</td>
-         <td>Status</td>
+         <td><% gettext Name %></td>
+         <td><% gettext Registered %></td>
+         <td><% gettext Last Login %></td>
+         <td><% gettext Status %></td>
          <td></td>
       </tr>
    </thead>
@@ -314,10 +314,10 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td>Method</td>
-         <td>Type</td>
-         <td>ID</td>
-         <td>User</td>
+         <td><% gettext Method %></td>
+         <td><% gettext Type %></td>
+         <td><% gettext ID %></td>
+         <td><% gettext User %></td>
          <td></td>
       </tr>
    </thead>
