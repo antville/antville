@@ -128,8 +128,8 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
       <footer>
          <small>
-            <% ngettext 'Online for {0} day' 'Online for {0} days' <% site.age %> %>
-            <% gettext 'Last modified: {0}' <% site.modified short %> %>
+            <% gettext 'Created {0}' <% site.created text %> %>.
+            <% gettext 'Last modified {0}' <% site.modified text %> %>.
          </small>
          <% image /smallchaos.gif | link http://antville.org %>
          <% image /helma.png | link http://helma.org %>
