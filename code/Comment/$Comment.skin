@@ -6,19 +6,20 @@
 <% #deleteOptions %>
 <script type="text/javascript">
 $(function() {
-   $("#confirmation").hide();
-   $("#confirm").click(function() {
-      $("button").attr("disabled", !$(this).attr("checked"));
-   });
-   $("#mode").click(function() {
-      if ($(this).attr("checked")) {
-         $("#confirm").attr("checked", false);
-         $("#confirmation").show();
-         $("button").attr("disabled", true);
+   $('#confirmation').hide();
+   $('#mode').on('click', function() {
+      console.log(1)
+      if ($(this).prop('checked')) {
+         $('#confirm').attr('checked', false);
+         $('#confirmation').show();
+         $('button').attr('disabled', true);
       } else {
-         $("#confirmation").hide();
-         $("button").attr("disabled", false);
+         $('#confirmation').hide();
+         $('button').attr('disabled', false);
       }
+   });
+   $('#confirm').on('click', function() {
+      $('button').attr('disabled', !$(this).prop('checked'));
    });
 });
 </script>
