@@ -47,6 +47,9 @@
     <tstamp>
       <format property="date" pattern="d MMM yyyy" locale="en"/>
     </tstamp>
+    <tstamp>
+      <format property="file-date" pattern="yyyyMMdd" locale="en"/>
+    </tstamp>
 
     <property name="name" value="antville"/>
     <property name="year" value="1998-${year}"/>
@@ -301,6 +304,7 @@
   </target>
 
   <target name="trail" depends="init">
+    <property name="trail.dir" value="trails/${trail.name}/${trail.title}"/>
     <input message="Please enter the name of the trail: " addproperty="trail.name"/>
     <script language="javascript"><![CDATA[
       name = project.getProperty('trail.name');
@@ -308,7 +312,6 @@
       title = firstLetter + name.substr(1);
       project.setProperty('trail.title', title);
     ]]></script>
-    <property name="trail.dir" value="trails/${trail.name}/${trail.title}"/>
     <mkdir dir="${trail.dir}"/>
     <echo file="${trail.dir}/${trail.title}.properties" append="true">#sites = collection(Site)</echo>
     <echo file="${trail.dir}/${trail.title}.js" append="true">${trail.title}.prototype.main_action = function () {${line.separator}<!--
@@ -316,6 +319,14 @@
     -->};${line.separator}</echo>
     <mkdir dir="${trail.dir}/../Trails"/>
     <echo file="${trail.dir}/../Trails/Trails.properties" append="true">${trail.name} = mountpoint(${trail.title})${line.separator}</echo>
+  </target>
+
+  <target name="add-patch" depends="init">
+    <property name="patch.dir" value="extra/updater"/>
+    <echo file="${patch.dir}/patch-${file-date}.js">
+      // Apply with enabled updater repository using `ant patch -Dpatch.id=${file-date}`
+      var sql = new Sql();
+    </echo>
   </target>
 
   <target name="clean" depends="init">
