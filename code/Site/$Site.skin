@@ -198,7 +198,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
             <% gettext Paging %>
          </label>
          <div class='uk-form-controls'>
-            <% site.input pageSize class='uk-form-width-mini' maxlength=2 %>
+            <% site.input pageSize class='uk-width-1-6' type=number min=1 max=25 %>
             <% gettext "{0} per page" <% gettext "stories" %> %>
             <% // site.select pageMode %>
          </div>
@@ -257,7 +257,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
             <% gettext 'Callback URL' %>
          </label>
          <div class='uk-form-controls'>
-            <% site.input callbackUrl class='uk-width-1-1' %>
+            <% site.input callbackUrl type=url class='uk-width-1-1' %>
             <label>
                <% site.checkbox callbackMode %>
                <% gettext enabled %>
@@ -295,7 +295,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
    </fieldset>
    <a name='admin' id='admin'></a>
    <fieldset class='uk-margin-large-top'>
-      <legend><% gettext Admin %></legend>
+      <legend><% gettext Administration %></legend>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='status'>
             <% gettext Status %>
