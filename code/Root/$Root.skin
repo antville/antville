@@ -309,3 +309,7 @@ div.skin div.title {
    vertical-align: middle;
    opacity: .3;
 }
+
+.helma-debug-line /*:has(script)*/ {
+   border: none !important;
+}

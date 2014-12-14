@@ -235,7 +235,7 @@ var console = function (type) {
     writeln('\u001B[34m[' + now + '] [CONSOLE] ' + argString + '\u001B[0m');
 
     if (typeof res !== 'undefined') {
-      res.writeln('<script>console.' + type + '("%c%s", "color: #39f", ' +
+      res.debug('<script>console.' + type + '("%c%s", "color: #39f", ' +
           JSON.stringify(argString) + ');</script>');
     }
   }
