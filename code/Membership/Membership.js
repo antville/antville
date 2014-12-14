@@ -172,7 +172,7 @@ Membership.prototype.edit_action = function() {
     try {
       this.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      res.redirect(this._parent.href());
+      res.redirect(this.href(req.action));
     } catch(ex) {
       res.message = ex;
       app.log(ex);
