@@ -148,8 +148,8 @@ Membership.prototype.getPermission = function(action) {
     return true;
     case 'edit':
     case 'delete':
-    return User.require(User.PRIVILEGED) ||
-        this.role !== Membership.OWNER || this.creator !== session.user;
+    return !this.require(Membership.OWNER) || this.site.members.owners.size() > 1;
+
   }
   return false;
 }

@@ -281,10 +281,11 @@ Site.prototype.getPermission = function(action) {
         !Membership.require(Membership.SUBSCRIBER);
 
     case 'unsubscribe':
-    if (User.require(User.REGULAR)) {
+    if (!Membership.require(Membership.OWNER) || this.members.owners.size() > 1) {
       var membership = Membership.getByName(session.user.name, this);
-      return membership && !membership.require(Membership.OWNER);
+      return membership;
     }
+    return;
 
     case 'import':
     return User.require(User.PRIVILEGED);
