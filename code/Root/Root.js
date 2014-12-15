@@ -20,18 +20,18 @@
  */
 
 /** @constant */
-Root.VERSION = (function(versionString, buildDate) {
-  // A valid version string is e.g. '1.2.3alpha.4711'.
+Root.VERSION = (function (versionString, buildDate) {
+  // A valid version string is e.g. '1.2.3alpha.c0ffee'.
   // Repositories could add something like '-compatible' to it,
   // FIXME: This should be refactored for modular extension.
-  var re = /^(\d+)\.(\d+)(?:\.(\d+))?(.+)?\.(\d+)(?:-(.*))?$/;
+  var re = /^(\d+)\.(\d+)(?:\.(\d+))?(.+)?\.([a-f0-9]+)(?:-(.*))?$/;
   var parts = re.exec(versionString);
   if (parts) {
     var result = {
       parts: parts,
       toString: function() {return parts[0]},
       major: parseInt(parts[1]),
-      revision: parseInt(parts[5]),
+      hash: parts[5],
       date: new Date(buildDate)
     };
     result.minor = result.major + parseInt(parts[2] || 0) / 10;
@@ -42,7 +42,7 @@ Root.VERSION = (function(versionString, buildDate) {
     return result;
   }
   return versionString;
-})('@version@.@revision@', '@buildDate@');
+})('<v>0</v>.<h>0</h>', '<d/>');
 
 this.handleMetadata('creationDelay');
 this.handleMetadata('creationScope');

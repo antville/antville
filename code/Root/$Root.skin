@@ -109,7 +109,7 @@ alphabetical order." %></p>
       <dd><% version %></dd>
       <dt><% gettext Build %></dt>
       <dd>
-         <% link <% version revision prefix='//antville.googlecode.com/svn/!svn/bc/' suffix='/trunk' %> <% version revision %> %> (<% version date | format date medium %>)
+         <% link <% version hash prefix='https://code.google.com/p/antville/source/browse/?r=' %> <% version hash %> %> (<% version date | format date medium %>)
       </dd>
    </dl>
 </div>
