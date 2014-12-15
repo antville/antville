@@ -56,88 +56,63 @@ alphabetical order." %></p>
 <% session.error default=<% param.error %> %>
 
 <% #health %>
-<p class="storyTitle"><% response.title %></p>
-<% site.skin Root#status %>
-<br /><br />
-<p><strong><% gettext Details %></strong></p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-<colgroup>
-   <col width="30%" />
-   <col width="*" />
-</colgroup>
-<tr>
-   <td class="small"><% gettext 'Sessions' %>:</td>
-   <td><% param.sessions %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext Uptime %>:</td>
-   <td><% ngettext '{0} day' '{0} days' <% param.uptime %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Threads' %>:</td>
-   <td>
-      <% gettext '{0} active' <% param.activeThreads %> %>,
-      <% gettext '{0} free' <% param.freeThreads %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Requests' %>:</td>
-   <td>
-      <% gettext '{0} total' <% param.requestCount %> %>,
-      <% gettext '{0} last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Errors' %>:</td>
-   <td>
-      <% gettext '{0} total' <% param.errorCount %> %>,
-      <% gettext '{0} last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Error Ratio' %>:</td>
-   <td>
-      <% gettext '{0}% total' <% param.errorRatio %> %>,
-      <% gettext '{0}% last 5 min.' <% param.errorRatioPerUnit %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Xml-Rpc Count' %>:</td>
-   <td><% ngettext '{0} request' '{0} requests' <% param.xmlrpcCount %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Cache' %>:</td>
-   <td><% gettext '{0} of {1} objects' <% param.cacheusage %> <% param.cacheSize %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Memory' %>:</td>
-   <td>
-      <% gettext '{0} MB total'  <% param.totalMemory %> %>,
-      <% gettext '{0} MB free' <% param.freeMemory %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Queue' %>:</td>
-   <td>
-      <% ngettext '{0} request' '{0} requests' <% param.requests %> %>,
-      <% ngettext '{0} mail' '{0} mails' <% param.mails %> %>,
-      <% ngettext '{0} callback' '{0} callbacks' <% param.callbacks %> %>,
-   </td>
-</tr>
-<tr>
-   <td></td>
-   <td><% gettext '{0} log entries' <% param.entries %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext Version %>:</td>
-   <td><% version %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext Build %>:</td>
-   <td><% link <% version revision prefix=http://antville.googlecode.com/svn/!svn/bc/ suffix=/trunk %> <% version revision %> %>
-         (<% version date | format date medium %>)</td>
-</tr>
-</table>
+<h1><% response.title %></h1>
+<div class='uk-panel uk-panel-header'>
+   <h3 class='uk-panel-title'><% gettext Status %></h3>
+   <% site.skin Root#status %>
+</div>
+<div class='uk-panel uk-panel-header'>
+   <h3 class='uk-panel-title'><% gettext Details %></h3>
+   <dl class='uk-description-list-horizontal'>
+      <dt><% gettext Sessions %></dt>
+      <dd><% param.sessions %></dd>
+      <dt><% gettext Uptime %></dt>
+      <dd><% ngettext '{0} day' '{0} days' <% param.uptime %> %></dd>
+      <dt><% gettext Threads %></dt>
+      <dd>
+         <% gettext '{0} active' <% param.activeThreads %> %>,
+         <% gettext '{0} free' <% param.freeThreads %> %>
+      </dd>
+      <dt><% gettext Requests %></dt>
+      <dd>
+         <% gettext '{0} total' <% param.requestCount %> %>,
+         <% gettext '{0} last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
+      </dd>
+      <dt><% gettext 'Errors' %></dt>
+      <dd>
+         <% gettext '{0} total' <% param.errorCount %> %>,
+         <% gettext '{0} last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
+      </dd>
+      <dt><% gettext 'Error Ratio' %></dt>
+      <dd>
+         <% gettext '{0}% total' <% param.errorRatio %> %>,
+         <% gettext '{0}% last 5 min.' <% param.errorRatioPerUnit %> %>
+      </dd>
+      <dt><% gettext 'Xml-Rpc Count' %></dt>
+      <dd><% ngettext '{0} request' '{0} requests' <% param.xmlrpcCount %> %></dd>
+      <dt><% gettext 'Cache' %></dt>
+      <dd><% gettext '{0} of {1} objects' <% param.cacheusage %> <% param.cacheSize %> %></dd>
+      <dt><% gettext 'Memory' %></dt>
+      <dd>
+         <% gettext '{0} MB total'  <% param.totalMemory %> %>,
+         <% gettext '{0} MB free' <% param.freeMemory %> %>
+      </dd>
+      <dt><% gettext 'Queue' %></dt>
+      <dd>
+         <% ngettext '{0} request' '{0} requests' <% param.requests %> %>,
+         <% ngettext '{0} mail' '{0} mails' <% param.mails %> %>,
+         <% ngettext '{0} callback' '{0} callbacks' <% param.callbacks %> %>,
+      </dd>
+      <dd></dd>
+      <dd><% gettext '{0} log entries' <% param.entries %> %></dd>
+      <dt><% gettext Version %></dt>
+      <dd><% version %></dd>
+      <dt><% gettext Build %></dt>
+      <dd>
+         <% link <% version revision prefix='//antville.googlecode.com/svn/!svn/bc/' suffix='/trunk' %> <% version revision %> %> (<% version date | format date medium %>)
+      </dd>
+   </dl>
+</div>
 
 <% #stylesheet %>
 /* CSS for protected skins (user interface elements etc.) */

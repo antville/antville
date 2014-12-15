@@ -257,20 +257,23 @@ Root.prototype.health_action = function() {
 
   param.errorRatio = formatNumber(100 * app.errorCount / app.requestCount || 0);
   param.errorRatioPerUnit = formatNumber(Admin.health.errorsPerUnit / Admin.health.requestsPerUnit || 0);
+
   if (Admin.health) {
     param.requestsPerUnit = formatNumber(Admin.health.requestsPerUnit);
     param.errorsPerUnit = formatNumber(Admin.health.errorsPerUnit);
   }
 
+  param.callbacks = app.data.callbacks.length;
   param.entries = app.data.entries.length;
   param.mails = app.data.mails.length;
+
   param.requests = 0;
+
   for (var i in app.data.requests) {
     param.requests += 1;
   }
-  param.callbacks = app.data.callbacks.length;
 
-  res.data.title = gettext('{0} Health', root.getTitle());
+  res.data.title = gettext('Health');
   res.data.body = this.renderSkinAsString('$Root#health', param);
   this.renderSkin('Site#page');
 }
