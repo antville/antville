@@ -1,0 +1,19 @@
+<% #main %>
+<h1><% response.title %></h1>
+<% comments.link main <% gettext "By {0}" <% membership.name %> %> %>
+<% comments.link all <% gettext All %> prefix=" | " %>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><% gettext Content %></td>
+         <td><% gettext Author %></td>
+         <td><% gettext Modified %></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>

@@ -225,6 +225,8 @@ Comment.prototype.getMacroHandler = function(name) {
       return {}; // Work-around for issue 88
     }
     return membership.comments;
+  } else if (name === 'story') {
+    return this.story;
   }
   return null;
 }

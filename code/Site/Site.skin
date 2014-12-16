@@ -18,6 +18,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li class='uk-nav-divider'></li>
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
 <% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
+<% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
 <% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
 <% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
 <% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>

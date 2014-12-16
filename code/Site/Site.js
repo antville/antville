@@ -785,6 +785,7 @@ Site.prototype.robots_txt_action = function() {
 Site.prototype.getMacroHandler = function(name) {
   switch (name) {
     case 'archive':
+    case 'comments':
     case 'files':
     case 'galleries':
     case 'images':
