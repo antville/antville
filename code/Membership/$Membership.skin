@@ -29,7 +29,7 @@
    </td>
    <td>
       <% membership.link edit "<i class='uk-icon-pencil'></i>" %>
-      <% membership.link delete "<i class='uk-icon-trash'></i>" %>
+      <% membership.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% membership.link contact "<i class='uk-icon-envelope-o'></i>" %>
    </td>
 </tr>
@@ -43,7 +43,7 @@
    <td title='<% subscription.modified short %>' data-uk-tooltip>
       <% subscription.modified text %>
    </td>
-   <td><% subscription.link unsubscribe "<i class='uk-icon-trash'></i>" %></td>
+   <td><% subscription.link unsubscribe "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>
 
 <% #contact %>

@@ -323,7 +323,7 @@ referrers.push(new Antville.Referrer("<% param.referrer %>",
       </div>
       <div class='uk-form-row'>
          <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
-            <i class='uk-icon-trash'></i>
+            <i class='uk-icon-trash-o'></i>
             Delete this site
          </a>
       </div>

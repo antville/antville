@@ -237,7 +237,7 @@ $(function() {
    <td style='white-space: nowrap;'>
       <% item.link edit#admin "<i class='uk-icon-pencil'></i>" <% item.id %> %>
       <% if <% item.mode %> is deleted then '' else
-         <% item.link delete "<i class='uk-icon-trash'></i>" <% item.id %> %>
+         <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
       %>
    </td>
 </tr>
@@ -303,7 +303,7 @@ $(function() {
    </td>
    <td style='white-space: nowrap;'>
       <% item.link edit#admin "<i class='uk-icon-pencil'></i>" %>
-      <% item.link delete "<i class='uk-icon-trash'></i>" %>
+      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% // item.url prefix="<a href='" suffix="'><i class='uk-icon-globe'></i></a>" %>
    </td>
 </tr>
@@ -334,6 +334,6 @@ $(function() {
    <td><% item.id %></td>
    <td><% item.user %></td>
    <td style='white-space: nowrap;'>
-      <% item.link delete "<i class='uk-icon-trash'></i>" %>
+      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
    </td>
 </tr>
