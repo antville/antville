@@ -67,10 +67,10 @@ Stories.prototype.getPermission = function(action) {
 Stories.prototype.main_action = function() {
   var stories = User.getMembership().stories;
   res.data.list = renderList(stories, '$Story#listItem',
-      10, req.queryParams.page);
+      25, req.queryParams.page);
   res.data.pager = renderPager(stories,
-      this.href(), 10, req.queryParams.page);
-  res.data.title = gettext('Member Stories');
+      this.href(), 25, req.queryParams.page);
+  res.data.title = gettext('Stories by {0}', session.user.name);
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
   return;
@@ -103,9 +103,9 @@ Stories.prototype.create_action = function() {
 
 Stories.prototype.closed_action = function() {
   res.data.list = renderList(this.closed,
-      '$Story#listItem', 10, req.queryParams.page);
+      '$Story#listItem', 25, req.queryParams.page);
   res.data.pager = renderPager(this.closed,
-      this.href(req.action), 10, req.queryParams.page);
+      this.href(req.action), 25, req.queryParams.page);
   res.data.title = gettext('Closed Stories');
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
@@ -113,9 +113,9 @@ Stories.prototype.closed_action = function() {
 }
 
 Stories.prototype.all_action = function() {
-  res.data.list = renderList(this, '$Story#listItem', 10, req.queryParams.page);
+  res.data.list = renderList(this, '$Story#listItem', 25, req.queryParams.page);
   res.data.pager = renderPager(this,
-      this.href(req.action), 10, req.queryParams.page);
+      this.href(req.action), 25, req.queryParams.page);
   res.data.title = gettext('All Stories');
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');

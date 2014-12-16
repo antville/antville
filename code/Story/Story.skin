@@ -33,7 +33,7 @@
       <label class='uk-form-label' for='tags'>
          <% gettext "Tags" %>
       </label>
-      <div class='uk-form-controls' title='Separated by commas' data-uk-tooltip>
+      <div class='uk-form-controls' title='Separated by commas' data-uk-tooltip='{pos: "left"}'>
          <% story.input tags class=uk-width-1-1 %>
       </div>
    </div>
@@ -44,6 +44,9 @@
       </div>
       <div class='uk-form-row'>
          <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>
+      </div>
+      <div class='uk-form-row'>
+         Macro: <a href='' data-macro="<% story.macro %>" data-text='<% gettext "Use keyboard shortcut to copy." %>' class='av-clipboard-copy'><% story.macro %></a>
       </div>
       <div class='uk-form-row'>
          <% if <% story.creator %> is null then "" else

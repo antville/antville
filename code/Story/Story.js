@@ -145,7 +145,9 @@ Story.prototype.getPermission = function(action) {
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
     case 'edit':
-    case 'rotate':
+    case 'mode':
+    case 'rotate': // FIXME: Action moved to compat layer
+    case 'status':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         (this.status === Story.SHARED &&
@@ -254,18 +256,15 @@ Story.prototype.update = function(data) {
   return;
 }
 
-Story.prototype.rotate_action = function() {
-  if (this.status === Story.CLOSED) {
-    this.status = this.cache.status || Story.PUBLIC;
-  } else if (this.mode === Story.FEATURED) {
-    this.mode = Story.HIDDEN;
-  } else {
-    this.cache.status = this.status;
-    this.mode = Story.FEATURED;
-    this.status = Story.CLOSED;
-  }
+Story.prototype.status_action = function () {
+  this.status = (this.status === Story.CLOSED ? Story.PUBLIC : Story.CLOSED);
   return res.redirect(req.data.http_referer || this._parent.href());
-}
+};
+
+Story.prototype.mode_action = function () {
+  this.mode = (this.mode === Story.HIDDEN ? Story.FEATURED : Story.HIDDEN);
+  return res.redirect(req.data.http_referer || this._parent.href());
+};
 
 Story.prototype.comment_action = function() {
   // Check if user is logged in since we allow linking here for any user
@@ -424,26 +423,6 @@ Story.prototype.getMacroHandler = function(name) {
 /**
  *
  * @param {Object} param
- * @param {String} action
- * @param {String} text
- */
-Story.prototype.link_macro = function(param, action, text) {
-  switch (action) {
-    case 'rotate':
-    if (this.status === Story.CLOSED) {
-      text = gettext('Publish');
-    } else if (this.mode === Story.FEATURED) {
-      text = gettext('Hide');
-    } else {
-      text = gettext('Close');
-    }
-  }
-  return HopObject.prototype.link_macro.call(this, param, action, text);
-}
-
-/**
- *
- * @param {Object} param
  */
 Story.prototype.summary_macro = function(param) {
   param.limit || (param.limit = 15);
@@ -483,17 +462,17 @@ Story.prototype.summary_macro = function(param) {
  */
 Story.prototype.comments_macro = function(param, mode) {
   var story = this.story || this;
+  var comments = this.story ? this : this.comments;
   if (story.site.commentMode === Site.DISABLED ||
       story.commentMode === Site.CLOSED) {
     return;
   } else if (mode) {
-    var n = this.comments.size() || 0;
-    var text = ngettext('{0} comment', '{0} comments', n);
+    var n = comments.size() || 0;
     if (mode === 'count' || mode === 'size') {
-      res.write(text);
+      res.write(n);
     } else if (mode === 'link') {
-      n < 1 ? res.write(text) :
-          html.link({href: this.href() + '#comments'}, text);
+      var text = ngettext('{0} comment', '{0} comments', n);
+        n < 1 ? res.write(text) : html.link({href: this.href() + '#comments'}, text);
     }
   } else {
     this.prefetchChildren();
@@ -523,6 +502,8 @@ Story.prototype.tags_macro = function(param, mode) {
       }
     });
     return res.write(tags.join(Tag.DELIMITER));
+  } else if (mode === 'count') {
+    return this.tags.count();
   }
   return res.write(this.getFormValue('tags'));
 }

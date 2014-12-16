@@ -40,6 +40,42 @@ Story.ALLOWED_MACROS = Story.ALLOWED_MACROS.concat([
   "this.topic"
 ]);
 
+Story.prototype.rotate_action = function() {
+  if (this.status === Story.CLOSED) {
+    this.status = this.cache.status || Story.PUBLIC;
+  } else if (this.mode === Story.FEATURED) {
+    this.mode = Story.HIDDEN;
+  } else {
+    this.cache.status = this.status;
+    this.mode = Story.FEATURED;
+    this.status = Story.CLOSED;
+  }
+  return res.redirect(req.data.http_referer || this._parent.href());
+}
+
+/**
+ *
+ * @param {Object} param
+ * @param {String} action
+ * @param {String} text
+ */
+Story.prototype.link_macro = function(param, action, text) {
+  switch (action) {
+    case 'rotate':
+    if (this.status === Story.CLOSED) {
+      text = param.publish || gettext('Publish');
+    } else if (this.mode === Story.FEATURED) {
+      text = param.hide || gettext('Hide');
+    } else {
+      text = param.close || gettext('Close');
+    }
+    delete param.publish;
+    delete param.hide;
+    delete param.close;
+  }
+  return HopObject.prototype.link_macro.call(this, param, action, text);
+}
+
 Story.prototype.backlinks_macro = Story.prototype.referrers_macro;
 
 Story.prototype.allowTextMacros = function(skin) {

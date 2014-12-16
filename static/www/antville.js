@@ -29,6 +29,11 @@ $(function() {
     $(this).selectText();
   });
 
+  $('a.av-clipboard-copy').on('click', function (event) {
+    event.preventDefault();
+    prompt($(this).data('text'), $(this).data('macro'));
+  });
+
   // Group related <option> elements by inserting additional <optgroup> elements.
   var groups = [],
       element = $('form#prefs #timeZone');

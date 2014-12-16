@@ -1,14 +1,28 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1><% response.title %></h1>
 <div class="ample">
-   <% stories.link create <% gettext "Add Story" %> prefix="... " %>
+   <% stories.link create <% gettext "Add Story" %> %>
 </div>
-...
 <% stories.link main <% gettext "By {0}" <% membership.name %> %> %>
 <% stories.link closed <% gettext Closed %> prefix=" | " %>
 <% stories.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>
-<% response.list %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><i class='uk-icon-comments-o'></i></td>
+         <td><% gettext Content %></td>
+         <td><% gettext Author %></td>
+         <td><% gettext Modified %></td>
+         <td><% gettext Status %></td>
+         <td></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
 <% response.pager %>
 
 <% #top %>

@@ -8,37 +8,27 @@
 </tr>
 
 <% #listItem %>
-<div class="listSeparator"> </div>
-<table cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<% if <% story.status %> is closed then
-   <% listItemFlag <% gettext closed %> %>
-else <% if <% story.mode %> is hidden then
-   <% listItemFlag <% gettext hidden %> %> %>
-%>
-<td class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% story.macro %><br />
-   <div class="ample"><strong><% gettext Status suffix=: %></strong>
-   <% gettext <% story.status %> %><% story.tags link prefix=<% gettext in
-         context=preposition prefix=" " suffix=" " %> %><% story.comments link prefix="; " %></div>
-</td>
-<td rowspan="2" width="10" nowrap="nowrap"> </td>
-<td rowspan="2" align="right" class="small">
-   <% story.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% story.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% story.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% story.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>"%>
-</td>
+   <td><% story.comments count %></td>
+   <td style='max-width: 200px; overflow: hidden;'>
+      <a href='' data-macro="<% story.macro %>" data-text='<% gettext "Please use the copy command." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
+      <a href='<% story.href %>'><% story.summary %></a>
+   </td>
+   <td><% story.creator %></td>
+   <td><% story.modified text %></td>
+   <td style='white-space: nowrap;'>
+      <% story.status %>
+      <% if <% story.tags count %> is 0 then '' else <% story.tags prefix="<i class='uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
+   </td>
+   <td style='white-space: nowrap;'>
+      <a href='<% story.href status %>'><i class='uk-icon-<% if <% story.status %> is closed then lock else unlock %>'></i></a>
+      <a href='<% story.href mode %>'><i class='uk-icon-<% if <% story.mode %> is hidden then eye-slash else eye %>'></i></a>
+   </td>
+   <td style='white-space: nowrap;'>
+      <% story.link edit "<i class='uk-icon-pencil'></i>" %>
+      <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
+   </td>
 </tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% story.title %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% story.creator link %>
-   <% story.created short %> %></div>
-   <% story.text | clip %>
-</td>
-</tr>
-</table>
 
 <% #referrer %>
 referrers.push(new Antville.Referrer("<% param.referrer %>",

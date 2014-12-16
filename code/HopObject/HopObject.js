@@ -492,13 +492,11 @@ HopObject.prototype.upload_macro = function(param, name) {
 HopObject.prototype.macro_macro = function(param, handler) {
   var ctor = this.constructor;
   if ([Story, Image, File, Poll].indexOf(ctor) > -1) {
-    res.write('<span class="macro-code">');
     res.encode('<% ');
     res.write(handler || ctor.name.toLowerCase());
     res.write(String.SPACE);
     res.write(quote(this.name || this._id));
     res.encode(' %>');
-    res.write('</span>');
   }
   return;
 }
