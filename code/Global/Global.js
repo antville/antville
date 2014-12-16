@@ -1071,7 +1071,7 @@ function formatDate(date, format) {
     } else {
       text = ngettext('{0} year ago', '{0} years ago', parseInt(diff / 365 / Date.ONEDAY, 10));
     }
-    return text;
+    return text.replace(/(\d+)\s+/, '$1\xa0'); // Add a no-break space after first digits
 
     default:
     pattern = format;
