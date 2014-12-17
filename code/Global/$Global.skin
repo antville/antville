@@ -32,13 +32,13 @@
    <input type="file" id="<% param.name %>" name="<% param.name %>"
          onchange='$("#<% param.name %>_origin").val($(this).val());'
          style="position: relative; z-index: 1; visibility: hidden;" />
-   <div class="text" style="position: absolute; z-index: 2; top: 0; left: 0;">
-      <input type="text" name="<% param.name %>_origin"
+   <div class="text uk-width-1-1" style="position: absolute; z-index: 2; top: 0; left: 0;">
+      <input class='uk-width-1-2' type="text" name="<% param.name %>_origin"
             id="<% param.name %>_origin" value="<% param.value %>"
             onblur='$("#<% param.name %>").val("");' />
-      <button id="<% param.name %>_control" name="<% param.name %>_control"
+      <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control"
             type="button" onclick='$("#<% param.name %>").click();'>
-         <% gettext "Browse..." %>
+         <% gettext "Browse" suffix=… %>
       </button>
    </div>
 </div>
