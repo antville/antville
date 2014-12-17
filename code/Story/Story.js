@@ -229,7 +229,7 @@ Story.prototype.update = function(data) {
 
   // Get difference to current content before applying changes
   var delta = this.getDelta(data);
-  this.title = data.title ? data.title.trim() : String.EMPTY;
+  this.title = data.title ? stripTags(data.title.trim()) : String.EMPTY;
   this.text = data.text ? data.text.trim() : String.EMPTY;
   this.status = data.status || Story.PUBLIC;
   this.mode = data.mode || Story.FEATURED;
