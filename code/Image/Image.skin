@@ -1,21 +1,20 @@
 <% #main %>
-<div class="storyTitle">
-   <% image.name %>
+<h1><% image.name %></h1>
+<div class="uk-article-meta">
+   <% gettext "Last modified {0} by {1}" <% image.modified text %> <% image.modifier %> %>
 </div>
-<div class="storyDate">
-   <% gettext "{0} on {1}" <% image.creator link %> <% image.created short %> %>
+<div class='uk-margin-top'>
+   <a href='<% image.url %>' class='uk-thumbnail' style='max-width: <% image.width %>px'>
+     <% image.render title=' ' %>
+     <div class='uk-thumbnail-caption'>
+        <% image.description | stripTags %>
+     </div>
+   </a>
 </div>
-<div>
-   <% image.render | link <% image.url %> %>
+<div class='uk-margin-top'>
+  <% image.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff' %>
+  <% image.link delete <% gettext Delete %> class='uk-button' %>
 </div>
-<p class="small">
-   <% image.link edit <% gettext Edit %> prefix="... " %>
-   <% image.link delete <% gettext Delete %> prefix=" ... " %>
-</p>
-<p class="small">
-   <% gettext 'To insert this image copy and paste the following code:' %><br />
-   <code><% image.macro %></code>
-</p>
 
 <% #preview %>
 <p><% image.render | image.link %></p>

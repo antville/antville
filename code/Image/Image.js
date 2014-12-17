@@ -193,7 +193,7 @@ Image.prototype.edit_action = function() {
       File.redirectOnExceededQuota(this.href(req.action));
       this.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      res.redirect(this.href());
+      res.redirect(this.href('edit'));
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -340,8 +340,7 @@ Image.prototype.url_macro = function() {
  *
  */
 Image.prototype.macro_macro = function() {
-  return HopObject.prototype.macro_macro.call(this, null,
-      this.parent.constructor === Layout ? 'layout.image' : 'image');
+  return HopObject.prototype.macro_macro.call(this, null, this.parent && this.parent.constructor === Layout ? 'layout.image' : 'image');
 }
 
 /**
