@@ -77,20 +77,18 @@ Files.prototype.create_action = function() {
 
 Files.prototype.main_action = function() {
   var files = User.getMembership().files;
-  res.data.list = renderList(files, '$File#listItem', 10, req.queryParams.page);
-  res.data.pager = renderPager(files, this.href(),
-      10, req.queryParams.page);
-  res.data.title = gettext('Member Files');
+  res.data.list = renderList(files, '$File#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(files, this.href(), 25, req.queryParams.page);
+  res.data.title = gettext('Files by {0}', session.user.name);
   res.data.body = this.renderSkinAsString('$Files#main');
   this._parent.renderSkin('Site#page');
   return;
 }
 
 Files.prototype.all_action = function() {
-  res.data.list = renderList(this, '$File#listItem', 10, req.queryParams.page);
-  res.data.pager = renderPager(this,
-      this.href(req.action), 10, req.queryParams.page);
-  res.data.title = gettext('All Files');
+  res.data.list = renderList(this, '$File#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
+  res.data.title = gettext('Files');
   res.data.body = this.renderSkinAsString('$Files#main');
   this._parent.renderSkin('Site#page');
   return;

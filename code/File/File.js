@@ -71,6 +71,59 @@ File.getName = function(name) {
   return null;
 }
 
+File.getGenericType = function (contentType) {
+  switch (contentType) {
+    case 'application/msword':
+    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+    return 'word';
+
+    case 'application/acrobat':
+    case 'application/pdf':
+    case 'applications/vnd.pdf':
+    case 'application/x-pdf':
+    case 'text/pdf':
+    case 'text/x-pdf':
+    return 'pdf';
+
+    case 'application/vnd.ms-excel':
+    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+    return 'excel';
+
+    case 'application/x-mpegURL':
+    return 'movie';
+
+    case 'application/gzip':
+    case 'application/x-7z-compressed':
+    case 'application/x-rar-compressed':
+    case 'application/x-stuffit':
+    case 'application/x-tar':
+    case 'application/zip':
+    return 'archive';
+
+    case 'text/htm':
+    case 'text/html':
+    return 'code';
+
+    default:
+    switch (contentType.split('/')[0]) {
+      case 'audio':
+      return 'sound';
+
+      case 'image':
+      return 'image';
+
+      case 'text':
+      return 'text';
+
+      case 'video':
+      return 'movie';
+
+      default:
+      return '';
+    }
+  }
+};
+
 /**
  *
  * @param {String } url
@@ -152,7 +205,7 @@ File.prototype.edit_action = function() {
       File.redirectOnExceededQuota(this.href(req.action));
       this.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      res.redirect(this._parent.href());
+      res.redirect(this.href('edit'));
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -228,6 +281,10 @@ File.prototype.update = function(data) {
        this.name = this.site.files.getAccessName(name);
     }
 
+    if (!data.description) {
+      data.description = gettext('Source: {0}', data.file_origin);
+    }
+
     // Make the file persistent before proceeding with writing
     // it to disk (also see Helma bug #607)
     this.isTransient() && this.persist();
@@ -263,6 +320,13 @@ File.prototype.url_macro = function() {
  */
 File.prototype.contentLength_macro = function(param) {
   return res.write((this.contentLength / 1024).format('###,###') + ' KB');
+}
+
+File.prototype.contentType_macro = function (param, mode) {
+  if (mode === 'generic') {
+    return res.write(File.getGenericType(this.contentType));
+  }
+  return res.write(this.contentType);
 }
 
 /**
