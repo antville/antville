@@ -11,8 +11,9 @@
 <tr>
    <td><% story.comments count %></td>
    <td style='max-width: 200px; overflow: hidden;'>
-      <a href='' data-macro="<% story.macro %>" data-text='<% gettext "Please use the copy command." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
-      <a href='<% story.href %>'><% story.summary %></a>
+      <a href='<% story.href %>' title='<% ngettext '{0} request' '{0} requests' <% story.requests %> %>' data-uk-tooltip="{pos: 'left'}">
+         <% story.summary %>
+      </a>
    </td>
    <td><% story.creator %></td>
    <td><% story.modified text %></td>
@@ -21,12 +22,13 @@
       <% if <% story.tags count %> is 0 then '' else <% story.tags prefix="<i class='uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
    <td style='white-space: nowrap;'>
-      <a href='<% story.href status %>'><i class='uk-icon-<% if <% story.status %> is closed then lock else unlock %>'></i></a>
       <a href='<% story.href mode %>'><i class='uk-icon-<% if <% story.mode %> is hidden then eye-slash else eye %>'></i></a>
+      <a href='<% story.href status %>'><i class='uk-icon-<% if <% story.status %> is closed then lock else unlock %>'></i></a>
    </td>
    <td style='white-space: nowrap;'>
       <% story.link edit "<i class='uk-icon-pencil'></i>" %>
       <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <a href='' data-value="<% story.macro %>" data-text='<% gettext "Please use the copy command." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
    </td>
 </tr>
 
