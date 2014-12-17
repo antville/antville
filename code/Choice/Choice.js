@@ -57,7 +57,7 @@ Choice.remove = function() {
  */
 Choice.prototype.constructor = function(title) {
   HopObject.confirmConstructor.call(this);
-  this.title = title;
+  this.title = stripTags(title || String.EMPTY);
   return this;
 }
 

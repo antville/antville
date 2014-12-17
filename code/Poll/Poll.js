@@ -93,8 +93,8 @@ Poll.prototype.getPermission = function(action) {
     case 'edit':
     return Membership.require(Membership.OWNER) ||
         User.require(User.PRIVILEGED);
-    case 'rotate':
     case 'delete':
+    case 'status':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
@@ -120,7 +120,7 @@ Poll.prototype.main_action = function() {
     res.redirect(this.href('result'));
     return;
   }
-  if (req.postParams.vote) {
+  if (req.postParams.submit) {
     try {
       this.vote(req.postParams);
       res.message = gettext('Thanks, your vote was registered. You can change your mind until the poll is closed.');
@@ -161,17 +161,25 @@ Poll.prototype.edit_action = function() {
     try {
       this.update(req.postParams);
       res.message = gettext('The poll was updated successfully.');
-      res.redirect(this.href());
+      res.redirect(this.href('edit'));
     } catch (ex) {
       res.message = ex;
       app.log(ex);
     }
   }
   res.data.action = this.href(req.action);
-  res.data.title = gettext('Edit Poll: {0}', this.question);
+  res.data.title = gettext('Edit Poll');
   res.data.body = this.renderSkinAsString('$Poll#edit');
   this.site.renderSkin('Site#page');
   return;
+}
+
+Poll.prototype.status_action = function () {
+  this.status = (this.status === Poll.OPEN ? Poll.CLOSED : Poll.OPEN);
+  if (this.status === Poll.CLOSED) {
+    this.closed = new Date();
+  }
+  res.redirect(req.data.http_referer);
 }
 
 /**
@@ -210,7 +218,7 @@ Poll.prototype.update = function(data) {
     this.closed = new Date;
   }
   this.status = data.save;
-  this.question = data.question;
+  this.question = stripTags(data.question);
   this.touch();
   return;
 }
@@ -220,17 +228,6 @@ Poll.prototype.result_action = function() {
   res.data.body = this.renderSkinAsString('$Poll#results', {header: true});
   this.site.renderSkin('Site#page');
   return;
-}
-
-Poll.prototype.rotate_action = function() {
-  if (this.status === Poll.CLOSED) {
-    this.status = Poll.OPEN;
-  } else if (this.status === Poll.OPEN) {
-    this.status = Poll.CLOSED;
-    this.closed = new Date;
-  }
-  this.touch();
-  return res.redirect(this.href());
 }
 
 /**
@@ -254,13 +251,6 @@ Poll.prototype.link_macro = function(param, action, text) {
     case 'main':
     if (this.status === Poll.CLOSED) {
       return;
-    }
-    break;
-    case 'rotate':
-    if (this.status === Poll.OPEN) {
-      text = gettext('Stop');
-    } else {
-      text = this.closed ? gettext('Re-run') : gettext('Run');
     }
     break;
   }
