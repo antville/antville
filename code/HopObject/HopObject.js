@@ -490,10 +490,10 @@ HopObject.prototype.upload_macro = function(param, name) {
  * @param {HopObject} [handler]
  */
 HopObject.prototype.macro_macro = function(param, handler) {
-  var ctor = this.constructor;
-  if ([Story, Image, File, Poll].indexOf(ctor) > -1) {
+  var constructor = this.constructor;
+  if ([Story, Image, File, Poll].indexOf(constructor) > -1 && this.isPersistent()) {
     res.encode('<% ');
-    res.write(handler || ctor.name.toLowerCase());
+    res.write(handler || constructor.name.toLowerCase());
     res.write(String.SPACE);
     res.write(quote(this.name || this._id));
     res.encode(' %>');
@@ -558,6 +558,9 @@ HopObject.prototype.type_macro = function() {
  * @param {String} text
  */
 HopObject.prototype.link_macro = function(param, url, text) {
+  if (this.isTransient()) {
+    return;
+  }
   if (url && text) {
     var action = url.split(/#|\?/)[0];
     if (this.getPermission(action)) {
