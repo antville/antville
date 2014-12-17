@@ -66,10 +66,8 @@ Stories.prototype.getPermission = function(action) {
 
 Stories.prototype.main_action = function() {
   var stories = User.getMembership().stories;
-  res.data.list = renderList(stories, '$Story#listItem',
-      25, req.queryParams.page);
-  res.data.pager = renderPager(stories,
-      this.href(), 25, req.queryParams.page);
+  res.data.list = renderList(stories, '$Story#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(stories, this.href(), 25, req.queryParams.page);
   res.data.title = gettext('Stories by {0}', session.user.name);
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
@@ -92,7 +90,6 @@ Stories.prototype.create_action = function() {
       app.log(ex);
     }
   }
-
   res.data.title = gettext('Add Story');
   res.data.action = this.href(req.action);
   HopObject.confirmConstructor(Story);
@@ -102,10 +99,8 @@ Stories.prototype.create_action = function() {
 }
 
 Stories.prototype.closed_action = function() {
-  res.data.list = renderList(this.closed,
-      '$Story#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.closed,
-      this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.closed, '$Story#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(this.closed, this.href(req.action), 25, req.queryParams.page);
   res.data.title = gettext('Closed Stories');
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
@@ -114,17 +109,17 @@ Stories.prototype.closed_action = function() {
 
 Stories.prototype.all_action = function() {
   res.data.list = renderList(this, '$Story#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(this,
-      this.href(req.action), 25, req.queryParams.page);
-  res.data.title = gettext('All Stories');
+  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
+  res.data.title = gettext('Stories');
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
   return;
 }
 
 Stories.prototype.top_action = function() {
+  res.data.list = renderList(this.top, '$Story#listItem', 25);
   res.data.title = gettext('Top Stories');
-  res.data.body = this.renderSkinAsString('$Stories#top');
+  res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
   return;
 }

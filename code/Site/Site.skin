@@ -27,7 +27,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <% site.link edit <% gettext Settings prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
 <% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
 <% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
-<% site.stories.link top <% gettext "Top Stories" %> prefix=<li> suffix=</li> %>
 <li class='uk-nav-divider'></li>
 <li><% root.title | root.link %></li>
 
