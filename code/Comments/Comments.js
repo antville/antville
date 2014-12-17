@@ -29,7 +29,7 @@ Comments.prototype.main_action = function () {
 }
 
 Comments.prototype.all_action = function () {
-  res.data.title = gettext('All Comments');
+  res.data.title = gettext('Comments');
   res.data.list = renderList(this, '$Comment#listItem', 25, req.queryParams.page);
   res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Comments#main');
