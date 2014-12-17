@@ -310,8 +310,7 @@ Members.prototype.add_action = function() {
     try {
       var membership = this.addMembership(req.queryParams);
       membership.notify(req.action, membership.creator.email, gettext('[{0}] Notification of membership change', root.title));
-      res.message = gettext('Successfully added {0} to the list of members.',
-          req.queryParams.name);
+      res.message = gettext('Successfully added {0} to the list of members.', req.queryParams.name);
       res.redirect(membership.href('edit'));
     } catch (ex) {
       res.message = ex;

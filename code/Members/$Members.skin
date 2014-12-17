@@ -1,9 +1,9 @@
 <% #main %>
-<h1><% response.title %></h1>
-<div class="ample">
-   <% members.link add <% gettext "Add Member" %> %>
-</div>
-<% members.link . <% gettext All %> %>
+<h1>
+   <% response.title %>
+   <% members.link add ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
+</h1>
+<% members.link . <% gettext Members %> %>
 <% members.link subscribers <% gettext Subscribers %> prefix='| ' %>
 <% members.link contributors <% gettext Contributors %> prefix="| " %>
 <% members.link managers <% gettext Managers %> prefix="| " %>
@@ -200,12 +200,11 @@ tabindex="4"><% gettext Save %></button>
 <h1><% response.title %></h1>
 <form class='uk-form uk-form-stacked' method='post' action='<% response.action %>'>
    <div class='uk-margin-top'>
-      <span data-uk-tooltip="{pos: 'bottom'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'>
-         <input type='text' name='term' id='term' value='<% request.term encoding='form' %>' />
-      </span>
+      <input type='text' name='term' id='term' value='<% request.term encoding='form' %>' class='uk-width-1-2' />
       <button class='uk-button uk-button-primary' type='submit' id='submit' name='Find' value='1'>
          <% gettext Find %>
       </button>
+      <i class='uk-icon-info-circle' data-uk-tooltip="{pos: 'bottom'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'></i>
       <a href='<% members.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
    <% response.result %>
@@ -229,7 +228,7 @@ tabindex="4"><% gettext Save %></button>
 <tr>
    <td class='uk-text-bold'><% param.name %></td>
    <td><% param.created %></td>
-   <td>
+   <td class='uk-text-right'>
       <a href='?name=<% param.name encoding=form %>'><i class='uk-icon-plus'></i></a>
    </td>
 </tr>
