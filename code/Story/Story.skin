@@ -10,7 +10,10 @@
 <p><% story.referrers %></p>
 
 <% #edit %>
-<h1><% response.title %></h1>
+<h1>
+   <% response.title %>
+   <% story.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
+</h1>
 <% story.skin $Story#restore %>
 <form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
@@ -32,12 +35,13 @@
    <div class='uk-form-row'>
       <label class='uk-form-label' for='tags'>
          <% gettext "Tags" %>
+         <i class='uk-icon-info-circle' title='Separated by commas' data-uk-tooltip='{pos: "right"}'></i>
       </label>
-      <div class='uk-form-controls' title='Separated by commas' data-uk-tooltip='{pos: "left"}'>
+      <div class='uk-form-controls'>
          <% story.input tags class=uk-width-1-1 %>
       </div>
    </div>
-   <fieldset class=uk-margin-top>
+   <fieldset class='uk-margin-top'>
       <legend><% gettext Options %></legend>
       <div class='uk-form-row'>
          <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>
@@ -45,27 +49,38 @@
       <div class='uk-form-row'>
          <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>
       </div>
-      <div class='uk-form-row'>
-         Macro: <a href='' data-macro="<% story.macro %>" data-text='<% gettext "Use keyboard shortcut to copy." %>' class='av-clipboard-copy'><% story.macro %></a>
-      </div>
-      <div class='uk-form-row'>
-         <% if <% story.creator %> is null then "" else
-            <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %>
-         %>
-         <% if <% story.created %> is <% story.modified %> then "" else
-            <% gettext "Last modified by {0} on {1}" <% story.modifier %>
-            <% story.modified %> prefix="<br />" %>
-         %>
+   </fieldset>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext Information %></legend>
+      <div class='uk-form-row uk-grid'>
+         <div class='uk-width-1-2'>
+            <div><% story.comments summary %></div>
+            <div><% ngettext '{0} request' '{0} requests' <% story.requests %> %></div>
+            <div>
+               <% if <% story.creator %> is null then '' else
+                  <% gettext 'Created {0} by {1}' <% story.created text %> <% story.creator %> %>
+               %>
+            </div>
+            <div>
+               <% if <% story.created %> is <% story.modified %> then '' else
+                  <% gettext 'Last modified {0} by {1}' <% story.modified text %> <% story.modifier %> %>
+               %>
+            </div>
+         </div>
+         <div class='uk-width-1-2 uk-text-right'>
+            <% story.macro | link 'javascript:' data-value=<% story.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy uk-button' %>
+         </div>
       </div>
    </fieldset>
    <div class='uk-form-row uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <button class='uk-button' type="button" id="restore" value="1">
+      <button class='uk-button uk-button-success' type="button" id="restore" value="1">
          <% gettext Restore %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <% story.link delete <% gettext Delete %> class='uk-button' %>
+      <a href='' class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
    </div>
 </form>
 <div class='uk-margin-large-top'>
