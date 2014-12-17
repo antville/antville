@@ -470,9 +470,13 @@ Story.prototype.comments_macro = function(param, mode) {
     var n = comments.size() || 0;
     if (mode === 'count' || mode === 'size') {
       res.write(n);
-    } else if (mode === 'link') {
+    } else if (mode === 'link' || mode === 'summary') {
       var text = ngettext('{0} comment', '{0} comments', n);
-        n < 1 ? res.write(text) : html.link({href: this.href() + '#comments'}, text);
+      if (n < 1 || mode === 'summary') {
+        res.write(text);
+      } else {
+        html.link({href: this.href() + '#comments'}, text);
+      }
     }
   } else {
     this.prefetchChildren();
