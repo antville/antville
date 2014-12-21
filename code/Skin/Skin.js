@@ -445,3 +445,16 @@ Skin.prototype.status_macro = function() {
 Skin.prototype.content_macro = function() {
   return res.write(this.getSource());
 }
+
+Skin.prototype.macro_macro = function () {
+  var name = this.prototype === 'Global' ? this.name : this.prototype + '.' + this.name;
+  res.encode('<% ');
+  res.write('skin ');
+  res.write(quote(name));
+  res.encode(' %>');
+  return;
+};
+
+Skin.prototype.custom_macro = function () {
+  return this.isPersistent() && !this.source;
+};
