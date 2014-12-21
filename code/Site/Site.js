@@ -288,6 +288,7 @@ Site.prototype.getPermission = function(action) {
     return;
 
     case 'import':
+    case '$Site#admin':
     return User.require(User.PRIVILEGED);
   }
 
