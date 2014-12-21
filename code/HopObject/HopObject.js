@@ -376,6 +376,9 @@ HopObject.prototype.skin_macro = function(param, name) {
   if (!name) {
     return;
   }
+  if (param.restricted && !this.getPermission(name)) {
+    return;
+  }
   if (name.contains('#')) {
     this.renderSkin(name);
   } else {
