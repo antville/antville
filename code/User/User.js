@@ -292,8 +292,20 @@ User.getMembership = function() {
     membership = Membership.getByName(session.user.name);
   }
   HopObject.confirmConstructor(Membership);
-  return membership || new Membership;
-}
+  return membership || new Membership();
+};
+
+User.prototype.getMembership = function () {
+  var membership = Membership.getByName(this.name);
+  if (!membership) {
+    HopObject.confirmConstructor(Membership);
+    membership = new Membership();
+    var site = res.handlers.site;
+    // FIXME: Should we do this also for stories, images etc.?
+    membership.comments.subnodeRelation = "where prototype = 'Comment' and status <> 'deleted' and site_id = " + site._id + " and creator_id = " + this._id + " order by created desc";
+  }
+  return membership;
+};
 
 /**
  *

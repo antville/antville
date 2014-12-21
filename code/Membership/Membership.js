@@ -28,21 +28,9 @@ markgettext('membership');
  * @param {Site} site
  * @returns {Membership}
  */
-Membership.getByName = function(name, site, options) {
-  site || (site = res.handlers.site);
-  options || (options = {});
-  var membership = site.members.get(name);
-  if (!membership && options.virtual) {
-    // Create a virtual Membership if the user is not a member of the site
-    var user = User.getByName(name);
-    if (user) {
-      membership = new Membership();
-      // FIXME: Should we do this also for stories, images etc.?
-      membership.comments.subnodeRelation = "where prototype = 'Comment' and status <> 'deleted' and site_id = " + site._id + " and creator_id = " + user._id;
-    }
-  }
-  return membership;
-}
+Membership.getByName = function(name, site) {
+  return (site || res.handlers.site).members.get(name);
+};
 
 /**
  *
