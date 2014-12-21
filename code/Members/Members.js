@@ -131,17 +131,15 @@ Members.prototype.reset_action = function() {
     if (user) {
       var token = user.getMetadata('resetToken');
       if (token && token === req.data.token) {
-        session.login(user);
         if (req.postParams.save) {
           var password = req.postParams.password;
           if (!password) {
             res.message = gettext('Please enter a new password.');
-          } else if (password !== req.postParams.passwordConfirm) {
-            res.message = gettext('The passwords do not match.');
           } else {
             user.hash = (password + user.salt).md5();
             user.setMetadata('resetToken', null);
             res.message = gettext('Your password was changed.');
+            session.login(user);
             res.redirect(this._parent.href());
           }
         }
