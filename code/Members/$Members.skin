@@ -3,7 +3,7 @@
    <% response.title %>
    <% members.link add ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
 </h1>
-<% members.link . <% gettext Members %> %>
+<% members.link . <% gettext All %> %>
 <% members.link subscribers <% gettext Subscribers %> prefix='| ' %>
 <% members.link contributors <% gettext Contributors %> prefix="| " %>
 <% members.link managers <% gettext Managers %> prefix="| " %>
@@ -33,9 +33,9 @@
          <% gettext Username %>
       </label>
       <div class='uk-form-controls'>
-         <input name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>" class=uk-form-width-medium>
+         <input name="name" id="name" tabindex=1 value="<% request.name encoding="form" %>" class='uk-width-1-2'>
          <button class='uk-button uk-button-link'>
-            <% members.link register <% gettext "Not registered yet\?" %> tabindex="6" %>
+            <% members.link register <% gettext "Not registered yet\?" %> tabindex=6 %>
          </button>
       </div>
    </div>
@@ -43,8 +43,8 @@
       <label class='uk-form-label' for='password'>
          <% gettext Password %>
       </label>
-      <div class='uk-form-controls uk-form-password'>
-         <input type="password" name="password" id="password" tabindex="2" class=uk-form-width-medium>
+      <div class='uk-form-controls uk-form-password uk-width-1-2'>
+         <input type="password" name="password" id="password" class='uk-width-1-1' tabindex=2>
          <a href='' class='uk-form-password-toggle' data-uk-form-password="{
             lblHide: '<% gettext Hide %>'
          }"><% gettext Show %></a>
@@ -55,7 +55,7 @@
    </div>
    <div class='uk-form-row'>
       <label class='uk-form-label' for='remember'>
-         <input type="checkbox" id="remember" name="remember" tabindex="3" <% if <% request.remember %> is "on" then 'checked="checked"' %> >
+         <input type="checkbox" id="remember" name="remember" tabindex="3" <% if <% request.remember %> is on then 'checked="checked"' %> >
          <% gettext "Remember Login" %>
       </label>
    </div>
@@ -158,21 +158,21 @@ $(function() {
 
 <% #reset %>
 <h1><% response.title %></h1>
-<p>
-   <small><% gettext "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions." %></small>
-</p>
-<form class='uk-form uk-form-stacked' id="login" method="post" action="<% response.action %>">
+<div class='uk-text-small'>
+   <% gettext "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions." %>
+</div>
+<form class='uk-margin-top uk-form uk-form-stacked' id="login" method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <label class='uk-form-label' for='username'>
          <% gettext Username %>
       </label>
-      <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>" class=uk-form-width-medium>
+      <input type="text" name="name" id="name" tabindex="1" value="<% request.name encoding="form" %>" class='uk-width-1-2'>
    </div>
    <div class='uk-form-row'>
       <label class='uk-form-label' for='email'>
-         <% gettext e-mail %>
+         <% gettext E-mail %>
       </label>
-      <input type="text" name="email" id="email" tabindex="2" value="<% request.email encoding="form" %>" class=uk-form-width-medium>
+      <input type="email" name="email" id="email" tabindex="2" value="<% request.email encoding="form" %>" class='uk-width-1-2'>
    </div>
    <div class='uk-form-row'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="reset" value="1" tabindex="4"><% gettext "Send Request" %></button>
@@ -181,31 +181,37 @@ $(function() {
 </form>
 
 <% #password %>
-<p class="storyTitle"><% response.title %></p>
-<form id="login" method="post" action="<% response.action %>">
-<div class="small"><% gettext Password suffix=: %></div>
-<div><input type="password" name="password" id="password" size="15" tabindex="1" /></div>
-<div class="small"><% gettext "Confirm Password" suffix=: %></div>
-<div><input type="password" name="passwordConfirm" id="passwordConfirm"
-size="15" tabindex="2" /></div>
-<input type="hidden" name="user" id="user" value="<% request.user %>" />
-<input type="hidden" name="token" id="token" value="<% request.token %>" />
-<br />
-<button type="submit" id="submit" name="save" value="1"
-tabindex="4"><% gettext Save %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' id="login" method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-controls uk-form-password uk-width-1-2'>
+         <input type="password" name="password" id="password" class='uk-width-1-1'>
+         <a href='' class='uk-form-password-toggle' data-uk-form-password="{
+            lblHide: '<% gettext Hide %>'
+         }"><% gettext Show %></a>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1" tabindex="4"><% gettext Save %></button>
+      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+   </div>
 </form>
 
 <% #add %>
 <h1><% response.title %></h1>
 <form class='uk-form uk-form-stacked' method='post' action='<% response.action %>'>
-   <div class='uk-margin-top'>
-      <input type='text' name='term' id='term' value='<% request.term encoding='form' %>' class='uk-width-1-2' />
-      <button class='uk-button uk-button-primary' type='submit' id='submit' name='Find' value='1'>
-         <% gettext Find %>
-      </button>
-      <i class='uk-icon-info-circle' data-uk-tooltip="{pos: 'bottom'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'></i>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Username %>
+         <i class='uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'bottom'}" title='<% gettext 'You can use the asterisk * as wildcard.' %>'></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input type='text' name='term' id='term' value='<% request.term encoding='form' %>' class='uk-width-1-2' />
+         <button class='uk-button uk-button-primary' type='submit' id='submit' name='Find' value='1'>
+            <% gettext Find %>
+         </button>
       <a href='<% members.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+   </div>
    </div>
    <% response.result %>
 </form>

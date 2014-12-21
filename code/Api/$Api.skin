@@ -43,6 +43,4 @@
 <h1><% response.title %></h1>
 <% gettext 'This callback URL invokes the ping method of the {0}.' "<a href='http://www.weblogs.com/api.html'>weblogs.com API</a>" %>
 <% gettext 'The essential ECMAScript code is shown below.' %>
-<pre style='overflow: auto; border: 1px solid #cccccc;'>
-   <code><% param.code %></code>
-</pre>
+<pre><code><% param.code %></code></pre>

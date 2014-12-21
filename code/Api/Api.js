@@ -105,25 +105,26 @@ Api.prototype.main_action = function() {
 }
 
 Api.prototype.callback_action = function() {
-  var ping = function(data) {
+  var ping = function (data) {
     if (data.type !== 'Story' && data.type !== 'Comment') {
       return;
     }
     var remote = new Remote('http://rpc.weblogs.com/RPC2');
     var call = remote.weblogUpdates.ping(data.site, data.origin);
     if (call.error || call.result.flerror) {
-      app.debug('Error invoking weblogs.com ping() method for ' +
-          data.site + ': ' + call.error || call.result.message);
+      console.error('Error invoking weblogs.com ping() method for ' + data.site + ': ' + call.error || call.result.message);
     } else {
-      app.debug(call.result);
+      console.info(call.result);
     }
     return;
   };
 
   if (req.isGet()) {
     res.data.title = gettext('Callback URL');
-    res.data.body = this.renderSkinAsString('$Api#callback',
-        {name: req.action, code: ping.toString()});
+    res.data.body = this.renderSkinAsString('$Api#callback', {
+      name: req.action,
+      code: ping.toString().replace(/^\s+/, '')
+    });
     res.handlers.site.renderSkin('Site#page');
   } else if (req.isPost()) {
     app.debug('Invoked default callback with POST params: ' + req.postParams);

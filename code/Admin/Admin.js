@@ -465,25 +465,6 @@ Admin.prototype.setup_action = function() {
   return;
 }
 
-/**
- *
- * @param {Object} data
- */
-Admin.prototype.update = function(data) {
-  root.map({
-    creationScope: data.creationScope,
-    creationDelay: data.creationDelay,
-    replyTo: data.replyTo,
-    notificationScope: data.notificationScope,
-    phaseOutGracePeriod: data.phaseOutGracePeriod,
-    phaseOutMode: data.phaseOutMode,
-    phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
-    probationPeriod: data.probationPeriod,
-    quota: data.quota
-  });
-  return;
-}
-
 Admin.prototype.jobs_action = function() {
   var files = Admin.queue.dir.listFiles();
   res.data.list = renderList(files, this.renderItem, 25, req.queryParams.page);
@@ -526,6 +507,25 @@ Admin.prototype.users_action = function() {
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#users');
   root.renderSkin('Site#page');
+  return;
+}
+
+/**
+ *
+ * @param {Object} data
+ */
+Admin.prototype.update = function(data) {
+  root.map({
+    creationScope: data.creationScope,
+    creationDelay: data.creationDelay,
+    replyTo: data.replyTo,
+    notificationScope: data.notificationScope,
+    phaseOutGracePeriod: data.phaseOutGracePeriod,
+    phaseOutMode: data.phaseOutMode,
+    phaseOutNotificationPeriod: data.phaseOutNotificationPeriod,
+    probationPeriod: data.probationPeriod,
+    quota: data.quota
+  });
   return;
 }
 

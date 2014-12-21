@@ -206,11 +206,9 @@ Comment.prototype.update = function(data) {
 Comment.prototype.getConfirmText = function() {
   var size = this.size() + 1;
   if (this.status === Comment.DELETED && size > 1) {
-    return gettext('You are about to delete a comment thread consisting of {0} postings.',
-        size);
+    return gettext('You are about to delete a comment thread consisting of {0} postings.', size);
   }
-  return gettext('You are about to delete a comment by user {0}.',
-      this.creator.name);
+  return gettext('You are about to delete a comment by user {0}.', this.creator.name);
 }
 
 /**

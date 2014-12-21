@@ -117,12 +117,8 @@ Skins.prototype.create_action = function() {
 
 Skins.prototype.modified_action = function() {
   res.data.title = gettext('Modified Skins');
-  res.push();
-  this.renderSkin('$Skins#header');
-  this.modified.forEach(function() {
-    this.renderSkin('$Skin#listItem');
-  });
-  res.data.body = res.pop();
+  res.data.list = renderList(this.modified, '$Skin#listItem');
+  res.data.body = this.renderSkinAsString('$Skins#list');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
@@ -131,21 +127,21 @@ Skins.prototype.all_action = function() {
   if (this.parent) {
     res.redirect(res.handlers.layout.skins.href(req.action));
   }
-  res.data.list = this.getOutline();
+  res.push()
+  for each (let set in this.getOutline()) {
+    res.write(renderList(set[1], '$Skin#listItem'));
+  }
+  res.data.list = res.pop();
   res.data.title = gettext('All Skins');
-  res.data.body = this.renderSkinAsString('$Skins#all');
+  res.data.body = this.renderSkinAsString('$Skins#list');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
 
 Skins.prototype.safe_action = function() {
-  res.data.title = gettext('Modified Skins');
-  res.push();
-  this.modified.forEach(function() {
-    this.renderSkin('$Skin#listItem');
-  });
-  res.data.title = 'Modified Skins';
-  res.data.body = res.pop();
+  res.data.title = gettext('Modified Skins (Safe Mode)');
+  res.data.list = renderList(this.modified, '$Skin#listItem');
+  res.data.body = this.renderSkinAsString('$Skins#list');
   this.renderSkin('$Skins#page');
   return;
 }
@@ -165,21 +161,23 @@ Skins.prototype.getSkin = function(group, name) {
  * @returns {String}
  */
 Skins.prototype.getOutline = function() {
-  var skinfiles, prototype, skin, subskins, names, skins = [];
+  var outline = [];
   var options = Skin.getPrototypeOptions();
 
   for each (var option in options) {
-    names = [];
-    prototype = option.value;
-    skinfiles = app.getSkinfilesInPath(res.skinpath);
-    skin = createSkin(skinfiles[prototype][prototype]);
-    subskins = skin.getSubskinNames();
-    for each (var subskin in subskins) {
-      names.push(subskin);
+    var skins = [];
+    var prototype = option.value;
+    var skinfiles = app.getSkinfilesInPath(res.skinpath);
+    var skin = createSkin(skinfiles[prototype][prototype]);
+    for each (var name in skin.getSubskinNames()) {
+      var subskin = this.getSkin(prototype, name);
+      skins.push(subskin);
     }
-    names.sort();
-    skins.push([prototype, names]);
+    skins.sort();
+    outline.push([prototype, skins]);
   }
+
+  return outline;
 
   res.push();
   for each (var item in skins) {

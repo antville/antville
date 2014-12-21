@@ -136,24 +136,25 @@ Story.prototype.getPermission = function(action) {
         this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
+
     case 'comment':
     return this.site.commentMode === Site.ENABLED &&
         (this.commentMode === Story.OPEN ||
         this.commentMode === Story.MODERATED);
+
     case 'delete':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
+
     case 'edit':
     case 'mode':
     case 'rotate': // FIXME: Action moved to compat layer
     case 'status':
     return this.creator === session.user ||
         Membership.require(Membership.MANAGER) ||
-        (this.status === Story.SHARED &&
-        Membership.require(Membership.CONTRIBUTOR)) ||
-        (this.status === Story.OPEN &&
-        Membership.require(Membership.SUBSCRIBER)) ||
+        (this.status === Story.SHARED && Membership.require(Membership.CONTRIBUTOR)) ||
+        (this.status === Story.OPEN && Membership.require(Membership.SUBSCRIBER)) ||
         User.require(User.PRIVILEGED);
   }
   return false;
@@ -463,8 +464,7 @@ Story.prototype.summary_macro = function(param) {
 Story.prototype.comments_macro = function(param, mode) {
   var story = this.story || this;
   var comments = this.story ? this : this.comments;
-  if (story.site.commentMode === Site.DISABLED ||
-      story.commentMode === Site.CLOSED) {
+  if (story.isTransient() || story.site.commentMode === Site.DISABLED ||  story.commentMode === Site.CLOSED) {
     return;
   } else if (mode) {
     var n = comments.size() || 0;

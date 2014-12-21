@@ -3,18 +3,17 @@
    <% response.title %>
    <% polls.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
 </h1>
-<% polls.link main <% gettext "By {0}" <% membership.name %> %> %>
+<% polls.link . <% gettext All %> %>
+<% polls.link user <% membership.name %> prefix=" | " %>
 <% polls.link running <% gettext Running %> prefix=" | " %>
-<% polls.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% image /ant-icon.png %></td>
+         <td class='uk-text-right'><i class='uk-icon-bar-chart'></i></td>
          <td><% gettext Question %></td>
          <td><% gettext Author %></td>
          <td><% gettext Modified %></td>
-         <td><% gettext Status %></td>
          <td></td>
          <td></td>
       </tr>

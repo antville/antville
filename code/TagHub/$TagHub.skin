@@ -1,2 +1,3 @@
 <% #main %>
+<% taghub.tagged.skin <% taghub.tagged.type suffix='#date' %> %>
 <% taghub.tagged.skin <% taghub.tagged.type suffix="#preview" %> %>

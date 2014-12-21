@@ -1,7 +1,9 @@
 <% #main %>
 <h1><% response.title %></h1>
-<% comments.link main <% gettext "By {0}" <% membership.name %> %> %>
-<% comments.link all <% gettext All %> prefix=" | " %>
+<% if <% username %> is null then '' else
+   <% comments.link . <% gettext All %> %>
+%>
+<% comments.link user <% username %> prefix=" | " %>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>

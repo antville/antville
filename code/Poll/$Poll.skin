@@ -1,14 +1,36 @@
+<% #listItem %>
+<a name="<% poll.id %>" id="<% poll.id %>"></a>
+<tr>
+   <td class='uk-text-right'><% poll.votes %></td>
+   <td style='max-width: 200px; overflow: hidden;'>
+      <% poll.question | stripTags | poll.link %>
+   </td>
+   <td><% poll.creator %></td>
+   <td><% poll.created text %></td>
+   <td class='uk-text-right'>
+      <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
+   </td>
+   <td style='white-space: nowrap;' class='uk-text-right'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'left'}">
+      <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
 <% #header %>
 <h1><% poll.question | stripTags %></h1>
 <div class='uk-article-meta'>
-   <% gettext "Last modified {0} by {1}" <% poll.created text %> <% poll.creator %> %>
+   <% gettext "Posted by {0} on {1}" <% poll.creator %> <% poll.created short %> %>
 </div>
 
 <% #footer %>
 <div class='uk-margin-top'>
-   <% poll.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff;' %>
-   <% poll.link status <% if <% poll.status %> is open then <% gettext Stop %> else <% gettext Run %> %> class='uk-button' %>
-   <% poll.link delete <% gettext Delete %> class='uk-button' %>
+   <% poll.link edit <% gettext Edit %> class='uk-button' %>
+   <% if <% poll.status %> is open then
+      <% poll.link status <% gettext Stop %> class='uk-button uk-button-danger' style='color: #fff;' %>
+   else
+      <% poll.link status <% gettext Run %> class='uk-button uk-button-success' style='color: #fff;' %>
+   %>
 </div>
 
 <% #main %>
@@ -52,32 +74,20 @@ else
 </div>
 <% poll.skin #footer %>
 
-<% #listItem %>
-<a name="<% poll.id %>" id="<% poll.id %>"></a>
-<tr>
-   <td><% poll.votes %></td>
-   <td style='max-width: 200px; overflow: hidden;'>
-      <% poll.question | stripTags | poll.link %>
-   </td>
-   <td><% poll.creator %></td>
-   <td><% poll.created text %></td>
-   <td><% poll.status %></td>
-   <td>
-      <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-pause'></i>" else "<i class='uk-icon-play'></i>" %> %>
-   </td>
-   <td style='white-space: nowrap;' class='uk-text-right'>
-      <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
-      <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'left'}">
-   </td>
-</tr>
-
 <% #edit %>
 <h1>
    <% response.title %>
    <% poll.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
-<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+<div class='uk-article-meta'>
+   <% if <% poll.creator %> is null then '' else
+      <% gettext 'Created by {0} on {1}' <% poll.creator %> <% poll.created short %> prefix=<div> suffix=</div> %>
+   %>
+   <% if <% poll.created %> is <% poll.modified %> then '' else
+      <% gettext 'Last modified by {0} on {1}' <% poll.modifier %> <% poll.modified short %> prefix=<div> suffix=</div> %>
+   %>
+</div>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <div class='uk-form-label'><% gettext Question %></div>
       <div class='uk-form-controls'>
@@ -94,22 +104,8 @@ else
    </div>
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
-      <div class='uk-form-row uk-grid'>
-         <div class='uk-width-1-2'>
-            <div>
-               <% if <% poll.creator %> is null then '' else
-                  <% gettext 'Created {0} by {1}' <% poll.created text %> <% poll.creator %> %>
-               %>
-            </div>
-            <div>
-               <% if <% poll.created %> is <% poll.modified %> then '' else
-                  <% gettext 'Last modified {0} by {1}' <% poll.modified text %> <% poll.modifier %> %>
-               %>
-            </div>
-         </div>
-         <div class='uk-width-1-2 uk-text-right'>
-            <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy uk-button' %>
-         </div>
+      <div class='uk-form-row'>
+         <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>

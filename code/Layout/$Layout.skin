@@ -1,75 +1,75 @@
 <% #main %>
-<script type="text/javascript">
+<h1><% response.title %></h1>
+<div class='uk-margin-top'>
+   <% layout.link skins <% gettext Skins %> %>
+   <% layout.link images <% gettext Images %> prefix=' | ' %>
+   <% layout.link import <% gettext Import %> prefix=' | ' %>
+   <% layout.link export <% gettext Export %> prefix=' | ' %>
+</div>
+<form class='uk-margin-top uk-form uk-form-stacked' id='prefs' method='post' action='<% response.action %>'>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext 'Show Controls' %>
+      </div>
+      <div class='uk-form-controls'>
+         <input id='sandbox' name='sandbox' type='checkbox' <% if <% layout.sandbox %> is true then checked %>>
+         <label for='sandbox'><% gettext enabled %></label>
+      </div>
+   </div>
+   <div class='uk-grid'>
+      <legend class='uk-margin-top' style='margin-bottom: -15px;'>
+         <% gettext 'Variables' %>
+      </legend>
+      <% layout.values %>
+      <div class='uk-margin-top'>
+         <div class='uk-form-label'>&#160;</div>
+         <a href='' class='uk-icon-button uk-icon-plus uk-text-middle' id='addVariable'></a>
+      </div>
+   </div>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type='submit' id='submit' name='save' value='1'>
+         <% gettext Save %>
+      </button>
+      <% layout.link reset <% gettext Reset %> class='uk-button' %>
+      <a href='' class='uk-button uk-button-link cancel'><% gettext Cancel %></a>
+   </div>
+</form>
+<script type='text/javascript'>
 $(function() {
-   $("#addValueFields").hide();
-   $("#addValueLink").click(function() {
+   $('#addVariable').on('click', function (event) {
+      event.preventDefault();
       var name = prompt('<% gettext "Please enter the name of the new variable:" %>');
       if (name) {
-         var key = "value_" + name;
-         var emptyFields = $("#addValueFields").clone();
-         $("#newKey").html(name + ":").attr("id", null);
-         $("#newValue").attr("name", key).attr("id", key);
-         $("#addValueFields").show().after(emptyFields).attr("id", null);
+         var key = 'value_' + name;
+         var variableRow = $('.av-variable-row').eq(0).clone();
+         variableRow.find('.uk-form-label').html(name);
+         variableRow.find('.uk-form-controls input').attr({name: key, 'id': key, value: ''});
+         $('.av-variable-row:last').after(variableRow);
+         $(variableRow).find('input').focus();
       }
-      return false;
    });
 });
 </script>
 
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">
-   <% layout.link import <% gettext Import %> prefix="... " %>
-   <% layout.link export <% gettext Export %> prefix=" | " %>
-   <% layout.link reset <% gettext Reset %> prefix=" | " %>
-</div>
-...
-<% layout.link images <% gettext Images %> %>
-<% layout.link skins <% gettext Skins %> prefix=" | " %>
-<% //layout.link sandbox <% gettext Sandbox %> prefix=" | " %>
-<br /><br />
-<form id="prefs" method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td class='small'>
-   <% gettext "Show Controls" suffix=: %>
-</td>
-<td>
-   <input id='sandbox' name='sandbox' type='checkbox' <% if <% layout.sandbox %> is true then checked %>>
-   <label for='sandbox'><% gettext enabled %></label>
-</td>
-</tr>
-<% layout.values %>
-<tr id="addValueFields">
-<td id="newKey" class="small"></td>
-<td><input type="text" name="newValue" id="newValue" size="40" /></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <div class="small">
-      <a href="" id="addValueLink"><% gettext "Add variable" %></a>
+<% #value %>
+<div class='uk-width-1-2 uk-margin-top av-variable-row'>
+   <div class='uk-form-label'>
+      <% param.key %>
    </div>
-   <p><br />
-      <button type="submit" name="save" value="1"><% gettext Save %></button>
-      <a href="" class="cancel"><% gettext Cancel %></a>
-   </p>
-</td>
-</tr>
-</table>
-</form>
+   <div class='uk-form-controls'>
+      <input class='uk-width-1-1' type='text' name='value_<% param.key %>' value='<% param.value %>'>
+   </div>
+</div>
 
 <% #import %>
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>" enctype="multipart/form-data">
-<% layout.upload upload %>
-<br />
-<button type="submit" name="submit" value="1"><% gettext Import %></button>
-<a href="" class="cancel"><% gettext Cancel %></button>
+<h1><% response.title %></h1>
+<form class='uk-form' method="post" action="<% response.action %>" enctype="multipart/form-data">
+   <% layout.upload upload %>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="submit" value="1">
+         <% gettext Import %>
+      </button>
+      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+   </div>
 </form>
 
-<% #value %>
-<tr>
-<td class="small"><% param.key %>:</td>
-<td><input type="text" name="value_<% param.key %>"
-      value="<% param.value %>" size="40" /></td>
-</tr>

@@ -1,32 +1,27 @@
 <% #welcome %>
-<p><% gettext "The site is currently {0}." <% gettext <% site.mode %> %> %>
-<% if <% site.mode %> is closed then
-   <% gettext "This means that only you and other {0} of this site have access
-   to it. You can safely start to customize it or to fill it with all the
-   content you have in mind." <% site.members.link owners <% gettext owners %> %> %>
-else <% if <% site.mode %> is restricted then "" else
-   <% gettext "Thus, it is publicly accessible for every visitor." %> %>
-%></p>
-<p><% gettext 'The easiest way to customize your site is to change its
-      <a href="{0}">preferences</a>. You can change the language and time zone
-      or the main title of your site, open or close it and much more.'
-      <% site.href edit %> %></p>
-<p><% gettext 'Of course, you can now also start to create <a href="{0}">stories</a>,
-      upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create
-      your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful
-      customization possibilities by having a look at the <a href="{4}">layout
-      section</a> where you can modify the appearance of your site according to
-      your needs.' <% site.stories.href create %> <% site.images.href create %>
-      <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %></p>
+<p>
+   <% gettext "The site is currently {0}." <% gettext <% site.mode %> %> %>
+   <% if <% site.mode %> is closed then
+      <% gettext "This means that only you and other {0} of this site have access to it. You can safely start to customize it or to fill it with all the content you have in mind." <% site.members.link owners <% gettext owners %> %> %>
+   else <% if <% site.mode %> is restricted then "" else
+      <% gettext "Thus, it is publicly accessible for every visitor." %> %>
+   %>
+</p>
+<p>
+   <% gettext 'The easiest way to customize your site is to change its <a href="{0}">preferences</a>. You can change the language and time zone or the main title of your site, open or close it and much more.' <% site.href edit %> %>
+</p>
+<p>
+   <% gettext 'Of course, you can now also start to create <a href="{0}">stories</a>, upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful customization possibilities by having a look at the <a href="{4}">layout section</a> where you can modify the appearance of your site according to your needs.' <% site.stories.href create %> <% site.images.href create %> <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %>
+</p>
 <p><% gettext "Have a lot of fun!" %></p>
 
 <% #sites %>
 <table border="0" cellpadding="1" cellspacing="0">
-<colgroup>
-   <col width="150">
-   <col width="*">
-</colgroup>
-<% user.list sites %>
+   <colgroup>
+      <col width="150">
+      <col width="*">
+   </colgroup>
+   <% user.list sites %>
 </table>
 
 <% #subscriptions %>
@@ -68,10 +63,10 @@ else <% if <% site.mode %> is restricted then "" else
    <div class='uk-form-row'>
       <label class='uk-form-label' for='url'>
          <% gettext "Personal URL" %>
-         <i class='uk-icon-info-circle' title='<% gettext "If you enter a URL here your user name will appear as link next to your posted items." %>' data-uk-tooltip="{pos: 'right'}"></i>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you enter a URL here your user name will appear as link next to your posted items." %>' data-uk-tooltip="{pos: 'right'}"></i>
       </label>
       <div class='uk-form-controls'>
-            <% user.input url type=url class='uk-form uk-width-1-2' %>
+         <% user.input url type=url class='uk-form uk-width-1-2' %>
          <a href='<% user.url %>'><i class='uk-icon-globe'></i></a>
       </div>
    </div>
@@ -86,48 +81,13 @@ else <% if <% site.mode %> is restricted then "" else
          }"><% gettext Show %></a>
       </div>
    </div>
+   <% user.skin $User#admin restricted=true %>
    <div class='uk-form-row uk-margin-top'>
       <fieldset>
          <legend><% gettext Connections %></legend>
          <% trail Connect context=profile default=— %>
       </fieldset>
    </div>
-   <a name='admin' id='admin'></a>
-   <fieldset class='uk-margin-top'>
-      <legend><% gettext Administration %></legend>
-      <div class='uk-form-row'>
-         <label class='uk-form-label' for='status'>
-            <% gettext Status %>
-         </label>
-         <div class='uk-form-controls'>
-            <% user.select status %>
-         </div>
-      </div>
-      <div class='uk-form-row'>
-         <label class='uk-form-label' for='status'>
-            <% gettext Information %>
-         </label>
-         <div><% ngettext "{0} Site" "{0} Sites" <% count <% user.self sites %> %> %></div>
-         <div><% ngettext "{0} Story" "{0} Stories" <% count <% user.self stories %> %> %></div>
-         <div><% ngettext "{0} Comment" "{0} Comments" <% count <% user.self comments %> %> %></div>
-         <div><% ngettext "{0} Image" "{0} Images" <% count <% user.self images %> %> %></div>
-         <div><% ngettext "{0} File" "{0} Files" <% count <% user.self files %> %> %></div>
-      </div>
-      <div class='uk-form-row'>
-         <label class='uk-form-label' for='notes'>
-            <% gettext Notes %>
-         </label>
-         <div class='uk-form-controls'>
-            <% user.textarea notes class='uk-width-1-1' rows=5 %>
-         </div>
-      </div>
-      <div class='uk-form-row'>
-         <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
-            <i class='uk-icon-trash-o'></i>
-            Delete this account
-         </a>
-      </div>
-   </fieldset>
    <div class='uk-form-row uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
@@ -152,6 +112,45 @@ $(function () {
    });
 });
 </script>
+
+<% #admin %>
+<a name='admin' id='admin'></a>
+<fieldset class='uk-margin-top'>
+   <legend><% gettext Administration %></legend>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='status'>
+         <% gettext Status %>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.select status %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='status'>
+         <% gettext Information %>
+      </label>
+      <div><% ngettext "{0} Site" "{0} Sites" <% count <% user.self sites %> %> %></div>
+      <div><% ngettext "{0} Story" "{0} Stories" <% count <% user.self stories %> %> %></div>
+      <div><% ngettext "{0} Comment" "{0} Comments" <% count <% user.self comments %> %> %></div>
+      <div><% ngettext "{0} Image" "{0} Images" <% count <% user.self images %> %> %></div>
+      <div><% ngettext "{0} File" "{0} Files" <% count <% user.self files %> %> %></div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='notes'>
+         <% gettext Notes %>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.textarea notes class='uk-width-1-1' rows=5 %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
+         <i class='uk-icon-trash-o'></i>
+         Delete this account
+      </a>
+   </div>
+</fieldset>
+
 
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>

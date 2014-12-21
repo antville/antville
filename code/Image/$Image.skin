@@ -1,9 +1,37 @@
+<% #listItem %>
+<tr>
+   <td>
+      <% image.thumbnail data-uk-tooltip="{pos: 'left'}" | image.link class='uk-thumbnail' %>
+   </td>
+   <!-- td><% image.contentType | replace image/ '' %></td>
+   <td><% image.contentLength %></td -->
+   <td><% image.width %>&times;<% image.height %></td>
+   <td><% image.creator %></td>
+   <td><% image.modified text %></td>
+   <td>
+      <% if <% image.tags count %> is 0 then '' else <% image.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
+   </td>
+   <td style='white-space: nowrap;' class='uk-text-right'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <% image.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% image.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
 <% #edit %>
 <h1>
    <% response.title %>
    <% image.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
-<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
+<div class='uk-article-meta'>
+   <% if <% image.creator %> is null then '' else
+      <% gettext 'Created by {0} on {1}' <% image.creator %> <% image.created short %> prefix=<div> suffix=</div> %>
+   %>
+   <% if <% image.created %> is <% image.modified %> then '' else
+      <% gettext 'Last modified by {0} on {1}' <% image.modifier %> <% image.modified short %> prefix=<div> suffix=</div> %>
+   %>
+</div>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
    <div class='uk-form-row'>
       <label class='uk-form-label' for=''>
          <% gettext File %>
@@ -15,10 +43,10 @@
    <div class='uk-form-row'>
       <label class='uk-form-label' for=''>
          <% gettext Name %>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
          <% image.input name class='uk-width-1-2' %>
-         <i class='uk-icon-info-circle' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -32,7 +60,7 @@
    <div class='uk-form-row'>
       <label class='uk-form-label' for=''>
          <% gettext Tags %>
-         <i class='uk-icon-info-circle' title='Separated by commas' data-uk-tooltip='{pos: "right"}'></i>
+         <i class='uk-icon-info-circle uk-text-muted' title='Separated by commas' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
          <% image.input tags class='uk-width-1-1' %>
@@ -41,39 +69,25 @@
    <div class='uk-form-row'>
       <label class='uk-form-label' for=''>
          Pixels
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be    preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
          <% image.input maxWidth type='number' min=1 max=1000 class='uk-form-width-small' %>
          &times;
          <% image.input maxHeight type='number' min=1 max=1000 class='uk-form-width-small' %>
-         <i class='uk-icon-info-circle' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be    preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %>
-' data-uk-tooltip='{pos: "right"}'></i>
       </div>
    </div>
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
-      <div class='uk-form-row uk-grid'>
-         <div class='uk-width-1-2'>
-            <div>
-               <% if <% image.creator %> is null then '' else
-                  <% gettext 'Created {0} by {1}' <% image.created text %> <% image.creator %> %>
-               %>
-            </div>
-            <div>
-               <% if <% image.created %> is <% image.modified %> then '' else
-                  <% gettext 'Last modified {0} by {1}' <% image.modified text %> <% image.modifier %> %>
-               %>
-            </div>
-         </div>
-         <div class='uk-width-1-2 uk-text-right'>
-            <% image.macro | link 'javascript:' data-value=<% image.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy uk-button' %>
-         </div>
+      <div class='uk-form-row'>
+         <% image.macro | link 'javascript:' data-value=<% image.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
+      <% image.link delete <% gettext Delete %> class='uk-button' %>
       <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
    </div>
 </form>
@@ -89,20 +103,3 @@ $(function() {
    }
 });
 </script>
-
-<% #listItem %>
-<tr>
-   <td>
-      <% image.thumbnail data-uk-tooltip="{pos: 'left'}" | image.link class='uk-thumbnail' %>
-   </td>
-   <td><% image.contentType | replace image/ '' %></td>
-   <td><% image.contentLength %></td>
-   <td><% image.width %>&times;<% image.height %></td>
-   <td><% image.creator %></td>
-   <td><% image.modified text %></td>
-   <td style='white-space: nowrap;' class='uk-text-right'>
-      <% image.link edit "<i class='uk-icon-pencil'></i>" %>
-      <% image.link delete "<i class='uk-icon-trash-o'></i>" %>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
-   </td>
-</tr>

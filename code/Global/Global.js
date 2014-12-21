@@ -437,6 +437,10 @@ function user_macro() {
   return !!session.user;
 }
 
+function username_macro() {
+  res.write(session.user ? session.user.name : '');
+}
+
 /**
  * Renders the URL of, a link to or an arbitrary skin of a story.
  * @param {Object} param The default Helma macro parameter object

@@ -1,7 +1,30 @@
+<% #listItem %>
+<tr>
+   <td style='max-width: 300px; overflow: hidden;'>
+      <a href='<% comment.href %>'><% comment.summary %></a>  <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<i class='uk-icon-comments-o uk-text-muted'> " suffix='</i>' %> %>
+   </td>
+   <td><% comment.creator %></td>
+   <td><% comment.modified text %></td>
+   <td style='white-space: nowrap;' class='uk-text-right'>
+      <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <a href='<% comment.story.href %>' title='<% comment.story.summary %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
+   </td>
+</tr>
+
 <% #delete %>
 <% if <% comment.related.size %> is null then '' else <% comment.skin #deleteOptions %> %>
 
 <% #deleteOptions %>
+<div class='uk-alert uk-alert-warning'>
+   <input type="checkbox" id="mode" name="mode" value="user" />
+   <label for="mode"><% gettext "Erase all comments of user {0}"
+         <% comment.creator %> %></label>
+   <div id="confirmation">
+      <input type="checkbox" id="confirm" name="confirm" value="1" />
+      <label for="confirm"><% ngettext "Yes, really erase {0} comment"
+            "Yes, really erase {0} comments" <% comment.related.size %> %></label>
+   </div>
+</div>
 <script type="text/javascript">
 $(function() {
    $('#confirmation').hide();
@@ -20,27 +43,3 @@ $(function() {
    });
 });
 </script>
-<div class='uk-alert uk-alert-warning'>
-   <input type="checkbox" id="mode" name="mode" value="user" />
-   <label for="mode"><% gettext "Erase all comments of user {0}"
-         <% comment.creator %> %></label>
-   <div id="confirmation">
-      <input type="checkbox" id="confirm" name="confirm" value="1" />
-      <label for="confirm"><% ngettext "Yes, really erase {0} comment"
-            "Yes, really erase {0} comments" <% comment.related.size %> %></label>
-   </div>
-</div>
-
-<% #listItem %>
-<tr>
-   <td style='max-width: 300px; overflow: hidden;'>
-      <a href='<% comment.href %>'><% comment.summary %></a>  <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<i class='uk-icon-comments-o'></i> " %> %>
-   </td>
-   <td><% comment.creator %></td>
-   <td><% comment.modified text %></td>
-   <td style='white-space: nowrap;' class='uk-text-right'>
-      <a href='<% comment.story.href %>' title='<% comment.story.summary %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
-      <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
-   </td>
-</tr>
-

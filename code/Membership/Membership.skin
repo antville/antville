@@ -1,11 +1,9 @@
 <% #status %>
-<div style='margin-left: 15px;'>
-  <small>
-    <% gettext 'Logged in as {0}' <% membership.name | membership.link %> %>
+<div class='uk-margin-left uk-text-small uk-text-muted'>
+    <% gettext 'Logged in as {0}' <% membership.name %> %>
     <% membership.role prefix=( suffix=) %>
-  </small>
 </div>
-<ul class='uk-nav uk-nav-side'>
+<ul class='uk-nav uk-nav-side uk-margin-small-top'>
   <li>
     <% site.members.link edit <% gettext Account %> %>
   </li>
@@ -21,8 +19,8 @@
 </ul>
 
 <% #login %>
-<div style='margin-left: 15px;'>
-  <small><% gettext "You are not logged in" %></small>
+<div class='uk-margin-left uk-text-small uk-text-muted'>
+  <% gettext "You are not logged in" %>
 </div>
 <ul class='uk-nav uk-nav-side'>
   <li>

@@ -3,18 +3,21 @@
    <% response.title %>
    <% images.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
 </h1>
-<% images.link main <% gettext "By {0}" <% membership.name %> %> %>
-<% images.link all <% gettext All %> prefix=" | " %>
+<% if <% images.self _parent %> is 'HopObject layout' then '' else
+   <% images.link . <% gettext All %> %>
+%>
+<% images.link user <% membership.name %> prefix=" | " %>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
          <td></td>
-         <td><% gettext Type %></td>
-         <td><% gettext Size %></td>
+         <!--td><% gettext Type %></td>
+         <td><% gettext Size %></td-->
          <td>Pixels</td>
          <td><% gettext Author %></td>
          <td><% gettext Modified %></td>
+         <td></td>
          <td></td>
       </tr>
    </thead>
@@ -24,14 +27,3 @@
 </table>
 <% response.pager %>
 
-<% #layout %>
-<div class="pagelink"><% breadcrumbs %></div><br />
-<h1><% response.title %></h1>
-
-<div class="ample">
-   <% images.link create <% gettext "Add Layout Image" %> prefix="... " %>
-</div>
-
-<% response.pager %>
-<% response.list %>
-<% response.pager %>

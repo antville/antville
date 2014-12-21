@@ -1,15 +1,6 @@
-<% #top %>
-<tr>
-<td align="right" valign="baseline" class="small"><% param.position %></td>
-<td align="right" valign="baseline"><% story.requests %></td>
-<td valign="baseline" style="white-space: nowrap"><% story.created "yyyy-MM-dd" %></td>
-<td valign="baseline"><% story.title | default <% story.text | clip 5 %> | story.link  %></td>
-<td valign="baseline"><% story.creator %></td>
-</tr>
-
 <% #listItem %>
 <tr>
-   <td><% story.comments count %></td>
+   <td class='uk-text-right'><% story.comments count %></td>
    <td style='max-width: 200px; overflow: hidden;'>
       <a href='<% story.href %>' title='<% ngettext '{0} request' '{0} requests' <% story.requests %> %>' data-uk-tooltip="{pos: 'left'}">
          <% story.summary %>
@@ -17,18 +8,21 @@
    </td>
    <td><% story.creator %></td>
    <td><% story.modified text %></td>
-   <td style='white-space: nowrap;'>
-      <% story.status %>
-      <% if <% story.tags count %> is 0 then '' else <% story.tags prefix="<i class='uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
+   <td>
+      <% //if <% story.status %> is closed then "<i class='uk-text-muted uk-icon-lock'></i>" %>
+      <% //if <% story.status %> is public then "<i class='uk-text-muted uk-icon-unlock'></i>" %>
+      <% if <% story.status %> is shared then "<i class='uk-text-muted uk-icon-group'></i>" %>
+      <% if <% story.status %> is open then "<i class='uk-text-muted uk-icon-globe'></i>" %>
+      <% if <% story.tags count %> is 0 then '' else <% story.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
    <td style='white-space: nowrap;'>
-      <a href='<% story.href mode %>'><i class='uk-icon-<% if <% story.mode %> is hidden then eye-slash else eye %>'></i></a>
-      <a href='<% story.href status %>'><i class='uk-icon-<% if <% story.status %> is closed then lock else unlock %>'></i></a>
+      <% story.link status <% if <% story.status %> is closed then lock else unlock prefix="<i class='uk-icon-" suffix="'></i>" %> %>
+      <% story.link mode <% if <% story.mode %> is hidden then eye-slash else eye prefix="<i class='uk-icon-" suffix="'></i>" %> %>
    </td>
-   <td style='white-space: nowrap;'>
-      <% story.link edit "<i class='uk-icon-pencil'></i>" %>
-      <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
+   <td style='white-space: nowrap;' class='uk-text-right'>
       <a href='' data-value="<% story.macro %>" data-text='<% gettext "Please use the copy command." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
+      <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% story.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
 </tr>
 

@@ -1,84 +1,83 @@
 <% #page %>
-<?xml version="1.0"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset='utf-8'>
+      <title><% response.title %></title>
+      <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
+      <link rel='stylesheet' href='<% root.static codemirror.css %>'>
+      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.almost-flat.css %>'>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
-<head>
-<title><% response.title %></title>
-<meta http-equiv="Content-Type" content="text/html" />
-<meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
-<link rel='stylesheet' href='<% root.static codemirror.css %>'>
-<style type="text/css">
-body {
-   width: auto;
-   margin: 10px;
-   padding: 0;
-   border: none;
-}
-.formWide {
-   width: 100%;
-   height: 500px;
-}
-.cm-helma-macro {
-   color: #000;
-}
-.CodeMirror-scroll {
-   height: 500px;
-   background: #fff;
-   border: 1px solid #eee;
-}
-.storyTitle {
-   margin-bottom: 2em;
-}
-.storyTitle .small {
-   margin-left: 3em;
-   font-weight: normal;
-}
-/* classes for skin diff */
-.diff {
-   padding: 0;
-   margin: 0;
-   border: 0;
-   border-collapse: collapse;
-}
-.diff td {
-   width: 50%;
-   padding: 2px 5px;
-   border-bottom: 1px solid #eee;
-   vertical-align: top;
-}
-.diff .line {
-   overflow: hidden;
-}
-.diff .line-number {
-   width: 2em;
-   color: #cccccc;
-   text-align: right;
-}
-.diff .removed {
-   background-color: #fcc;
-}
-.diff .added {
-   background-color: #cfc;
-}
-</style>
-<script type="text/javascript" src="<% site.href main.js %>"></script>
-</head>
-<body>
-<span style='float: right'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
-<% response.body %>
-</body>
+      <style type="text/css">
+         body {
+            margin: 10px;
+            padding: 0;
+         }
+         .cm-helma-macro {
+            color: #000;
+         }
+         .CodeMirror-scroll {
+            height: auto;
+            min-height: 500px;
+            background: #fff;
+            border: 1px solid #eee;
+         }
+         /* classes for skin diff */
+         .diff {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            border-collapse: collapse;
+         }
+         .diff td {
+            width: 50%;
+            padding: 2px 5px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+         }
+         .diff .line {
+            overflow: hidden;
+         }
+         .diff .line-number {
+            width: 2em;
+            color: #cccccc;
+            text-align: right;
+         }
+         .diff .removed {
+            background-color: #fff1f0;
+         }
+         .diff .added {
+            background-color: #f2fae3;
+         }
+      </style>
+
+      <script type='text/javascript' src='//code.jquery.com/jquery-1.11.0.min.js'></script>
+      <script type='text/javascript' src='<% site.href main.js %>'></script>
+      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/uikit.js %>'></script>
+
+      <script type='text/javascript' src='<% root.static codemirror-custom.min.js %>'></script>
+      <!-- Individual includes for testing purposes
+      <link rel='stylesheet' href='<% root.static codemirror2/mode/helma/skin.css %>'>
+      <script type='text/javascript' src='<% root.static codemirror2/lib/codemirror.js %>'></script>
+      <script type='text/javascript' src='<% root.static codemirror2/mode/javascript/javascript.js %>'></script>
+      <script type='text/javascript' src='<% root.static codemirror2/mode/css/css.js %>'></script>
+      <script type='text/javascript' src='<% root.static codemirror2/mode/xml/xml.js %>'></script>
+      <script type='text/javascript' src='<% root.static codemirror2/mode/htmlmixed/htmlmixed.js %>'></script>
+      <script type='text/javascript' src='<% root.static codemirror2/mode/helma/skin.js %>'></script>
+      -->
+   </head>
+   <body>
+      <span style='float: right;'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
+      <% response.body %>
+   </body>
 </html>
 
 <% #header %>
-<div class="pagelink"><% breadcrumbs %></div><br />
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">
-   <% skins.link create <% gettext "Add Skin" %> prefix="... " %>
-</div>
-<div>...
+<h1>
+   <% response.title %>
+   <% skins.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
+</h1>
+<div class='uk-margin-top'>
    <% skins.link main <% gettext Basic %> %>
    <% skins.link modified <% gettext Modified %> prefix=" | " %>
    <% skins.link all <% gettext All %> prefix=" | " %>
@@ -86,61 +85,32 @@ body {
 
 <% #main %>
 <% skins.skin $Skins#header %>
-<br />
-<div class="ample">
-   <% skins.link Site/page/edit <% gettext "Site Page" %> %>
-   <div class="small"><% gettext "This skin defines the basic structure of your
-   site. Modifying it will affect the general appearance of your site." %></div>
-</div>
-<div class="ample">
-   <% skins.link Site/main/edit <% gettext 'Start Page' %> %>
-   <div class="small"><% gettext "This skin is used to render the start page of
-   your site." %></div>
-</div>
-<div class="ample">
-   <% skins.link Site/navigation/edit <% gettext Navigation %> %>
-   <div class="small"><% gettext "This skin is used to display the navigation
-   links on the page." %></div>
-</div>
-<div class="ample">
-   <% skins.link Site/stylesheet/edit <% gettext "CSS Stylesheet" %> %>
-   <div class="small"><% gettext "This skin contains the Cascading Stylesheet
-   (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin
-   will affect the general appearance of your site." %></div>
-</div>
-<div class="ample">
-   <% skins.link Site/javascript/edit <% gettext JavaScript %> %>
-   <div class="small"><% gettext "This skin contains additional JavaScript code
-   that will be included in every page." %></div>
-</div>
+<dl class='uk-margin-top uk-description-list-line'>
+   <dt><% skins.link Site/page/edit <% gettext "Site Page" %> %></dt>
+   <dd><% gettext "This skin defines the basic structure of your site. Modifying it will affect the general appearance of your site." %></dd>
+   <dt><% skins.link Site/main/edit <% gettext 'Start Page' %> %></dt>
+   <dd><% gettext "This skin is used to render the start page of your site." %></dd>
+   <dt><% skins.link Site/navigation/edit <% gettext Navigation %> %></dt>
+   <dd><% gettext "This skin is used to display the navigation links on the page." %></dd>
+   <dt><% skins.link Site/stylesheet/edit <% gettext Stylesheet %> %></dt>
+   <dd><% gettext "This skin contains the Cascading Stylesheet (CSS) definitions, e.g. fonts, font sizes, colors etc. Modifying this skin will affect the general appearance of your site." %></dd>
+   <dt><% skins.link Site/javascript/edit <% gettext JavaScript %> %></dt>
+   <dd><% gettext "This skin contains additional JavaScript code that will be included in every page." %></dd>
+</dl>
 
-<% #all %>
-<script type="text/javascript">
-$(function() {
-   var recent;
-   $("ul ul").hide();
-   $("ul li a[href^=#]").toggle(function(event) {
-      if (recent) {
-         recent.click();
-      }
-      recent = $(this);
-      event.preventDefault();
-      $(this).css("color", "<% value 'base font color' %>");
-      $(this).next("ul").show();
-      location.hash = $(this).html();
-   }, function(event) {
-      event.preventDefault();
-      $(this).css("color", "<% value 'link color' %>");
-      $(this).next("ul").hide();
-      location.hash = '';
-      recent = null;
-   });
-   if (location.hash) {
-      $('ul li a[href^=' + location.hash + ']').click();
-   }
-});
-</script>
+<% #list %>
 <% skins.skin $Skins#header %>
-<ul class="skinmgrTree">
-<% response.list %>
-</ul>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><% gettext Name %></td>
+         <td><% gettext Author %></td>
+         <td><% gettext Modified %></td>
+         <td></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>

@@ -19,20 +19,28 @@
  * @fileOverview Defines the Comments prototype.
  */
 
-Comments.prototype.main_action = function () {
-  var Comments = User.getMembership().comments;
-  res.data.list = renderList(Comments, '$Comment#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(Comments, this.href(), 25, req.queryParams.page);
-  res.data.title = gettext('Comments by {0}', session.user.name);
-  res.data.body = this.renderSkinAsString('$Comments#main');
-  this._parent.renderSkin('Site#page');
-}
+Comments.prototype.getPermission = function (action) {
+  switch (action) {
+    case 'user':
+    return !!session.user;
+  }
+  return HopObject.prototype.getPermission.apply(this, arguments);
+};
 
-Comments.prototype.all_action = function () {
+Comments.prototype.main_action = function () {
   res.data.title = gettext('Comments');
   res.data.list = renderList(this, '$Comment#listItem', 25, req.queryParams.page);
   res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Comments#main');
   res.handlers.site.renderSkin('Site#page');
   return;
+};
+
+Comments.prototype.user_action = function () {
+  var comments = session.user.getMembership().comments;
+  res.data.list = renderList(comments, '$Comment#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(comments, this.href(), 25, req.queryParams.page);
+  res.data.title = gettext('Comments by {0}', session.user.name);
+  res.data.body = this.renderSkinAsString('$Comments#main');
+  this._parent.renderSkin('Site#page');
 };

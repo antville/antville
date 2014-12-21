@@ -619,8 +619,22 @@ Site.prototype.referrers_action = function() {
     res.redirect(this.href(req.action));
     return;
   }
+
+  res.push();
+  var self = this;
+  var sql = new Sql;
+  sql.retrieve(Sql.REFERRERS, 'Site', this._id);
+  sql.traverse(function() {
+    if (this.requests && this.referrer) {
+      this.text = encode(this.referrer.head(50));
+      this.referrer = encode(this.referrer);
+      self.renderSkin('$Site#referrer', this);
+    }
+  });
+
   res.data.action = this.href(req.action);
-  res.data.title = gettext('Site Referrers');
+  res.data.list = res.pop();
+  res.data.title = gettext('Referrers');
   res.data.body = this.renderSkinAsString('$Site#referrers');
   this.renderSkin('Site#page');
   return;
@@ -861,23 +875,6 @@ Site.prototype.static_macro = function(param, name, mode) {
 Site.prototype.deleted_macro = function() {
   return new Date(this.deleted.getTime() + Date.ONEDAY *
       Admin.SITEREMOVALGRACEPERIOD);
-}
-
-/**
- *
- */
-Site.prototype.referrers_macro = function() {
-  var self = this;
-  var sql = new Sql;
-  sql.retrieve(Sql.REFERRERS, 'Site', this._id);
-  sql.traverse(function() {
-    if (this.requests && this.referrer) {
-      this.text = encode(this.referrer.head(50));
-      this.referrer = encode(this.referrer);
-      self.renderSkin('$Site#referrer', this);
-    }
-  });
-  return;
 }
 
 /**

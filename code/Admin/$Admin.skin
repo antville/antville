@@ -133,20 +133,20 @@ $(function() {
       <tr>
          <td class="small"><% gettext Type suffix=: %></td>
          <td>
-            <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %>
-                  <% markgettext Site %> <% markgettext User %> %>
+            <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %> <% markgettext Site %> <% markgettext User %> %>
          </td>
       </tr>
       <tr>
          <td class="small"><% gettext Sort suffix=: %></td>
-         <td><% admin.dropdown name="dir" <% markgettext Descending %>
-               <% markgettext Ascending %> %></td>
+         <td><% admin.dropdown name="dir" <% markgettext Descending %> <% markgettext Ascending %> %></td>
       </tr>
       <tr>
          <td class="small"><% gettext Search suffix=: %></td>
-         <td><input id="query" name="query" value="<% request.query %>" />
-               <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
-               <button type="submit" name="search" value="1"><% gettext Update %></button></td>
+         <td>
+            <input id="query" name="query" value="<% request.query %>">
+            <button onclick='this.form.query.value = ''; return !1;'><% gettext Reset %></button>
+            <button type="submit" name="search" value="1"><% gettext Update %></button>
+         </td>
       </tr>
    </table>
 </form>
@@ -195,11 +195,10 @@ $(function() {
       <tr>
          <td class="small"><% gettext Search suffix=: %></td>
          <td>
-            <input id="query" name="query" value="<% request.query encoding="form" %>" />
-            <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
+            <input id="query" name="query" value="<% request.query encoding="form" %>">
+            <button onclick="this.form.query.value = ''; return !1;"><% gettext Reset %></button>
             <button type="submit" name="search" value="1"><% gettext Update %></button>
          </td>
-      </td>
       </tr>
    </table>
 </form>
@@ -213,6 +212,7 @@ $(function() {
          <td><% gettext Status %></td>
          <td><% gettext Mode %></td>
          <td></td>
+         <td></td>
       </tr>
    </thead>
    <tbody>
@@ -223,22 +223,22 @@ $(function() {
 
 <% #site %>
 <tr>
-   <td>
-      <div class='uk-text-bold'><% item.title default='<i>Untitled</i>' | item.link %></div>
-      <div class='uk-text-small'><a href='<% item.href %>'><% item.href %></a></div>
+   <td style='max-width: 150px; overflow: hidden;'>
+      <div><% item.title default='<i>Untitled</i>' | item.link %></div>
+      <div class='uk-text-small'><% item.href %></div>
    </td>
-   <td><% item.created short %></td>
-   <td><% item.modified short %></td>
-   <td>
-      <span title='<% item.notes %>' data-uk-tooltip="{pos: 'top'}">
-      <% item.status %> <% if <% item.notes %> is null then '' else "<i class='uk-icon-info-circle'></i>" %></span>
-   </td>
+   <td><% item.created text %></td>
+   <td><% item.modified text %></td>
+   <td><% item.status %></td>
    <td><% item.mode %></td>
-   <td style='white-space: nowrap;'>
-      <% item.link edit#admin "<i class='uk-icon-pencil'></i>" <% item.id %> %>
+   <td>
+      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
+   </td>
+   <td class='uk-text-right' style='white-space: nowrap'>
       <% if <% item.mode %> is deleted then '' else
          <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
       %>
+      <% item.link edit#admin "<i class='uk-icon-pencil'></i>" <% item.id %> %>
    </td>
 </tr>
 
@@ -264,9 +264,11 @@ $(function() {
       </tr>
       <tr>
          <td class="small"><% gettext Search suffix=: %></td>
-         <td><input name="query" value="<% request.query %>" />
-               <button type="reset"><% gettext Reset %></button>
-               <button type="submit" name="search" value="1"><% gettext Update %></button></td>
+         <td>
+            <input name="query" value="<% request.query %>">
+            <button type="reset"><% gettext Reset %></button>
+            <button type="submit" name="search" value="1"><% gettext Update %></button>
+         </td>
       </tr>
    </table>
 </form>
@@ -276,8 +278,9 @@ $(function() {
       <tr>
          <td><% gettext Name %></td>
          <td><% gettext Registered %></td>
-         <td><% gettext Last Login %></td>
+         <td><% gettext 'Last Login' %></td>
          <td><% gettext Status %></td>
+         <td></td>
          <td></td>
       </tr>
    </thead>
@@ -289,22 +292,21 @@ $(function() {
 
 <% #user %>
 <tr>
-   <td>
+   <td style='max-width: 200px; overflow: hidden;'>
       <div class='uk-text-bold'>
          <% if <% item.url %> is null then <% item.name %> else <% item.name | item.link <% item.url %> %> %>
       </div>
       <div class='uk-text-small'><a href='mailto:<% item.email %>'><% item.email %></a></div>
    </td>
-   <td><% item.created short %></td>
-   <td><% item.modified short %></td>
+   <td><% item.created text %></td>
+   <td><% item.modified text %></td>
+   <td><% item.status %></td>
    <td>
-      <span title='<% item.notes %>' data-uk-tooltip="{pos: 'top'}">
-      <% item.status %> <% if <% item.notes %> is null then '' else "<i class='uk-icon-info-circle'></i>" %></span>
+      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
    <td style='white-space: nowrap;'>
-      <% item.link edit#admin "<i class='uk-icon-pencil'></i>" %>
       <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
-      <% // item.url prefix="<a href='" suffix="'><i class='uk-icon-globe'></i></a>" %>
+      <% item.link edit#admin "<i class='uk-icon-pencil'></i>" %>
    </td>
 </tr>
 

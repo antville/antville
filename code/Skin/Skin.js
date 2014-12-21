@@ -162,7 +162,7 @@ Skin.prototype.edit_action = function() {
     }
   }
   res.data.action = this.href(req.action);
-  res.data.title = gettext('Edit Skin: {0}.{1}', this.prototype, this.name);
+  res.data.title = gettext('Edit {0}.{1}', this.prototype, this.name);
   res.data.body = this.renderSkinAsString('$Skin#edit');
   res.handlers.skins.renderSkin('$Skins#page');
   return;
@@ -259,7 +259,7 @@ Skin.prototype.compare_action = function() {
     res.data.diff = res.pop();
   }
 
-  res.data.title = gettext('Compare Skin: {0}', this.getTitle());
+  res.data.title = gettext('Compare {0}', this.getTitle());
   res.data.body = this.renderSkinAsString('$Skin#compare');
   res.handlers.skins.renderSkin('$Skins#page');
   return;

@@ -41,11 +41,9 @@ Files.prototype.getPermission = function(action) {
     case '.':
     case 'main':
     case 'create':
+    case 'user':
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
-        User.require(User.PRIVILEGED);
-    case 'all':
-    return Membership.require(Membership.MANAGER) ||
         User.require(User.PRIVILEGED);
   }
   return false;
@@ -76,19 +74,19 @@ Files.prototype.create_action = function() {
 }
 
 Files.prototype.main_action = function() {
-  var files = User.getMembership().files;
-  res.data.list = renderList(files, '$File#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(files, this.href(), 25, req.queryParams.page);
-  res.data.title = gettext('Files by {0}', session.user.name);
+  res.data.list = renderList(this, '$File#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
+  res.data.title = gettext('Files');
   res.data.body = this.renderSkinAsString('$Files#main');
   this._parent.renderSkin('Site#page');
   return;
 }
 
-Files.prototype.all_action = function() {
-  res.data.list = renderList(this, '$File#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
-  res.data.title = gettext('Files');
+Files.prototype.user_action = function() {
+  var files = User.getMembership().files;
+  res.data.list = renderList(files, '$File#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(files, this.href(), 25, req.queryParams.page);
+  res.data.title = gettext('Files by {0}', session.user.name);
   res.data.body = this.renderSkinAsString('$Files#main');
   this._parent.renderSkin('Site#page');
   return;

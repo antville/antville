@@ -50,25 +50,21 @@ Stories.prototype.getPermission = function(action) {
   switch (action) {
     case '.':
     case 'main':
-    case 'create':
-    return Site.require(Site.OPEN) && session.user ||
-        Membership.require(Membership.CONTRIBUTOR) ||
-        User.require(User.PRIVILEGED);
-
-    case 'all':
     case 'top':
     case 'closed':
-    return Membership.require(Membership.MANAGER) ||
+    case 'create':
+    case 'user':
+    return Site.require(Site.OPEN) && session.user ||
+        Membership.require(Membership.CONTRIBUTOR) ||
         User.require(User.PRIVILEGED);
   }
   return false;
 }
 
 Stories.prototype.main_action = function() {
-  var stories = User.getMembership().stories;
-  res.data.list = renderList(stories, '$Story#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(stories, this.href(), 25, req.queryParams.page);
-  res.data.title = gettext('Stories by {0}', session.user.name);
+  res.data.list = renderList(this, '$Story#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
+  res.data.title = gettext('Stories');
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
   return;
@@ -107,10 +103,11 @@ Stories.prototype.closed_action = function() {
   return;
 }
 
-Stories.prototype.all_action = function() {
-  res.data.list = renderList(this, '$Story#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
-  res.data.title = gettext('Stories');
+Stories.prototype.user_action = function() {
+  var stories = User.getMembership().stories;
+  res.data.list = renderList(stories, '$Story#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(stories, this.href(), 25, req.queryParams.page);
+  res.data.title = gettext('Stories by {0}', session.user.name);
   res.data.body = this.renderSkinAsString('$Stories#main');
   this._parent.renderSkin('Site#page');
   return;

@@ -1,10 +1,52 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
+<h1><% response.title %></h1>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td class='uk-text-right'>
+            <% if <% tags.self __name__ %> is tags then
+              "<i class='uk-icon-newspaper-o'></i>"
+            else
+              "<i class='uk-icon-image'></i>"
+            %>
+         </td>
+         <td class='uk-width-5-6'><% gettext Name %></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% tags.list %>
+   </tbody>
+</table>
+<% response.pager %>
+<script type='text/javascript'>
+$(function () {
+  $('.renameTag').on('click', function (event) {
+    event.preventDefault();
+    var name = prompt("<% gettext 'Please enter a new name for this tag' suffix=: %>")
+    if (name) {
+      var url = $(this).data('av-tag-url');
+      location.href = url + '?name=' + name;
+    }
+  });
+
+  $('.deleteTag').on('click', function (event) {
+    event.preventDefault();
+    if (confirm("<% gettext 'Are you sure you want to remove this tag?' %>")) {
+      var url = $(this).data('av-tag-url');
+      location.href = url;
+    }
+  });
+});
+</script>
+<!--
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.list prefix="<ul>" suffix="</ul> %>
+<% tags.list prefix="<ul>" suffix="</ul>" %>
 <% tags.pager prefix='<div>' suffix='</div>' %>
 <% tags.alphabet prefix='<div>' suffix='</div>' %>
+-->
 
 <% #header %>
 <th><% param.title %></th>

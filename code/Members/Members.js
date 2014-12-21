@@ -73,10 +73,8 @@ Members.prototype.getPermission = function(action) {
 
 Members.prototype.main_action = function() {
   res.data.title = gettext('Members');
-  res.data.list = renderList(this, '$Membership#member',
-      25, req.queryParams.page);
-  res.data.pager = renderPager(this, this.href(req.action),
-      25, req.queryParams.page);
+  res.data.list = renderList(this, '$Membership#member',  25, req.queryParams.page);
+  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -221,10 +219,8 @@ Members.prototype.salt_txt_action = function() {
 
 Members.prototype.owners_action = function() {
   res.data.title = gettext('Owners');
-  res.data.list = renderList(this.owners,
-      '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.owners,
-      this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.owners, '$Membership#member', 25, req.queryParams.page);
+  res.data.pager = renderPager(this.owners, this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -232,10 +228,8 @@ Members.prototype.owners_action = function() {
 
 Members.prototype.managers_action = function() {
   res.data.title = gettext('Managers');
-  res.data.list = renderList(this.managers,
-      '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.managers,
-      this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.managers, '$Membership#member', 25, req.queryParams.page);
+  res.data.pager = renderPager(this.managers, this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -243,10 +237,8 @@ Members.prototype.managers_action = function() {
 
 Members.prototype.contributors_action = function() {
   res.data.title = gettext('Contributors');
-  res.data.list = renderList(this.contributors,
-      '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.contributors,
-      this.href(req.action), 25, req.data.page);
+  res.data.list = renderList(this.contributors, '$Membership#member', 25, req.queryParams.page);
+  res.data.pager = renderPager(this.contributors, this.href(req.action), 25, req.data.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -254,10 +246,8 @@ Members.prototype.contributors_action = function() {
 
 Members.prototype.subscribers_action = function() {
   res.data.title = gettext('Subscribers');
-  res.data.list = renderList(this.subscribers,
-      '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.subscribers,
-      this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.subscribers, '$Membership#member', 25, req.queryParams.page);
+  res.data.pager = renderPager(this.subscribers, this.href(req.action), 25, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;

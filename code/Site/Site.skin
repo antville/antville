@@ -14,18 +14,18 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
+<% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
 <li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
 <% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
-<% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
 <% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
 <% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
 <% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
-<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
 <li class='uk-nav-divider'></li>
 <% site.link edit <% gettext Settings prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
 <% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
+<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
 <% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
 <li class='uk-nav-divider'></li>
 <li><% root.title | root.link %></li>
@@ -50,9 +50,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
 <html>
    <head>
       <meta charset='utf-8'>
-      <meta http-equiv='Content-Type' content='text/html'>
-      <meta name='MSSmartTagsPreventParsing' content='TRUE'>
-
       <title><% response.title %></title>
 
       <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
@@ -76,18 +73,15 @@ prefix="Last update: " default="None so far" %>)</span></li>
    </head>
    <body class='uk-container-center' style='width: 800px;'>
 
-      <header style='margin-top: 5px;'>
-         <div style='position: relative;'>
-            <div style='height: 53px; width: 262px; margin-left: -40px; background: url("<% image /webloghead.gif url %>"); float: left;'>
-            </div>
-            <div style='height: 53px; margin-left: 222px;'>
-               <div style='height: 38px; top: 7px; position: relative; background: url("<% image /dot.gif url %>");'></div>
+      <header class='av-header'>
+         <div class='av-header-bg'>
+            <div class='av-header-bg-chaos'></div>
+            <div class='av-header-bg-offset'>
+               <div class='av-header-bg-dots'></div>
             </div>
          </div>
-         <div style='position: relative; top: -50px;  transform: translateY(50%); overflow: visible; white-space: nowrap; font-size: 25px; font-weight: bold;'>
-            <div>
-               <% site.title | site.link title=<% site.tagline %> %>
-            </div>
+         <div class='av-title'>
+            <% site.title | site.link title=<% site.tagline %> %>
          </div>
       </header>
 
@@ -106,22 +100,22 @@ prefix="Last update: " default="None so far" %>)</span></li>
                   <li class='uk-nav-divider'/>
                   <% site.skin Site#navigation %>
                   <li class='uk-nav-divider'/>
-                  <li style='margin-left: 15px;'>
+                  <li class='uk-margin-left'>
                      <% site.skin Site#search %>
                   </li>
                   <li class='uk-nav-header'/>
-                  <li style='margin-left: 15px;'>
+                  <li class='uk-margin-left'>
                      <% site.calendar %>
                   </li>
                </ul>
             </div>
 
-            <div class='uk-panel uk-panel-box uk-margin'>
+            <!--div class='uk-panel uk-panel-box uk-margin'>
                <h1 class='uk-panel-title'><% gettext Comments %></h1>
                <ul class='uk-nav uk-nav-side'>
-                  <% list comments skin=Story#history %>
+                  <% // list comments skin=Story#history %>
                </ul>
-            </div>
+            </div-->
 
          </div>
       </div>
@@ -170,37 +164,49 @@ $(function () {
 });
 
 <% #values %>
+<% value "base font" "Helvetica, Arial, sans-serif" %>
 <% value "background color" #ffffff %>
 <% value "link color" #ff4040 %>
 <% value "active link color" #ff4040 %>
 <% value "visited link color" #ff4040 %>
 
-<% value "big font" "Verdana, Helvetica, Arial, sans-serif" %>
-<% value "big font size" 15px %>
-<% value "big font color" #d50000 %>
-
-<% value "base font" "Verdana, Helvetica, Arial, sans-serif" %>
-<% value "base font size" 13px %>
-<% value "base font color" #000000 %>
-
-<% value "small font" "Verdana, Arial, Helvetica, sans-serif" %>
-<% value "small font size" 11px %>
-<% value "small font color" #959595 %>
-
 <% #stylesheet %>
 .av-header {
-   height: 53px;
-   margin-left: -40px;
-   margin-bottom: 1em;
-   padding-left: 40px;
-   background: url(<% image /webloghead.gif url %>);
-   font-size: 25px;
+   margin-top: 5px;
 
-   div {
-     position: relative;
-     top: 50%;
-     transform: translateY(-50%);
-     font-weight: bold;
+   .av-header-bg {
+      position: relative;
+   }
+
+   .av-header-bg-chaos {
+      float: left;
+      width: 262px;
+      height: 53px;
+      margin-left: -40px;
+      background: url('<% image /webloghead.gif url %>');
+   }
+
+   .av-header-bg-offset {
+      height: 53px;
+      margin-left: 222px;
+   }
+
+   .av-header-bg-dots {
+      position: relative;
+      top: 7px;
+      height: 38px;
+      background: url('<% image /dot.gif url %>');
+   }
+
+   .av-title {
+      position: relative;
+      top: -50px;
+      overflow: visible;
+      white-space: nowrap;
+      font-family: Verdana, Helvetica, Arial, sans-serif;
+      font-size: 25px;
+      font-weight: bold;
+      transform: translateY(50%);
    }
 }
 
@@ -469,13 +475,13 @@ span.pageNavSelItem {
 .calendar {
    width: 100%;
    text-align: center;
-   color: <% value "small font color" %>;
+   /*color: <% value "small font color" %>;
    font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
+   font-size: <% value "small font size" %>;*/
 }
 
 .calendar tbody td, .calendar tfoot td {
-   font-size: <% value "small font size" %>;
+   /*font-size: <% value "small font size" %>;*/
 }
 
 .calendar tbody th {

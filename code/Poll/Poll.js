@@ -91,8 +91,6 @@ Poll.prototype.getPermission = function(action) {
     case 'result':
     return true;
     case 'edit':
-    return Membership.require(Membership.OWNER) ||
-        User.require(User.PRIVILEGED);
     case 'delete':
     case 'status':
     return this.creator === session.user ||

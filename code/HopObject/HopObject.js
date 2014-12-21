@@ -81,8 +81,7 @@ HopObject.confirmConstructor = function(ref) {
   } else {
     ref = (ref || this).constructor.name;
     if (!confirmed[ref]) {
-      app.logger.warn('Calling unconfirmed constructor for ' +
-          ref + ' prototype – please check!');
+      app.logger.warn('Calling unconfirmed constructor for ' + ref + ' prototype – please check!');
     }
   }
   return;
@@ -491,7 +490,7 @@ HopObject.prototype.upload_macro = function(param, name) {
  */
 HopObject.prototype.macro_macro = function(param, handler) {
   var constructor = this.constructor;
-  if ([Story, Image, File, Poll].indexOf(constructor) > -1 && this.isPersistent()) {
+  if ([File, Image, Poll, Story].indexOf(constructor) > -1 && this.isPersistent()) {
     res.encode('<% ');
     res.write(handler || constructor.name.toLowerCase());
     res.write(String.SPACE);

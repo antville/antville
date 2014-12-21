@@ -3,18 +3,18 @@
    <% response.title %>
    <% files.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
 </h1>
-<% files.link main <% gettext "By {0}" <% membership.name %> %> %>
-<% files.link all <% gettext All %> prefix=" | " %>
+<% files.link . <% gettext All %> %>
+<% files.link user <% membership.name %> prefix=" | " %>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><i class='uk-icon-download'></i></td>
+         <td class='uk-text-right'><i class='uk-icon-download'></i></td>
          <td><% gettext Name %></td>
-         <td></td>
-         <td><% gettext Size %></td>
+         <!-- td><% gettext Size %></td -->
          <td><% gettext Author %></td>
          <td><% gettext Modified %></td>
+         <td></td>
          <td></td>
       </tr>
    </thead>

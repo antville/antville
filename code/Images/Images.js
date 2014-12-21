@@ -49,33 +49,19 @@ Images.prototype.getPermission = function(action) {
     return Site.require(Site.OPEN) && session.user ||
         Membership.require(Membership.CONTRIBUTOR) ||
         User.require(User.PRIVILEGED);
-    case 'all':
+
+    case 'user':
     return this._parent.constructor !== Layout &&
-        (Membership.require(Membership.MANAGER) ||
-        User.require(User.PRIVILEGED));
+      this.getPermission('main');
   }
   return false;
 }
 
 Images.prototype.main_action = function() {
-  var images, skin;
-  switch (this._parent.constructor) {
-    case Root:
-    case Site:
-    images = User.getMembership().images;
-    skin = '$Images#main';
-    res.data.title = gettext('Images by {0}', session.user.name);
-    break;
-
-    case Layout:
-    images = res.handlers.layout.images;
-    skin = '$Images#layout';
-    res.data.title = gettext('Layout Images');
-    break;
-  }
-  res.data.list = renderList(images, '$Image#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(images, this.href(req.action), 25, req.queryParams.page);
-  res.data.body = this.renderSkinAsString(skin);
+  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this, '$Image#listItem', 25, req.queryParams.page);
+  res.data.title = gettext('Images');
+  res.data.body = this.renderSkinAsString('$Images#main');
   res.handlers.site.renderSkin('Site#page');
   return;
 }
@@ -107,11 +93,25 @@ Images.prototype.create_action = function() {
   return;
 }
 
-Images.prototype.all_action = function() {
-  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
-  res.data.list = renderList(this, '$Image#listItem', 25, req.queryParams.page);
-  res.data.title = gettext('Images');
-  res.data.body = this.renderSkinAsString('$Images#main');
+Images.prototype.user_action = function() {
+  var images, skin;
+  switch (this._parent.constructor) {
+    case Root:
+    case Site:
+    images = User.getMembership().images;
+    skin = '$Images#main';
+    res.data.title = gettext('Images by {0}', session.user.name);
+    break;
+
+    case Layout:
+    images = res.handlers.layout.images;
+    skin = '$Images#layout';
+    res.data.title = gettext('Layout Images');
+    break;
+  }
+  res.data.list = renderList(images, '$Image#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(images, this.href(req.action), 25, req.queryParams.page);
+  res.data.body = this.renderSkinAsString(skin);
   res.handlers.site.renderSkin('Site#page');
   return;
 }

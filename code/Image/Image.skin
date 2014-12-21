@@ -1,7 +1,7 @@
 <% #main %>
 <h1><% image.name %></h1>
 <div class="uk-article-meta">
-   <% gettext "Last modified {0} by {1}" <% image.modified text %> <% image.modifier %> %>
+   <% gettext "Posted by {0} on {1}" <% image.modifier %> <% image.modified short %> %>
 </div>
 <div class='uk-margin-top'>
    <a href='<% image.url %>' class='uk-thumbnail' style='max-width: <% image.width %>px'>
@@ -12,8 +12,7 @@
    </a>
 </div>
 <div class='uk-margin-top'>
-  <% image.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff' %>
-  <% image.link delete <% gettext Delete %> class='uk-button' %>
+  <% image.link edit <% gettext Edit %> class='uk-button' %>
 </div>
 
 <% #preview %>
