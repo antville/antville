@@ -560,13 +560,17 @@ HopObject.prototype.type_macro = function() {
  * @param {String} text
  */
 HopObject.prototype.link_macro = function(param, url, text) {
-  if (this.isTransient()) {
+  // FIXME: We need to check for trails and skins because they are always/sometimes
+  // transient, unfortunately. Active trails probably should become database records…
+  var isTrail = app.data.trails.contains(this._prototype.toLowerCase());
+  var isSkin = this.constructor === Skin;
+  if (this.isTransient() && !isTrail && !isSkin) {
     return;
   }
-  if (url && text) {
+  if (url) {
     var action = url.split(/#|\?/)[0];
     if (this.getPermission(action)) {
-      renderLink.call(global, param, url, text, this);
+      renderLink.call(global, param, url, text || '', this);
     }
   } else {
     res.write('[Insufficient link parameters]');
