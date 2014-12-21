@@ -131,13 +131,13 @@ Membership.prototype.getPermission = function(action) {
   if (!res.handlers.site.getPermission('main')) {
     return false;
   }
+
   switch (action) {
     case 'contact':
     return true;
     case 'edit':
     case 'delete':
-    return !this.require(Membership.OWNER) || this.site.members.owners.size() > 1;
-
+    return Membership.require(Membership.OWNER) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
   }
   return false;
 }
