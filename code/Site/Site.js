@@ -296,8 +296,7 @@ Site.prototype.getPermission = function(action) {
 }
 
 Site.prototype.main_action = function() {
-  res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ?
-      '$Site#deleted' : 'Site#main');
+  res.data.body = this.renderSkinAsString(this.mode === Site.DELETED ? '$Site#deleted' : 'Site#main');
   res.data.title = this.getTitle();
   this.renderSkin('Site#page');
   this.log();

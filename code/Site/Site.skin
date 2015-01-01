@@ -117,12 +117,15 @@ prefix="Last update: " default="None so far" %>)</span></li>
       </div>
 
       <footer>
-         <small>
-            <% gettext 'Created {0}' <% site.created text %> %>.
-            <% gettext 'Last modified {0}' <% site.modified text %> %>.
-         </small>
-         <% image /smallchaos.gif | link http://antville.org %>
+         <hr class='uk-margin-large-top'>
+         <div class='uk-text-small uk-margin-bottom' style='float: left;'>
+            <div><% gettext 'Created {0}' <% site.created text %> %>.</div>
+            <div><% gettext 'Last modified {0}' <% site.modified text %> %>.</div>
+         </div>
+         <div style='float: right;'>
+            <% image /smallchaos.gif | link http://antville.org %> &
          <% image /helma.png | link http://helma.org %>
+         </div>
       </footer>
 
    </body>
