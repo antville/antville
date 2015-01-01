@@ -618,6 +618,9 @@ HopObject.prototype.creator_macro = function(param, mode) {
     html.link({href: this.creator.url}, this.creator.name);
   } else if (mode === 'url') {
     res.write(this.creator.url);
+  } else if (mode === 'gravatar' && this.creator.email) {
+    res.write('https://secure.gravatar.com/avatar/');
+    res.write(this.creator.email.trim().toLowerCase().md5());
   } else {
     res.write(this.creator.name);
   } return;

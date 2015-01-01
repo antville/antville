@@ -226,7 +226,7 @@ Comment.prototype.getMacroHandler = function(name) {
   } else if (name === 'story') {
     return this.story;
   }
-  return null;
+  return Story.prototype.getMacroHandler.apply(this, arguments);
 }
 
 /**

@@ -1,35 +1,36 @@
 <% #main %>
-<% comment.skin Comment#content %>
-<% comment.comments %>
+<li>
+   <% comment.skin Comment#content %>
+   <% comment.comments prefix=<ul> suffix=</ul> %>
+</li>
+
+<% #reply %>
+<% // Remove the <ul> element for flat comments %>
+<li><% comment.skin Comment#content %></li>
 
 <% #content %>
-<li>
-   <article class='uk-comment uk-margin-top'>
-      <div class='uk-comment-header'>
-         <!-- img class='uk-comment-avatar' src='' -->
-         <h4 class='uk-comment-title'><% comment.creator %></h4>
-         <ul class='uk-comment-meta uk-subnav uk-subnav-line'>
-            <li><% comment.created short %></li>
-            <% comment.link main "<i class='uk-icon-link'></i>" prefix=<li> suffix=</li> %>
-            <% comment.link delete "<i class='uk-icon-trash-o'></i>" prefix=<li> suffix=</li> %>
-            <% comment.link edit "<i class='uk-icon-pencil'></i>" prefix=<li> suffix=</li> %>
-            <% comment.link comment#form "<i class='uk-icon-comment-o'></i>" prefix=<li> suffix=</li> %>
-         </ul>
-      </div>
-      <div class='uk-comment-body'>
-         <% comment.text | comment.format %>
-      </div>
-   </article>
-</li>
+<a name='<% comment.id %>'></a>
+<article class='uk-comment uk-margin-top'>
+   <div class='uk-comment-header'>
+      <% if <% comment.creator url %> is null then '' else <% comment.creator url prefix="<a href='" suffix="'>" %> %>
+      <img class='uk-comment-avatar' src='<% comment.creator gravatar suffix='?s=50&amp;d=mm' %>'>
+      <% if <% comment.creator url %> is null then '' else </a> %>
+      <h4 class='uk-comment-title'><% comment.creator %></h4>
+      <ul class='uk-comment-meta uk-subnav uk-subnav-line'>
+         <li><% comment.created short %></li>
+         <% comment.link main "<i class='uk-icon-link'></i>" prefix=<li> suffix=</li> %>
+         <% comment.link delete "<i class='uk-icon-trash-o'></i>" prefix=<li> suffix=</li> %>
+         <% comment.link edit "<i class='uk-icon-pencil'></i>" prefix=<li> suffix=</li> %>
+         <% comment.link comment#form "<i class='uk-icon-comment-o'></i>" prefix=<li> suffix=</li> %>
+      </ul>
+   </div>
+   <div class='uk-comment-body'>
+      <% comment.text | comment.format %>
+   </div>
+</article>
 
 <% #comment %>
 <% comment.skin Comment#content %>
-<% comment.comments %>
-
-<% #reply %>
-<ul> <% // Remove the <ul> element for flat comments %>
-   <% comment.skin Comment#content %>
-</ul>
 
 <% #edit %>
 <% if <% comment.creator %> is null then
@@ -39,12 +40,12 @@ else
 %>
 <a name="form" id="form"></a>
 <div class='uk-article-meta'>
-<% if <% comment.creator %> is null then '' else
-   <% gettext "Posted by {0} on {1}" <% comment.creator %> <% comment.created short %> %>
-%>
-<% if <% comment.created %> is <% comment.modified %> then '' else
-   <% gettext "Last modified by {0} on {1}" <% comment.modifier %> <% comment.modified short %> prefix=<div> suffix=</div> %>
-%>
+   <% if <% comment.creator %> is null then '' else
+      <% gettext "Posted by {0} on {1}" <% comment.creator %> <% comment.created short %> %>
+   %>
+   <% if <% comment.created %> is <% comment.modified %> then '' else
+      <% gettext "Last modified by {0} on {1}" <% comment.modifier %> <% comment.modified short %> prefix=<div> suffix=</div> %>
+   %>
 </div>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
@@ -70,7 +71,4 @@ else
    </div>
 </form>
 <% comment.skin $Story#restore %>
-<p class="backup">
-</p>
-<p class="backup">
-</p>
+<p class="backup"></p>
