@@ -73,8 +73,8 @@ Members.prototype.getPermission = function(action) {
 
 Members.prototype.main_action = function() {
   res.data.title = gettext('Members');
-  res.data.list = renderList(this, '$Membership#member',  25, req.queryParams.page);
-  res.data.pager = renderPager(this, this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this, '$Membership#member',  50, req.queryParams.page);
+  res.data.pager = renderPager(this, this.href(req.action), 50, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -217,8 +217,8 @@ Members.prototype.salt_txt_action = function() {
 
 Members.prototype.owners_action = function() {
   res.data.title = gettext('Owners');
-  res.data.list = renderList(this.owners, '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.owners, this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.owners, '$Membership#member', 50, req.queryParams.page);
+  res.data.pager = renderPager(this.owners, this.href(req.action), 50, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -226,8 +226,8 @@ Members.prototype.owners_action = function() {
 
 Members.prototype.managers_action = function() {
   res.data.title = gettext('Managers');
-  res.data.list = renderList(this.managers, '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.managers, this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.managers, '$Membership#member', 50, req.queryParams.page);
+  res.data.pager = renderPager(this.managers, this.href(req.action), 50, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -235,8 +235,8 @@ Members.prototype.managers_action = function() {
 
 Members.prototype.contributors_action = function() {
   res.data.title = gettext('Contributors');
-  res.data.list = renderList(this.contributors, '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.contributors, this.href(req.action), 25, req.data.page);
+  res.data.list = renderList(this.contributors, '$Membership#member', 50, req.queryParams.page);
+  res.data.pager = renderPager(this.contributors, this.href(req.action), 50, req.data.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -244,8 +244,8 @@ Members.prototype.contributors_action = function() {
 
 Members.prototype.subscribers_action = function() {
   res.data.title = gettext('Subscribers');
-  res.data.list = renderList(this.subscribers, '$Membership#member', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.subscribers, this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.subscribers, '$Membership#member', 50, req.queryParams.page);
+  res.data.pager = renderPager(this.subscribers, this.href(req.action), 50, req.queryParams.page);
   res.data.body = this.renderSkinAsString('$Members#main');
   res.handlers.site.renderSkin('Site#page');
   return;
@@ -269,8 +269,8 @@ Members.prototype.subscriptions_action = function() {
     res.handlers.subscription = item.site;
     item.renderSkin('$Membership#subscription');
     return;
-  }, 25, req.queryParams.page);
-  res.data.pager = renderPager(session.user.subscriptions, this.href(req.action), 25, req.queryParams.page);
+  }, 50, req.queryParams.page);
+  res.data.pager = renderPager(session.user.subscriptions, this.href(req.action), 50, req.queryParams.page);
   res.handlers.site = site;
   res.data.body = session.user.renderSkinAsString('$User#subscriptions');
   res.handlers.site.renderSkin('Site#page');
@@ -287,9 +287,9 @@ Members.prototype.add_action = function() {
       if (result.length >= limit) {
         result.length = limit;
         res.message = gettext('Found more than {0} results. Please try a more specific query.', result.length);
-        }
+      }
       res.data.count = result.length;
-        res.data.result = this.renderSkinAsString('$Members#results', result);
+      res.data.result = this.renderSkinAsString('$Members#results', result);
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -334,11 +334,11 @@ Members.prototype.search = function(searchString, limit) {
     if (counter >= limit) {
       return;
     }
-      self.renderSkin('$Members#result', {
-        name: this.name,
-        created: formatDate(this.created, 'text')
-      });
-      counter += 1;
+    self.renderSkin('$Members#result', {
+      name: this.name,
+      created: formatDate(this.created, 'text')
+    });
+    counter += 1;
   });
   return {
     result: res.pop(),
