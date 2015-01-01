@@ -24,3 +24,29 @@
 var sql = new Sql();
 
 sql.execute('alter table tag_hub drop column user_id');
+
+sql.execute('update account set modified = created where modified is null');
+
+sql.execute('update content set modified = created where modified is null');
+sql.execute('update content set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update file set modified = created where modified is null');
+sql.execute('update file set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update image set modified = created where modified is null');
+sql.execute('update image set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update layout set modified = created where modified is null');
+sql.execute('update layout set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update membership set modified = created where modified is null');
+sql.execute('update membership set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update poll set modified = created where modified is null');
+sql.execute('update poll set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update site set modified = created where modified is null');
+sql.execute('update site set modifier_id = creator_id where modifier_id is null');
+
+sql.execute('update skin set modified = created where modified is null');
+sql.execute('update skin set modifier_id = creator_id where modifier_id is null');
