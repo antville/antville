@@ -154,7 +154,7 @@ Comment.prototype.edit_action = function() {
       this.update(req.postParams);
       delete session.data.backup;
       res.message = gettext('The comment was successfully updated.');;
-      res.redirect(this.href(req.action));
+      res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);

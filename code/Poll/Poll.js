@@ -159,7 +159,7 @@ Poll.prototype.edit_action = function() {
     try {
       this.update(req.postParams);
       res.message = gettext('The poll was updated successfully.');
-      res.redirect(this.href('edit'));
+      res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);

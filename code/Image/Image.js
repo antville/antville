@@ -193,7 +193,7 @@ Image.prototype.edit_action = function() {
       File.redirectOnExceededQuota(this.href(req.action));
       this.update(req.postParams);
       res.message = gettext('The changes were saved successfully.');
-      res.redirect(this.href('edit'));
+      res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);

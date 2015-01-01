@@ -195,7 +195,7 @@ Story.prototype.edit_action = function() {
       this.update(req.postParams);
       delete session.data.backup;
       res.message = gettext('The story was successfully updated.');
-      res.redirect(this.href('edit'));
+      res.redirect(this.href());
     } catch (ex) {
       res.message = ex;
       app.log(ex);
