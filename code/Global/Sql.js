@@ -183,11 +183,10 @@ Sql.SEARCH = 'select content.id from content, site, metadata where site.id = $0 
     'order by content.created desc limit $2';
 
 /**
- * SQL query for searching members.
+ * SQL query for searching accounts which are not already members of the desired site.
  * @constant
  */
-Sql.MEMBERSEARCH = "select name, created from account where name $0 '$1' " +
-    'order by name asc limit $2';
+Sql.MEMBERSEARCH = "select id, name, created from account where name $0 '$1' order by name asc limit $2";
 
 /**
  * SQL query for retrieving all story IDs in a site’s archive.

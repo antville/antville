@@ -213,8 +213,11 @@ $(function() {
       <a href='<% members.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
    </div>
-   <% response.result %>
 </form>
+<p>
+   <% if <% response.count %> is null then '' else <% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> suffix=. %> %>
+</p>
+<% response.result %>
 
 <% #results %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>

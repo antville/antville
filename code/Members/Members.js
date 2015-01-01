@@ -275,21 +275,18 @@ Members.prototype.subscriptions_action = function() {
 };
 
 Members.prototype.add_action = function() {
-  if (req.postParams.term) {
+  var limit = 50;
+  if (req.postParams.term === '') {
+    res.message = gettext('Please enter a query in the search form.');
+  } else if (req.postParams.term) {
     try {
-      var result = this.search(req.postParams.term);
-      if (result.length < 1) {
-        res.message = gettext('No user found to add as member.');
-      } else {
-        if (result.length >= 25) {
-          res.message = gettext('Too many users found, displaying the first {0} matches only.',
-              result.length);
-        } else {
-          res.message = ngettext('One user found.', '{0} users found.',
-               result.length);
+      var result = this.search(req.postParams.term, limit);
+      if (result.length >= limit) {
+        result.length = limit;
+        res.message = gettext('Found more than {0} results. Please try a more specific query.', result.length);
         }
+      res.data.count = result.length;
         res.data.result = this.renderSkinAsString('$Members#results', result);
-      }
     } catch (ex) {
       res.message = ex;
       app.log(ex);
@@ -318,7 +315,8 @@ Members.prototype.add_action = function() {
  * @param {String} searchString
  * @returns {Object}
  */
-Members.prototype.search = function(searchString) {
+Members.prototype.search = function(searchString, limit) {
+  limit || (limit = 50);
   var self = this;
   var mode = '=';
   if (searchString.contains('*')) {
@@ -326,18 +324,18 @@ Members.prototype.search = function(searchString) {
     mode = 'like';
   }
   var sql = new Sql;
-  sql.retrieve(Sql.MEMBERSEARCH, mode, searchString, 25);
+  sql.retrieve(Sql.MEMBERSEARCH, mode, searchString, limit + 1, this._parent._id);
   var counter = 0, name;
   res.push();
   sql.traverse(function() {
-    // Check if the user is not already a member
-    if (!self.get(this.name)) {
+    if (counter >= limit) {
+      return;
+    }
       self.renderSkin('$Members#result', {
         name: this.name,
         created: formatDate(this.created, 'text')
       });
       counter += 1;
-    }
   });
   return {
     result: res.pop(),
