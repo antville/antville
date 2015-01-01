@@ -122,7 +122,7 @@ Comment.prototype.getPermission = function(action) {
     return this.story.getPermission.call(this, 'delete');
     case 'edit':
     return this.status !== Comment.DELETED &&
-        this.story.getPermission.call(this, 'delete');
+        this.creator === session.user;
   }
   return false;
 }
