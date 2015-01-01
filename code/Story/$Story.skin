@@ -37,6 +37,10 @@ else
    <% story.skin Story#permalink %>
 %>
 
+<% #search %>
+<dt><% this.summary | this.link %></dt>
+<dd>Posted <% this.created text %> by <% this.creator %>.</dd>
+
 <% #update %>
 <dt><% gettext '{0} user {1} posted a {2} to the site {3}' <% story.created text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.type %> is Story then <% gettext story %> else <% gettext comment %> %> <% story.site.title | story.link %> %></dt>
 <dd><% story.summary %></dd>
