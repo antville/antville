@@ -275,14 +275,11 @@ div.skin div.title {
    text-align: left;
 }
 
-.skin-control {
+.av-skin-control {
    margin: 5px 0;
-   font: bold 9px arial;
-   line-height: 15px;
-   letter-spacing: 1px;
 }
 
-.skin-edit-link {
+.av-skin-edit-link {
    padding: 2px;
    text-decoration: none !important;
 }

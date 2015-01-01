@@ -43,11 +43,14 @@ app.addRepository('modules/helma/Aspects.js');
       var prototype = parts[0];
       var skinName = parts[1];
       var skin = new Skin(prototype, skinName);
-      res.writeln('<!-- Begin of #skin-' + id + ' -->');
-      res.writeln('<div id="skin-' + id + '" class="skin" data-name="' +
-          name + '" data-href="' + skin.href('edit') + '">');
+      res.write('<!-- Begin of #skin-' + id + ' -->');
+      res.write('<div id="av-skin-' + id + '" class="av-skin" data-name="' + name + '" data-href="' + skin.href('edit') + '">');
       func.apply(object, args);
-      res.writeln('</div>\n<!-- End of #skin-' + id + ' -->');
+      result = res.pop();
+      // FIXME: Could we do something with the actual HTML for injecting the correct element?
+      // (Currently, there will be e.g. <div>s around <li>s which turns out to become ugly.)
+      res.write(result);
+      res.write('</div><!-- End of #skin-' + id + ' -->');
     } else {
       func.apply(object, args);
     }
