@@ -6,8 +6,9 @@
    <td><% comment.creator %></td>
    <td><% comment.modified text %></td>
    <td style='white-space: nowrap;' class='uk-text-right'>
-      <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
       <a href='<% comment.story.href %>' title='<% comment.story.summary %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
+      <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% comment.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
 </tr>
 
