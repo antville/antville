@@ -14,21 +14,23 @@
 
 <% #edit %>
 <form class='uk-form' method="post" action="<% response.action %>">
-   <h1 class='uk-margin-right' style='float: left;'><% response.title %></h1>
-   <span style='line-height: 42px;'>
-      <% if <% skin.name %> is '' then
-         <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
-      else
-         <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
-      %>
-      <button type="submit" name="save" value="2" class='uk-button uk-button-primary uk-margin-left'>
-         <% gettext "Save" %>
-      </button>
-      <button type="submit" name="save" value="1" class='uk-button'>
-         <% gettext "Save and Edit" %>
-      </button>
-      <a href="" class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
-   </span>
+   <div class='uk-margin-top uk-margin-left'>
+      <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
+      <span style='line-height: 42px;'>
+         <% if <% skin.name %> is '' then
+            <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
+         else
+            <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
+         %>
+         <button type="submit" name="save" value="2" class='uk-button uk-button-primary uk-margin-left'>
+            <% gettext "Save" %>
+         </button>
+         <button type="submit" name="save" value="1" class='uk-button'>
+            <% gettext "Save and Edit" %>
+         </button>
+         <a href="" class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
+      </span>
+   </div>
    <div style='clear: both;'>
       <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
       <% skin.textarea source %>
@@ -45,25 +47,29 @@ $(function() {
       mode = 'application/x-helma-skin';
    }
    var editor = CodeMirror.fromTextArea($('#source').get(0), {
+      autofocus: true,
+      enterMode: 'keep',
+      indentUnit: 3,
+      indentWithTabs: false,
       lineNumbers: true,
       matchBrackets: true,
       mode: mode,
-      indentUnit: 2,
-      indentWithTabs: false,
-      enterMode: 'keep',
-      tabMode: 'shift'
+      tabMode: 'shift',
+      viewportMargin: Infinity
    });
 });
 </script>
 
 <% #compare %>
 <form>
-   <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
-   <span style='line-height: 42px;'>
-      <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff;' %>
-      <% skin.link reset <% gettext Reset %> class='uk-button' %>
-      <a href='' class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
-   </span>
+   <div class='uk-margin-top uk-margin-left'>
+      <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
+      <span style='line-height: 42px;'>
+         <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff;' %>
+         <% skin.link reset <% gettext Reset %> class='uk-button' %>
+         <a href='' class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
+      </span>
+   </div>
    <div style='clear: both;'>
       <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
       <table class="diff">

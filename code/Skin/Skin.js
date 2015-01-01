@@ -114,8 +114,10 @@ Skin.prototype.getPermission = function(action) {
   switch (action) {
     case '.':
     case 'main':
-    case 'edit':
     return true;
+
+    case 'edit':
+    return res.handlers.layout.getPermission('main');
   }
   return this.isPersistent() && res.handlers.skins.getPermission('main');
 }

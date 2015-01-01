@@ -5,22 +5,19 @@
       <meta charset='utf-8'>
       <title><% response.title %></title>
       <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
-      <link rel='stylesheet' href='<% root.static codemirror.css %>'>
-      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.almost-flat.css %>'>
+      <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/main.min.css %>'>
 
       <style type="text/css">
          body {
-            margin: 10px;
+            margin: 0;
             padding: 0;
          }
          .cm-helma-macro {
             color: #000;
          }
-         .CodeMirror-scroll {
+         .CodeMirror {
             height: auto;
-            min-height: 500px;
-            background: #fff;
-            border: 1px solid #eee;
+            border-top: 1px solid #eee;
          }
          /* classes for skin diff */
          .diff {
@@ -51,23 +48,10 @@
          }
       </style>
 
-      <script type='text/javascript' src='//code.jquery.com/jquery-1.11.0.min.js'></script>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
-      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/uikit.js %>'></script>
-
-      <script type='text/javascript' src='<% root.static codemirror-custom.min.js %>'></script>
-      <!-- Individual includes for testing purposes
-      <link rel='stylesheet' href='<% root.static codemirror2/mode/helma/skin.css %>'>
-      <script type='text/javascript' src='<% root.static codemirror2/lib/codemirror.js %>'></script>
-      <script type='text/javascript' src='<% root.static codemirror2/mode/javascript/javascript.js %>'></script>
-      <script type='text/javascript' src='<% root.static codemirror2/mode/css/css.js %>'></script>
-      <script type='text/javascript' src='<% root.static codemirror2/mode/xml/xml.js %>'></script>
-      <script type='text/javascript' src='<% root.static codemirror2/mode/htmlmixed/htmlmixed.js %>'></script>
-      <script type='text/javascript' src='<% root.static codemirror2/mode/helma/skin.js %>'></script>
-      -->
    </head>
    <body>
-      <span style='float: right;'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
+      <span style='float: right; margin: 10px;'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
       <% response.body %>
    </body>
 </html>
