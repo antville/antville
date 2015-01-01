@@ -16,7 +16,7 @@
 
 <% #result %>
 <div class='uk-text-bold'><% choice.title %></div>
-<div style='width: <% choice.votes 300 default=1 %>px;' class='pollResultsBar'></div>
+<div style='width: <% choice.votes 300 default=1 %>px;' class='av-poll-result-bar'></div>
 <div>
    <% choice.votes % | format #.#% %>
    <% ngettext '{0} vote' '{0} votes' <% choice.votes %> prefix='(' suffix=')' %>
