@@ -18,7 +18,7 @@
 <% #subscriptions %>
 <h1><% response.title %></h1>
 <div class="ample">
-   <% members.link updated <% gettext "Updates" %> %>
+   <% members.link updates <% gettext "Updates" %> %>
    <% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
 </div>
 <% response.pager %>
