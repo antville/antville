@@ -1,12 +1,6 @@
 <% #main %>
 <% story.skin Story#date %>
-<% story.skin Story#content %>
-<div class='uk-margin-large-bottom uk-margin-top'>
-   <% story.link edit <% gettext Edit %> class='uk-button uk-margin-right' %>
-   <% story.link main "<i class='uk-icon-link'></i>" class='uk-button uk-button-link' %>
-   <% story.link comment#form "<i class='uk-icon-comment-o'></i>" class='uk-button uk-button-link' %>
-   <% story.link main#comments <% story.comments count prefix="<i class='uk-icon-comments'> " suffix='</i>' %> class='uk-button uk-button-link' %>
-</div>
+<% story.skin Story#preview %>
 <a name="comments" id="comments"></a>
 <ul class='uk-comment-list'><% story.comments %></ul>
 <div><% story.referrers %></div>
@@ -21,16 +15,16 @@
       <% gettext 'Posted by {0} at {1}' <% story.creator %> <% story.created time %> %>
       <% story.tags link prefix=<% gettext 'in' suffix=' ' %> %>
    </p>
-   <% story.text | story.format %>
+   <p>
+      <% story.text | story.format %>
+   </p>
 </article>
 
 <% #preview %>
 <% story.skin Story#content %>
 <div class='uk-margin-large-bottom uk-margin-top'>
    <% story.link edit <% gettext Edit %> class='uk-button uk-margin-right' %>
-   <% story.link main "<i class='uk-icon-link'></i>" class='uk-button uk-button-link' %>
-   <% story.link comment#form "<i class='uk-icon-comment-o'></i>" class='uk-button uk-button-link' %>
-   <% story.link main#comments <% story.comments count prefix="<i class='uk-icon-comments'> " suffix='</i>' %> class='uk-button uk-button-link' %>
+   <% story.skin $Story#links %>
 </div>
 
 <% #edit %>
@@ -101,9 +95,6 @@
       <a href='' class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
    </div>
 </form>
-<div class='uk-margin-large-top'>
-   <% list macros %>
-</div>
 
 <% #embed %>
 <% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
@@ -132,6 +123,13 @@
    </a>
 </li>
 
-<% #result %>
-<br /><% this.summary %>
-<div class="small">by <% this.creator %> (<% this.modified short %>)</div>
+<% #permalink %>
+<% story.link main "<i class='uk-icon-link'></i>" class='uk-button uk-button-small uk-button-link' %>
+
+<% #links %>
+<div class='uk-button-group av-link-group'>
+   <% story.skin Story#permalink %>
+   <% story.link comment#form "<i class='uk-icon-comment-o'></i>" class='uk-button uk-button-small uk-button-link' %>
+   <% story.link main#comments <% story.comments count prefix="<i class='uk-icon-comments'> " suffix='</i>' %> class='uk-button uk-button-small uk-button-link' %>
+</div>
+

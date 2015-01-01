@@ -26,6 +26,17 @@
    </td>
 </tr>
 
+<% #links %>
+<% if <% story.commentMode %> is open then
+   <% if <% site.commentMode %> is enabled then
+      <% story.skin Story#links %>
+   else
+      <% story.skin Story#permalink %>
+   %>
+else
+   <% story.skin Story#permalink %>
+%>
+
 <% #update %>
 <dt><% gettext '{0} user {1} posted a {2} to the site {3}' <% story.created text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.type %> is Story then <% gettext story %> else <% gettext comment %> %> <% story.site.title | story.link %> %></dt>
 <dd><% story.summary %></dd>
