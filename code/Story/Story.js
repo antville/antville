@@ -483,10 +483,11 @@ Story.prototype.comments_macro = function(param, mode) {
   } else {
     this.prefetchChildren();
     this.forEach(function() {
-      html.openTag('a', {name: this._id});
-      html.closeTag('a');
-      this.renderSkin(this.parent.constructor === Story ?
-          'Comment#main' : 'Comment#reply');
+      // FIXME: This interferes with (UIKit comment) lists because the <a> element is
+      // between <ul> and <li> elements. Must be added to the skin from now on…?
+      //html.openTag('a', {name: this._id});
+      //html.closeTag('a');
+      this.renderSkin(this.parent.constructor === Story ? 'Comment#main' : 'Comment#reply');
     });
   }
   return;
