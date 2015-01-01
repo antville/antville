@@ -20,6 +20,24 @@ document.head.appendChild(script);"
    </td>
 </tr>
 
+<% #search %>
+<h1><% response.title %></h1>
+<form class='uk-form' method='post' action='<% site.href search %>'>
+   <div class='uk-form-controls'>
+      <input type='text' class='uk-width-1-2' name='q' value='<% request.q encoding="form" %>' required>
+      <button type='submit' name='search' value='1' class='uk-button uk-button-primary'>
+         <% gettext Find %>
+      </button>
+      <a href='' class='uk-button uk-button-link cancel'><% gettext Cancel %></a>
+   </div>
+</form>
+<p>
+   <% if <% response.count %> is null then '' else <% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> suffix=. %> %>
+</p>
+<dl class='uk-description-list-line'>
+   <% response.result %>
+</dl>
+
 <% #opensearchdescription %>
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">

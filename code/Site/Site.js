@@ -642,29 +642,36 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
-  var term = req.data.q && stripTags(decodeURIComponent(String(req.data.q)));
-  if (!term) {
+  var term = req.data.q && stripTags(decodeURIComponent(String(req.data.q).trim()));
+  if (term === '') {
     res.message = gettext('Please enter a query in the search form.');
-    res.data.body = this.renderSkinAsString('Site#search');
-  } else {
+  } else if (term) {
+    var maxResults = 50;
     term = term.replace(/(?:\x22|\x27)/g, String.EMPTY); // Remove single and double ticks (aka false quotes)
     var sql = new Sql({quote: false});
-    sql.retrieve(Sql.SEARCH, this._id, term, 50);
+    sql.retrieve(Sql.SEARCH, this._id, term, maxResults + 1);
     res.push();
     var counter = 0;
     sql.traverse(function() {
       var content = Story.getById(this.id);
       if (!content.story || (content.story.status !== Story.CLOSED &&
           content.story.commentMode !== Story.CLOSED)) {
-        content.renderSkin('Story#result');
+        if (counter < maxResults) {
+          content.renderSkin('$Story#search');
+        }
         counter += 1;
       }
     });
-    res.message = ngettext('Found {0} result.', 'Found {0} results.', counter);
-    res.data.body = res.pop();
+    if (counter > maxResults) {
+      res.message = gettext('Found more than {0} results. Please try a more specific query.', maxResults);
+      counter = maxResults;
+    }
+    res.data.count = counter;
+    res.data.result = res.pop();
   }
 
-  res.data.title = gettext('Search results');
+  res.data.title = gettext('Search');
+  res.data.body = this.renderSkinAsString('$Site#search');
   this.renderSkin('Site#page');
   return;
 }
