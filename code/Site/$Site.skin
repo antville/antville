@@ -1,23 +1,10 @@
 <% #href %>
 <% param.path %>
 
-<% #include %>
-document.writeln('<script type="text/javascript" src="<% param.href %>"><\/script>');
-<% // This does not work because the asynchronous loading causes nasty side-effects
-"var script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = '<% param.href %>';
-document.head.appendChild(script);"
-%>
-
 <% #listItem %>
 <tr>
-   <td class="small" title="<% site.modified %>" style="text-align: right; vertical-align: baseline; white-space: nowrap;">
-      <% site.modified text %>
-   </td>
-   <td style="vertical-align: baseline; padding-left: 10px;">
-      <% site.title | site.link %>
-   </td>
+   <td><% site.title | site.link %></td>
+   <td><% gettext '{0} by {1}' <% site.modified text %> <% site.modifier %> %></td>
 </tr>
 
 <% #search %>
@@ -392,3 +379,12 @@ $(function() {
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
+
+<% #include %>
+document.writeln('<script type="text/javascript" src="<% param.href %>"><\/script>');
+<% // This does not work because the asynchronous loading causes nasty side-effects
+"var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '<% param.href %>';
+document.head.appendChild(script);"
+%>
