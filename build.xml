@@ -32,6 +32,7 @@
     <echo message="  antclick  Generate the AntClick packages"/>
     <echo message="  antville  Generate the Antville packages"/>
     <echo message="  clean     Clean up build directory"/>
+    <echo message="  client    Build client-side scripts and styles"/>
     <echo message="  docs      Generate the API documentation"/>
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
@@ -62,6 +63,8 @@
     <property name="modules.src" value="https://github.com/p3k/helma-modules/trunk"/>
     <property name="apps.src" value="https://github.com/p3k/helma-apps/trunk"/>
     <property name="jala.src" value="https://github.com/p3k/helma-jala/trunk"/>
+
+    <property name="uikit.dir" location="./node_modules/uikit"/>
 
     <property name="build.dir" location="${basedir}/build"/>
     <property file="${build.dir}/build.properties"/>
@@ -199,6 +202,18 @@
        <param name="filename" value="antclick-${version}"/>
        <param name="path" value="${work.dir}"/>
     </antcall>
+  </target>
+
+  <target name="client" depends="init">
+    <copy todir="static/fonts">
+      <fileset dir="node_modules/uikit-bower/fonts" includes="**"/>
+    </copy>
+    <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
+      <arg line="build/client/main.js"/>
+    </exec>
+    <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
+      <arg line="-x build/client/main.less"/>
+    </exec>
   </target>
 
   <target name="docs" depends="init">
