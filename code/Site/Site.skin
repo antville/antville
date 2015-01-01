@@ -52,24 +52,20 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <meta charset='utf-8'>
       <title><% response.title %></title>
 
+      <link rel='icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
+      <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
+
+      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
+
       <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
 
-      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
-
-      <link rel='icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
-      <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
-
-      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/uikit.almost-flat.css %>'>
-      <link rel='stylesheet' type='text/css' href='<% root.static uikit-2.11.0/css/components/form-password.almost-flat.css %>'>
+      <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/main.min.css %>'>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
 
-      <script type='text/javascript' src='//code.jquery.com/jquery-1.11.0.min.js'></script>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
-      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/uikit.js %>'></script>
-      <script type='text/javascript' src='<% root.static uikit-2.11.0/js/components/form-password.js %>'></script>
    </head>
    <body class='uk-container-center' style='width: 800px;'>
 

@@ -455,7 +455,7 @@ Site.prototype.main_js_action = function() {
   res.contentType = 'text/javascript';
   res.dependsOn(String(Root.VERSION));
   res.digest();
-  this.renderSkin('$Site#include', {href: root.getStaticUrl('main.min.js?v=' + Root.VERSION)});
+  this.renderSkin('$Site#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
   this.renderSkin('$Site#include', {href: this.href('user.js')});
   return;
 }
@@ -1020,7 +1020,7 @@ Site.prototype.getTags = function(type, group) {
  * @returns {helma.File}
  */
 Site.prototype.getStaticFile = function(tail) {
-  var fpath = this.name;
+  var fpath = 'sites/' + this.name;
   tail && (fpath += '/' + tail);
   return new helma.File(app.appsProperties['static'], fpath);
 }
@@ -1036,7 +1036,7 @@ Site.prototype.getStaticUrl = function(href) {
   var host = getProperty('domain.' + this.name);
   host || (host = getProperty('domain.*'));
   host || (host = req.data.http_host);
-  return [scheme, host, app.appsProperties.staticMountpoint, '/', this.name, '/', href].join('');
+  return [scheme, host, app.appsProperties.staticMountpoint, '/sites/', this.name, '/', href].join('');
 }
 
 /**

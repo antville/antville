@@ -122,7 +122,7 @@ Images.prototype.user_action = function() {
  */
 Images.Default = new function() {
   var Image = function(name, description) {
-    var dir = new helma.File(app.appsProperties['static'], 'www');
+    var dir = new helma.File(app.appsProperties['static'], 'sites/www');
     var image = new helma.Image(new helma.File(dir, name));
     this.__defineGetter__('parent', function() {return root});
     this.name = this.fileName = name;
