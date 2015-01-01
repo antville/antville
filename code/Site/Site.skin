@@ -209,6 +209,68 @@ $(function () {
    }
 }
 
+.av-poll-result-bar {
+   height: 5px;
+   overflow: hidden;
+   float:left;
+   margin-top: 7px;
+   margin-right: 10px;
+   background-color: <% value "link color" %>;
+   font-size: 0px;
+}
+
+.av-skin.active {
+   background: <% value "background color" %>;
+   opacity: .25;
+}
+
+.av-skin-edit-link {
+   color: <% value "small font color" %> !important;
+}
+
+.uk-button-group.av-link-group a {
+   border-right: none;
+}
+
+.jala-calendar {
+   width: 100%;
+   text-align: center;
+   /*color: <% value "small font color" %>;
+   font-family: <% value "small font" %>;
+   font-size: <% value "small font size" %>;*/
+}
+
+.jala-calendar tbody td, .jala-calendar tfoot td {
+   /*font-size: <% value "small font size" %>;*/
+}
+
+.jala-calendar tbody th {
+   font-weight: normal;
+}
+
+.jala-calendar-day {
+   width: 14.27%;
+   text-align: center;
+}
+
+.jala-calendar-left {
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.jala-calendar-right {
+   border: 0;
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.jala-calendar-selected {
+   border: 1px solid <% value "link color" %>;
+}
+
+
+
+old {
 body {
    background-color: <% value "background color" %>;
    font-family: <% value "base font" %>;
@@ -400,16 +462,6 @@ a:hover {text-decoration: underline;}
    font-weight: normal;
 }
 
-.pollResultsBar {
-   height: 5px;
-   overflow: hidden;
-   float:left;
-   margin-top: 7px;
-   margin-right: 10px;
-   background-color: <% value "link color" %>;
-   font-size: 0px;
-}
-
 .searchbox {
    font-size: 11px;
    margin-top: 3px;
@@ -471,49 +523,6 @@ span.pageNavSelItem {
    margin-bottom:5px;
 }
 
-.calendar {
-   width: 100%;
-   text-align: center;
-   /*color: <% value "small font color" %>;
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;*/
-}
-
-.calendar tbody td, .calendar tfoot td {
-   /*font-size: <% value "small font size" %>;*/
-}
-
-.calendar tbody th {
-   font-weight: normal;
-}
-
-.calendar .day {
-   width: 14.27%;
-   text-align: center;
-}
-
-.calendar .left {
-   text-align: center;
-   vertical-align: baseline;
-}
-
-.calendar .right {
-   border: 0;
-   text-align: center;
-   vertical-align: baseline;
-}
-
-.calendar .selected {
-   border: 1px solid <% value "link color" %>;
-}
-
-.skin.active {
-   background: <% value "background color" %>;
-   opacity: .25;
-}
-
-.skin-edit-link {
-   color: <% value "small font color" %> !important;
 }
 
 /* NEW 1.5 */
