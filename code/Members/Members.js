@@ -54,7 +54,7 @@ Members.prototype.getPermission = function(action) {
     case 'edit':
     case 'privileges':
     case 'subscriptions':
-    case 'updated':
+    case 'updates':
     return sitePermission && !!session.user;
 
     case '.':
@@ -251,9 +251,12 @@ Members.prototype.subscribers_action = function() {
   return;
 }
 
-Members.prototype.updated_action = function() {
+Members.prototype.updates_action = function() {
   res.data.title = gettext('Updates');
-  res.data.list = session.user.renderSkinAsString('$User#sites');
+  res.data.list = renderList(session.user.updates, function (item) {
+    res.handlers.subscription = item.site;
+    item.renderSkin('$Membership#subscription');
+  }, 50, req.queryParams.page);
   res.data.body = session.user.renderSkinAsString('$User#subscriptions');
   res.handlers.site.renderSkin('Site#page');
   return;

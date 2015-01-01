@@ -11,7 +11,7 @@
     <% site.link subscribe <% gettext Subscribe context=verb %> %>
   </li>
   <li>
-    <% site.members.link updated <% gettext Subscriptions %> %>
+    <% site.members.link updates <% gettext Subscriptions %> %>
   </li>
   <li>
     <% site.members.link logout <% gettext Logout context=verb prefix="<i class='uk-icon-sign-out'></i> " %> %>
