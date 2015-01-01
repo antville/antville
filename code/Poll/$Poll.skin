@@ -66,7 +66,7 @@ else
       <% if <% poll.status %> is open then
          <% poll.link main <% gettext 'Add Your Vote' %> class='uk-button uk-button-primary uk-button-mini' style='color: #fff;' %>
       else
-         <% gettext "This poll was closed {0} by {1}" <% poll.closed text %> <% poll.modifier %> %>
+         <% gettext "This poll was closed {0} by {1}" <% poll.closed text %> <% poll.modifier %> prefix="<span class='uk-text-muted'>" suffix='</span>' %>
       %>
    </div>
    <% if <% poll.status %> is open then
