@@ -113,10 +113,8 @@ Root.prototype.main_action = function() {
     this.layout.reset();
     res.redirect(this.members.href('register'));
   } else if (session.user && this.members.owners.size() < 1) {
-    this.creator = this.modifier = this.layout.creator =
-        this.layout.modifier = session.user;
-    this.created = this.modified = this.layout.created =
-        this.layout.modified = new Date;
+    this.creator = this.modifier = this.layout.creator = this.layout.modifier = session.user;
+    this.created = this.modified = this.layout.created = this.layout.modified = new Date;
     session.user.role = User.PRIVILEGED;
     res.handlers.membership.role = Membership.OWNER;
   }
@@ -173,10 +171,8 @@ Root.prototype.sites_action = function() {
     sites.sort(new String.Sorter('title'));
     this.cache.sites = {list: sites, modified: now};
   }
-  res.data.list = renderList(this.cache.sites.list,
-      '$Site#listItem', 25, req.queryParams.page);
-  res.data.pager = renderPager(this.cache.sites.list,
-      this.href(req.action), 25, req.queryParams.page);
+  res.data.list = renderList(this.cache.sites.list, '$Site#listItem', 25, req.queryParams.page);
+  res.data.pager = renderPager(this.cache.sites.list, this.href(req.action), 25, req.queryParams.page);
   res.data.title = gettext('Public Sites');
   res.data.body = this.renderSkinAsString('$Root#sites');
   root.renderSkin('Site#page');

@@ -15,13 +15,9 @@
    <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
 </p>
 <h1>Recent Updates</h1>
-<table border="0" cellpadding="1" cellspacing="0">
-<colgroup>
-   <col width="150" />
-   <col width="*" />
-</colgroup>
-<% list updates 25 skin=$Site#listItem %>
-</table>
+<dl class='uk-description-list-line'>
+<% list updates 25 skin=$Story#update %>
+</dl>
 
 <% #navigation %>
 <li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>

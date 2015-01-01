@@ -15,15 +15,6 @@
 </p>
 <p><% gettext "Have a lot of fun!" %></p>
 
-<% #sites %>
-<table border="0" cellpadding="1" cellspacing="0">
-   <colgroup>
-      <col width="150">
-      <col width="*">
-   </colgroup>
-   <% user.list sites %>
-</table>
-
 <% #subscriptions %>
 <h1><% response.title %></h1>
 <div class="ample">

@@ -629,7 +629,9 @@ function list_macro(param, id, limit) {
     collection = root.sites.list(0, max);
     skin = 'Site#preview';
   } else if (id === 'updates') {
-    collection = root.updates.list(0, limit);
+    collection = root.updates.list().map(function (item) {
+      return item.get(0);
+    });
     skin = 'Site#preview';
   } else {
     var site, type;

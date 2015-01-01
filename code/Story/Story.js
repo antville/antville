@@ -417,6 +417,8 @@ Story.prototype.getDelta = function(data) {
 Story.prototype.getMacroHandler = function(name) {
   if (name === 'metadata') {
     return this.getMetadata();
+  } else if (name === 'site') {
+    return this.site;
   }
   return null;
 }

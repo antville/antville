@@ -37,11 +37,19 @@
 </form>
 
 <% #sites %>
-<p><% gettext "This is the directory of public sites hosted here, in
-alphabetical order." %></p>
+<h1><% response.title %></h1>
+<p><% gettext "This is the directory of public sites hosted here, in alphabetical order." %></p>
 <% response.pager %>
-<table border="0" cellspacing="0" cellpadding="1">
-<% response.list prefix="<ul>" suffix="</ul>" %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <td><% gettext Title %></td>
+         <td><% gettext 'Last Update' %></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
 </table>
 <% response.pager %>
 
