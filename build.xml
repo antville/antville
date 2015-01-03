@@ -208,9 +208,11 @@
     <copy todir="static/fonts">
       <fileset dir="node_modules/uikit-bower/fonts" includes="**"/>
     </copy>
+    <mkdir dir="static/scripts"/>
     <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
       <arg line="build/client/main.js"/>
     </exec>
+    <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
       <arg line="-x build/client/main.less"/>
     </exec>
