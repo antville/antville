@@ -1,6 +1,6 @@
 <% #welcome %>
 <p>
-   <% gettext "The site is currently {0}." <% gettext <% site.mode %> %> %>
+   <% gettext "This site is currently {0}." <% gettext <% site.mode %> %> %>
    <% if <% site.mode %> is closed then
       <% gettext "This means that only you and other {0} of this site have access to it. You can safely start to customize it or to fill it with all the content you have in mind." <% site.members.link owners <% gettext owners %> %> %>
    else <% if <% site.mode %> is restricted then "" else
@@ -8,12 +8,17 @@
    %>
 </p>
 <p>
-   <% gettext 'The easiest way to customize your site is to change its <a href="{0}">preferences</a>. You can change the language and time zone or the main title of your site, open or close it and much more.' <% site.href edit %> %>
+   <% gettext 'The easiest way to customize your site is to change its <a href="{0}">settings</a>. You can change the language and time zone or the main title of your site, open or close it and much more.' <% site.href edit %> %>
 </p>
 <p>
-   <% gettext 'Of course, you can now also start to create <a href="{0}">stories</a>, upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful customization possibilities by having a look at the <a href="{4}">layout section</a> where you can modify the appearance of your site according to your needs.' <% site.stories.href create %> <% site.images.href create %> <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %>
+   <% gettext 'Of course, you can now also start to add <a href="{0}">stories</a>, upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful customization possibilities; just take a look at the <a href="{4}">layout section</a> where you can modify the appearance of your site according to your needs.' <% site.stories.href create %> <% site.images.href create %> <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %>
 </p>
-<p><% gettext "Have a lot of fun!" %></p>
+<p class='uk-text-bold'>
+   <% gettext 'Have a lot of fun!' %>
+</p>
+<p>
+   <% image /ant.png %>
+</p>
 
 <% #subscriptions %>
 <h1><% response.title %></h1>
