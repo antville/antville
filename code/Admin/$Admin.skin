@@ -278,7 +278,7 @@ $(function() {
 <% #activity %>
 <tr>
    <td><% param.icon %></td>
-   <td style='max-width: 150px; overflow: hidden;'><% param.user %></td>
+   <td style='max-width: 50px; overflow: hidden;'><% param.user %></td>
    <td><% param.date | format text %></td>
    <td <% if <% param.warn %> is true then "class='uk-text-bold'" %> style='max-width: 350px; overflow: hidden;'>
       <a href='<% param.href %>'><% param.reference %></a>
@@ -288,7 +288,7 @@ $(function() {
 
 <% #site %>
 <tr>
-   <td style='max-width: 50px; overflow: hidden;'>
+   <td style='max-width: 150px; overflow: hidden;'>
       <div><% item.title default='<i>Untitled</i>' | item.link %></div>
       <div class='uk-text-small'><% item.href %></div>
    </td>
