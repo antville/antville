@@ -380,7 +380,6 @@ Admin.updateDomains = function() {
 Admin.prototype.constructor = function() {
   this.filterSites();
   this.filterUsers();
-  this.filterLog();
   return this;
 }
 
