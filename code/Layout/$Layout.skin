@@ -16,8 +16,8 @@
          <label for='sandbox'><% gettext enabled %></label>
       </div>
    </div>
-   <div class='uk-grid'>
-      <legend class='uk-margin-top' style='margin-bottom: -15px;'>
+   <div class='uk-grid uk-form-row'>
+      <legend class='uk-width-1-1 uk-margin-top' style='margin-bottom: -15px;'>
          <% gettext 'Variables' %>
       </legend>
       <% layout.values %>
