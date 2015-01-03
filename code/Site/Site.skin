@@ -124,7 +124,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
          </div>
          <div style='float: right;'>
             <% image /smallchaos.gif | link http://antville.org %> &
-         <% image /helma.png | link http://helma.org %>
+            <% image /helma.png | link http://helma.org %>
          </div>
       </footer>
 
@@ -182,7 +182,8 @@ $(function () {
       width: 262px;
       height: 53px;
       margin-left: -40px;
-      background: url('<% image /webloghead.gif url %>');
+      background: url('<% image /spritesheet.png url %>');
+      background-position: 5px -139px;
    }
 
    .av-header-bg-offset {
@@ -195,6 +196,7 @@ $(function () {
       top: 7px;
       height: 38px;
       background: url('<% image /dot.gif url %>');
+      background-position-x: 1px;
    }
 
    .av-title {

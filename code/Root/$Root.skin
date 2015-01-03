@@ -1,31 +1,29 @@
 <% #create %>
 <h1><% response.title %></h1>
-<div>
-   <% gettext "To create a new site you need to fill out the form below." %>
-</div>
-<small>
-   <p>
-      <% gettext 'The name will be part of the URL of your site. E.g. if you enter “{0}” as the name your site will be reachable via this url: {1}' <% example.name %> <% example.href prefix="<pre><code>" suffix=</code></pre> %> %>
-   </p>
-   <p>
-      <% gettext "Please note that you cannot change the name after the site was created." %> <% gettext "The title will appear in the header of every page of your site. You can change it anytime you want." %>
-   </p>
-</small>
 <form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <label class='uk-form-label' for='name'>
-         <% gettext Name %>
+         <% gettext Name %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext "Please note that you cannot change the name after the site was created." %>"></i>
       </label>
       <div class='uk-form-controls'>
-         <% newSite.input name class=uk-form-width-medium %>
+         <% newSite.input name class=uk-form-width-medium maxlength=25 %>
+         <div class='uk-form-help-inline'>
+            <% gettext 'The name will be part of the URL of your site.' %>
+         </div>
+         <div class='uk-form-help-block'>
+            <% root.skin Root#urlPreview %>
+            <noscript>
+               <% gettext 'E.g. if you enter <em>{0}</em> here your site will be reachable via {1}' <% example.name %> <% root.href <% example.name %> prefix=<code> suffix=</code> %> %>
+            </noscript>
+         </div>
       </div>
    </div>
    <div class='uk-form-row'>
       <label class='uk-form-label' for='title'>
-         <% gettext Title %>
+         <% gettext Title %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title='<% gettext "The title will appear in the header of every page of your site. You can change it anytime you want." %>'></i>
       </label>
       <div class='uk-form-controls'>
-         <% newSite.input title class=uk-form-width-large %>
+         <% newSite.input title class=uk-width-1-1 %>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -284,10 +282,11 @@ div.skin div.title {
    text-decoration: none !important;
 }
 
-.connect img {
-   padding: 2px 0;
+.connect i {
+   margin: -2px;
    vertical-align: middle;
    opacity: .3;
+   transform: scale(0.7);
 }
 
 .helma-debug-line /*:has(script)*/ {

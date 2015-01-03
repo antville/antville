@@ -1,2 +1,14 @@
 <% #status %>
 <% gettext 'System is up and running.' %>
+
+<% #urlPreview %>
+<a id='av-site-url-preview'></a>
+<script>
+$(function () {
+  $('#name').on('keyup', function (event) {
+    var url = '<% root.href %>' + $(this).val();
+    var html = '<% root.href %>' + '<b>' + $(this).val() + '</b>';
+    $('#av-site-url-preview').html(html).attr('href', url);
+  });
+});
+</script>
