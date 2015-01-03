@@ -71,7 +71,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
-   <body class='uk-container-center' style='width: 800px;'>
+   <body class='uk-container-center' style='width: 900px;'>
 
       <header class='av-header'>
          <div class='av-header-bg'>
@@ -92,7 +92,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
          </div>
 
          <div class='uk-width-3-10'>
-            <div style='border-left: 1px solid #ddd;'>
+            <div style='border-left: 1px solid #ddd; margin-left: 20%;'>
                <% membership.status %>
                <% //root.admin.skin $Admin#navigation %>
 
