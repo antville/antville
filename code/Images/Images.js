@@ -122,46 +122,27 @@ Images.prototype.user_action = function() {
  */
 Images.Default = new function() {
   var Image = function(name, description) {
-    var dir = new helma.File(app.appsProperties['static'], 'img');
-    var image, isSprite = false;
-    try {
-      image = new helma.Image(new helma.File(dir, name));
-    } catch (ex) {
-      image = new helma.Image(new helma.File(dir, 'spritesheet.png'));
-      isSprite = true;
-    }
-    this.__defineGetter__('parent', function () { return root; });
+    var dir = new helma.File(app.appsProperties['static'], 'sites/www');
+    var image = new helma.Image(new helma.File(dir, name));
+    this.__defineGetter__('parent', function() {return root});
     this.name = this.fileName = name;
     this.description = description;
     this.width = image.width;
     this.height = image.height;
-    this.getUrl = function () {
-      return app.appsProperties.staticMountpoint + '/img/' + name;
+    this.getUrl = function() {
+      // Cannot use global.Image.getUrl() here because these images are
+      // located in the top-level of the static directory.
+      return root.getStaticUrl(name);
     }
-    this.render_macro = isSprite ? function () {
-      var shortName = this.name.substr(0, this.name.lastIndexOf('.'));
-      res.write("<i class='av-sprite av-sprite-" + shortName + "'></i>");
-    } : global.Image.prototype.render_macro;
+    this.render_macro = global.Image.prototype.render_macro;
     this.thumbnail_macro = global.Image.prototype.thumbnail_macro;
     return this;
   }
 
   var images = {};
-
-  function add(name, description) {
+  var add = function(name, description) {
     images[name] = new Image(name, description);
     return;
-  }
-
-  function isSprite(name) {
-    return !{
-      'big.gif': true,
-      'dot.gif': true,
-      'marquee.gif': true,
-      'pixel.gif': true,
-      'smallanim.gif': true,
-      'smalltrans.gif': true
-    }[name];
   }
 
   add('ant.png', 'Ant');
@@ -182,7 +163,6 @@ Images.Default = new function() {
   add('smallchaos.gif', 'Made with Antville');
   add('smallstraight.gif', 'Made with Antville');
   add('smalltrans.gif', 'Made with Antville');
-  add('spritesheet.png', 'Antville Sprite Sheet');
   add('status.gif', 'status');
   add('webloghead.gif', 'Antville');
   add('xmlbutton.gif', 'XML version of this page');

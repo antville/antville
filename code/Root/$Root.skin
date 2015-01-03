@@ -282,11 +282,10 @@ div.skin div.title {
    text-decoration: none !important;
 }
 
-.connect i {
-   margin: -2px;
+.connect img {
+   padding: 2px 0;
    vertical-align: middle;
    opacity: .3;
-   transform: scale(0.7);
 }
 
 .helma-debug-line /*:has(script)*/ {
