@@ -721,6 +721,8 @@ Admin.prototype.renderActivity = function (item) {
       name = 'image'; break;
       case User:
       name = 'user'; break;
+      case Poll:
+      name = 'bar-chart'; break;
     }
     return "<i class='uk-icon uk-icon-" + name + "'></i>";
   }
