@@ -623,7 +623,7 @@ function list_macro(param, id, limit) {
   }
 
   var skin, collection;
-  var max = Math.min(limit || 25, 50);
+  var max = Math.min(limit || 25, 100);
 
   if (id === 'sites') {
     collection = root.sites.list(0, max);
@@ -632,7 +632,9 @@ function list_macro(param, id, limit) {
     collection = root.updates.list().map(function (item) {
       return item.get(0);
     });
-    skin = 'Site#preview';
+    // FIXME: Sorting in code is necessary (see definition of Root.updates property).
+    collection.sort(new Number.Sorter('created', Number.Sorter.DESC));
+    skin = 'Story#preview';
   } else {
     var site, type;
     var parts = id.split('/');
