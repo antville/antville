@@ -52,14 +52,14 @@
 <% response.pager %>
 
 <% #notfound %>
-<p class="storyTitle"><% gettext Sorry! %></p>
-<p><% gettext "The path you requested was not found:"  %></p>
-<% param.path encoding="all" prefix=<code>/ suffix=</code> %>
+<h1><% gettext Sorry! %></h1>
+<p><% gettext "The path you requested was not found."  %></p>
+<% param.path encoding="all" prefix=<pre>/ suffix=</pre> %>
 
 <% #error %>
-<p class="storyTitle"><% gettext Sorry! %></p>
-<p><% gettext "An error occurred while processing your request:" %></p>
-<% session.error default=<% param.error %> %>
+<h1><% gettext Sorry! %></h1>
+<p><% gettext "An error occurred while processing your request." %></p>
+<pre class='uk-text-break'><% session.error default=<% param.error %> %></pre>
 
 <% #health %>
 <h1><% response.title %></h1>
