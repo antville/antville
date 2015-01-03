@@ -15,8 +15,8 @@
     "type": "git",
     "url": "https://code.google.com/p/antville"
   },
-  "author": "",
-  "license": "Apache",
+  "author": "The Ant Queens",
+  "license": "Apache 2",
   "napa": {
     "uikit-bower": "uikit/bower-uikit#2.15.0"
   },
