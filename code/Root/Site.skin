@@ -18,14 +18,19 @@
 
 <% #navigation %>
 <li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
+<li><% root.link sites <% gettext Sites %> %></li>
+<!--
 <li><% site.tags.link main <% gettext Tags %> %></li>
 <li><% site.galleries.link main <% gettext Galleries %> %></li>
+-->
 <li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
 <li class='uk-nav-divider'></li>
+<% root.admin.skin $Admin#navigation suffix="<li class='uk-nav-divider'></li>" %>
 <li><% site.link health <% gettext Health prefix="<i class='uk-icon-stethoscope'></i> " %> %></li>
 <li><% site.api.link main <% gettext API %> %></li>
 <li><% link http://code.google.com/p/antville <% gettext Development %> %></li>
 <li class='uk-nav-divider'></li>
+<!--
 <% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
 <% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
 <% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
@@ -37,4 +42,4 @@
 <% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
 <% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
 <% site.stories.link top <% gettext "Top Stories" %> prefix=<li> suffix=</li> %>
-
+-->

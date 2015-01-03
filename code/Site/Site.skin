@@ -6,9 +6,13 @@
 prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #welcome %>
-<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
-<p><% gettext "This site was created by {0} on {1}." <% site.creator link %>
-<% site.created long %> %></p>
+<article class='uk-article'>
+   <h1 class='uk-article-title'><% gettext Welcome %></h1>
+   <p class='uk-article-meta'>
+      <% gettext "Created by {0} on {1}." <% site.creator %> <% site.created long %> %>
+   </p>
+   <p><% gettext "Welcome to {0}." <% site.title %> %></p>
+</article>
 
 <% #navigation %>
 <li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>

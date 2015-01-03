@@ -79,25 +79,21 @@ Admin.Job = function(target, method, user) {
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getNotificationScopes = defineConstants(Admin, markgettext('None'),
-    markgettext('Trusted'), markgettext('Regular'));
+Admin.getNotificationScopes = defineConstants(Admin, markgettext('None'), markgettext('Trusted'), markgettext('Regular'));
 
 /**
  * @function
  * @return {String[]}
  * @see defineConstants
  */
-Admin.getPhaseOutModes = defineConstants(Admin, markgettext('Disabled'),
-    markgettext('Restricted'), markgettext('Abandoned'),
-    markgettext('Both'));
+Admin.getPhaseOutModes = defineConstants(Admin, markgettext('Disabled'), markgettext('Restricted'), markgettext('Abandoned'), markgettext('Both'));
 
 /**
  * @function
  * @returns {String[]}
  * @see defineConstants
  */
-Admin.getCreationScopes = defineConstants(Admin, markgettext('Privileged'),
-    markgettext('Trusted'), markgettext('Regular'));
+Admin.getCreationScopes = defineConstants(Admin, markgettext('Privileged'), markgettext('Trusted'), markgettext('Regular'));
 
 /**
  * Convenience method for easily queueing jobs.
@@ -340,8 +336,7 @@ Admin.updateHealth = function() {
   var health = Admin.health || {};
   if (!health.modified || new Date - health.modified > 5 * Date.ONEMINUTE) {
     health.modified = new Date;
-    health.requestsPerUnit = app.requestCount -
-        (health.currentRequestCount || 0);
+    health.requestsPerUnit = app.requestCount - (health.currentRequestCount || 0);
     health.currentRequestCount = app.requestCount;
     health.errorsPerUnit = app.errorCount - (health.currentErrorCount || 0);
     health.currentErrorCount = app.errorCount;
@@ -395,16 +390,6 @@ Admin.prototype.constructor = function() {
  * @returns {Boolean}
  */
 Admin.prototype.getPermission = function(action) {
-  if (!session.user) {
-    return false;
-  }
-  switch (action) {
-    case 'users':
-    if (req.queryParams.id === session.user._id) {
-      return false;
-    }
-    break;
-  }
   return User.require(User.PRIVILEGED);
 }
 
@@ -424,28 +409,11 @@ Admin.prototype.onRequest = function() {
  * @param {String} name
  */
 Admin.prototype.onUnhandledMacro = function(name) {
-  res.debug('Add ' + name + '_macro to Admin!');
+  console.warn('Add ' + name + '_macro to Admin!');
   return null;
 }
 
 Admin.prototype.main_action = function() {
-  if (req.postParams.search || req.postParams.filter) {
-    session.data.admin.filterLog(req.postParams);
-  }
-
-  res.data.list = renderList(session.data.admin.entries,
-      this.renderItem, 25, req.queryParams.page);
-  res.data.pager = renderPager(session.data.admin.entries,
-      this.href(req.action), 25, req.queryParams.page);
-
-  res.data.title = gettext('Activity');
-  res.data.action = this.href(req.action);
-  res.data.body = this.renderSkinAsString('$Admin#log');
-  root.renderSkin('Site#page');
-  return;
-}
-
-Admin.prototype.setup_action = function() {
   if (req.postParams.save) {
     try {
       this.update(req.postParams);
@@ -465,10 +433,73 @@ Admin.prototype.setup_action = function() {
   return;
 }
 
+Admin.prototype.activity_action = function () {
+  if (req.isPost()) {
+    session.data.display = req.postParams.display;
+    session.data.order = req.postParams.order;
+    session.data.filter = req.postParams.filter;
+  } else if (!req.data.page) {
+    session.data.display = session.data.order = session.data.filter = null;
+  }
+
+  var constraints = {order: 'created desc', limit: 1000};
+  var sites = Site.getCollection(constraints);
+  var stories = Story.getCollection(constraints);
+  var comments = Comment.getCollection(constraints);
+  var images = Image.getCollection(constraints);
+  var files = File.getCollection(constraints);
+  var polls = Poll.getCollection(constraints);
+  var users = User.getCollection(constraints);
+
+  var displays = {
+    1: [stories, images, files, polls],
+    2: [comments],
+    3: [stories, comments],
+    4: [files],
+    5: [images],
+    6: [polls],
+    7: [sites],
+    8: [users]
+  };
+
+  var lists = displays[session.data.display] || [sites, stories, images, files, polls, users];
+  lists = lists.map(function (collection) {
+    return collection.list();
+  });
+
+  var union = Array.prototype.concat.apply([], lists);
+  union.sort(new Number.Sorter('created', Number.Sorter.DESC));
+  (session.data.order == 1) && union.reverse();
+
+  if (session.data.filter) {
+    var filter = '^' + session.data.filter.replace(/(\W\D[*])/g, '$1').replace(/\*/g, '.*') + '$';
+    var re = new RegExp(filter.toLowerCase());
+    console.log(re);
+    union = union.filter(function (item) {
+      return re.test((item.creator ? item.creator.name : item.name).toLowerCase());
+    });
+  }
+
+  if (session.data.display == 3 /* link activity */) {
+    union = union.filter(function (item) {
+      return getLinkCount(item) > 0;
+    });
+  }
+
+  res.data.count = union.length;
+  res.data.list = renderList(union, this.renderActivity, 25, req.queryParams.page);
+  res.data.pager = renderPager(union, this.href(req.action), 25, req.queryParams.page);
+  res.data.title = gettext('Activity');
+  res.data.action = this.href(req.action);
+  res.data.body = this.renderSkinAsString('$Admin#activities');
+  root.renderSkin('Site#page');
+  return;
+}
+
 Admin.prototype.jobs_action = function() {
   var files = Admin.queue.dir.listFiles();
-  res.data.list = renderList(files, this.renderItem, 25, req.queryParams.page);
-  res.data.pager = renderPager(files, this.href(req.action),  25, req.data.page);
+  res.data.count = files.length;
+  res.data.list = renderList(files, this.renderItem);
   res.data.title = gettext('Jobs');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#jobs');
@@ -477,15 +508,18 @@ Admin.prototype.jobs_action = function() {
 }
 
 Admin.prototype.sites_action = function() {
-  if (req.postParams.search || req.postParams.filter) {
-    session.data.admin.filterSites(req.postParams);
+  if (req.isPost()) {
+    session.data.display = req.postParams.display;
+    session.data.sorting = req.postParams.sorting;
+    session.data.order = req.postParams.order;
+    session.data.filter = req.postParams.filter;
+  } else if (!req.data.page) {
+    session.data.display = session.data.sorting = session.data.order = session.data.filter = null;
   }
-
-  res.data.list = renderList(session.data.admin.sites,
-      this.renderItem, 25, req.queryParams.page);
-  res.data.pager = renderPager(session.data.admin.sites,
-      this.href(req.action), 25, req.data.page);
-
+  session.data.admin.filterSites(session.data);
+  res.data.count = session.data.admin.sites.size();
+  res.data.list = renderList(session.data.admin.sites, this.renderItem, 25, req.queryParams.page);
+  res.data.pager = renderPager(session.data.admin.sites, this.href(req.action), 25, req.data.page);
   res.data.title = gettext('Sites');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#sites');
@@ -494,15 +528,18 @@ Admin.prototype.sites_action = function() {
 }
 
 Admin.prototype.users_action = function() {
-  if (req.postParams.search || req.postParams.filter) {
-    session.data.admin.filterUsers(req.postParams);
+  if (req.isPost()) {
+    session.data.display = req.postParams.display;
+    session.data.sorting = req.postParams.sorting;
+    session.data.order = req.postParams.order;
+    session.data.filter = req.postParams.filter;
+  } else if (!req.data.page) {
+    session.data.display = session.data.sorting = session.data.order = session.data.filter = null;
   }
-
-  res.data.list = renderList(session.data.admin.users,
-      this.renderItem, 25, req.data.page);
-  res.data.pager = renderPager(session.data.admin.users,
-      this.href(req.action), 25, req.data.page);
-
+  session.data.admin.filterUsers(session.data);
+  res.data.count = session.data.admin.users.size();
+  res.data.list = renderList(session.data.admin.users, this.renderItem, 25, req.data.page);
+  res.data.pager = renderPager(session.data.admin.users, this.href(req.action), 25, req.data.page);
   res.data.title = gettext('Users');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#users');
@@ -533,87 +570,43 @@ Admin.prototype.update = function(data) {
  *
  * @param {Object} data
  */
-Admin.prototype.filterLog = function(data) {
-  data || (data = {});
-  var sql = '';
-  if (data.filter > 0) {
-    sql += "where context_type = '";
-    switch (data.filter) {
-      case '1':
-      sql += 'Root'; break;
-      case '2':
-      sql += 'Site'; break;
-      case '3':
-      sql += 'User'; break;
-    }
-    sql += "' and ";
-  } else {
-    sql += 'where '
-  }
-  sql += "action <> 'main' ";
-  if (data.query) {
-    var parts = stripTags(data.query).split(' ');
-    var keyword, like;
-    for (var i in parts) {
-      sql += i < 1 ? 'and ' : 'or ';
-      keyword = parts[i].replace(/\*/g, '%');
-      like = keyword.contains('%') ? 'like' : '=';
-      sql += 'action ' + like + " '' + keyword + '' ";
-    }
-  }
-  sql += 'order by created ';
-  (data.dir == 1) || (sql += 'desc');
-  this.entries.subnodeRelation = sql;
-  return;
-}
-
-/**
- *
- * @param {Object} data
- */
 Admin.prototype.filterSites = function(data) {
   data || (data = {});
-  var sql;
-  switch (data.filter) {
-    case '1':
-    sql = "where status = 'blocked' "; break;
-    case '2':
-    sql = "where status = 'trusted' "; break;
-    case '3':
-    sql = "where mode = 'open' "; break;
-    case '4':
-    sql = "where mode = 'restricted' "; break;
-    case '5':
-    sql = "where mode = 'public' "; break;
-    case '6':
-    sql = "where mode = 'closed' "; break;
-    case '7':
-    sql = "where mode = 'deleted' "; break;
-    case '0':
-    default:
-    sql = 'where true ';
-  }
-  if (data.query) {
-    var parts = stripTags(data.query).split(' ');
+
+  var displays = {
+    1: "status = 'blocked'",
+    2: "status = 'trusted'",
+    3: "mode = 'open'",
+    4: "mode = 'restricted'",
+    5: "mode = 'public'",
+    6: "mode = 'closed'",
+    7: "mode = 'deleted'"
+  };
+
+  var sortings = {
+    1: 'created',
+    2: 'name'
+  };
+
+  var sql = ['where'];
+  add(displays[data.display] || true);
+
+  if (data.filter) {
+    var parts = stripTags(data.filter).split(String.SPACE);
     var keyword, like;
     for (var i in parts) {
-      sql += i < 1 ? 'and ' : 'or ';
       keyword = parts[i].replace(/\*/g, '%');
       like = keyword.contains('%') ? 'like' : '=';
-      sql += '(name ' + like + " '' + keyword + '') ";
+      add(i < 1 ? 'and' : 'or', 'name', like, quote(keyword));
     }
   }
-  switch (data.order) {
-    case '1':
-    sql += 'group by created, id order by created '; break;
-    case '2':
-    sql += 'group by name, id order by name '; break;
-    default:
-    sql += 'group by modified, id order by modified '; break;
+
+  add('order by', sortings[data.sortings] || 'modified', data.order == 1 ? 'asc' : 'desc');
+  this.sites.subnodeRelation = sql.join(String.SPACE);
+
+  function add() {
+    sql.push.apply(sql, arguments);
   }
-  (data.dir == 1) || (sql += 'desc');
-  this.sites.subnodeRelation = sql;
-  return;
 }
 
 /**
@@ -622,43 +615,44 @@ Admin.prototype.filterSites = function(data) {
  */
 Admin.prototype.filterUsers = function(data) {
   data || (data = {});
-  var sql;
-  switch (data.filter) {
-    case '1':
-    sql = "where status = 'blocked' "; break;
-    case '2':
-    sql = "where status = 'trusted' "; break;
-    case '3':
-    sql = "where status = 'privileged' "; break;
-    default:
-    sql = 'where true '; break;
-  }
-  if (data.query) {
-    var parts = stripTags(data.query).split(' ');
+
+  var displays = {
+    1: "status = 'blocked'",
+    2: "status = 'trusted'",
+    3: "status = 'privileged'"
+  };
+
+  var sortings = {
+    1: 'modified',
+    2: 'name'
+  };
+
+  var sql = ['where'];
+  add(displays[data.display] || true);
+
+  if (data.filter) {
+    var parts = stripTags(data.filter).split(String.SPACE);
     var keyword, like;
     for (var i in parts) {
-      sql += i < 1 ? 'and ' : 'or ';
+      add(i < 1 ? 'and' : 'or');
       keyword = parts[i].replace(/\*/g, '%');
       like = keyword.contains('%') ? 'like' : '=';
       if (keyword.contains('@')) {
-        sql += 'email ' + like + " '' + keyword.replace(/@/g, '') + '' ";
+        add('email');
+        keyword = keyword.replace(/@/g, '');
       } else {
-        sql += 'name ' + like + " '' + keyword + '' ";
+        add('name');
       }
+      add(like, quote(keyword));
     }
   }
-  switch (data.order) {
-    case '0':
-    default:
-    sql += 'group by created, id order by created '; break;
-    case '1':
-    sql += 'group by modified, id order by modified '; break;
-    case '2':
-    sql += 'group by name, id order by name '; break;
+
+  add('order by', sortings[data.sorting] || 'created', data.order == 1 ? 'asc' : 'desc');
+  this.users.subnodeRelation = sql.join(String.SPACE);
+
+  function add() {
+    sql.push.apply(sql, arguments);
   }
-  (data.dir == 1) || (sql += 'desc');
-  this.users.subnodeRelation = sql;
-  return;
 }
 
 /**
@@ -671,10 +665,68 @@ Admin.prototype.renderItem = function(item) {
   if (item.getClass && item.getClass() === java.io.File) {
       name = 'Job';
       res.handlers.item = deserialize(item);
-  } else if (name === 'Root') name = 'Site';
+  } else if (name === 'Root') {
+    name = 'Site';
+  }
   Admin.prototype.renderSkin('$Admin#' + name.toLowerCase());
   return;
 }
+
+Admin.prototype.renderActivity = function (item) {
+  var param = {
+    icon: getIcon(item),
+    date: item.created,
+    reference: getReference(item),
+    user: item.creator ? item.creator.name : item.name,
+    href: item.href(item.constructor === User ? 'edit' : ''),
+    linkCount: getLinkCount(item)
+  };
+  param.warn = param.linkCount > 2 ? true : false;
+  Admin.prototype.renderSkin('$Admin#activity', param);
+
+  function getReference(item) {
+    res.push();
+    switch (item.constructor) {
+      case Root:
+      case Site:
+      res.write(item.getTitle()); break;
+      case Comment:
+      case Story:
+      item.summary_macro({}); break;
+      case File:
+      case User:
+      res.write(item.name); break;
+      case Image:
+      item.thumbnail_macro({'class': 'uk-thumbnail'}, 'thumbnail'); break;
+      case Poll:
+      res.write(item.question); break;
+    }
+    return res.pop();
+  }
+
+  function getIcon(item) {
+    var name;
+    switch (item.constructor) {
+      case Root:
+      case Site:
+      res.push();
+      image_macro({}, '/ant-icon.png');
+      return res.pop();
+      case Comment:
+      name = 'comment-o'; break;
+      case Story:
+      name = 'newspaper-o'; break
+      case File:
+      name = 'file-o'; break;
+      case Image:
+      name = 'image'; break;
+      case User:
+      name = 'user'; break;
+    }
+    return "<i class='uk-icon uk-icon-" + name + "'></i>";
+  }
+
+};
 
 /**
  *
@@ -768,7 +820,7 @@ Admin.prototype.dropdown_macro = function(param /*, value1, value2, ... */) {
       display: gettext(item)
     }
   });
-  var selectedIndex = req.postParams[param.name];
+  var selectedIndex = req.postParams[param.name] || session.data[param.name];
   html.dropDown({name: param.name}, options, selectedIndex);
   return;
 }
