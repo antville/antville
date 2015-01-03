@@ -1404,3 +1404,17 @@ var wait = function(millis) {
   }
   return;
 }
+
+function getLinkCount(item) {
+  var content;
+  switch (item.constructor) {
+    case Comment:
+    case Story:
+    content = item.title || '' + item.text || '';
+    break;
+
+    default:
+    content = String(item);
+  }
+  return (content.match(/https?:\/\//g) || []).length;
+}

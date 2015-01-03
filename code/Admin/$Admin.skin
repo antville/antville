@@ -4,15 +4,15 @@
 <% response.pager %>
 
 <% #navigation %>
-<li><% admin.link setup <% gettext Setup %> %></li>
+<li><% admin.link . <% gettext Setup prefix="<i class='uk-icon uk-icon-wrench'></i> " %> %></li>
+<li><% admin.link activity <% gettext Activity %> %></li>
 <li><% admin.link sites <% gettext Sites %> %></li>
 <li><% admin.link users <% gettext Users %> %></li>
 <li><% admin.link jobs <% gettext Jobs %> %></li>
-<li><% admin.link main <% gettext Activity %> %></li>
 
 <% #welcome %>
 <p>
-   <em><% gettext Note %></em>: <% gettext 'Since you are an administrator of this Antville installation you are entitled to administer <a href="{0}">sites</a> and <a href="{1}">users</a>, view the <a href="{2}">administration log</a> and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %> <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %> %>
+   <em><% gettext Note suffix=: %></em> <% gettext 'Since you are an administrator of this Antville installation you are entitled to manage <a href="{0}">sites</a> and <a href="{1}">users</a>, monitor all <a href="{2}">activity</a>, configure the <a href="{3}">setup</a> and much more.' <% root.admin.href sites %> <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %> %>
 </p>
 
 <% #setup %>
@@ -121,39 +121,41 @@ $(function() {
 });
 </script>
 
-<% #log %>
+<% #activities %>
 <h1><% response.title %></h1>
-<form method="post" action="<% response.action %>">
-   <table cellspacing="0" cellpadding="2">
-      <tr>
-         <td class="small"><% gettext Type suffix=: %></td>
-         <td>
-            <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %> <% markgettext Site %> <% markgettext User %> %>
-         </td>
-      </tr>
-      <tr>
-         <td class="small"><% gettext Sort suffix=: %></td>
-         <td><% admin.dropdown name="dir" <% markgettext Descending %> <% markgettext Ascending %> %></td>
-      </tr>
-      <tr>
-         <td class="small"><% gettext Search suffix=: %></td>
-         <td>
-            <input id="query" name="query" value="<% request.query %>">
-            <button onclick='this.form.query.value = ''; return !1;'><% gettext Reset %></button>
-            <button type="submit" name="search" value="1"><% gettext Update %></button>
-         </td>
-      </tr>
-   </table>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Display %>
+      </div>
+      <div class='uk-form-controls'>
+         <% gettext '{0} activity sorted by Date in {1} order.'
+            <% admin.dropdown name="display" <% markgettext Any %> <% markgettext Content %> <% markgettext Comment %> <% markgettext Link %> <% markgettext File %> <% markgettext Image %> <% markgettext Poll %> <% markgettext Site %> <% markgettext User %> %>
+            <% admin.dropdown name="order" <% markgettext Descending %> <% markgettext Ascending %> %>
+         %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Filter %>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by username. Use the asterisk * as wildcard.' %>"></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
+         <button class='uk-button' type='button' onclick="location.replace('.');"><% gettext Reset %></button>
+         <button class='uk-button uk-button-primary' type="submit" name="update" value="1"><% gettext Update %></button>
+      </div>
+   </div>
 </form>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Date %></td>
-         <td><% gettext Type %></td>
-         <td><% gettext Name %></td>
-         <td><% gettext Description %></td>
+         <td></td>
          <td><% gettext User %></td>
+         <td><% gettext Date %></td>
+         <td><% gettext Reference %></td>
       </tr>
    </thead>
    <tbody>
@@ -162,41 +164,34 @@ $(function() {
 </table>
 <% response.pager %>
 
-<% #logentry %>
-<tr>
-   <td><% item.created short %></td>
-   <td><% item.context_type %></td>
-   <td class='uk-text-bold'><% item.context.name %></td>
-   <td><% item.action %></td>
-   <td><% item.creator %></td>
-</tr>
-
 <% #sites %>
 <h1><% response.title %></h1>
-<form method="post" action="<% response.action %>">
-   <table cellspacing="0" cellpadding="2">
-      <tr>
-         <td class="small"><% gettext Type suffix=: %></td>
-         <td>
-            <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %> <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %> <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
-         </td>
-         </tr>
-      <tr>
-         <td class="small"><% gettext Sort suffix=: %></td>
-         <td>
-            <% admin.dropdown name="order" <% markgettext Modified %> <% markgettext "Created" %> <% markgettext Name %> %> <% admin.dropdown name="dir" <% markgettext Descending %> <% markgettext Ascending %> %>
-         </td>
-      </tr>
-      <tr>
-         <td class="small"><% gettext Search suffix=: %></td>
-         <td>
-            <input id="query" name="query" value="<% request.query encoding="form" %>">
-            <button onclick="this.form.query.value = ''; return !1;"><% gettext Reset %></button>
-            <button type="submit" name="search" value="1"><% gettext Update %></button>
-         </td>
-      </tr>
-   </table>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Display %>
+      </div>
+      <div>
+         <% gettext '{0} sites sorted by {1} in {2} order.'
+            <% admin.dropdown name="display" <% markgettext All %> <% markgettext Blocked %> <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %> <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
+            <% admin.dropdown name="sorting" <% markgettext Modified %> <% markgettext Created %> <% markgettext Name %> %>
+            <% admin.dropdown name="order" <% markgettext Descending %> <% markgettext Ascending %> %>
+         %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Filter %>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by site name. Use the asterisk * as wildcard.' %>"></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
+         <button class='uk-button' type='button' onclick="location.replace('sites');"><% gettext Reset %></button>
+         <button class='uk-button uk-button-primary' type="submit" name="update" value="1"><% gettext Update %></button>
+      </div>
+   </div>
 </form>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
@@ -216,57 +211,34 @@ $(function() {
 </table>
 <% response.pager %>
 
-<% #site %>
-<tr>
-   <td style='max-width: 150px; overflow: hidden;'>
-      <div><% item.title default='<i>Untitled</i>' | item.link %></div>
-      <div class='uk-text-small'><% item.href %></div>
-   </td>
-   <td><% item.created text %></td>
-   <td><% item.modified text %></td>
-   <td><% item.status %></td>
-   <td><% item.mode %></td>
-   <td>
-      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
-   </td>
-   <td class='uk-text-right' style='white-space: nowrap'>
-      <% if <% item.mode %> is deleted then '' else
-         <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
-      %>
-      <% item.link edit#admin "<i class='uk-icon-pencil'></i>" <% item.id %> %>
-   </td>
-</tr>
-
 <% #users %>
 <h1><% response.title %></h1>
-<form method="post" action="<% response.action %>">
-   <table cellspacing="0" cellpadding="2">
-      <tr>
-         <td class="small"><% gettext Type suffix=: %></td>
-         <td>
-            <% admin.dropdown name="filter" <% markgettext All %> <% markgettext Blocked %>
-                  <% markgettext Trusted %> <% markgettext Privileged %> %>
-         </td>
-      </tr>
-      <tr>
-         <td class="small"><% gettext Sort suffix=: %></td>
-         <td>
-            <% admin.dropdown name="order" <% markgettext Registration %>
-                  <% markgettext Login %> <% markgettext Username %> %>
-            <% admin.dropdown name="dir" <% markgettext Descending %>
-                  <% markgettext Ascending %> %>
-         </td>
-      </tr>
-      <tr>
-         <td class="small"><% gettext Search suffix=: %></td>
-         <td>
-            <input name="query" value="<% request.query %>">
-            <button type="reset"><% gettext Reset %></button>
-            <button type="submit" name="search" value="1"><% gettext Update %></button>
-         </td>
-      </tr>
-   </table>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Display %>
+      </div>
+      <div>
+         <% gettext '{0} sites sorted by {1} in {2} order.'
+            <% admin.dropdown name="display" <% markgettext All %> <% markgettext Blocked %> <% markgettext Trusted %> <% markgettext Privileged %> %>
+            <% admin.dropdown name="sorting" <% markgettext Registration %> <% markgettext 'Last Login' %> <% markgettext Name %> %>
+            <% admin.dropdown name="order" <% markgettext Descending %> <% markgettext Ascending %> %>
+         %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Filter %>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by username or by e-mail address. Use the asterisk * as wildcard.' %>"></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
+         <button class='uk-button' type='button' onclick="location.replace('users')"><% gettext Reset %></button>
+         <button class='uk-button uk-button-primary' type="submit" name="filter" value="1"><% gettext Update %></button>
+      </div>
+   </div>
 </form>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
@@ -285,29 +257,9 @@ $(function() {
 </table>
 <% response.pager %>
 
-<% #user %>
-<tr>
-   <td style='max-width: 200px; overflow: hidden;'>
-      <div class='uk-text-bold'>
-         <% if <% item.url %> is null then <% item.name %> else <% item.name | item.link <% item.url %> %> %>
-      </div>
-      <div class='uk-text-small'><a href='mailto:<% item.email %>'><% item.email %></a></div>
-   </td>
-   <td><% item.created text %></td>
-   <td><% item.modified text %></td>
-   <td><% item.status %></td>
-   <td>
-      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
-   </td>
-   <td style='white-space: nowrap;'>
-      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
-      <% item.link edit#admin "<i class='uk-icon-pencil'></i>" %>
-   </td>
-</tr>
-
 <% #jobs %>
 <h1><% response.title %></h1>
-<% response.pager %>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
@@ -322,7 +274,58 @@ $(function() {
       <% response.list %>
    </tbody>
 </table>
-<% response.pager %>
+
+<% #activity %>
+<tr>
+   <td><% param.icon %></td>
+   <td><% param.user %></td>
+   <td><% param.date | format text %></td>
+   <td <% if <% param.warn %> is true then "class='uk-text-bold'" %> style='max-width: 350px; overflow: hidden;'>
+      <a href='<% param.href %>'><% param.reference %></a>
+      <% if <% param.linkCount %> is 0 then '' else <% param.linkCount prefix="<i class='uk-icon uk-icon-link uk-text-muted'> " suffix=</i> %> %>
+   </td>
+</tr>
+
+<% #site %>
+<tr>
+   <td style='max-width: 150px; overflow: hidden;'>
+      <div><% item.title default='<i>Untitled</i>' | item.link %></div>
+      <div class='uk-text-small'><% item.href %></div>
+   </td>
+   <td><% item.created text %></td>
+   <td><% item.modified text %></td>
+   <td><% item.status %></td>
+   <td><% item.mode %></td>
+   <td>
+      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
+   </td>
+   <td class='uk-text-right' style='white-space: nowrap'>
+      <% if <% item.mode %> is deleted then '' else
+         <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
+      %>
+      <% item.link edit "<i class='uk-icon-pencil'></i>" <% item.id %> %>
+   </td>
+</tr>
+
+<% #user %>
+<tr>
+   <td style='max-width: 200px; overflow: hidden;'>
+      <div class='uk-text-bold'>
+         <% if <% item.url %> is null then <% item.name %> else <% item.name | item.link <% item.url %> %> %>
+      </div>
+      <div class='uk-text-small'><a href='mailto:<% item.email %>'><% item.email %></a></div>
+   </td>
+   <td><% item.created text %></td>
+   <td><% item.modified text %></td>
+   <td><% item.status %></td>
+   <td>
+      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
+   </td>
+   <td class='uk-text-right' style='white-space: nowrap;'>
+      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% item.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
 
 <% #job %>
 <tr>
