@@ -629,11 +629,9 @@ function list_macro(param, id, limit) {
     collection = root.sites.list(0, max);
     skin = 'Site#preview';
   } else if (id === 'updates') {
-    collection = root.updates.list().map(function (item) {
-      return item.get(0);
+    collection = root.sites.list(0, max).map(function (site) {
+      return site.stories.union.get(0);
     });
-    // FIXME: Sorting in code is necessary (see definition of Root.updates property).
-    collection.sort(new Number.Sorter('created', Number.Sorter.DESC));
     skin = 'Story#preview';
   } else {
     var site, type;
@@ -711,7 +709,7 @@ function list_macro(param, id, limit) {
     }
   }
   for each (var item in collection) {
-    item.renderSkin(param.skin || skin);
+    item && item.renderSkin(param.skin || skin);
   }
   return;
 }
