@@ -36,10 +36,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #search %>
 <form class='uk-form' method='post' action='<% site.href search %>'>
-   <input type='text' class='uk-form-small uk-form-width-small' name='q' value='<% request.q encoding="form" %>' required>
-   <button type='submit' name='search' value='1' class='uk-button uk-button-small'>
-      <% gettext Find %>
-   </button>
+   <input type='text' class='uk-width-1-1' name='q' value='<% request.q encoding="form" %>' required placeholder='<% gettext Search %>'>
 </form>
 
 <% #robots %>
@@ -94,8 +91,6 @@ prefix="Last update: " default="None so far" %>)</span></li>
          <div class='uk-width-3-10'>
             <div style='border-left: 1px solid #ddd; margin-left: 20%;'>
                <% membership.status %>
-               <% //root.admin.skin $Admin#navigation %>
-
                <ul class='uk-nav uk-nav-side'>
                   <li class='uk-nav-divider'/>
                   <% site.skin Site#navigation %>
@@ -104,19 +99,11 @@ prefix="Last update: " default="None so far" %>)</span></li>
                      <% site.skin Site#search %>
                   </li>
                   <li class='uk-nav-header'/>
-                  <li class='uk-margin-left'>
+                  <li class='uk-margin-left uk-text-small'>
                      <% site.calendar %>
                   </li>
                </ul>
             </div>
-
-            <!--div class='uk-panel uk-panel-box uk-margin'>
-               <h1 class='uk-panel-title'><% gettext Comments %></h1>
-               <ul class='uk-nav uk-nav-side'>
-                  <% // list comments skin=Story#history %>
-               </ul>
-            </div-->
-
          </div>
       </div>
 
