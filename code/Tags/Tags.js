@@ -45,6 +45,7 @@ Tags.prototype.getPermission = function(action) {
 }
 
 Tags.prototype.main_action = function() {
+  /*
   var action = this.getAction();
   if (req.data.group) {
     this.setGroup(req.data.group)
@@ -54,14 +55,14 @@ Tags.prototype.main_action = function() {
     this.setPage(req.data.page);
     res.redirect(this.href(action));
   }
+  */
+  var tags = this.get(Tags.ALL);
+  res.data.list = renderList(tags, '$Tag#listItem', 50, req.queryParams.page);
+  res.data.pager = renderPager(tags, this.href(req.action), 50, req.queryParams.page);
   res.data.title = this.getTitle();
-  res.data.body = this.renderSkinAsString('$Tags#' + req.action);
+  res.data.body = this.renderSkinAsString('$Tags#main');
   res.handlers.site.renderSkin('Site#page');
   return;
-}
-
-Tags.prototype.admin_action = function() {
-  return this.main_action();
 }
 
 /**
@@ -178,7 +179,8 @@ Tags.prototype.get = function(group) {
  * @returns {String}
  */
 Tags.prototype.getGroup = function() {
-  return decodeURIComponent(session.data[this.href('group')] || Tags.ALL);
+  return Tags.ALL;
+  //return decodeURIComponent(session.data[this.href('group')] || Tags.ALL);
 }
 
 /**
@@ -211,7 +213,7 @@ Tags.prototype.setPage = function(page) {
  * @returns {Number}
  */
 Tags.prototype.getPageSize = function() {
-  return 25;
+  return 5;
 }
 
 /**

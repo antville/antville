@@ -1,5 +1,7 @@
 <% #main %>
 <h1><% response.title %></h1>
+<% //tags.alphabet %>
+<% //tags.pager %>
 <% response.pager %>
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
@@ -16,10 +18,13 @@
       </tr>
    </thead>
    <tbody>
-      <% tags.list %>
+      <% //tags.list %>
+      <% response.list %>
    </tbody>
 </table>
 <% response.pager %>
+<% //tags.pager %>
+<% //tags.alphabet %>
 <script type='text/javascript'>
 $(function () {
   $('.renameTag').on('click', function (event) {
@@ -40,30 +45,3 @@ $(function () {
   });
 });
 </script>
-<!--
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.list prefix="<ul>" suffix="</ul>" %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
--->
-
-<% #header %>
-<th><% param.title %></th>
-
-<% #admin %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<table>
-<thead>
-<tr>
-<% tags.header %>
-</tr>
-</thead>
-<tbody>
-<% tags.list Tag#admin %>
-</tbody>
-</table>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-
