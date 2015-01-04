@@ -682,8 +682,8 @@ Site.prototype.search_action = function() {
 Site.prototype.subscribe_action = function() {
   try {
     Membership.add(session.user, Membership.SUBSCRIBER, this);
-    res.message = gettext('Successfully subscribed to site {0}.',
-        this.title);
+    res.message = gettext('Successfully subscribed to site {0}.', this.title);
+    res.redirect(this.members.href('subscriptions'));
   } catch (ex) {
     app.log(ex);
     res.message = ex.toString();
@@ -696,9 +696,8 @@ Site.prototype.unsubscribe_action = function() {
   if (req.postParams.proceed) {
     try {
       Membership.remove.call(Membership.getByName(session.user.name));
-      res.message = gettext('Successfully unsubscribed from site {0}.',
-          this.title);
-      res.redirect(User.getLocation() || this.href());
+      res.message = gettext('Successfully unsubscribed from site {0}.', this.title);
+      res.redirect(this.href());
     } catch (ex) {
       app.log(ex)
       res.message = ex.toString();
@@ -708,7 +707,7 @@ Site.prototype.unsubscribe_action = function() {
   User.setLocation();
   res.data.title = gettext('Confirm Unsubscribe');
   res.data.body = this.renderSkinAsString('$HopObject#confirm', {
-    text: gettext('You are about to unsubscribe from site {0}.', this.title)
+    text: gettext('You are about to unsubscribe from the site {0}.', this.title)
   });
   this.renderSkin('Site#page');
   return;

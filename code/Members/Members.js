@@ -52,10 +52,9 @@ Members.prototype.getPermission = function(action) {
 
   switch (action) {
     case 'edit':
-    case 'privileges':
     case 'subscriptions':
     case 'updates':
-    return sitePermission && !!session.user;
+    return !!session.user;
 
     case '.':
     case 'main':

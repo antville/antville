@@ -77,7 +77,7 @@ Membership.remove = function(options) {
     return;
   }
   if (!options.force && !this.getPermission('delete')) {
-    throw Error(gettext('Sorry, an owner of a site cannot be removed.'));
+    throw Error(gettext('The only owner of a site cannot be removed.'));
   }
   var recipient = this.creator.email;
   this.remove();
@@ -127,16 +127,13 @@ Membership.prototype.constructor = function(user, role) {
  * @return {Boolean}
  */
 Membership.prototype.getPermission = function(action) {
-  if (!res.handlers.site.getPermission('main')) {
-    return false;
-  }
-
   switch (action) {
     case 'contact':
-    return true;
+    return res.handlers.site.getPermission('main');
     case 'edit':
-    case 'delete':
     return Membership.require(Membership.OWNER) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
+    case 'delete':
+    return (this.creator === session.user || Membership.require(Membership.OWNER)) && (!this.require(Membership.OWNER) || this.site.members.owners.size() > 1);
   }
   return false;
 }
@@ -248,8 +245,7 @@ Membership.prototype.getMacroHandler = function(name) {
  * @returns {Boolean}
  */
 Membership.prototype.require = function(role) {
-  var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR,
-      Membership.MANAGER, Membership.OWNER];
+  var roles = [Membership.SUBSCRIBER, Membership.CONTRIBUTOR, Membership.MANAGER, Membership.OWNER];
   if (role) {
     return roles.indexOf(this.role) >= roles.indexOf(role);
   }

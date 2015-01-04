@@ -24,7 +24,7 @@ Comments.prototype.getPermission = function (action) {
     case 'user':
     return !!session.user;
   }
-  return HopObject.prototype.getPermission.apply(this, arguments);
+  return this._parent.getPermission('main');
 };
 
 Comments.prototype.main_action = function () {
