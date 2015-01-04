@@ -88,7 +88,7 @@
          <% gettext Save %>
       </button>
       <% image.link delete <% gettext Delete %> class='uk-button' %>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 <script type="text/javascript">

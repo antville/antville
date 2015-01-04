@@ -88,7 +88,7 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 <script type="text/javascript">

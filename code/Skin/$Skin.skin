@@ -28,7 +28,7 @@
          <button type="submit" name="save" value="1" class='uk-button'>
             <% gettext "Save and Edit" %>
          </button>
-         <a href="" class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
+         <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
       </span>
    </div>
    <div style='clear: both;'>
@@ -67,7 +67,7 @@ $(function() {
       <span style='line-height: 42px;'>
          <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff;' %>
          <% skin.link reset <% gettext Reset %> class='uk-button' %>
-         <a href='' class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
+         <a href='<% request.http_referer %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
       </span>
    </div>
    <div style='clear: both;'>

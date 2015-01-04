@@ -30,7 +30,7 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="create" value="1">
          <% gettext Create %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% root.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 

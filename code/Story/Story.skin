@@ -92,7 +92,7 @@
          <% gettext Restore %>
       </button>
       <% story.link delete <% gettext Delete %> class='uk-button' %>
-      <a href='' class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 

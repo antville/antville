@@ -116,7 +116,7 @@ else
          <% gettext "Save and Run" prefix="<button class='uk-button uk-button-success' type='submit' name='save' value='open'>" suffix=</button> %>
       %>
       <% poll.link delete <% gettext Delete %> class='uk-button' %>
-      <a href='' class='cancel uk-button uk-button-link'><% gettext Cancel %></a>
+      <a href='.' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
 </form>
 <script type="text/javascript">

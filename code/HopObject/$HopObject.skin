@@ -11,7 +11,7 @@
 <% this.skin <% this.type prefix=$ suffix=#delete %> %>
 <p>
   <button class='uk-button uk-button-danger' name="proceed" value="1"><% gettext Proceed %></button>
-  <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+  <a href="<% request.http_referer %>" class="uk-button uk-button-link"><% gettext Cancel %></a>
 </p>
 </form>
 

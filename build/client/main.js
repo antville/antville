@@ -30,10 +30,12 @@ $(function() {
     }
   }
 
-  // Go back one step in history when clicking on links with the cancel class.
-  $('a.cancel').click(function(event) {
-    event.preventDefault();
-    history.back();
+  // Prevent redundant submits of a form
+  $('form').one('submit', function (event) {
+    var submit = $(this).find('[type=submit]');
+    setTimeout(function () {
+      submit.attr('disabled', true);
+    }, 1);
   });
 
   // Select the macro code when clicking on elements with the macro-code class.

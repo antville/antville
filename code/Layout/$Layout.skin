@@ -31,7 +31,7 @@
          <% gettext Save %>
       </button>
       <% layout.link reset <% gettext Reset %> class='uk-button' %>
-      <a href='' class='uk-button uk-button-link cancel'><% gettext Cancel %></a>
+      <a href='..' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
 </form>
 <script type='text/javascript'>
@@ -69,7 +69,7 @@ $(function() {
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="submit" value="1">
          <% gettext Import %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href="." class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 

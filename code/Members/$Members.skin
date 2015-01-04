@@ -70,7 +70,7 @@
       <button class='uk-button uk-button-primary' type="submit" tabindex=4>
          <% gettext Login context=verb %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel" tabindex=5><% gettext Cancel %></a>
+      <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=5><% gettext Cancel %></a>
    </div>
 </form>
 <script type="text/javascript">
@@ -131,7 +131,7 @@ $(function() {
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="register" value="1">
          <% gettext Register %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% members.href login %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 <script type="text/javascript">
@@ -176,7 +176,7 @@ $(function() {
    </div>
    <div class='uk-form-row uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="reset" value="1" tabindex="4"><% gettext "Send Request" %></button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% members.href login %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 
@@ -193,7 +193,7 @@ $(function() {
    </div>
    <div class='uk-form-row'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1" tabindex="4"><% gettext Save %></button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% members.href login %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 

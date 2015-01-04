@@ -248,7 +248,7 @@ Poll.prototype.link_macro = function(param, action, text) {
     case '.':
     case 'main':
     if (this.status === Poll.CLOSED) {
-      return;
+      action = 'result';
     }
     break;
   }

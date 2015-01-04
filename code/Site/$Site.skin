@@ -15,7 +15,7 @@
       <button type='submit' name='search' value='1' class='uk-button uk-button-primary'>
          <% gettext Find %>
       </button>
-      <a href='' class='uk-button uk-button-link cancel'><% gettext Cancel %></a>
+      <a href='<% site.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
    </div>
 </form>
 <p>
@@ -136,34 +136,38 @@ for (var i in referrers) {
 <% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %>
 
 <% #export %>
-<p class="storyTitle"><% gettext "Export Site Data" %></p>
-<div class="ample">
-   <p><% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download the file {0} or klick “Start” to create a new one."
-         <% file.skin File#main %> '<small>'
-         <% file.created | format short %> '</small>' %> %> else <% param.status %> %></p>
-   <form action="" method="post">
-   <button type="submit" name="submit" value="<% if <% param.status %> is null then start else stop %>">
+<h1><% gettext "Export Site Data" %></h1>
+<p>
+   <% if <% param.status %> is null then <% if <% file.self %> is null then '' else <% gettext "Download the file {0} or klick “Start” to create a new one." <% file.skin File#main %> '<small>' <% file.created | format short %> '</small>' %> %> else <% param.status %> %>
+</p>
+<form action="" method="post">
+   <button type="submit" name="submit" value="<% if <% param.status %> is null then start else stop %>" class='uk-button uk-button-primary'>
       <% if <% param.status %> is null then <% gettext Start %> else <% gettext Stop %> %>
    </button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-   </form>
-</div>
+   <a href='<% site.href %>' class='uk-button uk-link-button'><% gettext Cancel %></a>
+</form>
 
 <% #import %>
-<p class="storyTitle"><% gettext 'Import Site Data' %></p>
-<div class="ample">
-   <p><% if <% file.self %> is null then '' else <% gettext "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours."
-         <% file.skin File#main %> '</a>' '<small>'
-         <% file.created | format short %> '</small>' %> %></p>
-   <form method="post" enctype="multipart/form-data">
-
-   <% if <% file.self %> is null then <% site.upload file prefix=<p> suffix=</p> %> %>
-   <button type="submit" name="submit" value="<% if <% file.self %> is null then start else stop %>">
-      <% if <% file.self %> is null then <% gettext Start %> else <% gettext Stop %> %>
-   </button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-   </form>
-</div>
+<h1><% gettext 'Import Site Data' %></h1>
+<p>
+   <% if <% file.self %> is null then '' else <% gettext "The site is scheduled for importing the file {0}. The imported site data will be available within 24 hours." <% file.skin File#main %> '</a>' '<small>' <% file.created | format short %> '</small>' %> %>
+</p>
+<form class='uk-form uk-form-stacked' method="post" enctype="multipart/form-data">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for=''>
+         <% gettext File %>
+      </label>
+      <div class='uk-form-controls'>
+         <% if <% file.self %> is null then <% site.upload file %> %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <button class='uk-button uk-button-primary' type="submit" name="submit" value="<% if <% file.self %> is null then start else stop %>">
+         <% if <% file.self %> is null then <% gettext Start %> else <% gettext Stop %> %>
+      </button>
+      <a href='<% site.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+   </div>
+</form>
 
 <% #edit %>
 <h1><% response.title %></h1>
@@ -298,7 +302,7 @@ for (var i in referrers) {
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 <script>

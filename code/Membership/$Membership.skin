@@ -15,7 +15,7 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel"><% gettext Cancel %></a>
+      <a href='<% members.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 
@@ -75,7 +75,7 @@
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="send" value="1" tabindex=4>
          <% gettext Send %>
       </button>
-      <a href="" class="uk-button uk-button-link cancel" tabindex=5><% gettext Cancel %></a>
+      <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=5><% gettext Cancel %></a>
    </div>
 </form>
 

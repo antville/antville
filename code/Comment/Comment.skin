@@ -67,7 +67,7 @@ else
    <div class='uk-margin-top'>
       <button type="submit" name="save" value="1" class='uk-button uk-button-primary'><% gettext Save %></button>
       <button type="button" id="restore" value="1" class='uk-button'><% gettext Restore %></button>
-      <a href="" class="cancel uk-button uk-button-link"><% gettext Cancel %></a>
+      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
 <% comment.skin $Story#restore %>
