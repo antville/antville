@@ -163,13 +163,13 @@ Members.prototype.login_action = function() {
   if (req.postParams.login) {
     try {
       var user = User.login(req.postParams);
-      res.message = gettext('Welcome to {0}, {1}. Have fun!',
-          res.handlers.site.getTitle(), user.name);
+      res.message = gettext('Welcome to {0}, {1}. Have fun!', res.handlers.site.getTitle(), user.name);
       res.redirect(User.getLocation() || this._parent.href());
     } catch (ex) {
       res.message = ex;
     }
   }
+  User.setLocation(User.getLocation() || req.data.http_referer);
   session.data.token = User.getSalt();
   res.data.action = this.href(req.action);
   res.data.title = gettext('Login');
