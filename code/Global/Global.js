@@ -629,7 +629,7 @@ function list_macro(param, id, limit) {
     collection = root.sites.list(0, max);
     skin = 'Site#preview';
   } else if (id === 'updates') {
-    collection = root.sites.list(0, max).map(function (site) {
+    collection = root.updates.list(0, max).map(function (site) {
       return site.stories.union.get(0);
     });
     skin = 'Story#preview';
