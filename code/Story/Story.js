@@ -314,7 +314,7 @@ Story.prototype.getFormValue = function(name) {
     case 'tags':
     return this.getTags().join(Tag.DELIMITER);
   }
-  return this[name] || this.getMetadata(name);
+  return this[name] || this.getMetadata(name) || req.queryParams[name];
 }
 
 /**
