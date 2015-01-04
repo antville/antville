@@ -52,7 +52,6 @@ Membership.require = function(role) {
 Membership.getRoles = defineConstants(Membership, markgettext('Subscriber'),
     markgettext('Contributor'), markgettext('Manager'), markgettext('Owner'));
 
-
 /**
  * @param {User} user
  * @param {String} role

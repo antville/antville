@@ -180,11 +180,15 @@ HopObject.prototype.delete_action = function() {
   res.data.action = this.href(req.action);
   res.data.title = gettext('Confirm Deletion');
   res.data.body = this.renderSkinAsString('$HopObject#confirm', {
-    text: this.getConfirmText()
+    text: this.getConfirmText(req.action),
+    extra: this.getConfirmExtra(req.action) || String.EMPTY
   });
   res.handlers.site.renderSkin('Site#page');
   return;
-}
+};
+
+HopObject.prototype.getConfirmText = function () { };
+HopObject.prototype.getConfirmExtra = HopObject.prototype.getConfirmText;
 
 /**
  * @returns {Object}

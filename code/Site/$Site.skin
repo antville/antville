@@ -352,7 +352,6 @@ $(function() {
 </fieldset>
 
 <% #delete %>
-<% // FIXME: This should not be shown when unsubscribing a site! %>
 <div class='uk-alert uk-alert-danger'>
    <% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.'
       <% ngettext '{0} story' '{0} stories' <% count <% site.self stories %> %> %>

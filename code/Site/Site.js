@@ -379,6 +379,10 @@ Site.prototype.getConfirmText = function() {
       this.getTitle());
 };
 
+Site.prototype.getConfirmExtra = function () {
+  return this.renderSkinAsString('$Site#delete');
+};
+
 /**
  *
  * @param {Object} data
@@ -880,8 +884,7 @@ Site.prototype.static_macro = function(param, name, mode) {
  *
  */
 Site.prototype.deleted_macro = function() {
-  return new Date(this.deleted.getTime() + Date.ONEDAY *
-      Admin.SITEREMOVALGRACEPERIOD);
+  return new Date(this.deleted.getTime() + Date.ONEDAY * Admin.SITEREMOVALGRACEPERIOD);
 }
 
 /**

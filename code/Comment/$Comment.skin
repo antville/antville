@@ -13,9 +13,6 @@
 </tr>
 
 <% #delete %>
-<% if <% comment.related.size %> is null then '' else <% comment.skin #deleteOptions %> %>
-
-<% #deleteOptions %>
 <div class='uk-alert uk-alert-warning'>
    <input type="checkbox" id="mode" name="mode" value="user" />
    <label for="mode"><% gettext "Erase all comments of user {0}"

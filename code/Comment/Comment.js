@@ -209,7 +209,13 @@ Comment.prototype.getConfirmText = function() {
     return gettext('You are about to delete a comment thread consisting of {0} postings.', size);
   }
   return gettext('You are about to delete a comment by user {0}.', this.creator.name);
-}
+};
+
+Comment.prototype.getConfirmExtra = function () {
+  if (this.getMacroHandler('related').size() > 0) {
+    return this.renderSkinAsString('$Comment#delete');
+  }
+};
 
 /**
  *
@@ -220,7 +226,7 @@ Comment.prototype.getMacroHandler = function(name) {
   if (name === 'related') {
     var membership = this.creator.getMembership();
     if (!membership || membership.comments.size() < 2 || this.status === Comment.DELETED) {
-      return {}; // Work-around for issue 88
+      return HopObject; // Work-around for issue 88
     }
     return membership.comments;
   } else if (name === 'story') {
