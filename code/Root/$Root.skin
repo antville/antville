@@ -121,6 +121,8 @@
 </div>
 
 <% #stylesheet %>
+@import '<% root.static ../../styles/main.min.css %>';
+
 /* CSS for protected skins (user interface elements etc.) */
 
 ul { list-style: url(<% image /bullet.gif url %>) circle; }

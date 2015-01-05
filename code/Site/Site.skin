@@ -63,9 +63,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
       <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
 
-      <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/main.min.css %>'>
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
-
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
    <body class='uk-container-center' style='width: 900px;'>
