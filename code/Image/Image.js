@@ -354,9 +354,16 @@ Image.prototype.thumbnail_macro = function(param) {
   param.src = this.getUrl(this.getThumbnailFile().getName());
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
-  param.width = this.thumbnailWidth || String.EMPTY;
-  param.height = this.thumbnailHeight || String.EMPTY;
-  param.border = (param.border = 0);
+  var width = param.width || this.thumbnailWidth;
+  var height = param.height || this.thumbnailHeight;
+  var style = [];
+  width && style.push('width:', width + 'px;');
+  height && style.push('height:', height + 'px;');
+  param.border && style.push('border:', param.border + 'px;');
+  param.style = style.join(String.SPACE);
+  delete param.width;
+  delete param.height;
+  delete param.border;
   html.tag('img', param);
   return;
 }
@@ -369,12 +376,17 @@ Image.prototype.render_macro = function(param) {
   param.src = this.getUrl();
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
-  param.width || (param.width = this.width);
-  param.height || (param.height = this.height);
-  param.border || (param.border = 0);
+  var style = [];
+  style.push('width:', (param.width || this.width) + 'px;');
+  style.push('height:', (param.height || this.height) + 'px;');
+  param.border && style.push('border:', param.border + 'px;');
+  param.style = style.join(String.SPACE);
+  delete param.width;
+  delete param.height;
+  delete param.border;
   html.tag('img', param);
   return;
-}
+};
 
 /**
  *
