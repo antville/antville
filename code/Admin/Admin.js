@@ -691,7 +691,7 @@ Admin.prototype.renderActivity = function (item) {
       res.write(item.getTitle()); break;
       case Comment:
       case Story:
-      item.summary_macro({}); break;
+      item.abstract_macro({}); break;
       case File:
       case User:
       res.write(item.name); break;

@@ -114,7 +114,7 @@
 <% #history %>
 <li>
    <a href='<% this.href %>' title='<% this.modified %>'>
-      <% this.summary | this.link %>
+      <% this.abstract | this.link %>
    </a>
    <div class='uk-text-small'>
       <% this.creator %>, <% this.modified text %>

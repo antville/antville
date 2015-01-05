@@ -19,8 +19,6 @@
       <span style='line-height: 42px;'>
          <% if <% skin.name %> is '' then
             <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
-         else
-            <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
          %>
          <button type="submit" name="save" value="2" class='uk-button uk-button-primary uk-margin-left'>
             <% gettext "Save" %>

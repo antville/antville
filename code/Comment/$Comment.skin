@@ -1,12 +1,12 @@
 <% #listItem %>
 <tr>
    <td style='max-width: 300px; overflow: hidden;'>
-      <a href='<% comment.href %>'><% comment.summary %></a>  <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<i class='uk-icon-comments-o uk-text-muted'> " suffix='</i>' %> %>
+      <a href='<% comment.href %>'><% comment.abstract %></a> <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<i class='uk-icon-comments-o uk-text-muted'> " suffix='</i>' %> %>
    </td>
    <td><% comment.creator %></td>
    <td><% comment.modified text %></td>
    <td style='white-space: nowrap;' class='uk-text-right'>
-      <a href='<% comment.story.href %>' title='<% comment.story.summary %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
+      <a href='<% comment.story.href %>' title='<% comment.story.abstract %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
       <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% comment.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>

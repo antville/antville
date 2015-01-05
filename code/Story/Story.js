@@ -427,19 +427,19 @@ Story.prototype.getMacroHandler = function(name) {
  *
  * @param {Object} param
  */
-Story.prototype.summary_macro = function(param) {
+Story.prototype.abstract_macro = function(param) {
   param.limit || (param.limit = 15);
-  var summary = this.title || this.text;
-  if (!summary && arguments.length > 1) {
+  var abstract = this.title || this.text;
+  if (!abstract && arguments.length > 1) {
     var buffer, content = [];
     for (var i = 1; i < arguments.length; i += 1) {
       if (buffer = this.getMetadata(arguments[i])) {
         content.push(buffer);
       }
     }
-    summary = content.join(String.SPACE);
+    abstract = content.join(String.SPACE);
   }
-  var clipped = stripTags(summary).clip(param.limit, param.clipping, '\\s');
+  var clipped = stripTags(abstract).clip(param.limit, param.clipping, '\\s');
   res.write(clipped || '…');
   return;
 }
