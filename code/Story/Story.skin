@@ -114,13 +114,11 @@
 <% #history %>
 <li>
    <a href='<% this.href %>' title='<% this.modified %>'>
-      <% this.summary %>
-      <div>
-         <small>
-            <% this.creator %>, <% this.modified text %>
-         </small>
-      </div>
+      <% this.summary | this.link %>
    </a>
+   <div class='uk-text-small'>
+      <% this.creator %>, <% this.modified text %>
+   </div>
 </li>
 
 <% #permalink %>

@@ -422,3 +422,33 @@ Story.prototype.reads_macro = function(param) {
   res.write(this.requests);
   return;
 }
+
+Story.prototype.summary_macro = function(param) {
+  param.limit || (param.limit = 15);
+  var keys, summary;
+  if (arguments.length > 1) {
+    res.push();
+    var content;
+    for (var i=1; i<arguments.length; i+=1) {
+      if (content = this.getMetadata(arguments[i])) {
+        res.write(content);
+        res.write(String.SPACE);
+      }
+    }
+    summary = res.pop();
+  }
+  if (!summary) {
+    summary = (this.title || String.EMPTY) + String.SPACE + (this.text || String.EMPTY);
+  }
+  var clipped = stripTags(summary).clip(param.limit, param.clipping, '\\s');
+  var head = clipped.split(/(\s)/, param.limit * 0.6).join(String.EMPTY);
+  var tail = clipped.substring(head.length).trim();
+  head = head.trim();
+  if (!head && !tail) {
+    head = '…';
+  }
+  html.link({href: this.href()}, head);
+  res.writeln('<br>');
+  res.write(tail);
+  return;
+}
