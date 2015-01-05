@@ -51,7 +51,7 @@
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
    <body>
-      <span style='float: right; margin: 10px;'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
+      <span style='float: right;' class='uk-margin-right'><% image /smallchaos.gif | link <% layout.skins.href %> %></span>
       <% response.body %>
    </body>
 </html>

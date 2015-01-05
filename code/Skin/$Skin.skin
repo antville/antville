@@ -14,7 +14,7 @@
 
 <% #edit %>
 <form class='uk-form' method="post" action="<% response.action %>">
-   <div class='uk-margin-top uk-margin-left'>
+   <div class='uk-margin-top uk-margin-left uk-margin-right'>
       <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
       <span style='line-height: 42px;'>
          <% if <% skin.name %> is '' then
@@ -30,9 +30,9 @@
          </button>
          <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
       </span>
+      <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
    </div>
    <div style='clear: both;'>
-      <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
       <% skin.textarea source %>
    </div>
 </form>
