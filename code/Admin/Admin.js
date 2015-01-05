@@ -684,23 +684,23 @@ Admin.prototype.renderActivity = function (item) {
   Admin.prototype.renderSkin('$Admin#activity', param);
 
   function getReference(item) {
-    res.push();
     switch (item.constructor) {
       case Root:
       case Site:
-      res.write(item.getTitle()); break;
+      return item.getTitle();
       case Comment:
       case Story:
-      item.abstract_macro({}); break;
+      return item.getAbstract();
       case File:
       case User:
-      res.write(item.name); break;
+      return item.name;
       case Image:
-      item.thumbnail_macro({'class': 'uk-thumbnail'}, 'thumbnail'); break;
+      res.push();
+      item.thumbnail_macro({'class': 'uk-thumbnail'}, 'thumbnail');
+      return res.pop();
       case Poll:
-      res.write(item.question); break;
+      return item.question;
     }
-    return res.pop();
   }
 
   function getIcon(item) {
@@ -712,17 +712,23 @@ Admin.prototype.renderActivity = function (item) {
       image_macro({}, '/ant-icon.png');
       return res.pop();
       case Comment:
-      name = 'comment-o'; break;
+      name = 'comment-o';
+      break;
       case Story:
-      name = 'newspaper-o'; break
+      name = 'newspaper-o';
+      break
       case File:
-      name = 'file-o'; break;
+      name = 'file-o';
+      break;
       case Image:
-      name = 'image'; break;
+      name = 'image';
+      break;
       case User:
-      name = 'user'; break;
+      name = 'user';
+      break;
       case Poll:
-      name = 'bar-chart'; break;
+      name = 'bar-chart';
+      break;
     }
     return "<i class='uk-icon uk-icon-" + name + "'></i>";
   }

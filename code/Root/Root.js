@@ -191,17 +191,20 @@ Root.prototype.updates_xml_action = function() {
   feed.setPublishedDate(now);
   var entries = new java.util.ArrayList();
   var entry, description;
-  var sites = root.updates.list(0, 25).sort(Number.Sorter('modified',
-      Number.Sorter.DESC));
+  var sites = root.updates.list(0, 25).sort(Number.Sorter('modified', Number.Sorter.DESC));
   for each (var site in sites) {
+    var story = site.stories.union.get(0);
+    if (!story) {
+      continue;
+    }
     entry = new rome.SyndEntryImpl();
     entry.setTitle(site.title);
-    entry.setLink(site.href());
-    entry.setAuthor(site.creator.name);
-    entry.setPublishedDate(site.modified);
+    entry.setLink(story.href());
+    entry.setAuthor(story.creator.name);
+    entry.setPublishedDate(story.modified);
     description = new rome.SyndContentImpl();
     description.setType('text/plain');
-    description.setValue(site.tagline);
+    description.setValue(story.getAbstract());
     entry.setDescription(description);
     entries.add(entry);
   }

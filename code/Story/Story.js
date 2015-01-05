@@ -423,12 +423,8 @@ Story.prototype.getMacroHandler = function(name) {
   return null;
 }
 
-/**
- *
- * @param {Object} param
- */
-Story.prototype.abstract_macro = function(param) {
-  param.limit || (param.limit = 15);
+Story.prototype.getAbstract = function (limit, clipping) {
+  limit || (limit = 15);
   var result = this.title || this.text;
   if (!result && arguments.length > 1) {
     var buffer, content = [];
@@ -439,9 +435,15 @@ Story.prototype.abstract_macro = function(param) {
     }
     result = content.join(String.SPACE);
   }
-  var clipped = stripTags(result).clip(param.limit, param.clipping, '\\s');
-  res.write(clipped || '…');
-  return;
+  return stripTags(result).clip(limit, clipping, '\\s') || '…';
+};
+
+/**
+ *
+ * @param {Object} param
+ */
+Story.prototype.abstract_macro = function(param) {
+  return res.write(this.getAbstract(param.limit, param.cliping));
 }
 
 /**
