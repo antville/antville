@@ -204,7 +204,7 @@ Root.prototype.updates_xml_action = function() {
     entry.setPublishedDate(story.modified);
     description = new rome.SyndContentImpl();
     description.setType('text/plain');
-    description.setValue(format(story.text));
+    description.setValue(story.format_filter(story.text, {}));
     entry.setDescription(description);
     entries.add(entry);
   }

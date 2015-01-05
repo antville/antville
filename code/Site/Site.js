@@ -556,7 +556,7 @@ Site.prototype.renderXml = function(collection) {
     if (item.text) {
       description = new rome.SyndContentImpl();
       description.setType('text/html');
-      description.setValue(format(item.text));
+      description.setValue(item.format_filter(item.text, {}));
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
       /*
       description.setValue(item.renderSkinAsString('Story#rss').replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
