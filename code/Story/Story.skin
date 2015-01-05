@@ -108,9 +108,6 @@
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 
-<% #rss %>
-<% this.text | this.format %>
-
 <% #history %>
 <li>
    <a href='<% this.href %>' title='<% this.modified %>'>

@@ -1,5 +1,8 @@
 <% #main %>
-<h1><% response.title %></h1>
+<h1>
+   <% response.title %>
+   <% site.link comments.xml ' ' class='uk-icon-button uk-icon-rss uk-text-middle' %>
+</h1>
 <% if <% username %> is null then '' else
    <% comments.link . <% gettext All %> %>
 %>

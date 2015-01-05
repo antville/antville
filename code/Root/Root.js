@@ -191,7 +191,7 @@ Root.prototype.updates_xml_action = function() {
   feed.setPublishedDate(now);
   var entries = new java.util.ArrayList();
   var entry, description;
-  var sites = root.updates.list(0, 25).sort(Number.Sorter('modified', Number.Sorter.DESC));
+  var sites = root.updates.list(0, 25);
   for each (var site in sites) {
     var story = site.stories.union.get(0);
     if (!story) {
@@ -204,15 +204,14 @@ Root.prototype.updates_xml_action = function() {
     entry.setPublishedDate(story.modified);
     description = new rome.SyndContentImpl();
     description.setType('text/plain');
-    description.setValue(story.getAbstract());
+    description.setValue(format(story.text));
     entry.setDescription(description);
     entries.add(entry);
   }
   feed.setEntries(entries);
   var output = new rome.SyndFeedOutput();
-  //output.output(feed, res.servletResponse.writer); return;
-  var xml = output.outputString(feed);
-  res.write(xml); //injectXslDeclaration(xml));
+  res.servletResponse.setCharacterEncoding('utf-8');
+  output.output(feed, res.servletResponse.writer, true);
   return;
 }
 

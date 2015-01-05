@@ -490,7 +490,7 @@ Site.prototype.rss_xml_action = function() {
   res.contentType = 'application/rss+xml';
   res.dependsOn(this.modified);
   res.digest();
-  res.write(this.getXml(this.stories.union));
+  this.renderXml(this.stories.union);
   return;
 }
 
@@ -498,7 +498,7 @@ Site.prototype.stories_xml_action = function() {
   res.contentType = 'application/rss+xml';
   res.dependsOn(this.modified);
   res.digest();
-  res.write(this.getXml(this.stories.recent));
+  this.renderXml(this.stories.recent);
   return;
 }
 
@@ -506,7 +506,7 @@ Site.prototype.comments_xml_action = function() {
   res.contentType = 'application/rss+xml';
   res.dependsOn(this.modified);
   res.digest();
-  res.write(this.getXml(this.stories.comments));
+  this.renderXml(this.stories.comments);
   return;
 }
 
@@ -520,7 +520,7 @@ Site.prototype.search_xml_action = function() {
  *
  * @param {Story[]} collection
  */
-Site.prototype.getXml = function(collection) {
+Site.prototype.renderXml = function(collection) {
   collection || (collection = this.stories.recent);
   var now = new Date;
   var feed = new rome.SyndFeedImpl();
@@ -530,7 +530,6 @@ Site.prototype.getXml = function(collection) {
   feed.setDescription(this.tagline || String.EMPTY);
   feed.setLanguage(this.locale.replace('_', '-'));
   feed.setPublishedDate(now);
-
   /*
   var feedInfo = new rome.FeedInformationImpl();
   var feedModules = new java.util.ArrayList();
@@ -543,31 +542,30 @@ Site.prototype.getXml = function(collection) {
   feedInfo.setOwnerName(this.creator.name);
   //feedInfo.setOwnerEmailAddress(this.getProperty('email'));
   */
-
   var entry, entryInfo, entryModules;
   var enclosure, enclosures, keywords;
   var entries = new java.util.ArrayList();
   var description;
-
-  var list = collection.constructor === Array ?
-      collection : collection.list(0, 25);
+  var list = collection.constructor === Array ? collection : collection.list(0, 25);
   for each (var item in list) {
     entry = new rome.SyndEntryImpl();
-    entry.setTitle(item.title || formatDate(item.created, 'date'));
+    entry.setTitle(item.title || formatDate(item.created, 'medium'));
     entry.setLink(item.href());
     entry.setAuthor(item.creator.name);
     entry.setPublishedDate(item.created);
     if (item.text) {
       description = new rome.SyndContentImpl();
-      //description.setType('text/plain');
+      description.setType('text/html');
+      description.setValue(format(item.text));
       // FIXME: Work-around for org.jdom.IllegalDataException caused by some ASCII control characters
+      /*
       description.setValue(item.renderSkinAsString('Story#rss').replace(/[\x00-\x1f^\x0a^\x0d]/g, function(c) {
         return '&#' + c.charCodeAt(0) + ';';
       }));
+      */
       entry.setDescription(description);
     }
     entries.add(entry);
-
     /*
     entryInfo = new rome.EntryInformationImpl();
     entryModules = new java.util.ArrayList();
@@ -592,15 +590,18 @@ Site.prototype.getXml = function(collection) {
     */
   }
   feed.setEntries(entries);
-
   var output = new rome.SyndFeedOutput();
-  //output.output(feed, res.servletResponse.writer); return;
-  var xml = output.outputString(feed);
+  res.servletResponse.setCharacterEncoding('utf-8');
+  output.output(feed, res.servletResponse.writer);
+  return;
   // FIXME: Ugly hack for adding PubSubHubbub and rssCloud elements to XML
+  /*
+  var xml = output.outputString(feed);
   xml = xml.replace('<rss', '<rss xmlns:atom="http://www.w3.org/2005/Atom"');
   xml = xml.replace('<channel>', '<channel>\n   <cloud domain="rpc.rsscloud.org" port="5337" path="/rsscloud/pleaseNotify" registerProcedure="" protocol="http-post" />');
   xml = xml.replace('<channel>', '<channel>\n   <atom:link rel="hub" href="' + getProperty("parss.hub") + '"/>');
-  return xml; //injectXslDeclaration(xml);
+  return xml;
+  */
 }
 
 Site.prototype.rss_xsl_action = function() {
