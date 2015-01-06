@@ -3,8 +3,10 @@
    <td>
       <% image.thumbnail data-uk-tooltip="{pos: 'left'}" | image.link class='uk-thumbnail' %>
    </td>
-   <!-- td><% image.contentType | replace image/ '' %></td>
-   <td><% image.contentLength %></td -->
+   <!--
+   <td><% image.contentType | replace image/ '' %></td>
+   <td><% image.contentLength %></td>
+   -->
    <td><% image.width %>&times;<% image.height %></td>
    <td><% image.creator %></td>
    <td><% image.modified text %></td>
@@ -28,14 +30,7 @@
    <% response.title %>
    <% image.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
-<div class='uk-article-meta'>
-   <% if <% image.creator %> is null then '' else
-      <% gettext 'Created by {0} on {1}' <% image.creator %> <% image.created short %> prefix=<div> suffix=</div> %>
-   %>
-   <% if <% image.created %> is <% image.modified %> then '' else
-      <% gettext 'Last modified by {0} on {1}' <% image.modifier %> <% image.modified short %> prefix=<div> suffix=</div> %>
-   %>
-</div>
+<div class='uk-article-meta'><% image.skin $HopObject#meta %></div>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
    <div class='uk-form-row'>
       <label class='uk-form-label' for=''>

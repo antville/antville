@@ -1,7 +1,7 @@
 <% #main %>
 <h1><% image.name %></h1>
 <div class="uk-article-meta">
-   <% gettext "Posted by {0} on {1}" <% image.modifier %> <% image.modified short %> %>
+   <% gettext "Posted by {0} on {1}" <% image.creator %> <% image.created short %> %>
 </div>
 <div class='uk-margin-top'>
    <a href='<% image.url %>' class='uk-thumbnail' style='max-width: <% image.width %>px'>

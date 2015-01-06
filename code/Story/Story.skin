@@ -32,14 +32,7 @@
    <% response.title %>
    <% story.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
-<div class='uk-article-meta'>
-   <% if <% story.creator %> is null then '' else
-      <% gettext 'Created by {0} on {1}' <% story.creator %> <% story.created short %> prefix=<div> suffix=</div> %>
-   %>
-   <% if <% story.created %> is <% story.modified %> then '' else
-      <% gettext 'Last modified by {0} on {1}' <% story.modifier %> <% story.modified short %> prefix=<div> suffix=</div> %>
-   %>
-</div>
+<div class='uk-article-meta'><% story.skin $HopObject#meta %></div>
 <% story.skin $Story#restore %>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>

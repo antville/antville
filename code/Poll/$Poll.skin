@@ -79,14 +79,7 @@ else
    <% response.title %>
    <% poll.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
 </h1>
-<div class='uk-article-meta'>
-   <% if <% poll.creator %> is null then '' else
-      <% gettext 'Created by {0} on {1}' <% poll.creator %> <% poll.created short %> prefix=<div> suffix=</div> %>
-   %>
-   <% if <% poll.created %> is <% poll.modified %> then '' else
-      <% gettext 'Last modified by {0} on {1}' <% poll.modifier %> <% poll.modified short %> prefix=<div> suffix=</div> %>
-   %>
-</div>
+<div class='uk-article-meta'><% poll.skin $HopObject#meta %></div>
 <form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <div class='uk-form-label'><% gettext Question %></div>

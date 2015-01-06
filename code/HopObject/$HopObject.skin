@@ -1,3 +1,11 @@
+<% #meta %>
+<% if <% this.creator %> is null then '' else
+   <% gettext 'Created by {0} on {1}' <% this.creator %> <% this.created short %> %>
+%>
+<% if <% this.created %> is <% this.modified %> then '' else
+   <% gettext 'Last modified by {0} on {1}' <% this.modifier %> <% this.modified short %> prefix=<br> %>
+%>
+
 <% #confirm %>
 <h1><% gettext Warning! %></h1>
 <p class='uk-text-bold'><% param.text %></p>
@@ -18,8 +26,7 @@
 <% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has added {1} #{2} to the site {3}:' <% this.modifier %>
-      <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% gettext 'User {0} has added {1} #{2} to the site {3}:' <% this.modifier %> <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
 <% this.href %>
 
 <% gettext "Best regards." %>
@@ -28,8 +35,7 @@
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %>
-      <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %> <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
 <% this.href %>
 
 <% gettext "Best regards." %>

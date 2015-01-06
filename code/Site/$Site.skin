@@ -169,9 +169,10 @@ for (var i in referrers) {
 
 <% #edit %>
 <h1><% response.title %></h1>
+<div class='uk-article-meta'><% site.skin $HopObject#meta %></div>
 <form class='uk-form uk-form-stacked' id="prefs" method="post" action="<% response.action %>">
    <fieldset>
-      <div class='uk-form-row'>
+      <div class='uk-form-row uk-margin-top'>
          <label class='uk-form-label' for='mode'>
             <% gettext Mode %>
          </label>
