@@ -19,7 +19,7 @@
 </tr>
 
 <% #tagged %>
-<div class='av-gallery-wrapper' data-caption='<% image.description default=<% image.fileName %> %>'>
+<div class='av-tagged-image' data-caption='<% image.description default=<% image.fileName %> %>'>
    <% image.render | image.link %>
 </div>
 

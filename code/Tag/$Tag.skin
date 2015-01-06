@@ -15,7 +15,7 @@
    <% tag.skin $Tag#controls prefix=<div> suffix="</div><br />" %>
 %>
 <%  %>
-<div class='av-gallery'>
+<div class='av-tagged'>
    <% list.render skin="$TagHub#main" %>
 </div>
 <ul class='uk-pagination uk-text-left'>
@@ -26,9 +26,9 @@
 (function () {
    $(function() {
       var resizeTimer = null;
-      $('.av-gallery').collageCaption();
+      $('.av-tagged').collageCaption();
       $(window).bind('resize', function() {
-         $('.av-gallery-wrapper').css('opacity', 0);
+         $('.av-tagged-image').css('opacity', 0);
          if (resizeTimer) clearTimeout(resizeTimer);
          resizeTimer = setTimeout(collage, 200);
       });
@@ -38,7 +38,7 @@
    collage();
 
    function collage() {
-      $('.av-gallery').removeWhitespace().collagePlus({
+      $('.av-tagged').removeWhitespace().collagePlus({
          allowPartialLastRow: true,
          fadeSpeed: 'slow'
       });
