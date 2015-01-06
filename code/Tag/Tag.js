@@ -180,6 +180,11 @@ Tag.prototype.permission_macro = function(param, type) {
   return this.getPermission(type);
 }
 
+// FIXME: HopObject.type_macro() returns this._prototype
+Tag.prototype.type_macro = function (param, self) {
+  return self ? this.type : HopObject.prototype.type_macro.apply(this, arguments);
+};
+
 /**
  * @returns {Story[]|Image[]}
  */
