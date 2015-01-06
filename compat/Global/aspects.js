@@ -220,11 +220,14 @@ Members.prototype.onCodeUpdate = function() {
 
 (function() {
   var func;
+
   if (Site.prototype.onCodeUpdate) {
     func = Site.prototype.onCodeUpdate;
   }
+
   Site.prototype.onCodeUpdate = function() {
     func && func.call(this);
+
     helma.aspects.addAround(this, "getPermission", function(args, func, site) {
       var permission = func.apply(site, args);
       if (!permission) {
@@ -236,6 +239,19 @@ Members.prototype.onCodeUpdate = function() {
         }
       }
       return permission;
+    });
+
+    helma.aspects.addBefore(this, 'search_action', function (args, func, site) {
+      if (getProperty('google-search') === 'true') {
+        if (req.data.q && !req.data.q.contains('site:')) {
+          res.redirect(site.href(req.action) + '?q=' + req.data.q + encodeURIComponent(' site:' + site.href()));
+        }
+        res.data.title = gettext('Search');
+        res.data.body = site.renderSkinAsString('$Site#googleSearch');
+        site.renderSkin('Site#page');
+        res.stop(); // Otherwise Site.search_action() in code will be rendered, too!
+        return;
+      }
     });
 
     return helma.aspects.addBefore(this, "main_action", aspects.fixPager);
