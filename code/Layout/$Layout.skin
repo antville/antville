@@ -1,5 +1,6 @@
 <% #main %>
 <h1><% response.title %></h1>
+<div class='uk-article-meta'><% layout.skin $HopObject#meta %></div>
 <div class='uk-margin-top'>
    <% layout.link skins <% gettext Skins %> %>
    <% layout.link images <% gettext Images %> prefix=' | ' %>
