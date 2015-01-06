@@ -185,6 +185,11 @@ Tag.prototype.type_macro = function (param, self) {
   return self ? this.type : HopObject.prototype.type_macro.apply(this, arguments);
 };
 
+Tag.prototype.size_macro = function () {
+  res.write(this.getTagged().size());
+  return;
+};
+
 /**
  * @returns {Story[]|Image[]}
  */
