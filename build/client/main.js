@@ -325,14 +325,14 @@ Antville.decode = function(str) {
 
 Antville.Referrer = function(url, text, count) {
   this.url = url;
-  this.text = text;
-  this.count = count;
-  this.compose = function(key, prefix) {
+  var re = new RegExp('https?://(?:www\.)?');
+  this.text = String(text).replace(re, '');
+  this.count = parseInt(count, 10);
+  this.compose = function(prefix, key) {
+    prefix || (prefix = '');
     var query = new Antville.Query(this.url);
     if (query[key]) {
-      if (prefix == null)
-        prefix = '';
-      return prefix + Antville.encode(query[key]);
+      return prefix + ' ' + Antville.encode(query[key]);
     }
     return this.text;
   }

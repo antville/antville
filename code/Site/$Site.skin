@@ -54,15 +54,18 @@ REGEDIT4
 
 <% #referrers %>
 <h1><% response.title %></h1>
-<form action="<% response.action %>" method="get">
-   <input type="text" name="filter" value="<% request.filter encoding="form" %>" size="30">
-   <button type="submit" name="submit" value="1"><% gettext Filter %></button>
-   <button onclick="document.location='<% site.href referrers %>'; return false;">
-         <% gettext Reset %></button>
-   <div class="small">
-      <input type="checkbox" id="includeSpam" name="includeSpam" value="checked"
-      <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> />
-      <label for="includeSpam"><% gettext 'Display the referrers unfiltered' %></label>
+<form class='uk-form' action="<% response.action %>" method="get">
+   <div class='uk-form-row'>
+      <input class='uk-width-1-2' type="text" name="filter" value="<% request.filter encoding="form" %>">
+      <button class='uk-button uk-button-primary' type="submit" name="submit" value="1"><% gettext Search %></button>
+      <a class='uk-button' href='<% site.href referrers %>'>
+         <% gettext Reset %>
+      </a>
+      <div class='uk-form-help-block'>
+         <input type="checkbox" id="includeSpam" name="includeSpam" value="checked"
+         <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> />
+         <label for="includeSpam"><% gettext 'Disable spam filter' %></label>
+      </div>
    </div>
    <table class='uk-table uk-table-condensed'>
       <thead>
@@ -78,57 +81,76 @@ REGEDIT4
    </table>
 </form>
 <script type="text/javascript">
-var referrers = [];
-<% //site.referrers %>
-var query = new Antville.Query();
-var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
-var searchFilter = new Antville.Filter(query.filter);
-var searchEngineFilters = [
-   new Antville.Filter("http:\/\/.*google.*\?", "q"),
-   new Antville.Filter("http:\/\/.*bing.*\?", "q"),
-   new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
-   new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p")
-];
-for (var i in referrers) {
-   var ref = referrers[i];
-   var text = ref.text;
-   var isSpam = spamFilter.test(ref.url);
-   if (isSpam && !query.includeSpam)
-      continue;
-   if (query.filter && !searchFilter.test(ref.url))
-      continue;
-   var done = false;
-   for (var e in searchEngineFilters) {
-      var filter = searchEngineFilters[e];
-      if (!done && filter.test(ref.url)) {
-         text = ref.compose(filter.key, "<em>Search request:</em> ");
-         done = true;
+$(function () {
+   var query = new Antville.Query();
+   var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
+   var searchFilter = new Antville.Filter(query.filter);
+   var searchEngineFilters = [
+      new Antville.Filter("\/\/.*altavista.*\?", "q"),
+      new Antville.Filter("\/\/.*bing\..*\?", "q"),
+      new Antville.Filter("\/\/.*google\..*\?", "q"),
+      new Antville.Filter("\/\/.*search\.yahoo\..*\?", "p"),
+      new Antville.Filter("\/\/.*yandex\..*\?", "text")
+   ];
+   var urlShortenerFilters = [
+      new Antville.Filter('\/\/bit\.ly/'),
+      new Antville.Filter('\/\/goo\.gl/'),
+      new Antville.Filter('\/\/owl\.ly/'),
+      new Antville.Filter('\/\/t\.co/'),
+      new Antville.Filter('\/\/tinyurl\.com/')
+   ];
+   $('.av-referrer-row').each(function (index) {
+      var row = $(this);
+      var ref = row.find('.av-referrer a');
+      var url = ref.attr('href');
+      var count = row.find('.av-referrer-count').html();
+      var control = row.find('.av-referrer-control a');
+      control.on('click', function (event) {
+         event.preventDefault();
+         var input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer spam filter?'%> <% gettext 'You can edit it before if you only want to filter a pattern.' %>", url);
+         if (input) {
+            location.search = '?submit=1&permanent=' + encodeURIComponent(input);
+         }
+      });
+      var referrer = new Antville.Referrer(url, url, count);
+      ref.html(referrer.text);
+      if (spamFilter.test(url)) {
+         if (query.includeSpam) {
+            ref.addClass('uk-text-muted');
+            control.remove();
+         } else {
+            row.hide();
+         }
       }
-   }
-   document.writeln('<tr>');
-   document.writeln('<td align="right" valign="top">', ref.count, '</td>');
-   document.write('<td valign="top">');
-   if ("<% membership.role %>" === "Owner") {
-      document.write('<input type="checkbox" name="permanent" value="',
-            ref.url, '" />');
-   }
-   document.writeln('</td>');
-   document.writeln('<td><a href="', ref.url, '"', (isSpam ?
-         ' style="<% value "Small font color" prefix="color: " %>"' : ''),
-         '>', text, '</a></td>');
-   document.writeln('</tr>');
-}
+      if (query.filter && !searchFilter.test(url)) {
+         row.hide();
+      }
+      var re = new RegExp('[:/].*$');
+      for (var i = 0, filter; i < searchEngineFilters.length; i += 1) {
+         filter = searchEngineFilters[i];
+         if (filter.test(url)) {
+            var host = referrer.text.replace(re, '');
+            ref.html(referrer.compose('<i><% gettext "Search" %> ' + host + ':</i>', filter.key));
+            break;
+         }
+      }
+   });
+});
 </script>
 
 <% #referrer %>
-<tr>
-   <td class='uk-text-right'><% param.requests %></td>
-   <td style='max-width: 400px; overflow: hidden;'><% param.referrer | link %></td>
-   <td></td>
+<tr class='av-referrer-row'>
+   <td class='uk-text-right av-referrer-count'><% param.requests %></td>
+   <td class='av-referrer' style='max-width: 400px; overflow: hidden;'>
+      <% param.referrer | link %>
+   </td>
+   <td class='av-referrer-control uk-text-right'>
+      <a href='javascript:'><i class='uk-icon uk-icon-filter'></i></a>
+   </td>
 </tr>
 
 <% #noscript %>
-<% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to be set to permit the execution of JavaScript." %>
+<% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to permit the execution of JavaScript." %>
 
 <% #deleted %>
 <% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %>
