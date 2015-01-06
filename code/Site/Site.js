@@ -645,31 +645,39 @@ Site.prototype.referrers_action = function() {
   return;
 }
 
-Site.prototype.search_action = function() {
-  if (req.data.q) {
-    var limit = 50;
-    var search = this.search(Story, req.data.q, limit);
-    var commentSearch = this.search(Comment, req.data.q, limit);
-    if (search.result.length < 1) {
-      res.message = search.message;
-    } else if (search.exceeded && commentSearch.exceeded) {
-      res.message = gettext('Found more than {0} results. Please try a more specific query.', 2 * limit);
+Site.prototype.search_action = function () {
+  if (getProperty('google-search') === 'true') {
+    if (req.data.q && !req.data.q.contains('site:')) {
+      res.redirect(this.href(req.action) + '?q=' + req.data.q + encodeURIComponent(' site:' + this.href()));
     }
-    search.result = search.result.concat(commentSearch.result);
-    search.result.sort(new Number.Sorter('created', Number.Sorter.DESC));
-    res.push();
-    search.result.forEach(function (story) {
-      story.renderSkin('$Story#search');
-    });
-    res.data.result = res.pop();
-    res.data.count = search.result.length;
-    req.data.q = search.term;
+    res.data.body = this.renderSkinAsString('$Site#googleSearch');
+    res.data.title = gettext('Search');
+  } else {
+    if (req.data.q) {
+      var limit = 50;
+      var search = this.search(Story, req.data.q, limit);
+      var commentSearch = this.search(Comment, req.data.q, limit);
+      if (search.result.length < 1) {
+        res.message = search.message;
+      } else if (search.exceeded && commentSearch.exceeded) {
+        res.message = gettext('Found more than {0} results. Please try a more specific query.', 2 * limit);
+      }
+      search.result = search.result.concat(commentSearch.result);
+      search.result.sort(new Number.Sorter('created', Number.Sorter.DESC));
+      res.push();
+      search.result.forEach(function (story) {
+        story.renderSkin('$Story#search');
+      });
+      res.data.result = res.pop();
+      res.data.count = search.result.length;
+      req.data.q = search.term;
+    }
+    res.data.title = gettext('Search');
+    res.data.body = this.renderSkinAsString('$Site#search');
   }
-  res.data.title = gettext('Search');
-  res.data.body = this.renderSkinAsString('$Site#search');
   this.renderSkin('Site#page');
   return;
-}
+};
 
 Site.prototype.subscribe_action = function() {
   try {

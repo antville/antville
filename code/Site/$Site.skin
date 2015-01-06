@@ -25,6 +25,31 @@
    <% response.result %>
 </dl>
 
+<% #googleSearch %>
+<h1><% response.title %></h1>
+<form class='uk-form' method='get' action='<% site.href search %>'>
+   <div class='uk-form-controls'>
+      <input type='text' class='uk-width-1-2' name='q' value='<% request.q encoding="form" %>' required>
+      <button type='submit' name='search' value='1' class='uk-button uk-button-primary'>
+         <% gettext Find %>
+      </button>
+      <a href='<% site.href %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+   </div>
+</form>
+<script>
+  (function() {
+    var cx = '008141500676255803966:bw4l-wnuz44';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchresults-only></gcse:searchresults-only>
+
 <% #opensearchdescription %>
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
