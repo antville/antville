@@ -4,18 +4,10 @@
     <% membership.role prefix=( suffix=) %>
 </div>
 <ul class='uk-nav uk-nav-side uk-margin-small-top'>
-  <li>
-    <% site.members.link edit <% gettext Account %> %>
-  </li>
-  <li>
-    <% site.link subscribe <% gettext Subscribe context=verb %> %>
-  </li>
-  <li>
-    <% site.members.link updates <% gettext Subscriptions %> %>
-  </li>
-  <li>
-    <% site.members.link logout <% gettext Logout context=verb prefix="<i class='uk-icon-sign-out'></i> " %> %>
-  </li>
+  <li><% site.members.link logout <% gettext Logout context=verb prefix="<i class='uk-icon-sign-out'></i> " %> %></li>
+  <li><% site.members.link edit <% gettext Account %> %></li>
+  <li><% site.link subscribe <% gettext Subscribe context=verb %> %></li>
+  <li><% site.members.link updates <% gettext Subscriptions %> %></li>
 </ul>
 
 <% #login %>
@@ -23,7 +15,5 @@
   <% gettext "You are not logged in" %>
 </div>
 <ul class='uk-nav uk-nav-side'>
-  <li>
-    <% site.members.link login <% gettext Login context=verb prefix="<i class='uk-icon-sign-in'></i> " %> %>
-  </li>
+  <li><% site.members.link login <% gettext Login context=verb prefix="<i class='uk-icon-sign-in'></i> " %> %></li>
 </ul>
