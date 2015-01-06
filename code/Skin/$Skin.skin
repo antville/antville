@@ -16,16 +16,17 @@
 <form class='uk-form' method="post" action="<% response.action %>">
    <div class='uk-margin-top uk-margin-left uk-margin-right'>
       <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
-      <span style='line-height: 42px;'>
+      <span style='line-height: 39px;'>
+         <span class='uk-article-meta' style='vertical-align: bottom; display: inline-block;'>
+            <% skin.skin $HopObject#meta %>
+         </span>
          <% if <% skin.name %> is '' then
             <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
          %>
-         <button type="submit" name="save" value="2" class='uk-button uk-button-primary uk-margin-left'>
+         <button type="submit" name="save" value="1" class='uk-button uk-button-primary uk-margin-large-left'>
             <% gettext "Save" %>
          </button>
-         <button type="submit" name="save" value="1" class='uk-button'>
-            <% gettext "Save and Edit" %>
-         </button>
+         <% skin.link compare <% gettext Compare %> class='uk-button' %>
          <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
       </span>
       <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
