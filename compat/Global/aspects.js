@@ -243,8 +243,12 @@ Members.prototype.onCodeUpdate = function() {
 
     helma.aspects.addBefore(this, 'search_action', function (args, func, site) {
       if (getProperty('google-search') === 'true') {
-        if (req.data.q && !req.data.q.contains('site:')) {
-          res.redirect(site.href(req.action) + '?q=' + req.data.q + encodeURIComponent(' site:' + site.href().replace('test.www.', '')));
+        if (req.data.q) {
+          if (!req.data.q.contains('site:')) {
+            res.redirect(site.href(req.action) + '?q=' + req.data.q + encodeURIComponent(' site:' + site.href().replace('test.www.', '')));
+          } else {
+            req.data.q = req.data.q.replace(/\s+site:.+$/, String.EMPTY);
+          }
         }
         res.data.title = gettext('Search');
         res.data.body = site.renderSkinAsString('$Site#googleSearch');
