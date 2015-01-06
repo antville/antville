@@ -473,7 +473,6 @@ Admin.prototype.activity_action = function () {
   if (session.data.filter) {
     var filter = '^' + session.data.filter.replace(/(\W\D[*])/g, '$1').replace(/\*/g, '.*') + '$';
     var re = new RegExp(filter.toLowerCase());
-    console.log(re);
     union = union.filter(function (item) {
       return re.test((item.creator ? item.creator.name : item.name).toLowerCase());
     });

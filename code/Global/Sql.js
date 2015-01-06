@@ -173,14 +173,12 @@ Sql.PURGEREFERRERS = "delete from log where action = 'main' and " +
     "created < now() - interval '2 days'";
 
 /**
- * SQL query for searching stories and comments.
+ * SQL query for searching stories.
  * @constant
  */
-Sql.SEARCH = 'select content.id from content, site, metadata where site.id = $0 and ' +
-    "site.id = content.site_id and content.status in ('public', 'shared', 'open') and " +
-    "content.id = metadata.parent_id and metadata.name in ('title', 'text') and " +
-    "lower(metadata.value) like lower('%$1%') group by content.id, content.created " +
-    'order by content.created desc limit $2';
+Sql.STORY_SEARCH = "select content.id from content, site, metadata where site.id = $0 and content.prototype = 'Story' and site.id = content.site_id and content.status in ('public', 'shared', 'open') and content.id = metadata.parent_id and metadata.name in ('title', 'text') and lower(metadata.value) like lower('%$1%') group by content.id, content.created order by content.created desc limit $2";
+
+Sql.COMMENT_SEARCH = "select comment.id from content as comment, content as story, site, metadata where site.id = $0 and comment.prototype = 'Comment' and site.id = comment.site_id and comment.story_id = story.id and story.status in ('public', 'shared', 'open') and story.comment_mode in ('open') and comment.id = metadata.parent_id and metadata.name in ('title', 'text') and lower(metadata.value) like lower('%$1%') group by comment.id, comment.created order by comment.created desc limit $2";
 
 /**
  * SQL query for searching accounts which are not already members of the desired site.

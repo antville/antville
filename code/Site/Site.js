@@ -646,34 +646,25 @@ Site.prototype.referrers_action = function() {
 }
 
 Site.prototype.search_action = function() {
-  var term = req.data.q && stripTags(decodeURIComponent(String(req.data.q).trim()));
-  if (term === '') {
-    res.message = gettext('Please enter a query in the search form.');
-  } else if (term) {
-    var maxResults = 50;
-    term = term.replace(/(?:\x22|\x27)/g, String.EMPTY); // Remove single and double ticks (aka false quotes)
-    var sql = new Sql({quote: false});
-    sql.retrieve(Sql.SEARCH, this._id, term, maxResults + 1);
-    res.push();
-    var counter = 0;
-    sql.traverse(function() {
-      var content = Story.getById(this.id);
-      if (!content.story || (content.story.status !== Story.CLOSED &&
-          content.story.commentMode !== Story.CLOSED)) {
-        if (counter < maxResults) {
-          content.renderSkin('$Story#search');
-        }
-        counter += 1;
-      }
-    });
-    if (counter > maxResults) {
-      res.message = gettext('Found more than {0} results. Please try a more specific query.', maxResults);
-      counter = maxResults;
+  if (req.data.q) {
+    var limit = 50;
+    var search = this.search(Story, req.data.q, limit);
+    var commentSearch = this.search(Comment, req.data.q, limit);
+    if (search.result.length < 1) {
+      res.message = search.message;
+    } else if (search.exceeded && commentSearch.exceeded) {
+      res.message = gettext('Found more than {0} results. Please try a more specific query.', 2 * limit);
     }
-    res.data.count = counter;
+    search.result = search.result.concat(commentSearch.result);
+    search.result.sort(new Number.Sorter('created', Number.Sorter.DESC));
+    res.push();
+    search.result.forEach(function (story) {
+      story.renderSkin('$Story#search');
+    });
     res.data.result = res.pop();
+    res.data.count = search.result.length;
+    req.data.q = search.term;
   }
-
   res.data.title = gettext('Search');
   res.data.body = this.renderSkinAsString('$Site#search');
   this.renderSkin('Site#page');
@@ -917,6 +908,41 @@ Site.prototype.diskspace_macro = function() {
   res.write(' MB ' + (quota ? gettext('free') : gettext('used')));
   return;
 }
+
+Site.prototype.search = function (type, term, limit) {
+  var search = {
+    message: '',
+    result: [],
+    exceeded: false
+  };
+  var query = Sql[type.name.toUpperCase() + '_SEARCH'];
+  if (!query) {
+    return search;
+  }
+  term = String(term || String.EMPTY).trim();
+  // FIXME: Is this still necessary?
+  // Remove single and double ticks (aka false quotes)
+  //term = term.replace(/(?:\x22|\x27)/g, String.EMPTY);
+  if (term === '') {
+    search.message = gettext('Please enter a query in the search form.');
+  } else if (term) {
+    var counter = 0;
+    var sql = new Sql({quote: false});
+    sql.retrieve(query, this._id, term, limit + 1);
+    sql.traverse(function () {
+      if (counter < limit) {
+        search.result.push(Story.getById(this.id));
+      }
+      counter += 1;
+    });
+    if (counter > limit) {
+      search.exceeded = true;
+      search.message = gettext('Found more than {0} results. Please try a more specific query.', limit);
+    }
+  }
+  search.term = term;
+  return search;
+};
 
 /**
  * @returns {java.util.Locale}
