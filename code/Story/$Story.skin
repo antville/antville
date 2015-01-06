@@ -37,6 +37,9 @@ else
    <% story.skin Story#permalink %>
 %>
 
+<% #tagged %>
+<% story.skin Story#preview %>
+
 <% #search %>
 <dt><% this.abstract | this.link %></dt>
 <dd>Posted <% this.created text %> by <% this.creator %>.</dd>

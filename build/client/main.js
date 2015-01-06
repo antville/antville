@@ -10,6 +10,10 @@ require('codemirror/mode/xml/xml');
 require('codemirror/mode/htmlmixed/htmlmixed');
 require('./cm-skin-mode');
 
+require('jquery-collagePlus/jquery.collagePlus');
+require('jquery-collagePlus/extras/jquery.collageCaption');
+require('jquery-collagePlus/extras/jquery.removeWhitespace');
+
 $(function() {
 
   setLayoutMode();

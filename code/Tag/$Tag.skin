@@ -14,13 +14,37 @@
 <% if <% tag.permission edit %> is true then
    <% tag.skin $Tag#controls prefix=<div> suffix="</div><br />" %>
 %>
-<div class="pagelink">
-   <% list.prevLink text=<% gettext "Previous page" %> prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
+<%  %>
+<div class='av-gallery'>
+   <% list.render skin="$TagHub#main" %>
 </div>
-<% list.render skin="$TagHub#main" %>
-<div class="pagelink">
-   <% list.nextLink text=<% gettext "Next page" %> prefix='<div class="pagelinkBottom">... ' suffix="</div>" %>
-</div>
+<ul class='uk-pagination uk-text-left'>
+  <% list.prevLink text="<i class='uk-icon-arrow-left'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-left'></i></span></li>" %>
+  <% list.nextLink text="<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
+</ul>
+<script type='text/javascript'>
+(function () {
+   $(function() {
+      var resizeTimer = null;
+      $('.av-gallery').collageCaption();
+      $(window).bind('resize', function() {
+         $('.av-gallery-wrapper').css('opacity', 0);
+         if (resizeTimer) clearTimeout(resizeTimer);
+         resizeTimer = setTimeout(collage, 200);
+      });
+
+   });
+
+   collage();
+
+   function collage() {
+      $('.av-gallery').removeWhitespace().collagePlus({
+         allowPartialLastRow: true,
+         fadeSpeed: 'slow'
+      });
+   }
+})();
+</script>
 
 <% #admin %>
 <tr>

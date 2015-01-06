@@ -18,7 +18,8 @@
   "author": "The Ant Queens",
   "license": "Apache 2",
   "napa": {
-    "uikit-bower": "uikit/bower-uikit#2.15.0"
+    "uikit-bower": "uikit/bower-uikit#2.15.0",
+    "jquery-collagePlus": "ed-lea/jquery-collagePlus#0.3.3"
   },
   "browserify-css": {
     "minify": true

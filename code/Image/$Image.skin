@@ -18,6 +18,11 @@
    </td>
 </tr>
 
+<% #tagged %>
+<div class='av-gallery-wrapper' data-caption='<% image.description default=<% image.fileName %> %>'>
+   <% image.render | image.link %>
+</div>
+
 <% #edit %>
 <h1>
    <% response.title %>
