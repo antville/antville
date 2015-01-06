@@ -107,7 +107,7 @@ Tag.prototype.rss_xml_action = function() {
   for (var i in tagHubs) {
     stories.push(tagHubs[i].tagged);
   }
-  res.write(this.site.getXml(stories));
+  this.site.renderXml(stories);
   return;
 }
 
