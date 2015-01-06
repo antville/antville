@@ -150,12 +150,3 @@ Stories.prototype.list_macro = function(param, type) {
 Stories.prototype.getTags = function(group) {
   return this._parent.getTags('tags', group);
 }
-
-/**
- *
- * @param {String} name
- * @returns {String[]}
- */
-Stories.prototype.getAdminHeader = function(name) {
-  return ['#', 'Tag', 'Items'];
-}

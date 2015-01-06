@@ -1088,17 +1088,3 @@ Site.prototype.callback = function(ref) {
   }
   return;
 }
-
-/**
- *
- * @param {String} name
- * @returns {String[]}
- */
-Site.prototype.getAdminHeader = function(name) {
-  switch (name) {
-    case 'tags':
-    case 'galleries':
-    return ['#', 'Name', 'Items'];
-  }
-  return [];
-}

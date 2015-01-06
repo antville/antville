@@ -133,18 +133,6 @@ Tags.prototype.pager_macro = function() {
 
 /**
  *
- * @param {Object} param
- */
-Tags.prototype.header_macro = function(param) {
-  var header = this.getHeader();
-  for each (var title in header) {
-    this.renderSkin('Tags#header', {title: title});
-  }
-  return;
-}
-
-/**
- *
  */
 Tags.prototype.list_macro = function(param, skin) {
   var page = this.getPage();
@@ -221,16 +209,4 @@ Tags.prototype.getPageSize = function() {
  */
 Tags.prototype.getAction = function() {
   return (req.action === 'main' ? String.EMPTY : req.action);
-}
-
-/**
- * @returns {String[]}
- * @see Stories#getAdminHeader
- * @see Images#getAdminHeader
- */
-Tags.prototype.getHeader = function() {
-  if (this._parent.getAdminHeader) {
-    return this._parent.getAdminHeader(this._id) || [];
-  }
-  return [];
 }
