@@ -109,6 +109,17 @@ for (var i in referrers) {
 </noscript>
 </table>
 
+<% #embed %>
+<div class='uk-margin-bottom'>
+   <div class='uk-panel uk-panel-box'>
+      <% story.title prefix="<h2 class='uk-panel-title'>" suffix=</h2> %>
+      <% story.text %>
+   </div>
+   <div class='uk-text-right uk-text-small uk-text-muted'>
+      <% gettext Source suffix=<% story.link . <% story.site.title %> prefix=': ' %> %>
+   </div>
+</div>
+
 <% #restore %>
 <script type="text/javascript">
 $(function() {

@@ -25,6 +25,14 @@
    <% image.render | image.link %>
 </div>
 
+<% #embed %>
+<div style='display: inline-block; max-width: 100%;'>
+   <% image.render | image.link class='uk-thumbnail' %>
+   <div class='uk-text-right uk-text-muted uk-text-small'>
+      <% gettext Source %>: <% image.site.title | image.link %>
+   </div>
+</div>
+
 <% #edit %>
 <h1>
    <% response.title %>

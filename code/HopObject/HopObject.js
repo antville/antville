@@ -383,11 +383,12 @@ HopObject.prototype.skin_macro = function(param, name) {
   if (param.restricted && !this.getPermission(name)) {
     return;
   }
+  delete param.restricted;
   if (name.contains('#')) {
-    this.renderSkin(name);
+    this.renderSkin(name, param);
   } else {
     var prototype = this._prototype || 'Global';
-    this.renderSkin(prototype + '#' + name);
+    this.renderSkin(prototype + '#' + name, param);
   }
   return;
 }
@@ -501,7 +502,7 @@ HopObject.prototype.macro_macro = function(param, handler) {
     res.encode('<% ');
     res.write(handler || constructor.name.toLowerCase());
     res.write(String.SPACE);
-    res.write(quote(this.name || this._id));
+    res.write(this.name ? quote(this.name) : this._id);
     res.encode(' %>');
   }
   return;

@@ -315,6 +315,13 @@ Image.prototype.update = function(data) {
   return;
 }
 
+Image.prototype.getMacroHandler = function (name) {
+  switch (name) {
+    case 'site':
+    return this.parent;
+  }
+}
+
 /**
  *
  */

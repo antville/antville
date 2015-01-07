@@ -625,7 +625,7 @@ Story.prototype.url_filter = function(value, param, mode) {
       }
       html.link({href: url, title: url}, text.clip(param.limit));
       if (mode === 'extended' && text !== location) {
-        res.write(' <small>(' + location + ')</small>');
+        res.write(' <span class="uk-text-muted">(' + location + ')</span>');
       }
     }
     res.write(tail);

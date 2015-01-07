@@ -4,10 +4,10 @@
    <% gettext "Posted by {0} on {1}" <% image.creator %> <% image.created short %> %>
 </div>
 <div class='uk-margin-top'>
-   <a href='<% image.url %>' class='uk-thumbnail' style='max-width: <% image.width %>px'>
-     <% image.render title=' ' %>
+   <a href='<% image.url %>' class='uk-thumbnail' style='width: <% image.width %>px;'>
+     <% image.render %>
      <div class='uk-thumbnail-caption'>
-        <% image.description | stripTags %>
+        <% image.description default=<% image.name %> %>
      </div>
    </a>
 </div>

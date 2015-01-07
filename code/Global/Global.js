@@ -464,7 +464,8 @@ function story_macro(param, id, mode) {
     html.link({href: story.href()}, story.getTitle());
     break;
     default:
-    story.renderSkin('Story#' + (param.skin || 'embed'));
+    var skin = param.skin ? 'Story#' + param.skin : '$Story#embed';
+    story.renderSkin(skin);
   }
   return;
 }
@@ -555,13 +556,16 @@ function image_macro(param, id, mode) {
     var url = image.getUrl();
     html.openTag('a', {href: url});
     // FIXME: Bloody popups belong to compatibility layer
-    (mode === 'popup') && (param.onclick = 'javascript:openPopup(\'' +
-        url + '\', ' + image.width + ', ' + image.height + '); return false;')
+    if (mode === 'popup') {
+      param.onclick = 'javascript: openPopup(\'' + url + '\', ' + image.width + ', ' + image.height + '); return false;';
+    }
     image.thumbnail_macro(param);
     html.closeTag('a');
     break;
     default:
-    image.render_macro(param);
+    image.renderSkin(param.skin || '$Image#embed');
+    // FIXME: This might be necessary for b/w compatibility
+    //image.render_macro(param);
   }
   return;
 }

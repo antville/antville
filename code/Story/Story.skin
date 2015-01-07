@@ -89,14 +89,6 @@
    </div>
 </form>
 
-<% #embed %>
-<% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
-<% story.text | clip %>
-<span class="small">
-   <% story.link main <% gettext "Read more" %> prefix=[ suffix=] %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
-</span><br />
-
 <% #comment %>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
