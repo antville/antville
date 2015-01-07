@@ -90,10 +90,15 @@ Exporter.run = function(site, user) {
     // FIXME: Adding a file to a site could be a little bit simpler :/
     file = new File;
     file.site = site;
-    file.update({file: {contentLength: 0}, file_origin: 'file://' + xml.getPath(), name: site.name + '-export'});
+    file.update({
+      file: {contentLength: 0},
+      file_origin: site.href('export'),
+      name: site.name + '-export'
+    });
     site.files.add(file);
     file.creator = file.modifier = user;
     file.created = file.modified = new Date();
+    file.requests = 0;
     site.export_id = file._id;
   } catch (ex) {
     app.log(ex);
