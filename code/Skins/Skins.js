@@ -128,7 +128,7 @@ Skins.prototype.all_action = function() {
     res.redirect(res.handlers.layout.skins.href(req.action));
   }
   res.push()
-  for each (let set in this.getOutline()) {
+  for each (let set in this.getListOfSkins()) {
     res.write(renderList(set[1], '$Skin#listItem'));
   }
   res.data.list = res.pop();
@@ -160,10 +160,9 @@ Skins.prototype.getSkin = function(group, name) {
  *
  * @returns {String}
  */
-Skins.prototype.getOutline = function() {
-  var outline = [];
+Skins.prototype.getListOfSkins = function() {
+  var result = [];
   var options = Skin.getPrototypeOptions();
-
   for each (var option in options) {
     var skins = [];
     var prototype = option.value;
@@ -174,31 +173,7 @@ Skins.prototype.getOutline = function() {
       skins.push(subskin);
     }
     skins.sort();
-    outline.push([prototype, skins]);
+    result.push([prototype, skins]);
   }
-
-  return outline;
-
-  res.push();
-  for each (var item in skins) {
-    prototype = item[0];
-    skin = item[1];
-    if (skin && skin.length > 0) {
-      html.openTag('li');
-      html.openTag('a', {href: '#' + prototype});
-      res.write(prototype);
-      html.closeTag('a');
-      html.openTag('ul');
-      for each (var name in skin) {
-        subskin = this.getSkin(prototype, name);
-        html.openTag('li');
-        html.link({href: subskin.href('edit')},
-            subskin.prototype + '.' + subskin.name);
-        html.closeTag('li');
-      }
-      html.closeTag('ul');
-      html.closeTag('li');
-    }
-  }
-  return res.pop();
+  return result;
 }
