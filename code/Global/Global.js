@@ -563,9 +563,11 @@ function image_macro(param, id, mode) {
     html.closeTag('a');
     break;
     default:
-    image.renderSkin(param.skin || '$Image#embed');
-    // FIXME: This might be necessary for b/w compatibility
-    //image.render_macro(param);
+    if (image.renderSkin) {
+      image.renderSkin(param.skin || '$Image#embed');
+    } else {
+      image.render_macro(param);
+    }
   }
   return;
 }
