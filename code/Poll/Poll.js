@@ -130,7 +130,7 @@ Poll.prototype.main_action = function() {
   }
   res.data.action = this.href();
   res.data.title = gettext('Poll: {0}', this.question);
-  res.data.body = this.renderSkinAsString('$Poll#main', {header: true});
+  res.data.body = this.renderSkinAsString('$Poll#main', {});
   this.site.renderSkin('Site#page');
   return;
 }
@@ -223,7 +223,7 @@ Poll.prototype.update = function(data) {
 
 Poll.prototype.result_action = function() {
   res.data.title = gettext('Poll Results: {0}', this.question);
-  res.data.body = this.renderSkinAsString('$Poll#results', {header: true});
+  res.data.body = this.renderSkinAsString('$Poll#results', {});
   this.site.renderSkin('Site#page');
   return;
 }
@@ -254,6 +254,13 @@ Poll.prototype.link_macro = function(param, action, text) {
   }
   return HopObject.prototype.link_macro.call(this, param, action, text);
 }
+
+Poll.prototype.getMacroHandler = function (name) {
+  switch (name) {
+    case 'site':
+    return this.site;
+  }
+};
 
 /**
  *

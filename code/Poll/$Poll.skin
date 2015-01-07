@@ -26,20 +26,31 @@
 <% #footer %>
 <div class='uk-margin-top'>
    <% poll.link edit <% gettext Edit %> class='uk-button' %>
-   <% if <% poll.status %> is open then
-      <% poll.link status <% gettext Stop %> class='uk-button uk-button-danger' style='color: #fff;' %>
-   else
-      <% poll.link status <% gettext Run %> class='uk-button uk-button-success' style='color: #fff;' %>
-   %>
 </div>
 
 <% #main %>
-<% if <% param.header %> is true then
-   <% poll.skin #header %>
+<% poll.skin #header %>
+<% poll.skin #open %>
+<% poll.skin #footer %>
+
+<% #results %>
+<% poll.skin #header %>
+<% poll.skin #closed %>
+<% poll.skin #footer %>
+
+<% #embed %>
+<% if <% poll.status %> is open then
+   <% poll.skin $Poll#open title=<% poll.question %> %>
 else
-   <% poll.question prefix='<div class="pollTitle">' suffix="</div>" %>
+   <% poll.skin $Poll#closed title=<% poll.question %> %>
 %>
+<div class='uk-text-right uk-text-small uk-text-muted'>
+   <% gettext Source suffix=<% poll.link . <% poll.site.title %> prefix=': ' %> %>
+</div>
+
+<% #open %>
 <form class='uk-margin-top uk-panel uk-panel-box uk-form uk-form-stacked' method="post" action="<% poll.href %>">
+   <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#main" %>
    <div class='uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="submit" value="1">
@@ -48,15 +59,10 @@ else
       <% poll.link result <% gettext "Results" %> class='uk-button uk-button-link' %>
    </div>
 </form>
-<% poll.skin #footer %>
 
-<% #results %>
-<% if <% param.header %> is true then
-   <% poll.skin #header %>
-else
-   <% poll.question prefix=<strong> suffix=</strong> %>
-%>
+<% #closed %>
 <div class='uk-margin-top uk-panel uk-panel-box'>
+   <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#result" %>
    <div style='float: left;'>
       <strong><% gettext Total suffix=: %></strong>
@@ -64,15 +70,12 @@ else
    </div>
    <div class='uk-text-right'>
       <% if <% poll.status %> is open then
-         <% poll.link main <% gettext 'Add Your Vote' %> class='uk-button uk-button-primary uk-button-mini' style='color: #fff;' %>
+         <% poll.link main <% gettext 'Add Your Vote' %> %>
       else
          <% gettext "This poll was closed {0} by {1}" <% poll.closed text %> <% poll.modifier %> prefix="<span class='uk-text-muted'>" suffix='</span>' %>
       %>
    </div>
-   <% if <% poll.status %> is open then
-   %>
 </div>
-<% poll.skin #footer %>
 
 <% #edit %>
 <h1>
@@ -105,7 +108,9 @@ else
       <button class='uk-button uk-button-primary' type="submit" name="save" value="<% poll.status default=closed %>">
          <% gettext Save %>
       </button>
-      <% if <% poll.status %> is open then '' else
+      <% if <% poll.status %> is open then
+         <% poll.link status <% gettext Stop %> class='uk-button uk-button-danger' style='color: #fff;' %>
+      else
          <% gettext "Save and Run" prefix="<button class='uk-button uk-button-success' type='submit' name='save' value='open'>" suffix=</button> %>
       %>
       <% poll.link delete <% gettext Delete %> class='uk-button' %>

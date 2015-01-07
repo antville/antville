@@ -592,11 +592,7 @@ function poll_macro(param, id, mode) {
     }, poll.question);
     break;
     default:
-    if (poll.status === Poll.CLOSED || mode === 'results')
-      poll.renderSkin('$Poll#results', {});
-    else {
-      poll.renderSkin('$Poll#main', {});
-    }
+    poll.renderSkin('$Poll#embed');
   }
   return;
 }
