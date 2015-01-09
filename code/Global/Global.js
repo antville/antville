@@ -562,12 +562,14 @@ function image_macro(param, id, mode) {
     image.thumbnail_macro(param);
     html.closeTag('a');
     break;
-    default:
+    case 'box':
+    // Default Images do not provide the renderSkin() method
     if (image.renderSkin) {
       image.renderSkin(param.skin || '$Image#embed');
-    } else {
-      image.render_macro(param);
     }
+    break;
+    default:
+    image.render_macro(param);
   }
   return;
 }
