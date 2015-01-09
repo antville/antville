@@ -3,7 +3,7 @@
 <% story.skin Story#preview %>
 <a name="comments" id="comments"></a>
 <ul class='uk-comment-list'><% story.comments %></ul>
-<div><% story.referrers %></div>
+<div class='uk-margin-large-top'><% story.referrers %></div>
 
 <% #date %>
 <div class='uk-text-muted uk-h3 uk-margin-bottom'><% story.created date %></div>
