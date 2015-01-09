@@ -69,20 +69,23 @@ REGEDIT4
          </label>
       </div>
    </div>
-   <table class='uk-table uk-table-condensed'>
-      <thead>
-         <tr>
-            <td class='uk-text-right'><i class='uk-icon-bar-chart'></i></td>
-            <td><% gettext Referrer %></td>
-            <td></td>
-         </tr>
-      </thead>
-      <tbody>
-         <% site.skin $Site#referrer %>
-         <% response.list %>
-      </tbody>
-   </table>
+   <% site.skin $Site#referrerTable %>
 </form>
+
+<% #referrerTable %>
+<table class='uk-table uk-table-condensed'>
+   <thead>
+      <tr>
+         <td class='uk-text-right'><i class='uk-icon-bar-chart'></i></td>
+         <td><% gettext Referrer %></td>
+         <td></td>
+      </tr>
+   </thead>
+   <tbody>
+      <% site.skin $Site#referrer %>
+      <% response.list %>
+   </tbody>
+</table>
 <script type="text/javascript">
 $(function () {
    var query = new Antville.Query();
@@ -101,8 +104,7 @@ $(function () {
       new Antville.Filter('\/\/goo\.gl/'),
       new Antville.Filter('\/\/owl\.ly/'),
       new Antville.Filter('\/\/t\.co/'),
-      new Antville.Filter('\/\/tinyurl\.com/'),
-      new Antville.Filter('\/\/localhost:8080/helma/antville/blog/stories/')
+      new Antville.Filter('\/\/tinyurl\.com/')
    ];
    $('.av-referrer-row').each(function (index) {
       if (index < 1) return;
@@ -115,7 +117,7 @@ $(function () {
          event.preventDefault();
          var input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer spam filter?'%> <% gettext 'You can edit it before if you only want to filter a pattern.' %>", url);
          if (input) {
-            location.search = '?submit=1&permanent=' + encodeURIComponent(input);
+            location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
          }
       });
       var referrer = new Antville.Referrer(url, url, count);
@@ -171,7 +173,6 @@ $(function () {
    }
 });
 </script>
-
 <% #referrer %>
 <tr class='av-referrer-row'>
    <td class='uk-text-right av-referrer-count'><% param.requests %></td>

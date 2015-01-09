@@ -621,7 +621,7 @@ Site.prototype.referrers_action = function() {
       res.write(urls[i].replace(/\?/g, '\\\\?'));
     }
     this.setMetadata('spamfilter', res.pop());
-    res.redirect(this.href(req.action));
+    res.redirect(req.data.http_referer);
     return;
   }
 

@@ -48,67 +48,6 @@ else
 <dt><% gettext '{0} user {1} {2} a {3} on the site {4}' <% story.modified text prefix=<strong> suffix=</strong> %> <% story.creator %> <% if <% story.created %> is <% story.modified %> then <% gettext posted %> else <% gettext updated %> %><% if <% story.type %> is Story then <% gettext story %> else <% gettext comment %> %> <% story.site.title | story.link %> %></dt>
 <dd><% story.abstract %></dd>
 
-<% #referrer %>
-referrers.push(new Antville.Referrer("<% param.referrer %>",
-      "<% param.text %>", <% param.requests %>));
-
-<% #referrers %>
-<a name="backlinks" id="backlinks"></a><br />
-<table border="0" cellspacing="0" cellpadding="1">
-<script type="text/javascript">
-var referrers = [];
-<% param.referrers %>
-var query = new Antville.Query();
-var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
-var searchFilter = new Antville.Filter(query.filter);
-var searchEngineFilters = [
-   new Antville.Filter("http:\/\/.*google.*\?", "q"),
-   new Antville.Filter("http:\/\/.*bing.*\?", "q"),
-   new Antville.Filter("http:\/\/.*altavista.*\?", "q"),
-   new Antville.Filter("http:\/\/.*search\.yahoo.*\?", "p"),
-];
-var cnt = 0;
-var prefix = "<em>Search request:</em> ";
-for (var i in referrers) {
-   var ref = referrers[i];
-   var text = ref.text;
-   if (spamFilter.test(ref.url)) {
-      continue;
-   }
-   if (query.filter && !searchFilter.test(ref.url)) {
-      continue;
-   }
-   for (var e in searchEngineFilters) {
-      var filter = searchEngineFilters[e];
-      if (filter.test(ref.url)) {
-         text = ref.compose(filter.key, prefix);
-         break;
-      }
-   }
-   if (++cnt == 1) {
-      document.writeln('<tr>');
-      document.writeln('<td align="right" class="small">&nbsp;</td>');
-      document.writeln('<td rowspan="999" class="small">&nbsp;&nbsp;</td>');
-      document.writeln('<td class="small"><strong><% gettext Backlinks %></strong></td>');
-      document.writeln('</tr>');
-   }
-   document.writeln('<tr>');
-   document.writeln('<td align="right" valign="top" class="small">',
-         ref.count, '</td>');
-   document.writeln('<td class="small"><a href="', ref.url, '">',
-         text, '</a></td>');
-   document.writeln('</tr>');
-}
-</script>
-<noscript>
-<tr>
-<td colspan="3">
-<% site.skin $Site#noscript %>
-</td>
-</tr>
-</noscript>
-</table>
-
 <% #embed %>
 <div class='uk-margin-bottom'>
    <div class='uk-panel uk-panel-box'>

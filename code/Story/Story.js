@@ -529,13 +529,13 @@ Story.prototype.referrers_macro = function(param, limit) {
     if (n < limit && this.requests && this.referrer) {
       this.text = encode(this.referrer.head(50));
       this.referrer = encode(this.referrer);
-      self.renderSkin('$Story#referrer', this);
+      self.site.renderSkin('$Site#referrer', this);
     }
     n += 1;
   });
-  param.referrers = res.pop();
-  if (param.referrers) {
-    this.renderSkin('$Story#referrers', param);
+  res.data.list = res.pop();
+  if (res.data.list) {
+    this.site.renderSkin('$Site#referrerTable', param);
   }
   return;
 }
