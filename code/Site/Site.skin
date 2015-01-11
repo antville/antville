@@ -120,7 +120,6 @@ function openPopup(img, width, height) {
 body {
    background-color: <% value 'background color' %>;
    font-family: <% value font %>;
-   color: <% value 'text color' %>;
 }
 
 a {
