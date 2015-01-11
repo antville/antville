@@ -142,7 +142,7 @@ scripts.push(function() {
       </div>
       <div class='uk-form-controls'>
          <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
-         <button class='uk-button' type='button' onclick="location.replace('.');"><% gettext Reset %></button>
+         <button class='uk-button' type='button' onclick="location.replace(location.href);"><% gettext Reset %></button>
          <button class='uk-button uk-button-primary' type="submit" name="update" value="1"><% gettext Update %></button>
       </div>
    </div>
