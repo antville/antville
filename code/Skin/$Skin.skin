@@ -2,9 +2,11 @@
 <tr>
    <td><% skin.name prefix=<% skin.prototype suffix=. %> %></td>
    <td><% skin.creator %></td>
-   <td><% skin.created text %></td>
+   <td title='<% skin.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% skin.modified text %>
+   </td>
    <td class='uk-text-muted uk-text-right'><% if <% skin.custom %> is true then "<i class='uk-icon-user'></i>" %></td>
-   <td class='uk-text-right' style='white-space: nowrap;'>
+   <td class='uk-text-right uk-text-nowrap;'>
       <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% skin.link compare "<i class='uk-icon-files-o'></i>"%>
       <% skin.link reset "<i class='uk-icon-undo'></i>" %>
@@ -14,8 +16,8 @@
 
 <% #edit %>
 <form class='uk-form' method="post" action="<% response.action %>">
-   <div class='uk-margin-top uk-margin-left uk-margin-right'>
-      <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
+   <div class='uk-margin-top uk-margin-left uk-margin-right uk-clearfix'>
+      <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
       <span style='line-height: 39px;'>
          <span class='uk-article-meta' style='vertical-align: bottom; display: inline-block;'>
             <% skin.skin $HopObject#meta %>
@@ -31,9 +33,7 @@
       </span>
       <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
    </div>
-   <div style='clear: both;'>
-      <% skin.textarea source %>
-   </div>
+   <% skin.textarea source %>
 </form>
 <script type='text/javascript'>
 $(function() {
@@ -61,30 +61,40 @@ $(function() {
 
 <% #compare %>
 <form>
-   <div class='uk-margin-top uk-margin-left'>
-      <h1 class='uk-margin-large-right' style='float: left;'><% response.title %></h1>
+   <div class='uk-margin-top uk-margin-left uk-clearfix'>
+      <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
       <span style='line-height: 42px;'>
-         <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' style='color: #fff;' %>
+         <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' %>
          <% skin.link reset <% gettext Reset %> class='uk-button' %>
          <a href='<% request.http_referer %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
       </span>
    </div>
-   <div style='clear: both;'>
+   <div>
       <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
-      <table class="diff">
-         <% response.diff %>
+      <table class='uk-table uk-table-condensed uk-table-striped'>
+         <thead>
+            <tr>
+               <th></th>
+               <th><% gettext 'Modified skin' %></th>
+               <th></th>
+               <th><% gettext 'Original skin' %></th>
+            </tr>
+         </thead>
+         <tbody>
+            <% response.diff %>
+         </tbody>
       </table>
    </div>
 </form>
 
 <% #difference %>
 <tr>
-   <td class='line-number'><% param.leftLineNumber %></td>
-   <td class='<% param.leftStatus %>'>
-      <div class='line' style='white-space: pre-wrap;'><% param.left %></div>
+   <td class='uk-text-muted uk-text-right'><% param.leftLineNumber %></td>
+   <td class='uk-width-1-2 av-overflow <% param.leftStatus prefix='av-line-' %>'>
+      <div class='av-line'><% param.left %></div>
    </td>
-   <td class='line-number'><% param.rightLineNumber %></td>
-   <td class='line <% param.rightStatus %>'>
-      <div class='line' style='white-space: pre-wrap;'><% param.right %></div>
+   <td class='uk-text-muted uk-text-right'><% param.rightLineNumber %></td>
+   <td class='uk-width-1-2 av-overflow <% param.rightStatus prefix='av-line-' %>'>
+      <div class='av-line'><% param.right %></div>
    </td>
 </tr>

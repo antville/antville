@@ -63,10 +63,8 @@
    <fieldset class='uk-margin-top'>
       <legend><% gettext Options %></legend>
       <div class='uk-form-row'>
-         <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>
-      </div>
-      <div class='uk-form-row'>
-         <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>
+         <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>.
+         <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>.
       </div>
    </fieldset>
    <fieldset class='uk-margin-top'>

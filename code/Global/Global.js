@@ -1162,7 +1162,7 @@ function getLocales(language) {
       result.push({
         value: localeString,
         display: locale.getDisplayName(locale),
-        'class': jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? 'translated' : ''
+        'class': jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? 'av-locale-translated' : ''
       });
     }
   }

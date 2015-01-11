@@ -335,7 +335,7 @@ Members.prototype.search = function(searchString, limit) {
     }
     self.renderSkin('$Members#result', {
       name: this.name,
-      created: formatDate(this.created, 'text')
+      created: this.created
     });
     counter += 1;
   });

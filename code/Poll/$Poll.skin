@@ -2,16 +2,18 @@
 <a name="<% poll.id %>" id="<% poll.id %>"></a>
 <tr>
    <td class='uk-text-right'><% poll.votes %></td>
-   <td style='max-width: 200px; overflow: hidden;'>
+   <td class='uk-width-1-2 av-overflow'>
       <% poll.question | stripTags | poll.link %>
    </td>
-   <td><% poll.creator %></td>
-   <td><% poll.created text %></td>
+   <td class='uk-text-truncate'><% poll.creator %></td>
+   <td class='uk-text-truncate' title='<% poll.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% poll.modified text %>
+   </td>
    <td class='uk-text-right'>
       <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
    </td>
-   <td style='white-space: nowrap;' class='uk-text-right'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'left'}">
+   <td class='uk-text-right uk-text-nowrap'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
       <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -64,7 +66,7 @@ else
 <div class='uk-margin-top uk-panel uk-panel-box'>
    <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
    <% poll.loop skin="$Choice#result" %>
-   <div style='float: left;'>
+   <div class='uk-float-left'>
       <strong><% gettext Total suffix=: %></strong>
       <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
    </div>
@@ -109,7 +111,7 @@ else
          <% gettext Save %>
       </button>
       <% if <% poll.status %> is open then
-         <% poll.link status <% gettext Stop %> class='uk-button uk-button-danger' style='color: #fff;' %>
+         <% poll.link status <% gettext Stop %> class='uk-button uk-button-danger' %>
       else
          <% gettext "Save and Run" prefix="<button class='uk-button uk-button-success' type='submit' name='save' value='open'>" suffix=</button> %>
       %>

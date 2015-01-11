@@ -11,14 +11,16 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td></td>
-         <!--td><% gettext Type %></td>
-         <td><% gettext Size %></td-->
-         <td>Pixels</td>
-         <td><% gettext Author %></td>
-         <td><% gettext Modified %></td>
-         <td></td>
-         <td></td>
+         <th></th>
+         <!--
+         <th><% gettext Type %></th>
+         <th><% gettext Size %></th>
+         -->
+         <th>Pixels</th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

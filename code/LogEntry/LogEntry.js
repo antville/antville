@@ -68,24 +68,3 @@ LogEntry.prototype.getMacroHandler = function(name) {
   }
   return null;
 }
-
-/**
- *
- * @param {Object} param
- */
-LogEntry.prototype.label_macro = function(param) {
-  if (!User.require(User.PRIVILEGED)) {
-    return;
-  }
-  switch (this.context_type) {
-    case 'Site' :
-    res.write('<span class=\'flagDark\' style=\'background-color:#006600;\'>SITE</span>');
-    break;
-    case 'User' :
-    res.write('<span class=\'flagDark\' style=\'background-color:#009900;\'>USER</span>');
-    break;
-    default :
-    res.write('<span class=\'flagLight\' style=\'background-color:#FFCC00;\'>ROOT</span>');
-  }
-  return;
-}

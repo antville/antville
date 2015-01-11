@@ -41,8 +41,9 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Title %></td>
-         <td><% gettext 'Last Update' %></td>
+         <th><% gettext Title %></th>
+         <th><% gettext 'Last Update' %></th>
+         <th><% gettext User %></th>
       </tr>
    </thead>
    <tbody>
@@ -123,147 +124,112 @@
 <% #stylesheet %>
 @import '<% root.static ../../styles/main.min.css %>';
 
-/* CSS for protected skins (user interface elements etc.) */
-
-ul { list-style: url(<% image /bullet.gif url %>) circle; }
-
-ul.skinmgrTree {
-   padding-left:15px;
-   margin:20px 0px;
+.av-page {
+   width: 900px; // FIXME: Could we use the `vw` unit already?
 }
 
-ul.skinmgrTree ul {
-   padding-left:30px;
-   margin:0px;
+.av-border-left {
+   border-left: 1px solid #ddd;
 }
 
-ul.skinmgrTree li {
-   list-style:none;
-   margin:7px 0px;
-   padding:0px;
+.av-overflow {
+   // FIXME: Is this cross-browser compatible?
+   max-width: 0;
+   overflow: hidden;
 }
 
-ul.skinmgrTree li.skinset {
-   list-style:square;
-   padding-left:0px;
+.av-upload {
+   position: relative;
+
+   input[type='file'] {
+      position: relative;
+      z-index: 1;
+      visibility: hidden;
 }
 
-ul.skinmgrTree a.selected {
-   font-weight:bold;
+   .av-upload-controls {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+}
 }
 
-ul.skinmgrTree li div {
-   font-family:<% value "small font" %>;
-   font-size:<% value "small font size" %>;
-   color:<% value "base font color" %>;
+.av-image-box {
+   display: inline-block;
+   max-width: 100%;
 }
 
-div.skin {
-   /*margin: 1px;
-   border: 1px solid gray;*/
+.av-tagged {
+   .av-tagged-image {
+      opacity: 0;
+      img {
+         display: inline-block;
+         margin: 0;
+         padding: 0;
+         vertical-align: bottom;
+         opacity: 1;
+}
+      .Caption_Content {
+         color: #fff;
+         padding: 10px;
+}
+}
 }
 
-div.skin div.title {
-   display: none;
-   padding: 2px;
-   color: gray;
-   font: normal 8px verdana, sans-serif;
+.av-header {
+   margin-top: 5px;
+
+   .av-header-bg {
+      position: relative;
 }
 
-#prefs select {
-   width: 200px;
+   .av-header-bg-chaos {
+      float: left;
+      width: 262px;
+      height: 53px;
+      margin-left: -40px;
+      background: url('<% image /webloghead.gif url %>');
 }
 
-.nowrap {
-   white-space: nowrap;
+   .av-header-bg-offset {
+      height: 53px;
+      margin-left: 222px;
 }
 
-.translated {
+   .av-header-bg-dots {
+      position: relative;
+      top: 7px;
+      height: 38px;
+      background: url('<% image /dot.gif url %>');
+}
+
+   .av-title {
+      position: relative;
+      top: -50px;
+      overflow: visible;
+      white-space: nowrap;
+      font-family: Verdana, Helvetica, Arial, sans-serif;
+      font-size: 25px;
+      font-weight: bold;
+      transform: translateY(50%);
+}
+}
+
+.av-skin-active {
+   background: #fff;
+   opacity: .25;
+}
+
+av-translated-locale {
    font-weight: bold;
 }
 
-.pageTitle {
-   font-family:<% value "big font" %>;
-   font-size:<% value "big font size" %>;
-   font-weight:bold;
-   color:<% value "big font color" %>;
-   padding-bottom:10pt;
-}
-
-.listItemSeparator {
-   margin-top:15px;
-   border-top:1px solid #dddddd;
-}
-
-.listItemFlag {
-   padding: 1px;
-   color: white;
-   background-color: #cccccc;
-   border: 1px solid white;
-   font: 11px monospace;
-   line-height: 10px;
-}
-
-.label {
-   margin-right: 1px;
-   padding: 2px 3px;
-   color: white;
-   font-family: sans-serif;
-   font-size: 0.8em;
-   letter-spacing: 1px;
-   text-transform: uppercase;
-}
-
-.adminHighlight {
-   margin-top: 5px;
-   padding: 1px 10px;
-   background-color: yellow;
-   border: 1px solid <% value 'link color' %>;
-}
-
-.Root, .blocked {
-   background-color: black;
-}
-
-.Site, .public, .privileged  {
-   background-color: #006600;
-}
-
-.User, .trusted {
-   background-color: #0000cc;
-}
-
-.regular {
-   display: none;
-}
-
-.open {
-   padding: 1px 2px;
-   color: #0000cc;
-   border: 1px solid #0000cc;
-}
-
-.restricted {
-   padding: 1px 2px;
-   color: #006600;
-   border: 1px solid #006600;
-}
-
-.closed {
-   background-color: #cc0000;
-}
-
-.deleted {
-   padding: 1px 2px;
-   color: #cc0000;
-   border: 1px solid #cc0000;
-}
-
-.layout-sandbox {
+.av-layout-sandbox {
    height: 22px;
 }
 
-.layout-sandbox div {
+.av-layout-sandbox div {
    position: fixed;
    top: 0;
    left: 0;
@@ -284,12 +250,13 @@ div.skin div.title {
    text-decoration: none !important;
 }
 
+.helma-debug-line /*:has(script)*/ {
+   border: none !important;
+}
+
+// FIXME: This belongs to the connect module!
 .connect img {
    padding: 2px 0;
    vertical-align: middle;
    opacity: .3;
-}
-
-.helma-debug-line /*:has(script)*/ {
-   border: none !important;
 }

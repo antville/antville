@@ -28,20 +28,26 @@
 </li>
 
 <% #upload %>
-<div class="upload" style="position: relative;">
-   <input type="file" id="<% param.name %>" name="<% param.name %>"
-         onchange='$("#<% param.name %>_origin").val($(this).val());'
-         style="position: relative; z-index: 1; visibility: hidden;" />
-   <div class="text uk-width-1-1" style="position: absolute; z-index: 2; top: 0; left: 0;">
-      <input class='uk-width-1-2' type="text" name="<% param.name %>_origin"
-            id="<% param.name %>_origin" value="<% param.value %>"
-            onblur='$("#<% param.name %>").val("");' />
-      <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control"
-            type="button" onclick='$("#<% param.name %>").click();'>
+<div class="av-upload">
+   <input type="file" id="<% param.name %>" name="<% param.name %>">
+   <div class="uk-width-1-1 av-upload-controls">
+      <input class='uk-width-1-2' type="text" name="<% param.name %>_origin" id="<% param.name %>_origin" value="<% param.value %>"/>
+      <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control" type="button">
          <% gettext "Browse" suffix=… %>
       </button>
    </div>
 </div>
+<script>
+   $('.av-upload input[type="file"]').on('change', function (event) {
+      $('#<% param.name %>_origin').val($(this).val());
+   });
+   $('.av-upload input[type="text"]').on('blur', function (event) {
+      $('#<% param.name %>').val('');
+   });
+   $('.av-upload button').on('click', function (event) {
+      $('#<% param.name %>').click();
+   })
+</script>
 
 <% #listItemFlag %>
 <td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap"

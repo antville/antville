@@ -3,7 +3,7 @@
    <% gettext 'Antville is an open source project aimed at the development of a simple site hosting system with many advanced <a href="http://code.google.com/p/antville/wiki/AntvilleFeatures">features</a>.' %>
 </p>
 <p>
-   <a style='color: #fff;' class='uk-button uk-button-success' href='<% site.href create %>'>
+   <a class='uk-button uk-button-success' href='<% site.href create %>'>
       <% gettext "Create a site. It only takes a few clicks." %>
    </a>
 </p>

@@ -3,8 +3,11 @@
 
 <% #listItem %>
 <tr>
-   <td><% site.title | site.link %></td>
-   <td><% gettext '{0} by {1}' <% site.modified text %> <% site.modifier %> %></td>
+   <td class='uk-width-6-10'><% site.title | site.link %></td>
+   <td class='uk-text-truncate' title='<% site.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% site.modified text %>
+   </td>
+   <td><% site.modifier %></td>
 </tr>
 
 <% #search %>
@@ -36,21 +39,31 @@
    <Query role="example" searchTerms="cat" />
 </OpenSearchDescription>
 
-<% #menuExt %>
-<script type="text/javascript" defer="defer">
-   var win = external.menuArguments;
-   var url = "<% site.url %>stories/create?text=";
-   var link = escape('<a href="' + win.location.href + '">' +
-      win.document.title + "</a>: ");
-   var text = escape(win.document.selection.createRange().text);
-   win.location.href = url + link + text;
-</script>
+<% #header %>
+<header class='av-header'>
+   <div class='av-header-bg'>
+      <div class='av-header-bg-chaos'></div>
+      <div class='av-header-bg-offset'>
+         <div class='av-header-bg-dots'></div>
+      </div>
+   </div>
+   <div class='av-title'>
+      <% site.title | site.link title=<% site.tagline %> %>
+   </div>
+</header>
 
-<% #menuExtRegistry %>
-REGEDIT4
-[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
-@="<% site.url %>menuext"
-"contexts"=hex:31
+<% #footer %>
+<footer>
+   <hr class='uk-margin-large-top'>
+   <div class='uk-text-small uk-margin-bottom uk-float-left'>
+      <div><% gettext 'Created {0}' <% site.created text %> %>.</div>
+      <div><% gettext 'Last modified {0}' <% site.modified text %> %>.</div>
+   </div>
+   <div class='uk-text-right'>
+      <% image /smallchaos.gif | link http://antville.org %> &
+   <% image /helma.png | link http://helma.org %>
+   </div>
+</footer>
 
 <% #referrers %>
 <h1><% response.title %></h1>
@@ -73,12 +86,12 @@ REGEDIT4
 </form>
 
 <% #referrerTable %>
-<table class='uk-table uk-table-condensed'>
+<table class='uk-table uk-table-condensed uk-table-striped uk-table-hover'>
    <thead>
       <tr>
-         <td class='uk-text-right'><i class='uk-icon-bar-chart'></i></td>
-         <td><% gettext Referrer %></td>
-         <td></td>
+         <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
+         <th><% gettext Referrer %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -126,7 +139,7 @@ $(function () {
          filter = urlShortenerFilters[i];
          if (filter.test(url)) {
             urlShortenerCounter += parseInt(count, 10);
-            row.hide();
+            row.remove();
          }
       }
       if (spamFilter.test(url)) {
@@ -134,11 +147,11 @@ $(function () {
             ref.addClass('uk-text-muted');
             control.remove();
          } else {
-            row.hide();
+            row.remove();
          }
       }
       if (query.filter && !searchFilter.test(url)) {
-         row.hide();
+         row.remove();
       }
       var re = new RegExp('[:/].*$');
       for (var i = 0, filter; i < searchEngineFilters.length; i += 1) {
@@ -169,14 +182,15 @@ $(function () {
          }
       }
    } else {
-      firstRow.hide();
+      firstRow.remove();
    }
 });
 </script>
+
 <% #referrer %>
 <tr class='av-referrer-row'>
    <td class='uk-text-right av-referrer-count'><% param.requests %></td>
-   <td class='av-referrer' style='max-width: 400px; overflow: hidden;'>
+   <td class='av-referrer av-overflow uk-width-1-1'>
       <% param.referrer | link %>
    </td>
    <td class='av-referrer-control uk-text-right'>
@@ -367,6 +381,27 @@ $(function() {
       $('input#callbackUrl').prop('disabled', !this.checked);
    });
    $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
+
+   // Group related <option> elements by inserting additional <optgroup> elements.
+   var groups = [];
+   var element = $('form #timeZone');
+   element.find('option').each(function(index, item) {
+      var zone = $(item);
+      var parts = zone.html().split('/'); // E.g. Europe/Vienna
+      var group = parts[0];
+      if ($.inArray(group, groups) < 0) {
+         groups.push(group);
+      }
+   });
+   groups.sort();
+   $.each(groups, function(index, group) {
+      var key = group + '/'; // E.g. Europe/
+      element.find('option:contains(' + key + ')')
+         .wrapAll($('<optgroup>').attr('label', group))
+         .each(function(index, item) {
+            $(item).html($(item).html().replace(key, ''));
+         });
+      });
 });
 </script>
 
@@ -400,7 +435,7 @@ $(function() {
       </div>
    </div>
    <div class='uk-form-row'>
-      <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
+      <a href='<% this.href delete %>' class='uk-button uk-button-danger'>
          <i class='uk-icon-trash-o'></i>
          Delete this site
       </a>
@@ -447,3 +482,19 @@ script.type = 'text/javascript';
 script.src = '<% param.href %>';
 document.head.appendChild(script);"
 %>
+
+<% #menuExt %>
+<script type="text/javascript" defer="defer">
+   var win = external.menuArguments;
+   var url = "<% site.url %>stories/create?text=";
+   var link = escape('<a href="' + win.location.href + '">' +
+      win.document.title + "</a>: ");
+   var text = escape(win.document.selection.createRange().text);
+   win.location.href = url + link + text;
+</script>
+
+<% #menuExtRegistry %>
+REGEDIT4
+[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
+@="<% site.url %>menuext"
+"contexts"=hex:31

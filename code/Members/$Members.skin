@@ -12,10 +12,10 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Role %></td>
-         <td><% gettext Subscribed %></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Role %></th>
+         <th><% gettext Subscribed %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -223,9 +223,9 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Registered %></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Registered %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -235,8 +235,8 @@ $(function() {
 
 <% #result %>
 <tr>
-   <td class='uk-text-bold'><% param.name %></td>
-   <td><% param.created %></td>
+   <td><% param.name %></td>
+   <td title='<% param.created | format short %>' data-uk-tooltip="{pos: 'top-left'}"><% param.created | format text %></td>
    <td class='uk-text-right'>
       <a href='?name=<% param.name encoding=form %>'><i class='uk-icon-plus'></i></a>
    </td>

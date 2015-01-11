@@ -21,7 +21,3 @@
    <% choice.votes % | format #.#% %>
    <% ngettext '{0} vote' '{0} votes' <% choice.votes %> prefix='(' suffix=')' %>
 </div>
-</p>
-
-<% #graph %>
-<div style='width: <% param.width %>px;' class='pollResultsBar'> </div>

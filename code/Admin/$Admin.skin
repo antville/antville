@@ -152,10 +152,10 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td></td>
-         <td><% gettext User %></td>
-         <td><% gettext Date %></td>
-         <td><% gettext Reference %></td>
+         <th></th>
+         <th><% gettext User %></th>
+         <th><% gettext Created %></th>
+         <th><% gettext Content %></th>
       </tr>
    </thead>
    <tbody>
@@ -196,13 +196,13 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Created %></td>
-         <td><% gettext Modified %></td>
-         <td><% gettext Status %></td>
-         <td><% gettext Mode %></td>
-         <td></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Created %></th>
+         <th><% gettext Modified %></th>
+         <th><% gettext Status %></th>
+         <th><% gettext Mode %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -243,12 +243,12 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Registered %></td>
-         <td><% gettext 'Last Login' %></td>
-         <td><% gettext Status %></td>
-         <td></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Registered %></th>
+         <th><% gettext 'Last Login' %></th>
+         <th><% gettext Status %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -263,11 +263,11 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Method %></td>
-         <td><% gettext Type %></td>
-         <td><% gettext ID %></td>
-         <td><% gettext User %></td>
-         <td></td>
+         <th><% gettext Method %></th>
+         <th><% gettext Type %></th>
+         <th><% gettext ID %></th>
+         <th><% gettext User %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -278,9 +278,11 @@ $(function() {
 <% #activity %>
 <tr>
    <td><% param.icon %></td>
-   <td style='max-width: 50px; overflow: hidden;'><% param.user %></td>
-   <td><% param.date | format text %></td>
-   <td <% if <% param.warn %> is true then "class='uk-text-bold'" %> style='max-width: 350px; overflow: hidden;'>
+   <td class='av-overflow'><% param.user %></td>
+   <td class='uk-text-truncate' title='<% param.date | format short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% param.date | format text %>
+   </td>
+   <td class='uk-width-6-10 av-overflow <% if <% param.warn %> is true then uk-text-bold %>'>
       <a href='<% param.href %>'><% param.reference %></a>
       <% if <% param.linkCount %> is 0 then '' else <% param.linkCount prefix="<i class='uk-icon uk-icon-link uk-text-muted'> " suffix=</i> %> %>
    </td>
@@ -288,18 +290,22 @@ $(function() {
 
 <% #site %>
 <tr>
-   <td style='max-width: 150px; overflow: hidden;'>
+   <td class='uk-width-1-3 av-overflow'>
       <div><% item.title default='<i>Untitled</i>' | item.link %></div>
-      <div class='uk-text-small'><% item.href %></div>
+      <div class='uk-text-small'><% item.href | replace 'http://' '' | replace 'https://' ''  %></div>
    </td>
-   <td><% item.created text %></td>
-   <td><% item.modified text %></td>
+   <td class='uk-text-truncate' title='<% item.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.created text %>
+   </td>
+   <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.modified text %>
+   </td>
    <td><% item.status %></td>
    <td><% item.mode %></td>
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
-   <td class='uk-text-right' style='white-space: nowrap'>
+   <td class='uk-text-right uk-text-nowrap'>
       <% if <% item.mode %> is deleted then '' else
          <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
       %>
@@ -309,19 +315,23 @@ $(function() {
 
 <% #user %>
 <tr>
-   <td style='max-width: 200px; overflow: hidden;'>
+   <td class='uk-width-1-3 av-overflow'>
       <div class='uk-text-bold'>
          <% if <% item.url %> is null then <% item.name %> else <% item.name | item.link <% item.url %> %> %>
       </div>
       <div class='uk-text-small'><a href='mailto:<% item.email %>'><% item.email %></a></div>
    </td>
-   <td><% item.created text %></td>
-   <td><% item.modified text %></td>
+   <td class='uk-text-truncate' title='<% item.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.created text %>
+   </td>
+   <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.modified text %>
+   </td>
    <td><% item.status %></td>
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
-   <td class='uk-text-right' style='white-space: nowrap;'>
+   <td class='uk-text-right uk-text-nowrap;'>
       <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% item.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -333,7 +343,5 @@ $(function() {
    <td><% item.type %></td>
    <td><% item.id %></td>
    <td><% item.user %></td>
-   <td style='white-space: nowrap;'>
-      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
-   </td>
+   <td><% item.link delete "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>

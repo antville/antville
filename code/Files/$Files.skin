@@ -9,13 +9,13 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td class='uk-text-right'><i class='uk-icon-download'></i></td>
-         <td><% gettext Name %></td>
-         <!-- td><% gettext Size %></td -->
-         <td><% gettext Author %></td>
-         <td><% gettext Modified %></td>
-         <td></td>
-         <td></td>
+         <th class='uk-text-right'><i class='uk-icon-download'></i></th>
+         <th><% gettext Name %></th>
+         <!-- th><% gettext Size %></th -->
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
