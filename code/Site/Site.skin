@@ -105,21 +105,7 @@ function openPopup(img, width, height) {
       // imgWindow.focus();
    }
 }
-
-$(function () {
-   // Highlight the current navigation menu item
-   var counter = 0;
-   $('.uk-nav li').each(function (index, element) {
-      if (counter > 0) {
-         return;
       }
-      var href = String($(element).find('a').attr('href')) + location.hash;
-      if (href && location.href.lastIndexOf(href) + href.length === location.href.length) {
-         $(element).addClass('uk-active');
-         counter += 1;
-      }
-   });
-});
 
 <% #values %>
 <% value 'font' 'Helvetica, Arial, sans-serif' %>
