@@ -86,7 +86,7 @@
 </form>
 
 <% #referrerTable %>
-<table class='uk-table uk-table-condensed uk-table-striped uk-table-hover'>
+<table class='uk-hidden uk-table uk-table-condensed uk-table-striped uk-table-hover av-referrers'>
    <thead>
       <tr>
          <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
@@ -100,7 +100,7 @@
    </tbody>
 </table>
 <script type="text/javascript">
-$(function () {
+scripts.push(function () {
    var query = new Antville.Query();
    var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
    var searchFilter = new Antville.Filter(query.filter);
@@ -183,6 +183,9 @@ $(function () {
       }
    } else {
       firstRow.remove();
+   }
+   if ($('.av-referrers tbody').children().length > 0) {
+      $('.av-referrers').removeClass('uk-hidden');
    }
 });
 </script>
@@ -373,7 +376,7 @@ $(function () {
    </div>
 </form>
 <script>
-$(function() {
+scripts.push(function () {
    $('input#callbackMode').on('click', function(event) {
       $('input#callbackUrl').prop('disabled', !this.checked);
    });

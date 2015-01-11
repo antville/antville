@@ -36,7 +36,7 @@
    </div>
 </form>
 <script type='text/javascript'>
-$(function() {
+scripts.push(function() {
    $('#addVariable').on('click', function (event) {
       event.preventDefault();
       var name = prompt('<% gettext "Please enter the name of the new variable:" %>');

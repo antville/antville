@@ -92,7 +92,7 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function () {
+scripts.push(function () {
    $("#submit").click(function (event) {
       //event.preventDefault();
       var token = "<% session.token %>";

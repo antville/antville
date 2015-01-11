@@ -50,7 +50,7 @@
          <% image.upload file %>
       </div>
    </div>
-   <div class='uk-form-row'>
+   <div class='uk-form-row uk-hidden av-name-row'>
       <label class='uk-form-label' for=''>
          <% gettext Name %>
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
@@ -67,7 +67,7 @@
          <% image.input description class='uk-width-1-1' %>
       </div>
    </div>
-   <div class='uk-form-row'>
+   <div class='uk-form-row uk-hidden av-tags-row'>
       <label class='uk-form-label' for=''>
          <% gettext Tags %>
          <i class='uk-icon-info-circle uk-text-muted' title='Separated by commas' data-uk-tooltip='{pos: "right"}'></i>
@@ -76,10 +76,10 @@
          <% image.input tags class='uk-width-1-1' %>
       </div>
    </div>
-   <div class='uk-form-row'>
+   <div class='uk-form-row uk-hidden av-pixels-row'>
       <label class='uk-form-label' for=''>
          Pixels
-         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be    preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
          <% image.input maxWidth type='number' min=1 max=1000 class='uk-form-width-small' %>
@@ -102,14 +102,16 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
-   if ("<% image.fileName %>") {
-      $(".name").hide();
-   } else {
-      $("#image").hide();
+scripts.push(function() {
+   if ('<% image.name %>') {
+      $('#name').attr('disabled', true);
+      $('#maxWidth').attr('disabled', true);
+      $('#maxHeight').attr('disabled', true);
    }
-   if ("<% image.parent_type %>" === "Layout") {
-      $(".tags").hide();
+   if (location.href.indexOf('/layout/') < 0) {
+      $('.av-tags-row').removeClass('uk-hidden');
    }
+   $('.av-name-row').removeClass('uk-hidden');
+   $('.av-pixels-row').removeClass('uk-hidden');
 });
 </script>

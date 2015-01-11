@@ -4,7 +4,7 @@
 <% #urlPreview %>
 <a id='av-site-url-preview'></a>
 <script>
-$(function () {
+scripts.push(function () {
   $('#name').on('keyup', function (event) {
     var url = '<% root.href %>' + $(this).val();
     var html = '<% root.href %>' + '<b>' + $(this).val() + '</b>';

@@ -28,7 +28,7 @@
 </li>
 
 <% #upload %>
-<div class="av-upload">
+<div class="uk-hidden av-upload">
    <input type="file" id="<% param.name %>" name="<% param.name %>">
    <div class="uk-width-1-1 av-upload-controls">
       <input class='uk-width-1-2' type="text" name="<% param.name %>_origin" id="<% param.name %>_origin" value="<% param.value %>"/>
@@ -38,6 +38,7 @@
    </div>
 </div>
 <script>
+scripts.push(function () {
    $('.av-upload input[type="file"]').on('change', function (event) {
       $('#<% param.name %>_origin').val($(this).val());
    });
@@ -46,7 +47,9 @@
    });
    $('.av-upload button').on('click', function (event) {
       $('#<% param.name %>').click();
-   })
+   });
+   $('.av-upload').removeClass('uk-hidden');
+});
 </script>
 
 <% #listItemFlag %>

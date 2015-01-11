@@ -74,7 +74,7 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
+scripts.push(function() {
    $("form#login").on('submit', function (event) {
       var name = $("#name").val();
       $.ajax({
@@ -135,7 +135,7 @@ $(function() {
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
+scripts.push(function() {
    $("form#register").submit(function() {
       var token = "<% session.token %>";
       var password = $("#password").val();

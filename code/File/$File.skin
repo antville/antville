@@ -32,7 +32,7 @@
          <% file.upload file class='uk-width-1-2' %>
       </div>
    </div>
-   <div class='uk-form-row'>
+   <div class='uk-form-row uk-hidden av-row-name'>
       <label class='uk-form-label' for='name'>
          <% gettext Name %>
          <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
@@ -64,10 +64,10 @@
    </div>
 </form>
 <script type="text/javascript">
-$(function() {
-   if ("<% file.created %>") {
-      $(".name").hide();
-      $(".resize").hide();
-   };
+scripts.push(function() {
+   if ('<% file.name %>') {
+      $('#name').attr('disabled', true);
+   }
+   $('.av-row-name').removeClass('uk-hidden');
 });
 </script>

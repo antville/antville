@@ -136,6 +136,8 @@ function init() {
    <% site.skin Site#javascript %>
 }
 
+var scripts = [];
+
 <% #stylesheet %>
 @import '<% root.static ../../styles/main.min.css %>';
 

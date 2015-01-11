@@ -5,11 +5,11 @@
       <meta charset='utf-8'>
       <title><% response.title %></title>
       <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
-      <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/main.min.css %>'>
       <style type="text/css">
          body {
             margin: 0;
             padding: 0;
+            background: none;
          }
          .cm-helma-macro {
             color: #000;
