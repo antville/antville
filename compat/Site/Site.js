@@ -321,7 +321,7 @@ Site.prototype.skin_macro = function (param, name) {
     // Always embed the stylesheet via link, never inline
     case 'Site#stylesheet':
     case 'stylesheet':
-    res.write("<link rel='stylesheet' type='text/css' href='" + this.href('main.css') + "'>");
+    res.write('/* Stylesheet is going to be injected by script; use <link> element to avoid this. */');
     return;
   }
   return HopObject.prototype.skin_macro.apply(this, arguments);

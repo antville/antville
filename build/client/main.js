@@ -15,6 +15,8 @@ require('codemirror/mode/xml/xml');
 require('codemirror/mode/htmlmixed/htmlmixed');
 require('./cm-skin-mode');
 
+init(); // This method is defined in the $Root#javascript skin rendered by Site.main_js_action()
+
 $(function() {
    // Extend jQuery with selectText() method.
    $.fn.selectText = function() {

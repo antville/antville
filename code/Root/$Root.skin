@@ -121,6 +121,21 @@
    </dl>
 </div>
 
+<% #javascript %>
+// Injecting the main.css if necessary
+if (!document.querySelector('link[href$=main\\.css]')) {
+   var link = document.createElement('link');
+   link.href = '<% site.href main.css %>';
+   link.rel = 'stylesheet';
+   link.type = 'text/css';
+   document.head.appendChild(link);
+}
+
+// Wrapping user scripts in a function which is called after library code has loaded.
+function init() {
+   <% site.skin Site#javascript %>
+}
+
 <% #stylesheet %>
 @import '<% root.static ../../styles/main.min.css %>';
 
@@ -152,7 +167,7 @@
       z-index: 2;
       top: 0;
       left: 0;
-}
+   }
 }
 
 .av-image-box {
@@ -169,12 +184,12 @@
          padding: 0;
          vertical-align: bottom;
          opacity: 1;
-}
+      }
       .Caption_Content {
          color: #fff;
          padding: 10px;
-}
-}
+      }
+   }
 }
 
 .av-header {
@@ -182,7 +197,7 @@
 
    .av-header-bg {
       position: relative;
-}
+   }
 
    .av-header-bg-chaos {
       float: left;
@@ -190,19 +205,19 @@
       height: 53px;
       margin-left: -40px;
       background: url('<% image /webloghead.gif url %>');
-}
+   }
 
    .av-header-bg-offset {
       height: 53px;
       margin-left: 222px;
-}
+   }
 
    .av-header-bg-dots {
       position: relative;
       top: 7px;
       height: 38px;
       background: url('<% image /dot.gif url %>');
-}
+   }
 
    .av-title {
       position: relative;
@@ -213,7 +228,7 @@
       font-size: 25px;
       font-weight: bold;
       transform: translateY(50%);
-}
+   }
 }
 
 .av-skin-active {

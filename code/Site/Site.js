@@ -458,8 +458,8 @@ Site.prototype.main_js_action = function() {
   res.contentType = 'text/javascript';
   res.dependsOn(String(Root.VERSION));
   res.digest();
+  root.renderSkin('$Root#javascript');
   this.renderSkin('$Site#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
-  this.renderSkin('$Site#include', {href: this.href('user.js')});
   return;
 }
 

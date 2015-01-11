@@ -198,9 +198,6 @@ $(function () {
    </td>
 </tr>
 
-<% #noscript %>
-<% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to permit the execution of JavaScript." %>
-
 <% #deleted %>
 <% gettext "This site is going to be deleted completely and irreversibly after {0}." <% site.deleted | format long %> %>
 
@@ -475,13 +472,13 @@ $(function() {
 <% gettext "The Management" %>
 
 <% #include %>
-document.writeln('<script type="text/javascript" src="<% param.href %>"><\/script>');
-<% // This does not work because the asynchronous loading causes nasty side-effects
-"var script = document.createElement('script');
+var script = document.createElement('script');
 script.type = 'text/javascript';
 script.src = '<% param.href %>';
-document.head.appendChild(script);"
-%>
+document.head.appendChild(script);
+
+<% #noscript %>
+<% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to permit the execution of JavaScript." %>
 
 <% #menuExt %>
 <script type="text/javascript" defer="defer">
