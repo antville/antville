@@ -139,7 +139,7 @@ $(function () {
          filter = urlShortenerFilters[i];
          if (filter.test(url)) {
             urlShortenerCounter += parseInt(count, 10);
-            row.hide();
+            row.remove();
          }
       }
       if (spamFilter.test(url)) {
@@ -147,11 +147,11 @@ $(function () {
             ref.addClass('uk-text-muted');
             control.remove();
          } else {
-            row.hide();
+            row.remove();
          }
       }
       if (query.filter && !searchFilter.test(url)) {
-         row.hide();
+         row.remove();
       }
       var re = new RegExp('[:/].*$');
       for (var i = 0, filter; i < searchEngineFilters.length; i += 1) {
@@ -182,10 +182,11 @@ $(function () {
          }
       }
    } else {
-      firstRow.hide();
+      firstRow.remove();
    }
 });
 </script>
+
 <% #referrer %>
 <tr class='av-referrer-row'>
    <td class='uk-text-right av-referrer-count'><% param.requests %></td>
