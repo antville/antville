@@ -235,8 +235,8 @@ $(function() {
 
 <% #result %>
 <tr>
-   <td class='uk-text-bold'><% param.name %></td>
-   <td><% param.created %></td>
+   <td><% param.name %></td>
+   <td title='<% param.created | format short %>' data-uk-tooltip="{pos: 'top-left'}"><% param.created | format text %></td>
    <td class='uk-text-right'>
       <a href='?name=<% param.name encoding=form %>'><i class='uk-icon-plus'></i></a>
    </td>

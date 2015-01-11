@@ -29,7 +29,7 @@
       %>
    </td>
    <td><% membership.role %></td>
-   <td title='<% membership.created short %>' data-uk-tooltip>
+   <td title='<% membership.created short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% membership.created text %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
@@ -45,7 +45,7 @@
       <% subscription.title default=<% subscription.name %> | subscription.link %>
    </td>
    <td><% membership.role %></td>
-   <td title='<% subscription.modified short %>' data-uk-tooltip>
+   <td title='<% subscription.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% subscription.modified text %>
    </td>
    <td class='uk-text-right'>

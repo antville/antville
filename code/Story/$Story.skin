@@ -6,8 +6,10 @@
          <% story.abstract %>
       </a>
    </td>
-   <td><% story.creator %></td>
-   <td><% story.modified text %></td>
+   <td class='uk-text-truncate'><% story.creator %></td>
+   <td class='uk-text-truncate' title='<% story.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% story.modified text %>
+   </td>
    <td>
       <% //if <% story.status %> is closed then "<i class='uk-text-muted uk-icon-lock'></i>" %>
       <% //if <% story.status %> is public then "<i class='uk-text-muted uk-icon-unlock'></i>" %>

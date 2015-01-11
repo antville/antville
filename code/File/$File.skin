@@ -4,9 +4,11 @@
    <td class='uk-width-1-2 av-overflow'>
       <span title='<% file.description %>' data-uk-tooltip="{pos: 'top-left'}"><% file.name | file.link %></span>
    </td>
-   <!-- td style='white-space: nowrap;'><% file.contentLength %></td -->
+   <!-- td class='uk-text-nowrap'><% //file.contentLength %></td -->
    <td><% file.creator %></td>
-   <td><% file.created text %></td>
+   <td class='uk-text-nowrap' title='<% file.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% file.modified text %>
+   </td>
    <td class='uk-text-muted'><i class='uk-icon-file<% file.contentType generic prefix=- %>-o' title='<% file.contentType %>' data-uk-tooltip></i></td>
    <td class='uk-text-right uk-text-nowrap'>
       <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>

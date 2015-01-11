@@ -278,9 +278,11 @@ $(function() {
 <% #activity %>
 <tr>
    <td><% param.icon %></td>
-   <td style='max-width: 50px; overflow: hidden;'><% param.user %></td>
-   <td><% param.date | format text %></td>
-   <td <% if <% param.warn %> is true then "class='uk-text-bold'" %> style='max-width: 350px; overflow: hidden;'>
+   <td class='av-overflow'><% param.user %></td>
+   <td class='uk-text-truncate' title='<% param.date | format short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% param.date | format text %>
+   </td>
+   <td class='uk-width-6-10 av-overflow <% if <% param.warn %> is true then uk-text-bold %>'>
       <a href='<% param.href %>'><% param.reference %></a>
       <% if <% param.linkCount %> is 0 then '' else <% param.linkCount prefix="<i class='uk-icon uk-icon-link uk-text-muted'> " suffix=</i> %> %>
    </td>
@@ -292,8 +294,12 @@ $(function() {
       <div><% item.title default='<i>Untitled</i>' | item.link %></div>
       <div class='uk-text-small'><% item.href %></div>
    </td>
-   <td><% item.created text %></td>
-   <td><% item.modified text %></td>
+   <td class='uk-text-truncate' title='<% item.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.created text %>
+   </td>
+   <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.modified text %>
+   </td>
    <td><% item.status %></td>
    <td><% item.mode %></td>
    <td>
@@ -315,8 +321,12 @@ $(function() {
       </div>
       <div class='uk-text-small'><a href='mailto:<% item.email %>'><% item.email %></a></div>
    </td>
-   <td><% item.created text %></td>
-   <td><% item.modified text %></td>
+   <td class='uk-text-truncate' title='<% item.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.created text %>
+   </td>
+   <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.modified text %>
+   </td>
    <td><% item.status %></td>
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>

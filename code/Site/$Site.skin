@@ -3,8 +3,11 @@
 
 <% #listItem %>
 <tr>
-   <td><% site.title | site.link %></td>
-   <td><% gettext '{0} by {1}' <% site.modified text %> <% site.modifier %> %></td>
+   <td class='uk-width-6-10'><% site.title | site.link %></td>
+   <td class='uk-text-truncate' title='<% site.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% site.modified text %>
+   </td>
+   <td><% site.modifier %></td>
 </tr>
 
 <% #search %>

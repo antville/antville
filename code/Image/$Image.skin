@@ -9,8 +9,10 @@
    -->
    <td><% image.width %>&times;<% image.height %></td>
    <td><% image.creator %></td>
-   <td><% image.modified text %></td>
-   <td>
+   <td class='uk-text-truncate' title='<% image.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% image.modified text %>
+   </td>
+   <td class='uk-text-right'>
       <% if <% image.tags count %> is 0 then '' else <% image.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>

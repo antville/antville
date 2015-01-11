@@ -5,8 +5,10 @@
    <td class='uk-width-1-2 av-overflow'>
       <% poll.question | stripTags | poll.link %>
    </td>
-   <td><% poll.creator %></td>
-   <td><% poll.created text %></td>
+   <td class='uk-text-truncate'><% poll.creator %></td>
+   <td class='uk-text-truncate' title='<% poll.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% poll.modified text %>
+   </td>
    <td class='uk-text-right'>
       <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
    </td>

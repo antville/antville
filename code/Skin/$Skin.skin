@@ -2,7 +2,9 @@
 <tr>
    <td><% skin.name prefix=<% skin.prototype suffix=. %> %></td>
    <td><% skin.creator %></td>
-   <td><% skin.created text %></td>
+   <td title='<% skin.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% skin.modified text %>
+   </td>
    <td class='uk-text-muted uk-text-right'><% if <% skin.custom %> is true then "<i class='uk-icon-user'></i>" %></td>
    <td class='uk-text-right uk-text-nowrap;'>
       <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
@@ -31,7 +33,7 @@
       </span>
       <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
    </div>
-      <% skin.textarea source %>
+   <% skin.textarea source %>
 </form>
 <script type='text/javascript'>
 $(function() {
@@ -79,7 +81,7 @@ $(function() {
             </tr>
          </thead>
          <tbody>
-         <% response.diff %>
+            <% response.diff %>
          </tbody>
       </table>
    </div>
