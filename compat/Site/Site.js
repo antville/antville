@@ -315,3 +315,14 @@ Site.prototype.monthlist_macro = function(param) {
   }
   return;
 }
+
+Site.prototype.skin_macro = function (param, name) {
+  switch (name) {
+    // Always embed the stylesheet via link, never inline
+    case 'Site#stylesheet':
+    case 'stylesheet':
+    res.write("<link rel='stylesheet' type='text/css' href='" + this.href('main.css') + "'>");
+    return;
+  }
+  return HopObject.prototype.skin_macro.apply(this, arguments);
+};
