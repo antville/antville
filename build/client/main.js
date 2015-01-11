@@ -16,9 +16,6 @@ require('codemirror/mode/htmlmixed/htmlmixed');
 require('./cm-skin-mode');
 
 $(function() {
-
-  setLayoutMode();
-
   // Extend jQuery with selectText() method.
   $.fn.selectText = function() {
     var element = this.get(0);
@@ -56,11 +53,7 @@ $(function() {
 
 });
 
-function setLayoutMode(mode) {
-  if (mode === false || $('.av-skin-control').length < 0) {
-    $('.av-skin-control').remove();
-    return;
-  }
+   // Add the skin controls for the layout sandbox
   /*$('body').prepend($('<div>').attr('class', 'layout-sandbox')
       .append($('<div>')
         .append($('<button>')
@@ -75,13 +68,13 @@ function setLayoutMode(mode) {
       href: $(this).data('href'),
       title: 'Click to edit ' + $(this).data('name') + ' skin'
     }).mouseover(function() {
-      $(this).parents('.av-skin').eq(0).addClass('active');
+         $(this).parents('.av-skin').eq(0).addClass('av-skin-active');
     }).mouseout(function() {
-      $(this).parents('.av-skin').eq(0).removeClass('active');
+         $(this).parents('.av-skin').eq(0).removeClass('av-skin-active');
     }).html('<i class="uk-icon-pencil"></i>');
     $(this).prepend(skinButton);
   });
-}
+});
 
 Antville = {};
 Antville.prefix = 'Antville_';
