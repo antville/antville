@@ -1,11 +1,11 @@
 <% #listItem %>
 <tr>
    <td>
-      <% image.thumbnail data-uk-tooltip="{pos: 'left'}" | image.link class='uk-thumbnail' %>
+      <% image.thumbnail data-uk-tooltip="{pos: 'right'}" | image.link class='uk-thumbnail' %>
    </td>
    <!--
-   <td><% image.contentType | replace image/ '' %></td>
-   <td><% image.contentLength %></td>
+   <td><% //image.contentType | replace image/ '' %></td>
+   <td><% //image.contentLength %></td>
    -->
    <td><% image.width %>&times;<% image.height %></td>
    <td><% image.creator %></td>
