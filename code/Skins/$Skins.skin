@@ -30,6 +30,7 @@
          }
       </style>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
+      <script type='text/javascript' src='<% root.static ../../scripts/cm.min.js %>'></script>
    </head>
    <body>
       <span class='uk-margin-right uk-float-right'>

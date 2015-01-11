@@ -8,13 +8,6 @@ require('jquery-collagePlus/extras/jquery.removeWhitespace');
 require('uikit-bower/js/uikit');
 require('uikit-bower/js/components/form-password');
 
-window.CodeMirror = require('codemirror/lib/codemirror');
-require('codemirror/mode/css/css');
-require('codemirror/mode/javascript/javascript');
-require('codemirror/mode/xml/xml');
-require('codemirror/mode/htmlmixed/htmlmixed');
-require('./cm-skin-mode');
-
 init(); // This method is defined in the $Root#javascript skin rendered by Site.main_js_action()
 
 $(function() {

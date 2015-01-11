@@ -212,6 +212,9 @@
     <exec executable="node_modules/.bin/browserify" output="static/scripts/main.min.js">
       <arg line="build/client/main.js"/>
     </exec>
+    <exec executable="node_modules/.bin/browserify" output="static/scripts/cm.min.js">
+      <arg line="build/client/cm.js"/>
+    </exec>
     <mkdir dir="static/styles"/>
     <exec executable="node_modules/.bin/lessc" output="static/styles/main.min.css">
       <arg line="-x build/client/main.less"/>
