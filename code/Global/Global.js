@@ -826,22 +826,6 @@ function version_macro(param, type) {
 }
 
 /**
- * Renders a string vertically in the global listItemFlag skin.
- * @param {Object} param The default Helma macro parameter object.
- * @param {String} str The string to be rendered.
- */
-function listItemFlag_macro(param, str) {
-  res.push();
-  for (var i=0; i<str.length; i+=1) {
-    res.write(str.charAt(i));
-    res.write('<br />');
-  }
-  renderSkin('$Global#listItemFlag', {text: res.pop()});
-  return;
-}
-
-
-/**
  * A simple Helma macro filter returning one of two possible values depending on which one is truthy.
  * @param {Object} value The original (desired) value.
  * @param {Object} param The default Helma macro parameter object.
