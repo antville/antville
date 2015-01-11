@@ -11,7 +11,10 @@
    <% gettext "Total sites hosted here" suffix=: %> <% root.size %><br>
    <% gettext "Number of public sites" suffix=: %> <% root.sites.size %>
 </p>
-<h1>Recent Updates</h1>
+<h1>
+  Recent Updates
+  <% root.link updates.xml ' ' class='uk-icon-button uk-icon-rss uk-text-middle' %>
+</h1>
 <dl class='uk-description-list-line'>
 <% list updates 25 skin=$Story#update %>
 </dl>
