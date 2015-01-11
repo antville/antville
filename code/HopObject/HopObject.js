@@ -232,33 +232,6 @@ HopObject.prototype.notify = function(action) {
     return true;
   }
 
-  // Helper method for debugging
-  var renderMatrix = function() {
-    var buf = ['<table border=1 cellspacing=0>'];
-    for each (var scope in Admin.getNotificationScopes()) {
-      for each (var mode in Site.getNotificationModes()) {
-        for each (var status in Site.getStatus()) {
-          var perm = getPermission(scope.value, mode.value, status.value);
-          buf.push('<tr style="');
-          perm && buf.push('color: blue;');
-          if (scope.value === root.notificationScope && mode.value ===
-              site.notificationMode && status.value === site.status) {
-            buf.push(' background-color: yellow;');
-          }
-          buf.push('">');
-          buf.push('<td>', scope.value, '</td>');
-          buf.push('<td>', status.value, '</td>');
-          buf.push('<td>', mode.value, '</td>');
-          buf.push('<td>', perm, '</td>');
-          buf.push('</tr>');
-        }
-      }
-    }
-    buf.push('</table>');
-    res.write(buf.join(''));
-    return;
-  }
-
   switch (action) {
     case 'comment':
     action = 'create'; break;
