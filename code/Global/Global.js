@@ -904,7 +904,7 @@ function clip_filter(input, param, limit, clipping, delimiter) {
     len = input.length;
     input = input.stripTags();
   }
-  if (param.default === null) {
+  if (param['default'] === null) {
     input || (input = ngettext('({0} character)', '({0} characters)', len));
   }
   limit || (limit = 20);
