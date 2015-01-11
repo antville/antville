@@ -384,8 +384,8 @@ Image.prototype.render_macro = function(param) {
   param.title || (param.title = encode(this.description));
   param.alt = encode(param.alt || param.title);
   var style = [];
-  style.push('width:', (param.width || this.width) + 'px;');
-  style.push('height:', (param.height || this.height) + 'px;');
+  param.width && style.push('width:', param.width + 'px;');
+  param.height && style.push('height:', param.height + 'px;');
   param.border && style.push('border:', param.border + 'px;');
   param.style = style.join(String.SPACE);
   delete param.width;
