@@ -381,6 +381,27 @@ $(function() {
       $('input#callbackUrl').prop('disabled', !this.checked);
    });
    $('input#callbackUrl').prop('disabled', !$('input#callbackMode').prop('checked'));
+
+   // Group related <option> elements by inserting additional <optgroup> elements.
+   var groups = [];
+   var element = $('form #timeZone');
+   element.find('option').each(function(index, item) {
+      var zone = $(item);
+      var parts = zone.html().split('/'); // E.g. Europe/Vienna
+      var group = parts[0];
+      if ($.inArray(group, groups) < 0) {
+         groups.push(group);
+      }
+   });
+   groups.sort();
+   $.each(groups, function(index, group) {
+      var key = group + '/'; // E.g. Europe/
+      element.find('option:contains(' + key + ')')
+         .wrapAll($('<optgroup>').attr('label', group))
+         .each(function(index, item) {
+            $(item).html($(item).html().replace(key, ''));
+         });
+      });
 });
 </script>
 

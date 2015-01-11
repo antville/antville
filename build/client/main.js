@@ -54,28 +54,6 @@ $(function() {
     prompt($(this).data('text'), $(this).data('value'));
   });
 
-  // Group related <option> elements by inserting additional <optgroup> elements.
-  var groups = [],
-      element = $('form#prefs #timeZone');
-  element.find('option').each(function(index, item) {
-    var zone = $(item),
-        parts = zone.html().split('/'), // E.g. Europe/Vienna
-        group = parts[0];
-
-    if ($.inArray(group, groups) < 0) {
-      groups.push(group);
-    }
-  });
-  groups.sort();
-  $.each(groups, function(index, group) {
-    var key = group + '/'; // E.g. Europe/
-    element.find('option:contains(' + key + ')')
-        .wrapAll($('<optgroup>').attr('label', group))
-        .each(function(index, item) {
-          $(item).html($(item).html().replace(key, ''));
-        });
-  });
-
 });
 
 function setLayoutMode(mode) {
