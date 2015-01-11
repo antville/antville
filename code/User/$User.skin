@@ -63,7 +63,7 @@
       </label>
       <div class='uk-form-controls'>
          <% user.input url type=url class='uk-form uk-width-1-2' %>
-         <a href='<% user.url %>'><i class='uk-icon-globe'></i></a>
+         <a href='<% user.url %>'><i class='uk-icon-link'></i></a>
       </div>
    </div>
    <div class='uk-form-row'>
