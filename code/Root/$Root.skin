@@ -155,6 +155,10 @@ var scripts = [];
    overflow: hidden;
 }
 
+.av-invisible {
+   visibility: hidden;
+}
+
 .av-upload {
    position: relative;
 

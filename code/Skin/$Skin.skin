@@ -15,7 +15,7 @@
 </tr>
 
 <% #edit %>
-<form class='uk-form' method="post" action="<% response.action %>">
+<form class='uk-form av-invisible av-skin-editor' method="post" action="<% response.action %>">
    <div class='uk-margin-top uk-margin-left uk-margin-right uk-clearfix'>
       <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
       <span style='line-height: 39px;'>
@@ -56,6 +56,7 @@ scripts.push(function() {
       tabMode: 'shift',
       viewportMargin: Infinity
    });
+   $('.av-skin-editor').removeClass('av-invisible');
 });
 </script>
 
