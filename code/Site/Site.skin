@@ -92,20 +92,20 @@ prefix="Last update: " default="None so far" %>)</span></li>
 </html>
 
 <% #javascript %>
-var imgWindow = "";
 function openPopup(img, width, height) {
    if (img && width && height) {
       width = Math.min(width + 36, 640);
       height = Math.min(height + 30, 480);
-      if (imgWindow.location && !imgWindow.closed)
-         imgWindow.close();
-      imgWindow = window.open(img, "imgWindow" + width + height,
-      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" +
-      width + ",height=" + height);
-      // imgWindow.focus();
+      var win = openPopup.window;
+      if (win && win.location && !win.closed) {
+         win.close();
+      }
+      win = window.open(img, 'antvillePopupWindow-' + width + '-' + height,
+      'toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=' + width + ',height=' + height);
+      //win.focus();
+      openPopup.window = win;
    }
 }
-      }
 
 <% #values %>
 <% value 'font' 'Helvetica, Arial, sans-serif' %>
@@ -121,7 +121,7 @@ body {
    background-color: <% value 'background color' %>;
    font-family: <% value font %>;
    color: <% value 'text color' %>;
-   }
+}
 
 a {
    color: <% value 'link color' %>;
@@ -133,7 +133,7 @@ a {
 .av-poll-result-bar {
    height: 5px;
    overflow: hidden;
-   float:left;
+   float: left;
    margin-top: 7px;
    margin-right: 10px;
    background-color: <% value "link color" %>;
@@ -148,7 +148,7 @@ a {
       background: @button-hover-background;
       border-color: <% value 'hover color' %>;
       color: <% value 'hover color' %>;
-}
+   }
 }
 
 .uk-pagination > .uk-active > span {
@@ -161,7 +161,7 @@ a {
    color: <% value 'link color' %>;
    &:hover {
       color: <% value 'hover color' %>;
-}
+   }
 }
 
 .uk-nav-side > li.uk-active > a {
