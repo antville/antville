@@ -12,10 +12,10 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Role %></td>
-         <td><% gettext Subscribed %></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Role %></th>
+         <th><% gettext Subscribed %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -223,9 +223,9 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Registered %></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Registered %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

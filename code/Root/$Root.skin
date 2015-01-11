@@ -41,8 +41,9 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Title %></td>
-         <td><% gettext 'Last Update' %></td>
+         <th><% gettext Title %></th>
+         <th><% gettext 'Last Update' %></th>
+         <th><% gettext User %></th>
       </tr>
    </thead>
    <tbody>

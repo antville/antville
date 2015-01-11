@@ -152,10 +152,10 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td></td>
-         <td><% gettext User %></td>
-         <td><% gettext Date %></td>
-         <td><% gettext Reference %></td>
+         <th></th>
+         <th><% gettext User %></th>
+         <th><% gettext Created %></th>
+         <th><% gettext Content %></th>
       </tr>
    </thead>
    <tbody>
@@ -196,13 +196,13 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Created %></td>
-         <td><% gettext Modified %></td>
-         <td><% gettext Status %></td>
-         <td><% gettext Mode %></td>
-         <td></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Created %></th>
+         <th><% gettext Modified %></th>
+         <th><% gettext Status %></th>
+         <th><% gettext Mode %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -243,12 +243,12 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Registered %></td>
-         <td><% gettext 'Last Login' %></td>
-         <td><% gettext Status %></td>
-         <td></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Registered %></th>
+         <th><% gettext 'Last Login' %></th>
+         <th><% gettext Status %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -263,11 +263,11 @@ $(function() {
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Method %></td>
-         <td><% gettext Type %></td>
-         <td><% gettext ID %></td>
-         <td><% gettext User %></td>
-         <td></td>
+         <th><% gettext Method %></th>
+         <th><% gettext Type %></th>
+         <th><% gettext ID %></th>
+         <th><% gettext User %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

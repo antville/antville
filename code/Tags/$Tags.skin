@@ -6,15 +6,15 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td class='uk-text-right'>
+         <th class='uk-text-right'>
             <% if <% tags.self __name__ %> is tags then
               "<i class='uk-icon-newspaper-o'></i>"
             else
               "<i class='uk-icon-image'></i>"
             %>
-         </td>
-         <td class='uk-width-5-6'><% gettext Name %></td>
-         <td></td>
+         </th>
+         <th class='uk-width-5-6'><% gettext Name %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

@@ -6,7 +6,6 @@
       <title><% response.title %></title>
       <link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
       <link rel='stylesheet' type='text/css' href='<% root.static ../../styles/main.min.css %>'>
-
       <style type="text/css">
          body {
             margin: 0;
@@ -71,11 +70,11 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Name %></td>
-         <td><% gettext Author %></td>
-         <td><% gettext Modified %></td>
-         <td></td>
-         <td></td>
+         <th><% gettext Name %></th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

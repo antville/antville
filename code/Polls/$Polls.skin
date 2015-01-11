@@ -10,12 +10,12 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td class='uk-text-right'><i class='uk-icon-bar-chart'></i></td>
-         <td><% gettext Question %></td>
-         <td><% gettext Author %></td>
-         <td><% gettext Modified %></td>
-         <td></td>
-         <td></td>
+         <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
+         <th><% gettext Question %></th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

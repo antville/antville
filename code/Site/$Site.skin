@@ -73,12 +73,12 @@ REGEDIT4
 </form>
 
 <% #referrerTable %>
-<table class='uk-table uk-table-condensed'>
+<table class='uk-table uk-table-condensed uk-table-striped uk-table-hover'>
    <thead>
       <tr>
-         <td class='uk-text-right'><i class='uk-icon-bar-chart'></i></td>
-         <td><% gettext Referrer %></td>
-         <td></td>
+         <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
+         <th><% gettext Referrer %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>

@@ -30,10 +30,10 @@
 <table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
    <thead>
       <tr>
-         <td><% gettext Site %></td>
-         <td><% gettext Role %></td>
-         <td><% gettext 'Last Update' %></td>
-         <td></td>
+         <th><% gettext Site %></th>
+         <th><% gettext Role %></th>
+         <th><% gettext 'Last Update' %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
