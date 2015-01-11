@@ -904,9 +904,11 @@ function clip_filter(input, param, limit, clipping, delimiter) {
     len = input.length;
     input = input.stripTags();
   }
-  input || (input = ngettext('({0} character)', '({0} characters)', len));
+  if (param.default === null) {
+    input || (input = ngettext('({0} character)', '({0} characters)', len));
+  }
   limit || (limit = 20);
-  clipping || (clipping = '...');
+  clipping || (clipping = '…');
   delimiter || (delimiter = '\\s');
   return String(input || '').head(limit, clipping, delimiter);
 }
@@ -1193,6 +1195,7 @@ function getTimeZones(language) {
 
   return result.sort(new String.Sorter('display'));
 }
+
 // FIXME:
 /**
  * Replaces <img> elements in a string with <a> elements to fix RSS output which is not capable of displaying images.
