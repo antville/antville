@@ -17,19 +17,19 @@
    <p>
       <% gettext 'The callback URL will be invoked as an HTTP POST request with the following parameters:' %>
       <dl class='uk-description-list-line'>
-         <dt><code>type</code></dt>
+         <dt>type</dt>
          <dd><% gettext 'Resource type (e.g. Story or Comment)' %></dd>
-         <dt><code>id</code></dt>
+         <dt>id</dt>
          <dd><% gettext 'Numeric identifier of the resource' %></dd>
-         <dt><code>url</code></dt>
+         <dt>url</dt>
          <dd><% gettext 'URL string of the resource' %></dd>
-         <dt><code>date</code></dt>
+         <dt>date</dt>
          <dd><% gettext 'Date string in Unix timestamp format' %></dd>
-         <dt><code>user</code></dt>
+         <dt>user</dt>
          <dd><% gettext 'Name of the user who triggered the event' %></dd>
-         <dt><code>site</code></dt>
+         <dt>site</dt>
          <dd><% gettext 'Title or name of the site' %></dd>
-         <dt><code>origin</code></dt>
+         <dt>origin</dt>
          <dd><% gettext 'URL string of the site' %></dd>
       </dl>
    </p>
