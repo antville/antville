@@ -4,21 +4,53 @@
 
 @import (inline) "node_modules/codemirror/lib/codemirror.css";
 
-.av-tagged {
-   .av-tagged-image {
-      opacity: 0;
-      img {
-         display: inline-block;
-         margin: 0;
-         padding: 0;
-         vertical-align: bottom;
-         opacity: 1;
-      }
-      .Caption_Content {
-         color: #fff;
-         padding: 10px;
-      }
+.uk-button-group.av-link-group a {
+   border-right: none;
+}
+
+.uk-nav-divider + .uk-nav-divider,
+.uk-nav-header + .uk-nav-header {
+  display: none;
+}
+
+.uk-nav-side .uk-nav-divider {
+   margin-top: 15px;
+   border-top: none;
+}
+
+.jala-calendar {
+   width: 100%;
+   text-align: center;
+}
+
+.jala-calendar tbody th {
+   font-weight: normal;
+   color: #999;
+}
+
+.jala-calendar-day {
+   width: 14.27%;
+   line-height: 18px;
+   text-align: center;
+   a {
+      font-weight: bold;
    }
+}
+
+.jala-calendar-selected, .jala-calendar-selected a {
+   border-radius: 4px;
+   .uk-button-primary;
+}
+
+.jala-calendar-left {
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.jala-calendar-right {
+   border: 0;
+   text-align: center;
+   vertical-align: baseline;
 }
 
 // Overwriting some CSS classes for Google’s custom search

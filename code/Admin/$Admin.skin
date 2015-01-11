@@ -288,7 +288,7 @@ $(function() {
 
 <% #site %>
 <tr>
-   <td style='max-width: 150px; overflow: hidden;'>
+   <td class='uk-width-1-3 av-overflow'>
       <div><% item.title default='<i>Untitled</i>' | item.link %></div>
       <div class='uk-text-small'><% item.href %></div>
    </td>
@@ -299,7 +299,7 @@ $(function() {
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
-   <td class='uk-text-right' style='white-space: nowrap'>
+   <td class='uk-text-right uk-text-nowrap'>
       <% if <% item.mode %> is deleted then '' else
          <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
       %>
@@ -309,7 +309,7 @@ $(function() {
 
 <% #user %>
 <tr>
-   <td style='max-width: 200px; overflow: hidden;'>
+   <td class='uk-width-1-3 av-overflow'>
       <div class='uk-text-bold'>
          <% if <% item.url %> is null then <% item.name %> else <% item.name | item.link <% item.url %> %> %>
       </div>
@@ -321,7 +321,7 @@ $(function() {
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
-   <td class='uk-text-right' style='white-space: nowrap;'>
+   <td class='uk-text-right uk-text-nowrap;'>
       <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% item.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -333,7 +333,5 @@ $(function() {
    <td><% item.type %></td>
    <td><% item.id %></td>
    <td><% item.user %></td>
-   <td style='white-space: nowrap;'>
-      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
-   </td>
+   <td><% item.link delete "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>

@@ -32,7 +32,7 @@
    <td title='<% membership.created short %>' data-uk-tooltip>
       <% membership.created text %>
    </td>
-   <td style='white-space: nowrap;' class='uk-text-right'>
+   <td class='uk-text-right uk-text-nowrap'>
       <% membership.link contact "<i class='uk-icon-envelope-o'></i>" %>
       <% membership.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% membership.link edit "<i class='uk-icon-pencil'></i>" %>

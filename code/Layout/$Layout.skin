@@ -18,11 +18,11 @@
       </div>
    </div>
    <div class='uk-grid uk-form-row'>
-      <legend class='uk-width-1-1 uk-margin-top' style='margin-bottom: -15px;'>
+      <legend class='uk-width-1-1 uk-margin-top'>
          <% gettext 'Variables' %>
       </legend>
       <% layout.values %>
-      <div class='uk-margin-top'>
+      <div class='uk-margin-bottom'>
          <div class='uk-form-label'>&#160;</div>
          <a href='' class='uk-icon-button uk-icon-plus uk-text-middle' id='addVariable'></a>
       </div>
@@ -53,7 +53,7 @@ $(function() {
 </script>
 
 <% #value %>
-<div class='uk-width-1-2 uk-margin-top av-variable-row'>
+<div class='uk-width-1-2 uk-margin-bottom av-variable-row'>
    <div class='uk-form-label'>
       <% param.key %>
    </div>

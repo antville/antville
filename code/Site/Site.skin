@@ -80,6 +80,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
          </div>
       </header>
 
+   <body class='uk-container-center av-page'>
       <div class='uk-grid'>
          <div class='uk-width-7-10'>
             <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
@@ -87,7 +88,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
          </div>
 
          <div class='uk-width-3-10'>
-            <div style='border-left: 1px solid #ddd; margin-left: 20%;'>
+            <div class='uk-margin-large-left av-border-left'>
                <% membership.status %>
                <ul class='uk-nav uk-nav-side'>
                   <li class='uk-nav-divider'/>
@@ -152,49 +153,25 @@ $(function () {
 });
 
 <% #values %>
-<% value "base font" "Helvetica, Arial, sans-serif" %>
-<% value "background color" #ffffff %>
-<% value "link color" #ff4040 %>
-<% value "active link color" #ff4040 %>
-<% value "visited link color" #ff4040 %>
+<% value 'font' 'Helvetica, Arial, sans-serif' %>
+<% value 'background color' #fff %>
+<% value 'link color' #ff4040 %>
+<% value 'hover color' #d50000 %>
 
 <% #stylesheet %>
-.av-header {
-   margin-top: 5px;
+@button-background: #f5f5f5;
+@button-hover-background: #fafafa;
 
-   .av-header-bg {
-      position: relative;
+body {
+   background-color: <% value 'background color' %>;
+   font-family: <% value font %>;
+   color: <% value 'text color' %>;
    }
 
-   .av-header-bg-chaos {
-      float: left;
-      width: 262px;
-      height: 53px;
-      margin-left: -40px;
-      background: url('<% image /webloghead.gif url %>');
-   }
-
-   .av-header-bg-offset {
-      height: 53px;
-      margin-left: 222px;
-   }
-
-   .av-header-bg-dots {
-      position: relative;
-      top: 7px;
-      height: 38px;
-      background: url('<% image /dot.gif url %>');
-   }
-
-   .av-title {
-      position: relative;
-      top: -50px;
-      overflow: visible;
-      white-space: nowrap;
-      font-family: Verdana, Helvetica, Arial, sans-serif;
-      font-size: 25px;
-      font-weight: bold;
-      transform: translateY(50%);
+a {
+   color: <% value 'link color' %>;
+   &:hover {
+     color: <% value 'hover color' %>;
    }
 }
 
@@ -208,320 +185,49 @@ $(function () {
    font-size: 0px;
 }
 
-.av-skin.active {
-   background: <% value "background color" %>;
-   opacity: .25;
+.uk-button-primary {
+   background: @button-background;
+   border-color: <% value 'link color' %>;
+   color: <% value 'link color' %>;
+   &:hover {
+      background: @button-hover-background;
+      border-color: <% value 'hover color' %>;
+      color: <% value 'hover color' %>;
+}
 }
 
-.av-skin-edit-link {
-   color: <% value "small font color" %> !important;
+.uk-pagination > .uk-active > span {
+   background: @button-background;
+   border-color: <% value 'link color' %>;
+   color: <% value 'link color' %>;
 }
 
-.uk-button-group.av-link-group a {
-   border-right: none;
+.uk-button-link, .uk-subnav > li > a {
+   color: <% value 'link color' %>;
+   &:hover {
+      color: <% value 'hover color' %>;
+}
 }
 
-.jala-calendar {
-   width: 100%;
-   text-align: center;
-   /*color: <% value "small font color" %>;
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;*/
+.uk-nav-side > li.uk-active > a {
+   background: none;
+   color: <% value 'link color' %>;
+   box-shadow: none;
+   font-weight: bold;
 }
 
-.jala-calendar tbody td, .jala-calendar tfoot td {
-   /*font-size: <% value "small font size" %>;*/
+.uk-alert {
+   background: @button-background;
+   border-color: #333;
+   border-color: rgba(0, 0, 0, 0.3);
+   color: #999;
 }
 
-.jala-calendar tbody th {
-   font-weight: normal;
-}
-
-.jala-calendar-day {
-   width: 14.27%;
-   text-align: center;
-}
-
-.jala-calendar-left {
-   text-align: center;
-   vertical-align: baseline;
-}
-
-.jala-calendar-right {
-   border: 0;
-   text-align: center;
-   vertical-align: baseline;
+.jala-calendar-selected, .jala-calendar-selected a {
+   background: @button-background;
+   color: <% value 'link color' %>;
 }
 
 .jala-calendar-selected {
    border: 1px solid <% value "link color" %>;
-}
-
-
-
-old {
-body {
-   background-color: <% value "background color" %>;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   color: <% value "base font color" %>;
-}
-
-table.main {
-   width: 700px;
-}
-
-td {
-   font-size: <% value "base font size" %>;
-   line-height: 1.2em;
-}
-
-td.header {
-   max-width: 700px;
-   height: 53px;
-   padding-left: 40px;
-   background-image: url(<% image /webloghead.gif url %>);
-   background-repeat: no-repeat;
-   font-size: 25px;
-   font-weight: bold;
-}
-
-td.center {
-   width: 70%;
-   padding: 25px 20px 10px 40px;
-   vertical-align: top;
-}
-
-td.right {
-   width: 30%;
-   padding: 0px 0px 10px 0px;
-   vertical-align: top;
-   border-left: 1px solid #dddddd;
-}
-
-div.boxheader {
-   color: <% value "small font color" %>;
-   overflow: hidden;
-   font-size: 10px;
-   padding-left: 6px;
-   border-top: 1px solid #dddddd;
-}
-
-div.boxline {
-   height:1px;
-   overflow:hidden;
-   border-bottom: 1px solid #dddddd;
-}
-
-div.box {
-   font-size: <% value "small font size" %>;
-   font-family: <% value "small font" %>;
-   color: <% value "small font color" %>;
-   line-height: 1.4em;
-   text-align: right;
-   padding: 0em 0em 0.4em 0.4em;
-   margin: 0em 0em 0.2em 0em;
-}
-
-div.ample { margin-bottom: 5px; }
-
-small, .small {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "small font color" %>;
-}
-
-/* this is for mozilla to right-align tables in boxes */
-div.box table {
-   margin-left: auto;
-   margin-right: 0px;
-}
-
-p + fieldset {
-   width: 360px;
-   padding-left: 8px;
-   padding-top: 0px;
-   margin-top: 6px;
-   margin-bottom: 6px;
-   border: 1px solid <% value "small font color" %>;
-}
-
-p {
-   margin-top: 6px;
-   margin-bottom: 10px;
-}
-
-form { margin: 0px; }
-
-a, a:link {
-  text-decoration: none;
-  color: <% value "link color" %>;
-}
-a:visited {color: <% value "visited link color" %>;}
-a:active {color: <% value "active link color" %>;}
-a:hover {text-decoration: underline;}
-
-.message {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   font-weight: bold;
-   padding: 1px;
-   margin-top: 6px;
-   margin-bottom: 6px;
-   color: <% value "big font color" %>;
-}
-
-.message input {
-   font-size:9px;
-   padding:0px;
-   margin:0px;
-}
-
-.historyItem {
-   color: <% value "base font color" %>;
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   padding-bottom: 0.3em;
-   width: 202px;
-   overflow: hidden;
-}
-
-.dayHeader {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "small font color" %>;
-   font-weight: bold;
-   margin-bottom: 20px;
-   margin-top: 10px;
-   text-align: left;
-}
-
-.storyDate {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "small font color" %>;
-   margin-bottom: 6px;
-}
-
-.storyTitle {
-   font-family: <% value "big font" %>;
-   font-size: <% value "big font size" %>;
-   color: <% value "big font color" %>;
-   font-weight: bold;
-}
-
-.listSeparator {
-   width: 50px;
-   height: 1em;
-   border-bottom: 2px dotted #dddddd;
-   margin-top: 10px;
-   margin-bottom: 4px;
-}
-
-.title {
-   font-family: <% value "big font" %>;
-   font-size: <% value "big font size" %>;
-   color: <% value "base font color" %>;
-   font-weight: bold;
-   margin-bottom: 2px;
-}
-
-.reply { padding-left: 40px; }
-
-.formTitle {
-   width: 380px;
-   font-family: <% value "big font" %>;
-   font-size: <% value "big font size" %>;
-   font-weight: bold;
-   border: 1px solid <% value "small font color" %>;
-}
-
-.formText {
-   width: 380px;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   font-weight: normal;
-   border: 1px solid <% value "small font color" %>;
-}
-
-.formWide {
-   width: 660px;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   font-weight: normal;
-}
-
-.searchbox {
-   font-size: 11px;
-   margin-top: 3px;
-}
-
-.colorpickerWidget {
-   border: 1px solid #cccccc;
-}
-
-.pagelinkTop {
-   margin-bottom: 18px;
-   padding-bottom:3px;
-   border-bottom:1px solid #dddddd;
-}
-
-.pagelinkBottom {
-   margin-top: 18px;
-   padding-top:3px;
-   border-top:1px solid #dddddd;
-   text-align:right;
-}
-
-div.pageNav {
-   margin-top: 10px;
-   margin-bottom: 0px;
-   font-size: 11px;
-}
-
-div.pageNavSummary {
-   padding: 1px 5px;
-   background-color: #efefef;
-   border-bottom: 1px solid #cccccc;
-   text-align: left;
-}
-
-div.pageNavBar {
-   padding-top: 1px;
-   text-align: right;
-}
-span.pageNavItem {
-   padding-left: 2px;
-   padding-right: 2px;
-}
-
-span.pageNavSelItem {
-   padding-left: 2px;
-   padding-right: 2px;
-   font-weight: bold;
-}
-
-.membergroup {
-   font-weight:bold;
-   font-size:<% value "big font size" %>;
-   margin:10px 0px;
-}
-
-.member {
-   margin-left:20px;
-   margin-bottom:5px;
-}
-
-}
-
-/* NEW 1.5 */
-
-.uk-nav-divider + .uk-nav-divider,
-.uk-nav-header + .uk-nav-header {
-  display: none;
-}
-
-.uk-nav-side .uk-nav-divider {
-   margin-top: 15px;
-   border-top: none;
 }

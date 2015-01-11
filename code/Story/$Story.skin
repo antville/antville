@@ -1,8 +1,8 @@
 <% #listItem %>
 <tr>
    <td class='uk-text-right'><% story.comments count %></td>
-   <td style='max-width: 200px; overflow: hidden;'>
-      <a href='<% story.href %>' title='<% ngettext '{0} request' '{0} requests' <% story.requests %> %>' data-uk-tooltip="{pos: 'left'}">
+   <td class='uk-width-1-2 av-overflow'>
+      <a href='<% story.href %>' title='<% ngettext '{0} request' '{0} requests' <% story.requests %> %>' data-uk-tooltip="{pos: 'top-left'}">
          <% story.abstract %>
       </a>
    </td>
@@ -15,11 +15,11 @@
       <% if <% story.status %> is open then "<i class='uk-text-muted uk-icon-globe'></i>" %>
       <% if <% story.tags count %> is 0 then '' else <% story.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
-   <td style='white-space: nowrap;'>
+   <td class='uk-text-nowrap'>
       <% story.link status <% if <% story.status %> is closed then lock else unlock prefix="<i class='uk-icon-" suffix="'></i>" %> %>
       <% story.link mode <% if <% story.mode %> is hidden then eye-slash else eye prefix="<i class='uk-icon-" suffix="'></i>" %> %>
    </td>
-   <td style='white-space: nowrap;' class='uk-text-right'>
+   <td class='uk-text-nowrap uk-text-right'>
       <a href='' data-value="<% story.macro %>" data-text='<% gettext "Please use the copy command." %>' class='av-clipboard-copy'><i class='uk-icon-clipboard'></i></a>
       <% story.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% story.link edit "<i class='uk-icon-pencil'></i>" %>

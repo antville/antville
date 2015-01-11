@@ -1,6 +1,6 @@
 <% #listItem %>
 <tr>
-   <td style='max-width: 300px; overflow: hidden;'>
+   <td class='uk-width-1-2 av-overflow'>
       <a href='<% comment.href %>'><% comment.abstract %></a> <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<i class='uk-icon-comments-o uk-text-muted'> " suffix='</i>' %> %>
    </td>
    <td><% comment.creator %></td>

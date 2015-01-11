@@ -140,7 +140,7 @@ $(function () {
       </div>
    </div>
    <div class='uk-form-row'>
-      <a style='color: #fff;' href='<% this.href delete %>' class='uk-button uk-button-danger'>
+      <a href='<% this.href delete %>' class='uk-button uk-button-danger'>
          <i class='uk-icon-trash-o'></i>
          Delete this account
       </a>
