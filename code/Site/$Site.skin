@@ -39,21 +39,31 @@
    <Query role="example" searchTerms="cat" />
 </OpenSearchDescription>
 
-<% #menuExt %>
-<script type="text/javascript" defer="defer">
-   var win = external.menuArguments;
-   var url = "<% site.url %>stories/create?text=";
-   var link = escape('<a href="' + win.location.href + '">' +
-      win.document.title + "</a>: ");
-   var text = escape(win.document.selection.createRange().text);
-   win.location.href = url + link + text;
-</script>
+<% #header %>
+<header class='av-header'>
+   <div class='av-header-bg'>
+      <div class='av-header-bg-chaos'></div>
+      <div class='av-header-bg-offset'>
+         <div class='av-header-bg-dots'></div>
+      </div>
+   </div>
+   <div class='av-title'>
+      <% site.title | site.link title=<% site.tagline %> %>
+   </div>
+</header>
 
-<% #menuExtRegistry %>
-REGEDIT4
-[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
-@="<% site.url %>menuext"
-"contexts"=hex:31
+<% #footer %>
+<footer>
+   <hr class='uk-margin-large-top'>
+   <div class='uk-text-small uk-margin-bottom uk-float-left'>
+      <div><% gettext 'Created {0}' <% site.created text %> %>.</div>
+      <div><% gettext 'Last modified {0}' <% site.modified text %> %>.</div>
+   </div>
+   <div class='uk-text-right'>
+      <% image /smallchaos.gif | link http://antville.org %> &
+   <% image /helma.png | link http://helma.org %>
+   </div>
+</footer>
 
 <% #referrers %>
 <h1><% response.title %></h1>
@@ -450,3 +460,19 @@ script.type = 'text/javascript';
 script.src = '<% param.href %>';
 document.head.appendChild(script);"
 %>
+
+<% #menuExt %>
+<script type="text/javascript" defer="defer">
+   var win = external.menuArguments;
+   var url = "<% site.url %>stories/create?text=";
+   var link = escape('<a href="' + win.location.href + '">' +
+      win.document.title + "</a>: ");
+   var text = escape(win.document.selection.createRange().text);
+   win.location.href = url + link + text;
+</script>
+
+<% #menuExtRegistry %>
+REGEDIT4
+[HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt\Post to <% site.title %>]
+@="<% site.url %>menuext"
+"contexts"=hex:31

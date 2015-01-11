@@ -52,41 +52,23 @@ prefix="Last update: " default="None so far" %>)</span></li>
    <head>
       <meta charset='utf-8'>
       <title><% response.title %></title>
-
       <link rel='icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
       <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
-
       <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
-
       <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
       <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
-
       <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
       <script type='text/javascript' src='<% site.href main.js %>'></script>
    </head>
-   <body class='uk-container-center' style='width: 900px;'>
-
-      <header class='av-header'>
-         <div class='av-header-bg'>
-            <div class='av-header-bg-chaos'></div>
-            <div class='av-header-bg-offset'>
-               <div class='av-header-bg-dots'></div>
-            </div>
-         </div>
-         <div class='av-title'>
-            <% site.title | site.link title=<% site.tagline %> %>
-         </div>
-      </header>
-
    <body class='uk-container-center av-page'>
+      <% site.skin $Site#header %>
       <div class='uk-grid'>
          <div class='uk-width-7-10'>
             <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
             <% response.body %>
          </div>
-
          <div class='uk-width-3-10'>
             <div class='uk-margin-large-left av-border-left'>
                <% membership.status %>
@@ -105,25 +87,12 @@ prefix="Last update: " default="None so far" %>)</span></li>
             </div>
          </div>
       </div>
-
-      <footer>
-         <hr class='uk-margin-large-top'>
-         <div class='uk-text-small uk-margin-bottom' style='float: left;'>
-            <div><% gettext 'Created {0}' <% site.created text %> %>.</div>
-            <div><% gettext 'Last modified {0}' <% site.modified text %> %>.</div>
-         </div>
-         <div style='float: right;'>
-            <% image /smallchaos.gif | link http://antville.org %> &
-         <% image /helma.png | link http://helma.org %>
-         </div>
-      </footer>
-
+      <% site.skin $Site#footer %>
    </body>
 </html>
 
 <% #javascript %>
 var imgWindow = "";
-
 function openPopup(img, width, height) {
    if (img && width && height) {
       width = Math.min(width + 36, 640);
