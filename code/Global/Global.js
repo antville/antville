@@ -19,6 +19,8 @@
  * @fileOverview Defines global variables and functions.
  */
 
+String.ELLIPSIS = '…';
+
 app.addRepository(app.dir + '/../lib/rome-1.0.jar');
 app.addRepository(app.dir + '/../lib/jdom.jar');
 app.addRepository(app.dir + '/../lib/itunes-0.4.jar');
@@ -904,11 +906,11 @@ function clip_filter(input, param, limit, clipping, delimiter) {
     len = input.length;
     input = input.stripTags();
   }
-  if (param['default'] === null) {
-    input || (input = ngettext('({0} character)', '({0} characters)', len));
+  if (!input && param['default'] === null) {
+    return ngettext('({0} character)', '({0} characters)', len);
   }
   limit || (limit = 20);
-  clipping || (clipping = '…');
+  clipping || (clipping = String.ELLIPSIS);
   delimiter || (delimiter = '\\s');
   return String(input || '').head(limit, clipping, delimiter);
 }
@@ -1333,7 +1335,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
     param.prevHref = '?page=' + (pageIdx - 1);
   }
   var offset = Math.floor(pageIdx / maxItems) * maxItems;
-  (offset > 0) && renderItem('…', 'pageNavItem', url, offset-1);
+  (offset > 0) && renderItem(String.ELLIPSIS, 'pageNavItem', url, offset-1);
   var currPage = offset;
   var stop = Math.min(currPage + maxItems, lastPageIdx+1);
   while (currPage < stop) {
@@ -1345,7 +1347,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
     currPage += 1;
   }
   if (currPage < lastPageIdx) {
-    renderItem('…', 'pageNavItem', url, offset + maxItems);
+    renderItem(String.ELLIPSIS, 'pageNavItem', url, offset + maxItems);
   }
   if (pageIdx >= lastPageIdx) {
     param.nextClass = 'uk-disabled';

@@ -179,14 +179,14 @@ Story.prototype.getTitle = function(limit) {
   var key = this + ':title:' + limit;
   if (!res.meta[key]) {
     if (this.title) {
-      res.meta[key] = stripTags(this.title).clip(limit, '...', '\\s');
+      res.meta[key] = stripTags(this.title).clip(limit, String.ELLIPSIS, '\\s');
     } else if (this.text) {
-      var parts = stripTags(this.text).embody(limit, '...', '\\s');
+      var parts = stripTags(this.text).embody(limit, String.ELLIPSIS, '\\s');
       res.meta[key] = parts.head;
       res.meta[this + ':text:' + limit] = parts.tail;
     }
   }
-  return String(res.meta[key]) || '...';
+  return String(res.meta[key]) || String.ELLIPSIS;
 }
 
 Story.prototype.edit_action = function() {
@@ -423,19 +423,27 @@ Story.prototype.getMacroHandler = function(name) {
   return null;
 }
 
-Story.prototype.getAbstract = function (limit, clipping) {
-  limit || (limit = 15);
-  var result = this.title || this.text;
-  if (!result && arguments.length > 1) {
-    var buffer, content = [];
+Story.prototype.getAbstract = function (param) {
+  var abstract = [], raw = [];
+  raw.push(this.title, this.text);
+  var title = this.title && stripTags(this.title).clip(10, null, '\\s');
+  var text = this.text && stripTags(this.text).clip(30, null, '\\s');
+  title && abstract.push('<b>' + title + '</b> ');
+  text && abstract.push(text);
+  if (abstract.length < 1 && arguments.length > 1) {
+    var buffer;
     for (var i = 1; i < arguments.length; i += 1) {
       if (buffer = this.getMetadata(arguments[i])) {
-        content.push(buffer);
+        raw.push(buffer);
+        buffer = stripTags(buffer).clip(20, null, '\\s');
+        buffer && abstract.push(buffer);
       }
     }
-    result = content.join(String.SPACE);
   }
-  return stripTags(result).clip(limit, clipping, '\\s') || '…';
+  if (abstract.length < 1 && param['default'] === null) {
+    return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
+  }
+  return abstract.join(String.SPACE);
 };
 
 /**
@@ -443,7 +451,7 @@ Story.prototype.getAbstract = function (limit, clipping) {
  * @param {Object} param
  */
 Story.prototype.abstract_macro = function(param) {
-  return res.write(this.getAbstract(param.limit, param.cliping));
+  return res.write(this.getAbstract(param));
 }
 
 /**
