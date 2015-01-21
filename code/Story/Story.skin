@@ -108,6 +108,6 @@
 <div class='uk-button-group av-link-group'>
    <% story.skin Story#permalink %>
    <% story.link comment#form "<i class='uk-icon-comment-o'></i>" class='uk-button uk-button-small uk-button-link' %>
-   <% story.link main#comments <% story.comments count prefix="<i class='uk-icon-comments'> " suffix='</i>' %> class='uk-button uk-button-small uk-button-link' %>
+   <% story.link main#comments <% story.comments count prefix="<i class='uk-icon-comments'></i> " %> class='uk-button uk-button-small uk-button-link' %>
 </div>
 

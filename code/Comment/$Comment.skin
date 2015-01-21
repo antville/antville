@@ -1,7 +1,7 @@
 <% #listItem %>
 <tr>
    <td class='uk-width-1-2 av-overflow'>
-      <a href='<% comment.href %>'><% comment.abstract %></a> <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<i class='uk-icon-comments-o uk-text-muted'> " suffix='</i>' %> %>
+      <a href='<% comment.href %>'><% comment.abstract %></a> <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<span class='uk-text-muted uk-text-nowrap'><i class='uk-icon-comments-o'></i> " suffix=</span> %> %>
    </td>
    <td class='uk-truncate'><% comment.creator %></td>
    <td class='uk-truncate' title='<% comment.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
