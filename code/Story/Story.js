@@ -424,26 +424,26 @@ Story.prototype.getMacroHandler = function(name) {
 }
 
 Story.prototype.getAbstract = function (param) {
-  var abstract = [], raw = [];
+  var result = [], raw = [];
   raw.push(this.title, this.text);
   var title = this.title && stripTags(this.title).clip(10, null, '\\s');
   var text = this.text && stripTags(this.text).clip(30, null, '\\s');
-  title && abstract.push('<b>' + title + '</b> ');
-  text && abstract.push(text);
-  if (abstract.length < 1 && arguments.length > 1) {
+  title && result.push('<b>' + title + '</b> ');
+  text && result.push(text);
+  if (result.length < 1 && arguments.length > 1) {
     var buffer;
     for (var i = 1; i < arguments.length; i += 1) {
       if (buffer = this.getMetadata(arguments[i])) {
         raw.push(buffer);
         buffer = stripTags(buffer).clip(20, null, '\\s');
-        buffer && abstract.push(buffer);
+        buffer && result.push(buffer);
       }
     }
   }
-  if (abstract.length < 1 && param['default'] === null) {
+  if (result.length < 1 && param['default'] === null) {
     return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
   }
-  return abstract.join(String.SPACE);
+  return result.join(String.SPACE);
 };
 
 /**
