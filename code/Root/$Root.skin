@@ -122,21 +122,31 @@
 </div>
 
 <% #javascript %>
-// Injecting the main.css if necessary
-if (!document.querySelector('link[href$=main\\.css]')) {
-   var link = document.createElement('link');
-   link.href = '<% site.href main.css %>';
-   link.rel = 'stylesheet';
-   link.type = 'text/css';
-   document.head.appendChild(link);
-}
+(function () {
+   // Injecting the main.css if necessary
+   if (!document.querySelector('link[href$=main\\.css]')) {
+      var link = document.createElement('link');
+      link.href = '<% site.href main.css %>';
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      document.head.appendChild(link);
+   }
+})();
 
 // Wrapping user scripts in a function which is called after library code has loaded.
 function init() {
    <% site.skin Site#javascript %>
 }
 
-var scripts = [];
+window.scripts = [];
+
+<% #include %>
+(function (url) {
+   var script = document.createElement('script');
+   script.type = 'text/javascript';
+   script.src = url;
+   document.head.appendChild(script);
+})('<% param.href %>');
 
 <% #stylesheet %>
 @import '<% root.static ../../styles/main.min.css %>';

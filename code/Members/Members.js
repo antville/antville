@@ -66,8 +66,6 @@ Members.prototype.getPermission = function(action) {
     return sitePermission && (Membership.require(Membership.OWNER) ||
         User.require(User.PRIVILEGED));
   }
-
-  return Feature.getPermission.apply(this, arguments);
 }
 
 Members.prototype.main_action = function() {

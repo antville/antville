@@ -241,7 +241,7 @@ scripts.push(function () {
 <% #edit %>
 <h1><% response.title %></h1>
 <div class='uk-article-meta'><% site.skin $HopObject#meta %></div>
-<form class='uk-form uk-form-stacked' id="prefs" method="post" action="<% response.action %>">
+<form class='uk-form uk-form-stacked' id="edit" method="post" action="<% response.action %>">
    <fieldset>
       <div class='uk-form-row uk-margin-top'>
          <label class='uk-form-label' for='mode'>
@@ -384,7 +384,7 @@ scripts.push(function () {
 
    // Group related <option> elements by inserting additional <optgroup> elements.
    var groups = [];
-   var element = $('form #timeZone');
+   var element = $('form#edit #timeZone');
    element.find('option').each(function(index, item) {
       var zone = $(item);
       var parts = zone.html().split('/'); // E.g. Europe/Vienna
@@ -473,12 +473,6 @@ scripts.push(function () {
 
 <% gettext "Best regards." %>
 <% gettext "The Management" %>
-
-<% #include %>
-var script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = '<% param.href %>';
-document.head.appendChild(script);
 
 <% #noscript %>
 <% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to permit the execution of JavaScript." %>

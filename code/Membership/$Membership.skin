@@ -68,7 +68,6 @@
       </label>
       <div class='uk-form-controls'>
          <textarea class='uk-width-1-1' rows="15" class="formText" wrap="virtual" name="text"><% request.text encoding="form" %></textarea>
-         <% trail Recaptcha prefix=<p> suffix=</p> %>
       </div>
    </div>
    <div class='uk-form-row'>
