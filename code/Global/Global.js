@@ -78,13 +78,12 @@ app.data.callbacks || (app.data.callbacks = []);
  */
 app.data.entries || (app.data.entries = []);
 /**
- * In-memory registry of Feature instances.
- * Features are defined in the “extra” dir.
- * @name app.data.features
+ * In-memory registry of Claustra instances.
+ * Claustra are defined in the “claustra” dir.
+ * @name app.data.claustra
  * @type Array
  */
-app.data.features || (app.data.features = []);
-app.data.trails || (app.data.trails = []);
+app.data.claustra || (app.data.claustra = []);
 /**
  * In-memory e-mail message queue.
  * They will be sent asynchronously by an Admin method.
@@ -257,8 +256,8 @@ function onStart() {
     app.logger.error('Error in database configuration: no root site found.');
     return;
   }
-  // Load add-ons aka trails
-  Trails.load(getProperty('trails'));
+  // Load add-ons aka claustra
+  Claustra.load();
   // This is necessary once to be sure that aspect-oriented code will be applied
   HopObject.prototype.onCodeUpdate && HopObject.prototype.onCodeUpdate();
   return;
@@ -915,6 +914,10 @@ function clip_filter(input, param, limit, clipping, delimiter) {
   return String(input || '').head(limit, clipping, delimiter);
 }
 
+function json_filter(value, param) {
+  return JSON.stringify(value);
+}
+
 /**
  * Renders an HTML <a> element from a URL or HopObject.
  * @see helma.Html#link
@@ -1015,9 +1018,10 @@ function formatDate(date, format) {
     return null;
   }
 
-  var pattern,
-      site = res.handlers.site,
-      locale = site.getLocale();
+  var pattern;
+  var site = res.handlers.site;
+  var locale = site ? site.getLocale() : null;
+  var timezone = site ? site.getTimeZone() : null;
 
   switch (format) {
     case null:
@@ -1076,7 +1080,7 @@ function formatDate(date, format) {
   }
 
   try {
-    return date.format(pattern, locale, site.getTimeZone());
+    return date.format(pattern, locale, timezone);
   } catch (ex) {
     return '[Invalid date format]';
   }

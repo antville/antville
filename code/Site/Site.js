@@ -291,8 +291,6 @@ Site.prototype.getPermission = function(action) {
     case '$Site#admin':
     return User.require(User.PRIVILEGED);
   }
-
-  return Feature.getPermission.apply(this, arguments);
 }
 
 Site.prototype.main_action = function() {
@@ -459,7 +457,8 @@ Site.prototype.main_js_action = function() {
   res.dependsOn(String(Root.VERSION));
   res.digest();
   root.renderSkin('$Root#javascript');
-  this.renderSkin('$Site#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
+  this.renderSkin('$Root#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
+  Claustra.invoke(req.path);
   return;
 }
 

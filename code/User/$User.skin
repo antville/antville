@@ -44,7 +44,7 @@
 
 <% #edit %>
 <h1><% response.title %></h1>
-<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+<form id='edit' class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
    <input type="hidden" name="digest" id="digest">
    <input type="hidden" name="hash" id="hash">
    <div class='uk-form-row'>
@@ -78,12 +78,6 @@
       </div>
    </div>
    <% user.skin $User#admin restricted=true %>
-   <div class='uk-form-row uk-margin-top'>
-      <fieldset>
-         <legend><% gettext Connections %></legend>
-         <% trail Connect context=profile default=— %>
-      </fieldset>
-   </div>
    <div class='uk-form-row uk-margin-top'>
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>

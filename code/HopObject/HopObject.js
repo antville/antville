@@ -538,11 +538,11 @@ HopObject.prototype.type_macro = function() {
  * @param {String} text
  */
 HopObject.prototype.link_macro = function(param, url, text) {
-  // FIXME: We need to check for trails and skins because they are always/sometimes
-  // transient, unfortunately. Active trails probably should become database records…
-  var isTrail = app.data.trails.contains(this._prototype.toLowerCase());
+  // FIXME: We need to check for claustra and skins because they are always/sometimes
+  // transient, unfortunately. Active claustra probably should become database records…
+  var isClaustra = !!Claustra.getByName(this._prototype);
   var isSkin = this.constructor === Skin;
-  if (this.isTransient() && !isTrail && !isSkin) {
+  if (this.isTransient() && !isClaustra && !isSkin) {
     return;
   }
   if (url) {
