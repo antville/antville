@@ -5,7 +5,8 @@
 build/work
 claustra/
 code/domains.map
-node_modules/
+jobs/
 local/
+node_modules/
 static/*
 !static/img
