@@ -137,11 +137,18 @@ Images.Default = new function() {
     this.height = image.height;
     this.getUrl = function () {
       return app.appsProperties.staticMountpoint + '/img/' + name;
-    }
-    this.render_macro = isSprite ? function () {
-      var shortName = this.name.substr(0, this.name.lastIndexOf('.'));
-      res.write("<i class='av-sprite av-sprite-" + shortName + "'></i>");
-    } : global.Image.prototype.render_macro;
+    };
+    this.render_macro = function (param) {
+      if (isSprite) {
+        var shortName = this.name.substr(0, this.name.lastIndexOf('.'));
+        res.write("<i class='av-sprite av-sprite-" + shortName + "'></i>");
+      } else {
+        global.Image.prototype.render_macro.call(this, {
+          width: param.width || this.width,
+          height: param.height || this.height
+        });
+      }
+    };
     this.thumbnail_macro = global.Image.prototype.thumbnail_macro;
     return this;
   }
