@@ -457,7 +457,7 @@ Site.prototype.main_js_action = function() {
   res.dependsOn(String(Root.VERSION));
   res.digest();
   root.renderSkin('$Root#javascript');
-  this.renderSkin('$Root#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
+  root.renderSkin('$Root#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
   Claustra.invoke(req.path);
   return;
 }
