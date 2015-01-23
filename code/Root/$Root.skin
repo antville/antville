@@ -135,7 +135,7 @@
 
 // Wrapping user scripts in a function which is called after library code has loaded.
 function init() {
-   <% site.skin Site#javascript %>
+   <% site.skin Site#javascript | script %>
 }
 
 window.scripts = [];

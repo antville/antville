@@ -918,6 +918,11 @@ function json_filter(value, param) {
   return JSON.stringify(value);
 }
 
+function script_filter(value, param) {
+  // Remove <script> element and comments (order in brackets is crucial)
+  return value.replace(/\s*(?:<!--|-->|<\/?[^>]*>)\s*/g, String.EMPTY);
+}
+
 /**
  * Renders an HTML <a> element from a URL or HopObject.
  * @see helma.Html#link
