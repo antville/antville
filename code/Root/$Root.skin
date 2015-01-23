@@ -210,7 +210,8 @@ var scripts = [];
       width: 262px;
       height: 53px;
       margin-left: -40px;
-      background: url('<% image /webloghead.gif url %>');
+      background: url('<% image /spritesheet.png url %>');
+      background-position: 5px -139px;
    }
 
    .av-header-bg-offset {
@@ -223,6 +224,7 @@ var scripts = [];
       top: 7px;
       height: 38px;
       background: url('<% image /dot.gif url %>');
+      background-position-x: 1px;
    }
 
    .av-title {
@@ -276,8 +278,9 @@ av-translated-locale {
 }
 
 // FIXME: This belongs to the connect module!
-.connect img {
-   padding: 2px 0;
+.connect i {
+   margin: -2px;
    vertical-align: middle;
    opacity: .3;
+   transform: scale(0.7);
 }
