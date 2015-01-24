@@ -372,6 +372,7 @@ scripts.push(function () {
       <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
          <% gettext Save %>
       </button>
+      <% site.link delete <% gettext Delete %> class='uk-button' %>
       <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
    </div>
 </form>
@@ -433,12 +434,6 @@ scripts.push(function () {
       <div class='uk-form-controls'>
          <% site.textarea notes class='uk-width-1-1' rows=5 %>
       </div>
-   </div>
-   <div class='uk-form-row'>
-      <a href='<% this.href delete %>' class='uk-button uk-button-danger'>
-         <i class='uk-icon-trash-o'></i>
-         Delete this site
-      </a>
    </div>
 </fieldset>
 

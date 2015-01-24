@@ -384,6 +384,7 @@ User.prototype.onLogout = function() { /* ... */ }
  * @returns {Boolean}
  */
 User.prototype.getPermission = function(action) {
+  if (action === 'delete') return false;
   return User.require(User.PRIVILEGED);
 }
 
