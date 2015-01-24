@@ -38,7 +38,8 @@ $(function() {
          return;
       }
       var href = String($(element).find('a').attr('href')) + location.hash;
-      if (href && location.href.lastIndexOf(href) + href.length === location.href.length) {
+      var index = location.href.lastIndexOf(href);
+      if (href && index > -1 && index + href.length === location.href.length) {
          $(element).addClass('uk-active');
          counter += 1;
       }
