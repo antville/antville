@@ -424,6 +424,7 @@ Story.prototype.getMacroHandler = function(name) {
 }
 
 Story.prototype.getAbstract = function (param) {
+  param || (param = {});
   var result = [], raw = [];
   raw.push(this.title, this.text);
   var title = this.title && stripTags(this.title).clip(10, null, '\\s');
