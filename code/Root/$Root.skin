@@ -286,11 +286,3 @@ av-translated-locale {
 .helma-debug-line /*:has(script)*/ {
    border: none !important;
 }
-
-// FIXME: This belongs to the connect module!
-.connect i {
-   margin: -2px;
-   vertical-align: middle;
-   opacity: .3;
-   transform: scale(0.7);
-}
