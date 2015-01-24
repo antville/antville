@@ -125,7 +125,7 @@ function storylist_macro(param) {
 
 function sitelist_macro(param) {
   param.limit || (param.limit = 10);
-  return list_macro(param, "updates", Math.min(param.limit, 25));
+  return list_macro(param, "sites", Math.min(param.limit, 25));
 }
 
 // FIXME: This method deserves some more compatibility pampering
