@@ -441,7 +441,7 @@ Story.prototype.getAbstract = function (param) {
       }
     }
   }
-  if (result.length < 1 && param['default'] === null) {
+  if (result.length < 1 && param['default'] === undefined) {
     return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
   }
   return result.join(String.SPACE);
