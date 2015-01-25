@@ -33,7 +33,7 @@
   "devDependencies": {
     "browserify": "^8.0.2",
     "less": "^2.1.2",
-    "napa": "^1.1.0",
-    "uglifyify": "^2.6.0"
+    "minifyify": "^6.1.0",
+    "napa": "^1.1.0"
   }
 }
