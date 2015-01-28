@@ -434,21 +434,21 @@ Site.prototype.main_css_action = function() {
   var lessCss = res.pop();
   try {
     lessParser.parse(lessCss, function(error, tree) {
-      if (error) {
-        res.writeln('/** ');
-        res.writeln(error.toSource())
-        res.writeln('**/');
-        res.writeln(lessCss);
-        return;
-      }
+      if (error) return handleError(error);
       res.writeln(tree.toCSS());
     });
   } catch (ex) {
-    res.writeln('/** ');
-    res.writeln(ex.toSource());
-    res.writeln('**/');
+    handleError(ex);
     res.writeln(lessCss);
   }
+
+  function handleError(e) {
+    res.writeln('/** ');
+    res.writeln(error.toSource())
+    res.writeln('**/');
+    return;
+  }
+
   return;
 }
 

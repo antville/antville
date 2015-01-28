@@ -43,6 +43,8 @@ app.addRepository('modules/jala/code/HopObject.js');
 app.addRepository('modules/jala/code/ListRenderer.js');
 app.addRepository('modules/jala/code/Utilities.js');
 
+app.addRepository(app.dir + '/Global/less.js');
+
 // Adding i18n message files as repositories
 (function() {
    var dir = new helma.File(app.dir, '../i18n');
@@ -1095,6 +1097,7 @@ function formatDate(date, format) {
 
 /**
  * Injects the XSLT stylesheet declaration into an XML string until Mozilla developers will have mercy.
+ * FIXME: Obsolete?
  * @param {String} xml An XML string
  * @returns {String} An XML string containing the XSLT stylesheet declaration
  */
