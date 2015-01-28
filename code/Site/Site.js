@@ -429,7 +429,7 @@ Site.prototype.main_css_action = function() {
   res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
   res.push();
-  root.renderSkin('$Root#stylesheet');
+  this.renderSkin('$Site#stylesheet');
   this.renderSkin('Site#stylesheet');
   var lessCss = res.pop();
   try {
@@ -457,7 +457,7 @@ Site.prototype.main_js_action = function() {
   res.dependsOn(String(Root.VERSION));
   res.digest();
   this.renderSkin('$Site#javascript');
-  root.renderSkin('$Root#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
+  root.renderSkin('$Site#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
   Claustra.invoke(req.path);
   return;
 }

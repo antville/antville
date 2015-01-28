@@ -114,10 +114,7 @@ function openPopup(img, width, height) {
 <% value 'hover color' #d50000 %>
 
 <% #stylesheet %>
-@button-background: #f5f5f5;
-@button-hover-background: #fafafa;
-
-body {
+html, body {
    background-color: <% value 'background color' %>;
    font-family: <% value font %>;
 }
@@ -130,28 +127,19 @@ a {
 }
 
 .av-poll-result-bar {
-   height: 5px;
-   overflow: hidden;
-   float: left;
-   margin-top: 7px;
-   margin-right: 10px;
    background-color: <% value "link color" %>;
-   font-size: 0px;
 }
 
 .uk-button-primary {
-   background: @button-background;
    border-color: <% value 'link color' %>;
    color: <% value 'link color' %>;
    &:hover {
-      background: @button-hover-background;
       border-color: <% value 'hover color' %>;
       color: <% value 'hover color' %>;
    }
 }
 
 .uk-pagination > .uk-active > span {
-   background: @button-background;
    border-color: <% value 'link color' %>;
    color: <% value 'link color' %>;
 }
@@ -164,24 +152,14 @@ a {
 }
 
 .uk-nav-side > li.uk-active > a {
-   background: none;
-   color: <% value 'link color' %>;
-   box-shadow: none;
-   font-weight: bold;
-}
-
-.uk-alert {
-   background: @button-background;
-   border-color: #333;
-   border-color: rgba(0, 0, 0, 0.3);
-   color: #999;
-}
-
-.jala-calendar-selected, .jala-calendar-selected a {
-   background: @button-background;
    color: <% value 'link color' %>;
 }
 
 .jala-calendar-selected {
    border: 1px solid <% value "link color" %>;
 }
+
+.jala-calendar-selected, .jala-calendar-selected a {
+   color: <% value 'link color' %>;
+}
+

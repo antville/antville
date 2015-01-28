@@ -66,8 +66,8 @@
 </footer>
 
 <% #javascript %>
-(function () {
-   // Injecting the main.css if necessary
+document.addEventListener('DOMContentLoaded', function () {
+   // Injecting main.css if necessary for compatibility reasons
    if (!document.querySelector('link[href$=main\\.css]')) {
       var link = document.createElement('link');
       link.href = '<% site.href main.css %>';
@@ -75,7 +75,7 @@
       link.type = 'text/css';
       document.head.appendChild(link);
    }
-})();
+});
 
 // Wrapping user scripts in a function which is called after library code has loaded.
 function init() {
@@ -83,6 +83,340 @@ function init() {
 }
 
 window.scripts = [];
+
+<% #include %>
+(function (url) {
+   var script = document.createElement('script');
+   script.type = 'text/javascript';
+   script.src = url;
+   document.head.appendChild(script);
+})('<% param.href %>');
+
+<% #stylesheet %>
+@import '<% root.static ../../styles/main.min.css %>';
+
+@font: Helvetica, Arial, sans-serif;
+@background-color: #fff;
+@link-color: #ff4040;
+@hover-color: #d50000;
+
+@button-background: #f5f5f5;
+@button-hover-background: #fafafa;
+
+// Overwriting some UIKit classes to go along with Antville’s layout
+
+.uk-table-striped tbody tr:hover, .uk-table-striped tbody tr:nth-of-type(odd) {
+   background: inherit;
+}
+
+.uk-button-group.av-link-group a {
+   border-right: none;
+}
+
+.uk-nav-divider + .uk-nav-divider,
+.uk-nav-header + .uk-nav-header {
+  display: none;
+}
+
+.uk-nav-side .uk-nav-divider {
+   margin-top: 15px;
+   border-top: none;
+}
+
+.uk-alert {
+   background: @button-background;
+   border-color: #333;
+   border-color: rgba(0, 0, 0, 0.3);
+   color: #999;
+}
+
+.uk-button-primary {
+   background-color: @button-background;
+   border-color: @link-color;
+   color: @link-color;
+   &:hover {
+      background: @button-hover-background;
+      border-color: @hover-color;
+      color: @hover-color;
+   }
+}
+
+.uk-pagination > .uk-active > span {
+   background: @button-background;
+   border-color: @link-color;
+   color: @link-color;
+}
+
+.uk-button-link, .uk-subnav > li > a {
+   color: @link-color;
+   &:hover {
+      color: @hover-color;
+   }
+}
+
+.uk-nav-side > li.uk-active > a {
+   background: none;
+   color: @link-color;
+   box-shadow: none;
+   font-weight: bold;
+}
+
+// Here come the classes defining the default Antville layout
+
+html, body {
+   background-color: @background-color;
+   font-family: @font;
+}
+
+a {
+   color: @link-color;
+   &:hover {
+     color: @hover-color;
+   }
+}
+
+em {
+   color: #000;
+}
+
+.av-page {
+   width: 900px; // FIXME: Could we use the `vw` unit already?
+}
+
+.av-sprite {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.av-border-left {
+   border-left: 1px solid #ddd;
+}
+
+.av-overflow {
+   // FIXME: Is this cross-browser compatible?
+   max-width: 0;
+   overflow: hidden;
+}
+
+.av-invisible {
+   visibility: hidden;
+}
+
+.av-upload {
+   position: relative;
+
+   input[type='file'] {
+      position: relative;
+      z-index: 1;
+      visibility: hidden;
+}
+
+   .av-upload-controls {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+   }
+}
+
+.av-image-box {
+   display: inline-block;
+   max-width: 100%;
+}
+
+.av-tagged {
+   .av-tagged-image {
+      opacity: 0;
+      img {
+         display: inline-block;
+         margin: 0;
+         padding: 0;
+         vertical-align: bottom;
+         opacity: 1;
+      }
+      .Caption_Content {
+         color: #fff;
+         padding: 10px;
+      }
+   }
+}
+
+.av-poll-result-bar {
+   display: inline-block;
+   height: 0.5rem;
+   overflow: hidden;
+   margin-right: 0.5rem;
+   background-color: @link-color;
+}
+
+.av-header {
+   margin-top: 5px;
+
+   .av-header-bg {
+      position: relative;
+   }
+
+   .av-header-bg-chaos {
+      float: left;
+      width: 262px;
+      height: 53px;
+      margin-left: -40px;
+      background: url('<% image /spritesheet.png url %>');
+      background-position: 5px -139px;
+   }
+
+   .av-header-bg-offset {
+      height: 53px;
+      margin-left: 222px;
+   }
+
+   .av-header-bg-dots {
+      position: relative;
+      top: 7px;
+      height: 38px;
+      background: url('<% image /dot.gif url %>');
+      background-position-x: 1px;
+   }
+
+   .av-title {
+      position: relative;
+      top: -50px;
+      overflow: visible;
+      white-space: nowrap;
+      font-family: Verdana, Helvetica, Arial, sans-serif;
+      font-size: 25px;
+      font-weight: bold;
+      transform: translateY(50%);
+   }
+}
+
+.av-skin-active {
+   background: #fff;
+   opacity: .25;
+}
+
+.av-translated-locale {
+   font-weight: bold;
+}
+
+.av-layout-sandbox {
+   height: 22px;
+}
+
+.av-layout-sandbox div {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 22px;
+   padding: 0 20px;
+   background: url('<% image /sandbox.png url %>');
+   background-position: 0 23px;
+   text-align: left;
+}
+
+.av-skin-control {
+   margin: 5px 0;
+}
+
+.av-skin-edit-link {
+   padding: 2px;
+   text-decoration: none !important;
+}
+
+// Overwriting some Helma and Jala classes for debugging and calendar integration
+
+.helma-debug-line /*:has(script)*/ {
+   border: none !important;
+}
+
+.jala-calendar {
+   width: 100%;
+   text-align: center;
+}
+
+.jala-calendar tbody th {
+   font-weight: normal;
+   color: #999;
+}
+
+.jala-calendar-day {
+   width: 14.27%;
+   line-height: 1.2rem;
+   text-align: center;
+   a {
+      font-weight: bold;
+   }
+}
+
+.jala-calendar-selected {
+   border: 1px solid @link-color;
+   border-radius: 4px;
+}
+
+.jala-calendar-selected, .jala-calendar-selected a {
+   background: @button-background;
+   color: @link-color;
+   .uk-button-primary;
+}
+
+.jala-calendar-left {
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.jala-calendar-right {
+   border: 0;
+   text-align: center;
+   vertical-align: baseline;
+}
+
+.jala-calendar-selected, .jala-calendar-selected a {
+   background: @button-background;
+   color: @link-color;
+}
+
+.jala-calendar-selected {
+   border: 1px solid @link-color;
+}
+
+// Overwriting some CSS classes for Google’s custom search
+
+.gs-result .gs-title, .gs-result .gs-title * {
+   text-decoration: none !important;
+}
+
+a.gs-title:hover {
+   text-decoration: underline !important;
+}
+
+.gsc-results {
+   width: auto !important;
+}
+
+.cse .gsc-control-cse, .gsc-control-cse, .gsc-result-info, .gcsc-branding, .gsc-table-result, .gsc-thumbnail-inside, .gsc-url-top  {
+   padding-left: 0 !important;
+   padding-right: 0 !important;
+}
+
+.gsc-results .gsc-cursor-box {
+   margin: 10px 0 0 0 !important;
+}
+
+.gs-no-results-result .gs-snippet, .gs-error-result .gs-snippet {
+   margin: 0 !important;
+}
+
+.gs-webResult div.gs-visibleUrl, .gs-imageResult div.gs-visibleUrl {
+   color: #999 !important;
+}
+
+.gcsc-branding-img-noclear {
+   width: 51px;
+   height: 15px;
+   max-width: none;
+   vertical-align: text-bottom;
+}
 
 <% #referrers %>
 <h1><% response.title %></h1>
