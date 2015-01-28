@@ -43,8 +43,6 @@ app.addRepository('modules/jala/code/HopObject.js');
 app.addRepository('modules/jala/code/ListRenderer.js');
 app.addRepository('modules/jala/code/Utilities.js');
 
-app.addRepository(app.dir + '/Global/less.js');
-
 // Adding i18n message files as repositories
 (function() {
    var dir = new helma.File(app.dir, '../i18n');

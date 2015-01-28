@@ -20,9 +20,7 @@ less.mode = 'rhino';
 
 (function() {
 
-    // FIXME: We already have a console!
-    //console = function() {
-    __console = function() {
+    console = function() {
         var stdout = java.lang.System.out;
         var stderr = java.lang.System.err;
 
