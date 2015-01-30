@@ -99,14 +99,37 @@ window.scripts = [];
 @link-color: #ff4040;
 @hover-color: #d50000;
 
-@button-background: #f5f5f5;
-@button-hover-background: #fafafa;
+// Compat
+
+@font-family: <% value 'base font' default=inherit %>;
+@font-size: <% value 'base font size' default=inherit %>;
+@font-color: <% value 'base font color' default=inherit %>;
+
+@font-family-small: <% value 'small font' default=inherit %>;
+@font-size-small: <% value 'small font size' default=inherit %>;
+@font-color-small: <% value 'small font color' default=inherit %>;
+
+@font-family-large: <% value 'big font' default=inherit %>;
+@font-size-large: <% value 'big font size' default=inherit %>;
+@font-color-large: <% value 'big font color' default=inherit %>;
+
+@background-color: <% value 'background color' default=inherit %>;
+@link-color: <% value 'link color' default=inherit %>;
+@hover-color: <% value 'active link color' default=inherit %>;
+@muted-color: contrast(@background-color, lighten(@background-color, 33%), darken(@background-color, 33%));
+@muted-background: fadeout(@muted-color, 75%);
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
 html, body {
    background-color: @background-color;
-   font-family: @font;
+   font-family: @font-family;
+   font-size: @font-size;
+}
+
+h1, h2, h3, h4, h5, h6 {
+   color: @font-color-large;
+   font-family: @font-family-large;
 }
 
 a {
@@ -117,19 +140,25 @@ a {
 }
 
 em {
-   color: <% value 'base font color' default=black %>; // FIXME: compatibility
+   color: @font-color;
 }
 
 img {
-   max-width: initial; // FIXME: compatibility
+   //max-width: initial; // FIXME: compatibility
 }
 
+/*
 hr {
    // FIXME: compatibility
    margin: initial;
    box-sizing: initial;
    height: initial;
    border-top-color: initial;
+}
+*/
+
+.uk-article-meta {
+   color: @muted-color;
 }
 
 .uk-table-striped tbody tr:hover, .uk-table-striped tbody tr:nth-of-type(odd) {
@@ -151,31 +180,92 @@ hr {
 }
 
 .uk-alert {
-   background: @button-background;
+   background: @background-color;
    border-color: #333;
    border-color: rgba(0, 0, 0, 0.3);
    color: #999;
 }
 
-.uk-button-primary {
-   background-color: @button-background;
-   border-color: @link-color;
-   color: @link-color;
+.uk-icon-button {
+   &:link, &:visited {
+      background-color: @background-color;
+      color: @link-color;
+      border-color: @link-color;
+      text-shadow: initial;
+   }
    &:hover {
-      background: @button-hover-background;
-      border-color: @hover-color;
+      background-color: @background-color;
       color: @hover-color;
+      border-color: @hover-color;
+      text-shadow: initial;
    }
 }
 
-.uk-pagination > .uk-active > span {
-   background: @button-background;
-   border-color: @link-color;
-   color: @link-color;
+.uk-button {
+   &, &:link, &:visited {
+      background-color: @background-color;
+      color: @font-color;
+      border-color: @font-color;
+      text-shadow: initial;
+   }
+   &:hover {
+      background-color: @background-color;
+      color: @hover-color;
+      border-color: @hover-color;
+   }
+   &.uk-button-link {
+      border: initial;
+      &:link, &:visited {
+         color: @link-color;
+      }
+      &:hover {
+         color: @hover-color;
+      }
+   }
+   &.uk-button-primary {
+      background-color: @background-color;
+      border-style: double;
+      border-color: @link-color;
+      color: @link-color;
+      font-weight: bold;
+      &:hover {
+         background: inherit;
+         border-color: @hover-color;
+         color: @hover-color;
+      }
+   }
 }
 
-.uk-button-link, .uk-subnav > li > a {
-   color: @link-color;
+.uk-pagination {
+   & > li > a {
+      background: @background-color;
+      color: @link-color;
+      border-color: @link-color;
+      text-shadow: initial;
+      &:hover {
+         background: @background-color;
+         color: @hover-color;
+         border-color: @hover-color;
+      }
+   }
+   & > .uk-active > span {
+      background: @background-color;
+      border-color: @font-color-small;
+      color: @font-color-small;
+      font-weight: bold;
+   }
+   & > .uk-disabled > span {
+      background: @muted-background;
+      color: @muted-color;
+      border-color: @muted-color;
+      text-shadow: initial;
+   }
+}
+
+.uk-subnav > li > a {
+   &:link, &:visited {
+      color: @link-color;
+   }
    &:hover {
       color: @hover-color;
    }
@@ -190,6 +280,15 @@ hr {
 
 .uk-thumbnail img {
    max-width: 100%;
+}
+
+h1 a, .uk-table a {
+   &:visited {
+      color: @link-color;
+   }
+   &:hover {
+      color: @hover-color;
+   }
 }
 
 // Here come the classes defining the default Antville layout
@@ -353,7 +452,7 @@ hr {
 
 .jala-calendar tbody th {
    font-weight: normal;
-   color: <% value 'link color' default=#999 %>; // FIXME: compatibility
+   color: @font-color;
 }
 
 .jala-calendar-day {
@@ -366,14 +465,9 @@ hr {
 }
 
 .jala-calendar-selected {
-   border: 1px solid @link-color;
+   border: 1px solid @font-color-small;
    border-radius: 4px;
-}
-
-.jala-calendar-selected, .jala-calendar-selected a {
-   background: @button-background;
-   color: @link-color;
-   .uk-button-primary;
+   font-weight: bold;
 }
 
 .jala-calendar-left {
@@ -385,15 +479,6 @@ hr {
    border: 0;
    text-align: center;
    vertical-align: baseline;
-}
-
-.jala-calendar-selected, .jala-calendar-selected a {
-   background: @button-background;
-   color: @link-color;
-}
-
-.jala-calendar-selected {
-   border: 1px solid @link-color;
 }
 
 // Overwriting some CSS classes for Google’s custom search

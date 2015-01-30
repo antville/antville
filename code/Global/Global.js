@@ -736,11 +736,9 @@ function value_macro(param, name, value) {
   }
   name = name.toLowerCase();
   if (!value) {
-    res.write(res.meta.values[name]);
-  } else {
-    //res.write('/* set ' + name + ' to ' + value + ' */');
-    res.meta.values[name] = value;
+    return res.meta.values[name];
   }
+  res.meta.values[name] = value;
   return;
 }
 

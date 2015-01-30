@@ -436,7 +436,7 @@ Site.prototype.main_css_action = function() {
 
   try {
     lessParser.parse(lessCss, function(error, tree) {
-      if (error) return handleError(error);
+      if (error) throw error;
       //var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
       //res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
       res.writeln(tree.toCSS());
@@ -446,10 +446,11 @@ Site.prototype.main_css_action = function() {
     res.writeln(lessCss);
   }
 
-  function handleError(e) {
+  function handleError(error) {
     res.writeln('/** ');
-    res.writeln(error.toSource())
+    res.writeln(error)
     res.writeln('**/');
+    console.log(error);
     return;
   }
 
