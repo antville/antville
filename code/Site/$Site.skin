@@ -278,8 +278,15 @@ h1 a, .uk-table a {
    }
 }
 
-.uk-table th, .uk-table td {
+.uk-table th, .uk-table td, {
    border-color: @muted-background;
+}
+
+.uk-form legend:after {
+   content: '';
+   display: block;
+   border-bottom: 1px solid @muted-background;
+   width: 100%;
 }
 
 // Here come the classes defining the default Antville layout
@@ -294,7 +301,7 @@ h1 a, .uk-table a {
 }
 
 .av-border-left {
-   border-left: 1px solid #ddd;
+   border-left: 1px solid @muted-background;
 }
 
 .av-overflow {
