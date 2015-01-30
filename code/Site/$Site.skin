@@ -535,8 +535,8 @@ a.gs-title:hover {
       <div class='uk-form-help-block'>
          <label>
             <input type="checkbox" id="includeSpam" name="includeSpam" value="checked" <% request.includeSpam prefix='checked="' suffix='"' encoding="form" %> />
-            <% gettext 'Disable spam filter' %>
-            <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'right'}"title='<% gettext "You can edit the spam filter in the site settings." %>'></i>
+            <% gettext 'Disable filter' %>
+            <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip="{pos: 'right'}"title='<% gettext "Edit the filter in the site settings." %>'></i>
          </label>
       </div>
    </div>
@@ -816,7 +816,7 @@ scripts.push(function () {
    </fieldset>
    <a id="spamfilter" name="spamfilter"></a>
    <fieldset class='uk-margin-top'>
-      <legend><% gettext "Referrer Spam Filter" %></legend>
+      <legend><% gettext "Referrer Filter" %></legend>
       <div class='uk-form-row'>
          <div class='uk-form-controls'>
             <% site.textarea spamfilter rows=5 class='uk-width-1-1' %>
