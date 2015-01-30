@@ -92,6 +92,8 @@ window.scripts = [];
 })('<% param.href %>');
 
 <% #stylesheet %>
+@import '<% root.static ../../styles/main.min.css %>';
+
 @font: Helvetica, Arial, sans-serif;
 @background-color: #fff;
 @link-color: #ff4040;
