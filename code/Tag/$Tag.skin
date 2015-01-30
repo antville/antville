@@ -20,8 +20,7 @@
   <% list.nextLink text="<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
 </ul>
 <script type='text/javascript'>
-$(function () {
-   $(function() {
+   $(window).load(function() {
       var resizeTimer = null;
       $('.av-tagged').collageCaption();
       $(window).bind('resize', function() {
@@ -30,15 +29,13 @@ $(function () {
          resizeTimer = setTimeout(collage, 200);
       });
 
+      collage();
+
+      function collage() {
+         $('.av-tagged').removeWhitespace().collagePlus({
+            allowPartialLastRow: true,
+            fadeSpeed: 'slow'
+         });
+      }
    });
-
-   collage();
-
-   function collage() {
-      $('.av-tagged').removeWhitespace().collagePlus({
-         allowPartialLastRow: true,
-         fadeSpeed: 'slow'
-      });
-   }
-});
 </script>
