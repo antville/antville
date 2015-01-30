@@ -102,14 +102,42 @@ window.scripts = [];
 @button-background: #f5f5f5;
 @button-hover-background: #fafafa;
 
-// Overwriting some UIKit classes to go along with Antville’s layout
+// Overwriting some classes defined by UIKit to go along with Antville’s layout
+
+html, body {
+   background-color: @background-color;
+   font-family: @font;
+}
+
+a {
+   color: @link-color;
+   &:hover {
+     color: @hover-color;
+   }
+}
+
+em {
+   color: <% value 'base font color' default=black %>; // FIXME: compatibility
+}
+
+img {
+   max-width: initial; // FIXME: compatibility
+}
+
+hr {
+   // FIXME: compatibility
+   margin: initial;
+   box-sizing: initial;
+   height: initial;
+   border-top-color: initial;
+}
 
 .uk-table-striped tbody tr:hover, .uk-table-striped tbody tr:nth-of-type(odd) {
    background: inherit;
 }
 
 .uk-button-group.av-link-group a {
-   border-right: none;
+   border-right: initial;
 }
 
 .uk-nav-divider + .uk-nav-divider,
@@ -160,35 +188,11 @@ window.scripts = [];
    font-weight: bold;
 }
 
+.uk-thumbnail img {
+   max-width: 100%;
+}
+
 // Here come the classes defining the default Antville layout
-
-html, body {
-   background-color: @background-color;
-   font-family: @font;
-}
-
-a {
-   color: @link-color;
-   &:hover {
-     color: @hover-color;
-   }
-}
-
-em {
-   color: <% value 'base font color' default=black %>; // FIXME: compatibility
-}
-
-img {
-   max-width: none; // FIXME: compatibility
-}
-
-hr {
-   // FIXME: compatibility
-   margin: initial;
-   box-sizing: initial;
-   height: initial;
-   border-top-color: initial;
-}
 
 .av-page {
    width: 900px; // FIXME: Could we use the `vw` unit already?
@@ -239,6 +243,7 @@ hr {
    .av-tagged-image {
       opacity: 0;
       img {
+         max-width: 100%;
          display: inline-block;
          margin: 0;
          padding: 0;
@@ -425,7 +430,7 @@ a.gs-title:hover {
 .gcsc-branding-img-noclear {
    width: 51px;
    height: 15px;
-   max-width: none;
+   max-width: initial;
    vertical-align: text-bottom;
 }
 
