@@ -121,7 +121,6 @@ html, body {
 }
 
 body {
-   margin: 8px;
    font-family: @font-family;
 }
 
