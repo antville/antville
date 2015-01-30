@@ -102,7 +102,7 @@
    </div>
 </form>
 <script type="text/javascript">
-scripts.push(function() {
+$(function() {
    if ('<% image.name %>') {
       $('#name').attr('disabled', true);
       $('#maxWidth').attr('disabled', true);

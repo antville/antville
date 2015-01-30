@@ -63,7 +63,7 @@ else
 
 <% #restore %>
 <script type="text/javascript">
-scripts.push(function() {
+$(function() {
    var url = "<% site.href backup.js %>";
    var input = $(".backup :input");
 

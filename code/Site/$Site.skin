@@ -79,16 +79,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <% site.skin Site#javascript | script %>
 
-window.scripts = [];
-
 <% #include %>
 (function (url) {
-   //document.writeln("<script type='text/javascript' src='<% param.href %>'></script>");
    var script = document.createElement('script');
    script.type = 'text/javascript';
    script.src = url;
-   var scripts = document.head.getElementsByTagName('script');
-   document.head.insertBefore(script, scripts[0]);
+   document.head.appendChild(script);
 })('<% param.href %>');
 
 <% #stylesheet %>
@@ -552,7 +548,7 @@ a.gs-title:hover {
    </tbody>
 </table>
 <script type="text/javascript">
-scripts.push(function () {
+$(function () {
    var query = new Antville.Query();
    var spamFilter = new Antville.Filter([<% site.spamfilter %>]);
    var searchFilter = new Antville.Filter(query.filter);
@@ -829,7 +825,7 @@ scripts.push(function () {
    </div>
 </form>
 <script>
-scripts.push(function () {
+   $(function () {
    $('input#callbackMode').on('click', function(event) {
       $('input#callbackUrl').prop('disabled', !this.checked);
    });

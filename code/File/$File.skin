@@ -64,7 +64,7 @@
    </div>
 </form>
 <script type="text/javascript">
-scripts.push(function() {
+$(function() {
    if ('<% file.name %>') {
       $('#name').attr('disabled', true);
    }

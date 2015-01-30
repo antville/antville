@@ -38,7 +38,7 @@
    </div>
 </div>
 <script>
-scripts.push(function () {
+$(function () {
    $('.av-upload input[type="file"]').on('change', function (event) {
       $('#<% param.name %>_origin').val($(this).val());
    });

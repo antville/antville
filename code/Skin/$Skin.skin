@@ -36,7 +36,7 @@
    <% skin.textarea source %>
 </form>
 <script type='text/javascript'>
-scripts.push(function() {
+$(function() {
    var mode;
    if (location.href.indexOf('stylesheet') > -1) {
       mode = 'text/css';

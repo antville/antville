@@ -3,12 +3,17 @@
 
 <% #urlPreview %>
 <a id='av-site-url-preview'></a>
-<script>
-scripts.push(function () {
+<script type='text/javascript'>
+$(function () {
   $('#name').on('keyup', function (event) {
-    var url = '<% root.href %>' + $(this).val();
-    var html = '<% root.href %>' + '<b>' + $(this).val() + '</b>';
-    $('#av-site-url-preview').html(html).attr('href', url);
+    var name = $(this).val();
+    if (name) {
+      var url = '<% root.href %>' + name;
+      var html = '<% root.href %>' + '<b>' + name + '</b>';
+      $('#av-site-url-preview').html(html).attr('href', url);
+    } else {
+      $('#av-site-url-preview').html(name);
+    }
   });
 });
 </script>

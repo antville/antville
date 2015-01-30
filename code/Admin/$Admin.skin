@@ -107,7 +107,7 @@
    </div>
 </form>
 <script type="text/javascript">
-scripts.push(function() {
+$(function() {
    $("#creationScope").on('change', function() {
       var disabled = $(this).val() === "regular" ? false : true;
       $("#probationPeriod").attr("disabled", disabled);

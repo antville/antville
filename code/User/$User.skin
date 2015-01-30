@@ -87,9 +87,8 @@
    </div>
 </form>
 <script type="text/javascript">
-scripts.push(function () {
+$(function () {
    $("#submit").click(function (event) {
-      //event.preventDefault();
       var token = "<% session.token %>";
       var salt = "<% session.salt %>";
       var password = $("#password").val();
@@ -97,9 +96,7 @@ scripts.push(function () {
          var hash = $.md5(password + token);
          $("#hash").val(hash);
          $("#password").val("");
-         //$("#digest").val($.md5($.md5(password + salt) + token));
       }
-      return true;
    });
 });
 </script>

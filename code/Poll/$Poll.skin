@@ -120,7 +120,7 @@ else
    </div>
 </form>
 <script type="text/javascript">
-scripts.push(function() {
+$(function() {
    var index = $(".choice").length + 1;
    $("#add").on('click', function (event) {
       event.preventDefault();

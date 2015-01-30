@@ -9,10 +9,6 @@ require('uikit-bower/js/uikit');
 require('uikit-bower/js/components/form-password');
 
 $(function() {
-   for (var i = 0; i < scripts.length; i += 1) {
-      scripts[i].call();
-   }
-
    // Extend jQuery with selectText() method.
    $.fn.selectText = function() {
       var element = this.get(0);

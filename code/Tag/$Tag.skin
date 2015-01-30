@@ -20,7 +20,7 @@
   <% list.nextLink text="<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
 </ul>
 <script type='text/javascript'>
-scripts.push(function () {
+$(function () {
    $(function() {
       var resizeTimer = null;
       $('.av-tagged').collageCaption();
