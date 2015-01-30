@@ -4,7 +4,7 @@
    <td>
       <a href='<% tag.href action=<% request.action encoding='form' %> %>'><% tag.name %></a>
    </td>
-   <td class='uk-text-right'>
+   <td class='uk-text-right uk-text-nowrap'>
       <% tag.link rss.xml "<i class='uk-icon-rss'></i>" %>
       <% tag.link delete "<i class='uk-icon-trash-o'></i>" class='deleteTag' data-av-tag-url=<% tag.href delete %> %>
       <% tag.link rename "<i class='uk-icon-pencil'></i>" class='renameTag' data-av-tag-url=<% tag.href rename %> %>
