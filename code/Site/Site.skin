@@ -114,6 +114,7 @@ function openPopup(img, width, height) {
 <% value 'hover color' #d50000 %>
 
 <% #stylesheet %>
+/*
 html, body {
    background-color: <% value 'background color' %>;
    font-family: <% value font %>;
@@ -162,4 +163,4 @@ a {
 .jala-calendar-selected, .jala-calendar-selected a {
    color: <% value 'link color' %>;
 }
-
+*/

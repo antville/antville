@@ -102,8 +102,8 @@ window.scripts = [];
 @muted-color: contrast(@background-color, lighten(@background-color, 33%), darken(@background-color, 33%));
 @muted-background: fadeout(@muted-color, 75%);
 
-@font-family: <% value 'base font' default='Helvetica, Arial, sans-serif' %>;
-@font-size: <% value 'base font size' default=inherit %>;
+@font-family: <% value 'base font' default='Helvetica Neue, Helvetica, Arial, sans-serif' %>;
+@font-size: <% value 'base font size' default='14px / 20px' %>;
 @font-color: <% value 'base font color' default=inherit %>;
 
 @font-family-small: <% value 'small font' default=inherit %>;
@@ -116,9 +116,8 @@ window.scripts = [];
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
-body {
-   background-color: @background-color;
-   font-family: @font-family;
+html {
+   font: normal @font-size @font-family;
 }
 
 h1, h2, h3, h4, h5, h6 {
