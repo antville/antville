@@ -127,6 +127,10 @@ html, body {
    font-size: @font-size;
 }
 
+body {
+   margin: 8px;
+}
+
 h1, h2, h3, h4, h5, h6 {
    color: @font-color-large;
    font-family: @font-family-large;
@@ -157,8 +161,8 @@ hr {
 }
 */
 
-.uk-article-meta {
-   color: @muted-color;
+.uk-text-muted, .uk-article-meta, .uk-description-list-line > dd {
+   color: @muted-color !important;
 }
 
 .uk-table-striped tbody tr:hover, .uk-table-striped tbody tr:nth-of-type(odd) {
@@ -180,10 +184,10 @@ hr {
 }
 
 .uk-alert {
-   background: @background-color;
-   border-color: #333;
-   border-color: rgba(0, 0, 0, 0.3);
-   color: #999;
+   background: @muted-background;
+   border-color: @muted-color;
+   color: @muted-color;
+   text-shadow: none;
 }
 
 .uk-icon-button {
