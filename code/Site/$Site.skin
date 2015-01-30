@@ -94,7 +94,7 @@ window.scripts = [];
 <% #stylesheet %>
 @import '<% root.static ../../styles/main.min.css %>';
 
-// Compat
+// FIXME: compatibility
 
 @background-color: <% value 'background color' default=#fff %>;
 @link-color: <% value 'link color' default=#ff4040 %>;
@@ -116,11 +116,8 @@ window.scripts = [];
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
-html, body {
-   background-color: @background-color;
-}
-
 body {
+   background-color: @background-color;
    font-family: @font-family;
 }
 
