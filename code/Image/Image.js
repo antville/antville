@@ -90,11 +90,12 @@ Image.getFileExtension = function(type) {
   if (index > -1) {
     type = type.substr(0, index);
   }
-  switch (type) {
+  switch (type.toLowerCase()) {
     //case 'image/x-icon':
     //return '.ico';
     case 'image/gif':
     return '.gif';
+    case 'image/jpg':
     case 'image/jpeg':
     case 'image/pjpeg':
     return '.jpg';

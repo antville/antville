@@ -265,43 +265,45 @@ Layout.prototype.export_action = function() {
 }
 
 Layout.prototype.import_action = function() {
-  var self = this;
+  var layout = this;
   var data = req.postParams;
   if (data.submit) {
     try {
       if (!data.upload || data.upload.contentLength === 0) {
         throw Error(gettext('Please upload a zipped layout archive'));
       }
-      // Extract zipped layout to temporary directory
-      var dir = this.site.getStaticFile();
-      var temp = new helma.File(dir, 'import.temp');
-      var fname = data.upload.writeToFile(dir);
-      var zip = new helma.File(dir, fname);
-      (new helma.Zip(zip)).extractAll(temp);
-      zip.remove();
-      var data = Xml.read(new helma.File(temp, 'data.xml'));
+      // Remove current layout
+      Layout.remove.call(this);
+      // Extract zipped layout
+      var baseDir = this.site.getStaticFile();
+      var layoutDir = this.getFile();
+      var fname = data.upload.writeToFile(baseDir);
+      var zipFile = new helma.File(baseDir, fname);
+      var zip = new helma.Zip(zipFile);
+      zip.extractAll(layoutDir);
+      zipFile.remove();
+      // Read data file
+      var data = Xml.read(new helma.File(layoutDir, 'data.xml'));
       if (!data.version) {
         throw Error(gettext('Sorry, this layout is not compatible with Antville.'));
       }
-      // Remove current layout and replace it with imported one
-      Layout.remove.call(this);
-      temp.renameTo(this.getFile());
+      // Begin import
       this.origin = data.origin;
       this.originator = data.originator;
       this.originated = data.originated;
       data.images.forEach(function() {
-        Image.add(this);
+        var content = new helma.File(layoutDir, this.fileName);
+        this.file_origin = data.origin;
+        this.file = Packages.helma.util.MimePart(this.name, content.toByteArray(), this.contentType);
+        Image.add(this, layout);
       });
       this.touch();
       res.message = gettext('The layout was successfully imported.');
     } catch (ex) {
       res.message = ex;
       app.log(ex);
-      temp && temp.removeDirectory();
-      res.redirect(this.href(req.action));
     }
-    res.redirect(this.href());
-    return;
+    res.redirect(this.href(req.action));
   }
   res.data.title = gettext('Import Layout');
   res.data.body = this.renderSkinAsString('$Layout#import');
