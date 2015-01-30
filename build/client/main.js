@@ -107,6 +107,10 @@ Antville.Referrer = function(url, text, count) {
    this.url = url;
    var re = new RegExp('https?://(?:www\.)?');
    this.text = String(text).replace(re, '');
+   var pos = this.text.lastIndexOf('/');
+   if (pos === this.text.length - 1) {
+      this.text = this.text.substr(0, pos);
+   }
    this.count = parseInt(count, 10);
    this.compose = function(prefix, key) {
       prefix || (prefix = '');
