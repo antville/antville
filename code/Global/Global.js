@@ -1311,7 +1311,7 @@ function renderPager(collectionOrSize, url, itemsPerPage, pageIdx) {
     return;
   }
 
-  var maxItems = 10;
+  var maxItems = 5;
   var size = 0;
   if (collectionOrSize instanceof Array) {
     size = collectionOrSize.length;
