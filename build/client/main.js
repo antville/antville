@@ -8,8 +8,6 @@ require('jquery-collagePlus/extras/jquery.removeWhitespace');
 require('uikit-bower/js/uikit');
 require('uikit-bower/js/components/form-password');
 
-init(); // This method is defined in the $Root#javascript skin rendered by Site.main_js_action()
-
 $(function() {
    for (var i = 0; i < scripts.length; i += 1) {
       scripts[i].call();

@@ -428,13 +428,17 @@ Site.prototype.main_css_action = function() {
   HopObject.confirmConstructor(Skin);
   res.dependsOn((new Skin('Site', 'stylesheet')).getStaticFile().lastModified());
   res.digest();
+
   res.push();
   this.renderSkin('$Site#stylesheet');
   this.renderSkin('Site#stylesheet');
   var lessCss = res.pop();
+
   try {
     lessParser.parse(lessCss, function(error, tree) {
       if (error) return handleError(error);
+      var file = new java.io.File(root.getStaticFile('../../styles/main.min.css'));
+      res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
       res.writeln(tree.toCSS());
     });
   } catch (ex) {
@@ -455,13 +459,17 @@ Site.prototype.main_css_action = function() {
 Site.prototype.main_js_action = function() {
   res.contentType = 'text/javascript';
   res.dependsOn(String(Root.VERSION));
+  HopObject.confirmConstructor(Skin);
+  res.dependsOn((new Skin('Site', 'javascript')).getStaticFile().lastModified());
   res.digest();
+  var file = new java.io.File(root.getStaticFile('../../scripts/main.min.js'));
+  res.writeln(Packages.org.apache.commons.io.FileUtils.readFileToString(file, 'utf-8'));
   this.renderSkin('$Site#javascript');
-  root.renderSkin('$Site#include', {href: root.getStaticUrl('../../scripts/main.min.js?v=' + Root.VERSION)});
   Claustra.invoke(req.path);
   return;
 }
 
+// FIXME: compatibility
 Site.prototype.user_js_action = function() {
   res.contentType = 'text/javascript';
   HopObject.confirmConstructor(Skin);

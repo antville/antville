@@ -77,24 +77,21 @@ document.addEventListener('DOMContentLoaded', function () {
    }
 });
 
-// Wrapping user scripts in a function which is called after library code has loaded.
-function init() {
-   <% site.skin Site#javascript | script %>
-}
+<% site.skin Site#javascript | script %>
 
 window.scripts = [];
 
 <% #include %>
 (function (url) {
+   //document.writeln("<script type='text/javascript' src='<% param.href %>'></script>");
    var script = document.createElement('script');
    script.type = 'text/javascript';
    script.src = url;
-   document.head.appendChild(script);
+   var scripts = document.head.getElementsByTagName('script');
+   document.head.insertBefore(script, scripts[0]);
 })('<% param.href %>');
 
 <% #stylesheet %>
-@import '<% root.static ../../styles/main.min.css %>';
-
 @font: Helvetica, Arial, sans-serif;
 @background-color: #fff;
 @link-color: #ff4040;
@@ -176,7 +173,19 @@ a {
 }
 
 em {
-   color: #000;
+   color: <% value 'base font color' default=black %>; // FIXME: compatibility
+}
+
+img {
+   max-width: none; // FIXME: compatibility
+}
+
+hr {
+   // FIXME: compatibility
+   margin: initial;
+   box-sizing: initial;
+   height: initial;
+   border-top-color: initial;
 }
 
 .av-page {
@@ -337,7 +346,7 @@ em {
 
 .jala-calendar tbody th {
    font-weight: normal;
-   color: #999;
+   color: <% value 'link color' default=#999 %>; // FIXME: compatibility
 }
 
 .jala-calendar-day {
