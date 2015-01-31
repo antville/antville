@@ -141,7 +141,12 @@ Images.Default = new function() {
     this.render_macro = function (param) {
       if (isSprite) {
         var shortName = this.name.substr(0, this.name.lastIndexOf('.'));
-        res.write("<i class='av-sprite av-sprite-" + shortName + "'></i>");
+        var cls = ['av-sprite av-sprite-' + shortName];
+        param['class'] && cls.push(param['class']);
+        html.element('i', null, {
+          'class': cls.join(String.SPACE),
+          style: param.style
+        });
       } else {
         global.Image.prototype.render_macro.call(this, {
           width: param.width || this.width,
