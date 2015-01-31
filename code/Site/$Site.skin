@@ -95,12 +95,10 @@ document.addEventListener('DOMContentLoaded', function () {
 @background-color: <% value 'background color' default=#fff %>;
 @link-color: <% value 'link color' default=#ff4040 %>;
 @hover-color: <% value 'active link color' default=#d50000 %>;
-@muted-color: contrast(@background-color, lighten(@background-color, 33%), darken(@background-color, 33%));
-@muted-background: fadeout(@muted-color, 75%);
 
 @font-family: <% value 'base font' default='Helvetica Neue, Helvetica, Arial, sans-serif' %>;
-@font-size: <% value 'base font size' default='14px / 20px' %>;
-@font-color: <% value 'base font color' default=inherit %>;
+@font-size: <% value 'base font size' default="'14px / 20px'" %>;
+@font-color: <% value 'base font color' default=#444 %>;
 
 @font-family-small: <% value 'small font' default=inherit %>;
 @font-size-small: <% value 'small font size' default=inherit %>;
@@ -109,6 +107,9 @@ document.addEventListener('DOMContentLoaded', function () {
 @font-family-large: <% value 'big font' default=inherit %>;
 @font-size-large: <% value 'big font size' default=inherit %>;
 @font-color-large: <% value 'big font color' default=inherit %>;
+
+@muted-color: average(@background-color, @font-color);
+@muted-background: fadeout(@muted-color, 80%);
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
@@ -337,6 +338,7 @@ h1 a, .uk-table a {
 }
 
 .av-tagged {
+   padding: 0;
    .av-tagged-image {
       opacity: 0;
       img {
