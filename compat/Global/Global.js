@@ -140,6 +140,8 @@ function imagelist_macro(param) {
 function topiclist_macro(param) {
   var site = param.of ? root.get(param.of) : res.handlers.site;
   if (site) {
+    param.skin || (param.skin = '$Tag#simple');
+    param.limit || (param.limit = 25);
     site.tags.list_macro(param, param.skin);
   }
   return;

@@ -39,3 +39,8 @@
       }
    });
 </script>
+
+<% #simple %>
+<li>
+   <a href='<% tag.href action=<% request.action encoding='form' %> %>'><% tag.name %></a>
+</li>
