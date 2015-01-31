@@ -134,3 +134,7 @@ function ngettext_macro(param, singular, plural /*, value1, value2, ...*/) {
 function markgettext_macro(param, singular, plural) {
   return markgettext.call(this, singular, plural);
 }
+
+// The gettext for this message is not found by the parser o_O
+markgettext('Press CTRL & C to copy to clipboard.');
+

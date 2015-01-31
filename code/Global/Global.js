@@ -1060,13 +1060,13 @@ function formatDate(date, format) {
       // FIXME: Do something similar for future dates
       text = formatDate(date);
     } else if (diff < Date.ONEMINUTE) {
-      text = gettext('Right now');
+      text = gettext('right now');
     } else if (diff < Date.ONEHOUR) {
       text = ngettext('{0} minute ago', '{0} minutes ago', parseInt(diff / Date.ONEMINUTE, 10));
     } else if (diff < Date.ONEDAY) {
       text = ngettext('{0} hour ago', '{0} hours ago', parseInt(diff / Date.ONEHOUR, 10));
     } else if (diff < 2 * Date.ONEDAY) {
-      text = gettext('Yesterday');
+      text = gettext('yesterday');
     } else if (diff < 7 * Date.ONEDAY) {
       text = ngettext('{0} day ago', '{0} days ago', parseInt(diff / Date.ONEDAY, 10));
     } else if (diff < 30 * Date.ONEDAY) {
@@ -1155,10 +1155,11 @@ function getLocales(language) {
     locale = locales[i];
     localeString = locale.toString();
     if (!localeString.contains('_')) {
+      var isTranslated = jala.i18n.getCatalog(jala.i18n.getLocale(localeString));
       result.push({
         value: localeString,
-        display: locale.getDisplayName(locale),
-        'class': jala.i18n.getCatalog(jala.i18n.getLocale(localeString)) ? 'av-locale-translated' : ''
+        display: (isTranslated ? '︎' : '⚠︎ ') + locale.getDisplayName(locale),
+        'class': isTranslated ? '' : 'av-locale-needs-translation'
       });
     }
   }

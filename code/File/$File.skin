@@ -11,7 +11,7 @@
    </td>
    <td class='uk-text-muted'><i class='uk-icon-file<% file.contentType generic prefix=- %>-o' title='<% file.contentType %>' data-uk-tooltip></i></td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% file.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% file.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -52,7 +52,7 @@
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% file.macro | link 'javascript:' data-value=<% file.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy' %>
+         <% file.macro | link 'javascript:' data-value=<% file.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
     <div class='uk-margin-top'>

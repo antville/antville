@@ -410,8 +410,8 @@ h1 a, .uk-table a {
    opacity: .25;
 }
 
-.av-translated-locale {
-   font-weight: bold;
+.av-locale-needs-translation {
+   color: @muted-color;
 }
 
 .av-layout-sandbox {
@@ -627,7 +627,7 @@ $(function () {
       var control = row.find('.av-referrer-control a');
       control.on('click', function (event) {
          event.preventDefault();
-         var input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer spam filter?'%> <% gettext 'You can edit it before if you only want to filter a pattern.' %>", url);
+         var input = prompt("<% gettext 'Are you sure you want to add this URL to the referrer  filter? Edit it below to filter a pattern only.' %>", url);
          if (input) {
             location.href = '<% site.href referrers %>?submit=1&permanent=' + encodeURIComponent(input);
          }
@@ -783,7 +783,7 @@ $(function () {
          <div class='uk-form-controls'>
             <label>
                <% site.checkbox commentMode %>
-               enabled
+               <% gettext enabled %>
             </label>
          </div>
       </div>
@@ -969,7 +969,7 @@ $(function () {
 <% gettext "The Management" %>
 
 <% #noscript %>
-<% gettext "To make spamming referrers and backlinks useless, they are displayed using client-side JavaScript. To see them, your browser needs to permit the execution of JavaScript." %>
+<% gettext "Referrers and backlinks are processed in your browser to reduce spam. To see them, your browser needs to permit the execution of JavaScript." %>
 
 <% #menuExt %>
 <script type="text/javascript" defer="defer">

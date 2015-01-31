@@ -7,7 +7,7 @@
    </td>
    <td class='uk-text-muted uk-text-right'><% if <% skin.custom %> is true then "<i class='uk-icon-user'></i>" %></td>
    <td class='uk-text-right uk-text-nowrap;'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% skin.link compare "<i class='uk-icon-files-o'></i>"%>
       <% skin.link reset "<i class='uk-icon-undo'></i>" %>
       <% skin.link edit "<i class='uk-icon-pencil'></i>" %>

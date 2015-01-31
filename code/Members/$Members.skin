@@ -46,7 +46,8 @@
       <div class='uk-form-controls uk-form-password uk-width-1-2'>
          <input type="password" name="password" id="password" class='uk-width-1-1' tabindex=2 required>
          <a href='' class='uk-form-password-toggle' data-uk-form-password="{
-            lblHide: '<% gettext Hide %>'
+            lblHide: '<% gettext Hide %>',
+            lblShow: '<% gettext Show %>'
          }"><% gettext Show %></a>
       </div>
       <button class='uk-button uk-button-link'>
@@ -117,7 +118,8 @@ $(function() {
       <div class='uk-form-controls uk-form-password uk-width-1-2'>
          <input type="password" name="password" id="password" class='uk-width-1-1' tabindex=2>
          <a href='' class='uk-form-password-toggle' data-uk-form-password="{
-            lblHide: '<% gettext Hide %>'
+            lblHide: '<% gettext Hide %>',
+            lblShow: '<% gettext Show %>'
          }"><% gettext Show %></a>
       </div>
    </div>
@@ -181,7 +183,8 @@ $(function() {
       <div class='uk-form-controls uk-form-password uk-width-1-2'>
          <input type="password" name="password" id="password" class='uk-width-1-1'>
          <a href='' class='uk-form-password-toggle' data-uk-form-password="{
-            lblHide: '<% gettext Hide %>'
+            lblHide: '<% gettext Hide %>',
+            lblShow: '<% gettext Show %>'
          }"><% gettext Show %></a>
       </div>
    </div>

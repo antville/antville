@@ -54,7 +54,7 @@
    <div class='uk-form-row'>
       <label class='uk-form-label' for='tags'>
          <% gettext "Tags" %>
-         <i class='uk-icon-info-circle uk-text-muted' title='Separated by commas' data-uk-tooltip='{pos: "right"}'></i>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext 'Separated by commas' %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
          <% story.input tags class=uk-width-1-1 %>
@@ -63,14 +63,17 @@
    <fieldset class='uk-margin-top'>
       <legend><% gettext Options %></legend>
       <div class='uk-form-row'>
-         <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>.
+         <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>
+         .
+      </div>
+      <div class='uk-form-row'>
          <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>.
       </div>
    </fieldset>
    <fieldset class='uk-margin-top'>
       <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% story.macro | link 'javascript:' data-value=<% story.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy' %>
+         <% story.macro | link 'javascript:' data-value=<% story.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
          <div><% story.comments summary %></div>
          <div><% ngettext '{0} request' '{0} requests' <% story.requests default=0 %> %></div>
       </div>

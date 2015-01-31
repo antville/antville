@@ -6,13 +6,13 @@
 <% #navigation %>
 <li><% admin.link . <% gettext Setup prefix="<i class='uk-icon uk-icon-wrench'></i> " %> %></li>
 <li><% admin.link activity <% gettext Activity %> %></li>
+<li><% admin.link users <% gettext Accounts %> %></li>
 <li><% admin.link sites <% gettext Sites %> %></li>
-<li><% admin.link users <% gettext Users %> %></li>
 <li><% admin.link jobs <% gettext Jobs %> %></li>
 
 <% #welcome %>
 <p>
-   <em><% gettext Note suffix=: %></em> <% gettext 'Since you are an administrator of this Antville installation you are entitled to manage <a href="{0}">sites</a> and <a href="{1}">users</a>, monitor all <a href="{2}">activity</a>, configure the <a href="{3}">setup</a> and much more.' <% root.admin.href sites %> <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %> %>
+   <em><% gettext Note suffix=: %></em> <% gettext 'Since you are an administrator of this Antville installation you are entitled to manage <a href="{0}">sites</a> and <a href="{1}">accounts</a>, monitor all <a href="{2}">activity</a>, configure the <a href="{3}">setup</a> and much more.' <% root.admin.href sites %> <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %> %>
 </p>
 
 <% #setup %>
@@ -30,7 +30,7 @@
       </div>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='replyTo'>
-            <% gettext Reply-To %>
+            <% gettext 'Notification E-Mail' %>
          </label>
          <div class='uk-form-controls'>
             <% root.input replyTo class=uk-width-1-2 type=email %>
@@ -49,7 +49,7 @@
       <legend><% gettext 'Site Creation' %></legend>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='creationScope'>
-            <% gettext 'User Role' %>
+            <% gettext 'Required Account Status' %>
          </label>
          <div class='uk-form-controls'>
             <% root.select creationScope %>
@@ -73,7 +73,7 @@
       </div>
    </fieldset>
    <fieldset class='uk-margin-top'>
-      <legend><% gettext Phase-Out %></legend>
+      <legend><% gettext 'Site Phase-Out' %></legend>
       <div class='uk-form-row'>
          <label class='uk-form-label' for='phaseOutMode'>
             <% gettext Mode %>
@@ -129,16 +129,16 @@ $(function() {
          <% gettext Display %>
       </div>
       <div class='uk-form-controls'>
-         <% gettext '{0} activity sorted by Date in {1} order.'
-            <% admin.dropdown name="display" <% markgettext Any %> <% markgettext Content %> <% markgettext Comment %> <% markgettext Link %> <% markgettext File %> <% markgettext Image %> <% markgettext Poll %> <% markgettext Site %> <% markgettext User %> %>
-            <% admin.dropdown name="order" <% markgettext Descending %> <% markgettext Ascending %> %>
+         <% gettext '{0} activity sorted by date in {1} order.'
+            <% admin.dropdown name="display" <% markgettext any %> <% markgettext content %> <% markgettext comment %> <% markgettext link %> <% markgettext file %> <% markgettext image %> <% markgettext poll %> <% markgettext site %> <% markgettext user %> %>
+            <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
       </div>
    </div>
    <div class='uk-form-row'>
       <div class='uk-form-label'>
          <% gettext Filter %>
-         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by username. Use the asterisk * as wildcard.' %>"></i>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by account. Use the asterisk * as wildcard.' %>"></i>
       </div>
       <div class='uk-form-controls'>
          <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
@@ -153,7 +153,7 @@ $(function() {
    <thead>
       <tr>
          <th></th>
-         <th><% gettext User %></th>
+         <th><% gettext Account %></th>
          <th><% gettext Created %></th>
          <th><% gettext Reference %></th>
       </tr>
@@ -173,9 +173,9 @@ $(function() {
       </div>
       <div>
          <% gettext '{0} sites sorted by {1} in {2} order.'
-            <% admin.dropdown name="display" <% markgettext All %> <% markgettext Blocked %> <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %> <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
-            <% admin.dropdown name="sorting" <% markgettext Modified %> <% markgettext Created %> <% markgettext Name %> %>
-            <% admin.dropdown name="order" <% markgettext Descending %> <% markgettext Ascending %> %>
+            <% admin.dropdown name="display" <% markgettext all %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext open %> <% markgettext restricted %> <% markgettext public %> <% markgettext closed %> <% markgettext deleted %> %>
+            <% admin.dropdown name="sorting" <% markgettext modified %> <% markgettext created %> <% markgettext name %> %>
+            <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
       </div>
    </div>
@@ -219,17 +219,17 @@ $(function() {
          <% gettext Display %>
       </div>
       <div>
-         <% gettext '{0} sites sorted by {1} in {2} order.'
-            <% admin.dropdown name="display" <% markgettext All %> <% markgettext Blocked %> <% markgettext Trusted %> <% markgettext Privileged %> %>
-            <% admin.dropdown name="sorting" <% markgettext Registration %> <% markgettext 'Last Login' %> <% markgettext Name %> %>
-            <% admin.dropdown name="order" <% markgettext Descending %> <% markgettext Ascending %> %>
+         <% gettext '{0} accounts sorted by {1} in {2} order.'
+            <% admin.dropdown name="display" <% markgettext all %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext privileged %> %>
+            <% admin.dropdown name="sorting" <% markgettext Registration %> <% markgettext 'last login' %> <% markgettext Name %> %>
+            <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
          %>
       </div>
    </div>
    <div class='uk-form-row'>
       <div class='uk-form-label'>
          <% gettext Filter %>
-         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by username or by e-mail address. Use the asterisk * as wildcard.' %>"></i>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by name or by e-mail address. Use the asterisk * as wildcard.' %>"></i>
       </div>
       <div class='uk-form-controls'>
          <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">

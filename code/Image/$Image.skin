@@ -16,7 +16,7 @@
       <% if <% image.tags count %> is 0 then '' else <% image.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
       <% image.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% image.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -70,7 +70,7 @@
    <div class='uk-form-row uk-hidden av-tags-row'>
       <label class='uk-form-label' for=''>
          <% gettext Tags %>
-         <i class='uk-icon-info-circle uk-text-muted' title='Separated by commas' data-uk-tooltip='{pos: "right"}'></i>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext 'Separated by commas' %>' data-uk-tooltip='{pos: "right"}'></i>
       </label>
       <div class='uk-form-controls'>
          <% image.input tags class='uk-width-1-1' %>
@@ -90,7 +90,7 @@
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% image.macro | link 'javascript:' data-value=<% image.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy' %>
+         <% image.macro | link 'javascript:' data-value=<% image.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>

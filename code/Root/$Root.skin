@@ -83,17 +83,17 @@
       <dt><% gettext Requests %></dt>
       <dd>
          <% gettext '{0} total' <% param.requestCount %> %>,
-         <% gettext '{0} last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
+         <% gettext '{0} in the last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
       </dd>
       <dt><% gettext 'Errors' %></dt>
       <dd>
          <% gettext '{0} total' <% param.errorCount %> %>,
-         <% gettext '{0} last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
+         <% gettext '{0} in the last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
       </dd>
       <dt><% gettext 'Error Ratio' %></dt>
       <dd>
          <% gettext '{0}% total' <% param.errorRatio %> %>,
-         <% gettext '{0}% last 5 min.' <% param.errorRatioPerUnit %> %>
+         <% gettext '{0}% in the last 5 min.' <% param.errorRatioPerUnit %> %>
       </dd>
       <dt><% gettext 'Xml-Rpc Count' %></dt>
       <dd><% ngettext '{0} request' '{0} requests' <% param.xmlrpcCount %> %></dd>

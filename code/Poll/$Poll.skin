@@ -13,7 +13,7 @@
       <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Please use the copy command.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
       <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
@@ -103,7 +103,7 @@ else
    <fieldset class='uk-margin-top'>
      <legend><% gettext Information %></legend>
       <div class='uk-form-row'>
-         <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Use keyboard shortcut to copy." %> class='av-clipboard-copy' %>
+         <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
       </div>
    </fieldset>
    <div class='uk-margin-top'>

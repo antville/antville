@@ -538,7 +538,7 @@ Admin.prototype.users_action = function() {
   res.data.count = session.data.admin.users.size();
   res.data.list = renderList(session.data.admin.users, this.renderItem, 25, req.data.page);
   res.data.pager = renderPager(session.data.admin.users, this.href(req.action), 25, req.data.page);
-  res.data.title = gettext('Users');
+  res.data.title = gettext('Accounts');
   res.data.action = this.href(req.action);
   res.data.body = this.renderSkinAsString('$Admin#users');
   root.renderSkin('Site#page');
