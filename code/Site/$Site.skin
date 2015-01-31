@@ -483,6 +483,20 @@ h1 a, .uk-table a {
 
 // Overwriting some CSS classes for Google’s custom search
 
+.gs-webResult.gs-result a.gs-title:link,
+.gs-webResult.gs-result a.gs-title:link b,
+.gs-imageResult a.gs-title:link,
+.gs-imageResult a.gs-title:link b {
+   color: @link-color !important;
+}
+
+.gs-webResult.gs-result a.gs-title:visited,
+.gs-webResult.gs-result a.gs-title:visited b,
+.gs-imageResult a.gs-title:visited,
+.gs-imageResult a.gs-title:visited b {
+   color: @link-color !important;
+}
+
 .gs-result .gs-title, .gs-result .gs-title * {
    text-decoration: none !important;
 }
@@ -492,10 +506,12 @@ a.gs-title:hover {
 }
 
 .gsc-results {
+   border: none !important;
    width: auto !important;
 }
 
 .cse .gsc-control-cse, .gsc-control-cse, .gsc-result-info, .gcsc-branding, .gsc-table-result, .gsc-thumbnail-inside, .gsc-url-top  {
+   border: none !important;
    padding-left: 0 !important;
    padding-right: 0 !important;
 }
@@ -504,12 +520,37 @@ a.gs-title:hover {
    margin: 10px 0 0 0 !important;
 }
 
+.gsc-result-info, .gsc-orderby-label, td.gsc-branding-text, td.gcsc-branding-text {
+   color: @muted-color !important;
+}
+
 .gs-no-results-result .gs-snippet, .gs-error-result .gs-snippet {
    margin: 0 !important;
+   border: none !important;
+   padding: 0 !important;
+   background-color: inherit !important;
 }
 
 .gs-webResult div.gs-visibleUrl, .gs-imageResult div.gs-visibleUrl {
-   color: #999 !important;
+   color: @muted-color !important;
+}
+
+.gsc-control-cse, .gsc-control-cse-en {
+   background: @background-color !important;
+}
+
+.gsc-webResult.gsc-result, .gsc-results .gsc-imageResult {
+   border: none !important;
+   background: none !important;
+}
+
+.gs-webResult .gs-snippet, .gs-imageResult .gs-snippet, .gs-fileFormatType {
+   color: @font-color !important;
+}
+
+.gsc-results .gsc-cursor-box .gsc-cursor-page {
+   color: @link-color !important;
+   background: none !important;
 }
 
 .gcsc-branding-img-noclear {
@@ -517,6 +558,10 @@ a.gs-title:hover {
    height: 15px;
    max-width: initial;
    vertical-align: text-bottom;
+}
+
+.gsc-above-wrapper-area {
+   border-bottom-color: @muted-background !important;
 }
 
 <% #referrers %>
