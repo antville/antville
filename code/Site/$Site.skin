@@ -147,6 +147,10 @@ hr {
    border-top-color: @muted-background;
 }
 
+.uk-description-list-line {
+   overflow: hidden;
+}
+
 .uk-text-muted, .uk-article-meta, .uk-description-list-line > dd {
    color: @muted-color !important;
 }
