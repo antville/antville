@@ -100,16 +100,16 @@ document.addEventListener('DOMContentLoaded', function () {
 @font-size: <% value 'base font size' default="'14px / 20px'" %>;
 @font-color: <% value 'base font color' default=#444 %>;
 
-@font-family-small: <% value 'small font' default=inherit %>;
-@font-size-small: <% value 'small font size' default=inherit %>;
-@font-color-small: <% value 'small font color' default=inherit %>;
-
-@font-family-large: <% value 'big font' default=inherit %>;
+@font-family-large: <% value 'big font' default=@font-family %>;
 @font-size-large: <% value 'big font size' default=inherit %>;
-@font-color-large: <% value 'big font color' default=inherit %>;
+@font-color-large: <% value 'big font color' default=@font-color %>;
 
 @muted-color: average(@background-color, @font-color);
 @muted-background: fadeout(@muted-color, 80%);
+
+@font-family-small: <% value 'small font' default=@font-family %>;
+@font-size-small: <% value 'small font size' default=inherit %>;
+@font-color-small: <% value 'small font color' default=@muted-color %>;
 
 // Overwriting some classes defined by UIKit to go along with Antville’s layout
 
@@ -120,6 +120,9 @@ html {
 h1, h2, h3, h4, h5, h6 {
    color: @font-color-large;
    font-family: @font-family-large;
+   &:hover {
+      color: @hover-color;
+   }
 }
 
 a {
@@ -131,6 +134,9 @@ a {
 
 em {
    color: @font-color;
+   small & {
+      color: @font-color-small;
+   }
 }
 
 img {
@@ -465,7 +471,7 @@ h1 a, .uk-table a {
 }
 
 .jala-calendar-selected {
-   border: 1px solid @font-color-small;
+   border: 1px solid @muted-color;
    border-radius: 4px;
    font-weight: bold;
 }
