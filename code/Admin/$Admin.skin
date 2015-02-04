@@ -355,7 +355,7 @@ $(function() {
 <i class='uk-icon-ban'></i>
 
 <% #closedSite %>
-<i class='uk-icon-closed'></i>
+<i class='uk-icon-lock'></i>
 
 <% #restrictedSite %>
 <i class='uk-icon-group'></i>
