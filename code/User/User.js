@@ -46,6 +46,7 @@ User.add = function(data) {
   var now = new Date;
   user.map({
     created: now,
+    modified: now,
     email: data.email,
     hash: data.hash,
     name: data.name,
@@ -435,7 +436,9 @@ User.prototype.update = function(data) {
   }
   this.email = data.email;
   this.url = data.url;
-  this.touch();
+  if (this === session.user) {
+    this.touch();
+  }
   return this;
 }
 
