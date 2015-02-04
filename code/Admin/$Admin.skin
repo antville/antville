@@ -199,8 +199,7 @@ $(function() {
          <th><% gettext Name %></th>
          <th><% gettext Created %></th>
          <th><% gettext Modified %></th>
-         <th><% gettext Status %></th>
-         <th><% gettext Mode %></th>
+         <th colspan=2><% gettext Status %> & <% gettext Mode %></th>
          <th></th>
          <th></th>
       </tr>
@@ -300,8 +299,8 @@ $(function() {
    <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% item.modified text %>
    </td>
-   <td><% item.status %></td>
-   <td><% item.mode %></td>
+   <td><% admin.skin <% item.status prefix=$Admin# suffix=Site %> %></td>
+   <td class='uk-text-muted'><% admin.skin <% item.mode prefix=$Admin# suffix=Site %> %></td>
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
@@ -327,7 +326,7 @@ $(function() {
    <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% item.modified text %>
    </td>
-   <td><% item.status %></td>
+   <td><% admin.skin <% item.status prefix=$Admin# suffix=User %> %></td>
    <td>
       <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
    </td>
@@ -345,3 +344,31 @@ $(function() {
    <td><% item.user %></td>
    <td><% item.link delete "<i class='uk-icon-trash-o'></i>" %></td>
 </tr>
+
+<% #blockedSite %>
+<div class='uk-badge uk-badge-danger'><% gettext Blocked %></div>
+
+<% #trustedSite %>
+<div class='uk-badge uk-badge-success'><% gettext Trusted %></div>
+
+<% #deletedSite %>
+<i class='uk-icon-ban'></i>
+
+<% #closedSite %>
+<i class='uk-icon-closed'></i>
+
+<% #restrictedSite %>
+<i class='uk-icon-group'></i>
+
+<% #openSite %>
+<i class='uk-icon-globe'></i>
+
+<% #blockedUser %>
+<div class='uk-badge uk-badge-danger'><% gettext Blocked %></div>
+
+<% #trustedUser %>
+<div class='uk-badge uk-badge-success'><% gettext Trusted %></div>
+
+<% #privilegedUser %>
+<div class='uk-badge'><% gettext Privileged %></div>
+
