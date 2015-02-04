@@ -2831,7 +2831,7 @@ msgstr[1] "{0} Beiträge"
 #: /Users/tobi/Projects/antville/helma/code/Admin/$Admin.skin:222
 #, java-format
 msgid "{0} accounts sorted by {1} in {2} order."
-msgstr "Status: {0} Sortierung: {1} {2}"
+msgstr "Typ: {0} Sortierung: {1} {2}"
 
 #: /Users/tobi/Projects/antville/helma/code/Root/$Root.skin:80
 #, java-format
@@ -2971,7 +2971,7 @@ msgstr[1] "{0} Anfragen"
 #: /Users/tobi/Projects/antville/helma/code/Admin/$Admin.skin:175
 #, java-format
 msgid "{0} sites sorted by {1} in {2} order."
-msgstr "Status: {0} Sortierung: {1} {2}."
+msgstr "Typ: {0} Sortierung: {1} {2}"
 
 #: /Users/tobi/Projects/antville/helma/code/Site/$Site.skin:942
 #, java-format
