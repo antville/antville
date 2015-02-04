@@ -34,9 +34,7 @@
       </label>
       <div class='uk-form-controls'>
          <input name="name" id="name" tabindex=1 value="<% request.name encoding="form" %>" class='uk-width-1-2' required>
-         <button class='uk-button uk-button-link'>
-            <% members.link register <% gettext "Not registered yet\?" %> tabindex=6 %>
-         </button>
+         <% members.link register <% gettext "Not registered yet\?" %> class='uk-button uk-button-link' tabindex=6 %>
       </div>
    </div>
    <div class='uk-form-row'>
@@ -50,9 +48,7 @@
             lblShow: '<% gettext Show %>'
          }"><% gettext Show %></a>
       </div>
-      <button class='uk-button uk-button-link'>
-         <% members.link reset <% gettext 'Password forgotten\?' %> tabindex="7" %>
-      </button>
+      <% members.link reset <% gettext 'Password forgotten\?' %>  class='uk-button uk-button-link' tabindex="7" %>
    </div>
    <div class='uk-form-row'>
       <label>
@@ -154,9 +150,7 @@ $(function() {
 
 <% #reset %>
 <h1><% response.title %></h1>
-<div class='uk-text-small'>
-   <% gettext "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions." %>
-</div>
+<% gettext "Enter your username and the e-mail address you have used when you registered. You will then receive a confirmation e-mail containing further instructions." %>
 <form class='uk-margin-top uk-form uk-form-stacked' id="login" method="post" action="<% response.action %>">
    <div class='uk-form-row'>
       <label class='uk-form-label' for='username'>
