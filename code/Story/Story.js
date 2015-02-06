@@ -423,12 +423,13 @@ Story.prototype.getMacroHandler = function(name) {
   return null;
 }
 
-Story.prototype.getAbstract = function (param) {
+Story.prototype.getAbstract = function (param, limit) {
   param || (param = {});
+  limit || (limit = 10);
   var result = [], raw = [];
   raw.push(this.title, this.text);
-  var title = this.title && stripTags(this.title).clip(10, null, '\\s');
-  var text = this.text && stripTags(this.text).clip(30, null, '\\s');
+  var title = this.title && stripTags(this.title).clip(limit * 0.25, null, '\\s');
+  var text = this.text && stripTags(this.text).clip(limit * 0.75, null, '\\s');
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
   if (result.length < 1 && arguments.length > 1) {
@@ -451,8 +452,8 @@ Story.prototype.getAbstract = function (param) {
  *
  * @param {Object} param
  */
-Story.prototype.abstract_macro = function(param) {
-  return res.write(this.getAbstract(param));
+Story.prototype.abstract_macro = function(param, limit) {
+  return res.write(this.getAbstract(param, limit));
 }
 
 /**
