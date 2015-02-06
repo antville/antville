@@ -8,7 +8,7 @@
       <% comment.modified text %>
    </td>
    <td class='uk-text-right uk-text-nowrap'>
-      <a href='<% comment.story.href %>' title='<% comment.story.abstract | stripTags %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
+      <a href='<% comment.story.href %>' title='<% comment.story.abstract | escapeXml %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
       <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
       <% comment.link edit "<i class='uk-icon-pencil'></i>" %>
    </td>
