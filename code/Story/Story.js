@@ -423,13 +423,20 @@ Story.prototype.getMacroHandler = function(name) {
   return null;
 }
 
-Story.prototype.getAbstract = function (param, limit) {
+Story.prototype.getAbstract = function (param, titleTextRatio) {
   param || (param = {});
-  limit || (limit = 10);
+  titleTextRatio || (titleTextRatio = 0.5);
+  var limit = param.limit || 10;
   var result = [], raw = [];
   raw.push(this.title, this.text);
-  var title = this.title && stripTags(this.title).clip(limit * 0.25, null, '\\s');
-  var text = this.text && stripTags(this.text).clip(limit * 0.75, null, '\\s');
+  var titleLimit = Math[titleTextRatio >= 0.5 ? 'ceil' : 'floor'](limit * titleTextRatio);
+  var title = this.title && stripTags(this.title).clip(titleLimit, null, '\\s');
+  var titleLength = title ? title.split(/\s/).length : 0;
+  if (titleLength < titleLimit) {
+    titleTextRatio = titleLength / limit;
+  }
+  var textLimit = Math[titleTextRatio < 0.5 ? 'ceil' : 'floor'](limit * (1 - titleTextRatio));
+  var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s');
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
   if (result.length < 1 && arguments.length > 1) {
@@ -437,7 +444,7 @@ Story.prototype.getAbstract = function (param, limit) {
     for (var i = 1; i < arguments.length; i += 1) {
       if (buffer = this.getMetadata(arguments[i])) {
         raw.push(buffer);
-        buffer = stripTags(buffer).clip(20, null, '\\s');
+        buffer = stripTags(buffer).clip(limit, null, '\\s');
         buffer && result.push(buffer);
       }
     }
@@ -452,8 +459,8 @@ Story.prototype.getAbstract = function (param, limit) {
  *
  * @param {Object} param
  */
-Story.prototype.abstract_macro = function(param, limit) {
-  return res.write(this.getAbstract(param, limit));
+Story.prototype.abstract_macro = function(param, titleTextRatio) {
+  return res.write(this.getAbstract(param, titleTextRatio));
 }
 
 /**
