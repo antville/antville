@@ -423,28 +423,29 @@ Story.prototype.getMacroHandler = function(name) {
   return null;
 }
 
-Story.prototype.getAbstract = function (param, titleTextRatio) {
+Story.prototype.getAbstract = function (param) {
   param || (param = {});
-  titleTextRatio || (titleTextRatio = 0.5);
   var limit = param.limit || 10;
+  var ratio = 0.5; // Use title and text equivalently
   var result = [], raw = [];
   raw.push(this.title, this.text);
-  var titleLimit = Math[titleTextRatio >= 0.5 ? 'ceil' : 'floor'](limit * titleTextRatio);
+  var titleLimit = Math[ratio >= 0.5 ? 'ceil' : 'floor'](limit * ratio);
   var title = this.title && stripTags(this.title).clip(titleLimit, null, '\\s');
   var titleLength = title ? title.split(/\s/).length : 0;
   if (titleLength < titleLimit) {
-    titleTextRatio = titleLength / limit;
+    ratio = titleLength / limit;
   }
-  var textLimit = Math[titleTextRatio < 0.5 ? 'ceil' : 'floor'](limit * (1 - titleTextRatio));
+  var textLimit = Math[ratio < 0.5 ? 'ceil' : 'floor'](limit * (1 - ratio));
   var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s');
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
-  if (result.length < 1 && arguments.length > 1) {
-    var buffer;
-    for (var i = 1; i < arguments.length; i += 1) {
-      if (buffer = this.getMetadata(arguments[i])) {
+  var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
+  if (result.length < 1 && contentArgs.length) {
+    ratio = 1 / contentArgs.length;
+    for (var i = 0, buffer, key = contentArgs[i]; i < contentArgs.length; i += 1) {
+      if (key && (buffer = this.getMetadata(key))) {
         raw.push(buffer);
-        buffer = stripTags(buffer).clip(limit, null, '\\s');
+        buffer = stripTags(buffer).clip(limit * ratio, null, '\\s');
         buffer && result.push(buffer);
       }
     }
@@ -459,8 +460,8 @@ Story.prototype.getAbstract = function (param, titleTextRatio) {
  *
  * @param {Object} param
  */
-Story.prototype.abstract_macro = function(param, titleTextRatio) {
-  return res.write(this.getAbstract(param, titleTextRatio));
+Story.prototype.abstract_macro = function(param) {
+  return res.write(this.getAbstract.call(this, param));
 }
 
 /**
