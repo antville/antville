@@ -32,7 +32,7 @@
       <tr>
          <th><% gettext Site %></th>
          <th><% gettext Role %></th>
-         <th><% gettext 'Last Update' %></th>
+         <th class='uk-text-nowrap'><% gettext 'Last Update' %></th>
          <th></th>
       </tr>
    </thead>

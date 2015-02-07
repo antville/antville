@@ -45,7 +45,7 @@
       <% subscription.title default=<% subscription.name %> | subscription.link %>
    </td>
    <td><% membership.role %></td>
-   <td title='<% subscription.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+   <td class='uk-text-nowrap' title='<% subscription.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% subscription.modified text %>
    </td>
    <td class='uk-text-right'>
