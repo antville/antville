@@ -48,7 +48,7 @@ prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #page %>
 <!DOCTYPE html>
-<html>
+<html <% site.locale prefix='lang=' %>>
    <head>
       <meta charset='utf-8'>
       <title><% response.title %></title>
