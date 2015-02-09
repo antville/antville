@@ -439,8 +439,14 @@ Story.prototype.getAbstract = function (param) {
   var text = this.text && stripTags(this.text).clip(textLimit, null, '\\s');
   title && result.push('<b>' + title + '</b> ');
   text && result.push(text);
-  var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
-  if (result.length < 1 && contentArgs.length) {
+  if (result.length < 1) {
+    // FIXME: Custom content should move to compatibility layer
+    var contentArgs = Array.prototype.slice.call(arguments, 1); // Remove first argument (param)
+    if (!contentArgs.length) {
+      for (var key in this.getMetadata()) {
+        contentArgs.push(key);
+      }
+    }
     ratio = 1 / contentArgs.length;
     for (var i = 0, buffer, key = contentArgs[i]; i < contentArgs.length; i += 1) {
       if (key && (buffer = this.getMetadata(key))) {
@@ -450,7 +456,7 @@ Story.prototype.getAbstract = function (param) {
       }
     }
   }
-  if (result.length < 1 && param['default'] === null) {
+  if (result.length < 1 && typeof param['default'] !== 'string') {
     return '<i>' + ngettext('{0} character', '{0} characters', raw.join(String.EMPTY).length) + '</i>';
   }
   return result.join(String.SPACE);
