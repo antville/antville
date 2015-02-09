@@ -154,8 +154,10 @@ $(function() {
       <tr>
          <th></th>
          <th><% gettext Account %></th>
+         <!--th><% gettext Site %></th-->
          <th><% gettext Created %></th>
          <th><% gettext Reference %></th>
+         <th></th>
       </tr>
    </thead>
    <tbody>
@@ -277,13 +279,18 @@ $(function() {
 <% #activity %>
 <tr <% if <% param.warn %> is true then "class='uk-text-bold'" %>>
    <td><% param.icon %></td>
-   <td class='av-overflow'><% param.user %></td>
+   <td class='av-overflow uk-width-2-10'><% param.user %></td>
+   <!--td class='av-overflow uk-width-2-10'><% param.site %></td-->
    <td class='uk-text-truncate' title='<% param.date | format short %>' data-uk-tooltip="{pos: 'top-left'}">
       <% param.date | format text %>
    </td>
-   <td class='uk-width-6-10 av-overflow'>
+   <td class='uk-width-5-10 av-overflow'>
       <a href='<% param.href %>'><% param.reference %></a>
       <% if <% param.linkCount %> is 0 then '' else <% param.linkCount prefix="<span class='uk-text-muted uk-text-nowrap'><i class='uk-icon uk-icon-link'></i> " suffix=</span> %> %>
+   </td>
+   <td class='uk-text-nowrap uk-text-right'>
+      <% admin.link delete "<i class='uk-icon-trash-o'></i>" <% param.item %> %>
+      <% admin.link block "<i class='uk-icon-ban'></i>" <% param.item %> %>
    </td>
 </tr>
 

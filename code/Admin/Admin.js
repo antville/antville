@@ -545,6 +545,33 @@ Admin.prototype.users_action = function() {
   return;
 }
 
+Admin.prototype.update_action = function () {
+  var action = req.data.action;
+  switch (req.data.type) {
+    case 'site':
+    var site = Site.getById(req.data.id);
+    if (site && site.getPermission(action)) {
+      switch (action) {
+        case 'delete':
+        site.mode = Site.DELETED;
+      }
+    }
+    break;
+    case 'user':
+    var user = User.getById(req.data.id);
+    if (user) {
+      switch (action) {
+        case 'block':
+        if (user.status !== User.PRIVILEGED) {
+          user.status = User.BLOCKED;
+        }
+      }
+    }
+    break;
+  }
+  res.redirect(req.data.http_referer);
+};
+
 /**
  *
  * @param {Object} data
@@ -672,12 +699,14 @@ Admin.prototype.renderItem = function(item) {
 
 Admin.prototype.renderActivity = function (item) {
   var param = {
+    item: item,
     icon: getIcon(item),
     date: item.created,
     reference: getReference(item),
     user: item.creator ? item.creator.name : item.name,
     href: item.href(item.constructor === User ? 'edit' : ''),
-    linkCount: getLinkCount(item)
+    linkCount: getLinkCount(item),
+    //site: item.site && item.site.name
   };
   param.warn = param.linkCount > 2 ? true : false;
   Admin.prototype.renderSkin('$Admin#activity', param);
@@ -829,4 +858,26 @@ Admin.prototype.dropdown_macro = function(param /*, value1, value2, ... */) {
   var selectedIndex = req.postParams[param.name] || session.data[param.name];
   html.dropDown({name: param.name}, options, selectedIndex);
   return;
+}
+
+Admin.prototype.link_macro = function (param, action, text, target) {
+  if (target) {
+    switch (action) {
+      case 'block':
+      var user = target.creator || target;
+      if (user.status !== User.PRIVILEGED && user.status !== User.BLOCKED) {
+        var url = this.href('update') + '?action=block&type=user&id=' + user._id;
+        return renderLink.call(global, param, url, text || String.EMPTY, this);
+      }
+      break;
+      case 'delete':
+      var site = target.site;
+      if (site && site.getPermission(action) && site.mode !== Site.DELETED) {
+        var url = this.href('update') + '?action=delete&type=site&id=' + site._id;
+        return renderLink.call(global, param, url, text || String.EMPTY, this);
+      }
+    }
+    return;
+  }
+  return HopObject.prototype.link_macro.call(this, param, action, text);
 }
