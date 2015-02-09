@@ -124,11 +124,8 @@ User.register = function(data) {
 
   // Create hash from password for JavaScript-disabled browsers
   if (!data.hash) {
-    // Check if passwords match
-    if (!data.password || !data.passwordConfirm) {
+    if (!data.password) {
       throw Error(gettext('Could not verify your password. Please repeat your input.'))
-    } else if (data.password !== data.passwordConfirm) {
-      throw Error(gettext('Unfortunately, your passwords did not match. Please repeat your input.'));
     }
     data.hash = (data.password + session.data.token).md5();
   }
