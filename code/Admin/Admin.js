@@ -553,7 +553,9 @@ Admin.prototype.update_action = function () {
     if (site && site.getPermission(action)) {
       switch (action) {
         case 'delete':
-        site.mode = Site.DELETED;
+        req.postParams.proceed = true;
+        Site.prototype.delete_action.call(site);
+        break;
       }
     }
     break;
@@ -565,6 +567,7 @@ Admin.prototype.update_action = function () {
         if (user.status !== User.PRIVILEGED) {
           user.status = User.BLOCKED;
         }
+        break;
       }
     }
     break;
@@ -870,8 +873,9 @@ Admin.prototype.link_macro = function (param, action, text, target) {
         return renderLink.call(global, param, url, text || String.EMPTY, this);
       }
       break;
+
       case 'delete':
-      var site = target.site;
+      var site = target.constructor === Site ? target : target.site;
       if (site && site.getPermission(action) && site.mode !== Site.DELETED) {
         var url = this.href('update') + '?action=delete&type=site&id=' + site._id;
         return renderLink.call(global, param, url, text || String.EMPTY, this);

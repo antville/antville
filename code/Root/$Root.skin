@@ -6,7 +6,7 @@
          <% gettext Name %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext "Please note that you cannot change the name after the site was created." %>"></i>
       </label>
       <div class='uk-form-controls'>
-         <% newSite.input name class=uk-form-width-medium maxlength=25 %>
+         <% newSite.input name class=uk-form-width-medium maxlength=25 tabindex=1 %>
          <div class='uk-form-help-inline'>
             <% gettext 'The name will be part of the URL of your site.' %>
          </div>
@@ -23,14 +23,14 @@
          <% gettext Title %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title='<% gettext "The title will appear in the header of every page of your site. You can change it anytime you want." %>'></i>
       </label>
       <div class='uk-form-controls'>
-         <% newSite.input title class=uk-width-1-1 %>
+         <% newSite.input title class=uk-width-1-1 tabindex=2 %>
       </div>
    </div>
    <div class='uk-form-row'>
-      <button class='uk-button uk-button-primary' type="submit" id="submit" name="create" value="1">
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="create" value="1"tabindex=3>
          <% gettext Create %>
       </button>
-      <a href='<% root.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
+      <a href='<% root.href %>' class="uk-button uk-button-link" tabindex=4><% gettext Cancel %></a>
    </div>
 </form>
 

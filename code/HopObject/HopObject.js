@@ -37,8 +37,7 @@ HopObject.remove = function(options) {
     } else if (!options) {
       item.remove();
     } else {
-      throw Error('Missing static ' + item.constructor.name +
-          '.remove() method');
+      throw Error('Missing static ' + item.constructor.name + '.remove() method');
     }
   }
   return;

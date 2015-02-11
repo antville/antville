@@ -158,19 +158,10 @@ Site.remove = function() {
     HopObject.remove.call(this.polls);
     HopObject.remove.call(this.entries);
     HopObject.remove.call(this.members, {force: true});
-    // The root site needs some special treatment (it will not be removed)
-    if (this === root) {
-      Membership.add(root.users.get(0), Membership.OWNER, this);
-      Layout.remove.call(this.layout);
-      this.layout.reset();
-      this.getStaticFile('images').removeDirectory();
-      this.getStaticFile('files').removeDirectory();
-    } else {
-      Layout.remove.call(this.layout, {force: true});
-      this.getStaticFile().removeDirectory();
-      this.deleteMetadata();
-      this.remove();
-    }
+    Layout.remove.call(this.layout, {force: true});
+    this.getStaticFile().removeDirectory();
+    this.deleteMetadata();
+    this.remove();
   }
   return;
 }
@@ -323,9 +314,11 @@ Site.prototype.edit_action = function() {
 
 Site.prototype.delete_action = function () {
   if (req.postParams.proceed) {
-    if (this.stories.size() < 1) {
+    if (this.stories.size() + this.images.size() + this.files.size() + this.polls.size() < 1) {
+      // If a site contains no content, delete it immediately
       HopObject.prototype.delete_action.call(this);
     } else {
+      // Otherwise, queue for deletion
       this.deleted = new Date;
       this.status = Site.BLOCKED;
       this.mode = Site.DELETED;

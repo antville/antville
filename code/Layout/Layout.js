@@ -66,9 +66,7 @@ Layout.remove = function(options) {
   if (this.constructor === Layout) {
     // Backup current layout in temporary directory if possible
     var dir = this.getFile();
-    // FIXME: Evaluate if using res.skinpath is necessary; dir could be fully sufficient.
-    if (res.skinpath && res.skinpath[0] && res.skinpath[0].equals(dir) &&
-          dir.exists() && dir.list().length > 0) {
+    if (dir.exists() && dir.list().length > 0) {
       var zip = this.getArchive(res.skinpath);
       var file = java.io.File.createTempFile(this.site.name + '-layout-', '.zip');
       zip.save(file);
