@@ -989,13 +989,15 @@ function validateUrl(str) {
 }
 
 /**
- * Surrounds a string by programmer quotes (").
+ * Surrounds a string by programmer quotes (like 'foo').
  * @param {String} str The original string.
+ * @param {String|RegExp} pattern A pattern for conditional quotes; e.g. '\\s' will make the function only add quotes when the original string contains whitespace.
  * @returns {String} The processed string.
  */
-function quote(str) {
-  if (/[\W\D]/.test(str)) {
-    str = '"' + str + '"';
+function quote(str, pattern) {
+  str = String(str);
+  if (!pattern || RegExp(pattern).test(str) || /['"]/.test(str)) {
+    str = "'" + str.replace(/("|')/g, '\\$1') + "'";
   }
   return str;
 }

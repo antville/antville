@@ -10,3 +10,4 @@ jobs/
 local/
 node_modules/
 static/sites/*
+static/scripts/*.map.json

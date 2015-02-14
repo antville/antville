@@ -452,7 +452,7 @@ Skin.prototype.macro_macro = function () {
   var name = this.prototype === 'Global' ? this.name : this.prototype + '.' + this.name;
   res.encode('<% ');
   res.write('skin ');
-  res.write(quote(name));
+  res.write(quote(name, '\\s'));
   res.encode(' %>');
   return;
 };

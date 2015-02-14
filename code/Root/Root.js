@@ -106,7 +106,7 @@ Root.prototype.getPermission = function(action) {
 Root.prototype.main_action = function() {
   if (this.users.size() < 1) {
     this.title = 'Antville';
-    this.created = new Date;
+    this.created = this.modified = new Date;
     this.replyTo = 'root@localhost';
     this.locale = java.util.Locale.getDefault().getLanguage();
     this.timeZone = java.util.TimeZone.getDefault().getID();
