@@ -3,10 +3,10 @@
 *.eml
 *.iml
 build/work
+build/dist
 claustra/
 code/domains.map
 jobs/
 local/
 node_modules/
-static/*
-!static/img
+static/sites/*
