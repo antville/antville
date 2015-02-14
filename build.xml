@@ -37,7 +37,6 @@
     <echo message="  messages  Generate JavaScript message files"/>
     <echo message="  patch     Apply patch file to Antville installation"/>
     <echo message="  pot       Extract gettext call strings into POT file"/>
-    <echo message="  release   Copy packages to the download server"/>
     <echo message="  +patch    Scaffolds a new patch, ready for implementation"/>
     <echo message="  +trail    Scaffolds a new trail, ready for implementation"/>
     <echo message="  usage     Show these build instructions (default)"/>
@@ -269,44 +268,6 @@
     <zip zipfile="${dist.dir}/${filename}.zip">
       <zipfileset dir="${path}" prefix="${filename}" includes="**"/>
     </zip>
-  </target>
-
-  <target name="release" depends="init">
-    <property name="antville.summary" value="Helma application providing high performance, full featured weblog hosting"/>
-    <property name="antclick.summary" value="The lightweight all-in-one package which contains everything you need to run Antville on your computer"/>
-    <antcall target="upload">
-      <param name="file" value="${dist.dir}/${package.name}.tbz"/>
-      <param name="summary" value="${antville.summary}"/>
-      <param name="labels" value="Type-Package, OpSys-All, Featured"/>
-    </antcall>
-    <antcall target="upload">
-      <param name="file" value="${dist.dir}/${package.name}.zip"/>
-      <param name="summary" value="${antville.summary}"/>
-      <param name="labels" value="Type-Package, OpSys-Windows"/>
-    </antcall>
-    <antcall target="upload">
-      <param name="file" value="${dist.dir}/antclick-${version}.tbz"/>
-      <param name="summary" value="${antclick.summary}"/>
-      <param name="labels" value="Type-Package, OpSys-All"/>
-    </antcall>
-    <antcall target="upload">
-      <param name="file" value="${dist.dir}/antclick-${version}.zip"/>
-      <param name="summary" value="${antclick.summary}"/>
-      <param name="labels" value="Type-Package, OpSys-Windows, Featured"/>
-    </antcall>
-  </target>
-
-  <target name="test-upload" depends="init">
-    <antcall target="upload">
-      <param name="file" value="/Users/tobi/Desktop/test.txt"/>
-      <param name="summary" value="Test pls ignore"/>
-      <param name="labels" value="Deprecated"/>
-    </antcall>
-  </target>
-
-  <target name="upload" depends="file-exists" if="file.exists">
-    <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpath="${build.dir}/ant-googlecode-0.0.3.jar" name="gcupload"/>
-    <gcupload username="${google.username}" password="${google.password}" projectname="antville" filename="${file}" targetfilename="${file}" summary="${summary}" labels="${labels}"/>
   </target>
 
   <target name="patch" depends="init">
