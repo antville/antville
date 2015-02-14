@@ -217,9 +217,9 @@ Layout.prototype.update = function(data) {
       var value = data[key];
       key = key.substr(6);
       res.write('<% value ');
-      res.write(quote(key));
+      res.write(quote(key, '\\s'));
       res.write(' ');
-      res.write(quote(value));
+      res.write(quote(value, '\\s'));
       res.write(' %>\n');
     }
   }
