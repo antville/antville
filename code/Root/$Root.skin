@@ -1,309 +1,122 @@
 <% #create %>
-<p class="storyTitle"><% response.title %></p>
-<div>
-   <% gettext "To create a new site you need to fill out the form below." %>
-</div>
-<div class="small">
-   <p><% gettext 'The name will be part of the URL of your site. E.g. if you
-   enter “{0}” as the name your site will be reachable via this url: {1}'
-   <% example.name %> <% example.href prefix="<p><code>" suffix=</code></p> %> %></p>
-   <p><% gettext "Please note that you cannot change the name after the site was
-   created." %> <% gettext "The title will appear in the header of every page
-   of your site. You can change it anytime you want." %></p>
-</div>
-<p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext Name suffix=: %></td>
-<td><% newSite.input name %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Title suffix=: %></td>
-<td><% newSite.input title %></td>
-</tr>
-<tr>
-<td></td>
-<td>
-   <br />
-   <button type="submit" name="create" value="1"><% gettext Create %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='name'>
+         <% gettext Name %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext "Please note that you cannot change the name after the site was created." %>"></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% newSite.input name class=uk-form-width-medium maxlength=25 tabindex=1 %>
+         <div class='uk-form-help-inline'>
+            <% gettext 'The name will be part of the URL of your site.' %>
+         </div>
+         <div class='uk-form-help-block'>
+            <% root.skin Root#urlPreview %>
+            <noscript>
+               <% gettext 'E.g. if you enter <em>{0}</em> here your site will be reachable via {1}' <% example.name %> <% root.href <% example.name %> prefix=<code> suffix=</code> %> %>
+            </noscript>
+         </div>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='title'>
+         <% gettext Title %> <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title='<% gettext "The title will appear in the header of every page of your site. You can change it anytime you want." %>'></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% newSite.input title class=uk-width-1-1 tabindex=2 %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="create" value="1"tabindex=3>
+         <% gettext Create %>
+      </button>
+      <a href='<% root.href %>' class="uk-button uk-button-link" tabindex=4><% gettext Cancel %></a>
+   </div>
 </form>
-</p>
 
 <% #sites %>
-<p><% gettext "This is the directory of public sites hosted here, in
-alphabetical order." %></p>
+<h1><% response.title %></h1>
+<p><% gettext "This is the directory of public sites hosted here, in alphabetical order." %></p>
 <% response.pager %>
-<table border="0" cellspacing="0" cellpadding="1">
-<% response.list prefix="<ul>" suffix="</ul>" %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Title %></th>
+         <th><% gettext 'Last Update' %></th>
+         <th><% gettext User %></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
 </table>
 <% response.pager %>
 
 <% #notfound %>
-<p class="storyTitle"><% gettext Sorry! %></p>
-<p><% gettext "The path you requested was not found:"  %></p>
-<% param.path encoding="all" prefix=<code>/ suffix=</code> %>
+<h1><% gettext Sorry! %></h1>
+<p><% gettext "The path you requested was not found."  %></p>
+<% param.path encoding="all" prefix=<pre>/ suffix=</pre> %>
 
 <% #error %>
-<p class="storyTitle"><% gettext Sorry! %></p>
-<p><% gettext "An error occurred while processing your request:" %></p>
-<% session.error default=<% param.error %> %>
+<h1><% gettext Sorry! %></h1>
+<p><% gettext "An error occurred while processing your request." %></p>
+<pre class='uk-text-break'><% session.error default=<% param.error %> %></pre>
 
 <% #health %>
-<p class="storyTitle"><% response.title %></p>
-<% site.skin Root#status %>
-<br /><br />
-<p><strong><% gettext Details %></strong></p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-<colgroup>
-   <col width="30%" />
-   <col width="*" />
-</colgroup>
-<tr>
-   <td class="small"><% gettext 'Sessions' %>:</td>
-   <td><% param.sessions %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext Uptime %>:</td>
-   <td><% ngettext '{0} day' '{0} days' <% param.uptime %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Threads' %>:</td>
-   <td>
-      <% gettext '{0} active' <% param.activeThreads %> %>,
-      <% gettext '{0} free' <% param.freeThreads %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Requests' %>:</td>
-   <td>
-      <% gettext '{0} total' <% param.requestCount %> %>,
-      <% gettext '{0} last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Errors' %>:</td>
-   <td>
-      <% gettext '{0} total' <% param.errorCount %> %>,
-      <% gettext '{0} last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Error Ratio' %>:</td>
-   <td>
-      <% gettext '{0}% total' <% param.errorRatio %> %>,
-      <% gettext '{0}% last 5 min.' <% param.errorRatioPerUnit %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Xml-Rpc Count' %>:</td>
-   <td><% ngettext '{0} request' '{0} requests' <% param.xmlrpcCount %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Cache' %>:</td>
-   <td><% gettext '{0} of {1} objects' <% param.cacheusage %> <% param.cacheSize %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Memory' %>:</td>
-   <td>
-      <% gettext '{0} MB total'  <% param.totalMemory %> %>,
-      <% gettext '{0} MB free' <% param.freeMemory %> %>
-   </td>
-</tr>
-<tr>
-   <td class="small"><% gettext 'Queue' %>:</td>
-   <td>
-      <% ngettext '{0} request' '{0} requests' <% param.requests %> %>,
-      <% ngettext '{0} mail' '{0} mails' <% param.mails %> %>,
-      <% ngettext '{0} callback' '{0} callbacks' <% param.callbacks %> %>,
-   </td>
-</tr>
-<tr>
-   <td></td>
-   <td><% gettext '{0} log entries' <% param.entries %> %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext Version %>:</td>
-   <td><% version %></td>
-</tr>
-<tr>
-   <td class="small"><% gettext Build %>:</td>
-   <td><% link <% version revision prefix=http://antville.googlecode.com/svn/!svn/bc/ suffix=/trunk %> <% version revision %> %>
-         (<% version date | format date medium %>)</td>
-</tr>
-</table>
-
-<% #stylesheet %>
-/* CSS for protected skins (user interface elements etc.) */
-
-ul { list-style: url(<% image /bullet.gif url %>) circle; }
-
-ul.skinmgrTree {
-   padding-left:15px;
-   margin:20px 0px;
-}
-
-ul.skinmgrTree ul {
-   padding-left:30px;
-   margin:0px;
-}
-
-ul.skinmgrTree li {
-   list-style:none;
-   margin:7px 0px;
-   padding:0px;
-}
-
-ul.skinmgrTree li.skinset {
-   list-style:square;
-   padding-left:0px;
-}
-
-ul.skinmgrTree a.selected {
-   font-weight:bold;
-}
-
-ul.skinmgrTree li div {
-   font-family:<% value "small font" %>;
-   font-size:<% value "small font size" %>;
-   color:<% value "base font color" %>;
-}
-
-div.skin {
-   /*margin: 1px;
-   border: 1px solid gray;*/
-}
-
-div.skin div.title {
-   display: none;
-   padding: 2px;
-   color: gray;
-   font: normal 8px verdana, sans-serif;
-}
-
-#prefs select {
-   width: 200px;
-}
-
-.nowrap {
-   white-space: nowrap;
-}
-
-.translated {
-   font-weight: bold;
-}
-
-.pageTitle {
-   font-family:<% value "big font" %>;
-   font-size:<% value "big font size" %>;
-   font-weight:bold;
-   color:<% value "big font color" %>;
-   padding-bottom:10pt;
-}
-
-.listItemSeparator {
-   margin-top:15px;
-   border-top:1px solid #dddddd;
-}
-
-.listItemFlag {
-   padding: 1px;
-   color: white;
-   background-color: #cccccc;
-   border: 1px solid white;
-   font: 11px monospace;
-   line-height: 10px;
-}
-
-.label {
-   margin-right: 1px;
-   padding: 2px 3px;
-   color: white;
-   font-family: sans-serif;
-   font-size: 0.8em;
-   letter-spacing: 1px;
-   text-transform: uppercase;
-}
-
-.adminHighlight {
-   margin-top: 5px;
-   padding: 1px 10px;
-   background-color: yellow;
-   border: 1px solid <% value 'link color' %>;
-}
-
-.Root, .blocked {
-   background-color: black;
-}
-
-.Site, .public, .privileged  {
-   background-color: #006600;
-}
-
-.User, .trusted {
-   background-color: #0000cc;
-}
-
-.regular {
-   display: none;
-}
-
-.open {
-   padding: 1px 2px;
-   color: #0000cc;
-   border: 1px solid #0000cc;
-}
-
-.restricted {
-   padding: 1px 2px;
-   color: #006600;
-   border: 1px solid #006600;
-}
-
-.closed {
-   background-color: #cc0000;
-}
-
-.deleted {
-   padding: 1px 2px;
-   color: #cc0000;
-   border: 1px solid #cc0000;
-}
-
-.layout-sandbox {
-   height: 22px;
-}
-
-.layout-sandbox div {
-   position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   height: 22px;
-   padding: 0 20px;
-   background: url('<% root.static sandbox.png %>');
-   background-position: 0 23px;
-   text-align: left;
-}
-
-.skin-control {
-   margin: 5px 0;
-   font: bold 9px arial;
-   line-height: 15px;
-   letter-spacing: 1px;
-}
-
-.skin-edit-link {
-   padding: 2px;
-   text-decoration: none !important;
-}
-
-.connect img {
-   padding: 2px 0;
-   vertical-align: middle;
-   opacity: .3;
-}
+<h1><% response.title %></h1>
+<div class='uk-panel uk-panel-header'>
+   <h3 class='uk-panel-title'><% gettext Status %></h3>
+   <% site.skin Root#status %>
+</div>
+<div class='uk-panel uk-panel-header'>
+   <h3 class='uk-panel-title'><% gettext Details %></h3>
+   <dl class='uk-description-list-horizontal'>
+      <dt><% gettext Sessions %></dt>
+      <dd><% param.sessions %></dd>
+      <dt><% gettext Uptime %></dt>
+      <dd><% ngettext '{0} day' '{0} days' <% param.uptime %> %></dd>
+      <dt><% gettext Threads %></dt>
+      <dd>
+         <% gettext '{0} active' <% param.activeThreads %> %>,
+         <% gettext '{0} free' <% param.freeThreads %> %>
+      </dd>
+      <dt><% gettext Requests %></dt>
+      <dd>
+         <% gettext '{0} total' <% param.requestCount %> %>,
+         <% gettext '{0} in the last 5 min.' <% param.requestsPerUnit default=n.a. %> %>
+      </dd>
+      <dt><% gettext 'Errors' %></dt>
+      <dd>
+         <% gettext '{0} total' <% param.errorCount %> %>,
+         <% gettext '{0} in the last 5 min.' <% param.errorsPerUnit default=n.a. %> %>
+      </dd>
+      <dt><% gettext 'Error Ratio' %></dt>
+      <dd>
+         <% gettext '{0}% total' <% param.errorRatio %> %>,
+         <% gettext '{0}% in the last 5 min.' <% param.errorRatioPerUnit %> %>
+      </dd>
+      <dt><% gettext 'Xml-Rpc Count' %></dt>
+      <dd><% ngettext '{0} request' '{0} requests' <% param.xmlrpcCount %> %></dd>
+      <dt><% gettext 'Cache' %></dt>
+      <dd><% gettext '{0} of {1} objects' <% param.cacheusage %> <% param.cacheSize %> %></dd>
+      <dt><% gettext 'Memory' %></dt>
+      <dd>
+         <% gettext '{0} MB total'  <% param.totalMemory %> %>,
+         <% gettext '{0} MB free' <% param.freeMemory %> %>
+      </dd>
+      <dt><% gettext 'Queue' %></dt>
+      <dd>
+         <% ngettext '{0} request' '{0} requests' <% param.requests %> %>,
+         <% ngettext '{0} mail' '{0} mails' <% param.mails %> %>,
+         <% ngettext '{0} callback' '{0} callbacks' <% param.callbacks %> %>,
+      </dd>
+      <dd></dd>
+      <dd><% gettext '{0} log entries' <% param.entries %> %></dd>
+      <dt><% gettext Version %></dt>
+      <dd><% version %></dd>
+      <dt><% gettext Build %></dt>
+      <dd>
+         <% link <% version hash prefix='https://code.google.com/p/antville/source/browse/?r=' %> <% version hash %> %> (<% version date | format date medium %>)
+      </dd>
+   </dl>
+</div>

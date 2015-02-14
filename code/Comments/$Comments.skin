@@ -1,0 +1,24 @@
+<% #main %>
+<h1>
+   <% response.title %>
+   <% site.link comments.xml ' ' class='uk-icon-button uk-icon-rss uk-text-middle' %>
+</h1>
+<% if <% username %> is null then '' else
+   <% comments.link . <% gettext All %> %>
+%>
+<% comments.link user <% username %> prefix=" | " %>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Content %></th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>

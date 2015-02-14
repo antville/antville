@@ -1,21 +1,32 @@
+<% #meta %>
+<% if <% this.creator %> is null then '' else
+   <% gettext 'Created by {0} on {1}' <% this.creator %> <% this.created short %> %>
+%>
+<% if <% this.created %> is <% this.modified %> then '' else
+   <% gettext 'Last modified by {0} on {1}' <% this.modifier %> <% this.modified short %> prefix=<br> %>
+%>
+
 <% #confirm %>
+<h1><% gettext Warning! %></h1>
+<p class='uk-text-bold'><% param.text %></p>
+<p>
+  <% gettext 'Please be aware of the fact that there is no “undo”, so if you click “Proceed” below the changes will be applied irreversibly.' %>
+</p>
+<p>
+  <% gettext 'Click “Cancel” now if you are not really sure you want to proceed.' %>
+</p>
 <form action="<% response.action %>" method="post">
-<p class="storyTitle"><% gettext Warning! %></p>
-<p><% param.text %></p>
-<p><% gettext 'Please be aware of the fact that there is no “undo”, so if you 
-click “Proceed” below the changes will be applied irreversibly.' %></p>
-<p><% gettext 'Click “Cancel” now if you are not really sure you want to 
-proceed.' %></p>
-<% this.skin <% this.type prefix=$ suffix=#delete %> %>
-<p><button type="submit" name="proceed" value="1"><% gettext Proceed %></button>
-<a href="" class="cancel"><strong><% gettext Cancel %></strong></a></p>
+  <% param.extra %>
+  <p>
+    <button class='uk-button uk-button-danger' name="proceed" value="1"><% gettext Proceed %></button>
+    <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
+  </p>
 </form>
 
 <% #notify_create %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has added {1} #{2} to the site {3}:' <% this.modifier %>
-      <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% gettext 'User {0} has added {1} #{2} to the site {3}:' <% this.modifier %> <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
 <% this.href %>
 
 <% gettext "Best regards." %>
@@ -24,8 +35,7 @@ proceed.' %></p>
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %> 
-      <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
+<% gettext 'User {0} has modified {1} #{2} at the site {3}:' <% this.modifier %> <% gettext <% this.kind %> %> <% this.id %> <% site.title %> %>
 <% this.href %>
 
 <% gettext "Best regards." %>

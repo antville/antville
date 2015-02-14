@@ -1,25 +1,31 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
-
-<div class="ample">
-   <% images.link create <% gettext "Add Image" %> prefix="... " %>
-</div>
-...
-<% images.link main <% gettext "By {0}" <% membership.name %> %> %>
-<% images.link all <% gettext All %> prefix=" | " %>
-
+<h1>
+   <% response.title %>
+   <% images.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
+</h1>
+<% if <% images.self _parent %> is 'HopObject layout' then '' else
+   <% images.link . <% gettext All %> %>
+%>
+<% images.link user <% membership.name %> prefix=" | " %>
 <% response.pager %>
-<% response.list %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th></th>
+         <!--
+         <th><% gettext Type %></th>
+         <th><% gettext Size %></th>
+         -->
+         <th>Pixels</th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
 <% response.pager %>
 
-<% #layout %>
-<div class="pagelink"><% breadcrumbs %></div><br />
-<p class="storyTitle"><% response.title %></p>
-
-<div class="ample">
-   <% images.link create <% gettext "Add Layout Image" %> prefix="... " %>
-</div>
-
-<% response.pager %>
-<% response.list %>
-<% response.pager %>

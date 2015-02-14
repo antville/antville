@@ -1,102 +1,117 @@
+<% #listItem %>
+<tr>
+   <td>
+      <% image.thumbnail data-uk-tooltip="{pos: 'right'}" | image.link class='uk-thumbnail' %>
+   </td>
+   <!--
+   <td><% //image.contentType | replace image/ '' %></td>
+   <td><% //image.contentLength %></td>
+   -->
+   <td><% image.width %>&times;<% image.height %></td>
+   <td><% image.creator %></td>
+   <td class='uk-text-truncate' title='<% image.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% image.modified text %>
+   </td>
+   <td class='uk-text-right'>
+      <% if <% image.tags count %> is 0 then '' else <% image.tags prefix="<i class='uk-text-muted uk-icon-tags' data-uk-tooltip title='" suffix="'></i>" %> %>
+   </td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% image.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <% image.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% image.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
+<% #tagged %>
+<div class='av-tagged-image' data-caption='<% image.description default=<% image.fileName %> %>'>
+   <% image.render | image.link %>
+</div>
+
+<% #embed %>
+<div class='av-image-box'>
+   <% image.render | image.link class='uk-thumbnail' %>
+   <div class='uk-text-right uk-text-muted uk-text-small'>
+      <% gettext Source %>: <% image.site.title | image.link %>
+   </div>
+</div>
+
 <% #edit %>
+<h1>
+   <% response.title %>
+   <% image.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
+</h1>
+<div class='uk-article-meta'><% image.skin $HopObject#meta %></div>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for=''>
+         <% gettext File %>
+      </label>
+      <div class='uk-form-controls'>
+         <% image.upload file %>
+      </div>
+   </div>
+   <div class='uk-form-row uk-hidden av-name-row'>
+      <label class='uk-form-label' for=''>
+         <% gettext Name %>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% image.input name class='uk-width-1-2' %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for=''>
+         <% gettext Description %>
+      </label>
+      <div class='uk-form-controls'>
+         <% image.input description class='uk-width-1-1' %>
+      </div>
+   </div>
+   <div class='uk-form-row uk-hidden av-tags-row'>
+      <label class='uk-form-label' for=''>
+         <% gettext Tags %>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext 'Separated by commas' %>' data-uk-tooltip='{pos: "right"}'></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% image.input tags class='uk-width-1-1' %>
+      </div>
+   </div>
+   <div class='uk-form-row uk-hidden av-pixels-row'>
+      <label class='uk-form-label' for=''>
+         Pixels
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you want to resize the image please specify your desired maximum width and/or maximum height in pixels. If you specify both the image will be resized to match both criterias, but the image ratio will be preserved. If the width or height of your image exceeds 100 pixels Antville automatically creates a thumbnail of it, too." %> ' data-uk-tooltip='{pos: "right"}'></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% image.input maxWidth type='number' min=1 max=1000 class='uk-form-width-small' %>
+         &times;
+         <% image.input maxHeight type='number' min=1 max=1000 class='uk-form-width-small' %>
+      </div>
+   </div>
+   <fieldset class='uk-margin-top'>
+     <legend><% gettext Information %></legend>
+      <div class='uk-form-row'>
+         <% image.macro | link 'javascript:' data-value=<% image.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+      </div>
+   </fieldset>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <% image.link delete <% gettext Delete %> class='uk-button' %>
+      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
+   </div>
+</form>
 <script type="text/javascript">
 $(function() {
-   if ("<% image.fileName %>") {
-      $(".name").hide();
-   } else {
-      $("#image").hide();
+   if ('<% image.name %>') {
+      $('#name').attr('disabled', true);
+      $('#maxWidth').attr('disabled', true);
+      $('#maxHeight').attr('disabled', true);
    }
-   if ("<% image.parent_type %>" === "Layout") {
-      $(".tags").hide();
+   if (location.href.indexOf('/layout/') < 0) {
+      $('.av-tags-row').removeClass('uk-hidden');
    }
+   $('.av-name-row').removeClass('uk-hidden');
+   $('.av-pixels-row').removeClass('uk-hidden');
 });
 </script>
-
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>" enctype="multipart/form-data">
-<table border="0" width="400" cellspacing="0" cellpadding="3" style="clear: both;">
-<tr>
-<td class="small"><% gettext "File" suffix=: %></td>
-<td><% image.upload file %></td>
-</tr>
-<tr class="name">
-<td valign="top" class="small"><% gettext Name suffix=: %></td>
-<td>
-   <% image.input name %><br />
-   <span class="small"><% gettext "If you do not specify a name Antville will 
-   create one based on the name of the local or remote file, resp." %></span>
-</td>
-</tr>
-<tr>
-<td class="small" valign="baseline"><% gettext Description suffix=: %></td>
-<td><% image.textarea description cols=40 %></td>
-</tr>
-<tr class="tags">
-<td class="small"><% gettext Tags suffix=: %></td>
-<td><% image.input tags size=55 %></td>
-</tr>
-<tr class="resize">
-<td></td>
-<td>
-   <span class="small"></small>
-</td>
-</tr>
-<tr class="resize">
-<td class="small" nowrap="nowrap"><% gettext "Max. width" suffix=: %></td>
-<td><% image.input maxWidth value="400" %> pixel</td>
-</tr>
-<tr class="resize">
-<td class="small" nowrap="nowrap"><% gettext "Max. height" suffix=: %></td>
-<td><% image.input maxHeight value="400" %> pixel</td>
-</tr>
-<tr class="resize">
-<td class="small"> </td>
-<td class="small">
-   <% gettext "If you want to resize the image please specify your desired 
-   maximum width and/or maximum height in pixels. If you specify both the image 
-   will be resized to match both criterias, but the image ratio will be 
-   preserved." %><br /><br />
-   <% gettext "If the width or height of your image exceeds 100 pixels Antville 
-   automatically creates a thumbnail of it, too." %>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"> </td>
-<td>
-   <br />
-   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
-
-<% #listItem %>
-<div class="listSeparator"> </div>
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td colspan="2" class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% image.macro %>
-   <div class="ample"><strong><% gettext Properties suffix=: %></strong>
-   <% image.contentType %>, <% image.contentLength %>, 
-   <% image.width %>&times;<% image.height %> <% gettext pixels %></div>
-</td>
-</tr>
-<tr>
-<td>
-   <div class="storyTitle"><% image.name %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% image.creator link %> 
-         <% image.created short %> %></div>
-</td>
-<td align="right" class="small" valign="top">
-   <% image.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% image.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% image.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-   <% image.thumbnail vspace="5" | image.link %>
-</td>
-</tr>
-</table>

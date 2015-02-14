@@ -1,122 +1,135 @@
+<% #listItem %>
+<a name="<% poll.id %>" id="<% poll.id %>"></a>
+<tr>
+   <td class='uk-text-right'><% poll.votes %></td>
+   <td class='uk-width-1-2 av-overflow'>
+      <% poll.question | stripTags | poll.link %>
+   </td>
+   <td class='uk-text-truncate'><% poll.creator %></td>
+   <td class='uk-text-truncate' title='<% poll.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% poll.modified text %>
+   </td>
+   <td class='uk-text-right'>
+      <% poll.link status <% if <% poll.status %> is open then "<i class='uk-icon-unlock'></i>" else "<i class='uk-icon-lock'></i>" %> %>
+   </td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% poll.macro %>"><i class='uk-icon-clipboard'></i></a><span title='' data-uk-tooltip="{pos: 'right'}">
+      <% poll.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% poll.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
 <% #header %>
-<div class="storyTitle"><% poll.question %></div>
-<div class="small"><% gettext "{0} on {1}" <% poll.creator %> <% poll.created %> %></div>
+<h1><% poll.question | stripTags %></h1>
+<div class='uk-article-meta'>
+   <% gettext "Posted by {0} on {1}" <% poll.creator %> <% poll.created short %> %>
+</div>
 
 <% #footer %>
-<p class="small">
-   <% poll.link edit <% gettext Edit %> prefix="... " %>
-   <% poll.link rotate prefix="... " %>
-   <% poll.link delete <% gettext Delete %> prefix="... " %>
-</p>
+<div class='uk-margin-top'>
+   <% poll.link edit <% gettext Edit %> class='uk-button' %>
+</div>
 
 <% #main %>
-<% if <% param.header %> is true then <% poll.skin #header suffix="<br />" %> else 
-      <% poll.question prefix='<div class="pollTitle">' suffix="</div> %> %>
-<form method="post" action="<% poll.href %>">
-<table border="0" cellspacing="2" cellpadding="2">
-<% poll.loop skin="$Choice#main" %>
-<tr>
-<td colspan="2">
-   <br />
-   <button type="submit" name="vote" value="1"><% gettext Vote %></button> 
-   <% poll.link result <% gettext "Results" %> %>
-</td>
-</tr>
-</table>
-</form>
+<% poll.skin #header %>
+<% poll.skin #open %>
 <% poll.skin #footer %>
 
 <% #results %>
-<% if <% param.header %> is true then <% poll.skin #header %> else 
-      <% poll.question prefix=<strong> suffix="</strong> %> %>
-<% poll.loop skin="$Choice#result" %>
-<div class="small">
-   <% gettext Total suffix=: %> 
-   <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
-   <% if <% poll.status %> is open then "" else
-      <% if <% poll.closed %> is null then "" else  
-         <% gettext "This poll was closed by {0} on {1}"
-         <% poll.modifier %> <% poll.closed short %> prefix="<br />" %> 
-      %>
-   %>
-</div>
-<% if <% poll.status %> is open then
-   <% poll.link main <% gettext "Add Your Vote %> prefix=<p> suffix=</p> %>
-%>
+<% poll.skin #header %>
+<% poll.skin #closed %>
 <% poll.skin #footer %>
 
-<% #listItem %>
-<a name="<% poll.id %>" id="<% poll.id %>"></a>
-<div class="listSeparator"> </div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<% if <% poll.status %> is closed then 
-   <% listItemFlag <% gettext closed %> %>
+<% #embed %>
+<% if <% poll.status %> is open then
+   <% poll.skin $Poll#open title=<% poll.question %> %>
+else
+   <% poll.skin $Poll#closed title=<% poll.question %> %>
 %>
-<td colspan="3" class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% poll.macro %>
-   <div class="ample"><strong><% gettext Status suffix=: %></strong> 
-   <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
-</td>
-</tr>
-<tr valign="top">
-<td>
-   <div class="storytitle"><% poll.question %></div>
-   <div class="storyDate"><% poll.creator link %>, 
-   <% poll.created short %></div>
-</td>
-<td width="10" nowrap="nowrap"> </td>
-<td align="right" class="small">
-   <% poll.link main <% gettext Vote %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link results <% gettext Results %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link rotate prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% poll.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-</table>
+<div class='uk-text-right uk-text-small uk-text-muted'>
+   <% gettext Source suffix=<% poll.link . <% poll.site.title %> prefix=': ' %> %>
+</div>
+
+<% #open %>
+<form class='uk-margin-top uk-panel uk-panel-box uk-form uk-form-stacked' method="post" action="<% poll.href %>">
+   <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
+   <% poll.loop skin="$Choice#main" %>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="submit" value="1">
+         <% gettext Vote %>
+      </button>
+      <% poll.link result <% gettext "Results" %> class='uk-button uk-button-link' %>
+   </div>
+</form>
+
+<% #closed %>
+<div class='uk-margin-top uk-panel uk-panel-box'>
+   <% param.title prefix="<h1 class='uk-panel-title'>" suffix=</h1> %>
+   <% poll.loop skin="$Choice#result" %>
+   <div class='uk-float-left'>
+      <strong><% gettext Total suffix=: %></strong>
+      <% ngettext "{0} vote" "{0} votes" <% poll.votes %> %>
+   </div>
+   <div class='uk-text-right'>
+      <% if <% poll.status %> is open then
+         <% poll.link main <% gettext 'Add Your Vote' %> %>
+      else
+         <% gettext "This poll was closed {0} by {1}" <% poll.closed text %> <% poll.modifier %> prefix="<span class='uk-text-muted'>" suffix='</span>' %>
+      %>
+   </div>
+</div>
 
 <% #edit %>
+<h1>
+   <% response.title %>
+   <% poll.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
+</h1>
+<div class='uk-article-meta'><% poll.skin $HopObject#meta %></div>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'><% gettext Question %></div>
+      <div class='uk-form-controls'>
+         <% poll.input question rows=3 class=uk-width-1-1 %>
+      </div>
+   </div>
+   <legend class='uk-margin-top'><% gettext Choices %></legend>
+   <% poll.input choices %>
+   <div class="uk-text-small uk-form-row">
+      <a href='' id="add">
+         <i class='uk-icon-plus'></i>
+         <% gettext "Add Choice" %>
+      </a>
+   </div>
+   <fieldset class='uk-margin-top'>
+     <legend><% gettext Information %></legend>
+      <div class='uk-form-row'>
+         <% poll.macro | link 'javascript:' data-value=<% poll.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+      </div>
+   </fieldset>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" name="save" value="<% poll.status default=closed %>">
+         <% gettext Save %>
+      </button>
+      <% if <% poll.status %> is open then
+         <% poll.link status <% gettext Stop %> class='uk-button uk-button-danger' %>
+      else
+         <% gettext "Save and Run" prefix="<button class='uk-button uk-button-success' type='submit' name='save' value='open'>" suffix=</button> %>
+      %>
+      <% poll.link delete <% gettext Delete %> class='uk-button' %>
+      <a href='.' class='uk-button uk-button-link'><% gettext Cancel %></a>
+   </div>
+</form>
 <script type="text/javascript">
 $(function() {
    var index = $(".choice").length + 1;
-   $("#add").click(function(event) {
+   $("#add").on('click', function (event) {
       event.preventDefault();
       var choice = $(".choice:last").clone();
-      choice.find(".small").text('<% gettext Choice %> #' + index + ':');
-      choice.find("input").attr("value", "");
+      choice.find(".uk-form-label").text('#' + index);
+      choice.find("input").attr("value", '');
       $(".choice:last").after(choice);
       $(".choice:last").find("input").focus();
       index += 1;
    });
 });
 </script>
-
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<div class="small"><% gettext Question suffix=: %></div>
-<div><% poll.input question cols="30" rows="3" class="formTitle" %></div>
-<% poll.input choices %>
-<div class="small">
-   <a href="" id="add"><% gettext "Add Choice" %></a>
-</div>
-<p class="small">
-   <% if <% poll.created %> then <% gettext "Created by {0} on {1}" 
-         <% poll.creator %> <% poll.created short %> %> %>
-   <% if <% poll.created %> is <% poll.modified %> then "" else 
-      <% gettext "Last modified by {0} on {1}" <% poll.modifier link %> 
-      <% poll.modified short %> prefix="<br />" %>
-   %>
-</p>
-<br />
-<div>
-   <button type="submit" name="save" value="<% poll.status default=closed %>">
-      <% gettext Save %>
-   </button>
-   <% if <% poll.status %> is open then "" else 
-         <% gettext "Save and Run" prefix='<button type="submit" 
-               name="save" value="open"><strong>' suffix=</strong></button> %>
-   %>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</div>
-</form>

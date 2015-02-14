@@ -1,35 +1,44 @@
-<% #delete %>
-<% if <% comment.creator %> is <% membership.user.name %> then ''
-      else <% if <% comment.related.size %> is null then '' 
-      else <% comment.skin #deleteOptions %> %> %>
+<% #listItem %>
+<tr>
+   <td class='uk-width-1-2 av-overflow'>
+      <a href='<% comment.href %>'><% comment.abstract %></a> <% if <% comment.comments count %> is 0 then '' else <% comment.comments count prefix="<span class='uk-text-muted uk-text-nowrap'><i class='uk-icon-comments-o'></i> " suffix=</span> %> %>
+   </td>
+   <td class='uk-truncate'><% comment.creator %></td>
+   <td class='uk-truncate' title='<% comment.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% comment.modified text %>
+   </td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <a href='<% comment.story.href %>' title='<% comment.story.abstract | escapeXml %>' data-uk-tooltip="{pos: 'left'}"><i class='uk-icon-newspaper-o'></i></a>
+      <% comment.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% comment.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
 
-<% #deleteOptions %>
+<% #delete %>
+<div class='uk-alert uk-alert-warning uk-hidden av-alert-confirm'>
+   <input type="checkbox" id="mode" name="mode" value="user" />
+   <label for="mode"><% gettext "Erase all comments of user {0}" <% comment.creator %> %></label>
+   <div id="confirmation">
+      <input type="checkbox" id="confirm" name="confirm" value="1" />
+      <label for="confirm"><% ngettext "Yes, really erase {0} comment" "Yes, really erase {0} comments" <% comment.related.size %> %></label>
+   </div>
+</div>
 <script type="text/javascript">
 $(function() {
-   $("#confirmation").hide();
-   $("#confirm").click(function() {
-      $("button").attr("disabled", !$(this).attr("checked"));
-   });
-   $("#mode").click(function() {
-      if ($(this).attr("checked")) {
-         $("#confirm").attr("checked", false);
-         $("#confirmation").show();
-         $("button").attr("disabled", true);
+   $('#confirmation').hide();
+   $('#mode').on('click', function() {
+      if ($(this).prop('checked')) {
+         $('#confirm').attr('checked', false);
+         $('#confirmation').show();
+         $('button').attr('disabled', true);
       } else {
-         $("#confirmation").hide();
-         $("button").attr("disabled", false);
+         $('#confirmation').hide();
+         $('button').attr('disabled', false);
       }
    });
+   $('#confirm').on('click', function() {
+      $('button').attr('disabled', !$(this).prop('checked'));
+   });
+   $('.av-alert-confirm').removeClass('uk-hidden');
 });
 </script>
-<div>
-   <input type="checkbox" id="mode" name="mode" value="user" />
-   <label for="mode"><% gettext "Erase all comments of user {0}" 
-         <% comment.creator %> %></label>
-</div>
-<div id="confirmation">
-   <input type="checkbox" id="confirm" name="confirm" value="1" />
-   <label for="confirm"><% ngettext "Yes, really erase {0} comment"
-         "Yes, really erase {0} comments" <% comment.related.size %> %></label>
-</div>
-<br />

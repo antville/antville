@@ -1,5 +1,5 @@
 <% #xslDeclaration %>
-<?xml-stylesheet title="Xml Stylesheet" type="text/xsl" 
+<?xml-stylesheet title="Xml Stylesheet" type="text/xsl"
       href="<% site.href rss.xsl %>"?>
 <!--
 ................................................................................
@@ -14,10 +14,10 @@
       xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
       xmlns:fn="http://www.w3.org/2005/02/xpath-functions">
 <xsl:output method="html" encoding="UTF-8" indent="yes"
-      doctype-public="-//W3C//DTD XHTML 1.1//EN" 
+      doctype-public="-//W3C//DTD XHTML 1.1//EN"
       doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
 <xsl:template match="/">
-   
+
 <html>
 <head>
 <title><xsl:value-of select="/rss/channel/title"/></title>

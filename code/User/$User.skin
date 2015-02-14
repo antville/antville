@@ -1,118 +1,149 @@
 <% #welcome %>
-<p><% gettext "The site is currently {0}." <% gettext <% site.mode %> %> %>
-<% if <% site.mode %> is closed then 
-   <% gettext "This means that only you and other {0} of this site have access 
-   to it. You can safely start to customize it or to fill it with all the 
-   content you have in mind." <% site.members.link owners <% gettext owners %> %> %>
-else <% if <% site.mode %> is restricted then "" else 
-   <% gettext "Thus, it is publicly accessible for every visitor." %> %>
-%></p>
-<p><% gettext 'The easiest way to customize your site is to change its 
-      <a href="{0}">preferences</a>. You can change the language and time zone 
-      or the main title of your site, open or close it and much more.' 
-      <% site.href edit %> %></p>
-<p><% gettext 'Of course, you can now also start to create <a href="{0}">stories</a>, 
-      upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create 
-      your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful 
-      customization possibilities by having a look at the <a href="{4}">layout 
-      section</a> where you can modify the appearance of your site according to 
-      your needs.' <% site.stories.href create %> <% site.images.href create %> 
-      <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %></p>
-<p><% gettext "Have a lot of fun!" %></p>
-
-<% #sites %>
-<table border="0" cellpadding="1" cellspacing="0">
-<colgroup>
-   <col width="150">
-   <col width="*">
-</colgroup>
-<% user.list sites %>
-</table>
+<p>
+   <% gettext "This site is currently {0}." <% gettext <% site.mode %> %> %>
+   <% if <% site.mode %> is closed then
+      <% gettext "This means that only you and other {0} of this site have access to it. You can safely start to customize it or to fill it with all the content you have in mind." <% site.members.link owners <% gettext owners %> %> %>
+   else <% if <% site.mode %> is restricted then "" else
+      <% gettext "Thus, it is publicly accessible for every visitor." %> %>
+   %>
+</p>
+<p>
+   <% gettext 'The easiest way to customize your site is to change its <a href="{0}">settings</a>. You can change the language and time zone or the main title of your site, open or close it and much more.' <% site.href edit %> %>
+</p>
+<p>
+   <% gettext 'Of course, you can now also start to add <a href="{0}">stories</a>, upload some <a href="{1}">images</a> or <a href="{2}">files</a>, create your first <a href="{3}">poll</a> or get a glimpse of Antville’s wonderful customization possibilities; just take a look at the <a href="{4}">layout section</a> where you can modify the appearance of your site according to your needs.' <% site.stories.href create %> <% site.images.href create %> <% site.files.href create %> <% site.polls.href create %> <% layout.href %> %>
+</p>
+<p class='uk-text-bold'>
+   <% gettext 'Have a lot of fun!' %>
+</p>
+<p>
+   <% image /ant.png %>
+</p>
 
 <% #subscriptions %>
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">...
-<% members.link updated <% gettext "Updates" %> %>
-<% members.link privileges <% gettext Privileges %> prefix="| " %> 
-<% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
+<h1><% response.title %></h1>
+<div class="ample">
+   <% members.link updates <% gettext "Updates" %> %>
+   <% members.link subscriptions <% gettext Subscriptions %> prefix="| " %>
 </div>
-<p><% response.list %></p>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Site %></th>
+         <th><% gettext Role %></th>
+         <th class='uk-text-nowrap'><% gettext 'Last Update' %></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
 
 <% #edit %>
+<h1><% response.title %></h1>
+<div class='uk-article-meta'>
+   <% gettext 'Created by {0} on {1}' <% user.name %> <% user.created short %> %>
+   <% if <% user.created %> is <% user.modified %> then '' else
+      <% gettext 'Last modified by {0} on {1}' <% user.name %> <% this.modified short %> prefix=<br> %>
+   %>
+</div>
+<form id='edit' class='uk-form uk-form-stacked uk-margin-top' method="post" action="<% response.action %>">
+   <input type="hidden" name="digest" id="digest">
+   <input type="hidden" name="hash" id="hash">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='email'>
+         <% gettext E-mail %>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.input email type=email class='uk-form uk-width-1-2' %>
+         <a href='mailto:<% user.email %>'><i class='uk-icon-envelope'></i></a>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='url'>
+         <% gettext "Personal URL" %>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you enter a URL here your user name will appear as link next to your posted items." %>' data-uk-tooltip="{pos: 'right'}"></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.input url type=url class='uk-form uk-width-1-2' %>
+         <a href='<% user.url %>'><i class='uk-icon-link'></i></a>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='password'>
+         <% gettext "Password" %>
+      </label>
+      <div class='uk-form-controls uk-form-password uk-width-1-2'>
+         <input type="password" name="password" id="password" class='uk-width-1-1'>
+         <a href='' class='uk-form-password-toggle' data-uk-form-password="{
+            lblHide: '<% gettext Hide %>',
+            lblShow: '<% gettext Show %>'
+         }"><% gettext Show %></a>
+      </div>
+   </div>
+   <% user.skin $User#admin restricted=true %>
+   <div class='uk-form-row uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <% user.link delete <% gettext 'Delete' %> class='uk-button' %>
+      <a href='<% site.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
+   </div>
+</form>
 <script type="text/javascript">
-$(function() {
-   $("#submit").click(function() {
+$(function () {
+   $("#submit").click(function (event) {
       var token = "<% session.token %>";
       var salt = "<% session.salt %>";
       var password = $("#password").val();
       if (password) {
-         $("#digest").val($.md5($.md5(password + salt) + token));
-      } 
-      var newPassword = $("#newPassword").val();
-      var newPasswordConfirm = $("#newPasswordConfirm").val();
-      $("input:password").val("");
-      // Check both passwords but let the server do the error handling
-      if (!newPassword || !newPasswordConfirm) {
-         return true;
-      } else if (newPassword !== newPasswordConfirm) {
-         $("#newPassword").val(0);
-         $("#newPasswordConfirm").val(1);
-         return true;
+         var hash = $.md5(password + token);
+         $("#hash").val(hash);
+         $("#password").val("");
       }
-      var hash = $.md5(newPassword + token);
-      $("#hash").val(hash);
-      return true;
    });
 });
 </script>
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<input type="hidden" name="digest" id="digest" />
-<input type="hidden" name="hash" id="hash" />
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "Current Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="password" id="password" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "New Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPassword" id="newPassword" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext "Confirm Password" suffix=: %></td>
-<td nowrap="nowrap"><input type="password" name="newPasswordConfirm" 
-      id="newPasswordConfirm" size="20" /></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext E-mail suffix=: %></td>
-<td><% user.input email size=30 %></td>
-</tr>
-<tr>
-<td class="small" valign="top" nowrap="nowrap"><% gettext "Personal URL" suffix=: %></td>
-<td><% user.input url size=30 %><br />
-<span class="small"><% gettext "If you enter a URL here your user name will 
-appear as link next to your posted items." %></span></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap" valign="baseline"><% gettext Connections suffix=: %></td>
-<td>
-<% feature connect context=profile default=— %>
-</td>
-</tr>
-<tr>
-<td nowrap="nowrap"> </td>
-<td><br />
-<button type="submit" id="submit" name="save" value="1"><% gettext Save %></button>
-<a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
+
+<% #admin %>
+<fieldset class='uk-margin-top uk-margin-bottom'>
+   <legend><% gettext Administration %></legend>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='status'>
+         <% gettext Status %>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.select status %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='status'>
+         <% gettext Information %>
+      </label>
+      <div><% ngettext "{0} Site" "{0} Sites" <% count <% user.self sites %> %> %></div>
+      <div><% ngettext "{0} Story" "{0} Stories" <% count <% user.self stories %> %> %></div>
+      <div><% ngettext "{0} Comment" "{0} Comments" <% count <% user.self comments %> %> %></div>
+      <div><% ngettext "{0} Image" "{0} Images" <% count <% user.self images %> %> %></div>
+      <div><% ngettext "{0} File" "{0} Files" <% count <% user.self files %> %> %></div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='notes'>
+         <% gettext Notes %>
+      </label>
+      <div class='uk-form-controls'>
+         <% user.textarea notes class='uk-width-1-1' rows=5 %>
+      </div>
+   </div>
+</fieldset>
+
 
 <% #notify_reset %>
 <% gettext 'Hello {0}.' <% user.name %> %>
 
-<% gettext "You (or someone pretending to be you) requested to reset your 
+<% gettext "You (or someone pretending to be you) requested to reset your
       account password for the site {0} at {1}." <% site.title %> <% site.href %> %>
 
 <% gettext "To confirm the request please click the link below." %>

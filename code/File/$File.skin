@@ -1,69 +1,73 @@
+<% #listItem %>
+<tr>
+   <td class='uk-text-right'><% file.requests %></td>
+   <td class='uk-width-1-2 av-overflow'>
+      <span title='<% file.description %>' data-uk-tooltip="{pos: 'top-left'}"><% file.name | file.link %></span>
+   </td>
+   <!-- td class='uk-text-nowrap'><% //file.contentLength %></td -->
+   <td><% file.creator %></td>
+   <td class='uk-text-nowrap' title='<% file.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% file.modified text %>
+   </td>
+   <td class='uk-text-muted'><i class='uk-icon-file<% file.contentType generic prefix=- %>-o' title='<% file.contentType %>' data-uk-tooltip></i></td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% file.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <% file.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% file.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
 <% #edit %>
+<h1>
+   <% response.title %>
+   <% file.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
+</h1>
+<div class='uk-article-meta'><% file.skin $HopObject#meta %></div>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>" enctype="multipart/form-data">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='upload'>
+         <% gettext File %>
+      </label>
+      <div class='uk-form-controls'>
+         <% file.upload file class='uk-width-1-2' %>
+      </div>
+   </div>
+   <div class='uk-form-row uk-hidden av-row-name'>
+      <label class='uk-form-label' for='name'>
+         <% gettext Name %>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext "If you do not specify a name Antville will create one based on the filename." %>' data-uk-tooltip='{pos: "right"}'></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% file.input name class='uk-width-1-2' %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='description'>
+         <% gettext Description %>
+      </label>
+      <div class='uk-form-controls'>
+         <% file.input description  class='uk-width-1-1' %>
+      </div>
+   </div>
+   <fieldset class='uk-margin-top'>
+     <legend><% gettext Information %></legend>
+      <div class='uk-form-row'>
+         <% file.macro | link 'javascript:' data-value=<% file.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+      </div>
+   </fieldset>
+    <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <% file.link delete <% gettext Delete %> class='uk-button' %>
+      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
+   </div>
+</form>
 <script type="text/javascript">
 $(function() {
-   if ("<% file.created %>") {
-      $(".name").hide();
-      $(".resize").hide();  
-   };
+   if ('<% file.name %>') {
+      $('#name').attr('disabled', true);
+   }
+   $('.av-row-name').removeClass('uk-hidden');
 });
 </script>
-<p class="storyTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>" enctype="multipart/form-data">
-<table border="0" width="400" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small"><% gettext "File" suffix=: %></td>
-<td><% file.upload file %></td>
-</tr>
-<tr class="name">
-<td valign="top" class="small"><% gettext Name suffix=: %></td>
-<td>
-   <% file.input name %><br />
-   <span class="small"><% gettext "If you do not specify a name Antville will 
-   create one based on the name of the local or remote file, resp." %></span>
-</td>
-</tr>
-<tr>
-<td class="small" valign="top"><% gettext Description suffix=: %></td>
-<td><% file.textarea description cols=40 %></td>
-</tr>
-<tr>
-<td class="small" valign="top"> </td>
-<td>
-   <br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></button>
-</td>
-</tr>
-</table>
-</form>
-
-
-<% #listItem %>
-<div class="listSeparator"> </div>
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td colspan="2" class="small">
-   <strong><% gettext Macro suffix=: %></strong> <% file.macro %>
-   <div class="ample"><strong><% gettext Properties suffix=: %></strong>
-   <% file.contentLength %><% file.contentType prefix=" " %><% ngettext "{0} hit" "{0} hits"
-   <% file.requests %> prefix=", " %></div>
-</td>
-</tr>
-<tr>
-<td>
-   <div class="storyTitle"><% file.name %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% file.creator link %> 
-         <% file.created short %> %></div>
-</td>
-<td class="small" align="right" valign="top" rowspan="2">
-   <% file.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% file.link main <% gettext Download context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% file.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-<tr>
-<td>
-   <p><% file.description suffix="<br />" %></p>
-</td>
-</tr>
-</table>

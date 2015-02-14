@@ -1,27 +1,47 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.list prefix="<ul>" suffix="</ul> %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-
-<% #header %>
-<th><% param.title %></th>
-
-<% #admin %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<table>
-<thead>
-<tr>
-<% tags.header %>
-</tr>
-</thead>
-<tbody>
-<% tags.list Tag#admin %>
-</tbody>
+<h1><% response.title %></h1>
+<% //tags.alphabet %>
+<% //tags.pager %>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th class='uk-text-right'>
+            <% if <% tags.self __name__ %> is tags then
+              "<i class='uk-icon-newspaper-o'></i>"
+            else
+              "<i class='uk-icon-image'></i>"
+            %>
+         </th>
+         <th class='uk-width-5-6'><% gettext Name %></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% //tags.list %>
+      <% response.list %>
+   </tbody>
 </table>
-<% tags.pager prefix='<div>' suffix='</div>' %>
-<% tags.alphabet prefix='<div>' suffix='</div>' %>
+<% response.pager %>
+<% //tags.pager %>
+<% //tags.alphabet %>
+<script type='text/javascript'>
+$(function () {
+  $('.renameTag').on('click', function (event) {
+    event.preventDefault();
+    var name = prompt("<% gettext 'Please enter a new name for this tag' suffix=: %>")
+    if (name) {
+      var url = $(this).data('av-tag-url');
+      location.href = url + '?name=' + name;
+    }
+  });
 
+  $('.deleteTag').on('click', function (event) {
+    event.preventDefault();
+    if (confirm("<% gettext 'Are you sure you want to remove this tag?' %>")) {
+      var url = $(this).data('av-tag-url');
+      location.href = url;
+    }
+  });
+});
+</script>

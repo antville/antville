@@ -1,12 +1,25 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">
-   <% polls.link create <% gettext "Add Poll" %> prefix="... " %>
-</div>
-... 
-<% polls.link main <% gettext "By {0}" <% membership.name %> %> %>
+<h1>
+   <% response.title %>
+   <% polls.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
+</h1>
+<% polls.link . <% gettext All %> %>
+<% polls.link user <% membership.name %> prefix=" | " %>
 <% polls.link running <% gettext Running %> prefix=" | " %>
-<% polls.link all <% gettext All %> prefix=" | " %>
 <% response.pager %>
-<% response.list %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th class='uk-text-right'><i class='uk-icon-bar-chart'></i></th>
+         <th><% gettext Question %></th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
 <% response.pager %>

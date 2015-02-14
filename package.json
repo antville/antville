@@ -1,0 +1,39 @@
+{
+  "name": "Antville",
+  "version": "1.5.0",
+  "description": "Antville is an open source project aimed at the development of a high performance, feature rich weblog hosting software. It can easily host up to several thousands of sites (the number of weblogs is rather limited by the installation owner’s choice and server power than by software limitations).",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "install": "napa",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.google.com/p/antville"
+  },
+  "author": "The Ant Queens",
+  "license": "Apache 2",
+  "napa": {
+    "uikit-bower": "uikit/bower-uikit#2.15.0",
+    "jquery-collagePlus": "ed-lea/jquery-collageplus#0.3.3"
+  },
+  "browserify-css": {
+    "minify": true
+  },
+  "dependencies": {
+    "codemirror": "^4.10.0",
+    "jquery": "^2.1.3",
+    "js-md5": "^0.1.3",
+    "uikit": "git://github.com/uikit/uikit"
+  },
+  "devDependencies": {
+    "browserify": "^8.0.2",
+    "less": "^2.1.2",
+    "minifyify": "^6.1.0",
+    "napa": "^1.1.0"
+  }
+}

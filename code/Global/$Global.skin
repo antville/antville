@@ -1,32 +1,59 @@
 <% #pager %>
-<div class="pageNav">
-<div class="pageNavSummary">
-   <% gettext "Displaying {0} (of {1})" <% param.display %> <% param.total %> %>
-</div>
-<div class="pageNavBar"><% param.pager %></div>
-</div>
+<% // gettext "Displaying {0} (of {1})" <% param.display %> <% param.total %> %>
+<ul class='uk-pagination uk-pagination-right'>
+   <li class='<% param.prevClass %>'>
+      <% if <% param.prevHref %> is null then
+         "<span><i class='uk-icon-angle-double-left'></i></span>"
+      else
+         <% link <% param.prevHref %> "<i class='uk-icon-angle-double-left'></i>" %>
+      %>
+   </li>
+   <% param.pager %>
+   <li class='<% param.nextClass %>'>
+      <% if <% param.nextHref %> is null then
+         "<span><i class='uk-icon-angle-double-right'></i></span>"
+      else
+         <% link <% param.nextHref %> "<i class='uk-icon-angle-double-right'></i>" %>
+      %>
+   </li>
+</ul>
 
 <% #pagerItem %>
-<span class="<% param.class %>"><% param.text %></span>
+<li class='<% param.class %>'>
+   <% if <% param.href %> is null then
+      <% param.text prefix=<span> suffix=</span> %>
+   else
+      <% link <% param.href %> <% param.text %> %>
+   %>
+</li>
 
 <% #upload %>
-<div class="upload" style="position: relative;">
-   <input type="file" id="<% param.name %>" name="<% param.name %>" 
-         onchange='$("#<% param.name %>_origin").val($(this).val());' 
-         style="position: relative; z-index: 1; visibility: hidden;" />
-   <div class="text" style="position: absolute; z-index: 2; top: 0; left: 0;">
-      <input type="text" name="<% param.name %>_origin" 
-            id="<% param.name %>_origin" value="<% param.value %>" 
-            onblur='$("#<% param.name %>").val("");' />
-      <button id="<% param.name %>_control" name="<% param.name %>_control" 
-            type="button" onclick='$("#<% param.name %>").click();'>
-         <% gettext "Browse..." %>
+<div class="uk-hidden av-upload">
+   <input type="file" id="<% param.name %>" name="<% param.name %>">
+   <div class="uk-width-1-1 av-upload-controls">
+      <input class='uk-width-1-2' type="text" name="<% param.name %>_origin" id="<% param.name %>_origin" value="<% param.value %>"/>
+      <button class='uk-button' id="<% param.name %>_control" name="<% param.name %>_control" type="button">
+         <% gettext "Browse" suffix=… %>
       </button>
    </div>
 </div>
+<script>
+$(function () {
+   $('.av-upload input[type="file"]').on('change', function (event) {
+      $('#<% param.name %>_origin').val($(this).val());
+   });
+   $('.av-upload input[type="text"]').on('blur', function (event) {
+      $('#<% param.name %>').val('');
+   });
+   $('.av-upload button').on('click', function (event) {
+      $('#<% param.name %>').click();
+   });
+   $('.av-upload').removeClass('uk-hidden');
+});
+</script>
 
 <% #listItemFlag %>
-<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap" 
+<td rowspan="2" width="10" align="center" valign="top" nowrap="nowrap"
       class="listItemFlag"><% param.text %></td>
 <td rowspan="2" width="5" nowrap="nowrap"></td>
 
@@ -35,11 +62,8 @@
 
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
 
-<% gettext 'This message was automatically sent to you because you are listed as 
-recipient of notification e-mails of the corresponding site.' %>
+<% gettext 'This message was automatically sent to you because you are listed as recipient of notification e-mails of the corresponding site.' %>
 
-<% gettext 'Thus, you will be notified whenever the site has undergone changes 
-as specified in the site preferences.' %>
+<% gettext 'Thus, you will be notified whenever the site has undergone changes as specified in the site preferences.' %>
 
-<% gettext 'If you think you have received this e-mail in error please contact 
-the maintainer of the site.' %>
+<% gettext 'If you think you have received this e-mail in error please contact the maintainer of the site.' %>

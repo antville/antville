@@ -1,39 +1,40 @@
+<% #listItem %>
+<tr>
+   <td><% skin.name prefix=<% skin.prototype suffix=. %> %></td>
+   <td><% skin.creator %></td>
+   <td title='<% skin.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% skin.modified text %>
+   </td>
+   <td class='uk-text-muted uk-text-right'><% if <% skin.custom %> is true then "<i class='uk-icon-user'></i>" %></td>
+   <td class='uk-text-right uk-text-nowrap;'>
+      <a href='' class='av-clipboard-copy' data-text='<% gettext 'Press CTRL & C to copy to clipboard.' %>' data-value="<% skin.macro %>"><i class='uk-icon-clipboard'></i></a>
+      <% skin.link compare "<i class='uk-icon-files-o'></i>"%>
+      <% skin.link reset "<i class='uk-icon-undo'></i>" %>
+      <% skin.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
 <% #edit %>
-<p class="storyTitle"><% response.title %></p>
-<% response.message prefix='<div class="message">' suffix="</div>" %>
-<form method="post" action="<% response.action %>">
-<p class="small">
-<% if <% skin.name %> is "" then 
-   <% skin.select prototype prefix=<% gettext Prototype suffix=": " %>
-   suffix=<% skin.input name prefix=<% gettext Name suffix=": " %> %> %>
-else 
-   <%// skin.summary prefix='<p class="small">' suffix='</p>' %>
-%>
-</p>
-<% skin.textarea source class="formWide" wrap="virtual" %>
-<p>
-   <button type="submit" name="save" value="1">
-      <% gettext "Save and Edit" %>
-   </button>
-   <button type="submit" name="save" value="2">
-      <strong><% gettext "Save" %></strong>
-   </button>
-   <a href="" class='cancel'><% gettext Cancel %></a>
-</p>
+<form class='uk-form av-invisible av-skin-editor' method="post" action="<% response.action %>">
+   <div class='uk-margin-top uk-margin-left uk-margin-right uk-clearfix'>
+      <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
+      <span style='line-height: 39px;'>
+         <span class='uk-article-meta' style='vertical-align: bottom; display: inline-block;'>
+            <% skin.skin $HopObject#meta %>
+         </span>
+         <% if <% skin.name %> is '' then
+            <% skin.select prototype suffix=<% skin.input name class='uk-width-1-4' %> %>
+         %>
+         <button type="submit" name="save" value="1" class='uk-button uk-button-primary uk-margin-large-left'>
+            <% gettext "Save" %>
+         </button>
+         <% skin.link compare <% gettext Compare %> class='uk-button' %>
+         <a href='<% layout.skins.href all %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+      </span>
+      <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
+   </div>
+   <% skin.textarea source %>
 </form>
-
-<script type='text/javascript' src='<% root.static codemirror-compressed.js %>'></script>
-
-<!-- Individual includes for testing purposes
-<link rel='stylesheet' href='<% root.static codemirror2/mode/helma/skin.css %>'>
-<script type='text/javascript' src='<% root.static codemirror2/lib/codemirror.js %>'></script>
-<script type='text/javascript' src='<% root.static codemirror2/mode/javascript/javascript.js %>'></script>
-<script type='text/javascript' src='<% root.static codemirror2/mode/css/css.js %>'></script>
-<script type='text/javascript' src='<% root.static codemirror2/mode/xml/xml.js %>'></script>
-<script type='text/javascript' src='<% root.static codemirror2/mode/htmlmixed/htmlmixed.js %>'></script>
-<script type='text/javascript' src='<% root.static codemirror2/mode/helma/skin.js %>'></script>
--->
-
 <script type='text/javascript'>
 $(function() {
    var mode;
@@ -45,65 +46,56 @@ $(function() {
       mode = 'application/x-helma-skin';
    }
    var editor = CodeMirror.fromTextArea($('#source').get(0), {
+      autofocus: true,
+      enterMode: 'keep',
+      indentUnit: 3,
+      indentWithTabs: false,
       lineNumbers: true,
       matchBrackets: true,
       mode: mode,
-      indentUnit: 3,
-      indentWithTabs: false,
-      enterMode: 'keep',
-      tabMode: 'shift'
+      tabMode: 'shift',
+      viewportMargin: Infinity
    });
+   $('.av-skin-editor').removeClass('av-invisible');
 });
 </script>
 
-<% #listItem %>
-<div class="listSeparator"> </div>
-<table cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<% if <% skin.source %> is null then 
-   <% listItemFlag <% gettext custom %> %>
-%>
-<td class="small">
-   <div class="ample"><strong><% gettext Macro suffix=: %></strong> 
-   <span class='macro-code'>&lt;% 
-   <% if <% skin.prototype %> is Global then 
-   <% skin.name prefix="skin " %> else 
-   <% skin.name prefix=<% skin.prototype suffix=".skin " | lowercase %> %> %> %&gt;</span></div>
-</td>
-<td rowspan="2" width="10" nowrap="nowrap"> </td>
-<td valign="bottom" rowspan="2" align="right" class="small">
-   <% skin.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% skin.link compare <% gettext Compare %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% skin.link reset <% gettext Reset %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% skin.name prefix=<% skin.prototype suffix="." %> %></div>
-   <div class="storyDate"><% gettext "{0} on {1}" <% skin.creator link %> 
-         <% skin.created short %> %></div>
-</td>
-</tr>
-</table>
-
 <% #compare %>
-<p class='storyTitle'>
-   <% response.title %>
-   <span class='small'>
-   ... <% skin.link edit <% gettext Edit %> %>
-   ... <% skin.link reset <% gettext Reset %> %>
-   ... <a href='' class='cancel'><% gettext Cancel %></a>
-   </span>
-</p>
-<% response.message prefix='<div class="message">' suffix='</div><br />' %>
-<table class="diff">
-<% response.diff %>
-</table>
+<form>
+   <div class='uk-margin-top uk-margin-left uk-clearfix'>
+      <h1 class='uk-margin-large-right uk-float-left'><% response.title %></h1>
+      <span style='line-height: 42px;'>
+         <% skin.link edit <% gettext Edit %> class='uk-button uk-button-primary' %>
+         <% skin.link reset <% gettext Reset %> class='uk-button' %>
+         <a href='<% request.http_referer %>' class='uk-button uk-button-link'><% gettext Cancel %></a>
+      </span>
+   </div>
+   <div>
+      <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
+      <table class='uk-table uk-table-condensed uk-table-striped'>
+         <thead>
+            <tr>
+               <th></th>
+               <th><% gettext 'Modified skin' %></th>
+               <th></th>
+               <th><% gettext 'Original skin' %></th>
+            </tr>
+         </thead>
+         <tbody>
+            <% response.diff %>
+         </tbody>
+      </table>
+   </div>
+</form>
 
 <% #difference %>
 <tr>
-   <td class='line-number'><% param.leftLineNumber %></td>
-   <td class='<% param.leftStatus %>'><div class='line'><% param.left %></div></td>
-   <td class='line-number'><% param.rightLineNumber %></td>
-   <td class='line <% param.rightStatus %>'><div class='line'><% param.right %></div></td>
+   <td class='uk-text-muted uk-text-right'><% param.leftLineNumber %></td>
+   <td class='uk-width-1-2 av-overflow <% param.leftStatus prefix='av-line-' %>'>
+      <div class='av-line'><% param.left %></div>
+   </td>
+   <td class='uk-text-muted uk-text-right'><% param.rightLineNumber %></td>
+   <td class='uk-width-1-2 av-overflow <% param.rightStatus prefix='av-line-' %>'>
+      <div class='av-line'><% param.right %></div>
+   </td>
 </tr>

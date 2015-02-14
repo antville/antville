@@ -2,7 +2,7 @@
 <div class="storyTitle"><% response.title %></div>
 <br />
 <div>
-   <% gettext "Upload a zipped layout archive created with Antville 1.1 
+   <% gettext "Upload a zipped layout archive created with Antville 1.1
          to convert it to an archive working with Antville 1.2." %>
 </div>
 <br />

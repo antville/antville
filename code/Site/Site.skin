@@ -2,461 +2,165 @@
 <% site.stories %>
 
 <% #preview %>
-<li><% site.title | site.link %> <span class="small">(<% site.modified short 
+<li><% site.title | site.link %> <span class="small">(<% site.modified short
 prefix="Last update: " default="None so far" %>)</span></li>
 
 <% #welcome %>
-<p class="storyTitle"><% gettext "Welcome to {0}." <% site.title %> %></p>
-<p><% gettext "This site was created by {0} on {1}." <% site.creator link %> 
-<% site.created long %> %></p>
+<article class='uk-article'>
+   <h1 class='uk-article-title'><% gettext Welcome %></h1>
+   <p class='uk-article-meta'>
+      <% gettext "Created by {0} on {1}." <% site.creator %> <% site.created long %> %>
+   </p>
+   <p><% gettext "Welcome to {0}." <% site.title %> %></p>
+</article>
 
 <% #navigation %>
-<div class="navigation">
-<div><% site.link main <% gettext Home %> prefix="... " %></div>
-<div><% site.tags.link main <% gettext Tags %> prefix="... " %></div>
-<div><% site.galleries.link main <% gettext Galleries %> prefix="... " %></div>
-</div>
-<p class="navigation">
-<div><% site.stories.link create <% gettext "Add Story" %> prefix="... " %></div>
-<div><% site.stories.link main <% gettext Stories %> prefix="... " %></div>
-<div><% site.images.link main <% gettext Images %> prefix="... " %></div>
-<div><% site.files.link main <% gettext Files %> prefix="... " %></div>
-<div><% site.polls.link main <% gettext Polls %>prefix="... " %></div>
-<div><% site.members.link main <% gettext Members %> prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% site.link edit <% gettext Preferences %> prefix="... " %></div>
-<div><% site.layout.link main <% gettext Layout %> prefix="... " %></div>
-<div><% site.link referrers <% gettext Referrers %> prefix="... " %></div>
-<div><% site.stories.link top <% gettext "Top Stories" %> prefix="... " %></div>
-</p>
-<p class="navigation">
-<div><% root.title prefix="... " | root.link %></div>
-</p>
+<li><% site.link main <% gettext Start prefix="<i class='uk-icon-home'></i> " %> %></li>
+<li><% site.tags.link main <% gettext Tags %> %></li>
+<li><% site.galleries.link main <% gettext Galleries %> %></li>
+<% site.comments.link main <% gettext Comments %> prefix=<li> suffix=</li> %>
+<li><% site.link rss.xml "<i class='uk-icon-rss'></i> RSS" %></li>
+<li class='uk-nav-divider'></li>
+<% site.stories.link create <% gettext "Add Story" prefix="<i class='uk-icon-plus'></i> " %> prefix="<li>" suffix=</li> %>
+<% site.stories.link main <% gettext Stories %> prefix=<li> suffix=</li> %>
+<% site.images.link main <% gettext Images %> prefix=<li> suffix=</li> %>
+<% site.files.link main <% gettext Files %> prefix=<li> suffix=</li> %>
+<% site.polls.link main <% gettext Polls %> prefix=<li> suffix=</li> %>
+<li class='uk-nav-divider'></li>
+<% site.link edit <% gettext Settings prefix="<i class='uk-icon-cog'></i> " %> prefix=<li> suffix=</li> %>
+<% site.layout.link main <% gettext Layout %> prefix=<li> suffix=</li> %>
+<% site.members.link main <% gettext Members %> prefix=<li> suffix=</li> %>
+<% site.link referrers <% gettext Referrers %> prefix=<li> suffix=</li> %>
+<li class='uk-nav-divider'></li>
+<li><% root.title | root.link %></li>
 
 <% #search %>
-<form class="nowrap" method="post" action="<% site.href search %>">
-   <input type="text" size="15" name="q" class="searchbox" 
-   value="<% request.q encoding="form" %>" />
-   <button type="submit" name="search" value="1" 
-   class="searchbox"><% gettext Find %></button>
+<form class='uk-form' method='post' action='<% site.href search %>'>
+   <input type='text' class='uk-width-1-1' name='q' value='<% request.q encoding="form" %>' required placeholder='<% gettext Search %>'>
 </form>
 
 <% #robots %>
-## See http://www.robotstxt.org for more information
+# See http://www.robotstxt.org for more information
 #User-agent: *
 #Disallow: /
 #User-agent: BadBot
 #Disallow: /foo
 
 <% #page %>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
-<head>
-<title><% response.title %></title>
-<meta http-equiv="Content-Type" content="text/html" />
-<meta name="MSSmartTagsPreventParsing" content="TRUE" />
-<link rel="stylesheet" type="text/css" title="CSS Stylesheet" href="<% site.href main.css %>" />
-<link rel="icon" type="image/x-icon" href="<% image /ant-icon.png url %>" />
-<link rel="shortcut icon" type="image/x-icon" href="<% image /ant-icon.png url %>" />
-<link rel="alternate" type="application/rss+xml" title="Stories and comments of <% site.title %>" href="<% site.href rss.xml %>" />
-<link rel="alternate" type="application/rss+xml" title="Stories of <% site.title %>" href="<% site.href stories.xml %>" />
-<link rel="alternate" type="application/rss+xml" title="Comments of <% site.title %>" href="<% site.href comments.xml %>" />
-<link rel="alternate" type="application/rss+xml" title="Sites of <% root.title %>" href="<% root.href updates.xml %>" />
-<link rel="search" type="application/opensearchdescription+xml" href="<% site.href search.xml %>" title="<% site.title %>" />
-<script type="text/javascript" src="<% site.href main.js %>"></script>
-</head>
-<body>
-
-<table class="main" cellspacing="0" cellpadding="0">
-<tr>
-<td class="header">
-   <div><% site.title | site.link title=<% site.tagline %> %></div>
-</td>
-</tr>
-</table>
-
-<table class="main">
-<tr>
-<td class="center">
-   <% response.message prefix='<div class="message">' suffix='</div><br />' %>
-   <% response.body %>
-</td>
-<td class="right">
-   <div class="box"><% ngettext "Online for {0} day" 
-         "Online for {0} days" <% site.age %> %><br />
-   <% gettext "Last modified: {0}" <% site.modified short %> %></div>
-   
-   <div class="boxheader"><% gettext Status %></div>
-   <div class="box"><% membership.status %></div>
-
-   <% root.admin.skin $Admin#navigation %>
-   
-   <div class="boxheader"><% gettext "Main Menu" %></div>
-   <div class="box">
-   <% site.skin Site#navigation %>
-   </div>
-   
-   <div class="boxheader"><% gettext Search %></div>
-   <div class="box"><% site.skin Site#search %></div>
-   
-   <% site.calendar prefix=<% gettext Calendar prefix='<div class="boxheader">' 
-   suffix='</div><div class="box">' %> suffix="</div>" %>
-   
-   <div class="boxheader"><% gettext "Comments" %></div>
-   <div class="box"><% list comments skin=Story#history %></div>
-   
-   <div class="boxline"></div><br />
-   <div class="box"><% image /rss.png | site.link rss.xml %><br />
-   <br />
-   <% image /smallchaos.gif | link http://antville.org %><br />
-   <% image /helma.png | link http://helma.org %></div>
-</td>
-</tr>
-</table>
-
-</body>
+<!DOCTYPE html>
+<html <% site.locale prefix='lang=' %>>
+   <head>
+      <meta charset='utf-8'>
+      <title><% response.title %></title>
+      <link rel='icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
+      <link rel='shortcut icon' type='image/x-icon' href='<% image /ant-icon.png url %>'>
+      <link rel='search' type='application/opensearchdescription+xml' href='<% site.href search.xml %>' title='<% site.title %>'>
+      <link rel='alternate' type='application/rss+xml' title='Stories and comments of <% site.title %>' href='<% site.href rss.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Stories of <% site.title %>' href='<% site.href stories.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Comments of <% site.title %>' href='<% site.href comments.xml %>'>
+      <link rel='alternate' type='application/rss+xml' title='Sites of <% root.title %>' href='<% root.href updates.xml %>'>
+      <link rel='stylesheet' type='text/css' href='<% site.href main.css %>'>
+      <script type='text/javascript' src='<% site.href main.js %>'></script>
+   </head>
+   <body class='uk-container-center av-page'>
+      <% site.skin $Site#header %>
+      <div class='uk-grid'>
+         <div class='uk-width-7-10'>
+            <% response.message prefix="<div class='uk-alert' data-uk-alert>" suffix=</div> %>
+            <% response.body %>
+         </div>
+         <div class='uk-width-3-10'>
+            <div class='uk-margin-large-left av-border-left'>
+               <% membership.status %>
+               <ul class='uk-nav uk-nav-side'>
+                  <li class='uk-nav-divider'/>
+                  <% site.skin Site#navigation %>
+                  <li class='uk-nav-divider'/>
+                  <li class='uk-margin-left'>
+                     <% site.skin Site#search %>
+                  </li>
+                  <li class='uk-nav-header'/>
+                  <li class='uk-margin-left uk-text-small'>
+                     <% site.calendar %>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <% site.skin $Site#footer %>
+   </body>
 </html>
 
 <% #javascript %>
-var imgWindow = "";
-
 function openPopup(img, width, height) {
    if (img && width && height) {
       width = Math.min(width + 36, 640);
       height = Math.min(height + 30, 480);
-      if (imgWindow.location && !imgWindow.closed)
-         imgWindow.close();
-      imgWindow = window.open(img, "imgWindow" + width + height, 
-      "toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=" + 
-      width + ",height=" + height);
-      // imgWindow.focus();
+      var win = openPopup.window;
+      if (win && win.location && !win.closed) {
+         win.close();
+      }
+      win = window.open(img, 'antvillePopupWindow-' + width + '-' + height,
+      'toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=' + width + ',height=' + height);
+      //win.focus();
+      openPopup.window = win;
    }
 }
 
 <% #values %>
-<% value "background color" #ffffff %>
-<% value "link color" #ff4040 %>
-<% value "active link color" #ff4040 %>
-<% value "visited link color" #ff4040 %>
-
-<% value "big font" "Verdana, Helvetica, Arial, sans-serif" %>
-<% value "big font size" 15px %>
-<% value "big font color" #d50000 %>
-
-<% value "base font" "Verdana, Helvetica, Arial, sans-serif" %>
-<% value "base font size" 13px %>
-<% value "base font color" #000000 %>
-
-<% value "small font" "Verdana, Arial, Helvetica, sans-serif" %>
-<% value "small font size" 11px %>
-<% value "small font color" #959595 %>
+<% value 'font' 'Helvetica, Arial, sans-serif' %>
+<% value 'background color' #fff %>
+<% value 'link color' #ff4040 %>
+<% value 'hover color' #d50000 %>
 
 <% #stylesheet %>
-body {
-   background-color: <% value "background color" %>;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   color: <% value "base font color" %>;
+/*
+html, body {
+   background-color: <% value 'background color' %>;
+   font-family: <% value font %>;
 }
 
-table.main {
-   width: 700px;
+a {
+   color: <% value 'link color' %>;
+   &:hover {
+     color: <% value 'hover color' %>;
+   }
 }
 
-td {
-   font-size: <% value "base font size" %>;
-   line-height: 1.2em;
-}
-
-td.header {
-   max-width: 700px;
-   height: 53px;
-   padding-left: 40px;
-   background-image: url(<% image /webloghead.gif url %>);
-   background-repeat: no-repeat;
-   font-size: 25px;
-   font-weight: bold;
-}
-
-td.center { 
-   width: 70%; 
-   padding: 25px 20px 10px 40px; 
-   vertical-align: top; 
-}
-
-td.right { 
-   width: 30%; 
-   padding: 0px 0px 10px 0px; 
-   vertical-align: top; 
-   border-left: 1px solid #dddddd;
-}
-
-div.boxheader {
-   color: <% value "small font color" %>;
-   overflow: hidden;
-   font-size: 10px;
-   padding-left: 6px;
-   border-top: 1px solid #dddddd;
-}
-
-div.boxline {
-   height:1px;
-   overflow:hidden;
-   border-bottom: 1px solid #dddddd;
-}
-
-div.box {
-   font-size: <% value "small font size" %>;
-   font-family: <% value "small font" %>;
-   color: <% value "small font color" %>;
-   line-height: 1.4em;
-   text-align: right;
-   padding: 0em 0em 0.4em 0.4em;
-   margin: 0em 0em 0.2em 0em;
-}
-
-div.ample { margin-bottom: 5px; }
-
-small, .small {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "small font color" %>;
-}
-
-/* this is for mozilla to right-align tables in boxes */
-div.box table {
-   margin-left: auto; 
-   margin-right: 0px; 
-}
-
-fieldset {
-   width: 360px;
-   padding-left: 8px;
-   padding-top: 0px;
-   margin-top: 6px;
-   margin-bottom: 6px;
-   border: 1px solid <% value "small font color" %>;
-}
-
-p {
-   margin-top: 6px;
-   margin-bottom: 10px;
-}
-
-form { margin: 0px; }
-
-a {text-decoration: none;}
-a:link {color: <% value "link color" %>;}
-a:visited {color: <% value "visited link color" %>;}
-a:active {color: <% value "active link color" %>;}
-a:hover {text-decoration: underline;}
-
-.message {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   font-weight: bold;
-   padding: 1px;
-   margin-top: 6px;
-   margin-bottom: 6px;
-   color: <% value "big font color" %>;
-}
-
-.message input {
-   font-size:9px;
-   padding:0px;
-   margin:0px;
-}
-
-.historyItem {
-   color: <% value "base font color" %>;
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   padding-bottom: 0.3em;
-   width: 202px;
-   overflow: hidden; 
-}
-
-.dayHeader {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "small font color" %>;
-   font-weight: bold;
-   margin-bottom: 20px;
-   margin-top: 10px;
-   text-align: left;
-}
-
-.storyDate {
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-   color: <% value "small font color" %>;
-   margin-bottom: 6px;
-}
-
-.storyTitle {
-   font-family: <% value "big font" %>;
-   font-size: <% value "big font size" %>;
-   color: <% value "big font color" %>;
-   font-weight: bold;
-}
-
-.listSeparator {
-   width: 50px;
-   height: 1em;
-   border-bottom: 2px dotted #dddddd;
-   margin-top: 10px;
-   margin-bottom: 4px;
-}
-
-.title {
-   font-family: <% value "big font" %>;
-   font-size: <% value "big font size" %>;
-   color: <% value "base font color" %>;
-   font-weight: bold;
-   margin-bottom: 2px;
-}
-
-.reply { padding-left: 40px; }
-
-.formTitle {
-   width: 380px;
-   font-family: <% value "big font" %>;
-   font-size: <% value "big font size" %>;
-   font-weight: bold;
-   border: 1px solid <% value "small font color" %>;
-}
-
-.formText {
-   width: 380px;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   font-weight: normal;
-   border: 1px solid <% value "small font color" %>;
-}
-
-.formWide {
-   width: 660px;
-   font-family: <% value "base font" %>;
-   font-size: <% value "base font size" %>;
-   font-weight: normal;
-}
-
-.pollResultsBar {
-   height: 5px;
-   overflow: hidden;
-   float:left;
-   margin-top: 7px;
-   margin-right: 10px;
+.av-poll-result-bar {
    background-color: <% value "link color" %>;
-   font-size: 0px;
 }
 
-.searchbox {
-   font-size: 11px;
-   margin-top: 3px;
+.uk-button-primary {
+   border-color: <% value 'link color' %>;
+   color: <% value 'link color' %>;
+   &:hover {
+      border-color: <% value 'hover color' %>;
+      color: <% value 'hover color' %>;
+   }
 }
 
-.colorpickerWidget {
-   border: 1px solid #cccccc;
+.uk-pagination > .uk-active > span {
+   border-color: <% value 'link color' %>;
+   color: <% value 'link color' %>;
 }
 
-.pagelinkTop {
-   margin-bottom: 18px;
-   padding-bottom:3px;
-   border-bottom:1px solid #dddddd;
+.uk-button-link, .uk-subnav > li > a {
+   color: <% value 'link color' %>;
+   &:hover {
+      color: <% value 'hover color' %>;
+   }
 }
 
-.pagelinkBottom {
-   margin-top: 18px;
-   padding-top:3px;
-   border-top:1px solid #dddddd;
-   text-align:right;
+.uk-nav-side > li.uk-active > a {
+   color: <% value 'link color' %>;
 }
 
-div.pageNav {
-   margin-top: 10px;
-   margin-bottom: 0px;
-   font-size: 11px;
-}
-
-div.pageNavSummary {
-   padding: 1px 5px;
-   background-color: #efefef;
-   border-bottom: 1px solid #cccccc;
-   text-align: left;
-}
-
-div.pageNavBar {
-   padding-top: 1px;
-   text-align: right;
-}
-span.pageNavItem {
-   padding-left: 2px;
-   padding-right: 2px;
-}
-
-span.pageNavSelItem {
-   padding-left: 2px;
-   padding-right: 2px;
-   font-weight: bold;
-}
-
-.membergroup {
-   font-weight:bold;
-   font-size:<% value "big font size" %>;
-   margin:10px 0px;
-}
-
-.member {
-   margin-left:20px;
-   margin-bottom:5px;
-}
-
-.calendar {
-   width: 100%;
-   text-align: center;
-   color: <% value "small font color" %>;
-   font-family: <% value "small font" %>;
-   font-size: <% value "small font size" %>;
-}
-
-.calendar tbody td, .calendar tfoot td {
-   font-size: <% value "small font size" %>;
-}
-
-.calendar tbody th {
-   font-weight: normal;
-}
-
-.calendar .day {
-   width: 14.27%;
-   text-align: center;
-}
-
-.calendar .left {
-   text-align: center;
-   vertical-align: baseline;
-}
-
-.calendar .right {
-   border: 0;
-   text-align: center;
-   vertical-align: baseline;
-}
-
-.calendar .selected {
+.jala-calendar-selected {
    border: 1px solid <% value "link color" %>;
 }
 
-.skin.active {
-   background: <% value "background color" %>;
-   opacity: .25;
+.jala-calendar-selected, .jala-calendar-selected a {
+   color: <% value 'link color' %>;
 }
-
-.skin-edit-link {
-   color: <% value "small font color" %> !important;
-}
+*/

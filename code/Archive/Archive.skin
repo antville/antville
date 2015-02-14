@@ -1,10 +1,6 @@
 <% #main %>
-<div class="pagelink">
-   <% archive.link previous <% gettext "Previous page" %> 
-         prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
-</div>
 <% archive.stories %>
-<div class="pagelink">
-   <% archive.link next <% gettext "Next page" %>
-         prefix='<div class="pagelinkBottom">... ' suffix="</div>" %>
-</div>
+<ul class='uk-pagination uk-text-left'>
+  <% archive.link previous "<i class='uk-icon-arrow-left'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-left'></i></span></li>" %>
+  <% archive.link next "<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
+</ul>

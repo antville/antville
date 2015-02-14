@@ -1,36 +1,46 @@
-<% #main %>
-<% if <% tag.permission edit %> is true then 
-   <% tag.skin $Tag#controls prefix=<div> suffix="</div><br />" %> 
-%>
-
-<div class="pagelink">
-   <% list.prevLink text=<% gettext "Previous page" %>
-         prefix='<div class="pagelinkTop">... ' suffix="</div>" %>
-</div>
-<% list.render skin="$TagHub#main" %>
-<div class="pagelink">
-   <% list.nextLink text=<% gettext "Next page" %>
-         prefix='<div class="pagelinkBottom">... ' suffix="</div>" %>
-</div>
-
 <% #listItem %>
-<li>
-   <a href="<% tag.href action=<% request.action encoding="form" %> %>"><% tag.name %></a>
-</li>
-
-<% #admin %>
 <tr>
-   <td><% param.index %></td>
-   <td><% tag.name %></td>
-   <td><% tag.size %></td>
+   <td class='uk-text-right'><% tag.size %></td>
+   <td>
+      <a href='<% tag.href action=<% request.action encoding='form' %> %>'><% tag.name %></a>
+   </td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <% tag.link rss.xml "<i class='uk-icon-rss'></i>" %>
+      <% tag.link delete "<i class='uk-icon-trash-o'></i>" class='deleteTag' data-av-tag-url=<% tag.href delete %> %>
+      <% tag.link rename "<i class='uk-icon-pencil'></i>" class='renameTag' data-av-tag-url=<% tag.href rename %> %>
+   </td>
 </tr>
 
-<% #controls %>
-... <a href="" onclick='var name; 
-      if (name = prompt("<% gettext 'Please enter new name for this tag' suffix=: %>")) {
-         location.href="<% tag.href action="rename" %>?name=" + name;
-      }'><% gettext "Rename Tag" %></a> |
-<a href="" onclick='var name; 
-      if (confirm("<% gettext 'Are you sure you want to remove the tag {0}?' <% tag.name %> %>")) {
-         location.href="<% tag.href action="delete" %>";
-      }'><% gettext "Delete Tag" %></a>
+<% #main %>
+<div <% if <% tag.type parent %> is Image then "class='av-tagged'" %>>
+   <% list.render skin="$TagHub#main" %>
+</div>
+<ul class='uk-pagination uk-text-left'>
+  <% list.prevLink text="<i class='uk-icon-arrow-left'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-left'></i></span></li>" %>
+  <% list.nextLink text="<i class='uk-icon-arrow-right'></i>" prefix=<li> suffix=</li> default="<li class='uk-disabled'><span><i class='uk-icon-arrow-right'></i></span></li>" %>
+</ul>
+<script type='text/javascript'>
+   $(window).load(function() {
+      var resizeTimer = null;
+      $('.av-tagged').collageCaption();
+      $(window).bind('resize', function() {
+         $('.av-tagged-image').css('opacity', 0);
+         if (resizeTimer) clearTimeout(resizeTimer);
+         resizeTimer = setTimeout(collage, 200);
+      });
+
+      collage();
+
+      function collage() {
+         $('.av-tagged').removeWhitespace().collagePlus({
+            allowPartialLastRow: true,
+            fadeSpeed: 'slow'
+         });
+      }
+   });
+</script>
+
+<% #simple %>
+<li>
+   <a href='<% tag.href action=<% request.action encoding='form' %> %>'><% tag.name %></a>
+</li>

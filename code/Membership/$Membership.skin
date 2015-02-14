@@ -1,100 +1,81 @@
 <% #edit %>
-<p class="storyTitle"><% response.title %></p>
-<p class="small">
-   <% gettext 'To modify a membership select the desired role from the 
-         drop-down menu and click the “Save” button.' %>
-   <% gettext 'An e-mail will be sent to notify the user of the update.' %>
-</p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="3">
-<tr>
-<td class="small" nowrap="nowrap"><% gettext User suffix=: %></td>
-<td nowrap="nowrap"><% membership.name %></td>
-</tr>
-<tr>
-<td class="small" nowrap="nowrap"><% gettext Role suffix=: %></td>
-<td nowrap="nowrap"><% membership.select role %></td>
-</tr>
-<tr>
-<td nowrap="nowrap"> </td>
-<td nowrap="nowrap"><br />
-<button type="submit" name="save" value="1">
-   <% gettext Save %>
-</button>
-<a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <fieldset>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='notificationScope'>
+            <% gettext Role %>
+         </label>
+         <div class='uk-form-controls'>
+            <% membership.select role %>
+         </div>
+      </div>
+   </fieldset>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <a href='<% members.href %>' class="uk-button uk-button-link"><% gettext Cancel %></a>
+   </div>
 </form>
 
 <% #member %>
-<div class="listSeparator"> </div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
-   <% membership.role %></div>
-</td>
+   <td class='uk-text'>
+      <% if <% membership.user.url %> is null then
+         <% membership.name %>
+      else
+         <% membership.name | link <% membership.user.url %> %>
+      %>
+   </td>
+   <td><% membership.role %></td>
+   <td title='<% membership.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% membership.created text %>
+   </td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <% membership.link contact "<i class='uk-icon-envelope-o'></i>" %>
+      <% membership.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% membership.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
 </tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% membership.name %></div>
-   <div class="ample"><span class="small"><% membership.created short
-   prefix=<% gettext "Member since" suffix=" " %>  %></span></div>
-   <div><% membership.user.url | link %></div>
-</td>
-<td width="10"> </td>
-<td align="right" class="small">
-   <% membership.link edit <% gettext Edit %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link contact <% gettext Contact %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% membership.link delete <% gettext Delete %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-</table>
 
 <% #subscription %>
-<div class="listSeparator"> </div>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td colspan="3" class="small">
-   <div class="ample"><strong><% gettext Role suffix=: %></strong> 
-   <% membership.role %></div>
-</td>
+   <td class='uk-text'>
+      <% subscription.title default=<% subscription.name %> | subscription.link %>
+   </td>
+   <td><% membership.role %></td>
+   <td class='uk-text-nowrap' title='<% subscription.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% subscription.modified text %>
+   </td>
+   <td class='uk-text-right'>
+      <% subscription.link unsubscribe "<i class='uk-icon-trash-o'></i>" %>
+   </td>
 </tr>
-<tr valign="top">
-<td>
-   <div class="storyTitle"><% subscription.title default=<% gettext Untitled 
-   prefix="<em>[" suffix="]</em>" %> %></div>
-   <div class="small"><% subscription.modified short prefix=<% gettext 
-   "Last updated on" suffix=" " %> %></div>
-</td>
-<td width="10"> </td>
-<td align="right" class="small">
-   <% subscription.link main <% gettext View context=verb %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-   <% subscription.link unsubscribe <% gettext Unsubscribe %> prefix='<div class="nowrap">... ' suffix="</div>" %>
-</td>
-</tr>
-</table>
 
 <% #contact %>
-<p class="storyTitle"><% response.title %></p>
-<p class="small">
-   <% gettext 'Please enter your message to the user below.' %> 
-   <% gettext 'To prevent abuse, the sender address and the subject of the e-mail 
+<h1><% response.title %></h1>
+<p class='uk-text-muted'>
+   <% gettext 'Please enter your message to the user below.' %>
+   <% gettext 'To prevent abuse, the sender address and the subject of the e-mail
          are set to predefined values.' %>
    <% gettext 'A generic disclaimer will be automatically appended to your message.' %>
 </p>
-<form method="post" action="<% response.action %>">
-<p>
-<span class="small"><% gettext Message suffix=: %></span><br />
-<textarea cols="31" rows="10" class="formText" wrap="virtual" 
-      name="text"><% request.text encoding="form" %></textarea>
-</p>
-<% feature recaptcha %>
-<p>
-   <button type="submit" name="send" value="1"><% gettext Send %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</p>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='name'>
+         <% gettext Message %>
+      </label>
+      <div class='uk-form-controls'>
+         <textarea class='uk-width-1-1' rows="15" class="formText" wrap="virtual" name="text"><% request.text encoding="form" %></textarea>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="send" value="1" tabindex=4>
+         <% gettext Send %>
+      </button>
+      <a href='<% site.href %>' class="uk-button uk-button-link" tabindex=5><% gettext Cancel %></a>
+   </div>
 </form>
 
 <% #content %>
@@ -106,17 +87,17 @@
 <% #notify_contact %>
 <% request.text %>
 
-<% if <% sender.role %> is null then 
+<% if <% sender.role %> is null then
    <% gettext 'This message was sent to you by an anonymous user of the site {0} [1].'
          <% site.title %> %>
-else 
-   <% gettext 'This message was sent to you by the user {0} of the site {1} [1].' 
+else
+   <% gettext 'This message was sent to you by the user {0} of the site {1} [1].'
          <% sender.name %> <% site.title %> %>
 %>
 
 <% gettext "PLEASE DO NOT REPLY TO THE SENDER ADDRESS OF THIS MESSAGE." %>
-<% if <% sender.role  %> is null then '' else 
-   <% gettext 'If the user did not include contact information in the message 
+<% if <% sender.role  %> is null then '' else
+   <% gettext 'If the user did not include contact information in the message
          itself, you can send your reply via the user’s contact form [2].' prefix="
 " suffix="
 " %><% // The ugly linebreaks are necessary to format the message nicely %>
@@ -127,14 +108,14 @@ else
 --
 
 [1] <% site.href %>
-<% if <% sender.role %> is null then '' else 
-   <% sender.href contact prefix='[2] ' %> 
+<% if <% sender.role %> is null then '' else
+   <% sender.href contact prefix='[2] ' %>
 %>
 
 <% #notify_register %>
 <% gettext 'Welcome to {0}, {1}!' <% root.title %> <% membership.name %> %>
 
-<% gettext 'You can edit your account profile and change its password any 
+<% gettext 'You can edit your account profile and change its password any
       time via the following link:' %>
 <% members.href edit %>
 
@@ -144,7 +125,7 @@ else
 <% #notify_edit %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The user {0} has modified your membership of the site {1} at {2}.' 
+<% gettext 'The user {0} has modified your membership of the site {1} at {2}.'
       <% sender.name %> <% site.title %> <% site.href %> %>
 
 <% gettext 'You are now {0} of the site.' <% membership.role %> %>
@@ -155,7 +136,7 @@ else
 <% #notify_add %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'The user {0} has added your account to the list of members 
+<% gettext 'The user {0} has added your account to the list of members
       of the site {1} at {2}.' <% sender.name %> <% site.title %> <% site.href %> %>
 
 <% gettext 'You are now {0} of the site.' <% membership.role %> %>
@@ -166,8 +147,8 @@ else
 <% #notify_delete %>
 <% gettext 'Hello {0}.' <% membership.name %> %>
 
-<% gettext 'We are sorry to inform you that the user {0} has cancelled your 
-      membership of the site {1} at {2}.' <% sender.name %> <% site.title %> 
+<% gettext 'We are sorry to inform you that the user {0} has cancelled your
+      membership of the site {1} at {2}.' <% sender.name %> <% site.title %>
       <% site.href %> %>
 
 <% gettext "Best regards." %>

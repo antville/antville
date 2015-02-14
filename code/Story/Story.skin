@@ -1,100 +1,116 @@
 <% #main %>
 <% story.skin Story#date %>
-<% story.skin Story#content %>
-<p class="small">
-   <% story.link comment#form <% gettext Comment context=verb %> prefix="... " %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
-</p>
+<% story.skin Story#preview %>
 <a name="comments" id="comments"></a>
-<p><% story.comments %></p>
-<p><% story.referrers %></p>
-
-<% #edit %>
-<p class="storyTitle"><% response.title %></p>
-<% story.skin $Story#restore %>
-<form method="post" action="<% response.action %>">
-<p>
-   <div class="small"><% gettext Title suffix=: %></div>
-   <div class="backup"><% story.input title class="formTitle" %></div>
-</p>
-<p>
-   <div class="small"><% gettext Text suffix=: %></div>
-   <div class="backup"><% story.textarea text cols="30" rows="15" 
-   class="formText" %></div>
-</p>
-<p>
-   <div class="small"><% gettext "Tags (separated by commas):" %></div>
-   <div class="backup"><% story.input tags class=formText %></div>
-</p>
-<p><fieldset>
-   <legend class="small"><% gettext Options %></legend>
-   <p><% gettext "The story is {0} and {1}" <% story.select status %>
-   <% story.select mode %> %></p>
-   <p><% gettext "Comments of the story are {0}" <% story.select commentMode %> %></p>
-</fieldset></p>
-<p class="small">
-   <% if <% story.creator %> is null then "" else 
-      <% gettext "Created by {0} on {1}" <% story.creator %> <% story.created %> %> 
-   %>
-   <% if <% story.created %> is <% story.modified %> then "" else 
-      <% gettext "Last modified by {0} on {1}" <% story.modifier %>
-      <% story.modified %> prefix="<br />" %>
-   %>
-</p>
-<p>
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <button type="button" id="restore" value="1"><% gettext Restore %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</p>
-</form>
-<% list macros %>
+<ul class='uk-comment-list'><% story.comments %></ul>
+<div class='uk-margin-large-top'><% story.referrers %></div>
 
 <% #date %>
-<div class="dayHeader"><% story.created date %></div>
+<div class='uk-text-muted uk-h3 uk-margin-bottom'><% story.created date %></div>
 
 <% #content %>
-<div class="storyTitle">
-   <% story.title %>
-</div>
-<div class="storyDate">
-   <% story.creator link suffix=, %>
-   <% story.created time %>
-</div>
-<div><% story.text | story.format %></div>
+<article class='uk-article'>
+   <% story.link main <% story.title prefix="<h1 class='uk-article-title'>" suffix="</h1>" default=' ' %> %>
+   <p class='uk-article-meta'>
+      <% gettext 'Posted by {0} at {1}' <% story.creator %> <% story.created time %> %>
+      <% story.tags link prefix=<% gettext 'in' suffix=' ' %> %>
+   </p>
+   <p>
+      <% story.text | story.format %>
+   </p>
+</article>
 
 <% #preview %>
 <% story.skin Story#content %>
-<p class="small">
-   <% story.link main <% gettext Link %> prefix="... " %>
-   <% story.comments link prefix="(" suffix=")" %>
-   <% story.link comment#form <% gettext Comment context=verb %> prefix=" ... " %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
-</p>
-<br />
+<div class='uk-margin-large-bottom uk-margin-top'>
+   <% story.link edit <% gettext Edit %> class='uk-button uk-margin-right' %>
+   <% story.skin $Story#links %>
+</div>
 
-<% #embed %>
-<% story.title prefix='<div class="storyTitle">'suffix="</div>" %>
-<% story.text | clip %>
-<span class="small">
-   <% story.link main <% gettext "Read more" %> prefix=[ suffix=] %>
-   <% story.link edit <% gettext Edit %> prefix=" ... " %>
-</span><br />
+<% #edit %>
+<h1>
+   <% response.title %>
+   <% story.link . ' ' class='uk-icon-button uk-icon-link uk-text-middle' %>
+</h1>
+<div class='uk-article-meta'><% story.skin $HopObject#meta %></div>
+<% story.skin $Story#restore %>
+<form class='uk-margin-top uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='title'>
+         <% gettext Title %>
+      </label>
+      <div class='uk-form-controls'>
+         <% story.input title class=uk-width-1-1 %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='text'>
+         <% gettext Text %>
+      </label>
+      <div class='uk-form-controls'>
+         <% story.textarea rows=15 text class=uk-width-1-1 data-uk-htmleditor='' %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <label class='uk-form-label' for='tags'>
+         <% gettext "Tags" %>
+         <i class='uk-icon-info-circle uk-text-muted' title='<% gettext 'Separated by commas' %>' data-uk-tooltip='{pos: "right"}'></i>
+      </label>
+      <div class='uk-form-controls'>
+         <% story.input tags class=uk-width-1-1 %>
+      </div>
+   </div>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext Options %></legend>
+      <div class='uk-form-row'>
+         <% gettext "The story is {0} and {1}" <% story.select status %> <% story.select mode %> %>
+         .
+      </div>
+      <div class='uk-form-row'>
+         <% gettext "Comments of the story are {0}" <% story.select commentMode %> %>.
+      </div>
+   </fieldset>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext Information %></legend>
+      <div class='uk-form-row'>
+         <% story.macro | link 'javascript:' data-value=<% story.macro %> data-text=<% gettext "Press CTRL & C to copy to clipboard." %> class='av-clipboard-copy' %>
+         <div><% story.comments summary %></div>
+         <div><% ngettext '{0} request' '{0} requests' <% story.requests default=0 %> %></div>
+      </div>
+   </fieldset>
+   <div class='uk-form-row uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <button class='uk-button uk-button-success' type="button" id="restore" value="1">
+         <% gettext Restore %>
+      </button>
+      <% story.link delete <% gettext Delete %> class='uk-button' %>
+      <a href='.' class="uk-button uk-button-link"><% gettext Cancel %></a>
+   </div>
+</form>
 
 <% #comment %>
 <% story.skin Story#date %>
 <% story.skin Story#content %>
 
-<% #rss %>
-<% this.text | this.format %>
-
 <% #history %>
-<div class="historyItem">
-   <% this.summary %>
-   <div class="small">
-      <% this.creator %>, <span title="<% this.modified %>"><% this.modified text %></span>
+<li>
+   <a href='<% this.href %>' title='<% this.modified %>'>
+      <% this.abstract | this.link %>
+   </a>
+   <div class='uk-text-small'>
+      <% this.creator %>, <% this.modified text %>
    </div>
+</li>
+
+<% #permalink %>
+<% story.link main "<i class='uk-icon-link'></i>" class='uk-button uk-button-small uk-button-link' %>
+
+<% #links %>
+<div class='uk-button-group av-link-group'>
+   <% story.skin Story#permalink %>
+   <% story.link comment#form "<i class='uk-icon-comment-o'></i>" class='uk-button uk-button-small uk-button-link' %>
+   <% story.link main#comments <% story.comments count prefix="<i class='uk-icon-comments'></i> " %> class='uk-button uk-button-small uk-button-link' %>
 </div>
 
-<% #result %>
-<br /><% this.summary %>
-<div class="small">by <% this.creator %> (<% this.modified short %>)</div>

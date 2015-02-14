@@ -1,32 +1,30 @@
 <% #main %>
-<p class="storyTitle"><% response.title %></p>
-<div class="ample">
-   <% stories.link create <% gettext "Add Story" %> prefix="... " %>
-</div>
-... 
-<% stories.link main <% gettext "By {0}" <% membership.name %> %> %>
+<h1>
+   <% response.title %>
+   <% stories.link create ' ' class='uk-icon-button uk-icon-plus uk-text-middle' %>
+</h1>
+<% stories.link . <% gettext All %> %>
+<% stories.link user <% membership.name %> prefix=" | " %>
 <% stories.link closed <% gettext Closed %> prefix=" | " %>
-<% stories.link all <% gettext All %> prefix=" | " %>
+<% stories.link top <% gettext Top %> prefix=" | " %>
 <% response.pager %>
-<% response.list %>
-<% response.pager %>
-
-<% #top %>
-<p class="storyTitle"><% response.title %></p>
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td></td>
-<td rowspan="999"> </td>
-<td align="right" class="small"><% gettext Count %></td>
-<td rowspan="999"> </td>
-<td class="small"><% gettext Date %></td>
-<td rowspan="999"> </td>
-<td class="small"><% gettext Story %></td>
-<td rowspan="999"> </td>
-<td class="small"><% gettext Author %></td>
-</tr>
-<% stories.list top %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th class='uk-text-right'><i class='uk-icon-comments-o'></i></th>
+         <th><% gettext Content %></th>
+         <th><% gettext Author %></th>
+         <th><% gettext Modified %></th>
+         <th></th>
+         <th></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
 </table>
+<% response.pager %>
 
 <% #macros %>
 <p class="small">

@@ -1,0 +1,24 @@
+<% #main %>
+<h1><% response.title %></h1>
+<p>
+  <% gettext 'The claustra – or cloistral chamber – is the first thing an ant queen creates when founding a new colony. In Antville, we call that an extension of functionality in a limited way – just like a plug-in, module or add-on. To enable or disable an Antville Claustra, simply add it to or remove it from the <code>claustra</code> property in <code>app.properties</code>.' %>
+</p>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Name %></th>
+         <th><% gettext Description %></th>
+         <th class='uk-text-right'><% gettext Enabled %></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+
+<% #listItem %>
+<tr>
+  <td><% param.name _prefix=<% param.href prefix="<a href='" suffix="'>" %> _suffix=</a> %></td>
+  <td></td>
+  <td class='uk-text-right'><% if <% param.enabled %> is true then "<i class='uk-icon uk-icon-check'></i>" %></td>
+</tr>

@@ -4,342 +4,378 @@
 <% response.pager %>
 
 <% #navigation %>
-<div class="boxheader"><% gettext Administration %></div>
-<div class="box">
-<% admin.link main <% gettext Log %> prefix="... " suffix="<br />" %>
-<% admin.link sites <% gettext Sites %> prefix="... " suffix="<br />" %>
-<% admin.link users <% gettext Users %> prefix="... " suffix="<br />" %>
-<% admin.link setup <% gettext Setup %> prefix="... " suffix="<br />" %>
-</div>
+<li><% admin.link . <% gettext Setup prefix="<i class='uk-icon uk-icon-wrench'></i> " %> %></li>
+<li><% admin.link activity <% gettext Activity %> %></li>
+<li><% admin.link users <% gettext Accounts %> %></li>
+<li><% admin.link sites <% gettext Sites %> %></li>
+<li><% admin.link jobs <% gettext Jobs %> %></li>
 
 <% #welcome %>
-<p><em><% gettext Note %></em>: <% gettext 'Since you are an administrator 
-of this Antville installation you are entitled to administer <a href="{0}">sites</a> 
-      and <a href="{1}">users</a>, view the <a href="{2}">administration log</a> 
-      and configure the <a href="{3}">setup</a>.' <% root.admin.href sites %> 
-      <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %>
-%></p>
-
-<% #log %>
-<p class="pageTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<table cellspacing="0" cellpadding="2">
-<tr>
-<td class="small"><% gettext Type suffix=: %></td>
-<td>
-   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Root %> 
-         <% markgettext Site %> <% markgettext User %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Sort suffix=: %></td>
-<td><% admin.dropdown name="dir" <% markgettext Descending %> 
-      <% markgettext Ascending %> %></td>
-</tr>
-<tr>
-<td class="small"><% gettext Search suffix=: %></td>
-<td><input id="query" name="query" value="<% request.query %>" />
-      <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
-      <button type="submit" name="search" value="1"><% gettext Update %></button></td> 
-</tr>
-</table>
-</form>
-
-<% #LogEntry %>
-<table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td>
-   <span class="label <% item.context_type %>"><% gettext <% item.context_type %> %></span>
-</td>
-<td> </td>
-</tr>
-<tr>
-<td width="100%">
-   <% item.context.name prefix="<strong>" suffix="</strong><br />" %>
-   <% item.action %><br />
-   <small><% gettext "{0} on {1}" <% item.creator %> <% item.created short %> %></small>
-</td>
-<td class="small" valign="top" align="right"></td>
-</tr>
-</table>
-
-<% #sites %>
-<p class="pageTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<table cellspacing="0" cellpadding="2">
-<tr>
-<td class="small"><% gettext Type suffix=: %></td>
-<td>
-   <% admin.dropdown name="filter" <% markgettext Any %> <% markgettext Blocked %> 
-         <% markgettext Trusted %> <% markgettext Open %> <% markgettext Restricted %>
-         <% markgettext Public %> <% markgettext Closed %> <% markgettext Deleted %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Sort suffix=: %></td>
-<td>
-   <% admin.dropdown name="order" <% markgettext "Last Update" %>
-         <% markgettext "Creation Date" %> <% markgettext Name %> %>
-   <% admin.dropdown name="dir" <% markgettext Descending %> 
-         <% markgettext Ascending %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Search suffix=: %></td>
-<td><input id="query" name="query" value="<% request.query encoding="form" %>" />
-      <button onclick='$("#query").val(""); return false'><% gettext Reset %></button>
-      <button type="submit" name="search" value="1"><% gettext Update %></button></td> 
-</td>
-</tr>
-</table>
-</form>
-
-<% #Site %>
-<a name="<% item.id %>" id="<% item.id %>"></a>
-<table border="0" class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td colspan="2">
-   <span class="label <% item.status %>"><% gettext <% item.status %> %></span><!--
-   --><span class="label <% item.mode %>"><% gettext <% item.mode %> %></span>
-</td>
-</tr>
-<tr>
-<td width="100%" valign="top">
-   <div><strong><% item.title | item.link %></strong></div>
-   <div><a href="<% item.href %>"><% item.href %></a></div>
-   <div class="small"><% gettext "Created by {0} on {1}" <% item.creator as="link" %> 
-   <% item.created short %> %><br />
-   <% gettext "Last updated on" %> <% item.modified short %></div>
-</td>
-<td class="small" valign="top" align="right">
-   <% admin.link edit <% gettext Edit %> <% item.id %> prefix='... ' %>
-   <% if <% item.mode %> is deleted then "" else 
-      <% admin.link delete <% gettext Delete %> <% item.id %> prefix="... " %> 
-   %>
-</td>
-</tr>
-</table>
-
-<% #editSite %>
-<form method="post" action="<% response.action %>#<% site.id %>">
-<input type="hidden" name="id" value="<% request.id %>" />
-<input type="hidden" name="page" value="<% request.page default="0" %>" />
-<table cellspacing="0" cellpadding="0" width="100%">
-<colgroup>
-   <col width="*" />
-   <col width="150" />
-</colgroup>
-<tr>
-<td valign="top" class="small">
-   <% gettext "Disk Space" %>: <% item.diskspace %><br />
-   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.self stories %> %> suffix="<br />" %>
-   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.self comments %> %> suffix="<br />" %>
-   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.self images %> %> suffix="<br />" %>
-   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.self files %> %> suffix="<br />" %>
-</td>
-<td class="small" align="left">
-   <div style="padding-bottom: 3px;"><% item.select status %></div>
-   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
-</form>
-
-<% #deleteSite %>
-<form method="post" action="<% response.action %>">
-<input type="hidden" name="id" value="<% request.id %>" />
-<input type="hidden" name="page" value="<% request.page %>" />
-<div class="adminHighlight">
-<p><strong><% gettext Caution! %></strong></p>
-<p><% gettext 'You are about to delete the whole site which currently contains {0}, {1}, {2}, {3} and {4}.' 
-      <% ngettext '{0} story' '{0} stories' <% admin.count <% item.self stories %> %> %>
-      <% ngettext '{0} comment' '{0} comments' <% admin.count <% item.self comments %> %> %>
-      <% ngettext '{0} image' '{0} images' <% admin.count <% item.self images %> %> %>
-      <% ngettext '{0} file' '{0} files' <% admin.count <% item.self files %> %> %> 
-      <% ngettext '{0} member' '{0} members' <% admin.count <% item.self members %> %> %> %></p>
-<p><strong><% gettext 'All of this will be deleted irreversibly.' %></strong></p>
-<p><% gettext 'Are you sure you want to proceed?' %></p>
-</div>
-<p><button type="submit" name="remove" value="1"><% gettext 'Proceed' %></button>
-<a href="" class="cancel"><% gettext 'Cancel' %></button></p>
-</form>
-
-<% #users %>
-<p class="pageTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<table cellspacing="0" cellpadding="2">
-<tr>
-<td class="small"><% gettext Type suffix=: %></td>
-<td>
-   <% admin.dropdown name="filter" <% markgettext All %> <% markgettext Blocked %>
-         <% markgettext Trusted %> <% markgettext Privileged %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Sort suffix=: %></td>
-<td>
-   <% admin.dropdown name="order" <% markgettext Registration %>
-         <% markgettext Login %> <% markgettext Username %> %>
-   <% admin.dropdown name="dir" <% markgettext Descending %> 
-         <% markgettext Ascending %> %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Search suffix=: %></td>
-<td><input name="query" value="<% request.query %>" />
-      <button type="reset"><% gettext Reset %></button>
-      <button type="submit" name="search" value="1"><% gettext Update %></button></td>
-</tr>
-</table>
-</form>
-
-<% #User %>
-<a name="<% item.id %>" id="<% item.id %>"></a>
-<table class="listItemSeparator" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td colspan="2">
-   <span class="label <% item.status %>"><% gettext <% item.status %> %></span>
-</td>
-</tr>
-<tr>
-<td valign="top">
-   <div><strong><% item.name %></strong></div>
-   <div><% item.email suffix="<br />" %>
-   <a href="<% item.url %>"><% item.url %></a></div>
-   <div class="small">
-      <% gettext Registered %>: <% item.created short %><br />
-      <% gettext "Last Login" %>: <% item.modified short %><br />
-   </div>
-</td>
-<td class="small" valign="top" align="right">
-   <% admin.link edit <% gettext Edit %> <% item.id %> prefix="... " %>
-</td>
-</tr>
-</table>
-
-<% #editUser %>
-<form method="post" action="<% response.action %>">
-<input type="hidden" name="id" value="<% request.id %>" />
-<input type="hidden" name="page" value="<% request.page %>" />
-<table cellspacing="0" cellpadding="0" width="100%">
-<colgroup>
-   <col width="*" />
-   <col width="150" />
-</colgroup>
-<tr>
-<td class="small" valign="top">
-   <% ngettext "{0} Story" "{0} Stories" <% admin.count <% item.self stories %> %> %>:
-   <% admin.items <% item.stories %> %><br />
-   <% ngettext "{0} Comment" "{0} Comments" <% admin.count <% item.self comments %> %> %>:
-   <% admin.items <% item.comments %> %><br />
-   <% ngettext "{0} Image" "{0} Images" <% admin.count <% item.self images %> %> %>:
-   <% admin.items <% item.images %> %><br />
-   <% ngettext "{0} File" "{0} Files" <% admin.count <% item.self files %> %> %>:
-   <% admin.items <% item.files %> %><br />
-</td>
-<td class="small" align="left">
-   <div style="padding-bottom: 3px;"><% item.select status %></div>
-   <button type="submit" id="save" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></button>
-</td>
-</tr>
-</table>
-</form>
+<p>
+   <em><% gettext Note suffix=: %></em> <% gettext 'Since you are an administrator of this Antville installation you are entitled to manage <a href="{0}">sites</a> and <a href="{1}">accounts</a>, monitor all <a href="{2}">activity</a>, configure the <a href="{3}">setup</a> and much more.' <% root.admin.href sites %> <% root.admin.href users %> <% root.admin.href log %>  <% root.admin.href setup %> %>
+</p>
 
 <% #setup %>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <fieldset>
+      <legend><% gettext General %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='notificationScope'>
+            <% gettext Notifications %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.select notificationScope %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='replyTo'>
+            <% gettext 'Notification E-Mail' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input replyTo class=uk-width-1-2 type=email %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='quote'>
+            <% gettext "Disk Quota" %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input quota class=uk-width-1-6 type=number min=0 %> MB
+         </div>
+      </div>
+   </fieldset>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext 'Site Creation' %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='creationScope'>
+            <% gettext 'Required Account Status' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.select creationScope %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='probationPeriod'>
+            <% gettext 'Probation Period' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input probationPeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='creationDelay'>
+            <% gettext Interval %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input creationDelay maxlength=3 class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+         </div>
+      </div>
+   </fieldset>
+   <fieldset class='uk-margin-top'>
+      <legend><% gettext 'Site Phase-Out' %></legend>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='phaseOutMode'>
+            <% gettext Mode %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.select phaseOutMode label=enabled %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='phaseOutNotificationPeriod'>
+            <% gettext 'Notification Period' %>
+         </label>
+         <div class='uk-form-controls'>
+         <% root.input phaseOutNotificationPeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+         </div>
+      </div>
+      <div class='uk-form-row'>
+         <label class='uk-form-label' for='phaseOutGracePeriod'>
+            <% gettext 'Grace Period' %>
+         </label>
+         <div class='uk-form-controls'>
+            <% root.input phaseOutGracePeriod class=uk-width-1-6 type=number min=1 %> <% gettext days %>
+         </div>
+      </div>
+   </fieldset>
+   <div class='uk-margin-top'>
+      <button class='uk-button uk-button-primary' type="submit" id="submit" name="save" value="1">
+         <% gettext Save %>
+      </button>
+      <a href='..' class="uk-button uk-button-link"><% gettext Cancel %></a>
+   </div>
+</form>
 <script type="text/javascript">
 $(function() {
-   $("#creationScope select").change(function() {
+   $("#creationScope").on('change', function() {
       var disabled = $(this).val() === "regular" ? false : true;
-      $("#probationPeriod input").attr("disabled", disabled);
-      $("#creationDelay input").attr("disabled", disabled);
+      $("#probationPeriod").attr("disabled", disabled);
+      $("#creationDelay").attr("disabled", disabled);
    }).change();
-   $("#phaseOutMode select").change(function() {
+   $("#phaseOutMode").on('change', function() {
       var disabled = $(this).val() !== "disabled" ? false : true;
-      $("#phaseOutNotificationPeriod input").attr("disabled", disabled);
-      $("#phaseOutGracePeriod input").attr("disabled", disabled);
+      $("#phaseOutNotificationPeriod").attr("disabled", disabled);
+      $("#phaseOutGracePeriod").attr("disabled", disabled);
    }).change();
 });
 </script>
-<p class="pageTitle"><% response.title %></p>
-<form method="post" action="<% response.action %>">
-<table border="0" cellspacing="0" cellpadding="2">
-<tr>
-<td colspan="2"><strong><% gettext General %></strong></td>
-</tr>
-<tr>
-<td class="small"><% gettext Notifications %>:</td>
-<td>
-   <% root.select notificationScope %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Reply-To %>:</td>
-<td>
-   <% root.input replyTo %><br />
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext "Disk Quota" %>:</td>
-<td>
-   <% root.input quota %> MB
-</td>
-</tr>
-<tr>
-<td colspan="2">
-   <div class="blockSeparator"> </div><br />
-   <strong><% gettext "Site Creation" %></strong>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext 'User Role' %>:</td>
-<td id="creationScope">
-   <% root.select creationScope %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext "Probation Period" %>:</td>
-<td id="probationPeriod">
-   <% root.input probationPeriod maxlength=3 %> <% gettext days %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext Interval %>:</td>
-<td id="creationDelay">
-   <% root.input creationDelay maxlength=3 %> <% gettext days %>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-   <div class="blockSeparator"> </div><br />
-   <strong><% gettext Phase-Out %></strong>
-</td>
-</tr>
-<tr>
-<td colspan="2" class="small" valign="top">
-<tr>
-<td class="small"><% gettext Mode %>:</td>
-<td id="phaseOutMode"><% root.select phaseOutMode label="enabled" %></td>
-</tr>
-<tr>
-<td class="small"><% gettext "Notification Period" %>:</td>
-<td id="phaseOutNotificationPeriod">
-   <% root.input phaseOutNotificationPeriod %> <% gettext days %>
-</td>
-</tr>
-<tr>
-<td class="small"><% gettext "Grace Period" %>:</td>
-<td id="phaseOutGracePeriod">
-   <% root.input phaseOutGracePeriod %> <% gettext days %>
-</td>
-</tr>
-<tr>
-<td> </td>
-<td><br />
-   <button type="submit" name="save" value="1"><% gettext Save %></button>
-   <a href="" class="cancel"><% gettext Cancel %></a>
-</td>
-</tr>
-</table>
+
+<% #activities %>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Display %>
+      </div>
+      <div class='uk-form-controls'>
+         <% gettext '{0} activity sorted by date in {1} order.'
+            <% admin.dropdown name="display" <% markgettext any %> <% markgettext content %> <% markgettext comment %> <% markgettext link %> <% markgettext file %> <% markgettext image %> <% markgettext poll %> <% markgettext site %> <% markgettext user %> %>
+            <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
+         %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Filter %>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by account. Use the asterisk * as wildcard.' %>"></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
+         <button class='uk-button' type='button' onclick="location.replace(location.href);"><% gettext Reset %></button>
+         <button class='uk-button uk-button-primary' type="submit" name="update" value="1"><% gettext Update %></button>
+      </div>
+   </div>
 </form>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th></th>
+         <th><% gettext Account %></th>
+         <!--th><% gettext Site %></th-->
+         <th><% gettext Created %></th>
+         <th><% gettext Reference %></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
+
+<% #sites %>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Display %>
+      </div>
+      <div>
+         <% gettext '{0} sites sorted by {1} in {2} order.'
+            <% admin.dropdown name="display" <% markgettext all %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext open %> <% markgettext restricted %> <% markgettext public %> <% markgettext closed %> <% markgettext deleted %> %>
+            <% admin.dropdown name="sorting" <% markgettext modified %> <% markgettext created %> <% markgettext name %> %>
+            <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
+         %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Filter %>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by site name. Use the asterisk * as wildcard.' %>"></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
+         <button class='uk-button' type='button' onclick="location.replace('sites');"><% gettext Reset %></button>
+         <button class='uk-button uk-button-primary' type="submit" name="update" value="1"><% gettext Update %></button>
+      </div>
+   </div>
+</form>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Name %></th>
+         <th><% gettext Created %></th>
+         <th><% gettext Modified %></th>
+         <th colspan=2><% gettext Status %> & <% gettext Mode %></th>
+         <th></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
+
+<% #users %>
+<h1><% response.title %></h1>
+<form class='uk-form uk-form-stacked' method="post" action="<% response.action %>">
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Display %>
+      </div>
+      <div>
+         <% gettext '{0} accounts sorted by {1} in {2} order.'
+            <% admin.dropdown name="display" <% markgettext all %> <% markgettext blocked %> <% markgettext trusted %> <% markgettext privileged %> %>
+            <% admin.dropdown name="sorting" <% markgettext Registration %> <% markgettext 'last login' %> <% markgettext Name %> %>
+            <% admin.dropdown name="order" <% markgettext descending %> <% markgettext ascending %> %>
+         %>
+      </div>
+   </div>
+   <div class='uk-form-row'>
+      <div class='uk-form-label'>
+         <% gettext Filter %>
+         <i class='uk-icon uk-icon-info-circle uk-text-muted' data-uk-tooltip title="<% gettext 'You can filter the results by name or by e-mail address. Use the asterisk * as wildcard.' %>"></i>
+      </div>
+      <div class='uk-form-controls'>
+         <input class='uk-width-1-2' id="filter" name="filter" value="<% session.filter encoding="form" %>">
+         <button class='uk-button' type='button' onclick="location.replace('users')"><% gettext Reset %></button>
+         <button class='uk-button uk-button-primary' type="submit" name="filter" value="1"><% gettext Update %></button>
+      </div>
+   </div>
+</form>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
+<% response.pager %>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Name %></th>
+         <th><% gettext Registered %></th>
+         <th><% gettext 'Last Login' %></th>
+         <th><% gettext Status %></th>
+         <th></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+<% response.pager %>
+
+<% #jobs %>
+<h1><% response.title %></h1>
+<p><% ngettext 'Showing {0} result' 'Showing {0} results' <% response.count %> %>.</p>
+<table class='uk-table uk-table-striped uk-table-hover uk-table-condensed'>
+   <thead>
+      <tr>
+         <th><% gettext Method %></th>
+         <th><% gettext Type %></th>
+         <th><% gettext ID %></th>
+         <th><% gettext User %></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      <% response.list %>
+   </tbody>
+</table>
+
+<% #activity %>
+<tr <% if <% param.warn %> is true then "class='uk-text-bold'" %>>
+   <td><% param.icon %></td>
+   <td class='av-overflow uk-width-2-10'><% param.user %></td>
+   <!--td class='av-overflow uk-width-2-10'><% param.site %></td-->
+   <td class='uk-text-truncate' title='<% param.date | format short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% param.date | format text %>
+   </td>
+   <td class='uk-width-5-10 av-overflow'>
+      <a href='<% param.href %>'><% param.reference %></a>
+      <% if <% param.linkCount %> is 0 then '' else <% param.linkCount prefix="<span class='uk-text-muted uk-text-nowrap'><i class='uk-icon uk-icon-link'></i> " suffix=</span> %> %>
+   </td>
+   <td class='uk-text-nowrap uk-text-right'>
+      <% admin.link delete "<i class='uk-icon-trash-o'></i>" <% param.item %> %>
+      <% admin.link block "<i class='uk-icon-ban'></i>" <% param.item %> %>
+   </td>
+</tr>
+
+<% #site %>
+<tr>
+   <td class='uk-width-1-3 av-overflow'>
+      <div><% item.title default='<i>Untitled</i>' | item.link %></div>
+      <div class='uk-text-small'><% item.href | replace '^https?:\/\/(.+)\/$' '$1' %></div>
+   </td>
+   <td class='uk-text-truncate' title='<% item.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.created text %>
+   </td>
+   <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.modified text %>
+   </td>
+   <td><% admin.skin <% item.status prefix=$Admin# suffix=Site %> %></td>
+   <td class='uk-text-muted'><% admin.skin <% item.mode prefix=$Admin# suffix=Site %> %></td>
+   <td>
+      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
+   </td>
+   <td class='uk-text-right uk-text-nowrap'>
+      <% if <% item.mode %> is deleted then '' else
+         <% item.link delete "<i class='uk-icon-trash-o'></i>" <% item.id %> %>
+      %>
+      <% item.link edit "<i class='uk-icon-pencil'></i>" <% item.id %> %>
+   </td>
+</tr>
+
+<% #user %>
+<tr>
+   <td class='uk-width-1-3 av-overflow'>
+      <div class='uk-text-bold'>
+         <% if <% item.url %> is null then <% item.name %> else <% item.name | item.link <% item.url %> %> %>
+      </div>
+      <div class='uk-text-small'><a href='mailto:<% item.email %>'><% item.email %></a></div>
+   </td>
+   <td class='uk-text-truncate' title='<% item.created short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.created text %>
+   </td>
+   <td class='uk-text-truncate' title='<% item.modified short %>' data-uk-tooltip="{pos: 'top-left'}">
+      <% item.modified text %>
+   </td>
+   <td><% admin.skin <% item.status prefix=$Admin# suffix=User %> %></td>
+   <td>
+      <% item.notes prefix="<span title='" suffix="' data-uk-tooltip><i class='uk-icon-info-circle uk-text-muted'></i></span>" %>
+   </td>
+   <td class='uk-text-right uk-text-nowrap;'>
+      <% item.link delete "<i class='uk-icon-trash-o'></i>" %>
+      <% item.link edit "<i class='uk-icon-pencil'></i>" %>
+   </td>
+</tr>
+
+<% #job %>
+<tr>
+   <td><% item.method %></td>
+   <td><% item.type %></td>
+   <td><% item.id %></td>
+   <td><% item.user %></td>
+   <td><% item.link delete "<i class='uk-icon-trash-o'></i>" %></td>
+</tr>
+
+<% #blockedSite %>
+<div class='uk-badge uk-badge-danger'><% gettext Blocked %></div>
+
+<% #trustedSite %>
+<div class='uk-badge uk-badge-success'><% gettext Trusted %></div>
+
+<% #deletedSite %>
+<i class='uk-icon-ban'></i>
+
+<% #closedSite %>
+<i class='uk-icon-lock'></i>
+
+<% #restrictedSite %>
+<i class='uk-icon-group'></i>
+
+<% #openSite %>
+<i class='uk-icon-globe'></i>
+
+<% #blockedUser %>
+<div class='uk-badge uk-badge-danger'><% gettext Blocked %></div>
+
+<% #trustedUser %>
+<div class='uk-badge uk-badge-success'><% gettext Trusted %></div>
+
+<% #privilegedUser %>
+<div class='uk-badge'><% gettext Privileged %></div>
+
