@@ -172,7 +172,7 @@ Skins.prototype.getListOfSkins = function() {
       var subskin = this.getSkin(prototype, name);
       skins.push(subskin);
     }
-    skins.sort();
+    skins.sort(new String.Sorter('name'));
     result.push([prototype, skins]);
   }
   return result;
